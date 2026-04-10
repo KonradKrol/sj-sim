@@ -1,14 +1,65 @@
 # Sj.Sim
-Program symulujący wyniki skoków narciarskich z interfejsem graficznym stworzonym w QT.
 
-# Opcje w menu głównym
-- **Symuluj sezon** - tryb, w którym tworzy się kalendarz, symulując po koleji konkursy dla różnych klasyfikacji. Po drodze ma się do dyspozycji wiele funkcji zwiększających realistykę (system automatycznego generowania formy skoczków, wykresy, statystyki, manipulowanie wynikami, zmiana bazy danych w trakcie sezonu)
-- **Pojedynczy konkurs** - tryb, w którym rozgrywa się wyłącznie jeden konkurs, na określonej skoczni, z określoną listą startową.
-- **Pojedyncze skoki** - użytkownik ma możliwość wybrania skoczni, jednego zawodnika, warunków wietrznych i przesymulowania określonej ilości skoków. Pokazywane są potem szczegółowe dane o każdym skoku, jak i wykresy czy ogólne statystyki.
-- **Edytor bazy danych** - w oknie edytora bazy danych użytkownik edytuje globalną listę zawodników, skoczni, i zasad konkursów.
-- **Pomoc** - wyjaśnione są tam trudniejsze zagadnienia dotyczące symulacji czy obsługi programu.
+Sj.Sim is a ski jumping results simulator with a graphical interface built using Qt Widgets (C++).
 
-# Galeria
+The project was mainly developed between January and November 2023.
+
+It focuses on simulation, not graphics — there is no 2D or 3D rendering. Instead, results are based on a probability system and modeled athlete skills.
+
+## Main modes
+
+- **Simulate season**  
+  A full season mode where the game goes through a generated calendar of competitions.  
+  Includes features to improve realism:
+  - automatic form system for athletes  
+  - charts and statistics  
+  - result manipulation tools  
+  - ability to change the database during the season  
+
+- **Single competition**  
+  Run one competition on a selected hill with a chosen start list.
+
+- **Single jumps**  
+  Lets you set up conditions (hill, athlete, wind) and simulate multiple jumps.  
+  Shows detailed data, charts, and overall statistics.
+
+- **Database editor**  
+  Edit the global list of athletes, hills, and competition rules.
+
+## Features
+- Custom databases (you can load your own jumpers and setups)  
+- Multi-season gameplay (if God permits and it won't crash...)
+- Simulation based on probability and athlete skill models  
+- Advanced statistics and charts  
+
+## Technical notes
+- Built with Qt Widgets and C++  
+- Codebase is hard to maintain  
+- Contains many bugs, memory leaks, and outdated patterns  
+- Debugging was often replaced by print-based approaches  
+
+This project should be treated as experimental and educational rather than production-quality.
+
+## Known issues
+
+There is a well-known crash in season mode.  
+Fix/workaround: https://www.youtube.com/watch?v=coQ_zKPa1xk
+
+## Remake
+
+A modern remake has been developed (React and Electron):
+https://github.com/KonradKrol/sjsim-2026  
+
+The new version aims to clean up the architecture and fix major issues.
+
+## Contributing
+
+This project is very open to contributions.  
+If something is unclear or hard to understand, feel free to ask — I can walk you through the code and explain key parts.
+
+Even small improvements help to clean up* the project.
+
+## Screenshots
 ![image (1)](https://github.com/user-attachments/assets/25282487-6e3f-4038-8711-4a08344059c9)
 ![image (2)](https://github.com/user-attachments/assets/8a9c473e-140d-4551-9f4e-eb7b1a2bec48)
 ![image (3)](https://github.com/user-attachments/assets/bf90b645-8b65-4667-8e16-517ea76c6513)
