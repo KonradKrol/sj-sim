@@ -6,6 +6,8 @@
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QRegularExpression>
+#include <QSaveFile>
+#include <QSet>
 #include <QSysInfo>
 #include "../global/Uuid.h"
 
@@ -251,16 +253,20 @@ bool SimulationSave::saveToFile(QString dir, QString fileName)
             applicationDirectory.cdUp();
         targetDirectory = QDir(applicationDirectory.absoluteFilePath(dir));
     }
-    targetDirectory.mkpath(".");
+    if(!targetDirectory.mkpath("."))
+    {
+        QMessageBox::critical(nullptr, QObject::tr("Nie można utworzyć folderu zapisu"),
+                              QObject::tr("Nie udało się utworzyć folderu %1.").arg(targetDirectory.absolutePath()));
+        return false;
+    }
     const QString filePath = targetDirectory.absoluteFilePath(fileName + ".json");
 
     QJsonDocument document;
     QJsonObject mainObject;
-    repairDatabase();
     mainObject.insert("simulation-save", SimulationSave::getJsonObject(*this));
     document.setObject(mainObject);
 
-    QFile file(filePath);
+    QSaveFile file(filePath);
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
         QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku z zapisem symulacji " + getName(), "Nie udało się otworzyć pliku " + filePath + "\nUpewnij się, że folder istnieje i ma odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
@@ -268,12 +274,13 @@ bool SimulationSave::saveToFile(QString dir, QString fileName)
         message.exec();
         return false;
     }
-    file.resize(0);
-    if(saveFileSizeReduce == true)
-        file.write(document.toJson(QJsonDocument::Compact));
-    else
-        file.write(document.toJson(QJsonDocument::Indented));
-    file.close();
+    const QByteArray content = document.toJson(saveFileSizeReduce ? QJsonDocument::Compact : QJsonDocument::Indented);
+    if(file.write(content) != content.size() || !file.commit())
+    {
+        QMessageBox::critical(nullptr, QObject::tr("Nie można zapisać zapisu symulacji"),
+                              QObject::tr("Nie udało się bezpiecznie zapisać pliku %1. Poprzedni plik pozostał bez zmian.").arg(filePath));
+        return false;
+    }
     return true;
 }
 
@@ -329,8 +336,10 @@ void SimulationSave::repairDatabase()
         objects.push_back(&rules);
     for(auto & season : seasons)
     {
+        objects.push_back(&season);
         for(auto & cal : season.getCalendarsReference())
         {
+            objects.push_back(cal);
             for(auto & competition : cal->getCompetitionsReference())
             {
                 objects.push_back(competition);
@@ -356,13 +365,13 @@ void SimulationSave::repairDatabase()
         }
     }
 
-    //globalIDGenerator.reset();
+    QSet<QString> assignedIds;
     for(auto & object : objects)
     {
-        object->reassign();
+        if(assignedIds.contains(object->getIDStr()))
+            object->reassign();
+        assignedIds.insert(object->getIDStr());
     }
-
-    return;
 }
 
 void SimulationSave::fixJumpersFormInstabilities()
