@@ -460,7 +460,7 @@ void SimulationSaveManagerWindow::fillNextCompetitionInformations()
     simulationSave->updateNextCompetitionIndex();
     SeasonCalendar * calendar = simulationSave->getActualSeason()->getActualCalendar();
     CompetitionInfo * next = simulationSave->getNextCompetition();
-    if(next != nullptr){
+    if(calendar != nullptr && next != nullptr && next->getHill() != nullptr){
         int competitionIndex = calendar->getCompetitionsReference().indexOf(next);
         int indexInCalendar = SeasonCalendar::getCompetitionMainIndex(calendar->getCompetitionsReference(), next);
         QString text = QString::number(competitionIndex + 1) + ". " + next->getHill()->getName() + " HS" + QString::number(next->getHill()->getHSPoint());

@@ -67,10 +67,14 @@ bool hasRequiredSaveStructure(const QJsonObject &object)
 }
 
 SimulationSave::SimulationSave() :
-    Identifiable()
-{
-    actualSeason = nullptr;
-}
+    Identifiable(),
+    actualSeason(nullptr),
+    nextCompetition(nullptr),
+    nextCompetitionIndex(0),
+    showForm(true),
+    showInstability(true),
+    saveFileSizeReduce(false)
+{}
 
 SimulationSave::~SimulationSave()
 {
@@ -298,8 +302,11 @@ SimulationSave *SimulationSave::loadFromFile(QString filePath)
 void SimulationSave::updateNextCompetitionIndex()
 {
     nextCompetitionIndex = 0;
-    if(actualSeason->getActualCalendar() != nullptr){
-    for(auto & comp : getActualSeason()->getActualCalendar()->getCompetitionsReference())
+    nextCompetition = nullptr;
+    if(actualSeason == nullptr || actualSeason->getActualCalendar() == nullptr)
+        return;
+
+    for(auto & comp : actualSeason->getActualCalendar()->getCompetitionsReference())
     {
         if(comp->getPlayed() == false)
             break;
@@ -308,8 +315,7 @@ void SimulationSave::updateNextCompetitionIndex()
     if(nextCompetitionIndex == actualSeason->getActualCalendar()->getCompetitionsReference().count())
         nextCompetition = nullptr;
     else
-        nextCompetition = getActualSeason()->getActualCalendar()->getCompetitionsReference()[nextCompetitionIndex];
-        }
+        nextCompetition = actualSeason->getActualCalendar()->getCompetitionsReference().at(nextCompetitionIndex);
 }
 
 void SimulationSave::repairDatabase()
