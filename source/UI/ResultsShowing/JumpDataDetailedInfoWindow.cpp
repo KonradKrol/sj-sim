@@ -10,9 +10,10 @@
 extern const QString appVersion;
 
 JumpDataDetailedInfoWindow::JumpDataDetailedInfoWindow(JumpData *jumpData, QWidget *parent) :
-    jumpData(jumpData),
     QWidget(parent),
-    ui(new Ui::JumpDataDetailedInfoWindow)
+    ui(new Ui::JumpDataDetailedInfoWindow),
+    jumpData(jumpData),
+    windInfoWidget(nullptr)
 {
     ui->setupUi(this);
 
@@ -61,11 +62,10 @@ void JumpDataDetailedInfoWindow::fillJumpInformations()
         ui->label_windPoints->setStyleSheet(Wind::getStyleSheetForAveragedWind(jumpData->getWindCompensation()));
         ui->label_totalCompensation->setText(QString::number(jumpData->getTotalCompensation(), 'f', 1) + tr("pkt"));
         ui->label_totalCompensation->setStyleSheet(Wind::getStyleSheetForAveragedWind(jumpData->getTotalCompensation()));
-        ui->label_judges->setText("| " + QString::number(jumpData->getJudges().at(0)) + " | ");
-        for(int i=0; i < 4; i++) //jedno zostalo juz wykonane
-        {
-            ui->label_judges->setText(ui->label_judges->text() + QString::number(jumpData->getJudges().at(i+1), 'f', 1) + " | ");
-        }
+        QString judgesText;
+        for(double judge : jumpData->getJudges())
+            judgesText += "| " + QString::number(judge, 'f', 1) + " ";
+        ui->label_judges->setText(judgesText.isEmpty() ? tr("Brak not") : judgesText + "|");
         ui->label_judgesPoints->setText(QString::number(jumpData->getJudgesPoints(), 'f', 1) + tr("pkt"));
         ui->label_landingType->setText(jumpData->getLanding().getTextLandingType());
         ui->label_landingType->setStyleSheet(Landing::getStyleSheetForLandingTypeTextInfo(jumpData->getLanding().getType()));

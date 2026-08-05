@@ -9,7 +9,10 @@
 
 Wind WindsCalculator::getAveragedWind(QVector<Wind> winds, short type)
 {
-    double percent = 100 / winds.count();
+    if(winds.isEmpty())
+        return Wind(0.0);
+
+    double percent = 100.0 / winds.count();
     double windAvg = 0;
     int i=0;
 

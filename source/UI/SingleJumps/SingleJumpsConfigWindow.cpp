@@ -22,6 +22,9 @@ SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent) :
     ui->setupUi(this);
     setWindowFlags(Qt::Window);
     ui->spinBox_dsqProbability->setValue(GlobalSimulationSettings::get()->getBaseDsqProbability());
+    ui->pushButton_submit->setDefault(true);
+    ui->pushButton_submit->setToolTip(tr("Rozpocznij symulację z aktualnymi ustawieniami (Enter)"));
+    ui->spinBox_jumpsCount->setToolTip(tr("Liczba skoków do wykonania; minimum to 1"));
 
     jumperEditor = new JumperEditorWidget;
     jumperEditor->removeSubmitButton();
@@ -67,6 +70,14 @@ SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent) :
         else
             ui->doubleSpinBox_jumpsImportance->setValue(5.0);
     });
+
+    const auto updateWindCompensationInputs = [this](){
+        const bool enabled = ui->checkBox_hasWindCompensation->isChecked();
+        ui->comboBox_windCompensationDistanceEffect->setEnabled(enabled);
+        ui->comboBox_windAverageCalculatingType->setEnabled(enabled);
+    };
+    connect(ui->checkBox_hasWindCompensation, &QCheckBox::toggled, this, updateWindCompensationInputs);
+    updateWindCompensationInputs();
 }
 
 SingleJumpsConfigWindow::~SingleJumpsConfigWindow()
@@ -98,9 +109,27 @@ void SingleJumpsConfigWindow::on_comboBox_existingHill_currentIndexChanged(int i
 
 void SingleJumpsConfigWindow::on_pushButton_submit_clicked()
 {
-    if(ui->spinBox_jumpsCount->value() > 0)
-        accept();
-    else QMessageBox::warning(this, tr("Ostrzeżenie"), tr("Ilość skoków musi być większa niż 0"), QMessageBox::Ok);
+    const Jumper jumper = jumperEditor->getJumperFromWidgetInput();
+    if(jumper.getNameAndSurname().trimmed().isEmpty())
+    {
+        QMessageBox::warning(this, tr("Brak zawodnika"),
+                             tr("Wybierz istniejącego zawodnika albo wpisz jego imię i nazwisko."), QMessageBox::Ok);
+        ui->toolBox->setCurrentIndex(0);
+        ui->comboBox_existingJumper->setFocus();
+        return;
+    }
+
+    const Hill hill = hillEditor->getHillFromWidgetInput();
+    if(hill.getKPoint() <= 0 || hill.getHSPoint() <= 0 || hill.getHSPoint() < hill.getKPoint())
+    {
+        QMessageBox::warning(this, tr("Nieprawidłowa skocznia"),
+                             tr("Wybierz lub skonfiguruj skocznię z dodatnim punktem K oraz punktem HS nie mniejszym od K."), QMessageBox::Ok);
+        ui->toolBox->setCurrentIndex(1);
+        ui->comboBox_existingHill->setFocus();
+        return;
+    }
+
+    accept();
 }
 
 WindsGeneratorSettingsEditorWidget *SingleJumpsConfigWindow::getWindsGeneratorSettingsEditor() const

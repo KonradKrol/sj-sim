@@ -10,7 +10,7 @@
 #include <QJsonArray>
 #include <QMessageBox>
 #include <QProgressDialog>
-#include <QObject>
+#include <QCoreApplication>
 #include <QObject>
 #include <QDir>
 
@@ -19,9 +19,9 @@
 SingleJumpsManager::SingleJumpsManager(int gate, int jumpsCount, const QString &resultsFileName, bool changeableWind, short resultsFormat) :
     jumpsCount(jumpsCount),
     changeableWind(changeableWind),
+    resultsFormat(resultsFormat),
     resultsFileName(resultsFileName),
-    gate(gate),
-    resultsFormat(resultsFormat)
+    gate(gate)
 {
     windAverageCalculatingType = windCompensationDistanceEffect = DSQProbability = 0;
 }
@@ -35,8 +35,6 @@ void SingleJumpsManager::simulate()
     jumpSimulator.setCompetitionRules(&rules);
     jumpSimulator.setManipulator(new JumpManipulator());
     jumpSimulator.setJumpsImportance(importance);
-
-    double min = 0, max = 100000, avg = 0;
 
     QVector<Wind> winds;
     if(changeableWind == false)
@@ -54,11 +52,18 @@ void SingleJumpsManager::simulate()
     dialog.setMinimum(0);
     dialog.setMaximum(jumpsCount);
     dialog.setWindowTitle(QObject::tr("Symulacja pojedynczych skoków"));
-    dialog.setLabelText(QString(QObject::tr("Przesymulowano %1 z %2 skoków")).arg(QString::number(dialog.value()).arg(QString::number(dialog.maximum()))));
+    dialog.setLabelText(QString(QObject::tr("Przesymulowano %1 z %2 skoków")).arg(dialog.value()).arg(dialog.maximum()));
+    dialog.setCancelButtonText(QObject::tr("Przerwij"));
+    dialog.setMinimumDuration(0);
     dialog.setModal(true);
     dialog.setWindowModality(Qt::WindowModal);
+    dialog.show();
 
     for(int i=0; i<jumpsCount; i++){
+        QCoreApplication::processEvents();
+        if(dialog.wasCanceled())
+            break;
+
         if(getChangeableWind() == true){
             windsGenerator.setGenerationSettings(getWindsGeneratorSettings());
             jumpSimulator.setWinds(windsGenerator.generateWinds());
@@ -74,6 +79,7 @@ void SingleJumpsManager::simulate()
         dialog.setLabelText(QString(QObject::tr("Przesymulowano %1 z %2 skoków")).arg(QString::number(dialog.value()), QString::number(dialog.maximum())));
     }
 
+    jumpsCount = jumps.count();
     delete jumpSimulator.getManipulator();
 }
 

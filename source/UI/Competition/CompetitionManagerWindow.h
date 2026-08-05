@@ -92,9 +92,13 @@ private:
 
     InrunSnowGenerator inrunSnowGenerator;
     double actualInrunSnow;
+    bool jumpInProgress;
+    bool manipulationPending;
 
     JumpSimulator simulator;
     void setupSimulator();
+    void focusCurrentJumper();
+    void updateManipulationIndicator(bool pending);
 
     JumperCompetitionResultsWidget * jumperResultsWidget;
 

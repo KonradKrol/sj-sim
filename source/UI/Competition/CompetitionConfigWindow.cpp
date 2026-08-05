@@ -26,6 +26,10 @@
 #include <QKeySequence>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonParseError>
+#include <limits>
 
 CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, SimulationSave *save) :
     QDialog(parent),
@@ -34,6 +38,10 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
     simulationSave(save)
 {
     ui->setupUi(this);
+    ui->pushButton_submit->setDefault(true);
+    ui->pushButton_submit->setToolTip(tr("Sprawdź ustawienia i rozpocznij symulację (Enter)"));
+    ui->pushButton_autoGate->setToolTip(tr("Dobierz bezpieczną belkę na podstawie najmocniejszego zawodnika"));
+    ui->pushButton_loadJumpers->setToolTip(tr("Wczytaj listę zawodników z pliku JSON"));
     ui->pushButton_jumpersLists->hide();
     if(simulationSave != nullptr)
         seasonCompetition = simulationSave->getNextCompetition();
@@ -732,8 +740,101 @@ void CompetitionConfigWindow::setType(short newType)
     type = newType;
 }
 
+bool CompetitionConfigWindow::validateSimulationInputs()
+{
+    CompetitionRules rules = getType() == SeasonCompetition
+        ? *seasonCompetition->getRulesPointer()
+        : competitionRulesEditor->getCompetitionRulesFromWidgetInputs();
+
+    if(rules.getRoundsReference().isEmpty())
+    {
+        QMessageBox::warning(this, tr("Brak serii"),
+                             tr("Konkurs musi zawierać co najmniej jedną serię."), QMessageBox::Ok);
+        return false;
+    }
+
+    if(getType() == SingleCompetition)
+    {
+        const Hill hill = hillEditor->getHillFromWidgetInput();
+        if(hill.getKPoint() <= 0 || hill.getHSPoint() <= 0 || hill.getHSPoint() < hill.getKPoint())
+        {
+            QMessageBox::warning(this, tr("Nieprawidłowa skocznia"),
+                                 tr("Wybierz lub skonfiguruj skocznię z dodatnim punktem K oraz punktem HS nie mniejszym od K."), QMessageBox::Ok);
+            return false;
+        }
+    }
+
+    if(rules.getCompetitionType() == CompetitionRules::Individual)
+    {
+        const QVector<Jumper *> &jumpers = getType() == SeasonCompetition
+            ? seasonCompetitionJumpers
+            : competitionJumpers;
+        bool validStartList = !jumpers.isEmpty();
+        for(Jumper *jumper : jumpers)
+            validStartList = validStartList && jumper != nullptr && !jumper->getNameAndSurname().trimmed().isEmpty();
+        if(!validStartList)
+        {
+            QMessageBox::warning(this, tr("Pusta lista startowa"),
+                                 tr("Dodaj co najmniej jednego prawidłowego zawodnika przed rozpoczęciem konkursu."), QMessageBox::Ok);
+            return false;
+        }
+
+        const RoundInfo &firstRound = rules.getRoundsReference().first();
+        if(firstRound.getKO())
+        {
+            QVector<KOGroup> &groups = getType() == SeasonCompetition
+                ? seasonCompetitionGroups
+                : competitionGroups;
+            const QVector<Jumper *> groupedJumpers = KOGroup::getJumpersFromGroups(&groups);
+            bool completeGroups = !groups.isEmpty() && groupedJumpers.count() == jumpers.count();
+            for(Jumper *jumper : jumpers)
+                completeGroups = completeGroups && groupedJumpers.count(jumper) == 1;
+            if(!completeGroups)
+            {
+                QMessageBox::warning(this, tr("Niekompletne grupy KO"),
+                                     tr("Wybierz sposób tworzenia grup i upewnij się, że każdy zawodnik znajduje się w grupie KO."), QMessageBox::Ok);
+                return false;
+            }
+        }
+    }
+    else
+    {
+        if(competitionTeams.isEmpty())
+        {
+            QMessageBox::warning(this, tr("Brak drużyn"),
+                                 tr("Dodaj co najmniej jedną drużynę przed rozpoczęciem konkursu."), QMessageBox::Ok);
+            return false;
+        }
+
+        const int requiredJumpers = rules.getJumpersInTeamCount();
+        if(requiredJumpers <= 0)
+        {
+            QMessageBox::warning(this, tr("Nieprawidłowy skład drużyny"),
+                                 tr("Liczba zawodników w drużynie musi być większa od zera."), QMessageBox::Ok);
+            return false;
+        }
+        for(Team &team : competitionTeams)
+        {
+            bool validTeam = team.getJumpersReference().count() >= requiredJumpers;
+            for(Jumper *jumper : team.getJumpersReference())
+                validTeam = validTeam && jumper != nullptr && !jumper->getNameAndSurname().trimmed().isEmpty();
+            if(!validTeam)
+            {
+                QMessageBox::warning(this, tr("Niekompletna drużyna"),
+                                     tr("Każda drużyna musi mieć co najmniej %1 zawodników.").arg(requiredJumpers), QMessageBox::Ok);
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
 void CompetitionConfigWindow::on_pushButton_submit_clicked()
 {
+    if(!validateSimulationInputs())
+        return;
+
     emit submitted();
     if(getType() == SeasonCompetition)
         accept();
@@ -955,16 +1056,30 @@ void CompetitionConfigWindow::on_pushButton_loadJumpers_clicked()
 {
     if(getType() == SingleCompetition){
         QUrl fileUrl = QFileDialog::getOpenFileUrl(this, tr("Wybierz plik z zawodnikami"), QUrl(), "JSON (*.json)");
+        if(fileUrl.isEmpty())
+            return;
 
-        QFile file(fileUrl.path());
+        QFile file(fileUrl.toLocalFile());
         if(!(file.open(QIODevice::ReadOnly | QIODevice::Text)))
         {
             QMessageBox message(QMessageBox::Icon::Critical, tr("Nie można otworzyć pliku z zawodnikami"), tr("Nie udało się otworzyć wybranego pliku\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
             message.setModal(true);
             message.exec();
+            return;
         }
-        QVector<Jumper> jumpers = Jumper::getVectorFromJson(file.readAll());
+        const QByteArray contents = file.readAll();
         file.close();
+        QJsonParseError parseError;
+        const QJsonDocument document = QJsonDocument::fromJson(contents, &parseError);
+        if(parseError.error != QJsonParseError::NoError || !document.isObject() || !document.object().value("jumpers").isArray())
+        {
+            QMessageBox::warning(this, tr("Nieprawidłowy plik zawodników"),
+                                 tr("Wybrany plik nie zawiera prawidłowej listy zawodników JSON.\n%1")
+                                     .arg(parseError.error == QJsonParseError::NoError ? QString() : parseError.errorString()),
+                                 QMessageBox::Ok);
+            return;
+        }
+        QVector<Jumper> jumpers = Jumper::getVectorFromJson(contents);
         if(jumpers.isEmpty() == false){
             competitionJumpers.clear();
             for(auto & j : jumpers)
@@ -980,6 +1095,9 @@ void CompetitionConfigWindow::on_pushButton_loadJumpers_clicked()
             teamsTreeView->setModel(teamsSquadsModel);
             teamsTreeView->getTreeView()->expandToDepth(0);
         }
+        else
+            QMessageBox::warning(this, tr("Pusta lista zawodników"),
+                                 tr("Wybrany plik nie zawiera żadnych prawidłowych zawodników."), QMessageBox::Ok);
     }
 }
 
@@ -1198,12 +1316,19 @@ void CompetitionConfigWindow::on_pushButton_jumpersLists_clicked()
 void CompetitionConfigWindow::on_pushButton_autoGate_clicked()
 {
     Jumper * bestJumper = nullptr;
-    double best = 0;
+    double best = -std::numeric_limits<double>::infinity();
     QVector<Jumper *> jumpers;
     if(type == CompetitionConfigWindow::SeasonCompetition)
         jumpers = seasonCompetitionJumpers;
     else
         jumpers = competitionJumpers;
+
+    if(jumpers.isEmpty())
+    {
+        QMessageBox::warning(this, tr("Automatyczna belka"),
+                             tr("Dodaj co najmniej jednego zawodnika przed automatycznym doborem belki."), QMessageBox::Ok);
+        return;
+    }
 
     for(auto & jumper : jumpers)
     {
@@ -1212,6 +1337,12 @@ void CompetitionConfigWindow::on_pushButton_autoGate_clicked()
             bestJumper = jumper;
             best = val;
         }
+    }
+    if(bestJumper == nullptr)
+    {
+        QMessageBox::warning(this, tr("Automatyczna belka"),
+                             tr("Nie udało się wybrać zawodnika do próby. Sprawdź dane listy startowej."), QMessageBox::Ok);
+        return;
     }
     int gate = -10;
     JumpSimulator simulator;

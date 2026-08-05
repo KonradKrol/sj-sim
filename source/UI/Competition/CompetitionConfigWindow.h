@@ -67,6 +67,7 @@ private:
     QLabel * existingCompetitionRulesLabel;
     QComboBox * existingCompetitionRulesComboBox;
     void setupCompetitionRulesToolBoxItem();
+    bool validateSimulationInputs();
     //
 
     DatabaseItemsListView * jumpersListView;

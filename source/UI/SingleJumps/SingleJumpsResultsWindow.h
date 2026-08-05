@@ -76,6 +76,7 @@ private:
     int maxNumberOfWindsForChart;
 
     void askForIndexForJumpInformationShow();
+    void showJumpDetails(int row);
 };
 
 #endif // SINGLEJUMPSRESULTSWINDOW_H

@@ -46,6 +46,12 @@ int SingleJumpsResultsTableModel::columnCount(const QModelIndex &parent) const
     return 5;
 }
 
+void SingleJumpsResultsTableModel::refresh()
+{
+    beginResetModel();
+    endResetModel();
+}
+
 QVariant SingleJumpsResultsTableModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())

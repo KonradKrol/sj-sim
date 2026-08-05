@@ -30,12 +30,31 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     QDialog(parent),
     ui(new Ui::CompetitionManagerWindow),
     manager(manager),
-    KOManager(nullptr),
     singleCompetition(singleCompetition),
-    teamResultsTreeView(nullptr)
+    startListModel(nullptr),
+    resultsTableModel(nullptr),
+    KOManager(nullptr),
+    KOGroupsResultsModel(nullptr),
+    teamResultsTreeModel(nullptr),
+    teamResultsTreeView(nullptr),
+    actualInrunSnow(0.0),
+    jumpInProgress(false),
+    manipulationPending(false)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::Window);
+    ui->listView_startList->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->tableView_results->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableView_results->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->tableView_results->setToolTip(tr("Kliknij dwukrotnie dowolne miejsce w wierszu, aby zobaczyć szczegóły wyniku"));
+    ui->pushButton_jump->setToolTip(tr("Oddaj skok aktualnego zawodnika (spacja, gdy przycisk ma fokus)"));
+    ui->pushButton_generateNewWinds->setToolTip(tr("Wylosuj nowe warunki wiatrowe dla następnego skoku"));
+    ui->pushButton_windsGeneratorSettings->setToolTip(tr("Edytuj sposób generowania wiatru dla kolejnych skoków"));
+    ui->pushButton_inrunSnowGeneratorSettings->setToolTip(tr("Edytuj poziom śniegu na rozbiegu dla kolejnych skoków"));
+    ui->pushButton_coachGate->setToolTip(tr("Ustaw obniżenie belki wyłącznie dla następnego zawodnika"));
+    ui->toolButton_cancelActions->setToolTip(tr("Odwołanie konkursu lub serii wymaga potwierdzenia"));
+    ui->toolButton_autoSimulationActions->setToolTip(tr("Automatycznie rozegraj wybraną część konkursu"));
+    updateManipulationIndicator(false);
     ui->checkBox_liveCompetition->setChecked(GlobalAppSettings::get()->getLiveCompetition());
 
     if(manager != nullptr){
@@ -117,6 +136,7 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
             }
 
         }
+        focusCurrentJumper();
     });
 
     if(singleCompetition == false){
@@ -132,6 +152,8 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     }
 
     ui->listView_startList->setModel(startListModel);
+    focusCurrentJumper();
+    ui->pushButton_jump->setFocus();
 
     if(type == CompetitionRules::Team){
         teamResultsTreeModel = new TeamResultsTreeModel(dynamic_cast<TeamCompetitionManager *>(manager));
@@ -212,6 +234,9 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     action_autoSimulateCompetition = new QAction(tr("Auto-symulacja konkursu"), this);
     action_autoSimulateRound = new QAction(tr("Auto-symulacja serii"), this);
     action_autoSimulateJumps = new QAction(tr("Auto-symulacja skoków"), this);
+    action_autoSimulateCompetition->setToolTip(tr("Rozegraj automatycznie cały pozostały konkurs"));
+    action_autoSimulateRound->setToolTip(tr("Rozegraj automatycznie pozostałą część aktualnej serii"));
+    action_autoSimulateJumps->setToolTip(tr("Wybierz ograniczoną liczbę kolejnych skoków"));
     autoSimulationActionsList = {action_autoSimulateCompetition, action_autoSimulateRound, action_autoSimulateJumps};
     if(getType() == CompetitionRules::Team){
         action_autoSimulateGroup = new QAction(tr("Auto-symulacja grupy"), this);
@@ -238,6 +263,33 @@ CompetitionManagerWindow::~CompetitionManagerWindow()
     {
         delete virtualClassification;
     }
+}
+
+void CompetitionManagerWindow::focusCurrentJumper()
+{
+    if(manager == nullptr || startListModel == nullptr || manager->getActualJumper() == nullptr)
+        return;
+
+    const int row = manager->getActualStartListIndex();
+    if(row < 0 || row >= startListModel->rowCount())
+        return;
+
+    const QModelIndex currentIndex = startListModel->index(row, 0);
+    ui->listView_startList->setCurrentIndex(currentIndex);
+    ui->listView_startList->scrollTo(currentIndex, QAbstractItemView::PositionAtCenter);
+    ui->pushButton_jump->setToolTip(
+        tr("Oddaj skok zawodnika %1 (spacja, gdy przycisk ma fokus)")
+            .arg(manager->getActualJumper()->getNameAndSurname()));
+}
+
+void CompetitionManagerWindow::updateManipulationIndicator(bool pending)
+{
+    manipulationPending = pending;
+    ui->pushButton_manipulateJump->setText(pending ? tr("Manipulacja ustawiona") : tr("Manipuluj"));
+    ui->pushButton_manipulateJump->setToolTip(
+        pending
+            ? tr("Zmiany są gotowe i zostaną użyte tylko przy następnym skoku. Kliknij, aby je edytować.")
+            : tr("Ustaw jednorazowe parametry następnego skoku"));
 }
 
 void CompetitionManagerWindow::updateToBeatDistanceLabel()
@@ -356,6 +408,11 @@ void CompetitionManagerWindow::disableCompetitionManagementButtons()
     ui->pushButton_jump->setDisabled(true);
     ui->pushButton_manipulateJump->setDisabled(true);
     ui->pushButton_windsGeneratorSettings->setDisabled(true);
+    ui->pushButton_inrunSnowGeneratorSettings->setDisabled(true);
+    ui->spinBox_actualGate->setDisabled(true);
+    ui->checkBox_liveCompetition->setDisabled(true);
+    ui->toolButton_autoSimulationActions->setDisabled(true);
+    ui->toolButton_cancelActions->setDisabled(true);
 }
 
 void CompetitionManagerWindow::enableCompetitionManagementButtons()
@@ -365,6 +422,11 @@ void CompetitionManagerWindow::enableCompetitionManagementButtons()
     ui->pushButton_jump->setEnabled(true);
     ui->pushButton_manipulateJump->setEnabled(true);
     ui->pushButton_windsGeneratorSettings->setEnabled(true);
+    ui->pushButton_inrunSnowGeneratorSettings->setEnabled(true);
+    ui->spinBox_actualGate->setEnabled(true);
+    ui->checkBox_liveCompetition->setEnabled(true);
+    ui->toolButton_autoSimulationActions->setEnabled(true);
+    ui->toolButton_cancelActions->setEnabled(true);
 }
 
 void CompetitionManagerWindow::showMessageBoxForNextGroup()
@@ -375,7 +437,7 @@ void CompetitionManagerWindow::showMessageBoxForNextGroup()
         box->setIcon(QMessageBox::Information);
         box->setWindowTitle(tr("Zakończenie ") + QString::number(dynamic_cast<TeamCompetitionManager *>(manager)->getActualGroup()) + tr(" grupy zawodników"));
         box->setText(tr("Aby przejść do następnej grupy zawodników, wciśnij przycisk na dole okna konkursu"));
-        QPushButton *btnOk = box->addButton("OK", QMessageBox::AcceptRole);
+        box->addButton("OK", QMessageBox::AcceptRole);
         box->setModal(true);
         box->show();
     }
@@ -387,14 +449,18 @@ void CompetitionManagerWindow::setupGoToNextButtonForNextGroup()
         TeamCompetitionManager * tmManager = dynamic_cast<TeamCompetitionManager *>(manager);
         ui->pushButton_goToNext->show();
         ui->pushButton_goToNext->setText(tr("Przejdź do ") + QString::number(tmManager->getActualGroup() + 1) + tr(" grupy"));
+        ui->pushButton_goToNext->setFocus();
         disableCompetitionManagementButtons();
 
         QMetaObject::Connection * const connection = new QMetaObject::Connection;
         *connection = connect(ui->pushButton_goToNext, &QPushButton::clicked, this, [this, connection, tmManager](){
             tmManager->setupNextGroup();
             currentInputJumpManipulator = JumpManipulator();
+            updateManipulationIndicator(false);
             enableCompetitionManagementButtons();
             ui->pushButton_goToNext->hide();
+            focusCurrentJumper();
+            ui->pushButton_jump->setFocus();
 
             QObject::disconnect(*connection);
             delete connection;
@@ -409,7 +475,7 @@ void CompetitionManagerWindow::showMessageBoxForNextRound()
     box->setIcon(QMessageBox::Information);
     box->setWindowTitle(tr("Zakończenie ") + QString::number(manager->getActualRound()) + tr(" serii"));
     box->setText(tr("Aby przejść do następnej serii, wciśnij przycisk na dole okna konkursu"));
-    QPushButton *btnOk = box->addButton("OK", QMessageBox::AcceptRole);
+    box->addButton("OK", QMessageBox::AcceptRole);
     box->setModal(true);
     box->show();
 }
@@ -422,6 +488,7 @@ JumpManipulator CompetitionManagerWindow::getCurrentInputJumpManipulator() const
 void CompetitionManagerWindow::setCurrentInputJumpManipulator(const JumpManipulator &newCurrentInputJumpManipulator)
 {
     currentInputJumpManipulator = newCurrentInputJumpManipulator;
+    updateManipulationIndicator(true);
 }
 
 short CompetitionManagerWindow::getType() const
@@ -508,6 +575,7 @@ void CompetitionManagerWindow::setupGoToNextButtonForNextRound()
 {
     ui->pushButton_goToNext->show();
     ui->pushButton_goToNext->setText(tr("Przejdź do ") + QString::number(manager->getActualRound() + 1) + tr(" serii"));
+    ui->pushButton_goToNext->setFocus();
     disableCompetitionManagementButtons();
 
     QMetaObject::Connection * const connection = new QMetaObject::Connection;
@@ -559,8 +627,11 @@ void CompetitionManagerWindow::setupGoToNextButtonForNextRound()
         if(getType() == CompetitionRules::Team)
             teamResultsTreeModel->setTeams(&dynamic_cast<TeamCompetitionManager *>(manager)->getRoundsTeamsReference()[0]);
         currentInputJumpManipulator = JumpManipulator();
+        updateManipulationIndicator(false);
         enableCompetitionManagementButtons();
         ui->pushButton_goToNext->hide();
+        focusCurrentJumper();
+        ui->pushButton_jump->setFocus();
 
         QObject::disconnect(*connection);
         delete connection;
@@ -574,7 +645,7 @@ void CompetitionManagerWindow::showMessageBoxForQualificationsEnd()
     box->setIcon(QMessageBox::Information);
     box->setWindowTitle(tr("Zakończenie kwalifikacji"));
     box->setText(tr("Aby przejść do konkursu, wciśnij przycisk na dole okna konkursu"));
-    QPushButton *btnOk = box->addButton("OK", QMessageBox::AcceptRole);
+    box->addButton("OK", QMessageBox::AcceptRole);
     box->setModal(true);
     box->show();
     accept();
@@ -584,6 +655,7 @@ void CompetitionManagerWindow::setupGoToNextButtonForQualificationsEnd()
 {
     ui->pushButton_goToNext->show();
     ui->pushButton_goToNext->setText(tr("Przejdź do konkursu"));
+    ui->pushButton_goToNext->setFocus();
     disableCompetitionManagementButtons();
 
     switch(getType())
@@ -627,7 +699,7 @@ void CompetitionManagerWindow::showMessageBoxForCompetitionEnd()
         break;
     }
     }
-    QPushButton *btnOk = box->addButton("OK", QMessageBox::AcceptRole);
+    box->addButton("OK", QMessageBox::AcceptRole);
     box->setModal(true);
     box->show();
 }
@@ -650,6 +722,8 @@ void CompetitionManagerWindow::setupGoToNextButtonForCompetitionEnd()
         break;
     }
 
+    ui->pushButton_goToNext->setFocus();
+
     disableCompetitionManagementButtons();
 
     QMetaObject::Connection * const connection = new QMetaObject::Connection;
@@ -663,6 +737,13 @@ void CompetitionManagerWindow::setupGoToNextButtonForCompetitionEnd()
 
 void CompetitionManagerWindow::autoSimulateRound()
 {
+    if(manager->checkCompetitionEnd())
+        return;
+    if(QMessageBox::question(this, tr("Automatyczna symulacja serii"),
+                             tr("Rozegrać automatycznie wszystkie pozostałe skoki w aktualnej serii?"),
+                             QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Yes)
+        return;
+
     if(getType() == CompetitionRules::Individual)
         resultsTableModel->setLastJumper(nullptr);
     else
@@ -673,6 +754,11 @@ void CompetitionManagerWindow::autoSimulateRound()
         setupSimulator();
         simulator.simulateJump();
         JumpData jump = simulator.getJumpData();
+        if(manipulationPending)
+        {
+            currentInputJumpManipulator = JumpManipulator();
+            updateManipulationIndicator(false);
+        }
         jump.setCompetition(manager->getCompetitionInfo());
         if(type == CompetitionRules::Individual){
             indManager->getResults()->addJump(indManager->getActualJumper(), jump);
@@ -723,7 +809,7 @@ void CompetitionManagerWindow::autoSimulateRound()
     jumperResultsWidget->show();
 
     emit startListModel->dataChanged(startListModel->index(0), startListModel->index(startListModel->rowCount() - 1));
-    ui->listView_startList->scrollTo(startListModel->index(manager->getActualStartListIndex() - 1));
+    focusCurrentJumper();
     if(getType() == CompetitionRules::Individual){
         ui->tableView_results->setModel(nullptr);
         ui->tableView_results->setModel(resultsTableModel);
@@ -775,6 +861,13 @@ void CompetitionManagerWindow::autoSimulateRound()
 
 void CompetitionManagerWindow::autoSimulateCompetition()
 {
+    if(manager->checkCompetitionEnd())
+        return;
+    if(QMessageBox::question(this, tr("Automatyczna symulacja konkursu"),
+                             tr("Rozegrać automatycznie cały pozostały konkurs? Tej operacji nie można cofnąć."),
+                             QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Yes)
+        return;
+
     if(getType() == CompetitionRules::Individual)
         resultsTableModel->setLastJumper(nullptr);
     else
@@ -785,6 +878,11 @@ void CompetitionManagerWindow::autoSimulateCompetition()
         setupSimulator();
         simulator.simulateJump();
         JumpData jump = simulator.getJumpData();
+        if(manipulationPending)
+        {
+            currentInputJumpManipulator = JumpManipulator();
+            updateManipulationIndicator(false);
+        }
         jump.setCompetition(manager->getCompetitionInfo());
         if(type == CompetitionRules::Individual){
             indManager->getResults()->addJump(indManager->getActualJumper(), jump);
@@ -873,7 +971,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
     jumperResultsWidget->show();
 
     emit startListModel->dataChanged(startListModel->index(0), startListModel->index(startListModel->rowCount() - 1));
-    ui->listView_startList->scrollTo(startListModel->index(manager->getActualStartListIndex() - 1));
+    focusCurrentJumper();
     if(getType() == CompetitionRules::Individual){
         ui->tableView_results->setModel(nullptr);
         ui->tableView_results->setModel(resultsTableModel);
@@ -921,13 +1019,25 @@ void CompetitionManagerWindow::autoSimulateCompetition()
 
 void CompetitionManagerWindow::autoSimulateGroup()
 {
-        teamResultsTreeModel->setLastTeam(nullptr);
+    if(manager->checkCompetitionEnd())
+        return;
+    if(QMessageBox::question(this, tr("Automatyczna symulacja grupy"),
+                             tr("Rozegrać automatycznie wszystkie pozostałe skoki w aktualnej grupie?"),
+                             QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Yes)
+        return;
+
+    teamResultsTreeModel->setLastTeam(nullptr);
     if(getType() == CompetitionRules::Team){
         TeamCompetitionManager * tmManager = dynamic_cast<TeamCompetitionManager *>(manager);
         while(tmManager->checkGroupEnd() != true){
             setupSimulator();
             simulator.simulateJump();
             JumpData jump = simulator.getJumpData();
+            if(manipulationPending)
+            {
+                currentInputJumpManipulator = JumpManipulator();
+                updateManipulationIndicator(false);
+            }
             jump.setCompetition(manager->getCompetitionInfo());
             tmManager->getResults()->addJump(tmManager->getActualTeam(), jump);
             tmManager->getResults()->getResultOfTeam(tmManager->getActualTeam())->updateTeamJumpersResults();
@@ -959,7 +1069,7 @@ void CompetitionManagerWindow::autoSimulateGroup()
         jumperResultsWidget->show();
 
         emit startListModel->dataChanged(startListModel->index(0), startListModel->index(startListModel->rowCount() - 1));
-        ui->listView_startList->scrollTo(startListModel->index(manager->getActualStartListIndex() - 1));
+        focusCurrentJumper();
         teamResultsTreeModel->setupTreeItems();
         teamResultsTreeView->setModel(nullptr);
         teamResultsTreeView->setModel(teamResultsTreeModel);
@@ -995,8 +1105,13 @@ void CompetitionManagerWindow::autoSimulateGroup()
 
 void CompetitionManagerWindow::autoSimulateJumps()
 {
+    if(manager->checkCompetitionEnd())
+        return;
+
     bool ok;
-    int jumpsCount = QInputDialog::getInt(this, tr("Symulacja kilku skoków"), tr("Ilość skoków"), 5, 0, 2147483647, 1, &ok);
+    const int jumpsCount = QInputDialog::getInt(this, tr("Symulacja kilku skoków"),
+                                                tr("Liczba kolejnych skoków (maksymalnie 10 000)"),
+                                                5, 1, 10000, 1, &ok);
     if(ok == true){
         for(int i = 0; i < jumpsCount; i++){
             IndividualCompetitionManager * indManager = dynamic_cast<IndividualCompetitionManager *>(manager);
@@ -1004,6 +1119,11 @@ void CompetitionManagerWindow::autoSimulateJumps()
             setupSimulator();
             simulator.simulateJump();
             JumpData jump = simulator.getJumpData();
+            if(manipulationPending)
+            {
+                currentInputJumpManipulator = JumpManipulator();
+                updateManipulationIndicator(false);
+            }
             jump.setCompetition(manager->getCompetitionInfo());
             if(type == CompetitionRules::Individual){
                 indManager->getResults()->addJump(indManager->getActualJumper(), jump);
@@ -1105,7 +1225,7 @@ void CompetitionManagerWindow::autoSimulateJumps()
         jumperResultsWidget->show();
 
         emit startListModel->dataChanged(startListModel->index(0), startListModel->index(startListModel->rowCount() - 1));
-        ui->listView_startList->scrollTo(startListModel->index(manager->getActualStartListIndex() - 1));
+        focusCurrentJumper();
         if(getType() == CompetitionRules::Individual){
             ui->tableView_results->setModel(nullptr);
             ui->tableView_results->setModel(resultsTableModel);
@@ -1200,7 +1320,6 @@ void CompetitionManagerWindow::checkRecords(JumpData &jump, bool multipleRecords
 
 void CompetitionManagerWindow::checkRecordsByResults(CompetitionResults *results)
 {
-    Hill * hill = manager->getCompetitionInfo()->getHill();
     for(auto & result : results->getResultsReference())
     {
     for(auto & jump : result.getJumpsReference())
@@ -1364,11 +1483,17 @@ void CompetitionManagerWindow::setInrunSnowGenerator(const InrunSnowGenerator &n
 
 void CompetitionManagerWindow::cancelCompetition()
 {
+    if(QMessageBox::question(this, tr("Odwołanie konkursu"),
+                             tr("Odwołać cały konkurs? Wszystkie uzyskane w nim wyniki zostaną usunięte."),
+                             QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Yes)
+        return;
+
     manager->getResults()->getResultsReference().clear();
     manager->getCompetitionInfo()->setCancelled(true);
 
-    emit startListModel->dataChanged(startListModel->index(manager->getActualStartListIndex() - 1), startListModel->index(manager->getActualStartListIndex() - 1));
-    ui->listView_startList->scrollTo(startListModel->index(manager->getActualStartListIndex()));
+    if(startListModel->rowCount() > 0)
+        emit startListModel->dataChanged(startListModel->index(0, 0), startListModel->index(startListModel->rowCount() - 1, 0));
+    focusCurrentJumper();
     if(getType() == CompetitionRules::Individual){
         ui->tableView_results->setModel(nullptr);
         ui->tableView_results->setModel(resultsTableModel);
@@ -1402,40 +1527,46 @@ void CompetitionManagerWindow::cancelCompetition()
 
 void CompetitionManagerWindow::cancelActualRound()
 {
+    if(QMessageBox::question(this, tr("Odwołanie aktualnej serii"),
+                             tr("Odwołać aktualną serię? Wszystkie skoki oddane w tej serii zostaną usunięte."),
+                             QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Yes)
+        return;
+
     for(auto & res : manager->getResults()->getResultsReference()){
         if(res.getJumpsReference().count() == manager->getActualRound()){
             res.getJumpsReference().removeLast();
             res.updatePointsSum();
         }
-        manager->getResults()->sortInDescendingOrder();
+    }
+    manager->getResults()->sortInDescendingOrder();
 
-        emit startListModel->dataChanged(startListModel->index(manager->getActualStartListIndex() - 1), startListModel->index(manager->getActualStartListIndex() - 1));
-        if(getType() == CompetitionRules::Individual){
-            ui->tableView_results->setModel(nullptr);
-            ui->tableView_results->setModel(resultsTableModel);
-            ui->tableView_results->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-            ui->tableView_results->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-            if(KOManager != nullptr)
-            {
-                KOManager->updateActualGroup(manager->getActualJumper());
-                KOManager->updateJumpersSortedByResults();
-                KOManager->updateStatuses();
-                KOGroupsResultsModel->setGroup(KOManager->getActualGroup());
-                manager->updateLastQualifiedResult();
-                updateToAdvanceDistanceLabel();
-                ui->tableView_KOGroupResults->setModel(nullptr);
-                ui->tableView_KOGroupResults->setModel(KOGroupsResultsModel);
-                ui->tableView_KOGroupResults->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-                ui->tableView_KOGroupResults->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-            }
+    if(startListModel->rowCount() > 0)
+        emit startListModel->dataChanged(startListModel->index(0, 0), startListModel->index(startListModel->rowCount() - 1, 0));
+    if(getType() == CompetitionRules::Individual){
+        ui->tableView_results->setModel(nullptr);
+        ui->tableView_results->setModel(resultsTableModel);
+        ui->tableView_results->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        ui->tableView_results->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        if(KOManager != nullptr)
+        {
+            KOManager->updateActualGroup(manager->getActualJumper());
+            KOManager->updateJumpersSortedByResults();
+            KOManager->updateStatuses();
+            KOGroupsResultsModel->setGroup(KOManager->getActualGroup());
+            manager->updateLastQualifiedResult();
+            updateToAdvanceDistanceLabel();
+            ui->tableView_KOGroupResults->setModel(nullptr);
+            ui->tableView_KOGroupResults->setModel(KOGroupsResultsModel);
+            ui->tableView_KOGroupResults->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+            ui->tableView_KOGroupResults->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
         }
-        else if(getType() == CompetitionRules::Team){
-            teamResultsTreeView->setModel(nullptr);
-            teamResultsTreeView->setModel(teamResultsTreeModel);
-            teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::Stretch);
-            teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
-            teamResultsTreeView->expandToDepth(0);
-        }
+    }
+    else if(getType() == CompetitionRules::Team){
+        teamResultsTreeView->setModel(nullptr);
+        teamResultsTreeView->setModel(teamResultsTreeModel);
+        teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::Stretch);
+        teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        teamResultsTreeView->expandToDepth(0);
     }
 
     setupGoToNextButtonForCompetitionEnd();
@@ -1465,6 +1596,12 @@ void CompetitionManagerWindow::setupSimulator()
 
 void CompetitionManagerWindow::on_pushButton_jump_clicked()
 {
+    if(jumpInProgress || !ui->pushButton_jump->isEnabled())
+        return;
+
+    jumpInProgress = true;
+    disableCompetitionManagementButtons();
+
     if(GlobalAppSettings::get()->getLiveCompetition()){
         if(manager->getCompetitionInfo()->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual){
             ui->tableView_results->setUpdatesEnabled(false);
@@ -1537,8 +1674,9 @@ void CompetitionManagerWindow::on_pushButton_jump_clicked()
         executeLiveCompetitionEffects();
     checkForEasterEggs();
 
-    emit startListModel->dataChanged(startListModel->index(manager->getActualStartListIndex() - 1), startListModel->index(manager->getActualStartListIndex() - 1));
-    ui->listView_startList->scrollTo(startListModel->index(manager->getActualStartListIndex() - 1));
+    const QModelIndex completedJumperIndex = startListModel->index(manager->getActualStartListIndex(), 0);
+    emit startListModel->dataChanged(completedJumperIndex, completedJumperIndex);
+    ui->listView_startList->scrollTo(completedJumperIndex);
     if(getType() == CompetitionRules::Individual){
         resultsTableModel->setLastJumper(manager->getActualJumper());
         ui->tableView_results->setModel(nullptr);
@@ -1578,6 +1716,7 @@ void CompetitionManagerWindow::on_pushButton_jump_clicked()
     setActualWinds(windsGenerator.generateWinds());
     updateActualInrunSnow();
     currentInputJumpManipulator = JumpManipulator();
+    updateManipulationIndicator(false);
 
     updateAvgWindLabel();
     updateActualInrunSnowLevelLabel();
@@ -1617,14 +1756,28 @@ void CompetitionManagerWindow::on_pushButton_jump_clicked()
             showMessageBoxForNextGroup();
         }
     }
+
+    jumpInProgress = false;
+    if(ui->pushButton_goToNext->isHidden())
+    {
+        enableCompetitionManagementButtons();
+        focusCurrentJumper();
+        ui->pushButton_jump->setFocus();
+    }
 }
 
 void CompetitionManagerWindow::on_tableView_results_doubleClicked(const QModelIndex &index)
 {
-    if(index.column() == 1){
-        jumperResultsWidget->setJumperResult(manager->getResults()->getResultByIndex(index.row()));
-        jumperResultsWidget->fillWidget();
-    }
+    if(!index.isValid() || index.row() < 0 || index.row() >= manager->getResults()->getResultsReference().count())
+        return;
+
+    CompetitionSingleResult *result = manager->getResults()->getResultByIndex(index.row());
+    if(result == nullptr)
+        return;
+
+    jumperResultsWidget->setJumperResult(result);
+    jumperResultsWidget->fillWidget();
+    jumperResultsWidget->show();
 }
 
 
@@ -1672,7 +1825,7 @@ void CompetitionManagerWindow::on_pushButton_inrunSnowGeneratorSettings_clicked(
 {
     QDialog dialog(this);
     dialog.setWindowFlags(Qt::Window);
-    dialog.setWindowTitle("Edytuj ustawienia generatora wiatru");
+    dialog.setWindowTitle(tr("Edytuj ustawienia śniegu na rozbiegu"));
     dialog.setStyleSheet("background-color: rgb(225, 225, 225);");
     dialog.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     dialog.setFixedSize(dialog.size());
@@ -1689,7 +1842,7 @@ void CompetitionManagerWindow::on_pushButton_inrunSnowGeneratorSettings_clicked(
         inrunSnowGenerator.setBaseInrunSnow(editor->getBase());
         inrunSnowGenerator.setInrunSnowDeviation(editor->getDeviation());
         actualInrunSnow = editor->getBase();
-
+        updateActualInrunSnowLevelLabel();
     }
 }
 
@@ -1702,6 +1855,7 @@ void CompetitionManagerWindow::on_pushButton_manipulateJump_clicked()
     if(window.exec() == QDialog::Accepted){
         JumpManipulator manipulator = window.getJumpManipulatorFromInputs();
         currentInputJumpManipulator = (manipulator);
+        updateManipulationIndicator(true);
         if(manipulator.getExactWinds().size() > 0)
             setActualWinds(manipulator.getExactWinds());      
         updateAvgWindLabel();
@@ -1713,7 +1867,14 @@ void CompetitionManagerWindow::on_pushButton_manipulateJump_clicked()
 void CompetitionManagerWindow::on_pushButton_coachGate_clicked()
 {
     bool ok{};
-    int howMany = QInputDialog::getInt(this, "Obniżenie belki na życzenie trenera", "O ile stopni obniżyć belkę?\nAby uzyskać dodatkową rekompensatę, zawodnik musi osiągnąć 95% punktu HS (" + QString::number(roundDoubleToHalf(manager->getCompetitionInfo()->getHill()->getHSPoint() * 0.95)) + " m)", 1, 0, 1000000, 1, &ok);
+    const int maxReduction = manager->getActualGate() - ui->spinBox_actualGate->minimum();
+    if(maxReduction <= 0)
+    {
+        QMessageBox::information(this, tr("Obniżenie belki"),
+                                 tr("Belka jest już ustawiona na najniższej dostępnej pozycji."), QMessageBox::Ok);
+        return;
+    }
+    int howMany = QInputDialog::getInt(this, tr("Obniżenie belki na życzenie trenera"), tr("O ile stopni obniżyć belkę?\nAby uzyskać dodatkową rekompensatę, zawodnik musi osiągnąć 95% punktu HS (%1 m)").arg(QString::number(roundDoubleToHalf(manager->getCompetitionInfo()->getHill()->getHSPoint() * 0.95))), 1, 0, maxReduction, 1, &ok);
     if(howMany > 0 && ok){
         manager->setCoachGateForNextJumper(true);
         manager->setActualCoachGate(manager->getActualGate() - howMany);
@@ -1795,8 +1956,29 @@ void CompetitionManagerWindow::on_checkBox_liveCompetition_stateChanged(int arg1
 
 void CompetitionManagerWindow::closeEvent(QCloseEvent *event)
 {
+    if(jumpInProgress)
+    {
+        QMessageBox::information(this, tr("Skok w toku"),
+                                 tr("Poczekaj na zakończenie aktualnego skoku, a następnie spróbuj ponownie."),
+                                 QMessageBox::Ok);
+        event->ignore();
+        return;
+    }
+
+    if(manager == nullptr)
+    {
+        event->accept();
+        return;
+    }
+    if(manager->getCompetitionInfo()->getCancelled() || manager->checkCompetitionEnd())
+    {
+        setResult(QDialog::Accepted);
+        event->accept();
+        return;
+    }
+
     QMessageBox::StandardButton resBtn = QMessageBox::question( this, tr("Wyjście z konkursu"),
-                                                               tr("Na pewno chcesz wyjsć z tego okna? Spowoduje to odwołanie aktualnie rozgrywanego konkursu."),
+                                                               tr("Na pewno chcesz wyjść z tego okna? Spowoduje to odwołanie aktualnie rozgrywanego konkursu i usunięcie jego wyników."),
                                                                QMessageBox::Cancel | QMessageBox::Yes, QMessageBox::Cancel);
     if (resBtn != QMessageBox::Yes) {
         event->ignore();
