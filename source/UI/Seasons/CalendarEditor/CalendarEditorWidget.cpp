@@ -264,6 +264,11 @@ QTableView *CalendarEditorWidget::getTableView()
 
 void CalendarEditorWidget::addActionTriggered()
 {
+    defaultHill = calendarModel->getHillsList()->isEmpty()
+        ? nullptr
+        : calendarModel->getHillsList()->first();
+    competitionInfoEditor->setDefaultHill(defaultHill);
+
     if(defaultHill == nullptr)
     {
         QMessageBox::warning(this, tr("Brak skoczni"),
