@@ -11,6 +11,7 @@
 #include <QDialogButtonBox>
 #include <QComboBox>
 #include <QLabel>
+#include <QMessageBox>
 #include <QInputDialog>
 #include <QCheckBox>
 #include <QDoubleSpinBox>
@@ -59,7 +60,9 @@ CalendarEditorWidget::CalendarEditorWidget(CalendarEditorTableModel *model, QVec
     this->addAction(action_duplicate);
     connect(action_duplicate, &QAction::triggered, this, &CalendarEditorWidget::duplicateActionTriggered);
 
-    defaultHill = calendarModel->getHillsList()->first();
+    defaultHill = calendarModel->getHillsList()->isEmpty()
+        ? nullptr
+        : calendarModel->getHillsList()->first();
 
     competitionInfoEditor = new CompetitionInfoEditorWidget();
     competitionInfoEditor->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
@@ -261,6 +264,13 @@ QTableView *CalendarEditorWidget::getTableView()
 
 void CalendarEditorWidget::addActionTriggered()
 {
+    if(defaultHill == nullptr)
+    {
+        QMessageBox::warning(this, tr("Brak skoczni"),
+                             tr("Najpierw dodaj co najmniej jedną skocznię do zapisu symulacji."), QMessageBox::Ok);
+        return;
+    }
+
     int insertIndex = 0;
     if(ui->tableView->selectionModel()->selectedIndexes().count() > 0)
         insertIndex = ui->tableView->selectionModel()->selectedIndexes().at(0).row() + 0;
