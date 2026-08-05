@@ -31,6 +31,20 @@ void JumpDataDetailedInfoWindow::fillJumpInformations()
 {
     if(jumpData != nullptr)
     {
+        const bool hasCompetitionContext = jumpData->getInSingleJumps()
+            || jumpData->getCompetition() != nullptr;
+        ui->pushButton->setEnabled(hasCompetitionContext);
+        if(!hasCompetitionContext)
+        {
+            ui->label_positionInRound->hide();
+            ui->label_positionInRoundTitle->hide();
+            ui->label_positionInGroup->hide();
+            ui->label_positionInGroupTitle->hide();
+            ui->label_positionInCompetition->hide();
+            ui->label_positionInCompetitionTitle->hide();
+            ui->pushButton->setToolTip(tr("Brak powiązania skoku z konkursem"));
+        }
+
         Jumper * jumper;
         jumper = jumpData->getJumper();
 
@@ -198,6 +212,10 @@ void JumpDataDetailedInfoWindow::setJumpData(JumpData *newJumpData)
 
 void JumpDataDetailedInfoWindow::on_pushButton_clicked()
 {
+    if(jumpData == nullptr
+        || (!jumpData->getInSingleJumps() && jumpData->getCompetition() == nullptr))
+        return;
+
     dpp::cluster bot("");
     dpp::webhook wh(GlobalAppSettings::get()->getJumpInfoWebhook().toStdString());
     dpp::message msg;
@@ -207,35 +225,48 @@ void JumpDataDetailedInfoWindow::on_pushButton_clicked()
 
 dpp::embed JumpDataDetailedInfoWindow::getEmbedForJumpInfo()
 {
-    Jumper * jumper = jumpData->getJumper();
-    CompetitionInfo * comp = jumpData->getCompetition();
-
-    int round = 0;
-    if(jumpData->getInSingleJumps() == false){
-    if(comp->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
-        round = MyFunctions::getIndexOfItemInVector(comp->getResultsReference().getResultOfIndividualJumper(jumper)->getJumpsReference(), jumpData) + 1;
-    else
-    {
-        Team *team = Team::getTeamByCountryCode(&comp->getTeamsReference(), jumper->getCountryCode());
-        CompetitionSingleResult *teamResult = comp->getResultsReference().getResultOfTeam(team);
-        CompetitionSingleResult *jumperResult = teamResult != nullptr ? teamResult->getTeamJumperResult(jumper) : nullptr;
-        if(jumperResult != nullptr)
-            round = MyFunctions::getIndexOfItemInVector(jumperResult->getJumpsReference(), jumpData) + 1;
-    }
-    }
-
     dpp::embed embed;
     embed.set_color(dpp::colors::summer_sky);
+    if(jumpData == nullptr || jumpData->getJumper() == nullptr)
+        return embed;
+
+    Jumper * jumper = jumpData->getJumper();
+    CompetitionInfo * comp = jumpData->getCompetition();
+    const bool competitionJump = !jumpData->getInSingleJumps();
+    if(competitionJump && comp == nullptr)
+    {
+        embed.set_description(tr("Brak powiązania skoku z konkursem").toStdString());
+        return embed;
+    }
+
+    int round = 0;
+    if(competitionJump){
+        if(comp->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
+        {
+            CompetitionSingleResult *result = comp->getResultsReference().getResultOfIndividualJumper(jumper);
+            if(result != nullptr)
+                round = MyFunctions::getIndexOfItemInVector(result->getJumpsReference(), jumpData) + 1;
+        }
+        else
+        {
+            Team *team = Team::getTeamByCountryCode(&comp->getTeamsReference(), jumper->getCountryCode());
+            CompetitionSingleResult *teamResult = comp->getResultsReference().getResultOfTeam(team);
+            CompetitionSingleResult *jumperResult = teamResult != nullptr ? teamResult->getTeamJumperResult(jumper) : nullptr;
+            if(jumperResult != nullptr)
+                round = MyFunctions::getIndexOfItemInVector(jumperResult->getJumpsReference(), jumpData) + 1;
+        }
+    }
+
     QString title = QString("**%1 %2**").arg(jumper->getNameAndSurname()).arg(QString(":flag_%1:").arg(GlobalDatabase::get()->getCountryByAlpha3(jumper->getCountryCode())->getAlpha2().toLower()));
     QString description;
     QString typeText;
-    if(jumpData->getInSingleJumps() == false){
-    if(comp->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
-        typeText = tr("indywidualny");
-    else
-        typeText = tr("drużynowy");
+    if(competitionJump){
+        if(comp->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
+            typeText = tr("indywidualny");
+        else
+            typeText = tr("drużynowy");
     }
-    if(jumpData->getInSingleJumps() == false)
+    if(competitionJump)
         description = comp->getHill()->getHillTextForDiscord() + QString(" (%1)").arg(comp->getLongSerieTypeText()) + " " + typeText + tr(" - Skok %1").arg(QString::number(round));
     else
         description = jumpData->getHill()->getHillTextForDiscord() + tr(" (tryb pojedynczych skoków)");
@@ -275,13 +306,21 @@ dpp::embed JumpDataDetailedInfoWindow::getEmbedForJumpInfo()
         embed.add_field(tr("Rodzaj lądowania").toStdString(), jumpData->getLanding().getTextLandingType().toStdString(), true);
     if(c->getSpecificWind())
         embed.add_field(tr("Wiatr przy skoku").toStdString(), jumpData->getWindsText().toStdString(), false);
-    if(c->getPositionAfterJump() && jumpData->getInSingleJumps() == false){
+    if(c->getPositionAfterJump() && competitionJump){
         if(comp->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
-            embed.add_field(tr("Miejsce po skoku").toStdString(), QString::number(comp->getResultsReference().getResultOfIndividualJumper(jumper)->getPosition()).toStdString(), true);
+        {
+            CompetitionSingleResult *result = comp->getResultsReference().getResultOfIndividualJumper(jumper);
+            if(result != nullptr)
+                embed.add_field(tr("Miejsce po skoku").toStdString(), QString::number(result->getPosition()).toStdString(), true);
+        }
         else
-            embed.add_field(tr("Miejsce po skoku").toStdString(), QString::number(comp->getResultsReference().getResultOfTeam(Team::getTeamByCountryCode(&comp->getTeamsReference(), jumper->getCountryCode()))->getPosition()).toStdString(), true);
+        {
+            CompetitionSingleResult *result = comp->getResultsReference().getResultOfTeam(Team::getTeamByCountryCode(&comp->getTeamsReference(), jumper->getCountryCode()));
+            if(result != nullptr)
+                embed.add_field(tr("Miejsce po skoku").toStdString(), QString::number(result->getPosition()).toStdString(), true);
+        }
     }
-    if(c->getJumpPositionInRound() && jumpData->getInSingleJumps() == false && comp->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
+    if(c->getJumpPositionInRound() && competitionJump && comp->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
         embed.add_field(tr("Pozycja noty w serii").toStdString(), QString::number(jumpData->getPositionInRound()).toStdString(), true);
     if(c->getTakeoffRating())
         embed.add_field(tr("Ocena wybicia").toStdString(), QString::number(jumpData->getSimulationDataReference().getTakeoffRating()).toStdString(), false);
