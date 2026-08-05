@@ -104,19 +104,19 @@ void WindsGeneratorSettingsEditorWidget::askForSettingsForFillAll()
 {
     if(getSettingsCount() > 0)
     {
-        QDialog * dialog = new QDialog;
-        dialog->setModal(true);
-        dialog->setWindowFlags(Qt::Window);
-        dialog->setWindowTitle(tr("Wypełnij podanym ustawieniem"));
-        dialog->setStyleSheet("background-color: rgb(225, 225, 225);");
-        dialog->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-        dialog->setFixedSize(dialog->size());
-        dialog->setLayout(new QVBoxLayout(dialog));
-        WindsGeneratorSettingsWidgetInputItem * item = new WindsGeneratorSettingsWidgetInputItem;
-        dialog->layout()->addWidget(item);
+        QDialog dialog(this);
+        dialog.setModal(true);
+        dialog.setWindowFlags(Qt::Window);
+        dialog.setWindowTitle(tr("Wypełnij podanym ustawieniem"));
+        dialog.setStyleSheet("background-color: rgb(225, 225, 225);");
+        dialog.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+        dialog.setFixedSize(dialog.size());
+        dialog.setLayout(new QVBoxLayout(&dialog));
+        WindsGeneratorSettingsWidgetInputItem * item = new WindsGeneratorSettingsWidgetInputItem(&dialog);
+        dialog.layout()->addWidget(item);
 
-        connect(item, &WindsGeneratorSettingsWidgetInputItem::submitted, dialog, &QDialog::accept);
-        if(dialog->exec() == QDialog::Accepted)
+        connect(item, &WindsGeneratorSettingsWidgetInputItem::submitted, &dialog, &QDialog::accept);
+        if(dialog.exec() == QDialog::Accepted)
         {
             int widgetsCount = ui->toolBox->count();
             for(int i=0; i<widgetsCount; i++){
@@ -142,7 +142,6 @@ void WindsGeneratorSettingsEditorWidget::askForSettingsForFillAll()
                 item->setSettings(&settings);
                 item->fillInputs();
             }
-            delete item;
         }
     }
 }
@@ -232,4 +231,3 @@ void WindsGeneratorSettingsEditorWidget::on_pushButton_submit_clicked()
 {
     emit submitted();
 }
-

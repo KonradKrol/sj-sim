@@ -683,8 +683,8 @@ void CalendarEditorWidget::duplicateActionTriggered()
 
 void CalendarEditorWidget::execMultipleTrainingsEditDialog(QVector<int> *rows, int column)
 {
-    MultipleTrainingsEditDialog * dialog = new MultipleTrainingsEditDialog();
-    dialog->setRulesList(calendarModel->getRulesList());
+    MultipleTrainingsEditDialog dialog(this);
+    dialog.setRulesList(calendarModel->getRulesList());
     CompetitionInfo * competition;
     int i=-1;
     for(auto & comp : calendar->getCompetitionsReference())
@@ -698,12 +698,12 @@ void CalendarEditorWidget::execMultipleTrainingsEditDialog(QVector<int> *rows, i
         }
     }
     if(competition->getTrainingsReference().count() > 0){
-        dialog->setTrainingsRules(competition->getTrainingsReference().first()->getRules());
-        dialog->setImp(competition->getTrainingsReference().first()->getJumpsImportance());
+        dialog.setTrainingsRules(competition->getTrainingsReference().first()->getRules());
+        dialog.setImp(competition->getTrainingsReference().first()->getJumpsImportance());
     }
-    dialog->setCount(competition->getTrainingsReference().count());
-    connect(dialog, &MultipleTrainingsEditDialog::submitted, dialog, &MultipleTrainingsEditDialog::accept);
-    if(dialog->exec() == QDialog::Accepted){
+    dialog.setCount(competition->getTrainingsReference().count());
+    connect(&dialog, &MultipleTrainingsEditDialog::submitted, &dialog, &MultipleTrainingsEditDialog::accept);
+    if(dialog.exec() == QDialog::Accepted){
         for(auto & row : qAsConst(*rows)){
             CompetitionInfo * competition = nullptr;
             int competitionIndex = 0;
@@ -725,12 +725,12 @@ void CalendarEditorWidget::execMultipleTrainingsEditDialog(QVector<int> *rows, i
                     delete training;
                     competitionIndex--;
                 }
-                for(int i=0; i<dialog->getTrainingsCount(); i++){
+                for(int i=0; i<dialog.getTrainingsCount(); i++){
                     CompetitionInfo * training = new CompetitionInfo(competition->getHill());
                     training->setSerieType(CompetitionInfo::Training);
-                    training->setRules(dialog->getTrainingsRules());
-                    training->setJumpsImportance(dialog->getJumpsImportance());
-                    qDebug()<<"AAA: "<<dialog->getTrainingsRules().getName();
+                    training->setRules(dialog.getTrainingsRules());
+                    training->setJumpsImportance(dialog.getJumpsImportance());
+                    qDebug()<<"AAA: "<<dialog.getTrainingsRules().getName();
                     competition->getTrainingsReference().insert(0, training);
                     if(competition->getTrialRound() != nullptr)
                         calendar->getCompetitionsReference().insert(competitionIndex - 1, training);
@@ -745,8 +745,8 @@ void CalendarEditorWidget::execMultipleTrainingsEditDialog(QVector<int> *rows, i
 
 void CalendarEditorWidget::execMultipleTrialRoundsEditDialog(QVector<int> *rows, int column)
 {
-    MultipleTrialRoundsEditDialog * dialog = new MultipleTrialRoundsEditDialog();
-    dialog->setRulesList(calendarModel->getRulesList());
+    MultipleTrialRoundsEditDialog dialog(this);
+    dialog.setRulesList(calendarModel->getRulesList());
     CompetitionInfo * competition;
     int i=-1;
     for(auto & comp : calendar->getCompetitionsReference())
@@ -760,12 +760,12 @@ void CalendarEditorWidget::execMultipleTrialRoundsEditDialog(QVector<int> *rows,
         }
     }
     if(competition->getTrialRound() != nullptr){
-        dialog->setTrialRoundRules(competition->getTrialRound()->getRules());
-        dialog->setImp(competition->getTrialRound()->getJumpsImportance());
+        dialog.setTrialRoundRules(competition->getTrialRound()->getRules());
+        dialog.setImp(competition->getTrialRound()->getJumpsImportance());
     }
-    dialog->setTrialRound(competition->getTrialRound() != nullptr);
-    connect(dialog, &MultipleTrialRoundsEditDialog::submitted, dialog, &MultipleTrialRoundsEditDialog::accept);
-    if(dialog->exec() == QDialog::Accepted){
+    dialog.setTrialRound(competition->getTrialRound() != nullptr);
+    connect(&dialog, &MultipleTrialRoundsEditDialog::submitted, &dialog, &MultipleTrialRoundsEditDialog::accept);
+    if(dialog.exec() == QDialog::Accepted){
         for(auto & row : qAsConst(*rows)){
             CompetitionInfo * competition = nullptr;
             int competitionIndex = 0;
@@ -787,11 +787,11 @@ void CalendarEditorWidget::execMultipleTrialRoundsEditDialog(QVector<int> *rows,
                     competition->setTrialRound(nullptr);
                     competitionIndex--;
                 }
-                if(dialog->getTrialRoundChecked() == true){
+                if(dialog.getTrialRoundChecked() == true){
                     CompetitionInfo * trialRound = new CompetitionInfo(competition->getHill());
                     trialRound->setSerieType(CompetitionInfo::TrialRound);
-                    trialRound->setRules(dialog->getTrialRoundRules());
-                    trialRound->setJumpsImportance(dialog->getJumpsImportance());
+                    trialRound->setRules(dialog.getTrialRoundRules());
+                    trialRound->setJumpsImportance(dialog.getJumpsImportance());
                     competition->setTrialRound(trialRound);
                     calendar->getCompetitionsReference().insert(competitionIndex, trialRound);
                     competitionIndex++;

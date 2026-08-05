@@ -77,27 +77,25 @@ void JumpManipulatorConfigWindow::on_pushButton_submit_2_clicked()
 
 void JumpManipulatorConfigWindow::on_pushButton_editWinds_clicked()
 {
-    QDialog * dialog = new QDialog;
-    dialog->setModal(true);
-    dialog->setWindowFlags(Qt::Window);
-    dialog->setWindowTitle(tr("Edytuj wiatr"));
-    dialog->setStyleSheet("background-color: rgb(225, 225, 225);");
-    dialog->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    dialog->setFixedSize(dialog->size());
-    dialog->setLayout(new QVBoxLayout(dialog));
+    QDialog dialog(this);
+    dialog.setModal(true);
+    dialog.setWindowFlags(Qt::Window);
+    dialog.setWindowTitle(tr("Edytuj wiatr"));
+    dialog.setStyleSheet("background-color: rgb(225, 225, 225);");
+    dialog.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    dialog.setFixedSize(dialog.size());
+    dialog.setLayout(new QVBoxLayout(&dialog));
 
-    WindsGeneratorSettingsEditorWidget * windsEditor = new WindsGeneratorSettingsEditorWidget;
+    WindsGeneratorSettingsEditorWidget * windsEditor = new WindsGeneratorSettingsEditorWidget(&dialog);
     windsEditor->setKPoint(this->getKPoint());
     windsEditor->setWindGenerationSettings(this->windGenerationSettings);
     windsEditor->fillSettingsInputsToExactWindsEditor();
-    dialog->layout()->addWidget(windsEditor);
-    dialog->raise();
+    dialog.layout()->addWidget(windsEditor);
+    dialog.raise();
 
-    connect(windsEditor, &WindsGeneratorSettingsEditorWidget::submitted, dialog, &QDialog::accept);
-    if(dialog->exec() == QDialog::Accepted){
+    connect(windsEditor, &WindsGeneratorSettingsEditorWidget::submitted, &dialog, &QDialog::accept);
+    if(dialog.exec() == QDialog::Accepted){
         this->exactWinds = windsEditor->getExactWindsFromInputs();
-        delete windsEditor;
-        delete dialog;
     }
 }
 
@@ -120,4 +118,3 @@ void JumpManipulatorConfigWindow::setWindGenerationSettings(QVector<WindGenerati
 {
     windGenerationSettings = newWindGenerationSettings;
 }
-

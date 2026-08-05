@@ -1634,68 +1634,64 @@ void CompetitionManagerWindow::on_pushButton_generateNewWinds_clicked()
 
 void CompetitionManagerWindow::on_pushButton_windsGeneratorSettings_clicked()
 {
-    QDialog * dialog = new QDialog;
-    dialog->setWindowFlags(Qt::Window);
-    dialog->setWindowTitle("Edytuj ustawienia generatora wiatru");
-    dialog->setStyleSheet("background-color: rgb(225, 225, 225);");
-    dialog->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    dialog->setFixedSize(dialog->size());
-    dialog->setLayout(new QVBoxLayout(dialog));
+    QDialog dialog(this);
+    dialog.setWindowFlags(Qt::Window);
+    dialog.setWindowTitle("Edytuj ustawienia generatora wiatru");
+    dialog.setStyleSheet("background-color: rgb(225, 225, 225);");
+    dialog.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    dialog.setFixedSize(dialog.size());
+    dialog.setLayout(new QVBoxLayout(&dialog));
 
-    WindsGeneratorSettingsEditorWidget * editor = new WindsGeneratorSettingsEditorWidget;
+    WindsGeneratorSettingsEditorWidget * editor = new WindsGeneratorSettingsEditorWidget(&dialog);
     editor->setWindGenerationSettings(&manager->getWindGenerationSettingsReference());
     editor->setRemovingSubmitButtons(true);
     editor->setKPoint(manager->getCompetitionInfo()->getHill()->getKPoint());
     editor->setSettingsCount(WindsGenerator::calculateWindsCountByKPoint(editor->getKPoint()));
     editor->fillSettingsInputs();
 
-    dialog->layout()->addWidget(editor);
-    connect(editor, &WindsGeneratorSettingsEditorWidget::submitted, dialog, &QDialog::accept);
+    dialog.layout()->addWidget(editor);
+    connect(editor, &WindsGeneratorSettingsEditorWidget::submitted, &dialog, &QDialog::accept);
 
-    if(dialog->exec() == QDialog::Accepted){
+    if(dialog.exec() == QDialog::Accepted){
         manager->setWindGenerationSettings(editor->getWindsGenerationSettingsFromInputs());
         windsGenerator.setGenerationSettings(manager->getWindGenerationSettingsReference());
-        delete editor;
-        delete dialog;
     }
 
 }
 
 void CompetitionManagerWindow::on_pushButton_inrunSnowGeneratorSettings_clicked()
 {
-    QDialog * dialog = new QDialog;
-    dialog->setWindowFlags(Qt::Window);
-    dialog->setWindowTitle("Edytuj ustawienia generatora wiatru");
-    dialog->setStyleSheet("background-color: rgb(225, 225, 225);");
-    dialog->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    dialog->setFixedSize(dialog->size());
-    dialog->setLayout(new QVBoxLayout(dialog));
+    QDialog dialog(this);
+    dialog.setWindowFlags(Qt::Window);
+    dialog.setWindowTitle("Edytuj ustawienia generatora wiatru");
+    dialog.setStyleSheet("background-color: rgb(225, 225, 225);");
+    dialog.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    dialog.setFixedSize(dialog.size());
+    dialog.setLayout(new QVBoxLayout(&dialog));
 
-    InrunSnowGeneratorSettingsEditorWidget * editor = new InrunSnowGeneratorSettingsEditorWidget;
+    InrunSnowGeneratorSettingsEditorWidget * editor = new InrunSnowGeneratorSettingsEditorWidget(&dialog);
     editor->setGenerator(&inrunSnowGenerator);
     editor->fillInputs();
 
-    dialog->layout()->addWidget(editor);
-    connect(editor, &InrunSnowGeneratorSettingsEditorWidget::submitted, dialog, &QDialog::accept);
+    dialog.layout()->addWidget(editor);
+    connect(editor, &InrunSnowGeneratorSettingsEditorWidget::submitted, &dialog, &QDialog::accept);
 
-    if(dialog->exec() == QDialog::Accepted){
+    if(dialog.exec() == QDialog::Accepted){
         inrunSnowGenerator.setBaseInrunSnow(editor->getBase());
         inrunSnowGenerator.setInrunSnowDeviation(editor->getDeviation());
         actualInrunSnow = editor->getBase();
 
-        delete editor;
-        delete dialog;
     }
 }
 
 void CompetitionManagerWindow::on_pushButton_manipulateJump_clicked()
 {
-    JumpManipulatorConfigWindow * window = new JumpManipulatorConfigWindow;
-    window->setWindGenerationSettings(&manager->getWindGenerationSettingsReference());
-    window->setKPoint(manager->getCompetitionInfo()->getHill()->getKPoint());
-    connect(window, &JumpManipulatorConfigWindow::submitted, window, &JumpManipulatorConfigWindow::accept);
-    if(window->exec() == QDialog::Accepted){
-        JumpManipulator manipulator = window->getJumpManipulatorFromInputs();
+    JumpManipulatorConfigWindow window(this);
+    window.setWindGenerationSettings(&manager->getWindGenerationSettingsReference());
+    window.setKPoint(manager->getCompetitionInfo()->getHill()->getKPoint());
+    connect(&window, &JumpManipulatorConfigWindow::submitted, &window, &JumpManipulatorConfigWindow::accept);
+    if(window.exec() == QDialog::Accepted){
+        JumpManipulator manipulator = window.getJumpManipulatorFromInputs();
         currentInputJumpManipulator = (manipulator);
         if(manipulator.getExactWinds().size() > 0)
             setActualWinds(manipulator.getExactWinds());      

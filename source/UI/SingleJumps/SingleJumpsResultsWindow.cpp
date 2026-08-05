@@ -402,17 +402,17 @@ void SingleJumpsResultsWindow::on_tableView_doubleClicked(const QModelIndex &ind
 
 void SingleJumpsResultsWindow::on_pushButton_sortTable_clicked()
 {
-     SingleJumpsResultsTableSortDialog * dialog = new SingleJumpsResultsTableSortDialog();
-     if(dialog->exec() == QDialog::Accepted)
+     SingleJumpsResultsTableSortDialog dialog(this);
+     if(dialog.exec() == QDialog::Accepted)
      {
-         switch(dialog->sortBy())
+         switch(dialog.sortBy())
          {
          case SingleJumpsResultsTableSortDialog::Distance:
          {
-            std::sort(manager->getJumpsReference().begin(), manager->getJumpsReference().end(), [this, dialog](const JumpData & j1, const JumpData & j2){
+            std::sort(manager->getJumpsReference().begin(), manager->getJumpsReference().end(), [this, &dialog](const JumpData & j1, const JumpData & j2){
                 if(j1.getDistance() == j2.getDistance())
                     return j1.getIDStr() > j2.getIDStr();
-                if(dialog->sortType() == SingleJumpsResultsTableSortDialog::Descending)
+                if(dialog.sortType() == SingleJumpsResultsTableSortDialog::Descending)
                     return j1.getDistance() > j2.getDistance();
                 else
                     return j1.getDistance() < j2.getDistance();
@@ -421,10 +421,10 @@ void SingleJumpsResultsWindow::on_pushButton_sortTable_clicked()
          }
          case SingleJumpsResultsTableSortDialog::Points:
          {
-            std::sort(manager->getJumpsReference().begin(), manager->getJumpsReference().end(), [this, dialog](const JumpData & j1, const JumpData & j2){
+            std::sort(manager->getJumpsReference().begin(), manager->getJumpsReference().end(), [this, &dialog](const JumpData & j1, const JumpData & j2){
                 if(j1.getDistance() == j2.getDistance())
                     return j1.getIDStr() > j2.getIDStr();
-                if(dialog->sortType() == SingleJumpsResultsTableSortDialog::Descending)
+                if(dialog.sortType() == SingleJumpsResultsTableSortDialog::Descending)
                     return j1.getPoints() > j2.getPoints();
                 else
                     return j1.getPoints() < j2.getPoints();
@@ -433,10 +433,10 @@ void SingleJumpsResultsWindow::on_pushButton_sortTable_clicked()
          }
          case SingleJumpsResultsTableSortDialog::Wind:
          {
-            std::sort(manager->getJumpsReference().begin(), manager->getJumpsReference().end(), [this, dialog](const JumpData & j1, const JumpData & j2){
+            std::sort(manager->getJumpsReference().begin(), manager->getJumpsReference().end(), [this, &dialog](const JumpData & j1, const JumpData & j2){
                 if(j1.getDistance() == j2.getDistance())
                     return j1.getIDStr() > j2.getIDStr();
-                if(dialog->sortType() == SingleJumpsResultsTableSortDialog::Descending)
+                if(dialog.sortType() == SingleJumpsResultsTableSortDialog::Descending)
                     return j1.getAveragedWind() > j2.getAveragedWind();
                 else
                     return j1.getAveragedWind() < j2.getAveragedWind();
@@ -445,10 +445,10 @@ void SingleJumpsResultsWindow::on_pushButton_sortTable_clicked()
          }
          case SingleJumpsResultsTableSortDialog::Judges:
          {
-            std::sort(manager->getJumpsReference().begin(), manager->getJumpsReference().end(), [this, dialog](const JumpData & j1, const JumpData & j2){
+            std::sort(manager->getJumpsReference().begin(), manager->getJumpsReference().end(), [this, &dialog](const JumpData & j1, const JumpData & j2){
                 if(j1.getDistance() == j2.getDistance())
                     return j1.getIDStr() > j2.getIDStr();
-                if(dialog->sortType() == SingleJumpsResultsTableSortDialog::Descending)
+                if(dialog.sortType() == SingleJumpsResultsTableSortDialog::Descending)
                     return j1.getJudgesPoints() > j2.getJudgesPoints();
                 else
                     return j1.getJudgesPoints() < j2.getJudgesPoints();
