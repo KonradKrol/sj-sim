@@ -3,7 +3,8 @@
 
 SimulationSaveInfoWidget::SimulationSaveInfoWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::SimulationSaveInfoWidget)
+    ui(new Ui::SimulationSaveInfoWidget),
+    simulationSave(nullptr)
 {
     ui->setupUi(this);
 }
@@ -25,6 +26,12 @@ void SimulationSaveInfoWidget::resetInputs()
 
 void SimulationSaveInfoWidget::fillInputs()
 {
+    if(simulationSave == nullptr || simulationSave->getActualSeason() == nullptr)
+    {
+        resetInputs();
+        return;
+    }
+
     ui->label_name->setText(simulationSave->getName());
     ui->label_jumpersCount->setText(QString::number(simulationSave->getJumpersReference().count()));
     ui->label_currentSeason->setText(QString::number(simulationSave->getActualSeason()->getSeasonNumber()));

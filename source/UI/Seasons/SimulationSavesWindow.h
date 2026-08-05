@@ -27,6 +27,10 @@ private slots:
     void on_pushButton_remove_clicked();
 
 private:
+    int selectedSaveRow() const;
+    void openSelectedSave();
+    void updateSelectionState();
+
     Ui::SimulationSavesWindow *ui;
     SimulationSavesListModel * listModel;
 

@@ -1,9 +1,12 @@
 #include "SimulationSave.h"
+#include <QCoreApplication>
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QRegularExpression>
+#include <QSysInfo>
 #include "../global/Uuid.h"
 
 extern Uuid globalIDGenerator;
@@ -235,16 +238,28 @@ bool SimulationSave::saveToFile(QString dir, QString fileName)
 {
     if(fileName == "!default")
         fileName = getName();
+
+    QDir targetDirectory(dir);
+    if(QDir::isRelativePath(dir))
+    {
+        QDir applicationDirectory(QCoreApplication::applicationDirPath());
+        if(!applicationDirectory.exists("userData") && QSysInfo::productType() == "windows")
+            applicationDirectory.cdUp();
+        targetDirectory = QDir(applicationDirectory.absoluteFilePath(dir));
+    }
+    targetDirectory.mkpath(".");
+    const QString filePath = targetDirectory.absoluteFilePath(fileName + ".json");
+
     QJsonDocument document;
     QJsonObject mainObject;
     repairDatabase();
     mainObject.insert("simulation-save", SimulationSave::getJsonObject(*this));
     document.setObject(mainObject);
 
-    QFile file(dir + fileName + ".json");
+    QFile file(filePath);
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku z zapisem symulacji " + getName(), "Nie udało się otworzyć pliku " + dir + getName() + ".json" + "\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku z zapisem symulacji " + getName(), "Nie udało się otworzyć pliku " + filePath + "\nUpewnij się, że folder istnieje i ma odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return false;

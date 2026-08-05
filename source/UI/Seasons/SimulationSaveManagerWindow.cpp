@@ -160,6 +160,10 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     calendarEditor->setSave(simulationSave);
     calendarEditor->setEnabled(actualCalendar != nullptr);
     ui->verticalLayout_calendar->addWidget(calendarEditor);
+    ui->pushButton_repairDatabase->setEnabled(actualCalendar != nullptr && !simulationSave->getHillsReference().isEmpty());
+    ui->pushButton_repairDatabase->setToolTip(actualCalendar != nullptr
+        ? tr("Sprawdź i napraw powiązania w aktualnym zapisie")
+        : tr("Najpierw utwórz i wybierz kalendarz"));
     calendarsListView = new DatabaseItemsListView(DatabaseItemsListView::CalendarItems, true, true, true, this);
     calendarsListView->setAddKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_A);
     calendarsListView->setUpKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Up);
@@ -347,6 +351,8 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         calendarEditor->setSave(simulationSave);
         calendarEditor->setClassificationsList(&actualCalendar->getClassificationsReference());
         calendarEditor->updateTable();
+        ui->pushButton_repairDatabase->setEnabled(!simulationSave->getHillsReference().isEmpty());
+        ui->pushButton_repairDatabase->setToolTip(tr("Sprawdź i napraw powiązania w aktualnym zapisie"));
         ui->lineEdit_calendarName->setText(actualCalendar->getName());
         if(checkSeasonEnd() == true)
             ui->pushButton_competitionConfig->setText(tr("Konfiguruj nowy sezon"));
@@ -774,25 +780,43 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
 
 void SimulationSaveManagerWindow::on_pushButton_saveToFile_clicked()
 {
-    simulationSave->saveToFile("simulationSaves/");
-    QMessageBox::information(this, tr("Zapis do pliku"), tr("Pomyślnie zapisano aktualny zapis symulacji do pliku"), QMessageBox::Ok);
+    if(simulationSave->saveToFile("simulationSaves/"))
+        QMessageBox::information(this, tr("Zapis do pliku"), tr("Pomyślnie zapisano aktualny zapis symulacji do pliku"), QMessageBox::Ok);
 }
 
 void SimulationSaveManagerWindow::on_pushButton_saveAsCopy_clicked()
 {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Otwórz folder"));
+    if(dir.isEmpty())
+        return;
     bool ok;
     QString name = QInputDialog::getText(this, tr("Nazwa kopii zapisu symulacji"), tr("Za pomocą jakiej etykiety znamienity pan/pani zamierza oznaczyć sporządzony w bliskiej przyszłości dokument przechowujący kopię bieżącego zapisu symulacji dyscypliny olimpijskiej jaką są skoki narciarskie w pamięci aktualnie używanego komputera?"), QLineEdit::Normal, simulationSave->getName() + "copy", &ok);
-    if(ok){
-        simulationSave->saveToFile(dir + "/", name);
-        qDebug()<<"dir: "<<dir;
-        qDebug()<<"name "<<name;
-        QMessageBox::information(this, tr("Kopia zapisu symulacji"), tr("Pomyślnie zapisano kopię aktualnego zapisu symulacji do pliku"), QMessageBox::Ok);
+    name = name.trimmed();
+    if(!ok)
+        return;
+    if(name.isEmpty() || name.contains('/') || name.contains('\\'))
+    {
+        QMessageBox::warning(this, tr("Nieprawidłowa nazwa kopii"),
+                             tr("Wpisz nazwę pliku, która nie zawiera ukośników."), QMessageBox::Ok);
+        return;
     }
+    if(!simulationSave->saveToFile(dir + "/", name))
+        return;
+    qDebug()<<"dir: "<<dir;
+    qDebug()<<"name "<<name;
+    QMessageBox::information(this, tr("Kopia zapisu symulacji"), tr("Pomyślnie zapisano kopię aktualnego zapisu symulacji do pliku"), QMessageBox::Ok);
 }
 
 void SimulationSaveManagerWindow::on_pushButton_repairDatabase_clicked()
 {
+    SeasonCalendar * calendar = simulationSave->getActualSeason()->getActualCalendar();
+    if(calendar == nullptr || simulationSave->getHillsReference().isEmpty())
+    {
+        QMessageBox::warning(this, tr("Naprawa bazy danych"),
+                             tr("Najpierw utwórz i wybierz kalendarz oraz upewnij się, że zapis zawiera co najmniej jedną skocznię."), QMessageBox::Ok);
+        return;
+    }
+
     QProgressDialog dialog;
     dialog.setStyleSheet("QProgressDialog{background-color: white; color: black;}");
     dialog.setMinimum(0);
@@ -804,7 +828,6 @@ void SimulationSaveManagerWindow::on_pushButton_repairDatabase_clicked()
     dialog.setWindowModality(Qt::WindowModal);
     dialog.show();
 
-    SeasonCalendar * calendar = simulationSave->getActualSeason()->getActualCalendar();
     calendar->fixCompetitionsClassifications();
     dialog.setValue(dialog.value() + 1);
     QCoreApplication::processEvents();
@@ -820,11 +843,12 @@ void SimulationSaveManagerWindow::on_pushButton_repairDatabase_clicked()
     simulationSave->repairDatabase();
     dialog.setValue(dialog.value() + 1);
     QCoreApplication::processEvents();
-    simulationSave->saveToFile("simulationSaves/");
+    const bool saved = simulationSave->saveToFile("simulationSaves/");
     dialog.setValue(dialog.value() + 1);
     QCoreApplication::processEvents();
 
-    QMessageBox::information(this, tr("Naprawa bazy danych"), tr("Naprawiono bazę danych tego zapisu symulacji i zapisano do pliku."), QMessageBox::Ok);
+    if(saved)
+        QMessageBox::information(this, tr("Naprawa bazy danych"), tr("Naprawiono bazę danych tego zapisu symulacji i zapisano do pliku."), QMessageBox::Ok);
 }
 
 

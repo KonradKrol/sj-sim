@@ -167,7 +167,7 @@ listy startowej</string>
         <set>Qt::AlignCenter</set>
        </property>
        <property name="minimum">
-        <number>-1</number>
+        <number>1</number>
        </property>
        <property name="maximum">
         <number>1000000</number>
@@ -197,7 +197,7 @@ listy startowej</string>
         <set>Qt::AlignCenter</set>
        </property>
        <property name="minimum">
-        <number>-1</number>
+        <number>0</number>
        </property>
        <property name="maximum">
         <number>1000000</number>

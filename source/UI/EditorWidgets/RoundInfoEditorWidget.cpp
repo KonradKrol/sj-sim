@@ -44,7 +44,12 @@ RoundInfoEditorWidget::RoundInfoEditorWidget(bool hideGroupsInfo, int competitio
     ui->checkBox_KORound->setChecked(KO);
     ui->spinBox_KOGroupCount->setValue(KOCount);
     ui->spinBox_AdvancingFromKOGroup->setValue(KOAdvance);
+    ui->spinBox_AdvancingFromKOGroup->setMaximum(ui->spinBox_KOGroupCount->value());
     ui->comboBox_KOGroupsSelectionType->setCurrentIndex(selection);
+
+    connect(ui->spinBox_KOGroupCount, qOverload<int>(&QSpinBox::valueChanged), this, [this](int groupSize){
+        ui->spinBox_AdvancingFromKOGroup->setMaximum(groupSize);
+    });
 
     connect(ui->checkBox_KORound, &QCheckBox::stateChanged, static_cast<CompetitionRulesEditorWidget *>(parent), &CompetitionRulesEditorWidget::KORoundChanged);
 }
@@ -78,7 +83,7 @@ void RoundInfoEditorWidget::resetRoundInfoInput()
 
     ui->checkBox_KORound->setChecked(false);
     ui->spinBox_KOGroupCount->setValue(2);
-    ui->spinBox_AdvancingFromKOGroup->setValue(0);
+    ui->spinBox_AdvancingFromKOGroup->setValue(1);
     ui->comboBox_KOGroupsSelectionType->setCurrentIndex(0);
 }
 
