@@ -37,9 +37,13 @@ KOGroup KOGroup::getFromJson(const QJsonObject &json, IdentifiableObjectsStorage
 
 QVector<KOGroup> KOGroup::constructKOGroups(RoundInfo *roundInfo, QVector<Jumper *> *jumpers, int selectionType, CompetitionInfo * competition)
 {
+    QVector<KOGroup> groups;
+    if(roundInfo == nullptr || jumpers == nullptr || jumpers->isEmpty()
+        || roundInfo->getCountInKOGroup() <= 0)
+        return groups;
+
     if (selectionType == 4)
         selectionType = 3;
-    QVector<KOGroup> groups;
     switch(selectionType)
     {
     case KOGroup::Classic:{ //Tak jak w TCS

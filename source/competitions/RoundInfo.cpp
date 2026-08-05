@@ -1,7 +1,12 @@
 #include "RoundInfo.h"
 
 RoundInfo::RoundInfo(int count, bool sortStartList) : count(count),
-    sortStartList(sortStartList)
+    sortStartList(sortStartList),
+    sortAfterGroups(Never),
+    KO(false),
+    countInKOGroup(2),
+    advancingFromKOGroup(1),
+    koGroupsSelectionType(0)
 {}
 
 int RoundInfo::getKoGroupsSelectionType() const

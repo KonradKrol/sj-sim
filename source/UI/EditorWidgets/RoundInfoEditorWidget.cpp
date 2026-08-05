@@ -77,7 +77,7 @@ void RoundInfoEditorWidget::resetRoundInfoInput()
     ui->comboBox_sortingAfterGroups->setCurrentIndex(3);
 
     ui->checkBox_KORound->setChecked(false);
-    ui->spinBox_KOGroupCount->setValue(0);
+    ui->spinBox_KOGroupCount->setValue(2);
     ui->spinBox_AdvancingFromKOGroup->setValue(0);
     ui->comboBox_KOGroupsSelectionType->setCurrentIndex(0);
 }
@@ -161,4 +161,3 @@ void RoundInfoEditorWidget::on_comboBox_KOGroupsSelectionType_activated(int inde
     else
         ui->label_warningIcon->show();
 }
-
