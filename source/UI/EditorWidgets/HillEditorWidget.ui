@@ -1,0 +1,1326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>HillEditorWidget</class>
+ <widget class="QWidget" name="HillEditorWidget">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>463</width>
+    <height>561</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Edytor skoczni</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);
+color: black;</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout" stretch="2,1,0,0">
+     <item>
+      <layout class="QFormLayout" name="formLayout_input">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_name">
+         <property name="font">
+          <font>
+           <family>Quicksand</family>
+           <pointsize>9</pointsize>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+background: transparent;
+color: rgb(0, 0, 0);
+}</string>
+         </property>
+         <property name="text">
+          <string>Nazwa</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lineEdit_name">
+         <property name="minimumSize">
+          <size>
+           <width>160</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>160</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Quicksand Medium</family>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QWidget{
+	background-color: rgb(222, 221, 218);
+	color: rgb(60, 60, 60);
+	border: 2px solid rgb(65, 0, 0);
+	border-radius: 7px;
+}
+
+QDoubleSpinBox::up-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+		background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}
+QDoubleSpinBox::down-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+	background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_countryCode">
+         <property name="font">
+          <font>
+           <family>Quicksand</family>
+           <pointsize>9</pointsize>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+background: transparent;
+color: rgb(0, 0, 0);
+}</string>
+         </property>
+         <property name="text">
+          <string>Kod kraju</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_countryCode">
+           <property name="minimumSize">
+            <size>
+             <width>70</width>
+             <height>23</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>90</width>
+             <height>23</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Quicksand Medium</family>
+             <pointsize>11</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QWidget{
+	background-color: rgb(222, 221, 218);
+	color: rgb(60, 60, 60);
+	border: 2px solid rgb(65, 0, 0);
+	border-radius: 7px;
+}
+
+QDoubleSpinBox::up-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+		background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}
+QDoubleSpinBox::down-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+	background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}</string>
+           </property>
+           <property name="maxLength">
+            <number>3</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Maximum</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_countryFlag">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>38</width>
+             <height>22</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>38</width>
+             <height>22</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>13</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QWidget{
+	background: transparent;
+}</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_countryName">
+           <property name="font">
+            <font>
+             <family>Quicksand Medium</family>
+             <pointsize>11</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>(Niemcy)</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label">
+         <property name="font">
+          <font>
+           <family>Quicksand</family>
+           <pointsize>9</pointsize>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+background: transparent;
+color: rgb(0, 0, 0);
+}</string>
+         </property>
+         <property name="text">
+          <string>Punkt K</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_KPoint">
+         <property name="minimumSize">
+          <size>
+           <width>160</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>160</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Quicksand Medium</family>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QWidget{
+	background-color: rgb(222, 221, 218);
+	color: rgb(60, 60, 60);
+	border: 2px solid rgb(65, 0, 0);
+	border-radius: 7px;
+}
+
+QDoubleSpinBox::up-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+		background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}
+QDoubleSpinBox::down-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+	background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="minimum">
+          <double>-1000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="font">
+          <font>
+           <family>Quicksand</family>
+           <pointsize>9</pointsize>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+background: transparent;
+color: rgb(0, 0, 0);
+}</string>
+         </property>
+         <property name="text">
+          <string>Punkt HS</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_HSPoint">
+         <property name="minimumSize">
+          <size>
+           <width>160</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>160</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Quicksand Medium</family>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QWidget{
+	background-color: rgb(222, 221, 218);
+	color: rgb(60, 60, 60);
+	border: 2px solid rgb(65, 0, 0);
+	border-radius: 7px;
+}
+
+QDoubleSpinBox::up-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+		background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}
+QDoubleSpinBox::down-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+	background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="minimum">
+          <double>-1000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_6">
+         <property name="font">
+          <font>
+           <family>Quicksand</family>
+           <pointsize>9</pointsize>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+background: transparent;
+color: rgb(0, 0, 0);
+}</string>
+         </property>
+         <property name="text">
+          <string>Punkty za punkt K</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_pointsForKPoint">
+           <property name="minimumSize">
+            <size>
+             <width>130</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Quicksand Medium</family>
+             <pointsize>11</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QWidget{
+	background-color: rgb(222, 221, 218);
+	color: rgb(60, 60, 60);
+	border: 2px solid rgb(65, 0, 0);
+	border-radius: 7px;
+}
+QWidget[readOnly = &quot;true&quot;]{
+	background-color: rgb(120, 120, 120);
+	color: rgb(20, 20, 20);
+	border: 2px solid rgb(65, 0, 0);
+	border-radius: 7px;
+}
+
+QDoubleSpinBox::up-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+		background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}
+QDoubleSpinBox::down-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+	background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="minimum">
+            <double>-1000000.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>1000000.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBox_autoPointsForKPoint">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Quicksand Medium</family>
+             <pointsize>7</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QWidget{
+	background: transparent;
+	color: rgb(60, 60, 60);
+	border: 2px solid rgb(65, 0, 0);
+	border-radius: 7px;
+}</string>
+           </property>
+           <property name="text">
+            <string>Automatycznie</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="font">
+          <font>
+           <family>Quicksand</family>
+           <pointsize>9</pointsize>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+background: transparent;
+color: rgb(0, 0, 0);
+}</string>
+         </property>
+         <property name="text">
+          <string>Punkty za metr</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_pointsForMeter">
+           <property name="minimumSize">
+            <size>
+             <width>130</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Quicksand Medium</family>
+             <pointsize>11</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QWidget{
+	background-color: rgb(222, 221, 218);
+	color: rgb(60, 60, 60);
+	border: 2px solid rgb(65, 0, 0);
+	border-radius: 7px;
+}
+QWidget[readOnly = &quot;true&quot;]{
+	background-color: rgb(120, 120, 120);
+	color: rgb(20, 20, 20);
+	border: 2px solid rgb(65, 0, 0);
+	border-radius: 7px;
+}
+
+QDoubleSpinBox::up-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+		background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}
+QDoubleSpinBox::down-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+	background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="minimum">
+            <double>-1000000.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>1000000.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.100000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBox_autoPointsForMeter">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Quicksand Medium</family>
+             <pointsize>7</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QWidget{
+	background: transparent;
+	color: rgb(60, 60, 60);
+	border: 2px solid rgb(65, 0, 0);
+	border-radius: 7px;
+}</string>
+           </property>
+           <property name="text">
+            <string>Automatycznie</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="font">
+          <font>
+           <family>Quicksand</family>
+           <pointsize>9</pointsize>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+background: transparent;
+color: rgb(0, 0, 0);
+}</string>
+         </property>
+         <property name="text">
+          <string>Punkty za belkę</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_gatePoints">
+         <property name="minimumSize">
+          <size>
+           <width>160</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>160</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Quicksand Medium</family>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QWidget{
+	background-color: rgb(222, 221, 218);
+	color: rgb(60, 60, 60);
+	border: 2px solid rgb(65, 0, 0);
+	border-radius: 7px;
+}
+
+QDoubleSpinBox::up-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+		background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}
+QDoubleSpinBox::down-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+	background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="minimum">
+          <double>-1000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.500000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="font">
+          <font>
+           <family>Quicksand</family>
+           <pointsize>9</pointsize>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+background: transparent;
+color: rgb(0, 0, 0);
+}</string>
+         </property>
+         <property name="text">
+          <string>Punkty za wiatr przedni</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_frontWindPoints">
+         <property name="minimumSize">
+          <size>
+           <width>160</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>160</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Quicksand Medium</family>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QWidget{
+	background-color: rgb(222, 221, 218);
+	color: rgb(60, 60, 60);
+	border: 2px solid rgb(65, 0, 0);
+	border-radius: 7px;
+}
+
+QDoubleSpinBox::up-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+		background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}
+QDoubleSpinBox::down-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+	background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="minimum">
+          <double>-1000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.500000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="font">
+          <font>
+           <family>Quicksand</family>
+           <pointsize>9</pointsize>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+background: transparent;
+color: rgb(0, 0, 0);
+}</string>
+         </property>
+         <property name="text">
+          <string>Punkty za wiatr tylni</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_backWindPoints">
+           <property name="minimumSize">
+            <size>
+             <width>130</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Quicksand Medium</family>
+             <pointsize>11</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QWidget{
+	background-color: rgb(222, 221, 218);
+	color: rgb(60, 60, 60);
+	border: 2px solid rgb(65, 0, 0);
+	border-radius: 7px;
+}
+QWidget[readOnly = &quot;true&quot;]{
+	background-color: rgb(120, 120, 120);
+	color: rgb(20, 20, 20);
+	border: 2px solid rgb(65, 0, 0);
+	border-radius: 7px;
+}
+
+QDoubleSpinBox::up-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+		background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}
+QDoubleSpinBox::down-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+	background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="minimum">
+            <double>-1000000.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>1000000.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.500000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBox_autoBackWindPoints">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Quicksand Medium</family>
+             <pointsize>7</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QWidget{
+	background: transparent;
+	color: rgb(60, 60, 60);
+	border: 2px solid rgb(65, 0, 0);
+	border-radius: 7px;
+}</string>
+           </property>
+           <property name="text">
+            <string>Automatycznie</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_9">
+         <property name="font">
+          <font>
+           <family>Quicksand</family>
+           <pointsize>9</pointsize>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+background: transparent;
+color: rgb(0, 0, 0);
+}</string>
+         </property>
+         <property name="text">
+          <string>Mnożnik odległości</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_distanceMultiplier">
+         <property name="minimumSize">
+          <size>
+           <width>160</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>160</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Quicksand Medium</family>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QWidget{
+	background-color: rgb(222, 221, 218);
+	color: rgb(60, 60, 60);
+	border: 2px solid rgb(65, 0, 0);
+	border-radius: 7px;
+}
+
+QDoubleSpinBox::up-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+		background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}
+QDoubleSpinBox::down-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+	background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="decimals">
+          <number>4</number>
+         </property>
+         <property name="minimum">
+          <double>-10.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>10.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.100000000000000</double>
+         </property>
+         <property name="value">
+          <double>1.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="label_10">
+         <property name="font">
+          <font>
+           <family>Quicksand</family>
+           <pointsize>9</pointsize>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+background: transparent;
+color: rgb(0, 0, 0);
+}</string>
+         </property>
+         <property name="text">
+          <string>Balans między wybiciem a lotem</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_balance">
+         <property name="minimumSize">
+          <size>
+           <width>160</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>160</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Quicksand Medium</family>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QWidget{
+	background-color: rgb(222, 221, 218);
+	color: rgb(60, 60, 60);
+	border: 2px solid rgb(65, 0, 0);
+	border-radius: 7px;
+}
+
+QDoubleSpinBox::up-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+		background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}
+QDoubleSpinBox::down-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+	background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="decimals">
+          <number>4</number>
+         </property>
+         <property name="minimum">
+          <double>-10.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>10.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.100000000000000</double>
+         </property>
+         <property name="value">
+          <double>1.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="0">
+        <widget class="QLabel" name="label_8">
+         <property name="font">
+          <font>
+           <family>Quicksand</family>
+           <pointsize>9</pointsize>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+background: transparent;
+color: rgb(0, 0, 0);
+}</string>
+         </property>
+         <property name="text">
+          <string>Rekord skoczni</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_record">
+           <property name="minimumSize">
+            <size>
+             <width>160</width>
+             <height>23</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>160</width>
+             <height>23</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Quicksand Medium</family>
+             <pointsize>11</pointsize>
+            </font>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::ClickFocus</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QWidget{
+	background-color: rgb(222, 221, 218);
+	color: rgb(60, 60, 60);
+	border: 2px solid rgb(65, 0, 0);
+	border-radius: 6px;
+}
+
+QDoubleSpinBox::up-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+		background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}
+QDoubleSpinBox::down-button{
+border: 1px solid rgb(33, 42, 0);
+border-radius: 3px;
+	background-color: rgb(129, 175, 117);
+	color: rgb(0, 59, 23);
+}</string>
+           </property>
+           <property name="wrapping">
+            <bool>false</bool>
+           </property>
+           <property name="frame">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="showGroupSeparator" stdset="0">
+            <bool>false</bool>
+           </property>
+           <property name="decimals">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <double>1000000.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>0.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_meterDecoration">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: rgb(100, 100, 100);</string>
+           </property>
+           <property name="text">
+            <string>m</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_characteristicsEditor"/>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Maximum</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>13</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_OKButton_2">
+       <item>
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_submit">
+         <property name="minimumSize">
+          <size>
+           <width>120</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>120</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Quicksand Medium</family>
+           <pointsize>18</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+border: 1px solid rgb(0, 59, 23);
+border-radius: 6px;
+color: rgb(0, 0, 0);
+background-color: rgb(123, 220, 144);
+}
+QPushButton:hover{
+background-color: rgb(153, 253, 174);
+}</string>
+         </property>
+         <property name="text">
+          <string>OK</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

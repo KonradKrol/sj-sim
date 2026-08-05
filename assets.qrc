@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/">
+        <file>img/ski-jumper-1.png</file>
+        <file>img/ski-jumper.png</file>
+        <file>img/settings.png</file>
+        <file>img/medal.png</file>
+        <file>img/help.png</file>
+        <file>img/database-edit.png</file>
+        <file>img/Crystal_Globe.svg.png</file>
+        <file>img/pencil.png</file>
+        <file>img/delete.png</file>
+        <file>img/plus.png</file>
+        <file>img/down-arrow.png</file>
+        <file>img/up-arrow.png</file>
+        <file>img/down.png</file>
+        <file>img/horizontal.png</file>
+        <file>img/arrow-up1.png</file>
+        <file>img/arrow-down.png</file>
+        <file>img/back-side.png</file>
+        <file>img/front-side.png</file>
+        <file>img/pipes.webp</file>
+        <file>img/check-mark.png</file>
+        <file>img/close.png</file>
+        <file>img/warning.png</file>
+    </qresource>
+</RCC>

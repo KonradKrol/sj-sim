@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>JumpersListsListItemWidget</class>
+ <widget class="QWidget" name="JumpersListsListItemWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>475</width>
+    <height>31</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background: transparent;
+color: black;</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0,0">
+   <property name="spacing">
+    <number>10</number>
+   </property>
+   <property name="leftMargin">
+    <number>3</number>
+   </property>
+   <property name="topMargin">
+    <number>5</number>
+   </property>
+   <property name="rightMargin">
+    <number>3</number>
+   </property>
+   <property name="bottomMargin">
+    <number>5</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="label_listName">
+     <property name="font">
+      <font>
+       <family>Quicksand Medium</family>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>1. Niemcy (Kadra A)</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButton_select">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>21</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton
+{
+background-color: rgb(255, 255, 255);
+color: black;
+border: 1px solid;
+border-radius: 4px;
+}
+QPushButton:hover
+{
+	background-color: rgb(200, 241, 193);
+}</string>
+     </property>
+     <property name="text">
+      <string>Wybierz</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButton_unselect">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>21</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton
+{
+	background-color: rgb(255, 255, 255);
+	color: black;
+border: 1px solid;
+border-radius: 4px;
+}
+QPushButton:hover
+{
+	background-color: rgb(255, 175, 175);
+}</string>
+     </property>
+     <property name="text">
+      <string>Odznacz</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

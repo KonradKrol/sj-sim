@@ -1,0 +1,6 @@
+  cd /home/konrad/Desktop/sj-sim/build-linux
+  qmake ../sj-sim.pro
+  make -j2
+  ./sj-sim
+
+
