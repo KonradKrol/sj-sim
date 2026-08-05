@@ -23,7 +23,6 @@ class GlobalDatabase : public IdentifiableObjectsStorage
 private:
     GlobalDatabase(); 
     ~GlobalDatabase();
-    static GlobalDatabase * m_globalDatabase;
 
     QVector<Jumper> globalJumpers;
     QVector<Hill> globalHills;

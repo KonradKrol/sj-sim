@@ -15,7 +15,6 @@
 
 #include "../global/CountryFlagsManager.h"
 
-GlobalDatabase* GlobalDatabase::m_globalDatabase = nullptr;
 extern Uuid globalIDGenerator;
 
 GlobalDatabase::GlobalDatabase()
@@ -33,7 +32,6 @@ GlobalDatabase::~GlobalDatabase()
         for(auto & cls : calendarPreset.getCalendarReference().getClassificationsReference())
             delete cls;
     }
-    delete m_globalDatabase;
 }
 
 void GlobalDatabase::repairDatabase()
@@ -304,9 +302,8 @@ QVector<Jumper> &GlobalDatabase::getEditableGlobalJumpers()
 
 GlobalDatabase *GlobalDatabase::get()
 {
-    if(m_globalDatabase == nullptr)
-        m_globalDatabase = new GlobalDatabase();
-    return m_globalDatabase;
+    static GlobalDatabase globalDatabase;
+    return &globalDatabase;
 }
 
 void GlobalDatabase::removeJumper(int index)
