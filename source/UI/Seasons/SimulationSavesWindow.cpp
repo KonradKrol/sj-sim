@@ -4,10 +4,8 @@
 #include "../../global/GlobalDatabase.h"
 #include "../../seasons/SimulationSave.h"
 #include "../../seasons/Season.h"
-#include "NewSeasonConfiguratorWindow.h"
 #include "NewSimulationSaveConfigurationWindow.h"
 #include "SimulationSaveManagerWindow.h"
-#include <QTimer>
 #include <QModelIndex>
 #include <QFile>
 #include <QCoreApplication>
@@ -54,9 +52,9 @@ SimulationSavesWindow::SimulationSavesWindow(QWidget *parent) :
     });
 
     QShortcut *openShortcut = new QShortcut(QKeySequence(Qt::Key_Return), ui->listView_simulationSaves);
-    connect(openShortcut, &QShortcut::activated, this, &SimulationSavesWindow::openSelectedSave);
+    connect(openShortcut, &QShortcut::activated, this, [this](){ openSelectedSave(); });
     QShortcut *openKeypadShortcut = new QShortcut(QKeySequence(Qt::Key_Enter), ui->listView_simulationSaves);
-    connect(openKeypadShortcut, &QShortcut::activated, this, &SimulationSavesWindow::openSelectedSave);
+    connect(openKeypadShortcut, &QShortcut::activated, this, [this](){ openSelectedSave(); });
     QShortcut *removeShortcut = new QShortcut(QKeySequence(Qt::Key_Delete), ui->listView_simulationSaves);
     connect(removeShortcut, &QShortcut::activated, this, &SimulationSavesWindow::on_pushButton_remove_clicked);
 
@@ -84,49 +82,45 @@ void SimulationSavesWindow::on_pushButton_add_clicked()
     }
     NewSimulationSaveConfigurationWindow simulationSaveWindow(otherNames, this);
     if(simulationSaveWindow.exec() == QDialog::Accepted){
-        NewSeasonConfiguratorWindow seasonWindow(false, this);
-        connect(seasonWindow.getToolBox(), &QToolBox::currentChanged, this, [&seasonWindow](){
-            if(seasonWindow.getToolBox()->currentIndex() == 3){ //edytor kalendarzy
-                QTimer::singleShot(200, &seasonWindow, [&seasonWindow](){
-                    seasonWindow.showCalendarEditorHelp();
-                });
-            }
-        });
-        if(seasonWindow.exec() == QDialog::Accepted){
-            SimulationSave * simulationSave = new SimulationSave();
-            simulationSave->setName(simulationSaveWindow.getNameFromInput());
-            simulationSave->setJumpers(seasonWindow.getJumpersReference());
-            simulationSave->setHills(seasonWindow.getHillsReference());
-            simulationSave->setCompetitionRules(seasonWindow.getCompetitionsRulesReference());
+        SimulationSave * simulationSave = new SimulationSave();
+        simulationSave->setName(simulationSaveWindow.getNameFromInput());
 
-            Season season;
-            season.setSeasonNumber(simulationSaveWindow.getSeasonNumberFromInput());
+        QVector<Jumper *> jumpers;
+        for(const Jumper &jumper : GlobalDatabase::get()->getEditableGlobalJumpers())
+            jumpers.append(new Jumper(jumper));
+        simulationSave->setJumpers(jumpers);
 
-            simulationSave->getSeasonsReference().push_back(season);
-            simulationSave->setActualSeason(&simulationSave->getSeasonsReference().last());
-            simulationSave->getActualSeason()->setActualCalendar(nullptr);
+        QVector<Hill *> hills;
+        for(const Hill &hill : GlobalDatabase::get()->getEditableGlobalHills())
+            hills.append(new Hill(hill));
+        simulationSave->setHills(hills);
+        simulationSave->setCompetitionRules(GlobalDatabase::get()->getEditableCompetitionRules());
 
-            simulationSave->updateNextCompetitionIndex();
+        Season season;
+        season.setSeasonNumber(simulationSaveWindow.getSeasonNumberFromInput());
+        simulationSave->getSeasonsReference().push_back(season);
+        simulationSave->setActualSeason(&simulationSave->getSeasonsReference().last());
+        simulationSave->updateNextCompetitionIndex();
 
-            int index = 0;
-            if(ui->listView_simulationSaves->selectionModel()->selectedRows().size() > 0)
-                index = ui->listView_simulationSaves->selectionModel()->selectedRows().first().row();
+        int index = 0;
+        if(ui->listView_simulationSaves->selectionModel()->selectedRows().size() > 0)
+            index = ui->listView_simulationSaves->selectionModel()->selectedRows().first().row();
 
-            if(listModel->insertSave(index, simulationSave))
+        if(listModel->insertSave(index, simulationSave))
+        {
+            const QString directory = simulationSavesDirectory().absolutePath() + QDir::separator();
+            if(simulationSave->saveToFile(directory))
             {
-                const QString directory = simulationSavesDirectory().absolutePath() + QDir::separator();
-                if(simulationSave->saveToFile(directory))
-                {
-                    const QModelIndex newIndex = listModel->index(index, 0);
-                    ui->listView_simulationSaves->setCurrentIndex(newIndex);
-                    ui->listView_simulationSaves->scrollTo(newIndex);
-                }
-                else
-                    delete listModel->takeSave(index);
+                const QModelIndex newIndex = listModel->index(index, 0);
+                ui->listView_simulationSaves->setCurrentIndex(newIndex);
+                ui->listView_simulationSaves->scrollTo(newIndex);
+                openSelectedSave(true);
             }
             else
-                delete simulationSave;
+                delete listModel->takeSave(index);
         }
+        else
+            delete simulationSave;
     }
 }
 
@@ -136,7 +130,7 @@ void SimulationSavesWindow::on_pushButton_OK_clicked()
     openSelectedSave();
 }
 
-void SimulationSavesWindow::openSelectedSave()
+void SimulationSavesWindow::openSelectedSave(bool focusCalendar)
 {
     const int row = selectedSaveRow();
     if(row >= 0){
@@ -146,6 +140,8 @@ void SimulationSavesWindow::openSelectedSave()
         if(manager->getSimulationSave()->getNextCompetition() == nullptr)
             manager->setupNextSeasonConfigButton();
         manager->fillNextCompetitionInformations();
+        if(focusCalendar)
+            manager->focusCalendarTab();
         manager->exec();
         delete manager;
         updateSelectionState();

@@ -29,6 +29,7 @@ public:
 
     void showJumperAndHillsEditingHelp();
     void fillNextCompetitionInformations();
+    void focusCalendarTab();
 
     void setupClassificationsComboBox();
     void connectComboBox();

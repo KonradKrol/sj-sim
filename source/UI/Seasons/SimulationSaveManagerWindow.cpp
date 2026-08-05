@@ -427,6 +427,12 @@ DatabaseItemsListView *SimulationSaveManagerWindow::getCalendarsListView() const
     return calendarsListView;
 }
 
+void SimulationSaveManagerWindow::focusCalendarTab()
+{
+    ui->toolBox->setCurrentIndex(3);
+    calendarsListView->getListView()->setFocus();
+}
+
 void SimulationSaveManagerWindow::setCalendarsListView(DatabaseItemsListView *newCalendarsListView)
 {
     calendarsListView = newCalendarsListView;

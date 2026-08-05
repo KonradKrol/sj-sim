@@ -28,7 +28,7 @@ private slots:
 
 private:
     int selectedSaveRow() const;
-    void openSelectedSave();
+    void openSelectedSave(bool focusCalendar = false);
     void updateSelectionState();
 
     Ui::SimulationSavesWindow *ui;
