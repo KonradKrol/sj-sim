@@ -32,9 +32,17 @@ void KORoundManager::updateStatuses()
                         remaining++;
                 }
                 QVector<int> positions = results->getJumpersPositions(&sortedGroupJumpers);
-                if(positions[sortedGroupJumpers.indexOf(jumper)] + remaining <= roundInfo->getAdvancingFromKOGroup())
+                const int resultIndex = sortedGroupJumpers.indexOf(jumper);
+                if(resultIndex < 0 || resultIndex >= positions.count())
+                {
+                    statuses.insert(jumper, KORoundManager::Waiting);
+                    continue;
+                }
+
+                const int position = positions.at(resultIndex);
+                if(position + remaining <= roundInfo->getAdvancingFromKOGroup())
                     statuses.insert(jumper, KORoundManager::Winner);
-                else if(positions[sortedGroupJumpers.indexOf(jumper)] > roundInfo->getAdvancingFromKOGroup())
+                else if(position > roundInfo->getAdvancingFromKOGroup())
                     statuses.insert(jumper, KORoundManager::Loser);
                 else
                     statuses.insert(jumper, KORoundManager::Waiting);
