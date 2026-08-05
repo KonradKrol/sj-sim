@@ -70,8 +70,6 @@ public:
 
 private slots:
     void on_pushButton_submit_clicked();
-    void on_pushButton_trialRoundRules_clicked();
-    void on_pushButton_trainingsRules_clicked();
 };
 
 #endif // COMPETITIONINFOEDITORWIDGET_H

@@ -77,11 +77,6 @@ JumperFormGeneratorsSettingsTableModel *JumpersFormGeneratorConfigWindow::getTab
     return tableModel;
 }
 
-void JumpersFormGeneratorConfigWindow::on_doubleSpinBox_tendVariability_editingFinished()
-{
-
-}
-
 void JumpersFormGeneratorConfigWindow::on_doubleSpinBox_formBonus_editingFinished()
 {
     double value = ui->doubleSpinBox_formBonus->value();
@@ -318,4 +313,3 @@ void JumpersFormGeneratorConfigWindow::on_pushButton_jumpersLists_clicked()
         updateTable();
     }
 }
-

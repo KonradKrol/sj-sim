@@ -511,7 +511,6 @@ void SimulationSaveManagerWindow::setupClassificationsComboBox()
     }
     }
     connectComboBox();
-    qDebug()<<"a";
 }
 
 void SimulationSaveManagerWindow::connectComboBox()
@@ -1093,7 +1092,6 @@ void SimulationSaveManagerWindow::on_pushButton_formGenerator_clicked()
     window.getTableModel()->setGeneratorsSettings(JumperFormGeneratorSettings::constructJumperFormGeneratorsSettingsVector(simulationSave->getJumpersReference()));
     window.setSave(simulationSave);
     window.updateTable();
-    window.on_doubleSpinBox_tendVariability_editingFinished();
     window.on_doubleSpinBox_formBonus_editingFinished();
     window.on_doubleSpinBox_minForm_editingFinished();
     window.on_doubleSpinBox_maxForm_editingFinished();
