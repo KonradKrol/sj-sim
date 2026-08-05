@@ -259,13 +259,13 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
 
     if(simulationSave->getActualSeason()->getActualCalendar() != nullptr)
     {
-        competitionsArchiveModel = new CompetitionsArchiveListModel(&simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference());
-        classificationsArchiveModel = new ClassificationsArchiveListModel(&simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference());
+        competitionsArchiveModel = new CompetitionsArchiveListModel(&simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference(), this);
+        classificationsArchiveModel = new ClassificationsArchiveListModel(&simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference(), this);
     }
     else
     {
-        competitionsArchiveModel = new CompetitionsArchiveListModel(new QVector<CompetitionInfo *>());
-        classificationsArchiveModel = new ClassificationsArchiveListModel(new QVector<Classification *>());
+        competitionsArchiveModel = new CompetitionsArchiveListModel(&emptyArchiveCompetitions, this);
+        classificationsArchiveModel = new ClassificationsArchiveListModel(&emptyArchiveClassifications, this);
     }
 
     ui->comboBox_archiveSeason->clear();
@@ -944,9 +944,11 @@ void SimulationSaveManagerWindow::updateArchive()
     }
     else
     {
-    competitionsArchiveModel->setSeasonCompetitions(new QVector<CompetitionInfo *>());
+        emptyArchiveCompetitions.clear();
+        emptyArchiveClassifications.clear();
+        competitionsArchiveModel->setSeasonCompetitions(&emptyArchiveCompetitions);
         ui->listView_competitionsArchive->reset();
-        classificationsArchiveModel->setSeasonClassifications(new QVector<Classification *>());
+        classificationsArchiveModel->setSeasonClassifications(&emptyArchiveClassifications);
         ui->listView_classificationsArchive->reset();
     }
 }

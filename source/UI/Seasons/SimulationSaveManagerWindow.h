@@ -76,6 +76,8 @@ private:
     CompetitionsArchiveListModel * competitionsArchiveModel;
     ClassificationsArchiveListModel * classificationsArchiveModel;
     ClassificationResultsTableView * archiveClassificationResults;
+    QVector<CompetitionInfo *> emptyArchiveCompetitions;
+    QVector<Classification *> emptyArchiveClassifications;
 
     DatabaseItemsListView * jumpersListsListView;
 
