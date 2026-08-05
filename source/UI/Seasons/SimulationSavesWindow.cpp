@@ -50,9 +50,9 @@ void SimulationSavesWindow::on_pushButton_add_clicked()
     NewSimulationSaveConfigurationWindow * simulationSaveWindow = new NewSimulationSaveConfigurationWindow(otherNames, this);
     if(simulationSaveWindow->exec() == QDialog::Accepted){
         NewSeasonConfiguratorWindow * seasonWindow = new NewSeasonConfiguratorWindow(false, this);
-        connect(seasonWindow->getToolBox(), &QToolBox::currentChanged, this, [this, seasonWindow](){
+        connect(seasonWindow->getToolBox(), &QToolBox::currentChanged, this, [seasonWindow](){
             if(seasonWindow->getToolBox()->currentIndex() == 3){ //edytor kalendarzy
-                QTimer::singleShot(200, [this, seasonWindow](){
+                QTimer::singleShot(200, seasonWindow, [seasonWindow](){
                     seasonWindow->showCalendarEditorHelp();
                 });
             }
