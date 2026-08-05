@@ -828,6 +828,11 @@ void SimulationSaveManagerWindow::on_pushButton_repairDatabase_clicked()
         return;
     }
 
+    if(QMessageBox::question(this, tr("Naprawa bazy danych"),
+                             tr("Funkcja poprawi powiązania kalendarza, a następnie zapisze symulację. Kontynuować?"),
+                             QMessageBox::Yes | QMessageBox::No, QMessageBox::No) != QMessageBox::Yes)
+        return;
+
     QProgressDialog dialog;
     dialog.setStyleSheet("QProgressDialog{background-color: white; color: black;}");
     dialog.setMinimum(0);

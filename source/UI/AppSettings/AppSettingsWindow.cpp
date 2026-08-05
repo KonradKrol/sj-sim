@@ -117,7 +117,10 @@ void AppSettingsWindow::on_spinBox_skillsRange_valueChanged(int arg1)
 
 void AppSettingsWindow::on_pushButton_repairDatabase_clicked()
 {
-    GlobalDatabase::get()->repairDatabase();
+    if(QMessageBox::question(this, tr("Naprawa bazy danych"),
+                             tr("Funkcja sprawdzi identyfikatory i naprawi tylko wykryte duplikaty. Zmiany zostaną zapisane na dysku. Kontynuować?"),
+                             QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
+        GlobalDatabase::get()->repairDatabase();
 }
 
 void AppSettingsWindow::on_pushButton_cutSurnames_clicked()
@@ -142,7 +145,10 @@ void AppSettingsWindow::on_pushButton_cutSurnames_clicked()
 
 void AppSettingsWindow::on_pushButton_repairDatabase_2_clicked()
 {
-    GlobalDatabase::get()->repairSimulationSaves();
+    if(QMessageBox::question(this, tr("Naprawa zapisów symulacji"),
+                             tr("Funkcja naprawi powiązania w kompletnych zapisach symulacji. Puste zapisy bez kalendarza zostaną pominięte. Kontynuować?"),
+                             QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
+        GlobalDatabase::get()->repairSimulationSaves();
 }
 
 void AppSettingsWindow::on_doubleSpinBox_randomMultiplier_valueChanged(double arg1)

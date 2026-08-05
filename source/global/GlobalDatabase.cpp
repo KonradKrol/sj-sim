@@ -53,62 +53,67 @@ void GlobalDatabase::repairDatabase()
     dialog.setModal(true);
     dialog.setWindowModality(Qt::WindowModal);
 
-    QSet<sole::uuid> values; //Te ktore już wystąpiły
+    QSet<QString> assignedIds;
+    const auto repairDuplicateId = [&assignedIds](Identifiable *object){
+        if(assignedIds.contains(object->getIDStr()))
+            object->reassign();
+        assignedIds.insert(object->getIDStr());
+    };
 
     for(auto & jumper : db->getEditableGlobalJumpers()){
-        jumper.reassign();
-        values.insert(jumper.getID());
+        repairDuplicateId(&jumper);
         dialog.setValue(dialog.value() + 1);
         QCoreApplication::processEvents();
     }
     for(auto & hill : db->getEditableGlobalHills()){
-        hill.reassign();
-        values.insert(hill.getID());
+        repairDuplicateId(&hill);
         dialog.setValue(dialog.value() + 1);
         QCoreApplication::processEvents();
     }
     for(auto & rules : db->getEditableCompetitionRules()){
-        rules.reassign();
-        values.insert(rules.getID());
+        repairDuplicateId(&rules);
         dialog.setValue(dialog.value() + 1);
         QCoreApplication::processEvents();
     }
     for(auto & calendarPreset : db->getEditableGlobalCalendarPresets())
     {
+        repairDuplicateId(&calendarPreset.getCalendarReference());
         for(auto & competition : calendarPreset.getCalendarReference().getCompetitionsReference())
         {
-            competition->reassign();
-
-            competition->getResultsReference().reassign();
+            repairDuplicateId(competition);
+            repairDuplicateId(&competition->getResultsReference());
 
             for(auto & groups : competition->getRoundsKOGroupsReference())
             {
                 for(auto & group : groups){
-                    group.reassign();
+                    repairDuplicateId(&group);
                 }
             }
             for(auto & team : competition->getTeamsReference())
             {
-                team.reassign();
+                repairDuplicateId(&team);
             }
         }
         for(auto & classification : calendarPreset.getCalendarReference().getClassificationsReference())
         {
-            classification->reassign();
+            repairDuplicateId(classification);
         }
     }
     for(auto & save : db->getEditableGlobalSimulationSaves()){
-        save->reassign();
+        repairDuplicateId(save);
         save->repairDatabase();
-        values.insert(save->getID());
         dialog.setValue(dialog.value() + 1);
         QCoreApplication::processEvents();
     }
 
-    db->writeToJson();
+    const bool saved = db->writeToJson();
     dialog.setValue(dialog.value() + 1);
 
-    QMessageBox::information(nullptr, QObject::tr("Naprawa bazy danych"), QObject::tr("Naprawiono bazę danych"), QMessageBox::Ok);
+    QMessageBox::information(nullptr, QObject::tr("Naprawa bazy danych"),
+                             saved
+                                 ? QObject::tr("Sprawdzono bazę danych i zapisano naprawione duplikaty identyfikatorów.")
+                                 : QObject::tr("Sprawdzono bazę danych, ale nie udało się zapisać wszystkich zmian."),
+                             QMessageBox::Ok);
 }
 
 void GlobalDatabase::repairSimulationSaves()
@@ -129,9 +134,20 @@ void GlobalDatabase::repairSimulationSaves()
         //dialog.setLabelText(QString(QObject::tr("Postęp naprawiania zapisów symulacji: %1 z %2")).arg(QString::number(dialog.value())).arg(QString::number(dialog.maximum())));
         dialog.setWindowModality(Qt::WindowModal);
 
+    int skippedSaves = 0;
+    int failedSaves = 0;
     for(auto & save : GlobalDatabase::get()->getEditableGlobalSimulationSaves())
     {
-        qDebug()<<"save "<<save->getName();
+        if(save == nullptr || save->getActualSeason() == nullptr
+            || save->getActualSeason()->getActualCalendar() == nullptr
+            || save->getHillsReference().isEmpty())
+        {
+            skippedSaves++;
+            dialog.setValue(dialog.value() + 11);
+            QCoreApplication::processEvents();
+            continue;
+        }
+
         SeasonCalendar * calendar = save->getActualSeason()->getActualCalendar();
         calendar->fixAdvancementClassifications();
         dialog.setValue(dialog.value() + 1);
@@ -142,17 +158,20 @@ void GlobalDatabase::repairSimulationSaves()
         calendar->fixCompetitionsClassifications();
         dialog.setValue(dialog.value() + 1);
         QCoreApplication::processEvents();
-        calendar->fixCompetitionsHills(&save->getHillsReference(), save->getHillsReference().first()  );
+        calendar->fixCompetitionsHills(&save->getHillsReference(), save->getHillsReference().first());
         dialog.setValue(dialog.value() + 1);
         QCoreApplication::processEvents();
         save->repairDatabase();
         dialog.setValue(dialog.value() + 5);
         QCoreApplication::processEvents();
-        save->saveToFile("simulationSaves/");
+        if(!save->saveToFile("simulationSaves/"))
+            failedSaves++;
         dialog.setValue(dialog.value() + 2);
         QCoreApplication::processEvents();
     }
-    QMessageBox::information(nullptr, QObject::tr("Naprawiono zapisy symulacji"), QObject::tr("Naprawiono zapisy symulacji. Aby zmiana weszła w życie wejdź jeszcze raz do programu aby ponownie wczytać zapisy symulacji."), QMessageBox::Ok);
+    QMessageBox::information(nullptr, QObject::tr("Naprawiono zapisy symulacji"),
+                             QObject::tr("Zakończono naprawę zapisów symulacji. Pominięto: %1, błędy zapisu: %2.")
+                                 .arg(skippedSaves).arg(failedSaves), QMessageBox::Ok);
 }
 
 QVector<Country> GlobalDatabase::getCountries() const

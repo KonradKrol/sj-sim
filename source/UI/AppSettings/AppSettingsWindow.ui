@@ -469,8 +469,8 @@ globalnej bazy danych</string>
             </font>
            </property>
            <property name="whatsThis">
-            <string>Od nowa przypisuje ID dla każdego obiektu w globalnej bazie danych.
-Użyteczne kiedy chcemy przenieść bazę danych z wczesnych wersji.</string>
+            <string>Sprawdza identyfikatory globalnej bazy i naprawia tylko wykryte duplikaty.
+Prawidłowe identyfikatory nie są zmieniane.</string>
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton{
@@ -509,8 +509,8 @@ Użyteczne kiedy chcemy przenieść bazę danych z wczesnych wersji.</string>
             </font>
            </property>
            <property name="whatsThis">
-            <string>Od nowa przypisuje ID dla każdego obiektu w globalnej bazie danych.
-Użyteczne kiedy chcemy przenieść bazę danych z wczesnych wersji.</string>
+            <string>Naprawia powiązania w kompletnych zapisach symulacji.
+Puste zapisy bez kalendarza są bezpiecznie pomijane.</string>
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton{
