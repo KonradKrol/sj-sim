@@ -101,6 +101,7 @@ void SimulationSavesWindow::on_pushButton_add_clicked()
         season.setActualCalendar(nullptr);
         simulationSave->getSeasonsReference().push_back(season);
         simulationSave->setActualSeason(&simulationSave->getSeasonsReference().last());
+        simulationSave->fixJumpersFormInstabilities();
         simulationSave->updateNextCompetitionIndex();
 
         int index = 0;
