@@ -15,6 +15,10 @@
 #include <QMessageBox>
 #include <QShortcut>
 #include <QSysInfo>
+#include <exception>
+#include <memory>
+#include <new>
+#include <stdexcept>
 
 namespace
 {
@@ -87,19 +91,28 @@ void SimulationSavesWindow::on_pushButton_add_clicked()
         otherNames.push_back(QFileInfo(fileName).completeBaseName());
 
     NewSimulationSaveConfigurationWindow simulationSaveWindow(otherNames, this);
-    if(simulationSaveWindow.exec() == QDialog::Accepted){
-        SimulationSave * simulationSave = new SimulationSave();
+    if(simulationSaveWindow.exec() != QDialog::Accepted)
+        return;
+
+    bool savedToDisk = false;
+    try
+    {
+        std::unique_ptr<SimulationSave> simulationSave = std::make_unique<SimulationSave>();
         simulationSave->setName(simulationSaveWindow.getNameFromInput());
 
-        QVector<Jumper *> jumpers;
         for(const Jumper &jumper : GlobalDatabase::get()->getEditableGlobalJumpers())
-            jumpers.append(new Jumper(jumper));
-        simulationSave->setJumpers(jumpers);
+        {
+            std::unique_ptr<Jumper> copy = std::make_unique<Jumper>(jumper);
+            simulationSave->getJumpersReference().append(copy.get());
+            copy.release();
+        }
 
-        QVector<Hill *> hills;
         for(const Hill &hill : GlobalDatabase::get()->getEditableGlobalHills())
-            hills.append(new Hill(hill));
-        simulationSave->setHills(hills);
+        {
+            std::unique_ptr<Hill> copy = std::make_unique<Hill>(hill);
+            simulationSave->getHillsReference().append(copy.get());
+            copy.release();
+        }
         simulationSave->setCompetitionRules(GlobalDatabase::get()->getEditableCompetitionRules());
 
         Season season;
@@ -110,25 +123,42 @@ void SimulationSavesWindow::on_pushButton_add_clicked()
         simulationSave->fixJumpersFormInstabilities();
         simulationSave->updateNextCompetitionIndex();
 
+        GlobalDatabase::get()->getEditableGlobalSimulationSaves().reserve(
+            GlobalDatabase::get()->getEditableGlobalSimulationSaves().size() + 1);
         int index = 0;
         if(ui->listView_simulationSaves->selectionModel()->selectedRows().size() > 0)
             index = ui->listView_simulationSaves->selectionModel()->selectedRows().first().row();
 
-        if(listModel->insertSave(index, simulationSave))
-        {
-            const QString directory = simulationSavesDirectory().absolutePath() + QDir::separator();
-            if(simulationSave->saveToFile(directory))
-            {
-                const QModelIndex newIndex = listModel->index(index, 0);
-                ui->listView_simulationSaves->setCurrentIndex(newIndex);
-                ui->listView_simulationSaves->scrollTo(newIndex);
-                openSelectedSave(true);
-            }
-            else
-                delete listModel->takeSave(index);
-        }
-        else
-            delete simulationSave;
+        const QString directory = simulationSavesDirectory().absolutePath() + QDir::separator();
+        if(!simulationSave->saveToFile(directory))
+            return;
+        savedToDisk = true;
+
+        if(!listModel->insertSave(index, simulationSave.get()))
+            throw std::runtime_error("Could not add the new simulation to the saves list");
+        simulationSave.release();
+
+        const QModelIndex newIndex = listModel->index(index, 0);
+        ui->listView_simulationSaves->setCurrentIndex(newIndex);
+        ui->listView_simulationSaves->scrollTo(newIndex);
+        openSelectedSave(true);
+    }
+    catch(const std::bad_alloc &)
+    {
+        QMessageBox::critical(this, tr("Brak pamięci"),
+                              savedToDisk
+                                  ? tr("Zapis został utworzony na dysku, ale zabrakło pamięci, aby go otworzyć. Uruchom aplikację ponownie.")
+                                  : tr("Nie udało się utworzyć symulacji, ponieważ zabrakło pamięci. Zamknij inne programy i spróbuj ponownie."));
+    }
+    catch(const std::exception &exception)
+    {
+        QMessageBox::critical(this, tr("Nie udało się utworzyć symulacji"),
+                              tr("Wystąpił błąd podczas tworzenia symulacji: %1").arg(QString::fromUtf8(exception.what())));
+    }
+    catch(...)
+    {
+        QMessageBox::critical(this, tr("Nie udało się utworzyć symulacji"),
+                              tr("Wystąpił nieoczekiwany błąd podczas tworzenia symulacji."));
     }
 }
 
