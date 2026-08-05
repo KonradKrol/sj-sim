@@ -538,6 +538,7 @@ void SimulationSaveManagerWindow::disconnectComboBox()
 void SimulationSaveManagerWindow::setupNextSeasonConfigButton()
 {
     ui->pushButton_competitionConfig->setText(tr("Konfiguruj nowy sezon"));
+    ui->pushButton_competitionConfig->setToolTip(QString());
     ui->pushButton_competitionConfig->setEnabled(true);
 }
 
@@ -547,16 +548,19 @@ void SimulationSaveManagerWindow::updateCompetitionConfigButton()
     if(calendar == nullptr)
     {
         ui->pushButton_competitionConfig->setText(tr("Utwórz kalendarz"));
-        ui->pushButton_competitionConfig->setEnabled(false);
+        ui->pushButton_competitionConfig->setToolTip(tr("Przejdź do karty Kalendarz"));
+        ui->pushButton_competitionConfig->setEnabled(true);
     }
     else if(calendar->getCompetitionsReference().isEmpty())
     {
         ui->pushButton_competitionConfig->setText(tr("Dodaj konkurs w kalendarzu"));
+        ui->pushButton_competitionConfig->setToolTip(tr("Dodaj konkurs w aktualnym kalendarzu"));
         ui->pushButton_competitionConfig->setEnabled(false);
     }
     else if(simulationSave->getNextCompetition() != nullptr)
     {
         ui->pushButton_competitionConfig->setText(tr("Konfiguruj konkurs"));
+        ui->pushButton_competitionConfig->setToolTip(QString());
         ui->pushButton_competitionConfig->setEnabled(true);
     }
     else if(checkSeasonEnd())
@@ -566,6 +570,7 @@ void SimulationSaveManagerWindow::updateCompetitionConfigButton()
     else
     {
         ui->pushButton_competitionConfig->setText(tr("Wybierz kalendarz z konkursem"));
+        ui->pushButton_competitionConfig->setToolTip(tr("Wybierz kalendarz zawierający nierozgrany konkurs"));
         ui->pushButton_competitionConfig->setEnabled(false);
     }
 }
@@ -665,6 +670,12 @@ SimulationSave *SimulationSaveManagerWindow::getSimulationSave() const
 
 void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
 {
+    if(simulationSave->getActualSeason()->getActualCalendar() == nullptr)
+    {
+        focusCalendarTab();
+        return;
+    }
+
     if(checkSeasonEnd() == true)
     {
         configNextSeason();
