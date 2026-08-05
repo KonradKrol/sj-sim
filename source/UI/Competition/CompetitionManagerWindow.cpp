@@ -541,7 +541,10 @@ void CompetitionManagerWindow::setupGoToNextButtonForNextRound()
             {
                 KOManager = new KORoundManager(indManager->getRoundsKOGroupsReference()[manager->getActualRound() - 1], manager->getResults(), &indManager->getCompetitionRules()->getRoundsReference()[manager->getActualRound() - 1], dynamic_cast<IndividualCompetitionManager *>(manager));
                 KOManager->updateJumpersSortedByResults();
-                KOManager->setLuckyLosersCount(manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getCount() - (KOManager->getGroups()->count() * KOManager->getRoundInfo()->getAdvancingFromKOGroup()));
+                if(manager->getCompetitionRules()->getRoundsReference().count() > manager->getActualRound())
+                    KOManager->setLuckyLosersCount(manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getCount() - (KOManager->getGroups()->count() * KOManager->getRoundInfo()->getAdvancingFromKOGroup()));
+                else
+                    KOManager->setLuckyLosersCount(0);
                 KOManager->updateActualGroup(manager->getActualJumper());
                 KOManager->setIndManager(dynamic_cast<IndividualCompetitionManager *>(manager));
                 indManager->setKOManager(KOManager);
@@ -841,7 +844,10 @@ void CompetitionManagerWindow::autoSimulateCompetition()
                     {
                         KOManager = new KORoundManager(indManager->getRoundsKOGroupsReference()[manager->getActualRound() - 1], manager->getResults(), &indManager->getCompetitionRules()->getRoundsReference()[manager->getActualRound() - 1], dynamic_cast<IndividualCompetitionManager *>(manager));
                         KOManager->updateJumpersSortedByResults();
-                        KOManager->setLuckyLosersCount(manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getCount() - (KOManager->getGroups()->count() * KOManager->getRoundInfo()->getAdvancingFromKOGroup()));
+                        if(manager->getCompetitionRules()->getRoundsReference().count() > manager->getActualRound())
+                            KOManager->setLuckyLosersCount(manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getCount() - (KOManager->getGroups()->count() * KOManager->getRoundInfo()->getAdvancingFromKOGroup()));
+                        else
+                            KOManager->setLuckyLosersCount(0);
                         KOManager->updateActualGroup(manager->getActualJumper());
                         KOManager->setIndManager(dynamic_cast<IndividualCompetitionManager *>(manager));
                         indManager->setKOManager(KOManager);
@@ -1069,7 +1075,10 @@ void CompetitionManagerWindow::autoSimulateJumps()
                         {
                             KOManager = new KORoundManager(indManager->getRoundsKOGroupsReference()[manager->getActualRound() - 1], manager->getResults(), &indManager->getCompetitionRules()->getRoundsReference()[manager->getActualRound() - 1], dynamic_cast<IndividualCompetitionManager *>(manager));
                             KOManager->updateJumpersSortedByResults();
-                            KOManager->setLuckyLosersCount(manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getCount() - (KOManager->getGroups()->count() * KOManager->getRoundInfo()->getAdvancingFromKOGroup()));
+                            if(manager->getCompetitionRules()->getRoundsReference().count() > manager->getActualRound())
+                                KOManager->setLuckyLosersCount(manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getCount() - (KOManager->getGroups()->count() * KOManager->getRoundInfo()->getAdvancingFromKOGroup()));
+                            else
+                                KOManager->setLuckyLosersCount(0);
                             KOManager->updateActualGroup(manager->getActualJumper());
                             KOManager->setIndManager(dynamic_cast<IndividualCompetitionManager *>(manager));
                             indManager->setKOManager(KOManager);
