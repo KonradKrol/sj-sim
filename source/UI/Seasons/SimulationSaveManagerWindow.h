@@ -13,6 +13,8 @@
 #include "ItemModels/ClassificationsArchiveListModel.h"
 #include "../../seasons/SimulationSave.h"
 
+class QLabel;
+
 namespace Ui {
 class SimulationSaveManagerWindow;
 }
@@ -59,7 +61,9 @@ private:
 
     CalendarEditorTableModel * calendarTableModel;
     CalendarEditorWidget * calendarEditor;
+    QLabel * calendarEmptyStateLabel;
     DatabaseItemsListView * calendarsListView;
+    QVector<Classification *> emptyClassifications;
 
     DatabaseItemsListView * classificationsListView;
     int classificationsListViewActualElement;

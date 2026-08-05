@@ -317,33 +317,32 @@ dpp::message CompetitionInfo::getResultsWebhookMessage(AbstractCompetitionManage
     else
         typeText = QObject::tr("(drużynowy)");
 
-    if(rules.getCompetitionType() == CompetitionRules::Individual)
+    if(manager != nullptr && rules.getCompetitionType() == CompetitionRules::Individual)
     {
         IndividualCompetitionManager * im = static_cast<IndividualCompetitionManager*>(manager);
-        if(manager != nullptr){
-            KORoundManager * km = im->getKOManager();
-            if(km != nullptr)
-            {
-                koRoundText = QObject::tr("(runda KO)");
-            }
+        KORoundManager * km = im->getKOManager();
+        if(km != nullptr)
+        {
+            koRoundText = QObject::tr("(runda KO)");
         }
     }
 
     QString title = "**" + getHill()->getHillTextForDiscord() + " - " + getLongSerieTypeText() + " " + typeText + " " + koRoundText + "**";
     QString description;
 
-    int index=manager->getActualStartListIndex();
-    if(manager->isAllJumpsAreFinished())
-        index++;
-    if(manager != nullptr){
-    if(getRulesPointer()->getCompetitionType() == CompetitionRules::Team)
+    if(manager != nullptr)
     {
-        description = QObject::tr("*Po %1 z %2 skoków grupy %3 (runda %4)*").arg(index).arg(static_cast<TeamCompetitionManager *>(manager)->getActualRoundTeamsReference().count()).arg(static_cast<TeamCompetitionManager *>(manager)->getActualGroup()).arg(manager->getActualRound());
-    }
-    else
-    {
-        description = QObject::tr("*Po %1 z %2 skoków rundy %3*").arg(index).arg(static_cast<IndividualCompetitionManager *>(manager)->getActualRoundJumpersReference().count()).arg(manager->getActualRound());
-    }
+        int index = manager->getActualStartListIndex();
+        if(manager->isAllJumpsAreFinished())
+            index++;
+        if(getRulesPointer()->getCompetitionType() == CompetitionRules::Team)
+        {
+            description = QObject::tr("*Po %1 z %2 skoków grupy %3 (runda %4)*").arg(index).arg(static_cast<TeamCompetitionManager *>(manager)->getActualRoundTeamsReference().count()).arg(static_cast<TeamCompetitionManager *>(manager)->getActualGroup()).arg(manager->getActualRound());
+        }
+        else
+        {
+            description = QObject::tr("*Po %1 z %2 skoków rundy %3*").arg(index).arg(static_cast<IndividualCompetitionManager *>(manager)->getActualRoundJumpersReference().count()).arg(manager->getActualRound());
+        }
     }
     else
     {

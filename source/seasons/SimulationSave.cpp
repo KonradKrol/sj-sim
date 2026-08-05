@@ -1,8 +1,67 @@
 #include "SimulationSave.h"
 #include <QFile>
+#include <QFileInfo>
+#include <QJsonDocument>
+#include <QJsonParseError>
+#include <QRegularExpression>
 #include "../global/Uuid.h"
 
 extern Uuid globalIDGenerator;
+
+namespace
+{
+bool isValidUuid(const QString &value)
+{
+    static const QRegularExpression standardUuid(
+        QStringLiteral("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"));
+    static const QRegularExpression base62Uuid(
+        QStringLiteral("^[0-9A-Za-z]+-[0-9A-Za-z]+$"));
+    return standardUuid.match(value).hasMatch() || base62Uuid.match(value).hasMatch();
+}
+
+bool hasValidUuidFields(const QJsonValue &value)
+{
+    if(value.isArray())
+    {
+        for(const auto &item : value.toArray())
+            if(!hasValidUuidFields(item))
+                return false;
+        return true;
+    }
+
+    if(!value.isObject())
+        return true;
+
+    const QJsonObject object = value.toObject();
+    for(auto it = object.constBegin(); it != object.constEnd(); ++it)
+    {
+        if(it.key() == QStringLiteral("id") || it.key().endsWith(QStringLiteral("-id")))
+        {
+            if(!it.value().isString())
+                return false;
+            const QString id = it.value().toString();
+            if(id != QStringLiteral("-1") && !isValidUuid(id))
+                return false;
+            if(it.key() == QStringLiteral("id") && id == QStringLiteral("-1"))
+                return false;
+        }
+        if(!hasValidUuidFields(it.value()))
+            return false;
+    }
+    return true;
+}
+
+bool hasRequiredSaveStructure(const QJsonObject &object)
+{
+    return object.value(QStringLiteral("id")).isString()
+        && object.value(QStringLiteral("actual-season-id")).isString()
+        && object.value(QStringLiteral("jumpers")).isArray()
+        && object.value(QStringLiteral("hills")).isArray()
+        && object.value(QStringLiteral("rules")).isArray()
+        && object.value(QStringLiteral("seasons")).isArray()
+        && hasValidUuidFields(object);
+}
+}
 
 SimulationSave::SimulationSave() :
     Identifiable()
@@ -30,6 +89,9 @@ SimulationSave::~SimulationSave()
 
 SimulationSave * SimulationSave::getFromJson(QJsonObject obj, IdentifiableObjectsStorage * storage)
 {
+    if(!hasRequiredSaveStructure(obj))
+        return nullptr;
+
     SimulationSave * save = new SimulationSave();
     if(storage == nullptr)
     {
@@ -83,7 +145,8 @@ SimulationSave * SimulationSave::getFromJson(QJsonObject obj, IdentifiableObject
     }
     save->setJumpersFormInstabilities(instabilitiesHash);
     qDebug()<<save->getJumpersFormInstabilitiesReference().count();
-    qDebug()<<save->getJumpersFormInstabilitiesReference().value(save->getJumpersReference().first());
+    if(!save->getJumpersReference().isEmpty())
+        qDebug()<<save->getJumpersFormInstabilitiesReference().value(save->getJumpersReference().first());
 
     array = obj.value("jumpers-lists").toArray();
     QVector<SaveJumpersList> lists;
@@ -92,11 +155,25 @@ SimulationSave * SimulationSave::getFromJson(QJsonObject obj, IdentifiableObject
     save->setJumpersLists(lists);
 
     save->setActualSeason(static_cast<Season *>(storage->get(obj.value("actual-season-id").toString())));
-    save->setNextCompetitionIndex(obj.value("next-competition-index").toInt());
-    if(save->getActualSeason()->getActualCalendar() != nullptr && save->getActualSeason()->getActualCalendar()->getCompetitionsReference().count() > 0)
-        save->setNextCompetition(save->getActualSeason()->getActualCalendar()->getCompetitionsReference()[save->getNextCompetitionIndex()]);
+    if(save->getActualSeason() == nullptr)
+    {
+        delete save;
+        return nullptr;
+    }
+
+    const int savedCompetitionIndex = obj.value("next-competition-index").toInt(-1);
+    SeasonCalendar *actualCalendar = save->getActualSeason()->getActualCalendar();
+    if(actualCalendar != nullptr
+        && savedCompetitionIndex >= 0
+        && savedCompetitionIndex < actualCalendar->getCompetitionsReference().count())
+    {
+        save->setNextCompetitionIndex(savedCompetitionIndex);
+        save->setNextCompetition(actualCalendar->getCompetitionsReference().at(savedCompetitionIndex));
+    }
     else
-        save->setNextCompetition(nullptr);
+    {
+        save->updateNextCompetitionIndex();
+    }
 
     save->setShowForm(obj.value("show-form").toBool(true));
     save->setShowInstability(obj.value("show-instability").toBool(true));
@@ -181,23 +258,26 @@ bool SimulationSave::saveToFile(QString dir, QString fileName)
     return true;
 }
 
-SimulationSave *SimulationSave::loadFromFile(QString fileName)
+SimulationSave *SimulationSave::loadFromFile(QString filePath)
 {
-    IdentifiableObjectsStorage objectsManager;
-        QFile file("simulationSaves/" + fileName);
-        if(!file.open(QFile::ReadOnly | QFile::Text))
-        {
-            QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku z zapisem symulacji", "Nie udało się otworzyć pliku simulationSaves/" + fileName +"\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
-            message.setModal(true);
-            message.exec();
-        }
-        QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
-        file.close();
-        QJsonObject object = doc.object().value("simulation-save").toObject();
-        SimulationSave * s = SimulationSave::getFromJson(object, nullptr);
-        fileName.chop(5);
-        s->setName(fileName);
-        return s;
+    QFile file(filePath);
+    if(!file.open(QFile::ReadOnly | QFile::Text))
+        return nullptr;
+
+    QJsonParseError parseError;
+    const QJsonDocument document = QJsonDocument::fromJson(file.readAll(), &parseError);
+    file.close();
+    if(parseError.error != QJsonParseError::NoError || !document.isObject())
+        return nullptr;
+
+    const QJsonValue saveValue = document.object().value(QStringLiteral("simulation-save"));
+    if(!saveValue.isObject())
+        return nullptr;
+
+    SimulationSave *save = SimulationSave::getFromJson(saveValue.toObject(), nullptr);
+    if(save != nullptr)
+        save->setName(QFileInfo(filePath).completeBaseName());
+    return save;
 }
 
 void SimulationSave::updateNextCompetitionIndex()

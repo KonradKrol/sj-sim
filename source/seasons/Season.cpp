@@ -53,7 +53,7 @@ Season Season::getFromJson(QJsonObject obj, IdentifiableObjectsStorage * storage
     if(storage != nullptr)
         storage->add(season.getCalendarsReference());
 
-    if(obj.value("actual-calendar-id").toString() == -1)
+    if(obj.value("actual-calendar-id").toString() == QStringLiteral("-1"))
         season.setActualCalendar(nullptr);
     else
         season.setActualCalendar(static_cast<SeasonCalendar *>(storage->get(obj.value("actual-calendar-id").toString())));

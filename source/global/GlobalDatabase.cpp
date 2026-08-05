@@ -382,7 +382,11 @@ bool GlobalDatabase::loadSimulationSaves(bool progressDialog)
     dir.setPath(dir.path() + "/simulationSaves");
     dir.setNameFilters(QStringList() << "*.json");
 
-    QStringList fileNames = dir.entryList();
+    const QStringList fileNames = dir.entryList();
+    QStringList filePaths;
+    filePaths.reserve(fileNames.count());
+    for(const QString &fileName : fileNames)
+        filePaths.append(dir.absoluteFilePath(fileName));
 
     QProgressDialog dialog;
     dialog.setStyleSheet("QProgressDialog{background-color: white; color: black;}");
@@ -398,11 +402,28 @@ bool GlobalDatabase::loadSimulationSaves(bool progressDialog)
     bool ok = true;
 
     qDebug()<<fileNames<<" (names)";
-    QFuture<SimulationSave *> future = QtConcurrent::mapped(fileNames, SimulationSave::loadFromFile);
+    QFuture<SimulationSave *> future = QtConcurrent::mapped(filePaths, SimulationSave::loadFromFile);
 
     // Czekamy na zakończenie zadania i pobieramy wyniki do listy persons
     future.waitForFinished();
-    globalSimulationSaves = future.results().toVector();
+    const QVector<SimulationSave *> loadedSaves = future.results().toVector();
+    int failedSaves = 0;
+    for(SimulationSave *save : loadedSaves)
+    {
+        if(save != nullptr)
+            globalSimulationSaves.append(save);
+        else
+            ++failedSaves;
+    }
+
+    if(failedSaves > 0)
+    {
+        ok = false;
+        QMessageBox::warning(nullptr,
+                             QObject::tr("Wczytywanie zapisów symulacji"),
+                             QObject::tr("Nie udało się wczytać %1 plików zapisów. Pliki są niedostępne albo uszkodzone.")
+                                 .arg(failedSaves));
+    }
     return ok;
 }
 

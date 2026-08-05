@@ -23,7 +23,7 @@ public:
     static QJsonObject getJsonObject(SimulationSave & save);
 
     bool saveToFile(QString dir = "", QString fileName = "!default");
-    static SimulationSave *loadFromFile(QString fileName);
+    static SimulationSave *loadFromFile(QString filePath);
     void updateNextCompetitionIndex();
     void repairDatabase();
     void fixJumpersFormInstabilities();
