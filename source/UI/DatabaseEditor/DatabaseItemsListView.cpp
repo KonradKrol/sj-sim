@@ -103,11 +103,9 @@ void DatabaseItemsListView::selectOnlyFirstRow()
 {
     if(listModel->rowCount() > 0)
     {
-        ui->listView->clearSelection();
-        if(listModel->rowCount() == 1)
-            ui->listView->selectionModel()->select(listModel->index(0), QItemSelectionModel::Select);
-        else if(listModel->rowCount() == 2)
-            ui->listView->selectionModel()->select(listModel->index(1), QItemSelectionModel::Select);
+        const QModelIndex firstIndex = listModel->index(0);
+        ui->listView->setCurrentIndex(firstIndex);
+        ui->listView->selectionModel()->select(firstIndex, QItemSelectionModel::ClearAndSelect);
     }
 }
 

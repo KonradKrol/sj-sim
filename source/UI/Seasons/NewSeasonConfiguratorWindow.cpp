@@ -32,8 +32,12 @@ NewSeasonConfiguratorWindow::NewSeasonConfiguratorWindow(bool nextSeason, QWidge
 
     jumperEditor = new JumperEditorWidget();
     jumperEditor->setParent(this);
-    //jumperEditor->hide();
     ui->verticalLayout_jumperEditor->addWidget(jumperEditor);
+    if(!jumpers.isEmpty())
+    {
+        jumperEditor->setJumper(jumpers.first());
+        jumperEditor->fillJumperInputs();
+    }
     connect(jumpersListView, &DatabaseItemsListView::listViewDoubleClicked, this, [this](const QModelIndex &index){
         jumperEditor->show();
         jumperEditor->setJumper(jumpers[index.row()]);
@@ -56,8 +60,12 @@ NewSeasonConfiguratorWindow::NewSeasonConfiguratorWindow(bool nextSeason, QWidge
     ui->verticalLayout_hillsList->addWidget(hillsListView);
 
     hillEditor = new HillEditorWidget(this);
-    //hillEditor->hide();
     ui->verticalLayout_hillEditor->addWidget(hillEditor);
+    if(!hills.isEmpty())
+    {
+        hillEditor->setHill(hills.first());
+        hillEditor->fillHillInputs();
+    }
 
     connect(hillsListView, &DatabaseItemsListView::listViewDoubleClicked, this, [this](const QModelIndex &index){
         hillEditor->show();
@@ -86,8 +94,12 @@ NewSeasonConfiguratorWindow::NewSeasonConfiguratorWindow(bool nextSeason, QWidge
     ui->verticalLayout_rulesList->addWidget(rulesListView);
 
     rulesEditor = new CompetitionRulesEditorWidget(this);
-    //rulesEditor->hide();
     ui->verticalLayout_rulesEditor->addWidget(rulesEditor);
+    if(!competitionsRules.isEmpty())
+    {
+        rulesEditor->setCompetitionRules(&competitionsRules.first());
+        rulesEditor->fillCompetitionRulesInputs();
+    }
 
     connect(rulesListView, &DatabaseItemsListView::listViewDoubleClicked, this, [this](const QModelIndex &index){
         rulesEditor->show();
