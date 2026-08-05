@@ -34,7 +34,7 @@
 #include <dpp/dpp.h>
 
 extern Uuid globalIDGenerator;
-const QString appVersion = "1.2.0";
+const QString appVersion = "1.3.0";
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -183,4 +183,3 @@ void MainWindow::on_pushButton_thanks_clicked()
     thanksWindow->setAttribute(Qt::WA_DeleteOnClose);
     thanksWindow->show();
 }
-
