@@ -137,8 +137,7 @@ void SimulationSavesWindow::openSelectedSave(bool focusCalendar)
         SimulationSaveManagerWindow * manager = new SimulationSaveManagerWindow(GlobalDatabase::get()->getEditableGlobalSimulationSaves().at(row), this);
         manager->getSimulationSave()->fixJumpersFormInstabilities();
         manager->getSimulationSave()->updateNextCompetitionIndex();
-        if(manager->getSimulationSave()->getNextCompetition() == nullptr)
-            manager->setupNextSeasonConfigButton();
+        manager->updateCompetitionConfigButton();
         manager->fillNextCompetitionInformations();
         if(focusCalendar)
             manager->focusCalendarTab();

@@ -242,6 +242,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         simulationSave->updateNextCompetitionIndex();
         fillNextCompetitionInformations();
         simulationSave->getActualSeason()->getActualCalendar()->updateCompetitionsQualifyingCompetitions();
+        updateCompetitionConfigButton();
     });
 
     classificationResultsTableView = new ClassificationResultsTableView(false, nullptr, this);
@@ -360,10 +361,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         ui->pushButton_repairDatabase->setEnabled(!simulationSave->getHillsReference().isEmpty());
         ui->pushButton_repairDatabase->setToolTip(tr("Sprawdź i napraw powiązania w aktualnym zapisie"));
         ui->lineEdit_calendarName->setText(actualCalendar->getName());
-        if(checkSeasonEnd() == true)
-            ui->pushButton_competitionConfig->setText(tr("Konfiguruj nowy sezon"));
-        else
-            ui->pushButton_competitionConfig->setText(tr("Konfiguruj konkurs"));
+        updateCompetitionConfigButton();
         fillNextCompetitionInformations();
         ui->label_calendarName->setText(simulationSave->getActualSeason()->getActualCalendar()->getName());
         setupClassificationsComboBox();
@@ -380,6 +378,8 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         classificationsListView->setClassifications(&simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference());
         classificationsListView->getListModel()->insertRows(0, simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference().count());
         classificationsListView->getListView()->reset();
+        simulationSave->updateNextCompetitionIndex();
+        updateCompetitionConfigButton();
     });
 }
 
@@ -538,6 +538,36 @@ void SimulationSaveManagerWindow::disconnectComboBox()
 void SimulationSaveManagerWindow::setupNextSeasonConfigButton()
 {
     ui->pushButton_competitionConfig->setText(tr("Konfiguruj nowy sezon"));
+    ui->pushButton_competitionConfig->setEnabled(true);
+}
+
+void SimulationSaveManagerWindow::updateCompetitionConfigButton()
+{
+    SeasonCalendar *calendar = simulationSave->getActualSeason()->getActualCalendar();
+    if(calendar == nullptr)
+    {
+        ui->pushButton_competitionConfig->setText(tr("Utwórz kalendarz"));
+        ui->pushButton_competitionConfig->setEnabled(false);
+    }
+    else if(calendar->getCompetitionsReference().isEmpty())
+    {
+        ui->pushButton_competitionConfig->setText(tr("Dodaj konkurs w kalendarzu"));
+        ui->pushButton_competitionConfig->setEnabled(false);
+    }
+    else if(simulationSave->getNextCompetition() != nullptr)
+    {
+        ui->pushButton_competitionConfig->setText(tr("Konfiguruj konkurs"));
+        ui->pushButton_competitionConfig->setEnabled(true);
+    }
+    else if(checkSeasonEnd())
+    {
+        setupNextSeasonConfigButton();
+    }
+    else
+    {
+        ui->pushButton_competitionConfig->setText(tr("Wybierz kalendarz z konkursem"));
+        ui->pushButton_competitionConfig->setEnabled(false);
+    }
 }
 
 void SimulationSaveManagerWindow::configNextSeason()

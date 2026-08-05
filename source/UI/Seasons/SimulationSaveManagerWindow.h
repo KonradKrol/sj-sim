@@ -36,6 +36,7 @@ public:
     void disconnectComboBox();
 
     void setupNextSeasonConfigButton();
+    void updateCompetitionConfigButton();
     void configNextSeason();
     bool checkSeasonEnd();
 
