@@ -79,6 +79,7 @@ private:
     DatabaseItemsListView * jumpersListsListView;
 
     void whenClassificationsComboBoxIndexChanged(int index);
+    void saveSimulationSettings();
 
 public:
     SimulationSave *getSimulationSave() const;

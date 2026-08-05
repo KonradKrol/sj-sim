@@ -24,6 +24,7 @@
 #include <QTimer>
 #include <QProgressDialog>
 #include <QPushButton>
+#include <QSignalBlocker>
 #include <QInputDialog>
 #include <QDesktopServices>
 #include <QTableView>
@@ -320,9 +321,14 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         }
     });
 
-    ui->checkBox_compactSaveFile->setChecked(simulationSave->getSaveFileSizeReduce());
-    ui->checkBox_showForm->setChecked(simulationSave->getShowForm());
-    ui->checkBox_showInstability->setChecked(simulationSave->getShowInstability());
+    {
+        QSignalBlocker compactSaveFileBlocker(ui->checkBox_compactSaveFile);
+        QSignalBlocker showFormBlocker(ui->checkBox_showForm);
+        QSignalBlocker showInstabilityBlocker(ui->checkBox_showInstability);
+        ui->checkBox_compactSaveFile->setChecked(simulationSave->getSaveFileSizeReduce());
+        ui->checkBox_showForm->setChecked(simulationSave->getShowForm());
+        ui->checkBox_showInstability->setChecked(simulationSave->getShowInstability());
+    }
 
     connect(this, &SimulationSaveManagerWindow::actualCalendarChanged, this, [this](){
         SeasonCalendar *actualCalendar = simulationSave->getActualSeason()->getActualCalendar();
@@ -1110,13 +1116,17 @@ void SimulationSaveManagerWindow::on_pushButton_formGenerator_clicked()
 
 void SimulationSaveManagerWindow::on_checkBox_showForm_stateChanged(int arg1)
 {
-    simulationSave->setShowForm(arg1);
+    const bool showForm = arg1 == Qt::Checked;
+    simulationSave->setShowForm(showForm);
+    jumperEditor->setShowForm(showForm);
+    saveSimulationSettings();
 }
 
 
 void SimulationSaveManagerWindow::on_checkBox_compactSaveFile_stateChanged(int arg1)
 {
-    simulationSave->setSaveFileSizeReduce(arg1);
+    simulationSave->setSaveFileSizeReduce(arg1 == Qt::Checked);
+    saveSimulationSettings();
 }
 
 void SimulationSaveManagerWindow::on_lineEdit_calendarName_editingFinished()
@@ -1132,5 +1142,11 @@ void SimulationSaveManagerWindow::on_lineEdit_calendarName_editingFinished()
 
 void SimulationSaveManagerWindow::on_checkBox_showInstability_stateChanged(int arg1)
 {
-   simulationSave->setShowInstability(arg1);
+    simulationSave->setShowInstability(arg1 == Qt::Checked);
+    saveSimulationSettings();
+}
+
+void SimulationSaveManagerWindow::saveSimulationSettings()
+{
+    simulationSave->saveToFile("simulationSaves/");
 }
