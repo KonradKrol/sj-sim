@@ -117,31 +117,19 @@ QVector<KOGroup> KOGroup::constructKOGroups(RoundInfo *roundInfo, QVector<Jumper
     case KOGroup::BasketsDraw:
     {
         QVector<QVector<Jumper *>> baskets;
-        int gap = jumpers->count() / roundInfo->getCountInKOGroup();
-        int groupsCount = jumpers->count() / roundInfo->getCountInKOGroup();
-        int additionalBasketJumpersCount = jumpers->count() % roundInfo->getCountInKOGroup();
-        int from = 0;
-        int to = gap - 1; //zakres np od 0 do 9
-        if(jumpers->count() % roundInfo->getCountInKOGroup() == 0)
-            to += 1;
-        if(to > 0)
-            for(int i=0; i<roundInfo->getCountInKOGroup(); i++) //tyle jest koszyków
-            {
-                QVector<Jumper *> basket;
-                for(int index=from; index<=to; index++)
-                {
-                    basket.push_back(jumpers->at(index));
-                }
-                if(i+1 != roundInfo->getCountInKOGroup()){
-                    from += gap;
-                    to += gap;
-                }
+        const int groupSize = roundInfo->getCountInKOGroup();
+        const int groupsCount = (jumpers->count() + groupSize - 1) / groupSize;
+
+        for(int basketIndex = 0; basketIndex < groupSize; ++basketIndex)
+        {
+            const int from = basketIndex * groupsCount;
+            const int to = std::min(from + groupsCount, jumpers->count());
+            QVector<Jumper *> basket;
+            for(int index = from; index < to; ++index)
+                basket.push_back(jumpers->at(index));
+            if(!basket.isEmpty())
                 baskets.push_back(basket);
-            }
-        QVector<Jumper *> additionalBasket;
-        if(additionalBasketJumpersCount > 0) //Tworzymy dodatkowy koszyk dla pozostałych zawodników
-            for(int index=to+1; index<to+1+additionalBasketJumpersCount; index++)
-                additionalBasket.push_back(jumpers->at(index));
+        }
 
         //Losowanie
         for(int i=0; i<groupsCount; i++)
@@ -152,26 +140,20 @@ QVector<KOGroup> KOGroup::constructKOGroups(RoundInfo *roundInfo, QVector<Jumper
 
             groups.push_back(group);
         }
-        for(auto & basket : baskets)
+        for(auto basket : baskets)
         {
-            for(auto & group : groups)
+            QVector<int> availableGroups;
+            availableGroups.reserve(groups.count());
+            for(int groupIndex = 0; groupIndex < groups.count(); ++groupIndex)
+                availableGroups.push_back(groupIndex);
+
+            while(!basket.isEmpty())
             {
-                int random = MyRandom::randomInt(0, basket.count() - 1);
-                Jumper * jumper = basket[random];
-                basket.remove(random);
-                group.getJumpersReference().push_back(jumper);
-            }
-        }
-        if(additionalBasket.count() > 0) //Jeżeli jest jeszcze dodatkowy koszyk do rozlosowania
-        {
-            while(additionalBasket.count() > 0){
-                int randomGroupIndex = MyRandom::randomInt(0, groups.count() - 1); //Losujemy grupę
-                if(groups[randomGroupIndex].getJumpersReference().count() == roundInfo->getCountInKOGroup()) //Sprawdzamy czy nie dodaliśmy jeszcze do tej grupy zawodnika z additionalBasket
-                {
-                    Jumper * jumper = additionalBasket.first();
-                    groups[randomGroupIndex].getJumpersReference().push_back(jumper);
-                    additionalBasket.removeFirst();
-                }
+                const int randomJumperIndex = MyRandom::randomInt(0, basket.count() - 1);
+                const int randomGroupListIndex = MyRandom::randomInt(0, availableGroups.count() - 1);
+                groups[availableGroups.at(randomGroupListIndex)].getJumpersReference().push_back(basket.at(randomJumperIndex));
+                basket.removeAt(randomJumperIndex);
+                availableGroups.removeAt(randomGroupListIndex);
             }
         }
         qDebug()<<"groups count: "<<groups.count();
