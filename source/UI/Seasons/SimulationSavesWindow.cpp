@@ -8,6 +8,7 @@
 #include "SimulationSaveManagerWindow.h"
 #include <QModelIndex>
 #include <QFile>
+#include <QFileInfo>
 #include <QCoreApplication>
 #include <QDir>
 #include <QItemSelectionModel>
@@ -80,6 +81,11 @@ void SimulationSavesWindow::on_pushButton_add_clicked()
     for(auto & save : GlobalDatabase::get()->getEditableGlobalSimulationSaves()){
         otherNames.push_back(save->getName());
     }
+    const QStringList existingSaveFiles = simulationSavesDirectory().entryList(
+        QStringList() << QStringLiteral("*.json"), QDir::Files);
+    for(const QString &fileName : existingSaveFiles)
+        otherNames.push_back(QFileInfo(fileName).completeBaseName());
+
     NewSimulationSaveConfigurationWindow simulationSaveWindow(otherNames, this);
     if(simulationSaveWindow.exec() == QDialog::Accepted){
         SimulationSave * simulationSave = new SimulationSave();
