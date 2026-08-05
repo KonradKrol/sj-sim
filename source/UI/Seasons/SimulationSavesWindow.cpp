@@ -123,6 +123,11 @@ void SimulationSavesWindow::on_pushButton_add_clicked()
         simulationSave->fixJumpersFormInstabilities();
         simulationSave->updateNextCompetitionIndex();
 
+        // Global databases from older versions may contain duplicate or null
+        // object IDs. A save must have independent, unique IDs before its first
+        // serialization so calendar relationships remain resolvable on reload.
+        simulationSave->repairDatabase();
+
         GlobalDatabase::get()->getEditableGlobalSimulationSaves().reserve(
             GlobalDatabase::get()->getEditableGlobalSimulationSaves().size() + 1);
         int index = 0;

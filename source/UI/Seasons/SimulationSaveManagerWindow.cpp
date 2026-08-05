@@ -39,6 +39,17 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
 {
     ui->setupUi(this);
     setWindowFlags(Qt::Window);
+
+    // Calendar data loaded from older saves may contain a missing or stale hill
+    // reference. Repair it before any widget or diagnostic code dereferences it.
+    if(simulationSave->getActualSeason() != nullptr
+        && simulationSave->getActualSeason()->getActualCalendar() != nullptr
+        && !simulationSave->getHillsReference().isEmpty())
+    {
+        simulationSave->getActualSeason()->getActualCalendar()->fixCompetitionsHills(
+            &simulationSave->getHillsReference(), simulationSave->getHillsReference().first());
+    }
+
     ui->toolBox->setCurrentIndex(0);
     ui->toolBox_2->setCurrentIndex(0);
     ui->label_saveName->setText(simulationSave->getName());
@@ -58,17 +69,6 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         }
     });
     emit ui->toolBox->currentChanged(0);
-
-    qDebug()<<simulationSave->getNextCompetitionIndex();
-
-    if(simulationSave->getActualSeason() != nullptr)
-    {
-        if(simulationSave->getActualSeason()->getActualCalendar())
-        {
-            simulationSave->getActualSeason()->getActualCalendar()->debugCalendar(simulationSave->getNextCompetition());
-        }
-    }
-
 
     //-----//
 

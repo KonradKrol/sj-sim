@@ -368,8 +368,11 @@ void SimulationSave::repairDatabase()
     QSet<QString> assignedIds;
     for(auto & object : objects)
     {
-        if(assignedIds.contains(object->getIDStr()))
+        while(object->getIDStr() == QStringLiteral("00000000-0000-0000-0000-000000000000")
+              || assignedIds.contains(object->getIDStr()))
+        {
             object->reassign();
+        }
         assignedIds.insert(object->getIDStr());
     }
 }

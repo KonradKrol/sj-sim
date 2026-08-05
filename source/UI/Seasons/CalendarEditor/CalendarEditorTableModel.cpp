@@ -81,6 +81,8 @@ QVariant CalendarEditorTableModel::data(const QModelIndex &index, int role) cons
         if(competition != nullptr){
             switch(index.column()){
             case 0:
+                if(competition->getHill() == nullptr)
+                    return tr("Brak skoczni");
                 return competition->getHill()->getName() + " HS" + QString::number(competition->getHill()->getHSPoint());
             case 1:
                 if(competition->getRules().getCompetitionType() == CompetitionRules::Individual)
@@ -186,7 +188,7 @@ QVariant CalendarEditorTableModel::data(const QModelIndex &index, int role) cons
     }
     else if(role == Qt::DecorationRole){
         if(index.column() == 0){
-            if(competition != nullptr){
+            if(competition != nullptr && competition->getHill() != nullptr){
                 return CountryFlagsManager::getFlagPixmap(competition->getHill()->getCountryCode().toLower()).scaled(QSize(33, 18));
             }
         }
