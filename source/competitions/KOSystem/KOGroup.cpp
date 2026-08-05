@@ -200,7 +200,7 @@ QVector<KOGroup> KOGroup::constructKOGroups(RoundInfo *roundInfo, QVector<Jumper
             {
                 for(int i=0; i<roundInfo->getCountInKOGroup(); i++){
                     if(toDraw.count() > 0){
-                        Jumper * randomJumper = toDraw[MyRandom::randomInt(0, toDraw.count())];
+                        Jumper * randomJumper = toDraw.at(MyRandom::randomInt(0, toDraw.count() - 1));
                         group.getJumpersReference().push_back(randomJumper);
                         MyFunctions::removeFromVector(toDraw, randomJumper);
                     }
