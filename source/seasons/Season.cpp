@@ -1,7 +1,9 @@
 #include "Season.h"
 
 Season::Season() :
-    Identifiable()
+    Identifiable(),
+    actualCalendar(nullptr),
+    seasonNumber(0)
 {
 }
 
