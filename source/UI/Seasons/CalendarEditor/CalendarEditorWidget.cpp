@@ -1103,6 +1103,8 @@ void CalendarEditorWidget::execMultipleCompetitionRulesEditDialog(QVector<int> *
         else
             editor->resetInputs();
     });
+    if(!calendarModel->getRulesList()->isEmpty())
+        comboBox->setCurrentIndex(1);
     dialog->layout()->addWidget(widget);
     dialog->layout()->addWidget(editor);
 
