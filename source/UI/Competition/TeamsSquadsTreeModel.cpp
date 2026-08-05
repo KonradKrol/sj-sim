@@ -75,9 +75,7 @@ int TeamsSquadsTreeModel::rowCount(const QModelIndex &parent) const
     else
         parentItem = static_cast<TreeItem*>(parent.internalPointer());
 
-    if(parentItem != rootItem)
-        return jumpersInTeam; //zawodnicy
-    return parentItem->childCount(); //naglowki druzyn (parent == rootItem)
+    return parentItem->childCount();
 }
 
 int TeamsSquadsTreeModel::columnCount(const QModelIndex &parent) const
@@ -158,6 +156,7 @@ void TeamsSquadsTreeModel::setTeams(QVector<Team> *newTeams)
 
 void TeamsSquadsTreeModel::setupTreeItems()
 {
+    beginResetModel();
     TreeItem::deleteAllTreeItemsRecursively(rootItem);
     rootItem = new TreeItem({"Drużyna", "Zawodnik"});
     for(auto & team : *teams){
@@ -165,10 +164,11 @@ void TeamsSquadsTreeModel::setupTreeItems()
         int i=0;
         for(auto & jumper : team.getJumpersReference()){
             if(i == jumpersInTeam) break;
-            TreeItem * jumperItem = new TreeItem({"", jumper->getNameAndSurname()}, teamItem);
+            new TreeItem({"", jumper->getNameAndSurname()}, teamItem);
             i++;
         }
     }
+    endResetModel();
 }
 
 int TeamsSquadsTreeModel::getJumpersInTeam() const

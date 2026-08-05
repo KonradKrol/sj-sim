@@ -32,7 +32,9 @@ TreeItem *TreeItem::getParentItem()
 
 TreeItem *TreeItem::getChildItem(int index)
 {
-    return childItems[index];
+    if(index < 0 || index >= childItems.count())
+        return nullptr;
+    return childItems.at(index);
 }
 
 int TreeItem::row() const

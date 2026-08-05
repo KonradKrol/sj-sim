@@ -386,4 +386,5 @@ CompetitionSingleResult *CompetitionSingleResult::getTeamJumperResult(Jumper *ju
         if(res.getJumper() == jumper)
             return &res;
     }
+    return nullptr;
 }

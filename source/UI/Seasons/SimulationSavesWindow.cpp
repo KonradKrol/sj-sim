@@ -77,11 +77,10 @@ void SimulationSavesWindow::on_pushButton_add_clicked()
             if(ui->listView_simulationSaves->selectionModel()->selectedRows().size() > 0)
                 index = ui->listView_simulationSaves->selectionModel()->selectedRows().first().row();
 
-            GlobalDatabase::get()->getEditableGlobalSimulationSaves().insert(index, simulationSave);
-
-            emit listModel->dataChanged(listModel->index(index), listModel->index(listModel->rowCount() - 1));
-
-            simulationSave->saveToFile("simulationSaves/");
+            if(listModel->insertSave(index, simulationSave))
+                simulationSave->saveToFile("simulationSaves/");
+            else
+                delete simulationSave;
         }
     }
 }
@@ -114,9 +113,7 @@ void SimulationSavesWindow::on_pushButton_remove_clicked()
             int row = ui->listView_simulationSaves->selectionModel()->selectedRows().first().row();
             QFile file("simulationSaves/" + GlobalDatabase::get()->getEditableGlobalSimulationSaves()[row]->getName() + ".json");
             file.remove();
-            GlobalDatabase::get()->getEditableGlobalSimulationSaves().remove(row);
-            listModel->removeRow(row);
+            delete listModel->takeSave(row);
         }
     }
 }
-

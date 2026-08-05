@@ -74,8 +74,14 @@ int JumpData::getPositionInGroupForTeamCompetition()
     qDebug()<<"JUMPER "<<jumper->getCountryCode();
     qDebug()<<"TEAMS "<<competition->getTeamsReference().count();
     Team * team = Team::getTeamByCountryCode(&competition->getTeamsReference(), jumper->getCountryCode());
+    if(team == nullptr)
+        return 0;
+    CompetitionSingleResult *teamResult = competition->getResultsReference().getResultOfTeam(team);
+    CompetitionSingleResult *jumperResult = teamResult != nullptr ? teamResult->getTeamJumperResult(jumper) : nullptr;
+    if(jumperResult == nullptr)
+        return 0;
     int group = team->getJumpersReference().indexOf(jumper) + 1;
-    int round = MyFunctions::getIndexOfItemInVector(competition->getResultsReference().getResultOfTeam(team)->getTeamJumperResult(jumper)->getJumpsReference(), this) + 1;
+    int round = MyFunctions::getIndexOfItemInVector(jumperResult->getJumpsReference(), this) + 1;
 
     QHash<Jumper *, double> hash;
     for(auto & teamResult : competition->getResultsReference().getResultsReference())
@@ -102,8 +108,13 @@ int JumpData::getPositionInGroupForTeamCompetition()
 int JumpData::getPositionInRoundForTeamCompetition()
 {
     Team * team = Team::getTeamByCountryCode(&competition->getTeamsReference(), jumper->getCountryCode());
-    int group = team->getJumpersReference().indexOf(jumper) + 1;
-    int round = MyFunctions::getIndexOfItemInVector(competition->getResultsReference().getResultOfTeam(team)->getTeamJumperResult(jumper)->getJumpsReference(), this) + 1;
+    if(team == nullptr)
+        return 0;
+    CompetitionSingleResult *teamResult = competition->getResultsReference().getResultOfTeam(team);
+    CompetitionSingleResult *jumperResult = teamResult != nullptr ? teamResult->getTeamJumperResult(jumper) : nullptr;
+    if(jumperResult == nullptr)
+        return 0;
+    int round = MyFunctions::getIndexOfItemInVector(jumperResult->getJumpsReference(), this) + 1;
 
     QHash<Jumper *, double> hash;
     for(auto & teamResult : competition->getResultsReference().getResultsReference())

@@ -15,14 +15,15 @@ int SimulationSavesListModel::rowCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
 
-    return globalSimulationSavesVectorPointer->size();
+    return globalSimulationSavesVectorPointer != nullptr ? globalSimulationSavesVectorPointer->size() : 0;
 
     // FIXME: Implement me!
 }
 
 QVariant SimulationSavesListModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!index.isValid() || globalSimulationSavesVectorPointer == nullptr
+        || index.row() < 0 || index.row() >= globalSimulationSavesVectorPointer->count())
         return QVariant();
 
     if(role == Qt::DisplayRole)
@@ -63,20 +64,26 @@ Qt::ItemFlags SimulationSavesListModel::flags(const QModelIndex &index) const
     return QAbstractItemModel::flags(index); // FIXME: Implement me!
 }
 
-bool SimulationSavesListModel::insertRows(int row, int count, const QModelIndex &parent)
+bool SimulationSavesListModel::insertSave(int row, SimulationSave *save)
 {
-    beginInsertRows(parent, row, row + count - 1);
-    // FIXME: Implement me!
+    if(globalSimulationSavesVectorPointer == nullptr || save == nullptr
+        || row < 0 || row > globalSimulationSavesVectorPointer->count())
+        return false;
+    beginInsertRows(QModelIndex(), row, row);
+    globalSimulationSavesVectorPointer->insert(row, save);
     endInsertRows();
     return true;
 }
 
-bool SimulationSavesListModel::removeRows(int row, int count, const QModelIndex &parent)
+SimulationSave *SimulationSavesListModel::takeSave(int row)
 {
-    beginRemoveRows(parent, row, row + count - 1);
-    // FIXME: Implement me!
+    if(globalSimulationSavesVectorPointer == nullptr
+        || row < 0 || row >= globalSimulationSavesVectorPointer->count())
+        return nullptr;
+    beginRemoveRows(QModelIndex(), row, row);
+    SimulationSave *save = globalSimulationSavesVectorPointer->takeAt(row);
     endRemoveRows();
-    return true;
+    return save;
 }
 
 QVector<SimulationSave *> *SimulationSavesListModel::getGlobalSimulationSavesVectorPointer() const
@@ -86,5 +93,7 @@ QVector<SimulationSave *> *SimulationSavesListModel::getGlobalSimulationSavesVec
 
 void SimulationSavesListModel::setGlobalSimulationSavesVectorPointer(QVector<SimulationSave *> *newGlobalSimulationSavesVectorPointer)
 {
+    beginResetModel();
     globalSimulationSavesVectorPointer = newGlobalSimulationSavesVectorPointer;
+    endResetModel();
 }

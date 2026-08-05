@@ -262,24 +262,32 @@ void AbstractCompetitionManager::updateLast10Judges()
         {
             if(startListStatuses[i].getJumpStatus() == StartListCompetitorStatus::Finished)
             {
+                CompetitionSingleResult *jumperResult = nullptr;
                 if (competitionInfo->getRulesPointer()->getCompetitionType()
                     == CompetitionRules::Individual)
-                    last10Judges += results
-                                        ->getResultOfIndividualJumper(
-                                            startListStatuses[i].getJumper())
-                                        ->getJumpsReference()
-                                        .last()
-                                        .getJudgesPoints();
+                {
+                    jumperResult = results->getResultOfIndividualJumper(startListStatuses[i].getJumper());
+                }
                 else
-                    last10Judges += results->getResultOfTeam(Team::getTeamByCountryCode(&competitionInfo->getTeamsReference(),startListStatuses[i].getJumper()->getCountryCode()))->getTeamJumperResult(startListStatuses[i].getJumper())->getJumpsReference().last().getJudgesPoints();
-                howMany++;
+                {
+                    Team *team = Team::getTeamByCountryCode(&competitionInfo->getTeamsReference(), startListStatuses[i].getJumper()->getCountryCode());
+                    CompetitionSingleResult *teamResult = results->getResultOfTeam(team);
+                    if(teamResult != nullptr)
+                        jumperResult = teamResult->getTeamJumperResult(startListStatuses[i].getJumper());
+                }
+                if(jumperResult != nullptr && !jumperResult->getJumpsReference().isEmpty())
+                {
+                    last10Judges += jumperResult->getJumpsReference().last().getJudgesPoints();
+                    howMany++;
+                }
             }
             i--;
             if(i == -1 || startListStatuses[i].getJumpStatus() == StartListCompetitorStatus::Unfinished)
                 break;
         }
     }
-    last10Judges /= double(howMany);
+    if(howMany > 0)
+        last10Judges /= double(howMany);
     qDebug()<<"last 10 judges average : "<<last10Judges;
 }
 

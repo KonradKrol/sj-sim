@@ -215,7 +215,13 @@ dpp::embed JumpDataDetailedInfoWindow::getEmbedForJumpInfo()
     if(comp->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
         round = MyFunctions::getIndexOfItemInVector(comp->getResultsReference().getResultOfIndividualJumper(jumper)->getJumpsReference(), jumpData) + 1;
     else
-        round = MyFunctions::getIndexOfItemInVector(comp->getResultsReference().getResultOfTeam(Team::getTeamByCountryCode(&comp->getTeamsReference(), jumper->getCountryCode()))->getTeamJumperResult(jumper)->getJumpsReference(), jumpData) + 1;
+    {
+        Team *team = Team::getTeamByCountryCode(&comp->getTeamsReference(), jumper->getCountryCode());
+        CompetitionSingleResult *teamResult = comp->getResultsReference().getResultOfTeam(team);
+        CompetitionSingleResult *jumperResult = teamResult != nullptr ? teamResult->getTeamJumperResult(jumper) : nullptr;
+        if(jumperResult != nullptr)
+            round = MyFunctions::getIndexOfItemInVector(jumperResult->getJumpsReference(), jumpData) + 1;
+    }
     }
 
     dpp::embed embed;

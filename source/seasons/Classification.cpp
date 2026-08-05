@@ -401,7 +401,11 @@ QHash<Jumper *, QHash<CompetitionInfo *, int>> Classification::constructJumpersA
                                 if(this->punctationType == Classification::PointsForPlaces)
                                     jumperResultPoints += this->altPointsForPlaces.value(singleResult.getPosition());
                                 else
-                                    jumperResultPoints += singleResult.getTeamJumperResult(jumper)->getPointsSum();
+                                {
+                                    CompetitionSingleResult *jumperResult = singleResult.getTeamJumperResult(jumper);
+                                    if(jumperResult != nullptr)
+                                        jumperResultPoints += jumperResult->getPointsSum();
+                                }
                             }
                         }
                         tempResultsToSort[jumper] = tempResultsToSort.value(jumper) + jumperResultPoints;

@@ -1506,14 +1506,24 @@ void CompetitionManagerWindow::on_pushButton_jump_clicked()
     }
     manager->updateCompetitorsAdvanceStatuses();
 
-    if(jumperResultsWidget->isHidden()) jumperResultsWidget->show();
+    CompetitionSingleResult *displayedResult = nullptr;
     if(type == CompetitionRules::Individual){
-        jumperResultsWidget->setJumperResult(manager->getResults()->getResultOfIndividualJumper(manager->getActualJumper()));
+        displayedResult = manager->getResults()->getResultOfIndividualJumper(manager->getActualJumper());
     }
     else if(type == CompetitionRules::Team){
-        jumperResultsWidget->setJumperResult(manager->getResults()->getResultOfTeam(tmManager->getActualTeam())->getTeamJumperResult(manager->getActualJumper()));
+        CompetitionSingleResult *teamResult = manager->getResults()->getResultOfTeam(tmManager->getActualTeam());
+        if(teamResult != nullptr)
+            displayedResult = teamResult->getTeamJumperResult(manager->getActualJumper());
     }
-    jumperResultsWidget->fillWidget();
+    if(displayedResult != nullptr)
+    {
+        if(jumperResultsWidget->isHidden())
+            jumperResultsWidget->show();
+        jumperResultsWidget->setJumperResult(displayedResult);
+        jumperResultsWidget->fillWidget();
+    }
+    else
+        jumperResultsWidget->hide();
     if(GlobalAppSettings::get()->getLiveCompetition())
         executeLiveCompetitionEffects();
     checkForEasterEggs();
