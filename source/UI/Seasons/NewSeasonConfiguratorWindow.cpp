@@ -44,9 +44,9 @@ NewSeasonConfiguratorWindow::NewSeasonConfiguratorWindow(bool nextSeason, QWidge
 {
     ui->setupUi(this);
     setWindowFlags(Qt::Window);
-    ui->label_title->setWordWrap(true);
+    ui->label_title->setWordWrap(false);
     ui->label_title->setAlignment(Qt::AlignCenter);
-    ui->label_title->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    ui->label_title->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     ui->pushButton_submit->setMinimumHeight(qMax(36, ui->pushButton_submit->fontMetrics().height() + 14));
     ui->toolBox->setCurrentIndex(0);
     for(auto & globalJumper : GlobalDatabase::get()->getEditableGlobalJumpers())
@@ -203,12 +203,13 @@ void NewSeasonConfiguratorWindow::createResponsivePageSplitters()
 
 void NewSeasonConfiguratorWindow::updateResponsiveLayout(int windowWidth)
 {
-    const bool useCompactLayout = windowWidth < 1000;
+    const bool useCompactLayout = windowWidth < 800;
     if(useCompactLayout == compactLayout && !pageSplitters.isEmpty() &&
             pageSplitters.first()->orientation() == (compactLayout ? Qt::Vertical : Qt::Horizontal))
         return;
 
     compactLayout = useCompactLayout;
+    ui->label_title->setWordWrap(compactLayout);
     for(QSplitter *splitter : pageSplitters) {
         splitter->setOrientation(compactLayout ? Qt::Vertical : Qt::Horizontal);
         if(compactLayout) {
