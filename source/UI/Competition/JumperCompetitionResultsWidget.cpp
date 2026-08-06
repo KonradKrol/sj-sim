@@ -25,7 +25,9 @@ JumperCompetitionResultsWidget::~JumperCompetitionResultsWidget()
 
 void JumperCompetitionResultsWidget::fillWidget()
 {
-    ui->label_nameAndSurname->setText(jumperResult->getJumper()->getNameAndSurname());
+    const QString competitorName = jumperResult->getJumper()->getNameAndSurname();
+    ui->label_nameAndSurname->setText(competitorName);
+    ui->label_nameAndSurname->setToolTip(competitorName);
     ui->label_flag->setPixmap(CountryFlagsManager::getFlagPixmap(jumperResult->getJumper()->getCountryCode().toLower()).scaled(ui->label_flag->size()));
     ui->label_img->setPixmap(jumperResult->getJumper()->getImagePixmap().scaled(ui->label_img->size()));
 
@@ -51,17 +53,21 @@ void JumperCompetitionResultsWidget::fillWidget()
         JumpDataDetailedInfoWindow * jumpInfo = new JumpDataDetailedInfoWindow(&jump, this);
         jumpInfo->fillJumpInformations();
         jumpInfo->removeJumperInfoTitle();
-        jumpInfo->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+        jumpInfo->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         ui->tabWidget_jumps->addTab(jumpInfo, tr("Seria ") + QString::number(i + 1));
 
         i++;
     }
     ui->tabWidget_jumps->setCurrentIndex(ui->tabWidget_jumps->count() - 1);
 
-    if(jumperResult->getCompetition()->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
-        ui->pushButton_sendWebhook->setText(tr("Wyślij webhooka (występ zawodnika)"));
-    else
-        ui->pushButton_sendWebhook->setText(tr("Wyślij webhooka (występ drużyny)"));
+    if(jumperResult->getCompetition()->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual) {
+        ui->pushButton_sendWebhook->setText(tr("Wyślij webhook"));
+        ui->pushButton_sendWebhook->setToolTip(tr("Wyślij webhooka z występem zawodnika"));
+    }
+    else {
+        ui->pushButton_sendWebhook->setText(tr("Wyślij webhook"));
+        ui->pushButton_sendWebhook->setToolTip(tr("Wyślij webhooka z występem drużyny"));
+    }
 }
 
 Ui::JumperCompetitionResultsWidget *JumperCompetitionResultsWidget::getUi() const
@@ -93,4 +99,3 @@ void JumperCompetitionResultsWidget::on_pushButton_sendWebhook_clicked()
     }
     bot.execute_webhook(wh, msg);
 }
-

@@ -98,13 +98,17 @@ void SingleJumpsResultsWindow::resizeEvent(QResizeEvent *event)
 
 void SingleJumpsResultsWindow::fillJumperInfo()
 {
-    ui->label_jumperNameAndSurname->setText(manager->getJumper().getNameAndSurname());
+    const QString jumperName = manager->getJumper().getNameAndSurname();
+    ui->label_jumperNameAndSurname->setText(jumperName);
+    ui->label_jumperNameAndSurname->setToolTip(jumperName);
     ui->label_jumperFlag->setPixmap(CountryFlagsManager::getFlagPixmap(manager->getJumper().getCountryCode().toLower()).scaled(ui->label_jumperFlag->size()));
 }
 
 void SingleJumpsResultsWindow::fillHillInfo()
 {
-    ui->label_hillName->setText(manager->getHill().getName() + " HS" + QString::number(manager->getHill().getHSPoint()));
+    const QString hillName = manager->getHill().getName() + " HS" + QString::number(manager->getHill().getHSPoint());
+    ui->label_hillName->setText(hillName);
+    ui->label_hillName->setToolTip(hillName);
     ui->label_hillFlag->setPixmap(CountryFlagsManager::getFlagPixmap(manager->getHill().getCountryCode().toLower()).scaled(ui->label_hillFlag->size()));
 }
 

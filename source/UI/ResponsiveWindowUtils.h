@@ -1,10 +1,15 @@
 #ifndef RESPONSIVEWINDOWUTILS_H
 #define RESPONSIVEWINDOWUTILS_H
 
+#include <QAbstractButton>
+#include <QAbstractSpinBox>
+#include <QComboBox>
 #include <QDialog>
 #include <QGuiApplication>
 #include <QHeaderView>
+#include <QLabel>
 #include <QLayout>
+#include <QLineEdit>
 #include <QScreen>
 #include <QScrollArea>
 #include <QSettings>
@@ -15,6 +20,54 @@
 
 namespace ResponsiveWindowUtils
 {
+inline int boundedTextMinimum(QWidget *widget, const QString &text)
+{
+    const QString sample = text.isEmpty() ? QStringLiteral("000000") : text;
+    return qBound(80, widget->fontMetrics().horizontalAdvance(sample) + 28, 220);
+}
+
+inline void relaxTextConstraints(QWidget *root)
+{
+    const auto relaxWidth = [](QWidget *widget, int minimumWidth) {
+        widget->setMinimumWidth(minimumWidth);
+        widget->setMaximumWidth(QWIDGETSIZE_MAX);
+        QSizePolicy policy = widget->sizePolicy();
+        policy.setHorizontalPolicy(QSizePolicy::Expanding);
+        widget->setSizePolicy(policy);
+    };
+
+    for(QAbstractButton *button : root->findChildren<QAbstractButton *>()) {
+        if(!button->text().isEmpty() && button->minimumWidth() == button->maximumWidth()) {
+            relaxWidth(button, boundedTextMinimum(button, button->text()));
+            if(button->toolTip().isEmpty())
+                button->setToolTip(button->text());
+        }
+    }
+    for(QLineEdit *lineEdit : root->findChildren<QLineEdit *>()) {
+        if(lineEdit->minimumWidth() == lineEdit->maximumWidth())
+            relaxWidth(lineEdit, boundedTextMinimum(lineEdit, lineEdit->placeholderText()));
+    }
+    for(QComboBox *comboBox : root->findChildren<QComboBox *>()) {
+        if(comboBox->minimumWidth() == comboBox->maximumWidth()) {
+            relaxWidth(comboBox, boundedTextMinimum(comboBox, comboBox->currentText()));
+            comboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
+            comboBox->setMinimumContentsLength(8);
+        }
+    }
+    for(QAbstractSpinBox *spinBox : root->findChildren<QAbstractSpinBox *>()) {
+        if(spinBox->minimumWidth() == spinBox->maximumWidth())
+            relaxWidth(spinBox, boundedTextMinimum(spinBox, QStringLiteral("000000")));
+    }
+    for(QLabel *label : root->findChildren<QLabel *>()) {
+        if(!label->text().isEmpty() && label->minimumWidth() == label->maximumWidth()) {
+            relaxWidth(label, 0);
+            label->setWordWrap(true);
+            if(label->toolTip().isEmpty())
+                label->setToolTip(label->text());
+        }
+    }
+}
+
 class WindowGeometryManager : public QObject
 {
 public:
@@ -34,6 +87,8 @@ protected:
         if(event->type() == QEvent::Show) {
             connectToWindowScreen();
             ensureVisible(window->screen());
+            QTimer::singleShot(0, this, [this](){ ensureVisible(window->screen()); });
+            QTimer::singleShot(50, this, [this](){ ensureVisible(window->screen()); });
         }
         else if(event->type() == QEvent::Hide || event->type() == QEvent::Close) {
             QSettings().setValue(settingsKey, window->saveGeometry());
@@ -99,23 +154,35 @@ private:
         if(screen == nullptr || window->isMaximized() || window->isFullScreen())
             return;
         const QRect available = screen->availableGeometry();
-        QRect geometry = window->frameGeometry();
-        geometry.setSize(geometry.size().boundedTo(available.size()));
-        if(geometry.left() < available.left())
-            geometry.moveLeft(available.left());
-        if(geometry.top() < available.top())
-            geometry.moveTop(available.top());
-        if(geometry.right() > available.right())
-            geometry.moveRight(available.right());
-        if(geometry.bottom() > available.bottom())
-            geometry.moveBottom(available.bottom());
-        window->resize(geometry.size());
-        window->move(geometry.topLeft());
+        const QMargins frameMargins = window->windowHandle() != nullptr
+            ? window->windowHandle()->frameMargins()
+            : QMargins();
+        const QRect currentFrame = window->frameGeometry();
+        const int horizontalFrame = qMax(frameMargins.left() + frameMargins.right(),
+                                         currentFrame.width() - window->geometry().width());
+        const int verticalFrame = qMax(frameMargins.top() + frameMargins.bottom(),
+                                       currentFrame.height() - window->geometry().height());
+        const QSize maximumClientSize(
+            qMax(1, available.width() - horizontalFrame),
+            qMax(1, available.height() - verticalFrame));
+        window->resize(window->size().boundedTo(maximumClientSize));
+
+        QRect frame = window->frameGeometry();
+        if(frame.left() < available.left())
+            frame.moveLeft(available.left());
+        if(frame.top() < available.top())
+            frame.moveTop(available.top());
+        if(frame.right() > available.right())
+            frame.moveRight(available.right());
+        if(frame.bottom() > available.bottom())
+            frame.moveBottom(available.bottom());
+        window->move(frame.topLeft());
     }
 };
 
 inline void manageWindowGeometry(QWidget *window, const QString &settingsKey)
 {
+    relaxTextConstraints(window);
     new WindowGeometryManager(window, settingsKey);
 }
 

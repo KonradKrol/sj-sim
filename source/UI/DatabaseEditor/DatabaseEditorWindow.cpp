@@ -13,6 +13,7 @@
 #include "ListModels/CompetitionRulesListModel.h"
 #include "ListModels/PointsForPlacesPresetsListModel.h"
 #include "DatabaseItemsListView.h"
+#include "../ResponsiveWindowUtils.h"
 #include <QFont>
 #include <QScrollArea>
 #include <QCloseEvent>
@@ -118,6 +119,7 @@ DatabaseEditorWindow::DatabaseEditorWindow(QWidget *parent) :
     connect(this->pointsForPlacesPresetsListView, &DatabaseItemsListView::down, this, [this](){
         actualElementIndex++;
     });
+    ResponsiveWindowUtils::relaxTextConstraints(this);
 }
 
 DatabaseEditorWindow::~DatabaseEditorWindow()
@@ -345,4 +347,3 @@ void DatabaseEditorWindow::on_pushButton_sortByCountries_clicked()
         hillsListView->setupListModel();
     }
 }
-

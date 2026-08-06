@@ -17,6 +17,7 @@
 #include "JumpDataInfoChoiceDialog.h"
 #include "NewJumpsImportancePresetDialog.h"
 #include "CountriesEditorWindow.h"
+#include "../ResponsiveWindowUtils.h"
 
 extern Uuid globalIDGenerator;
 
@@ -43,6 +44,7 @@ AppSettingsWindow::AppSettingsWindow(QWidget *parent) :
     ui->doubleSpinBox_liveCompSpeed->setValue(GlobalAppSettings::get()->getLiveCompetitionSpeedMulti());
     ui->doubleSpinBox_takeoffFormEffect->setValue(GlobalSimulationSettings::get()->getTakeoffFormEffect());
     ui->doubleSpinBox_flightFormEffect->setValue(GlobalSimulationSettings::get()->getFlightFormEffect());
+    ResponsiveWindowUtils::relaxTextConstraints(this);
 }
 
 AppSettingsWindow::~AppSettingsWindow()

@@ -58,7 +58,13 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QLabel" name="label_saveName">
+         <widget class="QLabel" name="label_saveName">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="font">
             <font>
              <family>Quicksand Medium</family>
@@ -75,7 +81,7 @@
             <enum>Qt::AutoText</enum>
            </property>
            <property name="wordWrap">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -1022,21 +1028,21 @@ li.checked::marker { content: &quot;\2612&quot;; }
              <item>
               <widget class="QPushButton" name="pushButton_competitionConfig">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>300</width>
-                 <height>45</height>
+                 <width>140</width>
+                 <height>40</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>300</width>
-                 <height>45</height>
+                 <width>16777215</width>
+                 <height>16777215</height>
                 </size>
                </property>
                <property name="font">

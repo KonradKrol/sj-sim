@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -64,6 +64,12 @@
       <layout class="QHBoxLayout" name="horizontalLayout_nameSurnameAndFlag">
        <item>
         <widget class="QLabel" name="label_nameAndSurname">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="font">
           <font>
            <family>Quicksand Light [PfEd]</family>
@@ -76,6 +82,9 @@
          </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -153,6 +162,12 @@
      </property>
      <property name="currentIndex">
       <number>0</number>
+     </property>
+     <property name="elideMode">
+      <enum>Qt::ElideRight</enum>
+     </property>
+     <property name="usesScrollButtons">
+      <bool>true</bool>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -238,14 +253,14 @@
       <widget class="QPushButton" name="pushButton_sendWebhook">
        <property name="minimumSize">
         <size>
-         <width>260</width>
-         <height>27</height>
+         <width>120</width>
+         <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>260</width>
-         <height>27</height>
+         <width>16777215</width>
+         <height>16777215</height>
         </size>
        </property>
        <property name="font">

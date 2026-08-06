@@ -75,7 +75,10 @@ color: rgb(26, 95, 180);
       <number>0</number>
      </property>
      <property name="elideMode">
-      <enum>Qt::ElideNone</enum>
+      <enum>Qt::ElideRight</enum>
+     </property>
+     <property name="usesScrollButtons">
+      <bool>true</bool>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">

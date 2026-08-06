@@ -275,13 +275,13 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>150</width>
+             <width>80</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>150</width>
+             <width>16777215</width>
              <height>16777215</height>
             </size>
            </property>
@@ -339,7 +339,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinBox_dsqProbability">
+           <widget class="QSpinBox" name="spinBox_dsqProbability">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
                <horstretch>0</horstretch>
@@ -348,13 +348,13 @@
              </property>
              <property name="minimumSize">
               <size>
-               <width>150</width>
+               <width>80</width>
                <height>0</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>150</width>
+               <width>16777215</width>
                <height>16777215</height>
               </size>
              </property>
@@ -550,7 +550,7 @@ height: 30px;
             </spacer>
            </item>
            <item>
-            <widget class="QComboBox" name="comboBox_windCompensationDistanceEffect">
+           <widget class="QComboBox" name="comboBox_windCompensationDistanceEffect">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
                <horstretch>0</horstretch>
@@ -559,13 +559,13 @@ height: 30px;
              </property>
              <property name="minimumSize">
               <size>
-               <width>150</width>
+               <width>80</width>
                <height>0</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>150</width>
+               <width>16777215</width>
                <height>16777215</height>
               </size>
              </property>
@@ -649,7 +649,7 @@ height: 30px;
             </spacer>
            </item>
            <item>
-            <widget class="QComboBox" name="comboBox_windAverageCalculatingType">
+           <widget class="QComboBox" name="comboBox_windAverageCalculatingType">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
                <horstretch>0</horstretch>
@@ -658,13 +658,13 @@ height: 30px;
              </property>
              <property name="minimumSize">
               <size>
-               <width>150</width>
+               <width>80</width>
                <height>0</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>150</width>
+               <width>16777215</width>
                <height>16777215</height>
               </size>
              </property>
@@ -741,7 +741,7 @@ height: 30px;
               </spacer>
              </item>
              <item>
-              <widget class="QDoubleSpinBox" name="doubleSpinBox_jumpsImportance">
+             <widget class="QDoubleSpinBox" name="doubleSpinBox_jumpsImportance">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -750,13 +750,13 @@ height: 30px;
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>150</width>
+                 <width>80</width>
                  <height>0</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>150</width>
+                 <width>16777215</width>
                  <height>16777215</height>
                 </size>
                </property>
@@ -855,13 +855,13 @@ height: 30px;
            </property>
            <property name="minimumSize">
             <size>
-             <width>150</width>
+             <width>80</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>150</width>
+             <width>16777215</width>
              <height>16777215</height>
             </size>
            </property>

@@ -60,6 +60,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     ui->toolBox->setCurrentIndex(0);
     ui->toolBox_2->setCurrentIndex(0);
     ui->label_saveName->setText(simulationSave->getName());
+    ui->label_saveName->setToolTip(simulationSave->getName());
     ui->label_seasonNumber->setText(QString::number(simulationSave->getActualSeason()->getSeasonNumber()));
     if(simulationSave->getActualSeason()->getActualCalendar() != nullptr)
         ui->label_calendarName->setText(simulationSave->getActualSeason()->getActualCalendar()->getName());

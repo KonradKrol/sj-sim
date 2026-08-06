@@ -61,6 +61,43 @@ SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent) :
     ui->pushButton_submit->setToolTip(tr("Rozpocznij symulację z aktualnymi ustawieniami (Enter)"));
     ui->spinBox_jumpsCount->setToolTip(tr("Liczba skoków do wykonania; minimum to 1"));
 
+    const QList<QWidget *> scalableInputs = {
+        ui->spinBox_jumpsCount,
+        ui->spinBox_dsqProbability,
+        ui->comboBox_windCompensationDistanceEffect,
+        ui->comboBox_windAverageCalculatingType,
+        ui->doubleSpinBox_jumpsImportance,
+        ui->spinBox_gate
+    };
+    for(QWidget *input : scalableInputs) {
+        const int metricMinimum = qMax(88, input->fontMetrics().horizontalAdvance(QStringLiteral("000000")) + 32);
+        input->setMinimumWidth(metricMinimum);
+        input->setMaximumWidth(QWIDGETSIZE_MAX);
+        input->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    }
+    const QList<QComboBox *> scalableComboBoxes = {
+        ui->comboBox_windCompensationDistanceEffect,
+        ui->comboBox_windAverageCalculatingType,
+        ui->comboBox_jumpsImportancePreset
+    };
+    for(QComboBox *comboBox : scalableComboBoxes) {
+        comboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
+        comboBox->setMinimumContentsLength(8);
+    }
+    const QList<QLabel *> wrappingLabels = {
+        ui->label_jumpsCount,
+        ui->label_5,
+        ui->label_3,
+        ui->label_2,
+        ui->label_6,
+        ui->label
+    };
+    for(QLabel *label : wrappingLabels) {
+        label->setWordWrap(true);
+        label->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    }
+    ui->pushButton_submit->setMinimumHeight(qMax(40, ui->pushButton_submit->fontMetrics().height() + 18));
+
     jumperEditor = new JumperEditorWidget;
     jumperEditor->removeSubmitButton();
 

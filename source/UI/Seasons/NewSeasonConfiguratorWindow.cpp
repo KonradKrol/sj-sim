@@ -44,6 +44,10 @@ NewSeasonConfiguratorWindow::NewSeasonConfiguratorWindow(bool nextSeason, QWidge
 {
     ui->setupUi(this);
     setWindowFlags(Qt::Window);
+    ui->label_title->setWordWrap(true);
+    ui->label_title->setAlignment(Qt::AlignCenter);
+    ui->label_title->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    ui->pushButton_submit->setMinimumHeight(qMax(36, ui->pushButton_submit->fontMetrics().height() + 14));
     ui->toolBox->setCurrentIndex(0);
     for(auto & globalJumper : GlobalDatabase::get()->getEditableGlobalJumpers())
         jumpers.push_back(new Jumper(globalJumper));
