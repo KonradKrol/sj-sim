@@ -85,7 +85,7 @@ void SingleJumpsResultsWindow::updateResponsiveLayout(int windowWidth)
     compactLayout = useCompactLayout;
     resultsSplitter->setOrientation(compactLayout ? Qt::Vertical : Qt::Horizontal);
     if(compactLayout)
-        resultsSplitter->setSizes({qMax(180, height() / 3), qMax(260, height() * 2 / 3)});
+        resultsSplitter->setSizes({qMax(220, height() * 3 / 5), qMax(180, height() * 2 / 5)});
     else
         resultsSplitter->setSizes({windowWidth / 2, windowWidth / 2});
 }

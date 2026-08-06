@@ -55,7 +55,7 @@ SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent) :
     contentSplitter->setStretchFactor(0, 3);
     contentSplitter->setStretchFactor(1, 2);
     ui->horizontalLayout_underTitle->addWidget(contentSplitter);
-    ui->verticalLayout_5->addWidget(ui->pushButton_submit);
+    ui->verticalLayout_5->addWidget(ui->pushButton_submit, 0, Qt::AlignHCenter);
     ui->spinBox_dsqProbability->setValue(GlobalSimulationSettings::get()->getBaseDsqProbability());
     ui->pushButton_submit->setDefault(true);
     ui->pushButton_submit->setToolTip(tr("Rozpocznij symulację z aktualnymi ustawieniami (Enter)"));
@@ -94,9 +94,13 @@ SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent) :
     };
     for(QLabel *label : wrappingLabels) {
         label->setWordWrap(true);
-        label->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+        label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     }
-    ui->pushButton_submit->setMinimumHeight(qMax(40, ui->pushButton_submit->fontMetrics().height() + 18));
+    const int submitHeight = qBound(48, ui->pushButton_submit->fontMetrics().height() + 18, 64);
+    ui->pushButton_submit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    ui->pushButton_submit->setFixedHeight(submitHeight);
+    ui->pushButton_submit->setMinimumWidth(250);
+    ui->pushButton_submit->setMaximumWidth(480);
 
     jumperEditor = new JumperEditorWidget;
     jumperEditor->removeSubmitButton();

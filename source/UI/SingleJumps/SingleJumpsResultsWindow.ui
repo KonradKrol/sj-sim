@@ -35,7 +35,7 @@
      <item>
       <widget class="QLabel" name="label_jumperNameAndSurname">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>1</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -115,7 +115,7 @@
      <item>
       <widget class="QLabel" name="label_hillName">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>1</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
