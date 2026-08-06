@@ -46,6 +46,11 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
     ui->splitter_configuration->setStretchFactor(2, 2);
     ui->splitter_configuration->setSizes({260, 640, 280});
     ui->verticalLayout->addWidget(ui->pushButton_submit, 0, Qt::AlignHCenter);
+    const int submitHeight = qBound(50, ui->pushButton_submit->fontMetrics().height() + 18, 64);
+    ui->pushButton_submit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    ui->pushButton_submit->setFixedHeight(submitHeight);
+    ui->pushButton_submit->setMinimumWidth(250);
+    ui->pushButton_submit->setMaximumWidth(360);
     ui->pushButton_submit->setDefault(true);
     ui->pushButton_submit->setToolTip(tr("Sprawdź ustawienia i rozpocznij symulację (Enter)"));
     ui->pushButton_autoGate->setToolTip(tr("Dobierz bezpieczną belkę na podstawie najmocniejszego zawodnika"));
@@ -583,8 +588,7 @@ void CompetitionConfigWindow::setupCompetitionRulesToolBoxItem()
 
     competitionRulesParentWidget = new QWidget(this);
     competitionRulesToolBoxItemLayout = new QVBoxLayout(competitionRulesParentWidget);
-    competitionRulesParentWidget->setLayout(competitionRulesToolBoxItemLayout);
-    existingRulesLabelAndComboBoxLayout = new QVBoxLayout(competitionRulesParentWidget);
+    existingRulesLabelAndComboBoxLayout = new QVBoxLayout();
     competitionRulesToolBoxItemLayout->addLayout(existingRulesLabelAndComboBoxLayout);
     //competitionRulesToolBoxItemLayout->addSpacerItem(new QSpacerItem(35, 35, QSizePolicy::Maximum, QSizePolicy::Maximum));
     competitionRulesToolBoxItemLayout->addWidget(competitionRulesEditor);
