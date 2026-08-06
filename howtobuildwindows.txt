@@ -1,0 +1,4 @@
+To run it: open build-win\release\sj-sim.exe (run from that folder). To rebuild from scratch, open an "x64 Native Tools Command Prompt for VS 2022" and run:
+qmake sj-sim.pro CONFIG+=release
+nmake
+windeployqt --release sj-sim.exe
