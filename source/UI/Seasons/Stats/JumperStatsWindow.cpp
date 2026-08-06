@@ -5,12 +5,41 @@
 #include <QInputDialog>
 #include <QDir>
 #include <QFile>
+#include <QGridLayout>
+#include <QScrollArea>
 
 JumperStatsWindow::JumperStatsWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::JumperStatsWindow)
 {
     ui->setupUi(this);
+    setMinimumSize(640, 480);
+
+    QLayoutItem *headerItem = ui->verticalLayout_2->takeAt(0);
+    QLayout *headerLayout = headerItem->layout();
+    QScrollArea *filtersArea = new QScrollArea(this);
+    filtersArea->setObjectName("scrollArea_filters");
+    filtersArea->setFrameShape(QFrame::NoFrame);
+    filtersArea->setWidgetResizable(true);
+    filtersArea->setMaximumHeight(280);
+    QWidget *filtersPanel = new QWidget(filtersArea);
+    QGridLayout *filtersLayout = new QGridLayout(filtersPanel);
+    filtersLayout->setContentsMargins(0, 0, 0, 0);
+
+    const QVector<QPair<int, int>> filterPositions = {
+        {0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}, {0, 5}, {0, 6},
+        {1, 0}, {1, 1}, {1, 2}, {1, 3},
+        {2, 0}, {2, 1}, {2, 2}, {2, 3}, {2, 4}, {2, 5}, {2, 6}, {2, 7},
+        {1, 4}, {1, 5}
+    };
+    for(const auto &position : filterPositions)
+        filtersLayout->addItem(headerLayout->takeAt(0), position.first, position.second);
+    delete headerItem;
+
+    filtersArea->setWidget(filtersPanel);
+    ui->verticalLayout_2->insertWidget(0, filtersArea);
+    ui->label_jumperNameAndSurname->setWordWrap(true);
+    ui->label_jumperNameAndSurname->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
 
     rangeComboBoxes = new CompetitionsRangeComboBoxesWidget(this);
     ui->verticalLayout_rangeComboBoxes->addWidget(rangeComboBoxes);
@@ -95,6 +124,7 @@ void JumperStatsWindow::setupComboBox()
 void JumperStatsWindow::fillWindow()
 {
     ui->label_jumperNameAndSurname->setText(jumper->getNameAndSurname());
+    ui->label_jumperNameAndSurname->setToolTip(jumper->getNameAndSurname());
     ui->label_jumperFlag->setPixmap(CountryFlagsManager::getFlagPixmap(jumper->getCountryCode().toLower()).scaled(ui->label_jumperFlag->size()));
     ui->label_img->setPixmap(jumper->getImagePixmap().scaled(ui->label_img->size()));
 
