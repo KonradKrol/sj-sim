@@ -90,6 +90,9 @@ private:
 
     QPushButton * push_button_randomWind;
 
+    void updateResponsiveLayout(int windowWidth);
+    bool compactLayout = false;
+
 public:
     short getType() const;
     void setType(short newType);
@@ -140,6 +143,9 @@ private slots:
     void on_pushButton_sortStartListByCountries_clicked();
     void on_pushButton_orderByJumpersList_clicked();
     void on_pushButton_byOtherComp_clicked();
+
+protected:
+    void resizeEvent(QResizeEvent *event) override;
 };
 
 #endif // COMPETITIONCONFIGWINDOW_H

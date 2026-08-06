@@ -29,6 +29,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonParseError>
+#include <QResizeEvent>
 #include <limits>
 
 CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, SimulationSave *save) :
@@ -38,6 +39,12 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
     simulationSave(save)
 {
     ui->setupUi(this);
+    setMinimumSize(640, 480);
+    ui->splitter_configuration->setStretchFactor(0, 2);
+    ui->splitter_configuration->setStretchFactor(1, 5);
+    ui->splitter_configuration->setStretchFactor(2, 2);
+    ui->splitter_configuration->setSizes({260, 640, 280});
+    ui->verticalLayout->addWidget(ui->pushButton_submit, 0, Qt::AlignHCenter);
     ui->pushButton_submit->setDefault(true);
     ui->pushButton_submit->setToolTip(tr("Sprawdź ustawienia i rozpocznij symulację (Enter)"));
     ui->pushButton_autoGate->setToolTip(tr("Dobierz bezpieczną belkę na podstawie najmocniejszego zawodnika"));
@@ -205,8 +212,10 @@ push_button_randomWind->setParent(this);
     else teamsSquadsModel->setJumpersInTeam(seasonCompetition->getRulesPointer()->getJumpersInTeamCount());
     teamsSquadsModel->setupTreeItems();
     teamsTreeView = new TeamsSquadsTreeView(teamsSquadsModel, this);
-    teamsTreeView->setFixedWidth(390);
-    jumpersListView->setFixedWidth(280);
+    teamsTreeView->setMinimumWidth(220);
+    teamsTreeView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    jumpersListView->setMinimumWidth(220);
+    jumpersListView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     ui->verticalLayout_startList->addWidget(teamsTreeView);
 
     if(getType() == SeasonCompetition)
@@ -494,6 +503,8 @@ push_button_randomWind->setParent(this);
             KOGroupsList->fillListLayout();
         }
     });
+
+    updateResponsiveLayout(width());
 }
 
 CompetitionConfigWindow::~CompetitionConfigWindow()
@@ -1050,6 +1061,27 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
     }
         break;
     }
+
+}
+
+void CompetitionConfigWindow::updateResponsiveLayout(int windowWidth)
+{
+    const bool useCompactLayout = windowWidth < 1100;
+    if(useCompactLayout == compactLayout)
+        return;
+
+    compactLayout = useCompactLayout;
+    ui->splitter_configuration->setOrientation(compactLayout ? Qt::Vertical : Qt::Horizontal);
+    if(compactLayout)
+        ui->splitter_configuration->setSizes({190, qMax(180, height() / 2), 150});
+    else
+        ui->splitter_configuration->setSizes({260, qMax(440, windowWidth - 540), 280});
+}
+
+void CompetitionConfigWindow::resizeEvent(QResizeEvent *event)
+{
+    QDialog::resizeEvent(event);
+    updateResponsiveLayout(event->size().width());
 }
 
 void CompetitionConfigWindow::on_pushButton_loadJumpers_clicked()
