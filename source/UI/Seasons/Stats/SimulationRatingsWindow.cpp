@@ -6,6 +6,8 @@
 #include "../../../global/CountryFlagsManager.h"
 #include "../../EditorWidgets/EditStartListWithJumpersListsWindow.h"
 #include <QInputDialog>
+#include <QGridLayout>
+#include <QScrollArea>
 
 SimulationRatingsWindow::SimulationRatingsWindow(SimulationSave * save, QWidget *parent) :
     QDialog(parent),
@@ -14,13 +16,38 @@ SimulationRatingsWindow::SimulationRatingsWindow(SimulationSave * save, QWidget 
 {
     ui->setupUi(this);
     setWindowFlags(Qt::Window);
+    setMinimumSize(640, 480);
+
+    QLayoutItem *headerItem = ui->verticalLayout->takeAt(0);
+    QLayout *headerLayout = headerItem->layout();
+    QScrollArea *filtersArea = new QScrollArea(this);
+    filtersArea->setObjectName("scrollArea_filters");
+    filtersArea->setFrameShape(QFrame::NoFrame);
+    filtersArea->setWidgetResizable(true);
+    filtersArea->setMaximumHeight(260);
+    QWidget *filtersPanel = new QWidget(filtersArea);
+    QGridLayout *filtersLayout = new QGridLayout(filtersPanel);
+    filtersLayout->setContentsMargins(0, 0, 0, 0);
+
+    const QVector<QPair<int, int>> filterPositions = {
+        {0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}, {0, 5}, {0, 6}, {0, 7},
+        {1, 0}, {1, 1}, {1, 2}, {1, 3},
+        {2, 0}, {2, 1}, {2, 2}, {2, 3}, {2, 4}, {2, 5}, {2, 6}, {2, 7},
+        {1, 4}, {1, 5}
+    };
+    for(const auto &position : filterPositions)
+        filtersLayout->addItem(headerLayout->takeAt(0), position.first, position.second);
+    delete headerItem;
+
+    filtersArea->setWidget(filtersPanel);
+    ui->verticalLayout->insertWidget(0, filtersArea);
 
     classificationsCheckBoxes = new ClassificationsCheckBoxesWidget(this);
     ui->verticalLayout_classificationsComboBoxes->addWidget(classificationsCheckBoxes);
     rangeComboBoxes = new CompetitionsRangeComboBoxesWidget(this);
     ui->verticalLayout_rangeComboBoxes->addWidget(rangeComboBoxes);
     serieTypesCheckBoxes = new SerieTypesComboBoxesWidget(this);
-    ui->verticalLayout_rangeComboBoxes->addWidget(serieTypesCheckBoxes);
+    ui->verticalLayout_serieTypesCheckBoxes->addWidget(serieTypesCheckBoxes);
     hillTypesCheckBoxes = new HillTypesCheckBoxesWidget(this);
     ui->verticalLayout_hillTypesCheckBoxes->addWidget(hillTypesCheckBoxes);
 
