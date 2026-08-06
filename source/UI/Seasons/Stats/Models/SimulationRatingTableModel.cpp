@@ -58,6 +58,10 @@ QVariant SimulationRatingTableModel::data(const QModelIndex &index, int role) co
             return ranking[index.row()].second;
         }
     }
+    else if(role == Qt::ToolTipRole)
+    {
+        return data(index, Qt::DisplayRole);
+    }
     else if(role == Qt::FontRole)
     {
         QFont font("Quicksand", 10);

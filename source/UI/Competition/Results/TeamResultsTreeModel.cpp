@@ -107,6 +107,10 @@ QVariant TeamResultsTreeModel::data(const QModelIndex &index, int role) const
     {
         return item->data(index.column());
     }
+    else if(role == Qt::ToolTipRole)
+    {
+        return item->data(index.column());
+    }
     else if(role == Qt::DecorationRole)
     {
         if(index.column() == 1 && item->getParentItem() == rootItem){

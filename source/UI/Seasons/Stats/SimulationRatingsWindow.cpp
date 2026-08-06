@@ -5,6 +5,7 @@
 #include "../../../global/GlobalDatabase.h"
 #include "../../../global/CountryFlagsManager.h"
 #include "../../EditorWidgets/EditStartListWithJumpersListsWindow.h"
+#include "../../ResponsiveWindowUtils.h"
 #include <QInputDialog>
 #include <QGridLayout>
 #include <QScrollArea>
@@ -92,6 +93,7 @@ SimulationRatingsWindow::SimulationRatingsWindow(SimulationSave * save, QWidget 
 
     generalClassificationModel = new GeneralClassificationTableModel(this);
     ui->tableView_generalClassification->setModel(generalClassificationModel);
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_generalClassification);
 
     connect(ui->tabWidget, &QTabWidget::currentChanged, this, [this](int index){
         if(index == 0)
@@ -230,7 +232,7 @@ void SimulationRatingsWindow::fillWindow()
     averagePositionModel->setRanking(avgPositionsRanking);
     ui->tableView_avgPosition->setModel(nullptr);
     ui->tableView_avgPosition->setModel(averagePositionModel);
-    ui->tableView_avgPosition->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_avgPosition);
 
     //Średnie noty za styl
     QVector<QPair<Jumper *, double>> avgJudgesRanking;
@@ -264,7 +266,7 @@ void SimulationRatingsWindow::fillWindow()
     averageJudgesModel->setRanking(avgJudgesRanking);
     ui->tableView_avgJudges->setModel(nullptr);
     ui->tableView_avgJudges->setModel(averageJudgesModel);
-    ui->tableView_avgJudges->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_avgJudges);
 
     //Średni wiatr
     QVector<QPair<Jumper *, double>> avgWindRanking;
@@ -295,7 +297,7 @@ void SimulationRatingsWindow::fillWindow()
     averageWindModel->setRanking(avgWindRanking);
     ui->tableView_avgWind->setModel(nullptr);
     ui->tableView_avgWind->setModel(averageWindModel);
-    ui->tableView_avgWind->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_avgWind);
 
     //Ocena wybicia
     QVector<QPair<Jumper *, double>> avgTakeoffRatingRanking;
@@ -326,7 +328,7 @@ void SimulationRatingsWindow::fillWindow()
     averageTakeoffRatingModel->setRanking(avgTakeoffRatingRanking);
     ui->tableView_avgTakeoffRating->setModel(nullptr);
     ui->tableView_avgTakeoffRating->setModel(averageTakeoffRatingModel);
-    ui->tableView_avgTakeoffRating->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_avgTakeoffRating);
 
     //Ocena lotu
     QVector<QPair<Jumper *, double>> avgFlightRatingRanking;
@@ -357,7 +359,7 @@ void SimulationRatingsWindow::fillWindow()
     averageFlightRatingModel->setRanking(avgFlightRatingRanking);
     ui->tableView_avgFlightRating->setModel(nullptr);
     ui->tableView_avgFlightRating->setModel(averageFlightRatingModel);
-    ui->tableView_avgFlightRating->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_avgFlightRating);
 
     //Odległosść
     QVector<QPair<Jumper *, double>> avgDistanceRanking;
@@ -388,7 +390,7 @@ void SimulationRatingsWindow::fillWindow()
     averageDistanceModel->setRanking(avgDistanceRanking);
     ui->tableView_avgDistance->setModel(nullptr);
     ui->tableView_avgDistance->setModel(averageDistanceModel);
-    ui->tableView_avgDistance->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_avgDistance);
 
     //-------------------REKORDY---------------------
     //Odległość
@@ -510,56 +512,56 @@ void SimulationRatingsWindow::fillWindow()
     bestDistanceModel->setRecords(bestDistanceRecords);
     ui->tableView_bestDistance->setModel(nullptr);
     ui->tableView_bestDistance->setModel(bestDistanceModel);
-    ui->tableView_bestDistance->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_bestDistance);
     worstDistanceModel->setRecords(worstDistanceRecords);
     ui->tableView_worstDistance->setModel(nullptr);
     ui->tableView_worstDistance->setModel(worstDistanceModel);
-    ui->tableView_worstDistance->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_worstDistance);
 
     bestPointsModel->setRecords(bestPointsRecords);
     ui->tableView_bestPoints->setModel(nullptr);
     ui->tableView_bestPoints->setModel(bestPointsModel);
-    ui->tableView_bestPoints->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_bestPoints);
     worstPointsModel->setRecords(worstPointsRecords);
     ui->tableView_worstPoints->setModel(nullptr);
     ui->tableView_worstPoints->setModel(worstPointsModel);
-    ui->tableView_worstPoints->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_worstPoints);
 
     bestJudgesModel->setRecords(bestJudgesRecords);
     ui->tableView_bestJudges->setModel(nullptr);
     ui->tableView_bestJudges->setModel(bestJudgesModel);
-    ui->tableView_bestJudges->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_bestJudges);
     worstJudgesModel->setRecords(worstJudgesRecords);
     ui->tableView_worstJudges->setModel(nullptr);
     ui->tableView_worstJudges->setModel(worstJudgesModel);
-    ui->tableView_worstJudges->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_worstJudges);
 
     bestWindModel->setRecords(bestWindRecords);
     ui->tableView_bestWind->setModel(nullptr);
     ui->tableView_bestWind->setModel(bestWindModel);
-    ui->tableView_bestWind->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_bestWind);
     worstWindModel->setRecords(worstWindRecords);
     ui->tableView_worstWind->setModel(nullptr);
     ui->tableView_worstWind->setModel(worstWindModel);
-    ui->tableView_worstWind->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_worstWind);
 
     bestTakeoffModel->setRecords(bestTakeoffRecords);
     ui->tableView_bestTakeoff->setModel(nullptr);
     ui->tableView_bestTakeoff->setModel(bestTakeoffModel);
-    ui->tableView_bestTakeoff->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_bestTakeoff);
     worstTakeoffModel->setRecords(worstTakeoffRecords);
     ui->tableView_worstTakeoff->setModel(nullptr);
     ui->tableView_worstTakeoff->setModel(worstTakeoffModel);
-    ui->tableView_worstTakeoff->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_worstTakeoff);
 
     bestFlightModel->setRecords(bestFlightRecords);
     ui->tableView_bestFlight->setModel(nullptr);
     ui->tableView_bestFlight->setModel(bestFlightModel);
-    ui->tableView_bestFlight->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_bestFlight);
     worstFlightModel->setRecords(worstFlightRecords);
     ui->tableView_worstFlight->setModel(nullptr);
     ui->tableView_worstFlight->setModel(worstFlightModel);
-    ui->tableView_worstFlight->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView_worstFlight);
 
     //-------Fakty-------//
     //Rozegrane konkursy

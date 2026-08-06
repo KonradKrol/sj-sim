@@ -999,7 +999,7 @@ void SimulationSaveManagerWindow::on_listView_competitionsArchive_doubleClicked(
     QTableView *resultsTableView = new QTableView(resultsSplitter);
     ResultsTableModel *resultsModel = new ResultsTableModel(competition->getRulesPointer()->getCompetitionType(), &competition->getResultsReference(), nullptr, dialog);
     resultsTableView->setModel(resultsModel);
-    resultsTableView->resizeColumnsToContents();
+    ResponsiveWindowUtils::configureTableColumns(resultsTableView);
     if(compType == CompetitionRules::Individual)
         resultsSplitter->addWidget(resultsTableView);
     else

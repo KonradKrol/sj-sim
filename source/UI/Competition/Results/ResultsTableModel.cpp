@@ -70,6 +70,9 @@ QVariant ResultsTableModel::data(const QModelIndex &index, int role) const
         }
         }
     }
+    else if(role == Qt::ToolTipRole){
+        return data(index, Qt::DisplayRole);
+    }
     else if(role == Qt::BackgroundRole){
         if(lastJumper != nullptr)
         {

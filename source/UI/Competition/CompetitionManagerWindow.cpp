@@ -93,7 +93,7 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
             KOManager->setIndManager(dynamic_cast<IndividualCompetitionManager *>(manager));
             KOGroupsResultsModel = new KOGroupResultsTableModel(KOManager, &dynamic_cast<IndividualCompetitionManager *>(manager)->getRoundsKOGroupsReference()[0]->first(), this);
             ui->tableView_KOGroupResults->setModel(KOGroupsResultsModel);
-            ui->tableView_KOGroupResults->resizeColumnsToContents();
+            ResponsiveWindowUtils::configureTableColumns(ui->tableView_KOGroupResults);
         }
         else
         {
@@ -173,7 +173,7 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
         teamResultsTreeView->setSelectionBehavior(QAbstractItemView::SelectRows);
         teamResultsTreeView->setSelectionMode(QAbstractItemView::SingleSelection);
         teamResultsTreeView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        ResponsiveWindowUtils::configureTreeColumns(teamResultsTreeView);
         ui->tableView_results->hide();
         ui->verticalLayout_tableAndFewOthers->addWidget(teamResultsTreeView, 1);
 
@@ -193,7 +193,7 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
         resultsTableModel = new ResultsTableModel(getType(), manager->getResults(), manager, this);
         resultsTableModel->setStartListStatuses(&manager->getStartListStatusesReference());
         ui->tableView_results->setModel(resultsTableModel);
-        ui->tableView_results->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        ResponsiveWindowUtils::configureTableColumns(ui->tableView_results);
     }
 
 
@@ -647,7 +647,7 @@ void CompetitionManagerWindow::setupGoToNextButtonForNextRound()
                 indManager->setKOManager(KOManager);
                 KOGroupsResultsModel = new KOGroupResultsTableModel(KOManager, &dynamic_cast<IndividualCompetitionManager *>(manager)->getRoundsKOGroupsReference()[manager->getActualRound() - 1]->first(), this);
                 ui->tableView_KOGroupResults->setModel(KOGroupsResultsModel);
-                ui->tableView_KOGroupResults->resizeColumnsToContents();
+                ResponsiveWindowUtils::configureTableColumns(ui->tableView_KOGroupResults);
                 ui->tableView_KOGroupResults->show();
                 startListModel->setKOGroups(KOManager->getGroups());
             }
@@ -842,8 +842,7 @@ void CompetitionManagerWindow::autoSimulateRound()
     if(getType() == CompetitionRules::Individual){
         ui->tableView_results->setModel(nullptr);
         ui->tableView_results->setModel(resultsTableModel);
-        ui->tableView_results->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-        ui->tableView_results->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        ResponsiveWindowUtils::configureTableColumns(ui->tableView_results);
         if(KOManager != nullptr)
         {
             KOManager->updateActualGroup(manager->getActualJumper());
@@ -854,16 +853,14 @@ void CompetitionManagerWindow::autoSimulateRound()
             updateToAdvanceDistanceLabel();
             ui->tableView_KOGroupResults->setModel(nullptr);
             ui->tableView_KOGroupResults->setModel(KOGroupsResultsModel);
-            ui->tableView_KOGroupResults->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-            ui->tableView_KOGroupResults->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+            ResponsiveWindowUtils::configureTableColumns(ui->tableView_KOGroupResults);
         }
     }
     else if(getType() == CompetitionRules::Team){
         teamResultsTreeModel->setupTreeItems();
         teamResultsTreeView->setModel(nullptr);
         teamResultsTreeView->setModel(teamResultsTreeModel);
-        teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::Stretch);
-        teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        ResponsiveWindowUtils::configureTreeColumns(teamResultsTreeView);
         teamResultsTreeView->expandToDepth(0);
     }
 
@@ -980,7 +977,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
                         indManager->setKOManager(KOManager);
                         KOGroupsResultsModel = new KOGroupResultsTableModel(KOManager, &dynamic_cast<IndividualCompetitionManager *>(manager)->getRoundsKOGroupsReference()[0]->first(), this);
                         ui->tableView_KOGroupResults->setModel(KOGroupsResultsModel);
-                        ui->tableView_KOGroupResults->resizeColumnsToContents();
+                        ResponsiveWindowUtils::configureTableColumns(ui->tableView_KOGroupResults);
                         ui->tableView_KOGroupResults->show();
                         startListModel->setKOGroups(KOManager->getGroups());
                     }
@@ -1004,8 +1001,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
     if(getType() == CompetitionRules::Individual){
         ui->tableView_results->setModel(nullptr);
         ui->tableView_results->setModel(resultsTableModel);
-        ui->tableView_results->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-        ui->tableView_results->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        ResponsiveWindowUtils::configureTableColumns(ui->tableView_results);
         if(KOManager != nullptr)
         {
             KOManager->updateActualGroup(manager->getActualJumper());
@@ -1016,16 +1012,14 @@ void CompetitionManagerWindow::autoSimulateCompetition()
             updateToAdvanceDistanceLabel();
             ui->tableView_KOGroupResults->setModel(nullptr);
             ui->tableView_KOGroupResults->setModel(KOGroupsResultsModel);
-            ui->tableView_KOGroupResults->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-            ui->tableView_KOGroupResults->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+            ResponsiveWindowUtils::configureTableColumns(ui->tableView_KOGroupResults);
         }
     }
     else if(getType() == CompetitionRules::Team){
         teamResultsTreeModel->setupTreeItems();
         teamResultsTreeView->setModel(nullptr);
         teamResultsTreeView->setModel(teamResultsTreeModel);
-        teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::Stretch);
-        teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        ResponsiveWindowUtils::configureTreeColumns(teamResultsTreeView);
         teamResultsTreeView->expandToDepth(0);
     }//teams sie psuje kiedy jest ostatnia seria
 
@@ -1102,8 +1096,7 @@ void CompetitionManagerWindow::autoSimulateGroup()
         teamResultsTreeModel->setupTreeItems();
         teamResultsTreeView->setModel(nullptr);
         teamResultsTreeView->setModel(teamResultsTreeModel);
-        teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::Stretch);
-        teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        ResponsiveWindowUtils::configureTreeColumns(teamResultsTreeView);
         teamResultsTreeView->expandToDepth(0);
 
         manager->updateLast10Judges();
@@ -1233,7 +1226,7 @@ void CompetitionManagerWindow::autoSimulateJumps()
                             indManager->setKOManager(KOManager);
                             KOGroupsResultsModel = new KOGroupResultsTableModel(KOManager, &dynamic_cast<IndividualCompetitionManager *>(manager)->getRoundsKOGroupsReference()[0]->first(), this);
                             ui->tableView_KOGroupResults->setModel(KOGroupsResultsModel);
-                            ui->tableView_KOGroupResults->resizeColumnsToContents();
+                            ResponsiveWindowUtils::configureTableColumns(ui->tableView_KOGroupResults);
                             ui->tableView_KOGroupResults->show();
                             startListModel->setKOGroups(KOManager->getGroups());
                         }
@@ -1258,8 +1251,7 @@ void CompetitionManagerWindow::autoSimulateJumps()
         if(getType() == CompetitionRules::Individual){
             ui->tableView_results->setModel(nullptr);
             ui->tableView_results->setModel(resultsTableModel);
-            ui->tableView_results->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-            ui->tableView_results->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+            ResponsiveWindowUtils::configureTableColumns(ui->tableView_results);
             if(KOManager != nullptr)
             {
                 KOManager->updateActualGroup(manager->getActualJumper());
@@ -1270,16 +1262,14 @@ void CompetitionManagerWindow::autoSimulateJumps()
                 updateToAdvanceDistanceLabel();
                 ui->tableView_KOGroupResults->setModel(nullptr);
                 ui->tableView_KOGroupResults->setModel(KOGroupsResultsModel);
-                ui->tableView_KOGroupResults->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-                ui->tableView_KOGroupResults->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+                ResponsiveWindowUtils::configureTableColumns(ui->tableView_KOGroupResults);
             }
         }
         else if(getType() == CompetitionRules::Team){
             teamResultsTreeModel->setupTreeItems();
             teamResultsTreeView->setModel(nullptr);
             teamResultsTreeView->setModel(teamResultsTreeModel);
-            teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::Stretch);
-            teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+            ResponsiveWindowUtils::configureTreeColumns(teamResultsTreeView);
             teamResultsTreeView->expandToDepth(0);
         }
 
@@ -1526,8 +1516,7 @@ void CompetitionManagerWindow::cancelCompetition()
     if(getType() == CompetitionRules::Individual){
         ui->tableView_results->setModel(nullptr);
         ui->tableView_results->setModel(resultsTableModel);
-        ui->tableView_results->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-        ui->tableView_results->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        ResponsiveWindowUtils::configureTableColumns(ui->tableView_results);
         if(KOManager != nullptr)
         {
             KOManager->updateActualGroup(manager->getActualJumper());
@@ -1538,15 +1527,13 @@ void CompetitionManagerWindow::cancelCompetition()
             updateToAdvanceDistanceLabel();
             ui->tableView_KOGroupResults->setModel(nullptr);
             ui->tableView_KOGroupResults->setModel(KOGroupsResultsModel);
-            ui->tableView_KOGroupResults->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-            ui->tableView_KOGroupResults->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+            ResponsiveWindowUtils::configureTableColumns(ui->tableView_KOGroupResults);
         }
     }
     else if(getType() == CompetitionRules::Team){
         teamResultsTreeView->setModel(nullptr);
         teamResultsTreeView->setModel(teamResultsTreeModel);
-        teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::Stretch);
-        teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        ResponsiveWindowUtils::configureTreeColumns(teamResultsTreeView);
         teamResultsTreeView->expandToDepth(0);
     }
 
@@ -1574,8 +1561,7 @@ void CompetitionManagerWindow::cancelActualRound()
     if(getType() == CompetitionRules::Individual){
         ui->tableView_results->setModel(nullptr);
         ui->tableView_results->setModel(resultsTableModel);
-        ui->tableView_results->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-        ui->tableView_results->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        ResponsiveWindowUtils::configureTableColumns(ui->tableView_results);
         if(KOManager != nullptr)
         {
             KOManager->updateActualGroup(manager->getActualJumper());
@@ -1586,15 +1572,13 @@ void CompetitionManagerWindow::cancelActualRound()
             updateToAdvanceDistanceLabel();
             ui->tableView_KOGroupResults->setModel(nullptr);
             ui->tableView_KOGroupResults->setModel(KOGroupsResultsModel);
-            ui->tableView_KOGroupResults->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-            ui->tableView_KOGroupResults->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+            ResponsiveWindowUtils::configureTableColumns(ui->tableView_KOGroupResults);
         }
     }
     else if(getType() == CompetitionRules::Team){
         teamResultsTreeView->setModel(nullptr);
         teamResultsTreeView->setModel(teamResultsTreeModel);
-        teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::Stretch);
-        teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        ResponsiveWindowUtils::configureTreeColumns(teamResultsTreeView);
         teamResultsTreeView->expandToDepth(0);
     }
 
@@ -1710,8 +1694,7 @@ void CompetitionManagerWindow::on_pushButton_jump_clicked()
         resultsTableModel->setLastJumper(manager->getActualJumper());
         ui->tableView_results->setModel(nullptr);
         ui->tableView_results->setModel(resultsTableModel);
-        ui->tableView_results->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-        ui->tableView_results->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        ResponsiveWindowUtils::configureTableColumns(ui->tableView_results);
 
         if(KOManager != nullptr)
         {
@@ -1723,8 +1706,7 @@ void CompetitionManagerWindow::on_pushButton_jump_clicked()
             updateToAdvanceDistanceLabel();
             ui->tableView_KOGroupResults->setModel(nullptr);
             ui->tableView_KOGroupResults->setModel(KOGroupsResultsModel);
-            ui->tableView_KOGroupResults->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-            ui->tableView_KOGroupResults->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+            ResponsiveWindowUtils::configureTableColumns(ui->tableView_KOGroupResults);
         }
     }
     else if(getType() == CompetitionRules::Team){
@@ -1732,8 +1714,7 @@ void CompetitionManagerWindow::on_pushButton_jump_clicked()
         teamResultsTreeModel->setupTreeItems();
         teamResultsTreeView->setModel(nullptr);
         teamResultsTreeView->setModel(teamResultsTreeModel);
-        teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::Stretch);
-        teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        ResponsiveWindowUtils::configureTreeColumns(teamResultsTreeView);
         teamResultsTreeView->expandToDepth(0);
     }
 

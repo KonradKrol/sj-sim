@@ -66,6 +66,10 @@ QVariant KOGroupResultsTableModel::data(const QModelIndex &index, int role) cons
             return QString::number(KOManager->getResults()->getResultOfIndividualJumper(jumper)->getPointsSum());
         }
     }
+    else if(role == Qt::ToolTipRole)
+    {
+        return data(index, Qt::DisplayRole);
+    }
     else if(role == Qt::DecorationRole)
     {
         if(index.column() == 1)

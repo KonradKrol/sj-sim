@@ -74,6 +74,10 @@ QVariant GeneralClassificationTableModel::data(const QModelIndex &index, int rol
                 return teamResults[index.row()].second;
         }
     }
+    else if(role == Qt::ToolTipRole)
+    {
+        return data(index, Qt::DisplayRole);
+    }
     else if(role == Qt::DecorationRole)
     {
         if(index.column() == 1)
