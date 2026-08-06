@@ -146,6 +146,14 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
             ui->pushButton_defaultStartListOrder->hide();
     }
 
+    if(getType() == SingleCompetition)
+    {
+        competitionJumpers = MyFunctions::convertToVectorOfPointers(
+            &GlobalDatabase::get()->getEditableGlobalJumpers());
+        competitionTeams = Team::constructTeamsVectorByJumpersList(
+            competitionJumpers, competitionRulesEditor->getJumpersCountInTeam());
+    }
+
     jumpersListView = new DatabaseItemsListView(DatabaseItemsListView::SeasonJumpersItems, false, true, true, this);
     jumpersListView->getListView()->setSelectionMode(QAbstractItemView::ExtendedSelection);
     jumpersListView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
@@ -302,8 +310,6 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         ui->verticalLayout_competitionOptions->insertWidget(0, checkBox_singleCompetitionQualifications);
 
         setWindowTitle("Konfiguracja pojedynczego konkursu");
-        competitionJumpers = MyFunctions::convertToVectorOfPointers(&GlobalDatabase::get()->getEditableGlobalJumpers());
-        competitionTeams = Team::constructTeamsVectorByJumpersList(competitionJumpers, competitionRulesEditor->getJumpersCountInTeam());
     }
     connect(competitionRulesEditor, &CompetitionRulesEditorWidget::jumpersCountInTeamChanged, this, [this](){
         competitionTeams = Team::constructTeamsVectorByJumpersList(competitionJumpers, competitionRulesEditor->getJumpersCountInTeam());
