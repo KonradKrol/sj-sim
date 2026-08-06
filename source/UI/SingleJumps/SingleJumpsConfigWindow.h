@@ -6,6 +6,8 @@
 class JumperEditorWidget;
 class HillEditorWidget;
 class WindsGeneratorSettingsEditorWidget;
+class QResizeEvent;
+class QSplitter;
 
 namespace Ui {
 class SingleJumpsConfigWindow;
@@ -33,10 +35,17 @@ private slots:
 
 private:
     Ui::SingleJumpsConfigWindow *ui;
+    QSplitter *contentSplitter;
+    bool compactLayout;
 
     JumperEditorWidget * jumperEditor;
     HillEditorWidget * hillEditor;
     WindsGeneratorSettingsEditorWidget * windsGeneratorSettingsEditor;
+
+    void updateResponsiveLayout(int windowWidth);
+
+protected:
+    void resizeEvent(QResizeEvent *event) override;
 
 public:
     int getJumpsCountFromInput();

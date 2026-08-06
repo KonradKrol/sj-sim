@@ -12,6 +12,8 @@
 #include "../EditorWidgets/CompetitionRulesEditorWidget.h"
 
 class DatabaseItemsListView;
+class QResizeEvent;
+class QSplitter;
 
 namespace Ui {
 class NewSeasonConfiguratorDialog;
@@ -32,6 +34,8 @@ private slots:
 
 private:
     Ui::NewSeasonConfiguratorDialog *ui;
+    QVector<QSplitter *> pageSplitters;
+    bool compactLayout;
 
     QVector<Jumper *> jumpers;
     QVector<Hill *> hills;
@@ -59,6 +63,12 @@ private:
     CalendarEditorTableModel * calendarTableModel;
 
     bool nextSeason;
+
+    void createResponsivePageSplitters();
+    void updateResponsiveLayout(int windowWidth);
+
+protected:
+    void resizeEvent(QResizeEvent *event) override;
 
 public:
     QVector<Jumper *> getJumpers() const;

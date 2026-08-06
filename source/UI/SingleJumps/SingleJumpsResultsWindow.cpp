@@ -20,12 +20,16 @@ QT_CHARTS_USE_NAMESPACE
 #include <QAction>
 #include <QInputDialog>
 #include <QItemSelectionModel>
+#include <QResizeEvent>
+#include <QSplitter>
 
 extern Uuid globalIDGenerator;
 
 SingleJumpsResultsWindow::SingleJumpsResultsWindow(SingleJumpsManager *manager, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SingleJumpsResultsWindow),
+    resultsSplitter(nullptr),
+    compactLayout(false),
     manager(manager),
     maxNumberOfDistancesForChart(0),
     maxNumberOfPointsForChart(0),
@@ -36,6 +40,18 @@ SingleJumpsResultsWindow::SingleJumpsResultsWindow(SingleJumpsManager *manager, 
     ui->setupUi(this);
 
     setWindowFlags(Qt::Window);
+    ui->horizontalLayout->removeWidget(ui->tableView);
+    ui->horizontalLayout->removeWidget(ui->toolBox);
+    while(QLayoutItem *item = ui->horizontalLayout->takeAt(0))
+        delete item;
+    resultsSplitter = new QSplitter(Qt::Horizontal, this);
+    resultsSplitter->setObjectName("splitter_singleJumpsResults");
+    resultsSplitter->setChildrenCollapsible(false);
+    resultsSplitter->addWidget(ui->tableView);
+    resultsSplitter->addWidget(ui->toolBox);
+    resultsSplitter->setStretchFactor(0, 1);
+    resultsSplitter->setStretchFactor(1, 1);
+    ui->horizontalLayout->addWidget(resultsSplitter);
     jumpInfoWidget = new JumpDataDetailedInfoWindow(nullptr, this);
     jumpInfoWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     ui->verticalLayout_jumpInfos->addWidget(jumpInfoWidget);
@@ -49,12 +65,35 @@ SingleJumpsResultsWindow::SingleJumpsResultsWindow(SingleJumpsManager *manager, 
     ui->pushButton_sortTable->setToolTip(tr("Zmień kolejność wyników bez utraty wybranego skoku"));
     connect(ui->tableView->selectionModel(), &QItemSelectionModel::currentRowChanged,
             this, [this](const QModelIndex &current){ showJumpDetails(current.row()); });
+    ResponsiveWindowUtils::configureTableColumns(ui->tableView);
+    updateResponsiveLayout(width());
     ResponsiveWindowUtils::manageWindowGeometry(this, "SingleJumpsResultsWindow");
 }
 
 SingleJumpsResultsWindow::~SingleJumpsResultsWindow()
 {
     delete ui;
+}
+
+void SingleJumpsResultsWindow::updateResponsiveLayout(int windowWidth)
+{
+    const bool useCompactLayout = windowWidth < 1000;
+    if(useCompactLayout == compactLayout && resultsSplitter->orientation() ==
+            (compactLayout ? Qt::Vertical : Qt::Horizontal))
+        return;
+
+    compactLayout = useCompactLayout;
+    resultsSplitter->setOrientation(compactLayout ? Qt::Vertical : Qt::Horizontal);
+    if(compactLayout)
+        resultsSplitter->setSizes({qMax(180, height() / 3), qMax(260, height() * 2 / 3)});
+    else
+        resultsSplitter->setSizes({windowWidth / 2, windowWidth / 2});
+}
+
+void SingleJumpsResultsWindow::resizeEvent(QResizeEvent *event)
+{
+    QDialog::resizeEvent(event);
+    updateResponsiveLayout(event->size().width());
 }
 
 void SingleJumpsResultsWindow::fillJumperInfo()

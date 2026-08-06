@@ -11,6 +11,8 @@ class QSplineSeries;
 class QBarSeries;
 }
 class SingleJumpMiniResultWidget;
+class QResizeEvent;
+class QSplitter;
 
 namespace Ui {
 class SingleJumpsResultsWindow;
@@ -58,6 +60,8 @@ private slots:
 
 private:
     Ui::SingleJumpsResultsWindow *ui;
+    QSplitter *resultsSplitter;
+    bool compactLayout;
 
     JumpDataDetailedInfoWindow * jumpInfoWidget;
     SingleJumpsResultsTableModel * model;
@@ -77,6 +81,10 @@ private:
 
     void askForIndexForJumpInformationShow();
     void showJumpDetails(int row);
+    void updateResponsiveLayout(int windowWidth);
+
+protected:
+    void resizeEvent(QResizeEvent *event) override;
 };
 
 #endif // SINGLEJUMPSRESULTSWINDOW_H

@@ -4,6 +4,7 @@
 #include "../EditorWidgets/JumperEditorWidget.h"
 #include "../EditorWidgets/HillEditorWidget.h"
 #include "../EditorWidgets/WindsGeneratorSettingsEditorWidget.h"
+#include "../ResponsiveWindowUtils.h"
 
 #include "../../global/GlobalDatabase.h"
 #include "../../global/CountryFlagsManager.h"
@@ -14,13 +15,47 @@
 #include <QScrollArea>
 #include <QCloseEvent>
 #include <QMessageBox>
+#include <QResizeEvent>
+#include <QSplitter>
 
 SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::SingleJumpsConfigWindow)
+    ui(new Ui::SingleJumpsConfigWindow),
+    contentSplitter(nullptr),
+    compactLayout(false)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::Window);
+
+    ui->horizontalLayout_underTitle->removeWidget(ui->toolBox);
+    ui->horizontalLayout_underTitle->removeItem(ui->verticalLayout_singleJumpsSettings);
+    while(QLayoutItem *item = ui->horizontalLayout_underTitle->takeAt(0))
+        delete item;
+
+    QWidget *settingsPanel = new QWidget(this);
+    ui->verticalLayout_singleJumpsSettings->setParent(nullptr);
+    settingsPanel->setLayout(ui->verticalLayout_singleJumpsSettings);
+    ui->verticalLayout_singleJumpsSettings->removeWidget(ui->pushButton_submit);
+
+    QScrollArea *editorScrollArea = new QScrollArea(this);
+    editorScrollArea->setWidgetResizable(true);
+    editorScrollArea->setFrameShape(QFrame::NoFrame);
+    editorScrollArea->setWidget(ui->toolBox);
+
+    QScrollArea *settingsScrollArea = new QScrollArea(this);
+    settingsScrollArea->setWidgetResizable(true);
+    settingsScrollArea->setFrameShape(QFrame::NoFrame);
+    settingsScrollArea->setWidget(settingsPanel);
+
+    contentSplitter = new QSplitter(Qt::Horizontal, this);
+    contentSplitter->setObjectName("splitter_singleJumpsConfiguration");
+    contentSplitter->setChildrenCollapsible(false);
+    contentSplitter->addWidget(editorScrollArea);
+    contentSplitter->addWidget(settingsScrollArea);
+    contentSplitter->setStretchFactor(0, 3);
+    contentSplitter->setStretchFactor(1, 2);
+    ui->horizontalLayout_underTitle->addWidget(contentSplitter);
+    ui->verticalLayout_5->addWidget(ui->pushButton_submit);
     ui->spinBox_dsqProbability->setValue(GlobalSimulationSettings::get()->getBaseDsqProbability());
     ui->pushButton_submit->setDefault(true);
     ui->pushButton_submit->setToolTip(tr("Rozpocznij symulację z aktualnymi ustawieniami (Enter)"));
@@ -78,6 +113,8 @@ SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent) :
     };
     connect(ui->checkBox_hasWindCompensation, &QCheckBox::toggled, this, updateWindCompensationInputs);
     updateWindCompensationInputs();
+    updateResponsiveLayout(width());
+    ResponsiveWindowUtils::manageWindowGeometry(this, "SingleJumpsConfigWindow");
 }
 
 SingleJumpsConfigWindow::~SingleJumpsConfigWindow()
@@ -86,6 +123,27 @@ SingleJumpsConfigWindow::~SingleJumpsConfigWindow()
     delete hillEditor;
     delete windsGeneratorSettingsEditor;
     delete ui;
+}
+
+void SingleJumpsConfigWindow::updateResponsiveLayout(int windowWidth)
+{
+    const bool useCompactLayout = windowWidth < 900;
+    if(useCompactLayout == compactLayout && contentSplitter->orientation() ==
+            (compactLayout ? Qt::Vertical : Qt::Horizontal))
+        return;
+
+    compactLayout = useCompactLayout;
+    contentSplitter->setOrientation(compactLayout ? Qt::Vertical : Qt::Horizontal);
+    if(compactLayout)
+        contentSplitter->setSizes({qMax(260, height() * 3 / 5), 220});
+    else
+        contentSplitter->setSizes({qMax(480, windowWidth * 3 / 5), 320});
+}
+
+void SingleJumpsConfigWindow::resizeEvent(QResizeEvent *event)
+{
+    QDialog::resizeEvent(event);
+    updateResponsiveLayout(event->size().width());
 }
 
 void SingleJumpsConfigWindow::on_comboBox_existingJumper_currentIndexChanged(int index)
