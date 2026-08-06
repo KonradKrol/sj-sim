@@ -1,5 +1,6 @@
 #include "WindsGeneratorSettingsEditorWidget.h"
 #include "ui_WindsGeneratorSettingsEditorWidget.h"
+#include "../ResponsiveWindowUtils.h"
 
 #include "WindsGeneratorSettingsWidgetInputItem.h"
 #include "../../simulator/wind-generation/WindGenerationSettings.h"
@@ -109,13 +110,13 @@ void WindsGeneratorSettingsEditorWidget::askForSettingsForFillAll()
         dialog.setWindowFlags(Qt::Window);
         dialog.setWindowTitle(tr("Wypełnij podanym ustawieniem"));
         dialog.setStyleSheet("background-color: rgb(225, 225, 225);");
-        dialog.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-        dialog.setFixedSize(dialog.size());
+        dialog.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         dialog.setLayout(new QVBoxLayout(&dialog));
         WindsGeneratorSettingsWidgetInputItem * item = new WindsGeneratorSettingsWidgetInputItem(&dialog);
-        dialog.layout()->addWidget(item);
+        ResponsiveWindowUtils::addScrollableContent(&dialog, item);
 
         connect(item, &WindsGeneratorSettingsWidgetInputItem::submitted, &dialog, &QDialog::accept);
+        ResponsiveWindowUtils::fitToAvailableScreen(&dialog, QSize(460, 520));
         if(dialog.exec() == QDialog::Accepted)
         {
             int widgetsCount = ui->toolBox->count();

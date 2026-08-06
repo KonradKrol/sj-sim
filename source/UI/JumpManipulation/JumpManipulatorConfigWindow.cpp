@@ -1,5 +1,6 @@
 #include "JumpManipulatorConfigWindow.h"
 #include "ui_JumpManipulatorConfigWindow.h"
+#include "../ResponsiveWindowUtils.h"
 
 #include "../EditorWidgets/WindsGeneratorSettingsEditorWidget.h"
 
@@ -82,18 +83,18 @@ void JumpManipulatorConfigWindow::on_pushButton_editWinds_clicked()
     dialog.setWindowFlags(Qt::Window);
     dialog.setWindowTitle(tr("Edytuj wiatr"));
     dialog.setStyleSheet("background-color: rgb(225, 225, 225);");
-    dialog.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    dialog.setFixedSize(dialog.size());
+    dialog.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     dialog.setLayout(new QVBoxLayout(&dialog));
 
     WindsGeneratorSettingsEditorWidget * windsEditor = new WindsGeneratorSettingsEditorWidget(&dialog);
     windsEditor->setKPoint(this->getKPoint());
     windsEditor->setWindGenerationSettings(this->windGenerationSettings);
     windsEditor->fillSettingsInputsToExactWindsEditor();
-    dialog.layout()->addWidget(windsEditor);
+    ResponsiveWindowUtils::addScrollableContent(&dialog, windsEditor);
     dialog.raise();
 
     connect(windsEditor, &WindsGeneratorSettingsEditorWidget::submitted, &dialog, &QDialog::accept);
+    ResponsiveWindowUtils::fitToAvailableScreen(&dialog, QSize(560, 640));
     if(dialog.exec() == QDialog::Accepted){
         this->exactWinds = windsEditor->getExactWindsFromInputs();
     }

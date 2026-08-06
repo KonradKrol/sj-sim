@@ -147,6 +147,7 @@ SOURCES += \
     source/utilities/functions.cpp
 
 HEADERS += \
+    source/UI/ResponsiveWindowUtils.h \
     source/UI/AppSettings/CountriesEditorTableModel.h \
     source/UI/AppSettings/CountriesEditorWindow.h \
     source/UI/AppSettings/JumpDataInfoChoiceDialog.h \

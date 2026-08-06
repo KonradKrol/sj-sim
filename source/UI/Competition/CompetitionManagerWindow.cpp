@@ -12,6 +12,7 @@
 #include "../EditorWidgets/InrunSnowGeneratorSettingsEditorWidget.h"
 #include "../EditorWidgets/KOSystem/KOGroupsListView.h"
 #include "../JumpManipulation/JumpManipulatorConfigWindow.h"
+#include "../ResponsiveWindowUtils.h"
 #include <QInputDialog>
 #include <QComboBox>
 #include <QDialogButtonBox>
@@ -1829,7 +1830,6 @@ void CompetitionManagerWindow::on_pushButton_windsGeneratorSettings_clicked()
     dialog.setWindowTitle("Edytuj ustawienia generatora wiatru");
     dialog.setStyleSheet("background-color: rgb(225, 225, 225);");
     dialog.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    dialog.setFixedSize(dialog.size());
     dialog.setLayout(new QVBoxLayout(&dialog));
 
     WindsGeneratorSettingsEditorWidget * editor = new WindsGeneratorSettingsEditorWidget(&dialog);
@@ -1839,8 +1839,9 @@ void CompetitionManagerWindow::on_pushButton_windsGeneratorSettings_clicked()
     editor->setSettingsCount(WindsGenerator::calculateWindsCountByKPoint(editor->getKPoint()));
     editor->fillSettingsInputs();
 
-    dialog.layout()->addWidget(editor);
+    ResponsiveWindowUtils::addScrollableContent(&dialog, editor);
     connect(editor, &WindsGeneratorSettingsEditorWidget::submitted, &dialog, &QDialog::accept);
+    ResponsiveWindowUtils::fitToAvailableScreen(&dialog, QSize(560, 640));
 
     if(dialog.exec() == QDialog::Accepted){
         manager->setWindGenerationSettings(editor->getWindsGenerationSettingsFromInputs());
@@ -1856,15 +1857,15 @@ void CompetitionManagerWindow::on_pushButton_inrunSnowGeneratorSettings_clicked(
     dialog.setWindowTitle(tr("Edytuj ustawienia śniegu na rozbiegu"));
     dialog.setStyleSheet("background-color: rgb(225, 225, 225);");
     dialog.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    dialog.setFixedSize(dialog.size());
     dialog.setLayout(new QVBoxLayout(&dialog));
 
     InrunSnowGeneratorSettingsEditorWidget * editor = new InrunSnowGeneratorSettingsEditorWidget(&dialog);
     editor->setGenerator(&inrunSnowGenerator);
     editor->fillInputs();
 
-    dialog.layout()->addWidget(editor);
+    ResponsiveWindowUtils::addScrollableContent(&dialog, editor);
     connect(editor, &InrunSnowGeneratorSettingsEditorWidget::submitted, &dialog, &QDialog::accept);
+    ResponsiveWindowUtils::fitToAvailableScreen(&dialog, QSize(460, 420));
 
     if(dialog.exec() == QDialog::Accepted){
         inrunSnowGenerator.setBaseInrunSnow(editor->getBase());
