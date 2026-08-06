@@ -113,7 +113,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Kalendarz</string>
+            <string>Kalendarz:</string>
            </property>
           </widget>
          </item>
@@ -306,7 +306,7 @@ background-color: rgb(249, 255, 241);
            <number>0</number>
           </property>
           <item>
-           <widget class="QToolBox" name="toolBox">
+           <widget class="QTabWidget" name="toolBox">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -331,7 +331,7 @@ background-color: rgb(249, 255, 241);
             <height>632</height>
            </rect>
           </property>
-          <attribute name="label">
+          <attribute name="title">
            <string>Zawodnicy</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_13">
@@ -406,7 +406,7 @@ background-color: rgb(255, 223, 189);
             <height>632</height>
            </rect>
           </property>
-          <attribute name="label">
+          <attribute name="title">
            <string>Skocznie</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -444,7 +444,7 @@ background-color: rgb(255, 223, 189);
             <height>632</height>
            </rect>
           </property>
-          <attribute name="label">
+          <attribute name="title">
            <string>Zasady konkursów (presety)</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -482,7 +482,7 @@ background-color: rgb(255, 223, 189);
             <height>632</height>
            </rect>
           </property>
-          <attribute name="label">
+          <attribute name="title">
            <string>Kalendarz</string>
           </attribute>
           <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="0,0,1">
@@ -600,7 +600,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <height>632</height>
            </rect>
           </property>
-          <attribute name="label">
+          <attribute name="title">
            <string>Klasyfikacje</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -638,7 +638,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <height>632</height>
            </rect>
           </property>
-          <attribute name="label">
+          <attribute name="title">
            <string>Listy zawodników</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_16">
@@ -656,7 +656,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <height>632</height>
            </rect>
           </property>
-          <attribute name="label">
+          <attribute name="title">
            <string>Archiwum</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -713,7 +713,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             </layout>
            </item>
            <item>
-            <widget class="QToolBox" name="toolBox_2">
+             <widget class="QTabWidget" name="toolBox_2">
              <property name="currentIndex">
               <number>1</number>
              </property>
@@ -726,7 +726,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <height>88</height>
                </rect>
               </property>
-              <attribute name="label">
+              <attribute name="title">
                <string>Konkursy</string>
               </attribute>
               <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -744,7 +744,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <height>522</height>
                </rect>
               </property>
-              <attribute name="label">
+              <attribute name="title">
                <string>Klasyfikacje</string>
               </attribute>
               <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -777,7 +777,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <height>632</height>
            </rect>
           </property>
-          <attribute name="label">
+          <attribute name="title">
            <string>Ustawienia zapisu symulacji</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_15">
@@ -851,7 +851,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <item>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <layout class="QVBoxLayout" name="verticalLayout_nextCompetitionHeading">
              <item>
               <widget class="QLabel" name="label_3">
                <property name="sizePolicy">
@@ -875,7 +875,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                <property name="font">
                 <font>
                  <family>Quicksand SemiBold</family>
-                 <pointsize>19</pointsize>
+                 <pointsize>16</pointsize>
                 </font>
                </property>
                <property name="styleSheet">
@@ -890,7 +890,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_nextCompetitionIndexAndHill">
+              <layout class="QHBoxLayout" name="horizontalLayout_6">
+               <item>
+                <widget class="QLabel" name="label_nextCompetitionIndexAndHill">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -906,7 +908,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>31</height>
+                 <height>60</height>
                 </size>
                </property>
                <property name="font">
@@ -918,8 +920,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                <property name="text">
                 <string>1. Zakopane HS140</string>
                </property>
-              </widget>
-             </item>
+                </widget>
+               </item>
              <item>
               <spacer name="horizontalSpacer_10">
                <property name="orientation">
@@ -960,6 +962,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <string>&lt;Flaga&gt;</string>
                </property>
               </widget>
+              </item>
+             </layout>
              </item>
             </layout>
            </item>
@@ -1019,7 +1023,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
-                 <width>70</width>
+                 <width>20</width>
                  <height>20</height>
                 </size>
                </property>
@@ -1080,7 +1084,7 @@ background-color: rgb(255, 255, 222);
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
-                 <width>70</width>
+                 <width>20</width>
                  <height>20</height>
                 </size>
                </property>

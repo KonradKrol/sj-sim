@@ -85,6 +85,7 @@ private:
     void saveSimulationSettings();
     void updateResponsiveLayout(int windowWidth);
     bool compactLayout = false;
+    bool headerActionsWrapped = false;
 
 public:
     SimulationSave *getSimulationSave() const;

@@ -34,6 +34,7 @@
 #include <QLabel>
 #include <QResizeEvent>
 #include <QSplitter>
+#include <QTabWidget>
 
 SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, QWidget *parent) :
     QDialog(parent),
@@ -46,6 +47,27 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     ui->splitter_manager->setStretchFactor(0, 4);
     ui->splitter_manager->setStretchFactor(1, 1);
     ui->splitter_manager->setSizes({980, 300});
+    ui->verticalLayout_4->setStretch(0, 0);
+    ui->verticalLayout_4->setStretch(1, 1);
+    ui->gridLayout_header->setVerticalSpacing(8);
+    ui->label_saveName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    const QList<QPushButton *> headerButtons = {
+        ui->pushButton_formGenerator,
+        ui->pushButton,
+        ui->pushButton_saveToFile,
+        ui->pushButton_saveAsCopy,
+        ui->pushButton_repairDatabase
+    };
+    for(QPushButton *button : headerButtons)
+    {
+        button->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        button->setFixedHeight(42);
+    }
+    ui->label_3->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    ui->label_nextCompetitionIndexAndHill->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    ui->label_nextCompetitionIndexAndHill->setWordWrap(true);
+    ui->label_nextCompetitionIndexAndHill->setAlignment(Qt::AlignCenter);
+    ui->pushButton_competitionConfig->setMaximumHeight(46);
 
     // Calendar data loaded from older saves may contain a missing or stale hill
     // reference. Repair it before any widget or diagnostic code dereferences it.
@@ -68,7 +90,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         ui->label_calendarName->setText(tr("BRAK"));
     ui->comboBox_archiveSeason->setCurrentIndex(0);
 
-    connect(ui->toolBox, &QToolBox::currentChanged, this, [this](){
+    connect(ui->toolBox, &QTabWidget::currentChanged, this, [this](){
         if(ui->toolBox->currentIndex() == 0 || ui->toolBox->currentIndex() == 1)
         {
             QTimer::singleShot(200, this, [this](){
@@ -397,11 +419,34 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
 
 void SimulationSaveManagerWindow::updateResponsiveLayout(int windowWidth)
 {
-    const bool useCompactLayout = windowWidth < 1100;
-    if(useCompactLayout == compactLayout)
+    const bool useCompactLayout = windowWidth < 700;
+    const bool wrapHeaderActions = windowWidth < 900;
+    if(useCompactLayout == compactLayout && wrapHeaderActions == headerActionsWrapped)
         return;
 
     compactLayout = useCompactLayout;
+    headerActionsWrapped = wrapHeaderActions;
+    ui->gridLayout_header->removeWidget(ui->pushButton_formGenerator);
+    ui->gridLayout_header->removeWidget(ui->pushButton);
+    ui->gridLayout_header->removeWidget(ui->pushButton_saveToFile);
+    ui->gridLayout_header->removeWidget(ui->pushButton_saveAsCopy);
+    ui->gridLayout_header->removeWidget(ui->pushButton_repairDatabase);
+    if(headerActionsWrapped)
+    {
+        ui->gridLayout_header->addWidget(ui->pushButton_formGenerator, 1, 0);
+        ui->gridLayout_header->addWidget(ui->pushButton, 1, 1);
+        ui->gridLayout_header->addWidget(ui->pushButton_saveToFile, 2, 0);
+        ui->gridLayout_header->addWidget(ui->pushButton_saveAsCopy, 2, 1);
+        ui->gridLayout_header->addWidget(ui->pushButton_repairDatabase, 2, 2);
+    }
+    else
+    {
+        ui->gridLayout_header->addWidget(ui->pushButton_formGenerator, 1, 0);
+        ui->gridLayout_header->addWidget(ui->pushButton, 1, 1);
+        ui->gridLayout_header->addWidget(ui->pushButton_saveToFile, 1, 2);
+        ui->gridLayout_header->addWidget(ui->pushButton_saveAsCopy, 1, 3);
+        ui->gridLayout_header->addWidget(ui->pushButton_repairDatabase, 1, 4);
+    }
     ui->splitter_manager->setOrientation(compactLayout ? Qt::Vertical : Qt::Horizontal);
     if(compactLayout)
         ui->splitter_manager->setSizes({qMax(260, height() * 2 / 3), 180});
