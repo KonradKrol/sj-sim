@@ -24,6 +24,7 @@
 #include <QJsonArray>
 #include <QMessageBox>
 #include <QByteArray>
+#include <exception>
 extern IdentifiableObjectsStorage seasonObjectsManager;
 extern const QString appVersion;
 
@@ -241,6 +242,8 @@ QString CompetitionInfo::getSingleResultsTextForWebhook(AbstractCompetitionManag
     CompetitionResults * res = &comp->getResultsReference();
 
     QString fullstring;
+    if(comp->getRulesPointer() == nullptr)
+        return QObject::tr("Brak zasad konkursu\n");
     if(comp->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
     {
         for(auto & sr : res->getResultsReference())
@@ -269,6 +272,8 @@ QString CompetitionInfo::getSingleResultsTextForWebhook(AbstractCompetitionManag
                     }
                 }
             }
+            if(sr.getJumper() == nullptr)
+                continue;
             s += koEmoji + QString::number(sr.getPosition()) + ". " + sr.getJumper()->getTextForDiscord() + ": ";
             int i=0;
             for(auto & jump : sr.getJumpsReference()){
@@ -285,11 +290,18 @@ QString CompetitionInfo::getSingleResultsTextForWebhook(AbstractCompetitionManag
     {
         for(auto & sr : res->getResultsReference())
         {
-            QString ss = "__" + GlobalDatabase::get()->getCountryByAlpha3(sr.getTeam()->getCountryCode())->getName() + QString(" :flag_%1:").arg(GlobalDatabase::get()->getCountryByAlpha3(sr.getTeam()->getCountryCode())->getAlpha2().toLower()) + QString("__** --> %1**\n").arg(QString::number(sr.getPointsSum(), 'f', 1) + QObject::tr("pkt"));
+            if(sr.getTeam() == nullptr)
+                continue;
+            Country *country = GlobalDatabase::get()->getCountryByAlpha3(sr.getTeam()->getCountryCode());
+            const QString countryName = country != nullptr ? country->getName() : sr.getTeam()->getCountryCode();
+            const QString flagCode = country != nullptr ? country->getAlpha2().toLower() : QString();
+            QString ss = "__" + countryName + QString(" :flag_%1:").arg(flagCode) + QString("__** --> %1**\n").arg(QString::number(sr.getPointsSum(), 'f', 1) + QObject::tr("pkt"));
             fullstring += ss;
             for(auto & tjr : sr.getTeamJumpersResultsReference())
             {
                 QString s;
+                if(tjr.getJumper() == nullptr)
+                    continue;
                 s = tjr.getJumper()->getNameAndSurname() + ": ";
                 int i=0;
                 for(auto & jump : tjr.getJumpsReference())
@@ -310,6 +322,12 @@ dpp::message CompetitionInfo::getResultsWebhookMessage(AbstractCompetitionManage
 {
     dpp::message message;
 
+    if(getRulesPointer() == nullptr)
+    {
+        message.content = QObject::tr("Nie można wysłać wyników: brak zasad konkursu.").toStdString();
+        return message;
+    }
+
     QString typeText;
     QString koRoundText;
     if(getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
@@ -327,7 +345,8 @@ dpp::message CompetitionInfo::getResultsWebhookMessage(AbstractCompetitionManage
         }
     }
 
-    QString title = "**" + getHill()->getHillTextForDiscord() + " - " + getLongSerieTypeText() + " " + typeText + " " + koRoundText + "**";
+    const QString hillText = getHill() != nullptr ? getHill()->getHillTextForDiscord() : QObject::tr("Brak skoczni");
+    QString title = "**" + hillText + " - " + getLongSerieTypeText() + " " + typeText + " " + koRoundText + "**";
     QString description;
 
     if(manager != nullptr)
@@ -359,17 +378,29 @@ dpp::message CompetitionInfo::getResultsWebhookMessage(AbstractCompetitionManage
 
 void CompetitionInfo::sendResultsWebhook(AbstractCompetitionManager * manager)
 {
-    dpp::message msg = getResultsWebhookMessage(manager);
-    std::string content = msg.content;
-    int i = 0;
-    while (!content.empty())
+    const QString webhookUrl = GlobalAppSettings::get()->getCompetitionResultsWebhook().trimmed();
+    if(webhookUrl.isEmpty())
+        return;
+    try
     {
-        dpp::cluster bot("");
-        dpp::webhook wh(GlobalAppSettings::get()->getCompetitionResultsWebhook().toStdString());
-        std::string newContent = content.substr(0, std::min(2000, int(content.length())));
-        content.replace(0, newContent.length(), "");
-        bot.execute_webhook(wh, dpp::message(newContent));
-        i++;
+        dpp::message msg = getResultsWebhookMessage(manager);
+        std::string content = msg.content;
+        while (!content.empty())
+        {
+            dpp::cluster bot("");
+            dpp::webhook wh(webhookUrl.toStdString());
+            std::string newContent = content.substr(0, std::min(2000, int(content.length())));
+            content.replace(0, newContent.length(), "");
+            bot.execute_webhook(wh, dpp::message(newContent));
+        }
+    }
+    catch(const std::exception &error)
+    {
+        qWarning() << "Competition webhook failed:" << error.what();
+    }
+    catch(...)
+    {
+        qWarning() << "Competition webhook failed with an unknown error";
     }
 
 }

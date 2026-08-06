@@ -6,6 +6,7 @@
 #include "../../global/GlobalDatabase.h"
 #include "../../utilities/functions.h"
 #include <dpp/dpp.h>
+#include <exception>
 
 extern const QString appVersion;
 
@@ -216,11 +217,25 @@ void JumpDataDetailedInfoWindow::on_pushButton_clicked()
         || (!jumpData->getInSingleJumps() && jumpData->getCompetition() == nullptr))
         return;
 
-    dpp::cluster bot("");
-    dpp::webhook wh(GlobalAppSettings::get()->getJumpInfoWebhook().toStdString());
-    dpp::message msg;
-    msg.add_embed(getEmbedForJumpInfo());
-    bot.execute_webhook(wh, msg);
+    const QString webhookUrl = GlobalAppSettings::get()->getJumpInfoWebhook().trimmed();
+    if(webhookUrl.isEmpty())
+        return;
+    try
+    {
+        dpp::cluster bot("");
+        dpp::webhook wh(webhookUrl.toStdString());
+        dpp::message msg;
+        msg.add_embed(getEmbedForJumpInfo());
+        bot.execute_webhook(wh, msg);
+    }
+    catch(const std::exception &error)
+    {
+        qWarning() << "Jump webhook failed:" << error.what();
+    }
+    catch(...)
+    {
+        qWarning() << "Jump webhook failed with an unknown error";
+    }
 }
 
 dpp::embed JumpDataDetailedInfoWindow::getEmbedForJumpInfo()

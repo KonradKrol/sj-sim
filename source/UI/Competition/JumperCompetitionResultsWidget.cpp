@@ -6,6 +6,7 @@
 #include "../../global/GlobalAppSettings.h"
 #include "../../competitions/CompetitionInfo.h"
 #include <dpp/dpp.h>
+#include <exception>
 
 JumperCompetitionResultsWidget::JumperCompetitionResultsWidget(QWidget *parent) :
     QWidget(parent),
@@ -87,15 +88,34 @@ void JumperCompetitionResultsWidget::setJumperResult(CompetitionSingleResult *ne
 
 void JumperCompetitionResultsWidget::on_pushButton_sendWebhook_clicked()
 {
-    dpp::cluster bot("");
-    dpp::webhook wh(GlobalAppSettings::get()->getCompetitionSingleResultWebhook().toStdString());
-    dpp::message msg;
-    if(jumperResult->getCompetition()->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
-        msg.add_embed(jumperResult->getEmbedForIndividualSingleCompResult());
-    else
+    if(jumperResult == nullptr || jumperResult->getJumper() == nullptr
+        || jumperResult->getCompetition() == nullptr || jumperResult->getCompetition()->getRulesPointer() == nullptr)
+        return;
+    const QString webhookUrl = GlobalAppSettings::get()->getCompetitionSingleResultWebhook().trimmed();
+    if(webhookUrl.isEmpty())
+        return;
+    try
     {
-        CompetitionSingleResult * teamResult = jumperResult->getCompetition()->getResultsReference().getResultOfTeam(Team::getTeamByCountryCode(&jumperResult->getCompetition()->getTeamsReference(), jumperResult->getJumper()->getCountryCode()));
-        msg.add_embed(teamResult->getEmbedForTeamSingleCompResult());
+        dpp::cluster bot("");
+        dpp::webhook wh(webhookUrl.toStdString());
+        dpp::message msg;
+        if(jumperResult->getCompetition()->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
+            msg.add_embed(jumperResult->getEmbedForIndividualSingleCompResult());
+        else
+        {
+            CompetitionSingleResult * teamResult = jumperResult->getCompetition()->getResultsReference().getResultOfTeam(Team::getTeamByCountryCode(&jumperResult->getCompetition()->getTeamsReference(), jumperResult->getJumper()->getCountryCode()));
+            if(teamResult == nullptr)
+                return;
+            msg.add_embed(teamResult->getEmbedForTeamSingleCompResult());
+        }
+        bot.execute_webhook(wh, msg);
     }
-    bot.execute_webhook(wh, msg);
+    catch(const std::exception &error)
+    {
+        qWarning() << "Single-result webhook failed:" << error.what();
+    }
+    catch(...)
+    {
+        qWarning() << "Single-result webhook failed with an unknown error";
+    }
 }

@@ -11,6 +11,8 @@
 #include "../global/MyRandom.h"
 #include "../global/GlobalAppSettings.h"
 #include <QtConcurrent>
+#include <QDebug>
+#include <exception>
 
 extern const QString appVersion;
 
@@ -314,7 +316,12 @@ QString Classification::getSingleResultsTextForWebhook()
         for(auto & res : results)
         {
             if(res->getPointsSum() != 0)
-            s += QString::number(res->getPosition()) + ". " + GlobalDatabase::get()->getCountryByAlpha3(res->getTeamCode())->getName() + QString(" :flag_%1:").arg(GlobalDatabase::get()->getCountryByAlpha3(res->getTeamCode())->getAlpha2().toLower()) + " -> " + QString::number(res->getPointsSum(), 'f', 1) + QObject::tr("pkt") + "\n";
+            {
+                Country *country = GlobalDatabase::get()->getCountryByAlpha3(res->getTeamCode());
+                const QString countryName = country != nullptr ? country->getName() : res->getTeamCode();
+                const QString flagCode = country != nullptr ? country->getAlpha2().toLower() : QString();
+                s += QString::number(res->getPosition()) + ". " + countryName + QString(" :flag_%1:").arg(flagCode) + " -> " + QString::number(res->getPointsSum(), 'f', 1) + QObject::tr("pkt") + "\n";
+            }
         }
     }
 
@@ -325,20 +332,22 @@ dpp::message Classification::getMessageForResultsWebhook(SimulationSave * save)
 {
     dpp::message msg;
 
-    SeasonCalendar * cal;
+    SeasonCalendar * cal = nullptr;
+    if(save != nullptr)
     for(auto & season : save->getSeasonsReference())
         for(auto & c : season.getCalendarsReference())
-            if(c->getClassificationsReference().contains(this))
+            if(c != nullptr && c->getClassificationsReference().contains(this))
             {
                 cal = c;
                 break;
             }
     int howMany = 0;
-    int played;
+    int played = 0;
+    if(cal != nullptr)
     for(auto & comp : cal->getCompetitionsReference())
     {
 
-        if(comp->getClassificationsReference().contains(this))
+        if(comp != nullptr && comp->getClassificationsReference().contains(this))
         {
             howMany++;
             if(comp->getPlayed() == true)
@@ -362,17 +371,29 @@ dpp::message Classification::getMessageForResultsWebhook(SimulationSave * save)
 
 void Classification::sendResultsWebhook(SimulationSave * save)
 {
-    dpp::message message = getMessageForResultsWebhook(save);
-    std::string content = message.content;
-    int i = 0;
-    while (!content.empty())
+    const QString webhookUrl = GlobalAppSettings::get()->getClassificationResultsWebhook().trimmed();
+    if(webhookUrl.isEmpty())
+        return;
+    try
     {
-        dpp::cluster bot("");
-        dpp::webhook wh(GlobalAppSettings::get()->getCompetitionResultsWebhook().toStdString());
-        std::string newContent = content.substr(0, std::min(2000, int(content.length())));
-        content.replace(0, newContent.length(), "");
-        bot.execute_webhook(wh, dpp::message(newContent));
-        i++;
+        dpp::message message = getMessageForResultsWebhook(save);
+        std::string content = message.content;
+        while (!content.empty())
+        {
+            dpp::cluster bot("");
+            dpp::webhook wh(webhookUrl.toStdString());
+            std::string newContent = content.substr(0, std::min(2000, int(content.length())));
+            content.replace(0, newContent.length(), "");
+            bot.execute_webhook(wh, dpp::message(newContent));
+        }
+    }
+    catch(const std::exception &error)
+    {
+        qWarning() << "Classification webhook failed:" << error.what();
+    }
+    catch(...)
+    {
+        qWarning() << "Classification webhook failed with an unknown error";
     }
 }
 
