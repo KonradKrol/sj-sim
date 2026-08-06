@@ -25,8 +25,9 @@ AppSettingsWindow::AppSettingsWindow(QWidget *parent) :
     ui(new Ui::AppSettingsWindow)
 {
     ui->setupUi(this);
-    setFixedSize(size());
     setWindowFlags(Qt::Window);
+    setMinimumSize(360, 360);
+    setSizeGripEnabled(true);
 
     ui->spinBox_skillsRange->setValue(GlobalSimulationSettings::get()->getMaxSkills());
     ui->spinBox_dsqProbability->setValue(GlobalSimulationSettings::get()->getBaseDsqProbability());
