@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1405</width>
-    <height>1003</height>
+    <width>1280</width>
+    <height>680</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,8 +20,8 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_4">
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <item>
+      <layout class="QGridLayout" name="gridLayout_header">
+       <item row="0" column="0" colspan="5">
         <layout class="QFormLayout" name="formLayout">
          <item row="0" column="0">
           <widget class="QLabel" name="label">
@@ -129,7 +129,7 @@
          </item>
         </layout>
        </item>
-       <item>
+       <item row="0" column="5">
         <spacer name="horizontalSpacer_12">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -145,7 +145,7 @@
          </property>
         </spacer>
        </item>
-       <item>
+       <item row="1" column="0">
         <widget class="QPushButton" name="pushButton_formGenerator">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -177,7 +177,7 @@ background-color: rgb(255, 228, 228);
          </property>
         </widget>
        </item>
-       <item>
+       <item row="1" column="1">
         <widget class="QPushButton" name="pushButton">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -208,7 +208,7 @@ background-color: rgb(249, 255, 241);
          </property>
         </widget>
        </item>
-       <item>
+       <item row="1" column="2">
         <widget class="QPushButton" name="pushButton_saveToFile">
          <property name="font">
           <font>
@@ -221,7 +221,7 @@ background-color: rgb(249, 255, 241);
          </property>
         </widget>
        </item>
-       <item>
+       <item row="1" column="3">
         <widget class="QPushButton" name="pushButton_saveAsCopy">
          <property name="font">
           <font>
@@ -234,7 +234,7 @@ background-color: rgb(249, 255, 241);
          </property>
         </widget>
        </item>
-       <item>
+       <item row="1" column="4">
         <widget class="QPushButton" name="pushButton_repairDatabase">
          <property name="font">
           <font>
@@ -247,7 +247,7 @@ background-color: rgb(249, 255, 241);
          </property>
         </widget>
        </item>
-       <item>
+       <item row="1" column="5">
         <spacer name="horizontalSpacer_11">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -263,9 +263,44 @@ background-color: rgb(249, 255, 241);
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="1,0,0">
-       <item>
-        <widget class="QToolBox" name="toolBox">
+      <widget class="QSplitter" name="splitter_manager">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="childrenCollapsible">
+        <bool>false</bool>
+       </property>
+       <widget class="QScrollArea" name="scrollArea_workspace">
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents_workspace">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>920</width>
+           <height>560</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_workspace">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QToolBox" name="toolBox">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -782,26 +817,27 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </item>
           </layout>
          </widget>
+           </widget>
+          </item>
+         </layout>
         </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_9">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+       </widget>
+       <widget class="QWidget" name="panel_nextCompetition">
+        <layout class="QVBoxLayout" name="verticalLayout_nextCompetitionPanel">
+         <property name="leftMargin">
+          <number>0</number>
          </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Maximum</enum>
+         <property name="topMargin">
+          <number>0</number>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>30</width>
-           <height>20</height>
-          </size>
+         <property name="rightMargin">
+          <number>0</number>
          </property>
-        </spacer>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_6" stretch="0,1,0">
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_6" stretch="0,1,0">
          <item>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
@@ -1074,9 +1110,11 @@ background-color: rgb(255, 255, 222);
            </item>
           </layout>
          </item>
+          </layout>
+         </item>
         </layout>
-       </item>
-      </layout>
+       </widget>
+      </widget>
      </item>
     </layout>
    </item>

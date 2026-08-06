@@ -83,6 +83,8 @@ private:
 
     void whenClassificationsComboBoxIndexChanged(int index);
     void saveSimulationSettings();
+    void updateResponsiveLayout(int windowWidth);
+    bool compactLayout = false;
 
 public:
     SimulationSave *getSimulationSave() const;
@@ -105,6 +107,9 @@ private slots:
     void on_comboBox_archiveCalendar_currentIndexChanged(int index);
     void on_pushButton_saveAsCopy_clicked();
     void on_checkBox_showInstability_stateChanged(int arg1);
+
+protected:
+    void resizeEvent(QResizeEvent *event) override;
 };
 
 #endif // SIMULATIONSAVEMANAGERWINDOW_H

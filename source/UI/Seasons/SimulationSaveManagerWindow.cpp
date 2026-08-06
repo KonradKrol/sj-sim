@@ -31,6 +31,7 @@
 #include <QFileDialog>
 #include <QTreeView>
 #include <QLabel>
+#include <QResizeEvent>
 
 SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, QWidget *parent) :
     QDialog(parent),
@@ -39,6 +40,10 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
 {
     ui->setupUi(this);
     setWindowFlags(Qt::Window);
+    setMinimumSize(640, 480);
+    ui->splitter_manager->setStretchFactor(0, 4);
+    ui->splitter_manager->setStretchFactor(1, 1);
+    ui->splitter_manager->setSizes({980, 300});
 
     // Calendar data loaded from older saves may contain a missing or stale hill
     // reference. Repair it before any widget or diagnostic code dereferences it.
@@ -294,7 +299,8 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     });
 
     jumpersListsListView = new DatabaseItemsListView(DatabaseItemsListView::JumpersListsItems, true, true, true, this);
-    jumpersListsListView->setMinimumWidth(600);
+    jumpersListsListView->setMinimumWidth(220);
+    jumpersListsListView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     jumpersListsListView->setJumpersLists(&simulationSave->getJumpersListsReference());
     jumpersListsListView->setupListModel();
     jumpersListsListView->selectOnlyFirstRow();
@@ -381,6 +387,28 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         simulationSave->updateNextCompetitionIndex();
         updateCompetitionConfigButton();
     });
+
+    updateResponsiveLayout(width());
+}
+
+void SimulationSaveManagerWindow::updateResponsiveLayout(int windowWidth)
+{
+    const bool useCompactLayout = windowWidth < 1100;
+    if(useCompactLayout == compactLayout)
+        return;
+
+    compactLayout = useCompactLayout;
+    ui->splitter_manager->setOrientation(compactLayout ? Qt::Vertical : Qt::Horizontal);
+    if(compactLayout)
+        ui->splitter_manager->setSizes({qMax(260, height() * 2 / 3), 180});
+    else
+        ui->splitter_manager->setSizes({qMax(700, windowWidth - 300), 300});
+}
+
+void SimulationSaveManagerWindow::resizeEvent(QResizeEvent *event)
+{
+    QDialog::resizeEvent(event);
+    updateResponsiveLayout(event->size().width());
 }
 
 void SimulationSaveManagerWindow::showClassificationApperanceWindowAfterListClick(const QModelIndex &index, Classification * classification)
