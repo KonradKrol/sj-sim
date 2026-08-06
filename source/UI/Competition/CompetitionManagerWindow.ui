@@ -282,7 +282,7 @@
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>500</height>
+           <height>20</height>
           </size>
          </property>
         </spacer>
@@ -1059,7 +1059,7 @@ background-color: rgb(240, 240, 240);
            <item>
             <widget class="QPushButton" name="pushButton_jump">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -1067,7 +1067,7 @@ background-color: rgb(240, 240, 240);
              <property name="minimumSize">
               <size>
                <width>130</width>
-               <height>95</height>
+               <height>90</height>
               </size>
              </property>
              <property name="maximumSize">

@@ -175,7 +175,7 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
         teamResultsTreeView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         ResponsiveWindowUtils::configureTreeColumns(teamResultsTreeView);
         ui->tableView_results->hide();
-        ui->verticalLayout_tableAndFewOthers->addWidget(teamResultsTreeView, 1);
+        ui->verticalLayout_tableAndFewOthers->insertWidget(1, teamResultsTreeView, 2);
 
         connect(teamResultsTreeView, &QTreeView::doubleClicked, this, [this](const QModelIndex & index){
             TreeItem * item = static_cast<TreeItem *>(index.internalPointer());
