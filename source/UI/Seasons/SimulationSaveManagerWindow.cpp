@@ -20,6 +20,7 @@
 #include "Stats/ApperanceInClassificationWindow.h"
 #include "Stats/SimulationRatingsWindow.h"
 #include "NewSeasonConfiguratorWindow.h"
+#include "../ResponsiveWindowUtils.h"
 #include <QMessageBox>
 #include <QTimer>
 #include <QProgressDialog>
@@ -32,6 +33,7 @@
 #include <QTreeView>
 #include <QLabel>
 #include <QResizeEvent>
+#include <QSplitter>
 
 SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, QWidget *parent) :
     QDialog(parent),
@@ -986,65 +988,88 @@ void SimulationSaveManagerWindow::on_listView_competitionsArchive_doubleClicked(
     CompetitionInfo * competition = competitionsArchiveModel->getSeasonCompetitions()->at(index.row());
     int compType = competition->getRulesPointer()->getCompetitionType();
 
-    QDialog * dialog = new QDialog(this);
+    QDialog *dialog = new QDialog(this);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->setWindowTitle(tr("Wyniki konkursu"));
-    dialog->resize(1400, 800);
-    QHBoxLayout * mainLayout = new QHBoxLayout(this);
-    dialog->setLayout(mainLayout);
+    QVBoxLayout *mainLayout = new QVBoxLayout(dialog);
+    QSplitter *resultsSplitter = new QSplitter(Qt::Horizontal, dialog);
+    resultsSplitter->setChildrenCollapsible(false);
+    mainLayout->addWidget(resultsSplitter, 1);
 
-    QTableView * resultsTableView = new QTableView(this);
-    ResultsTableModel * resultsModel = new ResultsTableModel(competition->getRulesPointer()->getCompetitionType(), &competition->getResultsReference(), nullptr, this);
+    QTableView *resultsTableView = new QTableView(resultsSplitter);
+    ResultsTableModel *resultsModel = new ResultsTableModel(competition->getRulesPointer()->getCompetitionType(), &competition->getResultsReference(), nullptr, dialog);
     resultsTableView->setModel(resultsModel);
     resultsTableView->resizeColumnsToContents();
     if(compType == CompetitionRules::Individual)
-        mainLayout->addWidget(resultsTableView);
+        resultsSplitter->addWidget(resultsTableView);
+    else
+        resultsTableView->hide();
 
-    QTreeView * teamResultsTreeView = new QTreeView(this);
-    TeamResultsTreeModel * teamResultsModel = new TeamResultsTreeModel(nullptr, this);
+    QTreeView *teamResultsTreeView = new QTreeView(resultsSplitter);
+    TeamResultsTreeModel *teamResultsModel = new TeamResultsTreeModel(nullptr, dialog);
     if(compType == CompetitionRules::Team){
-        QVector<Team *> teams = MyFunctions::convertToVectorOfPointers(&competition->getTeamsReference());
-        teamResultsModel->setTeams(&teams);
+        QVector<Team *> *teams = new QVector<Team *>(MyFunctions::convertToVectorOfPointers(&competition->getTeamsReference()));
+        connect(dialog, &QObject::destroyed, [teams](){ delete teams; });
+        teamResultsModel->setTeams(teams);
         teamResultsModel->setResults(&competition->getResultsReference());
         teamResultsModel->setupTreeItems();
         teamResultsTreeView->setModel(teamResultsModel);
         teamResultsTreeView->expandToDepth(0);
-        mainLayout->addWidget(teamResultsTreeView);
+        resultsSplitter->addWidget(teamResultsTreeView);
     }
+    else
+        teamResultsTreeView->hide();
 
-    JumperCompetitionResultsWidget * jumperResultWidget = new JumperCompetitionResultsWidget(this);
-    mainLayout->addWidget(jumperResultWidget);
-    mainLayout->setStretch(0, 1);
+    JumperCompetitionResultsWidget *jumperResultWidget = new JumperCompetitionResultsWidget(resultsSplitter);
+    jumperResultWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    jumperResultWidget->hide();
+    resultsSplitter->addWidget(jumperResultWidget);
+    resultsSplitter->setStretchFactor(0, 3);
+    resultsSplitter->setStretchFactor(1, 3);
+    resultsSplitter->setStretchFactor(2, 2);
 
-    QPushButton * button = new QPushButton(tr("Wyślij webhooka"), this);
-    button->setFixedWidth(150);
+    QHBoxLayout *footerLayout = new QHBoxLayout();
+    footerLayout->addStretch();
+    QPushButton *button = new QPushButton(tr("Wyślij webhooka"), dialog);
     button->setFont(QFont("Segoe UI", 12));
     button->setStyleSheet("color: black");
-    mainLayout->addWidget(button);
-    connect(button, &QPushButton::clicked, this, [competition](){
+    footerLayout->addWidget(button);
+    mainLayout->addLayout(footerLayout);
+    connect(button, &QPushButton::clicked, dialog, [competition](){
         competition->sendResultsWebhook(nullptr);
     });
 
-    connect(resultsTableView, &QListView::doubleClicked, this, [jumperResultWidget, competition](const QModelIndex index){
+    connect(resultsTableView, &QListView::doubleClicked, dialog, [jumperResultWidget, competition](const QModelIndex index){
+        if(!index.isValid() || index.row() < 0 || index.row() >= competition->getResultsReference().getResultsReference().count())
+            return;
         jumperResultWidget->setJumperResult(competition->getResultsReference().getResultByIndex(index.row()));
         jumperResultWidget->getJumperResult()->setCompetition(competition);
         jumperResultWidget->fillWidget();
+        jumperResultWidget->show();
     });
-    connect(teamResultsTreeView, &QTreeView::doubleClicked, this, [jumperResultWidget, competition, teamResultsModel](const QModelIndex index){
+    connect(teamResultsTreeView, &QTreeView::doubleClicked, dialog, [jumperResultWidget, competition, teamResultsModel](const QModelIndex index){
+        if(!index.isValid())
+            return;
         TreeItem * item = static_cast<TreeItem *>(index.internalPointer());
         if(item->getParentItem() == teamResultsModel->getRootItem())
             return;
         int teamIndex = item->getParentItem()->row();
         int jumperIndex = item->row();
-        qDebug()<<"teamIndex "<<teamIndex;
-        qDebug()<<"jumperIndex "<<jumperIndex;
-        //qDebug()<<competition<<" "<<jumperResultWidget->getJumperResult()->getCompetition();
+        if(teamIndex < 0 || teamIndex >= competition->getResultsReference().getResultsReference().count())
+            return;
+        if(jumperIndex < 0 || jumperIndex >= competition->getResultsReference().getResultsReference()[teamIndex].getTeamJumpersResultsReference().count())
+            return;
         jumperResultWidget->setJumperResult(&competition->getResultsReference().getResultsReference()[teamIndex].getTeamJumpersResultsReference()[jumperIndex]);
         jumperResultWidget->getJumperResult()->setCompetition(competition);
         for(auto & jmp : jumperResultWidget->getJumperResult()->getJumpsReference())
             jmp.setCompetition(competition);
         jumperResultWidget->fillWidget();
+        jumperResultWidget->show();
     });
 
+    ResponsiveWindowUtils::fitToAvailableScreen(dialog, QSize(1200, 720));
+    if(dialog->width() < 1100)
+        resultsSplitter->setOrientation(Qt::Vertical);
     dialog->show();
 }
 
