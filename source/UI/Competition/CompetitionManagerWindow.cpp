@@ -48,10 +48,17 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     ui->setupUi(this);
     setWindowFlags(Qt::Window);
     setMinimumSize(640, 480);
-    ui->splitter_main->setStretchFactor(0, 2);
-    ui->splitter_main->setStretchFactor(1, 7);
-    ui->splitter_main->setStretchFactor(2, 3);
-    ui->splitter_main->setSizes({220, 730, 330});
+    ui->splitter_main->setStretchFactor(0, 1);
+    ui->splitter_main->setStretchFactor(1, 6);
+    ui->splitter_main->setStretchFactor(2, 2);
+    ui->splitter_main->setSizes({170, 900, 270});
+    ui->verticalLayout_competitionControlsScroll->setAlignment(Qt::AlignTop);
+    ui->gridLayout_competitionControls->setAlignment(Qt::AlignTop);
+    ui->scrollArea_competitionControls->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    ui->scrollArea_competitionControls->setMinimumHeight(210);
+    ui->scrollArea_competitionControls->setMaximumHeight(280);
+    ui->verticalLayout_tableAndFewOthers->setStretch(0, 0);
+    ui->verticalLayout_tableAndFewOthers->setStretch(1, 1);
     ui->listView_startList->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableView_results->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView_results->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -176,6 +183,8 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
         ResponsiveWindowUtils::configureTreeColumns(teamResultsTreeView);
         ui->tableView_results->hide();
         ui->verticalLayout_tableAndFewOthers->insertWidget(1, teamResultsTreeView, 2);
+        ui->verticalLayout_tableAndFewOthers->setStretch(1, 1);
+        ui->verticalLayout_tableAndFewOthers->setStretch(2, 0);
 
         connect(teamResultsTreeView, &QTreeView::doubleClicked, this, [this](const QModelIndex & index){
             TreeItem * item = static_cast<TreeItem *>(index.internalPointer());
@@ -274,7 +283,7 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
 
 void CompetitionManagerWindow::updateResponsiveLayout(int windowWidth)
 {
-    const bool useCompactLayout = windowWidth < 1180;
+    const bool useCompactLayout = windowWidth < 1320;
     if(useCompactLayout == compactLayout)
         return;
 
@@ -285,7 +294,7 @@ void CompetitionManagerWindow::updateResponsiveLayout(int windowWidth)
     if(compactLayout)
         ui->splitter_main->setSizes({0, qMax(300, height() * 3 / 5), qMax(180, height() * 2 / 5)});
     else
-        ui->splitter_main->setSizes({220, qMax(500, windowWidth - 550), 330});
+        ui->splitter_main->setSizes({170, qMax(720, windowWidth - 450), 270});
 }
 
 void CompetitionManagerWindow::resizeEvent(QResizeEvent *event)
