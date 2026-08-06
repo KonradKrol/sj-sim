@@ -38,6 +38,28 @@ It focuses on simulation, not graphics — there is no 2D or 3D rendering. Inste
 - Contains many bugs, memory leaks, and outdated patterns  
 - Debugging was often replaced by print-based approaches  
 
+## Building on Windows
+
+No hand-written Makefile is required. `qmake` generates the correct build files
+for the selected Qt kit.
+
+Install a 64-bit Qt 5 kit with Widgets, Charts, Concurrent, and Linguist, plus
+the matching MSVC build of DPP 10.0.26. The repository contains DPP headers and
+the release import library, but the DPP runtime DLL and its dependency DLLs
+must be supplied by the Windows DPP package.
+
+From an x64 Qt MSVC command prompt:
+
+```bat
+qmake sj-sim.pro CONFIG+=release DPP_ROOT=C:/deps/libdpp-10.0.26-win64release
+nmake
+windeployqt --release sj-sim.exe
+```
+
+Copy `dpp.dll` and the DPP dependency DLLs beside `sj-sim.exe`. The `DPP_ROOT`
+argument is optional when using the bundled headers/import library; it is
+required when using a complete external DPP package.
+
 This project should be treated as experimental and educational rather than production-quality.
 
 ## Known issues
@@ -84,7 +106,6 @@ Even small improvements help to clean up* the project.
 ![image (22)](https://github.com/user-attachments/assets/2b297f2b-cb9f-49a8-8edc-7c609991b445)
 ![image (23)](https://github.com/user-attachments/assets/d144cf23-3a47-421b-b683-31c53890875d)
 ![image (24)](https://github.com/user-attachments/assets/3d012fc2-1aff-47d3-b1d4-56f44388291a)
-
 
 
 

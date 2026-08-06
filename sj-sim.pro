@@ -370,11 +370,33 @@ DISTFILES += \
 RESOURCES += \
 assets.qrc
 
-win32:CONFIG(release, debug|release): LIBS += -LC:/Users/Konrad/Downloads/libdpp-10.0.26-win64release/lib/dpp-10.0/ -ldpp
-else:win32:CONFIG(debug, debug|release): LIBS += -LC:/Users/Konrad/Downloads/libdpp-10.0.26-win64release/lib/dpp-10.0/ -ldppd
 win32 {
-    INCLUDEPATH += C:/Users/Konrad/Downloads/libdpp-10.0.26-win64release/include/dpp-10.0
-    DEPENDPATH += C:/Users/Konrad/Downloads/libdpp-10.0.26-win64release/include/dpp-10.0
+    # Override this when using an installed DPP package, for example:
+    # qmake sj-sim.pro DPP_ROOT=C:/deps/libdpp-10.0.26-win64release
+    isEmpty(DPP_ROOT): DPP_ROOT = $$PWD/source/3rdparty/dpp
+    DPP_INCLUDE = $$clean_path($$DPP_ROOT/include/dpp-10.0)
+    DPP_LIBRARY = $$clean_path($$DPP_ROOT/lib/dpp-10.0)
+
+    !exists($$DPP_INCLUDE/dpp/dpp.h) {
+        error("DPP headers not found. Set DPP_ROOT to a DPP Windows package.")
+    }
+    !exists($$DPP_LIBRARY/dpp.lib) {
+        error("DPP release library not found. Set DPP_ROOT to a DPP Windows package.")
+    }
+
+    INCLUDEPATH += $$DPP_INCLUDE
+    DEPENDPATH += $$DPP_INCLUDE
+    LIBS += -L$$DPP_LIBRARY
+    CONFIG(debug, debug|release) {
+        exists($$DPP_LIBRARY/dppd.lib) {
+            LIBS += -ldppd
+        } else {
+            # The bundled package contains only the release import library.
+            LIBS += -ldpp
+        }
+    } else {
+        LIBS += -ldpp
+    }
 } else {
     INCLUDEPATH += $$PWD/source/3rdparty/linux-dpp-stub
 }
