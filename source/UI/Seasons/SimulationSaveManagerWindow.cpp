@@ -391,6 +391,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     });
 
     updateResponsiveLayout(width());
+    ResponsiveWindowUtils::manageWindowGeometry(this, "SimulationSaveManagerWindow");
 }
 
 void SimulationSaveManagerWindow::updateResponsiveLayout(int windowWidth)

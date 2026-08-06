@@ -269,6 +269,7 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     connect(action_autoSimulateJumps, &QAction::triggered, this, &CompetitionManagerWindow::autoSimulateJumps);
 
     updateResponsiveLayout(width());
+    ResponsiveWindowUtils::manageWindowGeometry(this, "CompetitionManagerWindow");
 }
 
 void CompetitionManagerWindow::updateResponsiveLayout(int windowWidth)

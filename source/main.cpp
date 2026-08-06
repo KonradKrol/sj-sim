@@ -8,6 +8,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    QApplication::setOrganizationName("SJ-Sim");
+    QApplication::setApplicationName("SJ-Sim");
 
     GlobalAppSettings::get()->loadFromJson();
 

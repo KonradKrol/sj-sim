@@ -147,6 +147,7 @@ SimulationRatingsWindow::SimulationRatingsWindow(SimulationSave * save, QWidget 
     }
 
     connect(ui->comboBox_preset, qOverload<int>(&QComboBox::currentIndexChanged), this, &SimulationRatingsWindow::fillWindow);
+    ResponsiveWindowUtils::manageWindowGeometry(this, "SimulationRatingsWindow");
 }
 
 SimulationRatingsWindow::~SimulationRatingsWindow()

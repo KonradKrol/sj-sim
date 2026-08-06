@@ -3,6 +3,7 @@
 
 #include "SingleJumpsResultsTableSortDialog.h"
 #include "../ResultsShowing/JumpDataDetailedInfoWindow.h"
+#include "../ResponsiveWindowUtils.h"
 #include "../../global/CountryFlagsManager.h"
 #include "../../global/Uuid.h"
 
@@ -48,6 +49,7 @@ SingleJumpsResultsWindow::SingleJumpsResultsWindow(SingleJumpsManager *manager, 
     ui->pushButton_sortTable->setToolTip(tr("Zmień kolejność wyników bez utraty wybranego skoku"));
     connect(ui->tableView->selectionModel(), &QItemSelectionModel::currentRowChanged,
             this, [this](const QModelIndex &current){ showJumpDetails(current.row()); });
+    ResponsiveWindowUtils::manageWindowGeometry(this, "SingleJumpsResultsWindow");
 }
 
 SingleJumpsResultsWindow::~SingleJumpsResultsWindow()

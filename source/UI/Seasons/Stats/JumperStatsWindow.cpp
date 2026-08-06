@@ -2,6 +2,7 @@
 #include "ui_JumperStatsWindow.h"
 #include "../../../global/CountryFlagsManager.h"
 #include "../../../utilities/functions.h"
+#include "../../ResponsiveWindowUtils.h"
 #include <QInputDialog>
 #include <QDir>
 #include <QFile>
@@ -61,6 +62,7 @@ JumperStatsWindow::JumperStatsWindow(QWidget *parent) :
     ui->pushButton_csvExport->hide();
     setupCharts();
     emit ui->checkBox->stateChanged(0);
+    ResponsiveWindowUtils::manageWindowGeometry(this, "JumperStatsWindow");
 }
 
 JumperStatsWindow::~JumperStatsWindow()

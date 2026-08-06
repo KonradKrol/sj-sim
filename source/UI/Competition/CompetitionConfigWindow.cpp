@@ -16,6 +16,7 @@
 #include "CompetitionManagerWindow.h"
 #include "RandomWindConfigWindow.h"
 #include "StartListByOtherCompetitionConfigWindow.h"
+#include "../ResponsiveWindowUtils.h"
 
 #include <QSizePolicy>
 #include <QStringListModel>
@@ -505,6 +506,7 @@ push_button_randomWind->setParent(this);
     });
 
     updateResponsiveLayout(width());
+    ResponsiveWindowUtils::manageWindowGeometry(this, "CompetitionConfigWindow");
 }
 
 CompetitionConfigWindow::~CompetitionConfigWindow()

@@ -5,6 +5,7 @@
 #include "../../global/GlobalAppSettings.h"
 #include "../../utilities/functions.h"
 #include "../DatabaseEditor/DatabaseItemsListView.h"
+#include "../ResponsiveWindowUtils.h"
 #include <QMessageBox>
 #include <QComboBox>
 #include <QInputDialog>
@@ -118,6 +119,7 @@ NewSeasonConfiguratorWindow::NewSeasonConfiguratorWindow(bool nextSeason, QWidge
         calendar.fixCompetitionsHills(&hills, hills.first());
         emit calendarTableModel->dataChanged(calendarTableModel->index(0, 0), calendarTableModel->index(calendarTableModel->rowCount() - 1, 6));
     });
+    ResponsiveWindowUtils::manageWindowGeometry(this, "NewSeasonConfiguratorWindow");
 }
 
 NewSeasonConfiguratorWindow::~NewSeasonConfiguratorWindow()

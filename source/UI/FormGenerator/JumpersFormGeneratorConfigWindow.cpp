@@ -4,6 +4,7 @@
 #include "../../global/GlobalDatabase.h"
 #include "../../utilities/functions.h"
 #include "../EditorWidgets/EditStartListWithJumpersListsWindow.h"
+#include "../ResponsiveWindowUtils.h"
 #include <QMessageBox>
 #include <QInputDialog>
 
@@ -28,6 +29,7 @@ JumpersFormGeneratorConfigWindow::JumpersFormGeneratorConfigWindow(QWidget *pare
     connect(alternativeRemoveFromTableAction, &QAction::triggered, this, [this](){
         onRemoveFromTable(true);
     });
+    ResponsiveWindowUtils::manageWindowGeometry(this, "JumpersFormGeneratorConfigWindow");
 }
 
 JumpersFormGeneratorConfigWindow::~JumpersFormGeneratorConfigWindow()
