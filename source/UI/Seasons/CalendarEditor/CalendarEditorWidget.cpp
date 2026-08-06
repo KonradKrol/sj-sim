@@ -296,8 +296,8 @@ void CalendarEditorWidget::addActionTriggered()
         insertIndexInCalendar++;
     }
     if(insertIndexInCalendar >= calendarModel->getDontModifyBefore()){
-        calendarModel->insertRow(insertIndex);
         calendar->getCompetitionsReference().insert(insertIndexInCalendar, new CompetitionInfo(defaultHill));
+        calendarModel->insertRow(insertIndex);
 
         ui->tableView->clearSelection();
         ui->tableView->selectionModel()->select(calendarModel->index(insertIndex + 1, 0), QItemSelectionModel::Select);
@@ -657,7 +657,6 @@ void CalendarEditorWidget::duplicateActionTriggered()
         insertIndexInCalendar -= 1;
         CompetitionInfo * existing = calendar->getCompetitionsReference()[insertIndexInCalendar];
         debugCalendar();
-        calendarModel->insertRow(insertIndex);
         CompetitionInfo * comp = new CompetitionInfo(existing->getHill());
         comp->reassign();
         comp->setSerieType(existing->getSerieType());
@@ -685,6 +684,7 @@ void CalendarEditorWidget::duplicateActionTriggered()
         //insertIndexInCalendar += 1;
         }
         calendar->getCompetitionsReference().insert(insertIndexInCalendar, comp);
+        calendarModel->insertRow(insertIndex);
         debugCalendar();
 
         ui->tableView->clearSelection();

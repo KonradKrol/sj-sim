@@ -4,6 +4,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
+win32: DEFINES += NOMINMAX
+
 SOURCES += \
     source/UI/AppSettings/CountriesEditorTableModel.cpp \
     source/UI/AppSettings/CountriesEditorWindow.cpp \
@@ -370,33 +372,7 @@ DISTFILES += \
 RESOURCES += \
 assets.qrc
 
-win32 {
-    # Override this when using an installed DPP package, for example:
-    # qmake sj-sim.pro DPP_ROOT=C:/deps/libdpp-10.0.26-win64release
-    isEmpty(DPP_ROOT): DPP_ROOT = $$PWD/source/3rdparty/dpp
-    DPP_INCLUDE = $$clean_path($$DPP_ROOT/include/dpp-10.0)
-    DPP_LIBRARY = $$clean_path($$DPP_ROOT/lib/dpp-10.0)
+INCLUDEPATH += $$PWD/source/3rdparty/linux-dpp-stub
 
-    !exists($$DPP_INCLUDE/dpp/dpp.h) {
-        error("DPP headers not found. Set DPP_ROOT to a DPP Windows package.")
-    }
-    !exists($$DPP_LIBRARY/dpp.lib) {
-        error("DPP release library not found. Set DPP_ROOT to a DPP Windows package.")
-    }
-
-    INCLUDEPATH += $$DPP_INCLUDE
-    DEPENDPATH += $$DPP_INCLUDE
-    LIBS += -L$$DPP_LIBRARY
-    CONFIG(debug, debug|release) {
-        exists($$DPP_LIBRARY/dppd.lib) {
-            LIBS += -ldppd
-        } else {
-            # The bundled package contains only the release import library.
-            LIBS += -ldpp
-        }
-    } else {
-        LIBS += -ldpp
-    }
-} else {
-    INCLUDEPATH += $$PWD/source/3rdparty/linux-dpp-stub
-}
+# Qt 5 defined QT_CHARTS_USE_NAMESPACE and friends in qchartglobal.h; Qt 6 removed them.
+greaterThan(QT_MAJOR_VERSION, 5): DEFINES += QT_CHARTS_BEGIN_NAMESPACE= QT_CHARTS_END_NAMESPACE= QT_CHARTS_USE_NAMESPACE=

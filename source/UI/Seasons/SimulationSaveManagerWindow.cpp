@@ -669,23 +669,38 @@ void SimulationSaveManagerWindow::configNextSeason()
         simulationSave->updateNextCompetitionIndex();
         simulationSave->saveToFile("simulationSaves/");
 
-        ui->pushButton_competitionConfig->setText(tr("Konfiguruj konkurs"));
+        updateCompetitionConfigButton();
         ui->label_seasonNumber->setText(QString::number(simulationSave->getActualSeason()->getSeasonNumber()));
 
         delete calendarTableModel;
         calendarTableModel = new CalendarEditorTableModel(simulationSave->getActualSeason()->getActualCalendar(), &simulationSave->getHillsReference(), &simulationSave->getCompetitionRulesReference(), simulationSave->getNextCompetitionIndex(), this);
-        /*calendarTableModel->setCalendar(&simulationSave->getActualSeason()->getActualCalendar());
-        calendarTableModel->setHillsList(&simulationSave->getHillsReference());
-        calendarTableModel->setRulesList(&simulationSave->getCompetitionRulesReference());
-        calendarTableModel->setDontModifyBefore(simulationSave->getNextCompetitionIndex());
-        */
-        delete calendarEditor;
-        calendarEditor = new CalendarEditorWidget(calendarTableModel, &simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference(), this);
-calendarEditor->setClassificationsList(&simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference());
-    ui->verticalLayout_calendar->addWidget(calendarEditor);
 
-        classificationsListView->setClassifications(&simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference());
+        SeasonCalendar *actualCalendar = simulationSave->getActualSeason()->getActualCalendar();
+        QVector<Classification *> *activeClassifications = actualCalendar != nullptr
+            ? &actualCalendar->getClassificationsReference()
+            : &emptyClassifications;
+
+        delete calendarEditor;
+        calendarEditor = new CalendarEditorWidget(calendarTableModel, activeClassifications, this);
+        calendarEditor->setSave(simulationSave);
+        calendarEditor->setEnabled(actualCalendar != nullptr);
+        ui->verticalLayout_calendar->addWidget(calendarEditor);
+        calendarEmptyStateLabel->setVisible(actualCalendar == nullptr);
+
+        classificationsListView->setClassifications(activeClassifications);
         classificationsListView->setupListModel();
+        classificationsListView->setEnabled(actualCalendar != nullptr);
+
+        calendarsListView->setCalendars(&simulationSave->getActualSeason()->getCalendarsReference());
+        calendarsListView->setupListModel();
+
+        classificationResultsTableView->setClassification(nullptr);
+        classificationResultsTableView->fillTable();
+
+        ui->lineEdit_calendarName->setEnabled(actualCalendar != nullptr);
+        ui->label_calendarName->setText(actualCalendar != nullptr
+            ? actualCalendar->getName()
+            : tr("BRAK"));
 
         jumpersListView->getListView()->reset();
         hillsListView->getListView()->reset();
@@ -693,8 +708,12 @@ calendarEditor->setClassificationsList(&simulationSave->getActualSeason()->getAc
 
         fillNextCompetitionInformations();
 
-        competitionsArchiveModel->setSeasonCompetitions(&simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference());
-        classificationsArchiveModel->setSeasonClassifications(&simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference());
+        competitionsArchiveModel->setSeasonCompetitions(actualCalendar != nullptr
+            ? &actualCalendar->getCompetitionsReference()
+            : &emptyArchiveCompetitions);
+        classificationsArchiveModel->setSeasonClassifications(actualCalendar != nullptr
+            ? &actualCalendar->getClassificationsReference()
+            : &emptyArchiveClassifications);
         ui->comboBox_archiveSeason->clear();
         for(auto & season : simulationSave->getSeasonsReference())
         {
@@ -778,7 +797,8 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
             else if(type == CompetitionRules::Team)
                 competitionManager = new TeamCompetitionManager();
 
-            if(competition->getQualifyingCompetitionsReference().count() > 0)
+            if(competition->getQualifyingCompetitionsReference().count() > 0
+                && competition->getQualifyingCompetitionsReference()[0]->getRulesPointer()->getRoundsReference().isEmpty() == false)
                 competitionManager->setAltQualifiersLimit(competition->getQualifyingCompetitionsReference()[0]->getRulesPointer()->getRoundsReference()[0].getCount());
 
             competitionManager->setCompetitionInfo(competition);
@@ -792,7 +812,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
             competitionManager->setWindGenerationSettings(configWindow->getWindGeneratorSettingsEditor()->getWindsGenerationSettingsFromInputs());
 
             if(type == CompetitionRules::Individual){
-                if(competition->getRulesPointer()->getRoundsReference()[0].getKO())
+                if(competition->getRulesPointer()->getRoundsReference().isEmpty() == false && competition->getRulesPointer()->getRoundsReference()[0].getKO())
                 {
                     competition->getRoundsKOGroupsReference().push_back(configWindow->getSeasonCompetitionGroups());
                     static_cast<IndividualCompetitionManager *>(competitionManager)->getRoundsKOGroupsReference().push_back(&competition->getRoundsKOGroupsReference().last());

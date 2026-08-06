@@ -127,7 +127,7 @@ QVector<KOGroup> KOGroup::constructKOGroups(RoundInfo *roundInfo, QVector<Jumper
         for(int basketIndex = 0; basketIndex < groupSize; ++basketIndex)
         {
             const int from = basketIndex * groupsCount;
-            const int to = std::min(from + groupsCount, jumpers->count());
+            const int to = std::min(from + groupsCount, static_cast<int>(jumpers->count()));
             QVector<Jumper *> basket;
             for(int index = from; index < to; ++index)
                 basket.push_back(jumpers->at(index));

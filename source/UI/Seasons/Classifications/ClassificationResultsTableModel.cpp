@@ -21,7 +21,7 @@ QVariant ClassificationResultsTableModel::headerData(int section, Qt::Orientatio
     case 0:
         return tr("Poz.");
     case 1:
-        if(classification->getClassificationType() == Classification::Individual){
+        if(classification != nullptr && classification->getClassificationType() == Classification::Individual){
             return tr("Zawodnik");
         }
         else{
@@ -38,6 +38,9 @@ int ClassificationResultsTableModel::rowCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
 
+    if(classification == nullptr)
+        return 0;
+
     return classification->getResultsReference().count();
 }
 
@@ -52,6 +55,9 @@ int ClassificationResultsTableModel::columnCount(const QModelIndex &parent) cons
 QVariant ClassificationResultsTableModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
+        return QVariant();
+
+    if(classification == nullptr)
         return QVariant();
 
     if(classification->getResultsReference().count() > 0){

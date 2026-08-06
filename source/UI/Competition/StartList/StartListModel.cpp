@@ -122,7 +122,7 @@ QVariant StartListModel::data(const QModelIndex &index, int role) const
             return string;
     }
     else if(role == Qt::DecorationRole){
-        return QIcon(CountryFlagsManager::getFlagPixmap(startListStatuses->at(index.row()).getJumper()->getCountryCode().toLower()));
+        return QIcon(CountryFlagsManager::getFlagPixmap(startListStatuses->at(index.row()).getJumper()->getCountryCode().toLower()).scaled(QSize(24, 14)));
     }
     //}
     return QVariant();
