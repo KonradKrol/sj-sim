@@ -19,6 +19,7 @@
 #include "../ResponsiveWindowUtils.h"
 
 #include <QSizePolicy>
+#include <QBoxLayout>
 #include <QStringListModel>
 #include <QStringList>
 #include <QCompleter>
@@ -45,6 +46,9 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
     ui->splitter_configuration->setStretchFactor(1, 5);
     ui->splitter_configuration->setStretchFactor(2, 2);
     ui->splitter_configuration->setSizes({260, 640, 280});
+    ui->verticalLayout_4->setAlignment(Qt::AlignTop);
+    ui->verticalLayout_hillEditorWidget->setAlignment(Qt::AlignTop);
+    ui->verticalLayout_2->setAlignment(Qt::AlignTop);
     ui->verticalLayout->addWidget(ui->pushButton_submit, 0, Qt::AlignHCenter);
     const int submitHeight = qBound(50, ui->pushButton_submit->fontMetrics().height() + 18, 64);
     ui->pushButton_submit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -65,11 +69,14 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         setupHillToolBoxItem();
 
     windsGeneratorSettingsEditor = new WindsGeneratorSettingsEditorWidget(this);
+    windsGeneratorSettingsEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     windsGeneratorSettingsEditor->setRemovingSubmitButtons(true);
     windsGeneratorSettingsEditor->removeSubmitButton();
     inrunSnowGeneratorSettingsEditor = new InrunSnowGeneratorSettingsEditorWidget(this);
+    inrunSnowGeneratorSettingsEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     inrunSnowGeneratorSettingsEditor->removeSubmitButton();
     competitionRulesEditor = new CompetitionRulesEditorWidget(this);
+    competitionRulesEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     competitionRulesEditor->removeSubmitButton();
     competitionRulesEditor->setCompetitionRules(new CompetitionRules(tr("Zasady")));
     competitionRulesEditor->setParent(this);
@@ -78,9 +85,10 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
     //ui->label_title->raise();
     ui->toolBox->addItem(windsGeneratorSettingsEditor, tr("Ustawienia generatora wiatru"));
     push_button_randomWind = new QPushButton(tr("Losowe ustawienia generatora wiatru"));
-push_button_randomWind->setParent(this);
+    push_button_randomWind->setParent(windsGeneratorSettingsEditor);
     push_button_randomWind->setStyleSheet("QPushButton{\nborder: 2px solid rgb(0, 59, 23);\nborder-radius: 6px;\ncolor: rgb(0, 0, 0);\nbackground-color: rgb(160, 182, 217);\npadding: 2px;\n}\nQPushButton:hover{\nbackground-color: rgb(138, 157, 189);\n}");
-    windsGeneratorSettingsEditor->layout()->addWidget(push_button_randomWind);
+    if(QBoxLayout *windEditorLayout = qobject_cast<QBoxLayout *>(windsGeneratorSettingsEditor->layout()))
+        windEditorLayout->insertWidget(0, push_button_randomWind, 0, Qt::AlignTop);
     connect(push_button_randomWind, &QPushButton::clicked, this, [this](){
         RandomWindConfigWindow window;
         if(window.exec() == QDialog::Accepted){
@@ -560,6 +568,7 @@ void CompetitionConfigWindow::setupHillToolBoxItem()
     }
 
     hillEditor = new HillEditorWidget(this);
+    hillEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     hillEditor->removeSubmitButton();
     ui->verticalLayout_hillEditorWidget->addWidget(hillEditor);
 
@@ -588,6 +597,7 @@ void CompetitionConfigWindow::setupCompetitionRulesToolBoxItem()
 
     competitionRulesParentWidget = new QWidget(this);
     competitionRulesToolBoxItemLayout = new QVBoxLayout(competitionRulesParentWidget);
+    competitionRulesToolBoxItemLayout->setAlignment(Qt::AlignTop);
     existingRulesLabelAndComboBoxLayout = new QVBoxLayout();
     competitionRulesToolBoxItemLayout->addLayout(existingRulesLabelAndComboBoxLayout);
     //competitionRulesToolBoxItemLayout->addSpacerItem(new QSpacerItem(35, 35, QSizePolicy::Maximum, QSizePolicy::Maximum));
