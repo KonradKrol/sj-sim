@@ -14,8 +14,10 @@
 #include "../JumpManipulation/JumpManipulatorConfigWindow.h"
 #include <QInputDialog>
 #include <QComboBox>
+#include <QDialogButtonBox>
 #include <QMessageBox>
 #include <QCloseEvent>
+#include <QScreen>
 #include <QStringListModel>
 #include <string>
 #include <QPropertyAnimation>
@@ -509,25 +511,25 @@ AbstractCompetitionManager *CompetitionManagerWindow::getManager() const
 QVector<KOGroup> CompetitionManagerWindow::getManualKOGroupsFromDialogInputs()
 {
     IndividualCompetitionManager * indManager = dynamic_cast<IndividualCompetitionManager *>(manager);
-    QDialog * dialog = new QDialog(this);
-    QHBoxLayout * mainLayout = new QHBoxLayout(this);
-    dialog->setLayout(mainLayout);
-    dialog->setFixedSize(600, 820);
+    QDialog dialog(this);
+    dialog.setWindowTitle(tr("Ręczny dobór grup KO"));
+    dialog.setSizeGripEnabled(true);
 
-    QVBoxLayout * groupsListLayout = new QVBoxLayout(this);
-    QComboBox * selectionComboBox = new QComboBox(this);
-    selectionComboBox->setModel(new QStringListModel({tr("Dobór grup"), tr("Klasyczne"), tr("Dla dużych grup"), tr("Losowe (Z podziałem na koszyki)"), tr("Losowe")}, this));
+    QVBoxLayout mainLayout(&dialog);
+    QComboBox selectionComboBox(&dialog);
+    selectionComboBox.setModel(new QStringListModel({tr("Dobór grup"), tr("Klasyczne"), tr("Dla dużych grup"), tr("Losowe (Z podziałem na koszyki)"), tr("Losowe")}, &selectionComboBox));
 
-    KOGroupsListView groupsListView = KOGroupsListView();
+    KOGroupsListView groupsListView(&dialog);
+    groupsListView.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     QVector<Jumper *> jumpers = indManager->getFilteredJumpersForNextRound();
     QVector<KOGroup> groups = KOGroup::constructKOGroups(&manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()], &jumpers, KOGroup::Random, manager->getCompetitionInfo());
     groupsListView.setKOGroups(&groups);
     groupsListView.setJumpersList(&indManager->getActualRoundJumpersReference());
     groupsListView.fillListLayout();
-    groupsListLayout->addWidget(selectionComboBox);
-    groupsListLayout->addWidget(&groupsListView);
+    mainLayout.addWidget(&selectionComboBox);
+    mainLayout.addWidget(&groupsListView, 1);
 
-    connect(selectionComboBox, qOverload<int>(&QComboBox::activated), this, [this, & groupsListView, & jumpers, & groups](int index){
+    connect(&selectionComboBox, qOverload<int>(&QComboBox::activated), &dialog, [this, &groupsListView, &jumpers, &groups](int index){
         if(index != KOGroup::Classic || (index == KOGroup::Classic || (manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getCountInKOGroup() == 2)))
         {
             if(index > 0){
@@ -540,24 +542,16 @@ QVector<KOGroup> CompetitionManagerWindow::getManualKOGroupsFromDialogInputs()
         }
     });
 
-    QVBoxLayout * submitButtonLayout = new QVBoxLayout(this);
-    QPushButton * submitButton = new QPushButton("OK", this);
-    submitButton->setFixedSize(111, 111);
-    submitButton->setStyleSheet("QPushButton{\nborder: 1px solid rgb(0, 59, 23);\nborder-radius: 6px;\ncolor: rgb(0, 0, 0);\nbackground-color: rgb(123, 220, 144);\n}\nQPushButton:hover{\nbackground-color: rgb(153, 253, 174);\n}");
-    submitButton->setFont(QFont("Ubuntu", 18));
-    connect(submitButton, &QPushButton::clicked, dialog, &QDialog::accept);
-    submitButtonLayout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding));
-    submitButtonLayout->addWidget(submitButton);
-    submitButtonLayout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding));
+    QDialogButtonBox buttonBox(QDialogButtonBox::Ok, &dialog);
+    connect(&buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
+    mainLayout.addWidget(&buttonBox);
 
-    mainLayout->addLayout(groupsListLayout);
-    mainLayout->addSpacerItem(new QSpacerItem(50, 0, QSizePolicy::Fixed, QSizePolicy::Fixed));
-    mainLayout->addLayout(submitButtonLayout);
-
-    if(dialog->exec() == QDialog::Accepted)
-    {
-
-    }
+    dialog.setMinimumSize(360, 320);
+    const QRect availableGeometry = dialog.screen()->availableGeometry();
+    const QSize availableSize(qMax(360, availableGeometry.width() - 48),
+                              qMax(320, availableGeometry.height() - 48));
+    dialog.resize(QSize(600, 720).boundedTo(availableSize));
+    dialog.exec();
     return groups;
 }
 
