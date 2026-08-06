@@ -743,14 +743,18 @@ li.checked::marker { content: &quot;\2612&quot;; }
               </attribute>
               <layout class="QVBoxLayout" name="verticalLayout_10">
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_classificationsArchive" stretch="1,1">
-                 <item>
-                  <widget class="QListView" name="listView_classificationsArchive"/>
-                 </item>
-                 <item>
+                <widget class="QSplitter" name="splitter_archiveClassifications">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="childrenCollapsible">
+                  <bool>false</bool>
+                 </property>
+                 <widget class="QListView" name="listView_classificationsArchive"/>
+                 <widget class="QWidget" name="panel_archiveClassificationResults">
                   <layout class="QVBoxLayout" name="verticalLayout_archiveClassificationResults"/>
-                 </item>
-                </layout>
+                 </widget>
+                </widget>
                </item>
               </layout>
              </widget>

@@ -253,7 +253,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     classificationResultsTableView = new ClassificationResultsTableView(false, nullptr, this);
     classificationResultsTableView->setSave(simulationSave);
     classificationResultsTableView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    classificationResultsTableView->setFixedHeight(500);
+    classificationResultsTableView->setMinimumHeight(160);
     ui->verticalLayout_classificationResults->addWidget(classificationResultsTableView);
 
     setupClassificationsComboBox();
@@ -288,7 +288,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     archiveClassificationResults = new ClassificationResultsTableView(false, nullptr, this);
     archiveClassificationResults->setSave(simulationSave);
     archiveClassificationResults->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    archiveClassificationResults->setFixedHeight(500);
+    archiveClassificationResults->setMinimumHeight(160);
     ui->verticalLayout_archiveClassificationResults->addWidget(archiveClassificationResults);
 
     connect(classificationResultsTableView->getTableView(), &QTableView::doubleClicked, this, [this](const QModelIndex & index){
