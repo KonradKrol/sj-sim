@@ -1,0 +1,9 @@
+.qmake.stash
+build-linux/
+build-win/
+debug/
+release/
+assets_for_ai/
+AUDIT_CRASH_REPORT.md
+AUDIT_MONETIZATION_REPORT.md
+SIMULATOR_MIGRATION_GUIDE.md
