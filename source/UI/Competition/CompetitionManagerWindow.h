@@ -99,6 +99,8 @@ private:
     void setupSimulator();
     void focusCurrentJumper();
     void updateManipulationIndicator(bool pending);
+    void updateResponsiveLayout(int windowWidth);
+    bool compactLayout = false;
 
     JumperCompetitionResultsWidget * jumperResultsWidget;
 
@@ -157,6 +159,7 @@ private slots:
     void on_checkBox_liveCompetition_stateChanged(int arg1);
 protected:
     void closeEvent(QCloseEvent * event);
+    void resizeEvent(QResizeEvent * event) override;
 };
 
 #endif // COMPETITIONMANAGERWINDOW_H

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1542</width>
-    <height>904</height>
+    <width>1280</width>
+    <height>680</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -24,8 +24,8 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_8">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_actionsButtons">
-     <item>
+    <layout class="QGridLayout" name="gridLayout_actionsButtons">
+     <item row="0" column="0">
       <widget class="QToolButton" name="toolButton_cancelActions">
        <property name="font">
         <font>
@@ -43,7 +43,7 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="1">
       <widget class="QToolButton" name="toolButton_autoSimulationActions">
        <property name="font">
         <font>
@@ -61,7 +61,7 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="2">
       <widget class="QPushButton" name="pushButton_sendResultsWebhook">
        <property name="styleSheet">
         <string notr="true">color: rgb(70, 78,95)</string>
@@ -71,7 +71,7 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="1" column="0" colspan="3">
       <widget class="QCheckBox" name="checkBox_liveCompetition">
        <property name="styleSheet">
         <string notr="true">color: black;</string>
@@ -81,7 +81,7 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="3">
       <spacer name="horizontalSpacer_20">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -97,9 +97,29 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_main" stretch="1,19,7">
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_nextJump" stretch="0,0">
+    <widget class="QSplitter" name="splitter_main">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="childrenCollapsible">
+      <bool>false</bool>
+     </property>
+     <widget class="QWidget" name="panel_context">
+      <layout class="QVBoxLayout" name="verticalLayout_contextPanel">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_nextJump" stretch="0,0">
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <property name="spacing">
@@ -267,26 +287,75 @@
          </property>
         </spacer>
        </item>
+        </layout>
+       </item>
       </layout>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_tableAndFewOthers" stretch="0,1">
+     </widget>
+     <widget class="QWidget" name="panel_competition">
+      <layout class="QVBoxLayout" name="verticalLayout_competitionPanel">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_21" stretch="0,7,0,0,3,7">
-         <item>
-          <spacer name="horizontalSpacer_11">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+        <layout class="QVBoxLayout" name="verticalLayout_tableAndFewOthers" stretch="3,2">
+       <item>
+        <widget class="QScrollArea" name="scrollArea_competitionControls">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_competitionControls">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>940</width>
+            <height>355</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_competitionControlsScroll">
+           <property name="leftMargin">
+            <number>0</number>
            </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_competitionControls">
+         <item row="0" column="0">
+         <spacer name="horizontalSpacer_11">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Maximum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
              <height>20</height>
             </size>
            </property>
           </spacer>
          </item>
-         <item>
+         <item row="0" column="1">
           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,0">
            <property name="spacing">
             <number>0</number>
@@ -591,7 +660,7 @@ background-color: rgb(240, 240, 240);
            </item>
           </layout>
          </item>
-         <item>
+         <item row="0" column="2">
           <layout class="QVBoxLayout" name="verticalLayout_7" stretch="0,1">
            <property name="spacing">
             <number>4</number>
@@ -969,7 +1038,7 @@ background-color: rgb(240, 240, 240);
            </item>
           </layout>
          </item>
-         <item>
+         <item row="0" column="3">
           <layout class="QVBoxLayout" name="verticalLayout_jumpButtons" stretch="0,2,1">
            <property name="spacing">
             <number>0</number>
@@ -1076,7 +1145,7 @@ background-color:  rgb(100, 120, 170);
            </item>
           </layout>
          </item>
-         <item>
+         <item row="0" column="4">
           <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0">
            <property name="spacing">
             <number>0</number>
@@ -1383,7 +1452,7 @@ nowy wiatr</string>
            </item>
           </layout>
          </item>
-         <item>
+         <item row="1" column="0" colspan="5">
           <widget class="QTableView" name="tableView_KOGroupResults">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -1399,7 +1468,11 @@ nowy wiatr</string>
            </property>
           </widget>
          </item>
-        </layout>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </widget>
        </item>
        <item>
         <widget class="QTableView" name="tableView_results">
@@ -1421,10 +1494,26 @@ QTableView::item:selected
          </property>
         </widget>
        </item>
+        </layout>
+       </item>
       </layout>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_startListAndJumpInfo" stretch="5,7">
+     </widget>
+     <widget class="QWidget" name="panel_startListAndDetails">
+      <layout class="QVBoxLayout" name="verticalLayout_detailsPanel">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_startListAndJumpInfo" stretch="5,7">
        <item>
         <widget class="QListView" name="listView_startList">
          <property name="sizePolicy">
@@ -1447,9 +1536,11 @@ QTableView::item:selected
          </property>
         </layout>
        </item>
+        </layout>
+       </item>
       </layout>
-     </item>
-    </layout>
+     </widget>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_12">

@@ -22,6 +22,7 @@
 #include <string>
 #include <QPropertyAnimation>
 #include <QGraphicsItem>
+#include <QResizeEvent>
 #include "ui_JumperCompetitionResultsWidget.h"
 #include "ui_JumpDataDetailedInfoWindow.h"
 #include "../ResultsShowing/JumpDataDetailedInfoWindow.h"
@@ -45,6 +46,11 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
 {
     ui->setupUi(this);
     setWindowFlags(Qt::Window);
+    setMinimumSize(640, 480);
+    ui->splitter_main->setStretchFactor(0, 2);
+    ui->splitter_main->setStretchFactor(1, 7);
+    ui->splitter_main->setStretchFactor(2, 3);
+    ui->splitter_main->setSizes({220, 730, 330});
     ui->listView_startList->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableView_results->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView_results->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -143,7 +149,8 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
 
     if(singleCompetition == false){
         virtualClassificationTableView = new ClassificationResultsTableView(false, nullptr, this);
-        virtualClassificationTableView->getTableView()->setFixedSize(250, 172);
+        virtualClassificationTableView->setMinimumHeight(150);
+        virtualClassificationTableView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         setupVirtualClassificationComboBox();
         ui->verticalLayout_virtualClassificationListView->addWidget(virtualClassificationTableView);
         emit ui->comboBox_virtualClassification->currentIndexChanged(ui->comboBox_virtualClassification->currentIndex());
@@ -158,11 +165,16 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     ui->pushButton_jump->setFocus();
 
     if(type == CompetitionRules::Team){
-        teamResultsTreeModel = new TeamResultsTreeModel(dynamic_cast<TeamCompetitionManager *>(manager));
-        teamResultsTreeView = new QTreeView();
+        teamResultsTreeModel = new TeamResultsTreeModel(dynamic_cast<TeamCompetitionManager *>(manager), this);
+        teamResultsTreeModel->setupTreeItems();
+        teamResultsTreeView = new QTreeView(ui->panel_competition);
         teamResultsTreeView->setModel(teamResultsTreeModel);
+        teamResultsTreeView->setSelectionBehavior(QAbstractItemView::SelectRows);
+        teamResultsTreeView->setSelectionMode(QAbstractItemView::SingleSelection);
+        teamResultsTreeView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         teamResultsTreeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
-        ui->horizontalLayout_main->insertWidget(ui->horizontalLayout_main->count() - 2, teamResultsTreeView); //jako przedostatni
+        ui->tableView_results->hide();
+        ui->verticalLayout_tableAndFewOthers->addWidget(teamResultsTreeView, 1);
 
         connect(teamResultsTreeView, &QTreeView::doubleClicked, this, [this](const QModelIndex & index){
             TreeItem * item = static_cast<TreeItem *>(index.internalPointer());
@@ -175,8 +187,6 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
             jumperResultsWidget->fillWidget();
         });
 
-        ui->horizontalLayout_main->removeWidget(ui->tableView_results);
-        delete ui->tableView_results;
     }
     else{
         resultsTableModel = new ResultsTableModel(getType(), manager->getResults(), manager, this);
@@ -187,7 +197,7 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
 
 
     jumperResultsWidget = new JumperCompetitionResultsWidget(this);
-    jumperResultsWidget->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    jumperResultsWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     ui->verticalLayout_jumperResult->addWidget(jumperResultsWidget);
 
     ui->label_toBeatDistance->setText("0m");
@@ -256,6 +266,30 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     if(getType() == CompetitionRules::Team)
         connect(action_autoSimulateGroup, &QAction::triggered, this, &CompetitionManagerWindow::autoSimulateGroup);
     connect(action_autoSimulateJumps, &QAction::triggered, this, &CompetitionManagerWindow::autoSimulateJumps);
+
+    updateResponsiveLayout(width());
+}
+
+void CompetitionManagerWindow::updateResponsiveLayout(int windowWidth)
+{
+    const bool useCompactLayout = windowWidth < 1180;
+    if(useCompactLayout == compactLayout)
+        return;
+
+    compactLayout = useCompactLayout;
+    ui->panel_context->setVisible(!compactLayout);
+    ui->splitter_main->setOrientation(compactLayout ? Qt::Vertical : Qt::Horizontal);
+
+    if(compactLayout)
+        ui->splitter_main->setSizes({0, qMax(300, height() * 3 / 5), qMax(180, height() * 2 / 5)});
+    else
+        ui->splitter_main->setSizes({220, qMax(500, windowWidth - 550), 330});
+}
+
+void CompetitionManagerWindow::resizeEvent(QResizeEvent *event)
+{
+    QDialog::resizeEvent(event);
+    updateResponsiveLayout(event->size().width());
 }
 
 CompetitionManagerWindow::~CompetitionManagerWindow()
