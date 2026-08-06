@@ -254,36 +254,39 @@ void AbstractCompetitionManager::updateActualCompetitorPointsToTheLeader()
 void AbstractCompetitionManager::updateLast10Judges()
 {
     last10Judges = 0;
-    int i=actualStartListIndex;
     int howMany = 0;
-    while(true)
+    if(competitionInfo == nullptr || competitionInfo->getRulesPointer() == nullptr || results == nullptr)
+        return;
+
+    const int startIndex = qMin(actualStartListIndex, startListStatuses.count() - 1);
+    for(int i = startIndex; i >= 0 && howMany < 10; --i)
     {
-        if(startListStatuses.count() > actualStartListIndex)
+        if(startListStatuses.at(i).getJumpStatus() == StartListCompetitorStatus::Unfinished)
         {
-            if(startListStatuses[i].getJumpStatus() == StartListCompetitorStatus::Finished)
+            if(i == startIndex)
+                continue;
+            break;
+        }
+        if(startListStatuses.at(i).getJumpStatus() == StartListCompetitorStatus::Finished)
+        {
+            CompetitionSingleResult *jumperResult = nullptr;
+            if (competitionInfo->getRulesPointer()->getCompetitionType()
+                == CompetitionRules::Individual)
             {
-                CompetitionSingleResult *jumperResult = nullptr;
-                if (competitionInfo->getRulesPointer()->getCompetitionType()
-                    == CompetitionRules::Individual)
-                {
-                    jumperResult = results->getResultOfIndividualJumper(startListStatuses[i].getJumper());
-                }
-                else
-                {
-                    Team *team = Team::getTeamByCountryCode(&competitionInfo->getTeamsReference(), startListStatuses[i].getJumper()->getCountryCode());
-                    CompetitionSingleResult *teamResult = results->getResultOfTeam(team);
-                    if(teamResult != nullptr)
-                        jumperResult = teamResult->getTeamJumperResult(startListStatuses[i].getJumper());
-                }
-                if(jumperResult != nullptr && !jumperResult->getJumpsReference().isEmpty())
-                {
-                    last10Judges += jumperResult->getJumpsReference().last().getJudgesPoints();
-                    howMany++;
-                }
+                jumperResult = results->getResultOfIndividualJumper(startListStatuses.at(i).getJumper());
             }
-            i--;
-            if(i == -1 || startListStatuses[i].getJumpStatus() == StartListCompetitorStatus::Unfinished)
-                break;
+            else if(startListStatuses.at(i).getJumper() != nullptr)
+            {
+                Team *team = Team::getTeamByCountryCode(&competitionInfo->getTeamsReference(), startListStatuses.at(i).getJumper()->getCountryCode());
+                CompetitionSingleResult *teamResult = results->getResultOfTeam(team);
+                if(teamResult != nullptr)
+                    jumperResult = teamResult->getTeamJumperResult(startListStatuses.at(i).getJumper());
+            }
+            if(jumperResult != nullptr && !jumperResult->getJumpsReference().isEmpty())
+            {
+                last10Judges += jumperResult->getJumpsReference().last().getJudgesPoints();
+                howMany++;
+            }
         }
     }
     if(howMany > 0)
@@ -314,8 +317,14 @@ bool AbstractCompetitionManager::isAllJumpsAreFinished()
 
 void AbstractCompetitionManager::setActualJumperToNextUnfinished()
 {
-    setActualStartListIndex(getFirstUnfinishedStartListStatus());
-    setActualJumper(startListStatuses[getFirstUnfinishedStartListStatus()].getJumper());
+    const int index = getFirstUnfinishedStartListStatus();
+    if(index < 0 || index >= startListStatuses.count())
+    {
+        setActualJumper(nullptr);
+        return;
+    }
+    setActualStartListIndex(index);
+    setActualJumper(startListStatuses.at(index).getJumper());
 }
 
 double AbstractCompetitionManager::getLast10Judges() const

@@ -1,10 +1,13 @@
 #include "StartListByOtherCompetitionConfigWindow.h"
 #include "ui_StartListByOtherCompetitionConfigWindow.h"
 #include "../../global/CountryFlagsManager.h"
+#include <QStandardItemModel>
 
 StartListByOtherCompetitionConfigWindow::StartListByOtherCompetitionConfigWindow(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::StartListByOtherCompetitionConfigWindow)
+    ui(new Ui::StartListByOtherCompetitionConfigWindow),
+    save(nullptr),
+    competitionType(CompetitionRules::Individual)
 {
     ui->setupUi(this);
 }
@@ -17,19 +20,30 @@ StartListByOtherCompetitionConfigWindow::~StartListByOtherCompetitionConfigWindo
 void StartListByOtherCompetitionConfigWindow::setupComboBox()
 {
     ui->comboBox_comp->clear();
+    if(save == nullptr)
+        return;
+
+    auto addHeader = [this](const QString &text) {
+        ui->comboBox_comp->addItem(text);
+        if(auto *model = qobject_cast<QStandardItemModel *>(ui->comboBox_comp->model()))
+            model->item(ui->comboBox_comp->count() - 1)->setEnabled(false);
+    };
+
+    int lastCompetitionIndex = -1;
     for(auto & season : save->getSeasonsReference())
     {
-        QString string = "--- Sezon " + QString::number(season.getSeasonNumber()) + " ---";
-        ui->comboBox_comp->addItem(string);
+        addHeader("--- Sezon " + QString::number(season.getSeasonNumber()) + " ---");
         for(auto & cal : season.getCalendarsReference())
         {
-            QString string = "--- Kalendarz " + cal->getName() + " ---";
-            ui->comboBox_comp->addItem(string);
+            if(cal == nullptr)
+                continue;
+            addHeader("--- Kalendarz " + cal->getName() + " ---");
             for(auto & competition : CompetitionInfo::getSpecificTypeCompetitions(cal->getCompetitionsReference(), competitionType))
             {
-                if(competition->getPlayed() == false)
-                    break;
-                QString string = QString::number(cal->getCompetitionsReference().indexOf(competition) + 1) + ". " + competition->getHill()->getHillText();
+                if(competition == nullptr || !competition->getPlayed())
+                    continue;
+                QString string = QString::number(cal->getCompetitionsReference().indexOf(competition) + 1) + ". ";
+                string += competition->getHill() != nullptr ? competition->getHill()->getHillText() : tr("Brak skoczni");
                 switch(competition->getSerieType())
                 {
                 case CompetitionInfo::Competition:
@@ -45,38 +59,23 @@ void StartListByOtherCompetitionConfigWindow::setupComboBox()
                     string += tr(" (Tren.)");
                     break;
                 }
-                QPixmap pixmap = CountryFlagsManager::getFlagPixmap(competition->getHill()->getCountryCode().toLower());
-                ui->comboBox_comp->addItem(QIcon(pixmap), string);
+                const QIcon icon = competition->getHill() != nullptr
+                    ? QIcon(CountryFlagsManager::getFlagPixmap(competition->getHill()->getCountryCode().toLower()))
+                    : QIcon();
+                ui->comboBox_comp->addItem(icon, string,
+                    QVariant::fromValue<quintptr>(reinterpret_cast<quintptr>(competition)));
+                lastCompetitionIndex = ui->comboBox_comp->count() - 1;
             }
         }
     }
-    ui->comboBox_comp->setCurrentIndex(ui->comboBox_comp->count() - 1);
+    ui->comboBox_comp->setCurrentIndex(lastCompetitionIndex);
+    ui->pushButton_submit->setEnabled(lastCompetitionIndex >= 0);
 }
 
 CompetitionInfo *StartListByOtherCompetitionConfigWindow::getCompetition()
 {
-    int index = ui->comboBox_comp->currentIndex();
-    if(index >= 0)
-    {
-        for(auto & season : save->getSeasonsReference())
-        {
-            index -= 1;
-            for(auto & calendar : season.getCalendarsReference())
-            {
-                index -= 1;
-                if(index > CompetitionInfo::getSpecificTypeCompetitions(calendar->getCompetitionsReference(), competitionType).count() && CompetitionInfo::getSpecificTypeCompetitions(calendar->getCompetitionsReference(), competitionType).count() > 0)
-                {
-                    index -= CompetitionInfo::howManyPlayedStatic(CompetitionInfo::getSpecificTypeCompetitions(calendar->getCompetitionsReference(), competitionType));
-                }
-                else
-                {
-                    //qDebug()<<CompetitionInfo::getSpecificTypeCompetitions(calendar->getCompetitionsReference(), competitionType)[index]->getHill()->getHillText();
-                    return CompetitionInfo::getSpecificTypeCompetitions(calendar->getCompetitionsReference(), competitionType).at(index);
-                }
-            }
-        }
-    }
-    return nullptr;
+    const quintptr pointerValue = ui->comboBox_comp->currentData().value<quintptr>();
+    return reinterpret_cast<CompetitionInfo *>(pointerValue);
 }
 
 bool StartListByOtherCompetitionConfigWindow::getCheckBoxState()
@@ -108,4 +107,3 @@ void StartListByOtherCompetitionConfigWindow::setSave(SimulationSave *newSave)
 {
     save = newSave;
 }
-

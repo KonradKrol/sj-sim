@@ -7,7 +7,9 @@
 
 KOGroupEditorWidget::KOGroupEditorWidget(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::KOGroupEditorWidget)
+    ui(new Ui::KOGroupEditorWidget),
+    group(nullptr),
+    jumpersList(nullptr)
 {
     ui->setupUi(this);
 }
@@ -19,17 +21,15 @@ KOGroupEditorWidget::~KOGroupEditorWidget()
 
 void KOGroupEditorWidget::updateGroupNumber()
 {
-    ui->label_groupNumber->setText(QString::number(group->getNumber()));
+    ui->label_groupNumber->setText(group != nullptr ? QString::number(group->getNumber()) : QStringLiteral("-"));
 }
 
 void KOGroupEditorWidget::updateComboBoxesLayout()
 {
-    for(auto & comboBox : comboBoxes)
-    {
-        ui->verticalLayout_jumpersComboBoxes->removeWidget(comboBox);
-        MyFunctions::removeFromVector(comboBoxes, comboBox);
-        delete comboBox;
-    }
+    qDeleteAll(comboBoxes);
+    comboBoxes.clear();
+    if(group == nullptr || jumpersList == nullptr)
+        return;
     for(auto & groupJumper : group->getJumpersReference())
     {
         QComboBox * comboBox = new QComboBox();
@@ -47,10 +47,14 @@ void KOGroupEditorWidget::updateComboBoxesLayout()
 KOGroup KOGroupEditorWidget::getKOGroupFromInputs()
 {
     KOGroup group;
+    if(this->group == nullptr || jumpersList == nullptr)
+        return group;
     group.setNumber(this->group->getNumber());
     for(auto & comboBox : comboBoxes)
     {
-        group.getJumpersReference().push_back(jumpersList->at(comboBox->currentIndex()));
+        const int index = comboBox->currentIndex();
+        if(index >= 0 && index < jumpersList->count())
+            group.getJumpersReference().push_back(jumpersList->at(index));
     }
 
     return group;
@@ -59,9 +63,13 @@ KOGroup KOGroupEditorWidget::getKOGroupFromInputs()
 QVector<Jumper *> KOGroupEditorWidget::getJumpersFromInputs()
 {
     KOGroup group;
+    if(jumpersList == nullptr)
+        return group.getJumpersReference();
     for(auto & comboBox : comboBoxes)
     {
-        group.getJumpersReference().push_back(jumpersList->at(comboBox->currentIndex()));
+        const int index = comboBox->currentIndex();
+        if(index >= 0 && index < jumpersList->count())
+            group.getJumpersReference().push_back(jumpersList->at(index));
     }
     return group.getJumpersReference();
 }
@@ -90,4 +98,3 @@ void KOGroupEditorWidget::setGroup(KOGroup *newGroup)
 {
     group = newGroup;
 }
-

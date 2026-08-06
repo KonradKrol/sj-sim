@@ -4,8 +4,8 @@
 
 KOGroupResultsTableModel::KOGroupResultsTableModel(KORoundManager * KOManager, KOGroup * group, QObject *parent)
     : QAbstractTableModel(parent),
-    KOManager(KOManager),
-    group(group)
+    group(group),
+    KOManager(KOManager)
 {
 }
 
@@ -23,7 +23,7 @@ QVariant KOGroupResultsTableModel::headerData(int section, Qt::Orientation orien
 
 int KOGroupResultsTableModel::rowCount(const QModelIndex &parent) const
 {
-    if (parent.isValid())
+    if (parent.isValid() || group == nullptr || KOManager == nullptr || KOManager->getResults() == nullptr)
         return 0;
 
     QVector<Jumper *> sortedGroupJumpers = group->getJumpersReference();
@@ -41,22 +41,23 @@ int KOGroupResultsTableModel::columnCount(const QModelIndex &parent) const
 
 QVariant KOGroupResultsTableModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!index.isValid() || group == nullptr || KOManager == nullptr || KOManager->getResults() == nullptr
+        || index.column() < 0 || index.column() >= columnCount())
         return QVariant();
 
     QVector<Jumper *> sortedGroupJumpers = group->getJumpersReference();
     KOManager->getResults()->sortJumpersByResults(sortedGroupJumpers);
-    Jumper * jumper = sortedGroupJumpers[index.row()];
+    if(index.row() < 0 || index.row() >= sortedGroupJumpers.count())
+        return QVariant();
+    Jumper * jumper = sortedGroupJumpers.at(index.row());
+    if(jumper == nullptr)
+        return QVariant();
 
     if(role == Qt::DisplayRole)
     {
         if(index.column() == 0){
             QVector<int> positions = KOManager->getResults()->getJumpersPositions(&sortedGroupJumpers);
-            if(sortedGroupJumpers.count() > 0)
-            {
-                return positions[sortedGroupJumpers.indexOf(jumper)];
-            }
-            return 0;
+            return positions.value(sortedGroupJumpers.indexOf(jumper), 0);
         }
         else if(index.column() == 1)
             return jumper->getNameAndSurname();

@@ -42,7 +42,12 @@ int SimulationRecordsTableModel::columnCount(const QModelIndex &parent) const
 
 QVariant SimulationRecordsTableModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!index.isValid() || index.row() < 0 || index.row() >= records.count()
+        || index.column() < 0 || index.column() >= columnCount())
+        return QVariant();
+
+    JumpData *jump = records.at(index.row()).first;
+    if(jump == nullptr)
         return QVariant();
 
     if(role == Qt::DisplayRole)
@@ -50,30 +55,39 @@ QVariant SimulationRecordsTableModel::data(const QModelIndex &index, int role) c
         if(index.column() == 0)
             return index.row() + 1;
         else if(index.column() == 1)
-            return records[index.row()].first->getJumper()->getNameAndSurname();
+            return jump->getJumper() != nullptr ? jump->getJumper()->getNameAndSurname() : tr("Brak zawodnika");
         else if(index.column() == 2)
             return records[index.row()].second;
         else if(index.column() == 3)
         {
-            JumpData * jump = records[index.row()].first;
             CompetitionInfo * comp = jump->getCompetition();
+            if(comp == nullptr)
+                return tr("Skok bez powiązanego konkursu");
             Season * season = nullptr;
             SeasonCalendar * c = nullptr;
-            for(auto & s : save->getSeasonsReference())
-                for(auto & cal : s.getCalendarsReference())
-                {
-                    if(cal->getCompetitionsReference().contains(comp))
+            if(save != nullptr)
+                for(auto & s : save->getSeasonsReference())
+                    for(auto & cal : s.getCalendarsReference())
                     {
-                        season = &s;
-                        c = cal;
+                        if(cal != nullptr && cal->getCompetitionsReference().contains(comp))
+                        {
+                            season = &s;
+                            c = cal;
+                        }
                     }
 
-                }
-
+            if(season == nullptr || c == nullptr)
+                return tr("Konkurs spoza bieżącego zapisu");
 
             QString string = QString::number(season->getSeasonNumber()) + "/" + QString::number(c->getCompetitionsReference().indexOf(comp) + 1)
-                             + " " + comp->getHill()->getName() + " HS" + QString::number(comp->getHill()->getHSPoint()) + tr(" (Runda ")
-                             + QString::number(MyFunctions::getIndexOfItemInVector(jump->getSingleResult()->getJumpsReference(), jump) + 1) + ") ";
+                             + " ";
+            if(comp->getHill() != nullptr)
+                string += comp->getHill()->getName() + " HS" + QString::number(comp->getHill()->getHSPoint());
+            else
+                string += tr("Brak skoczni");
+            if(jump->getSingleResult() != nullptr)
+                string += tr(" (Runda ")
+                    + QString::number(MyFunctions::getIndexOfItemInVector(jump->getSingleResult()->getJumpsReference(), jump) + 1) + ") ";
             switch(comp->getSerieType())
             {
             case CompetitionInfo::Competition:
@@ -111,10 +125,10 @@ QVariant SimulationRecordsTableModel::data(const QModelIndex &index, int role) c
         return Qt::AlignHCenter;
     else if(role == Qt::DecorationRole)
     {
-        JumpData * jump = records[index.row()].first;
-        if(index.column() == 1) //zawodnik
+        if(index.column() == 1 && jump->getJumper() != nullptr) //zawodnik
             return QIcon(CountryFlagsManager::getFlagPixmap(jump->getJumper()->getCountryCode().toLower()));
-        else if(index.column() == 3) //skocznia
+        else if(index.column() == 3 && jump->getCompetition() != nullptr
+            && jump->getCompetition()->getHill() != nullptr) //skocznia
             return QIcon(CountryFlagsManager::getFlagPixmap(jump->getCompetition()->getHill()->getCountryCode().toLower()));
     }
     else if(role == Qt::BackgroundRole)
@@ -145,7 +159,9 @@ QVector<QPair<JumpData *, double> > &SimulationRecordsTableModel::getRecordsRefe
 
 void SimulationRecordsTableModel::setRecords(const QVector<QPair<JumpData *, double> > &newRecords)
 {
+    beginResetModel();
     records = newRecords;
+    endResetModel();
 }
 
 SimulationSave *SimulationRecordsTableModel::getSave() const

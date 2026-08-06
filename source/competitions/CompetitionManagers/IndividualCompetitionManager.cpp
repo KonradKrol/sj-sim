@@ -6,10 +6,12 @@
 IndividualCompetitionManager::IndividualCompetitionManager() : AbstractCompetitionManager(CompetitionRules::Individual)
 {
     connect(this, &IndividualCompetitionManager::actualStartListIndexChanged, this, [this](){
-        if(roundsJumpers.count() > 0){
-            actualJumper = roundsJumpers[actualRound - 1].at(actualStartListIndex);
-            emit actualJumperChanged();
-        }
+        const int roundIndex = actualRound - 1;
+        if(roundIndex < 0 || roundIndex >= roundsJumpers.count()
+            || actualStartListIndex < 0 || actualStartListIndex >= roundsJumpers.at(roundIndex).count())
+            return;
+        actualJumper = roundsJumpers.at(roundIndex).at(actualStartListIndex);
+        emit actualJumperChanged();
     });
     KOManager = nullptr;
 }

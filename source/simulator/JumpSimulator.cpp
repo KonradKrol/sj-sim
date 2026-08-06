@@ -602,7 +602,10 @@ void JumpSimulator::setSimulationData(JumpSimulationData *newSimulationData)
 
 double JumpSimulator::getWindSegmentDistance()
 {
-    return (hill->getKPoint() + (hill->getKPoint() / getWinds().count())) / getWinds().count();
+    const int segmentsCount = winds.count();
+    if(hill == nullptr || segmentsCount == 0)
+        return 0;
+    return (hill->getKPoint() + (hill->getKPoint() / segmentsCount)) / segmentsCount;
 }
 
 void JumpSimulator::setJumpData(const JumpData &newJumpData)

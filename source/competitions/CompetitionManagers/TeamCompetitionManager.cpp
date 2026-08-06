@@ -5,13 +5,17 @@
 TeamCompetitionManager::TeamCompetitionManager() : AbstractCompetitionManager(CompetitionRules::Team)
 {
     actualGroup = 0;
+    actualTeam = nullptr;
     connect(this, &TeamCompetitionManager::actualStartListIndexChanged, this, [this](){
-        if(roundsTeams.count() > 0){
-            actualJumper = startListStatuses[actualStartListIndex].getJumper();
-            emit actualJumperChanged();
-            actualTeam = roundsTeams[actualRound - 1][actualStartListIndex];
-            emit actualTeamChanged();
-        }
+        const int roundIndex = actualRound - 1;
+        if(roundIndex < 0 || roundIndex >= roundsTeams.count()
+            || actualStartListIndex < 0 || actualStartListIndex >= roundsTeams.at(roundIndex).count()
+            || actualStartListIndex >= startListStatuses.count())
+            return;
+        actualJumper = startListStatuses.at(actualStartListIndex).getJumper();
+        emit actualJumperChanged();
+        actualTeam = roundsTeams.at(roundIndex).at(actualStartListIndex);
+        emit actualTeamChanged();
     });
 }
 
@@ -156,12 +160,9 @@ QVector<Team *> TeamCompetitionManager::getFilteredTeamsForNextRound()
 void TeamCompetitionManager::updateTeamsVectorByQualifications(QVector<Team> &teamsVectorToModify)
 {
     QVector<Team *> teams = getFilteredTeamsForNextRound();
-
-    for(auto & team : teamsVectorToModify)
-    {
-        if(Team::containsTeamByCode(teams, team.getCountryCode()) == false)
-            MyFunctions::removeFromVector(teamsVectorToModify, &team);
-    }
+    for(int i = teamsVectorToModify.count() - 1; i >= 0; --i)
+        if(!Team::containsTeamByCode(teams, teamsVectorToModify.at(i).getCountryCode()))
+            teamsVectorToModify.removeAt(i);
 }
 
 QVector<Team> TeamCompetitionManager::getFilteredTeamsAfterQualifications(CompetitionInfo *competition)
