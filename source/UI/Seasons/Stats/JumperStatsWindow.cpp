@@ -18,29 +18,64 @@ JumperStatsWindow::JumperStatsWindow(QWidget *parent) :
 
     QLayoutItem *headerItem = ui->verticalLayout_2->takeAt(0);
     QLayout *headerLayout = headerItem->layout();
+    QWidget *identityPanel = new QWidget(this);
+    QHBoxLayout *identityLayout = new QHBoxLayout(identityPanel);
+    identityLayout->setContentsMargins(0, 0, 0, 0);
     QScrollArea *filtersArea = new QScrollArea(this);
     filtersArea->setObjectName("scrollArea_filters");
     filtersArea->setFrameShape(QFrame::NoFrame);
     filtersArea->setWidgetResizable(true);
-    filtersArea->setMaximumHeight(280);
+    filtersArea->setMinimumHeight(95);
+    filtersArea->setMaximumHeight(150);
+    filtersArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     QWidget *filtersPanel = new QWidget(filtersArea);
     QGridLayout *filtersLayout = new QGridLayout(filtersPanel);
     filtersLayout->setContentsMargins(0, 0, 0, 0);
 
-    const QVector<QPair<int, int>> filterPositions = {
-        {0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}, {0, 5}, {0, 6},
-        {1, 0}, {1, 1}, {1, 2}, {1, 3},
-        {2, 0}, {2, 1}, {2, 2}, {2, 3}, {2, 4}, {2, 5}, {2, 6}, {2, 7},
-        {1, 4}, {1, 5}
+    const QList<QWidget *> headerWidgets = {
+        ui->pushButton_csvExport, ui->label_img, ui->label_jumperNameAndSurname,
+        ui->label_jumperFlag, ui->checkBox_mergeCalendars, ui->comboBox_calendar,
+        ui->comboBox_hillFilter, ui->checkBox_withDSQ, ui->checkBox
     };
-    for(const auto &position : filterPositions)
-        filtersLayout->addItem(headerLayout->takeAt(0), position.first, position.second);
+    for(QWidget *widget : headerWidgets)
+        headerLayout->removeWidget(widget);
+    const QList<QLayout *> filterGroups = {
+        ui->verticalLayout_classificationsComboBoxes, ui->verticalLayout_rangeComboBoxes,
+        ui->verticalLayout_hillTypesCheckBoxes, ui->verticalLayout_serieTypesCheckBoxes
+    };
+    for(QLayout *layout : filterGroups)
+        headerLayout->removeItem(layout);
+    while(QLayoutItem *item = headerLayout->takeAt(0))
+        delete item;
     delete headerItem;
+
+    identityLayout->addWidget(ui->pushButton_csvExport);
+    identityLayout->addWidget(ui->label_img);
+    identityLayout->addWidget(ui->label_jumperNameAndSurname, 1);
+    identityLayout->addWidget(ui->label_jumperFlag);
+
+    filtersLayout->addWidget(ui->checkBox_mergeCalendars, 0, 0);
+    filtersLayout->addWidget(ui->comboBox_calendar, 0, 1);
+    filtersLayout->addWidget(ui->comboBox_hillFilter, 0, 2);
+    filtersLayout->addWidget(ui->checkBox_withDSQ, 0, 3);
+    filtersLayout->addWidget(ui->checkBox, 0, 4);
+    filtersLayout->addLayout(ui->verticalLayout_classificationsComboBoxes, 1, 0);
+    filtersLayout->addLayout(ui->verticalLayout_rangeComboBoxes, 1, 1);
+    filtersLayout->addLayout(ui->verticalLayout_hillTypesCheckBoxes, 1, 2);
+    filtersLayout->addLayout(ui->verticalLayout_serieTypesCheckBoxes, 1, 3, 1, 2);
+    filtersLayout->setColumnStretch(1, 1);
+    filtersLayout->setColumnStretch(2, 1);
+    filtersPanel->setMinimumWidth(720);
+    ui->comboBox_calendar->setMinimumWidth(140);
+    ui->comboBox_calendar->setMaximumWidth(240);
+    ui->comboBox_hillFilter->setMinimumWidth(160);
+    ui->comboBox_hillFilter->setMaximumWidth(300);
 
     filtersArea->setWidget(filtersPanel);
     ui->verticalLayout_2->insertWidget(0, filtersArea);
+    ui->verticalLayout_2->insertWidget(0, identityPanel);
     ui->label_jumperNameAndSurname->setWordWrap(true);
-    ui->label_jumperNameAndSurname->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    ui->label_jumperNameAndSurname->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
     rangeComboBoxes = new CompetitionsRangeComboBoxesWidget(this);
     ui->verticalLayout_rangeComboBoxes->addWidget(rangeComboBoxes);

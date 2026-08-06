@@ -25,20 +25,54 @@ SimulationRatingsWindow::SimulationRatingsWindow(SimulationSave * save, QWidget 
     filtersArea->setObjectName("scrollArea_filters");
     filtersArea->setFrameShape(QFrame::NoFrame);
     filtersArea->setWidgetResizable(true);
-    filtersArea->setMaximumHeight(260);
+    filtersArea->setMinimumHeight(145);
+    filtersArea->setMaximumHeight(190);
+    filtersArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     QWidget *filtersPanel = new QWidget(filtersArea);
     QGridLayout *filtersLayout = new QGridLayout(filtersPanel);
     filtersLayout->setContentsMargins(0, 0, 0, 0);
 
-    const QVector<QPair<int, int>> filterPositions = {
-        {0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}, {0, 5}, {0, 6}, {0, 7},
-        {1, 0}, {1, 1}, {1, 2}, {1, 3},
-        {2, 0}, {2, 1}, {2, 2}, {2, 3}, {2, 4}, {2, 5}, {2, 6}, {2, 7},
-        {1, 4}, {1, 5}
+    const QList<QWidget *> headerWidgets = {
+        ui->pushButton_csvExport, ui->label_24, ui->spinBox_minimalResults,
+        ui->label_recordsCount, ui->spinBox_recordsCount, ui->checkBox_mergeCalendars,
+        ui->comboBox_calendar, ui->comboBox_hillFilter, ui->pushButton_jumpersLists,
+        ui->checkBox_showHidden
     };
-    for(const auto &position : filterPositions)
-        filtersLayout->addItem(headerLayout->takeAt(0), position.first, position.second);
+    for(QWidget *widget : headerWidgets)
+        headerLayout->removeWidget(widget);
+    const QList<QLayout *> filterGroups = {
+        ui->verticalLayout_classificationsComboBoxes, ui->verticalLayout_rangeComboBoxes,
+        ui->verticalLayout_hillTypesCheckBoxes, ui->verticalLayout_serieTypesCheckBoxes
+    };
+    for(QLayout *layout : filterGroups)
+        headerLayout->removeItem(layout);
+    while(QLayoutItem *item = headerLayout->takeAt(0))
+        delete item;
     delete headerItem;
+
+    filtersLayout->addWidget(ui->pushButton_csvExport, 0, 0);
+    filtersLayout->addWidget(ui->label_24, 0, 1);
+    filtersLayout->addWidget(ui->spinBox_minimalResults, 0, 2);
+    filtersLayout->addWidget(ui->label_recordsCount, 0, 3);
+    filtersLayout->addWidget(ui->spinBox_recordsCount, 0, 4);
+    filtersLayout->addWidget(ui->checkBox_mergeCalendars, 1, 0);
+    filtersLayout->addWidget(ui->comboBox_calendar, 1, 1);
+    filtersLayout->addWidget(ui->comboBox_hillFilter, 1, 2);
+    filtersLayout->addWidget(ui->pushButton_jumpersLists, 1, 3);
+    filtersLayout->addWidget(ui->checkBox_showHidden, 1, 4);
+    filtersLayout->addLayout(ui->verticalLayout_classificationsComboBoxes, 2, 0);
+    filtersLayout->addLayout(ui->verticalLayout_rangeComboBoxes, 2, 1);
+    filtersLayout->addLayout(ui->verticalLayout_hillTypesCheckBoxes, 2, 2);
+    filtersLayout->addLayout(ui->verticalLayout_serieTypesCheckBoxes, 2, 3, 1, 2);
+    filtersLayout->setColumnStretch(1, 1);
+    filtersLayout->setColumnStretch(2, 1);
+    filtersPanel->setMinimumWidth(760);
+    ui->spinBox_minimalResults->setMaximumWidth(160);
+    ui->spinBox_recordsCount->setMaximumWidth(160);
+    ui->comboBox_calendar->setMinimumWidth(140);
+    ui->comboBox_calendar->setMaximumWidth(240);
+    ui->comboBox_hillFilter->setMinimumWidth(160);
+    ui->comboBox_hillFilter->setMaximumWidth(300);
 
     filtersArea->setWidget(filtersPanel);
     ui->verticalLayout->insertWidget(0, filtersArea);
