@@ -72,8 +72,8 @@ make -j"$(nproc)"
 cd ..
 ```
 
-Install `linuxdeploy-x86_64.AppImage` and its Qt plugin, then package the
-runtime-only release:
+Install ImageMagick, `linuxdeploy-x86_64.AppImage`, and its Qt plugin, then
+package the runtime-only release:
 
 ```bash
 bash scripts/package-linux.sh build-linux dist/sj-sim-linux-x64

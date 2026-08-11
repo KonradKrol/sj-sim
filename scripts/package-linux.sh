@@ -43,10 +43,19 @@ if [[ ! -x "${repo_root}/linuxdeploy-x86_64.AppImage" ]]; then
     exit 1
 fi
 
+if ! command -v convert >/dev/null 2>&1; then
+    echo "ImageMagick (convert) is required for Linux icon packaging" >&2
+    exit 1
+fi
+
+icon_path="$(mktemp --suffix=.png)"
+trap 'rm -f "${icon_path}"' EXIT
+convert "${repo_root}/sj-sim.png" -resize 512x512 "${icon_path}"
+
 "${repo_root}/linuxdeploy-x86_64.AppImage" \
     --appdir "${output_path}" \
     --desktop-file "${repo_root}/sj-sim.desktop" \
-    --icon-file "${repo_root}/sj-sim.png" \
+    --icon-file "${icon_path}" \
     --plugin qt
 
 tar -C "${repo_root}/dist" -czf "${repo_root}/dist/sj-sim-linux-x64.tar.gz" \
