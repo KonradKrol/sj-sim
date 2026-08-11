@@ -40,7 +40,7 @@ It focuses on simulation, not graphics — there is no 2D or 3D rendering. Inste
 
 ## Building on Windows
 
-Install Qt 6.7.3 for MSVC 2022 x64 with Qt Charts, then open an x64 Native
+Install Qt 6.8.3 for MSVC 2022 x64 with Qt Charts, then open an x64 Native
 Tools Command Prompt for VS 2022. From the repository root:
 
 ```bat
@@ -60,7 +60,7 @@ disabled and no external DPP package is required.
 
 ## Building on Linux
 
-Install Qt 6.7.3 for GCC x64 with Qt Charts, plus `lrelease`, `make`, and the
+Install Qt 6.8.3 for GCC x64 with Qt Charts, plus `lrelease`, `make`, and the
 Linux deployment prerequisites (`libgl1-mesa-dev`, `libfuse2`,
 `libxcb-cursor0`, and `libxkbcommon-x11-0`). From the repository root:
 

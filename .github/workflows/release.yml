@@ -24,7 +24,7 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
-          version: 6.7.3
+          version: 6.8.3
           arch: win64_msvc2022_64
           modules: qtcharts
           cache: true
@@ -58,7 +58,7 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
-          version: 6.7.3
+          version: 6.8.3
           arch: linux_gcc_64
           modules: qtcharts
           cache: true
