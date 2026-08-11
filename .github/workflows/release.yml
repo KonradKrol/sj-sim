@@ -83,7 +83,6 @@ jobs:
           mkdir -p dist/sj-sim-linux-x64/usr/bin/translations
           lrelease translations/translation_en.ts -qm dist/sj-sim-linux-x64/usr/bin/translations/translation_en.qm
           printf '[Desktop Entry]\nType=Application\nName=Sj.Sim\nExec=sj-sim\nIcon=sj-sim\nCategories=Game;Simulation;\n' > sj-sim.desktop
-          cp img/ski-jumper.png sj-sim.png
           ./linuxdeploy-x86_64.AppImage --appdir dist/sj-sim-linux-x64 --desktop-file sj-sim.desktop --icon-file sj-sim.png --plugin qt
           cd dist/sj-sim-linux-x64/usr/bin
           set +e

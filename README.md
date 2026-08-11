@@ -58,6 +58,32 @@ files stay in the build directory and are never included. The current portable
 build uses the bundled DPP compatibility layer, so Discord webhook delivery is
 disabled and no external DPP package is required.
 
+## Building on Linux
+
+Install Qt 6.7.3 for GCC x64 with Qt Charts, plus `lrelease`, `make`, and the
+Linux deployment prerequisites (`libgl1-mesa-dev`, `libfuse2`,
+`libxcb-cursor0`, and `libxkbcommon-x11-0`). From the repository root:
+
+```bash
+mkdir -p build-linux
+cd build-linux
+qmake .. CONFIG+=release
+make -j"$(nproc)"
+cd ..
+```
+
+Install `linuxdeploy-x86_64.AppImage` and its Qt plugin, then package the
+runtime-only release:
+
+```bash
+bash scripts/package-linux.sh build-linux dist/sj-sim-linux-x64
+```
+
+This creates `dist/sj-sim-linux-x64.tar.gz`. The package includes the new
+`sj-sim.png` application icon, dynamically linked Qt libraries, and the
+`flags`, `translations`, and `userData` folders. Object files remain only in
+the build directory.
+
 ## Automated releases
 
 Every commit pushed to `main` builds Windows and Linux packages and publishes

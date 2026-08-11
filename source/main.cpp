@@ -2,6 +2,7 @@
 
 #include <QApplication>
 #include <QDir>
+#include <QIcon>
 #include <QTranslator>
 #include "global/GlobalTranslators.h"
 #include "global/GlobalAppSettings.h"
@@ -15,6 +16,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     QApplication::setOrganizationName("SJ-Sim");
     QApplication::setApplicationName("SJ-Sim");
+    QApplication::setWindowIcon(QIcon(":/sj-sim.png"));
 
     // Data files are deliberately shipped beside the executable. Do not rely
     // on the shell/shortcut choosing that directory as its working directory.

@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>sj-sim.png</file>
         <file>img/ski-jumper-1.png</file>
         <file>img/ski-jumper.png</file>
         <file>img/settings.png</file>

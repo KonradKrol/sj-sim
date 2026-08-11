@@ -361,6 +361,8 @@ FORMS += \
 TRANSLATIONS += \
     translations/translation_en.ts
 
+win32:RC_ICONS = sj-sim.ico
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
@@ -369,6 +371,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
     flaticon_authors \
     flags_author \
+    sj-sim.png \
+    sj-sim.ico \
     userData/GlobalDatabase/globalCompetitionsRules.json \
     userData/GlobalDatabase/globalHills.json \
     userData/GlobalDatabase/globalJumpers.json \
