@@ -94,11 +94,13 @@ private:
     double actualInrunSnow;
     bool jumpInProgress;
     bool manipulationPending;
+    bool personalBestNotificationsSuppressed;
 
     JumpSimulator simulator;
     void setupSimulator();
     void focusCurrentJumper();
     void updateManipulationIndicator(bool pending);
+    void showPersonalBestNotification(const QString &title, const QString &message);
     void updateResponsiveLayout(int windowWidth);
     bool compactLayout = false;
 

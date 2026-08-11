@@ -43,7 +43,8 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     teamResultsTreeView(nullptr),
     actualInrunSnow(0.0),
     jumpInProgress(false),
-    manipulationPending(false)
+    manipulationPending(false),
+    personalBestNotificationsSuppressed(false)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::Window);
@@ -1304,6 +1305,17 @@ void CompetitionManagerWindow::autoSimulateJumps()
     }
 }
 
+void CompetitionManagerWindow::showPersonalBestNotification(const QString &title, const QString &message)
+{
+    QMessageBox box(QMessageBox::Information, title, message, QMessageBox::Ok, this);
+    QAbstractButton *dontShowButton = box.addButton(
+        tr("Nie pokazuj podczas tego konkursu"), QMessageBox::ActionRole);
+    box.exec();
+
+    if(box.clickedButton() == dontShowButton)
+        personalBestNotificationsSuppressed = true;
+}
+
 void CompetitionManagerWindow::checkRecords(JumpData &jump, bool multipleRecords)
 {
     if(jump.getCompetition()->getRulesPointer()->getHillRecordBreaking() == true && (jump.getLanding().getType() == Landing::TelemarkLanding || jump.getLanding().getType() == Landing::BothLegsLanding) && (singleCompetition == false || GlobalSimulationSettings::get()->getUpdateGlobalDatabaseRecords() == true)){
@@ -1327,13 +1339,19 @@ void CompetitionManagerWindow::checkRecords(JumpData &jump, bool multipleRecords
     }
 
     if(jump.getHill()->getHillType() == Hill::Flying && (jump.getLanding().getType() == Landing::TelemarkLanding || jump.getLanding().getType() == Landing::BothLegsLanding)  && (singleCompetition == false || GlobalSimulationSettings::get()->getUpdateGlobalDatabaseRecords() == true)){
-    if(roundDoubleToHalf(jump.getDistance()) == roundDoubleToHalf(jump.getJumper()->getPersonalBest()) && multipleRecords == false)
+    if(roundDoubleToHalf(jump.getDistance()) == roundDoubleToHalf(jump.getJumper()->getPersonalBest()) && multipleRecords == false && personalBestNotificationsSuppressed == false)
     {
         QMessageBox::information(this, "Wyrównanie rekordu życiowego", tr("%1 wyrównał swój własny rekord życiowy, skacząc %2m").arg(jump.getJumper()->getTextInfo()).arg(QString::number(jump.getDistance(), 'f', 1)), QMessageBox::Ok);
     }
     else if(roundDoubleToHalf(jump.getDistance()) > roundDoubleToHalf(jump.getJumper()->getPersonalBest()))
     {
-        QMessageBox::information(this, "Pobicie rekordu życiowego", tr("%1 pobił swój własny rekord życiowy, skacząc %2m (poprzedni rekord: %3m)").arg(jump.getJumper()->getTextInfo()).arg(QString::number(jump.getDistance(), 'f', 1)).arg(QString::number(jump.getJumper()->getPersonalBest(), 'f', 1)), QMessageBox::Ok);
+        if(personalBestNotificationsSuppressed == false)
+            showPersonalBestNotification(
+                tr("Pobicie rekordu życiowego"),
+                tr("%1 pobił swój własny rekord życiowy, skacząc %2m (poprzedni rekord: %3m)")
+                    .arg(jump.getJumper()->getTextInfo())
+                    .arg(QString::number(jump.getDistance(), 'f', 1))
+                    .arg(QString::number(jump.getJumper()->getPersonalBest(), 'f', 1)));
 
        qDebug()<<"singleCompetition: "<<singleCompetition;
        qDebug()<<"GlobalSimulationSettings::get()->getUpdateGlobalDatabaseRecords(): "<<GlobalSimulationSettings::get()->getUpdateGlobalDatabaseRecords();

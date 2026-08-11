@@ -1393,6 +1393,16 @@ by coach</translation>
         <translation>With a jump of %1m, %2 set a new hill record of %3 (previously %4m).</translation>
     </message>
     <message>
+        <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1311"/>
+        <source>Nie pokazuj podczas tego konkursu</source>
+        <translation>Don&apos;t show again during this competition</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1350"/>
+        <source>Pobicie rekordu życiowego</source>
+        <translation>New personal best</translation>
+    </message>
+    <message>
         <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1159"/>
         <source>%1 wyrównał swój własny rekord życiowy, skacząc %2m</source>
         <translation>%1 equaled his own personal record, jumping %2m</translation>
