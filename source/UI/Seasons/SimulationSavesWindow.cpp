@@ -4,6 +4,7 @@
 #include "../../global/GlobalDatabase.h"
 #include "../../seasons/SimulationSave.h"
 #include "../../seasons/Season.h"
+#include "NewSeasonConfiguratorWindow.h"
 #include "NewSimulationSaveConfigurationWindow.h"
 #include "SimulationSaveManagerWindow.h"
 #include <QModelIndex>
@@ -15,6 +16,7 @@
 #include <QMessageBox>
 #include <QShortcut>
 #include <QSysInfo>
+#include <QTimer>
 #include <exception>
 #include <memory>
 #include <new>
@@ -94,26 +96,28 @@ void SimulationSavesWindow::on_pushButton_add_clicked()
     if(simulationSaveWindow.exec() != QDialog::Accepted)
         return;
 
+    // A simulation begins with its own editable copy of the global database.
+    // Let the player choose and edit that initial set before the save owns it.
+    NewSeasonConfiguratorWindow seasonWindow(false, this);
+    connect(seasonWindow.getToolBox(), &QToolBox::currentChanged, this, [&seasonWindow](){
+        if(seasonWindow.getToolBox()->currentIndex() == 3)
+        {
+            QTimer::singleShot(200, &seasonWindow, [&seasonWindow](){
+                seasonWindow.showCalendarEditorHelp();
+            });
+        }
+    });
+    if(seasonWindow.exec() != QDialog::Accepted)
+        return;
+
     bool savedToDisk = false;
     try
     {
         std::unique_ptr<SimulationSave> simulationSave = std::make_unique<SimulationSave>();
         simulationSave->setName(simulationSaveWindow.getNameFromInput());
-
-        for(const Jumper &jumper : GlobalDatabase::get()->getEditableGlobalJumpers())
-        {
-            std::unique_ptr<Jumper> copy = std::make_unique<Jumper>(jumper);
-            simulationSave->getJumpersReference().append(copy.get());
-            copy.release();
-        }
-
-        for(const Hill &hill : GlobalDatabase::get()->getEditableGlobalHills())
-        {
-            std::unique_ptr<Hill> copy = std::make_unique<Hill>(hill);
-            simulationSave->getHillsReference().append(copy.get());
-            copy.release();
-        }
-        simulationSave->setCompetitionRules(GlobalDatabase::get()->getEditableCompetitionRules());
+        simulationSave->setJumpers(seasonWindow.getJumpersReference());
+        simulationSave->setHills(seasonWindow.getHillsReference());
+        simulationSave->setCompetitionRules(seasonWindow.getCompetitionsRulesReference());
 
         Season season;
         season.setSeasonNumber(simulationSaveWindow.getSeasonNumberFromInput());

@@ -1,0 +1,3051 @@
+{
+    "calendar-preset": {
+        "calendar": {
+            "classifications": [
+                {
+                    "alt-points-for-places": [
+                    ],
+                    "classification-type": 0,
+                    "id": "9bf115d3-40e8-4a81-aee7-bae6ba9bd357",
+                    "name": "SGP",
+                    "points-for-places": [
+                        100,
+                        80,
+                        60,
+                        50,
+                        45,
+                        40,
+                        36,
+                        32,
+                        29,
+                        26,
+                        24,
+                        22,
+                        20,
+                        18,
+                        16,
+                        15,
+                        14,
+                        13,
+                        12,
+                        11,
+                        10,
+                        9,
+                        8,
+                        7,
+                        6,
+                        5,
+                        4,
+                        3,
+                        2,
+                        1
+                    ],
+                    "punctation-type": 0,
+                    "results": [
+                    ]
+                },
+                {
+                    "alt-points-for-places": [
+                        100,
+                        80,
+                        60,
+                        50,
+                        45,
+                        40,
+                        36,
+                        32,
+                        29,
+                        26,
+                        24,
+                        22,
+                        20,
+                        18,
+                        16,
+                        15,
+                        14,
+                        13,
+                        12,
+                        11,
+                        10,
+                        9,
+                        8,
+                        7,
+                        6,
+                        5,
+                        4,
+                        3,
+                        2,
+                        1
+                    ],
+                    "classification-type": 1,
+                    "id": "d6e0ca67-d8ef-4892-83ad-dc7275631678",
+                    "name": "SNC",
+                    "points-for-places": [
+                        400,
+                        350,
+                        300,
+                        250,
+                        200,
+                        150,
+                        100,
+                        50
+                    ],
+                    "punctation-type": 0,
+                    "results": [
+                    ]
+                }
+            ],
+            "competitions": [
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "b101c9b7-0793-4372-8e7c-2fd413b3f172",
+                    "jumps-importance": 6.5,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 3,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "bb471146-1e4e-4f19-bed1-87cf440303c4",
+                    "jumps-importance": 6.1,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 2,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "7829bbd3-72c3-4d8e-916d-5cf6d42d1ac3",
+                    "jumps-importance": 9,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "EG",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 3,
+                                "sort-start-list": false
+                            },
+                            {
+                                "count": 30,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": true
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 0,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                        "b101c9b7-0793-4372-8e7c-2fd413b3f172"
+                    ],
+                    "trial-round-id": "bb471146-1e4e-4f19-bed1-87cf440303c4"
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "5f49a8cc-cd8c-47c2-8ca9-e5e5668cdfe8",
+                    "jumps-importance": 6.5,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 3,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "31caf005-ab06-4c37-afd0-1493b70903dc",
+                    "jumps-importance": 6.1,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 2,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "cd6f0cb3-42b8-49b2-8086-8aa51bd4665a",
+                    "jumps-importance": 9,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "EG",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 3,
+                                "sort-start-list": false
+                            },
+                            {
+                                "count": 30,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": true
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 0,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                        "5f49a8cc-cd8c-47c2-8ca9-e5e5668cdfe8"
+                    ],
+                    "trial-round-id": "31caf005-ab06-4c37-afd0-1493b70903dc"
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "54367f78-ab68-4a72-8a03-121b1624a545",
+                    "jumps-importance": 5,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 3,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "c4285037-b320-4d55-bcd2-891a0b60d65f",
+                    "jumps-importance": 5,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 3,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "a7479efa-b267-43d9-a056-bbcd0b91c523",
+                    "jumps-importance": 6.3,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "Qualifications",
+                        "rounds": [
+                            {
+                                "count": 100,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 1,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                        "54367f78-ab68-4a72-8a03-121b1624a545",
+                        "c4285037-b320-4d55-bcd2-891a0b60d65f"
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "3b25cd1e-ff05-4853-bb4d-7c86b25d653f",
+                    "jumps-importance": 5.75,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 2,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "advancement-competition-id": "a7479efa-b267-43d9-a056-bbcd0b91c523",
+                    "cancelled": false,
+                    "classifications-ids": [
+                        "9bf115d3-40e8-4a81-aee7-bae6ba9bd357",
+                        "d6e0ca67-d8ef-4892-83ad-dc7275631678"
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "94b1e889-aa8b-4d21-b2c8-d933f17c9407",
+                    "jumps-importance": 8.65,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "WC",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 3,
+                                "sort-start-list": false
+                            },
+                            {
+                                "count": 30,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": true
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 0,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ],
+                    "trial-round-id": "3b25cd1e-ff05-4853-bb4d-7c86b25d653f"
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "e9e32915-2107-4ef8-872f-df8b8b4460da",
+                    "jumps-importance": 6.3,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "Qualifications",
+                        "rounds": [
+                            {
+                                "count": 100,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 1,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "0eb4c326-696e-46e4-aec6-a8293aecbf98",
+                    "jumps-importance": 5.75,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 2,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "advancement-competition-id": "e9e32915-2107-4ef8-872f-df8b8b4460da",
+                    "cancelled": false,
+                    "classifications-ids": [
+                        "9bf115d3-40e8-4a81-aee7-bae6ba9bd357",
+                        "d6e0ca67-d8ef-4892-83ad-dc7275631678"
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "dfb9d67c-bd01-498f-b09b-1bc800a49903",
+                    "jumps-importance": 8.65,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "WC",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 3,
+                                "sort-start-list": false
+                            },
+                            {
+                                "count": 30,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": true
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 0,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ],
+                    "trial-round-id": "0eb4c326-696e-46e4-aec6-a8293aecbf98"
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "a9a7a96d-7100-45ef-974f-5b2a11a98ec3",
+                    "jumps-importance": 5,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 3,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "a58031d0-67f8-4ec2-b12f-b13eb0ae57fc",
+                    "jumps-importance": 5,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 3,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "eaff5a19-dc49-46fb-8ba0-6ae96a377df2",
+                    "jumps-importance": 6.3,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "Qualifications",
+                        "rounds": [
+                            {
+                                "count": 100,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 1,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                        "a9a7a96d-7100-45ef-974f-5b2a11a98ec3",
+                        "a58031d0-67f8-4ec2-b12f-b13eb0ae57fc"
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "8125d40f-8997-4336-bbc5-a43e51710af5",
+                    "jumps-importance": 5.75,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 2,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "advancement-competition-id": "eaff5a19-dc49-46fb-8ba0-6ae96a377df2",
+                    "cancelled": false,
+                    "classifications-ids": [
+                        "9bf115d3-40e8-4a81-aee7-bae6ba9bd357",
+                        "d6e0ca67-d8ef-4892-83ad-dc7275631678"
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "69a6db7a-47c8-4e29-8ef0-900a87ba4376",
+                    "jumps-importance": 8.65,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "WC",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 3,
+                                "sort-start-list": false
+                            },
+                            {
+                                "count": 30,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": true
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 0,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ],
+                    "trial-round-id": "8125d40f-8997-4336-bbc5-a43e51710af5"
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "24b8c7a8-4fcf-4e38-8e97-ae1839500fa9",
+                    "jumps-importance": 6.3,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "Qualifications",
+                        "rounds": [
+                            {
+                                "count": 100,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 1,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "0f9c46db-bc39-429a-a26b-54b80fdbe2e9",
+                    "jumps-importance": 5.75,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 2,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "advancement-competition-id": "24b8c7a8-4fcf-4e38-8e97-ae1839500fa9",
+                    "cancelled": false,
+                    "classifications-ids": [
+                        "9bf115d3-40e8-4a81-aee7-bae6ba9bd357",
+                        "d6e0ca67-d8ef-4892-83ad-dc7275631678"
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "1dccdb0e-cd23-491f-83af-229253e7b9c6",
+                    "jumps-importance": 8.65,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "WC",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 3,
+                                "sort-start-list": false
+                            },
+                            {
+                                "count": 30,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": true
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 0,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ],
+                    "trial-round-id": "0f9c46db-bc39-429a-a26b-54b80fdbe2e9"
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "89afd695-2597-4c37-822c-df70d27abc2e",
+                    "jumps-importance": 5,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 3,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "76ca9f08-0d5b-4f79-9d89-5851d98bafb3",
+                    "jumps-importance": 5,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 3,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "3e1a4d17-beac-4693-9f9a-86cd17a32f36",
+                    "jumps-importance": 6.3,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "Qualifications",
+                        "rounds": [
+                            {
+                                "count": 100,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 1,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                        "89afd695-2597-4c37-822c-df70d27abc2e",
+                        "76ca9f08-0d5b-4f79-9d89-5851d98bafb3"
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "72b775af-e60d-49f7-8242-e6d6f6f42983",
+                    "jumps-importance": 5.75,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 2,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "advancement-competition-id": "3e1a4d17-beac-4693-9f9a-86cd17a32f36",
+                    "cancelled": false,
+                    "classifications-ids": [
+                        "9bf115d3-40e8-4a81-aee7-bae6ba9bd357",
+                        "d6e0ca67-d8ef-4892-83ad-dc7275631678"
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "d8aa3034-c84f-4480-92f6-ce1f42933db8",
+                    "jumps-importance": 8.65,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "WC",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 3,
+                                "sort-start-list": false
+                            },
+                            {
+                                "count": 30,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": true
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 0,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ],
+                    "trial-round-id": "72b775af-e60d-49f7-8242-e6d6f6f42983"
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "216a8ffb-2488-4fda-b7ac-c5469f0c4c09",
+                    "jumps-importance": 6.3,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "Qualifications",
+                        "rounds": [
+                            {
+                                "count": 100,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 1,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "8a36b33f-8080-4756-9b9d-9f98d7f2976b",
+                    "jumps-importance": 5.75,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 2,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "advancement-competition-id": "216a8ffb-2488-4fda-b7ac-c5469f0c4c09",
+                    "cancelled": false,
+                    "classifications-ids": [
+                        "9bf115d3-40e8-4a81-aee7-bae6ba9bd357",
+                        "d6e0ca67-d8ef-4892-83ad-dc7275631678"
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "6bd0d55c-c4d5-44a9-bd9b-c2a0087eeceb",
+                    "jumps-importance": 8.65,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "WC",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 3,
+                                "sort-start-list": false
+                            },
+                            {
+                                "count": 30,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": true
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 0,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ],
+                    "trial-round-id": "8a36b33f-8080-4756-9b9d-9f98d7f2976b"
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "d35d9c9a-dc78-4300-a835-59297dea99bd",
+                    "jumps-importance": 5,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 3,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "798defbf-d0c5-47c2-8389-c578243712c6",
+                    "jumps-importance": 5,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 3,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "c7157847-a3d9-412d-b5ac-4c96f64e5197",
+                    "jumps-importance": 6.3,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "Qualifications",
+                        "rounds": [
+                            {
+                                "count": 100,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 1,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                        "d35d9c9a-dc78-4300-a835-59297dea99bd",
+                        "798defbf-d0c5-47c2-8389-c578243712c6"
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "58d08359-efb4-4e55-816a-b467f77fc0a7",
+                    "jumps-importance": 5.75,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 2,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "advancement-competition-id": "c7157847-a3d9-412d-b5ac-4c96f64e5197",
+                    "cancelled": false,
+                    "classifications-ids": [
+                        "9bf115d3-40e8-4a81-aee7-bae6ba9bd357",
+                        "d6e0ca67-d8ef-4892-83ad-dc7275631678"
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "cf799cee-4f8e-452c-bc92-466abcc9324f",
+                    "jumps-importance": 8.65,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "WC",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 3,
+                                "sort-start-list": false
+                            },
+                            {
+                                "count": 30,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": true
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 0,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ],
+                    "trial-round-id": "58d08359-efb4-4e55-816a-b467f77fc0a7"
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "e42140cd-60aa-4ee0-b1e5-e3214f5cbc2c",
+                    "jumps-importance": 6.3,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "Qualifications",
+                        "rounds": [
+                            {
+                                "count": 100,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 1,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "88c55710-c503-4b3a-899c-089e86b4ded4",
+                    "jumps-importance": 5.75,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 2,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "advancement-competition-id": "e42140cd-60aa-4ee0-b1e5-e3214f5cbc2c",
+                    "cancelled": false,
+                    "classifications-ids": [
+                        "9bf115d3-40e8-4a81-aee7-bae6ba9bd357",
+                        "d6e0ca67-d8ef-4892-83ad-dc7275631678"
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "37478fa6-61f4-4635-9e90-4ff377f7ec9e",
+                    "jumps-importance": 8.65,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "WC",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 3,
+                                "sort-start-list": false
+                            },
+                            {
+                                "count": 30,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": true
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 0,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ],
+                    "trial-round-id": "88c55710-c503-4b3a-899c-089e86b4ded4"
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "5db223df-8709-4445-a618-575d0face0d0",
+                    "jumps-importance": 5,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 3,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "c02ccdf4-2e6d-4f62-bc89-cbabf3e74d72",
+                    "jumps-importance": 5,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 3,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "dda224b0-f7f6-43ff-b980-871533192da7",
+                    "jumps-importance": 6.3,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "Qualifications",
+                        "rounds": [
+                            {
+                                "count": 100,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 1,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                        "5db223df-8709-4445-a618-575d0face0d0",
+                        "c02ccdf4-2e6d-4f62-bc89-cbabf3e74d72"
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "396cd61b-711b-445e-aaec-acab14217f3b",
+                    "jumps-importance": 5.75,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 2,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "advancement-competition-id": "dda224b0-f7f6-43ff-b980-871533192da7",
+                    "cancelled": false,
+                    "classifications-ids": [
+                        "9bf115d3-40e8-4a81-aee7-bae6ba9bd357",
+                        "d6e0ca67-d8ef-4892-83ad-dc7275631678"
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "66bb5ff5-b30f-4d4b-8283-53347618a454",
+                    "jumps-importance": 8.65,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "WC",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 3,
+                                "sort-start-list": false
+                            },
+                            {
+                                "count": 30,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": true
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 0,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ],
+                    "trial-round-id": "396cd61b-711b-445e-aaec-acab14217f3b"
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "6107937e-cf2e-43ee-b908-6acdb830d9d3",
+                    "jumps-importance": 6.3,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "Qualifications",
+                        "rounds": [
+                            {
+                                "count": 100,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 1,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "b1e33538-0b7b-4877-9070-58e78feb18e2",
+                    "jumps-importance": 5.75,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 2,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "advancement-competition-id": "6107937e-cf2e-43ee-b908-6acdb830d9d3",
+                    "cancelled": false,
+                    "classifications-ids": [
+                        "9bf115d3-40e8-4a81-aee7-bae6ba9bd357",
+                        "d6e0ca67-d8ef-4892-83ad-dc7275631678"
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "5e1c001a-951e-40e0-ba51-cb46f5070cdb",
+                    "jumps-importance": 8.65,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "WC",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 3,
+                                "sort-start-list": false
+                            },
+                            {
+                                "count": 30,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": true
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 0,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ],
+                    "trial-round-id": "b1e33538-0b7b-4877-9070-58e78feb18e2"
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "ee454dce-c24a-4668-a26b-dd541c6f6df9",
+                    "jumps-importance": 5,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 3,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "7e6f2e2e-788b-403f-a6b8-555476b8a370",
+                    "jumps-importance": 5,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 3,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "fbf71178-42d5-488c-90da-4f2640a096bc",
+                    "jumps-importance": 6.3,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "Qualifications",
+                        "rounds": [
+                            {
+                                "count": 100,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 1,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                        "ee454dce-c24a-4668-a26b-dd541c6f6df9",
+                        "7e6f2e2e-788b-403f-a6b8-555476b8a370"
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "b9a38477-349d-4ed0-bf0e-13793d0ea8da",
+                    "jumps-importance": 5.75,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 0,
+                        "name": "Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 2,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "advancement-competition-id": "fbf71178-42d5-488c-90da-4f2640a096bc",
+                    "cancelled": false,
+                    "classifications-ids": [
+                        "9bf115d3-40e8-4a81-aee7-bae6ba9bd357",
+                        "d6e0ca67-d8ef-4892-83ad-dc7275631678"
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "887c950c-294c-450e-abc8-f51989334199",
+                    "jumps-importance": 8.65,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 0,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 0,
+                        "name": "WC",
+                        "rounds": [
+                            {
+                                "count": 50,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 3,
+                                "sort-start-list": false
+                            },
+                            {
+                                "count": 30,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 0,
+                                "sort-start-list": true
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 0,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ],
+                    "trial-round-id": "b9a38477-349d-4ed0-bf0e-13793d0ea8da"
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "222732f7-39d4-4c3f-a685-894621c706fb",
+                    "jumps-importance": 5.75,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": false,
+                        "competition-type": 1,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": false,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": false,
+                        "jumpers-in-team-count": 4,
+                        "name": "Team Training/Trial",
+                        "rounds": [
+                            {
+                                "count": 15,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 3,
+                                "sort-start-list": false
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 2,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ]
+                },
+                {
+                    "cancelled": false,
+                    "classifications-ids": [
+                        "d6e0ca67-d8ef-4892-83ad-dc7275631678"
+                    ],
+                    "exceptional-rounds-count": -1,
+                    "id": "ab4563af-d1a5-4c36-9adf-0d148882de9c",
+                    "jumps-importance": 8.65,
+                    "played": false,
+                    "results": {
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "results": [
+                        ]
+                    },
+                    "rounds-ko-groups": [
+                    ],
+                    "rules": {
+                        "95-hs-rule": true,
+                        "competition-type": 1,
+                        "dsq": true,
+                        "gate-compensations": true,
+                        "hill-record-breaking": true,
+                        "id": "00000000-0000-0000-0000-000000000000",
+                        "judges-points": true,
+                        "jumpers-in-team-count": 4,
+                        "name": "Team World Cup",
+                        "rounds": [
+                            {
+                                "count": 15,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 3,
+                                "sort-start-list": false
+                            },
+                            {
+                                "count": 8,
+                                "ko": false,
+                                "ko-group-advancing": 0,
+                                "ko-group-count": 0,
+                                "ko-groups-selection-type": 0,
+                                "sort-after-groups": 1,
+                                "sort-start-list": true
+                            }
+                        ],
+                        "wind-average-calculating-type": 2,
+                        "wind-compensation-distance-effect": 1,
+                        "wind-compensations": true
+                    },
+                    "serie-type": 0,
+                    "start-list": [
+                    ],
+                    "teams": [
+                    ],
+                    "training-ids": [
+                    ],
+                    "trial-round-id": "222732f7-39d4-4c3f-a685-894621c706fb"
+                }
+            ],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": ""
+        },
+        "hills": [
+            {
+                "hs-point": 105,
+                "name": "Zakopane"
+            },
+            {
+                "hs-point": 105,
+                "name": "Zakopane"
+            },
+            {
+                "hs-point": 105,
+                "name": "Zakopane"
+            },
+            {
+                "hs-point": 140,
+                "name": "Zakopane"
+            },
+            {
+                "hs-point": 140,
+                "name": "Zakopane"
+            },
+            {
+                "hs-point": 140,
+                "name": "Zakopane"
+            },
+            {
+                "hs-point": 111,
+                "name": "Hinterzarten"
+            },
+            {
+                "hs-point": 111,
+                "name": "Hinterzarten"
+            },
+            {
+                "hs-point": 111,
+                "name": "Hinterzarten"
+            },
+            {
+                "hs-point": 111,
+                "name": "Hinterzarten"
+            },
+            {
+                "hs-point": 111,
+                "name": "Hinterzarten"
+            },
+            {
+                "hs-point": 111,
+                "name": "Hinterzarten"
+            },
+            {
+                "hs-point": 111,
+                "name": "Hinterzarten"
+            },
+            {
+                "hs-point": 111,
+                "name": "Hinterzarten"
+            },
+            {
+                "hs-point": 132,
+                "name": "Courchevel"
+            },
+            {
+                "hs-point": 132,
+                "name": "Courchevel"
+            },
+            {
+                "hs-point": 132,
+                "name": "Courchevel"
+            },
+            {
+                "hs-point": 132,
+                "name": "Courchevel"
+            },
+            {
+                "hs-point": 132,
+                "name": "Courchevel"
+            },
+            {
+                "hs-point": 132,
+                "name": "Courchevel"
+            },
+            {
+                "hs-point": 132,
+                "name": "Courchevel"
+            },
+            {
+                "hs-point": 132,
+                "name": "Courchevel"
+            },
+            {
+                "hs-point": 104,
+                "name": "Szczyrk"
+            },
+            {
+                "hs-point": 104,
+                "name": "Szczyrk"
+            },
+            {
+                "hs-point": 104,
+                "name": "Szczyrk"
+            },
+            {
+                "hs-point": 104,
+                "name": "Szczyrk"
+            },
+            {
+                "hs-point": 104,
+                "name": "Szczyrk"
+            },
+            {
+                "hs-point": 104,
+                "name": "Szczyrk"
+            },
+            {
+                "hs-point": 104,
+                "name": "Szczyrk"
+            },
+            {
+                "hs-point": 104,
+                "name": "Szczyrk"
+            },
+            {
+                "hs-point": 97,
+                "name": "Rasnov"
+            },
+            {
+                "hs-point": 97,
+                "name": "Rasnov"
+            },
+            {
+                "hs-point": 97,
+                "name": "Rasnov"
+            },
+            {
+                "hs-point": 97,
+                "name": "Rasnov"
+            },
+            {
+                "hs-point": 97,
+                "name": "Rasnov"
+            },
+            {
+                "hs-point": 97,
+                "name": "Rasnov"
+            },
+            {
+                "hs-point": 97,
+                "name": "Rasnov"
+            },
+            {
+                "hs-point": 97,
+                "name": "Rasnov"
+            },
+            {
+                "hs-point": 90,
+                "name": "Hinzenbach"
+            },
+            {
+                "hs-point": 90,
+                "name": "Hinzenbach"
+            },
+            {
+                "hs-point": 90,
+                "name": "Hinzenbach"
+            },
+            {
+                "hs-point": 90,
+                "name": "Hinzenbach"
+            },
+            {
+                "hs-point": 90,
+                "name": "Hinzenbach"
+            },
+            {
+                "hs-point": 90,
+                "name": "Hinzenbach"
+            },
+            {
+                "hs-point": 90,
+                "name": "Hinzenbach"
+            },
+            {
+                "hs-point": 90,
+                "name": "Hinzenbach"
+            },
+            {
+                "hs-point": 140,
+                "name": "Klingenthal"
+            },
+            {
+                "hs-point": 140,
+                "name": "Klingenthal"
+            },
+            {
+                "hs-point": 140,
+                "name": "Klingenthal"
+            },
+            {
+                "hs-point": 140,
+                "name": "Klingenthal"
+            },
+            {
+                "hs-point": 140,
+                "name": "Klingenthal"
+            },
+            {
+                "hs-point": 140,
+                "name": "Klingenthal"
+            },
+            {
+                "hs-point": 140,
+                "name": "Klingenthal"
+            }
+        ],
+        "name": "LGP2023"
+    }
+}

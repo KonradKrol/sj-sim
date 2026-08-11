@@ -1,8 +1,10 @@
 .qmake.stash
 build-linux/
 build-win/
+build-*/
 debug/
 release/
+dist/
 assets_for_ai/
 AUDIT_CRASH_REPORT.md
 AUDIT_MONETIZATION_REPORT.md

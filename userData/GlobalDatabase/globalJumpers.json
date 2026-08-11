@@ -1,0 +1,3560 @@
+{
+    "jumpers": [
+        {
+            "characteristics": [
+                {
+                    "level": 0.28,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.2,
+                    "type": "takeoff-power"
+                },
+                {
+                    "level": 0.3,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "USA",
+            "flight-style": 1,
+            "flight-technique": 69,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "USA_CaseyL",
+            "jumps-equality": 0,
+            "landing-style": 11.8,
+            "name": "Casey",
+            "personal-best": 216.5,
+            "surname": "L",
+            "takeoff-technique": 72
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.6,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.3,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "USA",
+            "flight-style": 1,
+            "flight-technique": 73.1,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "USA_ErikB",
+            "jumps-equality": 0.3,
+            "landing-style": 12,
+            "name": "Erik",
+            "personal-best": 202,
+            "surname": "B",
+            "takeoff-technique": 73.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 2.4,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 2.6,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 2.1,
+                    "type": "takeoff-power"
+                }
+            ],
+            "country-code": "USA",
+            "flight-style": 2,
+            "flight-technique": 67,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "USA_AndrewU",
+            "jumps-equality": -3,
+            "landing-style": 11,
+            "name": "Andrew",
+            "personal-best": 0,
+            "surname": "U",
+            "takeoff-technique": 71.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.5,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": -0.8,
+                    "type": "flight-height"
+                }
+            ],
+            "country-code": "USA",
+            "flight-style": 1,
+            "flight-technique": 73.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "USA_DeckerD",
+            "jumps-equality": -1,
+            "landing-style": 11.6,
+            "name": "Decker",
+            "personal-best": 212.5,
+            "surname": "D",
+            "takeoff-technique": 71.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.1,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "USA",
+            "flight-style": 1,
+            "flight-technique": 71,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "USA_KevinB",
+            "jumps-equality": -0.3,
+            "landing-style": 11.7,
+            "name": "Kevin",
+            "personal-best": 244.5,
+            "surname": "B",
+            "takeoff-technique": 71
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.7,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "USA",
+            "flight-style": 1,
+            "flight-technique": 52,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "USA_JasonC",
+            "jumps-equality": -2,
+            "landing-style": 9,
+            "name": "Jason",
+            "personal-best": 0,
+            "surname": "C",
+            "takeoff-technique": 50
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -1.6,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -2,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "USA",
+            "flight-style": 2,
+            "flight-technique": 46,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "USA_LoganG",
+            "jumps-equality": -1,
+            "landing-style": 9.45,
+            "name": "Logan",
+            "personal-best": 0,
+            "surname": "G",
+            "takeoff-technique": 48
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.65,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.7,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "USA",
+            "flight-style": 1,
+            "flight-technique": 51.8,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "USA_MaksimG",
+            "jumps-equality": -3,
+            "landing-style": 8.7,
+            "name": "Maksim",
+            "personal-best": 0,
+            "surname": "G",
+            "takeoff-technique": 50
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.8,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.8,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "USA",
+            "flight-style": 1,
+            "flight-technique": 47,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "USA_StewartG",
+            "jumps-equality": -0.5,
+            "landing-style": 9.7,
+            "name": "Stewart",
+            "personal-best": 0,
+            "surname": "G",
+            "takeoff-technique": 47
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.55,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.6,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "EST",
+            "flight-style": 0,
+            "flight-technique": 65,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "EST_KevinM",
+            "jumps-equality": 0,
+            "landing-style": 12.05,
+            "name": "Kevin",
+            "personal-best": 212.5,
+            "surname": "M",
+            "takeoff-technique": 68
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.05,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.2,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "EST",
+            "flight-style": 1,
+            "flight-technique": 77.9,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "EST_ArttiA",
+            "jumps-equality": 1.1,
+            "landing-style": 12.5,
+            "name": "Artti",
+            "personal-best": 228,
+            "surname": "A",
+            "takeoff-technique": 77.6
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 2,
+                    "type": "less-important-jumps"
+                },
+                {
+                    "level": 1.1,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 1.1,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 1,
+                    "type": "takeoff-power"
+                }
+            ],
+            "country-code": "BGR",
+            "flight-style": 1,
+            "flight-technique": 78.8,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "BGR_VladimirZ",
+            "jumps-equality": 1,
+            "landing-style": 12.2,
+            "name": "Vladimir",
+            "personal-best": 214,
+            "surname": "Z",
+            "takeoff-technique": 79.8
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -1,
+                    "type": "landing-skill"
+                },
+                {
+                    "level": -0.1,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "SVK",
+            "flight-style": 1,
+            "flight-technique": 66.6,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "SVK_HektorK",
+            "jumps-equality": -0.8,
+            "landing-style": 11,
+            "name": "Hektor",
+            "personal-best": 0,
+            "surname": "K",
+            "takeoff-technique": 66
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.5,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.5,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "CZE",
+            "flight-style": 2,
+            "flight-technique": 55.2,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "CZE_DavidR",
+            "jumps-equality": -2,
+            "landing-style": 10,
+            "name": "David",
+            "personal-best": 0,
+            "surname": "R",
+            "takeoff-technique": 54
+        },
+        {
+            "characteristics": [
+            ],
+            "country-code": "CZE",
+            "flight-style": 1,
+            "flight-technique": 59,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "CZE_KrystofH",
+            "jumps-equality": 0.5,
+            "landing-style": 11,
+            "name": "Krystof",
+            "personal-best": 0,
+            "surname": "H",
+            "takeoff-technique": 58
+        },
+        {
+            "characteristics": [
+            ],
+            "country-code": "CZE",
+            "flight-style": 1,
+            "flight-technique": 61,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "CZE_BenediktH",
+            "jumps-equality": -0.4,
+            "landing-style": 11.5,
+            "name": "Benedikt",
+            "personal-best": 0,
+            "surname": "H",
+            "takeoff-technique": 61
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.4,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "CZE",
+            "flight-style": 2,
+            "flight-technique": 64.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "CZE_RadekR",
+            "jumps-equality": -0.4,
+            "landing-style": 11.8,
+            "name": "Radek",
+            "personal-best": 0,
+            "surname": "R",
+            "takeoff-technique": 63.3
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.05,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.3,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "CZE",
+            "flight-style": 2,
+            "flight-technique": 74.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "CZE_RomanK",
+            "jumps-equality": 0.6,
+            "landing-style": 13.65,
+            "name": "Roman",
+            "personal-best": 229,
+            "surname": "K",
+            "takeoff-technique": 74.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.3,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.7,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "ROU",
+            "flight-style": 1,
+            "flight-technique": 63,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "ROU_AndreiF",
+            "jumps-equality": 0.1,
+            "landing-style": 10.9,
+            "name": "Andrei",
+            "personal-best": 0,
+            "surname": "F",
+            "takeoff-technique": 64
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.1,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "ROU",
+            "flight-style": 1,
+            "flight-technique": 56,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "ROU_NicolaeSM",
+            "jumps-equality": -1,
+            "landing-style": 10.7,
+            "name": "Nicolae",
+            "personal-best": 0,
+            "surname": "SM",
+            "takeoff-technique": 60
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.3,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.2,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "ROU",
+            "flight-style": 0,
+            "flight-technique": 57,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "ROU_MihneaAS",
+            "jumps-equality": -0.7,
+            "landing-style": 10.25,
+            "name": "Mihnea",
+            "personal-best": 0,
+            "surname": "AS",
+            "takeoff-technique": 57
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 1.8,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.8,
+                    "type": "takeoff-power"
+                },
+                {
+                    "level": 1.5,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "ROU",
+            "flight-style": 1,
+            "flight-technique": 64,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "ROU_DanielAC",
+            "jumps-equality": -0.6,
+            "landing-style": 12,
+            "name": "Daniel",
+            "personal-best": 0,
+            "surname": "AC",
+            "takeoff-technique": 68
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.25,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.3,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "UKR",
+            "flight-style": 1,
+            "flight-technique": 71.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "UKR_YevhenM",
+            "jumps-equality": 0.3,
+            "landing-style": 12.1,
+            "name": "Yevhen",
+            "personal-best": 213.5,
+            "surname": "M",
+            "takeoff-technique": 73.7
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.2,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.3,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "UKR",
+            "flight-style": 1,
+            "flight-technique": 65.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "UKR_VitaliyK",
+            "jumps-equality": 0.2,
+            "landing-style": 11.6,
+            "name": "Vitaliy",
+            "personal-best": 195.5,
+            "surname": "K",
+            "takeoff-technique": 67
+        },
+        {
+            "characteristics": [
+            ],
+            "country-code": "TUR",
+            "flight-style": 1,
+            "flight-technique": 61,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "TUR_MuhmammetIC",
+            "jumps-equality": -2,
+            "landing-style": 9.9,
+            "name": "Muhmammet",
+            "personal-best": 139,
+            "surname": "IC",
+            "takeoff-technique": 60
+        },
+        {
+            "characteristics": [
+            ],
+            "country-code": "TUR",
+            "flight-style": 1,
+            "flight-technique": 67,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "TUR_MuhammedAB",
+            "jumps-equality": 0.1,
+            "landing-style": 10.5,
+            "name": "Muhammed",
+            "personal-best": 212.5,
+            "surname": "AB",
+            "takeoff-technique": 66
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 2.3,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 1,
+                    "type": "less-important-jumps"
+                },
+                {
+                    "level": 0.5,
+                    "type": "takeoff-power"
+                },
+                {
+                    "level": 1.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "TUR",
+            "flight-style": 1,
+            "flight-technique": 71,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "TUR_FatihAI",
+            "jumps-equality": -1.7,
+            "landing-style": 10.8,
+            "name": "Fatih",
+            "personal-best": 209.5,
+            "surname": "AI",
+            "takeoff-technique": 75
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.4,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "FIN",
+            "flight-style": 2,
+            "flight-technique": 78.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "FIN_NikoK",
+            "jumps-equality": 0.3,
+            "landing-style": 12.08,
+            "name": "Niko",
+            "personal-best": 233,
+            "surname": "K",
+            "takeoff-technique": 77
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.55,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.6,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "FIN",
+            "flight-style": 2,
+            "flight-technique": 73.75,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "FIN_EetuN",
+            "jumps-equality": -0.65,
+            "landing-style": 12,
+            "name": "Eetu",
+            "personal-best": 223.5,
+            "surname": "N",
+            "takeoff-technique": 73.75
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.4,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "FIN",
+            "flight-style": 1,
+            "flight-technique": 65,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "FIN_JarkkoM",
+            "jumps-equality": 1,
+            "landing-style": 11.2,
+            "name": "Jarkko",
+            "personal-best": 216.5,
+            "surname": "M",
+            "takeoff-technique": 67
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.3,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": -0.45,
+                    "type": "flight-height"
+                }
+            ],
+            "country-code": "FIN",
+            "flight-style": 1,
+            "flight-technique": 78.6,
+            "form": 50,
+            "id": "5f6dc145-61bd-43b7-9ee1-92792b77f638",
+            "image-name": "FIN_AnttiA",
+            "jumps-equality": 0,
+            "landing-style": 12.5,
+            "name": "Antti",
+            "personal-best": 225.5,
+            "surname": "A",
+            "takeoff-technique": 77.8
+        },
+        {
+            "characteristics": [
+            ],
+            "country-code": "FIN",
+            "flight-style": 1,
+            "flight-technique": 69.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "FIN_ArttuP",
+            "jumps-equality": -1,
+            "landing-style": 10.9,
+            "name": "Arttu",
+            "personal-best": 160,
+            "surname": "P",
+            "takeoff-technique": 69.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.15,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.12,
+                    "type": "both-legs-landing-tendence"
+                },
+                {
+                    "level": -0.5,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "FIN",
+            "flight-style": 2,
+            "flight-technique": 72,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "FIN_KasperiV",
+            "jumps-equality": -0.4,
+            "landing-style": 11,
+            "name": "Kasperi",
+            "personal-best": 0,
+            "surname": "V",
+            "takeoff-technique": 69.3
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.2,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.1,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "FIN",
+            "flight-style": 2,
+            "flight-technique": 65,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "FIN_HenriK",
+            "jumps-equality": -1.5,
+            "landing-style": 11.25,
+            "name": "Henri",
+            "personal-best": 0,
+            "surname": "K",
+            "takeoff-technique": 65
+        },
+        {
+            "characteristics": [
+            ],
+            "country-code": "FIN",
+            "flight-style": 1,
+            "flight-technique": 63,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "FIN_MicoA",
+            "jumps-equality": -0.23,
+            "landing-style": 11,
+            "name": "Mico",
+            "personal-best": 0,
+            "surname": "A",
+            "takeoff-technique": 64.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.4,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 0.6,
+                    "type": "flight-height"
+                }
+            ],
+            "country-code": "FIN",
+            "flight-style": 1,
+            "flight-technique": 71.3,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "FIN_VilhoP",
+            "jumps-equality": -0.2,
+            "landing-style": 12,
+            "name": "Vilho",
+            "personal-best": 0,
+            "surname": "P",
+            "takeoff-technique": 71.3
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.8,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -3,
+                    "type": "landing-skill"
+                },
+                {
+                    "level": 0.8,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "KAZ",
+            "flight-style": 1,
+            "flight-technique": 62,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "KAZ_SabirzhanM",
+            "jumps-equality": -4,
+            "landing-style": 9,
+            "name": "Sabirzhan",
+            "personal-best": 190,
+            "surname": "M",
+            "takeoff-technique": 67
+        },
+        {
+            "characteristics": [
+            ],
+            "country-code": "KAZ",
+            "flight-style": 2,
+            "flight-technique": 66,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "KAZ_SergeyT",
+            "jumps-equality": -2,
+            "landing-style": 10,
+            "name": "Sergey",
+            "personal-best": 199.5,
+            "surname": "T",
+            "takeoff-technique": 63
+        },
+        {
+            "characteristics": [
+            ],
+            "country-code": "KAZ",
+            "flight-style": 2,
+            "flight-technique": 63,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "KAZ_NikitaD",
+            "jumps-equality": -2,
+            "landing-style": 10.4,
+            "name": "Nikita",
+            "personal-best": 131,
+            "surname": "D",
+            "takeoff-technique": 62
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.5,
+                    "type": "less-important-jumps"
+                }
+            ],
+            "country-code": "KAZ",
+            "flight-style": 2,
+            "flight-technique": 71.75,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "KAZ_DanilV",
+            "jumps-equality": 0.2,
+            "landing-style": 12.5,
+            "name": "Danil",
+            "personal-best": 194.5,
+            "surname": "V",
+            "takeoff-technique": 72.3
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.4,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "RUS",
+            "flight-style": 1,
+            "flight-technique": 66.25,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "RUS_MikhailM",
+            "jumps-equality": 0.3,
+            "landing-style": 12,
+            "name": "Mikhail",
+            "personal-best": 208,
+            "surname": "M",
+            "takeoff-technique": 69.5
+        },
+        {
+            "characteristics": [
+            ],
+            "country-code": "RUS",
+            "flight-style": 1,
+            "flight-technique": 68,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "RUS_AleksandrB",
+            "jumps-equality": -0.5,
+            "landing-style": 11.2,
+            "name": "Aleksandr",
+            "personal-best": 176,
+            "surname": "B",
+            "takeoff-technique": 69.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.9,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.5,
+                    "type": "takeoff-power"
+                },
+                {
+                    "level": 0.7,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "RUS",
+            "flight-style": 1,
+            "flight-technique": 70.35,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "RUS_IlyaM",
+            "jumps-equality": -0.5,
+            "landing-style": 12,
+            "name": "Ilya",
+            "personal-best": 204,
+            "surname": "M",
+            "takeoff-technique": 72.6
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 1.35,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 1.2,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "RUS",
+            "flight-style": 1,
+            "flight-technique": 78,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "RUS_EvgeniyK",
+            "jumps-equality": -2.5,
+            "landing-style": 11,
+            "name": "Evgeniy",
+            "personal-best": 237,
+            "surname": "K",
+            "takeoff-technique": 83
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.3,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.3,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "RUS",
+            "flight-style": 1,
+            "flight-technique": 74,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "RUS_MikhailN",
+            "jumps-equality": 0.3,
+            "landing-style": 12.07,
+            "name": "Mikhail",
+            "personal-best": 234.5,
+            "surname": "N",
+            "takeoff-technique": 75
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.1,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.2,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "RUS",
+            "flight-style": 1,
+            "flight-technique": 70.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "RUS_RomanST",
+            "jumps-equality": 0.5,
+            "landing-style": 11.5,
+            "name": "Roman",
+            "personal-best": 202.5,
+            "surname": "ST",
+            "takeoff-technique": 72
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.21,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.5,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "RUS",
+            "flight-style": 1,
+            "flight-technique": 65.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "RUS_MikhailP",
+            "jumps-equality": -1,
+            "landing-style": 11.4,
+            "name": "Mikhail",
+            "personal-best": 0,
+            "surname": "P",
+            "takeoff-technique": 63
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.6,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 0.6,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.2,
+                    "type": "takeoff-power"
+                }
+            ],
+            "country-code": "RUS",
+            "flight-style": 2,
+            "flight-technique": 77,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "RUS_DanilS",
+            "jumps-equality": 0.15,
+            "landing-style": 12,
+            "name": "Danil",
+            "personal-best": 207,
+            "surname": "S",
+            "takeoff-technique": 79.1
+        },
+        {
+            "characteristics": [
+            ],
+            "country-code": "FRA",
+            "flight-style": 1,
+            "flight-technique": 68,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "FRA_ValentinF",
+            "jumps-equality": -0.2,
+            "landing-style": 12.3,
+            "name": "Valentin",
+            "personal-best": 186.5,
+            "surname": "F",
+            "takeoff-technique": 68
+        },
+        {
+            "characteristics": [
+            ],
+            "country-code": "FRA",
+            "flight-style": 1,
+            "flight-technique": 68.6,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "FRA_EnzoM",
+            "jumps-equality": -0.1,
+            "landing-style": 11.6,
+            "name": "Enzo",
+            "personal-best": 0,
+            "surname": "M",
+            "takeoff-technique": 68.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.05,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.3,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "FRA",
+            "flight-style": 1,
+            "flight-technique": 70,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "FRA_AlessandroB",
+            "jumps-equality": 0.1,
+            "landing-style": 11.3,
+            "name": "Alessandro",
+            "personal-best": 0,
+            "surname": "B",
+            "takeoff-technique": 68
+        },
+        {
+            "characteristics": [
+            ],
+            "country-code": "FRA",
+            "flight-style": 1,
+            "flight-technique": 64,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "FRA_JulesC",
+            "jumps-equality": 0.8,
+            "landing-style": 12,
+            "name": "Jules",
+            "personal-best": 0,
+            "surname": "C",
+            "takeoff-technique": 64
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.5,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "CHE",
+            "flight-style": 1,
+            "flight-technique": 65,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "CHE_SandroH",
+            "jumps-equality": -0.5,
+            "landing-style": 10.6,
+            "name": "Sandro",
+            "personal-best": 237,
+            "surname": "H",
+            "takeoff-technique": 68
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.5,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 0.35,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -2,
+                    "type": "less-important-jumps"
+                },
+                {
+                    "level": 25,
+                    "type": "both-legs-landing-tendence"
+                }
+            ],
+            "country-code": "CHE",
+            "flight-style": 1,
+            "flight-technique": 76.2,
+            "form": 50,
+            "id": "4581c5b1-1c18-4912-8439-96b7e10446d4",
+            "image-name": "CHE_SimonA",
+            "jumps-equality": -0.5,
+            "landing-style": 6.75,
+            "name": "Simon",
+            "personal-best": 239.5,
+            "surname": "A",
+            "takeoff-technique": 74.3
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.9,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 0.75,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.25,
+                    "type": "takeoff-power"
+                }
+            ],
+            "country-code": "CHE",
+            "flight-style": 1,
+            "flight-technique": 77.5,
+            "form": 50,
+            "id": "f5d90cea-8bfb-405f-9b83-900627114d3b",
+            "image-name": "CHE_KillianP",
+            "jumps-equality": 1.2,
+            "landing-style": 12.6,
+            "name": "Killian",
+            "personal-best": 209.5,
+            "surname": "P",
+            "takeoff-technique": 80.2
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.6,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.35,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "CHE",
+            "flight-style": 2,
+            "flight-technique": 70.75,
+            "form": 50,
+            "id": "82f1d300-aaa9-4afe-bd70-ff87782a7ed1",
+            "image-name": "CHE_DominikP",
+            "jumps-equality": 0.4,
+            "landing-style": 12.8,
+            "name": "Dominik",
+            "personal-best": 211,
+            "surname": "P",
+            "takeoff-technique": 72.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -1,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 1,
+                    "type": "takeoff-power"
+                },
+                {
+                    "level": -0.6,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "CHE",
+            "flight-style": 2,
+            "flight-technique": 74,
+            "form": 50,
+            "id": "985dbfd8-76d6-442e-a598-e0c9feabc613",
+            "image-name": "CHE_RemoI",
+            "jumps-equality": 0.3,
+            "landing-style": 12.4,
+            "name": "Remo",
+            "personal-best": 218.5,
+            "surname": "I",
+            "takeoff-technique": 74
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 1.7,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 1.5,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 1.2,
+                    "type": "takeoff-power"
+                }
+            ],
+            "country-code": "CHE",
+            "flight-style": 1,
+            "flight-technique": 82.35,
+            "form": 50,
+            "id": "7727be42-fe41-4e78-8641-618800c68947",
+            "image-name": "CHE_GregorD",
+            "jumps-equality": -1.2,
+            "landing-style": 12.65,
+            "name": "Gregor",
+            "personal-best": 231,
+            "surname": "D",
+            "takeoff-technique": 83.65
+        },
+        {
+            "characteristics": [
+            ],
+            "country-code": "CHE",
+            "flight-style": 1,
+            "flight-technique": 65,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "CHE_JuriK",
+            "jumps-equality": 0.23,
+            "landing-style": 11,
+            "name": "Juri",
+            "personal-best": 0,
+            "surname": "K",
+            "takeoff-technique": 62
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 1,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 1,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "ITA",
+            "flight-style": 1,
+            "flight-technique": 72.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "ITA_FrancescoC",
+            "jumps-equality": -0.2,
+            "landing-style": 12.2,
+            "name": "Francesco",
+            "personal-best": 0,
+            "surname": "C",
+            "takeoff-technique": 74
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.6,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.35,
+                    "type": "takeoff-power"
+                },
+                {
+                    "level": 0.6,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "ITA",
+            "flight-style": 2,
+            "flight-technique": 73,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "ITA_AlexI",
+            "jumps-equality": 0.5,
+            "landing-style": 13,
+            "name": "Alex",
+            "personal-best": 232.5,
+            "surname": "I",
+            "takeoff-technique": 74
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.5,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.5,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "ITA",
+            "flight-style": 2,
+            "flight-technique": 70,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "ITA_AndreaC",
+            "jumps-equality": -2.5,
+            "landing-style": 11,
+            "name": "Andrea",
+            "personal-best": 0,
+            "surname": "C",
+            "takeoff-technique": 67
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.65,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.35,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "ITA",
+            "flight-style": 1,
+            "flight-technique": 78,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "ITA_GiovanniB",
+            "jumps-equality": -2.45,
+            "landing-style": 13,
+            "name": "Giovanni",
+            "personal-best": 228,
+            "surname": "B",
+            "takeoff-technique": 77
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 1,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 1.2,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "CAN",
+            "flight-style": 2,
+            "flight-technique": 75.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "CAN_MackenzieBC",
+            "jumps-equality": 1,
+            "landing-style": 13,
+            "name": "Mackenzie",
+            "personal-best": 224,
+            "surname": "BC",
+            "takeoff-technique": 78.3
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.5,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.3,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "JPN",
+            "flight-style": 1,
+            "flight-technique": 77.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "JPN_RenN",
+            "jumps-equality": 1,
+            "landing-style": 12.3,
+            "name": "Ren",
+            "personal-best": 212,
+            "surname": "N",
+            "takeoff-technique": 79
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.3,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 0.2,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 3,
+                    "type": "landing-skill"
+                },
+                {
+                    "level": 1.5,
+                    "type": "front-wind-use"
+                }
+            ],
+            "country-code": "JPN",
+            "flight-style": 1,
+            "flight-technique": 78.5,
+            "form": 50,
+            "id": "7d286306-0204-4a60-b7bd-054f4aaaa386",
+            "image-name": "JPN_YukiyaS",
+            "jumps-equality": -2.6,
+            "landing-style": 12.7,
+            "name": "Yukiya",
+            "personal-best": 242.5,
+            "surname": "S",
+            "takeoff-technique": 76.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.7,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.7,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "JPN",
+            "flight-style": 1,
+            "flight-technique": 81,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "JPN_NaokiN",
+            "jumps-equality": 0,
+            "landing-style": 13,
+            "name": "Naoki",
+            "personal-best": 237,
+            "surname": "N",
+            "takeoff-technique": 79
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.4,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.2,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "JPN",
+            "flight-style": 1,
+            "flight-technique": 88,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "JPN_RyoyuK",
+            "jumps-equality": 0.35,
+            "landing-style": 13.75,
+            "name": "Ryoyu",
+            "personal-best": 252,
+            "surname": "K",
+            "takeoff-technique": 88
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.2,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "JPN",
+            "flight-style": 0,
+            "flight-technique": 71,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "JPN_TakuT",
+            "jumps-equality": 1,
+            "landing-style": 12.25,
+            "name": "Taku",
+            "personal-best": 240,
+            "surname": "T",
+            "takeoff-technique": 73
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.5,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.8,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "JPN",
+            "flight-style": 0,
+            "flight-technique": 76.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "JPN_JunshiroK",
+            "jumps-equality": 2,
+            "landing-style": 12.7,
+            "name": "Junshiro",
+            "personal-best": 239.5,
+            "surname": "K",
+            "takeoff-technique": 77.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.3,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.5,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "JPN",
+            "flight-style": 1,
+            "flight-technique": 71,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "JPN_YukenI",
+            "jumps-equality": 0.5,
+            "landing-style": 12,
+            "name": "Yuken",
+            "personal-best": 197,
+            "surname": "I",
+            "takeoff-technique": 69
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 1,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 1,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "JPN",
+            "flight-style": 1,
+            "flight-technique": 67,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "JPN_HiroakiW",
+            "jumps-equality": 0.4,
+            "landing-style": 11.6,
+            "name": "Hiroaki",
+            "personal-best": 0,
+            "surname": "W",
+            "takeoff-technique": 70
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.55,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.5,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "JPN",
+            "flight-style": 1,
+            "flight-technique": 71.1,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "JPN_TomofumiN",
+            "jumps-equality": 1.6,
+            "landing-style": 11,
+            "name": "Tomofumi",
+            "personal-best": 0,
+            "surname": "N",
+            "takeoff-technique": 73.15
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.8,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -4,
+                    "type": "takeoff-power"
+                },
+                {
+                    "level": -1,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "JPN",
+            "flight-style": 1,
+            "flight-technique": 72.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "JPN_NoriakiK",
+            "jumps-equality": -2,
+            "landing-style": 14.15,
+            "name": "Noriaki",
+            "personal-best": 241.5,
+            "surname": "K",
+            "takeoff-technique": 67
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.5,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "JPN",
+            "flight-style": 0,
+            "flight-technique": 74.6,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "JPN_KeichiiS",
+            "jumps-equality": 1.3,
+            "landing-style": 12,
+            "name": "Keichii",
+            "personal-best": 219,
+            "surname": "S",
+            "takeoff-technique": 77
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -2.8,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 0.3,
+                    "type": "front-wind-use"
+                },
+                {
+                    "level": -2.5,
+                    "type": "less-important-jumps"
+                },
+                {
+                    "level": -2.8,
+                    "type": "flight-height"
+                }
+            ],
+            "country-code": "SVN",
+            "flight-style": 2,
+            "flight-technique": 85.5,
+            "form": 50,
+            "id": "1187a355-be83-49a1-875f-b9814e411a6b",
+            "image-name": "SVN_DomenP",
+            "jumps-equality": -2,
+            "landing-style": 13.1,
+            "name": "Domen",
+            "personal-best": 245.5,
+            "surname": "P",
+            "takeoff-technique": 79
+        },
+        {
+            "characteristics": [
+            ],
+            "country-code": "SVN",
+            "flight-style": 2,
+            "flight-technique": 82.15,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "SVN_ZigaJ",
+            "jumps-equality": 1.2,
+            "landing-style": 13,
+            "name": "Ziga",
+            "personal-best": 239,
+            "surname": "J",
+            "takeoff-technique": 82.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.92,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.65,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "SVN",
+            "flight-style": 2,
+            "flight-technique": 84.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "SVN_PeterP",
+            "jumps-equality": 0.4,
+            "landing-style": 14,
+            "name": "Peter",
+            "personal-best": 250,
+            "surname": "P",
+            "takeoff-technique": 82
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.3,
+                    "type": "less-important-jumps"
+                }
+            ],
+            "country-code": "SVN",
+            "flight-style": 1,
+            "flight-technique": 80.7,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "SVN_LovroK",
+            "jumps-equality": 0,
+            "landing-style": 13,
+            "name": "Lovro",
+            "personal-best": 236,
+            "surname": "K",
+            "takeoff-technique": 80.7
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.7,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.3,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "SVN",
+            "flight-style": 2,
+            "flight-technique": 75,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "SVN_RokM",
+            "jumps-equality": -1,
+            "landing-style": 12,
+            "name": "Rok",
+            "personal-best": 225,
+            "surname": "M",
+            "takeoff-technique": 73
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.1,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.2,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "SVN",
+            "flight-style": 1,
+            "flight-technique": 72.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "SVN_PatrikV",
+            "jumps-equality": 0.2,
+            "landing-style": 11,
+            "name": "Patrik",
+            "personal-best": 200,
+            "surname": "V",
+            "takeoff-technique": 70.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 1.5,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 1.3,
+                    "type": "flight-height"
+                }
+            ],
+            "country-code": "SVN",
+            "flight-style": 1,
+            "flight-technique": 73,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "SVN_ZakM",
+            "jumps-equality": -0.4,
+            "landing-style": 12.1,
+            "name": "Zak",
+            "personal-best": 218,
+            "surname": "M",
+            "takeoff-technique": 73
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.7,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.4,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": -1.5,
+                    "type": "less-important-jumps"
+                }
+            ],
+            "country-code": "SVN",
+            "flight-style": 2,
+            "flight-technique": 85.8,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "SVN_TimiZ",
+            "jumps-equality": 0.5,
+            "landing-style": 13.15,
+            "name": "Timi",
+            "personal-best": 245,
+            "surname": "Z",
+            "takeoff-technique": 83
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.2,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": -0.5,
+                    "type": "flight-height"
+                }
+            ],
+            "country-code": "SVN",
+            "flight-style": 2,
+            "flight-technique": 87.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "SVN_AnzeL",
+            "jumps-equality": 1.5,
+            "landing-style": 13,
+            "name": "Anze",
+            "personal-best": 244.5,
+            "surname": "L",
+            "takeoff-technique": 87.2
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.3,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.5,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "SVN",
+            "flight-style": 1,
+            "flight-technique": 71,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "SVN_MaksimB",
+            "jumps-equality": 1,
+            "landing-style": 11.3,
+            "name": "Maksim",
+            "personal-best": 201.5,
+            "surname": "B",
+            "takeoff-technique": 71
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -1,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.3,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "SVN",
+            "flight-style": 2,
+            "flight-technique": 71.3,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "SVN_RokO",
+            "jumps-equality": 0.2,
+            "landing-style": 10.7,
+            "name": "Rok",
+            "personal-best": 233.5,
+            "surname": "O",
+            "takeoff-technique": 68
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.6,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.5,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "SVN",
+            "flight-style": 2,
+            "flight-technique": 74.6,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "SVN_MatijaV",
+            "jumps-equality": 0.2,
+            "landing-style": 11.6,
+            "name": "Matija",
+            "personal-best": 212,
+            "surname": "V",
+            "takeoff-technique": 70
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.3,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.56,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "SVN",
+            "flight-style": 1,
+            "flight-technique": 73.6,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "SVN_MarkH",
+            "jumps-equality": -1,
+            "landing-style": 11.3,
+            "name": "Mark",
+            "personal-best": 236,
+            "surname": "H",
+            "takeoff-technique": 72
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.9,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.2,
+                    "type": "takeoff-power"
+                },
+                {
+                    "level": 0.5,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "SVN",
+            "flight-style": 1,
+            "flight-technique": 72,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "SVN_JernejP",
+            "jumps-equality": 0.11,
+            "landing-style": 11.8,
+            "name": "Jernej",
+            "personal-best": 200.5,
+            "surname": "P",
+            "takeoff-technique": 72
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.48,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": -0.7,
+                    "type": "flight-height"
+                }
+            ],
+            "country-code": "AUT",
+            "flight-style": 1,
+            "flight-technique": 85,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "AUT_MichaelH",
+            "jumps-equality": 0.9,
+            "landing-style": 11,
+            "name": "Michael",
+            "personal-best": 245.5,
+            "surname": "H",
+            "takeoff-technique": 83
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.2,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "AUT",
+            "flight-style": 1,
+            "flight-technique": 81.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "AUT_DanielH",
+            "jumps-equality": 0.5,
+            "landing-style": 12,
+            "name": "Daniel",
+            "personal-best": 237,
+            "surname": "H",
+            "takeoff-technique": 81
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.87,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.5,
+                    "type": "less-important-jumps"
+                },
+                {
+                    "level": 0.7,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "AUT",
+            "flight-style": 1,
+            "flight-technique": 83.8,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "AUT_DanielT",
+            "jumps-equality": 2,
+            "landing-style": 14.25,
+            "name": "Daniel",
+            "personal-best": 236.5,
+            "surname": "T",
+            "takeoff-technique": 85.25
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.2,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.7,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "AUT",
+            "flight-style": 1,
+            "flight-technique": 83,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "AUT_ManuelF",
+            "jumps-equality": 0.3,
+            "landing-style": 11.8,
+            "name": "Manuel",
+            "personal-best": 243,
+            "surname": "F",
+            "takeoff-technique": 84
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.4,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": -0.3,
+                    "type": "flight-height"
+                }
+            ],
+            "country-code": "AUT",
+            "flight-style": 1,
+            "flight-technique": 74,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "AUT_UlrichW",
+            "jumps-equality": -3,
+            "landing-style": 11.6,
+            "name": "Ulrich",
+            "personal-best": 235,
+            "surname": "W",
+            "takeoff-technique": 74
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.3,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "AUT",
+            "flight-style": 1,
+            "flight-technique": 76.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "AUT_ClemensL",
+            "jumps-equality": 0,
+            "landing-style": 12,
+            "name": "Clemens",
+            "personal-best": 206.5,
+            "surname": "L",
+            "takeoff-technique": 75.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 1.05,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 1.35,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "AUT",
+            "flight-style": 1,
+            "flight-technique": 78.75,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "AUT_PhilippA",
+            "jumps-equality": 2,
+            "landing-style": 12.15,
+            "name": "Philipp",
+            "personal-best": 229,
+            "surname": "A",
+            "takeoff-technique": 81
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 1.8,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.7,
+                    "type": "takeoff-power"
+                },
+                {
+                    "level": 2.1,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "AUT",
+            "flight-style": 1,
+            "flight-technique": 77.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "AUT_ClemensA",
+            "jumps-equality": 1.3,
+            "landing-style": 12.3,
+            "name": "Clemens",
+            "personal-best": 216.5,
+            "surname": "A",
+            "takeoff-technique": 78
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.2,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 0.3,
+                    "type": "takeoff-power"
+                }
+            ],
+            "country-code": "AUT",
+            "flight-style": 2,
+            "flight-technique": 85.4,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "AUT_JanH",
+            "jumps-equality": 2.2,
+            "landing-style": 13.5,
+            "name": "Jan",
+            "personal-best": 240,
+            "surname": "H",
+            "takeoff-technique": 85.7
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -1.65,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -1.65,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "AUT",
+            "flight-style": 1,
+            "flight-technique": 90.5,
+            "form": 50,
+            "id": "51e85c0d-b05c-4c62-8c7f-a3f78fce28d2",
+            "image-name": "AUT_StefanK",
+            "jumps-equality": -0.5,
+            "landing-style": 15,
+            "name": "Stefan",
+            "personal-best": 253.5,
+            "surname": "K",
+            "takeoff-technique": 83
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.3,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "AUT",
+            "flight-style": 1,
+            "flight-technique": 72.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "AUT_MarkusM",
+            "jumps-equality": 0.7,
+            "landing-style": 12,
+            "name": "Markus",
+            "personal-best": 202.5,
+            "surname": "M",
+            "takeoff-technique": 74
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.8,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "AUT",
+            "flight-style": 2,
+            "flight-technique": 77,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "AUT_MaximilianS",
+            "jumps-equality": 0.3,
+            "landing-style": 11.95,
+            "name": "Maximilian",
+            "personal-best": 0,
+            "surname": "S",
+            "takeoff-technique": 74
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.11,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "AUT",
+            "flight-style": 1,
+            "flight-technique": 72.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "AUT_MarcoW",
+            "jumps-equality": 0,
+            "landing-style": 11.65,
+            "name": "Marco",
+            "personal-best": 214,
+            "surname": "W",
+            "takeoff-technique": 75.5
+        },
+        {
+            "characteristics": [
+            ],
+            "country-code": "AUT",
+            "flight-style": 1,
+            "flight-technique": 73,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "AUT_NiklasB",
+            "jumps-equality": -0.1,
+            "landing-style": 11.9,
+            "name": "Niklas",
+            "personal-best": 202.5,
+            "surname": "B",
+            "takeoff-technique": 73.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.6,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.2,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "AUT",
+            "flight-style": 2,
+            "flight-technique": 74,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "AUT_FranciscoM",
+            "jumps-equality": 0.5,
+            "landing-style": 12,
+            "name": "Francisco",
+            "personal-best": 214.5,
+            "surname": "M",
+            "takeoff-technique": 74.6
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.2,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 1.4,
+                    "type": "takeoff-power"
+                },
+                {
+                    "level": -2.5,
+                    "type": "less-important-jumps"
+                },
+                {
+                    "level": 0.45,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "POL",
+            "flight-style": 2,
+            "flight-technique": 85,
+            "form": 50,
+            "id": "dc923079-3dec-4d84-a97e-ea60c62775d7",
+            "image-name": "POL_PiotrŻ",
+            "jumps-equality": -2.2,
+            "landing-style": 12.3,
+            "name": "Piotr",
+            "personal-best": 248,
+            "surname": "Ż",
+            "takeoff-technique": 82.75
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.4,
+                    "type": "front-wind-use"
+                },
+                {
+                    "level": 1,
+                    "type": "less-important-jumps"
+                },
+                {
+                    "level": 0.1,
+                    "type": "flight-height"
+                }
+            ],
+            "country-code": "POL",
+            "flight-style": 1,
+            "flight-technique": 82,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "POL_KamilS",
+            "jumps-equality": 0.6,
+            "landing-style": 14.75,
+            "name": "Kamil",
+            "personal-best": 251.5,
+            "surname": "S",
+            "takeoff-technique": 80.75
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.7,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "POL",
+            "flight-style": 1,
+            "flight-technique": 74.25,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "POL_PawełW",
+            "jumps-equality": -1.6,
+            "landing-style": 14,
+            "name": "Paweł",
+            "personal-best": 216.5,
+            "surname": "W",
+            "takeoff-technique": 78.8
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.7,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.67,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": -0.4,
+                    "type": "less-important-jumps"
+                },
+                {
+                    "level": 0.5,
+                    "type": "takeoff-power"
+                }
+            ],
+            "country-code": "POL",
+            "flight-style": 1,
+            "flight-technique": 85,
+            "form": 50,
+            "id": "f0f60144-eaea-404a-a775-46072e2aca73",
+            "image-name": "POL_DawidK",
+            "jumps-equality": 0.5,
+            "landing-style": 13,
+            "name": "Dawid",
+            "personal-best": 236.5,
+            "surname": "K",
+            "takeoff-technique": 87.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.5,
+                    "type": "takeoff-power"
+                },
+                {
+                    "level": -0.46,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 0.3,
+                    "type": "less-important-jumps"
+                },
+                {
+                    "level": -0.7,
+                    "type": "flight-height"
+                }
+            ],
+            "country-code": "POL",
+            "flight-style": 2,
+            "flight-technique": 79,
+            "form": 50,
+            "id": "ceb3e5ec-183f-4d15-8753-b79853f5aa7f",
+            "image-name": "POL_AleksanderZ",
+            "jumps-equality": -2,
+            "landing-style": 12.3,
+            "name": "Aleksander",
+            "personal-best": 235.5,
+            "surname": "Z",
+            "takeoff-technique": 76
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.3,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 0.3,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 1,
+                    "type": "less-important-jumps"
+                },
+                {
+                    "level": 0.4,
+                    "type": "takeoff-power"
+                }
+            ],
+            "country-code": "POL",
+            "flight-style": 1,
+            "flight-technique": 72.75,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "POL_MaciejK",
+            "jumps-equality": -2.1,
+            "landing-style": 11.3,
+            "name": "Maciej",
+            "personal-best": 244.5,
+            "surname": "K",
+            "takeoff-technique": 74.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.5,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.2,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "POL",
+            "flight-style": 1,
+            "flight-technique": 78,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "POL_JakubW",
+            "jumps-equality": 0,
+            "landing-style": 13,
+            "name": "Jakub",
+            "personal-best": 237.5,
+            "surname": "W",
+            "takeoff-technique": 75
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.6,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 1,
+                    "type": "takeoff-power"
+                },
+                {
+                    "level": 0.6,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "POL",
+            "flight-style": 1,
+            "flight-technique": 70.35,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "POL_TomaszP",
+            "jumps-equality": -1.8,
+            "landing-style": 11.24,
+            "name": "Tomasz",
+            "personal-best": 0,
+            "surname": "P",
+            "takeoff-technique": 72
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.4,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 0.3,
+                    "type": "flight-height"
+                }
+            ],
+            "country-code": "POL",
+            "flight-style": 1,
+            "flight-technique": 73.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "POL_KlemensM",
+            "jumps-equality": -0.5,
+            "landing-style": 11.5,
+            "name": "Klemens",
+            "personal-best": 221.5,
+            "surname": "M",
+            "takeoff-technique": 75.2
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 2.5,
+                    "type": "front-wind-use"
+                },
+                {
+                    "level": 0.5,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.3,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": -0.3,
+                    "type": "less-important-jumps"
+                },
+                {
+                    "level": -2.5,
+                    "type": "back-wind-protection"
+                }
+            ],
+            "country-code": "POL",
+            "flight-style": 2,
+            "flight-technique": 77.5,
+            "form": 50,
+            "id": "9c1691d0-5a71-4c56-8731-ad9a06044948",
+            "image-name": "POL_AndrzejS",
+            "jumps-equality": -1.7,
+            "landing-style": 12.45,
+            "name": "Andrzej",
+            "personal-best": 235,
+            "surname": "S",
+            "takeoff-technique": 74
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 2,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 2,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 2,
+                    "type": "takeoff-power"
+                }
+            ],
+            "country-code": "POL",
+            "flight-style": 1,
+            "flight-technique": 71,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "POL_JanH",
+            "jumps-equality": -0.7,
+            "landing-style": 10.8,
+            "name": "Jan",
+            "personal-best": 191,
+            "surname": "H",
+            "takeoff-technique": 73
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.1,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "POL",
+            "flight-style": 1,
+            "flight-technique": 66,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "POL_JarosławK",
+            "jumps-equality": -1,
+            "landing-style": 11.8,
+            "name": "Jarosław",
+            "personal-best": 0,
+            "surname": "K",
+            "takeoff-technique": 65
+        },
+        {
+            "characteristics": [
+            ],
+            "country-code": "POL",
+            "flight-style": 1,
+            "flight-technique": 66.25,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "POL_AdamN",
+            "jumps-equality": -1.5,
+            "landing-style": 10.7,
+            "name": "Adam",
+            "personal-best": 0,
+            "surname": "N",
+            "takeoff-technique": 65.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 1.8,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 2,
+                    "type": "takeoff-power"
+                },
+                {
+                    "level": 1.8,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "POL",
+            "flight-style": 2,
+            "flight-technique": 72.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "POL_KacperJ",
+            "jumps-equality": -0.5,
+            "landing-style": 12,
+            "name": "Kacper",
+            "personal-best": 0,
+            "surname": "J",
+            "takeoff-technique": 75
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.65,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.3,
+                    "type": "takeoff-power"
+                },
+                {
+                    "level": -2.1,
+                    "type": "landing-skill"
+                },
+                {
+                    "level": 2,
+                    "type": "both-legs-landing-tendence"
+                },
+                {
+                    "level": 1,
+                    "type": "dsq-probability"
+                },
+                {
+                    "level": 2,
+                    "type": "less-important-jumps"
+                },
+                {
+                    "level": -0.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "DEU",
+            "flight-style": 2,
+            "flight-technique": 84,
+            "form": 50,
+            "id": "67e1761e-a306-4013-9be0-c4d112aced14",
+            "image-name": "DEU_MarkusE",
+            "jumps-equality": -2.2,
+            "landing-style": 11.3,
+            "name": "Markus",
+            "personal-best": 248,
+            "surname": "E",
+            "takeoff-technique": 82
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.6,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.55,
+                    "type": "takeoff-power"
+                },
+                {
+                    "level": 0.6,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "DEU",
+            "flight-style": 1,
+            "flight-technique": 82,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "DEU_StephanL",
+            "jumps-equality": 2.3,
+            "landing-style": 12.85,
+            "name": "Stephan",
+            "personal-best": 226.5,
+            "surname": "L",
+            "takeoff-technique": 82.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 1.4,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 1.25,
+                    "type": "takeoff-power"
+                },
+                {
+                    "level": 2,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "DEU",
+            "flight-style": 1,
+            "flight-technique": 80,
+            "form": 50,
+            "id": "847aad00-2df3-4674-8dfc-402aa9c73bcc",
+            "image-name": "DEU_ConstantinS",
+            "jumps-equality": 1.4,
+            "landing-style": 12.7,
+            "name": "Constantin",
+            "personal-best": 234,
+            "surname": "S",
+            "takeoff-technique": 81.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.5,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 1,
+                    "type": "less-important-jumps"
+                },
+                {
+                    "level": 0.5,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "DEU",
+            "flight-style": 2,
+            "flight-technique": 85,
+            "form": 50,
+            "id": "91ac3020-6460-4f28-8af7-2604d492bab0",
+            "image-name": "DEU_AndreasW",
+            "jumps-equality": 2,
+            "landing-style": 13.8,
+            "name": "Andreas",
+            "personal-best": 245,
+            "surname": "W",
+            "takeoff-technique": 87
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.6,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.6,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "DEU",
+            "flight-style": 1,
+            "flight-technique": 82.8,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "DEU_PhilippR",
+            "jumps-equality": 0,
+            "landing-style": 10.37,
+            "name": "Philipp",
+            "personal-best": 197.5,
+            "surname": "R",
+            "takeoff-technique": 80.65
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.4,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.2,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "DEU",
+            "flight-style": 1,
+            "flight-technique": 77.2,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "DEU_FelixH",
+            "jumps-equality": 0.8,
+            "landing-style": 12,
+            "name": "Felix",
+            "personal-best": 235,
+            "surname": "H",
+            "takeoff-technique": 76
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.6,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.3,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "DEU",
+            "flight-style": 1,
+            "flight-technique": 81.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "DEU_PiusP",
+            "jumps-equality": 2.2,
+            "landing-style": 11,
+            "name": "Pius",
+            "personal-best": 234,
+            "surname": "P",
+            "takeoff-technique": 82.25
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 1.2,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 1.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "DEU",
+            "flight-style": 1,
+            "flight-technique": 75,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "DEU_LucaR",
+            "jumps-equality": 0.15,
+            "landing-style": 11.7,
+            "name": "Luca",
+            "personal-best": 201,
+            "surname": "R",
+            "takeoff-technique": 76
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 1.7,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 1.4,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -2,
+                    "type": "less-important-jumps"
+                },
+                {
+                    "level": 1.5,
+                    "type": "takeoff-power"
+                }
+            ],
+            "country-code": "DEU",
+            "flight-style": 1,
+            "flight-technique": 83.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "DEU_KarlG",
+            "jumps-equality": 1.7,
+            "landing-style": 13.3,
+            "name": "Karl",
+            "personal-best": 243.5,
+            "surname": "G",
+            "takeoff-technique": 87.75
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 2,
+                    "type": "less-important-jumps"
+                }
+            ],
+            "country-code": "DEU",
+            "flight-style": 1,
+            "flight-technique": 73,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "DEU_FinnB",
+            "jumps-equality": 1,
+            "landing-style": 12,
+            "name": "Finn",
+            "personal-best": 0,
+            "surname": "B",
+            "takeoff-technique": 71.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 1,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.3,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "DEU",
+            "flight-style": 1,
+            "flight-technique": 72,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "DEU_JustinL",
+            "jumps-equality": 0.2,
+            "landing-style": 11.3,
+            "name": "Justin",
+            "personal-best": 207.5,
+            "surname": "L",
+            "takeoff-technique": 75
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 1,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 1,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "DEU",
+            "flight-style": 1,
+            "flight-technique": 75,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "DEU_MartinH",
+            "jumps-equality": 1.2,
+            "landing-style": 12.5,
+            "name": "Martin",
+            "personal-best": 224.5,
+            "surname": "H",
+            "takeoff-technique": 78.25
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.05,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 1,
+                    "type": "front-wind-use"
+                },
+                {
+                    "level": -0.25,
+                    "type": "flight-height"
+                }
+            ],
+            "country-code": "NOR",
+            "flight-style": 1,
+            "flight-technique": 85.7,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "NOR_JohannAF",
+            "jumps-equality": -0.4,
+            "landing-style": 13.25,
+            "name": "Johann",
+            "personal-best": 245.5,
+            "surname": "AF",
+            "takeoff-technique": 82.2
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.2,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 0.2,
+                    "type": "flight-height"
+                }
+            ],
+            "country-code": "NOR",
+            "flight-style": 2,
+            "flight-technique": 83.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "NOR_DanielAT",
+            "jumps-equality": -0.2,
+            "landing-style": 13.5,
+            "name": "Daniel",
+            "personal-best": 243.5,
+            "surname": "AT",
+            "takeoff-technique": 82
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.4,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": -0.2,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.2,
+                    "type": "takeoff-power"
+                },
+                {
+                    "level": 1.15,
+                    "type": "front-wind-use"
+                }
+            ],
+            "country-code": "NOR",
+            "flight-style": 2,
+            "flight-technique": 82,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "NOR_RobertJ",
+            "jumps-equality": -1.4,
+            "landing-style": 13,
+            "name": "Robert",
+            "personal-best": 252,
+            "surname": "J",
+            "takeoff-technique": 79
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.6,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.45,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 0.3,
+                    "type": "less-important-jumps"
+                }
+            ],
+            "country-code": "NOR",
+            "flight-style": 2,
+            "flight-technique": 87.5,
+            "form": 50,
+            "id": "3be407ee-e907-439e-b6ec-d3294ee1a8ed",
+            "image-name": "NOR_HalvorEG",
+            "jumps-equality": 0.5,
+            "landing-style": 12.5,
+            "name": "Halvor",
+            "personal-best": 244.5,
+            "surname": "EG",
+            "takeoff-technique": 85
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.4,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "NOR",
+            "flight-style": 2,
+            "flight-technique": 86,
+            "form": 50,
+            "id": "0bf3be4a-2a88-4509-850b-043ec992eaec",
+            "image-name": "NOR_MariusL",
+            "jumps-equality": -1.6,
+            "landing-style": 12.5,
+            "name": "Marius",
+            "personal-best": 245.5,
+            "surname": "L",
+            "takeoff-technique": 83.2
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.2,
+                    "type": "flight-height"
+                },
+                {
+                    "level": -0.2,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "NOR",
+            "flight-style": 1,
+            "flight-technique": 79,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "NOR_KristofferES",
+            "jumps-equality": -0.5,
+            "landing-style": 12.2,
+            "name": "Kristoffer",
+            "personal-best": 222.5,
+            "surname": "ES",
+            "takeoff-technique": 78.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -0.2,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "NOR",
+            "flight-style": 1,
+            "flight-technique": 74.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "NOR_FredrikV",
+            "jumps-equality": 0.3,
+            "landing-style": 12.5,
+            "name": "Fredrik",
+            "personal-best": 208,
+            "surname": "V",
+            "takeoff-technique": 74.5
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.3,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.7,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "NOR",
+            "flight-style": 2,
+            "flight-technique": 76,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "NOR_BendikJH",
+            "jumps-equality": -0.2,
+            "landing-style": 11.5,
+            "name": "Bendik",
+            "personal-best": 235,
+            "surname": "JH",
+            "takeoff-technique": 74.75
+        },
+        {
+            "characteristics": [
+            ],
+            "country-code": "NOR",
+            "flight-style": 2,
+            "flight-technique": 74.3,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "NOR_ThomasAM",
+            "jumps-equality": -1,
+            "landing-style": 10.7,
+            "name": "Thomas",
+            "personal-best": 201,
+            "surname": "AM",
+            "takeoff-technique": 75.75
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.4,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "NOR",
+            "flight-style": 1,
+            "flight-technique": 73.1,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "NOR_SondreR",
+            "jumps-equality": 0.3,
+            "landing-style": 12,
+            "name": "Sondre",
+            "personal-best": 241,
+            "surname": "R",
+            "takeoff-technique": 76
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.3,
+                    "type": "flight-height"
+                }
+            ],
+            "country-code": "NOR",
+            "flight-style": 2,
+            "flight-technique": 74.3,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "NOR_JoacimOB",
+            "jumps-equality": 0.14,
+            "landing-style": 11.9,
+            "name": "Joacim",
+            "personal-best": 232,
+            "surname": "OB",
+            "takeoff-technique": 74.2
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 1.3,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 1,
+                    "type": "takeoff-power"
+                },
+                {
+                    "level": 1.3,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "NOR",
+            "flight-style": 1,
+            "flight-technique": 72,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "NOR_SanderVE",
+            "jumps-equality": 0,
+            "landing-style": 12,
+            "name": "Sander",
+            "personal-best": 218,
+            "surname": "VE",
+            "takeoff-technique": 74.8
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 0.4,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.4,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "NOR",
+            "flight-style": 2,
+            "flight-technique": 72,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "NOR_AndreasGB",
+            "jumps-equality": 0.5,
+            "landing-style": 12.2,
+            "name": "Andreas",
+            "personal-best": 216,
+            "surname": "GB",
+            "takeoff-technique": 75.5
+        },
+        {
+            "characteristics": [
+            ],
+            "country-code": "NOR",
+            "flight-style": 1,
+            "flight-technique": 74.8,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "NOR_AndersH",
+            "jumps-equality": 0.3,
+            "landing-style": 12,
+            "name": "Anders",
+            "personal-best": 230.5,
+            "surname": "H",
+            "takeoff-technique": 74
+        },
+        {
+            "characteristics": [
+                {
+                    "level": -1,
+                    "type": "back-wind-protection"
+                },
+                {
+                    "level": 1,
+                    "type": "takeoff-height"
+                },
+                {
+                    "level": 0.5,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.87,
+                    "type": "front-wind-use"
+                }
+            ],
+            "country-code": "NOR",
+            "flight-style": 2,
+            "flight-technique": 75.15,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "NOR_RobinP",
+            "jumps-equality": -2.5,
+            "landing-style": 11,
+            "name": "Robin",
+            "personal-best": 232.5,
+            "surname": "P",
+            "takeoff-technique": 75.6
+        },
+        {
+            "characteristics": [
+                {
+                    "level": 1,
+                    "type": "flight-height"
+                },
+                {
+                    "level": 0.6,
+                    "type": "takeoff-height"
+                }
+            ],
+            "country-code": "NOR",
+            "flight-style": 1,
+            "flight-technique": 74.5,
+            "form": 50,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "image-name": "NOR_BenjaminO",
+            "jumps-equality": 0.1,
+            "landing-style": 11.88,
+            "name": "Benjamin",
+            "personal-best": 243.5,
+            "surname": "O",
+            "takeoff-technique": 75.2
+        }
+    ]
+}

@@ -19,6 +19,13 @@
 #include <QCloseEvent>
 #include <QMessageBox>
 
+namespace
+{
+// Keep detail inputs comfortable to scan on ultrawide displays. The surrounding
+// scroll area still shrinks normally on smaller windows.
+constexpr int editorMaximumWidth = 900;
+}
+
 DatabaseEditorWindow::DatabaseEditorWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DatabaseEditorWindow),
@@ -39,24 +46,28 @@ DatabaseEditorWindow::DatabaseEditorWindow(QWidget *parent) :
     tempGlobalPointsForPlacesPresets = GlobalDatabase::get()->getGlobalPointsForPlacesPresets();
 
     jumperEditor = new JumperEditorWidget;
-    jumperEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    jumperEditor->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    jumperEditor->setMaximumWidth(editorMaximumWidth);
     jumperEditor->hide();
-    ui->verticalLayout_jumperEditor->addWidget(jumperEditor);
+    ui->verticalLayout_jumperEditor->addWidget(jumperEditor, 0, Qt::AlignHCenter | Qt::AlignTop);
 
     hillEditor = new HillEditorWidget();
-    hillEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    hillEditor->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    hillEditor->setMaximumWidth(editorMaximumWidth);
     hillEditor->hide();
-    ui->verticalLayout_hillEditor->addWidget(hillEditor);
+    ui->verticalLayout_hillEditor->addWidget(hillEditor, 0, Qt::AlignHCenter | Qt::AlignTop);
 
     competitionRulesEditor = new CompetitionRulesEditorWidget();
-    competitionRulesEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    competitionRulesEditor->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    competitionRulesEditor->setMaximumWidth(editorMaximumWidth);
     competitionRulesEditor->hide();
-    ui->verticalLayout_rulesEditor->addWidget(competitionRulesEditor);
+    ui->verticalLayout_rulesEditor->addWidget(competitionRulesEditor, 0, Qt::AlignHCenter | Qt::AlignTop);
 
     pointsForPlacesPresetEditor = new PointsForPlacesPresetEditorWidget();
-    pointsForPlacesPresetEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    pointsForPlacesPresetEditor->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    pointsForPlacesPresetEditor->setMaximumWidth(editorMaximumWidth);
     pointsForPlacesPresetEditor->hide();
-    ui->verticalLayout_pointsForPlacesEditor->addWidget(pointsForPlacesPresetEditor);
+    ui->verticalLayout_pointsForPlacesEditor->addWidget(pointsForPlacesPresetEditor, 0, Qt::AlignHCenter | Qt::AlignTop);
 
     jumpersListView = new DatabaseItemsListView(DatabaseItemsListView::JumperItems, true, true, true, this);
     jumpersListView->setJumpers(&GlobalDatabase::get()->getEditableGlobalJumpers());
@@ -198,7 +209,6 @@ void DatabaseEditorWindow::onJumpersListViewDoubleClicked(const QModelIndex &ind
     int row = index.row();
     actualElementIndex = row;
     if(jumperEditor->isHidden()){
-        ui->tabWidget_main->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
         jumperEditor->show();
     }
     jumperEditor->setJumper(const_cast<Jumper *>(&GlobalDatabase::get()->getEditableGlobalJumpers().at(row)));
@@ -210,7 +220,6 @@ void DatabaseEditorWindow::onHillsListViewDoubleClicked(const QModelIndex &index
     int row = index.row();
     actualElementIndex = row;
     if(hillEditor->isHidden()){
-        ui->tabWidget_main->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
         hillEditor->show();
     }
     hillEditor->setHill(const_cast<Hill *>(&GlobalDatabase::get()->getEditableGlobalHills().at(row)));
@@ -222,7 +231,6 @@ void DatabaseEditorWindow::onCompetitionRulesListViewDoubleClicked(const QModelI
     int row = index.row();
     actualElementIndex = row;
     if(competitionRulesEditor->isHidden()){
-        ui->tabWidget_main->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
         competitionRulesEditor->show();
     }
     competitionRulesEditor->setCompetitionRules(const_cast<CompetitionRules *>(&GlobalDatabase::get()->getEditableCompetitionRules().at(row)));
@@ -234,7 +242,6 @@ void DatabaseEditorWindow::onPointsForPlacesPresetsListViewDoubleClicked(const Q
     int row = index.row();
     actualElementIndex = row;
     if(pointsForPlacesPresetEditor->isHidden()){
-        ui->tabWidget_main->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
         pointsForPlacesPresetEditor->show();
     }
     pointsForPlacesPresetEditor->reset();

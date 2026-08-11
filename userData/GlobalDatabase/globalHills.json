@@ -1,0 +1,2470 @@
+{
+    "hills": [
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -0.75,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "POL",
+            "distance-multiplier": 1,
+            "hs-point": 134,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 120,
+            "name": "Wisła",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 7.24,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 139
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 0.66,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "POL",
+            "distance-multiplier": 1,
+            "hs-point": 75,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 70,
+            "name": "Szczyrk",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "POL",
+            "distance-multiplier": 1,
+            "hs-point": 104,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 95,
+            "name": "Szczyrk",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 106.5
+        },
+        {
+            "balance": 1.1,
+            "characteristics": [
+                {
+                    "level": 1,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "POL",
+            "distance-multiplier": 1,
+            "hs-point": 70,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 64,
+            "name": "Zakopane",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 5.3,
+            "points-for-gate": 4,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "POL",
+            "distance-multiplier": 1,
+            "hs-point": 140,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 125,
+            "name": "Zakopane",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 7.56,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 147
+        },
+        {
+            "balance": 1.1,
+            "characteristics": [
+                {
+                    "level": 1.5,
+                    "type": "flight-technique-effect"
+                }
+            ],
+            "country-code": "POL",
+            "distance-multiplier": 1,
+            "hs-point": 105,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 95,
+            "name": "Zakopane",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 1,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "POL",
+            "distance-multiplier": 1,
+            "hs-point": 94,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 85,
+            "name": "Karpacz",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 7,
+            "points-for-gate": 5,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1,
+            "hs-point": 71,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 64,
+            "name": "Bischofsgrun",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 5.3,
+            "points-for-gate": 4,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1,
+            "hs-point": 98,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Berchtesgaden",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 1.6,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1,
+            "hs-point": 78,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 74,
+            "name": "Breitenberg",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 5.6,
+            "points-for-gate": 4,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 2.5,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1,
+            "hs-point": 90,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 85,
+            "name": "Baiersbronn",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 7,
+            "points-for-gate": 4.8,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1,
+            "hs-point": 117,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 105,
+            "name": "Brotterode",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8.1,
+            "points-for-gate": 7.2,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1,
+            "hs-point": 83,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 75,
+            "name": "Degenfeld",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 7.4,
+            "points-for-gate": 6.8,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1,
+            "hs-point": 89,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 80,
+            "name": "Garmisch-Partenkirchen",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 7.5,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1,
+            "hs-point": 47,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 43,
+            "name": "Garmisch-Partenkirchen",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 3.5,
+            "points-for-gate": 6,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -1.5,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1,
+            "hs-point": 142,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 125,
+            "name": "Garmisch-Partenkirchen",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 7.67,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 144
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -0.25,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1,
+            "hs-point": 106,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 95,
+            "name": "Oberstdorf",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 105.5
+        },
+        {
+            "balance": 1.05,
+            "characteristics": [
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1.03,
+            "hs-point": 137,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 120,
+            "name": "Oberstdorf",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 7.56,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 143.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -2,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1,
+            "hs-point": 235,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 200,
+            "name": "Oberstdorf",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 14.4,
+            "points-for-gate": 8.46,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 242.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 1.3,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1,
+            "hs-point": 142,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 125,
+            "name": "Titisee-Neustadt",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 7.67,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 148
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -1.2,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1,
+            "hs-point": 85,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 77,
+            "name": "Klingenthal",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 4.84,
+            "points-for-gate": 5.28,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 0.9,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1,
+            "hs-point": 140,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 125,
+            "name": "Klingenthal",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 7.67,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 146.5
+        },
+        {
+            "balance": 1.1,
+            "characteristics": [
+                {
+                    "level": -0.65,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1.03,
+            "hs-point": 147,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 130,
+            "name": "Willingen",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 11.7,
+            "points-for-gate": 7.99,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 153
+        },
+        {
+            "balance": 1.05,
+            "characteristics": [
+                {
+                    "level": -1.6,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1.04,
+            "hs-point": 111,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 97,
+            "name": "Hinterzarten",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8.4,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 112.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1,
+            "hs-point": 102,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 92,
+            "name": "Lauscha",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1,
+            "hs-point": 100,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Oberhof",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 101
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -0.4,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1.03,
+            "hs-point": 140,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 120,
+            "name": "Oberhof",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 8.1,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 140
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "DEU",
+            "distance-multiplier": 1,
+            "hs-point": 105,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 95,
+            "name": "Oberwiesenthal",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7.4,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 2.3,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "AUT",
+            "distance-multiplier": 0.96,
+            "hs-point": 128,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 120,
+            "name": "Innsbruck",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 9.9,
+            "points-for-gate": 3.9,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 138
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 2.7,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "AUT",
+            "distance-multiplier": 1,
+            "hs-point": 90,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 85,
+            "name": "Hinzenbach",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 7,
+            "points-for-gate": 4.8,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 96
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "AUT",
+            "distance-multiplier": 1,
+            "hs-point": 70,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 64,
+            "name": "Eisenerz-Ramsau",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 5.3,
+            "points-for-gate": 4,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "AUT",
+            "distance-multiplier": 1,
+            "hs-point": 109,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 98,
+            "name": "Eisenerz-Ramsau",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 1,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "AUT",
+            "distance-multiplier": 1,
+            "hs-point": 42,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 38,
+            "name": "Kitzbuhel",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 3.33,
+            "points-for-gate": 3.8,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -1.5,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "AUT",
+            "distance-multiplier": 1,
+            "hs-point": 78,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 65,
+            "name": "Bischofshofen",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 6.4,
+            "points-for-gate": 5,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -1.5,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "AUT",
+            "distance-multiplier": 1,
+            "hs-point": 142,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 125,
+            "name": "Bischofshofen",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 4.86,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 145
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "AUT",
+            "distance-multiplier": 1,
+            "hs-point": 235,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 200,
+            "name": "Kulm",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 14.4,
+            "points-for-gate": 8.46,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 244
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "AUT",
+            "distance-multiplier": 1,
+            "hs-point": 98,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Ramsau",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "AUT",
+            "distance-multiplier": 1,
+            "hs-point": 109,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 99,
+            "name": "Seefeld",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 113
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "AUT",
+            "distance-multiplier": 1,
+            "hs-point": 115,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 105,
+            "name": "Stams",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.44,
+            "points-for-gate": 7.2,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "AUT",
+            "distance-multiplier": 1,
+            "hs-point": 108,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 97,
+            "name": "Tschagguns",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 1,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "AUT",
+            "distance-multiplier": 1,
+            "hs-point": 98,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Villach",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 99.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -0.5,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "NOR",
+            "distance-multiplier": 1,
+            "hs-point": 106,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 95,
+            "name": "Oslo",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 110
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "NOR",
+            "distance-multiplier": 1,
+            "hs-point": 134,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 120,
+            "name": "Oslo",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 9.9,
+            "points-for-gate": 7.13,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 144
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "NOR",
+            "distance-multiplier": 1,
+            "hs-point": 98,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Lillehammer",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 107.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -0.7,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "NOR",
+            "distance-multiplier": 1,
+            "hs-point": 140,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 123,
+            "name": "Lillehammer",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 9.9,
+            "points-for-gate": 7.56,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 146
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "NOR",
+            "distance-multiplier": 1,
+            "hs-point": 140,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 123,
+            "name": "Trondheim",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 7.45,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 146
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -1,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "NOR",
+            "distance-multiplier": 1,
+            "hs-point": 105,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 93,
+            "name": "Trondheim",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 105
+        },
+        {
+            "balance": 1.25,
+            "characteristics": [
+                {
+                    "level": -2.85,
+                    "type": "real-hs-point"
+                },
+                {
+                    "level": 1,
+                    "type": "flight-technique-effect"
+                },
+                {
+                    "level": -1,
+                    "type": "takeoff-technique-effect"
+                }
+            ],
+            "country-code": "NOR",
+            "distance-multiplier": 1.13,
+            "hs-point": 240,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 200,
+            "name": "Vikersund",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 14.4,
+            "points-for-gate": 8.64,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 246
+        },
+        {
+            "balance": 1.7,
+            "characteristics": [
+                {
+                    "level": 3.9,
+                    "type": "real-hs-point"
+                },
+                {
+                    "level": 3.5,
+                    "type": "flight-technique-effect"
+                },
+                {
+                    "level": -2.5,
+                    "type": "takeoff-technique-effect"
+                },
+                {
+                    "level": -4,
+                    "type": "takeoff-power-effect"
+                }
+            ],
+            "country-code": "NOR",
+            "distance-multiplier": 1.25,
+            "hs-point": 225,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 200,
+            "name": "Vikersund",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 14.4,
+            "points-for-gate": 8.64,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 253.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -1,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "NOR",
+            "distance-multiplier": 1,
+            "hs-point": 117,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 105,
+            "name": "Vikersund",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.44,
+            "points-for-gate": 7.2,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -1.24,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "NOR",
+            "distance-multiplier": 1,
+            "hs-point": 139,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 124,
+            "name": "Rena",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 7.56,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 0.4,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "NOR",
+            "distance-multiplier": 1,
+            "hs-point": 98,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Nottoden",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "NOR",
+            "distance-multiplier": 1,
+            "hs-point": 94,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 85,
+            "name": "Hoydalsmo",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 7.33,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -0.2,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "SVN",
+            "distance-multiplier": 1,
+            "hs-point": 80,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 72,
+            "name": "Planica",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 7,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 2,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "SVN",
+            "distance-multiplier": 1,
+            "hs-point": 102,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 95,
+            "name": "Planica",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 105
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 1.3,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "SVN",
+            "distance-multiplier": 1,
+            "hs-point": 138,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 125,
+            "name": "Planica",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 9.9,
+            "points-for-gate": 7.45,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 142
+        },
+        {
+            "balance": 0.95,
+            "characteristics": [
+                {
+                    "level": 2,
+                    "type": "takeoff-power-effect"
+                },
+                {
+                    "level": -0.3,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "SVN",
+            "distance-multiplier": 1,
+            "hs-point": 240,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 200,
+            "name": "Planica",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 14.4,
+            "points-for-gate": 8.64,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 252
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -0.89,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "SVN",
+            "distance-multiplier": 1,
+            "hs-point": 109,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 100,
+            "name": "Kranj",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 9,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 0.8,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "SVN",
+            "distance-multiplier": 1,
+            "hs-point": 94,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 85,
+            "name": "Ljubno",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 0.7,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "SVN",
+            "distance-multiplier": 1,
+            "hs-point": 65,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 60,
+            "name": "Ziri",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 5,
+            "points-for-gate": 4,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "FIN",
+            "distance-multiplier": 1,
+            "hs-point": 130,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 116,
+            "name": "Lahti",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 9.9,
+            "points-for-gate": 7.56,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 138
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "FIN",
+            "distance-multiplier": 1,
+            "hs-point": 100,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Lahti",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 103.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "FIN",
+            "distance-multiplier": 0.98,
+            "hs-point": 100,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 92,
+            "name": "Kuopio",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 106
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 1.5,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "FIN",
+            "distance-multiplier": 1,
+            "hs-point": 127,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 120,
+            "name": "Kuopio",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8.46,
+            "points-for-gate": 7.2,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 136
+        },
+        {
+            "balance": 1.4,
+            "characteristics": [
+                {
+                    "level": 1,
+                    "type": "real-hs-point"
+                },
+                {
+                    "level": -2.5,
+                    "type": "takeoff-power-effect"
+                }
+            ],
+            "country-code": "FIN",
+            "distance-multiplier": 1.15,
+            "hs-point": 142,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 120,
+            "name": "Kuusamo",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 11.7,
+            "points-for-gate": 9.54,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 150.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 1.2,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "FIN",
+            "distance-multiplier": 1,
+            "hs-point": 97,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Rovaniemi",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -0.47,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "SWE",
+            "distance-multiplier": 1,
+            "hs-point": 134,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 120,
+            "name": "Falun",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 9.9,
+            "points-for-gate": 7.24,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 135.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "SWE",
+            "distance-multiplier": 1,
+            "hs-point": 100,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Falun",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 97
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "CHE",
+            "distance-multiplier": 1,
+            "hs-point": 66,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 60,
+            "name": "Gibswil",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 5,
+            "points-for-gate": 5,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1.15,
+            "characteristics": [
+            ],
+            "country-code": "CHE",
+            "distance-multiplier": 1,
+            "hs-point": 106,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 95,
+            "name": "Kandersteg",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 7.2,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "CHE",
+            "distance-multiplier": 1,
+            "hs-point": 117,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 105,
+            "name": "Einsiedeln",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 7.29,
+            "points-for-gate": 6.32,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 121
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "CHE",
+            "distance-multiplier": 1,
+            "hs-point": 140,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 125,
+            "name": "Engelberg",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.44,
+            "points-for-gate": 7.56,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 144
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -0.5,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "ITA",
+            "distance-multiplier": 1,
+            "hs-point": 109,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 98,
+            "name": "Predazzo (F)",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 7.3,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -0.5,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "ITA",
+            "distance-multiplier": 1,
+            "hs-point": 143,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 128,
+            "name": "Predazzo (F)",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 11.2,
+            "points-for-gate": 7.7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "ITA",
+            "distance-multiplier": 1,
+            "hs-point": 104,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 95,
+            "name": "Predazzo",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 5,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 107.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -0.7,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "ITA",
+            "distance-multiplier": 1,
+            "hs-point": 135,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 120,
+            "name": "Predazzo",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 5.58,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 136
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -0.7,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "FRA",
+            "distance-multiplier": 1,
+            "hs-point": 64,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 57,
+            "name": "Autrans",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 5,
+            "points-for-gate": 5,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "FRA",
+            "distance-multiplier": 1,
+            "hs-point": 72,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 65,
+            "name": "Gerardmer",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 5.2,
+            "points-for-gate": 5,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "FRA",
+            "distance-multiplier": 1,
+            "hs-point": 90,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 81,
+            "name": "Premanon",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "FRA",
+            "distance-multiplier": 1,
+            "hs-point": 118,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 106,
+            "name": "Chaux-Neuve",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 7.56,
+            "points-for-gate": 6.84,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 1.4,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "FRA",
+            "distance-multiplier": 1,
+            "hs-point": 96,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Courchevel",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 2,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "FRA",
+            "distance-multiplier": 1,
+            "hs-point": 132,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 125,
+            "name": "Courchevel",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 12.6,
+            "points-for-gate": 8.82,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 137
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 0.6,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "RUS",
+            "distance-multiplier": 1,
+            "hs-point": 134,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 120,
+            "name": "Niżny Tagił",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 9.9,
+            "points-for-gate": 7.24,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 142.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 2.4,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "RUS",
+            "distance-multiplier": 1,
+            "hs-point": 97,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Niżny Tagił",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "RUS",
+            "distance-multiplier": 1,
+            "hs-point": 140,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 125,
+            "name": "Chaikovsky",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 7.56,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 146
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 1.2,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "RUS",
+            "distance-multiplier": 1,
+            "hs-point": 102,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 95,
+            "name": "Chaikovky",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 109.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "RUS",
+            "distance-multiplier": 1,
+            "hs-point": 72,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 65,
+            "name": "Chaikovsky",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 5.8,
+            "points-for-gate": 5,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "RUS",
+            "distance-multiplier": 1,
+            "hs-point": 140,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 125,
+            "name": "Sochi",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 7.56,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 140.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -0.44,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "RUS",
+            "distance-multiplier": 1,
+            "hs-point": 106,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 95,
+            "name": "Sochi",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 108
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 1,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "KAZ",
+            "distance-multiplier": 1,
+            "hs-point": 138,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 125,
+            "name": "Almaty",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 9.9,
+            "points-for-gate": 7.45,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 141.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 3,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "KAZ",
+            "distance-multiplier": 1,
+            "hs-point": 100,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 95,
+            "name": "Almaty",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 2,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "KAZ",
+            "distance-multiplier": 1,
+            "hs-point": 64,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 60,
+            "name": "Almaty",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 3.36,
+            "points-for-gate": 4.61,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 1.2,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "KAZ",
+            "distance-multiplier": 1,
+            "hs-point": 140,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 125,
+            "name": "Shuchinsk",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 7.56,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 1.57,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "KAZ",
+            "distance-multiplier": 1,
+            "hs-point": 99,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Shuchinsk",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 99.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 2.4,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "ROU",
+            "distance-multiplier": 1,
+            "hs-point": 97,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Rasnov",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 103
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "TUR",
+            "distance-multiplier": 1,
+            "hs-point": 109,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 95,
+            "name": "Erzurum",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "TUR",
+            "distance-multiplier": 1,
+            "hs-point": 140,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 125,
+            "name": "Erzurum",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 7.56,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "SWE",
+            "distance-multiplier": 1,
+            "hs-point": 100,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Ornskoldsvik",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "EST",
+            "distance-multiplier": 1,
+            "hs-point": 97,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Otepaeae",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "SVK",
+            "distance-multiplier": 1,
+            "hs-point": 100,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Strbske Pleso",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 0.65,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "CZE",
+            "distance-multiplier": 1,
+            "hs-point": 106,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 95,
+            "name": "Frenstat",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "CZE",
+            "distance-multiplier": 1,
+            "hs-point": 100,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Harrachov",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -2.14,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "CZE",
+            "distance-multiplier": 1,
+            "hs-point": 210,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 185,
+            "name": "Harrachov",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 7.56,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 214.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -1.5,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "CZE",
+            "distance-multiplier": 1,
+            "hs-point": 142,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 125,
+            "name": "Harrachov",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 5.04,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 145.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -1.8,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "CZE",
+            "distance-multiplier": 1,
+            "hs-point": 136,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 120,
+            "name": "Liberec",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.44,
+            "points-for-gate": 5.94,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 139
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "CZE",
+            "distance-multiplier": 1,
+            "hs-point": 100,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Liberec",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 5,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 104.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 0.88,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "JPN",
+            "distance-multiplier": 1,
+            "hs-point": 98,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Hakuba",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 1.5,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "JPN",
+            "distance-multiplier": 1,
+            "hs-point": 131,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 120,
+            "name": "Hakuba",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 8.82,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 137
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "JPN",
+            "distance-multiplier": 1,
+            "hs-point": 100,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Sapporo",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1.22,
+            "characteristics": [
+                {
+                    "level": -1.5,
+                    "type": "takeoff-power-effect"
+                },
+                {
+                    "level": 1.5,
+                    "type": "flight-technique-effect"
+                },
+                {
+                    "level": 0.5,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "JPN",
+            "distance-multiplier": 1.25,
+            "hs-point": 137,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 123,
+            "name": "Sapporo",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 7.4,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 148.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 2,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "JPN",
+            "distance-multiplier": 1,
+            "hs-point": 102,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 95,
+            "name": "Zao",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 1.38,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "CAN",
+            "distance-multiplier": 1,
+            "hs-point": 142,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 125,
+            "name": "Whistler",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 7.67,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 149
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "CAN",
+            "distance-multiplier": 1,
+            "hs-point": 104,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 95,
+            "name": "Whistler",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 108
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -0.5,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "USA",
+            "distance-multiplier": 1,
+            "hs-point": 98,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 88,
+            "name": "Brattleboro",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1.04,
+            "characteristics": [
+                {
+                    "level": 0.7,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "USA",
+            "distance-multiplier": 1,
+            "hs-point": 133,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 119,
+            "name": "Iron Mountain",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 9.9,
+            "points-for-gate": 7.2,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 140
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "USA",
+            "distance-multiplier": 1,
+            "hs-point": 128,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 115,
+            "name": "Lake Placid",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8.46,
+            "points-for-gate": 7.2,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 136
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "USA",
+            "distance-multiplier": 1,
+            "hs-point": 100,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Lake Placid",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -0.4,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "USA",
+            "distance-multiplier": 1,
+            "hs-point": 95,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 85,
+            "name": "Eau Claire",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 7,
+            "points-for-gate": 5,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": 0.7,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "USA",
+            "distance-multiplier": 1,
+            "hs-point": 180,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 161,
+            "name": "Ironwood",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 13,
+            "points-for-gate": 8.1,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 158
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "USA",
+            "distance-multiplier": 1,
+            "hs-point": 75,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 68,
+            "name": "Steamboat Springs",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 5.6,
+            "points-for-gate": 5,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 0
+        },
+        {
+            "balance": 0.97,
+            "characteristics": [
+            ],
+            "country-code": "USA",
+            "distance-multiplier": 0.985,
+            "hs-point": 134,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 120,
+            "name": "Park City",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 9.9,
+            "points-for-gate": 7.24,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 134
+        },
+        {
+            "balance": 0.97,
+            "characteristics": [
+            ],
+            "country-code": "USA",
+            "distance-multiplier": 1,
+            "hs-point": 100,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 90,
+            "name": "Park City",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 99
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -1.3,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "KOR",
+            "distance-multiplier": 1,
+            "hs-point": 142,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 125,
+            "name": "Pyeongchang",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 7.67,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 143.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "KOR",
+            "distance-multiplier": 1,
+            "hs-point": 109,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 98,
+            "name": "Pyeongchang",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 113.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+                {
+                    "level": -0.8,
+                    "type": "real-hs-point"
+                }
+            ],
+            "country-code": "CHN",
+            "distance-multiplier": 1,
+            "hs-point": 106,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 95,
+            "name": "Zhangjiakou",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 8,
+            "points-for-gate": 7,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 107.5
+        },
+        {
+            "balance": 1,
+            "characteristics": [
+            ],
+            "country-code": "CHN",
+            "distance-multiplier": 1,
+            "hs-point": 140,
+            "id": "00000000-0000-0000-0000-000000000000",
+            "k-point": 125,
+            "name": "Zhangjiakou",
+            "points-for-back-wind": "auto",
+            "points-for-front-wind": 10.8,
+            "points-for-gate": 7.56,
+            "points-for-k-point": "auto",
+            "points-for-meter": "auto",
+            "record": 142
+        }
+    ]
+}

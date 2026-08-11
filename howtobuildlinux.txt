@@ -1,6 +1,12 @@
-  cd /home/konrad/Desktop/sj-sim/build-linux
-  qmake ../sj-sim.pro
-  make -j2
-  ./sj-sim
+Install Qt 6 with Widgets, Charts, Concurrent, Linguist, and a C++17 compiler.
+From the repository root:
 
+mkdir -p build-linux
+cd build-linux
+qmake ../sj-sim.pro CONFIG+=release
+make -j2
+./sj-sim
+
+GitHub Actions uses linuxdeploy to collect the dynamically linked Qt runtime
+into a compact archive. Build intermediates such as .o files are not published.
 

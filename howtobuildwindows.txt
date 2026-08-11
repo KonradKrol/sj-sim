@@ -1,4 +1,13 @@
-To run it: open build-win\release\sj-sim.exe (run from that folder). To rebuild from scratch, open an "x64 Native Tools Command Prompt for VS 2022" and run:
-qmake sj-sim.pro CONFIG+=release
+Install Qt 6.7.3 for MSVC 2022 x64, including Qt Charts. Open an "x64 Native
+Tools Command Prompt for VS 2022" in the repository root and run:
+
+mkdir build-win
+cd build-win
+qmake ..\sj-sim.pro CONFIG+=release
 nmake
-windeployqt --release sj-sim.exe
+cd ..
+powershell -ExecutionPolicy Bypass -File scripts\package-windows.ps1 -BuildDir build-win -OutputDir dist\sj-sim-windows-x64
+
+Run dist\sj-sim-windows-x64\sj-sim.exe. The packaging script copies the Qt
+runtime DLLs and the flags, translations, and userData folders. Object files
+remain in build-win\.obj and are not part of the distributable application.
