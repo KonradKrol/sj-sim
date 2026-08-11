@@ -96,7 +96,8 @@ on demand from the Actions tab. Linux users extract the downloaded archive and
 run the clearly named top-level `Sj.Sim` launcher; a `README.txt` inside the
 package repeats these instructions. The Linux artifact is built in an Ubuntu
 20.04 container for compatibility with x86-64 distributions using glibc 2.31
-or newer.
+or newer. Local development builds target the current computer instead; see
+`howtobuildlinux.txt` for the host-native procedure.
 
 This project should be treated as experimental and educational rather than production-quality.
 
@@ -144,9 +145,6 @@ Even small improvements help to clean up* the project.
 ![image (22)](https://github.com/user-attachments/assets/2b297f2b-cb9f-49a8-8edc-7c609991b445)
 ![image (23)](https://github.com/user-attachments/assets/d144cf23-3a47-421b-b683-31c53890875d)
 ![image (24)](https://github.com/user-attachments/assets/3d012fc2-1aff-47d3-b1d4-56f44388291a)
-
-
-
 
 
 

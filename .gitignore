@@ -2,9 +2,13 @@
 build-linux/
 build-win/
 build-*/
+build/
 debug/
 release/
 dist/
+linuxdeploy-x86_64.AppImage
+linuxdeploy-plugin-qt-x86_64.AppImage
+sj-sim.desktop
 assets_for_ai/
 AUDIT_CRASH_REPORT.md
 AUDIT_MONETIZATION_REPORT.md

@@ -1,12 +1,11 @@
-Install Qt 6 with Widgets, Charts, Concurrent, Linguist, and a C++17 compiler.
-From the repository root:
+Build and run locally with the Qt 5 tools already installed on this computer:
 
-mkdir -p build-linux
-cd build-linux
-qmake ../sj-sim.pro CONFIG+=release
-make -j2
+cd /home/konrad/Desktop/sj-sim
+mkdir -p build-linux && cd build-linux
+qmake ../sj-sim.pro CONFIG+=release && make -j"$(nproc)"
+cp -a ../flags ../userData ../translations .
+lrelease translations/translation_en.ts -qm translations/translation_en.qm
 ./sj-sim
 
-GitHub Actions uses linuxdeploy to collect the dynamically linked Qt runtime
-into a compact archive. Build intermediates such as .o files are not published.
-
+This is a quick local build for this computer. GitHub Actions separately builds
+the portable release against the older Linux compatibility baseline.

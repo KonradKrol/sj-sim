@@ -52,15 +52,16 @@ jobs:
           if-no-files-found: error
 
   linux:
-    # Keep the hosted runner current, but build and package in an older
-    # userspace so releases only require glibc 2.31 or newer.
+    # Build in an older userspace so the release works on a broad range of
+    # current x86-64 distributions instead of targeting the developer's OS.
     runs-on: ubuntu-22.04
     container: ubuntu:20.04
     steps:
-      - name: Install build and deployment prerequisites
+      - name: Install container prerequisites
         run: |
           apt-get update
-          DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential ca-certificates curl git imagemagick libgl1-mesa-dev libfuse2 libxcb-cursor0 libxkbcommon-x11-0
+          DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates curl git imagemagick libgl1-mesa-dev libfuse2 libxcb-cursor0 libxkbcommon-x11-0 python3-pip
+          python3 -m pip install --upgrade pip
       - uses: actions/checkout@v6
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -70,6 +71,9 @@ jobs:
           modules: qtcharts
           cache: true
           install-deps: nosudo
+          setup-python: false
+          aqtversion: "==3.1.18"
+          py7zrversion: "==0.22.*"
       - name: Build
         run: |
           mkdir -p build/linux
