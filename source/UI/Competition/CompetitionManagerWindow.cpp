@@ -47,6 +47,16 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     personalBestNotificationsSuppressed(false)
 {
     ui->setupUi(this);
+
+    // The current KO group belongs to the start-list context, never to the
+    // main competition results. Enforce that relationship at runtime as well
+    // as in the .ui file so regenerated UI code cannot place it elsewhere.
+    ui->gridLayout_competitionControls->removeWidget(ui->tableView_KOGroupResults);
+    ui->verticalLayout_startListAndJumpInfo->removeWidget(ui->tableView_KOGroupResults);
+    ui->verticalLayout_startListAndJumpInfo->insertWidget(0, ui->tableView_KOGroupResults, 3);
+    ui->verticalLayout_startListAndJumpInfo->setStretch(1, 5);
+    ui->verticalLayout_startListAndJumpInfo->setStretch(2, 7);
+
     setWindowFlags(Qt::Window);
     setMinimumSize(640, 480);
     ui->splitter_main->setStretchFactor(0, 1);

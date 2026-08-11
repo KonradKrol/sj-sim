@@ -813,7 +813,11 @@ bool CompetitionConfigWindow::validateSimulationInputs()
         }
 
         const RoundInfo &firstRound = rules.getRoundsReference().first();
-        if(firstRound.getKO())
+        const bool groupsWillBeGeneratedAfterQualifications =
+            getType() == SingleCompetition
+            && checkBox_singleCompetitionQualifications != nullptr
+            && checkBox_singleCompetitionQualifications->isChecked();
+        if(firstRound.getKO() && !groupsWillBeGeneratedAfterQualifications)
         {
             QVector<KOGroup> &groups = getType() == SeasonCompetition
                 ? seasonCompetitionGroups

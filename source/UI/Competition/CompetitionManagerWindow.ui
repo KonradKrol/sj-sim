@@ -1458,22 +1458,6 @@ nowy wiatr</string>
            </item>
           </layout>
          </item>
-         <item row="1" column="0" colspan="5">
-          <widget class="QTableView" name="tableView_KOGroupResults">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
-          </widget>
-         </item>
             </layout>
            </item>
           </layout>
@@ -1519,7 +1503,29 @@ QTableView::item:selected
         <number>0</number>
        </property>
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_startListAndJumpInfo" stretch="5,7">
+        <layout class="QVBoxLayout" name="verticalLayout_startListAndJumpInfo" stretch="3,5,7">
+       <item>
+        <widget class="QTableView" name="tableView_KOGroupResults">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>120</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>220</height>
+          </size>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QListView" name="listView_startList">
          <property name="sizePolicy">
