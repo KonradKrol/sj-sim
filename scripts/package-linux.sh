@@ -6,6 +6,7 @@ output_dir="${2:-dist/sj-sim-linux-x64}"
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 build_path="${repo_root}/${build_dir}"
 output_path="${repo_root}/${output_dir}"
+output_archive="${repo_root}/dist/sj-sim-linux-x64.tar.gz"
 
 if [[ ! -x "${build_path}/sj-sim" && ! -x "${build_path}/release/sj-sim" ]]; then
     echo "sj-sim was not found under ${build_path}" >&2
@@ -18,6 +19,7 @@ if [[ "${output_path}" != "${repo_root}/dist/"* ]]; then
 fi
 
 rm -rf "${output_path}"
+rm -f "${output_archive}"
 mkdir -p "${output_path}/usr/bin/translations"
 
 executable="${build_path}/sj-sim"
@@ -59,6 +61,19 @@ convert "${repo_root}/sj-sim.png" -resize 512x512 "${icon_path}"
     --icon-file "${icon_path}" \
     --plugin qt
 
-tar -C "${repo_root}/dist" -czf "${repo_root}/dist/sj-sim-linux-x64.tar.gz" \
+mv "${output_path}/AppRun" "${output_path}/Sj.Sim"
+
+cat > "${output_path}/README.txt" <<'README'
+Sj.Sim for Linux
+================
+
+Run the application by double-clicking "Sj.Sim" or from a terminal:
+
+    ./Sj.Sim
+
+Keep the extracted folder together; it contains the runtime and application data.
+README
+
+tar -C "${repo_root}/dist" -czf "${output_archive}" \
     "$(basename "${output_path}")"
-echo "Packaged Linux application at ${output_path}"
+echo "Packaged Linux application at ${output_archive}"

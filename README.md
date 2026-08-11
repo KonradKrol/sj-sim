@@ -79,17 +79,24 @@ package the runtime-only release:
 bash scripts/package-linux.sh build-linux dist/sj-sim-linux-x64
 ```
 
-This creates `dist/sj-sim-linux-x64.tar.gz`. The package includes the new
-`sj-sim.png` application icon, dynamically linked Qt libraries, and the
-`flags`, `translations`, and `userData` folders. Object files remain only in
-the build directory.
+This creates `dist/sj-sim-linux-x64.tar.gz`. It includes the application
+icon, dynamically linked Qt libraries, and the writable `flags`, `translations`,
+and `userData` folders. Object files remain only in the build directory. Extract
+the archive, then double-click the top-level `Sj.Sim` launcher or run:
+
+```bash
+./sj-sim-linux-x64/Sj.Sim
+```
 
 ## Automated releases
 
 Every commit pushed to `main` builds Windows and Linux packages and publishes
 them as a prerelease in the GitHub Releases tab. The same workflow can be run
-on demand from the Actions tab. Each downloadable archive contains only runtime
-files and places `flags`, `translations`, and `userData` beside the executable.
+on demand from the Actions tab. Linux users extract the downloaded archive and
+run the clearly named top-level `Sj.Sim` launcher; a `README.txt` inside the
+package repeats these instructions. The Linux artifact is built in an Ubuntu
+20.04 container for compatibility with x86-64 distributions using glibc 2.31
+or newer.
 
 This project should be treated as experimental and educational rather than production-quality.
 
@@ -137,7 +144,6 @@ Even small improvements help to clean up* the project.
 ![image (22)](https://github.com/user-attachments/assets/2b297f2b-cb9f-49a8-8edc-7c609991b445)
 ![image (23)](https://github.com/user-attachments/assets/d144cf23-3a47-421b-b683-31c53890875d)
 ![image (24)](https://github.com/user-attachments/assets/3d012fc2-1aff-47d3-b1d4-56f44388291a)
-
 
 
 

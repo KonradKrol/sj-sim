@@ -52,8 +52,15 @@ jobs:
           if-no-files-found: error
 
   linux:
-    runs-on: ubuntu-24.04
+    # Keep the hosted runner current, but build and package in an older
+    # userspace so releases only require glibc 2.31 or newer.
+    runs-on: ubuntu-22.04
+    container: ubuntu:20.04
     steps:
+      - name: Install build and deployment prerequisites
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential ca-certificates curl git imagemagick libgl1-mesa-dev libfuse2 libxcb-cursor0 libxkbcommon-x11-0
       - uses: actions/checkout@v6
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -62,37 +69,28 @@ jobs:
           arch: linux_gcc_64
           modules: qtcharts
           cache: true
-      - name: Install deployment prerequisites
-        run: sudo apt-get update && sudo apt-get install -y imagemagick libgl1-mesa-dev libfuse2t64 libxcb-cursor0 libxkbcommon-x11-0
+          install-deps: nosudo
       - name: Build
         run: |
           mkdir -p build/linux
           cd build/linux
           qmake ../../sj-sim.pro CONFIG+=release
           make -j"$(nproc)"
-      - name: Collect dynamically linked runtime
+      - name: Package portable application
         env:
           QMAKE: ${{ env.QT_ROOT_DIR }}/bin/qmake
         run: |
           curl -L -o linuxdeploy-x86_64.AppImage https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
           curl -L -o linuxdeploy-plugin-qt-x86_64.AppImage https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
           chmod +x linuxdeploy-x86_64.AppImage linuxdeploy-plugin-qt-x86_64.AppImage
-          mkdir -p dist/sj-sim-linux-x64/usr/bin
-          cp build/linux/sj-sim dist/sj-sim-linux-x64/usr/bin/
-          cp -R flags userData dist/sj-sim-linux-x64/usr/bin/
-          mkdir -p dist/sj-sim-linux-x64/usr/bin/translations
-          lrelease translations/translation_en.ts -qm dist/sj-sim-linux-x64/usr/bin/translations/translation_en.qm
-          printf '[Desktop Entry]\nType=Application\nName=Sj.Sim\nExec=sj-sim\nIcon=sj-sim\nCategories=Game;Simulation;\n' > sj-sim.desktop
-          convert sj-sim.png -resize 512x512 /tmp/sj-sim.png
-          ./linuxdeploy-x86_64.AppImage --appdir dist/sj-sim-linux-x64 --desktop-file sj-sim.desktop --icon-file /tmp/sj-sim.png --plugin qt
-          cd dist/sj-sim-linux-x64/usr/bin
+          bash scripts/package-linux.sh build/linux dist/sj-sim-linux-x64
+      - name: Smoke-test packaged launcher
+        run: |
           set +e
-          QT_QPA_PLATFORM=offscreen timeout 5s ./sj-sim
+          QT_QPA_PLATFORM=offscreen timeout 5s ./dist/sj-sim-linux-x64/Sj.Sim
           status=$?
           set -e
           test "$status" -eq 124
-          cd ../../../..
-          tar -C dist -czf dist/sj-sim-linux-x64.tar.gz sj-sim-linux-x64
       - uses: actions/upload-artifact@v6
         with:
           name: linux-release
