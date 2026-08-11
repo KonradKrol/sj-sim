@@ -48,8 +48,9 @@ if ! command -v convert >/dev/null 2>&1; then
     exit 1
 fi
 
-icon_path="$(mktemp --suffix=.png)"
-trap 'rm -f "${icon_path}"' EXIT
+icon_dir="$(mktemp -d)"
+icon_path="${icon_dir}/sj-sim.png"
+trap 'rm -rf "${icon_dir}"' EXIT
 convert "${repo_root}/sj-sim.png" -resize 512x512 "${icon_path}"
 
 "${repo_root}/linuxdeploy-x86_64.AppImage" \
