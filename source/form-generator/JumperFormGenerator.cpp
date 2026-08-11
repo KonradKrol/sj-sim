@@ -1,4 +1,5 @@
 #include "JumperFormGenerator.h"
+#include <QDebug>
 #include "../global/MyRandom.h"
 
 JumperFormGenerator::JumperFormGenerator()

@@ -20,6 +20,22 @@
 
 namespace ResponsiveWindowUtils
 {
+inline QScreen *screenForWidget(const QWidget *widget)
+{
+    if(widget != nullptr && widget->windowHandle() != nullptr
+            && widget->windowHandle()->screen() != nullptr)
+        return widget->windowHandle()->screen();
+
+    if(widget != nullptr) {
+        const QPoint center = widget->mapToGlobal(widget->rect().center());
+        for(QScreen *screen : QGuiApplication::screens()) {
+            if(screen->geometry().contains(center))
+                return screen;
+        }
+    }
+    return QGuiApplication::primaryScreen();
+}
+
 inline int boundedTextMinimum(QWidget *widget, const QString &text)
 {
     const QString sample = text.isEmpty() ? QStringLiteral("000000") : text;
@@ -86,9 +102,9 @@ protected:
 
         if(event->type() == QEvent::Show) {
             connectToWindowScreen();
-            ensureVisible(window->screen());
-            QTimer::singleShot(0, this, [this](){ ensureVisible(window->screen()); });
-            QTimer::singleShot(50, this, [this](){ ensureVisible(window->screen()); });
+            ensureVisible(screenForWidget(window));
+            QTimer::singleShot(0, this, [this](){ ensureVisible(screenForWidget(window)); });
+            QTimer::singleShot(50, this, [this](){ ensureVisible(screenForWidget(window)); });
         }
         else if(event->type() == QEvent::Hide || event->type() == QEvent::Close) {
             QSettings().setValue(settingsKey, window->saveGeometry());
@@ -126,9 +142,7 @@ private:
             return;
         }
 
-        QScreen *screen = window->parentWidget() != nullptr
-            ? window->parentWidget()->screen()
-            : QGuiApplication::primaryScreen();
+        QScreen *screen = screenForWidget(window->parentWidget());
         if(screen == nullptr)
             return;
 
@@ -202,9 +216,7 @@ inline void fitToAvailableScreen(QDialog *dialog, const QSize &preferredSize = Q
         dialog->layout()->activate();
     dialog->adjustSize();
 
-    QScreen *screen = dialog->screen();
-    if(screen == nullptr)
-        screen = QGuiApplication::primaryScreen();
+    QScreen *screen = screenForWidget(dialog);
     if(screen == nullptr)
         return;
 

@@ -603,7 +603,10 @@ QVector<KOGroup> CompetitionManagerWindow::getManualKOGroupsFromDialogInputs()
     mainLayout.addWidget(&buttonBox);
 
     dialog.setMinimumSize(360, 320);
-    const QRect availableGeometry = dialog.screen()->availableGeometry();
+    QScreen *screen = ResponsiveWindowUtils::screenForWidget(&dialog);
+    const QRect availableGeometry = screen != nullptr
+        ? screen->availableGeometry()
+        : QRect(0, 0, 600, 720);
     const QSize availableSize(qMax(360, availableGeometry.width() - 48),
                               qMax(320, availableGeometry.height() - 48));
     dialog.resize(QSize(600, 720).boundedTo(availableSize));

@@ -92,7 +92,7 @@ void TeamEditorWidget::on_pushButton_up_clicked()
 
     if(index > (0) && index < jumpers.count())
     {
-        jumpers.swapItemsAt(index, index - 1);
+        qSwap(jumpers[index], jumpers[index - 1]);
         ui->listView_jumpers->clearSelection();
         ui->listView_jumpers->setCurrentIndex(model->index(index - 1, 0));
         emit model->dataChanged(model->index(index), model->index(index - 1));
@@ -108,10 +108,9 @@ void TeamEditorWidget::on_pushButton_down_clicked()
 
     if(index > (-1) && (index + 1) < jumpers.count())
     {
-        jumpers.swapItemsAt(index, index + 1);
+        qSwap(jumpers[index], jumpers[index + 1]);
         ui->listView_jumpers->clearSelection();
         ui->listView_jumpers->setCurrentIndex(model->index(index + 1, 0));
         emit model->dataChanged(model->index(index), model->index(index + 1));
     }
 }
-

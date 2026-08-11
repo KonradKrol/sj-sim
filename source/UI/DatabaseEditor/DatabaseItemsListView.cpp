@@ -2,6 +2,14 @@
 #include "ui_DatabaseItemsListView.h"
 #include <QMessageBox>
 
+namespace {
+template<typename T>
+void swapVectorItems(QVector<T> *items, int first, int second)
+{
+    qSwap((*items)[first], (*items)[second]);
+}
+}
+
 DatabaseItemsListView::DatabaseItemsListView(int type, bool allowInserting, bool allowRemoving, bool allowMoving, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::DatabaseItemsListView),
@@ -519,7 +527,7 @@ void DatabaseItemsListView::onUpActionTriggered()
                 for(auto & index : rows)
                     ui->listView->setCurrentIndex(jumpersListModel->index(index.row() - 1));
                 for(auto & index : rows)
-                    jumpersListModel->getSeasonJumpers()->swapItemsAt(index.row(), index.row() - 1);
+                    swapVectorItems(jumpersListModel->getSeasonJumpers(), index.row(), index.row() - 1);
                 emit jumpersListModel->dataChanged(jumpersListModel->index(firstRow), jumpersListModel->index(jumpersListModel->rowCount() - 1));
                 break;
             }
@@ -528,7 +536,7 @@ void DatabaseItemsListView::onUpActionTriggered()
                 for(auto & index : rows)
                     ui->listView->setCurrentIndex(hillsListModel->index(index.row() - 1));
                 for(auto & index : rows)
-                    hillsListModel->getSeasonHills()->swapItemsAt(index.row(), index.row() - 1);
+                    swapVectorItems(hillsListModel->getSeasonHills(), index.row(), index.row() - 1);
                 emit hillsListModel->dataChanged(hillsListModel->index(firstRow), hillsListModel->index(hillsListModel->rowCount() - 1));
                 break;
             }
@@ -537,7 +545,7 @@ void DatabaseItemsListView::onUpActionTriggered()
                 for(auto & index : rows)
                     ui->listView->setCurrentIndex(jumpersListModel->index(index.row() - 1));
                 for(auto & index : rows)
-                    jumpersListModel->getJumpersVectorPointer()->swapItemsAt(index.row(), index.row() - 1);
+                    swapVectorItems(jumpersListModel->getJumpersVectorPointer(), index.row(), index.row() - 1);
                 emit jumpersListModel->dataChanged(jumpersListModel->index(firstRow), jumpersListModel->index(jumpersListModel->rowCount() - 1));
                 break;
             }
@@ -546,7 +554,7 @@ void DatabaseItemsListView::onUpActionTriggered()
                 for(auto & index : rows)
                     ui->listView->setCurrentIndex(hillsListModel->index(index.row() - 1));
                 for(auto & index : rows)
-                    hillsListModel->getHillsVectorPointer()->swapItemsAt(index.row(), index.row() - 1);
+                    swapVectorItems(hillsListModel->getHillsVectorPointer(), index.row(), index.row() - 1);
                 emit hillsListModel->dataChanged(hillsListModel->index(firstRow), hillsListModel->index(hillsListModel->rowCount() - 1));
                 break;
             }
@@ -555,7 +563,7 @@ void DatabaseItemsListView::onUpActionTriggered()
                 for(auto & index : rows)
                     ui->listView->setCurrentIndex(competitionRulesListModel->index(index.row() - 1));
                 for(auto & index : rows)
-                    competitionRulesListModel->getCompetitonRulesVectorPointer()->swapItemsAt(index.row(), index.row() - 1);
+                    swapVectorItems(competitionRulesListModel->getCompetitonRulesVectorPointer(), index.row(), index.row() - 1);
                 emit competitionRulesListModel->dataChanged(competitionRulesListModel->index(firstRow), competitionRulesListModel->index(competitionRulesListModel->rowCount() - 1));
                 break;
             }
@@ -564,7 +572,7 @@ void DatabaseItemsListView::onUpActionTriggered()
                 for(auto & index : rows)
                     ui->listView->setCurrentIndex(classificationsListModel->index(index.row() - 1));
                 for(auto & index : rows)
-                    classificationsListModel->getClassificationsVectorPointer()->swapItemsAt(index.row(), index.row() - 1);
+                    swapVectorItems(classificationsListModel->getClassificationsVectorPointer(), index.row(), index.row() - 1);
                 emit classificationsListModel->dataChanged(classificationsListModel->index(firstRow), classificationsListModel->index(classificationsListModel->rowCount() - 1));
                 break;
             }
@@ -573,7 +581,7 @@ void DatabaseItemsListView::onUpActionTriggered()
                 for(auto & index : rows)
                     ui->listView->setCurrentIndex(model->index(index.row() - 1));
                 for(auto & index : rows)
-                    model->getPresetsVectorPointer()->swapItemsAt(index.row(), index.row() - 1);
+                    swapVectorItems(model->getPresetsVectorPointer(), index.row(), index.row() - 1);
                 emit model->dataChanged(model->index(firstRow), model->index(model->rowCount() - 1));
                 break;
             }
@@ -582,7 +590,7 @@ void DatabaseItemsListView::onUpActionTriggered()
                 for(auto & index : rows)
                     ui->listView->setCurrentIndex(model->index(index.row() - 1));
                 for(auto & index : rows)
-                    model->getJumpersLists()->swapItemsAt(index.row(), index.row() - 1);
+                    swapVectorItems(model->getJumpersLists(), index.row(), index.row() - 1);
                 emit model->dataChanged(model->index(firstRow), model->index(model->rowCount() - 1));
                 break;
             }
@@ -591,7 +599,7 @@ void DatabaseItemsListView::onUpActionTriggered()
                 for(auto & index : rows)
                     ui->listView->setCurrentIndex(model->index(index.row() - 1));
                 for(auto & index : rows)
-                    model->getCalendars()->swapItemsAt(index.row(), index.row() - 1);
+                    swapVectorItems(model->getCalendars(), index.row(), index.row() - 1);
                 emit model->dataChanged(model->index(firstRow), model->index(model->rowCount() - 1));
                 break;
             }
@@ -634,7 +642,7 @@ void DatabaseItemsListView::onDownActionTriggered()
                 for(auto & index : rows)
                     ui->listView->setCurrentIndex(jumpersListModel->index(index.row() + 1));
                 for(auto & index : rows)
-                    jumpersListModel->getSeasonJumpers()->swapItemsAt(index.row(), index.row() + 1);
+                    swapVectorItems(jumpersListModel->getSeasonJumpers(), index.row(), index.row() + 1);
                 emit jumpersListModel->dataChanged(jumpersListModel->index(lastRow), jumpersListModel->index(0));
                 break;
             }
@@ -643,7 +651,7 @@ void DatabaseItemsListView::onDownActionTriggered()
                 for(auto & index : rows)
                     ui->listView->setCurrentIndex(hillsListModel->index(index.row() + 1));
                 for(auto & index : rows)
-                    hillsListModel->getSeasonHills()->swapItemsAt(index.row(), index.row() + 1);
+                    swapVectorItems(hillsListModel->getSeasonHills(), index.row(), index.row() + 1);
                 emit hillsListModel->dataChanged(hillsListModel->index(lastRow), hillsListModel->index(0));
                 break;
             }
@@ -652,7 +660,7 @@ void DatabaseItemsListView::onDownActionTriggered()
                 for(auto & index : rows)
                     ui->listView->setCurrentIndex(jumpersListModel->index(index.row() + 1));
                 for(auto & index : rows)
-                    jumpersListModel->getJumpersVectorPointer()->swapItemsAt(index.row(), index.row() + 1);
+                    swapVectorItems(jumpersListModel->getJumpersVectorPointer(), index.row(), index.row() + 1);
                 emit jumpersListModel->dataChanged(jumpersListModel->index(lastRow), jumpersListModel->index(0));
                 break;
             }
@@ -661,7 +669,7 @@ void DatabaseItemsListView::onDownActionTriggered()
                 for(auto & index : rows)
                     ui->listView->setCurrentIndex(hillsListModel->index(index.row() + 1));
                 for(auto & index : rows)
-                    hillsListModel->getHillsVectorPointer()->swapItemsAt(index.row(), index.row() + 1);
+                    swapVectorItems(hillsListModel->getHillsVectorPointer(), index.row(), index.row() + 1);
                 emit hillsListModel->dataChanged(hillsListModel->index(lastRow), hillsListModel->index(0));
                 break;
             }
@@ -670,7 +678,7 @@ void DatabaseItemsListView::onDownActionTriggered()
                 for(auto & index : rows)
                     ui->listView->setCurrentIndex(competitionRulesListModel->index(index.row() + 1));
                 for(auto & index : rows)
-                    competitionRulesListModel->getCompetitonRulesVectorPointer()->swapItemsAt(index.row(), index.row() + 1);
+                    swapVectorItems(competitionRulesListModel->getCompetitonRulesVectorPointer(), index.row(), index.row() + 1);
                 emit competitionRulesListModel->dataChanged(competitionRulesListModel->index(lastRow), competitionRulesListModel->index(0));
                 break;
             }
@@ -679,7 +687,7 @@ void DatabaseItemsListView::onDownActionTriggered()
                 for(auto & index : rows)
                     ui->listView->setCurrentIndex(classificationsListModel->index(index.row() + 1));
                 for(auto & index : rows)
-                    classificationsListModel->getClassificationsVectorPointer()->swapItemsAt(index.row(), index.row() + 1);
+                    swapVectorItems(classificationsListModel->getClassificationsVectorPointer(), index.row(), index.row() + 1);
                 emit classificationsListModel->dataChanged(classificationsListModel->index(lastRow), classificationsListModel->index(0));
                 break;
             }
@@ -688,7 +696,7 @@ void DatabaseItemsListView::onDownActionTriggered()
                 for(auto & index : rows)
                     ui->listView->setCurrentIndex(model->index(index.row() + 1));
                 for(auto & index : rows)
-                    model->getPresetsVectorPointer()->swapItemsAt(index.row(), index.row() + 1);
+                    swapVectorItems(model->getPresetsVectorPointer(), index.row(), index.row() + 1);
                 emit model->dataChanged(model->index(lastRow), model->index(0));
                 break;
             }
@@ -697,7 +705,7 @@ void DatabaseItemsListView::onDownActionTriggered()
                 for(auto & index : rows)
                     ui->listView->setCurrentIndex(model->index(index.row() + 1));
                 for(auto & index : rows)
-                    model->getJumpersLists()->swapItemsAt(index.row(), index.row() + 1);
+                    swapVectorItems(model->getJumpersLists(), index.row(), index.row() + 1);
                 emit model->dataChanged(model->index(lastRow), model->index(0));
                 break;
             }
@@ -706,7 +714,7 @@ void DatabaseItemsListView::onDownActionTriggered()
                 for(auto & index : rows)
                     ui->listView->setCurrentIndex(model->index(index.row() + 1));
                 for(auto & index : rows)
-                    model->getCalendars()->swapItemsAt(index.row(), index.row() + 1);
+                    swapVectorItems(model->getCalendars(), index.row(), index.row() + 1);
                 emit model->dataChanged(model->index(lastRow), model->index(0));
                 break;
             }

@@ -2,6 +2,7 @@
 #include "../../../../global/CountryFlagsManager.h"
 #include <QFont>
 #include <QColor>
+#include <QDebug>
 
 TeamJumpersListModel::TeamJumpersListModel(QVector<Jumper *> *jumpers, int jumpersInTeamCount, QObject *parent) : QAbstractListModel(parent), jumpers(jumpers), jumpersInTeamCount(jumpersInTeamCount)
 {

@@ -413,7 +413,8 @@ void CalendarEditorWidget::upActionTriggered()
                     competitionToMoveIndexInCalendar++;
                 }
 
-                calendar->getCompetitionsReference().swapItemsAt(competitionToMoveIndexInCalendar, competitionToMoveIndexInCalendar - 1);
+                qSwap(calendar->getCompetitionsReference()[competitionToMoveIndexInCalendar],
+                      calendar->getCompetitionsReference()[competitionToMoveIndexInCalendar - 1]);
                 competitionToMoveIndexInCalendar -= 1;
                 //qSwap(competitionToMoveIndexInCalendar, previousCompetitionIndexInCalendar);
 
@@ -511,7 +512,8 @@ void CalendarEditorWidget::downActionTriggered()
                     competitionToMoveIndexInCalendar++;
                 }
 
-                calendar->getCompetitionsReference().swapItemsAt(competitionToMoveIndexInCalendar, competitionToMoveIndexInCalendar + 1);
+                qSwap(calendar->getCompetitionsReference()[competitionToMoveIndexInCalendar],
+                      calendar->getCompetitionsReference()[competitionToMoveIndexInCalendar + 1]);
                 competitionToMoveIndexInCalendar += 1;
                 //qSwap(competitionToMoveIndexInCalendar, nextCompetitionIndexInCalendar);
 

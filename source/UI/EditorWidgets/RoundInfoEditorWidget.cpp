@@ -2,6 +2,7 @@
 #include "ui_RoundInfoEditorWidget.h"
 
 #include "CompetitionRulesEditorWidget.h"
+#include <QDebug>
 
 RoundInfoEditorWidget::RoundInfoEditorWidget(bool hideGroupsInfo, int competitiorsCount, bool sortStartList, short sortGroups, bool KO, int KOCount, int KOAdvance, int selection,  QWidget *parent) :
     QWidget(parent),

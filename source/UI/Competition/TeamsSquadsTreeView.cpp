@@ -1,6 +1,14 @@
 #include "TeamsSquadsTreeView.h"
 #include "ui_TeamsSquadsTreeView.h"
 
+namespace {
+template<typename T>
+void swapVectorItems(QVector<T> *items, int first, int second)
+{
+    qSwap((*items)[first], (*items)[second]);
+}
+}
+
 TeamsSquadsTreeView::TeamsSquadsTreeView(TeamsSquadsTreeModel *model, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TeamsSquadsTreeView),
@@ -61,7 +69,7 @@ void TeamsSquadsTreeView::onUpActionTriggered()
         QModelIndex index = ui->treeView->selectionModel()->selectedRows().at(0);
         TreeItem * item = static_cast<TreeItem*>(index.internalPointer());
         if(item->getParentItem() == model->getRootItem() && item->row() > 0){
-            model->getTeams()->swapItemsAt(item->row(), item->row() - 1);
+            swapVectorItems(model->getTeams(), item->row(), item->row() - 1);
             emit needToUpdateModel();
 
             QItemSelectionModel * selectionModel = ui->treeView->selectionModel();
@@ -80,7 +88,7 @@ void TeamsSquadsTreeView::onDownActionTriggered()
         QModelIndex index = ui->treeView->selectionModel()->selectedRows().at(0);
         TreeItem * item = static_cast<TreeItem*>(index.internalPointer());
         if(item->getParentItem() == model->getRootItem() && item->row() < model->rowCount() - 1){
-            model->getTeams()->swapItemsAt(item->row(), item->row() + 1);
+            swapVectorItems(model->getTeams(), item->row(), item->row() + 1);
             emit needToUpdateModel();
 
             QItemSelectionModel * selectionModel = ui->treeView->selectionModel();

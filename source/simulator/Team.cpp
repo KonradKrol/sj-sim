@@ -1,4 +1,5 @@
 #include "Team.h"
+#include <QDebug>
 #include <QJsonArray>
 
 Team::Team(const QString &countryCode) : countryCode(countryCode),
