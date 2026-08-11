@@ -1,0 +1,11 @@
+{
+    "jumper-form-generator-settings-preset": {
+        "name": "Zmiana po jednym dniu zawodów",
+        "settings": {
+            "form-bonus": 0,
+            "form-variability": 0.12,
+            "max-form": 100,
+            "min-form": 0
+        }
+    }
+}

@@ -40,25 +40,30 @@ It focuses on simulation, not graphics — there is no 2D or 3D rendering. Inste
 
 ## Building on Windows
 
-No hand-written Makefile is required. `qmake` generates the correct build files
-for the selected Qt kit.
-
-Install a 64-bit Qt 5 kit with Widgets, Charts, Concurrent, and Linguist, plus
-the matching MSVC build of DPP 10.0.26. The repository contains DPP headers and
-the release import library, but the DPP runtime DLL and its dependency DLLs
-must be supplied by the Windows DPP package.
-
-From an x64 Qt MSVC command prompt:
+Install Qt 6.7.3 for MSVC 2022 x64 with Qt Charts, then open an x64 Native
+Tools Command Prompt for VS 2022. From the repository root:
 
 ```bat
-qmake sj-sim.pro CONFIG+=release DPP_ROOT=C:/deps/libdpp-10.0.26-win64release
+mkdir build-win
+cd build-win
+qmake ..\sj-sim.pro CONFIG+=release
 nmake
-windeployqt --release sj-sim.exe
+cd ..
+powershell -ExecutionPolicy Bypass -File scripts\package-windows.ps1 -BuildDir build-win -OutputDir dist\sj-sim-windows-x64
 ```
 
-Copy `dpp.dll` and the DPP dependency DLLs beside `sj-sim.exe`. The `DPP_ROOT`
-argument is optional when using the bundled headers/import library; it is
-required when using a complete external DPP package.
+Run `dist\sj-sim-windows-x64\sj-sim.exe`. Qt is dynamically linked, so the
+package contains the executable and the required runtime DLLs. Compiler object
+files stay in the build directory and are never included. The current portable
+build uses the bundled DPP compatibility layer, so Discord webhook delivery is
+disabled and no external DPP package is required.
+
+## Automated releases
+
+Every commit pushed to `main` builds Windows and Linux packages and publishes
+them as a prerelease in the GitHub Releases tab. The same workflow can be run
+on demand from the Actions tab. Each downloadable archive contains only runtime
+files and places `flags`, `translations`, and `userData` beside the executable.
 
 This project should be treated as experimental and educational rather than production-quality.
 

@@ -1,0 +1,15 @@
+{
+    "points-for-places-preset": {
+        "name": "Team World Cup",
+        "pointsForPlaces": [
+            400,
+            350,
+            300,
+            250,
+            200,
+            150,
+            100,
+            50
+        ]
+    }
+}

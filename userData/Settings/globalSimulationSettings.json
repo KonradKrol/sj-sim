@@ -1,0 +1,12 @@
+{
+    "settings": {
+        "auto-adjust-hill-effects": false,
+        "base-dsq-probability": 135,
+        "flight-form-effect": 0.18,
+        "hills-effects-multiplier": 1.42,
+        "max-skills": 100,
+        "simulation-random-multiplier": 0.79,
+        "takeoff-form-effect": 0.18,
+        "update-global-database-records": false
+    }
+}

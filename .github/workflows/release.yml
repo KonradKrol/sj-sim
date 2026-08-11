@@ -1,0 +1,120 @@
+name: Build and publish release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: 6.7.3
+          arch: win64_msvc2022_64
+          modules: qtcharts
+          cache: true
+      - name: Build
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force build/windows | Out-Null
+          Push-Location build/windows
+          qmake ../..\sj-sim.pro CONFIG+=release
+          nmake
+          Pop-Location
+      - name: Package
+        shell: pwsh
+        run: |
+          ./scripts/package-windows.ps1 -BuildDir build/windows -OutputDir dist/sj-sim-windows-x64
+          $env:QT_QPA_PLATFORM = "offscreen"
+          $process = Start-Process -FilePath "$PWD/dist/sj-sim-windows-x64/sj-sim.exe" -WorkingDirectory "$PWD/dist/sj-sim-windows-x64" -PassThru
+          if ($process.WaitForExit(5000)) { throw "Packaged application exited unexpectedly with code $($process.ExitCode)" }
+          Stop-Process -Id $process.Id -Force
+          Compress-Archive -Path dist/sj-sim-windows-x64 -DestinationPath dist/sj-sim-windows-x64.zip
+      - uses: actions/upload-artifact@v6
+        with:
+          name: windows-release
+          path: dist/sj-sim-windows-x64.zip
+          if-no-files-found: error
+
+  linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: 6.7.3
+          arch: linux_gcc_64
+          modules: qtcharts
+          cache: true
+      - name: Install deployment prerequisites
+        run: sudo apt-get update && sudo apt-get install -y libgl1-mesa-dev libfuse2t64 libxcb-cursor0 libxkbcommon-x11-0
+      - name: Build
+        run: |
+          mkdir -p build/linux
+          cd build/linux
+          qmake ../../sj-sim.pro CONFIG+=release
+          make -j"$(nproc)"
+      - name: Collect dynamically linked runtime
+        env:
+          QMAKE: ${{ env.QT_ROOT_DIR }}/bin/qmake
+        run: |
+          curl -L -o linuxdeploy-x86_64.AppImage https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          curl -L -o linuxdeploy-plugin-qt-x86_64.AppImage https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
+          chmod +x linuxdeploy-x86_64.AppImage linuxdeploy-plugin-qt-x86_64.AppImage
+          mkdir -p dist/sj-sim-linux-x64/usr/bin
+          cp build/linux/sj-sim dist/sj-sim-linux-x64/usr/bin/
+          cp -R flags userData dist/sj-sim-linux-x64/usr/bin/
+          mkdir -p dist/sj-sim-linux-x64/usr/bin/translations
+          lrelease translations/translation_en.ts -qm dist/sj-sim-linux-x64/usr/bin/translations/translation_en.qm
+          printf '[Desktop Entry]\nType=Application\nName=Sj.Sim\nExec=sj-sim\nIcon=sj-sim\nCategories=Game;Simulation;\n' > sj-sim.desktop
+          cp img/ski-jumper.png sj-sim.png
+          ./linuxdeploy-x86_64.AppImage --appdir dist/sj-sim-linux-x64 --desktop-file sj-sim.desktop --icon-file sj-sim.png --plugin qt
+          cd dist/sj-sim-linux-x64/usr/bin
+          set +e
+          QT_QPA_PLATFORM=offscreen timeout 5s ./sj-sim
+          status=$?
+          set -e
+          test "$status" -eq 124
+          cd ../../../..
+          tar -C dist -czf dist/sj-sim-linux-x64.tar.gz sj-sim-linux-x64
+      - uses: actions/upload-artifact@v6
+        with:
+          name: linux-release
+          path: dist/sj-sim-linux-x64.tar.gz
+          if-no-files-found: error
+
+  release:
+    needs: [windows, linux]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v6
+        with:
+          path: release-assets
+          merge-multiple: true
+      - name: Publish commit release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: continuous-${{ github.sha }}
+          target_commitish: ${{ github.sha }}
+          name: Continuous build ${{ github.sha }}
+          body: Automated Windows and Linux build for commit ${{ github.sha }}.
+          prerelease: true
+          make_latest: true
+          files: release-assets/*
+          fail_on_unmatched_files: true

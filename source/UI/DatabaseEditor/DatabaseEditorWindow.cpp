@@ -198,7 +198,6 @@ void DatabaseEditorWindow::onJumpersListViewDoubleClicked(const QModelIndex &ind
     int row = index.row();
     actualElementIndex = row;
     if(jumperEditor->isHidden()){
-        ui->tabWidget_main->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
         jumperEditor->show();
     }
     jumperEditor->setJumper(const_cast<Jumper *>(&GlobalDatabase::get()->getEditableGlobalJumpers().at(row)));
@@ -210,7 +209,6 @@ void DatabaseEditorWindow::onHillsListViewDoubleClicked(const QModelIndex &index
     int row = index.row();
     actualElementIndex = row;
     if(hillEditor->isHidden()){
-        ui->tabWidget_main->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
         hillEditor->show();
     }
     hillEditor->setHill(const_cast<Hill *>(&GlobalDatabase::get()->getEditableGlobalHills().at(row)));
@@ -222,7 +220,6 @@ void DatabaseEditorWindow::onCompetitionRulesListViewDoubleClicked(const QModelI
     int row = index.row();
     actualElementIndex = row;
     if(competitionRulesEditor->isHidden()){
-        ui->tabWidget_main->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
         competitionRulesEditor->show();
     }
     competitionRulesEditor->setCompetitionRules(const_cast<CompetitionRules *>(&GlobalDatabase::get()->getEditableCompetitionRules().at(row)));
@@ -234,7 +231,6 @@ void DatabaseEditorWindow::onPointsForPlacesPresetsListViewDoubleClicked(const Q
     int row = index.row();
     actualElementIndex = row;
     if(pointsForPlacesPresetEditor->isHidden()){
-        ui->tabWidget_main->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
         pointsForPlacesPresetEditor->show();
     }
     pointsForPlacesPresetEditor->reset();
