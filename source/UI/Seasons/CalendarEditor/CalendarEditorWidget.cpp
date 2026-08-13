@@ -892,6 +892,7 @@ void CalendarEditorWidget::execMultipleAdvancementCompetitionEditDialog(QVector<
     QComboBox * comboBox = new QComboBox(dialog);
     comboBox->addItem("BRAK");
     QVector<CompetitionInfo *> comps = CompetitionInfo::getSpecificTypeMainCompetitions(calendar->getCompetitionsReference(), competition->getRulesPointer()->getCompetitionType());
+    QVector<CompetitionInfo *> availableCompetitions;
     int maxMainIndex = row;//SeasonCalendar::getCompetitionMainIndex(comps, SeasonCalendar::getMainCompetitionByIndex(calendar->getCompetitionsReference(), row));
     // comps to tylko konkursy indywidualne i tylko kwalifikacje lub konkurs.
     // czego szukamy w maxMainIndex? Maksymalnego wiersza w tabeli odejmując drużynówki
@@ -904,11 +905,12 @@ void CalendarEditorWidget::execMultipleAdvancementCompetitionEditDialog(QVector<
             if(mainIndex < maxMainIndex)
             {
                 comboBox->addItem(CountryFlagsManager::getFlagPixmap(comp->getHill()->getCountryCode().toLower()), QString::number(displayIndex) + ". " + comp->getHill()->getName() + " HS" + QString::number(comp->getHill()->getHSPoint()));
+                availableCompetitions.push_back(comp);
             }
             else break;
         }
     }
-    comboBox->setCurrentIndex(comboBox->count() - 1);
+    comboBox->setCurrentIndex(availableCompetitions.indexOf(competition->getAdvancementCompetition()) + 1);
     layout->addWidget(label);
     layout->addWidget(comboBox);
     widget->setLayout(layout);
@@ -928,7 +930,7 @@ void CalendarEditorWidget::execMultipleAdvancementCompetitionEditDialog(QVector<
 
     if(dialog->exec() == QDialog::Accepted){
         if(comboBox->currentIndex() > 0){
-            CompetitionInfo * advancementCompetition = SeasonCalendar::getMainCompetitionByIndex(comps, comboBox->currentIndex() - 1);
+            CompetitionInfo * advancementCompetition = availableCompetitions.at(comboBox->currentIndex() - 1);
             competition->setAdvancementCompetition(advancementCompetition);
         }
         else competition->setAdvancementCompetition(nullptr);
@@ -939,6 +941,7 @@ void CalendarEditorWidget::execMultipleAdvancementCompetitionEditDialog(QVector<
 
 void CalendarEditorWidget::execMultipleAdvancementClassificationEditDialog(QVector<int> *rows, int column)
 {
+    CompetitionInfo * selectedCompetition = SeasonCalendar::getMainCompetitionByIndex(calendar->getCompetitionsReference(), rows->first());
     QDialog * dialog = new QDialog(this);
     dialog->setWindowFlags(Qt::Window);
     dialog->setWindowTitle(tr("Klasyfikacja"));
@@ -960,6 +963,7 @@ void CalendarEditorWidget::execMultipleAdvancementClassificationEditDialog(QVect
         comboBox->addItem(QString::number(pos) + ". " + cls->getName());
         pos++;
     }
+    comboBox->setCurrentIndex(calendar->getClassificationsReference().indexOf(selectedCompetition->getAdvancementClassification()) + 1);
     layout->addWidget(label);
     layout->addWidget(comboBox);
     widget->setLayout(layout);
@@ -1093,6 +1097,12 @@ void CalendarEditorWidget::execMultipleCompetitionRulesEditDialog(QVector<int> *
     for(auto & rules : *calendarModel->getRulesList()){
         comboBox->addItem(rules.getName());
     }
+    for(int rulesIndex = 0; rulesIndex < calendarModel->getRulesList()->count(); rulesIndex++){
+        if(calendarModel->getRulesList()->at(rulesIndex).getID() == competition->getRulesPointer()->getID()){
+            comboBox->setCurrentIndex(rulesIndex + 1);
+            break;
+        }
+    }
     layout->addWidget(label);
     layout->addWidget(comboBox);
     widget->setLayout(layout);
@@ -1105,8 +1115,6 @@ void CalendarEditorWidget::execMultipleCompetitionRulesEditDialog(QVector<int> *
         else
             editor->resetInputs();
     });
-    if(!calendarModel->getRulesList()->isEmpty())
-        comboBox->setCurrentIndex(1);
     dialog->layout()->addWidget(widget);
     dialog->layout()->addWidget(editor);
 
@@ -1226,6 +1234,10 @@ void CalendarEditorWidget::execMultipleHillEditDialog(QVector<int> *rows, int co
     for(auto & hill : *calendarModel->getHillsList()){
         comboBox->addItem(CountryFlagsManager::getFlagPixmap(hill->getCountryCode().toLower()), hill->getName() + " HS" + QString::number(hill->getHSPoint()));
     }
+    CompetitionInfo * selectedCompetition = SeasonCalendar::getMainCompetitionByIndex(calendar->getCompetitionsReference(), rows->first());
+    int currentHillIndex = calendarModel->getHillsList()->indexOf(selectedCompetition->getHill());
+    if(currentHillIndex >= 0)
+        comboBox->setCurrentIndex(currentHillIndex);
     layout->addWidget(label);
     layout->addWidget(comboBox);
     widget->setLayout(layout);

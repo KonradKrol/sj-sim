@@ -62,6 +62,12 @@ void MultipleTrainingsEditDialog::on_pushButton_trainingsRules_clicked()
     for(auto & rules : *rulesList){
         comboBox->addItem(rules.getName());
     }
+    for(int rulesIndex = 0; rulesIndex < rulesList->count(); rulesIndex++){
+        if(rulesList->at(rulesIndex).getID() == trainingsRules.getID()){
+            comboBox->setCurrentIndex(rulesIndex + 1);
+            break;
+        }
+    }
     layout->addWidget(label);
     layout->addWidget(comboBox);
     widget->setLayout(layout);

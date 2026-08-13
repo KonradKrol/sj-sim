@@ -590,8 +590,6 @@ CompetitionInfo CompetitionInfo::getFromJson(const QJsonObject &json, Identifiab
     {
         comp.getTeamsReference().push_back(Team::getFromJson(val.toObject(), storage));
     }
-    storage->add(comp.getTeamsReference());
-
     QJsonArray KOGroupsArray = json.value("rounds-ko-groups").toArray();
     for(auto val : KOGroupsArray)
     {
@@ -601,7 +599,6 @@ CompetitionInfo CompetitionInfo::getFromJson(const QJsonObject &json, Identifiab
             groups.push_back(KOGroup::getFromJson(v.toObject(), storage));
         }
         comp.getRoundsKOGroupsReference().push_back(groups);
-        storage->add(groups);
     }
     //seasonObjectsManager.fill(&comp.getKOGroupsReference());
 
@@ -613,66 +610,12 @@ CompetitionInfo CompetitionInfo::getFromJson(const QJsonObject &json, Identifiab
     if(!before120Map)
         comp.setHill(static_cast<Hill *>(storage->get(json.value("hill-id").toString())));
     comp.setResults(CompetitionResults::getFromJson(json.value("results").toObject(), storage));
-    if(storage != nullptr)
-        storage->add(&comp.getResultsReference());
-    for(auto & sr : comp.getResultsReference().getResultsReference()){
-        sr.setCompetition(&comp);
-        for(auto & j : sr.getJumpsReference()){
-            j.setCompetition(sr.getCompetition());
-            j.setSingleResult(&sr);
-        }
-    }
-    comp.getResultsReference().setCompetition(&comp);
     comp.setRules(CompetitionRules::getFromJson(json.value("rules").toObject()));
     comp.setSerieType(json.value("serie-type").toInt());
     comp.setExceptionalRoundsCount(json.value("exceptional-rounds-count").toInt());
     comp.setCancelled(json.value("cancelled").toBool());
     comp.setPlayed(json.value("played").toBool());
     comp.setJumpsImportance(json.value("jumps-importance").toDouble(5));
-
-    if(before120Map)
-        comp.setTrialRound(static_cast<CompetitionInfo *>(before120Map->value(json.value("trial-round-id").toString().toULong())));
-    else
-        comp.setTrialRound(static_cast<CompetitionInfo *>(storage->get(json.value("trial-round-id").toString())));
-
-    QJsonArray trainingsArray = json.value("training-ids").toArray();
-    for(auto val : trainingsArray){
-        if(before120Map)
-            comp.getTrainingsReference().push_back(static_cast<CompetitionInfo *>(before120Map->value(val.toString().toULong())));
-        else
-            comp.getTrainingsReference().push_back(static_cast<CompetitionInfo *>(storage->get(val.toString())));
-    }
-
-    QJsonArray classificationsArray = json.value("classifications-ids").toArray();
-    for(auto val : classificationsArray){
-        if(before120Map)
-            comp.getClassificationsReference().push_back(static_cast<Classification *>(before120Map->value(val.toString().toULong())));
-        else
-            comp.getClassificationsReference().push_back(static_cast<Classification *>(storage->get(val.toString())));
-    }
-
-    QJsonArray startListArray = json.value("start-list").toArray();
-    for(auto val : startListArray)
-    {
-        comp.getStartListReference().push_back(static_cast<Jumper *>(storage->get(val.toString())));
-    }
-
-    QString advClsVal = json.value("advancement-classification-id").toString();
-    if(!advClsVal.isEmpty())
-    {
-    if(before120Map)
-        comp.setAdvancementClassification(static_cast<Classification *>(before120Map->value(advClsVal.toULong())));
-    else
-        comp.setAdvancementClassification(static_cast<Classification *>(storage->get(advClsVal)));
-    }
-
-QString advCompVal = json.value("advancement-competition-id").toString();
-    if(advCompVal.isEmpty() == false){
-    if(before120Map)
-        comp.setAdvancementCompetition(static_cast<CompetitionInfo *>(before120Map->value(advCompVal.toULong())));
-    else
-        comp.setAdvancementCompetition(static_cast<CompetitionInfo *>(storage->get(advCompVal)));
-    }
 
     return comp;
 }

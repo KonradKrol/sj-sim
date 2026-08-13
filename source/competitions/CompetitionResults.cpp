@@ -69,8 +69,6 @@ CompetitionResults CompetitionResults::getFromJson(QJsonObject obj, Identifiable
         parsedResults.append(CompetitionSingleResult::getFromJson(value.toObject(), storage));
     results.setResults(parsedResults);
 
-    storage->add(results.getResultsReference());
-
     return results;
 }
 

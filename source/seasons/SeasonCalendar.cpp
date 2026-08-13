@@ -5,6 +5,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonValue>
+#include <QHash>
 #include <QtConcurrent>
 
 SeasonCalendar::SeasonCalendar(QString name) : name(name)
@@ -136,6 +137,15 @@ SeasonCalendar SeasonCalendar::getFromJson(QJsonObject json, IdentifiableObjects
         storage->add(calendar.getClassificationsReference());
 
     QJsonArray competitionsArray = json.value("competitions").toArray();
+    QHash<QString, CompetitionInfo *> competitionsById;
+    QHash<QString, Classification *> classificationsById;
+    QHash<QString, CompetitionResults *> resultsById;
+    for(int index = 0; index < classificationsArray.count(); ++index)
+        classificationsById.insert(classificationsArray.at(index).toObject().value("id").toString(),
+                                   calendar.getClassificationsReference().at(index));
+
+    // Phase 1: construct every competition before resolving cross-references.
+    // This keeps storage entries pointed at stable heap-owned objects.
     for(auto val : competitionsArray){
         int cId = 0;
         CompetitionInfo * c = new CompetitionInfo(CompetitionInfo::getFromJson(val.toObject(), storage, &cId, before120Map));
@@ -152,26 +162,81 @@ SeasonCalendar SeasonCalendar::getFromJson(QJsonObject json, IdentifiableObjects
             before120Map->insert(cId, c);
         }
         calendar.getCompetitionsReference().push_back(c);
-        if(storage != nullptr)
+        competitionsById.insert(val.toObject().value("id").toString(), c);
+        resultsById.insert(val.toObject().value("results").toObject().value("id").toString(),
+                           &c->getResultsReference());
+        if(storage != nullptr) {
             storage->add(c);
+            storage->add(c->getTeamsReference());
+            for(auto &groups : c->getRoundsKOGroupsReference())
+                storage->add(groups);
+            storage->add(&c->getResultsReference());
+            storage->add(c->getResultsReference().getResultsReference());
+        }
+    }
+
+    // Phase 2: every target now exists, so forward links (such as a
+    // qualification's later trainings) resolve without introducing nullptrs.
+    for(int index = 0; index < competitionsArray.count(); ++index)
+    {
+        const QJsonObject competitionJson = competitionsArray.at(index).toObject();
+        CompetitionInfo *competition = calendar.getCompetitionsReference().at(index);
+
+        competition->setTrialRound(
+            competitionsById.value(competitionJson.value("trial-round-id").toString(), nullptr));
+
+        QVector<CompetitionInfo *> trainings;
+        for(const auto &trainingId : competitionJson.value("training-ids").toArray())
+            if(CompetitionInfo *training = competitionsById.value(trainingId.toString(), nullptr))
+                trainings.push_back(training);
+        competition->setTrainings(trainings);
+
+        QVector<Classification *> classifications;
+        for(const auto &classificationId : competitionJson.value("classifications-ids").toArray())
+            if(Classification *classification = classificationsById.value(classificationId.toString(), nullptr))
+                classifications.push_back(classification);
+        competition->setClassifications(classifications);
+
+        QVector<Jumper *> startList;
+        for(const auto &jumperId : competitionJson.value("start-list").toArray())
+            if(Jumper *jumper = static_cast<Jumper *>(storage->get(jumperId.toString())))
+                startList.push_back(jumper);
+        competition->setStartList(startList);
+
+        competition->setAdvancementClassification(classificationsById.value(
+            competitionJson.value("advancement-classification-id").toString(), nullptr));
+        competition->setAdvancementCompetition(competitionsById.value(
+            competitionJson.value("advancement-competition-id").toString(), nullptr));
+
+        CompetitionResults &results = competition->getResultsReference();
+        results.setCompetition(competition);
+        for(auto &singleResult : results.getResultsReference()) {
+            singleResult.setCompetition(competition);
+            for(auto &jump : singleResult.getJumpsReference()) {
+                jump.setCompetition(competition);
+                jump.setSingleResult(&singleResult);
+            }
+            singleResult.updateTeamJumpersResults();
+        }
     }
     calendar.updateCompetitionsQualifyingCompetitions();
 
     if(storage != nullptr){
-        for(auto val : classificationsArray){
-            Classification * classification;
-                classification = static_cast<Classification *>(storage->get(val.toObject().value("id").toString()));
+        for(int index = 0; index < classificationsArray.count(); ++index){
+            const QJsonObject classificationJson = classificationsArray.at(index).toObject();
+            Classification *classification = calendar.getClassificationsReference().at(index);
             for(auto & singleResult : classification->getResultsReference())
             {
                 singleResult->setClassification(classification);
-                QJsonArray singleResultsArray = val.toObject().value("results").toArray();
+                QJsonArray singleResultsArray = classificationJson.value("results").toArray();
                 for(auto jsonRes : singleResultsArray)
                 {
                     if(sole::rebuild(jsonRes.toObject().value("id").toString().toStdString()) == singleResult->getID())
                     {
                         QJsonArray compsIds = jsonRes.toObject().value("competitions-results-ids").toArray();
                         for(auto id : compsIds)
-                            singleResult->getCompetitionsResultsReference().push_back(static_cast<CompetitionResults *>(storage->get(id.toString())));
+                            if(CompetitionResults *results = resultsById.value(id.toString(), nullptr))
+                                singleResult->getCompetitionsResultsReference().push_back(results);
                     }
                 }
                 singleResult->updateSingleResults();

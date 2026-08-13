@@ -66,6 +66,52 @@ bool hasRequiredSaveStructure(const QJsonObject &object)
         && object.value(QStringLiteral("seasons")).isArray()
         && hasValidUuidFields(object);
 }
+
+// Saving must never turn an already-invalid in-memory graph into a file that
+// will crash on its next load.  This is linear in the save size and is much
+// cheaper than JSON serialization, while keeping the QSaveFile write atomic.
+bool hasSerializableGraph(SimulationSave &save)
+{
+    if(save.getActualSeason() == nullptr)
+        return false;
+
+    for(auto *jumper : save.getJumpersReference())
+        if(jumper == nullptr)
+            return false;
+    for(auto *hill : save.getHillsReference())
+        if(hill == nullptr)
+            return false;
+    for(const auto &list : save.getJumpersListsReference())
+        for(auto *jumper : list.getJumpers())
+            if(jumper == nullptr)
+                return false;
+    for(auto *jumper : save.getJumpersFormInstabilitiesReference().keys())
+        if(jumper == nullptr)
+            return false;
+
+    for(auto &season : save.getSeasonsReference())
+        for(auto *calendar : season.getCalendarsReference()) {
+            if(calendar == nullptr)
+                return false;
+            for(auto *classification : calendar->getClassificationsReference())
+                if(classification == nullptr)
+                    return false;
+            for(auto *competition : calendar->getCompetitionsReference()) {
+                if(competition == nullptr || competition->getHill() == nullptr)
+                    return false;
+                for(auto *training : competition->getTrainingsReference())
+                    if(training == nullptr)
+                        return false;
+                for(auto *classification : competition->getClassificationsReference())
+                    if(classification == nullptr)
+                        return false;
+                for(auto *jumper : competition->getStartListReference())
+                    if(jumper == nullptr)
+                        return false;
+            }
+        }
+    return true;
+}
 }
 
 SimulationSave::SimulationSave() :
@@ -242,6 +288,12 @@ QJsonObject SimulationSave::getJsonObject(SimulationSave &save)
 
 bool SimulationSave::saveToFile(QString dir, QString fileName)
 {
+    if(!hasSerializableGraph(*this))
+    {
+        QMessageBox::critical(nullptr, QObject::tr("Nie moĹĽna zapisaÄ‡ zapisu symulacji"),
+                              QObject::tr("Zapis zawiera nieprawidĹ‚owe powiÄ…zania. Plik nie zostaĹ‚ zmieniony."));
+        return false;
+    }
     if(fileName == "!default")
         fileName = getName();
 
