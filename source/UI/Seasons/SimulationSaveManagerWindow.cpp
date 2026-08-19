@@ -203,8 +203,6 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     calendarsListView->hideInstructions();
     calendarsListView->setCalendars(&simulationSave->getActualSeason()->getCalendarsReference());
     calendarsListView->setupListModel();
-    if(simulationSave->getActualSeason()->getActualCalendar() != nullptr)
-        calendarsListView->getListView()->selectionModel()->select(calendarsListView->getListModel()->index(simulationSave->getActualSeason()->getCalendarsReference().indexOf(simulationSave->getActualSeason()->getActualCalendar())), QItemSelectionModel::Select);
     ui->verticalLayout_calendarsListView->insertWidget(0, calendarsListView);
 
     //-----//
@@ -268,13 +266,6 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
             emit ui->comboBox_classifications->currentIndexChanged(0);
         emit calendarTableModel->dataChanged(calendarTableModel->index(0, 0), calendarTableModel->index(calendarTableModel->rowCount() - 1, 6));
     });
-    connect(calendarEditor, &CalendarEditorWidget::changed, this, [this](){
-        simulationSave->updateNextCompetitionIndex();
-        fillNextCompetitionInformations();
-        simulationSave->getActualSeason()->getActualCalendar()->updateCompetitionsQualifyingCompetitions();
-        updateCompetitionConfigButton();
-    });
-
     classificationResultsTableView = new ClassificationResultsTableView(false, nullptr, this);
     classificationResultsTableView->setSave(simulationSave);
     classificationResultsTableView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -372,10 +363,27 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         classificationsArchiveModel->setSeasonClassifications(&actualCalendar->getClassificationsReference());
     });
 
-    connect(calendarsListView, &DatabaseItemsListView::listViewDoubleClicked, this, [this](const QModelIndex & index){
+    const auto activateCalendar = [this](const QModelIndex &index){
+        if(!index.isValid()
+            || index.row() < 0
+            || index.row() >= simulationSave->getActualSeason()->getCalendarsReference().count())
+            return;
         simulationSave->getActualSeason()->setActualCalendar(simulationSave->getActualSeason()->getCalendarsReference()[index.row()]);
-        emit actualCalendarChanged();      
+        emit actualCalendarChanged();
+    };
+    connect(calendarsListView, &DatabaseItemsListView::listViewClicked, this, activateCalendar);
+    connect(calendarsListView, &DatabaseItemsListView::listViewDoubleClicked, this, activateCalendar);
+    connect(calendarsListView, &DatabaseItemsListView::insert, this, [this](const QVector<int> &rows){
+        if(simulationSave->getActualSeason()->getActualCalendar() == nullptr && !rows.isEmpty()){
+            const int row = rows.first();
+            if(row >= 0 && row < simulationSave->getActualSeason()->getCalendarsReference().count()){
+                simulationSave->getActualSeason()->setActualCalendar(simulationSave->getActualSeason()->getCalendarsReference().at(row));
+                emit actualCalendarChanged();
+            }
+        }
     });
+    connect(calendarsListView, &DatabaseItemsListView::up, this, &SimulationSaveManagerWindow::highlightActualCalendar);
+    connect(calendarsListView, &DatabaseItemsListView::down, this, &SimulationSaveManagerWindow::highlightActualCalendar);
     connect(this, &SimulationSaveManagerWindow::actualCalendarChanged, this, [this](){
         SeasonCalendar *actualCalendar = simulationSave->getActualSeason()->getActualCalendar();
         if(actualCalendar == nullptr)
@@ -404,14 +412,10 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
 
         if(simulationSave->getActualSeason()->getActualCalendar())
             ui->comboBox_archiveCalendar->setCurrentIndex(simulationSave->getActualSeason()->getCalendarsReference().indexOf(simulationSave->getActualSeason()->getActualCalendar()));
+        highlightActualCalendar();
     });
-    connect(calendarEditor, &CalendarEditorWidget::calendarPresetLoaded, this, [this](){
-        classificationsListView->setClassifications(&simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference());
-        classificationsListView->getListModel()->insertRows(0, simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference().count());
-        classificationsListView->getListView()->reset();
-        simulationSave->updateNextCompetitionIndex();
-        updateCompetitionConfigButton();
-    });
+    connectCalendarEditorSignals();
+    highlightActualCalendar();
 
     updateResponsiveLayout(width());
     ResponsiveWindowUtils::manageWindowGeometry(this, "SimulationSaveManagerWindow");
@@ -524,6 +528,39 @@ void SimulationSaveManagerWindow::setCalendarsListView(DatabaseItemsListView *ne
 SimulationSaveManagerWindow::~SimulationSaveManagerWindow()
 {
     delete ui;
+}
+
+void SimulationSaveManagerWindow::connectCalendarEditorSignals()
+{
+    connect(calendarEditor, &CalendarEditorWidget::changed, this, [this](){
+        simulationSave->updateNextCompetitionIndex();
+        fillNextCompetitionInformations();
+        simulationSave->getActualSeason()->getActualCalendar()->updateCompetitionsQualifyingCompetitions();
+        updateCompetitionConfigButton();
+    });
+    connect(calendarEditor, &CalendarEditorWidget::calendarPresetLoaded, this, [this](){
+        classificationsListView->setClassifications(&simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference());
+        classificationsListView->getListModel()->insertRows(0, simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference().count());
+        classificationsListView->getListView()->reset();
+        simulationSave->updateNextCompetitionIndex();
+        updateCompetitionConfigButton();
+    });
+}
+
+void SimulationSaveManagerWindow::highlightActualCalendar()
+{
+    SeasonCalendar *actualCalendar = simulationSave->getActualSeason()->getActualCalendar();
+    if(actualCalendar == nullptr || calendarsListView->getListModel() == nullptr)
+        return;
+
+    const int row = simulationSave->getActualSeason()->getCalendarsReference().indexOf(actualCalendar);
+    if(row < 0)
+        return;
+
+    const QModelIndex index = calendarsListView->getListModel()->index(row);
+    QItemSelectionModel *selectionModel = calendarsListView->getListView()->selectionModel();
+    selectionModel->setCurrentIndex(index, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+    calendarsListView->getListView()->scrollTo(index);
 }
 
 void SimulationSaveManagerWindow::showJumperAndHillsEditingHelp()
@@ -684,6 +721,7 @@ void SimulationSaveManagerWindow::configNextSeason()
         calendarEditor->setSave(simulationSave);
         calendarEditor->setEnabled(actualCalendar != nullptr);
         ui->verticalLayout_calendar->addWidget(calendarEditor);
+        connectCalendarEditorSignals();
         calendarEmptyStateLabel->setVisible(actualCalendar == nullptr);
 
         classificationsListView->setClassifications(activeClassifications);

@@ -28,14 +28,17 @@ CalendarEditorWidget::CalendarEditorWidget(CalendarEditorTableModel *model, QVec
     ui->setupUi(this);
     ui->tableView->setModel(this->calendarModel);
     ui->tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
-    calendar->normalizeCompetitionEvents();
+    if(calendar != nullptr)
+        calendar->normalizeCompetitionEvents();
     ui->tableView->resizeColumnsToContents();
     connect(this, &CalendarEditorWidget::changed, this, [this](){
-        calendar->normalizeCompetitionEvents();
+        if(calendar != nullptr)
+            calendar->normalizeCompetitionEvents();
     });
 
     action_add = new QAction(this);
     action_add->setShortcut(Qt::CTRL | Qt::Key_A);
+    action_add->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     this->addAction(action_add);
     connect(action_add, &QAction::triggered, this, &CalendarEditorWidget::addActionTriggered);
 

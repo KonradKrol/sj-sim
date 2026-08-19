@@ -83,6 +83,8 @@ private:
 
     void whenClassificationsComboBoxIndexChanged(int index);
     void saveSimulationSettings();
+    void connectCalendarEditorSignals();
+    void highlightActualCalendar();
     void updateResponsiveLayout(int windowWidth);
     bool compactLayout = false;
     bool headerActionsWrapped = false;
