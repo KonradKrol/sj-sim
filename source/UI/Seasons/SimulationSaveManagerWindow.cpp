@@ -373,14 +373,24 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     };
     connect(calendarsListView, &DatabaseItemsListView::listViewClicked, this, activateCalendar);
     connect(calendarsListView, &DatabaseItemsListView::listViewDoubleClicked, this, activateCalendar);
-    connect(calendarsListView, &DatabaseItemsListView::insert, this, [this](const QVector<int> &rows){
-        if(simulationSave->getActualSeason()->getActualCalendar() == nullptr && !rows.isEmpty()){
-            const int row = rows.first();
-            if(row >= 0 && row < simulationSave->getActualSeason()->getCalendarsReference().count()){
-                simulationSave->getActualSeason()->setActualCalendar(simulationSave->getActualSeason()->getCalendarsReference().at(row));
-                emit actualCalendarChanged();
-            }
+    connect(calendarsListView, &DatabaseItemsListView::insert, this, [this](const QVector<int> &){
+        const QVector<SeasonCalendar *> &calendars = simulationSave->getActualSeason()->getCalendarsReference();
+        if(simulationSave->getActualSeason()->getActualCalendar() == nullptr && calendars.count() == 1){
+            simulationSave->getActualSeason()->setActualCalendar(calendars.first());
+            emit actualCalendarChanged();
         }
+        else
+            highlightActualCalendar();
+    });
+    connect(calendarsListView, &DatabaseItemsListView::remove, this, [this](const QVector<int> &){
+        const QVector<SeasonCalendar *> &calendars = simulationSave->getActualSeason()->getCalendarsReference();
+        SeasonCalendar *actualCalendar = simulationSave->getActualSeason()->getActualCalendar();
+        if(!calendars.contains(actualCalendar)){
+            simulationSave->getActualSeason()->setActualCalendar(calendars.isEmpty() ? nullptr : calendars.first());
+            emit actualCalendarChanged();
+        }
+        else
+            highlightActualCalendar();
     });
     connect(calendarsListView, &DatabaseItemsListView::up, this, &SimulationSaveManagerWindow::highlightActualCalendar);
     connect(calendarsListView, &DatabaseItemsListView::down, this, &SimulationSaveManagerWindow::highlightActualCalendar);
@@ -1341,6 +1351,7 @@ void SimulationSaveManagerWindow::on_lineEdit_calendarName_editingFinished()
         SeasonCalendar * c = simulationSave->getActualSeason()->getCalendarsReference()[calendarsListView->getListView()->selectionModel()->selectedRows(0).first().row()];
         c->setName(ui->lineEdit_calendarName->text());
         calendarsListView->setupListModel();
+        highlightActualCalendar();
     }
 }
 
