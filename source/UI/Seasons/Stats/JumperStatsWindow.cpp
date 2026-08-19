@@ -412,28 +412,9 @@ void JumperStatsWindow::updateChartCompetitionBySingleResult(const QPointF &poin
                 break;
             case CompetitionInfo::Training:
             {
-                CompetitionInfo * mainCompetition = nullptr;
-                /*for(int i=season->getActualCalendar()->getCompetitionsReference().indexOf(result->getCompetition()); i<season->getActualCalendar()->getCompetitionsReference().count(); i++)
-                {
-                    CompetitionInfo * c = season->getActualCalendar()->getCompetitionsReference()[i];
-                    if(c->getSerieType() == CompetitionInfo::Qualifications || c->getSerieType() == CompetitionInfo::Competition)
-                    {
-                        mainCompetition = season->getActualCalendar()->getCompetitionsReference()[i];
-                        break;
-                    }
-                }*/
-                for(int i=calendar->getCompetitionsReference().indexOf(result->getCompetition()); i<calendar->getCompetitionsReference().count(); i++)
-                {
-                    CompetitionInfo * c = calendar->getCompetitionsReference()[i];
-                    if(c->getSerieType() == CompetitionInfo::Qualifications || c->getSerieType() == CompetitionInfo::Competition)
-                    {
-                        mainCompetition = calendar->getCompetitionsReference()[i];
-                        break;
-                    }
-                }
-                int trainingIndex = 0;
-                if(mainCompetition != nullptr)
-                    trainingIndex = mainCompetition->getTrainingsReference().indexOf(result->getCompetition()) + 1;
+                int trainingIndex = calendar->getTrainingNumber(result->getCompetition());
+                if(trainingIndex < 0)
+                    trainingIndex = 1;
                 string += tr(" (Trening ") + QString::number(trainingIndex) + ")";
                 break;
             }
@@ -510,19 +491,9 @@ void JumperStatsWindow::updateChartCompetitionByJumpData(const QPointF &point, b
                     break;
             case CompetitionInfo::Training:
             {
-                CompetitionInfo * mainCompetition = nullptr;
-                for(int i=calendar->getCompetitionsReference().indexOf(result->getCompetition()); i<calendar->getCompetitionsReference().count(); i++)
-                {
-                    CompetitionInfo * c = calendar->getCompetitionsReference()[i];
-                    if(c->getSerieType() == CompetitionInfo::Qualifications || c->getSerieType() == CompetitionInfo::Competition)
-                    {
-                        mainCompetition = calendar->getCompetitionsReference()[i];
-                        break;
-                    }
-                }
-                int trainingIndex = 0;
-                if(mainCompetition != nullptr)
-                    trainingIndex = mainCompetition->getTrainingsReference().indexOf(result->getCompetition()) + 1;
+                int trainingIndex = calendar->getTrainingNumber(result->getCompetition());
+                if(trainingIndex < 0)
+                    trainingIndex = 1;
                 string += tr(" (Trening ") + QString::number(trainingIndex) + ")";
                 break;
             }

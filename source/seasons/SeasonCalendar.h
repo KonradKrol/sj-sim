@@ -21,6 +21,12 @@ public:
     void fixAdvancementClassifications();
     void updateCompetitionsQualifyingCompetitions();
 
+    // Main competitions own their trainings and trial round.  The playable
+    // sequence is derived from those links, never maintained independently.
+    void normalizeCompetitionEvents();
+    CompetitionInfo *getMainCompetitionForEvent(CompetitionInfo *event) const;
+    int getTrainingNumber(CompetitionInfo *training) const;
+
     static SeasonCalendar getFromJson(QJsonObject json, IdentifiableObjectsStorage *storage, QMap<ulong, Identifiable *> *before120Map = nullptr);
     static QJsonObject getJsonObject(SeasonCalendar & calendar);
     static int getCompetitionMainIndex(QVector<CompetitionInfo *> & competitions, CompetitionInfo * competition);

@@ -546,12 +546,14 @@ void SimulationSaveManagerWindow::showJumperAndHillsEditingHelp()
 
 void SimulationSaveManagerWindow::fillNextCompetitionInformations()
 {
+    if(simulationSave->getActualSeason() != nullptr
+        && simulationSave->getActualSeason()->getActualCalendar() != nullptr)
+        simulationSave->getActualSeason()->getActualCalendar()->normalizeCompetitionEvents();
     simulationSave->updateNextCompetitionIndex();
     SeasonCalendar * calendar = simulationSave->getActualSeason()->getActualCalendar();
     CompetitionInfo * next = simulationSave->getNextCompetition();
     if(calendar != nullptr && next != nullptr && next->getHill() != nullptr){
         int competitionIndex = calendar->getCompetitionsReference().indexOf(next);
-        int indexInCalendar = SeasonCalendar::getCompetitionMainIndex(calendar->getCompetitionsReference(), next);
         QString text = QString::number(competitionIndex + 1) + ". " + next->getHill()->getName() + " HS" + QString::number(next->getHill()->getHSPoint());
         ui->label_nextCompetitionIndexAndHill->setText(text);
         ui->label_hillFlag->setPixmap(CountryFlagsManager::getFlagPixmap(next->getHill()->getCountryCode().toLower()).scaled(ui->label_hillFlag->size()));
@@ -567,16 +569,13 @@ void SimulationSaveManagerWindow::fillNextCompetitionInformations()
             ui->label_serieTypeAndTrainingIndex->setText(tr("Seria próbna"));
             break;
         case CompetitionInfo::Training:
-            CompetitionInfo * mainCompetition = SeasonCalendar::getMainCompetitionByIndex(calendar->getCompetitionsReference(), indexInCalendar);
-            qDebug()<<mainCompetition->getShortSerieTypeText()<<" MAIN! "<<calendar->getCompetitionsReference().indexOf(mainCompetition);
-            int trainingIndex = mainCompetition->getTrainingsReference().indexOf(next);
-            qDebug()<<"competitionIndex: "<<competitionIndex;
-            qDebug()<<"indexInCalendar; "<<indexInCalendar;
-            qDebug()<<"trngs "<<mainCompetition->getTrainingsReference();
-            qDebug()<<"next "<<next;
-            qDebug()<<"trainingIndex: "<<trainingIndex;
-            ui->label_serieTypeAndTrainingIndex->setText(tr("Trening ") + QString::number(trainingIndex + 1));
+        {
+            int trainingIndex = calendar->getTrainingNumber(next);
+            if(trainingIndex < 0)
+                trainingIndex = 1;
+            ui->label_serieTypeAndTrainingIndex->setText(tr("Trening ") + QString::number(trainingIndex));
             break;
+        }
         }
         calendarTableModel->setDontModifyBefore(simulationSave->getNextCompetitionIndex());
         emit calendarTableModel->dataChanged(calendarTableModel->index(0, 0), calendarTableModel->index(calendarTableModel->rowCount() - 1, calendarTableModel->columnCount() - 1));

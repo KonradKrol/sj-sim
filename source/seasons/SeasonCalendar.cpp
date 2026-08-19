@@ -6,6 +6,7 @@
 #include <QJsonArray>
 #include <QJsonValue>
 #include <QHash>
+#include <QSet>
 #include <QtConcurrent>
 
 SeasonCalendar::SeasonCalendar(QString name) : name(name)
@@ -116,6 +117,115 @@ void SeasonCalendar::updateCompetitionsQualifyingCompetitions()
     }
 }
 
+namespace {
+bool isMainCompetition(const CompetitionInfo *competition)
+{
+    return competition != nullptr
+        && (competition->getSerieType() == CompetitionInfo::Competition
+            || competition->getSerieType() == CompetitionInfo::Qualifications);
+}
+}
+
+void SeasonCalendar::normalizeCompetitionEvents()
+{
+    const QVector<CompetitionInfo *> original = competitions;
+    QSet<CompetitionInfo *> attachedEvents;
+    for(auto *mainCompetition : original) {
+        if(!isMainCompetition(mainCompetition))
+            continue;
+
+        QVector<CompetitionInfo *> trainings;
+        for(auto *training : mainCompetition->getTrainingsReference()) {
+            if(training != nullptr
+                && training->getSerieType() == CompetitionInfo::Training
+                && !attachedEvents.contains(training)) {
+                trainings.push_back(training);
+                attachedEvents.insert(training);
+            }
+        }
+        mainCompetition->setTrainings(trainings);
+
+        CompetitionInfo *trialRound = mainCompetition->getTrialRound();
+        if(trialRound == nullptr
+            || trialRound->getSerieType() != CompetitionInfo::TrialRound
+            || attachedEvents.contains(trialRound)) {
+            mainCompetition->setTrialRound(nullptr);
+        }
+        else {
+            attachedEvents.insert(trialRound);
+        }
+    }
+
+    // Older saves and past editor bugs can leave an auxiliary event without an
+    // owner.  Adopt it into the next main competition, which is the calendar's
+    // established meaning for trainings and trial rounds.
+    for(int i = 0; i < original.count(); ++i) {
+        CompetitionInfo *event = original.at(i);
+        if(event == nullptr || attachedEvents.contains(event)
+            || (event->getSerieType() != CompetitionInfo::Training
+                && event->getSerieType() != CompetitionInfo::TrialRound))
+            continue;
+
+        CompetitionInfo *owner = nullptr;
+        for(int next = i + 1; next < original.count(); ++next) {
+            if(isMainCompetition(original.at(next))) {
+                owner = original.at(next);
+                break;
+            }
+        }
+        if(owner == nullptr)
+            continue;
+
+        if(event->getSerieType() == CompetitionInfo::Training)
+            owner->getTrainingsReference().push_back(event);
+        else if(owner->getTrialRound() == nullptr)
+            owner->setTrialRound(event);
+        else
+            continue;
+        attachedEvents.insert(event);
+    }
+
+    QVector<CompetitionInfo *> normalized;
+    normalized.reserve(original.count());
+    for(auto *mainCompetition : original) {
+        if(!isMainCompetition(mainCompetition))
+            continue;
+        normalized += mainCompetition->getTrainingsReference();
+        if(mainCompetition->getTrialRound() != nullptr)
+            normalized.push_back(mainCompetition->getTrialRound());
+        normalized.push_back(mainCompetition);
+    }
+    // Preserve non-main events that cannot be associated safely rather than
+    // deleting user data. They are kept out of every main competition group.
+    for(auto *event : original)
+        if(event != nullptr && !normalized.contains(event))
+            normalized.push_back(event);
+    competitions = normalized;
+}
+
+CompetitionInfo *SeasonCalendar::getMainCompetitionForEvent(CompetitionInfo *event) const
+{
+    if(event == nullptr)
+        return nullptr;
+    if(isMainCompetition(event))
+        return event;
+    for(auto *mainCompetition : competitions) {
+        if(isMainCompetition(mainCompetition)
+            && (mainCompetition->getTrialRound() == event
+                || mainCompetition->getTrainingsReference().contains(event)))
+            return mainCompetition;
+    }
+    return nullptr;
+}
+
+int SeasonCalendar::getTrainingNumber(CompetitionInfo *training) const
+{
+    CompetitionInfo *mainCompetition = getMainCompetitionForEvent(training);
+    if(mainCompetition == nullptr)
+        return -1;
+    return mainCompetition->getTrainingsReference().indexOf(training) + 1;
+}
+
 SeasonCalendar SeasonCalendar::getFromJson(QJsonObject json, IdentifiableObjectsStorage * storage, QMap<ulong, Identifiable*> * before120Map)
 {
     SeasonCalendar calendar;
@@ -219,6 +329,7 @@ SeasonCalendar SeasonCalendar::getFromJson(QJsonObject json, IdentifiableObjects
             singleResult.updateTeamJumpersResults();
         }
     }
+    calendar.normalizeCompetitionEvents();
     calendar.updateCompetitionsQualifyingCompetitions();
 
     if(storage != nullptr){
@@ -251,6 +362,7 @@ SeasonCalendar SeasonCalendar::getFromJson(QJsonObject json, IdentifiableObjects
 
 QJsonObject SeasonCalendar::getJsonObject(SeasonCalendar &calendar)
 {
+    calendar.normalizeCompetitionEvents();
     QJsonObject object;
     object.insert("id", calendar.getIDStr());
     object.insert("name", calendar.getName());

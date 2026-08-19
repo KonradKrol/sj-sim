@@ -28,7 +28,11 @@ CalendarEditorWidget::CalendarEditorWidget(CalendarEditorTableModel *model, QVec
     ui->setupUi(this);
     ui->tableView->setModel(this->calendarModel);
     ui->tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    calendar->normalizeCompetitionEvents();
     ui->tableView->resizeColumnsToContents();
+    connect(this, &CalendarEditorWidget::changed, this, [this](){
+        calendar->normalizeCompetitionEvents();
+    });
 
     action_add = new QAction(this);
     action_add->setShortcut(Qt::CTRL | Qt::Key_A);
@@ -120,6 +124,7 @@ CalendarEditorWidget::CalendarEditorWidget(CalendarEditorTableModel *model, QVec
             delete calendar->getCompetitionsReference()[actualCompetitionIndex];
             calendar->getCompetitionsReference()[actualCompetitionIndex] = competition;
             actualCompetitionID = competition->getIDStr();
+            calendar->normalizeCompetitionEvents();
             emit calendarModel->dataChanged(calendarModel->index(0, 0), calendarModel->index(calendarModel->rowCount() - 1, calendarModel->columnCount() - 1));
             ui->tableView->resizeColumnsToContents();
         }
@@ -736,24 +741,21 @@ void CalendarEditorWidget::execMultipleTrainingsEditDialog(QVector<int> *rows, i
                 competitionIndex ++;
             }
             if(competition != nullptr){
-                for(auto & training : competition->getTrainingsReference()){
-                    MyFunctions::removeFromVector(competition->getTrainingsReference(), training);
+                const QVector<CompetitionInfo *> oldTrainings = competition->getTrainingsReference();
+                competition->setTrainings({});
+                for(auto *training : oldTrainings){
                     MyFunctions::removeFromVector(calendar->getCompetitionsReference(), training);
                     delete training;
-                    competitionIndex--;
                 }
+                QVector<CompetitionInfo *> trainings;
                 for(int i=0; i<dialog.getTrainingsCount(); i++){
                     CompetitionInfo * training = new CompetitionInfo(competition->getHill());
                     training->setSerieType(CompetitionInfo::Training);
                     training->setRules(dialog.getTrainingsRules());
                     training->setJumpsImportance(dialog.getJumpsImportance());
-                    qDebug()<<"AAA: "<<dialog.getTrainingsRules().getName();
-                    competition->getTrainingsReference().insert(0, training);
-                    if(competition->getTrialRound() != nullptr)
-                        calendar->getCompetitionsReference().insert(competitionIndex - 1, training);
-                    else
-                        calendar->getCompetitionsReference().insert(competitionIndex, training);
+                    trainings.push_back(training);
                 }
+                competition->setTrainings(trainings);
                 emit calendarModel->dataChanged(calendarModel->index(competitionIndex, 4), calendarModel->index(4, calendarModel->columnCount() - 1));
             }
         }
@@ -810,8 +812,6 @@ void CalendarEditorWidget::execMultipleTrialRoundsEditDialog(QVector<int> *rows,
                     trialRound->setRules(dialog.getTrialRoundRules());
                     trialRound->setJumpsImportance(dialog.getJumpsImportance());
                     competition->setTrialRound(trialRound);
-                    calendar->getCompetitionsReference().insert(competitionIndex, trialRound);
-                    competitionIndex++;
                 }
                 emit calendarModel->dataChanged(calendarModel->index(competitionIndex, 4), calendarModel->index(4, calendarModel->columnCount() - 1));
             }
@@ -1451,6 +1451,7 @@ return;
             }
         }
         calendar->updateCompetitionsQualifyingCompetitions();
+        calendar->normalizeCompetitionEvents();
         int i=0;
         for(auto & presetHill : preset->getHillsReference())
         {
