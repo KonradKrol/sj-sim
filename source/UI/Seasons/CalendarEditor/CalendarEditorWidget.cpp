@@ -38,7 +38,10 @@ CalendarEditorWidget::CalendarEditorWidget(CalendarEditorTableModel *model, QVec
 
     action_add = new QAction(this);
     action_add->setShortcut(Qt::CTRL | Qt::Key_A);
-    action_add->setShortcutContext(Qt::WidgetWithChildrenShortcut);
+    // Keep this available while another part of the season editor has focus
+    // (for example, the calendars list). The action remains disabled until a
+    // calendar is selected and loaded into this editor.
+    action_add->setShortcutContext(Qt::WindowShortcut);
     this->addAction(action_add);
     connect(action_add, &QAction::triggered, this, &CalendarEditorWidget::addActionTriggered);
 
@@ -141,6 +144,7 @@ CalendarEditorWidget::~CalendarEditorWidget()
 
 void CalendarEditorWidget::updateTable()
 {
+    calendar = calendarModel->getCalendar();
     ui->tableView->setModel(nullptr);
     ui->tableView->setModel(calendarModel);
     ui->tableView->resizeColumnsToContents();
