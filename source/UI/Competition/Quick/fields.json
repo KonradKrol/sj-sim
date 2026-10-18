@@ -1,0 +1,190 @@
+{
+  "HillEditorWidget": [
+    [
+      "lineEdit_name",
+      "Nazwa skoczni"
+    ],
+    [
+      "lineEdit_countryCode",
+      "Kod kraju"
+    ],
+    [
+      "doubleSpinBox_KPoint",
+      "Punkt K · m"
+    ],
+    [
+      "doubleSpinBox_HSPoint",
+      "Punkt HS · m"
+    ],
+    [
+      "doubleSpinBox_pointsForKPoint",
+      "Punkty za punkt K"
+    ],
+    [
+      "checkBox_autoPointsForKPoint",
+      "Automatyczne punkty za K"
+    ],
+    [
+      "doubleSpinBox_pointsForMeter",
+      "Punkty za metr"
+    ],
+    [
+      "checkBox_autoPointsForMeter",
+      "Automatyczne punkty za metr"
+    ],
+    [
+      "doubleSpinBox_gatePoints",
+      "Punkty za belkę"
+    ],
+    [
+      "doubleSpinBox_frontWindPoints",
+      "Punkty za wiatr przedni"
+    ],
+    [
+      "doubleSpinBox_backWindPoints",
+      "Punkty za wiatr tylny"
+    ],
+    [
+      "checkBox_autoBackWindPoints",
+      "Automatyczne punkty za wiatr tylny"
+    ],
+    [
+      "doubleSpinBox_distanceMultiplier",
+      "Mnożnik odległości"
+    ],
+    [
+      "doubleSpinBox_balance",
+      "Balans wybicia i lotu"
+    ],
+    [
+      "doubleSpinBox_record",
+      "Rekord skoczni · m"
+    ]
+  ],
+  "CompetitionRulesEditorWidget": [
+    [
+      "lineEdit_name",
+      "Nazwa zasad"
+    ],
+    [
+      "comboBox_competitionType",
+      "Rodzaj konkursu"
+    ],
+    [
+      "spinBox_jumpersInTeamCount",
+      "Zawodników w drużynie"
+    ],
+    [
+      "spinBox_roundsCount",
+      "Liczba serii"
+    ],
+    [
+      "checkBox_windCompensation",
+      "Rekompensata za wiatr"
+    ],
+    [
+      "checkBox_gateCompensation",
+      "Rekompensata za belkę"
+    ],
+    [
+      "checkBox_judgesPoints",
+      "Punkty od sędziów"
+    ],
+    [
+      "checkBox_95HsRule",
+      "Zasada 95% HS"
+    ],
+    [
+      "checkBox_dsq",
+      "Dyskwalifikacje"
+    ],
+    [
+      "checkBox_hillRecordBreaking",
+      "Rekordy skoczni"
+    ],
+    [
+      "comboBox_windCompensationDistanceEffect",
+      "Wpływ odległości na rekompensatę"
+    ],
+    [
+      "comboBox_windAverageCalculatingType",
+      "Obliczanie średniej wiatru"
+    ]
+  ],
+  "RoundInfoEditorWidget": [
+    [
+      "spinBox_count",
+      "Liczba uczestników"
+    ],
+    [
+      "checkBox_sortStartList",
+      "Sortowanie listy startowej"
+    ],
+    [
+      "comboBox_sortingAfterGroups",
+      "Sortowanie po grupach"
+    ],
+    [
+      "checkBox_KORound",
+      "Seria KO"
+    ],
+    [
+      "spinBox_KOGroupCount",
+      "Zawodników w grupie KO"
+    ],
+    [
+      "spinBox_AdvancingFromKOGroup",
+      "Awansujących z grupy KO"
+    ],
+    [
+      "comboBox_KOGroupsSelectionType",
+      "Dobór grup KO"
+    ]
+  ],
+  "WindsGeneratorSettingsWidgetInputItem": [
+    [
+      "doubleSpinBox_baseWindStrength",
+      "Bazowa siła · m/s"
+    ],
+    [
+      "doubleSpinBox_windStrengthChange",
+      "Zmienność siły · m/s"
+    ],
+    [
+      "doubleSpinBox_baseWindDirection",
+      "Bazowy kierunek · °"
+    ],
+    [
+      "doubleSpinBox_windDirectionChange",
+      "Zmienność kierunku · °"
+    ]
+  ],
+  "InrunSnowGeneratorSettingsEditorWidget": [
+    [
+      "doubleSpinBox_base",
+      "Bazowy poziom śniegu · /10"
+    ],
+    [
+      "doubleSpinBox_deviation",
+      "Zmienność śniegu · /10"
+    ]
+  ],
+  "options": [
+    [
+      "spinBox_startGate",
+      "Belka startowa"
+    ],
+    [
+      "spinBox_dsqProbability",
+      "DSQ · jeden skok na"
+    ],
+    [
+      "doubleSpinBox_jumpsImportance",
+      "Ważność skoków"
+    ],
+    [
+      "comboBox_jumpsImportancePreset",
+      "Preset ważności"
+    ]
+  ]
+}

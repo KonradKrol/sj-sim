@@ -1,0 +1,6 @@
+<RCC><qresource prefix="/competition-quick">
+<file>CompetitionConfig.qml</file>
+<file>Field.qml</file>
+<file>ActionButton.qml</file>
+<file>fields.json</file>
+</qresource></RCC>

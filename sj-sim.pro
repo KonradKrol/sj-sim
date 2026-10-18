@@ -389,3 +389,20 @@ INCLUDEPATH += $$PWD/source/3rdparty/linux-dpp-stub
 
 # Qt 5 defined QT_CHARTS_USE_NAMESPACE and friends in qchartglobal.h; Qt 6 removed them.
 greaterThan(QT_MAJOR_VERSION, 5): DEFINES += QT_CHARTS_BEGIN_NAMESPACE= QT_CHARTS_END_NAMESPACE= QT_CHARTS_USE_NAMESPACE=
+
+# Optional migration: qmake CONFIG+=competition_quick. Widgets-only builds stay supported.
+contains(CONFIG, competition_quick) {
+    QT += qml quick quickwidgets quickcontrols2
+    DEFINES += SJ_COMPETITION_QUICK
+    SOURCES += source/UI/Competition/Quick/CompetitionQuickBridge.cpp
+    HEADERS += source/UI/Competition/Quick/CompetitionQuickBridge.h
+    RESOURCES += source/UI/Competition/Quick/competition-quick.qrc
+}
+
+contains(CONFIG, competition_quick_smoke) {
+    !contains(CONFIG, competition_quick): error(competition_quick_smoke requires competition_quick)
+    QT += testlib
+    TARGET = sj-sim-quick-smoke
+    SOURCES -= source/main.cpp
+    SOURCES += tests/competition-quick-smoke.cpp
+}

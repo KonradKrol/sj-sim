@@ -30,6 +30,7 @@ class SingleCompetitionConfigWindow;
 class CompetitionConfigWindow : public QDialog
 {
     Q_OBJECT
+    friend class CompetitionQuickBridge;
 
 public:
     explicit CompetitionConfigWindow(short type, QWidget *parent = nullptr, SimulationSave * save = nullptr);
@@ -75,13 +76,13 @@ private:
     TeamsSquadsTreeModel * teamsSquadsModel;
     KOGroupsListView * KOGroupsList;
 
-    QCheckBox * checkBox_singleCompetitionQualifications;
+    QCheckBox * checkBox_singleCompetitionQualifications = nullptr;
 
     QVector<Team> competitionTeams;
     QVector<Jumper *> competitionJumpers;
     QVector<KOGroup> competitionGroups;
 
-    CompetitionInfo * seasonCompetition;
+    CompetitionInfo * seasonCompetition = nullptr;
     SimulationSave * simulationSave;
     QVector<Jumper *> seasonCompetitionJumpers;
     QVector<KOGroup> seasonCompetitionGroups;

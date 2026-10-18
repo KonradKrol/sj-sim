@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QIcon>
 #include <QTranslator>
+#include <QTimer>
 #include "global/GlobalTranslators.h"
 #include "global/GlobalAppSettings.h"
 
@@ -30,5 +31,9 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.setParentApplication(&a);
     w.show();
+    if (a.arguments().contains("--quick-competition") || a.arguments().contains("--widgets-competition"))
+        QTimer::singleShot(0, &w, [&w] {
+            QMetaObject::invokeMethod(&w, "on_pushButton_singleCompetition_clicked");
+        });
     return a.exec();
 }

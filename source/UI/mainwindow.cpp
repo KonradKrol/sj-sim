@@ -17,6 +17,9 @@
 #include "SingleJumps/SingleJumpsConfigWindow.h"
 #include "SingleJumps/SingleJumpsResultsWindow.h"
 #include "Competition/CompetitionConfigWindow.h"
+#ifdef SJ_COMPETITION_QUICK
+#include "Competition/Quick/CompetitionQuickBridge.h"
+#endif
 #include "EditorWidgets/JumperEditorWidget.h"
 #include "EditorWidgets/HillEditorWidget.h"
 #include "EditorWidgets/WindsGeneratorSettingsEditorWidget.h"
@@ -104,6 +107,13 @@ void MainWindow::on_pushButton_singleJumps_clicked()
 
 void MainWindow::on_pushButton_singleCompetition_clicked()
 {
+#ifdef SJ_COMPETITION_QUICK
+    if (!QApplication::arguments().contains("--widgets-competition")) {
+        CompetitionQuickWindow window(this);
+        window.exec();
+        return;
+    }
+#endif
     CompetitionConfigWindow * configWindow = new CompetitionConfigWindow(CompetitionConfigWindow::Type::SingleCompetition, this);
     configWindow->setModal(true);
     if(configWindow->exec() == QDialog::Accepted)
