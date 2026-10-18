@@ -72,6 +72,28 @@ int main(int argc, char **argv) {
     check(window.view()->status() == QQuickWidget::Ready, "QML loads");
     auto *bridge = window.bridge();
     auto *original = bridge->configuration();
+    // Exercise the actual QML popup: a populated C++ model alone does not
+    // guarantee that the choices are visible or selectable in Qt Quick.
+    auto *hillChoice = findItem(window.view()->rootObject(), "quick-Skocznia z bazy");
+    check(hillChoice != nullptr, "QML hill selector");
+    check(hillChoice->property("count").toInt() > 1, "hill choices loaded");
+    auto *hillPopup = hillChoice->property("popup").value<QObject *>();
+    check(hillPopup != nullptr, "hill popup exists");
+    QMetaObject::invokeMethod(hillPopup, "open");
+    QTest::qWait(100);
+    check(hillPopup->property("visible").toBool(), "hill popup opens");
+    check(hillPopup->property("height").toDouble() >= 100, "hill choices have visible popup height");
+    auto *hillList = hillPopup->property("contentItem").value<QObject *>();
+    check(hillList && hillList->property("count").toInt() == hillChoice->property("count").toInt(), "popup shows all hill choices");
+    window.activateWindow();
+    window.view()->setFocus();
+    hillChoice->forceActiveFocus();
+    QTest::keyClick(window.view(), Qt::Key_Down);
+    QTest::keyClick(window.view(), Qt::Key_Return);
+    QTest::qWait(100);
+    check(hillChoice->property("currentIndex").toInt() == 1, "select hill from open popup using keyboard");
+    check(original->getHillEditor()->getKPointFromInput() > 0, "visible hill selection reaches C++ configuration");
+    QMetaObject::invokeMethod(hillPopup, "close");
     set(bridge, "Skocznia z bazy", 1);
     set(bridge, "Zasady z bazy", 1);
     set(bridge, "Belka startowa", 17);

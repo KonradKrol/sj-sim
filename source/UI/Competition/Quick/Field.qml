@@ -121,7 +121,9 @@ Column {
                 Behavior on rotation { NumberAnimation { duration: 130 } }
                 onPaint: { var c = getContext("2d"); c.strokeStyle = "#6a7069"; c.lineWidth = 1.5; c.beginPath(); c.moveTo(1, 1); c.lineTo(6, 6); c.lineTo(11, 1); c.stroke() }
             }
-            popup.height: Math.min(340, popup.implicitHeight)
+            // The default Qt Quick style sets Popup.height directly and leaves
+            // Popup.implicitHeight at zero. Size from its list content instead.
+            popup.height: Math.min(340, popup.contentItem.implicitHeight + popup.topPadding + popup.bottomPadding)
         }
     }
     Component {
