@@ -3,6 +3,7 @@
 
 #include <QAbstractTableModel>
 #include <QVector>
+#include <functional>
 #include "../../../seasons/SeasonCalendar.h"
 #include "../../../simulator/Hill.h"
 #include "../../../competitions/CompetitionRules.h"
@@ -45,6 +46,7 @@ public:
     void setRulesList(QVector<CompetitionRules> *newRulesList);
     int getDontModifyBefore() const;
     void setDontModifyBefore(int newDontModifiyBefore);
+    void applyChange(const std::function<void()> &change);
 };
 
 #endif // CALENDAREDITORTABLEMODEL_H

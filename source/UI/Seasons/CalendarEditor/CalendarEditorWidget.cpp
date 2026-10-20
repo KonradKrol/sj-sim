@@ -16,14 +16,17 @@
 #include <QCheckBox>
 #include <QDoubleSpinBox>
 #include <QAction>
+#include <algorithm>
 
 CalendarEditorWidget::CalendarEditorWidget(CalendarEditorTableModel *model, QVector<Classification *> *classificationsList, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CalendarEditorWidget),
     calendarModel(model),
     calendar(model->getCalendar()),
-    actualCompetitionIndex(-1),
-    classificationsList(classificationsList)
+    classificationsList(classificationsList),
+    save(nullptr),
+    actualCompetition(nullptr),
+    actualCompetitionIndex(-1)
 {
     ui->setupUi(this);
     ui->tableView->setModel(this->calendarModel);
@@ -174,21 +177,19 @@ void CalendarEditorWidget::setClassificationsList(QVector<Classification *> *new
 
 void CalendarEditorWidget::updateActualCompetitionByID()
 {
-    if(actualCompetitionID.isEmpty() == false){
-        int i=0;
-        for(auto & comp : calendar->getCompetitionsReference()){
-            if(comp->getIDStr() == actualCompetitionID){
-                actualCompetitionIndex = i;
-                actualCompetition = comp;
-                break;
-            }
-            i++;
+    actualCompetition = nullptr;
+    actualCompetitionIndex = -1;
+    if(calendar == nullptr || actualCompetitionID.isEmpty())
+        return;
+    for(int i = 0; i < calendar->getCompetitionsReference().size(); ++i) {
+        CompetitionInfo *competition = calendar->getCompetitionsReference().at(i);
+        if(competition && competition->getIDStr() == actualCompetitionID) {
+            actualCompetition = competition;
+            actualCompetitionIndex = i;
+            return;
         }
     }
-    else{
-        actualCompetition = nullptr;
-        actualCompetitionIndex = (-1);
-    }
+    actualCompetitionID.clear();
 }
 
 void CalendarEditorWidget::debugCalendar()
@@ -1322,9 +1323,11 @@ void CalendarEditorWidget::execMultipleHillEditDialog(QVector<int> *rows, int co
 
 void CalendarEditorWidget::on_pushButton_saveCalendarPreset_clicked()
 {
+    if(calendar == nullptr)return;
     bool ok = false;
     QString text = QInputDialog::getText(this, tr("Nazwa presetu"), tr("Podaj nazwę jaką ma mieć ten preset kalendarza. Jeżeli istnieje już preset o takiej nazwie, zostanie on nadpisany."), QLineEdit::Normal, "", &ok);
-    if(ok == true)
+    text = text.trimmed();
+    if(ok && !text.isEmpty())
     {
         bool textExsists = false;
         int index=0;
@@ -1375,7 +1378,10 @@ void CalendarEditorWidget::on_pushButton_saveCalendarPreset_clicked()
 
 void CalendarEditorWidget::on_pushButton_loadFromPreset_clicked()
 {
-    if(save->getNextCompetitionIndex() > 0)
+    if(!save || !calendar || save->getHillsReference().isEmpty() || GlobalDatabase::get()->getEditableGlobalCalendarPresets().isEmpty())return;
+    const auto events=calendar->getCompetitions();
+    const bool hasHistory=std::any_of(events.cbegin(),events.cend(),[](auto *event){return event->getPlayed() || event->getCancelled();});
+    if(hasHistory)
     {
         QMessageBox::information(this, tr("Preset kalendarza"), tr("Niestety nie można wczytać presetu kalendarza, ponieważ zostały rozegrane już konkursy. Stwórz inny kalendarz i spróbuj ponownie."), QMessageBox::Ok);
 return;
@@ -1388,14 +1394,12 @@ return;
             presetsNames.push_back(preset.getName());
         QString itemText = QInputDialog::getItem(this, tr("Wybierz preset kalendarza"), tr("Wybierz z listy preset kalendarza który chcesz wczytać"), presetsNames,0, false, &ok);
 
-    if(ok == true)
+    if(ok && presetsNames.contains(itemText))
     {
         SeasonCalendarPreset * preset = &GlobalDatabase::get()->getEditableGlobalCalendarPresets()[presetsNames.indexOf(itemText)];
-        for(auto & comp : calendar->getCompetitionsReference())
-        {
-            MyFunctions::removeFromVector(calendar->getCompetitionsReference(), comp);
-            delete comp;
-        }
+        calendarModel->applyChange([&]{
+        qDeleteAll(calendar->getCompetitionsReference());
+        calendar->getCompetitionsReference().clear();
         QHash<CompetitionInfo *, CompetitionInfo *> competitions; //1. Konkurs z presetu, 2. Nowy konkurs z kalendarza
         for(auto & presetCompetition : preset->getCalendarReference().getCompetitionsReference())
         {
@@ -1428,11 +1432,8 @@ return;
                     }
             }
         }
-        for(auto & cls : calendar->getClassificationsReference())
-        {
-            MyFunctions::removeFromVector(calendar->getClassificationsReference(), cls);
-            delete cls;
-        }
+        qDeleteAll(calendar->getClassificationsReference());
+        calendar->getClassificationsReference().clear();
         QHash<Classification *, Classification *> classifications; //1. Klasyfikacja z presetu, 2. Nowa Klasyfikacja z kalendarza
         for(auto & presetClassification : preset->getCalendarReference().getClassificationsReference())
         {
@@ -1457,28 +1458,18 @@ return;
                     }
             }
         }
+        for(int i=0;i<calendar->getCompetitionsReference().size();++i) {
+            Hill *hillToSet=save->getHillsReference().first();
+            if(i<preset->getHillsReference().size()) {
+                const auto &presetHill=preset->getHillsReference()[i];
+                for(auto *hill:save->getHillsReference())
+                    if(hill->getName()==presetHill.first && hill->getHSPoint()==presetHill.second){hillToSet=hill;break;}
+            }
+            calendar->getCompetitionsReference()[i]->setHill(hillToSet);
+        }
         calendar->updateCompetitionsQualifyingCompetitions();
         calendar->normalizeCompetitionEvents();
-        int i=0;
-        for(auto & presetHill : preset->getHillsReference())
-        {
-            Hill * hillToSet = nullptr;
-            for(auto & hill : save->getHillsReference())
-            {
-                    if(hill->getName() == presetHill.first && hill->getHSPoint() == presetHill.second){
-                        hillToSet = hill;
-                    }
-            }
-            if(hillToSet != nullptr)
-            {
-                    calendar->getCompetitionsReference()[i]->setHill(hillToSet);
-            }
-            else
-            {
-                    calendar->getCompetitionsReference()[i]->setHill(new Hill("Hill"));
-            }
-            i++;
-        }
+        });
         calendarModel->setCalendar(calendar);
         ui->tableView->setModel(nullptr);
         ui->tableView->setModel(calendarModel);

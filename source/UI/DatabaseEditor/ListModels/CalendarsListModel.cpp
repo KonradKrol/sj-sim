@@ -24,7 +24,7 @@ int CalendarsListModel::rowCount(const QModelIndex &parent) const
 
 QVariant CalendarsListModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!calendars || !index.isValid() || index.row()<0 || index.row()>=calendars->size())
         return QVariant();
 
     if(role == Qt::DisplayRole){
@@ -46,16 +46,20 @@ QVariant CalendarsListModel::data(const QModelIndex &index, int role) const
 
 bool CalendarsListModel::insertRows(int row, int count, const QModelIndex &parent)
 {
+    if(parent.isValid() || !calendars || row<0 || row>calendars->size() || count<=0)
+        return false;
     beginInsertRows(parent, row, row + count - 1);
-    // FIXME: Implement me!
+    for(int i=0;i<count;++i)calendars->insert(row+i,new SeasonCalendar(tr("Kalendarz")));
     endInsertRows();
     return true;
 }
 
 bool CalendarsListModel::removeRows(int row, int count, const QModelIndex &parent)
 {
+    if(parent.isValid() || !calendars || row<0 || count<=0 || row>calendars->size()-count)
+        return false;
     beginRemoveRows(parent, row, row + count - 1);
-    // FIXME: Implement me!
+    calendars->remove(row,count);
     endRemoveRows();
     return true;
 }

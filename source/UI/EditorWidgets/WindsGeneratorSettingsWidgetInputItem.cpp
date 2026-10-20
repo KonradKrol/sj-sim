@@ -20,7 +20,6 @@ WindsGeneratorSettingsWidgetInputItem::WindsGeneratorSettingsWidgetInputItem(QWi
 
     emit ui->doubleSpinBox_baseWindDirection->valueChanged(0);
 
-    disconnect(ui->pushButton_submit, &QPushButton::clicked, this, &WindsGeneratorSettingsWidgetInputItem::on_pushButton_submit_clicked);
 }
 
 WindsGeneratorSettingsWidgetInputItem::~WindsGeneratorSettingsWidgetInputItem()
@@ -42,7 +41,7 @@ double WindsGeneratorSettingsWidgetInputItem::getBaseWindStrengthFromInput()
 
 double WindsGeneratorSettingsWidgetInputItem::getWindStrengthChangeFromInput()
 {
-    return ui->doubleSpinBox_windStrengthChange->value();
+    auto *input=findChild<QDoubleSpinBox *>("doubleSpinBox_windStrengthChange");return input?input->value():0;
 }
 
 short WindsGeneratorSettingsWidgetInputItem::getBaseWindDirectionFromInput()
@@ -52,7 +51,7 @@ short WindsGeneratorSettingsWidgetInputItem::getBaseWindDirectionFromInput()
 
 double WindsGeneratorSettingsWidgetInputItem::getWindDirectionChangeFromInput()
 {
-    return ui->doubleSpinBox_windDirectionChange->value();
+    auto *input=findChild<QDoubleSpinBox *>("doubleSpinBox_windDirectionChange");return input?input->value():0;
 }
 
 WindGenerationSettings WindsGeneratorSettingsWidgetInputItem::getWindGenerationSettingsFromInputs()
@@ -62,18 +61,23 @@ WindGenerationSettings WindsGeneratorSettingsWidgetInputItem::getWindGenerationS
     settings.setWindStrengthInstability(getWindStrengthChangeFromInput());
     settings.setBaseDirection(getBaseWindDirectionFromInput());
     settings.setWindDirectionInstability(getWindDirectionChangeFromInput());
-    settings.setCharacteristics(characteristicsEditor->getCharacteristics());
+    if(characteristicsEditor)settings.setCharacteristics(characteristicsEditor->getCharacteristics());
 
     return settings;
 }
 
 void WindsGeneratorSettingsWidgetInputItem::fillInputs()
 {
-    ui->doubleSpinBox_baseWindStrength->setValue(settings->getBaseWindStrength());
-    ui->doubleSpinBox_windStrengthChange->setValue(settings->getWindStrengthInstability());
-    ui->doubleSpinBox_baseWindDirection->setValue(settings->getBaseDirection());
-    ui->doubleSpinBox_windDirectionChange->setValue(settings->getWindDirectionInstability());
-    characteristicsEditor->setCharacteristics(settings->getCharacteristics());
+    if(settings)applyInputSettings(*settings);
+}
+
+void WindsGeneratorSettingsWidgetInputItem::applyInputSettings(const WindGenerationSettings &value)
+{
+    ui->doubleSpinBox_baseWindStrength->setValue(value.getBaseWindStrength());
+    ui->doubleSpinBox_baseWindDirection->setValue(value.getBaseDirection());
+    if(auto *input=findChild<QDoubleSpinBox *>("doubleSpinBox_windStrengthChange"))input->setValue(value.getWindStrengthInstability());
+    if(auto *input=findChild<QDoubleSpinBox *>("doubleSpinBox_windDirectionChange"))input->setValue(value.getWindDirectionInstability());
+    if(characteristicsEditor)characteristicsEditor->setCharacteristics(value.getCharacteristics());
 }
 
 void WindsGeneratorSettingsWidgetInputItem::fillInputsToExactWindEditor()
@@ -90,6 +94,7 @@ void WindsGeneratorSettingsWidgetInputItem::fillInputsToExactWindEditor()
     delete ui->label_strengthChangeMS;
     ui->verticalLayout_characteristicsEditor->removeWidget(characteristicsEditor);
     delete characteristicsEditor;
+    characteristicsEditor=nullptr;
     ui->formLayout_main->removeWidget(ui->label_stopnie1);
     delete ui->label_stopnie1;
     ui->formLayout_main->removeWidget(ui->label_stopnie2);

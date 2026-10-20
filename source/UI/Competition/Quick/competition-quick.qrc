@@ -1,6 +1,14 @@
 <RCC><qresource prefix="/competition-quick">
 <file>CompetitionConfig.qml</file>
 <file>Field.qml</file>
+<file>CompetitionLive.qml</file>
+<file>LiveArena.qml</file>
+<file>LiveJumpPreview.qml</file>
+<file>LiveNode.qml</file>
+<file>LiveDashboard.qml</file>
+<file>LiveButton.qml</file>
+<file>LiveChoice.qml</file>
+<file>LiveTable.qml</file>
 <file>ActionButton.qml</file>
 <file>fields.json</file>
 </qresource></RCC>

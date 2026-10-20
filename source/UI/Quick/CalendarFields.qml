@@ -1,0 +1,53 @@
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
+
+ColumnLayout {
+    id: editorFields
+    property var backend
+    signal editRules(int target)
+    spacing: 12
+    Repeater {
+        model: [
+            {key:"hill",label:qsTr("Skocznia"),options:editorFields.backend.hills},
+            {key:"type",label:qsTr("Wydarzenie"),options:[qsTr("Konkurs"),qsTr("Kwalifikacje")]},
+            {key:"kind",label:qsTr("Rodzaj konkursu"),options:[qsTr("Indywidualny"),qsTr("Drużynowy")]},
+            {key:"rules",label:qsTr("Zasady konkursu"),options:editorFields.backend.rules}
+        ]
+        ColumnLayout {
+            property var field: modelData
+            Layout.fillWidth: true; spacing: 4
+            Label { text: parent.field.label; color: Theme.muted; font.pointSize: Theme.caption }
+            SChoice {
+                objectName: "calendar-field-" + parent.field.key
+                Layout.fillWidth: true
+                model: parent.field.options
+                currentIndex: editorFields.backend.selection[parent.field.key] === undefined ? -1 : editorFields.backend.selection[parent.field.key]
+                displayText: currentIndex < 0 ? qsTr("Różne wartości") : currentText
+                Accessible.name: parent.field.label
+                onActivated: { if(parent.field.key === "rules" && currentIndex === 0)editorFields.editRules(0);else {var patch={};patch[parent.field.key]=currentIndex;editorFields.backend.update(patch)} }
+            }
+        }
+    }
+    Label { text: qsTr("Treningi"); color: Theme.muted; font.pointSize: Theme.caption }
+    NumberField { Layout.fillWidth: true; direct: false; label: qsTr("Liczba treningów"); fields: ({value:Math.max(0,editorFields.backend.selection.trainings || 0),mixed:editorFields.backend.selection.trainings === -1,minimum:0,maximum:30,step:1,decimals:0}); onCommitted: editorFields.backend.update({trainings:value}) }
+    ColumnLayout {
+        visible: editorFields.backend.selection.trainings !== 0
+        Layout.fillWidth: true; spacing: 4
+        Label { text: qsTr("Zasady treningów"); color: Theme.muted; font.pointSize: Theme.caption }
+        SChoice { Layout.fillWidth: true; model: editorFields.backend.auxiliaryRules; currentIndex: editorFields.backend.selection.trainingRules || 0; Accessible.name: qsTr("Zasady treningów"); onActivated: currentIndex === 1 ? editorFields.editRules(1) : editorFields.backend.update({trainingRules:currentIndex}) }
+    }
+    Label { visible: editorFields.backend.selection.trainings !== 0; text: qsTr("Ważność treningów"); color: Theme.muted; font.pointSize: Theme.caption }
+    NumberField { visible: editorFields.backend.selection.trainings !== 0; Layout.fillWidth: true; direct: false; label: qsTr("Ważność treningów"); fields: ({value:Math.max(0,editorFields.backend.selection.trainingImportance || 0),mixed:editorFields.backend.selection.trainingImportance === -1,minimum:0,maximum:1000,step:.1,decimals:2}); onCommitted: editorFields.backend.update({trainingImportance:value}) }
+    SCheck { text: qsTr("Seria próbna"); Layout.fillWidth: true; tristate: true; checkState: editorFields.backend.selection.trial === -1 ? Qt.PartiallyChecked : editorFields.backend.selection.trial ? Qt.Checked : Qt.Unchecked; onClicked: editorFields.backend.update({trial:checked}) }
+    ColumnLayout {
+        visible: editorFields.backend.selection.trial !== 0
+        Layout.fillWidth: true; spacing: 4
+        Label { text: qsTr("Zasady serii próbnej"); color: Theme.muted; font.pointSize: Theme.caption }
+        SChoice { Layout.fillWidth: true; model: editorFields.backend.auxiliaryRules; currentIndex: editorFields.backend.selection.trialRules || 0; Accessible.name: qsTr("Zasady serii próbnej"); onActivated: currentIndex === 1 ? editorFields.editRules(2) : editorFields.backend.update({trialRules:currentIndex}) }
+    }
+    Label { visible: editorFields.backend.selection.trial !== 0; text: qsTr("Ważność serii próbnej"); color: Theme.muted; font.pointSize: Theme.caption }
+    NumberField { visible: editorFields.backend.selection.trial !== 0; Layout.fillWidth: true; direct: false; label: qsTr("Ważność serii próbnej"); fields: ({value:Math.max(0,editorFields.backend.selection.trialImportance || 0),mixed:editorFields.backend.selection.trialImportance === -1,minimum:0,maximum:1000,step:.1,decimals:2}); onCommitted: editorFields.backend.update({trialImportance:value}) }
+    Label { text: qsTr("Ważność skoków"); color: Theme.muted; font.pointSize: Theme.caption }
+    NumberField { Layout.fillWidth: true; direct: false; label: qsTr("Ważność skoków"); fields: ({value:Math.max(0,editorFields.backend.selection.importance || 0),mixed:editorFields.backend.selection.importance === -1,minimum:0,maximum:1000,step:.1,decimals:2}); onCommitted: editorFields.backend.update({importance:value}) }
+}

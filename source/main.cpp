@@ -1,4 +1,7 @@
 #include "UI/mainwindow.h"
+#ifdef SJ_QUICK_UI
+#include "UI/Quick/QuickUi.h"
+#endif
 
 #include <QApplication>
 #include <QDir>
@@ -30,6 +33,9 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     w.setParentApplication(&a);
+#ifdef SJ_QUICK_UI
+    if (QuickUi::enabled()) new QuickUi(&w);
+#endif
     w.show();
     if (a.arguments().contains("--quick-competition") || a.arguments().contains("--widgets-competition"))
         QTimer::singleShot(0, &w, [&w] {

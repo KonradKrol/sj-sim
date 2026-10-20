@@ -165,7 +165,7 @@ private:
 
     void ensureVisible(QScreen *screen)
     {
-        if(screen == nullptr || window->isMaximized() || window->isFullScreen())
+        if(!window->isWindow() || screen == nullptr || window->isMaximized() || window->isFullScreen())
             return;
         const QRect available = screen->availableGeometry();
         const QMargins frameMargins = window->windowHandle() != nullptr

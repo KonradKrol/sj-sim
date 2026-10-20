@@ -1,8 +1,10 @@
 #include "WindsCalculator.h"
 
 #include "../utilities/functions.h"
+#include "wind-generation/WindsGenerator.h"
 #include "../global/MyRandom.h"
 
+#include <cmath>
 #include <QRandomGenerator>
 #include <QDebug>
 #include <functional>
@@ -18,8 +20,6 @@ Wind WindsCalculator::getAveragedWind(QVector<Wind> winds, short type)
 
     for(auto & wind : winds)
     {
-        wind.setStrength(wind.getStrength() + MyRandom::normalDistributionRandom(0, wind.getStrength() / 13));
-        wind.setDirection(wind.getDirection() + MyRandom::normalDistributionRandom(0, wind.getStrength() * 2));
         if(type == Simple){
             if(wind.getDirectionType() == Wind::Front || wind.getDirectionType() == Wind::FrontSide){
                 windAvg += wind.getStrength() * percent;
@@ -53,6 +53,18 @@ Wind WindsCalculator::getAveragedWind(QVector<Wind> winds, short type)
     windAvg = roundDoubleToTwoPlaces(windAvg);
 
     return Wind(windAvg);
+}
+
+QVector<Wind> WindsCalculator::getScoringWinds(QVector<Wind> winds,double distance,double kPoint,short distanceEffect)
+{
+    if(winds.isEmpty() || kPoint<=0)return winds;
+    const double segment=WindsGenerator::getWindSegmentDistance(kPoint,winds.size());
+    if(distanceEffect==1 && distance<=.75*kPoint)
+        winds.resize(qBound(0,int(std::round(.75*kPoint/segment)),winds.size()));
+    else if(distanceEffect==2)
+        for(int i=0;i<winds.size();++i)
+            winds[i].setStrength(winds[i].getStrength()*qBound(0.,(distance-i*segment)/segment,1.));
+    return winds;
 }
 
 double WindsCalculator::getWindCompensation(Wind avgWind, Hill *hill)

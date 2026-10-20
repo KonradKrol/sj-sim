@@ -14,11 +14,12 @@ DatabaseItemsListView::DatabaseItemsListView(int type, bool allowInserting, bool
     QWidget(parent),
     ui(new Ui::DatabaseItemsListView),
     type(type),
+    showItemsNumbers(false),
     allowInserting(allowInserting),
     allowRemoving(allowRemoving),
     allowMoving(allowMoving),
     insertLast(false),
-    showItemsNumbers(false)
+    lastDoubleClickedIndex(-1)
 {
     ui->setupUi(this);
     ui->listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
@@ -375,7 +376,6 @@ void DatabaseItemsListView::onInsertActionTriggered()
             case CalendarItems:{
                 CalendarsListModel * model = dynamic_cast<CalendarsListModel *>(listModel);
                 model->insertRows(rowToInsert, 1);
-                model->getCalendars()->insert(rowToInsert, 1, new SeasonCalendar("Calendar"));
                 emit model->dataChanged(model->index(rowToInsert), model->index(model->rowCount() - 1));
                 break;
             }
@@ -484,7 +484,6 @@ void DatabaseItemsListView::onRemoveActionTriggered()
                 while(ui->listView->selectionModel()->selectedRows().size() > 0){
                     int rowToRemove = ui->listView->selectionModel()->selectedRows().first().row();
                     model->removeRows(rowToRemove, 1);
-                    model->getCalendars()->remove(rowToRemove, 1);
                 }
                 emit model->dataChanged(model->index(firstRow), model->index(model->rowCount() - 1));
                 break;

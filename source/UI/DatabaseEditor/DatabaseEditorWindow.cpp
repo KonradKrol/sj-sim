@@ -29,9 +29,9 @@ constexpr int editorMaximumWidth = 900;
 DatabaseEditorWindow::DatabaseEditorWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DatabaseEditorWindow),
-    jumperEditor(jumperEditor),
-    hillEditor(hillEditor),
-    competitionRulesEditor(competitionRulesEditor),
+    jumperEditor(nullptr),
+    hillEditor(nullptr),
+    competitionRulesEditor(nullptr),
     actualElementType(0),
     actualElementIndex(0)
 {

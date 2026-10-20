@@ -18,6 +18,7 @@ public:
     QVector<Wind> generateWinds();
 
     static int calculateWindsCountByKPoint(double KPoint);
+    static double getWindSegmentDistance(double KPoint,int count);
     static QPair<double, double> getRangeOfWindSector(int sector, double KPoint);
     QVector<WindGenerationSettings> getGenerationSettings() const;
     void setGenerationSettings(const QVector<WindGenerationSettings> &newGenerationSettings);

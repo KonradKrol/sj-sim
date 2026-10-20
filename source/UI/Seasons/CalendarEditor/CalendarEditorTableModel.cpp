@@ -12,6 +12,10 @@ CalendarEditorTableModel::CalendarEditorTableModel(SeasonCalendar *calendar, QVe
     dontModifyBefore(dontModifiyBefore)
 {
 }
+void CalendarEditorTableModel::applyChange(const std::function<void()> &change)
+{
+    beginResetModel();change();endResetModel();
+}
 
 QVariant CalendarEditorTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {

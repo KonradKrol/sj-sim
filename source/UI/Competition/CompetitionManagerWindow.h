@@ -65,11 +65,13 @@ public:
     QString getTextForFullResultsEmbed();
 
     void executeLiveCompetitionEffects();
+    int getLiveStage() const { return liveStage; }
 
     void checkForEasterEggs();
 
 signals:
     void nextRoundButtonClicked();
+    void liveStageChanged(int stage);
 
 private:
     Ui::CompetitionManagerWindow *ui;
@@ -93,6 +95,8 @@ private:
     InrunSnowGenerator inrunSnowGenerator;
     double actualInrunSnow;
     bool jumpInProgress;
+    int liveStage=0;
+    void setLiveStage(int stage);
     bool manipulationPending;
     bool personalBestNotificationsSuppressed;
 

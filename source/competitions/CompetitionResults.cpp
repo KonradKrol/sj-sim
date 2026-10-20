@@ -377,7 +377,7 @@ CompetitionSingleResult *CompetitionResults::getResultOfTeam(Team *team)
 
 CompetitionSingleResult *CompetitionResults::getResultByIndex(int index)
 {
-    if(results.count() > index){
+    if(index >= 0 && results.count() > index){
         return &results[index];
     }
     return nullptr;

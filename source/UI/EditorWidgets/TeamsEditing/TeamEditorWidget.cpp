@@ -66,7 +66,12 @@ QVector<Jumper *> TeamEditorWidget::getJumpers() const
 
 void TeamEditorWidget::setJumpers(const QVector<Jumper *> &newJumpers)
 {
+    if(jumpers==newJumpers)return;
     jumpers = newJumpers;
+    auto *previous=model;
+    model=new TeamJumpersListModel(&jumpers,jumpersCount,this);
+    ui->listView_jumpers->setModel(model);
+    delete previous;
 }
 
 Team *TeamEditorWidget::getTeam() const

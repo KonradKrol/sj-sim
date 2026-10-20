@@ -12,7 +12,7 @@ TeamResultsTreeModel::TeamResultsTreeModel(TeamCompetitionManager * manager, QOb
     : QAbstractItemModel(parent), results(nullptr), teams(nullptr), manager(manager),
       teamsAdvanceStatuses(nullptr), lastTeam(nullptr)
 {
-    rootItem = new TreeItem({tr("Miejsce"), tr("Drużyna"), tr("Zawodnik"), tr("Punkty")});
+    rootItem = new TreeItem({tr("Miejsce"), tr("Drużyna"), tr("Zawodnik"), tr("Punkty"), tr("Odległości (m)")});
     if(manager != nullptr)
     {
         results = manager->getResults();
@@ -237,7 +237,7 @@ TreeItem *TeamResultsTreeModel::getRootItem() const
 void TeamResultsTreeModel::setupTreeItems()
 {
     TreeItem::deleteAllTreeItemsRecursively(rootItem);
-    rootItem = new TreeItem({tr("Miejsce"), tr("Drużyna"), tr("Zawodnik"), tr("Punkty")});
+    rootItem = new TreeItem({tr("Miejsce"), tr("Drużyna"), tr("Zawodnik"), tr("Punkty"), tr("Odległości (m)")});
     if(results == nullptr)
         return;
     results->sortInDescendingOrder();
@@ -246,7 +246,7 @@ void TeamResultsTreeModel::setupTreeItems()
             continue;
         Country *country = GlobalDatabase::get()->getCountryByAlpha3(res.getTeam()->getCountryCode());
         const QString teamName = country != nullptr ? country->getName() : res.getTeam()->getCountryCode();
-        TreeItem * teamHeaderItem = new TreeItem({QString::number(res.getPosition()), teamName, "", QString::number(res.getPointsSum())}, rootItem);
+        TreeItem * teamHeaderItem = new TreeItem({QString::number(res.getPosition()), teamName, "", QString::number(res.getPointsSum()), ""}, rootItem);
         for(auto & jumper : res.getTeam()->getJumpersReference()){
             //Czy w resultsach jest już ten zawodnik?
             bool resultsContainsJumper = false;
@@ -257,11 +257,14 @@ void TeamResultsTreeModel::setupTreeItems()
                 }
             if(resultsContainsJumper == true){
                 double jumperPointsSum = 0;
+                QStringList distances;
                 for(auto & jump : res.getJumps()){
-                    if(jump.getJumper() == jumper)
+                    if(jump.getJumper() == jumper) {
                         jumperPointsSum += jump.getPoints();
+                        distances.append(QString::number(jump.getDistance())+(jump.getLanding().getType()==Landing::Fall?"*":""));
+                    }
                 }
-                new TreeItem({"", "", jumper->getNameAndSurname(), QString::number(jumperPointsSum, 'f', 1)}, teamHeaderItem);
+                new TreeItem({"", "", jumper->getNameAndSurname(), QString::number(jumperPointsSum, 'f', 1), distances.join(" · ")}, teamHeaderItem);
             }
         }
     }

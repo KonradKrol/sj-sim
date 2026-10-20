@@ -119,30 +119,9 @@ void WindsGeneratorSettingsEditorWidget::askForSettingsForFillAll()
         ResponsiveWindowUtils::fitToAvailableScreen(&dialog, QSize(460, 520));
         if(dialog.exec() == QDialog::Accepted)
         {
-            int widgetsCount = ui->toolBox->count();
-            for(int i=0; i<widgetsCount; i++){
-                delete ui->toolBox->widget(0);
-            }
-
-            WindGenerationSettings settings = item->getWindGenerationSettingsFromInputs();
-            for(auto & sett : *windGenerationSettings)
-            {
-                sett = settings;
-            }
-            for(int i=0; i<getSettingsCount(); i++)
-            {
-                QString sectorInfo = tr(" (Od ") + QString::number(WindsGenerator::getRangeOfWindSector(i + 1, KPoint).first) + tr(", do ");
-                if(i + 1 == WindsGenerator::calculateWindsCountByKPoint(KPoint))
-                    sectorInfo += tr("końca");
-                else sectorInfo += QString::number(WindsGenerator::getRangeOfWindSector(i + 1, KPoint).second) + "m";
-                sectorInfo += ")";
-
-                WindsGeneratorSettingsWidgetInputItem * item = new WindsGeneratorSettingsWidgetInputItem;
-                item->removeSubmitButton();
-                ui->toolBox->addItem(item, tr("Sektor wiatru nr ") + QString::number(i + 1) + sectorInfo);
-                item->setSettings(&settings);
-                item->fillInputs();
-            }
+            const WindGenerationSettings settings = item->getWindGenerationSettingsFromInputs();
+            for(int sector=0;sector<ui->toolBox->count();++sector)
+                if(auto *input=qobject_cast<WindsGeneratorSettingsWidgetInputItem *>(ui->toolBox->widget(sector)))input->applyInputSettings(settings);
         }
     }
 }

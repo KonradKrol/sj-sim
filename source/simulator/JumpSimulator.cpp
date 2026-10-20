@@ -1,4 +1,5 @@
 #include "JumpSimulator.h"
+#include "wind-generation/WindsGenerator.h"
 #include "../global/GlobalSimulationSettings.h"
 #include "../global/MyRandom.h"
 #include "../utilities/functions.h"
@@ -470,41 +471,16 @@ void JumpSimulator::generateJudges()
 void JumpSimulator::calculateCompensations()
 {
     jumpData.setWindCompensation(0);
-    if (competitionRules->getHasWindCompensations() == true) {
-        QVector<Wind> tempWinds = getWinds();
-        switch (competitionRules->getWindCompensationDistanceEffect()) //
-        {
-        case WindCompensationDistanceEffect::Original:
-            if (jumpData.getDistance() <= (0.75 * hill->getKPoint())) {
-                int howManyToRemove = winds.count()
-                                      - std::round((0.75 * hill->getKPoint())
-                                                   / getWindSegmentDistance());
-                for (int i = 0; i < howManyToRemove; i++)
-                    winds.remove(winds.count() - 1);
-            }
-            break;
-        case WindCompensationDistanceEffect::Full:
-            for (int i = 0; i < tempWinds.count(); i++) {
-                if (jumpData.getDistance() < (i + 1) * getWindSegmentDistance()) {
-                    double percent = double(jumpData.getDistance() - (getWindSegmentDistance() * i))
-                                     / ((i + 1) * getWindSegmentDistance());
-                    if (percent > 1)
-                        percent = 1;
-                    else if (percent < 0)
-                        percent = 0;
-                    winds[i] = Wind(winds[i].getDirection(), winds[i].getStrength() * percent);
-                }
-            }
-        }
-        tempWinds = winds;
+    {
+        const QVector<Wind> tempWinds=WindsCalculator::getScoringWinds(winds,jumpData.getDistance(),hill->getKPoint(),competitionRules->getWindCompensationDistanceEffect());
 
         Wind avgWind
             = WindsCalculator::getAveragedWind(tempWinds,
                                                competitionRules->getWindAverageCalculatingType());
 
         double avgConvertedStrength = avgWind.getStrengthToAveragedWind();
-        avgConvertedStrength += manipulator->getAveragedWindBonus();
-        if (manipulator->getAveragedWindRangeEnabled() == true) {
+        if(manipulator)avgConvertedStrength += manipulator->getAveragedWindBonus();
+        if (manipulator && manipulator->getAveragedWindRangeEnabled() == true) {
             if (avgConvertedStrength < manipulator->getAveragedWindRange().first)
                 avgConvertedStrength = (manipulator->getAveragedWindRange().first);
             else if (avgConvertedStrength > manipulator->getAveragedWindRange().second)
@@ -519,18 +495,17 @@ void JumpSimulator::calculateCompensations()
         else if (avgConvertedStrength < 0)
             avgWind.setDirection(180);
         double windCompensation = WindsCalculator::getWindCompensation(avgWind, hill);
-        jumpData.setWindCompensation(windCompensation);
+        if(competitionRules->getHasWindCompensations())jumpData.setWindCompensation(windCompensation);
     }
 
     jumpData.setGateCompensation(0);
-    jumpData.setBeats95HSPercents(false);
+    jumpData.setBeats95HSPercents(hasCoachGate && isJumperBeat95HSPercents(jumpData.distance,hill->getHSPoint()));
     if (competitionRules->getHasGateCompensations() == true) {
         jumpData.setGateCompensation(
             WindsCalculator::getGateCompensation(competitionStartGate, gate, hill));
         double coachGateCompensation = 0;
         if (hasCoachGate == true) {
-            if (JumpSimulator::isJumperBeat95HSPercents(jumpData.distance, hill->getHSPoint())) {
-                jumpData.setBeats95HSPercents(true);
+            if (jumpData.getBeats95HSPercents()) {
                 coachGateCompensation = WindsCalculator::getGateCompensation(gate, coachGate, hill);
             }
         }
@@ -556,7 +531,7 @@ void JumpSimulator::calculatePoints()
         for (const auto jg : jumpData.getJudges()) {
             if (jg > max)
                 max = jg;
-            else if (jg < min)
+            if (jg < min)
                 min = jg;
             jumpData.judgesPoints += jg;
         }
@@ -605,7 +580,7 @@ double JumpSimulator::getWindSegmentDistance()
     const int segmentsCount = winds.count();
     if(hill == nullptr || segmentsCount == 0)
         return 0;
-    return (hill->getKPoint() + (hill->getKPoint() / segmentsCount)) / segmentsCount;
+    return WindsGenerator::getWindSegmentDistance(hill->getKPoint(),segmentsCount);
 }
 
 void JumpSimulator::setJumpData(const JumpData &newJumpData)

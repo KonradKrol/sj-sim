@@ -21,16 +21,19 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 private:
-    QVector<StartListCompetitorStatus> * startListStatuses;
+    QVector<StartListCompetitorStatus> * startListStatuses = nullptr;
+    // Publish externally changed statuses only inside model notifications.
+    QVector<StartListCompetitorStatus> displayedStatuses;
     QVector<KOGroup> * KOGroups;
 
-    short type;
+    short type = IndividualCompetiton;
 public:
     enum Type{
         IndividualCompetiton,
         TeamCompetition
     };
 
+    void refresh();
     short getType() const;
     void setType(short newType);
     QVector<StartListCompetitorStatus> *getStartListStatuses() const;

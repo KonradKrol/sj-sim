@@ -14,3 +14,7 @@ AUDIT_CRASH_REPORT.md
 AUDIT_MONETIZATION_REPORT.md
 SIMULATOR_MIGRATION_GUIDE.md
 RELEASE_NOTES_v1.3.0-beta1.md
+
+# Runtime data copies created by preview scripts.
+/scripts/flags/
+/scripts/userData/

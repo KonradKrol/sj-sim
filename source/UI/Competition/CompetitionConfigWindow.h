@@ -31,6 +31,7 @@ class CompetitionConfigWindow : public QDialog
 {
     Q_OBJECT
     friend class CompetitionQuickBridge;
+    friend class QuickRoster;
 
 public:
     explicit CompetitionConfigWindow(short type, QWidget *parent = nullptr, SimulationSave * save = nullptr);

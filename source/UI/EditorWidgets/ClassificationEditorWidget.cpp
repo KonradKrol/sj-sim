@@ -6,7 +6,8 @@
 
 ClassificationEditorWidget::ClassificationEditorWidget(Classification * classification, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::ClassificationEditorWidget)
+    ui(new Ui::ClassificationEditorWidget),
+    classification(classification)
 {
     ui->setupUi(this);
 
@@ -155,7 +156,8 @@ Classification *ClassificationEditorWidget::getClassification() const
 void ClassificationEditorWidget::setClassification(Classification *newClassification)
 {
     classification = newClassification;
-    pointsForPlaces = classification->getPointsForPlacesReference();
+    pointsForPlaces = classification ? classification->getPointsForPlaces() : QMap<int,double>();
+    altPointsForPlaces = classification ? classification->getAltPointsForPlaces() : QMap<int,double>();
 }
 
 void ClassificationEditorWidget::on_comboBox_altPreset_activated(int index)

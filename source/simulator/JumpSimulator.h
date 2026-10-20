@@ -51,7 +51,6 @@ private:
     };
     static double getRandomForJumpSimulation(short parameter, Jumper * jumper, double jumpsImportance);
     static double getLandingChance(short landingType, double distance, Hill * hill, Jumper *jumper);
-    static bool isJumperBeat95HSPercents(double distance, double HSPoint);
 
     bool generateDSQ();
     void generateTakeoffRating();
@@ -81,6 +80,7 @@ public:
         Original,
         Full
     };
+    static bool isJumperBeat95HSPercents(double distance, double HSPoint);
     JumpManipulator *getManipulator() const;
     void setManipulator(JumpManipulator *newManipulator);
     Jumper *getJumper() const;

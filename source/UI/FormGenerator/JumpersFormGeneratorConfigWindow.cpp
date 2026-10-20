@@ -10,20 +10,23 @@
 
 JumpersFormGeneratorConfigWindow::JumpersFormGeneratorConfigWindow(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::JumpersFormGeneratorConfigWindow)
+    ui(new Ui::JumpersFormGeneratorConfigWindow),
+    save(nullptr)
 {
     ui->setupUi(this);
+    ui->pushButton_loadPreset->setEnabled(!GlobalDatabase::get()->getEditableFormGeneratorPresets().isEmpty());
+    ui->pushButton_generate->setEnabled(false);
 
     tableModel = new JumperFormGeneratorsSettingsTableModel(this);
     ui->tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-    removeFromTableAction = new QAction(this);
+    removeFromTableAction = new QAction(tr("Usuń zaznaczonych"),this);
     this->addAction(removeFromTableAction);
     removeFromTableAction->setShortcut(Qt::CTRL | Qt::Key_D);
     connect(removeFromTableAction, &QAction::triggered, this, [this](){
         onRemoveFromTable(false);
     });
-    alternativeRemoveFromTableAction = new QAction(this);
+    alternativeRemoveFromTableAction = new QAction(tr("Pozostaw zaznaczonych"),this);
     this->addAction(alternativeRemoveFromTableAction);
     alternativeRemoveFromTableAction->setShortcut(Qt::CTRL | Qt::ALT | Qt::Key_D);
     connect(alternativeRemoveFromTableAction, &QAction::triggered, this, [this](){
@@ -42,6 +45,7 @@ void JumpersFormGeneratorConfigWindow::updateTable()
     ui->tableView->setModel(nullptr);
     ui->tableView->setModel(tableModel);
     ui->tableView->resizeColumnsToContents();
+    ui->pushButton_generate->setEnabled(save && tableModel->rowCount()>0);
 }
 
 JumperFormGeneratorSettings JumpersFormGeneratorConfigWindow::getSettingsFromInputs()
@@ -72,6 +76,7 @@ SimulationSave *JumpersFormGeneratorConfigWindow::getSave() const
 void JumpersFormGeneratorConfigWindow::setSave(SimulationSave *newSave)
 {
     save = newSave;
+    ui->pushButton_generate->setEnabled(save && tableModel->rowCount()>0);
 }
 
 JumperFormGeneratorsSettingsTableModel *JumpersFormGeneratorConfigWindow::getTableModel() const
@@ -139,11 +144,12 @@ void JumpersFormGeneratorConfigWindow::on_pushButton_saveAsPreset_clicked()
 {
     bool ok = false;
     QString text = QInputDialog::getText(this, tr("Nazwa presetu"), tr("Podaj nazwę jaką ma mieć ten preset generatora formy. Jeżeli istnieje już preset o takiej nazwie, zostanie on nadpisany."), QLineEdit::Normal, "", &ok);
-    if(ok == true)
+    text=text.trimmed();
+    if(ok && !text.isEmpty())
     {
         bool textExsists = false;
         int index=0;
-        for(auto & p : GlobalDatabase::get()->getEditableGlobalCalendarPresets())
+        for(auto & p : GlobalDatabase::get()->getEditableFormGeneratorPresets())
         {
             if(p.getName() == text){
                 textExsists = true;
@@ -165,18 +171,20 @@ void JumpersFormGeneratorConfigWindow::on_pushButton_saveAsPreset_clicked()
         }
         preset->setName(text);
         GlobalDatabase::get()->writeFormGeneratorPresets();
+        ui->pushButton_loadPreset->setEnabled(true);
     }
 }
 
 
 void JumpersFormGeneratorConfigWindow::on_pushButton_loadPreset_clicked()
 {
+    if(GlobalDatabase::get()->getEditableFormGeneratorPresets().isEmpty())return;
     bool ok = false;
     QStringList presetsNames;
     for(auto & preset : GlobalDatabase::get()->getEditableFormGeneratorPresets())
         presetsNames.push_back(preset.getName());
     QString itemText = QInputDialog::getItem(this, tr("Wybierz preset generatora formy"), tr("Wybierz z listy preset generatora formy który chcesz wczytać"), presetsNames,0, false, &ok);
-    if(ok == true)
+    if(ok && presetsNames.contains(itemText))
     {
         JumperFormGeneratorSettingsPreset * preset = &GlobalDatabase::get()->getEditableFormGeneratorPresets()[presetsNames.indexOf(itemText)];
         for(auto & settings : tableModel->getGeneratorsSettingsReference())
@@ -190,12 +198,14 @@ void JumpersFormGeneratorConfigWindow::on_pushButton_loadPreset_clicked()
         ui->doubleSpinBox_formBonus->setValue(settings->getFormBonus());
         ui->doubleSpinBox_minForm->setValue(settings->getMinForm());
         ui->doubleSpinBox_maxForm->setValue(settings->getMaxForm());
+        updateTable();
     }
 }
 
 
 void JumpersFormGeneratorConfigWindow::on_pushButton_generate_clicked()
 {
+    if(!save || tableModel->rowCount()==0)return;
     JumperFormGenerator generator;
     for(auto & jumperSettings : tableModel->getGeneratorsSettingsReference())
     {
@@ -204,7 +214,7 @@ void JumpersFormGeneratorConfigWindow::on_pushButton_generate_clicked()
         generator.generateJumperForm();
     }
 
-    QMessageBox::information(this, tr("Generowanie formy"), tr("Pomyślnie zaktualizowano tendencję formy i formę zawodników"), QMessageBox::Ok);
+    QMessageBox::information(this, tr("Generowanie formy"), tr("Zaktualizowano formę zawodników."), QMessageBox::Ok);
 }
 
 void JumpersFormGeneratorConfigWindow::onRemoveFromTable(bool alternative)

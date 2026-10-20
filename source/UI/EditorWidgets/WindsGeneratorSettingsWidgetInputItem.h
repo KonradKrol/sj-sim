@@ -27,6 +27,7 @@ public:
     WindGenerationSettings getWindGenerationSettingsFromInputs();
 
     void fillInputs();
+    void applyInputSettings(const WindGenerationSettings &settings);
     void fillInputsToExactWindEditor();
 signals:
     void submitted();

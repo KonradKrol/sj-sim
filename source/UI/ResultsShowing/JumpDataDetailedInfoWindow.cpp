@@ -1,3 +1,4 @@
+#include <cmath>
 #include "JumpDataDetailedInfoWindow.h"
 #include "ui_JumpDataDetailedInfoWindow.h"
 
@@ -91,7 +92,7 @@ void JumpDataDetailedInfoWindow::fillJumpInformations()
                 ui->label_beats95HSPercents->setText(tr("Zawodnik nie osiągnął 95% punktu HS"));
                 ui->label_beats95HSPercents->setStyleSheet("color: rgb(112, 37, 31);");
             }
-            ui->label_beats95HSPercents->setText(ui->label_beats95HSPercents->text() + " (" + QString::number(roundDoubleToHalf(jumpData->getHill()->getHSPoint() * 0.95)) + "m)");
+            ui->label_beats95HSPercents->setText(ui->label_beats95HSPercents->text() + " (" + QString::number((std::ceil(jumpData->getHill()->getHSPoint() * 0.95 * 2) / 2)) + "m)");
         }
         else{
             ui->label_beats95HSPercents->hide();

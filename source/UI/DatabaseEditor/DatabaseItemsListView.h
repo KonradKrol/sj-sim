@@ -109,6 +109,7 @@ public:
     QVector<Team> *getTeams() const;
     void setTeams(QVector<Team> *newTeams);
     bool getAllowInserting() const;
+    bool getAllowRemoving() const { return allowRemoving; }
     void setAllowInserting(bool newAllowInserting);
     QListView * getListView();
     QAbstractListModel *getListModel();

@@ -10,6 +10,8 @@ Z katalogu repozytorium:
 ./scripts/run-qml-preview.sh
 ```
 
+Całą aplikację od menu głównego, z Qt Quick w konfiguracji pojedynczego konkursu, uruchomisz przez `./scripts/run-qml-preview.sh --app`.
+
 Skrypt uruchamia `build-qml-preview/sj-sim` bezpośrednio na ekranie konfiguracji konkursu. Lokalnie przygotowany katalog `build-qml-preview/qt-runtime` zawiera brakujące biblioteki i moduły QML; nie wymaga instalacji przez sudo ani plików z `/tmp`. To podgląd na tym komputerze, nie samodzielny pakiet dystrybucyjny.
 
 Przycisk **Widok klasyczny** otwiera dotychczasowy ekran z tymi samymi ustawieniami. Po zamknięciu tego okna wrócisz do QML, zachowując zmiany. Aby od początku używać Widgets:

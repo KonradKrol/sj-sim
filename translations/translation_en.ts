@@ -1527,6 +1527,14 @@ by coach</translation>
         <source>pkt</source>
         <translation type="vanished">pts</translation>
     </message>
+    <message>
+        <source>Wiatr</source>
+        <translation>Wind</translation>
+    </message>
+    <message>
+        <source>Śnieg</source>
+        <translation>Snow</translation>
+    </message>
 </context>
 <context>
     <name>CompetitionRulesEditorWidget</name>
@@ -4246,56 +4254,73 @@ li.checked::marker { content: &quot;\2612&quot;; }
 <context>
     <name>JumperFormGeneratorsSettingsTableModel</name>
     <message>
-        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="19"/>
+        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="19" />
         <source>Zawodnik</source>
         <translation>Jumper</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="21"/>
+        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="21" />
         <source>Zmienn. tend.</source>
         <translation>Tend. variab.</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="23"/>
+        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="23" />
         <source>Bonus tend.</source>
         <translation>Tend. bonus.</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="25"/>
+        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="25" />
         <source>Min. tend.</source>
         <translation>Min. tend.</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="27"/>
+        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="27" />
         <source>Maks. tend.</source>
         <translation>Max. tend.</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="29"/>
+        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="29" />
         <source>Wyrów. tend.</source>
         <translation>Tend. align.</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="31"/>
+        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="31" />
         <source>Zmienn. formy</source>
         <translation>Form. variability</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="33"/>
+        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="33" />
         <source>Bonus formy</source>
         <translation>Form bonus</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="35"/>
+        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="35" />
         <source>Min. forma</source>
         <translation>Min. form</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="37"/>
+        <location filename="../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp" line="37" />
         <source>Maks. forma</source>
         <translation>Max. form</translation>
     </message>
+    <message>
+        <source>Zmienność formy</source>
+        <translation>Form variability</translation>
+    </message>
+    <message>
+        <source>Bonus</source>
+        <translation>Bonus</translation>
+    </message>
+    <message>
+        <source>Minimum</source>
+        <translation>Minimum</translation>
+    </message>
+    <message>
+        <source>Maksimum</source>
+        <translation>Maximum</translation>
+    </message>
 </context>
+
 <context>
     <name>JumperStatsWindow</name>
     <message>
@@ -4490,195 +4515,195 @@ ukryte wykresy</source>
 <context>
     <name>JumpersFormGeneratorConfigWindow</name>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="14"/>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="51"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="14" />
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="51" />
         <source>Konfiguracja generatora formy</source>
         <translation>Form generator config</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="86"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="86" />
         <source>Parametry generatora:</source>
         <translation>Generator parameters:</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Zmienność tendencji&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Ogólny parametr mówiący o tym, jak bardzo może się zmienić tendencja. Od 0 do 20 (chociaż teorytycznie od 0 do 10, a wartości powyżej 10 są zarezerwowane do ekstremalnych przypadków jak zmiana formy między długim okresem czasu, np. na nowy sezon).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Tendence variability&lt;/span&gt;&lt;/p&gt;&lt;p&gt;A general parameter that tells how much a trend can change. From 0 to 20 (although theoretically from 0 to 10, and values above 10 are reserved for extreme cases like a change in form between a long period of time, such as for a new season).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Zmienność tendencji&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Ogólny parametr mówiący o tym, jak bardzo może się zmienić tendencja. Od 0 do 20 (chociaż teorytycznie od 0 do 10, a wartości powyżej 10 są zarezerwowane do ekstremalnych przypadków jak zmiana formy między długim okresem czasu, np. na nowy sezon).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Tendence variability&lt;/span&gt;&lt;/p&gt;&lt;p&gt;A general parameter that tells how much a trend can change. From 0 to 20 (although theoretically from 0 to 10, and values above 10 are reserved for extreme cases like a change in form between a long period of time, such as for a new season).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Zmienność tendencji</source>
         <translation type="vanished">Tendence variability</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Minimalna tendencja&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Poniżej tej wartości tendencja na pewno nie zejdzie. Od 0 do 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Minimum tendence&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Under this value, the tendence will definitely not go down. From 0 to 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Minimalna tendencja&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Poniżej tej wartości tendencja na pewno nie zejdzie. Od 0 do 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Minimum tendence&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Under this value, the tendence will definitely not go down. From 0 to 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Minimalna tendencja</source>
         <translation type="vanished">Minimal tendence</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Minimalna tendencja&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Tendencja nie będzie wyższa niż ta wartość. Od 0 do 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Maximal tendence&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Tendence will not be higher than this value. From 0 to 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Minimalna tendencja&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Tendencja nie będzie wyższa niż ta wartość. Od 0 do 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Maximal tendence&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Tendence will not be higher than this value. From 0 to 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Maksymalna tendencja&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Tendencja nie będzie wyższa niż ta wartość. Od 0 do 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Maximum tendence&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Tendence will not be higher than this value. From 0 to 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Maksymalna tendencja&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Tendencja nie będzie wyższa niż ta wartość. Od 0 do 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Maximum tendence&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Tendence will not be higher than this value. From 0 to 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Maksymalna tendencja</source>
         <translation type="vanished">Maximal tendence</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Bonus do tendencji&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Czyli ustalony przez użytkownika dodatek do tendencji który na pewno wystąpi. Od -10 do 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Bonus to trend&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Which is a user-determined addition to the trend that is sure to occur. From -10 to 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Bonus do tendencji&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Czyli ustalony przez użytkownika dodatek do tendencji który na pewno wystąpi. Od -10 do 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Bonus to trend&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Which is a user-determined addition to the trend that is sure to occur. From -10 to 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Bonus do tendencji</source>
         <translation type="vanished">Tendence bonus</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Wyrównanie tendencji&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Jeżeli wartość jest powyżej 1, wzrasta szansa na naturalne odwrócenie tendencji, tzn. w przeciwnym kierunku do aktualnej (Np. ze wzrostowej na spadkową). Jeżeli jest poniżej 0, wzrasta szansa na umocnienie tendencji zawodnika (wzrostowa tendencja ma szansę być bardziej wzrostową). Od 0 do 10 (Dziesięć to bardzo dużo, więc należy używać tego parametru z rozwagą)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Trend alignment&lt;/span&gt;&lt;/p&gt;&lt;p&gt;If the value is above 1, the chance of a natural trend reversal, i.e., in the opposite direction of the current trend (E.g., from upward to downward), increases. If it is below 0, there is an increased chance that the player&apos;s trend will strengthen (an upward trend has a chance to be more upward). From 0 to 10 (Ten is a lot, so use this parameter with caution)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Wyrównanie tendencji&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Jeżeli wartość jest powyżej 1, wzrasta szansa na naturalne odwrócenie tendencji, tzn. w przeciwnym kierunku do aktualnej (Np. ze wzrostowej na spadkową). Jeżeli jest poniżej 0, wzrasta szansa na umocnienie tendencji zawodnika (wzrostowa tendencja ma szansę być bardziej wzrostową). Od 0 do 10 (Dziesięć to bardzo dużo, więc należy używać tego parametru z rozwagą)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Trend alignment&lt;/span&gt;&lt;/p&gt;&lt;p&gt;If the value is above 1, the chance of a natural trend reversal, i.e., in the opposite direction of the current trend (E.g., from upward to downward), increases. If it is below 0, there is an increased chance that the player's trend will strengthen (an upward trend has a chance to be more upward). From 0 to 10 (Ten is a lot, so use this parameter with caution)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Wyrównanie tendencji (mnożnik)</source>
         <translation type="vanished">Tendence alignment</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="156"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Bonus do formy&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Określony przez użytkownika bonus do formy który na pewno wystąpi. Od -100 do 100.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Bonus to form&lt;/span&gt;&lt;/p&gt;&lt;p&gt;A user-specified bonus to form that is certain to occur. From -100 to 100.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="156" />
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Bonus do formy&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Określony przez użytkownika bonus do formy który na pewno wystąpi. Od -100 do 100.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Bonus to form&lt;/span&gt;&lt;/p&gt;&lt;p&gt;A user-specified bonus to form that is certain to occur. From -100 to 100.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="162"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="162" />
         <source>Bonus do formy</source>
         <translation>Form bonus</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Zmienność formy&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Ogólny parametr mówiący o tym, jak bardzo może się zmienić forma na podstawie aktualnej tendencji. Od 0 do 20 (teorytycznie od 0 do 10, ale wartości powyżej 10 są zarezerwowane do ekstrmalnych przypadków takich jak zmiana formy po długim okresie czasu).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Form variability&lt;/span&gt;&lt;/p&gt;&lt;p&gt;A general parameter that tells how much a form can change based on the current trend. From 0 to 20 (theoretically from 0 to 10, but values above 10 are reserved for extremes such as changing form after a long period of time).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Zmienność formy&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Ogólny parametr mówiący o tym, jak bardzo może się zmienić forma na podstawie aktualnej tendencji. Od 0 do 20 (teorytycznie od 0 do 10, ale wartości powyżej 10 są zarezerwowane do ekstrmalnych przypadków takich jak zmiana formy po długim okresie czasu).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Form variability&lt;/span&gt;&lt;/p&gt;&lt;p&gt;A general parameter that tells how much a form can change based on the current trend. From 0 to 20 (theoretically from 0 to 10, but values above 10 are reserved for extremes such as changing form after a long period of time).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="114"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Zmienność formy&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Zmiana formy i inne rzeczy związane z generowaniem formy są mnożone przez tą wartość. Dla przykładu: Jeżeli zmienność wynosi 0.50, zmiany formy będą o połowę mniejsze. Dla zmienności 1.24 będą za to o około 24% większe.&lt;/p&gt;&lt;p&gt;Zmienność nie może być mniejsza niż 0, a wartości większe niż 2 powinny być używane tylko okazjonalnie przy znaczących zmianach formy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;s</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Form variation&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Form variation and other things related to form generation are multiplied by this value. For example: if the volatility is 0.50, the form changes will be half as much. For a volatility of 1.24, they will instead be about 24% larger.&lt;/p&gt;&lt;p&gt;Variability must not be less than 0, and values greater than 2 should only be used occasionally for significant form changes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;s</translation>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="114" />
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Zmienność formy&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Zmiana formy i inne rzeczy związane z generowaniem formy są mnożone przez tą wartość. Dla przykładu: Jeżeli zmienność wynosi 0.50, zmiany formy będą o połowę mniejsze. Dla zmienności 1.24 będą za to o około 24% większe.&lt;/p&gt;&lt;p&gt;Zmienność nie może być mniejsza niż 0, a wartości większe niż 2 powinny być używane tylko okazjonalnie przy znaczących zmianach formy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;s</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Form variation&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Form variation and other things related to form generation are multiplied by this value. For example: if the volatility is 0.50, the form changes will be half as much. For a volatility of 1.24, they will instead be about 24% larger.&lt;/p&gt;&lt;p&gt;Variability must not be less than 0, and values greater than 2 should only be used occasionally for significant form changes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;s</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="120"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="120" />
         <source>Zmienność formy</source>
         <translation>Form variability</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="198"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Minimalna forma&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Forma nie będzie niższa niż wpisana tutaj wartość. Od 0 do 100.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Minimum form&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The form will not be less than the value entered here. From 0 to 100.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="198" />
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Minimalna forma&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Forma nie będzie niższa niż wpisana tutaj wartość. Od 0 do 100.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Minimum form&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The form will not be less than the value entered here. From 0 to 100.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="204"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="204" />
         <source>Minimalna forma</source>
         <translation>Minimal form</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="237"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Maksymalna forma&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Forma zawodnika nie przekroczy wpisanej tutaj wartości. Od 0 do 100.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Maximum form&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The player&apos;s form will not exceed the value entered here. From 0 to 100.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="237" />
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Maksymalna forma&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Forma zawodnika nie przekroczy wpisanej tutaj wartości. Od 0 do 100.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:11pt; font-weight:700;"&gt;Maximum form&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The player's form will not exceed the value entered here. From 0 to 100.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="243"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="243" />
         <source>Maksymalna forma</source>
         <translation>Maximal form</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="283"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="283" />
         <source>Najedź na nazwę parametru aby wyświetlić jego wyjaśnienie.
 Zmień wartość obok nazwy parametra aby ustawić dla wszystkich zawodników.</source>
         <translation>Hover over the parameter name to view its explanation.
 Change the value next to the parameter name to set for all jumpers.</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="336"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="336" />
         <source>Zapisz jako
 preset</source>
         <translation>Save as
 preset</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="382"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="382" />
         <source>Wczytaj preset</source>
         <translation>Load preset</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="399"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="399" />
         <source>Pomoc (pytania)</source>
         <translation>Help (FAQ)</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="425"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="425" />
         <source>1. Po co jest generator formy?</source>
         <translation>1. What is the form generator for?</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="430"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="430" />
         <source>2. Jak działa generator formy?</source>
         <translation>2. How form generator works?</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="435"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="435" />
         <source>3. Do czego służą poszczególne parametry?</source>
         <translation>3. What are the different parameters used for?</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="440"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="440" />
         <source>4. Jak ustalić formę na start nowego sezonu?</source>
         <translation>4. How to setup form for next season?</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="463"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="463" />
         <source>Ctrl+D aby usunąć z listy zawodnika. Ctrl+Alt+D aby usunąć wszystkich zawodników poza zaznaczonym. Użyj Ctrl aby wybierać wielu zawodników na raz</source>
         <translation>Ctrl+D for remove jumpers from list. Ctrl+Alt+D for delete all jumpers except selected. Użyj Ctrl for select multiple jumpers</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="498"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="498" />
         <source>Listy zawodników</source>
         <translation>Jumpers lists</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="526"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.ui" line="526" />
         <source>Wygeneruj formę zawodników</source>
         <translation>Generate jumpers form</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="119"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="119" />
         <source>Po co jest generator formy?</source>
         <translation>What is the form generator for?</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="119"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="119" />
         <source>Generator formy jest narzędziem służącym do pół-automatycznej zmiany formy zawodników pomiędzy okresem czasu (między zawodami, weekendami zawodów, sezonami).
 Posiada on wiele opcji, które służą do możliwie jak najwierniejszego odwzorowaniu zmiany formy prawdziwych skoczków między zawodami.</source>
         <translation>The form generator is a tool for semi-automatically changing the form of jumpers between periods of time (between competitions, competition weekends, seasons).
 It has a number of options that serve to replicate as closely as possible the form change of real jumpers between competitions.</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="125"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="125" />
         <source>Jak działa generator formy?</source>
         <translation>How form generator works?</translation>
     </message>
     <message>
-        <source>Każdy zawodnik ma swoją &quot;tendencję formy&quot;, która może być wzrostowa lub spadkowa. Jeśli zawodnik ma np. tendencję wzrostową, jego forma będzie rosnąć.
+        <source>Każdy zawodnik ma swoją "tendencję formy", która może być wzrostowa lub spadkowa. Jeśli zawodnik ma np. tendencję wzrostową, jego forma będzie rosnąć.
 Tendencja ta ma również swoją siłę. Mocna tendencja spadkowa będzie powodować duże spadki formy i trudno będzie ją odwrócić (W końcu i tak zostanie odwrócona ponieważ czym forma zawodnika jest bardziej skrajna, tym łatwiej odwrócić tendencję w drugą stronę. Np. jeżeli forma jest wysoka, zwiększa się prawdopodobieństwo na tendencję spadkową).
 Generator formy najpierw zmienia tendencję formy zawodnika w oparciu o aktualną formę i parametry generowania (Parametr zmienności tendencji i wyrównania tendencji) a następnie ustala nową formę zawodnika w oparciu o nową tendencję i parametr zmienności formy (Jeżeli jest mocna tendencja wzrostowa ale mała zmienność formy w generatorze, to wzrost formy nie będzie bardzo zauważalny.</source>
-        <translation type="vanished">Each player has a &quot;form tendence,&quot; which can be upward or downward. If a player has an upward tendence, for example, his form will increase.
-The tendence also has its strength. A strong downward trend will cause large drops in form and will be difficult to reverse (Eventually, it will be reversed anyway because the more extreme the player&apos;s form, the easier it is to reverse the tendence in the other direction. E.g., if the form is high, the probability for a downward tendence increases).
-The form generator first changes the tendence of the player&apos;s form based on the current form and the generation parameters (tendence variation parameter and tendence alignment) and then sets the new form of the player based on the new tendence and the form variation parameter (If there is a strong upward tendence but little form variation in the generator, the increase in form will not be very noticeable.</translation>
+        <translation type="vanished">Each player has a "form tendence," which can be upward or downward. If a player has an upward tendence, for example, his form will increase.
+The tendence also has its strength. A strong downward trend will cause large drops in form and will be difficult to reverse (Eventually, it will be reversed anyway because the more extreme the player's form, the easier it is to reverse the tendence in the other direction. E.g., if the form is high, the probability for a downward tendence increases).
+The form generator first changes the tendence of the player's form based on the current form and the generation parameters (tendence variation parameter and tendence alignment) and then sets the new form of the player based on the new tendence and the form variation parameter (If there is a strong upward tendence but little form variation in the generator, the increase in form will not be very noticeable.</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="130"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="130" />
         <source>Do czego służą poszczególne parametry?</source>
         <translation>What are the different parameters used for?</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="130"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="130" />
         <source>Każdy parametr generatora formy jest wyjaśniony po najchaniu kursorem na jego nazwę.</source>
         <translation>Each parameter of the form generator is explained when you hover the cursor over its name.</translation>
     </message>
@@ -4688,52 +4713,62 @@ The form generator first changes the tendence of the player&apos;s form based on
     </message>
     <message>
         <source>Aby osiągnąć taki efekt, że zawodnicy na start następnego sezonu mają całkiem inną formę z ułamkiem formy z końcówki poprzedniego sezonu, należy wykonać 3 czynności z generatorem formy:
-1. Wygenerować nową tendencję i formę zawodników. Dzięki temu zawodnicy mają odświeżoną formę na nowy sezon. Trzeba ustawić dużą zmienność tendencji i dużą zmienność formy, a także powinno się ustawić wyrównanie tendencji powyżej 0 (aby forma zawodników wyrównała się do środka na początek sezonu). Zalecane jest też ustawienie minusowego bonusu formy w wysokości około -10, jeśli początek sezonu to &quot;okres przygotowawczy&quot; (Dzięki temu na start przygotowań nikt nie będzie miał bardzo wysokiej formy co nie było by do końca realistyczne).
+1. Wygenerować nową tendencję i formę zawodników. Dzięki temu zawodnicy mają odświeżoną formę na nowy sezon. Trzeba ustawić dużą zmienność tendencji i dużą zmienność formy, a także powinno się ustawić wyrównanie tendencji powyżej 0 (aby forma zawodników wyrównała się do środka na początek sezonu). Zalecane jest też ustawienie minusowego bonusu formy w wysokości około -10, jeśli początek sezonu to "okres przygotowawczy" (Dzięki temu na start przygotowań nikt nie będzie miał bardzo wysokiej formy co nie było by do końca realistyczne).
 2. Ustalić każdemu zawodnikowi neutralną tendencję formy (Trzeba ustawić minimalną i maksymalną tendencję na 0. To samo robimy ze zmiennością tendencji i formy, też ustawiamy na 0). Resztę trzeba zostawić domyślnie. Robimy to po to, aby każdy zawodnik miał nową niezbyt mocną tendencję ponieważ przez dużą moc tendencji jaka byłaby przez punkt 1, byłyby nierealistycznie duże spadki i wzrosty formy.
 3. Ustalić każdemu zawodnikowi nową, niezbyt mocną tendencję poprzez ustawienie średniej zmienności tendencji i ZEROWEJ zmienności formy (formy zmieniać nie chcemy). Można również ustawić według uznania bonus tendencji jeżeli chce się aby zawodnikom na start sezonu forma raczej rosła niż spadała (można też zrobić na odwrót).
 Po wykonaniu tych 3 kroków, wszyscy zawodnicy są gotowi do ciekawej walki w następnym sezonie.</source>
         <translation type="vanished">In order to achieve such an effect that the players at the start of the next season have a completely different form with a fraction of the form from the end of the previous season, you need to do 3 things with the form generator:
-1. generate a new trend and form of the players. This gives the players a refreshed form for the new season. You need to set a high tendency variation and a high form variation, and you should also set the tendence alignment above 0 (so that the players&apos; form aligns to the middle for the beginning of the season). It is also recommended to set a minus form bonus of about -10 if the beginning of the season is a &quot;preparation period&quot; (This will ensure that no one has a very high form at the start of preparation which would not be entirely realistic).
+1. generate a new trend and form of the players. This gives the players a refreshed form for the new season. You need to set a high tendency variation and a high form variation, and you should also set the tendence alignment above 0 (so that the players' form aligns to the middle for the beginning of the season). It is also recommended to set a minus form bonus of about -10 if the beginning of the season is a "preparation period" (This will ensure that no one has a very high form at the start of preparation which would not be entirely realistic).
 2 Set a neutral form tendence for each player (You need to set the minimum and maximum tendence to 0. We do the same with the variation of tendency and form, also set to 0). The rest must be left default. We do this so that each player has a new not very strong tendence because by the high power of the tendency that would be by point 1, there would be unrealistically large drops and increases in form.
 3 Set each athlete a new not too strong tendence by setting an average tendence variation and a ZERO form variation (form we do not want to change). You can also set the tendence bonus at your discretion if you want the players to have their form increase rather than decrease for the start of the season (you can also do it the other way around).
 After completing these 3 steps, all players are ready for an interesting fight in the next season.</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="125"/>
-        <source>Na podstawie wielu czynników generator losuje jak bardzo zmieni się forma zawodnika. Użytkownik musi wpisać jedynie jaką zmienność ma mieć generator i ewentualnie jakie bonusy mają dostać zawodnicy (lub w jakim zakresie ma zmieścić się ich forma), a resztę robi komputer. Każdy zawodnik ma swoją &quot;niestabilność formy&quot; która dodatkowo wpływa na ewentualną zmianę formy i która również jest automatycznie zmieniana. Oprócz tego istnieją inne mechanizmy generatora formy, np. takie które zapobiegają zbyt częstemu występowaniu skrajnych form zawodnika.</source>
-        <translation>Based on a number of factors, the generator randomizes how much a player&apos;s form will change. The user only has to enter what variation the generator should have and possibly what bonuses the players should get (or in what range their form should fit), and the computer does the rest. Each player has his &quot;form volatility&quot; which further influences the possible change of form and which is also automatically changed. In addition to this, there are other mechanisms of the form generator, such as those that prevent extreme forms of a player from occurring too often.</translation>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="125" />
+        <source>Na podstawie wielu czynników generator losuje jak bardzo zmieni się forma zawodnika. Użytkownik musi wpisać jedynie jaką zmienność ma mieć generator i ewentualnie jakie bonusy mają dostać zawodnicy (lub w jakim zakresie ma zmieścić się ich forma), a resztę robi komputer. Każdy zawodnik ma swoją "niestabilność formy" która dodatkowo wpływa na ewentualną zmianę formy i która również jest automatycznie zmieniana. Oprócz tego istnieją inne mechanizmy generatora formy, np. takie które zapobiegają zbyt częstemu występowaniu skrajnych form zawodnika.</source>
+        <translation>Based on a number of factors, the generator randomizes how much a player's form will change. The user only has to enter what variation the generator should have and possibly what bonuses the players should get (or in what range their form should fit), and the computer does the rest. Each player has his "form volatility" which further influences the possible change of form and which is also automatically changed. In addition to this, there are other mechanisms of the form generator, such as those that prevent extreme forms of a player from occurring too often.</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="144"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="144" />
         <source>Nazwa presetu</source>
         <translation>Preset name</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="144"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="144" />
         <source>Podaj nazwę jaką ma mieć ten preset generatora formy. Jeżeli istnieje już preset o takiej nazwie, zostanie on nadpisany.</source>
         <translation>Specify the name you want this form generator settings preset to have. If a preset with this name already exists, it will be overwritten.</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="181"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="181" />
         <source>Wybierz preset generatora formy</source>
         <translation>Select form generator preset</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="181"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="181" />
         <source>Wybierz z listy preset generatora formy który chcesz wczytać</source>
         <translation>Select the form generator preset you want to load from the list</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="210"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="210" />
         <source>Generowanie formy</source>
         <translation>Form generation</translation>
     </message>
     <message>
-        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="210"/>
+        <location filename="../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp" line="210" />
         <source>Pomyślnie zaktualizowano tendencję formy i formę zawodników</source>
         <translation>Successfully updated the tendence of form and form of players</translation>
     </message>
+    <message>
+        <source>Usuń zaznaczonych</source>
+        <translation>Remove selected</translation>
+    </message>
+    <message>
+        <source>Pozostaw zaznaczonych</source>
+        <translation>Keep selected</translation>
+    </message>
+<message><source>Zaktualizowano formę zawodników.</source><translation>Athletes’ form updated.</translation></message>
 </context>
+
 <context>
     <name>JumpersListEditorWindow</name>
     <message>
@@ -7222,6 +7257,10 @@ You can only remove it completely</translation>
         <source>Naprawiono bazę danych tego zapisu symulacji</source>
         <translation type="vanished">Fixed the database of this simulation save</translation>
     </message>
+    <message>
+        <source>Nazwa kopii</source>
+        <translation>Copy name</translation>
+    </message>
 </context>
 <context>
     <name>SimulationSavesWindow</name>
@@ -7884,30 +7923,35 @@ Based on currently selected players</translation>
 <context>
     <name>TeamResultsTreeModel</name>
     <message>
-        <location filename="../source/UI/Competition/Results/TeamResultsTreeModel.cpp" line="14"/>
-        <location filename="../source/UI/Competition/Results/TeamResultsTreeModel.cpp" line="242"/>
+        <location filename="../source/UI/Competition/Results/TeamResultsTreeModel.cpp" line="14" />
+        <location filename="../source/UI/Competition/Results/TeamResultsTreeModel.cpp" line="242" />
         <source>Miejsce</source>
         <translation>Position</translation>
     </message>
     <message>
-        <location filename="../source/UI/Competition/Results/TeamResultsTreeModel.cpp" line="14"/>
-        <location filename="../source/UI/Competition/Results/TeamResultsTreeModel.cpp" line="242"/>
+        <location filename="../source/UI/Competition/Results/TeamResultsTreeModel.cpp" line="14" />
+        <location filename="../source/UI/Competition/Results/TeamResultsTreeModel.cpp" line="242" />
         <source>Drużyna</source>
         <translation>Team</translation>
     </message>
     <message>
-        <location filename="../source/UI/Competition/Results/TeamResultsTreeModel.cpp" line="14"/>
-        <location filename="../source/UI/Competition/Results/TeamResultsTreeModel.cpp" line="242"/>
+        <location filename="../source/UI/Competition/Results/TeamResultsTreeModel.cpp" line="14" />
+        <location filename="../source/UI/Competition/Results/TeamResultsTreeModel.cpp" line="242" />
         <source>Zawodnik</source>
         <translation>Jumper</translation>
     </message>
     <message>
-        <location filename="../source/UI/Competition/Results/TeamResultsTreeModel.cpp" line="14"/>
-        <location filename="../source/UI/Competition/Results/TeamResultsTreeModel.cpp" line="242"/>
+        <location filename="../source/UI/Competition/Results/TeamResultsTreeModel.cpp" line="14" />
+        <location filename="../source/UI/Competition/Results/TeamResultsTreeModel.cpp" line="242" />
         <source>Punkty</source>
         <translation>Points</translation>
     </message>
+    <message>
+        <source>Odległości (m)</source>
+        <translation>Distances (m)</translation>
+    </message>
 </context>
+
 <context>
     <name>TeamsSquadsTreeModel</name>
     <message>
@@ -8159,4 +8203,2245 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>OK</translation>
     </message>
 </context>
+<context>
+    <name>AppearanceMenu</name>
+    <message>
+        <location filename="../source/UI/Quick/AppearanceMenu.qml" line="15" />
+        <source>Wygląd i dostępność</source>
+        <translation>Appearance and accessibility</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/AppearanceMenu.qml" line="16" />
+        <source>Ciemny motyw</source>
+        <translation>Dark theme</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/AppearanceMenu.qml" line="17" />
+        <source>Ogranicz animacje</source>
+        <translation>Reduce motion</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/AppearanceMenu.qml" line="18" />
+        <source>Rozmiar tekstu</source>
+        <translation>Text size</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/AppearanceMenu.qml" line="19" />
+        <source>Standardowy</source>
+        <translation>Standard</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/AppearanceMenu.qml" line="19" />
+        <source>Większy · 115%</source>
+        <translation>Larger · 115%</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/AppearanceMenu.qml" line="19" />
+        <source>Duży · 130%</source>
+        <translation>Large · 130%</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/AppearanceMenu.qml" line="20" />
+        <source>Gotowe</source>
+        <translation>Done</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>DataTable</name>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="46" />
+        <source>Tabela danych</source>
+        <translation>Data table</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="81" />
+        <source>%1 pozycji</source>
+        <translation>%1 entries</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="84" />
+        <source>Dodaj</source>
+        <translation>Add</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="88" />
+        <source>Szukaj</source>
+        <translation>Search</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="89" />
+        <source>Punkty serii</source>
+        <translation>Round points</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="89" />
+        <source>Skoki</source>
+        <translation>Jumps</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="90" />
+        <source>Otwórz</source>
+        <translation>Open</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="94" />
+        <source>Opcje listy</source>
+        <translation>List options</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="99" />
+        <source>Zaznacz wszystkie</source>
+        <translation>Select all</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="111" />
+        <source>Szukaj w tabeli…</source>
+        <translation>Search table…</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="111" />
+        <source>Filtruj wiersze</source>
+        <translation>Filter rows</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="144" />
+        <source>Poz.</source>
+        <translation>Pos.</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="144" />
+        <source>Punkty</source>
+        <translation>Points</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="144" />
+        <source>%1 · m</source>
+        <translation>%1 · m</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="170" />
+        <source>Lista jest pusta</source>
+        <translation>The list is empty</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>Home</name>
+    <message>
+        <location filename="../source/UI/Quick/Home.qml" line="29" />
+        <source>Symulacja</source>
+        <translation>Simulation</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Home.qml" line="30" />
+        <source>01 — 03</source>
+        <translation>01 — 03</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Home.qml" line="36" />
+        <source>Sezony</source>
+        <translation>Seasons</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Home.qml" line="36" />
+        <source>Zapisy symulacji, kalendarze i klasyfikacje.</source>
+        <translation>Simulation saves, calendars and classifications.</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Home.qml" line="36" />
+        <source>Otwórz zapisy</source>
+        <translation>Open saves</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Home.qml" line="37" />
+        <source>Pojedynczy konkurs</source>
+        <translation>Single competition</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Home.qml" line="37" />
+        <source>Konfiguracja konkursu i przebieg rywalizacji.</source>
+        <translation>Competition setup and results.</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Home.qml" line="37" />
+        <source>Konfiguruj konkurs</source>
+        <translation>Configure the competition</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Home.qml" line="38" />
+        <source>Pojedyncze skoki</source>
+        <translation>Single jumps</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Home.qml" line="38" />
+        <source>Symulacja skoków wybranego zawodnika.</source>
+        <translation>Simulate jumps for a selected athlete.</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Home.qml" line="38" />
+        <source>Konfiguruj skoki</source>
+        <translation>Configure jumps</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Home.qml" line="44" />
+        <source>Autorzy</source>
+        <translation>Credits</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Home.qml" line="45" />
+        <source>Zgłoś problem</source>
+        <translation>Report an issue</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>HomeHero</name>
+    <message>
+        <location filename="../source/UI/Quick/HomeHero.qml" line="31" />
+        <source>Symulator skoków narciarskich</source>
+        <translation>Ski jumping simulator</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/HomeHero.qml" line="45" />
+        <source>Logo Sj.Sim</source>
+        <translation>Sj.Sim logo</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>HomeTools</name>
+    <message>
+        <location filename="../source/UI/Quick/HomeTools.qml" line="19" />
+        <source>Baza danych</source>
+        <translation>Database</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/HomeTools.qml" line="20" />
+        <source>%1 zawodników · %2 skoczni</source>
+        <translation>%1 athletes · %2 hills</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/HomeTools.qml" line="22" />
+        <source>Edytuj bazę danych</source>
+        <translation>Edit database</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/HomeTools.qml" line="23" />
+        <source>Ustawienia</source>
+        <translation>Settings</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>Node</name>
+    <message>
+        <location filename="../source/UI/Quick/Node.qml" line="125" />
+        <source>Własna wartość</source>
+        <translation>Custom value</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>NodeGroup</name>
+    <message>
+        <location filename="../source/UI/Quick/NodeGroup.qml" line="27" />
+        <source>Włącz</source>
+        <translation>Enable</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>NumberField</name>
+    <message>
+        <location filename="../source/UI/Quick/NumberField.qml" line="19" />
+        <source>Różne wartości</source>
+        <translation>Mixed values</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/NumberField.qml" line="37" />
+        <source>Zwiększ wartość</source>
+        <translation>Increase value</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/NumberField.qml" line="38" />
+        <source>Zmniejsz wartość</source>
+        <translation>Decrease value</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>PlotPanel</name>
+    <message>
+        <location filename="../source/UI/Quick/PlotPanel.qml" line="26" />
+        <source>Wykres statystyk</source>
+        <translation>Statistics chart</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/PlotPanel.qml" line="31" />
+        <source>Przeciągnij, aby przybliżyć · strzałki: punkty</source>
+        <translation>Drag to zoom · arrow keys: inspect points</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/PlotPanel.qml" line="32" />
+        <source>Cały wykres</source>
+        <translation>Reset zoom</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>QuickBridge</name>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="117" />
+        <source>Generator formy</source>
+        <translation>Form generator</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="117" />
+        <source>Lista zawodników</source>
+        <translation>Athlete list</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="117" />
+        <source>Konkurs</source>
+        <translation>Competition</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="117" />
+        <source>Pojedyncze skoki</source>
+        <translation>Single jumps</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="117" />
+        <source>Ustawienia</source>
+        <translation>Settings</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="117" />
+        <source>Baza danych</source>
+        <translation>Database</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="117" />
+        <source>Zapisy</source>
+        <translation>Saves</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="117" />
+        <source>Sezon</source>
+        <translation>Season</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="117" />
+        <source>Nowy zapis</source>
+        <translation>New save</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="118" />
+        <source>Grupa KO</source>
+        <translation>KO group</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="119" />
+        <source>Postęp</source>
+        <translation>Progress</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="227" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="298" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="409" />
+        <source>W górę</source>
+        <translation>Move up</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="227" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="298" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="409" />
+        <source>W dół</source>
+        <translation>Move down</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="227" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="298" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="409" />
+        <source>Usuń</source>
+        <translation>Remove</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="227" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="298" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="409" />
+        <source>Dodaj</source>
+        <translation>Add</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="227" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="409" />
+        <source>Edytuj</source>
+        <translation>Edit</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="227" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="409" />
+        <source>Wypełnij wszystkie</source>
+        <translation>Fill all</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="227" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="409" />
+        <source>Szczegóły</source>
+        <translation>Details</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="298" />
+        <source>Wybierz</source>
+        <translation>Choose</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="338" />
+        <source>Profil zawodnika</source>
+        <translation>Athlete profile</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="338" />
+        <source>Parametry skoczni</source>
+        <translation>Hill parameters</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="339" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="718" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="783" />
+        <source>Zasady konkursu</source>
+        <translation>Competition rules</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="339" />
+        <source>Warunki wietrzne</source>
+        <translation>Wind conditions</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="340" />
+        <source>Śnieg na rozbiegu</source>
+        <translation>Inrun snow</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="340" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="688" />
+        <source>Klasyfikacja</source>
+        <translation>Standings</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="341" />
+        <source>Punkty za miejsca</source>
+        <translation>Points for places</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="341" />
+        <source>Konkurs w kalendarzu</source>
+        <translation>Calendar event</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="342" />
+        <source>Zasady serii</source>
+        <translation>Round rules</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="342" />
+        <source>Skład drużyny</source>
+        <translation>Team squad</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="376" />
+        <source>Dane</source>
+        <translation>Details</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="377" />
+        <source>Punktacja</source>
+        <translation>Scoring</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="378" />
+        <source>Umiejętności</source>
+        <translation>Skills</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="378" />
+        <source>Parametry</source>
+        <translation>Parameters</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="379" />
+        <source>Cechy</source>
+        <translation>Characteristics</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="638" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="652" />
+        <source>Silnik symulacji</source>
+        <translation>Simulation engine</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="640" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="787" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="802" />
+        <source>Wiatr</source>
+        <translation>Wind</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="647" />
+        <source>Zmienność formy</source>
+        <translation>Form variability</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="647" />
+        <source>Bonus formy</source>
+        <translation>Form bonus</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="647" />
+        <source>Minimalna forma</source>
+        <translation>Minimal form</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="647" />
+        <source>Maksymalna forma</source>
+        <translation>Maximal form</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="653" />
+        <source>Język interfejsu</source>
+        <translation>Interface language</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="653" />
+        <source>Zakres umiejętności</source>
+        <translation>Skill range</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="654" />
+        <source>Bazowe prawdopodobieństwo dyskwalifikacji</source>
+        <translation>Base disqualification probability</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="655" />
+        <source>Mnożnik losowości</source>
+        <translation>Randomness multiplier</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="655" />
+        <source>Wpływ parametrów skoczni</source>
+        <translation>Hill parameter effects</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="656" />
+        <source>Wpływ formy na wybicie</source>
+        <translation>Form effect on takeoff</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="656" />
+        <source>Wpływ formy na lot</source>
+        <translation>Form effect on flight</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="657" />
+        <source>Tempo konkursu na żywo</source>
+        <translation>Live competition pace</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="659" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="667" />
+        <source>Baza danych i narzędzia</source>
+        <translation>Database and tools</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="664" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="667" />
+        <source>Udostępnianie wyników</source>
+        <translation>Share results</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="665" />
+        <source>Webhook: pojedynczy skok</source>
+        <translation>Webhook: individual jump</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="665" />
+        <source>Webhook: wynik zawodnika</source>
+        <translation>Webhook: athlete result</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="666" />
+        <source>Webhook: wyniki konkursu</source>
+        <translation>Webhook: competition results</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="666" />
+        <source>Webhook: klasyfikacja</source>
+        <translation>Webhook: standings</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="667" />
+        <source>Symulacja</source>
+        <translation>Simulation</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="679" />
+        <source>Narzędzia</source>
+        <translation>Tools</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="688" />
+        <source>Następny konkurs</source>
+        <translation>Next competition</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="689" />
+        <source>Przegląd</source>
+        <translation>Overview</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="709" />
+        <source>Brak skoczni</source>
+        <translation>No hill</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="712" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="782" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="798" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="802" />
+        <source>Skocznia</source>
+        <translation>Hill</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="725" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="799" />
+        <source>Belka startowa</source>
+        <translation>Starting gate</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="726" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="810" />
+        <source>Prawdopodobieństwo dyskwalifikacji</source>
+        <translation>Disqualification probability</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="726" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="800" />
+        <source>Ważność skoków</source>
+        <translation>Jump importance</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="727" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="800" />
+        <source>Preset ważności</source>
+        <translation>Importance preset</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="729" />
+        <source>Plan symulacji</source>
+        <translation>Simulation plan</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="752" />
+        <source>Opcje listy</source>
+        <translation>List options</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="758" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="768" />
+        <source>Lista startowa</source>
+        <translation>Start list</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="766" />
+        <source>Przygotowanie</source>
+        <translation>Preparation</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="766" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="797" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="801" />
+        <source>Konfiguracja</source>
+        <translation>Configuration</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="780" />
+        <source>Grupy KO</source>
+        <translation>KO groups</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="780" />
+        <source>Kolejność według wyników</source>
+        <translation>Order by results</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="787" />
+        <source>Śnieg</source>
+        <translation>Snow</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="790" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="809" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="814" />
+        <source>Opcje</source>
+        <translation>Options</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="798" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="802" />
+        <source>Zawodnik</source>
+        <translation>Athlete</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="799" />
+        <source>Liczba skoków</source>
+        <translation>Number of jumps</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="812" />
+        <source>Obliczanie średniego wiatru</source>
+        <translation>Average wind calculation</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="813" />
+        <source>Wpływ odległości na rekompensatę</source>
+        <translation>Distance effect on compensation</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>QuickPlot</name>
+    <message>
+        <location filename="../source/UI/Quick/QuickPlot.cpp" line="44" />
+        <source>Brak danych dla wybranych filtrów</source>
+        <translation>No data for the selected filters</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickPlot.cpp" line="91" />
+        <source>%1  ·  %2</source>
+        <translation>%1  ·  %2</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>RaceAthlete</name>
+    <message>
+        <location filename="../source/UI/Quick/RaceAthlete.qml" line="16" />
+        <source>Zakończono</source>
+        <translation>Finished</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceAthlete.qml" line="16" />
+        <source>Koniec serii</source>
+        <translation>Round complete</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceAthlete.qml" line="16" />
+        <source>NA BELCE</source>
+        <translation>ON THE GATE</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceAthlete.qml" line="26" />
+        <source>Do prowadzenia</source>
+        <translation>To lead</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceAthlete.qml" line="31" />
+        <source>Do awansu</source>
+        <translation>To qualify</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>RaceControls</name>
+    <message>
+        <location filename="../source/UI/Quick/RaceControls.qml" line="14" />
+        <source>Belka</source>
+        <translation>Gate</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceControls.qml" line="17" />
+        <source>Opcje</source>
+        <translation>Options</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>RaceScreen</name>
+    <message>
+        <location filename="../source/UI/Quick/RaceScreen.qml" line="44" />
+        <location filename="../source/UI/Quick/RaceScreen.qml" line="54" />
+        <source>Wyniki</source>
+        <translation>Results</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceScreen.qml" line="60" />
+        <location filename="../source/UI/Quick/RaceScreen.qml" line="66" />
+        <source>Lista startowa</source>
+        <translation>Start list</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceScreen.qml" line="92" />
+        <source>Opcje konkursu</source>
+        <translation>Competition options</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceScreen.qml" line="93" />
+        <source>Zamknij</source>
+        <translation>Close</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceScreen.qml" line="104" />
+        <source>Szczegóły skoku</source>
+        <translation>Jump details</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>Screen</name>
+    <message>
+        <location filename="../source/UI/Quick/Screen.qml" line="12" />
+        <source>Sezony / Zapisy</source>
+        <translation>Seasons / Saves</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Screen.qml" line="13" />
+        <source>Sezony / Zarządzanie</source>
+        <translation>Seasons / Management</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Screen.qml" line="14" />
+        <source>Sezony / Nowy zapis</source>
+        <translation>Seasons / New save</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Screen.qml" line="15" />
+        <source>Sezony / Nowy sezon</source>
+        <translation>Seasons / New season</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Screen.qml" line="16" />
+        <source>Konkurs / Konfiguracja</source>
+        <translation>Competition / Configuration</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Screen.qml" line="17" />
+        <source>Konkurs / Przebieg</source>
+        <translation>Competition / Progress</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Screen.qml" line="18" />
+        <source>Pojedyncze skoki / Konfiguracja</source>
+        <translation>Single jumps / Configuration</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Screen.qml" line="19" />
+        <source>Pojedyncze skoki / Wyniki</source>
+        <translation>Single jumps / Results</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Screen.qml" line="20" />
+        <source>Baza danych</source>
+        <translation>Database</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Screen.qml" line="21" />
+        <source>Ustawienia</source>
+        <translation>Settings</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Screen.qml" line="22" />
+        <source>Statystyki / Zawodnik</source>
+        <translation>Statistics / Athlete</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Screen.qml" line="23" />
+        <source>Statystyki / Rankingi i rekordy</source>
+        <translation>Statistics / Ratings and records</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Screen.qml" line="47" />
+        <source>Sj.Sim</source>
+        <translation>Sj.Sim</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Screen.qml" line="50" />
+        <source>Wygląd</source>
+        <translation>Appearance</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/Screen.qml" line="66" />
+        <source>Tab: następne pole  ·  Esc: zamknij</source>
+        <translation>Tab: next field  ·  Esc: close</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>TableRow</name>
+    <message>
+        <location filename="../source/UI/Quick/TableRow.qml" line="95" />
+        <source>Zwiń grupę</source>
+        <translation>Collapse group</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/TableRow.qml" line="95" />
+        <source>Rozwiń grupę</source>
+        <translation>Expand group</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>QuickTableModel</name>
+    <message>
+        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="68" />
+        <source>Skok oddany</source>
+        <translation>Jump completed</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="70" />
+        <source>Rozegrany</source>
+        <translation>Completed</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="71" />
+        <source>Odwołany</source>
+        <translation>Cancelled</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="74" />
+        <source>Awans</source>
+        <translation>Qualified</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="75" />
+        <source>Poza awansem</source>
+        <translation>Eliminated</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="76" />
+        <source>Oczekuje</source>
+        <translation>Pending</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="77" />
+        <source>Ostatni skok</source>
+        <translation>Last jump</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>RaceStatus</name>
+    <message>
+        <location filename="../source/UI/Quick/RaceStatus.qml" line="16" />
+        <source>Seria %1 / %2 · Start %3 / %4</source>
+        <translation>Round %1 / %2 · Start %3 / %4</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceStatus.qml" line="16" />
+        <source> · Grupa %1</source>
+        <translation> · Group %1</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceStatus.qml" line="17" />
+        <source>Wiatr: %1</source>
+        <translation>Wind: %1</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceStatus.qml" line="18" />
+        <source>Śnieg: %1</source>
+        <translation>Snow: %1</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>SetupFooter</name>
+    <message>
+        <location filename="../source/UI/Quick/SetupFooter.qml" line="16" />
+        <source>Ctrl+Enter · rozpocznij symulację</source>
+        <translation>Ctrl+Enter · start simulation</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>RaceLastJump</name>
+    <message>
+        <location filename="../source/UI/Quick/RaceLastJump.qml" line="15" />
+        <source>Lot</source>
+        <translation>Flight</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceLastJump.qml" line="15" />
+        <source>Odległość</source>
+        <translation>Distance</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceLastJump.qml" line="15" />
+        <source>Lądowanie</source>
+        <translation>Landing</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceLastJump.qml" line="15" />
+        <source>Noty</source>
+        <translation>Judges</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceLastJump.qml" line="15" />
+        <source>Wynik</source>
+        <translation>Result</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceLastJump.qml" line="15" />
+        <source>Ostatni skok</source>
+        <translation>Last jump</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<context>
+    <name>WindEditor</name>
+    <message>
+        <location filename="../source/UI/Quick/WindEditor.qml" line="16" />
+        <source>Losuj</source>
+        <translation>Generate</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/WindEditor.qml" line="17" />
+        <source>Przedni</source>
+        <translation>Headwind</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/WindEditor.qml" line="18" />
+        <source>Tylny</source>
+        <translation>Tailwind</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/WindEditor.qml" line="19" />
+        <source>Cisza</source>
+        <translation>Calm</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/WindEditor.qml" line="20" />
+        <source>Opcje</source>
+        <translation>Options</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/WindEditor.qml" line="21" />
+        <source>Cofnij</source>
+        <translation>Undo</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/WindEditor.qml" line="28" />
+        <source>Losowy kierunek</source>
+        <translation>Random direction</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/WindEditor.qml" line="30" />
+        <source>Kierunek · °</source>
+        <translation>Direction · °</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/WindEditor.qml" line="31" />
+        <source>Losowa zmienność</source>
+        <translation>Random variability</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/WindEditor.qml" line="33" />
+        <source>Zmienność · 0–10</source>
+        <translation>Variability · 0–10</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+<context>
+    <name>WindFields</name>
+    <message>
+        <location filename="../source/UI/Quick/WindFields.qml" line="14" />
+        <source>Sektor %1</source>
+        <translation>Sector %1</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/WindFields.qml" line="15" />
+        <source>Wszystkie</source>
+        <translation>All sectors</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/WindFields.qml" line="15" />
+        <source>Zmiany dotyczą wszystkich sektorów</source>
+        <translation>Changes apply to all sectors</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/WindFields.qml" line="22" />
+        <source>Siła · m/s</source>
+        <translation>Speed · m/s</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/WindFields.qml" line="22" />
+        <source>Kierunek · °</source>
+        <translation>Direction · °</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/WindFields.qml" line="22" />
+        <source>Zmienność · m/s</source>
+        <translation>Variation · m/s</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/WindFields.qml" line="22" />
+        <source>Zmienność · °</source>
+        <translation>Variation · °</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/WindFields.qml" line="44" />
+        <source>Kopiuj do wszystkich</source>
+        <translation>Copy to all</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/WindFields.qml" line="48" />
+        <source>Cechy</source>
+        <translation>Characteristics</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+<context>
+    <name>WindSectorStrip</name>
+    <message>
+        <location filename="../source/UI/Quick/WindSectorStrip.qml" line="30" />
+        <source>Sektor %1</source>
+        <translation>Sector %1</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+
+
+<context>
+    <name>SeasonBar</name>
+    <message>
+        <location filename="../source/UI/Quick/SeasonBar.qml" line="23" />
+        <source>%1 · %2</source>
+        <translation>%1 · %2</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+<context>
+    <name>SectionTabs</name>
+    <message>
+        <location filename="../source/UI/Quick/SectionTabs.qml" line="17" />
+        <source>Poprzednie zakładki</source>
+        <translation>Previous tabs</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/SectionTabs.qml" line="60" />
+        <source>Następne zakładki</source>
+        <translation>Next tabs</translation>
+    </message>
+</context>
+
+
+
+
+
+
+
+<context>
+    <name>AppFooter</name>
+    <message>
+        <location filename="../source/UI/Quick/AppFooter.qml" line="13" />
+        <source>Alt+← · Wstecz</source>
+        <translation>Alt+← · Back</translation>
+    </message>
+</context>
+
+
+
+
+<context>
+    <name>AppHeader</name>
+    <message>
+        <location filename="../source/UI/Quick/AppHeader.qml" line="15" />
+        <source>Wstecz</source>
+        <translation>Back</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/AppHeader.qml" line="16" />
+        <source>Logo Sj.Sim</source>
+        <translation>Sj.Sim logo</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/AppHeader.qml" line="23" />
+        <source>Pomoc</source>
+        <translation>Help</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/AppHeader.qml" line="24" />
+        <source>Wygląd</source>
+        <translation>Appearance</translation>
+    </message>
+</context>
+
+
+
+
+<context>
+    <name>CalendarEventRow</name>
+    <message>
+        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="22" />
+        <source>Zaznacz %1</source>
+        <translation>Select %1</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="26" />
+        <source>Drużynowy</source>
+        <translation>Team</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="26" />
+        <source>Treningi: %1</source>
+        <translation>Training: %1</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="26" />
+        <source>Próbna</source>
+        <translation>Trial round</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="27" />
+        <source>Rozegrany</source>
+        <translation>Completed</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="27" />
+        <source>Odwołany</source>
+        <translation>Cancelled</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="27" />
+        <source>W trakcie</source>
+        <translation>In progress</translation>
+    </message>
+</context>
+
+
+
+
+<context>
+    <name>CalendarFields</name>
+    <message>
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="12" />
+        <source>Skocznia</source>
+        <translation>Hill</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="13" />
+        <source>Wydarzenie</source>
+        <translation>Event</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="13" />
+        <source>Konkurs</source>
+        <translation>Competition</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="13" />
+        <source>Kwalifikacje</source>
+        <translation>Qualifications</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="14" />
+        <source>Rodzaj konkursu</source>
+        <translation>Competition type</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="14" />
+        <source>Indywidualny</source>
+        <translation>Individual</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="14" />
+        <source>Drużynowy</source>
+        <translation>Team</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="15" />
+        <source>Zasady konkursu</source>
+        <translation>Competition rules</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="26" />
+        <source>Różne wartości</source>
+        <translation>Mixed values</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="32" />
+        <source>Treningi</source>
+        <translation>Trainings</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="33" />
+        <source>Liczba treningów</source>
+        <translation>Training sessions</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="37" />
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="38" />
+        <source>Zasady treningów</source>
+        <translation>Trainings rules</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="40" />
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="41" />
+        <source>Ważność treningów</source>
+        <translation>Training importance</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="42" />
+        <source>Seria próbna</source>
+        <translation>Trial round</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="46" />
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="47" />
+        <source>Zasady serii próbnej</source>
+        <translation>Trial round rules</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="49" />
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="50" />
+        <source>Ważność serii próbnej</source>
+        <translation>Trial round importance</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="51" />
+        <location filename="../source/UI/Quick/CalendarFields.qml" line="52" />
+        <source>Ważność skoków</source>
+        <translation>Jump importance</translation>
+    </message>
+</context>
+
+
+
+
+<context>
+    <name>CalendarInspector</name>
+    <message>
+        <location filename="../source/UI/Quick/CalendarInspector.qml" line="19" />
+        <source>Wybierz konkurs</source>
+        <translation>Select a competition</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarInspector.qml" line="20" />
+        <source>Zmiany dotyczą %1 konkursów</source>
+        <translation>Changes apply to %1 competitions</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarInspector.qml" line="21" />
+        <source>Rozegrane wydarzenia są zablokowane.</source>
+        <translation>Completed events are locked.</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarInspector.qml" line="22" />
+        <location filename="../source/UI/Quick/CalendarInspector.qml" line="35" />
+        <source>Konkurs</source>
+        <translation>Competition</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarInspector.qml" line="22" />
+        <source>Zasady</source>
+        <translation>Rules</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarInspector.qml" line="22" />
+        <source>Powiązania</source>
+        <translation>Links</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarInspector.qml" line="35" />
+        <source>Treningi</source>
+        <translation>Trainings</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarInspector.qml" line="35" />
+        <source>Seria próbna</source>
+        <translation>Trial round</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarInspector.qml" line="35" />
+        <source>Zasady wydarzenia</source>
+        <translation>Event rules</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarInspector.qml" line="42" />
+        <source>Zastosuj zasady</source>
+        <translation>Apply rules</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarInspector.qml" line="43" />
+        <source>Odrzuć zmiany zasad</source>
+        <translation>Discard rule changes</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarInspector.qml" line="48" />
+        <source>Klasyfikacje</source>
+        <translation>Classifications</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarInspector.qml" line="49" />
+        <source>Brak klasyfikacji w kalendarzu</source>
+        <translation>No classifications in this calendar</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarInspector.qml" line="51" />
+        <location filename="../source/UI/Quick/CalendarInspector.qml" line="52" />
+        <source>Awans do konkursu</source>
+        <translation>Qualify for competition</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarInspector.qml" line="53" />
+        <location filename="../source/UI/Quick/CalendarInspector.qml" line="54" />
+        <source>Awans według klasyfikacji</source>
+        <translation>Qualify by classification</translation>
+    </message>
+</context>
+
+
+
+
+<context>
+    <name>CalendarWorkspace</name>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="20" />
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="33" />
+        <source>Konkursy</source>
+        <translation>Competitions</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="21" />
+        <source>Kalendarz</source>
+        <translation>Calendar</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="22" />
+        <source>Nazwa kalendarza</source>
+        <translation>Calendar name</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="23" />
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="53" />
+        <source>Cofnij</source>
+        <translation>Undo</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="25" />
+        <source>Kalendarze i presety</source>
+        <translation>Calendars and presets</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="28" />
+        <source>Zmień nazwę kalendarza</source>
+        <translation>Rename calendar</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="28" />
+        <source>Nowy kalendarz</source>
+        <translation>New calendar</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="28" />
+        <source>Kalendarz w górę</source>
+        <translation>Move calendar up</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="28" />
+        <source>Kalendarz w dół</source>
+        <translation>Move calendar down</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="28" />
+        <source>Usuń kalendarz</source>
+        <translation>Delete calendar</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="28" />
+        <source>Wczytaj preset</source>
+        <translation>Load preset</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="28" />
+        <source>Zapisz jako preset</source>
+        <translation>Save as preset</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="33" />
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="52" />
+        <source>Edycja</source>
+        <translation>Edit</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="38" />
+        <source>Dodaj konkurs</source>
+        <translation>Add competition</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="39" />
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="48" />
+        <source>Kopiuj</source>
+        <translation>Copy</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="40" />
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="48" />
+        <source>Usuń</source>
+        <translation>Remove</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="41" />
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="48" />
+        <source>Przesuń konkurs w górę</source>
+        <translation>Move competition up</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="42" />
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="48" />
+        <source>Przesuń konkurs w dół</source>
+        <translation>Move competition down</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="44" />
+        <source>Opcje konkursów</source>
+        <translation>Competition options</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="66" />
+        <source>Konkursy: %1</source>
+        <translation>Competitions: %1</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="67" />
+        <source>Przyszłe</source>
+        <translation>Upcoming</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="67" />
+        <source>Zaznacz przyszłe konkursy</source>
+        <translation>Select upcoming competitions</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="78" />
+        <source>Dodaj konkurs lub wczytaj preset.</source>
+        <translation>Add a competition or load a preset.</translation>
+    </message>
+</context>
+
+
+
+
+<context>
+    <name>QuickCalendar</name>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="54" />
+        <source>Zasady własne</source>
+        <translation>Custom rules</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="55" />
+        <source>Takie jak konkurs</source>
+        <translation>Same as competition</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="57" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="102" />
+        <source>Brak</source>
+        <translation>None</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="73" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="74" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="85" />
+        <source>Konkurs</source>
+        <translation>Competition</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="84" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="104" />
+        <source>Brak skoczni</source>
+        <translation>No hill</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="85" />
+        <source>Kwalifikacje</source>
+        <translation>Qualifications</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="88" />
+        <source>%1 konkursów</source>
+        <translation>%1 competitions</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="132" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="222" />
+        <source>Rozegrane wydarzenia są zablokowane.</source>
+        <translation>Completed events are locked.</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="153" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="154" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="205" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="244" />
+        <source>Konkurs jest powiązany z rozegranymi kwalifikacjami.</source>
+        <translation>This competition is linked to completed qualifications.</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="156" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="183" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="246" />
+        <source>Zmiany zapisane w kalendarzu</source>
+        <translation>Calendar changes saved</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="197" />
+        <source>Najpierw dodaj skocznię do zapisu.</source>
+        <translation>Add a hill to this save first.</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="198" />
+        <source>Dodano konkurs</source>
+        <translation>Competition added</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="202" />
+        <source>Skopiowano konkursy</source>
+        <translation>Competitions copied</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="206" />
+        <source>Usunięto konkursy. Możesz cofnąć zmianę.</source>
+        <translation>Competitions deleted. You can undo this change.</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="214" />
+        <source>Kwalifikacje muszą poprzedzać konkurs, do którego prowadzą.</source>
+        <translation>Qualifications must precede their target competition.</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="216" />
+        <source>Zmieniono kolejność konkursów</source>
+        <translation>Competition order changed</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="227" />
+        <source>Cofnięto zmianę</source>
+        <translation>Change undone</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="239" />
+        <source>Dodaj co najmniej jedną serię.</source>
+        <translation>Add at least one round.</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="242" />
+        <source>Najpierw dodaj treningi.</source>
+        <translation>Add training sessions first.</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="243" />
+        <source>Najpierw dodaj serię próbną.</source>
+        <translation>Add a trial round first.</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="263" />
+        <source>Kalendarz zawiera rozegrane wydarzenia.</source>
+        <translation>This calendar contains completed events.</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="272" />
+        <source>Brak presetów kalendarza do wczytania.</source>
+        <translation>No calendar presets available.</translation>
+    </message>
+</context>
+
+
+
+
+<context>
+    <name>QuickUi</name>
+    <message>
+        <location filename="../source/UI/Quick/QuickUi.cpp" line="88" />
+        <source>Menu główne</source>
+        <translation>Main menu</translation>
+    </message>
+</context>
+
+
+
+
+<context>
+    <name>CalendarsListModel</name>
+    <message>
+        <source>Kalendarz</source>
+        <translation>Calendar</translation>
+    </message>
+</context>
+<context>
+    <name>FormGeneratorWorkspace</name>
+    <message>
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="14" />
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="37" />
+        <source>Zawodnicy</source>
+        <translation>Jumpers</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="14" />
+        <source>Parametry</source>
+        <translation>Parameters</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="25" />
+        <source>Parametry formy</source>
+        <translation>Form parameters</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="27" />
+        <source>Presety</source>
+        <translation>Presets</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="46" />
+        <source>Parametry zawodników</source>
+        <translation>Athlete parameters</translation>
+    </message>
+</context>
+
+<context>
+    <name>QuickRoster</name>
+    <message>
+        <location filename="../source/UI/Quick/QuickRoster.cpp" line="64" />
+        <source>Wszystkie kraje</source>
+        <translation>All countries</translation>
+    </message>
+</context>
+
+<context>
+    <name>RosterLibrary</name>
+    <message>
+        <location filename="../source/UI/Quick/RosterLibrary.qml" line="9" />
+        <source>Zawodnicy</source>
+        <translation>Jumpers</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterLibrary.qml" line="10" />
+        <source>Szukaj nazwiska lub kraju</source>
+        <translation>Search name or country</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterLibrary.qml" line="11" />
+        <source>Kraj</source>
+        <translation>Country</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterLibrary.qml" line="20" />
+        <source>Brak pasujących zawodników</source>
+        <translation>No matching athletes</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterLibrary.qml" line="24" />
+        <source>Dodaj widocznych</source>
+        <translation>Add visible athletes</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterLibrary.qml" line="26" />
+        <source>Wybór zawodników</source>
+        <translation>Athlete selection</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterLibrary.qml" line="27" />
+        <source>Usuń widocznych z listy</source>
+        <translation>Remove visible athletes</translation>
+    </message>
+</context>
+
+<context>
+    <name>RosterOrder</name>
+    <message>
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="9" />
+        <source>Lista startowa</source>
+        <translation>Start list</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="13" />
+        <source>%1 · %2</source>
+        <translation>%1 · %2</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="14" />
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="22" />
+        <source>Przenieś</source>
+        <translation>Move</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="16" />
+        <source>Szukaj na liście</source>
+        <translation>Search start list</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="20" />
+        <source>Pozycja</source>
+        <translation>Position</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="21" />
+        <source>Pozycja docelowa</source>
+        <translation>Target position</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="23" />
+        <source>Zamknij</source>
+        <translation>Close</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="38" />
+        <source>Wybierz zawodników do listy</source>
+        <translation>Select athletes for the list</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="38" />
+        <source>Brak pasujących zawodników</source>
+        <translation>No matching athletes</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="47" />
+        <source>Zaznaczono: %1</source>
+        <translation>Selected: %1</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="47" />
+        <source>W składzie: %1</source>
+        <translation>Starting squad: %1</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="47" />
+        <source>Kolejność startu</source>
+        <translation>Start order</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="48" />
+        <source>Usuń zaznaczonych</source>
+        <translation>Remove selected</translation>
+    </message>
+</context>
+
+<context>
+    <name>RosterRow</name>
+    <message>
+        <location filename="../source/UI/Quick/RosterRow.qml" line="23" />
+        <source>%1. %2, %3</source>
+        <translation>%1. %2, %3</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterRow.qml" line="45" />
+        <source>Przenieś %1</source>
+        <translation>Move %1</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterRow.qml" line="46" />
+        <source>Przeciągnij lub wybierz pozycję</source>
+        <translation>Drag or choose a position</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterRow.qml" line="68" />
+        <source>Skład</source>
+        <translation>Starting squad</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterRow.qml" line="68" />
+        <source>Rezerwa</source>
+        <translation>Reserve</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterRow.qml" line="71" />
+        <source>Usuń %1 z listy</source>
+        <translation>Remove %1 from list</translation>
+    </message>
+</context>
+
+<context>
+    <name>RosterSummary</name>
+    <message>
+        <location filename="../source/UI/Quick/RosterSummary.qml" line="13" />
+        <source>Lista startowa</source>
+        <translation>Start list</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterSummary.qml" line="14" />
+        <source>Zawodnicy: %1</source>
+        <translation>Athletes: %1</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterSummary.qml" line="15" />
+        <source>Edytuj listę</source>
+        <translation>Edit start list</translation>
+    </message>
+</context>
+
+<context>
+    <name>RosterWorkspace</name>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="26" />
+        <source>Lista · %1</source>
+        <translation>List · %1</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="26" />
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="44" />
+        <source>Dodaj zawodników</source>
+        <translation>Add athletes</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="27" />
+        <source>Wybór i kolejność</source>
+        <translation>Selection and order</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="27" />
+        <source>Kolejność skoczków</source>
+        <translation>Athlete order</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="28" />
+        <source>Cofnij</source>
+        <translation>Undo</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="30" />
+        <source>Opcje listy</source>
+        <translation>List options</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="33" />
+        <source>Według nazwiska</source>
+        <translation>By surname</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="33" />
+        <source>Według kraju</source>
+        <translation>By country</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="33" />
+        <source>Losowo</source>
+        <translation>Random</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="33" />
+        <source>Zapisane listy</source>
+        <translation>Saved lists</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="41" />
+        <source>Zapisana lista</source>
+        <translation>Saved list</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="43" />
+        <source>Zastosuj</source>
+        <translation>Apply</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="44" />
+        <source>Usuń zawodników</source>
+        <translation>Remove athletes</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="44" />
+        <source>Ustaw kolejność</source>
+        <translation>Apply order</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="52" />
+        <source>Lista startowa</source>
+        <translation>Start list</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="52" />
+        <source>Drużyna</source>
+        <translation>Team</translation>
+    </message>
+</context>
+
 </TS>

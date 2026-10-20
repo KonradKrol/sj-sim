@@ -37,31 +37,23 @@ int StartListModel::rowCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
 
-    return startListStatuses->count();
+    return displayedStatuses.count();
 
     // FIXME: Implement me!
 }
 
 QVariant StartListModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!index.isValid() || index.column()!=0 || index.row()<0 || index.row()>=displayedStatuses.size())
         return QVariant();
 
     else if(role == Qt::TextAlignmentRole){
         return Qt::AlignHCenter;
     }
 
-    if(StartListCompetitorStatus::getStatusOfJumper(startListStatuses->at(index.row()).getJumper(), *startListStatuses) == nullptr)
-    {
-        if(role == Qt::ForegroundRole)
-            return QBrush(QColor("black"));
-        else if(role == Qt::BackgroundRole)
-            return QBrush(QColor("white"));
-        else if(role == Qt::FontRole)
-            return QFont("Ubuntu", 11);
-    }
-    else if(role == Qt::ForegroundRole){
-        if(startListStatuses->at(index.row()).getJumpStatus() == StartListCompetitorStatus::Finished){
+    if(!displayedStatuses.at(index.row()).getJumper())return {};
+    if(role == Qt::ForegroundRole){
+        if(displayedStatuses.at(index.row()).getJumpStatus() == StartListCompetitorStatus::Finished){
             return QBrush(QColor(qRgb(77, 77, 77)));
         }
         else{
@@ -70,7 +62,7 @@ QVariant StartListModel::data(const QModelIndex &index, int role) const
     }
     else if(role == Qt::BackgroundRole){
         if(KOGroups == nullptr){
-            if(startListStatuses->at(index.row()).getJumpStatus() == StartListCompetitorStatus::Finished){
+            if(displayedStatuses.at(index.row()).getJumpStatus() == StartListCompetitorStatus::Finished){
                 return QBrush(QColor(qRgb(242, 242, 242)));
             }
             else{
@@ -78,20 +70,20 @@ QVariant StartListModel::data(const QModelIndex &index, int role) const
             }
         }
         else{
-            Jumper * jumper = startListStatuses->at(index.row()).getJumper();
+            Jumper * jumper = displayedStatuses.at(index.row()).getJumper();
             for(auto & group : *KOGroups)
             {
                 for(auto & groupJumper : group.getJumpers()){
                     if(groupJumper== jumper)
                     {
                         if(group.getNumber() % 2 == 0){
-                            if(startListStatuses->at(index.row()).getJumpStatus() == StartListCompetitorStatus::Finished)
+                            if(displayedStatuses.at(index.row()).getJumpStatus() == StartListCompetitorStatus::Finished)
                                 return QBrush(QColor(qRgb(230, 230, 218)));
                             else
                                 return QBrush(QColor(qRgb(242, 245, 225)));
                         }
                         else{
-                            if(startListStatuses->at(index.row()).getJumpStatus() == StartListCompetitorStatus::Finished)
+                            if(displayedStatuses.at(index.row()).getJumpStatus() == StartListCompetitorStatus::Finished)
                                 return QBrush(QColor(qRgb(242, 242, 242)));
                             else
                                 return QBrush(QColor("white"));
@@ -103,26 +95,22 @@ QVariant StartListModel::data(const QModelIndex &index, int role) const
     }
     else if(role == Qt::FontRole){
         QFont font("Ubuntu", 11);
-        if(startListStatuses->at(index.row()).getJumpStatus() == StartListCompetitorStatus::Finished){
+        if(displayedStatuses.at(index.row()).getJumpStatus() == StartListCompetitorStatus::Finished){
             font.setItalic(true);
         }
         return font;
     }
-    qDebug()<<"index "<<index.row();
-    qDebug()<<startListStatuses->at(index.row()).getJumper();
-    qDebug()<<startListStatuses->at(index.row()).getJumper()->getPersonalBest();
-    qDebug()<<startListStatuses->at(index.row()).getJumper()->getNameAndSurname();
-    QString string = QString::number(index.row() + 1) + ". " + startListStatuses->at(index.row()).getJumper()->getNameAndSurname();
+    QString string = QString::number(index.row() + 1) + ". " + displayedStatuses.at(index.row()).getJumper()->getNameAndSurname();
     if(role == Qt::DisplayRole){
-        if(startListStatuses->at(index.row()).getJumpStatus() == StartListCompetitorStatus::Dns)
+        if(displayedStatuses.at(index.row()).getJumpStatus() == StartListCompetitorStatus::Dns)
             return string + "   (Nie wystartował)";
-        else if(startListStatuses->at(index.row()).getJumpStatus() == StartListCompetitorStatus::Dsq)
+        else if(displayedStatuses.at(index.row()).getJumpStatus() == StartListCompetitorStatus::Dsq)
                    return string + "   (Dyskwalifikacja)";
         else
             return string;
     }
     else if(role == Qt::DecorationRole){
-        return QIcon(CountryFlagsManager::getFlagPixmap(startListStatuses->at(index.row()).getJumper()->getCountryCode().toLower()).scaled(QSize(24, 14)));
+        return QIcon(CountryFlagsManager::getFlagPixmap(displayedStatuses.at(index.row()).getJumper()->getCountryCode().toLower()).scaled(QSize(24, 14)));
     }
     //}
     return QVariant();
@@ -146,6 +134,7 @@ QVector<StartListCompetitorStatus> *StartListModel::getStartListStatuses() const
 void StartListModel::setStartListStatuses(QVector<StartListCompetitorStatus> *newStartListStatuses)
 {
     startListStatuses = newStartListStatuses;
+    refresh();
 }
 
 short StartListModel::getType() const
@@ -156,4 +145,20 @@ short StartListModel::getType() const
 void StartListModel::setType(short newType)
 {
     type = newType;
+}
+
+void StartListModel::refresh()
+{
+    const auto next = startListStatuses ? *startListStatuses : QVector<StartListCompetitorStatus>();
+    bool structural = next.size() != displayedStatuses.size();
+    for(int i=0;!structural && i<next.size();++i)
+        structural = next[i].getJumper() != displayedStatuses[i].getJumper();
+    if(structural) {
+        beginResetModel();
+        displayedStatuses = next;
+        endResetModel();
+    } else {
+        displayedStatuses = next;
+        if(!displayedStatuses.isEmpty())emit dataChanged(index(0),index(displayedStatuses.size()-1));
+    }
 }

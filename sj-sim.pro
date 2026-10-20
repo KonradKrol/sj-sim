@@ -394,8 +394,10 @@ greaterThan(QT_MAJOR_VERSION, 5): DEFINES += QT_CHARTS_BEGIN_NAMESPACE= QT_CHART
 contains(CONFIG, competition_quick) {
     QT += qml quick quickwidgets quickcontrols2
     DEFINES += SJ_COMPETITION_QUICK
-    SOURCES += source/UI/Competition/Quick/CompetitionQuickBridge.cpp
-    HEADERS += source/UI/Competition/Quick/CompetitionQuickBridge.h
+    SOURCES += source/UI/Competition/Quick/CompetitionQuickBridge.cpp \
+        source/UI/Competition/Quick/CompetitionLiveBridge.cpp
+    HEADERS += source/UI/Competition/Quick/CompetitionQuickBridge.h \
+        source/UI/Competition/Quick/CompetitionLiveBridge.h
     RESOURCES += source/UI/Competition/Quick/competition-quick.qrc
 }
 
@@ -405,4 +407,28 @@ contains(CONFIG, competition_quick_smoke) {
     TARGET = sj-sim-quick-smoke
     SOURCES -= source/main.cpp
     SOURCES += tests/competition-quick-smoke.cpp
+}
+
+# The full Qt Quick interface is the default on this feature branch.
+# CONFIG+=widgets_only retains the original Widgets build without Quick dependencies.
+!contains(CONFIG, widgets_only):!contains(CONFIG, competition_quick) {
+    QT += qml quick quickwidgets quickcontrols2
+    DEFINES += SJ_QUICK_UI
+    SOURCES += source/UI/Quick/QuickUi.cpp \
+        source/UI/Quick/QuickBridge.cpp \
+        source/UI/Quick/QuickTableModel.cpp \
+        source/UI/Quick/QuickPlot.cpp \
+        source/UI/Quick/QuickSurface.cpp \
+        source/UI/Quick/QuickCalendar.cpp \
+        source/UI/Quick/QuickRoster.cpp
+    HEADERS += source/UI/Quick/QuickUi.h source/UI/Quick/QuickPlot.h source/UI/Quick/QuickSurface.h source/UI/Quick/QuickCalendar.h source/UI/Quick/QuickRoster.h
+    RESOURCES += source/UI/Quick/quick-ui.qrc
+}
+
+contains(CONFIG, quick_ui_smoke) {
+    contains(CONFIG, widgets_only): error(quick_ui_smoke requires the Qt Quick interface)
+    QT += testlib
+    TARGET = sj-sim-ui-smoke
+    SOURCES -= source/main.cpp
+    SOURCES += tests/quick-ui-smoke.cpp
 }
