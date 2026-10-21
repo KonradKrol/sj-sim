@@ -633,6 +633,7 @@ static void geometryRegressions(MainWindow &main) {
     form.findChild<QDoubleSpinBox *>("doubleSpinBox_formBonus")->setValue(3.5);withPreset("on_pushButton_saveAsPreset_clicked");const int count=presets.size();
     form.findChild<QDoubleSpinBox *>("doubleSpinBox_formBonus")->setValue(6.5);withPreset("on_pushButton_saveAsPreset_clicked");check(presets.size()==count&&presets.last().getSettings().getFormBonus()==6.5,"saving the same form preset replaces that preset instead of a calendar preset");
     const auto athletesBefore=form.getTableModel()->getGeneratorsSettingsReference();withPreset("on_pushButton_loadPreset_clicked");
+    check(form.getTableModel()->getGeneratorsSettingsReference().first().getFormBonus()!=6.5,"loaded preset is staged until explicit application");form.applyParameters(false);
     for(int i=0;i<athletesBefore.size();++i){const auto settings=form.getTableModel()->getGeneratorsSettingsReference()[i];check(settings.getJumper()==athletesBefore[i].getJumper()&&settings.getFormBonus()==6.5,"loading a form preset applies settings and preserves every athlete identity");}
     auto *formTable=qobject_cast<QuickTableModel *>(qobject_cast<QuickNode *>(bridge->find("tableView"))->values().value("table").value<QObject *>());check(formTable&&formTable->data(formTable->index(0),Qt::UserRole+1).toList()[2].toMap().value("text").toString().toDouble()==6.5,"loaded preset refreshes visible table values");
     presets=originals;GlobalDatabase::get()->writeFormGeneratorPresets();
@@ -718,6 +719,21 @@ static void auditStatisticsRegressions(MainWindow &main) {
     qInfo()<<"PASS: audit 7-13 finite statistics, small fields, missing presets, empty filters/calendars, detached jumps and DNS charts";
 }
 
+static void uxRegressions(MainWindow &main) {
+    main.show();main.resize(1440,900);SimulationSave save;QVector<Jumper *> pool;for(int i=0;i<6;++i)pool.append(new Jumper(GlobalDatabase::get()->getEditableGlobalJumpers()[i]));save.setJumpers(pool);save.fixJumpersFormInstabilities();
+    {
+        JumpersFormGeneratorConfigWindow form(&main);form.getTableModel()->setGeneratorsSettings(JumperFormGeneratorSettings::constructJumperFormGeneratorsSettingsVector(pool));form.setSave(&save);form.updateTable();form.show();QTest::qWait(150);auto *bridge=form.findChild<QuickBridge *>();
+        bridge->edit(id(bridge,"doubleSpinBox_formBonus"),8.0);QTest::qWait(80);
+        for(const auto &settings:form.getTableModel()->getGeneratorsSettings())check(settings.getFormBonus()==0,"UX 1: draft form parameters never silently overwrite athletes");
+        check(!form.findChild<QPushButton *>("pushButton_generate")->isEnabled(),"UX 1: pending parameters must be applied before generation");
+        auto *source=form.findChild<QTableView *>("tableView");source->selectionModel()->select(form.getTableModel()->index(1,0),QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);QTest::qWait(40);
+        auto *scope=item(scene(&form)->rootObject(),"formBulkScope");check(scope&&scope->isVisible(),"UX 1: batch scope is directly available");scope->setProperty("currentIndex",1);clickControl(scene(&form),"formApplyParameters");
+        const auto settings=form.getTableModel()->getGeneratorsSettings();for(int i=0;i<settings.size();++i)check(settings[i].getFormBonus()==(i==1?8:0),"UX 1: applying to selected athletes preserves every other setting");
+        check(form.findChild<QPushButton *>("pushButton_generate")->isEnabled(),"UX 1: generation becomes available after applying the draft");render(&form,"ux-explicit-form",true);form.reject();
+    }
+    qInfo()<<"PASS: explicit scoped form editing";
+}
+
 static void backendRegressions() {
     { Classification source("Existing classification");source.setAltPointsForPlaces({{1,25.0}});ClassificationEditorWidget editor(&source);check(editor.getClassification()==&source,"classification constructor initializes the supplied source");editor.setClassification(nullptr);check(!editor.getClassification(),"classification source can be cleared safely"); }
 
@@ -787,6 +803,7 @@ int main(int argc,char **argv) {
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="1.3.0 beta-3","one release version is shared with the interface");
     backendRegressions();
+    if(app.arguments().contains("--ux-only")){uxRegressions(main);return 0;}
     if(app.arguments().contains("--audit-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);return 0;}
     if(app.arguments().contains("--audit-stats-only")){auditStatisticsRegressions(main);return 0;}
     if(app.arguments().contains("--audit-form-only")){auditFormRegressions();return 0;}

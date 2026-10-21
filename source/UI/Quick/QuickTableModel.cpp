@@ -8,6 +8,7 @@
 #include <QPixmap>
 #include <QBrush>
 #include <QFont>
+#include <QSet>
 
 QString quickPicture(const QPixmap &pixmap) {
     if (pixmap.isNull()) return {};
@@ -218,4 +219,14 @@ void QuickTableModel::setFrozen(bool frozen) {
     } else {
         m_frozen=false;m_snapshot.clear();sync();rebuild();emit frozenChanged();
     }
+}
+
+int QuickTableModel::selectedCount() const {
+    if(!m_view || !m_view->selectionModel())return 0;
+    QSet<QPersistentModelIndex> rows;
+    for(const auto &index:m_view->selectionModel()->selectedIndexes())rows.insert(index.sibling(index.row(),0));
+    return rows.size();
+}
+void QuickTableModel::clearSelection() {
+    if(!m_frozen && m_view && m_view->selectionModel())m_view->selectionModel()->clearSelection();
 }

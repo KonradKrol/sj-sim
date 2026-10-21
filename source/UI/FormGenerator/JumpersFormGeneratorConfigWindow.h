@@ -23,8 +23,10 @@ public:
 
     void updateTable();
     JumperFormGeneratorSettings getSettingsFromInputs();
+    Q_INVOKABLE int applyParameters(bool selectedOnly);
 
 private:
+    bool stageParameters();
     Ui::JumpersFormGeneratorConfigWindow *ui;
 
     QAction * removeFromTableAction;

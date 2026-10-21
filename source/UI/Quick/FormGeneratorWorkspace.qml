@@ -9,6 +9,8 @@ Item {
     readonly property var fields: node.values
     readonly property bool parallel: width >= 1000 && height >= 520
     property int section: 0
+    property string appliedMessage: ""
+    readonly property var tableModel: fields.table ? fields.table.values.table : null
     ColumnLayout {
         anchors.fill: parent; spacing: 12
         SectionTabs { visible: !generator.parallel; options: [qsTr("Zawodnicy"),qsTr("Parametry")]; currentIndex: generator.section; Layout.fillWidth: true; onSelected: generator.section=index }
@@ -24,6 +26,18 @@ Item {
                     width: parameters.availableWidth; spacing: 12
                     Label { text: qsTr("Parametry formy"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section }
                     Repeater { model: generator.fields.parameters || []; Node { node: modelData; Layout.fillWidth: true } }
+                    SChoice {
+                        id: scope; objectName: "formBulkScope"
+                        Layout.fillWidth: true; Layout.minimumWidth: 0
+                        model: [qsTr("Wszyscy (%1)").arg(generator.tableModel ? generator.tableModel.count : 0),qsTr("Zaznaczeni (%1)").arg(generator.tableModel ? generator.tableModel.selectedCount : 0)]
+                        Accessible.name: qsTr("Zastosuj parametry do")
+                    }
+                    SButton {
+                        objectName: "formApplyParameters"; text: qsTr("Zastosuj parametry"); Layout.fillWidth: true
+                        enabled: !!generator.tableModel && (scope.currentIndex===0 ? generator.tableModel.count>0 : generator.tableModel.selectedCount>0)
+                        onClicked: {generator.forceActiveFocus();var count=generator.fields.controller.applyParameters(scope.currentIndex===1);generator.appliedMessage=qsTr("Zmieniono parametry: %1").arg(count);ui.refresh()}
+                    }
+                    Label { objectName: "formDraftStatus"; text: generator.fields.pending ? qsTr("Zastosuj parametry do tabeli.") : generator.appliedMessage; visible: text.length>0; color: generator.fields.pending ? Theme.warning : Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                     Label { text: qsTr("Presety"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.topMargin: 8 }
                     Repeater { model: generator.fields.presets || []; Node { node: modelData; Layout.fillWidth: true } }
                 }

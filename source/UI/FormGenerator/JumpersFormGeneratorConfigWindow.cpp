@@ -45,7 +45,7 @@ void JumpersFormGeneratorConfigWindow::updateTable()
     ui->tableView->setModel(nullptr);
     ui->tableView->setModel(tableModel);
     ui->tableView->resizeColumnsToContents();
-    ui->pushButton_generate->setEnabled(save && tableModel->rowCount()>0);
+    ui->pushButton_generate->setEnabled(save && tableModel->rowCount()>0 && !property("quickFormDraftPending").toBool());
 }
 
 JumperFormGeneratorSettings JumpersFormGeneratorConfigWindow::getSettingsFromInputs()
@@ -76,7 +76,7 @@ SimulationSave *JumpersFormGeneratorConfigWindow::getSave() const
 void JumpersFormGeneratorConfigWindow::setSave(SimulationSave *newSave)
 {
     save = newSave;
-    ui->pushButton_generate->setEnabled(save && tableModel->rowCount()>0);
+    ui->pushButton_generate->setEnabled(save && tableModel->rowCount()>0 && !property("quickFormDraftPending").toBool());
 }
 
 JumperFormGeneratorsSettingsTableModel *JumpersFormGeneratorConfigWindow::getTableModel() const
@@ -87,6 +87,7 @@ JumperFormGeneratorsSettingsTableModel *JumpersFormGeneratorConfigWindow::getTab
 void JumpersFormGeneratorConfigWindow::on_doubleSpinBox_formBonus_editingFinished()
 {
     double value = ui->doubleSpinBox_formBonus->value();
+    if(stageParameters())return;
     for(auto & settings : tableModel->getGeneratorsSettingsReference())
     {
         settings.setFormBonus(value);
@@ -98,6 +99,7 @@ void JumpersFormGeneratorConfigWindow::on_doubleSpinBox_minForm_editingFinished(
 {
     double value = ui->doubleSpinBox_minForm->value();
     if(ui->doubleSpinBox_maxForm->value()<value)ui->doubleSpinBox_maxForm->setValue(value);
+    if(stageParameters())return;
     for(auto & settings : tableModel->getGeneratorsSettingsReference())
     {
         settings.setMinForm(value);
@@ -110,6 +112,7 @@ void JumpersFormGeneratorConfigWindow::on_doubleSpinBox_maxForm_editingFinished(
 {
     double value = ui->doubleSpinBox_maxForm->value();
     if(ui->doubleSpinBox_minForm->value()>value)ui->doubleSpinBox_minForm->setValue(value);
+    if(stageParameters())return;
     for(auto & settings : tableModel->getGeneratorsSettingsReference())
     {
         settings.setMaxForm(value);
@@ -191,7 +194,7 @@ void JumpersFormGeneratorConfigWindow::on_pushButton_loadPreset_clicked()
     if(ok && presetsNames.contains(itemText))
     {
         JumperFormGeneratorSettingsPreset * preset = &GlobalDatabase::get()->getEditableFormGeneratorPresets()[presetsNames.indexOf(itemText)];
-        for(auto & settings : tableModel->getGeneratorsSettingsReference())
+        if(!property("quickExplicitFormEdits").toBool())for(auto & settings : tableModel->getGeneratorsSettingsReference())
         {
             Jumper * jumper = settings.getJumper();
             settings = preset->getSettings();
@@ -202,14 +205,14 @@ void JumpersFormGeneratorConfigWindow::on_pushButton_loadPreset_clicked()
         ui->doubleSpinBox_formBonus->setValue(settings->getFormBonus());
         ui->doubleSpinBox_minForm->setValue(settings->getMinForm());
         ui->doubleSpinBox_maxForm->setValue(settings->getMaxForm());
-        updateTable();
+        if(!stageParameters())updateTable();
     }
 }
 
 
 void JumpersFormGeneratorConfigWindow::on_pushButton_generate_clicked()
 {
-    if(!save || tableModel->rowCount()==0)return;
+    if(!save || tableModel->rowCount()==0 || property("quickFormDraftPending").toBool())return;
     JumperFormGenerator generator;
     for(auto & jumperSettings : tableModel->getGeneratorsSettingsReference())
     {
@@ -237,6 +240,7 @@ void JumpersFormGeneratorConfigWindow::onRemoveFromTable(bool alternative)
 void JumpersFormGeneratorConfigWindow::on_doubleSpinBox_formVariability_editingFinished()
 {
     double value = ui->doubleSpinBox_formVariability->value();
+    if(stageParameters())return;
     for(auto & settings : tableModel->getGeneratorsSettingsReference())
     {
         settings.setFormVariability(value);
@@ -306,4 +310,25 @@ void JumpersFormGeneratorConfigWindow::on_pushButton_jumpersLists_clicked()
         tableModel->setGeneratorsSettings(settings);
         updateTable();
     }
+}
+
+bool JumpersFormGeneratorConfigWindow::stageParameters() {
+    if(!property("quickExplicitFormEdits").toBool())return false;
+    setProperty("quickFormDraftPending",true);ui->pushButton_generate->setEnabled(false);return true;
+}
+int JumpersFormGeneratorConfigWindow::applyParameters(bool selectedOnly) {
+    QSet<int> rows;
+    if(selectedOnly)for(const auto &index:ui->tableView->selectionModel()->selectedIndexes())rows.insert(index.row());
+    const auto values=getSettingsFromInputs();int count=0;
+    if(values.getMinForm()>values.getMaxForm())return 0;
+    auto &settings=tableModel->getGeneratorsSettingsReference();
+    for(int row=0;row<settings.size();++row)if(!selectedOnly || rows.contains(row)) {
+        auto *jumper=settings[row].getJumper();settings[row]=values;settings[row].setJumper(jumper);++count;
+    }
+    if(count) {
+        setProperty("quickFormDraftPending",false);
+        emit tableModel->dataChanged(tableModel->index(0,0),tableModel->index(settings.size()-1,4));
+        ui->pushButton_generate->setEnabled(save && !settings.isEmpty());
+    }
+    return count;
 }

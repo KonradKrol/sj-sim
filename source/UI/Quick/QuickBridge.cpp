@@ -644,8 +644,9 @@ void QuickBridge::compose(QuickNode *base) {
     if(auto *list=qobject_cast<JumpersListEditorWindow *>(m_window)){auto *entry=rosterNode(list);m_root->update(entry->values(),entry->children());return;}
     if(profile()=="QDialog")if(auto *team=m_content->findChild<TeamEditorWidget *>()){auto *entry=rosterNode(team);m_root->update(entry->values(),entry->children());return;}
     if(profile()=="JumpersFormGeneratorConfigWindow") {
+        m_window->setProperty("quickExplicitFormEdits",true);
         const auto parameters=fields({{"doubleSpinBox_formVariability",tr("Zmienność formy")},{"doubleSpinBox_formBonus",tr("Bonus formy")},{"doubleSpinBox_minForm",tr("Minimalna forma")},{"doubleSpinBox_maxForm",tr("Maksymalna forma")}});
-        m_root->update({{"kind","formGenerator"},{"parameters",parameters},{"presets",fields({{"pushButton_loadPreset",""},{"pushButton_saveAsPreset",""}})},{"table",field("tableView")},{"lists",field("pushButton_jumpersLists")},{"submit",field("pushButton_generate")}});return;
+        m_root->update({{"kind","formGenerator"},{"controller",QVariant::fromValue(static_cast<QObject *>(m_window.data()))},{"pending",m_window->property("quickFormDraftPending")},{"parameters",parameters},{"presets",fields({{"pushButton_loadPreset",""},{"pushButton_saveAsPreset",""}})},{"table",field("tableView")},{"lists",field("pushButton_jumpersLists")},{"submit",field("pushButton_generate")}});return;
     }
     if(profile()=="AppSettingsWindow") {
         QVariantList sections;

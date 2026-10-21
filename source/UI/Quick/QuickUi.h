@@ -63,6 +63,7 @@ class QuickTableModel : public QAbstractListModel {
     Q_PROPERTY(QStringList headers READ headers NOTIFY structureChanged)
     Q_PROPERTY(int count READ count NOTIFY structureChanged)
     Q_PROPERTY(bool multiple READ multiple NOTIFY structureChanged)
+    Q_PROPERTY(int selectedCount READ selectedCount NOTIFY cursorChanged)
     Q_PROPERTY(QString filter READ filter WRITE setFilter NOTIFY structureChanged)
     Q_PROPERTY(int currentRow READ currentRow NOTIFY cursorChanged)
     Q_PROPERTY(int currentColumn READ currentColumn NOTIFY cursorChanged)
@@ -75,6 +76,7 @@ public:
     QStringList headers() const;
     int count() const { return m_rows.size(); }
     bool multiple() const;
+    int selectedCount() const;
     QString filter() const { return m_filter; }
     void setFilter(const QString &value);
     int currentRow() const;
@@ -91,6 +93,7 @@ public:
     Q_INVOKABLE void moveColumn(int delta);
     Q_INVOKABLE void toggleCurrent();
     Q_INVOKABLE void selectAll();
+    Q_INVOKABLE void clearSelection();
     Q_INVOKABLE void openCurrent();
 signals:
     void structureChanged();
