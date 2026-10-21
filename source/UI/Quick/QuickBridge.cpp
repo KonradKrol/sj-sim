@@ -646,8 +646,8 @@ void QuickBridge::compose(QuickNode *base) {
     if(profile()=="JumpersFormGeneratorConfigWindow") {
         m_window->setProperty("quickExplicitFormEdits",true);
         const auto parameters=fields({{"doubleSpinBox_formVariability",tr("Zmienność formy")},{"doubleSpinBox_formBonus",tr("Bonus formy")},{"doubleSpinBox_minForm",tr("Minimalna forma")},{"doubleSpinBox_maxForm",tr("Maksymalna forma")}});
-        auto *form=qobject_cast<JumpersFormGeneratorConfigWindow *>(m_window.data());
-        m_root->update({{"kind","formGenerator"},{"participantCount",form ? form->getTableModel()->rowCount() : 0},{"controller",QVariant::fromValue(static_cast<QObject *>(m_window.data()))},{"pending",m_window->property("quickFormDraftPending")},{"parameters",parameters},{"presets",fields({{"pushButton_loadPreset",""},{"pushButton_saveAsPreset",""}})},{"table",field("tableView")},{"lists",field("pushButton_jumpersLists")},{"submit",field("pushButton_generate")}});return;
+        const auto *table=m_content->findChild<QAbstractItemView *>("tableView");
+        m_root->update({{"kind","formGenerator"},{"participantCount",table && table->model() ? table->model()->rowCount() : 0},{"controller",QVariant::fromValue(static_cast<QObject *>(m_window.data()))},{"pending",m_window->property("quickFormDraftPending")},{"parameters",parameters},{"presets",fields({{"pushButton_loadPreset",""},{"pushButton_saveAsPreset",""}})},{"table",field("tableView")},{"lists",field("pushButton_jumpersLists")},{"submit",field("pushButton_generate")}});return;
     }
     if(profile()=="AppSettingsWindow") {
         QVariantList sections;
