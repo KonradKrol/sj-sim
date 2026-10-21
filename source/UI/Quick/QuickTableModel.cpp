@@ -55,7 +55,12 @@ QVariant QuickTableModel::data(const QModelIndex &index, int role) const {
         }
         return cells;
     }
-    case Qt::UserRole+2: return selection && selection->isSelected(first);
+    case Qt::UserRole+2:
+        if (selection) {
+            for (int column = 0; column < m_source->columnCount(first.parent()); ++column)
+                if (selection->isSelected(first.sibling(first.row(), column))) return true;
+        }
+        return false;
     case Qt::UserRole+3: { int depth=0; for(auto p=first.parent();p.isValid();p=p.parent()) ++depth; return depth; }
     case Qt::UserRole+4: return m_source->hasChildren(first);
     case Qt::UserRole+5: return qobject_cast<QTreeView *>(m_view) && static_cast<QTreeView *>(m_view.data())->isExpanded(first);
