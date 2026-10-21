@@ -6,12 +6,13 @@ ColumnLayout {
     id: order
     property var backend
     property bool moving: false
+    readonly property bool cramped: height<260
     property string title: qsTr("Lista startowa")
-    spacing: 8
+    spacing: cramped ? 4 : 8
     RowLayout {
         Layout.fillWidth: true
         Label { text: qsTr("%1 · %2").arg(order.title).arg(order.backend.count); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; elide: Text.ElideRight }
-        SButton { text: qsTr("Przenieś"); quiet: true; enabled: order.backend.markedCount > 0; onClicked: order.moving=!order.moving }
+        SButton { text: qsTr("Przenieś"); implicitHeight: order.cramped ? 32 : 40; padding: order.cramped ? 4 : 6; quiet: true; enabled: order.backend.markedCount > 0; onClicked: order.moving=!order.moving }
     }
     SField { objectName: "rosterOrderSearch"; Layout.fillWidth: true; Layout.minimumWidth: 0; text: order.backend.orderQuery; placeholderText: qsTr("Szukaj na liście"); Accessible.name: placeholderText; onTextEdited: order.backend.orderQuery=text }
     RowLayout {
@@ -43,6 +44,7 @@ ColumnLayout {
         }
     }
     RowLayout {
+        visible: !order.cramped || order.backend.markedCount>0 || order.backend.activeLimit>0
         Layout.fillWidth: true
         Label { text: order.backend.markedCount ? qsTr("Zaznaczono: %1").arg(order.backend.markedCount) : order.backend.activeLimit ? qsTr("W składzie: %1").arg(order.backend.activeLimit) : qsTr("Kolejność startu"); font.pointSize: Theme.caption; color: Theme.muted; Layout.fillWidth: true; elide: Text.ElideRight }
         SButton { visible: order.backend.membership && order.backend.markedCount > 0; text: qsTr("Usuń zaznaczonych"); onClicked: order.backend.removeMarked() }

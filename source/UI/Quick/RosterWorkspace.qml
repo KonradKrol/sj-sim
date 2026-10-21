@@ -22,8 +22,9 @@ Item {
         }
         RowLayout {
             Layout.fillWidth: true
-            SButton { objectName: "rosterChoose"; visible: roster.backend.membership && roster.compact; text: roster.choosing ? qsTr("Lista · %1").arg(roster.backend.count) : qsTr("Dodaj zawodników"); primary: !roster.choosing; Layout.fillWidth: true; onClicked: roster.choosing=!roster.choosing }
+            SButton { objectName: "rosterChoose"; visible: roster.backend.membership && roster.compact; text: roster.choosing ? qsTr("Lista · %1").arg(roster.backend.count) : (roster.backend.presets.length>0 ? qsTr("Dodaj") : qsTr("Dodaj zawodników")); primary: !roster.choosing; Layout.fillWidth: true; onClicked: roster.choosing=!roster.choosing }
             Label { visible: !roster.compact; text: roster.backend.membership ? qsTr("Wybór i kolejność") : qsTr("Kolejność skoczków"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; Layout.fillWidth: true }
+            SButton { objectName: "rosterOpenPresets"; visible: roster.compact && roster.backend.presets.length>0; text: qsTr("Listy"); Accessible.name: qsTr("Zapisane listy"); hint: qsTr("Zapisane listy"); onClicked: savedLists.open() }
             SButton { objectName: "rosterUndo"; text: qsTr("Cofnij"); enabled: roster.backend.canUndo; quiet: true; onClicked: roster.backend.undo() }
             SButton {
                 text: "⋯"; quiet: true; Accessible.name: qsTr("Opcje listy"); onClicked: options.open()
@@ -38,11 +39,6 @@ Item {
             active: !roster.compact && roster.backend.presets.length>0; visible: active
             Layout.fillWidth: true; Layout.preferredHeight: item ? item.implicitHeight : 0
             sourceComponent: Component { RosterPresets { backend: roster.backend; onApplied: roster.choosing=false } }
-        }
-        SButton {
-            objectName: "rosterOpenPresets"
-            visible: roster.compact && roster.backend.presets.length>0
-            text: qsTr("Zapisane listy"); Layout.fillWidth: true; onClicked: savedLists.open()
         }
         RowLayout {
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0

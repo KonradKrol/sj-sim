@@ -5,10 +5,11 @@ import QtQuick.Layouts 1.15
 ColumnLayout {
     id: library
     property var backend
-    spacing: 8
-    Label { text: qsTr("Zawodnicy"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section }
+    readonly property bool cramped: height<280
+    spacing: cramped ? 4 : 8
+    Label { visible: !library.cramped; text: qsTr("Zawodnicy"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section }
     GridLayout {
-        columns: library.width >= 400 ? 2 : 1
+        columns: library.width >= 400 || library.cramped ? 2 : 1
         Layout.fillWidth: true; columnSpacing: 8; rowSpacing: 8
         SField { objectName: "rosterSearch"; Layout.fillWidth: true; Layout.minimumWidth: 0; text: library.backend.query; placeholderText: qsTr("Szukaj nazwiska lub kraju"); Accessible.name: placeholderText; onTextEdited: library.backend.query=text }
         SChoice { objectName: "rosterCountry"; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: 150; model: library.backend.countries; currentIndex: library.backend.country; Accessible.name: qsTr("Kraj"); onActivated: library.backend.country=currentIndex }
