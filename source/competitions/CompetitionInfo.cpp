@@ -159,26 +159,15 @@ QVector<CompetitionInfo *> CompetitionInfo::getSpecificTypeCompetitions(QVector<
 
 QVector<CompetitionInfo *> CompetitionInfo::getCompetitionsByStartAndEnd(QVector<CompetitionInfo *> competitions, CompetitionInfo *start, CompetitionInfo *end)
 {
-    qDebug()<<start->getHill()->getName()<<", "<<start;
-    qDebug()<<end;
-    qDebug()<<end->getHill()->getName()<<", "<<end;
-    qDebug()<<"indexof start: "<<competitions.indexOf(start);
-    qDebug()<<"indexof end: "<<competitions.indexOf(end);
-    competitions.remove(0, competitions.indexOf(start));
-    competitions.remove(competitions.indexOf(end) + 1, competitions.count() - (competitions.indexOf(end) + 1));
-
-    //1 wisla (index 0)
-    //2 ga-pa (index 1)
-    //3 planica (index 2)
-    //4 oslo (index 3)
-    //- - - - - -
-    //8 vikersund (index 7)
-    return competitions;
+    const int first=competitions.indexOf(start),last=competitions.indexOf(end);
+    if(!start || !end || first<0 || last<first)return {};
+    return competitions.mid(first,last-first+1);
 }
 
 QVector<CompetitionInfo *> CompetitionInfo::mergeSeasonsCompetitions(QVector<Season> *seasons, QString filter, bool mergeCalendars)
 {
     QVector<CompetitionInfo *> competitions;
+    if(!seasons)return competitions;
     for(auto & season : *seasons)
     {
         for(auto & cal : season.getCalendarsReference())

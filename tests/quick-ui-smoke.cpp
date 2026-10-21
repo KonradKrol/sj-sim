@@ -702,6 +702,10 @@ static void auditStatisticsRegressions(MainWindow &main) {
     stats.setFilteredJumpers({});stats.fillWindow();
     for(auto *table:stats.findChildren<QTableView *>())if(table->model())check(table->model()->rowCount()==0,"audit 10: empty filters clear rankings, records and general classification");
     check(stats.findChild<QLabel *>("label_biggerWin")->text()==QString::fromUtf8("—"),"audit 10: facts cannot retain values from the preceding filter");
+    auto *emptyCalendar=new SeasonCalendar("Empty");save.getActualSeason()->getCalendarsReference().append(emptyCalendar);stats.setupComboBox();stats.getCalendarComboBox()->setCurrentIndex(1);stats.fillWindow();
+    check(!range->getCompetition(1)&&!range->getCompetition(2),"audit 11: switching to an empty calendar safely clears the range");
+    check(CompetitionInfo::getCompetitionsByStartAndEnd({},nullptr,nullptr).isEmpty(),"audit 11: missing range endpoints return an empty result");
+    check(CompetitionInfo::getCompetitionsByStartAndEnd({competition},nullptr,competition).isEmpty(),"audit 11: a missing starting competition cannot dereference null");
     qInfo()<<"PASS: audit 8 small-field and tied-winner statistics";
 }
 

@@ -852,23 +852,18 @@ void SimulationRatingsWindow::setupComboBox()
     toDisconnect.clear();
 
     ui->comboBox_calendar->clear(); 
+    if(!save->getActualSeason())return;
     for(auto & cal : save->getActualSeason()->getCalendarsReference())
     {
         ui->comboBox_calendar->addItem(cal->getName());
     } 
     auto c = connect(ui->comboBox_calendar, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](){
-        SeasonCalendar * cal = save->getActualSeason()->getCalendarsReference()[ui->comboBox_calendar->currentIndex()];
-        for(auto & s : save->getSeasonsReference())
-        {
-            for(auto & cl : s.getCalendarsReference())
-                if(cl->getName() == cal->getName()){
-                    if(cl->getCompetitionsReference().first()->getPlayed() == true){
-                        rangeComboBoxes->setCalendarFilter(cl->getName());
-                        rangeComboBoxes->setupComboBoxes();
-                        return;
-                    }
-                }
-        }
+        if(!save->getActualSeason())return;
+        const auto calendars=save->getActualSeason()->getCalendars();
+        const int index=ui->comboBox_calendar->currentIndex();
+        if(index<0 || index>=calendars.size() || !calendars[index])return;
+        rangeComboBoxes->setCalendarFilter(calendars[index]->getName());
+        rangeComboBoxes->setupComboBoxes();
     });
     toDisconnect.push_back(c);
     connect(ui->comboBox_calendar, qOverload<int>(&QComboBox::currentIndexChanged), rangeComboBoxes, &CompetitionsRangeComboBoxesWidget::setupComboBoxes);
