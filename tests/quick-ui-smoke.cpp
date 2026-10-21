@@ -138,7 +138,7 @@ static void render(QWidget *window,const QString &name,bool sweep=false) {
                 check(athlete&&results&&start,"competition keeps athlete, results and start list in one workspace");
                 const auto athleteBounds=athlete->mapRectToItem(view->rootObject(),athlete->boundingRect());const auto summaryBounds=summary->mapRectToItem(view->rootObject(),summary->boundingRect());
                 check(!athleteBounds.intersects(summaryBounds),"athlete and last jump never overlap");
-                for(auto *panel:{results,start}){const auto bounds=panel->mapRectToItem(view->rootObject(),panel->boundingRect());check(panel->isVisible()&&bounds.top()>=0&&bounds.bottom()<=view->height()+1&&panel->height()>=120,"critical tables remain visible together without page scrolling on laptops");}
+                for(auto *panel:{results,start}){const auto bounds=panel->mapRectToItem(view->rootObject(),panel->boundingRect());check(panel->isVisible()&&bounds.top()>=0&&bounds.bottom()<=view->height()+1&&panel->height()>=120,QString("critical tables remain visible together without page scrolling on laptops: %1 %2 %3x%4 y=%5 height=%6 viewport=%7").arg(name,panel->objectName()).arg(size.width()).arg(size.height()).arg(bounds.y()).arg(bounds.height()).arg(view->height()));}
 
             }
             auto image=presentation(window)->grab().toImage(); if(image.isNull()) qCritical()<<"Geometry"<<window->size()<<view->size(); check(!image.isNull(),"frame "+name);

@@ -9,7 +9,8 @@ Pane {
     readonly property var flagNode: ui.find("label_flag")
     readonly property var beatNode: ui.find("label_toBeatDistance")
     readonly property var advanceNode: ui.find("label_toAdvancementDistance")
-    padding: 12
+    property bool dense: false
+    padding: dense ? 8 : 12
     background: Surface { fillColor: Theme.stadium; sweep: 28 }
     contentItem: ColumnLayout {
         spacing: 4

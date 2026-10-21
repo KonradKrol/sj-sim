@@ -7,7 +7,7 @@ ScrollView {
     contentWidth: availableWidth
     contentHeight: raceContent.height
     clip: true
-    padding: width < 700 ? 8 : 12
+    padding: width < 700 || height < 600 ? 8 : 12
     function openOptions(section) {optionContent.section=section;options.open()}
     readonly property bool narrow: width < 700
     readonly property var individual: ui.find("tableView_results")
@@ -20,15 +20,15 @@ ScrollView {
         Column {
         id: header
         width: parent.width
-        spacing: 8
+        spacing: race.height < 600 ? 6 : 8
         RaceStatus { width: parent.width; height: implicitHeight; onConditionsRequested: race.openOptions(1) }
         GridLayout {
             id: hero
             columns: race.narrow ? 1 : 2
             width: parent.width; height: implicitHeight
             columnSpacing: 12; rowSpacing: 8
-            RaceAthlete { Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: 0 }
-            RaceLastJump { Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: 0 }
+            RaceAthlete { dense: race.height < 600; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: 0 }
+            RaceLastJump { dense: race.height < 600; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: 0 }
         }
         RaceControls { width: parent.width; height: implicitHeight; onOptionsRequested: race.openOptions(0) }
         }

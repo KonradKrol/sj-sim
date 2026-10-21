@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.15
 GridLayout {
     id: controls
     signal optionsRequested()
-    columns: width >= 800 ? 4 : 2
+    columns: width >= 800 ? 5 : 2
     columnSpacing: 8; rowSpacing: 6
     Node { visible: !ui.context.complete && !ui.context.roundComplete; Layout.fillWidth: true; Layout.minimumWidth: 0; node: ui.find("pushButton_jump") }
     Node { Layout.fillWidth: true; Layout.minimumWidth: 0; node: ui.find("pushButton_goToNext") }

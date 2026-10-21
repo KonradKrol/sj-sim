@@ -5,7 +5,8 @@ import QtQuick.Layouts 1.15
 Pane {
     id: jump
     objectName: "raceLastJump"
-    padding: 12
+    property bool dense: false
+    padding: dense ? 8 : 12
     background: Rectangle {
         color: Theme.surface; border.color: Theme.outline
         Rectangle { width: 24; height: 3; color: Theme.signal }
