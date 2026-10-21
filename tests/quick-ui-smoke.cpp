@@ -752,6 +752,14 @@ static void uxRegressions(MainWindow &main) {
         render(&config,"ux-saved-rosters",true);main.activateWindow();scene(&config)->setFocus();clickControl(scene(&config),"rosterOpenPresets");clickControl(scene(&config),"rosterPresetRemove");check(roster->count()==4,"UX 3: the narrow popover offers the same direct actions");
         clickControl(scene(&config),"rosterOpenPresets");clickControl(scene(&config),"rosterPresetAdd");check(roster->count()==6,"UX 3: adding a saved list restores membership on small screens");config.reject();
     }
+    for(int i=0;i<2;++i){auto *next=new CompetitionInfo(save.getHillsReference().first());next->setRules(rules);calendar->getCompetitionsReference().append(next);}save.updateNextCompetitionIndex();
+    {
+        main.resize(520,600);SimulationSaveManagerWindow manager(&save);manager.fillNextCompetitionInformations();manager.show();QTest::qWait(150);auto *bridge=manager.findChild<QuickBridge *>();bridge->edit(bridge->root()->values().value("id").toInt(),4);QTest::qWait(120);auto *backend=bridge->findChild<QuickCalendar *>();auto *workspace=item(scene(&manager)->rootObject(),"calendarWorkspace");check(backend&&workspace,"UX 5: calendar workspace exists");
+        const auto events=backend->events();const auto firstId=events[0].toMap().value("id").toString(),secondId=events[1].toMap().value("id").toString();clickControl(scene(&manager),"calendar-select-"+firstId);check(!workspace->property("editing").toBool(),"UX 5: selecting a calendar event does not navigate away from the list");
+        auto *rows=item(scene(&manager)->rootObject(),"calendarEvents");QMetaObject::invokeMethod(rows,"positionViewAtIndex",Q_ARG(int,1),Q_ARG(int,3));QTest::qWait(60);auto *second=item(scene(&manager)->rootObject(),"calendar-select-"+secondId);check(second&&second->isVisible(),"UX 5: second calendar event is visible");const auto point=second->mapToItem(scene(&manager)->rootObject(),second->boundingRect().center()).toPoint();QTest::mouseClick(scene(&manager),Qt::LeftButton,Qt::ControlModifier,point);QTest::qWait(60);
+        check(backend->selection().value("count").toInt()==2&&!workspace->property("editing").toBool(),"UX 5: modifier selection remains on the list and accumulates targets");clickControl(scene(&manager),"calendarEditSelection");check(workspace->property("editing").toBool()&&backend->selection().value("count").toInt()==2,"UX 5: explicit Edit opens one inspector for the complete selection");
+        render(&manager,"ux-calendar-selection",true);clickControl(scene(&manager),"calendarReturnToList");clickControl(scene(&manager),"calendarClearSelection");check(backend->selection().value("count").toInt()==0,"UX 5: clearing selection leaves no ambiguous edit targets");manager.reject();
+    }
     qInfo()<<"PASS: explicit form editing, searchable tables and direct saved-list actions";
 }
 

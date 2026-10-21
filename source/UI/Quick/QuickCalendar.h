@@ -49,6 +49,7 @@ public:
     QString message() const { return m_message; }
     Q_INVOKABLE void select(const QString &id,int modifiers=0);
     Q_INVOKABLE void selectAll(bool futureOnly=false);
+    Q_INVOKABLE void clearSelection();
     Q_INVOKABLE void update(const QVariantMap &fields);
     Q_INVOKABLE void setClassification(int index,bool checked);
     Q_INVOKABLE void add();

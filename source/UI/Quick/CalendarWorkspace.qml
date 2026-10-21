@@ -45,11 +45,10 @@ Item {
                 onClicked: eventMenu.open()
                 ActionMenu {
                     id: eventMenu
-                    entries: [{id:"copy",text:qsTr("Kopiuj"),enabled:calendar.backend.selection.count > 0},{id:"remove",text:qsTr("Usuń"),enabled:calendar.backend.selection.count > 0 && !calendar.backend.selection.locked},{id:"up",text:qsTr("Przesuń konkurs w górę"),enabled:!calendar.backend.selection.locked},{id:"down",text:qsTr("Przesuń konkurs w dół"),enabled:!calendar.backend.selection.locked}]
-                    onSelected: {if(entry.id === "copy")calendar.backend.duplicate();else if(entry.id === "remove")calendar.backend.remove();else calendar.backend.move(entry.id === "up" ? -1 : 1)}
+                    entries: [{id:"future",text:qsTr("Zaznacz przyszłe konkursy")},{id:"copy",text:qsTr("Kopiuj"),enabled:calendar.backend.selection.count > 0},{id:"remove",text:qsTr("Usuń"),enabled:calendar.backend.selection.count > 0 && !calendar.backend.selection.locked},{id:"up",text:qsTr("Przesuń konkurs w górę"),enabled:!calendar.backend.selection.locked},{id:"down",text:qsTr("Przesuń konkurs w dół"),enabled:!calendar.backend.selection.locked}]
+                    onSelected: {if(entry.id === "future")calendar.backend.selectAll(true);else if(entry.id === "copy")calendar.backend.duplicate();else if(entry.id === "remove")calendar.backend.remove();else calendar.backend.move(entry.id === "up" ? -1 : 1)}
                 }
             }
-            SButton { visible: calendar.tight; text: qsTr("Edycja"); enabled: calendar.backend.selection.count > 0; onClicked: calendar.editing=true }
             SButton { visible: !calendar.tight; text: qsTr("Cofnij"); enabled: calendar.backend.canUndo; onClicked: calendar.backend.undo() }
         }
         Label { visible: !!calendar.backend.message; text: calendar.backend.message; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
@@ -63,8 +62,10 @@ Item {
                 spacing: 8
                 RowLayout {
                     Layout.fillWidth: true
-                    Label { text: qsTr("Konkursy: %1").arg(calendar.backend.events.length); font.pointSize: Theme.caption; color: Theme.muted; Layout.fillWidth: true }
-                    SButton { text: qsTr("Przyszłe"); implicitHeight: calendar.tight ? 32 : 40; font.pointSize: calendar.tight ? Theme.caption : Theme.body; quiet: true; hint: qsTr("Zaznacz przyszłe konkursy"); onClicked: calendar.backend.selectAll(true) }
+                    Label { text: calendar.backend.selection.count ? qsTr("Zaznaczono: %1").arg(calendar.backend.selection.count) : qsTr("Konkursy: %1").arg(calendar.backend.events.length); font.pointSize: Theme.caption; color: Theme.muted; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
+                    SButton { objectName: "calendarClearSelection"; visible: calendar.backend.selection.count>0; text: "×"; quiet: true; Accessible.name: qsTr("Wyczyść zaznaczenie"); onClicked: calendar.backend.clearSelection() }
+                    SButton { objectName: "calendarEditSelection"; visible: calendar.compact; enabled: calendar.backend.selection.count>0; text: qsTr("Edytuj"); onClicked: calendar.editing=true }
+                    SButton { visible: !calendar.compact; text: qsTr("Przyszłe"); implicitHeight: calendar.tight ? 32 : 40; font.pointSize: calendar.tight ? Theme.caption : Theme.body; quiet: true; hint: qsTr("Zaznacz przyszłe konkursy"); onClicked: calendar.backend.selectAll(true) }
                 }
                 ListView {
                     id: rows
@@ -74,7 +75,7 @@ Item {
                     clip: true; spacing: 8
                     activeFocusOnTab: true
                     ScrollBar.vertical: ScrollBar {}
-                    delegate: CalendarEventRow { width: rows.width; event: modelData; backend: calendar.backend; onActivated: calendar.editing=true }
+                    delegate: CalendarEventRow { width: rows.width; event: modelData; backend: calendar.backend; compact: calendar.compact; onActivated: calendar.editing=true }
                     Label { visible: rows.count === 0; anchors.centerIn: parent; width: parent.width; text: qsTr("Dodaj konkurs lub wczytaj preset."); color: Theme.muted; font.pointSize: Theme.body; wrapMode: Text.WordWrap }
                 }
             }

@@ -115,6 +115,7 @@ void QuickCalendar::select(const QString &id,int modifiers) {
     if(m_editor->getTableView()->selectionModel())m_editor->getTableView()->selectionModel()->setCurrentIndex(m_editor->getModel()->index(row,0),QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
     m_message.clear();refresh();resetCustomRules();
 }
+void QuickCalendar::clearSelection() {sync();m_selected.clear();refresh();resetCustomRules();}
 void QuickCalendar::selectAll(bool futureOnly) { sync();m_selected.clear();for(auto *event:mains())if(!futureOnly||!locked(event))m_selected.append(event->getIDStr());refresh();resetCustomRules(); }
 QuickCalendar::Snapshot QuickCalendar::capture() const {
     Snapshot value;value.selected=m_selected;value.boundary=m_editor?m_editor->getModel()->getDontModifyBefore():0;if(!m_calendar)return value;value.order=m_calendar->getCompetitionsReference();
