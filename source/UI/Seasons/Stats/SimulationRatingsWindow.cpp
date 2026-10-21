@@ -90,15 +90,15 @@ SimulationRatingsWindow::SimulationRatingsWindow(SimulationSave * save, QWidget 
     averagePositionModel = new SimulationRatingTableModel(this);
     ui->tableView_avgPosition->setModel(averagePositionModel);
     averageJudgesModel = new SimulationRatingTableModel(this);
-    ui->tableView_avgJudges->setModel(averagePositionModel);
+    ui->tableView_avgJudges->setModel(averageJudgesModel);
     averageWindModel = new SimulationRatingTableModel(this);
-    ui->tableView_avgWind->setModel(averagePositionModel);
+    ui->tableView_avgWind->setModel(averageWindModel);
     averageTakeoffRatingModel = new SimulationRatingTableModel(this);
-    ui->tableView_avgTakeoffRating->setModel(averagePositionModel);
+    ui->tableView_avgTakeoffRating->setModel(averageTakeoffRatingModel);
     averageFlightRatingModel = new SimulationRatingTableModel(this);
-    ui->tableView_avgFlightRating->setModel(averagePositionModel);
+    ui->tableView_avgFlightRating->setModel(averageFlightRatingModel);
     averageDistanceModel = new SimulationRatingTableModel(this);
-    ui->tableView_avgDistance->setModel(averagePositionModel);
+    ui->tableView_avgDistance->setModel(averageDistanceModel);
     //Records models
     bestDistanceModel = new SimulationRecordsTableModel(save, this);
     ui->tableView_bestDistance->setModel(bestDistanceModel);
@@ -242,10 +242,7 @@ void SimulationRatingsWindow::fillWindow()
                 allIsEmpty = false;
                 break;
         }
-    if(allIsEmpty){
-        QMessageBox::information(this, tr("Zero statystyk"), tr("Nie można utworzyć zestawu statystyk z powodu ich zerowej ilości. Spróbuj przefiltrować statystyki w inny sposób."), QMessageBox::Ok);
-        return;
-    }
+    if(allIsEmpty){clearStatistics();return;}
     //Średnia pozycja
     QVector<QPair<Jumper *, double>> avgPositionsRanking;
     for(auto & jumper : jumpersSingleResults.keys())
@@ -1165,4 +1162,18 @@ void SimulationRatingsWindow::on_checkBox_mergeCalendars_stateChanged(int arg1)
 void SimulationRatingsWindow::on_spinBox_minimalResults_editingFinished()
 {
     fillWindow();
+}
+
+void SimulationRatingsWindow::clearStatistics()
+{
+    jumpersSingleResults.clear();teamsSingleResults.clear();
+    for(auto *view:findChildren<QTableView *>()) {
+        if(auto *rating=qobject_cast<SimulationRatingTableModel *>(view->model())){view->setModel(nullptr);rating->setRanking({});view->setModel(rating);}
+        else if(auto *records=qobject_cast<SimulationRecordsTableModel *>(view->model()))records->setRecords({});
+        else if(auto *general=qobject_cast<GeneralClassificationTableModel *>(view->model())){
+            view->setModel(nullptr);general->setIndResults({});general->setTeamResults({});general->setType(GeneralClassificationTableModel::Ind);view->setModel(general);
+        }
+    }
+    for(const auto *name:{"label_playedCompetitions","label_jumpsCount","label_kpointjumps","label_hsjumps","label_saveavgdist","label_wins","label_winsJumper","label_podiums","label_podiumsJumper","label_telemarks","label_bothLegs","label_support","label_fall","label_biggerWin","label_biggerWinJumper","label_smallestWin","label_smallestWinJumper","label_10Largestdifference","label_10smallestDifference","label_saveAvgJudges","label_saveAvgWind"})
+        if(auto *label=findChild<QLabel *>(name))label->setText(QString::fromUtf8("—"));
 }

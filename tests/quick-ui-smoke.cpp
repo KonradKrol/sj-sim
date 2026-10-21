@@ -699,6 +699,9 @@ static void auditStatisticsRegressions(MainWindow &main) {
     auto &presets=GlobalDatabase::get()->getEditableGlobalPointsForPlacesPresets();const auto originalPresets=presets;presets.clear();stats.findChild<QComboBox *>("comboBox_preset")->clear();stats.fillWindow();
     check(stats.getGeneralClassificationModel()->rowCount()==0,"audit 9: absent point presets do not crash or invent a places classification");
     stats.findChild<QCheckBox *>("checkBox_generalClassificationCompPoints")->setChecked(true);stats.fillWindow();check(stats.getGeneralClassificationModel()->rowCount()==2,"audit 9: competition-point classification works without any places preset");presets=originalPresets;
+    stats.setFilteredJumpers({});stats.fillWindow();
+    for(auto *table:stats.findChildren<QTableView *>())if(table->model())check(table->model()->rowCount()==0,"audit 10: empty filters clear rankings, records and general classification");
+    check(stats.findChild<QLabel *>("label_biggerWin")->text()==QString::fromUtf8("—"),"audit 10: facts cannot retain values from the preceding filter");
     qInfo()<<"PASS: audit 8 small-field and tied-winner statistics";
 }
 

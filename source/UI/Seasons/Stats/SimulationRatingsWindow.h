@@ -86,6 +86,7 @@ public:
     void saveRecordsCsv(QString fileName, short recordType, bool best);
     void saveGeneralClassificationCsv(QString fileName);
 private:
+    void clearStatistics();
     enum RankingType{
         AveragePosition,
         AverageJudges,
