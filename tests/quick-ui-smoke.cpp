@@ -866,6 +866,42 @@ static void backendRegressions() {
     qInfo()<<"PASS: scoring, target-line, wind and bulk-editor regressions";
 }
 
+static void interactionRegressions(MainWindow &main) {
+    main.show();main.resize(1024,640);
+    QDialog fixture(&main);auto *layout=new QVBoxLayout(&fixture);
+    auto *integer=new QSpinBox;integer->setObjectName("rapidInteger");integer->setRange(0,100);integer->setValue(20);layout->addWidget(integer);
+    auto *fraction=new QDoubleSpinBox;fraction->setObjectName("rapidFraction");fraction->setRange(-10,10);fraction->setSingleStep(.1);fraction->setValue(0);layout->addWidget(fraction);
+    fixture.show();QTest::qWait(220);auto *view=scene(&fixture);
+    const auto press=[&](const QString &name,int count,int hold=0){
+        auto *button=item(view->rootObject(),name);check(button&&button->isVisible(),"numeric step button exists");
+        const auto at=button->mapToItem(view->rootObject(),button->boundingRect().center()).toPoint();
+        for(int i=0;i<count;++i){QTest::mousePress(view,Qt::LeftButton,Qt::NoModifier,at);QTest::qWait(hold?hold:10);QTest::mouseRelease(view,Qt::LeftButton,Qt::NoModifier,at);QTest::qWait(10);}
+    };
+    press("numberIncrease-rapidInteger",10);check(integer->value()==30,"ten rapid presses increment ten times without click cooldown");
+    press("numberDecrease-rapidInteger",10);check(integer->value()==20,"ten rapid decrement presses are preserved");
+    press("numberIncrease-rapidInteger",1,700);check(integer->value()>=28,"holding a step button repeats smoothly");
+    integer->setValue(99);QTest::qWait(100);press("numberIncrease-rapidInteger",5);check(integer->value()==100,"repeated increment clamps at upper bound");
+    press("numberIncrease-rapidFraction",10);check(std::abs(fraction->value()-1)<.001,"rapid decimal stepping preserves all fractional steps");
+    fixture.reject();QTest::qWait(120);
+    for(const auto &size:QList<QSize>{{1024,640},{360,480}}){
+        main.resize(size);QTest::qWait(100);
+        QMessageBox message(QMessageBox::Information,QString("Nowy rekord skoczni — ").repeated(6),QString("Zawodnik ustanowił nowy rekord skoczni. ").repeated(25),QMessageBox::Ok|QMessageBox::Cancel,&main);
+        message.show();QTest::qWait(250);
+        // Standard Qt dialogs may restore a fixed native size after Quick attaches.
+        message.setFixedSize(320,200);message.layout()->activate();QTest::qWait(250);
+        auto *quick=scene(&message);check(quick&&quick->status()==QQuickWidget::Ready,"long record message loads Quick content");
+        const auto checkFooter=[&]{
+            quick->grabFramebuffer();auto *footer=item(quick->rootObject(),"modalButtons");check(footer&&footer->height()>0,"modal action footer exists");
+            const auto bounds=footer->mapRectToItem(quick->rootObject(),footer->boundingRect());
+            check(bounds.top()>=0&&bounds.bottom()<=quick->height(),"modal actions remain visible below scrollable title and content");
+            check(quick->geometry()==message.rect() && message.height()<=main.height()-40,"native resize cannot crop Quick dialog or exceed application height");
+        };checkFooter();main.resize(size.width(),size.height()-40);QTest::qWait(250);checkFooter();
+        auto *button=message.button(QMessageBox::Ok);auto *bridge=message.findChild<QuickBridge *>();bridge->refresh();QTest::qWait(50);
+        QSignalSpy accepted(&message,&QDialog::accepted);clickControl(quick,"action-"+(button->objectName().isEmpty()?button->text().remove('&'):button->objectName()));check(accepted.count()==1,"visible message action closes the actual native dialog");
+    }
+    main.resize(1024,640);qInfo()<<"PASS: rapid clicks, hold repeat, decimal steps and unclipped modal actions";
+}
+
 int main(int argc,char **argv) {
     QApplication app(argc,argv);
     app.setOrganizationName("SJ-Sim-UI-Test"); app.setApplicationName("SjSimUI");
@@ -886,6 +922,7 @@ int main(int argc,char **argv) {
     check(main.findChild<QuickBridge *>()->version()=="1.3.0 beta-3","one release version is shared with the interface");
     backendRegressions();
     if(app.arguments().contains("--team-only")){main.show();runCompetition(main,2);return 0;}
+    if(app.arguments().contains("--interaction-only")){interactionRegressions(main);return 0;}
     if(app.arguments().contains("--space-only")){spaceRegressions(main);return 0;}
     if(app.arguments().contains("--ux-only")){uxRegressions(main);runCompetition(main,0);return 0;}
     if(app.arguments().contains("--audit-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);return 0;}
@@ -903,7 +940,7 @@ int main(int argc,char **argv) {
         for(int scenario=0;scenario<4;++scenario) runCompetition(main,scenario);
         seasons();qInfo()<<"PASS: full individual, KO and team competitions and season analysis";return 0;
     }
-    if(!app.arguments().contains("--layout-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);spaceRegressions(main);uxRegressions(main);navigationRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);rosterRegressions(main);geometryRegressions(main);}
+    if(!app.arguments().contains("--layout-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);interactionRegressions(main);spaceRegressions(main);uxRegressions(main);navigationRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);rosterRegressions(main);geometryRegressions(main);}
     render(&main,"home",true);
     {
         DatabaseEditorWindow dialog; render(&dialog,"database",true);

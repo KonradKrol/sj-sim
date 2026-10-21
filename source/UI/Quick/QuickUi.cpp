@@ -138,15 +138,19 @@ void QuickUi::showAppearance() {
 }
 void QuickUi::closeAppearance() { if(m_appearancePopup)m_appearancePopup->close(); }
 bool QuickUi::eventFilter(QObject *object,QEvent *event) {
-    if(object==m_main && event->type()==QEvent::Resize)
+    if(object==m_main && event->type()==QEvent::Resize) {
+        for(auto *window:QApplication::topLevelWidgets())if(window->isVisible()&&window->property("sjQuickTransient").toBool())requestTransientFit(window);
         if(auto *header=m_main->findChild<QQuickWidget *>("quickApplicationHeader");header && header->rootObject())
             header->rootObject()->setProperty("compactHeight",m_main->height()<720);
+    }
     if(event->type()==QEvent::Resize || event->type()==QEvent::Show) {
         if(auto *widget=qobject_cast<QWidget *>(object);widget && widget->property("sjQuickTransient").toBool())
             if(auto *bridge=widget->findChild<QuickBridge *>(QString(),Qt::FindDirectChildrenOnly);bridge && bridge->view()) {
                 bridge->view()->setGeometry(widget->rect());bridge->view()->raise();
             }
     }
+    if(event->type()==QEvent::Resize || event->type()==QEvent::Show || event->type()==QEvent::LayoutRequest)
+        if(auto *widget=qobject_cast<QWidget *>(object);widget && widget->property("sjQuickTransient").toBool())requestTransientFit(widget);
     if(object==m_main && event->type()==QEvent::Close && canGoBack()) {
         static_cast<QCloseEvent *>(event)->ignore();m_closeRequested=true;back();return true;
     }
@@ -180,6 +184,11 @@ bool QuickUi::eventFilter(QObject *object,QEvent *event) {
     }
     return false;
 }
+void QuickUi::requestTransientFit(QWidget *dialog) {
+    if(!dialog || dialog->property("sjQuickSizing").toBool() || dialog->property("sjQuickFitPending").toBool())return;
+    dialog->setProperty("sjQuickFitPending",true);const QPointer<QWidget> guarded=dialog;
+    QTimer::singleShot(0,this,[this,guarded]{if(guarded){guarded->setProperty("sjQuickFitPending",false);fitTransient(guarded);}});
+}
 void QuickUi::fitTransient(QWidget *dialog) {
     if(!dialog || dialog->property("sjQuickSizing").toBool())return;
     auto *bridge=dialog->findChild<QuickBridge *>(QString(),Qt::FindDirectChildrenOnly);
@@ -188,12 +197,14 @@ void QuickUi::fitTransient(QWidget *dialog) {
     auto *screen=m_main->screen();const auto area=screen?screen->availableGeometry():QGuiApplication::primaryScreen()->availableGeometry();
     const QSize limit(qMax(280,qMin(area.width()-32,m_main->width()-24)),qMax(180,qMin(area.height()-48,m_main->height()-40)));
     if(dialog->layout())dialog->layout()->setSizeConstraint(QLayout::SetNoConstraint);
-    dialog->setMinimumSize(qMin(320,limit.width()),qMin(180,limit.height()));dialog->setMaximumSize(limit);
+    const QSize minimum(qMin(320,limit.width()),qMin(180,limit.height()));
+    if(dialog->minimumSize()!=minimum)dialog->setMinimumSize(minimum);
+    if(dialog->maximumSize()!=limit)dialog->setMaximumSize(limit);
     const QSize desired(qMin(600,limit.width()),qBound(qMin(220,limit.height()),qCeil(bridge->view()->rootObject()->implicitHeight()),limit.height()));
-    dialog->resize(desired);
+    if(dialog->size()!=desired)dialog->resize(desired);
     const auto center=m_main->frameGeometry().center();QPoint position=center-QPoint(desired.width()/2,desired.height()/2);
-    position.setX(qBound(area.left(),position.x(),area.right()-desired.width()+1));position.setY(qBound(area.top(),position.y(),area.bottom()-desired.height()+1));dialog->move(position);
-    bridge->view()->setGeometry(dialog->rect());dialog->setProperty("sjQuickSizing",false);
+    position.setX(qBound(area.left(),position.x(),area.right()-desired.width()+1));position.setY(qBound(area.top(),position.y(),area.bottom()-desired.height()+1));if(dialog->pos()!=position)dialog->move(position);
+    if(bridge->view()->geometry()!=dialog->rect())bridge->view()->setGeometry(dialog->rect());dialog->setProperty("sjQuickSizing",false);
 }
 void QuickUi::attach(QWidget *dialog) {
     const bool transient=qobject_cast<QMessageBox *>(dialog) || qobject_cast<QInputDialog *>(dialog) || qobject_cast<QProgressDialog *>(dialog);
@@ -211,7 +222,7 @@ void QuickUi::attach(QWidget *dialog) {
         dialog->setMinimumSize(280,180);dialog->setMaximumSize(QWIDGETSIZE_MAX,QWIDGETSIZE_MAX);
         dialog->resize(560,300);
         const QPointer<QWidget> guarded=dialog;
-        const auto fit=[this,guarded]{QTimer::singleShot(0,this,[this,guarded]{if(guarded)fitTransient(guarded);});};
+        const auto fit=[this,guarded]{if(guarded)requestTransientFit(guarded);};
         if(view->rootObject())connect(view->rootObject(),&QQuickItem::implicitHeightChanged,this,fit);
         fit();
         view->setGeometry(dialog->rect());view->show();view->raise();view->setFocus();

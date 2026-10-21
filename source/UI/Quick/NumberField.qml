@@ -6,16 +6,19 @@ Item {
     property var fields
     property bool direct: true
     property string label: ""
+    property real currentValue: fields ? Number(fields.value) : 0
+    onFieldsChanged: if(fields)currentValue=Number(fields.value)
     signal committed(real value)
     implicitHeight: 48
     implicitWidth: 140
-    function setValue(value) { if (direct) ui.edit(fields.id,value); committed(value) }
+    function setValue(value) { currentValue=Math.max(fields.minimum,Math.min(fields.maximum,value));if(direct)ui.edit(fields.id,currentValue);committed(currentValue) }
+    function step(direction) {setValue(currentValue+direction*Number(fields.step))}
     SField {
         id: input
         objectName: "input-" + (control.fields.name || control.fields.id)
         anchors.fill: parent
         rightPadding: 48 + (suffix.visible ? suffix.implicitWidth + 6 : 0)
-        text: control.fields.mixed ? "" : Number(control.fields.value).toLocaleString(Qt.locale(), 'f', control.fields.decimals).split(Qt.locale().groupSeparator).join("")
+        text: control.fields.mixed ? "" : control.currentValue.toLocaleString(Qt.locale(), 'f', control.fields.decimals).split(Qt.locale().groupSeparator).join("")
         placeholderText: control.fields.mixed ? qsTr("Różne wartości") : ""
         horizontalAlignment: TextInput.AlignRight
         font.family: Theme.mono
@@ -24,17 +27,17 @@ Item {
         onEditingFinished: {
             if(control.fields.mixed && text.length === 0)return
             var value = Number.fromLocaleString(Qt.locale(),text)
-            if (acceptableInput && isFinite(value)) { if (value !== control.fields.value) control.setValue(value) }
-            else text = Number(control.fields.value).toLocaleString(Qt.locale(),'f',control.fields.decimals).split(Qt.locale().groupSeparator).join("")
+            if (acceptableInput && isFinite(value)) { if (value !== control.currentValue) control.setValue(value) }
+            else text = control.currentValue.toLocaleString(Qt.locale(),'f',control.fields.decimals).split(Qt.locale().groupSeparator).join("")
         }
-        Keys.onUpPressed: control.setValue(Math.min(control.fields.maximum, Number(control.fields.value) + Number(control.fields.step)))
-        Keys.onDownPressed: control.setValue(Math.max(control.fields.minimum, Number(control.fields.value) - Number(control.fields.step)))
+        Keys.onUpPressed: control.step(1)
+        Keys.onDownPressed: control.step(-1)
     }
     Label { id: suffix; text: control.fields.suffix || ""; visible: text.length>0; anchors.right: parent.right; anchors.rightMargin: 44; anchors.verticalCenter: parent.verticalCenter; color: Theme.muted; font.pointSize: Theme.caption }
     Column {
         anchors.right: parent.right; anchors.top: parent.top; anchors.bottom: parent.bottom
         width: 38
-        SButton { width: parent.width; height: control.height/2; text: "+"; padding: 0; quiet: true; enabled: control.fields.value < control.fields.maximum; Accessible.name: qsTr("Zwiększ wartość"); onClicked: control.setValue(Math.min(control.fields.maximum, Number(control.fields.value) + Number(control.fields.step))) }
-        SButton { width: parent.width; height: control.height/2; text: "−"; padding: 0; quiet: true; enabled: control.fields.value > control.fields.minimum; Accessible.name: qsTr("Zmniejsz wartość"); onClicked: control.setValue(Math.max(control.fields.minimum, Number(control.fields.value) - Number(control.fields.step))) }
+        SButton { objectName: "numberIncrease-"+(control.fields.name || control.fields.id); autoRepeat: true; autoRepeatDelay: 250; autoRepeatInterval: 40; width: parent.width; height: control.height/2; text: "+"; padding: 0; quiet: true; enabled: control.currentValue < control.fields.maximum; Accessible.name: qsTr("Zwiększ wartość"); onPressed: control.step(1) }
+        SButton { objectName: "numberDecrease-"+(control.fields.name || control.fields.id); autoRepeat: true; autoRepeatDelay: 250; autoRepeatInterval: 40; width: parent.width; height: control.height/2; text: "−"; padding: 0; quiet: true; enabled: control.currentValue > control.fields.minimum; Accessible.name: qsTr("Zmniejsz wartość"); onPressed: control.step(-1) }
     }
 }

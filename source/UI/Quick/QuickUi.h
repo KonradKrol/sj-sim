@@ -213,6 +213,7 @@ protected:
 private:
     void attach(QWidget *dialog);
     void fitTransient(QWidget *dialog);
+    void requestTransientFit(QWidget *dialog);
     void push(QWidget *controller,QuickBridge *bridge);
     void removePage(QWidget *controller);
     void showCurrent();
