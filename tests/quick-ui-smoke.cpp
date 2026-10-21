@@ -48,6 +48,7 @@
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QJSValue>
+#include <limits>
 #include "../source/UI/Seasons/Stats/FilteringWidgets/ClassificationsCheckBoxesWidget.h"
 #include "../source/UI/Seasons/Stats/FilteringWidgets/CompetitionsRangeComboBoxesWidget.h"
 #include <QTemporaryDir>
@@ -657,6 +658,19 @@ static void auditDataRegressions() {
     qInfo()<<"PASS: audit 1-2 archive ties and competition ranges";
 }
 
+static void auditFormRegressions() {
+    Jumper a("A","One","POL"),b("B","Two","NOR");QVector<Jumper *> athletes{&a,&b};
+    JumperFormGeneratorsSettingsTableModel model;model.setGeneratorsSettings(JumperFormGeneratorSettings::constructJumperFormGeneratorsSettingsVector(athletes));
+    check(!model.setData(model.index(0,2),QString("abc"),Qt::EditRole),"audit 4: invalid text cannot silently become zero bonus");
+    check(model.setData(model.index(0,3),80,Qt::EditRole)&&!model.setData(model.index(0,4),40,Qt::EditRole),"audit 4: maximum cannot be lower than minimum");
+    check(!model.setData(model.index(0,1),QVariant(std::numeric_limits<double>::quiet_NaN()),Qt::EditRole),"audit 4: non-finite generator input is rejected");
+    JumpersFormGeneratorConfigWindow form;form.getTableModel()->setGeneratorsSettings(JumperFormGeneratorSettings::constructJumperFormGeneratorsSettingsVector(athletes));form.updateTable();
+    form.findChild<QDoubleSpinBox *>("doubleSpinBox_minForm")->setValue(80);QMetaObject::invokeMethod(&form,"on_doubleSpinBox_minForm_editingFinished");
+    form.findChild<QDoubleSpinBox *>("doubleSpinBox_maxForm")->setValue(40);QMetaObject::invokeMethod(&form,"on_doubleSpinBox_maxForm_editingFinished");
+    for(const auto &settings:form.getTableModel()->getGeneratorsSettings())check(settings.getMinForm()<=settings.getMaxForm(),"audit 4: bulk form bounds always stay consistent");
+    qInfo()<<"PASS: audit 4 valid finite form input and consistent bulk ranges";
+}
+
 static void backendRegressions() {
     { Classification source("Existing classification");source.setAltPointsForPlaces({{1,25.0}});ClassificationEditorWidget editor(&source);check(editor.getClassification()==&source,"classification constructor initializes the supplied source");editor.setClassification(nullptr);check(!editor.getClassification(),"classification source can be cleared safely"); }
 
@@ -726,6 +740,7 @@ int main(int argc,char **argv) {
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="1.3.0 beta-3","one release version is shared with the interface");
     backendRegressions();
+    if(app.arguments().contains("--audit-form-only")){auditFormRegressions();return 0;}
     if(app.arguments().contains("--audit-data-only")){auditDataRegressions();return 0;}
     if(app.arguments().contains("--geometry-only")){geometryRegressions(main);return 0;}
     if(app.arguments().contains("--rosters-only")){rosterRegressions(main);return 0;}

@@ -2,6 +2,7 @@
 
 #include <QIcon>
 #include <QFont>
+#include <cmath>
 #include "../../global/CountryFlagsManager.h"
 
 JumperFormGeneratorsSettingsTableModel::JumperFormGeneratorsSettingsTableModel(QObject *parent)
@@ -113,35 +114,17 @@ QVariant JumperFormGeneratorsSettingsTableModel::data(const QModelIndex &index, 
 
 bool JumperFormGeneratorsSettingsTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    if (data(index, role) != value) {
-        switch(index.column())
-        {
-        case 1:
-            if(value.toDouble() < 0 || value.toDouble() > 20)
-                return false;
-            generatorsSettings[index.row()].setFormVariability(value.toDouble());
-            break;
-        case 2:
-            if(value.toDouble() < -100 || value.toDouble() > 100)
-                return false;
-            generatorsSettings[index.row()].setFormBonus(value.toDouble());
-            break;
-        case 3:
-            if(value.toDouble() < 0 || value.toDouble() > 100)
-                return false;
-            generatorsSettings[index.row()].setMinForm(value.toDouble());
-            break;
-        case 4:
-            if(value.toDouble() < 0 || value.toDouble() > 100)
-                return false;
-            generatorsSettings[index.row()].setMaxForm(value.toDouble());
-            break;
-        }
-
-        emit dataChanged(index, index, {role});
-        return true;
+    if(role!=Qt::EditRole || !index.isValid() || index.row()<0 || index.row()>=generatorsSettings.size() || index.column()<1 || index.column()>4)return false;
+    bool ok=false;const double number=value.toDouble(&ok);
+    if(!ok || !std::isfinite(number))return false;
+    auto &settings=generatorsSettings[index.row()];
+    switch(index.column()) {
+    case 1: if(number<0 || number>20)return false;settings.setFormVariability(number);break;
+    case 2: if(number< -100 || number>100)return false;settings.setFormBonus(number);break;
+    case 3: if(number<0 || number>settings.getMaxForm())return false;settings.setMinForm(number);break;
+    case 4: if(number<settings.getMinForm() || number>100)return false;settings.setMaxForm(number);break;
     }
-    return false;
+    emit dataChanged(index,index,{Qt::DisplayRole,Qt::EditRole});return true;
 }
 
 Qt::ItemFlags JumperFormGeneratorsSettingsTableModel::flags(const QModelIndex &index) const

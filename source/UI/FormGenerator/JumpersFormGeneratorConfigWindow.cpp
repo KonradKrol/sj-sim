@@ -97,9 +97,11 @@ void JumpersFormGeneratorConfigWindow::on_doubleSpinBox_formBonus_editingFinishe
 void JumpersFormGeneratorConfigWindow::on_doubleSpinBox_minForm_editingFinished()
 {
     double value = ui->doubleSpinBox_minForm->value();
+    if(ui->doubleSpinBox_maxForm->value()<value)ui->doubleSpinBox_maxForm->setValue(value);
     for(auto & settings : tableModel->getGeneratorsSettingsReference())
     {
         settings.setMinForm(value);
+        if(settings.getMaxForm()<value)settings.setMaxForm(value);
     }
     updateTable();
 }
@@ -107,9 +109,11 @@ void JumpersFormGeneratorConfigWindow::on_doubleSpinBox_minForm_editingFinished(
 void JumpersFormGeneratorConfigWindow::on_doubleSpinBox_maxForm_editingFinished()
 {
     double value = ui->doubleSpinBox_maxForm->value();
+    if(ui->doubleSpinBox_minForm->value()>value)ui->doubleSpinBox_minForm->setValue(value);
     for(auto & settings : tableModel->getGeneratorsSettingsReference())
     {
         settings.setMaxForm(value);
+        if(settings.getMinForm()>value)settings.setMinForm(value);
     }
     updateTable();
 }
