@@ -7,6 +7,7 @@
 #include "../mainwindow.h"
 #include "../Competition/CompetitionManagerWindow.h"
 #include "../Competition/CompetitionConfigWindow.h"
+#include "../ResultsShowing/JumpDataDetailedInfoWindow.h"
 #include "../EditorWidgets/HillEditorWidget.h"
 #include "../EditorWidgets/CompetitionRulesEditorWidget.h"
 #include "../EditorWidgets/WindsGeneratorSettingsEditorWidget.h"
@@ -57,6 +58,7 @@
 #include <QRegularExpression>
 #include <cmath>
 #include <functional>
+#include <algorithm>
 QT_CHARTS_USE_NAMESPACE
 
 QString quickPicture(const QPixmap &pixmap);
@@ -420,8 +422,31 @@ void QuickBridge::refresh() {
         QWidget *selected=nullptr;
         for(auto *child:m_content->findChildren<QWidget *>())if(child->inherits("JumperCompetitionResultsWidget")) { selected=child;break; }
         if(selected && selected->isVisibleTo(m_content)) {
-            for(const auto &field:QList<QPair<QString,QString>>{{"name","label_nameAndSurname"},{"distance","label_distance"},{"points","label_points"},{"wind","label_averageWind"}}) {
+            for(const auto &field:QList<QPair<QString,QString>>{
+                {"name","label_nameAndSurname"},{"distance","label_distance"},{"points","label_points"},{"wind","label_averageWind"},
+                {"gate","label_gate"},{"gatePoints","label_gatePoints"},{"windPoints","label_windPoints"},{"compensation","label_totalCompensation"},
+                {"judgesText","label_judges"},{"judgesPoints","label_judgesPoints"},{"landing","label_landingType"},
+                {"position","label_actualPosition"},{"totalPoints","label_pointsSum"},{"roundPosition","label_positionInRound"},{"groupPosition","label_positionInGroup"},{"competitionPosition","label_positionInCompetition"},
+                {"takeoff","label_takeoffRating"},{"flight","label_flightRating"},{"random","label_random"},{"snow","label_snowRain"},
+                {"dsq","label_DSQ"},{"hs95","label_beats95HSPercents"}}) {
                 for(auto *label:selected->findChildren<QLabel *>(field.second))if(label->isVisibleTo(m_content)) { summary[field.first]=label->text();break; }
+            }
+            for(auto *info:selected->findChildren<JumpDataDetailedInfoWindow *>())if(info->isVisibleTo(m_content) && info->getJumpData()) {
+                const auto *jump=info->getJumpData();
+                if(summary.contains("wind"))summary["windValue"]=qRound64(jump->getAveragedWind()*100)/100.;
+                if(summary.contains("compensation")){
+                    summary["compensationValue"]=qRound64(jump->getTotalCompensation()*10)/10.;
+                    summary["windPoints"]=QString::number(jump->getWindCompensation(),'f',1)+tr(" pkt");
+                    summary["gatePoints"]=QString::number(jump->getGateCompensation(),'f',1)+tr(" pkt");
+                }
+                if(summary.contains("judgesText")) {
+                    const auto marks=jump->getJudges();int lowest=-1,highest=-1;
+                    if(marks.size()>=3){lowest=std::min_element(marks.begin(),marks.end())-marks.begin();for(int index=0;index<marks.size();++index)if(index!=lowest&&(highest<0||marks[index]>marks[highest]))highest=index;}
+                    QVariantList judges;for(int index=0;index<marks.size();++index)judges.append(QVariantMap{{"text",QString::number(marks[index],'f',1)},{"discarded",index==lowest||index==highest}});
+                    summary["judges"]=judges;
+                    summary["judgesPoints"]=QString::number(jump->getJudgesPoints(),'f',1)+tr(" pkt");
+                }
+                break;
             }
         }
         if(summary!=m_jumpSummary) { m_jumpSummary=summary;emit changed(); }
@@ -595,6 +620,41 @@ void QuickBridge::compose(QuickNode *base) {
         for(const auto &item:schema) { auto entry=field(item.first,item.second);if(entry.isValid())children.append(entry); }
         return children;
     };
+    auto catalog=[this](QWidget *page,const QVariant &toolbar=QVariant()) -> QuickNode * {
+        auto *container=page->findChild<DatabaseItemsListView *>();
+        if(!container)return nullptr;
+        node(container,true);
+        auto *view=container->findChild<QAbstractItemView *>("listView");if(!view)return nullptr;
+        const auto key="catalog-"+QString::number(idFor(container));auto *entry=m_groups.value(key);
+        if(!entry){entry=new QuickNode(this);m_groups.insert(key,entry);}
+        if(!view->property("quickCatalogConnected").toBool()){
+            view->setProperty("quickCatalogConnected",true);
+            connect(view,&QAbstractItemView::doubleClicked,this,[this,entry]{entry->setProperty("editRequest",entry->property("editRequest").toInt()+1);deferRefresh();});
+        }
+        QuickNode *editor=nullptr;QWidget *nativeEditor=nullptr;
+        const QStringList editorTypes{"JumperEditorWidget","HillEditorWidget","CompetitionRulesEditorWidget","ClassificationEditorWidget","PointsForPlacesPresetEditorWidget","JumpersListsListItemWidget"};
+        for(auto *widget:page->findChildren<QWidget *>())if(editorTypes.contains(QString::fromLatin1(widget->metaObject()->className()))&&widget->isVisibleTo(page)){editor=node(widget,true);nativeEditor=widget;break;}
+        QVariantList actions;
+        for(auto *button:page->findChildren<QPushButton *>())if(button->isVisibleTo(page)&&!container->isAncestorOf(button)&&(!nativeEditor||!nativeEditor->isAncestorOf(button)))actions.append(QVariant::fromValue(node(button,true)));
+        entry->update({{"kind","catalog"},{"actionsRow",actions},{"list",QVariant::fromValue(node(view,true))},{"editor",QVariant::fromValue(editor)},{"toolbar",toolbar},{"editRequest",entry->property("editRequest").toInt()}});
+        return entry;
+    };
+    if(profile()=="SimulationSavesWindow") {
+        if(auto *view=m_content->findChild<QAbstractItemView *>("listView_simulationSaves")){
+            QVariantList actions;
+            for(const auto &item:QList<QPair<QString,QString>>{{"pushButton_add",tr("Nowy zapis")},{"pushButton_OK",tr("Wczytaj")},{"pushButton_remove",tr("Usuń")}})if(auto *button=m_content->findChild<QPushButton *>(item.first)){
+                auto *entry=m_groups.value(item.first);if(!entry){entry=new QuickNode(this);m_groups.insert(item.first,entry);}
+                entry->update({{"kind","button"},{"name",item.first},{"id",idFor(button)},{"text",item.second},{"enabled",button->isEnabled()},{"primary",item.first=="pushButton_OK"}});actions.append(QVariant::fromValue(entry));
+            }
+            m_root->update({{"kind","catalog"},{"list",QVariant::fromValue(node(view,true))},{"actionsRow",actions}});return;
+        }
+    }
+    if(profile()=="DatabaseEditorWindow") {
+        auto *source=m_content->findChild<QTabWidget *>("tabWidget_main");
+        if(source)if(auto *content=catalog(source->currentWidget(),source->currentIndex()<2 ? field("pushButton_sortByCountries") : QVariant())){
+            auto *tabs=node(source,true);m_root->update(tabs->values(),{QVariant::fromValue(content)});return;
+        }
+    }
     if(qobject_cast<QInputDialog *>(m_window) || qobject_cast<QProgressDialog *>(m_window)) {
         QVariantList content,buttons;
         const auto append=[&](QWidget *widget,QVariantList &list){auto *entry=node(widget,true);if(!entry)return;auto values=entry->values();values["available"]=true;
@@ -692,6 +752,7 @@ void QuickBridge::compose(QuickNode *base) {
             for(int i=0;i<source->count();++i) {
                 auto *page=source->widget(i);page->setProperty("quickExposePage",true);
                 if(i==3 && page->findChild<CalendarEditorWidget *>())pages.append(QVariant::fromValue(node(page->findChild<CalendarEditorWidget *>(),true)));
+                else if(auto *content=catalog(page))pages.append(QVariant::fromValue(content));
                 else pages.append(QVariant::fromValue(node(page,true)));
                 labels.append(source->tabText(i).remove('&'));
             }

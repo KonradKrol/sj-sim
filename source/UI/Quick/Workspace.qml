@@ -9,6 +9,7 @@ ColumnLayout {
     readonly property var contentNode: tabbed && ui.root.children.length ? ui.root.children[0] : ui.root
     readonly property bool formPage: contentNode && contentNode.values.kind === "formGenerator"
     readonly property bool rosterPage: contentNode && contentNode.values.kind === "roster"
+    readonly property bool catalogPage: contentNode && contentNode.values.kind === "catalog"
     readonly property bool calendarPage: contentNode && contentNode.values.kind === "calendar"
     readonly property bool sideTabs: tabbed && width >= 1200 && height >= 550
     spacing: 0
@@ -41,7 +42,7 @@ ColumnLayout {
         }
         ScrollView {
         id: scroll
-        visible: !workspace.calendarPage && !workspace.rosterPage && !workspace.formPage
+        visible: !workspace.catalogPage && !workspace.calendarPage && !workspace.rosterPage && !workspace.formPage
         objectName: "workspaceScroll"
         Layout.fillWidth: true; Layout.fillHeight: true
         Layout.minimumWidth: 0; Layout.minimumHeight: 0
@@ -52,9 +53,15 @@ ColumnLayout {
             width: scroll.availableWidth
             padding: workspace.width < 700 ? 12 : 24
             background: Item {}
-            contentItem: Node { node: workspace.calendarPage || workspace.rosterPage || workspace.formPage ? null : workspace.contentNode }
+            contentItem: Node { node: workspace.catalogPage || workspace.calendarPage || workspace.rosterPage || workspace.formPage ? null : workspace.contentNode }
         }
     }
+        Loader {
+            visible: active; active: workspace.catalogPage
+            Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
+            Layout.margins: workspace.width < 700 || workspace.height < 600 ? 12 : 20
+            sourceComponent: Component { CatalogWorkspace { node: workspace.contentNode } }
+        }
         Loader {
             visible: active; active: workspace.formPage
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0

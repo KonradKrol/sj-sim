@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 ScrollView {
     id: race
+    objectName: "raceWorkspace"
     contentWidth: availableWidth
     contentHeight: raceContent.height
     clip: true
@@ -12,6 +13,8 @@ ScrollView {
     readonly property bool narrow: width < 700
     readonly property var individual: ui.find("tableView_results")
     readonly property var team: ui.find("quickTeamResults")
+    readonly property var koNode: ui.find("tableView_KOGroupResults")
+    readonly property bool hasKo: !!koNode && koNode.values.available !== false
     readonly property var resultNode: individual && individual.values.available !== false ? individual : team
     Item {
         id: raceContent
@@ -20,28 +23,30 @@ ScrollView {
         Column {
         id: header
         width: parent.width
-        spacing: race.height < 600 ? 6 : 8
+        spacing: race.height < 600 ? 4 : 8
         RaceStatus { width: parent.width; height: implicitHeight; onConditionsRequested: race.openOptions(1) }
         GridLayout {
             id: hero
             columns: race.narrow ? 1 : 2
             width: parent.width; height: implicitHeight
             columnSpacing: 12; rowSpacing: 8
-            RaceAthlete { dense: race.height < 600; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: 0 }
-            RaceLastJump { dense: race.height < 600; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: 0 }
+            RaceAthlete { dense: race.height < 600; Layout.row: race.narrow ? 1 : 0; Layout.column: 0; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: race.narrow ? 0 : 300 }
+            RaceLastJump { dense: race.height < 600; Layout.row: 0; Layout.column: race.narrow ? 0 : 1; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: race.narrow ? 0 : 640 }
         }
         RaceControls { width: parent.width; height: implicitHeight; onOptionsRequested: race.openOptions(0) }
         }
-        GridLayout {
+        Item {
             id: tables
+            objectName: "raceTables"
             y: header.height+8
             width: parent.width
-            height: Math.max(race.narrow?360:170,race.availableHeight-y)
-            columns: race.narrow ? 1 : 2
-            columnSpacing: 12; rowSpacing: 8
-            ColumnLayout {
-                Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0
-                Layout.preferredWidth: 640
+            height: Math.max(race.narrow ? (race.hasKo ? 500 : 400) : 170,race.availableHeight-y)
+            readonly property real resultWidth: race.narrow ? width : (width-12)*.66
+            readonly property real resultHeight: !race.narrow ? height : race.hasKo ? Math.max(180,height-308) : (height-8)/2
+            Item {
+                width: tables.resultWidth; height: tables.resultHeight
+                ColumnLayout {
+                anchors.fill: parent
                 Label { text: qsTr("Wyniki"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.body; font.weight: Font.ExtraBold }
                 DataTable {
                     id: results
@@ -54,15 +59,20 @@ ScrollView {
                     teamResults: race.resultNode === race.team
                     title: qsTr("Wyniki")
                 }
+                }
             }
-            ColumnLayout {
-                Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0
-                Layout.preferredWidth: 330
+            Item {
+                x: race.narrow ? 0 : tables.resultWidth+12
+                y: race.narrow ? tables.resultHeight+8 : 0
+                width: race.narrow ? tables.width : tables.width-x
+                height: tables.height-y
+                ColumnLayout {
+                anchors.fill: parent
                 Label { text: qsTr("Lista startowa"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.body; font.weight: Font.ExtraBold }
                 DataTable {
                     objectName: "raceStartList"
                     readonly property var entry: ui.find("listView_startList")
-                    Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 140
+                    Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 120
                     table: entry ? entry.values.table : null; ownerId: entry ? entry.values.id : -1
                     compact: true; followCurrent: true; title: qsTr("Lista startowa")
                 }
@@ -72,6 +82,7 @@ ScrollView {
                     node: entry && entry.values.available !== false ? entry : null
                     Layout.fillWidth: true; Layout.preferredHeight: visible ? 130 : 0
                     compactTable: true; tableHeightLimit: 130
+                }
                 }
             }
         }

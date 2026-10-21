@@ -22,6 +22,8 @@
 <file>RaceAthlete.qml</file>
 <file>RaceControls.qml</file>
 <file>RaceLastJump.qml</file>
+    <file>JumpMetric.qml</file>
+    <file>JudgeMarks.qml</file>
 <file>RaceScreen.qml</file>
 <file>RaceOptions.qml</file>
 <file>RaceStatus.qml</file>
@@ -53,6 +55,7 @@
 <file>RosterWorkspace.qml</file>
 <file>RosterPresets.qml</file>
 <file>ProjectedControl.qml</file>
+    <file>CatalogWorkspace.qml</file>
 <file>FormGeneratorWorkspace.qml</file>
 <file>RosterSummary.qml</file>
 <file>RosterLibrary.qml</file>

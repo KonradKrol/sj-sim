@@ -177,12 +177,12 @@ choice</translation>
         <translation>CSV jumpers loading</translation>
     </message>
     <message>
-        <source>Funkcja wczytania zawodników z pliku CSV została stworzona tylko i wyłącznie dla użytkownika o nazwie &quot;Kamen&quot;. Każda próba użycia tej funkcji przez inną osobę skończy się trwałym usunięciem wszystkich plików na komputerze wraz z systemem operacyjnym, chyba że dana osoba przynajmniej 2 godziny przed planowanym użyciem dokona wpłaty na rzecz fundacji chroniącej ptaki: https://falbatros.pl/chcesz-nas-wesprzec/. 
+        <source>Funkcja wczytania zawodników z pliku CSV została stworzona tylko i wyłącznie dla użytkownika o nazwie &quot;Kamen&quot;. Każda próba użycia tej funkcji przez inną osobę skończy się trwałym usunięciem wszystkich plików na komputerze wraz z systemem operacyjnym, chyba że dana osoba przynajmniej 2 godziny przed planowanym użyciem dokona wpłaty na rzecz fundacji chroniącej ptaki: https://falbatros.pl/chcesz-nas-wesprzec/.
 Czy chcesz kontynuować?
 
 Kolejność atrybutów zawodnika w pliku CSV: Imię, nazwisko, kod kraju, nazwa zdjęcia, rekord życiowy, technika wybicia, technika lotu, styl lotu, forma, styl lądowania, równość skoków.
 Niestety z powodu pandemii covid-19 wczytywanie cech charakterystycznych zostało uniemożliwione. Przepraszamy za niedogodności.</source>
-        <translation type="vanished">The function to load jumpers from a CSV file was created exclusively for a user named &quot;Kamen&quot;. Any attempt to use this function by another person will end up with the permanent deletion of all files on the computer, along with the operating system, unless the person at least 2 hours before the scheduled use makes a donation to a foundation that protects birds: https://falbatros.pl/chcesz-nas-wesprzec/. 
+        <translation type="vanished">The function to load jumpers from a CSV file was created exclusively for a user named &quot;Kamen&quot;. Any attempt to use this function by another person will end up with the permanent deletion of all files on the computer, along with the operating system, unless the person at least 2 hours before the scheduled use makes a donation to a foundation that protects birds: https://falbatros.pl/chcesz-nas-wesprzec/.
 Do you want to continue?
 
 The order of the jumper&apos;s attributes in the CSV file: First name, last name, country code, photo name, personal record, takeoff technique, flight technique, flight style, form, landing style, jump equality.
@@ -190,12 +190,12 @@ Unfortunately, due to the covid-19 pandemic, the loading of characteristics has 
     </message>
     <message>
         <location filename="../source/UI/AppSettings/AppSettingsWindow.cpp" line="282"/>
-        <source>Funkcja wczytania zawodników z pliku CSV została stworzona tylko i wyłącznie dla użytkownika o nazwie &quot;Kamen&quot;. Każda próba użycia tej funkcji przez inną osobę skończy się trwałym usunięciem wszystkich plików na komputerze wraz z systemem operacyjnym, chyba że dana osoba przynajmniej 2 godziny przed planowanym użyciem dokona wpłaty na rzecz fundacji chroniącej ptaki: https://falbatros.pl/chcesz-nas-wesprzec/. 
+        <source>Funkcja wczytania zawodników z pliku CSV została stworzona tylko i wyłącznie dla użytkownika o nazwie &quot;Kamen&quot;. Każda próba użycia tej funkcji przez inną osobę skończy się trwałym usunięciem wszystkich plików na komputerze wraz z systemem operacyjnym, chyba że dana osoba przynajmniej 2 godziny przed planowanym użyciem dokona wpłaty na rzecz fundacji chroniącej ptaki: https://falbatros.pl/chcesz-nas-wesprzec/.
 Czy chcesz kontynuować?
 
 Kolejność atrybutów zawodnika w pliku CSV: Imię i nazwisko, kod kraju, technika wybicia, technika lotu, styl lotu, forma, styl lądowania, równość skoków.
 Niestety z powodu pandemii covid-19 wczytywanie cech charakterystycznych zostało uniemożliwione. Przepraszamy za niedogodności.</source>
-        <translation>The function to load players from a CSV file was created exclusively for a user named &quot;Kamen&quot;. Any attempt to use this function by another person will end up with the permanent deletion of all files on the computer, along with the operating system, unless the person at least 2 hours before the scheduled use makes a donation to a foundation that protects birds: https://falbatros.pl/chcesz-nas-wesprzec/. 
+        <translation>The function to load players from a CSV file was created exclusively for a user named &quot;Kamen&quot;. Any attempt to use this function by another person will end up with the permanent deletion of all files on the computer, along with the operating system, unless the person at least 2 hours before the scheduled use makes a donation to a foundation that protects birds: https://falbatros.pl/chcesz-nas-wesprzec/.
 Do you want to continue?
 
 The order of the athlete&apos;s attributes in the CSV file: Name, country code, knockout technique, flight technique, flight style, form, landing style, jump equality.
@@ -1998,7 +1998,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;li style=&quot; font-size:13pt;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Nazwa zdjęcia zawodnika (nazwa pliku znajdującego się w folderze jumpersImages, opcjonalne)&lt;/li&gt;
 &lt;li style=&quot; font-size:13pt;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Technika wybicia (zakres dowolny)&lt;/li&gt;
 &lt;li style=&quot; font-size:13pt;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Technika lotu (zakres dowolny)&lt;/li&gt;
-&lt;li style=&quot; font-size:13pt;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Styl lotu (do wyboru): 
+&lt;li style=&quot; font-size:13pt;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Styl lotu (do wyboru):
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; font-size:13pt;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Styl V&lt;/li&gt;
 &lt;li style=&quot; font-size:13pt;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Nowoczesny styl V&lt;/li&gt;
@@ -2007,7 +2007,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;li style=&quot; font-size:13pt;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Styl lądowania (Od 0 do 15)&lt;/li&gt;
 &lt;li style=&quot; font-size:13pt;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Forma (Od 1 do 100)&lt;/li&gt;
 &lt;li style=&quot; font-size:13pt;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Równość skoków (Od -5 do 5)&lt;/li&gt;
-&lt;li style=&quot; font-size:13pt;&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Cechy charakterystyczne (opcjonalne, do wyboru, od -5 do 5): 
+&lt;li style=&quot; font-size:13pt;&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Cechy charakterystyczne (opcjonalne, do wyboru, od -5 do 5):
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; font-size:13pt;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Wysokość wybicia&lt;/li&gt;
 &lt;li style=&quot; font-size:13pt;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Wysokość lotu&lt;/li&gt;
@@ -2096,12 +2096,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Dyskwalifikacje (tak/nie)&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Bicie rekordów (tak/nie)&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ilość zawodników w drużynie (dla konkursów drużynowych)&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Rodzaj obliczania średniej wiatru 
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Rodzaj obliczania średniej wiatru
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Prosty: Każdy wiatr pod narty jest zaliczany jako 100% wiatr przedni itd. Nawet wiatr minimalnie w plecy zostanie uznany jako wiatr o kącie 180 stopni (0 to wiatr idealnie pod narty),&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Prosty ulepszony: Wiatr jest albo wiatrem pełnym albo połowicznym. Jeżeli wiatr nie jest blisko wiatru “idealnego” (odchylenie około 20-30 stopni) to jest zaliczany tylko w 50%&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Oryginalny (realistyczny): Tak jak w prawdziwych zawodach. Wpływ wiatru na rekompensatę jest w 100% w zależności od kierunku (nie licząc niedokładności przeliczników). Wpływ ten jest obliczany według wzoru: cos(kierunek* π / 180) * siła * (100 / ilość wiatrów). Podziękowania dla Jonka za doinformowanie mnie w tej kwestii.&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Wpływ odległości na rekompensatę 
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Wpływ odległości na rekompensatę
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Oryginalny: Jeżeli zawodnik skoczy poniżej 75% punktu K, reszta wiatrów się nie wlicza.&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Pełny: Wliczają się tylko te wiatry do których doleci zawodnik. Jeżeli doleci tylko do np. 54% danego wiatru to siła przy obliczaniu rekompensat jest mnożona przez 0.54.&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;
@@ -2111,7 +2111,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;
 &lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ilość zawodników w rundzie&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Sortowanie listy startowej przed rundą&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Sortowanie grup (konkurs drużynowy): 
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Sortowanie grup (konkurs drużynowy):
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Przed ostatnią grupą&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Po każdej grupie&lt;/li&gt;
@@ -2120,7 +2120,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Tryb KO (tak/nie)&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ilość zawodników w grupie KO&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ilość zawodników awansujących z grupy KO&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Sposób dobierania grup KO 
+&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Sposób dobierania grup KO
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Klasyczny (50 zawodnik z 1 itd., tylko dla dwuosobowych grup)&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Dla dużych grup (sposób klasyczny dopasowany do realiów dużych grup. Dla 50 zawodników i 5 osobowej grupy: np. 3, 13, 23, 33 i 43 miejsce)&lt;/li&gt;
@@ -2249,7 +2249,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;h1 style=&quot; margin-top:18px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;rozgrywanie-konkursu&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-size:13pt; font-weight:700;&quot;&gt;R&lt;/span&gt;&lt;span style=&quot; font-size:13pt; font-weight:700;&quot;&gt;ozgrywanie konkursu&lt;/span&gt;&lt;/h1&gt;
 &lt;h2 style=&quot; margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;najważniejsze-funkcje-przed-rozgrywaniem-konkursu&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-size:13pt; font-weight:700;&quot;&gt;N&lt;/span&gt;&lt;span style=&quot; font-size:13pt; font-weight:700;&quot;&gt;ajważniejsze funkcje przed rozgrywaniem konkursu&lt;/span&gt;&lt;/h2&gt;
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;
-&lt;li style=&quot; font-size:13pt;&quot; style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ustalanie kolejności listy startowej (większość tylko dla trybu sezonów) 
+&lt;li style=&quot; font-size:13pt;&quot; style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ustalanie kolejności listy startowej (większość tylko dla trybu sezonów)
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; font-size:13pt;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Na podstawie listy zawodników w zapisie&lt;/li&gt;
 &lt;li style=&quot; font-size:13pt;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Na podstawie losowości&lt;/li&gt;
@@ -2310,14 +2310,14 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Belka startowa&lt;/li&gt;&lt;/ul&gt;
 &lt;h2 style=&quot; margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;najważniejsze-funkcje-po-symulacji-pojedynczych-skoków&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-size:x-large; font-weight:700;&quot;&gt;N&lt;/span&gt;&lt;span style=&quot; font-size:x-large; font-weight:700;&quot;&gt;ajważniejsze funkcje po symulacji pojedynczych skoków&lt;/span&gt;&lt;/h2&gt;
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;
-&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Sortowanie tabeli malejąco lub rosnąco według: 
+&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Sortowanie tabeli malejąco lub rosnąco według:
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Odległości&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Noty łącznej&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Wiatru&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Punktów za styl&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Szczegółowy przegląd wybranych skoków&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Wykresy: 
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Wykresy:
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Rozkład odległości&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Rozkład punktów&lt;/li&gt;
@@ -2374,10 +2374,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Quicksand Medium&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;h1 style=&quot; margin-top:18px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;często-zadawane-pytania-faq&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-size:xx-large; font-weight:700;&quot;&gt;C&lt;/span&gt;&lt;span style=&quot; font-size:xx-large; font-weight:700;&quot;&gt;zęsto zadawane pytania (FAQ)&lt;/span&gt;&lt;/h1&gt;
 &lt;ol style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;
-&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Program crashuje się kiedy chcę rozpocząć konkurs. Co robić?&lt;/span&gt; 
+&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Program crashuje się kiedy chcę rozpocząć konkurs. Co robić?&lt;/span&gt;
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Prawdopodobnie skocznia lub zasady konkursu nie zostały wybrane.&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Program crashuje się w trakcie wejścia do zapisu symulacji. Co mam zrobić?&lt;/span&gt; 
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Program crashuje się w trakcie wejścia do zapisu symulacji. Co mam zrobić?&lt;/span&gt;
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jeśli program daje radę wczytać zapisy symulacji (czyli da się wejść w okno z listą zapisów) to być może wystarczy wejść w ustawienia i kliknąć “Napraw zapisy symulacji”. Jeśli to nie pomoże, skontaktuj się ze mną na poniżej podanym serwerze Discord, chociaż w niektórych przypadkach zapis symulacji jest nie do odratowania.&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
@@ -3289,16 +3289,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Quicksand Medium&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;h1 style=&quot; margin-top:18px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;często-zadawane-pytania-faq&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-size:xx-large; font-weight:700;&quot;&gt;C&lt;/span&gt;&lt;span style=&quot; font-size:xx-large; font-weight:700;&quot;&gt;zęsto zadawane pytania (FAQ)&lt;/span&gt;&lt;/h1&gt;
 &lt;ol style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;
-&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Program crashuje się kiedy chcę rozpocząć konkurs. Co robić?&lt;/span&gt; 
+&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Program crashuje się kiedy chcę rozpocząć konkurs. Co robić?&lt;/span&gt;
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Prawdopodobnie skocznia lub zasady konkursu nie zostały wybrane.&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Program crashuje się w trakcie wejścia do zapisu symulacji. Co mam zrobić?&lt;/span&gt; 
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Program crashuje się w trakcie wejścia do zapisu symulacji. Co mam zrobić?&lt;/span&gt;
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jeśli program daje radę wczytać zapisy symulacji (czyli da się wejść w okno z listą zapisów) to być może wystarczy wejść w ustawienia i kliknąć “Napraw zapisy symulacji”. Jeśli to nie pomoże, skontaktuj się ze mną na poniżej podanym serwerze Discord, chociaż w niektórych przypadkach zapis symulacji jest nie do odratowania.&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Mam pomysł na nową funkcję lub chcę zgłosić błąd. Gdzie to zrobić?&lt;/span&gt; 
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Mam pomysł na nową funkcję lub chcę zgłosić błąd. Gdzie to zrobić?&lt;/span&gt;
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Możesz zrobić to na oficjalnym serwerze Discord: &lt;a href=&quot;https://discord.gg/Un5jQ6STNX&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#8ab4f8;&quot;&gt;https://discord.gg/Un5jQ6STNX&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Chcę pomóc z istniejącymi tłumaczeniami, lub stworzyć własne. Gdzie mogę się zgłosić?&lt;/span&gt; 
+&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Chcę pomóc z istniejącymi tłumaczeniami, lub stworzyć własne. Gdzie mogę się zgłosić?&lt;/span&gt;
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Również za pośrednictwem serwera Discord. &lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -3310,16 +3310,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Quicksand Medium&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;h1 style=&quot; margin-top:18px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;często-zadawane-pytania-faq&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-size:xx-large; font-weight:700;&quot;&gt;&lt;/span&gt;&lt;span style=&quot; font-size:xx-large; font-weight:700;&quot;&gt;Frequently asked questions (FAQ)&lt;/span&gt;&lt;/h1&gt;
 &lt;ol style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;
-&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Program crashes when I want to start competition.What to do?&lt;/span&gt; 
+&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Program crashes when I want to start competition.What to do?&lt;/span&gt;
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;It is likely that the hill or the rules of the competition were not chosen.&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;The program crashes when entering the simulation save. What should I do?&lt;/span&gt; 
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;The program crashes when entering the simulation save. What should I do?&lt;/span&gt;
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If the program manages to load the simulation records (that is, it is possible to enter the window with the list of records) then perhaps it is enough to enter the settings and click &quot;Repair simulation records&quot;. If that doesn&apos;t help, contact me on the Discord server below, although in some cases the simulation record is unrecoverable.&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;I have an idea for a new feature or want to report a bug. Where to do it?&lt;/span&gt; 
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;I have an idea for a new feature or want to report a bug. Where to do it?&lt;/span&gt;
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can do it on the official Discord server: &lt;a href=&quot;https://discord.gg/Un5jQ6STNX&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#8ab4f8;&quot;&gt;https://discord.gg/Un5jQ6STNX&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;I want to help withexisting translations or make new. Where can I apply?&lt;/span&gt; 
+&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;I want to help withexisting translations or make new. Where can I apply?&lt;/span&gt;
 &lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;&quot;&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Also through the Discord server. &lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -7415,7 +7415,7 @@ gate</translation>
         <translation>Jumps importance preset</translation>
     </message>
     <message>
-        <source>Ilość zawodników 
+        <source>Ilość zawodników
 w drużynie</source>
         <translation type="vanished">Jumpers count
 in team</translation>
@@ -9076,6 +9076,20 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <source>Wpływ odległości na rekompensatę</source>
         <translation>Distance effect on compensation</translation>
     </message>
+<message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="439" />
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="440" />
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="447" />
+    <source> pkt</source>
+    <translation> pts</translation>
+</message>
+
+<message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="645" />
+    <source>Wczytaj</source>
+    <translation>Load</translation>
+</message>
+
 </context>
 
 
@@ -9498,6 +9512,73 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <source>Ostatni skok</source>
         <translation>Last jump</translation>
     </message>
+<message>
+    <location filename="../source/UI/Quick/RaceLastJump.qml" line="43" />
+    <source>Wiatr</source>
+    <translation>Wind</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/RaceLastJump.qml" line="44" />
+    <source>Belka</source>
+    <translation>Gate</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/RaceLastJump.qml" line="45" />
+    <source>Ląd.</source>
+    <translation>Landing</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/RaceLastJump.qml" line="46" />
+    <source>Rekomp.</source>
+    <translation>Comp.</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/RaceLastJump.qml" line="47" />
+    <source>Za wiatr</source>
+    <translation>Wind pts</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/RaceLastJump.qml" line="48" />
+    <source>Za belkę</source>
+    <translation>Gate pts</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/RaceLastJump.qml" line="49" />
+    <source>Seria</source>
+    <translation>Round</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/RaceLastJump.qml" line="50" />
+    <source>Suma</source>
+    <translation>Total</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/RaceLastJump.qml" line="55" />
+    <source>Wybicie</source>
+    <translation>Take-off</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/RaceLastJump.qml" line="57" />
+    <source>Los.</source>
+    <translation>Random</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/RaceLastJump.qml" line="58" />
+    <source>Śnieg</source>
+    <translation>Snow</translation>
+</message>
+
+<message>
+    <location filename="../source/UI/Quick/RaceLastJump.qml" line="50" />
+    <source>Grupa</source>
+    <translation>Group</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/RaceLastJump.qml" line="51" />
+    <source>Konkurs</source>
+    <translation>Competition</translation>
+</message>
+
 </context>
 
 
@@ -10687,4 +10768,27 @@ li.checked::marker { content: &quot;\2612&quot;; }
 
 
 
+<context>
+    <name>CatalogWorkspace</name>
+<message>
+    <location filename="../source/UI/Quick/CatalogWorkspace.qml" line="21" />
+    <source>Lista</source>
+    <translation>List</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CatalogWorkspace.qml" line="21" />
+    <source>Edycja</source>
+    <translation>Edit</translation>
+</message>
+
+</context>
+<context>
+    <name>JudgeMarks</name>
+<message>
+    <location filename="../source/UI/Quick/JudgeMarks.qml" line="15" />
+    <source> · nota odrzucona</source>
+    <translation> · discarded mark</translation>
+</message>
+
+</context>
 </TS>

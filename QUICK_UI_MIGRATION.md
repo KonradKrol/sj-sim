@@ -91,7 +91,7 @@ The render sweep covers widths of 1440, 1024, 520 and 360 pixels, light/dark the
 and enlarged text. Captures are written to `build-quick-ui/ui-renders`.
 The suite also verifies configuration tab switching and that the live jump summary
 uses actual result data and remains visible at desktop test sizes. The suite
-produces 316 counted renders, including the five UX workflows, roster editing, bounded presets, the form
+produces 339 counted renders, including the five UX workflows, roster editing, bounded presets, the form
 generator, calendar fields, custom rules and links,
 plus large-text variants. The original Widgets-only
 qmake configuration also builds successfully without linking Qt Quick or QML.
@@ -256,3 +256,14 @@ competition; the default suite also includes these checks. Competition options
 use secondary Progress / Conditions / Jump sections; live presentation stays in
 the main toolbar, and weather readings open Conditions directly. Short desktop
 windows use tighter header spacing to retain both critical tables, including KO.
+
+
+## Available space and last jump, 2026-10-21
+
+[The follow-up report](docs/SPACE_AND_LAST_JUMP_2026-10-21.md) covers full-height
+catalog lists in the database, season and save selection; independent scrolling
+for editors; and compact secondary actions. `--space-only` checks catalog growth
+and editor boundaries. The competition summary now exposes judges, wind, gate,
+landing, compensation components and totals, and positions directly. Judges have
+separate marks with discarded extremes; signed wind and total compensation use
+accessible positive/negative colours. The last jump comes first in narrow windows.

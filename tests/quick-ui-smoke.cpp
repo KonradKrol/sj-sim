@@ -117,6 +117,8 @@ static void render(QWidget *window,const QString &name,bool sweep=false) {
         presentation(window)->resize(size);
         for(bool dark:sweep?QList<bool>{false,true}:QList<bool>{false}) {
             appearance->setDark(dark); QTest::qWait(200);
+            // A grab flushes pending Quick layout polish in the offscreen widget.
+            auto image=presentation(window)->grab().toImage(); if(image.isNull()) qCritical()<<"Geometry"<<window->size()<<view->size(); check(!image.isNull(),"frame "+name);
             check(item(view->rootObject(),"releaseBadge")==nullptr,"pages and short dialogs do not repeat application chrome");
             auto *footer=applicationWindow->findChild<QQuickWidget *>("quickApplicationFooter");
             check(footer && item(footer->rootObject(),"releaseBadge"),"one shared release badge exists");
@@ -129,7 +131,7 @@ static void render(QWidget *window,const QString &name,bool sweep=false) {
                     check(mode->width()>=200 && position.x()>=0 && position.x()+mode->width()<=view->width()+1,"primary mode remains readable and inside the home viewport");
                 }
             }
-            if(name.startsWith("live-") && sweep && size.width()>=1000) {
+            if((name.startsWith("live-") || name=="last-jump-full") && sweep && size.width()>=1000) {
                 auto *summary=item(view->rootObject(),"raceLastJump");
                 check(summary!=nullptr,"live jump summary exists");
                 const auto position=summary->mapToItem(view->rootObject(),QPointF());
@@ -138,10 +140,16 @@ static void render(QWidget *window,const QString &name,bool sweep=false) {
                 check(athlete&&results&&start,"competition keeps athlete, results and start list in one workspace");
                 const auto athleteBounds=athlete->mapRectToItem(view->rootObject(),athlete->boundingRect());const auto summaryBounds=summary->mapRectToItem(view->rootObject(),summary->boundingRect());
                 check(!athleteBounds.intersects(summaryBounds),"athlete and last jump never overlap");
-                for(auto *panel:{results,start}){const auto bounds=panel->mapRectToItem(view->rootObject(),panel->boundingRect());check(panel->isVisible()&&bounds.top()>=0&&bounds.bottom()<=view->height()+1&&panel->height()>=120,QString("critical tables remain visible together without page scrolling on laptops: %1 %2 %3x%4 y=%5 height=%6 viewport=%7").arg(name,panel->objectName()).arg(size.width()).arg(size.height()).arg(bounds.y()).arg(bounds.height()).arg(view->height()));}
+                for(auto *panel:{results,start}){const auto bounds=panel->mapRectToItem(view->rootObject(),panel->boundingRect());if(bounds.bottom()>view->height()+1){presentation(window)->grab().save("/tmp/sj-race-overflow.png");auto *grid=item(view->rootObject(),"raceTables");auto *workspace=item(view->rootObject(),"raceWorkspace");qInfo()<<"RACEGEOMETRY"<<grid->height()<<grid->y()<<workspace->height()<<workspace->property("availableHeight")<<panel->parentItem()->height();}check(panel->isVisible()&&bounds.top()>=0&&bounds.bottom()<=view->height()+1&&panel->height()>=120,QString("critical tables remain visible together without page scrolling on laptops: %1 %2 %3x%4 y=%5 height=%6 viewport=%7").arg(name,panel->objectName()).arg(size.width()).arg(size.height()).arg(bounds.y()).arg(bounds.height()).arg(view->height()));}
 
             }
-            auto image=presentation(window)->grab().toImage(); if(image.isNull()) qCritical()<<"Geometry"<<window->size()<<view->size(); check(!image.isNull(),"frame "+name);
+            if(name=="last-jump-full"){
+                auto *summary=item(view->rootObject(),"raceLastJump");const auto bounds=summary->mapRectToItem(view->rootObject(),summary->boundingRect());
+                check(bounds.top()>=0&&bounds.bottom()<=view->height(),"complete last jump remains directly visible even in the smallest viewport");
+            }
+            if(name=="saves"){
+                auto *entry=qobject_cast<QuickNode *>(bridge->find("listView_simulationSaves"));auto *table=item(view->rootObject(),"dataTable-"+QString::number(entry->values().value("id").toInt()));const auto bounds=table->mapRectToItem(view->rootObject(),table->boundingRect());check(bounds.bottom()>=view->height()-24&&bounds.bottom()<=view->height(),"save selection gives the remaining viewport to the list");
+            }
             image.save(output+QString("/%1-%2-%3.png").arg(name).arg(size.width()).arg(dark)); ++renders;
             if(name=="ux-explicit-form" && size.width()==360 && !dark){
                 auto *workspace=item(view->rootObject(),"formGeneratorWorkspace");workspace->setProperty("section",1);QTest::qWait(70);auto *apply=item(view->rootObject(),"formApplyParameters");const auto bounds=apply->mapRectToItem(view->rootObject(),apply->boundingRect());check(apply->isVisible()&&bounds.top()>=0&&bounds.bottom()<=view->height(),"UX 1: Apply stays pinned and reachable on the smallest parameters screen");view->grabFramebuffer().save(output+"/ux-form-parameters-360.png");workspace->setProperty("section",0);
@@ -261,6 +269,12 @@ static void runCompetition(MainWindow &main,int scenario) {
                     auto *table=item(scene(window)->rootObject(),"raceResults");const auto columns=table->property("displayColumns").value<QJSValue>().toVariant().toList();
                     check(columns.contains(3)&&columns.contains(2),"default competition results show distance and total points together");
                     auto *distance=item(scene(window)->rootObject(),"lastJumpDistance");check(distance&&distance->property("text").toString()==bridge->jumpSummary().value("distance").toString(),"last jump distance uses revealed real jump data");
+                    const auto summary=bridge->jumpSummary();check(summary.contains("gate")&&summary.contains("windPoints")&&summary.contains("gatePoints")&&summary.contains("judgesPoints"),"last jump exposes gate, compensation components and judges total directly");
+                    const auto marks=summary.value("judges").toList();int discarded=0;for(const auto &mark:marks)if(mark.toMap().value("discarded").toBool())++discarded;check(marks.size()==5&&discarded==2,"last jump preserves all five judges and marks exactly two discarded scores");
+                    auto *resultWidget=window->findChild<JumperCompetitionResultsWidget *>();auto *jumpTabs=resultWidget->findChild<QTabWidget *>("tabWidget_jumps");auto *nativeInfo=qobject_cast<JumpDataDetailedInfoWindow *>(jumpTabs->currentWidget());check(nativeInfo&&nativeInfo->getJumpData(),"last jump has native result data");
+                    auto *original=nativeInfo->getJumpData();JumpData display=*original;nativeInfo->setJumpData(&display);auto *windLabel=nativeInfo->findChild<QLabel *>("label_averageWind");auto *compensationLabel=nativeInfo->findChild<QLabel *>("label_totalCompensation");const auto windText=windLabel->text(),compensationText=compensationLabel->text();
+                    for(int sign:{-1,0,1}){display.setAveragedWind(sign);display.setWindCompensation(-sign*3);display.setGateCompensation(0);display.setTotalCompensation(-sign*3);windLabel->setText(QString::number(sign)+"m/s");compensationLabel->setText(QString::number(-sign*3)+"pkt");bridge->refresh();QTest::qWait(50);for(const auto &name:{"lastJumpWind","lastJumpCompensation"}){const int value=QString(name)=="lastJumpWind"?sign:-sign;const QColor expected(value<0?"#a32f25":value>0?"#22633a":"#112b49");check(item(scene(window)->rootObject(),name)->property("valueColor").value<QColor>()==expected,"wind and total compensation independently distinguish negative, zero and positive values");}}
+                    nativeInfo->setJumpData(original);windLabel->setText(windText);compensationLabel->setText(compensationText);bridge->refresh();render(window,"last-jump-full",true);main.resize(1024,640);QTest::qWait(100);
                     main.activateWindow();scene(window)->setFocus();QTest::qWait(50);clickControl(scene(window),"raceOptions");auto *options=scene(window)->rootObject()->findChild<QObject *>("raceOptionsPanel");check(options&&options->property("visible").toBool(),"secondary competition tools open through one menu");QTest::keyClick(scene(window),Qt::Key_Escape);QTest::qWait(220);check(!options->property("visible").toBool(),"competition tools close with Escape");
 
                     window->findChild<QCheckBox *>("checkBox_liveCompetition")->setChecked(false);GlobalAppSettings::get()->setLiveCompetitionSpeedMulti(speed);
@@ -289,7 +303,7 @@ static void runCompetition(MainWindow &main,int scenario) {
             }
             check(window->getManager()->checkCompetitionEnd(),"competition finishes");
             check(!window->getManager()->getResults()->getResultsReference().isEmpty(),"competition has actual results");
-            render(window,QString("live-results-%1").arg(scenario));
+            render(window,QString("live-results-%1").arg(scenario),scenario==2);
             bridge->refresh();
             check(!bridge->jumpSummary().value("name").toString().isEmpty() && !bridge->jumpSummary().value("distance").toString().isEmpty(),"live jump summary follows real result data");
             if(scenario==0) {
@@ -727,6 +741,27 @@ static void auditStatisticsRegressions(MainWindow &main) {
     qInfo()<<"PASS: audit 7-13 finite statistics, small fields, missing presets, empty filters/calendars, detached jumps and DNS charts";
 }
 
+static void spaceRegressions(MainWindow &main) {
+    main.show();main.resize(1440,900);DatabaseEditorWindow database(&main);database.show();QTest::qWait(150);
+    auto *bridge=database.findChild<QuickBridge *>();auto *tabs=database.findChild<QTabWidget *>();
+    for(int page=0;page<tabs->count();++page){
+        bridge->edit(id(bridge,tabs->objectName()),page);QTest::qWait(100);
+        auto *entry=qobject_cast<QuickNode *>(bridge->find("listView"));check(entry,"expanding database list exists");
+        auto *table=item(scene(&database)->rootObject(),"dataTable-"+QString::number(entry->values().value("id").toInt()));check(table&&table->isVisible(),"active database table is visible");
+        const auto bounds=table->mapRectToItem(scene(&database)->rootObject(),table->boundingRect());
+        check(bounds.bottom()>=scene(&database)->height()-40&&table->width()>scene(&database)->width()*.8,"database list uses the available height and hidden editors reserve no empty column");
+        const double previous=table->height();main.resize(1440,1100);QTest::qWait(100);check(table->height()>=previous+180,"database lists grow when the window grows instead of stopping at a fixed cap");main.resize(1440,900);QTest::qWait(60);
+        auto *model=qobject_cast<QuickTableModel *>(entry->values().value("table").value<QObject *>());
+        if(model&&model->count()){model->select(0,0,0,true);QTest::qWait(100);table=item(scene(&database)->rootObject(),"dataTable-"+QString::number(entry->values().value("id").toInt()));check(table,"database table survives editor navigation");const auto edited=table->mapRectToItem(scene(&database)->rootObject(),table->boundingRect());check(edited.bottom()>=scene(&database)->height()-40&&edited.bottom()<=scene(&database)->height(),"opening a long editor does not push the database list beyond the viewport");}
+    }
+    render(&database,"space-database",true);database.reject();
+    SimulationSavesWindow saves;saves.show();QTest::qWait(100);auto *saveBridge=saves.findChild<QuickBridge *>();
+    for(const auto &size:{QSize(360,480),QSize(1440,900)}){
+        main.resize(size);QTest::qWait(100);main.grab();auto *entry=qobject_cast<QuickNode *>(saveBridge->find("listView_simulationSaves"));auto *table=item(scene(&saves)->rootObject(),"dataTable-"+QString::number(entry->values().value("id").toInt()));const auto bounds=table->mapRectToItem(scene(&saves)->rootObject(),table->boundingRect());check(bounds.bottom()>=scene(&saves)->height()-24&&bounds.bottom()<=scene(&saves)->height(),"save list fills available height at desktop and smallest size");check(item(scene(&saves)->rootObject(),"action-pushButton_add")->property("text").toString()==QString::fromUtf8("Nowy zapis")&&item(scene(&saves)->rootObject(),"action-pushButton_OK")->height()<=52,"save actions have concise labels and a compact one-row layout");
+    }
+    saves.reject();qInfo()<<"PASS: database categories and save lists fill available space while editors and secondary controls stay bounded";
+}
+
 static void uxRegressions(MainWindow &main) {
     main.show();main.resize(1440,900);SimulationSave save;QVector<Jumper *> pool;for(int i=0;i<6;++i)pool.append(new Jumper(GlobalDatabase::get()->getEditableGlobalJumpers()[i]));save.setJumpers(pool);save.fixJumpersFormInstabilities();
     {
@@ -843,6 +878,8 @@ int main(int argc,char **argv) {
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="1.3.0 beta-3","one release version is shared with the interface");
     backendRegressions();
+    if(app.arguments().contains("--team-only")){main.show();runCompetition(main,2);return 0;}
+    if(app.arguments().contains("--space-only")){spaceRegressions(main);return 0;}
     if(app.arguments().contains("--ux-only")){uxRegressions(main);runCompetition(main,0);return 0;}
     if(app.arguments().contains("--audit-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);return 0;}
     if(app.arguments().contains("--audit-stats-only")){auditStatisticsRegressions(main);return 0;}
@@ -859,7 +896,7 @@ int main(int argc,char **argv) {
         for(int scenario=0;scenario<4;++scenario) runCompetition(main,scenario);
         seasons();qInfo()<<"PASS: full individual, KO and team competitions and season analysis";return 0;
     }
-    if(!app.arguments().contains("--layout-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);uxRegressions(main);navigationRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);rosterRegressions(main);geometryRegressions(main);}
+    if(!app.arguments().contains("--layout-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);spaceRegressions(main);uxRegressions(main);navigationRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);rosterRegressions(main);geometryRegressions(main);}
     render(&main,"home",true);
     {
         DatabaseEditorWindow dialog; render(&dialog,"database",true);

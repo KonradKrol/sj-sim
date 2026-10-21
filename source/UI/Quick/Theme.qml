@@ -15,6 +15,7 @@ QtObject {
     readonly property color accentText: dark ? "#08244b" : "#ffffff"
     readonly property color selection: dark ? "#183d64" : "#dfebfb"
     readonly property color warning: dark ? "#f2c780" : "#87550c"
+    readonly property color success: dark ? "#92d9a2" : "#22633a"
     readonly property color danger: dark ? "#ffb4a7" : "#a32f25"
     readonly property color stadium: "#142e42"
     readonly property color snow: "#f1f6ff"
