@@ -228,6 +228,10 @@ static void runCompetition(MainWindow &main,int scenario) {
             window->findChild<QCheckBox *>("checkBox_liveCompetition")->setChecked(false);
             render(window,QString("live-%1").arg(scenario),true);
             if(scenario==0) {
+                main.resize(1024,640);main.activateWindow();scene(window)->setFocus();QTest::qWait(70);
+                clickControl(scene(window),"raceLiveToggle");check(window->findChild<QCheckBox *>("checkBox_liveCompetition")->isChecked(),"UX 4: live presentation is directly available in the competition toolbar");clickControl(scene(window),"raceLiveToggle");
+                clickControl(scene(window),"raceWindConditions");auto *optionsWorkspace=item(scene(window)->quickWindow()->contentItem(),"raceOptionsWorkspace");check(optionsWorkspace&&optionsWorkspace->property("section").toInt()==1,"UX 4: wind opens the conditions section directly");
+                QSignalSpy windGenerated(window->findChild<QPushButton *>("pushButton_generateNewWinds"),&QPushButton::clicked);clickControl(scene(window),"action-pushButton_generateNewWinds");check(windGenerated.count()==1,"UX 4: generating wind uses the original competition action");QTest::keyClick(scene(window),Qt::Key_Escape);QTest::qWait(220);
                 bridge->edit(id(bridge,"spinBox_actualGate"),17);
                 for(const QString &name:{QString("pushButton_windsGeneratorSettings"),QString("pushButton_inrunSnowGeneratorSettings"),QString("pushButton_manipulateJump"),QString("pushButton_coachGate")}) {
                     bool seen=false;QTimer closeEditor;
@@ -820,7 +824,7 @@ int main(int argc,char **argv) {
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="1.3.0 beta-3","one release version is shared with the interface");
     backendRegressions();
-    if(app.arguments().contains("--ux-only")){uxRegressions(main);return 0;}
+    if(app.arguments().contains("--ux-only")){uxRegressions(main);runCompetition(main,0);return 0;}
     if(app.arguments().contains("--audit-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);return 0;}
     if(app.arguments().contains("--audit-stats-only")){auditStatisticsRegressions(main);return 0;}
     if(app.arguments().contains("--audit-form-only")){auditFormRegressions();return 0;}

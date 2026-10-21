@@ -8,6 +8,7 @@ ScrollView {
     contentHeight: raceContent.height
     clip: true
     padding: width < 700 ? 8 : 12
+    function openOptions(section) {optionContent.section=section;options.open()}
     readonly property bool narrow: width < 700
     readonly property var individual: ui.find("tableView_results")
     readonly property var team: ui.find("quickTeamResults")
@@ -20,7 +21,7 @@ ScrollView {
         id: header
         width: parent.width
         spacing: 8
-        RaceStatus { width: parent.width; height: implicitHeight }
+        RaceStatus { width: parent.width; height: implicitHeight; onConditionsRequested: race.openOptions(1) }
         GridLayout {
             id: hero
             columns: race.narrow ? 1 : 2
@@ -29,7 +30,7 @@ ScrollView {
             RaceAthlete { Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: 0 }
             RaceLastJump { Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: 0 }
         }
-        RaceControls { width: parent.width; height: implicitHeight; onOptionsRequested: options.open() }
+        RaceControls { width: parent.width; height: implicitHeight; onOptionsRequested: race.openOptions(0) }
         }
         GridLayout {
             id: tables
@@ -82,31 +83,9 @@ ScrollView {
         x: Math.max(8,parent.width-width-8); y: 8
         width: Math.min(440,parent.width-16); height: Math.max(100,parent.height-16)
         modal: true; focus: true; padding: 12
-        onOpened: closeOptions.forceActiveFocus()
+        onOpened: optionContent.focusClose()
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
         background: Rectangle { color: Theme.surface; border.color: Theme.outline; radius: Theme.radius }
-        contentItem: ColumnLayout {
-            Keys.onEscapePressed: options.close()
-            RowLayout {
-                Layout.fillWidth: true
-                Label { text: qsTr("Opcje konkursu"); color: Theme.ink; font.pointSize: Theme.body; font.weight: Font.DemiBold; Layout.fillWidth: true }
-                SButton { id: closeOptions; text: "×"; quiet: true; Accessible.name: qsTr("Zamknij"); onClicked: options.close() }
-            }
-            ScrollView {
-                Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
-                contentWidth: availableWidth; clip: true
-                Column {
-                    width: parent.width; spacing: 12
-                    Repeater {
-                        model: ["checkBox_liveCompetition","pushButton_coachGate","toolButton_autoSimulationActions","toolButton_cancelActions","pushButton_generateNewWinds","pushButton_windsGeneratorSettings","pushButton_inrunSnowGeneratorSettings","pushButton_manipulateJump","pushButton_sendResultsWebhook","label_record","label_pointsBehindLeader","label_lastRoundPosition","label_personalBest"]
-                        Node { width: parent.width; height: implicitHeight; node: ui.find(modelData) }
-                    }
-                    Label { text: qsTr("Szczegóły skoku"); color: Theme.ink; font.pointSize: Theme.body }
-                    Node { width: parent.width; height: implicitHeight; node: ui.find("quickRaceDetails") }
-                    Node { width: parent.width; height: implicitHeight; node: ui.find("comboBox_virtualClassification") }
-                    Node { width: parent.width; height: implicitHeight; node: ui.find("quickVirtualResults") }
-                }
-            }
-        }
+        contentItem: RaceOptions { id: optionContent; onCloseRequested: options.close() }
     }
 }

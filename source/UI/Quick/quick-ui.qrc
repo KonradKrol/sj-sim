@@ -23,6 +23,7 @@
 <file>RaceControls.qml</file>
 <file>RaceLastJump.qml</file>
 <file>RaceScreen.qml</file>
+<file>RaceOptions.qml</file>
 <file>RaceStatus.qml</file>
 <file>SButton.qml</file>
 <file>SCheck.qml</file>
