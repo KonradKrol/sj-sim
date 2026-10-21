@@ -635,6 +635,14 @@ static void geometryRegressions(MainWindow &main) {
     render(&form,"form-generator-responsive",true);form.reject();qInfo()<<"PASS: form table and pinned action, bounded native preset dialogs, constrained popups and long-list keyboard selection";
 }
 
+static void auditDataRegressions() {
+    Jumper a("A","One","POL"),b("B","Two","NOR"),c("C","Three","GER");
+    const auto places=CompetitionResults::getResultsWithJumpersPositionsForClassificationArchiveResults({{&a,100},{&b,100},{&c,80}});
+    const auto teams=CompetitionResults::getResultsWithTeamsPositionsForClassificationArchiveResults({{"POL",100},{"NOR",100},{"GER",80}});
+    check(places.value(&a)==1&&places.value(&b)==1&&places.value(&c)==3&&teams.value("GER")==3,"audit 1: archive ties use competition ranking 1,1,3 for athletes and teams");
+    qInfo()<<"PASS: audit 1 archive tie positions";
+}
+
 static void backendRegressions() {
     { Classification source("Existing classification");source.setAltPointsForPlaces({{1,25.0}});ClassificationEditorWidget editor(&source);check(editor.getClassification()==&source,"classification constructor initializes the supplied source");editor.setClassification(nullptr);check(!editor.getClassification(),"classification source can be cleared safely"); }
 
@@ -704,6 +712,7 @@ int main(int argc,char **argv) {
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="1.3.0 beta-3","one release version is shared with the interface");
     backendRegressions();
+    if(app.arguments().contains("--audit-data-only")){auditDataRegressions();return 0;}
     if(app.arguments().contains("--geometry-only")){geometryRegressions(main);return 0;}
     if(app.arguments().contains("--rosters-only")){rosterRegressions(main);return 0;}
     if(app.arguments().contains("--menus-only")){menuRegressions(main);return 0;}

@@ -227,7 +227,7 @@ QHash<Jumper *, int> CompetitionResults::getResultsWithJumpersPositionsForClassi
         if(previousResultPoints == pair.second)
         {
             pos = actualPosition;
-            add = 1;
+            add += 1;
         }
         else{
             actualPosition += add;
@@ -281,7 +281,7 @@ QHash<QString, int> CompetitionResults::getResultsWithTeamsPositionsForClassific
         if(previousResultPoints == pair.second)
         {
             pos = actualPosition;
-            add == 1;
+            add += 1;
         }
         else{
             actualPosition += add;
