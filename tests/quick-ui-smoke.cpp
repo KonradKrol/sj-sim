@@ -678,6 +678,21 @@ static void auditFormRegressions() {
     qInfo()<<"PASS: audit 4 valid finite form input and consistent bulk ranges";
 }
 
+static void auditStatisticsRegressions(MainWindow &main) {
+    SimulationSave save;save.setName("Audit statistics");
+    auto *hill=new Hill(GlobalDatabase::get()->getEditableGlobalHills().first());save.setHills({hill});
+    auto *a=new Jumper("A","One","POL"),*b=new Jumper("B","Two","NOR");save.setJumpers({a,b});
+    auto *calendar=new SeasonCalendar("Audit calendar");auto *competition=new CompetitionInfo(hill);CompetitionRules rules=GlobalDatabase::get()->getEditableCompetitionRules().first();rules.setRounds({RoundInfo(2,true)});rules.setHasJudgesPoints(true);competition->setRules(rules);competition->setPlayed(true);
+    auto &results=competition->getResultsReference();results.setCompetition(competition);
+    for(auto *athlete:{a,b}){JumpData jump;jump.setJumper(athlete);jump.setCompetition(competition);jump.setHill(hill);jump.setDistance(80);jump.setPoints(100);jump.setJudges({18,18,18,18,18});jump.setDSQ(false);results.addJump(athlete,jump);}results.sortInDescendingOrder();
+    calendar->setCompetitions({competition});Season season;season.setSeasonNumber(2026);season.setCalendars({calendar});season.setActualCalendar(calendar);save.getSeasonsReference().append(season);save.setActualSeason(&save.getSeasonsReference().last());
+    SimulationRatingsWindow stats(&save,&main);stats.getClassificationsCheckBoxes()->setClassificationsList(&calendar->getClassificationsReference());stats.getClassificationsCheckBoxes()->setupCheckBoxes();stats.setFilteredJumpers(save.getJumpersReference());
+    auto *range=stats.getRangeComboBoxes();range->setSeasonsList(&save.getSeasonsReference());range->setMergeCalendars(false);range->setCalendarFilter(calendar->getName());range->setupComboBoxes();stats.setupComboBox();stats.fillWindow();
+    check(stats.findChild<QLabel *>("label_biggerWin")->text().startsWith("0"),"audit 8: tied winners record a valid zero winning margin");
+    check(stats.findChild<QLabel *>("label_10Largestdifference")->text()==QString::fromUtf8("—"),"audit 8: fewer than ten entrants shows unavailable margin without dereferencing null");
+    qInfo()<<"PASS: audit 8 small-field and tied-winner statistics";
+}
+
 static void backendRegressions() {
     { Classification source("Existing classification");source.setAltPointsForPlaces({{1,25.0}});ClassificationEditorWidget editor(&source);check(editor.getClassification()==&source,"classification constructor initializes the supplied source");editor.setClassification(nullptr);check(!editor.getClassification(),"classification source can be cleared safely"); }
 
@@ -747,6 +762,7 @@ int main(int argc,char **argv) {
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="1.3.0 beta-3","one release version is shared with the interface");
     backendRegressions();
+    if(app.arguments().contains("--audit-stats-only")){auditStatisticsRegressions(main);return 0;}
     if(app.arguments().contains("--audit-form-only")){auditFormRegressions();return 0;}
     if(app.arguments().contains("--audit-data-only")){auditDataRegressions();return 0;}
     if(app.arguments().contains("--geometry-only")){geometryRegressions(main);return 0;}

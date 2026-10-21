@@ -681,7 +681,7 @@ void SimulationRatingsWindow::fillWindow()
         if(results->getResultsReference().count() >= 2)
         {
             double diff = results->getResultsReference().first().getPointsSum() - results->getResultsReference()[1].getPointsSum();
-            if(diff > mostDifferenceBetweenWinner){
+            if(!mostDifferenceBetweenWinnerCompetition || diff > mostDifferenceBetweenWinner){
                 mostDifferenceBetweenWinner = diff;
                 mostDifferenceBetweenWinnerCompetition = comp;
             }
@@ -693,7 +693,7 @@ void SimulationRatingsWindow::fillWindow()
         if(results->getResultsReference().count() >= 10)
         {
             double diff = results->getResultsReference().first().getPointsSum() - results->getResultsReference()[9].getPointsSum();
-            if(diff > mostDifferenceBetween10){
+            if(!mostDifferenceBetween10Competition || diff > mostDifferenceBetween10){
                 mostDifferenceBetween10 = diff;
                 mostDifferenceBetween10Competition = comp;
             }
@@ -741,31 +741,20 @@ void SimulationRatingsWindow::fillWindow()
     ui->label_support->setText(QString::number(support) + " (" + QString::number(double(support) / double(jumpsCount) * 100) + "%)");
     ui->label_fall->setText(QString::number(fall) + " (" + QString::number(double(fall) / double(jumpsCount) * 100) + "%)");
 
-    ui->label_biggerWin->setText(QString::number(mostDifferenceBetweenWinner) + tr("pkt"));
-    for(auto & season : save->getSeasonsReference())
-    {
-        Hill * hill = mostDifferenceBetweenWinnerCompetition->getHill();
-        ui->label_biggerWinJumper->setText("   " + QString::number(season.getSeasonNumber()) + "/" + QString::number(season.getActualCalendar()->getCompetitionsReference().indexOf(mostDifferenceBetweenWinnerCompetition) + 1) + ": " + hill->getName() + " HS" + QString::number(hill->getHSPoint()));
-    }
-    ui->label_smallestWin->setText(QString::number(worstDifferenceBetweenWinner) + tr("pkt"));
-    for(auto & season : save->getSeasonsReference())
-    {
-        Hill * hill = worstDifferenceBetweenWinnerCompetition->getHill();
-        ui->label_smallestWinJumper->setText("   " + QString::number(season.getSeasonNumber()) + "/" + QString::number(season.getActualCalendar()->getCompetitionsReference().indexOf(worstDifferenceBetweenWinnerCompetition) + 1) + ": " + hill->getName() + " HS" + QString::number(hill->getHSPoint()));
-    }
-
-    ui->label_10Largestdifference->setText(QString::number(mostDifferenceBetween10) + tr("pkt"));
-    for(auto & season : save->getSeasonsReference())
-    {
-        Hill * hill = mostDifferenceBetween10Competition->getHill();
-        ui->label_10Largestdifference->setText(QString::number(mostDifferenceBetween10) + tr("pkt   ") + QString::number(season.getSeasonNumber()) + "/" + QString::number(season.getActualCalendar()->getCompetitionsReference().indexOf(mostDifferenceBetween10Competition) + 1) + ": " + hill->getName() + " HS" + QString::number(hill->getHSPoint()));
-    }
-    ui->label_10smallestDifference->setText(QString::number(worstDifferenceBetween10) + tr("pkt"));
-    for(auto & season : save->getSeasonsReference())
-    {
-        Hill * hill = worstDifferenceBetween10Competition->getHill();
-        ui->label_10smallestDifference->setText(QString::number(worstDifferenceBetween10) + tr("pkt   ") + QString::number(season.getSeasonNumber()) + "/" + QString::number(season.getActualCalendar()->getCompetitionsReference().indexOf(worstDifferenceBetween10Competition) + 1) + ": " + hill->getName() + " HS" + QString::number(hill->getHSPoint()));
-    }
+    const auto showGap=[this](QLabel *valueLabel,QLabel *eventLabel,double value,CompetitionInfo *competition){
+        if(!competition){valueLabel->setText(QString::fromUtf8("—"));if(eventLabel)eventLabel->clear();return;}
+        QString event;
+        for(const auto &season:save->getSeasonsReference())for(auto *calendar:season.getCalendars()) {
+            const int index=calendar->getCompetitionsReference().indexOf(competition);
+            if(index>=0)event=QString("%1/%2: %3").arg(season.getSeasonNumber()).arg(index+1).arg(competition->getHill()?competition->getHill()->getHillText():QString());
+        }
+        valueLabel->setText(QString::number(value)+tr("pkt")+(eventLabel?QString():" · "+event));
+        if(eventLabel)eventLabel->setText(event);
+    };
+    showGap(ui->label_biggerWin,ui->label_biggerWinJumper,mostDifferenceBetweenWinner,mostDifferenceBetweenWinnerCompetition);
+    showGap(ui->label_smallestWin,ui->label_smallestWinJumper,worstDifferenceBetweenWinner,worstDifferenceBetweenWinnerCompetition);
+    showGap(ui->label_10Largestdifference,nullptr,mostDifferenceBetween10,mostDifferenceBetween10Competition);
+    showGap(ui->label_10smallestDifference,nullptr,worstDifferenceBetween10,worstDifferenceBetween10Competition);
     ui->label_saveAvgJudges->setText(QString::number(averageJudges) + tr("pkt"));
     ui->label_saveAvgWind->setText(QString::number(averageWind) + tr("m/s"));
 
