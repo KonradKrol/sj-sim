@@ -14,7 +14,7 @@ FocusScope {
     property bool followCurrent: false
     property real maximumHeight: 540
     property bool compact: false
-    property bool searchOpen: false
+    property bool searchOpen: !compact && width >= 520 && height >= 260
     property bool jumpColumns: false
     property bool raceResults: false
     property bool teamResults: false
@@ -83,14 +83,15 @@ FocusScope {
         RowLayout {
             Layout.fillWidth: true
             Layout.margins: tableRoot.compact ? 4 : 8
-            Label { text: qsTr("%1 pozycji").arg(tableRoot.table ? tableRoot.table.count : 0); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
+            Label { text: tableRoot.table && tableRoot.table.selectedCount>0 && tableRoot.height<240 ? qsTr("Zaznaczono: %1").arg(tableRoot.table.selectedCount) : qsTr("%1 pozycji").arg(tableRoot.table ? tableRoot.table.count : 0); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
             SButton {
                 visible: tableRoot.width >= 380 && tableRoot.actions.length > 0 && !!tableRoot.actions[0].insert
                 text: "+"; quiet: true; Accessible.name: qsTr("Dodaj"); hint: qsTr("Dodaj")
                 enabled: tableRoot.actions.length > 0 && tableRoot.actions[0].enabled
                 onClicked: ui.triggerAction(tableRoot.actions[0].id)
             }
-            SButton { text: "⌕"; quiet: true; Accessible.name: qsTr("Szukaj"); hint: qsTr("Szukaj"); checkable: true; onClicked: tableRoot.searchOpen = checked }
+            SButton { visible: !!tableRoot.table && tableRoot.table.multiple && tableRoot.table.selectedCount>0 && tableRoot.height<240; text: "×"; quiet: true; Accessible.name: qsTr("Wyczyść zaznaczenie"); onClicked: tableRoot.table.clearSelection() }
+            SButton { visible: !tableRoot.searchOpen; text: "⌕"; quiet: true; Accessible.name: qsTr("Szukaj"); hint: qsTr("Szukaj"); checkable: true; onClicked: tableRoot.searchOpen = checked }
             SButton { visible: tableRoot.compact && tableRoot.columns>4 && !tableRoot.teamResults; text: tableRoot.raceResults ? qsTr("Punkty serii") : qsTr("Skoki"); quiet: true; font.pointSize: Theme.caption; checkable: true; onClicked: tableRoot.jumpColumns=checked }
             SButton { visible: !tableRoot.compact; text: tableRoot.width < 380 ? "↗" : qsTr("Otwórz"); quiet: true; Accessible.name: qsTr("Otwórz"); hint: qsTr("Otwórz"); onClicked: if (tableRoot.table) tableRoot.table.openCurrent() }
             SButton {
@@ -113,7 +114,15 @@ FocusScope {
         RowLayout {
             visible: tableRoot.searchOpen
             Layout.fillWidth: true; Layout.leftMargin: 8; Layout.rightMargin: 8; Layout.bottomMargin: 8
-            SField { Layout.fillWidth: true; Layout.minimumWidth: 0; placeholderText: qsTr("Szukaj w tabeli…"); text: tableRoot.table ? tableRoot.table.filter : ""; onTextEdited: if (tableRoot.table) tableRoot.table.filter = text; Accessible.name: qsTr("Filtruj wiersze") }
+            SField {
+                id: search; objectName: "tableSearch-"+tableRoot.ownerId
+                Layout.fillWidth: true; Layout.minimumWidth: 0
+                placeholderText: qsTr("Szukaj w tabeli…"); text: tableRoot.table ? tableRoot.table.filter : ""
+                onTextEdited: if(tableRoot.table)tableRoot.table.filter=text
+                Accessible.name: qsTr("Filtruj wiersze")
+                Keys.onEscapePressed: {if(tableRoot.table)tableRoot.table.filter="";tableRoot.forceActiveFocus()}
+            }
+            SButton { visible: !!tableRoot.table && tableRoot.table.filter.length>0; text: "×"; quiet: true; Accessible.name: qsTr("Wyczyść filtr"); onClicked: tableRoot.table.filter="" }
         }
         Flickable {
             id: horizontal
@@ -172,9 +181,20 @@ FocusScope {
                         statusText: model.statusText || ""
                         tint: model.tint || ""
                     }
-                    Label { anchors.centerIn: parent; visible: rows.count === 0; text: qsTr("Lista jest pusta"); color: Theme.muted; font.pointSize: Theme.body }
+                    Column {
+                        anchors.centerIn: parent; spacing: 8; visible: rows.count===0
+                        readonly property bool filtered: !!tableRoot.table && tableRoot.table.filter.length>0
+                        Label { text: parent.filtered ? qsTr("Brak wyników") : qsTr("Lista jest pusta"); color: Theme.muted; font.pointSize: Theme.body }
+                        SButton { objectName: "clearTableFilter-"+tableRoot.ownerId; visible: parent.filtered; text: qsTr("Wyczyść filtr"); quiet: true; onClicked: tableRoot.table.filter="" }
+                    }
                 }
             }
+        }
+        RowLayout {
+            visible: !!tableRoot.table && tableRoot.table.multiple && tableRoot.table.selectedCount>0 && tableRoot.height>=240
+            Layout.fillWidth: true; Layout.margins: 8
+            Label { objectName: "tableSelection-"+tableRoot.ownerId; text: qsTr("Zaznaczono: %1").arg(tableRoot.table ? tableRoot.table.selectedCount : 0); color: Theme.ink; font.pointSize: Theme.caption; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
+            SButton { text: tableRoot.width<400 ? "×" : qsTr("Wyczyść zaznaczenie"); Accessible.name: qsTr("Wyczyść zaznaczenie"); quiet: true; onClicked: tableRoot.table.clearSelection() }
         }
     }
     Connections {
@@ -194,6 +214,7 @@ FocusScope {
             })
         }
     }
+    Shortcut { sequence: StandardKey.Find; enabled: tableRoot.visible && tableRoot.activeFocus; onActivated: {tableRoot.searchOpen=true;search.forceActiveFocus();search.selectAll()} }
     Keys.onPressed: {
         if (!table) return
         if (event.key === Qt.Key_Up && !(event.modifiers & Qt.ControlModifier)) { table.moveCurrent(-1,event.modifiers); event.accepted = true }

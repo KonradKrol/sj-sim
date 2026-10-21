@@ -187,7 +187,7 @@ void QuickTableModel::selectAll() {
     for(const auto &row:m_rows) items.select(row,row.sibling(row.row(),m_source->columnCount(row.parent())-1));
     selection->select(items,QItemSelectionModel::Select);
 }
-void QuickTableModel::setFilter(const QString &value) { if(m_filter==value) return;m_filter=value;rebuild(); }
+void QuickTableModel::setFilter(const QString &value) { if(m_filter==value) return;clearSelection();m_filter=value;rebuild(); }
 int QuickTableModel::currentRow() const {
     if(!m_view) return -1;
     const auto index=m_view->currentIndex();return m_rows.indexOf(index.sibling(index.row(),0));

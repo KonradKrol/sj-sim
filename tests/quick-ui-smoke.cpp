@@ -729,7 +729,15 @@ static void uxRegressions(MainWindow &main) {
         auto *source=form.findChild<QTableView *>("tableView");source->selectionModel()->select(form.getTableModel()->index(1,0),QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);QTest::qWait(40);
         auto *scope=item(scene(&form)->rootObject(),"formBulkScope");check(scope&&scope->isVisible(),"UX 1: batch scope is directly available");scope->setProperty("currentIndex",1);clickControl(scene(&form),"formApplyParameters");
         const auto settings=form.getTableModel()->getGeneratorsSettings();for(int i=0;i<settings.size();++i)check(settings[i].getFormBonus()==(i==1?8:0),"UX 1: applying to selected athletes preserves every other setting");
-        check(form.findChild<QPushButton *>("pushButton_generate")->isEnabled(),"UX 1: generation becomes available after applying the draft");render(&form,"ux-explicit-form",true);form.reject();
+        check(form.findChild<QPushButton *>("pushButton_generate")->isEnabled(),"UX 1: generation becomes available after applying the draft");
+        auto *tableNode=qobject_cast<QuickNode *>(bridge->find("tableView"));auto *adapter=qobject_cast<QuickTableModel *>(tableNode->values().value("table").value<QObject *>());const int tableId=tableNode->values().value("id").toInt();
+        auto *search=item(scene(&form)->rootObject(),"tableSearch-"+QString::number(tableId));check(search&&search->isVisible(),"UX 2: desktop tables expose search without an icon hunt");
+        main.activateWindow();scene(&form)->setFocus();clickControl(scene(&form),search->objectName());QTest::keyClick(scene(&form),Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(scene(&form),"zzzx");QTest::qWait(100);
+        check(adapter->count()==0&&adapter->selectedCount()==0&&source->model()->rowCount()==pool.size(),"UX 2: filters hide rows without modifying data or retaining hidden bulk targets");
+        clickControl(scene(&form),"clearTableFilter-"+QString::number(tableId));check(adapter->count()==pool.size(),"UX 2: the empty state offers a direct filter reset");
+        source->selectionModel()->select(form.getTableModel()->index(0,0),QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);source->selectionModel()->select(form.getTableModel()->index(2,0),QItemSelectionModel::Select|QItemSelectionModel::Rows);QTest::qWait(50);
+        auto *selection=item(scene(&form)->rootObject(),"tableSelection-"+QString::number(tableId));check(selection&&selection->isVisible()&&adapter->selectedCount()==2,"UX 2: batch selection has a persistent count");adapter->clearSelection();check(adapter->selectedCount()==0,"UX 2: selection can be cleared independently of data");
+        render(&form,"ux-explicit-form",true);form.reject();
     }
     qInfo()<<"PASS: explicit scoped form editing";
 }
