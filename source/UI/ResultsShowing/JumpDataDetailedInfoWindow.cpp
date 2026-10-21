@@ -32,6 +32,14 @@ JumpDataDetailedInfoWindow::~JumpDataDetailedInfoWindow()
 
 void JumpDataDetailedInfoWindow::fillJumpInformations()
 {
+    if(!jumpData || !jumpData->getJumper() || !jumpData->getHill()) {
+        ui->pushButton->setEnabled(false);
+        ui->label_nameAndSurname->setText(tr("Brak danych skoku"));ui->label_flag->clear();
+        for(const auto *name:{"label_distance","label_points","label_gate","label_gatePoints","label_averageWind","label_windPoints","label_totalCompensation","label_judges","label_judgesPoints","label_landingType","label_takeoffRating","label_flightRating","label_random","label_snowRain","label_positionInRound","label_positionInGroup","label_positionInCompetition"})
+            if(auto *label=findChild<QLabel *>(name))label->setText(QString::fromUtf8("—"));
+        ui->label_DSQ->hide();ui->label_beats95HSPercents->hide();windInfoWidget->hide();return;
+    }
+    windInfoWidget->show();
     if(jumpData != nullptr)
     {
         const bool hasCompetitionContext = jumpData->getInSingleJumps()
@@ -214,7 +222,7 @@ void JumpDataDetailedInfoWindow::setJumpData(JumpData *newJumpData)
 
 void JumpDataDetailedInfoWindow::on_pushButton_clicked()
 {
-    if(jumpData == nullptr
+    if(jumpData == nullptr || !jumpData->getJumper() || !jumpData->getHill()
         || (!jumpData->getInSingleJumps() && jumpData->getCompetition() == nullptr))
         return;
 

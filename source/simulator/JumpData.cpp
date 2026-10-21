@@ -47,7 +47,12 @@ QString JumpData::getWindsText()
 
 int JumpData::getPositionInRound()
 {
-    int round = MyFunctions::getIndexOfItemInVector(competition->getResultsReference().getResultOfIndividualJumper(jumper)->getJumpsReference(), this) + 1;
+    if(!competition || !jumper)return 0;
+    auto *result=competition->getResultsReference().getResultOfIndividualJumper(jumper);
+    if(!result)return 0;
+    const int roundIndex=MyFunctions::getIndexOfItemInVector(result->getJumpsReference(),this);
+    if(roundIndex<0)return 0;
+    int round=roundIndex+1;
     qDebug()<<"Rd "<<round;
     QHash<Jumper *, double> hash;
     for(auto & res : competition->getResultsReference().getResultsReference())

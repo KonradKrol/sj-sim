@@ -706,6 +706,10 @@ static void auditStatisticsRegressions(MainWindow &main) {
     check(!range->getCompetition(1)&&!range->getCompetition(2),"audit 11: switching to an empty calendar safely clears the range");
     check(CompetitionInfo::getCompetitionsByStartAndEnd({},nullptr,nullptr).isEmpty(),"audit 11: missing range endpoints return an empty result");
     check(CompetitionInfo::getCompetitionsByStartAndEnd({competition},nullptr,competition).isEmpty(),"audit 11: a missing starting competition cannot dereference null");
+    JumpData partial;partial.setInSingleJumps(true);JumpDataDetailedInfoWindow detail(&partial);detail.fillJumpInformations();check(!detail.findChild<QPushButton *>("pushButton")->isEnabled(),"audit 12: a jump with missing athlete/hill is safely shown as unavailable");
+    partial.setJumper(a);detail.fillJumpInformations();check(!detail.findChild<QPushButton *>("pushButton")->isEnabled(),"audit 12: missing hill alone cannot crash jump details");
+    detail.setJumpData(&results.getResultsReference().first().getJumpsReference().first());detail.fillJumpInformations();check(detail.findChild<QPushButton *>("pushButton")->isEnabled(),"audit 12: the same details view recovers with complete data");
+    CompetitionInfo detachedCompetition(hill);JumpData orphan(a,hill);orphan.setCompetition(&detachedCompetition);check(orphan.getPositionInRound()==0,"audit 12: an unlinked jump has no fictitious round or null result dereference");
     qInfo()<<"PASS: audit 8 small-field and tied-winner statistics";
 }
 

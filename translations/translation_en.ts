@@ -3774,6 +3774,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <source>Wiadomość wysłana z poziomu Sj.Sim </source>
         <translation>Message sent from the Sj.Sim </translation>
     </message>
+<message><source>Brak danych skoku</source><translation>Jump data unavailable</translation></message>
 </context>
 <context>
     <name>JumpDataInfoChoiceDialog</name>
