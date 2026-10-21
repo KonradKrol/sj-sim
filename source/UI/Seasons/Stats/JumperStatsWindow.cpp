@@ -190,6 +190,7 @@ void JumperStatsWindow::fillJumperApperancesChart()
     int i=1;
     for(auto & result : singleResults)
     {
+        if(result->getJumpsReference().isEmpty())continue;
         if(result->getJumpsReference().first().getDSQ() && ui->checkBox_withDSQ->isChecked() == false)
             continue;
         jumperApperancesLineSeries->append(i, result->getPosition());
@@ -202,25 +203,25 @@ void JumperStatsWindow::fillJumperApperancesChart()
         positions.push_back(result->getPosition());
         i++;
     }
-    averagePosition /= singleResults.count();
-    double standardDev = MyFunctions::standardDeviation(positions, averagePosition);
+    averagePosition = positions.isEmpty()?0:averagePosition/positions.count();
+    double standardDev = positions.isEmpty()?0:MyFunctions::standardDeviation(positions, averagePosition);
     standardDev = roundDoubleToTwoPlaces(standardDev);
     averagePosition = roundDoubleToTwoPlaces(averagePosition);
 
     jumperApperancesChart->addSeries(jumperApperancesLineSeries);
     jumperApperancesChart->createDefaultAxes();
-    jumperApperancesChart->axes(Qt::Vertical).first()->setReverse(true);
-    jumperApperancesChart->axes(Qt::Vertical).first()->setRange(1, worstPosition);
-    jumperApperancesChart->axes(Qt::Horizontal).first()->setLabelsVisible(false);
+    if(!jumperApperancesChart->axes(Qt::Vertical).isEmpty())jumperApperancesChart->axes(Qt::Vertical).first()->setReverse(true);
+    if(!jumperApperancesChart->axes(Qt::Vertical).isEmpty())jumperApperancesChart->axes(Qt::Vertical).first()->setRange(1, qMax(2,worstPosition));
+    if(!jumperApperancesChart->axes(Qt::Horizontal).isEmpty())jumperApperancesChart->axes(Qt::Horizontal).first()->setLabelsVisible(false);
     jumperApperancesChart->zoom(1);
     jumperApperancesChart->setAnimationOptions(QChart::SeriesAnimations);
     jumperApperancesChartView->setChart(jumperApperancesChart);
     jumperApperancesChartView->setRenderHint(QPainter::Antialiasing);
 
-    ui->label_bestPos->setText(QString::number(bestPosition));
-    ui->label_worstPos->setText(QString::number(worstPosition));
-    ui->label_averagePos->setText(QString::number(averagePosition));
-    ui->label_standardDeviation->setText(QString::number(standardDev));
+    ui->label_bestPos->setText(positions.isEmpty()?QString::fromUtf8("—"):QString::number(bestPosition));
+    ui->label_worstPos->setText(positions.isEmpty()?QString::fromUtf8("—"):QString::number(worstPosition));
+    ui->label_averagePos->setText(positions.isEmpty()?QString::fromUtf8("—"):QString::number(averagePosition));
+    ui->label_standardDeviation->setText(positions.isEmpty()?QString::fromUtf8("—"):QString::number(standardDev));
 }
 
 void JumperStatsWindow::fillJudgesPointsChart()
@@ -249,8 +250,8 @@ void JumperStatsWindow::fillJudgesPointsChart()
     }  
     judgesPointsChart->addSeries(judgesPointsLineSeries);
     judgesPointsChart->createDefaultAxes();
-    judgesPointsChart->axes(Qt::Vertical).first()->setRange(worst, 60);
-    judgesPointsChart->axes(Qt::Horizontal).first()->setLabelsVisible(false);
+    if(!judgesPointsChart->axes(Qt::Vertical).isEmpty())judgesPointsChart->axes(Qt::Vertical).first()->setRange(qMin(59.0,worst), 60);
+    if(!judgesPointsChart->axes(Qt::Horizontal).isEmpty())judgesPointsChart->axes(Qt::Horizontal).first()->setLabelsVisible(false);
     judgesPointsChart->zoom(1);
     judgesPointsChart->setAnimationOptions(QChart::SeriesAnimations);
     judgesPointsChartView->setChart(judgesPointsChart);
@@ -278,7 +279,7 @@ void JumperStatsWindow::fillJumperFormChart()
     }
     jumperFormChart->addSeries(jumperFormLineSeries);
     jumperFormChart->createDefaultAxes();
-    jumperFormChart->axes(Qt::Horizontal).first()->setLabelsVisible(false);
+    if(!jumperFormChart->axes(Qt::Horizontal).isEmpty())jumperFormChart->axes(Qt::Horizontal).first()->setLabelsVisible(false);
     jumperFormChart->zoom(1);
     jumperFormChart->setAnimationOptions(QChart::SeriesAnimations);
     jumperFormChartView->setChart(jumperFormChart);
@@ -308,7 +309,7 @@ void JumperStatsWindow::fillTakeoffRatingChart()
     }
     takeoffRatingChart->addSeries(takeoffRatingLineSeries);
     takeoffRatingChart->createDefaultAxes();
-    takeoffRatingChart->axes(Qt::Horizontal).first()->setLabelsVisible(false);
+    if(!takeoffRatingChart->axes(Qt::Horizontal).isEmpty())takeoffRatingChart->axes(Qt::Horizontal).first()->setLabelsVisible(false);
     takeoffRatingChart->zoom(1);
     takeoffRatingChart->setAnimationOptions(QChart::SeriesAnimations);
     takeoffRatingChartView->setChart(takeoffRatingChart);
@@ -339,7 +340,7 @@ void JumperStatsWindow::fillFlightRatingChart()
     }
     flightRatingChart->addSeries(flightRatingLineSeries);
     flightRatingChart->createDefaultAxes();
-    flightRatingChart->axes(Qt::Horizontal).first()->setLabelsVisible(false);
+    if(!flightRatingChart->axes(Qt::Horizontal).isEmpty())flightRatingChart->axes(Qt::Horizontal).first()->setLabelsVisible(false);
     flightRatingChart->zoom(1);
     flightRatingChart->setAnimationOptions(QChart::SeriesAnimations);
     flightRatingChartView->setChart(flightRatingChart);
@@ -367,14 +368,14 @@ void JumperStatsWindow::updateChartCompetitionBySingleResult(const QPointF &poin
     {
         if((point.x() + 0.3 > int(point.x()) && point.x() - 0.3 < int(point.x())) && (point.y() + 0.3 > point.y() && point.y() - 0.3 < point.y()))
         {
-            QVector<CompetitionSingleResult *> tempSingleResults = singleResults;
-            tempSingleResults.detach();
-            for(auto & res : tempSingleResults)
-            {
-                if(res->getJumpsReference().first().getDSQ() == true && ui->checkBox_withDSQ->isChecked() == false)
-                    MyFunctions::removeFromVector(tempSingleResults, res);
+            QVector<CompetitionSingleResult *> tempSingleResults;
+            for(auto *res:singleResults)if(!res->getJumpsReference().isEmpty()) {
+                if(type==Positions && res->getJumpsReference().first().getDSQ() && !ui->checkBox_withDSQ->isChecked())continue;
+                tempSingleResults.append(res);
             }
-            CompetitionSingleResult * result = tempSingleResults[int(point.x() - 1)];
+            const int row=qRound(point.x())-1;
+            if(row<0 || row>=tempSingleResults.size())return;
+            CompetitionSingleResult * result = tempSingleResults[row];
             Hill * hill = result->getCompetition()->getHill();
 
             Season * season = nullptr;
@@ -390,6 +391,7 @@ void JumperStatsWindow::updateChartCompetitionBySingleResult(const QPointF &poin
                 }
             }
 
+            if(!season || !calendar || !hill)return;
             QString string = QString::number(season->getSeasonNumber()) + "/" + QString::number(calendar->getCompetitionsReference().indexOf(result->getCompetition()) + 1)
                              + ": " + hill->getName() + " HS" + QString::number(hill->getHSPoint());
             switch(result->getCompetition()->getSerieType())
@@ -452,6 +454,7 @@ void JumperStatsWindow::updateChartCompetitionByJumpData(const QPointF &point, b
                     }
                 }
             }
+            if(!result || !jumpData)return;
             int whichJump = MyFunctions::getIndexOfItemInVector(result->getJumpsReference(), jumpData) + 1;
 
             Hill * hill = result->getCompetition()->getHill();
@@ -469,6 +472,7 @@ void JumperStatsWindow::updateChartCompetitionByJumpData(const QPointF &point, b
                 }
             }
 
+            if(!season || !calendar || !hill)return;
             QString string = QString::number(season->getSeasonNumber()) + "/" + QString::number(calendar->getCompetitionsReference().indexOf(result->getCompetition()) + 1)
                              + ": " + hill->getName() + " HS" + QString::number(hill->getHSPoint());
             switch(result->getCompetition()->getSerieType())

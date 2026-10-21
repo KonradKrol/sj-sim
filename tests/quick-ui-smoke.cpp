@@ -656,7 +656,7 @@ static void auditDataRegressions() {
     first->setCurrentIndex(0);check(!range.getCompetition(1),"audit 2: a season heading is never interpreted as a competition");
     range.setCalendarFilter("B");range.setMergeCalendars(false);range.setupComboBoxes();check(range.getCompetition(1)==&later&&range.getCompetition(2)==&later,"audit 2: filtered range uses direct event identity");
     calA.setCompetitions({});calB.setCompetitions({});
-    qInfo()<<"PASS: audit 1-2 archive ties and competition ranges";
+    qInfo()<<"PASS: audit 1-3 archive ties, competition ranges and filter rebuilding";
 }
 
 static void auditFormRegressions() {
@@ -676,7 +676,7 @@ static void auditFormRegressions() {
     auto *view=form.findChild<QTableView *>("tableView");view->selectAll();QMetaObject::invokeMethod(&form,"onRemoveFromTable",Q_ARG(bool,true));check(form.getTableModel()->rowCount()==2,"audit 6: keep selected preserves all rows when every athlete is selected");
     view->selectionModel()->select(form.getTableModel()->index(1,0),QItemSelectionModel::ClearAndSelect);QMetaObject::invokeMethod(&form,"onRemoveFromTable",Q_ARG(bool,true));check(form.getTableModel()->rowCount()==1&&form.getTableModel()->getGeneratorsSettings().first().getJumper()==&b,"audit 6: keep selected accepts cell selection and preserves that athlete");
     view->clearSelection();QMetaObject::invokeMethod(&form,"onRemoveFromTable",Q_ARG(bool,true));check(form.getTableModel()->rowCount()==1,"audit 6: empty selection never erases the list");
-    qInfo()<<"PASS: audit 4 valid finite form input and consistent bulk ranges";
+    qInfo()<<"PASS: audit 4-6 form validation, DSQ overrides and keep-selected behavior";
 }
 
 static void auditStatisticsRegressions(MainWindow &main) {
@@ -710,7 +710,12 @@ static void auditStatisticsRegressions(MainWindow &main) {
     partial.setJumper(a);detail.fillJumpInformations();check(!detail.findChild<QPushButton *>("pushButton")->isEnabled(),"audit 12: missing hill alone cannot crash jump details");
     detail.setJumpData(&results.getResultsReference().first().getJumpsReference().first());detail.fillJumpInformations();check(detail.findChild<QPushButton *>("pushButton")->isEnabled(),"audit 12: the same details view recovers with complete data");
     CompetitionInfo detachedCompetition(hill);JumpData orphan(a,hill);orphan.setCompetition(&detachedCompetition);check(orphan.getPositionInRound()==0,"audit 12: an unlinked jump has no fictitious round or null result dereference");
-    qInfo()<<"PASS: audit 8 small-field and tied-winner statistics";
+    results.getResultsReference()[0].getJumpsReference().clear();
+    JumperStatsWindow athleteStats(&main);athleteStats.setSave(&save);athleteStats.setJumper(results.getResultsReference()[0].getJumper());athleteStats.getClassificationsCheckBoxes()->setClassificationsList(&calendar->getClassificationsReference());athleteStats.getClassificationsCheckBoxes()->setupCheckBoxes();athleteStats.setupComboBox();
+    auto *athleteRange=athleteStats.getRangeComboBoxes();athleteRange->setSeasonsList(&save.getSeasonsReference());athleteRange->setCalendarFilter(calendar->getName());athleteRange->setMergeCalendars(false);athleteRange->setupComboBoxes();athleteStats.fillWindow();
+    check(athleteStats.findChild<QLabel *>("label_averagePos")->text()==QString::fromUtf8("—"),"audit 13: DNS result without jumps has no invalid first jump or fabricated chart average");
+    athleteStats.getCalendarComboBox()->setCurrentIndex(1);athleteStats.fillWindow();check(athleteStats.findChild<QLabel *>("label_bestPos")->text()==QString::fromUtf8("—"),"audit 13: empty athlete charts remain safe after selecting an empty calendar");
+    qInfo()<<"PASS: audit 7-13 finite statistics, small fields, missing presets, empty filters/calendars, detached jumps and DNS charts";
 }
 
 static void backendRegressions() {
@@ -782,6 +787,7 @@ int main(int argc,char **argv) {
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="1.3.0 beta-3","one release version is shared with the interface");
     backendRegressions();
+    if(app.arguments().contains("--audit-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);return 0;}
     if(app.arguments().contains("--audit-stats-only")){auditStatisticsRegressions(main);return 0;}
     if(app.arguments().contains("--audit-form-only")){auditFormRegressions();return 0;}
     if(app.arguments().contains("--audit-data-only")){auditDataRegressions();return 0;}
@@ -796,7 +802,7 @@ int main(int argc,char **argv) {
         for(int scenario=0;scenario<4;++scenario) runCompetition(main,scenario);
         seasons();qInfo()<<"PASS: full individual, KO and team competitions and season analysis";return 0;
     }
-    if(!app.arguments().contains("--layout-only")){navigationRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);rosterRegressions(main);geometryRegressions(main);}
+    if(!app.arguments().contains("--layout-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);navigationRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);rosterRegressions(main);geometryRegressions(main);}
     render(&main,"home",true);
     {
         DatabaseEditorWindow dialog; render(&dialog,"database",true);
