@@ -7,6 +7,8 @@
 #include "../../competitions/CompetitionInfo.h"
 #include <dpp/dpp.h>
 #include <exception>
+#include <cmath>
+#include <QVariantMap>
 
 JumperCompetitionResultsWidget::JumperCompetitionResultsWidget(QWidget *parent) :
     QWidget(parent),
@@ -26,6 +28,29 @@ JumperCompetitionResultsWidget::~JumperCompetitionResultsWidget()
 
 void JumperCompetitionResultsWidget::fillWidget()
 {
+    QVariantMap rankSummary;
+    if(auto *competition=jumperResult->getCompetition()) {
+        const auto &results=competition->getResultsReference().getResultsReference();
+        const CompetitionSingleResult *ranked=jumperResult;
+        const bool team=competition->getRules().getCompetitionType()==CompetitionRules::Team;
+        if(team) {
+            ranked=nullptr;
+            for(const auto &result:results)if(result.getTeam() && result.getTeam()->getCountryCode()==jumperResult->getJumper()->getCountryCode()){ranked=&result;break;}
+        }
+        if(ranked) {
+            rankSummary["positionNumber"]=ranked->getPosition();
+            double leading=ranked->getPointsSum();
+            for(const auto &result:results)if(std::isfinite(result.getPointsSum()))leading=qMax(leading,result.getPointsSum());
+            if(std::isfinite(leading)&&std::isfinite(ranked->getPointsSum()))rankSummary["leaderGap"]=qMax(0.,qRound64((leading-ranked->getPointsSum())*10)/10.);
+            const int previousRounds=jumperResult->getJumps().size()-1;
+            const int count=previousRounds*(team?competition->getRules().getJumpersInTeamCount():1);
+            if(count>0 && ranked->getJumps().size()>=count) {
+                const int position=competition->getResultsReference().getPositionAfterJumps(*ranked,count);
+                rankSummary["previousPosition"]=position;rankSummary["previousRound"]=previousRounds;
+            }
+        }
+    }
+    setProperty("quickRankSummary",rankSummary);
     const QString competitorName = jumperResult->getJumper()->getNameAndSurname();
     ui->label_nameAndSurname->setText(competitorName);
     ui->label_nameAndSurname->setToolTip(competitorName);

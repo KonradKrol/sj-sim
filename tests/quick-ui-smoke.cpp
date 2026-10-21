@@ -113,7 +113,9 @@ static void render(QWidget *window,const QString &name,bool sweep=false) {
     auto *bridge=window->findChild<QuickBridge *>(QString(),Qt::FindDirectChildrenOnly);
     check(bridge!=nullptr,"adapter "+name);
     auto *appearance=view->rootContext()->contextProperty("appearance").value<QuickAppearance *>();
-    for(const auto &size:sweep?QList<QSize>{{1440,900},{1024,640},{520,600},{360,480}}:QList<QSize>{{1024,640}}) {
+    auto sizes=sweep?QList<QSize>{{1440,900},{1024,640},{520,600},{360,480}}:QList<QSize>{{1024,640}};
+    if(sweep && (name=="last-jump-full" || name=="live-results-2"))sizes.prepend(QSize(2560,1440));
+    for(const auto &size:sizes) {
         presentation(window)->resize(size);
         for(bool dark:sweep?QList<bool>{false,true}:QList<bool>{false}) {
             appearance->setDark(dark); QTest::qWait(200);
@@ -138,6 +140,9 @@ static void render(QWidget *window,const QString &name,bool sweep=false) {
                 check(position.y()>=0 && position.y()+summary->height()<view->height(),"live jump summary stays in the viewport");
                 auto *athlete=item(view->rootObject(),"raceAthlete");auto *results=item(view->rootObject(),"raceResults");auto *start=item(view->rootObject(),"raceStartList");
                 check(athlete&&results&&start,"competition keeps athlete, results and start list in one workspace");
+                check(summary->width()<=721 && athlete->width()<=321,"competition cards keep compact readable widths on large monitors");
+                auto *content=item(view->rootObject(),"lastJumpContent");
+                check(content && summary->height()<=content->implicitHeight()+17,"last jump card has no stretched empty footer");
                 const auto athleteBounds=athlete->mapRectToItem(view->rootObject(),athlete->boundingRect());const auto summaryBounds=summary->mapRectToItem(view->rootObject(),summary->boundingRect());
                 check(!athleteBounds.intersects(summaryBounds),"athlete and last jump never overlap");
                 for(auto *panel:{results,start}){const auto bounds=panel->mapRectToItem(view->rootObject(),panel->boundingRect());if(bounds.bottom()>view->height()+1){presentation(window)->grab().save("/tmp/sj-race-overflow.png");auto *grid=item(view->rootObject(),"raceTables");auto *workspace=item(view->rootObject(),"raceWorkspace");qInfo()<<"RACEGEOMETRY"<<grid->height()<<grid->y()<<workspace->height()<<workspace->property("availableHeight")<<panel->parentItem()->height();}check(panel->isVisible()&&bounds.top()>=0&&bounds.bottom()<=view->height()+1&&panel->height()>=120,QString("critical tables remain visible together without page scrolling on laptops: %1 %2 %3x%4 y=%5 height=%6 viewport=%7").arg(name,panel->objectName()).arg(size.width()).arg(size.height()).arg(bounds.y()).arg(bounds.height()).arg(view->height()));}
@@ -275,6 +280,12 @@ static void runCompetition(MainWindow &main,int scenario) {
                     auto *original=nativeInfo->getJumpData();JumpData display=*original;nativeInfo->setJumpData(&display);auto *windLabel=nativeInfo->findChild<QLabel *>("label_averageWind");auto *compensationLabel=nativeInfo->findChild<QLabel *>("label_totalCompensation");const auto windText=windLabel->text(),compensationText=compensationLabel->text();
                     for(int sign:{-1,0,1}){display.setAveragedWind(sign);display.setWindCompensation(-sign*3);display.setGateCompensation(0);display.setTotalCompensation(-sign*3);windLabel->setText(QString::number(sign)+"m/s");compensationLabel->setText(QString::number(-sign*3)+"pkt");bridge->refresh();QTest::qWait(50);for(const auto &name:{"lastJumpWind","lastJumpCompensation"}){const int value=QString(name)=="lastJumpWind"?sign:-sign;const QColor expected(value<0?"#a32f25":value>0?"#22633a":"#112b49");check(item(scene(window)->rootObject(),name)->property("valueColor").value<QColor>()==expected,"wind and total compensation independently distinguish negative, zero and positive values");}}
                     nativeInfo->setJumpData(original);windLabel->setText(windText);compensationLabel->setText(compensationText);bridge->refresh();render(window,"last-jump-full",true);main.resize(1024,640);QTest::qWait(100);
+                    check(!bridge->jumpSummary().value("flag").toString().isEmpty(),"last jump exposes its own athlete flag");
+                    check(bridge->jumpSummary().value("positionNumber").toInt()>0 && bridge->jumpSummary().value("leaderGap").toDouble()>=0,"last jump exposes rank and nonnegative leader gap");
+                    main.activateWindow();scene(window)->setFocus();QTest::qWait(100);
+                    for(const auto &category:QList<QPair<QString,int>>{{"raceConditionsOptions",1},{"raceJumpOptions",2},{"raceOptions",0}}){
+                        clickControl(scene(window),category.first);auto *workspace=item(scene(window)->quickWindow()->contentItem(),"raceOptionsWorkspace");check(workspace&&workspace->property("section").toInt()==category.second,"toolbar opens the requested competition category directly");QTest::keyClick(scene(window),Qt::Key_Escape);QTest::qWait(220);
+                    }
                     main.activateWindow();scene(window)->setFocus();QTest::qWait(50);clickControl(scene(window),"raceOptions");auto *options=scene(window)->rootObject()->findChild<QObject *>("raceOptionsPanel");check(options&&options->property("visible").toBool(),"secondary competition tools open through one menu");QTest::keyClick(scene(window),Qt::Key_Escape);QTest::qWait(220);check(!options->property("visible").toBool(),"competition tools close with Escape");
 
                     window->findChild<QCheckBox *>("checkBox_liveCompetition")->setChecked(false);GlobalAppSettings::get()->setLiveCompetitionSpeedMulti(speed);
@@ -293,18 +304,35 @@ static void runCompetition(MainWindow &main,int scenario) {
                 check(startAdapter->currentRow()==startView->currentIndex().row(),"start list cursor follows the active competitor");
             };
             checkStartList();
-            int jumps=0;
+            int jumps=0;bool previousRankTested=false;
             while(!window->getManager()->checkCompetitionEnd() && jumps++<250) {
                 auto *next=window->findChild<QPushButton *>("pushButton_goToNext");
                 auto *jump=window->findChild<QPushButton *>("pushButton_jump");
                 if(next && !next->isHidden() && next->isEnabled()) bridge->activate(id(bridge,"pushButton_goToNext"));
-                else { check(jump&&jump->isEnabled(),"jump remains operable");bridge->activate(id(bridge,"pushButton_jump")); }
+                else if(scenario==0 && window->getManager()->getActualRound()>1 && !previousRankTested) {
+                    bridge->refresh();const int previous=bridge->context().value("previousPosition").toInt();check(previous>0,"athlete on gate shows place after previous round");
+                    const double speed=GlobalAppSettings::get()->getLiveCompetitionSpeedMulti();GlobalAppSettings::get()->setLiveCompetitionSpeedMulti(.005);window->findChild<QCheckBox *>("checkBox_liveCompetition")->setChecked(true);
+                    QObject watcher;bool seen=false;
+                    QObject::connect(window,&CompetitionManagerWindow::liveStageChanged,&watcher,[&](int stage){if(stage==2){bridge->refresh();check(bridge->jumpSummary().value("positionNumber").toInt()==previous && bridge->jumpSummary().value("previousRound").toInt()==1,"live jump keeps previous-round position until result reveal");check(!bridge->jumpSummary().contains("leaderGap"),"current leader gap is not revealed during flight");seen=true;}});
+                    bridge->activate(id(bridge,"pushButton_jump"));QTest::qWait(300);bridge->refresh();check(seen&&!bridge->jumpSummary().contains("previousRound")&&bridge->jumpSummary().value("positionNumber").toInt()>0,"final result replaces previous place with current rank");
+                    window->findChild<QCheckBox *>("checkBox_liveCompetition")->setChecked(false);GlobalAppSettings::get()->setLiveCompetitionSpeedMulti(speed);previousRankTested=true;
+                }
+                else { check(jump&&jump->isEnabled(),"jump remains operable");if(scenario==2 && window->getManager()->getActualRound()>1){bridge->refresh();check(bridge->context().value("previousPosition").toInt()>0,"team on gate shows the team place after previous round");}bridge->activate(id(bridge,"pushButton_jump")); }
                 QTest::qWait(10);bridge->refresh();checkStartList();
             }
+            check(scenario!=0||previousRankTested,"previous-round rank transition was exercised in a real second round");
             check(window->getManager()->checkCompetitionEnd(),"competition finishes");
             check(!window->getManager()->getResults()->getResultsReference().isEmpty(),"competition has actual results");
             render(window,QString("live-results-%1").arg(scenario),scenario==2);
             bridge->refresh();
+            const auto finalSummary=bridge->jumpSummary();CompetitionSingleResult *shown=nullptr;
+            for(auto &result:window->getManager()->getResults()->getResultsReference()) {
+                if(scenario==2){for(const auto &athlete:result.getTeamJumpersResultsReference())if(athlete.getJumper()&&athlete.getJumper()->getNameAndSurname()==finalSummary.value("name").toString())shown=&result;}
+                else if(result.getJumper()&&result.getJumper()->getNameAndSurname()==finalSummary.value("name").toString())shown=&result;
+            }
+            check(shown && finalSummary.value("positionNumber").toInt()==shown->getPosition(),"last jump rank uses the shown athlete or aggregate team");
+            double leading=shown->getPointsSum();for(const auto &result:window->getManager()->getResults()->getResultsReference())leading=qMax(leading,result.getPointsSum());
+            check(std::abs(finalSummary.value("leaderGap").toDouble()-qRound64((leading-shown->getPointsSum())*10)/10.)<.01,"leader gap belongs to the last jump rather than the next athlete on gate");
             check(!bridge->jumpSummary().value("name").toString().isEmpty() && !bridge->jumpSummary().value("distance").toString().isEmpty(),"live jump summary follows real result data");
             if(scenario==0) {
                 finishedCompetition=std::make_unique<CompetitionInfo>(*window->getManager()->getCompetitionInfo());
@@ -686,6 +714,11 @@ static void auditDataRegressions() {
     first->setCurrentIndex(0);check(!range.getCompetition(1),"audit 2: a season heading is never interpreted as a competition");
     range.setCalendarFilter("B");range.setMergeCalendars(false);range.setupComboBoxes();check(range.getCompetition(1)==&later&&range.getCompetition(2)==&later,"audit 2: filtered range uses direct event identity");
     calA.setCompetitions({});calB.setCompetitions({});
+    CompetitionResults prefix;
+    for(auto *athlete:{&a,&b,&c})for(int round=0;round<2;++round){JumpData jump;jump.setJumper(athlete);jump.setPoints(round==0?(athlete==&b?90:100):(athlete==&b?50:10));prefix.addJump(athlete,jump);}
+    check(prefix.getPositionAfterJumps(*prefix.getResultOfIndividualJumper(&a),1)==1 && prefix.getPositionAfterJumps(*prefix.getResultOfIndividualJumper(&b),1)==3,"previous-round ranking handles ties as 1,1,3");
+    check(prefix.getPositionAfterJumps(*prefix.getResultOfIndividualJumper(&b),2)==1,"previous-round ranking excludes later jumps that change the leader");
+    check(prefix.getPositionAfterJumps(*prefix.getResultOfIndividualJumper(&a),0)==0 && prefix.getPositionAfterJumps(*prefix.getResultOfIndividualJumper(&a),3)==0,"previous-round ranking rejects unavailable rounds");
     qInfo()<<"PASS: audit 1-3 archive ties, competition ranges and filter rebuilding";
 }
 

@@ -4,7 +4,8 @@ import QtQuick.Layouts 1.15
 
 GridLayout {
     id: controls
-    signal optionsRequested()
+    signal optionsRequested(int section)
+    readonly property var liveControl: ui.find("checkBox_liveCompetition")
     columns: width >= 800 ? 5 : 2
     columnSpacing: 8; rowSpacing: 6
     Node { visible: !ui.context.complete && !ui.context.roundComplete; Layout.fillWidth: true; Layout.minimumWidth: 0; node: ui.find("pushButton_jump") }
@@ -14,6 +15,25 @@ GridLayout {
         Label { text: qsTr("Belka"); color: Theme.muted; font.pointSize: Theme.caption }
         Node { Layout.fillWidth: true; Layout.minimumWidth: 90; node: ui.find("spinBox_actualGate") }
     }
-    Node { objectName: "raceLiveToggle"; Layout.fillWidth: true; Layout.minimumWidth: 0; node: ui.find("checkBox_liveCompetition") }
-    SButton { objectName: "raceOptions"; text: qsTr("Opcje"); quiet: true; Layout.fillWidth: controls.width < 700; onClicked: controls.optionsRequested() }
+    SCheck {
+        objectName: "raceLiveToggle"; text: qsTr("Na żywo")
+        Layout.fillWidth: true; Layout.minimumWidth: 0
+        checked: !!controls.liveControl && !!controls.liveControl.values.value
+        enabled: !!controls.liveControl && controls.liveControl.values.enabled
+        onClicked: ui.activate(controls.liveControl.values.id)
+    }
+    RowLayout {
+        Layout.columnSpan: controls.width<800 ? 2 : 1
+        Layout.fillWidth: true; spacing: 2
+        Repeater {
+            model: [qsTr("Przebieg"),qsTr("Warunki"),qsTr("Skok")]
+            SButton {
+                objectName: index===0 ? "raceOptions" : index===1 ? "raceConditionsOptions" : "raceJumpOptions"
+                text: modelData; quiet: true; padding: 6; font.pointSize: Theme.caption
+                implicitWidth: contentItem.implicitWidth+12
+                Layout.fillWidth: true; Layout.minimumWidth: 0
+                onClicked: controls.optionsRequested(index)
+            }
+        }
+    }
 }

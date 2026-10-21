@@ -43,6 +43,7 @@ public:
     static QVector<Jumper *> getJumpersByTeamResults(CompetitionResults * results);
 
     QHash<Jumper *, int> getPositionsByRound(int round);
+    int getPositionAfterJumps(const CompetitionSingleResult &result,int jumpCount) const;
 
     void fixSingleResultsJumps();
 

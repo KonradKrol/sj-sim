@@ -417,6 +417,12 @@ void QuickBridge::refresh() {
         QVariantMap context{{"complete",manager->checkCompetitionEnd()},{"roundComplete",manager->checkRoundEnd()},{"liveStage",window->getLiveStage()},{"round",manager->getActualRound()},{"roundCount",manager->getCompetitionRules()->getRoundsReference().size()},
                             {"athlete",qMin(manager->getActualStartListIndex()+1,manager->getStartListStatusesReference().size())},{"athleteCount",manager->getStartListStatusesReference().size()}};
         if(auto *team=dynamic_cast<TeamCompetitionManager *>(manager))context["group"]=team->getActualGroup();
+        if(manager->getActualRound()>1 && !manager->checkRoundEnd() && !manager->checkCompetitionEnd()) {
+            auto *team=dynamic_cast<TeamCompetitionManager *>(manager);
+            auto *ranked=team?manager->getResults()->getResultOfTeam(team->getActualTeam()):manager->getResults()->getResultOfIndividualJumper(manager->getActualJumper());
+            const int count=(manager->getActualRound()-1)*(team?manager->getCompetitionRules()->getJumpersInTeamCount():1);
+            if(ranked)context["previousPosition"]=manager->getResults()->getPositionAfterJumps(*ranked,count);
+        }
         if(context!=m_context) { m_context=context;emit changed(); }
         QVariantMap summary;
         QWidget *selected=nullptr;
@@ -430,6 +436,14 @@ void QuickBridge::refresh() {
                 {"takeoff","label_takeoffRating"},{"flight","label_flightRating"},{"random","label_random"},{"snow","label_snowRain"},
                 {"dsq","label_DSQ"},{"hs95","label_beats95HSPercents"}}) {
                 for(auto *label:selected->findChildren<QLabel *>(field.second))if(label->isVisibleTo(m_content)) { summary[field.first]=label->text();break; }
+            }
+            if(auto *flag=selected->findChild<QLabel *>("label_flag");flag && flag->isVisibleTo(m_content))if(auto *entry=node(flag))summary["flag"]=entry->values().value("image");
+            const auto rank=selected->property("quickRankSummary").toMap();
+            if(summary.contains("position")) {
+                summary["positionNumber"]=rank.value("positionNumber");
+                if(rank.contains("leaderGap"))summary["leaderGap"]=rank.value("leaderGap");
+            } else if(window->getLiveStage()>0 && rank.contains("previousPosition")) {
+                summary["positionNumber"]=rank.value("previousPosition");summary["previousRound"]=rank.value("previousRound");
             }
             for(auto *info:selected->findChildren<JumpDataDetailedInfoWindow *>())if(info->isVisibleTo(m_content) && info->getJumpData()) {
                 const auto *jump=info->getJumpData();

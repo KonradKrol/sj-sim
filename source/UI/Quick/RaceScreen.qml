@@ -27,13 +27,14 @@ ScrollView {
         RaceStatus { width: parent.width; height: implicitHeight; onConditionsRequested: race.openOptions(1) }
         GridLayout {
             id: hero
+            objectName: "raceHeaderCards"
             columns: race.narrow ? 1 : 2
-            width: parent.width; height: implicitHeight
+            width: Math.min(parent.width,1052); height: implicitHeight
             columnSpacing: 12; rowSpacing: 8
-            RaceAthlete { dense: race.height < 600; Layout.row: race.narrow ? 1 : 0; Layout.column: 0; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: race.narrow ? 0 : 300 }
-            RaceLastJump { dense: race.height < 600; Layout.row: 0; Layout.column: race.narrow ? 0 : 1; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: race.narrow ? 0 : 640 }
+            RaceAthlete { Layout.alignment: Qt.AlignTop; Layout.maximumHeight: implicitHeight; dense: race.height < 600; Layout.row: race.narrow ? 1 : 0; Layout.column: 0; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: race.narrow ? 0 : 280; Layout.maximumWidth: race.narrow ? Infinity : 320 }
+            RaceLastJump { Layout.alignment: Qt.AlignTop; Layout.maximumHeight: implicitHeight; dense: race.height < 600; Layout.row: 0; Layout.column: race.narrow ? 0 : 1; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: race.narrow ? 0 : 680; Layout.maximumWidth: race.narrow ? Infinity : 720 }
         }
-        RaceControls { width: parent.width; height: implicitHeight; onOptionsRequested: race.openOptions(0) }
+        RaceControls { width: Math.min(parent.width,1052); height: implicitHeight; onOptionsRequested: race.openOptions(section) }
         }
         Item {
             id: tables

@@ -19,6 +19,11 @@ Pane {
             Layout.fillWidth: true
             Image { source: athlete.flagNode ? athlete.flagNode.values.image || "" : ""; sourceSize.width: 32; sourceSize.height: 24; Layout.preferredWidth: 28; Layout.preferredHeight: 20; fillMode: Image.PreserveAspectFit }
             Label { text: athlete.nameNode ? athlete.nameNode.values.text : "—"; color: Theme.snow; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.weight: Font.ExtraBold; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+            ColumnLayout {
+                visible: ui.context.previousPosition>0; spacing: 0
+                Label { objectName: "athletePreviousPosition"; text: ui.context.previousPosition>0 ? ui.context.previousPosition+"." : "—"; color: Theme.signal; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.weight: Font.ExtraBold; Layout.alignment: Qt.AlignRight }
+                Label { text: qsTr("po %1 serii").arg(ui.context.round-1); color: Theme.headerMuted; font.pointSize: Theme.caption-1 }
+            }
         }
         RowLayout {
             Layout.fillWidth: true; spacing: 16

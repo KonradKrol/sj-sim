@@ -531,3 +531,12 @@ void CompetitionResults::sortInAscendingOrder()
     std::sort(results.begin(), results.end(), std::less<CompetitionSingleResult>());
     updatePositions();
 }
+
+int CompetitionResults::getPositionAfterJumps(const CompetitionSingleResult &result,int jumpCount) const
+{
+    if(jumpCount<=0 || result.getJumps().size()<jumpCount)return 0;
+    const auto sum=[jumpCount](const CompetitionSingleResult &entry){double total=0;const auto jumps=entry.getJumps();for(int i=0;i<jumpCount;++i)total+=jumps[i].getPoints();return qRound64(total*10);};
+    const auto points=sum(result);int position=1;
+    for(const auto &entry:results)if(entry.getJumps().size()>=jumpCount && sum(entry)>points)++position;
+    return position;
+}

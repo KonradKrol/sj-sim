@@ -9165,6 +9165,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <source>Do awansu</source>
         <translation>To qualify</translation>
     </message>
+<message>
+    <location filename="../source/UI/Quick/RaceAthlete.qml" line="25" />
+    <source>po %1 serii</source>
+    <translation>after round %1</translation>
+</message>
+
 </context>
 
 
@@ -9195,6 +9201,27 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <source>Opcje</source>
         <translation>Options</translation>
     </message>
+<message>
+    <location filename="../source/UI/Quick/RaceControls.qml" line="19" />
+    <source>Na żywo</source>
+    <translation>Live</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/RaceControls.qml" line="29" />
+    <source>Przebieg</source>
+    <translation>Progress</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/RaceControls.qml" line="29" />
+    <source>Warunki</source>
+    <translation>Conditions</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/RaceControls.qml" line="29" />
+    <source>Skok</source>
+    <translation>Jump</translation>
+</message>
+
 </context>
 
 
@@ -9577,6 +9604,28 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <location filename="../source/UI/Quick/RaceLastJump.qml" line="51" />
     <source>Konkurs</source>
     <translation>Competition</translation>
+</message>
+
+<message>
+    <location filename="../source/UI/Quick/RaceLastJump.qml" line="36" />
+    <source>Do lidera: %1 pkt</source>
+    <translation>Behind leader: %1 pts</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/RaceLastJump.qml" line="36" />
+    <source>Lider</source>
+    <translation>Leader</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/RaceLastJump.qml" line="47" />
+    <source>miejsce</source>
+    <translation>place</translation>
+</message>
+
+<message>
+    <location filename="../source/UI/Quick/RaceLastJump.qml" line="47" />
+    <source>po %1 serii</source>
+    <translation>after round %1</translation>
 </message>
 
 </context>
@@ -10057,6 +10106,25 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <source>Awans według klasyfikacji</source>
         <translation>Qualify by classification</translation>
     </message>
+<message>
+    <location filename="../source/UI/Quick/CalendarInspector.qml" line="51" />
+    <source>Źródła kwalifikacji do tego konkursu</source>
+    <translation>Qualification sources for this competition</translation>
+</message>
+
+<message>
+    <location filename="../source/UI/Quick/CalendarInspector.qml" line="51" />
+    <location filename="../source/UI/Quick/CalendarInspector.qml" line="52" />
+    <source>Kwalifikacja na podstawie konkursu</source>
+    <translation>Qualify from competition</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarInspector.qml" line="53" />
+    <location filename="../source/UI/Quick/CalendarInspector.qml" line="54" />
+    <source>Kwalifikacja według klasyfikacji</source>
+    <translation>Qualify by standings</translation>
+</message>
+
 </context>
 
 

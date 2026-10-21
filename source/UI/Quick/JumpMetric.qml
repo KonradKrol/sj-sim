@@ -7,30 +7,43 @@ Item {
     property string value: "—"
     property color valueColor: Theme.ink
     property bool inlineValue: false
-    implicitWidth: Math.max(title.implicitWidth,number.implicitWidth)
-    implicitHeight: content.implicitHeight
+    implicitWidth: inlineValue ? inlineTitle.implicitWidth+inlineNumber.implicitWidth+6 : Math.max(title.implicitWidth,number.implicitWidth)
+    implicitHeight: inlineValue ? Math.max(inlineTitle.implicitHeight,inlineNumber.implicitHeight) : stacked.implicitHeight
     Accessible.role: Accessible.StaticText
     Accessible.name: caption + ": " + value
     Column {
-        id: content
-        width: parent.width; spacing: 0
+        id: stacked
+        visible: !metric.inlineValue
+        width: parent.width
         Label {
             id: title
-            visible: !metric.inlineValue
             width: parent.width
-            text: metric.caption
-            color: Theme.muted; font.pointSize: Theme.caption-1
-            wrapMode: Text.WordWrap
-            Accessible.ignored: true
+            text: metric.caption; color: Theme.muted; font.pointSize: Theme.caption-1
+            wrapMode: Text.WordWrap; Accessible.ignored: true
         }
         Label {
             id: number
             width: parent.width
-            text: (metric.inlineValue ? metric.caption+" " : "")+metric.value
-            color: metric.valueColor
+            text: metric.value; color: metric.valueColor
             font.family: Theme.mono; font.pointSize: Theme.caption
-            wrapMode: Text.Wrap
-            Accessible.ignored: true
+            wrapMode: Text.Wrap; Accessible.ignored: true
+        }
+    }
+    Row {
+        visible: metric.inlineValue
+        width: parent.width; spacing: 6
+        Label {
+            id: inlineTitle
+            width: implicitWidth
+            text: metric.caption; color: Theme.muted; font.pointSize: Theme.caption-1
+            wrapMode: Text.NoWrap; Accessible.ignored: true
+        }
+        Label {
+            id: inlineNumber
+            width: Math.max(0,parent.width-inlineTitle.width-6)
+            text: metric.value; color: metric.valueColor
+            font.family: Theme.mono; font.pointSize: Theme.caption
+            wrapMode: Text.Wrap; Accessible.ignored: true
         }
     }
 }

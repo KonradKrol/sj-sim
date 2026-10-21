@@ -91,7 +91,7 @@ The render sweep covers widths of 1440, 1024, 520 and 360 pixels, light/dark the
 and enlarged text. Captures are written to `build-quick-ui/ui-renders`.
 The suite also verifies configuration tab switching and that the live jump summary
 uses actual result data and remains visible at desktop test sizes. The suite
-produces 339 counted renders, including the five UX workflows, roster editing, bounded presets, the form
+produces 343 counted renders, including the five UX workflows, roster editing, bounded presets, the form
 generator, calendar fields, custom rules and links,
 plus large-text variants. The original Widgets-only
 qmake configuration also builds successfully without linking Qt Quick or QML.
@@ -136,15 +136,15 @@ a new round/group changes its athletes or their order; ordinary jump status chan
 use data notifications. Competition regressions compare every projected row and
 cursor to the current manager state and validate both model contracts.
 The current KO group stays with the start list. Gate and jump actions remain in
-the main toolbar; live mode, simulation tools, weather editors, detailed jump data
-and virtual classifications are available under Options.
+the main toolbar alongside live mode and direct Progress / Conditions / Jump
+buttons for simulation tools, weather editors, detailed data and virtual classifications.
 
 Focused checks `--rosters-only` and `--geometry-only` cover real pointer dragging,
 model contracts, source ordering, saved lists, reserves, actual preset replacement
 and loading, pinned actions, popup bounds and long-list keyboard selection. These
 checks are included in the default suite. Competition tests additionally verify
 that critical panels stay visible together on laptops, the athlete/last-jump
-panels do not intersect, distances are present by default and Options closes with
+panels do not intersect, distances are present by default and the category panel closes with
 Escape. The original Widgets alternative is retained.
 
 ## Screen organization
@@ -267,3 +267,24 @@ and editor boundaries. The competition summary now exposes judges, wind, gate,
 landing, compensation components and totals, and positions directly. Judges have
 separate marks with discarded extremes; signed wind and total compensation use
 accessible positive/negative colours. The last jump comes first in narrow windows.
+
+
+## Competition refinements and qualification sources, 2026-10-21
+
+The last-jump card has a distinct place badge, athlete flag and muted leader gap;
+team competitions use aggregate team results. Its width is capped at 720 px,
+the athlete card at 320 px and their combined row at 1052 px. Content determines
+their height, leaving the remaining workspace to full-width results/start-list tables.
+Direct Progress, Conditions and Jump buttons occupy the existing control bar.
+Previous-round places remain visible before a jump and during live presentation
+until the current result is revealed. Rank snapshots avoid dereferencing result
+vector elements after mutation.
+
+Transient dialog titles/bodies scroll above pinned responsive action rows; native
+resize/layout changes and application resizing trigger a coalesced geometry fit.
+Number fields count every press immediately and repeat after 250 ms at 40 ms intervals.
+Calendar qualification sources now correctly precede their dependent competition;
+reordering checks and load-time repairs enforce the same rule.
+
+See `docs/COMPETITION_REFINEMENTS_2026-10-21.md` for the complete manual checklist,
+implementation notes and validation, including `--interaction-only` regressions.
