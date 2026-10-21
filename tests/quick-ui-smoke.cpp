@@ -668,6 +668,10 @@ static void auditFormRegressions() {
     form.findChild<QDoubleSpinBox *>("doubleSpinBox_minForm")->setValue(80);QMetaObject::invokeMethod(&form,"on_doubleSpinBox_minForm_editingFinished");
     form.findChild<QDoubleSpinBox *>("doubleSpinBox_maxForm")->setValue(40);QMetaObject::invokeMethod(&form,"on_doubleSpinBox_maxForm_editingFinished");
     for(const auto &settings:form.getTableModel()->getGeneratorsSettings())check(settings.getMinForm()<=settings.getMaxForm(),"audit 4: bulk form bounds always stay consistent");
+    CompetitionRules rules;rules.setHasDsq(true);JumpManipulator manipulation;manipulation.setExactDSQProbability(0);Hill hill=GlobalDatabase::get()->getEditableGlobalHills().first();JumpSimulator simulator(&a,{Wind(0,0),Wind(0,0),Wind(0,0)},&hill);simulator.setGate(0);simulator.setCompetitionStartGate(0);simulator.setJumpsImportance(5);simulator.setCompetitionRules(&rules);simulator.setManipulator(&manipulation);simulator.setDSQBaseProbability(1);
+    for(int attempt=0;attempt<3;++attempt){simulator.simulateJump();check(!simulator.getJumpData().getDSQ(),"audit 5: exact zero DSQ overrides even guaranteed base disqualification");}
+    manipulation.setExactDSQProbability(1);simulator.simulateJump();check(simulator.getJumpData().getDSQ(),"audit 5: exact one still guarantees DSQ");
+    manipulation.setExactDSQProbability(-1);simulator.setDSQBaseProbability(0);simulator.simulateJump();check(!simulator.getJumpData().getDSQ(),"audit 5: default zero DSQ remains disabled");
     qInfo()<<"PASS: audit 4 valid finite form input and consistent bulk ranges";
 }
 

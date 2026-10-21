@@ -68,8 +68,10 @@ bool JumpSimulator::generateDSQ()
 {
     if (competitionRules->getHasDsq() == true) {
         int probability = 0;
-        if (manipulator->getExactDSQProbability() > (-1))
+        if (manipulator->getExactDSQProbability() > (-1)) {
             probability = manipulator->getExactDSQProbability();
+            if(probability==0)return false;
+        }
         else {
             probability = getDSQBaseProbability()
                           / (1 + (jumperSkills->getLevelOfCharacteristic("dsq-probability") / 7));
