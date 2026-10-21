@@ -73,7 +73,7 @@ private:
     QuickRosterRows *m_library,*m_ordered;
     QVector<Jumper *> m_pool,m_current,m_undo;
     QSet<QString> m_marked;
-    QStringList m_countryCodes;
+    QStringList m_countryCodes,m_presetNames;
     QString m_query,m_orderQuery,m_anchor;
     int m_country=0;
     bool m_hasUndo=false;

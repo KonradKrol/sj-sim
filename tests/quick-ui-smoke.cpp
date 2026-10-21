@@ -739,7 +739,16 @@ static void uxRegressions(MainWindow &main) {
         auto *selection=item(scene(&form)->rootObject(),"tableSelection-"+QString::number(tableId));check(selection&&selection->isVisible()&&adapter->selectedCount()==2,"UX 2: batch selection has a persistent count");adapter->clearSelection();check(adapter->selectedCount()==0,"UX 2: selection can be cleared independently of data");
         render(&form,"ux-explicit-form",true);form.reject();
     }
-    qInfo()<<"PASS: explicit scoped form editing";
+    save.setHills({new Hill(GlobalDatabase::get()->getEditableGlobalHills().first())});auto rules=GlobalDatabase::get()->getEditableCompetitionRules().first();rules.setCompetitionType(CompetitionRules::Individual);rules.setRounds({RoundInfo(6,true),RoundInfo(3,true)});save.setCompetitionRules({rules});
+    auto *calendar=new SeasonCalendar("UX calendar");auto *event=new CompetitionInfo(save.getHillsReference().first());event->setRules(rules);calendar->setCompetitions({event});Season season;season.setSeasonNumber(2026);season.setCalendars({calendar});season.setActualCalendar(calendar);save.getSeasonsReference().append(season);save.setActualSeason(&save.getSeasonsReference().last());save.updateNextCompetitionIndex();
+    SaveJumpersList preset("Skład A");preset.setIsDefault(true);preset.setJumpers({pool[2],pool[0]});save.setJumpersLists({preset});
+    {
+        main.resize(1440,900);CompetitionConfigWindow config(CompetitionConfigWindow::SeasonCompetition,&main,&save);config.show();QTest::qWait(150);auto *bridge=config.findChild<QuickBridge *>();auto *roster=bridge->findChild<QuickRoster *>();clickControl(scene(&config),"editStartList");
+        check(roster->count()==6,"UX 3: default saved list keeps the initial squad available");clickControl(scene(&config),"rosterPresetRemove");check(roster->count()==4,"UX 3: saved lists offer direct removal without nested menus");roster->undo();clickControl(scene(&config),"rosterPresetOrder");check(config.getSeasonCompetitionJumpers().first()==pool[2],"UX 3: applying saved order is a direct distinct action");roster->undo();
+        render(&config,"ux-saved-rosters",true);main.activateWindow();scene(&config)->setFocus();clickControl(scene(&config),"rosterOpenPresets");clickControl(scene(&config),"rosterPresetRemove");check(roster->count()==4,"UX 3: the narrow popover offers the same direct actions");
+        clickControl(scene(&config),"rosterOpenPresets");clickControl(scene(&config),"rosterPresetAdd");check(roster->count()==6,"UX 3: adding a saved list restores membership on small screens");config.reject();
+    }
+    qInfo()<<"PASS: explicit form editing, searchable tables and direct saved-list actions";
 }
 
 static void backendRegressions() {

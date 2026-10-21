@@ -50,6 +50,7 @@
 <file>TrackMark.qml</file>
 <file>Workspace.qml</file>
 <file>RosterWorkspace.qml</file>
+<file>RosterPresets.qml</file>
 <file>ProjectedControl.qml</file>
 <file>FormGeneratorWorkspace.qml</file>
 <file>RosterSummary.qml</file>

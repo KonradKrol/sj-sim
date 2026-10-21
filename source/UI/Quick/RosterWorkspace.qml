@@ -10,7 +10,6 @@ Item {
     readonly property var backend: fields.backend
     readonly property bool compact: width < 800
     property bool choosing: false
-    property bool showPresets: false
     implicitHeight: 580
     ColumnLayout {
         anchors.fill: parent
@@ -30,19 +29,20 @@ Item {
                 text: "⋯"; quiet: true; Accessible.name: qsTr("Opcje listy"); onClicked: options.open()
                 ActionMenu {
                     id: options
-                    entries: [{id:"name",text:qsTr("Według nazwiska")},{id:"country",text:qsTr("Według kraju")},{id:"random",text:qsTr("Losowo")},{id:"preset",text:qsTr("Zapisane listy"),enabled:roster.backend.presets.length > 0}].concat(roster.fields.externalActions || [])
-                    onSelected: {if(entry.button)ui.activate(entry.id);else if(entry.id === "preset")roster.showPresets=!roster.showPresets;else roster.backend.sort(entry.id)}
+                    entries: [{id:"name",text:qsTr("Według nazwiska")},{id:"country",text:qsTr("Według kraju")},{id:"random",text:qsTr("Losowo")}].concat(roster.fields.externalActions || [])
+                    onSelected: {if(entry.button)ui.activate(entry.id);else roster.backend.sort(entry.id)}
                 }
             }
         }
-        RowLayout {
-            visible: roster.showPresets && roster.backend.presets.length > 0
-            Layout.fillWidth: true
-            SChoice { id: preset; Layout.fillWidth: true; Layout.minimumWidth: 0; model: roster.backend.presets; Accessible.name: qsTr("Zapisana lista") }
-            SButton {
-                text: qsTr("Zastosuj"); onClicked: presetActions.open()
-                ActionMenu { id: presetActions; entries: [{id:0,text:qsTr("Dodaj zawodników")},{id:1,text:qsTr("Usuń zawodników")},{id:2,text:qsTr("Ustaw kolejność")}]; onSelected: roster.backend.applyPreset(preset.currentIndex,entry.id) }
-            }
+        Loader {
+            active: !roster.compact && roster.backend.presets.length>0; visible: active
+            Layout.fillWidth: true; Layout.preferredHeight: item ? item.implicitHeight : 0
+            sourceComponent: Component { RosterPresets { backend: roster.backend; onApplied: roster.choosing=false } }
+        }
+        SButton {
+            objectName: "rosterOpenPresets"
+            visible: roster.compact && roster.backend.presets.length>0
+            text: qsTr("Zapisane listy"); Layout.fillWidth: true; onClicked: savedLists.open()
         }
         RowLayout {
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
@@ -52,6 +52,22 @@ Item {
             RosterOrder { visible: !roster.compact || !roster.choosing || !roster.backend.membership; backend: roster.backend; title: roster.backend.membership ? qsTr("Lista startowa") : qsTr("Drużyna"); Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0; Layout.preferredWidth: 500 }
         }
         ProjectedControl { visible: !!roster.fields.submit; node: roster.fields.submit || null; Layout.fillWidth: true; Layout.preferredHeight: visible ? implicitHeight : 0 }
+    }
+    Popup {
+        id: savedLists; objectName: "rosterPresetsPanel"
+        parent: Overlay.overlay
+        x: Math.max(8,(parent.width-width)/2); y: Math.max(8,(parent.height-height)/2)
+        width: Math.min(420,parent.width-16); padding: 12; modal: true; focus: true
+        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+        background: Rectangle { color: Theme.surface; border.color: Theme.outline; radius: Theme.radius }
+        contentItem: ColumnLayout {
+            RowLayout {
+                Layout.fillWidth: true
+                Label { text: qsTr("Zapisane listy"); color: Theme.ink; font.pointSize: Theme.body; Layout.fillWidth: true }
+                SButton { text: "×"; quiet: true; Accessible.name: qsTr("Zamknij"); onClicked: savedLists.close() }
+            }
+            RosterPresets { backend: roster.backend; stacked: true; Layout.fillWidth: true; onApplied: {roster.choosing=false;savedLists.close()} }
+        }
     }
     Shortcut { sequence: "Ctrl+Z"; enabled: roster.visible && roster.backend.canUndo && !ui.editingText; onActivated: roster.backend.undo() }
 }

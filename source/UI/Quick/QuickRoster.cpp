@@ -57,7 +57,8 @@ void QuickRoster::sync(){
     const auto current=unique(read());auto pool=unique(candidates());
     if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source);config&&config->type==CompetitionConfigWindow::SingleCompetition)pool=unique(pool+m_pool+current);
     else pool=unique(pool+current);
-    if(current==m_current&&pool==m_pool&&!m_countryCodes.isEmpty())return;
+    if(current==m_current&&pool==m_pool&&!m_countryCodes.isEmpty()&&m_presetNames==presets())return;
+    m_presetNames=presets();
     if(current!=m_current){m_hasUndo=false;m_undo.clear();}m_current=current;m_pool=pool;
     m_countryCodes.clear();for(auto *j:m_pool)if(!m_countryCodes.contains(j->getCountryCode()))m_countryCodes.append(j->getCountryCode());m_countryCodes.sort();m_country=qBound(0,m_country,m_countryCodes.size());refresh();
 }
