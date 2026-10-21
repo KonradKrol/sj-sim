@@ -48,6 +48,7 @@
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QJSValue>
+#include <QRegularExpression>
 #include <limits>
 #include "../source/UI/Seasons/Stats/FilteringWidgets/ClassificationsCheckBoxesWidget.h"
 #include "../source/UI/Seasons/Stats/FilteringWidgets/CompetitionsRangeComboBoxesWidget.h"
@@ -690,6 +691,11 @@ static void auditStatisticsRegressions(MainWindow &main) {
     auto *range=stats.getRangeComboBoxes();range->setSeasonsList(&save.getSeasonsReference());range->setMergeCalendars(false);range->setCalendarFilter(calendar->getName());range->setupComboBoxes();stats.setupComboBox();stats.fillWindow();
     check(stats.findChild<QLabel *>("label_biggerWin")->text().startsWith("0"),"audit 8: tied winners record a valid zero winning margin");
     check(stats.findChild<QLabel *>("label_10Largestdifference")->text()==QString::fromUtf8("—"),"audit 8: fewer than ten entrants shows unavailable margin without dereferencing null");
+    competition->getRulesPointer()->setHasJudgesPoints(false);competition->getRulesPointer()->setHasWindCompensations(false);stats.fillWindow();
+    check(stats.findChild<QTableView *>("tableView_avgJudges")->model()->rowCount()==0&&stats.findChild<QTableView *>("tableView_avgWind")->model()->rowCount()==0,"audit 7: unavailable scoring components are omitted instead of ranked as NaN");
+    for(auto &result:results.getResultsReference())for(auto &jump:result.getJumpsReference())jump.setDSQ(true);stats.fillWindow();
+    check(stats.findChild<QTableView *>("tableView_avgDistance")->model()->rowCount()==0,"audit 7: all-DSQ athletes have no invented distance average");
+    for(auto *label:stats.findChildren<QLabel *>())check(!label->text().contains(QRegularExpression("\\b(?:nan|inf)\\b",QRegularExpression::CaseInsensitiveOption)),"audit 7: facts contain no non-finite averages or percentages");
     qInfo()<<"PASS: audit 8 small-field and tied-winner statistics";
 }
 

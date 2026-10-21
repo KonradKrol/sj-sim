@@ -257,6 +257,7 @@ void SimulationRatingsWindow::fillWindow()
         {
             avgPosition += result->getPosition();
         }
+        if(jumpersSingleResults.value(jumper).isEmpty())continue;
         avgPosition /= jumpersSingleResults.value(jumper).count();
         avgPosition = roundDoubleToTwoPlaces(avgPosition);
         if(jumpersSingleResults.value(jumper).count() == 0)
@@ -291,6 +292,7 @@ void SimulationRatingsWindow::fillWindow()
                 }
             }
         }
+        if(!count)continue;
         avgJudges /= count;
         avgJudges = roundDoubleToTwoPlaces(avgJudges);
         if(jumpersSingleResults.value(jumper).count() == 0)
@@ -322,6 +324,7 @@ void SimulationRatingsWindow::fillWindow()
                 }
             }
         }
+        if(!count)continue;
         avgWind /= count;
         avgWind = roundDoubleToTwoPlaces(avgWind);
         if(jumpersSingleResults.value(jumper).count() == 0)
@@ -353,6 +356,7 @@ void SimulationRatingsWindow::fillWindow()
                 }
             }
         }
+        if(!count)continue;
         avgRating /= count;
         avgRating = roundDoubleToTwoPlaces(avgRating);
         if(jumpersSingleResults.value(jumper).count() == 0)
@@ -384,6 +388,7 @@ void SimulationRatingsWindow::fillWindow()
                 }
             }
         }
+        if(!count)continue;
         avgRating /= count;
         avgRating = roundDoubleToTwoPlaces(avgRating);
         if(jumpersSingleResults.value(jumper).count() == 0)
@@ -415,6 +420,7 @@ void SimulationRatingsWindow::fillWindow()
                 }
             }
         }
+        if(!count)continue;
         avgDistance /= count;
         avgDistance = roundDoubleToTwoPlaces(avgDistance);
         if(jumpersSingleResults.value(jumper).count() == 0)
@@ -670,9 +676,9 @@ void SimulationRatingsWindow::fillWindow()
                 comps.insert(res->getCompetition());
         }
     }
-    averageDistance /= jumpsCount;
-    averageJudges /= judgesCount;
-    averageWind /= jumpsCount;
+    averageDistance = jumpsCount ? averageDistance/jumpsCount : 0;
+    averageJudges = judgesCount ? averageJudges/judgesCount : 0;
+    averageWind = jumpsCount ? averageWind/jumpsCount : 0;
     QString text = QString::number(comps.size()) + " (";
     int seriesCount = 0;
     for(auto & comp : comps)
@@ -707,10 +713,11 @@ void SimulationRatingsWindow::fillWindow()
     text += QString::number(seriesCount) + tr(" serii)");
     ui->label_playedCompetitions->setText(text);
 
+    const auto percent=[jumpsCount](int count){return jumpsCount?QString::number(double(count)/jumpsCount*100)+"%":QString::fromUtf8("—");};
     ui->label_jumpsCount->setText(QString::number(jumpsCount));
-    ui->label_kpointjumps->setText(QString::number(jumpsK) + " (" + QString::number(double(jumpsK) / double(jumpsCount) * 100)+ "%)");
-    ui->label_hsjumps->setText(QString::number(jumpsHS) + " (" + QString::number(double(jumpsHS) / double(jumpsCount) * 100) + "%)");
-    ui->label_saveavgdist->setText(QString::number(averageDistance) + "m");
+    ui->label_kpointjumps->setText(QString::number(jumpsK) + " (" + percent(jumpsK) + ")");
+    ui->label_hsjumps->setText(QString::number(jumpsHS) + " (" + percent(jumpsHS) + ")");
+    ui->label_saveavgdist->setText((jumpsCount?QString::number(averageDistance) + "m":QString::fromUtf8("—")));
 
     QList wins = winsStat.values();
     std::sort(wins.begin(), wins.end(), std::greater<int>());
@@ -736,10 +743,10 @@ void SimulationRatingsWindow::fillWindow()
         ui->label_podiumsJumper->setText("");
     }
 
-    ui->label_telemarks->setText(QString::number(telemarks) + " (" + QString::number(double(telemarks) / double(jumpsCount) * 100) + "%)");
-    ui->label_bothLegs->setText(QString::number(bothLegs) + " (" + QString::number(double(bothLegs) / double(jumpsCount) * 100) + "%)");
-    ui->label_support->setText(QString::number(support) + " (" + QString::number(double(support) / double(jumpsCount) * 100) + "%)");
-    ui->label_fall->setText(QString::number(fall) + " (" + QString::number(double(fall) / double(jumpsCount) * 100) + "%)");
+    ui->label_telemarks->setText(QString::number(telemarks) + " (" + percent(telemarks) + ")");
+    ui->label_bothLegs->setText(QString::number(bothLegs) + " (" + percent(bothLegs) + ")");
+    ui->label_support->setText(QString::number(support) + " (" + percent(support) + ")");
+    ui->label_fall->setText(QString::number(fall) + " (" + percent(fall) + ")");
 
     const auto showGap=[this](QLabel *valueLabel,QLabel *eventLabel,double value,CompetitionInfo *competition){
         if(!competition){valueLabel->setText(QString::fromUtf8("—"));if(eventLabel)eventLabel->clear();return;}
@@ -755,8 +762,8 @@ void SimulationRatingsWindow::fillWindow()
     showGap(ui->label_smallestWin,ui->label_smallestWinJumper,worstDifferenceBetweenWinner,worstDifferenceBetweenWinnerCompetition);
     showGap(ui->label_10Largestdifference,nullptr,mostDifferenceBetween10,mostDifferenceBetween10Competition);
     showGap(ui->label_10smallestDifference,nullptr,worstDifferenceBetween10,worstDifferenceBetween10Competition);
-    ui->label_saveAvgJudges->setText(QString::number(averageJudges) + tr("pkt"));
-    ui->label_saveAvgWind->setText(QString::number(averageWind) + tr("m/s"));
+    ui->label_saveAvgJudges->setText((judgesCount?QString::number(averageJudges) + tr("pkt"):QString::fromUtf8("—")));
+    ui->label_saveAvgWind->setText((jumpsCount?QString::number(averageWind) + tr("m/s"):QString::fromUtf8("—")));
 
 
     QMap<int, double> pointsForPlaces = GlobalDatabase::get()->getEditableGlobalPointsForPlacesPresets()[ui->comboBox_preset->currentIndex()].getPointsForPlacesReference();
