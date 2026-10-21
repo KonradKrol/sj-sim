@@ -85,7 +85,8 @@ void SeasonCalendar::fixAdvancementCompetitions()
     {
         if(comp->getAdvancementCompetition() != nullptr)
         {
-            if(MyFunctions::vectorContains(competitions, comp->getAdvancementCompetition()) == false
+            if(!competitions.contains(comp->getAdvancementCompetition())
+                || competitions.indexOf(comp->getAdvancementCompetition()) >= competitions.indexOf(comp)
                 || comp->getAdvancementCompetition()->getRulesPointer()->getCompetitionType() != comp->getRulesPointer()->getCompetitionType())
             {
                 comp->setAdvancementCompetition(nullptr);
@@ -330,6 +331,8 @@ SeasonCalendar SeasonCalendar::getFromJson(QJsonObject json, IdentifiableObjects
         }
     }
     calendar.normalizeCompetitionEvents();
+    calendar.fixAdvancementCompetitions();
+    calendar.fixAdvancementClassifications();
     calendar.updateCompetitionsQualifyingCompetitions();
 
     if(storage != nullptr){

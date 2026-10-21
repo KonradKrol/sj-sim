@@ -100,7 +100,7 @@ void QuickCalendar::refresh() {
         m_classifications.append(QVariantMap{{"name",cls->getName()},{"index",i},{"checked",!chosen.isEmpty()&&count==chosen.size()},{"mixed",count>0&&count<chosen.size()}});
     }
     m_advancementOptions={nullptr};m_advancementLabels=QStringList{tr("Brak")};
-    for(auto *target:all){bool allowed=!chosen.isEmpty();for(auto *event:chosen)if(all.indexOf(target)<=all.indexOf(event)||target->getRules().getCompetitionType()!=event->getRules().getCompetitionType())allowed=false;
+    for(auto *target:all){bool allowed=!chosen.isEmpty();for(auto *event:chosen)if(all.indexOf(target)>=all.indexOf(event)||target->getRules().getCompetitionType()!=event->getRules().getCompetitionType())allowed=false;
         if(allowed){m_advancementOptions.append(target);m_advancementLabels.append(QString::number(all.indexOf(target)+1)+". "+(target->getHill()?target->getHill()->getName():tr("Brak skoczni")));}}
     common("advancement",[&](auto *e){return m_advancementOptions.indexOf(e->getAdvancementCompetition());});
     common("advancementClass",[&](auto *e){return m_calendar->getClassificationsReference().indexOf(e->getAdvancementClassification())+1;});
@@ -211,7 +211,7 @@ void QuickCalendar::move(int direction) {
     if(direction<0){for(int i=1;i<order.size();++i)if(items.contains(order[i])&&!items.contains(order[i-1])&&!locked(order[i-1])){qSwap(order[i],order[i-1]);moved=true;}}
     else for(int i=order.size()-2;i>=0;--i)if(items.contains(order[i])&&!items.contains(order[i+1])&&!locked(order[i+1])){qSwap(order[i],order[i+1]);moved=true;}
     if(moved){
-        for(auto *event:order)if(event->getAdvancementCompetition() && order.indexOf(event->getAdvancementCompetition())<=order.indexOf(event)) {
+        for(auto *event:order)if(event->getAdvancementCompetition() && order.indexOf(event->getAdvancementCompetition())>=order.indexOf(event)) {
             fail(tr("Kwalifikacje muszą poprzedzać konkurs, do którego prowadzą."));return;
         }
         m_message=tr("Zmieniono kolejność konkursów");mutate([&]{setOrder(order);});
