@@ -17,13 +17,9 @@ ClassificationsCheckBoxesWidget::~ClassificationsCheckBoxesWidget()
 
 void ClassificationsCheckBoxesWidget::setupCheckBoxes()
 {
-    for(auto & checkBox : checkBoxes)
-    {
-        disconnect(checkBox, &QCheckBox::stateChanged, this, &ClassificationsCheckBoxesWidget::changed);
-        ui->gridLayout->removeWidget(checkBox);
-        MyFunctions::removeFromVector(checkBoxes, checkBox);
-        delete checkBox;
-    }
+    qDeleteAll(checkBoxes);
+    checkBoxes.clear();
+    if(!classificationsList)return;
     int row = 0;
     int column = 0;
     for(auto & classification : *classificationsList)
@@ -46,8 +42,9 @@ void ClassificationsCheckBoxesWidget::setupCheckBoxes()
 QVector<Classification *> ClassificationsCheckBoxesWidget::getClassifications()
 {
     QVector<Classification *> classifications;
+    if(!classificationsList)return classifications;
     QVector<Classification *> copied = Classification::getSpecificTypeClassifications(*classificationsList, Classification::Individual);
-    for(int i=0; i<checkBoxes.count(); i++)
+    for(int i=0; i<qMin(checkBoxes.count(),copied.count()); i++)
     {
         if(checkBoxes[i]->isChecked() == true){
             classifications.push_back(copied[i]);

@@ -48,6 +48,7 @@
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QJSValue>
+#include "../source/UI/Seasons/Stats/FilteringWidgets/ClassificationsCheckBoxesWidget.h"
 #include "../source/UI/Seasons/Stats/FilteringWidgets/CompetitionsRangeComboBoxesWidget.h"
 #include <QTemporaryDir>
 #include <QDirIterator>
@@ -641,6 +642,9 @@ static void auditDataRegressions() {
     const auto places=CompetitionResults::getResultsWithJumpersPositionsForClassificationArchiveResults({{&a,100},{&b,100},{&c,80}});
     const auto teams=CompetitionResults::getResultsWithTeamsPositionsForClassificationArchiveResults({{"POL",100},{"NOR",100},{"GER",80}});
     check(places.value(&a)==1&&places.value(&b)==1&&places.value(&c)==3&&teams.value("GER")==3,"audit 1: archive ties use competition ranking 1,1,3 for athletes and teams");
+    Classification one("One"),two("Two"),three("Three");QVector<Classification *> classes{&one,&two,&three};
+    ClassificationsCheckBoxesWidget filters;filters.setClassificationsList(&classes);
+    for(int pass=0;pass<5;++pass){filters.setupCheckBoxes();auto boxes=filters.findChildren<QCheckBox *>();check(boxes.size()==3,"audit 3: rebuilding classification filters leaves no stale or duplicate checkboxes");for(auto *box:boxes)box->setChecked(true);check(filters.getClassifications().size()==3,"audit 3: every rebuilt filter maps to its classification");}
     Hill hill;CompetitionInfo played(&hill),future(&hill),later(&hill);played.setPlayed(true);later.setPlayed(true);
     SeasonCalendar calA("A"),calB("B");calA.setCompetitions({&played,&future});calB.setCompetitions({&later});
     Season season;season.setCalendars({&calA,&calB});QVector<Season> seasons{season};

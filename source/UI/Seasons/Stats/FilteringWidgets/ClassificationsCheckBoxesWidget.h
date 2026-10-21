@@ -29,7 +29,7 @@ signals:
 
 private:
     Ui::ClassificationsCheckBoxesWidget *ui;
-    QVector<Classification *> * classificationsList;
+    QVector<Classification *> * classificationsList = nullptr;
     QVector<QCheckBox *> checkBoxes;
 };
 
