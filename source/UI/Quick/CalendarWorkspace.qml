@@ -75,7 +75,7 @@ Item {
                     clip: true; spacing: 8
                     activeFocusOnTab: true
                     ScrollBar.vertical: ScrollBar {}
-                    delegate: CalendarEventRow { width: rows.width; event: modelData; backend: calendar.backend; compact: calendar.compact; onActivated: calendar.editing=true }
+                    delegate: CalendarEventRow { width: rows.width; event: modelData; backend: calendar.backend; compact: calendar.compact; onActivated: function(eventId){var workspace=calendar;workspace.editing=true;workspace.backend.select(eventId)} }
                     Label { visible: rows.count === 0; anchors.centerIn: parent; width: parent.width; text: qsTr("Dodaj konkurs lub wczytaj preset."); color: Theme.muted; font.pointSize: Theme.body; wrapMode: Text.WordWrap }
                 }
             }

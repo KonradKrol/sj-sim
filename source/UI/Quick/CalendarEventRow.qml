@@ -8,10 +8,15 @@ Item {
     property var backend
     property bool compact: false
     objectName: "calendar-row-"+event.id
-    signal activated()
+    signal activated(string eventId)
     activeFocusOnTab: true
-    Keys.onReturnPressed: {row.backend.select(row.event.id);row.activated()}
-    Keys.onSpacePressed: row.backend.select(row.event.id,Qt.ControlModifier)
+    Keys.onReturnPressed: row.activated(row.event.id)
+    Keys.onSpacePressed: row.select(Qt.ControlModifier)
+    function select(modifiers) {
+        var view=row.ListView.view;var position=row.event.number-1;var source=row.backend;var eventId=row.event.id
+        Qt.callLater(function(){if(view && view.visible){view.currentIndex=position;var current=view.itemAtIndex(position);if(current)current.forceActiveFocus()}})
+        source.select(eventId,modifiers)
+    }
     implicitHeight: 88
     Accessible.role: Accessible.ListItem
     Accessible.name: event.title + ", " + event.type
@@ -20,8 +25,8 @@ Item {
     MouseArea {
         objectName: "calendar-select-"+row.event.id
         anchors.fill: parent
-        onClicked: {row.forceActiveFocus();row.backend.select(row.event.id,mouse.modifiers)}
-        onDoubleClicked: if(!(mouse.modifiers & (Qt.ControlModifier|Qt.ShiftModifier))){row.backend.select(row.event.id);row.activated()}
+        onClicked: row.select(mouse.modifiers)
+        onDoubleClicked: if(!(mouse.modifiers & (Qt.ControlModifier|Qt.ShiftModifier)))row.activated(row.event.id)
     }
     RowLayout {
         anchors.fill: parent; anchors.margins: 10
@@ -33,6 +38,6 @@ Item {
             Label { text: row.event.type + (row.event.team ? " · " + qsTr("Drużynowy") : "") + (row.event.trainings ? " · " + qsTr("Treningi: %1").arg(row.event.trainings) : "") + (row.event.trial ? " · " + qsTr("Próbna") : ""); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; elide: Text.ElideRight }
             Label { visible: !!row.event.locked; text: row.event.played ? qsTr("Rozegrany") : row.event.cancelled ? qsTr("Odwołany") : qsTr("W trakcie"); color: Theme.warning; font.pointSize: Theme.caption }
         }
-        SButton { visible: row.compact; text: "›"; quiet: true; Accessible.name: qsTr("Edytuj %1").arg(row.event.title); onClicked: {row.backend.select(row.event.id);row.activated()} }
+        SButton { visible: row.compact; text: "›"; quiet: true; Accessible.name: qsTr("Edytuj %1").arg(row.event.title); onClicked: row.activated(row.event.id) }
     }
 }
