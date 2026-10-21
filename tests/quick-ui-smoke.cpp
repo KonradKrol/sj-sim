@@ -143,6 +143,10 @@ static void render(QWidget *window,const QString &name,bool sweep=false) {
             }
             auto image=presentation(window)->grab().toImage(); if(image.isNull()) qCritical()<<"Geometry"<<window->size()<<view->size(); check(!image.isNull(),"frame "+name);
             image.save(output+QString("/%1-%2-%3.png").arg(name).arg(size.width()).arg(dark)); ++renders;
+            if(name=="ux-explicit-form" && size.width()==360 && !dark){
+                auto *workspace=item(view->rootObject(),"formGeneratorWorkspace");workspace->setProperty("section",1);QTest::qWait(70);auto *apply=item(view->rootObject(),"formApplyParameters");const auto bounds=apply->mapRectToItem(view->rootObject(),apply->boundingRect());check(apply->isVisible()&&bounds.top()>=0&&bounds.bottom()<=view->height(),"UX 1: Apply stays pinned and reachable on the smallest parameters screen");view->grabFramebuffer().save(output+"/ux-form-parameters-360.png");workspace->setProperty("section",0);
+            }
+            if(name=="ux-saved-rosters" && size.width()==360 && !dark){auto *rows=item(view->rootObject(),"rosterOrder");check(rows&&rows->isVisible()&&rows->height()>=44,"UX 3: narrow saved-list controls leave a usable roster viewport");auto *workspace=item(view->rootObject(),"rosterWorkspace");workspace->setProperty("choosing",true);QTest::qWait(60);auto *library=item(view->rootObject(),"rosterLibrary");check(library&&library->isVisible()&&library->height()>=44,"UX 3: available-athlete selection also retains visible rows on the smallest screen");view->grabFramebuffer().save(output+"/ux-roster-library-360.png");workspace->setProperty("choosing",false);}
             if(name=="calendar-custom-rules" && size.width()==360 && !dark) {
                 clickControl(view,"calendarReturnToList");auto *calendar=item(view->rootObject(),"calendarWorkspace");auto *rows=item(view->rootObject(),"calendarEvents");
                 check(calendar && !calendar->property("editing").toBool() && rows && rows->isVisible() && rows->height()>=80,"smallest calendar viewport retains a usable list and direct return navigation");
@@ -738,9 +742,15 @@ static void uxRegressions(MainWindow &main) {
         auto *search=item(scene(&form)->rootObject(),"tableSearch-"+QString::number(tableId));check(search&&search->isVisible(),"UX 2: desktop tables expose search without an icon hunt");
         main.activateWindow();scene(&form)->setFocus();clickControl(scene(&form),search->objectName());QTest::keyClick(scene(&form),Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(scene(&form),"zzzx");QTest::qWait(100);
         check(adapter->count()==0&&adapter->selectedCount()==0&&source->model()->rowCount()==pool.size(),"UX 2: filters hide rows without modifying data or retaining hidden bulk targets");
+        check(bridge->root()->values().value("participantCount").toInt()==pool.size(),"UX 1: All scope counts the complete roster independently of search");
         clickControl(scene(&form),"clearTableFilter-"+QString::number(tableId));check(adapter->count()==pool.size(),"UX 2: the empty state offers a direct filter reset");
+        check(scope->property("currentIndex").toInt()==1,"UX 1: changing selection counts cannot silently switch the batch scope to All");
+        item(scene(&form)->rootObject(),"formGeneratorTable")->forceActiveFocus();QTest::keyClick(scene(&form),Qt::Key_F,Qt::ControlModifier);QTest::qWait(50);check(search->hasActiveFocus(),"UX 2: Ctrl+F focuses the active table search");
         source->selectionModel()->select(form.getTableModel()->index(0,0),QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);source->selectionModel()->select(form.getTableModel()->index(2,0),QItemSelectionModel::Select|QItemSelectionModel::Rows);QTest::qWait(50);
         auto *selection=item(scene(&form)->rootObject(),"tableSelection-"+QString::number(tableId));check(selection&&selection->isVisible()&&adapter->selectedCount()==2,"UX 2: batch selection has a persistent count");adapter->clearSelection();check(adapter->selectedCount()==0,"UX 2: selection can be cleared independently of data");
+        source->selectionModel()->select(form.getTableModel()->index(1,1),QItemSelectionModel::ClearAndSelect);QTest::qWait(30);
+        check(adapter->selectedCount()==1&&adapter->data(adapter->index(1,0),Qt::UserRole+2).toBool(),"UX 2: a selected editable cell highlights and counts its athlete");
+        adapter->clearSelection();check(!adapter->data(adapter->index(1,0),Qt::UserRole+2).toBool(),"UX 2: the keyboard cursor cannot masquerade as a selected target");
         render(&form,"ux-explicit-form",true);form.reject();
     }
     save.setHills({new Hill(GlobalDatabase::get()->getEditableGlobalHills().first())});auto rules=GlobalDatabase::get()->getEditableCompetitionRules().first();rules.setCompetitionType(CompetitionRules::Individual);rules.setRounds({RoundInfo(6,true),RoundInfo(3,true)});save.setCompetitionRules({rules});
@@ -758,9 +768,10 @@ static void uxRegressions(MainWindow &main) {
         const auto events=backend->events();const auto firstId=events[0].toMap().value("id").toString(),secondId=events[1].toMap().value("id").toString();clickControl(scene(&manager),"calendar-select-"+firstId);check(!workspace->property("editing").toBool(),"UX 5: selecting a calendar event does not navigate away from the list");
         auto *rows=item(scene(&manager)->rootObject(),"calendarEvents");QMetaObject::invokeMethod(rows,"positionViewAtIndex",Q_ARG(int,1),Q_ARG(int,3));QTest::qWait(60);auto *second=item(scene(&manager)->rootObject(),"calendar-select-"+secondId);check(second&&second->isVisible(),"UX 5: second calendar event is visible");const auto point=second->mapToItem(scene(&manager)->rootObject(),second->boundingRect().center()).toPoint();QTest::mouseClick(scene(&manager),Qt::LeftButton,Qt::ControlModifier,point);QTest::qWait(60);
         check(backend->selection().value("count").toInt()==2&&!workspace->property("editing").toBool(),"UX 5: modifier selection remains on the list and accumulates targets");clickControl(scene(&manager),"calendarEditSelection");check(workspace->property("editing").toBool()&&backend->selection().value("count").toInt()==2,"UX 5: explicit Edit opens one inspector for the complete selection");
-        render(&manager,"ux-calendar-selection",true);clickControl(scene(&manager),"calendarReturnToList");clickControl(scene(&manager),"calendarClearSelection");check(backend->selection().value("count").toInt()==0,"UX 5: clearing selection leaves no ambiguous edit targets");manager.reject();
+        render(&manager,"ux-calendar-selection",true);clickControl(scene(&manager),"calendarReturnToList");clickControl(scene(&manager),"calendarClearSelection");check(backend->selection().value("count").toInt()==0,"UX 5: clearing selection leaves no ambiguous edit targets");
+        rows=item(scene(&manager)->rootObject(),"calendarEvents");QMetaObject::invokeMethod(rows,"positionViewAtIndex",Q_ARG(int,0),Q_ARG(int,3));QTest::qWait(60);auto *firstRow=item(scene(&manager)->rootObject(),"calendar-row-"+firstId);check(firstRow&&firstRow->isVisible(),"UX 5: an event row supports keyboard focus");main.activateWindow();scene(&manager)->setFocus();QTest::qWait(50);firstRow->forceActiveFocus();check(firstRow->hasActiveFocus(),"UX 5: keyboard target owns active focus");QTest::keyClick(scene(&manager),Qt::Key_Return);QTest::qWait(60);check(workspace->property("editing").toBool()&&backend->selection().value("count").toInt()==1,"UX 5: Enter opens the focused event for editing");manager.reject();
     }
-    qInfo()<<"PASS: explicit form editing, searchable tables and direct saved-list actions";
+    qInfo()<<"PASS: five UX workflows: scoped form edits, visible search, saved lists, contextual competition controls and explicit calendar editing";
 }
 
 static void backendRegressions() {
@@ -848,7 +859,7 @@ int main(int argc,char **argv) {
         for(int scenario=0;scenario<4;++scenario) runCompetition(main,scenario);
         seasons();qInfo()<<"PASS: full individual, KO and team competitions and season analysis";return 0;
     }
-    if(!app.arguments().contains("--layout-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);navigationRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);rosterRegressions(main);geometryRegressions(main);}
+    if(!app.arguments().contains("--layout-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);uxRegressions(main);navigationRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);rosterRegressions(main);geometryRegressions(main);}
     render(&main,"home",true);
     {
         DatabaseEditorWindow dialog; render(&dialog,"database",true);

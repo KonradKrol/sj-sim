@@ -8261,6 +8261,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
 
 
 
+
+
+
 <context>
     <name>DataTable</name>
     <message>
@@ -8269,76 +8272,102 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>Data table</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/DataTable.qml" line="81" />
+        <location filename="../source/UI/Quick/DataTable.qml" line="86" />
+        <location filename="../source/UI/Quick/DataTable.qml" line="196" />
+        <source>Zaznaczono: %1</source>
+        <translation>Selected: %1</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="86" />
         <source>%1 pozycji</source>
         <translation>%1 entries</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/DataTable.qml" line="84" />
+        <location filename="../source/UI/Quick/DataTable.qml" line="89" />
         <source>Dodaj</source>
         <translation>Add</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/DataTable.qml" line="88" />
+        <location filename="../source/UI/Quick/DataTable.qml" line="93" />
+        <location filename="../source/UI/Quick/DataTable.qml" line="197" />
+        <source>Wyczyść zaznaczenie</source>
+        <translation>Clear selection</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="94" />
         <source>Szukaj</source>
         <translation>Search</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/DataTable.qml" line="89" />
+        <location filename="../source/UI/Quick/DataTable.qml" line="95" />
         <source>Punkty serii</source>
         <translation>Round points</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/DataTable.qml" line="89" />
+        <location filename="../source/UI/Quick/DataTable.qml" line="95" />
         <source>Skoki</source>
         <translation>Jumps</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/DataTable.qml" line="90" />
+        <location filename="../source/UI/Quick/DataTable.qml" line="96" />
         <source>Otwórz</source>
         <translation>Open</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/DataTable.qml" line="94" />
+        <location filename="../source/UI/Quick/DataTable.qml" line="100" />
         <source>Opcje listy</source>
         <translation>List options</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/DataTable.qml" line="99" />
+        <location filename="../source/UI/Quick/DataTable.qml" line="105" />
         <source>Zaznacz wszystkie</source>
         <translation>Select all</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/DataTable.qml" line="111" />
+        <location filename="../source/UI/Quick/DataTable.qml" line="120" />
         <source>Szukaj w tabeli…</source>
         <translation>Search table…</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/DataTable.qml" line="111" />
+        <location filename="../source/UI/Quick/DataTable.qml" line="122" />
         <source>Filtruj wiersze</source>
         <translation>Filter rows</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/DataTable.qml" line="144" />
+        <location filename="../source/UI/Quick/DataTable.qml" line="125" />
+        <location filename="../source/UI/Quick/DataTable.qml" line="188" />
+        <source>Wyczyść filtr</source>
+        <translation>Clear filter</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="158" />
         <source>Poz.</source>
         <translation>Pos.</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/DataTable.qml" line="144" />
+        <location filename="../source/UI/Quick/DataTable.qml" line="158" />
         <source>Punkty</source>
         <translation>Points</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/DataTable.qml" line="144" />
+        <location filename="../source/UI/Quick/DataTable.qml" line="158" />
         <source>%1 · m</source>
         <translation>%1 · m</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/DataTable.qml" line="170" />
+        <location filename="../source/UI/Quick/DataTable.qml" line="187" />
+        <source>Brak wyników</source>
+        <translation>No results</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/DataTable.qml" line="187" />
         <source>Lista jest pusta</source>
         <translation>The list is empty</translation>
     </message>
 </context>
+
+
+
 
 
 
@@ -8435,6 +8464,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
 
 
 
+
+
+
 <context>
     <name>HomeHero</name>
     <message>
@@ -8448,6 +8480,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>Sj.Sim logo</translation>
     </message>
 </context>
+
+
+
 
 
 
@@ -8499,6 +8534,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
 
 
 
+
+
+
 <context>
     <name>Node</name>
     <message>
@@ -8521,6 +8559,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
 
 
 
+
+
+
 <context>
     <name>NodeGroup</name>
     <message>
@@ -8529,6 +8570,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>Enable</translation>
     </message>
 </context>
+
+
+
 
 
 
@@ -8575,6 +8619,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
 
 
 
+
+
+
 <context>
     <name>PlotPanel</name>
     <message>
@@ -8593,6 +8640,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>Reset zoom</translation>
     </message>
 </context>
+
+
+
 
 
 
@@ -8727,8 +8777,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
     </message>
     <message>
         <location filename="../source/UI/Quick/QuickBridge.cpp" line="339" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="718" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="783" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="719" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="785" />
         <source>Zasady konkursu</source>
         <translation>Competition rules</translation>
     </message>
@@ -8744,7 +8794,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     </message>
     <message>
         <location filename="../source/UI/Quick/QuickBridge.cpp" line="340" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="688" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="689" />
         <source>Klasyfikacja</source>
         <translation>Standings</translation>
     </message>
@@ -8795,238 +8845,241 @@ li.checked::marker { content: &quot;\2612&quot;; }
     </message>
     <message>
         <location filename="../source/UI/Quick/QuickBridge.cpp" line="638" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="652" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="653" />
         <source>Silnik symulacji</source>
         <translation>Simulation engine</translation>
     </message>
     <message>
         <location filename="../source/UI/Quick/QuickBridge.cpp" line="640" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="787" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="802" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="789" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="804" />
         <source>Wiatr</source>
         <translation>Wind</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="647" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="648" />
         <source>Zmienność formy</source>
         <translation>Form variability</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="647" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="648" />
         <source>Bonus formy</source>
         <translation>Form bonus</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="647" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="648" />
         <source>Minimalna forma</source>
         <translation>Minimal form</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="647" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="648" />
         <source>Maksymalna forma</source>
         <translation>Maximal form</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="653" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="654" />
         <source>Język interfejsu</source>
         <translation>Interface language</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="653" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="654" />
         <source>Zakres umiejętności</source>
         <translation>Skill range</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="654" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="655" />
         <source>Bazowe prawdopodobieństwo dyskwalifikacji</source>
         <translation>Base disqualification probability</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="655" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="656" />
         <source>Mnożnik losowości</source>
         <translation>Randomness multiplier</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="655" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="656" />
         <source>Wpływ parametrów skoczni</source>
         <translation>Hill parameter effects</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="656" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="657" />
         <source>Wpływ formy na wybicie</source>
         <translation>Form effect on takeoff</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="656" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="657" />
         <source>Wpływ formy na lot</source>
         <translation>Form effect on flight</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="657" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="658" />
         <source>Tempo konkursu na żywo</source>
         <translation>Live competition pace</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="659" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="667" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="660" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="668" />
         <source>Baza danych i narzędzia</source>
         <translation>Database and tools</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="664" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="667" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="665" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="668" />
         <source>Udostępnianie wyników</source>
         <translation>Share results</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="665" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="666" />
         <source>Webhook: pojedynczy skok</source>
         <translation>Webhook: individual jump</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="665" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="666" />
         <source>Webhook: wynik zawodnika</source>
         <translation>Webhook: athlete result</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="666" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="667" />
         <source>Webhook: wyniki konkursu</source>
         <translation>Webhook: competition results</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="666" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="667" />
         <source>Webhook: klasyfikacja</source>
         <translation>Webhook: standings</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="667" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="668" />
         <source>Symulacja</source>
         <translation>Simulation</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="679" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="680" />
         <source>Narzędzia</source>
         <translation>Tools</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="688" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="689" />
         <source>Następny konkurs</source>
         <translation>Next competition</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="689" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="690" />
         <source>Przegląd</source>
         <translation>Overview</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="709" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="710" />
         <source>Brak skoczni</source>
         <translation>No hill</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="712" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="782" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="798" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="802" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="713" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="784" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="800" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="804" />
         <source>Skocznia</source>
         <translation>Hill</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="725" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="799" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="726" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="801" />
         <source>Belka startowa</source>
         <translation>Starting gate</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="726" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="810" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="727" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="812" />
         <source>Prawdopodobieństwo dyskwalifikacji</source>
         <translation>Disqualification probability</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="726" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="800" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="727" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="802" />
         <source>Ważność skoków</source>
         <translation>Jump importance</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="727" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="800" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="728" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="802" />
         <source>Preset ważności</source>
         <translation>Importance preset</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="729" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="730" />
         <source>Plan symulacji</source>
         <translation>Simulation plan</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="752" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="755" />
         <source>Opcje listy</source>
         <translation>List options</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="758" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="768" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="760" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="770" />
         <source>Lista startowa</source>
         <translation>Start list</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="766" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="768" />
         <source>Przygotowanie</source>
         <translation>Preparation</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="766" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="797" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="801" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="768" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="799" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="803" />
         <source>Konfiguracja</source>
         <translation>Configuration</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="780" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="782" />
         <source>Grupy KO</source>
         <translation>KO groups</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="780" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="782" />
         <source>Kolejność według wyników</source>
         <translation>Order by results</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="787" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="789" />
         <source>Śnieg</source>
         <translation>Snow</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="790" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="809" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="814" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="792" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="811" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="816" />
         <source>Opcje</source>
         <translation>Options</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="798" />
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="802" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="800" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="804" />
         <source>Zawodnik</source>
         <translation>Athlete</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="799" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="801" />
         <source>Liczba skoków</source>
         <translation>Number of jumps</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="812" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="814" />
         <source>Obliczanie średniego wiatru</source>
         <translation>Average wind calculation</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickBridge.cpp" line="813" />
+        <location filename="../source/UI/Quick/QuickBridge.cpp" line="815" />
         <source>Wpływ odległości na rekompensatę</source>
         <translation>Distance effect on compensation</translation>
     </message>
 </context>
+
+
+
 
 
 
@@ -9054,6 +9107,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>%1  ·  %2</translation>
     </message>
 </context>
+
+
+
 
 
 
@@ -9110,6 +9166,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
 
 
 
+
+
+
 <context>
     <name>RaceControls</name>
     <message>
@@ -9118,7 +9177,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>Gate</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RaceControls.qml" line="17" />
+        <location filename="../source/UI/Quick/RaceControls.qml" line="18" />
         <source>Opcje</source>
         <translation>Options</translation>
     </message>
@@ -9137,36 +9196,27 @@ li.checked::marker { content: &quot;\2612&quot;; }
 
 
 
+
+
+
 <context>
     <name>RaceScreen</name>
     <message>
-        <location filename="../source/UI/Quick/RaceScreen.qml" line="44" />
-        <location filename="../source/UI/Quick/RaceScreen.qml" line="54" />
+        <location filename="../source/UI/Quick/RaceScreen.qml" line="45" />
+        <location filename="../source/UI/Quick/RaceScreen.qml" line="55" />
         <source>Wyniki</source>
         <translation>Results</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RaceScreen.qml" line="60" />
-        <location filename="../source/UI/Quick/RaceScreen.qml" line="66" />
+        <location filename="../source/UI/Quick/RaceScreen.qml" line="61" />
+        <location filename="../source/UI/Quick/RaceScreen.qml" line="67" />
         <source>Lista startowa</source>
         <translation>Start list</translation>
     </message>
-    <message>
-        <location filename="../source/UI/Quick/RaceScreen.qml" line="92" />
-        <source>Opcje konkursu</source>
-        <translation>Competition options</translation>
-    </message>
-    <message>
-        <location filename="../source/UI/Quick/RaceScreen.qml" line="93" />
-        <source>Zamknij</source>
-        <translation>Close</translation>
-    </message>
-    <message>
-        <location filename="../source/UI/Quick/RaceScreen.qml" line="104" />
-        <source>Szczegóły skoku</source>
-        <translation>Jump details</translation>
-    </message>
 </context>
+
+
+
 
 
 
@@ -9296,40 +9346,43 @@ li.checked::marker { content: &quot;\2612&quot;; }
 
 
 
+
+
+
 <context>
     <name>QuickTableModel</name>
     <message>
-        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="68" />
+        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="69" />
         <source>Skok oddany</source>
         <translation>Jump completed</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="70" />
+        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="71" />
         <source>Rozegrany</source>
         <translation>Completed</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="71" />
+        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="72" />
         <source>Odwołany</source>
         <translation>Cancelled</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="74" />
+        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="75" />
         <source>Awans</source>
         <translation>Qualified</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="75" />
+        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="76" />
         <source>Poza awansem</source>
         <translation>Eliminated</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="76" />
+        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="77" />
         <source>Oczekuje</source>
         <translation>Pending</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="77" />
+        <location filename="../source/UI/Quick/QuickTableModel.cpp" line="78" />
         <source>Ostatni skok</source>
         <translation>Last jump</translation>
     </message>
@@ -9347,29 +9400,35 @@ li.checked::marker { content: &quot;\2612&quot;; }
 
 
 
+
+
+
 <context>
     <name>RaceStatus</name>
     <message>
-        <location filename="../source/UI/Quick/RaceStatus.qml" line="16" />
+        <location filename="../source/UI/Quick/RaceStatus.qml" line="17" />
         <source>Seria %1 / %2 · Start %3 / %4</source>
         <translation>Round %1 / %2 · Start %3 / %4</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RaceStatus.qml" line="16" />
+        <location filename="../source/UI/Quick/RaceStatus.qml" line="17" />
         <source> · Grupa %1</source>
         <translation> · Group %1</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RaceStatus.qml" line="17" />
+        <location filename="../source/UI/Quick/RaceStatus.qml" line="18" />
         <source>Wiatr: %1</source>
         <translation>Wind: %1</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RaceStatus.qml" line="18" />
+        <location filename="../source/UI/Quick/RaceStatus.qml" line="19" />
         <source>Śnieg: %1</source>
         <translation>Snow: %1</translation>
     </message>
 </context>
+
+
+
 
 
 
@@ -9391,6 +9450,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>Ctrl+Enter · start simulation</translation>
     </message>
 </context>
+
+
+
 
 
 
@@ -9437,6 +9499,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>Last jump</translation>
     </message>
 </context>
+
+
+
 
 
 
@@ -9512,6 +9577,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
 
 
 
+
+
+
 <context>
     <name>WindFields</name>
     <message>
@@ -9569,6 +9637,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
 
 
 
+
+
+
 <context>
     <name>WindSectorStrip</name>
     <message>
@@ -9586,6 +9657,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
 
 
 
+
+
+
 <context>
     <name>SeasonBar</name>
     <message>
@@ -9594,6 +9668,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>%1 · %2</translation>
     </message>
 </context>
+
+
+
 
 
 
@@ -9621,6 +9698,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
 
 
 
+
+
+
 <context>
     <name>AppFooter</name>
     <message>
@@ -9629,6 +9709,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>Alt+← · Back</translation>
     </message>
 </context>
+
+
+
 
 
 
@@ -9660,44 +9743,55 @@ li.checked::marker { content: &quot;\2612&quot;; }
 
 
 
+
+
+
 <context>
     <name>CalendarEventRow</name>
     <message>
-        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="22" />
+        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="29" />
         <source>Zaznacz %1</source>
         <translation>Select %1</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="26" />
+        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="33" />
         <source>Drużynowy</source>
         <translation>Team</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="26" />
+        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="33" />
         <source>Treningi: %1</source>
         <translation>Training: %1</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="26" />
+        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="33" />
         <source>Próbna</source>
         <translation>Trial round</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="27" />
+        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="34" />
         <source>Rozegrany</source>
         <translation>Completed</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="27" />
+        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="34" />
         <source>Odwołany</source>
         <translation>Cancelled</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="27" />
+        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="34" />
         <source>W trakcie</source>
         <translation>In progress</translation>
     </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarEventRow.qml" line="36" />
+        <source>Edytuj %1</source>
+        <translation>Edit %1</translation>
+    </message>
 </context>
+
+
+
 
 
 
@@ -9799,6 +9893,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
 
 
 
+
+
+
 <context>
     <name>CalendarInspector</name>
     <message>
@@ -9884,6 +9981,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
 
 
 
+
+
+
 <context>
     <name>CalendarWorkspace</name>
     <message>
@@ -9904,7 +10004,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     </message>
     <message>
         <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="23" />
-        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="53" />
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="52" />
         <source>Cofnij</source>
         <translation>Undo</translation>
     </message>
@@ -9950,7 +10050,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
     </message>
     <message>
         <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="33" />
-        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="52" />
         <source>Edycja</source>
         <translation>Edit</translation>
     </message>
@@ -9989,26 +10088,45 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>Competition options</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="66" />
-        <source>Konkursy: %1</source>
-        <translation>Competitions: %1</translation>
-    </message>
-    <message>
-        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="67" />
-        <source>Przyszłe</source>
-        <translation>Upcoming</translation>
-    </message>
-    <message>
-        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="67" />
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="48" />
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="68" />
         <source>Zaznacz przyszłe konkursy</source>
         <translation>Select upcoming competitions</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="78" />
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="65" />
+        <source>Zaznaczono: %1</source>
+        <translation>Selected: %1</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="65" />
+        <source>Konkursy: %1</source>
+        <translation>Competitions: %1</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="66" />
+        <source>Wyczyść zaznaczenie</source>
+        <translation>Clear selection</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="67" />
+        <source>Edytuj</source>
+        <translation>Edit</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="68" />
+        <source>Przyszłe</source>
+        <translation>Upcoming</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="79" />
         <source>Dodaj konkurs lub wczytaj preset.</source>
         <translation>Add a competition or load a preset.</translation>
     </message>
 </context>
+
+
+
 
 
 
@@ -10055,87 +10173,90 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>%1 competitions</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="132" />
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="222" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="133" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="223" />
         <source>Rozegrane wydarzenia są zablokowane.</source>
         <translation>Completed events are locked.</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="153" />
         <location filename="../source/UI/Quick/QuickCalendar.cpp" line="154" />
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="205" />
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="244" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="155" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="206" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="245" />
         <source>Konkurs jest powiązany z rozegranymi kwalifikacjami.</source>
         <translation>This competition is linked to completed qualifications.</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="156" />
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="183" />
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="246" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="157" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="184" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="247" />
         <source>Zmiany zapisane w kalendarzu</source>
         <translation>Calendar changes saved</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="197" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="198" />
         <source>Najpierw dodaj skocznię do zapisu.</source>
         <translation>Add a hill to this save first.</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="198" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="199" />
         <source>Dodano konkurs</source>
         <translation>Competition added</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="202" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="203" />
         <source>Skopiowano konkursy</source>
         <translation>Competitions copied</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="206" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="207" />
         <source>Usunięto konkursy. Możesz cofnąć zmianę.</source>
         <translation>Competitions deleted. You can undo this change.</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="214" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="215" />
         <source>Kwalifikacje muszą poprzedzać konkurs, do którego prowadzą.</source>
         <translation>Qualifications must precede their target competition.</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="216" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="217" />
         <source>Zmieniono kolejność konkursów</source>
         <translation>Competition order changed</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="227" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="228" />
         <source>Cofnięto zmianę</source>
         <translation>Change undone</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="239" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="240" />
         <source>Dodaj co najmniej jedną serię.</source>
         <translation>Add at least one round.</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="242" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="243" />
         <source>Najpierw dodaj treningi.</source>
         <translation>Add training sessions first.</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="243" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="244" />
         <source>Najpierw dodaj serię próbną.</source>
         <translation>Add a trial round first.</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="263" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="264" />
         <source>Kalendarz zawiera rozegrane wydarzenia.</source>
         <translation>This calendar contains completed events.</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="272" />
+        <location filename="../source/UI/Quick/QuickCalendar.cpp" line="273" />
         <source>Brak presetów kalendarza do wczytania.</source>
         <translation>No calendar presets available.</translation>
     </message>
 </context>
+
+
+
 
 
 
@@ -10152,6 +10273,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
 
 
 
+
+
+
 <context>
     <name>CalendarsListModel</name>
     <message>
@@ -10162,150 +10286,202 @@ li.checked::marker { content: &quot;\2612&quot;; }
 <context>
     <name>FormGeneratorWorkspace</name>
     <message>
-        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="14" />
-        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="37" />
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="16" />
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="68" />
         <source>Zawodnicy</source>
         <translation>Jumpers</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="14" />
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="16" />
         <source>Parametry</source>
         <translation>Parameters</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="25" />
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="30" />
         <source>Parametry formy</source>
         <translation>Form parameters</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="27" />
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="36" />
         <source>Presety</source>
         <translation>Presets</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="46" />
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="50" />
+        <source>Wszyscy</source>
+        <translation>All athletes</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="50" />
+        <source>Zaznaczeni</source>
+        <translation>Selected athletes</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="51" />
+        <source>Wszyscy (%1)</source>
+        <translation>All athletes (%1)</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="51" />
+        <source>Zaznaczeni (%1)</source>
+        <translation>Selected athletes (%1)</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="52" />
+        <source>Zastosuj parametry do</source>
+        <translation>Apply parameters to</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="55" />
+        <source>Zastosuj parametry</source>
+        <translation>Apply parameters</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="57" />
+        <source>Zmieniono parametry: %1</source>
+        <translation>Parameters updated: %1</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="60" />
+        <source>Zastosuj parametry do tabeli.</source>
+        <translation>Apply parameters to the table.</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/FormGeneratorWorkspace.qml" line="77" />
         <source>Parametry zawodników</source>
         <translation>Athlete parameters</translation>
     </message>
 </context>
 
+
+
+
 <context>
     <name>QuickRoster</name>
     <message>
-        <location filename="../source/UI/Quick/QuickRoster.cpp" line="64" />
+        <location filename="../source/UI/Quick/QuickRoster.cpp" line="65" />
         <source>Wszystkie kraje</source>
         <translation>All countries</translation>
     </message>
 </context>
 
+
+
+
 <context>
     <name>RosterLibrary</name>
     <message>
-        <location filename="../source/UI/Quick/RosterLibrary.qml" line="9" />
+        <location filename="../source/UI/Quick/RosterLibrary.qml" line="10" />
         <source>Zawodnicy</source>
         <translation>Jumpers</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterLibrary.qml" line="10" />
+        <location filename="../source/UI/Quick/RosterLibrary.qml" line="14" />
         <source>Szukaj nazwiska lub kraju</source>
         <translation>Search name or country</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterLibrary.qml" line="11" />
+        <location filename="../source/UI/Quick/RosterLibrary.qml" line="15" />
         <source>Kraj</source>
         <translation>Country</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterLibrary.qml" line="20" />
+        <location filename="../source/UI/Quick/RosterLibrary.qml" line="25" />
         <source>Brak pasujących zawodników</source>
         <translation>No matching athletes</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterLibrary.qml" line="24" />
+        <location filename="../source/UI/Quick/RosterLibrary.qml" line="29" />
         <source>Dodaj widocznych</source>
         <translation>Add visible athletes</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterLibrary.qml" line="26" />
+        <location filename="../source/UI/Quick/RosterLibrary.qml" line="31" />
         <source>Wybór zawodników</source>
         <translation>Athlete selection</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterLibrary.qml" line="27" />
+        <location filename="../source/UI/Quick/RosterLibrary.qml" line="32" />
         <source>Usuń widocznych z listy</source>
         <translation>Remove visible athletes</translation>
     </message>
 </context>
 
+
+
+
 <context>
     <name>RosterOrder</name>
     <message>
-        <location filename="../source/UI/Quick/RosterOrder.qml" line="9" />
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="10" />
         <source>Lista startowa</source>
         <translation>Start list</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterOrder.qml" line="13" />
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="14" />
         <source>%1 · %2</source>
         <translation>%1 · %2</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterOrder.qml" line="14" />
-        <location filename="../source/UI/Quick/RosterOrder.qml" line="22" />
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="15" />
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="23" />
         <source>Przenieś</source>
         <translation>Move</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterOrder.qml" line="16" />
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="17" />
         <source>Szukaj na liście</source>
         <translation>Search start list</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterOrder.qml" line="20" />
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="21" />
         <source>Pozycja</source>
         <translation>Position</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterOrder.qml" line="21" />
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="22" />
         <source>Pozycja docelowa</source>
         <translation>Target position</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterOrder.qml" line="23" />
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="24" />
         <source>Zamknij</source>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterOrder.qml" line="38" />
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="39" />
         <source>Wybierz zawodników do listy</source>
         <translation>Select athletes for the list</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterOrder.qml" line="38" />
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="39" />
         <source>Brak pasujących zawodników</source>
         <translation>No matching athletes</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterOrder.qml" line="47" />
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="49" />
         <source>Zaznaczono: %1</source>
         <translation>Selected: %1</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterOrder.qml" line="47" />
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="49" />
         <source>W składzie: %1</source>
         <translation>Starting squad: %1</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterOrder.qml" line="47" />
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="49" />
         <source>Kolejność startu</source>
         <translation>Start order</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterOrder.qml" line="48" />
+        <location filename="../source/UI/Quick/RosterOrder.qml" line="50" />
         <source>Usuń zaznaczonych</source>
         <translation>Remove selected</translation>
     </message>
 </context>
+
+
+
 
 <context>
     <name>RosterRow</name>
@@ -10341,6 +10517,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
     </message>
 </context>
 
+
+
+
 <context>
     <name>RosterSummary</name>
     <message>
@@ -10360,28 +10539,46 @@ li.checked::marker { content: &quot;\2612&quot;; }
     </message>
 </context>
 
+
+
+
 <context>
     <name>RosterWorkspace</name>
     <message>
-        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="26" />
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="25" />
         <source>Lista · %1</source>
         <translation>List · %1</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="26" />
-        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="44" />
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="25" />
+        <source>Dodaj</source>
+        <translation>Add</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="25" />
         <source>Dodaj zawodników</source>
         <translation>Add athletes</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="27" />
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="26" />
         <source>Wybór i kolejność</source>
         <translation>Selection and order</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="27" />
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="26" />
         <source>Kolejność skoczków</source>
         <translation>Athlete order</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="27" />
+        <source>Listy</source>
+        <translation>Lists</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="27" />
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="62" />
+        <source>Zapisane listy</source>
+        <translation>Saved lists</translation>
     </message>
     <message>
         <location filename="../source/UI/Quick/RosterWorkspace.qml" line="28" />
@@ -10409,40 +10606,85 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>Random</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="33" />
-        <source>Zapisane listy</source>
-        <translation>Saved lists</translation>
-    </message>
-    <message>
-        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="41" />
-        <source>Zapisana lista</source>
-        <translation>Saved list</translation>
-    </message>
-    <message>
-        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="43" />
-        <source>Zastosuj</source>
-        <translation>Apply</translation>
-    </message>
-    <message>
-        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="44" />
-        <source>Usuń zawodników</source>
-        <translation>Remove athletes</translation>
-    </message>
-    <message>
-        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="44" />
-        <source>Ustaw kolejność</source>
-        <translation>Apply order</translation>
-    </message>
-    <message>
-        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="52" />
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="48" />
         <source>Lista startowa</source>
         <translation>Start list</translation>
     </message>
     <message>
-        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="52" />
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="48" />
         <source>Drużyna</source>
         <translation>Team</translation>
     </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterWorkspace.qml" line="63" />
+        <source>Zamknij</source>
+        <translation>Close</translation>
+    </message>
 </context>
+
+
+
+
+<context>
+    <name>RaceOptions</name>
+    <message>
+        <location filename="../source/UI/Quick/RaceOptions.qml" line="13" />
+        <source>Opcje konkursu</source>
+        <translation>Competition options</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceOptions.qml" line="14" />
+        <source>Zamknij</source>
+        <translation>Close</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceOptions.qml" line="18" />
+        <source>Przebieg</source>
+        <translation>Progress</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceOptions.qml" line="18" />
+        <source>Warunki</source>
+        <translation>Conditions</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RaceOptions.qml" line="18" />
+        <source>Skok</source>
+        <translation>Jump</translation>
+    </message>
+</context>
+
+
+
+<context>
+    <name>RosterPresets</name>
+    <message>
+        <location filename="../source/UI/Quick/RosterPresets.qml" line="16" />
+        <source>Lista: %1</source>
+        <translation>List: %1</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterPresets.qml" line="17" />
+        <source>Zapisana lista</source>
+        <translation>Saved list</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterPresets.qml" line="21" />
+        <source>Dodaj</source>
+        <translation>Add</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterPresets.qml" line="22" />
+        <source>Usuń</source>
+        <translation>Remove</translation>
+    </message>
+    <message>
+        <location filename="../source/UI/Quick/RosterPresets.qml" line="23" />
+        <source>Kolejność</source>
+        <translation>Order</translation>
+    </message>
+</context>
+
+
 
 </TS>
