@@ -232,3 +232,11 @@ be retired; reopening reconstructs the view from current controller state.
 
 Focused checks are available as `--navigation-only`, `--menus-only` and
 `--workflow-only`; the default integration run includes them too.
+
+## Logic and UX audit, 2026-10-21
+
+[The audit report](docs/BUGFIX_AUDIT_2026-10-21.md) records thirteen individually
+committed fixes, their reproduction scenarios, regression checks and commit IDs.
+Run `scripts/test-quick-ui.sh --audit-only` for the focused audit checks; they are
+also included in the default integration suite. The full updated suite passes
+with 292 responsive renders, and the Widgets-only build remains supported.
