@@ -1,5 +1,7 @@
 # Stan prac: pięć zmian UX — 2026-10-21
 
+**Aktualizacja po wznowieniu:** pięć zmian UX ukończono; dwa końcowe pełne przebiegi przeszły z 316 renderami. [Raport końcowy](UX_IMPROVEMENTS_2026-10-21.md) opisuje poprawkę geometrii KO, wyniki i ograniczenie diagnostyki jednorazowej awarii. Poniżej zachowano historyczny stan sprzed wznowienia.
+
 Przerwano na prośbę użytkownika przed wyłączeniem komputera. Zadanie **nie jest jeszcze zamknięte**.
 Gałąź: `feature/qml-competition-config`. Nie zmieniano `main` (05f2e48d8e92c7b9b180f18abe250b3c7e61d24c).
 

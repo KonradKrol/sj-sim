@@ -91,7 +91,7 @@ The render sweep covers widths of 1440, 1024, 520 and 360 pixels, light/dark the
 and enlarged text. Captures are written to `build-quick-ui/ui-renders`.
 The suite also verifies configuration tab switching and that the live jump summary
 uses actual result data and remains visible at desktop test sizes. The suite
-produces 292 counted renders, including roster editing, bounded presets, the form
+produces 316 counted renders, including the five UX workflows, roster editing, bounded presets, the form
 generator, calendar fields, custom rules and links,
 plus large-text variants. The original Widgets-only
 qmake configuration also builds successfully without linking Qt Quick or QML.
@@ -121,8 +121,10 @@ The form generator has a bounded table workspace and a pinned Generate action.
 On short/narrow windows its parameters have a separate tab. Preset windows are
 bounded to the application/screen, keep their actions visible and scroll long
 choices within the available space. Choices open upward when needed. Form preset
-replacement searches form presets, and loading updates both athlete settings and
-the visible table. Generation requires a save and at least one athlete.
+replacement searches form presets. Parameter edits and preset loading stage a draft;
+All / Selected scope and an explicit Apply action update athlete settings. Generation
+is disabled until the draft is applied, and requires a save and at least one athlete.
+Apply stays pinned on the parameters tab; scope never changes implicitly with selection.
 
 The competition workspace keeps the current athlete and last revealed jump above
 parallel result/start-list tables on laptop and desktop windows. Target labels
@@ -170,7 +172,9 @@ Escape. The original Widgets alternative is retained.
   generator has a direct action alongside Tools and Save.
 - Calendar editing uses a list and an inspector on desktop, and separate list/edit
   tabs in narrow or short windows. The smallest viewports use a direct list/back
-  transition and put secondary event operations in one menu. Field edits apply directly, including multi-selection;
+  transition and put secondary event operations in one menu. A click selects without
+  navigating; Edit, Enter, double-click or the row arrow opens editing. Selection
+  has a count and a clear action. Field edits apply directly, including multi-selection;
   one-step undo retains original event identities and historical results. Add,
   copy, delete and reorder operate on entire competition/training/trial blocks.
   Rules and qualification/classification links have their own inspector tabs.
@@ -240,3 +244,15 @@ committed fixes, their reproduction scenarios, regression checks and commit IDs.
 Run `scripts/test-quick-ui.sh --audit-only` for the focused audit checks; they are
 also included in the default integration suite. The full updated suite passes
 with 292 responsive renders, and the Widgets-only build remains supported.
+
+
+## Five-workflow UX redesign, 2026-10-21
+
+[The UX report](docs/UX_IMPROVEMENTS_2026-10-21.md) describes explicit form
+parameter application, visible table search/selection, direct saved-list actions,
+contextual competition tools and calendar selection without forced navigation.
+Run `scripts/test-quick-ui.sh --ux-only` for these workflows and an individual
+competition; the default suite also includes these checks. Competition options
+use secondary Progress / Conditions / Jump sections; live presentation stays in
+the main toolbar, and weather readings open Conditions directly. Short desktop
+windows use tighter header spacing to retain both critical tables, including KO.
