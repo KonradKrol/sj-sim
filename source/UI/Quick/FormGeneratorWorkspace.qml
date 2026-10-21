@@ -16,31 +16,48 @@ Item {
         SectionTabs { visible: !generator.parallel; options: [qsTr("Zawodnicy"),qsTr("Parametry")]; currentIndex: generator.section; Layout.fillWidth: true; onSelected: generator.section=index }
         RowLayout {
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; spacing: 24
-            ScrollView {
-                id: parameters
-                visible: generator.parallel || generator.section === 1
+            ColumnLayout {
+                visible: generator.parallel || generator.section===1
                 Layout.fillWidth: !generator.parallel; Layout.preferredWidth: generator.parallel ? 300 : 0
                 Layout.fillHeight: true; Layout.minimumHeight: 0; Layout.minimumWidth: 0
-                contentWidth: availableWidth; clip: true
-                ColumnLayout {
-                    width: parameters.availableWidth; spacing: 12
-                    Label { text: qsTr("Parametry formy"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section }
-                    Repeater { model: generator.fields.parameters || []; Node { node: modelData; Layout.fillWidth: true } }
+                spacing: 8
+                ScrollView {
+                    id: parameters
+                    Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
+                    contentWidth: availableWidth; clip: true
+                    ColumnLayout {
+                        width: parameters.availableWidth; spacing: 12
+                        Label { visible: generator.parallel; text: qsTr("Parametry formy"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section }
+                        GridLayout {
+                            columns: generator.parallel ? 1 : 2
+                            Layout.fillWidth: true; columnSpacing: 8; rowSpacing: 8
+                            Repeater { model: generator.fields.parameters || []; Node { node: modelData; Layout.fillWidth: true; Layout.minimumWidth: 0 } }
+                        }
+                        Label { text: qsTr("Presety"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.body; Layout.topMargin: 8 }
+                        GridLayout {
+                            columns: generator.parallel ? 1 : 2
+                            Layout.fillWidth: true; columnSpacing: 8; rowSpacing: 8
+                            Repeater { model: generator.fields.presets || []; Node { node: modelData; Layout.fillWidth: true; Layout.minimumWidth: 0 } }
+                        }
+                    }
+                }
+                GridLayout {
+                    columns: generator.parallel ? 1 : 2
+                    Layout.fillWidth: true; columnSpacing: 8; rowSpacing: 8
                     SChoice {
                         id: scope; objectName: "formBulkScope"
                         Layout.fillWidth: true; Layout.minimumWidth: 0
-                        model: [qsTr("Wszyscy (%1)").arg(generator.tableModel ? generator.tableModel.count : 0),qsTr("Zaznaczeni (%1)").arg(generator.tableModel ? generator.tableModel.selectedCount : 0)]
+                        model: [qsTr("Wszyscy"),qsTr("Zaznaczeni")]
+                        displayText: currentIndex===0 ? qsTr("Wszyscy (%1)").arg(generator.fields.participantCount || 0) : qsTr("Zaznaczeni (%1)").arg(generator.tableModel ? generator.tableModel.selectedCount : 0)
                         Accessible.name: qsTr("Zastosuj parametry do")
                     }
                     SButton {
-                        objectName: "formApplyParameters"; text: qsTr("Zastosuj parametry"); Layout.fillWidth: true
-                        enabled: !!generator.tableModel && (scope.currentIndex===0 ? generator.tableModel.count>0 : generator.tableModel.selectedCount>0)
+                        objectName: "formApplyParameters"; text: qsTr("Zastosuj parametry"); Layout.fillWidth: true; Layout.minimumWidth: 0
+                        enabled: !!generator.tableModel && (scope.currentIndex===0 ? generator.fields.participantCount>0 : generator.tableModel.selectedCount>0)
                         onClicked: {generator.forceActiveFocus();var count=generator.fields.controller.applyParameters(scope.currentIndex===1);generator.appliedMessage=qsTr("Zmieniono parametry: %1").arg(count);ui.refresh()}
                     }
-                    Label { objectName: "formDraftStatus"; text: generator.fields.pending ? qsTr("Zastosuj parametry do tabeli.") : generator.appliedMessage; visible: text.length>0; color: generator.fields.pending ? Theme.warning : Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-                    Label { text: qsTr("Presety"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.topMargin: 8 }
-                    Repeater { model: generator.fields.presets || []; Node { node: modelData; Layout.fillWidth: true } }
                 }
+                Label { objectName: "formDraftStatus"; text: generator.fields.pending ? qsTr("Zastosuj parametry do tabeli.") : generator.appliedMessage; visible: text.length>0; color: generator.fields.pending ? Theme.warning : Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
             }
             ColumnLayout {
                 visible: generator.parallel || generator.section === 0
