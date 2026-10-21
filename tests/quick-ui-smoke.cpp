@@ -696,6 +696,9 @@ static void auditStatisticsRegressions(MainWindow &main) {
     for(auto &result:results.getResultsReference())for(auto &jump:result.getJumpsReference())jump.setDSQ(true);stats.fillWindow();
     check(stats.findChild<QTableView *>("tableView_avgDistance")->model()->rowCount()==0,"audit 7: all-DSQ athletes have no invented distance average");
     for(auto *label:stats.findChildren<QLabel *>())check(!label->text().contains(QRegularExpression("\\b(?:nan|inf)\\b",QRegularExpression::CaseInsensitiveOption)),"audit 7: facts contain no non-finite averages or percentages");
+    auto &presets=GlobalDatabase::get()->getEditableGlobalPointsForPlacesPresets();const auto originalPresets=presets;presets.clear();stats.findChild<QComboBox *>("comboBox_preset")->clear();stats.fillWindow();
+    check(stats.getGeneralClassificationModel()->rowCount()==0,"audit 9: absent point presets do not crash or invent a places classification");
+    stats.findChild<QCheckBox *>("checkBox_generalClassificationCompPoints")->setChecked(true);stats.fillWindow();check(stats.getGeneralClassificationModel()->rowCount()==2,"audit 9: competition-point classification works without any places preset");presets=originalPresets;
     qInfo()<<"PASS: audit 8 small-field and tied-winner statistics";
 }
 

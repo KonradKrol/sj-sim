@@ -766,7 +766,15 @@ void SimulationRatingsWindow::fillWindow()
     ui->label_saveAvgWind->setText((jumpsCount?QString::number(averageWind) + tr("m/s"):QString::fromUtf8("—")));
 
 
-    QMap<int, double> pointsForPlaces = GlobalDatabase::get()->getEditableGlobalPointsForPlacesPresets()[ui->comboBox_preset->currentIndex()].getPointsForPlacesReference();
+    const auto &presets=GlobalDatabase::get()->getEditableGlobalPointsForPlacesPresets();
+    const int presetIndex=ui->comboBox_preset->currentIndex();
+    const bool hasPreset=presetIndex>=0 && presetIndex<presets.size();
+    if(!hasPreset && !ui->checkBox_generalClassificationCompPoints->isChecked()) {
+        ui->tableView_generalClassification->setModel(nullptr);
+        generalClassificationModel->setIndResults({});generalClassificationModel->setTeamResults({});generalClassificationModel->setType(GeneralClassificationTableModel::Ind);
+        ui->tableView_generalClassification->setModel(generalClassificationModel);return;
+    }
+    const QMap<int,double> pointsForPlaces=hasPreset?presets[presetIndex].getPointsForPlaces():QMap<int,double>();
     if(ui->checkBox_generalClassificationTeam->isChecked() == false)//Indywidualne
     {
         QHash<Jumper *, double> indGeneralClassification;
