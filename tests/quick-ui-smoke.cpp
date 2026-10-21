@@ -48,6 +48,7 @@
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QJSValue>
+#include "../source/UI/Seasons/Stats/FilteringWidgets/CompetitionsRangeComboBoxesWidget.h"
 #include <QTemporaryDir>
 #include <QDirIterator>
 #include <QFile>
@@ -640,7 +641,16 @@ static void auditDataRegressions() {
     const auto places=CompetitionResults::getResultsWithJumpersPositionsForClassificationArchiveResults({{&a,100},{&b,100},{&c,80}});
     const auto teams=CompetitionResults::getResultsWithTeamsPositionsForClassificationArchiveResults({{"POL",100},{"NOR",100},{"GER",80}});
     check(places.value(&a)==1&&places.value(&b)==1&&places.value(&c)==3&&teams.value("GER")==3,"audit 1: archive ties use competition ranking 1,1,3 for athletes and teams");
-    qInfo()<<"PASS: audit 1 archive tie positions";
+    Hill hill;CompetitionInfo played(&hill),future(&hill),later(&hill);played.setPlayed(true);later.setPlayed(true);
+    SeasonCalendar calA("A"),calB("B");calA.setCompetitions({&played,&future});calB.setCompetitions({&later});
+    Season season;season.setCalendars({&calA,&calB});QVector<Season> seasons{season};
+    CompetitionsRangeComboBoxesWidget range;range.setSeasonsList(&seasons);range.setMergeCalendars(true);range.setupComboBoxes();
+    auto *first=range.findChild<QComboBox *>("comboBox_firstCompetition");auto *last=range.findChild<QComboBox *>("comboBox_secondCompetition");
+    check(range.getCompetition(1)==&played&&range.getCompetition(2)==&later,"audit 2: merged range endpoints resolve to displayed played competitions, skipping unplayed tail");
+    first->setCurrentIndex(0);check(!range.getCompetition(1),"audit 2: a season heading is never interpreted as a competition");
+    range.setCalendarFilter("B");range.setMergeCalendars(false);range.setupComboBoxes();check(range.getCompetition(1)==&later&&range.getCompetition(2)==&later,"audit 2: filtered range uses direct event identity");
+    calA.setCompetitions({});calB.setCompetitions({});
+    qInfo()<<"PASS: audit 1-2 archive ties and competition ranges";
 }
 
 static void backendRegressions() {

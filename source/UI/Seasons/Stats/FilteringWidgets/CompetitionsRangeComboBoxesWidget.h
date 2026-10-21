@@ -26,9 +26,10 @@ signals:
 
 private:
     Ui::CompetitionsRangeComboBoxesWidget *ui;
-    QVector<Season> * seasonsList;
+    QVector<Season> * seasonsList = nullptr;
     QString calendarFilter;
-    bool mergeCalendars;
+    bool mergeCalendars = false;
+    QVector<CompetitionInfo *> entries;
 public:
     CompetitionInfo * getCompetition(int which);
     QVector<Season> *getSeasonsList() const;
