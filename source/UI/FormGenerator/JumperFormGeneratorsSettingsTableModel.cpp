@@ -166,5 +166,7 @@ QVector<JumperFormGeneratorSettings> &JumperFormGeneratorsSettingsTableModel::ge
 
 void JumperFormGeneratorsSettingsTableModel::setGeneratorsSettings(const QVector<JumperFormGeneratorSettings> &newGeneratorsSettings)
 {
+    beginResetModel();
     generatorsSettings = newGeneratorsSettings;
+    endResetModel();
 }

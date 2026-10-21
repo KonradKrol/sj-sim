@@ -672,6 +672,9 @@ static void auditFormRegressions() {
     for(int attempt=0;attempt<3;++attempt){simulator.simulateJump();check(!simulator.getJumpData().getDSQ(),"audit 5: exact zero DSQ overrides even guaranteed base disqualification");}
     manipulation.setExactDSQProbability(1);simulator.simulateJump();check(simulator.getJumpData().getDSQ(),"audit 5: exact one still guarantees DSQ");
     manipulation.setExactDSQProbability(-1);simulator.setDSQBaseProbability(0);simulator.simulateJump();check(!simulator.getJumpData().getDSQ(),"audit 5: default zero DSQ remains disabled");
+    auto *view=form.findChild<QTableView *>("tableView");view->selectAll();QMetaObject::invokeMethod(&form,"onRemoveFromTable",Q_ARG(bool,true));check(form.getTableModel()->rowCount()==2,"audit 6: keep selected preserves all rows when every athlete is selected");
+    view->selectionModel()->select(form.getTableModel()->index(1,0),QItemSelectionModel::ClearAndSelect);QMetaObject::invokeMethod(&form,"onRemoveFromTable",Q_ARG(bool,true));check(form.getTableModel()->rowCount()==1&&form.getTableModel()->getGeneratorsSettings().first().getJumper()==&b,"audit 6: keep selected accepts cell selection and preserves that athlete");
+    view->clearSelection();QMetaObject::invokeMethod(&form,"onRemoveFromTable",Q_ARG(bool,true));check(form.getTableModel()->rowCount()==1,"audit 6: empty selection never erases the list");
     qInfo()<<"PASS: audit 4 valid finite form input and consistent bulk ranges";
 }
 

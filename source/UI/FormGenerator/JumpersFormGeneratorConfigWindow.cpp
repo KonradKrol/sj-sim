@@ -223,35 +223,13 @@ void JumpersFormGeneratorConfigWindow::on_pushButton_generate_clicked()
 
 void JumpersFormGeneratorConfigWindow::onRemoveFromTable(bool alternative)
 {
-    QSet<int> rows;
-    for(auto & index : ui->tableView->selectionModel()->selectedIndexes())
-        rows.insert(index.row());
-    qDebug()<<"rows count: "<<rows.count();
-    if(alternative && ui->tableView->selectionModel()->selectedRows().count() < tableModel->rowCount() && ui->tableView->selectionModel()->selectedIndexes().count() > 0)
-    {
-        qDebug()<<"alt";
-        int count = tableModel->rowCount();
-        QSet<int> tempRows;
-        for(int i=0; i<count; i++)
-        {
-            qDebug()<<i<<" ("<<rows.contains(i)<<")";
-            if(rows.contains(i) == false)
-            {
-                tempRows.insert(i);
-            }
-        }
-        qDebug()<<"size "<<tempRows.size();
-        rows = tempRows;
-    }
-    int removed = 0;
-    QList<int> r = rows.values();
-    std::sort(r.begin(), r.end(), std::less<int>());
-    for(auto & row : qAsConst(r))
-    {
-        qDebug()<<"b << "<<row<<" (removed: "<<removed<<")";
-        MyFunctions::removeFromVector(tableModel->getGeneratorsSettingsReference(), &tableModel->getGeneratorsSettingsReference()[row - removed]);
-        removed++;
-    }
+    QSet<int> selected;
+    for(const auto &index:ui->tableView->selectionModel()->selectedIndexes())selected.insert(index.row());
+    if(selected.isEmpty())return;
+    auto settings=tableModel->getGeneratorsSettings();
+    for(int row=settings.size()-1;row>=0;--row)
+        if(alternative ? !selected.contains(row) : selected.contains(row))settings.removeAt(row);
+    tableModel->setGeneratorsSettings(settings);
     updateTable();
 }
 
