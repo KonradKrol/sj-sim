@@ -26,7 +26,6 @@ Pane {
                 Layout.fillWidth: true; Layout.minimumWidth: 0; spacing: 1
                 RowLayout {
                     Layout.fillWidth: true; spacing: 8
-                    Label { text: ui.context.liveStage ? ["",qsTr("Lot"),qsTr("Odległość"),qsTr("Lądowanie"),qsTr("Noty"),qsTr("Wynik")][ui.context.liveStage] : qsTr("Ostatni skok"); color: Theme.muted; font.pointSize: Theme.caption }
                     Image { objectName: "lastJumpFlag"; source: jump.summary.flag || ""; visible: source.toString().length>0; Layout.preferredWidth: 24; Layout.preferredHeight: 18; sourceSize.width: 48; sourceSize.height: 36; fillMode: Image.PreserveAspectFit }
                     Label { text: jump.summary.name || "—"; color: Theme.ink; font.pointSize: Theme.body; font.weight: Font.DemiBold; Layout.fillWidth: true; Layout.minimumWidth: 0; wrapMode: Text.WordWrap }
                 }
