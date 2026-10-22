@@ -700,6 +700,12 @@ static void seasonWorkflowRegressions(MainWindow &main) {
     auto *loaded=editor->getModel()->getCalendar()->getCompetitionsReference().last();
     check(loaded->getTrainings().size()==2 && loaded->getTrialRound() && loaded->getTrainings().first()->getJumpsImportance()==3.5 && loaded->getTrialRound()->getJumpsImportance()==4.0,"presets retain associated events and their independent importance");
     for(auto *event:editor->getModel()->getCalendar()->getCompetitionsReference())check(save.getHillsReference().contains(event->getHill()),"loaded preset uses hills owned by the save");
+    for(auto *event:editor->getModel()->getCalendar()->getCompetitionsReference()) {
+        check(event->getResultsReference().getCompetition()==event,"imported preset results belong to the newly created calendar event");
+        JumpData jump(save.getJumpersReference().first(),event->getHill());jump.setPoints(100);
+        CompetitionResults fresh=event->getResultsReference();fresh.addJump(save.getJumpersReference().first(),jump);
+        check(fresh.getResultsReference().first().getCompetition()==event && jump.getCompetition()==event,"new jumps after preset import refer to the live event rather than the source preset");
+    }
     manager.reject();qInfo()<<"PASS: real season tools, form navigation, direct calendar edits, multi-selection, history protection and undo";
 }
 static void rosterRegressions(MainWindow &main) {
@@ -955,6 +961,7 @@ static void presetSerializationRegression() {
     CompetitionInfo training(&hill),competition(&hill);training.setSerieType(CompetitionInfo::Training);competition.setTrainings({&training});
     SeasonCalendar calendar("Serialization regression");calendar.setCompetitions({&training,&competition});
     SeasonCalendarPreset preset(&calendar);preset.setName("Regression preset");preset.setHills({{hill.getName(),hill.getHSPoint()},{hill.getName(),hill.getHSPoint()}});
+    for(auto *event:preset.getCalendarReference().getCompetitionsReference())check(event->getResultsReference().getCompetition()==event,"preset competition result containers belong to their cloned events");
     const auto first=SeasonCalendarPreset::getJsonObject(preset),second=SeasonCalendarPreset::getJsonObject(preset);
     for(auto *event:preset.getCalendarReference().getCompetitionsReference())check(event->getHill()==&hill,"serializing a calendar preset preserves its in-memory hill pointers");
     check(competition.getHill()==&hill && training.getHill()==&hill,"serializing a preset leaves the source calendar intact");

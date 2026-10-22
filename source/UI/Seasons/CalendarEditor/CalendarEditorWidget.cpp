@@ -1407,6 +1407,7 @@ return;
             CompetitionInfo * calendarCompetition = new CompetitionInfo(*presetCompetition);
             calendarCompetition->reassign();
             calendarCompetition->getResultsReference().reassign();
+            calendarCompetition->getResultsReference().setCompetition(calendarCompetition);
 
             calendarCompetition->getClassificationsReference().detach();
             calendarCompetition->getQualifyingCompetitionsReference().detach();

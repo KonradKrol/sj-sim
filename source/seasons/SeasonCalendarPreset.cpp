@@ -16,6 +16,7 @@ SeasonCalendarPreset::SeasonCalendarPreset(SeasonCalendar *seasonCalendar)
             CompetitionInfo * presetCompetition = new CompetitionInfo(*comp);
             presetCompetition->reassign();
             presetCompetition->getResultsReference().reassign();
+            presetCompetition->getResultsReference().setCompetition(presetCompetition);
             presetCalendar->getCompetitionsReference().push_back(presetCompetition);
             competitions.insert(comp, presetCompetition);
         }
