@@ -33,6 +33,7 @@
 #include <QJsonParseError>
 #include <QResizeEvent>
 #include <limits>
+#include <memory>
 
 CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, SimulationSave *save) :
     QDialog(parent),
@@ -883,7 +884,8 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
     {
     case SingleCompetition:{
         CompetitionInfo qualsInfo;
-        qualsInfo.setHill(new Hill(hillEditor->getHillFromWidgetInput()));
+        Hill qualificationsHill = hillEditor->getHillFromWidgetInput();
+        qualsInfo.setHill(&qualificationsHill);
         qualsInfo.setRules(competitionRulesEditor->getCompetitionRulesFromWidgetInputs());
         qualsInfo.setSerieType(CompetitionInfo::Qualifications);
         qualsInfo.setExceptionalRoundsCount(1);
@@ -899,13 +901,16 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
         else if(type == CompetitionRules::Team)
             competitionManager = new TeamCompetitionManager();
 
+        const std::unique_ptr<AbstractCompetitionManager> competitionManagerOwner(competitionManager);
         AbstractCompetitionManager * qualificationsManager = nullptr;
+        std::unique_ptr<AbstractCompetitionManager> qualificationsManagerOwner;
         if(checkBox_singleCompetitionQualifications->isChecked() == true){
             if(type == CompetitionRules::Individual)
                 qualificationsManager = new IndividualCompetitionManager();
             else if(type == CompetitionRules::Team)
                 qualificationsManager = new TeamCompetitionManager();
 
+            qualificationsManagerOwner.reset(qualificationsManager);
             qualificationsManager->getRoundsStartingGatesReference().push_back(ui->spinBox_startGate->value());
 
             if(type == CompetitionRules::Individual){
@@ -948,18 +953,19 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
             qualsRounds.last().setKO(false);
             qualificationsManager->getCompetitionRules()->setRounds(qualsRounds);
 
-            CompetitionManagerWindow * qualsWindow = new CompetitionManagerWindow(qualificationsManager, this, true);
-            qualsWindow->setInrunSnowGenerator(InrunSnowGenerator(inrunSnowGeneratorSettingsEditor->getBase(), inrunSnowGeneratorSettingsEditor->getDeviation()));
-            connect(qualsWindow->getManager(), &AbstractCompetitionManager::competitionEnd, qualsWindow, [qualsWindow](){
-                qualsWindow->showMessageBoxForQualificationsEnd();
+            CompetitionManagerWindow qualsWindow(qualificationsManager, this, true);
+            qualsWindow.setInrunSnowGenerator(InrunSnowGenerator(inrunSnowGeneratorSettingsEditor->getBase(), inrunSnowGeneratorSettingsEditor->getDeviation()));
+            connect(qualsWindow.getManager(), &AbstractCompetitionManager::competitionEnd, &qualsWindow, [&qualsWindow](){
+                qualsWindow.showMessageBoxForQualificationsEnd();
             });
-            if(qualsWindow->exec() == QDialog::Accepted)
+            if(qualsWindow.exec() == QDialog::Accepted)
             {
             }
         }
 
         CompetitionInfo info;
-        info.setHill(new Hill(hillEditor->getHillFromWidgetInput()));
+        Hill competitionHill = hillEditor->getHillFromWidgetInput();
+        info.setHill(&competitionHill);
         info.setRules(competitionRulesEditor->getCompetitionRulesFromWidgetInputs());
         info.setSerieType(CompetitionInfo::Competition);
         info.setJumpsImportance(ui->doubleSpinBox_jumpsImportance->value());
@@ -1049,11 +1055,11 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
         competitionManager->setActualStartListIndex(0);
         competitionManager->getRoundsStartingGatesReference().push_back(competitionManager->getActualGate());
 
-        CompetitionManagerWindow * window = new CompetitionManagerWindow(competitionManager, this, true);
-        window->setInrunSnowGenerator(InrunSnowGenerator(inrunSnowGeneratorSettingsEditor->getBase(), inrunSnowGeneratorSettingsEditor->getDeviation()));
-        if(window->exec() == QDialog::Accepted)
         {
-            this->setModal(true);
+            CompetitionManagerWindow window(competitionManager, this, true);
+            window.setInrunSnowGenerator(InrunSnowGenerator(inrunSnowGeneratorSettingsEditor->getBase(), inrunSnowGeneratorSettingsEditor->getDeviation()));
+            if(window.exec() == QDialog::Accepted)
+                this->setModal(true);
         }
         competitionTeams = Team::constructTeamsVectorByJumpersList(competitionJumpers, competitionRulesEditor->getJumpersCountInTeam());
 
@@ -1079,15 +1085,11 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
             for(auto & jumper : competitionJumpers)
             {
                 Jumper * globalJumper = MyFunctions::getVectorItemByID(GlobalDatabase::get()->getEditableGlobalJumpers(), jumper->getID());
-                if(jumper->getPersonalBest() > globalJumper->getPersonalBest())
+                if(globalJumper && jumper->getPersonalBest() > globalJumper->getPersonalBest())
                     globalJumper->setPersonalBest(jumper->getPersonalBest());
             }
         }
 
-        delete info.getHill();
-        delete competitionManager;
-        if(qualificationsManager != nullptr)
-            delete qualificationsManager;
     }
         break;
     }

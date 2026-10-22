@@ -224,6 +224,7 @@ static void runCompetition(MainWindow &main,int scenario) {
     if(scenario==1)config.setCompetitionGroups(KOGroup::constructKOGroups(&rules.getRoundsReference()[0],&jumpers,KOGroup::Classic,nullptr));
     config.show();QTest::qWait(150);
     bool ran=false;
+    QPointer<CompetitionManagerWindow> presented;
     QTimer messages;
     QObject::connect(&messages,&QTimer::timeout,[&] {
         for(auto *widget:QApplication::allWidgets()) if(auto *box=qobject_cast<QMessageBox *>(widget);box && box->isVisible()) {
@@ -235,7 +236,7 @@ static void runCompetition(MainWindow &main,int scenario) {
     QTimer runner;
     QObject::connect(&runner,&QTimer::timeout,[&] {
         for(auto *widget:QApplication::allWidgets()) if(auto *window=qobject_cast<CompetitionManagerWindow *>(widget);window && window->isVisible()) {
-            runner.stop();ran=true;
+            runner.stop();ran=true;presented=window;
             auto *bridge=window->findChild<QuickBridge *>();check(bridge!=nullptr,"fresh competition adapter");
             check(window->getManager()->getToBeatLineDistance()<0 && window->findChild<QLabel *>("label_toBeatDistance")->text()==QString::fromUtf8("—"),"the first athlete has no fictitious zero-metre leader target");
             if(scenario==3) {
@@ -350,11 +351,14 @@ static void runCompetition(MainWindow &main,int scenario) {
                     for(auto &jump:result.getJumpsReference()) { jump.setCompetition(finishedCompetition.get());jump.setSingleResult(&result);jump.setHill(finishedCompetition->getHill());jump.setSimulator(nullptr); }
                 }
             }
-            window->accept();
+            QTest::qWait(180);
+            clickControl(scene(window),"action-pushButton_goToNext");
         }
     });runner.start(25);
     auto *bridge=config.findChild<QuickBridge *>();bridge->activate(id(bridge,"pushButton_submit"));
-    QTest::qWait(300);runner.stop();messages.stop();check(ran,"real competition started");config.hide();
+    QTest::qWait(300);runner.stop();messages.stop();check(ran,"real competition started");
+    check(presented.isNull(),"finished competition window and its pending UI updates are destroyed before simulation data");
+    config.hide();
 }
 static void seasonToolRegressions(SimulationSaveManagerWindow &manager);
 static void seasons() {
