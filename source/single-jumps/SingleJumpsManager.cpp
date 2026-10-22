@@ -11,6 +11,7 @@
 #include <QMessageBox>
 #include <QProgressDialog>
 #include <QCoreApplication>
+#include <QElapsedTimer>
 #include <QObject>
 #include <QDir>
 
@@ -59,8 +60,20 @@ void SingleJumpsManager::simulate()
     dialog.setWindowModality(Qt::WindowModal);
     dialog.show();
 
+    const int initialCount = jumps.size();
+    const auto updateProgress = [&](int count) {
+        dialog.setLabelText(QString(QObject::tr("Przesymulowano %1 z %2 skoków")).arg(count).arg(jumpsCount));
+        dialog.setValue(count);
+    };
+    updateProgress(0);
+    QCoreApplication::processEvents();
+    QElapsedTimer progressPulse;
+    progressPulse.start();
     for(int i=0; i<jumpsCount; i++){
-        QCoreApplication::processEvents();
+        if((i % 32)==0 && progressPulse.elapsed()>=33) {
+            updateProgress(i);
+            progressPulse.restart();
+        }
         if(dialog.wasCanceled())
             break;
 
@@ -75,9 +88,8 @@ void SingleJumpsManager::simulate()
         jumps.push_back(jumpSimulator.getJumpData());
         jumps.last().setInSingleJumps(true);
 
-        dialog.setValue(i+1);
-        dialog.setLabelText(QString(QObject::tr("Przesymulowano %1 z %2 skoków")).arg(QString::number(dialog.value()), QString::number(dialog.maximum())));
     }
+    if(!dialog.wasCanceled())updateProgress(jumps.size()-initialCount);
 
     jumpsCount = jumps.count();
     delete jumpSimulator.getManipulator();
