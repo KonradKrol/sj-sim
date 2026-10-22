@@ -41,14 +41,8 @@ void ClassWithCharacteristics::removeCharacteristic(const QString &type)
     characteristics.remove(Characteristic(0, type));
 }
 
-double ClassWithCharacteristics::getLevelOfCharacteristic(const QString &characteristicType)
+double ClassWithCharacteristics::getLevelOfCharacteristic(const QString &characteristicType) const
 {
-    QSet<Characteristic> cs = getCharacteristics();
-    cs.detach();
-    for(QSet<Characteristic>::iterator it = cs.begin(); it != cs.end(); ++it)
-    {
-        if(it->getType() == characteristicType)
-            return it->getLevel();
-    }
-    return 0;
+    const auto found = characteristics.constFind(Characteristic(characteristicType));
+    return found == characteristics.cend() ? 0 : found->getLevel();
 }

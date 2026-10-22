@@ -37,17 +37,14 @@ public:
     static int getAdditionToCharacteristicComboBoxIndexToGetCharacteristic(short parentType);
 };
 
-inline bool operator==(const Characteristic & char1, const Characteristic char2)
+inline bool operator==(const Characteristic & char1, const Characteristic &char2)
 {
     return char1.getType() == char2.getType();
 }
 
-inline size_t qHash(const Characteristic & k, size_t seed) noexcept
+inline uint qHash(const Characteristic &characteristic, uint seed = 0) noexcept
 {
-    return(k.getType(), seed);
-    /*QtPrivate::QHashCombine hash;
-    seed = hash(seed, k.getType());
-    return seed;*/
+    return ::qHash(characteristic.getType(), seed);
 }
 
 #endif // CHARACTERISTIC_H

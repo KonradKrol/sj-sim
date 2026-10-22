@@ -1207,7 +1207,19 @@ static void simulationBenchmark() {
     qInfo()<<"BENCH engine 10000 jumps ms"<<elapsed.elapsed()<<"checksum"<<total;check(std::isfinite(total),"engine benchmark has finite scores");
 }
 
+static void characteristicLookupRegression() {
+    JumperSkills skills;skills.setCharacteristics({Characteristic(2.5,"flight-height"),Characteristic(-3,"takeoff-power"),Characteristic(0,"landing-skill")});
+    const auto copy=skills;
+    check(copy.getLevelOfCharacteristic("flight-height")==2.5 && copy.getLevelOfCharacteristic("takeoff-power")==-3 && copy.getLevelOfCharacteristic("landing-skill")==0 && copy.getLevelOfCharacteristic("missing")==0,"constant characteristic lookups preserve positive, negative, zero and absent values");
+    skills.removeCharacteristic("flight-height");skills.insertCharacteristic("flight-height",7.5);
+    check(skills.getLevelOfCharacteristic("flight-height")==7.5 && copy.getLevelOfCharacteristic("flight-height")==2.5,"lookup sees current edits while copied athlete skills remain independent");
+    QSet<Characteristic> shared=skills.getCharacteristics();skills.setCharacteristics({Characteristic(1,"replacement")});
+    check(skills.getLevelOfCharacteristic("flight-height")==0 && shared.contains(Characteristic("flight-height")),"replacing characteristics does not retain stale values or alter shared snapshots");
+    qInfo()<<"PASS: characteristic lookups preserve current values and shared-copy isolation";
+}
+
 static void backendRegressions() {
+    characteristicLookupRegression();
     previousStandingRegression();
     historicalTeamPointsRegression();
     nextCompetitionReloadRegression();

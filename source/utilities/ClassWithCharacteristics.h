@@ -19,7 +19,7 @@ public:
     void removeCharacteristic(const Characteristic & characteristic);
     void removeCharacteristic(const QString & type);
     bool characteristicsContains(const QString & type);
-    double getLevelOfCharacteristic(const QString & characteristicType);
+    double getLevelOfCharacteristic(const QString & characteristicType) const;
     QSet<Characteristic> getCharacteristics() const;
     void setCharacteristics(const QSet<Characteristic> &newCharacteristics);
 };
