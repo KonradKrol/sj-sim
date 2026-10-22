@@ -7640,6 +7640,14 @@ in team</translation>
         <source>Ilość skoków musi być większa niż 0</source>
         <translation>Jumps count must be higher than 0</translation>
     </message>
+    <message>
+        <source>Dobierz belkę</source>
+        <translation>Calculate gate</translation>
+    </message>
+    <message>
+        <source>Oblicz belkę dla zawodnika, skoczni i ustawionego wiatru</source>
+        <translation>Calculate the gate for the athlete, hill and configured wind</translation>
+    </message>
 </context>
 <context>
     <name>SingleJumpsResultsTableModel</name>
@@ -8272,6 +8280,18 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <location filename="../source/UI/Quick/AppearanceMenu.qml" line="20" />
         <source>Gotowe</source>
         <translation>Done</translation>
+    </message>
+    <message>
+        <source>Kompaktowy interfejs</source>
+        <translation>Compact interface</translation>
+    </message>
+    <message>
+        <source>Bardzo mały · 75%</source>
+        <translation>Very small · 75%</translation>
+    </message>
+    <message>
+        <source>Mniejszy · 85%</source>
+        <translation>Smaller · 85%</translation>
     </message>
 </context>
 
@@ -11333,6 +11353,56 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <source>Podziękowania</source>
         <translation>Acknowledgements</translation>
+    </message>
+</context>
+<context>
+    <name>SingleJumpsResultsScreen</name>
+    <message>
+        <source>Wyniki</source>
+        <translation>Results</translation>
+    </message>
+    <message>
+        <source>Szczegóły i statystyki</source>
+        <translation>Details and statistics</translation>
+    </message>
+</context>
+<context>
+    <name>RaceSimulation</name>
+    <message>
+        <source>Symulacja</source>
+        <translation>Simulation</translation>
+    </message>
+    <message>
+        <source>N skoków</source>
+        <translation>N jumps</translation>
+    </message>
+    <message>
+        <source>Seria</source>
+        <translation>Round</translation>
+    </message>
+    <message>
+        <source>Konkurs</source>
+        <translation>Competition</translation>
+    </message>
+    <message>
+        <source>Wybierz liczbę kolejnych skoków</source>
+        <translation>Choose the number of consecutive jumps</translation>
+    </message>
+    <message>
+        <source>Pozostałe skoki aktualnej serii</source>
+        <translation>Remaining jumps in the current round</translation>
+    </message>
+    <message>
+        <source>Cały pozostały konkurs</source>
+        <translation>All remaining competition jumps</translation>
+    </message>
+    <message>
+        <source>Grupa</source>
+        <translation>Group</translation>
+    </message>
+    <message>
+        <source>Pozostałe skoki aktualnej grupy</source>
+        <translation>Remaining jumps in the current group</translation>
     </message>
 </context>
 </TS>
