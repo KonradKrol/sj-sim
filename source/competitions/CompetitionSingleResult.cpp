@@ -156,29 +156,31 @@ QVector<CompetitionSingleResult *> CompetitionSingleResult::getFilteredSingleRes
 
 QString CompetitionSingleResult::getCsvResultsObject()
 {
-    QString s;
-    s += QString::number(position)+";";
-    if(jumper != nullptr){
-    s += jumper->getNameAndSurname()+";";
-    s += jumper->getCountryCode()+";";
+    const auto textField = [](QString value) {
+        if(value.contains(';') || value.contains('"') || value.contains('\n') || value.contains('\r')) {
+            value.replace("\"", "\"\"");
+            return "\"" + value + "\"";
+        }
+        return value;
+    };
+    const auto numberField = [](double value) { return QString::number(value).replace('.', ','); };
+    QStringList fields{QString::number(position)};
+    if(jumper != nullptr) {
+        fields << textField(jumper->getNameAndSurname()) << textField(jumper->getCountryCode());
+    } else if(team != nullptr) {
+        QString name = team->getCountryCode();
+        for(const auto &country : GlobalDatabase::get()->getCountries())
+            if(country.getAlpha3() == team->getCountryCode() && !country.getName().isEmpty()) { name = country.getName(); break; }
+        fields << textField(name) << textField(team->getCountryCode());
+    } else {
+        fields << QString() << QString();
     }
-    else
-    {
-    s += GlobalDatabase::get()->getCountryByAlpha3(team->getCountryCode())->getName()+";";
-    s += team->getCountryCode()+";";
-    }
-    s += QString::number(pointsSum)+";";
-    for(auto & jump : jumps)
-    {
-        s += QString::number(jump.getDistance())+";";
-        s += QString::number(jump.getGate())+";";
-        s += QString::number(jump.getAveragedWind())+";";
-        s += QString::number(jump.getTotalCompensation())+";";
-        s += QString::number(jump.getJudgesPoints())+";";
-        s += QString::number(jump.getPoints())+";";
-        s.replace(".", ",");
-    }
-    return s;
+    fields << numberField(pointsSum);
+    for(const auto &jump : jumps)
+        fields << numberField(jump.getDistance()) << QString::number(jump.getGate())
+               << numberField(jump.getAveragedWind()) << numberField(jump.getTotalCompensation())
+               << numberField(jump.getJudgesPoints()) << numberField(jump.getPoints());
+    return fields.join(';') + ';';
 }
 
 QString CompetitionSingleResult::getIndividualJumpsSummaryText()

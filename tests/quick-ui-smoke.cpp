@@ -1078,8 +1078,20 @@ static void fractionalPointsPresetRegression() {
     qInfo()<<"PASS: fractional points presets survive single and collection reloads";
 }
 
+static void csvFieldsRegression() {
+    Jumper jumper("A.","B; \"C\"\nD","POL");CompetitionInfo competition;
+    CompetitionSingleResult result(&competition,&jumper);result.setPosition(1);result.setPointsSum(123.5);
+    JumpData jump; jump.setPoints(123.5);jump.setDistance(101.5);jump.setAveragedWind(-.25);result.setJumps({jump});
+    const QString csv=result.getCsvResultsObject();
+    check(csv.startsWith("1;\"A. B; \"\"C\"\"\nD\";POL;123,5;101,5;"),"CSV quotes name separators and preserves name punctuation while formatting numeric decimals");
+    Team unknown("XXX");CompetitionSingleResult teamResult(&competition,&unknown);teamResult.setPosition(2);teamResult.setPointsSum(88.25);
+    check(teamResult.getCsvResultsObject().startsWith("2;XXX;XXX;88,25;"),"CSV exports unknown team country safely using its code");
+    qInfo()<<"PASS: CSV names, separators, quotes, line breaks, decimal points and unknown countries";
+}
+
 static void backendRegressions() {
     fractionalPointsPresetRegression();
+    csvFieldsRegression();
     randomBoundsRegression();
     csvCollisionRegression();
     presetSerializationRegression();
