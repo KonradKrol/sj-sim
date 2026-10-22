@@ -543,11 +543,34 @@ static void seasonToolRegressions(SimulationSaveManagerWindow &manager) {
     }
     qInfo()<<"PASS: all four season tools open through pointer-driven menus";
 }
+static void hillSearchRegression(QQuickWidget *view,const QString &name,const QStringList &labels) {
+    auto *control=item(view->rootObject(),name);check(control && control->property("searchable").toBool(),"hill search is enabled at the intended selector");
+    const int previous=control->property("currentIndex").toInt();int target=2;
+    while(target<labels.size() && labels.count(labels[target])!=1)++target;
+    check(target<labels.size(),"hill search fixture has a unique name");
+    clickControl(view,name);auto *popup=control->property("popup").value<QObject *>();
+    auto *search=popup->findChild<QQuickItem *>("hillChoiceSearch");auto *choices=popup->findChild<QQuickItem *>("choiceResults");
+    check(search && search->isVisible() && search->hasActiveFocus() && choices,"opening a searchable hill selector focuses its discreet search field");
+    search->setProperty("text","no-such-hill-xyz");QTest::qWait(60);
+    check(choices->property("count").toInt()==0,"unknown hill search has no results");
+    QTest::keyClick(view,Qt::Key_Return);QTest::qWait(30);check(control->property("currentIndex").toInt()==previous,"empty search does not change the selected hill");
+    QTest::keyClick(view,Qt::Key_Escape);QTest::qWait(80);check(!popup->property("visible").toBool() && control->property("currentIndex").toInt()==previous,"cancelling hill search keeps the original selection");
+    clickControl(view,name);search->setProperty("text",labels[target].toUpper());QTest::qWait(60);
+    check(choices->property("count").toInt()==1,"hill search is case insensitive and filters the actual options");
+    QTest::keyClick(view,Qt::Key_Down);QTest::keyClick(view,Qt::Key_Up);QTest::keyClick(view,Qt::Key_Return);QTest::qWait(100);
+    check(!popup->property("visible").toBool() && control->property("currentIndex").toInt()==target,"filtered hill selection maps back to the original source index");
+    clickControl(view,name);check(search->property("text").toString().isEmpty() && choices->property("count").toInt()==labels.size(),"reopening hill search restores the full list");QTest::keyClick(view,Qt::Key_Escape);QTest::qWait(60);
+}
 static void seasonWorkflowRegressions(MainWindow &main) {
     main.show();main.resize(1200,800);
     {
         CompetitionConfigWindow preparation(CompetitionConfigWindow::SingleCompetition);
         auto *hill=preparation.findChild<QComboBox *>("comboBox_existingHill");
+        preparation.show();QTest::qWait(150);
+        auto *preparationBridge=preparation.findChild<QuickBridge *>();
+        auto *hillNode=qobject_cast<QuickNode *>(preparationBridge->find("comboBox_existingHill"));
+        hillSearchRegression(scene(&preparation),"choice-comboBox_existingHill",hillNode->values().value("options").toStringList());
+        check(hill->currentIndex()==item(scene(&preparation)->rootObject(),"choice-comboBox_existingHill")->property("currentIndex").toInt(),"searched hill updates the real competition configuration");
         hill->setCurrentIndex(1);
         auto *gate=preparation.findChild<QSpinBox *>("spinBox_startGate");
         check(preparation.suggestedGate()>=0 && gate->value()==preparation.suggestedGate() && gate->specialValueText().isEmpty(),"choosing a hill calculates a numeric gate for a single competition");
@@ -623,10 +646,13 @@ static void seasonWorkflowRegressions(MainWindow &main) {
     auto *editor=manager.findChild<CalendarEditorWidget *>();auto *backend=bridge->findChild<QuickCalendar *>();
     check(editor && backend,"direct calendar workspace backend exists");
     check(backend->events().size()==3,"calendar lists main competitions");
-    main.resize(1440,1000);QTest::qWait(100);clickControl(view,"calendar-field-rules");QTest::keyClick(view,Qt::Key_Home);QTest::keyClick(view,Qt::Key_Return);QTest::qWait(150);
+    main.resize(1440,1000);QTest::qWait(100);
+    clickControl(view,"calendar-field-rules");QTest::keyClick(view,Qt::Key_Home);QTest::keyClick(view,Qt::Key_Return);QTest::qWait(150);
     auto *inspector=item(view->rootObject(),"calendarInspector");check(inspector && inspector->property("section").toInt()==1,"choosing custom rules opens their editor directly");
     render(&manager,"calendar-custom-rules",true);inspector->setProperty("section",2);render(&manager,"calendar-links");inspector->setProperty("section",0);main.resize(1200,800);QTest::qWait(100);
 
+    const int oldHill=backend->selection().value("hill").toInt();hillSearchRegression(view,"calendar-field-hill",backend->hills());backend->undo();check(backend->selection().value("hill").toInt()==oldHill,"calendar hill search participates in undo");
+    check(!item(view->rootObject(),"calendar-field-rules")->property("searchable").toBool(),"other calendar selectors do not gain hill search");
     backend->select(first->getIDStr());backend->update({{"trainings",2},{"trial",true},{"hill",1}});
     check(first->getTrainings().size()==2 && first->getTrialRound() && first->getHill()==save.getHillsReference()[1],"calendar edits create complete competition block directly");
     check(calendar->getCompetitionsReference().size()==6 && calendar->getCompetitionsReference()[1]==first->getTrainings().first(),"calendar keeps training and trial events before their competition");

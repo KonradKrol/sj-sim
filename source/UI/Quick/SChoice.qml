@@ -70,7 +70,7 @@ ComboBox {
         objectName: "choicePopup"
         readonly property real above: Math.max(0,control.mapToItem(Overlay.overlay,0,0).y-8)
         readonly property real below: Math.max(0,(control.Window.window ? control.Window.window.height : 600)-control.mapToItem(Overlay.overlay,0,control.height).y-8)
-        readonly property real desired: Math.min(320,choices.contentHeight+(control.searchable ? search.implicitHeight+4 : 0)+8)
+        readonly property real desired: Math.min(320,choices.contentHeight+(control.searchable ? search.implicitHeight+4+(control.matches.length ? 0 : emptyResult.implicitHeight+4) : 0)+8)
         y: below >= desired || below >= above ? control.height+4 : -height-4
         margins: 8
         width: control.width
@@ -111,6 +111,7 @@ ComboBox {
                 ScrollBar.vertical: ScrollBar {}
             }
             Label {
+                id: emptyResult
                 visible: control.searchable && control.matches.length === 0
                 Layout.fillWidth: true
                 text: qsTr("Brak skoczni")
