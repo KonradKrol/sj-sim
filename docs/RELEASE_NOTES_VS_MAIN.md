@@ -22,6 +22,8 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 - Czytelniejszy generator formy z jawnym zastosowaniem parametrów do wszystkich lub zaznaczonych zawodników.
 - Poprawione linie prowadzenia i awansu, obsługa wiatru i punktacji, aktualizacja listy startowej oraz prezentacja na żywo.
 - Poprawki awarii, statystyk, eksportu wyników, presetów, kopiowania wydarzeń i losowania.
+- Mniejszy interfejs na życzenie, przebudowane wyniki pojedynczych skoków i nowa strona „O autorze”.
+- Przyspieszona automatyczna symulacja konkursów i pojedynczych skoków, z zachowanym anulowaniem.
 - Zachowany alternatywny interfejs Qt Widgets.
 
 To skrót do redakcji, nie deklaracja usunięcia wszystkich istniejących błędów.
@@ -53,7 +55,8 @@ To skrót do redakcji, nie deklaracja usunięcia wszystkich istniejących błęd
 - Bezpośrednio pokazuje trzy tryby: Sezony, Pojedynczy konkurs i Pojedyncze skoki.
 - Układ kart dopasowuje się do szerokości i wysokości; duża oprawa strony znika w niskim oknie, aby zachować miejsce na działania.
 - Dodano skróty Ctrl+1, Ctrl+2, Ctrl+3 do uruchamiania trybów.
-- Baza, ustawienia, pomoc, autorzy i zgłaszanie problemu pozostają dostępne ze strony startowej.
+- Baza, ustawienia, pomoc, „O autorze” i zgłaszanie problemu pozostają dostępne ze strony startowej.
+- Usunięto niejasne oznaczenie „01 — 03”. Nowa strona autora zawiera portret, biografię, wyróżnione Predazzo Edition, Ski Jump Draft, GitHub/LinkedIn z ikonami oraz podziękowania w osobnym dialogu. Na małym ekranie cały pomniejszony portret jest obok powitania, a treść poniżej korzysta z pełnej szerokości.
 - Wygląd jest ustawieniem całej aplikacji, a nie osobnym panelem powielanym w kolejnych oknach.
 - Jedna wspólna stopka zawiera oznaczenie wersji i beta. Ekrany zadań oraz krótkie dialogi nie powielają własnych pasków wyglądu i wersji.
 - Wersja pochodzi ze wspólnej stałej C++, używanej również przez dotychczasowy interfejs i udostępnianie wyników.
@@ -77,6 +80,8 @@ To skrót do redakcji, nie deklaracja usunięcia wszystkich istniejących błęd
 - Najważniejsze dane konkursu są dostępne razem; nie przeniesiono wyników, listy startowej ani karty skoku do konkurujących zakładek.
 - Drugorzędne nagłówki, akcje i odstępy są bardziej zwarte w niskich oknach.
 - Istotne listy wykorzystują pozostałą wysokość, zamiast kończyć się w połowie dostępnego obszaru.
+- Wyniki pojedynczych skoków mają dedykowany układ bez ogólnego limitu wysokości tabeli. Statystyki są obok na desktopie i w osobnej sekcji w wąskim oknie.
+- Opcjonalny „Kompaktowy interfejs” zmniejsza kontrolki i odstępy niezależnie od tekstu. Skala tekstu oferuje 75/85/100/115/130%; ustawienia są zapisywane, a panel dostępności mieści się w małym oknie.
 - Wiersze zakładek obsługują przepełnienie, a pola wyboru otwierają listę w górę, gdy poniżej brakuje miejsca.
 
 ### 2.3. Dialogi i pola liczbowe
@@ -461,7 +466,7 @@ To skrót do redakcji, nie deklaracja usunięcia wszystkich istniejących błęd
 
 | Sprawdzenie po ostatnich poprawkach | Wynik |
 | --- | --- |
-| Pełny scripts/test-quick-ui.sh | Kod 0; **350 responsywnych renderów** i scenariusze integracyjne. |
+| Pełny scripts/test-quick-ui.sh | Kod 0; **367 responsywnych renderów** i scenariusze integracyjne. |
 | Regresje kopiowania/presetów oraz pięciu kolejnych usterek danych | Kod 0; przed poprawkami każda wykazała opisany błąd. |
 | Wyszukiwanie skoczni, poprzednia strata, miejsce skoku i korekta awansu | Zaliczone w pełnym przebiegu, także w małych rozmiarach i Na żywo. |
 | Wszystkie cztery akcje automatycznej symulacji i odczyt cech | Zaliczone w pełnym przebiegu; pomiary w --simulation-benchmark. |
@@ -471,7 +476,7 @@ To skrót do redakcji, nie deklaracja usunięcia wszystkich istniejących błęd
 | FAIL, TypeError, ReferenceError i pętle powiązań w końcowym logu | Nie wystąpiły. |
 | git diff --check | Bez błędów. |
 
-Pełny log tego przebiegu: /tmp/sj-resume-final-full.log; log kompilacji Widgets: /tmp/sj-resume-final-widgets.log. To pliki pomocnicze, które system może usunąć. Wyniki i zakres weryfikacji są dlatego zapisane również tutaj i w commitach.
+Pełny log tego przebiegu: /tmp/sj-author-single-final-full.log; log kompilacji Widgets: /tmp/sj-author-single-final-widgets.log. Po końcowym przestawieniu małego portretu autora ponowiono --author-only, kod 0: /tmp/sj-author-header-final.log. To pliki pomocnicze, które system może usunąć. Wyniki i zakres weryfikacji są dlatego zapisane również tutaj i w commitach.
 
 ### 15.3. Ograniczenia i historia diagnostyki
 
@@ -514,6 +519,11 @@ Pełny log tego przebiegu: /tmp/sj-resume-final-full.log; log kompilacji Widgets
 28. Otwórz wszystkie narzędzia sezonu, archiwa i statystyki, również dla pustych zakresów, małej stawki, remisów i DNS.
 29. Sprawdź długi komunikat rekordu, mały dialog presetu i widoczność jego przycisków.
 30. Wykonaj dłuższą rozgrywkę z ponownym uruchamianiem i wczytywaniem rzeczywistych zapisów.
+31. Otwórz „O autorze” w 360×480: portret obok powitania, pełny kadr, projekty i wszystkie linki, osobne podziękowania.
+32. Włącz kompaktowy interfejs i tekst 75/85%, uruchom aplikację ponownie i sprawdź zapamiętanie.
+33. Dodaj serię w zasadach i sprawdź domyślne sortowanie bez zmiany poprzednich serii.
+34. Uruchom i anuluj N skoków / Serię / Konkurs; wróć ze Skoku do Przebiegu/Warunków i sprawdź brak zbędnego przewijania.
+35. W Pojedynczych skokach dobierz belkę dla różnych wiatrów, wykonaj dużą partię i przerwij kolejną, następnie powiększ okno wyników w pionie i sprawdź wszystkie sześć kategorii statystyk.
 
 ## 17. Rozwiązania zastąpione podczas prac
 
@@ -536,6 +546,7 @@ Ta sekcja chroni przed skopiowaniem do release notes nieaktualnego opisu z wcze�
 
 ## 18. Powiązane raporty szczegółowe
 
+- [Autor, dostępność, wyniki i optymalizacja pojedynczych skoków](AUTHOR_AND_SINGLE_JUMPS_2026-10-22.md).
 - [Pięć kolejnych poprawek danych: punkty, CSV, odczyt sezonu, historia drużynowa i następny sezon](FIVE_DATA_FIXES_2026-10-22.md).
 - [Wyszukiwanie skoczni i aktualne informacje konkursu](COMPETITION_AND_HILL_SEARCH_2026-10-22.md).
 - [Optymalizacja masowej symulacji i silnika — pomiary przed/po](SIMULATION_PERFORMANCE_2026-10-22.md).
@@ -587,7 +598,30 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 - Sprawdzić opcje po przejściu z dłuższej do krótszej treści; mieszcząca się zawartość nie powinna się przesuwać.
 - Porównać największy awans z liczbą jeszcze oczekujących skoczków; w drugiej serii sprawdzić poprzednią stratę i miejsce oglądanego skoku w serii, również Na żywo.
 - Sprawdzić pięć scenariuszy danych z raportu oraz automatyczny cały konkurs, serię, kilka skoków i grupę drużynową.
-- Strona „O autorze” pozostaje osobnym przypomnieniem użytkownika; nie jest deklarowana jako nowo zaimplementowana funkcja.
+- Otworzyć „O autorze”, sprawdzić zdjęcie obok powitania na małym ekranie, oba projekty, profile społecznościowe i osobny dialog podziękowań.
+
+### 19.5. Autor i dostępność
+
+- Nowy ekran autora korzysta ze zdjęcia użytkownika oraz własnej typografii i kolorów aplikacji. Predazzo Edition ma pierwszeństwo i wyróżnienie; Draft zawiera opis rywalizacji online, drużyny gracza i testów beta w 2025. Zachowano zaproszenie do płatnej współpracy i usunięto niepotrzebne końcowe wyliczenie projektów.
+- Ikony i dokładne linki GitHub/LinkedIn są pakowane z aplikacją. Podziękowania otwierają osobny, widoczny dialog, zamiast rozsuwać biografię.
+- Końcowy układ małego ekranu to cały portret 84×112 albo 120×160 obok powitania oraz pełna szerokość opisu/projektów poniżej. Wcześniejsze ułożenie zdjęcia nad tekstem zostało zastąpione.
+- Kompaktowy interfejs, mniejsze rozmiary tekstu, zapis ustawień, dostępny w małym oknie panel wyglądu i usunięcie „01 — 03” uzupełniają wcześniejszą responsywność.
+
+### 19.6. Dalsze poprawki obsługi konkursów
+
+- Nieaktywne Loadery opcji nie zachowują wysokości po odejściu ze Skoku. Krótsze zakładki przestają przewijać i wracają do początku.
+- Bezpośrednie N skoków / Seria / Konkurs zastępują nadrzędne menu; w drużynówce jest też Grupa. Panel opcji zamyka się po wyborze, a anulowanie operacji zachowuje stan zawodów.
+- Nowe serie mają domyślnie sortowanie listy startowej. Wcześniejsze serie zachowują własne ustawienia; poprawiono także pomylone przypisania ustawień KO do flagi sortowania.
+
+### 19.7. Pojedyncze skoki: belka, wyniki i wydajność
+
+- Dobór belki działa również poza konkursem i zapisuje konkretną liczbę, na podstawie aktualnego zawodnika, skoczni i bazowego wiatru; ręczna wartość pozostaje do kliknięcia.
+- Dedykowany ekran wyników wykorzystuje pełną pozostałą wysokość. Zrównoważono kolumny, uporządkowano szczegóły, zachowano wybór/sortowanie i wszystkie sześć kategorii szczegółów/wykresów. Wąskie okna mają oddzielną sekcję statystyk, bez odbierania wysokości tabeli.
+- Trzy optymalizacje obejmują grupowanie aktualizacji postępu, ponowne użycie próbek normalnych i odbicie symetrycznego rozkładu połówkowego oraz przygotowanie planu wiatrów/buforów raz na partię. Nie zmieniono współczynników silnika; zmieniła się kolejność zużywania losowych próbek. Zmienny wiatr nadal powstaje dla każdego skoku.
+- Lokalna mediana trzech prób: 1000 skoków ze stałym wiatrem 170 → **36 ms**, ze zmiennym 173 → **38 ms**. Koszt przygotowania i pokazania wyników jest dodatkowy. Największy zmierzony zysk daje grupowanie postępu; nie izolowano osobnego zysku pozostałych dwóch zmian. Nie odtworzono 13 sekund użytkownika; pomiary offscreen nie gwarantują takiego czasu na jego GPU.
+- Postęp pozostaje możliwy do przerwania, częściowe wyniki są zachowane, a historia wiatrów nie zmienia się po kolejnych partiach.
+- Ważność w `SingleJumpsManager` ma zdefiniowane domyślne 5 zamiast niezainicjalizowanej liczby. Ustawienia z konfiguratora pozostają nadrzędne.
+- Szczegółowe scenariusze, commity, czasy wszystkich etapów i testy: [raport autora i pojedynczych skoków](AUTHOR_AND_SINGLE_JUMPS_2026-10-22.md).
 
 ## Załącznik A. Dokładny zakres Git
 

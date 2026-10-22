@@ -47,3 +47,11 @@ Logi pomiarów: `/tmp/sj-simulation-baseline.log`, `/tmp/sj-simulation-batched.l
 - Regresja odczytu cech należy do testów backendu. Zmiana nie zawiera testu z twardym limitem czasu, zależnego od obciążenia komputera.
 
 Test użytkownika: rozegrać automatycznie cały konkurs, następnie na nowych zawodach serię, kilkanaście skoków i grupę drużynową; po każdej części sprawdzić wyniki, listę i zawodnika na belce.
+
+## Dalsza optymalizacja Pojedynczych skoków
+
+Osobny tryb `SingleJumpsManager` otrzymał trzy kolejne optymalizacje: ograniczenie częstotliwości aktualizacji modalnego postępu, wykorzystanie buforowanej drugiej próbki normalnej i odbicia symetrycznej połówki rozkładu oraz przygotowanie planu wiatrów/buforów poza pętlą. Zmienny wiatr nadal jest losowany dla każdego skoku. Anulowanie zachowuje częściowe wyniki.
+
+Lokalna mediana trzech prób dla 1000 skoków: stały wiatr **170 → 36 ms**, zmienny **173 → 38 ms**. Koszt przygotowania i pokazania wyników jest liczony oddzielnie. Nie odtworzono zgłoszonych 13 sekund na komputerze użytkownika; offscreen nie odtwarza kosztów jego GPU/prezentacji okien. Największy zmierzony zysk daje grupowanie postępu; oddzielnego zysku pozostałych dwóch zmian nie izolowano.
+
+Szczegółowy opis, wszystkie czasy etapów, commity i testy: [Autor, dostępność i pojedyncze skoki](AUTHOR_AND_SINGLE_JUMPS_2026-10-22.md). Pomiar można powtórzyć przez `scripts/test-quick-ui.sh --single-jumps-benchmark`.
