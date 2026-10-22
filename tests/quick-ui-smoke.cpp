@@ -1298,8 +1298,25 @@ static void newRoundDefaultsRegression() {
     qInfo()<<"PASS: new rounds default to sorting while existing choices remain unchanged";
 }
 
+static void normalSamplingRegression() {
+    double sum=0,squares=0,halfSum=0;constexpr int count=40000;
+    for(int i=0;i<count;++i) {
+        const double x=MyRandom::normalDistributionRandom(3,2);
+        sum+=x;squares+=(x-3)*(x-3);
+        const double positive=MyRandom::normalDistributionRandomHalf(0,2,MyRandom::Positive);
+        const double negative=MyRandom::normalDistributionRandomHalf(0,2,MyRandom::Negative);
+        check(positive>=0 && negative<=0,"centered half-normal draws preserve the requested sign");halfSum+=positive;
+    }
+    check(std::abs(sum/count-3)<.1 && std::abs(squares/count-4)<.25,"cached standard-normal samples preserve shifted mean and variance");
+    check(std::abs(halfSum/count-2*std::sqrt(2/M_PI))<.1,"reflected centered samples preserve the half-normal mean");
+    check(MyRandom::normalDistributionRandom(7,0)==7,"zero-deviation normal remains constant");
+    for(int i=0;i<100;++i)check(MyRandom::normalDistributionRandomHalf(1,2,MyRandom::Negative)<0 && MyRandom::normalDistributionRandomHalf(-1,2,MyRandom::Positive)>=0,"non-centered half-normal draws still truncate instead of reflecting");
+    qInfo()<<"PASS: cached normal sampling and centered half-normal distributions";
+}
+
 static void backendRegressions() {
     check(SingleJumpsManager().getImportance()==5.,"standalone jumps have a defined default importance");
+    normalSamplingRegression();
     newRoundDefaultsRegression();
     characteristicLookupRegression();
     previousStandingRegression();

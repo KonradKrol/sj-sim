@@ -115,8 +115,9 @@ double MyRandom::reducingChancesRandom(double min, double max, double resultNumb
 
 double MyRandom::normalDistributionRandom(double base, double deviation)
 {
-    std::normal_distribution<double> distribution(base, deviation);
-    return distribution(generator);
+    if(deviation == 0)return base;
+    static thread_local std::normal_distribution<double> standard(0., 1.);
+    return base + deviation * standard(generator);
 }
 
 double MyRandom::lognormalDistributionRandom(double base, double deviation)
@@ -133,6 +134,10 @@ double MyRandom::gammaDistributionRandom(double scale, double shape)
 
 double MyRandom::normalDistributionRandomHalf(double base, double deviation, short half)
 {
+    if(base == 0 && (half == Positive || half == Negative)) {
+        const double sample = std::abs(normalDistributionRandom(0, deviation));
+        return half == Negative ? -sample : sample;
+    }
     while(true)
     {
         double random = normalDistributionRandom(base, deviation);
