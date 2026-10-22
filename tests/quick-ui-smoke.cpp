@@ -1268,7 +1268,22 @@ static void characteristicLookupRegression() {
     qInfo()<<"PASS: characteristic lookups preserve current values and shared-copy isolation";
 }
 
+static void newRoundDefaultsRegression() {
+    for(int type:{int(CompetitionRules::Individual),int(CompetitionRules::Team)}) {
+        CompetitionRules rules;rules.setCompetitionType(type);rules.setJumpersInTeamCount(4);rules.setRounds({RoundInfo(50,false),RoundInfo(30,false)});
+        CompetitionRulesEditorWidget editor;editor.setCompetitionRules(&rules);editor.fillCompetitionRulesInputs();
+        auto *count=editor.findChild<QSpinBox *>("spinBox_roundsCount");count->setValue(4);
+        const auto rounds=editor.getRoundsFromInput();
+        check(rounds.size()==4 && !rounds[0].getSortStartList() && !rounds[1].getSortStartList(),"adding rounds preserves explicitly disabled sorting in existing rounds");
+        check(rounds[2].getSortStartList() && rounds[3].getSortStartList(),"all newly added rounds default to sorted start lists");
+        check(rounds[2].getCount()==30 && !rounds[2].getKO(),"new round retains the previous field size without leaking KO settings into the sorting flag");
+        count->setValue(2);count->setValue(3);check(editor.getRoundsFromInput().last().getSortStartList(),"a removed and re-added round also defaults to sorting");
+    }
+    qInfo()<<"PASS: new rounds default to sorting while existing choices remain unchanged";
+}
+
 static void backendRegressions() {
+    newRoundDefaultsRegression();
     characteristicLookupRegression();
     previousStandingRegression();
     historicalTeamPointsRegression();

@@ -94,38 +94,13 @@ void CompetitionRulesEditorWidget::fillRoundsInputs(bool setup)
         delete ui->toolBox_rounds->widget(ui->toolBox_rounds->count() - 1);
     }
 
-    int i=ui->toolBox_rounds->count() - 1; //toolBox_count: 2, roundsCount: 3
     while(ui->toolBox_rounds->count() < roundsCount)
     {
-        int count = 1;
-        if(i - 1 >= 0) //Czyli jeżeli istnieje poprzednia runda
-            count = dynamic_cast<RoundInfoEditorWidget *>(ui->toolBox_rounds->widget(i))->getCountFromInput();
-
-        short sortGroups = 0;
-        if(i - 1 >= 0) //Czyli jeżeli istnieje poprzednia runda
-            sortGroups = dynamic_cast<RoundInfoEditorWidget *>(ui->toolBox_rounds->widget(i))->getSortAfterGroupsFromInput();
-
-        bool sortStartList = true;
-        if(i - 1 >= 0) //Czyli jeżeli istnieje poprzednia runda
-            sortStartList = dynamic_cast<RoundInfoEditorWidget *>(ui->toolBox_rounds->widget(i))->getSortStartListFromInput();
-
-        bool KO = false;
-        if(i - 1 >= 0) //Czyli jeżeli istnieje poprzednia runda
-            sortStartList = dynamic_cast<RoundInfoEditorWidget *>(ui->toolBox_rounds->widget(i))->getKORoundFromInput();
-
-        int KOGroupCount = 0;
-        if(i - 1 >= 0) //Czyli jeżeli istnieje poprzednia runda
-            sortStartList = dynamic_cast<RoundInfoEditorWidget *>(ui->toolBox_rounds->widget(i))->getKOGroupCountFromInput();
-
-        int KOAdvanceCount = 0;
-        if(i - 1 >= 0) //Czyli jeżeli istnieje poprzednia runda
-            sortStartList = dynamic_cast<RoundInfoEditorWidget *>(ui->toolBox_rounds->widget(i))->getAdvancingFromKOGroup();
-
-        int selection = 0;
-        if(i - 1 >= 0) //Czyli jeżeli istnieje poprzednia runda
-            sortStartList = dynamic_cast<RoundInfoEditorWidget *>(ui->toolBox_rounds->widget(i))->getKOGroupsSelectionTypeFromInputs();
-
-        ui->toolBox_rounds->addItem(new RoundInfoEditorWidget(getCompetitionTypeFromInput() == CompetitionRules::Individual, count, sortStartList, sortGroups, KO, KOGroupCount, KOAdvanceCount, selection, this), "");
+        auto *previous = qobject_cast<RoundInfoEditorWidget *>(ui->toolBox_rounds->widget(ui->toolBox_rounds->count()-1));
+        const int count = previous ? previous->getCountFromInput() : 1;
+        const short sortGroups = previous ? previous->getSortAfterGroupsFromInput() : 0;
+        ui->toolBox_rounds->addItem(new RoundInfoEditorWidget(getCompetitionTypeFromInput() == CompetitionRules::Individual,
+            count, true, sortGroups, false, 0, 0, 0, this), "");
     }
     for(int i=0; i<ui->toolBox_rounds->count(); i++)
     {
