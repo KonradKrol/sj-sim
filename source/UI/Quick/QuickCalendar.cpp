@@ -250,7 +250,24 @@ void QuickCalendar::addMany(int count) {
         m_selected.clear();for(int i=0;i<count;++i){auto *event=new CompetitionInfo(m_editor->getModel()->getHillsList()->first());if(!m_editor->getModel()->getRulesList()->isEmpty())event->setRules(m_editor->getModel()->getRulesList()->first());order.insert(at++,event);m_selected.append(event->getIDStr());}setOrder(order);});
 }
 void QuickCalendar::duplicate() {
-    sync();const auto items=selected();if(items.isEmpty())return;m_message=tr("Skopiowano konkursy");mutate([&]{auto order=mains();int at=locked(items.last())?order.size():order.indexOf(items.last())+1;m_selected.clear();for(auto *event:items){auto *copy=clone(event);order.insert(at++,copy);m_selected.append(copy->getIDStr());}setOrder(order);});
+    sync();const auto items=selected();if(items.isEmpty())return;m_message=tr("Skopiowano konkursy");
+    mutate([&]{
+        auto order=mains();int at=locked(items.last())?order.size():order.indexOf(items.last())+1;
+        QHash<CompetitionInfo *,CompetitionInfo *> copies;m_selected.clear();
+        for(auto *event:items){
+            auto *copy=clone(event);copies.insert(event,copy);
+            const auto trainings=event->getTrainings(),copiedTrainings=copy->getTrainings();
+            for(int i=0;i<trainings.size();++i)copies.insert(trainings[i],copiedTrainings[i]);
+            if(event->getTrialRound())copies.insert(event->getTrialRound(),copy->getTrialRound());
+            order.insert(at++,copy);m_selected.append(copy->getIDStr());
+        }
+        for(auto *copy:copies){
+            auto *source=copy->getAdvancementCompetition();auto *pending=copy->getPendingAdvancementCompetition();
+            if(copies.contains(source))copy->setAdvancementCompetition(copies.value(source));
+            if(copies.contains(pending))copy->setPendingAdvancementCompetition(copies.value(pending));
+        }
+        setOrder(order);
+    });
 }
 void QuickCalendar::remove() {
     sync();if(!editable())return;const auto items=selected();for(auto *event:items)if(referencedByHistory(event)){fail(tr("Konkurs jest powiązany z rozegranymi kwalifikacjami."));return;}

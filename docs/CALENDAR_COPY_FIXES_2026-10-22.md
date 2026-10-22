@@ -17,3 +17,11 @@ Quick kopiował główne zawody z ich ważnością skoków, ale treningi i seri�
 Wspólne kopiowanie ustawień jest teraz stosowane do głównego wydarzenia i jego załączonych wydarzeń. Każde otrzymuje własny obiekt i tożsamość, bez rozegranych wyników, zachowując konfigurację źródła.
 
 Regresja przed poprawką wykazała utratę ważności treningów 3,5 i serii próbnej 4,0. Po poprawce `scripts/test-quick-ui.sh --workflow-only` przechodzi; sprawdza także kompletność bloku, nowe tożsamości, niezależność edycji kopii i cofanie operacji.
+
+## 3. Kopia powiązanych konkursów kwalifikowała z oryginalnego bloku
+
+Duplikowanie wielu zaznaczonych konkursów kopiowało każdy z nich niezależnie. Jeśli A kwalifikował do B, kopia B nadal miała jako źródło oryginalne A. To samo dotyczyło powiązania oczekującego po zmianie kolejności. Powstawał wizualnie kompletny nowy blok, ale jego zależności korzystały z wyników innych zawodów.
+
+Operacja najpierw tworzy mapę wszystkich kopiowanych głównych wydarzeń, treningów i serii próbnych, a następnie przepina wewnętrzne źródła kwalifikacji na odpowiednie kopie. Źródła poza zaznaczonym zestawem są zachowane. Oryginały nie zmieniają swoich zależności. Normalizacja odbudowuje powiązania zwrotne i zachowuje oczekujące źródła w nowym bloku.
+
+Regresja przed poprawką wykazała powiązanie kopii z oryginałem. Po poprawce `scripts/test-quick-ui.sh --workflow-only` przechodzi; sprawdza relacje aktywne i oczekujące, źródła zewnętrzne, powiązania zwrotne, przywrócenie oczekującej kwalifikacji po zmianie kolejności kopii oraz Cofnij.
