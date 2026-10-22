@@ -6,7 +6,7 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
-- Końcowy commit zmian aplikacji opisanych w tym dokumencie: **d157c29**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
+- Stan porównania kodu i dokumentacji: **c6c9782**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
 - Data zestawienia: **22 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **1.3.0 beta-3**. Przygotowanie dokumentu nie zmienia numeru wydania na 2.0.0.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
@@ -176,7 +176,7 @@ To skrót do redakcji, nie deklaracja usunięcia wszystkich istniejących błęd
 - Karty mają wysokość wynikającą z treści i są wyrównane do góry. Krótsza karta nie rozciąga tła do wysokości sąsiedniej.
 - Ograniczono łączną szerokość kart do 1052 px, kartę skoku do 720 px, a zawodnika do 320 px. Tabele wykorzystują pozostałe miejsce szerokiego monitora.
 - W wąskim układzie karty są w jednej kolumnie, z kartą skoku wcześniej.
-- Panel opcji nie przewija ani nie przeciąga pustego obszaru, gdy wszystko się mieści. Przewijanie pozostaje włączone przy rzeczywistym przepełnieniu, z zatrzymaniem na krawędziach.
+- Panel opcji nie przewija ani nie przeciąga pustego obszaru, gdy wszystko się mieści. Po zmianie dłuższej treści na mieszczącą się pozycja wraca do początku. Przewijanie pozostaje włączone przy rzeczywistym przepełnieniu, z zatrzymaniem na krawędziach; sprawdzają to rzeczywiste gesty i kółko myszy.
 
 ### 6.2. Górny pasek
 
@@ -186,7 +186,7 @@ To skrót do redakcji, nie deklaracja usunięcia wszystkich istniejących błęd
 - Pozostają informacje o serii, grupie drużynowej i śniegu.
 - Zamiast powielania lidera dodano największy awans względem końca poprzedniej serii, np. Jan Kowalski ↑12.
 - Statystyka pojawia się od drugiej serii, po rzeczywistym skoku i dodatnim awansie.
-- Poprzednie miejsca są obliczane na całej stawce z poprawną obsługą remisów 1,1,3. Bieżące miejsce odpowiada aktualnej tabeli; do końca serii jest prowizoryczne.
+- Poprzednie miejsca są obliczane na całej stawce z poprawną obsługą remisów 1,1,3. Od różnicy miejsc odejmuje się liczbę zawodników oczekujących na skok w aktywnej serii/grupie; DNS i DSQ nie są oczekującymi. Dzięki temu nie pojawia się pozorny awans wynikający wyłącznie z niepełnej serii.
 - Przy równym awansie wskaźnik wybiera wyżej sklasyfikowanego, następnie nazwę. Dopisek (+N) sygnalizuje pozostałych; podpowiedź pokazuje wszystkich oraz miejsca przed i po.
 - W drużynówce podstawą jest pełna poprzednia seria drużyny. Wskaźnik aktualizuje się także podczas grup.
 - W trybie na żywo nowa wartość czeka na ujawnienie wyniku.
@@ -196,12 +196,12 @@ To skrót do redakcji, nie deklaracja usunięcia wszystkich istniejących błęd
 - Usunięto mały nagłówek Ostatni skok. Karta może pokazywać również wybrany inny skok.
 - Usunięto zmieniające się nagłówki Lot, Odległość, Lądowanie, Noty, Wynik; dane nadal są ujawniane etapami.
 - Bez otwierania opcji widać zawodnika z flagą, wyraźne miejsce, odległość, punkty, pięć not i ich sumę, wiatr, belkę, lądowanie oraz składniki i sumę rekompensat.
-- Są też dostępne miejsca w serii, a dla drużyn w grupie i konkursie, suma punktów, DSQ i informacja 95% HS — gdy istnieją w danych.
+- Pole „W serii” pokazuje miejsce za oglądany skok w jego serii, również jeśli wcześniej wyłączono tę daną w szczegółach Widgets. Dla drużyn dostępne są też miejsca w grupie i konkursie, suma punktów, DSQ i informacja 95% HS — gdy istnieją w danych. Miejsce w serii jest ujawniane dopiero z wynikiem skoku.
 - Opcjonalne informacje silnika wybrane w ustawieniach również trafiają do karty.
 - Pięć not ma oddzielne pola. Dokładnie jedna najniższa i jedna najwyższa są skreślone; jednakowe noty nie powodują odrzucenia większej liczby ocen.
 - Wiatr i suma rekompensat mają niezależne kolory oraz znaki. Uwzględnia to sytuację, w której znak rekompensaty jest przeciwny do znaku wiatru.
 - Strata do lidera jest dyskretna i należy do oglądanego wyniku, a nie do następnego zawodnika.
-- Karta zawodnika na belce pokazuje miejsce po poprzedniej serii.
+- Karta zawodnika na belce pokazuje miejsce i stratę punktową po poprzedniej serii. Wyniki z bieżącej serii nie zmieniają tej różnicy. Strata jest dodatnia, przewaga nad najlepszym rywalem ujemna, remis wynosi zero. W pierwszej serii informacja jest ukryta.
 - Podczas lotu miejsce w karcie skoku pozostaje puste/niewyznaczone, a końcowy wynik nie jest ujawniany przedwcześnie.
 - Miejsce i strata są przekazywane jako bezpieczne podsumowanie wartości, bez przechowywania w adapterze niestabilnego wskaźnika do sortowanego wektora.
 
@@ -455,21 +455,23 @@ To skrót do redakcji, nie deklaracja usunięcia wszystkich istniejących błęd
 - Sprawdzają przełączanie języka polskiego/angielskiego oraz brak brakujących aktywnych tłumaczeń Quick w poprzednich audytach katalogu.
 - Przegląd geometrii obejmuje rozmiary od 360×480 do 2560×1440 w odpowiednich scenariuszach, oba motywy i powiększony tekst.
 - Dodatkowe regresje wykazują utratę skoczni podczas serializacji, nadpisanie CSV, błędne losowanie, błędnego właściciela skopiowanych wyników, utratę ustawień bloku i nieprzepięte kwalifikacje.
-- Dla sześciu ostatnich błędów najpierw wykonano regresję na wadliwym kodzie, a następnie sprawdzono poprawkę.
+- Dla sześciu wcześniejszych błędów kopiowania/eksportu/losowania oraz pięciu kolejnych usterek danych najpierw wykonano regresję na wadliwym kodzie, a następnie sprawdzono poprawkę.
 
 ### 15.2. Końcowy wynik
 
 | Sprawdzenie po ostatnich poprawkach | Wynik |
 | --- | --- |
 | Pełny scripts/test-quick-ui.sh | Kod 0; **350 responsywnych renderów** i scenariusze integracyjne. |
-| Nowe regresje kopiowania/presetów | Kod 0; przed poprawkami każda wykazała opisany błąd. |
+| Regresje kopiowania/presetów oraz pięciu kolejnych usterek danych | Kod 0; przed poprawkami każda wykazała opisany błąd. |
+| Wyszukiwanie skoczni, poprzednia strata, miejsce skoku i korekta awansu | Zaliczone w pełnym przebiegu, także w małych rozmiarach i Na żywo. |
+| Wszystkie cztery akcje automatycznej symulacji i odczyt cech | Zaliczone w pełnym przebiegu; pomiary w --simulation-benchmark. |
 | Historia, aktywne/oczekujące kwalifikacje i import presetu | Zaliczone osobno w --workflow-only i w końcowym pełnym przebiegu. |
 | Konkursy indywidualne, KO i drużynowe, Na żywo i zakończenie | Zaliczone w pełnym przebiegu. |
-| Widgets-only, make -j4 w build-widgets-compat | Kod 0. |
+| Widgets-only, make -j2 w build-widgets-compat | Kod 0. |
 | FAIL, TypeError, ReferenceError i pętle powiązań w końcowym logu | Nie wystąpiły. |
 | git diff --check | Bez błędów. |
 
-Pełny log tego przebiegu: /tmp/sj-release-inventory-full.log; log kompilacji Widgets: /tmp/sj-release-inventory-widgets.log. To pliki pomocnicze, które system może usunąć. Wyniki i zakres weryfikacji są dlatego zapisane również tutaj i w commitach.
+Pełny log tego przebiegu: /tmp/sj-resume-final-full.log; log kompilacji Widgets: /tmp/sj-resume-final-widgets.log. To pliki pomocnicze, które system może usunąć. Wyniki i zakres weryfikacji są dlatego zapisane również tutaj i w commitach.
 
 ### 15.3. Ograniczenia i historia diagnostyki
 
@@ -520,7 +522,7 @@ Ta sekcja chroni przed skopiowaniem do release notes nieaktualnego opisu z wcze�
 | Wcześniejszy etap | Końcowe zachowanie |
 | --- | --- |
 | Auto jako specjalna wartość pola belki | Pole zawiera wyliczony numer; automatyczny dobór jest akcją. |
-| Lider w górnym pasku | Największy awans względem poprzedniej serii. |
+| Lider w górnym pasku | Największy awans względem poprzedniej serii, pomniejszony o liczbę oczekujących. |
 | Nagłówek Ostatni skok i nazwy etapów na żywo | Nagłówek usunięty; ujawnianie danych zachowane. |
 | Poprzednie miejsce w karcie skoku podczas lotu | Miejsce karty skoku niewyznaczone; poprzednie miejsce pozostaje przy zawodniku na belce. |
 | Blokowanie zmiany kolejności psującej źródło kwalifikacji | Zmiana dozwolona, relacja zachowana jako oczekująca, start zależnego wydarzenia zablokowany. |
@@ -533,6 +535,10 @@ Ta sekcja chroni przed skopiowaniem do release notes nieaktualnego opisu z wcze�
 | Przepisanie starego eksperymentu konkursowego | Nowa domyślna warstwa source/UI/Quick; eksperyment pozostaje opcjonalny. |
 
 ## 18. Powiązane raporty szczegółowe
+
+- [Pięć kolejnych poprawek danych: punkty, CSV, odczyt sezonu, historia drużynowa i następny sezon](FIVE_DATA_FIXES_2026-10-22.md).
+- [Wyszukiwanie skoczni i aktualne informacje konkursu](COMPETITION_AND_HILL_SEARCH_2026-10-22.md).
+- [Optymalizacja masowej symulacji i silnika — pomiary przed/po](SIMULATION_PERFORMANCE_2026-10-22.md).
 
 - [Migracja i architektura](../QUICK_UI_MIGRATION.md).
 - [Pierwsze 10 błędów i 3 dodatkowe awarie](BUGFIX_AUDIT_2026-10-21.md).
@@ -549,23 +555,57 @@ Ta sekcja chroni przed skopiowaniem do release notes nieaktualnego opisu z wcze�
 Dalsze załączniki są wygenerowane z Git dla wskazanego commitu. Pozwalają odnaleźć wszystkie zmienione pliki, również narzędzia i wcześniejszy eksperyment, bez opierania się na pamięci z rozmowy.
 
 
+## 19. Uzupełnienia po wznowieniu prac
+
+### 19.1. Wyszukiwanie skoczni
+
+- Pole wyszukiwania znajduje się wewnątrz wyboru skoczni, wyłącznie w edytorze kalendarzy i konfiguracji pojedynczego konkursu.
+- Obsługuje klawiaturę, brak wyników, anulowanie i ponowne otwarcie pełnej listy; wybór używa właściwego indeksu źródłowego.
+- Zmiana skoczni uczestniczy w kalendarzowym Cofnij. Wyszukiwarka mieści się również w konfiguracji przy 360×480.
+
+### 19.2. Pięć kolejnych usterek danych
+
+1. Presety punktów zachowują wartości ułamkowe po odczycie JSON.
+2. CSV zachowuje kropki w nazwiskach, cytuje separatory/cudzysłowy/nowe linie i obsługuje nieznany kod kraju.
+3. Wczytanie sezonu ustala pierwsze nierozgrane wydarzenie według stanu kalendarza zamiast ufać staremu indeksowi.
+4. Zmiana obecnej narodowości zawodnika nie usuwa historycznych punktów z jego skoków drużynowych.
+5. Konfiguracja następnego sezonu używa kopii roboczej. Anulowanie odrzuca zmiany; zatwierdzenie zachowuje edycje, dodanych skoczków/skocznie/zasady oraz tożsamość istniejących obiektów. Edytory wskazują dane sezonu; edytor zasad jest odłączany przed zastąpieniem ich kolekcji.
+
+Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegóły, commity i scenariusze użytkownika zawiera raport pięciu poprawek.
+
+### 19.3. Wydajność
+
+- Automatyczne symulacje grupują aktualizacje prezentacji zawodnika i listy startowej, zachowując obliczenia i kwalifikacje każdego skoku.
+- Odczyt cech korzysta z poprawnego hasha i wyszukiwania bez kopiowania/odłączania całego zbioru.
+- Release wyłącza `qDebug` na etapie kompilacji; ostrzeżenia i błędy nadal są dostępne, a Debug zachowuje logi.
+- Pomiar: około 130 skoków w konkursie indywidualnym — mediana 1538 → 67 ms (około 23×); sam silnik, 10 000 skoków — 254 → 87 ms (około 2,9×). To wyniki lokalnego scenariusza, z naturalną zmiennością losowań, bez gwarancji czasu na każdym komputerze.
+- Powtarzalny tryb pomiarowy: `scripts/test-quick-ui.sh --simulation-benchmark`. Regresje wszystkich czterech akcji automatycznych należą do pełnego smoke testu i trybu `--bulk-only`.
+
+### 19.4. Dodatkowe sprawdzenie wydania
+
+- Wyszukać skocznię w obu miejscach, anulować inny wybór, cofnąć zmianę w kalendarzu.
+- Sprawdzić opcje po przejściu z dłuższej do krótszej treści; mieszcząca się zawartość nie powinna się przesuwać.
+- Porównać największy awans z liczbą jeszcze oczekujących skoczków; w drugiej serii sprawdzić poprzednią stratę i miejsce oglądanego skoku w serii, również Na żywo.
+- Sprawdzić pięć scenariuszy danych z raportu oraz automatyczny cały konkurs, serię, kilka skoków i grupę drużynową.
+- Strona „O autorze” pozostaje osobnym przypomnieniem użytkownika; nie jest deklarowana jako nowo zaimplementowana funkcja.
+
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
-- Końcowy kod: **d157c29d0d5dd9af49c33a21ea958a264b7b3058**.
-- Commitów od bazy: **50**.
-- Plików zmienionych w tym zakresie: **344**.
-- Statystyki obejmują również fonty, instrukcje skills, przykłady i dokumentację; nie są liczbą linii samej logiki gry.
-- Niniejszy dokument jest późniejszym dodatkiem dokumentacyjnym do wskazanego stanu kodu; jego commit nie dodaje osobnej funkcji aplikacji.
+- Snapshot kodu i dokumentacji: **c6c97824e9b6bb0d7f85a6621e746484d04ec345**.
+- Commitów od bazy: **72**.
+- Plików zmienionych w tym zakresie: **358**.
+- Statystyki obejmują także fonty, skills i dokumentację; nie oznaczają rozmiaru samej logiki gry.
+- Dalsza aktualizacja tego zestawienia jest dodatkiem dokumentacyjnym do wskazanego snapshotu.
 
 | Obszar | Plików |
 | --- | ---: |
-| Dokumentacja etapów i migracji | 13 |
+| Dokumentacja etapów i migracji | 18 |
 | Domyślny interfejs Qt Quick i jego zasoby | 80 |
-| Instrukcje i zasoby narzędzi deweloperskich | 168 |
-| Konfiguracja projektu i pozostałe pliki | 2 |
-| Kontrolery, modele i logika C++ | 56 |
-| Skrypty budowania, uruchamiania i testowania | 5 |
+| Instrukcje i zasoby narzędzi deweloperskich | 167 |
+| Konfiguracja projektu i pozostałe pliki | 3 |
+| Kontrolery, modele i logika C++ | 64 |
+| Skrypty budowania, uruchamiania i testowania | 6 |
 | Testy | 2 |
 | Tłumaczenia | 1 |
 | Wcześniejszy opcjonalny eksperyment konkursowy | 17 |
@@ -573,14 +613,16 @@ Dalsze załączniki są wygenerowane z Git dla wskazanego commitu. Pozwalają od
 Porównanie można odtworzyć poleceniami:
 
 ~~~sh
-git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c d157c29d0d5dd9af49c33a21ea958a264b7b3058
-git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c d157c29d0d5dd9af49c33a21ea958a264b7b3058
-git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..d157c29d0d5dd9af49c33a21ea958a264b7b3058
+git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c c6c97824e9b6bb0d7f85a6621e746484d04ec345
+git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c c6c97824e9b6bb0d7f85a6621e746484d04ec345
+git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..c6c97824e9b6bb0d7f85a6621e746484d04ec345
 ~~~
+
+Zestawienie można odświeżyć przez `python3 scripts/update-release-inventory.py --base main --snapshot HEAD`. Opisy zachowania i wyniki testów należy uzupełniać na podstawie faktycznych zmian oraz weryfikacji.
 
 ## Załącznik B. Wszystkie commity
 
-Historyczne opisy poniżej należy interpretować zgodnie z końcowym stanem opisanym wyżej, szczególnie wcześniejsze Auto, lidera, kwalifikacje i liczby renderów.
+Historyczne opisy należy czytać z uwzględnieniem opisanych powyżej rozwiązań zastąpionych podczas prac.
 
 | Commit | Zmiana i zapisane uzasadnienie/weryfikacja |
 | --- | --- |
@@ -634,10 +676,32 @@ Historyczne opisy poniżej należy interpretować zgodnie z końcowym stanem opi
 | `44b984f` | Bind cloned preset result containers to their new calendar events — CompetitionInfo copies retain the raw CompetitionResults::competition pointer. Rebind it when building and importing a preset so new jumps do not belong to the original event or template. Regression fails on the old preset constructor and passes with --workflow-only, including the imported event and newly added result/jump ownership. |
 | `df1a783` | Preserve auxiliary event settings when duplicating calendar blocks — Use the same configuration copy for main events, trainings and trial rounds. Preserve their importance, exceptional rounds, own hill and classification/qualification links while keeping fresh event identities and empty history. The regression fails before the fix on training/trial importance and passes with --workflow-only, including independent edits and undo. |
 | `d157c29` | Keep duplicated qualification links within the copied calendar block — Build an original-to-copy map for selected competitions and their attached events, then remap both active and pending qualification sources. Preserve external sources and original dependencies. The regression fails before the fix and passes with --workflow-only, including reverse links, pending-source restoration, external sources and undo. |
+| `4ddc8c2` | Document the complete release change inventory against main beta-2 — Consolidate the final Qt Quick UI, workflows, season and calendar changes, scoring and live repairs, crashes, persistence, presets and copying fixes. Record superseded designs, compatibility notes, validation limits and a manual release checklist. Include every one of the 50 application-history commits and all 344 changed files through d157c29, with exact baseline/runtime hashes and local links. Final full integration run passes with 350 renders; Widgets-only builds successfully. Main remains 05f2e48. |
+| `ccf8b0d` | fix: preserve fractional points when reloading presets |
+| `a894d4b` | fix: reset competition options scrolling when content fits |
+| `d89b6f4` | wip: save hill search implementation and resume checklist |
+| `54fa3f8` | docs: record prior-round gap and jump round placing requirements |
+| `641c6aa` | docs: add reminder about author page |
+| `da2fcd0` | feat: validate scoped hill search and handle empty matches |
+| `284360f` | fix: preserve names and column boundaries in CSV results |
+| `1171608` | fix: derive next competition from calendar state on load |
+| `5b9f147` | fix: retain historical team points after nationality changes |
+| `84e1729` | fix: stage next-season edits and apply accepted additions atomically |
+| `eef3818` | fix: account for remaining starters in biggest advancement |
+| `f95bcfa` | feat: show previous-round gaps and each jump round placing |
+| `100f09a` | docs: track bulk and engine simulation performance work |
+| `cd3cdba` | fix: clear rules editor before replacing next-season rules |
+| `8090805` | perf: batch athlete and start-list presentation in automatic simulation |
+| `4b8322a` | i18n: translate hill search and updated competition standings |
+| `af8f47c` | perf: read simulation characteristics without copying their set |
+| `380b671` | perf: compile out debug logging in release builds |
+| `8d873ea` | test: cover hill search within a small laptop viewport |
+| `18b681d` | docs: record completed fixes, performance measurements and validation |
+| `c6c9782` | docs: preserve the release inventory generator for future updates |
 
 ## Załącznik C. Pełny manifest zmienionych plików
 
-A oznacza dodany plik, M zmieniony, D usunięty. Kolumny +/− pokazują diff tekstowy; kreska przy foncie oznacza zasób binarny. Ścieżki prowadzą do plików w tej gałęzi.
+A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska oznacza zasób binarny.
 
 ### Dokumentacja etapów i migracji
 
@@ -649,9 +713,14 @@ A oznacza dodany plik, M zmieniony, D usunięty. Kolumny +/− pokazują diff te
 | A | [docs/BUGFIX_AUDIT_2026-10-21.md](../docs/BUGFIX_AUDIT_2026-10-21.md) | 140 | 0 |
 | A | [docs/CALENDAR_COPY_FIXES_2026-10-22.md](../docs/CALENDAR_COPY_FIXES_2026-10-22.md) | 27 | 0 |
 | A | [docs/COMPETITION_ADVANCEMENT_2026-10-22.md](../docs/COMPETITION_ADVANCEMENT_2026-10-22.md) | 30 | 0 |
+| A | [docs/COMPETITION_AND_HILL_SEARCH_2026-10-22.md](../docs/COMPETITION_AND_HILL_SEARCH_2026-10-22.md) | 12 | 0 |
 | A | [docs/COMPETITION_FINISH_CRASH_2026-10-22.md](../docs/COMPETITION_FINISH_CRASH_2026-10-22.md) | 20 | 0 |
 | A | [docs/COMPETITION_REFINEMENTS_2026-10-21.md](../docs/COMPETITION_REFINEMENTS_2026-10-21.md) | 34 | 0 |
+| A | [docs/FIVE_DATA_FIXES_2026-10-22.md](../docs/FIVE_DATA_FIXES_2026-10-22.md) | 57 | 0 |
+| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1033 | 0 |
+| A | [docs/RESUME_2026-10-22.md](../docs/RESUME_2026-10-22.md) | 29 | 0 |
 | A | [docs/SEASON_WORKSPACE_2026-10-22.md](../docs/SEASON_WORKSPACE_2026-10-22.md) | 60 | 0 |
+| A | [docs/SIMULATION_PERFORMANCE_2026-10-22.md](../docs/SIMULATION_PERFORMANCE_2026-10-22.md) | 49 | 0 |
 | A | [docs/SPACE_AND_LAST_JUMP_2026-10-21.md](../docs/SPACE_AND_LAST_JUMP_2026-10-21.md) | 43 | 0 |
 | A | [docs/THREE_SMALL_FIXES_2026-10-22.md](../docs/THREE_SMALL_FIXES_2026-10-22.md) | 37 | 0 |
 | A | [docs/UX_IMPROVEMENTS_2026-10-21.md](../docs/UX_IMPROVEMENTS_2026-10-21.md) | 77 | 0 |
@@ -669,7 +738,7 @@ A oznacza dodany plik, M zmieniony, D usunięty. Kolumny +/− pokazują diff te
 | A | [source/UI/Quick/AppearancePanel.qml](../source/UI/Quick/AppearancePanel.qml) | 12 | 0 |
 | A | [source/UI/Quick/CalendarClassifications.qml](../source/UI/Quick/CalendarClassifications.qml) | 59 | 0 |
 | A | [source/UI/Quick/CalendarEventRow.qml](../source/UI/Quick/CalendarEventRow.qml) | 92 | 0 |
-| A | [source/UI/Quick/CalendarFields.qml](../source/UI/Quick/CalendarFields.qml) | 53 | 0 |
+| A | [source/UI/Quick/CalendarFields.qml](../source/UI/Quick/CalendarFields.qml) | 54 | 0 |
 | A | [source/UI/Quick/CalendarInspector.qml](../source/UI/Quick/CalendarInspector.qml) | 60 | 0 |
 | A | [source/UI/Quick/CalendarWorkspace.qml](../source/UI/Quick/CalendarWorkspace.qml) | 147 | 0 |
 | A | [source/UI/Quick/CatalogWorkspace.qml](../source/UI/Quick/CatalogWorkspace.qml) | 52 | 0 |
@@ -682,17 +751,17 @@ A oznacza dodany plik, M zmieniony, D usunięty. Kolumny +/− pokazują diff te
 | A | [source/UI/Quick/JudgeMarks.qml](../source/UI/Quick/JudgeMarks.qml) | 27 | 0 |
 | A | [source/UI/Quick/JumpMetric.qml](../source/UI/Quick/JumpMetric.qml) | 49 | 0 |
 | A | [source/UI/Quick/ModalScreen.qml](../source/UI/Quick/ModalScreen.qml) | 57 | 0 |
-| A | [source/UI/Quick/Node.qml](../source/UI/Quick/Node.qml) | 208 | 0 |
+| A | [source/UI/Quick/Node.qml](../source/UI/Quick/Node.qml) | 210 | 0 |
 | A | [source/UI/Quick/NodeGroup.qml](../source/UI/Quick/NodeGroup.qml) | 78 | 0 |
 | A | [source/UI/Quick/NumberField.qml](../source/UI/Quick/NumberField.qml) | 45 | 0 |
 | A | [source/UI/Quick/PlotPanel.qml](../source/UI/Quick/PlotPanel.qml) | 35 | 0 |
 | A | [source/UI/Quick/ProjectedControl.qml](../source/UI/Quick/ProjectedControl.qml) | 10 | 0 |
-| A | [source/UI/Quick/QuickBridge.cpp](../source/UI/Quick/QuickBridge.cpp) | 1006 | 0 |
+| A | [source/UI/Quick/QuickBridge.cpp](../source/UI/Quick/QuickBridge.cpp) | 1015 | 0 |
 | A | [source/UI/Quick/QuickCalendar.cpp](../source/UI/Quick/QuickCalendar.cpp) | 419 | 0 |
 | A | [source/UI/Quick/QuickCalendar.h](../source/UI/Quick/QuickCalendar.h) | 136 | 0 |
 | A | [source/UI/Quick/QuickPlot.cpp](../source/UI/Quick/QuickPlot.cpp) | 116 | 0 |
 | A | [source/UI/Quick/QuickPlot.h](../source/UI/Quick/QuickPlot.h) | 38 | 0 |
-| A | [source/UI/Quick/QuickRaceStats.h](../source/UI/Quick/QuickRaceStats.h) | 55 | 0 |
+| A | [source/UI/Quick/QuickRaceStats.h](../source/UI/Quick/QuickRaceStats.h) | 78 | 0 |
 | A | [source/UI/Quick/QuickRoster.cpp](../source/UI/Quick/QuickRoster.cpp) | 118 | 0 |
 | A | [source/UI/Quick/QuickRoster.h](../source/UI/Quick/QuickRoster.h) | 89 | 0 |
 | A | [source/UI/Quick/QuickSurface.cpp](../source/UI/Quick/QuickSurface.cpp) | 17 | 0 |
@@ -700,10 +769,10 @@ A oznacza dodany plik, M zmieniony, D usunięty. Kolumny +/− pokazują diff te
 | A | [source/UI/Quick/QuickTableModel.cpp](../source/UI/Quick/QuickTableModel.cpp) | 237 | 0 |
 | A | [source/UI/Quick/QuickUi.cpp](../source/UI/Quick/QuickUi.cpp) | 250 | 0 |
 | A | [source/UI/Quick/QuickUi.h](../source/UI/Quick/QuickUi.h) | 228 | 0 |
-| A | [source/UI/Quick/RaceAthlete.qml](../source/UI/Quick/RaceAthlete.qml) | 42 | 0 |
+| A | [source/UI/Quick/RaceAthlete.qml](../source/UI/Quick/RaceAthlete.qml) | 50 | 0 |
 | A | [source/UI/Quick/RaceControls.qml](../source/UI/Quick/RaceControls.qml) | 39 | 0 |
 | A | [source/UI/Quick/RaceLastJump.qml](../source/UI/Quick/RaceLastJump.qml) | 89 | 0 |
-| A | [source/UI/Quick/RaceOptions.qml](../source/UI/Quick/RaceOptions.qml) | 58 | 0 |
+| A | [source/UI/Quick/RaceOptions.qml](../source/UI/Quick/RaceOptions.qml) | 59 | 0 |
 | A | [source/UI/Quick/RaceScreen.qml](../source/UI/Quick/RaceScreen.qml) | 103 | 0 |
 | A | [source/UI/Quick/RaceStatus.qml](../source/UI/Quick/RaceStatus.qml) | 41 | 0 |
 | A | [source/UI/Quick/RosterLibrary.qml](../source/UI/Quick/RosterLibrary.qml) | 35 | 0 |
@@ -714,7 +783,7 @@ A oznacza dodany plik, M zmieniony, D usunięty. Kolumny +/− pokazują diff te
 | A | [source/UI/Quick/RosterWorkspace.qml](../source/UI/Quick/RosterWorkspace.qml) | 69 | 0 |
 | A | [source/UI/Quick/SButton.qml](../source/UI/Quick/SButton.qml) | 39 | 0 |
 | A | [source/UI/Quick/SCheck.qml](../source/UI/Quick/SCheck.qml) | 26 | 0 |
-| A | [source/UI/Quick/SChoice.qml](../source/UI/Quick/SChoice.qml) | 57 | 0 |
+| A | [source/UI/Quick/SChoice.qml](../source/UI/Quick/SChoice.qml) | 124 | 0 |
 | A | [source/UI/Quick/SField.qml](../source/UI/Quick/SField.qml) | 21 | 0 |
 | A | [source/UI/Quick/Screen.qml](../source/UI/Quick/Screen.qml) | 12 | 0 |
 | A | [source/UI/Quick/SeasonBar.qml](../source/UI/Quick/SeasonBar.qml) | 32 | 0 |
@@ -913,14 +982,14 @@ A oznacza dodany plik, M zmieniony, D usunięty. Kolumny +/− pokazują diff te
 | A | [.agents/skills/qt-qml/references/qmlpreview.md](../.agents/skills/qt-qml/references/qmlpreview.md) | 159 | 0 |
 | A | [.agents/skills/qt-ui-design/LICENSE.txt](../.agents/skills/qt-ui-design/LICENSE.txt) | 32 | 0 |
 | A | [.agents/skills/qt-ui-design/SKILL.md](../.agents/skills/qt-ui-design/SKILL.md) | 334 | 0 |
-| A | [skills-lock.json](../skills-lock.json) | 83 | 0 |
 
 ### Konfiguracja projektu i pozostałe pliki
 
 | Status | Plik | + | − |
 | --- | --- | ---: | ---: |
 | M | [.gitignore](../.gitignore) | 4 | 0 |
-| M | [sj-sim.pro](../sj-sim.pro) | 43 | 0 |
+| M | [sj-sim.pro](../sj-sim.pro) | 45 | 0 |
+| A | [skills-lock.json](../skills-lock.json) | 83 | 0 |
 
 ### Kontrolery, modele i logika C++
 
@@ -928,8 +997,8 @@ A oznacza dodany plik, M zmieniony, D usunięty. Kolumny +/− pokazują diff te
 | --- | --- | ---: | ---: |
 | M | [source/UI/Competition/CompetitionConfigWindow.cpp](../source/UI/Competition/CompetitionConfigWindow.cpp) | 41 | 88 |
 | M | [source/UI/Competition/CompetitionConfigWindow.h](../source/UI/Competition/CompetitionConfigWindow.h) | 5 | 2 |
-| M | [source/UI/Competition/CompetitionManagerWindow.cpp](../source/UI/Competition/CompetitionManagerWindow.cpp) | 54 | 32 |
-| M | [source/UI/Competition/CompetitionManagerWindow.h](../source/UI/Competition/CompetitionManagerWindow.h) | 4 | 0 |
+| M | [source/UI/Competition/CompetitionManagerWindow.cpp](../source/UI/Competition/CompetitionManagerWindow.cpp) | 68 | 36 |
+| M | [source/UI/Competition/CompetitionManagerWindow.h](../source/UI/Competition/CompetitionManagerWindow.h) | 5 | 0 |
 | M | [source/UI/Competition/JumperCompetitionResultsWidget.cpp](../source/UI/Competition/JumperCompetitionResultsWidget.cpp) | 20 | 0 |
 | M | [source/UI/Competition/Results/TeamResultsTreeModel.cpp](../source/UI/Competition/Results/TeamResultsTreeModel.cpp) | 8 | 5 |
 | M | [source/UI/Competition/StartList/StartListModel.cpp](../source/UI/Competition/StartList/StartListModel.cpp) | 31 | 26 |
@@ -956,7 +1025,8 @@ A oznacza dodany plik, M zmieniony, D usunięty. Kolumny +/− pokazują diff te
 | M | [source/UI/Seasons/CalendarEditor/CalendarEditorTableModel.h](../source/UI/Seasons/CalendarEditor/CalendarEditorTableModel.h) | 2 | 0 |
 | M | [source/UI/Seasons/CalendarEditor/CalendarEditorWidget.cpp](../source/UI/Seasons/CalendarEditor/CalendarEditorWidget.cpp) | 45 | 51 |
 | M | [source/UI/Seasons/Classifications/ClassificationResultsTableModel.cpp](../source/UI/Seasons/Classifications/ClassificationResultsTableModel.cpp) | 1 | 1 |
-| M | [source/UI/Seasons/SimulationSaveManagerWindow.cpp](../source/UI/Seasons/SimulationSaveManagerWindow.cpp) | 98 | 75 |
+| M | [source/UI/Seasons/NewSeasonConfiguratorWindow.cpp](../source/UI/Seasons/NewSeasonConfiguratorWindow.cpp) | 42 | 9 |
+| M | [source/UI/Seasons/SimulationSaveManagerWindow.cpp](../source/UI/Seasons/SimulationSaveManagerWindow.cpp) | 142 | 78 |
 | M | [source/UI/Seasons/SimulationSaveManagerWindow.h](../source/UI/Seasons/SimulationSaveManagerWindow.h) | 7 | 1 |
 | M | [source/UI/Seasons/Stats/FilteringWidgets/ClassificationsCheckBoxesWidget.cpp](../source/UI/Seasons/Stats/FilteringWidgets/ClassificationsCheckBoxesWidget.cpp) | 5 | 8 |
 | M | [source/UI/Seasons/Stats/FilteringWidgets/ClassificationsCheckBoxesWidget.h](../source/UI/Seasons/Stats/FilteringWidgets/ClassificationsCheckBoxesWidget.h) | 1 | 1 |
@@ -971,10 +1041,15 @@ A oznacza dodany plik, M zmieniony, D usunięty. Kolumny +/− pokazują diff te
 | M | [source/competitions/CompetitionInfo.h](../source/competitions/CompetitionInfo.h) | 3 | 0 |
 | M | [source/competitions/CompetitionResults.cpp](../source/competitions/CompetitionResults.cpp) | 12 | 3 |
 | M | [source/competitions/CompetitionResults.h](../source/competitions/CompetitionResults.h) | 1 | 0 |
+| M | [source/competitions/CompetitionSingleResult.cpp](../source/competitions/CompetitionSingleResult.cpp) | 24 | 22 |
 | M | [source/global/MyRandom.cpp](../source/global/MyRandom.cpp) | 16 | 25 |
+| M | [source/global/PointsForPlacesPreset.cpp](../source/global/PointsForPlacesPreset.cpp) | 1 | 1 |
 | M | [source/main.cpp](../source/main.cpp) | 11 | 0 |
+| M | [source/seasons/ClassificationSingleResult.cpp](../source/seasons/ClassificationSingleResult.cpp) | 3 | 7 |
 | M | [source/seasons/SeasonCalendar.cpp](../source/seasons/SeasonCalendar.cpp) | 15 | 19 |
 | M | [source/seasons/SeasonCalendarPreset.cpp](../source/seasons/SeasonCalendarPreset.cpp) | 11 | 3 |
+| M | [source/seasons/SimulationSave.cpp](../source/seasons/SimulationSave.cpp) | 1 | 13 |
+| M | [source/simulator/Characteristic.h](../source/simulator/Characteristic.h) | 3 | 6 |
 | M | [source/simulator/JumpData.cpp](../source/simulator/JumpData.cpp) | 6 | 1 |
 | M | [source/simulator/JumpSimulator.cpp](../source/simulator/JumpSimulator.cpp) | 31 | 47 |
 | M | [source/simulator/JumpSimulator.h](../source/simulator/JumpSimulator.h) | 3 | 1 |
@@ -982,6 +1057,8 @@ A oznacza dodany plik, M zmieniony, D usunięty. Kolumny +/− pokazują diff te
 | M | [source/simulator/WindsCalculator.h](../source/simulator/WindsCalculator.h) | 1 | 0 |
 | M | [source/simulator/wind-generation/WindsGenerator.cpp](../source/simulator/wind-generation/WindsGenerator.cpp) | 6 | 1 |
 | M | [source/simulator/wind-generation/WindsGenerator.h](../source/simulator/wind-generation/WindsGenerator.h) | 1 | 0 |
+| M | [source/utilities/ClassWithCharacteristics.cpp](../source/utilities/ClassWithCharacteristics.cpp) | 4 | 10 |
+| M | [source/utilities/ClassWithCharacteristics.h](../source/utilities/ClassWithCharacteristics.h) | 1 | 1 |
 
 ### Skrypty budowania, uruchamiania i testowania
 
@@ -992,19 +1069,20 @@ A oznacza dodany plik, M zmieniony, D usunięty. Kolumny +/− pokazują diff te
 | A | [scripts/run-qml-preview.sh](../scripts/run-qml-preview.sh) | 21 | 0 |
 | A | [scripts/run-quick-ui.sh](../scripts/run-quick-ui.sh) | 8 | 0 |
 | A | [scripts/test-quick-ui.sh](../scripts/test-quick-ui.sh) | 17 | 0 |
+| A | [scripts/update-release-inventory.py](../scripts/update-release-inventory.py) | 98 | 0 |
 
 ### Testy
 
 | Status | Plik | + | − |
 | --- | --- | ---: | ---: |
 | A | [tests/competition-quick-smoke.cpp](../tests/competition-quick-smoke.cpp) | 397 | 0 |
-| A | [tests/quick-ui-smoke.cpp](../tests/quick-ui-smoke.cpp) | 1303 | 0 |
+| A | [tests/quick-ui-smoke.cpp](../tests/quick-ui-smoke.cpp) | 1511 | 0 |
 
 ### Tłumaczenia
 
 | Status | Plik | + | − |
 | --- | --- | ---: | ---: |
-| M | [translations/translation_en.ts](../translations/translation_en.ts) | 3205 | 106 |
+| M | [translations/translation_en.ts](../translations/translation_en.ts) | 3228 | 106 |
 
 ### Wcześniejszy opcjonalny eksperyment konkursowy
 
@@ -1027,7 +1105,3 @@ A oznacza dodany plik, M zmieniony, D usunięty. Kolumny +/− pokazują diff te
 | A | [source/UI/Competition/Quick/LiveTable.qml](../source/UI/Competition/Quick/LiveTable.qml) | 109 | 0 |
 | A | [source/UI/Competition/Quick/competition-quick.qrc](../source/UI/Competition/Quick/competition-quick.qrc) | 14 | 0 |
 | A | [source/UI/Competition/Quick/fields.json](../source/UI/Competition/Quick/fields.json) | 190 | 0 |
-
-### Dodatek dokumentacyjny tego zestawienia
-
-- A: [docs/RELEASE_NOTES_VS_MAIN.md](RELEASE_NOTES_VS_MAIN.md) — niniejszy zbiorczy wykaz, materiał redakcyjny, uwagi zgodności, plan testów, historia i manifest.
