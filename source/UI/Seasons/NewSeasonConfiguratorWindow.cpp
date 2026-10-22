@@ -40,6 +40,9 @@ NewSeasonConfiguratorWindow::NewSeasonConfiguratorWindow(bool nextSeason, QWidge
     actualHillIndex(0),
     actualRulesIndex(0),
     classificationsListViewActualElement(-1),
+    classificationEditor(nullptr),
+    calendarEditor(nullptr),
+    calendarTableModel(nullptr),
     nextSeason(nextSeason)
 {
     ui->setupUi(this);
@@ -49,8 +52,9 @@ NewSeasonConfiguratorWindow::NewSeasonConfiguratorWindow(bool nextSeason, QWidge
     ui->label_title->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     ui->pushButton_submit->setMinimumHeight(qMax(36, ui->pushButton_submit->fontMetrics().height() + 14));
     ui->toolBox->setCurrentIndex(0);
-    for(auto & globalJumper : GlobalDatabase::get()->getEditableGlobalJumpers())
-        jumpers.push_back(new Jumper(globalJumper));
+    if(!nextSeason)
+        for(auto &globalJumper : GlobalDatabase::get()->getEditableGlobalJumpers())
+            jumpers.push_back(new Jumper(globalJumper));
     jumpersListView = new DatabaseItemsListView(DatabaseItemsListView::SeasonJumpersItems, true, !nextSeason, true, this);
     jumpersListView->setSeasonJumpers(&jumpers);
     jumpersListView->setupListModel();
@@ -73,13 +77,16 @@ NewSeasonConfiguratorWindow::NewSeasonConfiguratorWindow(bool nextSeason, QWidge
     });
     connect(jumperEditor, &JumperEditorWidget::submitted, this, [this](){
         if(actualJumperIndex > (-1) && actualJumperIndex < jumpers.count()){
+            const auto id = jumpers[actualJumperIndex]->getID();
             *jumpers[actualJumperIndex] = jumperEditor->getJumperFromWidgetInput();
+            jumpers[actualJumperIndex]->setID(id);
             emit jumpersListView->getListModel()->dataChanged(jumpersListView->getListModel()->index(actualJumperIndex), jumpersListView->getListModel()->index(actualJumperIndex));
         }
     });
 
-    for(auto & hill : GlobalDatabase::get()->getEditableGlobalHills())
-        hills.push_back(new Hill(hill));
+    if(!nextSeason)
+        for(auto &hill : GlobalDatabase::get()->getEditableGlobalHills())
+            hills.push_back(new Hill(hill));
     hillsListView = new DatabaseItemsListView(DatabaseItemsListView::SeasonHillsItems, true, !nextSeason, true, this);
     hillsListView->setSeasonHills(&hills);
     hillsListView->setupListModel();
@@ -90,7 +97,7 @@ NewSeasonConfiguratorWindow::NewSeasonConfiguratorWindow(bool nextSeason, QWidge
     ui->verticalLayout_hillEditor->addWidget(hillEditor);
     if(!hills.isEmpty())
     {
-        hillEditor->setHill(hills.first());
+        hillEditor->setHill(hills.value(0));
         hillEditor->fillHillInputs();
     }
 
@@ -101,14 +108,16 @@ NewSeasonConfiguratorWindow::NewSeasonConfiguratorWindow(bool nextSeason, QWidge
         actualHillIndex = index.row();
     });
     connect(hillsListView, &DatabaseItemsListView::insert, this, [this](){
-        calendar.fixCompetitionsHills(&hills, hills.first());
+        calendar.fixCompetitionsHills(&hills, hills.value(0));
     });
     connect(hillsListView, &DatabaseItemsListView::remove, this, [this](){
-        calendar.fixCompetitionsHills(&hills, hills.first());
+        calendar.fixCompetitionsHills(&hills, hills.value(0));
     });
     connect(hillEditor, &HillEditorWidget::submitted, this, [this](){
         if(actualHillIndex > (-1) && actualHillIndex < hills.count()){
+            const auto id = hills[actualHillIndex]->getID();
             *hills[actualHillIndex] = hillEditor->getHillFromWidgetInput();
+            hills[actualHillIndex]->setID(id);
             emit hillsListView->getListModel()->dataChanged(hillsListView->getListModel()->index(actualHillIndex), hillsListView->getListModel()->index(actualHillIndex));
         }
     });
@@ -136,14 +145,16 @@ NewSeasonConfiguratorWindow::NewSeasonConfiguratorWindow(bool nextSeason, QWidge
     });
     connect(rulesEditor, &CompetitionRulesEditorWidget::submitted, this, [this](){
         if(actualRulesIndex > (-1) && actualRulesIndex < competitionsRules.count()){
+            const auto id = competitionsRules[actualRulesIndex].getID();
             competitionsRules[actualRulesIndex] = rulesEditor->getCompetitionRulesFromWidgetInputs();
+            competitionsRules[actualRulesIndex].setID(id);
             emit rulesListView->getListModel()->dataChanged(rulesListView->getListModel()->index(actualRulesIndex), rulesListView->getListModel()->index(actualRulesIndex));
         }
     });
 
     connect(hillsListView, &DatabaseItemsListView::remove, this, [this](){
-        calendar.fixCompetitionsHills(&hills, hills.first());
-        emit calendarTableModel->dataChanged(calendarTableModel->index(0, 0), calendarTableModel->index(calendarTableModel->rowCount() - 1, 6));
+        calendar.fixCompetitionsHills(&hills, hills.value(0));
+        if(calendarTableModel) emit calendarTableModel->dataChanged(calendarTableModel->index(0, 0), calendarTableModel->index(calendarTableModel->rowCount() - 1, 6));
     });
     createResponsivePageSplitters();
     updateResponsiveLayout(width());
@@ -153,6 +164,10 @@ NewSeasonConfiguratorWindow::NewSeasonConfiguratorWindow(bool nextSeason, QWidge
 NewSeasonConfiguratorWindow::~NewSeasonConfiguratorWindow()
 {
     delete ui;
+    if(nextSeason) {
+        qDeleteAll(jumpers);
+        qDeleteAll(hills);
+    }
 }
 
 void NewSeasonConfiguratorWindow::createResponsivePageSplitters()
@@ -262,6 +277,12 @@ QVector<CompetitionRules> &NewSeasonConfiguratorWindow::getCompetitionsRulesRefe
 void NewSeasonConfiguratorWindow::setCompetitionsRules(const QVector<CompetitionRules> &newCompetitionsRules)
 {
     competitionsRules = newCompetitionsRules;
+    rulesListView->setupListModel();
+    actualRulesIndex = competitionsRules.isEmpty() ? -1 : 0;
+    rulesEditor->setCompetitionRules(competitionsRules.isEmpty() ? nullptr : &competitionsRules.first());
+    rulesEditor->setVisible(!competitionsRules.isEmpty());
+    if(!competitionsRules.isEmpty())rulesEditor->fillCompetitionRulesInputs();
+    rulesListView->selectOnlyFirstRow();
 }
 
 QToolBox *NewSeasonConfiguratorWindow::getToolBox()
@@ -282,6 +303,12 @@ QVector<Hill *> NewSeasonConfiguratorWindow::getHillsReference()
 void NewSeasonConfiguratorWindow::setHills(const QVector<Hill *> &newHills)
 {
     hills = newHills;
+    hillsListView->setupListModel();
+    actualHillIndex = hills.isEmpty() ? -1 : 0;
+    hillEditor->setHill(hills.value(0));
+    hillEditor->setVisible(!hills.isEmpty());
+    if(!hills.isEmpty())hillEditor->fillHillInputs();
+    hillsListView->selectOnlyFirstRow();
 }
 
 ClassificationEditorWidget *NewSeasonConfiguratorWindow::getClassificationEditor() const
@@ -337,6 +364,12 @@ QVector<Jumper *> &NewSeasonConfiguratorWindow::getJumpersReference()
 void NewSeasonConfiguratorWindow::setJumpers(const QVector<Jumper *> &newJumpers)
 {
     jumpers = newJumpers;
+    jumpersListView->setupListModel();
+    actualJumperIndex = jumpers.isEmpty() ? -1 : 0;
+    jumperEditor->setJumper(jumpers.value(0));
+    jumperEditor->setVisible(!jumpers.isEmpty());
+    if(!jumpers.isEmpty())jumperEditor->fillJumperInputs();
+    jumpersListView->selectOnlyFirstRow();
 }
 
 bool NewSeasonConfiguratorWindow::getNextSeason() const

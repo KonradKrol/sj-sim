@@ -543,6 +543,42 @@ static void seasonToolRegressions(SimulationSaveManagerWindow &manager) {
     }
     qInfo()<<"PASS: all four season tools open through pointer-driven menus";
 }
+static void nextSeasonTransactionRegression(MainWindow &main) {
+    SimulationSave save;save.setName("Next season transaction");
+    auto *jumper=new Jumper("Original","Athlete","POL");auto *hill=new Hill(GlobalDatabase::get()->getEditableGlobalHills().first());hill->setName("Original hill");save.setJumpers({jumper});save.setHills({hill});
+    CompetitionRules rule;rule.setName("Original rules");save.setCompetitionRules({rule});
+    auto *calendar=new SeasonCalendar("Completed calendar");Season season;season.setSeasonNumber(2026);season.setCalendars({calendar});season.setActualCalendar(calendar);save.setSeasons({season});save.setActualSeason(&save.getSeasonsReference().first());save.fixJumpersFormInstabilities();save.updateNextCompetitionIndex();
+    SimulationSaveManagerWindow manager(&save,&main);manager.show();QTest::qWait(80);
+    const auto jumperId=jumper->getID(),hillId=hill->getID(),ruleId=rule.getID();
+    for(bool accepted:{false,true}) {
+        bool opened=false;QTimer watcher;
+        QObject::connect(&watcher,&QTimer::timeout,[&] {
+            for(auto *widget:QApplication::allWidgets())if(auto *draft=qobject_cast<NewSeasonConfiguratorWindow *>(widget);draft && draft->isVisible() && draft->getNextSeason()) {
+                watcher.stop();opened=true;
+                draft->getJumpersReference().first()->setName("Edited athlete");draft->getHillsReference().first()->setName("Edited hill");draft->getCompetitionsRulesReference().first().setName("Edited rules");
+                if(accepted) {
+                    auto *jumperEditor=draft->findChild<JumperEditorWidget *>();auto *hillEditor=draft->findChild<HillEditorWidget *>();auto *rulesEditor=draft->findChild<CompetitionRulesEditorWidget *>();
+                    check(jumperEditor->getJumper()==draft->getJumpersReference().first() && hillEditor->getHill()==draft->getHillsReference().first() && rulesEditor->getCompetitionRules()==&draft->getCompetitionsRulesReference().first(),"next-season editors bind to the save draft rather than global defaults");
+                    jumperEditor->findChild<QLineEdit *>("lineEdit_name")->setText("Accepted athlete");QMetaObject::invokeMethod(jumperEditor,"submitted");
+                    hillEditor->findChild<QLineEdit *>("lineEdit_name")->setText("Accepted hill");QMetaObject::invokeMethod(hillEditor,"submitted");
+                    rulesEditor->findChild<QLineEdit *>("lineEdit_name")->setText("Accepted rules");QMetaObject::invokeMethod(rulesEditor,"submitted");
+                    draft->getJumpersReference().append(new Jumper("Added","Athlete","NOR"));
+                    auto hills=draft->getHillsReference();hills.append(new Hill(*hill));draft->setHills(hills);
+                    auto additionalRule=rule;additionalRule.setName("Added rules");draft->getCompetitionsRulesReference().append(additionalRule);
+                    draft->accept();
+                } else draft->reject();
+                break;
+            }
+        });watcher.start(20);manager.configNextSeason();watcher.stop();check(opened,"next-season configuration opens");
+        if(!accepted)check(jumper->getName()=="Original" && hill->getName()=="Original hill" && save.getCompetitionRulesReference().first().getName()=="Original rules" && save.getSeasonsReference().size()==1,"cancelling next season discards all draft edits without changing the live save");
+    }
+    check(save.getJumpersReference().first()==jumper && save.getHillsReference().first()==hill && jumper->getID()==jumperId && hill->getID()==hillId,"accepting a new season retains existing object identities and historical references");
+    check(jumper->getName()=="Accepted athlete" && hill->getName()=="Accepted hill" && save.getCompetitionRulesReference().first().getName()=="Accepted rules" && save.getCompetitionRulesReference().first().getID()==ruleId,"accepted next-season edits include jumpers, hills and rules");
+    check(save.getJumpersReference().size()==2 && save.getHillsReference().size()==2 && save.getCompetitionRulesReference().size()==2 && save.getSeasonsReference().size()==2 && save.getActualSeason()->getSeasonNumber()==2027,"accepting new season keeps additions and advances the season once");
+    check(save.getJumperFormInstability(save.getJumpersReference().last()),"added athletes have form instability settings");
+    manager.reject();qInfo()<<"PASS: next-season drafts cancel cleanly and accept edits, additions and existing identities";
+}
+
 static void hillSearchRegression(QQuickWidget *view,const QString &name,const QStringList &labels) {
     auto *control=item(view->rootObject(),name);check(control && control->property("searchable").toBool(),"hill search is enabled at the intended selector");
     const int previous=control->property("currentIndex").toInt();int target=2;
@@ -563,6 +599,7 @@ static void hillSearchRegression(QQuickWidget *view,const QString &name,const QS
 }
 static void seasonWorkflowRegressions(MainWindow &main) {
     main.show();main.resize(1200,800);
+    nextSeasonTransactionRegression(main);
     {
         CompetitionConfigWindow preparation(CompetitionConfigWindow::SingleCompetition);
         auto *hill=preparation.findChild<QComboBox *>("comboBox_existingHill");

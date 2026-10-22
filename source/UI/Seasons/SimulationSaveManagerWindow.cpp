@@ -22,6 +22,7 @@
 #include "NewSeasonConfiguratorWindow.h"
 #include "../ResponsiveWindowUtils.h"
 #include <QMessageBox>
+#include <memory>
 #include <QTimer>
 #include <QProgressDialog>
 #include <QPushButton>
@@ -726,12 +727,50 @@ void SimulationSaveManagerWindow::updateCompetitionConfigButton()
 
 void SimulationSaveManagerWindow::configNextSeason()
 {
-    NewSeasonConfiguratorWindow * newSeasonConfig = new NewSeasonConfiguratorWindow(true, this);
-    newSeasonConfig->setJumpers(simulationSave->getJumpersReference());
-    newSeasonConfig->setHills(simulationSave->getHillsReference());
+    auto newSeasonConfig = std::make_unique<NewSeasonConfiguratorWindow>(true, this);
+    QHash<Jumper *, Jumper *> originalJumpers;
+    QHash<Hill *, Hill *> originalHills;
+    QVector<Jumper *> draftJumpers;
+    QVector<Hill *> draftHills;
+    for(auto *jumper : simulationSave->getJumpersReference()) {
+        auto *draft = new Jumper(*jumper);
+        draftJumpers.append(draft);
+        originalJumpers.insert(draft, jumper);
+    }
+    for(auto *hill : simulationSave->getHillsReference()) {
+        auto *draft = new Hill(*hill);
+        draftHills.append(draft);
+        originalHills.insert(draft, hill);
+    }
+    newSeasonConfig->setJumpers(draftJumpers);
+    newSeasonConfig->setHills(draftHills);
     newSeasonConfig->setCompetitionsRules(simulationSave->getCompetitionRulesReference());
     if(newSeasonConfig->exec() == QDialog::Accepted)
     {
+        QVector<Jumper *> acceptedJumpers;
+        QVector<Hill *> acceptedHills;
+        for(auto *draft : newSeasonConfig->getJumpersReference()) {
+            auto *target = originalJumpers.value(draft);
+            if(target) {
+                const auto id = target->getID();
+                *target = *draft;
+                target->setID(id);
+            } else target = new Jumper(*draft);
+            acceptedJumpers.append(target);
+        }
+        for(auto *draft : newSeasonConfig->getHillsReference()) {
+            auto *target = originalHills.value(draft);
+            if(target) {
+                const auto id = target->getID();
+                *target = *draft;
+                target->setID(id);
+            } else target = new Hill(*draft);
+            acceptedHills.append(target);
+        }
+        simulationSave->setJumpers(acceptedJumpers);
+        simulationSave->setHills(acceptedHills);
+        simulationSave->setCompetitionRules(newSeasonConfig->getCompetitionsRulesReference());
+        simulationSave->fixJumpersFormInstabilities();
         Season season;
         season.setSeasonNumber(simulationSave->getSeasonsReference().last().getSeasonNumber() + 1);
 
