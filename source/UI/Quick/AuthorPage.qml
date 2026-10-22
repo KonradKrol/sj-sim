@@ -27,15 +27,15 @@ ScrollView {
                     source: "qrc:/img/author/konrad.jpg"
                     sourceSize.width: 900; sourceSize.height: 1200
                     asynchronous: true
-                    fillMode: Image.PreserveAspectCrop
+                    fillMode: author.wide ? Image.PreserveAspectCrop : Image.PreserveAspectFit
                     clip: true
-                    Layout.fillWidth: true; Layout.fillHeight: author.wide
+                    Layout.fillWidth: author.wide; Layout.fillHeight: author.wide
                     Layout.minimumWidth: 0
-                    Layout.preferredWidth: author.wide ? 320 : 0
-                    Layout.maximumWidth: author.wide ? 380 : Infinity
-                    Layout.preferredHeight: author.wide ? 0 : 260
-                    Layout.maximumHeight: author.wide ? 760 : 260
-                    Layout.alignment: Qt.AlignTop
+                    Layout.preferredWidth: author.wide ? 320 : 150
+                    Layout.maximumWidth: author.wide ? 380 : 150
+                    Layout.preferredHeight: author.wide ? 0 : 200
+                    Layout.maximumHeight: author.wide ? 760 : 200
+                    Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
                     Accessible.role: Accessible.Graphic
                     Accessible.name: qsTr("Zdjęcie Konrada Króla")
                 }

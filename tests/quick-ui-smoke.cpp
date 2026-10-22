@@ -137,6 +137,7 @@ static void render(QWidget *window,const QString &name,bool sweep=false) {
                 const auto photoBounds=photo->mapRectToItem(view->rootObject(),QRectF(0,0,photo->width(),photo->height())),bioBounds=bio->mapRectToItem(view->rootObject(),bio->boundingRect());
                 check(photo->width()>0 && photo->height()>0 && !photoBounds.intersects(bioBounds) && bioBounds.left()>=0 && bioBounds.right()<=view->width(),"author uses available width without clipping or overlapping the portrait and text");
                 check(size.width()<900 ? photoBounds.bottom()<=bioBounds.top() : photoBounds.right()<=bioBounds.left(),"author portrait stacks above text on narrow screens and beside it on desktop");
+                if(size.width()<900)check(photo->property("fillMode").toInt()==1 && photo->height()<=200 && photo->width()<=150 && photo->property("paintedWidth").toReal()<=photo->width()+1 && photo->property("paintedHeight").toReal()<=photo->height()+1,"small-screen portrait shows the full photo in a compact frame");
             }
             if(name=="home") {
                 const auto modes=view->rootObject()->findChildren<QQuickItem *>("simulationMode");
