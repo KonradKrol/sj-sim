@@ -1022,7 +1022,18 @@ static void randomBoundsRegression() {
     qInfo()<<"PASS: singleton, subprecision, zero-ended and extreme random bounds";
 }
 
+static void fractionalPointsPresetRegression() {
+    PointsForPlacesPreset preset("Fractional points");preset.setPointsForPlaces({{1,12.5},{2,7.25},{3,0.5},{4,0.0}});
+    auto restored=PointsForPlacesPreset::getFromJson(PointsForPlacesPreset::getJsonObject(preset));
+    check(restored.getPointsForPlaces()==preset.getPointsForPlaces(),"points preset JSON round-trip preserves fractional and zero awards");
+    const QJsonObject collection{{"pointsForPlacesPresets",QJsonArray{PointsForPlacesPreset::getJsonObject(preset)}}};
+    const auto loaded=PointsForPlacesPreset::getPointsForPlacesPresetsVectorFromJson(QJsonDocument(collection).toJson());
+    check(loaded.size()==1 && loaded.first().getPointsForPlaces()==preset.getPointsForPlaces(),"global points preset collection preserves decimal awards on reload");
+    qInfo()<<"PASS: fractional points presets survive single and collection reloads";
+}
+
 static void backendRegressions() {
+    fractionalPointsPresetRegression();
     randomBoundsRegression();
     csvCollisionRegression();
     presetSerializationRegression();

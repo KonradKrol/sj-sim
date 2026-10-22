@@ -79,7 +79,7 @@ PointsForPlacesPreset PointsForPlacesPreset::getFromJson(QJsonObject json)
     QJsonArray pointsForPlacesArray = json.value("pointsForPlaces").toArray();
     int i=1;
     for(const auto & val : pointsForPlacesArray){
-        preset.getPointsForPlacesReference().insert(i, val.toInt());
+        preset.getPointsForPlacesReference().insert(i, val.toDouble());
         i++;
     }
     return preset;
