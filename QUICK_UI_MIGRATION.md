@@ -91,7 +91,7 @@ The render sweep covers widths of 1440, 1024, 520 and 360 pixels, light/dark the
 and enlarged text. Captures are written to `build-quick-ui/ui-renders`.
 The suite also verifies configuration tab switching and that the live jump summary
 uses actual result data and remains visible at desktop test sizes. The suite
-produces 343 counted renders, including the five UX workflows, roster editing, bounded presets, the form
+produces 350 counted renders, including the five UX workflows, roster editing, bounded presets, the form
 generator, calendar fields, custom rules and links,
 plus large-text variants. The original Widgets-only
 qmake configuration also builds successfully without linking Qt Quick or QML.
@@ -288,3 +288,27 @@ reordering checks and load-time repairs enforce the same rule.
 
 See `docs/COMPETITION_REFINEMENTS_2026-10-21.md` for the complete manual checklist,
 implementation notes and validation, including `--interaction-only` regressions.
+
+
+## Season editing workflow, 2026-10-22
+
+Calendar browsing/editing is independent of the active playback calendar. The
+calendar workspace exposes creation, explicit activation, bulk insertion,
+multi-selection block dragging and integrated classification editing. A shared
+undo/redo timeline covers edits, catalog operations and preset replacement while
+protecting newly played results. Displaced qualification sources remain pending,
+are serialized, block dependent starts and are restored when the order is valid.
+Classification names remain editable after use; scoring is locked and copying
+creates an independent classification. Points-table notifications and decimal
+editing are corrected, and overview standings synchronize on activation.
+
+Standard dialog actions follow the application language. Message content uses
+its full width below the title, with pinned actions. Competition preparation
+starts with Auto and displays deterministic, bounded wind-dependent gate
+recommendations with an apply action. The competition status bar shows the hill
+flag, signed wind colors and leader rather than the start counter; last-jump rank
+stays blank during flight. The next-event footer adds the flag, type, HS and format.
+
+The full suite passes with 350 renders, including the new classification layouts,
+and the Widgets-only build passes. See
+[the manual checklist and validation report](docs/SEASON_WORKSPACE_2026-10-22.md).
