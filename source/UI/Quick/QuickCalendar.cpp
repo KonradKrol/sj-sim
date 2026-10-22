@@ -226,8 +226,22 @@ void QuickCalendar::setOrder(const QVector<CompetitionInfo *> &events) {
     m_calendar->setCompetitions(order);
 }
 CompetitionInfo *QuickCalendar::clone(CompetitionInfo *e) {
-    auto *copy=new CompetitionInfo(e->getHill());copy->setRules(e->getRules());copy->setSerieType(e->getSerieType());copy->setJumpsImportance(e->getJumpsImportance());copy->setClassifications(e->getClassifications());copy->setAdvancementCompetition(e->getAdvancementCompetition());copy->setPendingAdvancementCompetition(e->getPendingAdvancementCompetition());copy->setAdvancementClassification(e->getAdvancementClassification());
-    for(auto *t:e->getTrainings()){auto *next=new CompetitionInfo(t->getHill());next->setRules(t->getRules());next->setSerieType(CompetitionInfo::Training);copy->getTrainingsReference().append(next);}if(e->getTrialRound()){auto *next=new CompetitionInfo(e->getHill());next->setRules(e->getTrialRound()->getRules());next->setSerieType(CompetitionInfo::TrialRound);copy->setTrialRound(next);}return copy;
+    const auto copySettings=[](CompetitionInfo *event) {
+        auto *copy=new CompetitionInfo(event->getHill());
+        copy->setRules(event->getRules());
+        copy->setSerieType(event->getSerieType());
+        copy->setExceptionalRoundsCount(event->getExceptionalRoundsCount());
+        copy->setJumpsImportance(event->getJumpsImportance());
+        copy->setClassifications(event->getClassifications());
+        copy->setAdvancementCompetition(event->getAdvancementCompetition());
+        copy->setPendingAdvancementCompetition(event->getPendingAdvancementCompetition());
+        copy->setAdvancementClassification(event->getAdvancementClassification());
+        return copy;
+    };
+    auto *copy=copySettings(e);
+    for(auto *training:e->getTrainings())copy->getTrainingsReference().append(copySettings(training));
+    if(e->getTrialRound())copy->setTrialRound(copySettings(e->getTrialRound()));
+    return copy;
 }
 void QuickCalendar::add() {addMany(1);}
 void QuickCalendar::addMany(int count) {

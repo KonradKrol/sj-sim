@@ -611,6 +611,14 @@ static void seasonWorkflowRegressions(MainWindow &main) {
     check(first->getTrainings().size()==2 && first->getTrialRound() && first->getHill()==save.getHillsReference()[1],"calendar edits create complete competition block directly");
     check(calendar->getCompetitionsReference().size()==6 && calendar->getCompetitionsReference()[1]==first->getTrainings().first(),"calendar keeps training and trial events before their competition");
     for(auto *training:first->getTrainings())check(training->getHill()==first->getHill(),"training hill follows competition");
+    backend->update({{"trainingImportance",3.5},{"trialImportance",4.0}});backend->duplicate();
+    const auto duplicateId=backend->events()[2].toMap().value("id").toString();CompetitionInfo *blockCopy=nullptr;
+    for(auto *event:calendar->getCompetitionsReference())if(event->getIDStr()==duplicateId)blockCopy=event;
+    check(blockCopy && blockCopy->getTrainings().size()==2 && blockCopy->getTrialRound(),"duplication retains the full auxiliary event block");
+    check(blockCopy->getTrainings()[0]->getJumpsImportance()==3.5 && blockCopy->getTrainings()[1]->getJumpsImportance()==3.5 && blockCopy->getTrialRound()->getJumpsImportance()==4.0,"duplicating a calendar block preserves custom training and trial importance");
+    check(blockCopy->getTrainings()[0]!=first->getTrainings()[0] && blockCopy->getTrialRound()!=first->getTrialRound(),"duplicated auxiliary events have independent object identities");
+    blockCopy->getTrainings()[0]->setJumpsImportance(7.5);check(first->getTrainings()[0]->getJumpsImportance()==3.5,"editing a duplicated training cannot alter the source event");
+    backend->undo();backend->undo();
     backend->undo();check(first->getTrainings().isEmpty() && !first->getTrialRound() && calendar->getCompetitionsReference().size()==3,"undo restores event graph and pointer identities");
     backend->select(history->getIDStr());backend->update({{"trainings",3}});check(history->getTrainings().isEmpty() && history->getPlayed(),"played competition is protected");
     backend->select(first->getIDStr());backend->select(second->getIDStr(),Qt::ControlModifier);backend->update({{"importance",6.5}});
