@@ -1107,7 +1107,20 @@ static void nextCompetitionReloadRegression() {
     qInfo()<<"PASS: stale next-event indices cannot replay or skip calendar events on reload";
 }
 
+static void historicalTeamPointsRegression() {
+    Jumper jumper("A","One","POL"),other("B","Two","POL");Team team("POL");team.setJumpers({&jumper,&other});
+    CompetitionInfo competition;CompetitionRules rules;rules.setCompetitionType(CompetitionRules::Team);competition.setRules(rules);
+    auto &results=competition.getResultsReference();JumpData jump; jump.setJumper(&jumper);jump.setPoints(123.5);results.addJump(&team,jump);results.getResultsReference().first().updateTeamJumpersResults();
+    Classification classification;classification.setClassificationType(Classification::Individual);classification.setPunctationType(Classification::CompetitionPoints);
+    ClassificationSingleResult entry(&classification,&jumper);entry.setCompetitionsResults({&results});entry.updateSingleResults();entry.updatePointsSum();check(entry.getPointsSum()==123.5,"historic team result contributes its athlete's jump points");
+    jumper.setCountryCode("NOR");entry.updateSingleResults();entry.updatePointsSum();
+    check(entry.getPointsSum()==123.5,"changing an athlete's nationality cannot erase points earned in a previous team event");
+    ClassificationSingleResult unrelated(&classification,&other);unrelated.setCompetitionsResults({&results});unrelated.updateSingleResults();unrelated.updatePointsSum();check(unrelated.getPointsSum()==0,"team membership alone does not copy another athlete's jump points");
+    qInfo()<<"PASS: historical team jump points survive subsequent nationality edits";
+}
+
 static void backendRegressions() {
+    historicalTeamPointsRegression();
     nextCompetitionReloadRegression();
     fractionalPointsPresetRegression();
     csvFieldsRegression();

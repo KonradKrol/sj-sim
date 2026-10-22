@@ -48,13 +48,9 @@ void ClassificationSingleResult::updateSingleResults()
                     }
                     else if(competitionType == CompetitionRules::Team)
                     {
-                        if(singleResult.getTeam()->getCountryCode() == this->getJumper()->getCountryCode()){
-                            for(auto & jumperResult : singleResult.getTeamJumpersResultsReference()){
-                                if(jumperResult.getJumper() == this->getJumper()){
-                                    singleResults.push_back(&jumperResult);
-                                    //break;
-                                }
-                            }
+                        for(auto &jumperResult : singleResult.getTeamJumpersResultsReference()) {
+                            if(jumperResult.getJumper() == this->getJumper())
+                                singleResults.push_back(&jumperResult);
                         }
                     }
                 }
