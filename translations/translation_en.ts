@@ -889,6 +889,13 @@ Make sure that the file exists there or has the appropriate permissions</transla
         <source>Wybierz listę zawodników</source>
         <translation>Select jumpers list</translation>
     </message>
+<message>
+    <source>Auto</source>
+    <translation>Auto</translation>
+</message><message>
+    <source>Sprawdź listę zawodników i parametry skoczni.</source>
+    <translation>Check the start list and hill parameters.</translation>
+</message>
 </context>
 <context>
     <name>CompetitionInfoEditorWidget</name>
@@ -7262,6 +7269,16 @@ You can only remove it completely</translation>
         <source>Nazwa kopii</source>
         <translation>Copy name</translation>
     </message>
+<message>
+    <source>Brak</source>
+    <translation>None</translation>
+</message><message>
+    <source>Popraw kolejność kwalifikacji</source>
+    <translation>Fix qualification order</translation>
+</message><message>
+    <source>Źródło kwalifikacji musi poprzedzać konkurs. Powiązanie zostało zachowane.</source>
+    <translation>The qualification source must precede the competition. The link has been preserved.</translation>
+</message>
 </context>
 <context>
     <name>SimulationSavesWindow</name>
@@ -9090,6 +9107,97 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <translation>Load</translation>
 </message>
 
+<message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="72" />
+    <source>OK</source>
+    <translation>OK</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="73" />
+    <source>Tak</source>
+    <translation>Yes</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="74" />
+    <source>Nie</source>
+    <translation>No</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="75" />
+    <source>Anuluj</source>
+    <translation>Cancel</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="76" />
+    <source>Zamknij</source>
+    <translation>Close</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="77" />
+    <source>Zapisz</source>
+    <translation>Save</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="78" />
+    <source>Zapisz wszystko</source>
+    <translation>Save all</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="79" />
+    <source>Odrzuć</source>
+    <translation>Discard</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="80" />
+    <source>Zastosuj</source>
+    <translation>Apply</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="81" />
+    <source>Resetuj</source>
+    <translation>Reset</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="82" />
+    <source>Przywróć domyślne</source>
+    <translation>Restore default</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="83" />
+    <source>Ponów</source>
+    <translation>Retry</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="84" />
+    <source>Ignoruj</source>
+    <translation>Ignore</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="85" />
+    <source>Przerwij</source>
+    <translation>Abort</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="86" />
+    <source>Tak dla wszystkich</source>
+    <translation>Yes to all</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="87" />
+    <source>Nie dla wszystkich</source>
+    <translation>No to all</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="88" />
+    <source>Otwórz</source>
+    <translation>Open</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickBridge.cpp" line="89" />
+    <source>Pomoc</source>
+    <translation>Help</translation>
+</message>
+
 </context>
 
 
@@ -9466,6 +9574,23 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <source>Śnieg: %1</source>
         <translation>Snow: %1</translation>
     </message>
+<message>
+    <location filename="../source/UI/Quick/RaceStatus.qml" line="21" />
+    <source>Seria %1 / %2</source>
+    <translation>Round %1 / %2</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/RaceStatus.qml" line="21" />
+    <source>Lider: %1 · %2 pkt</source>
+    <translation>Leader: %1 · %2 pts</translation>
+</message>
+
+<message>
+    <location filename="../source/UI/Quick/RaceStatus.qml" line="21" />
+    <source>Lider: %1 pkt</source>
+    <translation>Leader: %1 pts</translation>
+</message>
+
 </context>
 
 
@@ -9697,6 +9822,17 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <source>Zmienność · 0–10</source>
         <translation>Variability · 0–10</translation>
     </message>
+<message>
+    <location filename="../source/UI/Quick/WindEditor.qml" line="17" />
+    <source>Sugerowana belka: %1</source>
+    <translation>Suggested gate: %1</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/WindEditor.qml" line="18" />
+    <source>Zastosuj</source>
+    <translation>Apply</translation>
+</message>
+
 </context>
 
 
@@ -9918,6 +10054,27 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <source>Edytuj %1</source>
         <translation>Edit %1</translation>
     </message>
+<message>
+    <location filename="../source/UI/Quick/CalendarEventRow.qml" line="42" />
+    <source>Przenieś konkurs %1</source>
+    <translation>Move competition %1</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarEventRow.qml" line="43" />
+    <source>Przeciągnij; klawiatura: Ctrl+↑ / Ctrl+↓</source>
+    <translation>Drag; keyboard: Ctrl+↑ / Ctrl+↓</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarEventRow.qml" line="59" />
+    <source>Kwalifikacja z konkursu %1 — popraw kolejność</source>
+    <translation>Qualifies from competition %1 — fix order</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarEventRow.qml" line="59" />
+    <source>Źródło kwalifikacji dla: %1 — popraw kolejność</source>
+    <translation>Qualification source for: %1 — fix order</translation>
+</message>
+
 </context>
 
 
@@ -10125,6 +10282,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <translation>Qualify by standings</translation>
 </message>
 
+<message>
+    <location filename="../source/UI/Quick/CalendarInspector.qml" line="22" />
+    <source>Zachowano kwalifikację z konkursu %1. Przenieś źródło przed ten konkurs, aby przywrócić powiązanie.</source>
+    <translation>Qualification from competition %1 has been preserved. Move the source before this competition to restore the link.</translation>
+</message>
+
 </context>
 
 
@@ -10272,6 +10435,74 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <source>Dodaj konkurs lub wczytaj preset.</source>
         <translation>Add a competition or load a preset.</translation>
     </message>
+<message>
+    <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="25" />
+    <source>Kalendarze</source>
+    <translation>Calendars</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="36" />
+    <source>Aktywny</source>
+    <translation>Active</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="52" />
+    <source>Edytowany kalendarz</source>
+    <translation>Calendar being edited</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="53" />
+    <source>Nazwa edytowanego kalendarza</source>
+    <translation>Name of calendar being edited</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="55" />
+    <source>Aktywny kalendarz</source>
+    <translation>Active calendar</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="55" />
+    <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="60" />
+    <source>Ustaw jako aktywny</source>
+    <translation>Set as active</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="57" />
+    <source>Opcje kalendarza</source>
+    <translation>Calendar options</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="60" />
+    <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="65" />
+    <source>Klasyfikacje</source>
+    <translation>Classifications</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="76" />
+    <source>Dodaj wiele</source>
+    <translation>Add multiple</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="91" />
+    <source>Ponów</source>
+    <translation>Redo</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="95" />
+    <source>Liczba konkursów</source>
+    <translation>Competition count</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="97" />
+    <source>Dodaj</source>
+    <translation>Add</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="124" />
+    <source>Utwórz kalendarz, aby dodać konkursy.</source>
+    <translation>Create a calendar to add competitions.</translation>
+</message>
+
 </context>
 
 
@@ -10402,6 +10633,58 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <source>Brak presetów kalendarza do wczytania.</source>
         <translation>No calendar presets available.</translation>
     </message>
+<message>
+    <location filename="../source/UI/Quick/QuickCalendar.cpp" line="231" />
+    <source>Dodano konkursy: %1</source>
+    <translation>Competitions added: %1</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickCalendar.cpp" line="240" />
+    <source>Najpierw zmień źródło kwalifikacji w konkursach: %1.</source>
+    <translation>First change the qualification source in competitions: %1.</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickCalendar.cpp" line="274" />
+    <source>Ponowiono zmianę</source>
+    <translation>Change redone</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickCalendar.cpp" line="325" />
+    <source>Nowy kalendarz %1</source>
+    <translation>New calendar %1</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickCalendar.cpp" line="325" />
+    <source>Utworzono kalendarz. Dodaj konkursy lub wczytaj preset.</source>
+    <translation>Calendar created. Add competitions or load a preset.</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickCalendar.cpp" line="370" />
+    <source>Klasyfikacja ma rozegrane wyniki. Możesz zmienić nazwę lub utworzyć kopię.</source>
+    <translation>This classification has recorded results. You can rename it or create a copy.</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickCalendar.cpp" line="372" />
+    <source>Najpierw usuń powiązania klasyfikacji w konkursach: %1.</source>
+    <translation>First remove classification links in competitions: %1.</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickCalendar.cpp" line="376" />
+    <source>Nowa klasyfikacja</source>
+    <translation>New classification</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/QuickCalendar.cpp" line="376" />
+    <source> — kopia</source>
+    <translation> — copy</translation>
+</message>
+
+<message>
+    <location filename="../source/UI/Quick/QuickCalendar.cpp" line="135" />
+    <source>%1. %2 — oczekuje</source>
+    <translation>%1. %2 — pending</translation>
+</message>
+
 </context>
 
 
@@ -10858,5 +11141,99 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <translation> · discarded mark</translation>
 </message>
 
+</context>
+<context>
+    <name>CalendarClassifications</name>
+<message>
+    <location filename="../source/UI/Quick/CalendarClassifications.qml" line="14" />
+    <source>Dodaj klasyfikację</source>
+    <translation>Add classification</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarClassifications.qml" line="15" />
+    <source>Utwórz kopię</source>
+    <translation>Create copy</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarClassifications.qml" line="16" />
+    <source>Usuń</source>
+    <translation>Remove</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarClassifications.qml" line="17" />
+    <source>Cofnij</source>
+    <translation>Undo</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarClassifications.qml" line="18" />
+    <source>Ponów</source>
+    <translation>Redo</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarClassifications.qml" line="20" />
+    <source>Lista</source>
+    <translation>List</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarClassifications.qml" line="20" />
+    <source>Edycja</source>
+    <translation>Edit</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarClassifications.qml" line="32" />
+    <source>Drużynowa</source>
+    <translation>Team</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarClassifications.qml" line="32" />
+    <source>Indywidualna</source>
+    <translation>Individual</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarClassifications.qml" line="41" />
+    <source>Wyniki są już rozegrane. Możesz zmienić nazwę; aby zmienić punktację, utwórz kopię.</source>
+    <translation>Results have already been recorded. You can rename this classification; create a copy to change scoring.</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/CalendarClassifications.qml" line="42" />
+    <source>Zmiany zapisują się od razu w kalendarzu.</source>
+    <translation>Changes are saved to the calendar immediately.</translation>
+</message>
+
+<message>
+    <location filename="../source/UI/Quick/CalendarClassifications.qml" line="23" />
+    <source>Opcje klasyfikacji</source>
+    <translation>Classification options</translation>
+</message>
+
+</context>
+<context>
+    <name>SeasonFooter</name>
+<message>
+    <location filename="../source/UI/Quick/SeasonFooter.qml" line="17" />
+    <source>Brak kolejnego wydarzenia</source>
+    <translation>No next event</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/SeasonFooter.qml" line="18" />
+    <source>Drużynowy</source>
+    <translation>Team</translation>
+</message>
+    <message>
+    <location filename="../source/UI/Quick/SeasonFooter.qml" line="18" />
+    <source>Indywidualny</source>
+    <translation>Individual</translation>
+</message>
+
+</context>
+<context>
+    <name>PointsForPlacesTableModel</name>
+<message>
+    <source>Miejsce</source>
+    <translation>Place</translation>
+</message><message>
+    <source>Punkty</source>
+    <translation>Points</translation>
+</message>
 </context>
 </TS>

@@ -64,6 +64,29 @@ QT_CHARTS_USE_NAMESPACE
 QString quickPicture(const QPixmap &pixmap);
 QString quickDecoration(const QVariant &value);
 namespace {
+QString standardCaption(int button) {
+    switch(button) {
+    case QMessageBox::Ok:return QuickBridge::tr("OK");
+    case QMessageBox::Yes:return QuickBridge::tr("Tak");
+    case QMessageBox::No:return QuickBridge::tr("Nie");
+    case QMessageBox::Cancel:return QuickBridge::tr("Anuluj");
+    case QMessageBox::Close:return QuickBridge::tr("Zamknij");
+    case QMessageBox::Save:return QuickBridge::tr("Zapisz");
+    case QMessageBox::SaveAll:return QuickBridge::tr("Zapisz wszystko");
+    case QMessageBox::Discard:return QuickBridge::tr("Odrzuć");
+    case QMessageBox::Apply:return QuickBridge::tr("Zastosuj");
+    case QMessageBox::Reset:return QuickBridge::tr("Resetuj");
+    case QMessageBox::RestoreDefaults:return QuickBridge::tr("Przywróć domyślne");
+    case QMessageBox::Retry:return QuickBridge::tr("Ponów");
+    case QMessageBox::Ignore:return QuickBridge::tr("Ignoruj");
+    case QMessageBox::Abort:return QuickBridge::tr("Przerwij");
+    case QMessageBox::YesToAll:return QuickBridge::tr("Tak dla wszystkich");
+    case QMessageBox::NoToAll:return QuickBridge::tr("Nie dla wszystkich");
+    case QMessageBox::Open:return QuickBridge::tr("Otwórz");
+    case QMessageBox::Help:return QuickBridge::tr("Pomoc");
+    default:return {};
+    }
+}
 QString readableHtml(QString html) {
     html.remove(QRegularExpression("(?:color|background-color|font-family|font-size)\\s*:[^;\"]+;?",QRegularExpression::CaseInsensitiveOption));
     html.remove(QRegularExpression("color=[\"][^\"]*[\"]",QRegularExpression::CaseInsensitiveOption));
@@ -676,7 +699,7 @@ void QuickBridge::compose(QuickNode *base) {
             entry->update(values);list.append(QVariant::fromValue(entry));};
         for(auto *child:m_content->findChildren<QWidget *>(QString(),Qt::FindDirectChildrenOnly)) {
             if(child->isHidden())continue;
-            if(auto *box=qobject_cast<QDialogButtonBox *>(child)){for(auto *button:box->buttons())append(button,buttons);}
+            if(auto *box=qobject_cast<QDialogButtonBox *>(child)){for(auto *button:box->buttons()){const auto caption=standardCaption(int(box->standardButton(button)));if(!caption.isEmpty() && button->text()!=caption)button->setText(caption);append(button,buttons);}}
             else if(qobject_cast<QPushButton *>(child))append(child,buttons);
             else if(qobject_cast<QLabel *>(child)||qobject_cast<QProgressBar *>(child)||qobject_cast<QLineEdit *>(child)||qobject_cast<QComboBox *>(child)||qobject_cast<QSpinBox *>(child)||qobject_cast<QDoubleSpinBox *>(child)||qobject_cast<QPlainTextEdit *>(child))append(child,content);
         }
@@ -693,12 +716,14 @@ void QuickBridge::compose(QuickNode *base) {
         }
         QVariantList buttons;
         for(auto *button:message->buttons()) {
+            const auto caption=standardCaption(int(message->standardButton(button)));if(!caption.isEmpty() && button->text()!=caption)button->setText(caption);
             button->setProperty("quickExposePage",true);
             auto *entry=node(button,true);auto values=entry->values();values["available"]=true;
             const auto role=message->buttonRole(button);values["primary"]=role==QMessageBox::AcceptRole || role==QMessageBox::YesRole;
             entry->update(values);buttons.append(QVariant::fromValue(entry));
         }
-        m_root->update({{"kind","column"},{"buttons",buttons}},content);return;
+        QVariantList messages;for(const auto &value:content)if(auto *entry=value.value<QuickNode *>();entry && entry->values().value("kind")=="richtext")messages.append(entry->values().value("text"));
+        m_root->update({{"kind","column"},{"buttons",buttons},{"messages",messages}},content);return;
     }
     if(profile()=="JumpDataDetailedInfoWindow") {
         auto layout=[this](const QString &name) { return m_content->findChild<QLayout *>(name); };

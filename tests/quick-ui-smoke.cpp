@@ -916,6 +916,11 @@ static void interactionRegressions(MainWindow &main) {
     integer->setValue(99);QTest::qWait(100);press("numberIncrease-rapidInteger",5);check(integer->value()==100,"repeated increment clamps at upper bound");
     press("numberIncrease-rapidFraction",10);check(std::abs(fraction->value()-1)<.001,"rapid decimal stepping preserves all fractional steps");
     fixture.reject();QTest::qWait(120);
+    {
+        QMessageBox message(QMessageBox::Question,"Zapis sezonu","Czy zapisać zmiany?",QMessageBox::Yes|QMessageBox::No,&main);message.show();QTest::qWait(200);auto *quick=scene(&message);quick->grabFramebuffer();
+        check(message.button(QMessageBox::Yes)->text()==QString::fromUtf8("Tak") && message.button(QMessageBox::No)->text()==QString::fromUtf8("Nie"),"standard confirmation actions use Polish captions");
+        auto *body=item(quick->rootObject(),"modalMessage-0");check(body && body->width()>500 && body->height()<40 && body->y()>35,"short message uses available width and sits below its title without wrapping into four lines");message.reject();
+    }
     for(const auto &size:QList<QSize>{{1024,640},{360,480}}){
         main.resize(size);QTest::qWait(100);
         QMessageBox message(QMessageBox::Information,QString("Nowy rekord skoczni — ").repeated(6),QString("Zawodnik ustanowił nowy rekord skoczni. ").repeated(25),QMessageBox::Ok|QMessageBox::Cancel,&main);

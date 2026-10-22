@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
 Rectangle {
+    readonly property var messages: ui.root.values.messages || []
     implicitWidth: 560
     implicitHeight: bodyContent.implicitHeight + buttons.implicitHeight + 44
     color: Theme.background
@@ -20,7 +21,24 @@ Rectangle {
                 id: bodyContent
                 width: body.availableWidth; spacing: 12
                 Label { text: ui.title; visible: text.length > 0; color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; width: parent.width; wrapMode: Text.WordWrap }
-                Node { width: parent.width; node: ui.root }
+                Repeater {
+                    model: messages
+                    TextEdit {
+                        objectName: "modalMessage-"+index
+                        width: bodyContent.width; height: contentHeight
+                        text: modelData; textFormat: TextEdit.AutoText
+                        readOnly: true; selectByMouse: true; activeFocusOnTab: true
+                        color: Theme.ink; font.pointSize: Theme.body
+                        wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+                        selectionColor: Theme.selection; selectedTextColor: Theme.ink
+                        onLinkActivated: Qt.openUrlExternally(link)
+                    }
+                }
+                Node { width: parent.width; visible: messages.length===0; node: ui.root }
+                Repeater {
+                    model: messages.length ? ui.root.children : []
+                    Node { width: bodyContent.width; visible: modelData.values.kind !== "richtext"; node: modelData }
+                }
             }
         }
         GridLayout {
