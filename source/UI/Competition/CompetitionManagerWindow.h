@@ -99,6 +99,7 @@ private:
     void setLiveStage(int stage);
     bool manipulationPending;
     bool personalBestNotificationsSuppressed;
+    bool bulkSimulationInProgress = false;
 
     JumpSimulator simulator;
     void setupSimulator();

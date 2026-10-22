@@ -206,19 +206,19 @@ static int buttonId(QuickNode *node,const QString &text) {
     for(const auto &child:node->children()+node->values().value("buttons").toList()) if(auto *entry=child.value<QuickNode *>()) { const int found=buttonId(entry,text);if(found>=0)return found; }
     return -1;
 }
-static void runCompetition(MainWindow &main,int scenario) {
+static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bulkAction=0) {
     Q_UNUSED(main)
     auto *db=GlobalDatabase::get();
     CompetitionRules rules=db->getEditableCompetitionRules().first();
     rules.setHasDsq(false);rules.setCompetitionType(scenario==2?CompetitionRules::Team:CompetitionRules::Individual);
     rules.setJumpersInTeamCount(4);
-    RoundInfo first(16,true),second(scenario==2?3:8,true);
+    RoundInfo first(bulk&&scenario!=2?100:16,true),second(scenario==2?3:bulk?(scenario==1?60:30):8,true);
     if(scenario==1) { first.setKO(true);first.setCountInKOGroup(2);first.setAdvancingFromKOGroup(1);first.setKoGroupsSelectionType(KOGroup::Classic); }
     rules.setRounds({first,second});
     CompetitionConfigWindow config(CompetitionConfigWindow::SingleCompetition);
     config.getHillEditor()->setHill(&db->getEditableGlobalHills().first());config.getHillEditor()->fillHillInputs();
     config.getCompetitionRulesEditor()->setCompetitionRules(&rules);config.getCompetitionRulesEditor()->fillCompetitionRulesInputs();
-    auto jumpers=config.getCompetitionJumpers();check(jumpers.size()>=16,"competition fixture");jumpers.resize(16);
+    auto jumpers=config.getCompetitionJumpers();check(jumpers.size()>=16,"competition fixture");jumpers.resize(bulk?qMin(100,jumpers.size()):16);
     if(scenario==2) {
         QVector<Jumper *> all;for(auto &jumper:db->getEditableGlobalJumpers())all.append(&jumper);
         auto teams=Team::constructTeamsVectorByJumpersList(all,4);check(teams.size()>=4,"team fixture");teams.resize(4);jumpers.clear();
@@ -253,6 +253,24 @@ static void runCompetition(MainWindow &main,int scenario) {
                 GlobalAppSettings::get()->setLiveCompetition(false);GlobalAppSettings::get()->setLiveCompetitionSpeedMulti(speed);return;
             }
             window->findChild<QCheckBox *>("checkBox_liveCompetition")->setChecked(false);
+            if(bulk) {
+                QSignalSpy resets(window->findChild<StartListModel *>(),&QAbstractItemModel::modelReset);
+                QSignalSpy rowChanges(window->findChild<StartListModel *>(),&QAbstractItemModel::dataChanged);
+                QTimer acceptCount;QObject::connect(&acceptCount,&QTimer::timeout,[&] {for(auto *widget:QApplication::allWidgets())if(auto *input=qobject_cast<QInputDialog *>(widget);input && input->isVisible()){input->setIntValue(37);input->accept();}});acceptCount.start(20);
+                QElapsedTimer elapsed;elapsed.start();
+                if(bulkAction==1)window->autoSimulateRound();else if(bulkAction==2)window->autoSimulateJumps();else if(bulkAction==3)window->autoSimulateGroup();else window->autoSimulateCompetition();
+                const auto duration=elapsed.elapsed();acceptCount.stop();
+                check(bulkAction || window->getManager()->checkCompetitionEnd(),"bulk simulation completes the real competition");
+                check(rowChanges.count()<=2 && resets.count()<=2,"automatic simulation batches start-list presentation updates");
+                if(bulkAction==1)check(window->getManager()->checkRoundEnd() && window->getManager()->getActualRound()==1,"automatic round simulation stops at the round boundary");
+                if(bulkAction==3)check(dynamic_cast<TeamCompetitionManager *>(window->getManager())->checkGroupEnd(),"automatic team group simulation stops at the group boundary");
+                QLabel *athleteLabel=nullptr;for(auto *label:window->findChildren<QLabel *>("label_nameAndSurname"))if(!window->findChild<JumperCompetitionResultsWidget *>()->isAncestorOf(label))athleteLabel=label;
+                if(!athleteLabel || athleteLabel->text()!=window->getManager()->getActualJumper()->getNameAndSurname())qInfo()<<"BULK ATHLETE"<<scenario<<bulkAction<<(athleteLabel?athleteLabel->text():QString())<<window->getManager()->getActualJumper()->getNameAndSurname()<<window->getManager()->getActualStartListIndex();
+                check(athleteLabel && athleteLabel->text()==window->getManager()->getActualJumper()->getNameAndSurname(),"batched athlete presentation is synchronized before returning control");
+                int jumps=0;for(const auto &result:window->getManager()->getResults()->getResults()) {jumps+=result.getJumps().size();check(result.getCompetition()==window->getManager()->getCompetitionInfo() && std::isfinite(result.getPointsSum()),"bulk results retain competition owners and finite scores");}
+                qInfo()<<"BENCH bulk"<<scenario<<"jumps"<<jumps<<"ms"<<duration<<"start-list resets"<<resets.count()<<"row changes"<<rowChanges.count();
+                check(bulkAction==2 ? jumps==37 && window->getManager()->getActualStartListIndex()==37 : jumps>0,"bulk simulation records the requested jumps and leaves the next athlete ready");window->accept();return;
+            }
             render(window,QString("live-%1").arg(scenario),true);
             if(scenario==0) {
                 main.resize(1024,640);main.activateWindow();scene(window)->setFocus();QTest::qWait(70);
@@ -1178,6 +1196,17 @@ static void previousStandingRegression() {
     qInfo()<<"PASS: previous-round gaps, negative leads, ties and frozen baselines";
 }
 
+static void simulationBenchmark() {
+    auto *db=GlobalDatabase::get();auto jumper=db->getEditableGlobalJumpers().first();auto hill=db->getEditableGlobalHills().first();
+    for(const auto &type:Characteristic::characteristicTypesForSpecificParent(Characteristic::Jumper))jumper.getJumperSkillsPointer()->insertCharacteristic(type,1);
+    for(const auto &type:Characteristic::characteristicTypesForSpecificParent(Characteristic::Hill))hill.insertCharacteristic(type,1);
+    CompetitionRules rules;rules.setHasDsq(false);JumpManipulator manipulator;
+    JumpSimulator simulator(&jumper,{Wind(0,1),Wind(180,.5),Wind(45,1)},&hill);simulator.setCompetitionRules(&rules);simulator.setManipulator(&manipulator);simulator.setGate(10);simulator.setCompetitionStartGate(10);simulator.setJumpsImportance(5);simulator.setDSQBaseProbability(0);
+    QElapsedTimer elapsed;elapsed.start();double total=0;
+    for(int i=0;i<10000;++i) {simulator.simulateJump();total+=simulator.getJumpData().getPoints();}
+    qInfo()<<"BENCH engine 10000 jumps ms"<<elapsed.elapsed()<<"checksum"<<total;check(std::isfinite(total),"engine benchmark has finite scores");
+}
+
 static void backendRegressions() {
     previousStandingRegression();
     historicalTeamPointsRegression();
@@ -1296,6 +1325,7 @@ int main(int argc,char **argv) {
     MainWindow main; applicationWindow=&main; main.setParentApplication(&app); new QuickUi(&main);
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="1.3.0 beta-3","one release version is shared with the interface");
+    if(app.arguments().contains("--simulation-benchmark")) {simulationBenchmark();main.show();for(int i=0;i<3;++i)runCompetition(main,0,true);runCompetition(main,1,true);runCompetition(main,2,true);return 0;}
     backendRegressions();
     if(app.arguments().contains("--team-only")){main.show();runCompetition(main,2);return 0;}
     if(app.arguments().contains("--interaction-only")){interactionRegressions(main);return 0;}
@@ -1311,12 +1341,14 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--workflow-only")){seasonWorkflowRegressions(main);return 0;}
     if(app.arguments().contains("--navigation-only")){navigationRegressions(main);return 0;}
     if(app.arguments().contains("--backend-only"))return 0;
+    if(app.arguments().contains("--bulk-only")) {main.show();for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);runCompetition(main,0,true,1);runCompetition(main,0,true,2);runCompetition(main,2,true,3);return 0;}
     if(app.arguments().contains("--competitions-only")) {
         main.show();QTest::qWait(100);GlobalAppSettings::get()->setLiveCompetition(false);
         for(int scenario=0;scenario<4;++scenario) runCompetition(main,scenario);
         seasons();qInfo()<<"PASS: full individual, KO and team competitions and season analysis";return 0;
     }
     if(!app.arguments().contains("--layout-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);interactionRegressions(main);spaceRegressions(main);uxRegressions(main);navigationRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);rosterRegressions(main);geometryRegressions(main);}
+    if(!app.arguments().contains("--layout-only")){for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);runCompetition(main,0,true,1);runCompetition(main,0,true,2);runCompetition(main,2,true,3);}
     render(&main,"home",true);
     {
         DatabaseEditorWindow dialog; render(&dialog,"database",true);

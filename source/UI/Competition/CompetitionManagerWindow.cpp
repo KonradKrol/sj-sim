@@ -1,5 +1,6 @@
 #include <cmath>
 #include "CompetitionManagerWindow.h"
+#include <QScopedValueRollback>
 #ifdef SJ_COMPETITION_QUICK
 #include "Quick/CompetitionLiveBridge.h"
 #endif
@@ -147,6 +148,7 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
 
     ui->label_lastRoundPosition->hide();
     connect(this->manager, &AbstractCompetitionManager::actualJumperChanged, this, [this](){
+        if(bulkSimulationInProgress)return;
         if(this->manager->getActualStartListIndex() < this->manager->getStartListStatusesReference().count()){
             ui->label_nameAndSurname->setText(this->manager->getActualJumper()->getNameAndSurname());
             ui->label_flag->setPixmap(CountryFlagsManager::getFlagPixmap(this->manager->getActualJumper()->getCountryCode().toLower()).scaled(ui->label_flag->size()));
@@ -808,6 +810,7 @@ void CompetitionManagerWindow::autoSimulateRound()
                              QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Yes)
         return;
 
+    QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);
     if(getType() == CompetitionRules::Individual)
         resultsTableModel->setLastJumper(nullptr);
     else
@@ -873,7 +876,8 @@ void CompetitionManagerWindow::autoSimulateRound()
     jumperResultsWidget->show();
 
     startListModel->refresh();
-    focusCurrentJumper();
+    bulkSimulationInProgress = false;
+    emit manager->actualJumperChanged();
     if(getType() == CompetitionRules::Individual){
         ui->tableView_results->setModel(nullptr);
         ui->tableView_results->setModel(resultsTableModel);
@@ -929,6 +933,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
                              QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Yes)
         return;
 
+    QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);
     if(getType() == CompetitionRules::Individual)
         resultsTableModel->setLastJumper(nullptr);
     else
@@ -1032,7 +1037,8 @@ void CompetitionManagerWindow::autoSimulateCompetition()
     jumperResultsWidget->show();
 
     startListModel->refresh();
-    focusCurrentJumper();
+    bulkSimulationInProgress = false;
+    emit manager->actualJumperChanged();
     if(getType() == CompetitionRules::Individual){
         ui->tableView_results->setModel(nullptr);
         ui->tableView_results->setModel(resultsTableModel);
@@ -1084,6 +1090,7 @@ void CompetitionManagerWindow::autoSimulateGroup()
                              QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Yes)
         return;
 
+    QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);
     teamResultsTreeModel->setLastTeam(nullptr);
     if(getType() == CompetitionRules::Team){
         TeamCompetitionManager * tmManager = dynamic_cast<TeamCompetitionManager *>(manager);
@@ -1127,7 +1134,8 @@ void CompetitionManagerWindow::autoSimulateGroup()
         jumperResultsWidget->show();
 
         startListModel->refresh();
-        focusCurrentJumper();
+        bulkSimulationInProgress = false;
+        emit manager->actualJumperChanged();
         teamResultsTreeModel->setupTreeItems();
         teamResultsTreeView->setModel(nullptr);
         teamResultsTreeView->setModel(teamResultsTreeModel);
@@ -1170,6 +1178,7 @@ void CompetitionManagerWindow::autoSimulateJumps()
                                                 tr("Liczba kolejnych skoków (maksymalnie 10 000)"),
                                                 5, 1, 10000, 1, &ok);
     if(ok == true){
+        QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);
         for(int i = 0; i < jumpsCount; i++){
             IndividualCompetitionManager * indManager = dynamic_cast<IndividualCompetitionManager *>(manager);
             TeamCompetitionManager * tmManager = dynamic_cast<TeamCompetitionManager *>(manager);
@@ -1282,7 +1291,8 @@ void CompetitionManagerWindow::autoSimulateJumps()
         jumperResultsWidget->show();
 
         startListModel->refresh();
-        focusCurrentJumper();
+        bulkSimulationInProgress = false;
+        emit manager->actualJumperChanged();
         if(getType() == CompetitionRules::Individual){
             ui->tableView_results->setModel(nullptr);
             ui->tableView_results->setModel(resultsTableModel);
