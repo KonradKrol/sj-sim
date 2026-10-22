@@ -623,6 +623,10 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 - Ważność w `SingleJumpsManager` ma zdefiniowane domyślne 5 zamiast niezainicjalizowanej liczby. Ustawienia z konfiguratora pozostają nadrzędne.
 - Szczegółowe scenariusze, commity, czasy wszystkich etapów i testy: [raport autora i pojedynczych skoków](AUTHOR_AND_SINGLE_JUMPS_2026-10-22.md).
 
+### 19.8. Przygotowanie środowiska Windows
+
+- Dodano [WINDOWS_SETUP.MD](../WINDOWS_SETUP.MD) w katalogu głównym: komplet zależności, Qt 6.8.3/MSVC 2022 x64 zgodne z konfiguracją CI, instalacja ręczna i przez aqt, środowisko PowerShell, qmake, dane obok pliku wykonywalnego, testy, diagnostyka i pakowanie QML z `--qmldir`. Instrukcja nie zmienia konfiguracji aplikacji; nie wykonywano jej na Windowsie w tej sesji.
+
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
