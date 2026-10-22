@@ -467,7 +467,7 @@ void QuickBridge::refresh() {
         double wind=0;if(auto *label=m_content->findChild<QLabel *>("label_actualAvgWind")){auto value=label->text();value.remove(QRegularExpression("[^0-9.,+−-]"));value.replace(',', '.');value.replace(QChar(0x2212),'-');wind=value.toDouble();}context["windValue"]=wind;
         if(window->getLiveStage()>0 && window->getLiveStage()<5) {
             if(m_context.value("round")==context.value("round"))context["biggestAdvancement"]=m_context.value("biggestAdvancement");
-        } else context["biggestAdvancement"]=QuickRaceStats::biggestAdvancement(*manager->getResults(),manager->getActualRound(),dynamic_cast<TeamCompetitionManager *>(manager)?manager->getCompetitionRules()->getJumpersInTeamCount():1);
+        } else context["biggestAdvancement"]=QuickRaceStats::biggestAdvancement(*manager->getResults(),manager->getActualRound(),dynamic_cast<TeamCompetitionManager *>(manager)?manager->getCompetitionRules()->getJumpersInTeamCount():1,StartListCompetitorStatus::remainingJumpers(manager->getStartListStatusesReference()));
 
         if(manager->getActualRound()>1 && !manager->checkRoundEnd() && !manager->checkCompetitionEnd()) {
             auto *team=dynamic_cast<TeamCompetitionManager *>(manager);

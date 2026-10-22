@@ -357,7 +357,7 @@ static void runCompetition(MainWindow &main,int scenario) {
             check(!window->getManager()->getResults()->getResultsReference().isEmpty(),"competition has actual results");
             render(window,QString("live-results-%1").arg(scenario),scenario==2);
             bridge->refresh();
-            check(bridge->context().value("biggestAdvancement").toMap()==QuickRaceStats::biggestAdvancement(*window->getManager()->getResults(),window->getManager()->getActualRound(),scenario==2?4:1),"competition header exposes the largest revealed advancement");
+            check(bridge->context().value("biggestAdvancement").toMap()==QuickRaceStats::biggestAdvancement(*window->getManager()->getResults(),window->getManager()->getActualRound(),scenario==2?4:1,StartListCompetitorStatus::remainingJumpers(window->getManager()->getStartListStatusesReference())),"competition header exposes the largest revealed advancement");
             check(!bridge->context().contains("leaderName"),"competition header no longer duplicates the leader");
             const auto finalSummary=bridge->jumpSummary();CompetitionSingleResult *shown=nullptr;
             for(auto &result:window->getManager()->getResults()->getResultsReference()) {
@@ -1035,6 +1035,9 @@ static void advancementRegressions() {
     add(&a,120);add(&b,110);add(&c,100);add(&d,90);add(&e,80);
     check(QuickRaceStats::biggestAdvancement(results,1,1).isEmpty() && QuickRaceStats::biggestAdvancement(results,2,1).isEmpty(),"first round and unjumped second round have no advancement");
     add(&c,100);add(&d,100);
+    check(QuickRaceStats::biggestAdvancement(results,2,1,3).isEmpty(),"partial round cannot award an advancement created solely by athletes still waiting to jump");
+    const auto partial=QuickRaceStats::biggestAdvancement(results,2,1,1);
+    check(partial.value("places").toInt()==1 && partial.value("entries").toList().first().toMap().value("to").toInt()==2,"remaining athletes reduce both the displayed gain and its target place");
     auto gain=QuickRaceStats::biggestAdvancement(results,2,1);
     check(gain.value("places").toInt()==2 && gain.value("name")==c.getNameAndSurname() && gain.value("entries").toList().size()==2,"equal biggest gains retain both athletes with a stable current-rank order");
     const auto entries=gain.value("entries").toList();
@@ -1052,8 +1055,11 @@ static void advancementRegressions() {
     for(auto *team:{&pol,&nor})for(int i=0;i<4;++i){JumpData entry;entry.setPoints(team==&pol?25:30);teams.addJump(team,entry);}teams.sortInDescendingOrder();
     check(QuickRaceStats::biggestAdvancement(teams,2,4).isEmpty(),"team advancement waits for a jump in the new round");
     JumpData teamJump;teamJump.setPoints(40);teams.addJump(&pol,teamJump);teams.sortInDescendingOrder();
+    check(QuickRaceStats::biggestAdvancement(teams,2,4,1).isEmpty(),"the first team in a new group cannot gain a place merely because its rival has not jumped");
     gain=QuickRaceStats::biggestAdvancement(teams,2,4);
     check(gain.value("places").toInt()==1 && gain.value("name").toString()=="POL","team advancement compares complete previous-round team totals");
+    QVector<StartListCompetitorStatus> statuses{StartListCompetitorStatus(&a,StartListCompetitorStatus::Unfinished),StartListCompetitorStatus(&b,StartListCompetitorStatus::Dns),StartListCompetitorStatus(&c,StartListCompetitorStatus::Dsq),StartListCompetitorStatus(&d,StartListCompetitorStatus::Finished)};
+    check(StartListCompetitorStatus::remainingJumpers(statuses)==1,"DNS and disqualified athletes do not count as competitors waiting for a jump");
     qInfo()<<"PASS: biggest advancement, shared gains, tied places, third rounds and team baselines";
 }
 

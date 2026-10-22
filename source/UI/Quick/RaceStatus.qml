@@ -31,7 +31,7 @@ Pane {
             Layout.fillWidth: true; wrapMode: Text.WordWrap
             MouseArea { id: advancementHover; anchors.fill: parent; hoverEnabled: true; acceptedButtons: Qt.NoButton }
             ToolTip.visible: advancementHover.containsMouse && status.advancement.places>0
-            ToolTip.text: qsTr("Względem poprzedniej serii. Miejsca są prowizoryczne do końca serii.")
+            ToolTip.text: qsTr("Względem poprzedniej serii, po odjęciu zawodników oczekujących na skok.")
                           +"\n"+status.advancingEntries.map(function(entry){return entry.name+" · "+entry.from+" → "+entry.to}).join("\n")
         }
 

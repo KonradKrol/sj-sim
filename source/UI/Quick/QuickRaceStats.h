@@ -7,7 +7,7 @@
 #include <functional>
 
 namespace QuickRaceStats {
-inline QVariantMap biggestAdvancement(const CompetitionResults &results, int round, int jumpsPerRound) {
+inline QVariantMap biggestAdvancement(const CompetitionResults &results, int round, int jumpsPerRound, int remainingCompetitors = 0) {
     if (round < 2 || jumpsPerRound < 1)
         return {};
     const int previousCount = (round - 1) * jumpsPerRound;
@@ -33,12 +33,13 @@ inline QVariantMap biggestAdvancement(const CompetitionResults &results, int rou
     for (const auto &candidate : candidates) {
         const auto *result = candidate.result;
         const int previous = int(std::lower_bound(scores.cbegin(), scores.cend(), candidate.previousPoints, std::greater<qint64>()) - scores.cbegin()) + 1;
-        const int places = previous - result->getPosition();
+        const int correctedPosition = result->getPosition() + qMax(0, remainingCompetitors);
+        const int places = previous - correctedPosition;
         const QString name = result->getTeam() ? result->getTeam()->getCountryCode() : result->getJumper() ? result->getJumper()->getNameAndSurname() : QString();
         if (places <= 0 || places < best || name.isEmpty())
             continue;
         if (places > best) { best = places; entries.clear(); }
-        entries.append(QVariantMap{{"name", name}, {"from", previous}, {"to", result->getPosition()}});
+        entries.append(QVariantMap{{"name", name}, {"from", previous}, {"to", correctedPosition}});
     }
     if (entries.isEmpty())
         return {};
