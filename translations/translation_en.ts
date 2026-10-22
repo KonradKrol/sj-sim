@@ -9289,6 +9289,14 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <translation>after round %1</translation>
 </message>
 
+    <message>
+        <source> pkt</source>
+        <translation> pts</translation>
+    </message>
+    <message>
+        <source>Strata po %1 serii: %2. Przewaga ma znak minus.</source>
+        <translation>Gap after round %1: %2. A lead is shown as a negative value.</translation>
+    </message>
 </context>
 
 
@@ -9610,8 +9618,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>Biggest gain: %1 ↑%2</translation>
     </message>
     <message>
-        <source>Względem poprzedniej serii. Miejsca są prowizoryczne do końca serii.</source>
-        <translation>Compared with the previous round. Positions are provisional until the end of the round.</translation>
+        <source>Względem poprzedniej serii, po odjęciu zawodników oczekujących na skok.</source>
+        <translation>Compared with the previous round, after subtracting competitors still waiting to jump.</translation>
     </message>
 </context>
 
@@ -9718,8 +9726,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
 </message>
     <message>
     <location filename="../source/UI/Quick/RaceLastJump.qml" line="49" />
-    <source>Seria</source>
-    <translation>Round</translation>
+    <source>W serii</source>
+    <translation>In round</translation>
 </message>
     <message>
     <location filename="../source/UI/Quick/RaceLastJump.qml" line="50" />
@@ -11257,5 +11265,20 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <source>Punkty</source>
     <translation>Points</translation>
 </message>
+</context>
+<context>
+    <name>SChoice</name>
+    <message>
+        <source>Szukaj skoczni…</source>
+        <translation>Search hills…</translation>
+    </message>
+    <message>
+        <source>Szukaj skoczni</source>
+        <translation>Search hills</translation>
+    </message>
+    <message>
+        <source>Brak skoczni</source>
+        <translation>No matching hills</translation>
+    </message>
 </context>
 </TS>
