@@ -4,6 +4,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
+CONFIG(release, debug|release): DEFINES += QT_NO_DEBUG_OUTPUT
+
 # Keep generated compiler files out of the deployable executable directory.
 # These are unavoidable build intermediates; release packages are assembled in
 # a separate dist directory and contain none of them.
