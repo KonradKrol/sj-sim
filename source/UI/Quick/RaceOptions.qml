@@ -18,17 +18,19 @@ ColumnLayout {
         options: [qsTr("Przebieg"),qsTr("Warunki"),qsTr("Skok")]
         currentIndex: workspace.section; onSelected: workspace.section=index
     }
-    ScrollView {
+    Flickable {
         id: scroll
+        objectName: "raceOptionsScroll"
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
-        contentWidth: availableWidth; clip: true
-        Flickable {
-            objectName: "raceOptionsScroll"
-            contentWidth: width
-            contentHeight: optionsContent.height
-            interactive: contentHeight > height
-            boundsBehavior: Flickable.StopAtBounds
-            flickableDirection: Flickable.VerticalFlick
+        contentWidth: width
+        contentHeight: optionsContent.height
+        readonly property bool overflow: contentHeight > height
+        interactive: overflow
+        boundsBehavior: Flickable.StopAtBounds
+        flickableDirection: Flickable.VerticalFlick
+        clip: true
+        onOverflowChanged: if (!overflow) { cancelFlick(); contentY = 0 }
+        ScrollBar.vertical: ScrollBar { policy: scroll.overflow ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff }
             Column {
                 id: optionsContent
                 width: parent.width; spacing: 12
@@ -51,7 +53,6 @@ ColumnLayout {
                     }
                 }
             }
-        }
     }
     function focusClose() {closeButton.forceActiveFocus()}
     Keys.onEscapePressed: workspace.closeRequested()

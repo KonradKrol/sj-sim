@@ -81,6 +81,7 @@
 #include <QSignalSpy>
 #include <QAbstractItemModelTester>
 #include <QMouseEvent>
+#include <QWheelEvent>
 #include <QElapsedTimer>
 #include <QProgressDialog>
 #include <QProgressBar>
@@ -257,8 +258,27 @@ static void runCompetition(MainWindow &main,int scenario) {
                 main.resize(1024,640);main.activateWindow();scene(window)->setFocus();QTest::qWait(70);
                 clickControl(scene(window),"raceLiveToggle");check(window->findChild<QCheckBox *>("checkBox_liveCompetition")->isChecked(),"UX 4: live presentation is directly available in the competition toolbar");clickControl(scene(window),"raceLiveToggle");
                 clickControl(scene(window),"raceWindConditions");auto *optionsWorkspace=item(scene(window)->quickWindow()->contentItem(),"raceOptionsWorkspace");check(optionsWorkspace&&optionsWorkspace->property("section").toInt()==1,"UX 4: wind opens the conditions section directly");
-                auto *optionsScroll=item(scene(window)->quickWindow()->contentItem(),"raceOptionsScroll");check(optionsScroll && optionsScroll->property("contentHeight").toReal()<=optionsScroll->height() && !optionsScroll->property("interactive").toBool(),"competition options do not scroll when all conditions fit");
-                const qreal panelHeight=optionsScroll->height();optionsScroll->setHeight(30);check(optionsScroll->property("interactive").toBool(),"competition options remain scrollable when their content overflows");optionsScroll->setHeight(panelHeight);
+                auto *optionsScroll=item(scene(window)->quickWindow()->contentItem(),"raceOptionsScroll");
+                check(optionsScroll && optionsScroll->property("contentHeight").toReal()<=optionsScroll->height(),"conditions fit the competition options viewport");
+                auto *optionsView=scene(window);
+                const QPoint wheelPoint=optionsScroll->mapToItem(optionsView->rootObject(),QPointF(optionsScroll->width()-20,optionsScroll->height()/2)).toPoint();
+                QTest::mouseMove(optionsView,wheelPoint);QTest::qWait(30);
+                QWheelEvent wheel(wheelPoint,optionsView->mapToGlobal(wheelPoint),QPoint(),QPoint(0,-120),Qt::NoButton,Qt::NoModifier,Qt::NoScrollPhase,false);
+                QApplication::sendEvent(optionsView,&wheel);QTest::qWait(60);
+                check(!optionsScroll->property("interactive").toBool() && optionsScroll->property("contentY").toReal()==0,"mouse and wheel input do not enable scrolling when competition options fit");
+                const QPoint dragEnd=wheelPoint-QPoint(0,60);
+                QTest::mousePress(optionsView,Qt::LeftButton,Qt::NoModifier,wheelPoint);
+                for(int step=1;step<=6;++step) {const QPoint at=wheelPoint+(dragEnd-wheelPoint)*step/6;QMouseEvent move(QEvent::MouseMove,at,optionsView->mapToGlobal(at),Qt::NoButton,Qt::LeftButton,Qt::NoModifier);QApplication::sendEvent(optionsView,&move);QTest::qWait(15);}
+                QTest::mouseRelease(optionsView,Qt::LeftButton,Qt::NoModifier,dragEnd);QTest::qWait(60);
+                check(optionsScroll->property("contentY").toReal()==0,"dragging fitted competition options does not move their content");
+                const qreal panelHeight=optionsScroll->height();optionsScroll->setHeight(80);QTest::qWait(40);
+                check(optionsScroll->property("interactive").toBool(),"competition options remain scrollable when their content overflows");
+                const QPoint overflowPoint=optionsScroll->mapToItem(optionsView->rootObject(),QPointF(optionsScroll->width()-20,40)).toPoint();
+                QWheelEvent overflowWheel(overflowPoint,optionsView->mapToGlobal(overflowPoint),QPoint(),QPoint(0,-120),Qt::NoButton,Qt::NoModifier,Qt::NoScrollPhase,false);
+                QApplication::sendEvent(optionsView,&overflowWheel);QTest::qWait(80);
+                check(optionsScroll->property("contentY").toReal()>0,"overflowing competition options can actually be scrolled by wheel");
+                optionsScroll->setHeight(panelHeight);QTest::qWait(60);
+                check(optionsScroll->property("contentY").toReal()==0 && !optionsScroll->property("interactive").toBool(),"restoring sufficient space resets and disables competition options scrolling");
                 QSignalSpy windGenerated(window->findChild<QPushButton *>("pushButton_generateNewWinds"),&QPushButton::clicked);clickControl(scene(window),"action-pushButton_generateNewWinds");check(windGenerated.count()==1,"UX 4: generating wind uses the original competition action");QTest::keyClick(scene(window),Qt::Key_Escape);QTest::qWait(220);
                 bridge->edit(id(bridge,"spinBox_actualGate"),17);
                 for(const QString &name:{QString("pushButton_windsGeneratorSettings"),QString("pushButton_inrunSnowGeneratorSettings"),QString("pushButton_manipulateJump"),QString("pushButton_coachGate")}) {
