@@ -42,12 +42,7 @@ void JumperCompetitionResultsWidget::fillWidget()
             double leading=ranked->getPointsSum();
             for(const auto &result:results)if(std::isfinite(result.getPointsSum()))leading=qMax(leading,result.getPointsSum());
             if(std::isfinite(leading)&&std::isfinite(ranked->getPointsSum()))rankSummary["leaderGap"]=qMax(0.,qRound64((leading-ranked->getPointsSum())*10)/10.);
-            const int previousRounds=jumperResult->getJumps().size()-1;
-            const int count=previousRounds*(team?competition->getRules().getJumpersInTeamCount():1);
-            if(count>0 && ranked->getJumps().size()>=count) {
-                const int position=competition->getResultsReference().getPositionAfterJumps(*ranked,count);
-                rankSummary["previousPosition"]=position;rankSummary["previousRound"]=previousRounds;
-            }
+
         }
     }
     setProperty("quickRankSummary",rankSummary);

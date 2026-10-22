@@ -44,7 +44,7 @@ Pane {
                     id: rank
                     anchors.centerIn: parent; spacing: 6
                     Label { objectName: "lastJumpPosition"; text: jump.summary.positionNumber>0 ? jump.summary.positionNumber+"." : "—"; color: Theme.accent; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.weight: Font.ExtraBold }
-                    Label { text: jump.summary.previousRound ? qsTr("po %1 serii").arg(jump.summary.previousRound) : qsTr("miejsce"); color: Theme.ink; font.pointSize: Theme.caption; anchors.verticalCenter: parent.verticalCenter }
+                    Label { text: qsTr("miejsce"); color: Theme.ink; font.pointSize: Theme.caption; anchors.verticalCenter: parent.verticalCenter }
                 }
             }
         }

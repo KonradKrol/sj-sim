@@ -461,6 +461,12 @@ void QuickBridge::refresh() {
         QVariantMap context{{"complete",manager->checkCompetitionEnd()},{"roundComplete",manager->checkRoundEnd()},{"liveStage",window->getLiveStage()},{"round",manager->getActualRound()},{"roundCount",manager->getCompetitionRules()->getRoundsReference().size()},
                             {"athlete",qMin(manager->getActualStartListIndex()+1,manager->getStartListStatusesReference().size())},{"athleteCount",manager->getStartListStatusesReference().size()}};
         if(auto *team=dynamic_cast<TeamCompetitionManager *>(manager))context["group"]=team->getActualGroup();
+        if(auto *hill=manager->getCompetitionInfo()->getHill())context["hillFlag"]=quickPicture(CountryFlagsManager::getFlagPixmap(hill->getCountryCode().toLower()));
+        double wind=0;if(auto *label=m_content->findChild<QLabel *>("label_actualAvgWind")){auto value=label->text();value.remove(QRegularExpression("[^0-9.,+−-]"));value.replace(',', '.');value.replace(QChar(0x2212),'-');wind=value.toDouble();}context["windValue"]=wind;
+        const auto &results=manager->getResults()->getResultsReference();const CompetitionSingleResult *leader=nullptr;for(const auto &result:results)if(!leader||result.getPointsSum()>leader->getPointsSum())leader=&result;
+        if(window->getLiveStage()>0 && window->getLiveStage()<5){if(m_context.contains("leaderName")){context["leaderName"]=m_context.value("leaderName");context["leaderPoints"]=m_context.value("leaderPoints");}}
+        else if(leader){context["leaderName"]=leader->getTeam()?leader->getTeam()->getCountryCode():leader->getJumper()?leader->getJumper()->getNameAndSurname():QString();context["leaderPoints"]=leader->getPointsSum();}
+
         if(manager->getActualRound()>1 && !manager->checkRoundEnd() && !manager->checkCompetitionEnd()) {
             auto *team=dynamic_cast<TeamCompetitionManager *>(manager);
             auto *ranked=team?manager->getResults()->getResultOfTeam(team->getActualTeam()):manager->getResults()->getResultOfIndividualJumper(manager->getActualJumper());
@@ -486,8 +492,6 @@ void QuickBridge::refresh() {
             if(summary.contains("position")) {
                 summary["positionNumber"]=rank.value("positionNumber");
                 if(rank.contains("leaderGap"))summary["leaderGap"]=rank.value("leaderGap");
-            } else if(window->getLiveStage()>0 && rank.contains("previousPosition")) {
-                summary["positionNumber"]=rank.value("previousPosition");summary["previousRound"]=rank.value("previousRound");
             }
             for(auto *info:selected->findChildren<JumpDataDetailedInfoWindow *>())if(info->isVisibleTo(m_content) && info->getJumpData()) {
                 const auto *jump=info->getJumpData();
