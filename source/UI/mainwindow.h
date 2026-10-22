@@ -39,7 +39,7 @@ private slots:
     void on_pushButton_help_clicked();
 
     void on_pushButton_thanks_clicked();
-    void on_pushButton_author_clicked();
+    void showAuthor();
 
 private:
     Ui::MainWindow *ui;

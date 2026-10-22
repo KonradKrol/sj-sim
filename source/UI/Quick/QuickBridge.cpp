@@ -614,7 +614,7 @@ bool QuickBridge::shortcut(int owner,const QString &sequence) {
 void QuickBridge::launch(const QString &destination) {
     static const QHash<QString,const char *> destinations{{"competition","on_pushButton_singleCompetition_clicked"},{"jumps","on_pushButton_singleJumps_clicked"},
         {"seasons","on_pushButton_season_clicked"},{"database","on_pushButton_databaseEdit_clicked"},{"settings","on_pushButton_settings_clicked"},
-        {"author","on_pushButton_author_clicked"},{"help","on_pushButton_help_clicked"},{"credits","on_pushButton_thanks_clicked"},{"issue","on_pushButton_reportIssue_clicked"}};
+        {"author","showAuthor"},{"help","on_pushButton_help_clicked"},{"credits","on_pushButton_thanks_clicked"},{"issue","on_pushButton_reportIssue_clicked"}};
     const auto slot=destinations.value(destination,nullptr);
     if(!m_home || !slot) return;
     QTimer::singleShot(0,this,[this,slot] { if(m_window) QMetaObject::invokeMethod(m_window,slot); emit changed(); });

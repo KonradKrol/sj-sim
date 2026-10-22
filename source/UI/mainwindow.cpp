@@ -57,7 +57,7 @@ MainWindow::MainWindow(QWidget *parent)
     auto *author = new QPushButton(tr("O autorze"),this);
     author->setObjectName("pushButton_author");
     ui->verticalLayout_9->insertWidget(ui->verticalLayout_9->count()-1,author);
-    connect(author,&QPushButton::clicked,this,&MainWindow::on_pushButton_author_clicked);
+    connect(author,&QPushButton::clicked,this,&MainWindow::showAuthor);
     parentApplication = nullptr;
     ui->label_version->setText(appVersion);
     setFixedSize(size());
@@ -200,7 +200,7 @@ void MainWindow::on_pushButton_thanks_clicked()
     thanksWindow->show();
 }
 
-void MainWindow::on_pushButton_author_clicked()
+void MainWindow::showAuthor()
 {
     auto *author = new AuthorWindow(this);
     author->setAttribute(Qt::WA_DeleteOnClose);
