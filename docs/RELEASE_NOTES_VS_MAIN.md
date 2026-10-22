@@ -6,7 +6,7 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
-- Stan porównania kodu i dokumentacji: **e3c62cb**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
+- Stan porównania kodu i dokumentacji: **0eeef38**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
 - Data zestawienia: **22 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **1.3.0 beta-3**. Przygotowanie dokumentu nie zmienia numeru wydania na 2.0.0.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
@@ -630,9 +630,9 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
-- Snapshot kodu i dokumentacji: **e3c62cbf41a4062da30554dc4767a15251163c72**.
-- Commitów od bazy: **90**.
-- Plików zmienionych w tym zakresie: **377**.
+- Snapshot kodu i dokumentacji: **0eeef38b1810d04555b40d27a24248502d2343d9**.
+- Commitów od bazy: **92**.
+- Plików zmienionych w tym zakresie: **378**.
 - Statystyki obejmują także fonty, skills i dokumentację; nie oznaczają rozmiaru samej logiki gry.
 - Dalsza aktualizacja tego zestawienia jest dodatkiem dokumentacyjnym do wskazanego snapshotu.
 
@@ -641,7 +641,7 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 | Dokumentacja etapów i migracji | 19 |
 | Domyślny interfejs Qt Quick i jego zasoby | 89 |
 | Instrukcje i zasoby narzędzi deweloperskich | 167 |
-| Konfiguracja projektu i pozostałe pliki | 5 |
+| Konfiguracja projektu i pozostałe pliki | 6 |
 | Kontrolery, modele i logika C++ | 71 |
 | Skrypty budowania, uruchamiania i testowania | 6 |
 | Testy | 2 |
@@ -651,9 +651,9 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 Porównanie można odtworzyć poleceniami:
 
 ~~~sh
-git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c e3c62cbf41a4062da30554dc4767a15251163c72
-git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c e3c62cbf41a4062da30554dc4767a15251163c72
-git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..e3c62cbf41a4062da30554dc4767a15251163c72
+git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 0eeef38b1810d04555b40d27a24248502d2343d9
+git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 0eeef38b1810d04555b40d27a24248502d2343d9
+git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..0eeef38b1810d04555b40d27a24248502d2343d9
 ~~~
 
 Zestawienie można odświeżyć przez `python3 scripts/update-release-inventory.py --base main --snapshot HEAD`. Opisy zachowania i wyniki testów należy uzupełniać na podstawie faktycznych zmian oraz weryfikacji.
@@ -754,6 +754,8 @@ Historyczne opisy należy czytać z uwzględnieniem opisanych powyżej rozwiąza
 | `0b81ec2` | i18n: translate compact appearance and standalone jump controls |
 | `7eaf15d` | fix: place the compact author portrait beside the heading — Use a shared header row on small screens: full 84x112 or 120x160 portrait next to the greeting, followed by full-width biography and projects. Keep the desktop photo beside the entire biography. Verify portrait/header alignment, full framing, both themes and larger text. |
 | `e3c62cb` | docs: record author, compact UI and standalone jump changes — Document every completed follow-up, final small-screen portrait layout, full-height results, direct simulation controls, default sorting and single-jump gate calculation. Record three optimizations with phase timings and limitations, 367-render integration validation, final author regression and Widgets build. Update the continuation checkpoint and manual release checklist. |
+| `d95db6a` | docs: refresh complete release inventory through e3c62cb — Regenerate all 90 commits and 377 changed files against untouched main beta-2, including the author and standalone-jump follow-ups. This manifest-only commit is outside its explicitly recorded snapshot. |
+| `0eeef38` | docs: add complete Windows development setup for contributors and Codex — Document the CI-aligned Qt 6.8.3/MSVC 2022 x64 toolchain, all required Qt modules, optional aqt installation, developer PowerShell, qmake builds, isolated runtime data, smoke tests, Widgets fallback, troubleshooting and QML-aware deployment. Verify links, build targets and tool syntax against repository configuration and primary documentation; explicitly state Windows execution was not performed here. |
 
 ## Załącznik C. Pełny manifest zmienionych plików
 
@@ -774,7 +776,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/COMPETITION_FINISH_CRASH_2026-10-22.md](../docs/COMPETITION_FINISH_CRASH_2026-10-22.md) | 20 | 0 |
 | A | [docs/COMPETITION_REFINEMENTS_2026-10-21.md](../docs/COMPETITION_REFINEMENTS_2026-10-21.md) | 34 | 0 |
 | A | [docs/FIVE_DATA_FIXES_2026-10-22.md](../docs/FIVE_DATA_FIXES_2026-10-22.md) | 57 | 0 |
-| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1141 | 0 |
+| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1182 | 0 |
 | A | [docs/RESUME_2026-10-22.md](../docs/RESUME_2026-10-22.md) | 42 | 0 |
 | A | [docs/SEASON_WORKSPACE_2026-10-22.md](../docs/SEASON_WORKSPACE_2026-10-22.md) | 60 | 0 |
 | A | [docs/SIMULATION_PERFORMANCE_2026-10-22.md](../docs/SIMULATION_PERFORMANCE_2026-10-22.md) | 57 | 0 |
@@ -1054,6 +1056,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | Status | Plik | + | − |
 | --- | --- | ---: | ---: |
 | M | [.gitignore](../.gitignore) | 4 | 0 |
+| A | [WINDOWS_SETUP.MD](../WINDOWS_SETUP.MD) | 264 | 0 |
 | M | [assets.qrc](../assets.qrc) | 1 | 0 |
 | A | [img/author/konrad.jpg](../img/author/konrad.jpg) | - | - |
 | M | [sj-sim.pro](../sj-sim.pro) | 47 | 0 |
