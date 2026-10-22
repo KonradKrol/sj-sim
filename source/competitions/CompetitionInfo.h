@@ -61,6 +61,7 @@ private:
     QVector<Classification *> classifications;
 
     Classification * advancementClassification;
+    CompetitionInfo * pendingAdvancementCompetition=nullptr;
     CompetitionInfo * advancementCompetition; //Tylko jedno z tych 2 może być "aktywne"
     QVector<CompetitionInfo *> qualifyingCompetitions; //Konkursy dla których ten konkurs jest kwalifikacjami
 
@@ -98,6 +99,8 @@ public:
     Classification *getAdvancementClassification() const;
     void setAdvancementClassification(Classification *newAdvancementClassification);
     CompetitionInfo *getAdvancementCompetition() const;
+    CompetitionInfo *getPendingAdvancementCompetition() const { return pendingAdvancementCompetition; }
+    void setPendingAdvancementCompetition(CompetitionInfo *source) { pendingAdvancementCompetition=source; }
     void setAdvancementCompetition(CompetitionInfo *newAdvancementCompetition);
     QVector<CompetitionInfo *> getQualifyingCompetitions() const;
     QVector<CompetitionInfo *> & getQualifyingCompetitionsReference();

@@ -162,7 +162,7 @@ SimulationSave *CalendarEditorWidget::getSave() const
 void CalendarEditorWidget::setSave(SimulationSave *newSave)
 {
     save = newSave;
-    calendar = save->getActualSeason()->getActualCalendar();
+    calendar = calendarModel->getCalendar();
 }
 
 QVector<Classification *> *CalendarEditorWidget::getClassificationsList() const
@@ -678,6 +678,7 @@ void CalendarEditorWidget::duplicateActionTriggered()
         comp->setRules(existing->getRules());
         comp->setClassifications(existing->getClassifications());
         comp->setAdvancementCompetition(existing->getAdvancementCompetition());
+        comp->setPendingAdvancementCompetition(existing->getPendingAdvancementCompetition());
         comp->setAdvancementClassification(existing->getAdvancementClassification());
         for(auto & tr : existing->getTrainingsReference())
         {
@@ -1165,8 +1166,8 @@ void CalendarEditorWidget::execMultipleClassificationsEditDialog(QVector<int> *r
     CompetitionInfo * competition = SeasonCalendar::getMainCompetitionByIndex(calendar->getCompetitionsReference(), rows->first());
 
     QVBoxLayout * checkBoxesLayout = new QVBoxLayout(dialog);
-    for(int i=0; i<save->getActualSeason()->getActualCalendar()->getClassificationsReference().count(); i++){
-        Classification * c = const_cast<Classification *>(save->getActualSeason()->getActualCalendar()->getClassificationsReference()[i]);
+    for(int i=0; i<calendar->getClassificationsReference().count(); i++){
+        Classification * c = const_cast<Classification *>(calendar->getClassificationsReference()[i]);
         QCheckBox * checkBox = new QCheckBox(dialog);
         checkBox->setChecked(competition->getClassificationsReference().contains(c));
         QString text = c->getName();
@@ -1398,7 +1399,7 @@ return;
     {
         SeasonCalendarPreset * preset = &GlobalDatabase::get()->getEditableGlobalCalendarPresets()[presetsNames.indexOf(itemText)];
         calendarModel->applyChange([&]{
-        qDeleteAll(calendar->getCompetitionsReference());
+        if(!property("quickRetainPresetEvents").toBool())qDeleteAll(calendar->getCompetitionsReference());
         calendar->getCompetitionsReference().clear();
         QHash<CompetitionInfo *, CompetitionInfo *> competitions; //1. Konkurs z presetu, 2. Nowy konkurs z kalendarza
         for(auto & presetCompetition : preset->getCalendarReference().getCompetitionsReference())
@@ -1420,6 +1421,7 @@ return;
         {
             for(auto & presetCompetition : preset->getCalendarReference().getCompetitionsReference())
             {
+                    if(calendarCompetition->getPendingAdvancementCompetition()==presetCompetition)calendarCompetition->setPendingAdvancementCompetition(competitions.value(presetCompetition));
                     if(calendarCompetition->getAdvancementCompetition() == presetCompetition)
                         calendarCompetition->setAdvancementCompetition(competitions.value(presetCompetition));
                     if(calendarCompetition->getTrialRound() == presetCompetition)
@@ -1432,7 +1434,7 @@ return;
                     }
             }
         }
-        qDeleteAll(calendar->getClassificationsReference());
+        if(!property("quickRetainPresetEvents").toBool())qDeleteAll(calendar->getClassificationsReference());
         calendar->getClassificationsReference().clear();
         QHash<Classification *, Classification *> classifications; //1. Klasyfikacja z presetu, 2. Nowa Klasyfikacja z kalendarza
         for(auto & presetClassification : preset->getCalendarReference().getClassificationsReference())

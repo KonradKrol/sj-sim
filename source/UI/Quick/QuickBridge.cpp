@@ -4,17 +4,20 @@
 #include "../EditorWidgets/JumpersListEditorWindow.h"
 #include "../EditorWidgets/TeamsEditing/TeamEditorWidget.h"
 #include "../Seasons/CalendarEditor/CalendarEditorWidget.h"
+#include "../Seasons/SimulationSaveManagerWindow.h"
 #include "../mainwindow.h"
 #include "../Competition/CompetitionManagerWindow.h"
 #include "../Competition/CompetitionConfigWindow.h"
 #include "../ResultsShowing/JumpDataDetailedInfoWindow.h"
 #include "../EditorWidgets/HillEditorWidget.h"
 #include "../EditorWidgets/CompetitionRulesEditorWidget.h"
+#include "../EditorWidgets/ClassificationEditorWidget.h"
 #include "../EditorWidgets/WindsGeneratorSettingsEditorWidget.h"
 #include "../EditorWidgets/WindsGeneratorSettingsWidgetInputItem.h"
 #include "../DatabaseEditor/DatabaseItemsListView.h"
 #include "../../competitions/CompetitionManagers/TeamCompetitionManager.h"
 #include "../../global/GlobalDatabase.h"
+#include "../../global/CountryFlagsManager.h"
 #include <QApplication>
 #include <QAbstractButton>
 #include <QAbstractItemView>
@@ -155,6 +158,11 @@ int QuickBridge::idFor(QObject *object) {
     if(m_ids.contains(object)) return m_ids.value(object);
     const int id=++m_nextId; m_ids.insert(object,id); m_objects.insert(id,object);
     auto *widget=qobject_cast<QWidget *>(object);
+    if(auto *spin=qobject_cast<QSpinBox *>(object))connect(spin,QOverload<int>::of(&QSpinBox::valueChanged),this,&QuickBridge::deferRefresh);
+    else if(auto *spin=qobject_cast<QDoubleSpinBox *>(object))connect(spin,QOverload<double>::of(&QDoubleSpinBox::valueChanged),this,&QuickBridge::deferRefresh);
+    else if(auto *choice=qobject_cast<QComboBox *>(object))connect(choice,QOverload<int>::of(&QComboBox::currentIndexChanged),this,&QuickBridge::deferRefresh);
+    else if(auto *input=qobject_cast<QLineEdit *>(object))connect(input,&QLineEdit::textChanged,this,&QuickBridge::deferRefresh);
+    else if(auto *button=qobject_cast<QAbstractButton *>(object))connect(button,&QAbstractButton::toggled,this,&QuickBridge::deferRefresh);
     connect(object,&QObject::destroyed,this,[this,object,id,widget] {
         auto *entry=m_nodes.take(object);
         if(entry) entry->deleteLater();
@@ -270,6 +278,7 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
         if(!backend){backend=new QuickCalendar(calendar,this);m_calendars.insert(calendar,backend);connect(calendar,&QObject::destroyed,this,[this,calendar,backend]{m_calendars.remove(calendar);backend->deleteLater();});}
         backend->sync();data["kind"]="calendar";data["enabled"]=true;data["backend"]=QVariant::fromValue(static_cast<QObject *>(backend));
         data["rulesEditor"]=QVariant::fromValue(node(backend->rulesEditor(),true));
+        data["classificationEditor"]=QVariant::fromValue(node(backend->classificationEditor(),true));
     } else if(auto *wind=qobject_cast<WindsGeneratorSettingsEditorWidget *>(widget)) {
         data["kind"]="wind";data["kPoint"]=wind->getKPoint();
         if(entry->values().value("kPoint").toDouble()!=wind->getKPoint()) { m_windUndo.remove(wind);wind->setProperty("quickWindSector",0); }
@@ -435,6 +444,14 @@ void QuickBridge::refresh() {
         actions.append(QVariantMap{{"id",id},{"owner",owner?idFor(owner):-1},{"text",text},{"sequence",sequence},{"enabled",action->isEnabled() && (!owner || !owner->isHidden())}});
     }
     if(actions!=m_actions) { m_actions=actions; emit changed(); }
+    if(auto *season=qobject_cast<SimulationSaveManagerWindow *>(m_window)) {
+        QVariantMap context;
+        if(auto *next=season->getSimulationSave()->getNextCompetition();next && next->getHill()) {
+            context["nextFlag"]=quickPicture(CountryFlagsManager::getFlagPixmap(next->getHill()->getCountryCode().toLower()));context["nextHill"]=next->getHill()->getName();context["nextHS"]=next->getHill()->getHSPoint();context["nextTeam"]=next->getRules().getCompetitionType()==CompetitionRules::Team;
+            if(auto *label=m_content->findChild<QLabel *>("label_serieTypeAndTrainingIndex"))context["nextType"]=label->text();
+        }
+        if(context!=m_context){m_context=context;emit changed();}
+    }
     if(auto *window=qobject_cast<CompetitionManagerWindow *>(m_window);window && window->getManager()) {
         auto *manager=window->getManager();
         QVariantMap context{{"complete",manager->checkCompetitionEnd()},{"roundComplete",manager->checkRoundEnd()},{"liveStage",window->getLiveStage()},{"round",manager->getActualRound()},{"roundCount",manager->getCompetitionRules()->getRoundsReference().size()},
@@ -498,7 +515,7 @@ void QuickBridge::deferRefresh() {
 void QuickBridge::edit(int id,const QVariant &value) {
     if(auto *page=qobject_cast<QuickNode *>(m_objects.value(id))) {
         if(page==m_groups.value("season-pages") && value.toInt()>0)
-            if(auto *tabs=m_content->findChild<QTabWidget *>("toolBox"))tabs->setCurrentIndex(value.toInt()-1);
+            if(auto *tabs=m_content->findChild<QTabWidget *>("toolBox")){const auto mapping=page->property("quickSourceIndexes").toList();tabs->setCurrentIndex(mapping.isEmpty()?value.toInt()-1:mapping.value(value.toInt()).toInt());}
         page->setProperty("quickTabIndex",value.toInt());deferRefresh();return;
     }
     auto *widget=qobject_cast<QWidget *>(m_objects.value(id)); if(!widget || !widget->isEnabled()) return;
@@ -510,7 +527,7 @@ void QuickBridge::edit(int id,const QVariant &value) {
     } else if(auto *tabs=qobject_cast<QTabWidget *>(widget)) {
         tabs->setCurrentIndex(value.toInt());
         if(profile()=="SimulationSaveManagerWindow" && tabs->objectName()=="toolBox")
-            if(auto *pages=m_groups.value("season-pages"))pages->setProperty("quickTabIndex",value.toInt()+1);
+            if(auto *pages=m_groups.value("season-pages")){const auto mapping=pages->property("quickSourceIndexes").toList();pages->setProperty("quickTabIndex",value.toInt()==4?4:mapping.indexOf(value.toInt()));}
     }
     else if(auto *box=qobject_cast<QToolBox *>(widget)) box->setCurrentIndex(value.toInt());
     else if(auto *line=qobject_cast<QLineEdit *>(widget)) {
@@ -788,17 +805,19 @@ void QuickBridge::compose(QuickNode *base) {
             QVariantList pages{group("season-overview",QString(),{
                 group("season-next",tr("Następny konkurs"),overview),group("season-standings",tr("Klasyfikacja"),standings)},"sections")};
             QStringList labels{tr("Przegląd")};
+            QVariantList sourceIndexes{-1};
             for(int i=0;i<source->count();++i) {
                 auto *page=source->widget(i);page->setProperty("quickExposePage",true);
+                if(i==4 && page->findChild<ClassificationEditorWidget *>())continue;sourceIndexes.append(i);
                 if(i==3 && page->findChild<CalendarEditorWidget *>())pages.append(QVariant::fromValue(node(page->findChild<CalendarEditorWidget *>(),true)));
                 else if(auto *content=catalog(page))pages.append(QVariant::fromValue(content));
                 else pages.append(QVariant::fromValue(node(page,true)));
                 labels.append(source->tabText(i).remove('&'));
             }
-            auto *tabs=sectionTabs("season-pages",labels,pages);
+            auto *tabs=sectionTabs("season-pages",labels,pages);tabs->setProperty("quickSourceIndexes",sourceIndexes);
             if(!source->property("quickSeasonConnected").toBool()) {
                 source->setProperty("quickSeasonConnected",true);
-                connect(source,&QTabWidget::currentChanged,this,[this,tabs](int index){tabs->setProperty("quickTabIndex",index+1);deferRefresh();});
+                connect(source,&QTabWidget::currentChanged,this,[this,tabs](int index){const auto mapping=tabs->property("quickSourceIndexes").toList();tabs->setProperty("quickTabIndex",index==4?4:mapping.indexOf(index));deferRefresh();});
             }
             m_root->update(tabs->values(),tabs->children());return;
         }

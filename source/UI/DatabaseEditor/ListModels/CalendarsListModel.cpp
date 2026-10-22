@@ -73,3 +73,5 @@ void CalendarsListModel::setCalendars(QVector<SeasonCalendar *> *newCalendars)
 {
     calendars = newCalendars;
 }
+
+void CalendarsListModel::resetContents(const QVector<SeasonCalendar *> &items) {if(!calendars)return;beginResetModel();*calendars=items;endResetModel();}

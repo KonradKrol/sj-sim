@@ -482,6 +482,7 @@ CompetitionInfo *CompetitionInfo::getAdvancementCompetition() const
 void CompetitionInfo::setAdvancementCompetition(CompetitionInfo *newAdvancementCompetition)
 {
     advancementCompetition = newAdvancementCompetition;
+    pendingAdvancementCompetition = nullptr;
 }
 
 Classification *CompetitionInfo::getAdvancementClassification() const
@@ -538,6 +539,7 @@ QJsonObject CompetitionInfo::getJsonObject(CompetitionInfo &competition)
     }
     object.insert("classifications-ids", classificationsArray);
 
+    if(competition.getPendingAdvancementCompetition())object.insert("pending-advancement-competition-id",competition.getPendingAdvancementCompetition()->getIDStr());
     if(competition.getAdvancementClassification() != nullptr)
         object.insert("advancement-classification-id", competition.getAdvancementClassification()->getIDStr());
     if(competition.getAdvancementCompetition() != nullptr)

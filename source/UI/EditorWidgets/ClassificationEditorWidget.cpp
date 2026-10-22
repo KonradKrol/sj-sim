@@ -72,18 +72,8 @@ ClassificationEditorWidget::ClassificationEditorWidget(Classification * classifi
         i++;
     }
     connect(ui->comboBox_presets, qOverload<int>(&QComboBox::activated), this, [this](){
-        if(ui->comboBox_presets->currentIndex() == 0)
-        {
-            tableModel->removeRows(0, tableModel->rowCount());
-            pointsForPlaces.clear();
-        }
-        else
-        {
-            tableModel->removeRows(0, tableModel->rowCount());
-            pointsForPlaces = GlobalDatabase::get()->getEditableGlobalPointsForPlacesPresets()[ui->comboBox_presets->currentIndex() - 1].getPointsForPlacesReference();
-            tableModel->insertRows(0, pointsForPlaces.count());
-            emit tableModel->dataChanged(tableModel->index(0, 0), tableModel->index(tableModel->rowCount() - 1, tableModel->columnCount() - 1));
-        }
+        const int index=ui->comboBox_presets->currentIndex()-1;const auto &presets=GlobalDatabase::get()->getEditableGlobalPointsForPlacesPresets();
+        tableModel->replacePoints(index>=0&&index<presets.size()?presets[index].getPointsForPlaces():QMap<int,double>());
     });
 }
 
@@ -97,10 +87,7 @@ void ClassificationEditorWidget::resetInputs()
     ui->lineEdit_name->clear();
     ui->comboBox_type->setCurrentIndex(0);
     ui->comboBox_points->setCurrentIndex(0);
-    tableModel->removeRows(0, tableModel->rowCount());
-    altTableModel->removeRows(0, altTableModel->rowCount());
-    pointsForPlaces.clear();
-    altPointsForPlaces.clear();
+    tableModel->replacePoints({});altTableModel->replacePoints({});
 }
 
 void ClassificationEditorWidget::fillInputs()
@@ -109,12 +96,7 @@ void ClassificationEditorWidget::fillInputs()
     ui->comboBox_type->setCurrentIndex(classification->getClassificationType());
     ui->comboBox_points->setCurrentIndex(classification->getPunctationType());
 
-    pointsForPlaces = classification->getPointsForPlaces();
-    altPointsForPlaces = classification->getAltPointsForPlaces();
-    tableModel->insertRows(0, pointsForPlaces.count());
-    altTableModel->insertRows(0, altPointsForPlaces.count());
-    emit tableModel->dataChanged(tableModel->index(0, 0), tableModel->index(tableModel->rowCount() - 1, tableModel->columnCount() - 1));
-    emit altTableModel->dataChanged(altTableModel->index(0, 0), altTableModel->index(altTableModel->rowCount() - 1, altTableModel->columnCount() - 1));
+    tableModel->replacePoints(classification->getPointsForPlaces());altTableModel->replacePoints(classification->getAltPointsForPlaces());
 }
 
 Classification * ClassificationEditorWidget::getClassificationFromInputs()
@@ -136,7 +118,6 @@ void ClassificationEditorWidget::on_pushButton_submit_clicked()
 void ClassificationEditorWidget::addActionTriggered()
 {
     int count = pointsForPlaces.count();
-    pointsForPlaces.insert(count + 1, 0);
     tableModel->insertRow(count);
     emit tableModel->dataChanged(tableModel->index(count, 0), tableModel->index(count, 1));
 }
@@ -144,7 +125,6 @@ void ClassificationEditorWidget::addActionTriggered()
 void ClassificationEditorWidget::removeActionTriggered()
 {
     int count = pointsForPlaces.count();
-    pointsForPlaces.remove(count);
     tableModel->removeRow(count - 1);
 }
 
@@ -156,22 +136,12 @@ Classification *ClassificationEditorWidget::getClassification() const
 void ClassificationEditorWidget::setClassification(Classification *newClassification)
 {
     classification = newClassification;
-    pointsForPlaces = classification ? classification->getPointsForPlaces() : QMap<int,double>();
-    altPointsForPlaces = classification ? classification->getAltPointsForPlaces() : QMap<int,double>();
+    tableModel->replacePoints(classification?classification->getPointsForPlaces():QMap<int,double>());
+    altTableModel->replacePoints(classification?classification->getAltPointsForPlaces():QMap<int,double>());
 }
 
 void ClassificationEditorWidget::on_comboBox_altPreset_activated(int index)
 {
-    if(ui->comboBox_altPreset->currentIndex() == 0)
-    {
-        altTableModel->removeRows(0, altTableModel->rowCount());
-        altPointsForPlaces.clear();
-    }
-    else
-    {
-        altTableModel->removeRows(0, altTableModel->rowCount());
-        altPointsForPlaces = GlobalDatabase::get()->getEditableGlobalPointsForPlacesPresets()[ui->comboBox_altPreset->currentIndex() - 1].getPointsForPlacesReference();
-        altTableModel->insertRows(0, altPointsForPlaces.count());
-        emit altTableModel->dataChanged(altTableModel->index(0, 0), altTableModel->index(altTableModel->rowCount() - 1, altTableModel->columnCount() - 1));
-    }
+    const int position=index-1;const auto &presets=GlobalDatabase::get()->getEditableGlobalPointsForPlacesPresets();
+    altTableModel->replacePoints(position>=0&&position<presets.size()?presets[position].getPointsForPlaces():QMap<int,double>());
 }

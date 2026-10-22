@@ -40,15 +40,9 @@ void SeasonCalendar::debugCalendar(CompetitionInfo * next) const
 
 void SeasonCalendar::fixCompetitionsClassifications()
 {
-    for(auto & comp : competitions){
-        int type = comp->getRulesPointer()->getCompetitionType();
-        for(auto & classification : comp->getClassificationsReference()){
-            if(classification == nullptr)
-                MyFunctions::removeFromVector(comp->getClassificationsReference(), classification);
-            else if(MyFunctions::vectorContainsByID(classifications, classification) == false){// || ((type != classification->getClassificationType()) && classification->getPunctationType() == Classification::PointsForPlaces && classification->getClassificationType() == Classification::Individual)){
-                MyFunctions::removeFromVectorByID(comp->getClassificationsReference(), classification->getID());
-            }
-        }
+    for(auto *competition:competitions) {
+        auto &assigned=competition->getClassificationsReference();
+        for(int i=assigned.size()-1;i>=0;--i)if(!assigned[i] || !classifications.contains(assigned[i]))assigned.removeAt(i);
     }
 }
 
@@ -81,17 +75,15 @@ void SeasonCalendar::fixCompetitionsHills(QVector<Hill *> *hillsList, Hill * def
 
 void SeasonCalendar::fixAdvancementCompetitions()
 {
-    for(auto & comp : competitions)
-    {
-        if(comp->getAdvancementCompetition() != nullptr)
-        {
-            if(!competitions.contains(comp->getAdvancementCompetition())
-                || competitions.indexOf(comp->getAdvancementCompetition()) >= competitions.indexOf(comp)
-                || comp->getAdvancementCompetition()->getRulesPointer()->getCompetitionType() != comp->getRulesPointer()->getCompetitionType())
-            {
-                comp->setAdvancementCompetition(nullptr);
-            }
-        }
+    for(auto *event:competitions) {
+        auto *source=event->getAdvancementCompetition();
+        if(!source)source=event->getPendingAdvancementCompetition();
+        if(!source)continue;
+        const bool exists=competitions.contains(source);
+        const bool valid=exists && source!=event && competitions.indexOf(source)<competitions.indexOf(event)
+            && source->getRules().getCompetitionType()==event->getRules().getCompetitionType();
+        event->setAdvancementCompetition(valid?source:nullptr);
+        if(exists && source!=event && !valid)event->setPendingAdvancementCompetition(source);
     }
 }
 
@@ -318,6 +310,7 @@ SeasonCalendar SeasonCalendar::getFromJson(QJsonObject json, IdentifiableObjects
             competitionJson.value("advancement-classification-id").toString(), nullptr));
         competition->setAdvancementCompetition(competitionsById.value(
             competitionJson.value("advancement-competition-id").toString(), nullptr));
+        competition->setPendingAdvancementCompetition(competitionsById.value(competitionJson.value("pending-advancement-competition-id").toString(),nullptr));
 
         CompetitionResults &results = competition->getResultsReference();
         results.setCompetition(competition);

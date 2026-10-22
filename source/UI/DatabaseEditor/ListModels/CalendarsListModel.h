@@ -30,6 +30,7 @@ private:
 public:
     QVector<SeasonCalendar *> *getCalendars() const;
     void setCalendars(QVector<SeasonCalendar *> *newCalendars);
+    void resetContents(const QVector<SeasonCalendar *> &items);
 };
 
 #endif // CALENDARSLISTMODEL_H

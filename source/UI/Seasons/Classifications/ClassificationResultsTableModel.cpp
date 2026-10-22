@@ -148,5 +148,5 @@ Classification *ClassificationResultsTableModel::getClassification() const
 
 void ClassificationResultsTableModel::setClassification(Classification *newClassification)
 {
-    classification = newClassification;
+    beginResetModel();classification = newClassification;endResetModel();
 }

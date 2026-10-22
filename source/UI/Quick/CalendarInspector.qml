@@ -19,6 +19,7 @@ Pane {
         Label { text: inspector.backend.selection.title || qsTr("Wybierz konkurs"); color: Theme.ink; font.family: inspector.compact ? Theme.bodyFamily : Theme.displayFamily; font.pointSize: inspector.compact ? Theme.body : Theme.heading; Layout.fillWidth: true; wrapMode: inspector.compact ? Text.NoWrap : Text.WordWrap; elide: Text.ElideRight }
         Label { visible: inspector.backend.selection.count > 1; text: qsTr("Zmiany dotyczą %1 konkursów").arg(inspector.backend.selection.count); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         Label { visible: inspector.backend.selection.count > 0 && inspector.backend.selection.locked; text: qsTr("Rozegrane wydarzenia są zablokowane."); color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        Label { visible: inspector.backend.selection.pendingSource>0; text: qsTr("Zachowano kwalifikację z konkursu %1. Przenieś źródło przed ten konkurs, aby przywrócić powiązanie.").arg(inspector.backend.selection.pendingSource); color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         SectionTabs { visible: inspector.backend.selection.count > 0; options: [qsTr("Konkurs"),qsTr("Zasady"),qsTr("Powiązania")]; currentIndex: inspector.section; Layout.fillWidth: true; onSelected: inspector.section=index }
         ScrollView {
             id: fieldsScroll

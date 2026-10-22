@@ -37,10 +37,11 @@ public:
     bool removeColumns(int column, int count, const QModelIndex &parent = QModelIndex()) override;
 
 private:
-    QMap<int, double> * pointsForPlaces;
+    QMap<int, double> * pointsForPlaces=nullptr;
 public:
     QMap<int, double> *getPointsForPlaces() const;
     void setPointsForPlaces(QMap<int, double> *newPointsForPlaces);
+    void replacePoints(const QMap<int,double> &points);
 };
 
 #endif // POINTSFORPLACESTABLEMODEL_H

@@ -25,6 +25,7 @@ SeasonCalendarPreset::SeasonCalendarPreset(SeasonCalendar *seasonCalendar)
             {
                 if(presetCompetition->getAdvancementCompetition() == calendarCompetition)
                     presetCompetition->setAdvancementCompetition(competitions.value(calendarCompetition));
+                if(presetCompetition->getPendingAdvancementCompetition()==calendarCompetition)presetCompetition->setPendingAdvancementCompetition(competitions.value(calendarCompetition));
                 if(presetCompetition->getTrialRound() == calendarCompetition)
                     presetCompetition->setTrialRound(competitions.value(calendarCompetition));
                 for(auto & presetTraining : presetCompetition->getTrainingsReference())

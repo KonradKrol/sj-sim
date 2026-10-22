@@ -45,8 +45,7 @@ PointsForPlacesPreset PointsForPlacesPresetEditorWidget::constructPresetFromInpu
 void PointsForPlacesPresetEditorWidget::fill()
 {
     ui->lineEdit_name->setText(preset->getName());
-    model->removeRows(0, model->rowCount());
-    model->insertRows(0, pointsForPlaces.count());
+    model->replacePoints(pointsForPlaces);
     emit model->dataChanged(model->index(0, 0), model->index(model->rowCount() - 1, model->columnCount() - 1));
 }
 
@@ -64,8 +63,7 @@ PointsForPlacesPreset *PointsForPlacesPresetEditorWidget::getPreset() const
 void PointsForPlacesPresetEditorWidget::setPreset(PointsForPlacesPreset *newPreset)
 {
     preset = newPreset;
-    pointsForPlaces = preset->getPointsForPlacesReference();
-    model->setPointsForPlaces(&pointsForPlaces);
+    model->replacePoints(preset?preset->getPointsForPlaces():QMap<int,double>());
 }
 
 QMap<int, double> PointsForPlacesPresetEditorWidget::getPointsForPlaces() const
@@ -75,7 +73,7 @@ QMap<int, double> PointsForPlacesPresetEditorWidget::getPointsForPlaces() const
 
 void PointsForPlacesPresetEditorWidget::setPointsForPlaces(const QMap<int, double> &newPointsForPlaces)
 {
-    pointsForPlaces = newPointsForPlaces;
+    model->replacePoints(newPointsForPlaces);
 }
 
 void PointsForPlacesPresetEditorWidget::on_pushButton_submit_clicked()
@@ -86,7 +84,6 @@ void PointsForPlacesPresetEditorWidget::on_pushButton_submit_clicked()
 void PointsForPlacesPresetEditorWidget::addActionTriggered()
 {
     int count = pointsForPlaces.count();
-    pointsForPlaces.insert(count + 1, 0);
     model->insertRow(count);
     emit model->dataChanged(model->index(count, 0), model->index(count, 1));
 }
@@ -94,7 +91,6 @@ void PointsForPlacesPresetEditorWidget::addActionTriggered()
 void PointsForPlacesPresetEditorWidget::removeActionTriggered()
 {
     int count = pointsForPlaces.count();
-    pointsForPlaces.remove(count);
     model->removeRow(count - 1);
 }
 

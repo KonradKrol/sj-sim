@@ -150,7 +150,11 @@ static void render(QWidget *window,const QString &name,bool sweep=false) {
             }
             if(name=="last-jump-full"){
                 auto *summary=item(view->rootObject(),"raceLastJump");const auto bounds=summary->mapRectToItem(view->rootObject(),summary->boundingRect());
+                if(bounds.bottom()>view->height()){presentation(window)->grab().save("/tmp/sj-last-jump-status-overflow.png");qInfo()<<"JUMPSTATUS"<<bounds<<view->height();}
                 check(bounds.top()>=0&&bounds.bottom()<=view->height(),"complete last jump remains directly visible even in the smallest viewport");
+            }
+            if(name=="calendar-classifications" && size.width()==360 && !dark) {
+                auto *classes=item(view->rootObject(),"calendarClassesWorkspace");classes->setProperty("editing",true);QTest::qWait(80);view->grabFramebuffer();auto *editor=item(view->rootObject(),"calendarClassEditorScroll");check(editor&&editor->isVisible()&&editor->height()>=60,"classification editor remains accessible on the smallest screen");view->grabFramebuffer().save(output+"/calendar-classifications-edit-360.png");classes->setProperty("editing",false);
             }
             if(name=="saves"){
                 auto *entry=qobject_cast<QuickNode *>(bridge->find("listView_simulationSaves"));auto *table=item(view->rootObject(),"dataTable-"+QString::number(entry->values().value("id").toInt()));const auto bounds=table->mapRectToItem(view->rootObject(),table->boundingRect());check(bounds.bottom()>=view->height()-24&&bounds.bottom()<=view->height(),"save selection gives the remaining viewport to the list");
@@ -162,6 +166,7 @@ static void render(QWidget *window,const QString &name,bool sweep=false) {
             if(name=="ux-saved-rosters" && size.width()==360 && !dark){auto *rows=item(view->rootObject(),"rosterOrder");check(rows&&rows->isVisible()&&rows->height()>=44,"UX 3: narrow saved-list controls leave a usable roster viewport");auto *workspace=item(view->rootObject(),"rosterWorkspace");workspace->setProperty("choosing",true);QTest::qWait(60);auto *library=item(view->rootObject(),"rosterLibrary");check(library&&library->isVisible()&&library->height()>=44,"UX 3: available-athlete selection also retains visible rows on the smallest screen");view->grabFramebuffer().save(output+"/ux-roster-library-360.png");workspace->setProperty("choosing",false);}
             if(name=="calendar-custom-rules" && size.width()==360 && !dark) {
                 clickControl(view,"calendarReturnToList");auto *calendar=item(view->rootObject(),"calendarWorkspace");auto *rows=item(view->rootObject(),"calendarEvents");
+                if(!rows || rows->height()<80){presentation(window)->grab().save("/tmp/sj-calendar-narrow.png");qInfo()<<"CALENDAR"<<calendar->height()<<calendar->property("tight")<<(rows?rows->height():-1);}
                 check(calendar && !calendar->property("editing").toBool() && rows && rows->isVisible() && rows->height()>=80,"smallest calendar viewport retains a usable list and direct return navigation");
                 calendar->setProperty("editing",true);QTest::qWait(50);
             }
@@ -388,11 +393,12 @@ static void seasons() {
         SimulationSaveManagerWindow manager(&save);manager.updateCompetitionConfigButton();manager.fillNextCompetitionInformations();render(&manager,"season-manager",true);
         messages.stop();seasonToolRegressions(manager);messages.start(20);
         auto *bridge=manager.findChild<QuickBridge *>();auto *tabs=manager.findChild<QTabWidget *>("toolBox");
-        check(bridge->root()->values().value("kind")=="tabs" && bridge->root()->values().value("options").toStringList().size()==tabs->count()+1,"season overview and every original workspace are available");
+        check(bridge->root()->values().value("kind")=="tabs" && bridge->root()->values().value("options").toStringList().size()==tabs->count(),"season overview and every workspace remain available with classifications inside calendars");
         auto *tools=qobject_cast<QuickNode *>(bridge->find("quickSeasonTools"));
         check(tools && tools->values().value("actions").toList().size()==4,"season tools preserve form, statistics, save-copy and repair actions");
         for(int i=0;i<tabs->count();++i) {
-            bridge->edit(bridge->root()->values().value("id").toInt(),i+1);QTest::qWait(100);
+            if(i==4)continue;
+            bridge->edit(bridge->root()->values().value("id").toInt(),i<4?i+1:i);QTest::qWait(100);
             check(tabs->currentIndex()==i,"season task navigation updates original controller state");
             render(&manager,QString("season-page-%1").arg(i));
             auto *action=item(scene(&manager)->rootObject(),"seasonNextAction");
@@ -590,7 +596,12 @@ static void seasonWorkflowRegressions(MainWindow &main) {
     backend->update({{"advancement",2}});check(!first->getAdvancementCompetition(),"out-of-range future qualification source is rejected");
     backend->select(second->getIDStr());check(backend->advancementCompetitions().size()==3,"third competition offers both earlier sources");backend->update({{"advancement",2}});
     check(second->getAdvancementCompetition()==first && first->getQualifyingCompetitions().contains(second),"competition qualifies from earlier event and reverse dependency is rebuilt");
-    backend->select(first->getIDStr());backend->move(1);check(calendar->getCompetitionsReference()[1]==first,"reordering cannot put qualification source after the competition using it");backend->undo();
+    backend->select(first->getIDStr());backend->move(1);check(calendar->getCompetitionsReference()[2]==first && !second->getAdvancementCompetition() && second->getPendingAdvancementCompetition()==first,"reordering suspends and preserves a qualification source now in the future");
+    check(!manager.findChild<QPushButton *>("pushButton_competitionConfig")->isEnabled(),"unresolved qualification prevents starting the dependent competition");
+    QMetaObject::invokeMethod(&manager,"on_pushButton_competitionConfig_clicked");check(manager.findChildren<CompetitionConfigWindow *>().isEmpty(),"direct launch cannot bypass pending qualification protection");
+    IdentifiableObjectsStorage roundTripStorage;roundTripStorage.add(save.getHillsReference());roundTripStorage.add(save.getJumpersReference());auto roundTrip=SeasonCalendar::getFromJson(SeasonCalendar::getJsonObject(*calendar),&roundTripStorage);check(roundTrip.getCompetitionsReference()[1]->getPendingAdvancementCompetition()==roundTrip.getCompetitionsReference()[2],"suspended qualification survives save and reload by event identity");
+
+    backend->move(-1);check(second->getAdvancementCompetition()==first && !second->getPendingAdvancementCompetition(),"moving source back automatically restores qualification");backend->undo();check(second->getPendingAdvancementCompetition()==first,"undo restores suspended link");backend->undo();check(second->getAdvancementCompetition()==first,"multiple undo restores original order and active link");backend->undo();
     check(!second->getAdvancementCompetition(),"undo restores qualification links");
     first->setAdvancementCompetition(second);calendar->fixAdvancementCompetitions();check(!first->getAdvancementCompetition(),"calendar repair removes qualification sources from the future");
     second->setAdvancementCompetition(second);calendar->fixAdvancementCompetitions();check(!second->getAdvancementCompetition(),"calendar repair removes self qualification links");
@@ -600,11 +611,40 @@ static void seasonWorkflowRegressions(MainWindow &main) {
     check(judges,"custom auxiliary rules expose full editor");judges->setChecked(!first->getRules().getHasJudgesPoints());backend->applyCustomRules();
     check(first->getTrainings().first()->getRules().getHasJudgesPoints()!=first->getRules().getHasJudgesPoints(),"training rules can be customized without changing main competition");backend->undo();backend->setRulesTarget(0);
     backend->catalogAction("add");check(backend->calendars().size()==2 && backend->calendarName()!="Workflow calendar" && backend->events().isEmpty(),"new calendar is selected immediately");
+    first->setPlayed(true);check(!backend->canUndo(),"undo across calendars cannot overwrite competitions played after the snapshot");first->setPlayed(false);
     backend->renameCalendar("Renamed calendar");check(backend->calendarName()=="Renamed calendar","calendar name edits directly");
     backend->add();check(backend->events().size()==1,"new calendar accepts competitions");
+    check(manager.getEditingCalendar()!=save.getActualSeason()->getActualCalendar() && save.getActualSeason()->getActualCalendar()==calendar,"editing a new calendar never activates it implicitly");
+    auto *draft=manager.getEditingCalendar();backend->addMany(3);check(backend->events().size()==4 && backend->selection().value("count").toInt()==3,"batch creation selects exactly the newly created competitions");
+    backend->update({{"trainings",2},{"trial",true},{"hill",1}});
+    const auto draftEvents=backend->events();const QString stableId=draftEvents.last().toMap().value("id").toString();
+    backend->undo();backend->undo();check(backend->events().size()==1,"multiple undo reverses bulk settings and bulk insertion");backend->redo();backend->redo();
+    check(backend->events().size()==4 && backend->events().last().toMap().value("id").toString()==stableId,"redo restores event identities and complete blocks");
+    QVector<CompetitionInfo *> draftMains;for(auto *event:draft->getCompetitionsReference())if(event->getSerieType()<=CompetitionInfo::Qualifications)draftMains.append(event);
+    for(int i=1;i<draftMains.size();++i)check(draftMains[i]->getTrainings().size()==2 && draftMains[i]->getTrialRound() && draftMains[i]->getHill()==save.getHillsReference()[1],"bulk training, trial and hill changes apply to all selected blocks");
+    main.resize(1600,1100);QTest::qWait(180);backend->select(draftMains[0]->getIDStr());backend->select(draftMains[1]->getIDStr(),Qt::ControlModifier);QTest::qWait(100);
+    auto *grip=item(view->rootObject(),"calendar-grip-"+draftMains[0]->getIDStr());auto *target=item(view->rootObject(),"calendar-row-"+draftMains[3]->getIDStr());check(grip&&target,"calendar drag handle and target exist");
+    const auto begin=grip->mapToItem(view->rootObject(),grip->boundingRect().center()).toPoint();const auto end=target->mapToItem(view->rootObject(),QPointF(target->width()/2,target->height()*.85)).toPoint();
+    QTest::mousePress(view,Qt::LeftButton,Qt::NoModifier,begin);for(int step=1;step<=12;++step){const QPoint at=begin+(end-begin)*step/12;QMouseEvent move(QEvent::MouseMove,at,view->mapToGlobal(at),Qt::NoButton,Qt::LeftButton,Qt::NoModifier);QApplication::sendEvent(view,&move);QTest::qWait(20);}QTest::mouseRelease(view,Qt::LeftButton,Qt::NoModifier,end);QTest::qWait(150);
+    check(backend->events()[2].toMap().value("id").toString()==draftMains[0]->getIDStr() && backend->events()[3].toMap().value("id").toString()==draftMains[1]->getIDStr(),"real calendar pointer drag moves multiple selected blocks in their original order");backend->undo();
+    backend->classAction("add");auto *draftClass=draft->getClassificationsReference().last();auto *classEditor=backend->classificationEditor();
+    auto *points=classEditor->findChild<QTableView *>("tableView_pointsForPlaces")->model();QAbstractItemModelTester pointContract(points,QAbstractItemModelTester::FailureReportingMode::Fatal);
+    points->insertRows(0,2);check(points->setData(points->index(0,1),12.5),"classification points accept fractions");QTest::qWait(100);
+    check(draftClass->getPointsForPlaces().value(1)==12.5,"classification points synchronize without a submit button");
+    classEditor->findChild<QLineEdit *>("lineEdit_name")->setText("Draft standings");QMetaObject::invokeMethod(classEditor->findChild<QLineEdit *>("lineEdit_name"),"editingFinished");QTest::qWait(100);check(draftClass->getName()=="Draft standings","classification name saves on field completion");
+    auto *calendarWorkspace=item(view->rootObject(),"calendarWorkspace");calendarWorkspace->setProperty("section",1);render(&manager,"calendar-classifications",true);main.resize(1600,1100);calendarWorkspace->setProperty("section",0);QTest::qWait(100);
+
+    draftMains[0]->setClassifications({draftClass});draftMains[0]->setPlayed(true);manager.refreshCalendarState();backend->sync();check(backend->classLocked(),"used classification scoring is locked");
+    classEditor->findChild<QLineEdit *>("lineEdit_name")->setText("Renamed used standings");backend->applyClassification();check(draftClass->getName()=="Renamed used standings" && draftClass->getPointsForPlaces().value(1)==12.5,"used standings allow a safe rename without changing points");
+    backend->classAction("copy");check(draft->getClassificationsReference().size()==2 && !backend->classLocked() && draft->getClassificationsReference().last()->getIDStr()!=draftClass->getIDStr(),"copy of used standings has a new identity and editable scoring");
+    draftMains[0]->setPlayed(false);manager.refreshCalendarState();backend->activateCalendar();check(save.getActualSeason()->getActualCalendar()==draft,"explicit activation changes playback calendar");
+    check(manager.findChild<ClassificationResultsTableView *>()->getClassification()==draftClass,"activation synchronizes overview standings immediately");
     const int addedCalendar=backend->calendarIndex();
     backend->selectCalendar(1-addedCalendar);check(backend->calendarName()=="Workflow calendar","switching calendars restores original events");
+    check(save.getActualSeason()->getActualCalendar()==draft,"switching editor back leaves playback unchanged");backend->activateCalendar();check(save.getActualSeason()->getActualCalendar()==calendar,"active calendar can be explicitly restored");
+    check(manager.findChild<ClassificationResultsTableView *>()->getClassification()==classification,"restoring active calendar also restores its overview standings");
     backend->selectCalendar(addedCalendar);backend->catalogAction("remove");check(backend->calendars().size()==1 && backend->calendarIndex()==0,"removing current calendar selects remaining calendar");
+    backend->undo();check(backend->calendars().size()==2 && manager.getEditingCalendar()==draft,"undo deletion restores the exact calendar and its complete content");backend->redo();check(backend->calendars().size()==1,"redo removes the restored calendar again");
     render(&manager,"calendar-workflow",true);
     // Turn the fixture into an entirely unplayed calendar to exercise the empty state.
     history->setPlayed(false);save.updateNextCompetitionIndex();editor->getModel()->setDontModifyBefore(0);
@@ -627,6 +667,7 @@ static void seasonWorkflowRegressions(MainWindow &main) {
     auto *presetEvent=editor->getModel()->getCalendar()->getCompetitionsReference().first();backend->select(presetEvent->getIDStr());backend->update({{"trainings",2},{"trial",true},{"trainingImportance",3.5},{"trialImportance",4.0}});
     confirmPreset(true);backend->add();confirmPreset(false);
     check(backend->events().size()==1,"loading preset replaces calendar events");
+    backend->undo();check(backend->events().size()==2,"preset replacement supports undo without losing old event objects");backend->redo();check(backend->events().size()==1,"preset replacement supports redo");
     auto *loaded=editor->getModel()->getCalendar()->getCompetitionsReference().last();
     check(loaded->getTrainings().size()==2 && loaded->getTrialRound() && loaded->getTrainings().first()->getJumpsImportance()==3.5 && loaded->getTrialRound()->getJumpsImportance()==4.0,"presets retain associated events and their independent importance");
     for(auto *event:editor->getModel()->getCalendar()->getCompetitionsReference())check(save.getHillsReference().contains(event->getHill()),"loaded preset uses hills owned by the save");
@@ -841,10 +882,11 @@ static void uxRegressions(MainWindow &main) {
     {
         main.resize(520,600);SimulationSaveManagerWindow manager(&save);manager.fillNextCompetitionInformations();manager.show();QTest::qWait(150);auto *bridge=manager.findChild<QuickBridge *>();bridge->edit(bridge->root()->values().value("id").toInt(),4);QTest::qWait(120);auto *backend=bridge->findChild<QuickCalendar *>();auto *workspace=item(scene(&manager)->rootObject(),"calendarWorkspace");check(backend&&workspace,"UX 5: calendar workspace exists");
         const auto events=backend->events();const auto firstId=events[0].toMap().value("id").toString(),secondId=events[1].toMap().value("id").toString();clickControl(scene(&manager),"calendar-select-"+firstId);check(!workspace->property("editing").toBool(),"UX 5: selecting a calendar event does not navigate away from the list");
-        auto *rows=item(scene(&manager)->rootObject(),"calendarEvents");QMetaObject::invokeMethod(rows,"positionViewAtIndex",Q_ARG(int,1),Q_ARG(int,3));QTest::qWait(60);auto *second=item(scene(&manager)->rootObject(),"calendar-select-"+secondId);check(second&&second->isVisible(),"UX 5: second calendar event is visible");const auto point=second->mapToItem(scene(&manager)->rootObject(),second->boundingRect().center()).toPoint();QTest::mouseClick(scene(&manager),Qt::LeftButton,Qt::ControlModifier,point);QTest::qWait(60);
+        auto *rows=item(scene(&manager)->rootObject(),"calendarEvents");QMetaObject::invokeMethod(rows,"positionViewAtIndex",Q_ARG(int,1),Q_ARG(int,1));QTest::qWait(60);auto *second=item(scene(&manager)->rootObject(),"calendar-select-"+secondId);check(second&&second->isVisible(),"UX 5: second calendar event is visible");const auto point=second->mapToItem(scene(&manager)->rootObject(),second->boundingRect().center()).toPoint();QTest::mouseClick(scene(&manager),Qt::LeftButton,Qt::ControlModifier,point);QTest::qWait(60);
+        if(backend->selection().value("count").toInt()!=2){main.grab().save("/tmp/sj-calendar-modifiers.png");qInfo()<<"MODIFIERS"<<backend->selection()<<rows->height()<<rows->mapToItem(scene(&manager)->rootObject(),QPointF())<<point;}
         check(backend->selection().value("count").toInt()==2&&!workspace->property("editing").toBool(),"UX 5: modifier selection remains on the list and accumulates targets");clickControl(scene(&manager),"calendarEditSelection");check(workspace->property("editing").toBool()&&backend->selection().value("count").toInt()==2,"UX 5: explicit Edit opens one inspector for the complete selection");
         render(&manager,"ux-calendar-selection",true);clickControl(scene(&manager),"calendarReturnToList");clickControl(scene(&manager),"calendarClearSelection");check(backend->selection().value("count").toInt()==0,"UX 5: clearing selection leaves no ambiguous edit targets");
-        rows=item(scene(&manager)->rootObject(),"calendarEvents");QMetaObject::invokeMethod(rows,"positionViewAtIndex",Q_ARG(int,0),Q_ARG(int,3));QTest::qWait(60);auto *firstRow=item(scene(&manager)->rootObject(),"calendar-row-"+firstId);check(firstRow&&firstRow->isVisible(),"UX 5: an event row supports keyboard focus");main.activateWindow();scene(&manager)->setFocus();QTest::qWait(50);firstRow->forceActiveFocus();check(firstRow->hasActiveFocus(),"UX 5: keyboard target owns active focus");QTest::keyClick(scene(&manager),Qt::Key_Return);QTest::qWait(60);check(workspace->property("editing").toBool()&&backend->selection().value("count").toInt()==1,"UX 5: Enter opens the focused event for editing");manager.reject();
+        rows=item(scene(&manager)->rootObject(),"calendarEvents");QMetaObject::invokeMethod(rows,"positionViewAtIndex",Q_ARG(int,0),Q_ARG(int,1));QTest::qWait(60);auto *firstRow=item(scene(&manager)->rootObject(),"calendar-row-"+firstId);check(firstRow&&firstRow->isVisible(),"UX 5: an event row supports keyboard focus");main.activateWindow();scene(&manager)->setFocus();QTest::qWait(50);firstRow->forceActiveFocus();check(firstRow->hasActiveFocus(),"UX 5: keyboard target owns active focus");QTest::keyClick(scene(&manager),Qt::Key_Return);QTest::qWait(60);check(workspace->property("editing").toBool()&&backend->selection().value("count").toInt()==1,"UX 5: Enter opens the focused event for editing");manager.reject();
     }
     qInfo()<<"PASS: five UX workflows: scoped form edits, visible search, saved lists, contextual competition controls and explicit calendar editing";
 }

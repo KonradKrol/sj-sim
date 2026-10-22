@@ -46,11 +46,13 @@ public:
 
 signals:
     void actualCalendarChanged();
+    void editingCalendarChanged();
 
 private:
     Ui::SimulationSaveManagerWindow *ui;
 
     SimulationSave * simulationSave;
+    SeasonCalendar *editingCalendar=nullptr;
 
     DatabaseItemsListView * jumpersListView;
     JumperEditorWidget * jumperEditor;
@@ -71,7 +73,7 @@ private:
     int classificationsListViewActualElement;
     ClassificationEditorWidget * classificationEditor;
 
-    ClassificationResultsTableView * classificationResultsTableView;
+    ClassificationResultsTableView * classificationResultsTableView=nullptr;
 
     CompetitionsArchiveListModel * competitionsArchiveModel;
     ClassificationsArchiveListModel * classificationsArchiveModel;
@@ -91,6 +93,10 @@ private:
 
 public:
     SimulationSave *getSimulationSave() const;
+    SeasonCalendar *getEditingCalendar() const { return editingCalendar; }
+    void setEditingCalendar(SeasonCalendar *calendar);
+    void activateEditingCalendar();
+    void refreshCalendarState();
     DatabaseItemsListView *getCalendarsListView() const;
     void setCalendarsListView(DatabaseItemsListView *newCalendarsListView);
 

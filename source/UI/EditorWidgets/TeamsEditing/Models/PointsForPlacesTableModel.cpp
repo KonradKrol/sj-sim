@@ -1,6 +1,8 @@
 #include "PointsForPlacesTableModel.h"
 #include <QFont>
 #include <QColor>
+#include <cmath>
+#include <QLocale>
 
 PointsForPlacesTableModel::PointsForPlacesTableModel(QObject *parent)
     : QAbstractTableModel(parent)
@@ -13,12 +15,12 @@ QVariant PointsForPlacesTableModel::headerData(int section, Qt::Orientation orie
 
     if(orientation == Qt::Horizontal)
     {
-        if(role == Qt::DisplayRole){
+        if(role == Qt::DisplayRole || role==Qt::EditRole){
             switch(section){
             case 0:
-                return "Miejsce";
+                return tr("Miejsce");
             case 1:
-                return "Punkty";
+                return tr("Punkty");
             }
         }
     }
@@ -41,7 +43,7 @@ int PointsForPlacesTableModel::rowCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
 
-    return pointsForPlaces->count();
+    return pointsForPlaces?pointsForPlaces->count():0;
 }
 
 int PointsForPlacesTableModel::columnCount(const QModelIndex &parent) const
@@ -54,11 +56,11 @@ int PointsForPlacesTableModel::columnCount(const QModelIndex &parent) const
 
 QVariant PointsForPlacesTableModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!pointsForPlaces || !index.isValid() || index.row()<0 || index.row()>=rowCount() || index.column()<0 || index.column()>=2)
         return QVariant();
 
 
-    if(role == Qt::DisplayRole){
+    if(role == Qt::DisplayRole || role==Qt::EditRole){
         if(index.column() == 0)
             return index.row() + 1;
         else if(index.column() == 1){
@@ -79,18 +81,9 @@ QVariant PointsForPlacesTableModel::data(const QModelIndex &index, int role) con
 
 bool PointsForPlacesTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    if (role != Qt::EditRole || index.column() != 1)
-        return false;
-
-    bool result;
-    int val = value.toInt(&result);
-
-    if (result){
-        pointsForPlaces->insert(index.row() + 1, val);
-        emit dataChanged(index, index, {Qt::DisplayRole, Qt::EditRole});
-    }
-
-    return result;
+    if(role!=Qt::EditRole || !pointsForPlaces || !index.isValid() || index.row()<0 || index.row()>=rowCount() || index.column()!=1)return false;
+    bool valid=false;double points=value.toDouble(&valid);if(!valid && value.type()==QVariant::String){points=QLocale().toDouble(value.toString(),&valid);if(!valid){auto text=value.toString();text.replace(',','.');points=text.toDouble(&valid);}}if(!valid||!std::isfinite(points))return false;
+    pointsForPlaces->insert(index.row()+1,points);emit dataChanged(index,index,{Qt::DisplayRole,Qt::EditRole});return true;
 }
 
 Qt::ItemFlags PointsForPlacesTableModel::flags(const QModelIndex &index) const
@@ -106,34 +99,28 @@ Qt::ItemFlags PointsForPlacesTableModel::flags(const QModelIndex &index) const
 
 bool PointsForPlacesTableModel::insertRows(int row, int count, const QModelIndex &parent)
 {
-    beginInsertRows(parent, row, row + count - 1);
-    // FIXME: Implement me!
-    endInsertRows();
-    return true;
+    if(parent.isValid()||!pointsForPlaces||row<0||row>rowCount()||count<1)return false;
+    beginInsertRows(parent,row,row+count-1);QMap<int,double> next;
+    for(int i=0;i<rowCount();++i)next.insert(i+(i>=row?count:0)+1,pointsForPlaces->value(i+1));
+    for(int i=0;i<count;++i)next.insert(row+i+1,0);*pointsForPlaces=next;endInsertRows();return true;
 }
 
 bool PointsForPlacesTableModel::insertColumns(int column, int count, const QModelIndex &parent)
 {
-    beginInsertColumns(parent, column, column + count - 1);
-    // FIXME: Implement me!
-    endInsertColumns();
-    return true;
+    Q_UNUSED(column);Q_UNUSED(count);Q_UNUSED(parent);return false;
 }
 
 bool PointsForPlacesTableModel::removeRows(int row, int count, const QModelIndex &parent)
 {
-    beginRemoveRows(parent, row, row + count - 1);
-    // FIXME: Implement me!
-    endRemoveRows();
-    return true;
+    if(parent.isValid()||!pointsForPlaces||row<0||count<1||row>rowCount()-count)return false;
+    beginRemoveRows(parent,row,row+count-1);QMap<int,double> next;
+    for(int i=0;i<rowCount();++i)if(i<row||i>=row+count)next.insert(next.size()+1,pointsForPlaces->value(i+1));
+    *pointsForPlaces=next;endRemoveRows();return true;
 }
 
 bool PointsForPlacesTableModel::removeColumns(int column, int count, const QModelIndex &parent)
 {
-    beginRemoveColumns(parent, column, column + count - 1);
-    // FIXME: Implement me!
-    endRemoveColumns();
-    return true;
+    Q_UNUSED(column);Q_UNUSED(count);Q_UNUSED(parent);return false;
 }
 
 QMap<int, double> *PointsForPlacesTableModel::getPointsForPlaces() const
@@ -143,5 +130,7 @@ QMap<int, double> *PointsForPlacesTableModel::getPointsForPlaces() const
 
 void PointsForPlacesTableModel::setPointsForPlaces(QMap<int, double> *newPointsForPlaces)
 {
-    pointsForPlaces = newPointsForPlaces;
+    beginResetModel();pointsForPlaces = newPointsForPlaces;endResetModel();
 }
+
+void PointsForPlacesTableModel::replacePoints(const QMap<int,double> &points) {if(!pointsForPlaces)return;const auto copy=points;beginResetModel();*pointsForPlaces=copy;endResetModel();}
