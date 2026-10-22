@@ -348,6 +348,14 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
 
                     window->findChild<QCheckBox *>("checkBox_liveCompetition")->setChecked(false);GlobalAppSettings::get()->setLiveCompetitionSpeedMulti(speed);
                 }
+                clickControl(scene(window),"raceJumpOptions");QTest::qWait(120);
+                optionsWorkspace=item(scene(window)->quickWindow()->contentItem(),"raceOptionsWorkspace");optionsScroll=item(scene(window)->quickWindow()->contentItem(),"raceOptionsScroll");
+                check(optionsScroll->property("contentHeight").toReal()>optionsScroll->height() && optionsScroll->property("interactive").toBool(),"jump details really overflow the options panel");
+                for(int section:{1,0,2,0,1}) {
+                    optionsWorkspace->setProperty("section",section);QTest::qWait(80);scene(window)->grabFramebuffer();
+                    check(section==2 || (optionsScroll->property("contentHeight").toReal()<=optionsScroll->height() && !optionsScroll->property("interactive").toBool() && optionsScroll->property("contentY").toReal()==0),"returning from jump details unloads their height and hides scrolling in fitted options tabs");
+                }
+                QTest::keyClick(scene(window),Qt::Key_Escape);QTest::qWait(100);
                 const int before=window->getManager()->getActualStartListIndex();bridge->activate(id(bridge,"toolButton_autoSimulationActions"),1);QTest::qWait(100);
                 check(window->getManager()->getActualStartListIndex()!=before || window->getManager()->checkRoundEnd(),"automatic simulation menu advances real round");
             }

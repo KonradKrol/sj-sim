@@ -6,6 +6,7 @@ ColumnLayout {
     id: workspace
     objectName: "raceOptionsWorkspace"
     property int section: 0
+    onSectionChanged: { scroll.cancelFlick(); scroll.contentY = 0 }
     signal closeRequested()
     spacing: 12
     RowLayout {
@@ -39,11 +40,13 @@ ColumnLayout {
                     Node { width: parent.width; height: implicitHeight; node: ui.find(modelData) }
                 }
                 Loader {
-                    active: workspace.section===2; width: parent.width
+                    active: workspace.section===2; visible: active; width: parent.width
+                    height: active && item ? item.implicitHeight : 0
                     sourceComponent: Component { Node { node: ui.find("quickRaceDetails") } }
                 }
                 Loader {
-                    active: workspace.section===0; width: parent.width
+                    active: workspace.section===0; visible: active; width: parent.width
+                    height: active && item ? item.implicitHeight : 0
                     sourceComponent: Component {
                         Column {
                             spacing: 8
