@@ -22,23 +22,32 @@ ColumnLayout {
         id: scroll
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
         contentWidth: availableWidth; clip: true
-        Column {
-            width: scroll.availableWidth; spacing: 12
-            Repeater {
-                model: workspace.section===0 ? ["toolButton_autoSimulationActions","toolButton_cancelActions","pushButton_sendResultsWebhook"] : workspace.section===1 ? ["pushButton_generateNewWinds","pushButton_windsGeneratorSettings","pushButton_inrunSnowGeneratorSettings"] : ["pushButton_coachGate","pushButton_manipulateJump","label_record","label_pointsBehindLeader","label_lastRoundPosition","label_personalBest"]
-                Node { width: parent.width; height: implicitHeight; node: ui.find(modelData) }
-            }
-            Loader {
-                active: workspace.section===2; width: parent.width
-                sourceComponent: Component { Node { node: ui.find("quickRaceDetails") } }
-            }
-            Loader {
-                active: workspace.section===0; width: parent.width
-                sourceComponent: Component {
-                    Column {
-                        spacing: 8
-                        Node { width: parent.width; height: implicitHeight; node: ui.find("comboBox_virtualClassification") }
-                        Node { width: parent.width; height: implicitHeight; node: ui.find("quickVirtualResults") }
+        Flickable {
+            objectName: "raceOptionsScroll"
+            contentWidth: width
+            contentHeight: optionsContent.height
+            interactive: contentHeight > height
+            boundsBehavior: Flickable.StopAtBounds
+            flickableDirection: Flickable.VerticalFlick
+            Column {
+                id: optionsContent
+                width: parent.width; spacing: 12
+                Repeater {
+                    model: workspace.section===0 ? ["toolButton_autoSimulationActions","toolButton_cancelActions","pushButton_sendResultsWebhook"] : workspace.section===1 ? ["pushButton_generateNewWinds","pushButton_windsGeneratorSettings","pushButton_inrunSnowGeneratorSettings"] : ["pushButton_coachGate","pushButton_manipulateJump","label_record","label_pointsBehindLeader","label_lastRoundPosition","label_personalBest"]
+                    Node { width: parent.width; height: implicitHeight; node: ui.find(modelData) }
+                }
+                Loader {
+                    active: workspace.section===2; width: parent.width
+                    sourceComponent: Component { Node { node: ui.find("quickRaceDetails") } }
+                }
+                Loader {
+                    active: workspace.section===0; width: parent.width
+                    sourceComponent: Component {
+                        Column {
+                            spacing: 8
+                            Node { width: parent.width; height: implicitHeight; node: ui.find("comboBox_virtualClassification") }
+                            Node { width: parent.width; height: implicitHeight; node: ui.find("quickVirtualResults") }
+                        }
                     }
                 }
             }
