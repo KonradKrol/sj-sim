@@ -9,6 +9,7 @@ Instrukcja dla osoby pobierającej projekt oraz dla Codexa przygotowującego śr
 - Weryfikacja Windows x64 (22.10.2026): Qt 6.8.3, Build Tools 2022 17.14.42, MSVC 19.44.35229 i SDK 10.0.26100.0. Zbudowano Release Quick i program testowy; uruchomiono natywne okno aplikacji, a `--backend-only` i `--author-only` zakończyły się kodem 0. Pełny zestaw GUI i osobny build Widgets-only nie były wykonywane na Windowsie. Wcześniejsze testy pełnego zestawu wykonywano na Linuxie z Qt 5.15.3.
 - Nowy interfejs jest w `source/UI/Quick`. Eksperyment `source/UI/Competition/Quick` jest starszą, odrębną implementacją. **Nie dodawaj `CONFIG+=competition_quick` do zwykłego buildu.**
 - Widoki Quick nadal korzystają z kontrolerów Widgets. Potrzebne są oba zestawy bibliotek. `--widgets` przełącza UI podczas uruchamiania; `CONFIG+=widgets_only` tworzy osobny build bez Quick.
+- W Qt 6 aplikacja wybiera styl Quick Controls `Basic` przed załadowaniem QML. Własne tła i zawartość kontrolek wymagają stylu obsługującego modyfikacje; domyślny natywny styl Windows nie jest odpowiedni dla tego interfejsu.
 - Najpierw wykryj istniejące narzędzia, potem doinstaluj brakujące. Zachowaj jeden zgodny zestaw Qt, kompilatora, bibliotek i narzędzi x64.
 - Dane muszą być **obok uruchamianego `.exe`**, zwykle w podkatalogu `release`, nie tylko obok Makefile. Nie nadpisuj istniejącego `userData` przy kolejnych buildach.
 - Skrypty `scripts/*.sh` są dla Linuxa. Na Windowsie użyj poleceń PowerShell poniżej; nie kopiuj linuxowych bibliotek z `build-qml-preview`.
@@ -211,6 +212,10 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "Regresje backendu nie przeszły" }
     & $smokeExe --author-only
     if ($LASTEXITCODE -ne 0) { throw "Test autora nie przeszedł" }
+    & $smokeExe --navigation-only
+    if ($LASTEXITCODE -ne 0) { throw "Regresje nawigacji nie przeszły" }
+    & $smokeExe --home-launch-only
+    if ($LASTEXITCODE -ne 0) { throw "Otwieranie ekranów menu nie przeszło" }
     # Pełny zestaw: uruchom bez flagi zamiast powtarzać wszystkie testy osobno.
     # & $smokeExe
     # if ($LASTEXITCODE -ne 0) { throw "Pełny smoke test nie przeszedł" }
@@ -219,6 +224,19 @@ try {
     Remove-Item Env:\QT_QUICK_BACKEND -ErrorAction SilentlyContinue
 }
 ```
+
+Następnie sprawdź nawigację i wszystkie osiem lokalnych ekranów menu w natywnym oknie Windows, bez `offscreen` i wymuszonego renderera software:
+
+```powershell
+& $smokeExe --navigation-only
+if ($LASTEXITCODE -ne 0) { throw "Natywna nawigacja Windows nie przeszła" }
+& $smokeExe --home-launch-only
+if ($LASTEXITCODE -ne 0) { throw "Natywne otwieranie ekranów Windows nie przeszło" }
+```
+
+`--navigation-only` wymusza również ponowne zdarzenie Show podczas tworzenia widoku: odtwarza błąd ujawniony na Windowsie nawet w rendererze offscreen. `--home-launch-only` otwiera sezony, konkurs, pojedyncze skoki, bazę, ustawienia, autora, pomoc i podziękowania, wraca do menu i odrzuca testowe zmiany bazy.
+
+Weryfikacja poprawek Windows (22.10.2026, Release): oba zakresy zakończyły się kodem 0 w `offscreen` oraz w natywnym oknie z domyślnym rendererem Windows. Zwykłe, wdrożone `sj-sim.exe --quick-competition` również uruchomiono i zamknięto z kodem 0, bez dodatkowych zmiennych środowiskowych. Przed zabezpieczeniem inicjalizacji nowy test ponownego Show kończył się wyjątkiem `0xc0000005` w `QStackedLayout::addWidget`.
 
 Inne przydatne zakresy: `--single-jumps-only`, `--ux-only`, `--workflow-only`, `--appearance-only`; pomiar: `--single-jumps-benchmark`. Testy pracują na tymczasowych kopiach danych i ustawień, ale pliki bazowe nadal muszą znajdować się obok testowego `.exe`. Obrazy trafiają do `ui-renders` przy tym pliku. Testy GUI trzeba zweryfikować również na Windowsie — pozytywny wynik linuksowego renderera offscreen nie potwierdza wszystkich zachowań Windows/GPU.
 

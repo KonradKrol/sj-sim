@@ -52,6 +52,7 @@
 #include <QQmlContext>
 #include <QQuickItem>
 #include <QQuickWindow>
+#include <QQuickStyle>
 #include <QJSValue>
 #include <QRegularExpression>
 #include <limits>
@@ -565,10 +566,32 @@ static void authorRegressions(MainWindow &main) {
     qInfo()<<"PASS: author navigation, responsive portrait, project/social links, icons and acknowledgements dialog";
 }
 
+class ReentrantDialogShowProbe : public QObject {
+public:
+    explicit ReentrantDialogShowProbe(QDialog *dialog) : m_dialog(dialog) { qApp->installEventFilter(this); }
+    ~ReentrantDialogShowProbe() override { qApp->removeEventFilter(this); }
+    bool triggered = false;
+protected:
+    bool eventFilter(QObject *object,QEvent *event) override {
+        if(!triggered && object==m_dialog && event->type()==QEvent::ChildAdded
+            && object->property("sjQuickInstalled").toBool()) {
+            auto *bridge=object->findChild<QuickBridge *>(QString(),Qt::FindDirectChildrenOnly);
+            if(bridge && !bridge->view()) {
+                triggered=true;
+                QEvent nestedShow(QEvent::Show);
+                QCoreApplication::sendEvent(object,&nestedShow);
+            }
+        }
+        return false;
+    }
+private:
+    QDialog *m_dialog;
+};
 static void navigationRegressions(MainWindow &main) {
     main.show();QTest::qWait(100);
     auto *navigation=main.findChild<QuickUi *>();check(navigation && !navigation->canGoBack(),"navigation starts at home");
     QDialog first(&main);first.setWindowTitle("First page");auto *layout=new QVBoxLayout(&first);auto *name=new QLineEdit("Retained",&first);layout->addWidget(name);
+    ReentrantDialogShowProbe reentrantShow(&first);
     QTimer::singleShot(50,&first,[&]{
         check(navigation->current()==first.findChild<QuickBridge *>(),"exec controller becomes the current page");
         check(QApplication::activeModalWidget()==nullptr,"task pages do not block the application as modal dialogs");
@@ -585,8 +608,52 @@ static void navigationRegressions(MainWindow &main) {
         navigation->back();
     });
     check(first.exec()==QDialog::Rejected,"back finishes the parent controller safely");
+    check(reentrantShow.triggered,"navigation handles a reentrant Show while its Quick view is being constructed");
     check(!navigation->canGoBack() && navigation->current()==main.findChild<QuickBridge *>(),"navigation returns home after nested pages finish");
     qInfo()<<"PASS: one application window, nested navigation, state retention and shared appearance";
+}
+static void homeLaunchRegressions(MainWindow &main) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    check(QQuickStyle::name()==QStringLiteral("Basic"),"custom controls use a customizable style on Qt 6");
+#endif
+    main.show();QTest::qWait(100);
+    auto *navigation=main.findChild<QuickUi *>();
+    auto *home=main.findChild<QuickBridge *>(QString(),Qt::FindDirectChildrenOnly);
+    check(navigation && home && !navigation->canGoBack(),"home launch starts at the main menu");
+    QTimer confirmations;
+    QObject::connect(&confirmations,&QTimer::timeout,[]{
+        for(auto *widget:QApplication::topLevelWidgets())
+            if(auto *message=qobject_cast<QMessageBox *>(widget);message && message->isVisible()) {
+                check(message->standardButtons().testFlag(QMessageBox::No),"home smoke only dismisses a discard-changes confirmation");
+                message->done(QMessageBox::No);
+            }
+    });
+    confirmations.start(20);
+    const QList<QPair<QString,QString>> destinations{
+        {"seasons","SimulationSavesWindow"},{"competition","CompetitionConfigWindow"},
+        {"jumps","SingleJumpsConfigWindow"},{"database","DatabaseEditorWindow"},
+        {"settings","AppSettingsWindow"},{"author","AuthorWindow"},
+        {"help","HelpWindow"},{"credits","ThanksWindow"}
+    };
+    for(const auto &destination:destinations) {
+        bool visited=false;
+        QTimer inspect,deadline;deadline.setSingleShot(true);
+        QObject::connect(&deadline,&QTimer::timeout,[&]{check(false,"home launch timed out: "+destination.first);});
+        QObject::connect(&inspect,&QTimer::timeout,[&]{
+            if(visited || !navigation->canGoBack())return;
+            auto *page=navigation->current();
+            check(page && page->profile()==destination.second,"home launches the expected controller: "+destination.first);
+            check(page->view() && page->view()->rootObject() && page->view()->status()==QQuickWidget::Ready,"home page has a fully constructed Quick view: "+destination.first);
+            visited=true;inspect.stop();navigation->back();
+        });
+        inspect.start(20);deadline.start(15000);home->launch(destination.first);
+        while(!visited || navigation->canGoBack())QTest::qWait(20);
+        deadline.stop();
+        check(navigation->current()==home,"closing a home destination returns to the original menu: "+destination.first);
+        qInfo()<<"PASS: home destination"<<destination.first;
+        QTest::qWait(30);
+    }
+    qInfo()<<"PASS: all eight local home destinations open and return safely";
 }
 static void menuRegressions(MainWindow &main) {
     main.show();QDialog dialog(&main);dialog.setWindowTitle("Menu test");auto *layout=new QVBoxLayout(&dialog);auto *button=new QPushButton("Tools",&dialog);button->setObjectName("testTools");layout->addWidget(button);
@@ -1542,6 +1609,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--appearance-only")){appearanceRegressions(main);return 0;}
     if(app.arguments().contains("--author-only")){authorRegressions(main);return 0;}
     if(app.arguments().contains("--navigation-only")){navigationRegressions(main);return 0;}
+    if(app.arguments().contains("--home-launch-only")){homeLaunchRegressions(main);return 0;}
     if(app.arguments().contains("--backend-only"))return 0;
     if(app.arguments().contains("--bulk-only")) {main.show();for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);runCompetition(main,0,true,1);runCompetition(main,0,true,2);runCompetition(main,2,true,3);return 0;}
     if(app.arguments().contains("--competitions-only")) {
@@ -1549,7 +1617,7 @@ int main(int argc,char **argv) {
         for(int scenario=0;scenario<4;++scenario) runCompetition(main,scenario);
         seasons();qInfo()<<"PASS: full individual, KO and team competitions and season analysis";return 0;
     }
-    if(!app.arguments().contains("--layout-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);interactionRegressions(main);spaceRegressions(main);uxRegressions(main);navigationRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);rosterRegressions(main);geometryRegressions(main);}
+    if(!app.arguments().contains("--layout-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);interactionRegressions(main);spaceRegressions(main);uxRegressions(main);navigationRegressions(main);homeLaunchRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);rosterRegressions(main);geometryRegressions(main);}
     if(!app.arguments().contains("--layout-only")){for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);runCompetition(main,0,true,1);runCompetition(main,0,true,2);runCompetition(main,2,true,3);}
     singleSimulationRegression();
     singleGateRegression(main);

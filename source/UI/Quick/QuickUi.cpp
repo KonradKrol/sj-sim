@@ -17,6 +17,7 @@
 #include <QStackedWidget>
 #include <QQuickWidget>
 #include <QQuickItem>
+#include <QQuickStyle>
 #include <QQmlContext>
 #include <QQmlEngine>
 #include <QScreen>
@@ -52,6 +53,11 @@ bool QuickUi::enabled() {
     return !qEnvironmentVariableIsSet("SJ_WIDGETS_UI") && !QCoreApplication::arguments().contains("--widgets");
 }
 QuickUi::QuickUi(MainWindow *window) : QObject(window),m_main(window),m_appearance(new QuickAppearance(qApp)) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    // The custom controls replace native backgrounds and content items. Select
+    // a customizable style before any QML engine registers the controls.
+    if(QQuickStyle::name()!=QStringLiteral("Basic"))QQuickStyle::setStyle(QStringLiteral("Basic"));
+#endif
     for(const auto &font:{"Barlow-Regular.ttf","Barlow-Medium.ttf","Barlow-SemiBold.ttf","BarlowCondensed-ExtraBold.ttf","IBMPlexMono-Regular.ttf"})
         if(QFontDatabase::addApplicationFont(QString(":/ui/fonts/")+font)<0)qWarning()<<"Cannot load interface font"<<font;
     QApplication::setFont(QFont("Barlow",12));
@@ -167,11 +173,18 @@ bool QuickUi::eventFilter(QObject *object,QEvent *event) {
         });
     }
     auto *dialog=qobject_cast<QWidget *>(object);
+    // Native widgets can send another Show while makeView is still constructing
+    // the QQuickWidget. Its bridge has no view until that constructor returns.
+    if(dialog && dialog->property("sjQuickInstalling").toBool())return false;
     if(event->type()==QEvent::Hide && dialog && dialog->property("sjQuickPage").toBool())removePage(dialog);
     if(event->type()==QEvent::Show && dialog && (dialog->isWindow() || dialog->property("sjQuickPage").toBool()) && !dialog->property("sjQuickUtility").toBool()
         && (qobject_cast<QDialog *>(dialog) || dialog->inherits("JumpDataDetailedInfoWindow"))) {
         if(qobject_cast<QFileDialog *>(dialog))return false;
-        if(!dialog->property("sjQuickInstalled").toBool())attach(dialog);
+        if(!dialog->property("sjQuickInstalled").toBool()) {
+            dialog->setProperty("sjQuickInstalling",true);
+            attach(dialog);
+            dialog->setProperty("sjQuickInstalling",false);
+        }
         else if(auto *bridge=dialog->findChild<QuickBridge *>(QString(),Qt::FindDirectChildrenOnly)) {
             bridge->resume();if(dialog->property("sjQuickPage").toBool())push(dialog,bridge);
         }
