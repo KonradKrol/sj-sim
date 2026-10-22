@@ -42,7 +42,11 @@ inline bool operator==(const Characteristic & char1, const Characteristic &char2
     return char1.getType() == char2.getType();
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+inline size_t qHash(const Characteristic &characteristic, size_t seed = 0) noexcept
+#else
 inline uint qHash(const Characteristic &characteristic, uint seed = 0) noexcept
+#endif
 {
     return ::qHash(characteristic.getType(), seed);
 }

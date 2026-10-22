@@ -7,7 +7,11 @@
 
 namespace sole
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+inline size_t qHash(const uuid &value, size_t seed = 0) noexcept
+#else
 inline uint qHash(const uuid &value, uint seed = 0) noexcept
+#endif
 {
     return ::qHash(quint64(std::hash<uuid>{}(value)), seed);
 }

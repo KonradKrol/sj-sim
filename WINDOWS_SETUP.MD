@@ -6,7 +6,7 @@ Instrukcja dla osoby pobierającej projekt oraz dla Codexa przygotowującego śr
 
 - Projekt buduje **qmake**, plik wejściowy: [`sj-sim.pro`](sj-sim.pro). Standard języka: **C++17**.
 - Zalecany zestaw Windows: **Qt 6.8.3 / MSVC 2022 / x64**. Takie wersje wskazuje [workflow Windows](.github/workflows/release.yml); nie wybieraj automatycznie najnowszego Qt ani innego kompilatora.
-- W tej sesji testy aplikacji wykonywano na Linuxie z Qt 5.15.3. Niniejsza instrukcja Windows została sprawdzona względem konfiguracji repozytorium i dokumentacji narzędzi, ale nie wykonana na Windowsie.
+- Weryfikacja Windows x64 (22.10.2026): Qt 6.8.3, Build Tools 2022 17.14.42, MSVC 19.44.35229 i SDK 10.0.26100.0. Zbudowano Release Quick i program testowy; uruchomiono natywne okno aplikacji, a `--backend-only` i `--author-only` zakończyły się kodem 0. Pełny zestaw GUI i osobny build Widgets-only nie były wykonywane na Windowsie. Wcześniejsze testy pełnego zestawu wykonywano na Linuxie z Qt 5.15.3.
 - Nowy interfejs jest w `source/UI/Quick`. Eksperyment `source/UI/Competition/Quick` jest starszą, odrębną implementacją. **Nie dodawaj `CONFIG+=competition_quick` do zwykłego buildu.**
 - Widoki Quick nadal korzystają z kontrolerów Widgets. Potrzebne są oba zestawy bibliotek. `--widgets` przełącza UI podczas uruchamiania; `CONFIG+=widgets_only` tworzy osobny build bez Quick.
 - Najpierw wykryj istniejące narzędzia, potem doinstaluj brakujące. Zachowaj jeden zgodny zestaw Qt, kompilatora, bibliotek i narzędzi x64.

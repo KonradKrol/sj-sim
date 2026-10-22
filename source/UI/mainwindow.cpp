@@ -17,6 +17,9 @@
 #include "SingleJumps/SingleJumpsConfigWindow.h"
 #include "SingleJumps/SingleJumpsResultsWindow.h"
 #include "Competition/CompetitionConfigWindow.h"
+#ifdef SJ_QUICK_UI
+#include "Quick/QuickUi.h"
+#endif
 #ifdef SJ_COMPETITION_QUICK
 #include "Competition/Quick/CompetitionQuickBridge.h"
 #endif
@@ -69,6 +72,11 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    // Unload Quick scenes while the main window's child tree is still intact.
+    // QWidget's later child teardown is too late for QuickUi's scene cleanup.
+#ifdef SJ_QUICK_UI
+    delete findChild<QuickUi *>(QString(), Qt::FindDirectChildrenOnly);
+#endif
     delete ui;
 }
 
