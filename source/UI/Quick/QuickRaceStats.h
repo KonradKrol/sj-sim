@@ -5,8 +5,30 @@
 #include <QVariantMap>
 #include <algorithm>
 #include <functional>
+#include <limits>
 
 namespace QuickRaceStats {
+inline QVariantMap previousStanding(const CompetitionResults &results, const CompetitionSingleResult &athlete, int jumpCount) {
+    if(jumpCount < 1 || athlete.getJumps().size() < jumpCount) return {};
+    const auto score = [jumpCount](const CompetitionSingleResult &entry) {
+        double sum = 0; const auto jumps = entry.getJumps();
+        for(int i = 0; i < jumpCount; ++i) sum += jumps[i].getPoints();
+        return qRound64(sum * 10);
+    };
+    const auto own = score(athlete);
+    qint64 bestRival = std::numeric_limits<qint64>::min();
+    int position = 1;
+    for(const auto &entry : results.getResults()) {
+        if(entry.getJumps().size() < jumpCount || (entry.getJumper() == athlete.getJumper() && entry.getTeam() == athlete.getTeam())) continue;
+        const auto rival = score(entry);
+        bestRival = qMax(bestRival, rival);
+        if(rival > own) ++position;
+    }
+    QVariantMap standing{{"position", position}};
+    if(bestRival != std::numeric_limits<qint64>::min()) standing["gap"] = (bestRival - own) / 10.;
+    return standing;
+}
+
 inline QVariantMap biggestAdvancement(const CompetitionResults &results, int round, int jumpsPerRound, int remainingCompetitors = 0) {
     if (round < 2 || jumpsPerRound < 1)
         return {};

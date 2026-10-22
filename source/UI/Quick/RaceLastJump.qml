@@ -70,7 +70,7 @@ Pane {
             JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Rekomp."); value: jump.signedText(jump.summary.compensation,jump.summary.compensationValue); valueColor: jump.signedColor(jump.summary.compensationValue); objectName: "lastJumpCompensation"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
             JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Za wiatr"); value: jump.summary.windPoints || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
             JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Za belkę"); value: jump.summary.gatePoints || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
-            JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Seria"); value: jump.summary.roundPosition || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
+            JumpMetric { inlineValue: !jump.narrow; objectName: "lastJumpRoundPosition"; caption: qsTr("W serii"); value: jump.summary.roundPositionNumber>0 ? jump.summary.roundPositionNumber+"." : "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
             JumpMetric { inlineValue: !jump.narrow; visible: !!jump.summary.groupPosition; caption: qsTr("Grupa"); value: jump.summary.groupPosition || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
             JumpMetric { inlineValue: !jump.narrow; visible: !!jump.summary.competitionPosition; caption: qsTr("Konkurs"); value: jump.summary.competitionPosition || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
             JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Suma"); value: jump.summary.totalPoints || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }

@@ -342,15 +342,18 @@ static void runCompetition(MainWindow &main,int scenario) {
                 if(next && !next->isHidden() && next->isEnabled()) bridge->activate(id(bridge,"pushButton_goToNext"));
                 else if(scenario==0 && window->getManager()->getActualRound()>1 && !previousRankTested) {
                     bridge->refresh();const int previous=bridge->context().value("previousPosition").toInt();check(previous>0,"athlete on gate shows place after previous round");
+                    check(bridge->context().contains("previousGap"),"athlete on gate shows the gap after the previous round");
+                    const auto beforeJump=bridge->context().value("previousGap");
                     const double speed=GlobalAppSettings::get()->getLiveCompetitionSpeedMulti();GlobalAppSettings::get()->setLiveCompetitionSpeedMulti(.005);window->findChild<QCheckBox *>("checkBox_liveCompetition")->setChecked(true);
                     const auto advancementBefore=bridge->context().value("biggestAdvancement").toMap();
                     QObject watcher;bool seen=false;
-                    QObject::connect(window,&CompetitionManagerWindow::liveStageChanged,&watcher,[&](int stage){if(stage==2){bridge->refresh();check(!bridge->jumpSummary().contains("positionNumber"),"last jump leaves position blank during flight");check(!bridge->jumpSummary().contains("leaderGap"),"current leader gap is not revealed during flight");check(bridge->context().value("biggestAdvancement").toMap()==advancementBefore,"biggest advancement stays frozen until live results are revealed");seen=true;}});
+                    QObject::connect(window,&CompetitionManagerWindow::liveStageChanged,&watcher,[&](int stage){if(stage==2){bridge->refresh();check(!bridge->jumpSummary().contains("positionNumber"),"last jump leaves position blank during flight");check(!bridge->jumpSummary().contains("leaderGap"),"current leader gap is not revealed during flight");check(!bridge->jumpSummary().contains("roundPositionNumber"),"round jump rank is not revealed during flight");check(bridge->context().value("previousGap")==beforeJump,"pre-jump gap retains the completed-round baseline during live flight");check(bridge->context().value("biggestAdvancement").toMap()==advancementBefore,"biggest advancement stays frozen until live results are revealed");seen=true;}});
                     bridge->activate(id(bridge,"pushButton_jump"));QTest::qWait(300);bridge->refresh();check(seen&&!bridge->jumpSummary().contains("previousRound")&&bridge->jumpSummary().value("positionNumber").toInt()>0,"final result replaces previous place with current rank");
                     window->findChild<QCheckBox *>("checkBox_liveCompetition")->setChecked(false);GlobalAppSettings::get()->setLiveCompetitionSpeedMulti(speed);previousRankTested=true;
                 }
                 else { check(jump&&jump->isEnabled(),"jump remains operable");if(scenario==2 && window->getManager()->getActualRound()>1){bridge->refresh();check(bridge->context().value("previousPosition").toInt()>0,"team on gate shows the team place after previous round");}bridge->activate(id(bridge,"pushButton_jump")); }
                 QTest::qWait(10);bridge->refresh();checkStartList();
+                check(bridge->jumpSummary().value("roundPositionNumber").toInt()>0,"the main jump card shows that jump's rank within its own round");
             }
             check(scenario!=0||previousRankTested,"previous-round rank transition was exercised in a real second round");
             check(window->getManager()->checkCompetitionEnd(),"competition finishes");
@@ -563,8 +566,8 @@ static void nextSeasonTransactionRegression(MainWindow &main) {
                     hillEditor->findChild<QLineEdit *>("lineEdit_name")->setText("Accepted hill");QMetaObject::invokeMethod(hillEditor,"submitted");
                     rulesEditor->findChild<QLineEdit *>("lineEdit_name")->setText("Accepted rules");QMetaObject::invokeMethod(rulesEditor,"submitted");
                     draft->getJumpersReference().append(new Jumper("Added","Athlete","NOR"));
-                    auto hills=draft->getHillsReference();hills.append(new Hill(*hill));draft->setHills(hills);
-                    auto additionalRule=rule;additionalRule.setName("Added rules");draft->getCompetitionsRulesReference().append(additionalRule);
+                    auto hills=draft->getHillsReference();auto *addedHill=new Hill(*hill);addedHill->reassign();hills.append(addedHill);draft->setHills(hills);
+                    auto additionalRule=rule;additionalRule.reassign();additionalRule.setName("Added rules");draft->getCompetitionsRulesReference().append(additionalRule);
                     draft->accept();
                 } else draft->reject();
                 break;
@@ -1162,7 +1165,21 @@ static void historicalTeamPointsRegression() {
     qInfo()<<"PASS: historical team jump points survive subsequent nationality edits";
 }
 
+static void previousStandingRegression() {
+    Jumper leader("A","One","POL"),rival("B","Two","NOR"),athlete("C","Three","GER");CompetitionResults results;
+    const auto add=[&](Jumper *jumper,double points){JumpData jump; jump.setJumper(jumper);jump.setPoints(points);results.addJump(jumper,jump);results.sortInDescendingOrder();};
+    add(&leader,120);add(&rival,110);add(&athlete,99.5);
+    const auto standing=[&](Jumper *jumper,int count){return QuickRaceStats::previousStanding(results,*results.getResultOfIndividualJumper(jumper),count);};
+    check(standing(&athlete,1).value("gap").toDouble()==20.5 && standing(&athlete,1).value("position").toInt()==3,"pre-jump standing shows the previous-round gap and place");
+    check(standing(&leader,1).value("gap").toDouble()==-10,"a leader's previous-round advantage is negative relative to the best rival");
+    add(&athlete,200);check(standing(&athlete,1).value("gap").toDouble()==20.5 && standing(&leader,1).value("gap").toDouble()==-10,"jumps already made in the current round cannot change the previous-round gap");
+    check(standing(&rival,0).isEmpty() && standing(&rival,2).isEmpty(),"first-round and incomplete baselines have no invented gap");
+    add(&leader,179.5);add(&rival,189.5);check(standing(&athlete,2).value("gap").toDouble()==0,"shared leaders show zero previous-round gap");
+    qInfo()<<"PASS: previous-round gaps, negative leads, ties and frozen baselines";
+}
+
 static void backendRegressions() {
+    previousStandingRegression();
     historicalTeamPointsRegression();
     nextCompetitionReloadRegression();
     fractionalPointsPresetRegression();

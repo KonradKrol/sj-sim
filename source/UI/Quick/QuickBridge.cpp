@@ -473,7 +473,11 @@ void QuickBridge::refresh() {
             auto *team=dynamic_cast<TeamCompetitionManager *>(manager);
             auto *ranked=team?manager->getResults()->getResultOfTeam(team->getActualTeam()):manager->getResults()->getResultOfIndividualJumper(manager->getActualJumper());
             const int count=(manager->getActualRound()-1)*(team?manager->getCompetitionRules()->getJumpersInTeamCount():1);
-            if(ranked)context["previousPosition"]=manager->getResults()->getPositionAfterJumps(*ranked,count);
+            if(ranked) {
+                const auto standing=QuickRaceStats::previousStanding(*manager->getResults(),*ranked,count);
+                context["previousPosition"]=standing.value("position");
+                if(standing.contains("gap"))context["previousGap"]=standing.value("gap");
+            }
         }
         if(context!=m_context) { m_context=context;emit changed(); }
         QVariantMap summary;
@@ -496,7 +500,11 @@ void QuickBridge::refresh() {
                 if(rank.contains("leaderGap"))summary["leaderGap"]=rank.value("leaderGap");
             }
             for(auto *info:selected->findChildren<JumpDataDetailedInfoWindow *>())if(info->isVisibleTo(m_content) && info->getJumpData()) {
-                const auto *jump=info->getJumpData();
+                auto *jump=info->getJumpData();
+                if(jump->getCompetition() && (window->getLiveStage()==0 || window->getLiveStage()>=5)) {
+                    const int position=jump->getCompetition()->getRules().getCompetitionType()==CompetitionRules::Team ? jump->getPositionInRoundForTeamCompetition() : jump->getPositionInRound();
+                    if(position>0) { summary["roundPositionNumber"]=position; summary["roundPosition"]=QString::number(position); }
+                } else summary.remove("roundPosition");
                 if(summary.contains("wind"))summary["windValue"]=qRound64(jump->getAveragedWind()*100)/100.;
                 if(summary.contains("compensation")){
                     summary["compensationValue"]=qRound64(jump->getTotalCompensation()*10)/10.;
