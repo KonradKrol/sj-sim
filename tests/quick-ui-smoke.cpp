@@ -43,6 +43,7 @@
 #include "../source/global/GlobalDatabase.h"
 #include "../source/global/GlobalAppSettings.h"
 #include "../source/global/GlobalSimulationSettings.h"
+#include "../source/seasons/SeasonCalendarPreset.h"
 #include <QApplication>
 #include <QQuickWidget>
 #include <QQmlContext>
@@ -948,7 +949,23 @@ static void advancementRegressions() {
     qInfo()<<"PASS: biggest advancement, shared gains, tied places, third rounds and team baselines";
 }
 
+static void presetSerializationRegression() {
+    Hill hill=GlobalDatabase::get()->getEditableGlobalHills().first();
+    CompetitionInfo training(&hill),competition(&hill);training.setSerieType(CompetitionInfo::Training);competition.setTrainings({&training});
+    SeasonCalendar calendar("Serialization regression");calendar.setCompetitions({&training,&competition});
+    SeasonCalendarPreset preset(&calendar);preset.setName("Regression preset");preset.setHills({{hill.getName(),hill.getHSPoint()},{hill.getName(),hill.getHSPoint()}});
+    const auto first=SeasonCalendarPreset::getJsonObject(preset),second=SeasonCalendarPreset::getJsonObject(preset);
+    for(auto *event:preset.getCalendarReference().getCompetitionsReference())check(event->getHill()==&hill,"serializing a calendar preset preserves its in-memory hill pointers");
+    check(competition.getHill()==&hill && training.getHill()==&hill,"serializing a preset leaves the source calendar intact");
+    check(first==second,"repeated preset serialization is stable");
+    for(const auto &event:first.value("calendar").toObject().value("competitions").toArray())check(!event.toObject().contains("hill-id"),"preset JSON omits save-specific hill identities");
+    check(first.value("hills").toArray().size()==2,"preset JSON retains its named hill references");
+    qDeleteAll(preset.getCalendarReference().getCompetitionsReference());
+    qInfo()<<"PASS: calendar preset serialization preserves live hill assignments";
+}
+
 static void backendRegressions() {
+    presetSerializationRegression();
     advancementRegressions();
     { Classification source("Existing classification");source.setAltPointsForPlaces({{1,25.0}});ClassificationEditorWidget editor(&source);check(editor.getClassification()==&source,"classification constructor initializes the supplied source");editor.setClassification(nullptr);check(!editor.getClassification(),"classification source can be cleared safely"); }
 

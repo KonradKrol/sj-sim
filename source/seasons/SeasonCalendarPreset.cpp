@@ -74,9 +74,15 @@ QJsonObject SeasonCalendarPreset::getJsonObject(SeasonCalendarPreset preset)
 {
     QJsonObject object;
     object.insert("name", preset.getName());
-    for(auto & comp : preset.getCalendarReference().getCompetitionsReference())
-        comp->setHill(nullptr);
-    object.insert("calendar", SeasonCalendar::getJsonObject(preset.getCalendarReference()));
+    auto calendarJson = SeasonCalendar::getJsonObject(preset.getCalendarReference());
+    auto competitions = calendarJson.value("competitions").toArray();
+    for(int i = 0; i < competitions.size(); ++i) {
+        auto competition = competitions[i].toObject();
+        competition.remove("hill-id");
+        competitions[i] = competition;
+    }
+    calendarJson.insert("competitions", competitions);
+    object.insert("calendar", calendarJson);
     QJsonArray hillsArray;
     for(auto & hill : preset.getHillsReference()){
         QJsonObject hillObject;
