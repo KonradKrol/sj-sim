@@ -216,19 +216,7 @@ SimulationSave * SimulationSave::getFromJson(QJsonObject obj, IdentifiableObject
         return nullptr;
     }
 
-    const int savedCompetitionIndex = obj.value("next-competition-index").toInt(-1);
-    SeasonCalendar *actualCalendar = save->getActualSeason()->getActualCalendar();
-    if(actualCalendar != nullptr
-        && savedCompetitionIndex >= 0
-        && savedCompetitionIndex < actualCalendar->getCompetitionsReference().count())
-    {
-        save->setNextCompetitionIndex(savedCompetitionIndex);
-        save->setNextCompetition(actualCalendar->getCompetitionsReference().at(savedCompetitionIndex));
-    }
-    else
-    {
-        save->updateNextCompetitionIndex();
-    }
+    save->updateNextCompetitionIndex();
 
     save->setShowForm(obj.value("show-form").toBool(true));
     save->setShowInstability(obj.value("show-instability").toBool(true));

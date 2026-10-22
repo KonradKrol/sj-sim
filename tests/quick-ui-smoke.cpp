@@ -1089,7 +1089,26 @@ static void csvFieldsRegression() {
     qInfo()<<"PASS: CSV names, separators, quotes, line breaks, decimal points and unknown countries";
 }
 
+static void nextCompetitionReloadRegression() {
+    SimulationSave source;source.setName("Next event regression");
+    auto *hill=new Hill(GlobalDatabase::get()->getEditableGlobalHills().first());source.setHills({hill});
+    auto *calendar=new SeasonCalendar("Calendar");
+    auto *played=new CompetitionInfo(hill),*pending=new CompetitionInfo(hill),*later=new CompetitionInfo(hill);
+    played->setPlayed(true);calendar->setCompetitions({played,pending,later});
+    Season season;season.setCalendars({calendar});season.setActualCalendar(calendar);source.setSeasons({season});source.setActualSeason(&source.getSeasonsReference().first());source.updateNextCompetitionIndex();
+    for(int index:{0,2,-1,100}) {
+        auto json=SimulationSave::getJsonObject(source);json["next-competition-index"]=index;
+        std::unique_ptr<SimulationSave> loaded(SimulationSave::getFromJson(json,nullptr));
+        check(loaded && loaded->getNextCompetitionIndex()==1 && loaded->getNextCompetition() && loaded->getNextCompetition()->getID()==pending->getID(),"reload derives the first pending event instead of replaying or skipping from a stale index");
+    }
+    pending->setPlayed(true);later->setPlayed(true);auto json=SimulationSave::getJsonObject(source);json["next-competition-index"]=0;
+    std::unique_ptr<SimulationSave> loaded(SimulationSave::getFromJson(json,nullptr));
+    check(loaded && !loaded->getNextCompetition() && loaded->getNextCompetitionIndex()==3,"a finished calendar stays finished even when its saved next index is stale");
+    qInfo()<<"PASS: stale next-event indices cannot replay or skip calendar events on reload";
+}
+
 static void backendRegressions() {
+    nextCompetitionReloadRegression();
     fractionalPointsPresetRegression();
     csvFieldsRegression();
     randomBoundsRegression();
