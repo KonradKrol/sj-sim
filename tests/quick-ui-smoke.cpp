@@ -361,7 +361,17 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                     optionsWorkspace->setProperty("section",section);QTest::qWait(80);scene(window)->grabFramebuffer();
                     check(section==2 || (optionsScroll->property("contentHeight").toReal()<=optionsScroll->height() && !optionsScroll->property("interactive").toBool() && optionsScroll->property("contentY").toReal()==0),"returning from jump details unloads their height and hides scrolling in fitted options tabs");
                 }
-                QTest::keyClick(scene(window),Qt::Key_Escape);QTest::qWait(100);
+                optionsWorkspace->setProperty("section",0);QTest::qWait(100);
+                check(!item(scene(window)->quickWindow()->contentItem(),"action-toolButton_autoSimulationActions"),"automatic simulation has direct controls without a parent menu button");
+                messages.stop();const int untouchedIndex=window->getManager()->getActualStartListIndex();
+                for(int operation=0;operation<3;++operation) {
+                    if(operation>0){main.activateWindow();scene(window)->setFocus();clickControl(scene(window),"raceOptions");}
+                    bool opened=false;QTimer cancel;
+                    QObject::connect(&cancel,&QTimer::timeout,[&] {for(auto *widget:QApplication::allWidgets())if(auto *dialog=qobject_cast<QDialog *>(widget);dialog && dialog->isVisible() && (qobject_cast<QInputDialog *>(dialog)||qobject_cast<QMessageBox *>(dialog))){cancel.stop();opened=true;const auto title=dialog->windowTitle();check(operation==0 ? qobject_cast<QInputDialog *>(dialog)!=nullptr : title.contains(operation==1?QString::fromUtf8("serii"):QString::fromUtf8("konkursu")),"each direct simulation control opens its intended operation");dialog->reject();}});
+                    cancel.start(20);clickControl(scene(window),"raceSimulate-"+QString::number(operation));QTest::qWait(80);cancel.stop();check(opened && window->getManager()->getActualStartListIndex()==untouchedIndex,"cancelling a direct simulation operation preserves the competition");
+                }
+                messages.start(20);
+                check(!scene(window)->rootObject()->findChild<QObject *>("raceOptionsPanel")->property("visible").toBool(),"starting a direct simulation operation closes the options drawer");
                 const int before=window->getManager()->getActualStartListIndex();bridge->activate(id(bridge,"toolButton_autoSimulationActions"),1);QTest::qWait(100);
                 check(window->getManager()->getActualStartListIndex()!=before || window->getManager()->checkRoundEnd(),"automatic simulation menu advances real round");
             }
