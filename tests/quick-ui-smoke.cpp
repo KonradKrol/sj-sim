@@ -1336,6 +1336,27 @@ static void singleSimulationRegression() {
     qInfo()<<"PASS: cancellable single-jump batches, finite results and immutable wind history";
 }
 
+static void singleGateRegression(MainWindow &main) {
+    SingleJumpsConfigWindow config;
+    auto *db=GlobalDatabase::get();
+    config.getJumperEditor()->setJumper(&db->getEditableGlobalJumpers().first());config.getJumperEditor()->fillJumperInputs();
+    config.getHillEditor()->setHill(&db->getEditableGlobalHills().first());config.getHillEditor()->fillHillInputs();
+    QVector<WindGenerationSettings> settings(6,WindGenerationSettings(Wind::Front,0,2,0));
+    auto *wind=config.getWindsGeneratorSettingsEditor();wind->setWindGenerationSettings(&settings);wind->setKPoint(config.getHillEditor()->getKPointFromInput());wind->fillSettingsInputs();
+    auto *gate=config.findChild<QSpinBox *>("spinBox_gate");gate->setValue(17);
+    const int headwind=config.suggestedGate();
+    check(headwind>=gate->minimum() && headwind<=gate->maximum() && headwind==config.suggestedGate() && gate->value()==17,"single-jump gate preview is bounded, deterministic and preserves manual input");
+    settings.fill(WindGenerationSettings(Wind::Back,0,2,0));wind->fillSettingsInputs();const int tailwind=config.suggestedGate();
+    check(headwind<=tailwind,"single-jump gate accounts for configured headwind and tailwind");
+    render(&config,"single-jump-auto-gate",true);
+    main.resize(1024,640);QTest::qWait(100);clickControl(scene(&config),"action-pushButton_autoGate");
+    check(gate->value()==tailwind,"auto gate action applies a concrete calculated number");
+    config.getJumperEditor()->resetJumperInputs();gate->setValue(17);config.findChild<QPushButton *>("pushButton_autoGate")->click();
+    check(config.suggestedGate()==-1 && gate->value()==17,"incomplete single-jump setup cannot replace a manual gate");
+    config.reject();QTest::qWait(100);
+    qInfo()<<"PASS: single-jump auto gate uses current athlete, hill and wind";
+}
+
 static void backendRegressions() {
     check(SingleJumpsManager().getImportance()==5.,"standalone jumps have a defined default importance");
     normalSamplingRegression();
@@ -1485,6 +1506,7 @@ int main(int argc,char **argv) {
     if(!app.arguments().contains("--layout-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);interactionRegressions(main);spaceRegressions(main);uxRegressions(main);navigationRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);rosterRegressions(main);geometryRegressions(main);}
     if(!app.arguments().contains("--layout-only")){for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);runCompetition(main,0,true,1);runCompetition(main,0,true,2);runCompetition(main,2,true,3);}
     singleSimulationRegression();
+    singleGateRegression(main);
     appearanceRegressions(main);authorRegressions(main);
     render(&main,"home",true);
     {

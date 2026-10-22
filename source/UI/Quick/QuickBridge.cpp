@@ -949,7 +949,7 @@ void QuickBridge::compose(QuickNode *base) {
         QVariantList pages;
         pages.append(group("parameters",tr("Konfiguracja"),{group("jump-plan",QString(),fields({
             {"comboBox_existingJumper",tr("Zawodnik")},{"comboBox_existingHill",tr("Skocznia")},
-            {"spinBox_jumpsCount",tr("Liczba skoków")},{"spinBox_gate",tr("Belka startowa")},
+            {"spinBox_jumpsCount",tr("Liczba skoków")},{"spinBox_gate",tr("Belka startowa")},{"pushButton_autoGate",""},
             {"doubleSpinBox_jumpsImportance",tr("Ważność skoków")},{"comboBox_jumpsImportancePreset",tr("Preset ważności")}}),"form")}));
         QStringList labels{tr("Konfiguracja")};
         for(const auto &page:QList<QPair<QString,QString>>{{"page_jumper",tr("Zawodnik")},{"page_hill",tr("Skocznia")},{"page_windsGeneratorSettings",tr("Wiatr")}}) {

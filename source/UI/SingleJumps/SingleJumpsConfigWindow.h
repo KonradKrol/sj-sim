@@ -54,6 +54,7 @@ public:
     short getWindAverageCalculatingType();
     short getWindCompensationDistanceEffect();
     int getGateFromInput();
+    int suggestedGate();
     int getDSQProbabilityFromInput();
     bool getHasJudgesFromInput();
     bool getHasWindCompensationFromInput();

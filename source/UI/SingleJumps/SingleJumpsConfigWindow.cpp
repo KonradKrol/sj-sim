@@ -17,6 +17,9 @@
 #include <QMessageBox>
 #include <QResizeEvent>
 #include <QSplitter>
+#include <cmath>
+#include "../../simulator/JumpSimulator.h"
+#include "../../simulator/JumpManipulator.h"
 
 SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent) :
     QDialog(parent),
@@ -60,6 +63,14 @@ SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent) :
     ui->pushButton_submit->setDefault(true);
     ui->pushButton_submit->setToolTip(tr("Rozpocznij symulację z aktualnymi ustawieniami (Enter)"));
     ui->spinBox_jumpsCount->setToolTip(tr("Liczba skoków do wykonania; minimum to 1"));
+    auto *autoGate = new QPushButton(tr("Dobierz belkę"), this);
+    autoGate->setObjectName("pushButton_autoGate");
+    autoGate->setToolTip(tr("Oblicz belkę dla zawodnika, skoczni i ustawionego wiatru"));
+    ui->horizontalLayout_9->addWidget(autoGate);
+    connect(autoGate, &QPushButton::clicked, this, [this]{
+        const int gate = suggestedGate();
+        if(gate >= 0)ui->spinBox_gate->setValue(gate);
+    });
 
     const QList<QWidget *> scalableInputs = {
         ui->spinBox_jumpsCount,
@@ -254,6 +265,38 @@ short SingleJumpsConfigWindow::getWindAverageCalculatingType()
 short SingleJumpsConfigWindow::getWindCompensationDistanceEffect()
 {
     return ui->comboBox_windCompensationDistanceEffect->currentIndex();
+}
+
+int SingleJumpsConfigWindow::suggestedGate()
+{
+    Jumper jumper = jumperEditor->getJumperFromWidgetInput();
+    Hill hill = hillEditor->getHillFromWidgetInput();
+    if(jumper.getNameAndSurname().trimmed().isEmpty() ||
+       !std::isfinite(hill.getHSPoint()) || hill.getHSPoint() <= 0 ||
+       hill.getKPoint() <= 0 || hill.getHSPoint() < hill.getKPoint() ||
+       !std::isfinite(hill.getPointsForGate()) || hill.getPointsForGate() <= 0 ||
+       !std::isfinite(hill.getPointsForMeter()) || hill.getPointsForMeter() <= 0)
+        return -1;
+    CompetitionRules rules;
+    JumpManipulator manipulation;
+    JumpSimulator simulator;
+    simulator.setJumper(&jumper);simulator.setHill(&hill);
+    simulator.setCompetitionRules(&rules);simulator.setManipulator(&manipulation);
+    QVector<Wind> winds;
+    const auto settings = windsGeneratorSettingsEditor->getWindsGenerationSettingsFromInputs();
+    for(const auto &setting : settings)
+        winds.append(Wind(setting.getBaseDirection(), setting.getBaseWindStrength()));
+    simulator.setWinds(winds);
+    int low = ui->spinBox_gate->minimum(), high = ui->spinBox_gate->maximum();
+    while(low < high) {
+        const int middle = (low + high + 1) / 2;
+        simulator.setGate(middle);simulator.setCompetitionStartGate(middle);
+        const double distance = simulator.previewDistance();
+        if(!std::isfinite(distance))return -1;
+        if(distance <= hill.getHSPoint() * .97)low = middle;
+        else high = middle - 1;
+    }
+    return low;
 }
 
 int SingleJumpsConfigWindow::getGateFromInput()
