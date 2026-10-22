@@ -5,9 +5,9 @@ CheckBox {
     id: control
     nextCheckState: function() { return checkState === Qt.Checked ? Qt.Unchecked : Qt.Checked }
     font.pointSize: Theme.body
-    implicitHeight: Math.max(40, label.implicitHeight + 12)
+    implicitHeight: Math.max(Theme.compact ? 32 : 40, label.implicitHeight + (Theme.compact ? 6 : 12))
     indicator: Rectangle {
-        width: 22; height: 22; radius: 4
+        width: Theme.compact ? 18 : 22; height: width; radius: 4
         y: (control.height - height) / 2
         color: control.checkState !== Qt.Unchecked ? Theme.accent : Theme.raised
         border.color: control.activeFocus ? Theme.accent : Theme.outline
@@ -19,7 +19,7 @@ CheckBox {
         text: control.text
         font: control.font
         color: Theme.ink
-        leftPadding: 34
+        leftPadding: Theme.compact ? 28 : 34
         verticalAlignment: Text.AlignVCenter
         wrapMode: Text.WordWrap
     }

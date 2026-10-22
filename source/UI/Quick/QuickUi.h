@@ -22,20 +22,23 @@ class QuickBridge;
 class QuickAppearance : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool dark READ dark WRITE setDark NOTIFY changed)
+    Q_PROPERTY(bool compactUi READ compactUi WRITE setCompactUi NOTIFY changed)
     Q_PROPERTY(bool reducedMotion READ reducedMotion WRITE setReducedMotion NOTIFY changed)
     Q_PROPERTY(qreal textScale READ textScale WRITE setTextScale NOTIFY changed)
 public:
     explicit QuickAppearance(QObject *parent = nullptr);
     bool dark() const { return m_dark; }
+    bool compactUi() const { return m_compactUi; }
     bool reducedMotion() const { return m_reducedMotion; }
     qreal textScale() const { return m_textScale; }
     void setDark(bool value);
     void setReducedMotion(bool value);
+    void setCompactUi(bool value);
     void setTextScale(qreal value);
 signals:
     void changed();
 private:
-    bool m_dark, m_reducedMotion;
+    bool m_dark, m_reducedMotion, m_compactUi;
     qreal m_textScale;
 };
 

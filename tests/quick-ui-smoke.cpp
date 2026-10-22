@@ -511,6 +511,21 @@ public slots:
     void record(const QUrl &url) {urls.append(url);}
 };
 
+static void appearanceRegressions(MainWindow &main) {
+    main.show();main.resize(1024,640);auto *appearance=scene(&main)->rootContext()->contextProperty("appearance").value<QuickAppearance *>();
+    const bool oldCompact=appearance->compactUi();const qreal oldScale=appearance->textScale();appearance->setCompactUi(false);appearance->setTextScale(1);
+    QDialog fixture(&main);auto *layout=new QVBoxLayout(&fixture);auto *button=new QPushButton("Density probe");button->setObjectName("densityProbe");layout->addWidget(button);fixture.show();QTest::qWait(120);
+    auto *projected=item(scene(&fixture)->rootObject(),"action-densityProbe");check(projected,"appearance probe button exists");const qreal normal=projected->height();
+    appearance->setCompactUi(true);QTest::qWait(80);check(projected->height()<normal && appearance->textScale()==1,"compact UI reduces control spacing independently of text size");
+    appearance->setTextScale(.75);QuickAppearance persisted;check(persisted.compactUi() && persisted.textScale()==.75,"compact density and smaller text persist across appearance instances");
+    fixture.reject();main.resize(360,480);QTest::qWait(80);auto *navigation=main.findChild<QuickUi *>();navigation->showAppearance();QTest::qWait(120);
+    QWidget *popup=nullptr;for(auto *widget:QApplication::allWidgets())if(widget->isVisible() && widget->property("sjQuickUtility").toBool())popup=widget;
+    check(popup && popup->height()<=main.height()-24,"appearance controls fit the smallest application height");auto *view=popup->findChild<QQuickWidget *>();
+    clickControl(view,"compactUiToggle");check(!appearance->compactUi(),"compact setting can be changed through its visible appearance control");navigation->closeAppearance();
+    appearance->setCompactUi(oldCompact);appearance->setTextScale(oldScale);main.resize(1024,640);
+    qInfo()<<"PASS: compact interface, independent smaller text, persisted preferences and bounded appearance popup";
+}
+
 static void authorRegressions(MainWindow &main) {
     main.show();main.resize(1240,900);QTest::qWait(120);clickControl(scene(&main),"openAuthor");QTest::qWait(150);
     auto *dialog=main.findChild<AuthorWindow *>();auto *navigation=main.findChild<QuickUi *>();
@@ -1416,6 +1431,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--rosters-only")){rosterRegressions(main);return 0;}
     if(app.arguments().contains("--menus-only")){menuRegressions(main);return 0;}
     if(app.arguments().contains("--workflow-only")){seasonWorkflowRegressions(main);return 0;}
+    if(app.arguments().contains("--appearance-only")){appearanceRegressions(main);return 0;}
     if(app.arguments().contains("--author-only")){authorRegressions(main);return 0;}
     if(app.arguments().contains("--navigation-only")){navigationRegressions(main);return 0;}
     if(app.arguments().contains("--backend-only"))return 0;
@@ -1427,7 +1443,7 @@ int main(int argc,char **argv) {
     }
     if(!app.arguments().contains("--layout-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);interactionRegressions(main);spaceRegressions(main);uxRegressions(main);navigationRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);rosterRegressions(main);geometryRegressions(main);}
     if(!app.arguments().contains("--layout-only")){for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);runCompetition(main,0,true,1);runCompetition(main,0,true,2);runCompetition(main,2,true,3);}
-    authorRegressions(main);
+    appearanceRegressions(main);authorRegressions(main);
     render(&main,"home",true);
     {
         DatabaseEditorWindow dialog; render(&dialog,"database",true);

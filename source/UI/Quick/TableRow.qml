@@ -34,7 +34,7 @@ Rectangle {
     Accessible.role: Accessible.ListItem
     Accessible.name: (rowCells || []).map(function(cell) { return cell.text }).join(", ") + (statusText ? ", " + statusText : "")
     Accessible.selected: rowSelected
-    height: Math.max(tableView.compact ? 32 : 40, Theme.body * (tableView.compact ? 2.3 : 2.7))
+    height: Math.max(Theme.compact ? (tableView.compact ? 26 : 30) : (tableView.compact ? 32 : 40), Theme.body * (Theme.compact ? 1.9 : tableView.compact ? 2.3 : 2.7))
     color: rowSelected ? Theme.selection : mouse.containsMouse ? Theme.raised : tintColor()
     Rectangle { anchors.left: parent.left; anchors.top: parent.top; anchors.bottom: parent.bottom; width: 3; color: Theme.accent; visible: row.rowCurrent }
     Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: Theme.divider }

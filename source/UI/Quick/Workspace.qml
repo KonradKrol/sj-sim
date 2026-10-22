@@ -51,7 +51,7 @@ ColumnLayout {
         clip: true
         Pane {
             width: scroll.availableWidth
-            padding: workspace.width < 700 ? 12 : 24
+            padding: Theme.compact ? 8 : workspace.width < 700 ? 12 : 24
             background: Item {}
             contentItem: Node { node: workspace.catalogPage || workspace.calendarPage || workspace.rosterPage || workspace.formPage ? null : workspace.contentNode }
         }
@@ -59,27 +59,27 @@ ColumnLayout {
         Loader {
             visible: active; active: workspace.catalogPage
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
-            Layout.margins: workspace.width < 700 || workspace.height < 600 ? 12 : 20
+            Layout.margins: Theme.compact ? 8 : workspace.width < 700 || workspace.height < 600 ? 12 : 20
             sourceComponent: Component { CatalogWorkspace { node: workspace.contentNode } }
         }
         Loader {
             visible: active; active: workspace.formPage
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
-            Layout.margins: workspace.width < 700 || workspace.height < 600 ? 12 : 20
+            Layout.margins: Theme.compact ? 8 : workspace.width < 700 || workspace.height < 600 ? 12 : 20
             sourceComponent: Component { FormGeneratorWorkspace { node: workspace.contentNode } }
         }
         Loader {
             visible: active; active: workspace.rosterPage
             Layout.fillWidth: true; Layout.fillHeight: true
             Layout.minimumHeight: 0; Layout.minimumWidth: 0
-            Layout.margins: workspace.width < 700 || workspace.height < 600 ? 12 : 20
+            Layout.margins: Theme.compact ? 8 : workspace.width < 700 || workspace.height < 600 ? 12 : 20
             sourceComponent: Component { RosterWorkspace { node: workspace.contentNode } }
         }
         Loader {
             visible: active
             active: workspace.calendarPage
             Layout.fillWidth: true; Layout.fillHeight: true
-            Layout.margins: workspace.width < 700 || workspace.height < 600 ? 12 : 20
+            Layout.margins: Theme.compact ? 8 : workspace.width < 700 || workspace.height < 600 ? 12 : 20
             sourceComponent: Component { CalendarWorkspace { node: workspace.contentNode } }
         }
     }

@@ -22,7 +22,7 @@ Rectangle {
                 HomeHero { visible: home.height >= 1040; Layout.fillWidth: true; compact: home.width < 850 }
                 ColumnLayout {
                     Layout.fillWidth: true
-                    Layout.margins: home.width < 700 || home.height < 760 ? 16 : 32
+                    Layout.margins: Theme.compact ? 12 : home.width < 700 || home.height < 760 ? 16 : 32
                     spacing: 16
                     RowLayout {
                         Layout.fillWidth: true
@@ -31,7 +31,7 @@ Rectangle {
                     GridLayout {
                         Layout.fillWidth: true
                         columns: home.editorial ? 2 : home.width >= 900 ? 3 : home.width >= 680 ? 2 : 1
-                        columnSpacing: 16; rowSpacing: 16
+                        columnSpacing: Theme.gap; rowSpacing: Theme.gap
                         HomeCard { Layout.rowSpan: home.editorial ? 2 : 1; number: "01"; expansive: home.editorial; title: qsTr("Sezony"); description: qsTr("Zapisy symulacji, kalendarze i klasyfikacje."); detail: qsTr("Otwórz zapisy"); featured: true; Layout.fillWidth: true; Layout.fillHeight: true; Layout.preferredWidth: home.editorial ? 600 : 320; onClicked: ui.launch("seasons") }
                         HomeCard { number: "02"; title: qsTr("Pojedynczy konkurs"); description: qsTr("Konfiguracja konkursu i przebieg rywalizacji."); detail: qsTr("Konfiguruj konkurs"); Layout.fillWidth: true; Layout.fillHeight: true; onClicked: ui.launch("competition") }
                         HomeCard { number: "03"; title: qsTr("Pojedyncze skoki"); description: qsTr("Symulacja skoków wybranego zawodnika."); detail: qsTr("Konfiguruj skoki"); Layout.fillWidth: true; Layout.fillHeight: true; onClicked: ui.launch("jumps") }

@@ -8,8 +8,8 @@ Button {
     property bool inverse: false
     property string hint: ""
     property color foreground: primary ? Theme.accentText : inverse ? Theme.snow : Theme.ink
-    implicitHeight: Math.max(primary ? 48 : 40, label.implicitHeight + 16)
-    implicitWidth: Math.max(40, label.implicitWidth + 28)
+    implicitHeight: Math.max(primary ? (Theme.compact ? 38 : 48) : (Theme.compact ? 32 : 40), label.implicitHeight + (Theme.compact ? 10 : 16))
+    implicitWidth: Math.max(40, label.implicitWidth + (Theme.compact ? 20 : 28))
     hoverEnabled: true
     font.family: primary ? Theme.displayFamily : Theme.bodyFamily
     font.pointSize: primary ? Theme.section : Theme.body

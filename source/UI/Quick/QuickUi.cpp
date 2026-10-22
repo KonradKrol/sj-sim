@@ -133,8 +133,8 @@ void QuickUi::showAppearance() {
     m_appearancePopup=popup;
     auto *layout=new QVBoxLayout(popup);layout->setContentsMargins(0,0,0,0);
     auto *view=makeView(popup,m_pages.first().bridge,m_appearance,this,"qrc:/ui/AppearancePanel.qml",false);layout->addWidget(view);
-    popup->resize(320,view->rootObject()?qCeil(view->rootObject()->implicitHeight()):360);
-    const auto bounds=m_main->frameGeometry();popup->move(bounds.right()-popup->width()-12,bounds.top()+70);popup->show();
+    popup->resize(320,qMin(view->rootObject()?qCeil(view->rootObject()->implicitHeight()):360,qMax(180,m_main->height()-24)));
+    const auto bounds=m_main->frameGeometry();popup->move(bounds.right()-popup->width()-12,qMin(bounds.top()+70,bounds.bottom()-popup->height()-12));popup->show();
 }
 void QuickUi::closeAppearance() { if(m_appearancePopup)m_appearancePopup->close(); }
 bool QuickUi::eventFilter(QObject *object,QEvent *event) {

@@ -9,7 +9,7 @@ Item {
     property real currentValue: fields ? Number(fields.value) : 0
     onFieldsChanged: if(fields)currentValue=Number(fields.value)
     signal committed(real value)
-    implicitHeight: 48
+    implicitHeight: Math.max(Theme.compact ? 36 : 48,Theme.bodyMetrics.height+(Theme.compact ? 10 : 18))
     implicitWidth: 140
     function setValue(value) { currentValue=Math.max(fields.minimum,Math.min(fields.maximum,value));if(direct)ui.edit(fields.id,currentValue);committed(currentValue) }
     function formattedValue() {return currentValue===fields.minimum && fields.specialText ? fields.specialText : currentValue.toLocaleString(Qt.locale(),'f',fields.decimals).split(Qt.locale().groupSeparator).join("")}

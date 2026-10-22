@@ -11,10 +11,10 @@ AbstractButton {
     property string detail
     property bool featured: false
     property bool expansive: false
-    readonly property bool compact: Window.window && Window.window.height < 760
+    readonly property bool compact: Theme.compact || Window.window && Window.window.height < 760
     hoverEnabled: true
     implicitWidth: 320
-    implicitHeight: Math.max(compact ? 188 : 192, content.implicitHeight + padding * 2)
+    implicitHeight: Math.max(Theme.compact ? 152 : compact ? 188 : 192, content.implicitHeight + padding * 2)
     Accessible.name: title
     Accessible.description: description
     padding: compact ? 16 : 24

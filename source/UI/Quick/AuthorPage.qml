@@ -6,7 +6,7 @@ ScrollView {
     id: author
     objectName: "authorPage"
     readonly property bool wide: availableWidth >= 900
-    readonly property int inset: width < 700 || height < 600 ? 16 : 24
+    readonly property int inset: Theme.compact ? 12 : width < 700 || height < 600 ? 16 : 24
     contentWidth: availableWidth
     clip: true
     Item {
@@ -44,8 +44,8 @@ ScrollView {
                     objectName: "authorBiography"
                     Layout.fillWidth: true; Layout.minimumWidth: 0
                     Layout.preferredWidth: author.wide ? 640 : 0
-                    Layout.margins: author.wide ? 28 : 20
-                    spacing: 16
+                    Layout.margins: Theme.compact ? 16 : author.wide ? 28 : 20
+                    spacing: Theme.compact ? 10 : 16
                     Label { objectName: "authorHeading"; text: ui.context.heading || ""; color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.title; font.weight: Font.ExtraBold; Layout.fillWidth: true; Layout.minimumWidth: 0; wrapMode: Text.WordWrap }
                     Label { text: ui.context.introduction || ""; color: Theme.muted; font.pointSize: Theme.body; lineHeight: 1.25; Layout.fillWidth: true; Layout.minimumWidth: 0; wrapMode: Text.WordWrap }
                     ColumnLayout {
