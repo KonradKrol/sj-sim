@@ -22,7 +22,8 @@ SingleJumpsManager::SingleJumpsManager(int gate, int jumpsCount, const QString &
     changeableWind(changeableWind),
     resultsFormat(resultsFormat),
     resultsFileName(resultsFileName),
-    gate(gate)
+    gate(gate),
+    importance(5.)
 {
     windAverageCalculatingType = windCompensationDistanceEffect = DSQProbability = 0;
 }

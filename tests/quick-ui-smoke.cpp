@@ -1299,6 +1299,7 @@ static void newRoundDefaultsRegression() {
 }
 
 static void backendRegressions() {
+    check(SingleJumpsManager().getImportance()==5.,"standalone jumps have a defined default importance");
     newRoundDefaultsRegression();
     characteristicLookupRegression();
     previousStandingRegression();
