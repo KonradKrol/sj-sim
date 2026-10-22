@@ -445,7 +445,7 @@ void QuickBridge::refresh() {
     }
     if(actions!=m_actions) { m_actions=actions; emit changed(); }
     if(auto *configuration=qobject_cast<CompetitionConfigWindow *>(m_window)) {
-        QVariantMap context;context["suggestedGate"]=configuration->suggestedGate();context["autoGateReference"]=configuration->autoGateReference();if(auto *gate=m_content->findChild<QSpinBox *>("spinBox_startGate"))context["startingGate"]=gate->value();
+        QVariantMap context;context["suggestedGate"]=configuration->suggestedGate();if(auto *gate=m_content->findChild<QSpinBox *>("spinBox_startGate"))context["startingGate"]=gate->value();
         if(context!=m_context){m_context=context;emit changed();}
     }
     if(auto *season=qobject_cast<SimulationSaveManagerWindow *>(m_window)) {

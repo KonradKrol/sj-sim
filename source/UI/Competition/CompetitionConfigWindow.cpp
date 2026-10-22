@@ -57,7 +57,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
     ui->pushButton_submit->setMaximumWidth(360);
     ui->pushButton_submit->setDefault(true);
     ui->pushButton_submit->setToolTip(tr("Sprawdź ustawienia i rozpocznij symulację (Enter)"));
-    ui->spinBox_startGate->setMinimum(-1);ui->spinBox_startGate->setSpecialValueText(tr("Auto"));ui->spinBox_startGate->setValue(-1);
+    ui->spinBox_startGate->setMinimum(0);
     ui->pushButton_autoGate->setToolTip(tr("Dobierz bezpieczną belkę na podstawie najmocniejszego zawodnika"));
     ui->pushButton_loadJumpers->setToolTip(tr("Wczytaj listę zawodników z pliku JSON"));
     ui->pushButton_jumpersLists->hide();
@@ -525,6 +525,9 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         }
     });
 
+    on_pushButton_autoGate_clicked();
+    connect(ui->comboBox_existingHill, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &CompetitionConfigWindow::on_pushButton_autoGate_clicked);
     updateResponsiveLayout(width());
     ResponsiveWindowUtils::manageWindowGeometry(this, "CompetitionConfigWindow");
 }
@@ -541,7 +544,7 @@ int CompetitionConfigWindow::getJumpersCountInTeam() const
 
 int CompetitionConfigWindow::getStartingGateFromInput() const
 {
-    return ui->spinBox_startGate->value()<0?const_cast<CompetitionConfigWindow *>(this)->suggestedGate():ui->spinBox_startGate->value();
+    return ui->spinBox_startGate->value();
 }
 
 int CompetitionConfigWindow::getBaseDSQProbability() const
@@ -870,8 +873,6 @@ bool CompetitionConfigWindow::validateSimulationInputs()
 
 void CompetitionConfigWindow::on_pushButton_submit_clicked()
 {
-    if(ui->spinBox_startGate->value()<0){const int gate=suggestedGate();if(gate<0){QMessageBox::warning(this,tr("Automatyczna belka"),tr("Sprawdź listę zawodników i parametry skoczni."));return;}ui->spinBox_startGate->setValue(gate);}
-
     if(!validateSimulationInputs())
         return;
 
@@ -1387,9 +1388,14 @@ int CompetitionConfigWindow::suggestedGate() {
     JumpManipulator manipulation;JumpSimulator simulator;simulator.setJumper(best);simulator.setHill(&hill);simulator.setCompetitionRules(&rules);simulator.setManipulator(&manipulation);simulator.setWinds(winds);simulator.setInrunSnow(inrunSnowGeneratorSettingsEditor->getBase());
     int low=0,high=ui->spinBox_startGate->maximum();
     while(low<high){const int middle=(low+high+1)/2;simulator.setGate(middle);simulator.setCompetitionStartGate(middle);const double distance=simulator.previewDistance();if(!std::isfinite(distance))return -1;if(distance<=hill.getHSPoint()*.97)low=middle;else high=middle-1;}
-    if(initialAutoGate<0)initialAutoGate=low;return low;
+    return low;
 }
-void CompetitionConfigWindow::on_pushButton_autoGate_clicked() {initialAutoGate=suggestedGate();ui->spinBox_startGate->setValue(-1);}
+void CompetitionConfigWindow::on_pushButton_autoGate_clicked()
+{
+    const int gate = suggestedGate();
+    if (gate >= 0)
+        ui->spinBox_startGate->setValue(gate);
+}
 
 void CompetitionConfigWindow::on_pushButton_byOtherComp_clicked()
 {

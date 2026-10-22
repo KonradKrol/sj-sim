@@ -15,7 +15,7 @@ Zmiany na `feature/qml-competition-config`, bez modyfikacji `main`. Wersja: **1.
 9. **Użyta klasyfikacja:** nazwa pozostaje edytowalna, punktacja i typ są zablokowane. „Utwórz kopię” tworzy nową klasyfikację bez historycznych wyników, z własną tożsamością i edytowalną punktacją. Zmiana aktywnego kalendarza od razu aktualizuje klasyfikację w Przeglądzie, także do stanu pustego.
 10. **Dolny pasek:** poza Przeglądem pokazuje pełną flagę kraju skoczni, nazwę, rodzaj wydarzenia, HS i format indywidualny/drużynowy. Przycisk korzysta z aktualnego stanu aktywnego kalendarza. Dla pustego kalendarza prowadzi do jego edycji.
 11. **Dialogi:** sprawdź potwierdzenia Tak/Nie, przyciski Anuluj/Zapisz oraz krótkie komunikaty. Krótka treść korzysta z szerokości dialogu i jest poniżej nagłówka. Długie treści przewijają się nad stale dostępnymi przyciskami. Angielski tryb aplikacji zachowuje angielskie tłumaczenia.
-12. **Belka:** wejdź w konfigurację konkursu — domyślnie jest „Auto”. W sekcji Wiatr zmień warunki: sugestia jest przeliczana i pokazuje różnicę względem ręcznej belki, a w trybie Auto względem początkowej sugestii. „Zastosuj” ustawia konkretną belkę. Ponowne wybranie Auto przywraca automatyczny dobór.
+12. **Belka:** wejdź w konfigurację konkursu — pole od razu pokazuje konkretny numer wyliczonej belki. W pojedynczym konkursie wybór skoczni przelicza ten numer. W sekcji Wiatr zmień warunki: sugestia jest przeliczana i pokazuje różnicę względem ustawionej belki. „Zastosuj” wpisuje nowy numer; przycisk Auto również wpisuje wyliczoną liczbę, zamiast tekstu „Auto”.
 13. **Górny pasek konkursu:** flaga przy skoczni, wiatr dodatni zielony, ujemny czerwony, zero neutralne. Zamiast „Start x/N” jest lider z punktami; w najwęższym układzie pozostają jego punkty. Wynik nowego lidera nie pojawia się przed zakończeniem prezentacji na żywo.
 14. **Miejsce podczas lotu:** karta ostatniego skoku nie pokazuje miejsca po poprzedniej serii. Miejsce jest puste do ujawnienia aktualnego wyniku. Poprzednia pozycja pozostaje w karcie zawodnika na belce.
 
@@ -38,7 +38,7 @@ Zmiany kalendarza zapisują się od razu w danych otwartego sezonu. Przycisk „
 - Źródła kwalifikacji: zawieszenie, automatyczne przywrócenie, zapis/odczyt z użyciem magazynu tożsamości, blokada przycisku i bezpośredniego uruchomienia zależnego konkursu.
 - Aktywny/edytowany kalendarz, natychmiastowa zmiana klasyfikacji w Przeglądzie, ochrona później rozegranych zawodów, cofanie/ponawianie usunięcia kalendarza i zastąpienia presetem.
 - Test kontraktu modelu punktacji (`QAbstractItemModelTester`) podczas edycji i zmiany klasyfikacji; zachowanie wartości 12,5 zamiast obcięcia do 12; bezpieczna zmiana nazwy i kopia użytej klasyfikacji.
-- Belka Auto: wartość domyślna, deterministyczne sugestie, zależność od kierunku wiatru i przycisk zastosowania rzeczywistej belki.
+- Automatyczny dobór belki: liczbowy numer domyślny, deterministyczne sugestie, zależność od kierunku wiatru i przycisk zastosowania. Zmiana wiatru pozostawia ustawioną belkę do świadomego zastosowania sugestii.
 - Dialogi: polskie Tak/Nie, pełna szerokość krótkiej treści poniżej tytułu oraz widoczne działające przyciski długich komunikatów po wymuszonych zmianach geometrii. Szybkie kroki i przytrzymanie pól liczbowych nadal przechodzą testy.
 - Prezentacja na żywo: brak numeru miejsca i straty w trakcie lotu, ujawnienie końcowego miejsca po wyniku oraz zachowana poprzednia pozycja zawodnika/drużyny na belce.
 - Końcowa kompilacja Widgets-only: **kod 0**, bez zależności Qt Quick/QML.
@@ -52,3 +52,9 @@ Testy działają na Qt 5.15.3, z rendererem programowym offscreen. Nie obejmują
 - `e021c7b` — przebudowa sezonów, klasyfikacji, historii, przeciągania, kwalifikacji i dolnego paska.
 - `33ff226` — Auto oraz sugestie belki zależne od wiatru.
 - `da0924b` — górny pasek konkursu i puste miejsce w trakcie lotu.
+
+## Korekta: liczbowy numer belki
+
+Pole belki pokazuje wyliczony numer, bez specjalnej wartości tekstowej „Auto”. Przycisk automatycznego doboru wpisuje liczbę. W pojedynczym konkursie numer przelicza się po wyborze skoczni; w sezonie jest ustawiany po wczytaniu danych wydarzenia. Nowa sugestia w sekcji Wiatr pozostaje do zastosowania przez użytkownika, a różnica jest liczona względem aktualnego numeru.
+
+Weryfikacja korekty: `scripts/test-quick-ui.sh --workflow-only` — kompilacja aplikacji i testów oraz regresje sezonów, liczbowej belki, kierunku wiatru i zastosowania sugestii. Wcześniejsza pełna weryfikacja 350 renderów dotyczy stanu przed tą korektą.
