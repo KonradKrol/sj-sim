@@ -530,6 +530,16 @@ static void seasonWorkflowRegressions(MainWindow &main) {
         CompetitionConfigWindow preparation(CompetitionConfigWindow::SeasonCompetition,&main,&save);preparation.show();QTest::qWait(120);
         auto *preparationBridge=preparation.findChild<QuickBridge *>();check(preparationBridge,"season preparation uses Quick");
         const auto pages=preparationBridge->root()->values().value("options").toStringList();
+        auto *gate=preparation.findChild<QSpinBox *>("spinBox_startGate");check(gate->value()==-1 && gate->specialValueText()=="Auto","competition preparation starts with Auto rather than gate zero");
+        const int recommendation=preparation.suggestedGate();check(recommendation>=0 && preparation.suggestedGate()==recommendation,"automatic gate preview is deterministic");
+        auto *windEditor=preparation.getWindGeneratorSettingsEditor();const auto originalWind=*windEditor->getWindGenerationSettings();
+        for(auto &setting:*windEditor->getWindGenerationSettings()){setting.setBaseWindStrength(2);setting.setBaseDirection(0);}windEditor->fillSettingsInputs();const int front=preparation.suggestedGate();
+        for(auto &setting:*windEditor->getWindGenerationSettings())setting.setBaseDirection(180);windEditor->fillSettingsInputs();const int back=preparation.suggestedGate();check(front<=back,"headwind recommends no higher gate than tailwind");
+        *windEditor->getWindGenerationSettings()=originalWind;windEditor->fillSettingsInputs();preparationBridge->refresh();
+        preparationBridge->edit(id(preparationBridge,"spinBox_startGate"),recommendation+2);preparationBridge->edit(preparationBridge->root()->values().value("id").toInt(),pages.indexOf(QString::fromUtf8("Wiatr")));QTest::qWait(120);
+        clickControl(scene(&preparation),"applySuggestedGate");check(gate->value()==preparation.suggestedGate(),"wind section applies its updated suggested gate directly");
+        QMetaObject::invokeMethod(&preparation,"on_pushButton_autoGate_clicked");preparationBridge->edit(preparationBridge->root()->values().value("id").toInt(),0);QTest::qWait(80);
+
         check(!pages.contains(QString::fromUtf8("Skocznia"))&&!pages.contains(QString::fromUtf8("Zasady konkursu")),"calendar-owned hill and rules have no duplicate editors in preparation");
         auto *roster=preparationBridge->findChild<QuickRoster *>();check(roster&&roster->count()==preparation.getSeasonCompetitionJumpers().size(),"season roster starts with calendar-qualified participants");
         check(preparation.getSeasonCompetition()==first&&first->getHill()==save.getHillsReference().first()&&first->getRules().getName()==history->getRules().getName(),"preparation retains the next event and its calendar settings");

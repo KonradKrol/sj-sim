@@ -55,6 +55,7 @@ signals:
 
 private:
     Ui::SingleCompetitionConfigWindow *ui;
+    int initialAutoGate=-1;
     int type;
     HillEditorWidget * hillEditor;
     WindsGeneratorSettingsEditorWidget * windsGeneratorSettingsEditor;
@@ -122,6 +123,8 @@ public:
     void setTeamsTreeView(QTreeView *newTeamsTreeView);
     CompetitionInfo *getSeasonCompetition() const;
     void setSeasonCompetition(CompetitionInfo *newSeasonCompetition);
+    int suggestedGate();
+    int autoGateReference() const { return initialAutoGate; }
     SimulationSave *getSimulationSave() const;
     void setSimulationSave(SimulationSave *newSimulationSave);
     QVector<Jumper *> getSeasonCompetitionJumpers() const;

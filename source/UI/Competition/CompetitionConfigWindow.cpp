@@ -57,6 +57,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
     ui->pushButton_submit->setMaximumWidth(360);
     ui->pushButton_submit->setDefault(true);
     ui->pushButton_submit->setToolTip(tr("Sprawdź ustawienia i rozpocznij symulację (Enter)"));
+    ui->spinBox_startGate->setMinimum(-1);ui->spinBox_startGate->setSpecialValueText(tr("Auto"));ui->spinBox_startGate->setValue(-1);
     ui->pushButton_autoGate->setToolTip(tr("Dobierz bezpieczną belkę na podstawie najmocniejszego zawodnika"));
     ui->pushButton_loadJumpers->setToolTip(tr("Wczytaj listę zawodników z pliku JSON"));
     ui->pushButton_jumpersLists->hide();
@@ -540,7 +541,7 @@ int CompetitionConfigWindow::getJumpersCountInTeam() const
 
 int CompetitionConfigWindow::getStartingGateFromInput() const
 {
-    return ui->spinBox_startGate->value();
+    return ui->spinBox_startGate->value()<0?const_cast<CompetitionConfigWindow *>(this)->suggestedGate():ui->spinBox_startGate->value();
 }
 
 int CompetitionConfigWindow::getBaseDSQProbability() const
@@ -869,6 +870,8 @@ bool CompetitionConfigWindow::validateSimulationInputs()
 
 void CompetitionConfigWindow::on_pushButton_submit_clicked()
 {
+    if(ui->spinBox_startGate->value()<0){const int gate=suggestedGate();if(gate<0){QMessageBox::warning(this,tr("Automatyczna belka"),tr("Sprawdź listę zawodników i parametry skoczni."));return;}ui->spinBox_startGate->setValue(gate);}
+
     if(!validateSimulationInputs())
         return;
 
@@ -1371,80 +1374,22 @@ void CompetitionConfigWindow::on_pushButton_jumpersLists_clicked()
 }
 
 
-void CompetitionConfigWindow::on_pushButton_autoGate_clicked()
-{
-    Jumper * bestJumper = nullptr;
-    double best = -std::numeric_limits<double>::infinity();
-    QVector<Jumper *> jumpers;
-    if(type == CompetitionConfigWindow::SeasonCompetition)
-        jumpers = seasonCompetitionJumpers;
-    else
-        jumpers = competitionJumpers;
-
-    if(jumpers.isEmpty())
-    {
-        QMessageBox::warning(this, tr("Automatyczna belka"),
-                             tr("Dodaj co najmniej jednego zawodnika przed automatycznym doborem belki."), QMessageBox::Ok);
-        return;
-    }
-
-    for(auto & jumper : jumpers)
-    {
-        double val = jumper->getJumperSkillsPointer()->getTakeoffTechnique() * 0.8225 + jumper->getJumperSkillsPointer()->getFlightTechnique() * 0.81 + jumper->getJumperSkillsPointer()->getForm() * 0.3675;
-        if(val > best){
-            bestJumper = jumper;
-            best = val;
-        }
-    }
-    if(bestJumper == nullptr)
-    {
-        QMessageBox::warning(this, tr("Automatyczna belka"),
-                             tr("Nie udało się wybrać zawodnika do próby. Sprawdź dane listy startowej."), QMessageBox::Ok);
-        return;
-    }
-    int gate = -10;
-    JumpSimulator simulator;
-    simulator.setJumper(bestJumper);
-    simulator.setManipulator(new JumpManipulator());
-    simulator.setDSQBaseProbability(ui->spinBox_dsqProbability->value());
-    if(type == CompetitionConfigWindow::SeasonCompetition){
-        simulator.setCompetitionRules(seasonCompetition->getRulesPointer());
-        simulator.setHill(seasonCompetition->getHill());
-    }
-    else{
-        simulator.setCompetitionRules(new CompetitionRules(competitionRulesEditor->getCompetitionRulesFromWidgetInputs()));
-        simulator.setHill(new Hill(hillEditor->getHillFromWidgetInput()));
-    }
-    if(type == CompetitionConfigWindow::SeasonCompetition)
-        simulator.setJumpsImportance(seasonCompetition->getJumpsImportance());
-    else
-        simulator.setJumpsImportance(ui->doubleSpinBox_jumpsImportance->value());
-    WindsGenerator windsGenerator;
-    windsGenerator.setGenerationSettings(windsGeneratorSettingsEditor->getWindsGenerationSettingsFromInputs());
-    while(true)
-    {
-        simulator.setGate(gate);
-        simulator.setCompetitionStartGate(gate);
-        simulator.setInrunSnow(inrunSnowGeneratorSettingsEditor->getBase() - abs(inrunSnowGeneratorSettingsEditor->getDeviation()));
-        int HSPointJumps = 0;
-        for(int i=0; i<10; i++)
-        {
-            simulator.setWinds(windsGenerator.generateWinds());
-            simulator.simulateJump();
-            double dist = simulator.getJumpData().getDistance();
-            if(dist >= simulator.getHill()->getHSPoint())
-                HSPointJumps++;
-            simulator.setupForNextJump();
-        }
-        if(HSPointJumps <= 1)
-        {
-            gate ++;
-        }
-        else break;
-    }
-    ui->spinBox_startGate->setValue(gate);
- }
-
+int CompetitionConfigWindow::suggestedGate() {
+    const auto jumpers=type==SeasonCompetition?seasonCompetitionJumpers:competitionJumpers;
+    Jumper *best=nullptr;double strength=-std::numeric_limits<double>::infinity();
+    for(auto *jumper:jumpers)if(jumper){auto *skills=jumper->getJumperSkillsPointer();const double value=skills->getTakeoffTechnique()*.8225+skills->getFlightTechnique()*.81+skills->getForm()*.3675;if(value>strength){strength=value;best=jumper;}}
+    if(!best)return -1;
+    Hill hill=type==SeasonCompetition?*seasonCompetition->getHill():hillEditor->getHillFromWidgetInput();
+    if(!std::isfinite(hill.getHSPoint())||hill.getHSPoint()<=0||hill.getPointsForGate()<=0||hill.getPointsForMeter()<=0)return -1;
+    CompetitionRules rules=type==SeasonCompetition?seasonCompetition->getRules():competitionRulesEditor->getCompetitionRulesFromWidgetInputs();
+    const auto settings=windsGeneratorSettingsEditor->getWindsGenerationSettingsFromInputs();QVector<Wind> winds;
+    for(const auto &setting:settings)winds.append(Wind(setting.getBaseDirection(),setting.getBaseWindStrength()));
+    JumpManipulator manipulation;JumpSimulator simulator;simulator.setJumper(best);simulator.setHill(&hill);simulator.setCompetitionRules(&rules);simulator.setManipulator(&manipulation);simulator.setWinds(winds);simulator.setInrunSnow(inrunSnowGeneratorSettingsEditor->getBase());
+    int low=0,high=ui->spinBox_startGate->maximum();
+    while(low<high){const int middle=(low+high+1)/2;simulator.setGate(middle);simulator.setCompetitionStartGate(middle);const double distance=simulator.previewDistance();if(!std::isfinite(distance))return -1;if(distance<=hill.getHSPoint()*.97)low=middle;else high=middle-1;}
+    if(initialAutoGate<0)initialAutoGate=low;return low;
+}
+void CompetitionConfigWindow::on_pushButton_autoGate_clicked() {initialAutoGate=suggestedGate();ui->spinBox_startGate->setValue(-1);}
 
 void CompetitionConfigWindow::on_pushButton_byOtherComp_clicked()
 {

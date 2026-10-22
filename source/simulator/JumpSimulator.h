@@ -20,6 +20,7 @@ class JumpSimulator
 public:
     JumpSimulator(Jumper *jumper = nullptr, const QVector<Wind> & winds = QVector<Wind>(), Hill *hill = nullptr);
 private:
+    bool deterministicPreview=false;
     Jumper * jumper;
     JumperSkills * jumperSkills; //automatycznie od jumper
     QVector<Wind> winds;
@@ -38,6 +39,7 @@ private:
 public:
     //skok
     void simulateJump();
+    double previewDistance();
 
     void resetTemporaryParameters();
     void updateJumperSkills();

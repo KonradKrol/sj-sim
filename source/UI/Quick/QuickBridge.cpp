@@ -343,7 +343,7 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
             data["actions"]=actions;
         }
     } else if(auto *spin=qobject_cast<QSpinBox *>(widget)) {
-        data["kind"]="number"; data["value"]=spin->value(); data["minimum"]=spin->minimum(); data["maximum"]=spin->maximum(); data["step"]=spin->singleStep(); data["decimals"]=0; data["suffix"]=spin->suffix(); data["prefix"]=spin->prefix(); data["enabled"]=spin->isEnabled()&&!spin->isReadOnly();
+        data["kind"]="number"; data["value"]=spin->value(); data["minimum"]=spin->minimum(); data["maximum"]=spin->maximum(); data["step"]=spin->singleStep(); data["decimals"]=0; data["specialText"]=spin->specialValueText(); data["suffix"]=spin->suffix(); data["prefix"]=spin->prefix(); data["enabled"]=spin->isEnabled()&&!spin->isReadOnly();
     } else if(auto *spin=qobject_cast<QDoubleSpinBox *>(widget)) {
         data["kind"]="number"; data["value"]=spin->value(); data["minimum"]=spin->minimum(); data["maximum"]=spin->maximum(); data["step"]=spin->singleStep(); data["decimals"]=spin->decimals(); data["suffix"]=spin->suffix(); data["prefix"]=spin->prefix(); data["enabled"]=spin->isEnabled()&&!spin->isReadOnly();
     } else if(auto *combo=qobject_cast<QComboBox *>(widget)) {
@@ -444,6 +444,10 @@ void QuickBridge::refresh() {
         actions.append(QVariantMap{{"id",id},{"owner",owner?idFor(owner):-1},{"text",text},{"sequence",sequence},{"enabled",action->isEnabled() && (!owner || !owner->isHidden())}});
     }
     if(actions!=m_actions) { m_actions=actions; emit changed(); }
+    if(auto *configuration=qobject_cast<CompetitionConfigWindow *>(m_window)) {
+        QVariantMap context;context["suggestedGate"]=configuration->suggestedGate();context["autoGateReference"]=configuration->autoGateReference();if(auto *gate=m_content->findChild<QSpinBox *>("spinBox_startGate"))context["startingGate"]=gate->value();
+        if(context!=m_context){m_context=context;emit changed();}
+    }
     if(auto *season=qobject_cast<SimulationSaveManagerWindow *>(m_window)) {
         QVariantMap context;
         if(auto *next=season->getSimulationSave()->getNextCompetition();next && next->getHill()) {

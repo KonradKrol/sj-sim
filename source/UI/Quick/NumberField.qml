@@ -12,13 +12,14 @@ Item {
     implicitHeight: 48
     implicitWidth: 140
     function setValue(value) { currentValue=Math.max(fields.minimum,Math.min(fields.maximum,value));if(direct)ui.edit(fields.id,currentValue);committed(currentValue) }
+    function formattedValue() {return currentValue===fields.minimum && fields.specialText ? fields.specialText : currentValue.toLocaleString(Qt.locale(),'f',fields.decimals).split(Qt.locale().groupSeparator).join("")}
     function step(direction) {setValue(currentValue+direction*Number(fields.step))}
     SField {
         id: input
         objectName: "input-" + (control.fields.name || control.fields.id)
         anchors.fill: parent
         rightPadding: 48 + (suffix.visible ? suffix.implicitWidth + 6 : 0)
-        text: control.fields.mixed ? "" : control.currentValue.toLocaleString(Qt.locale(), 'f', control.fields.decimals).split(Qt.locale().groupSeparator).join("")
+        text: control.fields.mixed ? "" : control.formattedValue()
         placeholderText: control.fields.mixed ? qsTr("Różne wartości") : ""
         horizontalAlignment: TextInput.AlignRight
         font.family: Theme.mono
@@ -26,9 +27,10 @@ Item {
         validator: DoubleValidator { bottom: control.fields.minimum; top: control.fields.maximum; decimals: control.fields.decimals; locale: Qt.locale().name }
         onEditingFinished: {
             if(control.fields.mixed && text.length === 0)return
+            if(control.currentValue===control.fields.minimum && text===control.fields.specialText)return
             var value = Number.fromLocaleString(Qt.locale(),text)
             if (acceptableInput && isFinite(value)) { if (value !== control.currentValue) control.setValue(value) }
-            else text = control.currentValue.toLocaleString(Qt.locale(),'f',control.fields.decimals).split(Qt.locale().groupSeparator).join("")
+            else text = control.formattedValue()
         }
         Keys.onUpPressed: control.step(1)
         Keys.onDownPressed: control.step(-1)

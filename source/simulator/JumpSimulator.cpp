@@ -151,10 +151,10 @@ void JumpSimulator::generateTakeoffRating()
                                               - jumper->getJumperSkills().getLevelOfCharacteristic(
                                                   "takeoff-height"))
                                      * 1.3 * multiplier;
-    qDebug() << "takeoff level: " << Hill::calculateBestTakeoffHeightLevel(hill);
-    qDebug() << "flight level: " << Hill::calculateBestFlightHeightLevel(hill);
+    if(!deterministicPreview)qDebug() << "takeoff level: " << Hill::calculateBestTakeoffHeightLevel(hill);
+    if(!deterministicPreview)qDebug() << "flight level: " << Hill::calculateBestFlightHeightLevel(hill);
 
-    double random = JumpSimulator::getRandomForJumpSimulation(JumpSimulator::TakeoffRating, jumper, jumpsImportance);
+    double random = deterministicPreview?0:JumpSimulator::getRandomForJumpSimulation(JumpSimulator::TakeoffRating, jumper, jumpsImportance);
     random *= 1 + (0.1 * hill->getLevelOfCharacteristic("takeoff-randomness-effect"));
     simulationData->takeoffRating += random;
     simulationData->metersSumRandom += random * hill->calculateTakeoffEffect();
@@ -184,7 +184,7 @@ void JumpSimulator::generateFlightRating()
         - jumper->getJumperSkills().getLevelOfCharacteristic("flight-height") * 1.6 * multiplier);
 
     simulationData->flightRating *= getMultiplierForFlightStyleEffect();
-    double random = JumpSimulator::getRandomForJumpSimulation(JumpSimulator::FlightRating, jumper, jumpsImportance);
+    double random = deterministicPreview?0:JumpSimulator::getRandomForJumpSimulation(JumpSimulator::FlightRating, jumper, jumpsImportance);
     random *= 1 + (0.1 * hill->getLevelOfCharacteristic("flight-randomness-effect"));
     simulationData->flightRating += random;
     simulationData->metersSumRandom += random * hill->calculateFlightEffect();
@@ -219,8 +219,8 @@ void JumpSimulator::generateDistance()
     if (hasCoachGate)
         tempGate = coachGate;
 
-    qDebug()<<"takeoff effect: "<<hill->calculateTakeoffEffect();
-    qDebug()<<"flight effect: "<<hill->calculateFlightEffect();
+    if(!deterministicPreview)qDebug()<<"takeoff effect: "<<hill->calculateTakeoffEffect();
+    if(!deterministicPreview)qDebug()<<"flight effect: "<<hill->calculateFlightEffect();
 
     jumpData.distance += simulationData->takeoffRating * hill->calculateTakeoffEffect();
     jumpData.distance += simulationData->flightRating * hill->calculateFlightEffect();
@@ -294,7 +294,7 @@ void JumpSimulator::generateWindEffects()
                     percent = 1;
                 else if (percent < 0)
                     percent = 0;
-                qDebug()<<QString("percent %1 at distance %2").arg(QString::number(percent)).arg(QString::number(jumpData.getDistance()));
+                if(!deterministicPreview)qDebug()<<QString("percent %1 at distance %2").arg(QString::number(percent)).arg(QString::number(jumpData.getDistance()));
                 change *= percent;
             }
         }
@@ -303,7 +303,7 @@ void JumpSimulator::generateWindEffects()
         } else {
             jumpData.distance -= change;
         }
-        qDebug()<<"distance after wind change: "<<jumpData.distance;
+        if(!deterministicPreview)qDebug()<<"distance after wind change: "<<jumpData.distance;
         i++;
     }
 }
@@ -321,10 +321,10 @@ void JumpSimulator::generateInrunSnowEffect()
         simulationData->inrunSnow = 10;
     else if (simulationData->inrunSnow < 0)
         simulationData->inrunSnow = 0;
-    qDebug() << "inrunSnow -------> " << inrunSnow;
-    qDebug() << " simulationData->takeoffRating: " << simulationData->takeoffRating;
+    if(!deterministicPreview)qDebug() << "inrunSnow -------> " << inrunSnow;
+    if(!deterministicPreview)qDebug() << " simulationData->takeoffRating: " << simulationData->takeoffRating;
     simulationData->takeoffRating /= (1 + (simulationData->inrunSnow / 18));
-    qDebug() << " simulationData->takeoffRating: " << simulationData->takeoffRating;
+    if(!deterministicPreview)qDebug() << " simulationData->takeoffRating: " << simulationData->takeoffRating;
 }
 
 void JumpSimulator::preventVeryLongJumps()
@@ -1076,4 +1076,11 @@ int JumpSimulator::getCompetitionStartGate() const
 void JumpSimulator::setCompetitionStartGate(int newCompetitionStartGate)
 {
     competitionStartGate = newCompetitionStartGate;
+}
+
+double JumpSimulator::previewDistance()
+{
+    if(!jumper||!hill)return 0;
+    deterministicPreview=true;jumpData=JumpData();simulationData=&jumpData.simulationData;resetTemporaryParameters();updateJumperSkills();hill->setRealHSByCharacteristic();setupJumpData();generateTakeoffRating();generateInrunSnowEffect();generateFlightRating();generateDistance();generateWindEffects();
+    const double distance=jumpData.getDistance();deterministicPreview=false;return distance;
 }

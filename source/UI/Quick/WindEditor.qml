@@ -10,6 +10,13 @@ Column {
     readonly property var sectors: node ? node.children : []
     readonly property int selected: Math.max(0,Math.min(selectedSector,sectors.length-1))
     spacing: 16
+    RowLayout {
+        width: parent.width
+        visible: ui.profile==="CompetitionConfigWindow" && ui.context.suggestedGate>=0
+        readonly property int difference: ui.context.suggestedGate-(ui.context.startingGate<0 ? ui.context.autoGateReference : ui.context.startingGate)
+        Label { text: qsTr("Sugerowana belka: %1").arg(ui.context.suggestedGate)+(parent.difference ? " ("+(parent.difference>0?"+":"")+parent.difference+")" : ""); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        SButton { objectName: "applySuggestedGate"; text: qsTr("Zastosuj"); quiet: true; font.pointSize: Theme.caption; implicitHeight: 32; enabled: ui.context.startingGate!==ui.context.suggestedGate; onClicked: {var gate=ui.find("spinBox_startGate");if(gate)ui.edit(gate.values.id,ui.context.suggestedGate)} }
+    }
     Flow {
         enabled: wind.sectors.length > 0
         width: parent.width; spacing: 8
