@@ -21,6 +21,7 @@ ColumnLayout {
             SChoice {
                 objectName: "calendar-field-" + parent.field.key
                 Layout.fillWidth: true
+                searchable: parent.field.key === "hill"
                 model: parent.field.options
                 currentIndex: editorFields.backend.selection[parent.field.key] === undefined ? -1 : editorFields.backend.selection[parent.field.key]
                 displayText: currentIndex < 0 ? qsTr("Różne wartości") : currentText

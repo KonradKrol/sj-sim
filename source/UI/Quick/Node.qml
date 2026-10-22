@@ -113,6 +113,8 @@ FocusScope {
             spacing: 6
             SChoice {
                 width: parent.width
+                searchable: !!control.fields.searchable
+                objectName: "choice-" + (control.fields.name || control.fields.id)
                 model: control.fields.options || []
                 currentIndex: control.fields.value
                 Accessible.name: control.fields.accessibleName || control.fields.label || control.fields.tip || control.fields.name

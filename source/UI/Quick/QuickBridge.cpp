@@ -349,6 +349,7 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
         data["kind"]="number"; data["value"]=spin->value(); data["minimum"]=spin->minimum(); data["maximum"]=spin->maximum(); data["step"]=spin->singleStep(); data["decimals"]=spin->decimals(); data["suffix"]=spin->suffix(); data["prefix"]=spin->prefix(); data["enabled"]=spin->isEnabled()&&!spin->isReadOnly();
     } else if(auto *combo=qobject_cast<QComboBox *>(widget)) {
         QStringList options; for(int i=0;i<combo->count();++i) options<<combo->itemText(i);
+        data["searchable"]=widget->property("quickSearchableChoice").toBool();
         data["kind"]="choice"; data["options"]=options; data["value"]=combo->currentIndex(); data["editable"]=combo->isEditable(); data["text"]=combo->currentText();
     } else if(auto *slider=qobject_cast<QSlider *>(widget)) {
         data["kind"]="slider"; data["value"]=slider->value(); data["minimum"]=slider->minimum(); data["maximum"]=slider->maximum(); data["step"]=slider->singleStep();
@@ -839,7 +840,7 @@ void QuickBridge::compose(QuickNode *base) {
             plan.append(group("season-event",hill?hill->getName()+" HS"+QString::number(hill->getHSPoint()):tr("Brak skoczni"),{},"label"));
             plan.append(group("season-rules",event->getShortSerieTypeText()+" · "+event->getRules().getName(),{},"label"));
         }
-        if(!season){const auto hill=field("comboBox_existingHill",tr("Skocznia"));if(hill.isValid())plan.append(hill);}
+        if(!season){if(auto *hillChoice=m_content->findChild<QComboBox *>("comboBox_existingHill"))hillChoice->setProperty("quickSearchableChoice",true);const auto hill=field("comboBox_existingHill",tr("Skocznia"));if(hill.isValid())plan.append(hill);}
         auto *box=m_content->findChild<QToolBox *>("toolBox");
         if(box && !season) for(int i=0;i<box->count();++i) {
             auto *page=box->widget(i);
