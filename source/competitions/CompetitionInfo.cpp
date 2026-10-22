@@ -18,6 +18,7 @@
 #include <QJsonDocument>
 #include <QDir>
 #include <QFile>
+#include <QFileInfo>
 #include <QJsonObject>
 #include <QJsonValue>
 #include <QJsonParseError>
@@ -94,14 +95,17 @@ bool CompetitionInfo::saveToCsvFile(QString dir, QString name)
     QDir d(dir);
     if(!d.exists())
         d.mkpath(".");
-    QFile file(dir + name);
-    if(!file.open(QFile::WriteOnly | QFile::Text))
-    {
-        QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku ", "Nie udało się otworzyć pliku " + dir + name+ "\nUpewnij się, że istnieją odpowiednie foldery lub aplikacja ma odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
-       qDebug()<<file.errorString();
- message.setModal(true);
-        message.exec();
-        return false;
+    const QFileInfo requested(d.filePath(name));
+    QFile file(requested.filePath());
+    int number = 1;
+    while(!file.open(QFile::WriteOnly | QFile::Text | QFile::NewOnly)) {
+        if(!QFile::exists(file.fileName())) {
+            QMessageBox::critical(nullptr, QObject::tr("Nie można otworzyć pliku"),
+                                  QObject::tr("Nie udało się zapisać pliku %1\n%2").arg(file.fileName(), file.errorString()));
+            return false;
+        }
+        const QString extension = requested.suffix().isEmpty() ? QString() : "." + requested.suffix();
+        file.setFileName(requested.dir().filePath(requested.completeBaseName() + QString(" (%1)").arg(++number) + extension));
     }
     QTextStream stream(&file);
 

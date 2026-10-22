@@ -964,7 +964,22 @@ static void presetSerializationRegression() {
     qInfo()<<"PASS: calendar preset serialization preserves live hill assignments";
 }
 
+static void csvCollisionRegression() {
+    QTemporaryDir directory;check(directory.isValid(),"isolated CSV export directory");
+    const auto path=directory.path()+"/results.csv";
+    QFile original(path);check(original.open(QIODevice::WriteOnly),"create an existing competition export");original.write("original results\n");original.close();
+    CompetitionInfo competition;
+    check(competition.saveToCsvFile(directory.path()+"/","results.csv"),"CSV export succeeds when its requested name is already used");
+    check(original.open(QIODevice::ReadOnly) && original.readAll()==QByteArray("original results\n"),"CSV export never overwrites earlier competition results");original.close();
+    check(competition.saveToCsvFile(directory.path(),"results.csv"),"CSV export accepts a directory without a trailing separator");
+    const auto files=QDir(directory.path()).entryList({"*.csv"},QDir::Files);
+    check(files.size()==3 && files.contains("results (2).csv") && files.contains("results (3).csv"),"repeated exports create distinct numbered files");
+    for(const auto &name:files){QFile file(directory.path()+"/"+name);check(file.open(QIODevice::ReadOnly) && !file.readAll().isEmpty(),"every preserved or new CSV contains its data");}
+    qInfo()<<"PASS: automatic CSV exports preserve existing files and repeated results";
+}
+
 static void backendRegressions() {
+    csvCollisionRegression();
     presetSerializationRegression();
     advancementRegressions();
     { Classification source("Existing classification");source.setAltPointsForPlaces({{1,25.0}});ClassificationEditorWidget editor(&source);check(editor.getClassification()==&source,"classification constructor initializes the supplied source");editor.setClassification(nullptr);check(!editor.getClassification(),"classification source can be cleared safely"); }

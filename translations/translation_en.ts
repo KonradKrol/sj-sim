@@ -6073,6 +6073,16 @@ __</source>
 
 *Message sent from the Sj.SIm</translation>
     </message>
+    <message>
+        <source>Nie można otworzyć pliku</source>
+        <translation>Cannot open file</translation>
+    </message>
+    <message>
+        <source>Nie udało się zapisać pliku %1
+%2</source>
+        <translation>Could not save file %1
+%2</translation>
+    </message>
 </context>
 <context>
     <name>RandomWindConfigWindow</name>
