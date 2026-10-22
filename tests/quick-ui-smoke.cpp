@@ -1314,6 +1314,28 @@ static void normalSamplingRegression() {
     qInfo()<<"PASS: cached normal sampling and centered half-normal distributions";
 }
 
+static void singleSimulationRegression() {
+    SingleJumpsManager manager;
+    auto *db=GlobalDatabase::get();manager.setJumper(db->getEditableGlobalJumpers().first());manager.setHill(db->getEditableGlobalHills().first());manager.setGate(15);manager.setImportance(5);manager.getRules().setHasDsq(false);
+    manager.setChangeableWind(true);manager.setJumpsCount(50000);
+    QVector<WindGenerationSettings> settings(6,WindGenerationSettings(0,2,1,2));manager.setWindsGeneratorSettings(settings);
+    bool canceled=false;QTimer stop;
+    QObject::connect(&stop,&QTimer::timeout,[&]{for(auto *widget:QApplication::allWidgets())if(auto *progress=qobject_cast<QProgressDialog *>(widget);progress&&progress->isVisible()&&progress->value()>0){stop.stop();canceled=true;progress->cancel();}});
+    stop.start(5);manager.simulate();stop.stop();
+    const int produced=manager.getJumpsReference().size();
+    check(canceled && produced>0 && produced<50000 && manager.getJumpsCount()==produced,"batched single-jump progress remains cancellable and keeps partial results");
+    const auto first=manager.getJumpsReference().first().getWinds();bool varied=false;
+    for(const auto &jump:manager.getJumpsReference()) {
+        check(std::isfinite(jump.getDistance())&&std::isfinite(jump.getPoints())&&jump.getWinds().size()==6,"batched simulation preserves finite full jump results and all wind sectors");
+        if(jump.getWinds().first().getStrength()!=first.first().getStrength())varied=true;
+    }
+    check(varied,"changing winds are generated independently for each jump");
+    manager.setChangeableWind(false);manager.setJumpsCount(3);manager.simulate();
+    check(manager.getJumpsReference().size()==produced+3 && manager.getJumpsReference().first().getWinds().first().getStrength()==first.first().getStrength(),"reusing wind settings preserves past wind snapshots and appends requested results");
+    for(int i=produced;i<produced+3;++i)check(manager.getJumpsReference()[i].getWinds().first().getStrength()==1,"fixed wind matches the configured base in every appended jump");
+    qInfo()<<"PASS: cancellable single-jump batches, finite results and immutable wind history";
+}
+
 static void backendRegressions() {
     check(SingleJumpsManager().getImportance()==5.,"standalone jumps have a defined default importance");
     normalSamplingRegression();
@@ -1462,6 +1484,7 @@ int main(int argc,char **argv) {
     }
     if(!app.arguments().contains("--layout-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);interactionRegressions(main);spaceRegressions(main);uxRegressions(main);navigationRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);rosterRegressions(main);geometryRegressions(main);}
     if(!app.arguments().contains("--layout-only")){for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);runCompetition(main,0,true,1);runCompetition(main,0,true,2);runCompetition(main,2,true,3);}
+    singleSimulationRegression();
     appearanceRegressions(main);authorRegressions(main);
     render(&main,"home",true);
     {

@@ -29,11 +29,12 @@ void WindsGenerator::setGenerationSettings(const QVector<WindGenerationSettings>
 QVector<Wind> WindsGenerator::generateWinds()
 {
     QVector<Wind> winds;
+    winds.reserve(generationSettings.size());
 
     for(int i=0; i<getWindsCount(); i++)
     {
         Wind wind;
-        WindGenerationSettings * settings = &generationSettings[i];
+        const WindGenerationSettings *settings = &generationSettings.at(i);
 
         double windStrength = settings->getBaseWindStrength();
         if(settings->getWindStrengthInstability() > 0){

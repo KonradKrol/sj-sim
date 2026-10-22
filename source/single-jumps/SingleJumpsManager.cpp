@@ -33,12 +33,17 @@ void SingleJumpsManager::simulate()
     jumpSimulator.setJumper(&jumper);
     jumpSimulator.setHill(&hill);
     jumpSimulator.setGate(gate);
+    jumpSimulator.setCompetitionStartGate(gate);
     jumpSimulator.setDSQBaseProbability(getDSQProbability());
     jumpSimulator.setCompetitionRules(&rules);
-    jumpSimulator.setManipulator(new JumpManipulator());
+    JumpManipulator manipulator;
+    jumpSimulator.setManipulator(&manipulator);
     jumpSimulator.setJumpsImportance(importance);
 
+    jumps.reserve(jumps.size() + qMax(0,jumpsCount));
+    windsGenerator.setGenerationSettings(windsGeneratorSettings);
     QVector<Wind> winds;
+    winds.reserve(windsGeneratorSettings.size());
     if(changeableWind == false)
     {
         for(const auto & setting : windsGeneratorSettings)
@@ -49,6 +54,7 @@ void SingleJumpsManager::simulate()
             winds.push_back(wind);
         }
     }
+    if(!changeableWind)jumpSimulator.setWinds(winds);
     QProgressDialog dialog;
     dialog.setStyleSheet("QProgressDialog{background-color: white; color: black;}");
     dialog.setMinimum(0);
@@ -79,11 +85,7 @@ void SingleJumpsManager::simulate()
             break;
 
         if(getChangeableWind() == true){
-            windsGenerator.setGenerationSettings(getWindsGeneratorSettings());
             jumpSimulator.setWinds(windsGenerator.generateWinds());
-        }
-        else{
-            jumpSimulator.setWinds(winds);
         }
         jumpSimulator.simulateJump();
         jumps.push_back(jumpSimulator.getJumpData());
@@ -93,7 +95,7 @@ void SingleJumpsManager::simulate()
     if(!dialog.wasCanceled())updateProgress(jumps.size()-initialCount);
 
     jumpsCount = jumps.count();
-    delete jumpSimulator.getManipulator();
+    jumpSimulator.setManipulator(nullptr);
 }
 
 void SingleJumpsManager::saveResultsCsv(QString fileName)
