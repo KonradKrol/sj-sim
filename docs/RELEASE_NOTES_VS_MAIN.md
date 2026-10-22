@@ -1,0 +1,1033 @@
+# Sj.Sim — pełny wykaz zmian względem main
+
+Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru wydania. Opisuje końcowy stan gałęzi, a nie tylko ostatnie poprawki. Obejmuje również zmiany techniczne i narzędziowe, które nie muszą trafić do publicznej zapowiedzi.
+
+## Zakres porównania i wersja
+
+- Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
+- Gałąź zmian: **feature/qml-competition-config**.
+- Końcowy commit zmian aplikacji opisanych w tym dokumencie: **d157c29**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
+- Data zestawienia: **22 października 2026**.
+- Aktualne oznaczenie w kodzie aplikacji: **1.3.0 beta-3**. Przygotowanie dokumentu nie zmienia numeru wydania na 2.0.0.
+- main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
+- Starsze raporty opisują kolejne etapy prac. W razie rozbieżności stan końcowy opisany tutaj ma pierwszeństwo. Szczególnie istotne korekty są zebrane w sekcji „Rozwiązania zastąpione podczas prac”.
+
+## Krótki materiał do publicznych release notes
+
+- Nowy domyślny interfejs całej aplikacji w Qt Quick, z własnym sportowym stylem, nową typografią, jasnym i ciemnym motywem.
+- Wspólna nawigacja w jednym oknie oraz mniej zagnieżdżonych dialogów.
+- Przebudowane listy startowe, wybór zawodników, obsługa zapisanych składów i kolejności.
+- Nowy ekran konkursu: najważniejsze dane razem, odległości w tabelach, pełna karta skoku, bezpośredni dostęp do warunków i narzędzi.
+- Przebudowane sezony: niezależna edycja i aktywowanie kalendarzy, zmiany masowe, przeciąganie bloków, wielokrotne Cofnij/Ponów oraz zachowywanie zależności kwalifikacji.
+- Czytelniejszy generator formy z jawnym zastosowaniem parametrów do wszystkich lub zaznaczonych zawodników.
+- Poprawione linie prowadzenia i awansu, obsługa wiatru i punktacji, aktualizacja listy startowej oraz prezentacja na żywo.
+- Poprawki awarii, statystyk, eksportu wyników, presetów, kopiowania wydarzeń i losowania.
+- Zachowany alternatywny interfejs Qt Widgets.
+
+To skrót do redakcji, nie deklaracja usunięcia wszystkich istniejących błędów.
+
+## 1. Domyślny interfejs, styl i wygląd
+
+### 1.1. Nowa warstwa Qt Quick
+
+- Standardowy projekt qmake uruchamia nowy interfejs Qt Quick.
+- Widoki nowego interfejsu znajdują się w source/UI/Quick i zostały zbudowane niezależnie od wcześniejszego eksperymentu source/UI/Competition/Quick.
+- Zachowano istniejące kontrolery, modele i komponenty Qt Widgets. Nowy widok wywołuje ich operacje przez adaptery.
+- Uruchomienie z parametrem --widgets wybiera dotychczasowy interfejs. CONFIG+=widgets_only tworzy wariant bez zależności Qt Quick/QML.
+- Nie przeprowadzono migracji projektu do Qt 6. Weryfikacja opisana w raportach używa Qt 5.15.3.
+- Zakres nowej prezentacji obejmuje stronę startową, konfigurację i przebieg konkursu, pojedyncze skoki i wyniki, sezony, kalendarze, klasyfikacje, statystyki, bazy danych, ustawienia, generator formy, szczegóły skoku, pomoc i dodatkowe okna.
+
+### 1.2. Charakter wizualny i typografia
+
+- Przyjęto sportowy, alpejski kierunek: granat, kobalt, ciepłe jasne tła i wyrazisty akcent chartreuse.
+- Dodano wspólny system kolorów semantycznych, typografii, odstępów, obramowań, stanów kontrolek i hierarchii.
+- Duże nagłówki korzystają z Barlow Condensed ExtraBold, tekst i kontrolki z Barlow, a dane liczbowe z IBM Plex Mono.
+- Fonty są dostarczane z aplikacją wraz z licencjami SIL Open Font License, więc wygląd nie zależy od ich instalacji w systemie.
+- Wyróżniki obejmują asymetryczne narożniki, numerowane oznaczenia sekcji, wyraźne akcje główne i spokojniejszą prezentację akcji pomocniczych.
+- Etykiety polskie i angielskie mają krótki, rzeczowy charakter.
+- Dodano jasny i ciemny motyw, trwały wybór skali tekstu oraz ograniczenia animacji.
+
+### 1.3. Strona startowa i wspólne elementy
+
+- Strona startowa używa dotychczasowego logo Sj.Sim; nie zastąpiono go nowym znakiem.
+- Bezpośrednio pokazuje trzy tryby: Sezony, Pojedynczy konkurs i Pojedyncze skoki.
+- Układ kart dopasowuje się do szerokości i wysokości; duża oprawa strony znika w niskim oknie, aby zachować miejsce na działania.
+- Dodano skróty Ctrl+1, Ctrl+2, Ctrl+3 do uruchamiania trybów.
+- Baza, ustawienia, pomoc, autorzy i zgłaszanie problemu pozostają dostępne ze strony startowej.
+- Wygląd jest ustawieniem całej aplikacji, a nie osobnym panelem powielanym w kolejnych oknach.
+- Jedna wspólna stopka zawiera oznaczenie wersji i beta. Ekrany zadań oraz krótkie dialogi nie powielają własnych pasków wyglądu i wersji.
+- Wersja pochodzi ze wspólnej stałej C++, używanej również przez dotychczasowy interfejs i udostępnianie wyników.
+
+## 2. Nawigacja, responsywność i dostępność
+
+### 2.1. Mniej dialogów
+
+- Duże zadania otwierają się jako strony jednego głównego okna, ze wspólnym Wstecz i ścieżką nawigacji.
+- Edytory, generator formy, szczegóły i narzędzia sezonu nie tworzą kolejnych nakładających się głównych okien Quick.
+- Powrót zachowuje stan strony nadrzędnej.
+- Zachowano kontrakt istniejących kontrolerów C++: ich pętle dialogów i wyniki zatwierdzania nadal obsługują dotychczasowy przebieg programu.
+- Potwierdzenia, krótkie wybory wartości i postęp pozostają modalne. Systemowe wybieranie plików pozostaje natywne.
+- Zamknięcie strony zwalnia jej scenę Quick; ponowne otwarcie odtwarza widok z aktualnych danych.
+- Własność przeniesionych kontrolerów jest powiązana z ich pierwotnym właścicielem.
+
+### 2.2. Dopasowanie do miejsca
+
+- Duże ekrany korzystają z układów listy obok edytora, a mniejsze z przewidywalnych przejść między listą i edycją lub zakładek.
+- Formularze, listy, wyniki i długie treści mają własne obszary przewijania.
+- Najważniejsze dane konkursu są dostępne razem; nie przeniesiono wyników, listy startowej ani karty skoku do konkurujących zakładek.
+- Drugorzędne nagłówki, akcje i odstępy są bardziej zwarte w niskich oknach.
+- Istotne listy wykorzystują pozostałą wysokość, zamiast kończyć się w połowie dostępnego obszaru.
+- Wiersze zakładek obsługują przepełnienie, a pola wyboru otwierają listę w górę, gdy poniżej brakuje miejsca.
+
+### 2.3. Dialogi i pola liczbowe
+
+- Standardowe przyciski dialogów mają polskie etykiety, m.in. Tak, Nie, Anuluj, Zapisz, Zamknij, Zastosuj i Ponów. Angielska wersja używa tłumaczeń.
+- Zachowano role i identyfikatory przycisków; zmiana etykiety nie zmienia działania potwierdzenia.
+- Krótka wiadomość korzysta z szerokości dialogu i jest umieszczona pod tytułem, bez sztucznego zawijania kilku słów do wielu wierszy.
+- Tytuł i długa treść mogą się przewijać niezależnie od stale dostępnych przycisków na dole.
+- Przyciski dialogu mogą przejść do kolejnego rzędu w małym oknie.
+- Rozmiar krótkich okien jest ponownie ograniczany po zmianach natywnej geometrii i po zmniejszeniu głównego okna.
+- Przyciski +/− działają od razu przy każdym naciśnięciu. Przytrzymanie rozpoczyna powtarzanie po 250 ms, dalej co 40 ms.
+- Obsługiwane są kroki ułamkowe, granice wartości, sufiksy i lokalne formaty liczb.
+
+### 2.4. Klawiatura i dostępność
+
+- Kontrolki pokazują fokus, a operacje mają dostęp klawiaturą.
+- W tabelach strzałki nawigują po komórkach, F2 rozpoczyna edycję, spacja przełącza poprawne komórki zaznaczane.
+- Ctrl+F otwiera wyszukiwanie aktywnej tabeli, Ctrl+A zaznacza dane, Insert/Delete używają akcji źródłowych tam, gdzie są dozwolone.
+- Niestandardowe kontrolki mają nazwy i role dostępności; skreślone noty sędziowskie mają również opis odrzucenia.
+- Skala tekstu i ograniczenie animacji są ustawieniami trwałymi.
+- Automatyczne testy obejmują także powiększony tekst. Nie jest to certyfikat pełnej zgodności z konkretnym standardem dostępności.
+
+## 3. Tabele, katalogi i edytory danych
+
+- Adaptery tabel odczytują istniejące modele na żądanie, zamiast przepisywać całą bazę do osobnej logiki widoku.
+- Zachowano edycję komórek, sortowanie, zaznaczanie, role zaznaczanych pól, dwuklik i akcje kontekstowe źródła.
+- W zwykłych tabelach pole wyszukiwania jest widoczne, gdy pozwala na to miejsce; mniejsze obszary mają przycisk Szukaj.
+- Pusty filtr pokazuje stan Brak wyników i Wyczyść filtr, umożliwiając szybki powrót do danych.
+- Zmiana filtra czyści stare zaznaczenie, aby operacja zbiorcza nie objęła niewidocznych rekordów.
+- Licznik zaznaczonych dotyczy wierszy, nie liczby komórek.
+- Kursor klawiatury i faktyczne zaznaczenie mają odmienne oznaczenia. Zaznaczenie komórki poza pierwszą kolumną nadal podświetla właściwy wiersz.
+- Niskie tabele przenoszą drugorzędne kontrolki do nagłówka.
+- Rozróżniono edycję liczby/tekstu od checkboxów, także dla modeli, których domyślne flagi dopuszczają zaznaczanie, ale nie zwracają stanu checkboxa.
+- Edytor bazy wykorzystuje pełną wysokość list zawodników, skoczni, zasad i presetów punktacji.
+- Na desktopie lista i otwarty formularz dzielą szerokość mniej więcej 38%/62%. Ukryty edytor nie rezerwuje pustej kolumny.
+- Długi formularz przewija się niezależnie od listy.
+- Podobny układ obejmuje katalogi sezonu, w tym zawodników, skocznie, zasady, klasyfikacje i zapisane listy.
+- Lista zapisów symulacji również rośnie wraz z wysokością okna.
+- Edytory zawodnika dzielą dane, umiejętności i charakterystyki, a edytory skoczni dane, punktację, parametry i charakterystyki.
+- Wskaźniki edytorów bazy zaczynają od nullptr, a indeks ostatnio otwieranego elementu od -1, zamiast niezdefiniowanych wartości.
+- Zmiana składu w edytorze drużyny przebudowuje właściwy model członków, tak aby widok korzystał z aktualnej kolejności.
+
+## 4. Listy startowe, zapisane składy i drużyny
+
+- Zastąpiono przenoszenie między starymi listami wspólnym obszarem wyboru i kolejności zawodników.
+- Biblioteka obsługuje wyszukiwanie, filtr kraju i bezpośrednie zaznaczanie członkostwa.
+- Wybrany skład jest osobną uporządkowaną listą, z Ctrl/Shift, zaznaczeniem grupy, usuwaniem i cofnięciem.
+- Dodano przeciąganie całych zaznaczonych grup z zachowaniem kolejności.
+- Dostępne są również ruchy klawiaturą, podanie pozycji i alternatywa kliknięcia uchwytu z potwierdzeniem miejsca docelowego.
+- Desktop pokazuje bibliotekę i skład obok siebie. Wąskie okno rozdziela wybór i kolejność na widoki.
+- Ograniczono nagłówki i paski w najmniejszym oknie, zachowując użyteczne miejsce na zawodników.
+- Zapisana lista ma jawne działania Dodaj, Usuń, Kolejność. W małym oknie są dostępne w krótkim panelu Listy.
+- Zachowano import list, kolejność na podstawie wyników, oryginalne narzędzia kwalifikacji oraz kontrolki KO.
+- Obsługa zespołów korzysta ze wspólnego edytora kolejności, z rozróżnieniem startujących i rezerw.
+- Bieżące klucze widoku identyfikują obiekty zawodników, a nie wyłącznie UUID. Chroni to przed pominięciem zawodników z historycznych danych współdzielących zerowy UUID.
+- Ten mechanizm nie przepisuje masowo tożsamości zawodników w zapisach.
+
+## 5. Konfiguracja konkursu i wiatr
+
+### 5.1. Przygotowanie konkursu
+
+- Konfiguracja ma uporządkowane sekcje, stałą akcję rozpoczęcia i edytory dostosowane do szerokości.
+- W sezonie skocznia, zasady i typ wydarzenia pochodzą z kalendarza i są przedstawione informacyjnie.
+- Nie trzeba ponownie wybierać parametrów ustalonych w kalendarzu; przygotowanie skupia się na zawodnikach, belce i warunkach.
+- Zachowano ważność wydarzenia ustaloną w kalendarzu.
+- Walidacja źródłowa nadal sprawdza gotowość list i składów.
+
+### 5.2. Wyliczona belka
+
+- Pole belki pokazuje od razu konkretny numer wyliczony dla przygotowanego wydarzenia; nie wyświetla specjalnej wartości tekstowej Auto.
+- W pojedynczym konkursie wybór skoczni ponownie wylicza belkę.
+- Przycisk automatycznego doboru wpisuje wyliczoną liczbę do pola.
+- Sugestia korzysta z najsilniejszego zawodnika, parametrów skoczni, zasad, średniego profilu wiatru i śniegu.
+- Podgląd jest deterministyczny; nie losuje zakończenia skoku ani not i nie zapisuje wyników.
+- Użyto ograniczonego wyszukiwania w zakresie pola, z celem około 97% HS, zamiast nieograniczonej pętli prób.
+- Sekcja Wiatr pokazuje aktualną sugestię, różnicę względem ustawionej belki i dyskretny przycisk Zastosuj.
+- Zmiana wiatru przelicza sugestię, ale pozostawia ustawioną liczbę do świadomego zastosowania.
+
+### 5.3. Edytor wiatru
+
+- Widać podsumowania wszystkich sektorów i cztery parametry aktualnie wybranego sektora.
+- Obsługiwane są zmiany pojedynczego sektora, zastosowanie ustawień do wszystkich, kopiowanie sektora, profile Przedni/Tylny/Cisza, losowanie i cofnięcie.
+- Losowanie pozwala określić kierunek i zmienność lub użyć ich wartości losowych.
+- Poprawiono zapis zbiorczy ustawień: kontrolki nie wskazują już na lokalną zmienną, która przestaje istnieć po zamknięciu operacji.
+- Zmiany są przenoszone do prawidłowych kontrolek przed zatwierdzeniem. Anulowanie zachowuje poprzedni profil.
+- Po zaakceptowaniu nowych ustawień w konkursie aktualizują się rzeczywisty wiatr i linie docelowe.
+
+## 6. Ekran konkursu
+
+### 6.1. Hierarchia i wykorzystanie przestrzeni
+
+- Główny obszar obejmuje zawodnika na belce, kartę oglądanego skoku, wyniki i listę startową.
+- Drugorzędne narzędzia wydzielono do kategorii Przebieg, Warunki, Skok.
+- Każda kategoria ma bezpośredni przycisk w pasku sterowania. Kliknięcie odczytu wiatru lub śniegu otwiera od razu Warunki.
+- Tryb Na żywo ma przełącznik w głównym pasku.
+- W szerokim oknie kontrolki mieszczą się w jednym rzędzie.
+- Karty mają wysokość wynikającą z treści i są wyrównane do góry. Krótsza karta nie rozciąga tła do wysokości sąsiedniej.
+- Ograniczono łączną szerokość kart do 1052 px, kartę skoku do 720 px, a zawodnika do 320 px. Tabele wykorzystują pozostałe miejsce szerokiego monitora.
+- W wąskim układzie karty są w jednej kolumnie, z kartą skoku wcześniej.
+- Panel opcji nie przewija ani nie przeciąga pustego obszaru, gdy wszystko się mieści. Przewijanie pozostaje włączone przy rzeczywistym przepełnieniu, z zatrzymaniem na krawędziach.
+
+### 6.2. Górny pasek
+
+- Flaga kraju jest przy nazwie skoczni i HS.
+- Odczyt wiatru ma kolor zielony dla wartości dodatniej, czerwony dla ujemnej i neutralny dla zera.
+- Usunięto tekst Start x/N.
+- Pozostają informacje o serii, grupie drużynowej i śniegu.
+- Zamiast powielania lidera dodano największy awans względem końca poprzedniej serii, np. Jan Kowalski ↑12.
+- Statystyka pojawia się od drugiej serii, po rzeczywistym skoku i dodatnim awansie.
+- Poprzednie miejsca są obliczane na całej stawce z poprawną obsługą remisów 1,1,3. Bieżące miejsce odpowiada aktualnej tabeli; do końca serii jest prowizoryczne.
+- Przy równym awansie wskaźnik wybiera wyżej sklasyfikowanego, następnie nazwę. Dopisek (+N) sygnalizuje pozostałych; podpowiedź pokazuje wszystkich oraz miejsca przed i po.
+- W drużynówce podstawą jest pełna poprzednia seria drużyny. Wskaźnik aktualizuje się także podczas grup.
+- W trybie na żywo nowa wartość czeka na ujawnienie wyniku.
+
+### 6.3. Karta oglądanego skoku
+
+- Usunięto mały nagłówek Ostatni skok. Karta może pokazywać również wybrany inny skok.
+- Usunięto zmieniające się nagłówki Lot, Odległość, Lądowanie, Noty, Wynik; dane nadal są ujawniane etapami.
+- Bez otwierania opcji widać zawodnika z flagą, wyraźne miejsce, odległość, punkty, pięć not i ich sumę, wiatr, belkę, lądowanie oraz składniki i sumę rekompensat.
+- Są też dostępne miejsca w serii, a dla drużyn w grupie i konkursie, suma punktów, DSQ i informacja 95% HS — gdy istnieją w danych.
+- Opcjonalne informacje silnika wybrane w ustawieniach również trafiają do karty.
+- Pięć not ma oddzielne pola. Dokładnie jedna najniższa i jedna najwyższa są skreślone; jednakowe noty nie powodują odrzucenia większej liczby ocen.
+- Wiatr i suma rekompensat mają niezależne kolory oraz znaki. Uwzględnia to sytuację, w której znak rekompensaty jest przeciwny do znaku wiatru.
+- Strata do lidera jest dyskretna i należy do oglądanego wyniku, a nie do następnego zawodnika.
+- Karta zawodnika na belce pokazuje miejsce po poprzedniej serii.
+- Podczas lotu miejsce w karcie skoku pozostaje puste/niewyznaczone, a końcowy wynik nie jest ujawniany przedwcześnie.
+- Miejsce i strata są przekazywane jako bezpieczne podsumowanie wartości, bez przechowywania w adapterze niestabilnego wskaźnika do sortowanego wektora.
+
+### 6.4. Wyniki i lista startowa
+
+- W domyślnych wynikach indywidualnych widać odległości z poszczególnych serii i sumę punktów. Punkty pojedynczej serii pozostają opcjonalne.
+- W drzewie wyników drużynowych dodano odległości zawodników, z oznaczeniem upadku.
+- Aktualna grupa KO pozostaje przy liście startowej.
+- Zmieniono aktualizację modelu listy startowej: zmiana składu, kolejności, serii lub grupy publikuje spójny snapshot pod prawidłowym resetem modelu.
+- Zmiana zwykłego statusu skoku używa powiadomienia o danych.
+- Kursor i widoczny zawodnik podążają za faktycznym stanem menedżera.
+- Naprawiono rozmiary i położenie panelu KO, aby nie zasłaniał głównych wyników ani karty skoku.
+
+## 7. Silnik punktacji, linie docelowe i prezentacja na żywo
+
+### 7.1. Linie prowadzenia i awansu
+
+- Wyznaczanie celu odbywa się co pół metra z uwzględnieniem bieżącej sumy punktów, a nie tylko ostatniego skoku.
+- Uwzględniane są wyniki indywidualne i drużynowe, remisy, pozostałe miejsca awansu, KO i lucky losers.
+- Obliczenia respektują włączone rekompensaty wiatrowe i za belkę oraz zasadę 95% HS przy belce trenera.
+- Nieistniejący cel jest oznaczony kreską, np. dla pierwszego zawodnika, zamiast fikcyjnego 0 m.
+- Linie są obliczane przed pierwszym skokiem i odświeżane po zmianie warunków lub belki, również dla pierwszego zawodnika późniejszej serii.
+- Po skoku na żywo cel jest odświeżany dla następnego zawodnika.
+- Noty pozostają estymacją na podstawie ostatnich skoków. Linia nie zna przyszłej decyzji sędziów.
+
+### 7.2. Wiatr i punktacja
+
+- Usunięto losowość z obliczania średniego wiatru; losowość pozostaje w generatorze warunków.
+- Punktacja i widoczne zakresy sektorów korzystają z jednego obliczenia długości sektora, także dla jednego sektora i ułamkowych wartości K.
+- Ważenie ekspozycji na wiatr przy krótszym skoku nie modyfikuje surowego profilu wiatru.
+- Poprawiono proporcję częściowego sektora używaną do punktacji.
+- Zmierzony wiatr pozostaje zapisany także przy wyłączonych punktach rekompensaty.
+- Metadane 95% HS są zachowane również przy wyłączonych punktach za belkę.
+- Prezentowany próg 95% HS zaokrągla się w górę do dozwolonego pół metra.
+- Poprawiono znalezienie obu skrajnych ocen przy rosnącym zestawie not sędziowskich.
+- Dokładne ustawienie prawdopodobieństwa DSQ na 0 w manipulatorze wyłącza DSQ; 1 nadal oznacza pewność, a -1 dziedziczenie wartości bazowej.
+- Ujemne indeksy odczytu wyników są odrzucane.
+
+### 7.3. Tryb na żywo
+
+- Wyniki i ich adaptery są zamrożone podczas kolejnych etapów prezentacji skoku.
+- Dodatkowe informacje karty i wskaźnik największego awansu nie zdradzają końcowego wyniku przed ujawnieniem.
+- Zachowano preferencje widoczności informacji o skoku.
+- Zamknięcie w trakcie prezentacji kończy wewnętrzne oczekiwanie bez czekania na pełną animację.
+- Zredukowano powtarzalne komunikaty o przejściu do grupy, serii i zakończeniu w nowym interfejsie — właściwy stan i akcja są dostępne w ekranie.
+
+## 8. Sezony i kalendarze
+
+### 8.1. Edytowany kalendarz a aktywny kalendarz
+
+- Wybór kalendarza do oglądania i edycji nie przełącza już kalendarza rozgrywanego sezonu.
+- Aktywacja odbywa się jawnym przyciskiem Ustaw jako aktywny, z oznaczeniem aktywnego kalendarza.
+- Szeroki ekran ma listę kalendarzy po lewej, mniejszy rozwijaną listę. Przy bardzo małej wysokości akcje dodatkowe trafiają do menu.
+- Nowy kalendarz pojawia się od razu, jest wybrany, ma edytowalną nazwę i dostęp do dodawania konkursów lub presetu.
+- Kalendarz i jego klasyfikacje stanowią wspólny obszar pracy z sekcjami Konkursy i Klasyfikacje.
+- Usunięcie ostatniego kalendarza czyści modele i wskazanie edycji.
+- Poprawiono powiadomienia listy kalendarzy: dodanie/usunięcie danych odbywa się pomiędzy właściwymi sygnałami modelu, bez podwójnej zmiany kolekcji.
+- Podgląd klasyfikacji w Przeglądzie synchronizuje się od razu po aktywacji, także do pustego stanu.
+
+### 8.2. Edycja i synchronizacja
+
+- Kliknięcie konkursu zaznacza go; nie otwiera automatycznie edytora w małym oknie.
+- Edytuj, Enter, dwuklik lub strzałka wiersza otwierają edycję. Powrót prowadzi na listę.
+- Ctrl/Shift wybiera wiele konkursów, z widocznym zakresem i czyszczeniem zaznaczenia.
+- Fokus jest zachowywany po odświeżeniu danych.
+- Zmiany pól działają bez dodatkowego zatwierdzania pojedynczego konkursu i obejmują całe zaznaczenie.
+- Dotyczy to m.in. skoczni, zasad, typu, ważności, treningów, serii próbnych, klasyfikacji i kwalifikacji.
+- Dodaj wiele tworzy od 1 do 100 konkursów w jednej operacji i zaznacza nowe elementy.
+- Treningi i seria próbna zachowują własne zasady i ważność. Wybranie reguł niestandardowych otwiera ich edytor bez dodatkowego szukania.
+- Zmiany kontrolek liczbowych, list wyboru, pól tekstowych i przełączników zgłaszają odświeżenie przez sygnały. Pozostaje również okresowy fallback dla danych natywnych.
+- Rozdzielono aktualizację kalendarza edytowanego, aktywnego i granicy rozegranej historii.
+- Zmiany trafiają od razu do danych otwartego sezonu. Zapisz do pliku nadal zapisuje cały stan na dysku; nie należy opisywać tej przebudowy jako automatycznego zapisu każdej operacji na dysk.
+
+### 8.3. Przestawianie, kopiowanie i usuwanie
+
+- Przeciąganie uchwytu przestawia cały blok: treningi, serię próbną i główny konkurs.
+- Przeciągnięcie elementu wielokrotnego zaznaczenia przenosi cały wybrany zestaw z zachowaniem kolejności.
+- Widać miejsce upuszczenia, a lista przewija się przy krawędziach. Dostępna jest też alternatywa klawiaturowa Ctrl+↑/↓.
+- Kopie konkursów w nowym edytorze Quick dostają nowe tożsamości i nie zawierają rozegranej historii.
+- Kopiowanie zachowuje ustawienia wszystkich elementów bloku, w tym ważność treningów i serii próbnej, ich skocznie, wyjątkową liczbę serii i przypisania.
+- Edycja kopii wydarzenia nie modyfikuje oryginału.
+- Wewnętrzne źródła kwalifikacji zaznaczonego zestawu są przepinane na odpowiednie kopie, także dla relacji oczekujących.
+- Źródła poza kopiowanym zestawem pozostają źródłami zewnętrznymi. Nie przenosi się powiązań zwrotnych kopii do oryginalnego bloku.
+- Usunięcie źródła kwalifikacji jest blokowane z listą zależnych konkursów; najpierw trzeba zmienić zależności.
+- Rozegrana historia i zależności potrzebne rozegranym wydarzeniom są chronione przed niedozwolonymi zmianami.
+
+### 8.4. Kwalifikacje i zmiana kolejności
+
+- Źródłem może być wcześniejszy konkurs odpowiedniego typu. Konkurs N nie wybiera przyszłego konkursu jako normalnego nowego źródła.
+- Poprawiono odwrócone porównania przy wyborze źródła w nowym interfejsie.
+- Po przeniesieniu źródła za zależny konkurs powiązanie jest zawieszane, a nie usuwane.
+- Oba odpowiednie wiersze sygnalizują problem. Zależnego konkursu oraz związanego bloku przygotowawczego nie można rozpocząć, dopóki warunek nie jest poprawiony.
+- Zabezpieczenie działa również przy bezpośrednim wywołaniu akcji kontrolera, poza stanem przycisku.
+- Przywrócenie prawidłowej kolejności automatycznie uaktywnia zachowaną relację.
+- Oczekujące źródło pozostaje możliwe do świadomej zmiany lub wyczyszczenia.
+- Zapis i ponowny odczyt zachowują oczekujące powiązanie przez tożsamość wydarzenia.
+- Presety i duplikowane bloki poprawnie mapują źródła na nowe obiekty.
+- Porządkowanie przypisań klasyfikacji nie usuwa już elementów wektora w trakcie iteracji w sposób unieważniający tę iterację.
+
+### 8.5. Cofnij/Ponów
+
+- Dodano wielopoziomową historię operacji, działającą również pomiędzy edytowanymi kalendarzami bieżącego sezonu.
+- Historia obejmuje pola, operacje masowe, przestawianie, kopiowanie, usuwanie, nazwy, tworzenie/usuwanie kalendarzy, aktywowanie innego kalendarza, klasyfikacje i zastępowanie presetem.
+- Cofnięcie przywraca właściwy edytowany kalendarz oraz zaznaczenie, zamiast działać na przypadkowo aktualnej liście.
+- Tożsamości konkursów i klasyfikacji oraz powiązania pozostają stabilne.
+- Historia nie może nadpisać zawodów rozegranych lub odwołanych po wykonaniu snapshotu.
+- Zmiana sezonu i niezgodne zewnętrzne zmiany unieważniają odpowiednią historię.
+- Zachowane obiekty potrzebne do Cofnij/Ponów są uwzględniane przy zwalnianiu danych, również podczas zamykania edytora.
+
+### 8.6. Dolny pasek następnego wydarzenia i narzędzia
+
+- Pasek korzysta z aktywnego kalendarza, niezależnie od aktualnie edytowanego.
+- Pokazuje pełną flagę kraju skoczni, nazwę, rodzaj wydarzenia, HS i format indywidualny/drużynowy.
+- Dla treningu uwzględnia właściwy rodzaj/indeks wydarzenia.
+- Akcja od razu odzwierciedla aktualny stan. Pusty kalendarz prowadzi do edycji, zamiast przypadkowo do przejścia sezonu.
+- Generator formy ma bezpośrednie wejście oraz wejście w Narzędziach.
+- Naprawiono menu narzędzi: jawne wstawianie pozycji i atomowa aktualizacja zapobiegają znikaniu wpisów podczas odświeżania i kliknięcia.
+
+## 9. Klasyfikacje i presety kalendarzy
+
+### 9.1. Edytor klasyfikacji
+
+- Klasyfikacje są edytowane we wspólnym obszarze wybranego kalendarza.
+- Lista i formularz wykorzystują dostępną wysokość; małe okno ma przejście między listą i edycją.
+- Nazwa, typ i punktacja aktualizują dane bez osobnego przycisku zatwierdzania całej klasyfikacji.
+- Wskaźnik klasyfikacji startuje w poprawnym stanie, a zastosowanie edycji opiera się na tożsamości obiektu zamiast dawnym indeksie wiersza.
+- Zmiana kalendarza nie pozostawia formularza podpiętego do innej klasyfikacji.
+- Użyta w rozegranych wynikach klasyfikacja pozwala zmienić nazwę, ale blokuje zmianę typu i punktacji.
+- Utwórz kopię tworzy nową tożsamość bez historycznych wyników i pozwala edytować reguły punktowania.
+- Usuwanie użytej lub powiązanej klasyfikacji jest blokowane.
+- Model tabeli punktacji faktycznie zmienia dane między powiadomieniami wstawiania/usuwania wierszy.
+- Zmiana presetu/punktów używa resetu modelu. Obsługiwane są punkty ułamkowe i lokalny przecinek dziesiętny zamiast obcięcia do liczb całkowitych.
+- Nieprawidłowe indeksy presetów i dane nieliczbowe/nieskończone są odrzucane.
+- Zmiana źródła podglądu wyników klasyfikacji emituje reset modelu.
+
+### 9.2. Bezpieczniejsze presety
+
+- Zastąpienie kalendarza presetem zachowuje pełny blok wydarzeń i może być cofnięte/ponowione.
+- Rozegrane lub odwołane wydarzenia blokują zastąpienie presetem.
+- Import odtwarza klasyfikacje oraz mapuje powiązania wydarzeń i każdą skocznię na obiekty bieżącego zapisu.
+- Brak skoczni pasującej nazwą/HS ma kontrolowany fallback do skoczni dostępnej w zapisie.
+- Anulowanie wyboru nie zastępuje danych ani nie niszczy historii.
+- Serializacja presetu usuwa lokalne identyfikatory skoczni wyłącznie z JSON-a. Nie zeruje już żywych przypisań skoczni w obiekcie presetu.
+- Wyniki skopiowanych konkursów są przypinane do nowych wydarzeń zarówno przy tworzeniu, jak i imporcie presetu. Nowe skoki nie wskazują na oryginalny konkurs ani szablon.
+- Zachowano nazwane referencje skoczni, niezależną ważność i zasady wydarzeń pomocniczych.
+
+## 10. Generator formy
+
+- Zmieniono układ na ograniczony do okna obszar tabeli z widoczną akcją generowania.
+- Na małym/niskim ekranie parametry mają własną sekcję, a przyciski nie znikają poniżej obszaru.
+- Parametry są szkicem; Wszyscy/Zaznaczeni określa zakres, a Zastosuj parametry wykonuje zmianę.
+- Zmiana zaznaczenia nie przełącza zakresu automatycznie na wszystkich.
+- Wczytanie presetu również przygotowuje szkic i wymaga zastosowania.
+- Niezastosowany szkic blokuje generowanie ze starymi parametrami.
+- Licznik wszystkich zawodników odnosi się do całej listy, niezależnie od filtra.
+- Zachowano bezpośrednią edycję ustawień w komórkach tabeli.
+- Odrzucane są nieliczbowe wartości, NaN i sprzeczne granice.
+- Zbiorcza zmiana granicy dostosowuje drugą granicę, gdy przedział byłby odwrócony.
+- Pozostaw zaznaczonych poprawnie zachowuje wszystkich, także przy zaznaczeniu całej tabeli. Brak zaznaczenia nie usuwa zawodników.
+- Obsługa zastępowania presetu wyszukuje presety generatora formy, a nie inną kolekcję.
+- Widoki wyboru presetów mieszczą się w aplikacji, mają widoczne przyciski i obsługę długiej listy klawiaturą.
+- Generowanie wymaga poprawnego zapisu i co najmniej jednego zawodnika.
+- Wariant Widgets zachowuje wcześniejsze automatyczne stosowanie parametrów; jawny szkic jest przebiegiem nowego interfejsu.
+
+## 11. Statystyki, archiwa, wykresy i szczegóły
+
+- Archiwalne miejsca zawodników i drużyn poprawnie pomijają miejsca po remisach: 1,1,3.
+- Filtry początku/końca zakresu wskazują bezpośrednio konkurs z widocznego wpisu, również po połączeniu kalendarzy i przy nierozgranych wydarzeniach.
+- Nagłówki sezonów/kalendarzy nie udają pozycji konkursu.
+- Przebudowa filtrów klasyfikacji usuwa stary komplet kontrolek bez unieważniania iteracji i duplikowania checkboxów.
+- Brak ocen, rekompensat lub poprawnych skoków nie tworzy średnich NaN. Nieokreślone wartości są pomijane lub oznaczane kreską.
+- Statystyki małych konkursów, również poniżej dziesięciu wyników, nie wymagają nieistniejącego dziesiątego miejsca.
+- Remis zwycięzców jest prawidłową zerową przewagą; opisy wskazują właściwy sezon i kalendarz.
+- Brak presetów punktacji nie wywraca rankingu. Ranking za miejsca pozostaje pusty, a inne dostępne zestawienia działają.
+- Pusty wynik filtra czyści tabele, rekordy, dane eksportu i etykiety, zamiast pozostawiać poprzednie dane.
+- Pusty kalendarz, brak granic i odwrócony zakres dają bezpieczny pusty wynik.
+- Szczegóły skoku bez zawodnika/skoczni lub bez wyniku w danym konkursie mają stan braku danych i wyłączone niedostępne akcje.
+- Odczyt miejsca skoku spoza wyników nie indeksuje przez -1.
+- DNS bez zapisanych skoków oraz puste wykresy zawodnika nie odczytują pierwszego elementu pustej listy.
+- Wykresy sprawdzają osie i indeksy punktów. Średnie odnoszą się do faktycznie pokazanych danych.
+- Quick prezentuje istniejące serie wykresów, obsługując zoom/reset i wybór punktów, także klawiaturą, z zachowaniem źródłowych akcji inspekcji.
+
+## 12. Trwałość danych, awarie i losowanie
+
+### 12.1. Crash po Zakończ konkurs
+
+- Odtworzono błąd odświeżenia pozostawionego adaptera po zwolnieniu menedżera konkursu; debugger wskazał QuickBridge::refresh.
+- Okna konkursu i kwalifikacji są niszczone przed danymi symulacji.
+- Menedżery mają właścicieli RAII, a kopie skoczni kontrolowany zakres życia.
+- Wcześniejszy powrót po anulowanych kwalifikacjach zwalnia te zasoby.
+- Aktualizacja rekordów omija zawodnika nieobecnego w globalnej bazie zamiast dereferencji nullptr.
+- Regresja kończy konkurs przez widoczny przycisk i sprawdza usunięcie okna oraz adapterów, zamiast tylko wywoływać accept.
+
+### 12.2. Eksport CSV
+
+- Powtarzająca się nazwa, np. dwa pojedyncze konkursy tej samej minuty, nie nadpisuje poprzednich wyników.
+- Eksport używa tworzenia wyłącznie nowego pliku. Przy kolizji dodaje kolejno (2), (3) itd.
+- Zabezpiecza to również przed równoczesnym utworzeniem pliku o wybranej nazwie.
+- Katalog jest składany przez QDir i nie wymaga końcowego separatora.
+- Błąd otwarcia podaje faktyczny plik i przyczynę systemową.
+
+### 12.3. Zakresy losowania
+
+- Stały zakres, np. 7–7, zwraca 7 zamiast nieprawidłowego 0.
+- Przedziały ujemne zakończone zerem nie są sprowadzane do zera.
+- Bardzo wąskie przedziały dziesiętne nie są niszczone przez rzutowanie granic na int.
+- Dokładność dziesiętna jest zachowana tam, gdzie zakres zawiera wartości na tej siatce. W przeciwnym razie generator zachowuje zakres z dodatkowymi cyframi.
+- Losowanie całkowite obejmuje obie granice; zmiennoprzecinkowe przedział [min,max).
+- INT_MAX nie wymaga obliczenia przepełniającego max+1. Obsługiwany jest pełny zakres int i duże skończone zakresy double.
+- Zastąpiono budowanie tysiąca pomocniczych losowań bezpośrednim pobraniem próbki. Zmiana dotyczy poprawności i kosztu tych narzędzi losowania, nie obietnicy odtworzenia dawnych losowych wyników.
+
+## 13. Format danych i zgodność
+
+- Zachowano modele sezonów, konkursów i list oraz istniejący interfejs Widgets.
+- Dodano opcjonalne pole pending-advancement-competition-id dla zachowywanych kwalifikacji oczekujących.
+- Starsze pliki bez tego pola są nadal obsługiwane przez nowy kod.
+- Starsza wersja aplikacji nie obsługuje nowego pola; po otwarciu i ponownym zapisaniu przez nią oczekujące relacje mogą zostać pominięte. Nie należy obiecywać pełnej zgodności w obie strony bez osobnych testów.
+- Presety eksportują skocznie przez ich istniejące referencje nazwy/HS, bez lokalnych identyfikatorów z konkretnego zapisu.
+- Nowe kopie wydarzeń i klasyfikacji otrzymują nowe tożsamości.
+- Poprawki punktacji dotyczą kolejnych obliczeń; nie wykonano masowego przepisywania historycznych wyników zapisanych w istniejących plikach.
+- Atomowy zapis i część zabezpieczeń wczytywania sezonu istniały już na porównywanym main. Nie należy przedstawiać ich w całości jako nowych funkcji tej gałęzi.
+- Publiczne potwierdzenie zgodności powinno opierać się także na rzeczywistych zapisach użytkowników, oprócz testowych kopii danych.
+
+## 14. Architektura i narzędzia deweloperskie
+
+- Dodano QuickUi/QuickBridge i stabilne węzły prezentacji do odwzorowania istniejących kontrolek na Quick.
+- QuickTableModel zachowuje kontrakt modeli, edycję, zaznaczenie, sortowanie i filtr, bez tworzenia drugiego niezależnego silnika danych.
+- QuickRoster i QuickCalendar obsługują przebudowane przebiegi list i kalendarzy.
+- Dodano wspólny motyw, własne kontrolki, powierzchnie, adaptery wykresów oraz zasoby fontów.
+- Zamrożenie modeli podczas prezentacji na żywo jest sterowane sygnałem etapu z kontrolera konkursu.
+- Typy z zależnością cykliczną, np. zagnieżdżony Node w obszarze klasyfikacji kalendarza, są ładowane przez dynamiczny Loader, aby nie unieważniać typu QML.
+- Pomocnik geometrii Widgets pomija kontrolery przeniesione do głównego okna, zamiast traktować je jak niezależne okna ekranowe.
+- Dodano skrypty budowania, uruchamiania i testowania nowego interfejsu.
+- Zachowano opcjonalny wcześniejszy eksperyment konkursowy i jego skrypty/testy. Nie jest domyślnym interfejsem i nie należy prezentować go jako drugiej równoległej nowej wersji produktu.
+- Dodano lokalne instrukcje narzędzi Qt w .agents/skills oraz skills-lock.json: QML, UI design, CMake, testy, review, dokumentacja, profiler, Canvas2D i narzędzia Figma wraz z zasobami/licencjami.
+- Same instrukcje Qt 6, Canvas2D czy Figma nie oznaczają użycia tych technologii w działającym wydaniu. Są zasobami deweloperskimi.
+- Rozszerzono angielski katalog tłumaczeń dla nowych ekranów, kontrolek, metryk i błędów.
+
+## 15. Testy i dowody
+
+### 15.1. Zakres automatyczny
+
+- Testy działają na jednorazowych kopiach baz, ustawień i zapisów.
+- Przechodzą przez rzeczywiste kontrolery i modele, z kliknięciami myszą, klawiaturą, menu i dialogami.
+- Obejmują pełne konkursy indywidualne, KO i drużynowe, automatykę, skoki na żywo, zamknięcie w trakcie prezentacji i zakończenie przyciskiem.
+- Porównują każdy widoczny wiersz i kursor listy startowej ze stanem menedżera.
+- QAbstractItemModelTester sprawdza kontrakty modeli listy startowej i punktacji.
+- Obejmują wszystkie cztery narzędzia sezonu, generator formy obiema ścieżkami, nawigację, kalendarze, klasyfikacje, presety, zależności, historię i przeciąganie grup.
+- Sprawdzają zakres formy, szkic parametrów, wyszukiwanie, zaznaczenie, zapisane listy, rezerwy i KO.
+- Obejmują bazę danych, ustawienia, wyniki pojedynczych skoków, wykresy, szczegóły, postęp i jego anulowanie.
+- Sprawdzają przełączanie języka polskiego/angielskiego oraz brak brakujących aktywnych tłumaczeń Quick w poprzednich audytach katalogu.
+- Przegląd geometrii obejmuje rozmiary od 360×480 do 2560×1440 w odpowiednich scenariuszach, oba motywy i powiększony tekst.
+- Dodatkowe regresje wykazują utratę skoczni podczas serializacji, nadpisanie CSV, błędne losowanie, błędnego właściciela skopiowanych wyników, utratę ustawień bloku i nieprzepięte kwalifikacje.
+- Dla sześciu ostatnich błędów najpierw wykonano regresję na wadliwym kodzie, a następnie sprawdzono poprawkę.
+
+### 15.2. Końcowy wynik
+
+| Sprawdzenie po ostatnich poprawkach | Wynik |
+| --- | --- |
+| Pełny scripts/test-quick-ui.sh | Kod 0; **350 responsywnych renderów** i scenariusze integracyjne. |
+| Nowe regresje kopiowania/presetów | Kod 0; przed poprawkami każda wykazała opisany błąd. |
+| Historia, aktywne/oczekujące kwalifikacje i import presetu | Zaliczone osobno w --workflow-only i w końcowym pełnym przebiegu. |
+| Konkursy indywidualne, KO i drużynowe, Na żywo i zakończenie | Zaliczone w pełnym przebiegu. |
+| Widgets-only, make -j4 w build-widgets-compat | Kod 0. |
+| FAIL, TypeError, ReferenceError i pętle powiązań w końcowym logu | Nie wystąpiły. |
+| git diff --check | Bez błędów. |
+
+Pełny log tego przebiegu: /tmp/sj-release-inventory-full.log; log kompilacji Widgets: /tmp/sj-release-inventory-widgets.log. To pliki pomocnicze, które system może usunąć. Wyniki i zakres weryfikacji są dlatego zapisane również tutaj i w commitach.
+
+### 15.3. Ograniczenia i historia diagnostyki
+
+- Testy używają Qt 5.15.3 z rendererem programowym offscreen. Nie sprawdzają wszystkich GPU, systemów operacyjnych ani natywnych menedżerów okien.
+- Liczba renderów dotyczy zdefiniowanego zestawu scenariuszy, nie wszystkich możliwych stanów aplikacji.
+- Nie przeprowadzono pełnej certyfikacji dostępności ani gwarancji bezbłędności całego trybu sezonów.
+- We wcześniejszym etapie odnotowano jednorazowe „stack smashing detected”. Następne zwykłe przebiegi i przebiegi pod GDB przeszły; przyczyny tego konkretnego incydentu nie ustalono. Nie należy utożsamiać go automatycznie z później odtworzonym i naprawionym crashem zakończenia konkursu.
+- Ostrzeżenia istniejącego kodu C++ i pluginu offscreen nie są równoznaczne z błędami testów. Raport nie deklaruje kompilacji bez żadnych ostrzeżeń.
+- Całość nadal wymaga normalnego testowania długich sezonów i zapisów użytkowników przed wydaniem stabilnym.
+
+## 16. Lista kontrolna do testów wydania
+
+1. Uruchom domyślny interfejs oraz alternatywny --widgets.
+2. Sprawdź stronę startową, logo, trzy tryby i ich skróty.
+3. Zmień motyw, skalę tekstu i ograniczenie animacji, zamknij i uruchom aplikację ponownie.
+4. Przejdź przez bazę i długi formularz; powiększ oraz zmniejsz okno.
+5. Sprawdź wyszukiwanie, brak wyników, zaznaczenie wiersza przez komórkę, F2, spację i czyszczenie filtra.
+6. Zbuduj listę startową z biblioteki, zmień kolejność myszą i klawiaturą, zastosuj zapisaną listę, cofnij.
+7. Sprawdź drużynę z rezerwami i ręczną edycję KO.
+8. W konfiguracji obejrzyj liczbową belkę; zmień wiatr, porównaj różnicę i zastosuj sugestię.
+9. Rozegraj konkurs indywidualny, KO i drużynowy, także automatycznie.
+10. Sprawdź odległości w wynikach, aktualizację listy startowej i cele prowadzenia/awansu.
+11. Sprawdź pełną kartę skoku, flagę, noty, znaki wiatru/rekompensat, miejsce i stratę.
+12. Włącz Na żywo: miejsce i największy awans nie mogą zdradzać wyniku w trakcie lotu.
+13. Sprawdź największy awans od drugiej serii, remis awansów i podpowiedź miejsc.
+14. Otwórz każdą kategorię opcji bez pośredniego menu; panel nie powinien przesuwać się, gdy wszystko się mieści.
+15. Kliknij Zakończ konkurs; rozpocznij kolejny konkurs z konfiguracji. Sprawdź też kwalifikacje i anulowanie.
+16. Wykonaj kilka eksportów o tej samej nazwie i potwierdź zachowanie wcześniejszych plików.
+17. Utwórz kalendarz sezonu, dodaj wiele wydarzeń, masowo ustaw skocznie, treningi, serie próbne, reguły i klasyfikacje.
+18. Przełącz kalendarz edytowany, sprawdź niezmieniony aktywny, a następnie jawnie aktywuj drugi.
+19. Przeciągnij pojedynczy blok i zaznaczony zestaw, także na małym ekranie.
+20. Ustaw kwalifikację, przenieś źródło za cel, zapisz/wczytaj, przywróć kolejność i sprawdź odblokowanie startu.
+21. Spróbuj usunąć źródło z zależnościami.
+22. Skopiuj blok z niestandardową ważnością treningów i serii próbnej; zmień kopię i sprawdź niezależność oryginału.
+23. Skopiuj dwa powiązane konkursy i sprawdź, że kwalifikacja kopii wskazuje skopiowane źródło.
+24. Cofnij/Ponów kilka operacji, także przełączając kalendarze i zastępując presetem.
+25. Zapisz i wczytaj preset; rozegraj zawody z zaimportowanego kalendarza.
+26. Sprawdź klasyfikację z wynikami: nazwa edytowalna, reguły zablokowane, kopia edytowalna.
+27. W generatorze formy zastosuj szkic tylko do zaznaczonych; wczytaj preset i sprawdź jawne zastosowanie.
+28. Otwórz wszystkie narzędzia sezonu, archiwa i statystyki, również dla pustych zakresów, małej stawki, remisów i DNS.
+29. Sprawdź długi komunikat rekordu, mały dialog presetu i widoczność jego przycisków.
+30. Wykonaj dłuższą rozgrywkę z ponownym uruchamianiem i wczytywaniem rzeczywistych zapisów.
+
+## 17. Rozwiązania zastąpione podczas prac
+
+Ta sekcja chroni przed skopiowaniem do release notes nieaktualnego opisu z wcześniejszego commitu.
+
+| Wcześniejszy etap | Końcowe zachowanie |
+| --- | --- |
+| Auto jako specjalna wartość pola belki | Pole zawiera wyliczony numer; automatyczny dobór jest akcją. |
+| Lider w górnym pasku | Największy awans względem poprzedniej serii. |
+| Nagłówek Ostatni skok i nazwy etapów na żywo | Nagłówek usunięty; ujawnianie danych zachowane. |
+| Poprzednie miejsce w karcie skoku podczas lotu | Miejsce karty skoku niewyznaczone; poprzednie miejsce pozostaje przy zawodniku na belce. |
+| Blokowanie zmiany kolejności psującej źródło kwalifikacji | Zmiana dozwolona, relacja zachowana jako oczekująca, start zależnego wydarzenia zablokowany. |
+| Usuwanie nieprawidłowego przyszłego powiązania | Istniejące powiązanie zachowane pod maską do poprawienia kolejności. |
+| Wybór kalendarza jednocześnie zmienia aktywny | Edycja i jawna aktywacja są oddzielne. |
+| Jednokrokowe cofnięcie | Wielopoziomowe Cofnij/Ponów pomiędzy kalendarzami. |
+| Osobna główna karta edycji klasyfikacji w Quick | Klasyfikacje w obszarze wybranego kalendarza. |
+| Dodatkowe okna z własnym wyglądem i wersją | Jedna nawigacja, wspólny wygląd i oznaczenie wersji. |
+| Bezpośrednie accept w teście końca konkursu | Kliknięcie widocznego przycisku i kontrola zniszczenia adapterów. |
+| Przepisanie starego eksperymentu konkursowego | Nowa domyślna warstwa source/UI/Quick; eksperyment pozostaje opcjonalny. |
+
+## 18. Powiązane raporty szczegółowe
+
+- [Migracja i architektura](../QUICK_UI_MIGRATION.md).
+- [Pierwsze 10 błędów i 3 dodatkowe awarie](BUGFIX_AUDIT_2026-10-21.md).
+- [Pięć przebudowanych przepływów UX](UX_IMPROVEMENTS_2026-10-21.md).
+- [Wykorzystanie miejsca i szczegóły karty skoku](SPACE_AND_LAST_JUMP_2026-10-21.md).
+- [Wcześniejsze dopracowanie konkursu](COMPETITION_REFINEMENTS_2026-10-21.md) — z korektami końcowymi opisanymi tutaj.
+- [Przebudowa sezonów i kalendarzy](SEASON_WORKSPACE_2026-10-22.md).
+- [Największy awans](COMPETITION_ADVANCEMENT_2026-10-22.md).
+- [Crash zakończenia pojedynczego konkursu](COMPETITION_FINISH_CRASH_2026-10-22.md).
+- [Serializacja presetu, CSV i losowanie](THREE_SMALL_FIXES_2026-10-22.md).
+- [Trzy dodatkowe poprawki kopiowania kalendarzy](CALENDAR_COPY_FIXES_2026-10-22.md).
+- [Historyczny punkt przerwania prac](UX_REWORK_CHECKPOINT_2026-10-21.md).
+
+Dalsze załączniki są wygenerowane z Git dla wskazanego commitu. Pozwalają odnaleźć wszystkie zmienione pliki, również narzędzia i wcześniejszy eksperyment, bez opierania się na pamięci z rozmowy.
+
+
+## Załącznik A. Dokładny zakres Git
+
+- Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
+- Końcowy kod: **d157c29d0d5dd9af49c33a21ea958a264b7b3058**.
+- Commitów od bazy: **50**.
+- Plików zmienionych w tym zakresie: **344**.
+- Statystyki obejmują również fonty, instrukcje skills, przykłady i dokumentację; nie są liczbą linii samej logiki gry.
+- Niniejszy dokument jest późniejszym dodatkiem dokumentacyjnym do wskazanego stanu kodu; jego commit nie dodaje osobnej funkcji aplikacji.
+
+| Obszar | Plików |
+| --- | ---: |
+| Dokumentacja etapów i migracji | 13 |
+| Domyślny interfejs Qt Quick i jego zasoby | 80 |
+| Instrukcje i zasoby narzędzi deweloperskich | 168 |
+| Konfiguracja projektu i pozostałe pliki | 2 |
+| Kontrolery, modele i logika C++ | 56 |
+| Skrypty budowania, uruchamiania i testowania | 5 |
+| Testy | 2 |
+| Tłumaczenia | 1 |
+| Wcześniejszy opcjonalny eksperyment konkursowy | 17 |
+
+Porównanie można odtworzyć poleceniami:
+
+~~~sh
+git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c d157c29d0d5dd9af49c33a21ea958a264b7b3058
+git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c d157c29d0d5dd9af49c33a21ea958a264b7b3058
+git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..d157c29d0d5dd9af49c33a21ea958a264b7b3058
+~~~
+
+## Załącznik B. Wszystkie commity
+
+Historyczne opisy poniżej należy interpretować zgodnie z końcowym stanem opisanym wyżej, szczególnie wcześniejsze Auto, lidera, kwalifikacje i liczby renderów.
+
+| Commit | Zmiana i zapisane uzasadnienie/weryfikacja |
+| --- | --- |
+| `648fb2a` | Add optional responsive Qt Quick competition configuration preview |
+| `7041c12` | Fix invisible Qt Quick configuration dropdowns |
+| `8ed248b` | Rebuild Sj.Sim desktop UI in Qt Quick for 1.3.0 beta-3 — Make the fresh alpine Qt Quick interface the default while retaining the Widgets alternative and historical previews. Add shared navigation, appearance, accessible responsive controls, bundled typography and the release badge. Rework calendars, athlete rosters, season preparation, form generation, presets and live competition presentation. Fix start-list model notifications, target lines, scoring, wind generation, live staging and related controller defects. Include Qt skills, build/run scripts, Polish and English strings, migration documentation and integration coverage. Validation: 292 responsive renders; focused full individual, KO and team competitions with start-list model contract checks; Widgets-only build. |
+| `6233bdb` | Fix 01: preserve skipped places after archive classification ties — Archive standings returned 1,1,2 after a shared lead. Increment the tied block in both athlete and team ranking helpers, producing 1,1,3. Regression verified against the previously failing tie fixture. |
+| `6f44d3b` | Fix 02: map statistics range choices to the displayed competition — Numeric reconstruction counted unplayed events and could choose another calendar's event. Store direct identities for displayed played events and disable season headers. Test partially played merged and filtered calendars. |
+| `91a1e6e` | Fix 03: rebuild classification filters without invalidating iteration — Removing checkbox pointers from their vector during range iteration skipped widgets and risked use-after-free. Delete the old set before clearing it, guard missing sources and bound selection lookup. Test five consecutive rebuilds and all selections. |
+| `55e6d16` | Fix 04: reject invalid form input and contradictory generation limits — Reject nonnumeric and non-finite table edits and min/max inversions. Keep bulk minimum and maximum consistent when either bound changes. Regression checks cover invalid text, NaN, reversed table bounds and bulk updates. |
+| `07d6e30` | Fix 05: honor zero disqualification override in jump manipulation — An exact DSQ value of zero was converted to denominator one, guaranteeing disqualification. Treat zero as disabled, matching the base DSQ setting; retain exact one and inherited settings. Regression runs real jump simulations for all three cases. |
+| `2993270` | Fix 06: keep all selected athletes in the form generator — The keep-selected action removed every row when all athletes were selected. Apply the selection/complement consistently, preserve empty-selection drafts and notify model resets. Test all, one-cell and empty selections. |
+| `698feb4` | Fix 08: avoid statistics crashes for small fields and tied winners — Winning-margin event pointers stayed null for fewer than ten entrants or a zero-point winning gap. Show unavailable margins instead of dereferencing null; retain real tied results and identify the owning season/calendar. Test a two-athlete tie. |
+| `2e4f5cc` | Fix 07: omit unavailable averages instead of producing NaN statistics — No eligible judges, wind scoring or non-DSQ jumps caused division by zero and invalid rankings. Skip undefined athlete averages and display unavailable aggregate values/percentages. Test disabled scoring components and an entirely disqualified field. |
+| `38e8e31` | Fix 09: keep statistics usable without point-award presets — An empty preset database or index -1 was indexed unconditionally and crashed the ratings screen. Clear unsupported places classifications while preserving averages and competition-point classifications. Test removing all presets and both scoring modes. |
+| `642a618` | Fix 10: clear obsolete statistics when filters return no results — Empty filters left previous rankings, records, facts and exports in place. Clear every result model and factual value without a blocking information dialog. Bind average tables to their own models at construction. Test a populated-to-empty filter transition. |
+| `8511b0f` | Fix 11: handle empty calendars and missing statistics range endpoints — Range slicing dereferenced null endpoints and calendar switching read first() on empty calendars. Return empty slices for missing/reversed endpoints, guard selection indices and let range widgets represent empty calendars. Test switching from a populated calendar to an empty one. |
+| `37d1b8f` | Fix 12: handle incomplete or detached jump details without crashing — Missing athlete/hill links and a competition without the jump's result caused null dereferences or negative round indexing. Show unavailable details, disable sharing and return an unknown rank for detached jumps. Test missing links, recovery and an orphaned result. |
+| `3872878` | Fix 13: keep athlete charts safe for DNS and empty selections — Skip results without jumps, guard missing chart axes and invalid hover indices, and calculate positions only from displayed results. Empty charts show unavailable statistics instead of invalid averages. Test DNS-only data and switching to an empty calendar; include all 13 audit regressions in the default suite. |
+| `56dd0ea` | Document all 13 UX and gameplay fixes with regression evidence — Preserve symptoms, reproduction scenarios, causes, changes and the individual fix commit IDs outside the chat. Record passing audit/integration checks, 292 responsive renders, Widgets compatibility and the unchanged main branch. |
+| `e577e73` | UX 1: make form parameter changes explicit and scoped — Stage global parameters and presets instead of silently overwriting every athlete. Offer an explicit All/Selected scope and Apply action, preserve identities and selection, and require applying the draft before generation. Keep the Widgets workflow available. Test a real selected-only Apply click and staged presets. |
+| `1611e61` | UX 2: expose table search, selection counts and empty-state recovery — Keep search visible in roomy desktop tables, support Find, show selected row counts with a clear action and offer filter reset directly in empty results. Clear selection when changing filters to avoid hidden bulk targets; preserve compact layouts and source data. Test real keyboard filtering and reset clicks. |
+| `0679252` | UX 3: make saved athlete lists directly actionable — Expose list choice and separate Add, Remove and Order actions on desktop, with one accessible popover on small windows. Keep undo, eligibility and member identity; refresh saved-list names when returning from editing. Test desktop and narrow-screen membership/order actions through real clicks. |
+| `191138e` | UX 4: group competition tools and expose live/weather controls — Replace the single long options stack with Progress, Conditions and Jump sections. Put live mode in the main toolbar and make wind/snow indicators open Conditions directly. Keep last jump, results and start list together. Test actual live-toggle and wind action clicks plus full competition playback. |
+| `4e1c614` | UX 5: separate calendar selection from opening the editor — A click now selects without leaving the event list; use Edit, the row arrow, Enter or double-click to open details. Keep Ctrl/Shift selection in place, show selection count and provide a clear action. Test narrow-screen multi-selection and opening one batch inspector. |
+| `f9a0b90` | UX 1: pin form apply controls and preserve explicit scope |
+| `8708819` | UX 2: distinguish selection from cursor and expose laptop search |
+| `597e1dd` | UX 3: preserve usable athlete rows in the smallest windows |
+| `77811ae` | UX 5: retain keyboard focus across calendar selection refreshes |
+| `d865528` | Save five-workflow UX regressions, translations and resume checkpoint |
+| `5398f72` | UX 1: read complete form roster through the existing item model |
+| `4a49261` | UX 4: keep KO tables inside the laptop competition viewport |
+| `f1c3d87` | Document five completed UX workflows and final validation results |
+| `663bd58` | Expand catalog workspaces and expose complete last-jump information — Use full-height database, season and save lists with independently scrolling editors and compact actions. Show judges, gate, landing, compensation components, totals and team positions directly; preserve live reveal stages and distinguish signed values. Cover catalog growth, small-window summaries, judge exclusions and independent sign colours in integration tests. |
+| `870c929` | Fix calendar qualification sources and ordering constraints — Offer only earlier competitions of the same type; keep shared choices valid for multi-selection. Block moving a qualification source behind a dependent competition. Repair future/self links when loading calendars and clarify the field captions. Add regressions for source choices, invalid indices, ordering, undo and link repair. |
+| `ac0cd90` | Keep modal actions visible and make numeric stepping immediate — Scroll long dialog titles and bodies while pinning responsive action rows. Refit transient windows after native layout/size changes and application resizing. Count each numeric button press locally and enable 250 ms hold delay / 40 ms repeat. Regressions cover rapid integer/decimal steps, bounds, hold repeat and long record notifications after forced native resizing on small screens. |
+| `53fdc7f` | Compact competition cards and clarify jump ranking across rounds — Cap card widths, size them to contents, emphasize rank, add the athlete flag and leader gap, and open competition categories directly from the existing toolbar. Show previous-round positions on the gate and during live presentation until the new result is revealed, including team prefixes and ties. Snapshot rank data while native result references are valid. Validate 2K/small-screen geometry, category actions, leader gaps and live rank transitions. Document all refinements and the passing 343-render suite, focused follow-ups and Widgets build. |
+| `284a89e` | Localize standard dialog actions and fix message text sizing — Project standard Yes/No, Cancel, Save and other actions through application translations while preserving native roles and IDs. Give message text the full dialog width and explicit content height below the title, keeping checkboxes and pinned actions. Add a short-message geometry and Polish-caption regression; update translations for the redesigned workflows. |
+| `e021c7b` | Rebuild season calendar editing with reversible synchronized operations — Separate edited and active calendars, expose explicit activation and creation, and integrate classifications into one workspace. Add bulk competition creation, multi-selection drag/drop of complete event blocks, and shared undo/redo including catalog changes and preset replacement. Preserve displaced qualification sources through ordering and serialization, mark both ends, restore valid links automatically and block dependent launches. Protect referenced sources and played history. Synchronize overview standings and native fields immediately; retain objects safely across history and editor shutdown. Repair points-table model notifications, fractional/locale-aware editing and classification cleanup. Used standings allow renaming and copying while locking scoring. Add pointer-driven drag, serialization, playback separation, bulk edits, undo/redo, preset and model-contract regressions; enrich the next-event footer. |
+| `33ff226` | Default competition gates to Auto and refresh wind recommendations — Replace the unbounded random trial loop with a deterministic bounded distance preview. Default preparation to Auto, retain manual gate selection, show the recommended gate and signed difference in the wind workspace, and apply it directly. Handle special numeric captions in Quick. Regressions cover the initial mode, repeatability, headwind/tailwind changes and the apply action. |
+| `da0924b` | Clarify live competition status without revealing jump ranks early — Add the hill flag and signed wind colors to the top bar. Replace the start counter with the leader and points, compacting the smallest layout and preserving the previous leader until the live result is revealed. Keep the last-jump rank blank during flight while retaining previous-round position on the gate card. Remove the unused previous-rank snapshot and update the live regression. |
+| `50e991d` | Document season workflow changes and the 350-render validation |
+| `e9ce0a4` | Show the calculated starting gate as a number instead of Auto |
+| `9a6641c` | Remove redundant jump card heading and live stage captions |
+| `4697730` | Scroll competition options only when their content overflows — Use an explicit vertical Flickable with bounds clamped to its content. Disable interaction when every option fits; retain scrolling for smaller panels and longer categories. Validation: scripts/test-quick-ui.sh --ux-only passes, including fitted and overflowing options, direct competition actions and live presentation. The preceding label removal also passed --competitions-only. |
+| `145738d` | Destroy finished competition views before releasing simulation data — Reproduced SIGSEGV in QuickBridge::refresh after closing a single competition and refreshing the surviving adapter. Scope competition and qualification windows before manager cleanup, own managers with RAII and keep hill copies scoped. Guard missing global athletes during record updates. Replace the test's direct accept() with the visible finish action and assert the competition window is destroyed on return. scripts/test-quick-ui.sh --ux-only passes. |
+| `da96752` | Show the biggest gain since the previous round in the competition header — Replace duplicated leader data with the largest positive position change among current-round jumpers. Handle previous-round ties, shared gains, team totals, narrow layouts and English translations; show all tied athletes and before/after places in the tooltip. Freeze the statistic until live results are revealed. Validate empty and incomplete rounds, tied places, equal gains, third rounds and team baselines. Full individual, KO and team competition tests pass, including pointer-driven finish and view destruction; Widgets-only builds successfully. Document both the statistic and the finish crash fix. |
+| `d78e4c7` | Preserve live hill assignments when serializing calendar presets — The preset's shallow calendar copy shared event pointers, so clearing hills for JSON also cleared its live data. Remove hill IDs from the serialized JSON instead. The regression fails before the fix and passes with --backend-only. |
+| `291ad73` | Preserve earlier competition CSV exports when file names collide — Automatically exported competitions can share a name within the same minute. Create CSV files with NewOnly and numbered collision suffixes instead of truncating prior results. Build paths with QDir and report actual write-open errors. Regression proves the old code overwrites existing results; the fixed --backend-only run retains the original and creates distinct nonempty exports, including a directory without a trailing slash. |
+| `dbacc92` | Keep random samples inside singleton, narrow and extreme bounds — Return the only valid value for singleton ranges, avoid integer overflow at INT_MAX and stop collapsing small decimal ranges through int conversion. Preserve decimal precision where possible and use a bounded fractional fallback where no precision grid point exists. The new regression fails on the old singleton behavior and passes with narrow, negative, full integer and extreme finite floating-point bounds. Backend, complete individual/KO/team competitions, season workflows and Widgets-only builds pass; document all three small but consequential fixes. |
+| `44b984f` | Bind cloned preset result containers to their new calendar events — CompetitionInfo copies retain the raw CompetitionResults::competition pointer. Rebind it when building and importing a preset so new jumps do not belong to the original event or template. Regression fails on the old preset constructor and passes with --workflow-only, including the imported event and newly added result/jump ownership. |
+| `df1a783` | Preserve auxiliary event settings when duplicating calendar blocks — Use the same configuration copy for main events, trainings and trial rounds. Preserve their importance, exceptional rounds, own hill and classification/qualification links while keeping fresh event identities and empty history. The regression fails before the fix on training/trial importance and passes with --workflow-only, including independent edits and undo. |
+| `d157c29` | Keep duplicated qualification links within the copied calendar block — Build an original-to-copy map for selected competitions and their attached events, then remap both active and pending qualification sources. Preserve external sources and original dependencies. The regression fails before the fix and passes with --workflow-only, including reverse links, pending-source restoration, external sources and undo. |
+
+## Załącznik C. Pełny manifest zmienionych plików
+
+A oznacza dodany plik, M zmieniony, D usunięty. Kolumny +/− pokazują diff tekstowy; kreska przy foncie oznacza zasób binarny. Ścieżki prowadzą do plików w tej gałęzi.
+
+### Dokumentacja etapów i migracji
+
+| Status | Plik | + | − |
+| --- | --- | ---: | ---: |
+| A | [QML_COMPETITION_LIVE.md](../QML_COMPETITION_LIVE.md) | 42 | 0 |
+| A | [QML_COMPETITION_PREVIEW.md](../QML_COMPETITION_PREVIEW.md) | 60 | 0 |
+| A | [QUICK_UI_MIGRATION.md](../QUICK_UI_MIGRATION.md) | 314 | 0 |
+| A | [docs/BUGFIX_AUDIT_2026-10-21.md](../docs/BUGFIX_AUDIT_2026-10-21.md) | 140 | 0 |
+| A | [docs/CALENDAR_COPY_FIXES_2026-10-22.md](../docs/CALENDAR_COPY_FIXES_2026-10-22.md) | 27 | 0 |
+| A | [docs/COMPETITION_ADVANCEMENT_2026-10-22.md](../docs/COMPETITION_ADVANCEMENT_2026-10-22.md) | 30 | 0 |
+| A | [docs/COMPETITION_FINISH_CRASH_2026-10-22.md](../docs/COMPETITION_FINISH_CRASH_2026-10-22.md) | 20 | 0 |
+| A | [docs/COMPETITION_REFINEMENTS_2026-10-21.md](../docs/COMPETITION_REFINEMENTS_2026-10-21.md) | 34 | 0 |
+| A | [docs/SEASON_WORKSPACE_2026-10-22.md](../docs/SEASON_WORKSPACE_2026-10-22.md) | 60 | 0 |
+| A | [docs/SPACE_AND_LAST_JUMP_2026-10-21.md](../docs/SPACE_AND_LAST_JUMP_2026-10-21.md) | 43 | 0 |
+| A | [docs/THREE_SMALL_FIXES_2026-10-22.md](../docs/THREE_SMALL_FIXES_2026-10-22.md) | 37 | 0 |
+| A | [docs/UX_IMPROVEMENTS_2026-10-21.md](../docs/UX_IMPROVEMENTS_2026-10-21.md) | 77 | 0 |
+| A | [docs/UX_REWORK_CHECKPOINT_2026-10-21.md](../docs/UX_REWORK_CHECKPOINT_2026-10-21.md) | 28 | 0 |
+
+### Domyślny interfejs Qt Quick i jego zasoby
+
+| Status | Plik | + | − |
+| --- | --- | ---: | ---: |
+| A | [source/UI/Quick/ActionBar.qml](../source/UI/Quick/ActionBar.qml) | 29 | 0 |
+| A | [source/UI/Quick/ActionMenu.qml](../source/UI/Quick/ActionMenu.qml) | 31 | 0 |
+| A | [source/UI/Quick/AppFooter.qml](../source/UI/Quick/AppFooter.qml) | 15 | 0 |
+| A | [source/UI/Quick/AppHeader.qml](../source/UI/Quick/AppHeader.qml) | 26 | 0 |
+| A | [source/UI/Quick/AppearanceMenu.qml](../source/UI/Quick/AppearanceMenu.qml) | 22 | 0 |
+| A | [source/UI/Quick/AppearancePanel.qml](../source/UI/Quick/AppearancePanel.qml) | 12 | 0 |
+| A | [source/UI/Quick/CalendarClassifications.qml](../source/UI/Quick/CalendarClassifications.qml) | 59 | 0 |
+| A | [source/UI/Quick/CalendarEventRow.qml](../source/UI/Quick/CalendarEventRow.qml) | 92 | 0 |
+| A | [source/UI/Quick/CalendarFields.qml](../source/UI/Quick/CalendarFields.qml) | 53 | 0 |
+| A | [source/UI/Quick/CalendarInspector.qml](../source/UI/Quick/CalendarInspector.qml) | 60 | 0 |
+| A | [source/UI/Quick/CalendarWorkspace.qml](../source/UI/Quick/CalendarWorkspace.qml) | 147 | 0 |
+| A | [source/UI/Quick/CatalogWorkspace.qml](../source/UI/Quick/CatalogWorkspace.qml) | 52 | 0 |
+| A | [source/UI/Quick/DataTable.qml](../source/UI/Quick/DataTable.qml) | 241 | 0 |
+| A | [source/UI/Quick/FormGeneratorWorkspace.qml](../source/UI/Quick/FormGeneratorWorkspace.qml) | 83 | 0 |
+| A | [source/UI/Quick/Home.qml](../source/UI/Quick/Home.qml) | 54 | 0 |
+| A | [source/UI/Quick/HomeCard.qml](../source/UI/Quick/HomeCard.qml) | 51 | 0 |
+| A | [source/UI/Quick/HomeHero.qml](../source/UI/Quick/HomeHero.qml) | 57 | 0 |
+| A | [source/UI/Quick/HomeTools.qml](../source/UI/Quick/HomeTools.qml) | 25 | 0 |
+| A | [source/UI/Quick/JudgeMarks.qml](../source/UI/Quick/JudgeMarks.qml) | 27 | 0 |
+| A | [source/UI/Quick/JumpMetric.qml](../source/UI/Quick/JumpMetric.qml) | 49 | 0 |
+| A | [source/UI/Quick/ModalScreen.qml](../source/UI/Quick/ModalScreen.qml) | 57 | 0 |
+| A | [source/UI/Quick/Node.qml](../source/UI/Quick/Node.qml) | 208 | 0 |
+| A | [source/UI/Quick/NodeGroup.qml](../source/UI/Quick/NodeGroup.qml) | 78 | 0 |
+| A | [source/UI/Quick/NumberField.qml](../source/UI/Quick/NumberField.qml) | 45 | 0 |
+| A | [source/UI/Quick/PlotPanel.qml](../source/UI/Quick/PlotPanel.qml) | 35 | 0 |
+| A | [source/UI/Quick/ProjectedControl.qml](../source/UI/Quick/ProjectedControl.qml) | 10 | 0 |
+| A | [source/UI/Quick/QuickBridge.cpp](../source/UI/Quick/QuickBridge.cpp) | 1006 | 0 |
+| A | [source/UI/Quick/QuickCalendar.cpp](../source/UI/Quick/QuickCalendar.cpp) | 419 | 0 |
+| A | [source/UI/Quick/QuickCalendar.h](../source/UI/Quick/QuickCalendar.h) | 136 | 0 |
+| A | [source/UI/Quick/QuickPlot.cpp](../source/UI/Quick/QuickPlot.cpp) | 116 | 0 |
+| A | [source/UI/Quick/QuickPlot.h](../source/UI/Quick/QuickPlot.h) | 38 | 0 |
+| A | [source/UI/Quick/QuickRaceStats.h](../source/UI/Quick/QuickRaceStats.h) | 55 | 0 |
+| A | [source/UI/Quick/QuickRoster.cpp](../source/UI/Quick/QuickRoster.cpp) | 118 | 0 |
+| A | [source/UI/Quick/QuickRoster.h](../source/UI/Quick/QuickRoster.h) | 89 | 0 |
+| A | [source/UI/Quick/QuickSurface.cpp](../source/UI/Quick/QuickSurface.cpp) | 17 | 0 |
+| A | [source/UI/Quick/QuickSurface.h](../source/UI/Quick/QuickSurface.h) | 20 | 0 |
+| A | [source/UI/Quick/QuickTableModel.cpp](../source/UI/Quick/QuickTableModel.cpp) | 237 | 0 |
+| A | [source/UI/Quick/QuickUi.cpp](../source/UI/Quick/QuickUi.cpp) | 250 | 0 |
+| A | [source/UI/Quick/QuickUi.h](../source/UI/Quick/QuickUi.h) | 228 | 0 |
+| A | [source/UI/Quick/RaceAthlete.qml](../source/UI/Quick/RaceAthlete.qml) | 42 | 0 |
+| A | [source/UI/Quick/RaceControls.qml](../source/UI/Quick/RaceControls.qml) | 39 | 0 |
+| A | [source/UI/Quick/RaceLastJump.qml](../source/UI/Quick/RaceLastJump.qml) | 89 | 0 |
+| A | [source/UI/Quick/RaceOptions.qml](../source/UI/Quick/RaceOptions.qml) | 58 | 0 |
+| A | [source/UI/Quick/RaceScreen.qml](../source/UI/Quick/RaceScreen.qml) | 103 | 0 |
+| A | [source/UI/Quick/RaceStatus.qml](../source/UI/Quick/RaceStatus.qml) | 41 | 0 |
+| A | [source/UI/Quick/RosterLibrary.qml](../source/UI/Quick/RosterLibrary.qml) | 35 | 0 |
+| A | [source/UI/Quick/RosterOrder.qml](../source/UI/Quick/RosterOrder.qml) | 52 | 0 |
+| A | [source/UI/Quick/RosterPresets.qml](../source/UI/Quick/RosterPresets.qml) | 25 | 0 |
+| A | [source/UI/Quick/RosterRow.qml](../source/UI/Quick/RosterRow.qml) | 105 | 0 |
+| A | [source/UI/Quick/RosterSummary.qml](../source/UI/Quick/RosterSummary.qml) | 17 | 0 |
+| A | [source/UI/Quick/RosterWorkspace.qml](../source/UI/Quick/RosterWorkspace.qml) | 69 | 0 |
+| A | [source/UI/Quick/SButton.qml](../source/UI/Quick/SButton.qml) | 39 | 0 |
+| A | [source/UI/Quick/SCheck.qml](../source/UI/Quick/SCheck.qml) | 26 | 0 |
+| A | [source/UI/Quick/SChoice.qml](../source/UI/Quick/SChoice.qml) | 57 | 0 |
+| A | [source/UI/Quick/SField.qml](../source/UI/Quick/SField.qml) | 21 | 0 |
+| A | [source/UI/Quick/Screen.qml](../source/UI/Quick/Screen.qml) | 12 | 0 |
+| A | [source/UI/Quick/SeasonBar.qml](../source/UI/Quick/SeasonBar.qml) | 32 | 0 |
+| A | [source/UI/Quick/SeasonFooter.qml](../source/UI/Quick/SeasonFooter.qml) | 25 | 0 |
+| A | [source/UI/Quick/SectionRail.qml](../source/UI/Quick/SectionRail.qml) | 27 | 0 |
+| A | [source/UI/Quick/SectionTabs.qml](../source/UI/Quick/SectionTabs.qml) | 68 | 0 |
+| A | [source/UI/Quick/SetupFooter.qml](../source/UI/Quick/SetupFooter.qml) | 20 | 0 |
+| A | [source/UI/Quick/Surface.qml](../source/UI/Quick/Surface.qml) | 9 | 0 |
+| A | [source/UI/Quick/TableRow.qml](../source/UI/Quick/TableRow.qml) | 108 | 0 |
+| A | [source/UI/Quick/Theme.qml](../source/UI/Quick/Theme.qml) | 43 | 0 |
+| A | [source/UI/Quick/TrackMark.qml](../source/UI/Quick/TrackMark.qml) | 20 | 0 |
+| A | [source/UI/Quick/VersionBadge.qml](../source/UI/Quick/VersionBadge.qml) | 21 | 0 |
+| A | [source/UI/Quick/WindEditor.qml](../source/UI/Quick/WindEditor.qml) | 50 | 0 |
+| A | [source/UI/Quick/WindFields.qml](../source/UI/Quick/WindFields.qml) | 56 | 0 |
+| A | [source/UI/Quick/WindSectorStrip.qml](../source/UI/Quick/WindSectorStrip.qml) | 46 | 0 |
+| A | [source/UI/Quick/Workspace.qml](../source/UI/Quick/Workspace.qml) | 99 | 0 |
+| A | [source/UI/Quick/fonts/Barlow-Medium.ttf](../source/UI/Quick/fonts/Barlow-Medium.ttf) | - | - |
+| A | [source/UI/Quick/fonts/Barlow-Regular.ttf](../source/UI/Quick/fonts/Barlow-Regular.ttf) | - | - |
+| A | [source/UI/Quick/fonts/Barlow-SemiBold.ttf](../source/UI/Quick/fonts/Barlow-SemiBold.ttf) | - | - |
+| A | [source/UI/Quick/fonts/BarlowCondensed-ExtraBold.ttf](../source/UI/Quick/fonts/BarlowCondensed-ExtraBold.ttf) | - | - |
+| A | [source/UI/Quick/fonts/IBMPlexMono-Regular.ttf](../source/UI/Quick/fonts/IBMPlexMono-Regular.ttf) | - | - |
+| A | [source/UI/Quick/fonts/OFL-Barlow.txt](../source/UI/Quick/fonts/OFL-Barlow.txt) | 93 | 0 |
+| A | [source/UI/Quick/fonts/OFL-BarlowCondensed.txt](../source/UI/Quick/fonts/OFL-BarlowCondensed.txt) | 93 | 0 |
+| A | [source/UI/Quick/fonts/OFL-IBMPlexMono.txt](../source/UI/Quick/fonts/OFL-IBMPlexMono.txt) | 93 | 0 |
+| A | [source/UI/Quick/qmldir](../source/UI/Quick/qmldir) | 1 | 0 |
+| A | [source/UI/Quick/quick-ui.qrc](../source/UI/Quick/quick-ui.qrc) | 69 | 0 |
+
+### Instrukcje i zasoby narzędzi deweloperskich
+
+| Status | Plik | + | − |
+| --- | --- | ---: | ---: |
+| A | [.agents/skills/qt-canvas2d/LICENSE.txt](../.agents/skills/qt-canvas2d/LICENSE.txt) | 32 | 0 |
+| A | [.agents/skills/qt-canvas2d/SKILL.md](../.agents/skills/qt-canvas2d/SKILL.md) | 241 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/api-reference.md](../.agents/skills/qt-canvas2d/references/api-reference.md) | 652 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/porting.md](../.agents/skills/qt-canvas2d/references/porting.md) | 191 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/analog-clock.qml](../.agents/skills/qt-canvas2d/references/recipes/analog-clock.qml) | 159 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/animated-line-chart.qml](../.agents/skills/qt-canvas2d/references/recipes/animated-line-chart.qml) | 174 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/bar-chart.qml](../.agents/skills/qt-canvas2d/references/recipes/bar-chart.qml) | 110 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/color-effects-and-clipping.qml](../.agents/skills/qt-canvas2d/references/recipes/color-effects-and-clipping.qml) | 175 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/freehand-drawing.qml](../.agents/skills/qt-canvas2d/references/recipes/freehand-drawing.qml) | 143 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/images-and-patterns.qml](../.agents/skills/qt-canvas2d/references/recipes/images-and-patterns.qml) | 110 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/level-meter.qml](../.agents/skills/qt-canvas2d/references/recipes/level-meter.qml) | 171 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/node-link-diagram.qml](../.agents/skills/qt-canvas2d/references/recipes/node-link-diagram.qml) | 139 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/oscilloscope.qml](../.agents/skills/qt-canvas2d/references/recipes/oscilloscope.qml) | 127 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/pan-zoom-viewport.qml](../.agents/skills/qt-canvas2d/references/recipes/pan-zoom-viewport.qml) | 189 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/pie-donut-chart.qml](../.agents/skills/qt-canvas2d/references/recipes/pie-donut-chart.qml) | 184 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/progress-ring.qml](../.agents/skills/qt-canvas2d/references/recipes/progress-ring.qml) | 101 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/radial-gauge.qml](../.agents/skills/qt-canvas2d/references/recipes/radial-gauge.qml) | 138 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/rotary-knob.qml](../.agents/skills/qt-canvas2d/references/recipes/rotary-knob.qml) | 214 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/scatter-plot.qml](../.agents/skills/qt-canvas2d/references/recipes/scatter-plot.qml) | 132 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/shadowed-card-button.qml](../.agents/skills/qt-canvas2d/references/recipes/shadowed-card-button.qml) | 129 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/sparkline-delegate.qml](../.agents/skills/qt-canvas2d/references/recipes/sparkline-delegate.qml) | 148 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/static-shapes.qml](../.agents/skills/qt-canvas2d/references/recipes/static-shapes.qml) | 116 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/recipes/text-panel.qml](../.agents/skills/qt-canvas2d/references/recipes/text-panel.qml) | 147 | 0 |
+| A | [.agents/skills/qt-canvas2d/references/rules.md](../.agents/skills/qt-canvas2d/references/rules.md) | 65 | 0 |
+| A | [.agents/skills/qt-cmake-project/LICENSE.txt](../.agents/skills/qt-cmake-project/LICENSE.txt) | 32 | 0 |
+| A | [.agents/skills/qt-cmake-project/SKILL.md](../.agents/skills/qt-cmake-project/SKILL.md) | 165 | 0 |
+| A | [.agents/skills/qt-cmake-project/references/common-mistakes.md](../.agents/skills/qt-cmake-project/references/common-mistakes.md) | 271 | 0 |
+| A | [.agents/skills/qt-cmake-project/references/configure.md](../.agents/skills/qt-cmake-project/references/configure.md) | 37 | 0 |
+| A | [.agents/skills/qt-cmake-project/references/modular-architecture.md](../.agents/skills/qt-cmake-project/references/modular-architecture.md) | 268 | 0 |
+| A | [.agents/skills/qt-cmake-project/references/qml-integration.md](../.agents/skills/qt-cmake-project/references/qml-integration.md) | 260 | 0 |
+| A | [.agents/skills/qt-cmake-project/references/resources.md](../.agents/skills/qt-cmake-project/references/resources.md) | 229 | 0 |
+| A | [.agents/skills/qt-cmake-project/references/simple-project.md](../.agents/skills/qt-cmake-project/references/simple-project.md) | 122 | 0 |
+| A | [.agents/skills/qt-cpp-docs/LICENSE.txt](../.agents/skills/qt-cpp-docs/LICENSE.txt) | 32 | 0 |
+| A | [.agents/skills/qt-cpp-docs/SKILL.md](../.agents/skills/qt-cpp-docs/SKILL.md) | 410 | 0 |
+| A | [.agents/skills/qt-cpp-review/LICENSE.txt](../.agents/skills/qt-cpp-review/LICENSE.txt) | 32 | 0 |
+| A | [.agents/skills/qt-cpp-review/SKILL.md](../.agents/skills/qt-cpp-review/SKILL.md) | 480 | 0 |
+| A | [.agents/skills/qt-cpp-review/platforms/windsurf.md](../.agents/skills/qt-cpp-review/platforms/windsurf.md) | 34 | 0 |
+| A | [.agents/skills/qt-cpp-review/references/lint-scripts/qt_review_lint.py](../.agents/skills/qt-cpp-review/references/lint-scripts/qt_review_lint.py) | 785 | 0 |
+| A | [.agents/skills/qt-cpp-review/references/qt-deprecated-classes.md](../.agents/skills/qt-cpp-review/references/qt-deprecated-classes.md) | 38 | 0 |
+| A | [.agents/skills/qt-cpp-review/references/qt-framework-checklist.md](../.agents/skills/qt-cpp-review/references/qt-framework-checklist.md) | 177 | 0 |
+| A | [.agents/skills/qt-cpp-review/references/qt-review-checklist.md](../.agents/skills/qt-cpp-review/references/qt-review-checklist.md) | 293 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/SKILL.md](../.agents/skills/qt-figma-component-generation/SKILL.md) | 347 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/BadgeLabel.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/BadgeLabel.qml) | 122 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/BadgeLabelStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/BadgeLabelStyle.qml) | 117 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/BadgeNotification.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/BadgeNotification.qml) | 110 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/BadgeNotificationStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/BadgeNotificationStyle.qml) | 96 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/Button.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/Button.qml) | 177 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/ButtonStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/ButtonStyle.qml) | 215 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/Card.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/Card.qml) | 651 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/CardStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/CardStyle.qml) | 99 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/CheckBox.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/CheckBox.qml) | 121 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/CheckBoxStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/CheckBoxStyle.qml) | 143 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/ComboBox.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/ComboBox.qml) | 206 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/ComboBoxStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/ComboBoxStyle.qml) | 169 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/Dialog.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/Dialog.qml) | 136 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/DialogButtonBox.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/DialogButtonBox.qml) | 52 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/DialogButtonBoxStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/DialogButtonBoxStyle.qml) | 47 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/DialogStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/DialogStyle.qml) | 79 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/IconButton.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/IconButton.qml) | 112 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/IconButtonStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/IconButtonStyle.qml) | 159 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/Indicator.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/Indicator.qml) | 72 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/IndicatorStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/IndicatorStyle.qml) | 54 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/ItemDelegate.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/ItemDelegate.qml) | 84 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/ItemDelegateStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/ItemDelegateStyle.qml) | 84 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/Label.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/Label.qml) | 50 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/LabelStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/LabelStyle.qml) | 57 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/LinkInline.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/LinkInline.qml) | 68 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/LinkInlineStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/LinkInlineStyle.qml) | 59 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/LinkList.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/LinkList.qml) | 91 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/LinkListStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/LinkListStyle.qml) | 64 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/LinkStandalone.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/LinkStandalone.qml) | 91 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/LinkStandaloneStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/LinkStandaloneStyle.qml) | 60 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/ListItem.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/ListItem.qml) | 193 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/ListItemStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/ListItemStyle.qml) | 95 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/Menu.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/Menu.qml) | 63 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/MenuButton.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/MenuButton.qml) | 138 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/MenuButtonStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/MenuButtonStyle.qml) | 101 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/MenuItem.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/MenuItem.qml) | 77 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/MenuItemStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/MenuItemStyle.qml) | 58 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/MenuStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/MenuStyle.qml) | 49 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/PaginationDot.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/PaginationDot.qml) | 85 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/PaginationDotStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/PaginationDotStyle.qml) | 79 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/PaginationIndex.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/PaginationIndex.qml) | 77 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/PaginationIndexStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/PaginationIndexStyle.qml) | 67 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/PaginationNumber.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/PaginationNumber.qml) | 277 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/PaginationNumberStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/PaginationNumberStyle.qml) | 120 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/Popup.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/Popup.qml) | 44 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/PopupStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/PopupStyle.qml) | 41 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/ProgressBar.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/ProgressBar.qml) | 99 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/ProgressBarStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/ProgressBarStyle.qml) | 56 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/RadioButton.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/RadioButton.qml) | 95 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/RadioButtonStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/RadioButtonStyle.qml) | 91 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/RangeSlider.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/RangeSlider.qml) | 119 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/RangeSliderStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/RangeSliderStyle.qml) | 108 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/ScrollBar.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/ScrollBar.qml) | 66 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/ScrollBarStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/ScrollBarStyle.qml) | 112 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/SearchField.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/SearchField.qml) | 181 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/SearchFieldStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/SearchFieldStyle.qml) | 122 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/SearchMenu.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/SearchMenu.qml) | 390 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/SearchMenuStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/SearchMenuStyle.qml) | 90 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/Slider.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/Slider.qml) | 109 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/SliderStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/SliderStyle.qml) | 111 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/SortFilterModel.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/SortFilterModel.qml) | 60 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/SpinBox.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/SpinBox.qml) | 185 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/SpinBoxStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/SpinBoxStyle.qml) | 109 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/Switch.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/Switch.qml) | 113 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/SwitchStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/SwitchStyle.qml) | 86 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/TabBar.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/TabBar.qml) | 68 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/TabBarStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/TabBarStyle.qml) | 41 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/TabButton.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/TabButton.qml) | 139 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/TabButtonStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/TabButtonStyle.qml) | 140 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/Tag.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/Tag.qml) | 145 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/TagStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/TagStyle.qml) | 101 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/TextField.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/TextField.qml) | 220 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/TextFieldStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/TextFieldStyle.qml) | 132 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/ToolTip.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/ToolTip.qml) | 197 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/ToolTipStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/ToolTipStyle.qml) | 82 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/Toolbar.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/Toolbar.qml) | 54 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/ToolbarStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/ToolbarStyle.qml) | 45 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/TreeViewDelegate.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/TreeViewDelegate.qml) | 131 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/assets/qt-controls/TreeViewDelegateStyle.qml](../.agents/skills/qt-figma-component-generation/assets/qt-controls/TreeViewDelegateStyle.qml) | 85 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/references/Button.qml](../.agents/skills/qt-figma-component-generation/references/Button.qml) | 215 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/references/Checkbox.qml](../.agents/skills/qt-figma-component-generation/references/Checkbox.qml) | 150 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/references/Select.qml](../.agents/skills/qt-figma-component-generation/references/Select.qml) | 228 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/references/TextField.qml](../.agents/skills/qt-figma-component-generation/references/TextField.qml) | 150 | 0 |
+| A | [.agents/skills/qt-figma-component-generation/references/Toggle.qml](../.agents/skills/qt-figma-component-generation/references/Toggle.qml) | 108 | 0 |
+| A | [.agents/skills/qt-figma-token-extraction/SKILL.md](../.agents/skills/qt-figma-token-extraction/SKILL.md) | 593 | 0 |
+| A | [.agents/skills/qt-figma-token-extraction/examples/FontInterface.qml](../.agents/skills/qt-figma-token-extraction/examples/FontInterface.qml) | 65 | 0 |
+| A | [.agents/skills/qt-figma-token-extraction/examples/Primitives.qml](../.agents/skills/qt-figma-token-extraction/examples/Primitives.qml) | 51 | 0 |
+| A | [.agents/skills/qt-figma-token-extraction/examples/Spacing.qml](../.agents/skills/qt-figma-token-extraction/examples/Spacing.qml) | 63 | 0 |
+| A | [.agents/skills/qt-figma-token-extraction/examples/Theme.qml](../.agents/skills/qt-figma-token-extraction/examples/Theme.qml) | 68 | 0 |
+| A | [.agents/skills/qt-figma-token-extraction/examples/Typography.qml](../.agents/skills/qt-figma-token-extraction/examples/Typography.qml) | 48 | 0 |
+| A | [.agents/skills/qt-figma-token-extraction/references/token-mapping.md](../.agents/skills/qt-figma-token-extraction/references/token-mapping.md) | 133 | 0 |
+| A | [.agents/skills/qt-qml-docs/LICENSE.txt](../.agents/skills/qt-qml-docs/LICENSE.txt) | 32 | 0 |
+| A | [.agents/skills/qt-qml-docs/SKILL.md](../.agents/skills/qt-qml-docs/SKILL.md) | 184 | 0 |
+| A | [.agents/skills/qt-qml-docs/platforms/windsurf.md](../.agents/skills/qt-qml-docs/platforms/windsurf.md) | 28 | 0 |
+| A | [.agents/skills/qt-qml-profiler/LICENSE.txt](../.agents/skills/qt-qml-profiler/LICENSE.txt) | 32 | 0 |
+| A | [.agents/skills/qt-qml-profiler/SKILL.md](../.agents/skills/qt-qml-profiler/SKILL.md) | 542 | 0 |
+| A | [.agents/skills/qt-qml-profiler/references/qml-performance-anti-patterns.md](../.agents/skills/qt-qml-profiler/references/qml-performance-anti-patterns.md) | 150 | 0 |
+| A | [.agents/skills/qt-qml-profiler/references/scripts/parse-qmlprofiler-trace.py](../.agents/skills/qt-qml-profiler/references/scripts/parse-qmlprofiler-trace.py) | 412 | 0 |
+| A | [.agents/skills/qt-qml-review/LICENSE.txt](../.agents/skills/qt-qml-review/LICENSE.txt) | 32 | 0 |
+| A | [.agents/skills/qt-qml-review/SKILL.md](../.agents/skills/qt-qml-review/SKILL.md) | 412 | 0 |
+| A | [.agents/skills/qt-qml-review/platforms/windsurf.md](../.agents/skills/qt-qml-review/platforms/windsurf.md) | 44 | 0 |
+| A | [.agents/skills/qt-qml-review/references/lint-scripts/qt_qml_lint.py](../.agents/skills/qt-qml-review/references/lint-scripts/qt_qml_lint.py) | 1486 | 0 |
+| A | [.agents/skills/qt-qml-review/references/qt-qml-review-checklist.md](../.agents/skills/qt-qml-review/references/qt-qml-review-checklist.md) | 483 | 0 |
+| A | [.agents/skills/qt-qml-test-run/LICENSE.txt](../.agents/skills/qt-qml-test-run/LICENSE.txt) | 32 | 0 |
+| A | [.agents/skills/qt-qml-test-run/SKILL.md](../.agents/skills/qt-qml-test-run/SKILL.md) | 432 | 0 |
+| A | [.agents/skills/qt-qml-test-run/references/qt-quick-test-cmake.md](../.agents/skills/qt-qml-test-run/references/qt-quick-test-cmake.md) | 491 | 0 |
+| A | [.agents/skills/qt-qml-test-run/references/qt-quick-test-report-format.md](../.agents/skills/qt-qml-test-run/references/qt-quick-test-report-format.md) | 176 | 0 |
+| A | [.agents/skills/qt-qml-test-run/references/scripts/parse-qmltestrunner-output.py](../.agents/skills/qt-qml-test-run/references/scripts/parse-qmltestrunner-output.py) | 216 | 0 |
+| A | [.agents/skills/qt-qml-test/LICENSE.txt](../.agents/skills/qt-qml-test/LICENSE.txt) | 32 | 0 |
+| A | [.agents/skills/qt-qml-test/SKILL.md](../.agents/skills/qt-qml-test/SKILL.md) | 403 | 0 |
+| A | [.agents/skills/qt-qml-test/platforms/copilot.prompt.md](../.agents/skills/qt-qml-test/platforms/copilot.prompt.md) | 378 | 0 |
+| A | [.agents/skills/qt-qml-test/references/qt-quick-test-controls.md](../.agents/skills/qt-qml-test/references/qt-quick-test-controls.md) | 423 | 0 |
+| A | [.agents/skills/qt-qml-test/references/qt-quick-test-pitfalls.md](../.agents/skills/qt-qml-test/references/qt-quick-test-pitfalls.md) | 212 | 0 |
+| A | [.agents/skills/qt-qml-test/references/qt-quick-test-pre-send-scan.md](../.agents/skills/qt-qml-test/references/qt-quick-test-pre-send-scan.md) | 35 | 0 |
+| A | [.agents/skills/qt-qml-test/references/qt-quick-test-project-context.md](../.agents/skills/qt-qml-test/references/qt-quick-test-project-context.md) | 31 | 0 |
+| A | [.agents/skills/qt-qml-test/references/qt-quick-test-properties.md](../.agents/skills/qt-qml-test/references/qt-quick-test-properties.md) | 206 | 0 |
+| A | [.agents/skills/qt-qml-test/references/qt-quick-test-rules.md](../.agents/skills/qt-qml-test/references/qt-quick-test-rules.md) | 339 | 0 |
+| A | [.agents/skills/qt-qml-test/references/qt-quick-test-source-import.md](../.agents/skills/qt-qml-test/references/qt-quick-test-source-import.md) | 71 | 0 |
+| A | [.agents/skills/qt-qml-test/references/qt-quick-test-template.md](../.agents/skills/qt-qml-test/references/qt-quick-test-template.md) | 489 | 0 |
+| A | [.agents/skills/qt-qml/LICENSE.txt](../.agents/skills/qt-qml/LICENSE.txt) | 32 | 0 |
+| A | [.agents/skills/qt-qml/SKILL.md](../.agents/skills/qt-qml/SKILL.md) | 250 | 0 |
+| A | [.agents/skills/qt-qml/platforms/windsurf.md](../.agents/skills/qt-qml/platforms/windsurf.md) | 37 | 0 |
+| A | [.agents/skills/qt-qml/references/qmlpreview.md](../.agents/skills/qt-qml/references/qmlpreview.md) | 159 | 0 |
+| A | [.agents/skills/qt-ui-design/LICENSE.txt](../.agents/skills/qt-ui-design/LICENSE.txt) | 32 | 0 |
+| A | [.agents/skills/qt-ui-design/SKILL.md](../.agents/skills/qt-ui-design/SKILL.md) | 334 | 0 |
+| A | [skills-lock.json](../skills-lock.json) | 83 | 0 |
+
+### Konfiguracja projektu i pozostałe pliki
+
+| Status | Plik | + | − |
+| --- | --- | ---: | ---: |
+| M | [.gitignore](../.gitignore) | 4 | 0 |
+| M | [sj-sim.pro](../sj-sim.pro) | 43 | 0 |
+
+### Kontrolery, modele i logika C++
+
+| Status | Plik | + | − |
+| --- | --- | ---: | ---: |
+| M | [source/UI/Competition/CompetitionConfigWindow.cpp](../source/UI/Competition/CompetitionConfigWindow.cpp) | 41 | 88 |
+| M | [source/UI/Competition/CompetitionConfigWindow.h](../source/UI/Competition/CompetitionConfigWindow.h) | 5 | 2 |
+| M | [source/UI/Competition/CompetitionManagerWindow.cpp](../source/UI/Competition/CompetitionManagerWindow.cpp) | 54 | 32 |
+| M | [source/UI/Competition/CompetitionManagerWindow.h](../source/UI/Competition/CompetitionManagerWindow.h) | 4 | 0 |
+| M | [source/UI/Competition/JumperCompetitionResultsWidget.cpp](../source/UI/Competition/JumperCompetitionResultsWidget.cpp) | 20 | 0 |
+| M | [source/UI/Competition/Results/TeamResultsTreeModel.cpp](../source/UI/Competition/Results/TeamResultsTreeModel.cpp) | 8 | 5 |
+| M | [source/UI/Competition/StartList/StartListModel.cpp](../source/UI/Competition/StartList/StartListModel.cpp) | 31 | 26 |
+| M | [source/UI/Competition/StartList/StartListModel.h](../source/UI/Competition/StartList/StartListModel.h) | 5 | 2 |
+| M | [source/UI/DatabaseEditor/DatabaseEditorWindow.cpp](../source/UI/DatabaseEditor/DatabaseEditorWindow.cpp) | 3 | 3 |
+| M | [source/UI/DatabaseEditor/DatabaseItemsListView.cpp](../source/UI/DatabaseEditor/DatabaseItemsListView.cpp) | 2 | 3 |
+| M | [source/UI/DatabaseEditor/DatabaseItemsListView.h](../source/UI/DatabaseEditor/DatabaseItemsListView.h) | 1 | 0 |
+| M | [source/UI/DatabaseEditor/ListModels/CalendarsListModel.cpp](../source/UI/DatabaseEditor/ListModels/CalendarsListModel.cpp) | 9 | 3 |
+| M | [source/UI/DatabaseEditor/ListModels/CalendarsListModel.h](../source/UI/DatabaseEditor/ListModels/CalendarsListModel.h) | 1 | 0 |
+| M | [source/UI/EditorWidgets/ClassificationEditorWidget.cpp](../source/UI/EditorWidgets/ClassificationEditorWidget.cpp) | 10 | 38 |
+| M | [source/UI/EditorWidgets/PointsForPlacesPresetEditorWidget.cpp](../source/UI/EditorWidgets/PointsForPlacesPresetEditorWidget.cpp) | 3 | 7 |
+| M | [source/UI/EditorWidgets/TeamsEditing/Models/PointsForPlacesTableModel.cpp](../source/UI/EditorWidgets/TeamsEditing/Models/PointsForPlacesTableModel.cpp) | 24 | 35 |
+| M | [source/UI/EditorWidgets/TeamsEditing/Models/PointsForPlacesTableModel.h](../source/UI/EditorWidgets/TeamsEditing/Models/PointsForPlacesTableModel.h) | 2 | 1 |
+| M | [source/UI/EditorWidgets/TeamsEditing/TeamEditorWidget.cpp](../source/UI/EditorWidgets/TeamsEditing/TeamEditorWidget.cpp) | 5 | 0 |
+| M | [source/UI/EditorWidgets/WindsGeneratorSettingsEditorWidget.cpp](../source/UI/EditorWidgets/WindsGeneratorSettingsEditorWidget.cpp) | 3 | 24 |
+| M | [source/UI/EditorWidgets/WindsGeneratorSettingsWidgetInputItem.cpp](../source/UI/EditorWidgets/WindsGeneratorSettingsWidgetInputItem.cpp) | 14 | 9 |
+| M | [source/UI/EditorWidgets/WindsGeneratorSettingsWidgetInputItem.h](../source/UI/EditorWidgets/WindsGeneratorSettingsWidgetInputItem.h) | 1 | 0 |
+| M | [source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp](../source/UI/FormGenerator/JumperFormGeneratorsSettingsTableModel.cpp) | 17 | 42 |
+| M | [source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp](../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.cpp) | 54 | 37 |
+| M | [source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.h](../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.h) | 2 | 0 |
+| M | [source/UI/ResponsiveWindowUtils.h](../source/UI/ResponsiveWindowUtils.h) | 1 | 1 |
+| M | [source/UI/ResultsShowing/JumpDataDetailedInfoWindow.cpp](../source/UI/ResultsShowing/JumpDataDetailedInfoWindow.cpp) | 11 | 2 |
+| M | [source/UI/Seasons/CalendarEditor/CalendarEditorTableModel.cpp](../source/UI/Seasons/CalendarEditor/CalendarEditorTableModel.cpp) | 4 | 0 |
+| M | [source/UI/Seasons/CalendarEditor/CalendarEditorTableModel.h](../source/UI/Seasons/CalendarEditor/CalendarEditorTableModel.h) | 2 | 0 |
+| M | [source/UI/Seasons/CalendarEditor/CalendarEditorWidget.cpp](../source/UI/Seasons/CalendarEditor/CalendarEditorWidget.cpp) | 45 | 51 |
+| M | [source/UI/Seasons/Classifications/ClassificationResultsTableModel.cpp](../source/UI/Seasons/Classifications/ClassificationResultsTableModel.cpp) | 1 | 1 |
+| M | [source/UI/Seasons/SimulationSaveManagerWindow.cpp](../source/UI/Seasons/SimulationSaveManagerWindow.cpp) | 98 | 75 |
+| M | [source/UI/Seasons/SimulationSaveManagerWindow.h](../source/UI/Seasons/SimulationSaveManagerWindow.h) | 7 | 1 |
+| M | [source/UI/Seasons/Stats/FilteringWidgets/ClassificationsCheckBoxesWidget.cpp](../source/UI/Seasons/Stats/FilteringWidgets/ClassificationsCheckBoxesWidget.cpp) | 5 | 8 |
+| M | [source/UI/Seasons/Stats/FilteringWidgets/ClassificationsCheckBoxesWidget.h](../source/UI/Seasons/Stats/FilteringWidgets/ClassificationsCheckBoxesWidget.h) | 1 | 1 |
+| M | [source/UI/Seasons/Stats/FilteringWidgets/CompetitionsRangeComboBoxesWidget.cpp](../source/UI/Seasons/Stats/FilteringWidgets/CompetitionsRangeComboBoxesWidget.cpp) | 14 | 45 |
+| M | [source/UI/Seasons/Stats/FilteringWidgets/CompetitionsRangeComboBoxesWidget.h](../source/UI/Seasons/Stats/FilteringWidgets/CompetitionsRangeComboBoxesWidget.h) | 3 | 2 |
+| M | [source/UI/Seasons/Stats/JumperStatsWindow.cpp](../source/UI/Seasons/Stats/JumperStatsWindow.cpp) | 32 | 35 |
+| M | [source/UI/Seasons/Stats/SimulationRatingsWindow.cpp](../source/UI/Seasons/Stats/SimulationRatingsWindow.cpp) | 73 | 63 |
+| M | [source/UI/Seasons/Stats/SimulationRatingsWindow.h](../source/UI/Seasons/Stats/SimulationRatingsWindow.h) | 1 | 0 |
+| M | [source/UI/mainwindow.cpp](../source/UI/mainwindow.cpp) | 11 | 1 |
+| M | [source/competitions/AbstractCompetitionManager.cpp](../source/competitions/AbstractCompetitionManager.cpp) | 94 | 87 |
+| M | [source/competitions/CompetitionInfo.cpp](../source/competitions/CompetitionInfo.cpp) | 18 | 23 |
+| M | [source/competitions/CompetitionInfo.h](../source/competitions/CompetitionInfo.h) | 3 | 0 |
+| M | [source/competitions/CompetitionResults.cpp](../source/competitions/CompetitionResults.cpp) | 12 | 3 |
+| M | [source/competitions/CompetitionResults.h](../source/competitions/CompetitionResults.h) | 1 | 0 |
+| M | [source/global/MyRandom.cpp](../source/global/MyRandom.cpp) | 16 | 25 |
+| M | [source/main.cpp](../source/main.cpp) | 11 | 0 |
+| M | [source/seasons/SeasonCalendar.cpp](../source/seasons/SeasonCalendar.cpp) | 15 | 19 |
+| M | [source/seasons/SeasonCalendarPreset.cpp](../source/seasons/SeasonCalendarPreset.cpp) | 11 | 3 |
+| M | [source/simulator/JumpData.cpp](../source/simulator/JumpData.cpp) | 6 | 1 |
+| M | [source/simulator/JumpSimulator.cpp](../source/simulator/JumpSimulator.cpp) | 31 | 47 |
+| M | [source/simulator/JumpSimulator.h](../source/simulator/JumpSimulator.h) | 3 | 1 |
+| M | [source/simulator/WindsCalculator.cpp](../source/simulator/WindsCalculator.cpp) | 14 | 2 |
+| M | [source/simulator/WindsCalculator.h](../source/simulator/WindsCalculator.h) | 1 | 0 |
+| M | [source/simulator/wind-generation/WindsGenerator.cpp](../source/simulator/wind-generation/WindsGenerator.cpp) | 6 | 1 |
+| M | [source/simulator/wind-generation/WindsGenerator.h](../source/simulator/wind-generation/WindsGenerator.h) | 1 | 0 |
+
+### Skrypty budowania, uruchamiania i testowania
+
+| Status | Plik | + | − |
+| --- | --- | ---: | ---: |
+| A | [scripts/build-qml-preview.sh](../scripts/build-qml-preview.sh) | 21 | 0 |
+| A | [scripts/build-quick-ui.sh](../scripts/build-quick-ui.sh) | 16 | 0 |
+| A | [scripts/run-qml-preview.sh](../scripts/run-qml-preview.sh) | 21 | 0 |
+| A | [scripts/run-quick-ui.sh](../scripts/run-quick-ui.sh) | 8 | 0 |
+| A | [scripts/test-quick-ui.sh](../scripts/test-quick-ui.sh) | 17 | 0 |
+
+### Testy
+
+| Status | Plik | + | − |
+| --- | --- | ---: | ---: |
+| A | [tests/competition-quick-smoke.cpp](../tests/competition-quick-smoke.cpp) | 397 | 0 |
+| A | [tests/quick-ui-smoke.cpp](../tests/quick-ui-smoke.cpp) | 1303 | 0 |
+
+### Tłumaczenia
+
+| Status | Plik | + | − |
+| --- | --- | ---: | ---: |
+| M | [translations/translation_en.ts](../translations/translation_en.ts) | 3205 | 106 |
+
+### Wcześniejszy opcjonalny eksperyment konkursowy
+
+| Status | Plik | + | − |
+| --- | --- | ---: | ---: |
+| A | [source/UI/Competition/Quick/ActionButton.qml](../source/UI/Competition/Quick/ActionButton.qml) | 28 | 0 |
+| A | [source/UI/Competition/Quick/CompetitionConfig.qml](../source/UI/Competition/Quick/CompetitionConfig.qml) | 219 | 0 |
+| A | [source/UI/Competition/Quick/CompetitionLive.qml](../source/UI/Competition/Quick/CompetitionLive.qml) | 77 | 0 |
+| A | [source/UI/Competition/Quick/CompetitionLiveBridge.cpp](../source/UI/Competition/Quick/CompetitionLiveBridge.cpp) | 276 | 0 |
+| A | [source/UI/Competition/Quick/CompetitionLiveBridge.h](../source/UI/Competition/Quick/CompetitionLiveBridge.h) | 54 | 0 |
+| A | [source/UI/Competition/Quick/CompetitionQuickBridge.cpp](../source/UI/Competition/Quick/CompetitionQuickBridge.cpp) | 296 | 0 |
+| A | [source/UI/Competition/Quick/CompetitionQuickBridge.h](../source/UI/Competition/Quick/CompetitionQuickBridge.h) | 59 | 0 |
+| A | [source/UI/Competition/Quick/Field.qml](../source/UI/Competition/Quick/Field.qml) | 158 | 0 |
+| A | [source/UI/Competition/Quick/LiveArena.qml](../source/UI/Competition/Quick/LiveArena.qml) | 170 | 0 |
+| A | [source/UI/Competition/Quick/LiveButton.qml](../source/UI/Competition/Quick/LiveButton.qml) | 27 | 0 |
+| A | [source/UI/Competition/Quick/LiveChoice.qml](../source/UI/Competition/Quick/LiveChoice.qml) | 25 | 0 |
+| A | [source/UI/Competition/Quick/LiveDashboard.qml](../source/UI/Competition/Quick/LiveDashboard.qml) | 70 | 0 |
+| A | [source/UI/Competition/Quick/LiveJumpPreview.qml](../source/UI/Competition/Quick/LiveJumpPreview.qml) | 81 | 0 |
+| A | [source/UI/Competition/Quick/LiveNode.qml](../source/UI/Competition/Quick/LiveNode.qml) | 84 | 0 |
+| A | [source/UI/Competition/Quick/LiveTable.qml](../source/UI/Competition/Quick/LiveTable.qml) | 109 | 0 |
+| A | [source/UI/Competition/Quick/competition-quick.qrc](../source/UI/Competition/Quick/competition-quick.qrc) | 14 | 0 |
+| A | [source/UI/Competition/Quick/fields.json](../source/UI/Competition/Quick/fields.json) | 190 | 0 |
+
+### Dodatek dokumentacyjny tego zestawienia
+
+- A: [docs/RELEASE_NOTES_VS_MAIN.md](RELEASE_NOTES_VS_MAIN.md) — niniejszy zbiorczy wykaz, materiał redakcyjny, uwagi zgodności, plan testów, historia i manifest.
