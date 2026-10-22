@@ -27,7 +27,6 @@ Rectangle {
                     RowLayout {
                         Layout.fillWidth: true
                         Label { text: qsTr("Symulacja"); font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.weight: Font.DemiBold; color: Theme.ink; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-                        Label { visible: home.width > 850; text: qsTr("01 — 03"); color: Theme.muted; font.pointSize: Theme.caption; font.family: Theme.mono }
                     }
                     GridLayout {
                         Layout.fillWidth: true
