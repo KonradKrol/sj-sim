@@ -17,6 +17,7 @@ UI_DIR = .ui
 win32: DEFINES += NOMINMAX
 
 SOURCES += \
+    source/UI/AuthorWindow.cpp \
     source/UI/AppSettings/CountriesEditorTableModel.cpp \
     source/UI/AppSettings/CountriesEditorWindow.cpp \
     source/UI/AppSettings/JumpDataInfoChoiceDialog.cpp \
@@ -159,6 +160,7 @@ SOURCES += \
     source/utilities/functions.cpp
 
 HEADERS += \
+    source/UI/AuthorWindow.h \
     source/UI/ResponsiveWindowUtils.h \
     source/UI/AppSettings/CountriesEditorTableModel.h \
     source/UI/AppSettings/CountriesEditorWindow.h \

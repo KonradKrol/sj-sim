@@ -12,6 +12,13 @@
 <file>AppearancePanel.qml</file>
 <file>AppearanceMenu.qml</file>
 <file>DataTable.qml</file>
+<file>AuthorPage.qml</file>
+<file>AuthorProject.qml</file>
+<file>AuthorSocial.qml</file>
+<file>icons/github-light.svg</file>
+<file>icons/github-dark.svg</file>
+<file>icons/linkedin-light.svg</file>
+<file>icons/linkedin-dark.svg</file>
 <file>Home.qml</file>
 <file>HomeCard.qml</file>
 <file>HomeHero.qml</file>

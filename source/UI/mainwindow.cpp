@@ -27,6 +27,8 @@
 
 #include "HelpWindow.h"
 #include "ThanksWindow.h"
+#include "AuthorWindow.h"
+#include <QPushButton>
 
 #include <QDebug>
 #include <QCloseEvent>
@@ -52,6 +54,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     ui->setupUi(this);
+    auto *author = new QPushButton(tr("O autorze"),this);
+    author->setObjectName("pushButton_author");
+    ui->verticalLayout_9->insertWidget(ui->verticalLayout_9->count()-1,author);
+    connect(author,&QPushButton::clicked,this,&MainWindow::on_pushButton_author_clicked);
     parentApplication = nullptr;
     ui->label_version->setText(appVersion);
     setFixedSize(size());
@@ -192,4 +198,11 @@ void MainWindow::on_pushButton_thanks_clicked()
     ThanksWindow * thanksWindow = new ThanksWindow();
     thanksWindow->setAttribute(Qt::WA_DeleteOnClose);
     thanksWindow->show();
+}
+
+void MainWindow::on_pushButton_author_clicked()
+{
+    auto *author = new AuthorWindow(this);
+    author->setAttribute(Qt::WA_DeleteOnClose);
+    author->show();
 }

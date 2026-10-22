@@ -41,7 +41,7 @@ Rectangle {
                     RowLayout {
                         Layout.fillWidth: true
                         Item { Layout.fillWidth: true }
-                        SButton { text: qsTr("Autorzy"); quiet: true; onClicked: ui.launch("credits") }
+                        SButton { objectName: "openAuthor"; text: qsTr("O autorze"); quiet: true; onClicked: ui.launch("author") }
                         SButton { text: qsTr("Zgłoś problem"); quiet: true; onClicked: ui.launch("issue") }
                     }
                 }

@@ -6,7 +6,7 @@ Rectangle {
     LayoutMirroring.childrenInherit: true
     Loader {
         anchors.fill: parent
-        source: ui.profile === "CompetitionManagerWindow" ? Qt.resolvedUrl("RaceScreen.qml") : Qt.resolvedUrl("Workspace.qml")
+        source: ui.profile === "AuthorWindow" ? Qt.resolvedUrl("AuthorPage.qml") : ui.profile === "CompetitionManagerWindow" ? Qt.resolvedUrl("RaceScreen.qml") : Qt.resolvedUrl("Workspace.qml")
     }
     Keys.onEscapePressed: navigation.back()
 }

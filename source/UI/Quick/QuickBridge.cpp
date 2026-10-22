@@ -7,6 +7,7 @@
 #include "../Seasons/CalendarEditor/CalendarEditorWidget.h"
 #include "../Seasons/SimulationSaveManagerWindow.h"
 #include "../mainwindow.h"
+#include "../AuthorWindow.h"
 #include "../Competition/CompetitionManagerWindow.h"
 #include "../Competition/CompetitionConfigWindow.h"
 #include "../ResultsShowing/JumpDataDetailedInfoWindow.h"
@@ -144,6 +145,7 @@ QuickBridge::~QuickBridge() {
 QString QuickBridge::title() const {
     if(!m_window)return {};
     const QHash<QString,QString> titles{{"JumpersFormGeneratorConfigWindow",tr("Generator formy")},{"JumpersListEditorWindow",tr("Lista zawodników")},{"CompetitionConfigWindow",tr("Konkurs")},{"CompetitionManagerWindow",tr("Konkurs")},{"SingleJumpsConfigWindow",tr("Pojedyncze skoki")},{"AppSettingsWindow",tr("Ustawienia")},{"DatabaseEditorWindow",tr("Baza danych")},{"SimulationSavesWindow",tr("Zapisy")},{"SimulationSaveManagerWindow",tr("Sezon")},{"NewSimulationSaveConfigurationWindow",tr("Nowy zapis")}};
+    if(profile()=="AuthorWindow")return AuthorWindow::tr("O autorze");
     if(profile()=="KOGroupEditorWidget")return tr("Grupa KO");
     if(profile()=="QProgressDialog" && m_window->windowTitle().isEmpty())return tr("Postęp");
     return titles.value(profile(),m_window->windowTitle());
@@ -429,6 +431,12 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
 void QuickBridge::refresh() {
     if(!m_window || !m_content || m_refreshing) return;
     m_refreshing=true;
+    if(auto *author=qobject_cast<AuthorWindow *>(m_window)) {
+        const auto context=author->details();
+        if(context!=m_context){m_context=context;emit changed();}
+        m_refreshing=false;
+        return;
+    }
     if(!m_home) {
         auto *root=layoutNode(m_content->layout());
         compose(root);
@@ -606,10 +614,13 @@ bool QuickBridge::shortcut(int owner,const QString &sequence) {
 void QuickBridge::launch(const QString &destination) {
     static const QHash<QString,const char *> destinations{{"competition","on_pushButton_singleCompetition_clicked"},{"jumps","on_pushButton_singleJumps_clicked"},
         {"seasons","on_pushButton_season_clicked"},{"database","on_pushButton_databaseEdit_clicked"},{"settings","on_pushButton_settings_clicked"},
-        {"help","on_pushButton_help_clicked"},{"credits","on_pushButton_thanks_clicked"},{"issue","on_pushButton_reportIssue_clicked"}};
+        {"author","on_pushButton_author_clicked"},{"help","on_pushButton_help_clicked"},{"credits","on_pushButton_thanks_clicked"},{"issue","on_pushButton_reportIssue_clicked"}};
     const auto slot=destinations.value(destination,nullptr);
     if(!m_home || !slot) return;
     QTimer::singleShot(0,this,[this,slot] { if(m_window) QMetaObject::invokeMethod(m_window,slot); emit changed(); });
+}
+void QuickBridge::showAuthorCredits() {
+    if(auto *author=qobject_cast<AuthorWindow *>(m_window))QTimer::singleShot(0,author,&AuthorWindow::showCredits);
 }
 void QuickBridge::close() { QTimer::singleShot(0,this,[this] { if(m_window) m_window->close(); }); }
 QObject *QuickBridge::find(const QString &name) {

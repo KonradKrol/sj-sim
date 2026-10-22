@@ -8476,6 +8476,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <source>Zgłoś problem</source>
         <translation>Report an issue</translation>
     </message>
+    <message>
+        <source>O autorze</source>
+        <translation>About the author</translation>
+    </message>
 </context>
 
 
@@ -11279,6 +11283,56 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <source>Brak skoczni</source>
         <translation>No matching hills</translation>
+    </message>
+</context>
+<context>
+    <name>AuthorWindow</name>
+    <message>
+        <source>O autorze</source>
+        <translation>About the author</translation>
+    </message>
+    <message>
+        <source>Zdjęcie Konrada Króla</source>
+        <translation>Portrait of Konrad Król</translation>
+    </message>
+    <message>
+        <source>Cześć, jestem Konrad.</source>
+        <translation>Hi, I’m Konrad.</translation>
+    </message>
+    <message>
+        <source>Mam 18 lat i programuję od dziesiątego roku życia. Poza kodem najwięcej miejsca zajmują u mnie skoki narciarskie — dlatego powstało kilka moich gier o tej dyscyplinie.</source>
+        <translation>I’m 18 and have been programming since I was ten. Outside coding, ski jumping is my main interest — which is why I’ve made several games about the sport.</translation>
+    </message>
+    <message>
+        <source>Pracuję z aplikacjami serwerowymi w .NET i nowoczesnymi aplikacjami mobilnymi we Flutterze.</source>
+        <translation>I work on server applications in .NET and modern mobile applications in Flutter.</translation>
+    </message>
+    <message>
+        <source>Chętnie porozmawiam o pracy lub płatnym zadaniu.</source>
+        <translation>I’m happy to discuss a job or a paid project.</translation>
+    </message>
+    <message>
+        <source>Gra online o skokach narciarskich oparta na rywalizacji. Gracze kompletują własną drużynę i konkurują z innymi. W 2025 roku odbyły się testy beta.</source>
+        <translation>A competitive online ski jumping game. Players build their own team and compete with others. Beta testing took place in 2025.</translation>
+    </message>
+    <message>
+        <source>Odświeżona wersja klasycznego symulatora stworzona w kilka dób, specjalnie na Zimowe Igrzyska w 2026 roku.</source>
+        <translation>A refreshed version of the classic simulator, created in a few days especially for the 2026 Winter Games.</translation>
+    </message>
+    <message>
+        <source>Podziękowania</source>
+        <translation>Acknowledgements</translation>
+    </message>
+</context>
+<context>
+    <name>AuthorPage</name>
+    <message>
+        <source>Zdjęcie Konrada Króla</source>
+        <translation>Portrait of Konrad Król</translation>
+    </message>
+    <message>
+        <source>Podziękowania</source>
+        <translation>Acknowledgements</translation>
     </message>
 </context>
 </TS>

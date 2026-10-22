@@ -38,6 +38,8 @@
 #include "../source/UI/FormGenerator/JumpersFormGeneratorConfigWindow.h"
 #include "../source/UI/HelpWindow.h"
 #include "../source/UI/ThanksWindow.h"
+#include "../source/UI/AuthorWindow.h"
+#include <QDesktopServices>
 #include "../source/UI/ResultsShowing/JumpDataDetailedInfoWindow.h"
 #include "../source/single-jumps/SingleJumpsManager.h"
 #include "../source/global/GlobalDatabase.h"
@@ -129,6 +131,13 @@ static void render(QWidget *window,const QString &name,bool sweep=false) {
             auto *footer=applicationWindow->findChild<QQuickWidget *>("quickApplicationFooter");
             check(footer && item(footer->rootObject(),"releaseBadge"),"one shared release badge exists");
             if(window->property("sjQuickPage").toBool())check(window->testAttribute(Qt::WA_DontShowOnScreen) && view->window()==applicationWindow,"task screen is presented inside the main window");
+            if(name=="author") {
+                auto *photo=item(view->rootObject(),"authorPortrait");auto *bio=item(view->rootObject(),"authorBiography");auto *heading=item(view->rootObject(),"authorHeading");
+                check(photo && bio && heading,"author portrait and biography exist at every screen size");
+                const auto photoBounds=photo->mapRectToItem(view->rootObject(),QRectF(0,0,photo->width(),photo->height())),bioBounds=bio->mapRectToItem(view->rootObject(),bio->boundingRect());
+                check(photo->width()>0 && photo->height()>0 && !photoBounds.intersects(bioBounds) && bioBounds.left()>=0 && bioBounds.right()<=view->width(),"author uses available width without clipping or overlapping the portrait and text");
+                check(size.width()<900 ? photoBounds.bottom()<=bioBounds.top() : photoBounds.right()<=bioBounds.left(),"author portrait stacks above text on narrow screens and beside it on desktop");
+            }
             if(name=="home") {
                 const auto modes=view->rootObject()->findChildren<QQuickItem *>("simulationMode");
                 check(modes.size()==3,"all simulation modes exist");
@@ -486,6 +495,36 @@ static void seasons() {
     { MultipleTrainingsEditDialog dialog;dialog.setRulesList(&save.getCompetitionRulesReference());render(&dialog,"multiple-trainings");dialog.hide(); }
     { MultipleTrialRoundsEditDialog dialog;dialog.setRulesList(&save.getCompetitionRulesReference());render(&dialog,"multiple-trial-rounds");dialog.hide(); }
 }
+class AuthorLinkRecorder : public QObject {
+    Q_OBJECT
+public:
+    QList<QUrl> urls;
+public slots:
+    void record(const QUrl &url) {urls.append(url);}
+};
+
+static void authorRegressions(MainWindow &main) {
+    main.show();main.resize(1240,900);QTest::qWait(120);clickControl(scene(&main),"openAuthor");QTest::qWait(150);
+    auto *dialog=main.findChild<AuthorWindow *>();auto *navigation=main.findChild<QuickUi *>();
+    check(dialog && dialog->isVisible() && dialog->property("sjQuickPage").toBool() && !QApplication::activeModalWidget(),"author opens from home as a regular navigation page");
+    auto *bridge=dialog->findChild<QuickBridge *>();check(navigation->current()==bridge,"author page uses shared navigation");
+    const auto projects=bridge->context().value("projects").toList();check(projects.size()==2 && projects.first().toMap().value("name")=="Sj.Sim Predazzo Edition" && projects.last().toMap().value("name")=="Ski Jump Draft" && projects.last().toMap().value("description").toString().contains("2025"),"author projects include Ski Jump Draft and its 2025 beta");
+    check(!bridge->context().value("work").toString().contains("SJ Manager") && !bridge->context().value("work").toString().contains("SJ Draft") && bridge->context().value("availability").toString().contains(QString::fromUtf8("płatnym zadaniu")),"author retains the work invitation and removes the extra project sentence");
+    render(dialog,"author",true);
+    auto *view=scene(dialog);main.resize(1240,900);QTest::qWait(180);view->grabFramebuffer();
+    auto *photo=item(view->rootObject(),"authorPortrait");check(photo && photo->property("status").toInt()==1,"packaged author portrait loads without external files");
+    check(!item(view->rootObject(),"authorCredits"),"acknowledgements stay discreetly collapsed initially");
+    AuthorLinkRecorder receiver;QDesktopServices::setUrlHandler("https",&receiver,"record");
+    for(const auto &name:{"authorProject-0","authorProject-1","authorGitHub","authorLinkedIn"})clickControl(view,name);
+    const QList<QUrl> expected{QUrl("https://github.com/KonradKrol/sjsim-2026"),QUrl("https://github.com/Ski-Jump-Draft"),QUrl("https://github.com/KonradKrol"),QUrl("https://www.linkedin.com/in/konrad-kr%C3%B3l-bb51a72a7/")};
+    check(receiver.urls==expected,"all author links open their exact intended destinations");QDesktopServices::unsetUrlHandler("https");
+    bool seen=false;QTimer closeCredits;
+    QObject::connect(&closeCredits,&QTimer::timeout,[&] {for(auto *widget:QApplication::allWidgets())if(auto *box=qobject_cast<QMessageBox *>(widget);box && box->isVisible() && box->parentWidget()==dialog){closeCredits.stop();seen=true;check(box->text().contains("Jonek") && box->text().contains("flaticon"),"acknowledgements dialog preserves existing contributors");check(scene(box) && !box->property("sjQuickPage").toBool(),"acknowledgements opens as a Quick dialog rather than expanding the author page");render(box,"author-credits");box->accept();}});closeCredits.start(20);clickControl(view,"authorCreditsButton");QTest::qWait(160);closeCredits.stop();check(seen && navigation->current()==bridge,"closing acknowledgements keeps the author page in place");
+    for(const auto &name:{"socialIcon-github","socialIcon-linkedin"})check(item(view->rootObject(),name)->property("status").toInt()==1,"social icons load from packaged vectors");
+    navigation->back();QTest::qWait(150);check(!navigation->canGoBack(),"author returns to the home screen with shared Back");
+    qInfo()<<"PASS: author navigation, responsive portrait, project/social links, icons and acknowledgements dialog";
+}
+
 static void navigationRegressions(MainWindow &main) {
     main.show();QTest::qWait(100);
     auto *navigation=main.findChild<QuickUi *>();check(navigation && !navigation->canGoBack(),"navigation starts at home");
@@ -1354,6 +1393,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--rosters-only")){rosterRegressions(main);return 0;}
     if(app.arguments().contains("--menus-only")){menuRegressions(main);return 0;}
     if(app.arguments().contains("--workflow-only")){seasonWorkflowRegressions(main);return 0;}
+    if(app.arguments().contains("--author-only")){authorRegressions(main);return 0;}
     if(app.arguments().contains("--navigation-only")){navigationRegressions(main);return 0;}
     if(app.arguments().contains("--backend-only"))return 0;
     if(app.arguments().contains("--bulk-only")) {main.show();for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);runCompetition(main,0,true,1);runCompetition(main,0,true,2);runCompetition(main,2,true,3);return 0;}
@@ -1364,6 +1404,7 @@ int main(int argc,char **argv) {
     }
     if(!app.arguments().contains("--layout-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);interactionRegressions(main);spaceRegressions(main);uxRegressions(main);navigationRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);rosterRegressions(main);geometryRegressions(main);}
     if(!app.arguments().contains("--layout-only")){for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);runCompetition(main,0,true,1);runCompetition(main,0,true,2);runCompetition(main,2,true,3);}
+    authorRegressions(main);
     render(&main,"home",true);
     {
         DatabaseEditorWindow dialog; render(&dialog,"database",true);
@@ -1509,3 +1550,5 @@ int main(int argc,char **argv) {
     qInfo()<<"PASS: fresh Qt Quick screens, bridge validation and"<<renders<<"responsive renders";
     return 0;
 }
+
+#include "quick-ui-smoke.moc"

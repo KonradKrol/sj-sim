@@ -148,6 +148,7 @@ public:
     Q_INVOKABLE bool shortcut(int owner, const QString &sequence);
     Q_INVOKABLE void launch(const QString &destination);
     Q_INVOKABLE void close();
+    Q_INVOKABLE void showAuthorCredits();
     Q_INVOKABLE QObject *find(const QString &name);
     Q_INVOKABLE void refresh();
     void setView(QQuickWidget *view);
