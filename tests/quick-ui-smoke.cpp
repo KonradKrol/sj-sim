@@ -610,6 +610,8 @@ static void hillSearchRegression(QQuickWidget *view,const QString &name,const QS
     check(search && search->isVisible() && search->hasActiveFocus() && choices,"opening a searchable hill selector focuses its discreet search field");
     search->setProperty("text","no-such-hill-xyz");QTest::qWait(60);
     check(choices->property("count").toInt()==0,"unknown hill search has no results");
+    const auto popupBounds=popup->property("contentItem").value<QQuickItem *>()->mapRectToItem(view->rootObject(),popup->property("contentItem").value<QQuickItem *>()->boundingRect());
+    check(popupBounds.top()>=0 && popupBounds.bottom()<=view->height() && popupBounds.height()>=search->height(),"empty hill search remains within the viewport with its search field visible");
     QTest::keyClick(view,Qt::Key_Return);QTest::qWait(30);check(control->property("currentIndex").toInt()==previous,"empty search does not change the selected hill");
     QTest::keyClick(view,Qt::Key_Escape);QTest::qWait(80);check(!popup->property("visible").toBool() && control->property("currentIndex").toInt()==previous,"cancelling hill search keeps the original selection");
     clickControl(view,name);search->setProperty("text",labels[target].toUpper());QTest::qWait(60);
@@ -628,6 +630,7 @@ static void seasonWorkflowRegressions(MainWindow &main) {
         auto *preparationBridge=preparation.findChild<QuickBridge *>();
         auto *hillNode=qobject_cast<QuickNode *>(preparationBridge->find("comboBox_existingHill"));
         hillSearchRegression(scene(&preparation),"choice-comboBox_existingHill",hillNode->values().value("options").toStringList());
+        main.resize(360,480);QTest::qWait(80);hillSearchRegression(scene(&preparation),"choice-comboBox_existingHill",hillNode->values().value("options").toStringList());main.resize(1200,800);QTest::qWait(60);
         check(hill->currentIndex()==item(scene(&preparation)->rootObject(),"choice-comboBox_existingHill")->property("currentIndex").toInt(),"searched hill updates the real competition configuration");
         hill->setCurrentIndex(1);
         auto *gate=preparation.findChild<QSpinBox *>("spinBox_startGate");
