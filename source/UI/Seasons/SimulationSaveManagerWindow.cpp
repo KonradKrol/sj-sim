@@ -769,6 +769,8 @@ void SimulationSaveManagerWindow::configNextSeason()
         }
         simulationSave->setJumpers(acceptedJumpers);
         simulationSave->setHills(acceptedHills);
+        rulesEditor->setCompetitionRules(nullptr);
+        rulesEditor->hide();
         simulationSave->setCompetitionRules(newSeasonConfig->getCompetitionsRulesReference());
         simulationSave->fixJumpersFormInstabilities();
         Season season;
