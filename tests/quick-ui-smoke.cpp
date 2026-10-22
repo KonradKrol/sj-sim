@@ -43,6 +43,7 @@
 #include "../source/global/GlobalDatabase.h"
 #include "../source/global/GlobalAppSettings.h"
 #include "../source/global/GlobalSimulationSettings.h"
+#include "../source/global/MyRandom.h"
 #include "../source/seasons/SeasonCalendarPreset.h"
 #include <QApplication>
 #include <QQuickWidget>
@@ -978,7 +979,26 @@ static void csvCollisionRegression() {
     qInfo()<<"PASS: automatic CSV exports preserve existing files and repeated results";
 }
 
+static void randomBoundsRegression() {
+    check(MyRandom::randomInt(7,7)==7 && MyRandom::randomDouble(2.5,2.5)==2.5,"a fixed random range returns its only valid value");
+    for(int i=0;i<200;++i) {
+        const double narrow=MyRandom::randomDouble(1.001,1.009,2);
+        check(narrow>=1.001 && narrow<1.009,"a random interval narrower than the requested precision stays within bounds");
+        const double grid=MyRandom::randomDouble(1.011,1.039,2);
+        check(grid>=1.011 && grid<1.039 && std::abs(grid*100-std::round(grid*100))<1e-8,"decimal sampling respects both exact bounds and requested precision");
+        const double negative=MyRandom::randomDouble(-.009,0,2);
+        check(negative>=-.009 && negative<0,"a negative fractional interval ending at zero does not collapse to zero");
+        const int edge=MyRandom::randomInt(std::numeric_limits<int>::max()-1,std::numeric_limits<int>::max());
+        check(edge>=std::numeric_limits<int>::max()-1,"inclusive integer sampling does not overflow at INT_MAX");
+        const int any=MyRandom::randomInt(std::numeric_limits<int>::min(),std::numeric_limits<int>::max());Q_UNUSED(any)
+        const double large=MyRandom::randomDouble(-std::numeric_limits<double>::max(),std::numeric_limits<double>::max());
+        check(std::isfinite(large),"large finite bounds do not overflow during random interpolation");
+    }
+    qInfo()<<"PASS: singleton, subprecision, zero-ended and extreme random bounds";
+}
+
 static void backendRegressions() {
+    randomBoundsRegression();
     csvCollisionRegression();
     presetSerializationRegression();
     advancementRegressions();

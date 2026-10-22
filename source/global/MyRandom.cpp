@@ -5,6 +5,7 @@
 #include <QRandomGenerator>
 #include <QDebug>
 #include <random>
+#include <cmath>
 
 std::random_device rd{};
 std::mt19937 generator{rd()};
@@ -16,37 +17,27 @@ MyRandom::MyRandom()
 
 double MyRandom::randomDouble(double min, double max, short precision)
 {
-    if(min >= max)
+    if(!std::isfinite(min) || !std::isfinite(max) || min > max)
         return 0;
-    if(max == 0)
-        return 0;
+    if(min == max)
+        return min;
 
-    QVector<double> results;
-    ulong toMultipy = std::pow(10, precision);
-    for(int i=0; i<1000; i++)
-    {
-        double result = (QRandomGenerator::global()->bounded((int(double(double(min * toMultipy)))), int(double(double(max) * toMultipy))));
-        result = double(result / toMultipy);
-        results.push_back(result);
-    }
-    return results[QRandomGenerator::global()->bounded(0, results.size() - 1)];
+    const double scale = std::pow(10., precision);
+    const double first = std::ceil(min * scale), pastLast = std::ceil(max * scale);
+    const double count = pastLast - first;
+    const double fraction = QRandomGenerator::global()->generateDouble();
+    const double ceiling = std::nextafter(max, min);
+    if(scale > 0 && std::isfinite(scale) && std::isfinite(first) && std::isfinite(pastLast) && std::isfinite(count) && count > 0)
+        return qBound(min, (first + std::floor(fraction * count)) / scale, ceiling);
 
+    return qBound(min, min * (1 - fraction) + max * fraction, ceiling);
 }
 
 int MyRandom::randomInt(int min, int max)
 {
-    if(min >= max)
+    if(min > max)
         return 0;
-    if(max == 0)
-        return 0;
-
-    QVector<int> results;
-    for(int i=0; i<1000; i++)
-    {
-        int result = QRandomGenerator::global()->bounded(min, max + 1);
-        results.push_back(result);
-    }
-    return results[QRandomGenerator::global()->bounded(0, results.size() - 1)];
+    return std::uniform_int_distribution<int>(min, max)(*QRandomGenerator::global());
 }
 
 double MyRandom::reducingChancesRandom(double min, double max, double resultNumbersChange, double startingChance, double chancesChangeMultiplier, short drawType, short resultNumbersType)
