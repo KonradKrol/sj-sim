@@ -773,6 +773,28 @@ void QuickBridge::compose(QuickNode *base) {
         QVariantList messages;for(const auto &value:content)if(auto *entry=value.value<QuickNode *>();entry && entry->values().value("kind")=="richtext")messages.append(entry->values().value("text"));
         m_root->update({{"kind","column"},{"buttons",buttons},{"messages",messages}},content);return;
     }
+    if(profile()=="SingleJumpsResultsWindow") {
+        auto *box=m_content->findChild<QToolBox *>("toolBox");
+        QVariantList content;
+        if(box && box->currentIndex()==0) {
+            if(auto *info=m_content->findChild<JumpDataDetailedInfoWindow *>()) {
+                for(const auto &section:QList<QPair<QString,QString>>{
+                        {"formLayout_mainInformations",tr("Informacje o skoku")},
+                        {"formLayout_simulationRating",tr("Silnik symulacji")},
+                        {"verticalLayout_windsInfo",tr("Wiatr")}}) {
+                    auto children=childNodes(info->findChild<QLayout *>(section.first));
+                    if(section.first=="formLayout_mainInformations")
+                        for(int i=children.size()-1;i>=0;--i)
+                            if(auto *entry=children[i].value<QuickNode *>();entry && entry->values().value("name").toString().startsWith("label_position"))children.removeAt(i);
+                    if(!children.isEmpty())content.append(group("single-"+section.first,section.second,children));
+                }
+                for(const auto *name:{"label_DSQ","label_beats95HSPercents","pushButton"})
+                    if(auto *widget=info->findChild<QWidget *>(name);widget && !widget->isHidden())content.append(QVariant::fromValue(node(widget,true)));
+            }
+        } else if(box)content=childNodes(box->currentWidget()->layout());
+        const auto details=group("single-jump-details",QString(),content,"column").value<QuickNode *>();
+        m_root->update(details->values(),details->children());return;
+    }
     if(profile()=="JumpDataDetailedInfoWindow") {
         auto layout=[this](const QString &name) { return m_content->findChild<QLayout *>(name); };
         QVariantList information=childNodes(layout("horizontalLayout_jumperInfoTitle"));

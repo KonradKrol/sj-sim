@@ -9,6 +9,7 @@ FocusScope {
     enabled: !table || !table.frozen
     property var table
     property var actions: []
+    property var columnWidths: []
     property int ownerId: -1
     property string title: ""
     property bool followCurrent: false
@@ -46,6 +47,7 @@ FocusScope {
     Accessible.name: title.length ? title : qsTr("Tabela danych")
     function columnWidth(column) {
         if(column>=visibleColumns)return 0
+        if(columnWidths.length>column)return columnWidths[column]
         if(teamResults) {
             if(column===0)return 72
             if(column===1)return Math.max(140,width-276)

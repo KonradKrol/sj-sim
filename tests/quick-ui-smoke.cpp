@@ -139,6 +139,11 @@ static void render(QWidget *window,const QString &name,bool sweep=false) {
                 check(size.width()<900 ? photoBounds.bottom()<=bioBounds.top() : photoBounds.right()<=bioBounds.left(),"author portrait stacks above text on narrow screens and beside it on desktop");
                 if(size.width()<900)check(photo->property("fillMode").toInt()==1 && photo->height()<=200 && photo->width()<=150 && photo->property("paintedWidth").toReal()<=photo->width()+1 && photo->property("paintedHeight").toReal()<=photo->height()+1,"small-screen portrait shows the full photo in a compact frame");
             }
+            if(name=="jump-results") {
+                auto *table=item(view->rootObject(),"singleJumpsResultsTable");check(table&&table->isVisible(),"single-jump results remain the default workspace at all sizes");
+                const auto bounds=table->mapRectToItem(view->rootObject(),table->boundingRect());
+                check(table->height()>=100 && bounds.top()>=0 && std::abs(bounds.bottom()-(view->height()-12))<=1,"single-jump table fills the remaining vertical space and stays inside the viewport");
+            }
             if(name=="home") {
                 const auto modes=view->rootObject()->findChildren<QQuickItem *>("simulationMode");
                 check(modes.size()==3,"all simulation modes exist");
@@ -1314,6 +1319,27 @@ static void normalSamplingRegression() {
     qInfo()<<"PASS: cached normal sampling and centered half-normal distributions";
 }
 
+static void singleGateRegression(MainWindow &main) {
+    SingleJumpsConfigWindow config;
+    auto *db=GlobalDatabase::get();
+    config.getJumperEditor()->setJumper(&db->getEditableGlobalJumpers().first());config.getJumperEditor()->fillJumperInputs();
+    config.getHillEditor()->setHill(&db->getEditableGlobalHills().first());config.getHillEditor()->fillHillInputs();
+    QVector<WindGenerationSettings> settings(6,WindGenerationSettings(Wind::Front,0,2,0));
+    auto *wind=config.getWindsGeneratorSettingsEditor();wind->setWindGenerationSettings(&settings);wind->setKPoint(config.getHillEditor()->getKPointFromInput());wind->fillSettingsInputs();
+    auto *gate=config.findChild<QSpinBox *>("spinBox_gate");gate->setValue(17);
+    const int headwind=config.suggestedGate();
+    check(headwind>=gate->minimum() && headwind<=gate->maximum() && headwind==config.suggestedGate() && gate->value()==17,"single-jump gate preview is bounded, deterministic and preserves manual input");
+    settings.fill(WindGenerationSettings(Wind::Back,0,2,0));wind->fillSettingsInputs();const int tailwind=config.suggestedGate();
+    check(headwind<=tailwind,"single-jump gate accounts for configured headwind and tailwind");
+    render(&config,"single-jump-auto-gate",true);
+    main.resize(1024,640);QTest::qWait(100);clickControl(scene(&config),"action-pushButton_autoGate");
+    check(gate->value()==tailwind,"auto gate action applies a concrete calculated number");
+    config.getJumperEditor()->resetJumperInputs();gate->setValue(17);config.findChild<QPushButton *>("pushButton_autoGate")->click();
+    check(config.suggestedGate()==-1 && gate->value()==17,"incomplete single-jump setup cannot replace a manual gate");
+    config.reject();QTest::qWait(100);
+    qInfo()<<"PASS: single-jump auto gate uses current athlete, hill and wind";
+}
+
 static void singleSimulationRegression() {
     SingleJumpsManager manager;
     auto *db=GlobalDatabase::get();manager.setJumper(db->getEditableGlobalJumpers().first());manager.setHill(db->getEditableGlobalHills().first());manager.setGate(15);manager.setImportance(5);manager.getRules().setHasDsq(false);
@@ -1336,25 +1362,32 @@ static void singleSimulationRegression() {
     qInfo()<<"PASS: cancellable single-jump batches, finite results and immutable wind history";
 }
 
-static void singleGateRegression(MainWindow &main) {
-    SingleJumpsConfigWindow config;
-    auto *db=GlobalDatabase::get();
-    config.getJumperEditor()->setJumper(&db->getEditableGlobalJumpers().first());config.getJumperEditor()->fillJumperInputs();
-    config.getHillEditor()->setHill(&db->getEditableGlobalHills().first());config.getHillEditor()->fillHillInputs();
-    QVector<WindGenerationSettings> settings(6,WindGenerationSettings(Wind::Front,0,2,0));
-    auto *wind=config.getWindsGeneratorSettingsEditor();wind->setWindGenerationSettings(&settings);wind->setKPoint(config.getHillEditor()->getKPointFromInput());wind->fillSettingsInputs();
-    auto *gate=config.findChild<QSpinBox *>("spinBox_gate");gate->setValue(17);
-    const int headwind=config.suggestedGate();
-    check(headwind>=gate->minimum() && headwind<=gate->maximum() && headwind==config.suggestedGate() && gate->value()==17,"single-jump gate preview is bounded, deterministic and preserves manual input");
-    settings.fill(WindGenerationSettings(Wind::Back,0,2,0));wind->fillSettingsInputs();const int tailwind=config.suggestedGate();
-    check(headwind<=tailwind,"single-jump gate accounts for configured headwind and tailwind");
-    render(&config,"single-jump-auto-gate",true);
-    main.resize(1024,640);QTest::qWait(100);clickControl(scene(&config),"action-pushButton_autoGate");
-    check(gate->value()==tailwind,"auto gate action applies a concrete calculated number");
-    config.getJumperEditor()->resetJumperInputs();gate->setValue(17);config.findChild<QPushButton *>("pushButton_autoGate")->click();
-    check(config.suggestedGate()==-1 && gate->value()==17,"incomplete single-jump setup cannot replace a manual gate");
-    config.reject();QTest::qWait(100);
-    qInfo()<<"PASS: single-jump auto gate uses current athlete, hill and wind";
+static void singleJumpsBenchmark(MainWindow &main) {
+    main.show();main.resize(1200,800);auto *db=GlobalDatabase::get();
+    for(bool changeable:{false,true}) {
+        SingleJumpsManager manager;manager.setJumper(db->getEditableGlobalJumpers().first());manager.setHill(db->getEditableGlobalHills().first());manager.setJumpsCount(1000);manager.setGate(15);manager.setImportance(5);manager.setChangeableWind(changeable);manager.getRules().setHasDsq(false);manager.getRules().setHasGateCompensations(false);
+        QVector<WindGenerationSettings> winds(6);for(auto &wind:winds){wind.setBaseWindStrength(1);wind.setWindStrengthInstability(2);wind.setWindDirectionInstability(2);}manager.setWindsGeneratorSettings(winds);
+        QElapsedTimer elapsed;elapsed.start();manager.simulate();const auto simulationMs=elapsed.elapsed();check(manager.getJumpsReference().size()==1000,"single-jump simulation completes the requested count");
+        elapsed.restart();SingleJumpsResultsWindow results(&manager);results.fillWindow();const auto setupMs=elapsed.elapsed();
+        elapsed.restart();results.show();QApplication::processEvents();const auto showMs=elapsed.elapsed();
+        qInfo()<<"BENCH single jumps 1000 varying wind"<<changeable<<"simulation ms"<<simulationMs<<"results setup ms"<<setupMs<<"show ms"<<showMs;
+        if(QCoreApplication::arguments().contains("--single-jumps-only")) {
+            render(&results,"jump-results",true);
+            double shortHeight=0,previousViewport=0;
+            for(int height:{700,1000,1400}) {
+                main.resize(1440,height);QTest::qWait(100);scene(&results)->grabFramebuffer();
+                auto *table=item(scene(&results)->rootObject(),"singleJumpsResultsTable");
+                check(table && table->height()>height-300,"single-jump table expands vertically without the generic 540-pixel ceiling");
+                if(shortHeight)check(std::abs((table->height()-shortHeight)-(scene(&results)->height()-previousViewport))<=1,"growing the viewport gives all additional height to results");
+                shortHeight=table->height();previousViewport=scene(&results)->height();
+            }
+            auto *view=results.findChild<QTableView *>("tableView");auto *bridge=results.findChild<QuickBridge *>();auto *node=qobject_cast<QuickNode *>(bridge->find("tableView"));auto *adapter=qobject_cast<QuickTableModel *>(node->values().value("table").value<QObject *>());
+            adapter->select(23,0,0);QTest::qWait(80);check(view->currentIndex().row()==23,"full-height results preserve native jump selection");
+            main.resize(520,600);QTest::qWait(100);auto *workspace=item(scene(&results)->rootObject(),"singleJumpsResultsWorkspace");workspace->setProperty("section",1);QTest::qWait(100);scene(&results)->grabFramebuffer();
+            check(!item(scene(&results)->rootObject(),"singleJumpsResultsTable")->isVisible() && item(scene(&results)->rootObject(),"singleJumpsResultsDetails")->isVisible(),"narrow-screen statistics use a separate full-height workspace");
+        }
+        results.reject();QTest::qWait(80);
+    }
 }
 
 static void backendRegressions() {
@@ -1480,6 +1513,8 @@ int main(int argc,char **argv) {
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="1.3.0 beta-3","one release version is shared with the interface");
     if(app.arguments().contains("--simulation-benchmark")) {simulationBenchmark();main.show();for(int i=0;i<3;++i)runCompetition(main,0,true);runCompetition(main,1,true);runCompetition(main,2,true);return 0;}
+    if(app.arguments().contains("--single-jumps-benchmark")){singleJumpsBenchmark(main);return 0;}
+    if(app.arguments().contains("--single-jumps-only")){normalSamplingRegression();singleSimulationRegression();singleGateRegression(main);singleJumpsBenchmark(main);return 0;}
     backendRegressions();
     if(app.arguments().contains("--team-only")){main.show();runCompetition(main,2);return 0;}
     if(app.arguments().contains("--interaction-only")){interactionRegressions(main);return 0;}
