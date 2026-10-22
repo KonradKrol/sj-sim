@@ -1,6 +1,7 @@
 #include "../source/UI/Quick/QuickUi.h"
 #include "../source/UI/Quick/QuickCalendar.h"
 #include "../source/UI/Quick/QuickRoster.h"
+#include "../source/UI/Quick/QuickRaceStats.h"
 #include "../source/UI/EditorWidgets/TeamsEditing/TeamEditorWidget.h"
 #include "../source/UI/DatabaseEditor/DatabaseItemsListView.h"
 #include "../source/UI/Seasons/CalendarEditor/CalendarEditorWidget.h"
@@ -320,8 +321,9 @@ static void runCompetition(MainWindow &main,int scenario) {
                 else if(scenario==0 && window->getManager()->getActualRound()>1 && !previousRankTested) {
                     bridge->refresh();const int previous=bridge->context().value("previousPosition").toInt();check(previous>0,"athlete on gate shows place after previous round");
                     const double speed=GlobalAppSettings::get()->getLiveCompetitionSpeedMulti();GlobalAppSettings::get()->setLiveCompetitionSpeedMulti(.005);window->findChild<QCheckBox *>("checkBox_liveCompetition")->setChecked(true);
+                    const auto advancementBefore=bridge->context().value("biggestAdvancement").toMap();
                     QObject watcher;bool seen=false;
-                    QObject::connect(window,&CompetitionManagerWindow::liveStageChanged,&watcher,[&](int stage){if(stage==2){bridge->refresh();check(!bridge->jumpSummary().contains("positionNumber"),"last jump leaves position blank during flight");check(!bridge->jumpSummary().contains("leaderGap"),"current leader gap is not revealed during flight");seen=true;}});
+                    QObject::connect(window,&CompetitionManagerWindow::liveStageChanged,&watcher,[&](int stage){if(stage==2){bridge->refresh();check(!bridge->jumpSummary().contains("positionNumber"),"last jump leaves position blank during flight");check(!bridge->jumpSummary().contains("leaderGap"),"current leader gap is not revealed during flight");check(bridge->context().value("biggestAdvancement").toMap()==advancementBefore,"biggest advancement stays frozen until live results are revealed");seen=true;}});
                     bridge->activate(id(bridge,"pushButton_jump"));QTest::qWait(300);bridge->refresh();check(seen&&!bridge->jumpSummary().contains("previousRound")&&bridge->jumpSummary().value("positionNumber").toInt()>0,"final result replaces previous place with current rank");
                     window->findChild<QCheckBox *>("checkBox_liveCompetition")->setChecked(false);GlobalAppSettings::get()->setLiveCompetitionSpeedMulti(speed);previousRankTested=true;
                 }
@@ -333,6 +335,8 @@ static void runCompetition(MainWindow &main,int scenario) {
             check(!window->getManager()->getResults()->getResultsReference().isEmpty(),"competition has actual results");
             render(window,QString("live-results-%1").arg(scenario),scenario==2);
             bridge->refresh();
+            check(bridge->context().value("biggestAdvancement").toMap()==QuickRaceStats::biggestAdvancement(*window->getManager()->getResults(),window->getManager()->getActualRound(),scenario==2?4:1),"competition header exposes the largest revealed advancement");
+            check(!bridge->context().contains("leaderName"),"competition header no longer duplicates the leader");
             const auto finalSummary=bridge->jumpSummary();CompetitionSingleResult *shown=nullptr;
             for(auto &result:window->getManager()->getResults()->getResultsReference()) {
                 if(scenario==2){for(const auto &athlete:result.getTeamJumpersResultsReference())if(athlete.getJumper()&&athlete.getJumper()->getNameAndSurname()==finalSummary.value("name").toString())shown=&result;}
@@ -351,7 +355,7 @@ static void runCompetition(MainWindow &main,int scenario) {
                     for(auto &jump:result.getJumpsReference()) { jump.setCompetition(finishedCompetition.get());jump.setSingleResult(&result);jump.setHill(finishedCompetition->getHill());jump.setSimulator(nullptr); }
                 }
             }
-            QTest::qWait(180);
+            main.resize(1200,800);QTest::qWait(180);
             clickControl(scene(window),"action-pushButton_goToNext");
         }
     });runner.start(25);
@@ -914,7 +918,38 @@ static void uxRegressions(MainWindow &main) {
     qInfo()<<"PASS: five UX workflows: scoped form edits, visible search, saved lists, contextual competition controls and explicit calendar editing";
 }
 
+static void advancementRegressions() {
+    Jumper a("A","One","POL"), b("B","Two","NOR"), c("C","Three","GER"), d("D","Four","AUT"), e("E","Five","FIN");
+    CompetitionResults results;
+    auto add=[&](Jumper *athlete,double points){JumpData jump; jump.setJumper(athlete);jump.setPoints(points);results.addJump(athlete,jump);results.sortInDescendingOrder();};
+    check(QuickRaceStats::biggestAdvancement(results,2,1).isEmpty(),"empty results have no advancement");
+    add(&a,120);add(&b,110);add(&c,100);add(&d,90);add(&e,80);
+    check(QuickRaceStats::biggestAdvancement(results,1,1).isEmpty() && QuickRaceStats::biggestAdvancement(results,2,1).isEmpty(),"first round and unjumped second round have no advancement");
+    add(&c,100);add(&d,100);
+    auto gain=QuickRaceStats::biggestAdvancement(results,2,1);
+    check(gain.value("places").toInt()==2 && gain.value("name")==c.getNameAndSurname() && gain.value("entries").toList().size()==2,"equal biggest gains retain both athletes with a stable current-rank order");
+    const auto entries=gain.value("entries").toList();
+    check(entries[0].toMap().value("from").toInt()==3 && entries[0].toMap().value("to").toInt()==1 && entries[1].toMap().value("from").toInt()==4 && entries[1].toMap().value("to").toInt()==2,"advancement compares the previous full field with current cumulative positions");
+    results.getResultOfIndividualJumper(&e)->setPosition(1);
+    check(QuickRaceStats::biggestAdvancement(results,2,1)==gain,"an athlete without a current-round jump is excluded from advancement");results.sortInDescendingOrder();
+    add(&a,0);add(&a,300);add(&c,0);add(&d,0);
+    gain=QuickRaceStats::biggestAdvancement(results,3,1);
+    check(gain.value("places").toInt()==2 && gain.value("name")==a.getNameAndSurname(),"third-round advancement uses the completed second-round baseline");
+    CompetitionResults tied;
+    for(auto *athlete:{&a,&b,&c}){JumpData jump;jump.setJumper(athlete);jump.setPoints(athlete==&c?90:100);tied.addJump(athlete,jump);}
+    JumpData jump;jump.setJumper(&c);jump.setPoints(50);tied.addJump(&c,jump);tied.sortInDescendingOrder();
+    check(QuickRaceStats::biggestAdvancement(tied,2,1).value("places").toInt()==2,"previous-round ties use places 1,1,3 rather than dense ranking");
+    CompetitionResults teams;Team pol("POL"),nor("NOR");
+    for(auto *team:{&pol,&nor})for(int i=0;i<4;++i){JumpData entry;entry.setPoints(team==&pol?25:30);teams.addJump(team,entry);}teams.sortInDescendingOrder();
+    check(QuickRaceStats::biggestAdvancement(teams,2,4).isEmpty(),"team advancement waits for a jump in the new round");
+    JumpData teamJump;teamJump.setPoints(40);teams.addJump(&pol,teamJump);teams.sortInDescendingOrder();
+    gain=QuickRaceStats::biggestAdvancement(teams,2,4);
+    check(gain.value("places").toInt()==1 && gain.value("name").toString()=="POL","team advancement compares complete previous-round team totals");
+    qInfo()<<"PASS: biggest advancement, shared gains, tied places, third rounds and team baselines";
+}
+
 static void backendRegressions() {
+    advancementRegressions();
     { Classification source("Existing classification");source.setAltPointsForPlaces({{1,25.0}});ClassificationEditorWidget editor(&source);check(editor.getClassification()==&source,"classification constructor initializes the supplied source");editor.setClassification(nullptr);check(!editor.getClassification(),"classification source can be cleared safely"); }
 
     const QVector<Wind> input{Wind(0,2),Wind(180,1)};

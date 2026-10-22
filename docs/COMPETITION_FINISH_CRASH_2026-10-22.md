@@ -17,4 +17,4 @@ W regresji odtworzono pełny konkurs i kliknięcie widocznego „Zakończ konkur
 
 ## Walidacja
 
-`scripts/test-quick-ui.sh --ux-only` — kod 0 po poprawce, wraz z pełnym konkursem indywidualnym, prezentacją na żywo i powrotem do konfiguracji. Dalsze testy pełnych konkursów są opisane przy końcowym commicie statystyki awansu.
+`scripts/test-quick-ui.sh --ux-only` — kod 0 po poprawce, wraz z pełnym konkursem indywidualnym, prezentacją na żywo i powrotem do konfiguracji. Końcowe `scripts/test-quick-ui.sh --competitions-only` również kończy się kodem 0: konkursy indywidualne, KO i drużynowe, przerwanie prezentacji na żywo i analiza sezonu. Zakończenie korzysta z rzeczywistego przycisku, a `QPointer` potwierdza usunięcie okna. Kompilacja Widgets-only przechodzi.

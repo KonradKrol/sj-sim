@@ -9591,6 +9591,18 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <translation>Leader: %1 pts</translation>
 </message>
 
+    <message>
+        <source>Awans: %1 ↑%2</source>
+        <translation>Biggest gain: %1 ↑%2</translation>
+    </message>
+    <message>
+        <source>Największy awans: %1 ↑%2</source>
+        <translation>Biggest gain: %1 ↑%2</translation>
+    </message>
+    <message>
+        <source>Względem poprzedniej serii. Miejsca są prowizoryczne do końca serii.</source>
+        <translation>Compared with the previous round. Positions are provisional until the end of the round.</translation>
+    </message>
 </context>
 
 

@@ -1,6 +1,7 @@
 #include "QuickUi.h"
 #include "QuickCalendar.h"
 #include "QuickRoster.h"
+#include "QuickRaceStats.h"
 #include "../EditorWidgets/JumpersListEditorWindow.h"
 #include "../EditorWidgets/TeamsEditing/TeamEditorWidget.h"
 #include "../Seasons/CalendarEditor/CalendarEditorWidget.h"
@@ -463,9 +464,9 @@ void QuickBridge::refresh() {
         if(auto *team=dynamic_cast<TeamCompetitionManager *>(manager))context["group"]=team->getActualGroup();
         if(auto *hill=manager->getCompetitionInfo()->getHill())context["hillFlag"]=quickPicture(CountryFlagsManager::getFlagPixmap(hill->getCountryCode().toLower()));
         double wind=0;if(auto *label=m_content->findChild<QLabel *>("label_actualAvgWind")){auto value=label->text();value.remove(QRegularExpression("[^0-9.,+−-]"));value.replace(',', '.');value.replace(QChar(0x2212),'-');wind=value.toDouble();}context["windValue"]=wind;
-        const auto &results=manager->getResults()->getResultsReference();const CompetitionSingleResult *leader=nullptr;for(const auto &result:results)if(!leader||result.getPointsSum()>leader->getPointsSum())leader=&result;
-        if(window->getLiveStage()>0 && window->getLiveStage()<5){if(m_context.contains("leaderName")){context["leaderName"]=m_context.value("leaderName");context["leaderPoints"]=m_context.value("leaderPoints");}}
-        else if(leader){context["leaderName"]=leader->getTeam()?leader->getTeam()->getCountryCode():leader->getJumper()?leader->getJumper()->getNameAndSurname():QString();context["leaderPoints"]=leader->getPointsSum();}
+        if(window->getLiveStage()>0 && window->getLiveStage()<5) {
+            if(m_context.value("round")==context.value("round"))context["biggestAdvancement"]=m_context.value("biggestAdvancement");
+        } else context["biggestAdvancement"]=QuickRaceStats::biggestAdvancement(*manager->getResults(),manager->getActualRound(),dynamic_cast<TeamCompetitionManager *>(manager)?manager->getCompetitionRules()->getJumpersInTeamCount():1);
 
         if(manager->getActualRound()>1 && !manager->checkRoundEnd() && !manager->checkCompetitionEnd()) {
             auto *team=dynamic_cast<TeamCompetitionManager *>(manager);
