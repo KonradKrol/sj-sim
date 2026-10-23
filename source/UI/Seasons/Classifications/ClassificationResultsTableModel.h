@@ -31,6 +31,7 @@ public:
 
 private:
     Classification * classification;
+    QVector<ClassificationSingleResult *> rankedResults;
 public:
     Classification *getClassification() const;
     void setClassification(Classification *newClassification);

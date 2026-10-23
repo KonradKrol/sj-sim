@@ -1836,6 +1836,7 @@ static void backendRegressions() {
     packCatalogRecoveryRegression();
     calendarDateRegressions();
     classificationScoringRegressions();
+    classificationTablePerformanceRegression();
     dataPackRegressions();
     roundPointsRegressions();
     fisCountryRegressions();

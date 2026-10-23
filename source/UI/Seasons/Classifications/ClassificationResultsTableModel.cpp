@@ -5,7 +5,8 @@
 
 ClassificationResultsTableModel::ClassificationResultsTableModel(Classification *classification, QObject *parent)
     : QAbstractTableModel(parent),
-    classification(classification)
+    classification(classification),
+    rankedResults(classification?classification->getRankedResults():QVector<ClassificationSingleResult *>())
 {
 }
 
@@ -41,7 +42,7 @@ int ClassificationResultsTableModel::rowCount(const QModelIndex &parent) const
     if(classification == nullptr)
         return 0;
 
-    return classification->getRankedResults().count();
+    return rankedResults.size();
 }
 
 int ClassificationResultsTableModel::columnCount(const QModelIndex &parent) const
@@ -60,18 +61,20 @@ QVariant ClassificationResultsTableModel::data(const QModelIndex &index, int rol
     if(classification == nullptr)
         return QVariant();
 
-    if(classification->getRankedResults().count() > 0){
+    if(index.row()<0 || index.row()>=rankedResults.size())return QVariant();
+    const auto *result=rankedResults[index.row()];
+    if(result){
         if(role == Qt::DisplayRole)
         {
             if(index.column() == 0)
-                return classification->getRankedResults()[index.row()]->getPosition();
+                return result->getPosition();
             else if(index.column() == 1){
                 if(classification->getClassificationType() == Classification::Individual)
-                    return classification->getRankedResults()[index.row()]->getJumper()->getNameAndSurname();
-                else return classification->getRankedResults()[index.row()]->getTeamCode();
+                    return result->getJumper()->getNameAndSurname();
+                else return result->getTeamCode();
             }
             else if(index.column() == 2)
-                return classification->getRankedResults()[index.row()]->getPointsSum();
+                return result->getPointsSum();
         }
         else if(role == Qt::DecorationRole)
         {
@@ -79,9 +82,9 @@ QVariant ClassificationResultsTableModel::data(const QModelIndex &index, int rol
             {
                 QString countryCode;
                 if(classification->getClassificationType() == Classification::Individual)
-                    countryCode = classification->getRankedResults()[index.row()]->getJumper()->getCountryCode();
+                    countryCode = result->getJumper()->getCountryCode();
                 else
-                    countryCode = classification->getRankedResults()[index.row()]->getTeamCode();
+                    countryCode = result->getTeamCode();
                 return CountryFlagsManager::getFlagPixmap(countryCode.toLower()).scaled(28, 19.95);
             }
         }
@@ -148,5 +151,7 @@ Classification *ClassificationResultsTableModel::getClassification() const
 
 void ClassificationResultsTableModel::setClassification(Classification *newClassification)
 {
-    beginResetModel();classification = newClassification;endResetModel();
+    beginResetModel();classification = newClassification;
+    rankedResults=classification?classification->getRankedResults():QVector<ClassificationSingleResult *>();
+    endResetModel();
 }

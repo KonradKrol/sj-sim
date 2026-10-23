@@ -36,14 +36,14 @@ static void classificationScoringRegressions()
     ClassificationResultsTableModel table(&classification);check(table.rowCount()==2,"age-ineligible athletes do not appear in the classification table");
     CompetitionInfo qualification;RoundInfo qualifyingRound;qualifyingRound.setCount(1);qualification.getRulesPointer()->setRounds({qualifyingRound});QVector<Jumper *> entrants{&a,&b,&c,&d};
     check(IndividualCompetitionManager::getFilteredJumpersByClassification(&qualification,&classification,entrants)==QVector<Jumper *>{&a},"age-excluded position-zero rows never qualify through a classification");
-    options.includeUnknownAge=true;classification.setOptions(options);dr.updatePointsSum();classification.sortInDescendingOrder();check(table.rowCount()==3,"unknown ages can be explicitly included");
+    options.includeUnknownAge=true;classification.setOptions(options);dr.updatePointsSum();classification.sortInDescendingOrder();table.setClassification(&classification);check(table.rowCount()==3,"unknown ages can be explicitly included");
     options.ageFilter=false;options.countrySelection=1;options.countryCount=2;classification.setOptions(options);
     for(auto *row:{&ar,&br,&cr,&dr})row->updatePointsSum();classification.sortInDescendingOrder();
-    check(table.rowCount()==3 && !classification.getRankedResults().contains(&cr) && classification.getResultsReference().size()==4,"top N per country hides rows without discarding their history");
+    table.setClassification(&classification);check(table.rowCount()==3 && !classification.getRankedResults().contains(&cr) && classification.getResultsReference().size()==4,"top N per country hides rows without discarding their history");
     qualification.getRulesPointer()->getRoundsReference().first().setCount(10);
     check(!IndividualCompetitionManager::getFilteredJumpersByClassification(&qualification,&classification,entrants).contains(&c),"country-hidden athletes remain ineligible when qualification has spare places");
     options.countrySelection=2;options.countryCount=1;classification.setOptions(options);classification.sortInDescendingOrder();
-    check(table.rowCount()==2 && classification.getRankedResults().contains(&cr) && !classification.getRankedResults().contains(&ar),"bottom N per country reverses the selection");
+    table.setClassification(&classification);check(table.rowCount()==2 && classification.getRankedResults().contains(&cr) && !classification.getRankedResults().contains(&ar),"bottom N per country reverses the selection");
     options.countrySelection=1;options.countryCount=2;classification.setOptions(options);
     ar.setPointsSum(10);br.setPointsSum(10);cr.setPointsSum(10);classification.sortInDescendingOrder();
     const auto tied=classification.getRankedResults();check(tied.size()==3 && tied.contains(&ar) && tied.contains(&br) && !tied.contains(&cr),"ties never expand an exact country quota and selection is deterministic");
@@ -89,6 +89,22 @@ static void classificationScoringRegressions()
     qDeleteAll(preset.getCalendarReference().getCompetitionsReference());qDeleteAll(preset.getCalendarReference().getClassificationsReference());
     qDeleteAll(loaded.getCalendarReference().getCompetitionsReference());qDeleteAll(loaded.getCalendarReference().getClassificationsReference());
     qInfo()<<"PASS: variable classification scoring, context parameters, annual age, exact top/bottom country limits and calendar presets";
+}
+
+static void classificationTablePerformanceRegression()
+{
+    const int count=600;QVector<Jumper> jumpers;QVector<ClassificationSingleResult> results;jumpers.reserve(count);results.reserve(count);
+    Classification classification("Large filtered ranking");auto options=classification.getOptions();options.countrySelection=1;options.countryCount=count;classification.setOptions(options);
+    for(int i=0;i<count;++i){jumpers.append(Jumper(QString::number(i),"Athlete","POL"));results.append(ClassificationSingleResult(&classification,&jumpers.last()));results.last().setPointsSum(count-i);}
+    for(auto &row:results)classification.getResultsReference().append(&row);classification.sortInDescendingOrder();
+    ClassificationResultsTableModel model(&classification);QAbstractItemModelTester contract(&model,QAbstractItemModelTester::FailureReportingMode::Fatal);
+    QElapsedTimer timer;timer.start();int cells=0;
+    const int roles[]={Qt::DisplayRole,Qt::DecorationRole,Qt::FontRole,Qt::BackgroundRole,Qt::ForegroundRole,Qt::TextAlignmentRole};
+    for(int row=0;row<model.rowCount();++row)for(int column=0;column<model.columnCount();++column){for(int role:roles)model.data(model.index(row,column),role);++cells;}
+    check(cells==count*3 && timer.elapsed()<5000,"a filtered classification with hundreds of athletes renders without repeated ranking work");
+    options.countryCount=1;classification.setOptions(options);classification.sortInDescendingOrder();model.setClassification(&classification);check(model.rowCount()==1 && model.data(model.index(0,1),Qt::DisplayRole).toString()==jumpers.first().getNameAndSurname(),"explicit classification refresh rebuilds the visible row snapshot");
+    model.setClassification(nullptr);check(model.rowCount()==0 && !model.data(QModelIndex()).isValid(),"clearing the classification clears cached rows");
+    qInfo()<<"PASS: filtered classification table benchmark"<<cells<<"cells in"<<timer.elapsed()<<"ms including refresh";
 }
 
 static void classificationUiRegressions(MainWindow &main)
