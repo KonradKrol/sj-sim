@@ -34,10 +34,14 @@ static void classificationScoringRegressions()
     for(auto *row:{&ar,&br,&cr,&dr})row->updatePointsSum();classification.sortInDescendingOrder();
     check(classification.getRankedResults().size()==2 && ar.getPointsSum()==170 && br.getPointsSum()==130 && cr.getPointsSum()==0 && dr.getPointsSum()==0,"inclusive annual age filter excludes older and unknown-age athletes");
     ClassificationResultsTableModel table(&classification);check(table.rowCount()==2,"age-ineligible athletes do not appear in the classification table");
+    CompetitionInfo qualification;RoundInfo qualifyingRound;qualifyingRound.setCount(1);qualification.getRulesPointer()->setRounds({qualifyingRound});QVector<Jumper *> entrants{&a,&b,&c,&d};
+    check(IndividualCompetitionManager::getFilteredJumpersByClassification(&qualification,&classification,entrants)==QVector<Jumper *>{&a},"age-excluded position-zero rows never qualify through a classification");
     options.includeUnknownAge=true;classification.setOptions(options);dr.updatePointsSum();classification.sortInDescendingOrder();check(table.rowCount()==3,"unknown ages can be explicitly included");
     options.ageFilter=false;options.countrySelection=1;options.countryCount=2;classification.setOptions(options);
     for(auto *row:{&ar,&br,&cr,&dr})row->updatePointsSum();classification.sortInDescendingOrder();
     check(table.rowCount()==3 && !classification.getRankedResults().contains(&cr) && classification.getResultsReference().size()==4,"top N per country hides rows without discarding their history");
+    qualification.getRulesPointer()->getRoundsReference().first().setCount(10);
+    check(!IndividualCompetitionManager::getFilteredJumpersByClassification(&qualification,&classification,entrants).contains(&c),"country-hidden athletes remain ineligible when qualification has spare places");
     options.countrySelection=2;options.countryCount=1;classification.setOptions(options);classification.sortInDescendingOrder();
     check(table.rowCount()==2 && classification.getRankedResults().contains(&cr) && !classification.getRankedResults().contains(&ar),"bottom N per country reverses the selection");
     options.countrySelection=1;options.countryCount=2;classification.setOptions(options);
@@ -57,6 +61,8 @@ static void classificationScoringRegressions()
     country.ageFilter=true;country.minimumAge=18;country.maximumAge=22;country.referenceYear=2026;nations.setOptions(country);
     pol.updatePointsSum();check(pol.getPointsSum()==490,"age filter is applied before the country selection");
     team.setJumpers({&a,&c});pol.updatePointsSum();check(pol.getPointsSum()==90,"a team containing an ineligible athlete cannot receive team-event points");
+    pol.setCompetitionsResults({&teamEvent.getResultsReference()});pol.setSingleResults({});pol.updatePointsSum();nations.setResults({&pol});nations.sortInDescendingOrder();QVector<Team> teamEntrants{team};
+    check(TeamCompetitionManager::getFilteredTeamsByClassification(&qualification,&nations,teamEntrants).isEmpty(),"age-excluded teams do not qualify via their hidden position-zero rows");
     classification.setAltPointsForPlaces({{1,12}});classification.setPunctationType(Classification::PointsForPlaces);
     options.ageFilter=false;options.countrySelection=0;classification.setOptions(options);team.setJumpers({&a,&b});
     ClassificationSingleResult teamMember(&classification,&a);teamMember.setCompetitionsResults({&teamEvent.getResultsReference()});teamMember.updateSingleResults();teamMember.updatePointsSum();check(teamMember.getPointsSum()==12,"individual classification uses athlete points for the place of their team");

@@ -207,10 +207,11 @@ QVector<Team> TeamCompetitionManager::getFilteredTeamsAfterQualifications(Compet
 
 QVector<Team> TeamCompetitionManager::getFilteredTeamsByClassification(CompetitionInfo *competition, Classification *classification, QVector<Team> &teams)
 {
+    const auto ranked=classification->getRankedResults();
     int lastQualifiedPosition = competition->getRulesPointer()->getRoundsReference()[0].getCount();
 
     bool exaequo = true;
-    for(auto & res : classification->getRankedResults()){ // Sprawdzamy, czy wystąpiło ex aequo.
+    for(auto & res : ranked){ // Sprawdzamy, czy wystąpiło ex aequo.
         if(res->getPosition() == lastQualifiedPosition){
             exaequo = false;
             break;
@@ -218,7 +219,7 @@ QVector<Team> TeamCompetitionManager::getFilteredTeamsByClassification(Competiti
     }
     if(exaequo == true) // Jeżeli wystąpiło ex aequo
     {
-        for(auto & res : classification->getRankedResults()){
+        for(auto & res : ranked){
             if(res->getPosition() > lastQualifiedPosition){
                 lastQualifiedPosition = res->getPosition();
                 break;
@@ -229,11 +230,9 @@ QVector<Team> TeamCompetitionManager::getFilteredTeamsByClassification(Competiti
     QVector<Team> toReturn;
     for(auto & team : teams)
     {
-        if(classification->getResultOfTeam(team.getCountryCode()) != nullptr)
-        {
-            if(classification->getResultOfTeam(team.getCountryCode())->getPosition() <= lastQualifiedPosition)
-                toReturn.push_back(team);
-        }
+        auto *result=classification->getResultOfTeam(team.getCountryCode());
+        if(result && ranked.contains(result) && result->getPosition()>0 && result->getPosition()<=lastQualifiedPosition)
+            toReturn.push_back(team);
     }
     return toReturn;
 }

@@ -209,10 +209,11 @@ QVector<Jumper *> IndividualCompetitionManager::getFilteredJumpersAfterQualifica
 
 QVector<Jumper *> IndividualCompetitionManager::getFilteredJumpersByClassification(CompetitionInfo *competition, Classification *classification, QVector<Jumper *> &jumpers)
 {
+    const auto ranked=classification->getRankedResults();
     int lastQualifiedPosition = competition->getRulesPointer()->getRoundsReference()[0].getCount();
 
     bool exaequo = true;
-    for(auto & res : classification->getRankedResults()){ // Sprawdzamy, czy wystąpiło ex aequo.
+    for(auto & res : ranked){ // Sprawdzamy, czy wystąpiło ex aequo.
         if(res->getPosition() == lastQualifiedPosition){
             exaequo = false;
             break;
@@ -220,7 +221,7 @@ QVector<Jumper *> IndividualCompetitionManager::getFilteredJumpersByClassificati
     }
     if(exaequo == true)
     {
-        for(auto & res : classification->getRankedResults()){
+        for(auto & res : ranked){
             if(res->getPosition() > lastQualifiedPosition){
                 lastQualifiedPosition = res->getPosition();
                 break;
@@ -231,9 +232,9 @@ QVector<Jumper *> IndividualCompetitionManager::getFilteredJumpersByClassificati
     QVector<Jumper *> toReturn;
     for(auto & jumper : jumpers)
     {
-        if(classification->getResultOfIndividualJumper(jumper) != nullptr)
-            if(classification->getResultOfIndividualJumper(jumper)->getPosition() <= lastQualifiedPosition)
-                toReturn.push_back(jumper);
+        auto *result=classification->getResultOfIndividualJumper(jumper);
+        if(result && ranked.contains(result) && result->getPosition()>0 && result->getPosition()<=lastQualifiedPosition)
+            toReturn.push_back(jumper);
     }
     return toReturn;
 }
