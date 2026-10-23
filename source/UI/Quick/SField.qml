@@ -3,15 +3,17 @@ import QtQuick.Controls 2.15
 
 TextField {
     id: field
-    implicitHeight: Math.max(Theme.controlHeight, contentHeight + (Theme.compact ? 10 : 18))
+    implicitHeight: Math.max(Theme.controlHeight, contentHeight + (Theme.compact ? 4 : 18))
+    topPadding: Theme.compact ? 2 : 6
+    bottomPadding: topPadding
     color: Theme.ink
     placeholderTextColor: Theme.muted
     selectedTextColor: Theme.ink
     selectionColor: Theme.selection
     font.pointSize: Theme.body
     selectByMouse: true
-    leftPadding: Theme.compact ? 9 : 12
-    rightPadding: Theme.compact ? 9 : 12
+    leftPadding: Theme.compact ? 6 : 12
+    rightPadding: Theme.compact ? 6 : 12
     background: Surface {
         fillColor: Theme.raised
         corner: 6; sweep: 12

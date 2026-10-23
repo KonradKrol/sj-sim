@@ -16,7 +16,7 @@ Item {
     property bool monthView: false
     implicitHeight: 640
     RowLayout {
-        anchors.fill: parent; spacing: 16
+        anchors.fill: parent; spacing: Theme.compact ? 6 : 16
         Pane {
             visible: calendar.width>=1180
             Layout.preferredWidth: 210; Layout.fillHeight: true; padding: 12
@@ -113,7 +113,7 @@ Item {
         Label { visible: !!calendar.backend.message; text: calendar.backend.message; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         RowLayout {
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
-            spacing: 16
+            spacing: Theme.compact ? 6 : 16
             ColumnLayout {
                 visible: !calendar.compact || !calendar.editing
                 Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0

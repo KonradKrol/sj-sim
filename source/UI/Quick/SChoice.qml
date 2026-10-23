@@ -24,11 +24,13 @@ ComboBox {
         popup.close()
         forceActiveFocus()
     }
-    implicitHeight: Math.max(Theme.controlHeight,Theme.bodyMetrics.height+(Theme.compact ? 10 : 18))
+    implicitHeight: Math.max(Theme.controlHeight,Theme.bodyMetrics.height+(Theme.compact ? 4 : 18))
     implicitWidth: 180
     font.pointSize: Theme.body
-    leftPadding: 12
-    rightPadding: 32
+    topPadding: Theme.compact ? 2 : 6
+    bottomPadding: topPadding
+    leftPadding: Theme.compact ? 6 : 12
+    rightPadding: Theme.compact ? 24 : 32
     hoverEnabled: true
     contentItem: Text {
         text: control.displayText

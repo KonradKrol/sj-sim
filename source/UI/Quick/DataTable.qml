@@ -84,25 +84,25 @@ FocusScope {
         spacing: 0
         RowLayout {
             Layout.fillWidth: true
-            Layout.margins: tableRoot.compact ? 4 : 8
+            Layout.margins: Theme.compact ? 2 : tableRoot.compact ? 4 : 8
             Label { text: tableRoot.table && tableRoot.table.selectedCount>0 && tableRoot.height<300 ? qsTr("Zaznaczono: %1").arg(tableRoot.table.selectedCount) : qsTr("%1 pozycji").arg(tableRoot.table ? tableRoot.table.count : 0); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
             SButton {
-                implicitHeight: tableRoot.compact ? 28 : 40;
+                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40;
                 visible: tableRoot.width >= 380 && tableRoot.actions.length > 0 && !!tableRoot.actions[0].insert
                 text: "+"; quiet: true; Accessible.name: qsTr("Dodaj"); hint: qsTr("Dodaj")
                 enabled: tableRoot.actions.length > 0 && tableRoot.actions[0].enabled
                 onClicked: ui.triggerAction(tableRoot.actions[0].id)
             }
             SButton {
-                implicitHeight: tableRoot.compact ? 28 : 40; visible: !!tableRoot.table && tableRoot.table.multiple && tableRoot.table.selectedCount>0 && tableRoot.height<300; text: "×"; quiet: true; Accessible.name: qsTr("Wyczyść zaznaczenie"); onClicked: tableRoot.table.clearSelection() }
+                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40; visible: !!tableRoot.table && tableRoot.table.multiple && tableRoot.table.selectedCount>0 && tableRoot.height<300; text: "×"; quiet: true; Accessible.name: qsTr("Wyczyść zaznaczenie"); onClicked: tableRoot.table.clearSelection() }
             SButton {
-                implicitHeight: tableRoot.compact ? 28 : 40; visible: !tableRoot.searchOpen; text: tableRoot.compact ? "⌕" : qsTr("Szukaj"); quiet: true; Accessible.name: qsTr("Szukaj"); hint: qsTr("Szukaj"); checkable: true; onClicked: tableRoot.searchOpen = checked }
+                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40; visible: !tableRoot.searchOpen; text: tableRoot.compact ? "⌕" : qsTr("Szukaj"); quiet: true; Accessible.name: qsTr("Szukaj"); hint: qsTr("Szukaj"); checkable: true; onClicked: tableRoot.searchOpen = checked }
             SButton {
-                implicitHeight: tableRoot.compact ? 28 : 40; visible: tableRoot.compact && tableRoot.columns>4 && !tableRoot.teamResults; text: tableRoot.raceResults ? qsTr("Punkty serii") : qsTr("Skoki"); quiet: true; font.pointSize: Theme.caption; checkable: true; onClicked: tableRoot.jumpColumns=checked }
+                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40; visible: tableRoot.compact && tableRoot.columns>4 && !tableRoot.teamResults; text: tableRoot.raceResults ? qsTr("Punkty serii") : qsTr("Skoki"); quiet: true; font.pointSize: Theme.caption; checkable: true; onClicked: tableRoot.jumpColumns=checked }
             SButton {
-                implicitHeight: tableRoot.compact ? 28 : 40; visible: !tableRoot.compact; text: tableRoot.width < 380 ? "↗" : qsTr("Otwórz"); quiet: true; Accessible.name: qsTr("Otwórz"); hint: qsTr("Otwórz"); onClicked: if (tableRoot.table) tableRoot.table.openCurrent() }
+                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40; visible: !tableRoot.compact; text: tableRoot.width < 380 ? "↗" : qsTr("Otwórz"); quiet: true; Accessible.name: qsTr("Otwórz"); hint: qsTr("Otwórz"); onClicked: if (tableRoot.table) tableRoot.table.openCurrent() }
             SButton {
-                implicitHeight: tableRoot.compact ? 28 : 40;
+                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40;
                 objectName: "table-options-" + tableRoot.ownerId
                 visible: tableRoot.actions.length > 0 || (tableRoot.table && tableRoot.table.multiple)
                 text: "⋯"; quiet: true; Accessible.name: qsTr("Opcje listy")
@@ -147,7 +147,7 @@ FocusScope {
                 Row {
                     id: header
                     visible: tableRoot.columns > 1
-                    height: visible ? (tableRoot.compact ? 28 : 38) : 0
+                    height: visible ? (Theme.compact ? Math.max(24,Theme.captionMetrics.height+4) : tableRoot.compact ? 28 : 38) : 0
                     Repeater {
                         model: tableRoot.displayColumns
                         AbstractButton {

@@ -7,12 +7,12 @@ Item {
     property var optionEnabled: []
     property int currentIndex: 0
     signal selected(int index)
-    implicitHeight: row.implicitHeight + 8
+    implicitHeight: row.implicitHeight + (Theme.compact ? 4 : 8)
     readonly property bool overflow: row.width > width
     SButton {
         id: previous
         visible: tabs.overflow
-        width: 32; height: parent.height - 8
+        width: 32; height: parent.height - (Theme.compact ? 4 : 8)
         text: "‹"; quiet: true
         Accessible.name: qsTr("Poprzednie zakładki")
         enabled: viewport.contentX > 0
@@ -31,7 +31,7 @@ Item {
     ScrollBar.horizontal: ScrollBar { policy: ScrollBar.AsNeeded }
     Row {
         id: row
-        spacing: 6
+        spacing: Theme.compact ? 3 : 6
         Repeater {
             model: tabs.options
             SButton {
@@ -55,7 +55,7 @@ Item {
     SButton {
         visible: tabs.overflow
         anchors.right: parent.right
-        width: 32; height: parent.height - 8
+        width: 32; height: parent.height - (Theme.compact ? 4 : 8)
         text: "›"; quiet: true
         Accessible.name: qsTr("Następne zakładki")
         enabled: viewport.contentX + viewport.width < viewport.contentWidth - 1

@@ -16,7 +16,7 @@ Item {
     property bool ordered: false
     property var viewport
     signal moveRequested()
-    implicitHeight: Math.max(backend.activeLimit > 0 ? 56 : 44,Theme.bodyMetrics.height+16)
+    implicitHeight: Theme.compact ? Math.max(30,Theme.bodyMetrics.height+(ordered && backend.activeLimit > 0 ? Theme.captionMetrics.height : 0)+6) : Math.max(backend.activeLimit > 0 ? 56 : 44,Theme.bodyMetrics.height+16)
     objectName: (ordered ? "roster-entry-" : "roster-candidate-") + athleteId
     activeFocusOnTab: true
     Accessible.role: ordered ? Accessible.ListItem : Accessible.CheckBox
@@ -35,13 +35,13 @@ Item {
     MouseArea { anchors.fill: parent; onClicked: {row.forceActiveFocus();row.ordered ? row.backend.mark(row.athleteId,mouse.modifiers) : row.backend.toggle(row.athleteId)} }
     RowLayout {
         anchors.fill: parent; anchors.leftMargin: 6; anchors.rightMargin: 8
-        spacing: 8
+        spacing: Theme.compact ? 4 : 8
         SCheck { visible: !row.ordered; checked: row.included; text: ""; Layout.preferredWidth: 30; Accessible.name: row.athleteName; onClicked: row.backend.toggle(row.athleteId) }
         SButton {
             id: grip
             objectName: row.ordered ? "roster-grip-" + row.athleteId : ""
             visible: row.ordered; text: "⠿"; quiet: true
-            Layout.preferredWidth: 34; Layout.preferredHeight: 40
+            Layout.preferredWidth: 34; Layout.preferredHeight: Theme.compact ? 28 : 40
             Accessible.name: qsTr("Przenieś %1").arg(row.athleteName)
             hint: qsTr("Przeciągnij lub wybierz pozycję")
             onClicked: {if(!row.marked)row.backend.mark(row.athleteId);row.moveRequested()}

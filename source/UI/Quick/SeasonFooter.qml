@@ -6,7 +6,7 @@ Pane {
     id: footer
     readonly property var action: ui.find("pushButton_competitionConfig")
     implicitHeight: content.implicitHeight+topPadding+bottomPadding
-    padding: 8
+    padding: Theme.compact ? 4 : 8
     background: Rectangle { color: Theme.surface; border.color: Theme.divider }
     contentItem: GridLayout {
         id: content
@@ -20,6 +20,6 @@ Pane {
                 Label { visible: !!ui.context.nextHill; text: (ui.context.nextType || "")+" · HS"+ui.context.nextHS+" · "+(ui.context.nextTeam?qsTr("Drużynowy"):qsTr("Indywidualny")); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; elide: Text.ElideRight }
             }
         }
-        SButton { objectName: "seasonNextAction"; text: footer.action ? footer.action.values.text : ""; enabled: !!footer.action && footer.action.values.enabled; hint: footer.action ? footer.action.values.tip || "" : ""; primary: true; font.pointSize: Theme.body; implicitHeight: Math.max(40,contentItem.implicitHeight+12); Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.maximumWidth: footer.width<600 ? Infinity : 300; onClicked: if(footer.action)ui.activate(footer.action.values.id) }
+        SButton { objectName: "seasonNextAction"; text: footer.action ? footer.action.values.text : ""; enabled: !!footer.action && footer.action.values.enabled; hint: footer.action ? footer.action.values.tip || "" : ""; primary: true; font.pointSize: Theme.body; implicitHeight: Math.max(Theme.compact ? 28 : 40,contentItem.implicitHeight+(Theme.compact ? 4 : 12)); Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.maximumWidth: footer.width<600 ? Infinity : 300; onClicked: if(footer.action)ui.activate(footer.action.values.id) }
     }
 }

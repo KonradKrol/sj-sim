@@ -34,7 +34,7 @@ Rectangle {
     Accessible.role: Accessible.ListItem
     Accessible.name: (rowCells || []).map(function(cell) { return cell.text }).join(", ") + (statusText ? ", " + statusText : "")
     Accessible.selected: rowSelected
-    height: Math.max(Theme.compact ? (tableView.compact ? 26 : 30) : (tableView.compact ? 32 : 40), Theme.body * (Theme.compact ? 1.9 : tableView.compact ? 2.3 : 2.7))
+    height: Theme.compact ? Math.max(24,Theme.bodyMetrics.height+4) : Math.max(tableView.compact ? 32 : 40, Theme.body * (tableView.compact ? 2.3 : 2.7))
     color: rowSelected ? Theme.selection : mouse.containsMouse ? Theme.raised : tintColor()
     Rectangle { anchors.left: parent.left; anchors.top: parent.top; anchors.bottom: parent.bottom; width: 3; color: Theme.accent; visible: row.rowCurrent }
     Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: Theme.divider }
@@ -50,9 +50,9 @@ Rectangle {
                 height: row.height
                 Row {
                     anchors.fill: parent
-                    anchors.leftMargin: 12 + (cell.columnIndex === 0 ? row.rowDepth * 16 + (row.rowBranch ? 24 : 0) : 0)
-                    anchors.rightMargin: 10
-                    spacing: 8
+                    anchors.leftMargin: (Theme.compact ? 6 : 12) + (cell.columnIndex === 0 ? row.rowDepth * 16 + (row.rowBranch ? 24 : 0) : 0)
+                    anchors.rightMargin: Theme.compact ? 4 : 10
+                    spacing: Theme.compact ? 4 : 8
                     Image { visible: !!cell.fields.icon; source: cell.fields.icon || ""; sourceSize.width: 32; sourceSize.height: 24; width: visible ? 30 : 0; height: 24; anchors.verticalCenter: parent.verticalCenter; fillMode: Image.PreserveAspectFit }
                     Text { visible: !cell.fields.checkable; text: cell.fields.text || ""; color: Theme.ink; font.pointSize: Theme.body; font.family: /^[-+−]?\d+([.,]\d+)?\s*(m|pkt|%|m\/s)?$/.test(text) ? Theme.mono : Theme.bodyFamily; width: parent.width - (cell.fields.icon ? 38 : 0); height: parent.height; horizontalAlignment: cell.columnIndex > 0 && font.family === Theme.mono ? Text.AlignRight : Text.AlignLeft; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight }
                     Text { visible: !!cell.fields.checkable; text: cell.fields.checked ? "☑" : "☐"; color: Theme.accent; font.pointSize: Theme.body; height: parent.height; verticalAlignment: Text.AlignVCenter }

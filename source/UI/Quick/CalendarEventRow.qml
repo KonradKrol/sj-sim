@@ -20,7 +20,7 @@ Item {
         Qt.callLater(function(){if(view && view.visible){view.currentIndex=position;view.positionViewAtIndex(position,ListView.Contain);var current=view.itemAtIndex(position);if(current)current.forceActiveFocus()}})
         source.select(eventId,modifiers)
     }
-    implicitHeight: (event.pending || event.dependents ? 112 : 88)+(backend.datesEnabled ? 22 : 0)
+    implicitHeight: Theme.compact ? Math.max(56,rowContent.implicitHeight+8) : (event.pending || event.dependents ? 112 : 88)+(backend.datesEnabled ? 22 : 0)
     Accessible.role: Accessible.ListItem
     Accessible.name: event.title + ", " + event.type
     Accessible.selected: !!event.selected
@@ -32,13 +32,14 @@ Item {
         onDoubleClicked: if(!(mouse.modifiers & (Qt.ControlModifier|Qt.ShiftModifier)))row.activated(row.event.id)
     }
     RowLayout {
-        anchors.fill: parent; anchors.margins: 10
-        spacing: 10
+        id: rowContent
+        anchors.fill: parent; anchors.margins: Theme.compact ? 4 : 10
+        spacing: Theme.compact ? 4 : 10
         SButton {
             id: grip
             objectName: "calendar-grip-"+row.event.id
             text: "⠿"; quiet: true; enabled: !row.event.locked
-            Layout.preferredWidth: 30; Layout.preferredHeight: 40
+            Layout.preferredWidth: 30; Layout.preferredHeight: Theme.compact ? 28 : 40
             Accessible.name: qsTr("Przenieś konkurs %1").arg(row.event.number)
             hint: qsTr("Przeciągnij; klawiatura: Ctrl+↑ / Ctrl+↓")
             MouseArea {
@@ -53,7 +54,7 @@ Item {
         }
         SCheck { Layout.preferredWidth: 24; text: ""; checked: !!row.event.selected; Accessible.name: qsTr("Zaznacz %1").arg(row.event.title); onClicked: row.backend.select(row.event.id,Qt.ControlModifier) }
         ColumnLayout {
-            Layout.fillWidth: true; spacing: 3
+            Layout.fillWidth: true; spacing: Theme.compact ? 1 : 3
             Label { text: row.event.number + ". " + row.event.title; font.family: Theme.displayFamily; font.pointSize: Theme.section; color: Theme.ink; Layout.fillWidth: true; elide: Text.ElideRight }
             Label { visible: row.backend.datesEnabled; text: row.event.dateText; color: row.event.date ? Theme.accent : Theme.warning; font.pointSize: Theme.caption; font.bold: true; Layout.fillWidth: true; elide: Text.ElideRight }
             Label { text: row.event.type + (row.event.team ? " · " + qsTr("Drużynowy") : "") + (row.event.trainings ? " · " + qsTr("Treningi: %1").arg(row.event.trainings) : "") + (row.event.trial ? " · " + qsTr("Próbna") : ""); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; elide: Text.ElideRight }

@@ -7,13 +7,13 @@ Rectangle {
     property bool compactHeight: false
     readonly property var page: navigation ? navigation.current : null
     readonly property bool home: !navigation || !navigation.canGoBack
-    implicitHeight: home ? Math.max(Theme.compact ? 32 : 42,Theme.bodyMetrics.height)+(Theme.compact ? 16 : 24) : width < 600 || compactHeight || Theme.compact ? Math.max(40,Theme.titleMetrics.height)+16 : Theme.headerHeight
+    implicitHeight: Theme.compact ? Math.max(Theme.bodyMetrics.height+12,Theme.titleMetrics.height+8) : home ? Math.max(42,Theme.bodyMetrics.height)+24 : width < 600 || compactHeight ? Math.max(40,Theme.titleMetrics.height)+16 : Theme.headerHeight
     color: Theme.background
     RowLayout {
-        anchors.fill: parent; anchors.margins: header.compactHeight || header.width < 600 ? 8 : 12
-        spacing: 12
+        anchors.fill: parent; anchors.margins: Theme.compact ? 4 : header.compactHeight || header.width < 600 ? 8 : 12
+        spacing: Theme.compact ? 6 : 12
         SButton { objectName: "navigateBack"; visible: !header.home; text: qsTr("Wstecz"); Accessible.description: "Alt+←"; quiet: true; onClicked: navigation.back() }
-        Image { visible: header.home; source: "qrc:/sj-sim.png"; sourceSize.width: 80; sourceSize.height: 80; Layout.preferredWidth: 42; Layout.preferredHeight: 42; fillMode: Image.PreserveAspectFit; Accessible.name: qsTr("Logo Sj.Sim") }
+        Image { visible: header.home; source: "qrc:/sj-sim.png"; sourceSize.width: 80; sourceSize.height: 80; Layout.preferredWidth: Theme.compact ? 28 : 42; Layout.preferredHeight: Theme.compact ? 28 : 42; fillMode: Image.PreserveAspectFit; Accessible.name: qsTr("Logo Sj.Sim") }
         ColumnLayout {
             Layout.fillWidth: true
             spacing: 2

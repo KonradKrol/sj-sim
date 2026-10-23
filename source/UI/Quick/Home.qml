@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.15
 
 Rectangle {
     id: home
-    readonly property bool editorial: width >= 1100 && height >= 900
+    readonly property bool editorial: !Theme.compact && width >= 1100 && height >= 900
     color: Theme.background
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
@@ -19,11 +19,11 @@ Rectangle {
             ColumnLayout {
                 width: scroll.availableWidth
                 spacing: 0
-                HomeHero { visible: home.height >= 1040; Layout.fillWidth: true; compact: home.width < 850 }
+                HomeHero { visible: !Theme.compact && home.height >= 1040; Layout.fillWidth: true; compact: home.width < 850 }
                 ColumnLayout {
                     Layout.fillWidth: true
-                    Layout.margins: Theme.compact ? 12 : home.width < 700 || home.height < 760 ? 16 : 32
-                    spacing: 16
+                    Layout.margins: Theme.compact ? 6 : home.width < 700 || home.height < 760 ? 16 : 32
+                    spacing: Theme.compact ? 6 : 16
                     RowLayout {
                         Layout.fillWidth: true
                         Label { text: qsTr("Symulacja"); font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.weight: Font.DemiBold; color: Theme.ink; Layout.fillWidth: true; wrapMode: Text.WordWrap }

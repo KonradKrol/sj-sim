@@ -3,10 +3,10 @@ import QtQuick.Controls 2.15
 
 Rectangle {
     id: bar
-    implicitHeight: Math.min(100, flow.implicitHeight + 16)
+    implicitHeight: Math.min(100, flow.implicitHeight + (Theme.compact ? 8 : 16))
     color: Theme.raised
     Flickable {
-        anchors.fill: parent; anchors.margins: 8
+        anchors.fill: parent; anchors.margins: Theme.compact ? 4 : 8
         contentWidth: width
         contentHeight: flow.implicitHeight
         clip: true
@@ -14,7 +14,7 @@ Rectangle {
         Flow {
             id: flow
             width: parent.width
-            spacing: 6
+            spacing: Theme.compact ? 3 : 6
             Repeater {
                 model: ui.actions
                 SButton {

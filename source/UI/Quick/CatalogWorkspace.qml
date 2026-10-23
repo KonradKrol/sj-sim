@@ -13,7 +13,7 @@ ColumnLayout {
     readonly property int editRequest: fields.editRequest || 0
     onEditRequestChanged: if(editRequest>0)editing=true
     onEditorChanged: if(editor)editing=true
-    spacing: 8
+    spacing: Theme.compact ? 4 : 8
     Loader {
         active: ui.profile === "DatabaseEditorWindow"
         Layout.fillWidth: true
@@ -36,7 +36,7 @@ ColumnLayout {
     }
     RowLayout {
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
-        spacing: 20
+        spacing: Theme.compact ? 8 : 20
         DataTable {
             visible: catalog.parallel || !catalog.editing || !catalog.editor
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0

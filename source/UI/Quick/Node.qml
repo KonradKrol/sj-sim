@@ -18,7 +18,7 @@ FocusScope {
     Column {
     id: contents
     width: parent.width
-    spacing: 6
+    spacing: Theme.compact ? 3 : 6
     Label {
         visible: !!control.fields.label
         text: control.fields.label || ""
@@ -44,7 +44,7 @@ FocusScope {
     Component {
         id: labelBody
         RowLayout {
-            spacing: 10
+            spacing: Theme.compact ? 5 : 10
             Image {
                 visible: !!control.fields.image
                 source: control.fields.image || ""
@@ -110,7 +110,7 @@ FocusScope {
     Component {
         id: choiceBody
         Column {
-            spacing: 6
+            spacing: Theme.compact ? 3 : 6
             SChoice {
                 width: parent.width
                 searchable: !!control.fields.searchable
@@ -133,7 +133,7 @@ FocusScope {
         id: sliderBody
         Slider {
             id: slider
-            implicitHeight: 40
+            implicitHeight: Theme.compact ? 28 : 40
             from: control.fields.minimum; to: control.fields.maximum; value: control.fields.value; stepSize: control.fields.step || 1
             Accessible.name: control.fields.accessibleName || control.fields.label || control.fields.tip || control.fields.name
             onMoved: ui.edit(control.fields.id,value)

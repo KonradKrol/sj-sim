@@ -584,9 +584,12 @@ static void appearanceRegressions(MainWindow &main) {
     const bool oldCompact=appearance->compactUi();const qreal oldScale=appearance->textScale();appearance->setCompactUi(false);appearance->setTextScale(1);
     QDialog fixture(&main);auto *layout=new QVBoxLayout(&fixture);auto *button=new QPushButton("Density probe");button->setObjectName("densityProbe");layout->addWidget(button);fixture.show();QTest::qWait(120);
     auto *projected=item(scene(&fixture)->rootObject(),"action-densityProbe");check(projected,"appearance probe button exists");const qreal normal=projected->height();
-    appearance->setCompactUi(true);QTest::qWait(80);check(projected->height()<normal && appearance->textScale()==1,"compact UI reduces control spacing independently of text size");
+    appearance->setCompactUi(true);QTest::qWait(80);check(projected->height()<=normal*.75 && appearance->textScale()==1,"compact UI reduces button height by at least a quarter independently of text size");
     appearance->setTextScale(.75);QuickAppearance persisted;check(persisted.compactUi() && persisted.textScale()==.75,"compact density and smaller text persist across appearance instances");
-    fixture.reject();main.resize(360,480);QTest::qWait(80);auto *navigation=main.findChild<QuickUi *>();navigation->showAppearance();QTest::qWait(120);
+    fixture.reject();appearance->setTextScale(1);main.resize(1024,640);QTest::qWait(120);scene(&main)->grabFramebuffer().save(output+"/compact-home.png");
+    CompetitionConfigWindow densityPage(CompetitionConfigWindow::SingleCompetition,&main);densityPage.show();QTest::qWait(150);scene(&densityPage)->grabFramebuffer().save(output+"/compact-competition.png");
+    appearance->setTextScale(1.3);appearance->setDark(true);main.resize(360,480);QTest::qWait(150);scene(&densityPage)->grabFramebuffer().save(output+"/compact-competition-narrow.png");densityPage.reject();appearance->setTextScale(1);appearance->setDark(false);
+    main.resize(360,480);QTest::qWait(80);auto *navigation=main.findChild<QuickUi *>();navigation->showAppearance();QTest::qWait(120);
     QWidget *popup=nullptr;for(auto *widget:QApplication::allWidgets())if(widget->isVisible() && widget->property("sjQuickUtility").toBool())popup=widget;
     check(popup && popup->height()<=main.height()-24,"appearance controls fit the smallest application height");auto *view=popup->findChild<QQuickWidget *>();
     clickControl(view,"compactUiToggle");check(!appearance->compactUi(),"compact setting can be changed through its visible appearance control");navigation->closeAppearance();

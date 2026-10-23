@@ -14,13 +14,13 @@ AbstractButton {
     readonly property bool compact: Theme.compact || Window.window && Window.window.height < 760
     hoverEnabled: true
     implicitWidth: 320
-    implicitHeight: Math.max(Theme.compact ? 152 : compact ? 188 : 192, content.implicitHeight + padding * 2)
+    implicitHeight: Math.max(Theme.compact ? 112 : compact ? 188 : 192, content.implicitHeight + padding * 2)
     Accessible.name: title
     Accessible.description: description
-    padding: compact ? 16 : 24
+    padding: Theme.compact ? 8 : compact ? 16 : 24
     contentItem: Column {
         id: content
-        spacing: card.compact ? 10 : 14
+        spacing: Theme.compact ? 4 : card.compact ? 10 : 14
         Item {
             width: parent.width; height: Theme.captionMetrics.height + 4
             Label { text: card.number; color: card.featured ? Theme.signal : Theme.accent; font.family: Theme.mono; font.pointSize: Theme.caption }
@@ -34,13 +34,13 @@ AbstractButton {
         }
         Label { text: card.description; color: card.featured ? Theme.headerMuted : Theme.muted; font.pointSize: Theme.body; lineHeight: 1.2; width: parent.width; wrapMode: Text.WordWrap }
         Item {
-            width: parent.width; height: Math.max(action.implicitHeight,32)
+            width: parent.width; height: Math.max(action.implicitHeight,Theme.compact ? 22 : 32)
             Label { id: action; text: card.detail; color: card.featured ? Theme.signal : Theme.accent; font.pointSize: Theme.caption; font.weight: Font.DemiBold; width: parent.width - 42; wrapMode: Text.WordWrap; anchors.verticalCenter: parent.verticalCenter }
             Label { anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter; text: "↗"; color: card.featured ? Theme.signal : Theme.accent; font.pointSize: Theme.heading }
         }
     }
     background: Surface {
-        sweep: card.featured ? 48 : 28
+        sweep: Theme.compact ? 12 : card.featured ? 48 : 28
         corner: 8
         fillColor: card.featured ? Theme.stadium : card.hovered ? Theme.raised : Theme.surface
         edgeColor: card.activeFocus ? Theme.accent : card.featured ? Theme.signal : Theme.accent

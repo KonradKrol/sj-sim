@@ -8,10 +8,10 @@ Pane {
     property bool focused: false
     readonly property var fields: node ? node.values : ({})
     readonly property bool panel: fields.kind === "panel"
-    padding: panel ? 16 : 0
+    padding: panel ? (Theme.compact ? 6 : 16) : 0
     background: Surface { visible: group.panel; fillColor: Theme.surface; sweep: 28 }
     contentItem: Column {
-        spacing: 12
+        spacing: Theme.gap
         Label {
             visible: group.panel && !!group.fields.text
             width: parent.width
@@ -39,7 +39,7 @@ Pane {
         GridLayout {
             id: grid
             width: parent.width
-            columnSpacing: 16; rowSpacing: 12
+            columnSpacing: Theme.compact ? 8 : 16; rowSpacing: Theme.gap
             readonly property bool parallel: group.fields.kind === "row" || group.fields.kind === "split" || group.fields.kind === "sections" || group.fields.kind === "form"
             columns: parallel ? Math.max(1, Math.min(childrenRepeater.count, group.fields.kind === "form" ? 3 : 100, Math.floor((width + 16) / (group.fields.kind === "split" || group.fields.kind === "sections" ? 400 : group.fields.kind === "form" ? 220 : 260)))) : 1
             Repeater {
@@ -67,7 +67,7 @@ Pane {
         }
         Flow {
             width: parent.width
-            spacing: 6
+            spacing: Theme.compact ? 3 : 6
             visible: !group.fields.menuActions && !!group.fields.shortcuts && group.fields.shortcuts.length > 0
             Repeater {
                 model: group.fields.shortcuts || []
