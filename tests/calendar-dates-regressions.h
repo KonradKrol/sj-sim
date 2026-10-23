@@ -63,6 +63,11 @@ static void calendarDateUiRegressions(MainWindow &main)
     clickControl(scene(&manager),"calendarPlanDates");QTest::qWait(100);
     check(item(scene(&manager)->rootObject(),"calendarDatePlanner"),"planner opens directly from calendar toolbar");
     auto *input=item(scene(&manager)->rootObject(),"date-input-plan-start");check(input,"planner date input exists");
+    const auto originalText=input->property("text").toString();
+    auto editDate=[&](const QString &text){clickControl(scene(&manager),"date-input-plan-start");QTest::keyClick(scene(&manager),Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(scene(&manager),text);QTest::keyClick(scene(&manager),Qt::Key_Tab);QTest::qWait(80);};
+    editDate("2026-02-30");auto *dateField=item(scene(&manager)->rootObject(),"date-field-plan-start");check(dateField && !dateField->property("error").toString().isEmpty(),"invalid date displays a validation error");
+    check(!item(scene(&manager)->rootObject(),"date-plan-preview")->isEnabled(),"invalid start dates disable the preview");
+    editDate(originalText);check(dateField->property("error").toString().isEmpty() && item(scene(&manager)->rootObject(),"date-plan-preview")->isEnabled(),"restoring the original valid date clears the error and enables planning");
     clickControl(scene(&manager),"date-input-plan-start");QTest::keyClick(scene(&manager),Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(scene(&manager),"2026-11-27");QTest::keyClick(scene(&manager),Qt::Key_Tab);QTest::qWait(80);
     clickControl(scene(&manager),"date-plan-preview");QTest::qWait(100);check(backend->datePlan().size()==10 && backend->datePlan().first().toMap().value("date").toString()=="2026-11-28","visible planner previews weekend dates");
     clickControl(scene(&manager),"date-plan-apply");QTest::qWait(120);check(calendar->getCompetitionsReference().first()->getScheduledDate()==QDate(2026,11,28),"visible apply button commits the date plan");

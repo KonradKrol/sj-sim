@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 ColumnLayout {
     id: field
+    objectName: "date-field-"+name
     property var backend
     property string value: ""
     property string name: "date"
@@ -23,7 +24,7 @@ ColumnLayout {
             placeholderText: field.mixed ? qsTr("Różne daty") : qsTr("Wybierz datę lub wpisz RRRR-MM-DD")
             Accessible.name: field.label
             onEditingFinished: {
-                if(text === field.backend.dateText(field.value))return
+                if(text === field.backend.dateText(field.value)){field.error="";return}
                 var iso=field.backend.normalizeDate(text)
                 if(iso.length){field.error="";field.committed(iso)}
                 else field.error=qsTr("Nieprawidłowa data. Użyj kalendarza lub formatu RRRR-MM-DD.")
