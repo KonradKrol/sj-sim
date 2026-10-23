@@ -187,6 +187,13 @@ QVariantList QuickBridge::childNodes(QLayout *layout) {
     if(!layout) return children;
     if(auto *form=qobject_cast<QFormLayout *>(layout)) {
         for(int row=0;row<form->rowCount();++row) {
+            // Qt also returns a spanning item for FieldRole. Project it once,
+            // before handling the separate label/field cells.
+            if(auto *item=form->itemAt(row,QFormLayout::SpanningRole)) {
+                auto *entry=item->widget()?node(item->widget()):layoutNode(item->layout());
+                if(entry)children.append(QVariant::fromValue(entry));
+                continue;
+            }
             auto *labelItem=form->itemAt(row,QFormLayout::LabelRole);
             auto *fieldItem=form->itemAt(row,QFormLayout::FieldRole);
             if(labelItem && fieldItem && labelItem->widget() && (fieldItem->widget() || fieldItem->layout())) {
@@ -198,7 +205,7 @@ QVariantList QuickBridge::childNodes(QLayout *layout) {
                     values["label"]=label ? label->text().remove('&') : QString();
                     field->update(values,field->children()); children.append(QVariant::fromValue(field));
                 }
-            } else for(auto role:{QFormLayout::LabelRole,QFormLayout::FieldRole,QFormLayout::SpanningRole}) {
+            } else for(auto role:{QFormLayout::LabelRole,QFormLayout::FieldRole}) {
                 if(auto *item=form->itemAt(row,role)) {
                     auto *entry=item->widget()?node(item->widget()):layoutNode(item->layout());
                     if(entry) children.append(QVariant::fromValue(entry));
@@ -268,6 +275,9 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
     }
     data["shortcuts"]=shortcuts;
     data["menuActions"]=widget->property("quickMenuActions").toBool();
+    // The classification editor has explicit actions for each points table.
+    // Keep its keyboard shortcuts without rendering another button row.
+    if(qobject_cast<ClassificationEditorWidget *>(widget))data["menuActions"]=true;
     if(auto *list=qobject_cast<DatabaseItemsListView *>(widget)) {
         QVariantList actions;
         for(const auto &value:shortcuts) {

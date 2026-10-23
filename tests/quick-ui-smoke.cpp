@@ -1841,6 +1841,7 @@ static void dataPackUiRegressions(MainWindow &main) {
 #include "classification-regressions.h"
 #include "calendar-dates-regressions.h"
 #include "navigation-performance.h"
+#include "ui-duplication-regressions.h"
 
 static void backendRegressions() {
     packCatalogRecoveryRegression();
@@ -1979,6 +1980,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--single-jumps-benchmark")){singleJumpsBenchmark(main);return 0;}
     if(app.arguments().contains("--single-jumps-only")){normalSamplingRegression();singleSimulationRegression();singleGateRegression(main);singleJumpsBenchmark(main);return 0;}
     if(app.arguments().contains("--navigation-benchmark")){navigationPerformance(main);return 0;}
+    if(app.arguments().contains("--ui-duplicates-only")){uiDuplicationRegressions(main);return 0;}
     backendRegressions();
     if(app.arguments().contains("--team-only")){main.show();runCompetition(main,2);return 0;}
     if(app.arguments().contains("--interaction-only")){interactionRegressions(main);return 0;}
