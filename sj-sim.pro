@@ -17,6 +17,7 @@ UI_DIR = .ui
 win32: DEFINES += NOMINMAX
 
 SOURCES += \
+    source/global/CountryCodes.cpp \
     source/UI/AuthorWindow.cpp \
     source/UI/AppSettings/CountriesEditorTableModel.cpp \
     source/UI/AppSettings/CountriesEditorWindow.cpp \
@@ -160,6 +161,7 @@ SOURCES += \
     source/utilities/functions.cpp
 
 HEADERS += \
+    source/global/CountryCodes.h \
     source/UI/AuthorWindow.h \
     source/UI/ResponsiveWindowUtils.h \
     source/UI/AppSettings/CountriesEditorTableModel.h \
@@ -432,6 +434,7 @@ contains(CONFIG, competition_quick_smoke) {
 contains(CONFIG, quick_ui_smoke) {
     contains(CONFIG, widgets_only): error(quick_ui_smoke requires the Qt Quick interface)
     QT += testlib
+    win32: LIBS += -luser32
     TARGET = sj-sim-ui-smoke
     SOURCES -= source/main.cpp
     SOURCES += tests/quick-ui-smoke.cpp

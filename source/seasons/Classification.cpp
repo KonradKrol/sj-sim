@@ -1,4 +1,5 @@
  #include "Classification.h"
+#include "../global/CountryCodes.h"
 
 #include <QJsonObject>
 #include <QJsonArray>
@@ -84,6 +85,7 @@ ClassificationSingleResult *Classification::getResultOfIndividualJumper(Jumper *
 
 ClassificationSingleResult *Classification::getResultOfTeam(QString teamCode)
 {
+    teamCode = CountryCodes::toFis(teamCode);
     for(auto & result : results)
     {
         if(result->getTeamCode() == teamCode){

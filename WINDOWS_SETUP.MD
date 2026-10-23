@@ -232,6 +232,8 @@ Następnie sprawdź nawigację i wszystkie osiem lokalnych ekranów menu w natyw
 if ($LASTEXITCODE -ne 0) { throw "Natywna nawigacja Windows nie przeszła" }
 & $smokeExe --home-launch-only
 if ($LASTEXITCODE -ne 0) { throw "Natywne otwieranie ekranów Windows nie przeszło" }
+& $smokeExe --race-options-only
+if ($LASTEXITCODE -ne 0) { throw "Opcje konkursu na Windows nie przeszły" }
 ```
 
 `--navigation-only` wymusza również ponowne zdarzenie Show podczas tworzenia widoku: odtwarza błąd ujawniony na Windowsie nawet w rendererze offscreen. `--home-launch-only` otwiera sezony, konkurs, pojedyncze skoki, bazę, ustawienia, autora, pomoc i podziękowania, wraca do menu i odrzuca testowe zmiany bazy.
@@ -239,6 +241,8 @@ if ($LASTEXITCODE -ne 0) { throw "Natywne otwieranie ekranów Windows nie przesz
 Weryfikacja poprawek Windows (22.10.2026, Release): oba zakresy zakończyły się kodem 0 w `offscreen` oraz w natywnym oknie z domyślnym rendererem Windows. Zwykłe, wdrożone `sj-sim.exe --quick-competition` również uruchomiono i zamknięto z kodem 0, bez dodatkowych zmiennych środowiskowych. Przed zabezpieczeniem inicjalizacji nowy test ponownego Show kończył się wyjątkiem `0xc0000005` w `QStackedLayout::addWidget`.
 
 Inne przydatne zakresy: `--single-jumps-only`, `--ux-only`, `--workflow-only`, `--appearance-only`; pomiar: `--single-jumps-benchmark`. Testy pracują na tymczasowych kopiach danych i ustawień, ale pliki bazowe nadal muszą znajdować się obok testowego `.exe`. Obrazy trafiają do `ui-renders` przy tym pliku. Testy GUI trzeba zweryfikować również na Windowsie — pozytywny wynik linuksowego renderera offscreen nie potwierdza wszystkich zachowań Windows/GPU.
+
+Aktualizacja 23.10.2026: natywne testy sprawdzają także ukrycie kontrolerów przed pierwszym `Show` oraz systemowe `IsWindowVisible`. `--race-options-only` klika „Przebieg”, „Warunki” i „Skok” przy dwóch szerokościach, sprawdza ich widoczną zawartość i zamyka panele. Szczegóły poprawek i zgodności starych zapisów z kodami FIS: [raport Windows UI i FIS](docs/WINDOWS_UI_AND_FIS_2026-10-23.md).
 
 Do testu zgodności Widgets utwórz **osobny** katalog, np. `build-win-widgets`, i powtórz build z `CONFIG+=release CONFIG+=widgets_only`, bez `quick_ui_smoke`. Przygotuj jego dane tak samo. Nie usuwaj Widgets ani jego zależności z normalnego buildu Quick.
 

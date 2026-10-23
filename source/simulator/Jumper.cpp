@@ -1,4 +1,5 @@
 #include "Jumper.h"
+#include "../global/CountryCodes.h"
 #include "../global/CountryFlagsManager.h"
 #include "../global/GlobalDatabase.h"
 
@@ -16,7 +17,7 @@
 
 Jumper::Jumper(const QString &name, const QString &surname, const QString &countryCode, const JumperSkills &skills) : name(name),
     surname(surname),
-    countryCode(countryCode),
+    countryCode(CountryCodes::toFis(countryCode)),
     jumperSkills(skills),
     Identifiable()
 {
@@ -229,5 +230,5 @@ QString Jumper::getCountryCode() const
 
 void Jumper::setCountryCode(const QString &newCountryCode)
 {
-    countryCode = newCountryCode;
+    countryCode = CountryCodes::toFis(newCountryCode);
 }

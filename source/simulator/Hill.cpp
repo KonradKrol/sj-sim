@@ -1,4 +1,5 @@
 #include "Hill.h"
+#include "../global/CountryCodes.h"
 #include "Landing.h"
 
 #include "../global/CountryFlagsManager.h"
@@ -15,7 +16,7 @@
 #include <QMessageBox>
 
 Hill::Hill(const QString &name, const QString &countryCode, double KPoint, double HSPoint, double pointsForMeter, double pointsForKPoint, double pointsForFrontWind, double pointsForBackWind, double pointsForGate, double takeoffEffect, double flightEffect, double realHS, bool autoPointsForKPoint, bool autoPointsForMeter, bool autoPointsForBackWind) : name(name),
-    countryCode(countryCode),
+    countryCode(CountryCodes::toFis(countryCode)),
     KPoint(KPoint),
     HSPoint(HSPoint),
     pointsForMeter(pointsForMeter),
@@ -302,6 +303,7 @@ double Hill::calculateBestFlightHeightLevel(Hill *hill)
 
 QVector<Hill *> Hill::getHillsListByCountryCode(QVector<Hill> &hills, QString countryCode)
 {
+    countryCode = CountryCodes::toFis(countryCode);
     QVector<Hill *> toReturn;
     for(auto & hill : hills)
     {
@@ -458,7 +460,7 @@ QString Hill::getCountryCode() const
 
 void Hill::setCountryCode(const QString &newCountryCode)
 {
-    countryCode = newCountryCode;
+    countryCode = CountryCodes::toFis(newCountryCode);
 }
 
 double Hill::getKPoint() const

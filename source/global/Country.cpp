@@ -1,4 +1,5 @@
 #include "Country.h"
+#include "CountryCodes.h"
 
 QString Country::getName() const
 {
@@ -27,10 +28,10 @@ QString Country::getAlpha3() const
 
 void Country::setAlpha3(const QString &newAlpha3)
 {
-    alpha3 = newAlpha3;
+    alpha3 = CountryCodes::toFis(newAlpha3);
 }
 
 Country::Country(const QString &name, const QString &alpha2, const QString &alpha3) : name(name),
     alpha2(alpha2),
-    alpha3(alpha3)
+    alpha3(CountryCodes::toFis(alpha3))
 {}

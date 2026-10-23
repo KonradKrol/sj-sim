@@ -1,5 +1,7 @@
 # Do kontynuacji: interfejs Windows
 
+**Aktualizacja 23.10.2026:** użytkownik polecił kontynuować. Naprawę prezentacji stron, testy opcji konkursu i przejście na kody FIS opisano w [raporcie wykonanych prac](WINDOWS_UI_AND_FIS_2026-10-23.md). Poniżej zachowano historyczne zgłoszenie i punkt wyjścia; wcześniejsze polecenie oczekiwania już nie obowiązuje.
+
 Zapis zgłoszenia użytkownika po sesji 22.10.2026. Użytkownik polecił zapisać problemy na jutro i zaczekać na jego polecenie kontynuacji. Nie rozpoczynać napraw w ramach samego zapisu.
 
 ## Otwarte problemy zgłoszone przez użytkownika

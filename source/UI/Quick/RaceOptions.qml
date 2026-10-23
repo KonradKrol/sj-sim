@@ -12,7 +12,7 @@ ColumnLayout {
     RowLayout {
         Layout.fillWidth: true
         Label { text: qsTr("Opcje konkursu"); color: Theme.ink; font.pointSize: Theme.body; font.weight: Font.DemiBold; Layout.fillWidth: true }
-        SButton { id: closeButton; text: "×"; quiet: true; Accessible.name: qsTr("Zamknij"); onClicked: workspace.closeRequested() }
+        SButton { id: closeButton; objectName: "raceOptionsClose"; text: "×"; quiet: true; Accessible.name: qsTr("Zamknij"); onClicked: workspace.closeRequested() }
     }
     SectionTabs {
         Layout.fillWidth: true

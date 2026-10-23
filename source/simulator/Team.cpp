@@ -1,8 +1,9 @@
 #include "Team.h"
+#include "../global/CountryCodes.h"
 #include <QDebug>
 #include <QJsonArray>
 
-Team::Team(const QString &countryCode) : countryCode(countryCode),
+Team::Team(const QString &countryCode) : countryCode(CountryCodes::toFis(countryCode)),
     Identifiable()
 {
 }
@@ -104,7 +105,7 @@ QVector<Jumper *> Team::getJumpersFilteredByCountryCode(QVector<Jumper> &jumpers
     QVector<Jumper *> vector;
     for(auto & jumper : jumpers)
     {
-        if(jumper.getCountryCode().toUpper() == countryCode.toUpper())
+        if(jumper.getCountryCode() == CountryCodes::toFis(countryCode))
             vector.push_back(&jumper);
     }
     return vector;
@@ -115,7 +116,7 @@ QVector<Jumper *> Team::getJumpersFilteredByCountryCode(QVector<Jumper *> &jumpe
     QVector<Jumper *> vector;
     for(auto & jumper : jumpers)
     {
-        if(jumper->getCountryCode().toUpper() == countryCode.toUpper())
+        if(jumper->getCountryCode() == CountryCodes::toFis(countryCode))
             vector.push_back(jumper);
     }
     return vector;
@@ -133,6 +134,7 @@ void Team::cutTeamJumpers(Team *team, int jumpersCount)
 
 Team *Team::getTeamByCountryCode(QVector<Team> *teams, QString countryCode)
 {
+    countryCode = CountryCodes::toFis(countryCode);
     for(auto & team : *teams)
     {
         if(team.getCountryCode() == countryCode)
@@ -143,6 +145,7 @@ Team *Team::getTeamByCountryCode(QVector<Team> *teams, QString countryCode)
 
 Team Team::getTeamObjectByCountryCode(QVector<Team> *teams, QString countryCode)
 {
+    countryCode = CountryCodes::toFis(countryCode);
     for(auto & team : *teams)
     {
         if(team.getCountryCode() == countryCode)
@@ -153,6 +156,7 @@ Team Team::getTeamObjectByCountryCode(QVector<Team> *teams, QString countryCode)
 
 bool Team::containsTeamByCode(QVector<Team> &teams, QString code)
 {
+    code = CountryCodes::toFis(code);
     for(auto & t : teams)
     {
         if(t.getCountryCode() == code)
@@ -163,6 +167,7 @@ bool Team::containsTeamByCode(QVector<Team> &teams, QString code)
 
 bool Team::containsTeamByCode(QVector<Team *> &teams, QString code)
 {
+    code = CountryCodes::toFis(code);
     for(auto & t : teams)
     {
         if(t->getCountryCode() == code)
@@ -205,7 +210,7 @@ QString Team::getCountryCode() const
 
 void Team::setCountryCode(const QString &newCountryCode)
 {
-    countryCode = newCountryCode;
+    countryCode = CountryCodes::toFis(newCountryCode);
 }
 
 void Team::setJumper(Jumper *jumper, int index)

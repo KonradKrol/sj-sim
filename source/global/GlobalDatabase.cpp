@@ -1,4 +1,5 @@
 #include "GlobalDatabase.h"
+#include "CountryCodes.h"
 
 #include <QFile>
 #include <QByteArray>
@@ -747,6 +748,7 @@ Country * GlobalDatabase::getCountryByAlpha2(QString alpha2)
 
 Country * GlobalDatabase::getCountryByAlpha3(QString alpha3)
 {
+    alpha3 = CountryCodes::toFis(alpha3);
     for(auto & c : countries)
     {
         if(c.getAlpha3() == alpha3)

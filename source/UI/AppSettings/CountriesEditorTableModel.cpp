@@ -16,7 +16,7 @@ QVariant CountriesEditorTableModel::headerData(int section, Qt::Orientation orie
         switch(section)
         {
         case 0:
-            return tr("Kod alpha3");
+            return tr("Kod FIS");
         case 1:
             return tr("Kod alpha2");
         case 2:

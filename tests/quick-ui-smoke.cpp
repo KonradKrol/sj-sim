@@ -43,6 +43,8 @@
 #include "../source/UI/ResultsShowing/JumpDataDetailedInfoWindow.h"
 #include "../source/single-jumps/SingleJumpsManager.h"
 #include "../source/global/GlobalDatabase.h"
+#include "../source/global/CountryCodes.h"
+#include "../source/global/CountryFlagsManager.h"
 #include "../source/global/GlobalAppSettings.h"
 #include "../source/global/GlobalSimulationSettings.h"
 #include "../source/global/MyRandom.h"
@@ -96,6 +98,9 @@
 #include "../source/competitions/CompetitionManagers/IndividualCompetitionManager.h"
 #include <memory>
 #include <functional>
+#ifdef Q_OS_WIN
+#include <qt_windows.h>
+#endif
 
 static void check(bool ok,const QString &message) { if(!ok) { qCritical().noquote()<<"FAIL:"<<message; std::exit(1); } }
 static QQuickItem *item(QQuickItem *root,const QString &name) {
@@ -223,6 +228,27 @@ static int buttonId(QuickNode *node,const QString &text) {
     for(const auto &child:node->children()+node->values().value("buttons").toList()) if(auto *entry=child.value<QuickNode *>()) { const int found=buttonId(entry,text);if(found>=0)return found; }
     return -1;
 }
+static void raceOptionsRegressions(MainWindow &main,CompetitionManagerWindow *window) {
+    auto *view=scene(window);
+    for(const auto &size:QList<QSize>{{1240,900},{520,900}}) {
+        main.resize(size);QTest::qWait(150);
+        for(const auto &category:QList<QPair<QString,int>>{{"raceOptions",0},{"raceConditionsOptions",1},{"raceJumpOptions",2}}) {
+            const auto before=view->grabFramebuffer();
+            clickControl(view,category.first);QTest::qWait(120);
+            auto *panel=view->rootObject()->findChild<QObject *>("raceOptionsPanel");
+            auto *workspace=item(view->quickWindow()->contentItem(),"raceOptionsWorkspace");
+            check(panel && panel->property("visible").toBool() && panel->property("opened").toBool(),"competition option panel actually opens: "+category.first);
+            check(workspace && workspace->isVisible() && workspace->property("section").toInt()==category.second,"competition option has the requested visible section: "+category.first);
+            const auto bounds=workspace->mapRectToScene(workspace->boundingRect());
+            check(workspace->window()==view->quickWindow() && bounds.width()>200 && bounds.height()>100 && QRectF(QPointF(),view->size()).contains(bounds.center()),"competition options are inside the visible application viewport");
+            check(before!=view->grabFramebuffer(),"opening competition options changes the rendered frame");
+            main.grab().save(output+QString("/race-options-%1-%2.png").arg(category.second).arg(size.width()));
+            clickControl(view,"raceOptionsClose");QTest::qWait(100);
+            check(!panel->property("visible").toBool(),"competition options close and leave the competition visible");
+        }
+    }
+    qInfo()<<"PASS: Przebieg, Warunki and Skok open visibly and close at desktop and narrow widths";
+}
 static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bulkAction=0) {
     Q_UNUSED(main)
     auto *db=GlobalDatabase::get();
@@ -270,6 +296,9 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                 GlobalAppSettings::get()->setLiveCompetition(false);GlobalAppSettings::get()->setLiveCompetitionSpeedMulti(speed);return;
             }
             window->findChild<QCheckBox *>("checkBox_liveCompetition")->setChecked(false);
+            if(QCoreApplication::arguments().contains("--race-options-only")) {
+                raceOptionsRegressions(main,window);window->reject();return;
+            }
             if(bulk) {
                 QSignalSpy resets(window->findChild<StartListModel *>(),&QAbstractItemModel::modelReset);
                 QSignalSpy rowChanges(window->findChild<StartListModel *>(),&QAbstractItemModel::dataChanged);
@@ -566,20 +595,35 @@ static void authorRegressions(MainWindow &main) {
     qInfo()<<"PASS: author navigation, responsive portrait, project/social links, icons and acknowledgements dialog";
 }
 
+class TaskPresentationProbe : public QObject {
+public:
+    TaskPresentationProbe() { qApp->installEventFilter(this); }
+    ~TaskPresentationProbe() override { qApp->removeEventFilter(this); }
+protected:
+    bool eventFilter(QObject *object,QEvent *event) override {
+        auto *dialog=qobject_cast<QDialog *>(object);
+        if(event->type()==QEvent::Show && dialog && !qobject_cast<QMessageBox *>(dialog)
+            && !qobject_cast<QInputDialog *>(dialog) && !qobject_cast<QProgressDialog *>(dialog)
+            && !qobject_cast<QFileDialog *>(dialog) && !dialog->property("sjQuickUtility").toBool()) {
+            check(dialog->testAttribute(Qt::WA_DontShowOnScreen) && dialog->testAttribute(Qt::WA_ShowWithoutActivating),"task controller is suppressed before its first Show reaches native window mapping");
+        }
+        return false;
+    }
+};
 class ReentrantDialogShowProbe : public QObject {
 public:
     explicit ReentrantDialogShowProbe(QDialog *dialog) : m_dialog(dialog) { qApp->installEventFilter(this); }
     ~ReentrantDialogShowProbe() override { qApp->removeEventFilter(this); }
     bool triggered = false;
 protected:
-    bool eventFilter(QObject *object,QEvent *event) override {
-        if(!triggered && object==m_dialog && event->type()==QEvent::ChildAdded
-            && object->property("sjQuickInstalled").toBool()) {
-            auto *bridge=object->findChild<QuickBridge *>(QString(),Qt::FindDirectChildrenOnly);
+    bool eventFilter(QObject *,QEvent *event) override {
+        if(!triggered && event->type()==QEvent::ChildAdded
+            && m_dialog->property("sjQuickInstalled").toBool()) {
+            auto *bridge=m_dialog->findChild<QuickBridge *>(QString(),Qt::FindDirectChildrenOnly);
             if(bridge && !bridge->view()) {
                 triggered=true;
                 QEvent nestedShow(QEvent::Show);
-                QCoreApplication::sendEvent(object,&nestedShow);
+                QCoreApplication::sendEvent(m_dialog,&nestedShow);
             }
         }
         return false;
@@ -588,6 +632,7 @@ private:
     QDialog *m_dialog;
 };
 static void navigationRegressions(MainWindow &main) {
+    TaskPresentationProbe presentationProbe;
     main.show();QTest::qWait(100);
     auto *navigation=main.findChild<QuickUi *>();check(navigation && !navigation->canGoBack(),"navigation starts at home");
     QDialog first(&main);first.setWindowTitle("First page");auto *layout=new QVBoxLayout(&first);auto *name=new QLineEdit("Retained",&first);layout->addWidget(name);
@@ -613,6 +658,7 @@ static void navigationRegressions(MainWindow &main) {
     qInfo()<<"PASS: one application window, nested navigation, state retention and shared appearance";
 }
 static void homeLaunchRegressions(MainWindow &main) {
+    TaskPresentationProbe presentationProbe;
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     check(QQuickStyle::name()==QStringLiteral("Basic"),"custom controls use a customizable style on Qt 6");
 #endif
@@ -644,6 +690,12 @@ static void homeLaunchRegressions(MainWindow &main) {
             auto *page=navigation->current();
             check(page && page->profile()==destination.second,"home launches the expected controller: "+destination.first);
             check(page->view() && page->view()->rootObject() && page->view()->status()==QQuickWidget::Ready,"home page has a fully constructed Quick view: "+destination.first);
+#ifdef Q_OS_WIN
+            auto *controller=qobject_cast<QWidget *>(page->parent());
+            check(controller && (!controller->internalWinId() || !IsWindowVisible(reinterpret_cast<HWND>(controller->internalWinId()))),"Windows never maps the task controller as a separate visible window: "+destination.first);
+#endif
+            check(page->view()->window()==&main,"task content is rendered inside the original main window");
+            main.grab().save(output+"/home-"+destination.first+".png");
             visited=true;inspect.stop();navigation->back();
         });
         inspect.start(20);deadline.start(15000);home->launch(destination.first);
@@ -682,7 +734,24 @@ static void clickControl(QQuickWidget *view,const QString &name) {
     auto *control=item(view->quickWindow()->contentItem(),name);
     if(!control || !control->isVisible() || !control->isEnabled()){applicationWindow->grab().save("/tmp/sj-click-failure.png");qInfo()<<"Control failure"<<name<<control<<(control?control->isVisible():false)<<(control?control->isEnabled():false);}
     check(control && control->isVisible() && control->isEnabled(),"clickable control: "+name);
+    // Windows can constrain requested test sizes to the monitor's work area.
+    // Scroll fields into view with real wheel events before clicking them.
+    for(auto *ancestor=control->parentItem();ancestor;ancestor=ancestor->parentItem()) {
+        if(!ancestor->inherits("QQuickFlickable"))continue;
+        const auto viewport=ancestor->mapRectToScene(ancestor->boundingRect()).intersected(QRectF(view->rect()));
+        for(int attempt=0;attempt<24 && !viewport.isEmpty();++attempt) {
+            const auto center=control->mapToScene(control->boundingRect().center());
+            if(center.y()>=viewport.top()+4 && center.y()<=viewport.bottom()-4)break;
+            const auto position=viewport.center();
+            QWheelEvent wheel(position,view->mapToGlobal(position.toPoint()),QPoint(),QPoint(0,center.y()>viewport.bottom()?-120:120),Qt::NoButton,Qt::NoModifier,Qt::NoScrollPhase,false);
+            QApplication::sendEvent(view,&wheel);QTest::qWait(80);
+        }
+    }
     const auto point=control->mapToItem(view->rootObject(),control->boundingRect().center()).toPoint();
+    if(!view->rect().contains(point)) {
+        applicationWindow->grab().save(output+"/click-outside-viewport.png");
+        qWarning()<<"Control outside viewport"<<name<<point<<view->rect();
+    }
     check(view->rect().contains(point),"control inside viewport: "+name);
     QTest::mouseClick(view,Qt::LeftButton,Qt::NoModifier,point);
     QTest::qWait(80);
@@ -1468,7 +1537,32 @@ static void singleJumpsBenchmark(MainWindow &main) {
     }
 }
 
+static void fisCountryRegressions() {
+    Jumper german("Test","Athlete","DEU");
+    auto legacyJumper=Jumper::getJsonObject(german);legacyJumper["country-code"]="DEU";
+    auto loadedJumper=Jumper::getFromJson(legacyJumper);
+    check(loadedJumper.getCountryCode()=="GER" && loadedJumper.getID()==german.getID(),"legacy ISO athlete loads with its FIS code and original identity");
+    check(Jumper::getJsonObject(loadedJumper).value("country-code")=="GER","athletes persist FIS codes after loading old ISO data");
+    Hill swiss("Test hill","CHE",90,100);
+    auto legacyHill=Hill::getJsonObject(swiss);legacyHill["country-code"]="CHE";
+    auto loadedHill=Hill::getFromJson(legacyHill);
+    check(loadedHill.getCountryCode()=="SUI" && loadedHill.getID()==swiss.getID(),"legacy ISO hill loads as SUI without changing identity");
+    Team slovenian("SVN");IdentifiableObjectsStorage storage;storage.add(&german);slovenian.getJumpersReference().append(&german);
+    auto legacyTeam=Team::getJsonObject(slovenian);legacyTeam["country-code"]="SVN";
+    auto loadedTeam=Team::getFromJson(legacyTeam,&storage);
+    check(loadedTeam.getCountryCode()=="SLO" && loadedTeam.getJumpers().first()==&german,"legacy team keeps its athlete links while adopting FIS codes");
+    QVector<Team> teams{loadedTeam};check(Team::getTeamByCountryCode(&teams,"SVN")==&teams[0] && Team::getTeamByCountryCode(&teams,"SLO")==&teams[0],"ISO and FIS aliases resolve to the same team");
+    Classification classification;storage.add(&classification);ClassificationSingleResult points(&classification,QString("CHE"));points.setPointsSum(125.5);
+    auto legacyPoints=ClassificationSingleResult::getJsonObject(points);legacyPoints["team-code"]="CHE";
+    auto loadedPoints=ClassificationSingleResult::getFromJson(legacyPoints,&storage);classification.getResultsReference().append(&loadedPoints);
+    check(loadedPoints.getTeamCode()=="SUI" && loadedPoints.getPointsSum()==125.5 && classification.getResultOfTeam("CHE")==&loadedPoints && classification.getResultOfTeam("SUI")==&loadedPoints,"historical classification points survive ISO-to-FIS aliases");
+    auto *db=GlobalDatabase::get();check(db->getCountryByAlpha3("DEU")==db->getCountryByAlpha3("GER") && db->getCountryByAlpha3("GER")->getAlpha3()=="GER","country metadata accepts both old ISO and new FIS codes");
+    check(!CountryFlagsManager::getFlagPixmap("GER").isNull() && CountryFlagsManager::getFlagPixmap("GER").toImage()==CountryFlagsManager::getFlagPixmap("DEU").toImage(),"FIS codes resolve the existing ISO flag assets");
+    check(CountryCodes::toFis(" che ")=="SUI" && CountryCodes::toFis("SUI")=="SUI" && CountryCodes::toFis("HRV")=="CRO" && CountryCodes::toFis("TTO")=="TTO" && CountryCodes::toFis("ZZZ")=="ZZZ","FIS codes normalize aliases while preserving current FIS and custom countries");
+    qInfo()<<"PASS: FIS countries, legacy databases, flags, team links and historical points";
+}
 static void backendRegressions() {
+    fisCountryRegressions();
     check(SingleJumpsManager().getImportance()==5.,"standalone jumps have a defined default importance");
     normalSamplingRegression();
     newRoundDefaultsRegression();
@@ -1610,6 +1704,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--author-only")){authorRegressions(main);return 0;}
     if(app.arguments().contains("--navigation-only")){navigationRegressions(main);return 0;}
     if(app.arguments().contains("--home-launch-only")){homeLaunchRegressions(main);return 0;}
+    if(app.arguments().contains("--race-options-only")){main.show();runCompetition(main,0);return 0;}
     if(app.arguments().contains("--backend-only"))return 0;
     if(app.arguments().contains("--bulk-only")) {main.show();for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);runCompetition(main,0,true,1);runCompetition(main,0,true,2);runCompetition(main,2,true,3);return 0;}
     if(app.arguments().contains("--competitions-only")) {

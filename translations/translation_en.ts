@@ -1825,8 +1825,8 @@ Are you sure?</translation>
     </message>
     <message>
         <location filename="../source/UI/AppSettings/CountriesEditorTableModel.cpp" line="19"/>
-        <source>Kod alpha3</source>
-        <translation>Alpha3 code</translation>
+        <source>Kod FIS</source>
+        <translation>FIS code</translation>
     </message>
     <message>
         <location filename="../source/UI/AppSettings/CountriesEditorTableModel.cpp" line="21"/>

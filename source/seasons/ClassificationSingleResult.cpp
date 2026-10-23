@@ -1,4 +1,5 @@
 #include "ClassificationSingleResult.h"
+#include "../global/CountryCodes.h"
 #include "../global/IdentifiableObjectsStorage.h"
 #include "../seasons/Classification.h"
 #include "../competitions/CompetitionInfo.h"
@@ -8,7 +9,7 @@ ClassificationSingleResult::ClassificationSingleResult(Classification *classific
 
 }
 
-ClassificationSingleResult::ClassificationSingleResult(Classification *classification, QString teamCode) : teamCode(teamCode), position(0), pointsSum(0), classification(classification), jumper(nullptr)
+ClassificationSingleResult::ClassificationSingleResult(Classification *classification, QString teamCode) : teamCode(CountryCodes::toFis(teamCode)), position(0), pointsSum(0), classification(classification), jumper(nullptr)
 {
 
 }
@@ -254,5 +255,5 @@ QString ClassificationSingleResult::getTeamCode() const
 
 void ClassificationSingleResult::setTeamCode(const QString &newTeamCode)
 {
-    teamCode = newTeamCode;
+    teamCode = CountryCodes::toFis(newTeamCode);
 }

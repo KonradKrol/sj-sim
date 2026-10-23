@@ -48,6 +48,18 @@ void fitChrome(QQuickWidget *view) {
         QObject::connect(root,&QQuickItem::implicitHeightChanged,view,resize);resize();
     }
 }
+bool isTaskController(QWidget *widget) {
+    return widget && (qobject_cast<QDialog *>(widget) || widget->inherits("JumpDataDetailedInfoWindow"))
+        && !qobject_cast<QFileDialog *>(widget) && !qobject_cast<QMessageBox *>(widget)
+        && !qobject_cast<QInputDialog *>(widget) && !qobject_cast<QProgressDialog *>(widget)
+        && !widget->property("sjQuickUtility").toBool();
+}
+void keepControllerOffscreen(QWidget *widget) {
+    widget->setAttribute(Qt::WA_DontShowOnScreen);
+    widget->setAttribute(Qt::WA_ShowWithoutActivating);
+    widget->setWindowModality(Qt::NonModal);
+    widget->setAttribute(Qt::WA_ShowModal,false);
+}
 }
 bool QuickUi::enabled() {
     return !qEnvironmentVariableIsSet("SJ_WIDGETS_UI") && !QCoreApplication::arguments().contains("--widgets");
@@ -131,7 +143,7 @@ void QuickUi::showCurrent() {
     if(auto *root=view->rootObject())root->setVisible(true);
     view->show();view->setFocus(Qt::OtherFocusReason);
     m_navigating=false;emit navigationChanged();
-    QTimer::singleShot(0,this,[this]{if(auto *bridge=current();bridge && bridge->view()){m_main->activateWindow();bridge->view()->setFocus(Qt::OtherFocusReason);}});
+    QTimer::singleShot(0,this,[this]{if(auto *bridge=current();bridge && bridge->view()){if(!m_main->isActiveWindow())m_main->activateWindow();bridge->view()->setFocus(Qt::OtherFocusReason);}});
 }
 void QuickUi::showAppearance() {
     if(m_appearancePopup){m_appearancePopup->raise();return;}
@@ -144,6 +156,10 @@ void QuickUi::showAppearance() {
 }
 void QuickUi::closeAppearance() { if(m_appearancePopup)m_appearancePopup->close(); }
 bool QuickUi::eventFilter(QObject *object,QEvent *event) {
+    // Polish precedes native mapping. Suppress the controller window before its
+    // first Show, rather than moving an already-opening native dialog away.
+    if(event->type()==QEvent::Polish)
+        if(auto *widget=qobject_cast<QWidget *>(object);isTaskController(widget))keepControllerOffscreen(widget);
     if(object==m_main && event->type()==QEvent::Resize) {
         for(auto *window:QApplication::topLevelWidgets())if(window->isVisible()&&window->property("sjQuickTransient").toBool())requestTransientFit(window);
         if(auto *header=m_main->findChild<QQuickWidget *>("quickApplicationHeader");header && header->rootObject())
@@ -191,8 +207,7 @@ bool QuickUi::eventFilter(QObject *object,QEvent *event) {
         if(dialog->property("sjQuickPage").toBool()) {
             // Keep the controller's local event loop and visibility contract while
             // its view lives in the application stack; no native dialog is mapped.
-            dialog->setAttribute(Qt::WA_DontShowOnScreen);dialog->setAttribute(Qt::WA_ShowWithoutActivating);
-            dialog->setWindowModality(Qt::NonModal);dialog->setAttribute(Qt::WA_ShowModal,false);
+            keepControllerOffscreen(dialog);
         } else if(dialog->windowHandle() && m_main->windowHandle())dialog->windowHandle()->setTransientParent(m_main->windowHandle());
     }
     return false;
@@ -245,18 +260,12 @@ void QuickUi::attach(QWidget *dialog) {
     auto *legacy=new QWidget(dialog);legacy->setObjectName("widgetsContent");legacy->setLayout(dialog->layout());legacy->resize(1440,900);
     auto *layout=new QVBoxLayout(dialog);layout->setContentsMargins(0,0,0,0);
     auto *bridge=new QuickBridge(dialog,legacy,m_appearance);
-    makeView(dialog,bridge,m_appearance,this,"qrc:/ui/Screen.qml");
+    makeView(m_stack,bridge,m_appearance,this,"qrc:/ui/Screen.qml");
     legacy->hide();dialog->setStyleSheet(QString());
     auto *owner=dialog->parentWidget();
     dialog->setProperty("sjQuickOwner",QVariant::fromValue(static_cast<QObject *>(owner)));
-    if(owner && owner!=m_main)
-        connect(owner,&QObject::destroyed,dialog,[dialog]{delete dialog;});
-    m_navigating=true;
-    dialog->setAttribute(Qt::WA_DontShowOnScreen);dialog->setParent(m_main,Qt::Widget);
-    dialog->setAttribute(Qt::WA_TransparentForMouseEvents);
-    dialog->setWindowModality(Qt::NonModal);dialog->setAttribute(Qt::WA_ShowModal,false);
+    keepControllerOffscreen(dialog);
     if(!m_main->isVisible())m_main->show();
-    dialog->show();dialog->move(-32000,-32000);m_navigating=false;
     push(dialog,bridge);
     if(auto *modal=qobject_cast<QDialog *>(dialog))connect(modal,&QDialog::finished,bridge,[bridge]{bridge->suspend();});
     bridge->refresh();
