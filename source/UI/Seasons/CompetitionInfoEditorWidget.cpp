@@ -95,7 +95,7 @@ CompetitionInfo CompetitionInfoEditorWidget::getCompetitionInfoFromInputs()
         competition.setHill(defaultHill);
     competition.setSerieType(ui->comboBox_seriesType->currentIndex());
     competition.setRules(rulesEditor->getCompetitionRulesFromWidgetInputs());
-    if(competitionInfo){competition.setClassifications(competitionInfo->getClassifications());competition.setClassificationScoring(competitionInfo->getClassificationScoring());competition.setAdvancementClassification(competitionInfo->getAdvancementClassification());}
+    if(competitionInfo){competition.setScheduledDate(competitionInfo->getScheduledDate());competition.setClassifications(competitionInfo->getClassifications());competition.setClassificationScoring(competitionInfo->getClassificationScoring());competition.setAdvancementClassification(competitionInfo->getAdvancementClassification());}
 
 
     return competition;

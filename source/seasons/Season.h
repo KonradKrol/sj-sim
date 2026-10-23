@@ -24,8 +24,14 @@ private:
     QVector<SeasonCalendar *> calendars;
     SeasonCalendar * actualCalendar;
     int seasonNumber;
+    bool datesEnabled=false;
+    bool started=false;
 
 public:
+    bool getDatesEnabled() const { return datesEnabled; }
+    bool hasStarted() const;
+    bool setDatesEnabled(bool enabled);
+    void markStarted() { started=true; }
     int getSeasonNumber() const;
     void setSeasonNumber(int newSeasonNumber);
     QVector<SeasonCalendar *> getCalendars() const;

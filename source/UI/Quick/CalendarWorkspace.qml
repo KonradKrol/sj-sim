@@ -13,6 +13,7 @@ Item {
     property bool renaming: false
     property int section: 0
     property bool addingMany: false
+    property bool monthView: false
     implicitHeight: 640
     RowLayout {
         anchors.fill: parent; spacing: 16
@@ -63,9 +64,22 @@ Item {
             }
         }
         SectionTabs { visible: !calendar.tight && !(calendar.compact && calendar.editing); Layout.fillWidth: true; options: [qsTr("Konkursy"),qsTr("Klasyfikacje")]; currentIndex: calendar.section; onSelected: calendar.section=index }
+        Flow {
+            visible: calendar.section===0 && (!calendar.compact || !calendar.editing)
+            Layout.fillWidth: true; spacing: 6
+            SButton { objectName: "calendarEnableDates"; visible: !calendar.backend.datesEnabled; text: calendar.backend.canEnableDates ? qsTr("Włącz daty zawodów") : qsTr("Sezon bez dat"); enabled: calendar.backend.canEnableDates; hint: qsTr("Daty można włączyć przed rozpoczęciem sezonu. Ustawienie znajdziesz też w ustawieniach symulacji."); onClicked: calendar.backend.setDatesEnabled(true) }
+            SButton { objectName: "calendarMonthToggle"; visible: calendar.backend.datesEnabled; text: calendar.monthView ? qsTr("Lista i edycja") : qsTr("Widok kalendarza"); primary: calendar.monthView; onClicked: calendar.monthView=!calendar.monthView }
+            SButton { objectName: "calendarPlanDates"; visible: calendar.backend.datesEnabled; text: qsTr("Zaplanuj terminy"); onClicked: {calendar.monthView=false;calendar.editing=true;eventInspector.section=3} }
+        }
+        Loader {
+            Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
+            visible: active
+            active: calendar.section===0 && calendar.monthView && calendar.backend.datesEnabled
+            sourceComponent: CalendarDateOverview { backend: calendar.backend; onEditEvent: function(eventId){if(eventId.length)calendar.backend.select(eventId);calendar.monthView=false;calendar.editing=true;eventInspector.section=0} }
+        }
         CalendarClassifications { visible: calendar.section===1; Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; backend: calendar.backend; editorNode: calendar.node.values.classificationEditor }
         ColumnLayout {
-        visible: calendar.section===0
+        visible: calendar.section===0 && !(calendar.monthView && calendar.backend.datesEnabled)
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
         SectionTabs { visible: false; Layout.fillWidth: true; options: [qsTr("Konkursy"),qsTr("Edycja")]; currentIndex: calendar.editing ? 1 : 0; onSelected: calendar.editing=index === 1 }
         Flow {
@@ -125,6 +139,7 @@ Item {
                 }
             }
             CalendarInspector {
+                id: eventInspector
                 visible: !calendar.compact || calendar.editing
                 Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
                 Layout.preferredWidth: 500

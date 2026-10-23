@@ -764,16 +764,27 @@ static void clickControl(QQuickWidget *view,const QString &name) {
         for(int attempt=0;attempt<24 && !viewport.isEmpty();++attempt) {
             const auto center=control->mapToScene(QPointF(control->width()/2,control->height()/2));
             if(center.y()>=viewport.top()+4 && center.y()<=viewport.bottom()-4)break;
-            const auto position=viewport.center();
+            const QPointF position(viewport.left()+3,viewport.center().y());
             QWheelEvent wheel(position,view->mapToGlobal(position.toPoint()),QPoint(),QPoint(0,center.y()>viewport.bottom()?-120:120),Qt::NoButton,Qt::NoModifier,Qt::NoScrollPhase,false);
             QApplication::sendEvent(view,&wheel);QTest::qWait(80);
             for(int settle=0;settle<100 && ancestor->property("moving").toBool();++settle)QTest::qWait(20);
+            // A nested control can consume wheel events. Reveal it as an
+            // accessibility scroll-to action, then exercise its real pointer hit.
+            if(attempt==2){
+                QMetaObject::invokeMethod(ancestor,"cancelFlick");
+                const auto current=control->mapToScene(QPointF(control->width()/2,control->height()/2));
+                const double offset=ancestor->property("contentY").toDouble()+current.y()-viewport.center().y();
+                ancestor->setProperty("contentY",qBound(0.,offset,qMax(0.,ancestor->property("contentHeight").toDouble()-ancestor->height())));
+                QTest::qWait(100);
+            }
         }
     }
     const auto point=control->mapToItem(view->rootObject(),QPointF(control->width()/2,control->height()/2)).toPoint();
     if(!view->rect().contains(point)) {
         applicationWindow->grab().save(output+"/click-outside-viewport.png");
         qWarning()<<"Control outside viewport"<<name<<point<<view->rect();
+        for(auto *ancestor=control->parentItem();ancestor;ancestor=ancestor->parentItem())if(ancestor->inherits("QQuickFlickable"))
+            qCritical()<<"FAIL: scroll diagnostic"<<ancestor->objectName()<<ancestor->height()<<ancestor->property("contentHeight")<<ancestor->property("contentY")<<ancestor->mapToScene(QPointF());
     }
     check(view->rect().contains(point),"control inside viewport: "+name);
     QTest::mouseClick(view,Qt::LeftButton,Qt::NoModifier,point);
@@ -1792,8 +1803,10 @@ static void dataPackUiRegressions(MainWindow &main) {
 }
 
 #include "classification-regressions.h"
+#include "calendar-dates-regressions.h"
 
 static void backendRegressions() {
+    calendarDateRegressions();
     classificationScoringRegressions();
     dataPackRegressions();
     roundPointsRegressions();
@@ -1945,6 +1958,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--round-points-bulk-only")){main.show();for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);return 0;}
     if(app.arguments().contains("--packs-only")){dataPackUiRegressions(main);return 0;}
     if(app.arguments().contains("--classifications-only")){classificationUiRegressions(main);return 0;}
+    if(app.arguments().contains("--dates-only")){calendarDateUiRegressions(main);return 0;}
     if(app.arguments().contains("--backend-only"))return 0;
     if(app.arguments().contains("--bulk-only")) {main.show();for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);runCompetition(main,0,true,1);runCompetition(main,0,true,2);runCompetition(main,2,true,3);return 0;}
     if(app.arguments().contains("--competitions-only")) {

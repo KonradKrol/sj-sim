@@ -390,6 +390,7 @@ DISTFILES += \
     README.md
 
 RESOURCES += \
+    source/UI/Quick/QuickCalendarDates.cpp \
 assets.qrc
 
 # DPP previously depended on a Windows-only binary bundle. Use the small
@@ -430,6 +431,7 @@ contains(CONFIG, competition_quick_smoke) {
         source/UI/Quick/QuickPlot.cpp \
         source/UI/Quick/QuickSurface.cpp \
         source/UI/Quick/QuickCalendar.cpp \
+        source/UI/Quick/QuickCalendarDates.cpp \
         source/UI/Quick/QuickRoster.cpp
     HEADERS += source/UI/Quick/QuickRaceStats.h source/UI/Quick/QuickUi.h source/UI/Quick/QuickPlot.h source/UI/Quick/QuickSurface.h source/UI/Quick/QuickCalendar.h source/UI/Quick/QuickRoster.h
     RESOURCES += source/UI/Quick/quick-ui.qrc

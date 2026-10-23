@@ -11830,4 +11830,331 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>Advanced event parameters — unchecked fields inherit classification settings.</translation>
     </message>
 </context>
+<context>
+    <name>CalendarDateField</name>
+    <message>
+        <source>Data</source>
+        <translation>Date</translation>
+    </message>
+    <message>
+        <source>Następny miesiąc</source>
+        <translation>Next month</translation>
+    </message>
+    <message>
+        <source>Nieprawidłowa data. Użyj kalendarza lub formatu RRRR-MM-DD.</source>
+        <translation>Invalid date. Use the calendar or YYYY-MM-DD format.</translation>
+    </message>
+    <message>
+        <source>Otwórz kalendarz: %1</source>
+        <translation>Open calendar: %1</translation>
+    </message>
+    <message>
+        <source>Poprzedni miesiąc</source>
+        <translation>Previous month</translation>
+    </message>
+    <message>
+        <source>Różne daty</source>
+        <translation>Mixed dates</translation>
+    </message>
+    <message>
+        <source>Wybierz datę lub wpisz RRRR-MM-DD</source>
+        <translation>Choose a date or enter YYYY-MM-DD</translation>
+    </message>
+</context>
+<context>
+    <name>CalendarDatePlanner</name>
+    <message>
+        <source>%1 dni</source>
+        <translation>%1 days</translation>
+    </message>
+    <message>
+        <source>Anuluj</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>Co określoną liczbę dni</source>
+        <translation>Every specified number of days</translation>
+    </message>
+    <message>
+        <source>Co tydzień, w ten sam dzień</source>
+        <translation>Weekly, on the same weekday</translation>
+    </message>
+    <message>
+        <source>Kolejność symulacji wynika z listy. Ta operacja zmienia listę i może wymagać poprawienia powiązań kwalifikacji.</source>
+        <translation>Simulation follows list order. This operation changes that order and may require updating qualification links.</translation>
+    </message>
+    <message>
+        <source>Nowy początek — zachowaj odstępy</source>
+        <translation>New start — preserve spacing</translation>
+    </message>
+    <message>
+        <source>Odstęp w dniach</source>
+        <translation>Interval in days</translation>
+    </message>
+    <message>
+        <source>Pierwszy termin</source>
+        <translation>First date</translation>
+    </message>
+    <message>
+        <source>Podgląd · konkursy: %1</source>
+        <translation>Preview · events: %1</translation>
+    </message>
+    <message>
+        <source>Pokaż plan</source>
+        <translation>Preview plan</translation>
+    </message>
+    <message>
+        <source>Schemat terminów</source>
+        <translation>Date pattern</translation>
+    </message>
+    <message>
+        <source>Treningi: ile dni przed konkursem (0 = ten sam dzień)</source>
+        <translation>Training: days before the event (0 = same day)</translation>
+    </message>
+    <message>
+        <source>Uporządkuj przyszłe według dat</source>
+        <translation>Sort future events by date</translation>
+    </message>
+    <message>
+        <source>Usuń daty zaznaczonych</source>
+        <translation>Clear dates of selected events</translation>
+    </message>
+    <message>
+        <source>Weekendy: sobota i niedziela</source>
+        <translation>Weekends: Saturday and Sunday</translation>
+    </message>
+    <message>
+        <source>Wszystkie przyszłe konkursy</source>
+        <translation>All future events</translation>
+    </message>
+    <message>
+        <source>Wszystkie tego samego dnia</source>
+        <translation>All on the same day</translation>
+    </message>
+    <message>
+        <source>Zachowaj istniejące odstępy</source>
+        <translation>Preserve existing spacing</translation>
+    </message>
+    <message>
+        <source>Zaplanuj terminy</source>
+        <translation>Plan dates</translation>
+    </message>
+    <message>
+        <source>Zastosuj plan</source>
+        <translation>Apply plan</translation>
+    </message>
+    <message>
+        <source>Zaznacz konkursy bez daty</source>
+        <translation>Select undated events</translation>
+    </message>
+    <message>
+        <source>Zaznacz konkursy na liście lub zaplanuj wszystkie przyszłe. Najpierw zobaczysz podgląd; całą operację można cofnąć.</source>
+        <translation>Select events in the list or plan all future events. Preview your plan first; the entire operation can be undone.</translation>
+    </message>
+</context>
+<context>
+    <name>CalendarDateOverview</name>
+    <message>
+        <source>%1 konkursów w miesiącu · %2 bez daty w sezonie</source>
+        <translation>%1 events this month · %2 undated in the season</translation>
+    </message>
+    <message>
+        <source>+%1 więcej</source>
+        <translation>+%1 more</translation>
+    </message>
+    <message>
+        <source>Agenda miesiąca · wybierz zawody, aby je edytować</source>
+        <translation>Monthly agenda · select an event to edit</translation>
+    </message>
+    <message>
+        <source>Dzień bez zawodów — czas na odpoczynek lub podróż.</source>
+        <translation>No events this day — time for rest or travel.</translation>
+    </message>
+    <message>
+        <source>Następny miesiąc</source>
+        <translation>Next month</translation>
+    </message>
+    <message>
+        <source>Odwołany</source>
+        <translation>Cancelled</translation>
+    </message>
+    <message>
+        <source>Pierwsze zawody</source>
+        <translation>First event</translation>
+    </message>
+    <message>
+        <source>Pokaż konkursy bez daty (%1)</source>
+        <translation>Show undated events (%1)</translation>
+    </message>
+    <message>
+        <source>Poprzedni miesiąc</source>
+        <translation>Previous month</translation>
+    </message>
+    <message>
+        <source>Przejdź do daty</source>
+        <translation>Go to date</translation>
+    </message>
+    <message>
+        <source>Przypisz zaznaczone konkursy do tego dnia</source>
+        <translation>Assign selected events to this day</translation>
+    </message>
+    <message>
+        <source>Rozegrany</source>
+        <translation>Completed</translation>
+    </message>
+    <message>
+        <source>Ten miesiąc jest wolny. Zaplanuj zawody lub przejdź do innego miesiąca.</source>
+        <translation>This month is free. Plan events or go to another month.</translation>
+    </message>
+    <message>
+        <source>Wybierz dzień, aby zobaczyć szczegóły lub przypisać zaznaczone konkursy.</source>
+        <translation>Choose a day to see details or assign selected events.</translation>
+    </message>
+    <message>
+        <source>Zaplanowany</source>
+        <translation>Scheduled</translation>
+    </message>
+    <message>
+        <source>dziś</source>
+        <translation>today</translation>
+    </message>
+</context>
+<context>
+    <name>CalendarWorkspace</name>
+    <message>
+        <source>Daty można włączyć przed rozpoczęciem sezonu. Ustawienie znajdziesz też w ustawieniach symulacji.</source>
+        <translation>Dates can be enabled before the season starts. This option is also available in simulation settings.</translation>
+    </message>
+    <message>
+        <source>Lista i edycja</source>
+        <translation>List and editor</translation>
+    </message>
+    <message>
+        <source>Sezon bez dat</source>
+        <translation>Season without dates</translation>
+    </message>
+    <message>
+        <source>Widok kalendarza</source>
+        <translation>Calendar view</translation>
+    </message>
+    <message>
+        <source>Włącz daty zawodów</source>
+        <translation>Enable event dates</translation>
+    </message>
+    <message>
+        <source>Zaplanuj terminy</source>
+        <translation>Plan dates</translation>
+    </message>
+</context>
+<context>
+    <name>CalendarFields</name>
+    <message>
+        <source>Data zawodów (także dla treningów i serii próbnej)</source>
+        <translation>Event date (also for training and trial round)</translation>
+    </message>
+</context>
+<context>
+    <name>CalendarInspector</name>
+    <message>
+        <source>Terminy</source>
+        <translation>Dates</translation>
+    </message>
+</context>
+<context>
+    <name>QuickCalendar</name>
+    <message>
+        <source>%1: zawody w różnych miejscowościach tego samego dnia.</source>
+        <translation>%1: events in different towns on the same day.</translation>
+    </message>
+    <message>
+        <source>Aby zachować odstępy, najpierw nadaj daty wszystkim wybranym konkursom.</source>
+        <translation>To preserve spacing, first assign dates to all selected events.</translation>
+    </message>
+    <message>
+        <source>Bez daty</source>
+        <translation>Undated</translation>
+    </message>
+    <message>
+        <source>Bez daty: %1 konkursów. Możesz uzupełnić je zbiorczo.</source>
+        <translation>Undated: %1 events. You can schedule them together.</translation>
+    </message>
+    <message>
+        <source>Daty można włączyć tylko przed rozpoczęciem sezonu.</source>
+        <translation>Dates can only be enabled before the season starts.</translation>
+    </message>
+    <message>
+        <source>Konkurs %1 ma datę wcześniejszą niż poprzedni. Symulacja nadal używa kolejności listy.</source>
+        <translation>Event %1 has an earlier date than the previous event. Simulation still follows list order.</translation>
+    </message>
+    <message>
+        <source>Konkurs %1: kwalifikacje mają późniejszą datę.</source>
+        <translation>Event %1: qualifications have a later date.</translation>
+    </message>
+    <message>
+        <source>Konkurs %1: trening ma późniejszą datę niż zawody.</source>
+        <translation>Event %1: training has a later date than the event.</translation>
+    </message>
+    <message>
+        <source>Plan wykracza poza obsługiwany zakres dat.</source>
+        <translation>The plan exceeds the supported date range.</translation>
+    </message>
+    <message>
+        <source>Podgląd: %1 konkursów. Terminy zmienią się po zastosowaniu.</source>
+        <translation>Preview: %1 events. Dates will change after applying the plan.</translation>
+    </message>
+    <message>
+        <source>Przesunięcie wykracza poza obsługiwany zakres dat.</source>
+        <translation>The shift exceeds the supported date range.</translation>
+    </message>
+    <message>
+        <source>Przesunięto terminy z zachowaniem odstępów.</source>
+        <translation>Dates shifted with spacing preserved.</translation>
+    </message>
+    <message>
+        <source>Uporządkowano przyszłe konkursy według dat. Sprawdź powiązania kwalifikacji.</source>
+        <translation>Future events sorted by date. Check qualification links.</translation>
+    </message>
+    <message>
+        <source>Usunięto daty zaznaczonych konkursów. Możesz cofnąć zmianę.</source>
+        <translation>Dates cleared for selected events. You can undo this change.</translation>
+    </message>
+    <message>
+        <source>Wybierz nierozegrane konkursy do zaplanowania.</source>
+        <translation>Select unplayed events to schedule.</translation>
+    </message>
+    <message>
+        <source>Wybierz poprawną datę i odstęp od 1 do 366 dni.</source>
+        <translation>Choose a valid date and an interval from 1 to 366 days.</translation>
+    </message>
+    <message>
+        <source>Zastosowano plan dat. Możesz cofnąć zmianę.</source>
+        <translation>Date plan applied. You can undo this change.</translation>
+    </message>
+    <message>
+        <source>Zaznaczone konkursy nie mają jeszcze dat.</source>
+        <translation>Selected events do not have dates yet.</translation>
+    </message>
+</context>
+<context>
+    <name>NewSimulationSaveConfigurationWindow</name>
+    <message>
+        <source>Opcjonalny kalendarz z datami. Możesz włączyć go później, przed rozpoczęciem sezonu.</source>
+        <translation>Optional calendar with dates. You can enable it later, before the season starts.</translation>
+    </message>
+    <message>
+        <source>Używaj dat zawodów</source>
+        <translation>Use event dates</translation>
+    </message>
+</context>
+<context>
+    <name>SimulationSaveManagerWindow</name>
+    <message>
+        <source>Używaj dat zawodów w bieżącym sezonie</source>
+        <translation>Use event dates in the current season</translation>
+    </message>
+    <message>
+        <source>Daty można wyłączyć zawsze. Włączenie jest możliwe tylko przed rozpoczęciem sezonu. Wyłączenie zachowuje zaplanowane terminy.</source>
+        <translation>Dates can always be disabled. They can only be enabled before the season starts. Disabling preserves scheduled dates.</translation>
+    </message>
+</context>
 </TS>

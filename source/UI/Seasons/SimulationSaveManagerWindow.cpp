@@ -369,6 +369,11 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         ui->checkBox_showInstability->setChecked(simulationSave->getShowInstability());
     }
 
+    connect(ui->checkBox_calendarDates,&QCheckBox::toggled,this,[this](bool enabled){
+        simulationSave->getActualSeason()->setDatesEnabled(enabled);
+        fillNextCompetitionInformations();emit calendarEditor->changed();
+    });
+
     connect(this,&SimulationSaveManagerWindow::actualCalendarChanged,this,[this]{
         simulationSave->updateNextCompetitionIndex();fillNextCompetitionInformations();updateCompetitionConfigButton();setupClassificationsComboBox();
         const auto *active=simulationSave->getActualSeason()->getActualCalendar();ui->label_calendarName->setText(active?active->getName():tr("Brak"));
@@ -623,6 +628,7 @@ void SimulationSaveManagerWindow::showJumperAndHillsEditingHelp()
 
 void SimulationSaveManagerWindow::fillNextCompetitionInformations()
 {
+    {QSignalBlocker guard(ui->checkBox_calendarDates);auto *season=simulationSave->getActualSeason();ui->checkBox_calendarDates->setChecked(season->getDatesEnabled());ui->checkBox_calendarDates->setEnabled(season->getDatesEnabled() || !season->hasStarted());}
     if(simulationSave->getActualSeason() != nullptr
         && simulationSave->getActualSeason()->getActualCalendar() != nullptr)
         simulationSave->getActualSeason()->getActualCalendar()->normalizeCompetitionEvents();
@@ -632,6 +638,7 @@ void SimulationSaveManagerWindow::fillNextCompetitionInformations()
     if(calendar != nullptr && next != nullptr && next->getHill() != nullptr){
         int competitionIndex = calendar->getCompetitionsReference().indexOf(next);
         QString text = QString::number(competitionIndex + 1) + ". " + next->getHill()->getName() + " HS" + QString::number(next->getHill()->getHSPoint());
+        if(simulationSave->getActualSeason()->getDatesEnabled() && next->getScheduledDate().isValid())text += " · " + QLocale().toString(next->getScheduledDate(),QLocale::ShortFormat);
         ui->label_nextCompetitionIndexAndHill->setText(text);
         ui->label_hillFlag->setPixmap(CountryFlagsManager::getFlagPixmap(next->getHill()->getCountryCode().toLower()).scaled(ui->label_hillFlag->size()));
         switch(next->getSerieType())
@@ -775,6 +782,7 @@ void SimulationSaveManagerWindow::configNextSeason()
         simulationSave->fixJumpersFormInstabilities();
         Season season;
         season.setSeasonNumber(simulationSave->getSeasonsReference().last().getSeasonNumber() + 1);
+        season.setDatesEnabled(simulationSave->getActualSeason()->getDatesEnabled());
 
         simulationSave->getSeasonsReference().push_back(season);
         simulationSave->setActualSeason(&simulationSave->getSeasonsReference().last());
@@ -955,6 +963,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
 
             CompetitionManagerWindow * managerWindow = new CompetitionManagerWindow(competitionManager, this);
             managerWindow->setInrunSnowGenerator(InrunSnowGenerator(configWindow->getInrunSnowGeneratorSettingsWidget()->getBase(), configWindow->getInrunSnowGeneratorSettingsWidget()->getDeviation()));
+            simulationSave->getActualSeason()->markStarted();
             if(managerWindow->exec() == QDialog::Accepted)
             {
                 competition->setPlayed(true);

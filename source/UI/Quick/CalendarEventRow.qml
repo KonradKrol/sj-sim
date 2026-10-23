@@ -20,7 +20,7 @@ Item {
         Qt.callLater(function(){if(view && view.visible){view.currentIndex=position;view.positionViewAtIndex(position,ListView.Contain);var current=view.itemAtIndex(position);if(current)current.forceActiveFocus()}})
         source.select(eventId,modifiers)
     }
-    implicitHeight: event.pending || event.dependents ? 112 : 88
+    implicitHeight: (event.pending || event.dependents ? 112 : 88)+(backend.datesEnabled ? 22 : 0)
     Accessible.role: Accessible.ListItem
     Accessible.name: event.title + ", " + event.type
     Accessible.selected: !!event.selected
@@ -55,6 +55,7 @@ Item {
         ColumnLayout {
             Layout.fillWidth: true; spacing: 3
             Label { text: row.event.number + ". " + row.event.title; font.family: Theme.displayFamily; font.pointSize: Theme.section; color: Theme.ink; Layout.fillWidth: true; elide: Text.ElideRight }
+            Label { visible: row.backend.datesEnabled; text: row.event.dateText; color: row.event.date ? Theme.accent : Theme.warning; font.pointSize: Theme.caption; font.bold: true; Layout.fillWidth: true; elide: Text.ElideRight }
             Label { text: row.event.type + (row.event.team ? " · " + qsTr("Drużynowy") : "") + (row.event.trainings ? " · " + qsTr("Treningi: %1").arg(row.event.trainings) : "") + (row.event.trial ? " · " + qsTr("Próbna") : ""); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; elide: Text.ElideRight }
             Label { visible: !!row.event.pending || !!row.event.dependents; text: row.event.pending ? qsTr("Kwalifikacja z konkursu %1 — popraw kolejność").arg(row.event.pendingSource) : qsTr("Źródło kwalifikacji dla: %1 — popraw kolejność").arg(row.event.dependents); color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
             Label { visible: !!row.event.locked; text: row.event.played ? qsTr("Rozegrany") : row.event.cancelled ? qsTr("Odwołany") : qsTr("W trakcie"); color: Theme.warning; font.pointSize: Theme.caption }

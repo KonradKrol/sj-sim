@@ -19,6 +19,7 @@ public:
 
     QString getNameFromInput() const;
     int getSeasonNumberFromInput() const;
+    bool getDatesEnabledFromInput() const;
 
 private slots:
     void on_pushButton_submit_clicked();

@@ -2,6 +2,9 @@
 <file>ActionBar.qml</file>
 <file>ActionMenu.qml</file>
 <file>CalendarWorkspace.qml</file>
+<file>CalendarDateField.qml</file>
+<file>CalendarDatePlanner.qml</file>
+<file>CalendarDateOverview.qml</file>
 <file>CalendarClassifications.qml</file>
 <file>CalendarFields.qml</file>
 <file>CalendarInspector.qml</file>

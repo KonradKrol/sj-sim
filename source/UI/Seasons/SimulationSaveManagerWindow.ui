@@ -784,6 +784,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_14">
              <item>
+              <widget class="QCheckBox" name="checkBox_calendarDates">
+               <property name="text"><string>Używaj dat zawodów w bieżącym sezonie</string></property>
+               <property name="toolTip"><string>Daty można wyłączyć zawsze. Włączenie jest możliwe tylko przed rozpoczęciem sezonu. Wyłączenie zachowuje zaplanowane terminy.</string></property>
+              </widget>
+             </item>
+             <item>
               <widget class="QCheckBox" name="checkBox_showForm">
                <property name="text">
                 <string>Pokaż formę zawodników</string>

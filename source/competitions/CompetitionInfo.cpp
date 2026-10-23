@@ -545,6 +545,7 @@ QJsonObject CompetitionInfo::getJsonObject(CompetitionInfo &competition)
     QJsonObject scoring;
     for(auto it=competition.classificationScoring.cbegin();it!=competition.classificationScoring.cend();++it) scoring.insert(it.key(),it.value().toJson());
     object.insert("classification-scoring",scoring);
+    if(competition.scheduledDate.isValid()) object.insert("scheduled-date",competition.scheduledDate.toString(Qt::ISODate));
 
     if(competition.getPendingAdvancementCompetition())object.insert("pending-advancement-competition-id",competition.getPendingAdvancementCompetition()->getIDStr());
     if(competition.getAdvancementClassification() != nullptr)
@@ -609,6 +610,7 @@ CompetitionInfo CompetitionInfo::getFromJson(const QJsonObject &json, Identifiab
         comp.setHill(static_cast<Hill *>(storage->get(json.value("hill-id").toString())));
     comp.setResults(CompetitionResults::getFromJson(json.value("results").toObject(), storage));
     comp.setRules(CompetitionRules::getFromJson(json.value("rules").toObject()));
+    comp.scheduledDate=QDate::fromString(json.value("scheduled-date").toString(),Qt::ISODate);
     const auto scoring=json.value("classification-scoring").toObject();
     for(auto it=scoring.begin();it!=scoring.end();++it) comp.classificationScoring.insert(it.key(),ClassificationCompetitionSettings::fromJson(it.value().toObject()));
     comp.setSerieType(json.value("serie-type").toInt());

@@ -16,6 +16,8 @@ QJsonObject Season::getJsonObject(const Season &season)
     QJsonObject obj;
     obj.insert("id", season.getIDStr());
     obj.insert("season-number", season.getSeasonNumber());
+    obj.insert("dates-enabled",season.datesEnabled);
+    obj.insert("started",season.hasStarted());
     if(season.getActualCalendar() != nullptr)
         obj.insert("actual-calendar-id", season.getActualCalendar()->getIDStr());
     else
@@ -34,6 +36,8 @@ Season Season::getFromJson(QJsonObject obj, IdentifiableObjectsStorage * storage
     Season season;
     season.setID(sole::rebuild(obj.value("id").toString().toStdString()));
     season.setSeasonNumber(obj.value("season-number").toInt());
+    season.datesEnabled=obj.value("dates-enabled").toBool(false);
+    season.started=obj.value("started").toBool(false);
 
 
     /*QJsonArray array = obj.value("calendars").toArray();
@@ -106,4 +110,17 @@ int Season::getSeasonNumber() const
 void Season::setSeasonNumber(int newSeasonNumber)
 {
     seasonNumber = newSeasonNumber;
+}
+
+bool Season::hasStarted() const
+{
+    if(started)return true;
+    for(auto *calendar:calendars)for(auto *event:calendar->getCompetitionsReference())
+        if(event->getPlayed() || event->getCancelled() || !event->getResultsReference().getResultsReference().isEmpty())return true;
+    return false;
+}
+bool Season::setDatesEnabled(bool enabled)
+{
+    if(enabled && !datesEnabled && hasStarted())return false;
+    started=hasStarted();datesEnabled=enabled;return true;
 }

@@ -20,7 +20,7 @@ Pane {
         Label { visible: inspector.backend.selection.count > 1; text: qsTr("Zmiany dotyczą %1 konkursów").arg(inspector.backend.selection.count); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         Label { visible: inspector.backend.selection.count > 0 && inspector.backend.selection.locked; text: qsTr("Rozegrane wydarzenia są zablokowane."); color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         Label { visible: inspector.backend.selection.pendingSource>0; text: qsTr("Zachowano kwalifikację z konkursu %1. Przenieś źródło przed ten konkurs, aby przywrócić powiązanie.").arg(inspector.backend.selection.pendingSource); color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-        SectionTabs { visible: inspector.backend.selection.count > 0; options: [qsTr("Konkurs"),qsTr("Zasady"),qsTr("Powiązania")]; currentIndex: inspector.section; Layout.fillWidth: true; onSelected: inspector.section=index }
+        SectionTabs { visible: inspector.backend.selection.count > 0; options: inspector.backend.datesEnabled ? [qsTr("Konkurs"),qsTr("Zasady"),qsTr("Powiązania"),qsTr("Terminy")] : [qsTr("Konkurs"),qsTr("Zasady"),qsTr("Powiązania")]; currentIndex: inspector.section; Layout.fillWidth: true; onSelected: inspector.section=index }
         ScrollView {
             id: fieldsScroll
             Layout.fillWidth: true; Layout.fillHeight: true
@@ -28,7 +28,8 @@ Pane {
             contentWidth: availableWidth; clip: true
             ColumnLayout {
                 width: fieldsScroll.availableWidth
-                enabled: inspector.backend.selection.count > 0 && !inspector.backend.selection.locked
+                enabled: inspector.section===3 || (inspector.backend.selection.count > 0 && !inspector.backend.selection.locked)
+                CalendarDatePlanner { visible: inspector.section===3 && inspector.backend.datesEnabled; backend: inspector.backend; Layout.fillWidth: true }
                 CalendarFields { visible: inspector.section === 0; backend: inspector.backend; Layout.fillWidth: true; onEditRules: {inspector.backend.rulesTarget=target;inspector.section=1;inspector.editRequested()} }
                 ColumnLayout {
                     visible: inspector.section === 1

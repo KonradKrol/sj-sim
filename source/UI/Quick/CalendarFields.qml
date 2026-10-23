@@ -7,6 +7,14 @@ ColumnLayout {
     property var backend
     signal editRules(int target)
     spacing: 12
+    CalendarDateField {
+        visible: editorFields.backend.datesEnabled
+        Layout.fillWidth: true; backend: editorFields.backend; name: "event"
+        label: qsTr("Data zawodów (także dla treningów i serii próbnej)")
+        mixed: editorFields.backend.selection.date===-1
+        value: typeof editorFields.backend.selection.date==="string" ? editorFields.backend.selection.date : ""
+        onCommitted: function(iso){editorFields.backend.assignDate(iso)}
+    }
     Repeater {
         model: [
             {key:"hill",label:qsTr("Skocznia"),options:editorFields.backend.hills},

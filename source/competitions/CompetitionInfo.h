@@ -7,6 +7,7 @@ class AbstractCompetitionManager;
 class Season;
 class Classification;
 #include "../seasons/ClassificationScoring.h"
+#include <QDate>
 #include "CompetitionRules.h"
 #include "CompetitionResults.h"
 #include "CompetitionInfo.h"
@@ -49,6 +50,7 @@ public:
 
 private:
     QHash<QString, ClassificationCompetitionSettings> classificationScoring;
+    QDate scheduledDate;
     Hill * hill;
     CompetitionRules rules;
     CompetitionResults results;
@@ -84,6 +86,8 @@ public:
     void remapClassificationScoring(const QString &oldId, const QString &newId) {
         if(classificationScoring.contains(oldId)) classificationScoring.insert(newId,classificationScoring.take(oldId));
     }
+    QDate getScheduledDate() const { return scheduledDate; }
+    void setScheduledDate(QDate value) { scheduledDate=value; }
     Hill *getHill() const;
     void setHill(Hill *newHill);
     CompetitionRules getRules() const;

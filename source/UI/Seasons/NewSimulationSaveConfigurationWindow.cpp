@@ -1,6 +1,7 @@
 #include "NewSimulationSaveConfigurationWindow.h"
 #include "ui_NewSimulationSaveConfigurationWindow.h"
 #include <QDate>
+#include <QCheckBox>
 #include <QMessageBox>
 
 NewSimulationSaveConfigurationWindow::NewSimulationSaveConfigurationWindow(QStringList otherNames, QWidget *parent) :
@@ -9,6 +10,8 @@ NewSimulationSaveConfigurationWindow::NewSimulationSaveConfigurationWindow(QStri
     otherNames(otherNames)
 {
     ui->setupUi(this);
+    auto *dates=new QCheckBox(tr("Używaj dat zawodów"),this);dates->setObjectName("newSeasonDates");
+    dates->setToolTip(tr("Opcjonalny kalendarz z datami. Możesz włączyć go później, przed rozpoczęciem sezonu."));ui->formLayout->addRow(dates);
     ui->spinBox_seasonNumber->setValue(QDate::currentDate().year());
     ui->lineEdit_name->setMaxLength(80);
     ui->lineEdit_name->setPlaceholderText(tr("Np. Puchar Świata 2026"));
@@ -95,3 +98,5 @@ void NewSimulationSaveConfigurationWindow::on_pushButton_submit_clicked()
         ui->lineEdit_name->setText(name);
     accept();
 }
+
+bool NewSimulationSaveConfigurationWindow::getDatesEnabledFromInput() const { return findChild<QCheckBox *>("newSeasonDates")->isChecked(); }

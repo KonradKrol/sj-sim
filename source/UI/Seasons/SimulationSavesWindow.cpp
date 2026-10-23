@@ -121,6 +121,7 @@ void SimulationSavesWindow::on_pushButton_add_clicked()
 
         Season season;
         season.setSeasonNumber(simulationSaveWindow.getSeasonNumberFromInput());
+        season.setDatesEnabled(simulationSaveWindow.getDatesEnabledFromInput());
         season.setActualCalendar(nullptr);
         simulationSave->getSeasonsReference().push_back(season);
         simulationSave->setActualSeason(&simulationSave->getSeasonsReference().last());

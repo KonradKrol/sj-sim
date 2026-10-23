@@ -16,6 +16,11 @@ class ClassificationEditorWidget;
 class SimulationSave;
 class QuickCalendar : public QObject {
     Q_OBJECT
+    Q_PROPERTY(bool datesEnabled READ datesEnabled NOTIFY changed)
+    Q_PROPERTY(bool canEnableDates READ canEnableDates NOTIFY changed)
+    Q_PROPERTY(QVariantList datePlan READ datePlan NOTIFY changed)
+    Q_PROPERTY(QVariantList dateWarnings READ dateWarnings NOTIFY changed)
+    Q_PROPERTY(QString suggestedDate READ suggestedDate NOTIFY changed)
     Q_PROPERTY(QVariantList classEntries READ classEntries NOTIFY changed)
     Q_PROPERTY(QString classId READ classId NOTIFY changed)
     Q_PROPERTY(bool classLocked READ classLocked NOTIFY changed)
@@ -40,6 +45,24 @@ public:
     explicit QuickCalendar(CalendarEditorWidget *editor,QObject *parent);
     ~QuickCalendar() override;
     void sync();
+    bool datesEnabled() const;
+    bool canEnableDates() const;
+    QString suggestedDate() const;
+    QVariantList datePlan() const { return m_datePlan; }
+    QVariantList dateWarnings() const;
+    Q_INVOKABLE void setDatesEnabled(bool enabled);
+    Q_INVOKABLE QString normalizeDate(const QString &value) const;
+    Q_INVOKABLE QString dateText(const QString &iso) const;
+    Q_INVOKABLE QString offsetDate(const QString &iso,int days,int months=0) const;
+    Q_INVOKABLE QVariantMap monthData(const QString &iso) const;
+    Q_INVOKABLE void planDates(const QString &start,const QString &pattern,int interval,bool future=false,int trainingDays=0);
+    Q_INVOKABLE void applyDatePlan();
+    Q_INVOKABLE void discardDatePlan();
+    Q_INVOKABLE void shiftDates(int days);
+    Q_INVOKABLE void clearDates();
+    Q_INVOKABLE void assignDate(const QString &iso);
+    Q_INVOKABLE void sortDates();
+    Q_INVOKABLE void selectUndated();
     CompetitionRulesEditorWidget *rulesEditor() const;
     ClassificationEditorWidget *classificationEditor() const { return m_classEditor; }
     QVariantList classEntries() const;
@@ -91,6 +114,7 @@ signals:
     void changed();
 private:
     struct State {
+        QDate date;
         bool played=false,cancelled=false;Hill *hill=nullptr;CompetitionRules rules;short type=0;double importance=5;
         QVector<CompetitionInfo *> trainings;CompetitionInfo *trial=nullptr,*advancement=nullptr,*pending=nullptr;
         QHash<QString,ClassificationCompetitionSettings> scoring;
@@ -115,6 +139,9 @@ private:
     QStringList m_selected,m_advancementLabels;
     QVector<CompetitionInfo *> m_advancementOptions;
     QVariantList m_events,m_classifications;
+    QVariantList m_datePlan;
+    QHash<CompetitionInfo *,QDate> m_plannedDates;
+    void applyDates(const QHash<CompetitionInfo *,QDate> &dates);
     QVariantMap m_selection;
     QString m_message,m_language;
     bool m_dirty=true,m_mutating=false;
