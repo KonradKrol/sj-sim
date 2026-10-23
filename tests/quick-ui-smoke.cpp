@@ -256,6 +256,7 @@ static void raceOptionsRegressions(MainWindow &main,CompetitionManagerWindow *wi
 static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bulkAction=0) {
     Q_UNUSED(main)
     auto *db=GlobalDatabase::get();
+    const bool superTeam=QCoreApplication::arguments().contains("--super-team-only");
     CompetitionRules rules=db->getEditableCompetitionRules().first();
     rules.setHasDsq(false);rules.setCompetitionType(scenario==2?CompetitionRules::Team:CompetitionRules::Individual);
     rules.setJumpersInTeamCount(4);
@@ -264,14 +265,20 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
     const bool weighted=QCoreApplication::arguments().contains("--round-points-bulk-only");
     if(weighted) { if(scenario==2)second.setPreviousRoundsWeights({.5});else second.setResetPoints(true); }
     rules.setRounds({first,second});
+    if(superTeam){
+        bool found=false;for(const auto &preset:db->getEditableCompetitionRules())if(preset.getName()=="Super Team"){rules=preset;found=true;break;}
+        check(found && rules.getJumpersInTeamCount()==2 && rules.getRounds().size()==3,"real Super Team preset");
+        rules.setHasDsq(false);
+    }
     CompetitionConfigWindow config(CompetitionConfigWindow::SingleCompetition);
     config.getHillEditor()->setHill(&db->getEditableGlobalHills().first());config.getHillEditor()->fillHillInputs();
     config.getCompetitionRulesEditor()->setCompetitionRules(&rules);config.getCompetitionRulesEditor()->fillCompetitionRulesInputs();
     auto jumpers=config.getCompetitionJumpers();check(jumpers.size()>=16,"competition fixture");jumpers.resize(bulk?qMin(100,jumpers.size()):16);
     if(scenario==2) {
         QVector<Jumper *> all;for(auto &jumper:db->getEditableGlobalJumpers())all.append(&jumper);
-        auto teams=Team::constructTeamsVectorByJumpersList(all,4);check(teams.size()>=4,"team fixture");teams.resize(4);jumpers.clear();
-        for(auto &team:teams) { Team::cutTeamJumpers(&team,4);jumpers+=team.getJumpers(); } config.setCompetitionTeams(teams);
+        const int teamSize=superTeam?2:4;
+        auto teams=Team::constructTeamsVectorByJumpersList(all,teamSize);check(teams.size()>=(superTeam?13:4),"team fixture");teams.resize(superTeam?qMin(20,teams.size()):4);jumpers.clear();
+        for(auto &team:teams) { Team::cutTeamJumpers(&team,teamSize);jumpers+=team.getJumpers(); } config.setCompetitionTeams(teams);
     }
     config.setCompetitionJumpers(jumpers);
     if(scenario==1)config.setCompetitionGroups(KOGroup::constructKOGroups(&rules.getRoundsReference()[0],&jumpers,KOGroup::Classic,nullptr));
@@ -302,6 +309,42 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                 GlobalAppSettings::get()->setLiveCompetition(false);GlobalAppSettings::get()->setLiveCompetitionSpeedMulti(speed);return;
             }
             window->findChild<QCheckBox *>("checkBox_liveCompetition")->setChecked(false);
+            if(superTeam){
+                auto *manager=dynamic_cast<TeamCompetitionManager *>(window->getManager());check(manager,"Super Team manager");
+                const auto checkPreview=[&]{
+                    auto *preview=window->findChild<JumperCompetitionResultsWidget *>();check(preview && !preview->isHidden(),"automatic Super Team preview is visible");
+                    bool current=false;for(auto &team:manager->getResults()->getResultsReference())for(auto &member:team.getTeamJumpersResultsReference())if(&member==preview->getJumperResult())current=true;
+                    check(current,"automatic Super Team preview belongs to the current result buffers");
+                    const auto &jumps=preview->getJumperResult()->getJumpsReference();
+                    for(auto *details:preview->findChildren<JumpDataDetailedInfoWindow *>())if(details->isVisibleTo(preview)){
+                        bool currentJump=false;for(const auto &jump:jumps)if(&jump==details->getJumpData())currentJump=true;
+                        check(currentJump,"Super Team jump details point to a current jump after buffer rebuilding");
+                    }
+                    bridge->refresh();QTest::qWait(60);
+                };
+                for(int round=1;round<=3;++round){
+                    qInfo()<<"PASS: starting Super Team automatic round"<<round<<"teams"<<manager->getActualRoundTeamsReference().size();
+                    check(manager->getActualRound()==round,"Super Team round sequence");
+                    bridge->activate(id(bridge,"pushButton_jump"));QTest::qWait(60);
+                    if(round==2){
+                        window->autoSimulateGroup();checkPreview();
+                        check(manager->checkGroupEnd(),"automatic Super Team group ends at its boundary");
+                        bridge->activate(id(bridge,"pushButton_goToNext"));QTest::qWait(60);
+                        QTimer acceptCount;QObject::connect(&acceptCount,&QTimer::timeout,[&]{for(auto *widget:QApplication::allWidgets())if(auto *input=qobject_cast<QInputDialog *>(widget);input && input->isVisible()){input->setIntValue(3);input->accept();}});acceptCount.start(20);
+                        window->autoSimulateJumps();acceptCount.stop();checkPreview();
+                    }
+                    if(round==3)window->autoSimulateCompetition();else window->autoSimulateRound();
+                    checkPreview();
+                    check(manager->checkRoundEnd(),"Super Team automatic round completes both athlete groups");
+                    for(auto *team:manager->getActualRoundTeamsReference()){
+                        auto *result=manager->getResults()->getResultOfTeam(team);
+                        check(result && result->getJumps().size()==round*2 && std::isfinite(result->getPointsSum()),"Super Team keeps complete finite results");
+                    }
+                    qInfo()<<"PASS: completed Super Team automatic round"<<round;
+                    if(round<3){bridge->activate(id(bridge,"pushButton_goToNext"));checkPreview();QTest::qWait(100);}
+                }
+                check(manager->checkCompetitionEnd(),"Super Team finishes after three automatic rounds");window->accept();return;
+            }
             if(QCoreApplication::arguments().contains("--race-options-only")) {
                 raceOptionsRegressions(main,window);window->reject();return;
             }
@@ -1981,6 +2024,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--single-jumps-only")){normalSamplingRegression();singleSimulationRegression();singleGateRegression(main);singleJumpsBenchmark(main);return 0;}
     if(app.arguments().contains("--navigation-benchmark")){navigationPerformance(main);return 0;}
     if(app.arguments().contains("--ui-duplicates-only")){uiDuplicationRegressions(main);return 0;}
+    if(app.arguments().contains("--super-team-only")){main.show();runCompetition(main,2,true,1);return 0;}
     backendRegressions();
     if(app.arguments().contains("--team-only")){main.show();runCompetition(main,2);return 0;}
     if(app.arguments().contains("--interaction-only")){interactionRegressions(main);return 0;}

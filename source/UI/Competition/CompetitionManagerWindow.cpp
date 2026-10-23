@@ -35,6 +35,24 @@
 
 extern const QString appVersion;
 
+namespace {
+// Rebind after result mutations; team member buffers may have been replaced.
+void refreshAutomaticJumpPreview(JumperCompetitionResultsWidget *preview,CompetitionResults *results,Jumper *jumper)
+{
+    if(!jumper)return;
+    auto *result=results->getResultOfIndividualJumper(jumper);
+    if(!result)for(auto &teamResult:results->getResultsReference()){
+        result=teamResult.getTeamJumperResult(jumper);
+        if(result)break;
+    }
+    if(!result)return;
+    preview->setJumperResult(result);
+    preview->fillWidget();
+    preview->show();
+}
+}
+
+
 CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *manager, QWidget *parent, bool singleCompetition) :
     QDialog(parent),
     ui(new Ui::CompetitionManagerWindow),
@@ -646,6 +664,8 @@ void CompetitionManagerWindow::setupGoToNextButtonForNextRound()
 
     QMetaObject::Connection * const connection = new QMetaObject::Connection;
     *connection = connect(ui->pushButton_goToNext, &QPushButton::clicked, this, [this, connection](){
+        Jumper *previewJumper=!jumperResultsWidget->isHidden() && jumperResultsWidget->getJumperResult() ? jumperResultsWidget->getJumperResult()->getJumper() : nullptr;
+        jumperResultsWidget->hide();
         //Tu będzie ten dialog z edycją grup
         int condition1 = manager->getCompetitionRules()->getRoundsReference().count() > manager->getActualRound();
         int condition2 = false;
@@ -699,6 +719,7 @@ void CompetitionManagerWindow::setupGoToNextButtonForNextRound()
         focusCurrentJumper();
         ui->pushButton_jump->setFocus();
 
+        refreshAutomaticJumpPreview(jumperResultsWidget,manager->getResults(),previewJumper);
         QObject::disconnect(*connection);
         delete connection;
     });
@@ -802,6 +823,7 @@ void CompetitionManagerWindow::setupGoToNextButtonForCompetitionEnd()
     });
 }
 
+
 void CompetitionManagerWindow::autoSimulateRound()
 {
     if(manager->checkCompetitionEnd())
@@ -812,6 +834,8 @@ void CompetitionManagerWindow::autoSimulateRound()
         return;
 
     QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);
+    jumperResultsWidget->hide();
+    Jumper *lastSimulatedJumper = nullptr;
     if(getType() == CompetitionRules::Individual)
         resultsTableModel->setLastJumper(nullptr);
     else
@@ -822,6 +846,7 @@ void CompetitionManagerWindow::autoSimulateRound()
         setupSimulator();
         simulator.simulateJump();
         JumpData jump = simulator.getJumpData();
+        lastSimulatedJumper = jump.getJumper();
         if(manipulationPending)
         {
             currentInputJumpManipulator = JumpManipulator();
@@ -874,7 +899,6 @@ void CompetitionManagerWindow::autoSimulateRound()
         }
 
     }
-    jumperResultsWidget->show();
 
     startListModel->refresh();
     bulkSimulationInProgress = false;
@@ -923,6 +947,7 @@ void CompetitionManagerWindow::autoSimulateRound()
         setupGoToNextButtonForNextRound();
         showMessageBoxForNextRound();
     }
+    refreshAutomaticJumpPreview(jumperResultsWidget,manager->getResults(),lastSimulatedJumper);
 }
 
 void CompetitionManagerWindow::autoSimulateCompetition()
@@ -935,6 +960,8 @@ void CompetitionManagerWindow::autoSimulateCompetition()
         return;
 
     QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);
+    jumperResultsWidget->hide();
+    Jumper *lastSimulatedJumper = nullptr;
     if(getType() == CompetitionRules::Individual)
         resultsTableModel->setLastJumper(nullptr);
     else
@@ -945,6 +972,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
         setupSimulator();
         simulator.simulateJump();
         JumpData jump = simulator.getJumpData();
+        lastSimulatedJumper = jump.getJumper();
         if(manipulationPending)
         {
             currentInputJumpManipulator = JumpManipulator();
@@ -1035,7 +1063,6 @@ void CompetitionManagerWindow::autoSimulateCompetition()
             }
         }
     }
-    jumperResultsWidget->show();
 
     startListModel->refresh();
     bulkSimulationInProgress = false;
@@ -1080,6 +1107,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
         setupGoToNextButtonForCompetitionEnd();
         showMessageBoxForCompetitionEnd();
     }
+    refreshAutomaticJumpPreview(jumperResultsWidget,manager->getResults(),lastSimulatedJumper);
 }
 
 void CompetitionManagerWindow::autoSimulateGroup()
@@ -1092,6 +1120,8 @@ void CompetitionManagerWindow::autoSimulateGroup()
         return;
 
     QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);
+    jumperResultsWidget->hide();
+    Jumper *lastSimulatedJumper = nullptr;
     teamResultsTreeModel->setLastTeam(nullptr);
     if(getType() == CompetitionRules::Team){
         TeamCompetitionManager * tmManager = dynamic_cast<TeamCompetitionManager *>(manager);
@@ -1099,6 +1129,7 @@ void CompetitionManagerWindow::autoSimulateGroup()
             setupSimulator();
             simulator.simulateJump();
             JumpData jump = simulator.getJumpData();
+            lastSimulatedJumper = jump.getJumper();
             if(manipulationPending)
             {
                 currentInputJumpManipulator = JumpManipulator();
@@ -1132,7 +1163,6 @@ void CompetitionManagerWindow::autoSimulateGroup()
             if(manager->isAllJumpsAreFinished() == false)
                 manager->setActualJumperToNextUnfinished();
         }
-        jumperResultsWidget->show();
 
         startListModel->refresh();
         bulkSimulationInProgress = false;
@@ -1166,6 +1196,7 @@ void CompetitionManagerWindow::autoSimulateGroup()
             setupGoToNextButtonForNextGroup();
             showMessageBoxForNextGroup();
         }
+        refreshAutomaticJumpPreview(jumperResultsWidget,manager->getResults(),lastSimulatedJumper);
     }
 }
 
@@ -1180,12 +1211,15 @@ void CompetitionManagerWindow::autoSimulateJumps()
                                                 5, 1, 10000, 1, &ok);
     if(ok == true){
         QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);
+        jumperResultsWidget->hide();
+        Jumper *lastSimulatedJumper = nullptr;
         for(int i = 0; i < jumpsCount; i++){
             IndividualCompetitionManager * indManager = dynamic_cast<IndividualCompetitionManager *>(manager);
             TeamCompetitionManager * tmManager = dynamic_cast<TeamCompetitionManager *>(manager);
             setupSimulator();
             simulator.simulateJump();
             JumpData jump = simulator.getJumpData();
+            lastSimulatedJumper = jump.getJumper();
             if(manipulationPending)
             {
                 currentInputJumpManipulator = JumpManipulator();
@@ -1289,7 +1323,6 @@ void CompetitionManagerWindow::autoSimulateJumps()
                 }
             }
         }
-        jumperResultsWidget->show();
 
         startListModel->refresh();
         bulkSimulationInProgress = false;
@@ -1337,6 +1370,7 @@ void CompetitionManagerWindow::autoSimulateJumps()
             setupGoToNextButtonForCompetitionEnd();
             showMessageBoxForCompetitionEnd();
         }
+        refreshAutomaticJumpPreview(jumperResultsWidget,manager->getResults(),lastSimulatedJumper);
     }
 }
 
@@ -1621,6 +1655,9 @@ void CompetitionManagerWindow::cancelActualRound()
                              QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Yes)
         return;
 
+    Jumper *previewJumper=!jumperResultsWidget->isHidden() && jumperResultsWidget->getJumperResult() ? jumperResultsWidget->getJumperResult()->getJumper() : nullptr;
+    jumperResultsWidget->hide();
+
     for(auto & res : manager->getResults()->getResultsReference()){
         const int previousRound=qMin(res.getScoringRound(),manager->getActualRound()-1);
         const int perRound=res.getType()==CompetitionSingleResult::TeamResult?qMax(1,manager->getCompetitionRules()->getJumpersInTeamCount()):1;
@@ -1660,6 +1697,7 @@ void CompetitionManagerWindow::cancelActualRound()
 
     setupGoToNextButtonForCompetitionEnd();
     showMessageBoxForCompetitionEnd();
+    refreshAutomaticJumpPreview(jumperResultsWidget,manager->getResults(),previewJumper);
 }
 //dlaczego jak dodaje trzecii vector z drużynami, to pierwszy się zmienia?
 // W roundsTeams jest ta sama wartość ale we wskaźniku do niego jest 0 elementów, czyli być może istnieje dalej w pamięci i ma 0 elementów, ale w roundsTeams pojawił się nowy który ma te 12 ale inny adres.
