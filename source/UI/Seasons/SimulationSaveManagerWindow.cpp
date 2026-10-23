@@ -256,7 +256,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
                 std::unique_ptr<Classification> input(classificationEditor->getClassificationFromInputs());
                 auto *existing=calendar->getClassificationsReference()[row];
                 existing->setName(input->getName());existing->setClassificationType(input->getClassificationType());
-                existing->setPunctationType(input->getPunctationType());existing->setPointsForPlaces(input->getPointsForPlaces());existing->setAltPointsForPlaces(input->getAltPointsForPlaces());
+                existing->copyConfiguration(*input);
                 emit classificationsListView->getListModel()->dataChanged(classificationsListView->getListModel()->index(row,0),classificationsListView->getListModel()->index(row,0));
                 emit calendarTableModel->dataChanged(calendarTableModel->index(0,0),calendarTableModel->index(calendarTableModel->rowCount()-1,6));
                 setupClassificationsComboBox();

@@ -210,7 +210,7 @@ QVector<Team> TeamCompetitionManager::getFilteredTeamsByClassification(Competiti
     int lastQualifiedPosition = competition->getRulesPointer()->getRoundsReference()[0].getCount();
 
     bool exaequo = true;
-    for(auto & res : classification->getResultsReference()){ // Sprawdzamy, czy wystąpiło ex aequo.
+    for(auto & res : classification->getRankedResults()){ // Sprawdzamy, czy wystąpiło ex aequo.
         if(res->getPosition() == lastQualifiedPosition){
             exaequo = false;
             break;
@@ -218,7 +218,7 @@ QVector<Team> TeamCompetitionManager::getFilteredTeamsByClassification(Competiti
     }
     if(exaequo == true) // Jeżeli wystąpiło ex aequo
     {
-        for(auto & res : classification->getResultsReference()){
+        for(auto & res : classification->getRankedResults()){
             if(res->getPosition() > lastQualifiedPosition){
                 lastQualifiedPosition = res->getPosition();
                 break;
@@ -243,7 +243,7 @@ void TeamCompetitionManager::setStartListOrderByClassification(QVector<Team> & t
     if(classification->getClassificationType() == Classification::Team)
     {
         QVector<Team> tempTeams;
-        for(auto & result : classification->getResultsReference())
+        for(auto & result : classification->getRankedResults())
         {
             if(MyFunctions::vectorContains(teams, Team::getTeamByCountryCode(&teams, result->getTeamCode())) && result->getPointsSum() != 0)
                 tempTeams.push_back(*Team::getTeamByCountryCode(&teams, result->getTeamCode()));

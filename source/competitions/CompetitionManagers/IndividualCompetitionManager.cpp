@@ -212,7 +212,7 @@ QVector<Jumper *> IndividualCompetitionManager::getFilteredJumpersByClassificati
     int lastQualifiedPosition = competition->getRulesPointer()->getRoundsReference()[0].getCount();
 
     bool exaequo = true;
-    for(auto & res : classification->getResultsReference()){ // Sprawdzamy, czy wystąpiło ex aequo.
+    for(auto & res : classification->getRankedResults()){ // Sprawdzamy, czy wystąpiło ex aequo.
         if(res->getPosition() == lastQualifiedPosition){
             exaequo = false;
             break;
@@ -220,7 +220,7 @@ QVector<Jumper *> IndividualCompetitionManager::getFilteredJumpersByClassificati
     }
     if(exaequo == true)
     {
-        for(auto & res : classification->getResultsReference()){
+        for(auto & res : classification->getRankedResults()){
             if(res->getPosition() > lastQualifiedPosition){
                 lastQualifiedPosition = res->getPosition();
                 break;
@@ -243,7 +243,7 @@ void IndividualCompetitionManager::setStartListOrderByClassification(QVector<Jum
     if(classification->getClassificationType() == Classification::Individual)
     {
         QVector<Jumper *> tempJumpers;
-        for(auto & result : classification->getResultsReference())
+        for(auto & result : classification->getRankedResults())
         {
             if(jumpers.contains(result->getJumper()) && result->getPointsSum() != 0)
                 tempJumpers.push_back(result->getJumper());

@@ -2,6 +2,7 @@
 #define ABSTRACTCLASSIFICATION_H
 
 #include <QMap>
+#include "ClassificationScoring.h"
 #include <QString>
 #include <QJsonObject>
 #include "../utilities/Identifiable.h"
@@ -28,6 +29,12 @@ public:
         Team
     };
 
+    struct Contribution { Jumper *jumper=nullptr; QString country; double points=0; CompetitionSingleResult *result=nullptr; };
+    QVector<Contribution> contributions(CompetitionInfo *competition) const;
+    QVector<ClassificationSingleResult *> getRankedResults() const;
+    ClassificationOptions getOptions() const { return options; }
+    void setOptions(const ClassificationOptions &value) { options=value; }
+    void copyConfiguration(const Classification &source);
     void updatePositions();
     void sortInDescendingOrder();
     void sortInAscendingOrder();
@@ -49,6 +56,7 @@ public:
     void sendResultsWebhook(SimulationSave *save);
 
 private:
+    ClassificationOptions options;
     QString name;
     short classificationType;
     short punctationType;

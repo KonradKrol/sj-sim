@@ -11653,4 +11653,181 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>Done</translation>
     </message>
 </context>
+<context>
+    <name>ClassificationEditorWidget</name>
+    <message>
+        <source>Dodaj punktowane miejsce</source>
+        <translation>Add scoring place</translation>
+    </message>
+    <message>
+        <source>Dodaj sposób (kopia bieżącego)</source>
+        <translation>Add method (copy current)</translation>
+    </message>
+    <message>
+        <source>Domyślna</source>
+        <translation>Default</translation>
+    </message>
+    <message>
+        <source>Indywidualna: wybór według sumy punktów całej klasyfikacji; pozostali nie są wyświetlani. Drużynowa: N indywidualnych wyników kraju w każdym konkursie. Remis nie zwiększa limitu N.</source>
+        <translation>Individual: select by total classification points; other athletes are hidden. Team: select N individual results per country in each event. Ties never increase the N limit.</translation>
+    </message>
+    <message>
+        <source>Każdy konkurs wybiera jeden sposób osobno dla każdej klasyfikacji. Tabele mogą mieć dowolną liczbę miejsc i własne wartości punktów.</source>
+        <translation>Each competition selects a method separately for each classification. Tables can contain any number of places and custom point values.</translation>
+    </message>
+    <message>
+        <source>Liczba N</source>
+        <translation>Number N</translation>
+    </message>
+    <message>
+        <source>Maksymalny wiek (włącznie)</source>
+        <translation>Maximum age (inclusive)</translation>
+    </message>
+    <message>
+        <source>Mechanizm Pucharu Narodów: państwo otrzymuje punkty za wyniki drużyny w konkursach drużynowych oraz punkty za indywidualne wyniki skoczków tego państwa w konkursach indywidualnych. Oba źródła są sumowane. Dla klasyfikacji indywidualnej punktacja dodatkowa określa punkty zawodnika za miejsce jego drużyny w konkursie drużynowym.</source>
+        <translation>Nations Cup mechanism: a country receives points for team results in team events and for its athletes’ individual results in individual events. Both sources are added together. In an individual classification, additional scoring awards an athlete points for their team’s place in a team event.</translation>
+    </message>
+    <message>
+        <source>Minimalny wiek (włącznie)</source>
+        <translation>Minimum age (inclusive)</translation>
+    </message>
+    <message>
+        <source>N najgorszych z każdego kraju</source>
+        <translation>N worst from each country</translation>
+    </message>
+    <message>
+        <source>N najlepszych z każdego kraju</source>
+        <translation>N best from each country</translation>
+    </message>
+    <message>
+        <source>Nazwa sposobu</source>
+        <translation>Method name</translation>
+    </message>
+    <message>
+        <source>Opcjonalnie: mnożnik punktów, limit punktowanych miejsc, rok i granice wieku oraz liczba N dla punktacji kraju z wyników indywidualnych. Brak nadpisania zachowuje ustawienia klasyfikacji.</source>
+        <translation>Optional: points multiplier, scoring-place limit, reference year, age limits and N for a country’s individual-event contributions. Unspecified parameters inherit classification settings.</translation>
+    </message>
+    <message>
+        <source>Pomoc: punktacja dodatkowa i Puchar Narodów</source>
+        <translation>Help: additional scoring and the Nations Cup</translation>
+    </message>
+    <message>
+        <source>Pozwalaj konkursom nadpisywać parametry klasyfikacji</source>
+        <translation>Allow competitions to override classification parameters</translation>
+    </message>
+    <message>
+        <source>Punktacja dodatkowa</source>
+        <translation>Additional scoring</translation>
+    </message>
+    <message>
+        <source>Punkty drużyny (kraju) z indywidualnych wyników jej skoczków</source>
+        <translation>Team (country) points from its athletes’ individual results</translation>
+    </message>
+    <message>
+        <source>Punkty zawodnika za miejsce jego drużyny w konkursie drużynowym</source>
+        <translation>Athlete points for their team’s place in a team event</translation>
+    </message>
+    <message>
+        <source>Rok odniesienia dla wieku rocznikowego</source>
+        <translation>Reference year for annual age</translation>
+    </message>
+    <message>
+        <source>Sposób %1</source>
+        <translation>Method %1</translation>
+    </message>
+    <message>
+        <source>Sposób naliczania punktów</source>
+        <translation>Scoring method</translation>
+    </message>
+    <message>
+        <source>Usuń ostatnie miejsce</source>
+        <translation>Remove last place</translation>
+    </message>
+    <message>
+        <source>Usuń sposób</source>
+        <translation>Remove method</translation>
+    </message>
+    <message>
+        <source>Uwzględniaj skoczków o nieznanym wieku</source>
+        <translation>Include athletes with unknown age</translation>
+    </message>
+    <message>
+        <source>Wiek = rok odniesienia − rok urodzenia. W konkursie drużynowym cały skład musi spełniać filtr wieku, aby drużyna zdobyła punkty za swoje miejsce.</source>
+        <translation>Age = reference year − birth year. In a team event, every team member must meet the age filter for the team to score points for its place.</translation>
+    </message>
+    <message>
+        <source>Wszyscy</source>
+        <translation>All</translation>
+    </message>
+    <message>
+        <source>Wybór skoczków z kraju</source>
+        <translation>Athletes from each country</translation>
+    </message>
+    <message>
+        <source>Włącz filtr wieku</source>
+        <translation>Enable age filter</translation>
+    </message>
+    <message>
+        <source>Zaawansowane: filtry i parametry kontekstu</source>
+        <translation>Advanced: filters and context parameters</translation>
+    </message>
+</context>
+<context>
+    <name>QuickCalendar</name>
+    <message>
+        <source>Domyślna</source>
+        <translation>Default</translation>
+    </message>
+    <message>
+        <source>Minimalny wiek nie może przekraczać maksymalnego.</source>
+        <translation>Minimum age must not exceed maximum age.</translation>
+    </message>
+    <message>
+        <source>Nieprawidłowa wartość parametru klasyfikacji.</source>
+        <translation>Invalid classification parameter value.</translation>
+    </message>
+</context>
+<context>
+    <name>CalendarClassificationScoring</name>
+    <message>
+        <source>Limit punktowanych miejsc (0 = bez limitu)</source>
+        <translation>Scoring-place limit (0 = unlimited)</translation>
+    </message>
+    <message>
+        <source>Maksymalny wiek</source>
+        <translation>Maximum age</translation>
+    </message>
+    <message>
+        <source>Minimalny wiek</source>
+        <translation>Minimum age</translation>
+    </message>
+    <message>
+        <source>Mnożnik punktów</source>
+        <translation>Points multiplier</translation>
+    </message>
+    <message>
+        <source>N wyników indywidualnych kraju</source>
+        <translation>N individual results per country</translation>
+    </message>
+    <message>
+        <source>Rok odniesienia dla wieku</source>
+        <translation>Reference year for age</translation>
+    </message>
+    <message>
+        <source>Różne sposoby</source>
+        <translation>Mixed methods</translation>
+    </message>
+    <message>
+        <source>Sposób naliczania punktów</source>
+        <translation>Scoring method</translation>
+    </message>
+    <message>
+        <source>Sposób naliczania punktów: %1</source>
+        <translation>Scoring method: %1</translation>
+    </message>
+    <message>
+        <source>Zaawansowane parametry konkursu — wyłączone pola dziedziczą ustawienia klasyfikacji.</source>
+        <translation>Advanced event parameters — unchecked fields inherit classification settings.</translation>
+    </message>
+</context>
 </TS>

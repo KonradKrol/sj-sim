@@ -5,6 +5,7 @@
 <file>CalendarClassifications.qml</file>
 <file>CalendarFields.qml</file>
 <file>CalendarInspector.qml</file>
+<file>CalendarClassificationScoring.qml</file>
 <file>CalendarEventRow.qml</file>
 <file>AppHeader.qml</file>
 <file>AppFooter.qml</file>

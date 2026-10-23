@@ -71,6 +71,7 @@ public:
     Q_INVOKABLE void clearSelection();
     Q_INVOKABLE void update(const QVariantMap &fields);
     Q_INVOKABLE void setClassification(int index,bool checked);
+    Q_INVOKABLE void setClassificationScoring(int index,const QVariantMap &patch);
     Q_INVOKABLE void add();
     Q_INVOKABLE void addMany(int count);
     Q_INVOKABLE void duplicate();
@@ -92,6 +93,7 @@ private:
     struct State {
         bool played=false,cancelled=false;Hill *hill=nullptr;CompetitionRules rules;short type=0;double importance=5;
         QVector<CompetitionInfo *> trainings;CompetitionInfo *trial=nullptr,*advancement=nullptr,*pending=nullptr;
+        QHash<QString,ClassificationCompetitionSettings> scoring;
         QVector<Classification *> classifications;Classification *classification=nullptr;
     };
     struct Snapshot { SeasonCalendar *owner=nullptr,*active=nullptr;QVector<SeasonCalendar *> calendars;QVector<CompetitionInfo *> order;QHash<CompetitionInfo *,State> states;QVector<Classification *> classes;QHash<Classification *,Classification> classStates;QString name,classId;QStringList selected;int boundary=0; };

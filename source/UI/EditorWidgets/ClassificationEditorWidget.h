@@ -6,6 +6,12 @@
 #include "../../seasons/Classification.h"
 #include "TeamsEditing/Models/PointsForPlacesTableModel.h"
 
+class QComboBox;
+class QLineEdit;
+class QSpinBox;
+class QCheckBox;
+class QPushButton;
+
 namespace Ui {
 class ClassificationEditorWidget;
 }
@@ -24,6 +30,7 @@ public:
 
 signals:
     void submitted();
+    void configurationChanged();
 
 private slots:
     void on_pushButton_submit_clicked();
@@ -34,6 +41,21 @@ private slots:
 
 private:
     Ui::ClassificationEditorWidget *ui;
+    ClassificationOptions options;
+    QMap<int,double> basePoints, baseAlternative;
+    int baseType=0, currentMethod=0;
+    bool loadingInputs=false;
+    QComboBox *methodChoice, *countrySelection;
+    QLineEdit *methodName;
+    QSpinBox *minimumAge, *maximumAge, *referenceYear, *countryCount;
+    QCheckBox *ageFilter, *includeUnknownAge, *contextParameters;
+    QPushButton *removeMethod;
+    void setupScoringControls();
+    void storeMethod();
+    void loadMethod();
+    void refreshMethodChoices();
+    void refreshAlternativeLabel();
+    void fillOptions();
     Classification * classification;
     QMap<int, double> pointsForPlaces;
     QMap<int, double> altPointsForPlaces;

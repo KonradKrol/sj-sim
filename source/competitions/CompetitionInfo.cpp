@@ -542,6 +542,9 @@ QJsonObject CompetitionInfo::getJsonObject(CompetitionInfo &competition)
         classificationsArray.push_back(c->getIDStr());
     }
     object.insert("classifications-ids", classificationsArray);
+    QJsonObject scoring;
+    for(auto it=competition.classificationScoring.cbegin();it!=competition.classificationScoring.cend();++it) scoring.insert(it.key(),it.value().toJson());
+    object.insert("classification-scoring",scoring);
 
     if(competition.getPendingAdvancementCompetition())object.insert("pending-advancement-competition-id",competition.getPendingAdvancementCompetition()->getIDStr());
     if(competition.getAdvancementClassification() != nullptr)
@@ -606,6 +609,8 @@ CompetitionInfo CompetitionInfo::getFromJson(const QJsonObject &json, Identifiab
         comp.setHill(static_cast<Hill *>(storage->get(json.value("hill-id").toString())));
     comp.setResults(CompetitionResults::getFromJson(json.value("results").toObject(), storage));
     comp.setRules(CompetitionRules::getFromJson(json.value("rules").toObject()));
+    const auto scoring=json.value("classification-scoring").toObject();
+    for(auto it=scoring.begin();it!=scoring.end();++it) comp.classificationScoring.insert(it.key(),ClassificationCompetitionSettings::fromJson(it.value().toObject()));
     comp.setSerieType(json.value("serie-type").toInt());
     comp.setExceptionalRoundsCount(json.value("exceptional-rounds-count").toInt());
     comp.setCancelled(json.value("cancelled").toBool());
@@ -704,3 +709,6 @@ void CompetitionInfo::setRules(const CompetitionRules &newRules)
 {
     rules = newRules;
 }
+
+ClassificationCompetitionSettings CompetitionInfo::scoringFor(const Classification *classification) const { return classificationScoring.value(classification->getIDStr()); }
+void CompetitionInfo::setScoringFor(const Classification *classification,const ClassificationCompetitionSettings &value) { classificationScoring.insert(classification->getIDStr(),value); }

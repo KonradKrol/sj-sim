@@ -108,36 +108,15 @@ void ClassificationSingleResult::addCompetitionResults(CompetitionResults &resul
 
 void ClassificationSingleResult::updatePointsSum()
 {
-    pointsSum = 0;
-    for(auto & result : singleResults)
-    {
-        if(classification->getPunctationType() == Classification::CompetitionPoints)
-            pointsSum += result->getPointsSum();
-        else if(classification->getPunctationType() == Classification::PointsForPlaces)
-        {
-            if(classification->getClassificationType() == Classification::Individual)
-            {
-                if(result->getCompetition()->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
-                {
-                    pointsSum += classification->getPointsForPlacesReference().value(result->getPosition(), 0);
-                }
-                else if(result->getCompetition()->getRulesPointer()->getCompetitionType() == CompetitionRules::Team)
-                {
-                    pointsSum += classification->getAltPointsForPlacesReference().value(result->getPosition(), 0);
-                }
-            }
-            else if(classification->getClassificationType() == Classification::Team)
-            {
-                if(result->getCompetition()->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
-                {
-                    pointsSum += classification->getAltPointsForPlacesReference().value(result->getPosition(), 0);
-                }
-                else if(result->getCompetition()->getRulesPointer()->getCompetitionType() == CompetitionRules::Team)
-                {
-                    pointsSum += classification->getPointsForPlacesReference().value(result->getPosition(), 0);
-                }
-            }
-        }
+    pointsSum=0;eligibleParticipation=false;
+    if(!classification)return;
+    QVector<CompetitionInfo *> events;
+    const auto append=[&](CompetitionInfo *event){if(event && !events.contains(event))events.append(event);};
+    for(auto *results:competitionsResults)if(results)append(results->getCompetition());
+    for(auto *result:singleResults)if(result)append(result->getCompetition());
+    for(auto *event:events)for(const auto &c:classification->contributions(event)) {
+        const bool matches=classification->getClassificationType()==Classification::Individual?c.jumper==jumper:c.country==teamCode;
+        if(matches){pointsSum+=c.points;eligibleParticipation=true;}
     }
 }
 

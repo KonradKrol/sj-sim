@@ -17,6 +17,9 @@ SeasonCalendarPreset::SeasonCalendarPreset(SeasonCalendar *seasonCalendar)
             presetCompetition->reassign();
             presetCompetition->getResultsReference().reassign();
             presetCompetition->getResultsReference().setCompetition(presetCompetition);
+            presetCompetition->setPlayed(false);presetCompetition->setCancelled(false);presetCompetition->setExceptionalRoundsCount(0);
+            presetCompetition->getResultsReference().getResultsReference().clear();
+            presetCompetition->getTeamsReference().clear();presetCompetition->getRoundsKOGroupsReference().clear();presetCompetition->getStartListReference().clear();
             presetCalendar->getCompetitionsReference().push_back(presetCompetition);
             competitions.insert(comp, presetCompetition);
         }
@@ -42,6 +45,7 @@ SeasonCalendarPreset::SeasonCalendarPreset(SeasonCalendar *seasonCalendar)
         {
             Classification * presetClassification = new Classification(*cls);
             presetClassification->reassign();
+            presetClassification->setResults({});
             presetCalendar->getClassificationsReference().push_back(presetClassification);
             classifications.insert(cls, presetClassification);
         }
@@ -54,6 +58,7 @@ SeasonCalendarPreset::SeasonCalendarPreset(SeasonCalendar *seasonCalendar)
                 for(auto & presetCls : presetCompetition->getClassificationsReference())
                 {
                     if(presetCls == calendarClassification){
+                        presetCompetition->remapClassificationScoring(calendarClassification->getIDStr(),classifications.value(calendarClassification)->getIDStr());
                         presetCls = classifications.value(calendarClassification);
                     }
                 }

@@ -5,6 +5,8 @@ class Hill;
 class SeasonCalendar;
 class AbstractCompetitionManager;
 class Season;
+class Classification;
+#include "../seasons/ClassificationScoring.h"
 #include "CompetitionRules.h"
 #include "CompetitionResults.h"
 #include "CompetitionInfo.h"
@@ -46,6 +48,7 @@ public:
     void sendResultsWebhook(AbstractCompetitionManager *manager);
 
 private:
+    QHash<QString, ClassificationCompetitionSettings> classificationScoring;
     Hill * hill;
     CompetitionRules rules;
     CompetitionResults results;
@@ -74,6 +77,13 @@ public:
     static CompetitionInfo getFromJson(const QJsonObject & json, IdentifiableObjectsStorage *storage, int *oldId = nullptr, QMap<ulong, Identifiable *> *before120Map = nullptr);
 
 public:
+    QHash<QString,ClassificationCompetitionSettings> getClassificationScoring() const { return classificationScoring; }
+    void setClassificationScoring(const QHash<QString,ClassificationCompetitionSettings> &value) { classificationScoring=value; }
+    ClassificationCompetitionSettings scoringFor(const Classification *classification) const;
+    void setScoringFor(const Classification *classification, const ClassificationCompetitionSettings &value);
+    void remapClassificationScoring(const QString &oldId, const QString &newId) {
+        if(classificationScoring.contains(oldId)) classificationScoring.insert(newId,classificationScoring.take(oldId));
+    }
     Hill *getHill() const;
     void setHill(Hill *newHill);
     CompetitionRules getRules() const;

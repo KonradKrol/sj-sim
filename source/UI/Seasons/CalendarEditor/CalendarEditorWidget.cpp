@@ -1370,7 +1370,6 @@ void CalendarEditorWidget::on_pushButton_saveCalendarPreset_clicked()
         }
         for(auto & cls : calendar->getClassificationsReference())
         {
-            cls->reassign();
             cls->getResultsReference().clear();
         }
         GlobalDatabase::get()->writeCalendarPresets();
@@ -1444,7 +1443,7 @@ return;
             calendarClassification->reassign();
 
             calendarClassification->getPointsForPlacesReference().detach();
-            calendarClassification->getResultsReference().detach();
+            calendarClassification->setResults({});
             calendar->getClassificationsReference().push_back(calendarClassification);
             classifications.insert(presetClassification, calendarClassification);
         }
@@ -1456,8 +1455,10 @@ return;
                         calendarCompetition->setAdvancementClassification(classifications.value(presetClassification));
                     for(auto & cls : calendarCompetition->getClassificationsReference())
                     {
-                        if(cls == presetClassification)
+                        if(cls == presetClassification) {
+                            calendarCompetition->remapClassificationScoring(presetClassification->getIDStr(),classifications.value(presetClassification)->getIDStr());
                             cls = classifications.value(presetClassification);
+                        }
                     }
             }
         }

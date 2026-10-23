@@ -18,6 +18,7 @@ public:
     void updateSingleResults();
     void addCompetitionResults(CompetitionResults & results);
     void updatePointsSum();
+    bool hasEligibleParticipation() const { return eligibleParticipation; }
 
     static QJsonObject getJsonObject(ClassificationSingleResult & result);
     static ClassificationSingleResult getFromJson(QJsonObject json, IdentifiableObjectsStorage * storage);
@@ -30,6 +31,7 @@ private:
     Jumper * jumper;
     QString teamCode;
 
+    bool eligibleParticipation = true;
     double pointsSum;
     int position;
 

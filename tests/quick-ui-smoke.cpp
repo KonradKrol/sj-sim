@@ -1791,7 +1791,10 @@ static void dataPackUiRegressions(MainWindow &main) {
     main.resize(1024,640); qInfo()<<"PASS: pack editor switching, birth formats, import, export, save, discard and responsive layouts";
 }
 
+#include "classification-regressions.h"
+
 static void backendRegressions() {
+    classificationScoringRegressions();
     dataPackRegressions();
     roundPointsRegressions();
     fisCountryRegressions();
@@ -1941,6 +1944,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--round-points-only")){roundPointsUiRegressions(main);return 0;}
     if(app.arguments().contains("--round-points-bulk-only")){main.show();for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);return 0;}
     if(app.arguments().contains("--packs-only")){dataPackUiRegressions(main);return 0;}
+    if(app.arguments().contains("--classifications-only")){classificationUiRegressions(main);return 0;}
     if(app.arguments().contains("--backend-only"))return 0;
     if(app.arguments().contains("--bulk-only")) {main.show();for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);runCompetition(main,0,true,1);runCompetition(main,0,true,2);runCompetition(main,2,true,3);return 0;}
     if(app.arguments().contains("--competitions-only")) {

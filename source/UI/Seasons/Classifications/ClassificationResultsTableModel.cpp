@@ -41,7 +41,7 @@ int ClassificationResultsTableModel::rowCount(const QModelIndex &parent) const
     if(classification == nullptr)
         return 0;
 
-    return classification->getResultsReference().count();
+    return classification->getRankedResults().count();
 }
 
 int ClassificationResultsTableModel::columnCount(const QModelIndex &parent) const
@@ -60,18 +60,18 @@ QVariant ClassificationResultsTableModel::data(const QModelIndex &index, int rol
     if(classification == nullptr)
         return QVariant();
 
-    if(classification->getResultsReference().count() > 0){
+    if(classification->getRankedResults().count() > 0){
         if(role == Qt::DisplayRole)
         {
             if(index.column() == 0)
-                return classification->getResultsReference()[index.row()]->getPosition();
+                return classification->getRankedResults()[index.row()]->getPosition();
             else if(index.column() == 1){
                 if(classification->getClassificationType() == Classification::Individual)
-                    return classification->getResultsReference()[index.row()]->getJumper()->getNameAndSurname();
-                else return classification->getResultsReference()[index.row()]->getTeamCode();
+                    return classification->getRankedResults()[index.row()]->getJumper()->getNameAndSurname();
+                else return classification->getRankedResults()[index.row()]->getTeamCode();
             }
             else if(index.column() == 2)
-                return classification->getResultsReference()[index.row()]->getPointsSum();
+                return classification->getRankedResults()[index.row()]->getPointsSum();
         }
         else if(role == Qt::DecorationRole)
         {
@@ -79,9 +79,9 @@ QVariant ClassificationResultsTableModel::data(const QModelIndex &index, int rol
             {
                 QString countryCode;
                 if(classification->getClassificationType() == Classification::Individual)
-                    countryCode = classification->getResultsReference()[index.row()]->getJumper()->getCountryCode();
+                    countryCode = classification->getRankedResults()[index.row()]->getJumper()->getCountryCode();
                 else
-                    countryCode = classification->getResultsReference()[index.row()]->getTeamCode();
+                    countryCode = classification->getRankedResults()[index.row()]->getTeamCode();
                 return CountryFlagsManager::getFlagPixmap(countryCode.toLower()).scaled(28, 19.95);
             }
         }
