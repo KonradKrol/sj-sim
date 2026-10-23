@@ -1,4 +1,5 @@
 #include "QuickUi.h"
+#include "QuickView.h"
 #include "QuickCalendar.h"
 #include "QuickRoster.h"
 #include "QuickRaceStats.h"
@@ -138,7 +139,7 @@ bool QuickBridge::editingText() const {
 }
 void QuickBridge::suspend() { if(m_view) m_view->setSource(QUrl()); }
 void QuickBridge::resume() {
-    if(m_view && m_view->source().isEmpty()) { refresh();m_view->setSource(QUrl(m_view->property("quickSource").toString())); }
+    if(m_view && m_view->source().isEmpty()) { refresh();QuickView::load(m_view,QUrl(m_view->property("quickSource").toString())); }
 }
 QuickBridge::~QuickBridge() {
     // Drop the scene while the context and table adapters are still valid.

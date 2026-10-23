@@ -2,6 +2,7 @@
 #include "QuickRoster.h"
 #include "QuickPlot.h"
 #include "QuickSurface.h"
+#include "QuickView.h"
 #include "../mainwindow.h"
 #include <QFontDatabase>
 #include <QApplication>
@@ -20,6 +21,8 @@
 #include <QQuickStyle>
 #include <QQmlContext>
 #include <QQmlEngine>
+#include <QQmlComponent>
+#include <QSet>
 #include <QScreen>
 #include <QShortcut>
 #include <QCloseEvent>
@@ -30,15 +33,26 @@
 
 namespace {
 QQuickWidget *makeView(QWidget *parent,QuickBridge *bridge,QuickAppearance *appearance,QuickUi *navigation,const QString &source,bool page=true) {
-    auto *view=new QQuickWidget(parent);
+    auto *engine=qobject_cast<QQmlEngine *>(navigation->property("quickEngine").value<QObject *>());
+    if(!engine){
+        // QuickUi destroys its views before this engine and before QApplication
+        // tears down Qt Quick's image-loader threads.
+        engine=new QQmlEngine(navigation);
+        navigation->setProperty("quickEngine",QVariant::fromValue(static_cast<QObject *>(engine)));
+        engine->rootContext()->setContextProperty("appearance",appearance);
+        engine->rootContext()->setContextProperty("navigation",navigation);
+    }
+    auto *view=new QQuickWidget(engine,parent);
     view->setObjectName(page?"sjQuickView":"sjQuickChrome");
     view->setResizeMode(QQuickWidget::SizeRootObjectToView);
-    view->rootContext()->setContextProperty("ui",bridge);
-    view->rootContext()->setContextProperty("appearance",appearance);
-    view->rootContext()->setContextProperty("navigation",navigation);
+    auto *context=new QQmlContext(engine->rootContext(),view);
+    context->setObjectName("quickViewContext");
+    context->setContextProperty("ui",bridge);
+    context->setContextProperty("appearance",appearance);
+    context->setContextProperty("navigation",navigation);
     view->setProperty("quickSource",source);
     if(page)bridge->setView(view);
-    view->setSource(QUrl(source));
+    QuickView::load(view,QUrl(source));
     if(view->status()==QQuickWidget::Error)for(const auto &error:view->errors())qWarning().noquote()<<error.toString();
     return view;
 }
@@ -60,6 +74,15 @@ void keepControllerOffscreen(QWidget *widget) {
     widget->setWindowModality(Qt::NonModal);
     widget->setAttribute(Qt::WA_ShowModal,false);
 }
+}
+void QuickView::load(QQuickWidget *view,const QUrl &source)
+{
+    view->setSource(QUrl());
+    if(source.isEmpty())return;
+    auto *context=view->findChild<QQmlContext *>("quickViewContext",Qt::FindDirectChildrenOnly);
+    auto *component=new QQmlComponent(view->engine(),source,QQmlComponent::PreferSynchronous,view);
+    auto *root=component->isReady()?component->create(context):nullptr;
+    view->setContent(source,component,root);
 }
 bool QuickUi::enabled() {
     return !qEnvironmentVariableIsSet("SJ_WIDGETS_UI") && !QCoreApplication::arguments().contains("--widgets");
@@ -98,7 +121,9 @@ QuickUi::QuickUi(MainWindow *window) : QObject(window),m_main(window),m_appearan
 QuickBridge *QuickUi::current() const { return m_pages.isEmpty()?nullptr:m_pages.last().bridge.data(); }
 QuickUi::~QuickUi() {
     qApp->removeEventFilter(this);
-    for(auto *view:m_main->findChildren<QQuickWidget *>())view->setSource(QUrl());
+    QList<QPointer<QQuickWidget>> views;
+    for(auto *view:m_main->findChildren<QQuickWidget *>())views.append(view);
+    for(auto &view:views)if(view){view->setSource(QUrl());delete view.data();}
 }
 bool QuickUi::canGoBack() const { return m_pages.size()>1; }
 QStringList QuickUi::path() const {
@@ -180,8 +205,9 @@ bool QuickUi::eventFilter(QObject *object,QEvent *event) {
         m_translationPending=true;
         QTimer::singleShot(0,this,[this] {
             m_translationPending=false;
+            QSet<QQmlEngine *> engines;
             for(auto *window:QApplication::topLevelWidgets()) {
-                for(auto *view:window->findChildren<QQuickWidget *>())view->engine()->retranslate();
+                for(auto *view:window->findChildren<QQuickWidget *>())if(!engines.contains(view->engine())){engines.insert(view->engine());view->engine()->retranslate();}
                 for(auto *table:window->findChildren<QuickTableModel *>())table->invalidateText();
                 for(auto *roster:window->findChildren<QuickRoster *>())roster->invalidateText();
             }
@@ -268,5 +294,4 @@ void QuickUi::attach(QWidget *dialog) {
     if(!m_main->isVisible())m_main->show();
     push(dialog,bridge);
     if(auto *modal=qobject_cast<QDialog *>(dialog))connect(modal,&QDialog::finished,bridge,[bridge]{bridge->suspend();});
-    bridge->refresh();
 }

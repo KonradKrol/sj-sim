@@ -3,6 +3,7 @@ build-linux/
 build-win/
 build-*/
 build/
+profiler/
 debug/
 release/
 dist/

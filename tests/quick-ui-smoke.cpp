@@ -53,6 +53,7 @@
 #include <QApplication>
 #include <QQuickWidget>
 #include <QQmlContext>
+#include <QQmlDebuggingEnabler>
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QQuickStyle>
@@ -756,6 +757,7 @@ static void clickControl(QQuickWidget *view,const QString &name) {
     auto *control=item(view->quickWindow()->contentItem(),name);
     if(!control || !control->isVisible() || !control->isEnabled()){applicationWindow->grab().save("/tmp/sj-click-failure.png");qInfo()<<"Control failure"<<name<<control<<(control?control->isVisible():false)<<(control?control->isEnabled():false);}
     check(control && control->isVisible() && control->isEnabled(),"clickable control: "+name);
+    control->forceActiveFocus(Qt::MouseFocusReason);
     // Windows can constrain requested test sizes to the monitor's work area.
     // Scroll fields into view with real wheel events before clicking them.
     for(auto *ancestor=control->parentItem();ancestor;ancestor=ancestor->parentItem()) {
@@ -1801,6 +1803,10 @@ static void dataPackUiRegressions(MainWindow &main) {
     QMetaObject::invokeMethod(&dialog,"onJumpersListViewDoubleClicked",Qt::DirectConnection,Q_ARG(QModelIndex,list->getListModel()->index(0,0)));
     qInfo()<<"PASS: empty pack created";
     render(&dialog,"data-packs-edited",true);
+    // The responsive capture leaves the host at its smallest size. Restore
+    // the interaction fixture before continuing the pack persistence checks.
+    main.resize(1024,720);
+    QTest::qWait(120);
     clickControl(scene(&dialog),"closeDataPackSettings");
     auto *tabs = dialog.findChild<QTabWidget *>("tabWidget_main");
     tabs->setCurrentIndex(2); bridge->refresh();
@@ -1831,6 +1837,7 @@ static void dataPackUiRegressions(MainWindow &main) {
 
 #include "classification-regressions.h"
 #include "calendar-dates-regressions.h"
+#include "navigation-performance.h"
 
 static void backendRegressions() {
     packCatalogRecoveryRegression();
@@ -1945,6 +1952,9 @@ static void interactionRegressions(MainWindow &main) {
 
 int main(int argc,char **argv) {
     QApplication app(argc,argv);
+#if QT_CONFIG(qml_debug)
+    if(app.arguments().contains("--qml-profile"))QQmlDebuggingEnabler::enableDebugging(true);
+#endif
     if (app.arguments().contains("--packs-only")) QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
     app.setOrganizationName("SJ-Sim-UI-Test"); app.setApplicationName("SjSimUI");
     QTemporaryDir data; check(data.isValid(),"isolated data");
@@ -1965,6 +1975,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--simulation-benchmark")) {simulationBenchmark();main.show();for(int i=0;i<3;++i)runCompetition(main,0,true);runCompetition(main,1,true);runCompetition(main,2,true);return 0;}
     if(app.arguments().contains("--single-jumps-benchmark")){singleJumpsBenchmark(main);return 0;}
     if(app.arguments().contains("--single-jumps-only")){normalSamplingRegression();singleSimulationRegression();singleGateRegression(main);singleJumpsBenchmark(main);return 0;}
+    if(app.arguments().contains("--navigation-benchmark")){navigationPerformance(main);return 0;}
     backendRegressions();
     if(app.arguments().contains("--team-only")){main.show();runCompetition(main,2);return 0;}
     if(app.arguments().contains("--interaction-only")){interactionRegressions(main);return 0;}
