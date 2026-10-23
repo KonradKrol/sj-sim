@@ -35,17 +35,27 @@ ColumnLayout {
     Label { visible: !!field.error; text: field.error; color: Theme.danger; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     Popup {
         id: picker
+        objectName: "date-popup-"+field.name
         parent: Overlay.overlay
         x: parent ? (parent.width-width)/2 : 0
         y: parent ? Math.max(0,(parent.height-height)/2) : 0
         focus: true
         property string month: field.value || field.backend.suggestedDate
         width: Math.min(360,Overlay.overlay ? Overlay.overlay.width-20 : 320)
+        implicitHeight: pickerContent.implicitHeight+topPadding+bottomPadding
+        height: Math.min(implicitHeight,parent ? Math.max(0,parent.height-16) : implicitHeight)
         padding: 12
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
         onOpened: month=field.value || field.backend.suggestedDate
         background: Rectangle { color: Theme.surface; radius: 12; border.color: Theme.outline }
-        contentItem: Loader {
+        contentItem: ScrollView {
+            id: pickerScroll
+            contentWidth: availableWidth
+            contentHeight: pickerContent.implicitHeight
+            clip: true
+            Loader {
+            id: pickerContent
+            width: pickerScroll.availableWidth
             active: picker.visible
             sourceComponent: ColumnLayout {
                 id: pickerPage
@@ -76,6 +86,7 @@ ColumnLayout {
                         }
                     }
                 }
+            }
             }
         }
     }

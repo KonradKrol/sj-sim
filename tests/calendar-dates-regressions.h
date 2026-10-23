@@ -78,6 +78,10 @@ static void calendarDateUiRegressions(MainWindow &main)
     appearance->setDark(false);main.resize(1440,1000);QTest::qWait(120);
     clickControl(scene(&manager),"date-month-next");QTest::qWait(100);check(overview->property("month").toString()=="2027-01-01","month navigation uses real year boundaries");
     clickControl(scene(&manager),"date-picker-month-jump");QTest::qWait(100);clickControl(scene(&manager),"date-day-2027-01-15");QTest::qWait(100);check(overview->property("selectedDay").toString()=="2027-01-15","date picker changes the selected day without changing events");
+    clickControl(scene(&manager),"date-picker-month-jump");appearance->setTextScale(1.3);main.resize(360,360);QTest::qWait(160);
+    auto *popup=scene(&manager)->rootObject()->findChild<QObject *>("date-popup-month-jump");check(popup && popup->property("height").toReal()<=scene(&manager)->height(),"date picker stays within a short window at enlarged text size");
+    clickControl(scene(&manager),"date-day-2027-02-07");QTest::qWait(100);check(overview->property("selectedDay").toString()=="2027-02-07","last-row dates remain selectable in a short window");
+    appearance->setTextScale(1);main.resize(1440,1000);QTest::qWait(120);
     settings->setChecked(false);QTest::qWait(100);backend->sync();check(!backend->datesEnabled() && !item(scene(&manager)->rootObject(),"calendarDateOverview"),"disabling dates hides and unloads the month overview");
     manager.hide();main.resize(1024,640);
     qInfo()<<"PASS: simulation date setting, visible date planner, month navigation, date picker and responsive calendar overview";
