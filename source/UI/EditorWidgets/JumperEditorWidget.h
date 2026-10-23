@@ -5,6 +5,9 @@
 #include "../../simulator/Jumper.h"
 #include "CharacteristicsEditor.h"
 class SimulationSave;
+class QLineEdit;
+class QSpinBox;
+class QLabel;
 
 namespace Ui {
 class JumperEditorWidget;
@@ -18,6 +21,8 @@ public:
     explicit JumperEditorWidget(Jumper *jumper = nullptr , CharacteristicsEditor * characteristicsEditor = nullptr, QWidget *parent = nullptr);
     ~JumperEditorWidget();
 
+    void setAgeFormat(bool ageMode, int referenceYear);
+    bool validateBirthInput() const;
     void resetJumperInputs();
     void fillJumperInputs();
     void removeSubmitButton();
@@ -42,6 +47,15 @@ private slots:
 
 private:
     Ui::JumperEditorWidget *ui;
+    QLineEdit *birthDateInput;
+    QSpinBox *ageInput;
+    QSpinBox *birthYearInput;
+    QLabel *birthDateLabel;
+    QLabel *ageLabel;
+    QLabel *birthYearLabel;
+    QLabel *ageHint;
+    bool ageMode = false;
+    int referenceYear;
 
     CharacteristicsEditor * characteristicsEditor;
     Jumper * jumper;

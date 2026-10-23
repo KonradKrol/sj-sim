@@ -4,6 +4,7 @@
 #include "../utilities/Identifiable.h"
 #include "JumperSkills.h"
 
+#include <QDate>
 #include <QString>
 #include <QPixmap>
 #include <QObject>
@@ -25,7 +26,9 @@ private:
     QString name, surname;
     QString countryCode;
     QString imageName;
-    double personalBest;
+    double personalBest = 0;
+    QDate birthDate;
+    int birthYear = 0;
 
     JumperSkills jumperSkills;
 public:
@@ -46,6 +49,14 @@ public:
     void setJumperSkills(const JumperSkills &newJumperSkills);
     double getPersonalBest() const;
     void setPersonalBest(double newPersonalBest);
+    QDate getBirthDate() const { return birthDate; }
+    int getBirthYear() const { return birthDate.isValid() ? birthDate.year() : birthYear; }
+    void setBirthDate(const QDate &date) { birthDate = date; birthYear = date.isValid() ? date.year() : 0; }
+    void setBirthYear(int year) {
+        birthYear = year > 0 && year <= 9999 ? year : 0;
+        if (birthDate.year() != birthYear) birthDate = QDate();
+    }
+    int ageInYear(int year) const { return getBirthYear() > 0 && year >= getBirthYear() ? year - getBirthYear() : -1; }
     QString getImageName() const;
     void setImageName(const QString &newImageName);
 };

@@ -400,7 +400,8 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
                 auto *object=m_objects.value(field->values().value("id").toInt()).data();
                 const QString name=qobject_cast<QLayout *>(object)?inputName(qobject_cast<QLayout *>(object)):object?object->objectName():QString();
                 if(jumper) {
-                    if(name=="lineEdit_name" || name=="lineEdit_surname" || name=="lineEdit_countryCode" || name=="lineEdit_img" || name=="doubleSpinBox_personalBest")profile.append(value);
+                    if(name=="lineEdit_name" || name=="lineEdit_surname" || name=="lineEdit_countryCode" || name=="lineEdit_img" || name=="doubleSpinBox_personalBest"
+                        || name.startsWith("jumperBirth") || name=="jumperAge")profile.append(value);
                     else skills.append(value);
                 } else {
                     if(name.contains("Points",Qt::CaseInsensitive) || name.contains("points",Qt::CaseInsensitive))points.append(value);

@@ -2,6 +2,7 @@
 #include "CountryCodes.h"
 
 #include <QFile>
+#include <QSaveFile>
 #include <QByteArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -333,12 +334,12 @@ void GlobalDatabase::removeJumper(int index)
 
 bool GlobalDatabase::loadFromJson()
 {
-    return (loadJumpers() && loadHills() && loadCompetitionsRules() && loadPointsForPlacesPresets() && loadCalendarPresets() && loadFormGeneratorPresets() && loadJumpsImportancePresets() && loadCountries());
+    return (loadJumpers() && loadHills() && loadCompetitionsRules() && loadPointsForPlacesPresets() && loadCalendarPresets() && loadFormGeneratorPresets() && loadJumpsImportancePresets() && loadCountries() && loadPacks());
 }
 
 bool GlobalDatabase::writeToJson()
 {
-    return (writeJumpers() && writeHills() && writeCompetitionsRules() && writeSimulationSaves() && writePointsForPlacesPresets() && writeCalendarPresets() && writeFormGeneratorPresets() && writeJumpsImportancePresets() && writeCountries());
+    return (writePacks() && writeJumpers() && writeHills() && writeCompetitionsRules() && writeSimulationSaves() && writePointsForPlacesPresets() && writeCalendarPresets() && writeFormGeneratorPresets() && writeJumpsImportancePresets() && writeCountries());
 }
 
 bool GlobalDatabase::loadJumpers()
@@ -755,4 +756,121 @@ Country * GlobalDatabase::getCountryByAlpha3(QString alpha3)
             return &c;
     }
     return new Country("", "xx", "xxx");
+}
+
+void GlobalDatabase::ensurePacks()
+{
+    if (!packs.isEmpty()) return;
+    for (int i = 0; i < 3; ++i) {
+        DataPack pack;
+        pack.kind = DataPack::Kind(i);
+        pack.name = QObject::tr("Domyślna");
+        activePackIds[i] = pack.id;
+        packs.append(pack);
+    }
+    syncActivePacks();
+}
+
+DataPack *GlobalDatabase::activePack(DataPack::Kind kind)
+{
+    ensurePacks();
+    for (auto &pack : packs) if (pack.id == activePackIds[int(kind)]) return &pack;
+    return nullptr;
+}
+
+void GlobalDatabase::syncActivePacks()
+{
+    for (auto &p : packs) {
+        if (p.id != activePackIds[int(p.kind)]) continue;
+        if (p.kind == DataPack::Jumpers) p.jumpers = globalJumpers;
+        else if (p.kind == DataPack::Hills) p.hills = globalHills;
+        else { p.rules = globalCompetitionsRules; p.points = globalPointsForPlacesPresets; }
+    }
+}
+
+bool GlobalDatabase::selectPack(const QString &id)
+{
+    syncActivePacks();
+    for (const auto &p : packs) if (p.id == id) {
+        activePackIds[int(p.kind)] = id;
+        if (p.kind == DataPack::Jumpers) globalJumpers = p.jumpers;
+        else if (p.kind == DataPack::Hills) globalHills = p.hills;
+        else { globalCompetitionsRules = p.rules; globalPointsForPlacesPresets = p.points; }
+        return true;
+    }
+    return false;
+}
+
+QString GlobalDatabase::addPack(DataPack pack)
+{
+    ensurePacks();
+    syncActivePacks();
+    // Imports are independent copies, including when importing the same file twice.
+    pack.id = QUuid::createUuid().toString(QUuid::WithoutBraces);
+    packs.append(pack);
+    selectPack(pack.id);
+    return pack.id;
+}
+
+QJsonObject GlobalDatabase::packsSnapshot()
+{
+    ensurePacks();
+    syncActivePacks();
+    QJsonArray list, active;
+    for (const auto &p : packs) list.append(p.toJson());
+    for (const auto &id : activePackIds) active.append(id);
+    return QJsonObject{{"version", 1}, {"packs", list}, {"active", active}};
+}
+
+bool GlobalDatabase::restorePacks(const QJsonObject &o, QString &error)
+{
+    QVector<DataPack> loaded;
+    QSet<QString> ids;
+    if (o.value("version").toInt() != 1 || !o.value("packs").isArray() || o.value("active").toArray().size() != 3) {
+        error = QObject::tr("Nieprawidłowy katalog paczek."); return false;
+    }
+    for (const auto &v : o.value("packs").toArray()) {
+        DataPack p;
+        if (!DataPack::fromJson(v.toObject(), p, error)) return false;
+        if (ids.contains(p.id)) { error = QObject::tr("Powtórzony identyfikator paczki."); return false; }
+        ids.insert(p.id); loaded.append(p);
+    }
+    const auto active = o.value("active").toArray();
+    for (int kind = 0; kind < 3; ++kind) {
+        bool found = false;
+        for (const auto &p : loaded) if (p.kind == kind && p.id == active[kind].toString()) found = true;
+        if (!found) { error = QObject::tr("Brak aktywnej paczki."); return false; }
+    }
+    packs = loaded;
+    // Assign directly: switching here would copy the old working vectors over loaded packs.
+    for (int i = 0; i < 3; ++i) activePackIds[i] = active[i].toString();
+    for (const auto &p : packs) if (p.id == activePackIds[int(p.kind)]) {
+        if (p.kind == DataPack::Jumpers) globalJumpers = p.jumpers;
+        else if (p.kind == DataPack::Hills) globalHills = p.hills;
+        else { globalCompetitionsRules = p.rules; globalPointsForPlacesPresets = p.points; }
+    }
+    error.clear();
+    return true;
+}
+
+bool GlobalDatabase::loadPacks()
+{
+    QFile file("userData/GlobalDatabase/packs.json");
+    if (!file.exists()) { packs.clear(); ensurePacks(); return true; }
+    QJsonParseError parse;
+    QString error;
+    bool ok = file.open(QIODevice::ReadOnly);
+    const auto doc = ok ? QJsonDocument::fromJson(file.readAll(), &parse) : QJsonDocument();
+    ok = ok && parse.error == QJsonParseError::NoError && restorePacks(doc.object(), error);
+    packsWritable = ok;
+    if (!ok) QMessageBox::critical(nullptr, QObject::tr("Paczki"), QObject::tr("Nie udało się wczytać katalogu paczek. Plik nie zostanie nadpisany.\n%1").arg(error));
+    return ok;
+}
+
+bool GlobalDatabase::writePacks()
+{
+    if (!packsWritable) return false;
+    QSaveFile file("userData/GlobalDatabase/packs.json");
+    const auto bytes = QJsonDocument(packsSnapshot()).toJson(QJsonDocument::Indented);
+    return file.open(QIODevice::WriteOnly) && file.write(bytes) == bytes.size() && file.commit();
 }

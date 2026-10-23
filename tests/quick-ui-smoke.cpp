@@ -72,6 +72,8 @@
 #include <QDoubleSpinBox>
 #include <QVBoxLayout>
 #include <QLineEdit>
+#include <QSpinBox>
+#include <QFileDialog>
 #include <QPushButton>
 #include <QDialogButtonBox>
 #include <QMessageBox>
@@ -1657,7 +1659,140 @@ static void roundPointsUiRegressions(MainWindow &main) {
     qInfo()<<"PASS: visible round reset and expandable advanced weights in desktop and narrow Quick layouts";
 }
 
+static void dataPackRegressions() {
+    Jumper athlete("Test", "Birth", "POL");
+    check(athlete.ageInYear(2026) == -1, "old athletes have unknown age");
+    athlete.setBirthDate(QDate(2000,12,31));
+    check(athlete.ageInYear(2026) == 26 && athlete.ageInYear(2027) == 27, "age is annual and independent of birthday");
+    check(Jumper::getFromJson(Jumper::getJsonObject(athlete)).getBirthDate() == QDate(2000,12,31), "birth date survives save serialization");
+    DataPack p; p.name = "Roster 2026"; p.ageMode = true; p.referenceYear = 2026; p.jumpers = {athlete};
+    DataPack loaded; QString error;
+    check(DataPack::fromJson(p.toJson(),loaded,error) && loaded.jumpers.first().ageInYear(2027) == 27, "age pack round trip");
+    auto invalid = p.toJson(); invalid.remove("reference-year");
+    check(!DataPack::fromJson(invalid,loaded,error), "age packs require reference year");
+    auto entries = p.toJson().value("jumpers").toArray(); auto entry = entries.first().toObject(); entry.insert("age",25); entries[0] = entry;
+    invalid = p.toJson(); invalid.insert("jumpers",entries);
+    check(!DataPack::fromJson(invalid,loaded,error), "conflicting age and birth year rejected");
+    entry.remove("birth-date"); entry.remove("birth-year"); entry.insert("age",26); entries[0] = entry; invalid.insert("jumpers",entries);
+    check(DataPack::fromJson(invalid,loaded,error) && loaded.jumpers.first().getBirthYear() == 2000 && !loaded.jumpers.first().getBirthDate().isValid(), "age-only import never invents a birthday");
+    p.kind = DataPack::Rules; p.rules = {CompetitionRules()}; PointsForPlacesPreset points("Scoring"); points.getPointsForPlacesReference()[1] = 17.5; p.points = {points};
+    check(DataPack::fromJson(p.toJson(),loaded,error) && loaded.rules.size() == 1 && loaded.points.first().getPointsForPlaces().value(1) == 17.5, "rules pack carries fractional points presets");
+    p.kind = DataPack::Hills; p.hills = {Hill()};
+    check(DataPack::fromJson(p.toJson(),loaded,error) && loaded.hills.size() == 1, "hill pack round trip");
+    auto badId = p.toJson();
+    auto badEntries = badId.value("hills").toArray(); auto badEntry = badEntries.first().toObject(); badEntry.insert("id", "a-b-c"); badEntries[0] = badEntry; badId.insert("hills",badEntries);
+    check(!DataPack::fromJson(badId,loaded,error), "malformed entity identifiers rejected before legacy parser");
+    auto *db = GlobalDatabase::get(); auto original = db->packsSnapshot();
+    const auto originalId = db->activePackId(DataPack::Jumpers); const auto oldCount = db->getGlobalJumpers().size();
+    p = DataPack(); p.name = "Second roster"; p.jumpers = {athlete};
+    const auto secondId = db->addPack(p);
+    check(secondId != originalId && db->getGlobalJumpers().size() == 1, "adding a pack activates an independent roster");
+    db->getEditableGlobalJumpers()[0].setSurname("Edited");
+    check(db->selectPack(originalId) && db->getGlobalJumpers().size() == oldCount, "switching restores original roster");
+    check(db->selectPack(secondId) && db->getGlobalJumpers().first().getSurname() == "Edited", "switching preserves edits");
+    check(db->writePacks(), "atomic pack catalog save");
+    check(db->restorePacks(original,error) && db->loadPacks() && db->activePackId(DataPack::Jumpers) == secondId && db->getGlobalJumpers().first().getSurname() == "Edited", "disk reload preserves packs, selection and edits");
+    check(db->restorePacks(original,error), "restore fixture packs");
+    check(db->writePacks(), "restore disk fixture packs");
+    qInfo() << "PASS: named data packs, age cohorts, serialization and disk persistence";
+}
+
+static void dataPackUiRegressions(MainWindow &main) {
+    auto *db = GlobalDatabase::get(); const auto original = db->packsSnapshot(); QString error;
+    DataPack pack; pack.name = "Age roster"; pack.ageMode = true; pack.referenceYear = 2020;
+    Jumper athlete("Age", "Athlete", "POL"); athlete.setBirthYear(2000); pack.jumpers = {athlete};
+    db->addPack(pack);
+    const auto beforeEditing = db->packsSnapshot();
+    DatabaseEditorWindow dialog(&main); render(&dialog,"data-packs",true);
+    auto *bridge = dialog.findChild<QuickBridge *>();
+    auto *choice = dialog.findChild<QComboBox *>("dataPackChoice");
+    check(choice && choice->count() >= 2, "multiple jumper packs are selectable");
+    auto *list = dialog.findChildren<DatabaseItemsListView *>().first();
+    check(QMetaObject::invokeMethod(&dialog,"onJumpersListViewDoubleClicked",Qt::DirectConnection,Q_ARG(QModelIndex,list->getListModel()->index(0,0))), "open jumper editor");
+    bridge->refresh(); QTest::qWait(100);
+    auto *age = dialog.findChild<QSpinBox *>("jumperAge");
+    check(age && !age->isHidden() && age->value() == 20, "pack base year controls annual age input");
+    bridge->edit(id(bridge,"jumperAge"),22);
+    bridge->edit(id(bridge,"dataPackChoice"),0);
+    bridge->edit(id(bridge,"dataPackChoice"),choice->count()-1);
+    check(db->getGlobalJumpers().first().getBirthYear() == 1998, "switching packs commits open jumper changes");
+    QMetaObject::invokeMethod(&dialog,"onJumpersListViewDoubleClicked",Qt::DirectConnection,Q_ARG(QModelIndex,list->getListModel()->index(0,0)));
+    bridge->edit(id(bridge,"dataPackAgeFormat"),0); bridge->refresh();
+    auto *date = dialog.findChild<QLineEdit *>("jumperBirthDate");
+    check(date && !date->isHidden() && date->text().isEmpty(), "switch to dates retains unknown birthday");
+    bridge->edit(id(bridge,"jumperBirthDate"),QString("1998-12-31"));
+    bridge->edit(id(bridge,"dataPackAgeFormat"),1);
+    check(db->getGlobalJumpers().first().getBirthDate() == QDate(1998,12,31) && age->value() == 22, "date to age conversion preserves exact birth date");
+    bridge->edit(id(bridge,"dataPackReferenceYear"),2026);
+    check(age->value() == 28, "changing base year updates age without changing birth year");
+    const auto exported = QDir::currentPath()+"/share-pack.json";
+    QTimer::singleShot(1000,[exported] {
+        QFileDialog *file = nullptr;
+        for (auto *w : QApplication::topLevelWidgets()) if ((file=qobject_cast<QFileDialog *>(w)) && file->isVisible()) break;
+        check(file && file->isVisible(),"export file picker opens"); file->setDirectory(QFileInfo(exported).absolutePath());
+        auto *name = file->findChild<QLineEdit *>("fileNameEdit"); check(name != nullptr,"file picker filename input exists");
+        name->setText(QFileInfo(exported).fileName());
+        qInfo()<<"PASS: file picker selected"<<file->selectedFiles(); QMetaObject::invokeMethod(file,"accept",Qt::DirectConnection);
+    });
+    bridge->activate(id(bridge,"exportDataPack")); QTest::qWait(1400);
+    QFile file(exported); check(file.open(QIODevice::ReadOnly),QString("shareable pack file written: %1, files: %2").arg(exported,QDir(QDir::currentPath()).entryList(QDir::Files).join(",")));
+    DataPack imported; check(DataPack::fromJson(QJsonDocument::fromJson(file.readAll()).object(),imported,error) && imported.jumpers.first().getBirthDate() == QDate(1998,12,31), "export contains edited birth information"); file.close();
+    qInfo()<<"PASS: pack export completed";
+    const auto count = choice->count();
+    QTimer::singleShot(1000,[exported] {
+        QFileDialog *file = nullptr;
+        for (auto *w : QApplication::topLevelWidgets()) if ((file=qobject_cast<QFileDialog *>(w)) && file->isVisible()) break;
+        check(file && file->isVisible(),"import file picker opens"); file->setDirectory(QFileInfo(exported).absolutePath());
+        auto *name = file->findChild<QLineEdit *>("fileNameEdit"); check(name != nullptr,"file picker filename input exists");
+        name->setText(QFileInfo(exported).fileName());
+        qInfo()<<"PASS: file picker selected"<<file->selectedFiles(); QMetaObject::invokeMethod(file,"accept",Qt::DirectConnection);
+    });
+    bridge->activate(id(bridge,"importDataPack")); QTest::qWait(1400);
+    check(choice->count() == count + 1 && db->getGlobalJumpers().first().ageInYear(2026) == 28,"import adds independent named pack through visible action");
+    qInfo()<<"PASS: pack import completed";
+    main.resize(1024,720);
+    clickControl(scene(&dialog),"manageDataPack");
+    QTimer::singleShot(120,[] {
+        QInputDialog *input = nullptr;
+        for (auto *w : QApplication::topLevelWidgets()) if ((input=qobject_cast<QInputDialog *>(w)) && input->isVisible()) break;
+        check(input && input->isVisible(),"new pack name prompt opens"); input->setTextValue("Empty pack"); input->accept();
+    });
+    clickControl(scene(&dialog),"action-createDataPack");
+    check(choice->count() == count + 2 && db->getGlobalJumpers().isEmpty(),"new pack action creates a named empty roster");
+    bridge->edit(id(bridge,"dataPackChoice"),choice->count()-2);
+    QMetaObject::invokeMethod(&dialog,"onJumpersListViewDoubleClicked",Qt::DirectConnection,Q_ARG(QModelIndex,list->getListModel()->index(0,0)));
+    qInfo()<<"PASS: empty pack created";
+    render(&dialog,"data-packs-edited",true);
+    clickControl(scene(&dialog),"closeDataPackSettings");
+    auto *tabs = dialog.findChild<QTabWidget *>("tabWidget_main");
+    tabs->setCurrentIndex(2); bridge->refresh();
+    check(dialog.findChild<QWidget *>("dataPackAgeFormat")->parentWidget()->isHidden(),"age settings only apply to jumper packs");
+    const auto rulesId = db->activePackId(DataPack::Rules);
+    tabs->setCurrentIndex(3); check(choice->currentData().toString() == rulesId,"points and rules select the same pack");
+    qInfo()<<"PASS: pack settings popup closed, controller visible"<<dialog.isVisible();
+    auto answer = [](QMessageBox::StandardButton value) {
+        QTimer::singleShot(120,[value] {
+            QMessageBox *message = nullptr;
+            for (auto *w : QApplication::topLevelWidgets()) if ((message=qobject_cast<QMessageBox *>(w)) && message->isVisible()) break;
+            check(message && message->isVisible(),"database close asks about saving"); message->button(value)->click();
+        });
+    };
+    answer(QMessageBox::Cancel); check(!dialog.close(),"cancel keeps editor open");
+    answer(QMessageBox::No); check(dialog.close(),"discard closes editor");
+    check(db->packsSnapshot() == beforeEditing,"discard restores every pack, format, roster and active selection");
+    {
+        DatabaseEditorWindow saved(&main); render(&saved,"data-packs-save");
+        auto *savedBridge = saved.findChild<QuickBridge *>();
+        savedBridge->edit(id(savedBridge,"dataPackName"),QString("Saved roster"));
+        answer(QMessageBox::Yes); check(saved.close(),"save closes editor");
+        check(db->loadPacks() && db->activePack(DataPack::Jumpers)->name == "Saved roster", "save and reload preserve pack edits");
+    }
+    check(db->restorePacks(original,error) && db->writePacks(),"restore UI fixture packs");
+    main.resize(1024,640); qInfo()<<"PASS: pack editor switching, birth formats, import, export, save, discard and responsive layouts";
+}
+
 static void backendRegressions() {
+    dataPackRegressions();
     roundPointsRegressions();
     fisCountryRegressions();
     check(SingleJumpsManager().getImportance()==5.,"standalone jumps have a defined default importance");
@@ -1765,6 +1900,7 @@ static void interactionRegressions(MainWindow &main) {
 
 int main(int argc,char **argv) {
     QApplication app(argc,argv);
+    if (app.arguments().contains("--packs-only")) QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
     app.setOrganizationName("SJ-Sim-UI-Test"); app.setApplicationName("SjSimUI");
     QTemporaryDir data; check(data.isValid(),"isolated data");
     const QString build=QCoreApplication::applicationDirPath();
@@ -1804,6 +1940,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--race-options-only")){main.show();runCompetition(main,0);return 0;}
     if(app.arguments().contains("--round-points-only")){roundPointsUiRegressions(main);return 0;}
     if(app.arguments().contains("--round-points-bulk-only")){main.show();for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);return 0;}
+    if(app.arguments().contains("--packs-only")){dataPackUiRegressions(main);return 0;}
     if(app.arguments().contains("--backend-only"))return 0;
     if(app.arguments().contains("--bulk-only")) {main.show();for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);runCompetition(main,0,true,1);runCompetition(main,0,true,2);runCompetition(main,2,true,3);return 0;}
     if(app.arguments().contains("--competitions-only")) {

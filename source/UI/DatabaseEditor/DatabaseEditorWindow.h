@@ -5,6 +5,11 @@
 #include <QVector>
 #include <QEvent>
 #include <QScrollArea>
+#include <QJsonObject>
+class QComboBox;
+class QLineEdit;
+class QSpinBox;
+class QWidget;
 
 class QCloseEvent;
 
@@ -59,6 +64,17 @@ private slots:
     void on_pushButton_sortByCountries_clicked();
 
 private:
+    QJsonObject originalPacks;
+    QComboBox *packChoice;
+    QLineEdit *packName;
+    QWidget *ageSettings;
+    QComboBox *ageFormat;
+    QSpinBox *referenceYear;
+    int packKind() const;
+    void setupPackControls();
+    void refreshPackControls();
+    void resetPackEditors();
+    bool saveOpenEditors();
     QVector<Jumper> tempGlobalJumpers;
     QVector<Hill> tempGlobalHills;
     QVector<CompetitionRules> tempGlobalCompetitionRules;

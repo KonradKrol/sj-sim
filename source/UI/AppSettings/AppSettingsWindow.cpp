@@ -141,6 +141,7 @@ void AppSettingsWindow::on_pushButton_cutSurnames_clicked()
                 jumper.setSurname(surname);
         }
     }
+    db->writePacks();
     db->writeJumpers();
     QMessageBox::information(this, tr("Nazwiska zawodników"), tr("Pomyślnie skrócono nazwiska zawodników"), QMessageBox::Ok);
 }

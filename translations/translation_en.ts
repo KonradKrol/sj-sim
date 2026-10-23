@@ -11425,4 +11425,232 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>Remaining jumps in the current group</translation>
     </message>
 </context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Nieobsługiwany format paczki.</source>
+        <translation>Unsupported pack format.</translation>
+    </message>
+    <message>
+        <source>Paczka musi mieć nazwę.</source>
+        <translation>A pack must have a name.</translation>
+    </message>
+    <message>
+        <source>Nieznany rodzaj paczki.</source>
+        <translation>Unknown pack type.</translation>
+    </message>
+    <message>
+        <source>Brak listy zawartości paczki.</source>
+        <translation>Pack contents are missing.</translation>
+    </message>
+    <message>
+        <source>Nieznany format wieku.</source>
+        <translation>Unknown age format.</translation>
+    </message>
+    <message>
+        <source>Podaj rok odniesienia od 1 do 9999.</source>
+        <translation>Enter a reference year from 1 to 9999.</translation>
+    </message>
+    <message>
+        <source>Nieprawidłowy wpis w paczce.</source>
+        <translation>Invalid pack entry.</translation>
+    </message>
+    <message>
+        <source>Nieprawidłowa data urodzenia; użyj RRRR-MM-DD.</source>
+        <translation>Invalid birth date; use YYYY-MM-DD.</translation>
+    </message>
+    <message>
+        <source>Nieprawidłowy wiek skoczka.</source>
+        <translation>Invalid jumper age.</translation>
+    </message>
+    <message>
+        <source>Wiek i rok urodzenia są sprzeczne.</source>
+        <translation>Age and birth year conflict.</translation>
+    </message>
+    <message>
+        <source>Brak listy presetów punktów.</source>
+        <translation>Points presets are missing.</translation>
+    </message>
+    <message>
+        <source>Nieprawidłowy preset punktów.</source>
+        <translation>Invalid points preset.</translation>
+    </message>
+    <message>
+        <source>Domyślna</source>
+        <translation>Default</translation>
+    </message>
+    <message>
+        <source>Nieprawidłowy katalog paczek.</source>
+        <translation>Invalid pack catalog.</translation>
+    </message>
+    <message>
+        <source>Powtórzony identyfikator paczki.</source>
+        <translation>Duplicate pack identifier.</translation>
+    </message>
+    <message>
+        <source>Brak aktywnej paczki.</source>
+        <translation>Active pack is missing.</translation>
+    </message>
+    <message>
+        <source>Paczki</source>
+        <translation>Packs</translation>
+    </message>
+    <message>
+        <source>Nie udało się wczytać katalogu paczek. Plik nie zostanie nadpisany.
+%1</source>
+        <translation>Could not load the pack catalog. The file will not be overwritten.
+%1</translation>
+    </message>
+</context>
+<context>
+    <name>DatabaseEditorWindow</name>
+    <message>
+        <source>Paczki</source>
+        <translation>Packs</translation>
+    </message>
+    <message>
+        <source>Nie udało się zapisać paczek. Zmiany pozostają w edytorze.</source>
+        <translation>Could not save packs. Your changes remain in the editor.</translation>
+    </message>
+    <message>
+        <source>Aktywna paczka</source>
+        <translation>Active pack</translation>
+    </message>
+    <message>
+        <source>Nazwa paczki</source>
+        <translation>Pack name</translation>
+    </message>
+    <message>
+        <source>Data urodzenia</source>
+        <translation>Birth date</translation>
+    </message>
+    <message>
+        <source>Wiek rocznikowy</source>
+        <translation>Annual age</translation>
+    </message>
+    <message>
+        <source>Dane urodzenia w paczce</source>
+        <translation>Birth information format</translation>
+    </message>
+    <message>
+        <source>Rok odniesienia dla wieku</source>
+        <translation>Reference year for age</translation>
+    </message>
+    <message>
+        <source>Nowa paczka</source>
+        <translation>New pack</translation>
+    </message>
+    <message>
+        <source>Importuj paczkę…</source>
+        <translation>Import pack…</translation>
+    </message>
+    <message>
+        <source>Eksportuj / udostępnij…</source>
+        <translation>Export / share…</translation>
+    </message>
+    <message>
+        <source>Wybrana paczka jest używana w grze. Eksport tworzy jeden plik do udostępnienia; zasady i presety punktów są w tej samej paczce.</source>
+        <translation>The selected pack is used in the game. Export creates one shareable file; rules and points presets belong to the same pack.</translation>
+    </message>
+    <message>
+        <source>Importuj paczkę</source>
+        <translation>Import pack</translation>
+    </message>
+    <message>
+        <source>Paczki Sj.Sim (*.json)</source>
+        <translation>Sj.Sim packs (*.json)</translation>
+    </message>
+    <message>
+        <source>Import paczki</source>
+        <translation>Pack import</translation>
+    </message>
+    <message>
+        <source>Nie udało się odczytać pliku JSON.</source>
+        <translation>Could not read the JSON file.</translation>
+    </message>
+    <message>
+        <source>Eksportuj / udostępnij paczkę</source>
+        <translation>Export / share pack</translation>
+    </message>
+    <message>
+        <source>Eksport paczki</source>
+        <translation>Pack export</translation>
+    </message>
+    <message>
+        <source>Nie udało się zapisać pliku paczki.</source>
+        <translation>Could not save the pack file.</translation>
+    </message>
+</context>
+<context>
+    <name>JumperEditorWidget</name>
+    <message>
+        <source>Nieznany</source>
+        <translation>Unknown</translation>
+    </message>
+    <message>
+        <source>Data urodzenia</source>
+        <translation>Birth date</translation>
+    </message>
+    <message>
+        <source>Rok urodzenia (gdy brak pełnej daty)</source>
+        <translation>Birth year (if full date is unknown)</translation>
+    </message>
+    <message>
+        <source>Wiek rocznikowy = rok odniesienia − rok urodzenia.</source>
+        <translation>Annual age = reference year − birth year.</translation>
+    </message>
+    <message>
+        <source>Wiek rocznikowy w %1: %2</source>
+        <translation>Annual age in %1: %2</translation>
+    </message>
+    <message>
+        <source>Wiek nieznany. Możesz pozostawić dane urodzenia puste.</source>
+        <translation>Age unknown. You can leave birth information empty.</translation>
+    </message>
+    <message>
+        <source>Wiek rocznikowy w %1</source>
+        <translation>Annual age in %1</translation>
+    </message>
+    <message>
+        <source>Dane urodzenia mogą pozostać nieznane.</source>
+        <translation>Birth information can remain unknown.</translation>
+    </message>
+    <message>
+        <source>Podaj poprawną datę w formacie RRRR-MM-DD albo pozostaw pole puste.</source>
+        <translation>Enter a valid YYYY-MM-DD date or leave the field empty.</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Nieprawidłowy rok urodzenia.</source>
+        <translation>Invalid birth year.</translation>
+    </message>
+    <message>
+        <source>Data i rok urodzenia są sprzeczne.</source>
+        <translation>Birth date and birth year conflict.</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Nieprawidłowy identyfikator wpisu w paczce.</source>
+        <translation>Invalid pack entry identifier.</translation>
+    </message>
+</context>
+<context>
+    <name>DataPackBar</name>
+    <message>
+        <source>Paczka…</source>
+        <translation>Pack…</translation>
+    </message>
+    <message>
+        <source>Wybrana paczka jest używana w grze. Eksport zapisuje plik JSON do udostępnienia.</source>
+        <translation>The selected pack is used in the game. Export saves a shareable JSON file.</translation>
+    </message>
+    <message>
+        <source>Gotowe</source>
+        <translation>Done</translation>
+    </message>
+</context>
 </TS>

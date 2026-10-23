@@ -17,6 +17,7 @@ UI_DIR = .ui
 win32: DEFINES += NOMINMAX
 
 SOURCES += \
+    source/global/DataPack.cpp \
     source/global/CountryCodes.cpp \
     source/UI/AuthorWindow.cpp \
     source/UI/AppSettings/CountriesEditorTableModel.cpp \
@@ -161,6 +162,7 @@ SOURCES += \
     source/utilities/functions.cpp
 
 HEADERS += \
+    source/global/DataPack.h \
     source/global/CountryCodes.h \
     source/UI/AuthorWindow.h \
     source/UI/ResponsiveWindowUtils.h \

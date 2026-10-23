@@ -201,7 +201,7 @@ void SingleJumpsConfigWindow::resizeEvent(QResizeEvent *event)
 void SingleJumpsConfigWindow::on_comboBox_existingJumper_currentIndexChanged(int index)
 {
     if(index > 0){
-        jumperEditor->setJumper(const_cast<Jumper *>(&GlobalDatabase::get()->getGlobalJumpers().at(index - 1)));
+        jumperEditor->setJumper(&GlobalDatabase::get()->getEditableGlobalJumpers()[index - 1]);
         jumperEditor->fillJumperInputs();
     }
     else jumperEditor->resetJumperInputs();
@@ -210,9 +210,9 @@ void SingleJumpsConfigWindow::on_comboBox_existingJumper_currentIndexChanged(int
 void SingleJumpsConfigWindow::on_comboBox_existingHill_currentIndexChanged(int index)
 {
     if(index > 0){
-        hillEditor->setHill(const_cast<Hill *>(&GlobalDatabase::get()->getGlobalHills().at(index - 1)));
+        hillEditor->setHill(&GlobalDatabase::get()->getEditableGlobalHills()[index - 1]);
         hillEditor->fillHillInputs();
-        emit hillEditor->KPointInputChanged(const_cast<Hill *>(&GlobalDatabase::get()->getGlobalHills().at(index - 1))->getKPoint());
+        emit hillEditor->KPointInputChanged(GlobalDatabase::get()->getEditableGlobalHills()[index - 1].getKPoint());
     }
     else hillEditor->resetHillInputs();
 }

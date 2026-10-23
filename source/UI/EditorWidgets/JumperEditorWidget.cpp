@@ -6,6 +6,9 @@
 #include "../../utilities/functions.h"
 
 #include <QIcon>
+#include <QLineEdit>
+#include <QSpinBox>
+#include <QMessageBox>
 
 JumperEditorWidget::JumperEditorWidget(Jumper *jumper, CharacteristicsEditor *characteristicsEditor, QWidget *parent) :
     jumper(jumper),
@@ -15,12 +18,44 @@ JumperEditorWidget::JumperEditorWidget(Jumper *jumper, CharacteristicsEditor *ch
     formInstability(nullptr)
 {
     ui->setupUi(this);
+    referenceYear = QDate::currentDate().year();
+    birthDateInput = new QLineEdit(this);
+    birthDateInput->setObjectName("jumperBirthDate");
+    birthDateInput->setPlaceholderText("RRRR-MM-DD");
+    ageInput = new QSpinBox(this);
+    ageInput->setObjectName("jumperAge");
+    ageInput->setRange(-1, 9998);
+    ageInput->setSpecialValueText(tr("Nieznany"));
+    birthYearInput = new QSpinBox(this);
+    birthYearInput->setObjectName("jumperBirthYear");
+    birthYearInput->setRange(0, 9999);
+    birthYearInput->setSpecialValueText(tr("Nieznany"));
+    birthDateLabel = new QLabel(tr("Data urodzenia"), this);
+    ageLabel = new QLabel(this);
+    birthYearLabel = new QLabel(tr("Rok urodzenia (gdy brak pełnej daty)"), this);
+    ageHint = new QLabel(this);
+    ageHint->setObjectName("jumperBirthHint");
+    ageHint->setWordWrap(true);
+    ui->formLayout_jumperInfo->insertRow(2, birthDateLabel, birthDateInput);
+    ui->formLayout_jumperInfo->insertRow(3, ageLabel, ageInput);
+    ui->formLayout_jumperInfo->insertRow(4, birthYearLabel, birthYearInput);
+    ui->formLayout_jumperInfo->insertRow(5, ageHint);
+    auto updateAge = [this]() {
+        const auto date = QDate::fromString(birthDateInput->text(), Qt::ISODate);
+        const int year = date.isValid() ? date.year() : birthYearInput->value();
+        ageHint->setText(ageMode ? tr("Wiek rocznikowy = rok odniesienia − rok urodzenia.") :
+            year > 0 && referenceYear >= year ? tr("Wiek rocznikowy w %1: %2").arg(referenceYear).arg(referenceYear - year) : tr("Wiek nieznany. Możesz pozostawić dane urodzenia puste."));
+    };
+    connect(birthDateInput, &QLineEdit::textChanged, this, updateAge);
+    connect(birthYearInput, qOverload<int>(&QSpinBox::valueChanged), this, updateAge);
+    ageInput->setValue(-1);
 
     if(this->characteristicsEditor == nullptr)
         this->characteristicsEditor = new CharacteristicsEditor(Characteristic::Jumper);
 
     ui->verticalLayout_characteristicsEditor->insertWidget(0, getCharacteristicsEditor());
     ui->label_countryFlag->setGeometry(ui->label_countryFlag->x(), ui->label_countryFlag->y(), CountryFlagsManager::getFlagPixmapSize().width(), CountryFlagsManager::getFlagPixmapSize().height());
+    setAgeFormat(false, referenceYear);
 }
 
 JumperEditorWidget::~JumperEditorWidget()
@@ -30,6 +65,10 @@ JumperEditorWidget::~JumperEditorWidget()
 
 void JumperEditorWidget::resetJumperInputs()
 {
+    jumper = nullptr;
+    birthDateInput->clear();
+    birthYearInput->setValue(0);
+    ageInput->setValue(-1);
     ui->lineEdit_name->setText("");
     ui->lineEdit_surname->setText("");
     ui->lineEdit_countryCode->setText("");
@@ -52,6 +91,9 @@ void JumperEditorWidget::fillJumperInputs()
         qDebug()<<"Jumper is nullptr!";
         return;
     }
+    birthYearInput->setValue(jumper->getBirthYear());
+    birthDateInput->setText(jumper->getBirthDate().toString(Qt::ISODate));
+    ageInput->setValue(jumper->ageInYear(referenceYear));
     ui->lineEdit_name->setText(jumper->getName());
     ui->lineEdit_surname->setText(jumper->getSurname());
     ui->lineEdit_countryCode->setText(jumper->getCountryCode());
@@ -82,7 +124,16 @@ void JumperEditorWidget::fillJumperInputs()
 }
 Jumper JumperEditorWidget::getJumperFromWidgetInput() const
 {
-    Jumper jumper;
+    Jumper jumper = this->jumper ? *this->jumper : Jumper();
+    if (ageMode) {
+        if (ageInput->value() >= 0) jumper.setBirthYear(referenceYear - ageInput->value());
+        else if (jumper.getBirthYear() <= referenceYear) jumper.setBirthYear(0);
+    }
+    else {
+        const QDate date = QDate::fromString(birthDateInput->text().trimmed(), Qt::ISODate);
+        if (date.isValid()) jumper.setBirthDate(date);
+        else { jumper.setBirthDate(QDate()); jumper.setBirthYear(birthYearInput->value()); }
+    }
     jumper.setName(ui->lineEdit_name->text());
     jumper.setSurname(ui->lineEdit_surname->text());
     jumper.setCountryCode(ui->lineEdit_countryCode->text());
@@ -156,7 +207,7 @@ void JumperEditorWidget::on_lineEdit_countryCode_textChanged(const QString &arg1
 
 void JumperEditorWidget::on_pushButton_submit_clicked()
 {
-    emit submitted();
+    if (validateBirthInput()) emit submitted();
 }
 
 void JumperEditorWidget::on_lineEdit_img_textChanged(const QString &arg1)
@@ -174,4 +225,28 @@ double *JumperEditorWidget::getFormInstability() const
 void JumperEditorWidget::setFormInstability(double *newFormInstability)
 {
     formInstability = newFormInstability;
+}
+
+void JumperEditorWidget::setAgeFormat(bool mode, int year)
+{
+    ageMode = mode;
+    referenceYear = qBound(1, year, 9999);
+    ageInput->setMaximum(referenceYear - 1);
+    birthDateInput->setVisible(!mode); birthDateLabel->setVisible(!mode);
+    birthYearInput->setVisible(!mode); birthYearLabel->setVisible(!mode);
+    ageInput->setVisible(mode); ageLabel->setVisible(mode);
+    ageLabel->setText(tr("Wiek rocznikowy w %1").arg(referenceYear));
+    if (jumper) fillJumperInputs();
+    else ageHint->setText(tr("Dane urodzenia mogą pozostać nieznane."));
+    emit birthDateInput->textChanged(birthDateInput->text());
+}
+
+bool JumperEditorWidget::validateBirthInput() const
+{
+    if (!ageMode && !birthDateInput->text().trimmed().isEmpty()
+        && !QDate::fromString(birthDateInput->text().trimmed(), Qt::ISODate).isValid()) {
+        QMessageBox::warning(const_cast<JumperEditorWidget *>(this), tr("Data urodzenia"), tr("Podaj poprawną datę w formacie RRRR-MM-DD albo pozostaw pole puste."));
+        return false;
+    }
+    return true;
 }

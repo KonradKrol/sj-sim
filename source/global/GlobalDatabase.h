@@ -11,6 +11,7 @@
 #include "JumpsImportancePreset.h"
 #include "PointsForPlacesPreset.h"
 #include "Country.h"
+#include "DataPack.h"
 
 #include <QVector>
 #include <QPair>
@@ -24,6 +25,9 @@ private:
     GlobalDatabase(); 
     ~GlobalDatabase();
 
+    QVector<DataPack> packs;
+    QString activePackIds[3];
+    bool packsWritable = true;
     QVector<Jumper> globalJumpers;
     QVector<Hill> globalHills;
     QVector<CompetitionRules> globalCompetitionsRules;
@@ -40,6 +44,17 @@ public:
     GlobalDatabase(GlobalDatabase &) = delete;
     static GlobalDatabase * get();
 
+    void ensurePacks();
+    void syncActivePacks();
+    const QVector<DataPack> &getPacks() const { return packs; }
+    QString activePackId(DataPack::Kind kind) const { return activePackIds[int(kind)]; }
+    DataPack *activePack(DataPack::Kind kind);
+    bool selectPack(const QString &id);
+    QString addPack(DataPack pack);
+    QJsonObject packsSnapshot();
+    bool restorePacks(const QJsonObject &snapshot, QString &error);
+    bool loadPacks();
+    bool writePacks();
     void repairDatabase();
     void repairSimulationSaves();
 

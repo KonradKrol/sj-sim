@@ -14,6 +14,11 @@ ColumnLayout {
     onEditRequestChanged: if(editRequest>0)editing=true
     onEditorChanged: if(editor)editing=true
     spacing: 8
+    Loader {
+        active: ui.profile === "DatabaseEditorWindow"
+        Layout.fillWidth: true
+        sourceComponent: Component { DataPackBar {} }
+    }
     Node { node: catalog.fields.toolbar || null; Layout.alignment: Qt.AlignRight; Layout.maximumWidth: catalog.editor || ui.profile!=="SimulationSavesWindow" ? 280 : 600; Layout.fillWidth: true }
     RowLayout {
         visible: !!catalog.fields.actionsRow && catalog.fields.actionsRow.length>0

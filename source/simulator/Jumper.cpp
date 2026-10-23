@@ -103,6 +103,8 @@ QJsonObject Jumper::getJsonObject(const Jumper & jumper)
     object.insert("country-code", jumper.getCountryCode().toUpper());
     object.insert("image-name", jumper.getImageName());
     object.insert("personal-best", jumper.getPersonalBest());
+    if (jumper.getBirthYear() > 0) object.insert("birth-year", jumper.getBirthYear());
+    if (jumper.getBirthDate().isValid()) object.insert("birth-date", jumper.getBirthDate().toString(Qt::ISODate));
 
     object.insert("takeoff-technique", jumper.getJumperSkills().getTakeoffTechnique());
     object.insert("flight-technique", jumper.getJumperSkills().getFlightTechnique());
@@ -134,6 +136,9 @@ Jumper Jumper::getFromJson(QJsonObject obj)
     jumper.setCountryCode(obj.value("country-code").toString());
     jumper.setImageName(obj.value("image-name").toString());
     jumper.setPersonalBest(obj.value("personal-best").toDouble());
+    jumper.setBirthYear(obj.value("birth-year").toInt());
+    const QDate date = QDate::fromString(obj.value("birth-date").toString(), Qt::ISODate);
+    if (date.isValid()) jumper.setBirthDate(date);
 
     jumper.getJumperSkillsPointer()->setTakeoffTechnique(obj.value("takeoff-technique").toDouble());
     jumper.getJumperSkillsPointer()->setFlightTechnique(obj.value("flight-technique").toDouble());
