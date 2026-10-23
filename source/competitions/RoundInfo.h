@@ -1,6 +1,7 @@
 #ifndef ROUNDINFO_H
 #define ROUNDINFO_H
 
+#include <QVector>
 
 class RoundInfo
 {
@@ -18,6 +19,8 @@ private:
     //Ogólne
     int count; //liczba zawodników/drużyn w danej rundzie
     bool sortStartList;
+    bool resetPoints = false;
+    QVector<double> previousRoundsWeights;
 
     //Konkursy drużynowe
     int sortAfterGroups;
@@ -29,6 +32,10 @@ private:
     int koGroupsSelectionType; //Jak mają być ustalane grupy po przejściu do rundy KO. Manual sprawia że wyświetla się okno z doborem grup przez użytkownika.
     //Ilość lucky looserów jest obliczana automatycznie na podstawie następnej rundy/następnego konkursu dla którego K.O jest kwalifikacjami
 public:
+    bool getResetPoints() const;
+    void setResetPoints(bool reset);
+    QVector<double> getPreviousRoundsWeights() const;
+    void setPreviousRoundsWeights(const QVector<double> &weights);
     int getCount() const;
     void setCount(int newCount);
     bool getSortStartList() const;

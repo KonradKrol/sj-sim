@@ -6152,6 +6152,26 @@ __</source>
 <context>
     <name>RoundInfoEditorWidget</name>
     <message>
+        <source>Resetuj punkty przed tą serią</source>
+        <translation>Reset points before this round</translation>
+    </message>
+    <message>
+        <source>Wcześniejsze skoki pozostają w historii, ale nie są dodawane do łącznej noty.</source>
+        <translation>Earlier jumps remain in the history but do not contribute to the total score.</translation>
+    </message>
+    <message>
+        <source>Zaawansowane: własne wagi wcześniejszych serii</source>
+        <translation>Advanced: custom weights for previous rounds</translation>
+    </message>
+    <message>
+        <source>0 = pomiń serię, 1 = pełne punkty. Wagi dotyczą oryginalnych not z podanych serii. Łączna nota jest zaokrąglana do 0,1 pkt.</source>
+        <translation>0 = ignore the round, 1 = full points. Weights apply to the original scores from the specified rounds. The total is rounded to 0.1 points.</translation>
+    </message>
+    <message>
+        <source>Waga punktów z serii %1</source>
+        <translation>Score weight for round %1</translation>
+    </message>
+    <message>
         <location filename="../source/UI/EditorWidgets/RoundInfoEditorWidget.ui" line="20"/>
         <source>Form</source>
         <translation></translation>

@@ -44,6 +44,7 @@
 #include "../source/single-jumps/SingleJumpsManager.h"
 #include "../source/global/GlobalDatabase.h"
 #include "../source/global/CountryCodes.h"
+#include "../source/UI/EditorWidgets/RoundInfoEditorWidget.h"
 #include "../source/global/CountryFlagsManager.h"
 #include "../source/global/GlobalAppSettings.h"
 #include "../source/global/GlobalSimulationSettings.h"
@@ -257,6 +258,8 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
     rules.setJumpersInTeamCount(4);
     RoundInfo first(bulk&&scenario!=2?100:16,true),second(scenario==2?3:bulk?(scenario==1?60:30):8,true);
     if(scenario==1) { first.setKO(true);first.setCountInKOGroup(2);first.setAdvancingFromKOGroup(1);first.setKoGroupsSelectionType(KOGroup::Classic); }
+    const bool weighted=QCoreApplication::arguments().contains("--round-points-bulk-only");
+    if(weighted) { if(scenario==2)second.setPreviousRoundsWeights({.5});else second.setResetPoints(true); }
     rules.setRounds({first,second});
     CompetitionConfigWindow config(CompetitionConfigWindow::SingleCompetition);
     config.getHillEditor()->setHill(&db->getEditableGlobalHills().first());config.getHillEditor()->fillHillInputs();
@@ -314,6 +317,21 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                 if(!athleteLabel || athleteLabel->text()!=window->getManager()->getActualJumper()->getNameAndSurname())qInfo()<<"BULK ATHLETE"<<scenario<<bulkAction<<(athleteLabel?athleteLabel->text():QString())<<window->getManager()->getActualJumper()->getNameAndSurname()<<window->getManager()->getActualStartListIndex();
                 check(athleteLabel && athleteLabel->text()==window->getManager()->getActualJumper()->getNameAndSurname(),"batched athlete presentation is synchronized before returning control");
                 int jumps=0;for(const auto &result:window->getManager()->getResults()->getResults()) {jumps+=result.getJumps().size();check(result.getCompetition()==window->getManager()->getCompetitionInfo() && std::isfinite(result.getPointsSum()),"bulk results retain competition owners and finite scores");}
+                if(weighted) {
+                    const int perRound=scenario==2?4:1;
+                    for(const auto &result:window->getManager()->getResults()->getResults()) {
+                        double expected=0;const auto history=result.getJumps();
+                        for(int index=0;index<history.size();++index)expected+=history[index].getPoints()*(history.size()>perRound && index<perRound?(scenario==2?.5:0):1.);
+                        check(std::abs(result.getPointsSum()-qRound64(expected*10)/10.)<.001,"real individual, KO and team simulations use reset or fractional previous-round points");
+                    }
+                    window->cancelActualRound();
+                    check(window->getManager()->getCompetitionInfo()->getExceptionalRoundsCount()==1,"cancelled final round is excluded from saved completed-round metadata");
+                    for(const auto &result:window->getManager()->getResults()->getResults()) {
+                        double expected=0;for(const auto &jump:result.getJumps())expected+=jump.getPoints();
+                        check(result.getJumps().size()==perRound && std::abs(result.getPointsSum()-expected)<.001,"cancelling a weighted round restores original completed-round scores and team groups");
+                    }
+                    qInfo()<<"PASS: weighted competition and cancelled-round restoration"<<scenario;
+                }
                 qInfo()<<"BENCH bulk"<<scenario<<"jumps"<<jumps<<"ms"<<duration<<"start-list resets"<<resets.count()<<"row changes"<<rowChanges.count();
                 check(bulkAction==2 ? jumps==37 && window->getManager()->getActualStartListIndex()==37 : jumps>0,"bulk simulation records the requested jumps and leaves the next athlete ready");window->accept();return;
             }
@@ -731,6 +749,8 @@ static void menuRegressions(MainWindow &main) {
     qInfo()<<"PASS: real pointer clicks open menus and activate source actions";
 }
 static void clickControl(QQuickWidget *view,const QString &name) {
+    // Synthetic QWidget mouse events bypass native mouse activation and focus.
+    QApplication::setActiveWindow(view->window());view->setFocus(Qt::MouseFocusReason);
     auto *control=item(view->quickWindow()->contentItem(),name);
     if(!control || !control->isVisible() || !control->isEnabled()){applicationWindow->grab().save("/tmp/sj-click-failure.png");qInfo()<<"Control failure"<<name<<control<<(control?control->isVisible():false)<<(control?control->isEnabled():false);}
     check(control && control->isVisible() && control->isEnabled(),"clickable control: "+name);
@@ -740,14 +760,15 @@ static void clickControl(QQuickWidget *view,const QString &name) {
         if(!ancestor->inherits("QQuickFlickable"))continue;
         const auto viewport=ancestor->mapRectToScene(ancestor->boundingRect()).intersected(QRectF(view->rect()));
         for(int attempt=0;attempt<24 && !viewport.isEmpty();++attempt) {
-            const auto center=control->mapToScene(control->boundingRect().center());
+            const auto center=control->mapToScene(QPointF(control->width()/2,control->height()/2));
             if(center.y()>=viewport.top()+4 && center.y()<=viewport.bottom()-4)break;
             const auto position=viewport.center();
             QWheelEvent wheel(position,view->mapToGlobal(position.toPoint()),QPoint(),QPoint(0,center.y()>viewport.bottom()?-120:120),Qt::NoButton,Qt::NoModifier,Qt::NoScrollPhase,false);
             QApplication::sendEvent(view,&wheel);QTest::qWait(80);
+            for(int settle=0;settle<100 && ancestor->property("moving").toBool();++settle)QTest::qWait(20);
         }
     }
-    const auto point=control->mapToItem(view->rootObject(),control->boundingRect().center()).toPoint();
+    const auto point=control->mapToItem(view->rootObject(),QPointF(control->width()/2,control->height()/2)).toPoint();
     if(!view->rect().contains(point)) {
         applicationWindow->grab().save(output+"/click-outside-viewport.png");
         qWarning()<<"Control outside viewport"<<name<<point<<view->rect();
@@ -1561,7 +1582,83 @@ static void fisCountryRegressions() {
     check(CountryCodes::toFis(" che ")=="SUI" && CountryCodes::toFis("SUI")=="SUI" && CountryCodes::toFis("HRV")=="CRO" && CountryCodes::toFis("TTO")=="TTO" && CountryCodes::toFis("ZZZ")=="ZZZ","FIS codes normalize aliases while preserving current FIS and custom countries");
     qInfo()<<"PASS: FIS countries, legacy databases, flags, team links and historical points";
 }
+static void roundPointsRegressions() {
+    Jumper a("Round","One","POL"),b("Round","Two","GER"),c("Round","Three","SUI");
+    CompetitionRules rules;rules.setRounds({RoundInfo(3,true),RoundInfo(2,true),RoundInfo(2,true),RoundInfo(2,true)});
+    auto old=CompetitionRules::getJsonObject(rules);QJsonArray oldRounds;
+    for(auto value:old.value("rounds").toArray()){auto round=value.toObject();round.remove("reset-points");round.remove("previous-rounds-weights");oldRounds.append(round);}old["rounds"]=oldRounds;
+    check(CompetitionRules::getFromJson(old).getRoundPointWeights(4)==QVector<double>({1,1,1,1}),"legacy rules keep ordinary cumulative scoring");
+    rules.getRoundsReference()[2].setPreviousRoundsWeights({0,.5});
+    CompetitionInfo competition;competition.setRules(rules);auto &results=competition.getResultsReference();
+    const auto add=[&](Jumper *jumper,double points){JumpData jump(jumper);jump.setPoints(points);results.addJump(jumper,jump);};
+    add(&a,100);add(&a,200);add(&a,300);
+    auto *own=results.getResultOfIndividualJumper(&a);
+    check(own->getPointsSum()==400 && own->pointsForJumps(2)==300,"specific previous rounds use raw points with independent weights");
+    check(own->getJumps()[0].getPoints()==100 && own->getJumps()[1].getPoints()==200,"weighting never changes original jump scores");
+    competition.getRulesPointer()->getRoundsReference()[3].setPreviousRoundsWeights({.2,.2,.2});add(&a,400);
+    check(own->getPointsSum()==520,"three previous rounds can each contribute twenty percent");
+    rules.getRoundsReference()[2].setPreviousRoundsWeights({});rules.getRoundsReference()[1].setResetPoints(true);competition.setRules(rules);
+    results.getResultsReference().clear();add(&a,100);add(&b,80);add(&c,70);
+    IndividualCompetitionManager manager;manager.setCompetitionInfo(&competition);manager.setCompetitionRules(competition.getRulesPointer());manager.setResults(&results);manager.setRoundsJumpers({{&a,&b,&c}});manager.setActualRound(1);manager.setRoundsStartingGates({0});manager.setStartListStatuses({{&a,StartListCompetitorStatus::Finished},{&b,StartListCompetitorStatus::Finished},{&c,StartListCompetitorStatus::Finished}});
+    results.sortInDescendingOrder();manager.updateLastQualifiedResult();manager.setupNextRound();
+    check(manager.getActualRoundJumpersReference().size()==2 && results.getResultOfIndividualJumper(&a)->getPointsSum()==0 && results.getResultOfIndividualJumper(&b)->getPointsSum()==0,"round transition resets qualifiers immediately, before their first jump");
+    check(results.getResultOfIndividualJumper(&c)->getPointsSum()==70 && results.getResultOfIndividualJumper(&c)->getPosition()==3,"eliminated athletes keep their original result below the qualified round");
+    add(&a,10);
+    Hill hill("Target","POL",100,110);hill.setPointsForKPoint(60);hill.setPointsForMeter(2);competition.setHill(&hill);QVector<Wind> calm{Wind(0,0)};manager.setActualWinds(&calm);manager.updateToBeatLineDistance();
+    check(manager.getToBeatLineDistance()==75.5,"leader target after a reset uses the new zero baseline");
+    add(&b,20);results.sortInDescendingOrder();
+    check(results.getResultOfIndividualJumper(&b)->getPosition()==1 && results.getResultOfIndividualJumper(&a)->getPosition()==2,"final ranking follows reset scores instead of the old leader");
+    own=results.getResultOfIndividualJumper(&a);own->updatePointsSum(3);add(&a,30);
+    check(own->getPointsSum()==40 && own->pointsForJumps(1)==100,"ordinary following rounds carry the reset total without reviving discarded points");
+    const auto persisted=CompetitionRules::getFromJson(CompetitionRules::getJsonObject(rules));
+    check(persisted.getRounds()[1].getResetPoints() && persisted.getRoundPointWeights(3)==QVector<double>({0,1,1}),"reset survives rules and preset serialization");
+    CompetitionRulesEditorWidget editor;editor.setCompetitionRules(&rules);editor.fillCompetitionRulesInputs();
+    auto *box=editor.findChild<QToolBox *>("toolBox_rounds");auto *third=qobject_cast<RoundInfoEditorWidget *>(box->widget(2));
+    third->findChild<QCheckBox *>("checkBox_customRoundWeights")->setChecked(true);third->findChild<QDoubleSpinBox *>("doubleSpinBox_roundWeight_1")->setValue(0);third->findChild<QDoubleSpinBox *>("doubleSpinBox_roundWeight_2")->setValue(.5);
+    const auto edited=CompetitionRules::getFromJson(CompetitionRules::getJsonObject(editor.getCompetitionRulesFromWidgetInputs()));
+    check(edited.getRounds()[1].getResetPoints() && edited.getRounds()[2].getPreviousRoundsWeights()==QVector<double>({0,.5}),"competition editor saves reset and fractional advanced weights independently per round");
+    editor.findChild<QSpinBox *>("spinBox_roundsCount")->setValue(5);
+    check(editor.getRoundsFromInput()[2].getPreviousRoundsWeights()==QVector<double>({0,.5}),"adding a round preserves edited weights in existing rounds");
+    Team team("POL");team.setJumpers({&a,&b});CompetitionInfo teamCompetition;rules.setCompetitionType(CompetitionRules::Team);rules.setJumpersInTeamCount(2);teamCompetition.setRules(rules);teamCompetition.setHill(&hill);
+    auto &teamResults=teamCompetition.getResultsReference();
+    const auto addTeam=[&](Jumper *jumper,double points){JumpData jump(jumper,&hill);jump.setPoints(points);teamResults.addJump(&team,jump);};
+    addTeam(&a,100);addTeam(&b,110);auto *teamResult=teamResults.getResultOfTeam(&team);teamResult->updatePointsSum(2);
+    check(teamResult->getPointsSum()==0,"team reset applies to the whole previous round");addTeam(&a,50);addTeam(&b,60);teamResult->updateTeamJumpersResults();
+    check(teamResult->getPointsSum()==110 && teamResult->getTeamJumperResult(&a)->getPointsSum()==50 && teamResult->getTeamJumperResult(&b)->getPointsSum()==60,"team group jumps and individual contributions share the same reset policy");
+    IdentifiableObjectsStorage storage;storage.add(&a);storage.add(&b);storage.add(&team);storage.add(&hill);
+    auto reloaded=CompetitionSingleResult::getFromJson(CompetitionSingleResult::getJsonObject(*teamResult),&storage);reloaded.setCompetition(&teamCompetition);reloaded.updatePointsSum();
+    check(reloaded.getPointsSum()==110 && reloaded.getJumps().size()==4 && reloaded.getTeamJumperResult(&a)->getPointsSum()==50,"weighted results reload with complete unmodified jump history and team contributions");
+    qInfo()<<"PASS: round resets, fractional weights, inherited totals, rankings, teams, editors and legacy persistence";
+}
+
+static void roundPointsUiRegressions(MainWindow &main) {
+    main.show();main.resize(1240,900);CompetitionRulesEditorWidget owner;
+    QDialog fixture(&main);auto *layout=new QVBoxLayout(&fixture);
+    auto *editor=new RoundInfoEditorWidget(true,30,true,0,false,0,0,0,&owner);editor->setRoundIndex(2);layout->addWidget(editor);
+    fixture.show();QTest::qWait(200);auto *view=scene(&fixture);auto *bridge=fixture.findChild<QuickBridge *>();
+    check(editor->findChild<QWidget *>("previousRoundWeights")->isHidden() && !item(view->rootObject(),"input-doubleSpinBox_roundWeight_1"),"advanced weights start collapsed");
+    clickControl(view,"check-checkBox_resetPoints");check(editor->getResetPointsFromInput(),"visible reset control is clickable without advanced settings");
+    check(!editor->findChild<QCheckBox *>("checkBox_customRoundWeights")->isEnabled(),"reset explicitly overrides custom weights");
+    clickControl(view,"check-checkBox_resetPoints");clickControl(view,"check-checkBox_customRoundWeights");
+    check(bridge->find("doubleSpinBox_roundWeight_1") && bridge->find("doubleSpinBox_roundWeight_2"),"advanced settings reveal one weight for each previous round");
+    bridge->edit(id(bridge,"doubleSpinBox_roundWeight_1"),0);bridge->edit(id(bridge,"doubleSpinBox_roundWeight_2"),.5);QTest::qWait(100);
+    check(editor->getPreviousRoundsWeightsFromInput()==QVector<double>({0,.5}),"Quick controls update the real fractional rules values");
+    render(&fixture,"round-point-weights",true);
+    QTest::qWait(150);
+    clickControl(view,"input-doubleSpinBox_roundWeight_2");
+    auto *clickedField=item(view->rootObject(),"input-doubleSpinBox_roundWeight_2");
+    check(clickedField->hasActiveFocus(),"clicking the weight field focuses text input instead of its step buttons");
+    QTest::keyClick(view,Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(view,QLocale().toString(.2,'f',1));QTest::keyClick(view,Qt::Key_Tab);QTest::qWait(120);
+    main.grab().save(output+"/round-point-weights-narrow-scrolled.png");
+    const auto typedWeights=editor->getPreviousRoundsWeightsFromInput();
+    auto *typedField=item(view->rootObject(),"input-doubleSpinBox_roundWeight_2");
+    check(typedWeights==QVector<double>({0,.2}),QString("narrow weight keyboard input: weights=%1,%2 text=%3 locale=%4 focus=%5").arg(typedWeights.value(0)).arg(typedWeights.value(1)).arg(typedField->property("text").toString(),QLocale().name(),view->quickWindow()->activeFocusItem()?view->quickWindow()->activeFocusItem()->objectName():"none"));
+    fixture.reject();
+    qInfo()<<"PASS: visible round reset and expandable advanced weights in desktop and narrow Quick layouts";
+}
+
 static void backendRegressions() {
+    roundPointsRegressions();
     fisCountryRegressions();
     check(SingleJumpsManager().getImportance()==5.,"standalone jumps have a defined default importance");
     normalSamplingRegression();
@@ -1705,6 +1802,8 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--navigation-only")){navigationRegressions(main);return 0;}
     if(app.arguments().contains("--home-launch-only")){homeLaunchRegressions(main);return 0;}
     if(app.arguments().contains("--race-options-only")){main.show();runCompetition(main,0);return 0;}
+    if(app.arguments().contains("--round-points-only")){roundPointsUiRegressions(main);return 0;}
+    if(app.arguments().contains("--round-points-bulk-only")){main.show();for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);return 0;}
     if(app.arguments().contains("--backend-only"))return 0;
     if(app.arguments().contains("--bulk-only")) {main.show();for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);runCompetition(main,0,true,1);runCompetition(main,0,true,2);runCompetition(main,2,true,3);return 0;}
     if(app.arguments().contains("--competitions-only")) {

@@ -16,8 +16,8 @@ CompetitionRulesEditorWidget::CompetitionRulesEditorWidget(QWidget *parent) :
     delete ui->page;
     delete ui->page_2;
 
-    connect(ui->spinBox_roundsCount, &QSpinBox::editingFinished, this, [this](){
-        fillRoundsInputs(ui->spinBox_roundsCount->value());
+    connect(ui->spinBox_roundsCount, qOverload<int>(&QSpinBox::valueChanged), this, [this](){
+        fillRoundsInputs(false);
     });
     connect(ui->comboBox_competitionType, qOverload<int>(&QComboBox::currentIndexChanged), this, &CompetitionRulesEditorWidget::competitionTypeChanged);
     connect(ui->spinBox_jumpersInTeamCount, qOverload<int>(&QSpinBox::valueChanged), this, &CompetitionRulesEditorWidget::jumpersCountInTeamChanged);
@@ -105,20 +105,17 @@ void CompetitionRulesEditorWidget::fillRoundsInputs(bool setup)
     for(int i=0; i<ui->toolBox_rounds->count(); i++)
     {
         ui->toolBox_rounds->setItemText(i, "Seria " + QString::number(i+1));
+        static_cast<RoundInfoEditorWidget *>(ui->toolBox_rounds->widget(i))->setRoundIndex(i);
     }
     if(setup == true){
-        disconnect(ui->spinBox_roundsCount, qOverload<int>(&QSpinBox::valueChanged), this, &CompetitionRulesEditorWidget::fillRoundsInputs);
         for(int i=0; i<ui->toolBox_rounds->count(); i++){
             if(competitionRules->getRounds().count() > i){
-                dynamic_cast<RoundInfoEditorWidget *>(ui->toolBox_rounds->widget(i))->setRoundInfo(const_cast<RoundInfo *>(&competitionRules->getRounds().at(i)));
+                dynamic_cast<RoundInfoEditorWidget *>(ui->toolBox_rounds->widget(i))->setRoundInfo(&competitionRules->getRoundsReference()[i]);
                 dynamic_cast<RoundInfoEditorWidget *>(ui->toolBox_rounds->widget(i))->fillRoundInfoInput();
             }
             //else{
                 //dynamic_cast<RoundInfoEditorWidget *>(ui->toolBox_rounds->widget(i))->resetRoundInfoInput();
             //}
-            connect(ui->spinBox_roundsCount, qOverload<int>(&QSpinBox::valueChanged), this, [this](){
-                fillRoundsInputs(false);
-            });
         }
     }
 }
@@ -148,6 +145,9 @@ QVector<RoundInfo> CompetitionRulesEditorWidget::getRoundsFromInput()
         round.setCountInKOGroup(dynamic_cast<RoundInfoEditorWidget *>(ui->toolBox_rounds->widget(i))->getKOGroupCountFromInput());
         round.setAdvancingFromKOGroup(dynamic_cast<RoundInfoEditorWidget *>(ui->toolBox_rounds->widget(i))->getAdvancingFromKOGroup());
         round.setKoGroupsSelectionType(dynamic_cast<RoundInfoEditorWidget *>(ui->toolBox_rounds->widget(i))->getKOGroupsSelectionTypeFromInputs());
+        auto *editor=static_cast<RoundInfoEditorWidget *>(ui->toolBox_rounds->widget(i));
+        round.setResetPoints(editor->getResetPointsFromInput());
+        round.setPreviousRoundsWeights(editor->getPreviousRoundsWeightsFromInput());
         rounds.push_back(round);
     }
     return rounds;

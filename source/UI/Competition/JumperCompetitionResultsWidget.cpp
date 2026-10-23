@@ -40,7 +40,7 @@ void JumperCompetitionResultsWidget::fillWidget()
         if(ranked) {
             rankSummary["positionNumber"]=ranked->getPosition();
             double leading=ranked->getPointsSum();
-            for(const auto &result:results)if(std::isfinite(result.getPointsSum()))leading=qMax(leading,result.getPointsSum());
+            for(const auto &result:results)if(result.getRankingRound()==ranked->getRankingRound() && std::isfinite(result.getPointsSum()))leading=qMax(leading,result.getPointsSum());
             if(std::isfinite(leading)&&std::isfinite(ranked->getPointsSum()))rankSummary["leaderGap"]=qMax(0.,qRound64((leading-ranked->getPointsSum())*10)/10.);
 
         }

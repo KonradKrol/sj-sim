@@ -264,6 +264,7 @@ void TeamResultsTreeModel::setupTreeItems()
                         distances.append(QString::number(jump.getDistance())+(jump.getLanding().getType()==Landing::Fall?"*":""));
                     }
                 }
+                if(auto *member=res.getTeamJumperResult(jumper))jumperPointsSum=member->getPointsSum();
                 new TreeItem({"", "", jumper->getNameAndSurname(), QString::number(jumperPointsSum, 'f', 1), distances.join(" · ")}, teamHeaderItem);
             }
         }

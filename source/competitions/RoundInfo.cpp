@@ -1,4 +1,5 @@
 #include "RoundInfo.h"
+#include <cmath>
 
 RoundInfo::RoundInfo(int count, bool sortStartList) : count(count),
     sortStartList(sortStartList),
@@ -8,6 +9,15 @@ RoundInfo::RoundInfo(int count, bool sortStartList) : count(count),
     advancingFromKOGroup(1),
     koGroupsSelectionType(0)
 {}
+
+bool RoundInfo::getResetPoints() const { return resetPoints; }
+void RoundInfo::setResetPoints(bool reset) { resetPoints = reset; }
+QVector<double> RoundInfo::getPreviousRoundsWeights() const { return previousRoundsWeights; }
+void RoundInfo::setPreviousRoundsWeights(const QVector<double> &weights) {
+    previousRoundsWeights = weights;
+    for(auto &weight : previousRoundsWeights)
+        if(!std::isfinite(weight) || weight < 0)weight = 0;
+}
 
 int RoundInfo::getKoGroupsSelectionType() const
 {

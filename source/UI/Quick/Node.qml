@@ -87,7 +87,7 @@ FocusScope {
     }
     Component {
         id: checkBody
-        SCheck { text: control.fields.text || ""; checked: !!control.fields.value; onClicked: ui.activate(control.fields.id) }
+        SCheck { objectName: "check-" + (control.fields.name || control.fields.id); text: control.fields.text || ""; checked: !!control.fields.value; onClicked: ui.activate(control.fields.id) }
     }
     Component {
         id: numberBody

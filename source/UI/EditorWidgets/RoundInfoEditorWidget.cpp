@@ -3,6 +3,11 @@
 
 #include "CompetitionRulesEditorWidget.h"
 #include <QDebug>
+#include <QCheckBox>
+#include <QDoubleSpinBox>
+#include <QFormLayout>
+#include <QLabel>
+#include <QVBoxLayout>
 
 RoundInfoEditorWidget::RoundInfoEditorWidget(bool hideGroupsInfo, int competitiorsCount, bool sortStartList, short sortGroups, bool KO, int KOCount, int KOAdvance, int selection,  QWidget *parent) :
     QWidget(parent),
@@ -10,6 +15,20 @@ RoundInfoEditorWidget::RoundInfoEditorWidget(bool hideGroupsInfo, int competitio
 {
     roundInfo = nullptr;
     ui->setupUi(this);
+    resetPoints=new QCheckBox(tr("Resetuj punkty przed tą serią"),this);
+    resetPoints->setObjectName("checkBox_resetPoints");
+    resetPoints->setToolTip(tr("Wcześniejsze skoki pozostają w historii, ale nie są dodawane do łącznej noty."));
+    customWeights=new QCheckBox(tr("Zaawansowane: własne wagi wcześniejszych serii"),this);
+    customWeights->setObjectName("checkBox_customRoundWeights");
+    weightsPanel=new QWidget(this);weightsPanel->setObjectName("previousRoundWeights");
+    auto *weightsContent=new QVBoxLayout(weightsPanel);weightsContent->setContentsMargins(0,0,0,0);
+    auto *hint=new QLabel(tr("0 = pomiń serię, 1 = pełne punkty. Wagi dotyczą oryginalnych not z podanych serii. Łączna nota jest zaokrąglana do 0,1 pkt."),weightsPanel);
+    hint->setWordWrap(true);weightsContent->addWidget(hint);
+    auto *fields=new QWidget(weightsPanel);weightsLayout=new QFormLayout(fields);weightsLayout->setContentsMargins(0,0,0,0);weightsContent->addWidget(fields);
+    ui->verticalLayout->addWidget(resetPoints);ui->verticalLayout->addWidget(customWeights);ui->verticalLayout->addWidget(weightsPanel);
+    connect(customWeights,&QCheckBox::toggled,weightsPanel,&QWidget::setVisible);
+    connect(resetPoints,&QCheckBox::toggled,this,[this](bool reset){customWeights->setEnabled(!reset);weightsPanel->setEnabled(!reset);});
+    weightsPanel->hide();setRoundIndex(0);
 
     if(hideGroupsInfo == true){
         ui->comboBox_sortingAfterGroups->hide();
@@ -19,7 +38,7 @@ RoundInfoEditorWidget::RoundInfoEditorWidget(bool hideGroupsInfo, int competitio
     ui->checkBox_sortStartList->setChecked(sortStartList);
     ui->comboBox_sortingAfterGroups->setCurrentIndex(sortGroups);
 
-    connect(ui->checkBox_KORound, &QCheckBox::stateChanged, this, [this](){
+    const auto updateKoFields=[this](){
         if(ui->checkBox_KORound->isChecked() == true)
         {
             ui->spinBox_KOGroupCount->show();
@@ -39,10 +58,12 @@ RoundInfoEditorWidget::RoundInfoEditorWidget(bool hideGroupsInfo, int competitio
             ui->comboBox_KOGroupsSelectionType->hide();
             ui->label_warningIcon->hide();
         }
-    });
+    };
+    connect(ui->checkBox_KORound, &QCheckBox::stateChanged, this, updateKoFields);
     ui->label_warningIcon->setPixmap(QPixmap("://img/warning.png").scaled(ui->label_warningIcon->size()));
 
     ui->checkBox_KORound->setChecked(KO);
+    updateKoFields();
     ui->spinBox_KOGroupCount->setValue(KOCount);
     ui->spinBox_AdvancingFromKOGroup->setValue(KOAdvance);
     ui->spinBox_AdvancingFromKOGroup->setMaximum(ui->spinBox_KOGroupCount->value());
@@ -73,6 +94,10 @@ void RoundInfoEditorWidget::fillRoundInfoInput()
         ui->spinBox_KOGroupCount->setValue(roundInfo->getCountInKOGroup());
         ui->spinBox_AdvancingFromKOGroup->setValue(roundInfo->getAdvancingFromKOGroup());
         ui->comboBox_KOGroupsSelectionType->setCurrentIndex(roundInfo->getKoGroupsSelectionType());
+        resetPoints->setChecked(roundInfo->getResetPoints());
+        const auto weights=roundInfo->getPreviousRoundsWeights();
+        customWeights->setChecked(!weights.isEmpty());
+        for(int index=0;index<weightInputs.size();++index)weightInputs[index]->setValue(weights.value(index,1.));
     }
 }
 
@@ -86,6 +111,28 @@ void RoundInfoEditorWidget::resetRoundInfoInput()
     ui->spinBox_KOGroupCount->setValue(2);
     ui->spinBox_AdvancingFromKOGroup->setValue(1);
     ui->comboBox_KOGroupsSelectionType->setCurrentIndex(0);
+    resetPoints->setChecked(false);customWeights->setChecked(false);
+    for(auto *input:weightInputs)input->setValue(1.);
+}
+
+void RoundInfoEditorWidget::setRoundIndex(int index) {
+    resetPoints->setVisible(index>0);customWeights->setVisible(index>0);
+    while(weightInputs.size()>index) {auto *input=weightInputs.takeLast();weightsLayout->removeRow(input);}
+    while(weightInputs.size()<index) {
+        auto *input=new QDoubleSpinBox(weightsLayout->parentWidget());
+        input->setObjectName(QString("doubleSpinBox_roundWeight_%1").arg(weightInputs.size()+1));
+        input->setRange(0,1000);input->setDecimals(4);input->setSingleStep(.1);input->setValue(1.);
+        const auto label=tr("Waga punktów z serii %1").arg(weightInputs.size()+1);
+        input->setAccessibleName(label);weightsLayout->addRow(label,input);weightInputs.append(input);
+    }
+    weightsPanel->setVisible(index>0 && customWeights->isChecked());
+}
+
+bool RoundInfoEditorWidget::getResetPointsFromInput() const { return !weightInputs.isEmpty() && resetPoints->isChecked(); }
+QVector<double> RoundInfoEditorWidget::getPreviousRoundsWeightsFromInput() const {
+    QVector<double> weights;
+    if(customWeights->isChecked())for(auto *input:weightInputs)weights.append(input->value());
+    return weights;
 }
 
 int RoundInfoEditorWidget::getCountFromInput()

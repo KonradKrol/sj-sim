@@ -1621,11 +1621,14 @@ void CompetitionManagerWindow::cancelActualRound()
         return;
 
     for(auto & res : manager->getResults()->getResultsReference()){
-        if(res.getJumpsReference().count() == manager->getActualRound()){
-            res.getJumpsReference().removeLast();
-            res.updatePointsSum();
-        }
+        const int previousRound=qMin(res.getScoringRound(),manager->getActualRound()-1);
+        const int perRound=res.getType()==CompetitionSingleResult::TeamResult?qMax(1,manager->getCompetitionRules()->getJumpersInTeamCount()):1;
+        const int remaining=qMin(int(res.getJumpsReference().size()),(manager->getActualRound()-1)*perRound);
+        res.getJumpsReference().resize(remaining);
+        res.updatePointsSum(previousRound);
+        res.updateTeamJumpersResults();
     }
+    if(manager->getActualRound()>1)manager->getCompetitionInfo()->setExceptionalRoundsCount(manager->getActualRound()-1);
     manager->getResults()->sortInDescendingOrder();
 
     startListModel->refresh();
@@ -1647,6 +1650,7 @@ void CompetitionManagerWindow::cancelActualRound()
         }
     }
     else if(getType() == CompetitionRules::Team){
+        teamResultsTreeModel->setupTreeItems();
         teamResultsTreeView->setModel(nullptr);
         teamResultsTreeView->setModel(teamResultsTreeModel);
         ResponsiveWindowUtils::configureTreeColumns(teamResultsTreeView);

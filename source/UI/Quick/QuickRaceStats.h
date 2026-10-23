@@ -11,9 +11,7 @@ namespace QuickRaceStats {
 inline QVariantMap previousStanding(const CompetitionResults &results, const CompetitionSingleResult &athlete, int jumpCount) {
     if(jumpCount < 1 || athlete.getJumps().size() < jumpCount) return {};
     const auto score = [jumpCount](const CompetitionSingleResult &entry) {
-        double sum = 0; const auto jumps = entry.getJumps();
-        for(int i = 0; i < jumpCount; ++i) sum += jumps[i].getPoints();
-        return qRound64(sum * 10);
+        return qRound64(entry.pointsForJumps(jumpCount) * 10);
     };
     const auto own = score(athlete);
     qint64 bestRival = std::numeric_limits<qint64>::min();
@@ -41,9 +39,7 @@ inline QVariantMap biggestAdvancement(const CompetitionResults &results, int rou
         const auto jumps = result.getJumps();
         if (jumps.size() < previousCount)
             continue;
-        double points = 0;
-        for (int i = 0; i < previousCount; ++i)
-            points += jumps[i].getPoints();
+        const double points = result.pointsForJumps(previousCount);
         const auto score = qRound64(points * 10);
         scores.append(score);
         if (jumps.size() > previousCount && result.getPosition() > 0)

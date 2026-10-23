@@ -6,10 +6,12 @@
 extern const QString appVersion;
 
 CompetitionSingleResult::CompetitionSingleResult(CompetitionInfo *competition, Jumper *jumper, int type) : type(type), jumper(jumper), team(nullptr), competition(competition),
+    pointsSum(0), position(0),
     Identifiable()
 {}
 
 CompetitionSingleResult::CompetitionSingleResult(CompetitionInfo *competition, Team *team, int type) : type(type), jumper(nullptr), team(team), competition(competition),
+    pointsSum(0), position(0),
     Identifiable()
 {}
 
@@ -20,6 +22,7 @@ CompetitionSingleResult CompetitionSingleResult::getFromJson(QJsonObject obj, Id
     //result.setCompetition(static_cast<CompetitionInfo *>(storage->get(obj.value("competition-id").toString())));
     result.setPosition(obj.value("position").toInt());
     result.setPointsSum(obj.value("points-sum").toDouble());
+    result.scoringRound = qMax(0,obj.value("scoring-round").toInt());
     result.setType(obj.value("type").toInt());
     result.setJumper(static_cast<Jumper *>(storage->get(obj.value("jumper-id").toString())));
     result.setTeam(static_cast<Team *>(storage->get(obj.value("team-id").toString())));
@@ -39,6 +42,7 @@ QJsonObject CompetitionSingleResult::getJsonObject(CompetitionSingleResult resul
     //resultObject.insert("competition-id", QString::number(result.getCompetition()->getID()));
     resultObject.insert("position", result.getPosition());
     resultObject.insert("points-sum", result.getPointsSum());
+    resultObject.insert("scoring-round", result.getScoringRound());
     resultObject.insert("type", result.getType());
     if(result.getJumper() != nullptr)
         resultObject.insert("jumper-id", result.getJumper()->getIDStr());
@@ -267,6 +271,10 @@ CompetitionInfo *CompetitionSingleResult::getCompetition() const
 void CompetitionSingleResult::setCompetition(CompetitionInfo *newCompetition)
 {
     competition = newCompetition;
+    for(auto &result : teamJumpersResults) {
+        result.setCompetition(newCompetition);
+        result.updatePointsSum(getScoringRound());
+    }
 }
 
 QVector<CompetitionSingleResult> CompetitionSingleResult::getTeamJumpersResults() const
@@ -349,12 +357,31 @@ void CompetitionSingleResult::setJumps(const QVector<JumpData> &newJumps)
     jumps = newJumps;
 }
 
-void CompetitionSingleResult::updatePointsSum()
-{
-    pointsSum = 0;
-    for(auto & res : jumps){
-        pointsSum += res.getPoints();
-    }
+int CompetitionSingleResult::getScoringRound() const {
+    if(!competition && scoringRound>0)return scoringRound;
+    const int perRound=type==TeamResult && competition?qMax(1,competition->getRulesPointer()->getJumpersInTeamCount()):1;
+    return qMax(scoringRound,int((jumps.size()+perRound-1)/perRound));
+}
+
+int CompetitionSingleResult::getRankingRound() const {
+    return competition && competition->getRulesPointer()->hasRoundPointAdjustments()?getScoringRound():0;
+}
+
+double CompetitionSingleResult::pointsForJumps(int jumpCount,int round) const {
+    jumpCount=qBound(0,jumpCount,int(jumps.size()));
+    const auto *rules=competition?competition->getRulesPointer():nullptr;
+    const int perRound=type==TeamResult && rules?qMax(1,rules->getJumpersInTeamCount()):1;
+    if(round<=0)round=(jumpCount+perRound-1)/perRound;
+    const bool adjusted=rules && rules->hasRoundPointAdjustments();
+    const auto weights=adjusted?rules->getRoundPointWeights(round):QVector<double>();
+    double total=0;
+    for(int index=0;index<jumpCount;++index)total+=jumps[index].getPoints()*weights.value(index/perRound,1.);
+    return adjusted?qRound64(total*10)/10.:total;
+}
+
+void CompetitionSingleResult::updatePointsSum(int round) {
+    scoringRound=round>=0?round:getScoringRound();
+    pointsSum=pointsForJumps(jumps.size(),getScoringRound());
 }
 
 void CompetitionSingleResult::updateTeamJumpersResults()
@@ -364,6 +391,7 @@ void CompetitionSingleResult::updateTeamJumpersResults()
     for(auto & jump : getJumpsReference()){
         if(jumpers.contains(jump.getJumper()) == false){
             CompetitionSingleResult result(competition, jump.getJumper());
+            result.scoringRound=getScoringRound();
             result.getJumpsReference().push_back(jump);
             result.updatePointsSum();
 

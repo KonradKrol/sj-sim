@@ -394,6 +394,9 @@ void IndividualCompetitionManager::setupNextRound(QVector<KOGroup> manualGroups)
     setActualStartListIndex(0);
     roundsStartingGates.push_back(actualGate);
     setupStartListStatusesForActualRound();
+    for(auto *jumper : getActualRoundJumpersReference())
+        if(auto *result=results->getResultOfIndividualJumper(jumper))result->updatePointsSum(actualRound);
+    results->sortInDescendingOrder();
 }
 
 void IndividualCompetitionManager::setupStartListStatusesForActualRound()

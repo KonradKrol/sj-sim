@@ -7,6 +7,9 @@
 namespace Ui {
 class RoundInfoEditorWidget;
 }
+class QCheckBox;
+class QDoubleSpinBox;
+class QFormLayout;
 
 class RoundInfoEditorWidget : public QWidget
 {
@@ -25,6 +28,9 @@ public:
     int getKOGroupCountFromInput();
     int getAdvancingFromKOGroup();
     int getKOGroupsSelectionTypeFromInputs();
+    void setRoundIndex(int index);
+    bool getResetPointsFromInput() const;
+    QVector<double> getPreviousRoundsWeightsFromInput() const;
 
     void hideGroupsInfo();
     void showGroupsInfo();
@@ -38,6 +44,11 @@ private:
     Ui::RoundInfoEditorWidget *ui;
 
     RoundInfo * roundInfo;
+    QCheckBox *resetPoints;
+    QCheckBox *customWeights;
+    QWidget *weightsPanel;
+    QFormLayout *weightsLayout;
+    QVector<QDoubleSpinBox *> weightInputs;
 public:
     RoundInfo *getRoundInfo() const;
     void setRoundInfo(RoundInfo *newRoundInfo);

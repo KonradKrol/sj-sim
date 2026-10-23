@@ -242,6 +242,8 @@ Weryfikacja poprawek Windows (22.10.2026, Release): oba zakresy zakończyły si�
 
 Inne przydatne zakresy: `--single-jumps-only`, `--ux-only`, `--workflow-only`, `--appearance-only`; pomiar: `--single-jumps-benchmark`. Testy pracują na tymczasowych kopiach danych i ustawień, ale pliki bazowe nadal muszą znajdować się obok testowego `.exe`. Obrazy trafiają do `ui-renders` przy tym pliku. Testy GUI trzeba zweryfikować również na Windowsie — pozytywny wynik linuksowego renderera offscreen nie potwierdza wszystkich zachowań Windows/GPU.
 
+`--round-points-only` sprawdza normalnie widoczny reset punktów przed serią oraz rozwijane wagi zaawansowane. Obliczenia i zgodność starych zapisów są częścią regresji backendu. Opis funkcji: [reset i wagi punktów](docs/ROUND_POINT_WEIGHTS.md).
+
 Aktualizacja 23.10.2026: natywne testy sprawdzają także ukrycie kontrolerów przed pierwszym `Show` oraz systemowe `IsWindowVisible`. `--race-options-only` klika „Przebieg”, „Warunki” i „Skok” przy dwóch szerokościach, sprawdza ich widoczną zawartość i zamyka panele. Szczegóły poprawek i zgodności starych zapisów z kodami FIS: [raport Windows UI i FIS](docs/WINDOWS_UI_AND_FIS_2026-10-23.md).
 
 Do testu zgodności Widgets utwórz **osobny** katalog, np. `build-win-widgets`, i powtórz build z `CONFIG+=release CONFIG+=widgets_only`, bez `quick_ui_smoke`. Przygotuj jego dane tak samo. Nie usuwaj Widgets ani jego zależności z normalnego buildu Quick.

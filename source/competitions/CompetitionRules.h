@@ -61,6 +61,8 @@ public:
     QVector<RoundInfo> getRounds() const;
     void setRounds(const QVector<RoundInfo> &newRounds);
     QVector<RoundInfo> & getRoundsReference();
+    QVector<double> getRoundPointWeights(int round) const;
+    bool hasRoundPointAdjustments() const;
     QString getName() const;
     void setName(const QString &newName);
     int getJumpersInTeamCount() const;

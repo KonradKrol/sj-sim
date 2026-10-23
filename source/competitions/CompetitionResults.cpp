@@ -7,7 +7,7 @@
 extern Uuid globalIDGenerator;
 
 CompetitionResults::CompetitionResults() :
-    Identifiable()
+    Identifiable(), competition(nullptr)
 {
 
 }
@@ -135,8 +135,9 @@ QHash<Jumper *, int> CompetitionResults::getHashWithJumpersPositions(const QVect
         {
             if(res.getJumpsReference().count() > round)
                 res.getJumpsReference().remove(round, res.getJumpsReference().count() - round);
+            const int perRound=res.getType()==CompetitionSingleResult::TeamResult && res.getCompetition()?qMax(1,res.getCompetition()->getRulesPointer()->getJumpersInTeamCount()):1;
+            res.updatePointsSum((round+perRound-1)/perRound);
             res.updateTeamJumpersResults();
-            res.updatePointsSum();
         }
     }
     results.sortInDescendingOrder();
@@ -493,15 +494,17 @@ void CompetitionResults::updatePositions()
     int actualPosition = 1;
     int add = 1;
     int i=0;
+    int previousRankingRound = 0;
     for(auto & result : results){
         if(i==0){
             result.setPosition(1);
             previousResultPoints = result.getPointsSum();
+            previousRankingRound = result.getRankingRound();
             i++;
             continue;
         }
 
-        if(previousResultPoints == result.getPointsSum())
+        if(previousResultPoints == result.getPointsSum() && previousRankingRound == result.getRankingRound())
         {
             result.setPosition(actualPosition);
             add += 1;
@@ -513,6 +516,7 @@ void CompetitionResults::updatePositions()
         }
 
         previousResultPoints = result.getPointsSum();
+        previousRankingRound = result.getRankingRound();
         i++;
     }
     // for(auto & result : results){
@@ -535,7 +539,7 @@ void CompetitionResults::sortInAscendingOrder()
 int CompetitionResults::getPositionAfterJumps(const CompetitionSingleResult &result,int jumpCount) const
 {
     if(jumpCount<=0 || result.getJumps().size()<jumpCount)return 0;
-    const auto sum=[jumpCount](const CompetitionSingleResult &entry){double total=0;const auto jumps=entry.getJumps();for(int i=0;i<jumpCount;++i)total+=jumps[i].getPoints();return qRound64(total*10);};
+    const auto sum=[jumpCount](const CompetitionSingleResult &entry){return qRound64(entry.pointsForJumps(jumpCount)*10);};
     const auto points=sum(result);int position=1;
     for(const auto &entry:results)if(entry.getJumps().size()>=jumpCount && sum(entry)>points)++position;
     return position;

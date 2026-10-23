@@ -36,6 +36,11 @@ void TeamCompetitionManager::setupNextRound()
     setActualGroup(0);
     setupNextGroup();
     roundsStartingGates.push_back(actualGate);
+    for(auto *team : getActualRoundTeamsReference())
+        if(auto *result=results->getResultOfTeam(team)) {
+            result->updatePointsSum(actualRound);result->updateTeamJumpersResults();
+        }
+    results->sortInDescendingOrder();
 }
 
 void TeamCompetitionManager::setupStartListStatusesForActualRound(bool setupBeforeCompetition)

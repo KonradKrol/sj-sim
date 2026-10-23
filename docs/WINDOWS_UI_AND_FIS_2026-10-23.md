@@ -29,3 +29,5 @@ Windows x64, Qt 6.8.3 / MSVC 2022, Release:
 Powyższe testy GUI wykonano w natywnym oknie Windows. Testy pracują na kopiach danych. Zwykłe exe i dane użytkownika pozostają w dotychczasowym katalogu; skrót „Sj.Sim QML” nadal wskazuje właściwe exe.
 
 Pełny zestaw GUI nie jest deklarowany jako zaliczony. Dodatkowy `--workflow-only` po przewinięciu formularza zatrzymuje się na asercji `choosing custom rules opens their editor directly` w kalendarzu sezonu. Wcześniejszy zakres `--ux-only` zatrzymał się na akcji `rosterPresetRemove`. Są to osobne ścieżki do dalszego sprawdzenia; nie stanowią dowodu awarii trzech paneli opcji konkursu, które przeszły dedykowany test. Testy kliknięć przewijają teraz pola kółkiem myszy, ponieważ Windows ogranicza żądany rozmiar okna do obszaru monitora.
+
+Następna funkcja z tej sesji: [reset punktów i zaawansowane wagi poprzednich serii](ROUND_POINT_WEIGHTS.md).

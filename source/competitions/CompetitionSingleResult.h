@@ -20,7 +20,7 @@ class CompetitionSingleResult : public Identifiable
 public:
     CompetitionSingleResult(CompetitionInfo * competition = nullptr, Jumper * jumper = nullptr, int type = 0);
     CompetitionSingleResult(CompetitionInfo *competition, Team * team, int type = 0);
-    inline bool operator<(const CompetitionSingleResult & second) {return pointsSum < second.getPointsSum();}
+    inline bool operator<(const CompetitionSingleResult & second) {return getRankingRound()==second.getRankingRound()?pointsSum < second.getPointsSum():getRankingRound()<second.getRankingRound();}
     //inline bool operator>(const CompetitionSingleResult & second) {return pointsSum > second.getPointsSum();}
     enum Type{
         IndividualResult,
@@ -54,6 +54,7 @@ protected:
     QVector<JumpData> jumps;
     double pointsSum;
     int position;
+    int scoringRound = 0;
 
     int type;
     Jumper * jumper;
@@ -61,7 +62,10 @@ protected:
     QVector<CompetitionSingleResult> teamJumpersResults;
 
 public:
-    void updatePointsSum();
+    void updatePointsSum(int round = -1);
+    int getScoringRound() const;
+    int getRankingRound() const;
+    double pointsForJumps(int jumpCount, int round = 0) const;
     void updateTeamJumpersResults();
     CompetitionSingleResult * getTeamJumperResult(Jumper * jumper);
 
@@ -87,6 +91,7 @@ public:
 
 inline bool operator>(const CompetitionSingleResult & l, const CompetitionSingleResult & r)
 {
+    if(l.getRankingRound()!=r.getRankingRound())return l.getRankingRound()>r.getRankingRound();
     if(l.getPointsSum() == r.getPointsSum())
     {
         return l.getID().str() > r.getID().str();
@@ -96,6 +101,7 @@ inline bool operator>(const CompetitionSingleResult & l, const CompetitionSingle
 
 inline bool operator<(const CompetitionSingleResult & l, const CompetitionSingleResult & r)
 {
+    if(l.getRankingRound()!=r.getRankingRound())return l.getRankingRound()<r.getRankingRound();
     if(l.getPointsSum() == r.getPointsSum())
     {
         return l.getID() < r.getID();

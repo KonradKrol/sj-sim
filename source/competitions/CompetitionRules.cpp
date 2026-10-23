@@ -103,6 +103,10 @@ QJsonObject CompetitionRules::getJsonObject(const CompetitionRules &competitionR
         roundObject.insert("ko-group-count", round.getCountInKOGroup());
         roundObject.insert("ko-group-advancing", round.getAdvancingFromKOGroup());
         roundObject.insert("ko-groups-selection-type", round.getKoGroupsSelectionType());
+        roundObject.insert("reset-points", round.getResetPoints());
+        QJsonArray weights;
+        for(double weight : round.getPreviousRoundsWeights())weights.append(weight);
+        roundObject.insert("previous-rounds-weights", weights);
         roundsArray.push_back(roundObject);
     }
     object.insert("rounds", roundsArray);
@@ -167,6 +171,10 @@ CompetitionRules CompetitionRules::getFromJson(const QJsonObject &obj)
         roundInfo.setCountInKOGroup(round.toObject().value("ko-group-count").toInt());
         roundInfo.setAdvancingFromKOGroup(round.toObject().value("ko-group-advancing").toInt());
         roundInfo.setKoGroupsSelectionType(round.toObject().value("ko-groups-selection-type").toInt());
+        roundInfo.setResetPoints(round.toObject().value("reset-points").toBool());
+        QVector<double> weights;
+        for(const auto &weight : round.toObject().value("previous-rounds-weights").toArray())weights.append(weight.toDouble(1.));
+        roundInfo.setPreviousRoundsWeights(weights);
         rules.getRoundsReference().push_back(roundInfo);
     }
     return rules;
@@ -176,6 +184,27 @@ CompetitionRules CompetitionRules::getFromJson(const QJsonObject &obj)
 QVector<RoundInfo> CompetitionRules::getRounds() const
 {
     return rounds;
+}
+
+QVector<double> CompetitionRules::getRoundPointWeights(int round) const {
+    QVector<double> weights;
+    for(int index=0;index<round;++index) {
+        if(index<rounds.size()) {
+            const auto &info=rounds[index];
+            const auto custom=info.getPreviousRoundsWeights();
+            if(info.getResetPoints())weights.fill(0);
+            else if(!custom.isEmpty())
+                for(int previous=0;previous<index;++previous)weights[previous]=custom.value(previous,1.);
+        }
+        weights.append(1.);
+    }
+    return weights;
+}
+
+bool CompetitionRules::hasRoundPointAdjustments() const {
+    for(int index=1;index<rounds.size();++index)
+        if(rounds[index].getResetPoints() || !rounds[index].getPreviousRoundsWeights().isEmpty())return true;
+    return false;
 }
 
 void CompetitionRules::setRounds(const QVector<RoundInfo> &newRounds)
