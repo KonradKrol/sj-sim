@@ -22,6 +22,7 @@ extern Uuid globalIDGenerator;
 GlobalDatabase::GlobalDatabase()
 {
     loadedSimulationSaves = false;
+    packsWritable = false;
 }
 
 GlobalDatabase::~GlobalDatabase()
@@ -334,7 +335,22 @@ void GlobalDatabase::removeJumper(int index)
 
 bool GlobalDatabase::loadFromJson()
 {
-    return (loadJumpers() && loadHills() && loadCompetitionsRules() && loadPointsForPlacesPresets() && loadCalendarPresets() && loadFormGeneratorPresets() && loadJumpsImportancePresets() && loadCountries() && loadPacks());
+    packsWritable=false;
+    bool ok=true;
+    const auto record=[&](bool loaded){ok=loaded && ok;};
+    const bool hasCatalog=QFile::exists("userData/GlobalDatabase/packs.json");
+    bool loadedCatalog=false;
+    if(hasCatalog)record(loadedCatalog=loadPacks());
+    // A valid catalog owns these four collections. Legacy exports are only
+    // migration input or a read-only fallback when the catalog is damaged.
+    if(!loadedCatalog){
+        record(loadJumpers());record(loadHills());
+        record(loadCompetitionsRules());record(loadPointsForPlacesPresets());
+        if(!hasCatalog)record(loadPacks());
+    }
+    record(loadCalendarPresets());record(loadFormGeneratorPresets());
+    record(loadJumpsImportancePresets());record(loadCountries());
+    return ok;
 }
 
 bool GlobalDatabase::writeToJson()
@@ -856,7 +872,7 @@ bool GlobalDatabase::restorePacks(const QJsonObject &o, QString &error)
 bool GlobalDatabase::loadPacks()
 {
     QFile file("userData/GlobalDatabase/packs.json");
-    if (!file.exists()) { packs.clear(); ensurePacks(); return true; }
+    if (!file.exists()) { packs.clear(); ensurePacks(); packsWritable=true; return true; }
     QJsonParseError parse;
     QString error;
     bool ok = file.open(QIODevice::ReadOnly);

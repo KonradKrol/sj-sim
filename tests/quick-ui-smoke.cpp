@@ -1708,6 +1708,33 @@ static void dataPackRegressions() {
     qInfo() << "PASS: named data packs, age cohorts, serialization and disk persistence";
 }
 
+static void packCatalogRecoveryRegression()
+{
+    auto *db=GlobalDatabase::get();const auto original=db->packsSnapshot();QString error;
+    const auto originalActive=db->activePackId(DataPack::Jumpers);
+    DataPack extra;extra.name="Inactive catalog recovery fixture";extra.jumpers={Jumper("Preserved","Athlete","POL")};
+    const auto extraId=db->addPack(extra);db->selectPack(originalActive);const auto catalog=db->packsSnapshot();
+    QTemporaryDir temporary;check(temporary.isValid(),"pack recovery temporary directory");
+    const auto working=QDir::currentPath();const auto source=QDir(working).absoluteFilePath("userData/GlobalDatabase");
+    QDirIterator files(source,QDir::Files,QDirIterator::Subdirectories);
+    while(files.hasNext()){
+        const auto from=files.next();const auto to=temporary.path()+"/userData/GlobalDatabase/"+QDir(source).relativeFilePath(from);
+        check(QDir().mkpath(QFileInfo(to).absolutePath()) && QFile::copy(from,to),"copy isolated catalog recovery fixture");
+    }
+    const auto packFile=temporary.path()+"/userData/GlobalDatabase/packs.json";
+    {QFile file(packFile);check(file.open(QFile::WriteOnly) && file.write(QJsonDocument(catalog).toJson())>0,"write catalog fixture with an inactive pack");}
+    check(QFile::remove(temporary.path()+"/userData/GlobalDatabase/globalJumpers.json"),"remove only the legacy jumper export");
+    check(QDir::setCurrent(temporary.path()),"enter isolated recovery fixture");
+    int warnings=0;QTimer dismiss;QObject::connect(&dismiss,&QTimer::timeout,[&]{for(auto *w:QApplication::topLevelWidgets())if(auto *box=qobject_cast<QMessageBox *>(w);box && box->isVisible()){++warnings;box->accept();}});dismiss.start(20);
+    const bool loaded=db->loadFromJson();dismiss.stop();const auto restored=db->packsSnapshot();const bool written=db->writePacks();
+    QJsonObject onDisk;{QFile file(packFile);if(file.open(QFile::ReadOnly))onDisk=QJsonDocument::fromJson(file.readAll()).object();}
+    check(QDir::setCurrent(working) && db->restorePacks(original,error),"restore database after isolated recovery fixture");
+    check(loaded && warnings==0 && written && restored==catalog && onDisk==catalog,"valid catalog survives a missing legacy export without losing inactive packs");
+    bool preserved=false;for(const auto &value:onDisk.value("packs").toArray())if(value.toObject().value("id").toString()==extraId)preserved=true;
+    check(preserved,"inactive pack identity survives recovery and save");
+    qInfo()<<"PASS: authoritative pack catalog survives missing legacy database files";
+}
+
 static void dataPackUiRegressions(MainWindow &main) {
     auto *db = GlobalDatabase::get(); const auto original = db->packsSnapshot(); QString error;
     DataPack pack; pack.name = "Age roster"; pack.ageMode = true; pack.referenceYear = 2020;
@@ -1806,6 +1833,7 @@ static void dataPackUiRegressions(MainWindow &main) {
 #include "calendar-dates-regressions.h"
 
 static void backendRegressions() {
+    packCatalogRecoveryRegression();
     calendarDateRegressions();
     classificationScoringRegressions();
     dataPackRegressions();
