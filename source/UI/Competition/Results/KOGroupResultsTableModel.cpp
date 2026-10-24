@@ -55,6 +55,7 @@ QVariant KOGroupResultsTableModel::data(const QModelIndex &index, int role) cons
     if(jumper == nullptr)
         return QVariant();
 
+    if(role==CompetitionAdvancement::LatestJumpRole){auto *result=KOManager->getResults()->getResultOfIndividualJumper(jumper);return result && KOManager->getResults()->containsLatestJump(*result);}
     auto *manager=KOManager->getIndManager();
     const int groupState=KOManager->getStatuses().value(jumper,KORoundManager::Waiting);
     const int advancement=groupState==KORoundManager::Winner?StartListCompetitorStatus::SureAdvanced:groupState==KORoundManager::Loser?StartListCompetitorStatus::SureDroppedOut:StartListCompetitorStatus::Waiting;

@@ -28,6 +28,7 @@ QVariant ResultsTableModel::data(const QModelIndex &index, int role) const
     if (!index.isValid() || !results || index.row()<0 || index.row()>=results->getResultsReference().size() || index.column()<0 || index.column()>=columnCount())
         return QVariant();
 
+    if(role==CompetitionAdvancement::LatestJumpRole)return results->containsLatestJump(results->getResultsReference().at(index.row()));
     auto *jumper=results->getResultsReference().at(index.row()).getJumper();
     const auto *status=startListStatuses?StartListCompetitorStatus::getStatusOfJumper(jumper,*startListStatuses):nullptr;
     const int roundStatus=manager && !status && results->getResultsReference().at(index.row()).getScoringRound()<manager->getActualRound()?StartListCompetitorStatus::SureDroppedOut
@@ -96,9 +97,9 @@ QVariant ResultsTableModel::data(const QModelIndex &index, int role) const
         }
         if(roundStatus==StartListCompetitorStatus::SureDroppedOut || qualificationStatus==StartListCompetitorStatus::SureDroppedOut)return QColor(238,240,242);
         if(roundStatus==StartListCompetitorStatus::SureAdvanced)return QColor(245,255,248);
-        if(lastJumper != nullptr)
+        if(!results->getLatestJumpId().isEmpty() || lastJumper != nullptr)
         {
-            if(results->getResultByIndex(index.row())->getJumper() == lastJumper)
+            if(results->getLatestJumpId().isEmpty()?results->getResultByIndex(index.row())->getJumper()==lastJumper:results->containsLatestJump(*results->getResultByIndex(index.row())))
                 return QColor(qRgb(232, 243, 255));
         }
         return QColor(253,253,249);

@@ -25,6 +25,7 @@ public:
 private:
     CompetitionInfo * competition;
     QVector<CompetitionSingleResult> results;
+    QString latestJumpId;
     QVector<QVector<JumpData *>> constructRoundsJumps(QVector<RoundInfo> * rounds);
 
 public:
@@ -63,6 +64,8 @@ public:
     int howManyJumpersJumpedInTeam(Team * team);
     int getIndexOfJumperResult(Jumper * jumper);
 
+    QString getLatestJumpId() const { return latestJumpId; }
+    bool containsLatestJump(const CompetitionSingleResult &result) const;
     void updatePositions();
     void sortInDescendingOrder();
     void sortInAscendingOrder();

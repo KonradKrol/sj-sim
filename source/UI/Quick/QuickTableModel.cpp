@@ -35,7 +35,7 @@ QuickTableModel::QuickTableModel(QAbstractItemView *view, QObject *parent)
 int QuickTableModel::rowCount(const QModelIndex &parent) const { return parent.isValid() ? 0 : m_rows.size(); }
 QHash<int,QByteArray> QuickTableModel::roleNames() const {
     return {{Qt::UserRole+1,"cells"}, {Qt::UserRole+2,"selected"}, {Qt::UserRole+3,"depth"},
-            {Qt::UserRole+4,"branch"}, {Qt::UserRole+5,"expanded"}, {Qt::UserRole+6,"current"}, {Qt::UserRole+7,"statusText"}, {Qt::UserRole+8,"tint"}, {Qt::UserRole+9,"advanceState"}, {Qt::UserRole+10,"qualificationState"}, {Qt::UserRole+11,"qualificationTarget"}, {Qt::UserRole+12,"luckyLoser"}};
+            {Qt::UserRole+4,"branch"}, {Qt::UserRole+5,"expanded"}, {Qt::UserRole+6,"current"}, {Qt::UserRole+7,"statusText"}, {Qt::UserRole+8,"tint"}, {Qt::UserRole+9,"advanceState"}, {Qt::UserRole+10,"qualificationState"}, {Qt::UserRole+11,"qualificationTarget"}, {Qt::UserRole+12,"luckyLoser"}, {Qt::UserRole+13,"latestJump"}};
 }
 QModelIndex QuickTableModel::cell(int row, int column) const {
     return m_source && row >= 0 && row < m_rows.size() ? m_rows[row].sibling(m_rows[row].row(), column) : QModelIndex();
@@ -72,6 +72,7 @@ QVariant QuickTableModel::data(const QModelIndex &index, int role) const {
     case Qt::UserRole+10: return first.data(CompetitionAdvancement::QualificationStatusRole).isValid()?first.data(CompetitionAdvancement::QualificationStatusRole):QVariant(-1);
     case Qt::UserRole+11: return first.data(CompetitionAdvancement::QualificationTargetRole);
     case Qt::UserRole+12: return first.data(CompetitionAdvancement::LuckyLoserRole);
+    case Qt::UserRole+13: return first.data(CompetitionAdvancement::LatestJumpRole);
     case Qt::UserRole+7:
     case Qt::UserRole+8: {
         if(role==Qt::UserRole+7) {

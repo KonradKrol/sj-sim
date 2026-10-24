@@ -15,8 +15,10 @@ Rectangle {
     property int qualificationState: -1
     property string qualificationTarget: ""
     property bool luckyLoser: false
+    property bool latestJump: false
     readonly property bool teamHeader: tableView.teamResults && rowDepth===0
     readonly property bool teamMember: tableView.teamResults && rowDepth>0
+    readonly property bool sureAdvanced: advanceState===0 || qualificationState===0
     readonly property bool eliminated: advanceState===1 || qualificationState===1
     property string statusText: ""
     property string tint: ""
@@ -39,10 +41,13 @@ Rectangle {
         return Qt.rgba(.09+(r-low)/(high-low)*.08,.14+(g-low)/(high-low)*.08,.17+(b-low)/(high-low)*.08,1)
     }
     Accessible.role: Accessible.ListItem
-    Accessible.name: (rowCells || []).map(function(cell) { return cell.text }).join(", ") + (statusText ? ", " + statusText : "")
+    Accessible.name: (rowCells || []).map(function(cell) { return cell.text }).join(", ") + (statusText ? ", " + statusText : "") + (latestJump ? ", " + qsTr("Ostatnio oddany skok") : "")
     Accessible.selected: rowSelected
     height: Theme.compact ? Math.max(24,Theme.bodyMetrics.height+4) : Math.max(tableView.compact ? 32 : 40, Theme.body * (tableView.compact ? 2.3 : 2.7))
-    color: rowSelected ? Theme.selection : mouse.containsMouse || eliminated ? Theme.raised : advanceState===0 ? Theme.advancementSurface : teamHeader ? Theme.raised : teamMember ? Theme.surface : tintColor()
+    color: eliminated ? Theme.raised : sureAdvanced ? Theme.advancementSurface : rowSelected ? Theme.selection : mouse.containsMouse ? Theme.raised : teamHeader ? Theme.raised : teamMember ? Theme.surface : tintColor()
+    border.width: latestJump ? 1 : 0
+    border.color: Theme.accent
+    Rectangle { objectName: "latestJumpIndicator-"+row.rowIndex; anchors.right: parent.right; anchors.top: parent.top; anchors.bottom: parent.bottom; width: Math.max(2,Theme.dp(4)); color: Theme.accent; visible: row.latestJump }
     Rectangle { anchors.left: parent.left; anchors.top: parent.top; anchors.bottom: parent.bottom; width: 3; color: Theme.accent; visible: row.rowCurrent }
     Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: Theme.divider }
     Row {
@@ -63,7 +68,7 @@ Rectangle {
                     spacing: Theme.compact ? 4 : 8
                     Image { visible: !!cell.fields.icon; source: cell.fields.icon || ""; sourceSize.width: 32; sourceSize.height: 24; width: visible ? 30 : 0; height: 24; anchors.verticalCenter: parent.verticalCenter; fillMode: Image.PreserveAspectFit }
                     Text { visible: !cell.fields.checkable; text: cell.fields.text || ""; color: row.eliminated ? Theme.muted : Theme.ink; font.pointSize: row.teamMember ? Theme.caption : Theme.body; font.weight: row.teamHeader ? Font.DemiBold : Font.Normal; font.family: /^[-+−]?\d+([.,]\d+)?\s*(m|pkt|%|m\/s)?$/.test(text) ? Theme.mono : Theme.bodyFamily; width: parent.width - (cell.fields.icon ? 38 : 0) - (cell.qualificationBadge ? 46 : 0); height: parent.height; horizontalAlignment: cell.columnIndex > 0 && font.family === Theme.mono ? Text.AlignRight : Text.AlignLeft; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight }
-                    Label { objectName: cell.qualificationBadge ? "qualificationBadge-"+row.rowIndex : ""; visible: cell.qualificationBadge; text: row.luckyLoser ? (row.qualificationState===0 ? "LL Q" : "LL") : "Q"; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.body; font.weight: Font.DemiBold; width: 38; height: parent.height; verticalAlignment: Text.AlignVCenter; horizontalAlignment: Text.AlignHCenter; Accessible.name: row.luckyLoser ? qsTr("Awans jako lucky loser") : qsTr("Awans do konkursu"); ToolTip.visible: badgeHover.containsMouse; ToolTip.text: row.luckyLoser ? qsTr("Awans jako lucky loser") : row.qualificationTarget.length ? qsTr("Awans do konkursu · %1").arg(row.qualificationTarget) : qsTr("Awans do konkursu"); MouseArea { id: badgeHover; anchors.fill: parent; hoverEnabled: true; acceptedButtons: Qt.NoButton } }
+                    Label { objectName: cell.qualificationBadge ? "qualificationBadge-"+row.rowIndex : ""; visible: cell.qualificationBadge; text: row.luckyLoser ? (row.qualificationState===0 ? "LL Q" : "LL") : "Q"; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.body; font.weight: Font.DemiBold; width: 38; height: parent.height; verticalAlignment: Text.AlignVCenter; horizontalAlignment: Text.AlignHCenter; Accessible.name: row.luckyLoser ? qsTr("Aktualne miejsce lucky losera") : qsTr("Awans do konkursu"); ToolTip.visible: badgeHover.containsMouse; ToolTip.text: row.luckyLoser ? qsTr("Aktualne miejsce lucky losera") : row.qualificationTarget.length ? qsTr("Awans do konkursu · %1").arg(row.qualificationTarget) : qsTr("Awans do konkursu"); MouseArea { id: badgeHover; anchors.fill: parent; hoverEnabled: true; acceptedButtons: Qt.NoButton } }
                     Text { visible: !!cell.fields.checkable; text: cell.fields.checked ? "☑" : "☐"; color: Theme.accent; font.pointSize: Theme.body; height: parent.height; verticalAlignment: Text.AlignVCenter }
                 }
             }
@@ -85,7 +90,7 @@ Rectangle {
         ToolTip.text: {
             var column = row.tableView.columnAt(mouseX)
             var data = row.rowCells && row.rowCells[column]
-            return (data ? data.tip || data.text || "" : "") + (row.statusText ? " · " + row.statusText : "")
+            return (data ? data.tip || data.text || "" : "") + (row.statusText ? " · " + row.statusText : "") + (row.latestJump ? " · " + qsTr("Ostatnio oddany skok") : "")
         }
         onDoubleClicked: {
             var column = row.tableView.columnAt(mouse.x)

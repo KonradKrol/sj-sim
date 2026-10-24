@@ -296,6 +296,7 @@ QVector<CompetitionSingleResult> &CompetitionResults::getResultsReference()
 
 void CompetitionResults::setResults(const QVector<CompetitionSingleResult> &newResults)
 {
+    latestJumpId.clear();
     results = newResults;
 }
 
@@ -356,6 +357,7 @@ void CompetitionResults::addJump(Jumper *jumper, JumpData &jump, int jumpNumber)
         result->getJumpsReference().insert(index, jump);
     }
     result->updatePointsSum();
+    latestJumpId=jump.getIDStr();
 }
 
 void CompetitionResults::addJump(Team *team, JumpData &jump, int jumpNumber)
@@ -385,6 +387,7 @@ void CompetitionResults::addJump(Team *team, JumpData &jump, int jumpNumber)
         result->getJumpsReference().insert(index, jump);
     }
     result->updatePointsSum();
+    latestJumpId=jump.getIDStr();
 }
 
 void CompetitionResults::addJump(CompetitionSingleResult *result, JumpData &jump, int jumpNumber)
@@ -403,6 +406,7 @@ void CompetitionResults::addJump(CompetitionSingleResult *result, JumpData &jump
         result->getJumpsReference().insert(index, jump);
     }
     result->updatePointsSum();
+    latestJumpId=jump.getIDStr();
 }
 
 int CompetitionResults::howManyJumpersJumpedInTeam(Team *team)
@@ -431,6 +435,13 @@ int CompetitionResults::getIndexOfJumperResult(Jumper *jumper)
         index++;
     }
     return -1;
+}
+
+bool CompetitionResults::containsLatestJump(const CompetitionSingleResult &result) const
+{
+    if(latestJumpId.isEmpty())return false;
+    for(const auto &jump:result.getJumps())if(jump.getIDStr()==latestJumpId)return true;
+    return false;
 }
 
 void CompetitionResults::updatePositions()

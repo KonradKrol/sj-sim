@@ -23,6 +23,7 @@
 #include "../source/UI/Competition/CompetitionConfigWindow.h"
 #include "../source/UI/Competition/CompetitionManagerWindow.h"
 #include "../source/UI/Competition/StartList/StartListModel.h"
+#include "../source/UI/Competition/Results/TeamResultsTreeModel.h"
 #include "../source/UI/EditorWidgets/HillEditorWidget.h"
 #include "../source/UI/EditorWidgets/CompetitionRulesEditorWidget.h"
 #include "../source/competitions/CompetitionManagers/TeamCompetitionManager.h"
@@ -40,6 +41,7 @@
 #include "../source/UI/ThanksWindow.h"
 #include "../source/UI/AuthorWindow.h"
 #include <QDesktopServices>
+#include <QQmlComponent>
 #include "../source/UI/ResultsShowing/JumpDataDetailedInfoWindow.h"
 #include "../source/single-jumps/SingleJumpsManager.h"
 #include "../source/global/GlobalDatabase.h"
@@ -257,6 +259,61 @@ static void raceOptionsRegressions(MainWindow &main,CompetitionManagerWindow *wi
 #include "competition-ties-gate-regressions.h"
 #include "competition-advancement-regressions.h"
 
+static void advanceColorRegressions(MainWindow &main) {
+    main.show();auto *view=scene(&main);auto *appearance=view->rootContext()->contextProperty("appearance").value<QuickAppearance *>();const bool dark=appearance->dark();
+    QQmlComponent tableComponent(view->engine(),QUrl("qrc:/ui/DataTable.qml"));std::unique_ptr<QObject> tableObject(tableComponent.create(view->rootContext()));auto *table=qobject_cast<QQuickItem *>(tableObject.get());check(table,"color fixture table loads");table->setWidth(300);
+    QQmlComponent rowComponent(view->engine(),QUrl("qrc:/ui/TableRow.qml"));std::unique_ptr<QObject> rowObject(rowComponent.beginCreate(view->rootContext()));auto *row=qobject_cast<QQuickItem *>(rowObject.get());check(row,"color fixture row loads");row->setProperty("tableView",QVariant::fromValue(table));row->setProperty("rowCells",QVariantList());rowComponent.completeCreate();row->setParentItem(view->rootObject());row->setWidth(300);
+    for(bool night:{false,true}){
+        appearance->setDark(night);
+        for(bool teams:{false,true})for(bool external:{false,true}){
+            table->setProperty("teamResults",teams);row->setProperty("rowDepth",0);row->setProperty("advanceState",external?-1:0);row->setProperty("qualificationState",external?0:-1);row->setProperty("rowSelected",true);row->setProperty("latestJump",true);QTest::qWait(20);
+            const auto color=row->property("color").value<QColor>();check(color.green()>color.red()+6 && color.green()>color.blue()+4,"confirmed individual, KO, team and external advancement remains visibly green despite selection and latest-jump emphasis");
+            const auto before=color;QTest::mouseMove(view,QPoint(150,qRound(row->height()/2)));QTest::qWait(20);check(row->property("color").value<QColor>()==before,"hover cannot replace confirmed advancement color");
+            auto *marker=item(row,"latestJumpIndicator-0");check(marker && marker->isVisible(),"latest-jump marker coexists with green qualification rows");
+        }
+        row->setProperty("advanceState",1);row->setProperty("qualificationState",-1);QTest::qWait(20);const auto color=row->property("color").value<QColor>();check(color.green()<=color.blue(),"confirmed elimination remains neutral rather than red or green");
+    }
+    appearance->setDark(dark);qInfo()<<"PASS: confirmed advancement color across selection, hover, latest jump, qualifications, teams and both themes";
+}
+
+static void latestJumpRegressions() {
+    Jumper a("A","Latest","POL"),b("B","Other","NOR");Hill hill;CompetitionInfo info(&hill);
+    CompetitionRules rules;rules.setRounds({RoundInfo(2,true),RoundInfo(2,true)});info.setRules(rules);auto &results=info.getResultsReference();
+    auto add=[&](Jumper *jumper,double points){JumpData jump(jumper,&hill);jump.setPoints(points);results.addJump(jumper,jump);return jump.getIDStr();};
+    add(&a,100);const auto second=add(&b,90);results.sortInDescendingOrder();
+    ResultsTableModel native(CompetitionRules::Individual,&results);QTableView view;view.setModel(&native);QuickTableModel adapter(&view,&view);
+    auto owner=[&]{QString name;int count=0;for(int row=0;row<adapter.count();++row)if(adapter.data(adapter.index(row),Qt::UserRole+13).toBool()){++count;name=adapter.data(adapter.index(row),Qt::UserRole+1).toList().value(1).toMap().value("text").toString();}check(count==1,"exactly one individual result is marked latest");return name;};
+    check(owner()==b.getNameAndSurname() && results.getLatestJumpId()==second,"latest jump is independent of leader and table order");
+    native.setLastJumper(nullptr);check(owner()==b.getNameAndSurname(),"clearing legacy round-end selection cannot clear latest jump");
+    adapter.setFrozen(true);const auto third=add(&a,80);results.sortInDescendingOrder();
+    check(owner()==b.getNameAndSurname(),"live snapshot retains the previous marker until reveal");adapter.setFrozen(false);
+    check(owner()==a.getNameAndSurname() && results.getLatestJumpId()==third,"live reveal moves the marker to the accepted jump");
+    adapter.select(results.getIndexOfJumperResult(&b),0,0);check(owner()==a.getNameAndSurname(),"selecting another athlete never moves the latest-jump marker");
+    results.sortInAscendingOrder();adapter.invalidateText();check(owner()==a.getNameAndSurname(),"latest identity survives a standings reorder");
+    results.getResultOfIndividualJumper(&a)->getJumpsReference().removeLast();
+    for(const auto &result:results.getResultsReference())check(!results.containsLatestJump(result),"removing the latest cancelled jump leaves no stale marker");
+    Team team("POL"),other("NOR");team.setJumpers({&a,&b});other.setJumpers({&b});CompetitionInfo teams(&hill);rules.setCompetitionType(CompetitionRules::Team);rules.setJumpersInTeamCount(2);teams.setRules(rules);auto &standings=teams.getResultsReference();
+    JumpData first(&a,&hill);first.setPoints(100);standings.addJump(&team,first);JumpData last(&b,&hill);last.setPoints(90);standings.addJump(&team,last);
+    standings.getResultOfTeam(&team)->updateTeamJumpersResults();TeamResultsTreeModel tree(nullptr);tree.setResults(&standings);tree.setupTreeItems();
+    check(tree.index(0,0).data(CompetitionAdvancement::LatestJumpRole).toBool(),"team summary marks its latest jump");
+    const auto parent=tree.index(0,0);check(!tree.index(0,0,parent).data(CompetitionAdvancement::LatestJumpRole).toBool() && tree.index(1,0,parent).data(CompetitionAdvancement::LatestJumpRole).toBool(),"only the team member who actually jumped is marked");
+    standings.getResultOfTeam(&team)->getJumpsReference().last().setDSQ(true);JumpData blocked(&a,&hill);standings.addJump(&team,blocked);
+    check(standings.getLatestJumpId()==last.getIDStr(),"a rejected post-DSQ jump cannot replace the accepted latest identity");
+    qInfo()<<"PASS: latest-jump identity, sorting, round ends, frozen reveal, selection, cancellation and team members";
+}
+
+static void checkLatestJumpPresentation(CompetitionManagerWindow *window) {
+    auto *bridge=window->findChild<QuickBridge *>();bridge->refresh();QTest::qWait(30);
+    auto *table=item(scene(window)->rootObject(),"raceResults");auto *model=table->property("table").value<QuickTableModel *>();check(model && !model->frozen(),"result presentation is released before checking latest jump");
+    int summaries=0;for(int row=0;row<model->count();++row)if(model->data(model->index(row),Qt::UserRole+13).toBool() && model->data(model->index(row),Qt::UserRole+3).toInt()==0)++summaries;
+    check(summaries==1,"manual and automatic competition paths retain exactly one latest result summary");
+    for(int row=0;row<model->count();++row)if(model->data(model->index(row),Qt::UserRole+13).toBool()){
+        auto *rows=item(scene(window)->rootObject(),"tableRows-"+QString::number(table->property("ownerId").toInt()));
+        QMetaObject::invokeMethod(rows,"positionViewAtIndex",Q_ARG(int,row),Q_ARG(int,3));QTest::qWait(30);scene(window)->grabFramebuffer();
+        auto *marker=item(scene(window)->rootObject(),"latestJumpIndicator-"+QString::number(row));check(marker && marker->isVisible(),"latest marker stays visible regardless of advancement, podium and current selection");break;
+    }
+}
+
 static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bulkAction=0) {
     Q_UNUSED(main)
     auto *db=GlobalDatabase::get();
@@ -385,6 +442,7 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                 QElapsedTimer elapsed;elapsed.start();
                 if(bulkAction==1)window->autoSimulateRound();else if(bulkAction==2)window->autoSimulateJumps();else if(bulkAction==3)window->autoSimulateGroup();else window->autoSimulateCompetition();
                 const auto duration=elapsed.elapsed();acceptCount.stop();
+                checkLatestJumpPresentation(window);
                 check(bulkAction || window->getManager()->checkCompetitionEnd(),"bulk simulation completes the real competition");
                 check(rowChanges.count()<=2 && resets.count()<=2,"automatic simulation batches start-list presentation updates");
                 if(bulkAction==1)check(window->getManager()->checkRoundEnd() && window->getManager()->getActualRound()==1,"automatic round simulation stops at the round boundary");
@@ -573,6 +631,7 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                         appearance->setTeamResultsMode(2);QTest::qWait(30);check(summaries<last && last<=model->count(),"team modes expand none, the latest squad, or all jumped members");
                         appearance->setTeamResultsMode(mode);QTest::qWait(30);
                     }
+            checkLatestJumpPresentation(window);
             render(window,QString("live-results-%1").arg(scenario),scenario==2);
             bridge->refresh();
             check(bridge->context().value("biggestAdvancement").toMap()==QuickRaceStats::biggestAdvancement(*window->getManager()->getResults(),window->getManager()->getActualRound(),scenario==2?4:1,StartListCompetitorStatus::remainingJumpers(window->getManager()->getStartListStatusesReference())),"competition header exposes the largest revealed advancement");
@@ -2150,6 +2209,8 @@ int main(int argc,char **argv) {
     rosterTranslationRegression();
     if(app.arguments().contains("--engine-async-benchmark-only")){engineAsyncRegression();return 0;}
     competitionPresentationRegressions();
+    latestJumpRegressions();
+    advanceColorRegressions(main);
     if(app.arguments().contains("--ko-multi-round-only")){runCompetition(main,1);return 0;}
     if(app.arguments().contains("--onboarding-only")){simulationOnboardingRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-benchmark")) {simulationBenchmark();main.show();for(int i=0;i<3;++i)runCompetition(main,0,true);runCompetition(main,1,true);runCompetition(main,2,true);return 0;}

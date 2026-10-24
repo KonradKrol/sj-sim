@@ -199,6 +199,7 @@ FocusScope {
                         qualificationState: model.qualificationState === undefined ? -1 : model.qualificationState
                         qualificationTarget: model.qualificationTarget || ""
                         luckyLoser: !!model.luckyLoser
+                        latestJump: !!model.latestJump
                         statusText: model.statusText || ""
                         tint: model.tint || ""
                     }

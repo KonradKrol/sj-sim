@@ -45,7 +45,8 @@ enum ModelRole {
     RoundStatusRole = Qt::UserRole + 100,
     QualificationStatusRole,
     QualificationTargetRole,
-    LuckyLoserRole
+    LuckyLoserRole,
+    LatestJumpRole
 };
 }
 

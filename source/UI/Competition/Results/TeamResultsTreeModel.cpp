@@ -106,6 +106,16 @@ QVariant TeamResultsTreeModel::data(const QModelIndex &index, int role) const
     while(header && header->getParentItem()!=rootItem)header=header->getParentItem();
     auto *result=header && results && header->row()>=0 && header->row()<results->getResultsReference().size()?&results->getResultsReference()[header->row()]:nullptr;
     auto *team=result?result->getTeam():nullptr;
+    if(role==CompetitionAdvancement::LatestJumpRole){
+        if(!result || !results)return false;
+        if(item==header)return results->containsLatestJump(*result);
+        if(!team)return false;
+        int row=0;
+        for(auto *jumper:team->getJumpersReference())if(auto *member=result->getTeamJumperResult(jumper)){
+            if(row++==item->row())return results->containsLatestJump(*member);
+        }
+        return false;
+    }
     const int roundStatus=result && result->isTeamDisqualified()?StartListCompetitorStatus::SureDroppedOut:manager && result && manager->getAdvanceStatusOfTeam(team)<0 && result->getScoringRound()<manager->getActualRound()?StartListCompetitorStatus::SureDroppedOut
         :manager && manager->getActualRound()<manager->effectiveRoundsCount()?manager->getAdvanceStatusOfTeam(team):-1;
     const int qualificationStatus=manager?manager->qualificationStatus(team):-1;
