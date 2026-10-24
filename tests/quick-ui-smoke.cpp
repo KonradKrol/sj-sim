@@ -2059,6 +2059,7 @@ static void interactionRegressions(MainWindow &main) {
 
 #include "simulation-onboarding-regressions.h"
 #include "engine-audit-regressions.h"
+#include "roster-translation-regressions.h"
 
 int main(int argc,char **argv) {
     QApplication app(argc,argv);
@@ -2091,6 +2092,7 @@ int main(int argc,char **argv) {
     check(main.findChild<QuickBridge *>()->version()=="2.0.0-beta","one release version is shared with the interface");
     if(app.arguments().contains("--engine-audit-only")){int selected=0;for(const auto &argument:app.arguments())if(argument.startsWith("--engine-case="))selected=argument.mid(14).toInt();engineAuditRegressions(selected);return 0;}
     engineAuditRegressions();
+    rosterTranslationRegression();
     if(app.arguments().contains("--engine-async-benchmark-only")){engineAsyncRegression();return 0;}
     competitionPresentationRegressions();
     if(app.arguments().contains("--ko-multi-round-only")){runCompetition(main,1);return 0;}

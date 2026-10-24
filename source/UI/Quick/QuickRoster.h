@@ -38,7 +38,8 @@ class QuickRoster : public QObject {
 public:
     explicit QuickRoster(QWidget *source,QObject *parent);
     void sync();
-    void invalidateText() { refresh(); }
+    // Translation changes labels, not cached athlete values or their ownership.
+    void invalidateText() { emit changed(); }
     static QString key(Jumper *jumper);
     QuickRosterRows *library() const { return m_library; }
     QuickRosterRows *ordered() const { return m_ordered; }
