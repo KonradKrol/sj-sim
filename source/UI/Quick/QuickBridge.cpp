@@ -507,21 +507,13 @@ void QuickBridge::refresh() {
                 const auto standing=QuickRaceStats::previousStanding(*manager->getResults(),*ranked,count);
                 context["previousPosition"]=standing.value("position");
                 QVector<const CompetitionSingleResult *> rivals;
-                if(team)for(auto *entry:team->getActualRoundTeamsReference())rivals.append(manager->getResults()->getResultOfTeam(entry));
-                else for(const auto &entry:manager->getStartListStatusesReference())rivals.append(manager->getResults()->getResultOfIndividualJumper(entry.getJumper()));
-                const auto gap=QuickRaceStats::roundStartGap(*ranked,rivals,manager->getActualRound());
+                for(const auto &entry:manager->getResults()->getResultsReference())rivals.append(&entry);
+                const auto gap=QuickRaceStats::currentLeaderPreviousGap(*ranked,rivals,manager->getActualRound());
                 if(gap.contains("gap"))context["currentGap"]=gap.value("gap");
-                const auto liveGap=QuickRaceStats::currentLeaderGap(*ranked,rivals,manager->getActualRound());
-                if(liveGap.contains("gap"))context["liveLeaderGap"]=liveGap.value("gap");
-                if(auto *individual=dynamic_cast<IndividualCompetitionManager *>(manager);individual && individual->getKOManager() && individual->getKOManager()->getActualGroup()) {
-                    rivals.clear();for(auto *jumper:individual->getKOManager()->getActualGroup()->getJumpersReference())rivals.append(manager->getResults()->getResultOfIndividualJumper(jumper));
-                    const auto groupGap=QuickRaceStats::roundStartGap(*ranked,rivals,manager->getActualRound());
-                    if(groupGap.contains("gap"))context["groupGap"]=groupGap.value("gap");
-                }
             }
         }
         if(window->getLiveStage()>0 && window->getLiveStage()<5)
-            for(const auto &key:{"currentGap","groupGap","liveLeaderGap"}) {if(m_context.contains(key))context[key]=m_context.value(key);else context.remove(key);}
+            for(const auto &key:{"currentGap"}) {if(m_context.contains(key))context[key]=m_context.value(key);else context.remove(key);}
         if(context!=m_context) { m_context=context;emit changed(); }
         QVariantMap summary;
         QWidget *selected=nullptr;

@@ -24,14 +24,15 @@ inline QVariantMap roundStartGap(const CompetitionSingleResult &athlete,const QV
     return best==std::numeric_limits<qint64>::min()?QVariantMap():QVariantMap{{"gap",(best-own)/10.}};
 }
 
-inline QVariantMap currentLeaderGap(const CompetitionSingleResult &athlete,const QVector<const CompetitionSingleResult *> &rivals,int round) {
-    if(roundStartGap(athlete,rivals,round).isEmpty())return {};
+inline QVariantMap currentLeaderPreviousGap(const CompetitionSingleResult &athlete,const QVector<const CompetitionSingleResult *> &field,int round) {
+    if(roundStartGap(athlete,field,round).isEmpty())return {};
     const auto *rules=athlete.getCompetition()->getRulesPointer();
-    const int perRound=athlete.getType()==CompetitionSingleResult::TeamResult?qMax(1,rules->getJumpersInTeamCount()):1;
-    const auto own=qRound64(athlete.pointsForJumps(athlete.getJumps().size(),round)*10.);
-    qint64 best=std::numeric_limits<qint64>::min();
-    for(const auto *rival:rivals)if(rival && rival!=&athlete && !rival->isTeamDisqualified() && rival->getJumps().size()>=(round-1)*perRound)best=qMax(best,qRound64(rival->pointsForJumps(rival->getJumps().size(),round)*10.));
-    return best==std::numeric_limits<qint64>::min()?QVariantMap():QVariantMap{{"gap",(best-own)/10.}};
+    const int count=(round-1)*(athlete.getType()==CompetitionSingleResult::TeamResult?qMax(1,rules->getJumpersInTeamCount()):1);
+    const CompetitionSingleResult *leader=&athlete;
+    for(const auto *entry:field)if(entry && !entry->isTeamDisqualified() && entry->getJumps().size()>=count &&
+        (*entry>*leader))leader=entry;
+    const auto own=qRound64(athlete.pointsForJumps(count,round)*10.);
+    return {{"gap",(qRound64(leader->pointsForJumps(count,round)*10.)-own)/10.}};
 }
 
 inline QVariantMap previousStanding(const CompetitionResults &results, const CompetitionSingleResult &athlete, int jumpCount) {

@@ -596,7 +596,7 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                     }
                 }
                 if(multiKo && window->getManager()->getActualRound()>1 && !window->getManager()->checkRoundEnd()) {
-                    bridge->refresh();check(bridge->context().contains("currentGap") && bridge->context().contains("groupGap"),"multi-round KO exposes both weighted overall and group leader gaps before the jump");
+                    bridge->refresh();check(bridge->context().contains("currentGap") && !bridge->context().contains("groupGap") && !bridge->context().contains("liveLeaderGap"),"multi-round KO exposes only the weighted previous-series comparison with the current leader");
                 }
                 auto *jump=window->findChild<QPushButton *>("pushButton_jump");
                 if(jump && jump->isEnabled() && StartListCompetitorStatus::remainingJumpers(window->getManager()->getStartListStatusesReference())==1) {
