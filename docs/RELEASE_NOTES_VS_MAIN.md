@@ -652,6 +652,14 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 - Podium pojawia się wyłącznie po zakończeniu konkursu, także zakończonego odwołaniem serii. Kolory wynikają z miejsc z uwzględnieniem ex aequo. Zakończenie pośredniej serii nie tworzy podium, a odwołanie pierwszej nie tworzy miejsc z pustych wyników.
 - Raport szczegółowy i wyniki testów: [SIMULATION_ONBOARDING_2026-10-24.md](SIMULATION_ONBOARDING_2026-10-24.md).
 
+## 22. Audyt silnika i równoległe partie skoków — 24.10.2026
+
+- Dziesięć niezależnie odtworzonych i naprawionych błędów: stan JumpData, kontekst symulatora, DSQ przy zerowym mianowniku, kara wysokości lotu, niekompletne wymuszone noty, rekompensata podwyższonej belki trenera, niezależna flaga automatycznej punktacji za metr w JSON, luka dla K169,5, normalizacja kierunków wiatru i zapętlający się ucięty rozkład normalny.
+- Każda poprawka ma osobny commit i wybieralną regresję. Ogon losowania sprawdzono również statystycznie.
+- Jedna optymalizacja async/multithread: duże niezależne partie pojedynczych skoków od4096 prób, do4 pracowników, z zachowaniem anulowania i wcześniejszych wyników. Snapshoty ustawień i własne RNG zapobiegają współdzieleniu mutowanego stanu.
+- W izolowanym pomiarze20k skoków mediana zmalała z359ms dla jednego pracownika do236ms dla czterech, około34%. To pomiar jądra obliczeń, nie całego interfejsu. Nie równoleglono sekwencji zawodników w tym samym konkursie ani drobnych składników pojedynczego skoku.
+- Szczegóły każdego błędu, commity i logi: [ENGINE_AUDIT_2026-10-24.md](ENGINE_AUDIT_2026-10-24.md).
+
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
