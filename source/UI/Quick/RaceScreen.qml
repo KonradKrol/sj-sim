@@ -75,14 +75,14 @@ ScrollView {
                     readonly property var entry: ui.find("listView_startList")
                     Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 120
                     table: entry ? entry.values.table : null; ownerId: entry ? entry.values.id : -1
-                    compact: true; followCurrent: true; title: qsTr("Lista startowa")
+                    compact: true; followCurrent: true; searchEnabled: false; title: qsTr("Lista startowa")
                 }
                 Node {
                     objectName: "raceKoGroup"
                     readonly property var entry: ui.find("tableView_KOGroupResults")
                     node: entry && entry.values.available !== false ? entry : null
                     Layout.fillWidth: true; Layout.preferredHeight: visible ? 130 : 0
-                    compactTable: true; tableHeightLimit: 130
+                    compactTable: true; tableHeightLimit: 130; tableSearchEnabled: false
                 }
                 }
             }

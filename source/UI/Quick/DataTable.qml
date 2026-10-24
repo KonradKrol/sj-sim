@@ -15,7 +15,12 @@ FocusScope {
     property bool followCurrent: false
     property real maximumHeight: 540
     property bool compact: false
-    property bool searchOpen: !compact && width >= 320 && height >= 240
+    property bool searchEnabled: true
+    property bool searchOpen: searchEnabled && !compact && width >= 320 && height >= 240
+    function clearDisabledSearch() { if(!searchEnabled){searchOpen=false;if(table && table.filter.length)table.filter=""} }
+    onSearchEnabledChanged: clearDisabledSearch()
+    onTableChanged: clearDisabledSearch()
+    Component.onCompleted: clearDisabledSearch()
     property bool jumpColumns: false
     property bool raceResults: false
     property bool teamResults: false
@@ -96,7 +101,7 @@ FocusScope {
             SButton {
                 implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40; visible: !!tableRoot.table && tableRoot.table.multiple && tableRoot.table.selectedCount>0 && tableRoot.height<300; text: "×"; quiet: true; Accessible.name: qsTr("Wyczyść zaznaczenie"); onClicked: tableRoot.table.clearSelection() }
             SButton {
-                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40; visible: !tableRoot.searchOpen; text: tableRoot.compact ? "⌕" : qsTr("Szukaj"); quiet: true; Accessible.name: qsTr("Szukaj"); hint: qsTr("Szukaj"); checkable: true; onClicked: tableRoot.searchOpen = checked }
+                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40; visible: tableRoot.searchEnabled && !tableRoot.searchOpen; text: tableRoot.compact ? "⌕" : qsTr("Szukaj"); quiet: true; Accessible.name: qsTr("Szukaj"); hint: qsTr("Szukaj"); checkable: true; onClicked: tableRoot.searchOpen = checked }
             SButton {
                 implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40; visible: tableRoot.compact && tableRoot.columns>4 && !tableRoot.teamResults; text: tableRoot.raceResults ? qsTr("Punkty serii") : qsTr("Skoki"); quiet: true; font.pointSize: Theme.caption; checkable: true; onClicked: tableRoot.jumpColumns=checked }
             SButton {
@@ -120,7 +125,7 @@ FocusScope {
             }
         }
         RowLayout {
-            visible: tableRoot.searchOpen
+            visible: tableRoot.searchEnabled && tableRoot.searchOpen
             Layout.fillWidth: true; Layout.leftMargin: 8; Layout.rightMargin: 8; Layout.bottomMargin: 8
             SField {
                 id: search; objectName: "tableSearch-"+tableRoot.ownerId
@@ -222,7 +227,7 @@ FocusScope {
             })
         }
     }
-    Shortcut { sequence: StandardKey.Find; enabled: tableRoot.visible && tableRoot.activeFocus; onActivated: {tableRoot.searchOpen=true;search.forceActiveFocus();search.selectAll()} }
+    Shortcut { sequence: StandardKey.Find; enabled: tableRoot.searchEnabled && tableRoot.visible && tableRoot.activeFocus; onActivated: {tableRoot.searchOpen=true;search.forceActiveFocus();search.selectAll()} }
     Keys.onPressed: {
         if (!table) return
         if (event.key === Qt.Key_Up && !(event.modifiers & Qt.ControlModifier)) { table.moveCurrent(-1,event.modifiers); event.accepted = true }
