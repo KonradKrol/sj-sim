@@ -1,4 +1,5 @@
 #include "Wind.h"
+#include <cmath>
 
 #include <QDebug>
 #include <QString>
@@ -48,7 +49,7 @@ short Wind::getDirectionType() const
 Wind::Wind(short direction, double value) : direction(direction),
     strength(value),
     Identifiable()
-{}
+{setDirection(direction);}
 
 Wind::Wind(double value) : strength(value)
 {
@@ -69,7 +70,8 @@ double Wind::getDirection() const
 
 void Wind::setDirection(double newDirection)
 {
-    direction = newDirection;
+    direction=std::isfinite(newDirection)?std::fmod(newDirection,360.):90.;
+    if(direction<0)direction+=360.;
 }
 
 double Wind::getStrength() const
