@@ -43,7 +43,7 @@ Item {
             visible: row.ordered; text: "⠿"; quiet: true
             Layout.preferredWidth: 34; Layout.preferredHeight: Theme.compact ? 28 : 40
             Accessible.name: qsTr("Przenieś %1").arg(row.athleteName)
-            hint: qsTr("Przeciągnij lub wybierz pozycję")
+            hint: row.backend.membership ? qsTr("Przeciągnij lub wybierz pozycję") : qsTr("Przeciągnij na zawodnika, aby zamienić miejsca")
             onClicked: {if(!row.marked)row.backend.mark(row.athleteId);row.moveRequested()}
         }
         Label { visible: row.ordered; text: row.position; font.family: Theme.mono; font.pointSize: Theme.caption; color: Theme.muted; Layout.preferredWidth: 30; horizontalAlignment: Text.AlignRight }
