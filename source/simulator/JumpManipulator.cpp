@@ -1,4 +1,5 @@
 #include "JumpManipulator.h"
+#include <cmath>
 
 JumpManipulator::JumpManipulator()
 {
@@ -66,7 +67,8 @@ QVector<double> JumpManipulator::getExactJudges() const
 
 void JumpManipulator::setExactJudges(const QVector<double> &newExactJudges)
 {
-    exactJudges = newExactJudges;
+    exactJudges.fill(-1,5);
+    for(int i=0;i<5 && i<newExactJudges.size();++i)if(std::isfinite(newExactJudges[i]) && newExactJudges[i]>=0)exactJudges[i]=qMin(20.,newExactJudges[i]);
 }
 
 int JumpManipulator::getExactLandingType() const
