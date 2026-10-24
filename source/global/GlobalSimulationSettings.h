@@ -8,6 +8,7 @@ private:
     GlobalSimulationSettings();
     ~GlobalSimulationSettings();
     static GlobalSimulationSettings * m_globalSimulationSettings;
+    static thread_local GlobalSimulationSettings *threadSettings;
 
 private:
     int maxSkills;
@@ -20,6 +21,13 @@ private:
     double flightFormEffect;
 
 public:
+    struct Snapshot {
+        int maxSkills,baseDsqProbability;
+        double simulationRandomMultiplier,hillsEffectsMultiplier,takeoffFormEffect,flightFormEffect;
+        bool autoAdjustHillEffects,updateGlobalDatabaseRecords;
+    };
+    class ScopedSnapshot;
+    static Snapshot snapshot();
     GlobalSimulationSettings(GlobalSimulationSettings &) = delete;
     static GlobalSimulationSettings * get();
 
@@ -42,6 +50,16 @@ public:
     void setTakeoffFormEffect(double newTakeoffFormEffect);
     double getFlightFormEffect() const;
     void setFlightFormEffect(double newFlightFormEffect);
+};
+
+class GlobalSimulationSettings::ScopedSnapshot {
+    GlobalSimulationSettings local;
+    GlobalSimulationSettings *previous;
+public:
+    explicit ScopedSnapshot(const Snapshot &snapshot);
+    ~ScopedSnapshot();
+    ScopedSnapshot(const ScopedSnapshot &)=delete;
+    ScopedSnapshot &operator=(const ScopedSnapshot &)=delete;
 };
 
 #endif // GLOBALSIMULATIONSETTINGS_H

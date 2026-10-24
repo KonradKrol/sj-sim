@@ -11,6 +11,8 @@
 #include <QMessageBox>
 
 GlobalSimulationSettings* GlobalSimulationSettings::m_globalSimulationSettings = nullptr;
+thread_local GlobalSimulationSettings *GlobalSimulationSettings::threadSettings=nullptr;
+GlobalSimulationSettings::~GlobalSimulationSettings() = default;
 
 GlobalSimulationSettings::GlobalSimulationSettings()
 {
@@ -100,6 +102,7 @@ void GlobalSimulationSettings::setBaseDsqProbability(int newBaseDsqProbability)
 
 GlobalSimulationSettings *GlobalSimulationSettings::get()
 {
+    if(threadSettings)return threadSettings;
     if(m_globalSimulationSettings == nullptr)
         m_globalSimulationSettings = new GlobalSimulationSettings();
 
@@ -175,3 +178,15 @@ bool GlobalSimulationSettings::writeToFile()
     file.close();
     return true;
 }
+
+GlobalSimulationSettings::Snapshot GlobalSimulationSettings::snapshot() {
+    const auto *s=get();return {s->maxSkills,s->baseDsqProbability,s->simulationRandomMultiplier,s->hillsEffectsMultiplier,s->takeoffFormEffect,s->flightFormEffect,s->autoAdjustHillEffects,s->updateGlobalDatabaseRecords};
+}
+GlobalSimulationSettings::ScopedSnapshot::ScopedSnapshot(const Snapshot &s):previous(threadSettings) {
+    local.maxSkills=s.maxSkills;local.baseDsqProbability=s.baseDsqProbability;
+    local.simulationRandomMultiplier=s.simulationRandomMultiplier;local.hillsEffectsMultiplier=s.hillsEffectsMultiplier;
+    local.takeoffFormEffect=s.takeoffFormEffect;local.flightFormEffect=s.flightFormEffect;
+    local.autoAdjustHillEffects=s.autoAdjustHillEffects;local.updateGlobalDatabaseRecords=s.updateGlobalDatabaseRecords;
+    threadSettings=&local;
+}
+GlobalSimulationSettings::ScopedSnapshot::~ScopedSnapshot() {threadSettings=previous;}

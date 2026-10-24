@@ -8,8 +8,13 @@
 #include <cmath>
 #include <stdexcept>
 
-std::random_device rd{};
-std::mt19937 generator{rd()};
+namespace {
+thread_local std::mt19937 generator{std::random_device{}()};
+QRandomGenerator &uniformGenerator() {
+    static thread_local QRandomGenerator random(QRandomGenerator::securelySeeded());
+    return random;
+}
+}
 
 MyRandom::MyRandom()
 {
@@ -26,7 +31,7 @@ double MyRandom::randomDouble(double min, double max, short precision)
     const double scale = std::pow(10., precision);
     const double first = std::ceil(min * scale), pastLast = std::ceil(max * scale);
     const double count = pastLast - first;
-    const double fraction = QRandomGenerator::global()->generateDouble();
+    const double fraction = uniformGenerator().generateDouble();
     const double ceiling = std::nextafter(max, min);
     if(scale > 0 && std::isfinite(scale) && std::isfinite(first) && std::isfinite(pastLast) && std::isfinite(count) && count > 0)
         return qBound(min, (first + std::floor(fraction * count)) / scale, ceiling);

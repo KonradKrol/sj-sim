@@ -38,7 +38,33 @@ static void engineAuditRegressions(int selected=0) {
             Wind wind;wind.setDirection(-450);check(wind.getDirection()==270 && wind.getDirectionType()==Wind::Side,"negative multi-turn wind angles normalize before physical classification");wind.setDirection(810);check(wind.getDirection()==90,"positive multi-turn wind angles wrap consistently");
         } else if(test==10) {
             check(MyRandom::normalDistributionRandomHalf(2,0,MyRandom::Negative)==0,"impossible negative half-normal with zero deviation returns a boundary instead of hanging");check(MyRandom::normalDistributionRandomHalf(-2,0,MyRandom::Positive)==0,"impossible positive half-normal with zero deviation returns a boundary instead of hanging");
+            const double rare=MyRandom::normalDistributionRandomHalf(-1000,.1,MyRandom::Positive);check(std::isfinite(rare) && rare>=0,"extreme opposite tails complete with a finite sample");
+            double total=0;for(int sample=0;sample<20000;++sample)total+=MyRandom::normalDistributionRandomHalf(-4,1,MyRandom::Positive);
+            const double expected=std::exp(-8)/std::sqrt(2*std::acos(-1.))/(.5*std::erfc(4/std::sqrt(2.)))-4;
+            check(std::abs(total/20000-expected)<.02,"rare-tail sampler preserves the conditional normal mean");
         }
         qInfo()<<"PASS: engine audit case"<<test;
     }
+}
+
+static void engineAsyncRegression() {
+    auto *db=GlobalDatabase::get();SingleJumpsManager manager;manager.setJumper(db->getEditableGlobalJumpers().first());manager.setHill(db->getEditableGlobalHills().first());manager.setGate(15);manager.setImportance(5);manager.setChangeableWind(true);manager.getRules().setHasDsq(false);
+    manager.setWindsGeneratorSettings(QVector<WindGenerationSettings>(6,WindGenerationSettings(0,2,1,2)));
+    auto control=std::make_shared<SingleJumpsManager::BatchControl>();
+    const int scale=GlobalSimulationSettings::get()->getMaxSkills();auto isolated=manager.simulateAsync(2000,4,control);GlobalSimulationSettings::get()->setMaxSkills(0);isolated.waitForFinished();GlobalSimulationSettings::get()->setMaxSkills(scale);const auto values=isolated.result();
+    check(values.size()==2000 && control->completed==2000,"parallel batch returns the requested number of completed jumps");
+    QSet<QString> identities;for(const auto &jump:values){check(std::isfinite(jump.getPoints()) && std::isfinite(jump.getDistance()) && jump.getJumper()==nullptr && jump.getHill()==nullptr && jump.getSimulator()==nullptr && jump.getWinds().size()==6,"worker settings and wind histories are isolated and results contain no dangling worker pointers");identities.insert(jump.getIDStr());}
+    check(!JumpData::getJsonObject(values.first()).isEmpty(),"detached worker snapshots can be serialized without context pointers");
+    check(identities.size()==values.size(),"parallel jump identifiers remain unique");
+    control=std::make_shared<SingleJumpsManager::BatchControl>();control->canceled=true;auto canceled=manager.simulateAsync(2000,4,control);canceled.waitForFinished();check(canceled.result().isEmpty(),"pre-canceled async batches do not perform simulation work");
+    QFuture<QVector<JumpData>> outliving;
+    {auto owner=std::make_unique<SingleJumpsManager>();owner->setJumper(manager.getJumper());owner->setHill(manager.getHill());owner->setGate(15);owner->getRules().setHasDsq(false);outliving=owner->simulateAsync(128,2);}
+    outliving.waitForFinished();check(outliving.result().size()==128,"asynchronous snapshots outlive the manager that requested them");
+    QVector<qint64> serial,parallel;constexpr int count=20000;
+    for(int iteration=0;iteration<3;++iteration)for(int workers:{1,4}) {
+        QElapsedTimer timer;timer.start();auto job=manager.simulateAsync(count,workers);job.waitForFinished();auto results=job.result();const auto elapsed=timer.elapsed();check(results.size()==count,"benchmark preserves complete results");(workers==1?serial:parallel).append(elapsed);
+    }
+    std::sort(serial.begin(),serial.end());std::sort(parallel.begin(),parallel.end());
+    qInfo()<<"BENCH isolated engine"<<count<<"jumps serial median ms"<<serial[1]<<"parallel median ms"<<parallel[1]<<"speedup"<<double(serial[1])/qMax(qint64(1),parallel[1]);
+    qInfo()<<"PASS: asynchronous engine snapshot isolation, cancellation, stable output and unique identities";
 }

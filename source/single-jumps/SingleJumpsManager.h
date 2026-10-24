@@ -2,6 +2,9 @@
 #define SINGLEJUMPSMANAGER_H
 
 #include <QVector>
+#include <QFuture>
+#include <atomic>
+#include <memory>
 #include "../simulator/JumpData.h"
 #include "../simulator/Hill.h"
 #include "../simulator/WindsCalculator.h"
@@ -16,6 +19,12 @@ public:
     SingleJumpsManager(int gate = 0, int jumpsCount = 0, const QString &resultsFileName = "", bool changeableWind = false, short resultsFormat = 0);
 
     void simulate();
+    struct BatchControl {
+        std::atomic_bool canceled{false};
+        std::atomic_int completed{0};
+    };
+    // Detached value snapshots; bind athlete/hill pointers on the owning thread before contextual use.
+    QFuture<QVector<JumpData>> simulateAsync(int count,int threads=0,std::shared_ptr<BatchControl> control={}) const;
 
     enum ResultsFileFormat{
         Json,

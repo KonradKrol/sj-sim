@@ -14,6 +14,15 @@
 #include <QElapsedTimer>
 #include <QObject>
 #include <QDir>
+#include <QtConcurrent>
+#include <QFutureWatcher>
+#include <QEventLoop>
+#include <QTimer>
+#include <QThreadPool>
+#include <QThread>
+#include <optional>
+#include <vector>
+#include "../global/GlobalSimulationSettings.h"
 
 #include "../simulator/JumpManipulator.h"
 
@@ -26,6 +35,44 @@ SingleJumpsManager::SingleJumpsManager(int gate, int jumpsCount, const QString &
     importance(5.)
 {
     windAverageCalculatingType = windCompensationDistanceEffect = DSQProbability = 0;
+}
+
+QFuture<QVector<JumpData>> SingleJumpsManager::simulateAsync(int count,int threads,std::shared_ptr<BatchControl> control) const {
+    count=qMax(0,count);
+    const auto athleteSnapshot=jumper;const auto hillSnapshot=hill;const auto rulesSnapshot=rules;
+    const auto windSettings=windsGeneratorSettings;const bool varying=changeableWind;
+    const auto settings=GlobalSimulationSettings::snapshot();const int batchGate=gate,dsq=DSQProbability;const double priority=importance;
+    if(!control)control=std::make_shared<BatchControl>();
+    const int workers=qBound(1,threads>0?threads:qMax(1,QThread::idealThreadCount()),qMin(4,qMax(1,count/512)));
+    return QtConcurrent::run([=] {
+        std::vector<std::optional<JumpData>> results(static_cast<size_t>(count));
+        std::atomic_int next{0};
+        const auto work=[&] {
+            GlobalSimulationSettings::ScopedSnapshot isolated(settings);
+            auto athlete=athleteSnapshot;auto venue=hillSnapshot;auto competitionRules=rulesSnapshot;
+            JumpManipulator manipulation;JumpSimulator simulator(&athlete,{},&venue);
+            simulator.setCompetitionRules(&competitionRules);simulator.setManipulator(&manipulation);simulator.setGate(batchGate);simulator.setCompetitionStartGate(batchGate);simulator.setDSQBaseProbability(dsq);simulator.setJumpsImportance(priority);
+            WindsGenerator generator(windSettings);QVector<Wind> fixed;
+            if(!varying){for(const auto &value:windSettings){Wind wind;wind.setDirection(value.getBaseDirection());wind.setStrength(value.getBaseWindStrength());fixed.append(wind);}simulator.setWinds(fixed);}
+            while(!control->canceled.load(std::memory_order_relaxed)) {
+                const int first=next.fetch_add(32,std::memory_order_relaxed);if(first>=count)break;
+                for(int index=first;index<qMin(count,first+32);++index) {
+                    if(control->canceled.load(std::memory_order_relaxed))break;
+                    if(varying)simulator.setWinds(generator.generateWinds());simulator.simulateJump();
+                    auto jump=simulator.getJumpData();jump.setJumper(nullptr);jump.setHill(nullptr);jump.setSimulator(nullptr);jump.setInSingleJumps(true);
+                    results[static_cast<size_t>(index)]=std::move(jump);control->completed.fetch_add(1,std::memory_order_relaxed);
+                }
+            }
+        };
+        if(workers==1)work();
+        else {
+            QThreadPool pool;pool.setMaxThreadCount(workers);std::vector<QFuture<void>> tasks;
+            for(int worker=0;worker<workers;++worker)tasks.push_back(QtConcurrent::run(&pool,work));
+            for(auto &task:tasks)task.waitForFinished();
+        }
+        QVector<JumpData> completed;completed.reserve(control->completed.load(std::memory_order_relaxed));
+        for(auto &jump:results)if(jump)completed.append(std::move(*jump));return completed;
+    });
 }
 
 void SingleJumpsManager::simulate()
@@ -76,7 +123,17 @@ void SingleJumpsManager::simulate()
     QCoreApplication::processEvents();
     QElapsedTimer progressPulse;
     progressPulse.start();
-    for(int i=0; i<jumpsCount; i++){
+    if(jumpsCount>=4096) {
+        auto control=std::make_shared<BatchControl>();
+        auto future=simulateAsync(jumpsCount,0,control);
+        QFutureWatcher<QVector<JumpData>> watcher;QEventLoop wait;QTimer pulse;
+        QObject::connect(&watcher,&QFutureWatcher<QVector<JumpData>>::finished,&wait,&QEventLoop::quit);
+        QObject::connect(&dialog,&QProgressDialog::canceled,&wait,[control]{control->canceled.store(true,std::memory_order_relaxed);});
+        QObject::connect(&pulse,&QTimer::timeout,&wait,[&]{updateProgress(control->completed.load(std::memory_order_relaxed));if(dialog.wasCanceled())control->canceled.store(true,std::memory_order_relaxed);});
+        watcher.setFuture(future);pulse.start(33);wait.exec();pulse.stop();
+        auto completed=future.result();
+        for(auto &jump:completed){jump.setJumper(&jumper);jump.setHill(&hill);jump.setSimulator(&jumpSimulator);jumps.append(std::move(jump));}
+    } else for(int i=0; i<jumpsCount; i++){
         if((i % 32)==0 && progressPulse.elapsed()>=33) {
             updateProgress(i);
             progressPulse.restart();

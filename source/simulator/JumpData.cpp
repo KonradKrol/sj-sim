@@ -373,7 +373,7 @@ QJsonObject JumpData::getJsonObject(JumpData jumpData)
     for(const auto & wind : jumpData.getWinds())
     {
         QJsonObject windObject;
-        windObject.insert("range", QJsonValue(QString::number(WindsGenerator::getRangeOfWindSector(i+1, jumpData.getHill()->getKPoint()).first) + " - " + QString::number(WindsGenerator::getRangeOfWindSector(i+1, jumpData.getHill()->getKPoint()).second)));
+        if(jumpData.getHill())windObject.insert("range", QJsonValue(QString::number(WindsGenerator::getRangeOfWindSector(i+1, jumpData.getHill()->getKPoint()).first) + " - " + QString::number(WindsGenerator::getRangeOfWindSector(i+1, jumpData.getHill()->getKPoint()).second)));
         windObject.insert("direction", wind.getDirection());
         windObject.insert("strength", wind.getStrength());
         windsArray.push_back(windObject);
@@ -381,9 +381,9 @@ QJsonObject JumpData::getJsonObject(JumpData jumpData)
     }
     object.insert("winds", windsArray);
 
-    object.insert("jumper-id", jumpData.getJumper()->getIDStr());
+    if(jumpData.getJumper())object.insert("jumper-id", jumpData.getJumper()->getIDStr());
     object.insert("jumper-form", jumpData.getJumperForm());
-    object.insert("hill-id", jumpData.getHill()->getIDStr());
+    if(jumpData.getHill())object.insert("hill-id", jumpData.getHill()->getIDStr());
     object.insert("in-single-jumps", jumpData.getInSingleJumps());
     return object;
 }
@@ -546,8 +546,8 @@ void JumpData::setDistance(double newDistance)
 QDebug operator<<(QDebug d, const JumpData & jumpData)
 {
     Jumper * jumper = jumpData.getJumper();
-    d <<jumper->getNameAndSurname()<<" ("<<jumper->getCountryCode()<<")";
-    d<<jumpData.getDistance()<<"m ("<<jumpData.getPoints()<<" pts) --> Wiatr: "<<WindsCalculator::getAveragedWind(jumpData.getWinds(), jumpData.getSimulator()->getCompetitionRules()->getWindAverageCalculatingType()).getStrengthToAveragedWind()<<"m/s, ("<<jumpData.getWindCompensation()<<" pts), Belka "<<jumpData.getGate()<<" ("<<jumpData.getGateCompensation()<<"),   |"<<jumpData.getJudges().at(0)<<"|"<<jumpData.getJudges().at(1)<<"|"<<jumpData.getJudges().at(2)<<"|"<<jumpData.getJudges().at(3)<<"|"<<jumpData.getJudges().at(4)<<"|"<<",   Lądowanie: "<<jumpData.getLanding().getTextLandingType();
+    if(jumper)d <<jumper->getNameAndSurname()<<" ("<<jumper->getCountryCode()<<")";
+    d<<jumpData.getDistance()<<"m ("<<jumpData.getPoints()<<" pts) --> Wiatr: "<<jumpData.getAveragedWind()<<"m/s, ("<<jumpData.getWindCompensation()<<" pts), Belka "<<jumpData.getGate()<<" ("<<jumpData.getGateCompensation()<<"),   |"<<jumpData.getJudges().at(0)<<"|"<<jumpData.getJudges().at(1)<<"|"<<jumpData.getJudges().at(2)<<"|"<<jumpData.getJudges().at(3)<<"|"<<jumpData.getJudges().at(4)<<"|"<<",   Lądowanie: "<<jumpData.getLanding().getTextLandingType();
 
     return d;
 }
