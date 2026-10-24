@@ -32,6 +32,10 @@ static void calendarDateRegressions()
     backend.planDates("2026-02-30","interval",1);check(backend.datePlan().isEmpty() && first->getScheduledDate()==QDate(2026,3,28),"invalid dates do not mutate a calendar");
     const auto month=backend.monthData("2028-02-01");check(month.value("days").toList().size()==42 && month.value("weekdays").toStringList().size()==7,"month grids have complete Monday-first weeks");
     check(backend.normalizeDate("2028-02-29")=="2028-02-29" && backend.normalizeDate("2027-02-29").isEmpty(),"date input validates leap years");
+    check(backend.normalizeDate("29.02.2028")=="2028-02-29" && backend.normalizeDate("29.02.2027").isEmpty(),"Polish numeric date input validates leap years and keeps ISO storage");
+    const QLocale previousLocale;
+    for(const auto &language:{"pl_PL","en_US","de_DE"}){QLocale::setDefault(QLocale(language));check(backend.dateText("2026-12-31")=="31.12.2026" && backend.dateText("2027-02-01")=="01.02.2027","event dates always display DD.MM.YYYY independently of locale");}
+    QLocale::setDefault(previousLocale);
     backend.select(first->getIDStr());backend.assignDate("2026-04-20");check(!backend.dateWarnings().isEmpty(),"dates that contradict execution order are disclosed");
     backend.selectAll();backend.sortDates();check(calendar->getCompetitionsReference().last()==first,"date sorting changes future execution order explicitly");backend.undo();check(calendar->getMainCompetitionForEvent(calendar->getCompetitionsReference().first())==first,"date ordering is undoable");
     const auto oldDates=backend.events();backend.duplicate();check(backend.events().size()==12 && backend.events()[6].toMap().value("date")==oldDates.first().toMap().value("date"),"duplicates preserve event dates");backend.undo();
