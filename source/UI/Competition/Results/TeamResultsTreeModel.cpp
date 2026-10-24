@@ -152,6 +152,12 @@ QVariant TeamResultsTreeModel::data(const QModelIndex &index, int role) const
             return QColor(qRgb(30, 30, 30));
     }
     else if(role == Qt::BackgroundRole){
+        if(item==header && result && (!manager || manager->checkCompetitionEnd())) {
+            const int place=result->getPosition();
+            if(place==1)return QColor(255,247,205);
+            if(place==2)return QColor(232,232,232);
+            if(place==3)return QColor(255,232,215);
+        }
         if(roundStatus==StartListCompetitorStatus::SureDroppedOut || qualificationStatus==StartListCompetitorStatus::SureDroppedOut)return QColor(238,240,242);
         if(roundStatus==StartListCompetitorStatus::SureAdvanced)return QColor(245,255,248);
         if(lastTeam != nullptr && results != nullptr && item->getParentItem() == rootItem
@@ -160,47 +166,7 @@ QVariant TeamResultsTreeModel::data(const QModelIndex &index, int role) const
             if(results->getResultByIndex(index.row())->getTeam() == lastTeam)
                 return QColor(qRgb(232, 243, 255));
         }
-        if(manager != nullptr){
-            if(item->getParentItem() == rootItem){
-                Team * team = results->getResultsReference()[index.row()].getTeam();
-                if(manager->getActualRound() == manager->getCompetitionInfo()->getRulesPointer()->getRoundsReference().count() && manager->getActualGroup() == manager->getCompetitionInfo()->getRulesPointer()->getJumpersInTeamCount())
-                {
-                    if(results->getResultOfTeam(team)->getPosition() + StartListCompetitorStatus::remainingJumpers(manager->getStartListStatusesReference()) == 3)
-                        return QColor(qRgb(255, 232, 215));
-                    else if(results->getResultOfTeam(team)->getPosition() + StartListCompetitorStatus::remainingJumpers(manager->getStartListStatusesReference()) == 2)
-                        return QColor(qRgb(232, 232, 232));
-                    else if(results->getResultOfTeam(team)->getPosition() + StartListCompetitorStatus::remainingJumpers(manager->getStartListStatusesReference()) == 1)
-                        return QColor(qRgb(255, 247, 205));
-                }
-                if(manager->getAdvanceStatusOfTeam(team) == StartListCompetitorStatus::SureDroppedOut){
-                    return QColor(qRgb(238, 240, 242));
-                }
-                else if(results->getResultByIndex(index.row())->getJumpsReference().count() < manager->getActualRound() * manager->getActualGroup()) //Ilość skoków jest mniejsza niż round * group
-                {
-                    return QColor(qRgb(254, 254, 254));
-                }
-                else if(manager->getAdvanceStatusOfTeam(team) == StartListCompetitorStatus::Waiting){
-                    return QColor(qRgb(248, 248, 244));
-                }
-                else if(manager->getAdvanceStatusOfTeam(team) == StartListCompetitorStatus::SureAdvanced){
-                    return QColor(qRgb(245, 255, 248));
-                }
-            }
-        }
-        else
-        {
-            if(item->getParentItem() == rootItem){
-                if(index.row() == 2)
-                    return QColor(qRgb(255, 232, 215));
-                else if(index.row() == 1)
-                    return QColor(qRgb(232, 232, 232));
-                else if(index.row() == 0)
-                    return QColor(qRgb(255, 247, 205));
-                return QColor(qRgb(253, 253, 249));
-            }
-            else
-                return QColor(qRgb(253, 253, 249));
-        }
+        return QColor(253,253,249);
     }
 
     return QVariant();

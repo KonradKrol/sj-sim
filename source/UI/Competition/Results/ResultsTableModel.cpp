@@ -87,6 +87,12 @@ QVariant ResultsTableModel::data(const QModelIndex &index, int role) const
         return data(index, Qt::DisplayRole);
     }
     else if(role == Qt::BackgroundRole){
+        if(!manager || manager->checkCompetitionEnd()) {
+            const int place=results->getResultsReference().at(index.row()).getPosition();
+            if(place==1)return QColor(255,247,205);
+            if(place==2)return QColor(232,232,232);
+            if(place==3)return QColor(255,232,215);
+        }
         if(roundStatus==StartListCompetitorStatus::SureDroppedOut || qualificationStatus==StartListCompetitorStatus::SureDroppedOut)return QColor(238,240,242);
         if(roundStatus==StartListCompetitorStatus::SureAdvanced)return QColor(245,255,248);
         if(lastJumper != nullptr)
@@ -94,49 +100,7 @@ QVariant ResultsTableModel::data(const QModelIndex &index, int role) const
             if(results->getResultByIndex(index.row())->getJumper() == lastJumper)
                 return QColor(qRgb(232, 243, 255));
         }
-        if(startListStatuses != nullptr && manager && roundStatus>=0){
-            switch(type){
-            case CompetitionRules::Individual:{
-                Jumper * jumper = results->getResultsReference().at(index.row()).getJumper();
-                if(manager->getActualRound() == manager->getCompetitionRules()->getRoundsReference().count()){
-                    if(results->getResultOfIndividualJumper(jumper)->getPosition() + StartListCompetitorStatus::remainingJumpers(*startListStatuses) == 3)
-                        return QColor(qRgb(255, 232, 215));
-                    else if(results->getResultOfIndividualJumper(jumper)->getPosition() + StartListCompetitorStatus::remainingJumpers(*startListStatuses) == 2)
-                        return QColor(qRgb(232, 232, 232));
-                    else if(results->getResultOfIndividualJumper(jumper)->getPosition() + StartListCompetitorStatus::remainingJumpers(*startListStatuses) == 1)
-                        return QColor(qRgb(255, 247, 205));
-                }
-
-                if(StartListCompetitorStatus::getStatusOfJumper(results->getResultsReference().at(index.row()).getJumper(), *startListStatuses) == nullptr){
-                    return QColor(qRgb(255, 255, 255));
-                }
-                switch(StartListCompetitorStatus::getStatusOfJumper(results->getResultsReference().at(index.row()).getJumper(), *startListStatuses)->getAdvanceStatus())
-                {
-                case StartListCompetitorStatus::Waiting:
-                    return QColor(qRgb(253, 253, 249));
-                case StartListCompetitorStatus::SureAdvanced:
-                    if(StartListCompetitorStatus::getStatusOfJumper(results->getResultsReference().at(index.row()).getJumper(), *startListStatuses)->getQualifiedBy95HSRule())
-                        return QColor(qRgb(237, 247, 240));
-                    else{
-                        return QColor(qRgb(245, 255, 248));
-                    }
-                case StartListCompetitorStatus::SureDroppedOut:
-                    return QColor(qRgb(238, 240, 242));
-                }
-                break;
-            }
-            }
-        }
-        else
-        {
-            if(index.row() == 2)
-                return QColor(qRgb(255, 232, 215));
-            else if(index.row() == 1)
-                return QColor(qRgb(232, 232, 232));
-            else if(index.row() == 0)
-                return QColor(qRgb(255, 247, 205));
-            return QColor(qRgb(253, 253, 249));
-        }
+        return QColor(253,253,249);
     }
     else if(role == Qt::DecorationRole){
         switch(index.column()){

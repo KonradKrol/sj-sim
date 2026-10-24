@@ -23,13 +23,23 @@ Pane {
                 visible: ui.context.previousPosition>0; spacing: 0
                 Label { objectName: "athletePreviousPosition"; text: ui.context.previousPosition>0 ? ui.context.previousPosition+"." : "—"; color: Theme.signal; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.weight: Font.ExtraBold; Layout.alignment: Qt.AlignRight }
                 Label { text: qsTr("po %1 serii").arg(ui.context.round-1); color: Theme.headerMuted; font.pointSize: Theme.caption-1 }
+
+            }
+        }
+        RowLayout {
+            visible: ui.context.currentGap !== undefined || ui.context.groupGap !== undefined
+            Layout.fillWidth: true; spacing: 12
+            Repeater {
+                model: [{key:"currentGap",label:qsTr("Do lidera")},{key:"groupGap",label:qsTr("W grupie KO")}]
                 Label {
-                    objectName: "athletePreviousGap"
-                    visible: ui.context.previousGap !== undefined
-                    text: Number(ui.context.previousGap || 0).toLocaleString(Qt.locale(),'f',1)+qsTr(" pkt")
-                    color: ui.context.previousGap>0 ? Theme.danger : ui.context.previousGap<0 ? Theme.signal : Theme.headerMuted
-                    font.pointSize: Theme.caption-1; font.family: Theme.mono
-                    Accessible.name: qsTr("Strata po %1 serii: %2. Przewaga ma znak minus.").arg(ui.context.round-1).arg(text)
+                    visible: ui.context[modelData.key] !== undefined
+                    objectName: modelData.key==="currentGap" ? "athleteCurrentGap" : "athleteGroupGap"
+                    readonly property real gap: Number(ui.context[modelData.key] || 0)
+                    text: modelData.label+": "+gap.toLocaleString(Qt.locale(),'f',1)+qsTr(" pkt")
+                    color: gap>0 ? Theme.headerMuted : gap<0 ? Theme.signal : Theme.snow
+                    font.pointSize: Theme.caption; font.family: Theme.mono
+                    Layout.fillWidth: true; wrapMode: Text.WordWrap
+                    Accessible.name: text+qsTr(". Przewaga ma znak minus.")
                 }
             }
         }

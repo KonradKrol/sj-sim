@@ -239,6 +239,7 @@ void TeamCompetitionManager::setStartListOrderRandomly(QVector<Team> &teams)
 
 bool TeamCompetitionManager::checkCompetitionEnd()
 {
+    if(competitionInfo && (competitionInfo->getCancelled() || (competitionInfo->getExceptionalRoundsCount()>0 && actualRound>competitionInfo->getExceptionalRoundsCount())))return true;
     return (checkGroupEnd() && checkRoundEnd() && (actualRound == competitionRules->getRoundsReference().count() || actualRound == competitionInfo->getExceptionalRoundsCount()));
 }
 

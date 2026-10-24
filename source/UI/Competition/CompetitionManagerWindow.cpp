@@ -244,6 +244,19 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
 
 
     jumperResultsWidget = new JumperCompetitionResultsWidget(this);
+    connect(ui->tableView_results,&QTableView::clicked,this,&CompetitionManagerWindow::on_tableView_results_doubleClicked);
+    const auto showKoResult=[this](const QModelIndex &index) {
+        if(!index.isValid() || getLiveStage()>0)return;
+        auto *model=qobject_cast<KOGroupResultsTableModel *>(ui->tableView_KOGroupResults->model());
+        if(!model || index.model()!=model || !model->getGroup())return;
+        auto jumpers=model->getGroup()->getJumpers();model->getKOManager()->getResults()->sortJumpersByResults(jumpers);
+        if(index.row()<0 || index.row()>=jumpers.size())return;
+        auto *result=model->getKOManager()->getResults()->getResultOfIndividualJumper(jumpers[index.row()]);
+        if(!result || result->getJumpsReference().isEmpty())return;
+        jumperResultsWidget->setJumperResult(result);jumperResultsWidget->fillWidget();jumperResultsWidget->show();
+    };
+    connect(ui->tableView_KOGroupResults,&QTableView::clicked,this,showKoResult);
+    connect(ui->tableView_KOGroupResults,&QTableView::doubleClicked,this,showKoResult);
     jumperResultsWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     ui->verticalLayout_jumperResult->addWidget(jumperResultsWidget);
 
@@ -1677,6 +1690,7 @@ void CompetitionManagerWindow::cancelActualRound()
         res.updateTeamJumpersResults();
     }
     if(manager->getActualRound()>1)manager->getCompetitionInfo()->setExceptionalRoundsCount(manager->getActualRound()-1);
+    else {manager->getResults()->getResultsReference().clear();manager->getCompetitionInfo()->setCancelled(true);}
     manager->getResults()->sortInDescendingOrder();
 
     startListModel->refresh();
@@ -1905,7 +1919,7 @@ void CompetitionManagerWindow::on_pushButton_jump_clicked()
 
 void CompetitionManagerWindow::on_tableView_results_doubleClicked(const QModelIndex &index)
 {
-    if(!index.isValid() || index.row() < 0 || index.row() >= manager->getResults()->getResultsReference().count())
+    if(getLiveStage()>0 || !index.isValid() || index.row() < 0 || index.row() >= manager->getResults()->getResultsReference().count())
         return;
 
     CompetitionSingleResult *result = manager->getResults()->getResultByIndex(index.row());

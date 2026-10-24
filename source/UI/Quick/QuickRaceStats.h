@@ -6,8 +6,20 @@
 #include <algorithm>
 #include <functional>
 #include <limits>
+#include <cmath>
 
 namespace QuickRaceStats {
+inline QVariantMap currentGap(const CompetitionSingleResult &athlete,const QVector<const CompetitionSingleResult *> &rivals,int round) {
+    if(round<2 || !athlete.getCompetition())return {};
+    const auto weights=athlete.getCompetition()->getRulesPointer()->getRoundPointWeights(round);
+    bool carriesPoints=false;for(int i=0;i<round-1;++i)if(std::abs(weights.value(i,1.))>1e-9)carriesPoints=true;
+    if(!carriesPoints)return {};
+    const auto own=qRound64(athlete.pointsForJumps(athlete.getJumps().size(),round)*10.);
+    qint64 best=std::numeric_limits<qint64>::min();
+    for(const auto *rival:rivals)if(rival && rival!=&athlete)best=qMax(best,qRound64(rival->pointsForJumps(rival->getJumps().size(),round)*10.));
+    return best==std::numeric_limits<qint64>::min()?QVariantMap():QVariantMap{{"gap",(best-own)/10.}};
+}
+
 inline QVariantMap previousStanding(const CompetitionResults &results, const CompetitionSingleResult &athlete, int jumpCount) {
     if(jumpCount < 1 || athlete.getJumps().size() < jumpCount) return {};
     const auto score = [jumpCount](const CompetitionSingleResult &entry) {

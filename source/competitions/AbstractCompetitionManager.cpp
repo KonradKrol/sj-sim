@@ -147,6 +147,7 @@ bool AbstractCompetitionManager::checkRoundEnd()
 
 bool AbstractCompetitionManager::checkCompetitionEnd()
 {
+    if(competitionInfo && (competitionInfo->getCancelled() || (competitionInfo->getExceptionalRoundsCount()>0 && actualRound>competitionInfo->getExceptionalRoundsCount())))return true;
     return (checkRoundEnd() && (actualRound == competitionRules->getRoundsReference().count() || actualRound == competitionInfo->getExceptionalRoundsCount()));
 }
 
