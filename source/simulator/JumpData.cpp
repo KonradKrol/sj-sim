@@ -17,10 +17,8 @@ JumpData::JumpData(Jumper *jumper, Hill *hill) : jumper(jumper),
     hill(hill),
     Identifiable()
 {
-    DSQ = false;
-    DNS = false;
-    inSingleJumps = false;
-    competition = nullptr;
+    reset();
+    this->jumper=jumper;this->hill=hill;
 }
 
 QString JumpData::getJudgesText()
@@ -321,7 +319,8 @@ void JumpData::reset()
     jumper = nullptr;
     hill = nullptr;
     simulator = nullptr;
-    DSQ = false;
+    DSQ = DNS = hasCoachGate = beats95HSPercents = inSingleJumps = false;
+    coachGate=0;jumperForm=0;competition=nullptr;singleResult=nullptr;
     simulationData.reset();
 }
 
@@ -333,7 +332,8 @@ void JumpData::setupForNextJumper()
     judges.fill(0, 5);
     winds.clear();
     averagedWind = 0;
-    DSQ = false;
+    DSQ = DNS = hasCoachGate = beats95HSPercents = false;
+    coachGate=0;jumperForm=0;
     simulationData.reset();
 }
 
