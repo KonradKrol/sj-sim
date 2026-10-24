@@ -97,6 +97,7 @@
 #include <QTableWidget>
 #include <QLabel>
 #include "../source/UI/EditorWidgets/KOSystem/KOGroupEditorWidget.h"
+#include "../source/UI/EditorWidgets/KOSystem/KOGroupsListView.h"
 #include "../source/UI/EditorWidgets/WindsGeneratorSettingsWidgetInputItem.h"
 #include "../source/UI/EditorWidgets/WindsGeneratorSettingsEditorWidget.h"
 #include "../source/competitions/CompetitionManagers/IndividualCompetitionManager.h"
@@ -1183,6 +1184,25 @@ static void seasonWorkflowRegressions(MainWindow &main) {
 }
 #include "roster-drag-regressions.h"
 
+static void koGroupingRegressions(MainWindow &main) {
+    main.show();main.resize(1024,720);
+    QVector<Jumper *> athletes;for(auto &jumper:GlobalDatabase::get()->getEditableGlobalJumpers())athletes.append(&jumper);
+    athletes.resize(qMin(31,athletes.size()));check(athletes.size()>10,"KO grouping fixture");
+    CompetitionConfigWindow config(CompetitionConfigWindow::SingleCompetition);config.setCompetitionJumpers(athletes);
+    CompetitionRules rules=GlobalDatabase::get()->getEditableCompetitionRules().first();RoundInfo first(athletes.size(),true);first.setKO(true);first.setCountInKOGroup(2);rules.setCompetitionType(CompetitionRules::Individual);rules.setRounds({first,RoundInfo(16,true)});
+    config.getCompetitionRulesEditor()->setCompetitionRules(&rules);config.getCompetitionRulesEditor()->fillCompetitionRulesInputs();config.show();QTest::qWait(100);
+    auto *choice=config.findChild<QComboBox *>("comboBox_groupsSelectionType");auto *groups=config.findChild<KOGroupsListView *>();check(choice && groups,"real pre-competition KO grouping controls exist");
+    for(int iteration=0;iteration<32;++iteration){
+        const int mode=iteration%4+1;choice->setCurrentIndex(mode);QMetaObject::invokeMethod(choice,"activated",Q_ARG(int,mode));QTest::qWait(5);
+        const auto assigned=config.getCompetitionGroups();QSet<Jumper *> seen;int count=0;
+        for(const auto &group:assigned)for(auto *jumper:group.getJumpers()){check(jumper && !seen.contains(jumper),"regrouping never duplicates or loses athlete identity");seen.insert(jumper);++count;}
+        check(count==athletes.size(),"all grouping methods preserve odd-sized start lists");
+        check(groups->findChildren<KOGroupInfoWidget *>().size()==assigned.size(),"old KO cards are fully removed on every regrouping");
+    }
+    config.reject();KOGroupsListView empty;empty.fillListLayout();
+    qInfo()<<"PASS: repeated KO method changes, basket draws, odd counts and group-card lifetime";
+}
+
 static void rosterRegressions(MainWindow &main) {
     main.show();main.resize(1440,900);
     QVector<Jumper *> pool;for(auto &j:GlobalDatabase::get()->getEditableGlobalJumpers())pool.append(&j);
@@ -2114,6 +2134,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--audit-form-only")){auditFormRegressions();return 0;}
     if(app.arguments().contains("--audit-data-only")){auditDataRegressions();return 0;}
     if(app.arguments().contains("--geometry-only")){geometryRegressions(main);return 0;}
+    if(app.arguments().contains("--ko-groups-only")){koGroupingRegressions(main);return 0;}
     if(app.arguments().contains("--rosters-only")){rosterRegressions(main);return 0;}
     if(app.arguments().contains("--menus-only")){menuRegressions(main);return 0;}
     if(app.arguments().contains("--workflow-only")){seasonWorkflowRegressions(main);return 0;}
@@ -2134,7 +2155,7 @@ int main(int argc,char **argv) {
         for(int scenario=0;scenario<4;++scenario) runCompetition(main,scenario);
         seasons();qInfo()<<"PASS: full individual, KO and team competitions and season analysis";return 0;
     }
-    if(!app.arguments().contains("--layout-only")){simulationOnboardingRegressions(main);auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);rosterInputRegressions(main);interactionRegressions(main);spaceRegressions(main);uxRegressions(main);navigationRegressions(main);homeLaunchRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);calendarDateUiRegressions(main);rosterRegressions(main);geometryRegressions(main);}
+    if(!app.arguments().contains("--layout-only")){simulationOnboardingRegressions(main);auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);rosterInputRegressions(main);interactionRegressions(main);spaceRegressions(main);uxRegressions(main);navigationRegressions(main);homeLaunchRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);calendarDateUiRegressions(main);rosterRegressions(main);koGroupingRegressions(main);geometryRegressions(main);}
     if(!app.arguments().contains("--layout-only")){for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);runCompetition(main,0,true,1);runCompetition(main,0,true,2);runCompetition(main,2,true,3);}
     singleSimulationRegression();
     singleGateRegression(main);

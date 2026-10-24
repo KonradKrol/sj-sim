@@ -17,13 +17,10 @@ KOGroupsListView::~KOGroupsListView()
 
 void KOGroupsListView::fillListLayout()
 {
-    for(auto & widget : groupWidgets)
-    {
-        MyFunctions::removeFromVector(groupWidgets, widget);
-        ui->verticalLayout_groupsWidgets->removeWidget(widget);
-        delete widget;
-    }
-    qDebug()<<"KOGROUPS COUNT: "<<KOGroups->count();
+    const auto previous=groupWidgets;
+    groupWidgets.clear();
+    qDeleteAll(previous);
+    if(!KOGroups)return;
     for(auto & group : *KOGroups)
     {
         KOGroupInfoWidget * widget = new KOGroupInfoWidget(&group, this);
@@ -33,37 +30,28 @@ void KOGroupsListView::fillListLayout()
         groupWidgets.push_back(widget);
 
         connect(widget, &KOGroupInfoWidget::jumpersListViewDoubleClicked, this, [this, widget](){
-            KOGroupEditorWidget * editor = new KOGroupEditorWidget(this);
-            editor->setJumpersList(jumpersList);
-            editor->setGroup(widget->getGroup());
-            editor->updateComboBoxesLayout();
-            connect(editor, &KOGroupEditorWidget::submitted, editor, &KOGroupEditorWidget::accept);
-            if(editor->exec() == QDialog::Accepted)
-            {
-                KOGroup * oldGroup = editor->getGroup();
-                for(auto & editorJumper : editor->getJumpersFromInputs())
-                {
-                    if(oldGroup->getJumpersReference().contains(editorJumper))
-                    {
-
-                    }
-                    else{
-                        //Szukamy miejsce editorJumpera
-                        for(auto & group : *KOGroups)
-                        {
-                            for(auto & jumper : group.getJumpersReference())
-                            {
-                                if(editorJumper == jumper){
-                                    int newJumperIndex = editor->getJumpersFromInputs().indexOf(editorJumper);
-                                    Jumper * oldJumper = oldGroup->getJumpersReference()[newJumperIndex];
-                                    jumper = oldJumper;
-                                }
-                            }
-                        }
-                    }
+            KOGroupEditorWidget editor(this);
+            editor.setJumpersList(jumpersList);
+            editor.setGroup(widget->getGroup());
+            editor.updateComboBoxesLayout();
+            connect(&editor,&KOGroupEditorWidget::submitted,&editor,&KOGroupEditorWidget::accept);
+            if(editor.exec()!=QDialog::Accepted)return;
+            auto *target=editor.getGroup();
+            const auto chosen=editor.getJumpersFromInputs();
+            if(!target || chosen.size()!=target->getJumpersReference().size())return;
+            for(auto *jumper:chosen){bool present=false;for(const auto &group:*KOGroups)if(group.getJumpers().contains(jumper)){present=true;break;}if(!present)return;}
+            // Swap occupied slots without resizing groups or invalidating their models.
+            for(int slot=0;slot<chosen.size();++slot){
+                if(target->getJumpersReference()[slot]==chosen[slot])continue;
+                bool found=false;
+                for(auto &group:*KOGroups){
+                    const int other=group.getJumpersReference().indexOf(chosen[slot]);
+                    if(other<0)continue;
+                    qSwap(target->getJumpersReference()[slot],group.getJumpersReference()[other]);found=true;break;
                 }
-                oldGroup->setJumpers(editor->getJumpersFromInputs());
+                if(!found)return;
             }
+            for(auto *info:groupWidgets)info->updateWidget();
         });
     }
 }

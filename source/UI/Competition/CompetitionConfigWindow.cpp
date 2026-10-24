@@ -410,6 +410,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
     }
     KOGroupsList->hide();
     comboBox_groupsSelectionType = new QComboBox(this);
+    comboBox_groupsSelectionType->setObjectName("comboBox_groupsSelectionType");
     comboBox_groupsSelectionType->addItem(tr("Dobierz grupy"));
     comboBox_groupsSelectionType->addItem(tr("Klasycznie"));
     comboBox_groupsSelectionType->addItem(tr("Klasycznie (Dla dużych grup)"));
@@ -507,23 +508,19 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         emit competitionRulesEditor->KORoundChanged();
 
     connect(comboBox_groupsSelectionType, qOverload<int>(&QComboBox::activated), this, [this](int index){
-        if(index > 0)
-        {
-            index--;
-            if(getType() == SingleCompetition)
-            {
-                if(index != KOGroup::Classic || (index == KOGroup::Classic || (competitionRulesEditor->getRoundsFromInput().at(0).getCountInKOGroup() == 2)))
-                {
-                    RoundInfo roundInfo = competitionRulesEditor->getRoundsFromInput().at(0);
-                    competitionGroups = KOGroup::constructKOGroups(&roundInfo, &competitionJumpers, index, nullptr);
-                }
-            }
-            else if(index != KOGroup::Classic || (index == KOGroup::Classic || (seasonCompetition->getRulesPointer()->getRoundsReference().isEmpty() == false && seasonCompetition->getRulesPointer()->getRoundsReference()[0].getCountInKOGroup() == 2)))
-            {
-                seasonCompetitionGroups = KOGroup::constructKOGroups(&seasonCompetition->getRulesPointer()->getRoundsReference()[0], &seasonCompetitionJumpers, index, seasonCompetition);
-            }
-            KOGroupsList->fillListLayout();
+        if(index<=0 || index>4)return;
+        if(getType()==SingleCompetition){
+            const auto rounds=competitionRulesEditor->getRoundsFromInput();
+            if(rounds.isEmpty() || !rounds.first().getKO())return;
+            auto round=rounds.first();
+            competitionGroups=KOGroup::constructKOGroups(&round,&competitionJumpers,index-1,nullptr);
+        }else{
+            if(!seasonCompetition || seasonCompetition->getRulesPointer()->getRoundsReference().isEmpty())return;
+            auto &round=seasonCompetition->getRulesPointer()->getRoundsReference().first();
+            if(!round.getKO())return;
+            seasonCompetitionGroups=KOGroup::constructKOGroups(&round,&seasonCompetitionJumpers,index-1,seasonCompetition);
         }
+        KOGroupsList->fillListLayout();
     });
 
     on_pushButton_autoGate_clicked();

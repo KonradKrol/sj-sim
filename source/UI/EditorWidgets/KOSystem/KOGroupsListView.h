@@ -25,8 +25,8 @@ private:
 
     QVector<KOGroupInfoWidget *> groupWidgets;
 
-    QVector<KOGroup> * KOGroups;
-    QVector<Jumper *> * jumpersList;
+    QVector<KOGroup> * KOGroups=nullptr;
+    QVector<Jumper *> * jumpersList=nullptr;
 public:
     QVector<KOGroup> *getKOGroups() const;
     void setKOGroups(QVector<KOGroup> *newKOGroups);

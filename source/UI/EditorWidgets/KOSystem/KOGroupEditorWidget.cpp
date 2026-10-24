@@ -2,6 +2,8 @@
 #include "ui_KOGroupEditorWidget.h"
 
 #include <QIcon>
+#include <QSet>
+#include <QMessageBox>
 #include "../../../global/CountryFlagsManager.h"
 #include "../../../utilities/functions.h"
 
@@ -76,6 +78,11 @@ QVector<Jumper *> KOGroupEditorWidget::getJumpersFromInputs()
 
 void KOGroupEditorWidget::on_pushButton_submit_clicked()
 {
+    const auto chosen=getJumpersFromInputs();QSet<Jumper *> distinct;
+    for(auto *jumper:chosen)if(jumper)distinct.insert(jumper);
+    if(!group || chosen.size()!=group->getJumpersReference().size() || distinct.size()!=chosen.size()){
+        QMessageBox::information(this,tr("Skład grupy KO"),tr("Wybierz innego zawodnika w każdym miejscu grupy."),QMessageBox::Ok);return;
+    }
     emit submitted();
 }
 
