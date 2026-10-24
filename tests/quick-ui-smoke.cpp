@@ -42,6 +42,8 @@
 #include "../source/UI/AuthorWindow.h"
 #include <QDesktopServices>
 #include <QQmlComponent>
+#include <atomic>
+#include <cstdio>
 #include "../source/UI/ResultsShowing/JumpDataDetailedInfoWindow.h"
 #include "../source/single-jumps/SingleJumpsManager.h"
 #include "../source/global/GlobalDatabase.h"
@@ -108,6 +110,18 @@
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
 #endif
+
+static std::atomic<int> recursiveLayoutWarnings{0};
+static QtMessageHandler originalMessageHandler=nullptr;
+static void observeLayoutWarnings(QtMsgType type,const QMessageLogContext &context,const QString &message) {
+    if(message.contains("Detected recursive rearrange"))++recursiveLayoutWarnings;
+    if(originalMessageHandler)originalMessageHandler(type,context,message);
+    else std::fprintf(stderr,"%s\n",qPrintable(qFormatLogMessage(type,context,message)));
+}
+struct LayoutWarningRegressionGuard {
+    LayoutWarningRegressionGuard(){originalMessageHandler=qInstallMessageHandler(observeLayoutWarnings);}
+    ~LayoutWarningRegressionGuard(){qInstallMessageHandler(originalMessageHandler);if(recursiveLayoutWarnings.load()){std::fprintf(stderr,"FAIL: %d recursive Qt Quick Layout warnings\n",recursiveLayoutWarnings.load());std::exit(1);}}
+};
 
 static void check(bool ok,const QString &message) { if(!ok) { qCritical().noquote()<<"FAIL:"<<message; std::exit(1); } }
 static QQuickItem *item(QQuickItem *root,const QString &name) {
@@ -2190,6 +2204,7 @@ static void interactionRegressions(MainWindow &main) {
 
 int main(int argc,char **argv) {
     QApplication app(argc,argv);
+    LayoutWarningRegressionGuard layoutWarnings;
 #if QT_CONFIG(qml_debug)
     if(app.arguments().contains("--qml-profile")) {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
