@@ -10,7 +10,7 @@ Item {
     readonly property bool compact: editorArea.width < 850 || height < 420
     readonly property bool tight: compact && height < 300
     property bool editing: false
-    property bool renaming: false
+    property bool renaming: backend ? backend.newCalendar : false
     property int section: 0
     property bool addingMany: false
     property bool monthView: false
@@ -50,10 +50,10 @@ Item {
             Layout.fillWidth: true; columns: calendar.compact ? 3 : 5; columnSpacing: 6; rowSpacing: 4
             SButton { objectName: "calendarReturnToList"; visible: calendar.compact && calendar.editing; text: "←"; implicitHeight: 32; Accessible.name: qsTr("Konkursy"); quiet: true; onClicked: calendar.editing=false }
             Label { visible: calendar.compact && calendar.editing; text: calendar.backend.calendarName; color: Theme.ink; font.pointSize: Theme.caption; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
-            SChoice { visible: calendar.width<1180 && calendar.backend.calendars.length>0 && !(calendar.compact && calendar.editing); Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.columnSpan: calendar.compact && !calendar.tight ? 2 : 1; model: calendar.backend.calendars; currentIndex: calendar.backend.calendarIndex; Accessible.name: qsTr("Edytowany kalendarz"); onActivated: calendar.backend.selectCalendar(currentIndex) }
+            SChoice { visible: calendar.width<1180 && calendar.backend.calendars.length>1 && !(calendar.compact && calendar.editing); Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.columnSpan: calendar.compact && !calendar.tight ? 2 : 1; model: calendar.backend.calendars; currentIndex: calendar.backend.calendarIndex; Accessible.name: qsTr("Edytowany kalendarz"); onActivated: calendar.backend.selectCalendar(currentIndex) }
             SField { id: nameInput; visible: !calendar.compact || calendar.renaming; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.columnSpan: calendar.compact ? 3 : 1; text: calendar.backend.calendarName; Accessible.name: qsTr("Nazwa edytowanego kalendarza"); onEditingFinished: {if(text!==calendar.backend.calendarName)calendar.backend.renameCalendar(text);calendar.renaming=false} }
-            SButton { visible: calendar.width<1180 && !(calendar.compact && calendar.editing); objectName: "calendarCreate"; text: calendar.compact ? "+" : qsTr("Nowy kalendarz"); Accessible.name: qsTr("Nowy kalendarz"); onClicked: {calendar.backend.catalogAction("add");calendar.renaming=true;calendar.editing=false;nameInput.forceActiveFocus();nameInput.selectAll()} }
-            SButton { objectName: "calendarActivate"; visible: calendar.backend.calendarIndex>=0 && !calendar.tight && !(calendar.compact && calendar.editing); Layout.columnSpan: calendar.compact ? 2 : 1; Layout.fillWidth: calendar.compact; text: calendar.backend.activeCalendar ? qsTr("Aktywny kalendarz") : qsTr("Ustaw jako aktywny"); primary: !calendar.backend.activeCalendar; enabled: !calendar.backend.activeCalendar; onClicked: calendar.backend.activateCalendar() }
+            SButton { visible: calendar.width<1180 && !(calendar.compact && calendar.editing); objectName: "calendarCreate"; text: calendar.compact ? qsTr("+ Kalendarz") : qsTr("Nowy kalendarz"); primary: calendar.backend.calendarIndex<0; Accessible.name: qsTr("Nowy kalendarz"); onClicked: {calendar.backend.catalogAction("add");calendar.renaming=true;calendar.editing=false;nameInput.forceActiveFocus();nameInput.selectAll()} }
+            SButton { objectName: "calendarActivate"; visible: calendar.backend.calendarIndex>=0 && (calendar.backend.events.length>0 || !calendar.backend.activeCalendar) && !calendar.tight && !(calendar.compact && calendar.editing); Layout.columnSpan: calendar.compact ? 2 : 1; Layout.fillWidth: calendar.compact; text: calendar.backend.activeCalendar ? qsTr("Aktywny kalendarz") : qsTr("Ustaw jako aktywny"); primary: !calendar.backend.activeCalendar; enabled: !calendar.backend.activeCalendar; onClicked: calendar.backend.activateCalendar() }
             SButton {
                 text: "⋯"; Accessible.name: qsTr("Opcje kalendarza"); quiet: true; implicitHeight: calendar.tight ? 32 : 40; onClicked: catalogMenu.open()
                 ActionMenu {
@@ -65,7 +65,7 @@ Item {
         }
         SectionTabs { visible: !calendar.tight && !(calendar.compact && calendar.editing); Layout.fillWidth: true; options: [qsTr("Konkursy"),qsTr("Klasyfikacje")]; currentIndex: calendar.section; onSelected: calendar.section=index }
         Flow {
-            visible: calendar.section===0 && (!calendar.compact || !calendar.editing)
+            visible: calendar.section===0 && calendar.backend.events.length>0 && (!calendar.compact || !calendar.editing)
             Layout.fillWidth: true; spacing: 6
             SButton { objectName: "calendarEnableDates"; visible: !calendar.backend.datesEnabled && (!calendar.tight || calendar.backend.canEnableDates); text: calendar.backend.canEnableDates ? qsTr("Włącz daty zawodów") : qsTr("Sezon bez dat"); enabled: calendar.backend.canEnableDates; hint: qsTr("Daty można włączyć przed rozpoczęciem sezonu. Ustawienie znajdziesz też w ustawieniach symulacji."); onClicked: calendar.backend.setDatesEnabled(true) }
             SButton { objectName: "calendarMonthToggle"; visible: calendar.backend.datesEnabled; text: calendar.monthView ? qsTr("Lista i edycja") : qsTr("Widok kalendarza"); primary: calendar.monthView; onClicked: calendar.monthView=!calendar.monthView }
@@ -83,7 +83,7 @@ Item {
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
         SectionTabs { visible: false; Layout.fillWidth: true; options: [qsTr("Konkursy"),qsTr("Edycja")]; currentIndex: calendar.editing ? 1 : 0; onSelected: calendar.editing=index === 1 }
         Flow {
-            visible: !calendar.compact || !calendar.editing
+            visible: calendar.backend.events.length>0 && (!calendar.compact || !calendar.editing)
             Layout.fillWidth: true
             spacing: 6
             SButton { objectName: "calendarAdd"; text: qsTr("Dodaj konkurs"); primary: !calendar.tight; implicitHeight: calendar.tight?32:48; font.pointSize: calendar.tight?Theme.caption:Theme.section; enabled: calendar.backend.calendarIndex >= 0; onClicked: {calendar.backend.add();calendar.editing=true} }
@@ -120,6 +120,7 @@ Item {
                 Layout.preferredWidth: 320
                 spacing: calendar.tight ? 4 : 8
                 RowLayout {
+                    visible: calendar.backend.events.length>0
                     Layout.fillWidth: true
                     Label { text: calendar.backend.selection.count ? qsTr("Zaznaczono: %1").arg(calendar.backend.selection.count) : qsTr("Konkursy: %1").arg(calendar.backend.events.length); font.pointSize: Theme.caption; color: Theme.muted; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
                     SButton { objectName: "calendarClearSelection"; implicitHeight: calendar.tight?24:40; visible: calendar.backend.selection.count>0; text: "×"; quiet: true; Accessible.name: qsTr("Wyczyść zaznaczenie"); onClicked: calendar.backend.clearSelection() }
@@ -135,12 +136,20 @@ Item {
                     activeFocusOnTab: true
                     ScrollBar.vertical: ScrollBar {}
                     delegate: CalendarEventRow { width: rows.width; event: model.entry; backend: calendar.backend; viewport: rows; compact: calendar.compact; onActivated: function(eventId){var workspace=calendar;workspace.editing=true;workspace.backend.select(eventId)} }
-                    Label { visible: rows.count === 0; anchors.centerIn: parent; width: parent.width; text: calendar.backend.calendarIndex>=0 ? qsTr("Dodaj konkurs lub wczytaj preset.") : qsTr("Utwórz kalendarz, aby dodać konkursy."); color: Theme.muted; font.pointSize: Theme.body; wrapMode: Text.WordWrap }
+                    EmptyState {
+                        parent: rows
+                        anchors.fill: parent; compact: parent.height<150; visible: rows.count===0
+                        title: calendar.backend.calendarIndex>=0 ? qsTr("Kalendarz jest pusty") : qsTr("Utwórz pierwszy kalendarz")
+                        description: calendar.backend.calendarIndex>=0 ? qsTr("Dodaj konkursy lub wczytaj preset. Potem ustalisz skocznie i zasady.") : qsTr("Kalendarz określa konkursy i ich kolejność w sezonie.")
+                        actionObjectName: "calendarEmptyAction"
+                        actionText: calendar.backend.calendarIndex>=0 ? qsTr("Dodaj konkurs") : qsTr("Utwórz kalendarz")
+                        onTriggered: {if(calendar.backend.calendarIndex>=0){calendar.backend.add();calendar.editing=true}else{calendar.backend.catalogAction("add");calendar.renaming=true;nameInput.forceActiveFocus();nameInput.selectAll()}}
+                    }
                 }
             }
             CalendarInspector {
                 id: eventInspector
-                visible: !calendar.compact || calendar.editing
+                visible: calendar.backend.events.length>0 && (!calendar.compact || calendar.editing)
                 Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
                 Layout.preferredWidth: 500
                 compact: calendar.compact

@@ -41,7 +41,7 @@ ColumnLayout {
             included: true; marked: model.marked; position: model.position; activeSlot: model.activeSlot
             onMoveRequested: order.moving=true
         }
-        Label { visible: rows.count === 0; anchors.centerIn: parent; width: parent.width; text: order.backend.count === 0 ? qsTr("Wybierz zawodników do listy") : qsTr("Brak pasujących zawodników"); wrapMode: Text.WordWrap; color: Theme.muted; font.pointSize: Theme.body }
+        EmptyState { parent: rows; anchors.fill: parent; compact: parent.height<150; visible: rows.count===0; title: order.backend.count===0 ? qsTr("Lista startowa jest pusta") : qsTr("Brak pasujących zawodników"); description: order.backend.count===0 ? qsTr("Wybierz zawodników w panelu wyboru lub wczytaj zapisany skład.") : qsTr("Zmień filtry, aby zobaczyć zawodników z listy.") }
         Keys.onPressed: {
             if((event.modifiers & Qt.ControlModifier) && event.key === Qt.Key_A){order.backend.markAll();event.accepted=true}
             else if((event.modifiers & Qt.ControlModifier) && (event.key === Qt.Key_Up || event.key === Qt.Key_Down)){order.backend.step(event.key === Qt.Key_Up ? -1 : 1);event.accepted=true}

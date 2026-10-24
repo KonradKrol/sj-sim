@@ -18,6 +18,7 @@ class SimulationSave;
 class QuickCalendarEvents;
 class QuickCalendar : public QObject {
     Q_OBJECT
+    Q_PROPERTY(bool newCalendar READ newCalendar NOTIFY changed)
     Q_PROPERTY(bool datesEnabled READ datesEnabled NOTIFY changed)
     Q_PROPERTY(bool canEnableDates READ canEnableDates NOTIFY changed)
     Q_PROPERTY(QVariantList datePlan READ datePlan NOTIFY changed)
@@ -113,6 +114,7 @@ public:
     Q_INVOKABLE void applyCustomRules();
     Q_INVOKABLE void resetCustomRules();
     Q_INVOKABLE void selectCalendar(int index);
+    bool newCalendar() const;
     Q_INVOKABLE void renameCalendar(const QString &name);
     Q_INVOKABLE void catalogAction(const QString &action);
     Q_INVOKABLE void preset(bool save);
@@ -152,6 +154,7 @@ private:
     void applyDates(const QHash<CompetitionInfo *,QDate> &dates);
     QVariantMap m_selection;
     QString m_message,m_language;
+    QString m_newCalendarId;
     bool m_dirty=true,m_mutating=false;
     int m_rulesTarget=0;
     QVector<CompetitionInfo *> mains() const;

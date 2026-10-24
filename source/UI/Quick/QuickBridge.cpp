@@ -19,6 +19,8 @@
 #include "../EditorWidgets/WindsGeneratorSettingsWidgetInputItem.h"
 #include "../DatabaseEditor/DatabaseItemsListView.h"
 #include "../../competitions/CompetitionManagers/TeamCompetitionManager.h"
+#include "../../competitions/CompetitionManagers/IndividualCompetitionManager.h"
+#include "../../competitions/CompetitionManagers/KORoundManager.h"
 #include "../../global/GlobalDatabase.h"
 #include "../../global/CountryFlagsManager.h"
 #include <QApplication>
@@ -499,9 +501,20 @@ void QuickBridge::refresh() {
             if(ranked) {
                 const auto standing=QuickRaceStats::previousStanding(*manager->getResults(),*ranked,count);
                 context["previousPosition"]=standing.value("position");
-                if(standing.contains("gap"))context["previousGap"]=standing.value("gap");
+                QVector<const CompetitionSingleResult *> rivals;
+                if(team)for(auto *entry:team->getActualRoundTeamsReference())rivals.append(manager->getResults()->getResultOfTeam(entry));
+                else for(const auto &entry:manager->getStartListStatusesReference())rivals.append(manager->getResults()->getResultOfIndividualJumper(entry.getJumper()));
+                const auto gap=QuickRaceStats::currentGap(*ranked,rivals,manager->getActualRound());
+                if(gap.contains("gap"))context["currentGap"]=gap.value("gap");
+                if(auto *individual=dynamic_cast<IndividualCompetitionManager *>(manager);individual && individual->getKOManager() && individual->getKOManager()->getActualGroup()) {
+                    rivals.clear();for(auto *jumper:individual->getKOManager()->getActualGroup()->getJumpersReference())rivals.append(manager->getResults()->getResultOfIndividualJumper(jumper));
+                    const auto groupGap=QuickRaceStats::currentGap(*ranked,rivals,manager->getActualRound());
+                    if(groupGap.contains("gap"))context["groupGap"]=groupGap.value("gap");
+                }
             }
         }
+        if(window->getLiveStage()>0 && window->getLiveStage()<5)
+            for(const auto &key:{"currentGap","groupGap"}) {if(m_context.contains(key))context[key]=m_context.value(key);else context.remove(key);}
         if(context!=m_context) { m_context=context;emit changed(); }
         QVariantMap summary;
         QWidget *selected=nullptr;
@@ -868,6 +881,19 @@ void QuickBridge::compose(QuickNode *base) {
             const auto start=field("pushButton_competitionConfig");if(start.isValid())overview.append(start);
             QVariantList standings;
             if(auto *layout=m_content->findChild<QLayout *>("verticalLayout_classificationResults"))standings=childNodes(layout);
+            auto empty=[this](const QString &key,const QString &title,const QString &description,QPushButton *action=nullptr) {
+                auto *entry=m_groups.value(key);if(!entry){entry=new QuickNode(this);m_groups.insert(key,entry);}
+                entry->update({{"kind","empty"},{"title",title},{"description",description},{"actionText",action?action->text():QString()},{"actionId",action?idFor(action):-1}});return QVariant::fromValue(entry);
+            };
+            auto *season=qobject_cast<SimulationSaveManagerWindow *>(m_window);
+            if(season->getSimulationSave()->getActualSeason()->getCalendarsReference().isEmpty())
+                overview={empty("season-no-calendar",tr("Zacznij od kalendarza"),tr("Utwórz kalendarz, a następnie dodaj konkursy lub wczytaj preset."),m_content->findChild<QPushButton *>("pushButton_competitionConfig"))};
+            else if(!season->getSimulationSave()->getActualSeason()->getActualCalendar())
+                overview={empty("season-no-active-calendar",tr("Wybierz aktywny kalendarz"),tr("W sekcji Kalendarz wybierz kalendarz i użyj przycisku Ustaw jako aktywny."),m_content->findChild<QPushButton *>("pushButton_competitionConfig"))};
+            else if(season->getSimulationSave()->getActualSeason()->getActualCalendar()->getCompetitionsReference().isEmpty())
+                overview={empty("season-empty-calendar",tr("Dodaj pierwszy konkurs"),tr("Kalendarz jest gotowy. Dodaj konkursy lub wczytaj preset, aby rozpocząć sezon."),m_content->findChild<QPushButton *>("pushButton_competitionConfig"))};
+            auto *activeCalendar=season->getSimulationSave()->getActualSeason()->getActualCalendar();
+            if(standings.isEmpty() || !activeCalendar || activeCalendar->getClassificationsReference().isEmpty())standings={empty("season-no-standings",tr("Brak wyników klasyfikacji"),tr("Dodaj klasyfikację w kalendarzu i przypisz do niej konkursy. Wyniki pojawią się po ich rozegraniu."))};
             QVariantList pages{group("season-overview",QString(),{
                 group("season-next",tr("Następny konkurs"),overview),group("season-standings",tr("Klasyfikacja"),standings)},"sections")};
             QStringList labels{tr("Przegląd")};
@@ -883,6 +909,11 @@ void QuickBridge::compose(QuickNode *base) {
             auto *tabs=sectionTabs("season-pages",labels,pages);tabs->setProperty("quickSourceIndexes",sourceIndexes);
             if(!source->property("quickSeasonConnected").toBool()) {
                 source->setProperty("quickSeasonConnected",true);
+                connect(qobject_cast<SimulationSaveManagerWindow *>(m_window),&SimulationSaveManagerWindow::calendarRequested,this,[this,tabs](bool create){
+                    tabs->setProperty("quickTabIndex",tabs->property("quickSourceIndexes").toList().indexOf(3));
+                    if(create)for(auto *backend:m_calendars) {backend->catalogAction("add");break;}
+                    deferRefresh();
+                });
                 connect(source,&QTabWidget::currentChanged,this,[this,tabs](int index){const auto mapping=tabs->property("quickSourceIndexes").toList();tabs->setProperty("quickTabIndex",index==4?4:mapping.indexOf(index));deferRefresh();});
             }
             m_root->update(tabs->values(),tabs->children());return;

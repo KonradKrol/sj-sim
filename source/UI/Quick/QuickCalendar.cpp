@@ -455,8 +455,10 @@ void QuickCalendar::selectCalendar(int index) {
     for(QWidget *owner=m_editor.data();owner;owner=owner->parentWidget())if(auto *manager=qobject_cast<SimulationSaveManagerWindow *>(owner)){manager->setEditingCalendar(list->getCalendars()->at(index));break;}
     m_dirty=false;sync();
 }
+bool QuickCalendar::newCalendar() const {return m_calendar && m_calendar->getIDStr()==m_newCalendarId;}
 void QuickCalendar::renameCalendar(const QString &name) {
-    if(!m_calendar||name.trimmed().isEmpty()||name.trimmed()==m_calendar->getName())return;mutate([&]{m_calendar->setName(name.trimmed());});
+    const bool pendingRename=newCalendar();m_newCalendarId.clear();
+    if(!m_calendar||name.trimmed().isEmpty()||name.trimmed()==m_calendar->getName()){if(pendingRename)emit changed();return;}mutate([&]{m_calendar->setName(name.trimmed());});
     for(QWidget *owner=m_editor.data();owner;owner=owner->parentWidget())if(owner->inherits("SimulationSaveManagerWindow"))if(auto *input=owner->findChild<QLineEdit *>("lineEdit_calendarName")){input->setText(name.trimmed());QMetaObject::invokeMethod(input,"textEdited",Q_ARG(QString,name.trimmed()));}
     if(auto *list=calendarList())emit list->getListModel()->dataChanged(list->getListModel()->index(0,0),list->getListModel()->index(list->getListModel()->rowCount()-1,0));emit changed();
 }
@@ -467,7 +469,7 @@ void QuickCalendar::catalogAction(const QString &operation) {
     const QString suffix=operation=="add"?"A":operation=="remove"?"D":operation=="up"?"Up":operation=="down"?"Down":QString();if(suffix.isEmpty())return;
     m_history.undo.append(capture());m_history.redo.clear();m_mutating=true;
     for(auto *action:list->findChildren<QAction *>(QString(),Qt::FindDirectChildrenOnly))if(action->shortcut().toString(QKeySequence::PortableText).endsWith(suffix)){action->trigger();break;}
-    if(operation=="add")for(auto *calendar:*list->getCalendars())if(!old.contains(calendar)){calendar->setName(tr("Nowy kalendarz %1").arg(list->getCalendars()->size()));selectCalendar(list->getCalendars()->indexOf(calendar));m_message=tr("Utworzono kalendarz. Dodaj konkursy lub wczytaj preset.");break;}
+    if(operation=="add")for(auto *calendar:*list->getCalendars())if(!old.contains(calendar)){m_newCalendarId=calendar->getIDStr();calendar->setName(tr("Nowy kalendarz %1").arg(list->getCalendars()->size()));selectCalendar(list->getCalendars()->indexOf(calendar));m_message=tr("Utworzono kalendarz. Dodaj konkursy lub wczytaj preset.");break;}
     for(auto *calendar:old)if(!list->getCalendars()->contains(calendar)){for(auto *event:calendar->getCompetitionsReference())m_retired.insert(event);for(auto *entry:calendar->getClassificationsReference())m_retiredClasses.insert(entry);}
     m_dirty=true;sync();m_mutating=false;
 }

@@ -29,7 +29,7 @@ public:
 
     void showJumperAndHillsEditingHelp();
     void fillNextCompetitionInformations();
-    void focusCalendarTab();
+    void focusCalendarTab(bool create=false);
 
     void setupClassificationsComboBox();
     void connectComboBox();
@@ -47,6 +47,7 @@ public:
 signals:
     void actualCalendarChanged();
     void editingCalendarChanged();
+    void calendarRequested(bool create);
 
 private:
     Ui::SimulationSaveManagerWindow *ui;

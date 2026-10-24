@@ -545,10 +545,11 @@ DatabaseItemsListView *SimulationSaveManagerWindow::getCalendarsListView() const
     return calendarsListView;
 }
 
-void SimulationSaveManagerWindow::focusCalendarTab()
+void SimulationSaveManagerWindow::focusCalendarTab(bool create)
 {
     ui->toolBox->setCurrentIndex(3);
     calendarsListView->getListView()->setFocus();
+    emit calendarRequested(create);
 }
 
 void SimulationSaveManagerWindow::setCalendarsListView(DatabaseItemsListView *newCalendarsListView)
@@ -701,7 +702,7 @@ void SimulationSaveManagerWindow::updateCompetitionConfigButton()
     SeasonCalendar *calendar = simulationSave->getActualSeason()->getActualCalendar();
     if(calendar == nullptr)
     {
-        ui->pushButton_competitionConfig->setText(tr("Utwórz kalendarz"));
+        ui->pushButton_competitionConfig->setText(simulationSave->getActualSeason()->getCalendarsReference().isEmpty()?tr("Utwórz kalendarz"):tr("Wybierz aktywny kalendarz"));
         ui->pushButton_competitionConfig->setToolTip(tr("Przejdź do karty Kalendarz"));
         ui->pushButton_competitionConfig->setEnabled(true);
     }
@@ -889,7 +890,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
 
     if(simulationSave->getActualSeason()->getActualCalendar() == nullptr)
     {
-        focusCalendarTab();
+        focusCalendarTab(simulationSave->getActualSeason()->getCalendarsReference().isEmpty());
         return;
     }
 

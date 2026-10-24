@@ -22,7 +22,7 @@ ColumnLayout {
         spacing: 4; clip: true; activeFocusOnTab: true
         ScrollBar.vertical: ScrollBar {}
         delegate: RosterRow { width: candidates.width; backend: library.backend; athleteId: model.athleteId; athleteName: model.athleteName; countryCode: model.countryCode; flagSource: model.flagSource || ""; included: model.included }
-        Label { visible: candidates.count === 0; anchors.centerIn: parent; width: parent.width; text: qsTr("Brak pasujących zawodników"); wrapMode: Text.WordWrap; color: Theme.muted; font.pointSize: Theme.body }
+        EmptyState { parent: candidates; anchors.fill: parent; compact: parent.height<150; visible: candidates.count===0; title: qsTr("Brak pasujących zawodników"); description: qsTr("Zmień nazwisko lub kraj, aby zobaczyć innych zawodników."); actionText: library.backend.query.length || library.backend.country>0 ? qsTr("Wyczyść filtry") : ""; onTriggered: {library.backend.query="";library.backend.country=0} }
     }
     RowLayout {
         Layout.fillWidth: true

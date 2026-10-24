@@ -34,10 +34,12 @@ ColumnLayout {
     RowLayout {
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; spacing: 16
         ListView {
+            id: entries
             visible: !classes.compact || !classes.editing
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; Layout.preferredWidth: 280
             clip: true; model: classes.backend.classEntries; spacing: 4
             ScrollBar.vertical: ScrollBar {}
+            EmptyState { parent: entries; anchors.fill: parent; compact: parent.height<150; visible: entries.count===0; title: qsTr("Brak klasyfikacji"); description: qsTr("Klasyfikacja sumuje wyniki wybranych konkursów. Dodaj ją, a następnie przypisz konkursy w sekcji Powiązania."); actionText: classes.backend.calendarIndex>=0 ? qsTr("Dodaj klasyfikację") : ""; onTriggered: {classes.backend.classAction("add");classes.editing=true} }
             delegate: ItemDelegate {
                 width: ListView.view.width; height: 68
                 contentItem: Column {

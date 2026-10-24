@@ -197,11 +197,15 @@ FocusScope {
                         statusText: model.statusText || ""
                         tint: model.tint || ""
                     }
-                    Column {
-                        anchors.centerIn: parent; spacing: 8; visible: rows.count===0
+                    EmptyState {
+                        parent: rows
+                        anchors.fill: parent; compact: parent.height<150; visible: rows.count===0
                         readonly property bool filtered: !!tableRoot.table && tableRoot.table.filter.length>0
-                        Label { text: parent.filtered ? qsTr("Brak wyników") : qsTr("Lista jest pusta"); color: Theme.muted; font.pointSize: Theme.body }
-                        SButton { objectName: "clearTableFilter-"+tableRoot.ownerId; visible: parent.filtered; text: qsTr("Wyczyść filtr"); quiet: true; onClicked: tableRoot.table.filter="" }
+                        title: filtered ? qsTr("Brak pasujących wyników") : tableRoot.raceResults || tableRoot.teamResults ? qsTr("Nie oddano jeszcze skoku") : qsTr("Brak danych")
+                        description: filtered ? qsTr("Zmień wyszukiwanie lub wyczyść filtr.") : tableRoot.raceResults || tableRoot.teamResults ? qsTr("Wyniki pojawią się po pierwszym skoku.") : qsTr("Dodane elementy lub wyniki pojawią się tutaj.")
+                        actionObjectName: "clearTableFilter-"+tableRoot.ownerId
+                        actionText: filtered ? qsTr("Wyczyść filtr") : ""
+                        onTriggered: tableRoot.table.filter=""
                     }
                 }
             }
