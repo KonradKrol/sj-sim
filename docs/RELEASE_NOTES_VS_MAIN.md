@@ -648,7 +648,7 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 - „Utwórz kalendarz” od razu tworzy kalendarz i przechodzi do jego sekcji z edycją nazwy. Przejścia działają także wtedy, gdy ukryta karta Widgets miała już ten sam indeks. Rozróżniono brak kalendarza, brak aktywnego kalendarza i brak konkursów.
 - Przed skokiem straty/przewagi liczone są z punktów po wagach bieżącej serii względem aktualnych wyników rywali. KO ma osobną stratę do lidera grupy. Całkowity reset punktów i pierwsza seria wyłączają takie informacje; prezentacja na żywo nie ujawnia ich przed wynikiem.
 - Kliknięcie wyniku grupy KO pokazuje kartę właściwego skoczka. Wiersz grupy nie jest używany jako indeks ogólnych wyników.
-- Usunięto znacznik ✓ awansu. Q kalendarza znajduje się po lewej, przy tożsamości wydarzenia.
+- Usunięto znacznik ✓ awansu. Q kalendarza znajduje się po prawej stronie treści, z wyraźnym marginesem od krawędzi i odstępem od przycisku edycji.
 - Podium pojawia się wyłącznie po zakończeniu konkursu, także zakończonego odwołaniem serii. Kolory wynikają z miejsc z uwzględnieniem ex aequo. Zakończenie pośredniej serii nie tworzy podium, a odwołanie pierwszej nie tworzy miejsc z pustych wyników.
 - Raport szczegółowy i wyniki testów: [SIMULATION_ONBOARDING_2026-10-24.md](SIMULATION_ONBOARDING_2026-10-24.md).
 

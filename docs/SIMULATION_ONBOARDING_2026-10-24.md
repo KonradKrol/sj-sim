@@ -48,7 +48,7 @@ Przycisk dodawania kalendarza jest opisany również w wąskim układzie. Przy j
 ## Oznaczenia i podium
 
 - Usunięto znacznik ✓ awansu. Łagodna zieleń i tekst dostępności nadal przekazują stan.
-- Q w kalendarzu przesunięto na lewo, obok flagi i nazwy wydarzenia.
+- Q w kalendarzu znajduje się po prawej stronie treści, z własną szerokością 24 px, marginesem 12 px po prawej i odstępem od przycisku edycji. To końcowa korekta wcześniejszego przesunięcia na lewo.
 - Podium pojawia się dopiero po zakończeniu całego konkursu. Zakończenie pośredniej serii nie uruchamia kolorów podium.
 - Kolor zależy od miejsca w łącznej klasyfikacji, nie indeksu wiersza. Przy ex aequo 1,1,3 obaj pierwsi mają złoto, a trzeci brąz; nie tworzy się sztucznego srebrnego miejsca.
 - Odwołanie serii kończące zawody uznawane jest za koniec konkursu i zachowuje podium po poprzedniej zakończonej serii. Odwołanie pierwszej serii nie tworzy podium z pustych wyników.

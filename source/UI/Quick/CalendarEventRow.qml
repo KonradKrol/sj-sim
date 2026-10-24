@@ -69,12 +69,19 @@ Item {
             Layout.preferredWidth: Theme.compact ? 20 : 24; Layout.preferredHeight: Theme.compact ? 14 : 16
             fillMode: Image.PreserveAspectFit; Accessible.ignored: true
         }
-        Label { objectName: "calendar-qualification-"+row.event.id; visible: !!row.event.qualification; text: "Q"; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption; Accessible.name: qsTr("Kwalifikacje") }
         ColumnLayout {
             Layout.fillWidth: true; Layout.minimumWidth: 0; spacing: 1
             Label { text: row.event.number + ". " + row.event.title; font.pointSize: Theme.compact ? Theme.caption : Theme.body; font.weight: Font.DemiBold; color: Theme.ink; Layout.fillWidth: true; elide: Text.ElideRight }
             Label { objectName: "calendar-details-"+row.event.id; visible: text.length>0; text: row.details; color: row.backend.datesEnabled && !row.event.date ? Theme.warning : Theme.muted; font.pointSize: Theme.compact ? Theme.caption-1 : Theme.caption; Layout.fillWidth: true; elide: Text.ElideRight }
             Label { visible: !!row.event.pending || !!row.event.dependents; text: row.event.pending ? qsTr("Kwalifikacja z konkursu %1 — popraw kolejność").arg(row.event.pendingSource) : qsTr("Źródło kwalifikacji dla: %1 — popraw kolejność").arg(row.event.dependents); color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        }
+        Label {
+            objectName: "calendar-qualification-"+row.event.id
+            visible: !!row.event.qualification
+            Layout.preferredWidth: 24; Layout.leftMargin: 4; Layout.rightMargin: 12
+            horizontalAlignment: Text.AlignHCenter
+            text: "Q"; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption
+            Accessible.name: qsTr("Kwalifikacje")
         }
         SButton { visible: row.compact; Layout.preferredWidth: 24; Layout.minimumWidth: 24; Layout.maximumWidth: 24; Layout.preferredHeight: 28; text: "›"; quiet: true; Accessible.name: qsTr("Edytuj %1").arg(row.event.title); onClicked: row.activated(row.event.id) }
     }
