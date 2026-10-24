@@ -103,7 +103,7 @@ QJsonObject Hill::getJsonObject(const Hill & hill)
     object.insert("hs-point", hill.getHSPoint());
     object.insert("record", hill.getRecord());
 
-    if(hill.getAutoPointsForKPoint() == true)
+    if(hill.getAutoPointsForMeter() == true)
         object.insert("points-for-meter", "auto");
     else object.insert("points-for-meter", hill.getPointsForMeter());
 
