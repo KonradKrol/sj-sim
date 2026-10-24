@@ -265,6 +265,8 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
     rules.setJumpersInTeamCount(4);
     RoundInfo first(bulk&&scenario!=2?100:16,true),second(scenario==2?3:bulk?(scenario==1?60:30):8,true);
     if(scenario==1) { first.setKO(true);first.setCountInKOGroup(2);first.setAdvancingFromKOGroup(1);first.setKoGroupsSelectionType(KOGroup::Classic); }
+    const bool multiKo=QCoreApplication::arguments().contains("--ko-multi-round-only");
+    if(multiKo){second.setKO(true);second.setCountInKOGroup(2);second.setAdvancingFromKOGroup(1);second.setKoGroupsSelectionType(KOGroup::Classic);second.setPreviousRoundsWeights({.5});}
     const bool weighted=QCoreApplication::arguments().contains("--round-points-bulk-only");
     if(weighted) { if(scenario==2)second.setPreviousRoundsWeights({.5});else second.setResetPoints(true); }
     rules.setRounds({first,second});
@@ -505,10 +507,22 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                 check(startAdapter->currentRow()==startView->currentIndex().row(),"start list cursor follows the active competitor");
             };
             checkStartList();
-            int jumps=0;bool previousRankTested=false;
+            int jumps=0;bool previousRankTested=false;bool koPreviewTested=false;
             QSet<QString> checkedGates;
             while(!window->getManager()->checkCompetitionEnd() && jumps++<250) {
                 auto *next=window->findChild<QPushButton *>("pushButton_goToNext");
+                if(scenario==1 && !koPreviewTested && window->getManager()->getActualRound()==1) {
+                    auto *model=window->getKOGroupsResultsModel();
+                    auto group=model->getGroup()->getJumpers();window->getManager()->getResults()->sortJumpersByResults(group);
+                    for(int row=0;row<group.size();++row)if(auto *result=window->getManager()->getResults()->getResultOfIndividualJumper(group[row]);result && !result->getJumpsReference().isEmpty() && window->getManager()->getResults()->getIndexOfJumperResult(group[row])>0) {
+                        auto *native=window->findChild<QTableView *>("tableView_KOGroupResults");
+                        QMetaObject::invokeMethod(native,"clicked",Q_ARG(QModelIndex,model->index(row,2)));bridge->refresh();
+                        check(window->findChild<JumperCompetitionResultsWidget *>()->getJumperResult()->getJumper()==group[row],"clicking a KO result opens the matching athlete instead of treating the group row as an overall row");koPreviewTested=true;break;
+                    }
+                }
+                if(multiKo && window->getManager()->getActualRound()>1 && !window->getManager()->checkRoundEnd()) {
+                    bridge->refresh();check(bridge->context().contains("currentGap") && bridge->context().contains("groupGap"),"multi-round KO exposes both weighted overall and group leader gaps before the jump");
+                }
                 auto *jump=window->findChild<QPushButton *>("pushButton_jump");
                 if(jump && jump->isEnabled() && StartListCompetitorStatus::remainingJumpers(window->getManager()->getStartListStatusesReference())==1) {
                     const QString key=QString::number(window->getManager()->getActualRound())+":"+QString::number(window->getManager()->getType()==CompetitionRules::Team?static_cast<TeamCompetitionManager *>(window->getManager())->getActualGroup():0);
@@ -517,12 +531,12 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                 if(next && !next->isHidden() && next->isEnabled()) bridge->activate(id(bridge,"pushButton_goToNext"));
                 else if(scenario==0 && window->getManager()->getActualRound()>1 && !previousRankTested) {
                     bridge->refresh();const int previous=bridge->context().value("previousPosition").toInt();check(previous>0,"athlete on gate shows place after previous round");
-                    check(bridge->context().contains("previousGap"),"athlete on gate shows the gap after the previous round");
-                    const auto beforeJump=bridge->context().value("previousGap");
+                    check(bridge->context().contains("currentGap"),"athlete on gate shows the gap against the current leader");
+                    const auto beforeJump=bridge->context().value("currentGap");
                     const double speed=GlobalAppSettings::get()->getLiveCompetitionSpeedMulti();GlobalAppSettings::get()->setLiveCompetitionSpeedMulti(.005);window->findChild<QCheckBox *>("checkBox_liveCompetition")->setChecked(true);
                     const auto advancementBefore=bridge->context().value("biggestAdvancement").toMap();
                     QObject watcher;bool seen=false;
-                    QObject::connect(window,&CompetitionManagerWindow::liveStageChanged,&watcher,[&](int stage){if(stage==2){bridge->refresh();check(!bridge->jumpSummary().contains("positionNumber"),"last jump leaves position blank during flight");check(!bridge->jumpSummary().contains("leaderGap"),"current leader gap is not revealed during flight");check(!bridge->jumpSummary().contains("roundPositionNumber"),"round jump rank is not revealed during flight");check(bridge->context().value("previousGap")==beforeJump,"pre-jump gap retains the completed-round baseline during live flight");check(bridge->context().value("biggestAdvancement").toMap()==advancementBefore,"biggest advancement stays frozen until live results are revealed");seen=true;}});
+                    QObject::connect(window,&CompetitionManagerWindow::liveStageChanged,&watcher,[&](int stage){if(stage==2){bridge->refresh();check(!bridge->jumpSummary().contains("positionNumber"),"last jump leaves position blank during flight");check(!bridge->jumpSummary().contains("leaderGap"),"current leader gap is not revealed during flight");check(!bridge->jumpSummary().contains("roundPositionNumber"),"round jump rank is not revealed during flight");check(bridge->context().value("currentGap")==beforeJump,"pre-jump gap retains its pre-jump value during live flight");check(bridge->context().value("biggestAdvancement").toMap()==advancementBefore,"biggest advancement stays frozen until live results are revealed");seen=true;}});
                     bridge->activate(id(bridge,"pushButton_jump"));QTest::qWait(300);bridge->refresh();check(seen&&!bridge->jumpSummary().contains("previousRound")&&bridge->jumpSummary().value("positionNumber").toInt()>0,"final result replaces previous place with current rank");
                     window->findChild<QCheckBox *>("checkBox_liveCompetition")->setChecked(false);GlobalAppSettings::get()->setLiveCompetitionSpeedMulti(speed);previousRankTested=true;
                 }
@@ -530,6 +544,7 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                 QTest::qWait(10);bridge->refresh();checkStartList();
                 check(bridge->jumpSummary().value("roundPositionNumber").toInt()>0,"the main jump card shows that jump's rank within its own round");
             }
+            check(scenario!=1||koPreviewTested,"KO result preview selection was exercised");
             check(scenario!=0||previousRankTested,"previous-round rank transition was exercised in a real second round");
             check(window->getManager()->checkCompetitionEnd(),"competition finishes");
             check(!window->getManager()->getResults()->getResultsReference().isEmpty(),"competition has actual results");
@@ -2042,6 +2057,8 @@ static void interactionRegressions(MainWindow &main) {
 
 #include "ux-roster-input-regressions.h"
 
+#include "simulation-onboarding-regressions.h"
+
 int main(int argc,char **argv) {
     QApplication app(argc,argv);
 #if QT_CONFIG(qml_debug)
@@ -2071,6 +2088,9 @@ int main(int argc,char **argv) {
     MainWindow main; applicationWindow=&main; main.setParentApplication(&app); new QuickUi(&main);
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="1.3.0 beta-3","one release version is shared with the interface");
+    competitionPresentationRegressions();
+    if(app.arguments().contains("--ko-multi-round-only")){runCompetition(main,1);return 0;}
+    if(app.arguments().contains("--onboarding-only")){simulationOnboardingRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-benchmark")) {simulationBenchmark();main.show();for(int i=0;i<3;++i)runCompetition(main,0,true);runCompetition(main,1,true);runCompetition(main,2,true);return 0;}
     if(app.arguments().contains("--single-jumps-benchmark")){singleJumpsBenchmark(main);return 0;}
     if(app.arguments().contains("--single-jumps-only")){normalSamplingRegression();singleSimulationRegression();singleGateRegression(main);singleJumpsBenchmark(main);return 0;}
@@ -2083,7 +2103,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--interaction-only")){interactionRegressions(main);return 0;}
     if(app.arguments().contains("--space-only")){spaceRegressions(main);return 0;}
     if(app.arguments().contains("--ux-only")){uxRegressions(main);runCompetition(main,0);return 0;}
-    if(app.arguments().contains("--audit-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);return 0;}
+    if(app.arguments().contains("--audit-only")){simulationOnboardingRegressions(main);auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);return 0;}
     if(app.arguments().contains("--audit-stats-only")){auditStatisticsRegressions(main);return 0;}
     if(app.arguments().contains("--audit-form-only")){auditFormRegressions();return 0;}
     if(app.arguments().contains("--audit-data-only")){auditDataRegressions();return 0;}
@@ -2108,7 +2128,7 @@ int main(int argc,char **argv) {
         for(int scenario=0;scenario<4;++scenario) runCompetition(main,scenario);
         seasons();qInfo()<<"PASS: full individual, KO and team competitions and season analysis";return 0;
     }
-    if(!app.arguments().contains("--layout-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);rosterInputRegressions(main);interactionRegressions(main);spaceRegressions(main);uxRegressions(main);navigationRegressions(main);homeLaunchRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);calendarDateUiRegressions(main);rosterRegressions(main);geometryRegressions(main);}
+    if(!app.arguments().contains("--layout-only")){simulationOnboardingRegressions(main);auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);rosterInputRegressions(main);interactionRegressions(main);spaceRegressions(main);uxRegressions(main);navigationRegressions(main);homeLaunchRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);calendarDateUiRegressions(main);rosterRegressions(main);geometryRegressions(main);}
     if(!app.arguments().contains("--layout-only")){for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);runCompetition(main,0,true,1);runCompetition(main,0,true,2);runCompetition(main,2,true,3);}
     singleSimulationRegression();
     singleGateRegression(main);
