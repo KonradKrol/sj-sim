@@ -6,7 +6,7 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
-- Stan porównania kodu i dokumentacji: **5af8f1b**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
+- Stan porównania kodu i dokumentacji: **3a3ded9**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
 - Data zestawienia: **24 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **2.0.0-beta**, ustawione na wyraźne polecenie użytkownika po zakończeniu audytu silnika.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
@@ -671,8 +671,8 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
-- Snapshot kodu i dokumentacji: **5af8f1b80c93d27c90a82c6a3fd2fe97851a30ac**.
-- Commitów od bazy: **148**.
+- Snapshot kodu i dokumentacji: **3a3ded99075532cd721d83e5c4140f8886c75f69**.
+- Commitów od bazy: **150**.
 - Plików zmienionych w tym zakresie: **467**.
 - Statystyki obejmują także fonty, skills i dokumentację; nie oznaczają rozmiaru samej logiki gry.
 - Dalsza aktualizacja tego zestawienia jest dodatkiem dokumentacyjnym do wskazanego snapshotu.
@@ -692,9 +692,9 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 Porównanie można odtworzyć poleceniami:
 
 ~~~sh
-git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 5af8f1b80c93d27c90a82c6a3fd2fe97851a30ac
-git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 5af8f1b80c93d27c90a82c6a3fd2fe97851a30ac
-git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..5af8f1b80c93d27c90a82c6a3fd2fe97851a30ac
+git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 3a3ded99075532cd721d83e5c4140f8886c75f69
+git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 3a3ded99075532cd721d83e5c4140f8886c75f69
+git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..3a3ded99075532cd721d83e5c4140f8886c75f69
 ~~~
 
 Zestawienie można odświeżyć przez `python3 scripts/update-release-inventory.py --base main --snapshot HEAD`. Opisy zachowania i wyniki testów należy uzupełniać na podstawie faktycznych zmian oraz weryfikacji.
@@ -853,6 +853,8 @@ Historyczne opisy należy czytać z uwzględnieniem opisanych powyżej rozwiąza
 | `0fc093d` | fix: add the first calendar competition directly from season overview — Make the overview action insert and select an event through the existing undoable calendar backend, then request the editor in Qt Quick. Verify the actual creation and editor state rather than only a tab change. |
 | `a72a6b5` | fix: retranslate roster labels without reading retired athlete storage — AddressSanitizer found a heap-buffer-overflow when language changes rebuilt hidden roster rows after their source database had been replaced. Translation invalidation now notifies label bindings using cached value rows. Add a regression that retires athlete storage before invalidation and then verifies explicit data synchronization. |
 | `5af8f1b` | fix: compare pre-jump gaps at the same completed-round boundary — Apply current-round weights to completed rounds only, excluding rivals' additional jumps in the current round. Keep overall and KO gaps consistent, handle team group counts and reset suppression, and cover third-round unequal weights. Save the engine audit and memory-diagnostic checkpoint for continued work. |
+| `39e66fd` | docs: refresh release inventory at engine audit diagnostic checkpoint |
+| `3a3ded9` | docs: confirm final engine audit and AddressSanitizer verification |
 
 ## Załącznik C. Pełny manifest zmienionych plików
 
@@ -876,13 +878,13 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/COMPETITION_REFINEMENTS_2026-10-21.md](../docs/COMPETITION_REFINEMENTS_2026-10-21.md) | 34 | 0 |
 | A | [docs/COMPETITION_UX_2026-10-24.md](../docs/COMPETITION_UX_2026-10-24.md) | 62 | 0 |
 | A | [docs/DATA_PACKS.md](../docs/DATA_PACKS.md) | 30 | 0 |
-| A | [docs/ENGINE_AUDIT_2026-10-24.md](../docs/ENGINE_AUDIT_2026-10-24.md) | 76 | 0 |
+| A | [docs/ENGINE_AUDIT_2026-10-24.md](../docs/ENGINE_AUDIT_2026-10-24.md) | 85 | 0 |
 | A | [docs/FIVE_DATA_FIXES_2026-10-22.md](../docs/FIVE_DATA_FIXES_2026-10-22.md) | 57 | 0 |
 | A | [docs/NAVIGATION_PERFORMANCE.md](../docs/NAVIGATION_PERFORMANCE.md) | 30 | 0 |
-| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1343 | 0 |
+| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1371 | 0 |
 | A | [docs/RESUME_2026-10-22.md](../docs/RESUME_2026-10-22.md) | 44 | 0 |
 | A | [docs/RESUME_2026-10-24_COMPETITION_UX.md](../docs/RESUME_2026-10-24_COMPETITION_UX.md) | 52 | 0 |
-| A | [docs/RESUME_ENGINE_AUDIT_2026-10-24.md](../docs/RESUME_ENGINE_AUDIT_2026-10-24.md) | 38 | 0 |
+| A | [docs/RESUME_ENGINE_AUDIT_2026-10-24.md](../docs/RESUME_ENGINE_AUDIT_2026-10-24.md) | 33 | 0 |
 | A | [docs/RESUME_WINDOWS_UI_2026-10-23.md](../docs/RESUME_WINDOWS_UI_2026-10-23.md) | 44 | 0 |
 | A | [docs/ROUND_POINT_WEIGHTS.md](../docs/ROUND_POINT_WEIGHTS.md) | 23 | 0 |
 | A | [docs/SEASON_WORKSPACE_2026-10-22.md](../docs/SEASON_WORKSPACE_2026-10-22.md) | 60 | 0 |
