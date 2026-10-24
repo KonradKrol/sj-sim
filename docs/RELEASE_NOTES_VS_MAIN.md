@@ -7,7 +7,7 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
 - Stan porównania kodu i dokumentacji: **0eeef38**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
-- Data zestawienia: **22 października 2026**.
+- Data zestawienia: **24 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **1.3.0 beta-3**. Przygotowanie dokumentu nie zmienia numeru wydania na 2.0.0.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
 - Starsze raporty opisują kolejne etapy prac. W razie rozbieżności stan końcowy opisany tutaj ma pierwszeństwo. Szczególnie istotne korekty są zebrane w sekcji „Rozwiązania zastąpione podczas prac”.
@@ -626,6 +626,19 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 ### 19.8. Przygotowanie środowiska Windows
 
 - Dodano [WINDOWS_SETUP.MD](../WINDOWS_SETUP.MD) w katalogu głównym: komplet zależności, Qt 6.8.3/MSVC 2022 x64 zgodne z konfiguracją CI, instalacja ręczna i przez aqt, środowisko PowerShell, qmake, dane obok pliku wykonywalnego, testy, diagnostyka i pakowanie QML z `--qmldir`. Instrukcja nie zmienia konfiguracji aplikacji; nie wykonywano jej na Windowsie w tej sesji.
+
+## 20. Awans, remisy i ergonomia konkursów — 24.10.2026
+
+- Wspólne wyznaczanie pewnego awansu i pewnego odpadnięcia na podstawie możliwych wyników pozostałych zawodników. Poprawione remisy graniczne, DNS/DSQ, drużyny i KO/lucky loser; dokładny limit kwalifikacji do KO.
+- Niezależne oznaczenia następnej serii i kwalifikacji do najbliższego konkursu: neutralne Q, łagodniejsza zieleń ze znakiem ✓, szare odpadnięcie zachowujące czytelny i dostępny wiersz.
+- Spójne liczenie ex aequo w dziesiątych punktu i według etapu punktacji, także przy resetach punktów. Stabilna kolejność równych wyników.
+- Belka trenera nie zmienia pośrednio belki jury ani bazy serii; poprawna obsługa pierwszego i ostatniego zawodnika oraz kolejnych grup drużynowych.
+- Przeciąganie na liście startowej nie gubi źródła podczas szybkiego przewijania. Kółko i przewijanie przy krawędzi działają z podglądem nazwiska, flagi i wielokrotnego zaznaczenia.
+- Pola liczbowe zachowują wpisywany tekst mimo odświeżania. Plus/minus uwzględnia roboczy wpis; dotyczy też liczby skoków i wspólnych pól planowania.
+- Jednoseryjne kwalifikacje mają właściwy nagłówek. Usunięto wyszukiwanie z bieżącej listy startowej i wyników KO oraz podpowiedź zasłaniającą ekran po kliknięciu lub Spacji.
+- Stabilny model kalendarza zachowuje pozycję przewijania po dodaniu wydarzenia. Gęstsze karty, dzień tygodnia przy dacie, Q zamiast zbędnych etykiet i więcej flag skoczni/zawodników.
+- Wybór skoczni i zasad aktualizuje się po przełączeniu konkursu, także po wyszukiwaniu i w trybie dat. Inspektor wykorzystuje przestrzeń pod nagłówkiem zamiast losowo ściskać pola do zerowej wysokości.
+- Szczegóły, przykłady, zakres regresji i ograniczenia: [COMPETITION_UX_2026-10-24.md](COMPETITION_UX_2026-10-24.md).
 
 ## Załącznik A. Dokładny zakres Git
 
