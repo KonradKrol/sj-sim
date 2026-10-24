@@ -6,7 +6,7 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
-- Stan porównania kodu i dokumentacji: **8ebe631**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
+- Stan porównania kodu i dokumentacji: **c9cd4af**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
 - Data zestawienia: **24 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **2.0.0-beta**, ustawione na wyraźne polecenie użytkownika po zakończeniu audytu silnika.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
@@ -702,18 +702,22 @@ Weryfikacja: pełne regresje i 391 renderów PASS, kompilacja Qt Widgets PASS. [
 
 Opis i scenariusze: [KO_SETUP_AND_PREJUMP_2026-10-24.md](KO_SETUP_AND_PREJUMP_2026-10-24.md).
 
+## Usunięcie rekurencyjnego przeliczania layoutów
+
+Wspólny pusty stan używa teraz prostego `Column` zamiast wycentrowanego `ColumnLayout`, którego zmiana wysokości ponownie uruchamiała przeliczanie tej samej geometrii. Logowanie nie jest wyciszane. Pełny zestaw 399 renderów: **162 → 0** ostrzeżeń; ten sam scenariusz przygotowania sezonu: **2675 → 2324** wejścia do przeliczania layoutów. Dodano regresję blokującą powrót tego ostrzeżenia. Szczegóły i granice pomiaru: [LAYOUT_RECURSION_FIX_2026-10-24.md](LAYOUT_RECURSION_FIX_2026-10-24.md).
+
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
-- Snapshot kodu i dokumentacji: **8ebe631e27d80bc9887eb747747008b9c3960855**.
-- Commitów od bazy: **162**.
-- Plików zmienionych w tym zakresie: **476**.
+- Snapshot kodu i dokumentacji: **c9cd4aff15426f2a688eeebc2d082addf4766a39**.
+- Commitów od bazy: **164**.
+- Plików zmienionych w tym zakresie: **477**.
 - Statystyki obejmują także fonty, skills i dokumentację; nie oznaczają rozmiaru samej logiki gry.
 - Dalsza aktualizacja tego zestawienia jest dodatkiem dokumentacyjnym do wskazanego snapshotu.
 
 | Obszar | Plików |
 | --- | ---: |
-| Dokumentacja etapów i migracji | 35 |
+| Dokumentacja etapów i migracji | 36 |
 | Domyślny interfejs Qt Quick i jego zasoby | 101 |
 | Instrukcje i zasoby narzędzi deweloperskich | 167 |
 | Konfiguracja projektu i pozostałe pliki | 6 |
@@ -726,9 +730,9 @@ Opis i scenariusze: [KO_SETUP_AND_PREJUMP_2026-10-24.md](KO_SETUP_AND_PREJUMP_20
 Porównanie można odtworzyć poleceniami:
 
 ~~~sh
-git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 8ebe631e27d80bc9887eb747747008b9c3960855
-git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 8ebe631e27d80bc9887eb747747008b9c3960855
-git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..8ebe631e27d80bc9887eb747747008b9c3960855
+git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c c9cd4aff15426f2a688eeebc2d082addf4766a39
+git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c c9cd4aff15426f2a688eeebc2d082addf4766a39
+git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..c9cd4aff15426f2a688eeebc2d082addf4766a39
 ~~~
 
 Zestawienie można odświeżyć przez `python3 scripts/update-release-inventory.py --base main --snapshot HEAD`. Opisy zachowania i wyniki testów należy uzupełniać na podstawie faktycznych zmian oraz weryfikacji.
@@ -901,6 +905,8 @@ Historyczne opisy należy czytać z uwzględnieniem opisanych powyżej rozwiąza
 | `c6bc131` | Replace pre-competition KO setup with a direct group workspace — Use one grouping method and a responsive grid of inline athlete choices with flags. Swaps preserve membership and scroll position, avoid dialogs, and work with global templates sharing null UUIDs. Retain Widgets controllers; keep the active tab visible when resizing. Verify real dropdown changes and swaps, repeated draws, odd participant counts, and narrow/light/dark layouts. |
 | `2f1542b` | Show one weighted previous-series comparison with the current leader — Select the actual ranking leader first, then compare both athletes' points from before the ongoing series. Do not include the leader's extra current-series jump. Display a single lead/deficit sentence, omit it in the first series or after resets, and retain the frozen value during live flight. Cover a change of leader, weights, resets and multiround KO. |
 | `8ebe631` | Remove move-to-position controls from team lineup ordering — Keep drag-and-drop slot swaps, explain the gesture discreetly and prevent grip clicks opening the removed form. Preserve ordinary start-list movement controls and verify the team-specific behavior. |
+| `980365a` | Document KO setup redesign and simplified pre-jump comparison |
+| `c9cd4af` | Eliminate recursive layout churn in shared empty states — Replace a centered, self-resizing ColumnLayout with a plain Column and explicit child widths. This breaks the geometry/rearrange reentry without hiding warnings or clamping content. Add a smoke-test message observer that preserves logging and fails on recurring layout warnings. Full suite: 399 renders, recursive warnings 162 to zero; identical onboarding debug scenario: 2675 to 2324 layout entries, warnings 8 to zero. |
 
 ## Załącznik C. Pełny manifest zmienionych plików
 
@@ -926,9 +932,10 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/DATA_PACKS.md](../docs/DATA_PACKS.md) | 30 | 0 |
 | A | [docs/ENGINE_AUDIT_2026-10-24.md](../docs/ENGINE_AUDIT_2026-10-24.md) | 85 | 0 |
 | A | [docs/FIVE_DATA_FIXES_2026-10-22.md](../docs/FIVE_DATA_FIXES_2026-10-22.md) | 57 | 0 |
+| A | [docs/KO_SETUP_AND_PREJUMP_2026-10-24.md](../docs/KO_SETUP_AND_PREJUMP_2026-10-24.md) | 36 | 0 |
 | A | [docs/LATEST_JUMP_FEEDBACK_2026-10-24.md](../docs/LATEST_JUMP_FEEDBACK_2026-10-24.md) | 36 | 0 |
 | A | [docs/NAVIGATION_PERFORMANCE.md](../docs/NAVIGATION_PERFORMANCE.md) | 30 | 0 |
-| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1412 | 0 |
+| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1428 | 0 |
 | A | [docs/RESUME_2026-10-22.md](../docs/RESUME_2026-10-22.md) | 44 | 0 |
 | A | [docs/RESUME_2026-10-24_COMPETITION_UX.md](../docs/RESUME_2026-10-24_COMPETITION_UX.md) | 52 | 0 |
 | A | [docs/RESUME_ENGINE_AUDIT_2026-10-24.md](../docs/RESUME_ENGINE_AUDIT_2026-10-24.md) | 33 | 0 |
@@ -972,7 +979,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/CatalogWorkspace.qml](../source/UI/Quick/CatalogWorkspace.qml) | 57 | 0 |
 | A | [source/UI/Quick/DataPackBar.qml](../source/UI/Quick/DataPackBar.qml) | 55 | 0 |
 | A | [source/UI/Quick/DataTable.qml](../source/UI/Quick/DataTable.qml) | 262 | 0 |
-| A | [source/UI/Quick/EmptyState.qml](../source/UI/Quick/EmptyState.qml) | 25 | 0 |
+| A | [source/UI/Quick/EmptyState.qml](../source/UI/Quick/EmptyState.qml) | 24 | 0 |
 | A | [source/UI/Quick/FormGeneratorWorkspace.qml](../source/UI/Quick/FormGeneratorWorkspace.qml) | 83 | 0 |
 | A | [source/UI/Quick/Home.qml](../source/UI/Quick/Home.qml) | 53 | 0 |
 | A | [source/UI/Quick/HomeCard.qml](../source/UI/Quick/HomeCard.qml) | 51 | 0 |
@@ -1392,7 +1399,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [tests/competition-ties-gate-regressions.h](../tests/competition-ties-gate-regressions.h) | 126 | 0 |
 | A | [tests/engine-audit-regressions.h](../tests/engine-audit-regressions.h) | 70 | 0 |
 | A | [tests/navigation-performance.h](../tests/navigation-performance.h) | 26 | 0 |
-| A | [tests/quick-ui-smoke.cpp](../tests/quick-ui-smoke.cpp) | 2419 | 0 |
+| A | [tests/quick-ui-smoke.cpp](../tests/quick-ui-smoke.cpp) | 2434 | 0 |
 | A | [tests/roster-drag-regressions.h](../tests/roster-drag-regressions.h) | 23 | 0 |
 | A | [tests/roster-translation-regressions.h](../tests/roster-translation-regressions.h) | 13 | 0 |
 | A | [tests/simulation-onboarding-regressions.h](../tests/simulation-onboarding-regressions.h) | 91 | 0 |

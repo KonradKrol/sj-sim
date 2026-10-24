@@ -15,3 +15,11 @@ Remaining from the current UI request:
 Additional queued task (user request):
 - Completed: stable last-jump identity and independent visual marker across manual/bulk jumps, KO and team model rebuilding; confirmed advancement remains green under selection and hover. See LATEST_JUMP_FEEDBACK_2026-10-24.md.
 - Completed: KO grouping crash and manual-edit lifetime fixes; see TEAM_KO_UX_2026-10-24.md.
+
+Pending user request, superseded temporarily by the layout performance priority:
+- Add a discreet earlier-series selector in the jump card.
+- Shift-click an individual/team result's series column to open that particular series jump, retaining the card selector.
+- Explain weighted totals in a compact expandable calculation within the jump card.
+
+Completed priority: shared EmptyState layout recursion removed; full 399-render suite has zero recursive-layout warnings. See LAYOUT_RECURSION_FIX_2026-10-24.md.
+- After the layout performance fix: hide the pre-jump lead/deficit for the first athlete in a series and for a rounded zero-point tie (do not display 'Traci 0,0 pkt').
