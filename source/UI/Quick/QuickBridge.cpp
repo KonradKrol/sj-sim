@@ -291,7 +291,7 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
     if(qobject_cast<TeamEditorWidget *>(widget))return rosterNode(widget);
     if(auto *calendar=qobject_cast<CalendarEditorWidget *>(widget)) {
         auto *backend=m_calendars.value(calendar);
-        if(!backend){backend=new QuickCalendar(calendar,this);m_calendars.insert(calendar,backend);connect(calendar,&QObject::destroyed,this,[this,calendar,backend]{m_calendars.remove(calendar);backend->deleteLater();});}
+        if(!backend){backend=new QuickCalendar(calendar,this);m_calendars.insert(calendar,backend);connect(backend,&QuickCalendar::changed,this,&QuickBridge::deferRefresh);connect(calendar,&QObject::destroyed,this,[this,calendar,backend]{m_calendars.remove(calendar);backend->deleteLater();});}
         backend->sync();data["kind"]="calendar";data["enabled"]=true;data["backend"]=QVariant::fromValue(static_cast<QObject *>(backend));
         data["rulesEditor"]=QVariant::fromValue(node(backend->rulesEditor(),true));
         data["classificationEditor"]=QVariant::fromValue(node(backend->classificationEditor(),true));
@@ -363,7 +363,8 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
     } else if(auto *spin=qobject_cast<QDoubleSpinBox *>(widget)) {
         data["kind"]="number"; data["value"]=spin->value(); data["minimum"]=spin->minimum(); data["maximum"]=spin->maximum(); data["step"]=spin->singleStep(); data["decimals"]=spin->decimals(); data["suffix"]=spin->suffix(); data["prefix"]=spin->prefix(); data["enabled"]=spin->isEnabled()&&!spin->isReadOnly();
     } else if(auto *combo=qobject_cast<QComboBox *>(widget)) {
-        QStringList options; for(int i=0;i<combo->count();++i) options<<combo->itemText(i);
+        QStringList options,images; for(int i=0;i<combo->count();++i) { options<<combo->itemText(i);images<<quickDecoration(QVariant::fromValue(combo->itemIcon(i))); }
+        data["optionImages"]=images;
         data["searchable"]=widget->property("quickSearchableChoice").toBool();
         data["kind"]="choice"; data["options"]=options; data["value"]=combo->currentIndex(); data["editable"]=combo->isEditable(); data["text"]=combo->currentText();
     } else if(auto *slider=qobject_cast<QSlider *>(widget)) {
@@ -482,7 +483,7 @@ void QuickBridge::refresh() {
     }
     if(auto *window=qobject_cast<CompetitionManagerWindow *>(m_window);window && window->getManager()) {
         auto *manager=window->getManager();
-        QVariantMap context{{"complete",manager->checkCompetitionEnd()},{"roundComplete",manager->checkRoundEnd()},{"liveStage",window->getLiveStage()},{"round",manager->getActualRound()},{"roundCount",manager->getCompetitionRules()->getRoundsReference().size()},
+        QVariantMap context{{"complete",manager->checkCompetitionEnd()},{"roundComplete",manager->checkRoundEnd()},{"liveStage",window->getLiveStage()},{"round",manager->getActualRound()},{"roundCount",manager->effectiveRoundsCount()},{"qualifications",manager->getCompetitionInfo()->getSerieType()==CompetitionInfo::Qualifications},
                             {"athlete",qMin(manager->getActualStartListIndex()+1,manager->getStartListStatusesReference().size())},{"athleteCount",manager->getStartListStatusesReference().size()}};
         if(auto *team=dynamic_cast<TeamCompetitionManager *>(manager))context["group"]=team->getActualGroup();
         if(auto *hill=manager->getCompetitionInfo()->getHill())context["hillFlag"]=quickPicture(CountryFlagsManager::getFlagPixmap(hill->getCountryCode().toLower()));

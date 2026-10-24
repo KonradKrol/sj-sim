@@ -10,6 +10,7 @@
 <file>CalendarInspector.qml</file>
 <file>CalendarClassificationScoring.qml</file>
 <file>CalendarEventRow.qml</file>
+<file>CalendarVenueButton.qml</file>
 <file>AppHeader.qml</file>
 <file>AppFooter.qml</file>
 <file>ModalScreen.qml</file>

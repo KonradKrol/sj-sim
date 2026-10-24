@@ -17,10 +17,10 @@ ColumnLayout {
     }
     Repeater {
         model: [
-            {key:"hill",label:qsTr("Skocznia"),options:editorFields.backend.hills},
-            {key:"type",label:qsTr("Wydarzenie"),options:[qsTr("Konkurs"),qsTr("Kwalifikacje")]},
-            {key:"kind",label:qsTr("Rodzaj konkursu"),options:[qsTr("Indywidualny"),qsTr("Drużynowy")]},
-            {key:"rules",label:qsTr("Zasady konkursu"),options:editorFields.backend.rules}
+            {key:"hill",label:qsTr("Skocznia")},
+            {key:"type",label:qsTr("Wydarzenie")},
+            {key:"kind",label:qsTr("Rodzaj konkursu")},
+            {key:"rules",label:qsTr("Zasady konkursu")}
         ]
         ColumnLayout {
             property var field: modelData
@@ -30,11 +30,12 @@ ColumnLayout {
                 objectName: "calendar-field-" + parent.field.key
                 Layout.fillWidth: true
                 searchable: parent.field.key === "hill"
-                model: parent.field.options
+                model: parent.field.key === "hill" ? editorFields.backend.hills : parent.field.key === "rules" ? editorFields.backend.rules : parent.field.key === "type" ? [qsTr("Konkurs"),qsTr("Kwalifikacje")] : [qsTr("Indywidualny"),qsTr("Drużynowy")]
+                optionImages: parent.field.key === "hill" ? editorFields.backend.hillFlags : []
                 currentIndex: editorFields.backend.selection[parent.field.key] === undefined ? -1 : editorFields.backend.selection[parent.field.key]
                 displayText: currentIndex < 0 ? qsTr("Różne wartości") : currentText
                 Accessible.name: parent.field.label
-                onActivated: { if(parent.field.key === "rules" && currentIndex === 0)editorFields.editRules(0);else {var patch={};patch[parent.field.key]=currentIndex;editorFields.backend.update(patch)} }
+                onActivated: function(index) { if(parent.field.key === "rules" && index === 0)editorFields.editRules(0);else {var patch={};patch[parent.field.key]=index;editorFields.backend.update(patch)} }
             }
         }
     }

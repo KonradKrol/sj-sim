@@ -115,11 +115,12 @@ FocusScope {
             SChoice {
                 width: parent.width
                 searchable: !!control.fields.searchable
+                optionImages: control.fields.optionImages || []
                 objectName: "choice-" + (control.fields.name || control.fields.id)
                 model: control.fields.options || []
                 currentIndex: control.fields.value
                 Accessible.name: control.fields.accessibleName || control.fields.label || control.fields.tip || control.fields.name
-                onActivated: ui.edit(control.fields.id,currentIndex)
+                onActivated: function(index) { ui.edit(control.fields.id,index) }
             }
             SField {
                 visible: !!control.fields.editable

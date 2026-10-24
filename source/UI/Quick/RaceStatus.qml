@@ -22,7 +22,7 @@ Pane {
         }
         Label {
             objectName: "raceRoundStatus"
-            text: qsTr("Seria %1 / %2").arg(ui.context.round || 1).arg(ui.context.roundCount || 1)
+            text: (ui.context.qualifications && (ui.context.roundCount || 1)===1 ? qsTr("Kwalifikacje") : qsTr("Seria %1 / %2").arg(ui.context.round || 1).arg(ui.context.roundCount || 1))
                   +(ui.context.group ? qsTr(" · Grupa %1").arg(ui.context.group) : "")
                   +(status.advancement.places ? (status.width<600 ? "\n" : " · ")
                     +(status.width<600 ? qsTr("Awans: %1 ↑%2") : qsTr("Największy awans: %1 ↑%2")).arg(status.advancement.name).arg(status.advancement.places)

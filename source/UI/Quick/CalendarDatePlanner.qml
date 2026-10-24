@@ -41,7 +41,12 @@ Pane {
         Label { visible: planner.backend.datePlan.length>0; text: qsTr("Podgląd · konkursy: %1").arg(planner.backend.datePlan.length); color: Theme.ink; font.pointSize: Theme.body; font.bold: true }
         Repeater {
             model: planner.backend.datePlan
-            Label { required property var modelData; text: modelData.number+". "+modelData.title+" · "+modelData.before+" → "+modelData.after; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+            RowLayout {
+                required property var modelData
+                Layout.fillWidth: true; spacing: 6
+                Image { visible: !!parent.modelData.flag; source: parent.modelData.flag || ""; sourceSize.width: 48; sourceSize.height: 32; Layout.preferredWidth: 24; Layout.preferredHeight: 16; fillMode: Image.PreserveAspectFit; Accessible.ignored: true }
+                Label { text: parent.modelData.number+". "+parent.modelData.title+" · "+parent.modelData.before+" → "+parent.modelData.after; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; Layout.minimumWidth: 0; wrapMode: Text.WordWrap }
+            }
         }
         RowLayout {
             visible: planner.backend.datePlan.length>0; Layout.fillWidth: true
