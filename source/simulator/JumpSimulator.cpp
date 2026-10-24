@@ -191,7 +191,7 @@ void JumpSimulator::generateFlightRating()
 
     simulationData->flightRating -= std::abs(
         Hill::calculateBestFlightHeightLevel(hill)
-        - jumper->getJumperSkills().getLevelOfCharacteristic("flight-height") * 1.6 * multiplier);
+        - jumper->getJumperSkills().getLevelOfCharacteristic("flight-height")) * 1.6 * multiplier;
 
     simulationData->flightRating *= getMultiplierForFlightStyleEffect();
     double random = deterministicPreview?0:JumpSimulator::getRandomForJumpSimulation(JumpSimulator::FlightRating, jumper, jumpsImportance);
