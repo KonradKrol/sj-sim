@@ -639,7 +639,7 @@ void SimulationSaveManagerWindow::fillNextCompetitionInformations()
     if(calendar != nullptr && next != nullptr && next->getHill() != nullptr){
         int competitionIndex = calendar->getCompetitionsReference().indexOf(next);
         QString text = QString::number(competitionIndex + 1) + ". " + next->getHill()->getName() + " HS" + QString::number(next->getHill()->getHSPoint());
-        if(simulationSave->getActualSeason()->getDatesEnabled() && next->getScheduledDate().isValid())text += " · " + QLocale().toString(next->getScheduledDate(),QLocale::ShortFormat);
+        if(simulationSave->getActualSeason()->getDatesEnabled() && next->getScheduledDate().isValid())text += " · " + next->getScheduledDate().toString("dd.MM.yyyy");
         ui->label_nextCompetitionIndexAndHill->setText(text);
         ui->label_hillFlag->setPixmap(CountryFlagsManager::getFlagPixmap(next->getHill()->getCountryCode().toLower()).scaled(ui->label_hillFlag->size()));
         switch(next->getSerieType())

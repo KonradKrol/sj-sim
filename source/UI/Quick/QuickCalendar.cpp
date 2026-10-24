@@ -167,7 +167,7 @@ void QuickCalendar::refresh() {
         auto *pending=event->getPendingAdvancementCompetition();
         m_events.append(QVariantMap{{"pending",pending!=nullptr},{"pendingSource",pending?all.indexOf(pending)+1:0},{"dependents",dependencies.join(", ")},{"id",event->getIDStr()},{"number",i+1},{"title",hill?hill->getName()+" HS"+QString::number(hill->getHSPoint()):tr("Brak skoczni")},
             {"flag",hillFlag(hill)},{"qualification",event->getSerieType()==CompetitionInfo::Qualifications},{"weekday",event->getScheduledDate().isValid()?QLocale().standaloneDayName(event->getScheduledDate().dayOfWeek(),QLocale::ShortFormat):QString()},
-            {"date",event->getScheduledDate().toString(Qt::ISODate)},{"dateText",datesEnabled()?(event->getScheduledDate().isValid()?QLocale().toString(event->getScheduledDate(),QLocale::ShortFormat):tr("Bez daty")):QString()},
+            {"date",event->getScheduledDate().toString(Qt::ISODate)},{"dateText",datesEnabled()?(event->getScheduledDate().isValid()?dateText(event->getScheduledDate().toString(Qt::ISODate)):tr("Bez daty")):QString()},
             {"type",event->getSerieType()==CompetitionInfo::Qualifications?tr("Kwalifikacje"):tr("Konkurs")},{"team",event->getRules().getCompetitionType()==CompetitionRules::Team},
             {"trainings",event->getTrainingsReference().size()},{"trial",event->getTrialRound()!=nullptr},{"locked",locked(event)},{"played",event->getPlayed()},{"cancelled",event->getCancelled()},{"selected",m_selected.contains(event->getIDStr())}});
     }

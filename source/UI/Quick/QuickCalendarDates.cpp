@@ -27,7 +27,8 @@ void QuickCalendar::setDatesEnabled(bool enabled)
 QString QuickCalendar::normalizeDate(const QString &value) const
 {
     const auto text=value.trimmed();
-    QDate date=QDate::fromString(text,Qt::ISODate);
+    QDate date=QDate::fromString(text,"dd.MM.yyyy");
+    if(!date.isValid())date=QDate::fromString(text,Qt::ISODate);
     if(!date.isValid())date=QLocale().toDate(text,QLocale::ShortFormat);
     if(!date.isValid())date=QLocale().toDate(text,QLocale::LongFormat);
     return date.isValid() && date.year()>0 && date.year()<=9999?date.toString(Qt::ISODate):QString();
@@ -35,7 +36,7 @@ QString QuickCalendar::normalizeDate(const QString &value) const
 QString QuickCalendar::dateText(const QString &iso) const
 {
     const auto date=QDate::fromString(iso,Qt::ISODate);
-    return date.isValid()?QLocale().toString(date,QLocale::ShortFormat):QString();
+    return date.isValid()?date.toString("dd.MM.yyyy"):QString();
 }
 QString QuickCalendar::offsetDate(const QString &iso,int days,int months) const
 {

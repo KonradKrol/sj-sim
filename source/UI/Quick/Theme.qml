@@ -4,8 +4,11 @@ import QtQuick 2.15
 QtObject {
     readonly property bool dark: appearance ? appearance.dark : false
     readonly property bool compact: appearance ? appearance.compactUi : false
-    readonly property int controlHeight: compact ? 26 : 42
-    readonly property real scale: appearance ? appearance.textScale : 1
+    readonly property real uiScale: appearance ? appearance.uiScale : 1
+    function dp(value) { return value * uiScale }
+    function fontSize(value) { return value * scale }
+    readonly property real controlHeight: dp(compact ? 26 : 42)
+    readonly property real scale: uiScale * (appearance ? appearance.textScale : 1)
     readonly property int motion: appearance && appearance.reducedMotion ? 0 : 160
     readonly property color background: dark ? "#111d28" : "#f1f0e9"
     readonly property color surface: dark ? "#1a2c3c" : "#ffffff"
@@ -42,7 +45,7 @@ QtObject {
     readonly property FontMetrics bodyMetrics: FontMetrics { font.family: Theme.bodyFamily; font.pointSize: Theme.body }
     readonly property FontMetrics headingMetrics: FontMetrics { font.family: Theme.displayFamily; font.pointSize: Theme.heading }
     readonly property FontMetrics captionMetrics: FontMetrics { font.family: Theme.bodyFamily; font.pointSize: Theme.caption }
-    readonly property real headerHeight: titleMetrics.height + captionMetrics.height + 24
-    readonly property int gap: compact ? 4 : 12
-    readonly property int radius: 10
+    readonly property real headerHeight: titleMetrics.height + captionMetrics.height + dp(24)
+    readonly property real gap: dp(compact ? 4 : 12)
+    readonly property real radius: dp(10)
 }

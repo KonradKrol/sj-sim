@@ -21,13 +21,13 @@ ColumnLayout {
             objectName: "date-input-" + field.name
             Layout.fillWidth: true; Layout.minimumWidth: 0
             text: field.backend.dateText(field.value)
-            placeholderText: field.mixed ? qsTr("Różne daty") : qsTr("Wybierz datę lub wpisz RRRR-MM-DD")
+            placeholderText: field.mixed ? qsTr("Różne daty") : qsTr("Wybierz datę lub wpisz DD.MM.RRRR")
             Accessible.name: field.label
             onEditingFinished: {
                 if(text === field.backend.dateText(field.value)){field.error="";return}
                 var iso=field.backend.normalizeDate(text)
                 if(iso.length){field.error="";field.committed(iso)}
-                else field.error=qsTr("Nieprawidłowa data. Użyj kalendarza lub formatu RRRR-MM-DD.")
+                else field.error=qsTr("Nieprawidłowa data. Użyj kalendarza lub formatu DD.MM.RRRR.")
             }
         }
         SButton { objectName: "date-picker-"+field.name; text: "▦"; Accessible.name: qsTr("Otwórz kalendarz: %1").arg(field.label); onClicked: picker.open() }

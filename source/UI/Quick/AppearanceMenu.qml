@@ -23,9 +23,10 @@ Popup {
         Label { text: qsTr("Wygląd i dostępność"); font.pointSize: Theme.body; font.weight: Font.DemiBold; color: Theme.ink; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         SCheck { text: qsTr("Ciemny motyw"); checked: appearance && appearance.dark; onClicked: appearance.dark = checked; Layout.fillWidth: true }
         SCheck { text: qsTr("Ogranicz animacje"); checked: appearance && appearance.reducedMotion; onClicked: appearance.reducedMotion = checked; Layout.fillWidth: true }
-        SCheck { objectName: "compactUiToggle"; text: qsTr("Kompaktowy interfejs"); checked: appearance && appearance.compactUi; onClicked: appearance.compactUi = checked; Layout.fillWidth: true }
+        Label { text: qsTr("Skala interfejsu"); color: Theme.muted; font.pointSize: Theme.caption }
+        NumberField { objectName: "appearanceUiScale"; direct: false; label: qsTr("Skala interfejsu"); fields: ({name:"appearanceUiScale",value:appearance.uiScale*100,minimum:50,maximum:150,step:5,decimals:0,suffix:"%"}); Layout.fillWidth: true; onCommitted: appearance.uiScale=value/100 }
         Label { text: qsTr("Rozmiar tekstu"); color: Theme.muted; font.pointSize: Theme.caption }
-        SChoice { objectName: "appearanceTextSize"; model: [qsTr("Bardzo mały · 75%"),qsTr("Mniejszy · 85%"),qsTr("Standardowy"),qsTr("Większy · 115%"),qsTr("Duży · 130%")]; currentIndex: !appearance ? 2 : appearance.textScale >= 1.3 ? 4 : appearance.textScale >= 1.15 ? 3 : appearance.textScale >= 1 ? 2 : appearance.textScale >= .85 ? 1 : 0; onActivated: appearance.textScale = [.75,.85,1,1.15,1.3][currentIndex]; Layout.fillWidth: true }
+        NumberField { objectName: "appearanceTextSize"; direct: false; label: qsTr("Rozmiar tekstu"); fields: ({name:"appearanceTextSize",value:appearance.textScale*100,minimum:75,maximum:200,step:5,decimals:0,suffix:"%"}); Layout.fillWidth: true; onCommitted: appearance.textScale=value/100 }
         SButton { objectName: "appearanceDone"; text: qsTr("Gotowe"); onClicked: popup.close(); Layout.fillWidth: true }
         }
     }

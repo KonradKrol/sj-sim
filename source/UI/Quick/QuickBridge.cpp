@@ -109,14 +109,16 @@ void QuickNode::update(const QVariantMap &values,const QVariantList &children) {
 QuickAppearance::QuickAppearance(QObject *parent) : QObject(parent) {
     QSettings settings;
     m_dark=settings.value("quickUi/dark",false).toBool();
-    m_compactUi=settings.value("quickUi/compactUi",false).toBool();
+    m_compactUi=false; // The previous density preset is superseded by the continuous UI scale.
+    m_uiScale=qBound(.5,settings.value("quickUi/uiScale",DefaultUiScale).toDouble(),1.5);
     m_reducedMotion=settings.value("quickUi/reducedMotion",false).toBool();
-    m_textScale=qBound(.75,settings.value("quickUi/textScale",1.).toDouble(),1.5);
+    m_textScale=qBound(.75,settings.value("quickUi/textScale",1.).toDouble(),2.);
 }
 void QuickAppearance::setDark(bool value) { if(value==m_dark) return; m_dark=value; QSettings().setValue("quickUi/dark",value); emit changed(); }
 void QuickAppearance::setCompactUi(bool value) { if(value==m_compactUi)return; m_compactUi=value;QSettings().setValue("quickUi/compactUi",value);emit changed(); }
 void QuickAppearance::setReducedMotion(bool value) { if(value==m_reducedMotion) return; m_reducedMotion=value; QSettings().setValue("quickUi/reducedMotion",value); emit changed(); }
-void QuickAppearance::setTextScale(qreal value) { value=qBound(.75,value,1.5); if(qFuzzyCompare(value,m_textScale)) return; m_textScale=value; QSettings().setValue("quickUi/textScale",value); emit changed(); }
+void QuickAppearance::setUiScale(qreal value) { if(!qIsFinite(value))return;value=qBound(.5,value,1.5);if(qFuzzyCompare(value,m_uiScale))return;m_uiScale=value;QSettings().setValue("quickUi/uiScale",value);emit changed(); }
+void QuickAppearance::setTextScale(qreal value) { value=qBound(.75,value,2.); if(qFuzzyCompare(value,m_textScale)) return; m_textScale=value; QSettings().setValue("quickUi/textScale",value); emit changed(); }
 
 QuickBridge::QuickBridge(QWidget *window,QWidget *content,QuickAppearance *appearance,bool home)
     : QObject(window), m_window(window), m_content(content), m_appearance(appearance), m_root(new QuickNode(this)), m_home(home) {

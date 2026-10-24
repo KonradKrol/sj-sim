@@ -176,7 +176,7 @@ void QuickUi::showAppearance() {
     m_appearancePopup=popup;
     auto *layout=new QVBoxLayout(popup);layout->setContentsMargins(0,0,0,0);
     auto *view=makeView(popup,m_pages.first().bridge,m_appearance,this,"qrc:/ui/AppearancePanel.qml",false);layout->addWidget(view);
-    popup->resize(320,qMin(view->rootObject()?qCeil(view->rootObject()->implicitHeight()):360,qMax(180,m_main->height()-24)));
+    popup->resize(qCeil(320*m_appearance->uiScale()),qMin(view->rootObject()?qCeil(view->rootObject()->implicitHeight()):360,qMax(180,m_main->height()-24)));
     const auto bounds=m_main->frameGeometry();popup->move(bounds.right()-popup->width()-12,qMin(bounds.top()+70,bounds.bottom()-popup->height()-12));popup->show();
 }
 void QuickUi::closeAppearance() { if(m_appearancePopup)m_appearancePopup->close(); }
@@ -251,10 +251,10 @@ void QuickUi::fitTransient(QWidget *dialog) {
     auto *screen=m_main->screen();const auto area=screen?screen->availableGeometry():QGuiApplication::primaryScreen()->availableGeometry();
     const QSize limit(qMax(280,qMin(area.width()-32,m_main->width()-24)),qMax(180,qMin(area.height()-48,m_main->height()-40)));
     if(dialog->layout())dialog->layout()->setSizeConstraint(QLayout::SetNoConstraint);
-    const QSize minimum(qMin(320,limit.width()),qMin(180,limit.height()));
+    const QSize minimum(qMin(qCeil(320*m_appearance->uiScale()),limit.width()),qMin(180,limit.height()));
     if(dialog->minimumSize()!=minimum)dialog->setMinimumSize(minimum);
     if(dialog->maximumSize()!=limit)dialog->setMaximumSize(limit);
-    const QSize desired(qMin(600,limit.width()),qBound(qMin(220,limit.height()),qCeil(bridge->view()->rootObject()->implicitHeight()),limit.height()));
+    const QSize desired(qMin(qCeil(600*m_appearance->uiScale()),limit.width()),qBound(qMin(qCeil(220*m_appearance->uiScale()),limit.height()),qCeil(bridge->view()->rootObject()->implicitHeight()),limit.height()));
     if(dialog->size()!=desired)dialog->resize(desired);
     const auto center=m_main->frameGeometry().center();QPoint position=center-QPoint(desired.width()/2,desired.height()/2);
     position.setX(qBound(area.left(),position.x(),area.right()-desired.width()+1));position.setY(qBound(area.top(),position.y(),area.bottom()-desired.height()+1));if(dialog->pos()!=position)dialog->move(position);
