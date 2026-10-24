@@ -262,7 +262,7 @@ double Hill::calculatePointsForMeter(double KPoint)
         return 2.2;
     else if(KPoint <= 99)
         return 2.0;
-    else if(KPoint <= 169)
+    else if(KPoint < 170)
         return 1.8;
     else if(KPoint >= 170)
         return 1.2;
