@@ -9542,6 +9542,22 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <source>Rozwiń grupę</source>
         <translation>Expand group</translation>
     </message>
+    <message>
+        <source>Awans do konkursu</source>
+        <translation>Qualified for the competition</translation>
+    </message>
+    <message>
+        <source>Awans do konkursu · %1</source>
+        <translation>Qualified for the competition · %1</translation>
+    </message>
+    <message>
+        <source>Awans do następnej serii</source>
+        <translation>Advanced to the next round</translation>
+    </message>
+    <message>
+        <source>Poza awansem do następnej serii</source>
+        <translation>Eliminated from the next round</translation>
+    </message>
 </context>
 
 
@@ -9596,6 +9612,22 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <location filename="../source/UI/Quick/QuickTableModel.cpp" line="78" />
         <source>Ostatni skok</source>
         <translation>Last jump</translation>
+    </message>
+    <message>
+        <source>Awans do następnej serii</source>
+        <translation>Advanced to the next round</translation>
+    </message>
+    <message>
+        <source>Poza awansem do następnej serii</source>
+        <translation>Eliminated from the next round</translation>
+    </message>
+    <message>
+        <source>Q · Awans do konkursu</source>
+        <translation>Q · Qualified for the competition</translation>
+    </message>
+    <message>
+        <source>Poza awansem do konkursu</source>
+        <translation>Eliminated from qualification</translation>
     </message>
 </context>
 
@@ -9664,6 +9696,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <source>Względem poprzedniej serii, po odjęciu zawodników oczekujących na skok.</source>
         <translation>Compared with the previous round, after subtracting competitors still waiting to jump.</translation>
+    </message>
+    <message>
+        <source>Kwalifikacje</source>
+        <translation>Qualifications</translation>
     </message>
 </context>
 
@@ -10149,6 +10185,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <translation>Qualification source for: %1 — fix order</translation>
 </message>
 
+    <message>
+        <source>Kwalifikacje</source>
+        <translation>Qualifications</translation>
+    </message>
 </context>
 
 
@@ -12155,6 +12195,13 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <source>Daty można wyłączyć zawsze. Włączenie jest możliwe tylko przed rozpoczęciem sezonu. Wyłączenie zachowuje zaplanowane terminy.</source>
         <translation>Dates can always be disabled. They can only be enabled before the season starts. Disabling preserves scheduled dates.</translation>
+    </message>
+</context>
+<context>
+    <name>CalendarVenueButton</name>
+    <message>
+        <source>Kwalifikacje</source>
+        <translation>Qualifications</translation>
     </message>
 </context>
 </TS>
