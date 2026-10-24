@@ -42,7 +42,7 @@
 #include <dpp/dpp.h>
 
 extern Uuid globalIDGenerator;
-const QString appVersion = "1.3.0 beta-3";
+const QString appVersion = "2.0.0-beta";
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)

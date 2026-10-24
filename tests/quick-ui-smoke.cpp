@@ -2088,7 +2088,7 @@ int main(int argc,char **argv) {
     QSettings::setDefaultFormat(QSettings::IniFormat);QSettings::setPath(QSettings::IniFormat,QSettings::UserScope,data.path()+"/settings");
     MainWindow main; applicationWindow=&main; main.setParentApplication(&app); new QuickUi(&main);
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
-    check(main.findChild<QuickBridge *>()->version()=="1.3.0 beta-3","one release version is shared with the interface");
+    check(main.findChild<QuickBridge *>()->version()=="2.0.0-beta","one release version is shared with the interface");
     if(app.arguments().contains("--engine-audit-only")){int selected=0;for(const auto &argument:app.arguments())if(argument.startsWith("--engine-case="))selected=argument.mid(14).toInt();engineAuditRegressions(selected);return 0;}
     engineAuditRegressions();
     if(app.arguments().contains("--engine-async-benchmark-only")){engineAsyncRegression();return 0;}

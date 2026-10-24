@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.15
 RowLayout {
     id: badge
     objectName: "releaseBadge"
-    readonly property var parts: ui.version.split(" ")
+    readonly property var parts: ui.version.replace(/^(\d+\.\d+\.\d+)-/, "$1 ").split(" ")
     spacing: 8
     Accessible.role: Accessible.StaticText
     Accessible.name: "Sj.Sim " + ui.version
