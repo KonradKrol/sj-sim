@@ -1,5 +1,6 @@
 #pragma once
 #include <QObject>
+#include <QAbstractItemModel>
 #include <QPointer>
 #include <QVariantList>
 #include <QVariantMap>
@@ -14,6 +15,7 @@ class CompetitionRulesEditorWidget;
 class DatabaseItemsListView;
 class ClassificationEditorWidget;
 class SimulationSave;
+class QuickCalendarEvents;
 class QuickCalendar : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool datesEnabled READ datesEnabled NOTIFY changed)
@@ -25,6 +27,8 @@ class QuickCalendar : public QObject {
     Q_PROPERTY(QString classId READ classId NOTIFY changed)
     Q_PROPERTY(bool classLocked READ classLocked NOTIFY changed)
     Q_PROPERTY(QVariantList events READ events NOTIFY changed)
+    Q_PROPERTY(QAbstractItemModel *eventModel READ eventModel CONSTANT)
+    Q_PROPERTY(QStringList hillFlags READ hillFlags NOTIFY changed)
     Q_PROPERTY(QVariantMap selection READ selection NOTIFY changed)
     Q_PROPERTY(QStringList hills READ hills NOTIFY changed)
     Q_PROPERTY(QStringList rules READ rules NOTIFY changed)
@@ -72,6 +76,8 @@ public:
     Q_INVOKABLE void classAction(const QString &action);
     Q_INVOKABLE void applyClassification();
     QVariantList events() const { return m_events; }
+    QAbstractItemModel *eventModel() const;
+    QStringList hillFlags() const;
     QVariantMap selection() const { return m_selection; }
     QStringList hills() const;
     QStringList rules() const;
@@ -139,6 +145,8 @@ private:
     QStringList m_selected,m_advancementLabels;
     QVector<CompetitionInfo *> m_advancementOptions;
     QVariantList m_events,m_classifications;
+    QuickCalendarEvents *m_eventModel=nullptr;
+    QString hillFlag(Hill *hill) const;
     QVariantList m_datePlan;
     QHash<CompetitionInfo *,QDate> m_plannedDates;
     void applyDates(const QHash<CompetitionInfo *,QDate> &dates);

@@ -20,7 +20,16 @@ Item {
         Qt.callLater(function(){if(view && view.visible){view.currentIndex=position;view.positionViewAtIndex(position,ListView.Contain);var current=view.itemAtIndex(position);if(current)current.forceActiveFocus()}})
         source.select(eventId,modifiers)
     }
-    implicitHeight: Theme.compact ? Math.max(56,rowContent.implicitHeight+8) : (event.pending || event.dependents ? 112 : 88)+(backend.datesEnabled ? 22 : 0)
+    readonly property string details: {
+        var parts=[]
+        if(backend.datesEnabled)parts.push((event.weekday ? event.weekday+", " : "")+event.dateText)
+        if(event.team)parts.push(qsTr("Drużynowy"))
+        if(event.trainings)parts.push(qsTr("Treningi: %1").arg(event.trainings))
+        if(event.trial)parts.push(qsTr("Próbna"))
+        if(event.locked)parts.push(event.played ? qsTr("Rozegrany") : event.cancelled ? qsTr("Odwołany") : qsTr("W trakcie"))
+        return parts.join(" · ")
+    }
+    implicitHeight: Math.max(Theme.compact ? 32 : 48,rowContent.implicitHeight+(Theme.compact ? 6 : 8))
     Accessible.role: Accessible.ListItem
     Accessible.name: event.title + ", " + event.type
     Accessible.selected: !!event.selected
@@ -33,13 +42,13 @@ Item {
     }
     RowLayout {
         id: rowContent
-        anchors.fill: parent; anchors.margins: Theme.compact ? 4 : 10
-        spacing: Theme.compact ? 4 : 10
+        anchors.fill: parent; anchors.margins: Theme.compact ? 3 : 4
+        spacing: Theme.compact ? 4 : 6
         SButton {
             id: grip
             objectName: "calendar-grip-"+row.event.id
             text: "⠿"; quiet: true; enabled: !row.event.locked
-            Layout.preferredWidth: 30; Layout.preferredHeight: Theme.compact ? 28 : 40
+            Layout.preferredWidth: Theme.compact ? 24 : 28; Layout.minimumWidth: 24; Layout.maximumWidth: 28; Layout.preferredHeight: Theme.compact ? 24 : 28
             Accessible.name: qsTr("Przenieś konkurs %1").arg(row.event.number)
             hint: qsTr("Przeciągnij; klawiatura: Ctrl+↑ / Ctrl+↓")
             MouseArea {
@@ -52,16 +61,22 @@ Item {
                 onClicked: row.select(0)
             }
         }
-        SCheck { Layout.preferredWidth: 24; text: ""; checked: !!row.event.selected; Accessible.name: qsTr("Zaznacz %1").arg(row.event.title); onClicked: row.backend.select(row.event.id,Qt.ControlModifier) }
-        ColumnLayout {
-            Layout.fillWidth: true; spacing: Theme.compact ? 1 : 3
-            Label { text: row.event.number + ". " + row.event.title; font.family: Theme.displayFamily; font.pointSize: Theme.section; color: Theme.ink; Layout.fillWidth: true; elide: Text.ElideRight }
-            Label { visible: row.backend.datesEnabled; text: row.event.dateText; color: row.event.date ? Theme.accent : Theme.warning; font.pointSize: Theme.caption; font.bold: true; Layout.fillWidth: true; elide: Text.ElideRight }
-            Label { text: row.event.type + (row.event.team ? " · " + qsTr("Drużynowy") : "") + (row.event.trainings ? " · " + qsTr("Treningi: %1").arg(row.event.trainings) : "") + (row.event.trial ? " · " + qsTr("Próbna") : ""); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; elide: Text.ElideRight }
-            Label { visible: !!row.event.pending || !!row.event.dependents; text: row.event.pending ? qsTr("Kwalifikacja z konkursu %1 — popraw kolejność").arg(row.event.pendingSource) : qsTr("Źródło kwalifikacji dla: %1 — popraw kolejność").arg(row.event.dependents); color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-            Label { visible: !!row.event.locked; text: row.event.played ? qsTr("Rozegrany") : row.event.cancelled ? qsTr("Odwołany") : qsTr("W trakcie"); color: Theme.warning; font.pointSize: Theme.caption }
+        SCheck { Layout.preferredWidth: 24; Layout.minimumWidth: 24; Layout.maximumWidth: 24; text: ""; checked: !!row.event.selected; Accessible.name: qsTr("Zaznacz %1").arg(row.event.title); onClicked: row.backend.select(row.event.id,Qt.ControlModifier) }
+        Image {
+            objectName: "calendar-flag-"+row.event.id
+            visible: !!row.event.flag; source: row.event.flag || ""
+            sourceSize.width: 48; sourceSize.height: 32
+            Layout.preferredWidth: Theme.compact ? 20 : 24; Layout.preferredHeight: Theme.compact ? 14 : 16
+            fillMode: Image.PreserveAspectFit; Accessible.ignored: true
         }
-        SButton { visible: row.compact; text: "›"; quiet: true; Accessible.name: qsTr("Edytuj %1").arg(row.event.title); onClicked: row.activated(row.event.id) }
+        ColumnLayout {
+            Layout.fillWidth: true; Layout.minimumWidth: 0; spacing: 1
+            Label { text: row.event.number + ". " + row.event.title; font.pointSize: Theme.compact ? Theme.caption : Theme.body; font.weight: Font.DemiBold; color: Theme.ink; Layout.fillWidth: true; elide: Text.ElideRight }
+            Label { objectName: "calendar-details-"+row.event.id; visible: text.length>0; text: row.details; color: row.backend.datesEnabled && !row.event.date ? Theme.warning : Theme.muted; font.pointSize: Theme.compact ? Theme.caption-1 : Theme.caption; Layout.fillWidth: true; elide: Text.ElideRight }
+            Label { visible: !!row.event.pending || !!row.event.dependents; text: row.event.pending ? qsTr("Kwalifikacja z konkursu %1 — popraw kolejność").arg(row.event.pendingSource) : qsTr("Źródło kwalifikacji dla: %1 — popraw kolejność").arg(row.event.dependents); color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        }
+        Label { objectName: "calendar-qualification-"+row.event.id; visible: !!row.event.qualification; text: "Q"; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption; Accessible.name: qsTr("Kwalifikacje") }
+        SButton { visible: row.compact; Layout.preferredWidth: 24; Layout.minimumWidth: 24; Layout.maximumWidth: 24; Layout.preferredHeight: 28; text: "›"; quiet: true; Accessible.name: qsTr("Edytuj %1").arg(row.event.title); onClicked: row.activated(row.event.id) }
     }
     DropArea {
         id: dropTarget

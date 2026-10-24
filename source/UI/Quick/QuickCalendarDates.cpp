@@ -119,7 +119,7 @@ void QuickCalendar::planDates(const QString &start,const QString &pattern,int in
         for(auto *training:event->getTrainings())m_plannedDates.insert(training,pattern=="preserve" && training->getScheduledDate().isValid()?training->getScheduledDate().addDays(shift):trainingDate);
         if(event->getTrialRound())m_plannedDates.insert(event->getTrialRound(),pattern=="preserve" && event->getTrialRound()->getScheduledDate().isValid()?event->getTrialRound()->getScheduledDate().addDays(shift):date);
         m_datePlan.append(QVariantMap{{"id",event->getIDStr()},{"number",mains().indexOf(event)+1},
-            {"title",event->getHill()?event->getHill()->getName():QString()},
+            {"title",event->getHill()?event->getHill()->getName():QString()},{"flag",hillFlag(event->getHill())},
             {"before",event->getScheduledDate().isValid()?dateText(event->getScheduledDate().toString(Qt::ISODate)):tr("Bez daty")},
             {"after",dateText(date.toString(Qt::ISODate))},{"date",date.toString(Qt::ISODate)}});
         date=date.addDays(pattern=="weekends"?(date.dayOfWeek()==6?1:6):pattern=="weekly"?7:pattern=="same"?0:interval);

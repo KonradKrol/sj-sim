@@ -20,6 +20,39 @@
 #include <QJsonDocument>
 #include <algorithm>
 #include <QLocale>
+#include <QAbstractListModel>
+#include <QDir>
+#include <QFile>
+#include <QUrl>
+#include "../../global/CountryCodes.h"
+
+class QuickCalendarEvents final : public QAbstractListModel {
+public:
+    explicit QuickCalendarEvents(QObject *parent):QAbstractListModel(parent) {}
+    int rowCount(const QModelIndex &parent={}) const override { return parent.isValid()?0:m_rows.size(); }
+    QVariant data(const QModelIndex &index,int role) const override {
+        return index.isValid() && index.row()>=0 && index.row()<m_rows.size() && role==Qt::UserRole+1 ? m_rows[index.row()] : QVariant();
+    }
+    QHash<int,QByteArray> roleNames() const override { return {{Qt::UserRole+1,"entry"}}; }
+    void sync(const QVariantList &rows) {
+        QSet<QString> retained;
+        for(const auto &row:rows)retained.insert(row.toMap().value("id").toString());
+        for(int i=m_rows.size()-1;i>=0;--i)if(!retained.contains(m_rows[i].toMap().value("id").toString())) {
+            beginRemoveRows({},i,i);m_rows.removeAt(i);endRemoveRows();
+        }
+        for(int i=0;i<rows.size();++i) {
+            const auto id=rows[i].toMap().value("id").toString();int at=i;
+            while(at<m_rows.size() && m_rows[at].toMap().value("id").toString()!=id)++at;
+            if(at==m_rows.size()) { beginInsertRows({},i,i);m_rows.insert(i,rows[i]);endInsertRows(); }
+            else {
+                if(at!=i) { beginMoveRows({},at,at,{},i);m_rows.move(at,i);endMoveRows(); }
+                if(m_rows[i]!=rows[i]) { m_rows[i]=rows[i];emit dataChanged(index(i,0),index(i,0),{Qt::UserRole+1}); }
+            }
+        }
+    }
+private:
+    QVariantList m_rows;
+};
 
 namespace {
 bool mainEvent(CompetitionInfo *event) { return event && event->getSerieType()<=CompetitionInfo::Qualifications; }
@@ -30,6 +63,7 @@ int presetIndex(const CompetitionRules &value,const QVector<CompetitionRules> &r
 }
 }
 QuickCalendar::QuickCalendar(CalendarEditorWidget *editor,QObject *parent):QObject(parent),m_editor(editor) {
+    m_eventModel=new QuickCalendarEvents(this);
     m_save=editor->getSave();
     m_rulesEditor=new CompetitionRulesEditorWidget(editor);m_rulesEditor->setObjectName("quickCalendarRules");
     m_rulesEditor->setProperty("quickExposePage",true);m_rulesEditor->removeSubmitButton();m_rulesEditor->hide();
@@ -66,6 +100,17 @@ bool QuickCalendar::editable() const { const auto items=selected();return !items
 bool QuickCalendar::referencedByHistory(CompetitionInfo *event) const {
     for(auto *other:mains())if(other->getAdvancementCompetition()==event && locked(other))return true;
     return false;
+}
+QAbstractItemModel *QuickCalendar::eventModel() const { return m_eventModel; }
+QString QuickCalendar::hillFlag(Hill *hill) const {
+    if(!hill)return {};
+    const auto path=QDir("flags").absoluteFilePath(CountryCodes::toIso(hill->getCountryCode())+".svg");
+    return QFile::exists(path)?QUrl::fromLocalFile(path).toString():QString();
+}
+QStringList QuickCalendar::hillFlags() const {
+    QStringList result;
+    if(m_editor)for(auto *hill:*m_editor->getModel()->getHillsList())result.append(hillFlag(hill));
+    return result;
 }
 QStringList QuickCalendar::hills() const { QStringList result;if(m_editor)for(auto *hill:*m_editor->getModel()->getHillsList())result.append(hill->getName()+" HS"+QString::number(hill->getHSPoint()));return result; }
 QStringList QuickCalendar::rules() const { QStringList result{tr("Zasady własne")};if(m_editor)for(const auto &rules:*m_editor->getModel()->getRulesList())result.append(rules.getName());return result; }
@@ -108,7 +153,7 @@ void QuickCalendar::sync() {
     if(calendar==m_calendar && !m_dirty && m_language==tr("Konkurs"))return;
     if(m_calendar==calendar && m_dirty && !m_mutating)clearUndo();if(m_calendar!=calendar){m_selected.clear();m_selection.clear();m_message.clear();m_classId.clear();}m_calendar=calendar;m_dirty=false;m_language=tr("Konkurs");
     m_live.clear();if(m_calendar)for(auto *event:m_calendar->getCompetitionsReference())m_live.insert(event);
-    refresh();resetCustomRules();loadClass();
+    refresh();loadClass();
 }
 void QuickCalendar::refresh() {
     discardDatePlan();
@@ -121,11 +166,13 @@ void QuickCalendar::refresh() {
         QStringList dependencies;for(auto *other:all)if(other->getPendingAdvancementCompetition()==event)dependencies.append(QString::number(all.indexOf(other)+1));
         auto *pending=event->getPendingAdvancementCompetition();
         m_events.append(QVariantMap{{"pending",pending!=nullptr},{"pendingSource",pending?all.indexOf(pending)+1:0},{"dependents",dependencies.join(", ")},{"id",event->getIDStr()},{"number",i+1},{"title",hill?hill->getName()+" HS"+QString::number(hill->getHSPoint()):tr("Brak skoczni")},
+            {"flag",hillFlag(hill)},{"qualification",event->getSerieType()==CompetitionInfo::Qualifications},{"weekday",event->getScheduledDate().isValid()?QLocale().standaloneDayName(event->getScheduledDate().dayOfWeek(),QLocale::ShortFormat):QString()},
             {"date",event->getScheduledDate().toString(Qt::ISODate)},{"dateText",datesEnabled()?(event->getScheduledDate().isValid()?QLocale().toString(event->getScheduledDate(),QLocale::ShortFormat):tr("Bez daty")):QString()},
             {"type",event->getSerieType()==CompetitionInfo::Qualifications?tr("Kwalifikacje"):tr("Konkurs")},{"team",event->getRules().getCompetitionType()==CompetitionRules::Team},
             {"trainings",event->getTrainingsReference().size()},{"trial",event->getTrialRound()!=nullptr},{"locked",locked(event)},{"played",event->getPlayed()},{"cancelled",event->getCancelled()},{"selected",m_selected.contains(event->getIDStr())}});
     }
-    m_selection={{"count",chosen.size()},{"locked",!editable()},{"title",chosen.size()==1?m_events.value(all.indexOf(chosen.first())).toMap().value("title"):tr("%1 konkursów").arg(chosen.size())}};
+    m_eventModel->sync(m_events);
+    m_selection={{"id",chosen.size()==1?chosen.first()->getIDStr():QString()},{"flag",chosen.size()==1?hillFlag(chosen.first()->getHill()):QString()},{"count",chosen.size()},{"locked",!editable()},{"title",chosen.size()==1?m_events.value(all.indexOf(chosen.first())).toMap().value("title"):tr("%1 konkursów").arg(chosen.size())}};
     auto common=[&](const QString &key,const std::function<QVariant(CompetitionInfo *)> &read){
         if(chosen.isEmpty())return;QVariant value=read(chosen.first());for(auto *event:chosen)if(read(event)!=value){value=-1;break;}m_selection[key]=value;
     };
@@ -160,6 +207,7 @@ void QuickCalendar::refresh() {
     m_selection["pendingSource"]=chosen.size()==1 && chosen.first()->getPendingAdvancementCompetition()?all.indexOf(chosen.first()->getPendingAdvancementCompetition())+1:0;
     common("advancement",[&](auto *e){return m_advancementOptions.indexOf(e->getAdvancementCompetition()?e->getAdvancementCompetition():e->getPendingAdvancementCompetition());});
     common("advancementClass",[&](auto *e){return m_calendar->getClassificationsReference().indexOf(e->getAdvancementClassification())+1;});
+    resetCustomRules();
     emit changed();
 }
 void QuickCalendar::select(const QString &id,int modifiers) {
@@ -169,10 +217,10 @@ void QuickCalendar::select(const QString &id,int modifiers) {
         m_selected.clear();for(int i=qMin(anchor,row);i<=qMax(anchor,row);++i)m_selected.append(all[i]->getIDStr());
     }else if(modifiers & Qt::ControlModifier){if(m_selected.contains(id))m_selected.removeAll(id);else m_selected.append(id);}else m_selected=QStringList{id};
     if(m_editor->getTableView()->selectionModel())m_editor->getTableView()->selectionModel()->setCurrentIndex(m_editor->getModel()->index(row,0),QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
-    m_message.clear();refresh();resetCustomRules();
+    m_message.clear();refresh();
 }
-void QuickCalendar::clearSelection() {sync();m_selected.clear();refresh();resetCustomRules();}
-void QuickCalendar::selectAll(bool futureOnly) { sync();m_selected.clear();for(auto *event:mains())if(!futureOnly||!locked(event))m_selected.append(event->getIDStr());refresh();resetCustomRules(); }
+void QuickCalendar::clearSelection() {sync();m_selected.clear();refresh();}
+void QuickCalendar::selectAll(bool futureOnly) { sync();m_selected.clear();for(auto *event:mains())if(!futureOnly||!locked(event))m_selected.append(event->getIDStr());refresh(); }
 QuickCalendar::Snapshot QuickCalendar::capture() const {
     Snapshot value;value.owner=m_calendar;if(auto *list=calendarList())value.calendars=*list->getCalendars();for(QWidget *owner=m_editor.data();owner;owner=owner->parentWidget())if(auto *manager=qobject_cast<SimulationSaveManagerWindow *>(owner))value.active=manager->getSimulationSave()->getActualSeason()->getActualCalendar();value.selected=m_selected;value.classId=m_classId;value.boundary=m_editor?m_editor->getModel()->getDontModifyBefore():0;if(!m_calendar)return value;value.order=m_calendar->getCompetitionsReference();value.name=m_calendar->getName();value.classes=m_calendar->getClassificationsReference();for(auto *entry:value.classes)value.classStates.insert(entry,*entry);
     for(auto *e:value.order){State s;s.date=e->getScheduledDate();s.played=e->getPlayed();s.cancelled=e->getCancelled();s.hill=e->getHill();s.rules=e->getRules();s.type=e->getSerieType();s.importance=e->getJumpsImportance();s.trainings=e->getTrainings();s.trial=e->getTrialRound();s.advancement=e->getAdvancementCompetition();s.pending=e->getPendingAdvancementCompetition();s.classification=e->getAdvancementClassification();s.classifications=e->getClassifications();s.scoring=e->getClassificationScoring();value.states.insert(e,s);}return value;
@@ -182,7 +230,7 @@ void QuickCalendar::mutate(const std::function<void()> &operation) {
     auto &history=m_history;history.undo.append(capture());history.redo.clear();m_mutating=true;
     m_editor->getModel()->applyChange([&]{operation();for(auto *event:mains()){for(auto *training:event->getTrainings())if(!training->getScheduledDate().isValid())training->setScheduledDate(event->getScheduledDate());if(event->getTrialRound()&&!event->getTrialRound()->getScheduledDate().isValid())event->getTrialRound()->setScheduledDate(event->getScheduledDate());}m_calendar->normalizeCompetitionEvents();m_calendar->fixAdvancementCompetitions();m_calendar->fixAdvancementClassifications();m_calendar->updateCompetitionsQualifyingCompetitions();});
     const QSet<CompetitionInfo *> before=m_live;m_live.clear();for(auto *event:m_calendar->getCompetitionsReference())m_live.insert(event);for(auto *event:before)if(!m_live.contains(event))m_retired.insert(event);
-    emit m_editor->changed();m_mutating=false;m_dirty=false;refresh();resetCustomRules();collectRetired();
+    emit m_editor->changed();m_mutating=false;m_dirty=false;refresh();collectRetired();
 }
 void QuickCalendar::fail(const QString &message){m_message=message;emit changed();}
 void QuickCalendar::update(const QVariantMap &fields) {
@@ -358,7 +406,7 @@ void QuickCalendar::restore(const Snapshot &state) {
         for(auto it=state.states.cbegin();it!=state.states.cend();++it){auto *e=it.key();const auto &v=it.value();e->setScheduledDate(v.date);e->setHill(v.hill);e->setRules(v.rules);e->setSerieType(v.type);e->setJumpsImportance(v.importance);e->setTrainings(v.trainings);e->setTrialRound(v.trial);e->setClassifications(v.classifications);e->setClassificationScoring(v.scoring);e->setAdvancementCompetition(v.advancement);e->setPendingAdvancementCompetition(v.pending);e->setAdvancementClassification(v.classification);}
         m_calendar->setName(state.name);m_calendar->setClassifications(state.classes);for(auto it=state.classStates.cbegin();it!=state.classStates.cend();++it)*it.key()=it.value();m_classId=state.classId;
         m_calendar->setCompetitions(state.order);m_calendar->normalizeCompetitionEvents();m_calendar->fixAdvancementCompetitions();m_calendar->updateCompetitionsQualifyingCompetitions();});
-    m_selected=state.selected;m_live.clear();if(m_calendar)for(auto *e:m_calendar->getCompetitionsReference())m_live.insert(e);emit m_editor->changed();m_mutating=false;m_dirty=false;refresh();resetCustomRules();loadClass();collectRetired();
+    m_selected=state.selected;m_live.clear();if(m_calendar)for(auto *e:m_calendar->getCompetitionsReference())m_live.insert(e);emit m_editor->changed();m_mutating=false;m_dirty=false;refresh();loadClass();collectRetired();
 }
 void QuickCalendar::undo() {
     sync();if(!canUndo()||!m_editor)return;auto &history=m_history;
@@ -432,7 +480,7 @@ void QuickCalendar::preset(bool save) {
     if(!save && before.order!=m_calendar->getCompetitionsReference()) {
         m_history.undo.append(before);m_history.redo.clear();for(auto *event:before.order)m_retired.insert(event);for(auto *entry:before.classes)m_retiredClasses.insert(entry);m_selected.clear();m_selection.clear();m_classId.clear();
     }
-    m_dirty=false;m_live.clear();for(auto *event:m_calendar->getCompetitionsReference())m_live.insert(event);m_mutating=false;refresh();resetCustomRules();loadClass();
+    m_dirty=false;m_live.clear();for(auto *event:m_calendar->getCompetitionsReference())m_live.insert(event);m_mutating=false;refresh();loadClass();
 }
 
 Classification *QuickCalendar::selectedClass() const {
