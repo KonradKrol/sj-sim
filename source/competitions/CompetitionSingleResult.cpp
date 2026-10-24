@@ -367,6 +367,14 @@ int CompetitionSingleResult::getRankingRound() const {
     return competition && competition->getRulesPointer()->hasRoundPointAdjustments()?getScoringRound():0;
 }
 
+qint64 CompetitionSingleResult::getRankingPoints() const {
+    return qRound64(pointsSum * 10.);
+}
+
+bool CompetitionSingleResult::hasSameRankAs(const CompetitionSingleResult &other) const {
+    return getRankingRound() == other.getRankingRound() && getRankingPoints() == other.getRankingPoints();
+}
+
 double CompetitionSingleResult::pointsForJumps(int jumpCount,int round) const {
     jumpCount=qBound(0,jumpCount,int(jumps.size()));
     const auto *rules=competition?competition->getRulesPointer():nullptr;

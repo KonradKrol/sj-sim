@@ -86,102 +86,46 @@ QJsonObject CompetitionResults::getJsonObject(CompetitionResults &results)
     return object;
 }
 
-QVector<int> CompetitionResults::getJumpersPositions(const QVector<Jumper *> * jumpers) const
+QVector<int> CompetitionResults::getJumpersPositions(const QVector<Jumper *> *jumpers) const
 {
     QVector<int> positions;
-
-    double previousResultPoints = 0;
-    int actualPosition = 1;
-    int add = 1;
-    int i=0;
-    for(auto & result : results){
-        if(jumpers->contains(result.getJumper())){
-            int pos = 0;
-            if(i==0){
-                positions.push_back(1);
-                previousResultPoints = result.getPointsSum();
-                i++;
-                continue;
-            }
-
-            if(previousResultPoints == result.getPointsSum())
-            {
-                pos = actualPosition;
-                add += 1;
-            }
-            else{
-                actualPosition += add;
-                add = 1;
-                pos = actualPosition;
-            }
-
-            previousResultPoints = result.getPointsSum();
-            i++;
-            positions.push_back(pos);
-        }
+    if(!jumpers)return positions;
+    const CompetitionSingleResult *previous = nullptr;
+    int place = 0;
+    for(const auto &result : results) {
+        if(!jumpers->contains(result.getJumper()))continue;
+        if(!previous || !result.hasSameRankAs(*previous))place = positions.size() + 1;
+        positions.append(place);
+        previous = &result;
     }
-
     return positions;
 }
 
-QHash<Jumper *, int> CompetitionResults::getHashWithJumpersPositions(const QVector<Jumper *> * jumpers, int round) const
+QHash<Jumper *, int> CompetitionResults::getHashWithJumpersPositions(const QVector<Jumper *> *jumpers, int round) const
 {
-    QHash<Jumper *, int> hash;
-    CompetitionResults results = *this;
-    results.getResultsReference().detach();
-    for(auto & res : results.getResultsReference())
-    {
-        if(round > (-1))
-        {
-            if(res.getJumpsReference().count() > round)
-                res.getJumpsReference().remove(round, res.getJumpsReference().count() - round);
-            const int perRound=res.getType()==CompetitionSingleResult::TeamResult && res.getCompetition()?qMax(1,res.getCompetition()->getRulesPointer()->getJumpersInTeamCount()):1;
-            res.updatePointsSum((round+perRound-1)/perRound);
-            res.updateTeamJumpersResults();
-        }
+    QHash<Jumper *, int> positions;
+    if(!jumpers)return positions;
+    CompetitionResults snapshot = *this;
+    for(auto &result : snapshot.getResultsReference()) {
+        if(round < 0)continue;
+        auto &jumps = result.getJumpsReference();
+        if(jumps.size() > round)jumps.resize(round);
+        const int perRound = result.getType() == CompetitionSingleResult::TeamResult && result.getCompetition()
+            ? qMax(1,result.getCompetition()->getRulesPointer()->getJumpersInTeamCount()) : 1;
+        result.updatePointsSum((round + perRound - 1) / perRound);
+        result.updateTeamJumpersResults();
     }
-    results.sortInDescendingOrder();
-    /*
-    * Skok 1
-    * Skok 2
-    * Skok 3
-    * Skok 4
-
-    * Runda 2 czyli usuwamy index 2 i 3
-    */
-
-    double previousResultPoints = 0;
-    int actualPosition = 1;
-    int add = 1;
-    int i=0;
-    for(auto & result : results.getResultsReference()){
-        if(jumpers->contains(result.getJumper())){
-            int pos = 0;
-            if(i==0){
-                hash.insert(result.getJumper(), 1);
-                previousResultPoints = result.getPointsSum();
-                i++;
-                continue;
-            }
-
-            if(previousResultPoints == result.getPointsSum())
-            {
-                pos = actualPosition;
-                add += 1;
-            }
-            else{
-                actualPosition += add;
-                add = 1;
-                pos = actualPosition;
-            }
-
-            previousResultPoints = result.getPointsSum();
-            i++;
-            hash.insert(result.getJumper(), pos);
-        }
+    snapshot.sortInDescendingOrder();
+    const CompetitionSingleResult *previous = nullptr;
+    int count = 0, place = 0;
+    for(const auto &result : qAsConst(snapshot.getResultsReference())) {
+        if(!jumpers->contains(result.getJumper()))continue;
+        if(!previous || !result.hasSameRankAs(*previous))place = count + 1;
+        positions.insert(result.getJumper(),place);
+        previous = &result;
+        ++count;
     }
-
-    return hash;
+    return positions;
 }
 
 void CompetitionResults::sortJumpersByResults(QVector<Jumper *> &jumpers)
@@ -490,38 +434,12 @@ int CompetitionResults::getIndexOfJumperResult(Jumper *jumper)
 
 void CompetitionResults::updatePositions()
 {
-    double previousResultPoints = 0;
-    int actualPosition = 1;
-    int add = 1;
-    int i=0;
-    int previousRankingRound = 0;
-    for(auto & result : results){
-        if(i==0){
-            result.setPosition(1);
-            previousResultPoints = result.getPointsSum();
-            previousRankingRound = result.getRankingRound();
-            i++;
-            continue;
-        }
-
-        if(previousResultPoints == result.getPointsSum() && previousRankingRound == result.getRankingRound())
-        {
-            result.setPosition(actualPosition);
-            add += 1;
-        }
-        else{
-            actualPosition += add;
-            add = 1;
-            result.setPosition(actualPosition);
-        }
-
-        previousResultPoints = result.getPointsSum();
-        previousRankingRound = result.getRankingRound();
-        i++;
+    int place = 0;
+    for(int index = 0; index < results.size(); ++index) {
+        auto &result = results[index];
+        if(index == 0 || !result.hasSameRankAs(results[index-1]))place = index + 1;
+        result.setPosition(place);
     }
-    // for(auto & result : results){
-    //   qDebug()<<result.getJumper()->getNameAndSurname()<<": "<<result.getPosition();
-    //}
 }
 
 void CompetitionResults::sortInDescendingOrder()

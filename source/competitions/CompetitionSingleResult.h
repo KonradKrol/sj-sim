@@ -20,8 +20,6 @@ class CompetitionSingleResult : public Identifiable
 public:
     CompetitionSingleResult(CompetitionInfo * competition = nullptr, Jumper * jumper = nullptr, int type = 0);
     CompetitionSingleResult(CompetitionInfo *competition, Team * team, int type = 0);
-    inline bool operator<(const CompetitionSingleResult & second) {return getRankingRound()==second.getRankingRound()?pointsSum < second.getPointsSum():getRankingRound()<second.getRankingRound();}
-    //inline bool operator>(const CompetitionSingleResult & second) {return pointsSum > second.getPointsSum();}
     enum Type{
         IndividualResult,
         TeamResult
@@ -65,6 +63,8 @@ public:
     void updatePointsSum(int round = -1);
     int getScoringRound() const;
     int getRankingRound() const;
+    qint64 getRankingPoints() const;
+    bool hasSameRankAs(const CompetitionSingleResult &other) const;
     double pointsForJumps(int jumpCount, int round = 0) const;
     void updateTeamJumpersResults();
     CompetitionSingleResult * getTeamJumperResult(Jumper * jumper);
@@ -92,21 +92,21 @@ public:
 inline bool operator>(const CompetitionSingleResult & l, const CompetitionSingleResult & r)
 {
     if(l.getRankingRound()!=r.getRankingRound())return l.getRankingRound()>r.getRankingRound();
-    if(l.getPointsSum() == r.getPointsSum())
+    if(l.getRankingPoints() == r.getRankingPoints())
     {
         return l.getID().str() > r.getID().str();
     }
-    else return l.getPointsSum() > r.getPointsSum();
+    else return l.getRankingPoints() > r.getRankingPoints();
 }
 
 inline bool operator<(const CompetitionSingleResult & l, const CompetitionSingleResult & r)
 {
     if(l.getRankingRound()!=r.getRankingRound())return l.getRankingRound()<r.getRankingRound();
-    if(l.getPointsSum() == r.getPointsSum())
+    if(l.getRankingPoints() == r.getRankingPoints())
     {
         return l.getID() < r.getID();
     }
-    else return l.getPointsSum() < r.getPointsSum();
+    else return l.getRankingPoints() < r.getRankingPoints();
 }
 
 
