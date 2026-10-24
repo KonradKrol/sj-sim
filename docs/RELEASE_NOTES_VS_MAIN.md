@@ -6,7 +6,7 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
-- Stan porównania kodu i dokumentacji: **0eeef38**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
+- Stan porównania kodu i dokumentacji: **2df4f37**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
 - Data zestawienia: **24 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **1.3.0 beta-3**. Przygotowanie dokumentu nie zmienia numeru wydania na 2.0.0.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
@@ -643,30 +643,30 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
-- Snapshot kodu i dokumentacji: **0eeef38b1810d04555b40d27a24248502d2343d9**.
-- Commitów od bazy: **92**.
-- Plików zmienionych w tym zakresie: **378**.
+- Snapshot kodu i dokumentacji: **2df4f376796291d61ff82f84f344f4866969a2fb**.
+- Commitów od bazy: **122**.
+- Plików zmienionych w tym zakresie: **454**.
 - Statystyki obejmują także fonty, skills i dokumentację; nie oznaczają rozmiaru samej logiki gry.
 - Dalsza aktualizacja tego zestawienia jest dodatkiem dokumentacyjnym do wskazanego snapshotu.
 
 | Obszar | Plików |
 | --- | ---: |
-| Dokumentacja etapów i migracji | 19 |
-| Domyślny interfejs Qt Quick i jego zasoby | 89 |
+| Dokumentacja etapów i migracji | 29 |
+| Domyślny interfejs Qt Quick i jego zasoby | 98 |
 | Instrukcje i zasoby narzędzi deweloperskich | 167 |
 | Konfiguracja projektu i pozostałe pliki | 6 |
-| Kontrolery, modele i logika C++ | 71 |
+| Kontrolery, modele i logika C++ | 118 |
 | Skrypty budowania, uruchamiania i testowania | 6 |
-| Testy | 2 |
+| Testy | 12 |
 | Tłumaczenia | 1 |
 | Wcześniejszy opcjonalny eksperyment konkursowy | 17 |
 
 Porównanie można odtworzyć poleceniami:
 
 ~~~sh
-git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 0eeef38b1810d04555b40d27a24248502d2343d9
-git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 0eeef38b1810d04555b40d27a24248502d2343d9
-git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..0eeef38b1810d04555b40d27a24248502d2343d9
+git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 2df4f376796291d61ff82f84f344f4866969a2fb
+git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 2df4f376796291d61ff82f84f344f4866969a2fb
+git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..2df4f376796291d61ff82f84f344f4866969a2fb
 ~~~
 
 Zestawienie można odświeżyć przez `python3 scripts/update-release-inventory.py --base main --snapshot HEAD`. Opisy zachowania i wyniki testów należy uzupełniać na podstawie faktycznych zmian oraz weryfikacji.
@@ -769,6 +769,36 @@ Historyczne opisy należy czytać z uwzględnieniem opisanych powyżej rozwiąza
 | `e3c62cb` | docs: record author, compact UI and standalone jump changes — Document every completed follow-up, final small-screen portrait layout, full-height results, direct simulation controls, default sorting and single-jump gate calculation. Record three optimizations with phase timings and limitations, 367-render integration validation, final author regression and Widgets build. Update the continuation checkpoint and manual release checklist. |
 | `d95db6a` | docs: refresh complete release inventory through e3c62cb — Regenerate all 90 commits and 377 changed files against untouched main beta-2, including the author and standalone-jump follow-ups. This manifest-only commit is outside its explicitly recorded snapshot. |
 | `0eeef38` | docs: add complete Windows development setup for contributors and Codex — Document the CI-aligned Qt 6.8.3/MSVC 2022 x64 toolchain, all required Qt modules, optional aqt installation, developer PowerShell, qmake builds, isolated runtime data, smoke tests, Widgets fallback, troubleshooting and QML-aware deployment. Verify links, build targets and tool syntax against repository configuration and primary documentation; explicitly state Windows execution was not performed here. |
+| `d844f0c` | docs: include Windows setup in the release change inventory |
+| `d55ed9d` | Fix Qt 6 Windows build and Quick UI shutdown |
+| `db2b4ee` | Fix native Windows Quick page initialization and control style |
+| `5af7916` | Record Windows UI issues for the next session |
+| `028cdf2` | Fix Windows page presentation and adopt FIS country codes |
+| `2e254a4` | Add per-round score resets and advanced carryover weights |
+| `0dec098` | Add named data packs and jumper birth information |
+| `74ea6b4` | Add per-event classification scoring, age and country filters |
+| `aa0ce7d` | Add optional season dates, scheduling tools and calendar overview |
+| `ece9852` | Fix stale validation after restoring a valid calendar date |
+| `df6e5d1` | Keep date picker days accessible in short windows |
+| `2101965` | Exclude hidden classification rows from qualification |
+| `58f2517` | Preserve pack catalogs when legacy database files are missing |
+| `5c99454` | Cache visible classification rows per table refresh |
+| `b3db958` | Reuse QML engine caches to speed up screen navigation |
+| `7efe6f0` | Make compact interface substantially denser — Reduce compact control heights, panel padding, gaps, table rows and application chrome. Keep body text at the user's selected size, adapt rows to font metrics and use smaller headings and home cards. Verify density reduction and capture desktop and narrow layouts with enlarged text. |
+| `123c67c` | Avoid duplicate controls when projecting form layouts — Handle full-width form rows once instead of reading the same item through both FieldRole and SpanningRole. Hide the redundant shortcut button row in classification editors while retaining keyboard actions and explicit controls for both points tables. Add a regression reproducer and scan classification filters, rules, database catalogs and competition pages. |
+| `33605a6` | Rebind jump previews after automatic simulation and round changes — Prevent Super Team previews from reading jump buffers destroyed by team member result rebuilding. Hide the preview during mutations and resolve the displayed athlete from current results afterwards, including round transitions and cancellation. Reproduce manual jumps followed by auto-round simulation and cover all automatic modes across the three-round Super Team preset. |
+| `257a2dd` | ui: remove search from live start lists and KO group results — Allow table consumers to disable both search controls and the Find shortcut, and clear stale filters when search is disabled. Keep search available in regular result and editor tables. |
+| `e580393` | fix: show button hints only on intentional hover or help — Stop opening tooltips merely because a button retains keyboard focus. Suppress hints throughout repeated presses until the pointer leaves, and expose explicit F1 help plus accessible descriptions. |
+| `d9bab6f` | fix: use consistent tenths-based ranking for competition ties — Centralize competition score equality at the displayed tenth of a point, preserve scoring-round tiers, and use the same rule in sorting, global ranks, KO subgroup ranks and historical snapshots. Replace duplicate inconsistent comparison/ranking paths so cumulative binary floating-point noise cannot split ex aequo. |
+| `c68f92b` | fix: isolate coach gate changes from jury and round baselines — Block native signals when displaying a coach-only gate, preserve the jury reference across repeated adjustments and cancellation, and clear the override on manual jury changes. Update the round baseline only before any athlete has attempted a jump. Add regressions exercising the actual coach dialog, limits, cancellation, repeated changes, and first/last starters. |
+| `19d5a97` | fix: preserve numeric drafts across competition dialog refreshes — Keep an explicit local numeric draft so periodic backend metadata updates cannot overwrite typing. Commit a dirty draft before +/- steps. Add a regression typing slowly across refreshes and checking both step buttons, plus intentional tooltip help behavior. |
+| `8023b76` | fix: calculate guaranteed advancement and independent contest qualification — Share rank bounds across individual, team and KO competitions; preserve boundary ties, skip ineligible qualifiers and keep KO quotas exact. Expose neutral qualification Q, muted elimination and softer next-round markers without sorting during model reads. Add exhaustive future-outcome, KO and team regressions. |
+| `fa6ea6e` | fix: keep roster dragging active while scrolling long start lists — Own the pointer gesture outside recycled delegates, accelerate edge scrolling and support the wheel without losing the athlete preview. Keep selection counts and country flags visible; cover long drags, virtualization and undo. |
+| `5285fd8` | fix: preserve calendar scroll and compact event rows with weekday context — Synchronize a stable item model through incremental inserts, moves and updates instead of resetting delegates. Refresh selected-event rules before notifications, retain undo behavior and add model-contract, hill/rules switching and dated qualification tests. |
+| `cce62ba` | fix: rebind competition selectors and show hill flags throughout calendar tools — Keep searchable choice selection bound to its backend after activation, stabilize calendar field delegates and refresh rule projections when selection changes. Carry country icons through native choices and date views; derive the race header from effective rounds so one-round qualifications read correctly. |
+| `2d2cb43` | i18n: translate qualification markers and advancement explanations |
+| `8359eba` | fix: fill available calendar inspector height after event and tab changes — Anchor the field viewport below a separately sized header to prevent Qt layout negotiation from collapsing it to zero height. Verify five window sizes with and without dates, switching events and tabs; integrate competition, roster, numeric-input and calendar regressions into the smoke suite. |
+| `2df4f37` | docs: record competition advancement and calendar UX fixes with validation |
 
 ## Załącznik C. Pełny manifest zmienionych plików
 
@@ -784,19 +814,29 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/AUTHOR_AND_SINGLE_JUMPS_2026-10-22.md](../docs/AUTHOR_AND_SINGLE_JUMPS_2026-10-22.md) | 66 | 0 |
 | A | [docs/BUGFIX_AUDIT_2026-10-21.md](../docs/BUGFIX_AUDIT_2026-10-21.md) | 140 | 0 |
 | A | [docs/CALENDAR_COPY_FIXES_2026-10-22.md](../docs/CALENDAR_COPY_FIXES_2026-10-22.md) | 27 | 0 |
+| A | [docs/CALENDAR_DATES.md](../docs/CALENDAR_DATES.md) | 40 | 0 |
+| A | [docs/CLASSIFICATION_SCORING.md](../docs/CLASSIFICATION_SCORING.md) | 50 | 0 |
 | A | [docs/COMPETITION_ADVANCEMENT_2026-10-22.md](../docs/COMPETITION_ADVANCEMENT_2026-10-22.md) | 30 | 0 |
 | A | [docs/COMPETITION_AND_HILL_SEARCH_2026-10-22.md](../docs/COMPETITION_AND_HILL_SEARCH_2026-10-22.md) | 12 | 0 |
 | A | [docs/COMPETITION_FINISH_CRASH_2026-10-22.md](../docs/COMPETITION_FINISH_CRASH_2026-10-22.md) | 20 | 0 |
 | A | [docs/COMPETITION_REFINEMENTS_2026-10-21.md](../docs/COMPETITION_REFINEMENTS_2026-10-21.md) | 34 | 0 |
+| A | [docs/COMPETITION_UX_2026-10-24.md](../docs/COMPETITION_UX_2026-10-24.md) | 62 | 0 |
+| A | [docs/DATA_PACKS.md](../docs/DATA_PACKS.md) | 30 | 0 |
 | A | [docs/FIVE_DATA_FIXES_2026-10-22.md](../docs/FIVE_DATA_FIXES_2026-10-22.md) | 57 | 0 |
-| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1182 | 0 |
-| A | [docs/RESUME_2026-10-22.md](../docs/RESUME_2026-10-22.md) | 42 | 0 |
+| A | [docs/NAVIGATION_PERFORMANCE.md](../docs/NAVIGATION_PERFORMANCE.md) | 30 | 0 |
+| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1198 | 0 |
+| A | [docs/RESUME_2026-10-22.md](../docs/RESUME_2026-10-22.md) | 44 | 0 |
+| A | [docs/RESUME_2026-10-24_COMPETITION_UX.md](../docs/RESUME_2026-10-24_COMPETITION_UX.md) | 45 | 0 |
+| A | [docs/RESUME_WINDOWS_UI_2026-10-23.md](../docs/RESUME_WINDOWS_UI_2026-10-23.md) | 44 | 0 |
+| A | [docs/ROUND_POINT_WEIGHTS.md](../docs/ROUND_POINT_WEIGHTS.md) | 23 | 0 |
 | A | [docs/SEASON_WORKSPACE_2026-10-22.md](../docs/SEASON_WORKSPACE_2026-10-22.md) | 60 | 0 |
 | A | [docs/SIMULATION_PERFORMANCE_2026-10-22.md](../docs/SIMULATION_PERFORMANCE_2026-10-22.md) | 57 | 0 |
 | A | [docs/SPACE_AND_LAST_JUMP_2026-10-21.md](../docs/SPACE_AND_LAST_JUMP_2026-10-21.md) | 43 | 0 |
+| A | [docs/SUPER_TEAM_AUTO_SIMULATION_CRASH.md](../docs/SUPER_TEAM_AUTO_SIMULATION_CRASH.md) | 17 | 0 |
 | A | [docs/THREE_SMALL_FIXES_2026-10-22.md](../docs/THREE_SMALL_FIXES_2026-10-22.md) | 37 | 0 |
 | A | [docs/UX_IMPROVEMENTS_2026-10-21.md](../docs/UX_IMPROVEMENTS_2026-10-21.md) | 77 | 0 |
 | A | [docs/UX_REWORK_CHECKPOINT_2026-10-21.md](../docs/UX_REWORK_CHECKPOINT_2026-10-21.md) | 28 | 0 |
+| A | [docs/WINDOWS_UI_AND_FIS_2026-10-23.md](../docs/WINDOWS_UI_AND_FIS_2026-10-23.md) | 33 | 0 |
 
 ### Domyślny interfejs Qt Quick i jego zasoby
 
@@ -811,13 +851,19 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/AuthorPage.qml](../source/UI/Quick/AuthorPage.qml) | 96 | 0 |
 | A | [source/UI/Quick/AuthorProject.qml](../source/UI/Quick/AuthorProject.qml) | 36 | 0 |
 | A | [source/UI/Quick/AuthorSocial.qml](../source/UI/Quick/AuthorSocial.qml) | 25 | 0 |
+| A | [source/UI/Quick/CalendarClassificationScoring.qml](../source/UI/Quick/CalendarClassificationScoring.qml) | 86 | 0 |
 | A | [source/UI/Quick/CalendarClassifications.qml](../source/UI/Quick/CalendarClassifications.qml) | 59 | 0 |
-| A | [source/UI/Quick/CalendarEventRow.qml](../source/UI/Quick/CalendarEventRow.qml) | 92 | 0 |
-| A | [source/UI/Quick/CalendarFields.qml](../source/UI/Quick/CalendarFields.qml) | 54 | 0 |
-| A | [source/UI/Quick/CalendarInspector.qml](../source/UI/Quick/CalendarInspector.qml) | 60 | 0 |
-| A | [source/UI/Quick/CalendarWorkspace.qml](../source/UI/Quick/CalendarWorkspace.qml) | 147 | 0 |
-| A | [source/UI/Quick/CatalogWorkspace.qml](../source/UI/Quick/CatalogWorkspace.qml) | 52 | 0 |
-| A | [source/UI/Quick/DataTable.qml](../source/UI/Quick/DataTable.qml) | 243 | 0 |
+| A | [source/UI/Quick/CalendarDateField.qml](../source/UI/Quick/CalendarDateField.qml) | 93 | 0 |
+| A | [source/UI/Quick/CalendarDateOverview.qml](../source/UI/Quick/CalendarDateOverview.qml) | 105 | 0 |
+| A | [source/UI/Quick/CalendarDatePlanner.qml](../source/UI/Quick/CalendarDatePlanner.qml) | 72 | 0 |
+| A | [source/UI/Quick/CalendarEventRow.qml](../source/UI/Quick/CalendarEventRow.qml) | 109 | 0 |
+| A | [source/UI/Quick/CalendarFields.qml](../source/UI/Quick/CalendarFields.qml) | 63 | 0 |
+| A | [source/UI/Quick/CalendarInspector.qml](../source/UI/Quick/CalendarInspector.qml) | 75 | 0 |
+| A | [source/UI/Quick/CalendarVenueButton.qml](../source/UI/Quick/CalendarVenueButton.qml) | 19 | 0 |
+| A | [source/UI/Quick/CalendarWorkspace.qml](../source/UI/Quick/CalendarWorkspace.qml) | 162 | 0 |
+| A | [source/UI/Quick/CatalogWorkspace.qml](../source/UI/Quick/CatalogWorkspace.qml) | 57 | 0 |
+| A | [source/UI/Quick/DataPackBar.qml](../source/UI/Quick/DataPackBar.qml) | 55 | 0 |
+| A | [source/UI/Quick/DataTable.qml](../source/UI/Quick/DataTable.qml) | 251 | 0 |
 | A | [source/UI/Quick/FormGeneratorWorkspace.qml](../source/UI/Quick/FormGeneratorWorkspace.qml) | 83 | 0 |
 | A | [source/UI/Quick/Home.qml](../source/UI/Quick/Home.qml) | 53 | 0 |
 | A | [source/UI/Quick/HomeCard.qml](../source/UI/Quick/HomeCard.qml) | 51 | 0 |
@@ -826,24 +872,26 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/JudgeMarks.qml](../source/UI/Quick/JudgeMarks.qml) | 27 | 0 |
 | A | [source/UI/Quick/JumpMetric.qml](../source/UI/Quick/JumpMetric.qml) | 49 | 0 |
 | A | [source/UI/Quick/ModalScreen.qml](../source/UI/Quick/ModalScreen.qml) | 57 | 0 |
-| A | [source/UI/Quick/Node.qml](../source/UI/Quick/Node.qml) | 210 | 0 |
+| A | [source/UI/Quick/Node.qml](../source/UI/Quick/Node.qml) | 212 | 0 |
 | A | [source/UI/Quick/NodeGroup.qml](../source/UI/Quick/NodeGroup.qml) | 78 | 0 |
-| A | [source/UI/Quick/NumberField.qml](../source/UI/Quick/NumberField.qml) | 45 | 0 |
+| A | [source/UI/Quick/NumberField.qml](../source/UI/Quick/NumberField.qml) | 56 | 0 |
 | A | [source/UI/Quick/PlotPanel.qml](../source/UI/Quick/PlotPanel.qml) | 35 | 0 |
 | A | [source/UI/Quick/ProjectedControl.qml](../source/UI/Quick/ProjectedControl.qml) | 10 | 0 |
-| A | [source/UI/Quick/QuickBridge.cpp](../source/UI/Quick/QuickBridge.cpp) | 1050 | 0 |
-| A | [source/UI/Quick/QuickCalendar.cpp](../source/UI/Quick/QuickCalendar.cpp) | 419 | 0 |
-| A | [source/UI/Quick/QuickCalendar.h](../source/UI/Quick/QuickCalendar.h) | 136 | 0 |
+| A | [source/UI/Quick/QuickBridge.cpp](../source/UI/Quick/QuickBridge.cpp) | 1063 | 0 |
+| A | [source/UI/Quick/QuickCalendar.cpp](../source/UI/Quick/QuickCalendar.cpp) | 527 | 0 |
+| A | [source/UI/Quick/QuickCalendar.h](../source/UI/Quick/QuickCalendar.h) | 173 | 0 |
+| A | [source/UI/Quick/QuickCalendarDates.cpp](../source/UI/Quick/QuickCalendarDates.cpp) | 179 | 0 |
 | A | [source/UI/Quick/QuickPlot.cpp](../source/UI/Quick/QuickPlot.cpp) | 116 | 0 |
 | A | [source/UI/Quick/QuickPlot.h](../source/UI/Quick/QuickPlot.h) | 38 | 0 |
-| A | [source/UI/Quick/QuickRaceStats.h](../source/UI/Quick/QuickRaceStats.h) | 78 | 0 |
-| A | [source/UI/Quick/QuickRoster.cpp](../source/UI/Quick/QuickRoster.cpp) | 118 | 0 |
+| A | [source/UI/Quick/QuickRaceStats.h](../source/UI/Quick/QuickRaceStats.h) | 74 | 0 |
+| A | [source/UI/Quick/QuickRoster.cpp](../source/UI/Quick/QuickRoster.cpp) | 129 | 0 |
 | A | [source/UI/Quick/QuickRoster.h](../source/UI/Quick/QuickRoster.h) | 89 | 0 |
 | A | [source/UI/Quick/QuickSurface.cpp](../source/UI/Quick/QuickSurface.cpp) | 17 | 0 |
 | A | [source/UI/Quick/QuickSurface.h](../source/UI/Quick/QuickSurface.h) | 20 | 0 |
-| A | [source/UI/Quick/QuickTableModel.cpp](../source/UI/Quick/QuickTableModel.cpp) | 237 | 0 |
-| A | [source/UI/Quick/QuickUi.cpp](../source/UI/Quick/QuickUi.cpp) | 250 | 0 |
+| A | [source/UI/Quick/QuickTableModel.cpp](../source/UI/Quick/QuickTableModel.cpp) | 253 | 0 |
+| A | [source/UI/Quick/QuickUi.cpp](../source/UI/Quick/QuickUi.cpp) | 297 | 0 |
 | A | [source/UI/Quick/QuickUi.h](../source/UI/Quick/QuickUi.h) | 232 | 0 |
+| A | [source/UI/Quick/QuickView.h](../source/UI/Quick/QuickView.h) | 7 | 0 |
 | A | [source/UI/Quick/RaceAthlete.qml](../source/UI/Quick/RaceAthlete.qml) | 50 | 0 |
 | A | [source/UI/Quick/RaceControls.qml](../source/UI/Quick/RaceControls.qml) | 39 | 0 |
 | A | [source/UI/Quick/RaceLastJump.qml](../source/UI/Quick/RaceLastJump.qml) | 89 | 0 |
@@ -851,16 +899,17 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/RaceScreen.qml](../source/UI/Quick/RaceScreen.qml) | 103 | 0 |
 | A | [source/UI/Quick/RaceSimulation.qml](../source/UI/Quick/RaceSimulation.qml) | 35 | 0 |
 | A | [source/UI/Quick/RaceStatus.qml](../source/UI/Quick/RaceStatus.qml) | 41 | 0 |
+| A | [source/UI/Quick/RosterDragArea.qml](../source/UI/Quick/RosterDragArea.qml) | 99 | 0 |
 | A | [source/UI/Quick/RosterLibrary.qml](../source/UI/Quick/RosterLibrary.qml) | 35 | 0 |
-| A | [source/UI/Quick/RosterOrder.qml](../source/UI/Quick/RosterOrder.qml) | 52 | 0 |
+| A | [source/UI/Quick/RosterOrder.qml](../source/UI/Quick/RosterOrder.qml) | 59 | 0 |
 | A | [source/UI/Quick/RosterPresets.qml](../source/UI/Quick/RosterPresets.qml) | 25 | 0 |
-| A | [source/UI/Quick/RosterRow.qml](../source/UI/Quick/RosterRow.qml) | 105 | 0 |
+| A | [source/UI/Quick/RosterRow.qml](../source/UI/Quick/RosterRow.qml) | 72 | 0 |
 | A | [source/UI/Quick/RosterSummary.qml](../source/UI/Quick/RosterSummary.qml) | 17 | 0 |
 | A | [source/UI/Quick/RosterWorkspace.qml](../source/UI/Quick/RosterWorkspace.qml) | 69 | 0 |
-| A | [source/UI/Quick/SButton.qml](../source/UI/Quick/SButton.qml) | 39 | 0 |
-| A | [source/UI/Quick/SCheck.qml](../source/UI/Quick/SCheck.qml) | 26 | 0 |
-| A | [source/UI/Quick/SChoice.qml](../source/UI/Quick/SChoice.qml) | 124 | 0 |
-| A | [source/UI/Quick/SField.qml](../source/UI/Quick/SField.qml) | 21 | 0 |
+| A | [source/UI/Quick/SButton.qml](../source/UI/Quick/SButton.qml) | 55 | 0 |
+| A | [source/UI/Quick/SCheck.qml](../source/UI/Quick/SCheck.qml) | 27 | 0 |
+| A | [source/UI/Quick/SChoice.qml](../source/UI/Quick/SChoice.qml) | 145 | 0 |
+| A | [source/UI/Quick/SField.qml](../source/UI/Quick/SField.qml) | 23 | 0 |
 | A | [source/UI/Quick/Screen.qml](../source/UI/Quick/Screen.qml) | 12 | 0 |
 | A | [source/UI/Quick/SeasonBar.qml](../source/UI/Quick/SeasonBar.qml) | 32 | 0 |
 | A | [source/UI/Quick/SeasonFooter.qml](../source/UI/Quick/SeasonFooter.qml) | 25 | 0 |
@@ -869,8 +918,8 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/SetupFooter.qml](../source/UI/Quick/SetupFooter.qml) | 20 | 0 |
 | A | [source/UI/Quick/SingleJumpsResultsScreen.qml](../source/UI/Quick/SingleJumpsResultsScreen.qml) | 72 | 0 |
 | A | [source/UI/Quick/Surface.qml](../source/UI/Quick/Surface.qml) | 9 | 0 |
-| A | [source/UI/Quick/TableRow.qml](../source/UI/Quick/TableRow.qml) | 108 | 0 |
-| A | [source/UI/Quick/Theme.qml](../source/UI/Quick/Theme.qml) | 45 | 0 |
+| A | [source/UI/Quick/TableRow.qml](../source/UI/Quick/TableRow.qml) | 116 | 0 |
+| A | [source/UI/Quick/Theme.qml](../source/UI/Quick/Theme.qml) | 48 | 0 |
 | A | [source/UI/Quick/TrackMark.qml](../source/UI/Quick/TrackMark.qml) | 20 | 0 |
 | A | [source/UI/Quick/VersionBadge.qml](../source/UI/Quick/VersionBadge.qml) | 21 | 0 |
 | A | [source/UI/Quick/WindEditor.qml](../source/UI/Quick/WindEditor.qml) | 50 | 0 |
@@ -890,7 +939,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/icons/linkedin-dark.svg](../source/UI/Quick/icons/linkedin-dark.svg) | 1 | 0 |
 | A | [source/UI/Quick/icons/linkedin-light.svg](../source/UI/Quick/icons/linkedin-light.svg) | 1 | 0 |
 | A | [source/UI/Quick/qmldir](../source/UI/Quick/qmldir) | 1 | 0 |
-| A | [source/UI/Quick/quick-ui.qrc](../source/UI/Quick/quick-ui.qrc) | 78 | 0 |
+| A | [source/UI/Quick/quick-ui.qrc](../source/UI/Quick/quick-ui.qrc) | 85 | 0 |
 
 ### Instrukcje i zasoby narzędzi deweloperskich
 
@@ -1068,35 +1117,45 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 
 | Status | Plik | + | − |
 | --- | --- | ---: | ---: |
-| M | [.gitignore](../.gitignore) | 4 | 0 |
-| A | [WINDOWS_SETUP.MD](../WINDOWS_SETUP.MD) | 264 | 0 |
+| M | [.gitignore](../.gitignore) | 5 | 0 |
+| A | [WINDOWS_SETUP.MD](../WINDOWS_SETUP.MD) | 288 | 0 |
 | M | [assets.qrc](../assets.qrc) | 1 | 0 |
 | A | [img/author/konrad.jpg](../img/author/konrad.jpg) | - | - |
-| M | [sj-sim.pro](../sj-sim.pro) | 47 | 0 |
+| M | [sj-sim.pro](../sj-sim.pro) | 57 | 0 |
 | A | [skills-lock.json](../skills-lock.json) | 83 | 0 |
 
 ### Kontrolery, modele i logika C++
 
 | Status | Plik | + | − |
 | --- | --- | ---: | ---: |
+| M | [source/UI/AppSettings/AppSettingsWindow.cpp](../source/UI/AppSettings/AppSettingsWindow.cpp) | 1 | 0 |
+| M | [source/UI/AppSettings/CountriesEditorTableModel.cpp](../source/UI/AppSettings/CountriesEditorTableModel.cpp) | 1 | 1 |
 | A | [source/UI/AuthorWindow.cpp](../source/UI/AuthorWindow.cpp) | 77 | 0 |
 | A | [source/UI/AuthorWindow.h](../source/UI/AuthorWindow.h) | 24 | 0 |
-| M | [source/UI/Competition/CompetitionConfigWindow.cpp](../source/UI/Competition/CompetitionConfigWindow.cpp) | 41 | 88 |
+| M | [source/UI/Competition/CompetitionConfigWindow.cpp](../source/UI/Competition/CompetitionConfigWindow.cpp) | 42 | 88 |
 | M | [source/UI/Competition/CompetitionConfigWindow.h](../source/UI/Competition/CompetitionConfigWindow.h) | 5 | 2 |
-| M | [source/UI/Competition/CompetitionManagerWindow.cpp](../source/UI/Competition/CompetitionManagerWindow.cpp) | 68 | 36 |
+| M | [source/UI/Competition/CompetitionManagerWindow.cpp](../source/UI/Competition/CompetitionManagerWindow.cpp) | 152 | 68 |
 | M | [source/UI/Competition/CompetitionManagerWindow.h](../source/UI/Competition/CompetitionManagerWindow.h) | 5 | 0 |
 | M | [source/UI/Competition/JumperCompetitionResultsWidget.cpp](../source/UI/Competition/JumperCompetitionResultsWidget.cpp) | 20 | 0 |
-| M | [source/UI/Competition/Results/TeamResultsTreeModel.cpp](../source/UI/Competition/Results/TeamResultsTreeModel.cpp) | 8 | 5 |
+| M | [source/UI/Competition/Results/KOGroupResultsTableModel.cpp](../source/UI/Competition/Results/KOGroupResultsTableModel.cpp) | 12 | 11 |
+| M | [source/UI/Competition/Results/ResultsTableModel.cpp](../source/UI/Competition/Results/ResultsTableModel.cpp) | 21 | 6 |
+| M | [source/UI/Competition/Results/TeamResultsTreeModel.cpp](../source/UI/Competition/Results/TeamResultsTreeModel.cpp) | 28 | 7 |
 | M | [source/UI/Competition/StartList/StartListModel.cpp](../source/UI/Competition/StartList/StartListModel.cpp) | 31 | 26 |
 | M | [source/UI/Competition/StartList/StartListModel.h](../source/UI/Competition/StartList/StartListModel.h) | 5 | 2 |
-| M | [source/UI/DatabaseEditor/DatabaseEditorWindow.cpp](../source/UI/DatabaseEditor/DatabaseEditorWindow.cpp) | 3 | 3 |
+| M | [source/UI/DatabaseEditor/DatabaseEditorWindow.cpp](../source/UI/DatabaseEditor/DatabaseEditorWindow.cpp) | 200 | 3 |
+| M | [source/UI/DatabaseEditor/DatabaseEditorWindow.h](../source/UI/DatabaseEditor/DatabaseEditorWindow.h) | 16 | 0 |
 | M | [source/UI/DatabaseEditor/DatabaseItemsListView.cpp](../source/UI/DatabaseEditor/DatabaseItemsListView.cpp) | 2 | 3 |
 | M | [source/UI/DatabaseEditor/DatabaseItemsListView.h](../source/UI/DatabaseEditor/DatabaseItemsListView.h) | 1 | 0 |
 | M | [source/UI/DatabaseEditor/ListModels/CalendarsListModel.cpp](../source/UI/DatabaseEditor/ListModels/CalendarsListModel.cpp) | 9 | 3 |
 | M | [source/UI/DatabaseEditor/ListModels/CalendarsListModel.h](../source/UI/DatabaseEditor/ListModels/CalendarsListModel.h) | 1 | 0 |
-| M | [source/UI/EditorWidgets/ClassificationEditorWidget.cpp](../source/UI/EditorWidgets/ClassificationEditorWidget.cpp) | 10 | 38 |
-| M | [source/UI/EditorWidgets/CompetitionRulesEditorWidget.cpp](../source/UI/EditorWidgets/CompetitionRulesEditorWidget.cpp) | 5 | 30 |
+| M | [source/UI/EditorWidgets/ClassificationEditorWidget.cpp](../source/UI/EditorWidgets/ClassificationEditorWidget.cpp) | 153 | 52 |
+| M | [source/UI/EditorWidgets/ClassificationEditorWidget.h](../source/UI/EditorWidgets/ClassificationEditorWidget.h) | 22 | 0 |
+| M | [source/UI/EditorWidgets/CompetitionRulesEditorWidget.cpp](../source/UI/EditorWidgets/CompetitionRulesEditorWidget.cpp) | 12 | 37 |
+| M | [source/UI/EditorWidgets/JumperEditorWidget.cpp](../source/UI/EditorWidgets/JumperEditorWidget.cpp) | 77 | 2 |
+| M | [source/UI/EditorWidgets/JumperEditorWidget.h](../source/UI/EditorWidgets/JumperEditorWidget.h) | 14 | 0 |
 | M | [source/UI/EditorWidgets/PointsForPlacesPresetEditorWidget.cpp](../source/UI/EditorWidgets/PointsForPlacesPresetEditorWidget.cpp) | 3 | 7 |
+| M | [source/UI/EditorWidgets/RoundInfoEditorWidget.cpp](../source/UI/EditorWidgets/RoundInfoEditorWidget.cpp) | 49 | 2 |
+| M | [source/UI/EditorWidgets/RoundInfoEditorWidget.h](../source/UI/EditorWidgets/RoundInfoEditorWidget.h) | 11 | 0 |
 | M | [source/UI/EditorWidgets/TeamsEditing/Models/PointsForPlacesTableModel.cpp](../source/UI/EditorWidgets/TeamsEditing/Models/PointsForPlacesTableModel.cpp) | 24 | 35 |
 | M | [source/UI/EditorWidgets/TeamsEditing/Models/PointsForPlacesTableModel.h](../source/UI/EditorWidgets/TeamsEditing/Models/PointsForPlacesTableModel.h) | 2 | 1 |
 | M | [source/UI/EditorWidgets/TeamsEditing/TeamEditorWidget.cpp](../source/UI/EditorWidgets/TeamsEditing/TeamEditorWidget.cpp) | 5 | 0 |
@@ -1110,11 +1169,17 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | M | [source/UI/ResultsShowing/JumpDataDetailedInfoWindow.cpp](../source/UI/ResultsShowing/JumpDataDetailedInfoWindow.cpp) | 11 | 2 |
 | M | [source/UI/Seasons/CalendarEditor/CalendarEditorTableModel.cpp](../source/UI/Seasons/CalendarEditor/CalendarEditorTableModel.cpp) | 4 | 0 |
 | M | [source/UI/Seasons/CalendarEditor/CalendarEditorTableModel.h](../source/UI/Seasons/CalendarEditor/CalendarEditorTableModel.h) | 2 | 0 |
-| M | [source/UI/Seasons/CalendarEditor/CalendarEditorWidget.cpp](../source/UI/Seasons/CalendarEditor/CalendarEditorWidget.cpp) | 45 | 51 |
-| M | [source/UI/Seasons/Classifications/ClassificationResultsTableModel.cpp](../source/UI/Seasons/Classifications/ClassificationResultsTableModel.cpp) | 1 | 1 |
+| M | [source/UI/Seasons/CalendarEditor/CalendarEditorWidget.cpp](../source/UI/Seasons/CalendarEditor/CalendarEditorWidget.cpp) | 49 | 54 |
+| M | [source/UI/Seasons/Classifications/ClassificationResultsTableModel.cpp](../source/UI/Seasons/Classifications/ClassificationResultsTableModel.cpp) | 15 | 10 |
+| M | [source/UI/Seasons/Classifications/ClassificationResultsTableModel.h](../source/UI/Seasons/Classifications/ClassificationResultsTableModel.h) | 1 | 0 |
+| M | [source/UI/Seasons/CompetitionInfoEditorWidget.cpp](../source/UI/Seasons/CompetitionInfoEditorWidget.cpp) | 1 | 0 |
 | M | [source/UI/Seasons/NewSeasonConfiguratorWindow.cpp](../source/UI/Seasons/NewSeasonConfiguratorWindow.cpp) | 42 | 9 |
-| M | [source/UI/Seasons/SimulationSaveManagerWindow.cpp](../source/UI/Seasons/SimulationSaveManagerWindow.cpp) | 142 | 78 |
+| M | [source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp](../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp) | 5 | 0 |
+| M | [source/UI/Seasons/NewSimulationSaveConfigurationWindow.h](../source/UI/Seasons/NewSimulationSaveConfigurationWindow.h) | 1 | 0 |
+| M | [source/UI/Seasons/SimulationSaveManagerWindow.cpp](../source/UI/Seasons/SimulationSaveManagerWindow.cpp) | 151 | 78 |
 | M | [source/UI/Seasons/SimulationSaveManagerWindow.h](../source/UI/Seasons/SimulationSaveManagerWindow.h) | 7 | 1 |
+| M | [source/UI/Seasons/SimulationSaveManagerWindow.ui](../source/UI/Seasons/SimulationSaveManagerWindow.ui) | 6 | 0 |
+| M | [source/UI/Seasons/SimulationSavesWindow.cpp](../source/UI/Seasons/SimulationSavesWindow.cpp) | 1 | 0 |
 | M | [source/UI/Seasons/Stats/FilteringWidgets/ClassificationsCheckBoxesWidget.cpp](../source/UI/Seasons/Stats/FilteringWidgets/ClassificationsCheckBoxesWidget.cpp) | 5 | 8 |
 | M | [source/UI/Seasons/Stats/FilteringWidgets/ClassificationsCheckBoxesWidget.h](../source/UI/Seasons/Stats/FilteringWidgets/ClassificationsCheckBoxesWidget.h) | 1 | 1 |
 | M | [source/UI/Seasons/Stats/FilteringWidgets/CompetitionsRangeComboBoxesWidget.cpp](../source/UI/Seasons/Stats/FilteringWidgets/CompetitionsRangeComboBoxesWidget.cpp) | 14 | 45 |
@@ -1122,27 +1187,58 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | M | [source/UI/Seasons/Stats/JumperStatsWindow.cpp](../source/UI/Seasons/Stats/JumperStatsWindow.cpp) | 32 | 35 |
 | M | [source/UI/Seasons/Stats/SimulationRatingsWindow.cpp](../source/UI/Seasons/Stats/SimulationRatingsWindow.cpp) | 73 | 63 |
 | M | [source/UI/Seasons/Stats/SimulationRatingsWindow.h](../source/UI/Seasons/Stats/SimulationRatingsWindow.h) | 1 | 0 |
-| M | [source/UI/SingleJumps/SingleJumpsConfigWindow.cpp](../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp) | 43 | 0 |
+| M | [source/UI/SingleJumps/SingleJumpsConfigWindow.cpp](../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp) | 46 | 3 |
 | M | [source/UI/SingleJumps/SingleJumpsConfigWindow.h](../source/UI/SingleJumps/SingleJumpsConfigWindow.h) | 1 | 0 |
-| M | [source/UI/mainwindow.cpp](../source/UI/mainwindow.cpp) | 24 | 1 |
+| M | [source/UI/mainwindow.cpp](../source/UI/mainwindow.cpp) | 32 | 1 |
 | M | [source/UI/mainwindow.h](../source/UI/mainwindow.h) | 1 | 0 |
-| M | [source/competitions/AbstractCompetitionManager.cpp](../source/competitions/AbstractCompetitionManager.cpp) | 94 | 87 |
-| M | [source/competitions/CompetitionInfo.cpp](../source/competitions/CompetitionInfo.cpp) | 18 | 23 |
-| M | [source/competitions/CompetitionInfo.h](../source/competitions/CompetitionInfo.h) | 3 | 0 |
-| M | [source/competitions/CompetitionResults.cpp](../source/competitions/CompetitionResults.cpp) | 12 | 3 |
+| M | [source/competitions/AbstractCompetitionManager.cpp](../source/competitions/AbstractCompetitionManager.cpp) | 212 | 89 |
+| M | [source/competitions/AbstractCompetitionManager.h](../source/competitions/AbstractCompetitionManager.h) | 12 | 0 |
+| A | [source/competitions/CompetitionAdvancement.h](../source/competitions/CompetitionAdvancement.h) | 51 | 0 |
+| M | [source/competitions/CompetitionInfo.cpp](../source/competitions/CompetitionInfo.cpp) | 28 | 23 |
+| M | [source/competitions/CompetitionInfo.h](../source/competitions/CompetitionInfo.h) | 17 | 0 |
+| M | [source/competitions/CompetitionManagers/IndividualCompetitionManager.cpp](../source/competitions/CompetitionManagers/IndividualCompetitionManager.cpp) | 80 | 145 |
+| M | [source/competitions/CompetitionManagers/KORoundManager.cpp](../source/competitions/CompetitionManagers/KORoundManager.cpp) | 52 | 38 |
+| M | [source/competitions/CompetitionManagers/KORoundManager.h](../source/competitions/CompetitionManagers/KORoundManager.h) | 1 | 0 |
+| M | [source/competitions/CompetitionManagers/TeamCompetitionManager.cpp](../source/competitions/CompetitionManagers/TeamCompetitionManager.cpp) | 45 | 110 |
+| M | [source/competitions/CompetitionResults.cpp](../source/competitions/CompetitionResults.cpp) | 51 | 120 |
 | M | [source/competitions/CompetitionResults.h](../source/competitions/CompetitionResults.h) | 1 | 0 |
-| M | [source/competitions/CompetitionSingleResult.cpp](../source/competitions/CompetitionSingleResult.cpp) | 24 | 22 |
+| M | [source/competitions/CompetitionRules.cpp](../source/competitions/CompetitionRules.cpp) | 29 | 0 |
+| M | [source/competitions/CompetitionRules.h](../source/competitions/CompetitionRules.h) | 2 | 0 |
+| M | [source/competitions/CompetitionSingleResult.cpp](../source/competitions/CompetitionSingleResult.cpp) | 66 | 28 |
+| M | [source/competitions/CompetitionSingleResult.h](../source/competitions/CompetitionSingleResult.h) | 13 | 7 |
+| M | [source/competitions/RoundInfo.cpp](../source/competitions/RoundInfo.cpp) | 10 | 0 |
+| M | [source/competitions/RoundInfo.h](../source/competitions/RoundInfo.h) | 7 | 0 |
+| M | [source/global/Country.cpp](../source/global/Country.cpp) | 3 | 2 |
+| A | [source/global/CountryCodes.cpp](../source/global/CountryCodes.cpp) | 38 | 0 |
+| A | [source/global/CountryCodes.h](../source/global/CountryCodes.h) | 8 | 0 |
+| M | [source/global/CountryFlagsManager.cpp](../source/global/CountryFlagsManager.cpp) | 2 | 4 |
+| A | [source/global/DataPack.cpp](../source/global/DataPack.cpp) | 96 | 0 |
+| A | [source/global/DataPack.h](../source/global/DataPack.h) | 25 | 0 |
+| M | [source/global/GlobalDatabase.cpp](../source/global/GlobalDatabase.cpp) | 138 | 2 |
+| M | [source/global/GlobalDatabase.h](../source/global/GlobalDatabase.h) | 15 | 0 |
 | M | [source/global/MyRandom.cpp](../source/global/MyRandom.cpp) | 23 | 27 |
 | M | [source/global/PointsForPlacesPreset.cpp](../source/global/PointsForPlacesPreset.cpp) | 1 | 1 |
+| M | [source/global/Uuid.h](../source/global/Uuid.h) | 4 | 0 |
 | M | [source/main.cpp](../source/main.cpp) | 11 | 0 |
-| M | [source/seasons/ClassificationSingleResult.cpp](../source/seasons/ClassificationSingleResult.cpp) | 3 | 7 |
+| M | [source/seasons/Classification.cpp](../source/seasons/Classification.cpp) | 131 | 242 |
+| M | [source/seasons/Classification.h](../source/seasons/Classification.h) | 8 | 0 |
+| A | [source/seasons/ClassificationScoring.cpp](../source/seasons/ClassificationScoring.cpp) | 58 | 0 |
+| A | [source/seasons/ClassificationScoring.h](../source/seasons/ClassificationScoring.h) | 34 | 0 |
+| M | [source/seasons/ClassificationSingleResult.cpp](../source/seasons/ClassificationSingleResult.cpp) | 15 | 39 |
+| M | [source/seasons/ClassificationSingleResult.h](../source/seasons/ClassificationSingleResult.h) | 2 | 0 |
+| M | [source/seasons/Season.cpp](../source/seasons/Season.cpp) | 17 | 0 |
+| M | [source/seasons/Season.h](../source/seasons/Season.h) | 6 | 0 |
 | M | [source/seasons/SeasonCalendar.cpp](../source/seasons/SeasonCalendar.cpp) | 15 | 19 |
-| M | [source/seasons/SeasonCalendarPreset.cpp](../source/seasons/SeasonCalendarPreset.cpp) | 11 | 3 |
+| M | [source/seasons/SeasonCalendarPreset.cpp](../source/seasons/SeasonCalendarPreset.cpp) | 16 | 3 |
 | M | [source/seasons/SimulationSave.cpp](../source/seasons/SimulationSave.cpp) | 1 | 13 |
-| M | [source/simulator/Characteristic.h](../source/simulator/Characteristic.h) | 3 | 6 |
+| M | [source/simulator/Characteristic.h](../source/simulator/Characteristic.h) | 7 | 6 |
+| M | [source/simulator/Hill.cpp](../source/simulator/Hill.cpp) | 4 | 2 |
 | M | [source/simulator/JumpData.cpp](../source/simulator/JumpData.cpp) | 6 | 1 |
 | M | [source/simulator/JumpSimulator.cpp](../source/simulator/JumpSimulator.cpp) | 31 | 47 |
 | M | [source/simulator/JumpSimulator.h](../source/simulator/JumpSimulator.h) | 3 | 1 |
+| M | [source/simulator/Jumper.cpp](../source/simulator/Jumper.cpp) | 8 | 2 |
+| M | [source/simulator/Jumper.h](../source/simulator/Jumper.h) | 12 | 1 |
+| M | [source/simulator/Team.cpp](../source/simulator/Team.cpp) | 9 | 4 |
 | M | [source/simulator/WindsCalculator.cpp](../source/simulator/WindsCalculator.cpp) | 14 | 2 |
 | M | [source/simulator/WindsCalculator.h](../source/simulator/WindsCalculator.h) | 1 | 0 |
 | M | [source/simulator/wind-generation/WindsGenerator.cpp](../source/simulator/wind-generation/WindsGenerator.cpp) | 8 | 2 |
@@ -1166,14 +1262,24 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 
 | Status | Plik | + | − |
 | --- | --- | ---: | ---: |
+| A | [tests/calendar-dates-regressions.h](../tests/calendar-dates-regressions.h) | 91 | 0 |
+| A | [tests/calendar-inspector-space-regressions.h](../tests/calendar-inspector-space-regressions.h) | 31 | 0 |
+| A | [tests/calendar-workspace-ux-regressions.h](../tests/calendar-workspace-ux-regressions.h) | 35 | 0 |
+| A | [tests/classification-regressions.h](../tests/classification-regressions.h) | 159 | 0 |
+| A | [tests/competition-advancement-regressions.h](../tests/competition-advancement-regressions.h) | 82 | 0 |
 | A | [tests/competition-quick-smoke.cpp](../tests/competition-quick-smoke.cpp) | 397 | 0 |
-| A | [tests/quick-ui-smoke.cpp](../tests/quick-ui-smoke.cpp) | 1703 | 0 |
+| A | [tests/competition-ties-gate-regressions.h](../tests/competition-ties-gate-regressions.h) | 126 | 0 |
+| A | [tests/navigation-performance.h](../tests/navigation-performance.h) | 26 | 0 |
+| A | [tests/quick-ui-smoke.cpp](../tests/quick-ui-smoke.cpp) | 2262 | 0 |
+| A | [tests/roster-drag-regressions.h](../tests/roster-drag-regressions.h) | 23 | 0 |
+| A | [tests/ui-duplication-regressions.h](../tests/ui-duplication-regressions.h) | 79 | 0 |
+| A | [tests/ux-roster-input-regressions.h](../tests/ux-roster-input-regressions.h) | 26 | 0 |
 
 ### Tłumaczenia
 
 | Status | Plik | + | − |
 | --- | --- | ---: | ---: |
-| M | [translations/translation_en.ts](../translations/translation_en.ts) | 3352 | 106 |
+| M | [translations/translation_en.ts](../translations/translation_en.ts) | 4153 | 108 |
 
 ### Wcześniejszy opcjonalny eksperyment konkursowy
 
