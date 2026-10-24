@@ -7,31 +7,42 @@ Item {
     property bool direct: true
     property string label: ""
     property real currentValue: fields ? Number(fields.value) : 0
-    onFieldsChanged: if(fields)currentValue=Number(fields.value)
+    property string draft: ""
+    function synchronize() {
+        if(!fields)return
+        currentValue=Number(fields.value)
+        if(!input.dirty)draft=fields.mixed ? "" : formattedValue()
+    }
+    onFieldsChanged: synchronize()
+    Component.onCompleted: synchronize()
     signal committed(real value)
     implicitHeight: Math.max(Theme.compact ? 28 : 48,Theme.bodyMetrics.height+(Theme.compact ? 4 : 18))
     implicitWidth: 140
-    function setValue(value) { currentValue=Math.max(fields.minimum,Math.min(fields.maximum,value));if(direct)ui.edit(fields.id,currentValue);committed(currentValue) }
+    function setValue(value) { currentValue=Math.max(fields.minimum,Math.min(fields.maximum,value));input.dirty=false;draft=formattedValue();if(direct)ui.edit(fields.id,currentValue);committed(currentValue) }
     function formattedValue() {return currentValue===fields.minimum && fields.specialText ? fields.specialText : currentValue.toLocaleString(Qt.locale(),'f',fields.decimals).split(Qt.locale().groupSeparator).join("")}
-    function step(direction) {setValue(currentValue+direction*Number(fields.step))}
+    function commitInput() {
+        input.dirty=false
+        if(fields.mixed && draft.length===0)return
+        if(currentValue===fields.minimum && draft===fields.specialText)return
+        var value=Number.fromLocaleString(Qt.locale(),draft)
+        if(input.acceptableInput && isFinite(value)){if(value!==currentValue)setValue(value);else draft=formattedValue()}
+        else draft=fields.mixed ? "" : formattedValue()
+    }
+    function step(direction) {if(input.dirty)commitInput();setValue(currentValue+direction*Number(fields.step))}
     SField {
         id: input
+        property bool dirty: false
         objectName: "input-" + (control.fields.name || control.fields.id)
         anchors.fill: parent
         rightPadding: 48 + (suffix.visible ? suffix.implicitWidth + 6 : 0)
-        text: control.fields.mixed ? "" : control.formattedValue()
+        text: control.draft
         placeholderText: control.fields.mixed ? qsTr("Różne wartości") : ""
         horizontalAlignment: TextInput.AlignRight
         font.family: Theme.mono
         Accessible.name: control.label || control.fields.accessibleName || control.fields.label || control.fields.tip || control.fields.name || ""
         validator: DoubleValidator { bottom: control.fields.minimum; top: control.fields.maximum; decimals: control.fields.decimals; locale: Qt.locale().name }
-        onEditingFinished: {
-            if(control.fields.mixed && text.length === 0)return
-            if(control.currentValue===control.fields.minimum && text===control.fields.specialText)return
-            var value = Number.fromLocaleString(Qt.locale(),text)
-            if (acceptableInput && isFinite(value)) { if (value !== control.currentValue) control.setValue(value) }
-            else text = control.formattedValue()
-        }
+        onTextEdited: {dirty=true;control.draft=text}
+        onEditingFinished: control.commitInput()
         Keys.onUpPressed: control.step(1)
         Keys.onDownPressed: control.step(-1)
     }
