@@ -1,7 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import QtQuick.Window 2.15
 
 Item {
     id: row
@@ -9,6 +8,7 @@ Item {
     property string athleteId
     property string athleteName
     property string countryCode
+    property string flagSource: ""
     property bool included: false
     property bool marked: false
     property int position: 0
@@ -45,21 +45,6 @@ Item {
             Accessible.name: qsTr("Przenieś %1").arg(row.athleteName)
             hint: qsTr("Przeciągnij lub wybierz pozycję")
             onClicked: {if(!row.marked)row.backend.mark(row.athleteId);row.moveRequested()}
-            MouseArea {
-                id: handle
-                anchors.fill: parent
-                drag.target: preview; drag.threshold: 8
-                cursorShape: pressed ? Qt.ClosedHandCursor : Qt.OpenHandCursor
-                onPressed: {
-                    grip.forceActiveFocus()
-                    var point=mapToItem(preview.parent,mouse.x,mouse.y)
-                    preview.x=point.x-20;preview.y=point.y-preview.height/2
-                }
-                onPositionChanged: if(drag.active && !preview.Drag.active)preview.Drag.active=true
-                onReleased: {if(preview.Drag.active){preview.Drag.drop();preview.Drag.active=false}}
-                onCanceled: preview.Drag.active=false
-                onClicked: grip.clicked()
-            }
         }
         Label { visible: row.ordered; text: row.position; font.family: Theme.mono; font.pointSize: Theme.caption; color: Theme.muted; Layout.preferredWidth: 30; horizontalAlignment: Text.AlignRight }
         ColumnLayout {
@@ -67,6 +52,7 @@ Item {
             Label { text: row.athleteName; color: Theme.ink; font.pointSize: Theme.body; Layout.fillWidth: true; elide: Text.ElideRight }
             Label { visible: row.ordered && row.backend.activeLimit > 0; text: row.activeSlot ? qsTr("Skład") : qsTr("Rezerwa"); color: row.activeSlot ? Theme.muted : Theme.warning; font.pointSize: Theme.caption }
         }
+        Image { source: row.flagSource;sourceSize.width: 32;sourceSize.height: 24;Layout.preferredWidth: 28;Layout.preferredHeight: 21;fillMode: Image.PreserveAspectFit;visible: source.toString().length>0;Accessible.ignored: true }
         Label { text: row.countryCode; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption }
         SButton { visible: row.ordered && row.backend.membership; text: "×"; quiet: true; Layout.preferredWidth: 32; Accessible.name: qsTr("Usuń %1 z listy").arg(row.athleteName); onClicked: row.backend.toggle(row.athleteId) }
     }
@@ -83,23 +69,4 @@ Item {
         }
     }
     Rectangle { visible: dropTarget.containsDrag; x: 0; y: dropTarget.after ? parent.height-2 : 0; width: parent.width; height: 3; color: Theme.accent; z: 2 }
-    Rectangle {
-        id: preview
-        parent: row.Window.window ? row.Window.window.contentItem : row
-        visible: Drag.active
-        width: Math.min(300,row.width); height: 48; radius: 8
-        color: Theme.stadium; border.color: Theme.signal; border.width: 2
-        z: 100
-        Drag.source: row; Drag.keys: ["sj-roster"]; Drag.supportedActions: Qt.MoveAction
-        Drag.hotSpot.x: 20; Drag.hotSpot.y: height/2
-        Label { anchors.fill: parent; anchors.margins: 10; text: row.athleteName; color: Theme.snow; font.pointSize: Theme.body; elide: Text.ElideRight; verticalAlignment: Text.AlignVCenter }
-        Timer {
-            interval: 50; repeat: true; running: preview.Drag.active && !!row.viewport
-            onTriggered: {
-                var point=preview.mapToItem(row.viewport,20,24)
-                var step=point.y < 36 ? -12 : point.y > row.viewport.height-36 ? 12 : 0
-                if(step)row.viewport.contentY=Math.max(row.viewport.originY,Math.min(row.viewport.contentY+step,row.viewport.originY+Math.max(0,row.viewport.contentHeight-row.viewport.height)))
-            }
-        }
-    }
 }

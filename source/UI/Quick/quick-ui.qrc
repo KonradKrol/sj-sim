@@ -75,6 +75,7 @@
 <file>RosterSummary.qml</file>
 <file>RosterLibrary.qml</file>
 <file>RosterOrder.qml</file>
+<file>RosterDragArea.qml</file>
 <file>RosterRow.qml</file>
 <file>WindEditor.qml</file>
 <file>WindFields.qml</file>

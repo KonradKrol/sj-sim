@@ -11,7 +11,7 @@ ColumnLayout {
     spacing: cramped ? 4 : 8
     RowLayout {
         Layout.fillWidth: true
-        Label { text: qsTr("%1 · %2").arg(order.title).arg(order.backend.count); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; elide: Text.ElideRight }
+        Label { text: dragArea.dragging ? dragArea.athleteName : qsTr("%1 · %2").arg(order.title).arg(order.backend.count); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; elide: Text.ElideRight }
         SButton { text: qsTr("Przenieś"); implicitHeight: order.cramped ? 32 : 40; padding: order.cramped ? 4 : 6; quiet: true; enabled: order.backend.markedCount > 0; onClicked: order.moving=!order.moving }
     }
     SField { objectName: "rosterOrderSearch"; Layout.fillWidth: true; Layout.minimumWidth: 0; text: order.backend.orderQuery; placeholderText: qsTr("Szukaj na liście"); Accessible.name: placeholderText; onTextEdited: order.backend.orderQuery=text }
@@ -23,16 +23,21 @@ ColumnLayout {
         SButton { objectName: "rosterMoveConfirm"; text: qsTr("Przenieś"); enabled: target.acceptableInput; onClicked: {order.backend.moveMarked(Number(target.text));order.moving=false} }
         SButton { text: "×"; quiet: true; Accessible.name: qsTr("Zamknij"); onClicked: order.moving=false }
     }
+    Item {
+        Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
     ListView {
         id: rows
         objectName: "rosterOrder"
-        Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
+        anchors.fill: parent
         model: order.backend.ordered
         spacing: 4; clip: true; activeFocusOnTab: true
+        interactive: !dragArea.dragging
+        boundsBehavior: Flickable.StopAtBounds
         ScrollBar.vertical: ScrollBar {}
         delegate: RosterRow {
             width: rows.width; backend: order.backend; ordered: true; viewport: rows
             athleteId: model.athleteId; athleteName: model.athleteName; countryCode: model.countryCode
+            flagSource: model.flagSource || ""
             included: true; marked: model.marked; position: model.position; activeSlot: model.activeSlot
             onMoveRequested: order.moving=true
         }
@@ -42,6 +47,8 @@ ColumnLayout {
             else if((event.modifiers & Qt.ControlModifier) && (event.key === Qt.Key_Up || event.key === Qt.Key_Down)){order.backend.step(event.key === Qt.Key_Up ? -1 : 1);event.accepted=true}
             else if(event.key === Qt.Key_Delete && order.backend.membership){order.backend.removeMarked();event.accepted=true}
         }
+    }
+    RosterDragArea { id: dragArea; anchors.fill: parent; backend: order.backend; viewport: rows; onMoveRequested: order.moving=true }
     }
     RowLayout {
         visible: !order.cramped || order.backend.markedCount>0 || order.backend.activeLimit>0

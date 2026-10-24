@@ -21,7 +21,7 @@ ColumnLayout {
         model: library.backend.library
         spacing: 4; clip: true; activeFocusOnTab: true
         ScrollBar.vertical: ScrollBar {}
-        delegate: RosterRow { width: candidates.width; backend: library.backend; athleteId: model.athleteId; athleteName: model.athleteName; countryCode: model.countryCode; included: model.included }
+        delegate: RosterRow { width: candidates.width; backend: library.backend; athleteId: model.athleteId; athleteName: model.athleteName; countryCode: model.countryCode; flagSource: model.flagSource || ""; included: model.included }
         Label { visible: candidates.count === 0; anchors.centerIn: parent; width: parent.width; text: qsTr("Brak pasujących zawodników"); wrapMode: Text.WordWrap; color: Theme.muted; font.pointSize: Theme.body }
     }
     RowLayout {

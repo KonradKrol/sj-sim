@@ -5,12 +5,23 @@
 #include "../EditorWidgets/CompetitionRulesEditorWidget.h"
 #include "../../competitions/CompetitionManagers/IndividualCompetitionManager.h"
 #include "../../global/GlobalDatabase.h"
+#include "../../global/CountryCodes.h"
+#include <QDir>
+#include <QFile>
+#include <QUrl>
 #include <algorithm>
 #include <random>
 
 namespace {
-const QList<QByteArray> roles{"athleteId","athleteName","countryCode","included","marked","position","activeSlot"};
+const QList<QByteArray> roles{"athleteId","athleteName","countryCode","included","marked","position","activeSlot","flagSource"};
 QVector<Jumper *> unique(const QVector<Jumper *> &input) { QVector<Jumper *> out;QSet<Jumper *> seen;for(auto *j:input)if(j&&!seen.contains(j)){seen.insert(j);out.append(j);}return out; }
+
+QString flagSource(const QString &country) {
+    const auto file=QDir::current().absoluteFilePath("flags/"+CountryCodes::toIso(country)+".svg");
+    static QHash<QString,QString> cache;
+    if(!cache.contains(file))cache.insert(file,QFile::exists(file)?QUrl::fromLocalFile(file).toString():QString());
+    return cache.value(file);
+}
 
 bool matches(Jumper *jumper,const QString &query) { const auto words=query.simplified().split(' ',Qt::SkipEmptyParts);const auto text=jumper->getNameAndSurname()+" "+jumper->getCountryCode();for(const auto &word:words)if(!text.contains(word,Qt::CaseInsensitive))return false;return true; }
 }
@@ -67,8 +78,8 @@ QStringList QuickRoster::presets() const { QStringList out;if(auto *config=qobje
 QVector<Jumper *> QuickRoster::visiblePool() const { QVector<Jumper *> out;for(auto *j:m_pool)if(matches(j,m_query)&&(!m_country||j->getCountryCode()==m_countryCodes.value(m_country-1)))out.append(j);return out; }
 void QuickRoster::refresh(){
     QSet<QString> existing;for(auto *j:m_current)existing.insert(key(j));m_marked.intersect(existing);
-    QVariantList library,ordered;for(auto *j:visiblePool())library.append(QVariantMap{{"athleteId",key(j)},{"athleteName",j->getNameAndSurname()},{"countryCode",j->getCountryCode()},{"included",m_current.contains(j)}});
-    for(int i=0;i<m_current.size();++i){auto *j=m_current[i];if(!matches(j,m_orderQuery))continue;ordered.append(QVariantMap{{"athleteId",key(j)},{"athleteName",j->getNameAndSurname()},{"countryCode",j->getCountryCode()},{"included",true},{"marked",m_marked.contains(key(j))},{"position",i+1},{"activeSlot",!activeLimit()||i<activeLimit()}});}
+    QVariantList library,ordered;for(auto *j:visiblePool())library.append(QVariantMap{{"athleteId",key(j)},{"athleteName",j->getNameAndSurname()},{"countryCode",j->getCountryCode()},{"flagSource",flagSource(j->getCountryCode())},{"included",m_current.contains(j)}});
+    for(int i=0;i<m_current.size();++i){auto *j=m_current[i];if(!matches(j,m_orderQuery))continue;ordered.append(QVariantMap{{"athleteId",key(j)},{"athleteName",j->getNameAndSurname()},{"countryCode",j->getCountryCode()},{"flagSource",flagSource(j->getCountryCode())},{"included",true},{"marked",m_marked.contains(key(j))},{"position",i+1},{"activeSlot",!activeLimit()||i<activeLimit()}});}
     m_library->sync(library);m_ordered->sync(ordered);emit changed();
 }
 void QuickRoster::setQuery(const QString &value){if(m_query==value)return;m_query=value;refresh();}
