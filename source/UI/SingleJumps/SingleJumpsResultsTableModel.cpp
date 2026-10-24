@@ -65,7 +65,7 @@ QVariant SingleJumpsResultsTableModel::data(const QModelIndex &index, int role) 
         case 0:
             return index.row() + 1;
         case 1:
-            return QString::number(manager->getJumpsReference()[index.row()].getDistance()) + tr("m");
+            return QString::number(manager->getJumpsReference()[index.row()].getDistance(), 'f', 1) + tr("m");
         case 2:
             return QString::number(manager->getJumpsReference()[index.row()].getPoints()) + tr("pkt");
         case 3:

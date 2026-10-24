@@ -103,6 +103,7 @@ QVector<Classification::Contribution> Classification::contributions(CompetitionI
         return (type==CompetitionPoints?r->getPointsSum():table.value(place))*multiplier;
     };
     for(auto &result:competition->getResultsReference().getResultsReference()) {
+        if(result.isTeamDisqualified())continue;
         if(!teamEvent) {
             auto *j=result.getJumper(); if(!ageAllowed(j))continue;
             out.append({j,j->getCountryCode(),points(&result,result.getPosition()),&result});

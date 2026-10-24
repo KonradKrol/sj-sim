@@ -44,7 +44,8 @@ inline int status(const Entry &candidate, const QVector<Entry> &field, int limit
 enum ModelRole {
     RoundStatusRole = Qt::UserRole + 100,
     QualificationStatusRole,
-    QualificationTargetRole
+    QualificationTargetRole,
+    LuckyLoserRole
 };
 }
 

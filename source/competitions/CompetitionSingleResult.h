@@ -62,6 +62,7 @@ protected:
 public:
     void updatePointsSum(int round = -1);
     int getScoringRound() const;
+    bool isTeamDisqualified() const;
     int getRankingRound() const;
     qint64 getRankingPoints() const;
     bool hasSameRankAs(const CompetitionSingleResult &other) const;

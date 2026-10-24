@@ -27,21 +27,21 @@ Pane {
             }
         }
         RowLayout {
-            visible: ui.context.currentGap !== undefined || ui.context.groupGap !== undefined
+            visible: ui.context.currentGap !== undefined || ui.context.groupGap !== undefined || ui.context.liveLeaderGap !== undefined
             Layout.fillWidth: true; spacing: 12
             Repeater {
-                model: [{key:"currentGap",label:qsTr("Do lidera")},{key:"groupGap",label:qsTr("W grupie KO")}]
+                model: [{key:"currentGap",label:qsTr("Po %1 serii").arg(ui.context.round-1)},{key:"liveLeaderGap",label:qsTr("Aktualny lider")},{key:"groupGap",label:qsTr("W grupie KO")}]
                 Label {
                     visible: ui.context[modelData.key] !== undefined
-                    objectName: modelData.key==="currentGap" ? "athleteCurrentGap" : "athleteGroupGap"
+                    objectName: modelData.key==="currentGap" ? "athleteCurrentGap" : modelData.key==="liveLeaderGap" ? "athleteLiveLeaderGap" : "athleteGroupGap"
                     readonly property real gap: Number(ui.context[modelData.key] || 0)
                     text: modelData.label+": "+gap.toLocaleString(Qt.locale(),'f',1)+qsTr(" pkt")
                     color: gap>0 ? Theme.headerMuted : gap<0 ? Theme.signal : Theme.snow
                     font.pointSize: Theme.caption; font.family: Theme.mono
                     Layout.fillWidth: true; wrapMode: Text.WordWrap
-                    Accessible.name: text+qsTr(". Punkty po wagach, bez skoków bieżącej serii. Przewaga ma znak minus.")
+                    Accessible.name: text+qsTr(". Przewaga ma znak minus.")
                     ToolTip.visible: gapHover.containsMouse; ToolTip.delay: 600
-                    ToolTip.text: qsTr("Różnica punktów po wagach bieżącej serii. Porównanie nie uwzględnia skoków oddanych już w tej serii.")
+                    ToolTip.text: modelData.key==="liveLeaderGap" ? qsTr("Porównanie z aktualnym wynikiem lidera, z uwzględnieniem skoków bieżącej serii. Przewaga ma znak minus.") : qsTr("Różnica punktów po wagach bieżącej serii, bez skoków oddanych już w tej serii. Przewaga ma znak minus.")
                     MouseArea { id: gapHover; anchors.fill: parent; hoverEnabled: true; acceptedButtons: Qt.NoButton }
                 }
             }

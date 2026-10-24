@@ -1,6 +1,7 @@
 #pragma once
 #include "../source/competitions/CompetitionAdvancement.h"
 #include "../source/UI/Competition/Results/ResultsTableModel.h"
+#include "../source/UI/Competition/Results/KOGroupResultsTableModel.h"
 
 static void competitionAdvancementRegressions() {
     using namespace CompetitionAdvancement;
@@ -57,12 +58,19 @@ static void competitionAdvancementRegressions() {
     KORoundManager ko(&groups,manager.getResults(),&source.getRulesPointer()->getRoundsReference()[0],&manager);ko.setLuckyLosersCount(1);manager.setKOManager(&ko);
     finish(&a,100);finish(&b,90);
     check(ko.advancementStatus(&a)==yes && ko.advancementStatus(&b)==wait,"a completed duel winner is safe while its loser still has a lucky-loser chance");
+    check(manager.isLuckyLoser(&b),"current LL is marked before its advancement becomes certain");
+    KOGroupResultsTableModel groupModel(&ko,&groups[0]);
+    for(int row=0;row<groupModel.rowCount();++row)if(groupModel.index(row,1).data().toString()==b.getNameAndSurname())check(groupModel.index(row,0).data(RoundStatusRole).toInt()==no,"KO group coloring indicates duel loss even while LL remains open");
+    check(ko.guaranteedAdvancePoints(&e)<0,"no safe LL line is shown while an unresolved outside duel can produce a stronger loser");
     finish(&c,80);finish(&d,70);
+    check(ko.guaranteedAdvancePoints(&e)==90 && ko.wouldSurelyAdvance(&e,900) && !ko.wouldSurelyAdvance(&e,899),"safe LL threshold can be lower than the group-winning score and includes boundary ties");
     check(ko.advancementStatus(&d)==no && ko.advancementStatus(&b)==wait,"a confirmed weaker loser is already eliminated before the remaining duel finishes");
     finish(&e,110);finish(&f,120);
     check(ko.advancementStatus(&b)==no && ko.advancementStatus(&e)==yes && ko.advancementStatus(&f)==yes,"final duel correctly resolves both the lucky-loser cutoff and its winner");
     check(manager.getFilteredJumpersForNextRound().size()==4,"KO selects the three winners and one lucky loser");
-    manager.setKOManager(nullptr);
+    check(manager.isLuckyLoser(&e) && !manager.isLuckyLoser(&f) && !manager.isLuckyLoser(&b),"LL marks only confirmed lucky losers, not winners or eliminated losers");
+    manager.setupNextRound();manager.setKOManager(nullptr);
+    check(manager.isLuckyLoser(&e) && !manager.isLuckyLoser(&f),"LL survives the transition into the next series after the KO manager is retired");
     // Team certainty starts only after the team's last member has attempted the round.
     QVector<Jumper> members;members.reserve(8);QVector<Team> squads;squads.reserve(4);
     const QStringList countries{"POL","GER","SUI","AUT"};
@@ -77,6 +85,14 @@ static void competitionAdvancementRegressions() {
     check(teams.getAdvanceStatusOfTeam(&squads[1])==yes && teams.getAdvanceStatusOfTeam(&squads[2])==yes && teams.getAdvanceStatusOfTeam(&squads[3])==no,"team final-group ties retain all boundary teams and eliminate the next distinct rank");
     teamSource.setExceptionalRoundsCount(1);teamRules.setRounds({RoundInfo(3,true)});teamTarget.setRules(teamRules);teamTarget.setAdvancementCompetition(&teamSource);teamSource.setQualifyingCompetitions({&teamTarget});
     teamSource.getResultsReference().getResultOfTeam(&squads[0])->getJumpsReference().last().setDSQ(true);teams.updateCompetitorsAdvanceStatuses();
-    check(teams.qualificationStatus(&squads[0])==yes && TeamCompetitionManager::getFilteredTeamsAfterQualifications(&teamTarget).size()==3,"a single member's zero-point DSQ does not disqualify the entire team from a qualifying place");
+    check(teams.qualificationStatus(&squads[0])==no && TeamCompetitionManager::getFilteredTeamsAfterQualifications(&teamTarget).size()==3,"a member DSQ excludes the entire team and promotes eligible qualifying teams");
+    check(teamSource.getResultsReference().getResultOfTeam(&squads[0])->getPosition()==0,"disqualified team has no classified place");
+    teams.setActualGroup(1);teams.setupStartListStatusesForActualRound(true);
+    check(teams.getStartListStatusesReference()[0].getJumpStatus()==StartListCompetitorStatus::Dsq,"later team groups skip disqualified squads");
+    auto *disqualified=teamSource.getResultsReference().getResultOfTeam(&squads[0]);const int jumpCount=disqualified->getJumps().size();
+    JumpData blocked(&members[0],&hill);blocked.setPoints(999);teamSource.getResultsReference().addJump(&squads[0],blocked);
+    check(teamSource.getResultsReference().getResultOfTeam(&squads[0])->getJumps().size()==jumpCount,"engine rejects subsequent jumps for a disqualified team");
+    for(auto *team:teamPointers){auto *result=teamSource.getResultsReference().getResultOfTeam(team);result->getJumpsReference().last().setDSQ(true);}
+    teams.updateCompetitorsAdvanceStatuses();check(teams.checkCompetitionEnd(),"disqualifying every team ends an early group without waiting for impossible jumps");
     qInfo()<<"PASS: exhaustive advancement bounds, tied cutoffs, independent qualifying quotas and pure result presentation";
 }

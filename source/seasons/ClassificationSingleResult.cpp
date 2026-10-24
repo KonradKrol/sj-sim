@@ -22,6 +22,7 @@ void ClassificationSingleResult::updateSingleResults()
         int competitionType = results->getCompetition()->getRulesPointer()->getCompetitionType();
         for(auto & singleResult : results->getResultsReference())
         {
+            if(singleResult.isTeamDisqualified())continue;
             if(classification->getClassificationType() == Classification::Individual)
             {
                 if(classification->getPunctationType() == Classification::PointsForPlaces)

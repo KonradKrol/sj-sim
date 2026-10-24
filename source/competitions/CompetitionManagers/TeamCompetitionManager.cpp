@@ -52,6 +52,7 @@ void TeamCompetitionManager::setupStartListStatusesForActualRound(bool setupBefo
     startListStatuses.clear();
     for(auto & team : getActualRoundTeamsReference()){
         startListStatuses.push_back(StartListCompetitorStatus(team->getJumpersReference()[actualGroup - 1]));
+        if(auto *result=results->getResultOfTeam(team);result && result->isTeamDisqualified())startListStatuses.last().setJumpStatus(StartListCompetitorStatus::Dsq);
     }
 }
 
@@ -83,7 +84,7 @@ void TeamCompetitionManager::updateCompetitorsAdvanceStatuses()
         auto *jumper=team?team->getJumpersReference().value(actualGroup-1,nullptr):nullptr;
         const auto *status=StartListCompetitorStatus::getStatusOfJumper(jumper,startListStatuses);
         entry.pending=actualGroup<competitionRules->getJumpersInTeamCount() || !status || status->getJumpStatus()==StartListCompetitorStatus::Unfinished;
-        if(auto *result=results->getResultOfTeam(team))entry.points=result->getRankingPoints();
+        if(auto *result=results->getResultOfTeam(team)){entry.points=result->getRankingPoints();entry.excluded=result->isTeamDisqualified();}
         entries.append(entry);
     }
     for(const auto &entry:entries)
@@ -239,6 +240,7 @@ void TeamCompetitionManager::setStartListOrderRandomly(QVector<Team> &teams)
 
 bool TeamCompetitionManager::checkCompetitionEnd()
 {
+    if(actualRound>0 && actualRound<=roundsTeams.size() && !getActualRoundTeamsReference().isEmpty() && std::all_of(getActualRoundTeamsReference().cbegin(),getActualRoundTeamsReference().cend(),[this](Team *team){auto *result=results->getResultOfTeam(team);return result && result->isTeamDisqualified();}))return true;
     if(competitionInfo && (competitionInfo->getCancelled() || (competitionInfo->getExceptionalRoundsCount()>0 && actualRound>competitionInfo->getExceptionalRoundsCount())))return true;
     return (checkGroupEnd() && checkRoundEnd() && (actualRound == competitionRules->getRoundsReference().count() || actualRound == competitionInfo->getExceptionalRoundsCount()));
 }
@@ -259,7 +261,8 @@ void TeamCompetitionManager::setupNextGroup()
         setActualGroup(actualGroup + 1);
         setupStartListStatusesForActualRound();
         updateCompetitorsAdvanceStatuses();
-        setActualStartListIndex(0);
+        const int next=getFirstUnfinishedStartListStatus();
+        setActualStartListIndex(next>=0 && next<startListStatuses.size()?next:0);
     }
 }
 

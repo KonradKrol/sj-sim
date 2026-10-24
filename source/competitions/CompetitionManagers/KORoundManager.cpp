@@ -66,6 +66,50 @@ int KORoundManager::advancementStatus(Jumper *jumper) const
     return StartListCompetitorStatus::Waiting;
 }
 
+bool KORoundManager::wouldSurelyAdvance(Jumper *jumper,qint64 points) const
+{
+    if(!jumper || !groups || !results || !roundInfo || !indManager)return false;
+    QMap<Jumper *,CompetitionAdvancement::Entry> entries;
+    QMap<Jumper *,int> groupStates;
+    bool found=false;
+    const int quota=qMax(0,roundInfo->getAdvancingFromKOGroup());
+    for(const auto &group:*groups){
+        QVector<CompetitionAdvancement::Entry> field;
+        for(auto *member:group.getJumpers())if(member){
+            auto entry=koEntry(member,indManager,results);
+            if(member==jumper){entry.points=points;entry.pending=false;entry.excluded=false;found=true;}
+            field.append(entry);entries.insert(member,entry);
+        }
+        for(const auto &entry:field){
+            const int state=CompetitionAdvancement::status(entry,field,quota);
+            groupStates.insert(static_cast<Jumper *>(const_cast<void *>(entry.competitor)),state);
+        }
+    }
+    if(!found)return false;
+    if(groupStates.value(jumper)==StartListCompetitorStatus::SureAdvanced)return true;
+    if(luckyLosersCount<=0)return false;
+    // Every unresolved group can still contribute losers stronger than this score.
+    int worstHigher=0;
+    for(const auto &group:*groups){
+        int higher=0;
+        for(auto *member:group.getJumpers())if(member && member!=jumper){const auto entry=entries.value(member);if(!entry.excluded && (entry.pending || entry.points>points))++higher;}
+        worstHigher+=qMax(0,higher-quota);
+    }
+    return worstHigher<luckyLosersCount;
+}
+
+double KORoundManager::guaranteedAdvancePoints(Jumper *jumper) const
+{
+    if(!groups || !results || !indManager || !jumper)return -1;
+    qint64 upper=0;
+    for(const auto &group:*groups)for(auto *member:group.getJumpers())if(auto *result=results->getResultOfIndividualJumper(member))upper=qMax(upper,result->getRankingPoints());
+    ++upper;
+    if(!wouldSurelyAdvance(jumper,upper))return -1;
+    qint64 lower=0;
+    while(lower<upper){const qint64 middle=lower+(upper-lower)/2;if(wouldSurelyAdvance(jumper,middle))upper=middle;else lower=middle+1;}
+    return lower/10.;
+}
+
 void KORoundManager::updateLuckyLosers()
 {
     QVector<Jumper *> losers;

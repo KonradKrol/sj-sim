@@ -18,6 +18,7 @@ class IndividualCompetitionManager : public AbstractCompetitionManager
 public:
     IndividualCompetitionManager();
 
+    bool isLuckyLoser(Jumper *jumper) const;
     void setupNextRound(QVector<KOGroup> manualGroups = QVector<KOGroup>());
     void setupStartListStatusesForActualRound();
     void updateCompetitorsAdvanceStatuses();
@@ -39,6 +40,7 @@ private:
     QVector<QVector<Jumper *>> roundsJumpers;
     QVector<QVector<KOGroup> *> roundsKOGroups;
     KORoundManager * KOManager;
+    QSet<Jumper *> previousLuckyLosers;
 
 public:
     QVector<Jumper *> & getFirstRoundJumpersReference() {return roundsJumpers[0];}

@@ -33,6 +33,7 @@ QVariant ResultsTableModel::data(const QModelIndex &index, int role) const
     const int roundStatus=manager && !status && results->getResultsReference().at(index.row()).getScoringRound()<manager->getActualRound()?StartListCompetitorStatus::SureDroppedOut
         :manager && manager->getActualRound()<manager->effectiveRoundsCount() && status?status->getAdvanceStatus():-1;
     const int qualificationStatus=manager?manager->qualificationStatus(jumper):-1;
+    if(role==CompetitionAdvancement::LuckyLoserRole){auto *individual=dynamic_cast<IndividualCompetitionManager *>(manager);return individual && individual->isLuckyLoser(jumper);}
     if(role==CompetitionAdvancement::RoundStatusRole)return roundStatus;
     if(role==CompetitionAdvancement::QualificationStatusRole)return qualificationStatus;
     if(role==CompetitionAdvancement::QualificationTargetRole) {
@@ -70,7 +71,7 @@ QVariant ResultsTableModel::data(const QModelIndex &index, int role) const
                 if(results->getResultsReference().at(index.row()).getJumps().count() > jump){
                     switch(i){
                     case 0:{
-                        QString text = QString::number(results->getResultsReference().at(index.row()).getJumps().at(jump).getDistance());
+                        QString text = QString::number(results->getResultsReference().at(index.row()).getJumps().at(jump).getDistance(), 'f', 1);
                         if(results->getResultsReference().at(index.row()).getJumps().at(jump).getLanding().getType() == Landing::Fall)
                             text += "*";
                         return text;

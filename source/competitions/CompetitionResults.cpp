@@ -360,6 +360,7 @@ void CompetitionResults::addJump(Jumper *jumper, JumpData &jump, int jumpNumber)
 
 void CompetitionResults::addJump(Team *team, JumpData &jump, int jumpNumber)
 {
+    if(auto *existing=getResultOfTeam(team);existing && existing->isTeamDisqualified())return;
     CompetitionSingleResult *result = nullptr;
     for(auto & res : results){
         if(res.getTeam() == team){
@@ -437,6 +438,7 @@ void CompetitionResults::updatePositions()
     int place = 0;
     for(int index = 0; index < results.size(); ++index) {
         auto &result = results[index];
+        if(result.isTeamDisqualified()){result.setPosition(0);continue;}
         if(index == 0 || !result.hasSameRankAs(results[index-1]))place = index + 1;
         result.setPosition(place);
     }

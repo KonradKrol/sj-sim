@@ -24,6 +24,7 @@ class QuickAppearance : public QObject {
     Q_PROPERTY(bool dark READ dark WRITE setDark NOTIFY changed)
     Q_PROPERTY(bool compactUi READ compactUi WRITE setCompactUi NOTIFY changed)
     Q_PROPERTY(bool reducedMotion READ reducedMotion WRITE setReducedMotion NOTIFY changed)
+    Q_PROPERTY(int teamResultsMode READ teamResultsMode WRITE setTeamResultsMode NOTIFY changed)
     Q_PROPERTY(qreal uiScale READ uiScale WRITE setUiScale NOTIFY changed)
     Q_PROPERTY(qreal textScale READ textScale WRITE setTextScale NOTIFY changed)
 public:
@@ -32,6 +33,8 @@ public:
     bool dark() const { return m_dark; }
     bool compactUi() const { return m_compactUi; }
     bool reducedMotion() const { return m_reducedMotion; }
+    int teamResultsMode() const { return m_teamResultsMode; }
+    void setTeamResultsMode(int mode);
     qreal uiScale() const { return m_uiScale; }
     qreal textScale() const { return m_textScale; }
     void setDark(bool value);
@@ -44,6 +47,7 @@ signals:
 private:
     bool m_dark, m_reducedMotion, m_compactUi;
     qreal m_textScale,m_uiScale;
+    int m_teamResultsMode=0;
 };
 
 // Each projected control keeps its identity when values or the layout change.
@@ -95,6 +99,7 @@ public:
     Q_INVOKABLE void select(int row, int column, int modifiers, bool open = false);
     Q_INVOKABLE void edit(int row, int column, const QVariant &value);
     Q_INVOKABLE void toggle(int row);
+    Q_INVOKABLE void setTeamMode(int mode);
     Q_INVOKABLE void sort(int column, bool descending);
     Q_INVOKABLE void moveCurrent(int delta, int modifiers);
     Q_INVOKABLE void moveColumn(int delta);
@@ -114,6 +119,7 @@ private:
     QPointer<QObject> m_selection;
     QVector<QPersistentModelIndex> m_rows;
     QList<QMetaObject::Connection> m_connections;
+    int m_teamMode=-1;
     int m_anchor = -1;
     bool m_frozen=false;
     QVector<QHash<int,QVariant>> m_snapshot;

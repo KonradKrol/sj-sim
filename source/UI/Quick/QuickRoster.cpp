@@ -114,6 +114,7 @@ void QuickRoster::removeMarked(){sync();if(!membership())return;auto next=m_curr
 void QuickRoster::moveBefore(const QString &id,const QString &target,bool after){
     sync();auto *source=jumper(id),*destination=jumper(target);
     if(!source||!destination||!m_current.contains(source)||!m_current.contains(destination)||source==destination)return;
+    if(qobject_cast<TeamEditorWidget *>(m_source)){auto next=m_current;qSwap(next[next.indexOf(source)],next[next.indexOf(destination)]);m_marked={id};apply(next);return;}
     if(!m_marked.contains(id))m_marked={id};if(m_marked.contains(target))return;
     QVector<Jumper *> remaining;for(auto *j:m_current)if(!m_marked.contains(key(j)))remaining.append(j);
     moveMarked(remaining.indexOf(destination)+(after?1:0)+1);

@@ -106,7 +106,7 @@ QVariant TeamResultsTreeModel::data(const QModelIndex &index, int role) const
     while(header && header->getParentItem()!=rootItem)header=header->getParentItem();
     auto *result=header && results && header->row()>=0 && header->row()<results->getResultsReference().size()?&results->getResultsReference()[header->row()]:nullptr;
     auto *team=result?result->getTeam():nullptr;
-    const int roundStatus=manager && result && manager->getAdvanceStatusOfTeam(team)<0 && result->getScoringRound()<manager->getActualRound()?StartListCompetitorStatus::SureDroppedOut
+    const int roundStatus=result && result->isTeamDisqualified()?StartListCompetitorStatus::SureDroppedOut:manager && result && manager->getAdvanceStatusOfTeam(team)<0 && result->getScoringRound()<manager->getActualRound()?StartListCompetitorStatus::SureDroppedOut
         :manager && manager->getActualRound()<manager->effectiveRoundsCount()?manager->getAdvanceStatusOfTeam(team):-1;
     const int qualificationStatus=manager?manager->qualificationStatus(team):-1;
     if(role==CompetitionAdvancement::RoundStatusRole)return roundStatus;
@@ -179,7 +179,7 @@ Team *TeamResultsTreeModel::getLastTeam() const
 
 void TeamResultsTreeModel::setLastTeam(Team *newLastTeam)
 {
-    lastTeam = newLastTeam;
+    if(newLastTeam)lastTeam = newLastTeam;
 }
 
 CompetitionResults *TeamResultsTreeModel::getResults() const
@@ -229,7 +229,7 @@ void TeamResultsTreeModel::setupTreeItems()
             continue;
         Country *country = GlobalDatabase::get()->getCountryByAlpha3(res.getTeam()->getCountryCode());
         const QString teamName = country != nullptr ? country->getName() : res.getTeam()->getCountryCode();
-        TreeItem * teamHeaderItem = new TreeItem({QString::number(res.getPosition()), teamName, "", QString::number(res.getPointsSum()), ""}, rootItem);
+        TreeItem * teamHeaderItem = new TreeItem({res.isTeamDisqualified()?QString("DSQ"):QString::number(res.getPosition()), teamName, "", res.isTeamDisqualified()?QString::fromUtf8("—"):QString::number(res.getPointsSum(), 'f', 1), ""}, rootItem);
         for(auto & jumper : res.getTeam()->getJumpersReference()){
             //Czy w resultsach jest już ten zawodnik?
             bool resultsContainsJumper = false;
@@ -244,7 +244,7 @@ void TeamResultsTreeModel::setupTreeItems()
                 for(auto & jump : res.getJumps()){
                     if(jump.getJumper() == jumper) {
                         jumperPointsSum += jump.getPoints();
-                        distances.append(QString::number(jump.getDistance())+(jump.getLanding().getType()==Landing::Fall?"*":""));
+                        distances.append((jump.getDSQ()?QString("DSQ"):QString::number(jump.getDistance(), 'f', 1))+(jump.getLanding().getType()==Landing::Fall?"*":""));
                     }
                 }
                 if(auto *member=res.getTeamJumperResult(jumper))jumperPointsSum=member->getPointsSum();

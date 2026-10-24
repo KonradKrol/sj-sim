@@ -261,9 +261,11 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
     Q_UNUSED(main)
     auto *db=GlobalDatabase::get();
     const bool superTeam=QCoreApplication::arguments().contains("--super-team-only");
+    const bool forceTeamDsq=QCoreApplication::arguments().contains("--team-dsq-only");
     CompetitionRules rules=db->getEditableCompetitionRules().first();
     rules.setHasDsq(false);rules.setCompetitionType(scenario==2?CompetitionRules::Team:CompetitionRules::Individual);
     rules.setJumpersInTeamCount(4);
+    if(forceTeamDsq)rules.setHasDsq(true);
     RoundInfo first(bulk&&scenario!=2?100:16,true),second(scenario==2?3:bulk?(scenario==1?60:30):8,true);
     if(scenario==1) { first.setKO(true);first.setCountInKOGroup(2);first.setAdvancingFromKOGroup(1);first.setKoGroupsSelectionType(KOGroup::Classic); }
     const bool multiKo=QCoreApplication::arguments().contains("--ko-multi-round-only");
@@ -305,6 +307,18 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
             runner.stop();ran=true;presented=window;
             auto *bridge=window->findChild<QuickBridge *>();check(bridge!=nullptr,"fresh competition adapter");
             if(!bulk)competitionCoachGateRegressions(window,check);
+            auto *resultsTable=item(scene(window)->rootObject(),"raceResults");check(resultsTable && !resultsTable->property("searchEnabled").toBool() && resultsTable->property("plain").toBool(),"all live result tables are plain and cannot search");
+            if(scenario==2){
+                auto *appearance=scene(window)->rootContext()->contextProperty("appearance").value<QuickAppearance *>();const int oldMode=appearance->teamResultsMode();
+                auto *table=resultsTable->property("table").value<QuickTableModel *>();check(table,"team results adapter exists");
+                appearance->setTeamResultsMode(1);QTest::qWait(40);QuickAppearance stored;check(stored.teamResultsMode()==1,"team results mode is persisted");
+                appearance->setTeamResultsMode(oldMode);QTest::qWait(40);
+                if(forceTeamDsq){window->getManager()->setBaseDSQProbability(1);window->autoSimulateCompetition();check(window->getManager()->checkCompetitionEnd(),"automatic team DSQ competition finishes");
+                    for(const auto &result:window->getManager()->getResults()->getResultsReference())check(result.isTeamDisqualified() && result.getPosition()==0 && result.getJumps().size()==1,"whole-team DSQ stops all subsequent members and removes classified place");
+                    qInfo()<<"PASS: automatic whole-team DSQ, notifications, no later jumps and unclassified results";window->accept();return;
+                }
+            }
+
             if(auto *start=item(scene(window)->rootObject(),"raceStartList"))check(!start->property("searchEnabled").toBool() && !start->property("searchOpen").toBool(),"competition start list never exposes athlete filtering");
             if(!bulk && scenario==0) {
                 auto *info=window->getManager()->getCompetitionInfo();const int type=info->getSerieType(),rounds=info->getExceptionalRoundsCount();
@@ -458,6 +472,8 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                         source->setQualifyingCompetitions(oldTargets);source->setExceptionalRoundsCount(oldRounds);manager->updateCompetitorsAdvanceStatuses();manager->updateLastQualifiedResult();adapter->invalidateText();bridge->refresh();main.resize(1024,640);QTest::qWait(100);
                     }
                     auto *table=item(scene(window)->rootObject(),"raceResults");const auto columns=table->property("displayColumns").value<QJSValue>().toVariant().toList();
+
+
                     check(columns.contains(3)&&columns.contains(2),"default competition results show distance and total points together");
                     auto *distance=item(scene(window)->rootObject(),"lastJumpDistance");check(distance&&distance->property("text").toString()==bridge->jumpSummary().value("distance").toString(),"last jump distance uses revealed real jump data");
                     const auto summary=bridge->jumpSummary();check(summary.contains("gate")&&summary.contains("windPoints")&&summary.contains("gatePoints")&&summary.contains("judgesPoints"),"last jump exposes gate, compensation components and judges total directly");
@@ -549,6 +565,14 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
             check(scenario!=0||previousRankTested,"previous-round rank transition was exercised in a real second round");
             check(window->getManager()->checkCompetitionEnd(),"competition finishes");
             check(!window->getManager()->getResults()->getResultsReference().isEmpty(),"competition has actual results");
+            if(scenario==2){
+                auto *table=item(scene(window)->rootObject(),"raceResults");
+                        auto *appearance=scene(window)->rootContext()->contextProperty("appearance").value<QuickAppearance *>();const int mode=appearance->teamResultsMode();auto *model=table->property("table").value<QuickTableModel *>();
+                        appearance->setTeamResultsMode(1);QTest::qWait(30);const int summaries=model->count();
+                        appearance->setTeamResultsMode(0);QTest::qWait(30);const int last=model->count();
+                        appearance->setTeamResultsMode(2);QTest::qWait(30);check(summaries<last && last<=model->count(),"team modes expand none, the latest squad, or all jumped members");
+                        appearance->setTeamResultsMode(mode);QTest::qWait(30);
+                    }
             render(window,QString("live-results-%1").arg(scenario),scenario==2);
             bridge->refresh();
             check(bridge->context().value("biggestAdvancement").toMap()==QuickRaceStats::biggestAdvancement(*window->getManager()->getResults(),window->getManager()->getActualRound(),scenario==2?4:1,StartListCompetitorStatus::remainingJumpers(window->getManager()->getStartListStatusesReference())),"competition header exposes the largest revealed advancement");
@@ -1242,7 +1266,9 @@ static void rosterRegressions(MainWindow &main) {
     JumpersListEditorWindow saved;saved.setAllJumpers(pool.mid(0,12));saved.setSelectedJumpers(pool.mid(0,3));saved.updateUnselectedJumpers();saved.show();QTest::qWait(120);
     auto *savedRoster=saved.findChild<QuickBridge *>()->findChild<QuickRoster *>();check(savedRoster && savedRoster->count()==3,"saved lists use the same roster editor");savedRoster->toggle(QuickRoster::key(pool[5]));check(saved.getSelectedJumpers().contains(pool[5]) && !saved.getUnselectedJumpers().contains(pool[5]),"saved-list membership and its complement stay consistent");savedRoster->undo();check(saved.getSelectedJumpers()==pool.mid(0,3),"saved list undo restores its draft");render(&saved,"saved-roster",true);saved.reject();
     Team team;team.setCountryCode("POL");team.setJumpers(pool.mid(0,6));QDialog dialog;auto *layout=new QVBoxLayout(&dialog);auto *editor=new TeamEditorWidget(&team,4,&dialog);layout->addWidget(editor);dialog.show();QTest::qWait(120);
-    auto *teamRoster=dialog.findChild<QuickBridge *>()->findChild<QuickRoster *>();check(teamRoster && !teamRoster->membership() && teamRoster->activeLimit()==4,"team lineup distinguishes starters from reserves");teamRoster->mark(QuickRoster::key(pool[5]));teamRoster->moveMarked(1);check(editor->constructTeamFromWidgetInput().getJumpers().first()==pool[5],"reserve can move directly into starting squad");teamRoster->undo();check(editor->getJumpers()==pool.mid(0,6),"team lineup undo preserves identities");render(&dialog,"team-roster",true);dialog.reject();
+    auto *teamRoster=dialog.findChild<QuickBridge *>()->findChild<QuickRoster *>();check(teamRoster && !teamRoster->membership() && teamRoster->activeLimit()==4,"team lineup distinguishes starters from reserves");teamRoster->mark(QuickRoster::key(pool[5]));teamRoster->moveMarked(1);check(editor->constructTeamFromWidgetInput().getJumpers().first()==pool[5],"reserve can move directly into starting squad");teamRoster->undo();check(editor->getJumpers()==pool.mid(0,6),"team lineup undo preserves identities");teamRoster->moveBefore(QuickRoster::key(pool[5]),QuickRoster::key(pool[1]),true);
+    auto expected=pool.mid(0,6);qSwap(expected[1],expected[5]);check(editor->getJumpers()==expected,"team drag swaps the target and reserve without shifting other slots");teamRoster->undo();
+    render(&dialog,"team-roster",true);dialog.reject();
     qInfo()<<"PASS: roster search, batch membership, stable models, pointer drag, position moves, undo, saved lists and team reserves";
 }
 
@@ -2134,6 +2160,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--super-team-only")){main.show();runCompetition(main,2,true,1);return 0;}
     if(app.arguments().contains("--roster-inputs-only")){rosterInputRegressions(main);return 0;}
     backendRegressions();
+    if(app.arguments().contains("--team-dsq-only")){main.show();runCompetition(main,2);return 0;}
     if(app.arguments().contains("--team-only")){main.show();runCompetition(main,2);return 0;}
     if(app.arguments().contains("--interaction-only")){interactionRegressions(main);return 0;}
     if(app.arguments().contains("--space-only")){spaceRegressions(main);return 0;}

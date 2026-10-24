@@ -15,7 +15,8 @@ FocusScope {
     property bool followCurrent: false
     property real maximumHeight: 540
     property bool compact: false
-    property bool searchEnabled: true
+    property bool plain: false
+    property bool searchEnabled: !plain
     property bool searchOpen: searchEnabled && !compact && width >= 320 && height >= 240
     function clearDisabledSearch() { if(!searchEnabled){searchOpen=false;if(table && table.filter.length)table.filter=""} }
     onSearchEnabledChanged: clearDisabledSearch()
@@ -88,6 +89,7 @@ FocusScope {
         anchors.fill: parent; anchors.margins: 1
         spacing: 0
         RowLayout {
+            visible: !tableRoot.plain
             Layout.fillWidth: true
             Layout.margins: Theme.compact ? 2 : tableRoot.compact ? 4 : 8
             Label { text: tableRoot.table && tableRoot.table.selectedCount>0 && tableRoot.height<300 ? qsTr("Zaznaczono: %1").arg(tableRoot.table.selectedCount) : qsTr("%1 pozycji").arg(tableRoot.table ? tableRoot.table.count : 0); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
@@ -157,18 +159,20 @@ FocusScope {
                         model: tableRoot.displayColumns
                         AbstractButton {
                             visible: index < tableRoot.visibleColumns
-                            hoverEnabled: true
+                            hoverEnabled: !tableRoot.plain
+                            focusPolicy: tableRoot.plain ? Qt.NoFocus : Qt.StrongFocus
                             Accessible.name: (tableRoot.headers[modelData] || "")
                             ToolTip.visible: hovered || activeFocus
                             ToolTip.text: (tableRoot.headers[modelData] || "")
                             width: tableRoot.columnWidth(index); height: header.height
                             onClicked: {
+                                if(tableRoot.plain)return
                                 tableRoot.descending = tableRoot.sortColumn === modelData ? !tableRoot.descending : false
                                 tableRoot.sortColumn = modelData
                                 tableRoot.table.sort(modelData, tableRoot.descending)
                             }
                             background: Rectangle { color: Theme.raised; border.width: 2; border.color: parent.activeFocus ? Theme.accent : "transparent" }
-                            contentItem: Text { text: (tableRoot.raceResults && !tableRoot.jumpColumns ? (modelData===0 ? qsTr("Poz.") : modelData===1 ? tableRoot.headers[1] : modelData===2 ? qsTr("Punkty") : qsTr("%1 · m").arg((modelData-1)/2)) : (tableRoot.headers[modelData] || "")) + (tableRoot.sortColumn === modelData ? (tableRoot.descending ? " ↓" : " ↑") : ""); color: Theme.muted; font.family: Theme.bodyFamily; font.pointSize: Theme.caption; font.weight: Font.DemiBold; leftPadding: 12; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight }
+                            contentItem: Text { text: (tableRoot.raceResults && !tableRoot.jumpColumns ? (modelData===0 ? qsTr("Poz.") : modelData===1 ? tableRoot.headers[1] : modelData===2 ? qsTr("Punkty") : qsTr("%1 · m").arg((modelData-1)/2)) : (tableRoot.headers[modelData] || "")) + (!tableRoot.plain && tableRoot.sortColumn === modelData ? (tableRoot.descending ? " ↓" : " ↑") : ""); color: Theme.muted; font.family: Theme.bodyFamily; font.pointSize: Theme.caption; font.weight: Font.DemiBold; leftPadding: 12; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight }
                         }
                     }
                 }
@@ -194,6 +198,7 @@ FocusScope {
                         advanceState: model.advanceState === undefined ? -1 : model.advanceState
                         qualificationState: model.qualificationState === undefined ? -1 : model.qualificationState
                         qualificationTarget: model.qualificationTarget || ""
+                        luckyLoser: !!model.luckyLoser
                         statusText: model.statusText || ""
                         tint: model.tint || ""
                     }
@@ -211,7 +216,7 @@ FocusScope {
             }
         }
         RowLayout {
-            visible: !!tableRoot.table && tableRoot.table.multiple && tableRoot.table.selectedCount>0 && tableRoot.height>=300
+            visible: !tableRoot.plain && !!tableRoot.table && tableRoot.table.multiple && tableRoot.table.selectedCount>0 && tableRoot.height>=300
             Layout.fillWidth: true; Layout.margins: 8
             Label { objectName: "tableSelection-"+tableRoot.ownerId; text: qsTr("Zaznaczono: %1").arg(tableRoot.table ? tableRoot.table.selectedCount : 0); color: Theme.ink; font.pointSize: Theme.caption; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
             SButton { text: tableRoot.width<400 ? "×" : qsTr("Wyczyść zaznaczenie"); Accessible.name: qsTr("Wyczyść zaznaczenie"); quiet: true; onClicked: tableRoot.table.clearSelection() }
@@ -237,6 +242,7 @@ FocusScope {
     Shortcut { sequence: StandardKey.Find; enabled: tableRoot.searchEnabled && tableRoot.visible && tableRoot.activeFocus; onActivated: {tableRoot.searchOpen=true;search.forceActiveFocus();search.selectAll()} }
     Keys.onPressed: {
         if (!table) return
+        if(plain && ((event.modifiers & (Qt.ControlModifier | Qt.ShiftModifier)) || event.key===Qt.Key_F2 || event.key===Qt.Key_Delete || event.key===Qt.Key_Insert)){event.accepted=true;return}
         if (event.key === Qt.Key_Up && !(event.modifiers & Qt.ControlModifier)) { table.moveCurrent(-1,event.modifiers); event.accepted = true }
         else if (event.key === Qt.Key_Down && !(event.modifiers & Qt.ControlModifier)) { table.moveCurrent(1,event.modifiers); event.accepted = true }
         else if (event.key === Qt.Key_Left || event.key === Qt.Key_Right) { var visual=displayColumns.indexOf(table.currentColumn);var next=Math.max(0,Math.min(visibleColumns-1,visual+(event.key === Qt.Key_Left ? -1 : 1)));table.moveColumn(displayColumns[next]-table.currentColumn); event.accepted = true }

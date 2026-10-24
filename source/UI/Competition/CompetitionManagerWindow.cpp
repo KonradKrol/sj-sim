@@ -98,6 +98,8 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     ui->listView_startList->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableView_results->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView_results->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->tableView_KOGroupResults->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->tableView_KOGroupResults->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView_results->setToolTip(tr("Kliknij dwukrotnie dowolne miejsce w wierszu, aby zobaczyć szczegóły wyniku"));
     ui->pushButton_jump->setToolTip(tr("Oddaj skok aktualnego zawodnika (spacja, gdy przycisk ma fokus)"));
     ui->pushButton_generateNewWinds->setToolTip(tr("Wylosuj nowe warunki wiatrowe dla następnego skoku"));
@@ -405,15 +407,15 @@ void CompetitionManagerWindow::updateManipulationIndicator(bool pending)
 void CompetitionManagerWindow::updateToBeatDistanceLabel()
 {
     manager->updateToBeatLineDistance();
-    ui->label_toBeatDistance->setText(manager->getToBeatLineDistance()<0 ? QString::fromUtf8("—") : QString::number(manager->getToBeatLineDistance(), 'f', 1) + " m");
+    ui->label_toBeatDistance->setText(manager->getToBeatLineDistance()<0 || manager->getToBeatLineDistance()>manager->getCompetitionInfo()->getHill()->getKPoint()*1.3 ? QString::fromUtf8("—") : QString::number(manager->getToBeatLineDistance(), 'f', 1) + " m");
 }
 
 void CompetitionManagerWindow::updateToAdvanceDistanceLabel()
 {
     manager->updateToAdvanceLineDistance();
-    if(manager->getToAdvanceLineDistance() == (-1))
+    if(manager->getToAdvanceLineDistance()<0 || manager->getToAdvanceLineDistance()>manager->getCompetitionInfo()->getHill()->getKPoint()*1.3)
         ui->label_toAdvancementDistance->setText("-");
-    else ui->label_toAdvancementDistance->setText(QString::number(manager->getToAdvanceLineDistance()) + "m");
+    else ui->label_toAdvancementDistance->setText(QString::number(manager->getToAdvanceLineDistance(), 'f', 1) + " m");
 }
 
 void CompetitionManagerWindow::updatePointsToTheLeaderLabel()
@@ -869,6 +871,7 @@ void CompetitionManagerWindow::autoSimulateRound()
         setupSimulator();
         simulator.simulateJump();
         JumpData jump = simulator.getJumpData();
+        notifyTeamDisqualification(jump);
         lastSimulatedJumper = jump.getJumper();
         if(manipulationPending)
         {
@@ -881,6 +884,7 @@ void CompetitionManagerWindow::autoSimulateRound()
         }
         else if(type == CompetitionRules::Team){
             tmManager->getResults()->addJump(tmManager->getActualTeam(), jump);
+            teamResultsTreeModel->setLastTeam(tmManager->getActualTeam());
             tmManager->getResults()->getResultOfTeam(tmManager->getActualTeam())->updateTeamJumpersResults();
         }
 
@@ -995,6 +999,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
         setupSimulator();
         simulator.simulateJump();
         JumpData jump = simulator.getJumpData();
+        notifyTeamDisqualification(jump);
         lastSimulatedJumper = jump.getJumper();
         if(manipulationPending)
         {
@@ -1007,6 +1012,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
         }
         else if(type == CompetitionRules::Team){
             tmManager->getResults()->addJump(tmManager->getActualTeam(), jump);
+            teamResultsTreeModel->setLastTeam(tmManager->getActualTeam());
             tmManager->getResults()->getResultOfTeam(tmManager->getActualTeam())->updateTeamJumpersResults();
         }
 
@@ -1152,6 +1158,7 @@ void CompetitionManagerWindow::autoSimulateGroup()
             setupSimulator();
             simulator.simulateJump();
             JumpData jump = simulator.getJumpData();
+        notifyTeamDisqualification(jump);
             lastSimulatedJumper = jump.getJumper();
             if(manipulationPending)
             {
@@ -1160,6 +1167,7 @@ void CompetitionManagerWindow::autoSimulateGroup()
             }
             jump.setCompetition(manager->getCompetitionInfo());
             tmManager->getResults()->addJump(tmManager->getActualTeam(), jump);
+            teamResultsTreeModel->setLastTeam(tmManager->getActualTeam());
             tmManager->getResults()->getResultOfTeam(tmManager->getActualTeam())->updateTeamJumpersResults();
 
             int status = StartListCompetitorStatus::Finished;
@@ -1242,6 +1250,7 @@ void CompetitionManagerWindow::autoSimulateJumps()
             setupSimulator();
             simulator.simulateJump();
             JumpData jump = simulator.getJumpData();
+        notifyTeamDisqualification(jump);
             lastSimulatedJumper = jump.getJumper();
             if(manipulationPending)
             {
@@ -1254,6 +1263,7 @@ void CompetitionManagerWindow::autoSimulateJumps()
             }
             else if(type == CompetitionRules::Team){
                 tmManager->getResults()->addJump(tmManager->getActualTeam(), jump);
+            teamResultsTreeModel->setLastTeam(tmManager->getActualTeam());
                 tmManager->getResults()->getResultOfTeam(tmManager->getActualTeam())->updateTeamJumpersResults();
             }
 
@@ -1727,6 +1737,13 @@ void CompetitionManagerWindow::cancelActualRound()
 // W roundsTeams jest ta sama wartość ale we wskaźniku do niego jest 0 elementów, czyli być może istnieje dalej w pamięci i ma 0 elementów, ale w roundsTeams pojawił się nowy który ma te 12 ale inny adres.
 // Teorytycznie nowe przypisanie wskaźnika do model.teams powinno zadziałać, ale jakie jest rozwiązanie tego problemu w sposób "czysty?"
 
+void CompetitionManagerWindow::notifyTeamDisqualification(const JumpData &jump)
+{
+    if(type!=CompetitionRules::Team || !jump.getDSQ())return;
+    auto *team=static_cast<TeamCompetitionManager *>(manager)->getActualTeam();
+    QMessageBox::information(this,tr("Dyskwalifikacja drużyny"),tr("%1: dyskwalifikacja zawodnika %2 oznacza dyskwalifikację całej drużyny. Pozostali zawodnicy tej drużyny nie oddadzą kolejnych skoków w tym konkursie.").arg(team?team->getCountryCode():QString(),jump.getJumper()?jump.getJumper()->getNameAndSurname():QString()),QMessageBox::Ok);
+}
+
 void CompetitionManagerWindow::setupSimulator()
 {
     simulator.setGate(manager->getActualGate());
@@ -1770,12 +1787,14 @@ void CompetitionManagerWindow::on_pushButton_jump_clicked()
     setupSimulator();
     simulator.simulateJump();
     JumpData jump = simulator.getJumpData();
+        notifyTeamDisqualification(jump);
     jump.setCompetition(manager->getCompetitionInfo());
     if(type == CompetitionRules::Individual){
         indManager->getResults()->addJump(indManager->getActualJumper(), jump);
     }
     else if(type == CompetitionRules::Team){
         tmManager->getResults()->addJump(tmManager->getActualTeam(), jump);
+            teamResultsTreeModel->setLastTeam(tmManager->getActualTeam());
         tmManager->getResults()->getResultOfTeam(tmManager->getActualTeam())->updateTeamJumpersResults();
     }
 

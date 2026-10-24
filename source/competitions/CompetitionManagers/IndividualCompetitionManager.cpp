@@ -306,8 +306,14 @@ QVector<StartListCompetitorStatus> IndividualCompetitionManager::getStartListSta
     return startListStatuses;
 }
 
+bool IndividualCompetitionManager::isLuckyLoser(Jumper *jumper) const {
+    return previousLuckyLosers.contains(jumper) || (KOManager && KOManager->getLuckyLosers().contains(jumper));
+}
+
 void IndividualCompetitionManager::setupNextRound(QVector<KOGroup> manualGroups)
 {
+    previousLuckyLosers.clear();
+    if(KOManager){KOManager->updateStatuses();for(auto *jumper:KOManager->getLuckyLosers())if(KOManager->advancementStatus(jumper)==StartListCompetitorStatus::SureAdvanced)previousLuckyLosers.insert(jumper);}
     updateCompetitorsAdvanceStatuses();
     actualRound++; //Przechodzi do następnej rundy
     roundsJumpers.push_back(getFilteredJumpersForNextRound());

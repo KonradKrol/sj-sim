@@ -2,6 +2,7 @@
 #include "../global/IdentifiableObjectsStorage.h"
 #include "../global/GlobalDatabase.h"
 #include "CompetitionInfo.h"
+#include <algorithm>
 
 extern const QString appVersion;
 
@@ -363,7 +364,12 @@ int CompetitionSingleResult::getScoringRound() const {
     return qMax(scoringRound,int((jumps.size()+perRound-1)/perRound));
 }
 
+bool CompetitionSingleResult::isTeamDisqualified() const {
+    return type==TeamResult && std::any_of(jumps.cbegin(),jumps.cend(),[](const JumpData &jump){return jump.getDSQ();});
+}
+
 int CompetitionSingleResult::getRankingRound() const {
+    if(isTeamDisqualified())return -1;
     return competition && competition->getRulesPointer()->hasRoundPointAdjustments()?getScoringRound():0;
 }
 

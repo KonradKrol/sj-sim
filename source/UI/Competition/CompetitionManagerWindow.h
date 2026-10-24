@@ -103,6 +103,7 @@ private:
 
     JumpSimulator simulator;
     void setupSimulator();
+    void notifyTeamDisqualification(const JumpData &jump);
     void focusCurrentJumper();
     void updateManipulationIndicator(bool pending);
     void showPersonalBestNotification(const QString &title, const QString &message);

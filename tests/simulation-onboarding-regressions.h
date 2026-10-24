@@ -11,6 +11,7 @@ static void competitionPresentationRegressions() {
     check(QuickRaceStats::roundStartGap(*own,rivals(),2).value("gap").toDouble()==50,"pre-jump leader gap applies the new round's weights");
     add(&b,80);own=results.getResultOfIndividualJumper(&a);
     check(QuickRaceStats::roundStartGap(*own,rivals(),2).value("gap").toDouble()==50,"round-start gap excludes the leader's extra current-round jump");
+    check(QuickRaceStats::currentLeaderGap(*own,rivals(),2).value("gap").toDouble()==130,"separate current-leader gap includes the rival current-series jump with weights");
     check(QuickRaceStats::roundStartGap(*own,{results.getResultOfIndividualJumper(&c)},2).value("gap").toDouble()==-10,"KO group gap can expose a negative lead independent of the overall leader");
     check(QuickRaceStats::roundStartGap(*own,rivals(),1).isEmpty(),"first round has no inherited-points gap");
     add(&a,60);add(&c,100);RoundInfo third(3,true);third.setPreviousRoundsWeights({.25,.5});auto rounds=info.getRulesPointer()->getRounds();rounds.append(third);info.getRulesPointer()->setRounds(rounds);
@@ -25,7 +26,7 @@ static void competitionPresentationRegressions() {
     teamJump(&ta,100);teamJump(&ta,80);teamJump(&tb,90);teamJump(&tb,70);teamJump(&tb,150);
     check(QuickRaceStats::roundStartGap(*teamResults.getResultOfTeam(&ta),{teamResults.getResultOfTeam(&tb)},2).value("gap").toDouble()==-10,"team gaps exclude extra members' jumps from the current series");
     info.getRulesPointer()->getRoundsReference()[1].setResetPoints(true);info.getRulesPointer()->getRoundsReference()[1].setPreviousRoundsWeights({});
-    check(QuickRaceStats::roundStartGap(*own,rivals(),2).isEmpty(),"reset points suppress stale previous-round gaps");
+    check(QuickRaceStats::roundStartGap(*own,rivals(),2).isEmpty() && QuickRaceStats::currentLeaderGap(*own,rivals(),2).isEmpty(),"reset points suppress both previous and current inherited gaps");
     results.getResultsReference().clear();add(&a,100);add(&b,100);add(&c,90);results.sortInDescendingOrder();
     IndividualCompetitionManager manager;manager.setCompetitionInfo(&info);manager.setCompetitionRules(info.getRulesPointer());manager.setResults(&results);manager.setActualRound(1);manager.setFirstRoundJumpers({&a,&b,&c});manager.setupStartListStatusesForActualRound();
     ResultsTableModel model(CompetitionRules::Individual,&results,&manager);model.setStartListStatuses(&manager.getStartListStatusesReference());

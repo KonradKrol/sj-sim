@@ -91,6 +91,7 @@ void AbstractCompetitionManager::updateQualificationStatuses()
         entry.order=order;entry.round=result?result->getRankingRound():1;
         entry.maximumRound=rounds;entry.points=result?result->getRankingPoints():0;
         entry.excluded=current && !team && (current->getJumpStatus()==StartListCompetitorStatus::Dsq || current->getJumpStatus()==StartListCompetitorStatus::Dns);
+        if(result && result->isTeamDisqualified())entry.excluded=true;
         if(result && !team && !result->getJumpsReference().isEmpty()) {
             const auto &last=result->getJumpsReference().last();
             entry.excluded=entry.excluded || last.getDSQ() || last.getDNS();
@@ -204,35 +205,23 @@ void AbstractCompetitionManager::updateToAdvanceLineDistance()
 {
     toAdvanceLineDistance=-1;
     if(!lineContextValid(this))return;
-    updateLastQualifiedResult();
-    bool hasTarget=lastQualifiedResult!=nullptr;
-    double target=hasTarget?lastQualifiedResult->getPointsSum():0.;
     auto *individual=dynamic_cast<IndividualCompetitionManager *>(this);
     auto *ko=individual?individual->getKOManager():nullptr;
-    if(ko && ko->getActualGroup() && ko->getLuckyLosersCount()>0) {
-        bool othersFinished=true;QVector<double> losers;
-        for(auto &group:*ko->getGroups()) {
-            if(&group==ko->getActualGroup())continue;
-            for(auto *jumper:group.getJumpersReference()) {
-                auto *result=results->getResultOfIndividualJumper(jumper);
-                if(!result || result->getJumpsReference().size()<actualRound)othersFinished=false;
-                else if(ko->getStatusesReference().value(jumper)==KORoundManager::Loser)losers.append(result->getPointsSum());
-            }
-        }
-        if(othersFinished) {
-            std::sort(losers.begin(),losers.end(),std::greater<double>());
-            const double luckyTarget=losers.size()<ko->getLuckyLosersCount()?0.:losers[ko->getLuckyLosersCount()-1];
-            target=hasTarget?qMin(target,luckyTarget):luckyTarget;hasTarget=true;
-        }
+    if(ko){
+        const double target=ko->guaranteedAdvancePoints(actualJumper);
+        if(target>=0)toAdvanceLineDistance=distanceForPoints(this,target,false);
+        return;
     }
-    if(hasTarget)toAdvanceLineDistance=distanceForPoints(this,target,false);
+    updateLastQualifiedResult();
+    if(lastQualifiedResult)toAdvanceLineDistance=distanceForPoints(this,lastQualifiedResult->getPointsSum(),false);
 }
 
 
 void AbstractCompetitionManager::updateLeaderResult()
 {
     results->sortInDescendingOrder();
-    leaderResult = results->getResultByIndex(0);
+    leaderResult=nullptr;
+    for(auto &result:results->getResultsReference())if(!result.isTeamDisqualified()){leaderResult=&result;break;}
 }
 
 void AbstractCompetitionManager::updateLastQualifiedResult()
@@ -265,96 +254,12 @@ void AbstractCompetitionManager::updateLastQualifiedResult()
         if(place>0 && place<=completed.size())lastQualifiedResult=completed[place-1];
         return;
     }
-    results->sortInDescendingOrder();
-
-    int competitorsCount = 0;
-    if(type == CompetitionRules::Individual){
-        competitorsCount = dynamic_cast<IndividualCompetitionManager*>(this)->getActualRoundJumpersReference().count();
-    }
-    else if(type == CompetitionRules::Team){
-        competitorsCount = dynamic_cast<TeamCompetitionManager*>(this)->getActualRoundTeamsReference().count();
-    }
-
-    bool condition = false;
-    if(indManager != nullptr)
-        if(indManager->getKOManager()){
-            int finished = 0; //Zawodnicy którzy skoczyli w aktualnej rundzie
-            for(auto & jumper : indManager->getKOManager()->getActualGroup()->getJumpersReference())
-                if(results->getResultOfIndividualJumper(jumper) != nullptr)
-                    if(results->getResultOfIndividualJumper(jumper)->getJumpsReference().count() == actualRound)
-                        finished++;
-            if(finished >= indManager->getKOManager()->getRoundInfo()->getAdvancingFromKOGroup() && finished < indManager->getKOManager()->getActualGroup()->getJumpersReference().count())
-                condition = true;
-        }
-
-    int lastQualifiedPosition = 0;
-    int koLastQualifiedPosition = (-1);
-
-    int limit = 0;
-    if(competitionRules->getRounds().count() > actualRound)
-        limit = competitionRules->getRounds().at(actualRound).getCount();
-    if(actualRound == effectiveRoundsCount())
-        limit = qMax(0,qualificationLimit());
-    if((competitorsCount - limit - (actualStartListIndex) > 0 || (actualRound == competitionRules->getRounds().count() && altQualifiersLimit == 0) || competitorsCount <= limit) && condition == false){
-        lastQualifiedPosition = -1;
-    }
-    else{
-        bool condition = indManager != nullptr;
-        if(condition == true)
-        {
-            if(indManager->getKOManager() == nullptr)
-                condition = false;
-        }
-
-        if(condition == true)
-        {
-            //DLA KO
-            QVector<Jumper *> sortedGroupJumpers = indManager->getKOManager()->getActualGroup()->getJumpersReference();
-            results->sortJumpersByResults(sortedGroupJumpers);
-            int remaining = 0;
-            for(auto & jumper : indManager->getKOManager()->getActualGroup()->getJumpersReference())
-            {
-                if(results->getResultOfIndividualJumper(jumper) != nullptr)
-                {
-                    if(results->getResultOfIndividualJumper(jumper)->getJumpsReference().count() < indManager->getActualRound())
-                        remaining++;
-                }
-                else
-                    remaining++;
-            }
-            int addition = 0;
-            //int addition = int(indManager->getKOManager()->getRoundInfo()->getAdvancingFromKOGroup() == 1);
-            if(remaining <= indManager->getKOManager()->getRoundInfo()->getAdvancingFromKOGroup() && remaining > 0){
-                Jumper * lastQualified = nullptr;
-                if(indManager->getKOManager()->getActualGroup()->getJumpersReference().count() <= indManager->getKOManager()->getRoundInfo()->getAdvancingFromKOGroup())
-                    lastQualified = sortedGroupJumpers.last();
-                else
-                    lastQualified = sortedGroupJumpers[indManager->getKOManager()->getRoundInfo()->getAdvancingFromKOGroup() - remaining];
-                lastQualifiedPosition = results->getResultOfIndividualJumper(lastQualified)->getPosition();
-            }
-        }
-        else{
-            lastQualifiedPosition = abs(competitorsCount - limit - (actualStartListIndex + 1));
-            koLastQualifiedPosition = lastQualifiedPosition;
-        }
-    }
-    bool isLastQualifiedPositionValid = lastQualifiedPosition > 0 && lastQualifiedPosition <= results->getResultsReference().count();
-    bool isActualRoundGoodOne = actualRound < competitionRules->getRounds().count();
-    bool isActualRoundGoodSecond = altQualifiersLimit > 0 && actualRound == competitionRules->getRounds().count();
-    if(isLastQualifiedPositionValid && (isActualRoundGoodOne || isActualRoundGoodSecond)){
-        lastQualifiedResult = results->getResultByIndex(lastQualifiedPosition - 1);
-        if(getType() == CompetitionRules::Individual)
-        {
-            if(competitionRules->getRoundsReference().count() > actualRound){
-                if(competitionRules->getRoundsReference()[actualRound - 1].getKO() == false && competitionRules->getRoundsReference()[actualRound].getKO())// && competitionRules->getRoundsReference()[actualRound].getKoGroupsSelectionType() == CompetitionRules::Classic) //KO w next rundzie
-                {
-                    lastQualifiedResult = results->getResultByIndex(koLastQualifiedPosition - 1);
-                }
-            }
-        }
-    }
-    else
-        lastQualifiedResult = nullptr;
+    lastQualifiedResult=nullptr;
+    auto *ko=indManager->getKOManager();
+    const double target=ko->guaranteedAdvancePoints(actualJumper);
+    if(target<0)return;
+    for(auto &result:results->getResultsReference())
+        if(result.getPointsSum()>=target && (!lastQualifiedResult || result.getPointsSum()<lastQualifiedResult->getPointsSum()))lastQualifiedResult=&result;
 }
 
 void AbstractCompetitionManager::updateActualCompetitorPointsToTheLeader()

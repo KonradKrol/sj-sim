@@ -48,7 +48,11 @@ ScrollView {
                 width: tables.resultWidth; height: tables.resultHeight
                 ColumnLayout {
                 anchors.fill: parent
-                Label { text: qsTr("Wyniki"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.body; font.weight: Font.ExtraBold }
+                RowLayout {
+                    Layout.fillWidth: true
+                    Label { text: qsTr("Wyniki"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.body; font.weight: Font.ExtraBold; Layout.fillWidth: true }
+                    SChoice { objectName: "teamResultsMode"; visible: race.resultNode===race.team; model: [qsTr("Ostatni skok"),qsTr("Drużyny"),qsTr("Pełne wyniki")]; currentIndex: appearance.teamResultsMode; onActivated: appearance.teamResultsMode=currentIndex; Layout.preferredWidth: 160 }
+                }
                 DataTable {
                     id: results
                     objectName: "raceResults"
@@ -56,6 +60,12 @@ ScrollView {
                     table: race.resultNode ? race.resultNode.values.table : null
                     ownerId: race.resultNode ? race.resultNode.values.id : -1
                     actions: race.resultNode ? race.resultNode.values.tableActions || [] : []
+                    plain: true; searchEnabled: false
+                    function applyTeamMode(){if(teamResults && table)table.setTeamMode(appearance.teamResultsMode)}
+                    onTableChanged: {clearDisabledSearch();applyTeamMode()}
+                    onTeamResultsChanged: applyTeamMode()
+                    Component.onCompleted: applyTeamMode()
+                    Connections { target: appearance; function onChanged(){results.applyTeamMode()} }
                     compact: true; raceResults: race.resultNode === race.individual
                     teamResults: race.resultNode === race.team
                     title: qsTr("Wyniki")
@@ -82,7 +92,7 @@ ScrollView {
                     readonly property var entry: ui.find("tableView_KOGroupResults")
                     node: entry && entry.values.available !== false ? entry : null
                     Layout.fillWidth: true; Layout.preferredHeight: visible ? 130 : 0
-                    compactTable: true; tableHeightLimit: 130; tableSearchEnabled: false
+                    compactTable: true; plainTable: true; tableHeightLimit: 130; tableSearchEnabled: false
                 }
                 }
             }

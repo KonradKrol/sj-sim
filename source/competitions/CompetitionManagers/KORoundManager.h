@@ -21,6 +21,8 @@ public:
 
     void updateStatuses();
     int advancementStatus(Jumper *jumper) const;
+    double guaranteedAdvancePoints(Jumper *jumper) const;
+    bool wouldSurelyAdvance(Jumper *jumper,qint64 points) const;
     void updateLuckyLosers();
     void updateJumpersSortedByResults();
     void updateActualGroup(Jumper * actualJumper);

@@ -10,6 +10,8 @@
 #include <QBrush>
 #include <QFont>
 #include <QSet>
+#include <QSignalBlocker>
+#include "../Competition/Results/TeamResultsTreeModel.h"
 
 QString quickPicture(const QPixmap &pixmap) {
     if (pixmap.isNull()) return {};
@@ -33,7 +35,7 @@ QuickTableModel::QuickTableModel(QAbstractItemView *view, QObject *parent)
 int QuickTableModel::rowCount(const QModelIndex &parent) const { return parent.isValid() ? 0 : m_rows.size(); }
 QHash<int,QByteArray> QuickTableModel::roleNames() const {
     return {{Qt::UserRole+1,"cells"}, {Qt::UserRole+2,"selected"}, {Qt::UserRole+3,"depth"},
-            {Qt::UserRole+4,"branch"}, {Qt::UserRole+5,"expanded"}, {Qt::UserRole+6,"current"}, {Qt::UserRole+7,"statusText"}, {Qt::UserRole+8,"tint"}, {Qt::UserRole+9,"advanceState"}, {Qt::UserRole+10,"qualificationState"}, {Qt::UserRole+11,"qualificationTarget"}};
+            {Qt::UserRole+4,"branch"}, {Qt::UserRole+5,"expanded"}, {Qt::UserRole+6,"current"}, {Qt::UserRole+7,"statusText"}, {Qt::UserRole+8,"tint"}, {Qt::UserRole+9,"advanceState"}, {Qt::UserRole+10,"qualificationState"}, {Qt::UserRole+11,"qualificationTarget"}, {Qt::UserRole+12,"luckyLoser"}};
 }
 QModelIndex QuickTableModel::cell(int row, int column) const {
     return m_source && row >= 0 && row < m_rows.size() ? m_rows[row].sibling(m_rows[row].row(), column) : QModelIndex();
@@ -69,14 +71,17 @@ QVariant QuickTableModel::data(const QModelIndex &index, int role) const {
     case Qt::UserRole+9: return first.data(CompetitionAdvancement::RoundStatusRole).isValid()?first.data(CompetitionAdvancement::RoundStatusRole):QVariant(-1);
     case Qt::UserRole+10: return first.data(CompetitionAdvancement::QualificationStatusRole).isValid()?first.data(CompetitionAdvancement::QualificationStatusRole):QVariant(-1);
     case Qt::UserRole+11: return first.data(CompetitionAdvancement::QualificationTargetRole);
+    case Qt::UserRole+12: return first.data(CompetitionAdvancement::LuckyLoserRole);
     case Qt::UserRole+7:
     case Qt::UserRole+8: {
         if(role==Qt::UserRole+7) {
             const auto round=first.data(CompetitionAdvancement::RoundStatusRole),qualification=first.data(CompetitionAdvancement::QualificationStatusRole);
             if(round.isValid() || qualification.isValid()) {
                 QStringList labels;
-                if(round.toInt()==StartListCompetitorStatus::SureAdvanced && round.toInt()>=0)labels.append(tr("Awans do następnej serii"));
-                else if(round.toInt()==StartListCompetitorStatus::SureDroppedOut)labels.append(tr("Poza awansem do następnej serii"));
+                const bool group=QString::fromLatin1(m_source->metaObject()->className())=="KOGroupResultsTableModel";
+                if(round.toInt()==StartListCompetitorStatus::SureAdvanced && round.toInt()>=0)labels.append(group?tr("Awans z grupy KO"):tr("Awans do następnej serii"));
+                else if(round.toInt()==StartListCompetitorStatus::SureDroppedOut)labels.append(group?tr("Poza awansem z grupy KO"):tr("Poza awansem do następnej serii"));
+                if(first.data(CompetitionAdvancement::LuckyLoserRole).toBool())labels.append(tr("LL · Lucky loser"));
                 if(qualification.toInt()==StartListCompetitorStatus::SureAdvanced && qualification.toInt()>=0)labels.append(tr("Q · Awans do konkursu"));
                 else if(qualification.toInt()==StartListCompetitorStatus::SureDroppedOut)labels.append(tr("Poza awansem do konkursu"));
                 if(!labels.isEmpty())return labels.join(QStringLiteral(" · "));
@@ -139,8 +144,14 @@ void QuickTableModel::sync() {
     }
     rebuild();
 }
+void QuickTableModel::setTeamMode(int mode){mode=qBound(0,mode,2);if(mode==m_teamMode)return;m_teamMode=mode;rebuild();}
 void QuickTableModel::rebuild() {
     if(m_frozen)return;
+    if(auto *tree=qobject_cast<QTreeView *>(m_view);tree && m_source && m_teamMode>=0) {
+        const QSignalBlocker blocker(tree);
+        auto *teams=qobject_cast<TeamResultsTreeModel *>(m_source);
+        if(teams)for(int r=0;r<m_source->rowCount();++r){auto index=m_source->index(r,0);auto *result=teams->getResults()->getResultByIndex(r);tree->setExpanded(index,m_teamMode==2 || (m_teamMode==0 && result && result->getTeam()==teams->getLastTeam()));}
+    }
     beginResetModel(); m_rows.clear();
     std::function<void(QModelIndex)> append=[&](QModelIndex parent) {
         if(!m_source) return;

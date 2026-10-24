@@ -108,12 +108,14 @@ void QuickNode::update(const QVariantMap &values,const QVariantList &children) {
 }
 QuickAppearance::QuickAppearance(QObject *parent) : QObject(parent) {
     QSettings settings;
+    m_teamResultsMode=qBound(0,settings.value("quickUi/teamResultsMode",0).toInt(),2);
     m_dark=settings.value("quickUi/dark",false).toBool();
     m_compactUi=false; // The previous density preset is superseded by the continuous UI scale.
     m_uiScale=qBound(.5,settings.value("quickUi/uiScale",DefaultUiScale).toDouble(),1.5);
     m_reducedMotion=settings.value("quickUi/reducedMotion",false).toBool();
     m_textScale=qBound(.75,settings.value("quickUi/textScale",1.).toDouble(),2.);
 }
+void QuickAppearance::setTeamResultsMode(int mode){mode=qBound(0,mode,2);if(mode==m_teamResultsMode)return;m_teamResultsMode=mode;QSettings().setValue("quickUi/teamResultsMode",mode);emit changed();}
 void QuickAppearance::setDark(bool value) { if(value==m_dark) return; m_dark=value; QSettings().setValue("quickUi/dark",value); emit changed(); }
 void QuickAppearance::setCompactUi(bool value) { if(value==m_compactUi)return; m_compactUi=value;QSettings().setValue("quickUi/compactUi",value);emit changed(); }
 void QuickAppearance::setReducedMotion(bool value) { if(value==m_reducedMotion) return; m_reducedMotion=value; QSettings().setValue("quickUi/reducedMotion",value); emit changed(); }
@@ -508,6 +510,8 @@ void QuickBridge::refresh() {
                 else for(const auto &entry:manager->getStartListStatusesReference())rivals.append(manager->getResults()->getResultOfIndividualJumper(entry.getJumper()));
                 const auto gap=QuickRaceStats::roundStartGap(*ranked,rivals,manager->getActualRound());
                 if(gap.contains("gap"))context["currentGap"]=gap.value("gap");
+                const auto liveGap=QuickRaceStats::currentLeaderGap(*ranked,rivals,manager->getActualRound());
+                if(liveGap.contains("gap"))context["liveLeaderGap"]=liveGap.value("gap");
                 if(auto *individual=dynamic_cast<IndividualCompetitionManager *>(manager);individual && individual->getKOManager() && individual->getKOManager()->getActualGroup()) {
                     rivals.clear();for(auto *jumper:individual->getKOManager()->getActualGroup()->getJumpersReference())rivals.append(manager->getResults()->getResultOfIndividualJumper(jumper));
                     const auto groupGap=QuickRaceStats::roundStartGap(*ranked,rivals,manager->getActualRound());
@@ -516,7 +520,7 @@ void QuickBridge::refresh() {
             }
         }
         if(window->getLiveStage()>0 && window->getLiveStage()<5)
-            for(const auto &key:{"currentGap","groupGap"}) {if(m_context.contains(key))context[key]=m_context.value(key);else context.remove(key);}
+            for(const auto &key:{"currentGap","groupGap","liveLeaderGap"}) {if(m_context.contains(key))context[key]=m_context.value(key);else context.remove(key);}
         if(context!=m_context) { m_context=context;emit changed(); }
         QVariantMap summary;
         QWidget *selected=nullptr;

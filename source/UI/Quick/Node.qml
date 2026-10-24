@@ -9,6 +9,7 @@ FocusScope {
     property real tableHeightLimit: 540
     property bool compactTable: false
     property bool tableSearchEnabled: true
+    property bool plainTable: false
     property bool raceResults: false
     readonly property var fields: node ? node.values : ({kind: "column"})
     readonly property string kind: fields.kind || "column"
@@ -185,7 +186,7 @@ FocusScope {
             }
         }
     }
-    Component { id: tableBody; DataTable { table: control.fields.table; ownerId: control.fields.id; actions: control.fields.tableActions || []; followCurrent: !!control.fields.follow; title: control.fields.label || ""; maximumHeight: control.tableHeightLimit; compact: control.compactTable; searchEnabled: control.tableSearchEnabled; raceResults: control.raceResults } }
+    Component { id: tableBody; DataTable { table: control.fields.table; ownerId: control.fields.id; actions: control.fields.tableActions || []; followCurrent: !!control.fields.follow; title: control.fields.label || ""; maximumHeight: control.tableHeightLimit; compact: control.compactTable; plain: control.plainTable; searchEnabled: control.tableSearchEnabled; raceResults: control.raceResults } }
     Component { id: chartBody; PlotPanel { chart: control.fields.chart } }
     Component {
         id: progressBody

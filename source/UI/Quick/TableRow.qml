@@ -14,6 +14,9 @@ Rectangle {
     property int advanceState: -1
     property int qualificationState: -1
     property string qualificationTarget: ""
+    property bool luckyLoser: false
+    readonly property bool teamHeader: tableView.teamResults && rowDepth===0
+    readonly property bool teamMember: tableView.teamResults && rowDepth>0
     readonly property bool eliminated: advanceState===1 || qualificationState===1
     property string statusText: ""
     property string tint: ""
@@ -39,7 +42,7 @@ Rectangle {
     Accessible.name: (rowCells || []).map(function(cell) { return cell.text }).join(", ") + (statusText ? ", " + statusText : "")
     Accessible.selected: rowSelected
     height: Theme.compact ? Math.max(24,Theme.bodyMetrics.height+4) : Math.max(tableView.compact ? 32 : 40, Theme.body * (tableView.compact ? 2.3 : 2.7))
-    color: rowSelected ? Theme.selection : mouse.containsMouse || eliminated ? Theme.raised : advanceState===0 ? Theme.advancementSurface : tintColor()
+    color: rowSelected ? Theme.selection : mouse.containsMouse || eliminated ? Theme.raised : advanceState===0 ? Theme.advancementSurface : teamHeader ? Theme.raised : teamMember ? Theme.surface : tintColor()
     Rectangle { anchors.left: parent.left; anchors.top: parent.top; anchors.bottom: parent.bottom; width: 3; color: Theme.accent; visible: row.rowCurrent }
     Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: Theme.divider }
     Row {
@@ -50,17 +53,17 @@ Rectangle {
                 visible: index < row.tableView.visibleColumns
                 property var fields: row.rowCells[row.tableView.teamResults && modelData===1 && row.rowDepth>0 ? 2 : modelData] || ({})
                 property int columnIndex: modelData
-                readonly property bool qualificationBadge: row.qualificationState===0 && cell.columnIndex===1 && (!row.tableView.teamResults || row.rowDepth===0)
+                readonly property bool qualificationBadge: (row.qualificationState===0 || row.luckyLoser) && cell.columnIndex===1 && (!row.tableView.teamResults || row.rowDepth===0)
                 width: row.tableView.columnWidth(index)
                 height: row.height
                 Row {
                     anchors.fill: parent
-                    anchors.leftMargin: (Theme.compact ? 6 : 12) + (cell.columnIndex === 0 ? row.rowDepth * 16 + (row.rowBranch ? 24 : 0) : 0)
+                    anchors.leftMargin: (Theme.compact ? 6 : 12) + (cell.columnIndex === 0 ? (row.rowBranch ? 24 : 0) : row.teamMember && cell.columnIndex===1 ? 20 : 0)
                     anchors.rightMargin: Theme.compact ? 4 : 10
                     spacing: Theme.compact ? 4 : 8
                     Image { visible: !!cell.fields.icon; source: cell.fields.icon || ""; sourceSize.width: 32; sourceSize.height: 24; width: visible ? 30 : 0; height: 24; anchors.verticalCenter: parent.verticalCenter; fillMode: Image.PreserveAspectFit }
-                    Text { visible: !cell.fields.checkable; text: cell.fields.text || ""; color: row.eliminated ? Theme.muted : Theme.ink; font.pointSize: Theme.body; font.family: /^[-+−]?\d+([.,]\d+)?\s*(m|pkt|%|m\/s)?$/.test(text) ? Theme.mono : Theme.bodyFamily; width: parent.width - (cell.fields.icon ? 38 : 0) - (cell.qualificationBadge ? 28 : 0); height: parent.height; horizontalAlignment: cell.columnIndex > 0 && font.family === Theme.mono ? Text.AlignRight : Text.AlignLeft; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight }
-                    Label { objectName: cell.qualificationBadge ? "qualificationBadge-"+row.rowIndex : ""; visible: cell.qualificationBadge; text: "Q"; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.body; font.weight: Font.DemiBold; width: 20; height: parent.height; verticalAlignment: Text.AlignVCenter; horizontalAlignment: Text.AlignHCenter; Accessible.name: qsTr("Awans do konkursu"); ToolTip.visible: badgeHover.containsMouse; ToolTip.text: row.qualificationTarget.length ? qsTr("Awans do konkursu · %1").arg(row.qualificationTarget) : qsTr("Awans do konkursu"); MouseArea { id: badgeHover; anchors.fill: parent; hoverEnabled: true; acceptedButtons: Qt.NoButton } }
+                    Text { visible: !cell.fields.checkable; text: cell.fields.text || ""; color: row.eliminated ? Theme.muted : Theme.ink; font.pointSize: row.teamMember ? Theme.caption : Theme.body; font.weight: row.teamHeader ? Font.DemiBold : Font.Normal; font.family: /^[-+−]?\d+([.,]\d+)?\s*(m|pkt|%|m\/s)?$/.test(text) ? Theme.mono : Theme.bodyFamily; width: parent.width - (cell.fields.icon ? 38 : 0) - (cell.qualificationBadge ? 46 : 0); height: parent.height; horizontalAlignment: cell.columnIndex > 0 && font.family === Theme.mono ? Text.AlignRight : Text.AlignLeft; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight }
+                    Label { objectName: cell.qualificationBadge ? "qualificationBadge-"+row.rowIndex : ""; visible: cell.qualificationBadge; text: row.luckyLoser ? (row.qualificationState===0 ? "LL Q" : "LL") : "Q"; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.body; font.weight: Font.DemiBold; width: 38; height: parent.height; verticalAlignment: Text.AlignVCenter; horizontalAlignment: Text.AlignHCenter; Accessible.name: row.luckyLoser ? qsTr("Awans jako lucky loser") : qsTr("Awans do konkursu"); ToolTip.visible: badgeHover.containsMouse; ToolTip.text: row.luckyLoser ? qsTr("Awans jako lucky loser") : row.qualificationTarget.length ? qsTr("Awans do konkursu · %1").arg(row.qualificationTarget) : qsTr("Awans do konkursu"); MouseArea { id: badgeHover; anchors.fill: parent; hoverEnabled: true; acceptedButtons: Qt.NoButton } }
                     Text { visible: !!cell.fields.checkable; text: cell.fields.checked ? "☑" : "☐"; color: Theme.accent; font.pointSize: Theme.body; height: parent.height; verticalAlignment: Text.AlignVCenter }
                 }
             }
@@ -73,7 +76,7 @@ Rectangle {
         onClicked: {
             row.tableView.forceActiveFocus()
             var column = row.tableView.columnAt(mouse.x)
-            row.tableView.table.select(row.rowIndex,column,mouse.modifiers,false)
+            row.tableView.table.select(row.rowIndex,column,row.tableView.plain ? 0 : mouse.modifiers,false)
             var cell = row.rowCells[column]
             if (cell && cell.checkable) row.tableView.table.edit(row.rowIndex,column,!cell.checked)
         }
@@ -89,11 +92,11 @@ Rectangle {
             var cell = row.rowCells[column]
             if (cell && cell.editable) {
                 row.editCell(column)
-            } else row.tableView.table.select(row.rowIndex,column,mouse.modifiers,true)
+            } else row.tableView.table.select(row.rowIndex,column,row.tableView.plain ? 0 : mouse.modifiers,true)
         }
     }
     SButton {
-        visible: row.rowBranch
+        visible: row.rowBranch && !row.tableView.teamResults
         x: row.rowDepth * 16 + 3; y: 2
         width: 28; height: row.height - 4
         text: row.rowExpanded ? "−" : "+"
