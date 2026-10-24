@@ -1,0 +1,82 @@
+#pragma once
+#include "../source/competitions/CompetitionAdvancement.h"
+#include "../source/UI/Competition/Results/ResultsTableModel.h"
+
+static void competitionAdvancementRegressions() {
+    using namespace CompetitionAdvancement;
+    constexpr int yes=StartListCompetitorStatus::SureAdvanced,no=StartListCompetitorStatus::SureDroppedOut,wait=StartListCompetitorStatus::Waiting;
+    int keys[5];
+    for(int pattern=0;pattern<81;++pattern)for(int cutoff=1;cutoff<=4;++cutoff)for(bool ties:{false,true}) {
+        QVector<Entry> field;int digits=pattern;
+        for(int i=0;i<4;++i){Entry entry;entry.competitor=&keys[i];entry.points=digits%3;digits/=3;entry.order=i;entry.pending=i>=2;field.append(entry);}
+        for(int candidate=0;candidate<2;++candidate) {
+            bool anyIn=false,anyOut=false;
+            for(int a=-1;a<=3;++a)for(int b=-1;b<=3;++b) {
+                auto future=field;future[2].pending=future[3].pending=false;future[2].points=a;future[3].points=b;future[2].excluded=a<0;future[3].excluded=b<0;
+                int position=1;for(int i=0;i<4;++i)if(i!=candidate && !future[i].excluded && better(future[i],future[candidate],ties))++position;
+                if(position<=cutoff)anyIn=true;else anyOut=true;
+            }
+            const int expected=anyIn?(anyOut?wait:yes):no;
+            check(status(field[candidate],field,cutoff,ties)==expected,"certainty matches every possible future result, tie and DNS outcome");
+        }
+    }
+    Jumper a("A","Leader","POL"),b("B","Tie","GER"),c("C","Tie","SUI"),d("D","Out","AUT"),e("E","Pending","NOR");
+    QVector<Jumper *> athletes{&a,&b,&c,&d,&e};
+    Hill hill;hill.setKPoint(90);hill.setHSPoint(100);
+    CompetitionInfo source(&hill),near(&hill),far(&hill);CompetitionRules rules;rules.setRounds({RoundInfo(5,true),RoundInfo(3,true)});source.setRules(rules);
+    IndividualCompetitionManager manager;manager.setCompetitionInfo(&source);manager.setCompetitionRules(source.getRulesPointer());manager.setResults(&source.getResultsReference());manager.setActualRound(1);manager.setFirstRoundJumpers(athletes);manager.setupStartListStatusesForActualRound();
+    const auto finish=[&](Jumper *jumper,double points,int jumpStatus=StartListCompetitorStatus::Finished){JumpData jump(jumper,&hill);jump.setPoints(points);jump.setDSQ(jumpStatus==StartListCompetitorStatus::Dsq);jump.setDNS(jumpStatus==StartListCompetitorStatus::Dns);source.getResultsReference().addJump(jumper,jump);StartListCompetitorStatus::getStatusOfJumper(jumper,manager.getStartListStatusesReference())->setJumpStatus(jumpStatus);manager.updateCompetitorsAdvanceStatuses();};
+    finish(&a,100);finish(&b,90);finish(&c,90);finish(&d,80);
+    check(StartListCompetitorStatus::getStatusOfJumper(&d,manager.getStartListStatusesReference())->getAdvanceStatus()==no,"fourth place is already eliminated before the final rival jumps even though the cutoff rank is skipped by a tie");
+    check(StartListCompetitorStatus::getStatusOfJumper(&b,manager.getStartListStatusesReference())->getAdvanceStatus()==yes && StartListCompetitorStatus::getStatusOfJumper(&c,manager.getStartListStatusesReference())->getAdvanceStatus()==yes,"both tied competitors are safe when only one rival remains");
+    finish(&e,90);
+    const auto qualified=manager.getFilteredJumpersForNextRound();check(qualified.size()==4 && !qualified.contains(&d),"three-way boundary tie expands the next round without admitting the next distinct rank");
+    // Qualification quotas are independent of the next-round quota and use calendar order.
+    CompetitionRules target;target.setRounds({RoundInfo(2,true)});near.setRules(target);near.setAdvancementCompetition(&source);target.getRoundsReference()[0].setCount(4);far.setRules(target);far.setAdvancementCompetition(&source);
+    SeasonCalendar calendar;calendar.setCompetitions({&source,&near,&far});source.updateQualifyingCompetitions(&calendar);
+    source.setExceptionalRoundsCount(1);manager.updateCompetitorsAdvanceStatuses();
+    check(manager.nearestQualificationTarget()==&near && manager.qualificationLimit()==2,"nearest dependent contest determines qualification, independent of a farther quota");
+    check(manager.qualificationStatus(&b)==yes && manager.qualificationStatus(&c)==yes && manager.qualificationStatus(&d)==no,"external qualifying ranks include ties without promoting the next distinct place");
+    ResultsTableModel model(CompetitionRules::Individual,manager.getResults(),&manager);model.setStartListStatuses(&manager.getStartListStatusesReference());
+    const int row=manager.getResults()->getIndexOfJumperResult(&b);check(model.index(row,0).data(RoundStatusRole).toInt()==-1 && model.index(row,0).data(QualificationStatusRole).toInt()==yes,"one-round qualification exposes a neutral Q state without a fictitious next-series advance");
+    const auto before=manager.getResults()->getResultsReference();for(int i=0;i<model.rowCount();++i){model.index(i,0).data(Qt::BackgroundRole);model.index(i,0).data(Qt::ForegroundRole);}for(int i=0;i<before.size();++i)check(before[i].getJumper()==manager.getResults()->getResultsReference()[i].getJumper(),"reading result presentation cannot reorder standings");
+    near.setCancelled(true);manager.updateCompetitorsAdvanceStatuses();check(manager.nearestQualificationTarget()==&far && manager.qualificationLimit()==4,"canceled nearest target is skipped");
+    far.setCancelled(true);manager.updateCompetitorsAdvanceStatuses();check(manager.qualificationStatus(&a)==-1,"no stale Q remains when all dependent competitions are canceled");
+    source.setQualifyingCompetitions({});source.getRulesPointer()->setRounds({RoundInfo(0,false),RoundInfo(2,true)});source.setExceptionalRoundsCount(1);manager.setQualificationFixedLimit(true);manager.updateCompetitorsAdvanceStatuses();
+    int exact=0;for(const auto &entry:manager.getStartListStatusesReference())if(entry.getAdvanceStatus()==yes)++exact;
+    check(exact==2,"standalone qualifications feeding KO keep exactly the configured field even at a tied cutoff");
+    manager.setQualificationFixedLimit(false);manager.updateCompetitorsAdvanceStatuses();int expanded=0;for(const auto &entry:manager.getStartListStatusesReference())if(entry.getAdvanceStatus()==yes)++expanded;
+    check(expanded==4,"ordinary standalone qualifications retain every boundary tie");
+    source.setQualifyingCompetitions({});source.setRules(CompetitionRules());source.getRulesPointer()->setRounds({RoundInfo(5,true)});source.setExceptionalRoundsCount(0);manager.updateCompetitorsAdvanceStatuses();check(manager.advancementLimit()==-1 && manager.qualificationStatus(&a)==-1,"ordinary one-round contest has no nonexistent advancement target");
+    // KO winners and lucky losers need separate certainty bounds.
+    Jumper f("F","Duel","FIN");athletes.append(&f);
+    RoundInfo knockout(6,true);knockout.setKO(true);knockout.setAdvancingFromKOGroup(1);
+    source.getRulesPointer()->setRounds({knockout,RoundInfo(4,true)});source.getResultsReference().getResultsReference().clear();
+    manager.setFirstRoundJumpers(athletes);manager.setupStartListStatusesForActualRound();
+    KOGroup g1,g2,g3;g1.setJumpers({&a,&b});g2.setJumpers({&c,&d});g3.setJumpers({&e,&f});QVector<KOGroup> groups{g1,g2,g3};
+    KORoundManager ko(&groups,manager.getResults(),&source.getRulesPointer()->getRoundsReference()[0],&manager);ko.setLuckyLosersCount(1);manager.setKOManager(&ko);
+    finish(&a,100);finish(&b,90);
+    check(ko.advancementStatus(&a)==yes && ko.advancementStatus(&b)==wait,"a completed duel winner is safe while its loser still has a lucky-loser chance");
+    finish(&c,80);finish(&d,70);
+    check(ko.advancementStatus(&d)==no && ko.advancementStatus(&b)==wait,"a confirmed weaker loser is already eliminated before the remaining duel finishes");
+    finish(&e,110);finish(&f,120);
+    check(ko.advancementStatus(&b)==no && ko.advancementStatus(&e)==yes && ko.advancementStatus(&f)==yes,"final duel correctly resolves both the lucky-loser cutoff and its winner");
+    check(manager.getFilteredJumpersForNextRound().size()==4,"KO selects the three winners and one lucky loser");
+    manager.setKOManager(nullptr);
+    // Team certainty starts only after the team's last member has attempted the round.
+    QVector<Jumper> members;members.reserve(8);QVector<Team> squads;squads.reserve(4);
+    const QStringList countries{"POL","GER","SUI","AUT"};
+    for(int i=0;i<4;++i){members.append(Jumper("Team",QString::number(i)+"A",countries[i]));members.append(Jumper("Team",QString::number(i)+"B",countries[i]));Team team(countries[i]);team.setJumpers({&members[2*i],&members[2*i+1]});squads.append(team);}
+    QVector<Team *> teamPointers;for(auto &team:squads)teamPointers.append(&team);
+    CompetitionInfo teamSource(&hill),teamTarget(&hill);CompetitionRules teamRules;teamRules.setCompetitionType(CompetitionRules::Team);teamRules.setJumpersInTeamCount(2);teamRules.setRounds({RoundInfo(4,true),RoundInfo(2,true)});teamSource.setRules(teamRules);
+    TeamCompetitionManager teams;teams.setCompetitionInfo(&teamSource);teams.setCompetitionRules(teamSource.getRulesPointer());teams.setResults(&teamSource.getResultsReference());teams.setActualRound(1);teams.setActualGroup(1);teams.setRoundsTeams({teamPointers});teams.setupStartListStatusesForActualRound(true);
+    const auto teamFinish=[&](int index,double points){auto *jumper=squads[index].getJumpersReference()[teams.getActualGroup()-1];JumpData jump(jumper,&hill);jump.setPoints(points);teamSource.getResultsReference().addJump(&squads[index],jump);StartListCompetitorStatus::getStatusOfJumper(jumper,teams.getStartListStatusesReference())->setJumpStatus(StartListCompetitorStatus::Finished);teams.updateCompetitorsAdvanceStatuses();};
+    teamFinish(0,100);teamFinish(1,90);teamFinish(2,90);teamFinish(3,80);
+    check(teams.getAdvanceStatusOfTeam(&squads[0])==wait,"an early team group does not falsely guarantee advancement before later members jump");
+    teams.setActualGroup(2);teams.setupStartListStatusesForActualRound(true);teamFinish(0,0);teamFinish(1,0);teamFinish(2,0);teamFinish(3,0);
+    check(teams.getAdvanceStatusOfTeam(&squads[1])==yes && teams.getAdvanceStatusOfTeam(&squads[2])==yes && teams.getAdvanceStatusOfTeam(&squads[3])==no,"team final-group ties retain all boundary teams and eliminate the next distinct rank");
+    teamSource.setExceptionalRoundsCount(1);teamRules.setRounds({RoundInfo(3,true)});teamTarget.setRules(teamRules);teamTarget.setAdvancementCompetition(&teamSource);teamSource.setQualifyingCompetitions({&teamTarget});
+    teamSource.getResultsReference().getResultOfTeam(&squads[0])->getJumpsReference().last().setDSQ(true);teams.updateCompetitorsAdvanceStatuses();
+    check(teams.qualificationStatus(&squads[0])==yes && TeamCompetitionManager::getFilteredTeamsAfterQualifications(&teamTarget).size()==3,"a single member's zero-point DSQ does not disqualify the entire team from a qualifying place");
+    qInfo()<<"PASS: exhaustive advancement bounds, tied cutoffs, independent qualifying quotas and pure result presentation";
+}

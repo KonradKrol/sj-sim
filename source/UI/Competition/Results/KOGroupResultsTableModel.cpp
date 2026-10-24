@@ -1,5 +1,7 @@
 #include "KOGroupResultsTableModel.h"
+#include "../../../competitions/CompetitionAdvancement.h"
 #include <QIcon>
+#include "../../../competitions/CompetitionManagers/IndividualCompetitionManager.h"
 #include "../../../global/CountryFlagsManager.h"
 
 KOGroupResultsTableModel::KOGroupResultsTableModel(KORoundManager * KOManager, KOGroup * group, QObject *parent)
@@ -53,6 +55,12 @@ QVariant KOGroupResultsTableModel::data(const QModelIndex &index, int role) cons
     if(jumper == nullptr)
         return QVariant();
 
+    auto *manager=KOManager->getIndManager();
+    const int advancement=manager && manager->getActualRound()<manager->effectiveRoundsCount()?KOManager->advancementStatus(jumper):-1;
+    const int qualification=manager?manager->qualificationStatus(jumper):-1;
+    if(role==CompetitionAdvancement::RoundStatusRole)return advancement;
+    if(role==CompetitionAdvancement::QualificationStatusRole)return qualification;
+    if(role==CompetitionAdvancement::QualificationTargetRole)return QString();
     if(role == Qt::DisplayRole)
     {
         if(index.column() == 0){
@@ -80,20 +88,13 @@ QVariant KOGroupResultsTableModel::data(const QModelIndex &index, int role) cons
     }
     else if(role == Qt::BackgroundRole)
     {
-        //if(KOManager->getResults()->getJumpersPositions(&KOManager->getJumpersSortedByResultsReference()).at(index.row()) <= KOManager->getRoundInfo()->getAdvancingFromKOGroup())
-        if(KOManager->getStatusesReference().value(sortedGroupJumpers[index.row()]) == KORoundManager::Winner)
-        {
-            return QColor(qRgb(228, 255, 222));
-        }
-        else if(KOManager->getStatusesReference().value(sortedGroupJumpers[index.row()]) == KORoundManager::Waiting)
-            return QColor(qRgb(255, 255, 247));
-        else{
-            return QColor(qRgb(255, 214, 214));
-        }
+        if(advancement==StartListCompetitorStatus::SureDroppedOut || qualification==StartListCompetitorStatus::SureDroppedOut)return QColor(238,240,242);
+        if(advancement==StartListCompetitorStatus::SureAdvanced)return QColor(233,255,229);
+        return QColor(255,255,247);
     }
     else if(role == Qt::ForegroundRole)
     {
-        return QColor(qRgb(0, 0, 0));
+        return advancement==StartListCompetitorStatus::SureDroppedOut || qualification==StartListCompetitorStatus::SureDroppedOut?QColor(108,116,128):QColor(0,0,0);
     }
     else if(role == Qt::FontRole)
     {

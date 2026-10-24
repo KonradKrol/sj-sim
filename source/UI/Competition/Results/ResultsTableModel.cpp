@@ -1,4 +1,5 @@
 #include "ResultsTableModel.h"
+#include "../../../competitions/CompetitionAdvancement.h"
 
 #include "../../../competitions/CompetitionResults.h"
 #include "../../../competitions/CompetitionManagers/IndividualCompetitionManager.h"
@@ -17,15 +18,27 @@ ResultsTableModel::ResultsTableModel(int type, CompetitionResults *results, Abst
     results(results),
     manager(manager),
     startListStatuses(nullptr),
+    qualifiersLimit(0),
     lastJumper(nullptr)
 {
 }
 
 QVariant ResultsTableModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!index.isValid() || !results || index.row()<0 || index.row()>=results->getResultsReference().size() || index.column()<0 || index.column()>=columnCount())
         return QVariant();
 
+    auto *jumper=results->getResultsReference().at(index.row()).getJumper();
+    const auto *status=startListStatuses?StartListCompetitorStatus::getStatusOfJumper(jumper,*startListStatuses):nullptr;
+    const int roundStatus=manager && !status && results->getResultsReference().at(index.row()).getScoringRound()<manager->getActualRound()?StartListCompetitorStatus::SureDroppedOut
+        :manager && manager->getActualRound()<manager->effectiveRoundsCount() && status?status->getAdvanceStatus():-1;
+    const int qualificationStatus=manager?manager->qualificationStatus(jumper):-1;
+    if(role==CompetitionAdvancement::RoundStatusRole)return roundStatus;
+    if(role==CompetitionAdvancement::QualificationStatusRole)return qualificationStatus;
+    if(role==CompetitionAdvancement::QualificationTargetRole) {
+        auto *target=manager?manager->nearestQualificationTarget():nullptr;
+        return target && target->getHill()?target->getHill()->getName():QString();
+    }
     if(role == Qt::DisplayRole){
         switch(type){
         case CompetitionRules::Individual:{
@@ -74,15 +87,16 @@ QVariant ResultsTableModel::data(const QModelIndex &index, int role) const
         return data(index, Qt::DisplayRole);
     }
     else if(role == Qt::BackgroundRole){
+        if(roundStatus==StartListCompetitorStatus::SureDroppedOut || qualificationStatus==StartListCompetitorStatus::SureDroppedOut)return QColor(238,240,242);
+        if(roundStatus==StartListCompetitorStatus::SureAdvanced)return QColor(245,255,248);
         if(lastJumper != nullptr)
         {
             if(results->getResultByIndex(index.row())->getJumper() == lastJumper)
                 return QColor(qRgb(232, 243, 255));
         }
-        if(startListStatuses != nullptr){
+        if(startListStatuses != nullptr && manager && roundStatus>=0){
             switch(type){
             case CompetitionRules::Individual:{
-                results->sortInDescendingOrder();
                 Jumper * jumper = results->getResultsReference().at(index.row()).getJumper();
                 if(manager->getActualRound() == manager->getCompetitionRules()->getRoundsReference().count()){
                     if(results->getResultOfIndividualJumper(jumper)->getPosition() + StartListCompetitorStatus::remainingJumpers(*startListStatuses) == 3)
@@ -102,12 +116,12 @@ QVariant ResultsTableModel::data(const QModelIndex &index, int role) const
                     return QColor(qRgb(253, 253, 249));
                 case StartListCompetitorStatus::SureAdvanced:
                     if(StartListCompetitorStatus::getStatusOfJumper(results->getResultsReference().at(index.row()).getJumper(), *startListStatuses)->getQualifiedBy95HSRule())
-                        return QColor(qRgb(233, 245, 236));
+                        return QColor(qRgb(237, 247, 240));
                     else{
-                        return QColor(qRgb(242, 255, 246));
+                        return QColor(qRgb(245, 255, 248));
                     }
                 case StartListCompetitorStatus::SureDroppedOut:
-                    return QColor(qRgb(252, 237, 237));
+                    return QColor(qRgb(238, 240, 242));
                 }
                 break;
             }
@@ -140,6 +154,7 @@ QVariant ResultsTableModel::data(const QModelIndex &index, int role) const
         }
     }
     else if(role == Qt::ForegroundRole){
+        if(roundStatus==StartListCompetitorStatus::SureDroppedOut || qualificationStatus==StartListCompetitorStatus::SureDroppedOut)return QColor(108,116,128);
         if(index.column() == 0){
             return QColor(qRgb(0, 0, 0));
         }

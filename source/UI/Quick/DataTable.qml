@@ -191,6 +191,9 @@ FocusScope {
                         rowDepth: model.depth || 0
                         rowBranch: !!model.branch
                         rowExpanded: !!model.expanded
+                        advanceState: model.advanceState === undefined ? -1 : model.advanceState
+                        qualificationState: model.qualificationState === undefined ? -1 : model.qualificationState
+                        qualificationTarget: model.qualificationTarget || ""
                         statusText: model.statusText || ""
                         tint: model.tint || ""
                     }

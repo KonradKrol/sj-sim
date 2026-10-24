@@ -163,6 +163,7 @@ SOURCES += \
     source/utilities/functions.cpp
 
 HEADERS += \
+    source/competitions/CompetitionAdvancement.h \
     source/seasons/ClassificationScoring.h \
     source/global/DataPack.h \
     source/global/CountryCodes.h \

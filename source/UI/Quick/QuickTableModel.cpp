@@ -1,4 +1,5 @@
 #include "QuickUi.h"
+#include "../../competitions/CompetitionAdvancement.h"
 #include <QAbstractItemView>
 #include <QTreeView>
 #include <QItemSelectionModel>
@@ -32,7 +33,7 @@ QuickTableModel::QuickTableModel(QAbstractItemView *view, QObject *parent)
 int QuickTableModel::rowCount(const QModelIndex &parent) const { return parent.isValid() ? 0 : m_rows.size(); }
 QHash<int,QByteArray> QuickTableModel::roleNames() const {
     return {{Qt::UserRole+1,"cells"}, {Qt::UserRole+2,"selected"}, {Qt::UserRole+3,"depth"},
-            {Qt::UserRole+4,"branch"}, {Qt::UserRole+5,"expanded"}, {Qt::UserRole+6,"current"}, {Qt::UserRole+7,"statusText"}, {Qt::UserRole+8,"tint"}};
+            {Qt::UserRole+4,"branch"}, {Qt::UserRole+5,"expanded"}, {Qt::UserRole+6,"current"}, {Qt::UserRole+7,"statusText"}, {Qt::UserRole+8,"tint"}, {Qt::UserRole+9,"advanceState"}, {Qt::UserRole+10,"qualificationState"}, {Qt::UserRole+11,"qualificationTarget"}};
 }
 QModelIndex QuickTableModel::cell(int row, int column) const {
     return m_source && row >= 0 && row < m_rows.size() ? m_rows[row].sibling(m_rows[row].row(), column) : QModelIndex();
@@ -65,8 +66,23 @@ QVariant QuickTableModel::data(const QModelIndex &index, int role) const {
     case Qt::UserRole+4: return m_source->hasChildren(first);
     case Qt::UserRole+5: return qobject_cast<QTreeView *>(m_view) && static_cast<QTreeView *>(m_view.data())->isExpanded(first);
     case Qt::UserRole+6: return selection && selection->currentIndex().isValid() && selection->currentIndex().row()==first.row() && selection->currentIndex().parent()==first.parent();
+    case Qt::UserRole+9: return first.data(CompetitionAdvancement::RoundStatusRole).isValid()?first.data(CompetitionAdvancement::RoundStatusRole):QVariant(-1);
+    case Qt::UserRole+10: return first.data(CompetitionAdvancement::QualificationStatusRole).isValid()?first.data(CompetitionAdvancement::QualificationStatusRole):QVariant(-1);
+    case Qt::UserRole+11: return first.data(CompetitionAdvancement::QualificationTargetRole);
     case Qt::UserRole+7:
     case Qt::UserRole+8: {
+        if(role==Qt::UserRole+7) {
+            const auto round=first.data(CompetitionAdvancement::RoundStatusRole),qualification=first.data(CompetitionAdvancement::QualificationStatusRole);
+            if(round.isValid() || qualification.isValid()) {
+                QStringList labels;
+                if(round.toInt()==StartListCompetitorStatus::SureAdvanced && round.toInt()>=0)labels.append(tr("Awans do następnej serii"));
+                else if(round.toInt()==StartListCompetitorStatus::SureDroppedOut)labels.append(tr("Poza awansem do następnej serii"));
+                if(qualification.toInt()==StartListCompetitorStatus::SureAdvanced && qualification.toInt()>=0)labels.append(tr("Q · Awans do konkursu"));
+                else if(qualification.toInt()==StartListCompetitorStatus::SureDroppedOut)labels.append(tr("Poza awansem do konkursu"));
+                if(!labels.isEmpty())return labels.join(QStringLiteral(" · "));
+                return QString();
+            }
+        }
         const auto value=first.data(Qt::BackgroundRole);
         QColor color=value.canConvert<QBrush>()?qvariant_cast<QBrush>(value).color():qvariant_cast<QColor>(value);
         if(role==Qt::UserRole+8) return color.isValid()?color.name():QString();

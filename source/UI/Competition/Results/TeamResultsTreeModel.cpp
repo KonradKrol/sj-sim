@@ -1,4 +1,5 @@
 #include "TeamResultsTreeModel.h"
+#include "../../../competitions/CompetitionAdvancement.h"
 #include <QFont>
 #include <QPixmap>
 #include "../../../global/CountryFlagsManager.h"
@@ -101,6 +102,19 @@ QVariant TeamResultsTreeModel::data(const QModelIndex &index, int role) const
 
     TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
 
+    auto *header=item;
+    while(header && header->getParentItem()!=rootItem)header=header->getParentItem();
+    auto *result=header && results && header->row()>=0 && header->row()<results->getResultsReference().size()?&results->getResultsReference()[header->row()]:nullptr;
+    auto *team=result?result->getTeam():nullptr;
+    const int roundStatus=manager && result && manager->getAdvanceStatusOfTeam(team)<0 && result->getScoringRound()<manager->getActualRound()?StartListCompetitorStatus::SureDroppedOut
+        :manager && manager->getActualRound()<manager->effectiveRoundsCount()?manager->getAdvanceStatusOfTeam(team):-1;
+    const int qualificationStatus=manager?manager->qualificationStatus(team):-1;
+    if(role==CompetitionAdvancement::RoundStatusRole)return roundStatus;
+    if(role==CompetitionAdvancement::QualificationStatusRole)return qualificationStatus==StartListCompetitorStatus::SureAdvanced && item!=header?-1:qualificationStatus;
+    if(role==CompetitionAdvancement::QualificationTargetRole) {
+        auto *target=manager?manager->nearestQualificationTarget():nullptr;
+        return target && target->getHill()?target->getHill()->getName():QString();
+    }
     if(role == Qt::DisplayRole)
     {
         return item->data(index.column());
@@ -131,12 +145,15 @@ QVariant TeamResultsTreeModel::data(const QModelIndex &index, int role) const
         return font;
     }
     else if(role == Qt::ForegroundRole){
+        if(roundStatus==StartListCompetitorStatus::SureDroppedOut || qualificationStatus==StartListCompetitorStatus::SureDroppedOut)return QColor(108,116,128);
         if(item->getParentItem() == rootItem)
             return QColor(qRgb(0, 0, 0));
         else
             return QColor(qRgb(30, 30, 30));
     }
     else if(role == Qt::BackgroundRole){
+        if(roundStatus==StartListCompetitorStatus::SureDroppedOut || qualificationStatus==StartListCompetitorStatus::SureDroppedOut)return QColor(238,240,242);
+        if(roundStatus==StartListCompetitorStatus::SureAdvanced)return QColor(245,255,248);
         if(lastTeam != nullptr && results != nullptr && item->getParentItem() == rootItem
             && index.row() < results->getResultsReference().count())
         {
@@ -156,7 +173,7 @@ QVariant TeamResultsTreeModel::data(const QModelIndex &index, int role) const
                         return QColor(qRgb(255, 247, 205));
                 }
                 if(manager->getAdvanceStatusOfTeam(team) == StartListCompetitorStatus::SureDroppedOut){
-                    return QColor(qRgb(252, 237, 237));
+                    return QColor(qRgb(238, 240, 242));
                 }
                 else if(results->getResultByIndex(index.row())->getJumpsReference().count() < manager->getActualRound() * manager->getActualGroup()) //Ilość skoków jest mniejsza niż round * group
                 {
@@ -166,7 +183,7 @@ QVariant TeamResultsTreeModel::data(const QModelIndex &index, int role) const
                     return QColor(qRgb(248, 248, 244));
                 }
                 else if(manager->getAdvanceStatusOfTeam(team) == StartListCompetitorStatus::SureAdvanced){
-                    return QColor(qRgb(242, 255, 246));
+                    return QColor(qRgb(245, 255, 248));
                 }
             }
         }

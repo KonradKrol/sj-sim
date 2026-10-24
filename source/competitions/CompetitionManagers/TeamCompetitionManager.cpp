@@ -1,4 +1,5 @@
 #include "TeamCompetitionManager.h"
+#include "../CompetitionAdvancement.h"
 #include "../../utilities/functions.h"
 #include <random>
 
@@ -72,60 +73,22 @@ void TeamCompetitionManager::sortActualRoundJumpersForActualGroup()
 
 void TeamCompetitionManager::updateCompetitorsAdvanceStatuses()
 {
-    int limit = 0;
-    if(competitionRules->getRounds().count() > actualRound)
-        limit = competitionRules->getRounds().at(actualRound).getCount();
-    if(altQualifiersLimit > 0 && actualRound == competitionRules->getRounds().count())
-        limit = altQualifiersLimit;
-
     teamsAdvanceStatuses.clear();
-    results->updatePositions();
-    for(auto & team : getActualRoundTeamsReference())
-    {
-        int status = StartListCompetitorStatus::Waiting;
-        if(actualRound == competitionRules->getRounds().count())
-            status = StartListCompetitorStatus::Waiting;
-        else if(getActualRoundTeamsReference().count() <= limit){
-            status = StartListCompetitorStatus::SureAdvanced;
-        }
-
-        else if(lastQualifiedResult == nullptr || results->getResultOfTeam(team) == nullptr)
-            status = StartListCompetitorStatus::Waiting;
-        else{
-            if(results->getResultOfTeam(team)->getPosition() <= lastQualifiedResult->getPosition()){
-                status = StartListCompetitorStatus::SureAdvanced;
-            }
-            else{
-                int lastWaiting = limit;
-                results->sortInDescendingOrder();
-                QVector<CompetitionSingleResult> * res = &results->getResultsReference();
-                int lastPosition = 0;
-                for(int i = res->count() - 1; i>=0; i--){
-                    if(res->at(i).getPosition() < limit){
-                        if(res->at(i).getPosition() == lastPosition) //mamy egzekwo
-                        {
-                            int exaequos = 0;
-                            for(int i = res->count() - 1; i>=0; i--){
-                                if(res->at(i).getPosition() == lastPosition){
-                                    exaequos++;
-                                    lastPosition = res->at(i).getPosition();
-                                }
-                                else
-                                    break;
-                            }
-                            if(exaequos >= (competitionRules->getRounds().at(actualRound - 1).getCount() - lastPosition))
-                                lastWaiting += exaequos;
-                        }
-                    }
-                }
-                if(results->getResultOfTeam(team)->getPosition() <= lastWaiting)
-                    status = StartListCompetitorStatus::Waiting;
-                else
-                    status = StartListCompetitorStatus::SureDroppedOut;
-            }
-        }
-        teamsAdvanceStatuses.push_back(QPair<Team *, int>(team, status));
+    if(!results || !competitionRules || actualRound<1 || actualRound>roundsTeams.size())return;
+    results->sortInDescendingOrder();
+    QVector<CompetitionAdvancement::Entry> entries;
+    for(auto *team:getActualRoundTeamsReference()) {
+        CompetitionAdvancement::Entry entry;
+        entry.competitor=team;entry.round=entry.maximumRound=actualRound;
+        auto *jumper=team?team->getJumpersReference().value(actualGroup-1,nullptr):nullptr;
+        const auto *status=StartListCompetitorStatus::getStatusOfJumper(jumper,startListStatuses);
+        entry.pending=actualGroup<competitionRules->getJumpersInTeamCount() || !status || status->getJumpStatus()==StartListCompetitorStatus::Unfinished;
+        if(auto *result=results->getResultOfTeam(team))entry.points=result->getRankingPoints();
+        entries.append(entry);
     }
+    for(const auto &entry:entries)
+        teamsAdvanceStatuses.append({static_cast<Team *>(const_cast<void *>(entry.competitor)),CompetitionAdvancement::status(entry,entries,advancementLimit())});
+    updateQualificationStatuses();
 }
 
 int TeamCompetitionManager::getAdvanceStatusOfTeam(Team *team)
@@ -172,69 +135,37 @@ void TeamCompetitionManager::updateTeamsVectorByQualifications(QVector<Team> &te
 
 QVector<Team> TeamCompetitionManager::getFilteredTeamsAfterQualifications(CompetitionInfo *competition)
 {
-    CompetitionResults * results = &competition->getAdvancementCompetition()->getResultsReference();
-    int lastQualifiedPosition = competition->getRulesPointer()->getRoundsReference()[0].getCount();
-
-    bool exaequo = true;
-    for(auto & res : results->getResultsReference()){ // Sprawdzamy, czy wystąpiło ex aequo.
-        if(res.getPosition() == lastQualifiedPosition){
-            exaequo = false;
-            break;
-        }
+    QVector<Team> qualified;
+    if(!competition || !competition->getAdvancementCompetition() || competition->getRulesPointer()->getRoundsReference().isEmpty())return qualified;
+    const int limit = qMax(0,competition->getRulesPointer()->getRoundsReference().first().getCount());
+    if(limit == 0)return qualified;
+    CompetitionResults standings = competition->getAdvancementCompetition()->getResultsReference();
+    standings.sortInDescendingOrder();
+    QSet<QString> selected;
+    for(const auto &result : qAsConst(standings.getResultsReference())) {
+        auto *team = result.getTeam();
+        if(!team || selected.contains(team->getCountryCode()) || result.getPosition() <= 0 || result.getPosition() > limit)continue;
+        Team copy;
+        copy.setCountryCode(team->getCountryCode());copy.setJumpers(team->getJumpersReference());
+        qualified.append(copy);selected.insert(copy.getCountryCode());
     }
-    if(exaequo == true) // Jeżeli wystąpiło ex aequo
-    {
-        for(auto & res : results->getResultsReference()){
-            if(res.getPosition() > lastQualifiedPosition){
-                lastQualifiedPosition = res.getPosition();
-                break;
-            }
-        }
-    }
-
-    QVector<Team> toReturn;
-    for(auto & result : results->getResultsReference())
-    {
-        if(result.getPosition() <= lastQualifiedPosition){
-            Team team;
-            team.setCountryCode(result.getTeam()->getCountryCode());
-            team.setJumpers(result.getTeam()->getJumpersReference());
-            toReturn.push_back(team);
-        }
-    }
-    return toReturn;
+    return qualified;
 }
 
 QVector<Team> TeamCompetitionManager::getFilteredTeamsByClassification(CompetitionInfo *competition, Classification *classification, QVector<Team> &teams)
 {
-    const auto ranked=classification->getRankedResults();
-    int lastQualifiedPosition = competition->getRulesPointer()->getRoundsReference()[0].getCount();
-
-    bool exaequo = true;
-    for(auto & res : ranked){ // Sprawdzamy, czy wystąpiło ex aequo.
-        if(res->getPosition() == lastQualifiedPosition){
-            exaequo = false;
-            break;
+    QVector<Team> qualified;
+    if(!competition || !classification || competition->getRulesPointer()->getRoundsReference().isEmpty())return qualified;
+    const int limit = qMax(0,competition->getRulesPointer()->getRoundsReference().first().getCount());
+    const auto ranked = classification->getRankedResults();
+    QSet<QString> selected;
+    for(const auto &team : qAsConst(teams)) {
+        auto *result = classification->getResultOfTeam(team.getCountryCode());
+        if(result && ranked.contains(result) && result->getPosition() > 0 && result->getPosition() <= limit && !selected.contains(team.getCountryCode())) {
+            qualified.append(team);selected.insert(team.getCountryCode());
         }
     }
-    if(exaequo == true) // Jeżeli wystąpiło ex aequo
-    {
-        for(auto & res : ranked){
-            if(res->getPosition() > lastQualifiedPosition){
-                lastQualifiedPosition = res->getPosition();
-                break;
-            }
-        }
-    }
-
-    QVector<Team> toReturn;
-    for(auto & team : teams)
-    {
-        auto *result=classification->getResultOfTeam(team.getCountryCode());
-        if(result && ranked.contains(result) && result->getPosition()>0 && result->getPosition()<=lastQualifiedPosition)
-            toReturn.push_back(team);
-    }
-    return toReturn;
+    return qualified;
 }
 
 void TeamCompetitionManager::setStartListOrderByClassification(QVector<Team> & teams, Classification *classification)

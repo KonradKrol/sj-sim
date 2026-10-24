@@ -33,6 +33,15 @@ public:
     virtual void setupNextRound() {}
     virtual void setupStartListStatusesForActualRound() {}
     virtual void updateCompetitorsAdvanceStatuses() {}
+    int effectiveRoundsCount() const;
+    int advancementLimit() const;
+    int qualificationLimit() const;
+    bool qualificationIncludesTies() const;
+    void setQualificationFixedLimit(bool fixed) { qualificationFixedLimit=fixed; }
+    CompetitionInfo *nearestQualificationTarget() const;
+    int qualificationStatus(Jumper *jumper) const;
+    int qualificationStatus(Team *team) const;
+    void updateQualificationStatuses();
 
 signals:
     void actualStartListIndexChanged();
@@ -73,6 +82,9 @@ protected:
     int baseDSQProbability;
 
     int altQualifiersLimit;
+    bool qualificationFixedLimit=false;
+    QHash<Jumper *, int> qualificationJumpers;
+    QHash<Team *, int> qualificationTeams;
 
 public:
     short getType() const;

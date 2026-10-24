@@ -17,7 +17,10 @@ QtObject {
     readonly property color accentText: dark ? "#08244b" : "#ffffff"
     readonly property color selection: dark ? "#183d64" : "#dfebfb"
     readonly property color warning: dark ? "#f2c780" : "#87550c"
+    readonly property color advancementBase: dark ? "#173839" : "#f2fff6"
+    readonly property color advancementSurface: Qt.rgba(advancementBase.r*.8+surface.r*.2,advancementBase.g*.8+surface.g*.2,advancementBase.b*.8+surface.b*.2,1)
     readonly property color success: dark ? "#92d9a2" : "#22633a"
+    readonly property color advancementInk: Qt.rgba(success.r*.8+muted.r*.2,success.g*.8+muted.g*.2,success.b*.8+muted.b*.2,1)
     readonly property color danger: dark ? "#ffb4a7" : "#a32f25"
     readonly property color stadium: "#142e42"
     readonly property color snow: "#f1f6ff"

@@ -932,6 +932,7 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
             qualificationsManager->setCompetitionInfo(&qualsInfo);
             qualificationsManager->getCompetitionInfo()->setSerieType(CompetitionInfo::Qualifications);
             qualificationsManager->setCompetitionRules(qualsInfo.getRulesPointer());
+            qualificationsManager->setQualificationFixedLimit(!qualsInfo.getRulesPointer()->getRoundsReference().isEmpty() && qualsInfo.getRulesPointer()->getRoundsReference().first().getKO());
             qualificationsManager->setResults(&qualsInfo.getResultsReference());
             qualificationsManager->setActualGate(ui->spinBox_startGate->value());
             qualificationsManager->getRoundsStartingGatesReference().push_back(qualificationsManager->getActualGate());

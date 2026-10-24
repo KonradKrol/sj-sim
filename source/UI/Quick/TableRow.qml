@@ -11,6 +11,10 @@ Rectangle {
     property int rowDepth
     property bool rowBranch
     property bool rowExpanded
+    property int advanceState: -1
+    property int qualificationState: -1
+    property string qualificationTarget: ""
+    readonly property bool eliminated: advanceState===1 || qualificationState===1
     property string statusText: ""
     property string tint: ""
     function editCell(column) {
@@ -35,7 +39,7 @@ Rectangle {
     Accessible.name: (rowCells || []).map(function(cell) { return cell.text }).join(", ") + (statusText ? ", " + statusText : "")
     Accessible.selected: rowSelected
     height: Theme.compact ? Math.max(24,Theme.bodyMetrics.height+4) : Math.max(tableView.compact ? 32 : 40, Theme.body * (tableView.compact ? 2.3 : 2.7))
-    color: rowSelected ? Theme.selection : mouse.containsMouse ? Theme.raised : tintColor()
+    color: rowSelected ? Theme.selection : mouse.containsMouse || eliminated ? Theme.raised : advanceState===0 ? Theme.advancementSurface : tintColor()
     Rectangle { anchors.left: parent.left; anchors.top: parent.top; anchors.bottom: parent.bottom; width: 3; color: Theme.accent; visible: row.rowCurrent }
     Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: Theme.divider }
     Row {
@@ -46,6 +50,8 @@ Rectangle {
                 visible: index < row.tableView.visibleColumns
                 property var fields: row.rowCells[row.tableView.teamResults && modelData===1 && row.rowDepth>0 ? 2 : modelData] || ({})
                 property int columnIndex: modelData
+                readonly property bool roundBadge: row.advanceState>=0 && row.advanceState<2 && cell.columnIndex===1 && (!row.tableView.teamResults || row.rowDepth===0)
+                readonly property bool qualificationBadge: row.qualificationState===0 && cell.columnIndex===1 && (!row.tableView.teamResults || row.rowDepth===0)
                 width: row.tableView.columnWidth(index)
                 height: row.height
                 Row {
@@ -54,7 +60,9 @@ Rectangle {
                     anchors.rightMargin: Theme.compact ? 4 : 10
                     spacing: Theme.compact ? 4 : 8
                     Image { visible: !!cell.fields.icon; source: cell.fields.icon || ""; sourceSize.width: 32; sourceSize.height: 24; width: visible ? 30 : 0; height: 24; anchors.verticalCenter: parent.verticalCenter; fillMode: Image.PreserveAspectFit }
-                    Text { visible: !cell.fields.checkable; text: cell.fields.text || ""; color: Theme.ink; font.pointSize: Theme.body; font.family: /^[-+−]?\d+([.,]\d+)?\s*(m|pkt|%|m\/s)?$/.test(text) ? Theme.mono : Theme.bodyFamily; width: parent.width - (cell.fields.icon ? 38 : 0); height: parent.height; horizontalAlignment: cell.columnIndex > 0 && font.family === Theme.mono ? Text.AlignRight : Text.AlignLeft; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight }
+                    Text { visible: !cell.fields.checkable; text: cell.fields.text || ""; color: row.eliminated ? Theme.muted : Theme.ink; font.pointSize: Theme.body; font.family: /^[-+−]?\d+([.,]\d+)?\s*(m|pkt|%|m\/s)?$/.test(text) ? Theme.mono : Theme.bodyFamily; width: parent.width - (cell.fields.icon ? 38 : 0) - (cell.qualificationBadge ? 28 : 0) - (cell.roundBadge ? 28 : 0); height: parent.height; horizontalAlignment: cell.columnIndex > 0 && font.family === Theme.mono ? Text.AlignRight : Text.AlignLeft; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight }
+                    Label { visible: cell.roundBadge; text: row.advanceState===0 ? "✓" : "–"; color: row.advanceState===0 ? Theme.advancementInk : Theme.muted; font.pointSize: Theme.body; width: 20; height: parent.height; verticalAlignment: Text.AlignVCenter; horizontalAlignment: Text.AlignHCenter; Accessible.name: row.advanceState===0 ? qsTr("Awans do następnej serii") : qsTr("Poza awansem do następnej serii"); ToolTip.visible: roundHover.containsMouse; ToolTip.text: Accessible.name; MouseArea { id: roundHover; anchors.fill: parent; hoverEnabled: true; acceptedButtons: Qt.NoButton } }
+                    Label { objectName: cell.qualificationBadge ? "qualificationBadge-"+row.rowIndex : ""; visible: cell.qualificationBadge; text: "Q"; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.body; font.weight: Font.DemiBold; width: 20; height: parent.height; verticalAlignment: Text.AlignVCenter; horizontalAlignment: Text.AlignHCenter; Accessible.name: qsTr("Awans do konkursu"); ToolTip.visible: badgeHover.containsMouse; ToolTip.text: row.qualificationTarget.length ? qsTr("Awans do konkursu · %1").arg(row.qualificationTarget) : qsTr("Awans do konkursu"); MouseArea { id: badgeHover; anchors.fill: parent; hoverEnabled: true; acceptedButtons: Qt.NoButton } }
                     Text { visible: !!cell.fields.checkable; text: cell.fields.checked ? "☑" : "☐"; color: Theme.accent; font.pointSize: Theme.body; height: parent.height; verticalAlignment: Text.AlignVCenter }
                 }
             }

@@ -444,13 +444,13 @@ void CompetitionResults::updatePositions()
 
 void CompetitionResults::sortInDescendingOrder()
 {
-    std::sort(results.begin(), results.end(), std::greater<CompetitionSingleResult>());
+    std::stable_sort(results.begin(), results.end(), std::greater<CompetitionSingleResult>());
     updatePositions();
 }
 
 void CompetitionResults::sortInAscendingOrder()
 {
-    std::sort(results.begin(), results.end(), std::less<CompetitionSingleResult>());
+    std::stable_sort(results.begin(), results.end(), std::less<CompetitionSingleResult>());
     updatePositions();
 }
 

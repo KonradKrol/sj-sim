@@ -20,6 +20,7 @@ public:
     };
 
     void updateStatuses();
+    int advancementStatus(Jumper *jumper) const;
     void updateLuckyLosers();
     void updateJumpersSortedByResults();
     void updateActualGroup(Jumper * actualJumper);

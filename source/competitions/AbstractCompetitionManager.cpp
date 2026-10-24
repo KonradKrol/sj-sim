@@ -1,4 +1,5 @@
 #include "AbstractCompetitionManager.h"
+#include "CompetitionAdvancement.h"
 #include "CompetitionManagers/TeamCompetitionManager.h"
 #include "CompetitionManagers/IndividualCompetitionManager.h"
 #include "../utilities/functions.h"
@@ -22,6 +23,121 @@ AbstractCompetitionManager::AbstractCompetitionManager(short type) : type(type)
     lastQualifiedResult = nullptr;
     altQualifiersLimit = 0;
     actualJumper=nullptr;actualWinds=nullptr;actualJumpManipulator=nullptr;last10Judges=54; baseDSQProbability=0;
+}
+
+int AbstractCompetitionManager::effectiveRoundsCount() const
+{
+    if(!competitionRules)return 0;
+    const int configured=competitionRules->getRoundsReference().size();
+    const int exceptional=competitionInfo?competitionInfo->getExceptionalRoundsCount():0;
+    return exceptional>0?qMin(configured,exceptional):configured;
+}
+
+CompetitionInfo *AbstractCompetitionManager::nearestQualificationTarget() const
+{
+    if(!competitionInfo)return nullptr;
+    for(auto *target:competitionInfo->getQualifyingCompetitionsReference())
+        if(target && target!=competitionInfo && !target->getCancelled() && !target->getPlayed()
+            && target->getAdvancementCompetition()==competitionInfo && (!competitionRules || target->getRulesPointer()->getCompetitionType()==competitionRules->getCompetitionType()) && !target->getRulesPointer()->getRoundsReference().isEmpty())return target;
+    return nullptr;
+}
+
+int AbstractCompetitionManager::qualificationLimit() const
+{
+    if(auto *target=nearestQualificationTarget())return qMax(0,target->getRulesPointer()->getRoundsReference().first().getCount());
+    if(competitionInfo && !competitionInfo->getQualifyingCompetitionsReference().isEmpty())return 0;
+    const int rounds=effectiveRoundsCount();
+    if(competitionRules && rounds>0 && rounds<competitionRules->getRoundsReference().size())
+        return qMax(0,competitionRules->getRoundsReference()[rounds].getCount());
+    return qMax(0,altQualifiersLimit);
+}
+
+bool AbstractCompetitionManager::qualificationIncludesTies() const
+{
+    if(auto *target=nearestQualificationTarget())return !target->getRulesPointer()->getRoundsReference().first().getKO();
+    return !qualificationFixedLimit;
+}
+
+int AbstractCompetitionManager::advancementLimit() const
+{
+    if(!competitionRules || actualRound<1 || actualRound>effectiveRoundsCount())return -1;
+    if(actualRound<effectiveRoundsCount())return qMax(0,competitionRules->getRoundsReference()[actualRound].getCount());
+    return qualificationLimit()>0?qualificationLimit():-1;
+}
+
+int AbstractCompetitionManager::qualificationStatus(Jumper *jumper) const
+{
+    return qualificationJumpers.value(jumper,-1);
+}
+
+int AbstractCompetitionManager::qualificationStatus(Team *team) const
+{
+    return qualificationTeams.value(team,-1);
+}
+
+void AbstractCompetitionManager::updateQualificationStatuses()
+{
+    qualificationJumpers.clear();qualificationTeams.clear();
+    const int limit=qualificationLimit(), rounds=effectiveRoundsCount();
+    if(limit<=0 || !results || actualRound<1 || actualRound>rounds || rounds<1)return;
+    auto *individual=dynamic_cast<IndividualCompetitionManager *>(this);
+    auto *teamManager=dynamic_cast<TeamCompetitionManager *>(this);
+    QVector<CompetitionAdvancement::Entry> entries;
+    const auto append=[&](Jumper *jumper,Team *team,int order) {
+        auto *result=team?results->getResultOfTeam(team):results->getResultOfIndividualJumper(jumper);
+        const auto *current=StartListCompetitorStatus::getStatusOfJumper(jumper,startListStatuses);
+        CompetitionAdvancement::Entry entry;
+        entry.competitor=team?static_cast<const void *>(team):jumper;
+        entry.order=order;entry.round=result?result->getRankingRound():1;
+        entry.maximumRound=rounds;entry.points=result?result->getRankingPoints():0;
+        entry.excluded=current && !team && (current->getJumpStatus()==StartListCompetitorStatus::Dsq || current->getJumpStatus()==StartListCompetitorStatus::Dns);
+        if(result && !team && !result->getJumpsReference().isEmpty()) {
+            const auto &last=result->getJumpsReference().last();
+            entry.excluded=entry.excluded || last.getDSQ() || last.getDNS();
+        }
+        if(current) {
+            entry.pending=current->getJumpStatus()==StartListCompetitorStatus::Unfinished;
+            if(teamManager && teamManager->getActualGroup()<competitionRules->getJumpersInTeamCount())entry.pending=true;
+            if(actualRound<rounds && !entry.excluded) {
+                const int advancement=team?teamManager->getAdvanceStatusOfTeam(team):current->getAdvanceStatus();
+                if(advancement!=StartListCompetitorStatus::SureDroppedOut) {
+                    entry.pending=true;
+                    if(advancement==StartListCompetitorStatus::SureAdvanced)entry.round=qMax(entry.round,actualRound+1);
+                }
+            }
+            entry.protectedByDistance=current->getQualifiedBy95HSRule();
+        } else {
+            entry.pending=!result;
+            if(result)entry.maximumRound=entry.round;
+        }
+        entries.append(entry);
+    };
+    if(individual) {
+        const auto field=individual->getRoundsJumpers();
+        if(!field.isEmpty())for(auto *jumper:field.first())if(jumper)append(jumper,nullptr,entries.size());
+        for(const auto &result:results->getResultsReference()) {
+            bool found=false;for(const auto &entry:entries)if(entry.competitor==result.getJumper()){found=true;break;}
+            if(!found && result.getJumper())append(result.getJumper(),nullptr,entries.size());
+        }
+    } else if(teamManager) {
+        const auto field=teamManager->getRoundsTeams();
+        if(!field.isEmpty())for(auto *team:field.first())if(team) {
+            Jumper *jumper=team->getJumpersReference().value(teamManager->getActualGroup()-1,nullptr);
+            append(jumper,team,entries.size());
+        }
+    }
+    for(auto &entry:entries) {
+        int order=0;
+        for(const auto &result:results->getResultsReference()) {
+            if((individual && entry.competitor==result.getJumper()) || (teamManager && entry.competitor==result.getTeam())){entry.order=order;break;}
+            ++order;
+        }
+    }
+    for(const auto &entry:entries) {
+        const int state=CompetitionAdvancement::status(entry,entries,limit,qualificationIncludesTies());
+        if(individual)qualificationJumpers.insert(static_cast<Jumper *>(const_cast<void *>(entry.competitor)),state);
+        else qualificationTeams.insert(static_cast<Team *>(const_cast<void *>(entry.competitor)),state);
+    }
 }
 
 bool AbstractCompetitionManager::checkRoundEnd()
@@ -125,7 +241,7 @@ void AbstractCompetitionManager::updateLastQualifiedResult()
     if(!results || !competitionRules || actualRound<1 || actualRound>competitionRules->getRoundsReference().size()) { lastQualifiedResult=nullptr;return; }
     if(!indManager || !indManager->getKOManager()) {
         lastQualifiedResult=nullptr;
-        const int limit=actualRound<competitionRules->getRoundsReference().size()?competitionRules->getRoundsReference()[actualRound].getCount():altQualifiersLimit;
+        const int limit=advancementLimit();
         if(limit<=0)return;
         if(auto *team=dynamic_cast<TeamCompetitionManager *>(this)) {
             if(team->getActualGroup()<competitionRules->getJumpersInTeamCount() || team->getActualRoundTeamsReference().size()<=limit)return;
@@ -176,8 +292,8 @@ void AbstractCompetitionManager::updateLastQualifiedResult()
     int limit = 0;
     if(competitionRules->getRounds().count() > actualRound)
         limit = competitionRules->getRounds().at(actualRound).getCount();
-    if(altQualifiersLimit > 0 && actualRound == competitionRules->getRounds().count())
-        limit = altQualifiersLimit;
+    if(actualRound == effectiveRoundsCount())
+        limit = qMax(0,qualificationLimit());
     if((competitorsCount - limit - (actualStartListIndex) > 0 || (actualRound == competitionRules->getRounds().count() && altQualifiersLimit == 0) || competitorsCount <= limit) && condition == false){
         lastQualifiedPosition = -1;
     }
