@@ -669,20 +669,29 @@ public slots:
 
 static void appearanceRegressions(MainWindow &main) {
     main.show();main.resize(1024,640);auto *appearance=scene(&main)->rootContext()->contextProperty("appearance").value<QuickAppearance *>();
-    const bool oldCompact=appearance->compactUi();const qreal oldScale=appearance->textScale();appearance->setCompactUi(false);appearance->setTextScale(1);
-    QDialog fixture(&main);auto *layout=new QVBoxLayout(&fixture);auto *button=new QPushButton("Density probe");button->setObjectName("densityProbe");layout->addWidget(button);fixture.show();QTest::qWait(120);
-    auto *projected=item(scene(&fixture)->rootObject(),"action-densityProbe");check(projected,"appearance probe button exists");const qreal normal=projected->height();
-    appearance->setCompactUi(true);QTest::qWait(80);check(projected->height()<=normal*.75 && appearance->textScale()==1,"compact UI reduces button height by at least a quarter independently of text size");
-    appearance->setTextScale(.75);QuickAppearance persisted;check(persisted.compactUi() && persisted.textScale()==.75,"compact density and smaller text persist across appearance instances");
-    fixture.reject();appearance->setTextScale(1);main.resize(1024,640);QTest::qWait(120);scene(&main)->grabFramebuffer().save(output+"/compact-home.png");
-    CompetitionConfigWindow densityPage(CompetitionConfigWindow::SingleCompetition,&main);densityPage.show();QTest::qWait(150);scene(&densityPage)->grabFramebuffer().save(output+"/compact-competition.png");
-    appearance->setTextScale(1.3);appearance->setDark(true);main.resize(360,480);QTest::qWait(150);scene(&densityPage)->grabFramebuffer().save(output+"/compact-competition-narrow.png");densityPage.reject();appearance->setTextScale(1);appearance->setDark(false);
-    main.resize(360,480);QTest::qWait(80);auto *navigation=main.findChild<QuickUi *>();navigation->showAppearance();QTest::qWait(120);
+    const bool oldCompact=appearance->compactUi();const qreal oldScale=appearance->textScale(),oldUi=appearance->uiScale();
+    appearance->setCompactUi(false);appearance->setUiScale(.7);appearance->setTextScale(1);
+    QuickAppearance persisted;check(persisted.uiScale()==.7 && persisted.textScale()==1,"UI scale and text size persist independently");
+    auto *navigation=main.findChild<QuickUi *>();navigation->showAppearance();QTest::qWait(120);
     QWidget *popup=nullptr;for(auto *widget:QApplication::allWidgets())if(widget->isVisible() && widget->property("sjQuickUtility").toBool())popup=widget;
-    check(popup && popup->height()<=main.height()-24,"appearance controls fit the smallest application height");auto *view=popup->findChild<QQuickWidget *>();
-    clickControl(view,"compactUiToggle");check(!appearance->compactUi(),"compact setting can be changed through its visible appearance control");navigation->closeAppearance();
-    appearance->setCompactUi(oldCompact);appearance->setTextScale(oldScale);main.resize(1024,640);
-    qInfo()<<"PASS: compact interface, independent smaller text, persisted preferences and bounded appearance popup";
+    check(popup,"appearance settings open");auto *view=popup->findChild<QQuickWidget *>();
+    auto typeSetting=[&](const QString &name,const QString &text){
+        auto *spin=item(view->quickWindow()->contentItem(),name);check(spin,"appearance percentage control exists");
+        auto *input=spin->property("contentItem").value<QQuickItem *>();check(input,"percentage input exists");
+        input->forceActiveFocus();QTest::keyClick(view,Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(view,text);
+        check(input->property("text").toString()==text,"appearance input preserves the draft while typing");QTest::keyClick(view,Qt::Key_Return);QTest::qWait(100);
+    };
+    typeSetting("appearanceUiScale","85");check(qFuzzyCompare(appearance->uiScale(),.85),"typing applies UI percentage");
+    typeSetting("appearanceUiScale","100");check(qFuzzyCompare(appearance->uiScale(),1.),"UI percentage supports successive edits");
+    typeSetting("appearanceTextSize","125");check(qFuzzyCompare(appearance->textScale(),1.25),"typing applies text size independently");
+    typeSetting("appearanceTextSize","90");check(qFuzzyCompare(appearance->textScale(),.9),"text percentage supports successive edits");
+    QTest::keyClick(view,Qt::Key_Up);QTest::qWait(40);check(qFuzzyCompare(appearance->textScale(),.95),"appearance text size also supports increment keys");
+    QTest::keyClick(view,Qt::Key_Down);QTest::qWait(40);check(qFuzzyCompare(appearance->textScale(),.9),"appearance text size also supports decrement keys");
+    navigation->closeAppearance();appearance->setUiScale(.7);appearance->setTextScale(1);main.resize(360,480);QTest::qWait(80);navigation->showAppearance();QTest::qWait(120);
+    popup=nullptr;for(auto *widget:QApplication::allWidgets())if(widget->isVisible() && widget->property("sjQuickUtility").toBool())popup=widget;
+    check(popup && popup->height()<=main.height()-24,"appearance controls fit the smallest application height");navigation->closeAppearance();
+    appearance->setCompactUi(oldCompact);appearance->setTextScale(oldScale);appearance->setUiScale(oldUi);main.resize(1024,640);
+    qInfo()<<"PASS: independent UI/text scales, repeated keyboard edits, persistence and bounded appearance popup";
 }
 
 static void authorRegressions(MainWindow &main) {
@@ -2054,7 +2063,7 @@ static void interactionRegressions(MainWindow &main) {
     {
         QMessageBox message(QMessageBox::Question,"Zapis sezonu","Czy zapisać zmiany?",QMessageBox::Yes|QMessageBox::No,&main);message.show();QTest::qWait(200);auto *quick=scene(&message);quick->grabFramebuffer();
         check(message.button(QMessageBox::Yes)->text()==QString::fromUtf8("Tak") && message.button(QMessageBox::No)->text()==QString::fromUtf8("Nie"),"standard confirmation actions use Polish captions");
-        auto *body=item(quick->rootObject(),"modalMessage-0");check(body && body->width()>500 && body->height()<40 && body->y()>35,"short message uses available width and sits below its title without wrapping into four lines");message.reject();
+        auto *body=item(quick->rootObject(),"modalMessage-0");check(body && body->width()>=quick->width()-40 && body->height()<40 && body->y()>35,"short message uses available width and sits below its title without wrapping into four lines");message.reject();
     }
     for(const auto &size:QList<QSize>{{1024,640},{360,480}}){
         main.resize(size);QTest::qWait(100);

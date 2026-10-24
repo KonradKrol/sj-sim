@@ -23,10 +23,26 @@ Popup {
         Label { text: qsTr("Wygląd i dostępność"); font.pointSize: Theme.body; font.weight: Font.DemiBold; color: Theme.ink; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         SCheck { text: qsTr("Ciemny motyw"); checked: appearance && appearance.dark; onClicked: appearance.dark = checked; Layout.fillWidth: true }
         SCheck { text: qsTr("Ogranicz animacje"); checked: appearance && appearance.reducedMotion; onClicked: appearance.reducedMotion = checked; Layout.fillWidth: true }
-        Label { text: qsTr("Skala interfejsu"); color: Theme.muted; font.pointSize: Theme.caption }
-        NumberField { objectName: "appearanceUiScale"; direct: false; label: qsTr("Skala interfejsu"); fields: ({name:"appearanceUiScale",value:appearance.uiScale*100,minimum:50,maximum:150,step:5,decimals:0,suffix:"%"}); Layout.fillWidth: true; onCommitted: appearance.uiScale=value/100 }
-        Label { text: qsTr("Rozmiar tekstu"); color: Theme.muted; font.pointSize: Theme.caption }
-        NumberField { objectName: "appearanceTextSize"; direct: false; label: qsTr("Rozmiar tekstu"); fields: ({name:"appearanceTextSize",value:appearance.textScale*100,minimum:75,maximum:200,step:5,decimals:0,suffix:"%"}); Layout.fillWidth: true; onCommitted: appearance.textScale=value/100 }
+        Label { text: qsTr("Skala interfejsu (%)"); color: Theme.muted; font.pointSize: Theme.caption }
+        SpinBox {
+            objectName: "appearanceUiScale"; from: 50; to: 150; stepSize: 5; editable: true
+            value: Math.round(appearance.uiScale*100); font.pointSize: Theme.body; Layout.fillWidth: true
+            textFromValue: function(value,locale){return value.toString()}
+            valueFromText: function(text,locale){return Number(text.replace("%", "").trim())}
+            validator: IntValidator { bottom: 50; top: 150 }
+            onValueModified: appearance.uiScale=value/100
+            Accessible.name: qsTr("Skala interfejsu")
+        }
+        Label { text: qsTr("Rozmiar tekstu (%)"); color: Theme.muted; font.pointSize: Theme.caption }
+        SpinBox {
+            objectName: "appearanceTextSize"; from: 75; to: 200; stepSize: 5; editable: true
+            value: Math.round(appearance.textScale*100); font.pointSize: Theme.body; Layout.fillWidth: true
+            textFromValue: function(value,locale){return value.toString()}
+            valueFromText: function(text,locale){return Number(text.replace("%", "").trim())}
+            validator: IntValidator { bottom: 75; top: 200 }
+            onValueModified: appearance.textScale=value/100
+            Accessible.name: qsTr("Rozmiar tekstu")
+        }
         SButton { objectName: "appearanceDone"; text: qsTr("Gotowe"); onClicked: popup.close(); Layout.fillWidth: true }
         }
     }
