@@ -59,7 +59,9 @@ static void calendarDateUiRegressions(MainWindow &main)
     auto *settings=manager.findChild<QCheckBox *>("checkBox_calendarDates");check(settings && !settings->isChecked(),"date setting exists in simulation settings");settings->setChecked(true);QTest::qWait(100);backend->sync();check(backend->datesEnabled(),"simulation setting enables calendar dates");
     bridge->edit(bridge->root()->values().value("id").toInt(),4);QTest::qWait(150);
     auto *workspace=item(scene(&manager)->rootObject(),"calendarWorkspace");check(workspace,"calendar workspace exists");
-    main.resize(1440,1000);QTest::qWait(120);backend->selectAll();
+    main.resize(1440,1000);QTest::qWait(120);
+    calendarWorkspaceUxRegressions(backend,scene(&manager),calendar->getCompetitionsReference()[0],calendar->getCompetitionsReference()[1]);
+    backend->selectAll();
     clickControl(scene(&manager),"calendarPlanDates");QTest::qWait(100);
     check(item(scene(&manager)->rootObject(),"calendarDatePlanner"),"planner opens directly from calendar toolbar");
     auto *input=item(scene(&manager)->rootObject(),"date-input-plan-start");check(input,"planner date input exists");
@@ -83,6 +85,7 @@ static void calendarDateUiRegressions(MainWindow &main)
     clickControl(scene(&manager),"date-day-2027-02-07");QTest::qWait(100);check(overview->property("selectedDay").toString()=="2027-02-07","last-row dates remain selectable in a short window");
     appearance->setTextScale(1);main.resize(1440,1000);QTest::qWait(120);
     settings->setChecked(false);QTest::qWait(100);backend->sync();check(!backend->datesEnabled() && !item(scene(&manager)->rootObject(),"calendarDateOverview"),"disabling dates hides and unloads the month overview");
+    calendarInspectorSpaceRegression(main,backend,scene(&manager),settings,calendar);
     manager.hide();main.resize(1024,640);
     qInfo()<<"PASS: simulation date setting, visible date planner, month navigation, date picker and responsive calendar overview";
 }

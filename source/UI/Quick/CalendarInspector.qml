@@ -14,17 +14,28 @@ Pane {
     implicitHeight: 520
     padding: compact ? 8 : 16
     background: Surface { fillColor: Theme.surface; sweep: 26 }
-    contentItem: ColumnLayout {
-        spacing: inspector.compact ? 8 : 12
-        Label { text: inspector.backend.selection.title || qsTr("Wybierz konkurs"); color: Theme.ink; font.family: inspector.compact ? Theme.bodyFamily : Theme.displayFamily; font.pointSize: inspector.compact ? Theme.body : Theme.heading; Layout.fillWidth: true; wrapMode: inspector.compact ? Text.NoWrap : Text.WordWrap; elide: Text.ElideRight }
-        Label { visible: inspector.backend.selection.count > 1; text: qsTr("Zmiany dotyczą %1 konkursów").arg(inspector.backend.selection.count); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-        Label { visible: inspector.backend.selection.count > 0 && inspector.backend.selection.locked; text: qsTr("Rozegrane wydarzenia są zablokowane."); color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-        Label { visible: inspector.backend.selection.pendingSource>0; text: qsTr("Zachowano kwalifikację z konkursu %1. Przenieś źródło przed ten konkurs, aby przywrócić powiązanie.").arg(inspector.backend.selection.pendingSource); color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-        SectionTabs { visible: inspector.backend.selection.count > 0; options: inspector.backend.datesEnabled ? [qsTr("Konkurs"),qsTr("Zasady"),qsTr("Powiązania"),qsTr("Terminy")] : [qsTr("Konkurs"),qsTr("Zasady"),qsTr("Powiązania")]; currentIndex: inspector.section; Layout.fillWidth: true; onSelected: inspector.section=index }
+    contentItem: Item {
+        ColumnLayout {
+            id: heading
+            objectName: "calendarInspectorHeading"
+            anchors.top: parent.top; anchors.left: parent.left; anchors.right: parent.right
+            spacing: inspector.compact ? 8 : 12
+            RowLayout {
+                Layout.fillWidth: true; spacing: 8
+                Image { objectName: "calendarInspectorFlag"; visible: !!inspector.backend.selection.flag; source: inspector.backend.selection.flag || ""; sourceSize.width: 48; sourceSize.height: 32; Layout.preferredWidth: 28; Layout.preferredHeight: 20; fillMode: Image.PreserveAspectFit; Accessible.ignored: true }
+                Label { text: inspector.backend.selection.title || qsTr("Wybierz konkurs"); color: Theme.ink; font.family: inspector.compact ? Theme.bodyFamily : Theme.displayFamily; font.pointSize: inspector.compact ? Theme.body : Theme.heading; Layout.fillWidth: true; Layout.minimumWidth: 0; wrapMode: inspector.compact ? Text.NoWrap : Text.WordWrap; elide: Text.ElideRight }
+            }
+            Label { visible: inspector.backend.selection.count > 1; text: qsTr("Zmiany dotyczą %1 konkursów").arg(inspector.backend.selection.count); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+            Label { visible: inspector.backend.selection.count > 0 && inspector.backend.selection.locked; text: qsTr("Rozegrane wydarzenia są zablokowane."); color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+            Label { visible: inspector.backend.selection.pendingSource>0; text: qsTr("Zachowano kwalifikację z konkursu %1. Przenieś źródło przed ten konkurs, aby przywrócić powiązanie.").arg(inspector.backend.selection.pendingSource); color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+            SectionTabs { visible: inspector.backend.selection.count > 0; options: inspector.backend.datesEnabled ? [qsTr("Konkurs"),qsTr("Zasady"),qsTr("Powiązania"),qsTr("Terminy")] : [qsTr("Konkurs"),qsTr("Zasady"),qsTr("Powiązania")]; currentIndex: inspector.section; Layout.fillWidth: true; onSelected: inspector.section=index }
+        }
         ScrollView {
             id: fieldsScroll
-            Layout.fillWidth: true; Layout.fillHeight: true
-            Layout.minimumHeight: 0; Layout.preferredHeight: 0
+            objectName: "calendarInspectorFields"
+            anchors.top: heading.bottom; anchors.bottom: parent.bottom
+            anchors.left: parent.left; anchors.right: parent.right
+            anchors.topMargin: inspector.compact ? 8 : 12
             contentWidth: availableWidth; clip: true
             ColumnLayout {
                 width: fieldsScroll.availableWidth

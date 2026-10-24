@@ -253,6 +253,9 @@ static void raceOptionsRegressions(MainWindow &main,CompetitionManagerWindow *wi
     }
     qInfo()<<"PASS: Przebieg, Warunki and Skok open visibly and close at desktop and narrow widths";
 }
+#include "competition-ties-gate-regressions.h"
+#include "competition-advancement-regressions.h"
+
 static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bulkAction=0) {
     Q_UNUSED(main)
     auto *db=GlobalDatabase::get();
@@ -298,6 +301,16 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
         for(auto *widget:QApplication::allWidgets()) if(auto *window=qobject_cast<CompetitionManagerWindow *>(widget);window && window->isVisible()) {
             runner.stop();ran=true;presented=window;
             auto *bridge=window->findChild<QuickBridge *>();check(bridge!=nullptr,"fresh competition adapter");
+            if(!bulk)competitionCoachGateRegressions(window,check);
+            if(auto *start=item(scene(window)->rootObject(),"raceStartList"))check(!start->property("searchEnabled").toBool() && !start->property("searchOpen").toBool(),"competition start list never exposes athlete filtering");
+            if(!bulk && scenario==0) {
+                auto *info=window->getManager()->getCompetitionInfo();const int type=info->getSerieType(),rounds=info->getExceptionalRoundsCount();
+                info->setSerieType(CompetitionInfo::Qualifications);info->setExceptionalRoundsCount(1);bridge->refresh();QTest::qWait(30);
+                check(item(scene(window)->rootObject(),"raceRoundStatus")->property("text").toString()==QString::fromUtf8("Kwalifikacje"),"single-round qualifications do not display a fictitious second round");
+                info->setSerieType(CompetitionInfo::Competition);bridge->refresh();QTest::qWait(30);
+                check(item(scene(window)->rootObject(),"raceRoundStatus")->property("text").toString().contains("1 / 1"),"ordinary single-round competition retains its 1 / 1 round counter");
+                info->setSerieType(type);info->setExceptionalRoundsCount(rounds);bridge->refresh();
+            }
             check(window->getManager()->getToBeatLineDistance()<0 && window->findChild<QLabel *>("label_toBeatDistance")->text()==QString::fromUtf8("—"),"the first athlete has no fictitious zero-metre leader target");
             if(scenario==3) {
                 const double speed=GlobalAppSettings::get()->getLiveCompetitionSpeedMulti();GlobalAppSettings::get()->setLiveCompetitionSpeedMulti(1);
@@ -430,6 +443,17 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                     const double displayedLine=window->getManager()->getToBeatLineDistance();window->getManager()->updateToBeatLineDistance();
                     check(displayedLine==window->getManager()->getToBeatLineDistance(),"live leader line is refreshed for the next athlete and current wind");
                     check(adapter->count()==countBefore+1,"live results are released after presentation");
+                    {
+                        auto *manager=window->getManager();auto *source=manager->getCompetitionInfo();
+                        const auto oldTargets=source->getQualifyingCompetitions();const int oldRounds=source->getExceptionalRoundsCount();
+                        CompetitionInfo target(source->getHill());CompetitionRules targetRules;targetRules.setRounds({RoundInfo(manager->getStartListStatusesReference().size(),true)});target.setRules(targetRules);target.setAdvancementCompetition(source);source->setQualifyingCompetitions({&target});source->setExceptionalRoundsCount(1);
+                        manager->updateCompetitorsAdvanceStatuses();adapter->invalidateText();bridge->refresh();QTest::qWait(80);scene(window)->grabFramebuffer();
+                        auto *badge=item(scene(window)->rootObject(),"qualificationBadge-0");
+                        check(badge && badge->isVisible() && badge->property("text").toString()=="Q" && adapter->data(adapter->index(0),Qt::UserRole+9).toInt()==-1 && adapter->data(adapter->index(0),Qt::UserRole+10).toInt()==StartListCompetitorStatus::SureAdvanced,"external advancement uses a visible neutral Q instead of a next-round green state");
+                        const auto color=badge->property("color").value<QColor>();check(color==QColor("#51657c") || color==QColor("#b0c2d8"),"qualification Q uses neutral text in either theme");
+                        render(window,"qualification-markers",true);
+                        source->setQualifyingCompetitions(oldTargets);source->setExceptionalRoundsCount(oldRounds);manager->updateCompetitorsAdvanceStatuses();manager->updateLastQualifiedResult();adapter->invalidateText();bridge->refresh();main.resize(1024,640);QTest::qWait(100);
+                    }
                     auto *table=item(scene(window)->rootObject(),"raceResults");const auto columns=table->property("displayColumns").value<QJSValue>().toVariant().toList();
                     check(columns.contains(3)&&columns.contains(2),"default competition results show distance and total points together");
                     auto *distance=item(scene(window)->rootObject(),"lastJumpDistance");check(distance&&distance->property("text").toString()==bridge->jumpSummary().value("distance").toString(),"last jump distance uses revealed real jump data");
@@ -482,9 +506,14 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
             };
             checkStartList();
             int jumps=0;bool previousRankTested=false;
+            QSet<QString> checkedGates;
             while(!window->getManager()->checkCompetitionEnd() && jumps++<250) {
                 auto *next=window->findChild<QPushButton *>("pushButton_goToNext");
                 auto *jump=window->findChild<QPushButton *>("pushButton_jump");
+                if(jump && jump->isEnabled() && StartListCompetitorStatus::remainingJumpers(window->getManager()->getStartListStatusesReference())==1) {
+                    const QString key=QString::number(window->getManager()->getActualRound())+":"+QString::number(window->getManager()->getType()==CompetitionRules::Team?static_cast<TeamCompetitionManager *>(window->getManager())->getActualGroup():0);
+                    if(!checkedGates.contains(key)){competitionCoachGateRegressions(window,check);checkedGates.insert(key);}
+                }
                 if(next && !next->isHidden() && next->isEnabled()) bridge->activate(id(bridge,"pushButton_goToNext"));
                 else if(scenario==0 && window->getManager()->getActualRound()>1 && !previousRankTested) {
                     bridge->refresh();const int previous=bridge->context().value("previousPosition").toInt();check(previous>0,"athlete on gate shows place after previous round");
@@ -800,6 +829,7 @@ static void menuRegressions(MainWindow &main) {
 static void clickControl(QQuickWidget *view,const QString &name) {
     // Synthetic QWidget mouse events bypass native mouse activation and focus.
     QApplication::setActiveWindow(view->window());view->setFocus(Qt::MouseFocusReason);
+    view->grabFramebuffer();
     auto *control=item(view->quickWindow()->contentItem(),name);
     if(!control || !control->isVisible() || !control->isEnabled()){applicationWindow->grab().save("/tmp/sj-click-failure.png");qInfo()<<"Control failure"<<name<<control<<(control?control->isVisible():false)<<(control?control->isEnabled():false);}
     check(control && control->isVisible() && control->isEnabled(),"clickable control: "+name);
@@ -827,6 +857,7 @@ static void clickControl(QQuickWidget *view,const QString &name) {
             }
         }
     }
+    view->grabFramebuffer();
     const auto point=control->mapToItem(view->rootObject(),QPointF(control->width()/2,control->height()/2)).toPoint();
     if(!view->rect().contains(point)) {
         applicationWindow->grab().save(output+"/click-outside-viewport.png");
@@ -915,7 +946,12 @@ static void hillSearchRegression(QQuickWidget *view,const QString &name,const QS
     check(choices->property("count").toInt()==1,"hill search is case insensitive and filters the actual options");
     QTest::keyClick(view,Qt::Key_Down);QTest::keyClick(view,Qt::Key_Up);QTest::keyClick(view,Qt::Key_Return);QTest::qWait(100);
     check(!popup->property("visible").toBool() && control->property("currentIndex").toInt()==target,"filtered hill selection maps back to the original source index");
-    clickControl(view,name);check(search->property("text").toString().isEmpty() && choices->property("count").toInt()==labels.size(),"reopening hill search restores the full list");QTest::keyClick(view,Qt::Key_Escape);QTest::qWait(60);
+    if(name=="calendar-field-hill") {
+        auto *fields=item(view->rootObject(),"calendarInspectorFields");
+        check(fields && fields->height()>60,"calendar inspector keeps usable field height after a hill selection");
+    }
+    clickControl(view,name);
+    check(search->property("text").toString().isEmpty() && choices->property("count").toInt()==labels.size(),"reopening hill search restores the full list");QTest::keyClick(view,Qt::Key_Escape);QTest::qWait(60);
 }
 static void seasonWorkflowRegressions(MainWindow &main) {
     main.show();main.resize(1200,800);
@@ -1130,6 +1166,8 @@ static void seasonWorkflowRegressions(MainWindow &main) {
     }
     manager.reject();qInfo()<<"PASS: real season tools, form navigation, direct calendar edits, multi-selection, history protection and undo";
 }
+#include "roster-drag-regressions.h"
+
 static void rosterRegressions(MainWindow &main) {
     main.show();main.resize(1440,900);
     QVector<Jumper *> pool;for(auto &j:GlobalDatabase::get()->getEditableGlobalJumpers())pool.append(&j);
@@ -1155,6 +1193,7 @@ static void rosterRegressions(MainWindow &main) {
     QTest::mouseRelease(view,Qt::LeftButton,Qt::NoModifier,end);QTest::qWait(100);
     check(config.getCompetitionJumpers()[3]==pool[0],"real pointer drag reorders the original start list");roster->undo();
     clickControl(view,"roster-grip-"+QuickRoster::key(pool[1]));clickControl(view,"rosterMoveConfirm");check(config.getCompetitionJumpers().first()==pool[1],"clicking a grip offers accessible move-to-position alternative");roster->undo();
+    rosterLongDragRegression(config,roster,pool);
     render(&config,"roster-workspace",true);config.reject();
     JumpersListEditorWindow saved;saved.setAllJumpers(pool.mid(0,12));saved.setSelectedJumpers(pool.mid(0,3));saved.updateUnselectedJumpers();saved.show();QTest::qWait(120);
     auto *savedRoster=saved.findChild<QuickBridge *>()->findChild<QuickRoster *>();check(savedRoster && savedRoster->count()==3,"saved lists use the same roster editor");savedRoster->toggle(QuickRoster::key(pool[5]));check(saved.getSelectedJumpers().contains(pool[5]) && !saved.getUnselectedJumpers().contains(pool[5]),"saved-list membership and its complement stay consistent");savedRoster->undo();check(saved.getSelectedJumpers()==pool.mid(0,3),"saved list undo restores its draft");render(&saved,"saved-roster",true);saved.reject();
@@ -1882,11 +1921,15 @@ static void dataPackUiRegressions(MainWindow &main) {
 }
 
 #include "classification-regressions.h"
+#include "calendar-workspace-ux-regressions.h"
+#include "calendar-inspector-space-regressions.h"
 #include "calendar-dates-regressions.h"
 #include "navigation-performance.h"
 #include "ui-duplication-regressions.h"
 
 static void backendRegressions() {
+    competitionAdvancementRegressions();
+    competitionTieRegressions(check);
     packCatalogRecoveryRegression();
     calendarDateRegressions();
     classificationScoringRegressions();
@@ -1997,10 +2040,19 @@ static void interactionRegressions(MainWindow &main) {
     main.resize(1024,640);qInfo()<<"PASS: rapid clicks, hold repeat, decimal steps and unclipped modal actions";
 }
 
+#include "ux-roster-input-regressions.h"
+
 int main(int argc,char **argv) {
     QApplication app(argc,argv);
 #if QT_CONFIG(qml_debug)
-    if(app.arguments().contains("--qml-profile"))QQmlDebuggingEnabler::enableDebugging(true);
+    if(app.arguments().contains("--qml-profile")) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        QQmlDebuggingEnabler::enableDebugging(true);
+#else
+        static QQmlDebuggingEnabler debugging(true);
+        Q_UNUSED(debugging)
+#endif
+    }
 #endif
     if (app.arguments().contains("--packs-only")) QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
     app.setOrganizationName("SJ-Sim-UI-Test"); app.setApplicationName("SjSimUI");
@@ -2025,6 +2077,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--navigation-benchmark")){navigationPerformance(main);return 0;}
     if(app.arguments().contains("--ui-duplicates-only")){uiDuplicationRegressions(main);return 0;}
     if(app.arguments().contains("--super-team-only")){main.show();runCompetition(main,2,true,1);return 0;}
+    if(app.arguments().contains("--roster-inputs-only")){rosterInputRegressions(main);return 0;}
     backendRegressions();
     if(app.arguments().contains("--team-only")){main.show();runCompetition(main,2);return 0;}
     if(app.arguments().contains("--interaction-only")){interactionRegressions(main);return 0;}
@@ -2055,7 +2108,7 @@ int main(int argc,char **argv) {
         for(int scenario=0;scenario<4;++scenario) runCompetition(main,scenario);
         seasons();qInfo()<<"PASS: full individual, KO and team competitions and season analysis";return 0;
     }
-    if(!app.arguments().contains("--layout-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);interactionRegressions(main);spaceRegressions(main);uxRegressions(main);navigationRegressions(main);homeLaunchRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);rosterRegressions(main);geometryRegressions(main);}
+    if(!app.arguments().contains("--layout-only")){auditDataRegressions();auditFormRegressions();auditStatisticsRegressions(main);rosterInputRegressions(main);interactionRegressions(main);spaceRegressions(main);uxRegressions(main);navigationRegressions(main);homeLaunchRegressions(main);menuRegressions(main);seasonWorkflowRegressions(main);calendarDateUiRegressions(main);rosterRegressions(main);geometryRegressions(main);}
     if(!app.arguments().contains("--layout-only")){for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);runCompetition(main,0,true,1);runCompetition(main,0,true,2);runCompetition(main,2,true,3);}
     singleSimulationRegression();
     singleGateRegression(main);
