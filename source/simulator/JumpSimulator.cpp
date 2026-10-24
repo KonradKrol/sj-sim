@@ -7,12 +7,15 @@
 #include <QDebug>
 #include <QRandomGenerator>
 #include <math.h>
+#include <stdexcept>
+#include <QScopedValueRollback>
 
 JumpSimulator::JumpSimulator(Jumper *jumper, const QVector<Wind> &winds, Hill *hill)
     : winds(winds)
     , hill(hill)
 {
     this->jumper = jumper;
+    jumperSkills=nullptr;competitionRules=nullptr;gate=competitionStartGate=0;DSQBaseProbability=0;jumpsImportance=5;
     simulationData = nullptr;
     if (jumper != nullptr)
         jumperSkills = this->jumper->getJumperSkillsPointer();
@@ -90,6 +93,10 @@ bool JumpSimulator::generateDSQ()
 
 void JumpSimulator::simulateJump()
 {
+    if(!jumper || !hill || !competitionRules || !std::isfinite(hill->getKPoint()) || hill->getKPoint()<=0 || !std::isfinite(hill->getHSPoint()) || hill->getHSPoint()<=0 || !std::isfinite(hill->getPointsForMeter()) || hill->getPointsForMeter()<=0)
+        throw std::invalid_argument("Simulation requires an athlete, rules and a valid hill");
+    JumpManipulator fallback;
+    QScopedValueRollback<JumpManipulator *> manipulationScope(manipulator,manipulator?manipulator:&fallback);
     jumpData = JumpData();
     jumpData.setSimulator(this);
     simulationData = &jumpData.simulationData;
@@ -641,8 +648,7 @@ JumperSkills *JumpSimulator::getJumperSkills() const
 
 void JumpSimulator::updateJumperSkills()
 {
-    if (jumper != nullptr)
-        jumperSkills = jumper->getJumperSkillsPointer();
+    jumperSkills=jumper?jumper->getJumperSkillsPointer():nullptr;
 }
 
 void JumpSimulator::setupForNextJump()
@@ -1080,7 +1086,9 @@ void JumpSimulator::setCompetitionStartGate(int newCompetitionStartGate)
 
 double JumpSimulator::previewDistance()
 {
-    if(!jumper||!hill)return 0;
+    if(!jumper || !hill || hill->getKPoint()<=0 || hill->getPointsForMeter()<=0)return 0;
+    JumpManipulator fallback;
+    QScopedValueRollback<JumpManipulator *> manipulationScope(manipulator,manipulator?manipulator:&fallback);
     deterministicPreview=true;jumpData=JumpData();simulationData=&jumpData.simulationData;resetTemporaryParameters();updateJumperSkills();hill->setRealHSByCharacteristic();setupJumpData();generateTakeoffRating();generateInrunSnowEffect();generateFlightRating();generateDistance();generateWindEffects();
     const double distance=jumpData.getDistance();deterministicPreview=false;return distance;
 }
