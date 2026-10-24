@@ -1,6 +1,8 @@
 #include <cmath>
+#include <algorithm>
 #include "CompetitionManagerWindow.h"
 #include <QScopedValueRollback>
+#include <QSignalBlocker>
 #ifdef SJ_COMPETITION_QUICK
 #include "Quick/CompetitionLiveBridge.h"
 #endif
@@ -265,13 +267,21 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
 
     jumperResultsWidget->hide();
 
-    connect(ui->spinBox_actualGate, qOverload<int>(&QSpinBox::valueChanged), this, [this, manager](){
-        if(manager->getActualStartListIndex() == 0){
-            auto &gates=manager->getRoundsStartingGatesReference();
-            if(gates.isEmpty())gates.push_back(ui->spinBox_actualGate->value());
-            else gates.last()=ui->spinBox_actualGate->value();
+    connect(ui->spinBox_actualGate, qOverload<int>(&QSpinBox::valueChanged), this, [this, manager](int gate){
+        manager->setCoachGateForNextJumper(false);
+        manager->setActualCoachGate(0);
+        const int perRound = type == CompetitionRules::Team ? qMax(1,manager->getCompetitionRules()->getJumpersInTeamCount()) : 1;
+        const int previousJumps = qMax(0,manager->getActualRound()-1) * perRound;
+        const auto &standings = manager->getResults()->getResultsReference();
+        const bool roundStarted = std::any_of(standings.cbegin(),standings.cend(),[previousJumps](const CompetitionSingleResult &result){
+            return result.getJumps().size() > previousJumps;
+        });
+        if(!roundStarted) {
+            auto &gates = manager->getRoundsStartingGatesReference();
+            const int roundIndex = manager->getActualRound()-1;
+            if(roundIndex >= 0 && roundIndex < gates.size())gates[roundIndex] = gate;
         }
-        manager->setActualGate(ui->spinBox_actualGate->value());
+        manager->setActualGate(gate);
         manager->updateLast10Judges();
         updateToAdvanceDistanceLabel();
         updateToBeatDistanceLabel();
@@ -1835,7 +1845,10 @@ void CompetitionManagerWindow::on_pushButton_jump_clicked()
 
     manager->setCoachGateForNextJumper(false);
     manager->setActualCoachGate(0);
-    ui->spinBox_actualGate->setValue(manager->getActualGate());
+    {
+        const QSignalBlocker blocker(ui->spinBox_actualGate);
+        ui->spinBox_actualGate->setValue(manager->getActualGate());
+    }
     if(manager->isAllJumpsAreFinished() == false)
         manager->setActualJumperToNextUnfinished();
     setActualWinds(windsGenerator.generateWinds());
@@ -1992,34 +2005,28 @@ void CompetitionManagerWindow::on_pushButton_manipulateJump_clicked()
 
 void CompetitionManagerWindow::on_pushButton_coachGate_clicked()
 {
-    bool ok{};
-    const int maxReduction = manager->getActualGate() - ui->spinBox_actualGate->minimum();
+    if(!manager || jumpInProgress || manager->isAllJumpsAreFinished())return;
+    const int juryGate = manager->getActualGate();
+    const int maxReduction = juryGate - ui->spinBox_actualGate->minimum();
     if(maxReduction <= 0)
     {
         QMessageBox::information(this, tr("Obniżenie belki"),
                                  tr("Belka jest już ustawiona na najniższej dostępnej pozycji."), QMessageBox::Ok);
         return;
     }
-    int howMany = QInputDialog::getInt(this, tr("Obniżenie belki na życzenie trenera"), tr("O ile stopni obniżyć belkę?\nAby uzyskać dodatkową rekompensatę, zawodnik musi osiągnąć 95% punktu HS (%1 m)").arg(QString::number((std::ceil(manager->getCompetitionInfo()->getHill()->getHSPoint() * 0.95 * 2) / 2))), 1, 0, maxReduction, 1, &ok);
-    if(howMany > 0 && ok){
-        manager->setCoachGateForNextJumper(true);
-        manager->setActualCoachGate(manager->getActualGate() - howMany);
-        manager->updateLast10Judges();
-        updateToAdvanceDistanceLabel();
-        updateToBeatDistanceLabel();
-
-        ui->spinBox_actualGate->setValue(manager->getActualCoachGate());
-        manager->setActualGate(manager->getActualGate() + howMany);
-    }
-    else if(howMany == 0 && ok)
+    bool ok = false;
+    const int previousReduction = manager->getCoachGateForNextJumper() ? juryGate-manager->getActualCoachGate() : 1;
+    const int reduction = QInputDialog::getInt(this, tr("Obniżenie belki na życzenie trenera"), tr("O ile stopni obniżyć belkę?\nAby uzyskać dodatkową rekompensatę, zawodnik musi osiągnąć 95% punktu HS (%1 m)").arg(QString::number((std::ceil(manager->getCompetitionInfo()->getHill()->getHSPoint() * 0.95 * 2) / 2))), qBound(0,previousReduction,maxReduction), 0, maxReduction, 1, &ok);
+    if(!ok)return;
+    manager->setCoachGateForNextJumper(reduction > 0);
+    manager->setActualCoachGate(reduction > 0 ? juryGate-reduction : 0);
     {
-        manager->setCoachGateForNextJumper(false);
-        manager->updateLast10Judges();
-        updateToAdvanceDistanceLabel();
-        updateToBeatDistanceLabel();
-
-        ui->spinBox_actualGate->setValue(manager->getActualGate());
+        const QSignalBlocker blocker(ui->spinBox_actualGate);
+        ui->spinBox_actualGate->setValue(reduction > 0 ? manager->getActualCoachGate() : juryGate);
     }
+    manager->updateLast10Judges();
+    updateToAdvanceDistanceLabel();
+    updateToBeatDistanceLabel();
 }
 
 QVector<Wind> CompetitionManagerWindow::getActualWinds() const
