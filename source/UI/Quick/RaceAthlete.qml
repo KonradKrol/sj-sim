@@ -39,7 +39,10 @@ Pane {
                     color: gap>0 ? Theme.headerMuted : gap<0 ? Theme.signal : Theme.snow
                     font.pointSize: Theme.caption; font.family: Theme.mono
                     Layout.fillWidth: true; wrapMode: Text.WordWrap
-                    Accessible.name: text+qsTr(". Przewaga ma znak minus.")
+                    Accessible.name: text+qsTr(". Punkty po wagach, bez skoków bieżącej serii. Przewaga ma znak minus.")
+                    ToolTip.visible: gapHover.containsMouse; ToolTip.delay: 600
+                    ToolTip.text: qsTr("Różnica punktów po wagach bieżącej serii. Porównanie nie uwzględnia skoków oddanych już w tej serii.")
+                    MouseArea { id: gapHover; anchors.fill: parent; hoverEnabled: true; acceptedButtons: Qt.NoButton }
                 }
             }
         }

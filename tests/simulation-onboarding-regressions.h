@@ -8,13 +8,24 @@ static void competitionPresentationRegressions() {
     add(&a,100);add(&b,200);add(&c,80);
     auto *own=results.getResultOfIndividualJumper(&a);
     auto rivals=[&]{QVector<const CompetitionSingleResult *> field;for(const auto &result:results.getResultsReference())field.append(&result);return field;};
-    check(QuickRaceStats::currentGap(*own,rivals(),2).value("gap").toDouble()==50,"pre-jump leader gap applies the new round's weights");
+    check(QuickRaceStats::roundStartGap(*own,rivals(),2).value("gap").toDouble()==50,"pre-jump leader gap applies the new round's weights");
     add(&b,80);own=results.getResultOfIndividualJumper(&a);
-    check(QuickRaceStats::currentGap(*own,rivals(),2).value("gap").toDouble()==130,"leader gap includes attempts already completed in the current round");
-    check(QuickRaceStats::currentGap(*own,{results.getResultOfIndividualJumper(&c)},2).value("gap").toDouble()==-10,"KO group gap can expose a negative lead independent of the overall leader");
-    check(QuickRaceStats::currentGap(*own,rivals(),1).isEmpty(),"first round has no inherited-points gap");
+    check(QuickRaceStats::roundStartGap(*own,rivals(),2).value("gap").toDouble()==50,"round-start gap excludes the leader's extra current-round jump");
+    check(QuickRaceStats::roundStartGap(*own,{results.getResultOfIndividualJumper(&c)},2).value("gap").toDouble()==-10,"KO group gap can expose a negative lead independent of the overall leader");
+    check(QuickRaceStats::roundStartGap(*own,rivals(),1).isEmpty(),"first round has no inherited-points gap");
+    add(&a,60);add(&c,100);RoundInfo third(3,true);third.setPreviousRoundsWeights({.25,.5});auto rounds=info.getRulesPointer()->getRounds();rounds.append(third);info.getRulesPointer()->setRounds(rounds);
+    own=results.getResultOfIndividualJumper(&a);
+    check(QuickRaceStats::roundStartGap(*own,rivals(),3).value("gap").toDouble()==35,"third-series gap uses each completed round's new weight");
+    add(&b,200);own=results.getResultOfIndividualJumper(&a);
+    check(QuickRaceStats::roundStartGap(*own,rivals(),3).value("gap").toDouble()==35,"another current-series attempt cannot inflate the inherited gap");
+    check(QuickRaceStats::roundStartGap(*own,{results.getResultOfIndividualJumper(&c)},3).value("gap").toDouble()==15,"KO gap uses the same completed-round boundary as the overall gap");
+    Team ta("POL"),tb("NOR");CompetitionInfo teamInfo(&hill);CompetitionRules teamRules;teamRules.setCompetitionType(CompetitionRules::Team);teamRules.setJumpersInTeamCount(2);teamRules.setRounds({RoundInfo(2,true),second});teamInfo.setRules(teamRules);
+    auto &teamResults=teamInfo.getResultsReference();
+    const auto teamJump=[&](Team *team,double points){JumpData jump(&a,&hill);jump.setPoints(points);teamResults.addJump(team,jump);};
+    teamJump(&ta,100);teamJump(&ta,80);teamJump(&tb,90);teamJump(&tb,70);teamJump(&tb,150);
+    check(QuickRaceStats::roundStartGap(*teamResults.getResultOfTeam(&ta),{teamResults.getResultOfTeam(&tb)},2).value("gap").toDouble()==-10,"team gaps exclude extra members' jumps from the current series");
     info.getRulesPointer()->getRoundsReference()[1].setResetPoints(true);info.getRulesPointer()->getRoundsReference()[1].setPreviousRoundsWeights({});
-    check(QuickRaceStats::currentGap(*own,rivals(),2).isEmpty(),"reset points suppress stale previous-round gaps");
+    check(QuickRaceStats::roundStartGap(*own,rivals(),2).isEmpty(),"reset points suppress stale previous-round gaps");
     results.getResultsReference().clear();add(&a,100);add(&b,100);add(&c,90);results.sortInDescendingOrder();
     IndividualCompetitionManager manager;manager.setCompetitionInfo(&info);manager.setCompetitionRules(info.getRulesPointer());manager.setResults(&results);manager.setActualRound(1);manager.setFirstRoundJumpers({&a,&b,&c});manager.setupStartListStatusesForActualRound();
     ResultsTableModel model(CompetitionRules::Individual,&results,&manager);model.setStartListStatuses(&manager.getStartListStatusesReference());
@@ -26,7 +37,7 @@ static void competitionPresentationRegressions() {
     check(manager.checkCompetitionEnd() && model.index(0,0).data(Qt::BackgroundRole).value<QColor>()==gold && model.index(1,0).data(Qt::BackgroundRole).value<QColor>()==gold && model.index(2,0).data(Qt::BackgroundRole).value<QColor>()==bronze,"final podium follows tied places 1,1,3 rather than row indexes");
     manager.setActualRound(2);for(auto &status:manager.getStartListStatusesReference())status.setJumpStatus(StartListCompetitorStatus::Unfinished);
     check(manager.checkCompetitionEnd() && model.index(1,0).data(Qt::BackgroundRole).value<QColor>()==gold,"cancellation ending the competition retains the previous series' tied podium");
-    qInfo()<<"PASS: weighted current leader and KO gaps, reset suppression and final-only tied podium";
+    qInfo()<<"PASS: weighted round-start and KO gaps, reset suppression and final-only tied podium";
 }
 
 static void simulationOnboardingRegressions(MainWindow &main) {

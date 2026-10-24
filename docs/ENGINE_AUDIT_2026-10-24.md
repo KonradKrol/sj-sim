@@ -68,3 +68,9 @@ Nie zmieniono w tej partii ogólnych zasad zaokrąglania ani parametrów balansu
 ## Zadania dopisane przez użytkownika
 
 Po zakończeniu audytu i optymalizacji kolejność jest następująca: wersja `2.0.0-beta` w osobnym commicie; następnie przycisk „Dodaj konkurs w kalendarzu” z przeglądu ma rzeczywiście dodawać konkurs i otwierać jego edycję; na samym końcu straty przed skokiem mają porównywać punkty po wagach na tym samym etapie, bez dodatkowego skoku lidera bieżącej serii. To osobne zmiany, niewliczane do dziesięciu błędów silnika.
+
+## Dodatkowa kontrola pamięci i punkt kontrolny
+
+Po ukończeniu dziesięciu poprawek silnika AddressSanitizer wykrył osobny błąd adaptera UI: zmiana języka odświeżała ukryte listy przez wskaźniki do zastąpionej bazy skoczków. Stos prowadził z QuickUi do QuickRoster::invalidateText i Jumper::getCountryCode. Poprawka `a72a6b5` odświeża etykiety na podstawie przechowywanych map wartości; osobna regresja zwalnia źródłowego skoczka przed takim powiadomieniem. Nie wliczono tego błędu do dziesięciu poprawek silnika.
+
+W chwili bieżącego punktu kontrolnego regresja poprawki przeszła, a pełny ponowny przebieg ASAN jest jeszcze do potwierdzenia. Użytkownik polecił zapisać i wypchnąć wszystkie zmiany oraz kontynuować tę diagnostykę. Aktualny stan i polecenia są w [RESUME_ENGINE_AUDIT_2026-10-24.md](RESUME_ENGINE_AUDIT_2026-10-24.md).

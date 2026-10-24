@@ -646,7 +646,7 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 - Wybrane paczki są kopiowane do nowego zapisu bez przełączania globalnie aktywnej bazy. Puste paczki blokują tworzenie niekompletnej symulacji. Zachowano konfigurator kolejnego sezonu i komponenty Widgets.
 - Puste stany przeglądu sezonu, kalendarzy, klasyfikacji, list zawodników, wyników i wyszukiwania wyjaśniają następny krok. Przyciski pustych stanów mieszczą się także w niskich viewportach; narzędzia bez zastosowania nie zajmują miejsca pustego kalendarza.
 - „Utwórz kalendarz” od razu tworzy kalendarz i przechodzi do jego sekcji z edycją nazwy. Przejścia działają także wtedy, gdy ukryta karta Widgets miała już ten sam indeks. Rozróżniono brak kalendarza, brak aktywnego kalendarza i brak konkursów.
-- Przed skokiem straty/przewagi liczone są z punktów po wagach bieżącej serii względem aktualnych wyników rywali. KO ma osobną stratę do lidera grupy. Całkowity reset punktów i pierwsza seria wyłączają takie informacje; prezentacja na żywo nie ujawnia ich przed wynikiem.
+- Przed skokiem straty/przewagi liczone są z punktów po wagach bieżącej serii względem rywali po tych samych zakończonych seriach, bez dodatkowych skoków oddanych już w bieżącej serii. KO ma osobną stratę do lidera grupy. Całkowity reset punktów i pierwsza seria wyłączają takie informacje; prezentacja na żywo nie ujawnia ich przed wynikiem.
 - Kliknięcie wyniku grupy KO pokazuje kartę właściwego skoczka. Wiersz grupy nie jest używany jako indeks ogólnych wyników.
 - Usunięto znacznik ✓ awansu. Q kalendarza znajduje się po prawej stronie treści, z wyraźnym marginesem od krawędzi i odstępem od przycisku edycji.
 - Podium pojawia się wyłącznie po zakończeniu konkursu, także zakończonego odwołaniem serii. Kolory wynikają z miejsc z uwzględnieniem ex aequo. Zakończenie pośredniej serii nie tworzy podium, a odwołanie pierwszej nie tworzy miejsc z pustych wyników.
@@ -659,6 +659,13 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 - Jedna optymalizacja async/multithread: duże niezależne partie pojedynczych skoków od4096 prób, do4 pracowników, z zachowaniem anulowania i wcześniejszych wyników. Snapshoty ustawień i własne RNG zapobiegają współdzieleniu mutowanego stanu.
 - W izolowanym pomiarze20k skoków mediana zmalała z359ms dla jednego pracownika do236ms dla czterech, około34%. To pomiar jądra obliczeń, nie całego interfejsu. Nie równoleglono sekwencji zawodników w tym samym konkursie ani drobnych składników pojedynczego skoku.
 - Szczegóły każdego błędu, commity i logi: [ENGINE_AUDIT_2026-10-24.md](ENGINE_AUDIT_2026-10-24.md).
+
+## 23. Wersja 2.0.0-beta i końcowe korekty przeglądu oraz strat
+
+- Po audycie silnika ustawiono wspólne oznaczenie aplikacji na **2.0.0-beta**, z osobnym znacznikiem beta w Qt Quick. Commit `b04f612`.
+- Przycisk „Dodaj konkurs w kalendarzu” w przeglądzie pustego aktywnego kalendarza rzeczywiście tworzy konkurs, zaznacza go i otwiera edycję. Korzysta z istniejącego backendu i historii zmian. Commit `0fc093d`.
+- Skorygowano wcześniejszą decyzję o porównywaniu do lidera z dodatkowym skokiem: przed skokiem obie straty — ogólna i KO — dotyczą tego samego etapu. Wyniki poprzednich serii przeliczane są wagami bieżącej, a jej skoki są pomijane u wszystkich. Usuwa to zawyżenia typu180pkt zamiast10pkt. Zachowano minus przy przewadze i ukrywanie po całkowitym resecie.
+- Regresje obejmują kolejne skoki lidera, trzecią serię z niejednakowymi wagami i liczbę skoków przypadającą na serię drużynową.
 
 ## Załącznik A. Dokładny zakres Git
 

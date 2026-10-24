@@ -9,14 +9,18 @@
 #include <cmath>
 
 namespace QuickRaceStats {
-inline QVariantMap currentGap(const CompetitionSingleResult &athlete,const QVector<const CompetitionSingleResult *> &rivals,int round) {
+inline QVariantMap roundStartGap(const CompetitionSingleResult &athlete,const QVector<const CompetitionSingleResult *> &rivals,int round) {
     if(round<2 || !athlete.getCompetition())return {};
     const auto weights=athlete.getCompetition()->getRulesPointer()->getRoundPointWeights(round);
     bool carriesPoints=false;for(int i=0;i<round-1;++i)if(std::abs(weights.value(i,1.))>1e-9)carriesPoints=true;
     if(!carriesPoints)return {};
-    const auto own=qRound64(athlete.pointsForJumps(athlete.getJumps().size(),round)*10.);
+    const auto *rules=athlete.getCompetition()->getRulesPointer();
+    const int perRound=athlete.getType()==CompetitionSingleResult::TeamResult?qMax(1,rules->getJumpersInTeamCount()):1;
+    const int previousCount=(round-1)*perRound;
+    if(athlete.getJumps().size()<previousCount)return {};
+    const auto own=qRound64(athlete.pointsForJumps(previousCount,round)*10.);
     qint64 best=std::numeric_limits<qint64>::min();
-    for(const auto *rival:rivals)if(rival && rival!=&athlete)best=qMax(best,qRound64(rival->pointsForJumps(rival->getJumps().size(),round)*10.));
+    for(const auto *rival:rivals)if(rival && rival!=&athlete && rival->getJumps().size()>=previousCount)best=qMax(best,qRound64(rival->pointsForJumps(previousCount,round)*10.));
     return best==std::numeric_limits<qint64>::min()?QVariantMap():QVariantMap{{"gap",(best-own)/10.}};
 }
 

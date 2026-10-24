@@ -9453,6 +9453,14 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <source>. Przewaga ma znak minus.</source>
         <translation>. A lead is shown with a minus sign.</translation>
     </message>
+    <message>
+        <source>. Punkty po wagach, bez skoków bieżącej serii. Przewaga ma znak minus.</source>
+        <translation>. Weighted points, excluding jumps from the current round. A lead has a minus sign.</translation>
+    </message>
+    <message>
+        <source>Różnica punktów po wagach bieżącej serii. Porównanie nie uwzględnia skoków oddanych już w tej serii.</source>
+        <translation>Points difference after applying this round’s weights. Jumps already completed in the current round are excluded.</translation>
+    </message>
 </context>
 
 

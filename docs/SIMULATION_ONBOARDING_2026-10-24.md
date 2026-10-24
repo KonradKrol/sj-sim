@@ -31,14 +31,14 @@ Objęte miejsca:
 11. Pozostałe puste tabele — informacja o danych/wynikach, które pojawią się po działaniu użytkownika.
 12. Przegląd bez wyników klasyfikacji — wskazanie dodania klasyfikacji i przypisania wydarzeń.
 
-Przycisk „Utwórz kalendarz” w przeglądzie od razu tworzy kalendarz, zaznacza go i otwiera sekcję kalendarza z edycją nazwy. Przejście działa również wtedy, gdy ukryta karta Qt Widgets już była ustawiona na Kalendarz — dawniej nie emitowała ponownie zmiany indeksu, więc Quick pozostawał w Przeglądzie. Ta sama droga działa przy przejściu z przeglądu do dodawania konkursów w istniejącym pustym kalendarzu.
+Przycisk „Utwórz kalendarz” w przeglądzie od razu tworzy kalendarz, zaznacza go i otwiera sekcję kalendarza z edycją nazwy. Przejście działa również wtedy, gdy ukryta karta Qt Widgets już była ustawiona na Kalendarz — dawniej nie emitowała ponownie zmiany indeksu, więc Quick pozostawał w Przeglądzie. Przycisk „Dodaj konkurs w kalendarzu” w przeglądzie istniejącego pustego kalendarza od razu dodaje konkurs, zaznacza go i otwiera edycję przez ten sam backend z Cofnij/Ponów.
 
 Przycisk dodawania kalendarza jest opisany również w wąskim układzie. Przy jednym pustym aktywnym kalendarzu nie zajmują miejsca zbędny dropdown wyboru ani wyłączony przycisk jego aktywowania.
 
 ## Karta zawodnika i KO
 
 - Strata/przewaga przed skokiem jest liczona z punktów przeliczonych według wag bieżącej serii.
-- Porównanie dotyczy aktualnego wyniku najlepszego rywala, w tym skoków oddanych już w tej serii. Przewaga ma znak minus.
+- Porównanie dotyczy punktów rywali po tych samych zakończonych seriach, przeliczonych wagami bieżącej serii. Pomija dodatkowe skoki oddane już w tej serii; przewaga ma znak minus. To końcowa korekta po zgłoszeniu nieporównywalnych etapów.
 - W KO osobno pokazany jest wynik względem lidera całego konkursu i najlepszego rywala w grupie.
 - Pierwsza seria i seria z całkowitym resetem wcześniejszych punktów nie pokazują tych odziedziczonych strat. Miejsce po poprzedniej serii może nadal być widoczne; nie jest mylone ze stratą po przeliczeniu.
 - Podczas animacji na żywo wartości sprzed skoku pozostają zamrożone do ujawnienia wyniku.

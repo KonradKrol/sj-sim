@@ -504,11 +504,11 @@ void QuickBridge::refresh() {
                 QVector<const CompetitionSingleResult *> rivals;
                 if(team)for(auto *entry:team->getActualRoundTeamsReference())rivals.append(manager->getResults()->getResultOfTeam(entry));
                 else for(const auto &entry:manager->getStartListStatusesReference())rivals.append(manager->getResults()->getResultOfIndividualJumper(entry.getJumper()));
-                const auto gap=QuickRaceStats::currentGap(*ranked,rivals,manager->getActualRound());
+                const auto gap=QuickRaceStats::roundStartGap(*ranked,rivals,manager->getActualRound());
                 if(gap.contains("gap"))context["currentGap"]=gap.value("gap");
                 if(auto *individual=dynamic_cast<IndividualCompetitionManager *>(manager);individual && individual->getKOManager() && individual->getKOManager()->getActualGroup()) {
                     rivals.clear();for(auto *jumper:individual->getKOManager()->getActualGroup()->getJumpersReference())rivals.append(manager->getResults()->getResultOfIndividualJumper(jumper));
-                    const auto groupGap=QuickRaceStats::currentGap(*ranked,rivals,manager->getActualRound());
+                    const auto groupGap=QuickRaceStats::roundStartGap(*ranked,rivals,manager->getActualRound());
                     if(groupGap.contains("gap"))context["groupGap"]=groupGap.value("gap");
                 }
             }

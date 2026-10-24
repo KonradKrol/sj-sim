@@ -1,42 +1,38 @@
-# Wznowienie — audyt silnika, 24.10.2026
+# Punkt kontrolny — silnik, 2.0.0-beta i kontrola pamięci
 
-Gałąź feature/qml-competition-config. Nie ruszać main, pracować bez subagentów.
+Gałąź **feature/qml-competition-config**. Nie modyfikować main. Pracować bez subagentów. Użytkownik polecił teraz zrobić commit i push wszystkich zmian, a potem kontynuować diagnostykę.
 
-## Bieżące zadanie
+## Ukończony kod
 
-Użytkownik zlecił znaleźć i naprawić 10 błędów nie-UI oraz wdrożyć do 3 sensownych optymalizacji async/multithread (można mniej lub zero). Osobne commity. **10 poprawek już wykonano i zapisano**, testy każdego problemu odtworzyły błąd przed zmianami; cały nowy zestaw przeszedł po zmianach.
+- Dziesięć błędów nie-UI odtworzonych przed zmianami i naprawionych w dziesięciu osobnych commitach: 7cfef95,87b5792,9d6c768,6e50e1c,9b8644b,6266cb8,111d6d0,b48fa0d,090bd61,53a9960. Szczegóły w ENGINE_AUDIT_2026-10-24.md.
+- Jedna uzasadniona optymalizacja async: a99df69, duże niezależne partie >=4096 skoków, do4 pracowników. Snapshot ustawień w TLS, własne RNG, bezpieczne anulowanie i odłączone wyniki. Mediana20k:359ms1worker/236ms4workers (~34% krócej). Pozostałych2 kandydatów świadomie nie wdrażano.
+- b04f612: dokładny znacznik **2.0.0-beta**. VersionBadge rozdziela numer i beta; wspólna wartość jest w source/UI/mainwindow.cpp.
+- 0fc093d: przycisk „Dodaj konkurs w kalendarzu” z przeglądu faktycznie dodaje, zaznacza i otwiera edycję konkursu.
+- Ostatnia korekta strat: QuickRaceStats::roundStartGap porównuje punkty tylko po zakończonych seriach, z wagami bieżącej, bez dodatkowego skoku lidera. Dotyczy zwykłego konkursu, KO i drużyn; regresje obejmują również trzecią serię. To nadpisuje wcześniejszą decyzję o uwzględnianiu aktualnego skoku lidera.
 
-- f1b9c33 — niezależne regresje: tests/engine-audit-regressions.h, flaga --engine-audit-only i --engine-case=N.
-- 7cfef95 — inicjalizacja/reset JumpData: DNS, belka trenera, forma, wskaźniki i wyniki.
-- 87b5792 — inicjalizacja/ochrona kontekstu JumpSimulator, czyszczenie skills po odpięciu skoczka, domyślny manipulator tymczasowy; zły kontekst rzuca invalid_argument.
-- 9d6c768 — dzielenie przez zero i niewłaściwe konwersje prawdopodobieństwa DSQ przy cesze -7.
-- 6e50e1c — nawias we wpływie wysokości lotu: kara od różnicy od ideału, nie od przeskalowanej samej cechy.
-- 9b8644b — krótkie wektory wymuszonych not i wartości poza zakresem: dopełnienie -1, limit20, NaN pomijane.
-- 6266cb8 — wyższa belka trenera musi dawać ujemną rekompensatę także poniżej95% HS.
-- 111d6d0 — zapis skoczni używa właściwej flagi autoPointsForMeter.
-- b48fa0d — K169,5 daje1,8 pkt/m zamiast0.
-- 090bd61 — normalizacja kątów wiatru modulo360, także ujemnych i wielu obrotów.
-- 53a9960 — zerowe odchylenie uciętego normalnego nie zapętla się; daleki ogon próbkowany przez propozycję wykładniczą zamiast praktycznie nieskończonej pętli odrzucania.
+## Weryfikacja i dodatkowa znaleziona awaria
 
-Logi: /tmp/sj-engine-before-1.log ... -10.log (1–9 kod1 z oczekiwanym FAIL,10 timeout4s), /tmp/sj-engine-fixed.log (wszystkie10 PASS). Tymczasowy skrypt /tmp/sj-engine-fixes.py tylko do częściowego stagingu — wszystkie poprawki już są w Git, czysty working tree w chwili zapisania checkpointu. Nie trzeba go wznawiać.
+- /tmp/sj-engine-before-1.log ... -10.log: przypadki1–9 FAIL przed poprawką,10 timeout4s.
+- /tmp/sj-engine-fixed.log: wszystkie10 PASS.
+- /tmp/sj-engine-async-isolated.log: PASS dla snapshotów ustawień, anulowania, życia właściciela, serializacji i unikalnych ID.
+- /tmp/sj-engine-full.log: pełny zestaw391renderów, kod0 przed ostatnimi dopiskami.
+- /tmp/sj-final-full-gdb.log: pełny końcowy zestaw391renderów zakończony normalnie pod gdb.
+- /tmp/sj-final-gaps-multiko.log: rzeczywiste wieloseryjneKO z obiema stratami, kod0.
+- /tmp/sj-final-2-beta-widgets.log: aktualny build Widgets, kod0.
+- /tmp/sj-final-cache-and-gaps.log: engine audit, nowa regresja tłumaczeń i onboarding/dodawanie konkursu PASS po ostatniej poprawce.
 
-## Do zrobienia, kolejność obowiązkowa
+Pełny zwykły smoke raz zakończył się SIGSEGV po authorRegressions; powtórzenie pod gdb przeszło. Uruchomiono ASAN w osobnym ignorowanym **build-quick-asan** i on znalazł konkretny heap-buffer-overflow:
 
-1. Ocenić/wdrożyć sensowną równoległość. Kandydat: duże niezależne partie SingleJumpsManager, nie sekwencyjne konkursy. Potrzebne: lokalny RNG (obecny MyRandom ma globalny mt19937), kopie skoczka/skoczni/reguł per worker, snapshot ustawień globalnych (JumpSimulator/Hill odczytują singleton), brak QWidget w workerze, bezpieczne anulowanie i usunięcie wskaźników do lokalnych workerów. Zmierzyć przed/po i zachować tylko przy sensownej korzyści. Nie ma obowiązku robić3. Kod optymalizacji ukończono później w a99df69; patrz aktualizacja na końcu.
-2. Uzupełnić test losowania dalekiego ogona (średnia z phi(alpha)/Q(alpha)-alpha i terminacja), dodać engine audit do normalnego pełnego zestawu, uruchomić pełne regresje/Widgets oraz testy właściwe optymalizacji.
-3. Zrobić szczegółowy raport10 błędów, dowody i decyzje o optymalizacji, release notes vsmain.
-4. **Na końcu zmienić wersję na dokładnie 2.0.0-beta**, osobny commit (użytkownik to dopisał). Źródło source/UI/mainwindow.cpp const appVersion; zaktualizować związane testy i dokumentację. Nie zmieniać jeszcze przed zakończeniem punktów1–3.
-5. **Po znaczniku wersji**: przycisk „Dodaj konkurs w kalendarzu” z Przeglądu ma naprawdę dodawać konkurs, zaznaczyć go i przejść do edycji, a nie tylko przechodzić do sekcji. Osobny commit.
-6. **Absolutnie na końcu, po powyższym przycisku**: poprawić straty przed skokiem, przynajmniej w KO, również zwykły konkurs. Użytkownik odwołał wcześniejszą decyzję o porównywaniu do aktualnej sumy lidera. Teraz porównywać punkty po wagach NA TYM SAMYM ETAPIE: bez dodatkowego skoku lidera z bieżącej serii. Dotyczy obu strat (cały konkurs i grupa). Obecny QuickRaceStats::currentGap używa pointsForJumps(jumps.size(),round) i daje np180 zamiast10; trzeba uciąć do skoków z poprzednich serii, z bieżącymi wagami. Zachować ukrywanie po pełnym resecie, minus jako przewagę, frozen live context. Dostosować tests/simulation-onboarding-regressions.h i multiKO, które obecnie testują dawną decyzję.
-7. Commity, inventory scripts/update-release-inventory.py, czysty workingtree, finalny raport. User przy poprzednich wiadomościach pytał o render — wyjaśniono, że to zrzuty testowe, a nie FPS.
+`QuickUi.cpp:212 -> QuickRoster::invalidateText -> refresh -> visiblePool -> Jumper::getCountryCode`.
 
-Środowisko Qt5.15.3, scripts/test-quick-ui.sh (pełny~4min), --engine-audit-only (szybki), --single-jumps-only, --single-jumps-benchmark, --ko-multi-round-only, --round-points-bulk-only. W build-quick-ui nie uruchamiać równoległych buildów. Widgets: make-j2 w build-widgets-compat. Testy bez buildu przez env LD_LIBRARY_PATH=.../build-qml-preview/qt-runtime/lib QML2_IMPORT_PATH=.../build-qml-preview/qt-runtime/qml QT_QPA_PLATFORM=offscreen QT_QUICK_BACKEND=software build-quick-ui/sj-sim-ui-smoke FLAG. Nie nadpisywać danych użytkownika ani nie zamykać jego gry.
+Zmiana języka odświeżała ukryte adaptery mające wskaźniki do zastąpionej bazy skoczków. Błąd zapisany w /tmp/sj-asan-full.64349, linia2806 i dalej, pełny log aplikacji /tmp/sj-final-asan.log. Naprawa **a72a6b5**: invalidateText emituje changed bez dereferencji danych zawodników (gotowe wiersze są mapami wartości; zmianę danych nadal wykonuje sync). Regresja tests/roster-translation-regressions.h usuwa źródłowego zawodnika przed tłumaczeniem i przeszła.
 
+## Pozostałe — kontynuować po pushu
 
-## Aktualizacja po zakończeniu części silnika
+1. Ponowić **pełny ASAN po a72a6b5**. Build jest już gotowy i aktualny, ale pierwsza próba startu po poprawce zakończyła się od razu samym DEADLYSIGNAL bez raportu, zanim zaczęły się testy. Takie starty występowały też przed poprawką; nie mylić z raportem właściwego heap-buffer-overflow. Próba z verbosity=1 wcześniej pozwoliła przejść cały przebieg aż do rzeczywistego błędu. Można użyć gdb z ASAN_OPTIONS=detect_leaks=0:handle_segv=0, jeśli startup znowu się wywróci.
+2. Udany start: env ASAN_OPTIONS=detect_leaks=0:halt_on_error=1:verbosity=1:log_path=/tmp/sj-asan-fixed LD_LIBRARY_PATH=$PWD/build-qml-preview/qt-runtime/lib QML2_IMPORT_PATH=$PWD/build-qml-preview/qt-runtime/qml QT_QPA_PLATFORM=offscreen QT_QUICK_BACKEND=software $PWD/build-quick-asan/sj-sim-ui-smoke > /tmp/sj-final-asan-fixed.log 2>&1. Właściwy raport ASAN jest w pliku log_path.PID.
+3. Katalog ASAN ma symlinki userData/flags/translations do build-quick-ui, a sam test kopiuje je do QTemporaryDir. Nie nadpisuje danych użytkownika.
+4. Jeśli potrzebny rebuild ASAN: LD_LIBRARY_PATH=$PWD/build-qml-preview/qt-runtime/lib make -C build-quick-asan -j3. To ważne również przy linkowaniu; bez LD_LIBRARY_PATH mieszał systemowe QuickTemplates z runtime i link nie przechodził. Nie uruchamiać równoczesnych buildów w jednym katalogu.
+5. Po potwierdzeniu braku zgłoszenia: końcowy zwykły smoke albo przynajmniej istotne regresje, dokumentacja wyniku ASAN, aktualizacja release inventory, commit i push dalszych zmian na tę samą gałąź. Nie ogłaszać jeszcze zakończenia diagnostyki.
 
-Optymalizacja `a99df69` ukończona: duże partie >=4096 skoków, do4 pracowników, snapshot globalnych ustawień w TLS, lokalne RNG, anulowanie i odłączone wyniki. Izolowany benchmark20k:359ms1worker/236ms4workers, ok34% krócej. Nie wdrażano pozostałych2 kandydatów, ponieważ konkurs jest sekwencyjny, a pojedyncze sektory/nota to zbyt małe zadania.
-
-Przeszły pełne regresje391renderów (/tmp/sj-engine-full.log), single-jumps-only, async-benchmark-only z testem zniszczenia właściciela i izolacji ustawień oraz Widgets. Raport: ENGINE_AUDIT_2026-10-24.md.
-
-**Następna czynność: wersja2.0.0-beta**, potem realne dodawanie konkursu z Przeglądu, a na samym końcu poprawka strat na równym etapie. Te trzy dopisane zadania jeszcze nie są wykonane w tym checkpointcie. Po nich finalne testy i aktualizacja release inventory. Pozostać na feature, bez subagentów.
+MCP QML Preview brak. Lokalnie Linux/Qt5.15.3, offscreen/software, Windows/Qt6 i ThreadSanitizer nie były sprawdzane. Nie zamykać gry użytkownika ani nie ruszać jego userData. Wszystkie wymagane zmiany funkcjonalne są już gotowe; otwarta jest końcowa weryfikacja znalezionej awarii.
