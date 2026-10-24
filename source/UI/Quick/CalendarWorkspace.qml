@@ -9,7 +9,9 @@ Item {
     readonly property var backend: node ? node.values.backend : null
     readonly property bool compact: editorArea.width < 850 || height < 420
     readonly property bool tight: compact && height < 300
-    property bool editing: false
+    readonly property int editRequest: node ? node.values.editRequest || 0 : 0
+    property bool editing: editRequest>0
+    onEditRequestChanged: if(editRequest>0)editing=true
     property bool renaming: backend ? backend.newCalendar : false
     property int section: 0
     property bool addingMany: false

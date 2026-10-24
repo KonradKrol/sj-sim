@@ -294,7 +294,7 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
     if(auto *calendar=qobject_cast<CalendarEditorWidget *>(widget)) {
         auto *backend=m_calendars.value(calendar);
         if(!backend){backend=new QuickCalendar(calendar,this);m_calendars.insert(calendar,backend);connect(backend,&QuickCalendar::changed,this,&QuickBridge::deferRefresh);connect(calendar,&QObject::destroyed,this,[this,calendar,backend]{m_calendars.remove(calendar);backend->deleteLater();});}
-        backend->sync();data["kind"]="calendar";data["enabled"]=true;data["backend"]=QVariant::fromValue(static_cast<QObject *>(backend));
+        backend->sync();data["editRequest"]=calendar->property("quickEditRequest").toInt();data["kind"]="calendar";data["enabled"]=true;data["backend"]=QVariant::fromValue(static_cast<QObject *>(backend));
         data["rulesEditor"]=QVariant::fromValue(node(backend->rulesEditor(),true));
         data["classificationEditor"]=QVariant::fromValue(node(backend->classificationEditor(),true));
     } else if(auto *wind=qobject_cast<WindsGeneratorSettingsEditorWidget *>(widget)) {
@@ -909,9 +909,14 @@ void QuickBridge::compose(QuickNode *base) {
             auto *tabs=sectionTabs("season-pages",labels,pages);tabs->setProperty("quickSourceIndexes",sourceIndexes);
             if(!source->property("quickSeasonConnected").toBool()) {
                 source->setProperty("quickSeasonConnected",true);
-                connect(qobject_cast<SimulationSaveManagerWindow *>(m_window),&SimulationSaveManagerWindow::calendarRequested,this,[this,tabs](bool create){
+                connect(qobject_cast<SimulationSaveManagerWindow *>(m_window),&SimulationSaveManagerWindow::calendarRequested,this,[this,tabs](bool create,bool addCompetition){
                     tabs->setProperty("quickTabIndex",tabs->property("quickSourceIndexes").toList().indexOf(3));
                     if(create)for(auto *backend:m_calendars) {backend->catalogAction("add");break;}
+                    if(addCompetition)for(auto it=m_calendars.cbegin();it!=m_calendars.cend();++it) {
+                        const int before=it.value()->events().size();it.value()->add();
+                        if(it.value()->events().size()>before)it.key()->setProperty("quickEditRequest",it.key()->property("quickEditRequest").toInt()+1);
+                        break;
+                    }
                     deferRefresh();
                 });
                 connect(source,&QTabWidget::currentChanged,this,[this,tabs](int index){const auto mapping=tabs->property("quickSourceIndexes").toList();tabs->setProperty("quickTabIndex",index==4?4:mapping.indexOf(index));deferRefresh();});

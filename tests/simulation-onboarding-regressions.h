@@ -59,6 +59,11 @@ static void simulationOnboardingRegressions(MainWindow &main) {
     auto *action=item(scene(&manager)->rootObject(),"calendarEmptyAction");check(action && action->isVisible(),"empty calendar has a visible primary action inside its viewport");
     const auto bounds=action->mapRectToItem(scene(&manager)->rootObject(),action->boundingRect());check(bounds.top()>=0 && bounds.bottom()<=scene(&manager)->height(),"empty-calendar action is not clipped below its available space");
     clickControl(scene(&manager),"calendarEmptyAction");check(calendar->events().size()==1,"empty-calendar action creates the first editable competition");
+    calendar->undo();QTest::qWait(80);bridge->edit(rootId,0);QTest::qWait(80);
+    auto *addFromOverview=manager.findChild<QPushButton *>("pushButton_competitionConfig");check(addFromOverview->text().contains("Dodaj"),"empty active calendar offers adding a competition in overview");
+    bridge->activate(id(bridge,"pushButton_competitionConfig"));QTest::qWait(160);bridge->refresh();QTest::qWait(80);
+    auto *workspace=item(scene(&manager)->rootObject(),"calendarWorkspace");
+    check(calendar->events().size()==1 && calendar->selection().value("count").toInt()==1 && workspace && workspace->property("editing").toBool(),"overview adds and selects the competition and opens its editor, rather than only switching tabs");
     manager.reject();main.resize(1024,640);
     qInfo()<<"PASS: simplified simulation setup, pack counts and preferences, dates, and direct calendar creation";
 }

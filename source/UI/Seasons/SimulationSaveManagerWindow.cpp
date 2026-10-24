@@ -545,11 +545,11 @@ DatabaseItemsListView *SimulationSaveManagerWindow::getCalendarsListView() const
     return calendarsListView;
 }
 
-void SimulationSaveManagerWindow::focusCalendarTab(bool create)
+void SimulationSaveManagerWindow::focusCalendarTab(bool create,bool addCompetition)
 {
     ui->toolBox->setCurrentIndex(3);
     calendarsListView->getListView()->setFocus();
-    emit calendarRequested(create);
+    emit calendarRequested(create,addCompetition);
 }
 
 void SimulationSaveManagerWindow::setCalendarsListView(DatabaseItemsListView *newCalendarsListView)
@@ -894,7 +894,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
         return;
     }
 
-    if(simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference().isEmpty()) {setEditingCalendar(simulationSave->getActualSeason()->getActualCalendar());focusCalendarTab();return;}
+    if(simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference().isEmpty()) {setEditingCalendar(simulationSave->getActualSeason()->getActualCalendar());focusCalendarTab(false,true);return;}
 
     if(checkSeasonEnd() == true)
     {
