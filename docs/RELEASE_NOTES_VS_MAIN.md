@@ -659,6 +659,7 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 - Jedna optymalizacja async/multithread: duże niezależne partie pojedynczych skoków od4096 prób, do4 pracowników, z zachowaniem anulowania i wcześniejszych wyników. Snapshoty ustawień i własne RNG zapobiegają współdzieleniu mutowanego stanu.
 - W izolowanym pomiarze20k skoków mediana zmalała z359ms dla jednego pracownika do236ms dla czterech, około34%. To pomiar jądra obliczeń, nie całego interfejsu. Nie równoleglono sekwencji zawodników w tym samym konkursie ani drobnych składników pojedynczego skoku.
 - Szczegóły każdego błędu, commity i logi: [ENGINE_AUDIT_2026-10-24.md](ENGINE_AUDIT_2026-10-24.md).
+- Dodatkowo ASAN wykrył odczyt nieaktualnej bazy zawodników podczas zmiany języka w ukrytych listach. Poprawka `a72a6b5` powiadamia etykiety na podstawie przechowywanych wartości, bez dereferencji zwolnionych zawodników. Po poprawce pełny zwykły zestaw i pełny ASAN pod gdb zakończyły się poprawnie.
 
 ## 23. Wersja 2.0.0-beta i końcowe korekty przeglądu oraz strat
 

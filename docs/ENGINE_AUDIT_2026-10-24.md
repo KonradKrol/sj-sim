@@ -67,10 +67,19 @@ Nie zmieniono w tej partii ogólnych zasad zaokrąglania ani parametrów balansu
 
 ## Zadania dopisane przez użytkownika
 
-Po zakończeniu audytu i optymalizacji kolejność jest następująca: wersja `2.0.0-beta` w osobnym commicie; następnie przycisk „Dodaj konkurs w kalendarzu” z przeglądu ma rzeczywiście dodawać konkurs i otwierać jego edycję; na samym końcu straty przed skokiem mają porównywać punkty po wagach na tym samym etapie, bez dodatkowego skoku lidera bieżącej serii. To osobne zmiany, niewliczane do dziesięciu błędów silnika.
+Zrealizowano w żądanej kolejności: wersja **2.0.0-beta** w osobnym commicie `b04f612`; rzeczywiste dodanie i otwarcie konkursu z przeglądu w `0fc093d`; końcowa korekta strat w `5af8f1b`. Porównanie dotyczy punktów zakończonych serii z wagami bieżącej, bez dodatkowego skoku lidera. Regresje obejmują zwykły konkurs, KO, trzecią serię z różnymi wagami oraz drużyny. Te osobne zmiany nie są wliczane do dziesięciu błędów silnika.
 
 ## Dodatkowa kontrola pamięci i punkt kontrolny
 
 Po ukończeniu dziesięciu poprawek silnika AddressSanitizer wykrył osobny błąd adaptera UI: zmiana języka odświeżała ukryte listy przez wskaźniki do zastąpionej bazy skoczków. Stos prowadził z QuickUi do QuickRoster::invalidateText i Jumper::getCountryCode. Poprawka `a72a6b5` odświeża etykiety na podstawie przechowywanych map wartości; osobna regresja zwalnia źródłowego skoczka przed takim powiadomieniem. Nie wliczono tego błędu do dziesięciu poprawek silnika.
 
-W chwili bieżącego punktu kontrolnego regresja poprawki przeszła, a pełny ponowny przebieg ASAN jest jeszcze do potwierdzenia. Użytkownik polecił zapisać i wypchnąć wszystkie zmiany oraz kontynuować tę diagnostykę. Aktualny stan i polecenia są w [RESUME_ENGINE_AUDIT_2026-10-24.md](RESUME_ENGINE_AUDIT_2026-10-24.md).
+Po poprawce przeszły:
+
+- pełny zwykły zestaw: **kod 0**, 391 zrzutów, `/tmp/sj-final-normal-fixed.log`;
+- pełny zestaw instrumentowany AddressSanitizerem pod gdb: normalne zakończenie, 391 zrzutów, **bez raportu błędu pamięci**, `/tmp/sj-final-asan-fixed-gdb.log` oraz `/tmp/sj-asan-fixed-gdb.65769`;
+- osobna regresja zwolnionej pamięci listy: `/tmp/sj-final-cache-and-gaps.log`;
+- build Widgets dla2.0.0-beta: `/tmp/sj-final-2-beta-widgets.log`.
+
+ASAN uruchomiono z wyłączonym wykrywaniem wycieków (`detect_leaks=0`), więc nie jest to audyt wycieków ani zamiennik ThreadSanitizera. Dwa wcześniejsze starty narzędzia kończyły się samym DEADLYSIGNAL przed testami; kontrolę wykonano skutecznie pod gdb. Osobny rzeczywisty błąd odczytu list został odtworzony przez ASAN i po poprawce nie wystąpił w końcowym pełnym przebiegu.
+
+Wszystkie poprawki zostały zapisane i wypchnięte na `origin/feature/qml-competition-config`; main pozostaje niezmieniony. HTTPS nie miał danych logowania, więc użyto dostępnego uwierzytelniania SSH bez zmiany domyślnego URL pobierania. Końcowy stan: [RESUME_ENGINE_AUDIT_2026-10-24.md](RESUME_ENGINE_AUDIT_2026-10-24.md).
