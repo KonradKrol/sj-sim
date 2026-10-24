@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <random>
 #include <cmath>
+#include <stdexcept>
 
 std::random_device rd{};
 std::mt19937 generator{rd()};
@@ -134,25 +135,26 @@ double MyRandom::gammaDistributionRandom(double scale, double shape)
 
 double MyRandom::normalDistributionRandomHalf(double base, double deviation, short half)
 {
-    if(base == 0 && (half == Positive || half == Negative)) {
-        const double sample = std::abs(normalDistributionRandom(0, deviation));
-        return half == Negative ? -sample : sample;
-    }
-    while(true)
-    {
-        double random = normalDistributionRandom(base, deviation);
-        if(half == Positive)
-        {
-            if(random >= 0)
-                return random;
+    if(half!=Positive && half!=Negative)throw std::invalid_argument("Unknown half-normal side");
+    if(!std::isfinite(base) || !std::isfinite(deviation))throw std::invalid_argument("Half-normal parameters must be finite");
+    deviation=std::abs(deviation);
+    const double sign=half==Negative?-1.:1.;
+    const double mean=base*sign;
+    if(deviation==0)return sign*qMax(0.,mean);
+    if(base==0)return sign*std::abs(normalDistributionRandom(0,deviation));
+    const double alpha=-mean/deviation;
+    if(alpha>1) {
+        if(!std::isfinite(alpha))return 0;
+        const double rate=alpha*.5+std::hypot(alpha,2.)*.5;
+        std::exponential_distribution<double> tail(rate);
+        for(;;) {
+            const double offset=tail(generator);
+            const double residual=(alpha-rate)+offset;
+            if(std::generate_canonical<double,53>(generator)<=std::exp(-.5*residual*residual))return sign*(deviation*offset);
         }
-        else if(half == Negative)
-        {
-            if(random < 0)
-                return random;
-        }
-        else
-            continue;
     }
-    return 1000;
+    for(;;) {
+        const double sample=normalDistributionRandom(mean,deviation);
+        if(sample>=0)return sign*sample;
+    }
 }
