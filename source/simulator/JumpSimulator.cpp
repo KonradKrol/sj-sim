@@ -6,6 +6,7 @@
 
 #include <QDebug>
 #include <QRandomGenerator>
+#include <limits>
 #include <math.h>
 #include <stdexcept>
 #include <QScopedValueRollback>
@@ -76,10 +77,12 @@ bool JumpSimulator::generateDSQ()
             if(probability==0)return false;
         }
         else {
-            probability = getDSQBaseProbability()
-                          / (1 + (jumperSkills->getLevelOfCharacteristic("dsq-probability") / 7));
-            if (getDSQBaseProbability() == 0)
-                return false;
+            const double factor=1+jumperSkills->getLevelOfCharacteristic("dsq-probability")/7.;
+            const double base=getDSQBaseProbability();
+            if(!std::isfinite(base) || base<=0 || !std::isfinite(factor) || factor<=0)return false;
+            const double inverse=base/factor;
+            if(!std::isfinite(inverse) || inverse>=std::numeric_limits<int>::max())return false;
+            probability=static_cast<int>(inverse);
         }
 
         if(probability == 0)
