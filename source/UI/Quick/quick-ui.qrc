@@ -70,6 +70,7 @@
 
 <file>TrackMark.qml</file>
 <file>Workspace.qml</file>
+<file>KoGroupsWorkspace.qml</file>
 <file>RosterWorkspace.qml</file>
 <file>RosterPresets.qml</file>
 <file>ProjectedControl.qml</file>

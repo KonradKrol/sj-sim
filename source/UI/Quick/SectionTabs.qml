@@ -9,6 +9,15 @@ Item {
     signal selected(int index)
     implicitHeight: row.implicitHeight + (Theme.compact ? 4 : 8)
     readonly property bool overflow: row.width > width
+    function revealCurrent() {
+        var button=buttons.itemAt(currentIndex)
+        if(!button || !overflow)return
+        if(button.x<viewport.contentX)viewport.contentX=button.x
+        else if(button.x+button.width>viewport.contentX+viewport.width)viewport.contentX=Math.max(0,button.x+button.width-viewport.width)
+    }
+    onCurrentIndexChanged: Qt.callLater(revealCurrent)
+    onWidthChanged: Qt.callLater(revealCurrent)
+    onOptionsChanged: Qt.callLater(revealCurrent)
     SButton {
         id: previous
         visible: tabs.overflow
@@ -33,6 +42,7 @@ Item {
         id: row
         spacing: Theme.compact ? 3 : 6
         Repeater {
+            id: buttons
             model: tabs.options
             SButton {
                 text: modelData
@@ -61,8 +71,4 @@ Item {
         enabled: viewport.contentX + viewport.width < viewport.contentWidth - 1
         onClicked: viewport.contentX = Math.min(viewport.contentWidth-viewport.width,viewport.contentX+viewport.width*.7)
     }
-    onCurrentIndexChanged: Qt.callLater(function() {
-        var child = row.children[currentIndex]
-        if (child) viewport.contentX = Math.max(0, Math.min(child.x, viewport.contentWidth - viewport.width))
-    })
 }

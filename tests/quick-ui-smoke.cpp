@@ -1291,6 +1291,18 @@ static void koGroupingRegressions(MainWindow &main) {
         check(count==athletes.size(),"all grouping methods preserve odd-sized start lists");
         check(groups->findChildren<KOGroupInfoWidget *>().size()==assigned.size(),"old KO cards are fully removed on every regrouping");
     }
+    auto *bridge=config.findChild<QuickBridge *>();bridge->refresh();
+    const int tab=bridge->root()->values().value("options").toStringList().indexOf(QString::fromUtf8("Grupy KO"));check(tab>=0,"KO workspace is a clearly named preparation section");bridge->edit(bridge->root()->values().value("id").toInt(),tab);QTest::qWait(100);
+    auto *view=scene(&config);check(item(view->rootObject(),"koGroupsWorkspace"),"KO uses its own single workspace rather than nested legacy cards");
+    auto *method=item(view->rootObject(),"koGroupingMethod");check(method,"grouping method is directly available");QMetaObject::invokeMethod(method,"activated",Q_ARG(int,2));QTest::qWait(100);check(choice->currentIndex()==3,"QML basket choice drives actual KO grouping");
+    auto before=config.getCompetitionGroups();check(before.size()>1,"KO assignment fixture has several groups");
+    const auto firstMember=before[0].getJumpers().first(),second=before[1].getJumpers().first();
+    auto *member=item(view->rootObject(),"koMember-"+before[0].getIDStr()+"-0");check(member,"group members are directly editable");
+    QMetaObject::invokeMethod(member,"activated",Q_ARG(int,athletes.indexOf(second)));QTest::qWait(100);
+    const auto after=config.getCompetitionGroups();check(after[0].getJumpers().first()==second && after[1].getJumpers().first()==firstMember,"inline member choice swaps both occupied slots without a dialog or duplication");
+    bridge->assignKoMember(bridge->root()->children().first().value<QuickNode *>()->values().value("id").toInt(),before[0].getIDStr(),-1,QuickRoster::key(firstMember));
+    render(&config,"ko-groups-workspace",true);
+    auto *grid=item(view->rootObject(),"koGroupsGrid");check(grid && grid->height()>100,"KO groups use the remaining viewport on a small screen");
     config.reject();KOGroupsListView empty;empty.fillListLayout();
     qInfo()<<"PASS: repeated KO method changes, basket draws, odd counts and group-card lifetime";
 }

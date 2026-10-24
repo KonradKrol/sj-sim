@@ -3,6 +3,7 @@
 #include "QuickCalendar.h"
 #include "QuickRoster.h"
 #include "QuickRaceStats.h"
+#include "../EditorWidgets/KOSystem/KOGroupsListView.h"
 #include "../EditorWidgets/JumpersListEditorWindow.h"
 #include "../EditorWidgets/TeamsEditing/TeamEditorWidget.h"
 #include "../Seasons/CalendarEditor/CalendarEditorWidget.h"
@@ -983,9 +984,8 @@ void QuickBridge::compose(QuickNode *base) {
                 entry->update({{"kind","button"},{"text",tr("Opcje listy")},{"actions",actions}});
                 content.append(QVariant::fromValue(entry));
             }
-            content.append(QVariant::fromValue(node(list,true)));
             auto *roster=rosterNode(configuration);
-            if(!m_rosters.value(configuration)->active())top.append(group("start-list",tr("Lista startowa"),content));
+            if(!m_rosters.value(configuration)->active()){content.append(QVariant::fromValue(node(list,true)));top.append(group("start-list",tr("Lista startowa"),content));}
             else {
                 auto *summary=m_groups.value("roster-summary");if(!summary){summary=new QuickNode(this);m_groups.insert("roster-summary",summary);}
                 summary->update({{"kind","rosterSummary"},{"backend",roster->values().value("backend")}});
@@ -1000,14 +1000,32 @@ void QuickBridge::compose(QuickNode *base) {
             if(auto *list=m_content->findChild<QWidget *>("scrollArea_startList")) {
                 for(const auto &name:{"pushButton_loadJumpers","pushButton_byOtherComp","pushButton_defaultStartListOrder","pushButton_sortStartListByCountries","pushButton_orderByJumpersList"})if(auto *button=list->findChild<QPushButton *>(name);button&&!button->isHidden())advanced.append(QVariant::fromValue(node(button,true)));
                 for(auto *combo:list->findChildren<QComboBox *>())if(!combo->isHidden())advanced.append(QVariant::fromValue(node(combo,true)));
-                for(auto *groups:list->findChildren<QWidget *>())if(groups->inherits("KOGroupsListView")&&!groups->isHidden())advanced.append(QVariant::fromValue(node(groups,true)));
+
             }
             auto *entry=identity(configuration);auto values=entry->values();QVariantList external;
             for(const auto &value:advanced)if(auto *entry=value.value<QuickNode *>();entry&&entry->values().value("kind")=="button") {const auto fields=entry->values();external.append(QVariantMap{{"id",fields.value("id")},{"text",fields.value("text")},{"enabled",fields.value("enabled")},{"button",true}});}
             values["externalActions"]=external;entry->update(values);
-            QVariantList selectors;bool ko=false;
-            for(const auto &value:advanced)if(auto *entry=value.value<QuickNode *>();entry&&entry->values().value("kind")!="button"){selectors.append(value);if(entry->values().value("name").toString().contains("KOGroups"))ko=true;}
-            if(!selectors.isEmpty()){detail.append(group("start-list-conditions",ko?tr("Grupy KO"):tr("Kolejność według wyników"),selectors));labels.append(ko?tr("Grupy KO"):tr("Kolejność według wyników"));}
+            QVariantList selectors;
+            KOGroupsListView *koList=nullptr;
+            if(auto *list=m_content->findChild<QWidget *>("scrollArea_startList"))for(auto *groups:list->findChildren<KOGroupsListView *>())if(!groups->isHidden()){koList=groups;break;}
+            if(koList){
+                QVariantList groups,athletes;QStringList names,flags;QHash<Jumper *,int> options;
+                const auto *pool=koList->getJumpersList();
+                if(pool)for(auto *jumper:*pool)if(jumper && !options.contains(jumper)){options.insert(jumper,names.size());const auto flag=quickPicture(CountryFlagsManager::getFlagPixmap(jumper->getCountryCode().toLower()));athletes.append(QVariantMap{{"id",QuickRoster::key(jumper)}});names.append(jumper->getNameAndSurname());flags.append(flag);}
+                int largest=1;
+                if(koList->getKOGroups())for(const auto &group:*koList->getKOGroups()){
+                    QVariantList members;
+                    for(auto *jumper:group.getJumpers())if(jumper)members.append(QVariantMap{{"index",options.value(jumper,-1)},{"id",QuickRoster::key(jumper)}});
+                    largest=qMax(largest,int(members.size()));groups.append(QVariantMap{{"id",group.getIDStr()},{"number",group.getNumber()},{"members",members}});
+                }
+                auto *choice=m_content->findChild<QComboBox *>("comboBox_groupsSelectionType");QStringList methods;
+                if(choice)methods=QStringList{tr("Klasycznie"),tr("Klasycznie · większe grupy"),tr("Losowo z koszyków"),tr("Losowo")};
+                auto *ko=identity(koList);ko->update({{"kind","koGroups"},{"id",idFor(koList)},{"groups",groups},{"athletes",athletes},{"names",names},{"flags",flags},{"largest",largest},{"methods",methods},{"methodId",choice?idFor(choice):-1},{"methodIndex",choice?choice->currentIndex():0}});
+                detail.append(QVariant::fromValue(ko));labels.append(tr("Grupy KO"));
+            }else{
+                for(const auto &value:advanced)if(auto *entry=value.value<QuickNode *>();entry&&entry->values().value("kind")=="choice")selectors.append(value);
+                if(!selectors.isEmpty()){detail.append(group("start-list-conditions",tr("Kolejność według wyników"),selectors));labels.append(tr("Kolejność według wyników"));}
+            }
         }
         if(auto *hill=configuration->getHillEditor();hill && !season) { hill->setProperty("quickExposePage",true);detail.append(QVariant::fromValue(node(hill,true)));labels.append(tr("Skocznia")); }
         if(auto *rules=configuration->getCompetitionRulesEditor();rules && !season) { rules->setProperty("quickExposePage",true);detail.append(QVariant::fromValue(node(rules,true)));labels.append(tr("Zasady konkursu")); }
@@ -1061,6 +1079,18 @@ void writeWind(QWidget *page,const QVariantMap &values) {
     }
 }
 }
+void QuickBridge::assignKoMember(int editorId,const QString &groupId,int slot,const QString &athleteId)
+{
+    auto *editor=qobject_cast<KOGroupsListView *>(m_objects.value(editorId));
+    if(!editor || !editor->isEnabled() || !editor->getKOGroups())return;
+    auto &groups=*editor->getKOGroups();KOGroup *target=nullptr,*source=nullptr;int sourceSlot=-1;
+    for(auto &group:groups){if(group.getIDStr()==groupId)target=&group;for(int i=0;i<group.getJumpersReference().size();++i)if(auto *jumper=group.getJumpersReference()[i];jumper && QuickRoster::key(jumper)==athleteId){source=&group;sourceSlot=i;}}
+    if(!target || !source || slot<0 || slot>=target->getJumpersReference().size())return;
+    qSwap(target->getJumpersReference()[slot],source->getJumpersReference()[sourceSlot]);
+    for(auto *card:editor->findChildren<KOGroupInfoWidget *>())card->updateWidget();
+    deferRefresh();
+}
+
 void QuickBridge::setWind(int editorId,int sector,const QVariantMap &values,bool all) {
     auto *editor=qobject_cast<WindsGeneratorSettingsEditorWidget *>(m_objects.value(editorId));
     auto *box=editor?editor->findChild<QToolBox *>("toolBox"):nullptr;
