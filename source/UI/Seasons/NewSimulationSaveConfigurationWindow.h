@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QString>
 #include <QStringList>
+#include "../../global/DataPack.h"
+class QComboBox;
 
 namespace Ui {
 class NewSimulationSaveConfigurationWindow;
@@ -20,6 +22,7 @@ public:
     QString getNameFromInput() const;
     int getSeasonNumberFromInput() const;
     bool getDatesEnabledFromInput() const;
+    DataPack selectedPack(DataPack::Kind kind) const;
 
 private slots:
     void on_pushButton_submit_clicked();
@@ -28,6 +31,8 @@ private:
     Ui::NewSimulationSaveConfigurationWindow *ui;
 
     QStringList otherNames;
+    QComboBox *packChoices[3] = {nullptr,nullptr,nullptr};
+    void updateSubmitState();
 };
 
 #endif // NEWSIMULATIONSAVECONFIGURATIONWINDOW_H

@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 FocusScope {
     id: control
+    property bool showLabel: true
     property var node
     property real tableHeightLimit: 540
     property bool compactTable: false
@@ -21,7 +22,7 @@ FocusScope {
     width: parent.width
     spacing: Theme.compact ? 3 : 6
     Label {
-        visible: !!control.fields.label
+        visible: control.showLabel && !!control.fields.label
         text: control.fields.label || ""
         width: parent.width
         color: Theme.muted
@@ -31,9 +32,10 @@ FocusScope {
     Loader {
         id: body
         width: parent.width
-        sourceComponent: control.kind === "roster" ? rosterBody : control.kind === "rosterSummary" ? rosterSummary : control.kind === "calendar" ? calendarBody : control.kind === "wind" ? windBody : control.kind === "label" ? labelBody : control.kind === "button" ? buttonBody : control.kind === "check" ? checkBody : control.kind === "number" ? numberBody : control.kind === "text" || control.kind === "date" ? textBody : control.kind === "choice" ? choiceBody : control.kind === "slider" ? sliderBody : control.kind === "richtext" ? richBody : control.kind === "multiline" ? multilineBody : control.kind === "table" ? tableBody : control.kind === "chart" ? chartBody : control.kind === "progress" ? progressBody : groupBody
+        sourceComponent: control.kind === "empty" ? emptyBody : control.kind === "roster" ? rosterBody : control.kind === "rosterSummary" ? rosterSummary : control.kind === "calendar" ? calendarBody : control.kind === "wind" ? windBody : control.kind === "label" ? labelBody : control.kind === "button" ? buttonBody : control.kind === "check" ? checkBody : control.kind === "number" ? numberBody : control.kind === "text" || control.kind === "date" ? textBody : control.kind === "choice" ? choiceBody : control.kind === "slider" ? sliderBody : control.kind === "richtext" ? richBody : control.kind === "multiline" ? multilineBody : control.kind === "table" ? tableBody : control.kind === "chart" ? chartBody : control.kind === "progress" ? progressBody : groupBody
     }
     }
+    Component { id: emptyBody; EmptyState { title: control.fields.title || ""; description: control.fields.description || ""; actionText: control.fields.actionText || ""; onTriggered: ui.activate(control.fields.actionId) } }
     Component { id: rosterBody; RosterWorkspace { node: control.node } }
     Component { id: rosterSummary; RosterSummary { node: control.node } }
     Component { id: windBody; WindEditor { node: control.node } }

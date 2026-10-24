@@ -96,28 +96,15 @@ void SimulationSavesWindow::on_pushButton_add_clicked()
     if(simulationSaveWindow.exec() != QDialog::Accepted)
         return;
 
-    // A simulation begins with its own editable copy of the global database.
-    // Let the player choose and edit that initial set before the save owns it.
-    NewSeasonConfiguratorWindow seasonWindow(false, this);
-    connect(seasonWindow.getToolBox(), &QToolBox::currentChanged, this, [&seasonWindow](){
-        if(seasonWindow.getToolBox()->currentIndex() == 3)
-        {
-            QTimer::singleShot(200, &seasonWindow, [&seasonWindow](){
-                seasonWindow.showCalendarEditorHelp();
-            });
-        }
-    });
-    if(seasonWindow.exec() != QDialog::Accepted)
-        return;
-
     bool savedToDisk = false;
     try
     {
         std::unique_ptr<SimulationSave> simulationSave = std::make_unique<SimulationSave>();
         simulationSave->setName(simulationSaveWindow.getNameFromInput());
-        simulationSave->setJumpers(seasonWindow.getJumpersReference());
-        simulationSave->setHills(seasonWindow.getHillsReference());
-        simulationSave->setCompetitionRules(seasonWindow.getCompetitionsRulesReference());
+        QVector<Jumper *> jumpers;for(const auto &jumper:simulationSaveWindow.selectedPack(DataPack::Jumpers).jumpers)jumpers.append(new Jumper(jumper));
+        QVector<Hill *> hills;for(const auto &hill:simulationSaveWindow.selectedPack(DataPack::Hills).hills)hills.append(new Hill(hill));
+        simulationSave->setJumpers(jumpers);simulationSave->setHills(hills);
+        simulationSave->setCompetitionRules(simulationSaveWindow.selectedPack(DataPack::Rules).rules);
 
         Season season;
         season.setSeasonNumber(simulationSaveWindow.getSeasonNumberFromInput());

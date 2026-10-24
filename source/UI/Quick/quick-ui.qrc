@@ -47,6 +47,8 @@
 <file>SChoice.qml</file>
 <file>SField.qml</file>
 <file>Screen.qml</file>
+<file>NewSimulationPage.qml</file>
+<file>EmptyState.qml</file>
 <file>SingleJumpsResultsScreen.qml</file>
 <file>SectionTabs.qml</file>
 <file>SectionRail.qml</file>
