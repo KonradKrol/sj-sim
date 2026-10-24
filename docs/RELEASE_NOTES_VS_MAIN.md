@@ -6,7 +6,7 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
-- Stan porównania kodu i dokumentacji: **f9fef6c**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
+- Stan porównania kodu i dokumentacji: **b65a7be**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
 - Data zestawienia: **24 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **1.3.0 beta-3**. Przygotowanie dokumentu nie zmienia numeru wydania na 2.0.0.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
@@ -655,8 +655,8 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
-- Snapshot kodu i dokumentacji: **f9fef6c01925b62c2b701166bfbfed4399d3ab97**.
-- Commitów od bazy: **128**.
+- Snapshot kodu i dokumentacji: **b65a7becd7d6459b44a8473dbf374a866a234930**.
+- Commitów od bazy: **130**.
 - Plików zmienionych w tym zakresie: **458**.
 - Statystyki obejmują także fonty, skills i dokumentację; nie oznaczają rozmiaru samej logiki gry.
 - Dalsza aktualizacja tego zestawienia jest dodatkiem dokumentacyjnym do wskazanego snapshotu.
@@ -676,9 +676,9 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 Porównanie można odtworzyć poleceniami:
 
 ~~~sh
-git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c f9fef6c01925b62c2b701166bfbfed4399d3ab97
-git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c f9fef6c01925b62c2b701166bfbfed4399d3ab97
-git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..f9fef6c01925b62c2b701166bfbfed4399d3ab97
+git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c b65a7becd7d6459b44a8473dbf374a866a234930
+git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c b65a7becd7d6459b44a8473dbf374a866a234930
+git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..b65a7becd7d6459b44a8473dbf374a866a234930
 ~~~
 
 Zestawienie można odświeżyć przez `python3 scripts/update-release-inventory.py --base main --snapshot HEAD`. Opisy zachowania i wyniki testów należy uzupełniać na podstawie faktycznych zmian oraz weryfikacji.
@@ -817,6 +817,8 @@ Historyczne opisy należy czytać z uwzględnieniem opisanych powyżej rozwiąza
 | `faeba46` | fix: make empty season workflows actionable and synchronize calendar navigation — Create and select the first calendar directly from overview even when the native tab index is unchanged. Expose rename state, simplify controls for empty calendars and explain missing calendars, classifications, results, rosters and filtered data with viewport-bound empty states. Refresh current weighted leader and KO gaps while freezing them during live flight. |
 | `17bd91b` | test: cover simulation onboarding and weighted competition presentation — Verify pack isolation, remembered choices, date selection, direct calendar creation, visible empty-state actions, weighted live gaps, reset suppression, final-only tied medals and KO row preview mapping. Add an actual multi-round KO integration route. |
 | `f9fef6c` | docs: record simplified season setup, empty states and final result behavior — Document user decisions, completed workflows, exact regression routes and local platform limits; add English translations for new setup and empty-state guidance. |
+| `29ad6ac` | docs: refresh release manifest after simulation onboarding improvements |
+| `b65a7be` | ui: align calendar qualification Q right with comfortable padding |
 
 ## Załącznik C. Pełny manifest zmienionych plików
 
@@ -842,7 +844,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/DATA_PACKS.md](../docs/DATA_PACKS.md) | 30 | 0 |
 | A | [docs/FIVE_DATA_FIXES_2026-10-22.md](../docs/FIVE_DATA_FIXES_2026-10-22.md) | 57 | 0 |
 | A | [docs/NAVIGATION_PERFORMANCE.md](../docs/NAVIGATION_PERFORMANCE.md) | 30 | 0 |
-| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1316 | 0 |
+| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1326 | 0 |
 | A | [docs/RESUME_2026-10-22.md](../docs/RESUME_2026-10-22.md) | 44 | 0 |
 | A | [docs/RESUME_2026-10-24_COMPETITION_UX.md](../docs/RESUME_2026-10-24_COMPETITION_UX.md) | 52 | 0 |
 | A | [docs/RESUME_WINDOWS_UI_2026-10-23.md](../docs/RESUME_WINDOWS_UI_2026-10-23.md) | 44 | 0 |
@@ -875,7 +877,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/CalendarDateField.qml](../source/UI/Quick/CalendarDateField.qml) | 93 | 0 |
 | A | [source/UI/Quick/CalendarDateOverview.qml](../source/UI/Quick/CalendarDateOverview.qml) | 105 | 0 |
 | A | [source/UI/Quick/CalendarDatePlanner.qml](../source/UI/Quick/CalendarDatePlanner.qml) | 72 | 0 |
-| A | [source/UI/Quick/CalendarEventRow.qml](../source/UI/Quick/CalendarEventRow.qml) | 109 | 0 |
+| A | [source/UI/Quick/CalendarEventRow.qml](../source/UI/Quick/CalendarEventRow.qml) | 116 | 0 |
 | A | [source/UI/Quick/CalendarFields.qml](../source/UI/Quick/CalendarFields.qml) | 63 | 0 |
 | A | [source/UI/Quick/CalendarInspector.qml](../source/UI/Quick/CalendarInspector.qml) | 75 | 0 |
 | A | [source/UI/Quick/CalendarVenueButton.qml](../source/UI/Quick/CalendarVenueButton.qml) | 19 | 0 |
