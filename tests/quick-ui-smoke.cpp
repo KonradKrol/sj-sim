@@ -2058,6 +2058,7 @@ static void interactionRegressions(MainWindow &main) {
 #include "ux-roster-input-regressions.h"
 
 #include "simulation-onboarding-regressions.h"
+#include "engine-audit-regressions.h"
 
 int main(int argc,char **argv) {
     QApplication app(argc,argv);
@@ -2088,6 +2089,7 @@ int main(int argc,char **argv) {
     MainWindow main; applicationWindow=&main; main.setParentApplication(&app); new QuickUi(&main);
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="1.3.0 beta-3","one release version is shared with the interface");
+    if(app.arguments().contains("--engine-audit-only")){int selected=0;for(const auto &argument:app.arguments())if(argument.startsWith("--engine-case="))selected=argument.mid(14).toInt();engineAuditRegressions(selected);return 0;}
     competitionPresentationRegressions();
     if(app.arguments().contains("--ko-multi-round-only")){runCompetition(main,1);return 0;}
     if(app.arguments().contains("--onboarding-only")){simulationOnboardingRegressions(main);return 0;}
