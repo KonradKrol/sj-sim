@@ -43,3 +43,10 @@ Szczegółowy opis: [COMPETITION_UX_2026-10-24.md](COMPETITION_UX_2026-10-24.md)
 ## Kontynuacja
 
 Nie ma pozostawionego niewykonanego punktu z tej partii. Następny krok po nowym poleceniu: zgłoszenia z testów użytkownika oraz natywna weryfikacja Windows/Qt6 przed wydaniem. Nie zmieniać numeru wersji ani main bez polecenia. Nie nadpisywać userData i nie zamykać gry uruchomionej przez użytkownika.
+
+
+## Dalsza ukończona partia tego samego dnia
+
+Po powyższym etapie wykonano nowe zlecenie: uproszczone tworzenie symulacji z trzema paczkami, liczebnością, datami i pamięcią wyborów; stany pustych ekranów; bezpośrednie tworzenie kalendarza; straty po wagach, w KO i po resecie; podgląd wyniku KO; usunięcie ✓; Q po lewej i podium dopiero na koniec konkursu z remisami/odwołaniem. Nowe zgłoszenie o wysokości konfiguracji zostało wycofane przez użytkownika jako nieaktualne.
+
+Szczegóły i końcowe logi są w [SIMULATION_ONBOARDING_2026-10-24.md](SIMULATION_ONBOARDING_2026-10-24.md). Pełne testy tej partii przeszły z 391 zrzutami, dodatkowo końcowe onboarding/workflow, wieloseryjne KO, konkursy z wagami i odwołaniem oraz aktualny build Widgets. Nie pozostał otwarty punkt z tego zlecenia; natywne Windows/Qt6 pozostaje do sprawdzenia przed wydaniem. Pracowano bez subagentów.

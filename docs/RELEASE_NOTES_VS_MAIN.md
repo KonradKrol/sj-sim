@@ -630,7 +630,7 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 ## 20. Awans, remisy i ergonomia konkursów — 24.10.2026
 
 - Wspólne wyznaczanie pewnego awansu i pewnego odpadnięcia na podstawie możliwych wyników pozostałych zawodników. Poprawione remisy graniczne, DNS/DSQ, drużyny i KO/lucky loser; dokładny limit kwalifikacji do KO.
-- Niezależne oznaczenia następnej serii i kwalifikacji do najbliższego konkursu: neutralne Q, łagodniejsza zieleń ze znakiem ✓, szare odpadnięcie zachowujące czytelny i dostępny wiersz.
+- Niezależne oznaczenia następnej serii i kwalifikacji do najbliższego konkursu: neutralne Q, łagodniejsza zieleń, szare odpadnięcie zachowujące czytelny i dostępny wiersz.
 - Spójne liczenie ex aequo w dziesiątych punktu i według etapu punktacji, także przy resetach punktów. Stabilna kolejność równych wyników.
 - Belka trenera nie zmienia pośrednio belki jury ani bazy serii; poprawna obsługa pierwszego i ostatniego zawodnika oraz kolejnych grup drużynowych.
 - Przeciąganie na liście startowej nie gubi źródła podczas szybkiego przewijania. Kółko i przewijanie przy krawędzi działają z podglądem nazwiska, flagi i wielokrotnego zaznaczenia.
@@ -639,6 +639,18 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 - Stabilny model kalendarza zachowuje pozycję przewijania po dodaniu wydarzenia. Gęstsze karty, dzień tygodnia przy dacie, Q zamiast zbędnych etykiet i więcej flag skoczni/zawodników.
 - Wybór skoczni i zasad aktualizuje się po przełączeniu konkursu, także po wyszukiwaniu i w trybie dat. Inspektor wykorzystuje przestrzeń pod nagłówkiem zamiast losowo ściskać pola do zerowej wysokości.
 - Szczegóły, przykłady, zakres regresji i ograniczenia: [COMPETITION_UX_2026-10-24.md](COMPETITION_UX_2026-10-24.md).
+
+## 21. Uproszczony start symulacji i końcowe wyniki — 24.10.2026
+
+- Jednoekranowe tworzenie symulacji: nazwa, rok i wybór paczek skoczków, skoczni i zasad. Bez edycji baz przed sezonem. Widać liczebność paczek, dostępne są daty zawodów oraz zapamiętanie zatwierdzonych wyborów.
+- Wybrane paczki są kopiowane do nowego zapisu bez przełączania globalnie aktywnej bazy. Puste paczki blokują tworzenie niekompletnej symulacji. Zachowano konfigurator kolejnego sezonu i komponenty Widgets.
+- Puste stany przeglądu sezonu, kalendarzy, klasyfikacji, list zawodników, wyników i wyszukiwania wyjaśniają następny krok. Przyciski pustych stanów mieszczą się także w niskich viewportach; narzędzia bez zastosowania nie zajmują miejsca pustego kalendarza.
+- „Utwórz kalendarz” od razu tworzy kalendarz i przechodzi do jego sekcji z edycją nazwy. Przejścia działają także wtedy, gdy ukryta karta Widgets miała już ten sam indeks. Rozróżniono brak kalendarza, brak aktywnego kalendarza i brak konkursów.
+- Przed skokiem straty/przewagi liczone są z punktów po wagach bieżącej serii względem aktualnych wyników rywali. KO ma osobną stratę do lidera grupy. Całkowity reset punktów i pierwsza seria wyłączają takie informacje; prezentacja na żywo nie ujawnia ich przed wynikiem.
+- Kliknięcie wyniku grupy KO pokazuje kartę właściwego skoczka. Wiersz grupy nie jest używany jako indeks ogólnych wyników.
+- Usunięto znacznik ✓ awansu. Q kalendarza znajduje się po lewej, przy tożsamości wydarzenia.
+- Podium pojawia się wyłącznie po zakończeniu konkursu, także zakończonego odwołaniem serii. Kolory wynikają z miejsc z uwzględnieniem ex aequo. Zakończenie pośredniej serii nie tworzy podium, a odwołanie pierwszej nie tworzy miejsc z pustych wyników.
+- Raport szczegółowy i wyniki testów: [SIMULATION_ONBOARDING_2026-10-24.md](SIMULATION_ONBOARDING_2026-10-24.md).
 
 ## Załącznik A. Dokładny zakres Git
 

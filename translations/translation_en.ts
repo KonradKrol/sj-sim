@@ -5305,6 +5305,46 @@ You can edit several competitions at once (The only exception is the &quot;Advan
         <source>Wybierz nazwę, która nie została jeszcze wybrana na liście zapisów symulacji</source>
         <translation>Select a name that has not yet been selected in the list of simulation saves</translation>
     </message>
+    <message>
+        <source>Paczka skoczków</source>
+        <translation>Athlete pack</translation>
+    </message>
+    <message>
+        <source>Paczka skoczni</source>
+        <translation>Hill pack</translation>
+    </message>
+    <message>
+        <source>Paczka zasad</source>
+        <translation>Rules pack</translation>
+    </message>
+    <message>
+        <source>Zapamiętaj wybór paczek</source>
+        <translation>Remember pack choices</translation>
+    </message>
+    <message>
+        <source>Skoczkowie: %1</source>
+        <translation>Athletes: %1</translation>
+    </message>
+    <message>
+        <source>Skocznie: %1</source>
+        <translation>Hills: %1</translation>
+    </message>
+    <message>
+        <source>Zestawy zasad: %1</source>
+        <translation>Rule sets: %1</translation>
+    </message>
+    <message>
+        <source>Utwórz symulację</source>
+        <translation>Create simulation</translation>
+    </message>
+    <message>
+        <source>Pusta paczka</source>
+        <translation>Empty pack</translation>
+    </message>
+    <message>
+        <source>Wybierz paczki zawierające skoczków, skocznie i zasady konkursów.</source>
+        <translation>Choose packs containing athletes, hills and competition rules.</translation>
+    </message>
 </context>
 <context>
     <name>OtherCompetitionSettingsWidget</name>
@@ -7309,6 +7349,10 @@ You can only remove it completely</translation>
     <source>Źródło kwalifikacji musi poprzedzać konkurs. Powiązanie zostało zachowane.</source>
     <translation>The qualification source must precede the competition. The link has been preserved.</translation>
 </message>
+    <message>
+        <source>Wybierz aktywny kalendarz</source>
+        <translation>Choose the active calendar</translation>
+    </message>
 </context>
 <context>
     <name>SimulationSavesWindow</name>
@@ -8431,6 +8475,30 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <source>Lista jest pusta</source>
         <translation>The list is empty</translation>
     </message>
+    <message>
+        <source>Brak pasujących wyników</source>
+        <translation>No matching results</translation>
+    </message>
+    <message>
+        <source>Nie oddano jeszcze skoku</source>
+        <translation>No jumps yet</translation>
+    </message>
+    <message>
+        <source>Brak danych</source>
+        <translation>No data</translation>
+    </message>
+    <message>
+        <source>Zmień wyszukiwanie lub wyczyść filtr.</source>
+        <translation>Change your search or clear the filter.</translation>
+    </message>
+    <message>
+        <source>Wyniki pojawią się po pierwszym skoku.</source>
+        <translation>Results will appear after the first jump.</translation>
+    </message>
+    <message>
+        <source>Dodane elementy lub wyniki pojawią się tutaj.</source>
+        <translation>Added items or results will appear here.</translation>
+    </message>
 </context>
 
 
@@ -9252,6 +9320,38 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <translation>Help</translation>
 </message>
 
+    <message>
+        <source>Zacznij od kalendarza</source>
+        <translation>Start with a calendar</translation>
+    </message>
+    <message>
+        <source>Utwórz kalendarz, a następnie dodaj konkursy lub wczytaj preset.</source>
+        <translation>Create a calendar, then add competitions or load a preset.</translation>
+    </message>
+    <message>
+        <source>Brak wyników klasyfikacji</source>
+        <translation>No classification results</translation>
+    </message>
+    <message>
+        <source>Dodaj klasyfikację w kalendarzu i przypisz do niej konkursy. Wyniki pojawią się po ich rozegraniu.</source>
+        <translation>Add a classification in the calendar and assign competitions to it. Results will appear after those competitions.</translation>
+    </message>
+    <message>
+        <source>Wybierz aktywny kalendarz</source>
+        <translation>Choose the active calendar</translation>
+    </message>
+    <message>
+        <source>W sekcji Kalendarz wybierz kalendarz i użyj przycisku Ustaw jako aktywny.</source>
+        <translation>In Calendar, select a calendar and use Set as active.</translation>
+    </message>
+    <message>
+        <source>Dodaj pierwszy konkurs</source>
+        <translation>Add the first competition</translation>
+    </message>
+    <message>
+        <source>Kalendarz jest gotowy. Dodaj konkursy lub wczytaj preset, aby rozpocząć sezon.</source>
+        <translation>The calendar is ready. Add competitions or load a preset to start the season.</translation>
+    </message>
 </context>
 
 
@@ -9340,6 +9440,18 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <source>Strata po %1 serii: %2. Przewaga ma znak minus.</source>
         <translation>Gap after round %1: %2. A lead is shown as a negative value.</translation>
+    </message>
+    <message>
+        <source>Do lidera</source>
+        <translation>To leader</translation>
+    </message>
+    <message>
+        <source>W grupie KO</source>
+        <translation>In KO group</translation>
+    </message>
+    <message>
+        <source>. Przewaga ma znak minus.</source>
+        <translation>. A lead is shown with a minus sign.</translation>
     </message>
 </context>
 
@@ -10617,6 +10729,30 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <translation>Create a calendar to add competitions.</translation>
 </message>
 
+    <message>
+        <source>+ Kalendarz</source>
+        <translation>+ Calendar</translation>
+    </message>
+    <message>
+        <source>Kalendarz jest pusty</source>
+        <translation>This calendar is empty</translation>
+    </message>
+    <message>
+        <source>Utwórz pierwszy kalendarz</source>
+        <translation>Create your first calendar</translation>
+    </message>
+    <message>
+        <source>Dodaj konkursy lub wczytaj preset. Potem ustalisz skocznie i zasady.</source>
+        <translation>Add competitions or load a preset. You can then choose hills and rules.</translation>
+    </message>
+    <message>
+        <source>Kalendarz określa konkursy i ich kolejność w sezonie.</source>
+        <translation>A calendar defines the competitions and their order in the season.</translation>
+    </message>
+    <message>
+        <source>Utwórz kalendarz</source>
+        <translation>Create calendar</translation>
+    </message>
 </context>
 
 
@@ -10951,6 +11087,14 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <source>Usuń widocznych z listy</source>
         <translation>Remove visible athletes</translation>
     </message>
+    <message>
+        <source>Zmień nazwisko lub kraj, aby zobaczyć innych zawodników.</source>
+        <translation>Change the name or country to see other athletes.</translation>
+    </message>
+    <message>
+        <source>Wyczyść filtry</source>
+        <translation>Clear filters</translation>
+    </message>
 </context>
 
 
@@ -11023,6 +11167,18 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <location filename="../source/UI/Quick/RosterOrder.qml" line="50" />
         <source>Usuń zaznaczonych</source>
         <translation>Remove selected</translation>
+    </message>
+    <message>
+        <source>Lista startowa jest pusta</source>
+        <translation>The start list is empty</translation>
+    </message>
+    <message>
+        <source>Wybierz zawodników w panelu wyboru lub wczytaj zapisany skład.</source>
+        <translation>Choose athletes in the selection panel or load a saved roster.</translation>
+    </message>
+    <message>
+        <source>Zmień filtry, aby zobaczyć zawodników z listy.</source>
+        <translation>Change the filters to see athletes on the list.</translation>
     </message>
 </context>
 
@@ -11320,6 +11476,14 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <translation>Classification options</translation>
 </message>
 
+    <message>
+        <source>Brak klasyfikacji</source>
+        <translation>No classifications</translation>
+    </message>
+    <message>
+        <source>Klasyfikacja sumuje wyniki wybranych konkursów. Dodaj ją, a następnie przypisz konkursy w sekcji Powiązania.</source>
+        <translation>A classification combines results from selected competitions. Add one, then assign competitions under Links.</translation>
+    </message>
 </context>
 <context>
     <name>SeasonFooter</name>
@@ -12202,6 +12366,37 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <source>Kwalifikacje</source>
         <translation>Qualifications</translation>
+    </message>
+</context>
+<context>
+    <name>NewSimulationPage</name>
+    <message>
+        <source>Nowa symulacja</source>
+        <translation>New simulation</translation>
+    </message>
+    <message>
+        <source>Wybierz dane sezonu. Kalendarz utworzysz w kolejnym kroku.</source>
+        <translation>Choose the season data. Create a calendar in the next step.</translation>
+    </message>
+    <message>
+        <source>Nazwa symulacji</source>
+        <translation>Simulation name</translation>
+    </message>
+    <message>
+        <source>Pierwszy sezon</source>
+        <translation>First season</translation>
+    </message>
+    <message>
+        <source>Skoczkowie</source>
+        <translation>Athletes</translation>
+    </message>
+    <message>
+        <source>Skocznie</source>
+        <translation>Hills</translation>
+    </message>
+    <message>
+        <source>Zasady konkursów</source>
+        <translation>Competition rules</translation>
     </message>
 </context>
 </TS>
