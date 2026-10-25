@@ -519,7 +519,7 @@ void QuickCalendar::loadClass() {
     if(!entry && m_calendar && !m_calendar->getClassificationsReference().isEmpty()){entry=m_calendar->getClassificationsReference().first();m_classId=entry->getIDStr();}
     m_classEditor->setClassification(entry);
     if(entry){m_classEditor->resetInputs();m_classEditor->fillInputs();}
-    const bool locked=classLocked();for(auto *choice:m_classEditor->findChildren<QComboBox *>())choice->setEnabled(!locked);for(auto *table:m_classEditor->findChildren<QTableView *>())table->setEnabled(!locked);
+    const bool locked=classLocked();m_classEditor->setProperty("quickScoringLocked",locked);for(auto *choice:m_classEditor->findChildren<QComboBox *>())choice->setEnabled(!locked || choice->objectName()=="classificationScoringMethod");for(auto *table:m_classEditor->findChildren<QTableView *>())table->setEnabled(!locked);
     for(auto *input:m_classEditor->findChildren<QSpinBox *>())input->setEnabled(!locked);
     for(auto *button:m_classEditor->findChildren<QAbstractButton *>())button->setEnabled(!locked || button->objectName()=="classificationAlternativeHelp" || button->objectName()=="classificationAdvanced");
     if(auto *name=m_classEditor->findChild<QLineEdit *>("classificationMethodName"))name->setEnabled(!locked);

@@ -262,7 +262,7 @@ void ClassificationEditorWidget::loadMethod()
 {
     const bool previous=loadingInputs;loadingInputs=true;
     const bool custom=currentMethod>0 && currentMethod<=options.methods.size();
-    methodName->setReadOnly(!custom);removeMethod->setEnabled(custom);
+    methodName->setReadOnly(!custom);removeMethod->setEnabled(custom && !property("quickScoringLocked").toBool());
     methodName->setText(custom?options.methods[currentMethod-1].name:tr("Domyślny"));
     ui->comboBox_points->setCurrentIndex(custom?options.methods[currentMethod-1].type:baseType);
     tableModel->replacePoints(custom?options.methods[currentMethod-1].points:basePoints);

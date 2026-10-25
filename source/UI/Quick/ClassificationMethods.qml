@@ -40,7 +40,7 @@ Pane {
                         objectName: "classificationMethod-"+method.index
                         anchors.fill: parent; anchors.rightMargin: method.selected && method.index>0 ? 28 : 0
                         text: method.modelData
-                        readOnly: !method.selected || method.index===0 || methods.choice.enabled===false
+                        readOnly: !method.selected || method.index===0 || methods.workspace.value("classificationMethodName").enabled===false
                         font.weight: method.selected ? Font.DemiBold : Font.Normal
                         Accessible.name: qsTr("Sposób: %1").arg(method.modelData)
                         background: Item {}
