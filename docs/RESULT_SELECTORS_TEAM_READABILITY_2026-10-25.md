@@ -20,3 +20,5 @@
 - `--history-dns-only`: prawdziwe kliknięcie wyboru serii i opcji w powierzchni konkursu, sprawdzenie pełnej widoczności opcji pod nagłówkiem, powrót i ochrona symulacji; trzy rodzaje konkursów.
 - `--team-setup-compact-only`: osobne dane nazwisk składu, otwieranie odrębnego edytora, brak sortowania i wyszukiwania, responsywne renderowanie.
 - Alternatywa Qt Widgets nadal się buduje.
+
+Weryfikacja końcowa po wszystkich poprawkach: pełny zestaw **399 renderów responsywnych — PASS**, bez ostrzeżeń o rekursywnym układzie, pętlach bindingów ani błędach JavaScript. Testy dedykowane klasyfikacji, zwykłych dropdownów i wstrzymywania podglądu oraz listy drużyn bez wyszukiwania — PASS. Alternatywny wariant Widgets zbudowany poprawnie.

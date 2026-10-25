@@ -31,3 +31,5 @@ Testy `--classifications-only` obejmują odsłanianie sposobów, przełączanie 
 - Dodawanie, usuwanie i edycja zachowują zarówno przewinięcie punktacji, jak i przewinięcie zewnętrznego formularza. Test sprawdza dodanie 83. miejsca na przewiniętej siatce.
 - Tooltip ma jawnego rodzica — znak zapytania — i pozycję pod nim z marginesem od krawędzi okna.
 - Pola wieku ograniczono do 1–100. Reguły ustalania roku odniesienia i nowe reguły wykluczania najlepszych/najsłabszych pozostają do ustalenia z użytkownikiem; nie zmieniono samowolnie naliczania punktów.
+
+Weryfikacja końcowa po wszystkich poprawkach: pełny zestaw **399 renderów responsywnych — PASS**, bez ostrzeżeń o rekursywnym układzie, pętlach bindingów ani błędach JavaScript. Testy dedykowane klasyfikacji, zwykłych dropdownów i wstrzymywania podglądu oraz listy drużyn bez wyszukiwania — PASS. Alternatywny wariant Widgets zbudowany poprawnie.

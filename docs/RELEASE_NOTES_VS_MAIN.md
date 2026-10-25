@@ -738,6 +738,14 @@ Przełączanie podglądu buduje model poza widokiem i podmienia go raz. W teści
 
 Przyciski operacji na konkursach i klasyfikacjach przeniesiono nad listy po lewej, dzięki czemu prawe formularze zaczynają się wyżej i wykorzystują pełną pozostałą wysokość. Zachowano osobną nawigację na małych ekranach i powrót z widoku miesięcznego. Wspólny pasek wyników obejmuje serię, tryb rozwijania drużyn i klasyfikację indywidualną/drużynową. Szczegóły i weryfikacja: `docs/RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md`.
 
+### Przebudowa edytora klasyfikacji
+
+Dedykowane karty Qt Quick oddzielają nazwę i rodzaj, punktację oraz filtry zaawansowane. Kompaktowa siatka par miejsce/punkty obsługuje oba precyzyjnie nazwane źródła punktów i zachowuje przewinięcie przy dodawaniu miejsca. Sposoby są widocznymi elementami z nazwą edytowaną na miejscu. Dodatkowe sposoby są odsłaniane przełącznikiem; limity krajowe i wiek mają jasne włączanie, a objaśnienia znajdują się przy małych znakach zapytania. Usunięto dawne skróty. Zachowano dane, presety, historię zmian i blokady używanych klasyfikacji. Szczegóły: `docs/CLASSIFICATION_EDITOR_UX_2026-10-25.md`.
+
+### Czytelne wybory wyników i składy drużyn
+
+Doprecyzowano nazwy wyborów wyników, ukryto zbędny wybór przy jednej dostępnej serii oraz otwierane listy rozwijają się w dół przy kontrolce, bez modalności ani wyszarzania, w pełnym obszarze konkursu. Podgląd indywidualny w drużynówce także wstrzymuje symulację i ma wspólny powrót do konkursu. Lista drużyn ma o 20% wyższe pozycje i osobne, numerowane nazwiska w dwóch kolumnach; cienka linia oddziela skład od rezerwy w edytorze drużyny. Usunięto wyszukiwanie z tabeli drużyn przed konkursem. Szczegóły: `docs/RESULT_SELECTORS_TEAM_READABILITY_2026-10-25.md`.
+
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
