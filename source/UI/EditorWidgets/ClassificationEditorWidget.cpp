@@ -10,6 +10,7 @@
 #include <QLabel>
 #include <QSignalBlocker>
 #include <QMessageBox>
+#include <QStandardItemModel>
 
 ClassificationEditorWidget::ClassificationEditorWidget(Classification * classification, QWidget *parent) :
     QWidget(parent),
@@ -68,21 +69,29 @@ ClassificationEditorWidget::ClassificationEditorWidget(Classification * classifi
         }
     });
 
-    int i=1;
-    ui->comboBox_presets->addItem(tr("BRAK"));
-    ui->comboBox_altPreset->addItem(tr("BRAK"));
+    ui->comboBox_presets->addItem(tr("Własne"));
+    ui->comboBox_altPreset->addItem(tr("Własne"));
     for(auto & preset : GlobalDatabase::get()->getEditableGlobalPointsForPlacesPresets()){
-        ui->comboBox_presets->addItem(QString::number(i) + ". " + preset.getName());
-        ui->comboBox_altPreset->addItem(QString::number(i) + ". " + preset.getName());
-        i++;
+        ui->comboBox_presets->addItem(preset.getName());
+        ui->comboBox_altPreset->addItem(preset.getName());
     }
     connect(ui->comboBox_presets, qOverload<int>(&QComboBox::activated), this, [this](){
         const int index=ui->comboBox_presets->currentIndex()-1;const auto &presets=GlobalDatabase::get()->getEditableGlobalPointsForPlacesPresets();
         tableModel->replacePoints(index>=0&&index<presets.size()?presets[index].getPointsForPlaces():QMap<int,double>());
     });
+    ui->comboBox_points->setItemText(0,tr("Klasyczne punkty za miejsca"));
+    ui->comboBox_points->setItemText(1,tr("Naliczaj notę z konkursu"));
+    for(auto *choice:{ui->comboBox_presets,ui->comboBox_altPreset})if(auto *model=qobject_cast<QStandardItemModel *>(choice->model()))if(auto *item=model->item(0))item->setEnabled(false);
     setupScoringControls();
     if(classification)fillInputs();
     else resetInputs();
+    const auto refreshPresets=[this]{
+        const auto &presets=GlobalDatabase::get()->getEditableGlobalPointsForPlacesPresets();
+        const auto refresh=[&](QComboBox *choice,const QMap<int,double> &table){int match=0;const int selected=choice->currentIndex()-1;if(!table.isEmpty()){if(selected>=0 && selected<presets.size() && presets[selected].getPointsForPlaces()==table)match=selected+1;else for(int i=0;i<presets.size();++i)if(presets[i].getPointsForPlaces()==table){match=i+1;break;}}const QSignalBlocker block(choice);choice->setCurrentIndex(match);};
+        refresh(ui->comboBox_presets,pointsForPlaces);refresh(ui->comboBox_altPreset,altPointsForPlaces);
+    };
+    for(auto *model:{tableModel,altTableModel}){connect(model,&QAbstractItemModel::dataChanged,this,refreshPresets);connect(model,&QAbstractItemModel::modelReset,this,refreshPresets);connect(model,&QAbstractItemModel::rowsInserted,this,refreshPresets);connect(model,&QAbstractItemModel::rowsRemoved,this,refreshPresets);}
+    refreshPresets();
 
 }
 
@@ -117,7 +126,7 @@ Classification *ClassificationEditorWidget::getClassificationFromInputs()
     result->setPointsForPlaces(basePoints);result->setAltPointsForPlaces(baseAlternative);
     options.ageFilter=ageFilter->isChecked();options.minimumAge=minimumAge->value();options.maximumAge=maximumAge->value();
     options.referenceYear=referenceYear->value();options.includeUnknownAge=includeUnknownAge->isChecked();
-    options.countrySelection=countrySelection->currentIndex();options.countryCount=countryCount->value();
+    options.countryExclude=countryExclude->isChecked();options.countrySelection=countrySelection->currentIndex();options.countryCount=countryCount->value();
     options.contextParameters=contextParameters->isChecked();result->setOptions(options);
     return result;
 }
@@ -199,11 +208,9 @@ void ClassificationEditorWidget::setupScoringControls()
         ui->verticalLayout->insertWidget(ui->verticalLayout->indexOf(table),panel);
     };
     rowButtons(false);rowButtons(true);
-    const QString help=tr("Mechanizm Pucharu Narodów: państwo otrzymuje punkty za wyniki drużyny w konkursach drużynowych oraz punkty za indywidualne wyniki skoczków tego państwa w konkursach indywidualnych. Oba źródła są sumowane. Dla klasyfikacji indywidualnej punktacja dodatkowa określa punkty zawodnika za miejsce jego drużyny w konkursie drużynowym.");
-    auto *question=new QPushButton("?",this);question->setObjectName("classificationAlternativeHelp");question->setToolTip(help);question->setAccessibleName(tr("Pomoc: punktacja dodatkowa i Puchar Narodów"));
+    auto *question=new QPushButton("?",this);question->setObjectName("classificationAlternativeHelp");question->setAccessibleName(tr("Pomoc: źródła punktów"));
     ui->horizontalLayout_6->addWidget(question);
-    ui->tableView_altPointsForPlaces->setToolTip(help);
-    connect(question,&QPushButton::clicked,this,[this,help]{QMessageBox::information(this,tr("Punktacja dodatkowa"),help);});
+    connect(question,&QPushButton::clicked,this,[this,question]{QMessageBox::information(this,tr("Źródła punktów"),question->toolTip());});
     connect(ui->comboBox_type,qOverload<int>(&QComboBox::currentIndexChanged),this,[this]{refreshAlternativeLabel();});
     auto *advancedToggle=new QCheckBox(tr("Filtry zaawansowane"),this);advancedToggle->setObjectName("classificationAdvanced");
     auto *advanced=new QWidget(this);advanced->setObjectName("classificationAdvancedPanel");auto *fields=new QFormLayout(advanced);
@@ -211,19 +218,20 @@ void ClassificationEditorWidget::setupScoringControls()
     auto spin=[&](const char *name,int min,int max,const QString &label){auto *input=new QSpinBox(advanced);input->setObjectName(name);input->setRange(min,max);fields->addRow(label,input);return input;};
     minimumAge=spin("classificationMinimumAge",1,100,tr("Minimalny wiek (włącznie)"));
     maximumAge=spin("classificationMaximumAge",1,100,tr("Maksymalny wiek (włącznie)"));
-    referenceYear=spin("classificationReferenceYear",1,9999,tr("Rok odniesienia dla wieku rocznikowego"));
+    referenceYear=new QSpinBox(advanced);referenceYear->setObjectName("classificationReferenceYear");referenceYear->setRange(1,9999);referenceYear->hide();
     includeUnknownAge=new QCheckBox(tr("Uwzględniaj skoczków o nieznanym wieku"),advanced);includeUnknownAge->setObjectName("classificationUnknownAge");fields->addRow(includeUnknownAge);
-    auto *ageHint=new QLabel(tr("Wiek = rok odniesienia − rok urodzenia. W konkursie drużynowym cały skład musi spełniać filtr wieku, aby drużyna zdobyła punkty za swoje miejsce."),advanced);ageHint->setWordWrap(true);fields->addRow(ageHint);
+    auto *ageHint=new QLabel(tr("Wiek rocznikowy jest stały przez sezon, według roku jego rozpoczęcia. W konkursie drużynowym cały skład musi spełniać filtr wieku, aby drużyna zdobyła punkty za swoje miejsce."),advanced);ageHint->setWordWrap(true);fields->addRow(ageHint);
     countrySelection=new QComboBox(advanced);countrySelection->setObjectName("classificationCountrySelection");countrySelection->addItems({tr("Wszyscy"),tr("N najlepszych z każdego kraju"),tr("N najgorszych z każdego kraju")});fields->addRow(tr("Wybór skoczków z kraju"),countrySelection);
+    countryExclude=new QCheckBox(tr("Wyklucz wybranych skoczków"),advanced);countryExclude->setObjectName("classificationCountryExclude");fields->addRow(countryExclude);
     countryCount=spin("classificationCountryCount",1,10000,tr("Liczba N"));
-    auto *countryHint=new QLabel(tr("Indywidualna: wybór według sumy punktów całej klasyfikacji; pozostali nie są wyświetlani. Drużynowa: N indywidualnych wyników kraju w każdym konkursie. Remis nie zwiększa limitu N."),advanced);countryHint->setWordWrap(true);fields->addRow(countryHint);
-    contextParameters=new QCheckBox(tr("Pozwalaj konkursom nadpisywać parametry klasyfikacji"),advanced);contextParameters->setObjectName("classificationContextParameters");fields->addRow(contextParameters);
-    auto *contextHint=new QLabel(tr("Opcjonalnie: mnożnik punktów, limit punktowanych miejsc, rok i granice wieku oraz liczba N dla punktacji kraju z wyników indywidualnych. Brak nadpisania zachowuje ustawienia klasyfikacji."),advanced);contextHint->setWordWrap(true);fields->addRow(contextHint);
+    auto *countryHint=new QLabel(tr("Tylko klasyfikacja drużynowa i tylko konkursy indywidualne: uwzględnij albo wyklucz wybrane N wyników kraju osobno w każdym konkursie. Nie dotyczy konkursów drużynowych."),advanced);countryHint->setWordWrap(true);fields->addRow(countryHint);
+    contextParameters=new QCheckBox(tr("Pozwól zmieniać mnożnik punktów w konkursach"),advanced);contextParameters->setObjectName("classificationContextParameters");fields->addRow(contextParameters);
+    auto *contextHint=new QLabel(tr("Konkurs może mnożyć naliczane punkty, np. przez 0,5 lub 2. Domyślny mnożnik to 1."),advanced);contextHint->setWordWrap(true);fields->addRow(contextHint);
     ui->verticalLayout_2->insertWidget(ui->verticalLayout_2->count()-1,advancedToggle);
     ui->verticalLayout_2->insertWidget(ui->verticalLayout_2->count()-1,advanced);advanced->hide();
     connect(advancedToggle,&QCheckBox::toggled,advanced,&QWidget::setVisible);
     for(auto *input:{minimumAge,maximumAge,referenceYear,countryCount})connect(input,qOverload<int>(&QSpinBox::valueChanged),this,[this]{if(!loadingInputs)emit configurationChanged();});
-    for(auto *check:{ageFilter,includeUnknownAge,contextParameters})connect(check,&QCheckBox::toggled,this,[this]{if(!loadingInputs)emit configurationChanged();});
+    for(auto *check:{ageFilter,includeUnknownAge,contextParameters,countryExclude})connect(check,&QCheckBox::toggled,this,[this]{if(!loadingInputs)emit configurationChanged();});
     connect(minimumAge,qOverload<int>(&QSpinBox::valueChanged),maximumAge,&QSpinBox::setMinimum);
     refreshAlternativeLabel();
 }
@@ -234,6 +242,11 @@ void ClassificationEditorWidget::refreshAlternativeLabel()
         ?tr("Punkty zawodnika za miejsce jego drużyny w konkursie drużynowym")
         :tr("Punkty drużyny (kraju) z indywidualnych wyników jej skoczków"));
     ui->label_altPreset->setWordWrap(true);
+    const auto help=ui->comboBox_type->currentIndex()==Classification::Individual
+        ?tr("Aby zawodnik otrzymywał punkty na swoje konto za miejsce swojej drużyny, wybierz „Konkurs drużynowy” i ustaw tę punktację. W „Konkurs indywidualny” ustawisz punkty za jego własne miejsce.")
+        :tr("Aby drużyna (kraj) otrzymywała punkty za miejsca swoich skoczków, np. jak w Pucharze Narodów, wybierz „Konkurs indywidualny” i ustaw tę punktację. W „Konkurs drużynowy” ustawisz punkty za miejsce drużyny.");
+    if(auto *question=findChild<QPushButton *>("classificationAlternativeHelp"))question->setToolTip(help);
+    ui->tableView_altPointsForPlaces->setToolTip(help);
 }
 void ClassificationEditorWidget::storeMethod()
 {
@@ -250,7 +263,7 @@ void ClassificationEditorWidget::loadMethod()
     const bool previous=loadingInputs;loadingInputs=true;
     const bool custom=currentMethod>0 && currentMethod<=options.methods.size();
     methodName->setReadOnly(!custom);removeMethod->setEnabled(custom);
-    methodName->setText(custom?options.methods[currentMethod-1].name:tr("Domyślna"));
+    methodName->setText(custom?options.methods[currentMethod-1].name:tr("Domyślny"));
     ui->comboBox_points->setCurrentIndex(custom?options.methods[currentMethod-1].type:baseType);
     tableModel->replacePoints(custom?options.methods[currentMethod-1].points:basePoints);
     altTableModel->replacePoints(custom?options.methods[currentMethod-1].alternativePoints:baseAlternative);
@@ -261,7 +274,7 @@ void ClassificationEditorWidget::loadMethod()
 }
 void ClassificationEditorWidget::refreshMethodChoices()
 {
-    const QSignalBlocker blocker(methodChoice);methodChoice->clear();methodChoice->addItem(tr("Domyślna"));
+    const QSignalBlocker blocker(methodChoice);methodChoice->clear();methodChoice->addItem(tr("Domyślny"));
     for(const auto &m:options.methods)methodChoice->addItem(m.name);
     methodChoice->setCurrentIndex(currentMethod);
 }
@@ -269,6 +282,6 @@ void ClassificationEditorWidget::fillOptions()
 {
     ageFilter->setChecked(options.ageFilter);minimumAge->setValue(options.minimumAge);maximumAge->setValue(options.maximumAge);
     referenceYear->setValue(options.referenceYear);includeUnknownAge->setChecked(options.includeUnknownAge);
-    countrySelection->setCurrentIndex(options.countrySelection);countryCount->setValue(options.countryCount);contextParameters->setChecked(options.contextParameters);
+    countryExclude->setChecked(options.countryExclude);countrySelection->setCurrentIndex(options.countrySelection);countryCount->setValue(options.countryCount);contextParameters->setChecked(options.contextParameters);
     findChild<QCheckBox *>("classificationAdvanced")->setChecked(options.ageFilter || options.countrySelection!=0 || options.contextParameters);
 }

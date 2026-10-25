@@ -48,7 +48,7 @@ private:
     QComboBox *methodChoice, *countrySelection;
     QLineEdit *methodName;
     QSpinBox *minimumAge, *maximumAge, *referenceYear, *countryCount;
-    QCheckBox *ageFilter, *includeUnknownAge, *contextParameters;
+    QCheckBox *ageFilter, *includeUnknownAge, *contextParameters, *countryExclude;
     QPushButton *removeMethod;
     void setupScoringControls();
     void storeMethod();

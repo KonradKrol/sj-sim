@@ -21,7 +21,7 @@ QJsonObject ClassificationOptions::toJson() const {
         {"points",tableJson(m.points)},{"alternative-points",tableJson(m.alternativePoints)}});
     return {{"methods",variants},{"context-parameters",contextParameters},{"age-filter",ageFilter},
         {"minimum-age",minimumAge},{"maximum-age",maximumAge},{"reference-year",referenceYear},
-        {"include-unknown-age",includeUnknownAge},{"country-selection",countrySelection},{"country-count",countryCount}};
+        {"include-unknown-age",includeUnknownAge},{"country-exclude",countryExclude},{"country-selection",countrySelection},{"country-count",countryCount}};
 }
 ClassificationOptions ClassificationOptions::fromJson(const QJsonObject &o) {
     ClassificationOptions s;
@@ -33,10 +33,11 @@ ClassificationOptions ClassificationOptions::fromJson(const QJsonObject &o) {
         m.points=readTable(o.value("points")); m.alternativePoints=readTable(o.value("alternative-points")); s.methods.append(m);
     }
     s.contextParameters=o.value("context-parameters").toBool(); s.ageFilter=o.value("age-filter").toBool();
-    s.minimumAge=qBound(0,o.value("minimum-age").toInt(),9998);
-    s.maximumAge=qBound(s.minimumAge,o.value("maximum-age").toInt(150),9998);
+    s.minimumAge=qBound(1,o.value("minimum-age").toInt(1),100);
+    s.maximumAge=qBound(s.minimumAge,o.value("maximum-age").toInt(100),100);
     s.referenceYear=qBound(1,o.value("reference-year").toInt(s.referenceYear),9999);
     s.includeUnknownAge=o.value("include-unknown-age").toBool();
+    s.countryExclude=o.value("country-exclude").toBool(false);
     s.countrySelection=qBound(0,o.value("country-selection").toInt(),2);
     s.countryCount=qBound(1,o.value("country-count").toInt(1),10000);
     return s;
@@ -45,7 +46,7 @@ QJsonObject ClassificationCompetitionSettings::toJson() const { return {{"method
 ClassificationCompetitionSettings ClassificationCompetitionSettings::fromJson(const QJsonObject &o) {
     ClassificationCompetitionSettings s; s.methodId=o.value("method").toString();
     const auto p=o.value("parameters").toObject();
-    for (const auto &key:{"multiplier","points-limit","reference-year","minimum-age","maximum-age","country-count"}) {
+    for (const auto &key:{"multiplier","points-limit","minimum-age","maximum-age","country-count"}) {
         const auto v=p.value(key);
         if(!v.isDouble() || !std::isfinite(v.toDouble()) || v.toDouble()<0) continue;
         if(QString(key)=="multiplier" && v.toDouble()>1000000) continue;

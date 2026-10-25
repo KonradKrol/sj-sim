@@ -293,7 +293,7 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
     }
     if(auto *editor=qobject_cast<ClassificationEditorWidget *>(widget)) {
         QVariantMap controls;
-        const QStringList names{"lineEdit_name","comboBox_type","comboBox_points","classificationScoringMethod","classificationMethodName","classificationAddMethod","classificationRemoveMethod","tableView_pointsForPlaces","tableView_altPointsForPlaces","comboBox_presets","comboBox_altPreset","classificationAddPlace","classificationRemovePlace","classificationAltAddPlace","classificationAltRemovePlace","classificationAgeFilter","classificationMinimumAge","classificationMaximumAge","classificationReferenceYear","classificationUnknownAge","classificationCountrySelection","classificationCountryCount","classificationContextParameters"};
+        const QStringList names{"lineEdit_name","comboBox_type","comboBox_points","classificationScoringMethod","classificationMethodName","classificationAddMethod","classificationRemoveMethod","tableView_pointsForPlaces","tableView_altPointsForPlaces","comboBox_presets","comboBox_altPreset","classificationAddPlace","classificationRemovePlace","classificationAltAddPlace","classificationAltRemovePlace","classificationAgeFilter","classificationMinimumAge","classificationMaximumAge","classificationReferenceYear","classificationUnknownAge","classificationCountrySelection","classificationCountryExclude","classificationCountryCount","classificationContextParameters"};
         for(const auto &name:names)controls[name]=QVariant::fromValue(node(editor->findChild<QWidget *>(name),true));
         auto *entry=identity(editor);
         entry->update({{"kind","classificationEditor"},{"controls",controls},{"classificationId",editor->getClassification()?editor->getClassification()->getIDStr():QString()},
@@ -374,6 +374,7 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
         bool classificationTable=false;for(auto *parent=view->parentWidget();parent;parent=parent->parentWidget())if(parent->inherits("ClassificationResultsTableView")){classificationTable=true;break;}
         data["searchable"]=classificationTable || sourceName=="JumpersListModel" || sourceName=="HillsListModel" || sourceName=="SeasonJumpersListModel" || sourceName=="SeasonHillsListModel" || sourceName=="CompetitionsArchiveListModel" || sourceName=="SimulationSavesListModel";
 
+        data["plainTable"]=view->property("quickPlainTable").toBool();
         data["kind"]="table";data["follow"]=widget->objectName()=="listView_startList";
         data["tableActions"]=view->parentWidget()?view->parentWidget()->property("quickTableActions"):QVariant();
         if(!m_tables.contains(view)) {

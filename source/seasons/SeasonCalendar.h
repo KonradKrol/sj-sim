@@ -27,7 +27,7 @@ public:
     CompetitionInfo *getMainCompetitionForEvent(CompetitionInfo *event) const;
     int getTrainingNumber(CompetitionInfo *training) const;
 
-    static SeasonCalendar getFromJson(QJsonObject json, IdentifiableObjectsStorage *storage, QMap<ulong, Identifiable *> *before120Map = nullptr);
+    static SeasonCalendar getFromJson(QJsonObject json, IdentifiableObjectsStorage *storage, QMap<ulong, Identifiable *> *before120Map = nullptr, int seasonYear = 0);
     static QJsonObject getJsonObject(SeasonCalendar & calendar);
     static int getCompetitionMainIndex(QVector<CompetitionInfo *> & competitions, CompetitionInfo * competition);
     static CompetitionInfo * getMainCompetitionByIndex(QVector<CompetitionInfo *> & competitions, int index);

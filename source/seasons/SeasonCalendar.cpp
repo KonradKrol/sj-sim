@@ -219,7 +219,7 @@ int SeasonCalendar::getTrainingNumber(CompetitionInfo *training) const
     return mainCompetition->getTrainingsReference().indexOf(training) + 1;
 }
 
-SeasonCalendar SeasonCalendar::getFromJson(QJsonObject json, IdentifiableObjectsStorage * storage, QMap<ulong, Identifiable*> * before120Map)
+SeasonCalendar SeasonCalendar::getFromJson(QJsonObject json, IdentifiableObjectsStorage * storage, QMap<ulong, Identifiable*> * before120Map, int seasonYear)
 {
     SeasonCalendar calendar;
     calendar.setID(sole::rebuild(json.value("id").toString().toStdString()));
@@ -328,6 +328,7 @@ SeasonCalendar SeasonCalendar::getFromJson(QJsonObject json, IdentifiableObjects
     calendar.fixAdvancementClassifications();
     calendar.updateCompetitionsQualifyingCompetitions();
 
+    if(seasonYear>0 && seasonYear<=9999)for(auto *entry:calendar.getClassificationsReference()){auto options=entry->getOptions();options.referenceYear=seasonYear;entry->setOptions(options);}
     if(storage != nullptr){
         for(int index = 0; index < classificationsArray.count(); ++index){
             const QJsonObject classificationJson = classificationsArray.at(index).toObject();

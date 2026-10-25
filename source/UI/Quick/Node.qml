@@ -187,7 +187,7 @@ FocusScope {
             }
         }
     }
-    Component { id: tableBody; DataTable { teamSetup: !!control.fields.teamSetup; table: control.fields.table; ownerId: control.fields.id; actions: control.fields.tableActions || []; followCurrent: !!control.fields.follow; title: control.fields.label || ""; maximumHeight: control.tableHeightLimit; compact: control.compactTable; plain: control.plainTable; searchEnabled: control.tableSearchEnabled || !!control.fields.searchable; raceResults: control.raceResults } }
+    Component { id: tableBody; DataTable { teamSetup: !!control.fields.teamSetup; table: control.fields.table; ownerId: control.fields.id; actions: control.fields.tableActions || []; followCurrent: !!control.fields.follow; title: control.fields.label || ""; maximumHeight: control.tableHeightLimit; compact: control.compactTable; plain: control.plainTable || !!control.fields.plainTable; searchEnabled: control.tableSearchEnabled || !!control.fields.searchable; raceResults: control.raceResults } }
     Component { id: chartBody; PlotPanel { chart: control.fields.chart } }
     Component {
         id: progressBody

@@ -577,6 +577,7 @@ void SimulationSaveManagerWindow::activateEditingCalendar() {
     simulationSave->getActualSeason()->setActualCalendar(editingCalendar);emit actualCalendarChanged();
 }
 void SimulationSaveManagerWindow::refreshCalendarState() {
+    if(simulationSave && simulationSave->getActualSeason())simulationSave->getActualSeason()->synchronizeClassificationYears();
     if(editingCalendar){
         editingCalendar->updateCompetitionsQualifyingCompetitions();int boundary=0;
         const auto &events=editingCalendar->getCompetitionsReference();
@@ -681,6 +682,7 @@ void SimulationSaveManagerWindow::fillNextCompetitionInformations()
 
 void SimulationSaveManagerWindow::setupClassificationsComboBox()
 {
+    if(simulationSave && simulationSave->getActualSeason())simulationSave->getActualSeason()->synchronizeClassificationYears();
     auto *previous=classificationResultsTableView?classificationResultsTableView->getClassification():nullptr;
     disconnectComboBox();ui->comboBox_classifications->clear();auto *active=simulationSave->getActualSeason()->getActualCalendar();
     if(active){for(auto *entry:active->getClassificationsReference())ui->comboBox_classifications->addItem(entry->getName());const int row=active->getClassificationsReference().indexOf(previous);ui->comboBox_classifications->setCurrentIndex(row>=0?row:ui->comboBox_classifications->count()>0?0:-1);}

@@ -19,8 +19,9 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.leftMargin: 12
         spacing: 6
-        Label { text: qsTr("Sposób naliczania punktów"); color: Theme.muted; font.pointSize: Theme.caption }
+        Label { visible: scoring.entry.methodNames.length>1; text: qsTr("Sposób naliczania punktów"); color: Theme.muted; font.pointSize: Theme.caption }
         SChoice {
+            visible: scoring.entry.methodNames.length>1
             objectName: "calendar-scoring-method-" + scoring.entry.index
             Layout.fillWidth: true
             model: scoring.entry.methodNames
@@ -32,20 +33,13 @@ ColumnLayout {
         Label {
             visible: scoring.entry.contextAllowed
             Layout.fillWidth: true
-            text: qsTr("Zaawansowane parametry konkursu — wyłączone pola dziedziczą ustawienia klasyfikacji.")
+            text: qsTr("Mnożnik punktów dla tego konkursu.")
             color: Theme.muted
             font.pointSize: Theme.caption
             wrapMode: Text.WordWrap
         }
         Repeater {
-            model: scoring.entry.contextAllowed ? [
-                {key:"multiplier",title:qsTr("Mnożnik punktów"),minimum:0,maximum:1000000,step:0.1,decimals:4},
-                {key:"points-limit",title:qsTr("Limit punktowanych miejsc (0 = bez limitu)"),minimum:0,maximum:10000,step:1,decimals:0},
-                {key:"reference-year",title:qsTr("Rok odniesienia dla wieku"),minimum:1,maximum:9999,step:1,decimals:0},
-                {key:"minimum-age",title:qsTr("Minimalny wiek"),minimum:0,maximum:9998,step:1,decimals:0},
-                {key:"maximum-age",title:qsTr("Maksymalny wiek"),minimum:0,maximum:9998,step:1,decimals:0},
-                {key:"country-count",title:qsTr("N wyników indywidualnych kraju"),minimum:1,maximum:10000,step:1,decimals:0}
-            ] : []
+            model: scoring.entry.contextAllowed ? [{key:"multiplier",title:qsTr("Mnożnik punktów"),minimum:0,maximum:1000000,step:0.1,decimals:4}] : []
             ColumnLayout {
                 id: parameter
                 required property var modelData

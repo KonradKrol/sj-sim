@@ -185,20 +185,20 @@ void QuickCalendar::refresh() {
     common("trainingRules",[&](auto *e){return e->getTrainings().isEmpty() || ruleValue(e->getTrainings().first()->getRules())==ruleValue(e->getRules())?0:1+presetIndex(e->getTrainings().first()->getRules(),*m_editor->getModel()->getRulesList());});
     common("trialRules",[&](auto *e){return !e->getTrialRound() || ruleValue(e->getTrialRound()->getRules())==ruleValue(e->getRules())?0:1+presetIndex(e->getTrialRound()->getRules(),*m_editor->getModel()->getRulesList());});
     m_classifications.clear();if(m_calendar)for(int i=0;i<m_calendar->getClassificationsReference().size();++i){auto *cls=m_calendar->getClassificationsReference()[i];int count=0;for(auto *event:chosen)if(event->getClassificationsReference().contains(cls))++count;
-        QStringList methodNames{tr("Domyślna")},methodIds{QString()};
+        QStringList methodNames{tr("Domyślny")},methodIds{QString()};
         const auto options=cls->getOptions();
         for(const auto &method:options.methods){methodNames.append(method.name);methodIds.append(method.id);}
         int methodIndex=0;QVariantMap parameters,mixedParameters;
         if(!chosen.isEmpty()){
             const auto first=chosen.first()->scoringFor(cls);methodIndex=qMax(0,int(methodIds.indexOf(first.methodId)));parameters=first.parameters.toVariantMap();
             for(auto *event:chosen)if(event->scoringFor(cls).methodId!=first.methodId)methodIndex=-1;
-            for(const auto &key:{"multiplier","points-limit","reference-year","minimum-age","maximum-age","country-count"})
+            for(const auto &key:{"multiplier","points-limit","minimum-age","maximum-age","country-count"})
                 for(auto *event:chosen)if(event->scoringFor(cls).parameters.value(key)!=first.parameters.value(key))mixedParameters[key]=true;
         }
         m_classifications.append(QVariantMap{{"name",cls->getName()},{"index",i},{"checked",!chosen.isEmpty()&&count==chosen.size()},
             {"mixed",count>0&&count<chosen.size()},{"methodNames",methodNames},{"methodIds",methodIds},{"methodIndex",methodIndex},
             {"contextAllowed",options.contextParameters},{"parameters",parameters},{"mixedParameters",mixedParameters},
-            {"defaults",QVariantMap{{"multiplier",1.},{"points-limit",0},{"reference-year",options.referenceYear},{"minimum-age",options.minimumAge},{"maximum-age",options.maximumAge},{"country-count",options.countryCount}}}});
+            {"defaults",QVariantMap{{"multiplier",1.},{"points-limit",0},{"minimum-age",options.minimumAge},{"maximum-age",options.maximumAge},{"country-count",options.countryCount}}}});
     }
     m_advancementOptions={nullptr};m_advancementLabels=QStringList{tr("Brak")};
     for(auto *target:all){bool allowed=!chosen.isEmpty();for(auto *event:chosen)if(all.indexOf(target)>=all.indexOf(event)||target->getRules().getCompetitionType()!=event->getRules().getCompetitionType())allowed=false;
@@ -303,7 +303,7 @@ void QuickCalendar::setClassificationScoring(int index,const QVariantMap &patch)
                 settings.methodId=it.value().toString();continue;
             }
             if(!options.contextParameters)return;
-            const QStringList keys{"multiplier","points-limit","reference-year","minimum-age","maximum-age","country-count"};
+            const QStringList keys{"multiplier","points-limit","minimum-age","maximum-age","country-count"};
             if(!keys.contains(it.key()))return;
             if(it.value().isNull())settings.parameters.remove(it.key());
             else settings.parameters.insert(it.key(),QJsonValue::fromVariant(it.value()));
@@ -496,6 +496,7 @@ QVariantList QuickCalendar::classEntries() const {
     QVariantList result;if(m_calendar)for(auto *entry:m_calendar->getClassificationsReference())result.append(QVariantMap{{"id",entry->getIDStr()},{"name",entry->getName()},{"team",entry->getClassificationType()==Classification::Team},{"selected",entry->getIDStr()==m_classId}});return result;
 }
 void QuickCalendar::loadClass() {
+    if(m_save && m_save->getActualSeason())m_save->getActualSeason()->synchronizeClassificationYears();
     m_loadingClass=true;auto *entry=selectedClass();
     if(!entry && m_calendar && !m_calendar->getClassificationsReference().isEmpty()){entry=m_calendar->getClassificationsReference().first();m_classId=entry->getIDStr();}
     m_classEditor->setClassification(entry);

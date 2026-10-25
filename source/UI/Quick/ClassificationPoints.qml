@@ -10,19 +10,7 @@ ColumnLayout {
     readonly property var table: tableNode ? tableNode.values.table : null
     readonly property string prefix: alternative ? "classificationAlt" : "classification"
     spacing: 8
-    RowLayout {
-        Layout.fillWidth: true; spacing: 4
-        SChoice {
-            objectName: "classificationPointsSource"
-            Layout.fillWidth: true; Layout.minimumWidth: 0
-            model: [qsTr("Punkty za miejsce w konkursie"),points.workspace.fields.alternativeLabel || ""]
-            currentIndex: points.workspace.pointsSource
-            Accessible.name: qsTr("Źródło punktów")
-            onActivated: points.workspace.pointsSource=currentIndex
-        }
-        HelpDot { explanation: points.workspace.fields.alternativeHelp || "" }
-    }
-    Label { visible: points.alternative && points.width<560; Layout.fillWidth: true; text: points.workspace.fields.alternativeLabel || ""; color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap }
+    ClassificationSources { Layout.fillWidth: true; workspace: points.workspace }
     Flow {
         Layout.fillWidth: true; spacing: 6
         SChoice {
@@ -30,12 +18,13 @@ ColumnLayout {
             objectName: "classificationPointsPreset"
             readonly property var field: points.workspace.value(points.alternative ? "comboBox_altPreset" : "comboBox_presets")
             width: Math.min(220,points.width)
-            model: {var options=(field.options || []).slice();if(options.length)options[0]=qsTr("Wybierz preset");return options}
+            model: field.options || []
+            optionEnabled: (field.options || []).map(function(_,index){return index>0})
             currentIndex: field.value || 0
-            displayText: qsTr("Wybierz preset")
+            displayText: currentText || qsTr("Własne")
             enabled: field.enabled!==false
             Accessible.name: qsTr("Preset punktacji")
-            onActivated: if(currentIndex>0){points.rememberScroll();ui.edit(field.id,currentIndex)}
+            onActivated: function(index){if(index===0){currentIndex=Qt.binding(function(){return preset.field.value || 0});return}points.rememberScroll();ui.edit(field.id,index)}
         }
         SButton { objectName: "classificationPointAdd"; text: "+"; padding: 4; implicitHeight: 28; Accessible.name: qsTr("Dodaj punktowane miejsce"); enabled: points.workspace.value(points.prefix+"AddPlace").enabled!==false; onClicked: {points.rememberScroll();ui.activate(points.workspace.value(points.prefix+"AddPlace").id)} }
         SButton { objectName: "classificationPointRemove"; text: "−"; padding: 4; implicitHeight: 28; Accessible.name: qsTr("Usuń ostatnie miejsce"); enabled: points.table && points.table.count>0 && points.workspace.value(points.prefix+"RemovePlace").enabled!==false; onClicked: {points.rememberScroll();ui.activate(points.workspace.value(points.prefix+"RemovePlace").id)} }

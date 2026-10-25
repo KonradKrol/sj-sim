@@ -6,6 +6,7 @@ import QtQuick.Layouts 1.15
 ComboBox {
     id: control
     property bool searchable: false
+    property var optionEnabled: []
     property var optionImages: []
     readonly property var matches: {
         var entries = []
@@ -62,6 +63,7 @@ ComboBox {
     delegate: ItemDelegate {
         id: optionDelegate
         width: control.popup.width
+        enabled: control.optionEnabled.length<=index || control.optionEnabled[index]
         text: control.textRole ? model[control.textRole] : modelData
         highlighted: control.highlightedIndex === index
         contentItem: RowLayout {

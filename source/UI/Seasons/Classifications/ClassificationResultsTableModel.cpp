@@ -64,6 +64,7 @@ QVariant ClassificationResultsTableModel::data(const QModelIndex &index, int rol
     if(index.row()<0 || index.row()>=rankedResults.size())return QVariant();
     const auto *result=rankedResults[index.row()];
     if(result){
+        if(role==Qt::UserRole)return classification->getClassificationType()==Classification::Team?result->getTeamCode():QString();
         if(role == Qt::DisplayRole)
         {
             if(index.column() == 0)

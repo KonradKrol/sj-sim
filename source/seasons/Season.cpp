@@ -54,7 +54,7 @@ Season Season::getFromJson(QJsonObject obj, IdentifiableObjectsStorage * storage
     QJsonArray array = obj.value("calendars").toArray();
     for(auto a : array)
     {
-        season.getCalendarsReference().push_back(new SeasonCalendar(SeasonCalendar::getFromJson(a.toObject(), storage)));
+        season.getCalendarsReference().push_back(new SeasonCalendar(SeasonCalendar::getFromJson(a.toObject(), storage,nullptr,season.getSeasonNumber())));
     }
     if(storage != nullptr)
         storage->add(season.getCalendarsReference());
@@ -85,6 +85,7 @@ SeasonCalendar *Season::getActualCalendar() const
 void Season::setActualCalendar(SeasonCalendar *newActualCalendar)
 {
     actualCalendar = newActualCalendar;
+    synchronizeClassificationYears();
 }
 
 QVector<SeasonCalendar *> Season::getCalendars() const
@@ -100,6 +101,7 @@ QVector<SeasonCalendar *> &Season::getCalendarsReference()
 void Season::setCalendars(const QVector<SeasonCalendar *> &newCalendars)
 {
     calendars = newCalendars;
+    synchronizeClassificationYears();
 }
 
 int Season::getSeasonNumber() const
@@ -110,6 +112,7 @@ int Season::getSeasonNumber() const
 void Season::setSeasonNumber(int newSeasonNumber)
 {
     seasonNumber = newSeasonNumber;
+    synchronizeClassificationYears();
 }
 
 bool Season::hasStarted() const
@@ -123,4 +126,9 @@ bool Season::setDatesEnabled(bool enabled)
 {
     if(enabled && !datesEnabled && hasStarted())return false;
     started=hasStarted();datesEnabled=enabled;return true;
+}
+
+void Season::synchronizeClassificationYears() const {
+    if(seasonNumber<1 || seasonNumber>9999)return;
+    for(auto *calendar:calendars)if(calendar)for(auto *entry:calendar->getClassificationsReference())if(entry){auto options=entry->getOptions();options.referenceYear=seasonNumber;entry->setOptions(options);}
 }

@@ -38,6 +38,7 @@ private:
     QStandardItemModel *historyModel;
     QVector<CompetitionInfo *> historyEvents;
     void showHistory();
+    void showContributions(const QString &country);
 public:
     Classification *getClassification() const;
     void setClassification(Classification *newClassification);

@@ -32,6 +32,7 @@ public:
     bool hasStarted() const;
     bool setDatesEnabled(bool enabled);
     void markStarted() { started=true; }
+    void synchronizeClassificationYears() const;
     int getSeasonNumber() const;
     void setSeasonNumber(int newSeasonNumber);
     QVector<SeasonCalendar *> getCalendars() const;

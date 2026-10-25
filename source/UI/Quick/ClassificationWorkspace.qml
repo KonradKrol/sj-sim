@@ -51,8 +51,8 @@ ColumnLayout {
             ClassificationMethods { visible: workspace.multipleMethods; Layout.fillWidth: true; workspace: workspace }
             RowLayout {
                 Layout.fillWidth: true
-                Label { text: qsTr("Naliczanie punktów"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
-                ClassificationInput { node: workspace.controls.comboBox_points || null; showLabel: false; Layout.preferredWidth: 200; Layout.maximumWidth: workspace.width*.6; Layout.minimumWidth: 0 }
+                ClassificationInput { node: workspace.controls.comboBox_points || null; showLabel: false; Layout.fillWidth: true; Layout.minimumWidth: 0 }
+                HelpDot { explanation: qsTr("Dodaje notę z konkursu (np. 276,4 pkt), zamiast punktów za miejsce — jak w Turnieju Złotego Bażanta czy Turnieju Nordyckim.") }
             }
             ClassificationPoints { visible: workspace.value("comboBox_points").value===0; Layout.fillWidth: true; workspace: workspace }
         }

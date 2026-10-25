@@ -54,21 +54,6 @@ QVector<ClassificationSingleResult *> Classification::getRankedResults() const
     QVector<ClassificationSingleResult *> visible;
     for(auto *result:results)
         if(result && (!options.ageFilter || result->hasEligibleParticipation())) visible.append(result);
-    if(classificationType!=Individual || options.countrySelection==0) return visible;
-    const auto better=[](auto *a,auto *b) {
-        if(a->getPointsSum()!=b->getPointsSum())return a->getPointsSum()>b->getPointsSum();
-        const auto an=a->getJumper()?a->getJumper()->getNameAndSurname():QString();
-        const auto bn=b->getJumper()?b->getJumper()->getNameAndSurname():QString();
-        if(an!=bn)return an<bn;
-        return a->getJumper() && b->getJumper() && a->getJumper()->getIDStr()<b->getJumper()->getIDStr();
-    };
-    std::stable_sort(visible.begin(),visible.end(),better);
-    auto selection=visible;
-    if(options.countrySelection==2)std::reverse(selection.begin(),selection.end());
-    QHash<QString,int> counts; QSet<ClassificationSingleResult *> accepted;
-    for(auto *result:selection) if(auto *jumper=result->getJumper())
-        if(counts[jumper->getCountryCode()]++<options.countryCount) accepted.insert(result);
-    visible.erase(std::remove_if(visible.begin(),visible.end(),[&](auto *r){return !accepted.contains(r);}),visible.end());
     return visible;
 }
 
@@ -85,16 +70,17 @@ QVector<Classification::Contribution> Classification::contributions(CompetitionI
     const auto parameters=options.contextParameters?settings.parameters:QJsonObject();
     const double multiplier=parameters.value("multiplier").toDouble(1);
     const int pointsLimit=parameters.value("points-limit").toInt(0);
-    const int year=parameters.value("reference-year").toInt(options.referenceYear);
-    const int minimumAge=parameters.value("minimum-age").toInt(options.minimumAge);
-    const int maximumAge=parameters.value("maximum-age").toInt(options.maximumAge);
-    const int countryCount=parameters.value("country-count").toInt(options.countryCount);
+    const int year=options.referenceYear;
+    const int minimumAge=qBound(1,parameters.value("minimum-age").toInt(options.minimumAge),100);
+    const int maximumAge=qBound(minimumAge,parameters.value("maximum-age").toInt(options.maximumAge),100);
+    const int countryCount=qBound(1,parameters.value("country-count").toInt(options.countryCount),10000);
     const bool teamEvent=competition->getRulesPointer()->getCompetitionType()==CompetitionRules::Team;
     const bool alternateScoring=(classificationType==Team)!=teamEvent;
     const auto table=alternateScoring?alternate:normal;
     const auto ageAllowed=[&](Jumper *j) {
         if(!j)return false;
         if(!options.ageFilter)return true;
+        if(j->getBirthYear()>year)return false;
         const int age=j->ageInYear(year);
         return age<0?options.includeUnknownAge:age>=minimumAge && age<=maximumAge;
     };
@@ -130,7 +116,7 @@ QVector<Classification::Contribution> Classification::contributions(CompetitionI
             return a.jumper->getIDStr()<b.jumper->getIDStr();
         });
         QHash<QString,int> count;
-        out.erase(std::remove_if(out.begin(),out.end(),[&](const Contribution &c){return count[c.country]++>=countryCount;}),out.end());
+        out.erase(std::remove_if(out.begin(),out.end(),[&](const Contribution &c){const bool selected=count[c.country]++<countryCount;return options.countryExclude?selected:!selected;}),out.end());
     }
     return out;
 }
