@@ -6,7 +6,7 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
-- Stan porównania kodu i dokumentacji: **a27c5c4**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
+- Stan porównania kodu i dokumentacji: **1ddc3d2**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
 - Data zestawienia: **25 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **2.0.0-beta**, ustawione na wyraźne polecenie użytkownika po zakończeniu audytu silnika.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
@@ -788,8 +788,8 @@ Punktacja ma nowe nazwy naliczania, segmenty źródeł z precyzyjnym opisem, akt
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
-- Snapshot kodu i dokumentacji: **a27c5c4ef72475ea3db6bbe8fdb2e71b0404611c**.
-- Commitów od bazy: **213**.
+- Snapshot kodu i dokumentacji: **1ddc3d233330613c78bdc47ee00cc7d991143fba**.
+- Commitów od bazy: **215**.
 - Plików zmienionych w tym zakresie: **527**.
 - Statystyki obejmują także fonty, skills i dokumentację; nie oznaczają rozmiaru samej logiki gry.
 - Dalsza aktualizacja tego zestawienia jest dodatkiem dokumentacyjnym do wskazanego snapshotu.
@@ -809,9 +809,9 @@ Punktacja ma nowe nazwy naliczania, segmenty źródeł z precyzyjnym opisem, akt
 Porównanie można odtworzyć poleceniami:
 
 ~~~sh
-git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c a27c5c4ef72475ea3db6bbe8fdb2e71b0404611c
-git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c a27c5c4ef72475ea3db6bbe8fdb2e71b0404611c
-git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..a27c5c4ef72475ea3db6bbe8fdb2e71b0404611c
+git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 1ddc3d233330613c78bdc47ee00cc7d991143fba
+git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 1ddc3d233330613c78bdc47ee00cc7d991143fba
+git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..1ddc3d233330613c78bdc47ee00cc7d991143fba
 ~~~
 
 Zestawienie można odświeżyć przez `python3 scripts/update-release-inventory.py --base main --snapshot HEAD`. Opisy zachowania i wyniki testów należy uzupełniać na podstawie faktycznych zmian oraz weryfikacji.
@@ -1035,6 +1035,8 @@ Historyczne opisy należy czytać z uwzględnieniem opisanych powyżej rozwiąza
 | `c62e87c` | Remember simulation list order across additions, deletions and restarts |
 | `d000b48` | Reduce simulation JSON whitespace without changing saved data |
 | `a27c5c4` | Verify persistent save ordering, smaller JSON and legacy compatibility |
+| `1fcdad3` | Refresh release inventory for save ordering and storage improvements |
+| `1ddc3d2` | Separate date planning from weekend creation and preview weekends automatically |
 
 ## Załącznik C. Pełny manifest zmienionych plików
 
@@ -1051,7 +1053,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/BUGFIX_AUDIT_2026-10-21.md](../docs/BUGFIX_AUDIT_2026-10-21.md) | 140 | 0 |
 | A | [docs/CALENDAR_COPY_FIXES_2026-10-22.md](../docs/CALENDAR_COPY_FIXES_2026-10-22.md) | 27 | 0 |
 | A | [docs/CALENDAR_DATES.md](../docs/CALENDAR_DATES.md) | 40 | 0 |
-| A | [docs/CALENDAR_PLANNER_AND_STANDINGS_UX_2026-10-25.md](../docs/CALENDAR_PLANNER_AND_STANDINGS_UX_2026-10-25.md) | 51 | 0 |
+| A | [docs/CALENDAR_PLANNER_AND_STANDINGS_UX_2026-10-25.md](../docs/CALENDAR_PLANNER_AND_STANDINGS_UX_2026-10-25.md) | 61 | 0 |
 | A | [docs/CLASSIFICATION_EDITOR_UX_2026-10-25.md](../docs/CLASSIFICATION_EDITOR_UX_2026-10-25.md) | 35 | 0 |
 | A | [docs/CLASSIFICATION_RULES_AND_BREAKDOWN_2026-10-25.md](../docs/CLASSIFICATION_RULES_AND_BREAKDOWN_2026-10-25.md) | 41 | 0 |
 | A | [docs/CLASSIFICATION_SCORING.md](../docs/CLASSIFICATION_SCORING.md) | 50 | 0 |
@@ -1073,7 +1075,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/LAYOUT_RECURSION_FIX_2026-10-24.md](../docs/LAYOUT_RECURSION_FIX_2026-10-24.md) | 21 | 0 |
 | A | [docs/NAVIGATION_PERFORMANCE.md](../docs/NAVIGATION_PERFORMANCE.md) | 30 | 0 |
 | A | [docs/PENDING_CLASSIFICATION_RULES_2026-10-25.md](../docs/PENDING_CLASSIFICATION_RULES_2026-10-25.md) | 10 | 0 |
-| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1600 | 0 |
+| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1613 | 0 |
 | A | [docs/RESULT_HISTORY_ARCHIVE_DNS_2026-10-25.md](../docs/RESULT_HISTORY_ARCHIVE_DNS_2026-10-25.md) | 67 | 0 |
 | A | [docs/RESULT_SELECTORS_TEAM_READABILITY_2026-10-25.md](../docs/RESULT_SELECTORS_TEAM_READABILITY_2026-10-25.md) | 24 | 0 |
 | A | [docs/RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md](../docs/RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md) | 62 | 0 |
@@ -1113,12 +1115,12 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/CalendarClassifications.qml](../source/UI/Quick/CalendarClassifications.qml) | 63 | 0 |
 | A | [source/UI/Quick/CalendarDateField.qml](../source/UI/Quick/CalendarDateField.qml) | 93 | 0 |
 | A | [source/UI/Quick/CalendarDateOverview.qml](../source/UI/Quick/CalendarDateOverview.qml) | 105 | 0 |
-| A | [source/UI/Quick/CalendarDatePlanner.qml](../source/UI/Quick/CalendarDatePlanner.qml) | 91 | 0 |
+| A | [source/UI/Quick/CalendarDatePlanner.qml](../source/UI/Quick/CalendarDatePlanner.qml) | 94 | 0 |
 | A | [source/UI/Quick/CalendarEventRow.qml](../source/UI/Quick/CalendarEventRow.qml) | 116 | 0 |
 | A | [source/UI/Quick/CalendarFields.qml](../source/UI/Quick/CalendarFields.qml) | 63 | 0 |
 | A | [source/UI/Quick/CalendarInspector.qml](../source/UI/Quick/CalendarInspector.qml) | 73 | 0 |
 | A | [source/UI/Quick/CalendarVenueButton.qml](../source/UI/Quick/CalendarVenueButton.qml) | 19 | 0 |
-| A | [source/UI/Quick/CalendarWeekendPlanner.qml](../source/UI/Quick/CalendarWeekendPlanner.qml) | 47 | 0 |
+| A | [source/UI/Quick/CalendarWeekendPlanner.qml](../source/UI/Quick/CalendarWeekendPlanner.qml) | 79 | 0 |
 | A | [source/UI/Quick/CalendarWorkspace.qml](../source/UI/Quick/CalendarWorkspace.qml) | 180 | 0 |
 | A | [source/UI/Quick/CatalogWorkspace.qml](../source/UI/Quick/CatalogWorkspace.qml) | 60 | 0 |
 | A | [source/UI/Quick/CheckHelp.qml](../source/UI/Quick/CheckHelp.qml) | 22 | 0 |
