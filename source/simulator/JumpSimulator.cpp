@@ -1,4 +1,5 @@
 #include "JumpSimulator.h"
+#include "ExperimentalSimulation.h"
 #include "wind-generation/WindsGenerator.h"
 #include "../global/GlobalSimulationSettings.h"
 #include "../global/MyRandom.h"
@@ -232,14 +233,21 @@ void JumpSimulator::generateDistance()
     if(!deterministicPreview)qDebug()<<"takeoff effect: "<<hill->calculateTakeoffEffect();
     if(!deterministicPreview)qDebug()<<"flight effect: "<<hill->calculateFlightEffect();
 
-    jumpData.distance += simulationData->takeoffRating * hill->calculateTakeoffEffect();
-    jumpData.distance += simulationData->flightRating * hill->calculateFlightEffect();
+    const auto tuning=ExperimentalSimulation::current();
+    if(tuning.active){
+        jumpData.distance += simulationData->takeoffRating * hill->calculateTakeoffEffect() * tuning.takeoff;
+        jumpData.distance += simulationData->flightRating * hill->calculateFlightEffect() * tuning.flight;
+    }else {
+        jumpData.distance += simulationData->takeoffRating * hill->calculateTakeoffEffect();
+        jumpData.distance += simulationData->flightRating * hill->calculateFlightEffect();
+    }
     jumpData.distance += tempGate * (hill->getPointsForGate() / hill->getPointsForMeter());
     jumpData.distance = roundDoubleToHalf(jumpData.getDistance());
 }
 
 void JumpSimulator::generateWindEffects()
 {
+    const auto tuning=ExperimentalSimulation::current();
     double multiplier = GlobalSimulationSettings::get()->getMaxSkills() / 100;
 
     double change = 0;
@@ -308,6 +316,7 @@ void JumpSimulator::generateWindEffects()
                 change *= percent;
             }
         }
+        if(tuning.active)change*=tuning.wind;
         if (wind.getDirection() <= 90 || wind.getDirection() >= 270) {
             jumpData.distance += change;
         } else {

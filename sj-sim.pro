@@ -17,6 +17,7 @@ UI_DIR = .ui
 win32: DEFINES += NOMINMAX
 
 SOURCES += \
+    source/simulator/ExperimentalSimulation.cpp \
     source/playground/PlaygroundConfig.cpp \
     source/playground/PlaygroundController.cpp \
     source/playground/PlaygroundRunner.cpp \
@@ -168,6 +169,7 @@ SOURCES += \
     source/utilities/functions.cpp
 
 HEADERS += \
+    source/simulator/ExperimentalSimulation.h \
     source/playground/PlaygroundExperiment.h \
     source/playground/PlaygroundController.h \
     source/seasons/SimulationSaveListOrder.h \
