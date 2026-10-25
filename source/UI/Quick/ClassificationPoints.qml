@@ -35,49 +35,63 @@ ColumnLayout {
             displayText: qsTr("Wybierz preset")
             enabled: field.enabled!==false
             Accessible.name: qsTr("Preset punktacji")
-            onActivated: if(currentIndex>0)ui.edit(field.id,currentIndex)
+            onActivated: if(currentIndex>0){points.rememberScroll();ui.edit(field.id,currentIndex)}
         }
-        SButton { text: "+"; padding: 4; implicitHeight: 28; Accessible.name: qsTr("Dodaj punktowane miejsce"); enabled: points.workspace.value(points.prefix+"AddPlace").enabled!==false; onClicked: ui.activate(points.workspace.value(points.prefix+"AddPlace").id) }
-        SButton { text: "−"; padding: 4; implicitHeight: 28; Accessible.name: qsTr("Usuń ostatnie miejsce"); enabled: points.table && points.table.count>0 && points.workspace.value(points.prefix+"RemovePlace").enabled!==false; onClicked: ui.activate(points.workspace.value(points.prefix+"RemovePlace").id) }
-        SButton { text: qsTr("Wyczyść"); quiet: true; padding: 4; implicitHeight: 28; font.pointSize: Theme.caption; enabled: points.table && points.table.count>0 && preset.field.enabled!==false; onClicked: ui.edit(preset.field.id,0) }
+        SButton { objectName: "classificationPointAdd"; text: "+"; padding: 4; implicitHeight: 28; Accessible.name: qsTr("Dodaj punktowane miejsce"); enabled: points.workspace.value(points.prefix+"AddPlace").enabled!==false; onClicked: {points.rememberScroll();ui.activate(points.workspace.value(points.prefix+"AddPlace").id)} }
+        SButton { objectName: "classificationPointRemove"; text: "−"; padding: 4; implicitHeight: 28; Accessible.name: qsTr("Usuń ostatnie miejsce"); enabled: points.table && points.table.count>0 && points.workspace.value(points.prefix+"RemovePlace").enabled!==false; onClicked: {points.rememberScroll();ui.activate(points.workspace.value(points.prefix+"RemovePlace").id)} }
+        SButton { objectName: "classificationPointClear"; text: qsTr("Wyczyść"); quiet: true; padding: 4; implicitHeight: 28; font.pointSize: Theme.caption; enabled: points.table && points.table.count>0 && preset.field.enabled!==false; onClicked: {points.rememberScroll();ui.edit(preset.field.id,0)} }
     }
-    Rectangle {
-        Layout.fillWidth: true; implicitHeight: 26
-        color: Theme.stadium; radius: 4
-        RowLayout {
-            anchors.fill: parent; anchors.leftMargin: 10; anchors.rightMargin: 10
-            Label { text: qsTr("Miejsce"); color: Theme.snow; font.pointSize: Theme.caption; Layout.fillWidth: true }
-            Label { text: qsTr("Punkty"); color: Theme.snow; font.pointSize: Theme.caption; Layout.preferredWidth: 110; horizontalAlignment: Text.AlignRight }
-        }
+    RowLayout {
+        Layout.fillWidth: true
+        Label { text: qsTr("Miejsce → punkty"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
+        Label { text: qsTr("Miejsca: %1").arg(rows.count); color: Theme.muted; font.pointSize: Theme.caption }
     }
-    ListView {
+    GridView {
         id: rows
         objectName: "classificationPointsRows"
-        Layout.fillWidth: true; Layout.preferredHeight: Math.min(300,Math.max(56,count*34))
-        model: points.table; clip: true; spacing: 2
+        Layout.fillWidth: true
+        readonly property int columns: Math.max(1,Math.floor(width/Math.max(110,Theme.bodyMetrics.height*7)))
+        cellWidth: width/columns
+        cellHeight: Math.max(32,Theme.bodyMetrics.height+10)
+        Layout.preferredHeight: Math.min(240,Math.max(cellHeight*2,Math.ceil(count/columns)*cellHeight))
+        model: points.table; clip: true
+        boundsBehavior: Flickable.StopAtBounds
         ScrollBar.vertical: ScrollBar {}
-        delegate: Rectangle {
+        delegate: Item {
             id: entry
             required property int index
             required property var cells
-            width: rows.width; height: 32
-            color: index%2 ? Theme.raised : "transparent"; radius: 4
+            width: rows.cellWidth; height: rows.cellHeight
             RowLayout {
-                anchors.fill: parent; anchors.leftMargin: 10; anchors.rightMargin: 10
-                Label { text: entry.index+1; color: Theme.ink; font.family: Theme.mono; font.pointSize: Theme.body; Layout.fillWidth: true }
+                anchors.fill: parent; anchors.rightMargin: 8
+                spacing: 4
+                Label { text: (entry.index+1)+"."; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption; Layout.preferredWidth: 26 }
                 SField {
                     property bool dirty: false
-                    Layout.preferredWidth: 110; Layout.preferredHeight: 28
+                    Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredHeight: rows.cellHeight-4
                     text: entry.cells[1] ? entry.cells[1].text : ""
                     enabled: points.tableNode && points.tableNode.values.enabled!==false
                     font.family: Theme.mono; horizontalAlignment: TextInput.AlignRight
                     Accessible.name: qsTr("Punkty za miejsce %1").arg(entry.index+1)
                     validator: DoubleValidator { locale: Qt.locale().name }
                     onTextEdited: dirty=true
-                    onEditingFinished: if(dirty){dirty=false;points.table.edit(entry.index,1,text)}
+                    onEditingFinished: if(dirty){dirty=false;points.rememberScroll();points.table.edit(entry.index,1,text)}
                 }
             }
         }
         Label { anchors.centerIn: parent; visible: rows.count===0; text: qsTr("Wybierz preset lub dodaj punktowane miejsce."); color: Theme.muted; font.pointSize: Theme.caption; width: parent.width; wrapMode: Text.WordWrap; horizontalAlignment: Text.AlignHCenter }
+    }
+    property real savedY: 0
+    property real savedOuterY: 0
+    property bool preserving: false
+    function outerViewport(){for(var item=parent;item;item=item.parent)if(item.contentY!==undefined && item.contentHeight!==undefined)return item;return null}
+    function rememberScroll(){if(preserving)return;savedY=rows.contentY;var outer=outerViewport();savedOuterY=outer ? outer.contentY : 0;preserving=true}
+    function restoreScroll(){rows.contentY=Math.max(0,Math.min(savedY,rows.contentHeight-rows.height));var outer=outerViewport();if(outer)outer.contentY=Math.max(0,Math.min(savedOuterY,outer.contentHeight-outer.height));preserving=false}
+    onTableChanged: {restoreTimer.stop();preserving=false;rows.contentY=0}
+    Timer { id: restoreTimer; interval: 32; onTriggered: points.restoreScroll() }
+    Connections {
+        target: points.table
+        function onModelAboutToBeReset(){points.rememberScroll()}
+        function onModelReset(){restoreTimer.restart()}
     }
 }

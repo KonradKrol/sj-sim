@@ -209,8 +209,8 @@ void ClassificationEditorWidget::setupScoringControls()
     auto *advanced=new QWidget(this);advanced->setObjectName("classificationAdvancedPanel");auto *fields=new QFormLayout(advanced);
     ageFilter=new QCheckBox(tr("Włącz filtr wieku"),advanced);ageFilter->setObjectName("classificationAgeFilter");fields->addRow(ageFilter);
     auto spin=[&](const char *name,int min,int max,const QString &label){auto *input=new QSpinBox(advanced);input->setObjectName(name);input->setRange(min,max);fields->addRow(label,input);return input;};
-    minimumAge=spin("classificationMinimumAge",0,9998,tr("Minimalny wiek (włącznie)"));
-    maximumAge=spin("classificationMaximumAge",0,9998,tr("Maksymalny wiek (włącznie)"));
+    minimumAge=spin("classificationMinimumAge",1,100,tr("Minimalny wiek (włącznie)"));
+    maximumAge=spin("classificationMaximumAge",1,100,tr("Maksymalny wiek (włącznie)"));
     referenceYear=spin("classificationReferenceYear",1,9999,tr("Rok odniesienia dla wieku rocznikowego"));
     includeUnknownAge=new QCheckBox(tr("Uwzględniaj skoczków o nieznanym wieku"),advanced);includeUnknownAge->setObjectName("classificationUnknownAge");fields->addRow(includeUnknownAge);
     auto *ageHint=new QLabel(tr("Wiek = rok odniesienia − rok urodzenia. W konkursie drużynowym cały skład musi spełniać filtr wieku, aby drużyna zdobyła punkty za swoje miejsce."),advanced);ageHint->setWordWrap(true);fields->addRow(ageHint);

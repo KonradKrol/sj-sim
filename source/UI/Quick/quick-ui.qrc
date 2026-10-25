@@ -8,6 +8,7 @@
 <file>CalendarClassifications.qml</file>
 <file>ClassificationWorkspace.qml</file>
 <file>ClassificationInput.qml</file>
+<file>ClassificationMethods.qml</file>
 <file>ClassificationPoints.qml</file>
 <file>ClassificationFilters.qml</file>
 <file>HelpDot.qml</file>

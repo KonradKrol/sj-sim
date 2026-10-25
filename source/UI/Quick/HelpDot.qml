@@ -12,6 +12,9 @@ ToolButton {
     contentItem: Text { text: "?"; color: help.hovered || help.activeFocus ? Theme.accent : Theme.muted; font.pointSize: Theme.caption; font.bold: true; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
     background: Rectangle { radius: width/2; color: help.hovered || help.activeFocus ? Theme.selection : Theme.raised; border.color: help.activeFocus ? Theme.accent : Theme.outline }
     ToolTip {
+        parent: help
+        x: 0; y: help.height+6
+        margins: 8
         visible: help.hovered || help.activeFocus
         text: help.explanation
         delay: help.hovered ? 350 : 0

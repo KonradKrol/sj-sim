@@ -23,3 +23,11 @@ Zamiast automatycznej prezentacji drzewa formularza Widgets działa osobny formu
 ## Weryfikacja
 
 Testy `--classifications-only` obejmują odsłanianie sposobów, przełączanie jednej tabeli, zapis punktacji dodatkowej bez zmiany podstawowej, rzeczywiste kliknięcia przełączników wieku i kraju, ukrywanie niepotrzebnego limitu, brak dawnych skrótów oraz dotychczasowe sposoby, parametry, Cofnij/Ponów i presety kalendarza. `--workflow-only` sprawdza również responsywne renderowanie klasyfikacji i nawigację sezonu.
+
+## Kolejna iteracja formularza
+
+- Sposoby są widoczne obok siebie, z przyciskiem dodania kolejnego. Wybór odsłania punktację tego sposobu; jego nazwę edytuje się w tym samym elemencie, bez osobnego pola nazwy i bez dropdowna.
+- Punktowane miejsca zajmują kompaktową siatkę par „miejsce → punkty”, z liczbą kolumn zależną od szerokości. Nie ma naprzemiennych pasów kolorów ani szerokiej tabeli z jednym miejscem na wiersz.
+- Dodawanie, usuwanie i edycja zachowują zarówno przewinięcie punktacji, jak i przewinięcie zewnętrznego formularza. Test sprawdza dodanie 83. miejsca na przewiniętej siatce.
+- Tooltip ma jawnego rodzica — znak zapytania — i pozycję pod nim z marginesem od krawędzi okna.
+- Pola wieku ograniczono do 1–100. Reguły ustalania roku odniesienia i nowe reguły wykluczania najlepszych/najsłabszych pozostają do ustalenia z użytkownikiem; nie zmieniono samowolnie naliczania punktów.
