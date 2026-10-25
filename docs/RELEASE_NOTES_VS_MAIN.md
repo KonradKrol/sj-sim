@@ -726,6 +726,10 @@ Pojedyncze kliknięcie otwiera zawodnika w edytorze bazy. Zamiast „Otwórz” 
 
 Naprawiono przenoszenie oznaczeń LL z wcześniejszej serii do kolejnej serii KO bez miejsc LL; odtworzono cały preset „SuperKO by fortonse”. Limit LL uwzględnia faktycznie rozgrywane serie i czyści listę przy zerze. Przed kolejną serią KO dostępny jest przycisk „Grupy KO…” z tym samym wyszukiwaniem, dropdownami i drag and drop co przed konkursem. Pula zawiera tylko zakwalifikowanych zawodników, stan początkowy jest losowy, dostępne są pozostałe metody doboru. Anulowanie nie rozpoczyna serii. Karta wybranej serii z resetem pokazuje „Po resecie” zamiast „Wagi”. [Opis i testy](KO_LL_MANUAL_ROUNDS_2026-10-25.md).
 
+## Uzupełnienie: historia wyników, archiwum i DNS
+
+Archiwum aktualizuje modele po rozegraniu zawodów i zmianach kalendarza, obejmuje rozegrane wydarzenia po lukach oraz zachowuje kalendarz po ID. Konkursy indywidualne, KO i drużynowe mają podgląd wyników po wybranej serii; wcześniejszy stan blokuje rozgrywanie do powrotu do „Teraz”. Ten sam widok działa w archiwum, wraz z kartą skoku i wyborem jego serii. Klasyfikacje archiwalne można przeliczyć po wybranym konkursie przy użyciu dotychczasowych reguł punktacji. Drużynówki mają ranking indywidualny sumujący surowe punkty skoków oraz jego historię. „Pomiń skok · DNS” zapisuje wyłącznie bieżącą próbę z 0 pkt, bez dyskwalifikacji drużyny. Naprawiono również wykryty przez ASAN odczyt poza tablicą przy określaniu miejsca skopiowanego skoku drużynowego. [Pełny opis](RESULT_HISTORY_ARCHIVE_DNS_2026-10-25.md).
+
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
