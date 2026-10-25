@@ -13,15 +13,6 @@ GridLayout {
     columns: vertical ? 1 : 3
     columnSpacing: 6; rowSpacing: 6
     SChoice {
-        objectName: "historyStandingsMode"
-        visible: !!choices.fields.modeField
-        model: choices.mode.options || []; currentIndex: choices.mode.value || 0
-        enabled: choices.mode.enabled !== false
-        Layout.preferredWidth: 125; Layout.fillWidth: true; Layout.minimumWidth: 0
-        Accessible.name: qsTr("Klasyfikacja drużynowa lub indywidualna")
-        onActivated: function(index){choices.backend.edit(choices.mode.id,index);choices.selectionChanged()}
-    }
-    SChoice {
         objectName: "historyRoundSelector"
         model: choices.round.options || []; currentIndex: choices.round.value || 0
         enabled: choices.round.enabled !== false
@@ -37,5 +28,14 @@ GridLayout {
         Layout.preferredWidth: 150; Layout.fillWidth: true; Layout.minimumWidth: 0
         Accessible.name: qsTr("Widok wyników drużynowych")
         onActivated: {appearance.teamResultsMode=currentIndex;choices.selectionChanged()}
+    }
+    SChoice {
+        objectName: "historyStandingsMode"
+        visible: !!choices.fields.modeField
+        model: choices.mode.options || []; currentIndex: choices.mode.value || 0
+        enabled: choices.mode.enabled !== false
+        Layout.preferredWidth: 125; Layout.fillWidth: true; Layout.minimumWidth: 0
+        Accessible.name: qsTr("Klasyfikacja drużynowa lub indywidualna")
+        onActivated: function(index){choices.backend.edit(choices.mode.id,index);choices.selectionChanged()}
     }
 }
