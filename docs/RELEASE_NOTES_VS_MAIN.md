@@ -746,6 +746,12 @@ Dedykowane karty Qt Quick oddzielają nazwę i rodzaj, punktację oraz filtry za
 
 Doprecyzowano nazwy wyborów wyników, ukryto zbędny wybór przy jednej dostępnej serii oraz otwierane listy rozwijają się w dół przy kontrolce, bez modalności ani wyszarzania, w pełnym obszarze konkursu. Podgląd indywidualny w drużynówce także wstrzymuje symulację i ma wspólny powrót do konkursu. Lista drużyn ma o 20% wyższe pozycje i osobne, numerowane nazwiska w dwóch kolumnach; cienka linia oddziela skład od rezerwy w edytorze drużyny. Usunięto wyszukiwanie z tabeli drużyn przed konkursem. Szczegóły: `docs/RESULT_SELECTORS_TEAM_READABILITY_2026-10-25.md`.
 
+### Reguły wieku, filtr wkładu kraju i rozkład punktów
+
+Wiek klasyfikacji wynika ze stałego roku rozpoczęcia sezonu, bez ręcznego roku odniesienia. Filtr kraju działa tylko w klasyfikacjach drużynowych i tylko dla indywidualnych konkursów: uwzględnianie/wykluczanie TOP lub LAST N osobno w każdym konkursie, bez utraty wcześniejszych punktów. Dwuklik na kraj pokazuje wkład zawodników i osobno punkty z konkursów drużynowych, również dla historycznego zakresu.
+
+Punktacja ma nowe nazwy naliczania, segmenty źródeł z precyzyjnym opisem, aktualną nazwę presetu i niedostępny do wybrania stan „Własne” po edycji. UI parametrów konkursu ograniczono do mnożnika; podstawowy sposób nazywa się „Domyślny”. Dodawanie/usuwanie punktowanych miejsc nie resetuje już całego adaptera tabeli. Dropdowny konkursu nie przewijają opcji, a ich tło wynika z rzeczywistej zawartości. Szczegóły i kompatybilność: `docs/CLASSIFICATION_RULES_AND_BREAKDOWN_2026-10-25.md`.
+
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
