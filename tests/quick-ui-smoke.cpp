@@ -43,6 +43,7 @@
 #include <QDesktopServices>
 #include <QQmlComponent>
 #include <atomic>
+#include <thread>
 #include <cstdio>
 #include "../source/UI/ResultsShowing/JumpDataDetailedInfoWindow.h"
 #include "../source/UI/ResultsShowing/ResultsHistoryWidget.h"
@@ -1770,6 +1771,12 @@ static void uxRegressions(MainWindow &main) {
     qInfo()<<"PASS: five UX workflows: scoped form edits, visible search, saved lists, contextual competition controls and explicit calendar editing";
 }
 
+static void playgroundRandomRegressions() {
+    const auto sample=[] {return QVector<double>{double(MyRandom::randomInt(-20,20)),MyRandom::randomDouble(-3.,4.,5),MyRandom::normalDistributionRandom(2.,3.),MyRandom::lognormalDistributionRandom(.1,.3),MyRandom::gammaDistributionRandom(1.,2.),MyRandom::normalDistributionRandomHalf(0.,2.,MyRandom::Positive)};};
+    const auto sequence=[&](quint64 seed,bool nested){MyRandom::ScopedSeed scope(seed);auto values=sample();MyRandom::normalDistributionRandom(0,1);if(nested){MyRandom::ScopedSeed inner(999);sample();sample();}values+=sample();return values;};
+    const auto expected=sequence(1234567890123ULL,false);check(expected==sequence(1234567890123ULL,false) && expected==sequence(1234567890123ULL,true),"seeded experiments reproduce all distributions and restore nested generator/cache state");check(expected!=sequence(1234567890124ULL,false),"different experiment seeds produce distinct streams");QVector<double> left,right;std::thread first([&]{left=sequence(1234567890123ULL,false);}),second([&]{right=sequence(1234567890123ULL,true);});first.join();second.join();check(left==expected && right==expected,"experiment random streams are isolated across worker threads");qInfo()<<"PASS: scoped experiment seeds, all distributions, nested restoration and thread isolation";
+}
+
 static void saveStorageRegressions() {
     QSettings settings;const auto oldOrder=settings.value("simulationSaves/order");
     SimulationSave a,b,c,d;a.setName("Zulu");b.setName("Alfa");c.setName("Beta");d.setName("Nowa");
@@ -2347,6 +2354,7 @@ static void backendRegressions() {
     randomBoundsRegression();
     csvCollisionRegression();
     presetSerializationRegression();
+    playgroundRandomRegressions();
     saveStorageRegressions();
     advancementRegressions();
     { Classification source("Existing classification");source.setAltPointsForPlaces({{1,25.0}});ClassificationEditorWidget editor(&source);check(editor.getClassification()==&source,"classification constructor initializes the supplied source");editor.setClassification(nullptr);check(!editor.getClassification(),"classification source can be cleared safely"); }
@@ -2475,6 +2483,7 @@ int main(int argc,char **argv) {
     MainWindow main; applicationWindow=&main; main.setParentApplication(&app); new QuickUi(&main);
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="2.0.0-beta","one release version is shared with the interface");
+    if(app.arguments().contains("--playground-only")){playgroundRandomRegressions();return 0;}
     if(app.arguments().contains("--save-storage-only")){saveStorageRegressions();return 0;}
     if(app.arguments().contains("--engine-audit-only")){int selected=0;for(const auto &argument:app.arguments())if(argument.startsWith("--engine-case="))selected=argument.mid(14).toInt();engineAuditRegressions(selected);return 0;}
     engineAuditRegressions();

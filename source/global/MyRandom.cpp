@@ -10,10 +10,28 @@
 
 namespace {
 thread_local std::mt19937 generator{std::random_device{}()};
+thread_local std::normal_distribution<double> standardNormal(0.,1.);
+thread_local bool scopedSeed=false;
 QRandomGenerator &uniformGenerator() {
     static thread_local QRandomGenerator random(QRandomGenerator::securelySeeded());
     return random;
 }
+}
+
+struct MyRandom::ScopedSeed::State {
+    std::mt19937 generatorState{generator};
+    QRandomGenerator uniformState{uniformGenerator()};
+    std::normal_distribution<double> normalState{standardNormal};
+    bool seeded{scopedSeed};
+};
+MyRandom::ScopedSeed::ScopedSeed(quint64 seed):previous(std::make_unique<State>()) {
+    quint32 words[]{quint32(seed),quint32(seed>>32)};
+    std::seed_seq sequence{words[0],words[1]};
+    generator.seed(sequence);uniformGenerator().seed(sequence);standardNormal.reset();scopedSeed=true;
+}
+MyRandom::ScopedSeed::~ScopedSeed() {
+    generator=previous->generatorState;uniformGenerator()=previous->uniformState;
+    standardNormal=previous->normalState;scopedSeed=previous->seeded;
 }
 
 MyRandom::MyRandom()
@@ -43,7 +61,7 @@ int MyRandom::randomInt(int min, int max)
 {
     if(min > max)
         return 0;
-    return std::uniform_int_distribution<int>(min, max)(*QRandomGenerator::global());
+    return scopedSeed ? std::uniform_int_distribution<int>(min,max)(uniformGenerator()) : std::uniform_int_distribution<int>(min, max)(*QRandomGenerator::global());
 }
 
 double MyRandom::reducingChancesRandom(double min, double max, double resultNumbersChange, double startingChance, double chancesChangeMultiplier, short drawType, short resultNumbersType)
@@ -122,8 +140,7 @@ double MyRandom::reducingChancesRandom(double min, double max, double resultNumb
 double MyRandom::normalDistributionRandom(double base, double deviation)
 {
     if(deviation == 0)return base;
-    static thread_local std::normal_distribution<double> standard(0., 1.);
-    return base + deviation * standard(generator);
+    return base + deviation * standardNormal(generator);
 }
 
 double MyRandom::lognormalDistributionRandom(double base, double deviation)

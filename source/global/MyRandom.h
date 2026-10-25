@@ -1,11 +1,23 @@
 #ifndef MYRANDOM_H
 #define MYRANDOM_H
 
+#include <QtGlobal>
+#include <memory>
+
 
 class MyRandom
 {
 public:
     MyRandom();
+    class ScopedSeed {
+        struct State;
+        std::unique_ptr<State> previous;
+    public:
+        explicit ScopedSeed(quint64 seed);
+        ~ScopedSeed();
+        ScopedSeed(const ScopedSeed &)=delete;
+        ScopedSeed &operator=(const ScopedSeed &)=delete;
+    };
 
     static double randomDouble(double min, double max, short precision = 2);
     static int randomInt(int min, int max);
