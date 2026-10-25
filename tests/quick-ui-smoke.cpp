@@ -472,6 +472,22 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                 }
                 check(manager->checkCompetitionEnd(),"Super Team finishes after three automatic rounds");window->accept();return;
             }
+            if(QCoreApplication::arguments().contains("--result-scroll-only")) {
+                presentation(window)->resize(1024,600);QTest::qWait(50);
+                auto *view=scene(window);auto *table=item(view->rootObject(),"raceResults");
+                auto *appearance=view->rootContext()->contextProperty("appearance").value<QuickAppearance *>();const int oldMode=appearance->teamResultsMode();if(scenario==2)appearance->setTeamResultsMode(2);
+                for(int i=0;i<12;++i){bridge->activate(id(bridge,"pushButton_jump"));QTest::qWait(20);}
+                bridge->refresh();QTest::qWait(100);
+                auto *rows=item(table,"tableRows-"+table->property("ownerId").toString());check(rows,"result rows exist");
+                const auto maximum=rows->property("contentHeight").toDouble()-rows->height();check(maximum>40,QString("real results must scroll: scenario %1, content %2, height %3, count %4, view %5x%6").arg(scenario).arg(rows->property("contentHeight").toDouble()).arg(rows->height()).arg(rows->property("count").toInt()).arg(view->width()).arg(view->height()));
+                const double position=qMin(80.,maximum);rows->setProperty("contentY",rows->property("originY").toDouble()+position);
+                QMetaObject::invokeMethod(table,"forceActiveFocus");
+                bridge->activate(id(bridge,"pushButton_jump"));QTest::qWait(120);bridge->refresh();QTest::qWait(30);
+                const double after=rows->property("contentY").toDouble()-rows->property("originY").toDouble();
+                check(qAbs(after-position)<2,"adding an actual jump preserves a manually scrolled result table even with table focus");
+                QMetaObject::invokeMethod(table,"forceActiveFocus");QTest::keyClick(view,Qt::Key_Down);QTest::qWait(50);
+                appearance->setTeamResultsMode(oldMode);qInfo()<<"PASS: result scroll survives added jump"<<scenario;window->reject();return;
+            }
             if(QCoreApplication::arguments().contains("--race-options-only")) {
                 raceOptionsRegressions(main,window);window->reject();return;
             }
@@ -1543,6 +1559,25 @@ static void auditStatisticsRegressions(MainWindow &main) {
     qInfo()<<"PASS: audit 7-13 finite statistics, small fields, missing presets, empty filters/calendars, detached jumps and DNS charts";
 }
 
+static void jumperCatalogClickRegressions(MainWindow &main) {
+    main.show();main.resize(1440,900);DatabaseEditorWindow database(&main);database.show();QTest::qWait(150);
+    auto *bridge=database.findChild<QuickBridge *>();auto *entry=qobject_cast<QuickNode *>(bridge->find("listView"));check(entry,"jumper catalog node exists");
+    auto *view=scene(&database);auto *table=item(view->rootObject(),"dataTable-"+QString::number(entry->values().value("id").toInt()));
+    check(table && table->property("singleClickOpen").toBool() && table->property("expandedActions").toBool(),"jumper catalog enables single-click editing and direct actions");
+    auto *rows=item(table,"tableRows-"+QString::number(entry->values().value("id").toInt()));check(rows,"jumper rows exist");
+    const auto click=rows->mapToItem(view->rootObject(),QPointF(70,60)).toPoint();QTest::mouseClick(view,Qt::LeftButton,Qt::NoModifier,click);QTest::qWait(100);
+    auto *editor=database.findChild<JumperEditorWidget *>();check(editor && !editor->isHidden() && editor->property("packRow").toInt()==1,"one click opens the second athlete for editing");
+    check(item(view->rootObject(),"catalogAdd")->isVisible(),"add athlete remains available as plus");
+    check(item(view->rootObject(),"catalogSelectAll")->isVisible(),"select all is directly visible");
+    check(!item(table,"table-options-"+QString::number(entry->values().value("id").toInt()))->isVisible(),"jumper list has no overflow menu");
+    for(const auto &action:entry->values().value("tableActions").toList()) {
+        const auto fields=action.toMap();auto *button=item(table,"catalogAction-"+fields.value("id").toString());
+        check(fields.value("insert").toBool()? !button : button && button->isVisible(),"remaining actions are visible without a duplicate add action");
+    }
+    render(&database,"jumper-catalog-actions",true);database.reject();
+    qInfo()<<"PASS: single-click athlete editing, direct actions and one add control";
+}
+
 static void spaceRegressions(MainWindow &main) {
     main.show();main.resize(1440,900);DatabaseEditorWindow database(&main);database.show();QTest::qWait(150);
     auto *bridge=database.findChild<QuickBridge *>();auto *tabs=database.findChild<QTabWidget *>();
@@ -2337,6 +2372,8 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--author-only")){authorRegressions(main);return 0;}
     if(app.arguments().contains("--navigation-only")){navigationRegressions(main);return 0;}
     if(app.arguments().contains("--home-launch-only")){homeLaunchRegressions(main);return 0;}
+    if(app.arguments().contains("--jumper-catalog-only")){jumperCatalogClickRegressions(main);return 0;}
+    if(app.arguments().contains("--result-scroll-only")){main.show();for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario);return 0;}
     if(app.arguments().contains("--race-options-only")){main.show();runCompetition(main,0);return 0;}
     if(app.arguments().contains("--round-points-only")){roundPointsUiRegressions(main);return 0;}
     if(app.arguments().contains("--round-points-bulk-only")){main.show();for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);return 0;}

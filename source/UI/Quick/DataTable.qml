@@ -16,6 +16,12 @@ FocusScope {
     property real maximumHeight: 540
     property bool compact: false
     property bool plain: false
+    property bool expandedActions: false
+    property bool singleClickOpen: false
+    property bool preserveScroll: plain && !followCurrent
+    property bool restoringScroll: false
+    property real savedScrollY: 0
+    property int resetRevision: 0
     property bool searchEnabled: !plain
     property bool searchOpen: searchEnabled && !compact && width >= 320 && height >= 240
     function clearDisabledSearch() { if(!searchEnabled){searchOpen=false;if(table && table.filter.length)table.filter=""} }
@@ -95,7 +101,8 @@ FocusScope {
             Label { text: tableRoot.table && tableRoot.table.selectedCount>0 && tableRoot.height<300 ? qsTr("Zaznaczono: %1").arg(tableRoot.table.selectedCount) : qsTr("%1 pozycji").arg(tableRoot.table ? tableRoot.table.count : 0); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
             SButton {
                 implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40;
-                visible: tableRoot.width >= 380 && tableRoot.actions.length > 0 && !!tableRoot.actions[0].insert
+                visible: (tableRoot.expandedActions || tableRoot.width >= 380) && tableRoot.actions.length > 0 && !!tableRoot.actions[0].insert
+                objectName: tableRoot.expandedActions ? "catalogAdd" : "tableAdd-"+tableRoot.ownerId
                 text: "+"; quiet: true; Accessible.name: qsTr("Dodaj"); hint: qsTr("Dodaj")
                 enabled: tableRoot.actions.length > 0 && tableRoot.actions[0].enabled
                 onClicked: ui.triggerAction(tableRoot.actions[0].id)
@@ -107,11 +114,11 @@ FocusScope {
             SButton {
                 implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40; visible: tableRoot.compact && tableRoot.columns>4 && !tableRoot.teamResults; text: tableRoot.raceResults ? qsTr("Punkty serii") : qsTr("Skoki"); quiet: true; font.pointSize: Theme.caption; checkable: true; onClicked: tableRoot.jumpColumns=checked }
             SButton {
-                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40; visible: !tableRoot.compact; text: tableRoot.width < 380 ? "↗" : qsTr("Otwórz"); quiet: true; Accessible.name: qsTr("Otwórz"); hint: qsTr("Otwórz"); onClicked: if (tableRoot.table) tableRoot.table.openCurrent() }
+                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40; visible: !tableRoot.compact && !tableRoot.expandedActions; text: tableRoot.width < 380 ? "↗" : qsTr("Otwórz"); quiet: true; Accessible.name: qsTr("Otwórz"); hint: qsTr("Otwórz"); onClicked: if (tableRoot.table) tableRoot.table.openCurrent() }
             SButton {
                 implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40;
                 objectName: "table-options-" + tableRoot.ownerId
-                visible: tableRoot.actions.length > 0 || (tableRoot.table && tableRoot.table.multiple)
+                visible: !tableRoot.expandedActions && (tableRoot.actions.length > 0 || (!!tableRoot.table && tableRoot.table.multiple))
                 text: "⋯"; quiet: true; Accessible.name: qsTr("Opcje listy")
                 onClicked: selectionMenu.open()
                 ActionMenu {
@@ -123,6 +130,23 @@ FocusScope {
                         if (entry.selectAll) tableRoot.table.selectAll()
                         else ui.triggerAction(entry.id)
                     }
+                }
+            }
+        }
+        Flow {
+            objectName: "catalogListActions"
+            visible: tableRoot.expandedActions
+            Layout.fillWidth: true; Layout.margins: Theme.dp(6)
+            spacing: Theme.dp(4)
+            SButton { objectName: "catalogSelectAll"; visible: !!tableRoot.table && tableRoot.table.multiple; text: qsTr("Zaznacz wszystkie"); quiet: true; onClicked: tableRoot.table.selectAll() }
+            Repeater {
+                model: tableRoot.expandedActions ? tableRoot.actions.filter(function(action){return !action.insert}) : []
+                SButton {
+                    objectName: "catalogAction-"+modelData.id
+                    text: modelData.text
+                    enabled: modelData.enabled
+                    quiet: true
+                    onClicked: ui.triggerAction(modelData.id)
                 }
             }
         }
@@ -223,30 +247,42 @@ FocusScope {
             SButton { text: tableRoot.width<400 ? "×" : qsTr("Wyczyść zaznaczenie"); Accessible.name: qsTr("Wyczyść zaznaczenie"); quiet: true; onClicked: tableRoot.table.clearSelection() }
         }
     }
+    function revealCursor() {
+        if (restoringScroll || !table) return
+        if (table.currentRow>=0) rows.positionViewAtIndex(table.currentRow,ListView.Contain)
+        var visual=displayColumns.indexOf(table.currentColumn),offset=0
+        if (visual<0) return
+        for (var c=0;c<visual;++c) offset+=columnWidth(c)
+        if (offset<horizontal.contentX) horizontal.contentX=offset
+        else if (offset+columnWidth(visual)>horizontal.contentX+horizontal.width) horizontal.contentX=offset+columnWidth(visual)-horizontal.width
+    }
     Connections {
-        target: tableRoot.table
-        function onCursorChanged() {
-            if (tableRoot.followCurrent || tableRoot.activeFocus) Qt.callLater(function() {
-                if (tableRoot.table && tableRoot.table.currentRow >= 0) rows.positionViewAtIndex(tableRoot.table.currentRow,ListView.Contain)
-                if (tableRoot.table) {
-                    var offset = 0
-                    var visual=tableRoot.displayColumns.indexOf(tableRoot.table.currentColumn)
-                    if(visual<0)return
-                    for (var c=0;c<visual;++c) offset += tableRoot.columnWidth(c)
-                    if (offset < horizontal.contentX) horizontal.contentX = offset
-                    else if (offset+tableRoot.columnWidth(visual) > horizontal.contentX+horizontal.width)
-                        horizontal.contentX = offset+tableRoot.columnWidth(visual)-horizontal.width
-                }
+        target: tableRoot.table || null
+        function onModelAboutToBeReset() {
+            if (!tableRoot.preserveScroll) return
+            if (!tableRoot.restoringScroll) tableRoot.savedScrollY=rows.contentY-rows.originY
+            tableRoot.restoringScroll=true
+        }
+        function onModelReset() {
+            if (!tableRoot.restoringScroll) return
+            var revision=++tableRoot.resetRevision
+            Qt.callLater(function(){
+                if (revision!==tableRoot.resetRevision) return
+                rows.contentY=rows.originY+Math.max(0,Math.min(tableRoot.savedScrollY,rows.contentHeight-rows.height))
+                tableRoot.restoringScroll=false
             })
+        }
+        function onCursorChanged() {
+            if (!tableRoot.preserveScroll && (tableRoot.followCurrent || tableRoot.activeFocus)) Qt.callLater(tableRoot.revealCursor)
         }
     }
     Shortcut { sequence: StandardKey.Find; enabled: tableRoot.searchEnabled && tableRoot.visible && tableRoot.activeFocus; onActivated: {tableRoot.searchOpen=true;search.forceActiveFocus();search.selectAll()} }
     Keys.onPressed: {
         if (!table) return
         if(plain && ((event.modifiers & (Qt.ControlModifier | Qt.ShiftModifier)) || event.key===Qt.Key_F2 || event.key===Qt.Key_Delete || event.key===Qt.Key_Insert)){event.accepted=true;return}
-        if (event.key === Qt.Key_Up && !(event.modifiers & Qt.ControlModifier)) { table.moveCurrent(-1,event.modifiers); event.accepted = true }
-        else if (event.key === Qt.Key_Down && !(event.modifiers & Qt.ControlModifier)) { table.moveCurrent(1,event.modifiers); event.accepted = true }
-        else if (event.key === Qt.Key_Left || event.key === Qt.Key_Right) { var visual=displayColumns.indexOf(table.currentColumn);var next=Math.max(0,Math.min(visibleColumns-1,visual+(event.key === Qt.Key_Left ? -1 : 1)));table.moveColumn(displayColumns[next]-table.currentColumn); event.accepted = true }
+        if (event.key === Qt.Key_Up && !(event.modifiers & Qt.ControlModifier)) { table.moveCurrent(-1,event.modifiers); Qt.callLater(revealCursor); event.accepted = true }
+        else if (event.key === Qt.Key_Down && !(event.modifiers & Qt.ControlModifier)) { table.moveCurrent(1,event.modifiers); Qt.callLater(revealCursor); event.accepted = true }
+        else if (event.key === Qt.Key_Left || event.key === Qt.Key_Right) { var visual=displayColumns.indexOf(table.currentColumn);var next=Math.max(0,Math.min(visibleColumns-1,visual+(event.key === Qt.Key_Left ? -1 : 1)));table.moveColumn(displayColumns[next]-table.currentColumn); Qt.callLater(revealCursor); event.accepted = true }
         else if (event.key === Qt.Key_F2) { editCurrent(); event.accepted = true }
         else if (event.key === Qt.Key_Space) { table.toggleCurrent(); event.accepted = true }
         else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) { if (!ui.shortcut(ownerId,"Return")) table.openCurrent(); event.accepted = true }

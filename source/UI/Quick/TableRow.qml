@@ -81,7 +81,7 @@ Rectangle {
         onClicked: {
             row.tableView.forceActiveFocus()
             var column = row.tableView.columnAt(mouse.x)
-            row.tableView.table.select(row.rowIndex,column,row.tableView.plain ? (mouse.modifiers & Qt.ShiftModifier) : mouse.modifiers,false)
+            row.tableView.table.select(row.rowIndex,column,row.tableView.plain ? (mouse.modifiers & Qt.ShiftModifier) : mouse.modifiers,row.tableView.singleClickOpen && !(mouse.modifiers & (Qt.ControlModifier | Qt.ShiftModifier)))
             var cell = row.rowCells[column]
             if (cell && cell.checkable) row.tableView.table.edit(row.rowIndex,column,!cell.checked)
         }

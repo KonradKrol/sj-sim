@@ -768,7 +768,7 @@ void QuickBridge::compose(QuickNode *base) {
         for(auto *widget:page->findChildren<QWidget *>())if(editorTypes.contains(QString::fromLatin1(widget->metaObject()->className()))&&widget->isVisibleTo(page)){editor=node(widget,true);nativeEditor=widget;break;}
         QVariantList actions;
         for(auto *button:page->findChildren<QPushButton *>())if(button->isVisibleTo(page)&&!container->isAncestorOf(button)&&(!nativeEditor||!nativeEditor->isAncestorOf(button)))actions.append(QVariant::fromValue(node(button,true)));
-        entry->update({{"kind","catalog"},{"actionsRow",actions},{"list",QVariant::fromValue(node(view,true))},{"editor",QVariant::fromValue(editor)},{"toolbar",toolbar},{"editRequest",entry->property("editRequest").toInt()}});
+        entry->update({{"kind","catalog"},{"singleClickEdit",profile()=="DatabaseEditorWindow" && view->model() && QByteArray(view->model()->metaObject()->className())=="JumpersListModel"},{"actionsRow",actions},{"list",QVariant::fromValue(node(view,true))},{"editor",QVariant::fromValue(editor)},{"toolbar",toolbar},{"editRequest",entry->property("editRequest").toInt()}});
         return entry;
     };
     if(profile()=="SimulationSavesWindow") {
