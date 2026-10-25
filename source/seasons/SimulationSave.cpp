@@ -121,7 +121,7 @@ SimulationSave::SimulationSave() :
     nextCompetitionIndex(0),
     showForm(true),
     showInstability(true),
-    saveFileSizeReduce(false)
+    saveFileSizeReduce(true)
 {}
 
 SimulationSave::~SimulationSave()
@@ -220,7 +220,7 @@ SimulationSave * SimulationSave::getFromJson(QJsonObject obj, IdentifiableObject
 
     save->setShowForm(obj.value("show-form").toBool(true));
     save->setShowInstability(obj.value("show-instability").toBool(true));
-    save->setSaveFileSizeReduce(obj.value("save-file-size-reduce").toBool(false));
+    save->setSaveFileSizeReduce(obj.value("save-file-size-reduce").toBool(true));
 
     return save;
 }
@@ -314,7 +314,21 @@ bool SimulationSave::saveToFile(QString dir, QString fileName)
         message.exec();
         return false;
     }
-    const QByteArray content = document.toJson(saveFileSizeReduce ? QJsonDocument::Compact : QJsonDocument::Indented);
+    QByteArray content = document.toJson(saveFileSizeReduce ? QJsonDocument::Compact : QJsonDocument::Indented);
+    if(!saveFileSizeReduce) {
+        // JSON strings escape newlines/tabs: only indentation before each line is replaced.
+        QByteArray readable;readable.reserve(content.size());
+        for(int offset=0;offset<content.size();) {
+            const int start=offset;
+            while(offset<content.size() && content[offset]==' ')++offset;
+            readable.append(QByteArray((offset-start)/4,'\t'));
+            readable.append(QByteArray((offset-start)%4,' '));
+            const int end=content.indexOf('\n',offset);
+            const int length=(end<0?content.size():end+1)-offset;
+            readable.append(content.constData()+offset,length);offset+=length;
+        }
+        content=std::move(readable);
+    }
     if(file.write(content) != content.size() || !file.commit())
     {
         QMessageBox::critical(nullptr, QObject::tr("Nie można zapisać zapisu symulacji"),
