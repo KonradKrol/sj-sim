@@ -46,9 +46,9 @@ ScrollView {
             objectName: "raceTables"
             y: header.height+8
             width: parent.width
-            height: Math.max(race.narrow ? (race.hasKo ? 500 : 400) : 170,race.availableHeight-y)
-            readonly property real resultWidth: race.narrow ? width : (width-12)*.66
-            readonly property real resultHeight: !race.narrow ? height : race.hasKo ? Math.max(180,height-308) : (height-8)/2
+            height: Math.max(race.previewPaused ? 120 : race.narrow ? (race.hasKo ? 500 : 400) : 170,race.availableHeight-y)
+            readonly property real resultWidth: race.narrow || race.previewPaused ? width : (width-12)*.66
+            readonly property real resultHeight: !race.narrow || race.previewPaused ? height : race.hasKo ? Math.max(180,height-308) : (height-8)/2
             Item {
                 width: tables.resultWidth; height: tables.resultHeight
                 ColumnLayout {
@@ -79,6 +79,7 @@ ScrollView {
                 }
             }
             Item {
+                visible: !race.previewPaused
                 x: race.narrow ? 0 : tables.resultWidth+12
                 y: race.narrow ? tables.resultHeight+8 : 0
                 width: race.narrow ? tables.width : tables.width-x

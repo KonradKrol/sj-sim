@@ -1434,6 +1434,7 @@ void CompetitionManagerWindow::showPersonalBestNotification(const QString &title
 
 void CompetitionManagerWindow::checkRecords(JumpData &jump, bool multipleRecords)
 {
+    if(jump.getDNS())return;
     if(jump.getCompetition()->getRulesPointer()->getHillRecordBreaking() == true && (jump.getLanding().getType() == Landing::TelemarkLanding || jump.getLanding().getType() == Landing::BothLegsLanding) && (singleCompetition == false || GlobalSimulationSettings::get()->getUpdateGlobalDatabaseRecords() == true)){
         if(roundDoubleToHalf(jump.getDistance()) == roundDoubleToHalf(jump.getHill()->getRecord()) && multipleRecords == false)
         {

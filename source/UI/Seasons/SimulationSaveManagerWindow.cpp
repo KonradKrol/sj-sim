@@ -379,7 +379,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     connect(this,&SimulationSaveManagerWindow::actualCalendarChanged,this,[this]{
         simulationSave->updateNextCompetitionIndex();fillNextCompetitionInformations();updateCompetitionConfigButton();setupClassificationsComboBox();
         const auto *active=simulationSave->getActualSeason()->getActualCalendar();ui->label_calendarName->setText(active?active->getName():tr("Brak"));
-        if(active)ui->comboBox_archiveCalendar->setCurrentIndex(simulationSave->getActualSeason()->getCalendarsReference().indexOf(const_cast<SeasonCalendar *>(active)));
+        syncArchiveCalendars();
     });
 
     const auto activateCalendar = [this](const QModelIndex &index){
@@ -412,6 +412,10 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     });
     connect(calendarsListView, &DatabaseItemsListView::up, this, &SimulationSaveManagerWindow::highlightActualCalendar);
     connect(calendarsListView, &DatabaseItemsListView::down, this, &SimulationSaveManagerWindow::highlightActualCalendar);
+    connect(calendarsListView,&DatabaseItemsListView::insert,this,&SimulationSaveManagerWindow::syncArchiveCalendars);
+    connect(calendarsListView,&DatabaseItemsListView::remove,this,&SimulationSaveManagerWindow::syncArchiveCalendars);
+    connect(calendarsListView,&DatabaseItemsListView::up,this,&SimulationSaveManagerWindow::syncArchiveCalendars);
+    connect(calendarsListView,&DatabaseItemsListView::down,this,&SimulationSaveManagerWindow::syncArchiveCalendars);
     connect(this, &SimulationSaveManagerWindow::editingCalendarChanged, this, [this](){
         SeasonCalendar *actualCalendar = editingCalendar;
         classificationEditor->setClassification(nullptr);classificationEditor->hide();
