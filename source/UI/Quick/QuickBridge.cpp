@@ -24,6 +24,10 @@
 #include "../../competitions/CompetitionManagers/KORoundManager.h"
 #include "../../global/GlobalDatabase.h"
 #include "../../global/CountryFlagsManager.h"
+#include "../../global/CountryCodes.h"
+#include <QDir>
+#include <QFile>
+#include <QUrl>
 #include <QApplication>
 #include <QAbstractButton>
 #include <QAbstractItemView>
@@ -73,6 +77,12 @@ QT_CHARTS_USE_NAMESPACE
 QString quickPicture(const QPixmap &pixmap);
 QString quickDecoration(const QVariant &value);
 namespace {
+QString flagSource(const QString &country) {
+    const auto path=QDir::current().absoluteFilePath("flags/"+CountryCodes::toIso(country)+".svg");
+    static QHash<QString,QString> cache;
+    if(!cache.contains(path))cache.insert(path,QFile::exists(path)?QUrl::fromLocalFile(path).toString():QString());
+    return cache.value(path);
+}
 QString standardCaption(int button) {
     switch(button) {
     case QMessageBox::Ok:return QuickBridge::tr("OK");
@@ -1015,7 +1025,7 @@ void QuickBridge::compose(QuickNode *base) {
             if(koList){
                 QVariantList groups,athletes;QStringList names,flags;QHash<Jumper *,int> options;
                 const auto *pool=koList->getJumpersList();
-                if(pool)for(auto *jumper:*pool)if(jumper && !options.contains(jumper)){options.insert(jumper,names.size());const auto flag=quickPicture(CountryFlagsManager::getFlagPixmap(jumper->getCountryCode().toLower()));athletes.append(QVariantMap{{"id",QuickRoster::key(jumper)}});names.append(jumper->getNameAndSurname());flags.append(flag);}
+                if(pool)for(auto *jumper:*pool)if(jumper && !options.contains(jumper)){options.insert(jumper,names.size());const auto flag=flagSource(jumper->getCountryCode());athletes.append(QVariantMap{{"id",QuickRoster::key(jumper)}});names.append(jumper->getNameAndSurname());flags.append(flag);}
                 int largest=1;
                 if(koList->getKOGroups())for(const auto &group:*koList->getKOGroups()){
                     QVariantList members;
