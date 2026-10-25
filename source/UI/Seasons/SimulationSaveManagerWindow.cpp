@@ -1,4 +1,5 @@
 #include "SimulationSaveManagerWindow.h"
+#include "../ResultsShowing/ResultsHistoryWidget.h"
 #include "ui_SimulationSaveManagerWindow.h"
 #include "../../global/GlobalAppSettings.h"
 #include "../../global/CountryFlagsManager.h"
@@ -322,12 +323,13 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     archiveClassificationResults->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     archiveClassificationResults->setMinimumHeight(160);
     ui->verticalLayout_archiveClassificationResults->addWidget(archiveClassificationResults);
+    syncArchiveCalendars();
 
     connect(classificationResultsTableView->getTableView(), &QTableView::doubleClicked, this, [this](const QModelIndex & index){
         showClassificationApperanceWindowAfterListClick(index, classificationResultsTableView->getClassification());
     });
     connect(archiveClassificationResults->getTableView(), &QTableView::doubleClicked, this, [this](const QModelIndex & index){
-        showClassificationApperanceWindowAfterListClick(index, archiveClassificationResults->getClassification());
+        if(!archiveClassificationResults->historical())showClassificationApperanceWindowAfterListClick(index, archiveClassificationResults->getClassification());
     });
 
     jumpersListsListView = new DatabaseItemsListView(DatabaseItemsListView::JumpersListsItems, true, true, true, this);
@@ -582,6 +584,7 @@ void SimulationSaveManagerWindow::refreshCalendarState() {
         else emit classificationsListView->getListModel()->dataChanged(classificationsListView->getListModel()->index(0,0),classificationsListView->getListModel()->index(classificationsListView->getListModel()->rowCount()-1,0));
     }
     simulationSave->updateNextCompetitionIndex();fillNextCompetitionInformations();updateCompetitionConfigButton();setupClassificationsComboBox();
+    syncArchiveCalendars();
     emit calendarTableModel->dataChanged(calendarTableModel->index(0,0),calendarTableModel->index(calendarTableModel->rowCount()-1,9));
 }
 void SimulationSaveManagerWindow::connectCalendarEditorSignals()
@@ -1031,7 +1034,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
 
                 simulationSave->updateNextCompetitionIndex();
                 fillNextCompetitionInformations();
-                ui->listView_competitionsArchive->reset();
+                updateArchive();
                 simulationSave->saveToFile("simulationSaves/");
 
                 competition->saveToCsvFile("results/season-competitions/csv/", simulationSave->getName() + QString(" (%1)" ).arg(simulationSave->getActualSeason()->getActualCalendar()->getName()) + QString::number(simulationSave->getActualSeason()->getSeasonNumber()) + "-" + QString::number(simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference().indexOf(competition)) + " " + competition->getHill()->getHillText() + " (" + competition->getShortSerieTypeText() + ")" + ".csv");
@@ -1131,21 +1134,24 @@ void SimulationSaveManagerWindow::on_pushButton_repairDatabase_clicked()
 }
 
 
-void SimulationSaveManagerWindow::on_comboBox_archiveSeason_currentIndexChanged(int index)
+void SimulationSaveManagerWindow::syncArchiveCalendars()
 {
-    if(index >= 0){
-        Season * season = &simulationSave->getSeasonsReference()[simulationSave->getSeasonsReference().count() - 1 - index];
-
-        ui->comboBox_archiveCalendar->clear();
-        for(auto & c : season->getCalendarsReference())
-        {
-            ui->comboBox_archiveCalendar->addItem(c->getName());
-        }
-        if(simulationSave->getActualSeason()->getActualCalendar())
-            ui->comboBox_archiveCalendar->setCurrentIndex(simulationSave->getActualSeason()->getCalendarsReference().indexOf(simulationSave->getActualSeason()->getActualCalendar()));
-
-        updateArchive();
+    const int index=ui->comboBox_archiveSeason->currentIndex();
+    if(index<0 || index>=simulationSave->getSeasonsReference().size())return;
+    auto *season=&simulationSave->getSeasonsReference()[simulationSave->getSeasonsReference().size()-1-index];
+    const auto selected=ui->comboBox_archiveCalendar->currentData().toString();
+    {
+        const QSignalBlocker block(ui->comboBox_archiveCalendar);ui->comboBox_archiveCalendar->clear();
+        for(auto *calendar:season->getCalendarsReference())ui->comboBox_archiveCalendar->addItem(calendar->getName(),calendar->getIDStr());
+        int row=ui->comboBox_archiveCalendar->findData(selected);
+        if(row<0)row=season==simulationSave->getActualSeason()?season->getCalendarsReference().indexOf(season->getActualCalendar()):0;
+        ui->comboBox_archiveCalendar->setCurrentIndex(ui->comboBox_archiveCalendar->count()?qBound(0,row,ui->comboBox_archiveCalendar->count()-1):-1);
     }
+    updateArchive();
+}
+void SimulationSaveManagerWindow::on_comboBox_archiveSeason_currentIndexChanged(int)
+{
+    syncArchiveCalendars();
 }
 
 void SimulationSaveManagerWindow::on_comboBox_archiveCalendar_currentIndexChanged(int index)
@@ -1155,6 +1161,7 @@ void SimulationSaveManagerWindow::on_comboBox_archiveCalendar_currentIndexChange
 
 void SimulationSaveManagerWindow::updateArchive()
 {
+    if(!competitionsArchiveModel || !classificationsArchiveModel || ui->comboBox_archiveSeason->currentIndex()<0 || ui->comboBox_archiveSeason->currentIndex()>=simulationSave->getSeasonsReference().size())return;
     Season * season = &simulationSave->getSeasonsReference()[simulationSave->getSeasonsReference().count() - 1 - ui->comboBox_archiveSeason->currentIndex()];
     if(season->getCalendarsReference().count() > ui->comboBox_archiveCalendar->currentIndex() && ui->comboBox_archiveCalendar->currentIndex() > (-1)){
     SeasonCalendar * calendar = season->getCalendarsReference()[ui->comboBox_archiveCalendar->currentIndex()];
@@ -1163,6 +1170,7 @@ void SimulationSaveManagerWindow::updateArchive()
     ui->listView_competitionsArchive->reset();
     classificationsArchiveModel->setSeasonClassifications(&calendar->getClassificationsReference());
     ui->listView_classificationsArchive->reset();
+    if(archiveClassificationResults){if(!calendar->getClassificationsReference().contains(archiveClassificationResults->getClassification()))archiveClassificationResults->setClassification(nullptr);archiveClassificationResults->setHistoryCalendar(calendar);archiveClassificationResults->fillTable();}
     }
     else
     {
@@ -1172,102 +1180,23 @@ void SimulationSaveManagerWindow::updateArchive()
         ui->listView_competitionsArchive->reset();
         classificationsArchiveModel->setSeasonClassifications(&emptyArchiveClassifications);
         ui->listView_classificationsArchive->reset();
+        if(archiveClassificationResults){archiveClassificationResults->setClassification(nullptr);archiveClassificationResults->setHistoryCalendar(nullptr);archiveClassificationResults->fillTable();}
     }
 }
 
 void SimulationSaveManagerWindow::on_listView_competitionsArchive_doubleClicked(const QModelIndex &index)
 {
-    CompetitionInfo * competition = competitionsArchiveModel->getSeasonCompetitions()->at(index.row());
-    int compType = competition->getRulesPointer()->getCompetitionType();
-
-    QDialog *dialog = new QDialog(this);
-    dialog->setAttribute(Qt::WA_DeleteOnClose);
-    dialog->setWindowTitle(tr("Wyniki konkursu"));
-    QVBoxLayout *mainLayout = new QVBoxLayout(dialog);
-    QSplitter *resultsSplitter = new QSplitter(Qt::Horizontal, dialog);
-    resultsSplitter->setChildrenCollapsible(false);
-    mainLayout->addWidget(resultsSplitter, 1);
-
-    QTableView *resultsTableView = new QTableView(resultsSplitter);
-    ResultsTableModel *resultsModel = new ResultsTableModel(competition->getRulesPointer()->getCompetitionType(), &competition->getResultsReference(), nullptr, dialog);
-    resultsTableView->setModel(resultsModel);
-    ResponsiveWindowUtils::configureTableColumns(resultsTableView);
-    if(compType == CompetitionRules::Individual)
-        resultsSplitter->addWidget(resultsTableView);
-    else
-        resultsTableView->hide();
-
-    QTreeView *teamResultsTreeView = new QTreeView(resultsSplitter);
-    TeamResultsTreeModel *teamResultsModel = new TeamResultsTreeModel(nullptr, dialog);
-    if(compType == CompetitionRules::Team){
-        QVector<Team *> *teams = new QVector<Team *>(MyFunctions::convertToVectorOfPointers(&competition->getTeamsReference()));
-        connect(dialog, &QObject::destroyed, [teams](){ delete teams; });
-        teamResultsModel->setTeams(teams);
-        teamResultsModel->setResults(&competition->getResultsReference());
-        teamResultsModel->setupTreeItems();
-        teamResultsTreeView->setModel(teamResultsModel);
-        teamResultsTreeView->expandToDepth(0);
-        resultsSplitter->addWidget(teamResultsTreeView);
-    }
-    else
-        teamResultsTreeView->hide();
-
-    JumperCompetitionResultsWidget *jumperResultWidget = new JumperCompetitionResultsWidget(resultsSplitter);
-    jumperResultWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    jumperResultWidget->hide();
-    resultsSplitter->addWidget(jumperResultWidget);
-    resultsSplitter->setStretchFactor(0, 3);
-    resultsSplitter->setStretchFactor(1, 3);
-    resultsSplitter->setStretchFactor(2, 2);
-
-    QHBoxLayout *footerLayout = new QHBoxLayout();
-    footerLayout->addStretch();
-    QPushButton *button = new QPushButton(tr("Wyślij webhooka"), dialog);
-    button->setFont(QFont("Segoe UI", 12));
-    button->setStyleSheet("color: black");
-    footerLayout->addWidget(button);
-    mainLayout->addLayout(footerLayout);
-    connect(button, &QPushButton::clicked, dialog, [competition](){
-        competition->sendResultsWebhook(nullptr);
-    });
-
-    connect(resultsTableView, &QListView::doubleClicked, dialog, [jumperResultWidget, competition](const QModelIndex index){
-        if(!index.isValid() || index.row() < 0 || index.row() >= competition->getResultsReference().getResultsReference().count())
-            return;
-        jumperResultWidget->setJumperResult(competition->getResultsReference().getResultByIndex(index.row()));
-        jumperResultWidget->getJumperResult()->setCompetition(competition);
-        jumperResultWidget->fillWidget();
-        jumperResultWidget->show();
-    });
-    connect(teamResultsTreeView, &QTreeView::doubleClicked, dialog, [jumperResultWidget, competition, teamResultsModel](const QModelIndex index){
-        if(!index.isValid())
-            return;
-        TreeItem * item = static_cast<TreeItem *>(index.internalPointer());
-        if(item->getParentItem() == teamResultsModel->getRootItem())
-            return;
-        int teamIndex = item->getParentItem()->row();
-        int jumperIndex = item->row();
-        if(teamIndex < 0 || teamIndex >= competition->getResultsReference().getResultsReference().count())
-            return;
-        if(jumperIndex < 0 || jumperIndex >= competition->getResultsReference().getResultsReference()[teamIndex].getTeamJumpersResultsReference().count())
-            return;
-        jumperResultWidget->setJumperResult(&competition->getResultsReference().getResultsReference()[teamIndex].getTeamJumpersResultsReference()[jumperIndex]);
-        jumperResultWidget->getJumperResult()->setCompetition(competition);
-        for(auto & jmp : jumperResultWidget->getJumperResult()->getJumpsReference())
-            jmp.setCompetition(competition);
-        jumperResultWidget->fillWidget();
-        jumperResultWidget->show();
-    });
-
-    ResponsiveWindowUtils::fitToAvailableScreen(dialog, QSize(1200, 720));
-    if(dialog->width() < 1100)
-        resultsSplitter->setOrientation(Qt::Vertical);
-    dialog->show();
+    auto *competition=competitionsArchiveModel->competitionAt(index.row());if(!index.isValid() || !competition)return;
+    auto *dialog=new QDialog(this);dialog->setAttribute(Qt::WA_DeleteOnClose);dialog->setObjectName("competitionResultsArchive");dialog->setWindowTitle(tr("Wyniki konkursu"));
+    auto *layout=new QVBoxLayout(dialog);layout->addWidget(new ResultsHistoryWidget(competition,false,dialog));
+    auto *webhook=new QPushButton(tr("Wyślij webhooka"),dialog);webhook->setObjectName("archiveResultsWebhook");layout->addWidget(webhook);connect(webhook,&QPushButton::clicked,dialog,[competition]{competition->sendResultsWebhook(nullptr);});
+    ResponsiveWindowUtils::fitToAvailableScreen(dialog,QSize(1200,720));dialog->show();
 }
 
 
 void SimulationSaveManagerWindow::on_listView_classificationsArchive_doubleClicked(const QModelIndex &index)
 {
+    if(!index.isValid() || index.row()<0 || index.row()>=classificationsArchiveModel->rowCount())return;
     Classification * classification = classificationsArchiveModel->getSeasonClassifications()->at(index.row());
     archiveClassificationResults->setClassification(classification);
     archiveClassificationResults->fillTable();

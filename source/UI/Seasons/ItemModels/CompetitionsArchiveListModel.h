@@ -29,6 +29,7 @@ public:
 private:
     QVector<CompetitionInfo *> * seasonCompetitions;
 public:
+    CompetitionInfo *competitionAt(int row) const;
     QVector<CompetitionInfo *> *getSeasonCompetitions() const;
     void setSeasonCompetitions(QVector<CompetitionInfo *> *newSeasonCompetitions);
 };

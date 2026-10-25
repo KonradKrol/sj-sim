@@ -17,12 +17,12 @@ int ClassificationsArchiveListModel::rowCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
 
-    return seasonClassifications->count();
+    return seasonClassifications?seasonClassifications->count():0;
 }
 
 QVariant ClassificationsArchiveListModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!index.isValid() || !seasonClassifications || index.row()<0 || index.row()>=seasonClassifications->size())
         return QVariant();
 
 
@@ -64,5 +64,7 @@ QVector<Classification *> *ClassificationsArchiveListModel::getSeasonClassificat
 
 void ClassificationsArchiveListModel::setSeasonClassifications(QVector<Classification *> *newSeasonClassifications)
 {
+    beginResetModel();
     seasonClassifications = newSeasonClassifications;
+    endResetModel();
 }

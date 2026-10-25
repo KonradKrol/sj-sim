@@ -24,10 +24,9 @@ int CompetitionsArchiveListModel::rowCount(const QModelIndex &parent) const
     if(seasonCompetitions != nullptr){
     for(auto & competition : *seasonCompetitions)
     {
-        if(competition->getPlayed() == true)
+        if(competition && competition->getPlayed() == true)
             count++;
-        else
-            break;
+
     }
     }
     return count;
@@ -35,12 +34,12 @@ int CompetitionsArchiveListModel::rowCount(const QModelIndex &parent) const
 
 QVariant CompetitionsArchiveListModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!index.isValid() || index.row()<0 || index.row()>=rowCount())
         return QVariant();
 
     if(role == Qt::DisplayRole)
     {
-        CompetitionInfo * competition = seasonCompetitions->at(index.row());
+        CompetitionInfo * competition = competitionAt(index.row());
         if(competition->getPlayed() == true){
             QString string = QString::number(index.row() + 1) + ". " + competition->getHill()->getName() + " HS" + QString::number(competition->getHill()->getHSPoint()) + " (";
             switch(competition->getSerieType())
@@ -66,12 +65,12 @@ QVariant CompetitionsArchiveListModel::data(const QModelIndex &index, int role) 
     }
     else if(role == Qt::DecorationRole)
     {
-        CompetitionInfo * competition = seasonCompetitions->at(index.row());
+        CompetitionInfo * competition = competitionAt(index.row());
         return QIcon(CountryFlagsManager::getFlagPixmap(competition->getHill()->getCountryCode().toLower()));
     }
     else if(role == Qt::FontRole)
     {
-        CompetitionInfo * competition = seasonCompetitions->at(index.row());
+        CompetitionInfo * competition = competitionAt(index.row());
         QFont font("Ubuntu", 9);
         if(competition->getSerieType() == CompetitionInfo::Competition || competition->getSerieType() == CompetitionInfo::Qualifications)
             font.setBold(true);
@@ -85,7 +84,7 @@ QVariant CompetitionsArchiveListModel::data(const QModelIndex &index, int role) 
         return Qt::AlignLeft;
     else if(role == Qt::BackgroundRole)
     {
-        CompetitionInfo * competition = seasonCompetitions->at(index.row());
+        CompetitionInfo * competition = competitionAt(index.row());
         if(competition->getCancelled() == true)
             return QColor(qRgb(255, 238, 238));
         if(competition->getRulesPointer()->getCompetitionType() == CompetitionRules::Team)
@@ -131,5 +130,13 @@ QVector<CompetitionInfo *> *CompetitionsArchiveListModel::getSeasonCompetitions(
 
 void CompetitionsArchiveListModel::setSeasonCompetitions(QVector<CompetitionInfo *> *newSeasonCompetitions)
 {
+    beginResetModel();
     seasonCompetitions = newSeasonCompetitions;
+    endResetModel();
+}
+
+CompetitionInfo *CompetitionsArchiveListModel::competitionAt(int row) const {
+    if(!seasonCompetitions || row<0)return nullptr;
+    for(auto *event:*seasonCompetitions)if(event && event->getPlayed()){if(row--==0)return event;}
+    return nullptr;
 }

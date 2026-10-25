@@ -43,6 +43,7 @@ public:
     void showClassificationApperanceWindowAfterListClick(const QModelIndex & index, Classification *classification);
 
     void updateArchive();
+    void syncArchiveCalendars();
 
 signals:
     void actualCalendarChanged();
@@ -76,9 +77,9 @@ private:
 
     ClassificationResultsTableView * classificationResultsTableView=nullptr;
 
-    CompetitionsArchiveListModel * competitionsArchiveModel;
-    ClassificationsArchiveListModel * classificationsArchiveModel;
-    ClassificationResultsTableView * archiveClassificationResults;
+    CompetitionsArchiveListModel * competitionsArchiveModel=nullptr;
+    ClassificationsArchiveListModel * classificationsArchiveModel=nullptr;
+    ClassificationResultsTableView * archiveClassificationResults=nullptr;
     QVector<CompetitionInfo *> emptyArchiveCompetitions;
     QVector<Classification *> emptyArchiveClassifications;
 

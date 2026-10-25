@@ -11,6 +11,8 @@ namespace Ui {
 class ClassificationResultsTableView;
 }
 
+class QComboBox;
+class QStandardItemModel;
 class ClassificationResultsTableView : public QWidget
 {
     Q_OBJECT
@@ -20,6 +22,8 @@ public:
     ~ClassificationResultsTableView();
 
     void fillTable();
+    void setHistoryCalendar(SeasonCalendar *calendar);
+    bool historical() const;
 
 private:
     Ui::ClassificationResultsTableView *ui;
@@ -28,6 +32,12 @@ private:
     Classification * classification;
     SimulationSave * save;
     bool allowShowDetails;
+    SeasonCalendar *historyCalendar=nullptr;
+    Classification *historyClassification=nullptr;
+    QComboBox *historyChoice;
+    QStandardItemModel *historyModel;
+    QVector<CompetitionInfo *> historyEvents;
+    void showHistory();
 public:
     Classification *getClassification() const;
     void setClassification(Classification *newClassification);
