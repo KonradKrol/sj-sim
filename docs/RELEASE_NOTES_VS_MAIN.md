@@ -45,6 +45,18 @@ Szczegóły: [kolejność symulacji i mniejsze pliki](SIMULATION_ORDER_AND_SAVE_
 - Podgląd weekendu odświeża się automatycznie, bez osobnego przycisku. Po dodaniu od razu przygotowuje kolejny tydzień; błędna data blokuje utworzenie ze starego planu.
 - Pełny opis wspólnych kwalifikacji wskazuje piątek lub sobotę zgodnie z ustawieniami i zawija się na wąskich ekranach.
 
+## Uzupełnienie — playground symulacji (25.10.2026)
+
+- Nowy tryb w Ustawieniach: wielowątkowe, powtarzalne batche konkursów, wykorzystujące rzeczywisty silnik oraz managery indywidualne, KO i drużynowe.
+- Syntetyczna stawka lub kopie paczek zawodników, skoczni i zasad. Warianty i skanowanie parametrów zawodników, warunków, skoczni, rekompensat i silnika.
+- Eksperymentalne współczynniki wybicia, lotu i fizycznego wpływu wiatru działają tylko w laboratorium. Neutralne współczynniki zachowują dotychczasowe obliczenia; zwykła gra pozostaje poza zakresem eksperymentu.
+- Porównania wariantów dla każdego zawodnika, histogramy miejsc, odległości i not, zwycięstwa, podium, upadki, DSQ, korelacje oraz przybliżone przedziały niepewności. Odtworzenie dowolnego konkursu pokazuje wszystkie skoki i diagnostykę silnika.
+- Oddzielne strumienie losowania, stabilne rozstrzyganie remisów w laboratorium, ograniczona pamięć, postęp i anulowanie z zachowaniem kompletnych porównań. Historia raportów i eksport JSON/CSV.
+- CLI bez okna, gotowe eksperymenty i skrypt analizy bez dodatkowych bibliotek Pythona — również do samodzielnego użycia przez agenta.
+- Testy normalnej aplikacji, izolacji, powtarzalności, wielu wątków, źródłowych danych, KO/drużyn, interfejsu, eksportu, odtworzeń i sygnałowego anulowania.
+
+Instrukcja: [Playground symulacji](SIMULATION_PLAYGROUND.md). Pomiary i scenariusze: [walidacja](PLAYGROUND_VALIDATION_2026-10-25.md).
+
 ## Krótki materiał do publicznych release notes
 
 - Nowy domyślny interfejs całej aplikacji w Qt Quick, z własnym sportowym stylem, nową typografią, jasnym i ciemnym motywem.
@@ -57,6 +69,7 @@ Szczegóły: [kolejność symulacji i mniejsze pliki](SIMULATION_ORDER_AND_SAVE_
 - Poprawki awarii, statystyk, eksportu wyników, presetów, kopiowania wydarzeń i losowania.
 - Mniejszy interfejs na życzenie, przebudowane wyniki pojedynczych skoków i nowa strona „O autorze”.
 - Przyspieszona automatyczna symulacja konkursów i pojedynczych skoków, z zachowanym anulowaniem.
+- Playground symulacji: wielowątkowe eksperymenty, porównania parametrów i rozkładów każdego skoczka, odtwarzanie konkursów oraz eksport i CLI.
 - Zachowany alternatywny interfejs Qt Widgets.
 
 To skrót do redakcji, nie deklaracja usunięcia wszystkich istniejących błędów.

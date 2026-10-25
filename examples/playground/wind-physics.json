@@ -1,0 +1,94 @@
+{
+  "athletes": 50,
+  "competitions": 5000,
+  "focus": 24,
+  "hill": {
+    "hs": 134,
+    "k": 120,
+    "name": "HS134"
+  },
+  "name": "Fizyczny wpływ wiatru",
+  "parameters": {
+    "athlete.equality": 0,
+    "athlete.flight": 70,
+    "athlete.flightStyle": 1,
+    "athlete.form": 70,
+    "athlete.landing": 10,
+    "athlete.takeoff": 70,
+    "athlete.windBias": 0,
+    "engine.autoHillEffects": 0,
+    "engine.dsq": 0,
+    "engine.flightForm": 0.1,
+    "engine.hillEffects": 1,
+    "engine.maxSkills": 100,
+    "engine.randomness": 1,
+    "engine.takeoffForm": 0.1,
+    "experimental.distanceBias": 0,
+    "experimental.flightBias": 0,
+    "experimental.flightScale": 1,
+    "experimental.takeoffBias": 0,
+    "experimental.takeoffScale": 1,
+    "experimental.windScale": 1,
+    "field.equality": 0,
+    "field.flightStyle": 1,
+    "field.form": 70,
+    "field.landing": 10,
+    "field.skill": 70,
+    "field.spread": 30,
+    "gate": 0,
+    "hill.balance": 1,
+    "hill.distance": 1,
+    "hill.headwindPoints": 8,
+    "hill.tailwindPoints": 12,
+    "importance": 5,
+    "rules.95hs": 1,
+    "rules.dsq": 1,
+    "rules.gateCompensation": 1,
+    "rules.judges": 1,
+    "rules.windAverage": 0,
+    "rules.windCompensation": 1,
+    "rules.windDistance": 1,
+    "snow": 0,
+    "wind.deviation": 0.5,
+    "wind.mean": 0,
+    "wind.segmentDeviation": 0.2
+  },
+  "rounds": [
+    50,
+    30
+  ],
+  "sampleLimit": 64,
+  "schema": 1,
+  "seed": "20261025",
+  "threads": 8,
+  "variants": [
+    {
+      "name": "Bazowy 1.0",
+      "changes": {}
+    },
+    {
+      "name": "Mnożnik wiatru 0.5",
+      "changes": {
+        "experimental.windScale": 0.5
+      }
+    },
+    {
+      "name": "Mnożnik wiatru 0.75",
+      "changes": {
+        "experimental.windScale": 0.75
+      }
+    },
+    {
+      "name": "Mnożnik wiatru 1.25",
+      "changes": {
+        "experimental.windScale": 1.25
+      }
+    },
+    {
+      "name": "Mnożnik wiatru 1.5",
+      "changes": {
+        "experimental.windScale": 1.5
+      }
+    }
+  ]
+}
