@@ -16,7 +16,6 @@ Statyczny układ pustego stanu został zastąpiony zwykłym `Column`. Etykiety m
 - Liczby wejść dotyczą wskazanego scenariusza, nie są pomiarem FPS ani procentowym przyspieszeniem całej aplikacji.
 - Próba przechwycenia `.qtd` lokalnym profilerem Qt 5 nie dała poprawnego śladu (usługa profilera była wyłączona); diagnoza opiera się na bezpośrednich logach diagnostycznych Qt i powtarzalnych testach. Nie wyciągano wniosków o czasie klatek z uszkodzonego śladu.
 
-## Kolejne zachowane zadania
+## Dalsze zadania
 
-1. Dyskretny wybór skoku z wcześniejszych serii w karcie, Shift+klik w kolumnę serii oraz rozwijane wyjaśnienie wag.
-2. Na końcu: brak komunikatu straty/przewagi dla pierwszego zawodnika serii i przy remisie 0,0 pkt.
+Wybór wcześniejszych skoków, Shift+klik, obliczenia wag oraz ukrywanie straty przy pierwszym zawodniku i remisie zostały wykonane. Zobacz [opis zmian](JUMP_HISTORY_2026-10-25.md).

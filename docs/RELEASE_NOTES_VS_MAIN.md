@@ -6,7 +6,7 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
-- Stan porównania kodu i dokumentacji: **c9cd4af**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
+- Stan porównania kodu i dokumentacji: **468e112**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
 - Data zestawienia: **24 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **2.0.0-beta**, ustawione na wyraźne polecenie użytkownika po zakończeniu audytu silnika.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
@@ -706,22 +706,26 @@ Opis i scenariusze: [KO_SETUP_AND_PREJUMP_2026-10-24.md](KO_SETUP_AND_PREJUMP_20
 
 Wspólny pusty stan używa teraz prostego `Column` zamiast wycentrowanego `ColumnLayout`, którego zmiana wysokości ponownie uruchamiała przeliczanie tej samej geometrii. Logowanie nie jest wyciszane. Pełny zestaw 399 renderów: **162 → 0** ostrzeżeń; ten sam scenariusz przygotowania sezonu: **2675 → 2324** wejścia do przeliczania layoutów. Dodano regresję blokującą powrót tego ostrzeżenia. Szczegóły i granice pomiaru: [LAYOUT_RECURSION_FIX_2026-10-24.md](LAYOUT_RECURSION_FIX_2026-10-24.md).
 
+## Uzupełnienie: historia skoków i czytelność drużynówek
+
+Karta skoku otrzymała wybór wcześniejszych serii i rozwijane obliczenia wag. Shift+klik w kolumnę serii otwiera jej skok, także w drużynówkach; skrót jest opisany w stopce. Drużynowa tabela Quick pokazuje punkty serii i sumę bez zbiorczej kolumny odległości. Usunięto narastanie stron szczegółów przy ponownym podglądzie. Przewaga/strata nie pojawia się przed pierwszym skokiem serii ani przy remisie. Szczegóły: [raport](JUMP_HISTORY_2026-10-25.md).
+
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
-- Snapshot kodu i dokumentacji: **c9cd4aff15426f2a688eeebc2d082addf4766a39**.
-- Commitów od bazy: **164**.
-- Plików zmienionych w tym zakresie: **477**.
+- Snapshot kodu i dokumentacji: **468e112a2995de461a78abd314e07ddf4b841bc6**.
+- Commitów od bazy: **166**.
+- Plików zmienionych w tym zakresie: **480**.
 - Statystyki obejmują także fonty, skills i dokumentację; nie oznaczają rozmiaru samej logiki gry.
 - Dalsza aktualizacja tego zestawienia jest dodatkiem dokumentacyjnym do wskazanego snapshotu.
 
 | Obszar | Plików |
 | --- | ---: |
-| Dokumentacja etapów i migracji | 36 |
-| Domyślny interfejs Qt Quick i jego zasoby | 101 |
+| Dokumentacja etapów i migracji | 37 |
+| Domyślny interfejs Qt Quick i jego zasoby | 102 |
 | Instrukcje i zasoby narzędzi deweloperskich | 167 |
 | Konfiguracja projektu i pozostałe pliki | 6 |
-| Kontrolery, modele i logika C++ | 128 |
+| Kontrolery, modele i logika C++ | 129 |
 | Skrypty budowania, uruchamiania i testowania | 6 |
 | Testy | 15 |
 | Tłumaczenia | 1 |
@@ -730,9 +734,9 @@ Wspólny pusty stan używa teraz prostego `Column` zamiast wycentrowanego `Colum
 Porównanie można odtworzyć poleceniami:
 
 ~~~sh
-git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c c9cd4aff15426f2a688eeebc2d082addf4766a39
-git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c c9cd4aff15426f2a688eeebc2d082addf4766a39
-git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..c9cd4aff15426f2a688eeebc2d082addf4766a39
+git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 468e112a2995de461a78abd314e07ddf4b841bc6
+git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 468e112a2995de461a78abd314e07ddf4b841bc6
+git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..468e112a2995de461a78abd314e07ddf4b841bc6
 ~~~
 
 Zestawienie można odświeżyć przez `python3 scripts/update-release-inventory.py --base main --snapshot HEAD`. Opisy zachowania i wyniki testów należy uzupełniać na podstawie faktycznych zmian oraz weryfikacji.
@@ -907,6 +911,8 @@ Historyczne opisy należy czytać z uwzględnieniem opisanych powyżej rozwiąza
 | `8ebe631` | Remove move-to-position controls from team lineup ordering — Keep drag-and-drop slot swaps, explain the gesture discreetly and prevent grip clicks opening the removed form. Preserve ordinary start-list movement controls and verify the team-specific behavior. |
 | `980365a` | Document KO setup redesign and simplified pre-jump comparison |
 | `c9cd4af` | Eliminate recursive layout churn in shared empty states — Replace a centered, self-resizing ColumnLayout with a plain Column and explicit child widths. This breaks the geometry/rearrange reentry without hiding warnings or clamping content. Add a smoke-test message observer that preserves logging and fails on recurring layout warnings. Full suite: 399 renders, recursive warnings 162 to zero; identical onboarding debug scenario: 2675 to 2324 layout entries, warnings 8 to zero. |
+| `b80a8a6` | Record layout diagnosis, validation and remaining jump-card work |
+| `468e112` | Add historical jump previews and weighted score details — Enable series selection and Shift-click previews in individual and team results. Show team per-series points without the combined distance column in Quick. Add footer hint, hide first-jumper/tied gaps and release old preview pages. Targeted three-round individual/team regressions and Widgets build pass. |
 
 ## Załącznik C. Pełny manifest zmienionych plików
 
@@ -934,12 +940,13 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/FIVE_DATA_FIXES_2026-10-22.md](../docs/FIVE_DATA_FIXES_2026-10-22.md) | 57 | 0 |
 | A | [docs/KO_SETUP_AND_PREJUMP_2026-10-24.md](../docs/KO_SETUP_AND_PREJUMP_2026-10-24.md) | 36 | 0 |
 | A | [docs/LATEST_JUMP_FEEDBACK_2026-10-24.md](../docs/LATEST_JUMP_FEEDBACK_2026-10-24.md) | 36 | 0 |
+| A | [docs/LAYOUT_RECURSION_FIX_2026-10-24.md](../docs/LAYOUT_RECURSION_FIX_2026-10-24.md) | 22 | 0 |
 | A | [docs/NAVIGATION_PERFORMANCE.md](../docs/NAVIGATION_PERFORMANCE.md) | 30 | 0 |
-| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1428 | 0 |
+| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1435 | 0 |
 | A | [docs/RESUME_2026-10-22.md](../docs/RESUME_2026-10-22.md) | 44 | 0 |
 | A | [docs/RESUME_2026-10-24_COMPETITION_UX.md](../docs/RESUME_2026-10-24_COMPETITION_UX.md) | 52 | 0 |
 | A | [docs/RESUME_ENGINE_AUDIT_2026-10-24.md](../docs/RESUME_ENGINE_AUDIT_2026-10-24.md) | 33 | 0 |
-| A | [docs/RESUME_UI_SCALE.md](../docs/RESUME_UI_SCALE.md) | 17 | 0 |
+| A | [docs/RESUME_UI_SCALE.md](../docs/RESUME_UI_SCALE.md) | 25 | 0 |
 | A | [docs/RESUME_WINDOWS_UI_2026-10-23.md](../docs/RESUME_WINDOWS_UI_2026-10-23.md) | 44 | 0 |
 | A | [docs/ROUND_POINT_WEIGHTS.md](../docs/ROUND_POINT_WEIGHTS.md) | 23 | 0 |
 | A | [docs/SEASON_WORKSPACE_2026-10-22.md](../docs/SEASON_WORKSPACE_2026-10-22.md) | 60 | 0 |
@@ -959,7 +966,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | --- | --- | ---: | ---: |
 | A | [source/UI/Quick/ActionBar.qml](../source/UI/Quick/ActionBar.qml) | 29 | 0 |
 | A | [source/UI/Quick/ActionMenu.qml](../source/UI/Quick/ActionMenu.qml) | 31 | 0 |
-| A | [source/UI/Quick/AppFooter.qml](../source/UI/Quick/AppFooter.qml) | 15 | 0 |
+| A | [source/UI/Quick/AppFooter.qml](../source/UI/Quick/AppFooter.qml) | 14 | 0 |
 | A | [source/UI/Quick/AppHeader.qml](../source/UI/Quick/AppHeader.qml) | 26 | 0 |
 | A | [source/UI/Quick/AppearanceMenu.qml](../source/UI/Quick/AppearanceMenu.qml) | 49 | 0 |
 | A | [source/UI/Quick/AppearancePanel.qml](../source/UI/Quick/AppearancePanel.qml) | 12 | 0 |
@@ -987,6 +994,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/HomeTools.qml](../source/UI/Quick/HomeTools.qml) | 25 | 0 |
 | A | [source/UI/Quick/JudgeMarks.qml](../source/UI/Quick/JudgeMarks.qml) | 27 | 0 |
 | A | [source/UI/Quick/JumpMetric.qml](../source/UI/Quick/JumpMetric.qml) | 49 | 0 |
+| A | [source/UI/Quick/JumpWeights.qml](../source/UI/Quick/JumpWeights.qml) | 36 | 0 |
 | A | [source/UI/Quick/KoGroupsWorkspace.qml](../source/UI/Quick/KoGroupsWorkspace.qml) | 61 | 0 |
 | A | [source/UI/Quick/ModalScreen.qml](../source/UI/Quick/ModalScreen.qml) | 57 | 0 |
 | A | [source/UI/Quick/NewSimulationPage.qml](../source/UI/Quick/NewSimulationPage.qml) | 58 | 0 |
@@ -995,24 +1003,24 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/NumberField.qml](../source/UI/Quick/NumberField.qml) | 56 | 0 |
 | A | [source/UI/Quick/PlotPanel.qml](../source/UI/Quick/PlotPanel.qml) | 35 | 0 |
 | A | [source/UI/Quick/ProjectedControl.qml](../source/UI/Quick/ProjectedControl.qml) | 10 | 0 |
-| A | [source/UI/Quick/QuickBridge.cpp](../source/UI/Quick/QuickBridge.cpp) | 1127 | 0 |
+| A | [source/UI/Quick/QuickBridge.cpp](../source/UI/Quick/QuickBridge.cpp) | 1144 | 0 |
 | A | [source/UI/Quick/QuickCalendar.cpp](../source/UI/Quick/QuickCalendar.cpp) | 529 | 0 |
 | A | [source/UI/Quick/QuickCalendar.h](../source/UI/Quick/QuickCalendar.h) | 176 | 0 |
 | A | [source/UI/Quick/QuickCalendarDates.cpp](../source/UI/Quick/QuickCalendarDates.cpp) | 180 | 0 |
 | A | [source/UI/Quick/QuickPlot.cpp](../source/UI/Quick/QuickPlot.cpp) | 116 | 0 |
 | A | [source/UI/Quick/QuickPlot.h](../source/UI/Quick/QuickPlot.h) | 38 | 0 |
-| A | [source/UI/Quick/QuickRaceStats.h](../source/UI/Quick/QuickRaceStats.h) | 101 | 0 |
+| A | [source/UI/Quick/QuickRaceStats.h](../source/UI/Quick/QuickRaceStats.h) | 104 | 0 |
 | A | [source/UI/Quick/QuickRoster.cpp](../source/UI/Quick/QuickRoster.cpp) | 130 | 0 |
 | A | [source/UI/Quick/QuickRoster.h](../source/UI/Quick/QuickRoster.h) | 90 | 0 |
 | A | [source/UI/Quick/QuickSurface.cpp](../source/UI/Quick/QuickSurface.cpp) | 17 | 0 |
 | A | [source/UI/Quick/QuickSurface.h](../source/UI/Quick/QuickSurface.h) | 20 | 0 |
-| A | [source/UI/Quick/QuickTableModel.cpp](../source/UI/Quick/QuickTableModel.cpp) | 265 | 0 |
+| A | [source/UI/Quick/QuickTableModel.cpp](../source/UI/Quick/QuickTableModel.cpp) | 269 | 0 |
 | A | [source/UI/Quick/QuickUi.cpp](../source/UI/Quick/QuickUi.cpp) | 297 | 0 |
-| A | [source/UI/Quick/QuickUi.h](../source/UI/Quick/QuickUi.h) | 243 | 0 |
+| A | [source/UI/Quick/QuickUi.h](../source/UI/Quick/QuickUi.h) | 244 | 0 |
 | A | [source/UI/Quick/QuickView.h](../source/UI/Quick/QuickView.h) | 7 | 0 |
 | A | [source/UI/Quick/RaceAthlete.qml](../source/UI/Quick/RaceAthlete.qml) | 55 | 0 |
 | A | [source/UI/Quick/RaceControls.qml](../source/UI/Quick/RaceControls.qml) | 39 | 0 |
-| A | [source/UI/Quick/RaceLastJump.qml](../source/UI/Quick/RaceLastJump.qml) | 89 | 0 |
+| A | [source/UI/Quick/RaceLastJump.qml](../source/UI/Quick/RaceLastJump.qml) | 98 | 0 |
 | A | [source/UI/Quick/RaceOptions.qml](../source/UI/Quick/RaceOptions.qml) | 63 | 0 |
 | A | [source/UI/Quick/RaceScreen.qml](../source/UI/Quick/RaceScreen.qml) | 113 | 0 |
 | A | [source/UI/Quick/RaceSimulation.qml](../source/UI/Quick/RaceSimulation.qml) | 35 | 0 |
@@ -1057,7 +1065,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/icons/linkedin-dark.svg](../source/UI/Quick/icons/linkedin-dark.svg) | 1 | 0 |
 | A | [source/UI/Quick/icons/linkedin-light.svg](../source/UI/Quick/icons/linkedin-light.svg) | 1 | 0 |
 | A | [source/UI/Quick/qmldir](../source/UI/Quick/qmldir) | 1 | 0 |
-| A | [source/UI/Quick/quick-ui.qrc](../source/UI/Quick/quick-ui.qrc) | 88 | 0 |
+| A | [source/UI/Quick/quick-ui.qrc](../source/UI/Quick/quick-ui.qrc) | 89 | 0 |
 
 ### Instrukcje i zasoby narzędzi deweloperskich
 
@@ -1252,12 +1260,13 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/AuthorWindow.h](../source/UI/AuthorWindow.h) | 24 | 0 |
 | M | [source/UI/Competition/CompetitionConfigWindow.cpp](../source/UI/Competition/CompetitionConfigWindow.cpp) | 55 | 104 |
 | M | [source/UI/Competition/CompetitionConfigWindow.h](../source/UI/Competition/CompetitionConfigWindow.h) | 5 | 2 |
-| M | [source/UI/Competition/CompetitionManagerWindow.cpp](../source/UI/Competition/CompetitionManagerWindow.cpp) | 188 | 71 |
-| M | [source/UI/Competition/CompetitionManagerWindow.h](../source/UI/Competition/CompetitionManagerWindow.h) | 6 | 0 |
-| M | [source/UI/Competition/JumperCompetitionResultsWidget.cpp](../source/UI/Competition/JumperCompetitionResultsWidget.cpp) | 20 | 0 |
+| M | [source/UI/Competition/CompetitionManagerWindow.cpp](../source/UI/Competition/CompetitionManagerWindow.cpp) | 210 | 90 |
+| M | [source/UI/Competition/CompetitionManagerWindow.h](../source/UI/Competition/CompetitionManagerWindow.h) | 7 | 0 |
+| M | [source/UI/Competition/JumperCompetitionResultsWidget.cpp](../source/UI/Competition/JumperCompetitionResultsWidget.cpp) | 29 | 7 |
+| M | [source/UI/Competition/JumperCompetitionResultsWidget.h](../source/UI/Competition/JumperCompetitionResultsWidget.h) | 3 | 0 |
 | M | [source/UI/Competition/Results/KOGroupResultsTableModel.cpp](../source/UI/Competition/Results/KOGroupResultsTableModel.cpp) | 14 | 11 |
 | M | [source/UI/Competition/Results/ResultsTableModel.cpp](../source/UI/Competition/Results/ResultsTableModel.cpp) | 29 | 48 |
-| M | [source/UI/Competition/Results/TeamResultsTreeModel.cpp](../source/UI/Competition/Results/TeamResultsTreeModel.cpp) | 44 | 47 |
+| M | [source/UI/Competition/Results/TeamResultsTreeModel.cpp](../source/UI/Competition/Results/TeamResultsTreeModel.cpp) | 53 | 47 |
 | M | [source/UI/Competition/StartList/StartListModel.cpp](../source/UI/Competition/StartList/StartListModel.cpp) | 31 | 26 |
 | M | [source/UI/Competition/StartList/StartListModel.h](../source/UI/Competition/StartList/StartListModel.h) | 5 | 2 |
 | M | [source/UI/DatabaseEditor/DatabaseEditorWindow.cpp](../source/UI/DatabaseEditor/DatabaseEditorWindow.cpp) | 200 | 3 |
@@ -1399,10 +1408,10 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [tests/competition-ties-gate-regressions.h](../tests/competition-ties-gate-regressions.h) | 126 | 0 |
 | A | [tests/engine-audit-regressions.h](../tests/engine-audit-regressions.h) | 70 | 0 |
 | A | [tests/navigation-performance.h](../tests/navigation-performance.h) | 26 | 0 |
-| A | [tests/quick-ui-smoke.cpp](../tests/quick-ui-smoke.cpp) | 2434 | 0 |
+| A | [tests/quick-ui-smoke.cpp](../tests/quick-ui-smoke.cpp) | 2463 | 0 |
 | A | [tests/roster-drag-regressions.h](../tests/roster-drag-regressions.h) | 23 | 0 |
 | A | [tests/roster-translation-regressions.h](../tests/roster-translation-regressions.h) | 13 | 0 |
-| A | [tests/simulation-onboarding-regressions.h](../tests/simulation-onboarding-regressions.h) | 91 | 0 |
+| A | [tests/simulation-onboarding-regressions.h](../tests/simulation-onboarding-regressions.h) | 96 | 0 |
 | A | [tests/ui-duplication-regressions.h](../tests/ui-duplication-regressions.h) | 79 | 0 |
 | A | [tests/ux-roster-input-regressions.h](../tests/ux-roster-input-regressions.h) | 26 | 0 |
 
