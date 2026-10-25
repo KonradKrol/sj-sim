@@ -47,7 +47,7 @@ int KORoundManager::advancementStatus(Jumper *jumper) const
     const int groupStatus=statuses.value(jumper,Waiting);
     if(groupStatus==Winner)return StartListCompetitorStatus::SureAdvanced;
     if(groupStatus==Waiting)return StartListCompetitorStatus::Waiting;
-    if(luckyLosersCount<=0)return StartListCompetitorStatus::SureDroppedOut;
+    if(getLuckyLosersCount()<=0)return StartListCompetitorStatus::SureDroppedOut;
     int bestHigher=0,worstHigher=0;
     for(const auto &group:*groups) {
         int potentialHigher=0;
@@ -61,8 +61,8 @@ int KORoundManager::advancementStatus(Jumper *jumper) const
         }
         worstHigher+=qMax(0,potentialHigher-qMax(0,roundInfo->getAdvancingFromKOGroup()));
     }
-    if(bestHigher>=luckyLosersCount)return StartListCompetitorStatus::SureDroppedOut;
-    if(worstHigher<luckyLosersCount)return StartListCompetitorStatus::SureAdvanced;
+    if(bestHigher>=getLuckyLosersCount())return StartListCompetitorStatus::SureDroppedOut;
+    if(worstHigher<getLuckyLosersCount())return StartListCompetitorStatus::SureAdvanced;
     return StartListCompetitorStatus::Waiting;
 }
 
@@ -87,7 +87,7 @@ bool KORoundManager::wouldSurelyAdvance(Jumper *jumper,qint64 points) const
     }
     if(!found)return false;
     if(groupStates.value(jumper)==StartListCompetitorStatus::SureAdvanced)return true;
-    if(luckyLosersCount<=0)return false;
+    if(getLuckyLosersCount()<=0)return false;
     // Every unresolved group can still contribute losers stronger than this score.
     int worstHigher=0;
     for(const auto &group:*groups){
@@ -95,7 +95,7 @@ bool KORoundManager::wouldSurelyAdvance(Jumper *jumper,qint64 points) const
         for(auto *member:group.getJumpers())if(member && member!=jumper){const auto entry=entries.value(member);if(!entry.excluded && (entry.pending || entry.points>points))++higher;}
         worstHigher+=qMax(0,higher-quota);
     }
-    return worstHigher<luckyLosersCount;
+    return worstHigher<getLuckyLosersCount();
 }
 
 double KORoundManager::guaranteedAdvancePoints(Jumper *jumper) const
@@ -112,17 +112,18 @@ double KORoundManager::guaranteedAdvancePoints(Jumper *jumper) const
 
 void KORoundManager::updateLuckyLosers()
 {
+    luckyLosers.clear();
+    if(getLuckyLosersCount()<=0)return;
     QVector<Jumper *> losers;
     for(auto & key : statuses.keys())
         if(statuses.value(key) == KORoundManager::Loser && !koEntry(key,indManager,results).excluded)
             losers.push_back(key);
     results->sortJumpersByResults(losers);
 
-    luckyLosers.clear();
     QVector<int> losersPositions = results->getJumpersPositions(&losers);
     for(int i=0; i<losers.count(); i++)
     {
-        if(losersPositions[i] <= luckyLosersCount)
+        if(losersPositions[i] <= getLuckyLosersCount())
             luckyLosers.push_back(losers[i]);
         else
             break; //Przerywamy bo skoro tu nie spełniało wymogów to nie ma szans że później będzie jako że loserzy są posortowani
@@ -172,12 +173,14 @@ void KORoundManager::setActualGroup(KOGroup *newActualGroup)
 
 int KORoundManager::getLuckyLosersCount() const
 {
-    return luckyLosersCount;
+    if(!roundInfo || !roundInfo->getKO() || !indManager || indManager->getActualRound()>=indManager->effectiveRoundsCount())return 0;
+    return qMax(0,luckyLosersCount);
 }
 
 void KORoundManager::setLuckyLosersCount(int newLuckyLosersCount)
 {
-    luckyLosersCount = newLuckyLosersCount;
+    luckyLosersCount = qMax(0,newLuckyLosersCount);
+    if(getLuckyLosersCount()==0)luckyLosers.clear();
 }
 
 QVector<KOGroup> *KORoundManager::getGroups() const
@@ -227,7 +230,7 @@ void KORoundManager::setJumpersSortedByResults(const QVector<Jumper *> &newJumpe
 
 QVector<Jumper *> KORoundManager::getLuckyLosers() const
 {
-    return luckyLosers;
+    return getLuckyLosersCount()>0?luckyLosers:QVector<Jumper *>();
 }
 
 QVector<Jumper *> &KORoundManager::getLuckyLoserReference()
