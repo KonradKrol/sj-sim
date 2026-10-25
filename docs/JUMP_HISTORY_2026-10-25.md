@@ -11,3 +11,5 @@
 ## Weryfikacja
 
 Automatyczne scenariusze trzech serii obejmują konkurs indywidualny i drużynowy, rzeczywiste Shift+kliknięcia, przełączanie serii, obliczenia wag, stopkę, brak kolumny odległości oraz ograniczoną liczbę stron szczegółów. Osobne regresje obejmują pierwszy skok, remis i reset punktów. Zachowana jest kompilacja wersji Widgets.
+
+Weryfikacja końcowa: `scripts/test-quick-ui.sh --jump-history-only` — PASS dla scenariuszy indywidualnego i drużynowego; `scripts/test-quick-ui.sh` — PASS, 399 responsywnych renderów, bez ostrzeżeń rekurencji layoutów i pętli bindingów. `make -C build-widgets-compat -j3` — zakończone kodem 0.
