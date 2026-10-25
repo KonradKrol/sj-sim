@@ -6,7 +6,7 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
-- Stan porównania kodu i dokumentacji: **1244494**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
+- Stan porównania kodu i dokumentacji: **c11be0b**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
 - Data zestawienia: **24 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **2.0.0-beta**, ustawione na wyraźne polecenie użytkownika po zakończeniu audytu silnika.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
@@ -714,19 +714,23 @@ Karta skoku otrzymała wybór wcześniejszych serii i rozwijane obliczenia wag. 
 
 Usunięto nadpisywanie dedykowanego węzła grup KO podczas ogólnego odświeżania Widgets co 120 ms. Widok nie resetuje już bezczynnie modeli grup i dropdownów. Test wymaga, aby otwarta lista sposobów doboru pozostała otwarta podczas kolejnych odświeżeń, a niezmieniony węzeł nie emitował aktualizacji. Szczegóły: [raport KO](KO_IDLE_REFRESH_2026-10-25.md).
 
+## Uzupełnienie: wydajność i edycja grup KO
+
+Flagi zawodników w przygotowaniu KO są ładowane z lokalnych SVG zamiast wielokrotnego przetwarzania na PNG/base64 podczas odświeżania. Pomiar 20 odświeżeń dla 145 zawodników spadł z 3940 do około 164–172 ms. Wiersze zawodników używają jednego współdzielonego, wyszukiwalnego pickera; wybór obsługuje klawiaturę. Uchwyty umożliwiają przeciąganie i zamianę miejsc między grupami, z podglądem osoby, podświetleniem celu, przewijaniem przy krawędzi i anulowaniem Escape. Regresje obejmują 31/145 zawodników, prawdziwe kliknięcia, Enter, drag and drop i przewijanie podczas gestu. [Opis i ograniczenia pomiaru](KO_EDITOR_PERFORMANCE_2026-10-25.md).
+
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
-- Snapshot kodu i dokumentacji: **12444941a90ad50c6c0feee3d5c52a95f1b0d36c**.
-- Commitów od bazy: **168**.
-- Plików zmienionych w tym zakresie: **482**.
+- Snapshot kodu i dokumentacji: **c11be0b8b89a01a13df18ad193fe33deb46e2890**.
+- Commitów od bazy: **172**.
+- Plików zmienionych w tym zakresie: **485**.
 - Statystyki obejmują także fonty, skills i dokumentację; nie oznaczają rozmiaru samej logiki gry.
 - Dalsza aktualizacja tego zestawienia jest dodatkiem dokumentacyjnym do wskazanego snapshotu.
 
 | Obszar | Plików |
 | --- | ---: |
 | Dokumentacja etapów i migracji | 39 |
-| Domyślny interfejs Qt Quick i jego zasoby | 102 |
+| Domyślny interfejs Qt Quick i jego zasoby | 105 |
 | Instrukcje i zasoby narzędzi deweloperskich | 167 |
 | Konfiguracja projektu i pozostałe pliki | 6 |
 | Kontrolery, modele i logika C++ | 129 |
@@ -738,9 +742,9 @@ Usunięto nadpisywanie dedykowanego węzła grup KO podczas ogólnego odświeża
 Porównanie można odtworzyć poleceniami:
 
 ~~~sh
-git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 12444941a90ad50c6c0feee3d5c52a95f1b0d36c
-git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 12444941a90ad50c6c0feee3d5c52a95f1b0d36c
-git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..12444941a90ad50c6c0feee3d5c52a95f1b0d36c
+git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c c11be0b8b89a01a13df18ad193fe33deb46e2890
+git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c c11be0b8b89a01a13df18ad193fe33deb46e2890
+git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..c11be0b8b89a01a13df18ad193fe33deb46e2890
 ~~~
 
 Zestawienie można odświeżyć przez `python3 scripts/update-release-inventory.py --base main --snapshot HEAD`. Opisy zachowania i wyniki testów należy uzupełniać na podstawie faktycznych zmian oraz weryfikacji.
@@ -919,6 +923,10 @@ Historyczne opisy należy czytać z uwzględnieniem opisanych powyżej rozwiąza
 | `468e112` | Add historical jump previews and weighted score details — Enable series selection and Shift-click previews in individual and team results. Show team per-series points without the combined distance column in Quick. Add footer hint, hide first-jumper/tied gaps and release old preview pages. Targeted three-round individual/team regressions and Widgets build pass. |
 | `bfd9767` | Document jump history, weights and team table changes |
 | `1244494` | Keep KO workspace stable across periodic bridge refreshes — Skip generic traversal of KOGroupsListView: it overwrote the dedicated node twice per refresh, resetting group and dropdown models every 120 ms. Regression holds the method popup open across timer refreshes and verifies no idle node updates. KO grouping regression suite passes. |
+| `d21a99e` | Record KO refresh fix in release inventory |
+| `cdf73d0` | Record final jump history and KO validation results |
+| `dce5736` | Avoid rasterizing KO flags on every bridge refresh — Send cached local SVG URLs instead of loading and PNG/base64-encoding every athlete flag each 120 ms. A 145-athlete fixture drops from 3940 ms to 168 ms for 20 bridge refreshes before further editor changes. Missing flags remain empty. |
+| `c11be0b` | Add searchable KO athlete picker and drag-to-swap — Use lightweight member rows with one shared searchable picker. Add persistent drag preview, target feedback, edge/wheel scrolling and Escape cancellation. Real mouse/keyboard tests cover swaps, search persistence, empty queries and dragging past recycled rows on 31/145-athlete lists. |
 
 ## Załącznik C. Pełny manifest zmienionych plików
 
@@ -944,13 +952,13 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/DATA_PACKS.md](../docs/DATA_PACKS.md) | 30 | 0 |
 | A | [docs/ENGINE_AUDIT_2026-10-24.md](../docs/ENGINE_AUDIT_2026-10-24.md) | 85 | 0 |
 | A | [docs/FIVE_DATA_FIXES_2026-10-22.md](../docs/FIVE_DATA_FIXES_2026-10-22.md) | 57 | 0 |
-| A | [docs/JUMP_HISTORY_2026-10-25.md](../docs/JUMP_HISTORY_2026-10-25.md) | 13 | 0 |
-| A | [docs/KO_IDLE_REFRESH_2026-10-25.md](../docs/KO_IDLE_REFRESH_2026-10-25.md) | 13 | 0 |
+| A | [docs/JUMP_HISTORY_2026-10-25.md](../docs/JUMP_HISTORY_2026-10-25.md) | 15 | 0 |
+| A | [docs/KO_IDLE_REFRESH_2026-10-25.md](../docs/KO_IDLE_REFRESH_2026-10-25.md) | 15 | 0 |
 | A | [docs/KO_SETUP_AND_PREJUMP_2026-10-24.md](../docs/KO_SETUP_AND_PREJUMP_2026-10-24.md) | 36 | 0 |
 | A | [docs/LATEST_JUMP_FEEDBACK_2026-10-24.md](../docs/LATEST_JUMP_FEEDBACK_2026-10-24.md) | 36 | 0 |
 | A | [docs/LAYOUT_RECURSION_FIX_2026-10-24.md](../docs/LAYOUT_RECURSION_FIX_2026-10-24.md) | 21 | 0 |
 | A | [docs/NAVIGATION_PERFORMANCE.md](../docs/NAVIGATION_PERFORMANCE.md) | 30 | 0 |
-| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1444 | 0 |
+| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1452 | 0 |
 | A | [docs/RESUME_2026-10-22.md](../docs/RESUME_2026-10-22.md) | 44 | 0 |
 | A | [docs/RESUME_2026-10-24_COMPETITION_UX.md](../docs/RESUME_2026-10-24_COMPETITION_UX.md) | 52 | 0 |
 | A | [docs/RESUME_ENGINE_AUDIT_2026-10-24.md](../docs/RESUME_ENGINE_AUDIT_2026-10-24.md) | 33 | 0 |
@@ -1003,7 +1011,10 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/JudgeMarks.qml](../source/UI/Quick/JudgeMarks.qml) | 27 | 0 |
 | A | [source/UI/Quick/JumpMetric.qml](../source/UI/Quick/JumpMetric.qml) | 49 | 0 |
 | A | [source/UI/Quick/JumpWeights.qml](../source/UI/Quick/JumpWeights.qml) | 36 | 0 |
-| A | [source/UI/Quick/KoGroupsWorkspace.qml](../source/UI/Quick/KoGroupsWorkspace.qml) | 61 | 0 |
+| A | [source/UI/Quick/KoAthletePicker.qml](../source/UI/Quick/KoAthletePicker.qml) | 80 | 0 |
+| A | [source/UI/Quick/KoDragArea.qml](../source/UI/Quick/KoDragArea.qml) | 82 | 0 |
+| A | [source/UI/Quick/KoGroupsWorkspace.qml](../source/UI/Quick/KoGroupsWorkspace.qml) | 85 | 0 |
+| A | [source/UI/Quick/KoMemberSlot.qml](../source/UI/Quick/KoMemberSlot.qml) | 27 | 0 |
 | A | [source/UI/Quick/ModalScreen.qml](../source/UI/Quick/ModalScreen.qml) | 57 | 0 |
 | A | [source/UI/Quick/NewSimulationPage.qml](../source/UI/Quick/NewSimulationPage.qml) | 58 | 0 |
 | A | [source/UI/Quick/Node.qml](../source/UI/Quick/Node.qml) | 215 | 0 |
@@ -1011,7 +1022,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/NumberField.qml](../source/UI/Quick/NumberField.qml) | 56 | 0 |
 | A | [source/UI/Quick/PlotPanel.qml](../source/UI/Quick/PlotPanel.qml) | 35 | 0 |
 | A | [source/UI/Quick/ProjectedControl.qml](../source/UI/Quick/ProjectedControl.qml) | 10 | 0 |
-| A | [source/UI/Quick/QuickBridge.cpp](../source/UI/Quick/QuickBridge.cpp) | 1146 | 0 |
+| A | [source/UI/Quick/QuickBridge.cpp](../source/UI/Quick/QuickBridge.cpp) | 1156 | 0 |
 | A | [source/UI/Quick/QuickCalendar.cpp](../source/UI/Quick/QuickCalendar.cpp) | 529 | 0 |
 | A | [source/UI/Quick/QuickCalendar.h](../source/UI/Quick/QuickCalendar.h) | 176 | 0 |
 | A | [source/UI/Quick/QuickCalendarDates.cpp](../source/UI/Quick/QuickCalendarDates.cpp) | 180 | 0 |
@@ -1073,7 +1084,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/icons/linkedin-dark.svg](../source/UI/Quick/icons/linkedin-dark.svg) | 1 | 0 |
 | A | [source/UI/Quick/icons/linkedin-light.svg](../source/UI/Quick/icons/linkedin-light.svg) | 1 | 0 |
 | A | [source/UI/Quick/qmldir](../source/UI/Quick/qmldir) | 1 | 0 |
-| A | [source/UI/Quick/quick-ui.qrc](../source/UI/Quick/quick-ui.qrc) | 89 | 0 |
+| A | [source/UI/Quick/quick-ui.qrc](../source/UI/Quick/quick-ui.qrc) | 92 | 0 |
 
 ### Instrukcje i zasoby narzędzi deweloperskich
 
@@ -1416,7 +1427,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [tests/competition-ties-gate-regressions.h](../tests/competition-ties-gate-regressions.h) | 126 | 0 |
 | A | [tests/engine-audit-regressions.h](../tests/engine-audit-regressions.h) | 70 | 0 |
 | A | [tests/navigation-performance.h](../tests/navigation-performance.h) | 26 | 0 |
-| A | [tests/quick-ui-smoke.cpp](../tests/quick-ui-smoke.cpp) | 2472 | 0 |
+| A | [tests/quick-ui-smoke.cpp](../tests/quick-ui-smoke.cpp) | 2504 | 0 |
 | A | [tests/roster-drag-regressions.h](../tests/roster-drag-regressions.h) | 23 | 0 |
 | A | [tests/roster-translation-regressions.h](../tests/roster-translation-regressions.h) | 13 | 0 |
 | A | [tests/simulation-onboarding-regressions.h](../tests/simulation-onboarding-regressions.h) | 96 | 0 |

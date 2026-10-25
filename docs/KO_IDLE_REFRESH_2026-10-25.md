@@ -13,3 +13,5 @@ Ogólne przejście rozpoznaje KOGroupsListView i zwraca jego stabilny węzeł be
 Test przygotowania KO otwiera listę sposobów doboru, czeka przez okresowe odświeżenia i wymusza pięć kolejnych aktualizacji. Wymaga braku valuesChanged dla niezmienionego węzła i pozostawienia listy otwartej. Dotychczasowe scenariusze sprawdzają też wielokrotne zmiany metody, nieparzystą listę startową i zamianę zawodników pomiędzy grupami.
 
 Wynik: `scripts/test-quick-ui.sh --ko-groups-only` — PASS, w tym nowe asercje stabilności węzła i otwartego dropdowna.
+
+Dalszy zgłoszony lag miał dodatkową przyczynę: koszt przetwarzania flag. Usunięto go w [kolejnym etapie wraz z wyszukiwaniem i przeciąganiem](KO_EDITOR_PERFORMANCE_2026-10-25.md).
