@@ -66,53 +66,24 @@ Item {
             }
         }
         SectionTabs { visible: !calendar.tight && !(calendar.compact && calendar.editing); Layout.fillWidth: true; options: [qsTr("Konkursy"),qsTr("Klasyfikacje")]; currentIndex: calendar.section; onSelected: calendar.section=index }
-        Flow {
-            visible: calendar.section===0 && calendar.backend.events.length>0 && (!calendar.compact || !calendar.editing)
-            Layout.fillWidth: true; spacing: 6
-            SButton { objectName: "calendarEnableDates"; visible: !calendar.backend.datesEnabled && (!calendar.tight || calendar.backend.canEnableDates); text: calendar.backend.canEnableDates ? qsTr("Włącz daty zawodów") : qsTr("Sezon bez dat"); enabled: calendar.backend.canEnableDates; hint: qsTr("Daty można włączyć przed rozpoczęciem sezonu. Ustawienie znajdziesz też w ustawieniach symulacji."); onClicked: calendar.backend.setDatesEnabled(true) }
-            SButton { objectName: "calendarMonthToggle"; visible: calendar.backend.datesEnabled; text: calendar.monthView ? qsTr("Lista i edycja") : qsTr("Widok kalendarza"); primary: calendar.monthView; onClicked: calendar.monthView=!calendar.monthView }
-            SButton { objectName: "calendarPlanDates"; visible: calendar.backend.datesEnabled; text: qsTr("Zaplanuj terminy"); onClicked: {calendar.monthView=false;calendar.editing=true;eventInspector.section=3} }
-        }
         Loader {
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
             visible: active
             active: calendar.section===0 && calendar.monthView && calendar.backend.datesEnabled
-            sourceComponent: CalendarDateOverview { backend: calendar.backend; onEditEvent: function(eventId){if(eventId.length)calendar.backend.select(eventId);calendar.monthView=false;calendar.editing=true;eventInspector.section=0} }
+            sourceComponent: ColumnLayout {
+                RowLayout {
+                    Layout.fillWidth: true
+                    SButton { text: qsTr("Lista i edycja"); primary: true; onClicked: calendar.monthView=false }
+                    SButton { text: qsTr("Zaplanuj terminy"); onClicked: {calendar.monthView=false;calendar.editing=true;eventInspector.section=3} }
+                }
+                CalendarDateOverview { Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; backend: calendar.backend; onEditEvent: function(eventId){if(eventId.length)calendar.backend.select(eventId);calendar.monthView=false;calendar.editing=true;eventInspector.section=0} }
+            }
         }
         CalendarClassifications { visible: calendar.section===1; Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; backend: calendar.backend; editorNode: calendar.node.values.classificationEditor }
         ColumnLayout {
         visible: calendar.section===0 && !(calendar.monthView && calendar.backend.datesEnabled)
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
         SectionTabs { visible: false; Layout.fillWidth: true; options: [qsTr("Konkursy"),qsTr("Edycja")]; currentIndex: calendar.editing ? 1 : 0; onSelected: calendar.editing=index === 1 }
-        Flow {
-            visible: calendar.backend.events.length>0 && (!calendar.compact || !calendar.editing)
-            Layout.fillWidth: true
-            spacing: 6
-            SButton { objectName: "calendarAdd"; text: qsTr("Dodaj konkurs"); primary: !calendar.tight; implicitHeight: calendar.tight?32:48; font.pointSize: calendar.tight?Theme.caption:Theme.section; enabled: calendar.backend.calendarIndex >= 0; onClicked: {calendar.backend.add();calendar.editing=true} }
-            SButton { visible: !calendar.tight; text: qsTr("Dodaj wiele"); enabled: calendar.backend.calendarIndex>=0; onClicked: calendar.addingMany=!calendar.addingMany }
-            SButton { visible: !calendar.compact; text: qsTr("Kopiuj"); enabled: calendar.backend.selection.count > 0; onClicked: calendar.backend.duplicate() }
-            SButton { visible: !calendar.compact; text: qsTr("Usuń"); enabled: calendar.backend.selection.count > 0 && !calendar.backend.selection.locked; onClicked: calendar.backend.remove() }
-            SButton { visible: !calendar.compact; text: "↑"; Accessible.name: qsTr("Przesuń konkurs w górę"); enabled: calendar.backend.selection.count > 0 && !calendar.backend.selection.locked; onClicked: calendar.backend.move(-1) }
-            SButton { visible: !calendar.compact; text: "↓"; Accessible.name: qsTr("Przesuń konkurs w dół"); enabled: calendar.backend.selection.count > 0 && !calendar.backend.selection.locked; onClicked: calendar.backend.move(1) }
-            SButton {
-                visible: calendar.compact; text: "⋯"; implicitHeight: calendar.tight?32:40; Accessible.name: qsTr("Opcje konkursów"); quiet: true
-                onClicked: eventMenu.open()
-                ActionMenu {
-                    id: eventMenu
-                    entries: [{id:"future",text:qsTr("Zaznacz przyszłe konkursy")},{id:"copy",text:qsTr("Kopiuj"),enabled:calendar.backend.selection.count > 0},{id:"remove",text:qsTr("Usuń"),enabled:calendar.backend.selection.count > 0 && !calendar.backend.selection.locked},{id:"up",text:qsTr("Przesuń konkurs w górę"),enabled:!calendar.backend.selection.locked},{id:"down",text:qsTr("Przesuń konkurs w dół"),enabled:!calendar.backend.selection.locked}]
-                    onSelected: {if(entry.id === "future")calendar.backend.selectAll(true);else if(entry.id === "copy")calendar.backend.duplicate();else if(entry.id === "remove")calendar.backend.remove();else calendar.backend.move(entry.id === "up" ? -1 : 1)}
-                }
-            }
-            SButton { visible: !calendar.tight; text: qsTr("Cofnij"); enabled: calendar.backend.canUndo; onClicked: calendar.backend.undo() }
-            SButton { visible: !calendar.tight; text: qsTr("Ponów"); enabled: calendar.backend.canRedo; onClicked: calendar.backend.redo() }
-        }
-        RowLayout {
-            visible: calendar.addingMany; Layout.fillWidth: true
-            Label { text: qsTr("Liczba konkursów"); color: Theme.muted; font.pointSize: Theme.caption }
-            NumberField { id: batchCount; direct: false; fields: ({id:"calendarBatchCount",name:"calendarBatchCount",value:5,minimum:1,maximum:100,step:1,decimals:0}); Layout.preferredWidth: 110 }
-            SButton { text: qsTr("Dodaj"); primary: true; onClicked: {calendar.backend.addMany(batchCount.currentValue);calendar.addingMany=false;calendar.editing=true} }
-        }
-        Label { visible: !!calendar.backend.message; text: calendar.backend.message; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         RowLayout {
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
             spacing: Theme.compact ? 6 : 16
@@ -121,6 +92,42 @@ Item {
                 Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
                 Layout.preferredWidth: 320
                 spacing: calendar.tight ? 4 : 8
+                Flow {
+                    visible: calendar.section===0 && calendar.backend.events.length>0 && (!calendar.compact || !calendar.editing)
+                    Layout.fillWidth: true; spacing: 6
+                    SButton { objectName: "calendarEnableDates"; visible: !calendar.backend.datesEnabled && (!calendar.tight || calendar.backend.canEnableDates); text: calendar.backend.canEnableDates ? qsTr("Włącz daty zawodów") : qsTr("Sezon bez dat"); enabled: calendar.backend.canEnableDates; hint: qsTr("Daty można włączyć przed rozpoczęciem sezonu. Ustawienie znajdziesz też w ustawieniach symulacji."); onClicked: calendar.backend.setDatesEnabled(true) }
+                    SButton { objectName: "calendarMonthToggle"; visible: calendar.backend.datesEnabled; text: calendar.monthView ? qsTr("Lista i edycja") : qsTr("Widok kalendarza"); primary: calendar.monthView; onClicked: calendar.monthView=!calendar.monthView }
+                    SButton { objectName: "calendarPlanDates"; visible: calendar.backend.datesEnabled; text: qsTr("Zaplanuj terminy"); onClicked: {calendar.monthView=false;calendar.editing=true;eventInspector.section=3} }
+                }
+                Flow {
+                    visible: calendar.backend.events.length>0 && (!calendar.compact || !calendar.editing)
+                    Layout.fillWidth: true
+                    spacing: 6
+                    SButton { objectName: "calendarAdd"; text: qsTr("Dodaj konkurs"); primary: !calendar.tight; implicitHeight: calendar.tight?32:48; font.pointSize: calendar.tight?Theme.caption:Theme.section; enabled: calendar.backend.calendarIndex >= 0; onClicked: {calendar.backend.add();calendar.editing=true} }
+                    SButton { visible: !calendar.tight; text: qsTr("Dodaj wiele"); enabled: calendar.backend.calendarIndex>=0; onClicked: calendar.addingMany=!calendar.addingMany }
+                    SButton { visible: !calendar.compact; text: qsTr("Kopiuj"); enabled: calendar.backend.selection.count > 0; onClicked: calendar.backend.duplicate() }
+                    SButton { visible: !calendar.compact; text: qsTr("Usuń"); enabled: calendar.backend.selection.count > 0 && !calendar.backend.selection.locked; onClicked: calendar.backend.remove() }
+                    SButton { visible: !calendar.compact; text: "↑"; Accessible.name: qsTr("Przesuń konkurs w górę"); enabled: calendar.backend.selection.count > 0 && !calendar.backend.selection.locked; onClicked: calendar.backend.move(-1) }
+                    SButton { visible: !calendar.compact; text: "↓"; Accessible.name: qsTr("Przesuń konkurs w dół"); enabled: calendar.backend.selection.count > 0 && !calendar.backend.selection.locked; onClicked: calendar.backend.move(1) }
+                    SButton {
+                        visible: calendar.compact; text: "⋯"; implicitHeight: calendar.tight?32:40; Accessible.name: qsTr("Opcje konkursów"); quiet: true
+                        onClicked: eventMenu.open()
+                        ActionMenu {
+                            id: eventMenu
+                            entries: [{id:"future",text:qsTr("Zaznacz przyszłe konkursy")},{id:"copy",text:qsTr("Kopiuj"),enabled:calendar.backend.selection.count > 0},{id:"remove",text:qsTr("Usuń"),enabled:calendar.backend.selection.count > 0 && !calendar.backend.selection.locked},{id:"up",text:qsTr("Przesuń konkurs w górę"),enabled:!calendar.backend.selection.locked},{id:"down",text:qsTr("Przesuń konkurs w dół"),enabled:!calendar.backend.selection.locked}]
+                            onSelected: {if(entry.id === "future")calendar.backend.selectAll(true);else if(entry.id === "copy")calendar.backend.duplicate();else if(entry.id === "remove")calendar.backend.remove();else calendar.backend.move(entry.id === "up" ? -1 : 1)}
+                        }
+                    }
+                    SButton { visible: !calendar.tight; text: qsTr("Cofnij"); enabled: calendar.backend.canUndo; onClicked: calendar.backend.undo() }
+                    SButton { visible: !calendar.tight; text: qsTr("Ponów"); enabled: calendar.backend.canRedo; onClicked: calendar.backend.redo() }
+                }
+                RowLayout {
+                    visible: calendar.addingMany; Layout.fillWidth: true
+                    Label { text: qsTr("Liczba konkursów"); color: Theme.muted; font.pointSize: Theme.caption }
+                    NumberField { id: batchCount; direct: false; fields: ({id:"calendarBatchCount",name:"calendarBatchCount",value:5,minimum:1,maximum:100,step:1,decimals:0}); Layout.preferredWidth: 110 }
+                    SButton { text: qsTr("Dodaj"); primary: true; onClicked: {calendar.backend.addMany(batchCount.currentValue);calendar.addingMany=false;calendar.editing=true} }
+                }
+                Label { visible: !!calendar.backend.message; text: calendar.backend.message; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 RowLayout {
                     visible: calendar.backend.events.length>0
                     Layout.fillWidth: true

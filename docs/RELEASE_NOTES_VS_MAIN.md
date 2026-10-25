@@ -734,6 +734,10 @@ Archiwum aktualizuje modele po rozegraniu zawodów i zmianach kalendarza, obejmu
 
 Przełączanie podglądu buduje model poza widokiem i podmienia go raz. W teście 40 drużyn/160 zawodników zmiana serii spadła z 22,3 s do 99 ms, a zmiana na ranking indywidualny z 14,2 s do 104 ms; setki resetów tabeli zastąpił jeden. Podobnie poprawiono historię klasyfikacji. Wybory serii i trybów przeniesiono do paska aplikacji, a podgląd przygasza sterowanie bez przebudowy układu i ma przycisk „Wróć do konkursu”. Lista drużyn przed zawodami pokazuje jeden gęsty wiersz ze składem, bez sortowania i stałego wyszukiwania. Wyszukiwanie tabel jest domyślnie wyłączone i dostępne tylko do konkretnych zadań. DSQ ma jawne oznaczenia obok DNS, a strata brzmi „Traci X pkt do lidera”. [Opis i pomiary](RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md).
 
+### Więcej miejsca na edycję kalendarza i klasyfikacji
+
+Przyciski operacji na konkursach i klasyfikacjach przeniesiono nad listy po lewej, dzięki czemu prawe formularze zaczynają się wyżej i wykorzystują pełną pozostałą wysokość. Zachowano osobną nawigację na małych ekranach i powrót z widoku miesięcznego. Wspólny pasek wyników obejmuje serię, tryb rozwijania drużyn i klasyfikację indywidualną/drużynową. Szczegóły i weryfikacja: `docs/RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md`.
+
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.

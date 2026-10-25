@@ -51,3 +51,12 @@ Wspólny komponent tabeli domyślnie nie ma wyszukiwania. Pozostaje ono jawnie w
 - Pełne regresje Qt Quick i alternatywa Widgets; kontrola pamięci scenariuszy historii.
 
 Wyniki końcowe: pełny zestaw **399 renderów responsywnych — PASS**; test historii i DNS/DSQ dla trzech rodzajów konkursów oraz rzeczywiste kliknięcia wyboru/powrotu — PASS; kompaktowa lista drużyn z otwarciem i zamknięciem edytora składu — PASS. Test wydajności ponownie uzyskał **102/107 ms i po jednym resecie**. Kontrola AddressSanitizer scenariuszy historii zakończyła się normalnie bez zgłoszenia błędu pamięci. Alternatywny wariant Qt Widgets zbudowany poprawnie.
+
+## Dodatkowe poprawki wysokości edytorów
+
+- Paski dodawania, kopiowania, usuwania, przesuwania i Cofnij/Ponów znajdują się nad odpowiednią listą po lewej. Nie obniżają już edytora konkursu ani klasyfikacji po prawej.
+- Edytor konkursu zaczyna się bezpośrednio pod zakładkami, na wysokości opcji widoku kalendarza i planowania terminów. Dodawanie wielu konkursów i komunikaty również pozostają w kolumnie listy.
+- W edytorze klasyfikacji informacja o zapisie jest przy liście; formularz korzysta z odzyskanej wysokości. Na małych ekranach zachowana jest nawigacja lista/edycja.
+- Widok miesięczny ma własne przyciski powrotu do listy i planowania terminów.
+- Wybór klasyfikacji indywidualnej/drużynowej współdzieli komponent paska z serią i trybem rozwijania drużyn; kolejność to seria, tryb wyników, klasyfikacja. Regresja sprawdza wspólnego rodzica kontrolek.
+- Weryfikacja: testy workflow sezonu, dat i dostępnej wysokości inspektora oraz historii/DNS we wszystkich trzech typach konkursów. Renderowanie obejmuje małe ekrany i oba motywy.
