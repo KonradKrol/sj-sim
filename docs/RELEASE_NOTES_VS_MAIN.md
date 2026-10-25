@@ -23,6 +23,14 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 
 Szczegóły i scenariusze sprawdzenia: [Kalendarz, planowanie weekendów i klasyfikacje](CALENDAR_PLANNER_AND_STANDINGS_UX_2026-10-25.md).
 
+## Uzupełnienie — kolejność drużyn, LL i podgląd sposobów (25.10.2026)
+
+- Przesuwanie drużyn przed konkursem przenosi istniejące wiersze wraz ze składami, bez podmieniania modelu i resetowania listy; zachowuje zaznaczenie.
+- „Największy awans” ogranicza pozycję wyjściową zawodnika do limitu kolejnej serii, np. 40. miejsce LL przy limicie 30 jest liczone od 30. miejsca.
+- W rozegranej klasyfikacji można przeglądać wszystkie sposoby punktowania; edycja punktów, nazw sposobów, dodawanie i usuwanie pozostają zablokowane.
+
+Szczegóły: [kolejność drużyn, LL i podgląd sposobów](TEAM_ORDER_LL_METHOD_PREVIEW_2026-10-25.md).
+
 ## Krótki materiał do publicznych release notes
 
 - Nowy domyślny interfejs całej aplikacji w Qt Quick, z własnym sportowym stylem, nową typografią, jasnym i ciemnym motywem.
