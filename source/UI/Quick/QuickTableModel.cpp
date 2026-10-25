@@ -183,9 +183,11 @@ void QuickTableModel::select(int row,int column,int modifiers,bool open) {
     }
     // Slots may show a modal dialog or delete a model. Leave the QML event first.
     const QString sourceType=QString::fromLatin1(m_source->metaObject()->className());
-    const int round=(modifiers & Qt::ShiftModifier)?sourceType=="ResultsTableModel" && column>=3?(column-3)/2+1:sourceType=="TeamResultsTreeModel" && column>=5?column-4:0:0;
+    const bool history=m_view->objectName()=="historyResultsView",teamHistory=history && m_view->property("historyTeam").toBool();
+    const int round=(modifiers & Qt::ShiftModifier)?(sourceType=="ResultsTableModel" || (history && !teamHistory)) && column>=3?(column-3)/2+1:(sourceType=="TeamResultsTreeModel" || teamHistory) && column>=5?column-4:0:0;
     QTimer::singleShot(0,this,[this,item,open,round] {
         if(!m_view || !item.isValid()) return;
+        if(round>0 && m_view->objectName()=="historyResultsView"){m_view->setProperty("historyRoundRequested",round);QMetaObject::invokeMethod(m_view,"clicked",Q_ARG(QModelIndex,QModelIndex(item)));return;}
         if(round>0)if(auto *window=qobject_cast<CompetitionManagerWindow *>(m_view->window())){window->showResultJump(item,round);return;}
         QMetaObject::invokeMethod(m_view,open?"doubleClicked":"clicked",Q_ARG(QModelIndex,QModelIndex(item)));
         if(open && m_view && item.isValid()) QMetaObject::invokeMethod(m_view,"activated",Q_ARG(QModelIndex,QModelIndex(item)));

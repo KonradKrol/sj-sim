@@ -30,6 +30,8 @@ public:
 
     void showResultJump(const QModelIndex &index,int round=0);
     void editNextKoGroups();
+    void skipCurrentJump();
+    bool skipRequested=false;
     void updateToBeatDistanceLabel();
     void updateToAdvanceDistanceLabel();
     void updatePointsToTheLeaderLabel();

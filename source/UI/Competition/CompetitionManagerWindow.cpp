@@ -1,6 +1,7 @@
 #include <cmath>
 #include <algorithm>
 #include "CompetitionManagerWindow.h"
+#include "../ResultsShowing/ResultsHistoryWidget.h"
 #include <QScopedValueRollback>
 #include <QSignalBlocker>
 #ifdef SJ_COMPETITION_QUICK
@@ -238,6 +239,7 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
 
 
     jumperResultsWidget = new JumperCompetitionResultsWidget(this);
+    ui->verticalLayout_tableAndFewOthers->insertWidget(0,new ResultsHistoryWidget(manager->getCompetitionInfo(),true,this));
     connect(ui->tableView_results,&QTableView::clicked,this,&CompetitionManagerWindow::on_tableView_results_doubleClicked);
     const auto showKoResult=[this](const QModelIndex &index) {
         if(!index.isValid() || getLiveStage()>0)return;
@@ -559,6 +561,7 @@ void CompetitionManagerWindow::setupGoToNextButtonForNextGroup()
 
         QMetaObject::Connection * const connection = new QMetaObject::Connection;
         *connection = connect(ui->pushButton_goToNext, &QPushButton::clicked, this, [this, connection, tmManager](){
+            if(property("resultHistoryPaused").toBool())return;
             tmManager->setupNextGroup();
             currentInputJumpManipulator = JumpManipulator();
             updateManipulationIndicator(false);
@@ -693,6 +696,7 @@ void CompetitionManagerWindow::setupGoToNextButtonForNextRound()
 
     QMetaObject::Connection * const connection = new QMetaObject::Connection;
     *connection = connect(ui->pushButton_goToNext, &QPushButton::clicked, this, [this, connection](){
+        if(property("resultHistoryPaused").toBool())return;
         Jumper *previewJumper=!jumperResultsWidget->isHidden() && jumperResultsWidget->getJumperResult() ? jumperResultsWidget->getJumperResult()->getJumper() : nullptr;
         const bool condition1=dynamic_cast<IndividualCompetitionManager *>(manager) && manager->effectiveRoundsCount()>manager->getActualRound();
         const bool condition2=condition1 && manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getKO()
@@ -779,6 +783,7 @@ void CompetitionManagerWindow::setupGoToNextButtonForQualificationsEnd()
     case CompetitionRules::Individual:{
         QMetaObject::Connection * const connection = new QMetaObject::Connection;
         *connection = connect(ui->pushButton_goToNext, &QPushButton::clicked, [this, connection](){
+        if(property("resultHistoryPaused").toBool())return;
             accept();
 
             QObject::disconnect(*connection);
@@ -845,6 +850,7 @@ void CompetitionManagerWindow::setupGoToNextButtonForCompetitionEnd()
 
     QMetaObject::Connection * const connection = new QMetaObject::Connection;
     *connection = connect(ui->pushButton_goToNext, &QPushButton::clicked, [this, connection](){
+        if(property("resultHistoryPaused").toBool())return;
         accept();
 
         QObject::disconnect(*connection);
@@ -855,6 +861,7 @@ void CompetitionManagerWindow::setupGoToNextButtonForCompetitionEnd()
 
 void CompetitionManagerWindow::autoSimulateRound()
 {
+    if(property("resultHistoryPaused").toBool())return;
     if(manager->checkCompetitionEnd())
         return;
     if(QMessageBox::question(this, tr("Automatyczna symulacja serii"),
@@ -983,6 +990,7 @@ void CompetitionManagerWindow::autoSimulateRound()
 
 void CompetitionManagerWindow::autoSimulateCompetition()
 {
+    if(property("resultHistoryPaused").toBool())return;
     if(manager->checkCompetitionEnd())
         return;
     if(QMessageBox::question(this, tr("Automatyczna symulacja konkursu"),
@@ -1145,6 +1153,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
 
 void CompetitionManagerWindow::autoSimulateGroup()
 {
+    if(property("resultHistoryPaused").toBool())return;
     if(manager->checkCompetitionEnd())
         return;
     if(QMessageBox::question(this, tr("Automatyczna symulacja grupy"),
@@ -1237,6 +1246,7 @@ void CompetitionManagerWindow::autoSimulateGroup()
 
 void CompetitionManagerWindow::autoSimulateJumps()
 {
+    if(property("resultHistoryPaused").toBool())return;
     if(manager->checkCompetitionEnd())
         return;
 
@@ -1647,6 +1657,7 @@ void CompetitionManagerWindow::setInrunSnowGenerator(const InrunSnowGenerator &n
 
 void CompetitionManagerWindow::cancelCompetition()
 {
+    if(property("resultHistoryPaused").toBool())return;
     if(QMessageBox::question(this, tr("Odwołanie konkursu"),
                              tr("Odwołać cały konkurs? Wszystkie uzyskane w nim wyniki zostaną usunięte."),
                              QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Yes)
@@ -1687,6 +1698,7 @@ void CompetitionManagerWindow::cancelCompetition()
 
 void CompetitionManagerWindow::cancelActualRound()
 {
+    if(property("resultHistoryPaused").toBool())return;
     if(QMessageBox::question(this, tr("Odwołanie aktualnej serii"),
                              tr("Odwołać aktualną serię? Wszystkie skoki oddane w tej serii zostaną usunięte."),
                              QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Yes)
@@ -1766,9 +1778,17 @@ void CompetitionManagerWindow::setupSimulator()
     simulator.setJumpsImportance(manager->getCompetitionInfo()->getJumpsImportance());
 }
 
+void CompetitionManagerWindow::skipCurrentJump()
+{
+    if(property("resultHistoryPaused").toBool() || jumpInProgress || !ui->pushButton_jump->isEnabled())return;
+    const bool live=GlobalAppSettings::get()->getLiveCompetition();GlobalAppSettings::get()->setLiveCompetition(false);
+    skipRequested=true;on_pushButton_jump_clicked();skipRequested=false;
+    GlobalAppSettings::get()->setLiveCompetition(live);
+}
+
 void CompetitionManagerWindow::on_pushButton_jump_clicked()
 {
-    if(jumpInProgress || !ui->pushButton_jump->isEnabled())
+    if(property("resultHistoryPaused").toBool() || jumpInProgress || !ui->pushButton_jump->isEnabled())
         return;
 
     jumpInProgress = true;
@@ -1788,9 +1808,9 @@ void CompetitionManagerWindow::on_pushButton_jump_clicked()
     }
     IndividualCompetitionManager * indManager = dynamic_cast<IndividualCompetitionManager *>(manager);
     TeamCompetitionManager * tmManager = dynamic_cast<TeamCompetitionManager *>(manager);
-    setupSimulator();
-    simulator.simulateJump();
-    JumpData jump = simulator.getJumpData();
+    JumpData jump(manager->getActualJumper(),manager->getCompetitionInfo()->getHill());
+    if(skipRequested){skipRequested=false;jump.setDNS(true);jump.setGate(manager->getActualGate());}
+    else {setupSimulator();simulator.simulateJump();jump=simulator.getJumpData();}
         notifyTeamDisqualification(jump);
     jump.setCompetition(manager->getCompetitionInfo());
     if(type == CompetitionRules::Individual){

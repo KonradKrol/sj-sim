@@ -4,6 +4,8 @@ import QtQuick.Layouts 1.15
 
 GridLayout {
     id: controls
+    readonly property var history: ui.find("resultsHistory")
+    enabled: !history || !history.values.paused
     signal optionsRequested(int section)
     readonly property var liveControl: ui.find("checkBox_liveCompetition")
     columns: width >= 800 ? 5 : 2

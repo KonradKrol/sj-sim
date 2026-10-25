@@ -154,6 +154,7 @@ public:
     Q_INVOKABLE void finishText(int id);
     Q_INVOKABLE void selectPreviewRound(int round);
     Q_INVOKABLE void editNextKoGroups();
+    Q_INVOKABLE void skipCurrentJump();
     Q_INVOKABLE void assignKoMember(int editorId,const QString &groupId,int slot,const QString &athleteId);
     Q_INVOKABLE void setWind(int editorId,int sector,const QVariantMap &values,bool all);
     Q_INVOKABLE void randomizeWind(int editorId,double direction,double variability);

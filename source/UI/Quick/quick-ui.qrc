@@ -40,6 +40,8 @@
     <file>JumpMetric.qml</file>
     <file>JudgeMarks.qml</file>
 <file>RaceScreen.qml</file>
+<file>HistoryControls.qml</file>
+<file>ResultsHistoryPage.qml</file>
 <file>RaceOptions.qml</file>
 <file>RaceSimulation.qml</file>
 <file>RaceStatus.qml</file>

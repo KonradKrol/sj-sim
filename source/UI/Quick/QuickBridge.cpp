@@ -13,6 +13,7 @@
 #include "../Competition/CompetitionManagerWindow.h"
 #include "../Competition/CompetitionConfigWindow.h"
 #include "../ResultsShowing/JumpDataDetailedInfoWindow.h"
+#include "../ResultsShowing/ResultsHistoryWidget.h"
 #include "../EditorWidgets/HillEditorWidget.h"
 #include "../EditorWidgets/CompetitionRulesEditorWidget.h"
 #include "../EditorWidgets/ClassificationEditorWidget.h"
@@ -280,6 +281,16 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
     if(!force && widget->property("quickMenuOnly").toBool()) return nullptr;
     // The dedicated KO workspace owns this node; never rebuild its hidden Widgets tree.
     if(qobject_cast<KOGroupsListView *>(widget)) return identity(widget);
+    if(auto *history=qobject_cast<ResultsHistoryWidget *>(widget)) {
+        auto *window=qobject_cast<CompetitionManagerWindow *>(m_window);
+        history->roundChoice()->setEnabled(!window || window->getLiveStage()==0);history->modeChoice()->setEnabled(!window || window->getLiveStage()==0);
+        if(!window || window->getLiveStage()==0 || window->getLiveStage()>=5)history->refresh(window?qMax(0,window->getManager()->getActualRound()-((window->getManager()->checkRoundEnd() || window->getManager()->checkCompetitionEnd())?0:1)):-1);
+        auto *entry=identity(widget);
+        connect(history,&ResultsHistoryWidget::changed,this,&QuickBridge::deferRefresh,Qt::UniqueConnection);
+        entry->update({{"kind","resultHistory"},{"active",history->active()},{"paused",history->paused()},{"individual",history->individualRanking()},{"team",history->modeChoice()->isVisibleTo(history) && !history->individualRanking()},
+            {"roundField",QVariant::fromValue(node(history->roundChoice(),true))},{"modeField",QVariant::fromValue(node(history->modeChoice()))},{"tableField",QVariant::fromValue(node(history->tableView(),true))}});
+        return entry;
+    }
     if(auto *scroll=qobject_cast<QScrollArea *>(widget)) return node(scroll->widget(),true);
     auto *entry=identity(widget);
     QVariantMap data{{"id",idFor(widget)}, {"name",widget->objectName()}, {"kind","column"},
@@ -528,9 +539,14 @@ void QuickBridge::refresh() {
         if(window->getLiveStage()>0 && window->getLiveStage()<5)
             for(const auto &key:{"currentGap"}) {if(m_context.contains(key))context[key]=m_context.value(key);else context.remove(key);}
         if(context!=m_context) { m_context=context;emit changed(); }
+    }
+    if(auto *window=qobject_cast<CompetitionManagerWindow *>(m_window);window || m_content->findChild<ResultsHistoryWidget *>()) {
+        const int stage=window?window->getLiveStage():0;
+        auto *history=m_content->findChild<ResultsHistoryWidget *>();
         QVariantMap summary;
         QWidget *selected=nullptr;
         for(auto *child:m_content->findChildren<QWidget *>())if(child->inherits("JumperCompetitionResultsWidget")) { selected=child;break; }
+        if(history && history->active() && (stage==0 || stage>=5))selected=history->previewWidget();
         if(selected && selected->isVisibleTo(m_content)) {
             for(const auto &field:QList<QPair<QString,QString>>{
                 {"name","label_nameAndSurname"},{"distance","label_distance"},{"points","label_points"},{"wind","label_averageWind"},
@@ -542,7 +558,7 @@ void QuickBridge::refresh() {
                 for(auto *label:selected->findChildren<QLabel *>(field.second))if(label->isVisibleTo(m_content)) { summary[field.first]=label->text();break; }
             }
             if(auto *flag=selected->findChild<QLabel *>("label_flag");flag && flag->isVisibleTo(m_content))if(auto *entry=node(flag))summary["flag"]=entry->values().value("image");
-            if(auto *preview=qobject_cast<JumperCompetitionResultsWidget *>(selected);preview && preview->getJumperResult() && (window->getLiveStage()==0 || window->getLiveStage()>=5)){
+            if(auto *preview=qobject_cast<JumperCompetitionResultsWidget *>(selected);preview && preview->getJumperResult() && (stage==0 || stage>=5)){
                 auto *result=preview->getJumperResult();const int round=preview->selectedRound()+1;
                 QStringList choices;for(int r=1;r<=preview->roundsCount();++r)choices.append(tr("Seria %1").arg(r));
                 summary["roundChoices"]=choices;summary["selectedRound"]=round-1;
@@ -553,15 +569,22 @@ void QuickBridge::refresh() {
                 const auto &rounds=result->getCompetition()->getRulesPointer()->getRoundsReference();
                 const bool reset=round>1 && round<=rounds.size() && rounds[round-1].getResetPoints();
                 summary["resetPoints"]=reset;summary["weighted"]=weighted && !reset;summary["weightTerms"]=terms;
+                if(history && history->active()){
+                    int position=result->getPosition();
+                    if(!history->individualRanking() && result->getType()==CompetitionSingleResult::IndividualResult && result->getCompetition()->getRules().getCompetitionType()==CompetitionRules::Team){for(auto &team:history->snapshot.getResultsReference())if(team.getTeamJumperResult(result->getJumper())){position=team.getPosition();break;}}
+                    summary["position"]=QString::number(position);summary["positionNumber"]=position;summary["competitionPosition"]=QString::number(position);
+                    if(history->individualRanking()){double sum=0;for(int i=0;i<round && i<result->getJumpsReference().size();++i)sum+=result->getJumpsReference()[i].getPoints();summary["totalPoints"]=QString::number(sum,'f',1)+tr(" pkt");summary["weighted"]=false;summary["resetPoints"]=false;}
+                }
             }
             const auto rank=selected->property("quickRankSummary").toMap();
-            if(summary.contains("position")) {
+            if(summary.contains("position") && !(history && history->active())) {
                 summary["positionNumber"]=rank.value("positionNumber");
                 if(rank.contains("leaderGap"))summary["leaderGap"]=rank.value("leaderGap");
             }
             for(auto *info:selected->findChildren<JumpDataDetailedInfoWindow *>())if(info->isVisibleTo(m_content) && info->getJumpData()) {
                 auto *jump=info->getJumpData();
-                if(jump->getCompetition() && (window->getLiveStage()==0 || window->getLiveStage()>=5)) {
+                if(jump->getDNS()){summary["dns"]=true;summary["dsq"]="DNS";summary["distance"]="DNS";}
+                if(jump->getCompetition() && (stage==0 || stage>=5)) {
                     const int position=jump->getCompetition()->getRules().getCompetitionType()==CompetitionRules::Team ? jump->getPositionInRoundForTeamCompetition() : jump->getPositionInRound();
                     if(position>0) { summary["roundPositionNumber"]=position; summary["roundPosition"]=QString::number(position); }
                 } else summary.remove("roundPosition");
@@ -621,6 +644,7 @@ void QuickBridge::edit(int id,const QVariant &value) {
     deferRefresh();
 }
 void QuickBridge::activate(int id,int entry) {
+    if(m_window && m_window->property("resultHistoryPaused").toBool())return;
     QPointer<QAbstractButton> button=qobject_cast<QAbstractButton *>(m_objects.value(id));
     if(!button || !button->isEnabled()) return;
     QTimer::singleShot(0,this,[this,button,entry] {
@@ -634,6 +658,7 @@ void QuickBridge::activate(int id,int entry) {
     });
 }
 void QuickBridge::triggerAction(int id) {
+    if(m_window && m_window->property("resultHistoryPaused").toBool())return;
     QPointer<QObject> object=m_objects.value(id);
     auto *action=qobject_cast<QAction *>(object);
     auto *shortcut=qobject_cast<QShortcut *>(object);
@@ -681,6 +706,12 @@ QObject *QuickBridge::find(const QString &name) {
     if(name=="quickSelectedName" && m_content) {
         for(auto *child:m_content->findChildren<QWidget *>())if(child->inherits("JumperCompetitionResultsWidget")) {
             widget=child->findChild<QWidget *>("label_nameAndSurname");break;
+        }
+    }
+    if(m_content && !widget && profile()=="CompetitionManagerWindow" && (name=="label_nameAndSurname" || name=="label_flag")) {
+        for(auto *candidate:m_content->findChildren<QWidget *>(name)) {
+            bool preview=false;for(auto *parent=candidate->parentWidget();parent;parent=parent->parentWidget())if(qobject_cast<JumperCompetitionResultsWidget *>(parent)){preview=true;break;}
+            if(!preview){widget=candidate;break;}
         }
     }
     if(m_content && !widget) {
@@ -790,6 +821,9 @@ void QuickBridge::compose(QuickNode *base) {
         entry->update({{"kind","catalog"},{"singleClickEdit",profile()=="DatabaseEditorWindow" && view->model() && QByteArray(view->model()->metaObject()->className())=="JumpersListModel"},{"actionsRow",actions},{"list",QVariant::fromValue(node(view,true))},{"editor",QVariant::fromValue(editor)},{"toolbar",toolbar},{"editRequest",entry->property("editRequest").toInt()}});
         return entry;
     };
+    if(m_window->objectName()=="competitionResultsArchive")if(auto *history=m_content->findChild<ResultsHistoryWidget *>()) {
+        auto *entry=node(history,true);auto values=entry->values();if(auto *button=m_content->findChild<QPushButton *>("archiveResultsWebhook"))values["actionsField"]=QVariant::fromValue(node(button,true));m_root->update(values);return;
+    }
     if(m_window->objectName()=="manualKoGroupsDialog") {
         if(auto *list=m_content->findChild<KOGroupsListView *>()) {
             auto *ko=koGroupsNode(list);auto values=ko->values();
@@ -1108,12 +1142,15 @@ void writeWind(QWidget *page,const QVariantMap &values) {
     }
 }
 }
+void QuickBridge::skipCurrentJump() {QTimer::singleShot(0,this,[this]{if(auto *window=qobject_cast<CompetitionManagerWindow *>(m_window))window->skipCurrentJump();});}
+
 void QuickBridge::editNextKoGroups() {QTimer::singleShot(0,this,[this]{if(auto *window=qobject_cast<CompetitionManagerWindow *>(m_window))window->editNextKoGroups();});}
 
 void QuickBridge::selectPreviewRound(int round)
 {
     auto *window=qobject_cast<CompetitionManagerWindow *>(m_window);
-    if(!window || window->getLiveStage()>0)return;
+    if(window && window->getLiveStage()>0)return;
+    if(auto *history=m_content->findChild<ResultsHistoryWidget *>();history && history->active()){history->previewWidget()->selectRound(round);deferRefresh();return;}
     if(auto *preview=m_content->findChild<JumperCompetitionResultsWidget *>();preview && preview->isVisibleTo(m_content)){preview->selectRound(round);deferRefresh();}
 }
 

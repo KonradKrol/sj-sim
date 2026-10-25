@@ -35,6 +35,7 @@ ColumnLayout {
             Column {
                 id: optionsContent
                 width: parent.width; spacing: 12
+                SButton { objectName: "skipCurrentJump"; visible: workspace.section===2; text: qsTr("Pomiń skok · DNS"); enabled: !ui.context.complete && !ui.context.roundComplete; onClicked: {ui.skipCurrentJump();workspace.closeRequested()} }
                 RaceSimulation { visible: workspace.section===0; width: parent.width; onStarted: workspace.closeRequested() }
                 Repeater {
                     model: workspace.section===0 ? ["toolButton_cancelActions","pushButton_sendResultsWebhook"] : workspace.section===1 ? ["pushButton_generateNewWinds","pushButton_windsGeneratorSettings","pushButton_inrunSnowGeneratorSettings"] : ["pushButton_coachGate","pushButton_manipulateJump","label_record","label_pointsBehindLeader","label_lastRoundPosition","label_personalBest"]

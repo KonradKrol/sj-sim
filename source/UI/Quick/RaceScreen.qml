@@ -14,7 +14,11 @@ ScrollView {
     readonly property var individual: ui.find("tableView_results")
     readonly property var team: ui.find("quickTeamResults")
     readonly property var koNode: ui.find("tableView_KOGroupResults")
-    readonly property bool hasKo: !!koNode && koNode.values.available !== false
+    readonly property var history: ui.find("resultsHistory")
+    readonly property bool previewPaused: !!history && !!history.values.paused
+    readonly property bool historical: !!history && !!history.values.active
+    readonly property var shownResults: historical ? history.values.tableField : resultNode
+    readonly property bool hasKo: !historical && !!koNode && koNode.values.available !== false
     readonly property var resultNode: individual && individual.values.available !== false ? individual : team
     Item {
         id: raceContent
@@ -24,17 +28,18 @@ ScrollView {
         id: header
         width: parent.width
         spacing: race.height < 600 ? 4 : 8
-        RaceStatus { width: parent.width; height: implicitHeight; onConditionsRequested: race.openOptions(1) }
+        HistoryControls { visible: race.previewPaused || race.narrow; history: race.history; width: Math.min(parent.width,480); height: implicitHeight }
+        RaceStatus { visible: !race.previewPaused; width: parent.width; height: implicitHeight; onConditionsRequested: race.openOptions(1) }
         GridLayout {
             id: hero
             objectName: "raceHeaderCards"
-            columns: race.narrow ? 1 : 2
+            columns: race.narrow || race.previewPaused ? 1 : 2
             width: Math.min(parent.width,1052); height: implicitHeight
             columnSpacing: 12; rowSpacing: 8
-            RaceAthlete { Layout.alignment: Qt.AlignTop; Layout.maximumHeight: implicitHeight; dense: race.height < 600; Layout.row: race.narrow ? 1 : 0; Layout.column: 0; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: race.narrow ? 0 : 280; Layout.maximumWidth: race.narrow ? Infinity : 320 }
-            RaceLastJump { Layout.alignment: Qt.AlignTop; Layout.maximumHeight: implicitHeight; dense: race.height < 600; Layout.row: 0; Layout.column: race.narrow ? 0 : 1; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: race.narrow ? 0 : 680; Layout.maximumWidth: race.narrow ? Infinity : 720 }
+            RaceAthlete { visible: !race.previewPaused; Layout.alignment: Qt.AlignTop; Layout.maximumHeight: implicitHeight; dense: race.height < 600; Layout.row: race.narrow ? 1 : 0; Layout.column: 0; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: race.narrow ? 0 : 280; Layout.maximumWidth: race.narrow ? Infinity : 320 }
+            RaceLastJump { Layout.alignment: Qt.AlignTop; Layout.maximumHeight: implicitHeight; dense: race.height < 600; Layout.row: 0; Layout.column: race.narrow || race.previewPaused ? 0 : 1; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: race.narrow ? 0 : 680; Layout.maximumWidth: race.narrow ? Infinity : 720 }
         }
-        RaceControls { width: Math.min(parent.width,1052); height: implicitHeight; onOptionsRequested: race.openOptions(section) }
+        RaceControls { visible: !race.previewPaused; width: Math.min(parent.width,1052); height: implicitHeight; onOptionsRequested: race.openOptions(section) }
         }
         Item {
             id: tables
@@ -51,23 +56,24 @@ ScrollView {
                 RowLayout {
                     Layout.fillWidth: true
                     Label { text: qsTr("Wyniki"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.body; font.weight: Font.ExtraBold; Layout.fillWidth: true }
-                    SChoice { objectName: "teamResultsMode"; visible: race.resultNode===race.team; model: [qsTr("Ostatni skok"),qsTr("Drużyny"),qsTr("Pełne wyniki")]; currentIndex: appearance.teamResultsMode; onActivated: appearance.teamResultsMode=currentIndex; Layout.preferredWidth: 160 }
+                    HistoryControls { visible: !race.previewPaused && !race.narrow; history: race.history; Layout.maximumWidth: race.width<700 ? 210 : 340; Layout.fillWidth: true; Layout.minimumWidth: 120 }
+                    SChoice { objectName: "teamResultsMode"; visible: !race.historical && race.resultNode===race.team; model: [qsTr("Ostatni skok"),qsTr("Drużyny"),qsTr("Pełne wyniki")]; currentIndex: appearance.teamResultsMode; onActivated: appearance.teamResultsMode=currentIndex; Layout.preferredWidth: 160 }
                 }
                 DataTable {
                     id: results
                     objectName: "raceResults"
                     Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 140
-                    table: race.resultNode ? race.resultNode.values.table : null
-                    ownerId: race.resultNode ? race.resultNode.values.id : -1
+                    table: race.shownResults ? race.shownResults.values.table : null
+                    ownerId: race.shownResults ? race.shownResults.values.id : -1
                     actions: race.resultNode ? race.resultNode.values.tableActions || [] : []
                     plain: true; searchEnabled: false
-                    function applyTeamMode(){if(teamResults && table)table.setTeamMode(appearance.teamResultsMode)}
+                    function applyTeamMode(){if(!race.historical && teamResults && table)table.setTeamMode(appearance.teamResultsMode)}
                     onTableChanged: {clearDisabledSearch();applyTeamMode()}
                     onTeamResultsChanged: applyTeamMode()
                     Component.onCompleted: applyTeamMode()
                     Connections { target: appearance; function onChanged(){results.applyTeamMode()} }
-                    compact: true; raceResults: race.resultNode === race.individual
-                    teamResults: race.resultNode === race.team
+                    compact: true; raceResults: race.historical ? !race.history.values.team : race.resultNode === race.individual
+                    teamResults: race.historical ? !!race.history.values.team : race.resultNode === race.team
                     title: qsTr("Wyniki")
                 }
                 }
@@ -90,7 +96,7 @@ ScrollView {
                 Node {
                     objectName: "raceKoGroup"
                     readonly property var entry: ui.find("tableView_KOGroupResults")
-                    node: entry && entry.values.available !== false ? entry : null
+                    node: !race.historical && entry && entry.values.available !== false ? entry : null
                     Layout.fillWidth: true; Layout.preferredHeight: visible ? 130 : 0
                     compactTable: true; plainTable: true; tableHeightLimit: 130; tableSearchEnabled: false
                 }

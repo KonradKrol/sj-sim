@@ -45,6 +45,9 @@
 #include <atomic>
 #include <cstdio>
 #include "../source/UI/ResultsShowing/JumpDataDetailedInfoWindow.h"
+#include "../source/UI/ResultsShowing/ResultsHistoryWidget.h"
+#include "../source/UI/Seasons/ItemModels/CompetitionsArchiveListModel.h"
+#include "../source/UI/Seasons/ItemModels/ClassificationsArchiveListModel.h"
 #include "../source/single-jumps/SingleJumpsManager.h"
 #include "../source/global/GlobalDatabase.h"
 #include "../source/global/CountryCodes.h"
@@ -370,6 +373,7 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
     const bool multiKo=QCoreApplication::arguments().contains("--ko-multi-round-only");
     if(multiKo){second.setKO(true);second.setCountInKOGroup(2);second.setAdvancingFromKOGroup(1);second.setKoGroupsSelectionType(KOGroup::Classic);second.setPreviousRoundsWeights({.5});}
     const bool weighted=QCoreApplication::arguments().contains("--round-points-bulk-only");
+    if(QCoreApplication::arguments().contains("--history-dns-only"))second.setPreviousRoundsWeights({.5});
     if(weighted) { if(scenario==2)second.setPreviousRoundsWeights({.5});else second.setResetPoints(true); }
     rules.setRounds({first,second});
     if(QCoreApplication::arguments().contains("--jump-history-only")){second.setPreviousRoundsWeights({.95});RoundInfo third(scenario==2?2:4,true);third.setPreviousRoundsWeights({.5,.95});rules.setRounds({first,second,third});}
@@ -477,6 +481,32 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                 }
                 check(manager->checkCompetitionEnd(),"Super Team finishes after three automatic rounds");window->accept();return;
             }
+            if(QCoreApplication::arguments().contains("--history-dns-only")) {
+                auto *history=window->findChild<ResultsHistoryWidget *>();check(history,"live competition owns shared history widget");window->autoSimulateRound();bridge->activate(id(bridge,"pushButton_goToNext"));QTest::qWait(120);bridge->refresh();QTest::qWait(30);
+                check(window->getManager()->getActualRound()==2 && history->roundChoice()->count()==2,"completed first series is available in compact history choice");
+                const auto before=QJsonDocument(CompetitionResults::getJsonObject(*window->getManager()->getResults())).toJson();
+                history->roundChoice()->setCurrentIndex(1);bridge->refresh();QTest::qWait(30);check(history->active() && history->paused() && window->property("resultHistoryPaused").toBool(),"historical round selection pauses competition");
+                window->autoSimulateCompetition();window->autoSimulateRound();window->skipCurrentJump();bridge->activate(id(bridge,"pushButton_jump"));QTest::qWait(30);
+                check(QJsonDocument(CompetitionResults::getJsonObject(*window->getManager()->getResults())).toJson()==before,"historical preview cannot mutate competition through manual, automatic or DNS actions");
+                render(window,QString("history-live-%1").arg(scenario),scenario==2);
+                history->roundChoice()->setCurrentIndex(0);bridge->refresh();QTest::qWait(30);auto *jumper=window->getManager()->getActualJumper();auto *team=scenario==2?static_cast<TeamCompetitionManager *>(window->getManager())->getActualTeam():nullptr;
+                window->skipCurrentJump();bridge->refresh();QTest::qWait(30);
+                auto *result=scenario==2?window->getManager()->getResults()->getResultOfTeam(team)->getTeamJumperResult(jumper):window->getManager()->getResults()->getResultOfIndividualJumper(jumper);
+                check(result && result->getJumpsReference().last().getDNS() && !result->getJumpsReference().last().getDSQ() && result->getJumpsReference().last().getPoints()==0,"skip records exactly one zero-point DNS rather than DSQ");
+                if(scenario==2){
+                    auto copied=window->getManager()->getResults()->getResultOfTeam(team)->getJumpsReference().first();check(copied.getPositionInGroupForTeamCompetition()>0 && copied.getPositionInRoundForTeamCompetition()>0,"copied historical team jump keeps valid round and group positions");
+                    JumpData missing(jumper,window->getManager()->getCompetitionInfo()->getHill());missing.setCompetition(window->getManager()->getCompetitionInfo());check(missing.getPositionInGroupForTeamCompetition()==0 && missing.getPositionInRoundForTeamCompetition()==0,"missing team jump identity cannot index a negative series");
+                    check(!window->getManager()->getResults()->getResultOfTeam(team)->isTeamDisqualified(),"DNS does not disqualify the team");history->modeChoice()->setCurrentIndex(1);bridge->refresh();QTest::qWait(30);
+                    check(history->previewWidget()->getJumperResult()->getJumper()==jumper,"live individual team ranking retains the latest jumper card rather than switching to its leader");
+                    QHash<Jumper *,double> expected;for(const auto &squad:window->getManager()->getResults()->getResultsReference())for(const auto &jump:squad.getJumps())expected[jump.getJumper()]+=jump.getPoints();
+                    for(const auto &row:history->snapshot.getResultsReference())check(qAbs(expected.value(row.getJumper())-row.getPointsSum())<.001,"team individual ranking sums raw jump points");
+                    window->autoSimulateRound();check(window->getManager()->getResults()->getResultOfTeam(team)->getJumpsReference().size()==8,"all team members continue after one athlete DNS");
+                }
+                QDialog archive(&main);archive.setObjectName("competitionResultsArchive");archive.setWindowTitle("History fixture");auto *layout=new QVBoxLayout(&archive);auto *archived=new ResultsHistoryWidget(window->getManager()->getCompetitionInfo(),false,&archive);layout->addWidget(archived);archive.show();QTest::qWait(100);
+                archived->roundChoice()->setCurrentIndex(1);QTest::qWait(50);check(archived->active() && !archived->paused() && !archived->snapshot.getResultsReference().isEmpty(),"archive uses read-only historical results for all event types");render(&archive,QString("history-archive-%1").arg(scenario),scenario==2);
+                archived->roundChoice()->setCurrentIndex(0);QTest::qWait(40);auto *archiveBridge=archive.findChild<QuickBridge *>();auto *node=qobject_cast<QuickNode *>(archiveBridge->find("historyResultsView"));auto *adapter=qobject_cast<QuickTableModel *>(node->values().value("table").value<QObject *>());check(adapter,"archive history has a table adapter");adapter->select(0,scenario==2?5:3,Qt::ShiftModifier);QTest::qWait(40);check(archived->previewWidget()->selectedRound()==0,"Shift-click in archived snapshot selects the requested jump series");archive.reject();
+                qInfo()<<"PASS: historical pause, DNS and archive round selection"<<scenario;window->reject();return;
+            }
             if(QCoreApplication::arguments().contains("--superko-only")) {
                 auto *individual=dynamic_cast<IndividualCompetitionManager *>(window->getManager());check(individual,"SuperKO individual manager");
                 for(int round=1;round<=4;++round){
@@ -530,7 +560,7 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                 check(rowChanges.count()<=2 && resets.count()<=2,"automatic simulation batches start-list presentation updates");
                 if(bulkAction==1)check(window->getManager()->checkRoundEnd() && window->getManager()->getActualRound()==1,"automatic round simulation stops at the round boundary");
                 if(bulkAction==3)check(dynamic_cast<TeamCompetitionManager *>(window->getManager())->checkGroupEnd(),"automatic team group simulation stops at the group boundary");
-                QLabel *athleteLabel=nullptr;for(auto *label:window->findChildren<QLabel *>("label_nameAndSurname"))if(!window->findChild<JumperCompetitionResultsWidget *>()->isAncestorOf(label))athleteLabel=label;
+                QLabel *athleteLabel=nullptr;for(auto *label:window->findChildren<QLabel *>("label_nameAndSurname")){bool preview=false;for(auto *parent=label->parentWidget();parent;parent=parent->parentWidget())if(qobject_cast<JumperCompetitionResultsWidget *>(parent)){preview=true;break;}if(!preview)athleteLabel=label;}
                 if(!athleteLabel || athleteLabel->text()!=window->getManager()->getActualJumper()->getNameAndSurname())qInfo()<<"BULK ATHLETE"<<scenario<<bulkAction<<(athleteLabel?athleteLabel->text():QString())<<window->getManager()->getActualJumper()->getNameAndSurname()<<window->getManager()->getActualStartListIndex();
                 check(athleteLabel && athleteLabel->text()==window->getManager()->getActualJumper()->getNameAndSurname(),"batched athlete presentation is synchronized before returning control");
                 int jumps=0;for(const auto &result:window->getManager()->getResults()->getResults()) {jumps+=result.getJumps().size();check(result.getCompetition()==window->getManager()->getCompetitionInfo() && std::isfinite(result.getPointsSum()),"bulk results retain competition owners and finite scores");}
@@ -1586,6 +1616,21 @@ static void auditStatisticsRegressions(MainWindow &main) {
     qInfo()<<"PASS: audit 7-13 finite statistics, small fields, missing presets, empty filters/calendars, detached jumps and DNS charts";
 }
 
+static void archiveHistoryRegressions(MainWindow &main) {
+    Hill hill;hill.setKPoint(90);hill.setHSPoint(100);hill.setName("Archive hill");Jumper a("A","History","POL"),b("B","History","GER");CompetitionInfo first(&hill),second(&hill);CompetitionRules rules;rules.setRounds({RoundInfo(2,true)});first.setRules(rules);second.setRules(rules);
+    QVector<CompetitionInfo *> events{&first,&second};second.setPlayed(true);CompetitionsArchiveListModel archiveModel(&events);QAbstractItemModelTester modelTester(&archiveModel,QAbstractItemModelTester::FailureReportingMode::Fatal);
+    check(archiveModel.rowCount()==1 && archiveModel.competitionAt(0)==&second,"played events after a calendar gap remain visible in archive");QSignalSpy reset(&archiveModel,&QAbstractItemModel::modelReset);first.setPlayed(true);archiveModel.setSeasonCompetitions(&events);check(reset.count()==1 && archiveModel.rowCount()==2,"archive announces newly played events without reopening the game");
+    Classification classification;classification.setClassificationType(Classification::Individual);classification.setPunctationType(Classification::CompetitionPoints);first.setClassifications({&classification});second.setClassifications({&classification});
+    const auto jump=[&](CompetitionInfo &event,Jumper *jumper,double points){JumpData data(jumper,&hill);data.setCompetition(&event);data.setPoints(points);event.getResultsReference().addJump(jumper,data);};
+    jump(first,&a,100);jump(first,&b,80);first.getResultsReference().sortInDescendingOrder();jump(second,&a,10);jump(second,&b,80);second.getResultsReference().sortInDescendingOrder();
+    SeasonCalendar calendar;calendar.setCompetitions(events);ClassificationResultsTableView view(false,&classification);view.setHistoryCalendar(&calendar);view.fillTable();auto *choice=view.findChild<QComboBox *>("comboBox_classificationHistory");check(choice && choice->count()==3,"classification history exposes each participating played event");
+    choice->setCurrentIndex(1);check(view.getTableView()->model()->index(0,1).data().toString()==a.getNameAndSurname() && view.getTableView()->model()->index(0,2).data().toDouble()==100,"classification after first event excludes later scores");choice->setCurrentIndex(2);check(view.getTableView()->model()->index(0,1).data().toString()==b.getNameAndSurname() && view.getTableView()->model()->index(0,2).data().toDouble()==160,"classification history recalculates correct ranking after second event");
+    const auto original=QJsonDocument(CompetitionResults::getJsonObject(first.getResultsReference())).toJson();const auto snapshot=ResultsHistoryWidget::afterRound(first.getResultsReference(),1,false);check(snapshot.getResults().size()==2 && QJsonDocument(CompetitionResults::getJsonObject(first.getResultsReference())).toJson()==original,"historical ranking does not mutate persisted competition results");
+    auto copied=first.getResultsReference().getResultOfIndividualJumper(&a)->getJumpsReference().first();check(copied.getPositionInRound()==1,"a copied historical jump resolves its series by stable identity");
+    JumpData unknown(&a,&hill);unknown.setCompetition(&first);check(unknown.getPositionInRound()==0,"unknown jump identity has no invented series position");
+    Q_UNUSED(main);qInfo()<<"PASS: archive reset signals, non-contiguous played events and classification chronology";
+}
+
 static void jumperCatalogClickRegressions(MainWindow &main) {
     main.show();main.resize(1440,900);DatabaseEditorWindow database(&main);database.show();QTest::qWait(150);
     auto *bridge=database.findChild<QuickBridge *>();auto *entry=qobject_cast<QuickNode *>(bridge->find("listView"));check(entry,"jumper catalog node exists");
@@ -2399,6 +2444,8 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--author-only")){authorRegressions(main);return 0;}
     if(app.arguments().contains("--navigation-only")){navigationRegressions(main);return 0;}
     if(app.arguments().contains("--home-launch-only")){homeLaunchRegressions(main);return 0;}
+    if(app.arguments().contains("--archive-history-only")){archiveHistoryRegressions(main);return 0;}
+    if(app.arguments().contains("--history-dns-only")){archiveHistoryRegressions(main);main.show();for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario);return 0;}
     if(app.arguments().contains("--superko-only")){main.show();runCompetition(main,1);return 0;}
     if(app.arguments().contains("--manual-ko-only")){main.show();runCompetition(main,0);return 0;}
     if(app.arguments().contains("--jumper-catalog-only")){jumperCatalogClickRegressions(main);return 0;}
