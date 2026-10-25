@@ -1337,6 +1337,15 @@ static void koGroupingRegressions(MainWindow &main) {
     const int tab=bridge->root()->values().value("options").toStringList().indexOf(QString::fromUtf8("Grupy KO"));check(tab>=0,"KO workspace is a clearly named preparation section");bridge->edit(bridge->root()->values().value("id").toInt(),tab);QTest::qWait(100);
     auto *view=scene(&config);check(item(view->rootObject(),"koGroupsWorkspace"),"KO uses its own single workspace rather than nested legacy cards");
     auto *method=item(view->rootObject(),"koGroupingMethod");check(method,"grouping method is directly available");QMetaObject::invokeMethod(method,"activated",Q_ARG(int,2));QTest::qWait(100);check(choice->currentIndex()==3,"QML basket choice drives actual KO grouping");
+    auto *koNode=bridge->root()->children().first().value<QuickNode *>();
+    int idleUpdates=0;QObject::connect(koNode,&QuickNode::valuesChanged,&config,[&idleUpdates](){++idleUpdates;});
+    auto *methodPopup=method->property("popup").value<QObject *>();check(methodPopup,"KO choice has a popup");
+    QMetaObject::invokeMethod(methodPopup,"open");QTest::qWait(300);
+    for(int refresh=0;refresh<5;++refresh)bridge->refresh();
+    check(idleUpdates==0,"idle bridge refresh preserves dedicated KO node instead of rebuilding all groups");
+    check(methodPopup->property("visible").toBool(),"KO method popup stays open across periodic refreshes");
+    QMetaObject::invokeMethod(methodPopup,"close");
+    QObject::disconnect(koNode,nullptr,&config,nullptr);
     auto before=config.getCompetitionGroups();check(before.size()>1,"KO assignment fixture has several groups");
     const auto firstMember=before[0].getJumpers().first(),second=before[1].getJumpers().first();
     auto *member=item(view->rootObject(),"koMember-"+before[0].getIDStr()+"-0");check(member,"group members are directly editable");

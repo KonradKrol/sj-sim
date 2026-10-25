@@ -268,6 +268,8 @@ QVariantList QuickBridge::widgetChildren(QWidget *widget) {
 QuickNode *QuickBridge::node(QWidget *widget,bool force) {
     if(!widget || (widget->isHidden() && !force) || qobject_cast<QQuickWidget *>(widget)) return nullptr;
     if(!force && widget->property("quickMenuOnly").toBool()) return nullptr;
+    // The dedicated KO workspace owns this node; never rebuild its hidden Widgets tree.
+    if(qobject_cast<KOGroupsListView *>(widget)) return identity(widget);
     if(auto *scroll=qobject_cast<QScrollArea *>(widget)) return node(scroll->widget(),true);
     auto *entry=identity(widget);
     QVariantMap data{{"id",idFor(widget)}, {"name",widget->objectName()}, {"kind","column"},
