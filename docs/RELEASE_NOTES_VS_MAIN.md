@@ -6,7 +6,7 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
-- Stan porównania kodu i dokumentacji: **615eef0**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
+- Stan porównania kodu i dokumentacji: **a27c5c4**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
 - Data zestawienia: **25 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **2.0.0-beta**, ustawione na wyraźne polecenie użytkownika po zakończeniu audytu silnika.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
@@ -782,19 +782,19 @@ Punktacja ma nowe nazwy naliczania, segmenty źródeł z precyzyjnym opisem, akt
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
-- Snapshot kodu i dokumentacji: **615eef0604f317d74da80e7564249ec53dc9b44a**.
-- Commitów od bazy: **209**.
-- Plików zmienionych w tym zakresie: **524**.
+- Snapshot kodu i dokumentacji: **a27c5c4ef72475ea3db6bbe8fdb2e71b0404611c**.
+- Commitów od bazy: **213**.
+- Plików zmienionych w tym zakresie: **527**.
 - Statystyki obejmują także fonty, skills i dokumentację; nie oznaczają rozmiaru samej logiki gry.
 - Dalsza aktualizacja tego zestawienia jest dodatkiem dokumentacyjnym do wskazanego snapshotu.
 
 | Obszar | Plików |
 | --- | ---: |
-| Dokumentacja etapów i migracji | 50 |
+| Dokumentacja etapów i migracji | 51 |
 | Domyślny interfejs Qt Quick i jego zasoby | 120 |
 | Instrukcje i zasoby narzędzi deweloperskich | 167 |
 | Konfiguracja projektu i pozostałe pliki | 6 |
-| Kontrolery, modele i logika C++ | 142 |
+| Kontrolery, modele i logika C++ | 144 |
 | Skrypty budowania, uruchamiania i testowania | 6 |
 | Testy | 15 |
 | Tłumaczenia | 1 |
@@ -803,9 +803,9 @@ Punktacja ma nowe nazwy naliczania, segmenty źródeł z precyzyjnym opisem, akt
 Porównanie można odtworzyć poleceniami:
 
 ~~~sh
-git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 615eef0604f317d74da80e7564249ec53dc9b44a
-git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 615eef0604f317d74da80e7564249ec53dc9b44a
-git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..615eef0604f317d74da80e7564249ec53dc9b44a
+git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c a27c5c4ef72475ea3db6bbe8fdb2e71b0404611c
+git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c a27c5c4ef72475ea3db6bbe8fdb2e71b0404611c
+git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..a27c5c4ef72475ea3db6bbe8fdb2e71b0404611c
 ~~~
 
 Zestawienie można odświeżyć przez `python3 scripts/update-release-inventory.py --base main --snapshot HEAD`. Opisy zachowania i wyniki testów należy uzupełniać na podstawie faktycznych zmian oraz weryfikacji.
@@ -1025,6 +1025,10 @@ Historyczne opisy należy czytać z uwzględnieniem opisanych powyżej rozwiąza
 | `f2aeef0` | Cap advancement baselines at the next-round field limit for KO qualifiers |
 | `848ef94` | Allow browsing locked classification methods while keeping scoring read-only |
 | `615eef0` | Cover fast team moves, KO gain caps and read-only method previews |
+| `4c3aabf` | Refresh release inventory for team ordering and scoring previews |
+| `c62e87c` | Remember simulation list order across additions, deletions and restarts |
+| `d000b48` | Reduce simulation JSON whitespace without changing saved data |
+| `a27c5c4` | Verify persistent save ordering, smaller JSON and legacy compatibility |
 
 ## Załącznik C. Pełny manifest zmienionych plików
 
@@ -1063,7 +1067,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/LAYOUT_RECURSION_FIX_2026-10-24.md](../docs/LAYOUT_RECURSION_FIX_2026-10-24.md) | 21 | 0 |
 | A | [docs/NAVIGATION_PERFORMANCE.md](../docs/NAVIGATION_PERFORMANCE.md) | 30 | 0 |
 | A | [docs/PENDING_CLASSIFICATION_RULES_2026-10-25.md](../docs/PENDING_CLASSIFICATION_RULES_2026-10-25.md) | 10 | 0 |
-| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1582 | 0 |
+| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1600 | 0 |
 | A | [docs/RESULT_HISTORY_ARCHIVE_DNS_2026-10-25.md](../docs/RESULT_HISTORY_ARCHIVE_DNS_2026-10-25.md) | 67 | 0 |
 | A | [docs/RESULT_SELECTORS_TEAM_READABILITY_2026-10-25.md](../docs/RESULT_SELECTORS_TEAM_READABILITY_2026-10-25.md) | 24 | 0 |
 | A | [docs/RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md](../docs/RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md) | 62 | 0 |
@@ -1075,6 +1079,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/ROUND_POINT_WEIGHTS.md](../docs/ROUND_POINT_WEIGHTS.md) | 23 | 0 |
 | A | [docs/SEASON_WORKSPACE_2026-10-22.md](../docs/SEASON_WORKSPACE_2026-10-22.md) | 60 | 0 |
 | A | [docs/SIMULATION_ONBOARDING_2026-10-24.md](../docs/SIMULATION_ONBOARDING_2026-10-24.md) | 74 | 0 |
+| A | [docs/SIMULATION_ORDER_AND_SAVE_SIZE_2026-10-25.md](../docs/SIMULATION_ORDER_AND_SAVE_SIZE_2026-10-25.md) | 24 | 0 |
 | A | [docs/SIMULATION_PERFORMANCE_2026-10-22.md](../docs/SIMULATION_PERFORMANCE_2026-10-22.md) | 57 | 0 |
 | A | [docs/SPACE_AND_LAST_JUMP_2026-10-21.md](../docs/SPACE_AND_LAST_JUMP_2026-10-21.md) | 43 | 0 |
 | A | [docs/SUPER_TEAM_AUTO_SIMULATION_CRASH.md](../docs/SUPER_TEAM_AUTO_SIMULATION_CRASH.md) | 17 | 0 |
@@ -1390,7 +1395,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [WINDOWS_SETUP.MD](../WINDOWS_SETUP.MD) | 288 | 0 |
 | M | [assets.qrc](../assets.qrc) | 1 | 0 |
 | A | [img/author/konrad.jpg](../img/author/konrad.jpg) | - | - |
-| M | [sj-sim.pro](../sj-sim.pro) | 59 | 0 |
+| M | [sj-sim.pro](../sj-sim.pro) | 60 | 0 |
 | A | [skills-lock.json](../skills-lock.json) | 83 | 0 |
 
 ### Kontrolery, modele i logika C++
@@ -1457,6 +1462,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | M | [source/UI/Seasons/ItemModels/ClassificationsArchiveListModel.cpp](../source/UI/Seasons/ItemModels/ClassificationsArchiveListModel.cpp) | 4 | 2 |
 | M | [source/UI/Seasons/ItemModels/CompetitionsArchiveListModel.cpp](../source/UI/Seasons/ItemModels/CompetitionsArchiveListModel.cpp) | 15 | 8 |
 | M | [source/UI/Seasons/ItemModels/CompetitionsArchiveListModel.h](../source/UI/Seasons/ItemModels/CompetitionsArchiveListModel.h) | 1 | 0 |
+| M | [source/UI/Seasons/ItemModels/SimulationSavesListModel.cpp](../source/UI/Seasons/ItemModels/SimulationSavesListModel.cpp) | 3 | 0 |
 | M | [source/UI/Seasons/NewSeasonConfiguratorWindow.cpp](../source/UI/Seasons/NewSeasonConfiguratorWindow.cpp) | 42 | 9 |
 | M | [source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp](../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp) | 56 | 1 |
 | M | [source/UI/Seasons/NewSimulationSaveConfigurationWindow.h](../source/UI/Seasons/NewSimulationSaveConfigurationWindow.h) | 6 | 0 |
@@ -1500,7 +1506,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | M | [source/global/CountryFlagsManager.cpp](../source/global/CountryFlagsManager.cpp) | 2 | 4 |
 | A | [source/global/DataPack.cpp](../source/global/DataPack.cpp) | 96 | 0 |
 | A | [source/global/DataPack.h](../source/global/DataPack.h) | 25 | 0 |
-| M | [source/global/GlobalDatabase.cpp](../source/global/GlobalDatabase.cpp) | 138 | 2 |
+| M | [source/global/GlobalDatabase.cpp](../source/global/GlobalDatabase.cpp) | 142 | 2 |
 | M | [source/global/GlobalDatabase.h](../source/global/GlobalDatabase.h) | 15 | 0 |
 | M | [source/global/GlobalSimulationSettings.cpp](../source/global/GlobalSimulationSettings.cpp) | 15 | 0 |
 | M | [source/global/GlobalSimulationSettings.h](../source/global/GlobalSimulationSettings.h) | 18 | 0 |
@@ -1520,7 +1526,8 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | M | [source/seasons/SeasonCalendar.cpp](../source/seasons/SeasonCalendar.cpp) | 17 | 20 |
 | M | [source/seasons/SeasonCalendar.h](../source/seasons/SeasonCalendar.h) | 1 | 1 |
 | M | [source/seasons/SeasonCalendarPreset.cpp](../source/seasons/SeasonCalendarPreset.cpp) | 16 | 3 |
-| M | [source/seasons/SimulationSave.cpp](../source/seasons/SimulationSave.cpp) | 1 | 13 |
+| M | [source/seasons/SimulationSave.cpp](../source/seasons/SimulationSave.cpp) | 18 | 16 |
+| A | [source/seasons/SimulationSaveListOrder.h](../source/seasons/SimulationSaveListOrder.h) | 24 | 0 |
 | M | [source/simulator/Characteristic.h](../source/simulator/Characteristic.h) | 7 | 6 |
 | M | [source/simulator/Hill.cpp](../source/simulator/Hill.cpp) | 6 | 4 |
 | M | [source/simulator/JumpData.cpp](../source/simulator/JumpData.cpp) | 31 | 18 |
@@ -1564,7 +1571,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [tests/competition-ties-gate-regressions.h](../tests/competition-ties-gate-regressions.h) | 126 | 0 |
 | A | [tests/engine-audit-regressions.h](../tests/engine-audit-regressions.h) | 70 | 0 |
 | A | [tests/navigation-performance.h](../tests/navigation-performance.h) | 26 | 0 |
-| A | [tests/quick-ui-smoke.cpp](../tests/quick-ui-smoke.cpp) | 2670 | 0 |
+| A | [tests/quick-ui-smoke.cpp](../tests/quick-ui-smoke.cpp) | 2687 | 0 |
 | A | [tests/roster-drag-regressions.h](../tests/roster-drag-regressions.h) | 23 | 0 |
 | A | [tests/roster-translation-regressions.h](../tests/roster-translation-regressions.h) | 13 | 0 |
 | A | [tests/simulation-onboarding-regressions.h](../tests/simulation-onboarding-regressions.h) | 96 | 0 |
