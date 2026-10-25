@@ -80,7 +80,11 @@ inline QVariantMap biggestAdvancement(const CompetitionResults &results, int rou
     QVariantList entries;
     for (const auto &candidate : candidates) {
         const auto *result = candidate.result;
-        const int previous = int(std::lower_bound(scores.cbegin(), scores.cend(), candidate.previousPoints, std::greater<qint64>()) - scores.cbegin()) + 1;
+        int previous = int(std::lower_bound(scores.cbegin(), scores.cend(), candidate.previousPoints, std::greater<qint64>()) - scores.cbegin()) + 1;
+        if(auto *competition=result->getCompetition()){
+            const auto rounds=competition->getRulesPointer()->getRounds();
+            if(round<=rounds.size() && rounds[round-1].getCount()>0)previous=qMin(previous,rounds[round-1].getCount());
+        }
         const int correctedPosition = result->getPosition() + qMax(0, remainingCompetitors);
         const int places = previous - correctedPosition;
         const QString name = result->getTeam() ? result->getTeam()->getCountryCode() : result->getJumper() ? result->getJumper()->getNameAndSurname() : QString();
