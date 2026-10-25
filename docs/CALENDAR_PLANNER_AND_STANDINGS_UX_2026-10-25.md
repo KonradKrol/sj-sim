@@ -2,6 +2,16 @@
 
 Gałąź: `feature/qml-competition-config`. Zachowano Qt Widgets i oznaczenie `2.0.0-beta`.
 
+## Uzupełnienie — prostszy dostęp do terminów i automatyczny podgląd weekendu
+
+Panel ma stały tytuł **Zaplanuj terminy**. Dwa widoczne przyciski rozdzielają działania: **Ustal terminy** dotyczy dat istniejących konkursów, a **Dodaj weekend** tworzy nowe wydarzenia. Pod wyborem jest odpowiedni nagłówek i krótki opis zakresu działania.
+
+Kreator weekendów nie ma już przycisku „Podgląd weekendu”. Plan odświeża się po otwarciu i po zmianie daty, skoczni, zasad albo wariantu kwalifikacji. Przed zatwierdzeniem niczego nie dodaje. Błędna data usuwa nieaktualny plan i blokuje dodanie; poprawienie daty automatycznie przywraca podgląd. Po dodaniu przygotowany jest już podgląd kolejnego tygodnia. Cofnięcie lub zewnętrzne odświeżenie kalendarza nie pozostawia nieaktualnego planu.
+
+Opcja niedzielna nazywa się **Bierz kwalifikacje z piątku + rozegraj serię próbną**. Jeśli pierwsze kwalifikacje przeniesiono na sobotę, tekst wskazuje sobotę; wybór wspólnych kwalifikacji pozostaje zachowany. Długi opis zawija się w polu i menu przy mniejszej szerokości.
+
+Weryfikacja po tej zmianie: `scripts/test-quick-ui.sh --dates-only` — PASS, również automatyczne aktualizacje, zmiana piątek/sobota bez zgubienia wariantu, brak zmian przed dodaniem, błędna/poprawiona data, podgląd następnego tygodnia oraz responsive render w jasnym/ciemnym motywie i powiększonym tekście. Brak komunikatów o pętlach układu w tym przebiegu. Planowanie dat istniejących wydarzeń nadal ma osobne zatwierdzenie planu.
+
 ## Automatyczny zapis zasad
 
 W edytorze konkursu zmiany zasad zapisują się bez przycisku „Zastosuj zasady”. Dotyczy to także treningów, serii próbnej i pól nowo dodanych serii. Zmiana konkursu, kalendarza lub celu edycji najpierw kończy oczekujący zapis. Opóźnione wywołanie poprzedniego edytora nie może anulować zapisu w nowym. Wczytywanie formularza i identyczne wartości nie tworzą dodatkowych kroków historii. Cofnij/Ponów oraz blokady rozegranych wydarzeń pozostają aktywne.

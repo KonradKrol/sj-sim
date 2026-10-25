@@ -15,11 +15,14 @@ Pane {
     background: Surface { fillColor: Theme.surface; sweep: 20 }
     contentItem: ColumnLayout {
         spacing: 12
+        Label { text: qsTr("Zaplanuj terminy"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         RowLayout {
-            Layout.fillWidth: true
-            Label { text: planner.weekendMode ? qsTr("Nowy weekend") : qsTr("Terminy konkursów"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-            SButton { objectName: "date-open-weekend"; text: planner.weekendMode ? qsTr("← Terminy") : qsTr("Dodaj weekend"); quiet: true; onClicked: {planner.weekendMode=!planner.weekendMode;planner.invalidate();planner.backend.discardWeekend()} }
+            Layout.fillWidth: true; spacing: 6
+            SButton { objectName: "date-plan-existing"; text: qsTr("Ustal terminy"); primary: !planner.weekendMode; Layout.fillWidth: true; Layout.preferredWidth: 1; implicitHeight: Theme.controlHeight; font.pointSize: Theme.body; onClicked: {planner.invalidate();planner.backend.discardWeekend();planner.weekendMode=false} }
+            SButton { objectName: "date-open-weekend"; text: qsTr("Dodaj weekend"); primary: planner.weekendMode; Layout.fillWidth: true; Layout.preferredWidth: 1; implicitHeight: Theme.controlHeight; font.pointSize: Theme.body; onClicked: {planner.invalidate();planner.weekendMode=true} }
         }
+        Label { text: planner.weekendMode ? qsTr("Dodawanie nowych konkursów") : qsTr("Daty istniejących konkursów"); color: Theme.ink; font.pointSize: Theme.body; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        Label { visible: !planner.weekendMode; text: qsTr("Ustal lub zmień daty konkursów, które są już w kalendarzu."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         CalendarWeekendPlanner { visible: planner.weekendMode; Layout.fillWidth: true; backend: planner.backend }
         ColumnLayout {
             visible: !planner.weekendMode

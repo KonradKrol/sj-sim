@@ -39,6 +39,12 @@ Szczegóły: [kolejność drużyn, LL i podgląd sposobów](TEAM_ORDER_LL_METHOD
 
 Szczegóły: [kolejność symulacji i mniejsze pliki](SIMULATION_ORDER_AND_SAVE_SIZE_2026-10-25.md).
 
+## Uzupełnienie — automatyczny podgląd weekendu (25.10.2026)
+
+- Stały tytuł „Zaplanuj terminy” i widoczny wybór między ustalaniem dat istniejących konkursów a dodawaniem nowych weekendów.
+- Podgląd weekendu odświeża się automatycznie, bez osobnego przycisku. Po dodaniu od razu przygotowuje kolejny tydzień; błędna data blokuje utworzenie ze starego planu.
+- Pełny opis wspólnych kwalifikacji wskazuje piątek lub sobotę zgodnie z ustawieniami i zawija się na wąskich ekranach.
+
 ## Krótki materiał do publicznych release notes
 
 - Nowy domyślny interfejs całej aplikacji w Qt Quick, z własnym sportowym stylem, nową typografią, jasnym i ciemnym motywem.
