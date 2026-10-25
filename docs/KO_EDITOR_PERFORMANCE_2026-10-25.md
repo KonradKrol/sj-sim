@@ -19,6 +19,6 @@ Pomiar lokalny na tej samej liście 145 zawodników, 20 jawnych odświeżeń mos
 
 ## Weryfikacja
 
-`--ko-groups-only` oraz `--ko-groups-only --ko-stress` obejmują odpowiednio 31 i 145 zawodników, wielokrotne losowania, nieparzystą liczbę zawodników, stabilność dropdowna, wpisanego wyszukiwania i węzła podczas okresowych odświeżeń, pusty wynik wyszukiwania, wybór Enterem i rzeczywiste przeciągnięcie między grupami. Scenariusz renderuje oba motywy w różnych rozmiarach, w tym 360 px i powiększony tekst. Nie wykryto błędów QML ani rekurencyjnych layoutów.
+`--ko-groups-only` oraz `--ko-groups-only --ko-stress` obejmują odpowiednio 31 i 145 zawodników, wielokrotne losowania, nieparzystą liczbę zawodników, stabilność dropdowna, wpisanego wyszukiwania i węzła podczas okresowych odświeżeń, pusty wynik wyszukiwania, wybór Enterem i rzeczywiste przeciągnięcie między grupami. Scenariusz renderuje oba motywy w różnych rozmiarach, w tym 360 px i powiększony tekst. Obserwator komunikatów nie wykrył rekurencyjnych layoutów. Nowe komponenty KO nie zgłosiły błędów QML; zestaw nadal wypisuje wcześniejsze ostrzeżenia DataTable przy inicjalizacji syntetycznej tabeli bez modelu.
 
 Dodatkowy test rzeczywistym gestem potwierdza przewijanie przy krawędzi po opuszczeniu pierwotnego wiersza oraz anulowanie Escape bez zmiany składu grup. Końcowy powtórzony pomiar dużej listy: 164 ms / 20 odświeżeń.
