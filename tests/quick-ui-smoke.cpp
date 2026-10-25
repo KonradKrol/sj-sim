@@ -50,6 +50,7 @@
 #include "../source/UI/Seasons/ItemModels/ClassificationsArchiveListModel.h"
 #include "../source/single-jumps/SingleJumpsManager.h"
 #include "../source/global/GlobalDatabase.h"
+#include "../source/seasons/SimulationSaveListOrder.h"
 #include "../source/global/CountryCodes.h"
 #include "../source/UI/EditorWidgets/RoundInfoEditorWidget.h"
 #include "../source/global/CountryFlagsManager.h"
@@ -1769,6 +1770,20 @@ static void uxRegressions(MainWindow &main) {
     qInfo()<<"PASS: five UX workflows: scoped form edits, visible search, saved lists, contextual competition controls and explicit calendar editing";
 }
 
+static void saveStorageRegressions() {
+    QSettings settings;const auto oldOrder=settings.value("simulationSaves/order");
+    SimulationSave a,b,c,d;a.setName("Zulu");b.setName("Alfa");c.setName("Beta");d.setName("Nowa");
+    QVector<SimulationSave *> order{&a,&c,&b};SimulationSaveListOrder::remember(order);QVector<SimulationSave *> reloaded{&b,&a,&c};SimulationSaveListOrder::restore(reloaded);check(reloaded==order,"saved simulation order survives alphabetical disk enumeration");
+    SimulationSavesListModel model(&order);QAbstractItemModelTester contract(&model,QAbstractItemModelTester::FailureReportingMode::Fatal);check(model.insertSave(1,&d),"new save inserts at the requested position");reloaded={&b,&d,&c,&a};SimulationSaveListOrder::restore(reloaded);check(reloaded==order,"new simulation keeps its inserted position after reload");check(model.takeSave(2)==&c,"save deletion removes the expected simulation");reloaded={&b,&a,&d};SimulationSaveListOrder::restore(reloaded);check(reloaded==order,"remaining simulations keep their order after deletion and reload");reloaded={&c,&b,&d,&a};SimulationSaveListOrder::restore(reloaded);check(reloaded==QVector<SimulationSave *>({&a,&d,&b,&c}),"externally added saves append without disturbing known positions");settings.remove("simulationSaves/order");reloaded={&c,&a,&b};SimulationSaveListOrder::restore(reloaded);check(reloaded==QVector<SimulationSave *>({&c,&a,&b}),"legacy installs preserve their first enumerated order");if(oldOrder.isValid())settings.setValue("simulationSaves/order",oldOrder);
+    SimulationSave save;check(save.getSaveFileSizeReduce(),"new simulations default to compact JSON");save.setName("Storage test");save.setJumpers({new Jumper("  Ala\n    X","Żółć\t    Y","POL")});Season season;season.setSeasonNumber(2026);save.setSeasons({season});save.setActualSeason(&save.getSeasonsReference().first());save.updateNextCompetitionIndex();QTemporaryDir directory;check(directory.isValid(),"isolated save storage fixture");
+    for(bool compact:{false,true}){
+        save.setSaveFileSizeReduce(compact);const QJsonObject expected{{"simulation-save",SimulationSave::getJsonObject(save)}};const auto indented=QJsonDocument(expected).toJson(QJsonDocument::Indented);check(save.saveToFile(directory.path()),"both JSON presentation options save successfully");QFile file(directory.filePath("Storage test.json"));check(file.open(QIODevice::ReadOnly),"saved fixture can be read");const auto bytes=file.readAll();file.close();check(bytes.size()<indented.size() && QJsonDocument::fromJson(bytes).object()==expected,"smaller JSON preserves every value including whitespace within strings");if(!compact){check(bytes.contains("\n\t"),"readable saves retain line breaks and use shorter indentation");qInfo()<<"SAVE SIZE: readable"<<bytes.size()<<"bytes vs old indentation"<<indented.size();}else qInfo()<<"SAVE SIZE: compact"<<bytes.size()<<"bytes vs old indentation"<<indented.size();std::unique_ptr<SimulationSave> loaded(SimulationSave::loadFromFile(file.fileName()));check(loaded && loaded->getJumpersReference().first()->getName()==save.getJumpersReference().first()->getName() && loaded->getSaveFileSizeReduce()==compact,"both reduced formats reload and preserve explicit readable preference");
+        check(file.open(QIODevice::WriteOnly|QIODevice::Truncate) && file.write(indented)==indented.size(),"legacy indented fixture writes");file.close();loaded.reset(SimulationSave::loadFromFile(file.fileName()));check(loaded && loaded->getSaveFileSizeReduce()==compact,"old indented saves remain compatible");
+    }
+    auto legacy=SimulationSave::getJsonObject(save);legacy.remove("save-file-size-reduce");std::unique_ptr<SimulationSave> legacySave(SimulationSave::getFromJson(legacy,nullptr));check(legacySave && legacySave->getSaveFileSizeReduce(),"saves without a formatting preference use the safe compact default");
+    qInfo()<<"PASS: stable simulation list ordering and lossless smaller saves with legacy compatibility";
+}
+
 static void advancementRegressions() {
     Jumper a("A","One","POL"), b("B","Two","NOR"), c("C","Three","GER"), d("D","Four","AUT"), e("E","Five","FIN");
     CompetitionResults results;
@@ -2332,6 +2347,7 @@ static void backendRegressions() {
     randomBoundsRegression();
     csvCollisionRegression();
     presetSerializationRegression();
+    saveStorageRegressions();
     advancementRegressions();
     { Classification source("Existing classification");source.setAltPointsForPlaces({{1,25.0}});ClassificationEditorWidget editor(&source);check(editor.getClassification()==&source,"classification constructor initializes the supplied source");editor.setClassification(nullptr);check(!editor.getClassification(),"classification source can be cleared safely"); }
 
@@ -2459,6 +2475,7 @@ int main(int argc,char **argv) {
     MainWindow main; applicationWindow=&main; main.setParentApplication(&app); new QuickUi(&main);
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="2.0.0-beta","one release version is shared with the interface");
+    if(app.arguments().contains("--save-storage-only")){saveStorageRegressions();return 0;}
     if(app.arguments().contains("--engine-audit-only")){int selected=0;for(const auto &argument:app.arguments())if(argument.startsWith("--engine-case="))selected=argument.mid(14).toInt();engineAuditRegressions(selected);return 0;}
     engineAuditRegressions();
     rosterTranslationRegression();

@@ -31,6 +31,14 @@ Szczegóły i scenariusze sprawdzenia: [Kalendarz, planowanie weekendów i klasy
 
 Szczegóły: [kolejność drużyn, LL i podgląd sposobów](TEAM_ORDER_LL_METHOD_PREVIEW_2026-10-25.md).
 
+## Uzupełnienie — kolejność symulacji i rozmiar zapisów (25.10.2026)
+
+- Zapamiętywanie kolejności listy symulacji po dodawaniu, usuwaniu i ponownym uruchomieniu. Pliki dodane z zewnątrz trafiają za znane pozycje.
+- Kompaktowy JSON domyślnie dla nowych symulacji. Dotychczasowy wybór czytelnego formatu pozostaje zachowany; krótsze wcięcia zmniejszają także takie pliki.
+- Bez zmiany schematu lub usuwania danych; dotychczasowe pliki nadal się wczytują. Oszczędność pojawia się przy kolejnym zapisie.
+
+Szczegóły: [kolejność symulacji i mniejsze pliki](SIMULATION_ORDER_AND_SAVE_SIZE_2026-10-25.md).
+
 ## Krótki materiał do publicznych release notes
 
 - Nowy domyślny interfejs całej aplikacji w Qt Quick, z własnym sportowym stylem, nową typografią, jasnym i ciemnym motywem.
