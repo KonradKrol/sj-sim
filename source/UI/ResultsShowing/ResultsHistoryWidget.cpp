@@ -56,7 +56,7 @@ ResultsHistoryWidget::ResultsHistoryWidget(CompetitionInfo *competition,bool liv
     auto *layout=new QVBoxLayout(this);layout->setContentsMargins(0,0,0,0);
     auto *controls=new QHBoxLayout;layout->addLayout(controls);
     rounds=new QComboBox(this);rounds->setObjectName("comboBox_resultHistoryRound");rounds->setAccessibleName(tr("Wyniki po serii"));controls->addWidget(rounds);
-    mode=new QComboBox(this);mode->setObjectName("comboBox_resultHistoryMode");mode->addItems({tr("Drużyny"),tr("Indywidualnie")});mode->setVisible(competition->getRules().getCompetitionType()==CompetitionRules::Team);controls->addWidget(mode);
+    mode=new QComboBox(this);mode->setObjectName("comboBox_resultHistoryMode");mode->addItems({tr("Wyniki drużynowe"),tr("Wyniki indywidualne")});mode->setVisible(competition->getRules().getCompetitionType()==CompetitionRules::Team);controls->addWidget(mode);
     model=new QStandardItemModel(this);table=new QTreeView(this);table->setObjectName("historyResultsView");table->setModel(model);table->setSelectionMode(QAbstractItemView::SingleSelection);table->setSelectionBehavior(QAbstractItemView::SelectRows);layout->addWidget(table,1);
     preview=new JumperCompetitionResultsWidget(this);preview->hide();layout->addWidget(preview);
     connect(table,&QTreeView::clicked,this,&ResultsHistoryWidget::showJump);
@@ -66,7 +66,7 @@ ResultsHistoryWidget::ResultsHistoryWidget(CompetitionInfo *competition,bool liv
     refresh();
 }
 bool ResultsHistoryWidget::individualRanking() const {return mode->isVisibleTo(const_cast<ResultsHistoryWidget *>(this)) && mode->currentIndex()==1;}
-bool ResultsHistoryWidget::paused() const {return live && rounds->currentData().toInt()>0;}
+bool ResultsHistoryWidget::paused() const {return live && (rounds->currentData().toInt()>0 || individualRanking());}
 bool ResultsHistoryWidget::active() const {return !live || paused() || individualRanking();}
 void ResultsHistoryWidget::refresh(int completedRounds) {
     completedLimit=completedRounds;
@@ -75,7 +75,7 @@ void ResultsHistoryWidget::refresh(int completedRounds) {
     const int recorded=count;
     if(completedRounds>=0)count=qMin(count,completedRounds);
     if(live && count>0 && recorded==count)--count;
-    if(rounds->count()!=count+1){const QSignalBlocker block(rounds);const int selected=rounds->currentData().toInt();rounds->clear();rounds->addItem(live?tr("Teraz"):tr("Wszystkie serie"),0);for(int r=1;r<=count;++r)rounds->addItem(tr("Po %1 serii").arg(r),r);rounds->setCurrentIndex(qBound(0,selected,count));}
+    if(rounds->count()!=count+1){const QSignalBlocker block(rounds);const int selected=rounds->currentData().toInt();rounds->clear();rounds->addItem(live?tr("Wyniki na żywo"):tr("Wszystkie serie"),0);for(int r=1;r<=count;++r)rounds->addItem(tr("Wyniki z %1 serii").arg(r),r);rounds->setCurrentIndex(qBound(0,selected,count));}
     available=count;table->setVisible(active());if(!active())preview->hide();
     applyPause();
     const QString key=competition->getResultsReference().getLatestJumpId()+QString("/%1/%2/%3/%4").arg(rounds->currentData().toInt()).arg(individualRanking()).arg(count).arg(competition->getResultsReference().getResultsReference().size());

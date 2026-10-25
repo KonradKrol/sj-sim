@@ -49,6 +49,7 @@
 <file>RaceScreen.qml</file>
 <file>HistoryControls.qml</file>
 <file>RaceViewChoices.qml</file>
+<file>RaceViewSelector.qml</file>
 <file>RaceViewControls.qml</file>
 <file>ResultsHistoryPage.qml</file>
 <file>RaceOptions.qml</file>

@@ -155,7 +155,7 @@ public:
     Q_INVOKABLE void selectPreviewRound(int round);
     Q_INVOKABLE void editNextKoGroups();
     Q_INVOKABLE void skipCurrentJump();
-    Q_INVOKABLE void openResultViewOptions() {emit resultViewOptionsRequested();}
+    Q_INVOKABLE void openResultViewOptions(int field=-1,qreal x=-1,qreal y=-1,qreal width=0) {emit resultViewOptionsRequested(field,x,y,width);}
     Q_INVOKABLE void assignKoMember(int editorId,const QString &groupId,int slot,const QString &athleteId);
     Q_INVOKABLE void setWind(int editorId,int sector,const QVariantMap &values,bool all);
     Q_INVOKABLE void randomizeWind(int editorId,double direction,double variability);
@@ -178,7 +178,7 @@ public:
 signals:
     void changed();
     void focusChanged();
-    void resultViewOptionsRequested();
+    void resultViewOptionsRequested(int field,qreal x,qreal y,qreal width);
 private:
     QuickNode *node(QWidget *widget, bool force = false);
     QuickNode *layoutNode(QLayout *layout);

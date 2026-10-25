@@ -372,7 +372,7 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
         data["teamSetup"]=view->model() && view->model()->inherits("TeamsSquadsTreeModel");
         const auto sourceName=view->model()?QByteArray(view->model()->metaObject()->className()):QByteArray();
         bool classificationTable=false;for(auto *parent=view->parentWidget();parent;parent=parent->parentWidget())if(parent->inherits("ClassificationResultsTableView")){classificationTable=true;break;}
-        data["searchable"]=data.value("teamSetup").toBool() || classificationTable || sourceName=="JumpersListModel" || sourceName=="HillsListModel" || sourceName=="SeasonJumpersListModel" || sourceName=="SeasonHillsListModel" || sourceName=="CompetitionsArchiveListModel" || sourceName=="SimulationSavesListModel";
+        data["searchable"]=classificationTable || sourceName=="JumpersListModel" || sourceName=="HillsListModel" || sourceName=="SeasonJumpersListModel" || sourceName=="SeasonHillsListModel" || sourceName=="CompetitionsArchiveListModel" || sourceName=="SimulationSavesListModel";
 
         data["kind"]="table";data["follow"]=widget->objectName()=="listView_startList";
         data["tableActions"]=view->parentWidget()?view->parentWidget()->property("quickTableActions"):QVariant();

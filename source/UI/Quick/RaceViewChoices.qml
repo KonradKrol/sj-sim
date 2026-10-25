@@ -12,29 +12,33 @@ GridLayout {
     readonly property var mode: fields.modeField ? fields.modeField.values : ({})
     columns: vertical ? 1 : 3
     columnSpacing: 6; rowSpacing: 6
-    SChoice {
+    RaceViewSelector {
         objectName: "historyRoundSelector"
+        backend: choices.backend; field: 0
+        visible: (choices.round.options || []).length>1
         model: choices.round.options || []; currentIndex: choices.round.value || 0
         enabled: choices.round.enabled !== false
-        Layout.preferredWidth: 130; Layout.fillWidth: true; Layout.minimumWidth: 0
+        Layout.preferredWidth: 170; Layout.fillWidth: true; Layout.minimumWidth: 0
         Accessible.name: qsTr("Wyniki po serii")
         onActivated: function(index){choices.backend.edit(choices.round.id,index);choices.selectionChanged()}
     }
-    SChoice {
+    RaceViewSelector {
         objectName: "teamResultsMode"
+        backend: choices.backend; field: 2
         visible: !!choices.fields.modeField && !choices.fields.active
-        model: [qsTr("Ostatni skok"),qsTr("Drużyny"),qsTr("Pełne wyniki")]
+        model: [qsTr("Tylko wyniki bieżącej drużyny"),qsTr("Tylko suma drużyny"),qsTr("Pokaż pełne wyniki")]
         currentIndex: appearance.teamResultsMode
-        Layout.preferredWidth: 150; Layout.fillWidth: true; Layout.minimumWidth: 0
+        Layout.preferredWidth: 230; Layout.fillWidth: true; Layout.minimumWidth: 0
         Accessible.name: qsTr("Widok wyników drużynowych")
-        onActivated: {appearance.teamResultsMode=currentIndex;choices.selectionChanged()}
+        onActivated: function(index){appearance.teamResultsMode=index;choices.selectionChanged()}
     }
-    SChoice {
+    RaceViewSelector {
         objectName: "historyStandingsMode"
+        backend: choices.backend; field: 1
         visible: !!choices.fields.modeField
         model: choices.mode.options || []; currentIndex: choices.mode.value || 0
         enabled: choices.mode.enabled !== false
-        Layout.preferredWidth: 125; Layout.fillWidth: true; Layout.minimumWidth: 0
+        Layout.preferredWidth: 190; Layout.fillWidth: true; Layout.minimumWidth: 0
         Accessible.name: qsTr("Klasyfikacja drużynowa lub indywidualna")
         onActivated: function(index){choices.backend.edit(choices.mode.id,index);choices.selectionChanged()}
     }

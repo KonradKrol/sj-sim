@@ -54,11 +54,14 @@ QVariant QuickTableModel::data(const QModelIndex &index, int role) const {
             const auto item = cell(index.row(), c);
             const auto flags = item.flags();
             QString text=item.data().toString();
-            if(teamSetup && c==1){QStringList members;for(int r=0;r<m_source->rowCount(first);++r)members.append(m_source->index(r,1,first).data().toString());text=members.join(" · ");}
-            cells.append(QVariantMap{{"text",text}, {"value",item.data(Qt::EditRole)},
+            QStringList members;
+            if(teamSetup && c==1){for(int r=0;r<m_source->rowCount(first);++r)members.append(m_source->index(r,1,first).data().toString());text=members.join(" · ");}
+            QVariantMap cellData{{"text",text}, {"value",item.data(Qt::EditRole)},
                 {"icon",quickDecoration(item.data(Qt::DecorationRole))}, {"tip",item.data(Qt::ToolTipRole)},
                 {"editable",bool(flags & Qt::ItemIsEditable)}, {"enabled",bool(flags & Qt::ItemIsEnabled)},
-                {"checkable",bool(flags & Qt::ItemIsUserCheckable) && item.data(Qt::CheckStateRole).isValid()}, {"checked",item.data(Qt::CheckStateRole).toInt() == Qt::Checked}});
+                {"checkable",bool(flags & Qt::ItemIsUserCheckable) && item.data(Qt::CheckStateRole).isValid()}, {"checked",item.data(Qt::CheckStateRole).toInt() == Qt::Checked}};
+            if(teamSetup && c==1)cellData["members"]=members;
+            cells.append(cellData);
         }
         return cells;
     }

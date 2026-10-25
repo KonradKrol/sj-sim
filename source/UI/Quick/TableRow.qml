@@ -43,7 +43,7 @@ Rectangle {
     Accessible.role: Accessible.ListItem
     Accessible.name: (rowCells || []).map(function(cell) { return cell.text }).join(", ") + (statusText ? ", " + statusText : "") + (latestJump ? ", " + qsTr("Ostatnio oddany skok") : "")
     Accessible.selected: rowSelected
-    height: tableView.teamSetup ? Math.max(24,Theme.bodyMetrics.height+8) : Theme.compact ? Math.max(24,Theme.bodyMetrics.height+4) : Math.max(tableView.compact ? 32 : 40, Theme.body * (tableView.compact ? 2.3 : 2.7))
+    height: tableView.teamSetup ? Math.max(Math.ceil(Math.max(24,Theme.bodyMetrics.height+8)*1.2),Theme.captionMetrics.height*Math.max(2,Math.ceil(((rowCells[1] || {}).members || []).length/2))+8) : Theme.compact ? Math.max(24,Theme.bodyMetrics.height+4) : Math.max(tableView.compact ? 32 : 40, Theme.body * (tableView.compact ? 2.3 : 2.7))
     color: eliminated ? Theme.raised : sureAdvanced ? Theme.advancementSurface : rowSelected ? Theme.selection : mouse.containsMouse ? Theme.raised : teamHeader ? Theme.raised : teamMember ? Theme.surface : tintColor()
     border.width: latestJump ? 1 : 0
     border.color: Theme.accent
@@ -67,7 +67,22 @@ Rectangle {
                     anchors.rightMargin: Theme.compact ? 4 : 10
                     spacing: Theme.compact ? 4 : 8
                     Image { visible: !!cell.fields.icon; source: cell.fields.icon || ""; sourceSize.width: 32; sourceSize.height: 24; width: visible ? 30 : 0; height: 24; anchors.verticalCenter: parent.verticalCenter; fillMode: Image.PreserveAspectFit }
-                    Text { visible: !cell.fields.checkable; text: cell.fields.text || ""; color: row.eliminated ? Theme.muted : Theme.ink; font.pointSize: row.teamMember ? Theme.caption : Theme.body; font.weight: row.teamHeader ? Font.DemiBold : Font.Normal; font.family: /^[-+−]?\d+([.,]\d+)?\s*(m|pkt|%|m\/s)?$/.test(text) ? Theme.mono : Theme.bodyFamily; width: parent.width - (cell.fields.icon ? 38 : 0) - (cell.qualificationBadge ? 46 : 0); height: parent.height; horizontalAlignment: cell.columnIndex > 0 && font.family === Theme.mono ? Text.AlignRight : Text.AlignLeft; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight }
+                    Text { visible: !cell.fields.checkable && !(row.tableView.teamSetup && cell.columnIndex===1 && (cell.fields.members || []).length); text: row.tableView.teamSetup && cell.columnIndex===1 && !cell.fields.text ? qsTr("Brak zawodników") : cell.fields.text || ""; color: row.eliminated ? Theme.muted : Theme.ink; font.pointSize: row.teamMember ? Theme.caption : Theme.body; font.weight: row.teamHeader ? Font.DemiBold : Font.Normal; font.family: /^[-+−]?\d+([.,]\d+)?\s*(m|pkt|%|m\/s)?$/.test(text) ? Theme.mono : Theme.bodyFamily; width: parent.width - (cell.fields.icon ? 38 : 0) - (cell.qualificationBadge ? 46 : 0); height: parent.height; horizontalAlignment: cell.columnIndex > 0 && font.family === Theme.mono ? Text.AlignRight : Text.AlignLeft; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight }
+                    Grid {
+                        id: squad
+                        visible: row.tableView.teamSetup && cell.columnIndex===1
+                        width: parent.width; height: parent.height
+                        columns: 2
+                        readonly property var members: cell.fields.members || []
+                        Repeater {
+                            model: squad.visible ? squad.members : []
+                            Row {
+                                width: squad.width/2; height: squad.height/Math.max(1,Math.ceil(squad.members.length/2))
+                                Text { width: 18; height: parent.height; text: index+1; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption; verticalAlignment: Text.AlignVCenter }
+                                Text { width: parent.width-22; height: parent.height; text: modelData; color: Theme.ink; font.pointSize: Theme.caption; elide: Text.ElideRight; verticalAlignment: Text.AlignVCenter }
+                            }
+                        }
+                    }
                     Label { objectName: cell.qualificationBadge ? "qualificationBadge-"+row.rowIndex : ""; visible: cell.qualificationBadge; text: row.luckyLoser ? (row.qualificationState===0 ? "LL Q" : "LL") : "Q"; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.body; font.weight: Font.DemiBold; width: 38; height: parent.height; verticalAlignment: Text.AlignVCenter; horizontalAlignment: Text.AlignHCenter; Accessible.name: row.luckyLoser ? qsTr("Aktualne miejsce lucky losera") : qsTr("Awans do konkursu"); ToolTip.visible: badgeHover.containsMouse; ToolTip.text: row.luckyLoser ? qsTr("Aktualne miejsce lucky losera") : row.qualificationTarget.length ? qsTr("Awans do konkursu · %1").arg(row.qualificationTarget) : qsTr("Awans do konkursu"); MouseArea { id: badgeHover; anchors.fill: parent; hoverEnabled: true; acceptedButtons: Qt.NoButton } }
                     Text { visible: !!cell.fields.checkable; text: cell.fields.checked ? "☑" : "☐"; color: Theme.accent; font.pointSize: Theme.body; height: parent.height; verticalAlignment: Text.AlignVCenter }
                 }

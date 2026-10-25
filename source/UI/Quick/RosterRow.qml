@@ -15,8 +15,9 @@ Item {
     property bool activeSlot: true
     property bool ordered: false
     property var viewport
+    readonly property bool reserveBoundary: ordered && !backend.membership && backend.activeLimit>0 && position===backend.activeLimit+1
     signal moveRequested()
-    implicitHeight: Theme.compact ? Math.max(30,Theme.bodyMetrics.height+(ordered && backend.activeLimit > 0 ? Theme.captionMetrics.height : 0)+6) : Math.max(backend.activeLimit > 0 ? 56 : 44,Theme.bodyMetrics.height+16)
+    implicitHeight: (Theme.compact ? Math.max(30,Theme.bodyMetrics.height+(ordered && backend.activeLimit > 0 ? Theme.captionMetrics.height : 0)+6) : Math.max(backend.activeLimit > 0 ? 56 : 44,Theme.bodyMetrics.height+16))+(reserveBoundary ? 8 : 0)
     objectName: (ordered ? "roster-entry-" : "roster-candidate-") + athleteId
     activeFocusOnTab: true
     Accessible.role: ordered ? Accessible.ListItem : Accessible.CheckBox
@@ -31,10 +32,11 @@ Item {
             backend.step(event.key === Qt.Key_Up ? -1 : 1);event.accepted=true
         }
     }
-    Rectangle { anchors.fill: parent; radius: 6; color: row.marked ? Theme.selection : row.activeSlot ? Theme.surface : Theme.raised; border.color: row.activeFocus ? Theme.accent : Theme.divider; border.width: row.activeFocus ? 2 : 1 }
+    Rectangle { anchors.fill: parent; anchors.topMargin: row.reserveBoundary ? 8 : 0; radius: 6; color: row.marked ? Theme.selection : row.activeSlot ? Theme.surface : Theme.raised; border.color: row.activeFocus ? Theme.accent : Theme.divider; border.width: row.activeFocus ? 2 : 1 }
+    Rectangle { objectName: "reserveDivider"; visible: row.reserveBoundary; anchors.top: parent.top; anchors.topMargin: 2; width: parent.width; height: 1; color: Theme.outline }
     MouseArea { anchors.fill: parent; onClicked: {row.forceActiveFocus();row.ordered ? row.backend.mark(row.athleteId,mouse.modifiers) : row.backend.toggle(row.athleteId)} }
     RowLayout {
-        anchors.fill: parent; anchors.leftMargin: 6; anchors.rightMargin: 8
+        anchors.fill: parent; anchors.topMargin: row.reserveBoundary ? 8 : 0; anchors.leftMargin: 6; anchors.rightMargin: 8
         spacing: Theme.compact ? 4 : 8
         SCheck { visible: !row.ordered; checked: row.included; text: ""; Layout.preferredWidth: 30; Accessible.name: row.athleteName; onClicked: row.backend.toggle(row.athleteId) }
         SButton {
