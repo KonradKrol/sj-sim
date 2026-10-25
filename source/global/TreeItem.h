@@ -15,6 +15,7 @@ private:
     QVector<QVariant> dataVector;
 public:
     void addChild(TreeItem * child);
+    void moveChild(int from, int to) { childItems.move(from, to); }
     QVariant data(int index) const;
     TreeItem * getParentItem();
     TreeItem * getChildItem(int index);

@@ -144,6 +144,15 @@ void QuickTableModel::sync() {
                       << connect(m_source,&QAbstractItemModel::dataChanged,this,[this] {
                           if(!m_rows.isEmpty()) emit dataChanged(index(0),index(m_rows.size()-1));
                       });
+        if(m_source->inherits("TeamsSquadsTreeModel")) {
+            auto moving=std::make_shared<bool>(false);
+            m_connections << connect(m_source,&QAbstractItemModel::rowsAboutToBeMoved,this,[this,moving](const QModelIndex &parent,int first,int last,const QModelIndex &destination,int target){
+                *moving=!m_frozen && !parent.isValid() && !destination.isValid() && m_filter.isEmpty() && !m_view->rootIndex().isValid() && last==first && m_rows.size()==m_source->rowCount();
+                if(*moving)*moving=beginMoveRows({},first,last,{},target);
+            }) << connect(m_source,&QAbstractItemModel::rowsMoved,this,[this,moving](const QModelIndex &,int first,int,const QModelIndex &,int target){
+                if(!*moving){rebuild();return;}m_rows.move(first,target>first?target-1:target);*moving=false;endMoveRows();emit cursorChanged();
+            });
+        } else m_connections << connect(m_source,&QAbstractItemModel::rowsMoved,this,update);
         if(m_source->inherits("PointsForPlacesTableModel")) {
             const auto natural=[this](const QModelIndex &parent){if(m_frozen || parent.isValid() || m_view->rootIndex().isValid() || !m_filter.isEmpty() || m_rows.size()!=m_source->rowCount())return false;for(int i=0;i<m_rows.size();++i)if(m_rows[i].parent().isValid() || m_rows[i].row()!=i)return false;return true;};
             auto inserting=std::make_shared<bool>(false),removing=std::make_shared<bool>(false);

@@ -180,3 +180,14 @@ void TeamsSquadsTreeModel::setJumpersInTeam(int newJumpersInTeam)
 {
     jumpersInTeam = newJumpersInTeam;
 }
+
+
+bool TeamsSquadsTreeModel::moveTeam(int from, int to)
+{
+    if(!teams || from<0 || to<0 || from>=teams->size() || to>=teams->size() || from==to || rootItem->childCount()!=teams->size())return false;
+    if(!beginMoveRows({},from,from,{},to>from?to+1:to))return false;
+    teams->move(from,to);
+    rootItem->moveChild(from,to);
+    endMoveRows();
+    return true;
+}

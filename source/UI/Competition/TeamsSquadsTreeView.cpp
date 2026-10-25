@@ -1,14 +1,6 @@
 #include "TeamsSquadsTreeView.h"
 #include "ui_TeamsSquadsTreeView.h"
 
-namespace {
-template<typename T>
-void swapVectorItems(QVector<T> *items, int first, int second)
-{
-    qSwap((*items)[first], (*items)[second]);
-}
-}
-
 TeamsSquadsTreeView::TeamsSquadsTreeView(TeamsSquadsTreeModel *model, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TeamsSquadsTreeView),
@@ -65,40 +57,16 @@ void TeamsSquadsTreeView::onRemoveActionTriggered()
 
 void TeamsSquadsTreeView::onUpActionTriggered()
 {
-    if(ui->treeView->selectionModel()->selectedRows().count() > 0){
-        QModelIndex index = ui->treeView->selectionModel()->selectedRows().at(0);
-        TreeItem * item = static_cast<TreeItem*>(index.internalPointer());
-        if(item->getParentItem() == model->getRootItem() && item->row() > 0){
-            swapVectorItems(model->getTeams(), item->row(), item->row() - 1);
-            emit needToUpdateModel();
-
-            QItemSelectionModel * selectionModel = ui->treeView->selectionModel();
-            selectionModel->clearSelection();
-            selectionModel->select(model->index(index.row() - 1, index.column(), index.parent()), QItemSelectionModel::Select);
-            selectionModel->select(model->index(index.row() - 1, index.column() + 1, index.parent()), QItemSelectionModel::Select);
-            selectionModel->select(model->index(index.row() - 1, index.column() + 2, index.parent()), QItemSelectionModel::Select);
-            ui->treeView->setSelectionModel(selectionModel);
-        }
-    }
+    const auto rows=ui->treeView->selectionModel()->selectedRows();
+    if(rows.isEmpty() || rows.first().parent().isValid())return;
+    model->moveTeam(rows.first().row(),rows.first().row()-1);
 }
 
 void TeamsSquadsTreeView::onDownActionTriggered()
 {
-    if(ui->treeView->selectionModel()->selectedRows().count() > 0){
-        QModelIndex index = ui->treeView->selectionModel()->selectedRows().at(0);
-        TreeItem * item = static_cast<TreeItem*>(index.internalPointer());
-        if(item->getParentItem() == model->getRootItem() && item->row() < model->rowCount() - 1){
-            swapVectorItems(model->getTeams(), item->row(), item->row() + 1);
-            emit needToUpdateModel();
-
-            QItemSelectionModel * selectionModel = ui->treeView->selectionModel();
-            selectionModel->clearSelection();
-            selectionModel->select(model->index(index.row() + 1, index.column(), index.parent()), QItemSelectionModel::Select);
-            selectionModel->select(model->index(index.row() + 1, index.column() + 1, index.parent()), QItemSelectionModel::Select);
-            selectionModel->select(model->index(index.row() + 1, index.column() + 2, index.parent()), QItemSelectionModel::Select);
-            ui->treeView->setSelectionModel(selectionModel);
-        }
-    }
+    const auto rows=ui->treeView->selectionModel()->selectedRows();
+    if(rows.isEmpty() || rows.first().parent().isValid())return;
+    model->moveTeam(rows.first().row(),rows.first().row()+1);
 }
 
 void TeamsSquadsTreeView::setModel(TeamsSquadsTreeModel *newModel)

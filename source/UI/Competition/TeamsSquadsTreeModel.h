@@ -35,6 +35,7 @@ private:
     TreeItem * rootItem;
 public:
     void setupTreeItems();
+    bool moveTeam(int from, int to);
 public:
     int getJumpersInTeam() const;
     void setJumpersInTeam(int newJumpersInTeam);
