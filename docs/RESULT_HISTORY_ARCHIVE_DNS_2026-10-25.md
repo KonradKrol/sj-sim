@@ -10,11 +10,11 @@ Lista kalendarzy archiwum jest synchronizowana po utworzeniu widoku i zmianach k
 
 ## 2. Wyniki po wybranej serii
 
-W konkursie pojawia się niewielki wybór **Teraz / Po N serii**. Dostępne są serie już zakończone; „Teraz” obejmuje bieżący przebieg. Dla małych ekranów wybór jest na górze, na szerszych w nagłówku wyników. Podgląd wcześniejszej serii:
+W konkursie pojawia się niewielki wybór **Teraz / Po N serii**. Dostępne są serie już zakończone; „Teraz” obejmuje bieżący przebieg. Wybory są teraz w pasku aplikacji: bezpośrednio na szerokim ekranie i pod „Wyniki” w mniejszym oknie. Podgląd wcześniejszej serii:
 
 - blokuje ręczne skakanie, DNS, automatyczną symulację, przechodzenie dalej i działania sterujące;
-- ukrywa bieżącego zawodnika, aktualną listę startową, status rozgrywania i przyciski konkursu, aby nie mieszać ich z historycznymi danymi;
-- pokazuje „Podgląd”; wybór „Teraz” odtwarza poprzednie stany dostępności kontrolek;
+- przygasa i blokuje bieżącego zawodnika, listę startową, status rozgrywania i przyciski, zachowując ich rozmieszczenie;
+- udostępnia „Wróć do konkursu”; powrót odtwarza poprzednie stany dostępności kontrolek;
 - wykorzystuje oddzielne kopie wyników, obcięte do wybranej serii, z jej wagami/resetami i przeliczoną kolejnością oraz miejscami ex aequo.
 
 Ten sam mechanizm działa w konkursach indywidualnych, KO i drużynowych. W podglądzie nie pokazuje się bieżąca tabela grupy KO jako rzekomo historyczna. Wyniki drużyn zachowują hierarchię drużyna–zawodnicy i punkty serii.
@@ -63,3 +63,5 @@ Wyniki końcowe: scenariusze historii/DNS dla wszystkich trzech typów zawodów 
 4. W drużynówce przełącz „Indywidualnie”, także przy wagach lub resecie. Suma ma pozostać sumą surowych punktów zawodnika. Sprawdź ten widok również po zakończeniu i w archiwum.
 5. W archiwum klasyfikacji wybierz pierwszy, potem kolejny konkurs; późniejsze punkty mają pojawić się dopiero przy późniejszym stanie.
 6. W „Skok” pomiń próbę. Powinno być DNS i 0 pkt; drużyna nie może otrzymać DSQ, a pozostali członkowie muszą kontynuować.
+
+Dalsze poprawki sterowania, oznaczeń i wydajności opisano w [kolejnym etapie](RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md).
