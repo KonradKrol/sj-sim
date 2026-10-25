@@ -72,6 +72,9 @@
 <file>TrackMark.qml</file>
 <file>Workspace.qml</file>
 <file>KoGroupsWorkspace.qml</file>
+<file>KoAthletePicker.qml</file>
+<file>KoMemberSlot.qml</file>
+<file>KoDragArea.qml</file>
 <file>RosterWorkspace.qml</file>
 <file>RosterPresets.qml</file>
 <file>ProjectedControl.qml</file>

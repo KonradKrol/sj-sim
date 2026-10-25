@@ -1321,7 +1321,7 @@ static void seasonWorkflowRegressions(MainWindow &main) {
 static void koGroupingRegressions(MainWindow &main) {
     main.show();main.resize(1024,720);
     QVector<Jumper *> athletes;for(auto &jumper:GlobalDatabase::get()->getEditableGlobalJumpers())athletes.append(&jumper);
-    athletes.resize(qMin(31,athletes.size()));check(athletes.size()>10,"KO grouping fixture");
+    athletes.resize(qMin(QCoreApplication::arguments().contains("--ko-stress")?145:31,athletes.size()));check(athletes.size()>10,"KO grouping fixture");
     CompetitionConfigWindow config(CompetitionConfigWindow::SingleCompetition);config.setCompetitionJumpers(athletes);
     CompetitionRules rules=GlobalDatabase::get()->getEditableCompetitionRules().first();RoundInfo first(athletes.size(),true);first.setKO(true);first.setCountInKOGroup(2);rules.setCompetitionType(CompetitionRules::Individual);rules.setRounds({first,RoundInfo(16,true)});
     config.getCompetitionRulesEditor()->setCompetitionRules(&rules);config.getCompetitionRulesEditor()->fillCompetitionRulesInputs();config.show();QTest::qWait(100);
@@ -1341,7 +1341,9 @@ static void koGroupingRegressions(MainWindow &main) {
     int idleUpdates=0;QObject::connect(koNode,&QuickNode::valuesChanged,&config,[&idleUpdates](){++idleUpdates;});
     auto *methodPopup=method->property("popup").value<QObject *>();check(methodPopup,"KO choice has a popup");
     QMetaObject::invokeMethod(methodPopup,"open");QTest::qWait(300);
-    for(int refresh=0;refresh<5;++refresh)bridge->refresh();
+    QElapsedTimer refreshTiming;refreshTiming.start();
+    for(int refresh=0;refresh<20;++refresh)bridge->refresh();
+    qInfo()<<"KO idle refresh, 20 iterations, ms:"<<refreshTiming.elapsed()<<"QML objects:"<<view->rootObject()->findChildren<QObject *>().size();
     check(idleUpdates==0,"idle bridge refresh preserves dedicated KO node instead of rebuilding all groups");
     check(methodPopup->property("visible").toBool(),"KO method popup stays open across periodic refreshes");
     QMetaObject::invokeMethod(methodPopup,"close");
@@ -1351,6 +1353,36 @@ static void koGroupingRegressions(MainWindow &main) {
     auto *member=item(view->rootObject(),"koMember-"+before[0].getIDStr()+"-0");check(member,"group members are directly editable");
     QMetaObject::invokeMethod(member,"activated",Q_ARG(int,athletes.indexOf(second)));QTest::qWait(100);
     const auto after=config.getCompetitionGroups();check(after[0].getJumpers().first()==second && after[1].getJumpers().first()==firstMember,"inline member choice swaps both occupied slots without a dialog or duplication");
+    member=item(view->rootObject(),"koMember-"+before[0].getIDStr()+"-0");
+    auto at=member->mapToItem(view->rootObject(),member->boundingRect().center()).toPoint();
+    QTest::mouseClick(view,Qt::LeftButton,Qt::NoModifier,at);QTest::qWait(80);
+    auto *picker=view->rootObject()->findChild<QObject *>("koAthletePicker");check(picker && picker->property("visible").toBool(),"clicking a KO member opens searchable athlete picker");
+    auto *search=item(view->quickWindow()->contentItem(),"koAthleteSearch");check(search,"KO athlete search field exists");
+    search->setProperty("text",QStringLiteral("zzzz-no-athlete"));QTest::qWait(30);
+    check(picker->property("matches").toList().isEmpty(),"unmatched KO athlete query produces an empty result list");
+    search->setProperty("text",firstMember->getNameAndSurname());QTest::qWait(300);
+    check(search->property("text").toString()==firstMember->getNameAndSurname() && picker->property("visible").toBool(),"KO search and popup survive periodic refreshes");
+    const auto matches=picker->property("matches").toList();check(matches.contains(athletes.indexOf(firstMember)),"athlete search retains original pool indices");
+    QTest::keyClick(view,Qt::Key_Return);QTest::qWait(100);
+    check(!picker->property("visible").toBool() && config.getCompetitionGroups()[0].getJumpers().first()==firstMember,"keyboard search selection swaps the chosen athlete into the group");
+    auto *from=item(view->rootObject(),"koMember-"+before[0].getIDStr()+"-0"),*to=item(view->rootObject(),"koMember-"+before[1].getIDStr()+"-0");
+    check(from && to,"drag fixture has two visible group slots");
+    const auto begin=from->mapToItem(view->rootObject(),QPointF(12,from->height()/2)).toPoint(),end=to->mapToItem(view->rootObject(),to->boundingRect().center()).toPoint();
+    QTest::mousePress(view,Qt::LeftButton,Qt::NoModifier,begin);
+    for(int step=1;step<=10;++step){const QPoint point=begin+(end-begin)*step/10;QMouseEvent move(QEvent::MouseMove,point,view->mapToGlobal(point),Qt::NoButton,Qt::LeftButton,Qt::NoModifier);QApplication::sendEvent(view,&move);QTest::qWait(15);}
+    auto *gesture=item(view->rootObject(),"koDragArea");check(gesture && gesture->property("dragging").toBool(),"KO handle starts a drag");
+    QTest::mouseRelease(view,Qt::LeftButton,Qt::NoModifier,end);QTest::qWait(100);
+    check(config.getCompetitionGroups()[0].getJumpers().first()==second && config.getCompetitionGroups()[1].getJumpers().first()==firstMember,"real drag swaps occupied KO slots without shifting other athletes");
+    auto *scrollingGrid=item(view->rootObject(),"koGroupsGrid");
+    auto *handle=item(view->rootObject(),"koMember-"+before[0].getIDStr()+"-0");
+    const auto scrollStart=handle->mapToItem(view->rootObject(),QPointF(12,handle->height()/2)).toPoint(),scrollEnd=scrollingGrid->mapToItem(view->rootObject(),QPointF(20,scrollingGrid->height()-4)).toPoint();
+    const auto unchanged=config.getCompetitionGroups()[0].getJumpers().first();
+    QTest::mousePress(view,Qt::LeftButton,Qt::NoModifier,scrollStart);
+    QMouseEvent scrollMove(QEvent::MouseMove,scrollEnd,view->mapToGlobal(scrollEnd),Qt::NoButton,Qt::LeftButton,Qt::NoModifier);QApplication::sendEvent(view,&scrollMove);QTest::qWait(300);
+    check(scrollingGrid->property("contentY").toDouble()>0 && gesture->property("dragging").toBool(),"KO drag autoscroll retains the dragged athlete when its original row leaves the viewport");
+    QTest::keyClick(view,Qt::Key_Escape);QTest::mouseRelease(view,Qt::LeftButton,Qt::NoModifier,scrollEnd);QTest::qWait(30);
+    check(config.getCompetitionGroups()[0].getJumpers().first()==unchanged,"Escape cancels KO drag without changing group membership");
+    scrollingGrid->setProperty("contentY",0);
     bridge->assignKoMember(bridge->root()->children().first().value<QuickNode *>()->values().value("id").toInt(),before[0].getIDStr(),-1,QuickRoster::key(firstMember));
     render(&config,"ko-groups-workspace",true);
     auto *grid=item(view->rootObject(),"koGroupsGrid");check(grid && grid->height()>100,"KO groups use the remaining viewport on a small screen");
