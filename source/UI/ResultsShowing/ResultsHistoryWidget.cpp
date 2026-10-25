@@ -61,7 +61,7 @@ ResultsHistoryWidget::ResultsHistoryWidget(CompetitionInfo *competition,bool liv
     preview=new JumperCompetitionResultsWidget(this);preview->hide();layout->addWidget(preview);
     connect(table,&QTreeView::clicked,this,&ResultsHistoryWidget::showJump);
     connect(table,&QTreeView::doubleClicked,this,&ResultsHistoryWidget::showJump);
-    const auto update=[this]{signature.clear();preview->hide();applyPause();if(active()){table->show();rebuild();}else{table->hide();preview->setJumperResult(nullptr);}emit changed();};
+    const auto update=[this]{signature.clear();preview->hide();applyPause();if(!active())preview->setJumperResult(nullptr);refresh(completedLimit);emit changed();};
     connect(rounds,qOverload<int>(&QComboBox::currentIndexChanged),this,update);connect(mode,qOverload<int>(&QComboBox::currentIndexChanged),this,update);
     refresh();
 }
@@ -69,9 +69,12 @@ bool ResultsHistoryWidget::individualRanking() const {return mode->isVisibleTo(c
 bool ResultsHistoryWidget::paused() const {return live && rounds->currentData().toInt()>0;}
 bool ResultsHistoryWidget::active() const {return !live || paused() || individualRanking();}
 void ResultsHistoryWidget::refresh(int completedRounds) {
+    completedLimit=completedRounds;
     int count=0;const int size=competition->getRules().getCompetitionType()==CompetitionRules::Team?qMax(1,competition->getRules().getJumpersInTeamCount()):1;
     for(const auto &result:competition->getResultsReference().getResultsReference())count=qMax(count,int((result.getJumps().size()+size-1)/size));
+    const int recorded=count;
     if(completedRounds>=0)count=qMin(count,completedRounds);
+    if(live && count>0 && recorded==count)--count;
     if(rounds->count()!=count+1){const QSignalBlocker block(rounds);const int selected=rounds->currentData().toInt();rounds->clear();rounds->addItem(live?tr("Teraz"):tr("Wszystkie serie"),0);for(int r=1;r<=count;++r)rounds->addItem(tr("Po %1 serii").arg(r),r);rounds->setCurrentIndex(qBound(0,selected,count));}
     available=count;table->setVisible(active());if(!active())preview->hide();
     applyPause();
@@ -81,25 +84,30 @@ void ResultsHistoryWidget::refresh(int completedRounds) {
 void ResultsHistoryWidget::rebuild() {
     preview->hide();preview->setJumperResult(nullptr);
     snapshot=afterRound(competition->getResultsReference(),rounds->currentData().toInt(),individualRanking(),competition);
-    model->clear();const bool team=competition->getRules().getCompetitionType()==CompetitionRules::Team && !individualRanking();
+    auto *previousModel=model;
+    auto *nextModel=new QStandardItemModel(this);
+    const bool team=competition->getRules().getCompetitionType()==CompetitionRules::Team && !individualRanking();
     table->setProperty("historyTeam",team);
     int n=rounds->currentData().toInt();if(n==0){n=1;for(const auto &result:snapshot.getResultsReference()){const int size=result.getType()==CompetitionSingleResult::TeamResult?qMax(1,competition->getRules().getJumpersInTeamCount()):1;n=qMax(n,int((result.getJumps().size()+size-1)/size));}}
     QStringList headers=team?QStringList{tr("Poz."),tr("Drużyna"),tr("Zawodnik"),tr("Suma"),QString()}:QStringList{tr("Poz."),tr("Zawodnik"),tr("Suma")};
-    for(int r=1;r<=n;++r){if(!team)headers.append(tr("%1 · m").arg(r));headers.append(tr("%1 · pkt").arg(r));}model->setHorizontalHeaderLabels(headers);
+    for(int r=1;r<=n;++r){if(!team)headers.append(tr("%1 · m").arg(r));headers.append(tr("%1 · pkt").arg(r));}nextModel->setHorizontalHeaderLabels(headers);
     const auto row=[&](CompetitionSingleResult &result,int resultIndex,bool child){
-        QStringList values=team?QStringList{child?QString():QString::number(result.getPosition()),child?QString():result.getTeam()->getCountryCode(),child?result.getJumper()->getNameAndSurname():QString(),QString::number(result.getPointsSum(),'f',1),QString()}:QStringList{QString::number(result.getPosition()),result.getJumper()->getNameAndSurname(),QString::number(result.getPointsSum(),'f',1)};
+        QStringList values=team?QStringList{child?QString():result.isTeamDisqualified()?QStringLiteral("DSQ"):QString::number(result.getPosition()),child?QString():result.getTeam()->getCountryCode(),child?result.getJumper()->getNameAndSurname():QString(),result.isTeamDisqualified()?QString::fromUtf8("—"):QString::number(result.getPointsSum(),'f',1),QString()}:QStringList{QString::number(result.getPosition()),result.getJumper()->getNameAndSurname(),QString::number(result.getPointsSum(),'f',1)};
         const int perRound=team&&!child?qMax(1,competition->getRules().getJumpersInTeamCount()):1;
-        const auto &jumps=result.getJumpsReference();for(int r=0;r<n;++r){double points=0;bool has=false;for(int i=r*perRound;i<qMin((r+1)*perRound,int(jumps.size()));++i){points+=jumps[i].getPoints();has=true;}if(!team)values.append(has?(jumps[r].getDNS()?QStringLiteral("DNS"):QString::number(jumps[r].getDistance(),'f',1)):QString());values.append(has?QString::number(points,'f',1):QString());}
+        const auto &jumps=result.getJumpsReference();for(int r=0;r<n;++r){double points=0;bool has=false;for(int i=r*perRound;i<qMin((r+1)*perRound,int(jumps.size()));++i){points+=jumps[i].getPoints();has=true;}if(!team)values.append(has?(jumps[r].getDNS()?QStringLiteral("DNS"):jumps[r].getDSQ()?QStringLiteral("DSQ"):QString::number(jumps[r].getDistance(),'f',1)):QString());values.append(has?(team && child && jumps[r].getDNS()?QStringLiteral("DNS"):team && child && jumps[r].getDSQ()?QStringLiteral("DSQ"):QString::number(points,'f',1)):QString());}
         QList<QStandardItem *> items;for(const auto &value:values){auto *item=new QStandardItem(value);item->setFlags(Qt::ItemIsEnabled|Qt::ItemIsSelectable);items.append(item);}items[0]->setData(resultIndex,Qt::UserRole);items[0]->setData(snapshot.containsLatestJump(result),CompetitionAdvancement::LatestJumpRole);const int column=team&&child?2:1;const auto country=team&&!child?result.getTeam()->getCountryCode():result.getJumper()->getCountryCode();items[column]->setIcon(QIcon(QDir::current().absoluteFilePath("flags/"+CountryCodes::toIso(country)+".svg")));return items;
     };
-    for(int i=0;i<snapshot.getResultsReference().size();++i){auto &result=snapshot.getResultsReference()[i];auto items=row(result,i,false);model->appendRow(items);if(team)for(auto &member:result.getTeamJumpersResultsReference())items[0]->appendRow(row(member,i,true));}
-    table->expandAll();table->resizeColumnToContents(0);
+    for(int i=0;i<snapshot.getResultsReference().size();++i){auto &result=snapshot.getResultsReference()[i];auto items=row(result,i,false);nextModel->appendRow(items);if(team)for(auto &member:result.getTeamJumpersResultsReference())items[0]->appendRow(row(member,i,true));}
+    // Expose only the finished model; row-by-row signals used to reset Quick hundreds of times.
+    auto *previousSelection=table->selectionModel();
+    {const QSignalBlocker blocker(table);table->setModel(nextModel);model=nextModel;table->expandAll();table->resizeColumnToContents(0);}
+    if(previousSelection && previousSelection!=table->selectionModel())previousSelection->deleteLater();
     int selected=0;if(live && rounds->currentData().toInt()==0)for(int i=0;i<snapshot.getResultsReference().size();++i)if(snapshot.containsLatestJump(snapshot.getResultsReference()[i])){selected=i;break;}
-    if(model->rowCount())showJump(model->index(selected,0));emit changed();
+    if(model->rowCount())showJump(model->index(selected,0));emit changed();previousModel->deleteLater();
 }
 void ResultsHistoryWidget::showJump(const QModelIndex &index) {
     const int requested=table->property("historyRoundRequested").toInt();table->setProperty("historyRoundRequested",0);
-    if(!index.isValid())return;const auto parent=index.parent();const int resultIndex=(parent.isValid()?parent:index.sibling(index.row(),0)).data(Qt::UserRole).toInt();
+    if(!index.isValid() || index.model()!=model)return;const auto parent=index.parent();const int resultIndex=(parent.isValid()?parent:index.sibling(index.row(),0)).data(Qt::UserRole).toInt();
     if(resultIndex<0 || resultIndex>=snapshot.getResultsReference().size())return;
     auto *result=&snapshot.getResultsReference()[resultIndex];if(parent.isValid()){if(index.row()>=result->getTeamJumpersResultsReference().size())return;result=&result->getTeamJumpersResultsReference()[index.row()];}
     if(result->getType()==CompetitionSingleResult::TeamResult){if(result->getTeamJumpersResultsReference().isEmpty())return;result=result->getTeamJumperResult(result->getJumpsReference().last().getJumper());if(!result)return;}

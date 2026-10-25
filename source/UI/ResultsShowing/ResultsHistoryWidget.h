@@ -33,6 +33,7 @@ private:
     JumperCompetitionResultsWidget *preview;
     QString signature;
     int available=0;
+    int completedLimit=-1;
     bool wasPaused=false;
     QVector<QPair<QPointer<QWidget>,bool>> disabledControls;
     void applyPause();
