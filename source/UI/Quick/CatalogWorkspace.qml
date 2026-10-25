@@ -42,6 +42,7 @@ ColumnLayout {
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
             Layout.preferredWidth: catalog.editor ? 380 : 1000
             table: catalog.list.table || null; ownerId: catalog.list.id || -1
+            searchEnabled: true
             actions: catalog.list.tableActions || []
             expandedActions: !!catalog.fields.singleClickEdit
             singleClickOpen: !!catalog.fields.singleClickEdit

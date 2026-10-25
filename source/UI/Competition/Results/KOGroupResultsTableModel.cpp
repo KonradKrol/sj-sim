@@ -74,7 +74,11 @@ QVariant KOGroupResultsTableModel::data(const QModelIndex &index, int role) cons
         else if(index.column() == 2){
             if(KOManager->getResults()->getResultOfIndividualJumper(jumper) == nullptr)
                 return 0;
-            return QString::number(KOManager->getResults()->getResultOfIndividualJumper(jumper)->getPointsSum());
+            auto *result=KOManager->getResults()->getResultOfIndividualJumper(jumper);
+            const int round=manager?manager->getActualRound():result->getJumpsReference().size();
+            QString text=QString::number(result->getPointsSum(),'f',1);
+            if(round>0 && round<=result->getJumpsReference().size()){const auto &jump=result->getJumpsReference()[round-1];if(jump.getDNS())text+=" · DNS";else if(jump.getDSQ())text+=" · DSQ";}
+            return text;
         }
     }
     else if(role == Qt::ToolTipRole)

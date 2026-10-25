@@ -43,6 +43,7 @@ QModelIndex QuickTableModel::cell(int row, int column) const {
 }
 QVariant QuickTableModel::data(const QModelIndex &index, int role) const {
     if(m_frozen)return index.row()>=0 && index.row()<m_snapshot.size()?m_snapshot[index.row()].value(role):QVariant();
+    const bool teamSetup=m_source && m_source->inherits("TeamsSquadsTreeModel");
     const auto first = cell(index.row(),0);
     if (!first.isValid() || !m_view) return {};
     auto *selection = m_view->selectionModel();
@@ -52,7 +53,9 @@ QVariant QuickTableModel::data(const QModelIndex &index, int role) const {
         for (int c = 0; c < m_source->columnCount(first.parent()); ++c) {
             const auto item = cell(index.row(), c);
             const auto flags = item.flags();
-            cells.append(QVariantMap{{"text",item.data().toString()}, {"value",item.data(Qt::EditRole)},
+            QString text=item.data().toString();
+            if(teamSetup && c==1){QStringList members;for(int r=0;r<m_source->rowCount(first);++r)members.append(m_source->index(r,1,first).data().toString());text=members.join(" · ");}
+            cells.append(QVariantMap{{"text",text}, {"value",item.data(Qt::EditRole)},
                 {"icon",quickDecoration(item.data(Qt::DecorationRole))}, {"tip",item.data(Qt::ToolTipRole)},
                 {"editable",bool(flags & Qt::ItemIsEditable)}, {"enabled",bool(flags & Qt::ItemIsEnabled)},
                 {"checkable",bool(flags & Qt::ItemIsUserCheckable) && item.data(Qt::CheckStateRole).isValid()}, {"checked",item.data(Qt::CheckStateRole).toInt() == Qt::Checked}});
@@ -66,7 +69,7 @@ QVariant QuickTableModel::data(const QModelIndex &index, int role) const {
         }
         return false;
     case Qt::UserRole+3: { int depth=0; for(auto p=first.parent();p.isValid();p=p.parent()) ++depth; return depth; }
-    case Qt::UserRole+4: return m_source->hasChildren(first);
+    case Qt::UserRole+4: return !teamSetup && m_source->hasChildren(first);
     case Qt::UserRole+5: return qobject_cast<QTreeView *>(m_view) && static_cast<QTreeView *>(m_view.data())->isExpanded(first);
     case Qt::UserRole+6: return selection && selection->currentIndex().isValid() && selection->currentIndex().row()==first.row() && selection->currentIndex().parent()==first.parent();
     case Qt::UserRole+9: return first.data(CompetitionAdvancement::RoundStatusRole).isValid()?first.data(CompetitionAdvancement::RoundStatusRole):QVariant(-1);
@@ -112,6 +115,7 @@ QVariant QuickTableModel::data(const QModelIndex &index, int role) const {
 }
 QStringList QuickTableModel::headers() const {
     QStringList values;
+    if(m_source && m_source->inherits("TeamsSquadsTreeModel"))return {tr("Drużyna"),tr("Skład")};
     if(m_source && m_view) for(int c=0;c<m_source->columnCount(m_view->rootIndex());++c) values << m_source->headerData(c,Qt::Horizontal).toString();
     return values;
 }
@@ -161,8 +165,9 @@ void QuickTableModel::rebuild() {
             auto item=m_source->index(r,0,parent);
             bool matches=m_filter.isEmpty();
             for(int c=0;!matches && c<m_source->columnCount(parent);++c) matches=m_source->index(r,c,parent).data().toString().contains(m_filter,Qt::CaseInsensitive);
+            if(m_source->inherits("TeamsSquadsTreeModel") && !matches)for(int child=0;!matches && child<m_source->rowCount(item);++child)matches=m_source->index(child,1,item).data().toString().contains(m_filter,Qt::CaseInsensitive);
             if(matches) m_rows.append(item);
-            if(auto *tree=qobject_cast<QTreeView *>(m_view); tree && (tree->isExpanded(item) || !m_filter.isEmpty())) append(item);
+            if(auto *tree=qobject_cast<QTreeView *>(m_view); tree && !m_source->inherits("TeamsSquadsTreeModel") && (tree->isExpanded(item) || !m_filter.isEmpty())) append(item);
         }
     };
     if(m_view) append(m_view->rootIndex());

@@ -15,6 +15,8 @@ FocusScope {
     property bool followCurrent: false
     property real maximumHeight: 540
     property bool compact: false
+    property bool teamSetup: false
+    readonly property bool sortable: !plain && !teamSetup
     property bool plain: false
     property bool expandedActions: false
     property bool singleClickOpen: false
@@ -22,8 +24,8 @@ FocusScope {
     property bool restoringScroll: false
     property real savedScrollY: 0
     property int resetRevision: 0
-    property bool searchEnabled: !plain
-    property bool searchOpen: searchEnabled && !compact && width >= 320 && height >= 240
+    property bool searchEnabled: false
+    property bool searchOpen: searchEnabled && !teamSetup && !compact && width >= 320 && height >= 240
     function clearDisabledSearch() { if(!searchEnabled){searchOpen=false;if(table && table.filter.length)table.filter=""} }
     onSearchEnabledChanged: clearDisabledSearch()
     onTableChanged: clearDisabledSearch()
@@ -60,6 +62,7 @@ FocusScope {
     function columnWidth(column) {
         if(column>=visibleColumns)return 0
         if(columnWidths.length>column)return columnWidths[column]
+        if(teamSetup)return column===0?Math.min(190,Math.max(110,width*.36)):Math.max(150,width-Math.min(190,Math.max(110,width*.36)))
         if(teamResults) {
             if(column===0)return 52
             if(column===1)return Math.max(140,width-52-84-(visibleColumns-3)*76)
@@ -97,10 +100,10 @@ FocusScope {
         RowLayout {
             visible: !tableRoot.plain
             Layout.fillWidth: true
-            Layout.margins: Theme.compact ? 2 : tableRoot.compact ? 4 : 8
+            Layout.margins: Theme.compact ? 2 : (tableRoot.compact || tableRoot.teamSetup) ? 4 : 8
             Label { text: tableRoot.table && tableRoot.table.selectedCount>0 && tableRoot.height<300 ? qsTr("Zaznaczono: %1").arg(tableRoot.table.selectedCount) : qsTr("%1 pozycji").arg(tableRoot.table ? tableRoot.table.count : 0); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
             SButton {
-                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40;
+                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : (tableRoot.compact || tableRoot.teamSetup) ? 28 : 40;
                 visible: (tableRoot.expandedActions || tableRoot.width >= 380) && tableRoot.actions.length > 0 && !!tableRoot.actions[0].insert
                 objectName: tableRoot.expandedActions ? "catalogAdd" : "tableAdd-"+tableRoot.ownerId
                 text: "+"; quiet: true; Accessible.name: qsTr("Dodaj"); hint: qsTr("Dodaj")
@@ -108,17 +111,28 @@ FocusScope {
                 onClicked: ui.triggerAction(tableRoot.actions[0].id)
             }
             SButton {
-                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40; visible: !!tableRoot.table && tableRoot.table.multiple && tableRoot.table.selectedCount>0 && tableRoot.height<300; text: "×"; quiet: true; Accessible.name: qsTr("Wyczyść zaznaczenie"); onClicked: tableRoot.table.clearSelection() }
+                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : (tableRoot.compact || tableRoot.teamSetup) ? 28 : 40; visible: !!tableRoot.table && tableRoot.table.multiple && tableRoot.table.selectedCount>0 && tableRoot.height<300; text: "×"; quiet: true; Accessible.name: qsTr("Wyczyść zaznaczenie"); onClicked: tableRoot.table.clearSelection() }
             SButton {
-                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40; visible: tableRoot.searchEnabled && !tableRoot.searchOpen; text: tableRoot.compact ? "⌕" : qsTr("Szukaj"); quiet: true; Accessible.name: qsTr("Szukaj"); hint: qsTr("Szukaj"); checkable: true; onClicked: tableRoot.searchOpen = checked }
+                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : (tableRoot.compact || tableRoot.teamSetup) ? 28 : 40; visible: tableRoot.searchEnabled && (!tableRoot.searchOpen || tableRoot.teamSetup); text: tableRoot.compact || tableRoot.teamSetup ? "⌕" : qsTr("Szukaj"); quiet: true; Accessible.name: qsTr("Szukaj"); hint: qsTr("Szukaj"); checkable: true; checked: tableRoot.searchOpen; onClicked: {tableRoot.searchOpen = checked;if(!checked && tableRoot.table)tableRoot.table.filter=""} }
             SButton {
-                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40; visible: tableRoot.compact && tableRoot.columns>4 && !tableRoot.teamResults; text: tableRoot.raceResults ? qsTr("Punkty serii") : qsTr("Skoki"); quiet: true; font.pointSize: Theme.caption; checkable: true; onClicked: tableRoot.jumpColumns=checked }
+                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : (tableRoot.compact || tableRoot.teamSetup) ? 28 : 40; visible: tableRoot.compact && tableRoot.columns>4 && !tableRoot.teamResults; text: tableRoot.raceResults ? qsTr("Punkty serii") : qsTr("Skoki"); quiet: true; font.pointSize: Theme.caption; checkable: true; onClicked: tableRoot.jumpColumns=checked }
             SButton {
-                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40; visible: !tableRoot.compact && !tableRoot.expandedActions; text: tableRoot.width < 380 ? "↗" : qsTr("Otwórz"); quiet: true; Accessible.name: qsTr("Otwórz"); hint: qsTr("Otwórz"); onClicked: if (tableRoot.table) tableRoot.table.openCurrent() }
+                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : (tableRoot.compact || tableRoot.teamSetup) ? 28 : 40; visible: (!tableRoot.compact || tableRoot.teamSetup) && !tableRoot.expandedActions; text: tableRoot.teamSetup ? qsTr("Skład") : tableRoot.width < 380 ? "↗" : qsTr("Otwórz"); quiet: true; Accessible.name: tableRoot.teamSetup ? qsTr("Edytuj skład") : qsTr("Otwórz"); hint: tableRoot.teamSetup ? qsTr("Edytuj skład wybranej drużyny") : qsTr("Otwórz"); enabled: !!tableRoot.table && (!tableRoot.teamSetup || tableRoot.table.currentRow>=0); onClicked: if (tableRoot.table) tableRoot.table.openCurrent() }
+            Repeater {
+                model: tableRoot.teamSetup ? tableRoot.actions : []
+                SButton {
+                    text: modelData.sequence.indexOf("Up")>=0 ? "↑" : modelData.sequence.indexOf("Down")>=0 ? "↓" : qsTr("Usuń")
+                    Accessible.name: modelData.text; hint: modelData.text; quiet: true; padding: 2; font.pointSize: Theme.caption
+                    Layout.preferredWidth: text.length===1 ? 26 : implicitWidth
+                    implicitHeight: Theme.controlHeight
+                    enabled: modelData.enabled
+                    onClicked: ui.triggerAction(modelData.id)
+                }
+            }
             SButton {
-                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : tableRoot.compact ? 28 : 40;
+                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : (tableRoot.compact || tableRoot.teamSetup) ? 28 : 40;
                 objectName: "table-options-" + tableRoot.ownerId
-                visible: !tableRoot.expandedActions && (tableRoot.actions.length > 0 || (!!tableRoot.table && tableRoot.table.multiple))
+                visible: !tableRoot.expandedActions && !tableRoot.teamSetup && (tableRoot.actions.length > 0 || (!!tableRoot.table && tableRoot.table.multiple))
                 text: "⋯"; quiet: true; Accessible.name: qsTr("Opcje listy")
                 onClicked: selectionMenu.open()
                 ActionMenu {
@@ -178,25 +192,25 @@ FocusScope {
                 Row {
                     id: header
                     visible: tableRoot.columns > 1
-                    height: visible ? (Theme.compact ? Math.max(24,Theme.captionMetrics.height+4) : tableRoot.compact ? 28 : 38) : 0
+                    height: visible ? (Theme.compact ? Math.max(24,Theme.captionMetrics.height+4) : (tableRoot.compact || tableRoot.teamSetup) ? 28 : 38) : 0
                     Repeater {
                         model: tableRoot.displayColumns
                         AbstractButton {
                             visible: index < tableRoot.visibleColumns
-                            hoverEnabled: !tableRoot.plain
-                            focusPolicy: tableRoot.plain ? Qt.NoFocus : Qt.StrongFocus
+                            hoverEnabled: tableRoot.sortable
+                            focusPolicy: tableRoot.sortable ? Qt.StrongFocus : Qt.NoFocus
                             Accessible.name: (tableRoot.headers[modelData] || "")
                             ToolTip.visible: hovered || activeFocus
                             ToolTip.text: (tableRoot.headers[modelData] || "")
                             width: tableRoot.columnWidth(index); height: header.height
                             onClicked: {
-                                if(tableRoot.plain)return
+                                if(!tableRoot.sortable)return
                                 tableRoot.descending = tableRoot.sortColumn === modelData ? !tableRoot.descending : false
                                 tableRoot.sortColumn = modelData
                                 tableRoot.table.sort(modelData, tableRoot.descending)
                             }
                             background: Rectangle { color: Theme.raised; border.width: 2; border.color: parent.activeFocus ? Theme.accent : "transparent" }
-                            contentItem: Text { text: (tableRoot.raceResults && !tableRoot.jumpColumns ? (modelData===0 ? qsTr("Poz.") : modelData===1 ? tableRoot.headers[1] : modelData===2 ? qsTr("Punkty") : qsTr("%1 · m").arg((modelData-1)/2)) : (tableRoot.headers[modelData] || "")) + (!tableRoot.plain && tableRoot.sortColumn === modelData ? (tableRoot.descending ? " ↓" : " ↑") : ""); color: Theme.muted; font.family: Theme.bodyFamily; font.pointSize: Theme.caption; font.weight: Font.DemiBold; leftPadding: 12; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight }
+                            contentItem: Text { text: (tableRoot.raceResults && !tableRoot.jumpColumns ? (modelData===0 ? qsTr("Poz.") : modelData===1 ? tableRoot.headers[1] : modelData===2 ? qsTr("Punkty") : qsTr("%1 · m").arg((modelData-1)/2)) : (tableRoot.headers[modelData] || "")) + (tableRoot.sortable && tableRoot.sortColumn === modelData ? (tableRoot.descending ? " ↓" : " ↑") : ""); color: Theme.muted; font.family: Theme.bodyFamily; font.pointSize: Theme.caption; font.weight: Font.DemiBold; leftPadding: 12; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight }
                         }
                     }
                 }

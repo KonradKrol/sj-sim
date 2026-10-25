@@ -69,6 +69,7 @@ Item {
                     Node { node: generator.fields.lists || null; Layout.preferredWidth: Math.min(220,generator.width/2); Layout.minimumWidth: 0 }
                 }
                 DataTable {
+                    searchEnabled: true
                     objectName: "formGeneratorTable"
                     Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; Layout.minimumWidth: 0
                     table: generator.fields.table ? generator.fields.table.values.table : null

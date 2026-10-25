@@ -265,8 +265,8 @@ void TeamResultsTreeModel::setupTreeItems()
                 }
                 if(auto *member=res.getTeamJumperResult(jumper))jumperPointsSum=member->getPointsSum();
                 QVector<QVariant> cells{"","",jumper->getNameAndSurname(),QString::number(jumperPointsSum,'f',1),distances.join(" · ")};
-                QVector<double> series;for(const auto &jump:res.getJumps())if(jump.getJumper()==jumper)series.append(jump.getPoints());
-                for(int round=0;round<rounds;++round)cells.append(round<series.size()?QVariant(QString::number(series[round],'f',1)):QVariant());
+                QStringList series;for(const auto &jump:res.getJumps())if(jump.getJumper()==jumper)series.append(jump.getDNS()?QStringLiteral("DNS"):jump.getDSQ()?QStringLiteral("DSQ"):QString::number(jump.getPoints(),'f',1));
+                for(int round=0;round<rounds;++round)cells.append(round<series.size()?QVariant(series[round]):QVariant());
                 new TreeItem(cells,teamHeaderItem);
             }
         }

@@ -308,6 +308,10 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
     // The classification editor has explicit actions for each points table.
     // Keep its keyboard shortcuts without rendering another button row.
     if(qobject_cast<ClassificationEditorWidget *>(widget))data["menuActions"]=true;
+    if(widget->inherits("TeamsSquadsTreeView")) {
+        widget->setProperty("quickTableActions",shortcuts);
+        if(auto *view=widget->findChild<QTreeView *>())return node(view,true);
+    }
     if(auto *list=qobject_cast<DatabaseItemsListView *>(widget)) {
         QVariantList actions;
         for(const auto &value:shortcuts) {
@@ -358,6 +362,11 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
         QVariantList weights;for(int value:split->sizes()) weights.append(qMax(120,value));data["weights"]=weights;
         for(int i=0;i<split->count();++i) if(auto *child=node(split->widget(i))) children.append(QVariant::fromValue(child));
     } else if(auto *view=qobject_cast<QAbstractItemView *>(widget)) {
+        data["teamSetup"]=view->model() && view->model()->inherits("TeamsSquadsTreeModel");
+        const auto sourceName=view->model()?QByteArray(view->model()->metaObject()->className()):QByteArray();
+        bool classificationTable=false;for(auto *parent=view->parentWidget();parent;parent=parent->parentWidget())if(parent->inherits("ClassificationResultsTableView")){classificationTable=true;break;}
+        data["searchable"]=data.value("teamSetup").toBool() || classificationTable || sourceName=="JumpersListModel" || sourceName=="HillsListModel" || sourceName=="SeasonJumpersListModel" || sourceName=="SeasonHillsListModel" || sourceName=="CompetitionsArchiveListModel" || sourceName=="SimulationSavesListModel";
+
         data["kind"]="table";data["follow"]=widget->objectName()=="listView_startList";
         data["tableActions"]=view->parentWidget()?view->parentWidget()->property("quickTableActions"):QVariant();
         if(!m_tables.contains(view)) {
@@ -583,7 +592,7 @@ void QuickBridge::refresh() {
             }
             for(auto *info:selected->findChildren<JumpDataDetailedInfoWindow *>())if(info->isVisibleTo(m_content) && info->getJumpData()) {
                 auto *jump=info->getJumpData();
-                if(jump->getDNS()){summary["dns"]=true;summary["dsq"]="DNS";summary["distance"]="DNS";}
+                if(jump->getDNS()){summary["dns"]=true;summary["dsq"]="DNS";summary["distance"]="DNS";}else if(jump->getDSQ()){summary["dsq"]="DSQ";summary["distance"]="DSQ";}
                 if(jump->getCompetition() && (stage==0 || stage>=5)) {
                     const int position=jump->getCompetition()->getRules().getCompetitionType()==CompetitionRules::Team ? jump->getPositionInRoundForTeamCompetition() : jump->getPositionInRound();
                     if(position>0) { summary["roundPositionNumber"]=position; summary["roundPosition"]=QString::number(position); }

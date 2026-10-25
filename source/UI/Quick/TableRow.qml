@@ -43,7 +43,7 @@ Rectangle {
     Accessible.role: Accessible.ListItem
     Accessible.name: (rowCells || []).map(function(cell) { return cell.text }).join(", ") + (statusText ? ", " + statusText : "") + (latestJump ? ", " + qsTr("Ostatnio oddany skok") : "")
     Accessible.selected: rowSelected
-    height: Theme.compact ? Math.max(24,Theme.bodyMetrics.height+4) : Math.max(tableView.compact ? 32 : 40, Theme.body * (tableView.compact ? 2.3 : 2.7))
+    height: tableView.teamSetup ? Math.max(24,Theme.bodyMetrics.height+8) : Theme.compact ? Math.max(24,Theme.bodyMetrics.height+4) : Math.max(tableView.compact ? 32 : 40, Theme.body * (tableView.compact ? 2.3 : 2.7))
     color: eliminated ? Theme.raised : sureAdvanced ? Theme.advancementSurface : rowSelected ? Theme.selection : mouse.containsMouse ? Theme.raised : teamHeader ? Theme.raised : teamMember ? Theme.surface : tintColor()
     border.width: latestJump ? 1 : 0
     border.color: Theme.accent

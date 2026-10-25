@@ -73,6 +73,7 @@ QVariant ResultsTableModel::data(const QModelIndex &index, int role) const
                     switch(i){
                     case 0:{
                         if(results->getResultsReference().at(index.row()).getJumps().at(jump).getDNS())return QStringLiteral("DNS");
+                        if(results->getResultsReference().at(index.row()).getJumps().at(jump).getDSQ())return QStringLiteral("DSQ");
                         QString text = QString::number(results->getResultsReference().at(index.row()).getJumps().at(jump).getDistance(), 'f', 1);
                         if(results->getResultsReference().at(index.row()).getJumps().at(jump).getLanding().getType() == Landing::Fall)
                             text += "*";
