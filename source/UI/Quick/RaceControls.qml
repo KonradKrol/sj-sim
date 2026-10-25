@@ -9,7 +9,11 @@ GridLayout {
     columns: width >= 800 ? 5 : 2
     columnSpacing: 8; rowSpacing: 6
     Node { visible: !ui.context.complete && !ui.context.roundComplete; Layout.fillWidth: true; Layout.minimumWidth: 0; node: ui.find("pushButton_jump") }
-    Node { Layout.fillWidth: true; Layout.minimumWidth: 0; node: ui.find("pushButton_goToNext") }
+    RowLayout {
+        Layout.fillWidth: true; Layout.minimumWidth: 0
+        Node { Layout.fillWidth: true; Layout.minimumWidth: 0; node: ui.find("pushButton_goToNext") }
+        SButton { objectName: "editNextKoGroups"; visible: !!ui.context.nextKoEditable; text: qsTr("Grupy KO…"); quiet: true; onClicked: ui.editNextKoGroups() }
+    }
     RowLayout {
         Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.maximumWidth: controls.width >= 700 ? 220 : 9999
         Label { text: qsTr("Belka"); color: Theme.muted; font.pointSize: Theme.caption }

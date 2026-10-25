@@ -16,6 +16,7 @@ class QAbstractItemView;
 class QStackedWidget;
 class QuickCalendar;
 class QuickRoster;
+class KOGroupsListView;
 class MainWindow;
 class QuickBridge;
 
@@ -152,6 +153,7 @@ public:
     Q_INVOKABLE void inputText(int id, const QString &value);
     Q_INVOKABLE void finishText(int id);
     Q_INVOKABLE void selectPreviewRound(int round);
+    Q_INVOKABLE void editNextKoGroups();
     Q_INVOKABLE void assignKoMember(int editorId,const QString &groupId,int slot,const QString &athleteId);
     Q_INVOKABLE void setWind(int editorId,int sector,const QVariantMap &values,bool all);
     Q_INVOKABLE void randomizeWind(int editorId,double direction,double variability);
@@ -184,6 +186,7 @@ private:
     void deferRefresh();
     void compose(QuickNode *base);
     QuickNode *rosterNode(QWidget *source);
+    QuickNode *koGroupsNode(KOGroupsListView *list);
     QuickNode *sectionTabs(const QString &key, const QStringList &labels, const QVariantList &pages);
     QPointer<QWidget> m_window;
     QPointer<QWidget> m_content;

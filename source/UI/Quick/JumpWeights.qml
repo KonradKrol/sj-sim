@@ -5,12 +5,13 @@ Column {
     id: breakdown
     property var summary: ({})
     property bool expanded: false
-    visible: !!summary.weighted
+    visible: !!summary.weighted || !!summary.resetPoints
     spacing: 2
     function number(value,decimals) {return Number(value).toLocaleString(Qt.locale(),'f',decimals)}
     function precise(value,decimals) {return number(value,decimals).replace(/0+$/, "").replace(/[.,]$/, "")}
     onSummaryChanged: if(!summary.weighted)expanded=false
     SButton {
+        visible: !breakdown.summary.resetPoints
         objectName: "jumpWeightToggle"
         text: breakdown.expanded ? qsTr("Wagi ▴") : qsTr("Wagi ▾")
         quiet: true; font.pointSize: Theme.caption
@@ -19,10 +20,11 @@ Column {
         checkable: true; checked: breakdown.expanded
         onClicked: breakdown.expanded=checked
     }
+    Label { objectName: "jumpResetInfo"; visible: !!breakdown.summary.resetPoints; text: qsTr("Po resecie"); color: Theme.muted; font.pointSize: Theme.caption }
     ScrollView {
         id: scroll
         objectName: "jumpWeightCalculation"
-        visible: breakdown.expanded
+        visible: breakdown.expanded && !breakdown.summary.resetPoints
         width: parent.width; height: Math.min(160,calculation.implicitHeight+8)
         contentWidth: availableWidth; clip: true
         Label {

@@ -77,6 +77,7 @@ ColumnLayout {
         }
         EmptyState { anchors.fill: parent; visible: groups.count===0; title: (workspace.fields.athletes || []).length ? qsTr("Grupy nie zostały dobrane") : qsTr("Brak zawodników"); description: (workspace.fields.athletes || []).length ? qsTr("Wybierz sposób doboru i dobierz grupy.") : qsTr("Dodaj zawodników do listy startowej."); actionText: (workspace.fields.athletes || []).length ? qsTr("Dobierz grupy") : qsTr("Lista startowa"); onTriggered: (workspace.fields.athletes || []).length ? workspace.generate(method.currentIndex) : ui.edit(ui.root.values.id,1) }
     }
+    SButton { visible: workspace.fields.submitId !== undefined; text: qsTr("Rozpocznij serię"); primary: true; Layout.alignment: Qt.AlignRight; onClicked: ui.activate(workspace.fields.submitId) }
     KoAthletePicker {
         id: picker
         fields: workspace.fields

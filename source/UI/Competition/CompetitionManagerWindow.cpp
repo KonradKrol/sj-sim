@@ -129,7 +129,7 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
 
             KOManager = new KORoundManager(startListModel->getKOGroups(), manager->getResults(), &manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound() - 1], dynamic_cast<IndividualCompetitionManager *>(manager));
             KOManager->updateJumpersSortedByResults();
-            if(manager->getCompetitionRules()->getRoundsReference().count() > manager->getActualRound())
+            if(manager->effectiveRoundsCount() > manager->getActualRound())
                 KOManager->setLuckyLosersCount(manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getCount() - (KOManager->getGroups()->count() * KOManager->getRoundInfo()->getAdvancingFromKOGroup()));
             else
                 KOManager->setLuckyLosersCount(0);
@@ -616,37 +616,40 @@ QVector<KOGroup> CompetitionManagerWindow::getManualKOGroupsFromDialogInputs()
 {
     IndividualCompetitionManager * indManager = dynamic_cast<IndividualCompetitionManager *>(manager);
     QDialog dialog(this);
-    dialog.setWindowTitle(tr("Ręczny dobór grup KO"));
+    dialog.setWindowTitle(tr("Dobór grup KO"));
+    dialog.setObjectName("manualKoGroupsDialog");
     dialog.setSizeGripEnabled(true);
 
     QVBoxLayout mainLayout(&dialog);
     QComboBox selectionComboBox(&dialog);
+    selectionComboBox.setObjectName("comboBox_groupsSelectionType");
     selectionComboBox.setModel(new QStringListModel({tr("Dobór grup"), tr("Klasyczne"), tr("Dla dużych grup"), tr("Losowe (Z podziałem na koszyki)"), tr("Losowe")}, &selectionComboBox));
 
-    KOGroupsListView groupsListView(&dialog);
-    groupsListView.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     QVector<Jumper *> jumpers = indManager->getFilteredJumpersForNextRound();
     QVector<KOGroup> groups = KOGroup::constructKOGroups(&manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()], &jumpers, KOGroup::Random, manager->getCompetitionInfo());
+    KOGroupsListView groupsListView(&dialog);
+    groupsListView.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     groupsListView.setKOGroups(&groups);
-    groupsListView.setJumpersList(&indManager->getActualRoundJumpersReference());
+    groupsListView.setJumpersList(&jumpers);
+    selectionComboBox.setCurrentIndex(KOGroup::Random+1);
     groupsListView.fillListLayout();
     mainLayout.addWidget(&selectionComboBox);
     mainLayout.addWidget(&groupsListView, 1);
 
-    connect(&selectionComboBox, qOverload<int>(&QComboBox::activated), &dialog, [this, &groupsListView, &jumpers, &groups](int index){
-        if(index != KOGroup::Classic || (index == KOGroup::Classic || (manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getCountInKOGroup() == 2)))
-        {
-            if(index > 0){
-                index--;
-                RoundInfo * roundInfo = &manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()];
-                groups = KOGroup::constructKOGroups(roundInfo, &jumpers, index, manager->getCompetitionInfo());
-                groupsListView.setKOGroups(&groups);
-                groupsListView.fillListLayout();
-            }
-        }
+    connect(&selectionComboBox, qOverload<int>(&QComboBox::activated), &dialog, [this, &selectionComboBox, &groupsListView, &jumpers, &groups](int index){
+        if(index<1 || index>4)return;
+        auto *round=&manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()];
+        int method=index-1;
+        if(method==KOGroup::Classic && round->getCountInKOGroup()!=2){method=KOGroup::ForLargerGroups;selectionComboBox.setCurrentIndex(method+1);}
+        groups=KOGroup::constructKOGroups(round,&jumpers,method,manager->getCompetitionInfo());
+        groupsListView.fillListLayout();
     });
 
-    QDialogButtonBox buttonBox(QDialogButtonBox::Ok, &dialog);
+    QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
+    buttonBox.button(QDialogButtonBox::Ok)->setObjectName("confirmKoGroups");
+    buttonBox.button(QDialogButtonBox::Ok)->setText(tr("Rozpocznij serię"));
+    buttonBox.button(QDialogButtonBox::Cancel)->setText(tr("Anuluj"));
+    connect(&buttonBox, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
     connect(&buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
     mainLayout.addWidget(&buttonBox);
 
@@ -658,7 +661,7 @@ QVector<KOGroup> CompetitionManagerWindow::getManualKOGroupsFromDialogInputs()
     const QSize availableSize(qMax(360, availableGeometry.width() - 48),
                               qMax(320, availableGeometry.height() - 48));
     dialog.resize(QSize(600, 720).boundedTo(availableSize));
-    dialog.exec();
+    if(dialog.exec()!=QDialog::Accepted)return {};
     return groups;
 }
 
@@ -672,6 +675,15 @@ void CompetitionManagerWindow::setupVirtualClassificationComboBox()
     }
 }
 
+void CompetitionManagerWindow::editNextKoGroups()
+{
+    if(!dynamic_cast<IndividualCompetitionManager *>(manager) || !manager->checkRoundEnd() || manager->checkCompetitionEnd()
+        || manager->getActualRound()>=manager->effectiveRoundsCount() || !manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getKO())return;
+    setProperty("manualKoRequested",true);
+    ui->pushButton_goToNext->click();
+    setProperty("manualKoRequested",false);
+}
+
 void CompetitionManagerWindow::setupGoToNextButtonForNextRound()
 {
     ui->pushButton_goToNext->show();
@@ -682,15 +694,15 @@ void CompetitionManagerWindow::setupGoToNextButtonForNextRound()
     QMetaObject::Connection * const connection = new QMetaObject::Connection;
     *connection = connect(ui->pushButton_goToNext, &QPushButton::clicked, this, [this, connection](){
         Jumper *previewJumper=!jumperResultsWidget->isHidden() && jumperResultsWidget->getJumperResult() ? jumperResultsWidget->getJumperResult()->getJumper() : nullptr;
-        jumperResultsWidget->hide();
-        //Tu będzie ten dialog z edycją grup
-        int condition1 = manager->getCompetitionRules()->getRoundsReference().count() > manager->getActualRound();
-        int condition2 = false;
-        if(condition1)
-            condition2 = manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getKO() == true && manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getKoGroupsSelectionType() == CompetitionRules::Manual;
+        const bool condition1=dynamic_cast<IndividualCompetitionManager *>(manager) && manager->effectiveRoundsCount()>manager->getActualRound();
+        const bool condition2=condition1 && manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getKO()
+            && (manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getKoGroupsSelectionType()==CompetitionRules::Manual || property("manualKoRequested").toBool());
 
+        QVector<KOGroup> manualGroups;
+        if(condition1 && condition2){manualGroups=getManualKOGroupsFromDialogInputs();if(manualGroups.isEmpty())return;}
+        jumperResultsWidget->hide();
         if(condition1 && condition2)
-            dynamic_cast<IndividualCompetitionManager *>(manager)->setupNextRound(getManualKOGroupsFromDialogInputs());
+            dynamic_cast<IndividualCompetitionManager *>(manager)->setupNextRound(manualGroups);
         else if(dynamic_cast<IndividualCompetitionManager *>(manager) != nullptr)
             dynamic_cast<IndividualCompetitionManager *>(manager)->setupNextRound();
         else
@@ -712,7 +724,7 @@ void CompetitionManagerWindow::setupGoToNextButtonForNextRound()
             {
                 KOManager = new KORoundManager(indManager->getRoundsKOGroupsReference()[manager->getActualRound() - 1], manager->getResults(), &indManager->getCompetitionRules()->getRoundsReference()[manager->getActualRound() - 1], dynamic_cast<IndividualCompetitionManager *>(manager));
                 KOManager->updateJumpersSortedByResults();
-                if(manager->getCompetitionRules()->getRoundsReference().count() > manager->getActualRound())
+                if(manager->effectiveRoundsCount() > manager->getActualRound())
                     KOManager->setLuckyLosersCount(manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getCount() - (KOManager->getGroups()->count() * KOManager->getRoundInfo()->getAdvancingFromKOGroup()));
                 else
                     KOManager->setLuckyLosersCount(0);
@@ -1058,7 +1070,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
                     {
                         KOManager = new KORoundManager(indManager->getRoundsKOGroupsReference()[manager->getActualRound() - 1], manager->getResults(), &indManager->getCompetitionRules()->getRoundsReference()[manager->getActualRound() - 1], dynamic_cast<IndividualCompetitionManager *>(manager));
                         KOManager->updateJumpersSortedByResults();
-                        if(manager->getCompetitionRules()->getRoundsReference().count() > manager->getActualRound())
+                        if(manager->effectiveRoundsCount() > manager->getActualRound())
                             KOManager->setLuckyLosersCount(manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getCount() - (KOManager->getGroups()->count() * KOManager->getRoundInfo()->getAdvancingFromKOGroup()));
                         else
                             KOManager->setLuckyLosersCount(0);
@@ -1321,7 +1333,7 @@ void CompetitionManagerWindow::autoSimulateJumps()
                         {
                             KOManager = new KORoundManager(indManager->getRoundsKOGroupsReference()[manager->getActualRound() - 1], manager->getResults(), &indManager->getCompetitionRules()->getRoundsReference()[manager->getActualRound() - 1], dynamic_cast<IndividualCompetitionManager *>(manager));
                             KOManager->updateJumpersSortedByResults();
-                            if(manager->getCompetitionRules()->getRoundsReference().count() > manager->getActualRound())
+                            if(manager->effectiveRoundsCount() > manager->getActualRound())
                                 KOManager->setLuckyLosersCount(manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getCount() - (KOManager->getGroups()->count() * KOManager->getRoundInfo()->getAdvancingFromKOGroup()));
                             else
                                 KOManager->setLuckyLosersCount(0);

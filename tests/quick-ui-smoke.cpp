@@ -339,6 +339,9 @@ static void jumpHistoryRegressions(MainWindow &main,CompetitionManagerWindow *wi
     check(std::abs(bridge->jumpSummary().value("weightedTotal").toDouble()-result->pointsForJumps(2,2))<.001 && bridge->jumpSummary().value("weightTerms").toList().size()==2,"weight explanation and total belong to the selected series");
     clickControl(view,"jumpWeightToggle");check(item(view->rootObject(),"jumpWeightCalculation")->isVisible(),"weight calculation expands inside the jump card");render(window,"weighted-jump-history",true);clickControl(view,"jumpWeightToggle");main.resize(1440,900);QTest::qWait(80);
     bridge->selectPreviewRound(2);QTest::qWait(60);
+    auto &lastRule=result->getCompetition()->getRulesPointer()->getRoundsReference()[2];const bool resetBefore=lastRule.getResetPoints();lastRule.setResetPoints(true);bridge->refresh();QTest::qWait(40);
+    check(bridge->jumpSummary().value("resetPoints").toBool() && !bridge->jumpSummary().value("weighted").toBool() && item(view->rootObject(),"jumpResetInfo")->isVisible() && !item(view->rootObject(),"jumpWeightToggle")->isVisible(),"reset series shows only the discreet reset label instead of weights");
+    lastRule.setResetPoints(resetBefore);bridge->refresh();QTest::qWait(30);
     auto *appearance=view->rootContext()->contextProperty("appearance").value<QuickAppearance *>();const int oldMode=appearance->teamResultsMode();if(scenario==2){appearance->setTeamResultsMode(2);QTest::qWait(60);}
     auto *table=item(view->rootObject(),"raceResults");auto *model=table->property("table").value<QuickTableModel *>();int row=-1;
     for(int r=0;r<model->count();++r){const auto cells=model->data(model->index(r),Qt::UserRole+1).toList();const int name=scenario==2?2:1;if(cells.value(name).toMap().value("text").toString()==result->getJumper()->getNameAndSurname()){row=r;break;}}
@@ -375,10 +378,12 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
         check(found && rules.getJumpersInTeamCount()==2 && rules.getRounds().size()==3,"real Super Team preset");
         rules.setHasDsq(false);
     }
+    if(QCoreApplication::arguments().contains("--superko-only")){bool found=false;for(const auto &preset:db->getEditableCompetitionRules())if(preset.getName().compare("SuperKO by fortonse",Qt::CaseInsensitive)==0){rules=preset;rules.setHasDsq(false);found=true;break;}check(found,"real SuperKO by fortonse preset exists");}
+    if(QCoreApplication::arguments().contains("--manual-ko-only")){rules.getRoundsReference()[1].setKO(true);rules.getRoundsReference()[1].setKoGroupsSelectionType(CompetitionRules::Classic);}
     CompetitionConfigWindow config(CompetitionConfigWindow::SingleCompetition);
     config.getHillEditor()->setHill(&db->getEditableGlobalHills().first());config.getHillEditor()->fillHillInputs();
     config.getCompetitionRulesEditor()->setCompetitionRules(&rules);config.getCompetitionRulesEditor()->fillCompetitionRulesInputs();
-    auto jumpers=config.getCompetitionJumpers();check(jumpers.size()>=16,"competition fixture");jumpers.resize(bulk?qMin(100,jumpers.size()):16);
+    auto jumpers=config.getCompetitionJumpers();check(jumpers.size()>=16,"competition fixture");jumpers.resize(QCoreApplication::arguments().contains("--superko-only")?20:bulk?qMin(100,jumpers.size()):16);
     if(scenario==2) {
         QVector<Jumper *> all;for(auto &jumper:db->getEditableGlobalJumpers())all.append(&jumper);
         const int teamSize=superTeam?2:4;
@@ -471,6 +476,28 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                     if(round<3){bridge->activate(id(bridge,"pushButton_goToNext"));checkPreview();QTest::qWait(100);}
                 }
                 check(manager->checkCompetitionEnd(),"Super Team finishes after three automatic rounds");window->accept();return;
+            }
+            if(QCoreApplication::arguments().contains("--superko-only")) {
+                auto *individual=dynamic_cast<IndividualCompetitionManager *>(window->getManager());check(individual,"SuperKO individual manager");
+                for(int round=1;round<=4;++round){
+                    if(round==2 || round==3){check(individual->getKOManager()->getLuckyLosersCount()==0,"SuperKO later KO rounds have zero LL quota");for(auto *jumper:individual->getActualRoundJumpersReference())check(!individual->isLuckyLoser(jumper),"previous-series LL must not leak into a fresh zero-quota KO round");}
+                    window->autoSimulateRound();bridge->refresh();
+                    if(round==1)check(individual->getKOManager()->getLuckyLosersCount()==2 && !individual->getKOManager()->getLuckyLosers().isEmpty(),"SuperKO first round genuinely produces two LL places");
+                    if(round==2 || round==3)for(int row=0;row<individual->getResults()->getResultsReference().size();++row)check(!window->findChild<ResultsTableModel *>()->index(row,0).data(CompetitionAdvancement::LuckyLoserRole).toBool(),"SuperKO zero-quota results do not expose LL graphics");
+                    if(round<4){bridge->activate(id(bridge,"pushButton_goToNext"));QTest::qWait(100);}
+                }
+                check(individual->checkCompetitionEnd(),"SuperKO completes all four actual preset rounds");qInfo()<<"PASS: real SuperKO preset, first-round LL and no stale LL in rounds two/three";window->accept();return;
+            }
+            if(QCoreApplication::arguments().contains("--manual-ko-only")) {
+                window->autoSimulateRound();auto *individual=dynamic_cast<IndividualCompetitionManager *>(window->getManager());const auto qualified=individual->getFilteredJumpersForNextRound();
+                bool cancelled=false;QTimer cancelTimer;QObject::connect(&cancelTimer,&QTimer::timeout,[&]{for(auto *widget:QApplication::allWidgets())if(widget->objectName()=="manualKoGroupsDialog" && widget->isVisible()){cancelled=true;cancelTimer.stop();qobject_cast<QDialog *>(widget)->reject();return;}});cancelTimer.start(20);bridge->editNextKoGroups();QTest::qWait(120);cancelTimer.stop();check(cancelled && individual->getActualRound()==1,"cancelled group editing leaves the finished series intact");
+                bool edited=false;QTimer editTimer;QObject::connect(&editTimer,&QTimer::timeout,[&]{for(auto *widget:QApplication::allWidgets())if(widget->objectName()=="manualKoGroupsDialog" && widget->isVisible()){
+                    editTimer.stop();auto *editorBridge=widget->findChild<QuickBridge *>();check(editorBridge,"in-competition group editor has Quick bridge");editorBridge->refresh();auto *editorView=scene(widget);check(item(editorView->rootObject(),"koGroupsWorkspace") && item(editorView->rootObject(),"koDragArea"),"between-series editor reuses searchable drag-and-drop workspace");
+                    const auto fields=editorBridge->root()->values();check(fields.value("methodIndex").toInt()==4 && fields.value("athletes").toList().size()==qualified.size(),"manual editor starts randomly and contains only qualified athletes");
+                    QMetaObject::invokeMethod(item(editorView->rootObject(),"koGroupingMethod"),"activated",Q_ARG(int,2));QTest::qWait(30);check(editorBridge->root()->values().value("methodIndex").toInt()==3,"between-series editor supports basket draws");
+                    edited=true;editorBridge->activate(editorBridge->root()->values().value("submitId").toInt());return;
+                }});editTimer.start(20);bridge->editNextKoGroups();QTest::qWait(120);editTimer.stop();check(edited && individual->getActualRound()==2,"confirmed manual groups start the next KO series");
+                const auto grouped=KOGroup::getJumpersFromGroups(individual->getRoundsKOGroupsReference()[1]);check(grouped.size()==qualified.size(),"manual groups preserve the entire qualified field");for(auto *jumper:grouped)check(qualified.contains(jumper),"eliminated athletes cannot enter manual next-round groups");qInfo()<<"PASS: shared between-series KO workspace, cancellation, random startup and basket selection";window->reject();return;
             }
             if(QCoreApplication::arguments().contains("--result-scroll-only")) {
                 presentation(window)->resize(1024,600);QTest::qWait(50);
@@ -2372,6 +2399,8 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--author-only")){authorRegressions(main);return 0;}
     if(app.arguments().contains("--navigation-only")){navigationRegressions(main);return 0;}
     if(app.arguments().contains("--home-launch-only")){homeLaunchRegressions(main);return 0;}
+    if(app.arguments().contains("--superko-only")){main.show();runCompetition(main,1);return 0;}
+    if(app.arguments().contains("--manual-ko-only")){main.show();runCompetition(main,0);return 0;}
     if(app.arguments().contains("--jumper-catalog-only")){jumperCatalogClickRegressions(main);return 0;}
     if(app.arguments().contains("--result-scroll-only")){main.show();for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario);return 0;}
     if(app.arguments().contains("--race-options-only")){main.show();runCompetition(main,0);return 0;}
