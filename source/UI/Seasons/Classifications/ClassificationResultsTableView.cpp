@@ -21,6 +21,7 @@ ClassificationResultsTableView::ClassificationResultsTableView(bool allowShowDet
     classification(classification)
 {
     ui->setupUi(this);
+    ui->tableView->setSelectionMode(QAbstractItemView::NoSelection);ui->tableView->setProperty("quickClassificationRanking",true);ui->tableView->setProperty("quickScoreColumn",2);
     save=nullptr;historyChoice=new QComboBox(this);historyChoice->setObjectName("comboBox_classificationHistory");historyChoice->setAccessibleName(tr("Stan klasyfikacji po konkursie"));historyChoice->hide();ui->verticalLayout->insertWidget(0,historyChoice);
     historyModel=new QStandardItemModel(this);connect(historyChoice,qOverload<int>(&QComboBox::currentIndexChanged),this,[this]{showHistory();});
 
@@ -127,13 +128,13 @@ void ClassificationResultsTableView::showContributions(const QString &country) {
         else if(!contribution.jumper)teamPoints+=contribution.points;
     }
     auto rows=athletes.values();std::stable_sort(rows.begin(),rows.end(),[](const Row &a,const Row &b){return a.points==b.points?a.name<b.name:a.points>b.points;});
-    QDialog dialog(this);dialog.setObjectName("classificationContributionDetails");dialog.setWindowTitle(tr("Wkład do klasyfikacji · %1").arg(country));dialog.resize(620,520);auto *layout=new QVBoxLayout(&dialog);
+    QDialog dialog(this);dialog.setObjectName("classificationContributionDetails");dialog.setWindowTitle(tr("Wkład do klasyfikacji · %1").arg(country));dialog.setProperty("contributionCountry",country);dialog.setProperty("contributionName",classification->getName());dialog.setProperty("contributionTotal",total);dialog.resize(620,520);auto *layout=new QVBoxLayout(&dialog);
     auto *heading=new QLabel(tr("%1 · %2").arg(country,classification->getName()),&dialog);heading->setWordWrap(true);layout->addWidget(heading);
     auto *summary=new QLabel(tr("Razem: %1 pkt").arg(QLocale().toString(total,'g',12)),&dialog);summary->setObjectName("classificationContributionTotal");layout->addWidget(summary);
     auto *model=new QStandardItemModel(&dialog);model->setHorizontalHeaderLabels({tr("Lp."),tr("Zawodnik / źródło"),tr("Punkty")});
     const auto add=[&](const QString &name,double points){QList<QStandardItem *> items{new QStandardItem(QString::number(model->rowCount()+1)),new QStandardItem(name),new QStandardItem(QLocale().toString(points,'g',12))};for(auto *item:items)item->setFlags(Qt::ItemIsEnabled|Qt::ItemIsSelectable);items[2]->setData(points,Qt::UserRole);model->appendRow(items);};
     for(const auto &row:rows)add(row.name,row.points);if(teamPoints!=0)add(tr("Konkursy drużynowe"),teamPoints);
     if(rows.isEmpty() && teamPoints==0){auto *empty=new QLabel(tr("Brak wkładu punktowego w tym zakresie konkursów."),&dialog);empty->setWordWrap(true);layout->addWidget(empty);}
-    auto *table=new QTableView(&dialog);table->setObjectName("classificationContributionTable");table->setProperty("quickPlainTable",true);table->setModel(model);table->setEditTriggers(QAbstractItemView::NoEditTriggers);layout->addWidget(table,1);table->resizeColumnsToContents();
+    auto *table=new QTableView(&dialog);table->setObjectName("classificationContributionTable");table->setProperty("quickPlainTable",true);table->setProperty("quickScoreColumn",2);table->setSelectionMode(QAbstractItemView::NoSelection);table->setModel(model);table->setEditTriggers(QAbstractItemView::NoEditTriggers);layout->addWidget(table,1);table->resizeColumnsToContents();
     auto *buttons=new QDialogButtonBox(QDialogButtonBox::Close,&dialog);connect(buttons,&QDialogButtonBox::rejected,&dialog,&QDialog::reject);layout->addWidget(buttons);dialog.exec();
 }

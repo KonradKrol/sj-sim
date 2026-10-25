@@ -4,6 +4,7 @@
 <file>CalendarWorkspace.qml</file>
 <file>CalendarDateField.qml</file>
 <file>CalendarDatePlanner.qml</file>
+<file>CalendarWeekendPlanner.qml</file>
 <file>CalendarDateOverview.qml</file>
 <file>CalendarClassifications.qml</file>
 <file>ClassificationWorkspace.qml</file>
@@ -11,6 +12,7 @@
 <file>ClassificationMethods.qml</file>
 <file>ClassificationPoints.qml</file>
 <file>ClassificationSources.qml</file>
+<file>ClassificationContributionPage.qml</file>
 <file>ClassificationFilters.qml</file>
 <file>HelpDot.qml</file>
 <file>CheckHelp.qml</file>

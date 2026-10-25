@@ -2,6 +2,7 @@
 #include <QJsonArray>
 #include <QSet>
 #include <cmath>
+#include <QLocale>
 
 namespace {
 QJsonArray tableJson(const QMap<int,double> &table) {
@@ -56,4 +57,12 @@ ClassificationCompetitionSettings ClassificationCompetitionSettings::fromJson(co
         s.parameters.insert(key,v);
     }
     return s;
+}
+
+QString classificationPointsText(double value){
+    if(!std::isfinite(value))return QStringLiteral("—");
+    const QLocale locale;QString text=locale.toString(std::abs(value)<0.0000005?0.:value,'f',6);
+    const QString decimal(locale.decimalPoint()),zero(locale.zeroDigit());const int point=text.lastIndexOf(decimal);
+    while(point>=0 && text.endsWith(zero) && text.size()>point+decimal.size()+zero.size())text.chop(zero.size());
+    return text;
 }

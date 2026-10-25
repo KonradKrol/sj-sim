@@ -16,7 +16,8 @@ FocusScope {
     property real maximumHeight: 540
     property bool compact: false
     property bool teamSetup: false
-    readonly property bool sortable: !plain && !teamSetup
+    property bool ranking: false
+    readonly property bool sortable: !plain && !teamSetup && !ranking
     property bool plain: false
     property bool expandedActions: false
     property bool singleClickOpen: false
@@ -25,7 +26,7 @@ FocusScope {
     property real savedScrollY: 0
     property int resetRevision: 0
     property bool searchEnabled: false
-    property bool searchOpen: searchEnabled && !teamSetup && !compact && width >= 320 && height >= 240
+    property bool searchOpen: searchEnabled && !teamSetup && !ranking && !compact && width >= 320 && height >= 240
     function clearDisabledSearch() { if(!searchEnabled){searchOpen=false;if(table && table.filter.length)table.filter=""} }
     onSearchEnabledChanged: clearDisabledSearch()
     onTableChanged: clearDisabledSearch()
@@ -113,11 +114,11 @@ FocusScope {
             SButton {
                 implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : (tableRoot.compact || tableRoot.teamSetup) ? 28 : 40; visible: !!tableRoot.table && tableRoot.table.multiple && tableRoot.table.selectedCount>0 && tableRoot.height<300; text: "×"; quiet: true; Accessible.name: qsTr("Wyczyść zaznaczenie"); onClicked: tableRoot.table.clearSelection() }
             SButton {
-                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : (tableRoot.compact || tableRoot.teamSetup) ? 28 : 40; visible: tableRoot.searchEnabled && (!tableRoot.searchOpen || tableRoot.teamSetup); text: tableRoot.compact || tableRoot.teamSetup ? "⌕" : qsTr("Szukaj"); quiet: true; Accessible.name: qsTr("Szukaj"); hint: qsTr("Szukaj"); checkable: true; checked: tableRoot.searchOpen; onClicked: {tableRoot.searchOpen = checked;if(!checked && tableRoot.table)tableRoot.table.filter=""} }
+                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : (tableRoot.compact || tableRoot.teamSetup) ? 28 : 40; visible: tableRoot.searchEnabled && (!tableRoot.searchOpen || tableRoot.teamSetup || tableRoot.ranking); text: tableRoot.compact || tableRoot.teamSetup ? "⌕" : qsTr("Szukaj"); quiet: true; Accessible.name: qsTr("Szukaj"); hint: qsTr("Szukaj"); checkable: true; checked: tableRoot.searchOpen; onClicked: {tableRoot.searchOpen = checked;if(!checked && tableRoot.table)tableRoot.table.filter=""} }
             SButton {
                 implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : (tableRoot.compact || tableRoot.teamSetup) ? 28 : 40; visible: tableRoot.compact && tableRoot.columns>4 && !tableRoot.teamResults; text: tableRoot.raceResults ? qsTr("Punkty serii") : qsTr("Skoki"); quiet: true; font.pointSize: Theme.caption; checkable: true; onClicked: tableRoot.jumpColumns=checked }
             SButton {
-                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : (tableRoot.compact || tableRoot.teamSetup) ? 28 : 40; visible: (!tableRoot.compact || tableRoot.teamSetup) && !tableRoot.expandedActions; text: tableRoot.teamSetup ? qsTr("Skład") : tableRoot.width < 380 ? "↗" : qsTr("Otwórz"); quiet: true; Accessible.name: tableRoot.teamSetup ? qsTr("Edytuj skład") : qsTr("Otwórz"); hint: tableRoot.teamSetup ? qsTr("Edytuj skład wybranej drużyny") : qsTr("Otwórz"); enabled: !!tableRoot.table && (!tableRoot.teamSetup || tableRoot.table.currentRow>=0); onClicked: if (tableRoot.table) tableRoot.table.openCurrent() }
+                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : (tableRoot.compact || tableRoot.teamSetup) ? 28 : 40; visible: !tableRoot.ranking && (!tableRoot.compact || tableRoot.teamSetup) && !tableRoot.expandedActions; text: tableRoot.teamSetup ? qsTr("Skład") : tableRoot.width < 380 ? "↗" : qsTr("Otwórz"); quiet: true; Accessible.name: tableRoot.teamSetup ? qsTr("Edytuj skład") : qsTr("Otwórz"); hint: tableRoot.teamSetup ? qsTr("Edytuj skład wybranej drużyny") : qsTr("Otwórz"); enabled: !!tableRoot.table && (!tableRoot.teamSetup || tableRoot.table.currentRow>=0); onClicked: if (tableRoot.table) tableRoot.table.openCurrent() }
             Repeater {
                 model: tableRoot.teamSetup ? tableRoot.actions : []
                 SButton {

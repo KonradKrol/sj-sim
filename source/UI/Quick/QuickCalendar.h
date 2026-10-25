@@ -22,6 +22,7 @@ class QuickCalendar : public QObject {
     Q_PROPERTY(bool datesEnabled READ datesEnabled NOTIFY changed)
     Q_PROPERTY(bool canEnableDates READ canEnableDates NOTIFY changed)
     Q_PROPERTY(QVariantList datePlan READ datePlan NOTIFY changed)
+    Q_PROPERTY(QVariantList weekendPreview READ weekendPreview NOTIFY changed)
     Q_PROPERTY(QVariantList dateWarnings READ dateWarnings NOTIFY changed)
     Q_PROPERTY(QString suggestedDate READ suggestedDate NOTIFY changed)
     Q_PROPERTY(QVariantList classEntries READ classEntries NOTIFY changed)
@@ -54,13 +55,17 @@ public:
     bool canEnableDates() const;
     QString suggestedDate() const;
     QVariantList datePlan() const { return m_datePlan; }
+    QVariantList weekendPreview() const { return m_weekendPreview; }
+    Q_INVOKABLE void previewWeekend(const QString &date,int hill,int rules,bool saturdayQualification,bool sharedSunday);
+    Q_INVOKABLE bool applyWeekend();
+    Q_INVOKABLE void discardWeekend();
     QVariantList dateWarnings() const;
     Q_INVOKABLE void setDatesEnabled(bool enabled);
     Q_INVOKABLE QString normalizeDate(const QString &value) const;
     Q_INVOKABLE QString dateText(const QString &iso) const;
     Q_INVOKABLE QString offsetDate(const QString &iso,int days,int months=0) const;
     Q_INVOKABLE QVariantMap monthData(const QString &iso) const;
-    Q_INVOKABLE void planDates(const QString &start,const QString &pattern,int interval,bool future=false,int trainingDays=0);
+    Q_INVOKABLE void planDates(const QString &start,const QString &pattern,int interval,bool future=false,int trainingDays=0,bool onlyMissing=false);
     Q_INVOKABLE void applyDatePlan();
     Q_INVOKABLE void discardDatePlan();
     Q_INVOKABLE void shiftDates(int days);
@@ -87,7 +92,7 @@ public:
     void setRulesTarget(int target);
     QVariantList classifications() const { return m_classifications; }
     QStringList advancementCompetitions() const { return m_advancementLabels; }
-    QStringList advancementClassifications() const;
+    QStringList advancementClassifications() const { return m_advancementClassLabels; }
     QStringList calendars() const;
     int calendarIndex() const;
     QString calendarName() const;
@@ -139,17 +144,22 @@ private:
     SeasonCalendar *m_calendar=nullptr;
     SimulationSave *m_save=nullptr;
     CompetitionRules m_customRules;
+    bool m_rulesPending=false;
+    quint64 m_rulesRevision=0;
+    void commitPendingRules();
     struct History { QVector<Snapshot> undo,redo; };
     History m_history;
     QSet<CompetitionInfo *> m_retired,m_live;
     QSet<Classification *> m_retiredClasses,m_liveClasses;
     const void *m_season=nullptr;
-    QStringList m_selected,m_advancementLabels;
+    QStringList m_selected,m_advancementLabels,m_advancementClassLabels;
+    QVector<Classification *> m_advancementClasses;
     QVector<CompetitionInfo *> m_advancementOptions;
     QVariantList m_events,m_classifications;
     QuickCalendarEvents *m_eventModel=nullptr;
     QString hillFlag(Hill *hill) const;
-    QVariantList m_datePlan;
+    QVariantList m_datePlan,m_weekendPreview;
+    struct WeekendPlan {QString calendar,hill,rules;QDate friday;CompetitionRules definition;bool saturdayQualification=false,sharedSunday=false;} m_weekendPlan;
     QHash<CompetitionInfo *,QDate> m_plannedDates;
     void applyDates(const QHash<CompetitionInfo *,QDate> &dates);
     QVariantMap m_selection;

@@ -11,6 +11,7 @@
 #include <QFont>
 #include <QSet>
 #include <memory>
+#include "../../seasons/ClassificationScoring.h"
 #include <QSignalBlocker>
 #include "../Competition/Results/TeamResultsTreeModel.h"
 #include "../Competition/CompetitionManagerWindow.h"
@@ -55,19 +56,22 @@ QVariant QuickTableModel::data(const QModelIndex &index, int role) const {
             const auto item = cell(index.row(), c);
             const auto flags = item.flags();
             QString text=item.data().toString();
+            const bool scoreCell=m_view->property("quickScoreColumn").isValid() && c==m_view->property("quickScoreColumn").toInt();
+            if(scoreCell){bool valid=false;double score=item.data(Qt::UserRole).toDouble(&valid);if(!valid)score=item.data().toDouble(&valid);if(valid)text=classificationPointsText(score);}
             QStringList members;
             if(teamSetup && c==1){for(int r=0;r<m_source->rowCount(first);++r)members.append(m_source->index(r,1,first).data().toString());text=members.join(" · ");}
             QVariantMap cellData{{"text",text}, {"value",item.data(Qt::EditRole)},
                 {"icon",quickDecoration(item.data(Qt::DecorationRole))}, {"tip",item.data(Qt::ToolTipRole)},
                 {"editable",bool(flags & Qt::ItemIsEditable)}, {"enabled",bool(flags & Qt::ItemIsEnabled)},
                 {"checkable",bool(flags & Qt::ItemIsUserCheckable) && item.data(Qt::CheckStateRole).isValid()}, {"checked",item.data(Qt::CheckStateRole).toInt() == Qt::Checked}};
+            if(scoreCell)cellData["numeric"]=true;
             if(teamSetup && c==1)cellData["members"]=members;
             cells.append(cellData);
         }
         return cells;
     }
     case Qt::UserRole+2:
-        if (selection) {
+        if (selection && m_view->selectionMode()!=QAbstractItemView::NoSelection) {
             for (int column = 0; column < m_source->columnCount(first.parent()); ++column)
                 if (selection->isSelected(first.sibling(first.row(), column))) return true;
         }
@@ -75,7 +79,7 @@ QVariant QuickTableModel::data(const QModelIndex &index, int role) const {
     case Qt::UserRole+3: { int depth=0; for(auto p=first.parent();p.isValid();p=p.parent()) ++depth; return depth; }
     case Qt::UserRole+4: return !teamSetup && m_source->hasChildren(first);
     case Qt::UserRole+5: return qobject_cast<QTreeView *>(m_view) && static_cast<QTreeView *>(m_view.data())->isExpanded(first);
-    case Qt::UserRole+6: return selection && selection->currentIndex().isValid() && selection->currentIndex().row()==first.row() && selection->currentIndex().parent()==first.parent();
+    case Qt::UserRole+6: return m_view->selectionMode()!=QAbstractItemView::NoSelection && selection && selection->currentIndex().isValid() && selection->currentIndex().row()==first.row() && selection->currentIndex().parent()==first.parent();
     case Qt::UserRole+9: return first.data(CompetitionAdvancement::RoundStatusRole).isValid()?first.data(CompetitionAdvancement::RoundStatusRole):QVariant(-1);
     case Qt::UserRole+10: return first.data(CompetitionAdvancement::QualificationStatusRole).isValid()?first.data(CompetitionAdvancement::QualificationStatusRole):QVariant(-1);
     case Qt::UserRole+11: return first.data(CompetitionAdvancement::QualificationTargetRole);
@@ -188,12 +192,14 @@ void QuickTableModel::select(int row,int column,int modifiers,bool open) {
     QPersistentModelIndex item=cell(row,column);
     if(!item.isValid() || !m_view || !(item.flags() & Qt::ItemIsEnabled)) return;
     if(auto *selection=m_view->selectionModel()) {
+        if(m_view->selectionMode()!=QAbstractItemView::NoSelection){
         QItemSelectionModel::SelectionFlags flags=QItemSelectionModel::ClearAndSelect;
         if(m_view->selectionBehavior()==QAbstractItemView::SelectRows || m_source->columnCount()==1) flags|=QItemSelectionModel::Rows;
         if(multiple() && (modifiers & Qt::ControlModifier)) flags=QItemSelectionModel::Toggle | (flags & QItemSelectionModel::Rows);
         if(multiple() && (modifiers & Qt::ShiftModifier) && m_anchor>=0 && m_anchor<m_rows.size() && cell(m_anchor,column).parent()==item.parent()) {
             selection->select(QItemSelection(cell(qMin(m_anchor,row),column),cell(qMax(m_anchor,row),column)),flags);
         } else { selection->select(item,flags); m_anchor=row; }
+        }
         selection->setCurrentIndex(item,QItemSelectionModel::NoUpdate);
     }
     // Slots may show a modal dialog or delete a model. Leave the QML event first.

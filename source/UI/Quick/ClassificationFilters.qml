@@ -55,7 +55,7 @@ Pane {
                 text: qsTr("Filtr wkładu z konkursów indywidualnych")
                 checked: filters.country.value>0
                 editable: filters.country.enabled!==false
-                explanation: qsTr("Dotyczy tylko punktów kraju z indywidualnych wyników jego skoczków. W każdym konkursie indywidualnym osobno wybieramy najlepszych lub najsłabszych z kraju: uwzględniamy tylko ich albo ich wykluczamy. W konkursach drużynowych filtr nie działa. Raz zdobyte punkty pozostają w klasyfikacji; kolejny konkurs może mieć innych punktujących. Remis nie zwiększa liczby N.")
+                explanation: qsTr("W każdym konkursie indywidualnym osobno: „Uwzględniaj tylko 3 najlepszych” punktuje trzech skoczków kraju; „Wyklucz 2 najsłabszych” — wszystkich pozostałych. Nie dotyczy konkursów drużynowych.")
                 onClicked: ui.edit(filters.country.id,value ? 1 : 0)
             }
             Label { visible: filters.team && filters.country.value>0; text: qsTr("Nie dotyczy konkursów drużynowych."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }

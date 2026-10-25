@@ -33,3 +33,5 @@ struct ClassificationCompetitionSettings {
     QJsonObject toJson() const;
     static ClassificationCompetitionSettings fromJson(const QJsonObject &object);
 };
+
+QString classificationPointsText(double value);

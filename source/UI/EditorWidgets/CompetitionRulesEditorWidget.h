@@ -42,8 +42,12 @@ signals:
     void competitionTypeChanged();
     void KORoundChanged();
     void submitted();
+    void configurationChanged();
 
 private:
+    bool eventFilter(QObject *object,QEvent *event) override;
+    void watchInputs();
+    bool loadingInputs=false,watchQueued=false;
     Ui::CompetitionRulesEditorWidget *ui;
 
     CompetitionRules * competitionRules;

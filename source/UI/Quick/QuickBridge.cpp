@@ -371,7 +371,8 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
     } else if(auto *view=qobject_cast<QAbstractItemView *>(widget)) {
         data["teamSetup"]=view->model() && view->model()->inherits("TeamsSquadsTreeModel");
         const auto sourceName=view->model()?QByteArray(view->model()->metaObject()->className()):QByteArray();
-        bool classificationTable=false;for(auto *parent=view->parentWidget();parent;parent=parent->parentWidget())if(parent->inherits("ClassificationResultsTableView")){classificationTable=true;break;}
+        const bool classificationTable=view->property("quickClassificationRanking").toBool();
+        data["classificationRanking"]=classificationTable;
         data["searchable"]=classificationTable || sourceName=="JumpersListModel" || sourceName=="HillsListModel" || sourceName=="SeasonJumpersListModel" || sourceName=="SeasonHillsListModel" || sourceName=="CompetitionsArchiveListModel" || sourceName=="SimulationSavesListModel";
 
         data["plainTable"]=view->property("quickPlainTable").toBool();
@@ -838,6 +839,10 @@ void QuickBridge::compose(QuickNode *base) {
         entry->update({{"kind","catalog"},{"singleClickEdit",profile()=="DatabaseEditorWindow" && view->model() && QByteArray(view->model()->metaObject()->className())=="JumpersListModel"},{"actionsRow",actions},{"list",QVariant::fromValue(node(view,true))},{"editor",QVariant::fromValue(editor)},{"toolbar",toolbar},{"editRequest",entry->property("editRequest").toInt()}});
         return entry;
     };
+    if(m_window->objectName()=="classificationContributionDetails"){
+        auto *table=m_content->findChild<QTableView *>("classificationContributionTable");
+        m_root->update({{"kind","classificationContributions"},{"country",m_window->property("contributionCountry")},{"name",m_window->property("contributionName")},{"total",classificationPointsText(m_window->property("contributionTotal").toDouble())},{"flag",QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(m_window->property("contributionCountry").toString())+".svg")).toString()},{"tableField",QVariant::fromValue(node(table,true))}});return;
+    }
     if(m_window->objectName()=="competitionResultsArchive")if(auto *history=m_content->findChild<ResultsHistoryWidget *>()) {
         auto *entry=node(history,true);auto values=entry->values();if(auto *button=m_content->findChild<QPushButton *>("archiveResultsWebhook"))values["actionsField"]=QVariant::fromValue(node(button,true));m_root->update(values);return;
     }

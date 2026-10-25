@@ -2,6 +2,10 @@
 #include "ui_CompetitionRulesEditorWidget.h"
 
 #include "RoundInfoEditorWidget.h"
+#include <QEvent>
+#include <QTimer>
+#include <QScopedValueRollback>
+#include <QDoubleSpinBox>
 #include "../../utilities/functions.h"
 
 CompetitionRulesEditorWidget::CompetitionRulesEditorWidget(QWidget *parent) :
@@ -42,6 +46,7 @@ CompetitionRulesEditorWidget::CompetitionRulesEditorWidget(QWidget *parent) :
         }
     });
     emit competitionTypeChanged();
+    watchInputs();
 
 }
 
@@ -52,6 +57,7 @@ CompetitionRulesEditorWidget::~CompetitionRulesEditorWidget()
 
 void CompetitionRulesEditorWidget::resetInputs()
 {
+    QScopedValueRollback<bool> loading(loadingInputs,true);
     ui->lineEdit_name->clear();
     ui->spinBox_roundsCount->setValue(0);
     ui->checkBox_windCompensation->setChecked(true);
@@ -68,6 +74,7 @@ void CompetitionRulesEditorWidget::resetInputs()
 
 void CompetitionRulesEditorWidget::fillCompetitionRulesInputs()
 {
+    QScopedValueRollback<bool> loading(loadingInputs,true);
     ui->lineEdit_name->setText(competitionRules->getName());
     ui->spinBox_roundsCount->setValue(competitionRules->getRounds().count());
     ui->checkBox_windCompensation->setChecked(competitionRules->getHasWindCompensations());
@@ -88,6 +95,7 @@ void CompetitionRulesEditorWidget::fillCompetitionRulesInputs()
 
 void CompetitionRulesEditorWidget::fillRoundsInputs(bool setup)
 {
+    QScopedValueRollback<bool> loading(loadingInputs,true);
     int roundsCount = ui->spinBox_roundsCount->value();
     while (ui->toolBox_rounds->count() > roundsCount)
     {
@@ -229,4 +237,23 @@ void CompetitionRulesEditorWidget::setCompetitionRules(CompetitionRules *newComp
 void CompetitionRulesEditorWidget::on_pushButton_submit_clicked()
 {
     emit submitted();
+}
+
+void CompetitionRulesEditorWidget::watchInputs() {
+    installEventFilter(this);
+    for(auto *object:findChildren<QObject *>()) {
+        object->installEventFilter(this);
+        if(object->property("rulesInputWatched").toBool())continue;
+        object->setProperty("rulesInputWatched",true);
+        const auto changed=[this]{if(!loadingInputs)emit configurationChanged();};
+        if(auto *input=qobject_cast<QSpinBox *>(object))connect(input,qOverload<int>(&QSpinBox::valueChanged),this,changed);
+        else if(auto *input=qobject_cast<QDoubleSpinBox *>(object))connect(input,qOverload<double>(&QDoubleSpinBox::valueChanged),this,changed);
+        else if(auto *input=qobject_cast<QCheckBox *>(object))connect(input,&QCheckBox::toggled,this,changed);
+        else if(auto *input=qobject_cast<QComboBox *>(object))connect(input,qOverload<int>(&QComboBox::activated),this,changed);
+        else if(auto *input=qobject_cast<QLineEdit *>(object);input && !qobject_cast<QAbstractSpinBox *>(input->parentWidget()))connect(input,&QLineEdit::editingFinished,this,changed);
+    }
+}
+bool CompetitionRulesEditorWidget::eventFilter(QObject *object,QEvent *event) {
+    if(event->type()==QEvent::ChildAdded && !watchQueued){watchQueued=true;QTimer::singleShot(0,this,[this]{watchQueued=false;watchInputs();});}
+    return QWidget::eventFilter(object,event);
 }
