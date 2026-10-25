@@ -24,7 +24,8 @@ struct MyRandom::ScopedSeed::State {
     std::normal_distribution<double> normalState{standardNormal};
     bool seeded{scopedSeed};
 };
-MyRandom::ScopedSeed::ScopedSeed(quint64 seed):previous(std::make_unique<State>()) {
+MyRandom::ScopedSeed::ScopedSeed(quint64 seed):previous(std::make_unique<State>()) {reseed(seed);}
+void MyRandom::ScopedSeed::reseed(quint64 seed) {
     quint32 words[]{quint32(seed),quint32(seed>>32)};
     std::seed_seq sequence{words[0],words[1]};
     generator.seed(sequence);uniformGenerator().seed(sequence);standardNormal.reset();scopedSeed=true;

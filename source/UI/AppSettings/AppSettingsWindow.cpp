@@ -1,5 +1,6 @@
 #include "AppSettingsWindow.h"
 #include "ui_AppSettingsWindow.h"
+#include "../../playground/PlaygroundController.h"
 
 #include <QTranslator>
 #include <QCloseEvent>
@@ -26,6 +27,8 @@ AppSettingsWindow::AppSettingsWindow(QWidget *parent) :
     ui(new Ui::AppSettingsWindow)
 {
     ui->setupUi(this);
+    auto *playground=new QPushButton(tr("Playground symulacji"),this);playground->setObjectName("openSimulationPlayground");playground->setToolTip(tr("Wielowątkowe eksperymenty, porównania parametrów i analiza wyników."));ui->verticalLayout_6->insertWidget(0,playground);
+    connect(playground,&QPushButton::clicked,this,[this]{auto *window=new PlaygroundWindow(this);window->setAttribute(Qt::WA_DeleteOnClose);window->show();});
     setWindowFlags(Qt::Window);
     setMinimumSize(360, 360);
     setSizeGripEnabled(true);

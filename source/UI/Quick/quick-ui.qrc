@@ -103,5 +103,12 @@
 <file>WindEditor.qml</file>
 <file>WindFields.qml</file>
 <file>WindSectorStrip.qml</file>
+<file>PlaygroundScreen.qml</file>
+<file>PlaygroundSetup.qml</file>
+<file>PlaygroundResults.qml</file>
+<file>PlaygroundReplay.qml</file>
+<file>PlaygroundHistogram.qml</file>
+<file>PlaygroundMetric.qml</file>
+<file>PlaygroundNumber.qml</file>
 <file>qmldir</file>
 </qresource></RCC>

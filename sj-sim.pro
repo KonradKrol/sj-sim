@@ -17,6 +17,10 @@ UI_DIR = .ui
 win32: DEFINES += NOMINMAX
 
 SOURCES += \
+    source/playground/PlaygroundConfig.cpp \
+    source/playground/PlaygroundController.cpp \
+    source/playground/PlaygroundRunner.cpp \
+    source/playground/PlaygroundIo.cpp \
     source/UI/ResultsShowing/ResultsHistoryWidget.cpp \
     source/seasons/ClassificationScoring.cpp \
     source/global/DataPack.cpp \
@@ -164,6 +168,8 @@ SOURCES += \
     source/utilities/functions.cpp
 
 HEADERS += \
+    source/playground/PlaygroundExperiment.h \
+    source/playground/PlaygroundController.h \
     source/seasons/SimulationSaveListOrder.h \
     source/UI/ResultsShowing/ResultsHistoryWidget.h \
     source/competitions/CompetitionAdvancement.h \

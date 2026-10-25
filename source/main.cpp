@@ -1,4 +1,6 @@
 #include "UI/mainwindow.h"
+#include "playground/PlaygroundExperiment.h"
+#include <cstring>
 #ifdef SJ_QUICK_UI
 #include "UI/Quick/QuickUi.h"
 #endif
@@ -13,6 +15,7 @@
 
 int main(int argc, char *argv[])
 {
+    for(int i=1;i<argc;++i)if(std::strcmp(argv[i],"--playground")==0 || std::strcmp(argv[i],"--playground-example")==0)return Playground::cli(argc,argv);
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);

@@ -2452,6 +2452,7 @@ static void interactionRegressions(MainWindow &main) {
 #include "simulation-onboarding-regressions.h"
 #include "engine-audit-regressions.h"
 #include "roster-translation-regressions.h"
+#include "playground-regressions.h"
 
 int main(int argc,char **argv) {
     QApplication app(argc,argv);
@@ -2483,7 +2484,8 @@ int main(int argc,char **argv) {
     MainWindow main; applicationWindow=&main; main.setParentApplication(&app); new QuickUi(&main);
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="2.0.0-beta","one release version is shared with the interface");
-    if(app.arguments().contains("--playground-only")){playgroundRandomRegressions();return 0;}
+    if(app.arguments().contains("--playground-only")){playgroundRandomRegressions();playgroundBackendRegressions();playgroundUiRegressions(main);return 0;}
+    if(app.arguments().contains("--playground-core-only")){playgroundRandomRegressions();playgroundBackendRegressions();return 0;}
     if(app.arguments().contains("--save-storage-only")){saveStorageRegressions();return 0;}
     if(app.arguments().contains("--engine-audit-only")){int selected=0;for(const auto &argument:app.arguments())if(argument.startsWith("--engine-case="))selected=argument.mid(14).toInt();engineAuditRegressions(selected);return 0;}
     engineAuditRegressions();

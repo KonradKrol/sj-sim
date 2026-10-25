@@ -839,6 +839,7 @@ void QuickBridge::compose(QuickNode *base) {
         entry->update({{"kind","catalog"},{"singleClickEdit",profile()=="DatabaseEditorWindow" && view->model() && QByteArray(view->model()->metaObject()->className())=="JumpersListModel"},{"actionsRow",actions},{"list",QVariant::fromValue(node(view,true))},{"editor",QVariant::fromValue(editor)},{"toolbar",toolbar},{"editRequest",entry->property("editRequest").toInt()}});
         return entry;
     };
+    if(m_window->property("playgroundController").isValid()){m_root->update({{"kind","playground"},{"backend",m_window->property("playgroundController")}});return;}
     if(m_window->objectName()=="classificationContributionDetails"){
         auto *table=m_content->findChild<QTableView *>("classificationContributionTable");
         m_root->update({{"kind","classificationContributions"},{"country",m_window->property("contributionCountry")},{"name",m_window->property("contributionName")},{"total",classificationPointsText(m_window->property("contributionTotal").toDouble())},{"flag",QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(m_window->property("contributionCountry").toString())+".svg")).toString()},{"tableField",QVariant::fromValue(node(table,true))}});return;
@@ -950,7 +951,7 @@ void QuickBridge::compose(QuickNode *base) {
     if(profile()=="AppSettingsWindow") {
         QVariantList sections;
         sections.append(group("simulation",tr("Silnik symulacji"),{group("simulation-settings-fields",QString(),fields({
-            {"comboBox_language",tr("Język interfejsu")},{"spinBox_skillsRange",tr("Zakres umiejętności")},
+            {"openSimulationPlayground",""},{"comboBox_language",tr("Język interfejsu")},{"spinBox_skillsRange",tr("Zakres umiejętności")},
             {"spinBox_dsqProbability",tr("Bazowe prawdopodobieństwo dyskwalifikacji")},
             {"doubleSpinBox_randomMultiplier",tr("Mnożnik losowości")},{"doubleSpinBox",tr("Wpływ parametrów skoczni")},
             {"doubleSpinBox_takeoffFormEffect",tr("Wpływ formy na wybicie")},{"doubleSpinBox_flightFormEffect",tr("Wpływ formy na lot")},

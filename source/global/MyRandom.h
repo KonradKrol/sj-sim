@@ -15,6 +15,7 @@ public:
     public:
         explicit ScopedSeed(quint64 seed);
         ~ScopedSeed();
+        void reseed(quint64 seed);
         ScopedSeed(const ScopedSeed &)=delete;
         ScopedSeed &operator=(const ScopedSeed &)=delete;
     };
