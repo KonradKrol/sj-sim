@@ -6,7 +6,7 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
-- Stan porównania kodu i dokumentacji: **617006a**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
+- Stan porównania kodu i dokumentacji: **df0ea86**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
 - Data zestawienia: **25 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **2.0.0-beta**, ustawione na wyraźne polecenie użytkownika po zakończeniu audytu silnika.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
@@ -766,19 +766,19 @@ Punktacja ma nowe nazwy naliczania, segmenty źródeł z precyzyjnym opisem, akt
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
-- Snapshot kodu i dokumentacji: **617006aaab31865d7c74a5b9802ff63d532ca04c**.
-- Commitów od bazy: **201**.
-- Plików zmienionych w tym zakresie: **515**.
+- Snapshot kodu i dokumentacji: **df0ea86ab526f5fc71c5488d08ab66296ffad135**.
+- Commitów od bazy: **204**.
+- Plików zmienionych w tym zakresie: **519**.
 - Statystyki obejmują także fonty, skills i dokumentację; nie oznaczają rozmiaru samej logiki gry.
 - Dalsza aktualizacja tego zestawienia jest dodatkiem dokumentacyjnym do wskazanego snapshotu.
 
 | Obszar | Plików |
 | --- | ---: |
-| Dokumentacja etapów i migracji | 48 |
-| Domyślny interfejs Qt Quick i jego zasoby | 118 |
+| Dokumentacja etapów i migracji | 49 |
+| Domyślny interfejs Qt Quick i jego zasoby | 120 |
 | Instrukcje i zasoby narzędzi deweloperskich | 167 |
 | Konfiguracja projektu i pozostałe pliki | 6 |
-| Kontrolery, modele i logika C++ | 137 |
+| Kontrolery, modele i logika C++ | 138 |
 | Skrypty budowania, uruchamiania i testowania | 6 |
 | Testy | 15 |
 | Tłumaczenia | 1 |
@@ -787,9 +787,9 @@ Punktacja ma nowe nazwy naliczania, segmenty źródeł z precyzyjnym opisem, akt
 Porównanie można odtworzyć poleceniami:
 
 ~~~sh
-git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 617006aaab31865d7c74a5b9802ff63d532ca04c
-git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 617006aaab31865d7c74a5b9802ff63d532ca04c
-git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..617006aaab31865d7c74a5b9802ff63d532ca04c
+git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c df0ea86ab526f5fc71c5488d08ab66296ffad135
+git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c df0ea86ab526f5fc71c5488d08ab66296ffad135
+git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..df0ea86ab526f5fc71c5488d08ab66296ffad135
 ~~~
 
 Zestawienie można odświeżyć przez `python3 scripts/update-release-inventory.py --base main --snapshot HEAD`. Opisy zachowania i wyniki testów należy uzupełniać na podstawie faktycznych zmian oraz weryfikacji.
@@ -1001,6 +1001,9 @@ Historyczne opisy należy czytać z uwzględnieniem opisanych powyżej rozwiąza
 | `8073676` | Preserve scoring grid scroll with incremental point rows — Map flat unfiltered PointsForPlacesTableModel insert/remove signals without resetting the entire Quick adapter. Retain fallback rebuilds for other mappings, expire scroll snapshots even for no-op actions and avoid automatic item selection. Separate pointer preparation from clicks in the test helper so scroll assertions measure the action rather than test navigation. |
 | `d3ad04c` | Bind classification ages to seasons and expose per-country contribution details — Keep annual eligibility fixed to the season's starting year, bind it before loading standings, and ignore per-event year overrides. Apply include/exclude TOP/LAST N only to country contributions from individual events, preserving contributions from each earlier event. Add country double-click breakdowns for live and historical totals. Finish scoring source segments, preset/custom state, general mechanism help, multiplier-only controls and the Domyślny label; cover serialization, quotas, history, presets, real controls and model contracts. |
 | `617006a` | Document resolved classification rules and complete validation |
+| `985316d` | Refresh release inventory for season scoring and contribution views |
+| `e7a7554` | Save calendar rules automatically and simplify scheduling and standings — Add a previewed weekend builder with Friday or Saturday qualifiers, shared Sunday qualification, automatic trainings and trials, and atomic undo. Clarify date rhythms and allow filling only missing dates. Filter compatible qualification sources, preserve pending rule edits across selection changes, simplify read-only rankings, format points consistently and give country contributions a dedicated page. |
+| `df0ea86` | Document weekend planning, automatic rule saves and standings verification |
 
 ## Załącznik C. Pełny manifest zmienionych plików
 
@@ -1017,6 +1020,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/BUGFIX_AUDIT_2026-10-21.md](../docs/BUGFIX_AUDIT_2026-10-21.md) | 140 | 0 |
 | A | [docs/CALENDAR_COPY_FIXES_2026-10-22.md](../docs/CALENDAR_COPY_FIXES_2026-10-22.md) | 27 | 0 |
 | A | [docs/CALENDAR_DATES.md](../docs/CALENDAR_DATES.md) | 40 | 0 |
+| A | [docs/CALENDAR_PLANNER_AND_STANDINGS_UX_2026-10-25.md](../docs/CALENDAR_PLANNER_AND_STANDINGS_UX_2026-10-25.md) | 51 | 0 |
 | A | [docs/CLASSIFICATION_EDITOR_UX_2026-10-25.md](../docs/CLASSIFICATION_EDITOR_UX_2026-10-25.md) | 35 | 0 |
 | A | [docs/CLASSIFICATION_RULES_AND_BREAKDOWN_2026-10-25.md](../docs/CLASSIFICATION_RULES_AND_BREAKDOWN_2026-10-25.md) | 41 | 0 |
 | A | [docs/CLASSIFICATION_SCORING.md](../docs/CLASSIFICATION_SCORING.md) | 50 | 0 |
@@ -1038,7 +1042,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/LAYOUT_RECURSION_FIX_2026-10-24.md](../docs/LAYOUT_RECURSION_FIX_2026-10-24.md) | 21 | 0 |
 | A | [docs/NAVIGATION_PERFORMANCE.md](../docs/NAVIGATION_PERFORMANCE.md) | 30 | 0 |
 | A | [docs/PENDING_CLASSIFICATION_RULES_2026-10-25.md](../docs/PENDING_CLASSIFICATION_RULES_2026-10-25.md) | 10 | 0 |
-| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1548 | 0 |
+| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1567 | 0 |
 | A | [docs/RESULT_HISTORY_ARCHIVE_DNS_2026-10-25.md](../docs/RESULT_HISTORY_ARCHIVE_DNS_2026-10-25.md) | 67 | 0 |
 | A | [docs/RESULT_SELECTORS_TEAM_READABILITY_2026-10-25.md](../docs/RESULT_SELECTORS_TEAM_READABILITY_2026-10-25.md) | 24 | 0 |
 | A | [docs/RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md](../docs/RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md) | 62 | 0 |
@@ -1076,14 +1080,16 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/CalendarClassifications.qml](../source/UI/Quick/CalendarClassifications.qml) | 63 | 0 |
 | A | [source/UI/Quick/CalendarDateField.qml](../source/UI/Quick/CalendarDateField.qml) | 93 | 0 |
 | A | [source/UI/Quick/CalendarDateOverview.qml](../source/UI/Quick/CalendarDateOverview.qml) | 105 | 0 |
-| A | [source/UI/Quick/CalendarDatePlanner.qml](../source/UI/Quick/CalendarDatePlanner.qml) | 72 | 0 |
+| A | [source/UI/Quick/CalendarDatePlanner.qml](../source/UI/Quick/CalendarDatePlanner.qml) | 91 | 0 |
 | A | [source/UI/Quick/CalendarEventRow.qml](../source/UI/Quick/CalendarEventRow.qml) | 116 | 0 |
 | A | [source/UI/Quick/CalendarFields.qml](../source/UI/Quick/CalendarFields.qml) | 63 | 0 |
-| A | [source/UI/Quick/CalendarInspector.qml](../source/UI/Quick/CalendarInspector.qml) | 75 | 0 |
+| A | [source/UI/Quick/CalendarInspector.qml](../source/UI/Quick/CalendarInspector.qml) | 73 | 0 |
 | A | [source/UI/Quick/CalendarVenueButton.qml](../source/UI/Quick/CalendarVenueButton.qml) | 19 | 0 |
+| A | [source/UI/Quick/CalendarWeekendPlanner.qml](../source/UI/Quick/CalendarWeekendPlanner.qml) | 47 | 0 |
 | A | [source/UI/Quick/CalendarWorkspace.qml](../source/UI/Quick/CalendarWorkspace.qml) | 180 | 0 |
 | A | [source/UI/Quick/CatalogWorkspace.qml](../source/UI/Quick/CatalogWorkspace.qml) | 60 | 0 |
 | A | [source/UI/Quick/CheckHelp.qml](../source/UI/Quick/CheckHelp.qml) | 22 | 0 |
+| A | [source/UI/Quick/ClassificationContributionPage.qml](../source/UI/Quick/ClassificationContributionPage.qml) | 39 | 0 |
 | A | [source/UI/Quick/ClassificationFilters.qml](../source/UI/Quick/ClassificationFilters.qml) | 93 | 0 |
 | A | [source/UI/Quick/ClassificationInput.qml](../source/UI/Quick/ClassificationInput.qml) | 37 | 0 |
 | A | [source/UI/Quick/ClassificationMethods.qml](../source/UI/Quick/ClassificationMethods.qml) | 77 | 0 |
@@ -1091,7 +1097,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/ClassificationSources.qml](../source/UI/Quick/ClassificationSources.qml) | 45 | 0 |
 | A | [source/UI/Quick/ClassificationWorkspace.qml](../source/UI/Quick/ClassificationWorkspace.qml) | 61 | 0 |
 | A | [source/UI/Quick/DataPackBar.qml](../source/UI/Quick/DataPackBar.qml) | 55 | 0 |
-| A | [source/UI/Quick/DataTable.qml](../source/UI/Quick/DataTable.qml) | 312 | 0 |
+| A | [source/UI/Quick/DataTable.qml](../source/UI/Quick/DataTable.qml) | 313 | 0 |
 | A | [source/UI/Quick/EmptyState.qml](../source/UI/Quick/EmptyState.qml) | 24 | 0 |
 | A | [source/UI/Quick/FormGeneratorWorkspace.qml](../source/UI/Quick/FormGeneratorWorkspace.qml) | 84 | 0 |
 | A | [source/UI/Quick/HelpDot.qml](../source/UI/Quick/HelpDot.qml) | 24 | 0 |
@@ -1114,10 +1120,10 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/NumberField.qml](../source/UI/Quick/NumberField.qml) | 56 | 0 |
 | A | [source/UI/Quick/PlotPanel.qml](../source/UI/Quick/PlotPanel.qml) | 35 | 0 |
 | A | [source/UI/Quick/ProjectedControl.qml](../source/UI/Quick/ProjectedControl.qml) | 10 | 0 |
-| A | [source/UI/Quick/QuickBridge.cpp](../source/UI/Quick/QuickBridge.cpp) | 1227 | 0 |
-| A | [source/UI/Quick/QuickCalendar.cpp](../source/UI/Quick/QuickCalendar.cpp) | 530 | 0 |
-| A | [source/UI/Quick/QuickCalendar.h](../source/UI/Quick/QuickCalendar.h) | 176 | 0 |
-| A | [source/UI/Quick/QuickCalendarDates.cpp](../source/UI/Quick/QuickCalendarDates.cpp) | 180 | 0 |
+| A | [source/UI/Quick/QuickBridge.cpp](../source/UI/Quick/QuickBridge.cpp) | 1232 | 0 |
+| A | [source/UI/Quick/QuickCalendar.cpp](../source/UI/Quick/QuickCalendar.cpp) | 548 | 0 |
+| A | [source/UI/Quick/QuickCalendar.h](../source/UI/Quick/QuickCalendar.h) | 186 | 0 |
+| A | [source/UI/Quick/QuickCalendarDates.cpp](../source/UI/Quick/QuickCalendarDates.cpp) | 214 | 0 |
 | A | [source/UI/Quick/QuickPlot.cpp](../source/UI/Quick/QuickPlot.cpp) | 116 | 0 |
 | A | [source/UI/Quick/QuickPlot.h](../source/UI/Quick/QuickPlot.h) | 38 | 0 |
 | A | [source/UI/Quick/QuickRaceStats.h](../source/UI/Quick/QuickRaceStats.h) | 104 | 0 |
@@ -1125,7 +1131,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/QuickRoster.h](../source/UI/Quick/QuickRoster.h) | 90 | 0 |
 | A | [source/UI/Quick/QuickSurface.cpp](../source/UI/Quick/QuickSurface.cpp) | 17 | 0 |
 | A | [source/UI/Quick/QuickSurface.h](../source/UI/Quick/QuickSurface.h) | 20 | 0 |
-| A | [source/UI/Quick/QuickTableModel.cpp](../source/UI/Quick/QuickTableModel.cpp) | 286 | 0 |
+| A | [source/UI/Quick/QuickTableModel.cpp](../source/UI/Quick/QuickTableModel.cpp) | 292 | 0 |
 | A | [source/UI/Quick/QuickUi.cpp](../source/UI/Quick/QuickUi.cpp) | 297 | 0 |
 | A | [source/UI/Quick/QuickUi.h](../source/UI/Quick/QuickUi.h) | 250 | 0 |
 | A | [source/UI/Quick/QuickView.h](../source/UI/Quick/QuickView.h) | 7 | 0 |
@@ -1180,7 +1186,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/icons/linkedin-dark.svg](../source/UI/Quick/icons/linkedin-dark.svg) | 1 | 0 |
 | A | [source/UI/Quick/icons/linkedin-light.svg](../source/UI/Quick/icons/linkedin-light.svg) | 1 | 0 |
 | A | [source/UI/Quick/qmldir](../source/UI/Quick/qmldir) | 1 | 0 |
-| A | [source/UI/Quick/quick-ui.qrc](../source/UI/Quick/quick-ui.qrc) | 105 | 0 |
+| A | [source/UI/Quick/quick-ui.qrc](../source/UI/Quick/quick-ui.qrc) | 107 | 0 |
 
 ### Instrukcje i zasoby narzędzi deweloperskich
 
@@ -1392,7 +1398,8 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | M | [source/UI/DatabaseEditor/ListModels/CalendarsListModel.h](../source/UI/DatabaseEditor/ListModels/CalendarsListModel.h) | 1 | 0 |
 | M | [source/UI/EditorWidgets/ClassificationEditorWidget.cpp](../source/UI/EditorWidgets/ClassificationEditorWidget.cpp) | 173 | 61 |
 | M | [source/UI/EditorWidgets/ClassificationEditorWidget.h](../source/UI/EditorWidgets/ClassificationEditorWidget.h) | 22 | 0 |
-| M | [source/UI/EditorWidgets/CompetitionRulesEditorWidget.cpp](../source/UI/EditorWidgets/CompetitionRulesEditorWidget.cpp) | 12 | 37 |
+| M | [source/UI/EditorWidgets/CompetitionRulesEditorWidget.cpp](../source/UI/EditorWidgets/CompetitionRulesEditorWidget.cpp) | 39 | 37 |
+| M | [source/UI/EditorWidgets/CompetitionRulesEditorWidget.h](../source/UI/EditorWidgets/CompetitionRulesEditorWidget.h) | 4 | 0 |
 | M | [source/UI/EditorWidgets/JumperEditorWidget.cpp](../source/UI/EditorWidgets/JumperEditorWidget.cpp) | 77 | 2 |
 | M | [source/UI/EditorWidgets/JumperEditorWidget.h](../source/UI/EditorWidgets/JumperEditorWidget.h) | 14 | 0 |
 | M | [source/UI/EditorWidgets/KOSystem/KOGroupEditorWidget.cpp](../source/UI/EditorWidgets/KOSystem/KOGroupEditorWidget.cpp) | 7 | 0 |
@@ -1419,7 +1426,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | M | [source/UI/Seasons/CalendarEditor/CalendarEditorWidget.cpp](../source/UI/Seasons/CalendarEditor/CalendarEditorWidget.cpp) | 49 | 54 |
 | M | [source/UI/Seasons/Classifications/ClassificationResultsTableModel.cpp](../source/UI/Seasons/Classifications/ClassificationResultsTableModel.cpp) | 16 | 10 |
 | M | [source/UI/Seasons/Classifications/ClassificationResultsTableModel.h](../source/UI/Seasons/Classifications/ClassificationResultsTableModel.h) | 1 | 0 |
-| M | [source/UI/Seasons/Classifications/ClassificationResultsTableView.cpp](../source/UI/Seasons/Classifications/ClassificationResultsTableView.cpp) | 68 | 4 |
+| M | [source/UI/Seasons/Classifications/ClassificationResultsTableView.cpp](../source/UI/Seasons/Classifications/ClassificationResultsTableView.cpp) | 69 | 4 |
 | M | [source/UI/Seasons/Classifications/ClassificationResultsTableView.h](../source/UI/Seasons/Classifications/ClassificationResultsTableView.h) | 11 | 0 |
 | M | [source/UI/Seasons/CompetitionInfoEditorWidget.cpp](../source/UI/Seasons/CompetitionInfoEditorWidget.cpp) | 1 | 0 |
 | M | [source/UI/Seasons/ItemModels/ClassificationsArchiveListModel.cpp](../source/UI/Seasons/ItemModels/ClassificationsArchiveListModel.cpp) | 4 | 2 |
@@ -1478,8 +1485,8 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | M | [source/main.cpp](../source/main.cpp) | 11 | 0 |
 | M | [source/seasons/Classification.cpp](../source/seasons/Classification.cpp) | 118 | 242 |
 | M | [source/seasons/Classification.h](../source/seasons/Classification.h) | 8 | 0 |
-| A | [source/seasons/ClassificationScoring.cpp](../source/seasons/ClassificationScoring.cpp) | 59 | 0 |
-| A | [source/seasons/ClassificationScoring.h](../source/seasons/ClassificationScoring.h) | 35 | 0 |
+| A | [source/seasons/ClassificationScoring.cpp](../source/seasons/ClassificationScoring.cpp) | 68 | 0 |
+| A | [source/seasons/ClassificationScoring.h](../source/seasons/ClassificationScoring.h) | 37 | 0 |
 | M | [source/seasons/ClassificationSingleResult.cpp](../source/seasons/ClassificationSingleResult.cpp) | 16 | 39 |
 | M | [source/seasons/ClassificationSingleResult.h](../source/seasons/ClassificationSingleResult.h) | 2 | 0 |
 | M | [source/seasons/Season.cpp](../source/seasons/Season.cpp) | 26 | 1 |
@@ -1522,16 +1529,16 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 
 | Status | Plik | + | − |
 | --- | --- | ---: | ---: |
-| A | [tests/calendar-dates-regressions.h](../tests/calendar-dates-regressions.h) | 95 | 0 |
+| A | [tests/calendar-dates-regressions.h](../tests/calendar-dates-regressions.h) | 101 | 0 |
 | A | [tests/calendar-inspector-space-regressions.h](../tests/calendar-inspector-space-regressions.h) | 31 | 0 |
 | A | [tests/calendar-workspace-ux-regressions.h](../tests/calendar-workspace-ux-regressions.h) | 35 | 0 |
-| A | [tests/classification-regressions.h](../tests/classification-regressions.h) | 208 | 0 |
+| A | [tests/classification-regressions.h](../tests/classification-regressions.h) | 216 | 0 |
 | A | [tests/competition-advancement-regressions.h](../tests/competition-advancement-regressions.h) | 111 | 0 |
 | A | [tests/competition-quick-smoke.cpp](../tests/competition-quick-smoke.cpp) | 397 | 0 |
 | A | [tests/competition-ties-gate-regressions.h](../tests/competition-ties-gate-regressions.h) | 126 | 0 |
 | A | [tests/engine-audit-regressions.h](../tests/engine-audit-regressions.h) | 70 | 0 |
 | A | [tests/navigation-performance.h](../tests/navigation-performance.h) | 26 | 0 |
-| A | [tests/quick-ui-smoke.cpp](../tests/quick-ui-smoke.cpp) | 2657 | 0 |
+| A | [tests/quick-ui-smoke.cpp](../tests/quick-ui-smoke.cpp) | 2658 | 0 |
 | A | [tests/roster-drag-regressions.h](../tests/roster-drag-regressions.h) | 23 | 0 |
 | A | [tests/roster-translation-regressions.h](../tests/roster-translation-regressions.h) | 13 | 0 |
 | A | [tests/simulation-onboarding-regressions.h](../tests/simulation-onboarding-regressions.h) | 96 | 0 |
