@@ -1,5 +1,6 @@
 #include "SimulationSavesListModel.h"
 #include <QFont>
+#include "../../../seasons/SimulationSaveListOrder.h"
 #include <QColor>
 
 SimulationSavesListModel::SimulationSavesListModel(QVector<SimulationSave *> * globalSimulationSavesVectorPointer, QObject *parent)
@@ -72,6 +73,7 @@ bool SimulationSavesListModel::insertSave(int row, SimulationSave *save)
     beginInsertRows(QModelIndex(), row, row);
     globalSimulationSavesVectorPointer->insert(row, save);
     endInsertRows();
+    SimulationSaveListOrder::remember(*globalSimulationSavesVectorPointer);
     return true;
 }
 
@@ -83,6 +85,7 @@ SimulationSave *SimulationSavesListModel::takeSave(int row)
     beginRemoveRows(QModelIndex(), row, row);
     SimulationSave *save = globalSimulationSavesVectorPointer->takeAt(row);
     endRemoveRows();
+    SimulationSaveListOrder::remember(*globalSimulationSavesVectorPointer);
     return save;
 }
 

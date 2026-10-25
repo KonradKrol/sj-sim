@@ -1,5 +1,6 @@
 #include "GlobalDatabase.h"
 #include "CountryCodes.h"
+#include "../seasons/SimulationSaveListOrder.h"
 
 #include <QFile>
 #include <QSaveFile>
@@ -449,6 +450,9 @@ bool GlobalDatabase::loadSimulationSaves(bool progressDialog)
         else
             ++failedSaves;
     }
+
+    SimulationSaveListOrder::restore(globalSimulationSaves);
+    if(failedSaves==0)SimulationSaveListOrder::remember(globalSimulationSaves);
 
     if(failedSaves > 0)
     {

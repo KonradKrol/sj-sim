@@ -164,6 +164,7 @@ SOURCES += \
     source/utilities/functions.cpp
 
 HEADERS += \
+    source/seasons/SimulationSaveListOrder.h \
     source/UI/ResultsShowing/ResultsHistoryWidget.h \
     source/competitions/CompetitionAdvancement.h \
     source/seasons/ClassificationScoring.h \
