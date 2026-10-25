@@ -55,6 +55,9 @@ ColumnLayout {
         cellHeight: Math.max(32,Theme.bodyMetrics.height+10)
         Layout.preferredHeight: Math.min(240,Math.max(cellHeight*2,Math.ceil(count/columns)*cellHeight))
         model: points.table; clip: true
+        currentIndex: -1
+        highlightFollowsCurrentItem: false
+        keyNavigationEnabled: false
         boundsBehavior: Flickable.StopAtBounds
         ScrollBar.vertical: ScrollBar {}
         delegate: Item {
@@ -85,13 +88,18 @@ ColumnLayout {
     property real savedOuterY: 0
     property bool preserving: false
     function outerViewport(){for(var item=parent;item;item=item.parent)if(item.contentY!==undefined && item.contentHeight!==undefined)return item;return null}
-    function rememberScroll(){if(preserving)return;savedY=rows.contentY;var outer=outerViewport();savedOuterY=outer ? outer.contentY : 0;preserving=true}
+    function rememberScroll(){if(preserving)return;savedY=rows.contentY;var outer=outerViewport();savedOuterY=outer ? outer.contentY : 0;preserving=true;restoreTimer.restart()}
     function restoreScroll(){rows.contentY=Math.max(0,Math.min(savedY,rows.contentHeight-rows.height));var outer=outerViewport();if(outer)outer.contentY=Math.max(0,Math.min(savedOuterY,outer.contentHeight-outer.height));preserving=false}
     onTableChanged: {restoreTimer.stop();preserving=false;rows.contentY=0}
     Timer { id: restoreTimer; interval: 32; onTriggered: points.restoreScroll() }
     Connections {
         target: points.table
         function onModelAboutToBeReset(){points.rememberScroll()}
-        function onModelReset(){restoreTimer.restart()}
+        function onModelReset(){rows.currentIndex=-1;restoreTimer.restart()}
+        function onRowsAboutToBeInserted(){points.rememberScroll()}
+        function onRowsAboutToBeRemoved(){points.rememberScroll()}
+        function onRowsInserted(){restoreTimer.restart()}
+        function onRowsRemoved(){restoreTimer.restart()}
+        function onDataChanged(){if(points.preserving)restoreTimer.restart()}
     }
 }

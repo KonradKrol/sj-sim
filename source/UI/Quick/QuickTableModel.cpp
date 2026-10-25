@@ -10,6 +10,7 @@
 #include <QBrush>
 #include <QFont>
 #include <QSet>
+#include <memory>
 #include <QSignalBlocker>
 #include "../Competition/Results/TeamResultsTreeModel.h"
 #include "../Competition/CompetitionManagerWindow.h"
@@ -133,14 +134,20 @@ void QuickTableModel::sync() {
         auto update=[this] { rebuild(); };
         m_connections << connect(m_source,&QAbstractItemModel::modelReset,this,update)
                       << connect(m_source,&QAbstractItemModel::layoutChanged,this,update)
-                      << connect(m_source,&QAbstractItemModel::rowsInserted,this,update)
-                      << connect(m_source,&QAbstractItemModel::rowsRemoved,this,update)
                       << connect(m_source,&QAbstractItemModel::columnsInserted,this,update)
                       << connect(m_source,&QAbstractItemModel::columnsRemoved,this,update)
                       << connect(m_source,&QAbstractItemModel::headerDataChanged,this,[this] { emit structureChanged(); })
                       << connect(m_source,&QAbstractItemModel::dataChanged,this,[this] {
                           if(!m_rows.isEmpty()) emit dataChanged(index(0),index(m_rows.size()-1));
                       });
+        if(m_source->inherits("PointsForPlacesTableModel")) {
+            const auto natural=[this](const QModelIndex &parent){if(m_frozen || parent.isValid() || m_view->rootIndex().isValid() || !m_filter.isEmpty() || m_rows.size()!=m_source->rowCount())return false;for(int i=0;i<m_rows.size();++i)if(m_rows[i].parent().isValid() || m_rows[i].row()!=i)return false;return true;};
+            auto inserting=std::make_shared<bool>(false),removing=std::make_shared<bool>(false);
+            m_connections << connect(m_source,&QAbstractItemModel::rowsAboutToBeInserted,this,[this,inserting,natural](const QModelIndex &parent,int first,int last){*inserting=natural(parent);if(*inserting)beginInsertRows({},first,last);})
+                << connect(m_source,&QAbstractItemModel::rowsInserted,this,[this,inserting](const QModelIndex &,int first,int last){if(!*inserting){rebuild();return;}for(int row=first;row<=last;++row)m_rows.insert(row,m_source->index(row,0));*inserting=false;endInsertRows();emit structureChanged();emit cursorChanged();})
+                << connect(m_source,&QAbstractItemModel::rowsAboutToBeRemoved,this,[this,removing,natural](const QModelIndex &parent,int first,int last){*removing=natural(parent);if(*removing)beginRemoveRows({},first,last);})
+                << connect(m_source,&QAbstractItemModel::rowsRemoved,this,[this,removing](const QModelIndex &,int first,int last){if(!*removing){rebuild();return;}for(int row=first;row<=last;++row)m_rows.removeAt(first);*removing=false;endRemoveRows();emit structureChanged();emit cursorChanged();});
+        }else m_connections << connect(m_source,&QAbstractItemModel::rowsInserted,this,update) << connect(m_source,&QAbstractItemModel::rowsRemoved,this,update);
     }
     if(auto *selection=m_view->selectionModel()) {
         auto update=[this] { if(!m_rows.isEmpty()) emit dataChanged(index(0),index(m_rows.size()-1),{Qt::UserRole+2,Qt::UserRole+6}); emit cursorChanged(); };

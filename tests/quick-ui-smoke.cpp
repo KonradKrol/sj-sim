@@ -138,6 +138,7 @@ static QQuickWidget *scene(QWidget *window) {
     return bridge?bridge->view():nullptr;
 }
 static QWidget *presentation(QWidget *window) { return window->property("sjQuickPage").toBool()?applicationWindow:window; }
+static QPoint controlPoint(QQuickWidget *view,const QString &name);
 static void clickControl(QQuickWidget *view,const QString &name);
 static QString output;
 static int renders=0;
@@ -1057,7 +1058,7 @@ static void menuRegressions(MainWindow &main) {
     clickControl(tableView,optionsName);clickControl(tableView,"menu-entry-0");check(source->selectionModel()->selectedRows().size()==3,"table menu selects all source rows");tableDialog.reject();
     qInfo()<<"PASS: real pointer clicks open menus and activate source actions";
 }
-static void clickControl(QQuickWidget *view,const QString &name) {
+static QPoint controlPoint(QQuickWidget *view,const QString &name) {
     // Synthetic QWidget mouse events bypass native mouse activation and focus.
     QApplication::setActiveWindow(view->window());view->setFocus(Qt::MouseFocusReason);
     view->grabFramebuffer();
@@ -1097,6 +1098,10 @@ static void clickControl(QQuickWidget *view,const QString &name) {
             qCritical()<<"FAIL: scroll diagnostic"<<ancestor->objectName()<<ancestor->height()<<ancestor->property("contentHeight")<<ancestor->property("contentY")<<ancestor->mapToScene(QPointF());
     }
     check(view->rect().contains(point),"control inside viewport: "+name);
+    return point;
+}
+static void clickControl(QQuickWidget *view,const QString &name) {
+    const auto point=controlPoint(view,name);
     QTest::mouseClick(view,Qt::LeftButton,Qt::NoModifier,point);
     QTest::qWait(80);
 }
