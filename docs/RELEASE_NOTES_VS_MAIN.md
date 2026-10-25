@@ -7,10 +7,21 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
 - Stan porównania kodu i dokumentacji: **617006a**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
-- Data zestawienia: **24 października 2026**.
+- Data zestawienia: **25 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **2.0.0-beta**, ustawione na wyraźne polecenie użytkownika po zakończeniu audytu silnika.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
 - Starsze raporty opisują kolejne etapy prac. W razie rozbieżności stan końcowy opisany tutaj ma pierwszeństwo. Szczególnie istotne korekty są zebrane w sekcji „Rozwiązania zastąpione podczas prac”.
+
+## Uzupełnienie — planowanie weekendów i obsługa klasyfikacji (25.10.2026)
+
+- Automatyczny zapis zasad w kalendarzu, także dla treningów i serii próbnych; bez przycisku zastosowania, z bezpiecznym przełączaniem konkursów i Cofnij/Ponów.
+- Filtrowanie źródeł kwalifikacji według rodzaju konkursu, z prawidłowym mapowaniem przefiltrowanych klasyfikacji.
+- Prostsze planowanie dat: nazwane rytmy z przykładami, jawne jednostki, opcja uzupełniania wyłącznie brakujących terminów.
+- Kreator nowych weekendów: piątkowe lub sobotnie kwalifikacje, osobne niedzielne lub wspólne źródło awansu, automatyczne treningi i serie próbne, podgląd oraz atomowe cofanie. Kolejny weekend można dodawać od razu z datą przesuniętą o tydzień.
+- Klasyfikacje bez zaznaczania i sortowania, wyszukiwanie na żądanie, spójne formatowanie punktów. Osobny podgląd wkładu kraju z flagą, sumą i tabelą bez wyszukiwania.
+- Zwykłe menu wyboru wyników konkursu pokazuje wszystkie pozycje, ma tło dopasowane do zawartości i nie przyciemnia pozostałego ekranu.
+
+Szczegóły i scenariusze sprawdzenia: [Kalendarz, planowanie weekendów i klasyfikacje](CALENDAR_PLANNER_AND_STANDINGS_UX_2026-10-25.md).
 
 ## Krótki materiał do publicznych release notes
 
