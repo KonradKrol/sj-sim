@@ -6,6 +6,12 @@
 <file>CalendarDatePlanner.qml</file>
 <file>CalendarDateOverview.qml</file>
 <file>CalendarClassifications.qml</file>
+<file>ClassificationWorkspace.qml</file>
+<file>ClassificationInput.qml</file>
+<file>ClassificationPoints.qml</file>
+<file>ClassificationFilters.qml</file>
+<file>HelpDot.qml</file>
+<file>CheckHelp.qml</file>
 <file>CalendarFields.qml</file>
 <file>CalendarInspector.qml</file>
 <file>CalendarClassificationScoring.qml</file>

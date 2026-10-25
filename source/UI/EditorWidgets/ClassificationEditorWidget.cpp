@@ -34,19 +34,17 @@ ClassificationEditorWidget::ClassificationEditorWidget(Classification * classifi
     ui->tableView_altPointsForPlaces->setSelectionMode(QAbstractItemView::SingleSelection);
 
     action_add = new QAction(this);
-    action_add->setShortcut(Qt::CTRL | Qt::SHIFT | Qt::Key_A);
     this->addAction(action_add);
     connect(action_add, &QAction::triggered, this, &ClassificationEditorWidget::addActionTriggered);
 
     action_remove = new QAction(this);
-    action_remove->setShortcut(Qt::CTRL | Qt::SHIFT | Qt::Key_D);
     this->addAction(action_remove);
     connect(action_remove, &QAction::triggered, this, &ClassificationEditorWidget::removeActionTriggered);
 
     connect(ui->comboBox_points, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](){
         if(ui->comboBox_points->currentIndex() == Classification::PointsForPlaces)
         {
-            ui->label_shortcuts->show();
+            ui->label_shortcuts->hide();
 
             ui->tableView_pointsForPlaces->show();
             ui->label_preset->show();
@@ -186,7 +184,7 @@ void ClassificationEditorWidget::setupScoringControls()
         if(currentMethod<1 || currentMethod>options.methods.size())return;
         options.methods.removeAt(currentMethod-1);currentMethod=0;refreshMethodChoices();loadMethod();emit configurationChanged();
     });
-    // Both tables have explicit row actions; the legacy shortcuts still edit the primary table.
+    ui->label_shortcuts->hide();
     auto rowButtons=[this](bool alternative){
         auto *panel=new QWidget(this);auto *row=new QHBoxLayout(panel);
         auto *add=new QPushButton(tr("Dodaj punktowane miejsce"),panel);
@@ -207,7 +205,7 @@ void ClassificationEditorWidget::setupScoringControls()
     ui->tableView_altPointsForPlaces->setToolTip(help);
     connect(question,&QPushButton::clicked,this,[this,help]{QMessageBox::information(this,tr("Punktacja dodatkowa"),help);});
     connect(ui->comboBox_type,qOverload<int>(&QComboBox::currentIndexChanged),this,[this]{refreshAlternativeLabel();});
-    auto *advancedToggle=new QCheckBox(tr("Zaawansowane: filtry i parametry kontekstu"),this);advancedToggle->setObjectName("classificationAdvanced");
+    auto *advancedToggle=new QCheckBox(tr("Filtry zaawansowane"),this);advancedToggle->setObjectName("classificationAdvanced");
     auto *advanced=new QWidget(this);advanced->setObjectName("classificationAdvancedPanel");auto *fields=new QFormLayout(advanced);
     ageFilter=new QCheckBox(tr("Włącz filtr wieku"),advanced);ageFilter->setObjectName("classificationAgeFilter");fields->addRow(ageFilter);
     auto spin=[&](const char *name,int min,int max,const QString &label){auto *input=new QSpinBox(advanced);input->setObjectName(name);input->setRange(min,max);fields->addRow(label,input);return input;};
@@ -258,7 +256,7 @@ void ClassificationEditorWidget::loadMethod()
     altTableModel->replacePoints(custom?options.methods[currentMethod-1].alternativePoints:baseAlternative);
     // Apply visibility also when the selected type has not emitted a change.
     const bool places=ui->comboBox_points->currentIndex()==Classification::PointsForPlaces;
-    for(QWidget *w:QVector<QWidget *>{ui->tableView_pointsForPlaces,ui->tableView_altPointsForPlaces,ui->label_preset,ui->comboBox_presets,ui->label_altPreset,ui->comboBox_altPreset,ui->label_shortcuts})w->setVisible(places);
+    for(QWidget *w:QVector<QWidget *>{ui->tableView_pointsForPlaces,ui->tableView_altPointsForPlaces,ui->label_preset,ui->comboBox_presets,ui->label_altPreset,ui->comboBox_altPreset})w->setVisible(places);
     loadingInputs=previous;
 }
 void ClassificationEditorWidget::refreshMethodChoices()

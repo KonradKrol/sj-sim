@@ -291,6 +291,16 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
             {"roundField",QVariant::fromValue(node(history->roundChoice(),true))},{"modeField",QVariant::fromValue(node(history->modeChoice()))},{"tableField",QVariant::fromValue(node(history->tableView(),true))}});
         return entry;
     }
+    if(auto *editor=qobject_cast<ClassificationEditorWidget *>(widget)) {
+        QVariantMap controls;
+        const QStringList names{"lineEdit_name","comboBox_type","comboBox_points","classificationScoringMethod","classificationMethodName","classificationAddMethod","classificationRemoveMethod","tableView_pointsForPlaces","tableView_altPointsForPlaces","comboBox_presets","comboBox_altPreset","classificationAddPlace","classificationRemovePlace","classificationAltAddPlace","classificationAltRemovePlace","classificationAgeFilter","classificationMinimumAge","classificationMaximumAge","classificationReferenceYear","classificationUnknownAge","classificationCountrySelection","classificationCountryCount","classificationContextParameters"};
+        for(const auto &name:names)controls[name]=QVariant::fromValue(node(editor->findChild<QWidget *>(name),true));
+        auto *entry=identity(editor);
+        entry->update({{"kind","classificationEditor"},{"controls",controls},{"classificationId",editor->getClassification()?editor->getClassification()->getIDStr():QString()},
+            {"alternativeLabel",editor->findChild<QLabel *>("label_altPreset")->text()},
+            {"alternativeHelp",editor->findChild<QPushButton *>("classificationAlternativeHelp")->toolTip()}});
+        return entry;
+    }
     if(auto *scroll=qobject_cast<QScrollArea *>(widget)) return node(scroll->widget(),true);
     auto *entry=identity(widget);
     QVariantMap data{{"id",idFor(widget)}, {"name",widget->objectName()}, {"kind","column"},
@@ -305,9 +315,6 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
     }
     data["shortcuts"]=shortcuts;
     data["menuActions"]=widget->property("quickMenuActions").toBool();
-    // The classification editor has explicit actions for each points table.
-    // Keep its keyboard shortcuts without rendering another button row.
-    if(qobject_cast<ClassificationEditorWidget *>(widget))data["menuActions"]=true;
     if(widget->inherits("TeamsSquadsTreeView")) {
         widget->setProperty("quickTableActions",shortcuts);
         if(auto *view=widget->findChild<QTreeView *>())return node(view,true);
