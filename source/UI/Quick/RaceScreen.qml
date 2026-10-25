@@ -116,7 +116,6 @@ ScrollView {
         readonly property var field: selector===0 ? fields.roundField : fields.modeField
         readonly property var options: selector===2 ? [qsTr("Tylko wyniki bieżącej drużyny"),qsTr("Tylko suma drużyny"),qsTr("Pokaż pełne wyniki")] : field ? field.values.options || [] : []
         readonly property int selected: selector===2 ? appearance.teamResultsMode : field ? field.values.value || 0 : 0
-        readonly property int menuCount: ((fields.roundField && fields.roundField.values.options.length>1) ? 1 : 0)+(fields.modeField ? (fields.active ? 1 : 2) : 0)
         readonly property real optionHeight: Math.max(40,Theme.bodyMetrics.height*2+12)
         function choose(index){if(index<0 || index>=options.length)return;if(selector===2)appearance.teamResultsMode=index;else if(field)ui.edit(field.values.id,index);close()}
         function focusChoices(){directOptions.currentIndex=selected;directOptions.forceActiveFocus()}
@@ -124,30 +123,34 @@ ScrollView {
         onSelectorChanged: if(visible && selector>=0)Qt.callLater(focusChoices)
         parent: Overlay.overlay
         x: Math.max(8,Math.min(anchorX<0 ? parent.width-width-8 : anchorX,parent.width-width-8)); y: anchorY
-        width: Math.min(selector<0 ? 330 : Math.max(280,anchorWidth),parent.width-16); height: Math.min(Math.max(40,parent.height-y-8),24+(selector<0 ? (Theme.controlHeight+6)*menuCount : optionHeight*options.length))
+        width: Math.min(selector<0 ? 330 : Math.max(280,anchorWidth),parent.width-16); height: popupContent.implicitHeight+topPadding+bottomPadding
         modal: false; dim: false; focus: true; padding: 12
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-        contentItem: ColumnLayout {
-            RaceViewChoices { id: viewChoices; visible: viewOptions.selector<0; Layout.fillWidth: true; backend: ui; vertical: true; onSelectionChanged: viewOptions.close() }
-            ListView {
+        contentItem: Item {
+            id: popupContent
+            implicitHeight: viewOptions.selector<0 ? viewChoices.implicitHeight : directOptions.implicitHeight
+            RaceViewChoices { id: viewChoices; width: parent.width; visible: viewOptions.selector<0; backend: ui; vertical: true; onSelectionChanged: viewOptions.close() }
+            Column {
                 id: directOptions
                 objectName: "raceResultViewOptions"
+                property int currentIndex: 0
                 visible: viewOptions.selector>=0
-                Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
-                model: viewOptions.selector>=0 ? viewOptions.options : []
-                clip: true
-                keyNavigationWraps: true
+                width: parent.width
+                Keys.onDownPressed: currentIndex=(currentIndex+1)%Math.max(1,viewOptions.options.length)
+                Keys.onUpPressed: currentIndex=(currentIndex+viewOptions.options.length-1)%Math.max(1,viewOptions.options.length)
                 Keys.onReturnPressed: viewOptions.choose(currentIndex)
                 Keys.onEnterPressed: viewOptions.choose(currentIndex)
                 Keys.onSpacePressed: viewOptions.choose(currentIndex)
-                ScrollBar.vertical: ScrollBar {}
-                delegate: ItemDelegate {
-                    objectName: "raceResultViewOption-"+index
-                    width: directOptions.width; height: viewOptions.optionHeight
-                    highlighted: index===directOptions.currentIndex
-                    contentItem: Label { text: modelData; color: Theme.ink; font.pointSize: Theme.body; wrapMode: Text.WordWrap }
-                    background: Rectangle { color: parent.highlighted ? Theme.selection : parent.hovered ? Theme.raised : Theme.surface; radius: 4 }
-                    onClicked: viewOptions.choose(index)
+                Repeater {
+                    model: viewOptions.selector>=0 ? viewOptions.options : []
+                    ItemDelegate {
+                        objectName: "raceResultViewOption-"+index
+                        width: directOptions.width; height: viewOptions.optionHeight
+                        highlighted: index===directOptions.currentIndex
+                        contentItem: Label { text: modelData; color: Theme.ink; font.pointSize: Theme.body; wrapMode: Text.WordWrap }
+                        background: Rectangle { color: parent.highlighted ? Theme.selection : parent.hovered ? Theme.raised : Theme.surface; radius: 4 }
+                        onClicked: viewOptions.choose(index)
+                    }
                 }
             }
         }
