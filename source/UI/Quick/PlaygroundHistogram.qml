@@ -8,7 +8,7 @@ ColumnLayout {
     property bool places: false
     property int unclassified: 0
     property string caption: ""
-    readonly property var palette: [Theme.accent,Theme.signal,"#ca7529","#a75ab0","#328f9e","#b14461"]
+    readonly property var palette: [Theme.accent,appearance.dark?"#b0d98a":"#477b3b","#ca7529","#a75ab0","#328f9e","#b14461"]
     readonly property var plotted: {
         var keys={},lo=Infinity,hi=-Infinity
         for(var s=0;s<series.length;s++)for(var j=0;j<series[s].bins.length;j++){var b=series[s].bins[j];var key=places?b.place:b.from;keys[key]=true;lo=Math.min(lo,key);hi=Math.max(hi,places?key:b.to)}
@@ -19,6 +19,9 @@ ColumnLayout {
         for(var x=lo;x<=hi;x+=span){var values=[];for(s=0;s<series.length;s++){var n=0,total=0;for(j=0;j<series[s].bins.length;j++){b=series[s].bins[j];total+=b.count;key=places?b.place:b.from;if(key>=x && key<x+span)n+=b.count}var share=total?n/total:0;values.push({name:series[s].name,n:n,share:share});max=Math.max(max,share)}bins.push({from:x,to:Math.min(hi,x+span-(places?1:0)),values:values})}
         return {bins:bins,max:max||1,lo:lo,hi:hi}
     }
+    Accessible.role: Accessible.Graphic
+    Accessible.name: caption
+    Accessible.description: series.map(function(s){return s.name+": "+s.bins.map(function(b){return (chart.places?b.place:b.from+"–"+b.to)+": "+b.count}).join(", ")}).join("; ")
     spacing: 6
     Label { text: chart.caption; color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     Flow {

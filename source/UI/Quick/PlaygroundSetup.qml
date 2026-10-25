@@ -8,9 +8,12 @@ ScrollView {
     readonly property var config: backend.config
     property int selectedVariant: 0
     property int selectedGroup: 0
-    readonly property var groups: ["conditions","athlete","field","hill","engine","experimental"]
+    readonly property var groups: ["conditions","athlete","field","hill","engine","rules","experimental"]
     readonly property var definitions: backend.definitions.filter(function(p){return p.group===setup.groups[setup.selectedGroup]})
+    readonly property string focusNamesKey: {var names=[];for(var i=0;i<config.athletes;i++)names.push(config.roster ? config.roster[i].name+" "+config.roster[i].surname : qsTr("Zawodnik %1").arg(i+1));return JSON.stringify(names)}
     property int sweepKey: 0
+    readonly property real sweepMinimum: backend.definitions[sweepKey].key==="hill.hs"?config.hill.k:backend.definitions[sweepKey].minimum
+    readonly property real sweepMaximum: backend.definitions[sweepKey].key==="hill.k"?config.hill.hs:backend.definitions[sweepKey].maximum
     function parameterValue(key,index){var changes=config.variants[index].changes;return changes[key]!==undefined?changes[key]:config.parameters[key]!==undefined?config.parameters[key]:key==="hill.k"?config.hill.k:key==="hill.hs"?config.hill.hs:backend.definitions.filter(function(p){return p.key===key})[0].default}
     contentWidth: availableWidth; clip: true
     onConfigChanged: selectedVariant=Math.max(0,Math.min(selectedVariant,config.variants.length-1))
@@ -45,14 +48,15 @@ ScrollView {
                         PlaygroundNumber { Layout.fillWidth: true; name: "playground-k"; caption: qsTr("K"); value: setup.config.hill.k; minimum: 10; maximum: 300; onCommitted: {var hill=Object.assign({},setup.config.hill);hill.k=value;hill.hs=Math.max(value,hill.hs);setup.backend.setValue("hill",hill)} }
                         PlaygroundNumber { Layout.fillWidth: true; name: "playground-hs"; caption: qsTr("HS"); value: setup.config.hill.hs; minimum: setup.config.hill.k; maximum: 400; onCommitted: {var hill=Object.assign({},setup.config.hill);hill.hs=value;setup.backend.setValue("hill",hill)} }
                     }
-                    Label { text: qsTr("Zasady"); color: Theme.muted; font.pointSize: Theme.caption }
+                    RowLayout { Layout.fillWidth: true; Label { text: qsTr("Zasady"); color: Theme.muted; font.pointSize: Theme.caption } HelpDot { explanation: qsTr("Batch korzysta z zasad gry. Ręczny dobór grup KO jest zastępowany losowaniem z zapisanym ziarnem, aby nie zatrzymywać obliczeń.") } Item { Layout.fillWidth: true } }
                     SChoice { objectName: "playgroundRules"; Layout.fillWidth: true; model: setup.backend.ruleNames; displayText: setup.config.rulesData ? setup.config.rulesData.name : qsTr("Zasady eksperymentu"); onActivated: setup.backend.useRules(currentIndex) }
                     RowLayout {
                         visible: !setup.config.rulesData; Layout.fillWidth: true
                         PlaygroundNumber { Layout.fillWidth: true; name: "playground-rounds"; caption: qsTr("Serie"); value: setup.config.rounds.length; minimum: 1; maximum: 8; onCommitted: {var rounds=[];for(var i=0;i<value;i++)rounds.push(i===0?setup.config.athletes:Math.min(setup.config.athletes,setup.config.rounds[i] || setup.config.rounds[setup.config.rounds.length-1]));setup.backend.setValue("rounds",rounds)} }
                         PlaygroundNumber { Layout.fillWidth: true; name: "playground-cut"; caption: qsTr("Limit po pierwszej serii"); value: setup.config.rounds[1] || setup.config.athletes; minimum: 1; maximum: setup.config.athletes; enabled: setup.config.rounds.length>1; onCommitted: {var rounds=setup.config.rounds.slice();for(var i=1;i<rounds.length;i++)rounds[i]=Math.min(rounds[i],value);rounds[1]=value;setup.backend.setValue("rounds",rounds)} }
                     }
-                    PlaygroundNumber { Layout.fillWidth: true; name: "playground-focus"; caption: qsTr("Wybrany skoczek · numer na liście"); value: setup.config.focus+1; minimum: 1; maximum: setup.config.athletes; onCommitted: setup.backend.setValue("focus",value-1) }
+                    Label { text: qsTr("Wybrany skoczek"); color: Theme.muted; font.pointSize: Theme.caption }
+                    SChoice { objectName: "playgroundFocus"; Layout.fillWidth: true; searchable: true; model: JSON.parse(setup.focusNamesKey); currentIndex: setup.config.focus; Accessible.name: qsTr("Wybrany skoczek"); onActivated: setup.backend.setValue("focus",currentIndex) }
                     Label { text: qsTr("%1 konkursów × %2 wariantów = %3 konkursów").arg(setup.config.competitions).arg(setup.config.variants.length).arg(setup.config.competitions*setup.config.variants.length); color: Theme.ink; font.family: Theme.mono; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 }
             }
@@ -73,10 +77,10 @@ ScrollView {
                         SField { Layout.fillWidth: true; text: setup.config.variants[setup.selectedVariant].name; Accessible.name: qsTr("Nazwa wariantu"); onEditingFinished: setup.backend.renameVariant(setup.selectedVariant,text) }
                         SButton { text: qsTr("Usuń"); quiet: true; enabled: setup.selectedVariant>0; onClicked: setup.backend.removeVariant(setup.selectedVariant) }
                     }
-                    SChoice { Layout.fillWidth: true; model: [qsTr("Warunki"),qsTr("Wybrany skoczek"),qsTr("Stawka"),qsTr("Skocznia"),qsTr("Silnik"),qsTr("Współczynniki eksperymentalne")]; Accessible.name: qsTr("Grupa parametrów"); currentIndex: setup.selectedGroup; onActivated: setup.selectedGroup=currentIndex }
+                    SChoice { Layout.fillWidth: true; model: [qsTr("Warunki"),qsTr("Wybrany skoczek"),qsTr("Stawka"),qsTr("Skocznia"),qsTr("Silnik"),qsTr("Zasady"),qsTr("Współczynniki eksperymentalne")]; Accessible.name: qsTr("Grupa parametrów"); currentIndex: setup.selectedGroup; onActivated: setup.selectedGroup=currentIndex }
                     GridLayout {
                         Layout.fillWidth: true; columns: 2; columnSpacing: 10; rowSpacing: 8
-                        Repeater { model: setup.definitions; PlaygroundNumber { required property var modelData; Layout.fillWidth: true; Layout.minimumWidth: 0; name: "playground-parameter-"+modelData.key; caption: modelData.label; value: setup.parameterValue(modelData.key,setup.selectedVariant); minimum: modelData.minimum; maximum: modelData.maximum; step: modelData.step; decimals: step<1?2:0; help: modelData.help; onCommitted: setup.backend.setVariantParameter(setup.selectedVariant,modelData.key,value) } }
+                        Repeater { model: setup.definitions; PlaygroundNumber { required property var modelData; Layout.fillWidth: true; Layout.minimumWidth: 0; name: "playground-parameter-"+modelData.key; caption: modelData.label; value: setup.parameterValue(modelData.key,setup.selectedVariant); minimum: modelData.minimum; maximum: modelData.maximum; step: modelData.step; decimals: step<1?2:0; help: modelData.help; enabled: !(setup.config.roster && (modelData.key==="field.skill" || modelData.key==="field.spread")); toggle: modelData.type==="boolean"; options: modelData.options || []; onCommitted: setup.backend.setVariantParameter(setup.selectedVariant,modelData.key,value) } }
                     }
                     Rectangle { Layout.fillWidth: true; implicitHeight: 1; color: Theme.outline }
                     Label { text: qsTr("Gotowe porównania"); color: Theme.ink; font.pointSize: Theme.body; font.bold: true }
@@ -88,8 +92,8 @@ ScrollView {
                     SChoice { id: sweep; Layout.fillWidth: true; model: setup.backend.definitions.map(function(p){return p.label}); Accessible.name: qsTr("Parametr do skanowania"); onActivated: setup.sweepKey=currentIndex }
                     RowLayout {
                         Layout.fillWidth: true
-                        PlaygroundNumber { id: from; Layout.fillWidth: true; caption: qsTr("Od"); name: "playground-sweep-from"; value: setup.backend.definitions[setup.sweepKey].minimum; minimum: value; maximum: setup.backend.definitions[setup.sweepKey].maximum; step: setup.backend.definitions[setup.sweepKey].step; decimals: 2 }
-                        PlaygroundNumber { id: to; Layout.fillWidth: true; caption: qsTr("Do"); name: "playground-sweep-to"; value: setup.backend.definitions[setup.sweepKey].maximum; minimum: setup.backend.definitions[setup.sweepKey].minimum; maximum: value; step: setup.backend.definitions[setup.sweepKey].step; decimals: 2 }
+                        PlaygroundNumber { id: from; Layout.fillWidth: true; caption: qsTr("Od"); name: "playground-sweep-from"; value: setup.sweepMinimum; minimum: setup.sweepMinimum; maximum: setup.sweepMaximum; step: setup.backend.definitions[setup.sweepKey].step; decimals: 2 }
+                        PlaygroundNumber { id: to; Layout.fillWidth: true; caption: qsTr("Do"); name: "playground-sweep-to"; value: setup.sweepMaximum; minimum: setup.sweepMinimum; maximum: setup.sweepMaximum; step: setup.backend.definitions[setup.sweepKey].step; decimals: 2 }
                         PlaygroundNumber { id: steps; Layout.fillWidth: true; caption: qsTr("Wartości"); name: "playground-sweep-count"; value: 5; minimum: 2; maximum: 31 }
                     }
                     SButton { objectName: "playgroundSweep"; Layout.fillWidth: true; text: qsTr("Zbuduj warianty skanowania"); onClicked: setup.backend.sweep(setup.backend.definitions[setup.sweepKey].key,from.currentValue,to.currentValue,steps.currentValue) }

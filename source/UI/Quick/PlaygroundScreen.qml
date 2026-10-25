@@ -9,6 +9,8 @@ ColumnLayout {
     readonly property var backend: ui.root.values.backend
     readonly property bool hasReport: !!backend.report.variants
     property int section: 0
+    property int resultVariant: 1
+    property int resultAthlete: 0
     spacing: 10
     RowLayout {
         Layout.fillWidth: true; spacing: 8
@@ -45,18 +47,18 @@ ColumnLayout {
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
         sourceComponent: playground.section===0?setup:playground.section===1?comparison:playground.section===2?athlete:playground.section===3?replay:playground.section===4?history:cli
     }
-    Connections { target: playground.backend; function onReportChanged(){if(playground.hasReport)playground.section=1} }
+    Connections { target: playground.backend; function onReportChanged(){if(playground.hasReport){playground.resultVariant=Math.min(playground.resultVariant,playground.backend.report.variants.length-1);playground.resultAthlete=playground.backend.report.config.focus;playground.section=1}} }
     Component { id: setup; PlaygroundSetup { backend: playground.backend } }
-    Component { id: comparison; PlaygroundResults { backend: playground.backend } }
-    Component { id: athlete; PlaygroundResults { backend: playground.backend; individual: true; onReplayRequested: {playground.section=3;playground.backend.replay(variant,competition)} } }
-    Component { id: replay; PlaygroundReplay { backend: playground.backend } }
+    Component { id: comparison; PlaygroundResults { backend: playground.backend; selectedVariant: playground.resultVariant; selectedAthlete: playground.resultAthlete; onVariantSelected: function(index){playground.resultVariant=index}; onAthleteSelected: function(index){playground.resultAthlete=index} } }
+    Component { id: athlete; PlaygroundResults { backend: playground.backend; individual: true; selectedVariant: playground.resultVariant; selectedAthlete: playground.resultAthlete; onVariantSelected: function(index){playground.resultVariant=index}; onAthleteSelected: function(index){playground.resultAthlete=index}; onReplayRequested: {playground.section=3;playground.backend.replay(variant,competition)} } }
+    Component { id: replay; PlaygroundReplay { backend: playground.backend; selectedVariant: playground.resultVariant; selectedAthlete: playground.resultAthlete; onVariantSelected: function(index){playground.resultVariant=index}; onAthleteSelected: function(index){playground.resultAthlete=index} } }
     Component {
         id: history
         ListView {
             objectName: "playgroundHistory"; clip: true; model: playground.backend.history; spacing: 6
             ScrollBar.vertical: ScrollBar {}
-            delegate: ItemDelegate { required property var modelData; required property int index; width: ListView.view.width; text: modelData.name; enabled: !playground.backend.busy; font.pointSize: Theme.body; onClicked: playground.backend.loadRun(index) }
-            EmptyState { anchors.fill: parent; visible: !playground.backend.history.length; title: qsTr("Brak zapisanych eksperymentów"); description: qsTr("Każdy zakończony lub przerwany eksperyment zapisuje pełne porównania. Konfigurację można później ponownie uruchomić.") }
+            delegate: ItemDelegate { required property var modelData; required property int index; width: ListView.view.width; text: modelData.name+" · "+modelData.time+" · "+modelData.competitions+" × "+modelData.variants; enabled: !playground.backend.busy; font.pointSize: Theme.body; onClicked: playground.backend.loadRun(index) }
+            EmptyState { anchors.fill: parent; visible: !playground.backend.history.length; title: qsTr("Brak zapisanych eksperymentów"); description: qsTr("Zakończony lub normalnie przerwany eksperyment zapisuje ukończone porównania. Konfigurację można później ponownie uruchomić.") }
         }
     }
     Component {

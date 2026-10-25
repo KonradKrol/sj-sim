@@ -12,6 +12,7 @@ struct Control {
     std::atomic_int completed{0};
     std::atomic<qint64> jumps{0};
 };
+QString engineBuild();
 QJsonArray parameters();
 QJsonObject example();
 bool validate(const QJsonObject &config,QString &error);

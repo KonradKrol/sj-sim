@@ -84,5 +84,8 @@ signals:
 class PlaygroundWindow : public QDialog {
 public:
     explicit PlaygroundWindow(QWidget *parent=nullptr);
+    void reject() override;
+protected:
+    void closeEvent(QCloseEvent *event) override;
 };
 #endif
