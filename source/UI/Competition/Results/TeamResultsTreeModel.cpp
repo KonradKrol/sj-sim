@@ -230,7 +230,10 @@ TreeItem *TeamResultsTreeModel::getRootItem() const
 void TeamResultsTreeModel::setupTreeItems()
 {
     TreeItem::deleteAllTreeItemsRecursively(rootItem);
-    rootItem = new TreeItem({tr("Miejsce"), tr("Drużyna"), tr("Zawodnik"), tr("Punkty"), tr("Odległości (m)")});
+    QVector<QVariant> headers{tr("Miejsce"),tr("Drużyna"),tr("Zawodnik"),tr("Punkty"),tr("Odległości (m)")};
+    const int rounds=manager?manager->effectiveRoundsCount():results && results->getCompetition()?results->getCompetition()->getRules().getRounds().size():0;
+    for(int round=1;round<=rounds;++round)headers.append(tr("%1 · pkt").arg(round));
+    rootItem = new TreeItem(headers);
     if(results == nullptr)
         return;
     results->sortInDescendingOrder();
@@ -239,7 +242,10 @@ void TeamResultsTreeModel::setupTreeItems()
             continue;
         Country *country = GlobalDatabase::get()->getCountryByAlpha3(res.getTeam()->getCountryCode());
         const QString teamName = country != nullptr ? country->getName() : res.getTeam()->getCountryCode();
-        TreeItem * teamHeaderItem = new TreeItem({res.isTeamDisqualified()?QString("DSQ"):QString::number(res.getPosition()), teamName, "", res.isTeamDisqualified()?QString::fromUtf8("—"):QString::number(res.getPointsSum(), 'f', 1), ""}, rootItem);
+        QVector<QVariant> teamCells{res.isTeamDisqualified()?QString("DSQ"):QString::number(res.getPosition()),teamName,"",res.isTeamDisqualified()?QString::fromUtf8("—"):QString::number(res.getPointsSum(),'f',1),""};
+        const int teamSize=results->getCompetition()?qMax(1,results->getCompetition()->getRules().getJumpersInTeamCount()):qMax(1,int(res.getTeam()->getJumpers().size()));
+        for(int round=0;round<rounds;++round){double points=0;const int end=qMin((round+1)*teamSize,int(res.getJumps().size()));for(int j=round*teamSize;j<end;++j)points+=res.getJumps().at(j).getPoints();teamCells.append(end>round*teamSize?QVariant(QString::number(points,'f',1)):QVariant());}
+        TreeItem * teamHeaderItem = new TreeItem(teamCells,rootItem);
         for(auto & jumper : res.getTeam()->getJumpersReference()){
             //Czy w resultsach jest już ten zawodnik?
             bool resultsContainsJumper = false;
@@ -258,7 +264,10 @@ void TeamResultsTreeModel::setupTreeItems()
                     }
                 }
                 if(auto *member=res.getTeamJumperResult(jumper))jumperPointsSum=member->getPointsSum();
-                new TreeItem({"", "", jumper->getNameAndSurname(), QString::number(jumperPointsSum, 'f', 1), distances.join(" · ")}, teamHeaderItem);
+                QVector<QVariant> cells{"","",jumper->getNameAndSurname(),QString::number(jumperPointsSum,'f',1),distances.join(" · ")};
+                QVector<double> series;for(const auto &jump:res.getJumps())if(jump.getJumper()==jumper)series.append(jump.getPoints());
+                for(int round=0;round<rounds;++round)cells.append(round<series.size()?QVariant(QString::number(series[round],'f',1)):QVariant());
+                new TreeItem(cells,teamHeaderItem);
             }
         }
     }

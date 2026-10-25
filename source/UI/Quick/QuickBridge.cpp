@@ -529,6 +529,16 @@ void QuickBridge::refresh() {
                 for(auto *label:selected->findChildren<QLabel *>(field.second))if(label->isVisibleTo(m_content)) { summary[field.first]=label->text();break; }
             }
             if(auto *flag=selected->findChild<QLabel *>("label_flag");flag && flag->isVisibleTo(m_content))if(auto *entry=node(flag))summary["flag"]=entry->values().value("image");
+            if(auto *preview=qobject_cast<JumperCompetitionResultsWidget *>(selected);preview && preview->getJumperResult() && (window->getLiveStage()==0 || window->getLiveStage()>=5)){
+                auto *result=preview->getJumperResult();const int round=preview->selectedRound()+1;
+                QStringList choices;for(int r=1;r<=preview->roundsCount();++r)choices.append(tr("Seria %1").arg(r));
+                summary["roundChoices"]=choices;summary["selectedRound"]=round-1;
+                summary["weightedTotal"]=result->pointsForJumps(round,round);
+                summary["totalPoints"]=QString::number(result->pointsForJumps(round,round),'f',1)+tr(" pkt");
+                const auto weights=result->getCompetition()->getRulesPointer()->getRoundPointWeights(round);QVariantList terms;bool weighted=false;
+                for(int r=0;r<round && r<result->getJumpsReference().size();++r){const double weight=weights.value(r,1.),points=result->getJumpsReference()[r].getPoints();weighted=weighted || std::abs(weight-1.)>1e-9;terms.append(QVariantMap{{"round",r+1},{"points",points},{"weight",weight},{"contribution",points*weight}});}
+                summary["weighted"]=weighted;summary["weightTerms"]=terms;
+            }
             const auto rank=selected->property("quickRankSummary").toMap();
             if(summary.contains("position")) {
                 summary["positionNumber"]=rank.value("positionNumber");
@@ -1071,6 +1081,13 @@ void writeWind(QWidget *page,const QVariantMap &values) {
     }
 }
 }
+void QuickBridge::selectPreviewRound(int round)
+{
+    auto *window=qobject_cast<CompetitionManagerWindow *>(m_window);
+    if(!window || window->getLiveStage()>0)return;
+    if(auto *preview=m_content->findChild<JumperCompetitionResultsWidget *>();preview && preview->isVisibleTo(m_content)){preview->selectRound(round);deferRefresh();}
+}
+
 void QuickBridge::assignKoMember(int editorId,const QString &groupId,int slot,const QString &athleteId)
 {
     auto *editor=qobject_cast<KOGroupsListView *>(m_objects.value(editorId));

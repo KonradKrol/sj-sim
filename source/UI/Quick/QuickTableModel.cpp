@@ -12,6 +12,7 @@
 #include <QSet>
 #include <QSignalBlocker>
 #include "../Competition/Results/TeamResultsTreeModel.h"
+#include "../Competition/CompetitionManagerWindow.h"
 
 QString quickPicture(const QPixmap &pixmap) {
     if (pixmap.isNull()) return {};
@@ -181,8 +182,11 @@ void QuickTableModel::select(int row,int column,int modifiers,bool open) {
         selection->setCurrentIndex(item,QItemSelectionModel::NoUpdate);
     }
     // Slots may show a modal dialog or delete a model. Leave the QML event first.
-    QTimer::singleShot(0,this,[this,item,open] {
+    const QString sourceType=QString::fromLatin1(m_source->metaObject()->className());
+    const int round=(modifiers & Qt::ShiftModifier)?sourceType=="ResultsTableModel" && column>=3?(column-3)/2+1:sourceType=="TeamResultsTreeModel" && column>=5?column-4:0:0;
+    QTimer::singleShot(0,this,[this,item,open,round] {
         if(!m_view || !item.isValid()) return;
+        if(round>0)if(auto *window=qobject_cast<CompetitionManagerWindow *>(m_view->window())){window->showResultJump(item,round);return;}
         QMetaObject::invokeMethod(m_view,open?"doubleClicked":"clicked",Q_ARG(QModelIndex,QModelIndex(item)));
         if(open && m_view && item.isValid()) QMetaObject::invokeMethod(m_view,"activated",Q_ARG(QModelIndex,QModelIndex(item)));
     });

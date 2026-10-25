@@ -63,7 +63,7 @@ Rectangle {
                 height: row.height
                 Row {
                     anchors.fill: parent
-                    anchors.leftMargin: (Theme.compact ? 6 : 12) + (cell.columnIndex === 0 ? (row.rowBranch ? 24 : 0) : row.teamMember && cell.columnIndex===1 ? 20 : 0)
+                    anchors.leftMargin: (Theme.compact ? 6 : 12) + (cell.columnIndex === 0 ? (row.rowBranch && !row.tableView.teamResults ? 24 : 0) : row.teamMember && cell.columnIndex===1 ? 20 : 0)
                     anchors.rightMargin: Theme.compact ? 4 : 10
                     spacing: Theme.compact ? 4 : 8
                     Image { visible: !!cell.fields.icon; source: cell.fields.icon || ""; sourceSize.width: 32; sourceSize.height: 24; width: visible ? 30 : 0; height: 24; anchors.verticalCenter: parent.verticalCenter; fillMode: Image.PreserveAspectFit }
@@ -81,7 +81,7 @@ Rectangle {
         onClicked: {
             row.tableView.forceActiveFocus()
             var column = row.tableView.columnAt(mouse.x)
-            row.tableView.table.select(row.rowIndex,column,row.tableView.plain ? 0 : mouse.modifiers,false)
+            row.tableView.table.select(row.rowIndex,column,row.tableView.plain ? (mouse.modifiers & Qt.ShiftModifier) : mouse.modifiers,false)
             var cell = row.rowCells[column]
             if (cell && cell.checkable) row.tableView.table.edit(row.rowIndex,column,!cell.checked)
         }
@@ -97,7 +97,7 @@ Rectangle {
             var cell = row.rowCells[column]
             if (cell && cell.editable) {
                 row.editCell(column)
-            } else row.tableView.table.select(row.rowIndex,column,row.tableView.plain ? 0 : mouse.modifiers,true)
+            } else row.tableView.table.select(row.rowIndex,column,row.tableView.plain ? (mouse.modifiers & Qt.ShiftModifier) : mouse.modifiers,true)
         }
     }
     SButton {

@@ -12,13 +12,10 @@
 
 JumperCompetitionResultsWidget::JumperCompetitionResultsWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::JumperCompetitionResultsWidget)
+    ui(new Ui::JumperCompetitionResultsWidget), jumperResult(nullptr)
 {
     ui->setupUi(this);
-    for(int i=0; i<ui->tabWidget_jumps->count(); i++){
-        delete ui->tabWidget_jumps->widget(0);
-        ui->tabWidget_jumps->removeTab(0);
-    }
+    while(ui->tabWidget_jumps->count()){auto *page=ui->tabWidget_jumps->widget(0);ui->tabWidget_jumps->removeTab(0);delete page;}
 }
 
 JumperCompetitionResultsWidget::~JumperCompetitionResultsWidget()
@@ -28,6 +25,7 @@ JumperCompetitionResultsWidget::~JumperCompetitionResultsWidget()
 
 void JumperCompetitionResultsWidget::fillWidget()
 {
+    if(!jumperResult || !jumperResult->getJumper() || !jumperResult->getCompetition())return;
     QVariantMap rankSummary;
     if(auto *competition=jumperResult->getCompetition()) {
         const auto &results=competition->getResultsReference().getResultsReference();
@@ -35,7 +33,7 @@ void JumperCompetitionResultsWidget::fillWidget()
         const bool team=competition->getRules().getCompetitionType()==CompetitionRules::Team;
         if(team) {
             ranked=nullptr;
-            for(const auto &result:results)if(result.getTeam() && result.getTeam()->getCountryCode()==jumperResult->getJumper()->getCountryCode()){ranked=&result;break;}
+            for(const auto &result:results)if(result.getTeam()){for(const auto &jump:result.getJumps())if(jump.getJumper()==jumperResult->getJumper()){ranked=&result;break;}if(ranked)break;}
         }
         if(ranked) {
             rankSummary["positionNumber"]=ranked->getPosition();
@@ -57,7 +55,7 @@ void JumperCompetitionResultsWidget::fillWidget()
         if(jumperResult->getCompetition()->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
              ui->label_actualPosition->setText("(" + QString::number(jumperResult->getPosition()) + tr(" miejsce)"));
         else{
-             int pos = jumperResult->getCompetition()->getResultsReference().getResultOfTeam(Team::getTeamByCountryCode(&jumperResult->getCompetition()->getTeamsReference(), jumperResult->getJumper()->getCountryCode()))->getPosition();
+             int pos = rankSummary.value("positionNumber").toInt();
              ui->label_actualPosition->setText("(" + QString::number(pos) + tr(" miejsce)"));
         }
         }
@@ -68,7 +66,7 @@ void JumperCompetitionResultsWidget::fillWidget()
     else
         ui->label_actualPosition->hide();
 
-    ui->tabWidget_jumps->clear();
+    while(ui->tabWidget_jumps->count()){auto *page=ui->tabWidget_jumps->widget(0);ui->tabWidget_jumps->removeTab(0);delete page;}
     int i = 0;
     for(auto & jump : jumperResult->getJumpsReference()){
         JumpDataDetailedInfoWindow * jumpInfo = new JumpDataDetailedInfoWindow(&jump, this);
@@ -90,6 +88,10 @@ void JumperCompetitionResultsWidget::fillWidget()
         ui->pushButton_sendWebhook->setToolTip(tr("Wyślij webhooka z występem drużyny"));
     }
 }
+
+int JumperCompetitionResultsWidget::selectedRound() const {return ui->tabWidget_jumps->currentIndex();}
+int JumperCompetitionResultsWidget::roundsCount() const {return ui->tabWidget_jumps->count();}
+void JumperCompetitionResultsWidget::selectRound(int index){if(index>=0 && index<roundsCount())ui->tabWidget_jumps->setCurrentIndex(index);}
 
 Ui::JumperCompetitionResultsWidget *JumperCompetitionResultsWidget::getUi() const
 {

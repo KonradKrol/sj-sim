@@ -9,7 +9,6 @@ Rectangle {
     RowLayout {
         anchors.fill: parent; anchors.leftMargin: Theme.compact ? 8 : 16; anchors.rightMargin: Theme.compact ? 8 : 16
         VersionBadge { id: release }
-        Item { Layout.fillWidth: true }
-        Label { visible: navigation && navigation.canGoBack && parent.width > 650; text: qsTr("Alt+← · Wstecz"); color: Theme.muted; font.pointSize: Theme.caption }
+        Label { objectName: "jumpSeriesShortcutHint"; visible: !!navigation && !!navigation.current && navigation.current.profile === "CompetitionManagerWindow"; text: qsTr("Shift+klik · skok z wybranej serii"); color: Theme.muted; font.pointSize: Theme.caption; Layout.minimumWidth: 0; Layout.fillWidth: true; Layout.preferredWidth: 0; horizontalAlignment: Text.AlignRight; elide: Text.ElideRight }
     }
 }

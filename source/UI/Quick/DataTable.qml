@@ -31,7 +31,7 @@ FocusScope {
     readonly property int columns: Math.max(1, headers.length)
     readonly property var displayColumns: {
         var out=[]
-        if(teamResults && columns>=5) return [0,1,4,3]
+        if(teamResults && columns>=5) {out=[0,1];for(var t=5;t<columns;++t)out.push(t);out.push(3);return out}
         if(raceResults && !jumpColumns && columns>4) {
             out=[0,1]
             for(var c=3;c<columns;c+=2)out.push(c)
@@ -55,9 +55,9 @@ FocusScope {
         if(column>=visibleColumns)return 0
         if(columnWidths.length>column)return columnWidths[column]
         if(teamResults) {
-            if(column===0)return 72
-            if(column===1)return Math.max(140,width-276)
-            return column===2 ? 120 : 84
+            if(column===0)return 52
+            if(column===1)return Math.max(140,width-52-84-(visibleColumns-3)*76)
+            return displayColumns[column]===3 ? 84 : 76
         }
         if(raceResults) {
             if(column===0)return 44

@@ -17,6 +17,9 @@ public:
     ~JumperCompetitionResultsWidget();
 
     void fillWidget();
+    int selectedRound() const;
+    int roundsCount() const;
+    void selectRound(int index);
 
 private:
     Ui::JumperCompetitionResultsWidget *ui;

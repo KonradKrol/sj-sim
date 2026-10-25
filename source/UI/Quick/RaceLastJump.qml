@@ -36,6 +36,14 @@ Pane {
                     color: Theme.muted; font.pointSize: Theme.caption
                 }
             }
+            SChoice {
+                objectName: "jumpRoundChoice"
+                visible: (jump.summary.roundChoices || []).length>1 && ui.context.liveStage===0
+                model: jump.summary.roundChoices || []; currentIndex: jump.summary.selectedRound || 0
+                Layout.preferredWidth: Math.max(72,Theme.dp(110)); Layout.maximumWidth: 110
+                font.pointSize: Theme.caption; Accessible.name: qsTr("Seria skoku")
+                onActivated: function(index){ui.selectPreviewRound(index)}
+            }
             Rectangle {
                 color: Theme.selection; radius: 6
                 implicitWidth: rank.implicitWidth+16; implicitHeight: rank.implicitHeight+6
@@ -84,6 +92,7 @@ Pane {
             JumpMetric { inlineValue: true; visible: !!jump.summary.random; caption: qsTr("Los."); value: jump.summary.random || "" }
             JumpMetric { inlineValue: true; visible: !!jump.summary.snow; caption: qsTr("Śnieg"); value: jump.summary.snow || "" }
         }
+        JumpWeights { width: parent.width; summary: jump.summary }
         Label { width: parent.width; visible: !!jump.summary.dsq || !!jump.summary.hs95; text: [jump.summary.dsq,jump.summary.hs95].filter(function(value){return !!value}).join(" · "); color: jump.summary.dsq ? Theme.danger : Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap }
     }
 }

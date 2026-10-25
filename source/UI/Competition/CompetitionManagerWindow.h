@@ -28,6 +28,7 @@ public:
     explicit CompetitionManagerWindow(AbstractCompetitionManager * manager = nullptr,  QWidget *parent = nullptr, bool singleCompetition = false);
     ~CompetitionManagerWindow();
 
+    void showResultJump(const QModelIndex &index,int round=0);
     void updateToBeatDistanceLabel();
     void updateToAdvanceDistanceLabel();
     void updatePointsToTheLeaderLabel();

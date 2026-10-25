@@ -328,6 +328,31 @@ static void checkLatestJumpPresentation(CompetitionManagerWindow *window) {
     }
 }
 
+static void jumpHistoryRegressions(MainWindow &main,CompetitionManagerWindow *window,int scenario) {
+    main.resize(1440,900);auto *bridge=window->findChild<QuickBridge *>();bridge->refresh();QTest::qWait(80);
+    auto *preview=window->findChild<JumperCompetitionResultsWidget *>();check(preview && preview->roundsCount()==3 && preview->selectedRound()==2,"three-series fixture opens its latest jump");
+    auto *footer=main.findChild<QQuickWidget *>("quickApplicationFooter");auto *hint=item(footer->rootObject(),"jumpSeriesShortcutHint");check(hint && hint->isVisible() && hint->property("text").toString().contains("Shift+klik") && !hint->property("text").toString().contains("Alt+"),"competition footer advertises historical-series selection instead of the Back shortcut");
+    auto *view=scene(window);auto *choice=item(view->rootObject(),"jumpRoundChoice");check(choice && choice->isVisible(),"jump card exposes an earlier-series choice");
+    QMetaObject::invokeMethod(choice,"activated",Q_ARG(int,0));QTest::qWait(80);check(preview->selectedRound()==0 && !bridge->jumpSummary().value("weighted").toBool(),"card can open the first unweighted jump");
+    QMetaObject::invokeMethod(choice,"activated",Q_ARG(int,1));QTest::qWait(80);
+    auto *result=preview->getJumperResult();check(preview->selectedRound()==1 && bridge->jumpSummary().value("weighted").toBool(),"card opens a weighted historical series");
+    check(std::abs(bridge->jumpSummary().value("weightedTotal").toDouble()-result->pointsForJumps(2,2))<.001 && bridge->jumpSummary().value("weightTerms").toList().size()==2,"weight explanation and total belong to the selected series");
+    clickControl(view,"jumpWeightToggle");check(item(view->rootObject(),"jumpWeightCalculation")->isVisible(),"weight calculation expands inside the jump card");render(window,"weighted-jump-history",true);clickControl(view,"jumpWeightToggle");main.resize(1440,900);QTest::qWait(80);
+    bridge->selectPreviewRound(2);QTest::qWait(60);
+    auto *appearance=view->rootContext()->contextProperty("appearance").value<QuickAppearance *>();const int oldMode=appearance->teamResultsMode();if(scenario==2){appearance->setTeamResultsMode(2);QTest::qWait(60);}
+    auto *table=item(view->rootObject(),"raceResults");auto *model=table->property("table").value<QuickTableModel *>();int row=-1;
+    for(int r=0;r<model->count();++r){const auto cells=model->data(model->index(r),Qt::UserRole+1).toList();const int name=scenario==2?2:1;if(cells.value(name).toMap().value("text").toString()==result->getJumper()->getNameAndSurname()){row=r;break;}}
+    if(scenario==2)check(!table->property("displayColumns").value<QJSValue>().toVariant().toList().contains(4),"team results omit the combined distance column");
+    check(row>=0,"selected jumper is present in its individual or team results row");auto *rows=item(view->rootObject(),"tableRows-"+QString::number(table->property("ownerId").toInt()));QMetaObject::invokeMethod(rows,"positionViewAtIndex",Q_ARG(int,row),Q_ARG(int,3));QTest::qWait(80);
+    const int column=scenario==2?6:5;const auto columns=table->property("displayColumns").value<QJSValue>().toVariant().toList();qreal x=0;
+    for(const auto &entry:columns){QVariant width;QMetaObject::invokeMethod(table,"columnWidth",Q_RETURN_ARG(QVariant,width),Q_ARG(QVariant,columns.indexOf(entry)));if(entry.toInt()==column){x+=width.toReal()/2;break;}x+=width.toReal();}
+    auto *marker=item(view->rootObject(),"latestJumpIndicator-"+QString::number(row));check(marker,"target row is materialized");auto *rowItem=marker->parentItem();const auto at=rowItem->mapToItem(view->rootObject(),QPointF(x,rowItem->height()/2)).toPoint();
+    QTest::mouseClick(view,Qt::LeftButton,Qt::ShiftModifier,at);QTest::qWait(100);check(preview->selectedRound()==1 && preview->roundsCount()==3,"real Shift-click on the second-series column opens series two while retaining all series choices");
+    QTest::mouseClick(view,Qt::LeftButton,Qt::NoModifier,at);QTest::qWait(100);check(preview->selectedRound()==2,"ordinary result click still opens the latest jump");
+    if(scenario==2)appearance->setTeamResultsMode(oldMode);
+    check(preview->findChildren<JumpDataDetailedInfoWindow *>().size()==3,"repeated preview rebuilding releases old jump detail pages");qInfo()<<"PASS: jump history, Shift-click series selection, weights and bounded preview pages"<<scenario;
+}
+
 static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bulkAction=0) {
     Q_UNUSED(main)
     auto *db=GlobalDatabase::get();
@@ -344,6 +369,7 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
     const bool weighted=QCoreApplication::arguments().contains("--round-points-bulk-only");
     if(weighted) { if(scenario==2)second.setPreviousRoundsWeights({.5});else second.setResetPoints(true); }
     rules.setRounds({first,second});
+    if(QCoreApplication::arguments().contains("--jump-history-only")){second.setPreviousRoundsWeights({.95});RoundInfo third(scenario==2?2:4,true);third.setPreviousRoundsWeights({.5,.95});rules.setRounds({first,second,third});}
     if(superTeam){
         bool found=false;for(const auto &preset:db->getEditableCompetitionRules())if(preset.getName()=="Super Team"){rules=preset;found=true;break;}
         check(found && rules.getJumpersInTeamCount()==2 && rules.getRounds().size()==3,"real Super Team preset");
@@ -610,7 +636,8 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                     }
                 }
                 if(multiKo && window->getManager()->getActualRound()>1 && !window->getManager()->checkRoundEnd()) {
-                    bridge->refresh();check(bridge->context().contains("currentGap") && !bridge->context().contains("groupGap") && !bridge->context().contains("liveLeaderGap"),"multi-round KO exposes only the weighted previous-series comparison with the current leader");
+                    bridge->refresh();check(!bridge->context().contains("groupGap") && !bridge->context().contains("liveLeaderGap"),"multi-round KO has only one previous-series comparison");
+                    if(window->getManager()->getActualStartListIndex()==0)check(!bridge->context().contains("currentGap"),"first KO jumper of a series has no leader comparison");
                 }
                 auto *jump=window->findChild<QPushButton *>("pushButton_jump");
                 if(jump && jump->isEnabled() && StartListCompetitorStatus::remainingJumpers(window->getManager()->getStartListStatusesReference())==1) {
@@ -620,7 +647,7 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                 if(next && !next->isHidden() && next->isEnabled()) bridge->activate(id(bridge,"pushButton_goToNext"));
                 else if(scenario==0 && window->getManager()->getActualRound()>1 && !previousRankTested) {
                     bridge->refresh();const int previous=bridge->context().value("previousPosition").toInt();check(previous>0,"athlete on gate shows place after previous round");
-                    check(bridge->context().contains("currentGap"),"athlete on gate shows the gap against the current leader");
+                    check(!bridge->context().contains("currentGap"),"first athlete of the new series has no premature leader comparison");
                     const auto beforeJump=bridge->context().value("currentGap");
                     const double speed=GlobalAppSettings::get()->getLiveCompetitionSpeedMulti();GlobalAppSettings::get()->setLiveCompetitionSpeedMulti(.005);window->findChild<QCheckBox *>("checkBox_liveCompetition")->setChecked(true);
                     const auto advancementBefore=bridge->context().value("biggestAdvancement").toMap();
@@ -645,6 +672,7 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
                         appearance->setTeamResultsMode(2);QTest::qWait(30);check(summaries<last && last<=model->count(),"team modes expand none, the latest squad, or all jumped members");
                         appearance->setTeamResultsMode(mode);QTest::qWait(30);
                     }
+            if(QCoreApplication::arguments().contains("--jump-history-only"))jumpHistoryRegressions(main,window,scenario);
             checkLatestJumpPresentation(window);
             render(window,QString("live-results-%1").arg(scenario),scenario==2);
             bridge->refresh();
@@ -2239,6 +2267,7 @@ int main(int argc,char **argv) {
     competitionPresentationRegressions();
     latestJumpRegressions();
     advanceColorRegressions(main);
+    if(app.arguments().contains("--jump-history-only")){runCompetition(main,0);runCompetition(main,2);return 0;}
     if(app.arguments().contains("--ko-multi-round-only")){runCompetition(main,1);return 0;}
     if(app.arguments().contains("--onboarding-only")){simulationOnboardingRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-benchmark")) {simulationBenchmark();main.show();for(int i=0;i<3;++i)runCompetition(main,0,true);runCompetition(main,1,true);runCompetition(main,2,true);return 0;}

@@ -225,16 +225,8 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
         ui->verticalLayout_tableAndFewOthers->setStretch(1, 1);
         ui->verticalLayout_tableAndFewOthers->setStretch(2, 0);
 
-        connect(teamResultsTreeView, &QTreeView::doubleClicked, this, [this](const QModelIndex & index){
-            TreeItem * item = static_cast<TreeItem *>(index.internalPointer());
-            if(item->getParentItem() == teamResultsTreeModel->getRootItem())
-                return;
-            int teamIndex = item->getParentItem()->row();
-            int jumperIndex = item->row();
-
-            jumperResultsWidget->setJumperResult(&this->manager->getResults()->getResultsReference()[teamIndex].getTeamJumpersResultsReference()[jumperIndex]);
-            jumperResultsWidget->fillWidget();
-        });
+        connect(teamResultsTreeView,&QTreeView::clicked,this,[this](const QModelIndex &index){showResultJump(index);});
+        connect(teamResultsTreeView,&QTreeView::doubleClicked,this,[this](const QModelIndex &index){showResultJump(index);});
 
     }
     else{
@@ -1936,19 +1928,30 @@ void CompetitionManagerWindow::on_pushButton_jump_clicked()
     setLiveStage(0);
 }
 
-void CompetitionManagerWindow::on_tableView_results_doubleClicked(const QModelIndex &index)
+void CompetitionManagerWindow::showResultJump(const QModelIndex &index,int round)
 {
-    if(getLiveStage()>0 || !index.isValid() || index.row() < 0 || index.row() >= manager->getResults()->getResultsReference().count())
-        return;
-
-    CompetitionSingleResult *result = manager->getResults()->getResultByIndex(index.row());
-    if(result == nullptr)
-        return;
-
-    jumperResultsWidget->setJumperResult(result);
-    jumperResultsWidget->fillWidget();
+    if(getLiveStage()>0 || !index.isValid())return;
+    CompetitionSingleResult *result=nullptr;
+    if(index.model()==teamResultsTreeModel && type==CompetitionRules::Team){
+        const auto header=index.parent().isValid()?index.parent():index;
+        auto *teamResult=manager->getResults()->getResultByIndex(header.row());
+        if(!teamResult || !teamResult->getTeam())return;
+        if(index.parent().isValid()){
+            int row=0;for(auto *jumper:teamResult->getTeam()->getJumpersReference())if(auto *member=teamResult->getTeamJumperResult(jumper)){if(row++==index.row()){result=member;break;}}
+        }else{
+            const int size=qMax(1,manager->getCompetitionRules()->getJumpersInTeamCount());
+            const int end=round>0?qMin(round*size,int(teamResult->getJumps().size())):teamResult->getJumps().size();
+            if(round>0 && end<=(round-1)*size)return;
+            if(end>0)result=teamResult->getTeamJumperResult(teamResult->getJumps().at(end-1).getJumper());
+        }
+    }else if(index.model()==resultsTableModel)result=manager->getResults()->getResultByIndex(index.row());
+    if(!result || result->getJumpsReference().isEmpty() || (round>0 && round>result->getJumpsReference().size()))return;
+    jumperResultsWidget->setJumperResult(result);jumperResultsWidget->fillWidget();
+    if(round>0)jumperResultsWidget->selectRound(round-1);
     jumperResultsWidget->show();
 }
+
+void CompetitionManagerWindow::on_tableView_results_doubleClicked(const QModelIndex &index){showResultJump(index);}
 
 
 void CompetitionManagerWindow::on_pushButton_generateNewWinds_clicked()

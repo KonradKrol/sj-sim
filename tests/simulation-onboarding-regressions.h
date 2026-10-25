@@ -30,10 +30,15 @@ static void competitionPresentationRegressions() {
     {
         CompetitionInfo changed(&hill);CompetitionRules weighted;weighted.setRounds({RoundInfo(3,true),second});changed.setRules(weighted);auto &scores=changed.getResultsReference();
         auto jump=[&](Jumper *jumper,double points){JumpData data(jumper,&hill);data.setPoints(points);scores.addJump(jumper,data);};
-        jump(&a,100);jump(&b,200);jump(&c,80);jump(&b,80);jump(&c,300);
+        jump(&a,100);jump(&b,200);jump(&c,80);
+        QVector<const CompetitionSingleResult *> before;for(const auto &entry:scores.getResultsReference())before.append(&entry);
+        check(QuickRaceStats::currentLeaderPreviousGap(*scores.getResultOfIndividualJumper(&a),before,2).isEmpty(),"first athlete in a series has no lead or deficit message");
+        jump(&b,80);jump(&c,300);
         QVector<const CompetitionSingleResult *> field;for(const auto &entry:scores.getResultsReference())field.append(&entry);
         const auto gap=QuickRaceStats::currentLeaderPreviousGap(*scores.getResultOfIndividualJumper(&a),field,2);
         check(gap.value("gap").toDouble()==-10,"compare against the actual new leader but only their weighted points from before the current series");
+        scores.getResultsReference().clear();jump(&a,100);jump(&b,100);jump(&c,80);jump(&b,50);field.clear();for(const auto &entry:scores.getResultsReference())field.append(&entry);
+        check(QuickRaceStats::currentLeaderPreviousGap(*scores.getResultOfIndividualJumper(&a),field,2).isEmpty(),"equal weighted previous-series points never display a zero-point deficit");
         changed.getRulesPointer()->getRoundsReference()[1].setResetPoints(true);changed.getRulesPointer()->getRoundsReference()[1].setPreviousRoundsWeights({});
         check(QuickRaceStats::currentLeaderPreviousGap(*scores.getResultOfIndividualJumper(&a),field,2).isEmpty(),"reset hides the single leader comparison");
     }

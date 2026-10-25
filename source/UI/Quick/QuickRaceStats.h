@@ -28,11 +28,14 @@ inline QVariantMap currentLeaderPreviousGap(const CompetitionSingleResult &athle
     if(roundStartGap(athlete,field,round).isEmpty())return {};
     const auto *rules=athlete.getCompetition()->getRulesPointer();
     const int count=(round-1)*(athlete.getType()==CompetitionSingleResult::TeamResult?qMax(1,rules->getJumpersInTeamCount()):1);
+    bool seriesStarted=false;for(const auto *entry:field)if(entry && entry->getJumps().size()>count){seriesStarted=true;break;}
+    if(!seriesStarted)return {};
     const CompetitionSingleResult *leader=&athlete;
     for(const auto *entry:field)if(entry && !entry->isTeamDisqualified() && entry->getJumps().size()>=count &&
         (*entry>*leader))leader=entry;
     const auto own=qRound64(athlete.pointsForJumps(count,round)*10.);
-    return {{"gap",(qRound64(leader->pointsForJumps(count,round)*10.)-own)/10.}};
+    const auto difference=qRound64(leader->pointsForJumps(count,round)*10.)-own;
+    return difference==0?QVariantMap():QVariantMap{{"gap",difference/10.}};
 }
 
 inline QVariantMap previousStanding(const CompetitionResults &results, const CompetitionSingleResult &athlete, int jumpCount) {
