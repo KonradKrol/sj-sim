@@ -43,12 +43,17 @@ QString JumpData::getWindsText()
     return s;
 }
 
+namespace {
+int jumpIndex(const CompetitionSingleResult &result,const JumpData &jump){const auto jumps=result.getJumps();for(int i=0;i<jumps.size();++i)if(jumps[i].getIDStr()==jump.getIDStr())return i;return -1;}
+Team *jumpTeam(CompetitionInfo *competition,Jumper *jumper){if(!competition || !jumper)return nullptr;for(auto &result:competition->getResultsReference().getResultsReference())if(result.getTeam() && result.getTeam()->getJumpersReference().contains(jumper))return result.getTeam();return nullptr;}
+}
+
 int JumpData::getPositionInRound()
 {
     if(!competition || !jumper)return 0;
     auto *result=competition->getResultsReference().getResultOfIndividualJumper(jumper);
     if(!result)return 0;
-    const int roundIndex=MyFunctions::getIndexOfItemInVector(result->getJumpsReference(),this);
+    const int roundIndex=jumpIndex(*result,*this);
     if(roundIndex<0)return 0;
     int round=roundIndex+1;
     qDebug()<<"Rd "<<round;
@@ -74,9 +79,8 @@ int JumpData::getPositionInRound()
 
 int JumpData::getPositionInGroupForTeamCompetition()
 {
-    qDebug()<<"JUMPER "<<jumper->getCountryCode();
-    qDebug()<<"TEAMS "<<competition->getTeamsReference().count();
-    Team * team = Team::getTeamByCountryCode(&competition->getTeamsReference(), jumper->getCountryCode());
+    if(!competition || !jumper)return 0;
+    Team * team = jumpTeam(competition,jumper);
     if(team == nullptr)
         return 0;
     CompetitionSingleResult *teamResult = competition->getResultsReference().getResultOfTeam(team);
@@ -84,7 +88,8 @@ int JumpData::getPositionInGroupForTeamCompetition()
     if(jumperResult == nullptr)
         return 0;
     int group = team->getJumpersReference().indexOf(jumper) + 1;
-    int round = MyFunctions::getIndexOfItemInVector(jumperResult->getJumpsReference(), this) + 1;
+    int round = jumpIndex(*jumperResult,*this) + 1;
+    if(round<=0)return 0;
 
     QHash<Jumper *, double> hash;
     for(auto & teamResult : competition->getResultsReference().getResultsReference())
@@ -110,14 +115,16 @@ int JumpData::getPositionInGroupForTeamCompetition()
 
 int JumpData::getPositionInRoundForTeamCompetition()
 {
-    Team * team = Team::getTeamByCountryCode(&competition->getTeamsReference(), jumper->getCountryCode());
+    if(!competition || !jumper)return 0;
+    Team * team = jumpTeam(competition,jumper);
     if(team == nullptr)
         return 0;
     CompetitionSingleResult *teamResult = competition->getResultsReference().getResultOfTeam(team);
     CompetitionSingleResult *jumperResult = teamResult != nullptr ? teamResult->getTeamJumperResult(jumper) : nullptr;
     if(jumperResult == nullptr)
         return 0;
-    int round = MyFunctions::getIndexOfItemInVector(jumperResult->getJumpsReference(), this) + 1;
+    int round = jumpIndex(*jumperResult,*this) + 1;
+    if(round<=0)return 0;
 
     QHash<Jumper *, double> hash;
     for(auto & teamResult : competition->getResultsReference().getResultsReference())
@@ -143,6 +150,7 @@ int JumpData::getPositionInRoundForTeamCompetition()
 
 int JumpData::getPositionInCompetitionForTeamCompetition()
 {
+    if(!competition || !jumper)return 0;
     QHash<Jumper *, double> hash;
     for(auto & teamResult : competition->getResultsReference().getResultsReference())
     {

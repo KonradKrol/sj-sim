@@ -17,6 +17,7 @@ UI_DIR = .ui
 win32: DEFINES += NOMINMAX
 
 SOURCES += \
+    source/UI/ResultsShowing/ResultsHistoryWidget.cpp \
     source/seasons/ClassificationScoring.cpp \
     source/global/DataPack.cpp \
     source/global/CountryCodes.cpp \
@@ -163,6 +164,7 @@ SOURCES += \
     source/utilities/functions.cpp
 
 HEADERS += \
+    source/UI/ResultsShowing/ResultsHistoryWidget.h \
     source/competitions/CompetitionAdvancement.h \
     source/seasons/ClassificationScoring.h \
     source/global/DataPack.h \
