@@ -6,7 +6,7 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
-- Stan porównania kodu i dokumentacji: **1ddc3d2**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
+- Stan porównania kodu i dokumentacji: **b84cd12**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
 - Data zestawienia: **25 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **2.0.0-beta**, ustawione na wyraźne polecenie użytkownika po zakończeniu audytu silnika.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
@@ -801,30 +801,30 @@ Punktacja ma nowe nazwy naliczania, segmenty źródeł z precyzyjnym opisem, akt
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
-- Snapshot kodu i dokumentacji: **1ddc3d233330613c78bdc47ee00cc7d991143fba**.
-- Commitów od bazy: **215**.
-- Plików zmienionych w tym zakresie: **527**.
+- Snapshot kodu i dokumentacji: **b84cd12e54395fb22f0e3bca28651e58cdc8a5fd**.
+- Commitów od bazy: **221**.
+- Plików zmienionych w tym zakresie: **555**.
 - Statystyki obejmują także fonty, skills i dokumentację; nie oznaczają rozmiaru samej logiki gry.
 - Dalsza aktualizacja tego zestawienia jest dodatkiem dokumentacyjnym do wskazanego snapshotu.
 
 | Obszar | Plików |
 | --- | ---: |
-| Dokumentacja etapów i migracji | 51 |
-| Domyślny interfejs Qt Quick i jego zasoby | 120 |
+| Dokumentacja etapów i migracji | 54 |
+| Domyślny interfejs Qt Quick i jego zasoby | 127 |
 | Instrukcje i zasoby narzędzi deweloperskich | 167 |
-| Konfiguracja projektu i pozostałe pliki | 6 |
-| Kontrolery, modele i logika C++ | 144 |
-| Skrypty budowania, uruchamiania i testowania | 6 |
-| Testy | 15 |
+| Konfiguracja projektu i pozostałe pliki | 12 |
+| Kontrolery, modele i logika C++ | 153 |
+| Skrypty budowania, uruchamiania i testowania | 8 |
+| Testy | 16 |
 | Tłumaczenia | 1 |
 | Wcześniejszy opcjonalny eksperyment konkursowy | 17 |
 
 Porównanie można odtworzyć poleceniami:
 
 ~~~sh
-git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 1ddc3d233330613c78bdc47ee00cc7d991143fba
-git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 1ddc3d233330613c78bdc47ee00cc7d991143fba
-git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..1ddc3d233330613c78bdc47ee00cc7d991143fba
+git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c b84cd12e54395fb22f0e3bca28651e58cdc8a5fd
+git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c b84cd12e54395fb22f0e3bca28651e58cdc8a5fd
+git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..b84cd12e54395fb22f0e3bca28651e58cdc8a5fd
 ~~~
 
 Zestawienie można odświeżyć przez `python3 scripts/update-release-inventory.py --base main --snapshot HEAD`. Opisy zachowania i wyniki testów należy uzupełniać na podstawie faktycznych zmian oraz weryfikacji.
@@ -1050,6 +1050,12 @@ Historyczne opisy należy czytać z uwzględnieniem opisanych powyżej rozwiąza
 | `a27c5c4` | Verify persistent save ordering, smaller JSON and legacy compatibility |
 | `1fcdad3` | Refresh release inventory for save ordering and storage improvements |
 | `1ddc3d2` | Separate date planning from weekend creation and preview weekends automatically |
+| `3180890` | Refresh release inventory after automatic weekend previews |
+| `6c7aaef` | Add isolated repeatable random streams for simulation experiments |
+| `e72570a` | Introduce multithread simulation playground with paired experiments, analysis UI and headless CLI |
+| `3795f1f` | Add experiment-scoped takeoff flight and wind physics coefficients |
+| `2305df8` | Harden playground replay determinism paired statistics and cancellation |
+| `b84cd12` | Document simulation playground workflows experiments and measured validation |
 
 ## Załącznik C. Pełny manifest zmienionych plików
 
@@ -1088,7 +1094,9 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/LAYOUT_RECURSION_FIX_2026-10-24.md](../docs/LAYOUT_RECURSION_FIX_2026-10-24.md) | 21 | 0 |
 | A | [docs/NAVIGATION_PERFORMANCE.md](../docs/NAVIGATION_PERFORMANCE.md) | 30 | 0 |
 | A | [docs/PENDING_CLASSIFICATION_RULES_2026-10-25.md](../docs/PENDING_CLASSIFICATION_RULES_2026-10-25.md) | 10 | 0 |
-| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1613 | 0 |
+| A | [docs/PLAYGROUND_IMPLEMENTATION.md](../docs/PLAYGROUND_IMPLEMENTATION.md) | 35 | 0 |
+| A | [docs/PLAYGROUND_VALIDATION_2026-10-25.md](../docs/PLAYGROUND_VALIDATION_2026-10-25.md) | 76 | 0 |
+| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1628 | 0 |
 | A | [docs/RESULT_HISTORY_ARCHIVE_DNS_2026-10-25.md](../docs/RESULT_HISTORY_ARCHIVE_DNS_2026-10-25.md) | 67 | 0 |
 | A | [docs/RESULT_SELECTORS_TEAM_READABILITY_2026-10-25.md](../docs/RESULT_SELECTORS_TEAM_READABILITY_2026-10-25.md) | 24 | 0 |
 | A | [docs/RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md](../docs/RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md) | 62 | 0 |
@@ -1102,6 +1110,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/SIMULATION_ONBOARDING_2026-10-24.md](../docs/SIMULATION_ONBOARDING_2026-10-24.md) | 74 | 0 |
 | A | [docs/SIMULATION_ORDER_AND_SAVE_SIZE_2026-10-25.md](../docs/SIMULATION_ORDER_AND_SAVE_SIZE_2026-10-25.md) | 24 | 0 |
 | A | [docs/SIMULATION_PERFORMANCE_2026-10-22.md](../docs/SIMULATION_PERFORMANCE_2026-10-22.md) | 57 | 0 |
+| A | [docs/SIMULATION_PLAYGROUND.md](../docs/SIMULATION_PLAYGROUND.md) | 131 | 0 |
 | A | [docs/SPACE_AND_LAST_JUMP_2026-10-21.md](../docs/SPACE_AND_LAST_JUMP_2026-10-21.md) | 43 | 0 |
 | A | [docs/SUPER_TEAM_AUTO_SIMULATION_CRASH.md](../docs/SUPER_TEAM_AUTO_SIMULATION_CRASH.md) | 17 | 0 |
 | A | [docs/TEAM_KO_UX_2026-10-24.md](../docs/TEAM_KO_UX_2026-10-24.md) | 33 | 0 |
@@ -1166,9 +1175,16 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/Node.qml](../source/UI/Quick/Node.qml) | 216 | 0 |
 | A | [source/UI/Quick/NodeGroup.qml](../source/UI/Quick/NodeGroup.qml) | 78 | 0 |
 | A | [source/UI/Quick/NumberField.qml](../source/UI/Quick/NumberField.qml) | 56 | 0 |
+| A | [source/UI/Quick/PlaygroundHistogram.qml](../source/UI/Quick/PlaygroundHistogram.qml) | 64 | 0 |
+| A | [source/UI/Quick/PlaygroundMetric.qml](../source/UI/Quick/PlaygroundMetric.qml) | 18 | 0 |
+| A | [source/UI/Quick/PlaygroundNumber.qml](../source/UI/Quick/PlaygroundNumber.qml) | 28 | 0 |
+| A | [source/UI/Quick/PlaygroundReplay.qml](../source/UI/Quick/PlaygroundReplay.qml) | 81 | 0 |
+| A | [source/UI/Quick/PlaygroundResults.qml](../source/UI/Quick/PlaygroundResults.qml) | 118 | 0 |
+| A | [source/UI/Quick/PlaygroundScreen.qml](../source/UI/Quick/PlaygroundScreen.qml) | 79 | 0 |
+| A | [source/UI/Quick/PlaygroundSetup.qml](../source/UI/Quick/PlaygroundSetup.qml) | 105 | 0 |
 | A | [source/UI/Quick/PlotPanel.qml](../source/UI/Quick/PlotPanel.qml) | 35 | 0 |
 | A | [source/UI/Quick/ProjectedControl.qml](../source/UI/Quick/ProjectedControl.qml) | 10 | 0 |
-| A | [source/UI/Quick/QuickBridge.cpp](../source/UI/Quick/QuickBridge.cpp) | 1232 | 0 |
+| A | [source/UI/Quick/QuickBridge.cpp](../source/UI/Quick/QuickBridge.cpp) | 1233 | 0 |
 | A | [source/UI/Quick/QuickCalendar.cpp](../source/UI/Quick/QuickCalendar.cpp) | 548 | 0 |
 | A | [source/UI/Quick/QuickCalendar.h](../source/UI/Quick/QuickCalendar.h) | 186 | 0 |
 | A | [source/UI/Quick/QuickCalendarDates.cpp](../source/UI/Quick/QuickCalendarDates.cpp) | 214 | 0 |
@@ -1234,7 +1250,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/icons/linkedin-dark.svg](../source/UI/Quick/icons/linkedin-dark.svg) | 1 | 0 |
 | A | [source/UI/Quick/icons/linkedin-light.svg](../source/UI/Quick/icons/linkedin-light.svg) | 1 | 0 |
 | A | [source/UI/Quick/qmldir](../source/UI/Quick/qmldir) | 1 | 0 |
-| A | [source/UI/Quick/quick-ui.qrc](../source/UI/Quick/quick-ui.qrc) | 107 | 0 |
+| A | [source/UI/Quick/quick-ui.qrc](../source/UI/Quick/quick-ui.qrc) | 114 | 0 |
 
 ### Instrukcje i zasoby narzędzi deweloperskich
 
@@ -1415,15 +1431,21 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | M | [.gitignore](../.gitignore) | 5 | 0 |
 | A | [WINDOWS_SETUP.MD](../WINDOWS_SETUP.MD) | 288 | 0 |
 | M | [assets.qrc](../assets.qrc) | 1 | 0 |
+| A | [examples/playground/form.json](../examples/playground/form.json) | 106 | 0 |
+| A | [examples/playground/randomness.json](../examples/playground/randomness.json) | 94 | 0 |
+| A | [examples/playground/takeoff-flight.json](../examples/playground/takeoff-flight.json) | 98 | 0 |
+| A | [examples/playground/wind-advantage.json](../examples/playground/wind-advantage.json) | 106 | 0 |
+| A | [examples/playground/wind-physics.json](../examples/playground/wind-physics.json) | 94 | 0 |
+| A | [examples/playground/wind.json](../examples/playground/wind.json) | 106 | 0 |
 | A | [img/author/konrad.jpg](../img/author/konrad.jpg) | - | - |
-| M | [sj-sim.pro](../sj-sim.pro) | 60 | 0 |
+| M | [sj-sim.pro](../sj-sim.pro) | 68 | 0 |
 | A | [skills-lock.json](../skills-lock.json) | 83 | 0 |
 
 ### Kontrolery, modele i logika C++
 
 | Status | Plik | + | − |
 | --- | --- | ---: | ---: |
-| M | [source/UI/AppSettings/AppSettingsWindow.cpp](../source/UI/AppSettings/AppSettingsWindow.cpp) | 1 | 0 |
+| M | [source/UI/AppSettings/AppSettingsWindow.cpp](../source/UI/AppSettings/AppSettingsWindow.cpp) | 4 | 0 |
 | M | [source/UI/AppSettings/CountriesEditorTableModel.cpp](../source/UI/AppSettings/CountriesEditorTableModel.cpp) | 1 | 1 |
 | A | [source/UI/AuthorWindow.cpp](../source/UI/AuthorWindow.cpp) | 77 | 0 |
 | A | [source/UI/AuthorWindow.h](../source/UI/AuthorWindow.h) | 24 | 0 |
@@ -1531,11 +1553,18 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | M | [source/global/GlobalDatabase.h](../source/global/GlobalDatabase.h) | 15 | 0 |
 | M | [source/global/GlobalSimulationSettings.cpp](../source/global/GlobalSimulationSettings.cpp) | 15 | 0 |
 | M | [source/global/GlobalSimulationSettings.h](../source/global/GlobalSimulationSettings.h) | 18 | 0 |
-| M | [source/global/MyRandom.cpp](../source/global/MyRandom.cpp) | 48 | 45 |
+| M | [source/global/MyRandom.cpp](../source/global/MyRandom.cpp) | 65 | 44 |
+| M | [source/global/MyRandom.h](../source/global/MyRandom.h) | 13 | 0 |
 | M | [source/global/PointsForPlacesPreset.cpp](../source/global/PointsForPlacesPreset.cpp) | 1 | 1 |
 | M | [source/global/TreeItem.h](../source/global/TreeItem.h) | 1 | 0 |
 | M | [source/global/Uuid.h](../source/global/Uuid.h) | 4 | 0 |
-| M | [source/main.cpp](../source/main.cpp) | 11 | 0 |
+| M | [source/main.cpp](../source/main.cpp) | 14 | 0 |
+| A | [source/playground/PlaygroundConfig.cpp](../source/playground/PlaygroundConfig.cpp) | 100 | 0 |
+| A | [source/playground/PlaygroundController.cpp](../source/playground/PlaygroundController.cpp) | 64 | 0 |
+| A | [source/playground/PlaygroundController.h](../source/playground/PlaygroundController.h) | 91 | 0 |
+| A | [source/playground/PlaygroundExperiment.h](../source/playground/PlaygroundExperiment.h) | 24 | 0 |
+| A | [source/playground/PlaygroundIo.cpp](../source/playground/PlaygroundIo.cpp) | 54 | 0 |
+| A | [source/playground/PlaygroundRunner.cpp](../source/playground/PlaygroundRunner.cpp) | 155 | 0 |
 | M | [source/seasons/Classification.cpp](../source/seasons/Classification.cpp) | 118 | 242 |
 | M | [source/seasons/Classification.h](../source/seasons/Classification.h) | 8 | 0 |
 | A | [source/seasons/ClassificationScoring.cpp](../source/seasons/ClassificationScoring.cpp) | 68 | 0 |
@@ -1550,10 +1579,12 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | M | [source/seasons/SimulationSave.cpp](../source/seasons/SimulationSave.cpp) | 18 | 16 |
 | A | [source/seasons/SimulationSaveListOrder.h](../source/seasons/SimulationSaveListOrder.h) | 24 | 0 |
 | M | [source/simulator/Characteristic.h](../source/simulator/Characteristic.h) | 7 | 6 |
+| A | [source/simulator/ExperimentalSimulation.cpp](../source/simulator/ExperimentalSimulation.cpp) | 7 | 0 |
+| A | [source/simulator/ExperimentalSimulation.h](../source/simulator/ExperimentalSimulation.h) | 16 | 0 |
 | M | [source/simulator/Hill.cpp](../source/simulator/Hill.cpp) | 6 | 4 |
 | M | [source/simulator/JumpData.cpp](../source/simulator/JumpData.cpp) | 31 | 18 |
 | M | [source/simulator/JumpManipulator.cpp](../source/simulator/JumpManipulator.cpp) | 3 | 1 |
-| M | [source/simulator/JumpSimulator.cpp](../source/simulator/JumpSimulator.cpp) | 49 | 54 |
+| M | [source/simulator/JumpSimulator.cpp](../source/simulator/JumpSimulator.cpp) | 60 | 56 |
 | M | [source/simulator/JumpSimulator.h](../source/simulator/JumpSimulator.h) | 3 | 1 |
 | M | [source/simulator/Jumper.cpp](../source/simulator/Jumper.cpp) | 8 | 2 |
 | M | [source/simulator/Jumper.h](../source/simulator/Jumper.h) | 12 | 1 |
@@ -1572,10 +1603,12 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 
 | Status | Plik | + | − |
 | --- | --- | ---: | ---: |
+| A | [scripts/analyze-playground.py](../scripts/analyze-playground.py) | 142 | 0 |
 | A | [scripts/build-qml-preview.sh](../scripts/build-qml-preview.sh) | 21 | 0 |
 | A | [scripts/build-quick-ui.sh](../scripts/build-quick-ui.sh) | 16 | 0 |
 | A | [scripts/run-qml-preview.sh](../scripts/run-qml-preview.sh) | 21 | 0 |
 | A | [scripts/run-quick-ui.sh](../scripts/run-quick-ui.sh) | 8 | 0 |
+| A | [scripts/test-playground-cli.py](../scripts/test-playground-cli.py) | 89 | 0 |
 | A | [scripts/test-quick-ui.sh](../scripts/test-quick-ui.sh) | 17 | 0 |
 | A | [scripts/update-release-inventory.py](../scripts/update-release-inventory.py) | 98 | 0 |
 
@@ -1592,7 +1625,8 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [tests/competition-ties-gate-regressions.h](../tests/competition-ties-gate-regressions.h) | 126 | 0 |
 | A | [tests/engine-audit-regressions.h](../tests/engine-audit-regressions.h) | 70 | 0 |
 | A | [tests/navigation-performance.h](../tests/navigation-performance.h) | 26 | 0 |
-| A | [tests/quick-ui-smoke.cpp](../tests/quick-ui-smoke.cpp) | 2687 | 0 |
+| A | [tests/playground-regressions.h](../tests/playground-regressions.h) | 34 | 0 |
+| A | [tests/quick-ui-smoke.cpp](../tests/quick-ui-smoke.cpp) | 2698 | 0 |
 | A | [tests/roster-drag-regressions.h](../tests/roster-drag-regressions.h) | 23 | 0 |
 | A | [tests/roster-translation-regressions.h](../tests/roster-translation-regressions.h) | 13 | 0 |
 | A | [tests/simulation-onboarding-regressions.h](../tests/simulation-onboarding-regressions.h) | 96 | 0 |
