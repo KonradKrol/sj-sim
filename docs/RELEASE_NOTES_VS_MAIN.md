@@ -6,7 +6,7 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
-- Stan porównania kodu i dokumentacji: **1d84c07**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
+- Stan porównania kodu i dokumentacji: **2b6f3b3**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
 - Data zestawienia: **26 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **2.0.0-beta**, ustawione na wyraźne polecenie użytkownika po zakończeniu audytu silnika.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
@@ -811,16 +811,16 @@ Punktacja ma nowe nazwy naliczania, segmenty źródeł z precyzyjnym opisem, akt
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
-- Snapshot kodu i dokumentacji: **1d84c07d60cf5d0cb14791f334dce803cb8f6ff2**.
-- Commitów od bazy: **224**.
-- Plików zmienionych w tym zakresie: **579**.
+- Snapshot kodu i dokumentacji: **2b6f3b3bc6b0e8a49ff36697758c4047211f863b**.
+- Commitów od bazy: **227**.
+- Plików zmienionych w tym zakresie: **642**.
 - Statystyki obejmują także fonty, skills i dokumentację; nie oznaczają rozmiaru samej logiki gry.
 - Dalsza aktualizacja tego zestawienia jest dodatkiem dokumentacyjnym do wskazanego snapshotu.
 
 | Obszar | Plików |
 | --- | ---: |
 | Dokumentacja etapów i migracji | 55 |
-| Domyślny interfejs Qt Quick i jego zasoby | 145 |
+| Domyślny interfejs Qt Quick i jego zasoby | 208 |
 | Instrukcje i zasoby narzędzi deweloperskich | 167 |
 | Konfiguracja projektu i pozostałe pliki | 12 |
 | Kontrolery, modele i logika C++ | 157 |
@@ -832,9 +832,9 @@ Punktacja ma nowe nazwy naliczania, segmenty źródeł z precyzyjnym opisem, akt
 Porównanie można odtworzyć poleceniami:
 
 ~~~sh
-git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 1d84c07d60cf5d0cb14791f334dce803cb8f6ff2
-git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 1d84c07d60cf5d0cb14791f334dce803cb8f6ff2
-git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..1d84c07d60cf5d0cb14791f334dce803cb8f6ff2
+git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 2b6f3b3bc6b0e8a49ff36697758c4047211f863b
+git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 2b6f3b3bc6b0e8a49ff36697758c4047211f863b
+git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..2b6f3b3bc6b0e8a49ff36697758c4047211f863b
 ~~~
 
 Zestawienie można odświeżyć przez `python3 scripts/update-release-inventory.py --base main --snapshot HEAD`. Opisy zachowania i wyniki testów należy uzupełniać na podstawie faktycznych zmian oraz weryfikacji.
@@ -1069,6 +1069,9 @@ Historyczne opisy należy czytać z uwzględnieniem opisanych powyżej rozwiąza
 | `c684454` | Refresh release inventory with complete simulation playground |
 | `335a7d0` | Add isolated athlete model and three expressive Qt Quick editor views |
 | `1d84c07` | Document new athlete editor isolation migration and package workflow |
+| `392841c` | Refresh release inventory for independent athlete editor |
+| `43c140f` | Replace athlete previews with five distinct game-inspired concepts and compact perk badges |
+| `2b6f3b3` | Document five athlete concepts equipped badges and tooltip-only perk help |
 
 ## Załącznik C. Pełny manifest zmienionych plików
 
@@ -1081,7 +1084,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [QML_COMPETITION_LIVE.md](../QML_COMPETITION_LIVE.md) | 42 | 0 |
 | A | [QML_COMPETITION_PREVIEW.md](../QML_COMPETITION_PREVIEW.md) | 60 | 0 |
 | A | [QUICK_UI_MIGRATION.md](../QUICK_UI_MIGRATION.md) | 314 | 0 |
-| A | [docs/ATHLETE_STUDIO_2026-10-26.md](../docs/ATHLETE_STUDIO_2026-10-26.md) | 61 | 0 |
+| A | [docs/ATHLETE_STUDIO_2026-10-26.md](../docs/ATHLETE_STUDIO_2026-10-26.md) | 69 | 0 |
 | A | [docs/AUTHOR_AND_SINGLE_JUMPS_2026-10-22.md](../docs/AUTHOR_AND_SINGLE_JUMPS_2026-10-22.md) | 66 | 0 |
 | A | [docs/BUGFIX_AUDIT_2026-10-21.md](../docs/BUGFIX_AUDIT_2026-10-21.md) | 140 | 0 |
 | A | [docs/CALENDAR_COPY_FIXES_2026-10-22.md](../docs/CALENDAR_COPY_FIXES_2026-10-22.md) | 27 | 0 |
@@ -1110,7 +1113,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/PENDING_CLASSIFICATION_RULES_2026-10-25.md](../docs/PENDING_CLASSIFICATION_RULES_2026-10-25.md) | 10 | 0 |
 | A | [docs/PLAYGROUND_IMPLEMENTATION.md](../docs/PLAYGROUND_IMPLEMENTATION.md) | 35 | 0 |
 | A | [docs/PLAYGROUND_VALIDATION_2026-10-25.md](../docs/PLAYGROUND_VALIDATION_2026-10-25.md) | 76 | 0 |
-| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1672 | 0 |
+| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1699 | 0 |
 | A | [docs/RESULT_HISTORY_ARCHIVE_DNS_2026-10-25.md](../docs/RESULT_HISTORY_ARCHIVE_DNS_2026-10-25.md) | 67 | 0 |
 | A | [docs/RESULT_SELECTORS_TEAM_READABILITY_2026-10-25.md](../docs/RESULT_SELECTORS_TEAM_READABILITY_2026-10-25.md) | 24 | 0 |
 | A | [docs/RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md](../docs/RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md) | 62 | 0 |
@@ -1144,17 +1147,25 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/AppHeader.qml](../source/UI/Quick/AppHeader.qml) | 33 | 0 |
 | A | [source/UI/Quick/AppearanceMenu.qml](../source/UI/Quick/AppearanceMenu.qml) | 49 | 0 |
 | A | [source/UI/Quick/AppearancePanel.qml](../source/UI/Quick/AppearancePanel.qml) | 12 | 0 |
-| A | [source/UI/Quick/AthleteCard.qml](../source/UI/Quick/AthleteCard.qml) | 49 | 0 |
+| A | [source/UI/Quick/AthleteBadge.qml](../source/UI/Quick/AthleteBadge.qml) | 88 | 0 |
+| A | [source/UI/Quick/AthleteBadgeRack.qml](../source/UI/Quick/AthleteBadgeRack.qml) | 54 | 0 |
+| A | [source/UI/Quick/AthleteCharacter.qml](../source/UI/Quick/AthleteCharacter.qml) | 45 | 0 |
+| A | [source/UI/Quick/AthleteCollector.qml](../source/UI/Quick/AthleteCollector.qml) | 55 | 0 |
 | A | [source/UI/Quick/AthleteCopy.qml](../source/UI/Quick/AthleteCopy.qml) | 29 | 0 |
-| A | [source/UI/Quick/AthleteEditor.qml](../source/UI/Quick/AthleteEditor.qml) | 114 | 0 |
-| A | [source/UI/Quick/AthleteIdentity.qml](../source/UI/Quick/AthleteIdentity.qml) | 62 | 0 |
-| A | [source/UI/Quick/AthleteLanding.qml](../source/UI/Quick/AthleteLanding.qml) | 40 | 0 |
-| A | [source/UI/Quick/AthletePerkCard.qml](../source/UI/Quick/AthletePerkCard.qml) | 71 | 0 |
-| A | [source/UI/Quick/AthletePerks.qml](../source/UI/Quick/AthletePerks.qml) | 48 | 0 |
-| A | [source/UI/Quick/AthletePortrait.qml](../source/UI/Quick/AthletePortrait.qml) | 31 | 0 |
-| A | [source/UI/Quick/AthleteRating.qml](../source/UI/Quick/AthleteRating.qml) | 55 | 0 |
-| A | [source/UI/Quick/AthleteStudio.qml](../source/UI/Quick/AthleteStudio.qml) | 116 | 0 |
-| A | [source/UI/Quick/AthleteViewChoice.qml](../source/UI/Quick/AthleteViewChoice.qml) | 23 | 0 |
+| A | [source/UI/Quick/AthleteDesign.qml](../source/UI/Quick/AthleteDesign.qml) | 22 | 0 |
+| A | [source/UI/Quick/AthleteEditor.qml](../source/UI/Quick/AthleteEditor.qml) | 34 | 0 |
+| A | [source/UI/Quick/AthleteEquipped.qml](../source/UI/Quick/AthleteEquipped.qml) | 50 | 0 |
+| A | [source/UI/Quick/AthleteIdentity.qml](../source/UI/Quick/AthleteIdentity.qml) | 87 | 0 |
+| A | [source/UI/Quick/AthleteInsignia.qml](../source/UI/Quick/AthleteInsignia.qml) | 33 | 0 |
+| A | [source/UI/Quick/AthleteLanding.qml](../source/UI/Quick/AthleteLanding.qml) | 36 | 0 |
+| A | [source/UI/Quick/AthleteMedals.qml](../source/UI/Quick/AthleteMedals.qml) | 35 | 0 |
+| A | [source/UI/Quick/AthletePatches.qml](../source/UI/Quick/AthletePatches.qml) | 39 | 0 |
+| A | [source/UI/Quick/AthletePerkCatalog.qml](../source/UI/Quick/AthletePerkCatalog.qml) | 14 | 0 |
+| A | [source/UI/Quick/AthleteRating.qml](../source/UI/Quick/AthleteRating.qml) | 54 | 0 |
+| A | [source/UI/Quick/AthleteStudio.qml](../source/UI/Quick/AthleteStudio.qml) | 79 | 0 |
+| A | [source/UI/Quick/AthleteText.qml](../source/UI/Quick/AthleteText.qml) | 21 | 0 |
+| A | [source/UI/Quick/AthleteTokens.qml](../source/UI/Quick/AthleteTokens.qml) | 33 | 0 |
+| A | [source/UI/Quick/AthleteViewChoice.qml](../source/UI/Quick/AthleteViewChoice.qml) | 27 | 0 |
 | A | [source/UI/Quick/AuthorPage.qml](../source/UI/Quick/AuthorPage.qml) | 96 | 0 |
 | A | [source/UI/Quick/AuthorProject.qml](../source/UI/Quick/AuthorProject.qml) | 36 | 0 |
 | A | [source/UI/Quick/AuthorSocial.qml](../source/UI/Quick/AuthorSocial.qml) | 25 | 0 |
@@ -1270,7 +1281,62 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/fonts/OFL-Barlow.txt](../source/UI/Quick/fonts/OFL-Barlow.txt) | 93 | 0 |
 | A | [source/UI/Quick/fonts/OFL-BarlowCondensed.txt](../source/UI/Quick/fonts/OFL-BarlowCondensed.txt) | 93 | 0 |
 | A | [source/UI/Quick/fonts/OFL-IBMPlexMono.txt](../source/UI/Quick/fonts/OFL-IBMPlexMono.txt) | 93 | 0 |
+| A | [source/UI/Quick/icons/athlete/athlete.svg](../source/UI/Quick/icons/athlete/athlete.svg) | 15 | 0 |
+| A | [source/UI/Quick/icons/athlete/coin-flight-0.svg](../source/UI/Quick/icons/athlete/coin-flight-0.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/coin-flight-1.svg](../source/UI/Quick/icons/athlete/coin-flight-1.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/coin-flight-2.svg](../source/UI/Quick/icons/athlete/coin-flight-2.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/coin-reserve-0.svg](../source/UI/Quick/icons/athlete/coin-reserve-0.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/coin-reserve-1.svg](../source/UI/Quick/icons/athlete/coin-reserve-1.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/coin-reserve-2.svg](../source/UI/Quick/icons/athlete/coin-reserve-2.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/coin-small-0.svg](../source/UI/Quick/icons/athlete/coin-small-0.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/coin-small-1.svg](../source/UI/Quick/icons/athlete/coin-small-1.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/coin-small-2.svg](../source/UI/Quick/icons/athlete/coin-small-2.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/coin-steady-0.svg](../source/UI/Quick/icons/athlete/coin-steady-0.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/coin-steady-1.svg](../source/UI/Quick/icons/athlete/coin-steady-1.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/coin-steady-2.svg](../source/UI/Quick/icons/athlete/coin-steady-2.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/coin-training-0.svg](../source/UI/Quick/icons/athlete/coin-training-0.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/coin-training-1.svg](../source/UI/Quick/icons/athlete/coin-training-1.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/coin-training-2.svg](../source/UI/Quick/icons/athlete/coin-training-2.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/coin-volatile-0.svg](../source/UI/Quick/icons/athlete/coin-volatile-0.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/coin-volatile-1.svg](../source/UI/Quick/icons/athlete/coin-volatile-1.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/coin-volatile-2.svg](../source/UI/Quick/icons/athlete/coin-volatile-2.svg) | 1 | 0 |
 | A | [source/UI/Quick/icons/athlete/flight.svg](../source/UI/Quick/icons/athlete/flight.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/medal-flight-0.svg](../source/UI/Quick/icons/athlete/medal-flight-0.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/medal-flight-1.svg](../source/UI/Quick/icons/athlete/medal-flight-1.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/medal-flight-2.svg](../source/UI/Quick/icons/athlete/medal-flight-2.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/medal-reserve-0.svg](../source/UI/Quick/icons/athlete/medal-reserve-0.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/medal-reserve-1.svg](../source/UI/Quick/icons/athlete/medal-reserve-1.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/medal-reserve-2.svg](../source/UI/Quick/icons/athlete/medal-reserve-2.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/medal-small-0.svg](../source/UI/Quick/icons/athlete/medal-small-0.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/medal-small-1.svg](../source/UI/Quick/icons/athlete/medal-small-1.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/medal-small-2.svg](../source/UI/Quick/icons/athlete/medal-small-2.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/medal-steady-0.svg](../source/UI/Quick/icons/athlete/medal-steady-0.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/medal-steady-1.svg](../source/UI/Quick/icons/athlete/medal-steady-1.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/medal-steady-2.svg](../source/UI/Quick/icons/athlete/medal-steady-2.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/medal-training-0.svg](../source/UI/Quick/icons/athlete/medal-training-0.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/medal-training-1.svg](../source/UI/Quick/icons/athlete/medal-training-1.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/medal-training-2.svg](../source/UI/Quick/icons/athlete/medal-training-2.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/medal-volatile-0.svg](../source/UI/Quick/icons/athlete/medal-volatile-0.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/medal-volatile-1.svg](../source/UI/Quick/icons/athlete/medal-volatile-1.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/medal-volatile-2.svg](../source/UI/Quick/icons/athlete/medal-volatile-2.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-flight-0.svg](../source/UI/Quick/icons/athlete/patch-flight-0.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-flight-1.svg](../source/UI/Quick/icons/athlete/patch-flight-1.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-flight-2.svg](../source/UI/Quick/icons/athlete/patch-flight-2.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-reserve-0.svg](../source/UI/Quick/icons/athlete/patch-reserve-0.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-reserve-1.svg](../source/UI/Quick/icons/athlete/patch-reserve-1.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-reserve-2.svg](../source/UI/Quick/icons/athlete/patch-reserve-2.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-small-0.svg](../source/UI/Quick/icons/athlete/patch-small-0.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-small-1.svg](../source/UI/Quick/icons/athlete/patch-small-1.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-small-2.svg](../source/UI/Quick/icons/athlete/patch-small-2.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-steady-0.svg](../source/UI/Quick/icons/athlete/patch-steady-0.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-steady-1.svg](../source/UI/Quick/icons/athlete/patch-steady-1.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-steady-2.svg](../source/UI/Quick/icons/athlete/patch-steady-2.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-training-0.svg](../source/UI/Quick/icons/athlete/patch-training-0.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-training-1.svg](../source/UI/Quick/icons/athlete/patch-training-1.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-training-2.svg](../source/UI/Quick/icons/athlete/patch-training-2.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-volatile-0.svg](../source/UI/Quick/icons/athlete/patch-volatile-0.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-volatile-1.svg](../source/UI/Quick/icons/athlete/patch-volatile-1.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-volatile-2.svg](../source/UI/Quick/icons/athlete/patch-volatile-2.svg) | 1 | 0 |
 | A | [source/UI/Quick/icons/athlete/reserve.svg](../source/UI/Quick/icons/athlete/reserve.svg) | 1 | 0 |
 | A | [source/UI/Quick/icons/athlete/small.svg](../source/UI/Quick/icons/athlete/small.svg) | 1 | 0 |
 | A | [source/UI/Quick/icons/athlete/steady.svg](../source/UI/Quick/icons/athlete/steady.svg) | 1 | 0 |
@@ -1282,7 +1348,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/icons/linkedin-dark.svg](../source/UI/Quick/icons/linkedin-dark.svg) | 1 | 0 |
 | A | [source/UI/Quick/icons/linkedin-light.svg](../source/UI/Quick/icons/linkedin-light.svg) | 1 | 0 |
 | A | [source/UI/Quick/qmldir](../source/UI/Quick/qmldir) | 1 | 0 |
-| A | [source/UI/Quick/quick-ui.qrc](../source/UI/Quick/quick-ui.qrc) | 132 | 0 |
+| A | [source/UI/Quick/quick-ui.qrc](../source/UI/Quick/quick-ui.qrc) | 196 | 0 |
 
 ### Instrukcje i zasoby narzędzi deweloperskich
 
@@ -1652,7 +1718,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 
 | Status | Plik | + | − |
 | --- | --- | ---: | ---: |
-| A | [tests/athlete-studio-regressions.h](../tests/athlete-studio-regressions.h) | 31 | 0 |
+| A | [tests/athlete-studio-regressions.h](../tests/athlete-studio-regressions.h) | 44 | 0 |
 | A | [tests/calendar-dates-regressions.h](../tests/calendar-dates-regressions.h) | 101 | 0 |
 | A | [tests/calendar-inspector-space-regressions.h](../tests/calendar-inspector-space-regressions.h) | 31 | 0 |
 | A | [tests/calendar-workspace-ux-regressions.h](../tests/calendar-workspace-ux-regressions.h) | 35 | 0 |
