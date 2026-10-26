@@ -61,11 +61,21 @@ Instrukcja: [Playground symulacji](SIMULATION_PLAYGROUND.md). Pomiary i scenariu
 
 - Osobny, przyszłościowy model skoczka: dane osobowe, opcjonalny rok urodzenia i zdjęcie, rekord w metrach, OVR, forma, pięć poziomów lądowania i trzy przeciwstawne pary perków z poziomami I/II.
 - Przełącznik „Klasyczny / Nowy edytor” w sekcji zawodników. Pięć odrębnych koncepcji: Emblematy, Naszywki, Żetony, Karta i Postać. Dane osobowe na początku, nazwane opcje lądowania, kompaktowe perki bez opisowych kart. Wektorowe emblematy, naszywki i żetony mają stany zwykły/wybrany/II, a wybrane odznaki są przypisane do zawodnika. Opisy są w tooltipach i pomocy F1. Obsługa klawiatury, motywów, zdjęć i braku zdjęć, małych ekranów i większego tekstu.
-- Nowe paczki i atomowy zapis są odizolowane od obecnej bazy; Cofnij/Ponów obejmuje zmiany i usuwanie. Zdjęcia należą do paczki, a eksport i import przenoszą folder z manifestem oraz plikami.
+- Nowe paczki i atomowy zapis są odizolowane od obecnej bazy; Cofnij/Ponów obejmuje zmiany i usuwanie. Zdjęcia są wskazywane ścieżkami względem folderu paczki; eksport i import przenoszą manifest oraz istniejące wskazane pliki.
 - Opcjonalne kopiowanie klasycznego skoczka z jawnym opisem przeliczenia OVR/formy i przybliżenia lądowania; perki zaczynają od zera. Oryginały pozostają nietknięte.
 - Ten etap nie zmienia symulacji, klasy Jumper ani dotychczasowych sezonów. Nowe profile i perki nie są jeszcze używane do rozgrywania konkursów.
 
 Szczegóły: [Nowy model i edytor skoczka](ATHLETE_STUDIO_2026-10-26.md).
+
+## Uzupełnienie — klasyczniejszy widok Naszywki (26.10.2026)
+
+- Domyślny widok Naszywki korzysta ze wspólnej palety i typografii Sj.Sima. Zachowuje mocną hierarchię, duże OVR i trzy oddzielne kategorie z dwiema opcjami.
+- Perki są opcjonalne; kliknięcie wybiera lub odznacza. Wzmocnienie jest przyciskiem wewnątrz wybranej naszywki, bez osobnego przełącznika poziomów. Kliknięcie przypisanego perka lub × usuwa go. Poziom II ma złote wyróżnienie.
+- Nowe piktogramy naszywek lepiej odpowiadają treningowi, oszczędzaniu wysiłku, lotom, skoczniom i regularności.
+- Zdjęcie jest wskazywane ścieżką względną wobec folderu paczki, bez kopiowania przy przypisaniu. Brak obrazu nie blokuje profilu; plik pojawiający się później zostaje wykryty. Zdjęcia zachowują względne ścieżki przy imporcie i eksporcie. Zachowana zgodność starszych paczek.
+- Dyskretne +/− przy OVR i formie wspierają przytrzymanie. Usunięto rekurencyjne przeliczanie layoutu powodowane długimi ścieżkami i zmiennymi szerokościami pól.
+
+Szczegóły: [Naszywki — UX, poziomy i zdjęcia](ATHLETE_PATCHES_UX_2026-10-26.md).
 
 ## Krótki materiał do publicznych release notes
 
