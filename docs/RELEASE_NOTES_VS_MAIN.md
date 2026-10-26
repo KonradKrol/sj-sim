@@ -6,7 +6,7 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
-- Stan porównania kodu i dokumentacji: **2b6f3b3**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
+- Stan porównania kodu i dokumentacji: **4007be1**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
 - Data zestawienia: **26 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **2.0.0-beta**, ustawione na wyraźne polecenie użytkownika po zakończeniu audytu silnika.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
@@ -821,20 +821,20 @@ Punktacja ma nowe nazwy naliczania, segmenty źródeł z precyzyjnym opisem, akt
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
-- Snapshot kodu i dokumentacji: **2b6f3b3bc6b0e8a49ff36697758c4047211f863b**.
-- Commitów od bazy: **227**.
-- Plików zmienionych w tym zakresie: **642**.
+- Snapshot kodu i dokumentacji: **4007be174a452ffd7077ee0da1a24c7e5caab1d5**.
+- Commitów od bazy: **230**.
+- Plików zmienionych w tym zakresie: **646**.
 - Statystyki obejmują także fonty, skills i dokumentację; nie oznaczają rozmiaru samej logiki gry.
 - Dalsza aktualizacja tego zestawienia jest dodatkiem dokumentacyjnym do wskazanego snapshotu.
 
 | Obszar | Plików |
 | --- | ---: |
-| Dokumentacja etapów i migracji | 55 |
-| Domyślny interfejs Qt Quick i jego zasoby | 208 |
+| Dokumentacja etapów i migracji | 56 |
+| Domyślny interfejs Qt Quick i jego zasoby | 210 |
 | Instrukcje i zasoby narzędzi deweloperskich | 167 |
 | Konfiguracja projektu i pozostałe pliki | 12 |
 | Kontrolery, modele i logika C++ | 157 |
-| Skrypty budowania, uruchamiania i testowania | 8 |
+| Skrypty budowania, uruchamiania i testowania | 9 |
 | Testy | 17 |
 | Tłumaczenia | 1 |
 | Wcześniejszy opcjonalny eksperyment konkursowy | 17 |
@@ -842,9 +842,9 @@ Punktacja ma nowe nazwy naliczania, segmenty źródeł z precyzyjnym opisem, akt
 Porównanie można odtworzyć poleceniami:
 
 ~~~sh
-git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 2b6f3b3bc6b0e8a49ff36697758c4047211f863b
-git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 2b6f3b3bc6b0e8a49ff36697758c4047211f863b
-git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..2b6f3b3bc6b0e8a49ff36697758c4047211f863b
+git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 4007be174a452ffd7077ee0da1a24c7e5caab1d5
+git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 4007be174a452ffd7077ee0da1a24c7e5caab1d5
+git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..4007be174a452ffd7077ee0da1a24c7e5caab1d5
 ~~~
 
 Zestawienie można odświeżyć przez `python3 scripts/update-release-inventory.py --base main --snapshot HEAD`. Opisy zachowania i wyniki testów należy uzupełniać na podstawie faktycznych zmian oraz weryfikacji.
@@ -1082,6 +1082,9 @@ Historyczne opisy należy czytać z uwzględnieniem opisanych powyżej rozwiąza
 | `392841c` | Refresh release inventory for independent athlete editor |
 | `43c140f` | Replace athlete previews with five distinct game-inspired concepts and compact perk badges |
 | `2b6f3b3` | Document five athlete concepts equipped badges and tooltip-only perk help |
+| `7ce0273` | Refresh release inventory after athlete UI redesign |
+| `45ee63c` | Refine patch perk workflow, pack-relative portraits and compact rating steppers |
+| `4007be1` | Document compact optional perks and pack-relative image workflow |
 
 ## Załącznik C. Pełny manifest zmienionych plików
 
@@ -1094,7 +1097,8 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [QML_COMPETITION_LIVE.md](../QML_COMPETITION_LIVE.md) | 42 | 0 |
 | A | [QML_COMPETITION_PREVIEW.md](../QML_COMPETITION_PREVIEW.md) | 60 | 0 |
 | A | [QUICK_UI_MIGRATION.md](../QUICK_UI_MIGRATION.md) | 314 | 0 |
-| A | [docs/ATHLETE_STUDIO_2026-10-26.md](../docs/ATHLETE_STUDIO_2026-10-26.md) | 69 | 0 |
+| A | [docs/ATHLETE_PATCHES_UX_2026-10-26.md](../docs/ATHLETE_PATCHES_UX_2026-10-26.md) | 40 | 0 |
+| A | [docs/ATHLETE_STUDIO_2026-10-26.md](../docs/ATHLETE_STUDIO_2026-10-26.md) | 76 | 0 |
 | A | [docs/AUTHOR_AND_SINGLE_JUMPS_2026-10-22.md](../docs/AUTHOR_AND_SINGLE_JUMPS_2026-10-22.md) | 66 | 0 |
 | A | [docs/BUGFIX_AUDIT_2026-10-21.md](../docs/BUGFIX_AUDIT_2026-10-21.md) | 140 | 0 |
 | A | [docs/CALENDAR_COPY_FIXES_2026-10-22.md](../docs/CALENDAR_COPY_FIXES_2026-10-22.md) | 27 | 0 |
@@ -1123,7 +1127,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/PENDING_CLASSIFICATION_RULES_2026-10-25.md](../docs/PENDING_CLASSIFICATION_RULES_2026-10-25.md) | 10 | 0 |
 | A | [docs/PLAYGROUND_IMPLEMENTATION.md](../docs/PLAYGROUND_IMPLEMENTATION.md) | 35 | 0 |
 | A | [docs/PLAYGROUND_VALIDATION_2026-10-25.md](../docs/PLAYGROUND_VALIDATION_2026-10-25.md) | 76 | 0 |
-| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1699 | 0 |
+| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1775 | 0 |
 | A | [docs/RESULT_HISTORY_ARCHIVE_DNS_2026-10-25.md](../docs/RESULT_HISTORY_ARCHIVE_DNS_2026-10-25.md) | 67 | 0 |
 | A | [docs/RESULT_SELECTORS_TEAM_READABILITY_2026-10-25.md](../docs/RESULT_SELECTORS_TEAM_READABILITY_2026-10-25.md) | 24 | 0 |
 | A | [docs/RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md](../docs/RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md) | 62 | 0 |
@@ -1157,7 +1161,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/AppHeader.qml](../source/UI/Quick/AppHeader.qml) | 33 | 0 |
 | A | [source/UI/Quick/AppearanceMenu.qml](../source/UI/Quick/AppearanceMenu.qml) | 49 | 0 |
 | A | [source/UI/Quick/AppearancePanel.qml](../source/UI/Quick/AppearancePanel.qml) | 12 | 0 |
-| A | [source/UI/Quick/AthleteBadge.qml](../source/UI/Quick/AthleteBadge.qml) | 88 | 0 |
+| A | [source/UI/Quick/AthleteBadge.qml](../source/UI/Quick/AthleteBadge.qml) | 89 | 0 |
 | A | [source/UI/Quick/AthleteBadgeRack.qml](../source/UI/Quick/AthleteBadgeRack.qml) | 54 | 0 |
 | A | [source/UI/Quick/AthleteCharacter.qml](../source/UI/Quick/AthleteCharacter.qml) | 45 | 0 |
 | A | [source/UI/Quick/AthleteCollector.qml](../source/UI/Quick/AthleteCollector.qml) | 55 | 0 |
@@ -1165,15 +1169,17 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/AthleteDesign.qml](../source/UI/Quick/AthleteDesign.qml) | 22 | 0 |
 | A | [source/UI/Quick/AthleteEditor.qml](../source/UI/Quick/AthleteEditor.qml) | 34 | 0 |
 | A | [source/UI/Quick/AthleteEquipped.qml](../source/UI/Quick/AthleteEquipped.qml) | 50 | 0 |
-| A | [source/UI/Quick/AthleteIdentity.qml](../source/UI/Quick/AthleteIdentity.qml) | 87 | 0 |
+| A | [source/UI/Quick/AthleteIdentity.qml](../source/UI/Quick/AthleteIdentity.qml) | 117 | 0 |
 | A | [source/UI/Quick/AthleteInsignia.qml](../source/UI/Quick/AthleteInsignia.qml) | 33 | 0 |
 | A | [source/UI/Quick/AthleteLanding.qml](../source/UI/Quick/AthleteLanding.qml) | 36 | 0 |
 | A | [source/UI/Quick/AthleteMedals.qml](../source/UI/Quick/AthleteMedals.qml) | 35 | 0 |
+| A | [source/UI/Quick/AthletePatchRack.qml](../source/UI/Quick/AthletePatchRack.qml) | 52 | 0 |
+| A | [source/UI/Quick/AthletePatchSet.qml](../source/UI/Quick/AthletePatchSet.qml) | 38 | 0 |
 | A | [source/UI/Quick/AthletePatches.qml](../source/UI/Quick/AthletePatches.qml) | 39 | 0 |
 | A | [source/UI/Quick/AthletePerkCatalog.qml](../source/UI/Quick/AthletePerkCatalog.qml) | 14 | 0 |
-| A | [source/UI/Quick/AthleteRating.qml](../source/UI/Quick/AthleteRating.qml) | 54 | 0 |
-| A | [source/UI/Quick/AthleteStudio.qml](../source/UI/Quick/AthleteStudio.qml) | 79 | 0 |
-| A | [source/UI/Quick/AthleteText.qml](../source/UI/Quick/AthleteText.qml) | 21 | 0 |
+| A | [source/UI/Quick/AthleteRating.qml](../source/UI/Quick/AthleteRating.qml) | 91 | 0 |
+| A | [source/UI/Quick/AthleteStudio.qml](../source/UI/Quick/AthleteStudio.qml) | 80 | 0 |
+| A | [source/UI/Quick/AthleteText.qml](../source/UI/Quick/AthleteText.qml) | 22 | 0 |
 | A | [source/UI/Quick/AthleteTokens.qml](../source/UI/Quick/AthleteTokens.qml) | 33 | 0 |
 | A | [source/UI/Quick/AthleteViewChoice.qml](../source/UI/Quick/AthleteViewChoice.qml) | 27 | 0 |
 | A | [source/UI/Quick/AuthorPage.qml](../source/UI/Quick/AuthorPage.qml) | 96 | 0 |
@@ -1329,24 +1335,24 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/icons/athlete/medal-volatile-0.svg](../source/UI/Quick/icons/athlete/medal-volatile-0.svg) | 1 | 0 |
 | A | [source/UI/Quick/icons/athlete/medal-volatile-1.svg](../source/UI/Quick/icons/athlete/medal-volatile-1.svg) | 1 | 0 |
 | A | [source/UI/Quick/icons/athlete/medal-volatile-2.svg](../source/UI/Quick/icons/athlete/medal-volatile-2.svg) | 1 | 0 |
-| A | [source/UI/Quick/icons/athlete/patch-flight-0.svg](../source/UI/Quick/icons/athlete/patch-flight-0.svg) | 1 | 0 |
-| A | [source/UI/Quick/icons/athlete/patch-flight-1.svg](../source/UI/Quick/icons/athlete/patch-flight-1.svg) | 1 | 0 |
-| A | [source/UI/Quick/icons/athlete/patch-flight-2.svg](../source/UI/Quick/icons/athlete/patch-flight-2.svg) | 1 | 0 |
-| A | [source/UI/Quick/icons/athlete/patch-reserve-0.svg](../source/UI/Quick/icons/athlete/patch-reserve-0.svg) | 1 | 0 |
-| A | [source/UI/Quick/icons/athlete/patch-reserve-1.svg](../source/UI/Quick/icons/athlete/patch-reserve-1.svg) | 1 | 0 |
-| A | [source/UI/Quick/icons/athlete/patch-reserve-2.svg](../source/UI/Quick/icons/athlete/patch-reserve-2.svg) | 1 | 0 |
-| A | [source/UI/Quick/icons/athlete/patch-small-0.svg](../source/UI/Quick/icons/athlete/patch-small-0.svg) | 1 | 0 |
-| A | [source/UI/Quick/icons/athlete/patch-small-1.svg](../source/UI/Quick/icons/athlete/patch-small-1.svg) | 1 | 0 |
-| A | [source/UI/Quick/icons/athlete/patch-small-2.svg](../source/UI/Quick/icons/athlete/patch-small-2.svg) | 1 | 0 |
-| A | [source/UI/Quick/icons/athlete/patch-steady-0.svg](../source/UI/Quick/icons/athlete/patch-steady-0.svg) | 1 | 0 |
-| A | [source/UI/Quick/icons/athlete/patch-steady-1.svg](../source/UI/Quick/icons/athlete/patch-steady-1.svg) | 1 | 0 |
-| A | [source/UI/Quick/icons/athlete/patch-steady-2.svg](../source/UI/Quick/icons/athlete/patch-steady-2.svg) | 1 | 0 |
-| A | [source/UI/Quick/icons/athlete/patch-training-0.svg](../source/UI/Quick/icons/athlete/patch-training-0.svg) | 1 | 0 |
-| A | [source/UI/Quick/icons/athlete/patch-training-1.svg](../source/UI/Quick/icons/athlete/patch-training-1.svg) | 1 | 0 |
-| A | [source/UI/Quick/icons/athlete/patch-training-2.svg](../source/UI/Quick/icons/athlete/patch-training-2.svg) | 1 | 0 |
-| A | [source/UI/Quick/icons/athlete/patch-volatile-0.svg](../source/UI/Quick/icons/athlete/patch-volatile-0.svg) | 1 | 0 |
-| A | [source/UI/Quick/icons/athlete/patch-volatile-1.svg](../source/UI/Quick/icons/athlete/patch-volatile-1.svg) | 1 | 0 |
-| A | [source/UI/Quick/icons/athlete/patch-volatile-2.svg](../source/UI/Quick/icons/athlete/patch-volatile-2.svg) | 1 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-flight-0.svg](../source/UI/Quick/icons/athlete/patch-flight-0.svg) | 7 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-flight-1.svg](../source/UI/Quick/icons/athlete/patch-flight-1.svg) | 7 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-flight-2.svg](../source/UI/Quick/icons/athlete/patch-flight-2.svg) | 7 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-reserve-0.svg](../source/UI/Quick/icons/athlete/patch-reserve-0.svg) | 7 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-reserve-1.svg](../source/UI/Quick/icons/athlete/patch-reserve-1.svg) | 7 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-reserve-2.svg](../source/UI/Quick/icons/athlete/patch-reserve-2.svg) | 7 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-small-0.svg](../source/UI/Quick/icons/athlete/patch-small-0.svg) | 7 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-small-1.svg](../source/UI/Quick/icons/athlete/patch-small-1.svg) | 7 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-small-2.svg](../source/UI/Quick/icons/athlete/patch-small-2.svg) | 7 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-steady-0.svg](../source/UI/Quick/icons/athlete/patch-steady-0.svg) | 7 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-steady-1.svg](../source/UI/Quick/icons/athlete/patch-steady-1.svg) | 7 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-steady-2.svg](../source/UI/Quick/icons/athlete/patch-steady-2.svg) | 7 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-training-0.svg](../source/UI/Quick/icons/athlete/patch-training-0.svg) | 7 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-training-1.svg](../source/UI/Quick/icons/athlete/patch-training-1.svg) | 7 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-training-2.svg](../source/UI/Quick/icons/athlete/patch-training-2.svg) | 7 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-volatile-0.svg](../source/UI/Quick/icons/athlete/patch-volatile-0.svg) | 7 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-volatile-1.svg](../source/UI/Quick/icons/athlete/patch-volatile-1.svg) | 7 | 0 |
+| A | [source/UI/Quick/icons/athlete/patch-volatile-2.svg](../source/UI/Quick/icons/athlete/patch-volatile-2.svg) | 7 | 0 |
 | A | [source/UI/Quick/icons/athlete/reserve.svg](../source/UI/Quick/icons/athlete/reserve.svg) | 1 | 0 |
 | A | [source/UI/Quick/icons/athlete/small.svg](../source/UI/Quick/icons/athlete/small.svg) | 1 | 0 |
 | A | [source/UI/Quick/icons/athlete/steady.svg](../source/UI/Quick/icons/athlete/steady.svg) | 1 | 0 |
@@ -1358,7 +1364,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/icons/linkedin-dark.svg](../source/UI/Quick/icons/linkedin-dark.svg) | 1 | 0 |
 | A | [source/UI/Quick/icons/linkedin-light.svg](../source/UI/Quick/icons/linkedin-light.svg) | 1 | 0 |
 | A | [source/UI/Quick/qmldir](../source/UI/Quick/qmldir) | 1 | 0 |
-| A | [source/UI/Quick/quick-ui.qrc](../source/UI/Quick/quick-ui.qrc) | 196 | 0 |
+| A | [source/UI/Quick/quick-ui.qrc](../source/UI/Quick/quick-ui.qrc) | 198 | 0 |
 
 ### Instrukcje i zasoby narzędzi deweloperskich
 
@@ -1633,10 +1639,10 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | M | [source/UI/SingleJumps/SingleJumpsResultsTableModel.cpp](../source/UI/SingleJumps/SingleJumpsResultsTableModel.cpp) | 1 | 1 |
 | M | [source/UI/mainwindow.cpp](../source/UI/mainwindow.cpp) | 32 | 1 |
 | M | [source/UI/mainwindow.h](../source/UI/mainwindow.h) | 1 | 0 |
-| A | [source/athletes/AthleteProfile.cpp](../source/athletes/AthleteProfile.cpp) | 30 | 0 |
+| A | [source/athletes/AthleteProfile.cpp](../source/athletes/AthleteProfile.cpp) | 36 | 0 |
 | A | [source/athletes/AthleteProfile.h](../source/athletes/AthleteProfile.h) | 16 | 0 |
-| A | [source/athletes/AthleteStudioController.cpp](../source/athletes/AthleteStudioController.cpp) | 68 | 0 |
-| A | [source/athletes/AthleteStudioController.h](../source/athletes/AthleteStudioController.h) | 68 | 0 |
+| A | [source/athletes/AthleteStudioController.cpp](../source/athletes/AthleteStudioController.cpp) | 125 | 0 |
+| A | [source/athletes/AthleteStudioController.h](../source/athletes/AthleteStudioController.h) | 71 | 0 |
 | M | [source/competitions/AbstractCompetitionManager.cpp](../source/competitions/AbstractCompetitionManager.cpp) | 206 | 177 |
 | M | [source/competitions/AbstractCompetitionManager.h](../source/competitions/AbstractCompetitionManager.h) | 12 | 0 |
 | A | [source/competitions/CompetitionAdvancement.h](../source/competitions/CompetitionAdvancement.h) | 53 | 0 |
@@ -1718,6 +1724,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [scripts/analyze-playground.py](../scripts/analyze-playground.py) | 142 | 0 |
 | A | [scripts/build-qml-preview.sh](../scripts/build-qml-preview.sh) | 21 | 0 |
 | A | [scripts/build-quick-ui.sh](../scripts/build-quick-ui.sh) | 16 | 0 |
+| A | [scripts/generate-athlete-patches.py](../scripts/generate-athlete-patches.py) | 28 | 0 |
 | A | [scripts/run-qml-preview.sh](../scripts/run-qml-preview.sh) | 21 | 0 |
 | A | [scripts/run-quick-ui.sh](../scripts/run-quick-ui.sh) | 8 | 0 |
 | A | [scripts/test-playground-cli.py](../scripts/test-playground-cli.py) | 89 | 0 |
@@ -1728,7 +1735,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 
 | Status | Plik | + | − |
 | --- | --- | ---: | ---: |
-| A | [tests/athlete-studio-regressions.h](../tests/athlete-studio-regressions.h) | 44 | 0 |
+| A | [tests/athlete-studio-regressions.h](../tests/athlete-studio-regressions.h) | 61 | 0 |
 | A | [tests/calendar-dates-regressions.h](../tests/calendar-dates-regressions.h) | 101 | 0 |
 | A | [tests/calendar-inspector-space-regressions.h](../tests/calendar-inspector-space-regressions.h) | 31 | 0 |
 | A | [tests/calendar-workspace-ux-regressions.h](../tests/calendar-workspace-ux-regressions.h) | 35 | 0 |
