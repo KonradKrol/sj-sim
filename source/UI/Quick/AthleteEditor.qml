@@ -7,13 +7,6 @@ ColumnLayout {
     property var backend
     property int viewMode: 1
     spacing: Theme.dp(8)
-    Flow {
-        Layout.fillWidth: true; spacing: Theme.dp(5)
-        Repeater {
-            model: 5
-            AthleteViewChoice { required property int index; objectName: "athleteView-"+index; view: index; selected: editor.viewMode===index; onClicked: editor.viewMode=index }
-        }
-    }
     ScrollView {
         id: scroll
         objectName: "athleteEditorScroll"

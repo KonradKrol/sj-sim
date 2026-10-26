@@ -1,6 +1,6 @@
 # Naszywki — kompaktowe perki, poziomy i zdjęcia
 
-Rozwijany jest istniejący widok Naszywki. Dwa kolejne projekty odłożono. Pozostałe cztery prototypy pozostają dostępne; symulacja nie jest zmieniana.
+Rozwijany jest istniejący widok Naszywki. Dwa kolejne projekty odłożono. Pasek pięciu wariantów usunięto: nowy edytor otwiera od razu Naszywki. Pozostałe cztery prototypy pozostają w kodzie, bez przełącznika w interfejsie; symulacja nie jest zmieniana.
 
 ## Interfejs
 
