@@ -12,7 +12,7 @@ Rozwijany jest istniejący widok Naszywki. Dwa kolejne projekty odłożono. Pozo
 - Kliknięcie przypisanego perka albo jego widocznego × usuwa go. Operację można cofnąć jednym Cofnij.
 - Opisy są w tooltipie/F1; każdy perk ma wyłącznie symbol, nazwę i stan.
 - OVR i forma mają dyskretne +/−, działające od naciśnięcia i powtarzające zmianę po przytrzymaniu. Zakres pozostaje 1–100.
-- Lądowanie ma osobny panel z pięcioma kolejnymi poziomami 1–5, od Niechlujnego do Stylisty. W wąskim panelu tworzą pionową listę z linią łączącą numerowane znaczniki, przy dużej szerokości — pojedynczy rząd. Podpis „Jakość rośnie” ze strzałką wskazuje kierunek poprawy. Zaznaczenie wyróżnia jednocześnie numer, pełne tło i mocniejszy tekst; czytnik ekranu podaje również numer poziomu. Nazwy mogą się zawijać przy zwiększonym tekście. Wybór jest dostępny myszą i klawiaturą, a wartości modelu pozostają bez zmian.
+- Lądowanie ma zwartą, zawsze jednorzędową skalę 1–5, od Niechlujnego do Stylisty. Wybrana nazwa jest widoczna obok tytułu; w wąskim panelu pozostałe nazwy są w podpowiedziach po najechaniu lub ustawieniu fokusu klawiaturą. W szerokim panelu nazwy mieszczą się również w samych przyciskach. Bez dodatkowego podpisu i pionowej listy. Zaznaczenie wyróżniają pełne tło i mocniejszy tekst; czytnik ekranu podaje nazwę oraz numer poziomu. Wartości modelu pozostają bez zmian.
 
 ## Piktogramy
 
