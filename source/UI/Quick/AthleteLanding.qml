@@ -17,10 +17,15 @@ Control {
     }
     contentItem: ColumnLayout {
         spacing: Theme.dp(9)
-        Label { text: qsTr("Lądowanie"); color: landing.design.ink; font.family: landing.design.headingFont; font.pointSize: Theme.section; font.bold: true }
-        GridLayout {
+        RowLayout {
             Layout.fillWidth: true
-            columns: width>=Theme.dp(640) ? 5 : 2
+            Label { text: qsTr("Lądowanie"); color: landing.design.ink; font.family: landing.design.headingFont; font.pointSize: Theme.section; font.bold: true; Layout.fillWidth: true }
+            Label { text: steps.columns===1 ? qsTr("Jakość rośnie ↓") : qsTr("Jakość rośnie →"); color: landing.design.muted; font.pointSize: Theme.caption }
+        }
+        GridLayout {
+            id: steps
+            Layout.fillWidth: true
+            columns: width>=Theme.dp(640) ? 5 : 1
             columnSpacing: Theme.dp(5)
             rowSpacing: Theme.dp(5)
             Repeater {
@@ -32,26 +37,35 @@ Control {
                     objectName: "athleteLanding-"+index
                     Layout.fillWidth: true
                     Layout.minimumWidth: 0
-                    Layout.columnSpan: index===4 && parent.columns===2 ? 2 : 1
                     checked: landing.backend.profile.landing===index
                     hoverEnabled: true
                     implicitWidth: contentItem.implicitWidth+leftPadding+rightPadding
                     implicitHeight: Math.max(Theme.dp(39),contentItem.implicitHeight+topPadding+bottomPadding)
                     padding: Theme.dp(9)
-                    Accessible.name: modelData; Accessible.role: Accessible.RadioButton; Accessible.checked: checked
-                    background: Rectangle {
-                        color: choice.checked ? landing.design.accent : choice.hovered ? landing.design.paper : "transparent"
-                        radius: Theme.dp(3)
-                        border.width: choice.activeFocus ? 2 : 1
-                        border.color: choice.checked || choice.activeFocus ? landing.design.accent : landing.design.line
+                    Accessible.name: qsTr("%1 · poziom %2 z 5").arg(modelData).arg(index+1); Accessible.role: Accessible.RadioButton; Accessible.checked: checked
+                    background: Item {
+                        Rectangle {
+                            visible: steps.columns===1 && choice.index<4
+                            x: choice.leftPadding+Theme.dp(11); y: parent.height/2
+                            width: 1; height: choice.height+steps.rowSpacing
+                            color: landing.design.line
+                        }
+                        Rectangle {
+                            anchors.fill: parent
+                            anchors.leftMargin: steps.columns===1 ? Theme.dp(37) : 0
+                            color: choice.checked ? landing.design.accent : choice.hovered ? landing.design.paper : "transparent"
+                            radius: Theme.dp(3)
+                            border.width: choice.activeFocus ? 2 : 1
+                            border.color: choice.checked || choice.activeFocus ? landing.design.accent : landing.design.line
+                        }
                     }
                     contentItem: RowLayout {
-                        spacing: Theme.dp(7)
+                        spacing: Theme.dp(12)
                         Rectangle {
-                            Layout.preferredWidth: Theme.dp(12); Layout.preferredHeight: Theme.dp(12)
-                            radius: width/2; color: "transparent"; border.width: 1
-                            border.color: choice.checked ? landing.design.accentInk : landing.design.muted
-                            Rectangle { anchors.centerIn: parent; width: Theme.dp(6); height: width; radius: width/2; visible: choice.checked; color: landing.design.accentInk }
+                            Layout.preferredWidth: Theme.dp(22); Layout.preferredHeight: Theme.dp(22)
+                            radius: width/2; color: choice.checked ? landing.design.accent : landing.design.paper; border.width: 1
+                            border.color: choice.checked ? landing.design.accent : landing.design.line
+                            Label { anchors.centerIn: parent; text: choice.index+1; font.family: Theme.mono; font.pointSize: Theme.caption; font.bold: true; color: choice.checked ? landing.design.accentInk : landing.design.muted }
                         }
                         Label { text: choice.modelData; Layout.fillWidth: true; Layout.minimumWidth: 0; wrapMode: Text.WordWrap; color: choice.checked ? landing.design.accentInk : landing.design.ink; font.pointSize: Theme.body; font.family: Theme.bodyFamily; font.weight: choice.checked ? Font.Bold : Font.Medium }
                     }
