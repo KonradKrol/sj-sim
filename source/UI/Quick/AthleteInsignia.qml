@@ -22,7 +22,7 @@ Flow {
             Behavior on scale { NumberAnimation { duration: Theme.motion; easing.type: Easing.OutBack } }
             hoverEnabled: true
             Accessible.name: qsTr("%1 · poziom %2").arg(perk.name).arg(Math.abs(value))
-            contentItem: Image { source: "icons/athlete/"+marks.family+"-"+mark.perk.key+"-"+Math.abs(mark.value)+".svg"; sourceSize.width: 120; sourceSize.height: 120; Accessible.ignored: true }
+            contentItem: AthletePerkArt { family: marks.family; perkKey: mark.perk.key; tier: Math.abs(mark.value); sourceSize.width: 120; sourceSize.height: 120; Accessible.ignored: true }
             background: Rectangle { color: "transparent"; border.width: mark.activeFocus ? 2 : 0; border.color: Theme.accent; radius: 4 }
             onClicked: marks.backend.setPerk(index,value>0?1:-1,Math.abs(value),true)
             ToolTip.visible: hovered && !down

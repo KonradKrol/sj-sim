@@ -1,0 +1,38 @@
+{
+  "tool": "image_gen.imagegen",
+  "mode": "built-in",
+  "date": "2026-10-26",
+  "transparent_background": true,
+  "assets": {
+    "training": {
+      "file": "training.png",
+      "generation": "exec-5c08c12c-9fd6-4f0f-8a80-6b899aa6cc3a.png",
+      "prompt": "Use case: logo-brand. Production game UI pictogram. Create ONE extremely clean flat DARK NAVY (#142e42) monochrome sports icon with a genuinely transparent alpha background. The icon is a strong solid geometric silhouette, expertly crafted like a premium Olympic sports pictogram, no fine detail. Perfectly smooth crisp contours and large clean negative spaces. Consistent broad substantial stroke widths, subtly rounded joins. Square canvas, centered symbol with equal margins occupying about 72 percent. Must read clearly at 24–40 pixels. The foreground MUST BE DARK NAVY, not white. No white pixels or white outlines; NO grain, texture, noise, stray flecks, shadows, glow, shading, photographic effects or sketch marks. No frame, shield, badge, border, disc, writing, numbers, watermark or logo. Subject: one single horizontal symmetrical BARBELL for strength training, a thick straight bar with two weight plates on each side. Frontal flat silhouette. Not two dumbbells. Very simple."
+    },
+    "reserve": {
+      "file": "reserve.png",
+      "generation": "exec-32510f4e-ff1f-4308-9f58-cde2099228d4.png",
+      "prompt": "Use case: logo-brand. Production game UI pictogram. Create ONE extremely clean flat DARK NAVY (#142e42) monochrome sports icon with a genuinely transparent alpha background. The icon is a strong solid geometric silhouette, expertly crafted like a premium Olympic sports pictogram, no fine detail. Perfectly smooth crisp contours and large clean negative spaces. Consistent broad substantial stroke widths, subtly rounded joins. Square canvas, centered symbol with equal margins occupying about 72 percent. Must read clearly at 24–40 pixels. The foreground MUST BE DARK NAVY, not white. No white pixels or white outlines; NO grain, texture, noise, stray flecks, shadows, glow, shading, photographic effects or sketch marks. No frame, shield, badge, border, disc, writing, numbers, watermark or logo. Subject: RECOVERY / REGENERATION. A simple heart surrounded by one broad circular regeneration arrow, clearly distinct heart and arrowhead, generous empty gap. Exactly these two elements, no medical cross."
+    },
+    "flight": {
+      "file": "flight.png",
+      "generation": "exec-084ea4de-6c2d-488a-8115-10adbcd7a03b.png",
+      "prompt": "Use case: logo-brand. Production game UI pictogram. Create ONE extremely clean flat DARK NAVY (#142e42) monochrome sports icon with a genuinely transparent alpha background. The icon is a strong solid geometric silhouette, expertly crafted like a premium Olympic sports pictogram, no fine detail. Perfectly smooth crisp contours and large clean negative spaces. Consistent broad substantial stroke widths, subtly rounded joins. Square canvas, centered symbol with equal margins occupying about 72 percent. Must read clearly at 24–40 pixels. The foreground MUST BE DARK NAVY, not white. No white pixels or white outlines; NO grain, texture, noise, stray flecks, shadows, glow, shading, photographic effects or sketch marks. No frame, shield, badge, border, disc, writing, numbers, watermark or logo. Subject: SKI JUMPER IN FLIGHT, unmistakable Nordic ski jumping. A simple helmeted athlete in aerodynamic forward leaning flight position above TWO LONG SEPARATE SKIS in a V. Head leads to the right, arms straight backwards alongside torso, straight extended legs. No poles, no ramp, no mountains. Not alpine skiing or snowboarding. Essential bold silhouette only."
+    },
+    "small": {
+      "file": "small.png",
+      "generation": "exec-b019a899-420b-4480-ac44-ef044fea982b.png",
+      "prompt": "Use case: logo-brand. Production game UI pictogram. Create ONE extremely clean flat DARK NAVY (#142e42) monochrome sports icon with a genuinely transparent alpha background. The icon is a strong solid geometric silhouette, expertly crafted like a premium Olympic sports pictogram, no fine detail. Perfectly smooth crisp contours and large clean negative spaces. Consistent broad substantial stroke widths, subtly rounded joins. Square canvas, centered symbol with equal margins occupying about 72 percent. Must read clearly at 24–40 pixels. The foreground MUST BE DARK NAVY, not white. No white pixels or white outlines; NO grain, texture, noise, stray flecks, shadows, glow, shading, photographic effects or sketch marks. No frame, shield, badge, border, disc, writing, numbers, watermark or logo. Subject: POWERFUL SKI-JUMP TAKEOFF. A simple ski jumper launching upward from the horizontal lip of a short ski-jump table, legs extending forcefully. Two short bold power rays at the takeoff point. Minimal athlete, skis, short curved ramp edge and force marks only; no scenery or tiny details."
+    },
+    "steady": {
+      "file": "steady.png",
+      "generation": "exec-a2eb3859-fde8-46f4-83bc-749cd3d9c7b4.png",
+      "prompt": "Use case: logo-brand. Production game UI pictogram. Create ONE extremely clean flat DARK NAVY (#142e42) monochrome sports icon with a genuinely transparent alpha background. The icon is a strong solid geometric silhouette, expertly crafted like a premium Olympic sports pictogram, no fine detail. Perfectly smooth crisp contours and large clean negative spaces. Consistent broad substantial stroke widths, subtly rounded joins. Square canvas, centered symbol with equal margins occupying about 72 percent. Must read clearly at 24–40 pixels. The foreground MUST BE DARK NAVY, not white. No white pixels or white outlines; NO grain, texture, noise, stray flecks, shadows, glow, shading, photographic effects or sketch marks. No frame, shield, badge, border, disc, writing, numbers, watermark or logo. Subject: STEADY RHYTHM / CONSISTENCY. One classic mechanical METRONOME: tapered triangular outer body with a flat base, a single diagonal pendulum rod with a simple square sliding weight. Bold simple recognizable shape, large open interior, no dial, numbers or music notes."
+    },
+    "volatile": {
+      "file": "volatile.png",
+      "generation": "exec-a723ad49-1866-45ae-9570-47649b89eb81.png",
+      "prompt": "Use case: logo-brand. Production game UI pictogram. Create ONE extremely clean flat DARK NAVY (#142e42) monochrome sports icon with a genuinely transparent alpha background. The icon is a strong solid geometric silhouette, expertly crafted like a premium Olympic sports pictogram, no fine detail. Perfectly smooth crisp contours and large clean negative spaces. Consistent broad substantial stroke widths, subtly rounded joins. Square canvas, centered symbol with equal margins occupying about 72 percent. Must read clearly at 24–40 pixels. The foreground MUST BE DARK NAVY, not white. No white pixels or white outlines; NO grain, texture, noise, stray flecks, shadows, glow, shading, photographic effects or sketch marks. No frame, shield, badge, border, disc, writing, numbers, watermark or logo. Subject: RANDOMNESS / UNPREDICTABILITY. One gaming DIE tilted in simple three-quarter view, three bold faces and large transparent cutout round pips. Perfect rounded geometric cube, clear generous gaps between faces. No second die, no motion marks or other objects."
+    }
+  }
+}

@@ -22,6 +22,10 @@
 #include <QQmlContext>
 #include <QQmlEngine>
 #include <QQmlComponent>
+#include <QQuickImageProvider>
+#include <QImageReader>
+#include <QPainter>
+#include <QHash>
 #include <QSet>
 #include <QScreen>
 #include <QShortcut>
@@ -32,6 +36,29 @@
 #include <QtMath>
 
 namespace {
+class PerkIconProvider final : public QQuickImageProvider {
+public:
+    PerkIconProvider() : QQuickImageProvider(QQuickImageProvider::Image) {
+        for(const auto &key:{"training","reserve","flight","small","steady","volatile"}) {
+            QImageReader reader(QStringLiteral(":/ui/icons/athlete/ai/")+key+QStringLiteral(".png"));
+            reader.setScaledSize(QSize(256,256));
+            QImage icon=reader.read().convertToFormat(QImage::Format_ARGB32_Premultiplied);
+            if(icon.isNull()){qWarning()<<"Cannot load perk icon"<<key;continue;}
+            QPainter painter(&icon);
+            painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+            painter.fillRect(icon.rect(),QColor("#f9fcf7"));
+            painter.end();
+            m_icons.insert(QString::fromLatin1(key),icon);
+        }
+    }
+    QImage requestImage(const QString &id,QSize *size,const QSize &) override {
+        const QImage icon=m_icons.value(id);
+        if(size)*size=icon.size();
+        return icon;
+    }
+private:
+    QHash<QString,QImage> m_icons;
+};
 QQuickWidget *makeView(QWidget *parent,QuickBridge *bridge,QuickAppearance *appearance,QuickUi *navigation,const QString &source,bool page=true) {
     auto *engine=qobject_cast<QQmlEngine *>(navigation->property("quickEngine").value<QObject *>());
     if(!engine){
@@ -79,6 +106,8 @@ void QuickView::load(QQuickWidget *view,const QUrl &source)
 {
     view->setSource(QUrl());
     if(source.isEmpty())return;
+    if(!view->engine()->imageProvider(QStringLiteral("perkIcons")))
+        view->engine()->addImageProvider(QStringLiteral("perkIcons"),new PerkIconProvider);
     auto *context=view->findChild<QQmlContext *>("quickViewContext",Qt::FindDirectChildrenOnly);
     auto *component=new QQmlComponent(view->engine(),source,QQmlComponent::PreferSynchronous,view);
     auto *root=component->isReady()?component->create(context):nullptr;

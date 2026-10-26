@@ -70,8 +70,8 @@ Szczegóły: [Nowy model i edytor skoczka](ATHLETE_STUDIO_2026-10-26.md).
 ## Uzupełnienie — klasyczniejszy widok Naszywki (26.10.2026)
 
 - Domyślny widok Naszywki korzysta ze wspólnej palety i typografii Sj.Sima. Zachowuje mocną hierarchię, duże OVR i trzy oddzielne kategorie z dwiema opcjami.
-- Perki są opcjonalne; kliknięcie wybiera lub odznacza. Wzmocnienie jest przyciskiem wewnątrz wybranej naszywki, bez osobnego przełącznika poziomów. Kliknięcie przypisanego perka lub × usuwa go. Poziom II ma złote wyróżnienie.
-- Nowe piktogramy naszywek lepiej odpowiadają treningowi, oszczędzaniu wysiłku, lotom, skoczniom i regularności.
+- Perki są opcjonalne; kliknięcie wybiera lub odznacza. Wzmocnienie jest przyciskiem wewnątrz wybranej naszywki, bez osobnego przełącznika poziomów. Kliknięcie przypisanego perka lub × usuwa go. Wzmocniony perk ma cały złoty przycisk, ciemny tekst, podwójną ramkę i ✦, również wśród przypisanych perków. Obsługa puszczenia przycisku pozwala szybko zaznaczać i odznaczać.
+- Sześć piktogramów wygenerowanych modelem graficznym AI: sztanga, regeneracja, skoczek w locie, mocne odbicie, metronom i kostka. Wspólny renderer używa tych samych symboli we wszystkich pięciu wariantach edytora i przy przypisanych perkach. Przezroczyste oryginały, pełne prompty i identyfikatory generacji są w repozytorium. Obrazy są skalowane i współdzielone między kontrolkami; złote oznaczenia poziomu pozostają częścią ramek.
 - Zdjęcie jest wskazywane ścieżką względną wobec folderu paczki, bez kopiowania przy przypisaniu. Brak obrazu nie blokuje profilu; plik pojawiający się później zostaje wykryty. Zdjęcia zachowują względne ścieżki przy imporcie i eksporcie. Zachowana zgodność starszych paczek.
 - Dyskretne +/− przy OVR i formie wspierają przytrzymanie. Usunięto rekurencyjne przeliczanie layoutu powodowane długimi ścieżkami i zmiennymi szerokościami pól.
 

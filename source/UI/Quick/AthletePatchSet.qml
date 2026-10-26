@@ -25,7 +25,7 @@ ColumnLayout {
             background: Rectangle { color: assigned.enhanced ? "#ffcd57" : assigned.hovered ? Theme.selection : "transparent"; radius: Theme.dp(5); border.width: assigned.enhanced || assigned.activeFocus ? 2 : 0; border.color: assigned.enhanced ? "#64400a" : Theme.accent }
             contentItem: RowLayout {
                 spacing: Theme.dp(6)
-                Image { source: "icons/athlete/patch-"+assigned.perk.key+"-"+Math.abs(assigned.value)+".svg"; sourceSize.width: 96; sourceSize.height: 96; Layout.preferredWidth: Theme.dp(30); Layout.preferredHeight: Theme.dp(33); Accessible.ignored: true }
+                AthletePerkArt { family: "patch"; perkKey: assigned.perk.key; tier: Math.abs(assigned.value); sourceSize.width: 96; sourceSize.height: 96; Layout.preferredWidth: Theme.dp(30); Layout.preferredHeight: Theme.dp(33); Accessible.ignored: true }
                 Label { text: assigned.enhanced ? qsTr("✦ %1").arg(assigned.perk.name) : assigned.perk.name; Layout.fillWidth: true; Layout.minimumWidth: 0; wrapMode: Text.WordWrap; color: assigned.enhanced ? "#30210c" : Theme.ink; font.pointSize: Theme.body }
                 Label { text: "×"; color: assigned.enhanced ? "#30210c" : Theme.muted; font.pointSize: Theme.section }
             }

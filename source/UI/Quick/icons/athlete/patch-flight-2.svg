@@ -3,5 +3,4 @@
 <path d="M17 6h62l8 10v49L48 92 9 65V16Z" fill="#20313b"/>
 <path d="M19 10h58l6 9v44L48 87 13 63V19Z" fill="url(#cloth)"/>
 <path d="M22 14h52l5 8v39L48 82 17 61V22Z" fill="none" stroke="#f1cf87" stroke-width="2" stroke-dasharray="2 2"/>
-<g transform="translate(27 22) scale(1.75)" fill="none" stroke="#f9fcf7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2"/><path d="m16 8-6 4-6-1m10-1-4-4-4 2m4 4 6 5m-6-5-5 3M2 19l19-3M4 22l18-2"/></g>
-<path d="m34 69 14 8 14-8m-28 6 14 8 14-8" fill="none" stroke="#f1cf87" stroke-width="3" stroke-linejoin="round"/></svg>
+<path d="m38 77 10 6 10-6m-20 5 10 6 10-6" fill="none" stroke="#f1cf87" stroke-width="3" stroke-linejoin="round"/></svg>

@@ -48,12 +48,12 @@ Item {
             width: Math.min(320,pick.Window.window ? pick.Window.window.width-24 : 280)
         }
     }
-    Image {
+    AthletePerkArt {
         id: art
         width: badge.artSize; height: width
         x: badge.ribbon ? Theme.dp(4) : (badge.width-width)/2
         y: 0
-        source: "icons/athlete/"+badge.family+"-"+badge.perk.key+"-"+badge.tier+".svg"
+        family: badge.family; perkKey: badge.perk.key; tier: badge.tier
         sourceSize.width: 192; sourceSize.height: 192
         scale: pick.down ? .9 : badge.chosen ? 1.06 : pick.hovered ? 1.02 : .95
         Behavior on scale { NumberAnimation { duration: Theme.motion; easing.type: Easing.OutBack } }

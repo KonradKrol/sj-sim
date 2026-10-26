@@ -30,7 +30,7 @@ GridLayout {
                 spacing: Theme.dp(7)
                 Item {
                     Layout.preferredWidth: Theme.dp(42); Layout.preferredHeight: Theme.dp(44)
-                    Image { visible: slot.value!==0; anchors.fill: parent; source: "icons/athlete/"+equipped.family+"-"+slot.perk.key+"-"+Math.abs(slot.value)+".svg"; sourceSize.width: 96; sourceSize.height: 96; Accessible.ignored: true }
+                    AthletePerkArt { visible: slot.value!==0; anchors.fill: parent; family: equipped.family; perkKey: slot.perk.key; tier: Math.abs(slot.value); sourceSize.width: 96; sourceSize.height: 96; Accessible.ignored: true }
                     Rectangle { visible: !slot.value; anchors.centerIn: parent; width: Theme.dp(28); height: width; radius: equipped.family==="coin" ? width/2 : 4; color: "transparent"; border.width: 1; border.color: equipped.design.line; Label { anchors.centerIn: parent; text: "+"; font.pointSize: Theme.section; color: equipped.design.muted } }
                 }
                 ColumnLayout {

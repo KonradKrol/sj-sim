@@ -3,5 +3,4 @@
 <path d="M17 6h62l8 10v49L48 92 9 65V16Z" fill="#20313b"/>
 <path d="M19 10h58l6 9v44L48 87 13 63V19Z" fill="url(#cloth)"/>
 <path d="M22 14h52l5 8v39L48 82 17 61V22Z" fill="none" stroke="#8b9fa9" stroke-width="2" stroke-dasharray="2 2"/>
-<g transform="translate(27 22) scale(1.75)" fill="none" stroke="#f9fcf7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M5 16V7m7 9V7m7 9V7M3 7h4m3 0h4m3 0h4"/></g>
 </svg>
