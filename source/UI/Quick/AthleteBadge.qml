@@ -38,7 +38,7 @@ Item {
             border.color: pick.activeFocus ? badge.design.accent : badge.chosen ? (badge.managedLevel ? Theme.accent : badge.perk.color) : badge.design.line
             Rectangle { visible: badge.ribbon && badge.chosen && !badge.managedLevel; anchors.right: parent.right; width: Theme.dp(5); height: parent.height; color: badge.tier===2 ? "#f1cf87" : "#ffffff" }
         }
-        onClicked: {suppressed=true;helpRequested=false;badge.backend.setPerk(badge.perk.pair,badge.perk.side,badge.chosen ? badge.tier : 1,true)}
+        onReleased: {suppressed=true;helpRequested=false;badge.backend.setPerk(badge.perk.pair,badge.perk.side,badge.chosen ? badge.tier : 1,true)}
         ToolTip {
             visible: pick.helpRequested || pick.hovered && !pick.suppressed && !pick.down
             delay: pick.helpRequested ? 0 : 700; timeout: 6000
@@ -81,7 +81,7 @@ Item {
         Accessible.name: badge.tier===1 ? qsTr("Wzmocnij %1 do poziomu II").arg(badge.perk.name) : qsTr("Zmień %1 na poziom I").arg(badge.perk.name)
         background: Rectangle { color: badge.tier===2 ? "#f1cf87" : "#eaf1f0"; radius: badge.managedLevel ? Theme.dp(4) : badge.ribbon ? 2 : height/2; border.width: level.activeFocus ? 3 : 1; border.color: level.activeFocus ? badge.design.accent : "#23363c" }
         contentItem: Label { id: levelLabel; text: badge.managedLevel ? (badge.tier===2 ? qsTr("Poziom II") : qsTr("Wzmocnij")) : badge.tier===2 ? "II" : "I ↑"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; color: "#293128"; font.family: Theme.mono; font.pointSize: Theme.caption; font.bold: true }
-        onClicked: badge.backend.setPerk(badge.perk.pair,badge.perk.side,badge.tier===1 ? 2 : 1,false)
+        onReleased: badge.backend.setPerk(badge.perk.pair,badge.perk.side,badge.tier===1 ? 2 : 1,false)
         ToolTip.visible: hovered && !down
         ToolTip.text: Accessible.name
         ToolTip.delay: 600
