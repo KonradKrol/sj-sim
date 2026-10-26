@@ -60,7 +60,7 @@ Instrukcja: [Playground symulacji](SIMULATION_PLAYGROUND.md). Pomiary i scenariu
 ## Uzupełnienie — nowy model i edytor skoczka (26.10.2026)
 
 - Osobny, przyszłościowy model skoczka: dane osobowe, opcjonalny rok urodzenia i zdjęcie, rekord w metrach, OVR, forma, pięć poziomów lądowania i trzy przeciwstawne pary perków z poziomami I/II.
-- Przełącznik „Klasyczny / Nowy edytor” w sekcji zawodników. Trzy odrębne widoki: Karta, Profil, Studio. Własne ikony perków, wyraźny poziom II, podgląd bez wymagania zdjęcia, obsługa klawiatury, obu motywów, małych ekranów i większego tekstu.
+- Przełącznik „Klasyczny / Nowy edytor” w sekcji zawodników. Pięć odrębnych koncepcji: Emblematy, Naszywki, Żetony, Karta i Postać. Dane osobowe na początku, nazwane opcje lądowania, kompaktowe perki bez opisowych kart. Wektorowe emblematy, naszywki i żetony mają stany zwykły/wybrany/II, a wybrane odznaki są przypisane do zawodnika. Opisy są w tooltipach i pomocy F1. Obsługa klawiatury, motywów, zdjęć i braku zdjęć, małych ekranów i większego tekstu.
 - Nowe paczki i atomowy zapis są odizolowane od obecnej bazy; Cofnij/Ponów obejmuje zmiany i usuwanie. Zdjęcia należą do paczki, a eksport i import przenoszą folder z manifestem oraz plikami.
 - Opcjonalne kopiowanie klasycznego skoczka z jawnym opisem przeliczenia OVR/formy i przybliżenia lądowania; perki zaczynają od zera. Oryginały pozostają nietknięte.
 - Ten etap nie zmienia symulacji, klasy Jumper ani dotychczasowych sezonów. Nowe profile i perki nie są jeszcze używane do rozgrywania konkursów.
