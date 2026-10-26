@@ -9,7 +9,9 @@ ColumnLayout {
     property bool form: false
     property bool compact: false
     readonly property int value: Number(backend.profile[form ? "form" : "overall"] || 70)
-    readonly property real numberSize: Theme.fontSize(form ? (compact ? 36 : 48) : (compact ? 68 : design.variant===0 ? 116 : design.variant===1 ? 100 : 86))
+    readonly property real numberSize: Theme.fontSize(form ? (compact ? 34 : 44) : (compact ? (design.variant===2 ? 42 : design.variant===3 ? 50 : 60) : design.variant===0 ? 100 : design.variant===2 ? 72 : 84))
+    readonly property TextMetrics numberMetrics: TextMetrics { font: number.font; text: "100" }
+
     spacing: Theme.dp(4)
     RowLayout {
         Layout.fillWidth: true; spacing: Theme.dp(10)
@@ -17,16 +19,23 @@ ColumnLayout {
         Item { Layout.fillWidth: true }
         Label { visible: !rating.compact; text: "/ 100"; color: rating.design.muted; font.family: Theme.mono; font.pointSize: Theme.caption }
     }
-    TextField {
+    readonly property int effectiveValue: number.activeFocus && number.acceptableInput ? Number(number.text) : value
+    function step(delta) {
+        backend.setValue(form?"form":"overall",Math.max(1,Math.min(100,effectiveValue+delta)))
+        number.text=Qt.binding(function(){return String(rating.value)})
+    }
+    RowLayout {
+        Layout.fillWidth: true; spacing: Theme.dp(3)
+        TextField {
         id: number
         objectName: rating.form ? "athleteForm" : "athleteOverall"
-        Layout.fillWidth: true
+        Layout.fillWidth: false; Layout.preferredWidth: Math.ceil(Math.max(rating.numberMetrics.advanceWidth,rating.numberMetrics.width))+Theme.dp(8); Layout.minimumWidth: Layout.preferredWidth
         implicitHeight: contentHeight+Theme.dp(2)
         topPadding: 0; bottomPadding: 0; leftPadding: 0; rightPadding: 0
         text: String(slider.pressed ? Math.round(slider.value) : rating.value)
         color: rating.form ? rating.design.ink : rating.design.accent
         font.family: rating.design.variant===2 ? Theme.mono : Theme.displayFamily
-        font.pointSize: Math.min(rating.numberSize,rating.width/(rating.design.variant===2 ? 2.6 : 2)); font.weight: Font.Black
+        font.pointSize: rating.numberSize; font.weight: Font.Black
         hoverEnabled: true
         selectByMouse: true; selectionColor: rating.design.accent; selectedTextColor: rating.design.accentInk
         inputMethodHints: Qt.ImhDigitsOnly
@@ -36,6 +45,34 @@ ColumnLayout {
         onActiveFocusChanged: if(!activeFocus && !acceptableInput)text=Qt.binding(function(){return String(rating.value)})
         onEditingFinished: {if(acceptableInput)rating.backend.setValue(rating.form?"form":"overall",Number(text));text=Qt.binding(function(){return String(rating.value)})}
     }
+        Column {
+            Layout.alignment: Qt.AlignVCenter
+            Layout.preferredWidth: Theme.dp(24)
+            spacing: Theme.dp(1)
+            SButton {
+                objectName: rating.form ? "athleteFormIncrease" : "athleteOverallIncrease"
+                width: Theme.dp(24); height: Math.max(Theme.dp(22),Theme.captionMetrics.height+2)
+                text: "+"; quiet: true; padding: 0; foreground: rating.design.muted; font.pointSize: Theme.caption
+                autoRepeat: true; autoRepeatDelay: 250; autoRepeatInterval: 45
+                enabled: rating.effectiveValue<100
+                Accessible.name: rating.form ? qsTr("Zwiększ formę") : qsTr("Zwiększ OVR")
+                hint: Accessible.name
+                onPressed: rating.step(1)
+            }
+            SButton {
+                objectName: rating.form ? "athleteFormDecrease" : "athleteOverallDecrease"
+                width: Theme.dp(24); height: Math.max(Theme.dp(22),Theme.captionMetrics.height+2)
+                text: "−"; quiet: true; padding: 0; foreground: rating.design.muted; font.pointSize: Theme.caption
+                autoRepeat: true; autoRepeatDelay: 250; autoRepeatInterval: 45
+                enabled: rating.effectiveValue>1
+                Accessible.name: rating.form ? qsTr("Zmniejsz formę") : qsTr("Zmniejsz OVR")
+                hint: Accessible.name
+                onPressed: rating.step(-1)
+            }
+        }
+        Item { Layout.fillWidth: true }
+    }
+
     Slider {
         id: slider
         objectName: rating.form ? "athleteFormSlider" : "athleteOverallSlider"

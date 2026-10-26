@@ -15,7 +15,7 @@ Control {
     contentItem: ColumnLayout {
         spacing: Theme.dp(10)
         Label { text: qsTr("Skopiuj z klasycznego modelu"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-        Label { text: qsTr("OVR: średnia wybicia i lotu. Forma jest przeskalowana, lądowanie przybliżone. Dane osobowe, zdjęcie i rekord są kopiowane. Perki dobierz od zera; pozostałe parametry i cechy nie przechodzą. Oryginał pozostaje bez zmian."); color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap; Layout.fillWidth: true }
+        Label { text: qsTr("OVR: średnia wybicia i lotu. Forma jest przeskalowana, lądowanie przybliżone. Dane osobowe, ścieżka zdjęcia i rekord są kopiowane. Perki dobierz od zera; pozostałe parametry i cechy nie przechodzą. Oryginał pozostaje bez zmian."); color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap; Layout.fillWidth: true }
         GridLayout {
             Layout.fillWidth: true; columns: width>Theme.dp(600) ? 2 : 1; columnSpacing: Theme.dp(10); rowSpacing: Theme.dp(8)
             SChoice { Layout.fillWidth: true; model: copy.backend.legacyPacks.map(function(p){return p.name}); currentIndex: copy.sourcePack; Accessible.name: qsTr("Paczka źródłowa"); onActivated: {copy.sourcePack=index;copy.sourceAthlete=0} }

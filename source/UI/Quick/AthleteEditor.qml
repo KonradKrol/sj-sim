@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.15
 ColumnLayout {
     id: editor
     property var backend
-    property int viewMode: 0
+    property int viewMode: 1
     spacing: Theme.dp(8)
     Flow {
         Layout.fillWidth: true; spacing: Theme.dp(5)

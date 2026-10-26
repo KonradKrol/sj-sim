@@ -5,7 +5,7 @@
 
 // A separate authoring model. Neither Jumper nor the simulation reads it.
 struct AthleteProfile {
-    QString id, name, surname, country="POL", portrait, sourceId;
+    QString id, name, surname, country="POL", portrait, photoPath, sourceId;
     int overall=70, form=70, landing=2, birthYear=0;
     double personalBest=0;
     // 0: none, +1/+2: first perk I/II, -1/-2: opposite perk I/II.

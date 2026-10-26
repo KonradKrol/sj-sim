@@ -41,13 +41,14 @@ ColumnLayout {
                 onClicked: tools.open()
                 ActionMenu {
                     id: tools; y: packTools.height
-                    entries: [{key:"copy",text:qsTr("Skopiuj ze starego modelu")},{key:"duplicate",text:qsTr("Duplikuj skoczka"),enabled:studio.backend.selectedIndex>=0},{key:"remove",text:qsTr("Usuń skoczka"),enabled:studio.backend.selectedIndex>=0},{key:"new",text:qsTr("Nowa paczka")},{key:"rename",text:qsTr("Zmień nazwę paczki")},{key:"import",text:qsTr("Importuj paczkę")},{key:"export",text:qsTr("Eksportuj ze zdjęciami")}]
+                    entries: [{key:"copy",text:qsTr("Skopiuj ze starego modelu")},{key:"duplicate",text:qsTr("Duplikuj skoczka"),enabled:studio.backend.selectedIndex>=0},{key:"remove",text:qsTr("Usuń skoczka"),enabled:studio.backend.selectedIndex>=0},{key:"new",text:qsTr("Nowa paczka")},{key:"rename",text:qsTr("Zmień nazwę paczki")},{key:"folder",text:qsTr("Otwórz folder paczki")},{key:"import",text:qsTr("Importuj paczkę")},{key:"export",text:qsTr("Eksportuj paczkę")}]
                     onSelected: {
                         if(entry.key==="copy")studio.copying=!studio.copying
                         else if(entry.key==="duplicate")studio.backend.duplicate()
                         else if(entry.key==="remove")studio.backend.remove()
                         else if(entry.key==="new")studio.backend.createPack()
                         else if(entry.key==="rename")studio.renaming=!studio.renaming
+                        else if(entry.key==="folder")studio.backend.openPackFolder()
                         else if(entry.key==="import")studio.backend.importPack()
                         else if(entry.key==="export")studio.backend.exportPack()
                     }

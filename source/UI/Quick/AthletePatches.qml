@@ -7,9 +7,9 @@ Control {
     objectName: "athleteConceptPatches"
     property var backend
     AthleteDesign { id: design; variant: 1 }
-    padding: Theme.dp(26)
+    padding: Theme.dp(18)
     implicitHeight: contentItem.implicitHeight+topPadding+bottomPadding
-    background: Rectangle { color: design.paper; Rectangle { anchors.top: parent.top; anchors.topMargin: Theme.dp(8); width: parent.width; height: Theme.dp(4); color: design.ink } Rectangle { anchors.bottom: parent.bottom; anchors.bottomMargin: Theme.dp(8); width: parent.width; height: 1; color: design.ink } }
+    background: Rectangle { color: Theme.background }
     contentItem: ColumnLayout {
         spacing: Theme.dp(18)
         RowLayout {
@@ -28,12 +28,12 @@ Control {
                     AthleteRating { backend: screen.backend; design: design; compact: true; Layout.fillWidth: true; Layout.preferredWidth: Theme.dp(170) }
                     AthleteRating { backend: screen.backend; design: design; form: true; compact: true; Layout.fillWidth: true; Layout.preferredWidth: Theme.dp(140); Layout.alignment: Qt.AlignBottom }
                 }
-                Rectangle { Layout.fillWidth: true; height: Theme.dp(3); color: design.ink }
-                Image { visible: !!screen.backend.profile.photo; source: screen.backend.profile.photo || ""; sourceSize.width: 480; sourceSize.height: 500; Layout.fillWidth: true; Layout.preferredHeight: Theme.dp(120); fillMode: Image.PreserveAspectFit; asynchronous: true; Accessible.name: qsTr("Zdjęcie skoczka") }
+                Rectangle { Layout.fillWidth: true; height: 1; color: Theme.divider }
+                Image { visible: !!screen.backend.profile.photo; source: screen.backend.profile.photo || ""; sourceSize.width: 480; sourceSize.height: 500; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: 0; Layout.preferredHeight: Theme.dp(120); fillMode: Image.PreserveAspectFit; asynchronous: true; Accessible.name: qsTr("Zdjęcie skoczka") }
                 AthleteLanding { backend: screen.backend; design: design; Layout.fillWidth: true }
-                AthleteEquipped { backend: screen.backend; design: design; family: "patch"; vertical: true; Layout.fillWidth: true }
+                AthletePatchSet { backend: screen.backend; Layout.fillWidth: true }
             }
-            AthleteBadgeRack { backend: screen.backend; design: design; family: "patch"; ribbons: true; vertical: true; Layout.fillWidth: true; Layout.preferredWidth: Theme.dp(680); Layout.minimumWidth: 0; Layout.alignment: Qt.AlignTop }
+            AthletePatchRack { backend: screen.backend; design: design; Layout.fillWidth: true; Layout.preferredWidth: Theme.dp(680); Layout.minimumWidth: 0; Layout.alignment: Qt.AlignTop }
         }
     }
 }

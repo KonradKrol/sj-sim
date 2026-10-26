@@ -14,12 +14,13 @@ class AthleteStudioController : public QObject {
     Q_PROPERTY(QVariantList countries READ countries CONSTANT)
     Q_PROPERTY(QVariantList legacyPacks READ legacyPacks CONSTANT)
     Q_PROPERTY(QString packName READ packName NOTIFY changed)
+    Q_PROPERTY(QString packDirectory READ packDirectory NOTIFY changed)
     Q_PROPERTY(int packIndex READ packIndex NOTIFY changed)
     Q_PROPERTY(int selectedIndex READ selectedIndex NOTIFY changed)
     Q_PROPERTY(QString message READ message NOTIFY changed)
     Q_PROPERTY(bool canUndo READ canUndo NOTIFY changed)
     Q_PROPERTY(bool canRedo READ canRedo NOTIFY changed)
-    QString m_root,m_message;
+    QString m_root,m_message,m_lastPhoto;
     QVector<QJsonObject> m_packs;
     QVector<QJsonObject> m_undo,m_redo;
     int m_pack=0,m_selected=-1;
@@ -29,7 +30,7 @@ class AthleteStudioController : public QObject {
     void status(const QString &message);
     QJsonObject currentPack() const;
     bool readPack(const QString &file,QJsonObject &pack,QString &error) const;
-    bool copyPortrait(const QString &file,QString &relative);
+    QString resolvedPhotoPath() const;
 public:
     explicit AthleteStudioController(QObject *parent=nullptr,const QString &root={});
     QVariantList packs() const;
@@ -39,6 +40,8 @@ public:
     QVariantList legacyPacks() const;
     Q_INVOKABLE QVariantList legacyAthletes(int pack) const;
     QString packName() const;
+    QString packDirectory() const{return directory(currentPack());}
+    Q_INVOKABLE void openPackFolder();
     int packIndex() const{return m_pack;}
     int selectedIndex() const{return m_selected;}
     QString message() const{return m_message;}

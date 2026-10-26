@@ -20,7 +20,7 @@ Control {
                 Layout.fillWidth: true; Layout.preferredWidth: Theme.dp(210); Layout.maximumWidth: parent.columns===2 ? Theme.dp(260) : Infinity; Layout.alignment: Qt.AlignTop; spacing: Theme.dp(14)
                 AthleteRating { backend: screen.backend; design: design; Layout.fillWidth: true }
                 AthleteRating { backend: screen.backend; design: design; form: true; compact: true; Layout.fillWidth: true }
-                Image { visible: !!screen.backend.profile.photo; source: screen.backend.profile.photo || ""; sourceSize.width: 480; sourceSize.height: 500; Layout.fillWidth: true; Layout.preferredHeight: Theme.dp(120); fillMode: Image.PreserveAspectFit; asynchronous: true; Accessible.name: qsTr("Zdjęcie skoczka") }
+                Image { visible: !!screen.backend.profile.photo; source: screen.backend.profile.photo || ""; sourceSize.width: 480; sourceSize.height: 500; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: 0; Layout.preferredHeight: Theme.dp(120); fillMode: Image.PreserveAspectFit; asynchronous: true; Accessible.name: qsTr("Zdjęcie skoczka") }
                 AthleteInsignia { backend: screen.backend; Layout.fillWidth: true; badgeSize: Theme.dp(52) }
             }
             ColumnLayout {

@@ -30,7 +30,7 @@ GridLayout {
             optionImages: identity.countryOptions.map(function(c){return c.flag})
             currentIndex: {for(var i=0;i<identity.countryOptions.length;i++)if(identity.countryOptions[i].code===identity.profile.country)return i;return -1}
             Accessible.name: qsTr("Kraj")
-            background: Rectangle { color: identity.design.variant===1 ? "transparent" : identity.design.surface; radius: identity.design.variant===2 ? Theme.dp(18) : 0; border.width: identity.design.variant===1 ? 0 : country.activeFocus ? 2 : 1; border.color: country.activeFocus ? identity.design.accent : identity.design.line; Rectangle { visible: identity.design.variant===1; anchors.bottom: parent.bottom; width: parent.width; height: 1; color: identity.design.line } }
+            background: Rectangle { color: identity.design.surface; radius: identity.design.variant===2 ? Theme.dp(18) : identity.design.variant===1 ? Theme.dp(6) : 0; border.width: country.activeFocus ? 2 : 1; border.color: country.activeFocus ? identity.design.accent : identity.design.line; Rectangle { visible: false; anchors.bottom: parent.bottom; width: parent.width; height: 1; color: identity.design.line } }
             contentItem: RowLayout {
                 spacing: Theme.dp(7)
                 Image { source: identity.profile.flag || ""; Layout.preferredWidth: Theme.dp(25); Layout.preferredHeight: Theme.dp(17); sourceSize.width: 50; sourceSize.height: 34; fillMode: Image.PreserveAspectFit; Accessible.ignored: true }
@@ -63,25 +63,55 @@ GridLayout {
             }
         }
     }
-    Flow {
-        Layout.fillWidth: true; Layout.columnSpan: identity.columns===3 ? 2 : 1
-        spacing: Theme.dp(8)
-        AbstractButton {
-            id: photo
-            implicitWidth: label.implicitWidth+Theme.dp(4); implicitHeight: Math.max(Theme.dp(35),label.implicitHeight+Theme.dp(8))
-            contentItem: Label { id: label; text: identity.profile.photo ? qsTr("Zmień zdjęcie") : qsTr("+ Zdjęcie"); color: identity.design.accent; font.pointSize: Theme.body; verticalAlignment: Text.AlignVCenter }
-            Accessible.name: identity.profile.photo ? qsTr("Zmień zdjęcie") : qsTr("Dodaj zdjęcie")
-            background: Rectangle { color: "transparent"; border.width: photo.activeFocus ? 2 : 0; border.color: identity.design.accent }
-            onClicked: identity.backend.choosePhoto()
+    ColumnLayout {
+        Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.columnSpan: identity.columns===3 ? 2 : 1
+        spacing: Theme.dp(3)
+        Label { text: qsTr("Zdjęcie · plik w paczce"); color: identity.design.muted; font.family: identity.design.detailFont; font.pointSize: Theme.caption }
+        GridLayout {
+            Layout.fillWidth: true; columns: width<Theme.dp(420) ? 1 : 2; columnSpacing: Theme.dp(5); rowSpacing: Theme.dp(3)
+            AthleteText {
+                objectName: "athletePhotoPath"
+                design: identity.design; Layout.fillWidth: true; Layout.minimumWidth: 0
+                id: photoPath
+                property bool dirty: false
+                readonly property string sourcePath: identity.profile.photoPath || ""
+                text: ""; maximumLength: 4096
+                Component.onCompleted: text=sourcePath
+                onSourcePathChanged: if(!dirty)text=sourcePath
+                onTextEdited: dirty=true
+                placeholderText: "zdjecia/skoczek.jpg"
+                Accessible.name: qsTr("Ścieżka zdjęcia")
+                onEditingFinished: {identity.backend.setValue("photoPath",text);dirty=false;text=sourcePath}
+            }
+            RowLayout {
+                Layout.alignment: Qt.AlignRight; spacing: Theme.dp(4)
+            AbstractButton {
+                id: browse
+                implicitWidth: browseText.implicitWidth+Theme.dp(12); implicitHeight: Math.max(Theme.dp(35),browseText.implicitHeight+Theme.dp(8))
+                contentItem: Label { id: browseText; text: qsTr("Wybierz…"); color: identity.design.accent; font.pointSize: Theme.body; verticalAlignment: Text.AlignVCenter }
+                Accessible.name: qsTr("Wskaż plik zdjęcia")
+                background: Rectangle { color: "transparent"; border.width: browse.activeFocus ? 2 : 0; border.color: identity.design.accent; radius: Theme.dp(4) }
+                onClicked: identity.backend.choosePhoto()
+            }
+            AbstractButton {
+                id: folder
+                implicitWidth: folderText.implicitWidth+Theme.dp(12); implicitHeight: Math.max(Theme.dp(35),folderText.implicitHeight+Theme.dp(8))
+                contentItem: Label { id: folderText; text: qsTr("Folder"); color: identity.design.accent; font.pointSize: Theme.body; verticalAlignment: Text.AlignVCenter }
+                Accessible.name: qsTr("Otwórz folder paczki")
+                background: Rectangle { color: "transparent"; border.width: folder.activeFocus ? 2 : 0; border.color: identity.design.accent; radius: Theme.dp(4) }
+                onClicked: identity.backend.openPackFolder()
+            }
+            AbstractButton {
+                id: clear
+                visible: !!identity.profile.photoPath
+                implicitWidth: Theme.dp(28); implicitHeight: Theme.dp(35)
+                contentItem: Label { text: "×"; font.pointSize: Theme.section; color: identity.design.muted; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
+                Accessible.name: qsTr("Usuń ścieżkę zdjęcia")
+                background: Rectangle { color: "transparent"; border.width: clear.activeFocus ? 2 : 0; border.color: identity.design.accent }
+                onClicked: identity.backend.clearPhoto()
+            }
+            }
         }
-        AbstractButton {
-            id: remove
-            visible: !!identity.profile.photo
-            implicitWidth: Theme.dp(35); implicitHeight: implicitWidth
-            contentItem: Label { text: "×"; font.pointSize: Theme.section; color: identity.design.muted; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-            Accessible.name: qsTr("Usuń zdjęcie")
-            background: Rectangle { color: "transparent"; border.width: remove.activeFocus ? 2 : 0; border.color: identity.design.accent }
-            onClicked: identity.backend.clearPhoto()
-        }
+        Label { visible: !!identity.profile.photoPath && !identity.profile.photoAvailable; text: qsTr("Nie znaleziono pliku"); color: identity.design.muted; font.pointSize: Theme.caption }
     }
 }

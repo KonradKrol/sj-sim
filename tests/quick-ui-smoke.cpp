@@ -119,7 +119,7 @@
 static std::atomic<int> recursiveLayoutWarnings{0};
 static QtMessageHandler originalMessageHandler=nullptr;
 static void observeLayoutWarnings(QtMsgType type,const QMessageLogContext &context,const QString &message) {
-    if(message.contains("Detected recursive rearrange"))++recursiveLayoutWarnings;
+    if(message.contains("Detected recursive rearrange")){++recursiveLayoutWarnings;std::fprintf(stderr,"LAYOUT STAGE: %s\n",qPrintable(qApp->property("athleteTestStage").toString()));}
     if(originalMessageHandler)originalMessageHandler(type,context,message);
     else std::fprintf(stderr,"%s\n",qPrintable(qFormatLogMessage(type,context,message)));
 }
@@ -2485,7 +2485,7 @@ int main(int argc,char **argv) {
     MainWindow main; applicationWindow=&main; main.setParentApplication(&app); new QuickUi(&main);
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="2.0.0-beta","one release version is shared with the interface");
-    if(app.arguments().contains("--athlete-studio-only")){athleteStudioRegressions(main);return 0;}
+    if(app.arguments().contains("--athlete-studio-only") || app.arguments().contains("--athlete-patches-only")){athleteStudioRegressions(main,app.arguments().contains("--athlete-patches-only"));return 0;}
     if(app.arguments().contains("--playground-only")){playgroundRandomRegressions();playgroundBackendRegressions();playgroundUiRegressions(main);return 0;}
     if(app.arguments().contains("--playground-core-only")){playgroundRandomRegressions();playgroundBackendRegressions();return 0;}
     if(app.arguments().contains("--save-storage-only")){saveStorageRegressions();return 0;}

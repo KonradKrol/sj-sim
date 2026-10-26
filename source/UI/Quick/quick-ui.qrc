@@ -12,6 +12,8 @@
 <file>AthleteLanding.qml</file>
 <file>AthleteMedals.qml</file>
 <file>AthletePatches.qml</file>
+<file>AthletePatchRack.qml</file>
+<file>AthletePatchSet.qml</file>
 <file>AthletePerkCatalog.qml</file>
 <file>AthleteRating.qml</file>
 <file>AthleteStudio.qml</file>

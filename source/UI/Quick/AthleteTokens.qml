@@ -25,7 +25,7 @@ Control {
                     AthleteRating { backend: screen.backend; design: design; form: true; compact: true; Layout.fillWidth: true }
                 }
                 AthleteLanding { backend: screen.backend; design: design; Layout.fillWidth: true }
-                Image { visible: !!screen.backend.profile.photo; source: screen.backend.profile.photo || ""; sourceSize.width: 480; sourceSize.height: 480; Layout.fillWidth: true; Layout.preferredHeight: Theme.dp(120); fillMode: Image.PreserveAspectFit; asynchronous: true; Accessible.name: qsTr("Zdjęcie skoczka") }
+                Image { visible: !!screen.backend.profile.photo; source: screen.backend.profile.photo || ""; sourceSize.width: 480; sourceSize.height: 480; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: 0; Layout.preferredHeight: Theme.dp(120); fillMode: Image.PreserveAspectFit; asynchronous: true; Accessible.name: qsTr("Zdjęcie skoczka") }
             }
             AthleteBadgeRack { backend: screen.backend; design: design; family: "coin"; Layout.fillWidth: true; Layout.preferredWidth: Theme.dp(700); Layout.alignment: Qt.AlignTop; Layout.minimumWidth: 0 }
         }
