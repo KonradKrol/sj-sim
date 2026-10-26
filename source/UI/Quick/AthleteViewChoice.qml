@@ -6,17 +6,21 @@ AbstractButton {
     id: choice
     property int view: 0
     property bool selected: false
-    text: [qsTr("Karta"),qsTr("Profil"),qsTr("Studio")][view]
-    implicitWidth: Math.max(Theme.dp(110),contentItem.implicitWidth+leftPadding+rightPadding); implicitHeight: Math.max(Theme.dp(43),contentItem.implicitHeight+topPadding+bottomPadding); padding: Theme.dp(7)
+    readonly property var accents: ["#d5f575","#a34429","#49a387","#f2cf8b","#bba4fb"]
+    text: [qsTr("Emblematy"),qsTr("Naszywki"),qsTr("Żetony"),qsTr("Karta"),qsTr("Postać")][view]
+    implicitWidth: contentItem.implicitWidth+leftPadding+rightPadding
+    implicitHeight: Math.max(Theme.dp(44),contentItem.implicitHeight+topPadding+bottomPadding)
+    padding: Theme.dp(8)
     Accessible.name: qsTr("Widok: %1").arg(text); Accessible.role: Accessible.RadioButton; Accessible.checked: selected
-    background: Rectangle { color: choice.selected ? Theme.stadium : choice.hovered ? Theme.selection : Theme.surface; radius: Theme.dp(6); border.width: choice.selected || choice.activeFocus ? 2 : 1; border.color: choice.selected ? Theme.accent : Theme.divider }
+    background: Rectangle { color: choice.selected ? Theme.stadium : choice.hovered ? Theme.selection : Theme.surface; radius: Theme.dp(4); border.width: choice.activeFocus || choice.selected ? 2 : 1; border.color: choice.activeFocus ? Theme.accent : choice.selected ? choice.accents[choice.view] : Theme.divider }
     contentItem: RowLayout {
         spacing: Theme.dp(7)
         Item {
-            Layout.preferredWidth: Theme.dp(24); Layout.preferredHeight: Theme.dp(23)
-            Rectangle { x: 0; y: 0; width: choice.view===0 ? parent.width*.4 : parent.width; height: choice.view===0 ? parent.height : choice.view===1 ? parent.height*.3 : parent.height*.42; radius: 2; color: choice.selected ? Theme.signal : Theme.accent }
-            Rectangle { x: choice.view===0 ? parent.width*.53 : 0; y: choice.view===0 ? 0 : choice.view===1 ? parent.height*.44 : parent.height*.56; width: choice.view===0 ? parent.width*.47 : choice.view===2 ? parent.width*.45 : parent.width; height: choice.view===0 ? parent.height*.45 : choice.view===1 ? parent.height*.56 : parent.height*.44; radius: 2; color: choice.selected ? Theme.snow : Theme.outline }
-            Rectangle { visible: choice.view!==1; x: parent.width*.55; y: parent.height*.57; width: parent.width*.45; height: parent.height*.43; radius: 2; color: choice.selected ? Theme.headerMuted : Theme.divider }
+            Layout.preferredWidth: Theme.dp(23); Layout.preferredHeight: Theme.dp(26)
+            Rectangle { anchors.fill: parent; color: ["#111d25","#f1ebdb","#e5f0e9","#243b60","#ebeaf7"][choice.view]; radius: choice.view===2 ? 8 : 1; border.width: 1; border.color: choice.accents[choice.view] }
+            Rectangle { x: Theme.dp(4); y: Theme.dp(4); width: choice.view===3 ? Theme.dp(6) : Theme.dp(15); height: choice.view===4 ? Theme.dp(14) : Theme.dp(5); radius: choice.view===4 ? width/2 : 1; color: choice.accents[choice.view] }
+            Rectangle { x: Theme.dp(4); y: Theme.dp(17); width: Theme.dp(6); height: Theme.dp(5); radius: choice.view===2 ? 3 : 0; color: choice.accents[choice.view] }
+            Rectangle { x: Theme.dp(13); y: Theme.dp(17); width: Theme.dp(6); height: Theme.dp(5); radius: choice.view===2 ? 3 : 0; color: choice.accents[choice.view] }
         }
         Label { text: choice.text; font.family: Theme.displayFamily; font.pointSize: Theme.section; color: choice.selected ? Theme.snow : Theme.ink }
     }

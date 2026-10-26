@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 240" fill="none">
+<defs><linearGradient id="suit" x2=".8" y2="1"><stop stop-color="#c9b9f0"/><stop offset="1" stop-color="#66528f"/></linearGradient></defs>
+<path d="M26 228 37 9q1-5 5-4t4 5l-8 218m100 0L128 10q0-5 5-5t5 5l12 218" stroke="#7c6aa6" stroke-width="6" stroke-linecap="round"/>
+<path d="M65 90q-19 5-22 23l-7 46 13 3 14-39-1 58-8 48h24l12-51 12 51h24l-9-48-1-58 14 39 13-3-7-46q-3-18-22-23Z" fill="url(#suit)" stroke="#4b416a" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="m64 122 26 12 26-12M90 134v43m-25-19 25 10 26-10" stroke="#4d4269" stroke-width="3"/>
+<path d="m51 217 28 1v13H47q-4-7 4-14m51 1 28-1q8 7 4 14h-32Z" fill="#48405c"/>
+<path d="M73 83v10l17 11 17-11V83" fill="#9d8ec4" stroke="#4b416a" stroke-width="2"/>
+<path d="M65 60q0-31 25-31t25 31v10q-3 20-25 22-22-2-25-22Z" fill="#d8cdea" stroke="#4b416a" stroke-width="2.5"/>
+<path d="M63 59q1-34 27-34t27 34l-9 1-8-12H80l-8 12Z" fill="#74639c" stroke="#4b416a" stroke-width="2.5"/>
+<path d="m66 60 24-5 24 5-5 17H71Z" fill="#433c60" stroke="#bba8de" stroke-width="3"/>
+<path d="m75 62 15-3 11 2-18 12h-9Z" fill="#9ca4d6"/>
+<path d="M67 99h46v21H67Z" fill="#eee9f6"/>
+<path d="m69 102 5 15m5-15 5 15m13-15 5 15m5-15 5 15" stroke="#b9aed0" stroke-width="2"/>
+<path d="m39 153-4 13q3 8 10 4l5-13m90-4 5 13q-3 8-10 4l-5-13" fill="#48405c"/>
+</svg>

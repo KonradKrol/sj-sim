@@ -5,15 +5,12 @@ import QtQuick.Layouts 1.15
 ColumnLayout {
     id: landing
     property var backend
+    property var design
     readonly property var names: [qsTr("Niechlujne"),qsTr("Niestaranne"),qsTr("Poprawne"),qsTr("Eleganckie"),qsTr("Stylista")]
-    spacing: Theme.dp(7)
-    RowLayout {
-        Label { text: qsTr("Lądowanie"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section }
-        Item { Layout.fillWidth: true }
-        Label { text: landing.names[landing.backend.profile.landing || 0]; color: Theme.muted; font.pointSize: Theme.caption }
-    }
-    GridLayout {
-        Layout.fillWidth: true; columns: landing.width<Theme.dp(330) ? 3 : 5; columnSpacing: Theme.dp(5); rowSpacing: Theme.dp(5)
+    spacing: Theme.dp(6)
+    Label { text: qsTr("Lądowanie"); color: landing.design.muted; font.family: landing.design.detailFont; font.pointSize: Theme.caption }
+    Flow {
+        Layout.fillWidth: true; spacing: Theme.dp(5)
         Repeater {
             model: landing.names
             AbstractButton {
@@ -21,18 +18,17 @@ ColumnLayout {
                 required property int index
                 required property string modelData
                 objectName: "athleteLanding-"+index
-                Layout.fillWidth: true; implicitHeight: contentItem.implicitHeight+Theme.dp(18); padding: Theme.dp(8)
                 checked: landing.backend.profile.landing===index
+                implicitWidth: text.implicitWidth+Theme.dp(22); implicitHeight: Math.max(Theme.dp(34),text.implicitHeight+Theme.dp(12))
+                padding: Theme.dp(7)
                 Accessible.name: modelData; Accessible.role: Accessible.RadioButton; Accessible.checked: checked
-                background: Rectangle { color: choice.checked ? Theme.stadium : choice.hovered ? Theme.selection : Theme.surface; radius: Theme.dp(7); border.width: choice.activeFocus || choice.checked ? 2 : 1; border.color: choice.checked ? Theme.accent : Theme.divider }
-                contentItem: ColumnLayout {
-                    spacing: Theme.dp(6)
-                    Row {
-                        Layout.alignment: Qt.AlignHCenter; spacing: Theme.dp(2)
-                        Repeater { model: 5; Rectangle { required property int index; width: Theme.dp(5); height: Theme.dp(5+index*2); radius: 1; color: index<=choice.index ? (choice.checked ? Theme.signal : Theme.accent) : (choice.checked ? "#456071" : Theme.divider) } }
-                    }
-                    Label { Layout.fillWidth: true; text: choice.modelData; horizontalAlignment: Text.AlignHCenter; wrapMode: Text.WordWrap; color: choice.checked ? Theme.snow : Theme.ink; font.pointSize: Theme.caption }
+                background: Rectangle {
+                    color: choice.checked ? landing.design.accent : choice.hovered ? landing.design.surface : "transparent"
+                    radius: landing.design.variant===2 || landing.design.variant===4 ? height/2 : landing.design.variant===1 ? 0 : Theme.dp(3)
+                    border.width: choice.activeFocus ? 2 : choice.checked || landing.design.variant!==1 ? 1 : 0
+                    border.color: choice.checked || choice.activeFocus ? landing.design.accent : landing.design.line
                 }
+                contentItem: Label { id: text; text: choice.modelData; color: choice.checked ? landing.design.accentInk : landing.design.ink; font.pointSize: Theme.body; font.family: landing.design.variant===1 ? Theme.bodyFamily : landing.design.headingFont; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
                 onClicked: landing.backend.setValue("landing",index)
             }
         }
