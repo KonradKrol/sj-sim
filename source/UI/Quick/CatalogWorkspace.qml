@@ -10,31 +10,50 @@ ColumnLayout {
     readonly property var list: fields.list ? fields.list.values : ({})
     readonly property bool parallel: width>=850
     property bool editing: false
+    property bool modern: false
+    readonly property bool hasStudio: !!fields.athleteStudio
+    readonly property bool studioActive: hasStudio && modern
     readonly property int editRequest: fields.editRequest || 0
     onEditRequestChanged: if(editRequest>0)editing=true
     onEditorChanged: if(editor)editing=true
     spacing: Theme.compact ? 4 : 8
+    RowLayout {
+        visible: catalog.hasStudio
+        Layout.fillWidth: true
+        SButton { objectName: "athleteClassicMode"; text: qsTr("Klasyczny"); quiet: !catalog.modern; onClicked: catalog.modern=false }
+        SButton { objectName: "athleteNewMode"; text: qsTr("Nowy edytor"); primary: catalog.modern; onClicked: catalog.modern=true }
+        Item { Layout.fillWidth: true }
+        Label { visible: catalog.modern && catalog.width>600; text: qsTr("Osobny zapis · bez zmian w grze"); color: Theme.muted; font.pointSize: Theme.caption }
+    }
     Loader {
-        active: ui.profile === "DatabaseEditorWindow"
+        visible: active
+        active: catalog.studioActive
+        Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; Layout.minimumWidth: 0
+        sourceComponent: Component { AthleteStudio { backend: catalog.fields.athleteStudio } }
+    }
+    Loader {
+        visible: active
+        active: !catalog.studioActive && ui.profile === "DatabaseEditorWindow"
         Layout.fillWidth: true
         sourceComponent: Component { DataPackBar {} }
     }
-    Node { node: catalog.fields.toolbar || null; Layout.alignment: Qt.AlignRight; Layout.maximumWidth: catalog.editor || ui.profile!=="SimulationSavesWindow" ? 280 : 600; Layout.fillWidth: true }
+    Node { visible: !catalog.studioActive; node: catalog.fields.toolbar || null; Layout.alignment: Qt.AlignRight; Layout.maximumWidth: catalog.editor || ui.profile!=="SimulationSavesWindow" ? 280 : 600; Layout.fillWidth: true }
     RowLayout {
-        visible: !!catalog.fields.actionsRow && catalog.fields.actionsRow.length>0
+        visible: !catalog.studioActive && !!catalog.fields.actionsRow && catalog.fields.actionsRow.length>0
         Layout.fillWidth: true
         Layout.maximumWidth: 600
         Layout.alignment: Qt.AlignRight
         Repeater { model: catalog.fields.actionsRow || []; Node { node: modelData; Layout.fillWidth: true; Layout.minimumWidth: 0 } }
     }
     SectionTabs {
-        visible: !catalog.parallel && !!catalog.editor
+        visible: !catalog.studioActive && !catalog.parallel && !!catalog.editor
         Layout.fillWidth: true
         options: [qsTr("Lista"),qsTr("Edycja")]
         currentIndex: catalog.editing ? 1 : 0
         onSelected: catalog.editing=index===1
     }
     RowLayout {
+        visible: !catalog.studioActive
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
         spacing: Theme.compact ? 8 : 20
         DataTable {

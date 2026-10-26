@@ -1,4 +1,22 @@
 <RCC><qresource prefix="/ui">
+<file>AthleteCard.qml</file>
+<file>AthleteCopy.qml</file>
+<file>AthleteEditor.qml</file>
+<file>AthleteIdentity.qml</file>
+<file>AthleteLanding.qml</file>
+<file>AthletePerkCard.qml</file>
+<file>AthletePerks.qml</file>
+<file>AthletePortrait.qml</file>
+<file>AthleteRating.qml</file>
+<file>AthleteStudio.qml</file>
+<file>AthleteViewChoice.qml</file>
+<file>icons/athlete/flight.svg</file>
+<file>icons/athlete/reserve.svg</file>
+<file>icons/athlete/small.svg</file>
+<file>icons/athlete/steady.svg</file>
+<file>icons/athlete/terrain.svg</file>
+<file>icons/athlete/training.svg</file>
+<file>icons/athlete/volatile.svg</file>
 <file>ActionBar.qml</file>
 <file>ActionMenu.qml</file>
 <file>CalendarWorkspace.qml</file>

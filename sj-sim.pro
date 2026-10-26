@@ -17,6 +17,8 @@ UI_DIR = .ui
 win32: DEFINES += NOMINMAX
 
 SOURCES += \
+    source/athletes/AthleteProfile.cpp \
+    source/athletes/AthleteStudioController.cpp \
     source/simulator/ExperimentalSimulation.cpp \
     source/playground/PlaygroundConfig.cpp \
     source/playground/PlaygroundController.cpp \
@@ -169,6 +171,8 @@ SOURCES += \
     source/utilities/functions.cpp
 
 HEADERS += \
+    source/athletes/AthleteProfile.h \
+    source/athletes/AthleteStudioController.h \
     source/simulator/ExperimentalSimulation.h \
     source/playground/PlaygroundExperiment.h \
     source/playground/PlaygroundController.h \

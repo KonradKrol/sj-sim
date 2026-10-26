@@ -2453,6 +2453,7 @@ static void interactionRegressions(MainWindow &main) {
 #include "engine-audit-regressions.h"
 #include "roster-translation-regressions.h"
 #include "playground-regressions.h"
+#include "athlete-studio-regressions.h"
 
 int main(int argc,char **argv) {
     QApplication app(argc,argv);
@@ -2484,6 +2485,7 @@ int main(int argc,char **argv) {
     MainWindow main; applicationWindow=&main; main.setParentApplication(&app); new QuickUi(&main);
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="2.0.0-beta","one release version is shared with the interface");
+    if(app.arguments().contains("--athlete-studio-only")){athleteStudioRegressions(main);return 0;}
     if(app.arguments().contains("--playground-only")){playgroundRandomRegressions();playgroundBackendRegressions();playgroundUiRegressions(main);return 0;}
     if(app.arguments().contains("--playground-core-only")){playgroundRandomRegressions();playgroundBackendRegressions();return 0;}
     if(app.arguments().contains("--save-storage-only")){saveStorageRegressions();return 0;}

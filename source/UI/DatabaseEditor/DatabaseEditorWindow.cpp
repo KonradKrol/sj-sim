@@ -1,4 +1,5 @@
 #include "DatabaseEditorWindow.h"
+#include "../../athletes/AthleteStudioController.h"
 #include "ui_DatabaseEditorWindow.h"
 
 #include "../../global/GlobalDatabase.h"
@@ -52,6 +53,7 @@ DatabaseEditorWindow::DatabaseEditorWindow(QWidget *parent) :
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     ui->tabWidget_main->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
+    setProperty("athleteStudio",QVariant::fromValue(static_cast<QObject *>(new AthleteStudioController(this))));
     originalPacks = GlobalDatabase::get()->packsSnapshot();
     tempGlobalJumpers = GlobalDatabase::get()->getGlobalJumpers();
     tempGlobalHills = GlobalDatabase::get()->getGlobalHills();
