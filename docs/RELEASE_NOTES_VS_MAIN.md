@@ -7,7 +7,7 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
 - Stan porównania kodu i dokumentacji: **b84cd12**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
-- Data zestawienia: **25 października 2026**.
+- Data zestawienia: **26 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **2.0.0-beta**, ustawione na wyraźne polecenie użytkownika po zakończeniu audytu silnika.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
 - Starsze raporty opisują kolejne etapy prac. W razie rozbieżności stan końcowy opisany tutaj ma pierwszeństwo. Szczególnie istotne korekty są zebrane w sekcji „Rozwiązania zastąpione podczas prac”.
@@ -56,6 +56,16 @@ Szczegóły: [kolejność symulacji i mniejsze pliki](SIMULATION_ORDER_AND_SAVE_
 - Testy normalnej aplikacji, izolacji, powtarzalności, wielu wątków, źródłowych danych, KO/drużyn, interfejsu, eksportu, odtworzeń i sygnałowego anulowania.
 
 Instrukcja: [Playground symulacji](SIMULATION_PLAYGROUND.md). Pomiary i scenariusze: [walidacja](PLAYGROUND_VALIDATION_2026-10-25.md).
+
+## Uzupełnienie — nowy model i edytor skoczka (26.10.2026)
+
+- Osobny, przyszłościowy model skoczka: dane osobowe, opcjonalny rok urodzenia i zdjęcie, rekord w metrach, OVR, forma, pięć poziomów lądowania i trzy przeciwstawne pary perków z poziomami I/II.
+- Przełącznik „Klasyczny / Nowy edytor” w sekcji zawodników. Trzy odrębne widoki: Karta, Profil, Studio. Własne ikony perków, wyraźny poziom II, podgląd bez wymagania zdjęcia, obsługa klawiatury, obu motywów, małych ekranów i większego tekstu.
+- Nowe paczki i atomowy zapis są odizolowane od obecnej bazy; Cofnij/Ponów obejmuje zmiany i usuwanie. Zdjęcia należą do paczki, a eksport i import przenoszą folder z manifestem oraz plikami.
+- Opcjonalne kopiowanie klasycznego skoczka z jawnym opisem przeliczenia OVR/formy i przybliżenia lądowania; perki zaczynają od zera. Oryginały pozostają nietknięte.
+- Ten etap nie zmienia symulacji, klasy Jumper ani dotychczasowych sezonów. Nowe profile i perki nie są jeszcze używane do rozgrywania konkursów.
+
+Szczegóły: [Nowy model i edytor skoczka](ATHLETE_STUDIO_2026-10-26.md).
 
 ## Krótki materiał do publicznych release notes
 
