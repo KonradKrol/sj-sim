@@ -9,10 +9,16 @@ Pełne prompty i identyfikatory wybranych generacji: [prompts.json](prompts.json
 | --- | --- | --- |
 | training.png | Błyszczy na treningach | Sztanga |
 | reserve.png | Oszczędza siły | Serce i strzałka regeneracji |
-| flight.png | Lotnik | Skoczek w locie |
-| small.png | Specjalista małych skoczni | Odbicie z progu z oznaczeniem siły |
-| steady.png | Regularny | Metronom |
+| flight.png | Lotnik | Poziomy lot i szerokie smugi powietrza |
+| small.png | Specjalista małych skoczni | Ugięte nogi przy odbiciu, impuls pod nartami i błyskawica |
+| steady.png | Regularny | Trzy równe słupki i płaska linia jednakowych wyników |
 | volatile.png | Nieprzewidywalny | Kostka do gry |
+
+Lotnika, specjalistę i regularność wygenerowano ponownie po ocenie pierwszego
+zestawu: lot ma poziomą, płynącą sylwetkę, a odbicie — zwartą sylwetkę nad progiem
+i osobny symbol siły. Metronom zastąpił prosty wykres jednakowych wyników.
+Prompty poprzednich wersji pozostają w `previousGenerations` w manifeście;
+poprzednie pliki można odtworzyć z historii Git.
 
 `AthletePerkArt.qml` łączy piktogram z dotychczasową oprawą SVG. Oprawy
 zawierają teraz wyłącznie ramkę i oznaczenia poziomu. Wspólny renderer obsługuje
