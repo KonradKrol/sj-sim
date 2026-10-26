@@ -6,7 +6,7 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
-- Stan porównania kodu i dokumentacji: **d6e435c**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
+- Stan porównania kodu i dokumentacji: **a6d38fa**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
 - Data zestawienia: **26 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **2.0.0-beta**, ustawione na wyraźne polecenie użytkownika po zakończeniu audytu silnika.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
@@ -822,8 +822,8 @@ Punktacja ma nowe nazwy naliczania, segmenty źródeł z precyzyjnym opisem, akt
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
-- Snapshot kodu i dokumentacji: **d6e435ce872d57001c3c76125ec738b56f101c3a**.
-- Commitów od bazy: **234**.
+- Snapshot kodu i dokumentacji: **a6d38fac7805cf655b4a167f2ae34136ec12641e**.
+- Commitów od bazy: **237**.
 - Plików zmienionych w tym zakresie: **655**.
 - Statystyki obejmują także fonty, skills i dokumentację; nie oznaczają rozmiaru samej logiki gry.
 - Dalsza aktualizacja tego zestawienia jest dodatkiem dokumentacyjnym do wskazanego snapshotu.
@@ -843,9 +843,9 @@ Punktacja ma nowe nazwy naliczania, segmenty źródeł z precyzyjnym opisem, akt
 Porównanie można odtworzyć poleceniami:
 
 ~~~sh
-git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c d6e435ce872d57001c3c76125ec738b56f101c3a
-git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c d6e435ce872d57001c3c76125ec738b56f101c3a
-git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..d6e435ce872d57001c3c76125ec738b56f101c3a
+git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c a6d38fac7805cf655b4a167f2ae34136ec12641e
+git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c a6d38fac7805cf655b4a167f2ae34136ec12641e
+git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..a6d38fac7805cf655b4a167f2ae34136ec12641e
 ~~~
 
 Zestawienie można odświeżyć przez `python3 scripts/update-release-inventory.py --base main --snapshot HEAD`. Opisy zachowania i wyniki testów należy uzupełniać na podstawie faktycznych zmian oraz weryfikacji.
@@ -1090,6 +1090,9 @@ Historyczne opisy należy czytać z uwzględnieniem opisanych powyżej rozwiąza
 | `360b18e` | Handle each perk button release during rapid double clicks |
 | `bdbfaf3` | Make strengthened perks unmistakable with full gold treatment |
 | `d6e435c` | Add AI-generated athlete perk pictograms across badge views — Use barbell, recovery heart, ski flight, powerful takeoff, metronome and die symbols. Preserve generated PNG originals and full prompts; compose them with existing frames through one shared QML component and cache six tinted 256px images per engine. Keep strengthened gold treatment and authoring-only model unchanged. Validated production build, full athlete studio regressions, light/dark renders, resource paths and original PNG hashes. |
+| `a25a584` | Refresh release inventory through AI perk icon integration |
+| `a729e4f` | Give athlete landing choices a compact panel and clear selection — Group five landing choices into bordered options with a strong heading, selected fill and radio indicator. Preserve names and authoring model; support wrapped labels and responsive rows. Production build and athlete patches regressions pass. |
+| `a6d38fa` | Distinguish flight and takeoff perks and simplify consistency icon — Regenerate three AI pictograms: horizontal soaring flight with airflow, explosive bent-leg takeoff with force rays and lightning, and equal-result bars replacing the metronome. Preserve original alpha and previous prompts. Production build and full athlete studio regression suite pass with landing panel changes; inspected light/dark badge renders. |
 
 ## Załącznik C. Pełny manifest zmienionych plików
 
@@ -1102,7 +1105,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [QML_COMPETITION_LIVE.md](../QML_COMPETITION_LIVE.md) | 42 | 0 |
 | A | [QML_COMPETITION_PREVIEW.md](../QML_COMPETITION_PREVIEW.md) | 60 | 0 |
 | A | [QUICK_UI_MIGRATION.md](../QUICK_UI_MIGRATION.md) | 314 | 0 |
-| A | [docs/ATHLETE_PATCHES_UX_2026-10-26.md](../docs/ATHLETE_PATCHES_UX_2026-10-26.md) | 44 | 0 |
+| A | [docs/ATHLETE_PATCHES_UX_2026-10-26.md](../docs/ATHLETE_PATCHES_UX_2026-10-26.md) | 45 | 0 |
 | A | [docs/ATHLETE_STUDIO_2026-10-26.md](../docs/ATHLETE_STUDIO_2026-10-26.md) | 76 | 0 |
 | A | [docs/AUTHOR_AND_SINGLE_JUMPS_2026-10-22.md](../docs/AUTHOR_AND_SINGLE_JUMPS_2026-10-22.md) | 66 | 0 |
 | A | [docs/BUGFIX_AUDIT_2026-10-21.md](../docs/BUGFIX_AUDIT_2026-10-21.md) | 140 | 0 |
@@ -1132,7 +1135,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/PENDING_CLASSIFICATION_RULES_2026-10-25.md](../docs/PENDING_CLASSIFICATION_RULES_2026-10-25.md) | 10 | 0 |
 | A | [docs/PLAYGROUND_IMPLEMENTATION.md](../docs/PLAYGROUND_IMPLEMENTATION.md) | 35 | 0 |
 | A | [docs/PLAYGROUND_VALIDATION_2026-10-25.md](../docs/PLAYGROUND_VALIDATION_2026-10-25.md) | 76 | 0 |
-| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1782 | 0 |
+| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1796 | 0 |
 | A | [docs/RESULT_HISTORY_ARCHIVE_DNS_2026-10-25.md](../docs/RESULT_HISTORY_ARCHIVE_DNS_2026-10-25.md) | 67 | 0 |
 | A | [docs/RESULT_SELECTORS_TEAM_READABILITY_2026-10-25.md](../docs/RESULT_SELECTORS_TEAM_READABILITY_2026-10-25.md) | 24 | 0 |
 | A | [docs/RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md](../docs/RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md) | 62 | 0 |
@@ -1176,7 +1179,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/AthleteEquipped.qml](../source/UI/Quick/AthleteEquipped.qml) | 50 | 0 |
 | A | [source/UI/Quick/AthleteIdentity.qml](../source/UI/Quick/AthleteIdentity.qml) | 117 | 0 |
 | A | [source/UI/Quick/AthleteInsignia.qml](../source/UI/Quick/AthleteInsignia.qml) | 33 | 0 |
-| A | [source/UI/Quick/AthleteLanding.qml](../source/UI/Quick/AthleteLanding.qml) | 36 | 0 |
+| A | [source/UI/Quick/AthleteLanding.qml](../source/UI/Quick/AthleteLanding.qml) | 63 | 0 |
 | A | [source/UI/Quick/AthleteMedals.qml](../source/UI/Quick/AthleteMedals.qml) | 35 | 0 |
 | A | [source/UI/Quick/AthletePatchRack.qml](../source/UI/Quick/AthletePatchRack.qml) | 52 | 0 |
 | A | [source/UI/Quick/AthletePatchSet.qml](../source/UI/Quick/AthletePatchSet.qml) | 38 | 0 |
@@ -1303,9 +1306,9 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/fonts/OFL-Barlow.txt](../source/UI/Quick/fonts/OFL-Barlow.txt) | 93 | 0 |
 | A | [source/UI/Quick/fonts/OFL-BarlowCondensed.txt](../source/UI/Quick/fonts/OFL-BarlowCondensed.txt) | 93 | 0 |
 | A | [source/UI/Quick/fonts/OFL-IBMPlexMono.txt](../source/UI/Quick/fonts/OFL-IBMPlexMono.txt) | 93 | 0 |
-| A | [source/UI/Quick/icons/athlete/ai/README.md](../source/UI/Quick/icons/athlete/ai/README.md) | 27 | 0 |
+| A | [source/UI/Quick/icons/athlete/ai/README.md](../source/UI/Quick/icons/athlete/ai/README.md) | 33 | 0 |
 | A | [source/UI/Quick/icons/athlete/ai/flight.png](../source/UI/Quick/icons/athlete/ai/flight.png) | - | - |
-| A | [source/UI/Quick/icons/athlete/ai/prompts.json](../source/UI/Quick/icons/athlete/ai/prompts.json) | 38 | 0 |
+| A | [source/UI/Quick/icons/athlete/ai/prompts.json](../source/UI/Quick/icons/athlete/ai/prompts.json) | 56 | 0 |
 | A | [source/UI/Quick/icons/athlete/ai/reserve.png](../source/UI/Quick/icons/athlete/ai/reserve.png) | - | - |
 | A | [source/UI/Quick/icons/athlete/ai/small.png](../source/UI/Quick/icons/athlete/ai/small.png) | - | - |
 | A | [source/UI/Quick/icons/athlete/ai/steady.png](../source/UI/Quick/icons/athlete/ai/steady.png) | - | - |
