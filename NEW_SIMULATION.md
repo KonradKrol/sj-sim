@@ -48,6 +48,36 @@ Niech playground pozwala KOMPLEKSOWO cały silnik symulacji przetestować. Aktua
 Cały silnik ma być udokumentowany gdzieś w pliku .MD.
 Przed zadaniem pytań poeksploruj wpierw bazę kodu.
 
+## Ustalenia po odpowiedziach na pytania
+
+1. Nowy silnik obowiązuje dla nowych sezonów. Nie wymagać wstecznej kompatybilności z Sj.Sim 1.3.0-beta2 ani automatycznie przepisywać wyników starych sezonów do nowego silnika. Nie niszczyć źródłowych plików; nieobsługiwany zapis ma otrzymać czytelny komunikat.
+2. Stare paczki można przybliżenie przekonwertować: OVR ze średniej dawnych technik wybicia i lotu, zachowana/przeliczona forma, przybliżona klasa lądowania i perki od zera. **Bardzo wyraźnie zaznaczać, że to niedokładna, przybliżona migracja**, nie wierne odtworzenie możliwości dawnego zawodnika.
+3. Zachować gotowe nowe paczki. Stare przeliczać jako osobne paczki bez nadpisywania nowych danych.
+4. Zachować trzy poziomy perków skoczków i skoczni.
+5. Początkowo przyjąć około 70% wpływu OVR i 30% formy na jakość bazową. To parametr do zmiany w playgroundzie, a nie stała konstrukcyjna silnika.
+6. Podział 65/35 oznacza udział **łącznego wpływu losowych strat i bonusów** po obu stronach: około 65% wpływu ujemnego i 35% dodatniego. Nie oznacza 65% słabszych odległości ani narzuconej proporcji liczby zdarzeń. Wpływ, rozkład, asymetria i różnice ważności serii mają być parametryzowalne oraz mierzalne w playgroundzie.
+7. Nie skracać gotowego skoku po fakcie. Już w okolicach real HS dalsze metry mają być coraz trudniejsze do uzyskania, a wypłaszczający się zeskok ma ograniczać dalszy lot. Osobno wzrasta ryzyko trudnego lądowania i upadku. Nie dopuścić do absurdalnych lądowań daleko za końcem użytecznego zeskoku; granice i tempo wzrostu trudności muszą być związane ze skocznią i dostępne do strojenia. Playground ma pokazywać krzywe szans upadku, lądowania i not w zależności od odległości oraz parametrów.
+8. Preferencję wybicia/lotu skoczni powiązać z Lotnikiem i Specjalistą małych skoczni; zawodników bez tej pary traktować neutralnie. Bazowy udział wybicia i lotu zależy od K zgodnie z poniższą krzywą. Punkty i siła wpływu mają być edytowalne.
+9. Typ opadów wynika z nawierzchni: zimą śnieg, na igelicie deszcz. Data i kraj mogą sugerować scenariusz/intensywność; użytkownik zawsze może go zmienić.
+10. Zachować wszystkie możliwości manipulacji zgodne z nowym symulatorem, przebudować ich UX i dodać użyteczne nowe możliwości, jeśli pasują do modelu.
+11. Playground automatycznie przelicza małą próbę w tle po zmianie parametru; duże serie uruchamia się osobno. Uwzględnić anulowanie zastąpionych prób i ograniczenie częstotliwości przeliczania przy szybkiej edycji.
+12. Wstępny cel kalibracji: OVR 90 wobec OVR 70 na K120, przy tej samej formie, belce i spokojnych warunkach, daje przeciętnie **14–17 m** przewagi. Cel dotyczy porównania dużych prób, nie każdego pojedynczego skoku.
+
+### Bazowy udział wybicia i lotu zależnie od K
+
+| K | Wybicie | Lot |
+| ---: | ---: | ---: |
+| 50 | 85% | 15% |
+| 80 | 72% | 28% |
+| 95 | 62% | 38% |
+| 110 | 50% | 50% |
+| 125 | 40% | 60% |
+| 140 | 30% | 70% |
+| 200 | 15% | 85% |
+| 250 | 8% | 92% |
+
+Między punktami zastosować ciągłą, monotoniczną krzywą bez niezamierzonych ekstremów. Zachować podane wartości w punktach. Zachowanie poza zakresem tabeli oraz modyfikacja przez perk skoczni mają być jawne i parametryzowalne; nie tworzyć nowego ukrytego, niezależnego skilla zawodnika.
+
 # Nowy silnik formy
 
 <na razie forma jest taka jaka jest, za niedlugo zrobimy auto-zmianę formy w sezonie>

@@ -2,10 +2,9 @@
 
 Gałąź: `feature/simulation-v2`, utworzona z `6095d31` gałęzi
 `feature/qml-competition-config`. Wymagania: [NEW_SIMULATION.md](../NEW_SIMULATION.md).
-Stan: rozpoczęto analizę kodu; zadano 12 pytań przed implementacją, zgodnie ze
-specyfikacją. Odpowiedzi nie zostały jeszcze uzgodnione. Pierwsze wytyczne do
-sekcji „Wiatr w UX” zostały dopisane. Poniższy plan nie zastępuje
-tych ustaleń i nie oznacza, że nowy silnik już działa.
+Stan: zakończono wstępną analizę i otrzymano odpowiedzi na wszystkie 12 pytań.
+Odpowiedzi i wytyczne „Wiatr w UX” zapisano w specyfikacji. Rdzeń jest w budowie;
+dotychczasowy silnik pozostaje aktywny do zakończenia integracji.
 
 ## Ustalenia z kodu
 
@@ -62,10 +61,10 @@ kalibracji model. Może pozostać kandydatem do eksperymentu lub testów skrajny
 - [x] Zidentyfikować rozkłady i główne punkty podłączenia silnika.
 - [x] Zadać 12 pytań po wstępnej analizie.
 - [x] Przygotować i przetestować niezależne źródło losowości dla nowego rdzenia.
-- [ ] Zapisać odpowiedzi i nowe wytyczne dotyczące konfiguracji wiatru.
+- [x] Zapisać odpowiedzi i nowe wytyczne dotyczące konfiguracji wiatru.
 - [x] Zapisać automatyczne propozycje, prosty/zaawansowany wybór wiatru,
   opcjonalny podgląd oraz czwartą parę perków dominującego kierunku.
-- [ ] Uzgodnić migrację paczek, gotowych nowych profili oraz zapisów sezonów.
+- [x] Uzgodnić migrację paczek, gotowych nowych profili oraz zapisów sezonów.
 - [ ] Rozszerzyć skocznie o nową parę kierunku wiatru; stare zestawy trzech par
   odczytywać z neutralnym nowym perkiem. Wpływ kierunku i loteryjności skoczni
   stosować do automatycznych propozycji, bez ukrytych zmian ręcznych ustawień.
@@ -105,14 +104,21 @@ kalibracji model. Może pozostać kandydatem do eksperymentu lub testów skrajny
 - [ ] Udokumentować końcowe wzory, rozkłady, jednostki, współczynniki,
   format danych i procedurę strojenia; commitować zakończone etapy.
 
-## Otwarte decyzje
+## Zatwierdzone decyzje
 
-12 pytań dotyczy: istniejących sezonów, przeliczenia starych zawodników,
-wyboru paczek, liczby poziomów perków, relacji OVR/formy, znaczenia 65/35,
-ograniczania bardzo dalekich skoków, preferencji wybicia/lotu skoczni,
-typu opadów, manipulacji wynikiem, automatycznego podglądu playgroundu
-oraz orientacyjnej różnicy między OVR 90 i OVR 70.
-Zaleceń z pytań nie traktować jako zatwierdzonych odpowiedzi.
+Nowy silnik dla nowych sezonów, bez wymogu zgodności zapisów z 1.3.0-beta2.
+Konwersja starych paczek ma być wyraźnie opisana jako niedokładne przybliżenie;
+nie nadpisywać gotowych nowych paczek. Zachować trzy poziomy perków.
+Początkowy udział OVR/formy 70/30 jest regulowany. 65/35 dotyczy łącznego
+ujemnego/dodatniego wpływu losowości, nie częstości ani procentowej straty
+odległości. Wstępny cel różnicy OVR 90/70 na K120: 14–17 m.
+
+Bez skracania wyniku po fakcie, ale z narastającą trudnością uzyskania metrów
+w okolicach real HS i ograniczeniem wynikającym z końca użytecznego zeskoku.
+Krzywe lądowania/upadku i not muszą być dostępne do analizy. Udziały wybicia/lotu
+mają przechodzić przez punkty podane przez użytkownika w `NEW_SIMULATION.md`.
+Typ opadów zgodny z nawierzchnią, manipulacje zgodne z nowym modelem zachowane,
+szybki automatyczny podgląd playgroundu plus duże serie na żądanie.
 
 ## Pierwszy element rdzenia: losowość
 
