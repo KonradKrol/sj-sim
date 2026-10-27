@@ -3,8 +3,8 @@
 Gałąź: `feature/simulation-v2`, utworzona z `6095d31` gałęzi
 `feature/qml-competition-config`. Wymagania: [NEW_SIMULATION.md](../NEW_SIMULATION.md).
 Stan: rozpoczęto analizę kodu; zadano 12 pytań przed implementacją, zgodnie ze
-specyfikacją. Odpowiedzi nie zostały jeszcze uzgodnione. Oczekujemy również
-wytycznych użytkownika do sekcji „Wiatr w UX”. Poniższy plan nie zastępuje
+specyfikacją. Odpowiedzi nie zostały jeszcze uzgodnione. Pierwsze wytyczne do
+sekcji „Wiatr w UX” zostały dopisane. Poniższy plan nie zastępuje
 tych ustaleń i nie oznacza, że nowy silnik już działa.
 
 ## Ustalenia z kodu
@@ -63,7 +63,12 @@ kalibracji model. Może pozostać kandydatem do eksperymentu lub testów skrajny
 - [x] Zadać 12 pytań po wstępnej analizie.
 - [x] Przygotować i przetestować niezależne źródło losowości dla nowego rdzenia.
 - [ ] Zapisać odpowiedzi i nowe wytyczne dotyczące konfiguracji wiatru.
+- [x] Zapisać automatyczne propozycje, prosty/zaawansowany wybór wiatru,
+  opcjonalny podgląd oraz czwartą parę perków dominującego kierunku.
 - [ ] Uzgodnić migrację paczek, gotowych nowych profili oraz zapisów sezonów.
+- [ ] Rozszerzyć skocznie o nową parę kierunku wiatru; stare zestawy trzech par
+  odczytywać z neutralnym nowym perkiem. Wpływ kierunku i loteryjności skoczni
+  stosować do automatycznych propozycji, bez ukrytych zmian ręcznych ustawień.
 - [ ] Przygotować niezależny od UI rdzeń: wejście skoku, kontekst wydarzenia,
   konfiguracja współczynników i wynik z danymi do analizy.
 - [ ] Oddzielić przez interfejsy źródło losowości i warunki pogodowe od rdzenia;

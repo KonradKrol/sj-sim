@@ -64,6 +64,34 @@ W trybie sezonów jeśli są włączone daty konkursów, to w zależności od da
 
 ## Wiatr w UX
 
+### Automatyczne propozycje i rola perków skoczni
+
+- Po wejściu do konfiguracji konkursu gra ma już proponować wylosowany wiatr i wariant opadów. Użytkownik widzi gotowy punkt wyjścia i może go łatwo zmienić lub świadomie wylosować ponownie.
+- Perk loteryjności/stabilności skoczni ma **duży wpływ na losowanie automatycznie sugerowanego scenariusza**. Skocznia loteryjna znacznie częściej proponuje naprawdę gwałtowne i zróżnicowane warunki; stabilna częściej spokojne i podobne. Nie oznacza to zawsze identycznego scenariusza na tej samej skoczni.
+- Dodać czwartą przeciwstawną parę perków skoczni: **„Dominuje wiatr przedni” / „Dominuje wiatr tylny”**. Zmienia ona prawdopodobieństwo dominującego kierunku w automatycznej propozycji, a nie gwarantuje go we wszystkich skokach ani wszystkich miejscach.
+- Wpływ obu par na warunki dotyczy automatycznego proponowania/losowania. Po ręcznym ustaleniu warunków przez użytkownika perki nie mogą ukrycie ponownie podbijać loteryjności lub narzucać kierunku. Sam wybrany scenariusz nadal dynamicznie ewoluuje według jawnie ustawionego charakteru.
+- Przykład oczekiwanego charakteru: Engelberg K140 może zwykle proponować mało loteryjny wiatr tylny. Wynika to z ustawień/perków konkretnej skoczni; nie kodować rozpoznawania skoczni wyłącznie po nazwie ani nie przedstawiać tego przykładu jako zweryfikowanej statystyki pogodowej.
+- Rozszerzenie modelu skoczni o parę kierunku ma czytać dotychczasowe paczki z trzema parami jako brak nowego perka, zachowując istniejące wybory i identyfikatory.
+
+### Proste ustawienie warunków
+
+Przebudować aktualny widok wiatru i korytarzy, dopasowując go do ciągłego modelu. Główny ekran ma być nowoczesny, wyrazisty, kontrastowy i przyjemny w użyciu, z hierarchią Sj.Sima i konserwatywnymi, krótkimi etykietami. Działać na desktopie i małym laptopie, w obu motywach.
+
+Użytkownik przede wszystkim wybiera ogólny charakter warunków: dominujący kierunek, typową siłę oraz to, czy wiatr jest raczej stabilny/loteryjny i podobny/różny wzdłuż zeskoku. Nie musi wpisywać kąta ani siły w każdym punkcie. Wybory mają tworzyć zrozumiały opis i podgląd, np.:
+
+- Średnio mocny wiatr boczny, raczej podobny na całym zeskoku.
+- Mocny, loteryjny wiatr tylny, z typową siłą około 1,8 m/s.
+
+Dokładne wartości, kierunki i punkty odniesienia udostępnić w opcjach zaawansowanych. Proste ustawienia mają być nadrzędnym, wygodnym sposobem przygotowania konkursu, a nie dodatkowym krokiem przed obowiązkową szczegółową konfiguracją. Nie wprowadzać wielu drobiazgowych parametrów na głównym ekranie.
+
+### Informacja podczas konkursu i po skoku
+
+- **Domyślnie po skoku pokazywać uśredniony wiatr tak jak obecnie.** Nie zastępować tej informacji dużym widokiem sektorów i nie zwiększać obowiązkowej ilości danych.
+- Dodać opcję uproszczonego podglądu kierunków i sił wiatru w poszczególnych sektorach przed skokiem i po nim; jeżeli będzie to czytelne i wykonalne, także podczas skoku. Podgląd w trakcie jest opcjonalny, nie warunek podstawowej funkcjonalności.
+- Warunki mogą zmienić się między odczytem przed skokiem, przebiegiem lotu i odczytem po skoku. Przy loteryjnej pogodzie różnice mają być czasem wyraźne; obraz przed skokiem nie jest gwarancją tego, czego zawodnik doświadczy.
+- Zachować czytelne rozróżnienie czasu pokazywanych danych: odczyt przed skokiem, warunki z lotu i aktualny stan po skoku. Zmiana pogody po lądowaniu nie przelicza ponownie już oddanego skoku ani jego oficjalnej wartości wiatru.
+- Nierówność warunków i niedoskonałe wyrównanie przez pomiar/rekompensatę mogą naturalnie tworzyć niesprawiedliwe sytuacje. Ma to wynikać z przebiegu pogody oraz rzeczywistego sposobu uśredniania, a nie osobnego losowania krzywdzącej korekty po poznaniu wyniku.
+
 ## Ciągły model wiatru i lotu
 
 ### Założenia
