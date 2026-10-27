@@ -14,6 +14,9 @@
 #include <QMessageBox>
 #include <QRegularExpression>
 #include <QByteArray>
+#include <QDir>
+#include <QFileInfo>
+#include <QUuid>
 
 Jumper::Jumper(const QString &name, const QString &surname, const QString &countryCode, const JumperSkills &skills) : name(name),
     surname(surname),
@@ -29,7 +32,26 @@ Jumper::~Jumper()
 
 QPixmap Jumper::getImagePixmap()
 {
-    return QPixmap("jumpersImages/" + imageName);
+    const auto file=getImageFilePath();return file.isEmpty()?QPixmap():QPixmap(file);
+}
+
+QString Jumper::getImageFilePath() const
+{
+    if(!simulationProfile)return "jumpersImages/"+imageName;
+    if(imageName.isEmpty() || simulationAssetDirectory.isEmpty())return {};
+    const QString base=QFileInfo(simulationAssetDirectory).canonicalFilePath();
+    const QString file=QFileInfo(QDir(simulationAssetDirectory).filePath(imageName)).canonicalFilePath();
+#ifdef Q_OS_WIN
+    const auto sensitivity=Qt::CaseInsensitive;
+#else
+    const auto sensitivity=Qt::CaseSensitive;
+#endif
+    return !base.isEmpty() && !file.isEmpty() && file.startsWith(base+"/",sensitivity) && QFileInfo(file).isFile()?file:QString();
+}
+
+void Jumper::setSimulationPackContext(const QString &packId,const QString &assetDirectory)
+{
+    simulationPackId=packId;simulationAssetDirectory=assetDirectory;
 }
 
 QString Jumper::getTextInfo()
@@ -125,6 +147,7 @@ QJsonObject Jumper::getJsonObject(const Jumper & jumper)
     }
     object.insert("characteristics", characteristicsArray);
     if(const auto profile=jumper.getSimulationProfile())object.insert("simulation-v2",profile->toJson());
+    if(!jumper.simulationPackId.isEmpty())object.insert("simulation-pack-id",jumper.simulationPackId);
     return object;
 }
 
@@ -156,6 +179,7 @@ Jumper Jumper::getFromJson(QJsonObject obj)
     if(obj.contains("simulation-v2")) {
         AthleteProfile profile;QString error;
         if(AthleteProfile::fromJson(obj["simulation-v2"].toObject(),profile,error))jumper.setSimulationProfile(profile,error);
+        jumper.setSimulationPackContext(obj["simulation-pack-id"].toString(),{});
     }
 
     return jumper;
@@ -188,6 +212,12 @@ bool Jumper::validateSimulationProfileJson(const QJsonObject &json,QString &erro
     AthleteProfile profile;
     if(!json["simulation-v2"].isObject() || !AthleteProfile::fromJson(json["simulation-v2"].toObject(),profile,error))return false;
     if(profile.id!=json["id"].toString()) {error=QObject::tr("Niezgodne identyfikatory skoczka i nowego profilu.");return false;}
+    if(json.contains("simulation-pack-id")) {
+        const auto id=json["simulation-pack-id"].toString();
+        if(!json["simulation-pack-id"].isString() || QUuid(id).isNull() || QUuid(id).toString(QUuid::WithoutBraces)!=id) {
+            error=QObject::tr("Nieprawidłowy identyfikator paczki zdjęć zawodnika.");return false;
+        }
+    }
     return true;
 }
 

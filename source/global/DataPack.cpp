@@ -36,6 +36,7 @@ bool DataPack::fromJson(const QJsonObject &o, DataPack &result, QString &error)
     const auto format=o.value("format").toString();
     if(format=="sj-sim-athlete-pack" || format=="sj-sim-hill-pack") {
         DataPack p;p.engineVersion=2;p.kind=format=="sj-sim-athlete-pack"?Jumpers:Hills;
+        p.approximateMigrationSource=o.value("approximate-migration-source").toString();
         p.id=o["id"].toString();p.name=o["name"].toString().trimmed();
         if(o["version"]!=1 || QUuid(p.id).isNull() || QUuid(p.id).toString(QUuid::WithoutBraces)!=p.id
             || p.name.isEmpty() || p.name.size()>100 || !o["profiles"].isArray() || o["profiles"].toArray().size()>10000)

@@ -44,6 +44,6 @@ ColumnLayout {
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; spacing: Theme.dp(14)
         HillLibrary { backend: studio.backend; visible: studio.parallel || !studio.editing; Layout.fillWidth: true; Layout.fillHeight: true; Layout.preferredWidth: Theme.dp(280); Layout.maximumWidth: studio.parallel?Theme.dp(320):Infinity; Layout.minimumHeight: 0; onActivated: studio.editing=true }
         Loader { active: studio.backend.selectedIndex>=0; visible: active && (studio.parallel || studio.editing); Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0; Layout.preferredWidth: Theme.dp(950); sourceComponent: Component { HillEditor { backend: studio.backend } } }
-        EmptyState { visible: studio.backend.selectedIndex<0 && (studio.parallel || studio.editing); Layout.fillWidth: true; Layout.fillHeight: true; title: qsTr("Stwórz pierwszą skocznię"); description: qsTr("Punkt K, HS i trzy pary perków. Zacznij od nowej skoczni lub kopii klasycznego modelu."); actionText: qsTr("Dodaj skocznię"); onTriggered: {studio.backend.add();studio.editing=true} }
+        EmptyState { visible: studio.backend.selectedIndex<0 && (studio.parallel || studio.editing); Layout.fillWidth: true; Layout.fillHeight: true; title: qsTr("Stwórz pierwszą skocznię"); description: qsTr("Punkt K, HS i perki. Dodaj skocznię lub zaimportuj starsze dane."); actionText: qsTr("Dodaj skocznię"); onTriggered: {studio.backend.add();studio.editing=true} }
     }
 }

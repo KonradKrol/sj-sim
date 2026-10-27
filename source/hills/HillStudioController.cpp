@@ -1,4 +1,5 @@
 #include "HillStudioController.h"
+#include "../simulation-v2/ProfilePackRepository.h"
 #include "../global/GlobalDatabase.h"
 #include "../global/CountryCodes.h"
 #include <QStandardPaths>
@@ -23,12 +24,8 @@ HillStudioController::HillStudioController(QObject *parent,const QString &root):
     connect(this,&HillStudioController::changed,this,&HillStudioController::perksChanged);
     connect(this,&HillStudioController::changed,this,&HillStudioController::historyChanged);
     connect(this,&HillStudioController::changed,this,&HillStudioController::statusChanged);
-    for(const auto &file:QDir(m_root).entryInfoList({"*.json"},QDir::Files,QDir::Name)){
-        QFile in(file.absoluteFilePath());QString error;
-        if(!in.open(QIODevice::ReadOnly) || in.size()>20*1024*1024){m_message=tr("Nie można odczytać paczki skoczni.");continue;}
-        const auto doc=QJsonDocument::fromJson(in.readAll());const auto pack=doc.object();
-        if(validatePack(pack,error) && file.baseName()==pack["id"].toString())m_packs.append(pack);else m_message=error;
-    }
+    const auto loaded=SimulationV2::ProfilePackRepository(SimulationV2::ProfilePackKind::Hills,m_root).load();
+    m_packs=loaded.packs;m_message=loaded.issues.join('\n');
     if(m_packs.isEmpty())m_packs.append(emptyPack(tr("Moje skocznie")));
     if(!currentPack()["profiles"].toArray().isEmpty())m_selected=0;
 }
@@ -38,13 +35,10 @@ QVariantList HillStudioController::selectedPerks()const {const auto entries=curr
 double HillStudioController::realHs()const {const auto entries=currentPack()["profiles"].toArray();HillProfile hill;QString error;return m_selected>=0 && m_selected<entries.size() && HillProfile::fromJson(entries[m_selected].toObject(),hill,error)?hill.realHs():0;}
 void HillStudioController::status(const QString &value){m_message=value;emit changed();}
 bool HillStudioController::validatePack(const QJsonObject &pack,QString &error)const{
-    const auto id=pack["id"].toString();
-    if(pack["format"]!="sj-sim-hill-pack" || pack["version"].toInt()!=1 || QUuid(id).isNull() || QUuid(id).toString(QUuid::WithoutBraces)!=id || !pack["name"].isString() || pack["name"].toString().trimmed().isEmpty() || pack["name"].toString().size()>100 || !pack["profiles"].isArray() || pack["profiles"].toArray().size()>10000){error=tr("Nieprawidłowy format paczki skoczni.");return false;}
-    QSet<QString> ids;for(const auto &entry:pack["profiles"].toArray()){HillProfile p;if(!entry.isObject()){error=tr("Nieprawidłowy format paczki skoczni.");return false;}if(!HillProfile::fromJson(entry.toObject(),p,error))return false;if(ids.contains(p.id)){error=tr("Powtórzony identyfikator skoczni.");return false;}ids.insert(p.id);}return true;
+    return SimulationV2::ProfilePackRepository(SimulationV2::ProfilePackKind::Hills,m_root).validate(pack,error);
 }
 bool HillStudioController::persist(const QJsonObject &pack,QString &error,bool validate)const{
-    if(validate && !validatePack(pack,error))return false;
-    if(!QDir().mkpath(m_root) || !writeJson(m_root+"/"+pack["id"].toString()+".json",pack)){error=tr("Nie udało się zapisać paczki. Zmiana nie została zastosowana.");return false;}return true;
+    return SimulationV2::ProfilePackRepository(SimulationV2::ProfilePackKind::Hills,m_root).save(pack,error,validate);
 }
 bool HillStudioController::commit(const QJsonObject &pack,int selection,const QString &message,bool perksOnly){
     if(pack==currentPack()){m_selected=selection;return true;}

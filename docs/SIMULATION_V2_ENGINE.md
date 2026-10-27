@@ -252,9 +252,36 @@ przybliżane do jednej z pięciu klas; wszystkie perki zaczynają od zera. Funkc
 zwraca wyraźne ostrzeżenie o niedokładnym przybliżeniu, nie modyfikuje źródła
 i odrzuca ponowne migrowanie gotowych profili. Mapowanie zdjęć ma unikalny
 podfolder zawodnika, aby identyczne nazwy plików nie nadpisywały innych zdjęć.
-Fizyczne kopiowanie i podłączenie do wspólnego katalogu są kolejnym etapem.
+Fizyczne kopiowanie wykonuje `ProfilePackRepository`, a wspólny serwis źródeł
+implementuje `SimulationCatalog`. Podłączenie serwisu do okien gry nadal trwa.
 
 Testy integracji: `scripts/test-quick-ui.sh --simulation-v2-only`.
 Obejmują migrację i jej pochodzenie, zapis/odczyt modeli i pogody, tożsamość
 wyników, niezależność od dawnych technik, preview, jawny czas/pole, wymuszenia
 oraz zachowanie profilu skoczni przy odczycie konfiguracji.
+
+## Jedno źródło danych profili
+
+Nowe edytory korzystają z `ProfilePackRepository`. Te same pliki czyta
+`SimulationCatalog`, który zwraca własny snapshot gotowy do konfiguracji gry.
+Indeks katalogu zapisuje tylko ID/kolejność, nie kopiuje wszystkich profili.
+Przybliżone migracje i ich zdjęcia są publikowane atomowo jako osobne paczki,
+idempotentnie według źródłowego ID. Gotowe paczki i pliki źródłowe nie są
+nadpisywane. Brak zdjęcia nie blokuje zawodnika; problemy są zwracane do UI.
+
+Formaty są osobne:
+
+- `sj-sim-athlete-pack` / `sj-sim-hill-pack`, wersja 1: pliki edytorów;
+  profil skoczni obsługuje trzy dawne lub cztery obecne pary perków.
+- `sj-sim-pack`, wersja 2: reprezentacja katalogowa nowych profili w `DataPack`.
+  Kompatybilne paczki zasad pozostają w swoim formacie wersji 1.
+- `sj-sim-simulation-v2-catalog`, wersja 1: tylko metadane wyboru/kolejności.
+- `JumpData.simulation-v2.engineVersion = 2`: zapis wyników/warunków skoku.
+- Nowy format sezonu: jeszcze do wdrożenia.
+
+`Jumper` otrzymuje nietrwały kontekst folderu swojej paczki. Zdjęcie rozwiązuje
+względem tego folderu, z kontrolą, czy plik pozostaje w jego obrębie. W JSON
+zapisuje tylko ID paczki i względną ścieżkę. Po odczytaniu sezonu kontekst
+plików trzeba przywrócić przez warstwę danych; domenowy parser nie zakłada
+lokalizacji plików konkretnego komputera. Brak pakietu zdjęć oznacza pusty
+portret, bez wpływu na obliczenia.

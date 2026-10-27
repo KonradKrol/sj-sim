@@ -43,7 +43,6 @@ bool approximateLegacyPack(const DataPack &source,double maximumSkills,PackMigra
         profile.headwindPoints=old.getPointsForFrontWind();profile.tailwindPoints=old.getPointsForBackWind();
         ::Hill hill;if(!hill.setSimulationProfile(profile,error))return false;migration.pack.hills.append(hill);
     }
-    if(!migration.photos.isEmpty())migration.warning+=QObject::tr(" Zdjęcia należy przenieść do folderu nowej paczki.");
     result=std::move(migration);error.clear();return true;
 }
 

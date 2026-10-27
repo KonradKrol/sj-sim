@@ -28,6 +28,7 @@ private:
     QString name, surname;
     QString countryCode;
     QString imageName;
+    QString simulationPackId, simulationAssetDirectory;
     double personalBest = 0;
     QDate birthDate;
     int birthYear = 0;
@@ -62,6 +63,9 @@ public:
     int ageInYear(int year) const { return getBirthYear() > 0 && year >= getBirthYear() ? year - getBirthYear() : -1; }
     QString getImageName() const;
     void setImageName(const QString &newImageName);
+    QString getImageFilePath() const;
+    void setSimulationPackContext(const QString &packId,const QString &assetDirectory);
+    QString getSimulationPackId() const { return simulationPackId; }
     std::optional<AthleteProfile> getSimulationProfile() const;
     bool setSimulationProfile(const AthleteProfile &, QString &error);
     static bool validateSimulationProfileJson(const QJsonObject &, QString &error);

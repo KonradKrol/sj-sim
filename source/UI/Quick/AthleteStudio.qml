@@ -17,7 +17,7 @@ ColumnLayout {
         SChoice {
             Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: Theme.dp(220)
             model: studio.backend.packs.map(function(p){return p.name+" · "+p.count})
-            currentIndex: studio.backend.packIndex; Accessible.name: qsTr("Paczka nowego modelu")
+            currentIndex: studio.backend.packIndex; Accessible.name: qsTr("Paczka zawodników")
             onActivated: studio.backend.selectPack(index)
         }
         RowLayout {

@@ -1,4 +1,5 @@
 #include "AthleteStudioController.h"
+#include "../simulation-v2/ProfilePackRepository.h"
 #include "../global/GlobalDatabase.h"
 #include "../global/GlobalSimulationSettings.h"
 #include "../global/CountryCodes.h"
@@ -49,10 +50,8 @@ AthleteStudioController::AthleteStudioController(QObject *parent,const QString &
     connect(this,&AthleteStudioController::changed,this,&AthleteStudioController::perksChanged);
     connect(this,&AthleteStudioController::changed,this,&AthleteStudioController::historyChanged);
     connect(this,&AthleteStudioController::changed,this,&AthleteStudioController::statusChanged);
-    for(const auto &entry:QDir(m_root).entryInfoList(QDir::Dirs|QDir::NoDotAndDotDot,QDir::Name)){
-        QJsonObject pack;QString error;if(readPack(entry.absoluteFilePath()+"/pack.json",pack,error) && pack["id"].toString()==entry.fileName())m_packs.append(pack);
-        else if(!error.isEmpty())m_message=tr("Nie wczytano paczki %1: %2").arg(entry.fileName(),error);
-    }
+    const auto loaded=SimulationV2::ProfilePackRepository(SimulationV2::ProfilePackKind::Athletes,m_root).load();
+    m_packs=loaded.packs;m_message=loaded.issues.join('\n');
     if(m_packs.isEmpty())m_packs.append(emptyPack(tr("Moi skoczkowie")));
     if(!currentPack()["profiles"].toArray().isEmpty())m_selected=0;
     m_lastPhoto=profile().value("photo").toString();
@@ -64,7 +63,9 @@ QJsonObject AthleteStudioController::currentPack()const{return m_packs.value(m_p
 QString AthleteStudioController::packName()const{return currentPack()["name"].toString();}
 QVariantList AthleteStudioController::selectedPerks()const {const auto entries=currentPack()["profiles"].toArray();return m_selected>=0 && m_selected<entries.size()?entries[m_selected].toObject()["perks"].toArray().toVariantList():QVariantList();}
 void AthleteStudioController::status(const QString &message){m_message=message;emit changed();}
-bool AthleteStudioController::persist(const QJsonObject &pack,QString &error)const{const auto path=directory(pack);if(!QDir().mkpath(path) || !writeJson(path+"/pack.json",pack)){error=tr("Nie udało się zapisać paczki. Zmiana nie została zastosowana.");return false;}return true;}
+bool AthleteStudioController::persist(const QJsonObject &pack,QString &error)const{
+    return SimulationV2::ProfilePackRepository(SimulationV2::ProfilePackKind::Athletes,m_root).save(pack,error,false);
+}
 bool AthleteStudioController::commit(const QJsonObject &next,int selection,const QString &message,bool perksOnly){if(next==currentPack()){m_selected=selection;return true;}QString error;QSet<QString> ids;const auto profiles=next["profiles"].toArray();if(profiles.size()>10000){status(tr("Paczka może mieć najwyżej 10 000 profili."));return false;}if(!perksOnly)for(const auto &entry:profiles){AthleteProfile checked;if(!AthleteProfile::fromJson(entry.toObject(),checked,error)){status(error);return false;}if(ids.contains(checked.id)){status(tr("Powtórzony identyfikator skoczka."));return false;}ids.insert(checked.id);}if(!persist(next,error)){status(error);return false;}m_undo.append(QJsonObject{{"pack",currentPack()},{"selection",m_selected}});if(m_undo.size()>100)m_undo.removeFirst();m_redo.clear();m_packs[m_pack]=next;m_selected=selection;m_message=message.isEmpty()?tr("Zapisano"):message;if(perksOnly){emit perksChanged();emit historyChanged();emit statusChanged();}else emit changed();return true;}
 QVariantList AthleteStudioController::packs()const{QVariantList list;for(const auto &p:m_packs)list.append(QVariantMap{{"name",p["name"].toString()},{"count",p["profiles"].toArray().size()}});return list;}
 QVariantList AthleteStudioController::profiles()const{QVariantList rows;const auto source=currentPack()["profiles"].toArray();for(int i=0;i<source.size();++i){auto p=source[i].toObject().toVariantMap();p["label"]=title(source[i].toObject());p["index"]=i;p["flag"]=QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(p["country"].toString())+".svg")).toString();rows.append(p);}return rows;}
@@ -110,7 +111,9 @@ void AthleteStudioController::choosePhoto(){const auto file=QFileDialog::getOpen
 void AthleteStudioController::openPackFolder(){QString error;if(!persist(currentPack(),error)){status(error);return;}if(!QDesktopServices::openUrl(QUrl::fromLocalFile(packDirectory())))status(tr("Nie udało się otworzyć folderu paczki: %1").arg(packDirectory()));}
 
 void AthleteStudioController::clearPhoto(){setPhoto({});}
-bool AthleteStudioController::readPack(const QString &file,QJsonObject &pack,QString &error)const{QFile input(file);if(!input.open(QIODevice::ReadOnly) || input.size()>20*1024*1024){error=tr("Nie można odczytać paczki (limit 20 MB). Zdjęcia są w osobnym folderze.");return false;}QJsonParseError parse;auto object=QJsonDocument::fromJson(input.readAll(),&parse).object();const auto id=object["id"].toString();if(parse.error!=QJsonParseError::NoError || object["format"]!="sj-sim-athlete-pack" || object["version"]!=1 || QUuid(id).isNull() || QUuid(id).toString(QUuid::WithoutBraces)!=id || object["name"].toString().trimmed().isEmpty() || object["name"].toString().size()>100 || !object["profiles"].isArray()){error=tr("Nieprawidłowy format nowej paczki skoczków.");return false;}QSet<QString> ids;const auto entries=object["profiles"].toArray();if(entries.size()>10000){error=tr("Paczka może mieć najwyżej 10 000 profili.");return false;}for(const auto &v:entries){AthleteProfile p;if(!v.isObject()){error=tr("Nieprawidłowy wpis skoczka w paczce.");return false;}if(!AthleteProfile::fromJson(v.toObject(),p,error))return false;if(ids.contains(p.id)){error=tr("Powtórzony identyfikator skoczka.");return false;}ids.insert(p.id);}pack=object;return true;}
+bool AthleteStudioController::readPack(const QString &file,QJsonObject &pack,QString &error)const{
+    return SimulationV2::ProfilePackRepository(SimulationV2::ProfilePackKind::Athletes,m_root).read(file,pack,error);
+}
 bool AthleteStudioController::exportTo(const QString &destination){
     if(QFileInfo::exists(destination)){status(tr("Wybierz nowy folder. Istniejące pliki nie zostaną nadpisane."));return false;}
     if(!QDir().mkpath(destination)){status(tr("Nie udało się utworzyć folderu eksportu."));return false;}

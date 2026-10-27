@@ -28,6 +28,8 @@ SOURCES += \
     source/simulation-v2/Engine.cpp \
     source/simulation-v2/ProfileBridge.cpp \
     source/simulation-v2/ProfileMigration.cpp \
+    source/simulation-v2/ProfilePackRepository.cpp \
+    source/simulation-v2/SimulationCatalog.cpp \
     source/simulation-v2/GameSimulationBridge.cpp \
     source/hills/HillProfile.cpp \
     source/hills/HillStudioController.cpp \
@@ -196,6 +198,8 @@ HEADERS += \
     source/simulation-v2/Engine.h \
     source/simulation-v2/ProfileBridge.h \
     source/simulation-v2/ProfileMigration.h \
+    source/simulation-v2/ProfilePackRepository.h \
+    source/simulation-v2/SimulationCatalog.h \
     source/hills/HillProfile.h \
     source/hills/HillStudioController.h \
     source/athletes/AthleteProfile.h \
