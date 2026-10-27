@@ -15,3 +15,9 @@ mkdir -p "${build_dir}"
     "${repo_root}/tests/simulation-v2-quality.cpp" \
     -o "${build_dir}/simulation-v2-quality"
 "${build_dir}/simulation-v2-quality"
+"${CXX:-g++}" -std=c++17 -O2 -Wall -Wextra -Wpedantic -pthread \
+    "${repo_root}/source/simulation-v2/RandomSource.cpp" \
+    "${repo_root}/source/simulation-v2/Weather.cpp" \
+    "${repo_root}/tests/simulation-v2-weather.cpp" \
+    -o "${build_dir}/simulation-v2-weather"
+"${build_dir}/simulation-v2-weather"

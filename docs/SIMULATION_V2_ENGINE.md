@@ -54,3 +54,51 @@ Jakość po losowaniu nie jest arbitralnie obcinana do zakresu OVR.
 dokładność punktów krzywej, jej monotoniczność, znaczenie perków,
 proporcję wpływu 65/35 i częstość stron w dużej próbie, alternatywę
 Laplace'a oraz powtarzalność generatorów w zadaniach równoległych.
+
+## Pogoda ciągła
+
+`WeatherField` oddziela silnik skoku od dostawcy warunków. `ContinuousWeather`
+jest niezmienny i bezpieczny do równoległego odczytu. Zwraca składową przednią
+i boczną w m/s dla odległości w metrach oraz umownego czasu konkursu w sekundach.
+Czasu nie bierze z zegara systemowego: tę samą sekwencję skoków można rozegrać
+ręcznie albo masowo bez wpływu wydajności UI na pogodę.
+
+Pole składa się z:
+
+- referencyjnych wektorów interpolowanych gładko, bez nadstrzałów składowych;
+  pierwszy/ostatni wektor obowiązuje również przed/za zakresem punktów;
+- wspólnej zmiany w czasie i lokalnego, skorelowanego pola przestrzeń–czas;
+  wartości na siatce są wyprowadzane z seeda i współrzędnych, z interpolacją
+  smoothstep, zamiast ponownie losowane przy każdym odczycie;
+- krótkich podmuchów o czasie życia, szerokości i prędkości przemieszczania;
+  ich obwiednia płynnie narasta i zanika w czasie i przestrzeni;
+- jawnego ograniczenia maksymalnej siły wektora.
+
+Referencje, amplitudy, skale korelacji oraz siła, częstość, szerokość i prędkość
+podmuchów są parametrami. Zerowe amplitudy pozwalają uzyskać stałe warunki.
+Duże różnice i odwrócenie kierunku na zeskoku są dozwolone. Identyczne
+współrzędne i seed dają identyczny odczyt niezależnie od kolejności zapytań.
+
+`proposeWeather` tworzy edytowalny punkt wyjścia. Na III poziomie stabilności
+proponuje spokojny charakter w 85% losowań, loteryjności w 8%. Silny perk
+kierunku daje 94% szans preferowanego znaku początkowej składowej przedniej.
+To początkowe współczynniki, nie statystyka rzeczywistej skoczni. Gotowe pole
+nie otrzymuje perków skoczni, więc ręczne warunki nie są nimi potajemnie zmieniane.
+
+Opady są w zakresie 0–10: brak, stałe, zmienne, śnieżyca/ulewa, narastające.
+Intensywność, zmienność, korelacja i tempo narastania są edytowalne. Rodzaj
+wynika z nawierzchni. Miesiąc i kraj służą wyłącznie do zgrubnej, edytowalnej
+propozycji; to nie model klimatu. Sam wpływ opadów na skok wdraża moduł lotu.
+
+Testy obejmują ciągłość, korelację pobliskich odczytów, ewolucję, powtarzalność
+przy odwróconej kolejności i ośmiu wątkach, skrajne parametry, wszystkie warianty
+opadów oraz po 10 tys. propozycji dla przeciwstawnych perków.
+
+### Status pomiaru do rekompensaty
+
+Pole pogody nie narzuca sposobu uśredniania do punktacji. W publicznych materiałach
+FIS i producenta nie potwierdzono jeszcze dokładnych wag i okien czasowych;
+nie deklarować pełnej zgodności z FIS. Producent potwierdza osobną aplikację
+pomiaru i przetwarzania danych wszystkich anemometrów dla systemu Wind/Gate,
+ale karta produktu nie publikuje pełnego algorytmu.
+[Swiss Timing — system konkursowy](https://www.swisstiming.com/fileadmin/Resources/Data/Datasheets/DOCM_SJ_Competition-System_1215_EN.pdf).

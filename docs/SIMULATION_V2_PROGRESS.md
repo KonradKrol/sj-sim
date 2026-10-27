@@ -156,3 +156,15 @@ nie wpływa na jakość. Oba moduły nadal są oddzielone od aktywnej gry.
 
 Testy przechodzą, w tym porównania po 200 tys. próbek. Opis wzorów i początkowych
 współczynników: [SIMULATION_V2_ENGINE.md](SIMULATION_V2_ENGINE.md).
+
+## Pole pogody
+
+Gotowy niezależny interfejs `WeatherField` oraz `ContinuousWeather`: referencje,
+korelacje czasu/przestrzeni, przemieszczające się podmuchy i ograniczenie siły.
+Odczyty są niezmienne i deterministyczne. Gotowe pięć scenariuszy opadów 0–10
+oraz propozycje warunków silnie zależne od obu perków pogodowych skoczni.
+Perki nie są argumentem pola, więc nie nadpisują ręcznie wybranych warunków.
+
+Testy granic, ciągłości, korelacji, odczytów równoległych i rozkładu propozycji
+przechodzą. Pole nadal nie jest podłączone do aktywnej gry. Dokładny algorytm
+pomiaru do rekompensaty wymaga dalszej weryfikacji; nie jest jeszcze wdrożony.
