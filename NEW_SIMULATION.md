@@ -59,8 +59,8 @@ Korytarze, kierunki i siły wiatru pozostają zrozumiałe dla użytkownika. Wart
 
 ### Warunki na skoczni
 
-- Wiatr ma **pamięć między skokami**: następny zawodnik zwykle startuje przy warunkach podobnych do poprzedniego, a siła i kierunek stopniowo się zmieniają. Czas między skokami i przerwy mogą wpływać na wielkość zmiany.
-- Sąsiednie miejsca są powiązane. Istnieje ogólny wiatr na skoczni oraz lokalne odchylenia, np. bardziej osłonięty albo wystawiony fragment. Nie losujemy niezależnie zupełnie nowego wiatru dla każdego metra.
+- Wiatr **zmienia się przez cały konkurs** i ma pamięć między skokami: następny zawodnik często startuje przy warunkach podobnych do poprzedniego, a siła i kierunek stopniowo się zmieniają. Czas między skokami i przerwy mogą wpływać na wielkość zmiany. Pamięć nie może jednak wygładzać wszystkiego: czasami warunki zmieniają się bardzo gwałtownie, także w trakcie skoku albo między dwoma kolejnymi zawodnikami. Dopuszczać również szybkie odwrócenie kierunku i nagłe podmuchy.
+- Sąsiednie miejsca bywają powiązane, ale nie muszą mieć niemal identycznego wiatru. Istnieje ogólny wiatr na skoczni oraz lokalne odchylenia, np. bardziej osłonięty albo wystawiony fragment. Czasami jednocześnie różne fragmenty skoczni mają bardzo różne siły lub nawet przeciwne kierunki. Natężenie lokalnych różnic oraz nagłych zmian powinno wynikać z warunków, losowości i charakteru skoczni, a nie być stale takie samo. Nie losujemy niezależnie zupełnie nowego wiatru dla każdego metra.
 - Podmuch ma siłę, kierunek, zasięg i czas trwania. Może przemieszczać się wzdłuż skoczni; zawodnik może trafić na niego w środku dotychczasowego korytarza i odczuć go tylko przez część lotu.
 - Warunki między punktami odniesienia zmieniają się płynnie, bez sztucznych skoków na granicach. Interpolacja nie powinna sama tworzyć niezamierzonych ekstremów. Warunki w ostatnim obszarze działają aż do lądowania także przy bardzo dalekim skoku.
 - Losowość ma być spójna w czasie i przestrzeni: ponowny odczyt wiatru w tym samym miejscu i chwili nie może dawać nowego, niezależnego wyniku. Ten sam seed i konfiguracja powinny pozwalać powtórzyć eksperyment.
@@ -90,11 +90,25 @@ To **wyłącznie poglądowy przykład**, nie gotowe współczynniki ani deklarac
 
 Gdyby wiatr −2,0 m/s pozostał taki sam, zawodnik lądowałby około 76,5 m. Jeśli na 70. metrze trafia na utrzymujący się podmuch +4,0 m/s, zapas wystarcza w tym rachunku do około 83,5 m. Podmuch uratował około 7 m, ale nie cofnął wcześniejszych strat. Gdyby zaczynał się dopiero na 80. metrze, zawodnik nie doleciałby do niego i nie miałby on wpływu. Przykład pomija stopniowe narastanie reakcji, aby pokazać mechanizm.
 
-### Pomiar i rekompensata
+### Podgląd korytarzy podczas skoku
 
-Rzeczywisty wpływ wiatru na skok oraz pomiar używany do punktów to **oddzielne rzeczy**. System punktowy może korzystać z uproszczonego pomiaru w kilku miejscach i czasie, a następnie stosować współczynniki skoczni oraz zasady konkursu. Nie powinien znać idealnie rzeczywistego efektu wiatru ani automatycznie go zerować: dwóch zawodników z podobnym pomiarem może odczuć inne warunki podczas lotu.
+Użytkownik ma móc na życzenie zobaczyć **przybliżony obraz warunków w poszczególnych korytarzach dla konkretnego skoku** — w podglądzie skoku podczas konkursu i później w archiwum. Ma być jasne, że ciągłe pole wiatru zostało tu zagregowane do czytelnych odcinków, a pokazane liczby są przybliżeniem, nie pełnym zapisem każdej zmiany w czasie.
 
-Zasady uwzględniania punktów pomiaru i odległości trzeba określić oraz sprawdzić osobno od wzoru lotu. Zachować czytelność wyświetlanego wiatru i rekompensaty; nie zakładać bez pomiarów, że tylny lub przedni wiatr musi być zawsze w pełni zrekompensowany.
+- Dla odcinków pokazać ich zakres, kierunek i siłę wiatru; jeśli w obrębie odcinka była duża zmiana lub podmuch, umożliwić jej zauważenie bez mylenia z jedną stałą wartością.
+- Rozróżnić odcinki faktycznie przebyte przez skoczka, częściowo przebyte i te poza miejscem lądowania. Te ostatnie nie mogą być przedstawiane jako wpływające na odległość.
+- Osobno pokazać wynik pomiaru użytego do rekompensaty i same punkty, aby przybliżony podgląd odczutych warunków nie wyglądał na oficjalny pomiar punktowy. Kolory kierunku uzupełnić liczbami i czytelnymi oznaczeniami.
+- Zapisać wystarczająco informacji, by ten sam podgląd odtworzyć po zamknięciu gry i w archiwum. Nie zakładać, że samo ponowne użycie seeda będzie trwałym zapisem po zmianie wersji algorytmu; dobrać reprezentację z uwzględnieniem rozmiaru zapisów i kompatybilności.
+
+### Pomiar i rekompensata zgodne z rzeczywistymi zasadami
+
+**Rekompensaty mają działać jak w prawdziwych skokach**, według właściwych przepisów dla danego konkursu, a nie idealnie odwracać obliczony przez symulator wpływ wiatru na odległość. Rzeczywisty wpływ wiatru na skok oraz pomiar używany do punktów to oddzielne rzeczy: dwóch zawodników z podobnym pomiarem może odczuć inne warunki podczas lotu.
+
+- Dla pomiaru wiatru wzdłuż zeskoku stosować odpowiedni współczynnik skoczni: przy korzystnym wietrze pod narty punkty są odejmowane, przy tylnym dodawane; przy zerze nie ma punktów za wiatr. Uwzględnić właściwe współczynniki dla obu kierunków i zasady zaokrąglania. Przykład oficjalny: pomiar +0,39 m/s i współczynnik 9,26 pkt/(m/s) daje −3,6 pkt. [Zasady zawodów olimpijskich 2026](https://wmr-static-assets.scd.dgplatform.net/wmr/static/_PDF/OWG2026/SJP/2026-02-02/SJP-------------------------------__N02A_1.0.pdf).
+- Uwzględnić także rzeczywiste zasady rekompensaty za belkę, w tym rozróżnienie decyzji jury i obniżenia przez trenera oraz próg 95% HS tam, gdzie wymagają tego przepisy. [Przepisy FIS, art. 422.1](https://assets.fis-ski.com/f/252177/x/c67426c343/icr-ski-jumping-2024_e_clean.pdf).
+- Przed implementacją zweryfikować w aktualnych oficjalnych przepisach i dokumentacji technicznej dokładny układ punktów pomiarowych dla systemu rekompensaty, okna czasowe, ważenie, sposób uwzględniania odległości i zaokrąglanie. Nie wymyślać ich ani nie zakładać, że trzy ogólne stanowiska pomiaru warunków opisane w ICR są automatycznie całym układem używanym przez system wind/gate; ICR odsyła tu do osobnych zasad. [FIS ICR, art. 415.3](https://assets.fis-ski.com/f/252177/x/c67426c343/icr-ski-jumping-2024_e_clean.pdf).
+- **Stan obecny Sj.Sim:** istnieje już wyliczanie średniego wiatru i rekompensaty z osobnymi współczynnikami skoczni dla wiatru przedniego i tylnego, a także rekompensata za belkę oraz logika progu 95% HS. Dostępne są różne sposoby uśredniania i uwzględniania odległości; sam fakt, że kod istnieje, nie potwierdza jeszcze pełnej zgodności z aktualną metodą FIS. Przed migracją porównać te mechanizmy z przepisami, zachować lub świadomie zmigrować ustawienia i stare zapisy oraz dodać przykłady i testy zgodności.
+
+Wyświetlać czytelnie zmierzony wiatr, rekompensatę za wiatr, rekompensatę za belkę i sumę. Nie zakładać, że rzeczywisty wpływ wiatru na wynik musi być w każdym skoku w pełni wyrównany.
 
 ### Wydajność i strojenie
 
