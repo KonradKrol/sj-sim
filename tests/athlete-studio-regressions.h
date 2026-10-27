@@ -3,6 +3,26 @@
 #include "../source/athletes/AthleteProfile.h"
 #include <QStandardPaths>
 
+static void athleteLibraryRegressions(QQuickWidget *view,AthleteStudioController *backend){
+    auto *library=item(view->rootObject(),"athleteLibrary");auto *rows=item(view->rootObject(),"athleteList");auto *editor=item(view->rootObject(),"athleteEditor");
+    check(library && rows && editor,"athlete list and editor share the workspace");
+    check(library->mapToScene(QPointF()).x()+library->width()<=editor->mapToScene(QPointF()).x(),"athlete list stays to the left of the editor");
+    for(int n=1;n<=40;++n){backend->add();backend->setValue("name",QString("Test%1").arg(n,2,10,QLatin1Char('0')));backend->setValue("surname","Lista");}
+    backend->setValue("country","NOR");backend->select(0);QTest::qWait(80);check(rows->property("count").toInt()==41,"all profiles appear in the side list");
+    auto *name=item(view->rootObject(),"athleteName");name->forceActiveFocus();QTest::keyClick(view,Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(view,"Aleksander zmieniony");
+    auto *second=item(view->rootObject(),"athleteListRow-1");check(second,"second athlete row is visible");const auto point=second->mapToScene(QPointF(second->width()/2,second->height()/2)).toPoint();QTest::mouseClick(view,Qt::LeftButton,Qt::NoModifier,point);QTest::qWait(60);
+    check(backend->selectedIndex()==1 && backend->profile()["name"]=="Test01","single click changes athlete without writing old input into the next profile");
+    check(backend->profiles()[0].toMap()["name"]=="Aleksander zmieniony","pending name edit commits before changing athlete");backend->select(0);backend->setValue("name","Aleksander");
+    auto *search=item(view->rootObject(),"athleteListSearch");search->forceActiveFocus();QTest::keyClicks(view,"Test35");QTest::qWait(40);check(rows->property("count").toInt()==1,"athlete list filters names");clickControl(view,"athleteListRow-35");check(backend->selectedIndex()==35,"filtered row selects original profile index");
+    library->setProperty("query","NOR");QTest::qWait(30);check(rows->property("count").toInt()==1,"athlete list filters countries");clickControl(view,"athleteListRow-40");check(backend->selectedIndex()==40,"country result selects the correct athlete");library->setProperty("query","");QTest::qWait(50);
+    rows->setProperty("contentY",350);QTest::qWait(30);const auto scroll=rows->property("contentY").toReal();backend->setValue("overall",88);QTest::qWait(50);check(qAbs(rows->property("contentY").toReal()-scroll)<1,"editing a profile preserves list scroll");
+    backend->remove();QTest::qWait(30);check(rows->property("count").toInt()==40 && backend->selectedIndex()==39,"deleting selected athlete synchronizes list selection");backend->undo();QTest::qWait(30);check(rows->property("count").toInt()==41 && backend->selectedIndex()==40,"undo restores removed athlete and selection");
+    rows->forceActiveFocus();QTest::keyClick(view,Qt::Key_Home);QTest::qWait(30);check(backend->selectedIndex()==0,"Home selects first athlete");QTest::keyClick(view,Qt::Key_Down);QTest::qWait(30);check(backend->selectedIndex()==1,"arrow keys select neighboring athletes");
+    for(int n=40;n>0;--n){backend->select(n);backend->remove();}backend->select(0);
+    const auto originalPack=backend->packIndex();library->setProperty("query","missing");backend->createPack();QTest::qWait(40);check(library->property("query").toString().isEmpty() && rows->property("count").toInt()==0,"changing pack clears stale filter and list");backend->selectPack(originalPack);QTest::qWait(60);check(rows->property("count").toInt()==1 && backend->selectedIndex()==0,"returning to original pack restores its list");
+    qInfo()<<"PASS: athlete side list, pending edits, filtered selection, keyboard navigation, preserved scroll, deletion, undo and pack switching";
+}
+
 static void athleteStudioRegressions(MainWindow &main,bool patchesOnly=false){
     QStandardPaths::setTestModeEnabled(true);
     QTemporaryDir data;check(data.isValid(),"athlete studio isolated data");
@@ -32,6 +52,7 @@ static void athleteStudioRegressions(MainWindow &main,bool patchesOnly=false){
     QFile blocked(data.path()+"/blocked");check(blocked.open(QIODevice::WriteOnly),"blocked storage fixture");blocked.close();AthleteStudioController denied(nullptr,blocked.fileName());denied.add();check(denied.profiles().isEmpty() && !denied.message().isEmpty(),"failed write preserves current model and reports failure");
     const QString previousApp=QCoreApplication::applicationName();QCoreApplication::setApplicationName("SjSimAthleteTest-"+QUuid::createUuid().toString(QUuid::WithoutBraces));const auto isolatedStorage=QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     main.show();main.resize(1440,1000);DatabaseEditorWindow window(&main);window.show();QTest::qWait(200);auto *backend=qobject_cast<AthleteStudioController *>(window.property("athleteStudio").value<QObject *>());check(backend,"database provides isolated athlete controller");clickControl(scene(&window),"athleteNewMode");QTest::qWait(80);check(item(scene(&window)->rootObject(),"athleteStudio"),"new mode opens in same database section");clickControl(scene(&window),"athleteAdd");backend->setValue("name","Aleksander");backend->setValue("surname","Nowak");backend->setValue("overall",87);backend->setValue("form",76);backend->setValue("personalBest",218.5);backend->setPerk(1,1,2,false);backend->setPerk(2,-1,1,false);QTest::qWait(80);
+    athleteLibraryRegressions(scene(&window),backend);
     for(int view=0;view<5;++view){
         if(patchesOnly && view!=1)continue;
         qApp->setProperty("athleteTestStage",QString("main %1").arg(view));

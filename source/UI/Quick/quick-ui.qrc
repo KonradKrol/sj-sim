@@ -10,6 +10,7 @@
 <file>AthleteIdentity.qml</file>
 <file>AthleteInsignia.qml</file>
 <file>AthleteLanding.qml</file>
+<file>AthleteLibrary.qml</file>
 <file>AthleteMedals.qml</file>
 <file>AthletePatches.qml</file>
 <file>AthletePatchRack.qml</file>

@@ -14,7 +14,7 @@ Wspólne pozostają dane i podstawowe reguły wyboru. Każda koncepcja ma własn
 - **Karta:** kolekcjonerska karta ze złotą oprawą, zdjęciem albo inicjałami, edytowalnymi wartościami i odznakami przypiętymi do karty; obok dostępne perki.
 - **Postać:** ekran zawodnika z autorską wektorową sylwetką narciarza, opcjonalnym zdjęciem i przypisanymi odznakami; fioletowa oprawa oraz kolekcja perków poniżej.
 
-**Imię, nazwisko i kraj są na początku każdej wersji.** Lądowanie wybiera się z pięciu nazwanych opcji. Zawodnika wybiera się z wyszukiwalnej listy u góry; stała boczna lista nie zmniejsza obszaru projektów. Zmiana wersji zachowuje profil, parametry i perki.
+**Imię, nazwisko i kraj są na początku każdej wersji.** Lądowanie wybiera się z pięciu nazwanych opcji. Aktualizacja z 27.10: zawodnika wybiera się jednym kliknięciem na wyszukiwalnej liście po lewej, jak w klasycznym edytorze. Na małym oknie lista i formularz są przełączane zakładkami. Pasek koncepcji usunięto; interfejs otwiera Naszywki, a pozostałe warianty pozostają w kodzie. Szczegóły: [lista skoczków](ATHLETE_LIBRARY_2026-10-27.md).
 
 Nie ma akapitów opisowych przy perkach. Wszystkie sześć symboli jest dostępnych od razu, w przeciwstawnych parach. Wybrane odznaki są dodatkowo przypisane do zawodnika, zależnie od koncepcji: na karcie, przy sylwetce albo w osobnych miejscach. Brak zdjęcia jest obsłużonym stanem, bez konieczności uzupełniania pustego portretu.
 

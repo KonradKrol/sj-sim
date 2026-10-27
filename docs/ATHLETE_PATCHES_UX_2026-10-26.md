@@ -5,6 +5,7 @@ Rozwijany jest istniejący widok Naszywki. Dwa kolejne projekty odłożono. Pase
 ## Interfejs
 
 - Naszywki są domyślne po wejściu do nowego edytora.
+- Nowy edytor ma listę skoczków po lewej, z flagami, OVR i wyszukiwaniem. Jeden klik zmienia zawodnika; edycja nie resetuje przewinięcia listy. Na małym oknie są zakładki Lista/Edycja. Szczegóły aktualizacji z 27.10: [lista skoczków](ATHLETE_LIBRARY_2026-10-27.md).
 - Tła, teksty, pola i kolory działań korzystają z Theme Sj.Sima w obu motywach. Barwy perków pozostają przede wszystkim wewnątrz samych naszywek.
 - Zachowano duże OVR, mocne nagłówki i trzy oddzielne kategorie. W każdej są dwie wzajemnie wykluczające się opcje.
 - Perki są oznaczone jako opcjonalne. Kliknięcie wybiera lub odznacza naszywkę, a wybór przeciwieństwa zastępuje poprzednią.
