@@ -26,14 +26,20 @@ ColumnLayout {
             objectName: "athleteAssigned-"+index
             visible: reveal>0; enabled: value!==0; hoverEnabled: true; opacity: reveal; clip: true
             Layout.fillWidth: true; Layout.minimumWidth: 0
-            implicitHeight: (contentItem.implicitHeight+topPadding+bottomPadding)*reveal; padding: Theme.dp(4)
+            implicitHeight: (Math.max(Theme.dp(33),nameMeasure.implicitHeight,removeLabel.implicitHeight)+topPadding+bottomPadding)*reveal; padding: Theme.dp(4)
             Accessible.name: qsTr("Usuń przypisany perk: %1").arg(perk.name)
+            Text {
+                id: nameMeasure
+                visible: false
+                width: Math.max(1,(set.width>0 ? set.width : Theme.dp(250))-Theme.dp(50)-removeLabel.implicitWidth)
+                text: nameLabel.text; font.family: Theme.bodyFamily; font.pointSize: Theme.body; wrapMode: Text.WordWrap
+            }
             background: Rectangle { color: assigned.empowered ? "#241237" : assigned.enhanced ? "#ffcd57" : assigned.hovered ? Theme.selection : "transparent"; radius: Theme.dp(5); border.width: assigned.enhanced || assigned.activeFocus ? 2 : 0; border.color: assigned.empowered ? "#ffb941" : assigned.enhanced ? "#64400a" : Theme.accent }
             contentItem: RowLayout {
                 spacing: Theme.dp(6)
                 AthletePerkArt { family: "patch"; perkKey: assigned.perk.key; tier: Math.abs(assigned.value); sourceSize.width: 96; sourceSize.height: 96; Layout.preferredWidth: Theme.dp(30); Layout.preferredHeight: Theme.dp(33); Accessible.ignored: true }
-                Label { text: qsTr("%1 · %2").arg(assigned.perk.name).arg(["","I","II","III"][Math.abs(assigned.value)]); Layout.fillWidth: true; Layout.minimumWidth: 0; wrapMode: Text.WordWrap; color: assigned.empowered ? "#fff1d2" : assigned.enhanced ? "#30210c" : Theme.ink; font.pointSize: Theme.body }
-                Label { text: "×"; color: assigned.empowered ? "#fff1d2" : assigned.enhanced ? "#30210c" : Theme.muted; font.pointSize: Theme.section }
+                Label { id: nameLabel; text: qsTr("%1 · %2").arg(assigned.perk.name).arg(["","I","II","III"][Math.abs(assigned.value)]); Layout.fillWidth: true; Layout.minimumWidth: 0; wrapMode: Text.WordWrap; color: assigned.empowered ? "#fff1d2" : assigned.enhanced ? "#30210c" : Theme.ink; font.family: Theme.bodyFamily; font.pointSize: Theme.body }
+                Label { id: removeLabel; text: "×"; color: assigned.empowered ? "#fff1d2" : assigned.enhanced ? "#30210c" : Theme.muted; font.pointSize: Theme.section }
             }
             onClicked: set.backend.setPerk(index,value>0?1:-1,Math.abs(value),true)
             ToolTip.visible: hovered && !down

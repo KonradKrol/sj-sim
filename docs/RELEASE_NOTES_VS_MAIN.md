@@ -12,6 +12,10 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
 - Starsze raporty opisują kolejne etapy prac. W razie rozbieżności stan końcowy opisany tutaj ma pierwszeństwo. Szczególnie istotne korekty są zebrane w sekcji „Rozwiązania zastąpione podczas prac”.
 
+## Uzupełnienie — start Qt Quick na Linuksie (27.10.2026)
+
+- Przywrócono zgodne z Qt 5.15 importy komponentów menu, edytora skoczni i kontrolek perków, zachowując składnię używaną także z Qt 6. Zastąpiono właściwości siatki dostępne tylko w Qt 6 tak, aby karty menu nadal miały równe wymiary. Wyeliminowano pętle wysokości w kafelkach menu i przypisanych perkach. Build, start właściwego programu oraz regresje menu, animacji i edytorów skoczni i skoczków przeszły na Qt 5.15.3; Qt 6 nie budowano w tym środowisku. [Szczegóły i polecenia](LINUX_QT5_STARTUP_2026-10-27.md).
+
 ## Uzupełnienie — planowanie weekendów i obsługa klasyfikacji (25.10.2026)
 
 - Automatyczny zapis zasad w kalendarzu, także dla treningów i serii próbnych; bez przycisku zastosowania, z bezpiecznym przełączaniem konkursów i Cofnij/Ponów.
