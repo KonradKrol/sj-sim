@@ -47,6 +47,8 @@ Przed zadaniem pytań poeksploruj wpierw bazę kodu.
 
 # Nowy silnik formy
 
+<na razie forma jest taka jaka jest, za niedlugo zrobimy auto-zmianę formy w sezonie>
+
 # Nowy system wiatru
 
 ## Ciągły model wiatru i lotu
@@ -101,7 +103,7 @@ Użytkownik ma móc na życzenie zobaczyć **przybliżony obraz warunków w posz
 
 ### Pomiar i rekompensata zgodne z rzeczywistymi zasadami
 
-**Rekompensaty mają działać jak w prawdziwych skokach**, według właściwych przepisów dla danego konkursu, a nie idealnie odwracać obliczony przez symulator wpływ wiatru na odległość. Rzeczywisty wpływ wiatru na skok oraz pomiar używany do punktów to oddzielne rzeczy: dwóch zawodników z podobnym pomiarem może odczuć inne warunki podczas lotu.
+**Sposób uśredniania wiatru z pomiarów ma odpowiadać rzeczywistemu systemowi w skokach**, według właściwych przepisów dla danego konkursu. Chodzi przede wszystkim o to, jak z pomiarów powstaje wyświetlana wartość wiatru używana do punktacji; samo mnożenie przez współczynnik rekompensaty jest osobnym krokiem. Rzeczywisty wpływ wiatru na skok oraz pomiar używany do punktów to oddzielne rzeczy: dwóch zawodników z podobnym pomiarem może odczuć inne warunki podczas lotu. Rekompensata nie ma idealnie odwracać obliczonego przez symulator wpływu na odległość.
 
 - Dla pomiaru wiatru wzdłuż zeskoku stosować odpowiedni współczynnik skoczni: przy korzystnym wietrze pod narty punkty są odejmowane, przy tylnym dodawane; przy zerze nie ma punktów za wiatr. Uwzględnić właściwe współczynniki dla obu kierunków i zasady zaokrąglania. Przykład oficjalny: pomiar +0,39 m/s i współczynnik 9,26 pkt/(m/s) daje −3,6 pkt. [Zasady zawodów olimpijskich 2026](https://wmr-static-assets.scd.dgplatform.net/wmr/static/_PDF/OWG2026/SJP/2026-02-02/SJP-------------------------------__N02A_1.0.pdf).
 - Uwzględnić także rzeczywiste zasady rekompensaty za belkę, w tym rozróżnienie decyzji jury i obniżenia przez trenera oraz próg 95% HS tam, gdzie wymagają tego przepisy. [Przepisy FIS, art. 422.1](https://assets.fis-ski.com/f/252177/x/c67426c343/icr-ski-jumping-2024_e_clean.pdf).
