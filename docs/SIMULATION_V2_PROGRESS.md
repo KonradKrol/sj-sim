@@ -68,15 +68,15 @@ kalibracji model. Może pozostać kandydatem do eksperymentu lub testów skrajny
 - [ ] Rozszerzyć skocznie o nową parę kierunku wiatru; stare zestawy trzech par
   odczytywać z neutralnym nowym perkiem. Wpływ kierunku i loteryjności skoczni
   stosować do automatycznych propozycji, bez ukrytych zmian ręcznych ustawień.
-- [ ] Przygotować niezależny od UI rdzeń: wejście skoku, kontekst wydarzenia,
+- [x] Przygotować niezależny od UI rdzeń: wejście skoku, kontekst wydarzenia,
   konfiguracja współczynników i wynik z danymi do analizy.
-- [ ] Oddzielić przez interfejsy źródło losowości i warunki pogodowe od rdzenia;
+- [x] Oddzielić przez interfejsy źródło losowości i warunki pogodowe od rdzenia;
   unikać mutowalnych globalnych ustawień w pracy równoległej.
-- [ ] Zaimplementować OVR, niezależną formę, perki zawodnika i skoczni oraz
+- [x] Zaimplementować OVR, niezależną formę, perki zawodnika i skoczni oraz
   ważność wydarzenia jako kategorię, zamiast starej liczby.
-- [ ] Zaimplementować odległość, belkę i skończony zapas lotu z konfigurowalnymi
+- [x] Zaimplementować odległość, belkę i skończony zapas lotu z konfigurowalnymi
   współczynnikami, bez rzeczywistej trajektorii fizycznej.
-- [ ] Dodać ciągłą pogodę w przestrzeni i umownym czasie konkursu, korelacje,
+- [x] Dodać ciągłą pogodę w przestrzeni i umownym czasie konkursu, korelacje,
   lokalne różnice i gwałtowne podmuchy. Ręczne i masowe symulowanie nie może
   zależeć od szybkości klikania ani czasu renderowania UI.
 - [ ] Zweryfikować rzeczywistą metodę uśredniania pomiarów wiatru i oddzielić
@@ -86,7 +86,7 @@ kalibracji model. Może pozostać kandydatem do eksperymentu lub testów skrajny
 - [ ] Dodać opady 0–10, zmiany w konkursie i pięć prostych scenariuszy.
   Kandydat na piąty scenariusz: narastające opady. Sugestie daty/kraju mają być
   edytowalne przed konkursem; nie traktować ich jako dokładnej prognozy pogody.
-- [ ] Przebudować lądowanie i noty: płynne ryzyko w zależności od real HS,
+- [x] Przebudować lądowanie i noty w rdzeniu: płynne ryzyko w zależności od real HS,
   wpływ klasy lądowania tylko zgodny ze specyfikacją, kalibracja wysokich not.
 - [ ] Przenieść punktację, DSQ/DNS, podgląd odległości i automatyczną belkę.
 - [ ] Podłączyć nowe modele do bazy, konfiguracji i konkursów indywidualnych,
@@ -168,3 +168,18 @@ Perki nie są argumentem pola, więc nie nadpisują ręcznie wybranych warunków
 Testy granic, ciągłości, korelacji, odczytów równoległych i rozkładu propozycji
 przechodzą. Pole nadal nie jest podłączone do aktywnej gry. Dokładny algorytm
 pomiaru do rekompensaty wymaga dalszej weryfikacji; nie jest jeszcze wdrożony.
+
+## Gotowy samodzielny rdzeń skoku
+
+`Engine` łączy jakość, lot, pogodę, lądowanie, noty i punktację. Zawiera DSQ/DNS,
+deterministyczny podgląd odległości, osobne obniżenie belki jury/trenera i próg
+95% HS. Wynik zawiera opcjonalny ślad ekspozycji w sekcjach; trwały zapis
+i pokazanie go w UI pozostają do zrobienia. Strategia pomiaru wiatru jest
+oddzielna, dostępna wersja z jawnymi stanowiskami/wagami jest eksperymentalna,
+nie potwierdzona jako dokładny algorytm FIS.
+
+`scripts/test-simulation-v2-core.sh` — PASS, m.in. 4000 losowych skrajnych
+konfiguracji, zbieżność kroku, brak wpływu nieosiągniętego podmuchu, geometria,
+landing skill tylko w notach oraz zgodność wyników przy pracy równoległej.
+Cel OVR90/70 na K120: **15,35 m** średniej różnicy w 20 tys. sparowanych seedów.
+Cały rdzeń nadal wymaga podłączenia do projektu, danych i aktywnej gry.

@@ -102,3 +102,93 @@ nie deklarować pełnej zgodności z FIS. Producent potwierdza osobną aplikacj�
 pomiaru i przetwarzania danych wszystkich anemometrów dla systemu Wind/Gate,
 ale karta produktu nie publikuje pełnego algorytmu.
 [Swiss Timing — system konkursowy](https://www.swisstiming.com/fileadmin/Resources/Data/Datasheets/DOCM_SJ_Competition-System_1215_EN.pdf).
+
+## Zapas lotu, belka i zeskok
+
+`Engine` składa `QualityModel`, `FlightModel`, `LandingModel` i osobną strategię
+pomiaru wiatru. Przyjmuje wyłącznie wartości wejściowe, lokalny RNG i pogodę.
+Nie modyfikuje profili, UI, globalnych ustawień ani pola pogody. Jedną instancję
+można bezpiecznie współdzielić między zadaniami z oddzielnymi RNG.
+
+Początkowy zapas ma jednostki umowne odpowiadające metrom spokojnego lotu:
+
+```
+baza = K × 0,95 + (jakość − 70) × 1,107142857 × K/120
+belka = (belka rzeczywista − 10) × 2,5 × K/120
+        × (1 + 0,04 × max(0, −wiatr przy starcie))
+zapas = max(0, (baza + belka) × (1 − 0,008 × opady))
+```
+
+Wszystkie współczynniki są w `FlightParameters`. Dozwolony zakres zapasu
+ma dodatkowy techniczny limit miliona jednostek dla skrajnych eksperymentów.
+Nie jest to późniejsze skracanie wyniku. Wyższa belka może nieco mocniej pomagać
+przy tylnym wietrze; ten wpływ można wyzerować.
+
+Lot jest całkowany domyślnie krokami 1 m, z dokładnym domknięciem ostatniego
+częściowego kroku. Wiatr jest odczytywany na początku osiągniętego kroku,
+więc nieosiągnięty podmuch nie może wpływać na odległość. Reakcja na składową
+przednią narasta/zanika wykładniczo ze skalą 5 m. Wpływ rośnie od 0,55 do
+1,1 wzdłuż K. Boczny wiatr zwiększa zużycie oraz osobno ryzyko lądowania;
+nie ma nieciągłego przeskoku przy przejściu przez kierunek boczny.
+
+Trudność zdobywania metrów rośnie już od `0,94 × realHS`. Użyteczny zeskok
+kończy się przy `realHS + 0,12 × K`; oba współczynniki są edytowalne.
+Jeśli `p` jest stopniem przebycia odcinka od początku wypłaszczenia do końca,
+koszt bazowy metra wynosi `1 + 1,8 × p² / (1−p)`. Wpływ jest częścią lotu,
+przed ustaleniem odległości. Nie ma losowego skracania gotowego skoku.
+Wiatr nie może pokryć więcej niż 65% kosztu metra. Limit domeny zeskoku,
+dodatnie zużycie i ograniczona liczba kroków gwarantują koniec skoku.
+
+Czas lotu wynika z umownej skali 4 s na K, służącej wyłącznie do odczytu
+zmiennej pogody. Nie wyliczamy fizycznej wysokości ani prędkości zawodnika.
+
+Kalibracja początkowa: 20 tys. sparowanych seedów na K120/HS134, forma 70,
+belka 10, cisza, neutralne perki, konkurs: OVR90–OVR70 daje średnio **15,35 m**.
+To test założonego celu 14–17 m, nie potwierdzenie realizmu całego silnika.
+
+## Lądowanie i noty
+
+`LandingModel::probabilities` udostępnia jawne krzywe do analizy bez losowania.
+Gładkie funkcje logistyczne zależą od `odległość / realHS` i bezwzględnej
+składowej bocznej. Najpierw wyznaczają upadek, potem podpórkę wśród pozostałych,
+potem dwie nogi; reszta to telemark. Parametry środka, szerokości, minimum
+i wzrostu każdego ryzyka są niezależne. Klasa lądowania zawodnika nie zmienia
+tych prawdopodobieństw ani lotu; wpływa wyłącznie na noty.
+
+Początkowe średnie klas to 16,5 / 17,25 / 18 / 18,75 / 19,5. Wspólne
+odchylenie stylu ma σ=0,35, odchylenie pojedynczego sędziego σ=0,25.
+Dodatkowe kary: dwie nogi 2,5, podpórka 5, upadek 7,5. Płynna kara trudności
+wynosi maksymalnie 1,2. Noty są zaokrąglane do 0,5 i ograniczone do 0–20.
+Każdy parametr jest edytowalny. Wysokie noty nie wymagają osobnego rzadkiego
+zdarzenia; stylista po dobrym lądowaniu regularnie uzyskuje 19,5 lub 20.
+
+## Wynik, pomiar i ślad pogody
+
+Odległość pomiarowa ma dokładność 0,5 m. Spośród pięciu not odrzucana jest jedna
+najwyższa i jedna najniższa. Pomiar wiatru jest zaokrąglany do 0,01 m/s,
+rekompensaty i wynik do 0,1 pkt. Dodatni wiatr odejmuje punkty według
+współczynnika przedniego, ujemny dodaje według tylnego. Obniżenie jury liczy
+się niezależnie od progu trenera; dodatkowe obniżenie trenera ma próg 95% HS.
+Składniki punktacji i regułę progu można niezależnie wyłączyć.
+
+`WindMeasurement` jest wstrzykniętą strategią. `SensorWindMeasurement` przyjmuje
+**jawne** stanowiska, wagi, okno przed startem/po lądowaniu, liczbę odczytów
+i opcję uwzględniania tylko osiągniętych stanowisk. To konfigurowalny model
+eksperymentalny; brak tu domniemania dokładnej zgodności z FIS. Pomiar nie jest
+średnią osobistej ekspozycji i nie odwraca matematycznie efektu na lot.
+
+Wynik lotu może zawierać kompaktowy zestaw sześciu sekcji: granice, przebytą
+długość, średni doświadczony wektor i min/max składowej przedniej oraz odczyt
+przed i po skoku. Nieprzebyte odcinki mają przebytą długość 0. W batchach
+można wyłączyć zbieranie sekcji. Format zapisu tych danych w archiwum jest
+jeszcze do podłączenia; sam wynik rdzenia nie zapisuje plików.
+
+DNS kończy obliczenie przed losowaniem, DSQ przed lotem i punktacją, oba mają
+0 punktów. `previewDistance` nie pobiera losowości, ale używa tego samego
+modelu jakości bazowej, opadów, belki, pogody i geometrii co pełny skok.
+
+Testy dodatkowo obejmują uratowanie krótkiego skoku przez osiągnięty podmuch,
+brak wpływu nieosiągniętego wiatru, malejący przyrost długich skoków, zbieżność
+kroku 1 m do 0,1 m, prawidłową sumę ekspozycji, niezależność stylu od długości,
+przykład −3,6 pkt za +0,39 m/s, próg trenera, pełny silnik na kilku wątkach
+oraz 4000 losowych skrajnych konfiguracji.

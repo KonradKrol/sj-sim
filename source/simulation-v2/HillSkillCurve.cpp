@@ -16,12 +16,12 @@ std::vector<SkillAnchor> HillSkillCurve::defaultAnchors()
 HillSkillCurve::HillSkillCurve(std::vector<SkillAnchor> anchors, CurveExtension mode)
     : knots(std::move(anchors)), extension(mode)
 {
-    if (knots.size() < 2 || (mode != CurveExtension::Constant && mode != CurveExtension::LinearBounded))
+    if (knots.size() < 2 || knots.size()>1000 || (mode != CurveExtension::Constant && mode != CurveExtension::LinearBounded))
         throw std::invalid_argument("Invalid hill skill curve");
     std::vector<double> h(knots.size()-1), secants(knots.size()-1);
     for (std::size_t i=0; i<knots.size(); ++i) {
         const auto &p = knots[i];
-        if (!std::isfinite(p.k) || p.k <= 0 || !std::isfinite(p.takeoff) || p.takeoff < 0 || p.takeoff > 1)
+        if (!std::isfinite(p.k) || p.k <= 0 || p.k>10000 || !std::isfinite(p.takeoff) || p.takeoff < 0 || p.takeoff > 1)
             throw std::invalid_argument("Hill skill anchors must have positive K and weights in [0,1]");
         if (!i) continue;
         const auto &before = knots[i-1];
