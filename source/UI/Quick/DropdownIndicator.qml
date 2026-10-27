@@ -1,4 +1,4 @@
-import QtQuick
+import QtQuick 2.15
 
 Item {
     width: Theme.dp(12); height: Theme.dp(8)

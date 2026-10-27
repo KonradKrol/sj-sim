@@ -32,11 +32,13 @@ static void hillStudioRegressions(MainWindow &main){
     clickControl(scene(&window),"hillPerk-takeoff-1");
     auto *view=scene(&window);
     for(const QString name:{QString("hillPerk-takeoff-1"),QString("hillPerk-takeoff-3")}){
-        const auto point=controlPoint(view,name);QTest::mousePress(view,Qt::LeftButton,Qt::NoModifier,point);QTest::mouseMove(view,QPoint(1,1));QTest::mouseRelease(view,Qt::LeftButton,Qt::NoModifier,QPoint(1,1));
-        check(uiBackend->profile()["perks"].toList()[0].toInt()==1,"cancelled badge gesture leaves perk unchanged");
+        const auto point=controlPoint(view,name);QTest::mousePress(view,Qt::LeftButton,Qt::NoModifier,point);
+        QMouseEvent move(QEvent::MouseMove,QPointF(1,1),QPointF(view->mapToGlobal(QPoint(1,1))),Qt::NoButton,Qt::LeftButton,Qt::NoModifier);QApplication::sendEvent(view,&move);
+        QTest::mouseRelease(view,Qt::LeftButton,Qt::NoModifier,QPoint(1,1));
+        check(uiBackend->profile()["perks"].toList()[0].toInt()==1,QString("cancelled badge gesture leaves perk unchanged: %1, value %2").arg(name).arg(uiBackend->profile()["perks"].toList()[0].toInt()));
     }
     {
-        QQmlComponent component(view->engine());component.setData(R"(import QtQuick
+        QQmlComponent component(view->engine());component.setData(R"(import QtQuick 2.15
 import "qrc:/ui"
 SChoice { property int selected: 0; currentIndex: selected; width: 300; searchable: true; model: ["First","Disabled","Third"]; optionEnabled: [true,false,true] })",QUrl("qrc:/ui/ChoiceRegression.qml"));
         std::unique_ptr<QObject> choice(component.create(view->rootContext()));check(bool(choice),"searchable choice fixture loads");
