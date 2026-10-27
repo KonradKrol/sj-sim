@@ -10,22 +10,13 @@ ColumnLayout {
     readonly property var list: fields.list ? fields.list.values : ({})
     readonly property bool parallel: width>=850
     property bool editing: false
-    property bool modern: !!fields.hillStudio
     readonly property bool hasHillStudio: !!fields.hillStudio
     readonly property bool hasStudio: !!fields.athleteStudio || hasHillStudio
-    readonly property bool studioActive: hasStudio && modern
+    readonly property bool studioActive: hasStudio
     readonly property int editRequest: fields.editRequest || 0
     onEditRequestChanged: if(editRequest>0)editing=true
     onEditorChanged: if(editor)editing=true
     spacing: Theme.compact ? 4 : 8
-    RowLayout {
-        visible: catalog.hasStudio
-        Layout.fillWidth: true
-        SButton { objectName: "athleteClassicMode"; text: qsTr("Klasyczny"); quiet: !catalog.modern; onClicked: catalog.modern=false }
-        SButton { objectName: "athleteNewMode"; text: qsTr("Nowy edytor"); primary: catalog.modern; onClicked: catalog.modern=true }
-        Item { Layout.fillWidth: true }
-        Label { visible: catalog.modern && catalog.width>600; text: qsTr("Osobny zapis · bez zmian w grze"); color: Theme.muted; font.pointSize: Theme.caption }
-    }
     Loader {
         visible: active
         active: catalog.studioActive
