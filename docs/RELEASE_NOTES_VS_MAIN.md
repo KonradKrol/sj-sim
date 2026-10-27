@@ -6,7 +6,7 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 
 - Baza: main, commit **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**, opis „Set version label to 1.3.0-beta2 and fix Ctrl+A button focus”.
 - Gałąź zmian: **feature/qml-competition-config**.
-- Stan porównania kodu i dokumentacji: **4c9177b**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
+- Stan porównania kodu i dokumentacji: **ceb36ba**. Pełny hash, zestawienie commitów i manifest plików są w załącznikach.
 - Data zestawienia: **26 października 2026**.
 - Aktualne oznaczenie w kodzie aplikacji: **2.0.0-beta**, ustawione na wyraźne polecenie użytkownika po zakończeniu audytu silnika.
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
@@ -823,16 +823,16 @@ Punktacja ma nowe nazwy naliczania, segmenty źródeł z precyzyjnym opisem, akt
 ## Załącznik A. Dokładny zakres Git
 
 - Baza: **05f2e48d8e92c7b9b180f18abe250b3c7e61d24c**.
-- Snapshot kodu i dokumentacji: **4c9177b57a36970313a29bec468e299340c5e4bb**.
-- Commitów od bazy: **242**.
-- Plików zmienionych w tym zakresie: **655**.
+- Snapshot kodu i dokumentacji: **ceb36ba9e91a26459df8b7d1774dda5326894361**.
+- Commitów od bazy: **244**.
+- Plików zmienionych w tym zakresie: **657**.
 - Statystyki obejmują także fonty, skills i dokumentację; nie oznaczają rozmiaru samej logiki gry.
 - Dalsza aktualizacja tego zestawienia jest dodatkiem dokumentacyjnym do wskazanego snapshotu.
 
 | Obszar | Plików |
 | --- | ---: |
-| Dokumentacja etapów i migracji | 56 |
-| Domyślny interfejs Qt Quick i jego zasoby | 219 |
+| Dokumentacja etapów i migracji | 57 |
+| Domyślny interfejs Qt Quick i jego zasoby | 220 |
 | Instrukcje i zasoby narzędzi deweloperskich | 167 |
 | Konfiguracja projektu i pozostałe pliki | 12 |
 | Kontrolery, modele i logika C++ | 157 |
@@ -844,9 +844,9 @@ Punktacja ma nowe nazwy naliczania, segmenty źródeł z precyzyjnym opisem, akt
 Porównanie można odtworzyć poleceniami:
 
 ~~~sh
-git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 4c9177b57a36970313a29bec468e299340c5e4bb
-git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c 4c9177b57a36970313a29bec468e299340c5e4bb
-git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..4c9177b57a36970313a29bec468e299340c5e4bb
+git diff --stat 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c ceb36ba9e91a26459df8b7d1774dda5326894361
+git diff --name-status 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c ceb36ba9e91a26459df8b7d1774dda5326894361
+git log --reverse --oneline 05f2e48d8e92c7b9b180f18abe250b3c7e61d24c..ceb36ba9e91a26459df8b7d1774dda5326894361
 ~~~
 
 Zestawienie można odświeżyć przez `python3 scripts/update-release-inventory.py --base main --snapshot HEAD`. Opisy zachowania i wyniki testów należy uzupełniać na podstawie faktycznych zmian oraz weryfikacji.
@@ -1099,6 +1099,8 @@ Historyczne opisy należy czytać z uwzględnieniem opisanych powyżej rozwiąza
 | `dbac449` | Record ordered landing levels in release inventory |
 | `8a4b07e` | Compact landing quality into a single five-level row — Remove the quality direction caption and vertical list. Keep five ordered numeric choices on one line with the selected name in the header; show full option names on wide panels and on hover or keyboard focus in compact panels. Build and athlete regressions pass. |
 | `4c9177b` | Remove athlete concept chooser and open patches directly — Remove the five-view selector from the editor, retaining patches as the default and preserving prototype code. Production build and focused athlete patches regressions pass. |
+| `cfd8d63` | Refresh release inventory after athlete editor compaction |
+| `ceb36ba` | Restore left athlete list beside the new patches editor — Replace the profile dropdown with a full-height list matching the classic catalog style, country flags, OVR, search and single-click selection. Keep model rows stable during edits, resolve filtered rows to source profile indices, commit active fields before changing athlete and provide keyboard navigation. Switch to List/Edit tabs on narrow windows. Build and focused athlete regressions pass, including 41-profile selection, pending input, search, scroll preservation, deletion, undo and pack changes. No simulation or data format changes. |
 
 ## Załącznik C. Pełny manifest zmienionych plików
 
@@ -1111,7 +1113,8 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [QML_COMPETITION_LIVE.md](../QML_COMPETITION_LIVE.md) | 42 | 0 |
 | A | [QML_COMPETITION_PREVIEW.md](../QML_COMPETITION_PREVIEW.md) | 60 | 0 |
 | A | [QUICK_UI_MIGRATION.md](../QUICK_UI_MIGRATION.md) | 314 | 0 |
-| A | [docs/ATHLETE_PATCHES_UX_2026-10-26.md](../docs/ATHLETE_PATCHES_UX_2026-10-26.md) | 45 | 0 |
+| A | [docs/ATHLETE_LIBRARY_2026-10-27.md](../docs/ATHLETE_LIBRARY_2026-10-27.md) | 34 | 0 |
+| A | [docs/ATHLETE_PATCHES_UX_2026-10-26.md](../docs/ATHLETE_PATCHES_UX_2026-10-26.md) | 46 | 0 |
 | A | [docs/ATHLETE_STUDIO_2026-10-26.md](../docs/ATHLETE_STUDIO_2026-10-26.md) | 76 | 0 |
 | A | [docs/AUTHOR_AND_SINGLE_JUMPS_2026-10-22.md](../docs/AUTHOR_AND_SINGLE_JUMPS_2026-10-22.md) | 66 | 0 |
 | A | [docs/BUGFIX_AUDIT_2026-10-21.md](../docs/BUGFIX_AUDIT_2026-10-21.md) | 140 | 0 |
@@ -1141,7 +1144,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [docs/PENDING_CLASSIFICATION_RULES_2026-10-25.md](../docs/PENDING_CLASSIFICATION_RULES_2026-10-25.md) | 10 | 0 |
 | A | [docs/PLAYGROUND_IMPLEMENTATION.md](../docs/PLAYGROUND_IMPLEMENTATION.md) | 35 | 0 |
 | A | [docs/PLAYGROUND_VALIDATION_2026-10-25.md](../docs/PLAYGROUND_VALIDATION_2026-10-25.md) | 76 | 0 |
-| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1801 | 0 |
+| A | [docs/RELEASE_NOTES_VS_MAIN.md](../docs/RELEASE_NOTES_VS_MAIN.md) | 1805 | 0 |
 | A | [docs/RESULT_HISTORY_ARCHIVE_DNS_2026-10-25.md](../docs/RESULT_HISTORY_ARCHIVE_DNS_2026-10-25.md) | 67 | 0 |
 | A | [docs/RESULT_SELECTORS_TEAM_READABILITY_2026-10-25.md](../docs/RESULT_SELECTORS_TEAM_READABILITY_2026-10-25.md) | 24 | 0 |
 | A | [docs/RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md](../docs/RESULT_VIEW_CONTROLS_COMPACT_TEAMS_2026-10-25.md) | 62 | 0 |
@@ -1186,6 +1189,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/AthleteIdentity.qml](../source/UI/Quick/AthleteIdentity.qml) | 117 | 0 |
 | A | [source/UI/Quick/AthleteInsignia.qml](../source/UI/Quick/AthleteInsignia.qml) | 33 | 0 |
 | A | [source/UI/Quick/AthleteLanding.qml](../source/UI/Quick/AthleteLanding.qml) | 67 | 0 |
+| A | [source/UI/Quick/AthleteLibrary.qml](../source/UI/Quick/AthleteLibrary.qml) | 116 | 0 |
 | A | [source/UI/Quick/AthleteMedals.qml](../source/UI/Quick/AthleteMedals.qml) | 35 | 0 |
 | A | [source/UI/Quick/AthletePatchRack.qml](../source/UI/Quick/AthletePatchRack.qml) | 52 | 0 |
 | A | [source/UI/Quick/AthletePatchSet.qml](../source/UI/Quick/AthletePatchSet.qml) | 38 | 0 |
@@ -1193,7 +1197,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/AthletePerkArt.qml](../source/UI/Quick/AthletePerkArt.qml) | 23 | 0 |
 | A | [source/UI/Quick/AthletePerkCatalog.qml](../source/UI/Quick/AthletePerkCatalog.qml) | 14 | 0 |
 | A | [source/UI/Quick/AthleteRating.qml](../source/UI/Quick/AthleteRating.qml) | 91 | 0 |
-| A | [source/UI/Quick/AthleteStudio.qml](../source/UI/Quick/AthleteStudio.qml) | 80 | 0 |
+| A | [source/UI/Quick/AthleteStudio.qml](../source/UI/Quick/AthleteStudio.qml) | 95 | 0 |
 | A | [source/UI/Quick/AthleteText.qml](../source/UI/Quick/AthleteText.qml) | 22 | 0 |
 | A | [source/UI/Quick/AthleteTokens.qml](../source/UI/Quick/AthleteTokens.qml) | 33 | 0 |
 | A | [source/UI/Quick/AthleteViewChoice.qml](../source/UI/Quick/AthleteViewChoice.qml) | 27 | 0 |
@@ -1387,7 +1391,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Quick/icons/linkedin-dark.svg](../source/UI/Quick/icons/linkedin-dark.svg) | 1 | 0 |
 | A | [source/UI/Quick/icons/linkedin-light.svg](../source/UI/Quick/icons/linkedin-light.svg) | 1 | 0 |
 | A | [source/UI/Quick/qmldir](../source/UI/Quick/qmldir) | 1 | 0 |
-| A | [source/UI/Quick/quick-ui.qrc](../source/UI/Quick/quick-ui.qrc) | 205 | 0 |
+| A | [source/UI/Quick/quick-ui.qrc](../source/UI/Quick/quick-ui.qrc) | 206 | 0 |
 
 ### Instrukcje i zasoby narzędzi deweloperskich
 
@@ -1758,7 +1762,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 
 | Status | Plik | + | − |
 | --- | --- | ---: | ---: |
-| A | [tests/athlete-studio-regressions.h](../tests/athlete-studio-regressions.h) | 61 | 0 |
+| A | [tests/athlete-studio-regressions.h](../tests/athlete-studio-regressions.h) | 82 | 0 |
 | A | [tests/calendar-dates-regressions.h](../tests/calendar-dates-regressions.h) | 101 | 0 |
 | A | [tests/calendar-inspector-space-regressions.h](../tests/calendar-inspector-space-regressions.h) | 31 | 0 |
 | A | [tests/calendar-workspace-ux-regressions.h](../tests/calendar-workspace-ux-regressions.h) | 35 | 0 |
