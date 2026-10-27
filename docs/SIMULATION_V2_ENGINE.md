@@ -192,3 +192,22 @@ brak wpływu nieosiągniętego wiatru, malejący przyrost długich skoków, zbie
 kroku 1 m do 0,1 m, prawidłową sumę ekspozycji, niezależność stylu od długości,
 przykład −3,6 pkt za +0,39 m/s, próg trenera, pełny silnik na kilku wątkach
 oraz 4000 losowych skrajnych konfiguracji.
+
+## Jawne manipulacje
+
+`JumpManipulation` ma niezależne korekty jakości, odległości, opadów i pomiaru
+wiatru: bonus oraz opcjonalny zakres. Osobno można wymusić typ lądowania,
+poszczególne noty sędziów (także 0) i prawdopodobieństwo DSQ. Puste ustawienia
+nie zmieniają obliczeń. Przeciwny kierunek/siłę faktycznego wiatru ustawia się
+przez pole pogody, niezależnie od samego pomiaru punktowego.
+
+Wymuszenie odległości dostosowuje zapas i ponownie przelicza lot przez te same
+warunki, dzięki czemu ślad wiatru odpowiada rzeczywiście osiągniętym odcinkom.
+Nie dokleja się historycznych warunków krótszego skoku do zmienionej liczby
+metrów. Ta opcjonalna ścieżka jest celowo droższa od zwykłego skoku: poszukuje
+zapasu bisekcją. Żądanie poza użytecznym zeskokiem zatrzymuje się na jego końcu
+i ustawia `distanceLimitedByGeometry`. To jawne wymuszenie użytkownika, oddzielne
+od normalnego modelu; standardowy skok nie jest skracany po fakcie.
+
+Podgląd odległości uwzględnia te same korekty. Wynik zapisuje zarówno fakt
+manipulacji, jak i jej wpływ na jakość. Nowy UX manipulacji pozostaje do wdrożenia.

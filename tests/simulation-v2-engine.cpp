@@ -104,6 +104,19 @@ int main()
         check(engine.simulate(request,noJump,calm,measurement).status==JumpStatus::DidNotStart && noJump.next()==untouched.next(),"DNS consumes no jump randomness");
         request.skip=false;request.dsqProbability=1;
         auto dsq=engine.simulate(request,rng,calm,measurement);check(dsq.status==JumpStatus::Disqualified && dsq.score.total==0 && dsq.flight.exposures.empty(),"DSQ skips flight/scoring");request.dsqProbability=0;
+        request.manipulation.distance.range=ValueRange{130,130};request.manipulation.landing=LandingKind::Telemark;
+        request.manipulation.judges[0]=0;request.manipulation.measuredWind.bonus=.39;
+        auto forced=engine.simulate(request,rng,calm,measurement);
+        check(forced.manipulated && forced.landing==LandingKind::Telemark && forced.judges[0]==0,"explicit overrides applied, including zero mark");
+        near(forced.flight.distance,130,.0001,"distance override realised through consistent flight");
+        double forcedCovered=0;for(const auto &s:forced.flight.exposures)forcedCovered+=s.traversed;
+        near(forcedCovered,forced.flight.distance,1e-8,"forced distance retains true exposure");
+        near(engine.previewDistance(request,calm),130,.0001,"preview applies distance manipulation");
+        request.manipulation.distance.range=ValueRange{500,500};
+        forced=engine.simulate(request,rng,calm,measurement);
+        check(forced.distanceLimitedByGeometry && forced.flight.distance<=engine.flight().landingLimit(request.hill),"manipulation cannot invent impossible landing beyond slope");
+        request.manipulation={};
+        rejects([&]{auto bad=request;bad.manipulation.distance.range=ValueRange{130,100};engine.simulate(bad,rng,calm,measurement);});
 
         // Calibration includes normal jump variability, geometry and actual rounding.
         constexpr int count=20000;double gap=0;

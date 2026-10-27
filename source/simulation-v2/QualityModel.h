@@ -40,7 +40,8 @@ struct JumpQuality {
     double hillEffect=0;
     double eventEffect=0;
     double randomEffect=0;
-    double value() const { return overallAndForm+hillEffect+eventEffect+randomEffect; }
+    double manipulationEffect=0;
+    double value() const { return overallAndForm+hillEffect+eventEffect+randomEffect+manipulationEffect; }
 };
 
 class QualityModel {

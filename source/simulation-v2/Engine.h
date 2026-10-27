@@ -3,6 +3,7 @@
 #include "LandingModel.h"
 #include "QualityModel.h"
 #include "Scoring.h"
+#include "Manipulation.h"
 
 namespace SimulationV2 {
 
@@ -23,6 +24,7 @@ struct JumpRequest {
     double dsqProbability=0;
     bool skip=false;
     bool captureExposure=true;
+    JumpManipulation manipulation;
 };
 
 enum class JumpStatus { Completed, Disqualified, DidNotStart };
@@ -37,6 +39,8 @@ struct JumpResult {
     LandingProbabilities landingProbabilities;
     std::array<double,5> judges{};
     Score score;
+    bool manipulated=false;
+    bool distanceLimitedByGeometry=false;
 };
 
 class Engine {

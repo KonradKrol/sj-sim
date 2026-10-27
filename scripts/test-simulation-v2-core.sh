@@ -29,6 +29,7 @@ mkdir -p "${build_dir}"
     "${repo_root}/source/simulation-v2/FlightModel.cpp" \
     "${repo_root}/source/simulation-v2/LandingModel.cpp" \
     "${repo_root}/source/simulation-v2/Scoring.cpp" \
+    "${repo_root}/source/simulation-v2/Manipulation.cpp" \
     "${repo_root}/source/simulation-v2/Engine.cpp" \
     "${repo_root}/tests/simulation-v2-engine.cpp" \
     -o "${build_dir}/simulation-v2-engine"
