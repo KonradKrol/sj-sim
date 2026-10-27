@@ -145,3 +145,14 @@ Weryfikacja: `scripts/test-simulation-v2-core.sh` — PASS. Obejmuje otwarte gra
 walidację, zerowe skale, wagi zerowe i bardzo duże, momenty 200 tys. próbek oraz
 powtarzalność równoległą. Moduł jest testowany samodzielnie i nie został jeszcze
 podłączony do gry ani aktualnego projektu qmake.
+
+## Jakość i krzywa K
+
+Zaimplementowano `HillSkillCurve` (edytowalne punkty, monotoniczna interpolacja
+PCHIP, jawne zachowanie poza zakresem) i `QualityModel`: OVR/forma, trzy pary
+perkó​​w, kategorie ważności oraz parametryzowany rozkład normalny/Laplace'a.
+Podział 65/35 dotyczy siły wpływu, nie częstości losowania. Klasa lądowania
+nie wpływa na jakość. Oba moduły nadal są oddzielone od aktywnej gry.
+
+Testy przechodzą, w tym porównania po 200 tys. próbek. Opis wzorów i początkowych
+współczynników: [SIMULATION_V2_ENGINE.md](SIMULATION_V2_ENGINE.md).
