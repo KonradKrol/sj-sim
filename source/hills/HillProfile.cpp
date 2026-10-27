@@ -19,7 +19,7 @@ bool HillProfile::fromJson(const QJsonObject &json,HillProfile &profile,QString 
     p.name=json["name"].toString();p.country=json["country"].toString();p.sourceId=json["sourceId"].toString();
     if(p.name.size()>100 || !QRegularExpression("^[A-Z]{3}$").match(p.country).hasMatch())return fail(QObject::tr("Sprawdź nazwę skoczni i trzyliterowy kod kraju."));
     const auto number=[&](const char *key,double lo,double hi,double &value){value=json[key].toDouble(-1);return json[key].isDouble() && std::isfinite(value) && value>=lo && value<=hi;};
-    if(!number("k",1,400,p.k) || !number("hs",p.k,500,p.hs) || !number("record",0,600,p.record))return fail(QObject::tr("Punkt K musi być dodatni, HS nie mniejszy od K, a rekord w zakresie 0–600 m."));
+    if(!number("k",1,400,p.k) || !number("hs",p.k,500,p.hs) || !number("record",0,1000,p.record))return fail(QObject::tr("Punkt K musi być dodatni, HS nie mniejszy od K, a rekord w zakresie 0–1000 m."));
     if(!number("pointsAtK",0,200,p.pointsAtK) || !number("pointsPerMetre",0,20,p.pointsPerMetre) || !number("gatePoints",0,100,p.gatePoints) || !number("headwindPoints",0,100,p.headwindPoints) || !number("tailwindPoints",0,100,p.tailwindPoints))return fail(QObject::tr("Punktacja skoczni jest poza zakresem."));
     if(!json["perks"].isArray())return fail(QObject::tr("Nieprawidłowy zestaw perków skoczni."));
     const auto values=json["perks"].toArray();

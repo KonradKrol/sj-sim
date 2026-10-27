@@ -38,7 +38,7 @@ ScrollView {
                 Layout.fillWidth: true; columns: width>Theme.dp(520)?3:2; columnSpacing: Theme.dp(10)
                 HillNumber { backend: editor.backend; fieldKey: "k"; label: qsTr("Punkt K · m"); minimum: 1; maximum: Math.min(400,editor.profile.hs); Layout.fillWidth: true }
                 HillNumber { backend: editor.backend; fieldKey: "hs"; label: "HS · m"; minimum: editor.profile.k; maximum: 500; Layout.fillWidth: true }
-                HillNumber { backend: editor.backend; fieldKey: "record"; label: qsTr("Rekord skoczni · m"); maximum: 600; Layout.fillWidth: true }
+                HillNumber { backend: editor.backend; fieldKey: "record"; label: qsTr("Rekord skoczni · m"); maximum: 1000; Layout.fillWidth: true }
             }
             Label { text: qsTr("Punktacja skoczni"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true }
             GridLayout {

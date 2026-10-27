@@ -48,7 +48,7 @@ GridLayout {
             AthleteText {
                 objectName: "athletePersonalBest"; design: identity.design; Layout.fillWidth: true
                 text: identity.profile.personalBest>0 ? Number(identity.profile.personalBest).toLocaleString(Qt.locale(Theme.localeName),'f',1) : ""; placeholderText: "—"
-                Accessible.name: qsTr("Rekord życiowy w metrach"); validator: DoubleValidator { bottom: 0; top: 500; decimals: 1; locale: Qt.locale(Theme.localeName).name }
+                Accessible.name: qsTr("Rekord życiowy w metrach"); validator: DoubleValidator { bottom: 0; top: 1000; decimals: 1; locale: Qt.locale(Theme.localeName).name }
                 onEditingFinished: if(!text.length || acceptableInput)identity.backend.setValue("personalBest",text.length?Number.fromLocaleString(Qt.locale(Theme.localeName),text):0)
             }
         }
