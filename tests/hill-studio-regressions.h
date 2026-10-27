@@ -5,7 +5,10 @@ static void hillStudioRegressions(MainWindow &main){
     QTemporaryDir storage;check(storage.isValid(),"isolated hill library");
     HillProfile hill=HillProfile::create(),decoded;QString error;
     check(HillProfile::fromJson(hill.toJson(),decoded,error),"hill profile round trip");
-    for(int pair=0;pair<3;++pair)for(int value=-3;value<=3;++value){hill.perks[pair]=value;check(HillProfile::fromJson(hill.toJson(),decoded,error) && decoded.perks[pair]==value,"all hill perk sides and strengths round trip");hill.perks[pair]=0;}
+    for(int pair=0;pair<4;++pair)for(int value=-3;value<=3;++value){hill.perks[pair]=value;check(HillProfile::fromJson(hill.toJson(),decoded,error) && decoded.perks[pair]==value,"all hill perk sides and strengths round trip");hill.perks[pair]=0;}
+    auto threePairs=hill.toJson();threePairs["perks"]=QJsonArray{2,-1,3};check(HillProfile::fromJson(threePairs,decoded,error) && decoded.id==hill.id && decoded.perks[0]==2 && decoded.perks[1]==-1 && decoded.perks[2]==3 && decoded.perks[3]==0,"old three-pair profile preserves identity and perks with neutral direction");
+    check(decoded.toJson()["perks"].toArray().size()==4,"new saves include fourth hill perk");
+    hill.perks[3]=3;check(qAbs(hill.headwindProbability()-.94)<1e-9,"headwind preference tier III");hill.perks[3]=-3;check(qAbs(hill.headwindProbability()-.06)<1e-9,"tailwind preference tier III");hill.perks[3]=0;
     hill.hs=225;hill.perks[1]=3;check(qAbs(hill.realHs()-247.5)<.01,"forgiving flying hill extends landing threshold independently of HS");hill.hs=140;hill.perks[1]=-1;check(qAbs(hill.realHs()-137.9)<.01,"demanding hill can become difficult before HS");
     hill.perks[0]=3;check(hill.takeoffBias()>.5,"third-tier takeoff preference is pronounced");hill.perks[0]=-3;check(hill.takeoffBias()<-.5,"opposite hill preference rewards flight");hill.perks[2]=3;check(hill.windVariability()>2,"lottery tier III has a pronounced domain effect");hill.perks[2]=-3;check(hill.windVariability()<.5,"stability tier III suppresses variation");
     auto invalid=HillProfile::create().toJson();invalid["hs"]=10;check(!HillProfile::fromJson(invalid,decoded,error),"HS below K rejected");invalid=HillProfile::create().toJson();invalid["perks"]=QJsonArray{0,0,4};check(!HillProfile::fromJson(invalid,decoded,error),"hill tier IV rejected");

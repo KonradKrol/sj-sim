@@ -31,6 +31,8 @@
 <file>icons/hill/demanding.svg</file>
 <file>icons/hill/lottery.svg</file>
 <file>icons/hill/stable.svg</file>
+<file>icons/hill/headwind.svg</file>
+<file>icons/hill/tailwind.svg</file>
 <file>AthleteText.qml</file>
 <file>AthleteTokens.qml</file>
 <file>AthleteViewChoice.qml</file>

@@ -8,13 +8,15 @@ struct HillProfile {
     QString id, name, country="POL", sourceId;
     double k=120, hs=134, record=0;
     double pointsAtK=60, pointsPerMetre=1.8, gatePoints=5, headwindPoints=8, tailwindPoints=12;
-    // Take-off/flight, forgiving/demanding landing, variable/stable wind.
+    // Take-off/flight, forgiving/demanding landing, variable/stable wind,
+    // prevailing headwind/tailwind (weather traits affect automatic proposals).
     // Sign chooses a side; magnitude 1..3 selects its strength; zero means neither.
-    std::array<int,3> perks{{0,0,0}};
+    std::array<int,4> perks{{0,0,0,0}};
     static HillProfile create();
     QJsonObject toJson() const;
     static bool fromJson(const QJsonObject &json,HillProfile &profile,QString &error);
     double realHs() const;
     double takeoffBias() const;
     double windVariability() const;
+    double headwindProbability() const;
 };

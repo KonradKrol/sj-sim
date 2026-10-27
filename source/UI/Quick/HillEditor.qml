@@ -56,7 +56,7 @@ ScrollView {
                 HelpDot { explanation: qsTr("Wybierz siłę działania perka: lekko, wyraźnie lub mocno. Jedna strona każdej pary lub brak. Kliknij zaznaczoną opcję ponownie, aby usunąć perk.") }
             }
             Repeater {
-                model: 3
+                model: perks.pairs.length
                 Control {
                     id: pair
                     required property int index
@@ -76,7 +76,7 @@ ScrollView {
                         Label {
                             objectName: "hillLandingThreshold"
                             visible: pair.index===1
-                            text: qsTr("Zeskok zaczyna się wypłaszczać od %1 m.").arg(Number(editor.backend.realHs || 0).toLocaleString(Qt.locale(Theme.localeName),'f',1))
+                            text: qsTr("Próg trudnego lądowania: %1 m.").arg(Number(editor.backend.realHs || 0).toLocaleString(Qt.locale(Theme.localeName),'f',1))
                             color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap; Layout.fillWidth: true
                             Layout.topMargin: Theme.dp(4)
                         }

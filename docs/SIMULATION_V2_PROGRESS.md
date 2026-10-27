@@ -65,7 +65,7 @@ kalibracji model. Może pozostać kandydatem do eksperymentu lub testów skrajny
 - [x] Zapisać automatyczne propozycje, prosty/zaawansowany wybór wiatru,
   opcjonalny podgląd oraz czwartą parę perków dominującego kierunku.
 - [x] Uzgodnić migrację paczek, gotowych nowych profili oraz zapisów sezonów.
-- [ ] Rozszerzyć skocznie o nową parę kierunku wiatru; stare zestawy trzech par
+- [x] Rozszerzyć skocznie o nową parę kierunku wiatru; stare zestawy trzech par
   odczytywać z neutralnym nowym perkiem. Wpływ kierunku i loteryjności skoczni
   stosować do automatycznych propozycji, bez ukrytych zmian ręcznych ustawień.
 - [x] Przygotować niezależny od UI rdzeń: wejście skoku, kontekst wydarzenia,
@@ -183,3 +183,16 @@ konfiguracji, zbieżność kroku, brak wpływu nieosiągniętego podmuchu, geome
 landing skill tylko w notach oraz zgodność wyników przy pracy równoległej.
 Cel OVR90/70 na K120: **15,35 m** średniej różnicy w 20 tys. sparowanych seedów.
 Cały rdzeń nadal wymaga podłączenia do projektu, danych i aktywnej gry.
+
+## Czwarta para perków skoczni
+
+Nowy edytor skoczni ma parę „Dominuje wiatr przedni / tylny”, z trzema siłami,
+spójnymi ikonami i opisem dotyczącym wyłącznie automatycznych propozycji.
+`HillProfile` zapisuje cztery pary; odczytuje też trzy, zachowując identyfikator
+i wszystkie dawne wybory, z neutralnym kierunkiem. Kontroler rozszerza stary
+zestaw przy pierwszej edycji. Qt Quick używa liczby par z katalogu.
+
+`scripts/test-quick-ui.sh --hill-studio-only` — PASS na Qt 5.15.3, w tym
+serializacja obu formatów, poziomy, zapis/undo i responsywne rendery.
+Sprawdzono wygląd renderu 1440 px. Perki będą działały w grze po integracji
+nowych profili oraz konfiguracji pogody; obecnie działają w propozycjach rdzenia.
