@@ -41,6 +41,7 @@ int main()
         near(linear.takeoffWeight(400),0,1e-12,"linear extrapolation is bounded");
         rejects([]{HillSkillCurve({{50,.5},{40,.4}});});
         rejects([]{HillSkillCurve({{50,.5},{80,.6}});});
+        rejects([]{HillSkillCurve({{50,.5},{50.000000001,.4}});});
         rejects([&]{curve.takeoffWeight(std::numeric_limits<double>::quiet_NaN());});
 
         QualityModel model;
@@ -79,6 +80,7 @@ int main()
         athlete.landing=4;auto after=model.baseline(athlete,120,0,EventKind::Competition);
         near(before.value(),after.value(),1e-12,"landing skill cannot change jump quality");
         QualityParameters params;params.overallWeight=0;
+        params.specialistBias[0]=20;
         near(QualityModel(params).baseline(athlete,120,0,EventKind::Competition).value(),athlete.form,1e-12,"OVR/form weights editable");
         params.noise=NoiseShape::Laplace;QualityModel laplace(params);SeededRandom laplaceRng(5);
         double negative=0,positive=0;

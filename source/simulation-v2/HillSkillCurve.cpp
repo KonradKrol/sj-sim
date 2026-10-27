@@ -21,11 +21,11 @@ HillSkillCurve::HillSkillCurve(std::vector<SkillAnchor> anchors, CurveExtension 
     std::vector<double> h(knots.size()-1), secants(knots.size()-1);
     for (std::size_t i=0; i<knots.size(); ++i) {
         const auto &p = knots[i];
-        if (!std::isfinite(p.k) || p.k <= 0 || p.k>10000 || !std::isfinite(p.takeoff) || p.takeoff < 0 || p.takeoff > 1)
+        if (!std::isfinite(p.k) || p.k < 1 || p.k>10000 || !std::isfinite(p.takeoff) || p.takeoff < 0 || p.takeoff > 1)
             throw std::invalid_argument("Hill skill anchors must have positive K and weights in [0,1]");
         if (!i) continue;
         const auto &before = knots[i-1];
-        if (p.k <= before.k || p.takeoff > before.takeoff)
+        if (p.k-before.k < .000001 || p.takeoff > before.takeoff)
             throw std::invalid_argument("Hill skill anchors must increase in K and not increase in takeoff weight");
         h[i-1] = p.k-before.k;
         secants[i-1] = (p.takeoff-before.takeoff)/h[i-1];

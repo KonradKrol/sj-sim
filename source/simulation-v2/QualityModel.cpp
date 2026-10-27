@@ -48,7 +48,7 @@ JumpQuality QualityModel::baseline(const Athlete &athlete, double k, double hill
     // Equal underlying OVR/form for takeoff and flight. Only the specialist perk
     // separates them, so neutral athletes are unaffected by a hill's preference.
     const int specialist=athlete.perks[1];
-    quality.hillEffect=(specialist>=0?1:-1)*config.specialistBias[std::abs(specialist)]*(1-2*quality.takeoffWeight);
+    quality.hillEffect=specialist==0?0:(specialist>0?1:-1)*config.specialistBias[std::abs(specialist)]*(1-2*quality.takeoffWeight);
     const int attitude=athlete.perks[0];
     if (attitude>0) {
         quality.eventEffect=event==EventKind::Competition ? -config.competitionPenalty[attitude]
