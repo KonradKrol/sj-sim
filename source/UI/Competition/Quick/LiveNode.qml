@@ -32,7 +32,7 @@ Loader {
         id: buttonComponent
         LiveButton {
             theme:node.theme
-            text:node.caption || ({pushButton_jump:"Oddaj skok",pushButton_generateNewWinds:"Wylosuj wiatr",pushButton_windsGeneratorSettings:"Ustawienia wiatru",pushButton_inrunSnowGeneratorSettings:"Ustawienia śniegu",pushButton_coachGate:"Belka trenera",toolButton_autoSimulationActions:"Automatyczna symulacja ▾",toolButton_cancelActions:"Odwołaj…"})[n.name] || n.text || ""; primary:n.name==="pushButton_jump" || n.name==="pushButton_goToNext" || (n.name && n.name.indexOf("submit")>=0)
+            text:node.caption || ({pushButton_jump:"Oddaj skok",pushButton_generateNewWinds:"Wylosuj wiatr",pushButton_windsGeneratorSettings:"Ustawienia wiatru",pushButton_inrunSnowGeneratorSettings:qsTr("Ustawienia śniegu"),pushButton_coachGate:"Belka trenera",toolButton_autoSimulationActions:"Automatyczna symulacja ▾",toolButton_cancelActions:qsTr("Odwołaj…")})[n.name] || n.text || ""; primary:n.name==="pushButton_jump" || n.name==="pushButton_goToNext" || (n.name && n.name.indexOf("submit")>=0)
             hoverEnabled:true
             ToolTip.visible:hovered && !!n.tip; ToolTip.text:n.tip || ""; ToolTip.delay:600
             onClicked: { if(n.actions && n.actions.length) actionMenu.open(); else live.activate(n.id) }

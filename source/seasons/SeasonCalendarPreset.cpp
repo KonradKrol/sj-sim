@@ -1,3 +1,4 @@
+#include <QObject>
 #include "SeasonCalendarPreset.h"
 #include <QJsonValue>
 #include <QHash>
@@ -123,7 +124,7 @@ QVector<SeasonCalendarPreset> SeasonCalendarPreset::getVectorFromJson(QByteArray
     QJsonDocument document = QJsonDocument::fromJson(json, &error);
     if(error.error != QJsonParseError::NoError)
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Błąd przy wczytytywaniu presetów kalendarzy", "Treść błędu: " + error.errorString(),  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu presetów kalendarzy"), QObject::tr("Treść błędu: ") + error.errorString(),  QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return presets;
@@ -132,7 +133,7 @@ QVector<SeasonCalendarPreset> SeasonCalendarPreset::getVectorFromJson(QByteArray
     QJsonValue value = object.value("calendarPresets");
     if(!value.isArray())
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Błąd przy wczytytywaniu presetów kalendarzy","Prawdopodobnie w tym pliku nie ma listy z presetami\nUpewnij się, że wybrałeś właściwy plik!");
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu presetów kalendarzy"),QObject::tr("Prawdopodobnie w tym pliku nie ma listy z presetami\nUpewnij się, że wybrałeś właściwy plik!"));
         message.setModal(true);
         message.exec();
         return presets;
@@ -156,7 +157,7 @@ bool SeasonCalendarPreset::saveToFile(QString dir)
     QFile file(dir + getName() + ".json");
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku z presetem kalendarza " + getName(), "Nie udało się otworzyć pliku " + dir + getName() + ".json" + "\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z presetem kalendarza ") + getName(), QObject::tr("Nie udało się otworzyć pliku ") + dir + getName() + ".json" + QObject::tr("\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return false;

@@ -31,6 +31,6 @@ bool AthleteProfile::fromJson(const QJsonObject &j,AthleteProfile &result,QStrin
     if(!integer("overall",1,100,p.overall) || !integer("form",1,100,p.form) || !integer("landing",0,4,p.landing) || !integer("birthYear",0,9999,p.birthYear))return fail(QObject::tr("Parametry skoczka są poza zakresem."));
     p.personalBest=j["personalBest"].toDouble(-1);if(!j["personalBest"].isDouble() || !std::isfinite(p.personalBest) || p.personalBest<0 || p.personalBest>500)return fail(QObject::tr("Rekord musi mieścić się między 0 a 500 m."));
     const auto perks=j["perks"].toArray();if(perks.size()!=3)return fail(QObject::tr("Nieprawidłowy zestaw perków."));
-    for(int i=0;i<3;++i){const double v=perks[i].toDouble(99);if(v!=std::floor(v) || v< -2 || v>2)return fail(QObject::tr("Nieprawidłowy poziom perka."));p.perks[i]=int(v);}
+    for(int i=0;i<3;++i){const double v=perks[i].toDouble(99);if(v!=std::floor(v) || v< -3 || v>3)return fail(QObject::tr("Nieprawidłowy poziom perka."));p.perks[i]=int(v);}
     result=p;error.clear();return true;
 }

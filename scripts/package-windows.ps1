@@ -37,7 +37,14 @@ foreach ($folder in @("flags", "userData")) {
 
 $translationDir = Join-Path $outputPath "translations"
 New-Item -ItemType Directory -Force -Path $translationDir | Out-Null
-& lrelease (Join-Path $repoRoot "translations/translation_en.ts") -qm (Join-Path $translationDir "translation_en.qm")
-if ($LASTEXITCODE -ne 0) { throw "lrelease failed with exit code $LASTEXITCODE" }
+foreach ($language in @('en', 'cs')) {
+    & lrelease -nounfinished (Join-Path $repoRoot "translations/translation_$language.ts") -qm (Join-Path $translationDir "translation_$language.qm")
+    if ($LASTEXITCODE -ne 0) { throw "lrelease failed with exit code $LASTEXITCODE" }
+}
+$qtTranslations = & qmake -query QT_INSTALL_TRANSLATIONS
+if ($LASTEXITCODE -ne 0) { throw "qmake failed with exit code $LASTEXITCODE" }
+foreach ($language in @('pl', 'cs')) {
+    Copy-Item -LiteralPath (Join-Path $qtTranslations "qtbase_$language.qm") -Destination $translationDir
+}
 
 Write-Host "Packaged Windows application at $outputPath"

@@ -1,3 +1,4 @@
+#include <QObject>
 #include "JumperEditorWidget.h"
 #include "ui_JumperEditorWidget.h"
 
@@ -21,7 +22,7 @@ JumperEditorWidget::JumperEditorWidget(Jumper *jumper, CharacteristicsEditor *ch
     referenceYear = QDate::currentDate().year();
     birthDateInput = new QLineEdit(this);
     birthDateInput->setObjectName("jumperBirthDate");
-    birthDateInput->setPlaceholderText("RRRR-MM-DD");
+    birthDateInput->setPlaceholderText(QObject::tr("RRRR-MM-DD"));
     ageInput = new QSpinBox(this);
     ageInput->setObjectName("jumperAge");
     ageInput->setRange(-1, 9998);

@@ -1,3 +1,4 @@
+#include <QObject>
 #include "MultipleTrialRoundsEditDialog.h"
 #include "ui_MultipleTrialRoundsEditDialog.h"
 #include "../../../global/GlobalDatabase.h"
@@ -52,7 +53,7 @@ void MultipleTrialRoundsEditDialog::on_pushButton_trainingsRules_clicked()
     QWidget * widget = new QWidget(dialog);
     QHBoxLayout * layout = new QHBoxLayout(dialog);
     QLabel * label = new QLabel(dialog);
-    label->setText("Zasady: ");
+    label->setText(QObject::tr("Zasady: "));
     QFont font("Ubuntu", 10);
     font.setBold(true);
     label->setFont(font);

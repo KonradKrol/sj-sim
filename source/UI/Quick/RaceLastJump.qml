@@ -32,7 +32,7 @@ Pane {
                 Label {
                     objectName: "lastJumpLeaderGap"
                     visible: jump.summary.leaderGap !== undefined
-                    text: jump.summary.leaderGap>0 ? qsTr("Do lidera: %1 pkt").arg(Number(jump.summary.leaderGap).toLocaleString(Qt.locale(),'f',1)) : qsTr("Lider")
+                    text: jump.summary.leaderGap>0 ? qsTr("Do lidera: %1 pkt").arg(Number(jump.summary.leaderGap).toLocaleString(Qt.locale(Theme.localeName),'f',1)) : qsTr("Lider")
                     color: Theme.muted; font.pointSize: Theme.caption
                 }
             }

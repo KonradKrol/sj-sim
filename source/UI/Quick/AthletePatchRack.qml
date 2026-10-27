@@ -7,14 +7,14 @@ ColumnLayout {
     property var backend
     property var design
     AthletePerkCatalog { id: catalog }
-    spacing: Theme.dp(9)
+    spacing: Theme.dp(5)
     RowLayout {
         Layout.fillWidth: true
         Label { text: qsTr("Perki"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true }
         Label { text: qsTr("opcjonalne"); color: Theme.muted; font.pointSize: Theme.caption }
         Item { Layout.fillWidth: true }
         Label { text: qsTr("Wybrane: %1").arg((rack.backend.profile.perks || []).filter(function(v){return v!==0}).length); color: Theme.muted; font.pointSize: Theme.caption }
-        HelpDot { explanation: qsTr("Kliknij naszywkę, aby ją wybrać lub odznaczyć. Wzmocnij zmienia poziom na II. Kliknięcie przypisanego perka usuwa go. Opis naszywki: najedź lub naciśnij F1.") }
+        HelpDot { explanation: qsTr("Wybierz jeden perk z każdej pary lub pozostaw ją pustą. Wzmocnij przełącza poziomy I, II i III. Poziom III jest najsilniejszy. Kliknij wybrany perk, aby go usunąć. Opis: najedź lub naciśnij F1.") }
     }
     Repeater {
         model: 3
@@ -23,7 +23,7 @@ ColumnLayout {
             required property int index
             Layout.fillWidth: true
             implicitHeight: contentItem.implicitHeight+topPadding+bottomPadding
-            padding: Theme.dp(9)
+            padding: Theme.dp(6)
             background: Rectangle { color: Theme.surface; border.width: 1; border.color: Theme.divider; radius: Theme.dp(6) }
             contentItem: ColumnLayout {
                 spacing: Theme.dp(5)

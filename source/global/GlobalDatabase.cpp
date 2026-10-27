@@ -1,3 +1,4 @@
+#include <QObject>
 #include "GlobalDatabase.h"
 #include "CountryCodes.h"
 #include "../seasons/SimulationSaveListOrder.h"
@@ -364,7 +365,7 @@ bool GlobalDatabase::loadJumpers()
     QFile file("userData/GlobalDatabase/globalJumpers.json");
     if(!file.open(QFile::ReadOnly | QFile::Text))
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku z zawodnikami", "Nie udało się otworzyć pliku userData/GlobalDatabase/globalJumpers.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z zawodnikami"), QObject::tr("Nie udało się otworzyć pliku userData/GlobalDatabase/globalJumpers.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return false;
@@ -382,7 +383,7 @@ bool GlobalDatabase::loadHills()
     QFile file("userData/GlobalDatabase/globalHills.json");
     if(!file.open(QFile::ReadOnly | QFile::Text))
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku ze skoczniami", "Nie udało się otworzyć pliku userData/GlobalDatabase/globalHills.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku ze skoczniami"), QObject::tr("Nie udało się otworzyć pliku userData/GlobalDatabase/globalHills.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return false;
@@ -397,7 +398,7 @@ bool GlobalDatabase::loadCompetitionsRules()
     QFile file("userData/GlobalDatabase/globalCompetitionsRules.json");
     if(!file.open(QFile::ReadOnly | QFile::Text))
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku z zasadami konkursów", "Nie udało się otworzyć pliku userData/GlobalDatabase/globalCompetitionsRules.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z zasadami konkursów"), QObject::tr("Nie udało się otworzyć pliku userData/GlobalDatabase/globalCompetitionsRules.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return false;
@@ -500,7 +501,7 @@ bool GlobalDatabase::loadCalendarPresets(bool before1_2_0)
         QFile file("userData/GlobalDatabase/calendarPresets/" + fileName);
         if(!file.open(QFile::ReadOnly | QFile::Text))
         {
-            QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku z zapisem symulacji", "Nie udało się otworzyć pliku simulationSaves/" + fileName +"\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
+            QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z zapisem symulacji"), QObject::tr("Nie udało się otworzyć pliku simulationSaves/") + fileName +QObject::tr("\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
             message.setModal(true);
             message.exec();
             ok = false;
@@ -536,7 +537,7 @@ bool GlobalDatabase::loadFormGeneratorPresets()
         QFile file("userData/GlobalDatabase/formGeneratorPresets/" + fileName);
         if(!file.open(QFile::ReadOnly | QFile::Text))
         {
-            QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku z presetem generatora formy", "Nie udało się otworzyć pliku userData/GlobalDatabase/formGeneratorPresets/" + fileName +"\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
+            QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z presetem generatora formy"), QObject::tr("Nie udało się otworzyć pliku userData/GlobalDatabase/formGeneratorPresets/") + fileName +QObject::tr("\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
             message.setModal(true);
             message.exec();
             ok = false;
@@ -607,7 +608,7 @@ bool GlobalDatabase::writeJumpers()
     QFile file("userData/GlobalDatabase/globalJumpers.json");
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku z zawodnikami", "Nie udało się otworzyć pliku userData/GlobalDatabase/globalJumpers.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z zawodnikami"), QObject::tr("Nie udało się otworzyć pliku userData/GlobalDatabase/globalJumpers.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return false;
@@ -634,7 +635,7 @@ bool GlobalDatabase::writeHills()
     QFile file("userData/GlobalDatabase/globalHills.json");
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku ze skoczniami", "Nie udało się otworzyć pliku userData/GlobalDatabase/globalHills.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku ze skoczniami"), QObject::tr("Nie udało się otworzyć pliku userData/GlobalDatabase/globalHills.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return false;
@@ -661,7 +662,7 @@ bool GlobalDatabase::writeCompetitionsRules()
     QFile file("userData/GlobalDatabase/globalCompetitionsRules.json");
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku z zasadami konkursów", "Nie udało się otworzyć pliku userData/GlobalDatabase/globalCompetitionsRules.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z zasadami konkursów"), QObject::tr("Nie udało się otworzyć pliku userData/GlobalDatabase/globalCompetitionsRules.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return false;

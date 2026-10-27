@@ -1,3 +1,4 @@
+#include <QObject>
 #include "CalendarEditorWidget.h"
 #include "ui_CalendarEditorWidget.h"
 #include "../../../global/CountryFlagsManager.h"
@@ -204,9 +205,9 @@ void CalendarEditorWidget::debugCalendar()
         case CompetitionInfo::Qualifications:
             string += "KWALIFIKACJE"; break;
         case CompetitionInfo::TrialRound:
-            string += "Seria próbna"; break;
+            string += QObject::tr("Seria próbna"); break;
             case CompetitionInfo::Training:
-            string += "Trening"; break;
+            string += QObject::tr("Trening"); break;
         default: break;
         }
 
@@ -894,12 +895,12 @@ void CalendarEditorWidget::execMultipleAdvancementCompetitionEditDialog(QVector<
     QWidget * widget = new QWidget(dialog);
     QHBoxLayout * layout = new QHBoxLayout(dialog);
     QLabel * label = new QLabel(dialog);
-    label->setText("Konkurs: ");
+    label->setText(QObject::tr("Konkurs: "));
     QFont font("Ubuntu", 10);
     font.setBold(true);
     label->setFont(font);
     QComboBox * comboBox = new QComboBox(dialog);
-    comboBox->addItem("BRAK");
+    comboBox->addItem(QObject::tr("BRAK"));
     QVector<CompetitionInfo *> comps = CompetitionInfo::getSpecificTypeMainCompetitions(calendar->getCompetitionsReference(), competition->getRulesPointer()->getCompetitionType());
     QVector<CompetitionInfo *> availableCompetitions;
     int maxMainIndex = row;//SeasonCalendar::getCompetitionMainIndex(comps, SeasonCalendar::getMainCompetitionByIndex(calendar->getCompetitionsReference(), row));
@@ -961,13 +962,13 @@ void CalendarEditorWidget::execMultipleAdvancementClassificationEditDialog(QVect
     QWidget * widget = new QWidget(dialog);
     QHBoxLayout * layout = new QHBoxLayout(dialog);
     QLabel * label = new QLabel(dialog);
-    label->setText("Klasyfikacja: ");
+    label->setText(QObject::tr("Klasyfikacja: "));
     QFont font("Ubuntu", 10);
     font.setBold(true);
     label->setFont(font);
     QComboBox * comboBox = new QComboBox(dialog);
     int pos = 1;
-    comboBox->addItem("BRAK");
+    comboBox->addItem(QObject::tr("BRAK"));
     for(auto & cls : calendar->getClassificationsReference()){
         comboBox->addItem(QString::number(pos) + ". " + cls->getName());
         pos++;
@@ -1027,7 +1028,7 @@ void CalendarEditorWidget::execJumpsImportanceEditDialog(QVector<int> *rows, int
     QWidget * widget = new QWidget(dialog);
     QHBoxLayout * layout = new QHBoxLayout(dialog);
     QLabel * label = new QLabel(dialog);
-    label->setText("Preset: ");
+    label->setText(QObject::tr("Preset: "));
     QFont font("Ubuntu", 10);
     font.setBold(true);
     label->setFont(font);
@@ -1097,7 +1098,7 @@ void CalendarEditorWidget::execMultipleCompetitionRulesEditDialog(QVector<int> *
     QWidget * widget = new QWidget(dialog);
     QHBoxLayout * layout = new QHBoxLayout(dialog);
     QLabel * label = new QLabel(dialog);
-    label->setText("Zasady: ");
+    label->setText(QObject::tr("Zasady: "));
     QFont font("Ubuntu", 10);
     font.setBold(true);
     label->setFont(font);
@@ -1235,7 +1236,7 @@ void CalendarEditorWidget::execMultipleHillEditDialog(QVector<int> *rows, int co
     QWidget * widget = new QWidget(dialog);
     QHBoxLayout * layout = new QHBoxLayout(dialog);
     QLabel * label = new QLabel(dialog);
-    label->setText("Skocznia: ");
+    label->setText(QObject::tr("Skocznia: "));
     QFont font("Ubuntu", 10);
     font.setBold(true);
     label->setFont(font);

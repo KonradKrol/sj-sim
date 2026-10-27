@@ -1,3 +1,4 @@
+#include <QObject>
 #include "JumperFormGeneratorSettingsPreset.h"
 #include <QJsonValue>
 #include <QFile>
@@ -46,7 +47,7 @@ QVector<JumperFormGeneratorSettingsPreset> JumperFormGeneratorSettingsPreset::ge
     QJsonDocument document = QJsonDocument::fromJson(json, &error);
     if(error.error != QJsonParseError::NoError)
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Błąd przy wczytytywaniu presetów generatora formy", "Treść błędu: " + error.errorString(),  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu presetów generatora formy"), QObject::tr("Treść błędu: ") + error.errorString(),  QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return presets;
@@ -55,7 +56,7 @@ QVector<JumperFormGeneratorSettingsPreset> JumperFormGeneratorSettingsPreset::ge
     QJsonValue value = object.value("formGeneratorSettingsPresets");
     if(!value.isArray())
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Błąd przy wczytytywaniu generatora formy","Prawdopodobnie w tym pliku nie ma listy z presetami\nUpewnij się, że wybrałeś właściwy plik!");
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu generatora formy"),QObject::tr("Prawdopodobnie w tym pliku nie ma listy z presetami\nUpewnij się, że wybrałeś właściwy plik!"));
         message.setModal(true);
         message.exec();
         return presets;
@@ -77,7 +78,7 @@ bool JumperFormGeneratorSettingsPreset::saveToFile(QString dir)
     QFile file(dir + getName() + ".json");
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku z presetem generatora formy " + getName(), "Nie udało się otworzyć pliku " + dir + getName() + ".json" + "\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z presetem generatora formy ") + getName(), QObject::tr("Nie udało się otworzyć pliku ") + dir + getName() + ".json" + QObject::tr("\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return false;

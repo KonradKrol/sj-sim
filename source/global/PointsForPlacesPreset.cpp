@@ -1,3 +1,4 @@
+#include <QObject>
 #include "PointsForPlacesPreset.h"
 #include <QJsonArray>
 #include <QDebug>
@@ -51,7 +52,7 @@ QVector<PointsForPlacesPreset> PointsForPlacesPreset::getPointsForPlacesPresetsV
     QJsonDocument document = QJsonDocument::fromJson(bytes, &error);
     if(error.error != QJsonParseError::NoError)
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Błąd przy wczytytywaniu presetów punktów za miejsca", "Nie udało się wczytać presetów z pliku userData/GlobalDatabase/globalPointsForPlacesPresets.json\nTreść błędu: " + error.errorString(),  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu presetów punktów za miejsca"), QObject::tr("Nie udało się wczytać presetów z pliku userData/GlobalDatabase/globalPointsForPlacesPresets.json\nTreść błędu: ") + error.errorString(),  QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return presets;
@@ -60,7 +61,7 @@ QVector<PointsForPlacesPreset> PointsForPlacesPreset::getPointsForPlacesPresetsV
     QJsonValue value = object.value("pointsForPlacesPresets");
     if(!value.isArray())
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Błąd przy wczytytywaniu presetów punktów za miejsca","Prawdopodobnie w tym pliku nie ma listy z presetami\nUpewnij się, że wybrałeś właściwy plik!");
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu presetów punktów za miejsca"),QObject::tr("Prawdopodobnie w tym pliku nie ma listy z presetami\nUpewnij się, że wybrałeś właściwy plik!"));
         message.setModal(true);
         message.exec();
         return presets;

@@ -13,4 +13,6 @@ for directory in userData flags; do
     if [[ ! -d "${build_dir}/${directory}" ]]; then cp -a "${repo_root}/${directory}" "${build_dir}/"; fi
 done
 mkdir -p translations
-lrelease "${repo_root}/translations/translation_en.ts" -qm translations/translation_en.qm
+for language in en cs; do
+    lrelease -nounfinished "${repo_root}/translations/translation_${language}.ts" -qm "translations/translation_${language}.qm"
+done

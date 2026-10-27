@@ -65,7 +65,7 @@ ColumnLayout {
                     enabled: points.tableNode && points.tableNode.values.enabled!==false
                     font.family: Theme.mono; horizontalAlignment: TextInput.AlignRight
                     Accessible.name: qsTr("Punkty za miejsce %1").arg(entry.index+1)
-                    validator: DoubleValidator { locale: Qt.locale().name }
+                    validator: DoubleValidator { locale: Qt.locale(Theme.localeName).name }
                     onTextEdited: dirty=true
                     onEditingFinished: if(dirty){dirty=false;points.rememberScroll();points.table.edit(entry.index,1,text)}
                 }

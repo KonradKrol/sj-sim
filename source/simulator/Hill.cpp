@@ -1,3 +1,4 @@
+#include <QObject>
 #include "Hill.h"
 #include "../global/CountryCodes.h"
 #include "Landing.h"
@@ -188,7 +189,7 @@ QVector<Hill> Hill::getVectorFromJson(const QByteArray &bytes)
     QJsonDocument document = QJsonDocument::fromJson(bytes, &error);
     if(error.error != QJsonParseError::NoError)
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Błąd przy wczytytywaniu skoczni", "Nie udało się wczytać skoczni z pliku userData/GlobalDatabase/globalHills.json\nTreść błędu: " + error.errorString(), QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu skoczni"), QObject::tr("Nie udało się wczytać skoczni z pliku userData/GlobalDatabase/globalHills.json\nTreść błędu: ") + error.errorString(), QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return hills;
@@ -198,7 +199,7 @@ QVector<Hill> Hill::getVectorFromJson(const QByteArray &bytes)
     QJsonValue value = object.value("hills");
     if(!value.isArray())
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Błąd przy wczytytywaniu skoczni", "Prawdopodobnie w tym pliku nie ma listy ze skoczniami\nUpewnij się, że wybrałeś właściwy plik!");
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu skoczni"), QObject::tr("Prawdopodobnie w tym pliku nie ma listy ze skoczniami\nUpewnij się, że wybrałeś właściwy plik!"));
         message.setModal(true);
         message.exec();
         return hills;

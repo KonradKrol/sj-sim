@@ -243,7 +243,7 @@ QString Characteristic::getTypeToDisplay(const Characteristic &characteristic)
         else if(characteristic.getType() == "front-wind-probability")
             return QObject::tr("Szansa na przedni wiatr");
     }
-    return "<Nieprawidłowa cecha>";
+    return QObject::tr("<Nieprawidłowa cecha>");
 }
 
 int Characteristic::getCharacteristicsForParentTypeCount(short parentType)

@@ -10,8 +10,9 @@ ColumnLayout {
     readonly property var list: fields.list ? fields.list.values : ({})
     readonly property bool parallel: width>=850
     property bool editing: false
-    property bool modern: false
-    readonly property bool hasStudio: !!fields.athleteStudio
+    property bool modern: !!fields.hillStudio
+    readonly property bool hasHillStudio: !!fields.hillStudio
+    readonly property bool hasStudio: !!fields.athleteStudio || hasHillStudio
     readonly property bool studioActive: hasStudio && modern
     readonly property int editRequest: fields.editRequest || 0
     onEditRequestChanged: if(editRequest>0)editing=true
@@ -29,8 +30,10 @@ ColumnLayout {
         visible: active
         active: catalog.studioActive
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; Layout.minimumWidth: 0
-        sourceComponent: Component { AthleteStudio { backend: catalog.fields.athleteStudio } }
+        sourceComponent: catalog.hasHillStudio ? hillStudio : athleteStudio
     }
+    Component { id: hillStudio; HillStudio { backend: catalog.fields.hillStudio } }
+    Component { id: athleteStudio; AthleteStudio { backend: catalog.fields.athleteStudio } }
     Loader {
         visible: active
         active: !catalog.studioActive && ui.profile === "DatabaseEditorWindow"

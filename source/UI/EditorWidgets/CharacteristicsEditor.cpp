@@ -1,3 +1,4 @@
+#include <QObject>
 #include "CharacteristicsEditor.h"
 #include "ui_CharacteristicsEditor.h"
 
@@ -123,7 +124,7 @@ void CharacteristicsEditor::on_pushButton_delete_clicked()
 {
     if(ui->listView_characteristics->selectionModel()->selectedRows().size() > 0){
         int index = ui->listView_characteristics->selectionModel()->selectedRows().at(0).row();
-        QMessageBox * message = new QMessageBox(QMessageBox::Question, "Usunięcie cechy", "Czy na pewno chcesz usunąć tą cechę?");
+        QMessageBox * message = new QMessageBox(QMessageBox::Question, QObject::tr("Usunięcie cechy"), QObject::tr("Czy na pewno chcesz usunąć tą cechę?"));
         message->setAttribute(Qt::WA_DeleteOnClose, true);
         message->setStyleSheet("background-color: white; color: black;");
         message->addButton(tr("Nie"), QMessageBox::RejectRole);

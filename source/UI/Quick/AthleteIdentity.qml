@@ -9,7 +9,7 @@ GridLayout {
     readonly property var profile: backend.profile
     readonly property var countryOptions: backend.countries
     columns: width>=Theme.dp(690) ? 3 : width>=Theme.dp(360) ? 2 : 1
-    columnSpacing: Theme.dp(15); rowSpacing: Theme.dp(8)
+    columnSpacing: Theme.dp(12); rowSpacing: Theme.dp(5)
     ColumnLayout {
         Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: Theme.dp(260); spacing: Theme.dp(3)
         Label { text: qsTr("Imię"); color: identity.design.muted; font.family: identity.design.detailFont; font.pointSize: Theme.caption }
@@ -36,7 +36,7 @@ GridLayout {
                 Image { source: identity.profile.flag || ""; Layout.preferredWidth: Theme.dp(25); Layout.preferredHeight: Theme.dp(17); sourceSize.width: 50; sourceSize.height: 34; fillMode: Image.PreserveAspectFit; Accessible.ignored: true }
                 Label { text: country.displayText; color: identity.design.ink; font.pointSize: Theme.body; Layout.fillWidth: true; elide: Text.ElideRight }
             }
-            indicator: Label { anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.rightMargin: Theme.dp(8); text: "⌄"; color: identity.design.muted; font.pointSize: Theme.body }
+            indicator: DropdownIndicator { anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.rightMargin: Theme.dp(8); tint: identity.design.muted }
             onActivated: identity.backend.setValue("country",identity.countryOptions[index].code)
         }
     }
@@ -47,9 +47,9 @@ GridLayout {
             Label { text: qsTr("Rekord · m"); color: identity.design.muted; font.family: identity.design.detailFont; font.pointSize: Theme.caption }
             AthleteText {
                 objectName: "athletePersonalBest"; design: identity.design; Layout.fillWidth: true
-                text: identity.profile.personalBest>0 ? Number(identity.profile.personalBest).toLocaleString(Qt.locale(),'f',1) : ""; placeholderText: "—"
-                Accessible.name: qsTr("Rekord życiowy w metrach"); validator: DoubleValidator { bottom: 0; top: 500; decimals: 1; locale: Qt.locale().name }
-                onEditingFinished: if(!text.length || acceptableInput)identity.backend.setValue("personalBest",text.length?Number.fromLocaleString(Qt.locale(),text):0)
+                text: identity.profile.personalBest>0 ? Number(identity.profile.personalBest).toLocaleString(Qt.locale(Theme.localeName),'f',1) : ""; placeholderText: "—"
+                Accessible.name: qsTr("Rekord życiowy w metrach"); validator: DoubleValidator { bottom: 0; top: 500; decimals: 1; locale: Qt.locale(Theme.localeName).name }
+                onEditingFinished: if(!text.length || acceptableInput)identity.backend.setValue("personalBest",text.length?Number.fromLocaleString(Qt.locale(Theme.localeName),text):0)
             }
         }
         ColumnLayout {
@@ -74,12 +74,14 @@ GridLayout {
                 design: identity.design; Layout.fillWidth: true; Layout.minimumWidth: 0
                 id: photoPath
                 property bool dirty: false
+                readonly property string recordKey: identity.profile.id || ""
+                onRecordKeyChanged: {dirty=false;text=sourcePath}
                 readonly property string sourcePath: identity.profile.photoPath || ""
                 text: ""; maximumLength: 4096
                 Component.onCompleted: text=sourcePath
                 onSourcePathChanged: if(!dirty)text=sourcePath
                 onTextEdited: dirty=true
-                placeholderText: "zdjecia/skoczek.jpg"
+                placeholderText: qsTr("zdjecia/skoczek.jpg")
                 Accessible.name: qsTr("Ścieżka zdjęcia")
                 onEditingFinished: {identity.backend.setValue("photoPath",text);dirty=false;text=sourcePath}
             }

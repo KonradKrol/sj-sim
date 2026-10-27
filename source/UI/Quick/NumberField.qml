@@ -8,6 +8,10 @@ Item {
     property string label: ""
     property real currentValue: fields ? Number(fields.value) : 0
     property string draft: ""
+    property string recordKey: ""
+    onRecordKeyChanged: { input.dirty=false; synchronize() }
+    readonly property string localeName: Theme.localeName
+    onLocaleNameChanged: synchronize()
     function synchronize() {
         if(!fields)return
         currentValue=Number(fields.value)
@@ -19,12 +23,12 @@ Item {
     implicitHeight: Math.max(Theme.compact ? 28 : 48,Theme.bodyMetrics.height+(Theme.compact ? 4 : 18))
     implicitWidth: 140
     function setValue(value) { currentValue=Math.max(fields.minimum,Math.min(fields.maximum,value));input.dirty=false;draft=formattedValue();if(direct)ui.edit(fields.id,currentValue);committed(currentValue) }
-    function formattedValue() {return currentValue===fields.minimum && fields.specialText ? fields.specialText : currentValue.toLocaleString(Qt.locale(),'f',fields.decimals).split(Qt.locale().groupSeparator).join("")}
+    function formattedValue() {return currentValue===fields.minimum && fields.specialText ? fields.specialText : currentValue.toLocaleString(Qt.locale(Theme.localeName),'f',fields.decimals).split(Qt.locale(Theme.localeName).groupSeparator).join("")}
     function commitInput() {
         input.dirty=false
         if(fields.mixed && draft.length===0)return
         if(currentValue===fields.minimum && draft===fields.specialText)return
-        var value=Number.fromLocaleString(Qt.locale(),draft)
+        var value=Number.fromLocaleString(Qt.locale(Theme.localeName),draft)
         if(input.acceptableInput && isFinite(value)){if(value!==currentValue)setValue(value);else draft=formattedValue()}
         else draft=fields.mixed ? "" : formattedValue()
     }
@@ -40,7 +44,7 @@ Item {
         horizontalAlignment: TextInput.AlignRight
         font.family: Theme.mono
         Accessible.name: control.label || control.fields.accessibleName || control.fields.label || control.fields.tip || control.fields.name || ""
-        validator: DoubleValidator { bottom: control.fields.minimum; top: control.fields.maximum; decimals: control.fields.decimals; locale: Qt.locale().name }
+        validator: DoubleValidator { bottom: control.fields.minimum; top: control.fields.maximum; decimals: control.fields.decimals; locale: Qt.locale(Theme.localeName).name }
         onTextEdited: {dirty=true;control.draft=text}
         onEditingFinished: control.commitInput()
         Keys.onUpPressed: control.step(1)

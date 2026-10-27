@@ -32,7 +32,7 @@ ColumnLayout {
     ColumnLayout {
         visible: playground.backend.busy; Layout.fillWidth: true; spacing: 3
         ProgressBar { Layout.fillWidth: true; from: 0; to: playground.backend.config.competitions; value: playground.backend.completed }
-        Label { text: qsTr("%1 / %2 powtórzeń · %3 skoków · %4 s").arg(playground.backend.completed).arg(playground.backend.config.competitions).arg(playground.backend.jumpCount).arg(playground.backend.elapsed.toLocaleString(Qt.locale(),'f',1)); color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        Label { text: qsTr("%1 / %2 powtórzeń · %3 skoków · %4 s").arg(playground.backend.completed).arg(playground.backend.config.competitions).arg(playground.backend.jumpCount).arg(playground.backend.elapsed.toLocaleString(Qt.locale(Theme.localeName),'f',1)); color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     }
     Label { visible: playground.backend.message.length>0; text: playground.backend.message; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     SectionTabs {

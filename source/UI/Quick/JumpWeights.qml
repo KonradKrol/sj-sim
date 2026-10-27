@@ -7,7 +7,7 @@ Column {
     property bool expanded: false
     visible: !!summary.weighted || !!summary.resetPoints
     spacing: 2
-    function number(value,decimals) {return Number(value).toLocaleString(Qt.locale(),'f',decimals)}
+    function number(value,decimals) {return Number(value).toLocaleString(Qt.locale(Theme.localeName),'f',decimals)}
     function precise(value,decimals) {return number(value,decimals).replace(/0+$/, "").replace(/[.,]$/, "")}
     onSummaryChanged: if(!summary.weighted)expanded=false
     SButton {

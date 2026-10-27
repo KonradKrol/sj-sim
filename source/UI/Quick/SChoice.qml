@@ -8,6 +8,8 @@ ComboBox {
     property bool searchable: false
     property var optionEnabled: []
     property var optionImages: []
+    property string searchPlaceholder: qsTr("Szukaj…")
+    property string emptySearchText: qsTr("Brak wyników")
     readonly property var matches: {
         var entries = []
         var source = model
@@ -21,6 +23,8 @@ ComboBox {
     function chooseMatch() {
         if (choices.currentIndex < 0 || choices.currentIndex >= matches.length) return
         var index = matches[choices.currentIndex].sourceIndex
+        if (optionEnabled.length>index && !optionEnabled[index]) return
+        navigation.setChoiceIndex(control,index)
         activated(index)
         popup.close()
         forceActiveFocus()
@@ -49,10 +53,8 @@ ComboBox {
             verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight
         }
     }
-    indicator: Text {
-        text: "⌄"; color: Theme.muted
+    indicator: DropdownIndicator {
         anchors.right: parent.right; anchors.rightMargin: 12; anchors.verticalCenter: parent.verticalCenter
-        font.pointSize: Theme.body
     }
     background: Surface {
         fillColor: control.hovered ? Theme.selection : Theme.raised
@@ -79,6 +81,7 @@ ComboBox {
             id: matchedDelegate
             width: choices.width
             text: modelData.label
+            enabled: control.optionEnabled.length<=modelData.sourceIndex || control.optionEnabled[modelData.sourceIndex]
             highlighted: choices.currentIndex === index
             onClicked: { choices.currentIndex = index; control.chooseMatch() }
             contentItem: RowLayout {
@@ -112,8 +115,8 @@ ComboBox {
                 objectName: "hillChoiceSearch"
                 visible: control.searchable
                 Layout.fillWidth: true
-                placeholderText: qsTr("Szukaj skoczni…")
-                Accessible.name: qsTr("Szukaj skoczni")
+                placeholderText: control.searchPlaceholder
+                Accessible.name: placeholderText
                 onTextChanged: choices.currentIndex = control.matches.length ? 0 : -1
                 Keys.onDownPressed: choices.currentIndex = Math.min(control.matches.length-1,choices.currentIndex+1)
                 Keys.onUpPressed: choices.currentIndex = Math.max(0,choices.currentIndex-1)
@@ -137,7 +140,7 @@ ComboBox {
                 id: emptyResult
                 visible: control.searchable && control.matches.length === 0
                 Layout.fillWidth: true
-                text: qsTr("Brak skoczni")
+                text: control.emptySearchText
                 color: Theme.muted; font.pointSize: Theme.caption
                 padding: 8
             }

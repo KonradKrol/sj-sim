@@ -218,6 +218,7 @@ class QuickUi : public QObject {
     Q_PROPERTY(QuickBridge *current READ current NOTIFY navigationChanged)
     Q_PROPERTY(QStringList path READ path NOTIFY navigationChanged)
     Q_PROPERTY(bool canGoBack READ canGoBack NOTIFY navigationChanged)
+    Q_PROPERTY(QString localeName READ localeName NOTIFY navigationChanged)
 public:
     explicit QuickUi(MainWindow *window);
     ~QuickUi() override;
@@ -225,7 +226,12 @@ public:
     QuickBridge *current() const;
     QStringList path() const;
     bool canGoBack() const;
+    QString localeName() const;
     Q_INVOKABLE void back();
+    Q_INVOKABLE void setChoiceIndex(QObject *control, int index) {
+        if (control && index >= 0 && index < control->property("count").toInt())
+            control->setProperty("currentIndex", index);
+    }
     Q_INVOKABLE void showAppearance();
     Q_INVOKABLE void closeAppearance();
 signals:

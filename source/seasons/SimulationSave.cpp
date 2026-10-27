@@ -1,3 +1,4 @@
+#include <QObject>
 #include "SimulationSave.h"
 #include <QCoreApplication>
 #include <QDir>
@@ -309,7 +310,7 @@ bool SimulationSave::saveToFile(QString dir, QString fileName)
     QSaveFile file(filePath);
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku z zapisem symulacji " + getName(), "Nie udało się otworzyć pliku " + filePath + "\nUpewnij się, że folder istnieje i ma odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z zapisem symulacji ") + getName(), QObject::tr("Nie udało się otworzyć pliku ") + filePath + QObject::tr("\nUpewnij się, że folder istnieje i ma odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return false;

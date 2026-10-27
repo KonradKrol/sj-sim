@@ -1,3 +1,4 @@
+#include <QObject>
 #include "StartListModel.h"
 #include "../../../global/CountryFlagsManager.h"
 #include "../../../competitions/AbstractCompetitionManager.h"
@@ -17,7 +18,7 @@ QVariant StartListModel::headerData(int section, Qt::Orientation orientation, in
     if(section == 0 && orientation == Qt::Horizontal)
     {
         if(role == Qt::DisplayRole)
-            return "Zawodnik";
+            return QObject::tr("Zawodnik");
         else if(role == Qt::FontRole)
             return QFont("Ubuntu", 9, 2);
         else if(role == Qt::BackgroundRole)
@@ -103,7 +104,7 @@ QVariant StartListModel::data(const QModelIndex &index, int role) const
     QString string = QString::number(index.row() + 1) + ". " + displayedStatuses.at(index.row()).getJumper()->getNameAndSurname();
     if(role == Qt::DisplayRole){
         if(displayedStatuses.at(index.row()).getJumpStatus() == StartListCompetitorStatus::Dns)
-            return string + "   (Nie wystartował)";
+            return string + QObject::tr("   (Nie wystartował)");
         else if(displayedStatuses.at(index.row()).getJumpStatus() == StartListCompetitorStatus::Dsq)
                    return string + "   (Dyskwalifikacja)";
         else

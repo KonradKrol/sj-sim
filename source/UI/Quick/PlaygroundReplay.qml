@@ -12,7 +12,7 @@ ColumnLayout {
     readonly property var result: backend.replayResult
     readonly property var variants: backend.report.variants || []
     readonly property var standings: (result.standings || []).slice().sort(function(a,b){return (a.place>0?a.place:9999)-(b.place>0?b.place:9999)})
-    function format(value){return typeof value==="number"?value.toLocaleString(Qt.locale(),'f',1):"—"}
+    function format(value){return typeof value==="number"?value.toLocaleString(Qt.locale(Theme.localeName),'f',1):"—"}
     spacing: 10
     Flow {
         Layout.fillWidth: true; spacing: 8
@@ -68,7 +68,7 @@ ColumnLayout {
                                 Label { text: qsTr("Seria %1").arg(parent.parent.parent.modelData.round); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
                                 Label { text: parent.parent.parent.modelData.dsq?"DSQ":parent.parent.parent.modelData.fall?qsTr("Upadek"):qsTr("Ustany"); color: parent.parent.parent.modelData.fall?Theme.warning:Theme.muted; font.pointSize: Theme.caption }
                             }
-                            Label { text: replay.format(parent.parent.modelData.distance)+" m · "+replay.format(parent.parent.modelData.points)+" pkt"; color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading }
+                            Label { text: replay.format(parent.parent.modelData.distance)+" m · "+replay.format(parent.parent.modelData.points)+qsTr(" pkt"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading }
                             Label { text: qsTr("Wiatr %1 m/s · rekompensata %2 pkt · noty %3 pkt").arg(replay.format(parent.parent.modelData.wind)).arg(replay.format(parent.parent.modelData.compensation)).arg(replay.format(parent.parent.modelData.judges)); color: Theme.ink; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                             Label { text: qsTr("Wybicie %1 · lot %2 · losowa część %3").arg(replay.format(parent.parent.modelData.takeoff)).arg(replay.format(parent.parent.modelData.flight)).arg(replay.format(parent.parent.modelData.random)); color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                         }

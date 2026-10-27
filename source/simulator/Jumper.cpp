@@ -164,7 +164,7 @@ QVector<Jumper> Jumper::getVectorFromJson(const QByteArray &bytes)
     QJsonDocument document = QJsonDocument::fromJson(bytes, &error);
     if(error.error != QJsonParseError::NoError)
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Błąd przy wczytytywaniu zawodników", "Nie udało się wczytać zawodników z pliku userData/GlobalDatabase/globalJumpers.json\nTreść błędu: " + error.errorString(), QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu zawodników"), QObject::tr("Nie udało się wczytać zawodników z pliku userData/GlobalDatabase/globalJumpers.json\nTreść błędu: ") + error.errorString(), QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return jumpers;
@@ -173,7 +173,7 @@ QVector<Jumper> Jumper::getVectorFromJson(const QByteArray &bytes)
     QJsonValue value = object.value("jumpers");
     if(!value.isArray())
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Błąd przy wczytytywaniu zawodników", "Prawdopodobnie w tym pliku nie ma listy ze skoczkami\nUpewnij się, że wybrałeś właściwy plik!");
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu zawodników"), QObject::tr("Prawdopodobnie w tym pliku nie ma listy ze skoczkami\nUpewnij się, że wybrałeś właściwy plik!"));
         message.setModal(true);
         message.exec();
         return jumpers;

@@ -165,8 +165,13 @@ function Initialize-SjRuntime([string]$Executable) {
     }
     $translationDir = Join-Path $runtimeDir "translations"
     New-Item -ItemType Directory -Force $translationDir | Out-Null
-    & (Join-Path $qtBin "lrelease.exe") (Join-Path $repoRoot "translations\translation_en.ts") -qm (Join-Path $translationDir "translation_en.qm")
-    if ($LASTEXITCODE -ne 0) { throw "Nie udało się zbudować tłumaczeń" }
+    foreach ($language in @('en', 'cs')) {
+        & (Join-Path $qtBin "lrelease.exe") -nounfinished (Join-Path $repoRoot "translations\translation_$language.ts") -qm (Join-Path $translationDir "translation_$language.qm")
+        if ($LASTEXITCODE -ne 0) { throw "Nie udało się zbudować tłumaczeń" }
+    }
+    foreach ($language in @('pl', 'cs')) {
+        Copy-Item -LiteralPath (Join-Path $qtKit "translations\qtbase_$language.qm") -Destination $translationDir -Force
+    }
 }
 
 $appExe = Find-SjExecutable $buildDir
@@ -174,7 +179,7 @@ Initialize-SjRuntime $appExe
 Start-Process -FilePath $appExe -WorkingDirectory (Split-Path $appExe)
 ```
 
-Obok `.exe` mają być: `userData\GlobalDatabase`, `userData\Settings`, `flags` oraz `translations\translation_en.qm`. Program ustawia katalog roboczy na katalog wykonywalny w `source/main.cpp`; sama zmiana katalogu roboczego w IDE nie zastąpi tych plików.
+Obok `.exe` mają być: `userData\GlobalDatabase`, `userData\Settings`, `flags` oraz folder `translations` z `translation_en.qm`, `translation_cs.qm`, `qtbase_pl.qm` i `qtbase_cs.qm`. Program ustawia katalog roboczy na katalog wykonywalny w `source/main.cpp`; sama zmiana katalogu roboczego w IDE nie zastąpi tych plików.
 
 Uruchomienie starego UI w tym samym buildzie:
 
@@ -258,7 +263,7 @@ Do testu zgodności Widgets utwórz **osobny** katalog, np. `build-win-widgets`,
 | Brak pluginu `windows` lub błędy pluginów | Użyj `QT_DEBUG_PLUGINS=1` w bieżącej sesji; sprawdź `platforms\qwindows.dll` w paczce i obce `QT_PLUGIN_PATH`. |
 | Nie widać flag, SVG lub zdjęcia | Sprawdź `flags`, `Qt6Svg.dll`, pluginy SVG/JPEG i wynik `windeployqt`. Fonty i zdjęcie są zasobami repozytorium; nie instaluj fontów ręcznie. |
 | Puste bazy / błędy odczytu JSON | Dane skopiowano obok Makefile zamiast do katalogu `.exe`, albo brakuje części `userData`. |
-| Brak angielskiego tłumaczenia | Wykonaj `lrelease`; `.ts` nie zastępuje uruchomieniowego `.qm`. |
+| Brak angielskiego lub czeskiego tłumaczenia | Wykonaj `Initialize-SjRuntime`; `.ts` nie zastępuje uruchomieniowego `.qm`. |
 | Pusta scena / problem sterownika | Próbnie uruchom z `QT_QUICK_BACKEND=software`, potem usuń tę zmienną i sprawdź właściwy renderer. |
 | LNK1104 przy kolejnym buildzie | Zamknij uruchomiony proces gry/testów. |
 

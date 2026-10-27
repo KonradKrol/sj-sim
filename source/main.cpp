@@ -31,8 +31,10 @@ int main(int argc, char *argv[])
 
     GlobalAppSettings::get()->loadFromJson();
 
-    if(GlobalAppSettings::get()->getLanguageID() == 1) //english
-    a.installTranslator(GlobalTranslators::get()->getGlobalTranslations().at(0));
+    if (!GlobalTranslators::get()->setLanguage(&a, GlobalAppSettings::get()->getLanguageID())) {
+        GlobalAppSettings::get()->setLanguageID(GlobalAppSettings::Polish);
+        GlobalTranslators::get()->setLanguage(&a, GlobalAppSettings::Polish);
+    }
 
     MainWindow w;
     w.setParentApplication(&a);

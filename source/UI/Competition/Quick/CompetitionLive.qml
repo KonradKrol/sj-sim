@@ -47,9 +47,9 @@ Rectangle {
             ColumnLayout {
                 Layout.fillWidth:true; spacing:2
                 Label { text:live.competition ? screen.text("label_hillNameAndHSPoint") : (live.sections.length ? live.sections[0].title : ""); color:screen.ink; font.pixelSize:20; font.weight:Font.DemiBold; Layout.fillWidth:true; elide:Text.ElideRight }
-                Label { visible:live.competition; text:(live.sections.length ? (live.sections[0].stage || "Konkurs") : "Konkurs")+(screen.width>=700 ? "     ·     Wiatr "+screen.text("label_actualAvgWind")+"     ·     Śnieg: "+screen.text("label_snowLevel") : ""); color:screen.muted; font.pixelSize:12; Layout.fillWidth:true; elide:Text.ElideRight }
+                Label { visible:live.competition; text:(live.sections.length ? (live.sections[0].stage || qsTr("Konkurs")) : qsTr("Konkurs"))+(screen.width>=700 ? "     ·     Wiatr "+screen.text("label_actualAvgWind")+qsTr("     ·     Śnieg: ")+screen.text("label_snowLevel") : ""); color:screen.muted; font.pixelSize:12; Layout.fillWidth:true; elide:Text.ElideRight }
             }
-            LiveButton { theme:screen; text:screen.dark ? "☀" : "☾"; implicitWidth:40; onClicked:live.dark=!live.dark; ToolTip.visible:hovered; ToolTip.text:"Jasny / ciemny motyw" }
+            LiveButton { theme:screen; text:screen.dark ? "☀" : "☾"; implicitWidth:40; onClicked:live.dark=!live.dark; ToolTip.visible:hovered; ToolTip.text:qsTr("Jasny / ciemny motyw") }
             LiveButton { theme:screen; visible:live.competition; text:"Qt Widgets"; onClicked:live.classic() }
         }
         LiveArena { visible:live.competition; Layout.fillWidth:true; Layout.fillHeight:true; theme:screen }

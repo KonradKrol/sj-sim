@@ -33,7 +33,7 @@ Flickable {
                 background: Surface { fillColor: sector.chosen ? Theme.stadium : sector.hovered ? Theme.selection : Theme.surface; strokeWidth: sector.activeFocus ? 2 : 0; edgeColor: Theme.accent; sweep: 20 }
                 contentItem: Item {
                     Label { text: sector.values.range; color: sector.chosen ? Theme.headerMuted : Theme.muted; font.pointSize: Theme.caption; anchors.top: parent.top }
-                    Label { text: Number(sector.values.strength.value).toLocaleString(Qt.locale(),'f',1); color: sector.chosen ? Theme.signal : Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.title; anchors.left: parent.left; anchors.bottom: parent.bottom }
+                    Label { text: Number(sector.values.strength.value).toLocaleString(Qt.locale(Theme.localeName),'f',1); color: sector.chosen ? Theme.signal : Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.title; anchors.left: parent.left; anchors.bottom: parent.bottom }
                     Label { text: "↑"; rotation: sector.values.direction.value; color: sector.chosen ? Theme.signal : Theme.accent; font.pointSize: Theme.heading; anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter; Accessible.ignored: true; Behavior on rotation { RotationAnimation { duration: Theme.motion; direction: RotationAnimation.Shortest } } }
                 }
             }

@@ -1,3 +1,4 @@
+#include <QObject>
 #include "SimulationSaveManagerWindow.h"
 #include "../ResultsShowing/ResultsHistoryWidget.h"
 #include "ui_SimulationSaveManagerWindow.h"
@@ -674,7 +675,7 @@ void SimulationSaveManagerWindow::fillNextCompetitionInformations()
         emit calendarTableModel->dataChanged(calendarTableModel->index(0, 0), calendarTableModel->index(calendarTableModel->rowCount() - 1, calendarTableModel->columnCount() - 1));
     }
     else{
-        ui->label_nextCompetitionIndexAndHill->setText("BRAK");
+        ui->label_nextCompetitionIndexAndHill->setText(QObject::tr("BRAK"));
         ui->label_hillFlag->setText("");
         ui->label_serieTypeAndTrainingIndex->setText("");
     }

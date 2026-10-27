@@ -1,3 +1,4 @@
+#include <QObject>
 #include "TeamsSquadsTreeModel.h"
 #include <QFont>
 #include <QPixmap>
@@ -158,7 +159,7 @@ void TeamsSquadsTreeModel::setupTreeItems()
 {
     beginResetModel();
     TreeItem::deleteAllTreeItemsRecursively(rootItem);
-    rootItem = new TreeItem({"Drużyna", "Zawodnik"});
+    rootItem = new TreeItem({QObject::tr("Drużyna"), QObject::tr("Zawodnik")});
     for(auto & team : *teams){
         TreeItem * teamItem = new TreeItem({GlobalDatabase::get()->getCountryByAlpha3(team.getCountryCode())->getName(), ""}, rootItem);
         int i=0;

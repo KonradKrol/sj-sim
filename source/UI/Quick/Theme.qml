@@ -2,6 +2,7 @@ pragma Singleton
 import QtQuick 2.15
 
 QtObject {
+    readonly property string localeName: navigation ? navigation.localeName : "pl_PL"
     readonly property bool dark: appearance ? appearance.dark : false
     readonly property bool compact: appearance ? appearance.compactUi : false
     readonly property real uiScale: appearance ? appearance.uiScale : 1

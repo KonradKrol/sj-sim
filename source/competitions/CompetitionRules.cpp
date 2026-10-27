@@ -1,3 +1,4 @@
+#include <QObject>
 #include "CompetitionRules.h"
 
 #include <QFile>
@@ -122,7 +123,7 @@ QVector<CompetitionRules> CompetitionRules::getCompetitionRulesVectorFromJson(co
     QJsonDocument document = QJsonDocument::fromJson(bytes, &error);
     if(error.error != QJsonParseError::NoError)
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Błąd przy wczytytywaniu zasad konkursów", "Nie udało się wczytać zawodników z pliku userData/GlobalDatabase/globalCompetitionsRules.json\nTreść błędu: " + error.errorString(), QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu zasad konkursów"), QObject::tr("Nie udało się wczytać zawodników z pliku userData/GlobalDatabase/globalCompetitionsRules.json\nTreść błędu: ") + error.errorString(), QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return rulesVector;
@@ -131,7 +132,7 @@ QVector<CompetitionRules> CompetitionRules::getCompetitionRulesVectorFromJson(co
     QJsonValue value = object.value("competitionsRules");
     if(!value.isArray())
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Błąd przy wczytytywaniu zasad konkursów", "Prawdopodobnie w tym pliku nie ma listy z zasadami konkursów\nUpewnij się, że wybrałeś właściwy plik!");
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu zasad konkursów"), QObject::tr("Prawdopodobnie w tym pliku nie ma listy z zasadami konkursów\nUpewnij się, że wybrałeś właściwy plik!"));
         message.setModal(true);
         message.exec();
         return rulesVector;

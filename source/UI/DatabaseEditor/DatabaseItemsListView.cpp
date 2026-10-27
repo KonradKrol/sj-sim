@@ -1,3 +1,4 @@
+#include <QObject>
 #include "DatabaseItemsListView.h"
 #include "ui_DatabaseItemsListView.h"
 #include <QMessageBox>
@@ -362,7 +363,7 @@ void DatabaseItemsListView::onInsertActionTriggered()
             case PointsForPlacesPresetsItems:{
                 PointsForPlacesPresetsListModel * model = dynamic_cast<PointsForPlacesPresetsListModel *>(listModel);
                 model->insertRows(rowToInsert, 1);
-                model->getPresetsVectorPointer()->insert(rowToInsert, 1, PointsForPlacesPreset("Preset"));
+                model->getPresetsVectorPointer()->insert(rowToInsert, 1, PointsForPlacesPreset(QObject::tr("Preset")));
                 emit model->dataChanged(model->index(rowToInsert), model->index(model->rowCount() - 1));
                 break;
             }

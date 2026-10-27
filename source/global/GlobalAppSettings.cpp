@@ -1,3 +1,4 @@
+#include <QObject>
 #include "GlobalAppSettings.h"
 
 #include <QFile>
@@ -124,7 +125,7 @@ short GlobalAppSettings::getLanguageID() const
 
 void GlobalAppSettings::setLanguageID(const short &newLanguageID)
 {
-    languageID = newLanguageID;
+    languageID = newLanguageID >= Polish && newLanguageID <= Czech ? newLanguageID : Polish;
 }
 
 bool GlobalAppSettings::loadFromJson()
@@ -132,7 +133,7 @@ bool GlobalAppSettings::loadFromJson()
     QFile file("userData/Settings/appSettings.json");
     if(!file.open(QFile::ReadOnly | QFile::Text))
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku z ustawieniami aplikacji", "Nie udało się otworzyć pliku userData/Settings/appSettings.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z ustawieniami aplikacji"), QObject::tr("Nie udało się otworzyć pliku userData/Settings/appSettings.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return false;
@@ -141,7 +142,7 @@ bool GlobalAppSettings::loadFromJson()
     QJsonDocument document = QJsonDocument::fromJson(file.readAll(), &error);
     if(error.error != QJsonParseError::NoError)
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Błąd przy wczytytywaniu ustawień aplikacji", "Nie udało się wczytać ustawień aplikacji z pliku userData/Settings/appSettings.json\nTreść błędu: " + error.errorString(), QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu ustawień aplikacji"), QObject::tr("Nie udało się wczytać ustawień aplikacji z pliku userData/Settings/appSettings.json\nTreść błędu: ") + error.errorString(), QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return false;
@@ -151,7 +152,7 @@ bool GlobalAppSettings::loadFromJson()
     QJsonValue value = object.value("settings");
     if(!value.isObject())
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Błąd przy wczytytywaniu ustawień aplikacji", "Prawdopodobnie w tym pliku nie ma obiektu z ustawieniami\nUpewnij się, że wybrałeś właściwy plik!");
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu ustawień aplikacji"), QObject::tr("Prawdopodobnie w tym pliku nie ma obiektu z ustawieniami\nUpewnij się, że wybrałeś właściwy plik!"));
         message.setModal(true);
         message.exec();
         return false;
@@ -175,7 +176,7 @@ bool GlobalAppSettings::writeToJson()
     QFile file("userData/Settings/appSettings.json");
     if(!file.open(QFile::WriteOnly | QFile::Text))
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku z ustawieniami aplikacji", "Nie udało się otworzyć pliku userData/Settings/appSettings.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z ustawieniami aplikacji"), QObject::tr("Nie udało się otworzyć pliku userData/Settings/appSettings.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return false;

@@ -16,7 +16,7 @@ public:
     static GlobalAppSettings * get();
 
 private:
-    short languageID;
+    short languageID = 0;
     bool showCalendarEditorHelp;
     bool showSeasonJumpersAndHillsHelp;
     JumpDataInfoChoice jumpDataInfoChoice;
@@ -35,7 +35,8 @@ public:
 
     enum Language{
         Polish,
-        English
+        English,
+        Czech
     };
 
     bool loadFromJson();

@@ -6,13 +6,13 @@ Control {
     id: screen
     objectName: "athleteConceptCollector"
     property var backend
-    AthleteDesign { id: design; variant: 3 }
+    AthleteDesign { id: conceptPalette; variant: 3 }
     padding: Theme.dp(22)
     implicitHeight: contentItem.implicitHeight+topPadding+bottomPadding
-    background: Rectangle { color: design.paper }
+    background: Rectangle { color: conceptPalette.paper }
     contentItem: ColumnLayout {
         spacing: Theme.dp(20)
-        AthleteIdentity { backend: screen.backend; design: design; Layout.fillWidth: true }
+        AthleteIdentity { backend: screen.backend; design: conceptPalette; Layout.fillWidth: true }
         GridLayout {
             Layout.fillWidth: true; columns: width>=Theme.dp(780) ? 2 : 1; columnSpacing: Theme.dp(32); rowSpacing: Theme.dp(22)
             Control {
@@ -27,11 +27,11 @@ Control {
                     spacing: Theme.dp(8)
                     RowLayout {
                         Layout.fillWidth: true; spacing: Theme.dp(15)
-                        AthleteRating { backend: screen.backend; design: design; compact: true; Layout.fillWidth: true; Layout.preferredWidth: Theme.dp(130) }
+                        AthleteRating { backend: screen.backend; design: conceptPalette; compact: true; Layout.fillWidth: true; Layout.preferredWidth: Theme.dp(130) }
                         ColumnLayout {
                             Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.alignment: Qt.AlignTop; spacing: Theme.dp(4)
-                            Label { text: screen.backend.profile.name || qsTr("Nowy"); color: design.muted; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-                            Label { text: screen.backend.profile.surname || qsTr("skoczek"); color: design.ink; font.family: Theme.displayFamily; font.pointSize: Theme.title; font.weight: Font.Black; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                            Label { text: screen.backend.profile.name || qsTr("Nowy"); color: conceptPalette.muted; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                            Label { text: screen.backend.profile.surname || qsTr("skoczek"); color: conceptPalette.ink; font.family: Theme.displayFamily; font.pointSize: Theme.title; font.weight: Font.Black; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                             Image { source: screen.backend.profile.flag || ""; Layout.preferredWidth: Theme.dp(38); Layout.preferredHeight: Theme.dp(24); sourceSize.width: 76; sourceSize.height: 48; fillMode: Image.PreserveAspectFit; Accessible.ignored: true }
                         }
                     }
@@ -41,14 +41,14 @@ Control {
                         Label { visible: portrait.status!==Image.Ready; anchors.centerIn: parent; text: ((screen.backend.profile.name || "S").slice(0,1)+(screen.backend.profile.surname || "J").slice(0,1)).toLocaleUpperCase(); color: "#bdd0ec"; font.family: Theme.displayFamily; font.pointSize: Theme.fontSize(88); font.weight: Font.Black }
                         Image { id: portrait; visible: !!screen.backend.profile.photo; anchors.fill: parent; source: screen.backend.profile.photo || ""; sourceSize.width: 480; sourceSize.height: 500; fillMode: Image.PreserveAspectFit; asynchronous: true; Accessible.name: qsTr("Zdjęcie skoczka") }
                     }
-                    AthleteRating { backend: screen.backend; design: design; form: true; compact: true; Layout.fillWidth: true }
+                    AthleteRating { backend: screen.backend; design: conceptPalette; form: true; compact: true; Layout.fillWidth: true }
                     AthleteInsignia { backend: screen.backend; family: "medal"; Layout.fillWidth: true; badgeSize: Theme.dp(54) }
                 }
             }
             ColumnLayout {
                 Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: Theme.dp(660); Layout.alignment: Qt.AlignTop; spacing: Theme.dp(15)
-                AthleteBadgeRack { backend: screen.backend; design: design; family: "medal"; vertical: true; Layout.fillWidth: true }
-                AthleteLanding { backend: screen.backend; design: design; Layout.fillWidth: true }
+                AthleteBadgeRack { backend: screen.backend; design: conceptPalette; family: "medal"; vertical: true; Layout.fillWidth: true }
+                AthleteLanding { backend: screen.backend; design: conceptPalette; Layout.fillWidth: true }
             }
         }
     }

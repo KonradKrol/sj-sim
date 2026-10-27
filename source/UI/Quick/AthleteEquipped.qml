@@ -38,7 +38,7 @@ GridLayout {
                     Label { text: catalog.pairs[slot.index]; color: equipped.design.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; elide: Text.ElideRight }
                     Label { text: slot.value ? slot.perk.name : "—"; color: equipped.design.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 }
-                Label { visible: Math.abs(slot.value)===2; text: "II"; color: equipped.design.accent; font.family: Theme.mono; font.pointSize: Theme.section; font.bold: true }
+                Label { visible: Math.abs(slot.value)>=2; text: Math.abs(slot.value)===3 ? "III" : "II"; color: equipped.design.accent; font.family: Theme.mono; font.pointSize: Theme.section; font.bold: true }
                 Label { visible: slot.hovered || slot.activeFocus; text: "×"; color: equipped.design.muted; font.pointSize: Theme.section }
             }
             onClicked: equipped.backend.setPerk(index,value>0?1:-1,Math.abs(value),true)

@@ -158,6 +158,13 @@ void MainWindow::on_pushButton_settings_clicked()
     }
 }
 
+void MainWindow::changeEvent(QEvent *event)
+{
+    QMainWindow::changeEvent(event);
+    if (event->type() == QEvent::LanguageChange)
+        ui->retranslateUi(this);
+}
+
 QApplication *MainWindow::getParentApplication() const
 {
     return parentApplication;

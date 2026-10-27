@@ -1,3 +1,4 @@
+#include <QObject>
 #include "JumpersFormGeneratorConfigWindow.h"
 #include "ui_JumpersFormGeneratorConfigWindow.h"
 #include "../../form-generator/JumperFormGenerator.h"
@@ -125,19 +126,15 @@ void JumpersFormGeneratorConfigWindow::on_listWidget_questions_doubleClicked(con
 {
     if(index.row() == 0)
     {
-        QMessageBox::information(this, tr("Po co jest generator formy?"), tr(
-        "Generator formy jest narzędziem służącym do pół-automatycznej zmiany formy zawodników pomiędzy okresem czasu (między zawodami, weekendami zawodów, sezonami).\nPosiada on wiele opcji, które służą do możliwie jak najwierniejszego odwzorowaniu zmiany formy prawdziwych skoczków między zawodami."
-                                                                             ), QMessageBox::Ok);
+        QMessageBox::information(this, tr("Po co jest generator formy?"), tr("Generator formy jest narzędziem służącym do pół-automatycznej zmiany formy zawodników pomiędzy okresem czasu (między zawodami, weekendami zawodów, sezonami).\nPosiada on wiele opcji, które służą do możliwie jak najwierniejszego odwzorowaniu zmiany formy prawdziwych skoczków między zawodami."), QMessageBox::Ok);
     }
     else if(index.row() == 1)
     {
-        QMessageBox::information(this, tr("Jak działa generator formy?"), tr(
-        "Na podstawie wielu czynników generator losuje jak bardzo zmieni się forma zawodnika. Użytkownik musi wpisać jedynie jaką zmienność ma mieć generator i ewentualnie jakie bonusy mają dostać zawodnicy (lub w jakim zakresie ma zmieścić się ich forma), a resztę robi komputer. Każdy zawodnik ma swoją \"niestabilność formy\" która dodatkowo wpływa na ewentualną zmianę formy i która również jest automatycznie zmieniana. Oprócz tego istnieją inne mechanizmy generatora formy, np. takie które zapobiegają zbyt częstemu występowaniu skrajnych form zawodnika."), QMessageBox::Ok);
+        QMessageBox::information(this, tr("Jak działa generator formy?"), tr("Na podstawie wielu czynników generator losuje jak bardzo zmieni się forma zawodnika. Użytkownik musi wpisać jedynie jaką zmienność ma mieć generator i ewentualnie jakie bonusy mają dostać zawodnicy (lub w jakim zakresie ma zmieścić się ich forma), a resztę robi komputer. Każdy zawodnik ma swoją \"niestabilność formy\" która dodatkowo wpływa na ewentualną zmianę formy i która również jest automatycznie zmieniana. Oprócz tego istnieją inne mechanizmy generatora formy, np. takie które zapobiegają zbyt częstemu występowaniu skrajnych form zawodnika."), QMessageBox::Ok);
     }
     else if(index.row() == 2)
     {
-        QMessageBox::information(this, tr("Do czego służą poszczególne parametry?"), tr(
-        "Każdy parametr generatora formy jest wyjaśniony po najchaniu kursorem na jego nazwę."), QMessageBox::Ok);
+        QMessageBox::information(this, tr("Do czego służą poszczególne parametry?"), tr("Każdy parametr generatora formy jest wyjaśniony po najchaniu kursorem na jego nazwę."), QMessageBox::Ok);
     }
     else if(index.row() == 3)
     {

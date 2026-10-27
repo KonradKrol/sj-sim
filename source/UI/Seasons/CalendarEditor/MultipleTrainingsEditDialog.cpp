@@ -1,3 +1,4 @@
+#include <QObject>
 #include "MultipleTrainingsEditDialog.h"
 #include "ui_MultipleTrainingsEditDialog.h"
 #include "../../../global/GlobalDatabase.h"
@@ -53,7 +54,7 @@ void MultipleTrainingsEditDialog::on_pushButton_trainingsRules_clicked()
     QWidget * widget = new QWidget(dialog);
     QHBoxLayout * layout = new QHBoxLayout(dialog);
     QLabel * label = new QLabel(dialog);
-    label->setText("Zasady: ");
+    label->setText(QObject::tr("Zasady: "));
     QFont font("Ubuntu", 10);
     font.setBold(true);
     label->setFont(font);

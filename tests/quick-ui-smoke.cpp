@@ -2454,6 +2454,7 @@ static void interactionRegressions(MainWindow &main) {
 #include "roster-translation-regressions.h"
 #include "playground-regressions.h"
 #include "athlete-studio-regressions.h"
+#include "hill-studio-regressions.h"
 
 int main(int argc,char **argv) {
     QApplication app(argc,argv);
@@ -2485,6 +2486,22 @@ int main(int argc,char **argv) {
     MainWindow main; applicationWindow=&main; main.setParentApplication(&app); new QuickUi(&main);
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="2.0.0-beta","one release version is shared with the interface");
+    if(app.arguments().contains("--translation-only")) {
+        check(QDir(data.path()+"/translations").removeRecursively(),"remove working-directory catalogs to verify executable-relative loading");
+        main.show();
+        AppSettingsWindow dialog; dialog.setMainWindowParent(&main); dialog.setupLanguagesComboBox(); render(&dialog,"translation-settings",true);
+        auto *bridge=dialog.findChild<QuickBridge *>();
+        auto *headline=item(scene(&main)->rootObject(),"homeDescription");
+        check(headline,"home headline exists");
+        bridge->edit(id(bridge,"comboBox_language"),1);QTest::qWait(150);
+        check(headline->property("text").toString()=="Ski jumping simulator","English updates the open Quick scene");
+        bridge->edit(id(bridge,"comboBox_language"),2);QTest::qWait(150);
+        check(headline->property("text").toString()==QString::fromUtf8("Simulátor skoků na lyžích"),"Czech updates the open Quick scene");
+        bridge->edit(id(bridge,"comboBox_language"),0);QTest::qWait(150);
+        check(headline->property("text").toString()==QString::fromUtf8("Symulator skoków narciarskich"),"Polish restores the open Quick scene");
+        qInfo()<<"PASS: live language switching";return 0;
+    }
+    if(app.arguments().contains("--hill-studio-only")){hillStudioRegressions(main);return 0;}
     if(app.arguments().contains("--athlete-studio-only") || app.arguments().contains("--athlete-patches-only")){athleteStudioRegressions(main,app.arguments().contains("--athlete-patches-only"));return 0;}
     if(app.arguments().contains("--playground-only")){playgroundRandomRegressions();playgroundBackendRegressions();playgroundUiRegressions(main);return 0;}
     if(app.arguments().contains("--playground-core-only")){playgroundRandomRegressions();playgroundBackendRegressions();return 0;}

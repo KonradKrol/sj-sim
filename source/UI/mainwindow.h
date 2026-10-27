@@ -24,6 +24,7 @@ public:
 
 protected:
     void closeEvent(QCloseEvent *event);
+    void changeEvent(QEvent *event) override;
 
 private slots:
     void on_pushButton_singleJumps_clicked();

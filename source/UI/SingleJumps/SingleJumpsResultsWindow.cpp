@@ -1,3 +1,4 @@
+#include <QObject>
 #include "SingleJumpsResultsWindow.h"
 #include "ui_SingleJumpsResultsWindow.h"
 
@@ -124,7 +125,7 @@ void SingleJumpsResultsWindow::fillDistancesChart()
     QChart * distancesChart = new QChart;
     distancesChart->legend()->hide();
     distancesChart->addSeries(getSplineSeriesForDistancesChart());
-    distancesChart->setTitle("Rozkład odległości zawodnika");
+    distancesChart->setTitle(QObject::tr("Rozkład odległości zawodnika"));
     distancesChart->setTitleFont(QFont("Quicksand Medium", 15, 1, false));
     distancesChart->createDefaultAxes();
     const auto axes = distancesChart->axes(Qt::Vertical);
@@ -174,7 +175,7 @@ void SingleJumpsResultsWindow::fillJudgesChart()
     QChart * judgesChart = new QChart();
     judgesChart->legend()->hide();
     judgesChart->addSeries(getSplineSeriesForJudgesChart());
-    judgesChart->setTitle("Rozkład not sędziowskich zawodnika");
+    judgesChart->setTitle(QObject::tr("Rozkład not sędziowskich zawodnika"));
     judgesChart->setTitleFont(QFont("Quicksand Medium", 15, 1, false));
     judgesChart->createDefaultAxes();
     const auto axes = judgesChart->axes(Qt::Vertical);
@@ -198,7 +199,7 @@ void SingleJumpsResultsWindow::fillLandingsChart()
 
     QChart * landingsChart = new QChart();
     landingsChart->addSeries(getBarSeriesForLandingsChar());
-    landingsChart->setTitle("Rozkład rodzajów lądowania zawodnika");
+    landingsChart->setTitle(QObject::tr("Rozkład rodzajów lądowania zawodnika"));
     landingsChart->setTitleFont(QFont("Quicksand Medium", 15, 1, false));
     landingsChart->createDefaultAxes();
     const auto axes = landingsChart->axes(Qt::Vertical);
@@ -222,7 +223,7 @@ void SingleJumpsResultsWindow::fillWindsChart()
 
     QChart * windsChart = new QChart();
     windsChart->addSeries(getSplineSeriesForWindsChart());
-    windsChart->setTitle("Rozkład siły wiatru przy skokach");
+    windsChart->setTitle(QObject::tr("Rozkład siły wiatru przy skokach"));
     windsChart->setTitleFont(QFont("Quicksand Medium", 15, 1, false));
     windsChart->createDefaultAxes();
     const auto axes = windsChart->axes(Qt::Vertical);

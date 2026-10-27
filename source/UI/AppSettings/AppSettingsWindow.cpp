@@ -7,6 +7,7 @@
 #include <QProgressDialog>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QSignalBlocker>
 
 #include "../mainwindow.h"
 #include "../../global/GlobalAppSettings.h"
@@ -57,8 +58,9 @@ AppSettingsWindow::~AppSettingsWindow()
 
 void AppSettingsWindow::setupLanguagesComboBox()
 {
-    ui->comboBox_language->addItem(QIcon(CountryFlagsManager::getFlagPixmap("pl")), QObject::tr("Polski"));
-    ui->comboBox_language->addItem(QIcon(CountryFlagsManager::getFlagPixmap("gb")), QObject::tr("Angielski"));
+    ui->comboBox_language->addItem(QIcon(CountryFlagsManager::getFlagPixmap("pl")), QStringLiteral("Polski"));
+    ui->comboBox_language->addItem(QIcon(CountryFlagsManager::getFlagPixmap("gb")), QStringLiteral("English"));
+    ui->comboBox_language->addItem(QIcon(CountryFlagsManager::getFlagPixmap("cz")), QStringLiteral("Čeština"));
 
     ui->comboBox_language->setCurrentIndex(GlobalAppSettings::get()->getLanguageID());
     connect(ui->comboBox_language, qOverload<int>(&QComboBox::currentIndexChanged), this, &AppSettingsWindow::myConnect_on_comboBox_language_currentIndexChanged);
@@ -96,18 +98,17 @@ void AppSettingsWindow::closeEvent(QCloseEvent *event)
 
 void AppSettingsWindow::myConnect_on_comboBox_language_currentIndexChanged(int index)
 {
-    switch(index)
-    {
-    case GlobalAppSettings::Polish:
-        dynamic_cast<MainWindow *>(getMainWindowParent())->getParentApplication()->removeTranslator(const_cast<QTranslator *>(GlobalTranslators::get()->getGlobalTranslations().at(0)));
-        ui->retranslateUi(this);
-        GlobalAppSettings::get()->setLanguageID(GlobalAppSettings::Polish);
-        break;
-    case GlobalAppSettings::English:
-        dynamic_cast<MainWindow *>(getMainWindowParent())->getParentApplication()->installTranslator(const_cast<QTranslator *>(GlobalTranslators::get()->getGlobalTranslations().at(0)));
-        ui->retranslateUi(this);
-        GlobalAppSettings::get()->setLanguageID(GlobalAppSettings::English);
-        break;
+    if (!GlobalTranslators::get()->setLanguage(qApp, index)) {
+        const QSignalBlocker blocker(ui->comboBox_language);
+        ui->comboBox_language->setCurrentIndex(GlobalAppSettings::get()->getLanguageID());
+        QMessageBox::warning(this, tr("Nie można zmienić języka"), tr("Nie udało się wczytać pliku tłumaczenia."));
+        return;
+    }
+    GlobalAppSettings::get()->setLanguageID(index);
+    ui->retranslateUi(this);
+    if(auto *playground=findChild<QPushButton *>("openSimulationPlayground")) {
+        playground->setText(tr("Playground symulacji"));
+        playground->setToolTip(tr("Wielowątkowe eksperymenty, porównania parametrów i analiza wyników."));
     }
 }
 

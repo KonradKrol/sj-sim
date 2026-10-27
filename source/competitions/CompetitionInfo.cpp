@@ -73,7 +73,7 @@ bool CompetitionInfo::saveToJsonFile(QString dir, QString name)
     QFile file(dir + name);
     if(!file.open(QFile::WriteOnly | QFile::Text))
     {
-        QMessageBox message(QMessageBox::Icon::Critical, "Nie można otworzyć pliku ", "Nie udało się otworzyć pliku " + dir + name+ "\nUpewnij się, że istnieją odpowiednie foldery lub aplikacja ma odpowiednie uprawnienia",  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku "), QObject::tr("Nie udało się otworzyć pliku ") + dir + name+ QObject::tr("\nUpewnij się, że istnieją odpowiednie foldery lub aplikacja ma odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
        qDebug()<<file.errorString();
  message.setModal(true);
         message.exec();

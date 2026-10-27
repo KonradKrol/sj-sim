@@ -14,7 +14,7 @@ class PlaygroundController : public QObject {
     Q_PROPERTY(QVariantMap config READ config NOTIFY configChanged)
     Q_PROPERTY(QVariantMap report READ report NOTIFY reportChanged)
     Q_PROPERTY(QVariantMap replayResult READ replayResult NOTIFY replayChanged)
-    Q_PROPERTY(QVariantList definitions READ definitions CONSTANT)
+    Q_PROPERTY(QVariantList definitions READ definitions NOTIFY configChanged)
     Q_PROPERTY(QVariantList history READ history NOTIFY historyChanged)
     Q_PROPERTY(QStringList athletePacks READ athletePacks CONSTANT)
     Q_PROPERTY(QStringList hillNames READ hillNames CONSTANT)
@@ -38,6 +38,7 @@ class PlaygroundController : public QObject {
     void refreshHistory();
 public:
     explicit PlaygroundController(QObject *parent=nullptr);
+    void invalidateText(){emit configChanged();}
     ~PlaygroundController() override;
     QVariantMap config()const{return m_config.toVariantMap();}
     QVariantMap report()const{return m_reportMap;}
@@ -82,6 +83,7 @@ signals:
 };
 
 class PlaygroundWindow : public QDialog {
+    Q_OBJECT
 public:
     explicit PlaygroundWindow(QWidget *parent=nullptr);
     void reject() override;

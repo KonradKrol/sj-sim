@@ -4,6 +4,9 @@
 #include "QuickSurface.h"
 #include "QuickView.h"
 #include "../mainwindow.h"
+#include "../../athletes/AthleteStudioController.h"
+#include "../../hills/HillStudioController.h"
+#include "../../playground/PlaygroundController.h"
 #include <QFontDatabase>
 #include <QApplication>
 #include <QDialog>
@@ -33,6 +36,7 @@
 #include <QTimer>
 #include <QWindow>
 #include <QDebug>
+#include <QLocale>
 #include <QtMath>
 
 namespace {
@@ -155,6 +159,7 @@ QuickUi::~QuickUi() {
     for(auto &view:views)if(view){view->setSource(QUrl());delete view.data();}
 }
 bool QuickUi::canGoBack() const { return m_pages.size()>1; }
+QString QuickUi::localeName() const { return QLocale().name(); }
 QStringList QuickUi::path() const {
     QStringList result;
     for(int i=0;i<m_pages.size();++i)if(m_pages[i].bridge)result.append(i==0?tr("Menu główne"):m_pages[i].bridge->title());
@@ -239,6 +244,9 @@ bool QuickUi::eventFilter(QObject *object,QEvent *event) {
                 for(auto *view:window->findChildren<QQuickWidget *>())if(!engines.contains(view->engine())){engines.insert(view->engine());view->engine()->retranslate();}
                 for(auto *table:window->findChildren<QuickTableModel *>())table->invalidateText();
                 for(auto *roster:window->findChildren<QuickRoster *>())roster->invalidateText();
+                for(auto *studio:window->findChildren<AthleteStudioController *>())studio->invalidateText();
+                for(auto *studio:window->findChildren<HillStudioController *>())studio->invalidateText();
+                for(auto *playground:window->findChildren<PlaygroundController *>())playground->invalidateText();
             }
             emit navigationChanged();
         });

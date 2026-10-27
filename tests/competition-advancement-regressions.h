@@ -24,7 +24,7 @@ static void competitionAdvancementRegressions() {
     Jumper a("A","Leader","POL"),b("B","Tie","GER"),c("C","Tie","SUI"),d("D","Out","AUT"),e("E","Pending","NOR");
     QVector<Jumper *> athletes{&a,&b,&c,&d,&e};
     Hill hill;hill.setKPoint(90);hill.setHSPoint(100);
-    CompetitionInfo source(&hill),near(&hill),far(&hill);CompetitionRules rules;rules.setRounds({RoundInfo(5,true),RoundInfo(3,true)});source.setRules(rules);
+    CompetitionInfo source(&hill),nearTarget(&hill),farTarget(&hill);CompetitionRules rules;rules.setRounds({RoundInfo(5,true),RoundInfo(3,true)});source.setRules(rules);
     IndividualCompetitionManager manager;manager.setCompetitionInfo(&source);manager.setCompetitionRules(source.getRulesPointer());manager.setResults(&source.getResultsReference());manager.setActualRound(1);manager.setFirstRoundJumpers(athletes);manager.setupStartListStatusesForActualRound();
     const auto finish=[&](Jumper *jumper,double points,int jumpStatus=StartListCompetitorStatus::Finished){JumpData jump(jumper,&hill);jump.setPoints(points);jump.setDSQ(jumpStatus==StartListCompetitorStatus::Dsq);jump.setDNS(jumpStatus==StartListCompetitorStatus::Dns);source.getResultsReference().addJump(jumper,jump);StartListCompetitorStatus::getStatusOfJumper(jumper,manager.getStartListStatusesReference())->setJumpStatus(jumpStatus);manager.updateCompetitorsAdvanceStatuses();};
     finish(&a,100);finish(&b,90);finish(&c,90);finish(&d,80);
@@ -33,16 +33,16 @@ static void competitionAdvancementRegressions() {
     finish(&e,90);
     const auto qualified=manager.getFilteredJumpersForNextRound();check(qualified.size()==4 && !qualified.contains(&d),"three-way boundary tie expands the next round without admitting the next distinct rank");
     // Qualification quotas are independent of the next-round quota and use calendar order.
-    CompetitionRules target;target.setRounds({RoundInfo(2,true)});near.setRules(target);near.setAdvancementCompetition(&source);target.getRoundsReference()[0].setCount(4);far.setRules(target);far.setAdvancementCompetition(&source);
-    SeasonCalendar calendar;calendar.setCompetitions({&source,&near,&far});source.updateQualifyingCompetitions(&calendar);
+    CompetitionRules target;target.setRounds({RoundInfo(2,true)});nearTarget.setRules(target);nearTarget.setAdvancementCompetition(&source);target.getRoundsReference()[0].setCount(4);farTarget.setRules(target);farTarget.setAdvancementCompetition(&source);
+    SeasonCalendar calendar;calendar.setCompetitions({&source,&nearTarget,&farTarget});source.updateQualifyingCompetitions(&calendar);
     source.setExceptionalRoundsCount(1);manager.updateCompetitorsAdvanceStatuses();
-    check(manager.nearestQualificationTarget()==&near && manager.qualificationLimit()==2,"nearest dependent contest determines qualification, independent of a farther quota");
+    check(manager.nearestQualificationTarget()==&nearTarget && manager.qualificationLimit()==2,"nearest dependent contest determines qualification, independent of a farther quota");
     check(manager.qualificationStatus(&b)==yes && manager.qualificationStatus(&c)==yes && manager.qualificationStatus(&d)==no,"external qualifying ranks include ties without promoting the next distinct place");
     ResultsTableModel model(CompetitionRules::Individual,manager.getResults(),&manager);model.setStartListStatuses(&manager.getStartListStatusesReference());
     const int row=manager.getResults()->getIndexOfJumperResult(&b);check(model.index(row,0).data(RoundStatusRole).toInt()==-1 && model.index(row,0).data(QualificationStatusRole).toInt()==yes,"one-round qualification exposes a neutral Q state without a fictitious next-series advance");
     const auto before=manager.getResults()->getResultsReference();for(int i=0;i<model.rowCount();++i){model.index(i,0).data(Qt::BackgroundRole);model.index(i,0).data(Qt::ForegroundRole);}for(int i=0;i<before.size();++i)check(before[i].getJumper()==manager.getResults()->getResultsReference()[i].getJumper(),"reading result presentation cannot reorder standings");
-    near.setCancelled(true);manager.updateCompetitorsAdvanceStatuses();check(manager.nearestQualificationTarget()==&far && manager.qualificationLimit()==4,"canceled nearest target is skipped");
-    far.setCancelled(true);manager.updateCompetitorsAdvanceStatuses();check(manager.qualificationStatus(&a)==-1,"no stale Q remains when all dependent competitions are canceled");
+    nearTarget.setCancelled(true);manager.updateCompetitorsAdvanceStatuses();check(manager.nearestQualificationTarget()==&farTarget && manager.qualificationLimit()==4,"canceled nearest target is skipped");
+    farTarget.setCancelled(true);manager.updateCompetitorsAdvanceStatuses();check(manager.qualificationStatus(&a)==-1,"no stale Q remains when all dependent competitions are canceled");
     source.setQualifyingCompetitions({});source.getRulesPointer()->setRounds({RoundInfo(0,false),RoundInfo(2,true)});source.setExceptionalRoundsCount(1);manager.setQualificationFixedLimit(true);manager.updateCompetitorsAdvanceStatuses();
     int exact=0;for(const auto &entry:manager.getStartListStatusesReference())if(entry.getAdvanceStatus()==yes)++exact;
     check(exact==2,"standalone qualifications feeding KO keep exactly the configured field even at a tied cutoff");

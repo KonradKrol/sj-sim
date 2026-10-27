@@ -1,3 +1,4 @@
+#include <QObject>
 #include "CompetitionSingleResult.h"
 #include "../global/IdentifiableObjectsStorage.h"
 #include "../global/GlobalDatabase.h"
@@ -249,7 +250,7 @@ dpp::embed CompetitionSingleResult::getEmbedForTeamSingleCompResult()
     embed.set_color(dpp::colors::coffee);
     QString title = QString("**%1 %2**").arg(country->getName()).arg(QString(":flag_%1:").arg(country->getAlpha2().toLower()));
     embed.set_title(title.toStdString());
-    QString description = competition->getHill()->getHillTextForDiscord() + QString(" (%1)").arg(competition->getLongSerieTypeText()) + " (drużynowy)";
+    QString description = competition->getHill()->getHillTextForDiscord() + QString(" (%1)").arg(competition->getLongSerieTypeText()) + QObject::tr(" (drużynowy)");
     embed.set_description(description.toStdString());
 
     embed.add_field(QObject::tr("Pozycja").toStdString(), QString::number(position).toStdString(), true);

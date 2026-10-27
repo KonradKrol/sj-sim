@@ -1,3 +1,4 @@
+#include <QObject>
 #include "JumpWindInfoWidgetItem.h"
 #include "ui_JumpWindInfoWidgetItem.h"
 
@@ -27,7 +28,7 @@ void JumpWindInfoWidgetItem::fillWidget()
         QString text = "(" + QString::number(WindsGenerator::getRangeOfWindSector(getSector() + 1, getKPoint()).first);
         if(getSector() + 1 != WindsGenerator::calculateWindsCountByKPoint(getKPoint()))
             text += "-" + QString::number(WindsGenerator::getRangeOfWindSector(getSector() + 1, getKPoint()).second) + "m)";
-        else text += " do końca)";
+        else text += QObject::tr(" do końca)");
         ui->label_windRange->setText(text);
         ui->label_degrees->setText(QString::number(round(wind->getDirection())) + "°");
         double speed = wind->getStrength();

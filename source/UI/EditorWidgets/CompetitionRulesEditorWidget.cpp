@@ -1,3 +1,4 @@
+#include <QObject>
 #include "CompetitionRulesEditorWidget.h"
 #include "ui_CompetitionRulesEditorWidget.h"
 
@@ -112,7 +113,7 @@ void CompetitionRulesEditorWidget::fillRoundsInputs(bool setup)
     }
     for(int i=0; i<ui->toolBox_rounds->count(); i++)
     {
-        ui->toolBox_rounds->setItemText(i, "Seria " + QString::number(i+1));
+        ui->toolBox_rounds->setItemText(i, QObject::tr("Seria ") + QString::number(i+1));
         static_cast<RoundInfoEditorWidget *>(ui->toolBox_rounds->widget(i))->setRoundIndex(i);
     }
     if(setup == true){

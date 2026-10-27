@@ -22,7 +22,7 @@ ColumnLayout {
             }
             ColumnLayout {
                 Layout.fillWidth:true; spacing:6
-                Label { text:"NA BELCE"; color:theme.muted; font.pixelSize:10; font.letterSpacing:1.5; font.bold:true }
+                Label { text:qsTr("NA BELCE"); color:theme.muted; font.pixelSize:10; font.letterSpacing:1.5; font.bold:true }
                 RowLayout {
                     Image { source:theme.find("label_flag").image || ""; Layout.preferredWidth:28; Layout.preferredHeight:20; fillMode:Image.PreserveAspectFit }
                     Label { text:theme.text("label_nameAndSurname"); color:theme.ink; font.pixelSize:theme.width<700 ? 18 : 23; font.weight:Font.DemiBold; Layout.fillWidth:true; elide:Text.ElideRight }
@@ -52,7 +52,7 @@ ColumnLayout {
             width:gateRow.implicitWidth+16; height:38; radius:6; color:theme.panel; border.color:theme.line
             RowLayout {
                 id:gateRow; anchors.centerIn:parent; spacing:7
-                Label { text:"Belka"; color:theme.muted; font.pixelSize:12 }
+                Label { text:qsTr("Belka"); color:theme.muted; font.pixelSize:12 }
                 TextField {
                     id:gate; objectName:"input-spinBox_actualGate"; implicitWidth:45; implicitHeight:30; padding:4; selectByMouse:true
                     text:theme.find("spinBox_actualGate").value===undefined ? "" : theme.find("spinBox_actualGate").value
@@ -72,17 +72,17 @@ ColumnLayout {
             visible:theme.width<700; width:weather.implicitWidth+20; height:38; radius:6; color:theme.panel; border.color:theme.line
             Row {
                 id:weather; anchors.centerIn:parent; spacing:12
-                Label { text:"Wiatr  "+theme.text("label_actualAvgWind"); color:theme.ink; font.pixelSize:12 }
-                Label { text:"Śnieg  "+theme.text("label_snowLevel"); color:theme.muted; font.pixelSize:12 }
+                Label { text:qsTr("Wiatr  ")+theme.text("label_actualAvgWind"); color:theme.ink; font.pixelSize:12 }
+                Label { text:qsTr("Śnieg  ")+theme.text("label_snowLevel"); color:theme.muted; font.pixelSize:12 }
             }
         }
         LiveNode { caption:"Auto-symulacja ▾"; width:160; height:38; dataNode:theme.find("toolButton_autoSimulationActions"); theme:arena.theme }
-        LiveButton { theme:arena.theme; text:"Ustawienia  ···"; height:38; onClicked:settings.open() }
+        LiveButton { theme:arena.theme; text:qsTr("Ustawienia  ···"); height:38; onClicked:settings.open() }
     }
     RowLayout {
         Layout.fillWidth:true; visible:!theme.wide; spacing:6
         Repeater {
-            model:[{text:"Wyniki",page:1},{text:"Lista startowa",page:2},{text:"Ostatni skok",page:3}]
+            model:[{text:qsTr("Wyniki"),page:1},{text:qsTr("Lista startowa"),page:2},{text:qsTr("Ostatni skok"),page:3}]
             LiveButton { Layout.fillWidth:true; theme:arena.theme; text:modelData.text; primary:theme.page===modelData.page || (modelData.page===1 && theme.page===0); onClicked:theme.page=modelData.page }
         }
     }
@@ -95,10 +95,10 @@ ColumnLayout {
                 anchors.fill:parent; anchors.margins:12; spacing:8
                 RowLayout {
                     Layout.fillWidth:true
-                    Label { text:arena.showStandings ? "Klasyfikacja na żywo" : "Wyniki konkursu"; color:theme.ink; font.pixelSize:15; font.weight:Font.DemiBold; Layout.fillWidth:true }
-                    LiveButton { visible:theme.section(4).length>0; theme:arena.theme; text:arena.showStandings ? "Wyniki" : "Klasyfikacja"; implicitHeight:30; onClicked:theme.page=arena.showStandings ? 1 : 4 }
+                    Label { text:arena.showStandings ? qsTr("Klasyfikacja na żywo") : qsTr("Wyniki konkursu"); color:theme.ink; font.pixelSize:15; font.weight:Font.DemiBold; Layout.fillWidth:true }
+                    LiveButton { visible:theme.section(4).length>0; theme:arena.theme; text:arena.showStandings ? qsTr("Wyniki") : qsTr("Klasyfikacja"); implicitHeight:30; onClicked:theme.page=arena.showStandings ? 1 : 4 }
                 }
-                Label { visible:!arena.showStandings; text:"Dwuklik zawodnika pokazuje jego skoki w panelu obok"; color:theme.muted; font.pixelSize:11; Layout.fillWidth:true; elide:Text.ElideRight }
+                Label { visible:!arena.showStandings; text:qsTr("Dwuklik zawodnika pokazuje jego skoki w panelu obok"); color:theme.muted; font.pixelSize:11; Layout.fillWidth:true; elide:Text.ElideRight }
                 Loader {
                     Layout.fillWidth:true; Layout.fillHeight:true
                     sourceComponent:arena.showStandings ? classification : results
@@ -119,8 +119,8 @@ ColumnLayout {
                     anchors.fill:parent; anchors.margins:12; spacing:6
                     RowLayout {
                         Layout.fillWidth:true
-                        Label { text:"Lista startowa"; color:theme.ink; font.pixelSize:15; font.weight:Font.DemiBold; Layout.fillWidth:true }
-                        Label { text:arena.startTable.rows ? arena.startTable.rows.length+" zawodników" : ""; color:theme.muted; font.pixelSize:11 }
+                        Label { text:qsTr("Lista startowa"); color:theme.ink; font.pixelSize:15; font.weight:Font.DemiBold; Layout.fillWidth:true }
+                        Label { text:arena.startTable.rows ? arena.startTable.rows.length+qsTr(" zawodników") : ""; color:theme.muted; font.pixelSize:11 }
                     }
                     LiveTable { visible:!!arena.koTable.id; Layout.fillWidth:true; Layout.preferredHeight:Math.min(110,28+40*(arena.koTable.rows || []).length); table:arena.koTable; theme:arena.theme; compact:true }
                     LiveTable { Layout.fillWidth:true; Layout.fillHeight:true; table:arena.startTable; theme:arena.theme; compact:true }
@@ -161,9 +161,9 @@ ColumnLayout {
             anchors.fill:parent; contentWidth:availableWidth; clip:true
             Column {
                 width:parent.width; spacing:9
-                Label { text:"Ustawienia i przebieg konkursu"; color:theme.ink; font.bold:true; width:parent.width; wrapMode:Text.WordWrap }
+                Label { text:qsTr("Ustawienia i przebieg konkursu"); color:theme.ink; font.bold:true; width:parent.width; wrapMode:Text.WordWrap }
                 Repeater { model:["pushButton_windsGeneratorSettings","pushButton_inrunSnowGeneratorSettings","toolButton_cancelActions","checkBox_liveCompetition","pushButton_sendResultsWebhook","label_record"]; LiveNode { width:parent.width; dataNode:theme.find(modelData); theme:arena.theme } }
-                LiveButton { width:parent.width; theme:arena.theme; text:"Zamknij"; onClicked:settings.close() }
+                LiveButton { width:parent.width; theme:arena.theme; text:qsTr("Zamknij"); onClicked:settings.close() }
             }
         }
     }

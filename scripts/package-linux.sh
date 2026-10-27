@@ -28,8 +28,14 @@ if [[ ! -x "${executable}" ]]; then
 fi
 cp "${executable}" "${output_path}/usr/bin/sj-sim"
 cp -R "${repo_root}/flags" "${repo_root}/userData" "${output_path}/usr/bin/"
-lrelease "${repo_root}/translations/translation_en.ts" \
-    -qm "${output_path}/usr/bin/translations/translation_en.qm"
+for language in en cs; do
+    lrelease -nounfinished "${repo_root}/translations/translation_${language}.ts" \
+        -qm "${output_path}/usr/bin/translations/translation_${language}.qm"
+done
+qt_translations="$(qmake -query QT_INSTALL_TRANSLATIONS)"
+for language in pl cs; do
+    cp "${qt_translations}/qtbase_${language}.qm" "${output_path}/usr/bin/translations/"
+done
 
 cat > "${repo_root}/sj-sim.desktop" <<'DESKTOP'
 [Desktop Entry]

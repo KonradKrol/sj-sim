@@ -105,5 +105,5 @@ Item {
             }
         }
     }
-    Label { visible:!(table.rows || []).length; anchors.centerIn:parent; text:"Brak wyników"; color:theme.muted }
+    Label { visible:!(table.rows || []).length; anchors.centerIn:parent; text:qsTr("Brak wyników"); color:theme.muted }
 }

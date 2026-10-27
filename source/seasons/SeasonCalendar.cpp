@@ -1,3 +1,4 @@
+#include <QObject>
 #include "SeasonCalendar.h"
 #include "../utilities/functions.h"
 #include "../global/IdentifiableObjectsStorage.h"
@@ -27,11 +28,11 @@ void SeasonCalendar::debugCalendar(CompetitionInfo * next) const
         QString s = "";
         if(comp->getTrainingsReference().count() > 0)
         {
-            s = QString("%1 treningów").arg(comp->getTrainingsReference().count());
+            s = QString(QObject::tr("%1 treningów")).arg(comp->getTrainingsReference().count());
         }
         if(comp == next)
         {
-            s += " (NASTĘPNY)";
+            s += QObject::tr(" (NASTĘPNY)");
         }
         qDebug()<<QString::number(i)<<". "<<comp->getShortSerieTypeText()<<"  "<<comp->getHill()->getHillText()<<s<<" ("<<comp<<")";
         i++;
@@ -255,7 +256,7 @@ SeasonCalendar SeasonCalendar::getFromJson(QJsonObject json, IdentifiableObjects
         QString s = "";
         if(!c->getTrainingsReference().isEmpty())
         {
-            s = QString(" (%1 treningów)").arg(QString::number(c->getTrainingsReference().count()));
+            s = QString(QObject::tr(" (%1 treningów)")).arg(QString::number(c->getTrainingsReference().count()));
         }
         qDebug()<<c->getShortSerieTypeText()<<s;
 

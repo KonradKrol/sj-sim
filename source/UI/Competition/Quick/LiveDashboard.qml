@@ -22,7 +22,7 @@ Column {
         color:theme.dark ? "#223754" : "#eaf2ff"
         Column {
             id:athlete; anchors.left:parent.left; anchors.right:parent.right; anchors.top:parent.top; anchors.margins:15; spacing:10
-            Label { text:"NA BELCE"; color:theme.dark ? "#8bbcff" : "#3975c7"; font.pixelSize:10; font.letterSpacing:2; font.bold:true }
+            Label { text:qsTr("NA BELCE"); color:theme.dark ? "#8bbcff" : "#3975c7"; font.pixelSize:10; font.letterSpacing:2; font.bold:true }
             RowLayout {
                 width:parent.width
                 Image { source:dashboard.find("label_flag").image || ""; Layout.preferredWidth:30; Layout.preferredHeight:22; fillMode:Image.PreserveAspectFit }
@@ -48,21 +48,21 @@ Column {
         Label { text:dashboard.text("label_toAdvancementDistance"); color:theme.ink; font.pixelSize:26; font.weight:Font.DemiBold; Layout.fillWidth:true }
     }
     Rectangle { width:parent.width; height:1; color:theme.dark ? "#304159" : "#e2e8f1" }
-    Label { text:"Warunki na skoczni"; color:theme.ink; font.weight:Font.DemiBold; font.pixelSize:15 }
+    Label { text:qsTr("Warunki na skoczni"); color:theme.ink; font.weight:Font.DemiBold; font.pixelSize:15 }
     GridLayout {
         width:parent.width; columns:2; columnSpacing:10; rowSpacing:8
-        Label { text:"Wiatr"; color:theme.muted }
+        Label { text:qsTr("Wiatr"); color:theme.muted }
         Label { text:dashboard.text("label_actualAvgWind"); color:theme.ink; font.bold:true; Layout.fillWidth:true; horizontalAlignment:Text.AlignRight }
-        Label { text:"Śnieg"; color:theme.muted }
+        Label { text:qsTr("Śnieg"); color:theme.muted }
         Label { text:dashboard.text("label_snowLevel"); color:theme.ink; Layout.fillWidth:true; horizontalAlignment:Text.AlignRight; wrapMode:Text.WordWrap }
     }
-    Label { text:"Belka startowa"; color:theme.muted; font.pixelSize:12 }
+    Label { text:qsTr("Belka startowa"); color:theme.muted; font.pixelSize:12 }
     LiveNode { width:parent.width; dataNode:dashboard.find("spinBox_actualGate"); theme:dashboard.theme }
     Repeater {
         model:["pushButton_coachGate", "pushButton_generateNewWinds", "pushButton_manipulateJump"]
         LiveNode { width:parent.width; dataNode:dashboard.find(modelData); theme:dashboard.theme }
     }
-    Label { text:"Ustawienia i przebieg"; color:theme.ink; font.weight:Font.DemiBold; font.pixelSize:15 }
+    Label { text:qsTr("Ustawienia i przebieg"); color:theme.ink; font.weight:Font.DemiBold; font.pixelSize:15 }
     Repeater {
         model:["pushButton_windsGeneratorSettings", "pushButton_inrunSnowGeneratorSettings", "toolButton_autoSimulationActions", "toolButton_cancelActions", "checkBox_liveCompetition", "pushButton_sendResultsWebhook", "label_record"]
         LiveNode { width:parent.width; dataNode:dashboard.find(modelData); theme:dashboard.theme }

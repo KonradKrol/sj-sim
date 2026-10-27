@@ -17,5 +17,7 @@ for directory in userData flags; do
     fi
 done
 mkdir -p translations
-lrelease "${repo_root}/translations/translation_en.ts" -qm translations/translation_en.qm
+for language in en cs; do
+    lrelease -nounfinished "${repo_root}/translations/translation_${language}.ts" -qm "translations/translation_${language}.qm"
+done
 printf 'Uruchom: %s/scripts/run-qml-preview.sh\n' "${repo_root}"

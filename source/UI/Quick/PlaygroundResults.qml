@@ -17,7 +17,7 @@ ScrollView {
     signal athleteSelected(int index)
     signal replayRequested(int variant,int competition)
     function paired(variant,key){return individual?variant.athletes[selectedAthlete][key] || ({}):variant[key] || ({})}
-    function format(value,decimals){return typeof value==="number" && isFinite(value)?value.toLocaleString(Qt.locale(),'f',decimals===undefined?1:decimals):"—"}
+    function format(value,decimals){return typeof value==="number" && isFinite(value)?value.toLocaleString(Qt.locale(Theme.localeName),'f',decimals===undefined?1:decimals):"—"}
     function mean(metric){return metric?format(metric.mean):"—"}
     function interval(metric){return metric && typeof metric.ciLow==="number" ? qsTr("95%: %1–%2").arg(format(metric.ciLow)).arg(format(metric.ciHigh)):""}
     function series(metric,athleteMetric){var indices=current===0?[0]:[0,current];return indices.map(function(i){var source=athleteMetric?variants[i].athletes[results.selectedAthlete][metric]:variants[i][metric];return {name:variants[i].name,bins:metric==="places"?source:source.histogram || []}})}
@@ -41,9 +41,9 @@ ScrollView {
         GridLayout {
             Layout.fillWidth: true; columns: results.width<550?2:4; columnSpacing: 8; rowSpacing: 8
             PlaygroundMetric { Layout.fillWidth: true; caption: results.individual?qsTr("Średnie miejsce"):qsTr("Średnia odległość"); value: results.individual?results.mean(results.athlete.place):results.mean(results.variant.distance)+" m"; detail: results.interval(results.individual?results.athlete.place:results.variant.distance) }
-            PlaygroundMetric { Layout.fillWidth: true; caption: results.individual?qsTr("Zwycięstwa"):qsTr("Średnia nota skoku"); value: results.individual?results.format(100*(results.athlete.wins || 0)/Math.max(1,results.athlete.starts),1)+" %":results.mean(results.variant.points)+" pkt"; detail: results.individual?qsTr("Podium: %1 %").arg(results.format(100*(results.athlete.podiums || 0)/Math.max(1,results.athlete.starts))):results.interval(results.variant.points) }
+            PlaygroundMetric { Layout.fillWidth: true; caption: results.individual?qsTr("Zwycięstwa"):qsTr("Średnia nota skoku"); value: results.individual?results.format(100*(results.athlete.wins || 0)/Math.max(1,results.athlete.starts),1)+" %":results.mean(results.variant.points)+qsTr(" pkt"); detail: results.individual?qsTr("Podium: %1 %").arg(results.format(100*(results.athlete.podiums || 0)/Math.max(1,results.athlete.starts))):results.interval(results.variant.points) }
             PlaygroundMetric { Layout.fillWidth: true; caption: qsTr("Upadki"); value: results.format(100*(results.individual?results.athlete.falls:results.variant.falls)/Math.max(1,results.individual?results.athlete.jumps:results.variant.jumps),2)+" %"; detail: qsTr("Na wszystkie oddane skoki") }
-            PlaygroundMetric { Layout.fillWidth: true; caption: results.individual?qsTr("Średnia suma"):qsTr("Oddane skoki"); value: results.individual?results.mean(results.athlete.total)+" pkt":results.format(results.variant.jumps,0); detail: results.individual && results.report.competitionType==="team" ? qsTr("DSQ drużyny: %1").arg(results.format(results.athlete.teamDsq,0)) : qsTr("DSQ: %1").arg(results.format(results.individual?results.athlete.dsq:results.variant.dsq,0)) }
+            PlaygroundMetric { Layout.fillWidth: true; caption: results.individual?qsTr("Średnia suma"):qsTr("Oddane skoki"); value: results.individual?results.mean(results.athlete.total)+qsTr(" pkt"):results.format(results.variant.jumps,0); detail: results.individual && results.report.competitionType==="team" ? qsTr("DSQ drużyny: %1").arg(results.format(results.athlete.teamDsq,0)) : qsTr("DSQ: %1").arg(results.format(results.individual?results.athlete.dsq:results.variant.dsq,0)) }
         }
         Pane {
             Layout.fillWidth: true; padding: 14

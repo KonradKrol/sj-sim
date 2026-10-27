@@ -17,6 +17,8 @@ UI_DIR = .ui
 win32: DEFINES += NOMINMAX
 
 SOURCES += \
+    source/hills/HillProfile.cpp \
+    source/hills/HillStudioController.cpp \
     source/athletes/AthleteProfile.cpp \
     source/athletes/AthleteStudioController.cpp \
     source/simulator/ExperimentalSimulation.cpp \
@@ -171,6 +173,8 @@ SOURCES += \
     source/utilities/functions.cpp
 
 HEADERS += \
+    source/hills/HillProfile.h \
+    source/hills/HillStudioController.h \
     source/athletes/AthleteProfile.h \
     source/athletes/AthleteStudioController.h \
     source/simulator/ExperimentalSimulation.h \
@@ -385,7 +389,8 @@ FORMS += \
     source/UI/mainwindow.ui
 
 TRANSLATIONS += \
-    translations/translation_en.ts
+    translations/translation_en.ts \
+    translations/translation_cs.ts
 
 win32:RC_ICONS = sj-sim.ico
 

@@ -31,7 +31,7 @@ ColumnLayout {
     Item {
         Layout.fillWidth: true; Layout.preferredHeight: 190; Layout.minimumHeight: 160
         Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: Theme.outline }
-        Label { anchors.left: parent.left; anchors.top: parent.top; text: (chart.plotted.max*100).toLocaleString(Qt.locale(),'f',1)+" %"; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption }
+        Label { anchors.left: parent.left; anchors.top: parent.top; text: (chart.plotted.max*100).toLocaleString(Qt.locale(Theme.localeName),'f',1)+" %"; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption }
         Row {
             anchors.fill: parent; anchors.topMargin: 22; spacing: 1
             Repeater {
@@ -50,7 +50,7 @@ ColumnLayout {
                                 width: parent.width/Math.max(1,chart.series.length); height: Math.max(modelData.n?1:0,parent.height*modelData.share/chart.plotted.max); anchors.bottom: parent.bottom; color: chart.palette[index%chart.palette.length]
                                 MouseArea { id: hover; anchors.fill: parent; hoverEnabled: true }
                                 ToolTip.visible: hover.containsMouse
-                                ToolTip.text: modelData.name+"\n"+(chart.places && bucket.modelData.from===chart.unclassified?qsTr("Nieklasyfikowany"):bucket.modelData.from+"–"+bucket.modelData.to)+" · "+modelData.n+" · "+(modelData.share*100).toLocaleString(Qt.locale(),'f',2)+" %"
+                                ToolTip.text: modelData.name+"\n"+(chart.places && bucket.modelData.from===chart.unclassified?qsTr("Nieklasyfikowany"):bucket.modelData.from+"–"+bucket.modelData.to)+" · "+modelData.n+" · "+(modelData.share*100).toLocaleString(Qt.locale(Theme.localeName),'f',2)+" %"
                             }
                         }
                     }

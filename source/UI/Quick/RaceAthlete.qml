@@ -30,7 +30,7 @@ Pane {
             objectName: "athleteCurrentGap"
             visible: ui.context.currentGap !== undefined
             readonly property real gap: Number(ui.context.currentGap || 0)
-            text: gap<0 ? qsTr("Ma przewagę %1 pkt").arg(Math.abs(gap).toLocaleString(Qt.locale(),'f',1)) : qsTr("Traci %1 pkt do lidera").arg(gap.toLocaleString(Qt.locale(),'f',1))
+            text: gap<0 ? qsTr("Ma przewagę %1 pkt").arg(Math.abs(gap).toLocaleString(Qt.locale(Theme.localeName),'f',1)) : qsTr("Traci %1 pkt do lidera").arg(gap.toLocaleString(Qt.locale(Theme.localeName),'f',1))
             color: gap<0 ? Theme.signal : gap>0 ? Theme.headerMuted : Theme.snow
             font.pointSize: Theme.caption; font.family: Theme.mono
             Layout.fillWidth: true; wrapMode: Text.WordWrap
