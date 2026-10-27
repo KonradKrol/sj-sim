@@ -1,7 +1,11 @@
 # Silnik symulacji v2
 
-Kod w `source/simulation-v2` jest niezależny od Qt i interfejsu użytkownika.
-Do czasu zakończenia integracji gra nadal uruchamia dotychczasowy silnik.
+Rdzeń w `source/simulation-v2` jest niezależny od Qt i interfejsu użytkownika.
+Osobne pliki `ProfileBridge`, `ProfileMigration` i `GameSimulationBridge`
+integrują go z Qt oraz dotychczasowymi obiektami gry.
+Dotychczasowe dane nadal używają starego silnika. Adapter uruchamia v2 dla
+obiektów z nowymi profilami; domyślna migracja katalogu i przebudowa UI
+nie są jeszcze zakończone.
 Współczynniki poniżej są punktem wyjścia do kalibracji, nie modelem
 potwierdzonym na danych rzeczywistych zawodów.
 
@@ -180,8 +184,8 @@ eksperymentalny; brak tu domniemania dokładnej zgodności z FIS. Pomiar nie jes
 Wynik lotu może zawierać kompaktowy zestaw sześciu sekcji: granice, przebytą
 długość, średni doświadczony wektor i min/max składowej przedniej oraz odczyt
 przed i po skoku. Nieprzebyte odcinki mają przebytą długość 0. W batchach
-można wyłączyć zbieranie sekcji. Format zapisu tych danych w archiwum jest
-jeszcze do podłączenia; sam wynik rdzenia nie zapisuje plików.
+można wyłączyć zbieranie sekcji. Adapter gry zapisuje te dane w `JumpData`;
+sam wynik rdzenia nie zapisuje plików. Podgląd w UI pozostaje do wdrożenia.
 
 DNS kończy obliczenie przed losowaniem, DSQ przed lotem i punktacją, oba mają
 0 punktów. `previewDistance` nie pobiera losowości, ale używa tego samego
@@ -211,3 +215,46 @@ od normalnego modelu; standardowy skok nie jest skracany po fakcie.
 
 Podgląd odległości uwzględnia te same korekty. Wynik zapisuje zarówno fakt
 manipulacji, jak i jej wpływ na jakość. Nowy UX manipulacji pozostaje do wdrożenia.
+
+## Integracja z grą i migracja paczek
+
+`ProfileBridge` mapuje nowe profile do wejść rdzenia; nie przelicza dawnych
+technik na ukryte umiejętności. `Jumper` i `Hill` przechowują opcjonalny nowy
+profil wraz z dotychczasową tożsamością. Gettery profilu odzwierciedlają aktualne
+dane wspólne (np. nazwę, rekord i HS), zapobiegając rozjechaniu dwóch kopii.
+Paczka w formacie katalogu z nowymi profilami ma wersję 2. Gotowe paczki nowych
+edytorów można odczytać bez przybliżania ich parametrów. Walidacja kontroluje
+również zgodność ID nowego profilu z obiektem przechowywanym przez grę.
+
+`GameSimulationBridge` implementuje ścieżkę v2 istniejącego `JumpSimulator`.
+Nowa para profili kieruje obliczenia do nowego silnika. Łączenie nowego profilu
+z dawnym jest błędem konfiguracji; integracja katalogu musi uniemożliwić taki
+start i pokazać wyjaśnienie przed otwarciem konkursu. Przejściowo dotychczasowe
+pary danych mogą nadal wywoływać dawny silnik. Nie jest to zakończona migracja.
+
+Adapter otrzymuje kategorię wydarzenia i potrafi przyjąć wspólne pole pogody
+z własną strategią pomiaru. Przy braku takiego pola tworzy stałe w czasie,
+gładko interpolowane referencje z dawnych korytarzy, z ich dotychczasowym
+pomiarem do punktacji. Nowy UX pogody ma zastąpić tę przejściową konfigurację.
+Domyślny logiczny odstęp wynosi 30 s; kontroler może jawnie podać czas.
+Batchom należy przydzielać czas po indeksie zdarzenia, niezależnie od wątków.
+
+Wynik zachowuje wskaźniki zawodnika/skoczni używane przez obecną logikę wyników.
+W JSON `JumpData` ma dodatkowy obiekt `simulation-v2`: wersję silnika, seed
+jako tekst (bez utraty precyzji JSON), logiczny czas, kategorię wydarzenia,
+składniki jakości, zapas, surową odległość, opady, ekspozycję i przekroje wiatru.
+Po ponownym wczytaniu korzystamy z zapisanych odczytów, nie ponownego losowania.
+
+`ProfileMigration::approximateLegacyPack` tworzy nową, oddzielną paczkę z nowymi
+ID i informacją o pochodzeniu. OVR = średnia dawnych technik × 100/dawna skala,
+forma = dawna forma × 100/dawna skala, z ograniczeniem 1–100. Lądowanie jest
+przybliżane do jednej z pięciu klas; wszystkie perki zaczynają od zera. Funkcja
+zwraca wyraźne ostrzeżenie o niedokładnym przybliżeniu, nie modyfikuje źródła
+i odrzuca ponowne migrowanie gotowych profili. Mapowanie zdjęć ma unikalny
+podfolder zawodnika, aby identyczne nazwy plików nie nadpisywały innych zdjęć.
+Fizyczne kopiowanie i podłączenie do wspólnego katalogu są kolejnym etapem.
+
+Testy integracji: `scripts/test-quick-ui.sh --simulation-v2-only`.
+Obejmują migrację i jej pochodzenie, zapis/odczyt modeli i pogody, tożsamość
+wyników, niezależność od dawnych technik, preview, jawny czas/pole, wymuszenia
+oraz zachowanie profilu skoczni przy odczycie konfiguracji.

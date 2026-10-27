@@ -1,12 +1,164 @@
 # Simulation v2 — postęp i punkty wznowienia
 
+**Ostatnia aktualizacja: 27.10.2026. To główny plik przekazania pracy kolejnej
+sesji AI, także na innym komputerze po `git pull`. Zadanie nie jest zakończone.**
+
+## Start kolejnej sesji
+
+1. Sprawdź `git status --short --branch`. Pracuj na istniejącej gałęzi
+   `feature/simulation-v2`; pobieraj jej zmiany bez nadpisywania lokalnej pracy.
+   Nie modyfikuj maina. Nie zaczynaj implementacji silnika ponownie.
+2. Przeczytaj ten plik, pełne [NEW_SIMULATION.md](../NEW_SIMULATION.md)
+   i [opis silnika](SIMULATION_V2_ENGINE.md). Odpowiedzi na 12 pytań są już
+   rozstrzygnięte w specyfikacji, nie trzeba ich ponownie zadawać.
+3. Pracuj samodzielnie, **bez subagentów** — wyraźna prośba użytkownika.
+   Kontynuuj pełen zakres, nie skracaj go do prototypu. Użytkownik zgodził się
+   poświęcić tyle czasu, ile wymaga poprawne wdrożenie.
+4. Przy QML korzystaj z umiejętności w `.agents/skills`, szczególnie
+   `qt-qml` i `qt-ui-design`. Zachowaj zgodność z Qt 5.15 i Qt 6; importy
+   QML mają wersje 2.15/1.15. Nie wprowadzaj unversioned imports lub importu
+   `QtQuick.Controls.Basic`, który zepsuje tutejszy Qt 5.
+5. Zakończone etapy commituj i wypychaj na tę gałąź. Aktualizuj ten plik przy
+   postępie i przed zakończeniem sesji. Nie polegaj na historii czatu,
+   lokalnych logach `/tmp`, wygenerowanych binarkach ani niedodanych plikach.
+
+### Co już można sprawdzić po pull
+
+- Nowy edytor skoczni: czwarta para perków dominującego kierunku wiatru;
+  stare nowe-paczki z trzema parami czytają się z neutralną czwartą.
+- Samodzielny kompletny rdzeń skoku: testy ze skryptu poniżej.
+- Adapter gry i migracja: test `--simulation-v2-only`.
+- **Zwykłe uruchomienie gry nadal startuje z dotychczasowym katalogiem.**
+  Nowe edytory nie stały się jeszcze wspólnym katalogiem gry. Nie oczekuj,
+  że kliknięcie „Skok” na dawnych danych uruchomi nową fizykę. Wybór nowego
+  silnika w adapterze zależy od obecności nowych profili u skoczka i skoczni.
+
+### Budowanie i odtwarzanie testów
+
+Wszystkie polecenia uruchamiaj w głównym katalogu repo:
+
+```bash
+scripts/test-simulation-v2-core.sh
+scripts/build-quick-ui.sh
+scripts/test-quick-ui.sh --simulation-v2-only
+scripts/test-quick-ui.sh --hill-studio-only
+scripts/test-quick-ui.sh --engine-audit-only
+scripts/test-quick-ui.sh --config-defaults-only
+scripts/test-quick-ui.sh --save-storage-only
+```
+
+Skrypt Quick Test przygotowuje izolowane dane testowe. Pełny domyślny smoke-test
+jest duży; do etapu dobieraj konkretne przypadki. `SJ_BUILD_JOBS` steruje liczbą
+zadań kompilacji. Lokalnie używano Qt 5.15.3 na Linuksie; staging Qt jest
+automatycznie wykrywany przez skrypty. **Nie zweryfikowano tego etapu na Qt 6
+ani Windowsie.** Instrukcja Windows: [WINDOWS_SETUP.MD](../WINDOWS_SETUP.MD).
+
+Wyniki dotychczasowych sprawdzeń:
+
+- Rdzeń: PASS — rozkłady i ich momenty, krzywa K, perki i proporcja wpływu
+  65/35, ciągłość/korelacja/podmuchy pogody, zbieżność kroku lotu, 4000 losowych
+  skrajnych konfiguracji, punktacja, DSQ/DNS, deterministyczna praca równoległa.
+- Kalibracja: 20 tys. par seedów, OVR90/70, forma70, K120/HS134, belka10,
+  cisza i neutralne perki → średnia różnica **15,3476 m** (cel 14–17 m).
+- Rdzeń z AddressSanitizer i UndefinedBehaviorSanitizer: PASS. To sprawdzenie
+  samodzielnego rdzenia, nie całej aplikacji Qt.
+- Adapter `--simulation-v2-only`: PASS — paczki, migracja bez mutowania źródła,
+  profile, tożsamość obiektów, ślad wiatru po serializacji, preview i manipulacja.
+- Nowy edytor skoczni: PASS, rendery desktopu i małego ekranu.
+- Stary silnik: wszystkie 10 przypadków `--engine-audit-only` PASS.
+- Domyślne ustawienia konfiguracji oraz zapis/kolejność symulacji: PASS.
+
+Nie traktuj czasu samego testu 40 tys. spokojnych skoków jako benchmarku gry:
+nie obejmuje on tabel, JSON, archiwum ani zmiennego pola z UI.
+
+### Mapa implementacji
+
+| Plik/moduł | Rola |
+| --- | --- |
+| `source/simulation-v2/RandomSource.*` | Wstrzykiwany RNG, seedy, normalny/Laplace, brak globalnego stanu rdzenia |
+| `HillSkillCurve.*`, `QualityModel.*` | Krzywa K, OVR/forma, perki, kategoria wydarzenia i asymetria wpływu |
+| `Weather.*` | Ciągłe, deterministyczne pole, gusty, opady, automatyczne propozycje |
+| `FlightModel.*` | Zapas, krok przestrzenny, reakcja na wiatr, rosnący koszt geometrii |
+| `LandingModel.*` | Jawne krzywe ryzyka i noty; klasa lądowania wpływa wyłącznie na noty |
+| `Scoring.*` | Osobna strategia pomiaru, jawne sensory, punkty, belka/trener i 95% HS |
+| `Manipulation.*`, `Engine.*` | Złożenie skoku, preview i jawne wymuszenia |
+| `ProfileBridge.*` | Mapowanie profili nowych edytorów na wejście rdzenia |
+| `ProfileMigration.*` | Osobne przybliżone paczki, świeże ID, źródła i mapowanie zdjęć |
+| `GameSimulationBridge.cpp` | Implementacja ścieżki v2 `JumpSimulator` |
+| `source/simulator/Jumper.*`, `Hill.*` | Opcjonalny pełny profil v2 obok starego modelu; stabilna tożsamość wyników |
+| `source/simulator/JumpData.*` | Trwały JSON danych v2 skoku i pogody |
+| `source/global/DataPack.*` | Odczyt nowych paczek, wersja katalogowa 2, pochodzenie przybliżonej migracji |
+| `source/hills/*`, `source/UI/Quick/Hill*` | Czwarta para kierunku, odczyt dawnych 3 par |
+| `tests/simulation-v2-*.cpp` | Testy niezależnego rdzenia |
+| `tests/simulation-v2-bridge-regressions.h` | Testy adaptera przez aplikację Qt |
+
+Pliki rdzenia i adaptera są już dodane do `sj-sim.pro`. Projekt używa qmake.
+
+### Pułapki, których nie pomijać przy dalszej integracji
+
+- Nowe edytory przechowują własne paczki: `AthleteStudioController` domyślnie
+  w `QStandardPaths::AppDataLocation/athlete-studio/<id>/pack.json`, a
+  `HillStudioController` w `.../hill-studio/<id>.json`. Nie są jeszcze wspólną
+  bazą runtime. Nie twórz dwóch niezależnych kopii edytowanych parametrów.
+- `GlobalDatabase` nadal czyta/pisze dawne `userData/GlobalDatabase` i ma kopie
+  aktywnych wektorów. Przed migracją przejrzyj `loadPacks`, `writePacks`,
+  `syncActivePacks`, `selectPack` oraz pozostałe load/write globalnych danych.
+  Zachowaj źródła i sprawdź referencje kalendarzy/list skoczków po zmianie ID.
+- Konfiguracja musi zablokować start mieszanych wersji, zanim adapter rzuci
+  wyjątek. W dalszym etapie nowe profile mają być domyślne. Nie zostawiaj
+  widocznych starych edytorów umiejętności, których nowy silnik nie odczytuje.
+- `HillEditorWidget` zachowuje nowy profil przy tworzeniu konfiguracji. Podobne
+  ścieżki kopiowania/rekonstrukcji muszą zachować profil i jego tożsamość.
+- `JumpSimulator` ma lokalny zegar z krokiem 30 s i setter czasu; to jeszcze
+  nie zapisany zegar konkursu. DNS i przerwy też muszą wpływać na czas.
+  Batchom przypisuj seed/czas po indeksie, nie numerze pracownika.
+- `setSimulationWeather` wymaga pola i strategii pomiaru razem.
+  `setSimulationParameters` waliduje pełny zestaw parametrów nowego silnika.
+- Dawne ratingi i ustawienia `GlobalSimulationSettings` nie sterują nowym
+  OVR/formą. Nowe UI oraz playground muszą pokazywać właściwe parametry,
+  a nie pozostawiać działających pozornie kontrolek starego modelu.
+- Sam preview odległości jest nowy, lecz wybór „najlepszego” zawodnika do
+  automatycznej belki w `CompetitionConfigWindow::suggestedGate` i dawnym
+  playgroundzie nadal korzysta z technik starego modelu. Przenieś też selektor
+  najlepszego zawodnika na jakość v2, nie tylko wywołanie `previewDistance`.
+- Dokładny pomiar FIS nadal jest niewyjaśniony. Są źródła i punktacja, ale
+  nie potwierdzone dokładne wagi/okna. Nie nazywaj eksperymentalnej strategii
+  sensorów „dokładnym FIS” ani nie utożsamiaj jej z ekspozycją zawodnika.
+- Funkcja migracji zwraca mapowanie zdjęć; fizyczne kopiowanie jeszcze nie
+  istnieje. Zdjęcie jest opcjonalne, ścieżka ma należeć do folderu paczki.
+- Nowe profile są już serializowane, ale nowy format/wersjonowanie sezonu,
+  komunikat o nieobsługiwanych starych zapisach i migracja domyślnego katalogu
+  nie zostały wdrożone. Nie deklaruj zakończonej zgodności zapisów.
+
+Poniżej znajduje się pełny postęp i kolejka. Najbliższe zadanie to wspólny
+katalog nowych profili oraz bezpieczne przeniesienie konfiguracji gry;
+potem UX pogody i playground. Nie zaczynaj od ponownego strojenia gotowego rdzenia.
+
+### Zakończone commity tego etapu
+
+| Commit | Zmiana |
+| --- | --- |
+| `8969679` | Parametry jakości i monotoniczna krzywa K |
+| `b99be3e` | Ciągła pogoda i automatyczne propozycje |
+| `13954d0` | Skalibrowany lot, lądowanie i punktacja |
+| `eedff18` | Czwarta para kierunku wiatru w modelu i edytorze skoczni |
+| `24b5224` | Jawne manipulacje zachowujące prawidłowy ślad wiatru |
+| `274c68d` | Neutralność bez perka i walidacja zdegenerowanej krzywej |
+| `b99afd4` | Zapisywalne rekordy skoczni niestandardowych i jasny opis migracji |
+| `00e0fb2` | Adapter gry, profile/paczki v2, migracja i zapis historii pogody |
+
+Szczegóły każdego etapu są w `git show <commit>`. Ten wykaz nie zastępuje
+checklisty prac pozostałych poniżej.
+
 Gałąź: `feature/simulation-v2`, utworzona z `6095d31` gałęzi
 `feature/qml-competition-config`. Wymagania: [NEW_SIMULATION.md](../NEW_SIMULATION.md).
-Stan: zakończono wstępną analizę i otrzymano odpowiedzi na wszystkie 12 pytań.
-Odpowiedzi i wytyczne „Wiatr w UX” zapisano w specyfikacji. Rdzeń jest w budowie;
-dotychczasowy silnik pozostaje aktywny do zakończenia integracji.
+Stan: gotowy i przetestowany rdzeń v2 oraz adapter nowych profili do gry.
+Wytyczne i wszystkie 12 odpowiedzi zapisano w specyfikacji. **Pełna migracja
+nie jest zakończona**: dotychczasowe dane nadal używają starego silnika,
+nowy wybierany jest dla obiektów z profilami v2. Do przełączenia domyślnego
+pozostają katalog, konfiguracja, sezony, UX pogody/manipulacji i playground.
 
-## Ustalenia z kodu
+## Ustalenia z kodu przed integracją
 
 - `AthleteProfile` zawiera OVR, formę, klasę lądowania i trzy pary perków z siłą
   1–3. `HillProfile` ma K, HS, punktację i trzy pary perków; wyprowadza real HS,
@@ -143,16 +295,16 @@ uwzględniać wersję silnika i zapisane wyniki/historyczne pomiary.
 
 Weryfikacja: `scripts/test-simulation-v2-core.sh` — PASS. Obejmuje otwarte granice,
 walidację, zerowe skale, wagi zerowe i bardzo duże, momenty 200 tys. próbek oraz
-powtarzalność równoległą. Moduł jest testowany samodzielnie i nie został jeszcze
-podłączony do gry ani aktualnego projektu qmake.
+powtarzalność równoległą. Moduł był początkowo testowany samodzielnie;
+obecnie jest też częścią projektu qmake i adaptera gry opisanego poniżej.
 
 ## Jakość i krzywa K
 
 Zaimplementowano `HillSkillCurve` (edytowalne punkty, monotoniczna interpolacja
 PCHIP, jawne zachowanie poza zakresem) i `QualityModel`: OVR/forma, trzy pary
-perkó​​w, kategorie ważności oraz parametryzowany rozkład normalny/Laplace'a.
+perków, kategorie ważności oraz parametryzowany rozkład normalny/Laplace'a.
 Podział 65/35 dotyczy siły wpływu, nie częstości losowania. Klasa lądowania
-nie wpływa na jakość. Oba moduły nadal są oddzielone od aktywnej gry.
+nie wpływa na jakość. Adapter gry korzysta z nich dla nowych profili.
 
 Testy przechodzą, w tym porównania po 200 tys. próbek. Opis wzorów i początkowych
 współczynników: [SIMULATION_V2_ENGINE.md](SIMULATION_V2_ENGINE.md).
@@ -166,15 +318,16 @@ oraz propozycje warunków silnie zależne od obu perków pogodowych skoczni.
 Perki nie są argumentem pola, więc nie nadpisują ręcznie wybranych warunków.
 
 Testy granic, ciągłości, korelacji, odczytów równoległych i rozkładu propozycji
-przechodzą. Pole nadal nie jest podłączone do aktywnej gry. Dokładny algorytm
-pomiaru do rekompensaty wymaga dalszej weryfikacji; nie jest jeszcze wdrożony.
+przechodzą. Adapter gry potrafi przyjąć wspólne pole oraz strategię pomiaru;
+UI konfiguracji nie ustawia jeszcze nowego modelu. Dokładny algorytm FIS
+pomiaru do rekompensaty wymaga dalszej weryfikacji.
 
 ## Gotowy samodzielny rdzeń skoku
 
 `Engine` łączy jakość, lot, pogodę, lądowanie, noty i punktację. Zawiera DSQ/DNS,
 deterministyczny podgląd odległości, osobne obniżenie belki jury/trenera i próg
-95% HS. Wynik zawiera opcjonalny ślad ekspozycji w sekcjach; trwały zapis
-i pokazanie go w UI pozostają do zrobienia. Strategia pomiaru wiatru jest
+95% HS. Wynik zawiera opcjonalny ślad ekspozycji w sekcjach; adapter zapisuje
+go już w `JumpData`, a pokazanie w UI pozostaje do zrobienia. Strategia pomiaru jest
 oddzielna, dostępna wersja z jawnymi stanowiskami/wagami jest eksperymentalna,
 nie potwierdzona jako dokładny algorytm FIS.
 
@@ -182,7 +335,8 @@ nie potwierdzona jako dokładny algorytm FIS.
 konfiguracji, zbieżność kroku, brak wpływu nieosiągniętego podmuchu, geometria,
 landing skill tylko w notach oraz zgodność wyników przy pracy równoległej.
 Cel OVR90/70 na K120: **15,35 m** średniej różnicy w 20 tys. sparowanych seedów.
-Cały rdzeń nadal wymaga podłączenia do projektu, danych i aktywnej gry.
+Rdzeń jest w projekcie qmake i ma adapter gry; domyślna migracja danych
+oraz przebudowa konfiguracji i playgroundu pozostają do zrobienia.
 
 ## Czwarta para perków skoczni
 
@@ -196,3 +350,62 @@ zestaw przy pierwszej edycji. Qt Quick używa liczby par z katalogu.
 serializacja obu formatów, poziomy, zapis/undo i responsywne rendery.
 Sprawdzono wygląd renderu 1440 px. Perki będą działały w grze po integracji
 nowych profili oraz konfiguracji pogody; obecnie działają w propozycjach rdzenia.
+
+## Adapter gry i paczki v2
+
+- `Jumper` i `Hill` mogą przenosić pełny nowy profil, zachowując dotychczasową
+  tożsamość używaną przez wyniki, KO, drużyny i archiwum. Serializacja zapisuje
+  nowy profil; odczyt paczek i sezonów sprawdza jego poprawność oraz zgodność ID.
+- `DataPack` przyjmuje gotowe paczki z nowych edytorów i zapisuje zawartość v2
+  z wersją 2. Dotychczasowe paczki nadal są czytane jako wersja 1. Same nowe
+  edytory wciąż mają własny zapis; wspólny domyślny katalog jest następnym etapem.
+- `JumpSimulator` kieruje nowe profile do `Engine`, bez odczytywania starych
+  technik zawodnika. Kategorie wydarzenia są przekazywane z konkursu. Mieszane
+  nowe/stare profile są odrzucane, nie przeliczane potajemnie. Przy przełączeniu
+  katalogu trzeba zapewnić zgodny wybór obu paczek i walidację przed startem.
+- Adapter przyjmuje niezmienne pole pogody i strategię pomiaru. Do czasu nowego
+  UX potrafi też zbudować gładkie pole z dawnych ustawień korytarzy, zachowując
+  dotychczasowy sposób pomiaru do rekompensaty. To przejściowa ścieżka.
+- Podgląd belki używa tego samego nowego modelu. Przeniesiono zgodne wymuszenia
+  odległości, opadów, pomiaru wiatru, lądowania, not i DSQ. Osobne dawne
+  ratingi wybicia/lotu nie mają odpowiedników; zastąpi je korekta jakości w nowym UX.
+- `JumpData` zapisuje wersję silnika, seed jako tekst, czas/kategorię, rozkład
+  jakości, zapas i surową odległość, opady, rzeczywistą ekspozycję i odczyty
+  przed/po. Odczyt nie odtwarza pogody z seeda. Reset usuwa te dane.
+- `ProfileMigration` tworzy osobną paczkę i nowe ID, zachowuje pochodzenie,
+  przelicza OVR/formę i przybliża lądowanie, zeruje perki. Wynik zawiera wyraźne
+  ostrzeżenie o niedokładności i mapowanie zdjęć do unikalnych ścieżek w paczce.
+  Gotowe profile v2 nie są migrowane ponownie. Funkcja nie zapisuje plików ani
+  nie kopiuje jeszcze zdjęć — zrobi to integracja katalogu.
+- Zakres zapisu rekordów w nowych profilach rozszerzono do 1000 m, żeby legalna
+  duża niestandardowa skocznia/eksperyment nie tworzyły nieserializowalnego profilu.
+
+Test `--simulation-v2-only`: profil/paczka, migracja bez zmiany źródła,
+tożsamość wyniku, historia pogody po serializacji, preview, wymuszenia,
+przekazanie pola/czasu i konfiguracja skoczni zachowująca nowy profil.
+Testy rdzenia z AddressSanitizer/UndefinedBehaviorSanitizer również przechodzą.
+
+## Następne zadania — wznowienie
+
+1. Ujednolicić katalog nowych profili i zapis nowych edytorów. Zachować gotowe
+   paczki, wygenerować osobne przybliżone kopie starych, przenieść zdjęcia,
+   zapewnić ścieżki względem paczki. Nie nadpisywać źródeł. Wyraźnie pokazać
+   ostrzeżenie o przybliżeniu oraz pochodzenie w edytorze i wyborze paczki.
+2. Przełączyć bazę i konfigurację nowych konkursów, sezonów oraz pojedynczych
+   skoków na zgodne paczki v2. Dopilnować, żeby dawne widgety nie edytowały
+   ignorowanych umiejętności i nie traciły nowego profilu. Przekazać wszystkie
+   parametry oraz seed i logiczny czas po indeksie zadania w batchach.
+3. Nowy format sezonu/wersja silnika i jasne odrzucenie nieobsługiwanych starych
+   zapisów bez modyfikacji źródła. Zachować poprawne relacje i historię.
+4. Nowy UX pogody/opadów: propozycja przed konkursem, dominujący kierunek/siła,
+   loteryjność i podobieństwo zeskoku, pięć scenariuszy opadów, zaawansowane
+   referencje. Przechowywać ustawienia i zegar konkursu; DNS także przesuwa czas.
+5. Zweryfikować dokładne ważenie i okno pomiarów FIS. Do tego czasu nie deklarować
+   zgodności eksperymentalnego pomiaru stanowiskowego z pełnym algorytmem FIS.
+6. Podgląd sektorów na życzenie w karcie skoku/archiwum. Domyślnie tylko średnia
+   wiatru. Nowa analiza jakości zastępuje nieaktualne ratingi wybicia/lotu.
+7. Nowy UX manipulacji. Następnie pełny nowy playground/CLI, wszystkie współczynniki,
+   porównania, rozkłady miejsc, krzywe lądowania/not, automatyczny anulowalny
+   podgląd w tle, duże równoległe próby z ograniczoną pamięcią.
+8. Testy całości indywidualne/drużyny/KO, seriami ręcznie/automatycznie, zapisem
+   i ponownym odczytem, małe ekrany/motywy/Qt 5 i docelowe Qt 6/Windows.

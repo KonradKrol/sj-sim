@@ -1,3 +1,11 @@
+> **Wznowienie pracy w nowej sesji:** najpierw przeczytaj
+> [docs/SIMULATION_V2_PROGRESS.md](docs/SIMULATION_V2_PROGRESS.md), potem
+> [docs/SIMULATION_V2_ENGINE.md](docs/SIMULATION_V2_ENGINE.md).
+> Ten plik jest specyfikacją i zawiera także już wykonane polecenia startowe.
+> Gałąź `feature/simulation-v2` już istnieje. Nie twórz jej ponownie, nie cofaj
+> wykonanych zmian i nie pracuj na mainie. Implementacja całości trwa;
+> opis rdzenia nie oznacza zakończenia migracji gry.
+
 Czas zmigrować na nowy system symulacji i formy. Utwórz nowy branch od aktualnego. Nazwij go `feature/simulation-v2`.
 
 Przejdź w pełni na nowy system skoczków i skoczni, także w bazie danych.
