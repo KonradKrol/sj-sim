@@ -115,7 +115,7 @@ void HillEditorWidget::removeSubmitButton()
 
 Hill HillEditorWidget::getHillFromWidgetInput() const
 {
-    Hill hill;
+    Hill hill=this->hill && this->hill->getSimulationProfile()?*this->hill:Hill();
     hill.setName(ui->lineEdit_name->text());
     hill.setCountryCode(ui->lineEdit_countryCode->text());
     hill.setKPoint(ui->doubleSpinBox_KPoint->value());

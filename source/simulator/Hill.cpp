@@ -132,6 +132,7 @@ QJsonObject Hill::getJsonObject(const Hill & hill)
         characteristicsArray.push_back(characteristicObject);
     }
     object.insert("characteristics", characteristicsArray);
+    if(const auto profile=hill.getSimulationProfile())object.insert("simulation-v2",profile->toJson());
 
     return object;
 }
@@ -178,7 +179,43 @@ Hill Hill::getFromJson(QJsonObject obj)
         hill.insertCharacteristic(val.toObject().value("type").toString(), val.toObject().value("level").toDouble());
     }
 
+    if(obj.contains("simulation-v2")) {
+        HillProfile profile;QString error;
+        if(HillProfile::fromJson(obj["simulation-v2"].toObject(),profile,error))hill.setSimulationProfile(profile,error);
+    }
+
     return hill;
+}
+
+std::optional<HillProfile> Hill::getSimulationProfile() const
+{
+    if(!simulationProfile)return std::nullopt;
+    auto profile=*simulationProfile;
+    profile.id=getIDStr();profile.name=name;profile.country=countryCode;
+    profile.k=KPoint;profile.hs=HSPoint;profile.record=record;
+    profile.pointsAtK=pointsForKPoint;profile.pointsPerMetre=pointsForMeter;profile.gatePoints=pointsForGate;
+    profile.headwindPoints=pointsForFrontWind;profile.tailwindPoints=pointsForBackWind;
+    return profile;
+}
+
+bool Hill::setSimulationProfile(const HillProfile &input,QString &error)
+{
+    HillProfile profile;if(!HillProfile::fromJson(input.toJson(),profile,error))return false;
+    simulationProfile=profile;setID(sole::rebuild(profile.id.toStdString()));
+    setName(profile.name);setCountryCode(profile.country);setKPoint(profile.k);setHSPoint(profile.hs);setRecord(profile.record);
+    setPointsForKPoint(profile.pointsAtK);setPointsForMeter(profile.pointsPerMetre);setPointsForGate(profile.gatePoints);
+    setPointsForFrontWind(profile.headwindPoints);setPointsForBackWind(profile.tailwindPoints);
+    setAutoPointsForKPoint(false);setAutoPointsForMeter(false);setAutoPointsForBackWind(false);setRealHS(profile.realHs());
+    return true;
+}
+
+bool Hill::validateSimulationProfileJson(const QJsonObject &json,QString &error)
+{
+    if(!json.contains("simulation-v2"))return true;
+    HillProfile profile;
+    if(!json["simulation-v2"].isObject() || !HillProfile::fromJson(json["simulation-v2"].toObject(),profile,error))return false;
+    if(profile.id!=json["id"].toString()) {error=QObject::tr("Niezgodne identyfikatory skoczni i nowego profilu.");return false;}
+    return true;
 }
 
 QVector<Hill> Hill::getVectorFromJson(const QByteArray &bytes)
@@ -207,6 +244,10 @@ QVector<Hill> Hill::getVectorFromJson(const QByteArray &bytes)
     QJsonArray array = value.toArray();
     for(const auto & val : array)
     {
+        QString profileError;
+        if(!validateSimulationProfileJson(val.toObject(),profileError)) {
+            QMessageBox::critical(nullptr,QObject::tr("Skocznie"),profileError);return {};
+        }
         hills.push_back(Hill::getFromJson(val.toObject()));
     }
 
@@ -342,6 +383,7 @@ void Hill::setPointsForKPoint(double newPointsForKPoint)
 
 double Hill::getRealHS() const
 {
+    if(const auto profile=getSimulationProfile())return profile->realHs();
     return realHS;
 }
 
@@ -352,6 +394,7 @@ void Hill::setRealHS(double newRealHS)
 
 void Hill::setRealHSByCharacteristic()
 {
+    if(const auto profile=getSimulationProfile()) {realHS=profile->realHs();return;}
     realHS = HSPoint;
     realHS *= 1.018 + (getLevelOfCharacteristic("real-hs-point") * 0.015);
 }

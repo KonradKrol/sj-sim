@@ -1778,6 +1778,12 @@ void CompetitionManagerWindow::setupSimulator()
     simulator.setInrunSnow(actualInrunSnow);
     qDebug()<<"importance: "<<manager->getCompetitionInfo()->getJumpsImportance();
     simulator.setJumpsImportance(manager->getCompetitionInfo()->getJumpsImportance());
+    switch(manager->getCompetitionInfo()->getSerieType()) {
+    case CompetitionInfo::Training:simulator.setSimulationEvent(SimulationV2::EventKind::Training);break;
+    case CompetitionInfo::TrialRound:simulator.setSimulationEvent(SimulationV2::EventKind::Trial);break;
+    case CompetitionInfo::Qualifications:simulator.setSimulationEvent(SimulationV2::EventKind::Qualification);break;
+    default:simulator.setSimulationEvent(SimulationV2::EventKind::Competition);break;
+    }
 }
 
 void CompetitionManagerWindow::skipCurrentJump()

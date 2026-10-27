@@ -10,6 +10,8 @@
 #include "Hill.h"
 #include "Landing.h"
 #include "JumpManipulator.h"
+#include "../simulation-v2/Engine.h"
+#include <memory>
 
 #include <QMap>
 
@@ -33,6 +35,13 @@ private:
     int coachGate;
     double inrunSnow;
     double jumpsImportance;
+    SimulationV2::Engine simulationEngine;
+    SimulationV2::EventKind simulationEvent=SimulationV2::EventKind::Competition;
+    double simulationTime=0;
+    std::shared_ptr<const SimulationV2::WeatherField> simulationWeather;
+    std::shared_ptr<const SimulationV2::WindMeasurement> simulationMeasurement;
+    void simulateV2();
+    double previewV2() const;
 
     CompetitionRules * competitionRules;
 
@@ -40,6 +49,10 @@ public:
     //skok
     void simulateJump();
     double previewDistance();
+    void setSimulationEvent(SimulationV2::EventKind event) { simulationEvent=event; }
+    void setSimulationTime(double seconds) { simulationTime=seconds; }
+    void setSimulationParameters(const SimulationV2::EngineParameters &parameters) { simulationEngine=SimulationV2::Engine(parameters); }
+    void setSimulationWeather(std::shared_ptr<const SimulationV2::WeatherField>,std::shared_ptr<const SimulationV2::WindMeasurement>);
 
     void resetTemporaryParameters();
     void updateJumperSkills();

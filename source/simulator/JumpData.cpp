@@ -318,6 +318,7 @@ void JumpData::setSimulator(JumpSimulator *newSimulator)
 
 void JumpData::reset()
 {
+    simulationV2Data={};
     distance = points = gateCompensation = windCompensation = totalCompensation = gate = judgesPoints = 0;
     landing = Landing();
     judges.clear();
@@ -334,6 +335,7 @@ void JumpData::reset()
 
 void JumpData::setupForNextJumper()
 {
+    simulationV2Data={};
     distance = points = gateCompensation = windCompensation = totalCompensation = judgesPoints = 0;
     landing = Landing();
     judges.clear();
@@ -376,6 +378,7 @@ QJsonObject JumpData::getJsonObject(JumpData jumpData)
     simulationDataObject.insert("inrun-snow", jumpData.getSimulationDataReference().getInrunSnow());
     simulationDataObject.insert("meters-sum-random", jumpData.getSimulationDataReference().getMetersSumRandom());
     object.insert("simulation-data", simulationDataObject);
+    if(!jumpData.getSimulationV2Data().isEmpty())object.insert("simulation-v2",jumpData.getSimulationV2Data());
     QJsonArray windsArray;
     int i=0;
     for(const auto & wind : jumpData.getWinds())
@@ -429,6 +432,7 @@ JumpData JumpData::getFromJson(QJsonObject obj, IdentifiableObjectsStorage * sto
     simulationData.setInrunSnow(simulationDataObject.value("inrun-snow").toDouble());
     simulationData.setMetersSumRandom(simulationDataObject.value("meters-sum-random").toDouble());
     jump.setSimulationData(simulationData);
+    jump.setSimulationV2Data(obj.value("simulation-v2").toObject());
     QJsonArray windsArray = obj.value("winds").toArray();
     QVector<Wind> winds;
     int i=0;

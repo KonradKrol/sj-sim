@@ -59,6 +59,9 @@ bool hasValidUuidFields(const QJsonValue &value)
 
 bool hasRequiredSaveStructure(const QJsonObject &object)
 {
+    QString profileError;
+    for(const auto &value:object["jumpers"].toArray())if(!Jumper::validateSimulationProfileJson(value.toObject(),profileError))return false;
+    for(const auto &value:object["hills"].toArray())if(!Hill::validateSimulationProfileJson(value.toObject(),profileError))return false;
     return object.value(QStringLiteral("id")).isString()
         && object.value(QStringLiteral("actual-season-id")).isString()
         && object.value(QStringLiteral("jumpers")).isArray()

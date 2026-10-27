@@ -17,6 +17,18 @@ UI_DIR = .ui
 win32: DEFINES += NOMINMAX
 
 SOURCES += \
+    source/simulation-v2/RandomSource.cpp \
+    source/simulation-v2/HillSkillCurve.cpp \
+    source/simulation-v2/QualityModel.cpp \
+    source/simulation-v2/Weather.cpp \
+    source/simulation-v2/FlightModel.cpp \
+    source/simulation-v2/LandingModel.cpp \
+    source/simulation-v2/Scoring.cpp \
+    source/simulation-v2/Manipulation.cpp \
+    source/simulation-v2/Engine.cpp \
+    source/simulation-v2/ProfileBridge.cpp \
+    source/simulation-v2/ProfileMigration.cpp \
+    source/simulation-v2/GameSimulationBridge.cpp \
     source/hills/HillProfile.cpp \
     source/hills/HillStudioController.cpp \
     source/athletes/AthleteProfile.cpp \
@@ -173,6 +185,17 @@ SOURCES += \
     source/utilities/functions.cpp
 
 HEADERS += \
+    source/simulation-v2/RandomSource.h \
+    source/simulation-v2/HillSkillCurve.h \
+    source/simulation-v2/QualityModel.h \
+    source/simulation-v2/Weather.h \
+    source/simulation-v2/FlightModel.h \
+    source/simulation-v2/LandingModel.h \
+    source/simulation-v2/Scoring.h \
+    source/simulation-v2/Manipulation.h \
+    source/simulation-v2/Engine.h \
+    source/simulation-v2/ProfileBridge.h \
+    source/simulation-v2/ProfileMigration.h \
     source/hills/HillProfile.h \
     source/hills/HillStudioController.h \
     source/athletes/AthleteProfile.h \

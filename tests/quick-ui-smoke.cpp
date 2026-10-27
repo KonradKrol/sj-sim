@@ -2477,6 +2477,7 @@ static void interactionRegressions(MainWindow &main) {
 #include "hill-studio-regressions.h"
 #include "config-defaults-regressions.h"
 #include "motion-feedback-regressions.h"
+#include "simulation-v2-bridge-regressions.h"
 
 int main(int argc,char **argv) {
     QApplication app(argc,argv);
@@ -2524,6 +2525,7 @@ int main(int argc,char **argv) {
         qInfo()<<"PASS: live language switching";return 0;
     }
     if(app.arguments().contains("--config-defaults-only")){configDefaultsRegressions(main);return 0;}
+    if(app.arguments().contains("--simulation-v2-only")){simulationV2BridgeRegressions();return 0;}
     if(app.arguments().contains("--motion-feedback-only")){motionFeedbackRegressions(main);return 0;}
     if(app.arguments().contains("--hill-studio-only")){hillStudioRegressions(main);return 0;}
     if(app.arguments().contains("--athlete-studio-only") || app.arguments().contains("--athlete-patches-only")){athleteStudioRegressions(main,app.arguments().contains("--athlete-patches-only"));return 0;}

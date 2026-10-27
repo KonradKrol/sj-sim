@@ -62,6 +62,7 @@ private:
     double jumperForm;
 
     bool inSingleJumps;
+    QJsonObject simulationV2Data;
 
 public:
     void reset();
@@ -119,6 +120,8 @@ public:
     void setSingleResult(CompetitionSingleResult *newSingleResult);
     bool getInSingleJumps() const;
     void setInSingleJumps(bool newInSingleJumps);
+    const QJsonObject &getSimulationV2Data() const { return simulationV2Data; }
+    void setSimulationV2Data(const QJsonObject &value) { simulationV2Data=value; }
 };
 
 QDebug operator<<(QDebug d, const JumpData & jumpData);

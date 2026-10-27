@@ -4,6 +4,8 @@
 #include "../utilities/Identifiable.h"
 #include "../utilities/ClassWithCharacteristics.h"
 #include "Characteristic.h"
+#include "../hills/HillProfile.h"
+#include <optional>
 
 #include <QString>
 #include <QSet>
@@ -53,6 +55,7 @@ private:
     bool autoPointsForKPoint;
     bool autoPointsForMeter;
     bool autoPointsForBackWind;
+    std::optional<HillProfile> simulationProfile;
 
 public:
     static QJsonObject getJsonObject(const Hill &hill);
@@ -110,6 +113,9 @@ public:
     void setBalance(double newBalance);
     double getDistanceMultiplier() const;
     void setDistanceMultiplier(double newDistanceMultiplier);
+    std::optional<HillProfile> getSimulationProfile() const;
+    bool setSimulationProfile(const HillProfile &, QString &error);
+    static bool validateSimulationProfileJson(const QJsonObject &, QString &error);
 };
 
 #endif // HILL_H

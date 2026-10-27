@@ -13,6 +13,8 @@ struct DataPack {
     QString id = QUuid::createUuid().toString(QUuid::WithoutBraces);
     QString name;
     Kind kind = Jumpers;
+    int engineVersion = 1;
+    QString approximateMigrationSource;
     bool ageMode = false;
     int referenceYear = QDate::currentDate().year();
     QVector<Jumper> jumpers;

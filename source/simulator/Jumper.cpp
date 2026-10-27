@@ -124,6 +124,7 @@ QJsonObject Jumper::getJsonObject(const Jumper & jumper)
         characteristicsArray.push_back(characteristicObject);
     }
     object.insert("characteristics", characteristicsArray);
+    if(const auto profile=jumper.getSimulationProfile())object.insert("simulation-v2",profile->toJson());
     return object;
 }
 
@@ -152,7 +153,42 @@ Jumper Jumper::getFromJson(QJsonObject obj)
         jumper.getJumperSkillsPointer()->insertCharacteristic(val.toObject().value("type").toString(), val.toObject().value("level").toDouble());
     }
 
+    if(obj.contains("simulation-v2")) {
+        AthleteProfile profile;QString error;
+        if(AthleteProfile::fromJson(obj["simulation-v2"].toObject(),profile,error))jumper.setSimulationProfile(profile,error);
+    }
+
     return jumper;
+}
+
+std::optional<AthleteProfile> Jumper::getSimulationProfile() const
+{
+    if(!simulationProfile)return std::nullopt;
+    auto profile=*simulationProfile;
+    profile.id=getIDStr();profile.name=name;profile.surname=surname;profile.country=countryCode;
+    profile.personalBest=personalBest;profile.birthYear=getBirthYear();
+    const QString oldImage=profile.photoPath.isEmpty()?profile.portrait:profile.photoPath;
+    if(imageName!=oldImage) {profile.photoPath=imageName;profile.portrait.clear();}
+    return profile;
+}
+
+bool Jumper::setSimulationProfile(const AthleteProfile &input,QString &error)
+{
+    AthleteProfile profile;if(!AthleteProfile::fromJson(input.toJson(),profile,error))return false;
+    simulationProfile=profile;setID(sole::rebuild(profile.id.toStdString()));
+    setName(profile.name);setSurname(profile.surname);setCountryCode(profile.country);
+    setPersonalBest(profile.personalBest);setBirthYear(profile.birthYear);
+    setImageName(profile.photoPath.isEmpty()?profile.portrait:profile.photoPath);
+    return true;
+}
+
+bool Jumper::validateSimulationProfileJson(const QJsonObject &json,QString &error)
+{
+    if(!json.contains("simulation-v2"))return true;
+    AthleteProfile profile;
+    if(!json["simulation-v2"].isObject() || !AthleteProfile::fromJson(json["simulation-v2"].toObject(),profile,error))return false;
+    if(profile.id!=json["id"].toString()) {error=QObject::tr("Niezgodne identyfikatory skoczka i nowego profilu.");return false;}
+    return true;
 }
 
 QVector<Jumper> Jumper::getVectorFromJson(const QByteArray &bytes)
@@ -182,6 +218,10 @@ QVector<Jumper> Jumper::getVectorFromJson(const QByteArray &bytes)
 
     for(const auto & val : array)
     {
+        QString profileError;
+        if(!validateSimulationProfileJson(val.toObject(),profileError)) {
+            QMessageBox::critical(nullptr,QObject::tr("Skoczkowie"),profileError);return {};
+        }
         jumpers.push_back(Jumper::getFromJson(val.toObject()));
     }
 

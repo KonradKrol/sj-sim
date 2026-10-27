@@ -3,6 +3,8 @@
 
 #include "../utilities/Identifiable.h"
 #include "JumperSkills.h"
+#include "../athletes/AthleteProfile.h"
+#include <optional>
 
 #include <QDate>
 #include <QString>
@@ -31,6 +33,7 @@ private:
     int birthYear = 0;
 
     JumperSkills jumperSkills;
+    std::optional<AthleteProfile> simulationProfile;
 public:
     static QJsonObject getJsonObject(const Jumper &jumper);
     static Jumper getFromJson(QJsonObject obj);
@@ -59,6 +62,9 @@ public:
     int ageInYear(int year) const { return getBirthYear() > 0 && year >= getBirthYear() ? year - getBirthYear() : -1; }
     QString getImageName() const;
     void setImageName(const QString &newImageName);
+    std::optional<AthleteProfile> getSimulationProfile() const;
+    bool setSimulationProfile(const AthleteProfile &, QString &error);
+    static bool validateSimulationProfileJson(const QJsonObject &, QString &error);
 };
 
 #endif // JUMPER_H
