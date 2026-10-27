@@ -61,6 +61,7 @@ kalibracji model. Może pozostać kandydatem do eksperymentu lub testów skrajny
 - [x] Utworzyć osobną gałąź bez zmieniania maina.
 - [x] Zidentyfikować rozkłady i główne punkty podłączenia silnika.
 - [x] Zadać 12 pytań po wstępnej analizie.
+- [x] Przygotować i przetestować niezależne źródło losowości dla nowego rdzenia.
 - [ ] Zapisać odpowiedzi i nowe wytyczne dotyczące konfiguracji wiatru.
 - [ ] Uzgodnić migrację paczek, gotowych nowych profili oraz zapisów sezonów.
 - [ ] Przygotować niezależny od UI rdzeń: wejście skoku, kontekst wydarzenia,
@@ -107,3 +108,29 @@ ograniczania bardzo dalekich skoków, preferencji wybicia/lotu skoczni,
 typu opadów, manipulacji wynikiem, automatycznego podglądu playgroundu
 oraz orientacyjnej różnicy między OVR 90 i OVR 70.
 Zaleceń z pytań nie traktować jako zatwierdzonych odpowiedzi.
+
+## Pierwszy element rdzenia: losowość
+
+`source/simulation-v2/RandomSource.h/.cpp` udostępnia interfejs źródła losowości
+oraz lokalny sampler z seedem. Rdzeń może otrzymać inne źródło, np. kontrolowane
+w testach, bez odwoływania się do globalnego generatora lub obiektów UI.
+`deriveSeed` pozwala wydzielać niezależne strumienie dla eksperymentów i zdarzeń.
+Sam moduł nie narzuca jeszcze przypisywania streamów do zawodników i pogody.
+
+Pierwsza implementacja używa SplitMix64, otwartego przedziału (0, 1), Boxa–Mullera
+dla rozkładu normalnego oraz odwrotnej dystrybuanty dla Laplace'a. Dostępne są
+także rozkład jednostajny, zdarzenie o podanym prawdopodobieństwie i wybór
+ważony; duże wagi są skalowane przed sumowaniem. Błędne parametry są odrzucane,
+a zerowa skala zwraca wartość stałą bez zużywania losowania. Funkcje rozkładów
+nie ustalają jeszcze, którego rozkładu będzie używać gotowy model skoku.
+
+Generator nie ma stanu globalnego; osobne instancje można przydzielać zadaniom.
+Testy potwierdzają takie same próbki przy zmianie kolejności odbierania wyników
+ośmiu zadań. To nie obietnica identyczności ostatnich bitów obliczeń `log`, `cos`
+i innych funkcji matematycznych między różnymi platformami. Powtórki muszą
+uwzględniać wersję silnika i zapisane wyniki/historyczne pomiary.
+
+Weryfikacja: `scripts/test-simulation-v2-core.sh` — PASS. Obejmuje otwarte granice,
+walidację, zerowe skale, wagi zerowe i bardzo duże, momenty 200 tys. próbek oraz
+powtarzalność równoległą. Moduł jest testowany samodzielnie i nie został jeszcze
+podłączony do gry ani aktualnego projektu qmake.
