@@ -10,6 +10,7 @@ Pane {
     readonly property var beatNode: ui.find("label_toBeatDistance")
     readonly property var advanceNode: ui.find("label_toAdvancementDistance")
     property bool dense: false
+    ChangeFeedback { id: athleteArrival; target: athlete; trigger: athlete.nameNode ? athlete.nameNode.values.text : ""; duration: Theme.motion*2 }
     padding: dense ? 8 : 12
     background: Surface { fillColor: Theme.stadium; sweep: 28 }
     contentItem: ColumnLayout {
@@ -17,6 +18,8 @@ Pane {
         Label { text: ui.context.complete ? qsTr("Zakończono") : ui.context.roundComplete ? qsTr("Koniec serii") : qsTr("NA BELCE"); color: Theme.signal; font.pointSize: Theme.caption; font.family: Theme.mono }
         RowLayout {
             Layout.fillWidth: true
+            opacity: 0.65+athleteArrival.progress*0.35
+            transform: Translate { x: (1-athleteArrival.progress)*Theme.dp(12) }
             Image { source: athlete.flagNode ? athlete.flagNode.values.image || "" : ""; sourceSize.width: 32; sourceSize.height: 24; Layout.preferredWidth: 28; Layout.preferredHeight: 20; fillMode: Image.PreserveAspectFit }
             Label { text: athlete.nameNode ? athlete.nameNode.values.text : "—"; color: Theme.snow; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.weight: Font.ExtraBold; Layout.fillWidth: true; wrapMode: Text.WordWrap }
             ColumnLayout {

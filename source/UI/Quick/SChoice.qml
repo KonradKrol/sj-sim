@@ -25,9 +25,9 @@ ComboBox {
         var index = matches[choices.currentIndex].sourceIndex
         if (optionEnabled.length>index && !optionEnabled[index]) return
         navigation.setChoiceIndex(control,index)
+        popup.returnFocusOnClose=true
         activated(index)
         popup.close()
-        forceActiveFocus()
     }
     implicitHeight: Math.max(Theme.controlHeight,Theme.bodyMetrics.height+(Theme.compact ? 4 : 18))
     implicitWidth: 180
@@ -93,6 +93,14 @@ ComboBox {
         }
     }
     popup: Popup {
+        property bool returnFocusOnClose: false
+        enter: Transition {
+            ParallelAnimation {
+                NumberAnimation { property: "opacity"; from: 0; to: 1; duration: Theme.motion }
+                NumberAnimation { property: "scale"; from: 0.97; to: 1; duration: Theme.motion; easing.type: Easing.OutCubic }
+            }
+        }
+        exit: Transition { NumberAnimation { property: "opacity"; to: 0; duration: Theme.motion/2 } }
         objectName: "choicePopup"
         readonly property real above: Math.max(0,control.mapToItem(Overlay.overlay,0,0).y-8)
         readonly property real below: Math.max(0,(control.Window.window ? control.Window.window.height : 600)-control.mapToItem(Overlay.overlay,0,control.height).y-8)
@@ -102,12 +110,16 @@ ComboBox {
         width: control.width
         padding: 4
         implicitHeight: Math.min(desired,Math.max(above,below))
-        onOpened: if (control.searchable) {
-            search.clear()
-            choices.currentIndex = control.currentIndex
-            search.forceActiveFocus()
+        onAboutToShow: {
+            returnFocusOnClose=false
+            if(control.searchable){search.clear();Qt.callLater(function(){if(control.popup.visible){choices.currentIndex=control.currentIndex;search.forceActiveFocus()}})}
         }
-        onClosed: if (control.searchable) search.clear()
+        onOpened: if(control.searchable && !search.activeFocus && !choices.activeFocus)search.forceActiveFocus()
+        onClosed: {
+            if(control.searchable)search.clear()
+            if(returnFocusOnClose && control.visible && control.enabled)control.forceActiveFocus()
+            returnFocusOnClose=false
+        }
         contentItem: ColumnLayout {
             spacing: 4
             SField {
@@ -120,8 +132,12 @@ ComboBox {
                 onTextChanged: choices.currentIndex = control.matches.length ? 0 : -1
                 Keys.onDownPressed: choices.currentIndex = Math.min(control.matches.length-1,choices.currentIndex+1)
                 Keys.onUpPressed: choices.currentIndex = Math.max(0,choices.currentIndex-1)
-                Keys.onReturnPressed: control.chooseMatch()
-                Keys.onEnterPressed: control.chooseMatch()
+                Keys.onReturnPressed: function(event){event.accepted=true}
+                Keys.onEnterPressed: function(event){event.accepted=true}
+                Keys.onReleased: function(event){
+                    if(event.key===Qt.Key_Return || event.key===Qt.Key_Enter){event.accepted=true;control.chooseMatch()}
+                    else event.accepted=false
+                }
                 Keys.onEscapePressed: control.popup.close()
             }
             ListView {

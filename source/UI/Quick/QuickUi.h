@@ -219,6 +219,7 @@ class QuickUi : public QObject {
     Q_PROPERTY(QStringList path READ path NOTIFY navigationChanged)
     Q_PROPERTY(bool canGoBack READ canGoBack NOTIFY navigationChanged)
     Q_PROPERTY(QString localeName READ localeName NOTIFY navigationChanged)
+    Q_PROPERTY(int languageIndex READ languageIndex NOTIFY navigationChanged)
 public:
     explicit QuickUi(MainWindow *window);
     ~QuickUi() override;
@@ -227,6 +228,8 @@ public:
     QStringList path() const;
     bool canGoBack() const;
     QString localeName() const;
+    int languageIndex() const;
+    Q_INVOKABLE bool setLanguage(int language);
     Q_INVOKABLE void back();
     Q_INVOKABLE void setChoiceIndex(QObject *control, int index) {
         if (control && index >= 0 && index < control->property("count").toInt())

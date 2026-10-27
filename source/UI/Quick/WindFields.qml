@@ -47,10 +47,20 @@ Column {
         }
         SButton { id: advanced; visible: !!editor.fields.details; text: qsTr("Cechy"); quiet: true; checkable: true }
     }
-    Loader {
+    Item {
+        id: detailsWrap
         width: parent.width
-        active: advanced.checked && !!editor.fields.details
-        source: Qt.resolvedUrl("Node.qml")
-        onLoaded: item.node=Qt.binding(function(){return editor.fields.details})
+        property real reveal: advanced.checked && !!editor.fields.details ? 1 : 0
+        height: details.item ? details.item.implicitHeight*reveal : 0
+        clip: true
+        Behavior on reveal { NumberAnimation { duration: Theme.motion; easing.type: Easing.OutCubic } }
+        Loader {
+            id: details
+            width: parent.width
+            active: detailsWrap.reveal>0
+            opacity: detailsWrap.reveal
+            source: Qt.resolvedUrl("Node.qml")
+            onLoaded: item.node=Qt.binding(function(){return editor.fields.details})
+        }
     }
 }

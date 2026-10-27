@@ -7,6 +7,9 @@
 #include "../../athletes/AthleteStudioController.h"
 #include "../../hills/HillStudioController.h"
 #include "../../playground/PlaygroundController.h"
+#include "../../global/GlobalAppSettings.h"
+#include "../../global/GlobalTranslators.h"
+#include <QComboBox>
 #include <QFontDatabase>
 #include <QApplication>
 #include <QDialog>
@@ -160,6 +163,14 @@ QuickUi::~QuickUi() {
 }
 bool QuickUi::canGoBack() const { return m_pages.size()>1; }
 QString QuickUi::localeName() const { return QLocale().name(); }
+int QuickUi::languageIndex() const { return GlobalAppSettings::get()->getLanguageID(); }
+bool QuickUi::setLanguage(int language) {
+    if (!GlobalTranslators::get()->setLanguage(qApp,language)) {emit navigationChanged();return false;}
+    GlobalAppSettings::get()->setLanguageID(language);
+    GlobalAppSettings::get()->writeToJson();
+    emit navigationChanged();
+    return true;
+}
 QStringList QuickUi::path() const {
     QStringList result;
     for(int i=0;i<m_pages.size();++i)if(m_pages[i].bridge)result.append(i==0?tr("Menu główne"):m_pages[i].bridge->title());
@@ -241,6 +252,8 @@ bool QuickUi::eventFilter(QObject *object,QEvent *event) {
             m_translationPending=false;
             QSet<QQmlEngine *> engines;
             for(auto *window:QApplication::topLevelWidgets()) {
+                for(auto *choice:window->findChildren<QComboBox *>("comboBox_language"))
+                    if(choice->currentIndex()!=languageIndex())choice->setCurrentIndex(languageIndex());
                 for(auto *view:window->findChildren<QQuickWidget *>())if(!engines.contains(view->engine())){engines.insert(view->engine());view->engine()->retranslate();}
                 for(auto *table:window->findChildren<QuickTableModel *>())table->invalidateText();
                 for(auto *roster:window->findChildren<QuickRoster *>())roster->invalidateText();

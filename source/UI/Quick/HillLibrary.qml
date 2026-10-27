@@ -53,7 +53,7 @@ ColumnLayout {
             width: rows.width; implicitHeight: Math.max(Theme.dp(42),contentItem.implicitHeight+Theme.dp(14)); padding: Theme.dp(7)
             checked: library.backend.selectedIndex===profileIndex; hoverEnabled: true
             Accessible.role: Accessible.ListItem; Accessible.selected: checked; Accessible.name: label+", HS "+hs
-            background: Rectangle { color: row.checked?Theme.selection:row.hovered?Theme.raised:Theme.surface; radius: Theme.dp(5); border.width: row.activeFocus?2:0; border.color: Theme.accent }
+            background: Rectangle { color: row.checked?Theme.selection:row.hovered?Theme.raised:Theme.surface; radius: Theme.dp(5); border.width: row.activeFocus?2:0; border.color: Theme.accent; Behavior on color { ColorAnimation { duration: Theme.motion } } }
             contentItem: RowLayout {
                 Label { text: row.label; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight; color: Theme.ink; font.pointSize: Theme.body }
                 Label { text: "HS "+row.hs; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption }

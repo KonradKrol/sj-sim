@@ -8,6 +8,7 @@ Pane {
     property bool dense: false
     readonly property var summary: ui.jumpSummary
     readonly property bool narrow: width<480
+    ChangeFeedback { id: resultArrival; target: jump; trigger: [jump.summary.name,jump.summary.distance,jump.summary.points,jump.summary.selectedRound].join("|"); duration: Theme.motion*2 }
     implicitHeight: content.implicitHeight + topPadding + bottomPadding
     padding: dense ? 4 : 8
     function signedColor(value){return value>0 ? Theme.success : value<0 ? Theme.danger : Theme.ink}
@@ -19,6 +20,8 @@ Pane {
     contentItem: Column {
         id: content
         objectName: "lastJumpContent"
+        opacity: 0.6+resultArrival.progress*0.4
+        transform: Translate { y: (1-resultArrival.progress)*Theme.dp(8) }
         spacing: 3
         RowLayout {
             width: parent.width; spacing: 8

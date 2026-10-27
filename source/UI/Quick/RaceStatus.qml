@@ -10,6 +10,7 @@ Pane {
     readonly property var snow: ui.find("label_snowLevel")
     readonly property var advancement: ui.context.biggestAdvancement || ({})
     readonly property var advancingEntries: advancement.entries || []
+    ChangeFeedback { id: roundFeedback; target: status; trigger: String(ui.context.round)+"|"+String(ui.context.group); duration: Theme.motion*2 }
     padding: 6
     background: Rectangle { color: Theme.surface; radius: Theme.radius; border.color: Theme.outline }
     contentItem: GridLayout {
@@ -21,7 +22,9 @@ Pane {
             Label { text: status.hill ? status.hill.values.text : ""; font.pointSize: Theme.caption; font.weight: Font.DemiBold; color: Theme.ink; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         }
         Label {
+            id: roundLabel
             objectName: "raceRoundStatus"
+            transform: Scale { origin.x: 0; origin.y: roundLabel.height/2; xScale: 1+(1-roundFeedback.progress)*0.06; yScale: xScale }
             text: (ui.context.qualifications && (ui.context.roundCount || 1)===1 ? qsTr("Kwalifikacje") : qsTr("Seria %1 / %2").arg(Math.min(ui.context.round || 1,ui.context.roundCount || 1)).arg(ui.context.roundCount || 1))
                   +(ui.context.group ? qsTr(" · Grupa %1").arg(ui.context.group) : "")
                   +(status.advancement.places ? (status.width<600 ? "\n" : " · ")

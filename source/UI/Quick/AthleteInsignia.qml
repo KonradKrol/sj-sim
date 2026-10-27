@@ -13,7 +13,7 @@ Flow {
         AbstractButton {
             id: mark
             required property int index
-            readonly property int value: Number((marks.backend.profile.perks || [])[index] || 0)
+            readonly property int value: Number((marks.backend.selectedPerks || [])[index] || 0)
             readonly property var perk: catalog.selected(index,value)
             objectName: "athleteInsignia-"+index
             width: marks.badgeSize; height: width

@@ -6,10 +6,9 @@ ScrollView {
     id: editor
     objectName: "hillEditorScroll"
     property var backend
-    property bool scoring: false
     readonly property var profile: backend.profile
+    readonly property var countryOptions: backend.countries.map(function(country){return country})
     contentWidth: availableWidth; clip: true
-    AthleteDesign { id: conceptPalette; variant: 1 }
     HillPerkCatalog { id: perks }
     Control {
         width: editor.availableWidth
@@ -32,7 +31,7 @@ ScrollView {
                 ColumnLayout {
                     Layout.fillWidth: true; Layout.minimumWidth: 0
                     Label { text: qsTr("Kraj"); color: Theme.muted; font.pointSize: Theme.caption }
-                    SChoice { Layout.fillWidth: true; model: editor.backend.countries.map(function(c){return c.name}); optionImages: editor.backend.countries.map(function(c){return c.flag}); searchable: true; Accessible.name: qsTr("Kraj"); currentIndex: {var countries=editor.backend.countries;for(var i=0;i<countries.length;i++)if(countries[i].code===editor.profile.country)return i;return -1} onActivated: editor.backend.setValue("country",editor.backend.countries[index].code) }
+                    SChoice { Layout.fillWidth: true; model: editor.countryOptions.map(function(c){return c.name}); optionImages: editor.countryOptions.map(function(c){return c.flag}); searchable: true; Accessible.name: qsTr("Kraj"); currentIndex: {var countries=editor.countryOptions;var code=editor.profile.country;for(var i=0;i<countries.length;i++)if(countries[i].code===code)return i;return -1} onActivated: editor.backend.setValue("country",editor.countryOptions[index].code) }
                 }
             }
             GridLayout {
@@ -41,10 +40,20 @@ ScrollView {
                 HillNumber { backend: editor.backend; fieldKey: "hs"; label: "HS · m"; minimum: editor.profile.k; maximum: 500; Layout.fillWidth: true }
                 HillNumber { backend: editor.backend; fieldKey: "record"; label: qsTr("Rekord skoczni · m"); maximum: 600; Layout.fillWidth: true }
             }
+            Label { text: qsTr("Punktacja skoczni"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true }
+            GridLayout {
+                objectName: "hillScoring"
+                Layout.fillWidth: true; columns: width>Theme.dp(520)?3:2; columnSpacing: Theme.dp(10); rowSpacing: Theme.dp(6)
+                HillNumber { backend: editor.backend; fieldKey: "pointsAtK"; label: qsTr("Punkty za punkt K"); maximum: 200; Layout.fillWidth: true }
+                HillNumber { backend: editor.backend; fieldKey: "pointsPerMetre"; label: qsTr("Punkty za metr"); maximum: 20; Layout.fillWidth: true }
+                HillNumber { backend: editor.backend; fieldKey: "gatePoints"; label: qsTr("Punkty za belkę"); Layout.fillWidth: true }
+                HillNumber { backend: editor.backend; fieldKey: "headwindPoints"; label: qsTr("Punkty za wiatr przedni"); Layout.fillWidth: true }
+                HillNumber { backend: editor.backend; fieldKey: "tailwindPoints"; label: qsTr("Punkty za wiatr tylni"); Layout.fillWidth: true }
+            }
             RowLayout {
                 Layout.fillWidth: true
                 Label { text: qsTr("Perki"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true; Layout.fillWidth: true }
-                HelpDot { explanation: qsTr("Jedna strona każdej pary lub brak. Wzmocnij przełącza poziomy I, II i III. Poziom III jest najsilniejszy. Kliknij wybrany perk, aby go usunąć.") }
+                HelpDot { explanation: qsTr("Wybierz siłę działania perka: lekko, wyraźnie lub mocno. Jedna strona każdej pary lub brak. Kliknij zaznaczoną opcję ponownie, aby usunąć perk.") }
             }
             Repeater {
                 model: 3
@@ -61,21 +70,18 @@ ScrollView {
                             Layout.fillWidth: true; columns: width<Theme.dp(480)?1:2; columnSpacing: Theme.dp(8); rowSpacing: Theme.dp(4)
                             Repeater {
                                 model: 2
-                                AthleteBadge { required property int index; backend: editor.backend; design: conceptPalette; perk: perks.items[pair.index*2+index]; family: "patch"; ribbon: true; managedLevel: true; hill: true; Layout.fillWidth: true; Layout.minimumWidth: 0 }
+                                HillPerkChoice { required property int index; backend: editor.backend; perk: perks.items[pair.index*2+index]; Layout.fillWidth: true; Layout.minimumWidth: 0 }
                             }
+                        }
+                        Label {
+                            objectName: "hillLandingThreshold"
+                            visible: pair.index===1
+                            text: qsTr("Zeskok zaczyna się wypłaszczać od %1 m.").arg(Number(editor.backend.realHs || 0).toLocaleString(Qt.locale(Theme.localeName),'f',1))
+                            color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap; Layout.fillWidth: true
+                            Layout.topMargin: Theme.dp(4)
                         }
                     }
                 }
-            }
-            Label { text: qsTr("Próg trudnego lądowania: %1 m").arg(Number(editor.profile.realHs || 0).toLocaleString(Qt.locale(Theme.localeName),'f',1)); color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap; Layout.fillWidth: true }
-            SButton { text: editor.scoring?qsTr("Ukryj punktację"):qsTr("Punktacja skoczni"); quiet: true; onClicked: editor.scoring=!editor.scoring }
-            GridLayout {
-                visible: editor.scoring; Layout.fillWidth: true; columns: width>Theme.dp(520)?3:2; columnSpacing: Theme.dp(10); rowSpacing: Theme.dp(6)
-                HillNumber { backend: editor.backend; fieldKey: "pointsAtK"; label: qsTr("Punkty za punkt K"); maximum: 200; Layout.fillWidth: true }
-                HillNumber { backend: editor.backend; fieldKey: "pointsPerMetre"; label: qsTr("Punkty za metr"); maximum: 20; Layout.fillWidth: true }
-                HillNumber { backend: editor.backend; fieldKey: "gatePoints"; label: qsTr("Punkty za belkę"); Layout.fillWidth: true }
-                HillNumber { backend: editor.backend; fieldKey: "headwindPoints"; label: qsTr("Punkty za wiatr przedni"); Layout.fillWidth: true }
-                HillNumber { backend: editor.backend; fieldKey: "tailwindPoints"; label: qsTr("Punkty za wiatr tylni"); Layout.fillWidth: true }
             }
         }
     }

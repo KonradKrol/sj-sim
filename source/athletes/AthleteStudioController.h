@@ -11,20 +11,22 @@ class AthleteStudioController : public QObject {
     Q_PROPERTY(QVariantList packs READ packs NOTIFY changed)
     Q_PROPERTY(QVariantList profiles READ profiles NOTIFY changed)
     Q_PROPERTY(QVariantMap profile READ profile NOTIFY changed)
+    Q_PROPERTY(QVariantList selectedPerks READ selectedPerks NOTIFY perksChanged)
     Q_PROPERTY(QVariantList countries READ countries CONSTANT)
     Q_PROPERTY(QVariantList legacyPacks READ legacyPacks CONSTANT)
     Q_PROPERTY(QString packName READ packName NOTIFY changed)
     Q_PROPERTY(QString packDirectory READ packDirectory NOTIFY changed)
     Q_PROPERTY(int packIndex READ packIndex NOTIFY changed)
     Q_PROPERTY(int selectedIndex READ selectedIndex NOTIFY changed)
-    Q_PROPERTY(QString message READ message NOTIFY changed)
-    Q_PROPERTY(bool canUndo READ canUndo NOTIFY changed)
-    Q_PROPERTY(bool canRedo READ canRedo NOTIFY changed)
+    Q_PROPERTY(QString message READ message NOTIFY statusChanged)
+    Q_PROPERTY(bool canUndo READ canUndo NOTIFY historyChanged)
+    Q_PROPERTY(bool canRedo READ canRedo NOTIFY historyChanged)
     QString m_root,m_message,m_lastPhoto;
+    mutable QVariantList m_countryOptions;
     QVector<QJsonObject> m_packs;
     QVector<QJsonObject> m_undo,m_redo;
     int m_pack=0,m_selected=-1;
-    bool commit(const QJsonObject &next,int selection,const QString &message={});
+    bool commit(const QJsonObject &next,int selection,const QString &message={},bool perksOnly=false);
     bool persist(const QJsonObject &pack,QString &error) const;
     QString directory(const QJsonObject &pack) const;
     void status(const QString &message);
@@ -36,6 +38,7 @@ public:
     QVariantList packs() const;
     QVariantList profiles() const;
     QVariantMap profile() const;
+    QVariantList selectedPerks() const;
     QVariantList countries() const;
     QVariantList legacyPacks() const;
     Q_INVOKABLE QVariantList legacyAthletes(int pack) const;
@@ -69,4 +72,7 @@ public:
     bool importFrom(const QString &file);
 signals:
     void changed();
+    void perksChanged();
+    void historyChanged();
+    void statusChanged();
 };

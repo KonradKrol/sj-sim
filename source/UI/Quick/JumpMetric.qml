@@ -7,6 +7,7 @@ Item {
     property string value: "—"
     property color valueColor: Theme.ink
     property bool inlineValue: false
+    ChangeFeedback { id: valueFeedback; target: metric; trigger: metric.value }
     implicitWidth: inlineValue ? inlineTitle.implicitWidth+inlineNumber.implicitWidth+6 : Math.max(title.implicitWidth,number.implicitWidth)
     implicitHeight: inlineValue ? Math.max(inlineTitle.implicitHeight,inlineNumber.implicitHeight) : stacked.implicitHeight
     Accessible.role: Accessible.StaticText
@@ -23,6 +24,7 @@ Item {
         }
         Label {
             id: number
+            opacity: 0.55+valueFeedback.progress*0.45
             width: parent.width
             text: metric.value; color: metric.valueColor
             font.family: Theme.mono; font.pointSize: Theme.caption
@@ -40,6 +42,7 @@ Item {
         }
         Label {
             id: inlineNumber
+            opacity: 0.55+valueFeedback.progress*0.45
             width: Math.max(0,parent.width-inlineTitle.width-6)
             text: metric.value; color: metric.valueColor
             font.family: Theme.mono; font.pointSize: Theme.caption

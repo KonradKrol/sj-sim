@@ -139,6 +139,8 @@ Item {
                 ListView {
                     id: rows
                     objectName: "calendarEvents"
+                    move: Transition { NumberAnimation { properties: "x,y"; duration: Theme.motion; easing.type: Easing.OutCubic } }
+                    moveDisplaced: Transition { NumberAnimation { properties: "x,y"; duration: Theme.motion; easing.type: Easing.OutCubic } }
                     Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
                     model: calendar.backend.eventModel
                     clip: true; spacing: Theme.compact ? 2 : 4

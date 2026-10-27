@@ -17,7 +17,7 @@ GridLayout {
         AbstractButton {
             id: slot
             required property int index
-            readonly property int value: Number((equipped.backend.profile.perks || [])[index] || 0)
+            readonly property int value: Number((equipped.backend.selectedPerks || [])[index] || 0)
             readonly property var perk: catalog.selected(index,value)
             objectName: "athleteAssigned-"+index
             Layout.fillWidth: true; Layout.minimumWidth: 0

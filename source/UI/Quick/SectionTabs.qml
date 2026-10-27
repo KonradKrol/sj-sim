@@ -11,6 +11,7 @@ Item {
     readonly property bool overflow: row.width > width
     function revealCurrent() {
         var button=buttons.itemAt(currentIndex)
+        indicator.selectedButton=button
         if(!button || !overflow)return
         if(button.x<viewport.contentX)viewport.contentX=button.x
         else if(button.x+button.width>viewport.contentX+viewport.width)viewport.contentX=Math.max(0,button.x+button.width-viewport.width)
@@ -38,11 +39,23 @@ Item {
     boundsBehavior: Flickable.StopAtBounds
     clip: true
     ScrollBar.horizontal: ScrollBar { policy: ScrollBar.AsNeeded }
+    Rectangle {
+        id: indicator
+        property Item selectedButton
+        x: selectedButton ? selectedButton.x : 0
+        width: selectedButton ? selectedButton.width : 0
+        height: selectedButton ? selectedButton.height : 0
+        color: Theme.stadium; radius: Theme.radius
+        Behavior on x { NumberAnimation { duration: Theme.motion; easing.type: Easing.OutCubic } }
+        Behavior on width { NumberAnimation { duration: Theme.motion; easing.type: Easing.OutCubic } }
+    }
     Row {
         id: row
         spacing: Theme.compact ? 3 : 6
         Repeater {
             id: buttons
+            onItemAdded: Qt.callLater(tabs.revealCurrent)
+            onItemRemoved: Qt.callLater(tabs.revealCurrent)
             model: tabs.options
             SButton {
                 text: modelData
@@ -51,7 +64,7 @@ Item {
                 font.pointSize: Theme.section
                 foreground: tabs.currentIndex === index ? Theme.snow : Theme.muted
                 background: Surface {
-                    fillColor: tabs.currentIndex===index ? Theme.stadium : parent.hovered ? Theme.selection : "transparent"
+                    fillColor: tabs.currentIndex===index ? "transparent" : parent.hovered ? Theme.selection : "transparent"
                     edgeColor: Theme.accent; strokeWidth: parent.activeFocus ? 2 : 0; sweep: 18
                 }
                 enabled: tabs.optionEnabled.length <= index || tabs.optionEnabled[index]

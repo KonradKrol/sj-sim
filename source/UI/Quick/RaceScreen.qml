@@ -16,6 +16,8 @@ ScrollView {
     readonly property var koNode: ui.find("tableView_KOGroupResults")
     readonly property var history: ui.find("resultsHistory")
     readonly property bool previewPaused: !!history && !!history.values.paused
+    property real previewOpacity: previewPaused ? 0.45 : 1
+    Behavior on previewOpacity { NumberAnimation { duration: Theme.motion } }
     property real heroReserve: 0
     onPreviewPausedChanged: {if(previewPaused)heroReserve=hero.height;else{heroReserve=0;if(viewOptions)viewOptions.close()}}
     readonly property bool historical: !!history && !!history.values.active
@@ -30,17 +32,17 @@ ScrollView {
         id: header
         width: parent.width
         spacing: race.height < 600 ? 4 : 8
-        RaceStatus { enabled: !race.previewPaused; opacity: race.previewPaused ? .45 : 1; width: parent.width; height: implicitHeight; onConditionsRequested: race.openOptions(1) }
+        RaceStatus { enabled: !race.previewPaused; opacity: race.previewOpacity; width: parent.width; height: implicitHeight; onConditionsRequested: race.openOptions(1) }
         GridLayout {
             id: hero
             objectName: "raceHeaderCards"
             columns: race.narrow ? 1 : 2
             width: Math.min(parent.width,1052); height: race.previewPaused ? Math.max(implicitHeight,race.heroReserve) : implicitHeight
             columnSpacing: 12; rowSpacing: 8
-            RaceAthlete { enabled: !race.previewPaused; opacity: race.previewPaused ? .45 : 1; Layout.alignment: Qt.AlignTop; Layout.maximumHeight: implicitHeight; dense: race.height < 600; Layout.row: race.narrow ? 1 : 0; Layout.column: 0; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: race.narrow ? 0 : 280; Layout.maximumWidth: race.narrow ? Infinity : 320 }
+            RaceAthlete { enabled: !race.previewPaused; opacity: race.previewOpacity; Layout.alignment: Qt.AlignTop; Layout.maximumHeight: implicitHeight; dense: race.height < 600; Layout.row: race.narrow ? 1 : 0; Layout.column: 0; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: race.narrow ? 0 : 280; Layout.maximumWidth: race.narrow ? Infinity : 320 }
             RaceLastJump { Layout.alignment: Qt.AlignTop; Layout.maximumHeight: implicitHeight; dense: race.height < 600; Layout.row: 0; Layout.column: race.narrow ? 0 : 1; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: race.narrow ? 0 : 680; Layout.maximumWidth: race.narrow ? Infinity : 720 }
         }
-        RaceControls { opacity: race.previewPaused ? .45 : 1; width: Math.min(parent.width,1052); height: implicitHeight; onOptionsRequested: race.openOptions(section) }
+        RaceControls { opacity: race.previewOpacity; width: Math.min(parent.width,1052); height: implicitHeight; onOptionsRequested: race.openOptions(section) }
         }
         Item {
             id: tables
@@ -78,7 +80,7 @@ ScrollView {
                 }
             }
             Item {
-                enabled: !race.previewPaused; opacity: race.previewPaused ? .45 : 1
+                enabled: !race.previewPaused; opacity: race.previewOpacity
                 x: race.narrow ? 0 : tables.resultWidth+12
                 y: race.narrow ? tables.resultHeight+8 : 0
                 width: race.narrow ? tables.width : tables.width-x

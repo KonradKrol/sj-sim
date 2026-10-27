@@ -21,6 +21,22 @@ Popup {
         width: scroll.availableWidth
         spacing: 12
         Label { text: qsTr("Wygląd i dostępność"); font.pointSize: Theme.body; font.weight: Font.DemiBold; color: Theme.ink; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        Label { text: qsTranslate("QuickBridge","Język interfejsu"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        SChoice {
+            id: languageChoice
+            objectName: "appearanceLanguage"
+            model: ["Polski","English","Čeština"]
+            currentIndex: navigation.languageIndex
+            Layout.fillWidth: true
+            Accessible.name: qsTranslate("QuickBridge","Język interfejsu")
+            onActivated: {languageError.visible=!navigation.setLanguage(index);if(!languageError.visible && Theme.motion)languageFeedback.restart()}
+            SequentialAnimation {
+                id: languageFeedback
+                NumberAnimation { target: languageChoice; property: "opacity"; from: 0.5; to: 1; duration: Theme.motion*2; easing.type: Easing.OutCubic }
+            }
+            Connections { target: Theme; function onMotionChanged(){if(!Theme.motion){languageFeedback.stop();languageChoice.opacity=1}} }
+        }
+        Label { id: languageError; visible: false; text: qsTranslate("AppSettingsWindow","Nie udało się wczytać pliku tłumaczenia."); color: Theme.danger; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         SCheck { text: qsTr("Ciemny motyw"); checked: appearance && appearance.dark; onClicked: appearance.dark = checked; Layout.fillWidth: true }
         SCheck { text: qsTr("Ogranicz animacje"); checked: appearance && appearance.reducedMotion; onClicked: appearance.reducedMotion = checked; Layout.fillWidth: true }
         Label { text: qsTr("Skala interfejsu (%)"); color: Theme.muted; font.pointSize: Theme.caption }

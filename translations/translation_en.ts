@@ -231,6 +231,7 @@ to display</translation>
             <translation>Cannot change language</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/AppearanceMenu.qml" line="39" />
             <location filename="../source/UI/AppSettings/AppSettingsWindow.cpp" line="104" />
             <source>Nie udało się wczytać pliku tłumaczenia.</source>
             <translation>Could not load the translation file.</translation>
@@ -314,37 +315,37 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <translation>Appearance and accessibility</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AppearanceMenu.qml" line="24" />
+            <location filename="../source/UI/Quick/AppearanceMenu.qml" line="40" />
             <source>Ciemny motyw</source>
             <translation>Dark theme</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AppearanceMenu.qml" line="25" />
+            <location filename="../source/UI/Quick/AppearanceMenu.qml" line="41" />
             <source>Ogranicz animacje</source>
             <translation>Reduce animations</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AppearanceMenu.qml" line="26" />
+            <location filename="../source/UI/Quick/AppearanceMenu.qml" line="42" />
             <source>Skala interfejsu (%)</source>
             <translation>Interface scale (%)</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AppearanceMenu.qml" line="34" />
+            <location filename="../source/UI/Quick/AppearanceMenu.qml" line="50" />
             <source>Skala interfejsu</source>
             <translation>Interface scale</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AppearanceMenu.qml" line="36" />
+            <location filename="../source/UI/Quick/AppearanceMenu.qml" line="52" />
             <source>Rozmiar tekstu (%)</source>
             <translation>Text size (%)</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AppearanceMenu.qml" line="44" />
+            <location filename="../source/UI/Quick/AppearanceMenu.qml" line="60" />
             <source>Rozmiar tekstu</source>
             <translation>Text size</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AppearanceMenu.qml" line="46" />
+            <location filename="../source/UI/Quick/AppearanceMenu.qml" line="62" />
             <source>Gotowe</source>
             <translation>Done</translation>
         </message>
@@ -461,44 +462,14 @@ But to keep you from getting too cheerful, your computer has been infected with 
     <context>
         <name>AthleteBadge</name>
         <message>
-            <location filename="../source/UI/Quick/AthleteBadge.qml" line="32" />
+            <location filename="../source/UI/Quick/AthleteBadge.qml" line="48" />
             <source>%1%2</source>
             <translation>%1%2</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AthleteBadge.qml" line="32" />
+            <location filename="../source/UI/Quick/AthleteBadge.qml" line="48" />
             <source> · poziom %1</source>
             <translation> · level %1</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/AthleteBadge.qml" line="69" />
-            <source>%1 · %2</source>
-            <translation>%1 · %2</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/AthleteBadge.qml" line="85" />
-            <source>Przywróć zwykły perk: %1</source>
-            <translation>Restore normal perk: %1</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/AthleteBadge.qml" line="85" />
-            <source>Wzmocnij perk do poziomu %1: %2</source>
-            <translation>Enhance perk to level %1: %2</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/AthleteBadge.qml" line="87" />
-            <source>Wzmocniony</source>
-            <translation>Enhanced</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/AthleteBadge.qml" line="87" />
-            <source>Wzmocnij</source>
-            <translation>Enhance</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/AthleteBadge.qml" line="87" />
-            <source>Potężny</source>
-            <translation>Powerful</translation>
         </message>
     </context>
     <context>
@@ -515,8 +486,8 @@ But to keep you from getting too cheerful, your computer has been infected with 
         </message>
         <message>
             <location filename="../source/UI/Quick/AthleteBadgeRack.qml" line="19" />
-            <source>Wybierz jeden perk z każdej pary lub pozostaw ją pustą. Wzmocnij przełącza poziomy I, II i III. Poziom III jest najsilniejszy. Kliknij wybrany perk, aby go usunąć. Opis: najedź lub naciśnij F1.</source>
-            <translation>Choose one perk from each pair or leave it empty. Enhance cycles through levels I, II and III. Level III is the strongest. Click a selected perk to remove it. For details, hover or press F1.</translation>
+            <source>Wybierz jeden perk z każdej pary lub pozostaw ją pustą. Trzy opcje siły są widoczne obok siebie. Kliknij zaznaczoną opcję ponownie, aby usunąć perk. Opis: najedź lub naciśnij F1.</source>
+            <translation>Choose one perk from each pair or leave it empty. All three strength options are shown side by side. Click the selected option again to remove the perk. Hover or press F1 for details.</translation>
         </message>
     </context>
     <context>
@@ -747,27 +718,27 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <translation>%1, %2, OVR %3</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="113" />
+            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="114" />
             <source>Brak wyników</source>
             <translation>No results</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="113" />
+            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="114" />
             <source>Brak skoczków</source>
             <translation>No jumpers</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="113" />
+            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="114" />
             <source>Zmień nazwisko lub kraj.</source>
             <translation>Change the surname or country.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="113" />
+            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="114" />
             <source>Dodaj skoczka do paczki.</source>
             <translation>Add a jumper to the pack.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="113" />
+            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="114" />
             <source>Wyczyść filtr</source>
             <translation>Clear filter</translation>
         </message>
@@ -799,8 +770,8 @@ But to keep you from getting too cheerful, your computer has been infected with 
         </message>
         <message>
             <location filename="../source/UI/Quick/AthletePatchRack.qml" line="17" />
-            <source>Wybierz jeden perk z każdej pary lub pozostaw ją pustą. Wzmocnij przełącza poziomy I, II i III. Poziom III jest najsilniejszy. Kliknij wybrany perk, aby go usunąć. Opis: najedź lub naciśnij F1.</source>
-            <translation>Choose one perk from each pair or leave it empty. Enhance cycles through levels I, II and III. Level III is the strongest. Click a selected perk to remove it. For details, hover or press F1.</translation>
+            <source>Wybierz jeden perk z każdej pary lub pozostaw ją pustą. Trzy opcje siły są widoczne obok siebie. Kliknij zaznaczoną opcję ponownie, aby usunąć perk. Opis: najedź lub naciśnij F1.</source>
+            <translation>Choose one perk from each pair or leave it empty. All three strength options are shown side by side. Click the selected option again to remove the perk. Hover or press F1 for details.</translation>
         </message>
     </context>
     <context>
@@ -1063,164 +1034,164 @@ But to keep you from getting too cheerful, your computer has been infected with 
     <context>
         <name>AthleteStudioController</name>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="51" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="54" />
             <source>Nie wczytano paczki %1: %2</source>
             <translation>Could not load pack %1: %2</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="53" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="56" />
             <source>Moi skoczkowie</source>
             <translation>My jumpers</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="63" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="67" />
             <source>Nie udało się zapisać paczki. Zmiana nie została zastosowana.</source>
             <translation>Could not save the pack. The change was not applied.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="64" />
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="109" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="68" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="113" />
             <source>Paczka może mieć najwyżej 10 000 profili.</source>
             <translation>A pack can contain at most 10,000 profiles.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="64" />
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="109" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="68" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="113" />
             <source>Powtórzony identyfikator skoczka.</source>
             <translation>Duplicate jumper identifier.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="64" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="68" />
             <source>Zapisano</source>
             <translation>Saved</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="83" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="87" />
             <source>Nazwa paczki musi mieć od 1 do 100 znaków.</source>
             <translation>The pack name must contain 1 to 100 characters.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="84" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="88" />
             <source>Nowa paczka %1</source>
             <translation>New pack %1</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="84" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="88" />
             <source>Utworzono paczkę</source>
             <translation>Pack created</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="86" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="90" />
             <source>Dodano skoczka</source>
             <translation>Jumper added</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="87" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="91" />
             <source> — kopia</source>
             <translation> — copy</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="87" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="91" />
             <source>Utworzono kopię</source>
             <translation>Copy created</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="88" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="92" />
             <source>Usunięto skoczka · możesz cofnąć</source>
             <translation>Jumper removed · you can undo</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="91" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="95" />
             <source>Cofnięto</source>
             <translation>Undone</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="92" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="96" />
             <source>Ponowiono</source>
             <translation>Redone</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="93" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="97" />
             <source>Skopiowano. OVR i forma są przeliczone; lądowanie przybliżone. Perki dobierz od zera. Plik zdjęcia nie jest kopiowany.</source>
             <translation>Copied. OVR and form are converted; landing is approximate. Choose perks from scratch. The photo file is not copied.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="102" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="106" />
             <source>Zdjęcie musi znajdować się w folderze paczki.</source>
             <translation>The photo must be inside the pack folder.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="105" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="109" />
             <source>Zdjęcie z folderu paczki</source>
             <translation>Photo from pack folder</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="105" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="109" />
             <source>Zdjęcia (*.png *.jpg *.jpeg *.webp)</source>
             <translation>Images (*.png *.jpg *.jpeg *.webp)</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="106" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="110" />
             <source>Nie udało się otworzyć folderu paczki: %1</source>
             <translation>Could not open pack folder: %1</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="109" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="113" />
             <source>Nie można odczytać paczki (limit 20 MB). Zdjęcia są w osobnym folderze.</source>
             <translation>Cannot read the pack (20 MB limit). Photos are in a separate folder.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="109" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="113" />
             <source>Nieprawidłowy format nowej paczki skoczków.</source>
             <translation>Invalid new jumper pack format.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="109" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="113" />
             <source>Nieprawidłowy wpis skoczka w paczce.</source>
             <translation>Invalid jumper entry in the pack.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="111" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="115" />
             <source>Wybierz nowy folder. Istniejące pliki nie zostaną nadpisane.</source>
             <translation>Choose a new folder. Existing files will not be overwritten.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="112" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="116" />
             <source>Nie udało się utworzyć folderu eksportu.</source>
             <translation>Could not create export folder.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="114" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="118" />
             <source>Nie udało się wyeksportować paczki.</source>
             <translation>Could not export the pack.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="115" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="119" />
             <source>Wyeksportowano paczkę</source>
             <translation>Pack exported</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="119" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="123" />
             <source>Nie udało się utworzyć folderu paczki.</source>
             <translation>Could not create pack folder.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="121" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="125" />
             <source>Wczytano kopię paczki</source>
             <translation>Pack copy loaded</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="124" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="128" />
             <source>Folder docelowy paczki</source>
             <translation>Destination folder for pack</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="125" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="129" />
             <source>Wczytaj nową paczkę skoczków</source>
             <translation>Load a new jumper pack</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="125" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="129" />
             <source>Paczka skoczków (pack.json)</source>
             <translation>Jumper pack (pack.json)</translation>
         </message>
@@ -3492,202 +3463,196 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>CompetitionConfigWindow</name>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="61" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="62" />
             <source>Sprawdź ustawienia i rozpocznij symulację (Enter)</source>
             <translation>Check settings and start simulation (Enter)</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="63" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="64" />
             <source>Dobierz bezpieczną belkę na podstawie najmocniejszego zawodnika</source>
             <translation>Choose a safe start gate based on the strongest jumper</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="64" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="65" />
             <source>Wczytaj listę zawodników z pliku JSON</source>
             <translation>Load jumper list from a JSON file</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="84" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="85" />
             <source>Zasady</source>
             <translation>Rules</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="89" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="90" />
             <source>Ustawienia generatora wiatru</source>
             <translation>Wind generator settings</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="90" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="91" />
             <source>Losowe ustawienia generatora wiatru</source>
             <translation>Random wind generator settings</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="103" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="104" />
             <source>Ustawienia generatora śniegu na najeździe</source>
             <translation>Inrun snow generator settings</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="260" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="251" />
             <source>Konfiguracja konkursu</source>
             <translation>Competition setup</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="310" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="301" />
             <source>Przeprowadzenie kwalifikacji</source>
             <translation>Run qualification</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="415" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="406" />
             <source>Dobierz grupy</source>
             <translation>Choose groups</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="416" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="407" />
             <source>Klasycznie</source>
             <translation>Classic</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="417" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="408" />
             <source>Klasycznie (Dla dużych grup)</source>
             <translation>Classic (for large groups)</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="418" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="409" />
             <source>Losowo (Z podziałem na koszyki)</source>
             <translation>Random (using pools)</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="419" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="410" />
             <source>Losowo</source>
             <translation>Random</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="573" />
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="599" />
-            <source>BRAK</source>
-            <translation>NONE</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="616" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="611" />
             <source>Istniejące zasady konkursu</source>
             <translation>Existing competition rules</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="626" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="621" />
             <source>Zasady konkursu</source>
             <translation>Competition rules</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="787" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="786" />
             <source>Brak serii</source>
             <translation>No rounds</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="788" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="787" />
             <source>Konkurs musi zawierać co najmniej jedną serię.</source>
             <translation>A competition must contain at least one round.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="797" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="796" />
             <source>Nieprawidłowa skocznia</source>
             <translation>Invalid hill</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="798" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="797" />
             <source>Wybierz lub skonfiguruj skocznię z dodatnim punktem K oraz punktem HS nie mniejszym od K.</source>
             <translation>Select or configure a hill with a positive K-point and an HS no smaller than K.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="813" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="812" />
             <source>Pusta lista startowa</source>
             <translation>Empty start list</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="814" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="813" />
             <source>Dodaj co najmniej jednego prawidłowego zawodnika przed rozpoczęciem konkursu.</source>
             <translation>Add at least one valid jumper before starting the competition.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="834" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="833" />
             <source>Niekompletne grupy KO</source>
             <translation>Incomplete KO groups</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="835" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="834" />
             <source>Wybierz sposób tworzenia grup i upewnij się, że każdy zawodnik znajduje się w grupie KO.</source>
             <translation>Choose how to create groups and ensure every jumper is in a KO group.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="844" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="843" />
             <source>Brak drużyn</source>
             <translation>No teams</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="845" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="844" />
             <source>Dodaj co najmniej jedną drużynę przed rozpoczęciem konkursu.</source>
             <translation>Add at least one team before starting the competition.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="852" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="851" />
             <source>Nieprawidłowy skład drużyny</source>
             <translation>Invalid team lineup</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="853" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="852" />
             <source>Liczba zawodników w drużynie musi być większa od zera.</source>
             <translation>The number of jumpers on a team must be greater than zero.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="863" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="862" />
             <source>Niekompletna drużyna</source>
             <translation>Incomplete team</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="864" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="863" />
             <source>Każda drużyna musi mieć co najmniej %1 zawodników.</source>
             <translation>Each team must have at least %1 jumpers.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1121" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1120" />
             <source>Wybierz plik z zawodnikami</source>
             <translation>Choose a jumper file</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1128" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1127" />
             <source>Nie można otworzyć pliku z zawodnikami</source>
             <translation>Cannot open jumper file</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1128" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1127" />
             <source>Nie udało się otworzyć wybranego pliku
 Upewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia</source>
             <translation>Could not open the selected file.
 Check that it exists and has appropriate permissions.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1139" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1138" />
             <source>Nieprawidłowy plik zawodników</source>
             <translation>Invalid jumper file</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1140" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1139" />
             <source>Wybrany plik nie zawiera prawidłowej listy zawodników JSON.
 %1</source>
             <translation>The selected file does not contain a valid JSON jumper list.
 %1</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1162" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1161" />
             <source>Pusta lista zawodników</source>
             <translation>Empty jumper list</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1163" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1162" />
             <source>Wybrany plik nie zawiera żadnych prawidłowych zawodników.</source>
             <translation>The selected file contains no valid jumpers.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1333" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1332" />
             <source>Wybierz listę zawodników</source>
             <translation>Choose jumper list</translation>
         </message>
@@ -3741,9 +3706,13 @@ Check that it exists and has appropriate permissions.</translation>
         </message>
         <message>
             <location filename="../source/UI/Seasons/CompetitionInfoEditorWidget.cpp" line="38" />
+            <source>Własne zasady</source>
+            <translation>Custom rules</translation>
+        </message>
+        <message>
             <location filename="../source/UI/Seasons/CompetitionInfoEditorWidget.cpp" line="107" />
-            <source>BRAK</source>
-            <translation>NONE</translation>
+            <source>Skocznia domyślna</source>
+            <translation>Default hill</translation>
         </message>
     </context>
     <context>
@@ -5781,79 +5750,74 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>HillEditor</name>
         <message>
-            <location filename="../source/UI/Quick/HillEditor.qml" line="22" />
+            <location filename="../source/UI/Quick/HillEditor.qml" line="21" />
             <source>Skocznia</source>
             <translation>Hill</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/HillEditor.qml" line="28" />
             <location filename="../source/UI/Quick/HillEditor.qml" line="29" />
-            <location filename="../source/UI/Quick/HillEditor.qml" line="30" />
             <source>Nazwa skoczni</source>
             <translation>Hill name</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/HillEditor.qml" line="33" />
             <location filename="../source/UI/Quick/HillEditor.qml" line="34" />
-            <location filename="../source/UI/Quick/HillEditor.qml" line="35" />
             <source>Kraj</source>
             <translation>Country</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillEditor.qml" line="40" />
+            <location filename="../source/UI/Quick/HillEditor.qml" line="39" />
             <source>Punkt K · m</source>
             <translation>K-point · m</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillEditor.qml" line="42" />
+            <location filename="../source/UI/Quick/HillEditor.qml" line="41" />
             <source>Rekord skoczni · m</source>
             <translation>Hill record · m</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillEditor.qml" line="46" />
+            <location filename="../source/UI/Quick/HillEditor.qml" line="55" />
             <source>Perki</source>
             <translation>Perks</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillEditor.qml" line="47" />
-            <source>Jedna strona każdej pary lub brak. Wzmocnij przełącza poziomy I, II i III. Poziom III jest najsilniejszy. Kliknij wybrany perk, aby go usunąć.</source>
-            <translation>Choose one side of each pair or neither. Enhance cycles through levels I, II and III. Level III is the strongest. Click a selected perk to remove it.</translation>
+            <location filename="../source/UI/Quick/HillEditor.qml" line="56" />
+            <source>Wybierz siłę działania perka: lekko, wyraźnie lub mocno. Jedna strona każdej pary lub brak. Kliknij zaznaczoną opcję ponownie, aby usunąć perk.</source>
+            <translation>Choose the perk strength: light, noticeable or strong. Select one side of each pair or leave both unselected. Click the selected option again to remove the perk.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillEditor.qml" line="70" />
-            <source>Próg trudnego lądowania: %1 m</source>
-            <translation>Difficult landing threshold: %1 m</translation>
+            <location filename="../source/UI/Quick/HillEditor.qml" line="79" />
+            <source>Zeskok zaczyna się wypłaszczać od %1 m.</source>
+            <translation>The landing slope starts to flatten out at %1 m.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillEditor.qml" line="71" />
-            <source>Ukryj punktację</source>
-            <translation>Hide scoring</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/HillEditor.qml" line="71" />
+            <location filename="../source/UI/Quick/HillEditor.qml" line="43" />
             <source>Punktacja skoczni</source>
             <translation>Hill scoring</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillEditor.qml" line="74" />
+            <location filename="../source/UI/Quick/HillEditor.qml" line="47" />
             <source>Punkty za punkt K</source>
             <translation>Points for K-point</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillEditor.qml" line="75" />
+            <location filename="../source/UI/Quick/HillEditor.qml" line="48" />
             <source>Punkty za metr</source>
             <translation>Points per metre</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillEditor.qml" line="76" />
+            <location filename="../source/UI/Quick/HillEditor.qml" line="49" />
             <source>Punkty za belkę</source>
             <translation>Gate points</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillEditor.qml" line="77" />
+            <location filename="../source/UI/Quick/HillEditor.qml" line="50" />
             <source>Punkty za wiatr przedni</source>
             <translation>Headwind points</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillEditor.qml" line="78" />
+            <location filename="../source/UI/Quick/HillEditor.qml" line="51" />
             <source>Punkty za wiatr tylni</source>
             <translation>Tailwind points</translation>
         </message>
@@ -5951,37 +5915,37 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>HillLibrary</name>
         <message>
-            <location filename="../source/UI/Quick/HillLibrary.qml" line="29" />
+            <location filename="../source/UI/Quick/HillLibrary.qml" line="30" />
             <source>Skocznie · %1</source>
             <translation>Hills · %1</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillLibrary.qml" line="30" />
+            <location filename="../source/UI/Quick/HillLibrary.qml" line="31" />
             <source>Szukaj skoczni lub kraju…</source>
             <translation>Search hills or countries…</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillLibrary.qml" line="38" />
+            <location filename="../source/UI/Quick/HillLibrary.qml" line="39" />
             <source>Skocznie</source>
             <translation>Hills</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillLibrary.qml" line="62" />
+            <location filename="../source/UI/Quick/HillLibrary.qml" line="63" />
             <source>Brak wyników</source>
             <translation>No results</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillLibrary.qml" line="62" />
+            <location filename="../source/UI/Quick/HillLibrary.qml" line="63" />
             <source>Brak skoczni</source>
             <translation>No hill</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillLibrary.qml" line="62" />
+            <location filename="../source/UI/Quick/HillLibrary.qml" line="63" />
             <source>Zmień nazwę lub kraj.</source>
             <translation>Change the name or country.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillLibrary.qml" line="62" />
+            <location filename="../source/UI/Quick/HillLibrary.qml" line="63" />
             <source>Dodaj skocznię lub skopiuj ją z klasycznego modelu.</source>
             <translation>Add a hill or copy one from the classic model.</translation>
         </message>
@@ -6005,8 +5969,23 @@ li.checked::marker { content: "\2612"; }
         </message>
         <message>
             <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="6" />
-            <source>Katapulta</source>
-            <translation>Catapult</translation>
+            <source>Premiuje wybicie</source>
+            <translation>Favours take-off</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="9" />
+            <source>Utrudnione lądowanie</source>
+            <translation>Demanding landing</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="10" />
+            <source>Wietrzna aura</source>
+            <translation>Windy weather</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="11" />
+            <source>Spokojna pogoda</source>
+            <translation>Calm weather</translation>
         </message>
         <message>
             <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="6" />
@@ -6015,13 +5994,13 @@ li.checked::marker { content: "\2612"; }
         </message>
         <message>
             <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="7" />
-            <source>Królestwo lotników</source>
-            <translation>Flyers' kingdom</translation>
+            <source>Bardziej nagradza lot niż typowa skocznia o tym punkcie K.</source>
+            <translation>Rewards flight more than a typical hill with this K-point.</translation>
         </message>
         <message>
             <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="7" />
-            <source>Bardziej nagradza lot niż typowa skocznia o tym punkcie K.</source>
-            <translation>Rewards flight more than a typical hill with this K-point.</translation>
+            <source>Lotna skocznia</source>
+            <translation>Flight-friendly hill</translation>
         </message>
         <message>
             <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="8" />
@@ -6035,18 +6014,8 @@ li.checked::marker { content: "\2612"; }
         </message>
         <message>
             <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="9" />
-            <source>Bez marginesu</source>
-            <translation>No margin</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="9" />
             <source>Próg trudnego lądowania pojawia się wcześniej. Nawet okolice HS wymagają ostrożności.</source>
             <translation>Difficult landings begin earlier. Even near HS, caution is needed.</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="10" />
-            <source>Wietrzna ruletka</source>
-            <translation>Wind roulette</translation>
         </message>
         <message>
             <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="10" />
@@ -6055,13 +6024,26 @@ li.checked::marker { content: "\2612"; }
         </message>
         <message>
             <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="11" />
-            <source>Spokojne niebo</source>
-            <translation>Calm skies</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="11" />
             <source>Sprzyja równiejszym warunkom i mniejszym wahaniom wiatru.</source>
             <translation>Encourages more even conditions and smaller wind changes.</translation>
+        </message>
+    </context>
+    <context>
+        <name>HillPerkChoice</name>
+        <message>
+            <location filename="../source/UI/Quick/HillPerkChoice.qml" line="27" />
+            <source>Lekko</source>
+            <translation>Light</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/HillPerkChoice.qml" line="27" />
+            <source>Wyraźnie</source>
+            <translation>Noticeable</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/HillPerkChoice.qml" line="27" />
+            <source>Mocno</source>
+            <translation>Strong</translation>
         </message>
     </context>
     <context>
@@ -6180,100 +6162,100 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>HillStudioController</name>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="25" />
-            <location filename="../source/hills/HillStudioController.cpp" line="67" />
+            <location filename="../source/hills/HillStudioController.cpp" line="28" />
+            <location filename="../source/hills/HillStudioController.cpp" line="72" />
             <source>Nie można odczytać paczki skoczni.</source>
             <translation>Cannot read the hill pack.</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="29" />
+            <location filename="../source/hills/HillStudioController.cpp" line="32" />
             <source>Moje skocznie</source>
             <translation>My hills</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="37" />
-            <location filename="../source/hills/HillStudioController.cpp" line="38" />
+            <location filename="../source/hills/HillStudioController.cpp" line="42" />
+            <location filename="../source/hills/HillStudioController.cpp" line="43" />
             <source>Nieprawidłowy format paczki skoczni.</source>
             <translation>Invalid hill pack format.</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="38" />
+            <location filename="../source/hills/HillStudioController.cpp" line="43" />
             <source>Powtórzony identyfikator skoczni.</source>
             <translation>Duplicate hill identifier.</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="42" />
+            <location filename="../source/hills/HillStudioController.cpp" line="47" />
             <source>Nie udało się zapisać paczki. Zmiana nie została zastosowana.</source>
             <translation>Could not save the pack. The change was not applied.</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="47" />
+            <location filename="../source/hills/HillStudioController.cpp" line="52" />
             <source>Zapisano</source>
             <translation>Saved</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="55" />
+            <location filename="../source/hills/HillStudioController.cpp" line="60" />
             <source>Nowa paczka %1</source>
             <translation>New pack %1</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="58" />
+            <location filename="../source/hills/HillStudioController.cpp" line="63" />
             <source>Dodano skocznię</source>
             <translation>Hill added</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="59" />
+            <location filename="../source/hills/HillStudioController.cpp" line="64" />
             <source> — kopia</source>
             <translation> — copy</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="60" />
+            <location filename="../source/hills/HillStudioController.cpp" line="65" />
             <source>Usunięto skocznię · możesz cofnąć</source>
             <translation>Hill removed · you can undo</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="63" />
+            <location filename="../source/hills/HillStudioController.cpp" line="68" />
             <source>Skopiowano skocznię. Perki dobierz od zera.</source>
             <translation>Hill copied. Choose perks from scratch.</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="64" />
+            <location filename="../source/hills/HillStudioController.cpp" line="69" />
             <source>Cofnięto</source>
             <translation>Undone</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="65" />
+            <location filename="../source/hills/HillStudioController.cpp" line="70" />
             <source>Ponowiono</source>
             <translation>Redone</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="66" />
+            <location filename="../source/hills/HillStudioController.cpp" line="71" />
             <source>Nie udało się wyeksportować paczki.</source>
             <translation>Could not export the pack.</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="66" />
+            <location filename="../source/hills/HillStudioController.cpp" line="71" />
             <source>Wyeksportowano paczkę</source>
             <translation>Pack exported</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="67" />
+            <location filename="../source/hills/HillStudioController.cpp" line="72" />
             <source>Wczytano kopię paczki</source>
             <translation>Pack copy loaded</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="68" />
+            <location filename="../source/hills/HillStudioController.cpp" line="73" />
             <source>Eksportuj paczkę</source>
             <translation>Export pack</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="68" />
-            <location filename="../source/hills/HillStudioController.cpp" line="69" />
+            <location filename="../source/hills/HillStudioController.cpp" line="73" />
+            <location filename="../source/hills/HillStudioController.cpp" line="74" />
             <source>Paczka skoczni (*.json)</source>
             <translation>Hill pack (*.json)</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="69" />
+            <location filename="../source/hills/HillStudioController.cpp" line="74" />
             <source>Importuj paczkę</source>
             <translation>Import pack</translation>
         </message>
@@ -6403,24 +6385,34 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>HomeTools</name>
         <message>
-            <location filename="../source/UI/Quick/HomeTools.qml" line="19" />
+            <location filename="../source/UI/Quick/HomeTools.qml" line="16" />
             <source>Baza danych</source>
             <translation>Database</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HomeTools.qml" line="20" />
+            <location filename="../source/UI/Quick/HomeTools.qml" line="17" />
             <source>%1 zawodników · %2 skoczni</source>
             <translation>%1 jumpers · %2 hills</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HomeTools.qml" line="22" />
+            <location filename="../source/UI/Quick/HomeTools.qml" line="18" />
             <source>Edytuj bazę danych</source>
             <translation>Edit database</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HomeTools.qml" line="23" />
+            <location filename="../source/UI/Quick/HomeTools.qml" line="30" />
             <source>Ustawienia</source>
             <translation>Settings</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/HomeTools.qml" line="31" />
+            <source>Preferencje aplikacji i ustawienia symulacji.</source>
+            <translation>App preferences and simulation settings.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/HomeTools.qml" line="32" />
+            <source>Otwórz ustawienia</source>
+            <translation>Open settings</translation>
         </message>
     </context>
     <context>
@@ -7417,8 +7409,8 @@ hidden charts</translation>
         </message>
         <message>
             <location filename="../source/UI/Seasons/Stats/JumperStatsWindow.cpp" line="120" />
-            <source>BRAK</source>
-            <translation>NONE</translation>
+            <source>Wszystkie skocznie</source>
+            <translation>All hills</translation>
         </message>
         <message>
             <location filename="../source/UI/Seasons/Stats/JumperStatsWindow.cpp" line="400" />
@@ -8569,6 +8561,24 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
             <location filename="../source/UI/Quick/NumberField.qml" line="58" />
             <source>Zmniejsz wartość</source>
             <translation>Decrease value</translation>
+        </message>
+    </context>
+    <context>
+        <name>PerkStrengthSelector</name>
+        <message>
+            <location filename="../source/UI/Quick/PerkStrengthSelector.qml" line="10" />
+            <source>Zwykły</source>
+            <translation>Normal</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PerkStrengthSelector.qml" line="10" />
+            <source>Wzmocniony</source>
+            <translation>Enhanced</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PerkStrengthSelector.qml" line="10" />
+            <source>Potężny</source>
+            <translation>Powerful</translation>
         </message>
     </context>
     <context>
@@ -11422,7 +11432,7 @@ Check that you selected the correct file.</translation>
             <translation>New hill</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="315" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="306" />
             <source>Konfiguracja pojedynczego konkursu</source>
             <translation>Single competition setup</translation>
         </message>
@@ -11474,6 +11484,11 @@ Check that you selected the correct file.</translation>
             <location filename="../source/UI/Seasons/CalendarEditor/CalendarEditorWidget.cpp" line="1239" />
             <source>Skocznia: </source>
             <translation>Hill: </translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/ConfigSelections.h" line="15" />
+            <source>Własne ustawienia</source>
+            <translation>Custom settings</translation>
         </message>
     </context>
     <context>
@@ -11730,6 +11745,8 @@ Check that you selected the correct file.</translation>
             <translation>Maximum form</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/AppearanceMenu.qml" line="24" />
+            <location filename="../source/UI/Quick/AppearanceMenu.qml" line="31" />
             <location filename="../source/UI/Quick/QuickBridge.cpp" line="954" />
             <source>Język interfejsu</source>
             <translation>Interface language</translation>
@@ -12518,7 +12535,7 @@ Check that you selected the correct file.</translation>
     <context>
         <name>QuickUi</name>
         <message>
-            <location filename="../source/UI/Quick/QuickUi.cpp" line="165" />
+            <location filename="../source/UI/Quick/QuickUi.cpp" line="176" />
             <source>Menu główne</source>
             <translation>Main menu</translation>
         </message>
@@ -13482,12 +13499,12 @@ sorting</translation>
     <context>
         <name>SectionTabs</name>
         <message>
-            <location filename="../source/UI/Quick/SectionTabs.qml" line="26" />
+            <location filename="../source/UI/Quick/SectionTabs.qml" line="27" />
             <source>Poprzednie zakładki</source>
             <translation>Previous tabs</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/SectionTabs.qml" line="70" />
+            <location filename="../source/UI/Quick/SectionTabs.qml" line="83" />
             <source>Następne zakładki</source>
             <translation>Next tabs</translation>
         </message>
@@ -13943,8 +13960,8 @@ in team standings</translation>
         </message>
         <message>
             <location filename="../source/UI/Seasons/Stats/SimulationRatingsWindow.cpp" line="841" />
-            <source>BRAK</source>
-            <translation>NONE</translation>
+            <source>Wszystkie skocznie</source>
+            <translation>All hills</translation>
         </message>
         <message>
             <location filename="../source/UI/Seasons/Stats/SimulationRatingsWindow.cpp" line="912" />
@@ -14904,48 +14921,42 @@ calculation</translation>
             <translation>Simulate</translation>
         </message>
         <message>
-            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="126" />
-            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="132" />
-            <source>BRAK</source>
-            <translation>NONE</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="64" />
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="65" />
             <source>Rozpocznij symulację z aktualnymi ustawieniami (Enter)</source>
             <translation>Start simulation with current settings (Enter)</translation>
         </message>
         <message>
-            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="65" />
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="66" />
             <source>Liczba skoków do wykonania; minimum to 1</source>
             <translation>Number of jumps to perform; minimum is 1</translation>
         </message>
         <message>
-            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="66" />
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="67" />
             <source>Dobierz belkę</source>
             <translation>Choose start gate</translation>
         </message>
         <message>
-            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="68" />
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="69" />
             <source>Oblicz belkę dla zawodnika, skoczni i ustawionego wiatru</source>
             <translation>Calculate gate for the jumper, hill and selected wind</translation>
         </message>
         <message>
-            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="225" />
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="219" />
             <source>Brak zawodnika</source>
             <translation>No jumper</translation>
         </message>
         <message>
-            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="226" />
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="220" />
             <source>Wybierz istniejącego zawodnika albo wpisz jego imię i nazwisko.</source>
             <translation>Select an existing jumper or enter their first and last name.</translation>
         </message>
         <message>
-            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="235" />
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="229" />
             <source>Nieprawidłowa skocznia</source>
             <translation>Invalid hill</translation>
         </message>
         <message>
-            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="236" />
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="230" />
             <source>Wybierz lub skonfiguruj skocznię z dodatnim punktem K oraz punktem HS nie mniejszym od K.</source>
             <translation>Select or configure a hill with a positive K-point and an HS no smaller than K.</translation>
         </message>

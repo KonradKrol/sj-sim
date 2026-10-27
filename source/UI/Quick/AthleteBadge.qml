@@ -12,14 +12,31 @@ Item {
     property bool ribbon: false
     property bool managedLevel: false
     property bool hill: false
-    readonly property int selected: Number((backend.profile.perks || [])[perk.pair] || 0)
+    property real perkPulse: 1
+    property real burstProgress: 1
+    SequentialAnimation {
+        id: selectionFeedback
+        NumberAnimation { target: badge; property: "perkPulse"; to: 1.14; duration: Theme.motion/2; easing.type: Easing.OutCubic }
+        NumberAnimation { target: badge; property: "perkPulse"; to: 1; duration: Theme.motion; easing.type: Easing.OutBack }
+    }
+    NumberAnimation { id: powerBurst; target: badge; property: "burstProgress"; from: 0; to: 1; duration: Theme.motion*4; easing.type: Easing.OutCubic }
+    function animateSelection() {
+        if(!Theme.motion)return
+        selectionFeedback.restart()
+        if(empowered)powerBurst.restart()
+    }
+    Connections { target: Theme; function onMotionChanged(){if(!Theme.motion){selectionFeedback.stop();powerBurst.stop();badge.perkPulse=1;badge.burstProgress=1}} }
+    readonly property int selected: Number((backend.selectedPerks || [])[perk.pair] || 0)
     readonly property bool chosen: selected*perk.side>0
     readonly property int tier: chosen ? Math.abs(selected) : 0
     readonly property bool enhanced: managedLevel && tier>=2
     readonly property bool empowered: tier===3
-    readonly property real artSize: Theme.dp(ribbon ? 46 : 70)
+    onEmpoweredChanged: if(!empowered){powerBurst.stop();burstProgress=1}
+    readonly property real artSize: Theme.dp(ribbon ? 34 : 70)
+    readonly property bool inlineLevels: ribbon && width>=Math.max(220,Theme.dp(320))
+    readonly property real headerHeight: ribbon ? Math.max(artSize+Theme.dp(8),name.implicitHeight+Theme.dp(10)) : artSize+name.implicitHeight+Theme.dp(8)
     implicitWidth: Theme.dp(ribbon ? 250 : 160)
-    implicitHeight: ribbon ? Math.max(artSize,name.implicitHeight+Theme.dp(16)) : artSize+name.implicitHeight+Theme.dp(8)
+    implicitHeight: (inlineLevels ? Math.max(headerHeight,strengths.implicitHeight) : headerHeight+strengths.implicitHeight)+Theme.dp(8)
     AbstractButton {
         id: pick
         objectName: "athletePerk-"+badge.perk.key
@@ -42,7 +59,7 @@ Item {
             Rectangle { visible: badge.enhanced; anchors.fill: parent; anchors.margins: Theme.dp(4); color: "transparent"; border.width: 1; border.color: "#946716"; radius: Theme.dp(1) }
             Rectangle { visible: badge.ribbon && badge.chosen && !badge.managedLevel; anchors.right: parent.right; width: Theme.dp(5); height: parent.height; color: badge.tier===2 ? "#f1cf87" : "#ffffff" }
         }
-        onClicked: {suppressed=true;helpRequested=false;badge.backend.setPerk(badge.perk.pair,badge.perk.side,badge.chosen ? badge.tier : 1,true)}
+        onClicked: {suppressed=true;helpRequested=false;badge.backend.setPerk(badge.perk.pair,badge.perk.side,badge.chosen ? badge.tier : 1,true);if(badge.chosen)badge.animateSelection()}
         ToolTip {
             visible: pick.helpRequested || pick.hovered && !pick.suppressed && !pick.down
             delay: pick.helpRequested ? 0 : 700; timeout: 6000
@@ -54,19 +71,43 @@ Item {
         id: art
         width: badge.artSize; height: width
         x: badge.ribbon ? Theme.dp(4) : (badge.width-width)/2
-        y: 0
+        y: badge.ribbon ? Theme.dp(4) : 0
         family: badge.family; perkKey: badge.perk.key; tier: badge.tier; hill: badge.hill
         sourceSize.width: 192; sourceSize.height: 192
         scale: pick.down ? .9 : badge.chosen ? 1.06 : pick.hovered ? 1.02 : .95
+        transform: Scale { origin.x: art.width/2; origin.y: art.height/2; xScale: badge.perkPulse; yScale: badge.perkPulse }
         Behavior on scale { NumberAnimation { duration: Theme.motion; easing.type: Easing.OutBack } }
         Accessible.ignored: true
+    }
+    Item {
+        x: art.x+art.width/2; y: art.y+art.height/2
+        visible: badge.burstProgress<1
+        opacity: 1-badge.burstProgress
+        rotation: badge.burstProgress*30
+        Accessible.ignored: true
+        Rectangle {
+            width: art.width*(1+badge.burstProgress*2); height: width
+            x: -width/2; y: -height/2
+            radius: width/2; color: "transparent"; border.width: Theme.dp(2); border.color: "#ffcd63"
+        }
+        Repeater {
+            model: 8
+            Rectangle {
+                required property int index
+                readonly property real angle: index*Math.PI/4
+                readonly property real distance: art.width*(.5+badge.burstProgress)
+                x: Math.cos(angle)*distance-width/2; y: Math.sin(angle)*distance-height/2
+                width: Theme.dp(4); height: Theme.dp(12)*(1-badge.burstProgress)+1
+                rotation: index*45+90; radius: width/2; color: "#ffdf9d"
+            }
+        }
     }
     Label {
         id: name
         x: badge.ribbon ? badge.artSize+Theme.dp(10) : Theme.dp(2)
-        y: badge.ribbon ? (badge.height-height)/2 : badge.artSize+Theme.dp(2)
-        width: badge.ribbon ? Math.max(0,badge.width-x-(badge.chosen ? level.width+Theme.dp(16) : Theme.dp(12))) : badge.width-Theme.dp(4)
-        text: badge.chosen ? qsTr("%1 · %2").arg(badge.perk.name).arg(["","I","II","III"][badge.tier]) : badge.perk.name
+        y: badge.ribbon ? (badge.headerHeight-height)/2 : badge.artSize+Theme.dp(2)
+        width: badge.ribbon ? Math.max(0,badge.width-x-Theme.dp(10)-(badge.inlineLevels ? strengths.implicitWidth+Theme.dp(8) : 0)) : badge.width-Theme.dp(4)
+        text: badge.perk.name
         color: badge.empowered ? "#fff1d2" : badge.enhanced ? "#30210c" : badge.ribbon && badge.chosen ? "#ffffff" : badge.chosen ? badge.design.ink : badge.design.muted
         font.family: badge.ribbon ? Theme.bodyFamily : Theme.displayFamily
         font.pointSize: badge.ribbon ? Theme.body : Theme.section
@@ -74,20 +115,11 @@ Item {
         horizontalAlignment: badge.ribbon ? Text.AlignLeft : Text.AlignHCenter
         wrapMode: Text.WordWrap
     }
-    AbstractButton {
-        id: level
-        objectName: "athletePerkLevel-"+badge.perk.key
-        visible: badge.chosen
-        x: badge.ribbon ? badge.width-width-Theme.dp(10) : Math.min(badge.width-width,art.x+art.width-Theme.dp(14))
-        y: badge.ribbon ? (badge.height-height)/2 : Theme.dp(8)
-        width: Math.max(Theme.dp(badge.managedLevel ? 90 : 31),levelLabel.implicitWidth+Theme.dp(12)); height: Math.max(Theme.dp(badge.managedLevel ? 34 : 30),levelLabel.implicitHeight+Theme.dp(7))
-        hoverEnabled: true
-        Accessible.name: badge.tier<3 ? qsTr("Wzmocnij perk do poziomu %1: %2").arg(badge.tier+1).arg(badge.perk.name) : qsTr("Przywróć zwykły perk: %1").arg(badge.perk.name)
-        background: Rectangle { color: badge.tier===2 ? "#f1cf87" : "#eaf1f0"; radius: badge.managedLevel ? Theme.dp(4) : badge.ribbon ? 2 : height/2; border.width: level.activeFocus ? 3 : 1; border.color: level.activeFocus ? badge.design.accent : "#23363c" }
-        contentItem: Label { id: levelLabel; text: badge.managedLevel ? (badge.empowered ? qsTr("Potężny") : badge.tier===2 ? qsTr("Wzmocniony") : qsTr("Wzmocnij")) : badge.empowered ? "III" : badge.tier===2 ? "II ↑" : "I ↑"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; color: "#293128"; font.family: Theme.mono; font.pointSize: Theme.caption; font.bold: true }
-        onClicked: badge.backend.setPerk(badge.perk.pair,badge.perk.side,badge.tier<3 ? badge.tier+1 : 1,false)
-        ToolTip.visible: hovered && !down
-        ToolTip.text: Accessible.name
-        ToolTip.delay: 600
+    PerkStrengthSelector {
+        id: strengths
+        x: badge.inlineLevels ? badge.width-width-Theme.dp(6) : badge.ribbon ? Theme.dp(5) : (badge.width-width)/2
+        y: badge.inlineLevels ? (badge.headerHeight-height)/2 : badge.headerHeight
+        backend: badge.backend; perk: badge.perk
+        onApplied: function(level){if(level>0)badge.animateSelection()}
     }
 }

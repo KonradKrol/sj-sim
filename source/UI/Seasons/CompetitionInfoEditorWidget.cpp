@@ -35,7 +35,7 @@ CompetitionInfoEditorWidget::CompetitionInfoEditorWidget(CompetitionInfo * compe
 void CompetitionInfoEditorWidget::setupRulesComboBox()
 {
     ui->comboBox_rules->clear();
-    ui->comboBox_rules->addItem(tr("BRAK"));
+    ui->comboBox_rules->addItem(tr("Własne zasady"));
     for(auto & rules : *rulesList){
         ui->comboBox_rules->addItem(rules.getName());
     }
@@ -104,7 +104,7 @@ CompetitionInfo CompetitionInfoEditorWidget::getCompetitionInfoFromInputs()
 void CompetitionInfoEditorWidget::setupHillsComboBox()
 {
     ui->comboBox_hill->clear();
-    ui->comboBox_hill->addItem(tr("BRAK"));
+    ui->comboBox_hill->addItem(tr("Skocznia domyślna"));
     for(const auto & hill : *hillsList){
         ui->comboBox_hill->addItem(QIcon(QPixmap(CountryFlagsManager::getFlagPixmap(hill->getCountryCode().toLower()))), hill->getName() + " HS" + QString::number(hill->getHSPoint()));
     }

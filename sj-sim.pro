@@ -297,6 +297,7 @@ HEADERS += \
     source/global/IdentifiableObjectsStorage.h \
     source/global/JumpDataInfoChoice.h \
     source/global/JumpsImportancePreset.h \
+    source/UI/EditorWidgets/ConfigSelections.h \
     source/global/PointsForPlacesPreset.h \
     source/global/TreeItem.h \
     source/global/Uuid.h \

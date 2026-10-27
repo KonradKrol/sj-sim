@@ -6,6 +6,7 @@ ColumnLayout {
     id: editor
     property var backend
     property int viewMode: 1
+    ChangeFeedback { id: recordFeedback; target: editor; trigger: editor.backend.profile.id; duration: Theme.motion*2 }
     spacing: Theme.dp(8)
     ScrollView {
         id: scroll
@@ -14,6 +15,7 @@ ColumnLayout {
         contentWidth: availableWidth; clip: true
         onWidthChanged: contentItem.contentX=0
         Loader {
+            opacity: 0.7+recordFeedback.progress*0.3
             width: scroll.availableWidth
             sourceComponent: [medals,patches,tokens,collector,character][editor.viewMode]
             onLoaded: scroll.contentItem.contentY=0

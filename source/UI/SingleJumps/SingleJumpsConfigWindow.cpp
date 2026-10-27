@@ -4,6 +4,7 @@
 #include "../EditorWidgets/JumperEditorWidget.h"
 #include "../EditorWidgets/HillEditorWidget.h"
 #include "../EditorWidgets/WindsGeneratorSettingsEditorWidget.h"
+#include "../EditorWidgets/ConfigSelections.h"
 #include "../ResponsiveWindowUtils.h"
 
 #include "../../global/GlobalDatabase.h"
@@ -123,13 +124,11 @@ SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent) :
     windsGeneratorSettingsEditor->setRemovingSubmitButtons(true);
     windsGeneratorSettingsEditor->removeSubmitButton();
 
-    ui->comboBox_existingJumper->addItem(tr("BRAK"));
     for(const auto & jumper : GlobalDatabase::get()->getGlobalJumpers())
     {
         ui->comboBox_existingJumper->addItem(QIcon(QPixmap(CountryFlagsManager::getFlagPixmap(jumper.getCountryCode().toLower()))) ,jumper.getNameAndSurname());
     }
 
-    ui->comboBox_existingHill->addItem(tr("BRAK"));
     for(const auto & hill : GlobalDatabase::get()->getGlobalHills())
     {
         ui->comboBox_existingHill->addItem(QIcon(QPixmap(CountryFlagsManager::getFlagPixmap(hill.getCountryCode().toLower()))) ,hill.getName() + " HS" + QString::number(hill.getHSPoint()));
@@ -147,16 +146,9 @@ SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent) :
 
     ui->toolBox->setCurrentIndex(0);
 
-    for(auto & preset : GlobalDatabase::get()->getJumpsImportancePresetsReference())
-    {
-        ui->comboBox_jumpsImportancePreset->addItem(preset.getName() + " (" + QString::number(preset.getJumpsImportance(), 'f', 2) + ")");
-    }
-    connect(ui->comboBox_jumpsImportancePreset, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int index){
-        if(index > 0)
-            ui->doubleSpinBox_jumpsImportance->setValue(GlobalDatabase::get()->getJumpsImportancePresetsReference()[index - 1].getJumpsImportance());
-        else
-            ui->doubleSpinBox_jumpsImportance->setValue(5.0);
-    });
+    ConfigSelections::importancePresets(ui->comboBox_jumpsImportancePreset,ui->doubleSpinBox_jumpsImportance,GlobalDatabase::get()->getJumpsImportancePresetsReference());
+    on_comboBox_existingJumper_currentIndexChanged(ui->comboBox_existingJumper->currentIndex());
+    on_comboBox_existingHill_currentIndexChanged(ui->comboBox_existingHill->currentIndex());
 
     const auto updateWindCompensationInputs = [this](){
         const bool enabled = ui->checkBox_hasWindCompensation->isChecked();
@@ -200,8 +192,9 @@ void SingleJumpsConfigWindow::resizeEvent(QResizeEvent *event)
 
 void SingleJumpsConfigWindow::on_comboBox_existingJumper_currentIndexChanged(int index)
 {
-    if(index > 0){
-        jumperEditor->setJumper(&GlobalDatabase::get()->getEditableGlobalJumpers()[index - 1]);
+    if(index<0 && ui->comboBox_existingJumper->count()>0){ui->comboBox_existingJumper->setCurrentIndex(0);return;}
+    if(index >= 0 && index<GlobalDatabase::get()->getEditableGlobalJumpers().size()){
+        jumperEditor->setJumper(&GlobalDatabase::get()->getEditableGlobalJumpers()[index]);
         jumperEditor->fillJumperInputs();
     }
     else jumperEditor->resetJumperInputs();
@@ -209,10 +202,11 @@ void SingleJumpsConfigWindow::on_comboBox_existingJumper_currentIndexChanged(int
 
 void SingleJumpsConfigWindow::on_comboBox_existingHill_currentIndexChanged(int index)
 {
-    if(index > 0){
-        hillEditor->setHill(&GlobalDatabase::get()->getEditableGlobalHills()[index - 1]);
+    if(index<0 && ui->comboBox_existingHill->count()>0){ui->comboBox_existingHill->setCurrentIndex(0);return;}
+    if(index >= 0 && index<GlobalDatabase::get()->getEditableGlobalHills().size()){
+        hillEditor->setHill(&GlobalDatabase::get()->getEditableGlobalHills()[index]);
         hillEditor->fillHillInputs();
-        emit hillEditor->KPointInputChanged(GlobalDatabase::get()->getEditableGlobalHills()[index - 1].getKPoint());
+        emit hillEditor->KPointInputChanged(GlobalDatabase::get()->getEditableGlobalHills()[index].getKPoint());
     }
     else hillEditor->resetHillInputs();
 }

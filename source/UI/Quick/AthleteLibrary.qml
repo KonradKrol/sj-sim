@@ -10,6 +10,7 @@ Control {
     property string pack: ""
     property string selectedId: ""
     signal activated()
+    ChangeFeedback { id: packFeedback; target: library; trigger: library.backend.packDirectory; duration: Theme.motion*2 }
     padding: 1
     background: Rectangle { color: Theme.surface; radius: Theme.radius; border.color: rows.activeFocus ? Theme.accent : Theme.divider }
     function sync(reset) {
@@ -65,6 +66,7 @@ Control {
         }
         ListView {
             id: rows
+            opacity: 0.65+packFeedback.progress*0.35
             objectName: "athleteList"
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
             model: entries; clip: true; activeFocusOnTab: true
@@ -99,6 +101,7 @@ Control {
                 Accessible.role: Accessible.ListItem; Accessible.name: qsTr("%1, %2, OVR %3").arg(label).arg(country).arg(overall); Accessible.selected: checked
                 background: Rectangle {
                     color: row.checked ? Theme.selection : row.hovered ? Theme.raised : Theme.surface
+                    Behavior on color { ColorAnimation { duration: Theme.motion } }
                     Rectangle { width: 3; height: parent.height; visible: row.checked; color: Theme.accent }
                     Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: Theme.divider }
                 }

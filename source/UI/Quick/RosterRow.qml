@@ -17,6 +17,7 @@ Item {
     property var viewport
     readonly property bool reserveBoundary: ordered && !backend.membership && backend.activeLimit>0 && position===backend.activeLimit+1
     signal moveRequested()
+    ChangeFeedback { id: positionFeedback; target: row; trigger: row.ordered ? row.position : 0; duration: Theme.motion*2 }
     implicitHeight: (Theme.compact ? Math.max(30,Theme.bodyMetrics.height+(ordered && backend.activeLimit > 0 ? Theme.captionMetrics.height : 0)+6) : Math.max(backend.activeLimit > 0 ? 56 : 44,Theme.bodyMetrics.height+16))+(reserveBoundary ? 8 : 0)
     objectName: (ordered ? "roster-entry-" : "roster-candidate-") + athleteId
     activeFocusOnTab: true
@@ -48,9 +49,11 @@ Item {
             hint: row.backend.membership ? qsTr("Przeciągnij lub wybierz pozycję") : qsTr("Przeciągnij na zawodnika, aby zamienić miejsca")
             onClicked: {if(!row.marked)row.backend.mark(row.athleteId);row.moveRequested()}
         }
-        Label { visible: row.ordered; text: row.position; font.family: Theme.mono; font.pointSize: Theme.caption; color: Theme.muted; Layout.preferredWidth: 30; horizontalAlignment: Text.AlignRight }
+        Label { visible: row.ordered; text: row.position; opacity: 0.55+positionFeedback.progress*0.45; font.family: Theme.mono; font.pointSize: Theme.caption; color: Theme.muted; Layout.preferredWidth: 30; horizontalAlignment: Text.AlignRight }
         ColumnLayout {
             Layout.fillWidth: true; Layout.minimumWidth: 0; spacing: 0
+            opacity: 0.65+positionFeedback.progress*0.35
+            transform: Translate { x: (1-positionFeedback.progress)*Theme.dp(8) }
             Label { text: row.athleteName; color: Theme.ink; font.pointSize: Theme.body; Layout.fillWidth: true; elide: Text.ElideRight }
             Label { visible: row.ordered && row.backend.activeLimit > 0; text: row.activeSlot ? qsTr("Skład") : qsTr("Rezerwa"); color: row.activeSlot ? Theme.muted : Theme.warning; font.pointSize: Theme.caption }
         }

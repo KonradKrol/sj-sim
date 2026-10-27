@@ -8,20 +8,25 @@ ColumnLayout {
     AthletePerkCatalog { id: catalog }
     spacing: Theme.dp(4)
     Label { text: qsTr("Przypisane perki"); color: Theme.muted; font.pointSize: Theme.caption }
-    Label { visible: (set.backend.profile.perks || []).every(function(v){return v===0}); text: qsTr("Brak"); color: Theme.muted; font.pointSize: Theme.body }
+    Label { visible: (set.backend.selectedPerks || []).every(function(v){return v===0}); text: qsTr("Brak"); color: Theme.muted; font.pointSize: Theme.body }
     Repeater {
         model: 3
         AbstractButton {
             id: assigned
             required property int index
-            readonly property int value: Number((set.backend.profile.perks || [])[index] || 0)
+            readonly property int value: Number((set.backend.selectedPerks || [])[index] || 0)
+            property int displayedValue: 0
+            onValueChanged: if(value!==0)displayedValue=value
+            Component.onCompleted: displayedValue=value
+            property real reveal: value!==0 ? 1 : 0
+            Behavior on reveal { NumberAnimation { duration: Theme.motion; easing.type: Easing.OutCubic } }
             readonly property bool enhanced: Math.abs(value)>=2
             readonly property bool empowered: Math.abs(value)===3
-            readonly property var perk: catalog.selected(index,value)
+            readonly property var perk: catalog.selected(index,displayedValue)
             objectName: "athleteAssigned-"+index
-            visible: value!==0; hoverEnabled: true
+            visible: reveal>0; enabled: value!==0; hoverEnabled: true; opacity: reveal; clip: true
             Layout.fillWidth: true; Layout.minimumWidth: 0
-            implicitHeight: contentItem.implicitHeight+topPadding+bottomPadding; padding: Theme.dp(4)
+            implicitHeight: (contentItem.implicitHeight+topPadding+bottomPadding)*reveal; padding: Theme.dp(4)
             Accessible.name: qsTr("Usuń przypisany perk: %1").arg(perk.name)
             background: Rectangle { color: assigned.empowered ? "#241237" : assigned.enhanced ? "#ffcd57" : assigned.hovered ? Theme.selection : "transparent"; radius: Theme.dp(5); border.width: assigned.enhanced || assigned.activeFocus ? 2 : 0; border.color: assigned.empowered ? "#ffb941" : assigned.enhanced ? "#64400a" : Theme.accent }
             contentItem: RowLayout {

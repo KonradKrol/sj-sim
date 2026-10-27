@@ -20,6 +20,7 @@ Item {
     onFieldsChanged: synchronize()
     Component.onCompleted: synchronize()
     signal committed(real value)
+    ChangeFeedback { id: invalidFeedback; target: control; duration: Theme.motion*3 }
     implicitHeight: Math.max(Theme.compact ? 28 : 48,Theme.bodyMetrics.height+(Theme.compact ? 4 : 18))
     implicitWidth: 140
     function setValue(value) { currentValue=Math.max(fields.minimum,Math.min(fields.maximum,value));input.dirty=false;draft=formattedValue();if(direct)ui.edit(fields.id,currentValue);committed(currentValue) }
@@ -28,9 +29,10 @@ Item {
         input.dirty=false
         if(fields.mixed && draft.length===0)return
         if(currentValue===fields.minimum && draft===fields.specialText)return
-        var value=Number.fromLocaleString(Qt.locale(Theme.localeName),draft)
+        var value=NaN
+        try {value=Number.fromLocaleString(Qt.locale(Theme.localeName),draft)} catch(error) {}
         if(input.acceptableInput && isFinite(value)){if(value!==currentValue)setValue(value);else draft=formattedValue()}
-        else draft=fields.mixed ? "" : formattedValue()
+        else {draft=fields.mixed ? "" : formattedValue();invalidFeedback.restart()}
     }
     function step(direction) {if(input.dirty)commitInput();setValue(currentValue+direction*Number(fields.step))}
     SField {
@@ -56,5 +58,11 @@ Item {
         width: 38
         SButton { objectName: "numberIncrease-"+(control.fields.name || control.fields.id); autoRepeat: true; autoRepeatDelay: 250; autoRepeatInterval: 40; width: parent.width; height: control.height/2; text: "+"; padding: 0; quiet: true; enabled: control.currentValue < control.fields.maximum; Accessible.name: qsTr("Zwiększ wartość"); onPressed: control.step(1) }
         SButton { objectName: "numberDecrease-"+(control.fields.name || control.fields.id); autoRepeat: true; autoRepeatDelay: 250; autoRepeatInterval: 40; width: parent.width; height: control.height/2; text: "−"; padding: 0; quiet: true; enabled: control.currentValue > control.fields.minimum; Accessible.name: qsTr("Zmniejsz wartość"); onPressed: control.step(-1) }
+    }
+    Rectangle {
+        anchors.fill: parent; color: "transparent"; radius: Theme.dp(6)
+        visible: invalidFeedback.progress<1; opacity: 1-invalidFeedback.progress
+        border.width: 2; border.color: Theme.danger
+        Accessible.ignored: true
     }
 }

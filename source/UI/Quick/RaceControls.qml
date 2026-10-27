@@ -13,7 +13,7 @@ GridLayout {
     Node { visible: !ui.context.complete && !ui.context.roundComplete; Layout.fillWidth: true; Layout.minimumWidth: 0; node: ui.find("pushButton_jump") }
     RowLayout {
         Layout.fillWidth: true; Layout.minimumWidth: 0
-        Node { Layout.fillWidth: true; Layout.minimumWidth: 0; node: ui.find("pushButton_goToNext") }
+        Node { Layout.fillWidth: true; Layout.minimumWidth: 0; node: ui.find("pushButton_goToNext"); opacity: enabled ? 1 : 0.45; Behavior on opacity { NumberAnimation { duration: Theme.motion } } }
         SButton { objectName: "editNextKoGroups"; visible: !!ui.context.nextKoEditable; text: qsTr("Grupy KO…"); quiet: true; onClicked: ui.editNextKoGroups() }
     }
     RowLayout {

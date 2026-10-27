@@ -5,6 +5,7 @@
 #include "../EditorWidgets/HillEditorWidget.h"
 #include "../EditorWidgets/WindsGeneratorSettingsEditorWidget.h"
 #include "../EditorWidgets/CompetitionRulesEditorWidget.h"
+#include "../EditorWidgets/ConfigSelections.h"
 #include "../EditorWidgets/TeamsEditing/TeamEditorWidget.h"
 #include "../EditorWidgets/EditStartListWithJumpersListsWindow.h"
 #include "../../global/GlobalDatabase.h"
@@ -112,17 +113,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         ui->pushButton_byOtherComp->hide();
         ui->label_3->hide();
 
-        for(auto & preset : GlobalDatabase::get()->getJumpsImportancePresetsReference())
-        {
-            ui->comboBox_jumpsImportancePreset->addItem(preset.getName() + " (" + QString::number(preset.getJumpsImportance(), 'f', 2) + ")");
-        }
-
-        connect(ui->comboBox_jumpsImportancePreset, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int index){
-            if(index > 0)
-                ui->doubleSpinBox_jumpsImportance->setValue(GlobalDatabase::get()->getJumpsImportancePresetsReference()[index - 1].getJumpsImportance());
-            else
-                ui->doubleSpinBox_jumpsImportance->setValue(5);
-        });
+        ConfigSelections::importancePresets(ui->comboBox_jumpsImportancePreset,ui->doubleSpinBox_jumpsImportance,GlobalDatabase::get()->getJumpsImportancePresetsReference());
     }
     else
     {
@@ -524,6 +515,10 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         KOGroupsList->fillListLayout();
     });
 
+    if(getType()==SingleCompetition){
+        emit ui->comboBox_existingHill->currentIndexChanged(ui->comboBox_existingHill->currentIndex());
+        emit existingCompetitionRulesComboBox->currentIndexChanged(existingCompetitionRulesComboBox->currentIndex());
+    }
     on_pushButton_autoGate_clicked();
     connect(ui->comboBox_existingHill, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &CompetitionConfigWindow::on_pushButton_autoGate_clicked);
@@ -570,7 +565,6 @@ void CompetitionConfigWindow::setClassificationsComboBoxIndex(int index)
 void CompetitionConfigWindow::setupHillToolBoxItem()
 {
     ui->comboBox_existingHill->clear();
-    ui->comboBox_existingHill->addItem(tr("BRAK"));
     for(const auto & hill : GlobalDatabase::get()->getEditableGlobalHills())
     {
         ui->comboBox_existingHill->addItem(QIcon(QPixmap(CountryFlagsManager::getFlagPixmap(hill.getCountryCode().toLower()))) ,hill.getName() + " HS" + QString::number(hill.getHSPoint()));
@@ -583,8 +577,9 @@ void CompetitionConfigWindow::setupHillToolBoxItem()
 
     connect(ui->comboBox_existingHill, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](){
         int selected = ui->comboBox_existingHill->currentIndex();
-        if(selected > 0){
-            hillEditor->setHill(&GlobalDatabase::get()->getEditableGlobalHills()[selected - 1]);
+        if(selected<0 && ui->comboBox_existingHill->count()>0){ui->comboBox_existingHill->setCurrentIndex(0);return;}
+        if(selected >= 0 && selected<GlobalDatabase::get()->getEditableGlobalHills().size()){
+            hillEditor->setHill(&GlobalDatabase::get()->getEditableGlobalHills()[selected]);
             hillEditor->fillHillInputs();
             emit hillEditor->KPointInputChanged(hillEditor->getHill()->getKPoint());
         }
@@ -595,8 +590,8 @@ void CompetitionConfigWindow::setupHillToolBoxItem()
 void CompetitionConfigWindow::setupCompetitionRulesToolBoxItem()
 {
     existingCompetitionRulesComboBox = new QComboBox();
+    existingCompetitionRulesComboBox->setObjectName("comboBox_existingCompetitionRules");
     QStringList rulesStringList;
-    rulesStringList.push_back(tr("BRAK"));
     for(const auto & rule : GlobalDatabase::get()->getEditableCompetitionRules())
     {
         rulesStringList.push_back(rule.getName());
@@ -627,10 +622,14 @@ void CompetitionConfigWindow::setupCompetitionRulesToolBoxItem()
 
     connect(existingCompetitionRulesComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](){
         int selected = existingCompetitionRulesComboBox->currentIndex();
-        if(selected > 0){
-            CompetitionRules * rules = &GlobalDatabase::get()->getEditableCompetitionRules()[selected - 1];
+        if(selected<0 && existingCompetitionRulesComboBox->count()>0){existingCompetitionRulesComboBox->setCurrentIndex(0);return;}
+        if(selected >= 0 && selected<GlobalDatabase::get()->getEditableCompetitionRules().size()){
+            CompetitionRules * rules = &GlobalDatabase::get()->getEditableCompetitionRules()[selected];
             competitionRulesEditor->setCompetitionRules(rules);
             competitionRulesEditor->fillCompetitionRulesInputs();
+            emit competitionRulesEditor->competitionTypeChanged();
+            emit competitionRulesEditor->jumpersCountInTeamChanged();
+            emit competitionRulesEditor->KORoundChanged();
         }
         else competitionRulesEditor->resetInputs();
     });
@@ -1071,8 +1070,8 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
         }
 
         Hill * hill = nullptr;
-        if(ui->comboBox_existingHill->currentIndex() > 0)
-            hill = &GlobalDatabase::get()->getEditableGlobalHills()[ui->comboBox_existingHill->currentIndex() - 1];
+        if(ui->comboBox_existingHill->currentIndex() >= 0 && ui->comboBox_existingHill->currentIndex()<GlobalDatabase::get()->getEditableGlobalHills().size())
+            hill = &GlobalDatabase::get()->getEditableGlobalHills()[ui->comboBox_existingHill->currentIndex()];
         if(hill != nullptr && GlobalSimulationSettings::get()->getUpdateGlobalDatabaseRecords() == true){
             if(qualsInfo.getHill()->getRecord() > hill->getRecord())
             hill->setRecord(qualsInfo.getHill()->getRecord());

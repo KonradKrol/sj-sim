@@ -142,7 +142,12 @@
 <file>Home.qml</file>
 <file>HomeCard.qml</file>
 <file>HomeHero.qml</file>
-<file>HomeTools.qml</file>
+        <file>HomeTools.qml</file>
+        <file>HomeTool.qml</file>
+        <file>MenuEntrance.qml</file>
+        <file>HillPerkChoice.qml</file>
+        <file>PerkStrengthSelector.qml</file>
+        <file>ChangeFeedback.qml</file>
 <file>Node.qml</file>
 <file>NodeGroup.qml</file>
 <file>NumberField.qml</file>

@@ -838,7 +838,7 @@ void SimulationRatingsWindow::setupComboBox()
 {
     disconnect(ui->comboBox_hillFilter, qOverload<int>(&QComboBox::currentIndexChanged), this, &SimulationRatingsWindow::fillWindow);
     ui->comboBox_hillFilter->clear();
-    ui->comboBox_hillFilter->addItem(tr("BRAK"));
+    ui->comboBox_hillFilter->addItem(tr("Wszystkie skocznie"));
     for(auto & hill : save->getHillsReference())
     {
         ui->comboBox_hillFilter->addItem(QIcon(CountryFlagsManager::getFlagPixmap(hill->getCountryCode().toLower())), hill->getHillText());

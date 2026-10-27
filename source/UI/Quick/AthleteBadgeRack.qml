@@ -14,9 +14,9 @@ ColumnLayout {
     RowLayout {
         Layout.fillWidth: true
         Label { text: qsTr("Perki"); color: rack.design.ink; font.family: rack.design.headingFont; font.pointSize: Theme.heading; font.bold: true }
-        Label { text: qsTr("%1 / 3").arg((rack.backend.profile.perks || []).filter(function(v){return v!==0}).length); color: rack.design.muted; font.family: Theme.mono; font.pointSize: Theme.caption }
+        Label { text: qsTr("%1 / 3").arg((rack.backend.selectedPerks || []).filter(function(v){return v!==0}).length); color: rack.design.muted; font.family: Theme.mono; font.pointSize: Theme.caption }
         Item { Layout.fillWidth: true }
-        HelpDot { explanation: qsTr("Wybierz jeden perk z każdej pary lub pozostaw ją pustą. Wzmocnij przełącza poziomy I, II i III. Poziom III jest najsilniejszy. Kliknij wybrany perk, aby go usunąć. Opis: najedź lub naciśnij F1.") }
+        HelpDot { explanation: qsTr("Wybierz jeden perk z każdej pary lub pozostaw ją pustą. Trzy opcje siły są widoczne obok siebie. Kliknij zaznaczoną opcję ponownie, aby usunąć perk. Opis: najedź lub naciśnij F1.") }
     }
     GridLayout {
         Layout.fillWidth: true

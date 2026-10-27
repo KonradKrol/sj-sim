@@ -7,7 +7,7 @@ GridLayout {
     property var backend
     property var design
     readonly property var profile: backend.profile
-    readonly property var countryOptions: backend.countries
+    readonly property var countryOptions: backend.countries.map(function(country){return country})
     columns: width>=Theme.dp(690) ? 3 : width>=Theme.dp(360) ? 2 : 1
     columnSpacing: Theme.dp(12); rowSpacing: Theme.dp(5)
     ColumnLayout {
@@ -28,7 +28,7 @@ GridLayout {
             objectName: "athleteCountry"; Layout.fillWidth: true; searchable: true
             model: identity.countryOptions.map(function(c){return c.name})
             optionImages: identity.countryOptions.map(function(c){return c.flag})
-            currentIndex: {for(var i=0;i<identity.countryOptions.length;i++)if(identity.countryOptions[i].code===identity.profile.country)return i;return -1}
+            currentIndex: {var code=identity.profile.country;var countries=identity.countryOptions;for(var i=0;i<countries.length;i++)if(countries[i].code===code)return i;return -1}
             Accessible.name: qsTr("Kraj")
             background: Rectangle { color: identity.design.surface; radius: identity.design.variant===2 ? Theme.dp(18) : identity.design.variant===1 ? Theme.dp(6) : 0; border.width: country.activeFocus ? 2 : 1; border.color: country.activeFocus ? identity.design.accent : identity.design.line; Rectangle { visible: false; anchors.bottom: parent.bottom; width: parent.width; height: 1; color: identity.design.line } }
             contentItem: RowLayout {

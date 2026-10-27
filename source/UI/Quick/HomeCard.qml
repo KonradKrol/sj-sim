@@ -5,7 +5,7 @@ import QtQuick.Window 2.15
 AbstractButton {
     id: card
     objectName: "simulationMode"
-    property string number
+    property int entranceDelay: 0
     property string title
     property string description
     property string detail
@@ -13,6 +13,12 @@ AbstractButton {
     property bool expansive: false
     readonly property bool compact: Theme.compact || Window.window && Window.window.height < 760
     hoverEnabled: true
+    MenuEntrance { id: entrance; target: card; delay: card.entranceDelay }
+    opacity: entrance.progress
+    transform: [
+        Translate { y: (1-entrance.progress)*Theme.dp(54) },
+        Rotation { origin.x: card.width/2; origin.y: card.height; axis.x: 1; axis.y: 0; axis.z: 0; angle: (1-entrance.progress)*-16 }
+    ]
     implicitWidth: 320
     implicitHeight: Math.max(Theme.compact ? 112 : compact ? 188 : 192, content.implicitHeight + padding * 2)
     Accessible.name: title
@@ -21,11 +27,6 @@ AbstractButton {
     contentItem: Column {
         id: content
         spacing: Theme.compact ? 4 : card.compact ? 10 : 14
-        Item {
-            width: parent.width; height: Theme.captionMetrics.height + 4
-            Label { text: card.number; color: card.featured ? Theme.signal : Theme.accent; font.family: Theme.mono; font.pointSize: Theme.caption }
-            Label { text: "Ctrl+" + parseInt(card.number,10); anchors.right: parent.right; color: card.featured ? Theme.headerMuted : Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption }
-        }
         Label {
             text: card.title; color: card.featured ? Theme.snow : Theme.ink
             font.family: Theme.displayFamily; font.pointSize: card.expansive ? Theme.display*1.5 : card.featured && !card.compact ? Theme.display : Theme.heading

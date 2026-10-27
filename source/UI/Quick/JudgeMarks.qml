@@ -4,10 +4,16 @@ import QtQuick.Controls 2.15
 Row {
     id: marks
     property var judges: []
+    readonly property string signature: judges.map(function(judge){return judge.text+":"+judge.discarded}).join("|")
+    property var shownJudges: []
+    onSignatureChanged: shownJudges=judges.map(function(judge){return judge})
+    ChangeFeedback { id: marksArrival; target: marks; trigger: marks.signature; duration: Theme.motion*2 }
     spacing: 4
     Repeater {
-        model: marks.judges
+        model: marks.shownJudges
         Rectangle {
+            opacity: Math.min(1,Math.max(0,(marksArrival.progress-index*0.1)*2))
+            transform: Translate { y: (1-opacity)*Theme.dp(5) }
             width: number.implicitWidth+10; height: number.implicitHeight+6
             color: modelData.discarded ? "transparent" : Theme.raised
             radius: 4

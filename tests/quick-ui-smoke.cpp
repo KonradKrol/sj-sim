@@ -25,6 +25,7 @@
 #include "../source/UI/Competition/StartList/StartListModel.h"
 #include "../source/UI/Competition/Results/TeamResultsTreeModel.h"
 #include "../source/UI/EditorWidgets/HillEditorWidget.h"
+#include "../source/UI/EditorWidgets/JumperEditorWidget.h"
 #include "../source/UI/EditorWidgets/CompetitionRulesEditorWidget.h"
 #include "../source/competitions/CompetitionManagers/TeamCompetitionManager.h"
 #include "../source/UI/Seasons/SimulationSaveManagerWindow.h"
@@ -157,7 +158,7 @@ static void render(QWidget *window,const QString &name,bool sweep=false) {
     for(const auto &size:sizes) {
         presentation(window)->resize(size);
         for(bool dark:sweep?QList<bool>{false,true}:QList<bool>{false}) {
-            appearance->setDark(dark); QTest::qWait(200);
+            appearance->setDark(dark); QTest::qWait(name=="home-tools"?850:200);
             // A grab flushes pending Quick layout polish in the offscreen widget.
             auto image=presentation(window)->grab().toImage(); if(image.isNull()) qCritical()<<"Geometry"<<window->size()<<view->size(); check(!image.isNull(),"frame "+name);
             check(item(view->rootObject(),"releaseBadge")==nullptr,"pages and short dialogs do not repeat application chrome");
@@ -185,6 +186,14 @@ static void render(QWidget *window,const QString &name,bool sweep=false) {
                     const auto position=mode->mapToItem(view->rootObject(),QPointF());
                     check(mode->width()>=200 && position.x()>=0 && position.x()+mode->width()<=view->width()+1,"primary mode remains readable and inside the home viewport");
                 }
+            }
+            if(name=="home-tools") {
+                auto *database=item(view->rootObject(),"homeDatabase"),*settings=item(view->rootObject(),"homeSettings");
+                if(database && settings && qAbs(database->height()-settings->height())>=1){image.save(output+"/home-tools-unequal.png");qInfo()<<"Home tools geometry"<<size<<database->size()<<settings->size()<<database->implicitHeight()<<settings->implicitHeight();}
+                check(database && settings && qAbs(database->height()-settings->height())<1,"home tools have equal card heights");
+                check(qAbs(database->width()-settings->width())<1,"home tools have equal card widths");
+                const auto db=database->mapRectToItem(view->rootObject(),database->boundingRect()),prefs=settings->mapRectToItem(view->rootObject(),settings->boundingRect());
+                check(!db.intersects(prefs) && db.left()>=0 && prefs.right()<=view->width(),"home tools stay separate and inside the viewport");
             }
             if((name.startsWith("live-") || name=="last-jump-full") && sweep && size.width()>=1000) {
                 auto *summary=item(view->rootObject(),"raceLastJump");
@@ -878,12 +887,22 @@ public slots:
 
 static void appearanceRegressions(MainWindow &main) {
     main.show();main.resize(1024,640);auto *appearance=scene(&main)->rootContext()->contextProperty("appearance").value<QuickAppearance *>();
+    render(&main,"home-tools",true);
     const bool oldCompact=appearance->compactUi();const qreal oldScale=appearance->textScale(),oldUi=appearance->uiScale();
     appearance->setCompactUi(false);appearance->setUiScale(.7);appearance->setTextScale(1);
     QuickAppearance persisted;check(persisted.uiScale()==.7 && persisted.textScale()==1,"UI scale and text size persist independently");
     auto *navigation=main.findChild<QuickUi *>();navigation->showAppearance();QTest::qWait(120);
     QWidget *popup=nullptr;for(auto *widget:QApplication::allWidgets())if(widget->isVisible() && widget->property("sjQuickUtility").toBool())popup=widget;
     check(popup,"appearance settings open");auto *view=popup->findChild<QQuickWidget *>();
+    auto *language=item(view->quickWindow()->contentItem(),"appearanceLanguage");check(language,"appearance offers a language selector");
+    const int originalLanguage=navigation->languageIndex();
+    for(int selected:{1,2,0}) {
+        language->setProperty("currentIndex",selected);check(QMetaObject::invokeMethod(language,"activated",Q_ARG(int,selected)),"activate appearance language");QTest::qWait(150);
+        check(navigation->languageIndex()==selected && language->property("currentIndex").toInt()==selected,"appearance applies and retains selected language");
+        const QString expected=selected==1?QString("Ski jumping simulator"):selected==2?QString::fromUtf8("Simulátor skoků na lyžích"):QString::fromUtf8("Symulator skoków narciarskich");
+        check(item(scene(&main)->rootObject(),"homeDescription")->property("text").toString()==expected,"appearance language updates the open home screen");
+    }
+    check(navigation->setLanguage(originalLanguage),"restore language after appearance regression");QTest::qWait(50);
     auto typeSetting=[&](const QString &name,const QString &text){
         auto *spin=item(view->quickWindow()->contentItem(),name);check(spin,"appearance percentage control exists");
         auto *input=spin->property("contentItem").value<QQuickItem *>();check(input,"percentage input exists");
@@ -1172,6 +1191,7 @@ static void hillSearchRegression(QQuickWidget *view,const QString &name,const QS
     while(target<labels.size() && labels.count(labels[target])!=1)++target;
     check(target<labels.size(),"hill search fixture has a unique name");
     clickControl(view,name);auto *popup=control->property("popup").value<QObject *>();
+    const auto waitForPopupClose=[popup](){for(int i=0;i<25 && popup->property("visible").toBool();++i)QTest::qWait(20);};
     auto *search=popup->findChild<QQuickItem *>("hillChoiceSearch");auto *choices=popup->findChild<QQuickItem *>("choiceResults");
     check(search && search->isVisible() && search->hasActiveFocus() && choices,"opening a searchable hill selector focuses its discreet search field");
     search->setProperty("text","no-such-hill-xyz");QTest::qWait(60);
@@ -1179,17 +1199,17 @@ static void hillSearchRegression(QQuickWidget *view,const QString &name,const QS
     const auto popupBounds=popup->property("contentItem").value<QQuickItem *>()->mapRectToItem(view->rootObject(),popup->property("contentItem").value<QQuickItem *>()->boundingRect());
     check(popupBounds.top()>=0 && popupBounds.bottom()<=view->height() && popupBounds.height()>=search->height(),"empty hill search remains within the viewport with its search field visible");
     QTest::keyClick(view,Qt::Key_Return);QTest::qWait(30);check(control->property("currentIndex").toInt()==previous,"empty search does not change the selected hill");
-    QTest::keyClick(view,Qt::Key_Escape);QTest::qWait(80);check(!popup->property("visible").toBool() && control->property("currentIndex").toInt()==previous,"cancelling hill search keeps the original selection");
+    QTest::keyClick(view,Qt::Key_Escape);waitForPopupClose();check(!popup->property("visible").toBool() && control->property("currentIndex").toInt()==previous,"cancelling hill search keeps the original selection");
     clickControl(view,name);search->setProperty("text",labels[target].toUpper());QTest::qWait(60);
     check(choices->property("count").toInt()==1,"hill search is case insensitive and filters the actual options");
-    QTest::keyClick(view,Qt::Key_Down);QTest::keyClick(view,Qt::Key_Up);QTest::keyClick(view,Qt::Key_Return);QTest::qWait(100);
-    check(!popup->property("visible").toBool() && control->property("currentIndex").toInt()==target,"filtered hill selection maps back to the original source index");
+    QTest::keyClick(view,Qt::Key_Down);QTest::keyClick(view,Qt::Key_Up);QTest::keyClick(view,Qt::Key_Return);waitForPopupClose();
+    check(!popup->property("visible").toBool() && control->property("currentIndex").toInt()==target,QString("filtered hill selection maps back to the original source index (%1: visible=%2, index=%3, expected=%4)").arg(name).arg(popup->property("visible").toBool()).arg(control->property("currentIndex").toInt()).arg(target));
     if(name=="calendar-field-hill") {
         auto *fields=item(view->rootObject(),"calendarInspectorFields");
         check(fields && fields->height()>60,"calendar inspector keeps usable field height after a hill selection");
     }
     clickControl(view,name);
-    check(search->property("text").toString().isEmpty() && choices->property("count").toInt()==labels.size(),"reopening hill search restores the full list");QTest::keyClick(view,Qt::Key_Escape);QTest::qWait(60);
+    check(search->property("text").toString().isEmpty() && choices->property("count").toInt()==labels.size(),"reopening hill search restores the full list");QTest::keyClick(view,Qt::Key_Escape);waitForPopupClose();
 }
 static void seasonWorkflowRegressions(MainWindow &main) {
     main.show();main.resize(1200,800);
@@ -2455,6 +2475,8 @@ static void interactionRegressions(MainWindow &main) {
 #include "playground-regressions.h"
 #include "athlete-studio-regressions.h"
 #include "hill-studio-regressions.h"
+#include "config-defaults-regressions.h"
+#include "motion-feedback-regressions.h"
 
 int main(int argc,char **argv) {
     QApplication app(argc,argv);
@@ -2501,6 +2523,8 @@ int main(int argc,char **argv) {
         check(headline->property("text").toString()==QString::fromUtf8("Symulator skoków narciarskich"),"Polish restores the open Quick scene");
         qInfo()<<"PASS: live language switching";return 0;
     }
+    if(app.arguments().contains("--config-defaults-only")){configDefaultsRegressions(main);return 0;}
+    if(app.arguments().contains("--motion-feedback-only")){motionFeedbackRegressions(main);return 0;}
     if(app.arguments().contains("--hill-studio-only")){hillStudioRegressions(main);return 0;}
     if(app.arguments().contains("--athlete-studio-only") || app.arguments().contains("--athlete-patches-only")){athleteStudioRegressions(main,app.arguments().contains("--athlete-patches-only"));return 0;}
     if(app.arguments().contains("--playground-only")){playgroundRandomRegressions();playgroundBackendRegressions();playgroundUiRegressions(main);return 0;}
@@ -2535,7 +2559,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--audit-data-only")){auditDataRegressions();return 0;}
     if(app.arguments().contains("--geometry-only")){geometryRegressions(main);return 0;}
     if(app.arguments().contains("--ko-groups-only")){koGroupingRegressions(main);return 0;}
-    if(app.arguments().contains("--rosters-only")){rosterRegressions(main);return 0;}
+    if(app.arguments().contains("--rosters-only") || app.arguments().contains("--roster-only")){rosterRegressions(main);return 0;}
     if(app.arguments().contains("--menus-only")){menuRegressions(main);return 0;}
     if(app.arguments().contains("--workflow-only")){seasonWorkflowRegressions(main);return 0;}
     if(app.arguments().contains("--appearance-only")){appearanceRegressions(main);return 0;}

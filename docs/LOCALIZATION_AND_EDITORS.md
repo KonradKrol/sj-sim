@@ -16,10 +16,14 @@ Pary perków skoczni:
 
 | Para | Strona dodatnia | Strona ujemna |
 | --- | --- | --- |
-| Charakter | Katapulta | Królestwo lotników |
-| Lądowanie | Przyjazny zeskok | Bez marginesu |
-| Wiatr | Wietrzna ruletka | Spokojne niebo |
+| Charakter | Premiuje wybicie | Lotna skocznia |
+| Lądowanie | Przyjazny zeskok | Utrudnione lądowanie |
+| Wiatr | Wietrzna aura | Spokojna pogoda |
 
 Model domenowy udostępnia preferencję wybicia/lotu (±0,15 / 0,30 / 0,55), próg trudnego lądowania i względną zmienność wiatru. Przyjazny zeskok podnosi próg o 3/6/10% HS, a Bez marginesu obniża go o 1,5/3/5% HS. Zmienność wynosi 1,35/1,8/2,5 dla ruletki oraz 0,75/0,5/0,25 dla stabilności. To parametry przygotowane dla przyszłej symulacji, a nie zmiany bieżącego silnika.
 
 Test `--hill-studio-only` obejmuje walidację, poziomy perków, niezależność od danych symulacji, zapis, import/eksport, cofanie oraz widok przy małym oknie. `--athlete-patches-only` sprawdza edytor skoczka i przechodzenie przez wszystkie trzy poziomy.
+
+W obu edytorach trzy siły perka są dostępne bezpośrednio obok siebie. Ponowne kliknięcie zaznaczonej siły usuwa perk. Skocznie używają określeń „Lekko”, „Wyraźnie”, „Mocno”, a skoczkowie „Zwykły”, „Wzmocniony”, „Potężny”. Punktacja skoczni jest stale rozwinięta. Próg lądowania opisuje zdanie „Zeskok zaczyna się wypłaszczać od … m”.
+
+Zmiana perka wysyła osobne powiadomienia o perkach, historii i statusie. Nie odświeża całej biblioteki ani pól tożsamości. Paczka nadal jest zapisywana atomowo przed zastosowaniem zmiany. Listy krajów są buforowane w kontrolerze, a QML pracuje na lokalnej tablicy zamiast wielokrotnie odczytywać natywną sekwencję podczas wyszukiwania kodu kraju.

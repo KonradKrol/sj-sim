@@ -10,6 +10,8 @@ static void hillStudioRegressions(MainWindow &main){
     hill.perks[0]=3;check(hill.takeoffBias()>.5,"third-tier takeoff preference is pronounced");hill.perks[0]=-3;check(hill.takeoffBias()<-.5,"opposite hill preference rewards flight");hill.perks[2]=3;check(hill.windVariability()>2,"lottery tier III has a pronounced domain effect");hill.perks[2]=-3;check(hill.windVariability()<.5,"stability tier III suppresses variation");
     auto invalid=HillProfile::create().toJson();invalid["hs"]=10;check(!HillProfile::fromJson(invalid,decoded,error),"HS below K rejected");invalid=HillProfile::create().toJson();invalid["perks"]=QJsonArray{0,0,4};check(!HillProfile::fromJson(invalid,decoded,error),"hill tier IV rejected");
     HillStudioController backend(nullptr,storage.path()+"/library");const auto legacy=GlobalDatabase::get()->packsSnapshot();
+    backend.add();QSignalSpy broadHillUpdates(&backend,&HillStudioController::changed),hillPerkUpdates(&backend,&HillStudioController::perksChanged);
+    backend.setPerk(1,1,3,false);check(broadHillUpdates.isEmpty() && hillPerkUpdates.count()==1 && backend.realHs()>134,"hill perk refreshes its derived threshold without rebuilding the library");backend.remove();
     backend.add();backend.setValue("name","Test Hill");backend.setPerk(1,1,3,false);check(backend.profile()["perks"].toList()[1].toInt()==3,"controller stores third tier");backend.setPerk(1,-1,1,false);check(backend.profile()["perks"].toList()[1].toInt()==-1,"opposite replaces selected side");backend.undo();check(backend.profile()["perks"].toList()[1].toInt()==3,"undo restores tier III");backend.redo();check(backend.profile()["perks"].toList()[1].toInt()==-1,"redo restores opposite");backend.setValue("hs",10);check(backend.profile()["hs"].toDouble()==134,"invalid value leaves saved hill unchanged");
     HillStudioController reopened(nullptr,storage.path()+"/library");check(reopened.profile()["name"]=="Test Hill","hill edits persist across sessions");check(reopened.exportTo(storage.path()+"/export.json") && reopened.importFrom(storage.path()+"/export.json"),"hill pack exports and imports");check(reopened.packs().size()==2 && reopened.profile()["id"]!=backend.profile()["id"],"import creates independent pack and profile identities");backend.remove();backend.undo();check(backend.profiles().size()==1,"hill removal can be undone");check(GlobalDatabase::get()->packsSnapshot()==legacy,"authoring does not modify simulation data");
     {
@@ -22,9 +24,14 @@ static void hillStudioRegressions(MainWindow &main){
     DatabaseEditorWindow window;auto *uiBackend=new HillStudioController(&window,storage.path()+"/ui");window.setProperty("hillStudio",QVariant::fromValue(static_cast<QObject *>(uiBackend)));window.findChild<QTabWidget *>()->setCurrentIndex(1);render(&window,"hill-studio-empty",true);QTest::qWait(80);
     check(item(scene(&window)->rootObject(),"hillStudio"),"modern hill studio opens in hills catalog");clickControl(scene(&window),"hillAdd");QTest::qWait(60);
     uiBackend->setValue("name","Vikersund");uiBackend->setValue("hs",225);uiBackend->setPerk(1,1,3,false);QTest::qWait(60);
-    clickControl(scene(&window),"athletePerk-takeoff");check(uiBackend->profile()["perks"].toList()[0].toInt()==1,"hill badge selects tier I");clickControl(scene(&window),"athletePerkLevel-takeoff");clickControl(scene(&window),"athletePerkLevel-takeoff");check(uiBackend->profile()["perks"].toList()[0].toInt()==3,"hill badge upgrades through II to III");clickControl(scene(&window),"athletePerkLevel-takeoff");check(uiBackend->profile()["perks"].toList()[0].toInt()==1,"tier control returns from III to I");
+    check(item(scene(&window)->rootObject(),"hillScoring")->isVisible(),"hill scoring is expanded by default");
+    clickControl(scene(&window),"hillPerk-takeoff-1");check(uiBackend->profile()["perks"].toList()[0].toInt()==1,"hill strength selector applies light preference");
+    clickControl(scene(&window),"hillPerk-takeoff-3");check(uiBackend->profile()["perks"].toList()[0].toInt()==3,"strong hill preference can be selected directly");
+    check(item(scene(&window)->rootObject(),"hillPerk-takeoff-3")->property("checked").toBool() && !item(scene(&window)->rootObject(),"hillPerk-takeoff-1")->property("checked").toBool(),"current hill strength is highlighted");
+    clickControl(scene(&window),"hillPerk-takeoff-3");check(uiBackend->profile()["perks"].toList()[0].toInt()==0,"clicking selected strength removes the hill perk");
+    clickControl(scene(&window),"hillPerk-takeoff-1");
     auto *view=scene(&window);
-    for(const QString name:{QString("athletePerk-takeoff"),QString("athletePerkLevel-takeoff")}){
+    for(const QString name:{QString("hillPerk-takeoff-1"),QString("hillPerk-takeoff-3")}){
         const auto point=controlPoint(view,name);QTest::mousePress(view,Qt::LeftButton,Qt::NoModifier,point);QTest::mouseMove(view,QPoint(1,1));QTest::mouseRelease(view,Qt::LeftButton,Qt::NoModifier,QPoint(1,1));
         check(uiBackend->profile()["perks"].toList()[0].toInt()==1,"cancelled badge gesture leaves perk unchanged");
     }

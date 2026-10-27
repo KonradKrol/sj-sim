@@ -201,6 +201,7 @@ FocusScope {
                 contentItem: Item {
                     Rectangle {
                         width: progress.indeterminate ? parent.width*.25 : progress.visualPosition*parent.width
+                        Behavior on width { enabled: !progress.indeterminate && Theme.motion>0; NumberAnimation { duration: Theme.motion; easing.type: Easing.OutCubic } }
                         height: parent.height; radius: 4; color: Theme.accent
                         SequentialAnimation on x {
                             running: progress.visible && progress.indeterminate && Theme.motion > 0
