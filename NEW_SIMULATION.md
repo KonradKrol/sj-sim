@@ -1,5 +1,7 @@
 Czas zmigrować na nowy system symulacji i formy. Utwórz nowy branch od aktualnego. Nazwij go `feature/simulation-v2`.
 
+Przejdź w pełni na nowy system skoczków i skoczni, także w bazie danych.
+
 # Nowy silnik symulacji
 
 Teraz będzie wszystko nowe. Możliwe że inne rozkłady prawdopodobieństwa. Podaj mi zarazem od razu, potem kontynuuj pracę, jakie rozkłady prawdopodobieństwa są obecnie używane? Czy Cauchy miałby gdzieś sens albo Laplace?
@@ -19,6 +21,7 @@ Zadaj mi 10-15 pytań zanim zaczniesz, żeby pokryć wszystko o co można zapyta
 + K skoczni - im wyższy, tym większe bonusy/straty mają zawodnicy z perkiem lotnika/specjalisty od małych skoczni.
 ##### Pogoda
 + Wiatr. Trochę zmieni się obecny model wiatru i jego wpływ. Natomiast dalej są korytarze, kierunki i siły wiatru.
++ Śnieg. Śnieg też jest do przemodelowania chyba, szczególnie od strony UX i jego ustawiania. Śnieg po prostu pogarsza skoki i tyle.
 ##### Inne
 + Belka, tak jak teraz. Np. przy wietrze tylnym, jeśli tak nie jest zaimplementowane, raczej pomaga trochę barzdiej wyższy najazd, więc tu liniowość troszkę może być naruszona. 
 + Funkcja manipulacji skoku. TUTAJ TRZEBA TOTALNIE PRZEBUDOWAĆ TE OCHYDNE UI bezwartościowe.
@@ -49,7 +52,17 @@ Przed zadaniem pytań poeksploruj wpierw bazę kodu.
 
 <na razie forma jest taka jaka jest, za niedlugo zrobimy auto-zmianę formy w sezonie>
 
+# Zaktualizowany system opadów (śnieg lub deszcz).
+Niech opady po prostu pogarszają skoki i tyle.
+Niech będzie 10 poziomów, od 0 do 10.
+Niech to się samo zmienia w trakcie konkursu, np na koniec konkursu większy deszcz. Dynamicznie tak jak obecnie jest bodajże.
+Ale pod względem UX to ma być dużo prostsze. Niech będzie 5 opcji do wyboru ze śniegiem. Albo brak śniegu, albo stabilne opady śniegu, albo bardzo zmienne opady i nie wiadomo czego się spodziewać, albo śnieżyca absolutna. i wymyśl jeszcze jakąś opcję.
+Tutaj ma być bardzo ładne kafelkowe UI z wyborami fajnymi. Satysfakcjonujące ładne UI.
+W trybie sezonów jeśli są włączone daty konkursów, to w zależności od daty wymyśl algorytm wyboru opadów do konkursu, pewnie w różnych porach trochę inna szansa jest, nie wiem nawet. Weź pod uwagę kraj skoczni również. Uzytkownik może to sobie zmienić przed konkursem zawsze.
+
 # Nowy system wiatru
+
+## Wiatr w UX
 
 ## Ciągły model wiatru i lotu
 
