@@ -5,7 +5,6 @@ import QtQuick.Layouts 1.15
 Control {
     id: tuning
     property var backend
-    property bool localEditing: false
     readonly property var values: backend.values
     padding: Theme.dp(12)
     implicitHeight: contentItem.implicitHeight+topPadding+bottomPadding
@@ -25,8 +24,5 @@ Control {
             WeatherNumber { backend: tuning.backend; fieldKey: "variability"; factor: .1; label: qsTr("Zmienność w czasie · 0–10"); maximum: 10; Layout.fillWidth: true; explanation: qsTr("0: bez zmian. Wyżej: silniejsze podmuchy i szybsze zmiany.") }
             WeatherNumber { backend: tuning.backend; fieldKey: "differences"; factor: .1; label: qsTr("Różnice na zeskoku · 0–10"); maximum: 10; Layout.fillWidth: true; explanation: qsTr("Wyższa wartość: większe różnice wzdłuż skoczni.") }
         }
-        Rectangle { Layout.fillWidth: true; Layout.preferredHeight: 1; color: Theme.divider }
-        SButton { objectName: "weatherLocalToggle"; text: tuning.localEditing ? qsTr("Ukryj punkty na zeskoku") : qsTr("Dostosuj w wybranym miejscu"); primary: tuning.localEditing; onClicked: tuning.localEditing=!tuning.localEditing }
-        Loader { active: tuning.localEditing; visible: active; Layout.fillWidth: true; Layout.preferredHeight: status===Loader.Ready && item ? item.implicitHeight : 0; sourceComponent: Component { WeatherLocalWind { backend: tuning.backend } } }
     }
 }

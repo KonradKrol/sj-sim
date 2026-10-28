@@ -9,6 +9,7 @@ Item {
     property real currentValue: fields ? Number(fields.value) : 0
     property string draft: ""
     property string recordKey: ""
+    property bool flexibleDecimal: false
     onRecordKeyChanged: { input.dirty=false; synchronize() }
     readonly property string localeName: Theme.localeName
     onLocaleNameChanged: synchronize()
@@ -30,8 +31,8 @@ Item {
         if(fields.mixed && draft.length===0)return
         if(currentValue===fields.minimum && draft===fields.specialText)return
         var value=NaN
-        try {value=Number.fromLocaleString(Qt.locale(Theme.localeName),draft)} catch(error) {}
-        if(input.acceptableInput && isFinite(value)){if(value!==currentValue)setValue(value);else draft=formattedValue()}
+        try {value=control.flexibleDecimal ? Number(draft.trim().replace(",",".")) : Number.fromLocaleString(Qt.locale(Theme.localeName),draft)} catch(error) {}
+        if(input.acceptableInput && draft.trim().length>0 && isFinite(value) && value>=fields.minimum && value<=fields.maximum){if(value!==currentValue)setValue(value);else draft=formattedValue()}
         else {draft=fields.mixed ? "" : formattedValue();invalidFeedback.restart()}
     }
     function step(direction) {if(input.dirty)commitInput();setValue(currentValue+direction*Number(fields.step))}
@@ -46,12 +47,14 @@ Item {
         horizontalAlignment: TextInput.AlignRight
         font.family: Theme.mono
         Accessible.name: control.label || control.fields.accessibleName || control.fields.label || control.fields.tip || control.fields.name || ""
-        validator: DoubleValidator { bottom: control.fields.minimum; top: control.fields.maximum; decimals: control.fields.decimals; locale: Qt.locale(Theme.localeName).name }
+        validator: control.flexibleDecimal ? decimalValidator : localeValidator
         onTextEdited: {dirty=true;control.draft=text}
         onEditingFinished: control.commitInput()
         Keys.onUpPressed: control.step(1)
         Keys.onDownPressed: control.step(-1)
     }
+    DoubleValidator { id: localeValidator; bottom: control.fields.minimum; top: control.fields.maximum; decimals: control.fields.decimals; locale: Qt.locale(Theme.localeName).name }
+    RegularExpressionValidator { id: decimalValidator; regularExpression: new RegExp("[+-]?[0-9]*"+(control.fields.decimals>0?"([.,][0-9]{0,"+control.fields.decimals+"})?":"")) }
     Label { id: suffix; text: control.fields.suffix || ""; visible: text.length>0; anchors.right: parent.right; anchors.rightMargin: 44; anchors.verticalCenter: parent.verticalCenter; color: Theme.muted; font.pointSize: Theme.caption }
     Column {
         anchors.right: parent.right; anchors.top: parent.top; anchors.bottom: parent.bottom

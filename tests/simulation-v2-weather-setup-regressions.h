@@ -40,6 +40,11 @@ static void simulationV2WeatherSetupRegressions() {
     const auto pointCount=setup.references().size();setup.putReference(113,2.1,138);
     check(setup.references().size()==pointCount,"editing the same location updates instead of duplicating a reference");
     setup.removeReference(setup.referenceAt(113)["index"].toInt());check(setup.references().size()==pointCount-1,"local reference can be removed");
+    const auto neighbour=setup.station(1);const auto fixedSeed=setup.values()["seed"];
+    for(int i=0;i<20;++i)setup.setStation(3,"strength",1.+i*.1);
+    check(setup.references().size()==6 && std::abs(setup.station(1)["strength"].toDouble()-neighbour["strength"].toDouble())<1e-8,"repeated direct slope edits keep six controls and preserve other reference values");
+    setup.setStation(3,"strength",0);setup.setStation(3,"direction",137);setup.setStation(3,"strength",2);
+    check(std::abs(setup.station(3)["direction"].toDouble()-137)<1e-8 && setup.values()["seed"]==fixedSeed,"zero-strength point remembers a direction chosen before adding wind");
     for(int index=5;index<SimulationV2::weatherPresetCount;++index){setup.applyPreset(index);check(setup.values()["preset"].toInt()==index,"all six extra scenarios are selectable");}
     setup.setValue("precipitationScenario",1);setup.setValue("precipitationIntensity",7);
     setup.setValue("precipitationScenario",3);setup.setValue("precipitationIntensity",2);check(setup.precipitationParameters().intensity==8,"heavy precipitation displays its actual minimum intensity");setup.setValue("precipitationScenario",1);setup.setValue("precipitationIntensity",7);

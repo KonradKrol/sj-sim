@@ -67,11 +67,24 @@ static void simulationV2SetupRegressions(MainWindow &main) {
     check(item(scene(&window)->rootObject(),"weatherDirection"),"customization is optional and reveals the four simple controls");
     window.getWeatherSetup()->setValue("direction",37);auto *direction=item(scene(&window)->rootObject(),"weatherDirection");direction->forceActiveFocus();QTest::keyClick(scene(&window),Qt::Key_Right);
     check(std::abs(window.getWeatherSetup()->values()["direction"].toDouble()-38)<.01,"direction dial supports one-degree keyboard changes rather than four rigid directions");
-    clickControl(scene(&window),"weatherLocalToggle");QTest::qWait(30);
-    check(item(scene(&window)->rootObject(),"weatherLocalPosition") && item(scene(&window)->rootObject(),"weather-local-distance"),"local wind editing exposes a clickable slope and a precise metre input");
-    QMetaObject::invokeMethod(item(scene(&window)->rootObject(),"weather-local-distance"),"committed",Q_ARG(double,113));
-    QMetaObject::invokeMethod(item(scene(&window)->rootObject(),"weather-local-strength"),"committed",Q_ARG(double,2.4));
-    check(std::abs(window.getWeatherSetup()->referenceAt(113)["strength"].toDouble()-2.4)<1e-8,"local UI writes the actual field at the entered metre");
+    auto *pointer=item(scene(&window)->rootObject(),"weatherDirectionPointer");check(pointer,"direction selector has a direct pointer surface");
+    controlPoint(scene(&window),"weatherDirectionPointer");
+    const auto chooseAngle=[&](qreal x,qreal y){QTest::mouseClick(scene(&window),Qt::LeftButton,Qt::NoModifier,pointer->mapToScene(QPointF(x,y)).toPoint());QTest::qWait(10);};
+    chooseAngle(pointer->width()/2,3);check(std::abs(window.getWeatherSetup()->values()["direction"].toDouble())<.01,"wind from above the skis means headwind");
+    chooseAngle(pointer->width()/2,pointer->height()-3);check(std::abs(window.getWeatherSetup()->values()["direction"].toDouble()-180)<.01,"wind from behind the skier means tailwind");
+    auto *strength=item(scene(&window)->rootObject(),"input-weather-strength");check(strength,"wind strength text input exists");
+    for(const auto entry:QList<QPair<QString,double>>{{"2.4",2.4},{"2,6",2.6}}) {
+        strength->forceActiveFocus();QTest::keyClick(scene(&window),Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(scene(&window),entry.first);QTest::keyClick(scene(&window),Qt::Key_Tab);QTest::qWait(20);
+        check(std::abs(window.getWeatherSetup()->values()["strength"].toDouble()-entry.second)<1e-8,"wind input accepts a dot or comma without reverting the value");
+    }
+    clickControl(scene(&window),"windStation-3");QTest::qWait(30);
+    check(item(scene(&window)->rootObject(),"weather-station-strength") && !item(scene(&window)->rootObject(),"weatherLocalToggle"),"local editing opens directly inside the main slope without a separate point form");
+    QMetaObject::invokeMethod(item(scene(&window)->rootObject(),"weather-station-strength"),"committed",Q_ARG(double,2.4));
+    check(std::abs(window.getWeatherSetup()->station(3)["strength"].toDouble()-2.4)<1e-8 && window.getWeatherSetup()->references().size()==6,"station UI edits the actual field while keeping exactly six simple controls");
+    auto *stationInput=item(scene(&window)->rootObject(),"input-wind-station-strength");check(stationInput,"direct station strength has an editable input");
+    stationInput->forceActiveFocus();QTest::keyClick(scene(&window),Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(scene(&window),"3,2");
+    clickControl(scene(&window),"windStation-4");QTest::qWait(20);
+    check(std::abs(window.getWeatherSetup()->station(3)["strength"].toDouble()-3.2)<1e-8,"switching arrows commits the previous point before editing another");
     check(!item(scene(&window)->rootObject(),"weatherAdvancedToggle") && !item(scene(&window)->rootObject(),"weather-gustProbability"),"technical weather form is not exposed by customization");
     check(item(scene(&window)->rootObject(),"weatherPrecipitationKind") && item(scene(&window)->rootObject(),"weatherPrecipitationLevel"),"precipitation exposes a short independent kind and intensity choice");
     window.getWeatherSetup()->setValue("precipitationKind",1);window.getWeatherSetup()->setValue("precipitationLevel",3);

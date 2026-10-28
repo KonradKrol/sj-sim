@@ -7,6 +7,7 @@
 #include <QVariantList>
 #include <QDate>
 #include <memory>
+#include <array>
 
 // UI-owned configuration; running jobs receive an immutable field snapshot.
 class SimulationWeatherSetup : public QObject {
@@ -42,6 +43,8 @@ public:
     Q_INVOKABLE QVariantMap referenceAt(double distance) const;
     Q_INVOKABLE void putReference(double distance,double strength,double direction);
     Q_INVOKABLE void removeReference(int index);
+    Q_INVOKABLE QVariantMap station(int index) const;
+    Q_INVOKABLE void setStation(int index,const QString &key,double value);
     void setPreviewSeconds(double);
 signals:
     void changed();
@@ -53,6 +56,7 @@ private:
     double variability=0,differences=0,previewTime=0,requestedDirection=0,origin=0;
     SimulationV2::Surface surface=SimulationV2::Surface::Snow;
     SimulationV2::Seed seed=0;
+    std::array<double,6> stationZeroDirections{};
     SimulationV2::WindParameters wind;
     SimulationV2::PrecipitationParameters precipitation;
     std::shared_ptr<const SimulationV2::WeatherField> weather;

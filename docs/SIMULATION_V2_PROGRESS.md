@@ -868,3 +868,32 @@ to 120,849 / 120,849 / 119,759 / 112,146 / 99,822 m. Poprzednio przy 10 było
 Teraz wykonać ostatnią uwagę użytkownika: czytelne kierunki względem skoczka/nart,
 sprawdzić inputy i **usunąć duży formularz lokalnych punktów**, przenosząc prostą
 edycję na sześć strzałek głównego `WindSlopePreview`. Dopiero potem wrócić do sezonów.
+
+## Bezpośrednia edycja głównego schematu — wdrożenie
+
+Usunięto `WeatherLocalWind` i jego duży formularz. Każda z sześciu strzałek
+`WindSlopePreview` otwiera mały edytor **w tej samej karcie**: kierunek i siła
+wyjściowa. Jeden obszar naraz; ponowny klik/× zamyka. Nie ma listy ani dokładania
+punktów. `station`/`setStation` mapują tę obsługę na sześć referencji ciągłego pola;
+pozostałe wartości w węzłach są zachowane, seed nie zmienia się. API dokładnych
+dowolnych punktów pozostaje dla eksperymentów, bez ekspozycji w Quick.
+
+`WindDirectionDial` ma teraz własną, zgodną mapę wskaźnika i myszy: narty/skoczek
+pośrodku, pod narty u góry, w plecy u dołu, boczny z boków. Strzałka pokazuje skąd
+wieje, a obok jest nazwany kierunek w odpowiednim kolorze i konkretne stopnie.
+Poprzedni natywny Dial miał inną geometrię pozycji niż rysowana wskazówka —
+nie przywracać go bez zgodności obu mapowań. Klawiatura i wskaźnik działają co 1°.
+
+Inputy wiatru akceptują kropkę oraz przecinek. `NumberField.flexibleDecimal`
+jest opcjonalne, domyślnie wyłączone dla pozostałych pól. Przy zmianie wybranej
+strzałki zmienia się `recordKey`, aby draft nie przechodził do innego miejsca.
+Zerowy wiatr pamięta wybrany kierunek przed dodaniem siły. Pozostają cztery główne
+ustawienia, a scenariusze są schowane domyślnie.
+
+Walidacja obejmuje rzeczywiste kliknięcia góry/dołu tarczy, klawiaturę,
+wpisywanie 2.4 i 2,6, edycję siły na strzałce, stałe sześć punktów oraz zachowanie
+sąsiednich węzłów i seeda. `--roster-inputs-only` i `--config-defaults-only` PASS.
+Końcowy `--simulation-v2-setup-only`: PASS, także wpisanie wartości na strzałce
+i przejście do następnej bez utraty poprzedniej. Produkcyjny build Qt 5.15.3 PASS,
+brak nowych ostrzeżeń QML i pętli układów. Zmiany gotowe do ręcznego testowania.
+Po ukończeniu tej poprawki wrócić do nowych sezonów według kolejki wyżej.

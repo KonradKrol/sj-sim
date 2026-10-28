@@ -21,7 +21,8 @@ ColumnLayout {
     NumberField {
         objectName: "weather-"+control.fieldKey
         Layout.fillWidth: true
-        direct: false; label: control.label
+        direct: false; label: control.label; flexibleDecimal: true
+        recordKey: control.fieldKey+":"+control.backend.values.seed
         fields: ({value:Number(control.backend.values[control.fieldKey] || 0)*control.factor,minimum:control.minimum,maximum:control.maximum,step:control.step,decimals:control.step<1?1:0,name:"weather-"+control.fieldKey})
         onCommitted: function(value){control.backend.setValue(control.fieldKey,value/control.factor)}
     }

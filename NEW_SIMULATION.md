@@ -162,10 +162,14 @@ Ustalenia 28.10.2026 po odpowiedziach użytkownika:
   pokazywane. Etykiety i krótkie tooltipy tłumaczą efekt bez instrukcji aplikacji.
 - Dodatkowe zaakceptowane dostosowanie: **interaktywny kierunek 0–359°**,
   nie tylko cztery wybory co 90°. Sekcja ma być silnie odróżniona kontrastem
-  i hierarchią. Pod „Dostosuj w wybranym miejscu” proste kliknięcie zeskoku lub
-  wpisanie metra (np. 113), kierunek i siła. Zmiana działa od razu, punkt można
-  usunąć. Są to punkty odniesienia ciągłego pola, z płynnym przejściem między nimi,
-  a nie sztywne sektory. Wyjaśnić krótko, że podmuchy nadal wynikają ze zmienności.
+  i hierarchią. **Nowsza uwaga:** duży formularz punktów jest odrzucony. Edycja
+  lokalna ma być bezpośrednio na sześciu strzałkach gotowej głównej grafiki,
+  wyłącznie kierunek i siła w wybranym miejscu. Nie tworzyć listy wielu punktów
+  ani wymagać wpisywania metrów. Oznaczyć kierunki względem skoczka/nart,
+  bo sama liczba stopni i obracana wskazówka były nieczytelne. Są to punkty
+  odniesienia ciągłego pola, z płynnym przejściem, a nie sztywne sektory.
+  Dokładne dowolne pozycje (np. 113 m) mogą pozostać w API eksperymentalnym.
+  Sprawdzić inputy: nie mogą gubić/odrzucać poprawnych wartości podczas edycji.
 
 ### Kolejna kontrola deszczu (uwaga użytkownika)
 

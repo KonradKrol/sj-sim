@@ -46,6 +46,7 @@ void SimulationWeatherSetup::rebuild() {
     error.clear();emit changed();emit previewChanged();
 }
 void SimulationWeatherSetup::regenerate(bool includePrecipitation) {
+    stationZeroDirections.fill(0);
     seed=QRandomGenerator::global()->generate64();SimulationV2::SeededRandom rng(SimulationV2::deriveSeed(seed,0));
     const auto proposed=SimulationV2::proposeWeather(SimulationV2::weatherProposalContext(hill,surface,eventDate.month()),rng);
     wind=proposed.wind;
@@ -55,6 +56,7 @@ void SimulationWeatherSetup::regenerate(bool includePrecipitation) {
 void SimulationWeatherSetup::suggest() {if(!hasHill)return;precipitationEdited=false;regenerate(true);}
 void SimulationWeatherSetup::applyPreset(int index) {
     if(!hasHill || index<0 || index>=SimulationV2::weatherPresetCount)return;
+    stationZeroDirections.fill(0);
     seed=QRandomGenerator::global()->generate64();SimulationV2::SeededRandom rng(SimulationV2::deriveSeed(seed,0));
     wind=SimulationV2::sampleWeatherPreset(static_cast<SimulationV2::WeatherPreset>(index),hill.k,rng).wind;
     preset=index;modified=false;inferControls();rebuild();
@@ -217,4 +219,26 @@ void SimulationWeatherSetup::putReference(double distance,double strength,double
 void SimulationWeatherSetup::removeReference(int index) {
     if(!hasHill || wind.references.size()<=1 || index<0 || index>=int(wind.references.size()))return;
     wind.references.erase(wind.references.begin()+index);modified=true;inferControls();rebuild();
+}
+
+QVariantMap SimulationWeatherSetup::station(int index) const {
+    if(!hasHill || index<0 || index>=6)return {};
+    const double distance=hill.k*1.2*(index+.5)/6;
+    auto result=referenceAt(distance);result["distance"]=distance;
+    if(result["strength"].toDouble()<1e-8)result["direction"]=stationZeroDirections[std::size_t(index)];
+    return result;
+}
+
+void SimulationWeatherSetup::setStation(int index,const QString &key,double value) {
+    if(!hasHill || index<0 || index>=6 || !std::isfinite(value))return;
+    if((key!="strength" || !bounded(value,0,15)) && (key!="direction" || !bounded(value,0,360)))return;
+    if(key=="direction")stationZeroDirections[std::size_t(index)]=std::fmod(value,360);
+    auto next=wind;next.references.clear();
+    for(int i=0;i<6;++i) {
+        const auto point=station(i);
+        next.references.push_back({point["distance"].toDouble(),polar(point["strength"].toDouble(),point["direction"].toDouble())});
+    }
+    const auto current=station(index);
+    next.references[std::size_t(index)].value=polar(key=="strength"?value:current["strength"].toDouble(),key=="direction"?value:current["direction"].toDouble());
+    next.validate();wind=std::move(next);modified=true;inferControls();rebuild();
 }

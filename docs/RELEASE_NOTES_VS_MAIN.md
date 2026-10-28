@@ -1965,3 +1965,8 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
   natężenia 5/10. Silne opady mogą znacząco skracać skoki; lekki deszcz zachowuje
   dotychczasowy efekt. Dodano odtwarzalną analizę CLI i porównanie 300 000 skoków.
   Parametry pozostają założeniami gry do strojenia, a nie pomiarami FIS.
+
+- Uproszczono lokalny wiatr: kliknięcie jednej z sześciu strzałek otwiera edycję
+  w głównym schemacie. Zastępuje to duży formularz i listę punktów.
+- Kierunek ma odniesienie do nart/skoczka, podpisy i zgodną geometrię wskaźnika.
+  Pola wiatru przyjmują oba separatory dziesiętne i rozdzielają drafty wybranych miejsc.

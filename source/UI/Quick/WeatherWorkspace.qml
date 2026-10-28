@@ -65,7 +65,7 @@ ScrollView {
                 ColumnLayout {
                     Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: Theme.dp(760); Layout.alignment: Qt.AlignTop
                     spacing: Theme.dp(7)
-                    WindSlopePreview { Layout.fillWidth: true; samples: workspace.backend.preview; heading: workspace.scenarioName }
+                    WindSlopePreview { Layout.fillWidth: true; samples: workspace.backend.preview; backend: workspace.backend; heading: workspace.scenarioName }
                     Label { text: workspace.variabilityText; color: Theme.muted; font.pointSize: Theme.body; wrapMode: Text.WordWrap; Layout.fillWidth: true }
                     SButton { objectName: "weatherTuningToggle"; text: workspace.tuning ? qsTr("Ukryj dostosowanie") : qsTr("Dostosuj wiatr"); primary: true; enabled: workspace.values.ready; onClicked: workspace.tuning=!workspace.tuning }
                     Loader {
