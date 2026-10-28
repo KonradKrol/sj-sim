@@ -1890,3 +1890,12 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | A | [source/UI/Competition/Quick/LiveTable.qml](../source/UI/Competition/Quick/LiveTable.qml) | 109 | 0 |
 | A | [source/UI/Competition/Quick/competition-quick.qrc](../source/UI/Competition/Quick/competition-quick.qrc) | 14 | 0 |
 | A | [source/UI/Competition/Quick/fields.json](../source/UI/Competition/Quick/fields.json) | 190 | 0 |
+
+## Uzupełnienie — walidacja konkursu z profilami v2 (28.10.2026)
+
+- Automatyczna belka uwzględnia nowy OVR, formę, perki, K i rodzaj wydarzenia;
+  wybór zawodnika do obliczenia nie opiera się na ignorowanych dawnych technikach.
+- Mieszane wersje skoczka/skoczni są odrzucane przed startem zamiast kończyć się
+  wyjątkiem nowego silnika. Podgląd takiej konfiguracji bezpiecznie nie daje sugestii.
+- Usunięto crash wyszukiwania belki poza zakresem 0–200 nowego silnika, dodając
+  zgodny limit sugestii, walidację startu i zakres sterowania belką w konkursie v2.

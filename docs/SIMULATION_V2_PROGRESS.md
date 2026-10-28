@@ -600,3 +600,29 @@ Następnie `CompetitionManagerWindow::setupSimulator` ma dostać pole i pomiar
 oraz wspólny logiczny zegar; nie pokazywać nowego panelu dla ścieżki, która nadal
 wywołuje stary generator. Dalej migracja nowych sezonów/format zapisów, manipulacje,
 podgląd historii wiatru w wynikach i playground. Nie zaczynać UI wiatru od zera.
+
+## Przygotowanie konfiguracji konkursu do nowych profili — 28.10
+
+`CompetitionConfigWindow::suggestedGate` wybiera zawodnika według tego samego
+nowego baseline OVR/formy/perków/K/rodzaju wydarzenia co preview silnika, gdy
+skocznia ma profil v2. Dawne techniki nie zmieniają tego wyboru. Mieszany model
+zwraca brak sugestii, a walidacja startu odrzuca go przed wejściem do managera.
+
+Wykryto przy tym crash: domyślne pole belki konkursu dopuszczało wartości ponad
+200, a wyszukiwanie binarne przekazywało je do ścisłej walidacji v2. Sugestia v2
+ma teraz limit 200; start z wyższą belką jest odrzucany, a sterowanie belką w oknie
+nowego konkursu ograniczone do 0–200. Stara ścieżka zachowuje swoje zakresy.
+
+`--simulation-v2-competition-only`: PASS — odwrócone stare umiejętności nie
+wpływają na wybór najmocniejszego nowego skoczka, preview nie rzuca dla mieszanych
+wersji, a start jest blokowany czytelnym komunikatem. To jeszcze nie podłącza
+kanonicznego katalogu do wyboru zwykłego konkursu.
+
+Dalszy research: nowy sezon jest tworzony w
+`NewSimulationSaveConfigurationWindow` (trzy wybory paczek) i kopiowany przez
+`SimulationSavesWindow` (~104) do własnych obiektów `Jumper`/`Hill`. Ten punkt
+można podłączyć do snapshotu katalogu bez podmieniania GlobalDatabase. Potem
+sezonowy `CompetitionConfigWindow` dostaje już własne stabilne profile z zapisu.
+`CompetitionManagerWindow` nadal ma pięć ścieżek wykonywania skoku (ręczna,
+N, grupa, seria, cały konkurs) oraz osobne DNS. Przy podłączaniu nowego pola trzeba
+ujednolicić zegar we wszystkich ścieżkach i zachować ciągłość kwalifikacje → konkurs.

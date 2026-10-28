@@ -36,6 +36,8 @@
 #include <QResizeEvent>
 #include <limits>
 #include <memory>
+#include <algorithm>
+#include "../../simulation-v2/ProfileBridge.h"
 
 CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, SimulationSave *save) :
     QDialog(parent),
@@ -866,6 +868,22 @@ bool CompetitionConfigWindow::validateSimulationInputs()
         }
     }
 
+    const Hill selectedHill=getType()==SeasonCompetition?*seasonCompetition->getHill():hillEditor->getHillFromWidgetInput();
+    const bool newHill=bool(selectedHill.getSimulationProfile());
+    if(newHill && (ui->spinBox_startGate->value()<0 || ui->spinBox_startGate->value()>200)) {
+        QMessageBox::warning(this,tr("Nieprawidłowa belka"),tr("Wybierz belkę w zakresie od 0 do 200."),QMessageBox::Ok);
+        return false;
+    }
+    QVector<Jumper *> selectedAthletes;
+    if(rules.getCompetitionType()==CompetitionRules::Individual)
+        selectedAthletes=getType()==SeasonCompetition?seasonCompetitionJumpers:competitionJumpers;
+    else for(const auto &team:competitionTeams)for(auto *athlete:team.getJumpers())selectedAthletes.append(athlete);
+    for(auto *athlete:selectedAthletes)if(athlete && bool(athlete->getSimulationProfile())!=newHill) {
+        QMessageBox::warning(this,tr("Niezgodne profile"),
+            tr("Zawodnicy i skocznia muszą korzystać z tej samej wersji modelu. Wybierz zgodne paczki; nie można mieszać dawnych umiejętności z nowymi profilami."),QMessageBox::Ok);
+        return false;
+    }
+
     return true;
 }
 
@@ -1377,17 +1395,39 @@ void CompetitionConfigWindow::on_pushButton_jumpersLists_clicked()
 
 int CompetitionConfigWindow::suggestedGate() {
     const auto jumpers=type==SeasonCompetition?seasonCompetitionJumpers:competitionJumpers;
-    Jumper *best=nullptr;double strength=-std::numeric_limits<double>::infinity();
-    for(auto *jumper:jumpers)if(jumper){auto *skills=jumper->getJumperSkillsPointer();const double value=skills->getTakeoffTechnique()*.8225+skills->getFlightTechnique()*.81+skills->getForm()*.3675;if(value>strength){strength=value;best=jumper;}}
-    if(!best)return -1;
     Hill hill=type==SeasonCompetition?*seasonCompetition->getHill():hillEditor->getHillFromWidgetInput();
-    if(!std::isfinite(hill.getHSPoint())||hill.getHSPoint()<=0||hill.getPointsForGate()<=0||hill.getPointsForMeter()<=0)return -1;
+    if(!std::isfinite(hill.getHSPoint()) || hill.getHSPoint()<=0 || hill.getKPoint()<=0 || hill.getPointsForGate()<=0 || hill.getPointsForMeter()<=0)return -1;
+    const auto hillProfile=hill.getSimulationProfile();
+    SimulationV2::EventKind event=SimulationV2::EventKind::Competition;
+    if(type==SeasonCompetition)switch(seasonCompetition->getSerieType()) {
+    case CompetitionInfo::Training:event=SimulationV2::EventKind::Training;break;
+    case CompetitionInfo::TrialRound:event=SimulationV2::EventKind::Trial;break;
+    case CompetitionInfo::Qualifications:event=SimulationV2::EventKind::Qualification;break;
+    default:break;
+    }
+    const SimulationV2::QualityModel quality;
+    Jumper *best=nullptr;double strength=-std::numeric_limits<double>::infinity();
+    for(auto *jumper:jumpers)if(jumper) {
+        const auto profile=jumper->getSimulationProfile();
+        if(bool(profile)!=bool(hillProfile))return -1;
+        double value;
+        if(profile)value=quality.baseline(SimulationV2::athleteInput(*profile),hillProfile->k,hillProfile->takeoffBias(),event).value();
+        else {const auto *skills=jumper->getJumperSkillsPointer();value=skills->getTakeoffTechnique()*.8225+skills->getFlightTechnique()*.81+skills->getForm()*.3675;}
+        if(value>strength){strength=value;best=jumper;}
+    }
+    if(!best)return -1;
     CompetitionRules rules=type==SeasonCompetition?seasonCompetition->getRules():competitionRulesEditor->getCompetitionRulesFromWidgetInputs();
     const auto settings=windsGeneratorSettingsEditor->getWindsGenerationSettingsFromInputs();QVector<Wind> winds;
-    for(const auto &setting:settings)winds.append(Wind(setting.getBaseDirection(),setting.getBaseWindStrength()));
-    JumpManipulator manipulation;JumpSimulator simulator;simulator.setJumper(best);simulator.setHill(&hill);simulator.setCompetitionRules(&rules);simulator.setManipulator(&manipulation);simulator.setWinds(winds);simulator.setInrunSnow(inrunSnowGeneratorSettingsEditor->getBase());
-    int low=0,high=ui->spinBox_startGate->maximum();
-    while(low<high){const int middle=(low+high+1)/2;simulator.setGate(middle);simulator.setCompetitionStartGate(middle);const double distance=simulator.previewDistance();if(!std::isfinite(distance))return -1;if(distance<=hill.getHSPoint()*.97)low=middle;else high=middle-1;}
+    for(const auto &setting:settings){Wind wind;wind.setDirection(setting.getBaseDirection());wind.setStrength(setting.getBaseWindStrength());winds.append(wind);}
+    JumpManipulator manipulation;JumpSimulator simulator;
+    simulator.setJumper(best);simulator.setHill(&hill);simulator.setCompetitionRules(&rules);simulator.setManipulator(&manipulation);
+    simulator.setWinds(winds);simulator.setInrunSnow(inrunSnowGeneratorSettingsEditor->getBase());simulator.setSimulationEvent(event);
+    int low=0,high=hillProfile?std::min(200,ui->spinBox_startGate->maximum()):ui->spinBox_startGate->maximum();
+    while(low<high) {
+        const int middle=(low+high+1)/2;simulator.setGate(middle);simulator.setCompetitionStartGate(middle);
+        const double distance=simulator.previewDistance();if(!std::isfinite(distance))return -1;
+        if(distance<=hill.getHSPoint()*.97)low=middle;else high=middle-1;
+    }
     return low;
 }
 void CompetitionConfigWindow::on_pushButton_autoGate_clicked()

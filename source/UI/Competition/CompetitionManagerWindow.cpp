@@ -74,6 +74,8 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     personalBestNotificationsSuppressed(false)
 {
     ui->setupUi(this);
+    if(manager && manager->getCompetitionInfo() && manager->getCompetitionInfo()->getHill() && manager->getCompetitionInfo()->getHill()->getSimulationProfile())
+        ui->spinBox_actualGate->setRange(0,200);
 
     // The current KO group belongs to the start-list context, never to the
     // main competition results. Enforce that relationship at runtime as well
