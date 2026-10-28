@@ -1,4 +1,5 @@
 #include <QObject>
+#include <QEvent>
 #include <cmath>
 #include <algorithm>
 #include "CompetitionManagerWindow.h"
@@ -865,6 +866,17 @@ void CompetitionManagerWindow::setupGoToNextButtonForCompetitionEnd()
         QObject::disconnect(*connection);
         delete connection;
     });
+}
+
+void CompetitionManagerWindow::changeEvent(QEvent *event)
+{
+    QDialog::changeEvent(event);
+    if(event->type()!=QEvent::LanguageChange || !ui || !manager)return;
+    // These captions are assigned at runtime, so retranslateUi cannot refresh
+    // them. Do not reset the form: it also contains current scores and flags.
+    if(manager->checkCompetitionEnd())setupGoToNextButtonForCompetitionEnd();
+    else if(manager->checkRoundEnd())setupGoToNextButtonForNextRound();
+    else if(auto *team=dynamic_cast<TeamCompetitionManager *>(manager);team && team->checkGroupEnd())setupGoToNextButtonForNextGroup();
 }
 
 

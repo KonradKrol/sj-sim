@@ -4757,6 +4757,10 @@ průměrného větru</translation>
             <source>OK</source>
             <translation>OK</translation>
         </message>
+        <message>
+            <source>Pomiar wiatru</source>
+            <translation>Měření větru</translation>
+        </message>
     </context>
     <context>
         <name>CompetitionsArchiveListModel</name>
@@ -11491,6 +11495,54 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Własne ustawienia</source>
             <translation>Vlastní nastavení</translation>
         </message>
+        <message>
+            <source>FIS — przybliżenie</source>
+            <translation>FIS — přiblížení</translation>
+        </message>
+        <message>
+            <source>Pomiar przez czas lotu</source>
+            <translation>Měření během letu</translation>
+        </message>
+        <message>
+            <source>Gęsta sieć czujników</source>
+            <translation>Hustá síť čidel</translation>
+        </message>
+        <message>
+            <source>Odczyt przed skokiem</source>
+            <translation>Odečet při odrazu</translation>
+        </message>
+        <message>
+            <source>Wiatr na trasie lotu</source>
+            <translation>Vítr na trase letu</translation>
+        </message>
+        <message>
+            <source>Dotychczasowy Sj.Sim</source>
+            <translation>Původní Sj.Sim</translation>
+        </message>
+        <message>
+            <source>Ważony pomiar z nieruchomych czujników przez czas lotu. Wagi i rozmieszczenie są przybliżone; nie jest to dokładna oficjalna receptura FIS. Pomiar może rozmijać się z warunkami zawodnika.</source>
+            <translation>Vážené údaje z pevných čidel během letu. Váhy a rozmístění jsou přibližné, nejde o přesnou oficiální metodu FIS. Měření se může lišit od podmínek závodníka.</translation>
+        </message>
+        <message>
+            <source>Równe wagi czujników przez cały lot. Krótki podmuch może umknąć pomiarowi lub wpływać na wynik już po minięciu czujnika.</source>
+            <translation>Stejné váhy čidel po celý let. Krátký poryv může měření uniknout nebo jej ovlivnit až po průletu závodníka kolem čidla.</translation>
+        </message>
+        <message>
+            <source>Pomiar co około 5 m przez czas lotu. Lepiej wykrywa lokalne podmuchy, ale nadal nie odtwarza warunków zawodnika co do chwili.</source>
+            <translation>Měření přibližně každých 5 m během letu. Lépe zachytí místní poryvy, ale stále nesleduje podmínky závodníka v každém okamžiku.</translation>
+        </message>
+        <message>
+            <source>Jednorazowy odczyt czujników przy wybiciu. Zmiany w trakcie lotu nie wpływają na pomiar do punktacji.</source>
+            <translation>Jediný odečet čidel při odrazu. Změny během letu neovlivňují měření pro bodování.</translation>
+        </message>
+        <message>
+            <source>Średnia wiatru rzeczywiście napotkanego podczas lotu. Punkt odniesienia do symulacji, bez idealnego wyrównania wpływu na odległość.</source>
+            <translation>Průměr větru skutečně zaznamenaného za letu. Referenční model simulace, bez dokonalého vyrovnání vlivu na délku.</translation>
+        </message>
+        <message>
+            <source>Zachowuje wcześniejsze ustawienia sposobu kierunków i wpływu odległości na pomiar. Nie oznacza zgodności z FIS.</source>
+            <translation>Zachovává původní nastavení směru a vlivu délky na měření. Neznamená to shodu s pravidly FIS.</translation>
+        </message>
     </context>
     <context>
         <name>QuickBridge</name>
@@ -12091,6 +12143,10 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Wpływ odległości na rekompensatę</source>
             <translation>Vliv vzdálenosti na kompenzaci</translation>
         </message>
+        <message>
+            <source>Pomiar wiatru</source>
+            <translation>Měření větru</translation>
+        </message>
     </context>
     <context>
         <name>QuickCalendar</name>
@@ -12588,6 +12644,14 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Do awansu</source>
             <translation>K postupu</translation>
         </message>
+        <message>
+            <source>Wiatr ↗</source>
+            <translation>Vítr ↗</translation>
+        </message>
+        <message>
+            <source>Podgląd wiatru przed skokiem</source>
+            <translation>Náhled větru před skokem</translation>
+        </message>
     </context>
     <context>
         <name>RaceControls</name>
@@ -12713,6 +12777,10 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <location filename="../source/UI/Quick/RaceLastJump.qml" line="93" />
             <source>Śnieg</source>
             <translation>Sníh</translation>
+        </message>
+        <message>
+            <source>Wiatr ↗</source>
+            <translation>Vítr ↗</translation>
         </message>
     </context>
     <context>
@@ -14961,6 +15029,10 @@ za vítr</translation>
             <source>Wybierz lub skonfiguruj skocznię z dodatnim punktem K oraz punktem HS nie mniejszym od K.</source>
             <translation>Vyberte nebo nastavte můstek s kladným bodem K a bodem HS nejméně rovným K.</translation>
         </message>
+        <message>
+            <source>Pomiar wiatru</source>
+            <translation>Měření větru</translation>
+        </message>
     </context>
     <context>
         <name>SingleJumpsResultsScreen</name>
@@ -15639,6 +15711,103 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/EditorWidgets/WindsGeneratorSettingsWidgetInputItem.ui" line="398" />
             <source>OK</source>
             <translation>OK</translation>
+        </message>
+    </context>
+    <context>
+        <name>JumpWindProfile</name>
+        <message>
+            <source>Wiatr przed skokiem</source>
+            <translation>Vítr před skokem</translation>
+        </message>
+        <message>
+            <source>Wiatr na zeskoku</source>
+            <translation>Vítr na doskočišti</translation>
+        </message>
+        <message>
+            <source>Zamknij podgląd wiatru</source>
+            <translation>Zavřít náhled větru</translation>
+        </message>
+        <message>
+            <source>Przed</source>
+            <translation>Před</translation>
+        </message>
+        <message>
+            <source>W locie</source>
+            <translation>Za letu</translation>
+        </message>
+        <message>
+            <source>Po</source>
+            <translation>Po</translation>
+        </message>
+        <message>
+            <source>Teraz</source>
+            <translation>Nyní</translation>
+        </message>
+        <message>
+            <source>Zapisany wiatr</source>
+            <translation>Zaznamenaný vítr</translation>
+        </message>
+        <message>
+            <source>Przybliżony układ wiatru. Warunki mogą zmienić się w trakcie skoku.</source>
+            <translation>Přibližný profil větru. Podmínky se mohou během skoku změnit.</translation>
+        </message>
+        <message>
+            <source>Średnia na przebytym odcinku. — oznacza odcinek poza skokiem.</source>
+            <translation>Průměr na proletěném úseku. — označuje úsek mimo skok.</translation>
+        </message>
+        <message>
+            <source>Pole wiatru tuż przed wybiciem.</source>
+            <translation>Pole větru těsně před odrazem.</translation>
+        </message>
+        <message>
+            <source>Pole wiatru w chwili zakończenia skoku.</source>
+            <translation>Pole větru v okamžiku ukončení skoku.</translation>
+        </message>
+    </context>
+    <context>
+        <name>WindSlopePreview</name>
+        <message>
+            <source>%1 m: poza skokiem</source>
+            <translation>%1 m: mimo skok</translation>
+        </message>
+        <message>
+            <source>%1 m: %2 m/s</source>
+            <translation>%1 m: %2 m/s</translation>
+        </message>
+        <message>
+            <source>%1 m</source>
+            <translation>%1 m</translation>
+        </message>
+        <message>
+            <source>↖ Pod narty    ↘ W plecy</source>
+            <translation>↖ Protivítr    ↘ Vítr do zad</translation>
+        </message>
+        <message>
+            <source>Zmień wiatr w tym miejscu</source>
+            <translation>Upravit vítr na tomto místě</translation>
+        </message>
+        <message>
+            <source>Odcinek poza skokiem</source>
+            <translation>Úsek mimo skok</translation>
+        </message>
+        <message>
+            <source>Odcinek %1–%2 m</source>
+            <translation>Úsek %1–%2 m</translation>
+        </message>
+    </context>
+    <context>
+        <name>SimulationDraftWorkspace</name>
+        <message>
+            <source>Cofnij edycję</source>
+            <translation>Vrátit úpravy</translation>
+        </message>
+        <message>
+            <source>Przywróć z paczki</source>
+            <translation>Obnovit z balíčku</translation>
+        </message>
+        <message>
+            <source>Zmiany tylko dla tej symulacji</source>
+            <translation>Změny platí pouze pro tuto simulaci</translation>
         </message>
     </context>
 </TS>

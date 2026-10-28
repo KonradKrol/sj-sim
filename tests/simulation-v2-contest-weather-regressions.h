@@ -1,5 +1,6 @@
 #pragma once
 #include "../source/UI/Quick/QuickWindProfile.h"
+#include "../source/global/GlobalTranslators.h"
 
 static void simulationV2ContestWeatherRegressions(MainWindow &main) {
     const bool previousLive=GlobalAppSettings::get()->getLiveCompetition();GlobalAppSettings::get()->setLiveCompetition(false);
@@ -93,6 +94,15 @@ static void simulationV2ContestWeatherRegressions(MainWindow &main) {
             if(mode==1 || mode==4)check(jumps==2,"N and team-group simulation keep their requested scope");
             if(mode==2 || ko)check(manager->checkCompetitionEnd(),"whole-competition simulation completes both normal and KO contests");
             if(mode==2) {
+                auto *button=window.findChild<QPushButton *>("pushButton_goToNext");
+                const auto original=QJsonDocument(CompetitionResults::getJsonObject(info.getResultsReference())).toJson();
+                auto *app=qobject_cast<QApplication *>(QCoreApplication::instance());
+                check(GlobalTranslators::get()->setLanguage(app,GlobalAppSettings::English),"English catalog loads for dynamic competition captions");QTest::qWait(30);
+                check(button->text()=="Finish competition","already-visible end-competition button updates to English");
+                check(GlobalTranslators::get()->setLanguage(app,GlobalAppSettings::Czech),"Czech catalog loads for dynamic competition captions");QTest::qWait(30);
+                check(button->text()==QString::fromUtf8("Ukončit závod"),"already-visible end-competition button updates to Czech");
+                GlobalTranslators::get()->setLanguage(app,GlobalAppSettings::Polish);QTest::qWait(30);
+                check(button->text()==QString::fromUtf8("Zakończ konkurs") && QJsonDocument(CompetitionResults::getJsonObject(info.getResultsReference())).toJson()==original,"language change restores Polish without resetting scores or competition state");
                 QDialog archive(&main);archive.setObjectName("competitionResultsArchive");auto *layout=new QVBoxLayout(&archive);
                 auto *history=new ResultsHistoryWidget(&info,false,&archive);layout->addWidget(history);archive.show();QTest::qWait(100);
                 auto *table=history->tableView();table->clicked(table->model()->index(0,0));

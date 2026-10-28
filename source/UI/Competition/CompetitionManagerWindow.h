@@ -36,6 +36,11 @@ public:
     void bindWeatherSetup(SimulationWeatherSetup *,SimulationV2::Seed qualitySeed,double startSeconds=0);
     double getSimulationSeconds() const {return simulationSeconds;}
 
+protected:
+    void changeEvent(QEvent *event) override;
+
+public:
+
     void showResultJump(const QModelIndex &index,int round=0);
     void editNextKoGroups();
     void skipCurrentJump();

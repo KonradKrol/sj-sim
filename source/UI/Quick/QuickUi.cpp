@@ -92,8 +92,9 @@ QQuickWidget *makeView(QWidget *parent,QuickBridge *bridge,QuickAppearance *appe
 }
 void fitChrome(QQuickWidget *view) {
     if(auto *root=view->rootObject()) {
-        const auto resize=[view,root]{view->setFixedHeight(qCeil(root->implicitHeight()));};
-        QObject::connect(root,&QQuickItem::implicitHeightChanged,view,resize);resize();
+        const QPointer<QQuickItem> guardedRoot=root;
+        const auto resize=[view,guardedRoot]{if(guardedRoot)view->setFixedHeight(qCeil(guardedRoot->implicitHeight()));};
+        QObject::connect(root,&QQuickItem::implicitHeightChanged,view,resize,Qt::QueuedConnection);resize();
     }
 }
 bool isTaskController(QWidget *widget) {

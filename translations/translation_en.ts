@@ -4756,6 +4756,10 @@ calculation</translation>
             <source>OK</source>
             <translation>OK</translation>
         </message>
+        <message>
+            <source>Pomiar wiatru</source>
+            <translation>Wind measurement</translation>
+        </message>
     </context>
     <context>
         <name>CompetitionsArchiveListModel</name>
@@ -11490,6 +11494,54 @@ Check that you selected the correct file.</translation>
             <source>Własne ustawienia</source>
             <translation>Custom settings</translation>
         </message>
+        <message>
+            <source>FIS — przybliżenie</source>
+            <translation>FIS — approximation</translation>
+        </message>
+        <message>
+            <source>Pomiar przez czas lotu</source>
+            <translation>Flight-window measurement</translation>
+        </message>
+        <message>
+            <source>Gęsta sieć czujników</source>
+            <translation>Dense sensor network</translation>
+        </message>
+        <message>
+            <source>Odczyt przed skokiem</source>
+            <translation>Reading at takeoff</translation>
+        </message>
+        <message>
+            <source>Wiatr na trasie lotu</source>
+            <translation>Wind along the flight</translation>
+        </message>
+        <message>
+            <source>Dotychczasowy Sj.Sim</source>
+            <translation>Previous Sj.Sim</translation>
+        </message>
+        <message>
+            <source>Ważony pomiar z nieruchomych czujników przez czas lotu. Wagi i rozmieszczenie są przybliżone; nie jest to dokładna oficjalna receptura FIS. Pomiar może rozmijać się z warunkami zawodnika.</source>
+            <translation>Weighted readings from fixed sensors over the flight. Sensor weights and positions are approximate, not the exact official FIS method. The measurement may differ from the athlete’s conditions.</translation>
+        </message>
+        <message>
+            <source>Równe wagi czujników przez cały lot. Krótki podmuch może umknąć pomiarowi lub wpływać na wynik już po minięciu czujnika.</source>
+            <translation>Equal sensor weights over the flight. A brief gust may be missed or affect the measurement after the athlete has passed the sensor.</translation>
+        </message>
+        <message>
+            <source>Pomiar co około 5 m przez czas lotu. Lepiej wykrywa lokalne podmuchy, ale nadal nie odtwarza warunków zawodnika co do chwili.</source>
+            <translation>Readings roughly every 5 m over the flight. Detects local gusts better, but still does not follow the athlete’s conditions moment by moment.</translation>
+        </message>
+        <message>
+            <source>Jednorazowy odczyt czujników przy wybiciu. Zmiany w trakcie lotu nie wpływają na pomiar do punktacji.</source>
+            <translation>One sensor reading at takeoff. Changes during the flight do not affect the measurement used for scoring.</translation>
+        </message>
+        <message>
+            <source>Średnia wiatru rzeczywiście napotkanego podczas lotu. Punkt odniesienia do symulacji, bez idealnego wyrównania wpływu na odległość.</source>
+            <translation>Average wind actually encountered in flight. A simulation reference, without perfectly cancelling the effect on distance.</translation>
+        </message>
+        <message>
+            <source>Zachowuje wcześniejsze ustawienia sposobu kierunków i wpływu odległości na pomiar. Nie oznacza zgodności z FIS.</source>
+            <translation>Keeps the previous direction and distance measurement settings. This does not imply FIS compliance.</translation>
+        </message>
     </context>
     <context>
         <name>QuickBridge</name>
@@ -12090,6 +12142,10 @@ Check that you selected the correct file.</translation>
             <source>Kalendarz jest gotowy. Dodaj konkursy lub wczytaj preset, aby rozpocząć sezon.</source>
             <translation>The calendar is ready. Add competitions or load a preset to start the season.</translation>
         </message>
+        <message>
+            <source>Pomiar wiatru</source>
+            <translation>Wind measurement</translation>
+        </message>
     </context>
     <context>
         <name>QuickCalendar</name>
@@ -12587,6 +12643,14 @@ Check that you selected the correct file.</translation>
             <source>po %1 serii</source>
             <translation>after round %1</translation>
         </message>
+        <message>
+            <source>Wiatr ↗</source>
+            <translation>Wind ↗</translation>
+        </message>
+        <message>
+            <source>Podgląd wiatru przed skokiem</source>
+            <translation>Preview wind before the jump</translation>
+        </message>
     </context>
     <context>
         <name>RaceControls</name>
@@ -12712,6 +12776,10 @@ Check that you selected the correct file.</translation>
             <location filename="../source/UI/Quick/RaceLastJump.qml" line="54" />
             <source>miejsce</source>
             <translation>position</translation>
+        </message>
+        <message>
+            <source>Wiatr ↗</source>
+            <translation>Wind ↗</translation>
         </message>
     </context>
     <context>
@@ -14960,6 +15028,10 @@ calculation</translation>
             <source>Wybierz lub skonfiguruj skocznię z dodatnim punktem K oraz punktem HS nie mniejszym od K.</source>
             <translation>Select or configure a hill with a positive K-point and an HS no smaller than K.</translation>
         </message>
+        <message>
+            <source>Pomiar wiatru</source>
+            <translation>Wind measurement</translation>
+        </message>
     </context>
     <context>
         <name>SingleJumpsResultsScreen</name>
@@ -15638,6 +15710,103 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/EditorWidgets/WindsGeneratorSettingsWidgetInputItem.ui" line="398" />
             <source>OK</source>
             <translation>OK</translation>
+        </message>
+    </context>
+    <context>
+        <name>JumpWindProfile</name>
+        <message>
+            <source>Wiatr przed skokiem</source>
+            <translation>Wind before the jump</translation>
+        </message>
+        <message>
+            <source>Wiatr na zeskoku</source>
+            <translation>Wind along the slope</translation>
+        </message>
+        <message>
+            <source>Zamknij podgląd wiatru</source>
+            <translation>Close wind preview</translation>
+        </message>
+        <message>
+            <source>Przed</source>
+            <translation>Before</translation>
+        </message>
+        <message>
+            <source>W locie</source>
+            <translation>In flight</translation>
+        </message>
+        <message>
+            <source>Po</source>
+            <translation>After</translation>
+        </message>
+        <message>
+            <source>Teraz</source>
+            <translation>Now</translation>
+        </message>
+        <message>
+            <source>Zapisany wiatr</source>
+            <translation>Recorded wind</translation>
+        </message>
+        <message>
+            <source>Przybliżony układ wiatru. Warunki mogą zmienić się w trakcie skoku.</source>
+            <translation>Approximate wind profile. Conditions may change during the jump.</translation>
+        </message>
+        <message>
+            <source>Średnia na przebytym odcinku. — oznacza odcinek poza skokiem.</source>
+            <translation>Average over each flown section. — marks a section beyond the jump.</translation>
+        </message>
+        <message>
+            <source>Pole wiatru tuż przed wybiciem.</source>
+            <translation>Wind field just before takeoff.</translation>
+        </message>
+        <message>
+            <source>Pole wiatru w chwili zakończenia skoku.</source>
+            <translation>Wind field at the end of the jump.</translation>
+        </message>
+    </context>
+    <context>
+        <name>WindSlopePreview</name>
+        <message>
+            <source>%1 m: poza skokiem</source>
+            <translation>%1 m: beyond the jump</translation>
+        </message>
+        <message>
+            <source>%1 m: %2 m/s</source>
+            <translation>%1 m: %2 m/s</translation>
+        </message>
+        <message>
+            <source>%1 m</source>
+            <translation>%1 m</translation>
+        </message>
+        <message>
+            <source>↖ Pod narty    ↘ W plecy</source>
+            <translation>↖ Headwind    ↘ Tailwind</translation>
+        </message>
+        <message>
+            <source>Zmień wiatr w tym miejscu</source>
+            <translation>Edit wind here</translation>
+        </message>
+        <message>
+            <source>Odcinek poza skokiem</source>
+            <translation>Section beyond the jump</translation>
+        </message>
+        <message>
+            <source>Odcinek %1–%2 m</source>
+            <translation>Section %1–%2 m</translation>
+        </message>
+    </context>
+    <context>
+        <name>SimulationDraftWorkspace</name>
+        <message>
+            <source>Cofnij edycję</source>
+            <translation>Revert edits</translation>
+        </message>
+        <message>
+            <source>Przywróć z paczki</source>
+            <translation>Restore from pack</translation>
+        </message>
+        <message>
+            <source>Zmiany tylko dla tej symulacji</source>
+            <translation>Changes apply only to this simulation</translation>
         </message>
     </context>
 </TS>

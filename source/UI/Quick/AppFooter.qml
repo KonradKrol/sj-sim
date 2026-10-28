@@ -3,7 +3,8 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
 Rectangle {
-    implicitHeight: release.implicitHeight + (Theme.compact ? 4 : 8)
+    implicitHeight: Math.max(Theme.captionMetrics.height,versionMetrics.height)+6+(Theme.compact ? 4 : 8)
+    FontMetrics { id: versionMetrics; font.family: Theme.mono; font.pointSize: Theme.caption }
     color: Theme.surface
     Rectangle { width: parent.width; height: 1; color: Theme.divider }
     RowLayout {
