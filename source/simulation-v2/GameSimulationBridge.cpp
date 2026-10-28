@@ -96,7 +96,8 @@ void JumpSimulator::simulateV2()
     std::optional<SimulationV2::ContinuousWeather> fallbackWeather;
     if(!simulationWeather || exactWindOverride)fallbackWeather.emplace(referenceWeather(activeWinds,hill->getKPoint(),simulationWeather?simulationWeather->precipitation(simulationTime):inrunSnow));
     const LegacyMeasurement measurement(activeWinds,hill->getKPoint(),*competitionRules);
-    const auto input=requestFor(*jumper,*hill,*competitionRules,gate,competitionStartGate,hasCoachGate,coachGate,DSQBaseProbability,simulationEvent,simulationTime,manipulator);
+    auto input=requestFor(*jumper,*hill,*competitionRules,gate,competitionStartGate,hasCoachGate,coachGate,DSQBaseProbability,simulationEvent,simulationTime,manipulator);
+    input.skip=simulationSkip;
     // Sequence the draws explicitly: operand evaluation order must not change
     // the seed between compilers/platforms.
     const SimulationV2::Seed seed=[this] {

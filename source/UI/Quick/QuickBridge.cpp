@@ -1131,6 +1131,9 @@ void QuickBridge::compose(QuickNode *base) {
         auto *tabs=sectionTabs("competition-pages",labels,detail);
         m_root->update(tabs->values(),tabs->children());return;
     }
+    if(m_window->objectName()=="continuousWeatherEditor") {
+        m_root->update({{"kind","weatherSetup"},{"backend",m_window->property("weatherSetup")}});return;
+    }
     if(profile()=="SingleJumpsConfigWindow") {
         QVariantList pages;
         pages.append(group("parameters",QString(),{

@@ -2478,6 +2478,7 @@ static void interactionRegressions(MainWindow &main) {
 #include "playground-regressions.h"
 #include "athlete-studio-regressions.h"
 #include "hill-studio-regressions.h"
+#include "simulation-v2-contest-weather-regressions.h"
 #include "simulation-v2-competition-regressions.h"
 #include "simulation-v2-weather-setup-regressions.h"
 #include "simulation-v2-setup-regressions.h"
@@ -2533,6 +2534,7 @@ int main(int argc,char **argv) {
         qInfo()<<"PASS: live language switching";return 0;
     }
     if(app.arguments().contains("--config-defaults-only")){configDefaultsRegressions(main);return 0;}
+    if(app.arguments().contains("--simulation-v2-contest-weather-only")){simulationV2ContestWeatherRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-competition-only")){simulationV2CompetitionRegressions();return 0;}
     if(app.arguments().contains("--simulation-v2-setup-only")){simulationV2WeatherSetupRegressions();simulationV2SetupRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-only")){simulationV2BridgeRegressions();simulationV2RepositoryRegressions();simulationV2CatalogRegressions();return 0;}

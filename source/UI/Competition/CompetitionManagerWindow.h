@@ -15,6 +15,11 @@
 #include "../../simulator/InrunSnowGenerator.h"
 #include "../Seasons/Classifications/ClassificationResultsTableView.h"
 #include <dpp/dpp.h>
+#include "../../simulation-v2/Weather.h"
+#include "../../simulation-v2/Scoring.h"
+#include <memory>
+#include <QPointer>
+class SimulationWeatherSetup;
 
 namespace Ui {
 class CompetitionManagerWindow;
@@ -27,6 +32,9 @@ class CompetitionManagerWindow : public QDialog
 public:
     explicit CompetitionManagerWindow(AbstractCompetitionManager * manager = nullptr,  QWidget *parent = nullptr, bool singleCompetition = false);
     ~CompetitionManagerWindow();
+    void setSimulationWeather(std::shared_ptr<const SimulationV2::WeatherField>,SimulationV2::Seed qualitySeed,double startSeconds=0);
+    void bindWeatherSetup(SimulationWeatherSetup *,SimulationV2::Seed qualitySeed,double startSeconds=0);
+    double getSimulationSeconds() const {return simulationSeconds;}
 
     void showResultJump(const QModelIndex &index,int round=0);
     void editNextKoGroups();
@@ -107,6 +115,15 @@ private:
 
     JumpSimulator simulator;
     void setupSimulator();
+    JumpData simulateCurrentJump(bool skip=false);
+    void refreshWindSnapshot();
+    std::shared_ptr<const SimulationV2::WeatherField> simulationWeather;
+    std::shared_ptr<const SimulationV2::WindMeasurement> simulationMeasurement;
+    SimulationV2::Seed simulationQualitySeed=0;
+    double simulationSeconds=0;
+    QPointer<SimulationWeatherSetup> simulationWeatherSetup;
+    QMetaObject::Connection weatherSetupConnection;
+    void editSimulationWeather();
     void notifyTeamDisqualification(const JumpData &jump);
     void focusCurrentJumper();
     void updateManipulationIndicator(bool pending);

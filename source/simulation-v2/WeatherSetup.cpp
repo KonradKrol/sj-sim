@@ -90,11 +90,12 @@ QVariantList SimulationWeatherSetup::references() const {
 QVariantList SimulationWeatherSetup::preview() const {
     QVariantList rows;
     for(int i=0;i<6;++i) {
-        const double distance=hill.k*1.2*(i+.5)/6;const auto value=weather->wind(distance,previewTime);
+        const double distance=hill.k*1.2*(i+.5)/6;const auto value=weather->wind(distance,origin+previewTime);
         rows.append(QVariantMap{{"distance",distance},{"strength",value.strength()},{"direction",angle(value)},{"head",value.head},{"cross",value.cross}});
     }
     return rows;
 }
+void SimulationWeatherSetup::setPreviewOrigin(double value) {if(!bounded(value,0,1e12-100000) || origin==value)return;origin=value;emit previewChanged();}
 void SimulationWeatherSetup::setPreviewSeconds(double value) {if(!bounded(value,0,3600) || previewTime==value)return;previewTime=value;emit previewChanged();}
 void SimulationWeatherSetup::setValue(const QString &key,double value) {
     if(!hasHill || !std::isfinite(value))return;

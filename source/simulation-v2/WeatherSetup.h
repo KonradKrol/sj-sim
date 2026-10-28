@@ -16,6 +16,7 @@ class SimulationWeatherSetup : public QObject {
     Q_PROPERTY(QVariantList preview READ preview NOTIFY previewChanged)
     Q_PROPERTY(double previewSeconds READ previewSeconds WRITE setPreviewSeconds NOTIFY previewChanged)
     Q_PROPERTY(QString message READ message NOTIFY changed)
+    Q_PROPERTY(double previewOrigin READ previewOrigin WRITE setPreviewOrigin NOTIFY previewChanged)
 public:
     explicit SimulationWeatherSetup(QObject *parent=nullptr);
     void setHill(const HillProfile &);
@@ -25,6 +26,8 @@ public:
     QVariantList references() const;
     QVariantList preview() const;
     double previewSeconds() const {return previewTime;}
+    double previewOrigin() const {return origin;}
+    void setPreviewOrigin(double);
     QString message() const {return error;}
     std::shared_ptr<const SimulationV2::WeatherField> field() const {return weather;}
     const SimulationV2::WindParameters &windParameters() const {return wind;}
@@ -42,7 +45,7 @@ private:
     HillProfile hill;
     bool hasHill=false,modified=false,precipitationEdited=false;
     int preset=-1;
-    double variability=0,differences=0,previewTime=0,requestedDirection=0;
+    double variability=0,differences=0,previewTime=0,requestedDirection=0,origin=0;
     SimulationV2::Surface surface=SimulationV2::Surface::Snow;
     SimulationV2::Seed seed=0;
     SimulationV2::WindParameters wind;

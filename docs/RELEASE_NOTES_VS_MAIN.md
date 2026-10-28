@@ -1903,3 +1903,12 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 - W nowym silniku poprawiono dokładne wymuszanie wiatrów przy aktywnym ciągłym
   polu: obejmuje faktyczny lot, preview i pomiar, a nie tylko zapisane wartości.
   Zachowuje opady i nie nadpisuje wspólnej pogody kolejnych skoków.
+
+### Warstwa wykonawcza ciągłej pogody konkursu (28.10.2026)
+
+- Ręczne i automatyczne skoki, grupy drużynowe, serie i cały konkurs korzystają
+  ze wspólnej ścieżki wykonania. Dla podanego pola v2 współdzielą zegar i pomiar.
+- DNS przesuwa czas jak skok. Można odczekać 30 s bez losowania innego modelu pogody.
+- Edycja warunków zachowuje czas konkursu i historię; podgląd pokazuje aktualną
+  chwilę. Warstwa jest gotowa do podłączenia do nowej konfiguracji konkursu;
+  zwykły konkurs z menu nie jest jeszcze przełączony na ten model.

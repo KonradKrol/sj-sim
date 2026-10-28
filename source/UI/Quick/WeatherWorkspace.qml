@@ -91,7 +91,7 @@ ScrollView {
                 SButton { text: qsTr("Zastosuj"); quiet: true; visible: ui.context.suggestedGate>=0; enabled: !!parent.autoGate && ui.context.suggestedGate!==ui.context.startingGate; onClicked: {workspace.forceActiveFocus();ui.activate(parent.autoGate.values.id)} }
                 SChoice {
                     visible: workspace.tuning && workspace.availableWidth>=Theme.dp(700)
-                    model: [qsTr("Na początku"),qsTr("Za 3 minuty"),qsTr("Za 6 minut")]
+                    model: [workspace.backend.previewOrigin>0?qsTr("Teraz"):qsTr("Na początku"),qsTr("Za 3 minuty"),qsTr("Za 6 minut")]
                     Accessible.name: qsTr("Czas podglądu wiatru")
                     currentIndex: Math.round(workspace.backend.previewSeconds/180)
                     onActivated: workspace.backend.previewSeconds=index*180
@@ -99,7 +99,7 @@ ScrollView {
             }
             SChoice {
                 visible: workspace.tuning && workspace.availableWidth<Theme.dp(700)
-                model: [qsTr("Na początku"),qsTr("Za 3 minuty"),qsTr("Za 6 minut")]
+                model: [workspace.backend.previewOrigin>0?qsTr("Teraz"):qsTr("Na początku"),qsTr("Za 3 minuty"),qsTr("Za 6 minut")]
                 Accessible.name: qsTr("Czas podglądu wiatru")
                 currentIndex: Math.round(workspace.backend.previewSeconds/180)
                 onActivated: workspace.backend.previewSeconds=index*180

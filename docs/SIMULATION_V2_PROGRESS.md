@@ -636,3 +636,29 @@ zachowując opady bieżącego pola oraz pozostałe manipulacje. Działa tak samo
 w preview i pełnym skoku. Wynik zapisuje `exactWindOverride=true` i flagę manipulacji;
 nie zmienia wspólnej pogody następnych skoków. `--simulation-v2-only`: PASS,
 w tym przeciwne wymuszenia ±3 m/s przy wstrzykniętym polu.
+
+## Wspólny zegar pogody w managerze konkursu — 28.10
+
+Gotowa, przetestowana warstwa wykonawcza: `CompetitionManagerWindow` udostępnia
+`setSimulationWeather` i `bindWeatherSetup`. Wszystkie pięć ścieżek skakania
+(ręcznie, N, grupa, seria, cały konkurs) używa wspólnego `simulateCurrentJump`.
+Pole jest niezmienne między jawnymi zmianami ustawień; seed jakości i czas kolejnego
+skoku są rozłączne. Skok i DNS przesuwają czas o 30 s, a „Odczekaj 30 s” zmienia
+chwilę bez niezależnego losowania nowego pola. Opady i snapshot także pochodzą z pola.
+Dokładne wymuszenie wiatru nadal działa lokalnie dla jednego skoku.
+
+Powiązany `SimulationWeatherSetup` można otworzyć przez zwykłą nawigację Quick
+(`continuousWeatherEditor`). Podgląd jest wtedy liczony od aktualnej chwili
+konkursu (`previewOrigin`); oglądanie innego czasu nie przesuwa zegara konkursu.
+Zmiana ustawień nie zeruje zegara i nie zmienia zapisanych skoków. Gdy caller poda
+tylko pole bez edytora, niedziałające przyciski edycji są wyłączone.
+
+**Nie oznacza to jeszcze włączenia nowego wiatru w konkursie z menu.** Nadal trzeba
+podłączyć kanoniczny katalog i `SimulationWeatherSetup` w konfiguracji konkursu,
+przekazać je do managera oraz zachować zegar kwalifikacje → konkurs. Potem nowe
+sezony i ich narzędzia. Nie podmieniać globalnych wektorów pod żyjącymi oknami.
+
+Walidacja Qt 5.15.3: `--simulation-v2-contest-weather-only` PASS (ręcznie, DNS,
+czekanie, edycja, N, grupa drużynowa, seria, cały konkurs i KO; unikalne czasy
+co 30 s), `--bulk-only` PASS (stare ścieżki), `--simulation-v2-setup-only` PASS,
+`--simulation-v2-only` PASS. Bez nowych ostrzeżeń QML/pętli układów.

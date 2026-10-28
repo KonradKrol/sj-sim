@@ -2,6 +2,11 @@
 #include <cmath>
 #include <algorithm>
 #include "CompetitionManagerWindow.h"
+#include "../../simulation-v2/FieldWindMeasurement.h"
+#include "../../simulation-v2/WeatherSetup.h"
+#include "../EditorWidgets/WeatherSetupEditor.h"
+#include <QDialogButtonBox>
+#include <stdexcept>
 #include "../ResultsShowing/ResultsHistoryWidget.h"
 #include <QScopedValueRollback>
 #include <QSignalBlocker>
@@ -262,7 +267,7 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     ui->label_toBeatDistance->setText("0m");
     ui->label_toAdvancementDistance->setText("-");
     windsGenerator.setGenerationSettings(manager->getWindGenerationSettingsReference());
-    setActualWinds(windsGenerator.generateWinds());
+    refreshWindSnapshot();
     updateAvgWindLabel();
     updateActualInrunSnowLevelLabel();
 
@@ -443,6 +448,7 @@ void CompetitionManagerWindow::updateAvgWindLabel()
 
 void CompetitionManagerWindow::updateActualInrunSnow()
 {
+    if(simulationWeather){actualInrunSnow=simulationWeather->precipitation(simulationSeconds);return;}
     actualInrunSnow += MyRandom::normalDistributionRandom(0, inrunSnowGenerator.getInrunSnowDeviation() / 10);
     qDebug()<<"actt";
     if(actualInrunSnow < 0)
@@ -530,8 +536,8 @@ void CompetitionManagerWindow::enableCompetitionManagementButtons()
     ui->pushButton_generateNewWinds->setEnabled(true);
     ui->pushButton_jump->setEnabled(true);
     ui->pushButton_manipulateJump->setEnabled(true);
-    ui->pushButton_windsGeneratorSettings->setEnabled(true);
-    ui->pushButton_inrunSnowGeneratorSettings->setEnabled(true);
+    ui->pushButton_windsGeneratorSettings->setEnabled(!simulationWeather || bool(simulationWeatherSetup));
+    ui->pushButton_inrunSnowGeneratorSettings->setEnabled(!simulationWeather || bool(simulationWeatherSetup));
     ui->spinBox_actualGate->setEnabled(true);
     ui->checkBox_liveCompetition->setEnabled(true);
     ui->toolButton_autoSimulationActions->setEnabled(true);
@@ -882,9 +888,7 @@ void CompetitionManagerWindow::autoSimulateRound()
     IndividualCompetitionManager * indManager = dynamic_cast<IndividualCompetitionManager *>(manager);
     TeamCompetitionManager * tmManager = dynamic_cast<TeamCompetitionManager *>(manager);
     while(manager->checkRoundEnd() != true && manager->checkCompetitionEnd() != true){
-        setupSimulator();
-        simulator.simulateJump();
-        JumpData jump = simulator.getJumpData();
+        JumpData jump = simulateCurrentJump();
         notifyTeamDisqualification(jump);
         lastSimulatedJumper = jump.getJumper();
         if(manipulationPending)
@@ -929,7 +933,7 @@ void CompetitionManagerWindow::autoSimulateRound()
         if(getType() == CompetitionRules::Team)
             teamResultsTreeModel->setTeams(&dynamic_cast<TeamCompetitionManager *>(manager)->getRoundsTeamsReference()[0]);
 
-        setActualWinds(windsGenerator.generateWinds());
+        refreshWindSnapshot();
         updateActualInrunSnow();
         if(manager->isAllJumpsAreFinished() == false)
             manager->setActualJumperToNextUnfinished();
@@ -1011,9 +1015,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
     IndividualCompetitionManager * indManager = dynamic_cast<IndividualCompetitionManager *>(manager);
     TeamCompetitionManager * tmManager = dynamic_cast<TeamCompetitionManager *>(manager);
     while(manager->checkCompetitionEnd() != true){
-        setupSimulator();
-        simulator.simulateJump();
-        JumpData jump = simulator.getJumpData();
+        JumpData jump = simulateCurrentJump();
         notifyTeamDisqualification(jump);
         lastSimulatedJumper = jump.getJumper();
         if(manipulationPending)
@@ -1056,7 +1058,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
         }
         manager->updateCompetitorsAdvanceStatuses();
 
-        setActualWinds(windsGenerator.generateWinds());
+        refreshWindSnapshot();
         updateActualInrunSnow();
 
         if(manager->isAllJumpsAreFinished() == false)
@@ -1171,9 +1173,7 @@ void CompetitionManagerWindow::autoSimulateGroup()
     if(getType() == CompetitionRules::Team){
         TeamCompetitionManager * tmManager = dynamic_cast<TeamCompetitionManager *>(manager);
         while(tmManager->checkGroupEnd() != true){
-            setupSimulator();
-            simulator.simulateJump();
-            JumpData jump = simulator.getJumpData();
+            JumpData jump = simulateCurrentJump();
         notifyTeamDisqualification(jump);
             lastSimulatedJumper = jump.getJumper();
             if(manipulationPending)
@@ -1205,7 +1205,7 @@ void CompetitionManagerWindow::autoSimulateGroup()
             manager->updateToBeatLineDistance();
             manager->updateCompetitorsAdvanceStatuses();
 
-            setActualWinds(windsGenerator.generateWinds());
+            refreshWindSnapshot();
             updateActualInrunSnow();
             if(manager->isAllJumpsAreFinished() == false)
                 manager->setActualJumperToNextUnfinished();
@@ -1264,9 +1264,7 @@ void CompetitionManagerWindow::autoSimulateJumps()
         for(int i = 0; i < jumpsCount; i++){
             IndividualCompetitionManager * indManager = dynamic_cast<IndividualCompetitionManager *>(manager);
             TeamCompetitionManager * tmManager = dynamic_cast<TeamCompetitionManager *>(manager);
-            setupSimulator();
-            simulator.simulateJump();
-            JumpData jump = simulator.getJumpData();
+            JumpData jump = simulateCurrentJump();
         notifyTeamDisqualification(jump);
             lastSimulatedJumper = jump.getJumper();
             if(manipulationPending)
@@ -1311,7 +1309,7 @@ void CompetitionManagerWindow::autoSimulateJumps()
             }
             manager->updateCompetitorsAdvanceStatuses();
 
-            setActualWinds(windsGenerator.generateWinds());
+            refreshWindSnapshot();
             updateActualInrunSnow();
             if(type == CompetitionRules::Individual)
                 resultsTableModel->setLastJumper(manager->getActualJumper());
@@ -1764,8 +1762,70 @@ void CompetitionManagerWindow::notifyTeamDisqualification(const JumpData &jump)
     QMessageBox::information(this,tr("Dyskwalifikacja drużyny"),tr("%1: dyskwalifikacja zawodnika %2 oznacza dyskwalifikację całej drużyny. Pozostali zawodnicy tej drużyny nie oddadzą kolejnych skoków w tym konkursie.").arg(team?team->getCountryCode():QString(),jump.getJumper()?jump.getJumper()->getNameAndSurname():QString()),QMessageBox::Ok);
 }
 
+void CompetitionManagerWindow::setSimulationWeather(std::shared_ptr<const SimulationV2::WeatherField> field,SimulationV2::Seed qualitySeed,double seconds)
+{
+    if(!field || !manager || !manager->getCompetitionInfo() || !manager->getCompetitionInfo()->getHill()
+        || !manager->getCompetitionInfo()->getHill()->getSimulationProfile() || !std::isfinite(seconds) || seconds<0 || seconds>1e12-100000)
+        throw std::invalid_argument("Continuous contest weather requires a new hill and a valid logical clock");
+    simulationWeather=std::move(field);simulationQualitySeed=qualitySeed;simulationSeconds=seconds;
+    simulationMeasurement=std::make_shared<SimulationV2::FieldWindMeasurement>(manager->getCompetitionInfo()->getHill()->getKPoint(),*manager->getCompetitionRules());
+    ui->pushButton_generateNewWinds->setText(tr("Odczekaj 30 s"));
+    ui->pushButton_generateNewWinds->setToolTip(tr("Przesuń czas konkursu o 30 sekund. Pogoda zmienia się zgodnie z wybranym scenariuszem."));
+    ui->pushButton_windsGeneratorSettings->setEnabled(bool(simulationWeatherSetup));
+    ui->pushButton_inrunSnowGeneratorSettings->setEnabled(bool(simulationWeatherSetup));
+    refreshWindSnapshot();updateActualInrunSnow();updateAvgWindLabel();updateActualInrunSnowLevelLabel();
+    updateToBeatDistanceLabel();updateToAdvanceDistanceLabel();
+}
+
+void CompetitionManagerWindow::bindWeatherSetup(SimulationWeatherSetup *setup,SimulationV2::Seed seed,double seconds)
+{
+    if(!setup || !setup->values().value("ready").toBool())throw std::invalid_argument("Contest weather setup must be ready");
+    disconnect(weatherSetupConnection);simulationWeatherSetup=setup;
+    setSimulationWeather(setup->field(),seed,seconds);
+    weatherSetupConnection=connect(setup,&SimulationWeatherSetup::changed,this,[this]{
+        if(simulationWeatherSetup && simulationWeatherSetup->field()!=simulationWeather)
+            setSimulationWeather(simulationWeatherSetup->field(),simulationQualitySeed,simulationSeconds);
+    });
+}
+
+void CompetitionManagerWindow::editSimulationWeather()
+{
+    if(!simulationWeatherSetup)return;
+    auto *setup=simulationWeatherSetup.data();
+    QDialog dialog(this);dialog.setObjectName("continuousWeatherEditor");dialog.setWindowTitle(tr("Warunki"));
+    dialog.setProperty("weatherSetup",QVariant::fromValue(static_cast<QObject *>(setup)));
+    auto *layout=new QVBoxLayout(&dialog);layout->addWidget(createWeatherSetupEditor(setup,&dialog));
+    auto *close=new QDialogButtonBox(QDialogButtonBox::Close,&dialog);layout->addWidget(close);
+    connect(close,&QDialogButtonBox::rejected,&dialog,&QDialog::reject);
+    setup->setPreviewSeconds(0);setup->setPreviewOrigin(simulationSeconds);
+    const QScopedValueRollback<bool> editing(jumpInProgress,true);
+    dialog.exec();setup->setPreviewOrigin(0);
+}
+
+void CompetitionManagerWindow::refreshWindSnapshot()
+{
+    if(simulationWeather)setActualWinds(SimulationV2::fieldWindSnapshot(*simulationWeather,manager->getCompetitionInfo()->getHill()->getKPoint(),simulationSeconds));
+    else setActualWinds(windsGenerator.generateWinds());
+}
+
+JumpData CompetitionManagerWindow::simulateCurrentJump(bool skip)
+{
+    if(skip && !simulationWeather) {
+        JumpData jump(manager->getActualJumper(),manager->getCompetitionInfo()->getHill());
+        jump.setDNS(true);jump.setGate(manager->getActualGate());return jump;
+    }
+    setupSimulator();simulator.setSimulationSkip(skip);simulator.simulateJump();simulator.setSimulationSkip(false);
+    if(simulationWeather)simulationSeconds+=30;
+    return simulator.getJumpData();
+}
+
 void CompetitionManagerWindow::setupSimulator()
 {
+    if(simulationWeather) {
+        simulator.setSimulationWeather(simulationWeather,simulationMeasurement);
+        simulator.setSimulationTime(simulationSeconds);
+        simulator.setSimulationSeed(SimulationV2::deriveSeed(simulationQualitySeed,static_cast<SimulationV2::Seed>(std::floor(simulationSeconds/30))));
+    }
     simulator.setGate(manager->getActualGate());
     simulator.setHasCoachGate(manager->getCoachGateForNextJumper());
     simulator.setCoachGate(manager->getActualCoachGate());
@@ -1818,9 +1878,8 @@ void CompetitionManagerWindow::on_pushButton_jump_clicked()
     }
     IndividualCompetitionManager * indManager = dynamic_cast<IndividualCompetitionManager *>(manager);
     TeamCompetitionManager * tmManager = dynamic_cast<TeamCompetitionManager *>(manager);
-    JumpData jump(manager->getActualJumper(),manager->getCompetitionInfo()->getHill());
-    if(skipRequested){skipRequested=false;jump.setDNS(true);jump.setGate(manager->getActualGate());}
-    else {setupSimulator();simulator.simulateJump();jump=simulator.getJumpData();}
+    const bool skip=skipRequested;skipRequested=false;
+    JumpData jump=simulateCurrentJump(skip);
         notifyTeamDisqualification(jump);
     jump.setCompetition(manager->getCompetitionInfo());
     if(type == CompetitionRules::Individual){
@@ -1918,7 +1977,7 @@ void CompetitionManagerWindow::on_pushButton_jump_clicked()
     }
     if(manager->isAllJumpsAreFinished() == false)
         manager->setActualJumperToNextUnfinished();
-    setActualWinds(windsGenerator.generateWinds());
+    refreshWindSnapshot();
     updateActualInrunSnow();
     currentInputJumpManipulator = JumpManipulator();
     updateManipulationIndicator(false);
@@ -1998,7 +2057,8 @@ void CompetitionManagerWindow::on_tableView_results_doubleClicked(const QModelIn
 
 void CompetitionManagerWindow::on_pushButton_generateNewWinds_clicked()
 {
-    setActualWinds(windsGenerator.generateWinds());
+    if(simulationWeather)simulationSeconds+=30;
+    refreshWindSnapshot();
     if(manager->getActualStartListIndex() > 0){
         manager->updateLeaderResult();
         manager->updateLast10Judges();
@@ -2011,6 +2071,7 @@ void CompetitionManagerWindow::on_pushButton_generateNewWinds_clicked()
 
 void CompetitionManagerWindow::on_pushButton_windsGeneratorSettings_clicked()
 {
+    if(simulationWeather){editSimulationWeather();return;}
     QDialog dialog(this);
     dialog.setWindowFlags(Qt::Window);
     dialog.setWindowTitle(tr("Wiatr"));
@@ -2032,7 +2093,7 @@ void CompetitionManagerWindow::on_pushButton_windsGeneratorSettings_clicked()
     if(dialog.exec() == QDialog::Accepted){
         manager->setWindGenerationSettings(editor->getWindsGenerationSettingsFromInputs());
         windsGenerator.setGenerationSettings(manager->getWindGenerationSettingsReference());
-        setActualWinds(windsGenerator.generateWinds());updateAvgWindLabel();
+        refreshWindSnapshot();updateAvgWindLabel();
         updateToBeatDistanceLabel();updateToAdvanceDistanceLabel();
     }
 
@@ -2040,6 +2101,7 @@ void CompetitionManagerWindow::on_pushButton_windsGeneratorSettings_clicked()
 
 void CompetitionManagerWindow::on_pushButton_inrunSnowGeneratorSettings_clicked()
 {
+    if(simulationWeather){editSimulationWeather();return;}
     QDialog dialog(this);
     dialog.setWindowFlags(Qt::Window);
     dialog.setWindowTitle(tr("Śnieg"));
