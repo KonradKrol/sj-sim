@@ -396,7 +396,7 @@ static void runCompetition(MainWindow &main,int scenario,bool bulk=false,int bul
     }
     if(QCoreApplication::arguments().contains("--superko-only")){bool found=false;for(const auto &preset:db->getEditableCompetitionRules())if(preset.getName().compare("SuperKO by fortonse",Qt::CaseInsensitive)==0){rules=preset;rules.setHasDsq(false);found=true;break;}check(found,"real SuperKO by fortonse preset exists");}
     if(QCoreApplication::arguments().contains("--manual-ko-only")){rules.getRoundsReference()[1].setKO(true);rules.getRoundsReference()[1].setKoGroupsSelectionType(CompetitionRules::Classic);}
-    CompetitionConfigWindow config(CompetitionConfigWindow::SingleCompetition);
+    CompetitionConfigWindow config(CompetitionConfigWindow::SingleCompetition,nullptr,nullptr,CompetitionConfigWindow::DataSource::LegacyCompatibility);
     config.getHillEditor()->setHill(&db->getEditableGlobalHills().first());config.getHillEditor()->fillHillInputs();
     config.getCompetitionRulesEditor()->setCompetitionRules(&rules);config.getCompetitionRulesEditor()->fillCompetitionRulesInputs();
     auto jumpers=config.getCompetitionJumpers();check(jumpers.size()>=16,"competition fixture");jumpers.resize(QCoreApplication::arguments().contains("--superko-only")?20:bulk?qMin(100,jumpers.size()):16);
@@ -1215,7 +1215,7 @@ static void seasonWorkflowRegressions(MainWindow &main) {
     main.show();main.resize(1200,800);
     nextSeasonTransactionRegression(main);
     {
-        CompetitionConfigWindow preparation(CompetitionConfigWindow::SingleCompetition);
+        CompetitionConfigWindow preparation(CompetitionConfigWindow::SingleCompetition,nullptr,nullptr,CompetitionConfigWindow::DataSource::LegacyCompatibility);
         auto *hill=preparation.findChild<QComboBox *>("comboBox_existingHill");
         preparation.show();QTest::qWait(150);
         auto *preparationBridge=preparation.findChild<QuickBridge *>();
@@ -1433,7 +1433,7 @@ static void koGroupingRegressions(MainWindow &main) {
     main.show();main.resize(1024,720);
     QVector<Jumper *> athletes;for(auto &jumper:GlobalDatabase::get()->getEditableGlobalJumpers())athletes.append(&jumper);
     athletes.resize(qMin(QCoreApplication::arguments().contains("--ko-stress")?145:31,athletes.size()));check(athletes.size()>10,"KO grouping fixture");
-    CompetitionConfigWindow config(CompetitionConfigWindow::SingleCompetition);config.setCompetitionJumpers(athletes);
+    CompetitionConfigWindow config(CompetitionConfigWindow::SingleCompetition,nullptr,nullptr,CompetitionConfigWindow::DataSource::LegacyCompatibility);config.setCompetitionJumpers(athletes);
     CompetitionRules rules=GlobalDatabase::get()->getEditableCompetitionRules().first();RoundInfo first(athletes.size(),true);first.setKO(true);first.setCountInKOGroup(2);rules.setCompetitionType(CompetitionRules::Individual);rules.setRounds({first,RoundInfo(16,true)});
     config.getCompetitionRulesEditor()->setCompetitionRules(&rules);config.getCompetitionRulesEditor()->fillCompetitionRulesInputs();config.show();QTest::qWait(100);
     auto *choice=config.findChild<QComboBox *>("comboBox_groupsSelectionType");auto *groups=config.findChild<KOGroupsListView *>();check(choice && groups,"real pre-competition KO grouping controls exist");
@@ -1505,7 +1505,7 @@ static void rosterRegressions(MainWindow &main) {
     main.show();main.resize(1440,900);
     QVector<Jumper *> pool;for(auto &j:GlobalDatabase::get()->getEditableGlobalJumpers())pool.append(&j);
     check(pool.size()>20,"roster fixture");
-    CompetitionConfigWindow config(CompetitionConfigWindow::SingleCompetition);config.setCompetitionJumpers(pool.mid(0,8));config.show();QTest::qWait(180);
+    CompetitionConfigWindow config(CompetitionConfigWindow::SingleCompetition,nullptr,nullptr,CompetitionConfigWindow::DataSource::LegacyCompatibility);config.setCompetitionJumpers(pool.mid(0,8));config.show();QTest::qWait(180);
     auto *bridge=config.findChild<QuickBridge *>();auto *roster=bridge->findChild<QuickRoster *>();check(roster && roster->count()==8 && roster->library()->rowCount()==pool.size(),QString("roster exposes full library and current start list separately (%1 selected, %2 candidates, %3 expected)").arg(roster?roster->count():-1).arg(roster?roster->library()->rowCount():-1).arg(pool.size()));
     QAbstractItemModelTester libraryModel(roster->library(),QAbstractItemModelTester::FailureReportingMode::Fatal);QAbstractItemModelTester orderModel(roster->ordered(),QAbstractItemModelTester::FailureReportingMode::Fatal);
     clickControl(scene(&config),"editStartList");check(item(scene(&config)->rootObject(),"rosterWorkspace"),"overview opens dedicated roster workspace");
@@ -1655,7 +1655,7 @@ static void auditStatisticsRegressions(MainWindow &main) {
 }
 
 static void teamSetupCompactRegression(MainWindow &main) {
-    main.show();main.resize(1024,720);CompetitionConfigWindow config(CompetitionConfigWindow::SingleCompetition);CompetitionRules rules=GlobalDatabase::get()->getEditableCompetitionRules().first();rules.setCompetitionType(CompetitionRules::Team);rules.setJumpersInTeamCount(4);config.getCompetitionRulesEditor()->setCompetitionRules(&rules);config.getCompetitionRulesEditor()->fillCompetitionRulesInputs();
+    main.show();main.resize(1024,720);CompetitionConfigWindow config(CompetitionConfigWindow::SingleCompetition,nullptr,nullptr,CompetitionConfigWindow::DataSource::LegacyCompatibility);CompetitionRules rules=GlobalDatabase::get()->getEditableCompetitionRules().first();rules.setCompetitionType(CompetitionRules::Team);rules.setJumpersInTeamCount(4);config.getCompetitionRulesEditor()->setCompetitionRules(&rules);config.getCompetitionRulesEditor()->fillCompetitionRulesInputs();
     auto *native=config.getTeamsSquadsModel();native->setupTreeItems();config.show();QTest::qWait(120);auto *bridge=config.findChild<QuickBridge *>();auto *entry=qobject_cast<QuickNode *>(bridge->find("treeView"));check(entry && entry->values().value("teamSetup").toBool(),"team setup uses a dedicated compact list policy");
     auto *adapter=qobject_cast<QuickTableModel *>(entry->values().value("table").value<QObject *>());check(adapter && adapter->count()==native->rowCount() && adapter->count()>1,"team setup shows one row per team instead of every member as a separate row");
     auto *view=scene(&config);auto *table=item(view->rootObject(),"dataTable-"+entry->values().value("id").toString());check(table && !table->property("sortable").toBool() && !table->property("searchEnabled").toBool() && !table->property("searchOpen").toBool(),"team table has no sortable headings or search controls");
@@ -2535,7 +2535,7 @@ int main(int argc,char **argv) {
     }
     if(app.arguments().contains("--config-defaults-only")){configDefaultsRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-contest-weather-only")){simulationV2ContestWeatherRegressions(main);return 0;}
-    if(app.arguments().contains("--simulation-v2-competition-only")){simulationV2CompetitionRegressions();return 0;}
+    if(app.arguments().contains("--simulation-v2-competition-only")){simulationV2CompetitionRegressions();simulationV2CanonicalCompetitionRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-setup-only")){simulationV2WeatherSetupRegressions();simulationV2SetupRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-only")){simulationV2BridgeRegressions();simulationV2RepositoryRegressions();simulationV2CatalogRegressions();return 0;}
     if(app.arguments().contains("--motion-feedback-only")){motionFeedbackRegressions(main);return 0;}
@@ -2645,7 +2645,7 @@ int main(int argc,char **argv) {
         QTemporaryDir catalogStorage;SingleJumpsConfigWindow dialog(nullptr,isolatedCatalogPaths(catalogStorage.path()));waitForCatalog(dialog); render(&dialog,"jump-config",true); dialog.hide();
     }
     {
-        CompetitionConfigWindow dialog(CompetitionConfigWindow::SingleCompetition); render(&dialog,"competition-config",true);
+        CompetitionConfigWindow dialog(CompetitionConfigWindow::SingleCompetition,nullptr,nullptr,CompetitionConfigWindow::DataSource::LegacyCompatibility); render(&dialog,"competition-config",true);
         auto *bridge=dialog.findChild<QuickBridge *>();
         auto *spin=dialog.findChild<QSpinBox *>("spinBox_startGate");
         check(spin!=nullptr,"original gate exists"); bridge->edit(id(bridge,"spinBox_startGate"),19); check(spin->value()==19,"gate reaches original logic");

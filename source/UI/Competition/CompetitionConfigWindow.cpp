@@ -38,12 +38,24 @@
 #include <memory>
 #include <algorithm>
 #include "../../simulation-v2/ProfileBridge.h"
+#include "../../simulation-v2/FieldWindMeasurement.h"
+#include "../EditorWidgets/SimulationProfileEditor.h"
+#include "../EditorWidgets/WeatherSetupEditor.h"
+#include <QFormLayout>
+#include <QFutureWatcher>
+#include <QtConcurrent/QtConcurrentRun>
+#include <QSignalBlocker>
+#include <QTimer>
+#include <QDir>
+#include <QJsonArray>
+#include <QRandomGenerator>
 
-CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, SimulationSave *save) :
+CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, SimulationSave *save,
+    DataSource source,const SimulationV2::CatalogPaths &paths) :
     QDialog(parent),
     ui(new Ui::SingleCompetitionConfigWindow),
     type(type),
-    simulationSave(save)
+    simulationSave(save),source(source),catalogPaths(paths),catalog(paths)
 {
     ui->setupUi(this);
     setMinimumSize(640, 480);
@@ -142,7 +154,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
             ui->pushButton_defaultStartListOrder->hide();
     }
 
-    if(getType() == SingleCompetition)
+    if(getType() == SingleCompetition && !usesCanonicalCatalog())
     {
         competitionJumpers = MyFunctions::convertToVectorOfPointers(
             &GlobalDatabase::get()->getEditableGlobalJumpers());
@@ -526,11 +538,204 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
             this, &CompetitionConfigWindow::on_pushButton_autoGate_clicked);
     updateResponsiveLayout(width());
     ResponsiveWindowUtils::manageWindowGeometry(this, "CompetitionConfigWindow");
+    if(usesCanonicalCatalog())setupCanonicalCatalog();
 }
 
 CompetitionConfigWindow::~CompetitionConfigWindow()
 {
     delete ui;
+}
+
+Hill CompetitionConfigWindow::configuredHill() const
+{
+    if(getType()==SeasonCompetition)return seasonCompetition && seasonCompetition->getHill()?*seasonCompetition->getHill():Hill();
+    return usesCanonicalCatalog() && hillDraft?hillDraft->configuredHill():hillEditor->getHillFromWidgetInput();
+}
+
+QVector<Jumper *> CompetitionConfigWindow::availableJumpers() const
+{
+    if(usesCanonicalCatalog())return sourceJumpers+importedJumpers;
+    if(getType()==SeasonCompetition)return simulationSave?simulationSave->getJumpers():QVector<Jumper *>();
+    QVector<Jumper *> values;for(auto &athlete:GlobalDatabase::get()->getEditableGlobalJumpers())values.append(&athlete);return values;
+}
+
+void CompetitionConfigWindow::setupCanonicalCatalog()
+{
+    hillDraft=new SimulationProfileDraft(DataPack::Hills,this);
+    weatherSetup=new SimulationWeatherSetup(this);
+    setProperty("hillDraft",QVariant::fromValue(static_cast<QObject *>(hillDraft)));
+    setProperty("weatherSetup",QVariant::fromValue(static_cast<QObject *>(weatherSetup)));
+    hillEditor->hide();
+    ui->verticalLayout_hillEditorWidget->addWidget(createSimulationProfileEditor(hillDraft,true,this));
+    auto *sources=new QWidget(this);auto *form=new QFormLayout(sources);
+    for(auto entry:{qMakePair(&athletePack,tr("Paczka zawodników")),qMakePair(&hillPack,tr("Paczka skoczni")),qMakePair(&rulesPack,tr("Paczka zasad"))}) {
+        *entry.first=new QComboBox(sources);form->addRow(entry.second,*entry.first);
+    }
+    athletePack->setObjectName("comboBox_athletePack");hillPack->setObjectName("comboBox_hillPack");rulesPack->setObjectName("comboBox_rulesPack");
+    ui->verticalLayout_hillEditorWidget->insertWidget(0,sources);
+    catalogStatus=new QLabel(tr("Wczytywanie paczek…"),this);catalogStatus->setObjectName("label_catalogStatus");catalogStatus->setWordWrap(true);
+    ui->verticalLayout_hillEditorWidget->insertWidget(1,catalogStatus);
+    auto *details=new QPushButton(tr("Szczegóły wczytywania"),this);details->setObjectName("pushButton_catalogDetails");details->hide();
+    ui->verticalLayout_hillEditorWidget->insertWidget(2,details);
+    auto *gateLabel=new QLabel(this);gateLabel->setObjectName("label_suggestedGate");form->addRow(gateLabel);
+    connect(details,&QPushButton::clicked,this,[this]{QMessageBox box(QMessageBox::Information,tr("Wczytywanie paczek"),tr("Uwagi: %1").arg(snapshot.issues.size()),QMessageBox::Ok,this);box.setDetailedText(snapshot.issues.join('\n'));box.exec();});
+    for(int i=ui->toolBox->count()-1;i>=0;--i)if(ui->toolBox->widget(i)==windsGeneratorSettingsEditor || ui->toolBox->widget(i)==inrunSnowGeneratorSettingsEditor) {
+        ui->toolBox->widget(i)->hide();ui->toolBox->removeItem(i);
+    }
+    ui->toolBox->addItem(createWeatherSetupEditor(weatherSetup,this),tr("Warunki"));
+    for(auto *widget:QList<QWidget *>{ui->label_jumpsImportance,ui->doubleSpinBox_jumpsImportance,ui->comboBox_jumpsImportancePreset})widget->hide();
+    ui->spinBox_startGate->setMaximum(200);ui->pushButton_submit->setEnabled(false);
+    connect(athletePack,QOverload<int>::of(&QComboBox::currentIndexChanged),this,[this]{if(!filling)selectCanonicalPack(DataPack::Jumpers);});
+    connect(hillPack,QOverload<int>::of(&QComboBox::currentIndexChanged),this,[this]{if(!filling)selectCanonicalPack(DataPack::Hills);});
+    connect(rulesPack,QOverload<int>::of(&QComboBox::currentIndexChanged),this,[this]{if(!filling)selectCanonicalPack(DataPack::Rules);});
+    connect(hillDraft,&SimulationProfileDraft::changed,this,[this]{
+        if(hillDraft->valid()) {
+            widgetHill=hillDraft->configuredHill();hillEditor->setHill(&widgetHill);hillEditor->fillHillInputs();
+            weatherSetup->setHill(*widgetHill.getSimulationProfile());
+        } else weatherSetup->clearHill();
+        updateCanonicalReadiness();
+    });
+    auto *gateTimer=new QTimer(this);gateTimer->setSingleShot(true);gateTimer->setInterval(40);
+    connect(weatherSetup,&SimulationWeatherSetup::changed,gateTimer,QOverload<>::of(&QTimer::start));
+    connect(gateTimer,&QTimer::timeout,this,&CompetitionConfigWindow::updateCanonicalGateSuggestion);
+    connect(ui->spinBox_startGate,QOverload<int>::of(&QSpinBox::valueChanged),gateTimer,QOverload<>::of(&QTimer::start));
+    connect(competitionRulesEditor,&CompetitionRulesEditorWidget::KORoundChanged,gateTimer,QOverload<>::of(&QTimer::start));
+    connect(competitionRulesEditor,&CompetitionRulesEditorWidget::competitionTypeChanged,gateTimer,QOverload<>::of(&QTimer::start));
+    connect(competitionRulesEditor,&CompetitionRulesEditorWidget::jumpersCountInTeamChanged,gateTimer,QOverload<>::of(&QTimer::start));
+    for(auto *input:competitionRulesEditor->findChildren<QCheckBox *>())connect(input,&QCheckBox::toggled,gateTimer,QOverload<>::of(&QTimer::start));
+    QTimer::singleShot(0,this,&CompetitionConfigWindow::loadCanonicalCatalog);
+}
+
+void CompetitionConfigWindow::loadCanonicalCatalog()
+{
+    const auto *db=GlobalDatabase::get();const auto packs=db->getPacks();
+    const QStringList active{db->activePackId(DataPack::Jumpers),db->activePackId(DataPack::Hills),db->activePackId(DataPack::Rules)};
+    const auto maximum=GlobalSimulationSettings::get()->getMaxSkills();const auto service=catalog;
+    auto *watcher=new QFutureWatcher<SimulationV2::CatalogSnapshot>(this);
+    connect(watcher,&QFutureWatcher<SimulationV2::CatalogSnapshot>::finished,this,[this,watcher]{
+        snapshot=watcher->result();watcher->deleteLater();
+        // Publish pointers only after every implicitly shared vector has its own storage.
+        snapshot.packs.detach();for(auto &pack:snapshot.packs){pack.data.jumpers.detach();pack.data.hills.detach();pack.data.rules.detach();}
+        filling=true;
+        for(const auto &pack:snapshot.packs) {
+            auto *combo=pack.data.kind==DataPack::Jumpers?athletePack:pack.data.kind==DataPack::Hills?hillPack:rulesPack;
+            combo->addItem(pack.data.name,pack.data.id);
+        }
+        athletePack->setCurrentIndex(athletePack->findData(snapshot.active.value(0)));
+        hillPack->setCurrentIndex(hillPack->findData(snapshot.active.value(1)));
+        rulesPack->setCurrentIndex(rulesPack->findData(snapshot.active.value(2)));
+        filling=false;ready=true;
+        selectCanonicalPack(DataPack::Jumpers);selectCanonicalPack(DataPack::Hills);selectCanonicalPack(DataPack::Rules);
+        on_pushButton_autoGate_clicked();updateCanonicalReadiness();
+    });
+    watcher->setFuture(QtConcurrent::run([=]{return service.load(packs,maximum,active);}));
+}
+
+void CompetitionConfigWindow::selectCanonicalPack(DataPack::Kind kind)
+{
+    if(!ready)return;
+    auto *selector=kind==DataPack::Jumpers?athletePack:kind==DataPack::Hills?hillPack:rulesPack;
+    const auto id=selector->currentData().toString();
+    SimulationV2::CatalogPack *selected=nullptr;
+    for(auto &pack:snapshot.packs)if(pack.data.kind==kind && pack.data.id==id){selected=&pack;break;}
+    if(selected && snapshot.selectionWritable){QString error;if(!catalog.select(snapshot,kind,id,error))snapshot.issues.append(error);}
+    filling=true;
+    if(kind==DataPack::Jumpers) {
+        sourceJumpers.clear();importedJumpers.clear();importNotice.clear();
+        if(selected)for(auto &athlete:selected->data.jumpers)sourceJumpers.append(&athlete);
+        competitionJumpers=sourceJumpers;refreshCanonicalRoster();
+    } else {
+        auto *items=kind==DataPack::Hills?ui->comboBox_existingHill:existingCompetitionRulesComboBox;items->clear();
+        if(selected) {
+            if(kind==DataPack::Hills)for(const auto &hill:selected->data.hills)items->addItem(QIcon(CountryFlagsManager::getFlagPixmap(hill.getCountryCode().toLower())),hill.getName()+" HS"+QString::number(hill.getHSPoint()));
+            else for(const auto &rules:selected->data.rules)items->addItem(rules.getName());
+        }
+    }
+    filling=false;
+    if(kind==DataPack::Hills)selectCanonicalHill(ui->comboBox_existingHill->currentIndex());
+    else if(kind==DataPack::Rules)selectCanonicalRules(existingCompetitionRulesComboBox->currentIndex());
+    updateCanonicalReadiness();
+}
+
+void CompetitionConfigWindow::selectCanonicalHill(int index)
+{
+    if(!ready)return;
+    const auto *pack=snapshot.find(DataPack::Hills,hillPack->currentData().toString());
+    if(index<0 && ui->comboBox_existingHill->count()){ui->comboBox_existingHill->setCurrentIndex(0);return;}
+    if(pack && index>=0 && index<pack->data.hills.size())hillDraft->load(pack->data.hills[index]);
+    else hillDraft->clear();
+    on_pushButton_autoGate_clicked();
+}
+
+void CompetitionConfigWindow::selectCanonicalRules(int index)
+{
+    if(!ready)return;
+    if(index<0 && existingCompetitionRulesComboBox->count()){existingCompetitionRulesComboBox->setCurrentIndex(0);return;}
+    for(auto &pack:snapshot.packs)if(pack.data.kind==DataPack::Rules && pack.data.id==rulesPack->currentData().toString() && index>=0 && index<pack.data.rules.size()) {
+        competitionRulesEditor->setCompetitionRules(&pack.data.rules[index]);competitionRulesEditor->fillCompetitionRulesInputs();
+        emit competitionRulesEditor->competitionTypeChanged();emit competitionRulesEditor->jumpersCountInTeamChanged();emit competitionRulesEditor->KORoundChanged();break;
+    }
+    updateCanonicalReadiness();
+}
+
+void CompetitionConfigWindow::refreshCanonicalRoster()
+{
+    competitionGroups.clear();const QSignalBlocker blocker(comboBox_groupsSelectionType);comboBox_groupsSelectionType->setCurrentIndex(0);
+    jumpersListView->setupListModel();KOGroupsList->fillListLayout();
+    competitionTeams=Team::constructTeamsVectorByJumpersList(competitionJumpers,competitionRulesEditor->getJumpersCountInTeam());
+    teamsSquadsModel->setupTreeItems();
+}
+
+void CompetitionConfigWindow::updateCanonicalReadiness()
+{
+    if(!hillDraft || !catalogStatus)return;
+    ui->pushButton_submit->setEnabled(ready && hillDraft->valid() && !competitionJumpers.isEmpty() && existingCompetitionRulesComboBox->currentIndex()>=0);
+    if(!ready)return;
+    QStringList messages;
+    if(!importNotice.isEmpty())messages.append(importNotice);
+    if(sourceJumpers.isEmpty() && importedJumpers.isEmpty())messages.append(tr("Dodaj zawodników w bazie danych lub wybierz inną paczkę."));
+    if(!hillDraft->valid())messages.append(tr("Dodaj skocznię w bazie danych lub wybierz inną paczkę."));
+    if(existingCompetitionRulesComboBox->currentIndex()<0)messages.append(tr("Wybierz paczkę z zasadami konkursu."));
+    for(auto kind:{DataPack::Jumpers,DataPack::Hills}) {
+        auto *combo=kind==DataPack::Jumpers?athletePack:hillPack;
+        if(const auto *pack=snapshot.find(kind,combo->currentData().toString());pack && !pack->migrationNotice.isEmpty())messages.append(pack->migrationNotice);
+    }
+    messages.removeDuplicates();
+    if(!snapshot.issues.isEmpty())messages.append(tr("Uwagi przy wczytywaniu paczek: %1.").arg(snapshot.issues.size()));
+    findChild<QPushButton *>("pushButton_catalogDetails")->setVisible(!snapshot.issues.isEmpty());
+    catalogStatus->setText(messages.join('\n'));catalogStatus->setVisible(!messages.isEmpty());
+    updateCanonicalGateSuggestion();
+}
+
+void CompetitionConfigWindow::updateCanonicalGateSuggestion()
+{
+    const int gate=suggestedGate();setProperty("suggestedGate",gate);
+    auto *label=findChild<QLabel *>("label_suggestedGate");if(!label)return;
+    const int delta=gate-ui->spinBox_startGate->value();
+    label->setText(gate<0?tr("Sugerowana belka: —"):tr("Sugerowana belka: %1 (%2%3)").arg(gate).arg(delta>0?"+":"").arg(delta));
+}
+
+void CompetitionConfigWindow::persistCanonicalRecords(const Hill &hill)
+{
+    QStringList issues;
+    for(auto kind:{DataPack::Jumpers,DataPack::Hills}) {
+        auto *combo=kind==DataPack::Jumpers?athletePack:hillPack;
+        const auto *pack=snapshot.find(kind,combo->currentData().toString());if(!pack)continue;
+        const SimulationV2::ProfilePackRepository repository(kind==DataPack::Jumpers?SimulationV2::ProfilePackKind::Athletes:SimulationV2::ProfilePackKind::Hills,kind==DataPack::Jumpers?catalogPaths.athletes:catalogPaths.hills);
+        QJsonObject current;QString error;
+        const QString file=repository.filePath(QJsonObject{{"id",pack->data.id}});
+        if(!repository.read(file,current,error)){issues.append(error);continue;}
+        auto profiles=current["profiles"].toArray();bool changed=false;
+        for(int i=0;i<profiles.size();++i) {
+            auto profile=profiles[i].toObject();double record=0;const auto id=profile["id"].toString();
+            if(kind==DataPack::Hills && id==hill.getIDStr())record=hill.getRecord();
+            else if(kind==DataPack::Jumpers)for(auto *athlete:sourceJumpers)if(athlete->getIDStr()==id){record=athlete->getPersonalBest();break;}
+            const QString key=kind==DataPack::Hills?"record":"personalBest";
+            if(record>profile[key].toDouble()){profile[key]=record;profiles[i]=profile;changed=true;}
+        }
+        if(changed){current["profiles"]=profiles;if(!repository.save(current,error))issues.append(error);}
+    }
+    if(!issues.isEmpty())QMessageBox::warning(this,tr("Nie zapisano rekordów"),issues.join('\n'),QMessageBox::Ok);
 }
 
 int CompetitionConfigWindow::getJumpersCountInTeam() const
@@ -567,7 +772,7 @@ void CompetitionConfigWindow::setClassificationsComboBoxIndex(int index)
 void CompetitionConfigWindow::setupHillToolBoxItem()
 {
     ui->comboBox_existingHill->clear();
-    for(const auto & hill : GlobalDatabase::get()->getEditableGlobalHills())
+    if(!usesCanonicalCatalog())for(const auto & hill : GlobalDatabase::get()->getEditableGlobalHills())
     {
         ui->comboBox_existingHill->addItem(QIcon(QPixmap(CountryFlagsManager::getFlagPixmap(hill.getCountryCode().toLower()))) ,hill.getName() + " HS" + QString::number(hill.getHSPoint()));
     }
@@ -579,6 +784,7 @@ void CompetitionConfigWindow::setupHillToolBoxItem()
 
     connect(ui->comboBox_existingHill, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](){
         int selected = ui->comboBox_existingHill->currentIndex();
+        if(usesCanonicalCatalog()){if(!filling)selectCanonicalHill(selected);return;}
         if(selected<0 && ui->comboBox_existingHill->count()>0){ui->comboBox_existingHill->setCurrentIndex(0);return;}
         if(selected >= 0 && selected<GlobalDatabase::get()->getEditableGlobalHills().size()){
             hillEditor->setHill(&GlobalDatabase::get()->getEditableGlobalHills()[selected]);
@@ -594,7 +800,7 @@ void CompetitionConfigWindow::setupCompetitionRulesToolBoxItem()
     existingCompetitionRulesComboBox = new QComboBox();
     existingCompetitionRulesComboBox->setObjectName("comboBox_existingCompetitionRules");
     QStringList rulesStringList;
-    for(const auto & rule : GlobalDatabase::get()->getEditableCompetitionRules())
+    if(!usesCanonicalCatalog())for(const auto & rule : GlobalDatabase::get()->getEditableCompetitionRules())
     {
         rulesStringList.push_back(rule.getName());
     }
@@ -624,6 +830,7 @@ void CompetitionConfigWindow::setupCompetitionRulesToolBoxItem()
 
     connect(existingCompetitionRulesComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](){
         int selected = existingCompetitionRulesComboBox->currentIndex();
+        if(usesCanonicalCatalog()){if(!filling)selectCanonicalRules(selected);return;}
         if(selected<0 && existingCompetitionRulesComboBox->count()>0){existingCompetitionRulesComboBox->setCurrentIndex(0);return;}
         if(selected >= 0 && selected<GlobalDatabase::get()->getEditableCompetitionRules().size()){
             CompetitionRules * rules = &GlobalDatabase::get()->getEditableCompetitionRules()[selected];
@@ -779,6 +986,9 @@ void CompetitionConfigWindow::setType(short newType)
 
 bool CompetitionConfigWindow::validateSimulationInputs()
 {
+    if(usesCanonicalCatalog() && (!ready || !hillDraft->valid() || existingCompetitionRulesComboBox->currentIndex()<0)) {
+        QMessageBox::warning(this,tr("Niepełna konfiguracja"),tr("Poczekaj na paczki i wybierz skocznię oraz zasady konkursu."),QMessageBox::Ok);return false;
+    }
     CompetitionRules rules = getType() == SeasonCompetition
         ? *seasonCompetition->getRulesPointer()
         : competitionRulesEditor->getCompetitionRulesFromWidgetInputs();
@@ -868,7 +1078,7 @@ bool CompetitionConfigWindow::validateSimulationInputs()
         }
     }
 
-    const Hill selectedHill=getType()==SeasonCompetition?*seasonCompetition->getHill():hillEditor->getHillFromWidgetInput();
+    const Hill selectedHill=configuredHill();
     const bool newHill=bool(selectedHill.getSimulationProfile());
     if(newHill && (ui->spinBox_startGate->value()<0 || ui->spinBox_startGate->value()>200)) {
         QMessageBox::warning(this,tr("Nieprawidłowa belka"),tr("Wybierz belkę w zakresie od 0 do 200."),QMessageBox::Ok);
@@ -898,8 +1108,10 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
     switch(getType())
     {
     case SingleCompetition:{
+        double simulationSeconds=0;
+        const auto qualitySeed=QRandomGenerator::global()->generate64();
         CompetitionInfo qualsInfo;
-        Hill qualificationsHill = hillEditor->getHillFromWidgetInput();
+        Hill qualificationsHill = configuredHill();
         qualsInfo.setHill(&qualificationsHill);
         qualsInfo.setRules(competitionRulesEditor->getCompetitionRulesFromWidgetInputs());
         qualsInfo.setSerieType(CompetitionInfo::Qualifications);
@@ -971,16 +1183,19 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
 
             CompetitionManagerWindow qualsWindow(qualificationsManager, this, true);
             qualsWindow.setInrunSnowGenerator(InrunSnowGenerator(inrunSnowGeneratorSettingsEditor->getBase(), inrunSnowGeneratorSettingsEditor->getDeviation()));
+            if(weatherSetup)qualsWindow.bindWeatherSetup(weatherSetup,qualitySeed,simulationSeconds);
             connect(qualsWindow.getManager(), &AbstractCompetitionManager::competitionEnd, &qualsWindow, [&qualsWindow](){
                 qualsWindow.showMessageBoxForQualificationsEnd();
             });
             if(qualsWindow.exec() == QDialog::Accepted)
             {
             }
+            simulationSeconds=qualsWindow.getSimulationSeconds();
         }
 
         CompetitionInfo info;
-        Hill competitionHill = hillEditor->getHillFromWidgetInput();
+        Hill competitionHill = configuredHill();
+        competitionHill.setRecord(std::max(competitionHill.getRecord(),qualificationsHill.getRecord()));
         info.setHill(&competitionHill);
         info.setRules(competitionRulesEditor->getCompetitionRulesFromWidgetInputs());
         info.setSerieType(CompetitionInfo::Competition);
@@ -1074,6 +1289,7 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
         {
             CompetitionManagerWindow window(competitionManager, this, true);
             window.setInrunSnowGenerator(InrunSnowGenerator(inrunSnowGeneratorSettingsEditor->getBase(), inrunSnowGeneratorSettingsEditor->getDeviation()));
+            if(weatherSetup)window.bindWeatherSetup(weatherSetup,qualitySeed,simulationSeconds);
             if(window.exec() == QDialog::Accepted)
                 this->setModal(true);
         }
@@ -1088,7 +1304,7 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
         }
 
         Hill * hill = nullptr;
-        if(ui->comboBox_existingHill->currentIndex() >= 0 && ui->comboBox_existingHill->currentIndex()<GlobalDatabase::get()->getEditableGlobalHills().size())
+        if(!usesCanonicalCatalog() && ui->comboBox_existingHill->currentIndex() >= 0 && ui->comboBox_existingHill->currentIndex()<GlobalDatabase::get()->getEditableGlobalHills().size())
             hill = &GlobalDatabase::get()->getEditableGlobalHills()[ui->comboBox_existingHill->currentIndex()];
         if(hill != nullptr && GlobalSimulationSettings::get()->getUpdateGlobalDatabaseRecords() == true){
             if(qualsInfo.getHill()->getRecord() > hill->getRecord())
@@ -1096,7 +1312,11 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
             if(info.getHill()->getRecord() > hill->getRecord())
                 hill->setRecord(info.getHill()->getRecord());
         }
-        if(GlobalSimulationSettings::get()->getUpdateGlobalDatabaseRecords() == true)
+        if(usesCanonicalCatalog() && GlobalSimulationSettings::get()->getUpdateGlobalDatabaseRecords()) {
+            competitionHill.setRecord(std::max(competitionHill.getRecord(),qualificationsHill.getRecord()));
+            persistCanonicalRecords(competitionHill);
+        }
+        if(!usesCanonicalCatalog() && GlobalSimulationSettings::get()->getUpdateGlobalDatabaseRecords() == true)
         {
             for(auto & jumper : competitionJumpers)
             {
@@ -1140,7 +1360,7 @@ void CompetitionConfigWindow::on_pushButton_loadJumpers_clicked()
             return;
 
         QFile file(fileUrl.toLocalFile());
-        if(!(file.open(QIODevice::ReadOnly | QIODevice::Text)))
+        if(!(file.open(QIODevice::ReadOnly | QIODevice::Text)) || file.size()>20*1024*1024)
         {
             QMessageBox message(QMessageBox::Icon::Critical, tr("Nie można otworzyć pliku z zawodnikami"), tr("Nie udało się otworzyć wybranego pliku\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
             message.setModal(true);
@@ -1151,7 +1371,7 @@ void CompetitionConfigWindow::on_pushButton_loadJumpers_clicked()
         file.close();
         QJsonParseError parseError;
         const QJsonDocument document = QJsonDocument::fromJson(contents, &parseError);
-        if(parseError.error != QJsonParseError::NoError || !document.isObject() || !document.object().value("jumpers").isArray())
+        if(parseError.error != QJsonParseError::NoError || !document.isObject() || (!document.object().value("jumpers").isArray() && !(usesCanonicalCatalog() && document.object().value("format")=="sj-sim-athlete-pack")))
         {
             QMessageBox::warning(this, tr("Nieprawidłowy plik zawodników"),
                                  tr("Wybrany plik nie zawiera prawidłowej listy zawodników JSON.\n%1")
@@ -1160,10 +1380,33 @@ void CompetitionConfigWindow::on_pushButton_loadJumpers_clicked()
             return;
         }
         QVector<Jumper> jumpers = Jumper::getVectorFromJson(contents);
+        if(usesCanonicalCatalog()) {
+            DataPack pack;QString error;
+            if(document.object().value("format")=="sj-sim-athlete-pack") {
+                if(!DataPack::fromJson(document.object(),pack,error)){QMessageBox::warning(this,tr("Nieprawidłowa paczka"),error,QMessageBox::Ok);return;}
+                jumpers=pack.jumpers;
+            }
+            DataPack old;old.name=tr("Import zawodników");
+            for(const auto &athlete:jumpers)if(!athlete.getSimulationProfile())old.jumpers.append(athlete);
+            if(!old.jumpers.isEmpty()) {
+                SimulationV2::PackMigration converted;
+                if(!SimulationV2::approximateLegacyPack(old,GlobalSimulationSettings::get()->getMaxSkills(),converted,error)){QMessageBox::warning(this,tr("Nie udało się przeliczyć zawodników"),error,QMessageBox::Ok);return;}
+                QVector<Jumper> updated;int legacyIndex=0;
+                for(const auto &athlete:jumpers)updated.append(athlete.getSimulationProfile()?athlete:converted.pack.jumpers[legacyIndex++]);
+                jumpers=updated;importNotice=converted.warning;
+            } else importNotice.clear();
+        }
         if(jumpers.isEmpty() == false){
-            competitionJumpers.clear();
-            for(auto & j : jumpers)
-                competitionJumpers.push_back(new Jumper(j));
+            competitionJumpers.clear();importedJumpers.clear();
+            for(auto & j : jumpers) {
+                if(usesCanonicalCatalog()) {
+                    auto profile=*j.getSimulationProfile();profile.id=QUuid::createUuid().toString(QUuid::WithoutBraces);QString error;
+                    if(!j.setSimulationProfile(profile,error))continue;
+                    j.setSimulationPackContext({},QFileInfo(fileUrl.toLocalFile()).absolutePath());
+                }
+                importedStorage.push_back(std::make_unique<Jumper>(j));auto *athlete=importedStorage.back().get();
+                competitionJumpers.append(athlete);importedJumpers.append(athlete);
+            }
             jumpersListView->setSeasonJumpers(&competitionJumpers);
             delete jumpersListView->getListModel();
             jumpersListView->setupListModel();
@@ -1174,6 +1417,7 @@ void CompetitionConfigWindow::on_pushButton_loadJumpers_clicked()
             teamsSquadsModel->setupTreeItems();
             teamsTreeView->setModel(teamsSquadsModel);
             teamsTreeView->getTreeView()->expandToDepth(0);
+            if(usesCanonicalCatalog()){refreshCanonicalRoster();updateCanonicalReadiness();}
         }
         else
             QMessageBox::warning(this, tr("Pusta lista zawodników"),
@@ -1394,8 +1638,9 @@ void CompetitionConfigWindow::on_pushButton_jumpersLists_clicked()
 
 
 int CompetitionConfigWindow::suggestedGate() {
+    if(usesCanonicalCatalog() && (!ready || !hillDraft || !hillDraft->valid()))return -1;
     const auto jumpers=type==SeasonCompetition?seasonCompetitionJumpers:competitionJumpers;
-    Hill hill=type==SeasonCompetition?*seasonCompetition->getHill():hillEditor->getHillFromWidgetInput();
+    Hill hill=configuredHill();
     if(!std::isfinite(hill.getHSPoint()) || hill.getHSPoint()<=0 || hill.getKPoint()<=0 || hill.getPointsForGate()<=0 || hill.getPointsForMeter()<=0)return -1;
     const auto hillProfile=hill.getSimulationProfile();
     SimulationV2::EventKind event=SimulationV2::EventKind::Competition;
@@ -1422,6 +1667,7 @@ int CompetitionConfigWindow::suggestedGate() {
     JumpManipulator manipulation;JumpSimulator simulator;
     simulator.setJumper(best);simulator.setHill(&hill);simulator.setCompetitionRules(&rules);simulator.setManipulator(&manipulation);
     simulator.setWinds(winds);simulator.setInrunSnow(inrunSnowGeneratorSettingsEditor->getBase());simulator.setSimulationEvent(event);
+    if(weatherSetup)simulator.setSimulationWeather(weatherSetup->field(),std::make_shared<SimulationV2::FieldWindMeasurement>(hill.getKPoint(),rules));
     int low=0,high=hillProfile?std::min(200,ui->spinBox_startGate->maximum()):ui->spinBox_startGate->maximum();
     while(low<high) {
         const int middle=(low+high+1)/2;simulator.setGate(middle);simulator.setCompetitionStartGate(middle);

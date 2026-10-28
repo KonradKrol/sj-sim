@@ -53,7 +53,7 @@ QVector<Jumper *> QuickRoster::read() const {
 }
 QVector<Jumper *> QuickRoster::candidates() const {
     if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source)){
-        if(config->type==CompetitionConfigWindow::SingleCompetition){QVector<Jumper *> out;for(auto &j:GlobalDatabase::get()->getEditableGlobalJumpers())out.append(&j);return out;}
+        if(config->type==CompetitionConfigWindow::SingleCompetition)return config->availableJumpers();
         if(!config->simulationSave||!config->seasonCompetition)return {};
         auto pool=config->simulationSave->getJumpers();auto *event=config->seasonCompetition;
         for(auto *main:config->simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference())if(main->getTrialRound()==event){event=main;break;}
@@ -66,7 +66,7 @@ QVector<Jumper *> QuickRoster::candidates() const {
 }
 void QuickRoster::sync(){
     const auto current=unique(read());auto pool=unique(candidates());
-    if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source);config&&config->type==CompetitionConfigWindow::SingleCompetition)pool=unique(pool+m_pool+current);
+    if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source);config&&config->type==CompetitionConfigWindow::SingleCompetition && !config->usesCanonicalCatalog())pool=unique(pool+m_pool+current);
     else pool=unique(pool+current);
     if(current==m_current&&pool==m_pool&&!m_countryCodes.isEmpty()&&m_presetNames==presets())return;
     m_presetNames=presets();
@@ -90,6 +90,7 @@ void QuickRoster::write(const QVector<Jumper *> &value){
     if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source)){
         if(config->type==CompetitionConfigWindow::SingleCompetition)config->competitionJumpers=value;else config->seasonCompetitionJumpers=value;
         config->jumpersListView->setupListModel();
+        if(config->usesCanonicalCatalog())config->updateCanonicalReadiness();
         if(config->KOGroupsList&&!config->comboBox_groupsSelectionType->isHidden()&&config->comboBox_groupsSelectionType->currentIndex()>0){
             auto &groups=config->type==CompetitionConfigWindow::SingleCompetition?config->competitionGroups:config->seasonCompetitionGroups;
             const auto rules=config->seasonCompetition?config->seasonCompetition->getRules():config->competitionRulesEditor->getCompetitionRulesFromWidgetInputs();

@@ -66,7 +66,7 @@ static void uiDuplicationRegressions(MainWindow &main)
         database.hide();
     }
     {
-        CompetitionConfigWindow configuration(CompetitionConfigWindow::SingleCompetition,&main);configuration.show();QTest::qWait(120);
+        CompetitionConfigWindow configuration(CompetitionConfigWindow::SingleCompetition,&main,nullptr,CompetitionConfigWindow::DataSource::LegacyCompatibility);configuration.show();QTest::qWait(120);
         auto *bridge=configuration.findChild<QuickBridge *>();
         const int count=bridge->root()->values().value("options").toStringList().size();
         for(int index=0;index<count;++index){

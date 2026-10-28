@@ -17,6 +17,11 @@
 #include "TeamsSquadsTreeView.h"
 #include "../EditorWidgets/InrunSnowGeneratorSettingsEditorWidget.h"
 #include "../EditorWidgets/KOSystem/KOGroupsListView.h"
+#include "../../simulation-v2/SimulationCatalog.h"
+#include "../../simulation-v2/ProfileDraft.h"
+#include "../../simulation-v2/WeatherSetup.h"
+#include <memory>
+#include <vector>
 
 class HillEditorWidget;
 class WindsGeneratorSettingsEditorWidget;
@@ -34,8 +39,17 @@ class CompetitionConfigWindow : public QDialog
     friend class QuickRoster;
 
 public:
-    explicit CompetitionConfigWindow(short type, QWidget *parent = nullptr, SimulationSave * save = nullptr);
+    enum class DataSource { Canonical, LegacyCompatibility };
+    explicit CompetitionConfigWindow(short type, QWidget *parent = nullptr, SimulationSave * save = nullptr,
+        DataSource source = DataSource::Canonical,
+        const SimulationV2::CatalogPaths &paths = SimulationV2::CatalogPaths::defaults());
     ~CompetitionConfigWindow();
+    bool usesCanonicalCatalog() const {return type==SingleCompetition && source==DataSource::Canonical;}
+    bool catalogReady() const {return !usesCanonicalCatalog() || ready;}
+    SimulationWeatherSetup *getWeatherSetup() const {return weatherSetup;}
+    SimulationProfileDraft *getHillDraft() const {return hillDraft;}
+    Hill configuredHill() const;
+    QVector<Jumper *> availableJumpers() const;
 
     enum Type{
         SingleCompetition,
@@ -94,6 +108,28 @@ private:
 
     void updateResponsiveLayout(int windowWidth);
     bool compactLayout = false;
+    DataSource source;
+    SimulationV2::CatalogPaths catalogPaths;
+    SimulationV2::SimulationCatalog catalog;
+    SimulationV2::CatalogSnapshot snapshot;
+    SimulationProfileDraft *hillDraft=nullptr;
+    SimulationWeatherSetup *weatherSetup=nullptr;
+    QComboBox *athletePack=nullptr,*hillPack=nullptr,*rulesPack=nullptr;
+    QLabel *catalogStatus=nullptr;
+    Hill widgetHill;
+    bool ready=false,filling=false;
+    QVector<Jumper *> sourceJumpers,importedJumpers;
+    QString importNotice;
+    std::vector<std::unique_ptr<Jumper>> importedStorage;
+    void setupCanonicalCatalog();
+    void loadCanonicalCatalog();
+    void selectCanonicalPack(DataPack::Kind);
+    void selectCanonicalHill(int);
+    void selectCanonicalRules(int);
+    void updateCanonicalReadiness();
+    void updateCanonicalGateSuggestion();
+    void refreshCanonicalRoster();
+    void persistCanonicalRecords(const Hill &);
 
 public:
     short getType() const;

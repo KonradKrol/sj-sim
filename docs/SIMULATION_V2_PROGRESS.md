@@ -34,8 +34,10 @@ sesji AI, także na innym komputerze po `git pull`. Zadanie nie jest zakończone
   wczytuje kanoniczne paczki v2, a dawne dane migruje do oddzielnych przybliżonych
   kopii. Można wybrać paczkę, zawodnika, skocznię, rodzaj skoku i edytować lokalną
   kopię pełnego nowego profilu bez zmiany źródła. Belka na wejściu jest wyliczana.
-- Konkursy i nowe sezony nadal wymagają podłączenia katalogu; dawne dane w tych
-  ścieżkach wciąż uruchamiają stary silnik. Nie deklaruj zakończenia całej migracji.
+- **Zwykły konkurs ma już podłączony katalog v2 i wspólną pogodę.** Wybór trzech
+  paczek, nowy lokalny edytor skoczni, uproszczone Warunki; kwalifikacje i konkurs
+  zachowują seed pola oraz wspólny czas. Nowe sezony nadal wymagają integracji.
+  Nie deklaruj zakończenia całej migracji.
 
 ### Budowanie i odtwarzanie testów
 
@@ -708,3 +710,62 @@ brak technicznego formularza, 2048 skoków z deszczem 1 vs 4 wątki, oba motywy,
 Produkcyjny build Qt 5.15.3 PASS; bez nowych ostrzeżeń QML i pętli układów.
 Pozostaje dopięcie katalogu i uruchomienia zwykłego konkursu, a potem sezony,
 historia korytarzy i pozostałe prace specyfikacji. Nowy kierunek obowiązuje też je.
+
+## Zwykły konkurs podłączony do v2 — najnowszy etap 28.10
+
+Domyślny `CompetitionConfigWindow(SingleCompetition)` asynchronicznie wczytuje
+kanoniczny katalog. Użytkownik wybiera paczkę zawodników/skoczni/zasad oraz
+konkretną skocznię i zasady. Snapshot żyje przez całą konfigurację: wszystkie
+wektory są odłączane przed opublikowaniem pointerów, zmiana paczki nie niszczy
+poprzednich zawodników, ale usuwa ich z bieżącej listy/kandydatów QuickRoster.
+Żadne globalne wektory nie są podmieniane.
+
+Skocznia ma `SimulationProfileDraft`, legacy widget jest wyłącznie ukrytym lustrem.
+`configuredHill()` jest źródłem faktycznych wejść preview i startu. Warunki używają
+tego samego prostego `WeatherWorkspace` i `SimulationWeatherSetup`, losowanego
+po wyborze skoczni. Sugestia belki bierze to pole, a jej podpis/delta odświeżają się
+z krótkim debounce. Nie ma ignorowanych parametrów starej ważności skoku.
+
+Kwalifikacje i konkurs dostają to samo pole i root seed jakości, a główna faza
+zaczyna od `qualsWindow.getSimulationSeconds()`. Nie ma ukrytego losowania przy
+starcie. Rekord skoczni po kwalifikacjach jest zachowany przed konkursem.
+Zapis rekordów ponownie czyta kanoniczne pliki i scala tylko większe rekordy po ID,
+zachowując ewentualne nowsze zmiany pozostałych pól. Dawne paczki są nietknięte.
+Importowane listy są własnością konfiguracji (wcześniej wyciekały); stare profile
+są przybliżane lokalnie z ostrzeżeniem, nowe dostają osobne tożsamości kopii.
+Konfiguracja otwierana z MainWindow ma czas życia ograniczony do wykonania okna.
+
+Wewnętrzny `DataSource::LegacyCompatibility` służy istniejącym regresjom oraz
+zachowaniu dawnej ścieżki bez ekspozycji przełącznika w UI. Domyślny jest Canonical.
+Nie pomylić tego z przywróceniem starego edytora użytkownikowi.
+
+`--simulation-v2-competition-only`: PASS — w tym pełne kwalifikacje → dwie serie
+→ zakończenie, deszcz w metadanych, wspólny czas bez powtórzeń, seed bez rerollu,
+zmiana paczek bez starych kandydatów, stabilne pointery i scalanie rekordu bez
+nadpisania zmienionego na dysku nazwiska. Test dopuszcza dodatkowe awanse ex aequo.
+Produkcja Qt 5.15.3 buduje się; nie testowano Qt 6 ani Windowsa.
+
+Przy sprawdzaniu istniejącej ścieżki wykryto jeszcze `ReferenceError: model is
+not defined` w obu delegatach `RosterLibrary` i `RosterOrder`. Mają teraz jawny
+`required property var model`, dzięki czemu kandydaci, kolejność i drag uchwyty
+dostają właściwe role także na Qt 5. `--rosters-only` PASS (w tym prawdziwe
+klikanie, przeciąganie, przewijanie, cofanie i skład/rezerwy), `--config-defaults-only`
+PASS. Nie usuwać tej poprawki jako niepowiązanej — lista jest częścią nowego konkursu.
+Końcowy `--bulk-only`: PASS — zachowane stare ścieżki indywidualne, drużynowe,
+KO, N, seria i grupa; także wcześniejsze audyty punktacji i archiwum.
+
+### Następne konkretne zadania
+
+1. Nowy sezon: kanoniczne trzy wybory w `NewSimulationSaveConfigurationWindow`,
+   własne kopie profili w `SimulationSave`, jednoznaczny format nowego silnika.
+   Przed udostępnieniem sprawdzić edycję sezonowych zawodników i ręczny generator
+   formy — nadal operują dawnymi umiejętnościami i mogłyby ignorować/zgubić v2.
+2. Sezonowy `CompetitionConfigWindow` i `SimulationSaveManagerWindow`: to samo
+   uproszczone losowanie, kontekst daty/kraju, przekazanie pola/rodzaju opadów do
+   managera. Sezony nie są jeszcze przełączone domyślnie na nowy model.
+3. Po wczytaniu zapisu odtworzyć katalog zdjęć z przenośnego `simulation-pack-id`,
+   bez zapisu absolutnej ścieżki do pliku symulacji.
+4. Podgląd korytarzy konkretnego skoku w konkursie i archiwum: użyć zapisanych
+   `exposures`, nie bieżącej pogody/replay zależnego od nowszych współczynników.
+5. Weryfikacja sposobu uśredniania FIS i reszta manipulacji/playgroundu/specyfikacji.
+   Aktualna polityka pomiaru pozostaje zgodnością z ustawieniami gry, nie deklaracją FIS.

@@ -523,7 +523,7 @@ void QuickBridge::refresh() {
         if(context!=m_context){m_context=context;emit changed();}
     }
     if(auto *configuration=qobject_cast<CompetitionConfigWindow *>(m_window)) {
-        QVariantMap context;context["suggestedGate"]=configuration->suggestedGate();if(auto *gate=m_content->findChild<QSpinBox *>("spinBox_startGate"))context["startingGate"]=gate->value();
+        QVariantMap context;context["suggestedGate"]=configuration->usesCanonicalCatalog()?m_window->property("suggestedGate"):QVariant(configuration->suggestedGate());if(auto *gate=m_content->findChild<QSpinBox *>("spinBox_startGate"))context["startingGate"]=gate->value();
         if(context!=m_context){m_context=context;emit changed();}
     }
     if(auto *season=qobject_cast<SimulationSaveManagerWindow *>(m_window)) {
@@ -1036,12 +1036,17 @@ void QuickBridge::compose(QuickNode *base) {
     if(auto *configuration=qobject_cast<CompetitionConfigWindow *>(m_window)) {
         const bool season=configuration->getType()==CompetitionConfigWindow::SeasonCompetition;
         QVariantList plan;
+        if(configuration->usesCanonicalCatalog()) {
+            plan.append(group("competition-catalog-status",QString(),fields({{"label_catalogStatus",""},{"pushButton_catalogDetails",""}})));
+            plan.append(group("competition-packs",tr("Paczki"),fields({{"comboBox_athletePack",tr("Zawodnicy")},{"comboBox_hillPack",tr("Skocznie")},{"comboBox_rulesPack",tr("Zasady")}}),"form"));
+        }
         if(season && configuration->getSeasonCompetition()) {
             auto *event=configuration->getSeasonCompetition();auto *hill=event->getHill();
             plan.append(group("season-event",hill?hill->getName()+" HS"+QString::number(hill->getHSPoint()):tr("Brak skoczni"),{},"label"));
             plan.append(group("season-rules",event->getShortSerieTypeText()+" · "+event->getRules().getName(),{},"label"));
         }
         if(!season){if(auto *hillChoice=m_content->findChild<QComboBox *>("comboBox_existingHill"))hillChoice->setProperty("quickSearchableChoice",true);const auto hill=field("comboBox_existingHill",tr("Skocznia"));if(hill.isValid())plan.append(hill);}
+        const auto rulesChoice=field("comboBox_existingCompetitionRules",tr("Zasady konkursu"));if(!season && rulesChoice.isValid())plan.append(rulesChoice);
         auto *box=m_content->findChild<QToolBox *>("toolBox");
         if(box && !season) for(int i=0;i<box->count();++i) {
             auto *page=box->widget(i);
@@ -1118,9 +1123,17 @@ void QuickBridge::compose(QuickNode *base) {
                 if(!selectors.isEmpty()){detail.append(group("start-list-conditions",tr("Kolejność według wyników"),selectors));labels.append(tr("Kolejność według wyników"));}
             }
         }
-        if(auto *hill=configuration->getHillEditor();hill && !season) { hill->setProperty("quickExposePage",true);detail.append(QVariant::fromValue(node(hill,true)));labels.append(tr("Skocznia")); }
+        if(configuration->usesCanonicalCatalog()) {
+            auto *draft=identity(m_window->property("hillDraft").value<QObject *>());
+            draft->update({{"kind","simulationDraft"},{"hill",true},{"backend",m_window->property("hillDraft")}});
+            detail.append(QVariant::fromValue(draft));labels.append(tr("Skocznia"));
+        } else if(auto *hill=configuration->getHillEditor();hill && !season) { hill->setProperty("quickExposePage",true);detail.append(QVariant::fromValue(node(hill,true)));labels.append(tr("Skocznia")); }
         if(auto *rules=configuration->getCompetitionRulesEditor();rules && !season) { rules->setProperty("quickExposePage",true);detail.append(QVariant::fromValue(node(rules,true)));labels.append(tr("Zasady konkursu")); }
-        if(box)for(int i=0;i<box->count();++i) {
+        if(configuration->getWeatherSetup()) {
+            auto *weather=identity(m_window->property("weatherSetup").value<QObject *>());
+            weather->update({{"kind","weatherSetup"},{"backend",m_window->property("weatherSetup")}});
+            detail.append(QVariant::fromValue(weather));labels.append(tr("Warunki"));
+        } else if(box)for(int i=0;i<box->count();++i) {
             auto *page=box->widget(i);
             if(page->inherits("WindsGeneratorSettingsEditorWidget") || page->inherits("InrunSnowGeneratorSettingsEditorWidget")) {
                 page->setProperty("quickExposePage",true);detail.append(QVariant::fromValue(node(page,true)));labels.append(page->inherits("WindsGeneratorSettingsEditorWidget")?tr("Wiatr"):tr("Śnieg"));

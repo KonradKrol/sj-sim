@@ -1934,3 +1934,15 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
   Lekki deszcz nie dostaje automatycznie tej samej kary co zasypane tory;
   mocny deszcz używa oddzielnego, regulowanego współczynnika. Typ opadów
   jest niezależny od nawierzchni i pozostaje zapisany z nowym skokiem.
+
+### Nowy silnik w zwykłym konkursie
+
+- Konfiguracja domyślnie używa kanonicznych paczek v2 i nowego edytora skoczni.
+  Paczki wczytują się w tle; lista zawodników i drużyn reaguje na wybór paczki.
+- Warunki są losowane według skoczni. Podgląd, sugestia belki, kwalifikacje
+  i konkurs korzystają z jednego zaakceptowanego pola pogody.
+- Wspólny czas przechodzi z kwalifikacji do konkursu bez powtórzenia warunków.
+- Rekordy trafiają do nowych paczek przez scalanie po ID, bez nadpisywania innych
+  zmian w plikach. Importy mają własną pamięć, a zamknięta konfiguracja jest zwalniana.
+- Poprawiono powiązanie ról obu list zawodników w Qt Quick, które mogło ukrywać
+  nazwiska i uchwyty przeciągania oraz generować błędy `model is not defined`.

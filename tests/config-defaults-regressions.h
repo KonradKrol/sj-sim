@@ -14,7 +14,7 @@ static void configDefaultsRegressions(MainWindow &main) {
     check(single.getJumperEditor()->getJumperFromWidgetInput().getNameAndSurname()==database->getEditableGlobalJumpers().last().getNameAndSurname() && single.getHillEditor()->getHillFromWidgetInput().getName()==database->getEditableGlobalHills().last().getName(),"last entries map correctly without a placeholder offset");
     jumper->setCurrentIndex(-1);hill->setCurrentIndex(-1);check(jumper->currentIndex()==0 && hill->currentIndex()==0,"populated required selectors cannot remain empty");
     render(&single,"config-default-single-jumps",true);single.hide();
-    CompetitionConfigWindow competition(CompetitionConfigWindow::SingleCompetition,&main);
+    CompetitionConfigWindow competition(CompetitionConfigWindow::SingleCompetition,&main,nullptr,CompetitionConfigWindow::DataSource::LegacyCompatibility);
     hill=competition.findChild<QComboBox *>("comboBox_existingHill");auto *rules=competition.findChild<QComboBox *>("comboBox_existingCompetitionRules");
     check(hill && rules && hill->currentIndex()==0 && rules->currentIndex()==0 && hill->count()==database->getEditableGlobalHills().size() && rules->count()==database->getEditableCompetitionRules().size(),"competition defaults to real hill and rules without NONE entries");
     check(competition.getHillEditor()->getHillFromWidgetInput().getName()==database->getEditableGlobalHills().first().getName() && competition.getCompetitionRulesEditor()->getCompetitionRulesFromWidgetInputs().getName()==database->getEditableCompetitionRules().first().getName(),"competition applies default hill and rules to the editor");

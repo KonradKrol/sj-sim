@@ -130,9 +130,9 @@ void MainWindow::on_pushButton_singleCompetition_clicked()
         return;
     }
 #endif
-    CompetitionConfigWindow * configWindow = new CompetitionConfigWindow(CompetitionConfigWindow::Type::SingleCompetition, this);
-    configWindow->setModal(true);
-    if(configWindow->exec() == QDialog::Accepted)
+    CompetitionConfigWindow configWindow(CompetitionConfigWindow::Type::SingleCompetition, this);
+    configWindow.setModal(true);
+    if(configWindow.exec() == QDialog::Accepted)
     {
 
     }

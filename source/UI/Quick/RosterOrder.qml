@@ -36,6 +36,7 @@ ColumnLayout {
         boundsBehavior: Flickable.StopAtBounds
         ScrollBar.vertical: ScrollBar {}
         delegate: RosterRow {
+            required property var model
             width: rows.width; backend: order.backend; ordered: true; viewport: rows
             athleteId: model.athleteId; athleteName: model.athleteName; countryCode: model.countryCode
             flagSource: model.flagSource || ""
