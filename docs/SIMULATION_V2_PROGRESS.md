@@ -799,3 +799,31 @@ formy w sezonie — ten pozostaje odłożony zgodnie ze specyfikacją.
 oraz poprzednie audyty ustawień. Teraz można bezpiecznie podpinać to narzędzie
 do nowych sezonów; pozostałe zadania sezonowe (katalog, edycja, format, pogoda)
 nie zostały jeszcze zakończone.
+
+## Dostosowanie kierunku i punktów — najnowsze uwagi użytkownika
+
+- Kafelki scenariuszy są **domyślnie ukryte**, ujawnia je „Scenariusze”. Główna
+  akcja „Losuj warunki” zawsze losuje według skoczni i perków. Wariant ręcznego
+  scenariusza można wylosować osobno po rozwinięciu. Usunięto napis „Wylosowane
+  dla skoczni”; tytuł domyślnego podglądu to „Wiatr na zeskoku”.
+- `WindDirectionDial` daje natywny Dial 360°, klawiaturę co 1° i wpisywanie stopni.
+  Działa na Qt 5.15 bez zależności Canvas2D/Shapes. Zastosowano go globalnie
+  i w edycji lokalnej. 0° to pod narty, 180° w plecy.
+- Sekcja dostosowania ma wyraźny nagłówek, kontrastową ramkę i osobny przycisk.
+  „Dostosuj w wybranym miejscu” otwiera `WeatherLocalWind`: wskazanie miejsca
+  na miniaturze zeskoku lub wpisanie metra, kierunek, siła, usunięcie punktu.
+- Backend: `referenceAt`, `putReference`, `removeReference`. Edytują bazowe
+  referencje **ciągłego** pola. Wstawienie na np. 113 m nie tworzy sztywnego sektora;
+  interpolacja jest płynna. Wahania/podmuchy nadal zależą od ustawionej zmienności.
+  Edycja nie losuje seeda i nie zmienia immutable snapshotów bieżących jobów.
+  Parametry techniczne pozostają schowane.
+
+`--simulation-v2-setup-only` obejmuje kliknięcie scenariuszy/ukrywanie, kierunek
+37° → 38° klawiaturą, lokalne UI 113 m / 2,4 m/s, zgodność rzeczywistego pola,
+ciągłość wokół nowego punktu, brak duplikacji, usunięcie i zachowanie seeda.
+Wynik: PASS, produkcyjny build Qt 5.15.3 PASS; bez nowych ostrzeżeń QML.
+
+**Następna uwaga do zbadania:** użytkownik podejrzewa silnie destrukcyjny wpływ
+deszczu na skoki. Po tym UI wrócić do źródeł i kalibracji mocnego deszczu.
+Nie uznawać obecnego łagodniejszego współczynnika za wynik badań. Kolejka
+sezonów pozostaje aktywna i jest opisana powyżej.

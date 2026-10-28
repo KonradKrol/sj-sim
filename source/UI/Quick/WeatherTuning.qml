@@ -2,29 +2,31 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
-ColumnLayout {
+Control {
     id: tuning
     property var backend
+    property bool localEditing: false
     readonly property var values: backend.values
-    spacing: Theme.dp(10)
-    GridLayout {
-        Layout.fillWidth: true; columns: width>Theme.dp(740) ? 4 : width>Theme.dp(400) ? 2 : 1
-        columnSpacing: Theme.dp(12); rowSpacing: Theme.dp(8)
-        ColumnLayout {
+    padding: Theme.dp(12)
+    implicitHeight: contentItem.implicitHeight+topPadding+bottomPadding
+    background: Rectangle { color: Theme.surface; radius: Theme.dp(5); border.width: 2; border.color: Theme.accent }
+    contentItem: ColumnLayout {
+        spacing: Theme.dp(12)
+        RowLayout {
             Layout.fillWidth: true
-            Label { text: qsTr("Kierunek wyjściowy"); color: Theme.muted; font.pointSize: Theme.caption }
-            SChoice {
-                objectName: "weatherDirection"
-                Layout.fillWidth: true
-                model: [qsTr("Pod narty"),qsTr("W plecy"),qsTr("Boczny z lewej"),qsTr("Boczny z prawej")]
-                readonly property var angles: [0,180,90,270]
-                currentIndex: {var angle=tuning.values.direction;return angle<45 || angle>=315 ? 0 : angle<135 ? 2 : angle<225 ? 1 : 3}
-                Accessible.name: qsTr("Kierunek wyjściowy")
-                onActivated: tuning.backend.setValue("direction",angles[index])
-            }
+            Rectangle { Layout.preferredWidth: Theme.dp(4); Layout.preferredHeight: Theme.dp(24); color: Theme.accent }
+            Label { text: qsTr("Dostosowanie wiatru"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         }
-        WeatherNumber { backend: tuning.backend; fieldKey: "strength"; label: qsTr("Siła wyjściowa · m/s"); maximum: 10; Layout.fillWidth: true; explanation: qsTr("Punkt wyjścia. Mocny wiatr może być stabilny, a słaby — bardzo zmienny.") }
-        WeatherNumber { backend: tuning.backend; fieldKey: "variability"; factor: .1; label: qsTr("Zmienność w czasie · 0–10"); maximum: 10; Layout.fillWidth: true; explanation: qsTr("0: bez zmian w czasie. Wyżej: większe i szybsze zmiany, podmuchy oraz możliwe odwrócenia kierunku.") }
-        WeatherNumber { backend: tuning.backend; fieldKey: "differences"; factor: .1; label: qsTr("Różnice na zeskoku · 0–10"); maximum: 10; Layout.fillWidth: true; explanation: qsTr("0: podobny wiatr wzdłuż zeskoku. Wyżej: poszczególne fragmenty mogą mieć znacznie inne warunki.") }
+        GridLayout {
+            Layout.fillWidth: true; columns: width>Theme.fontSize(600)?2:1
+            columnSpacing: Theme.dp(18); rowSpacing: Theme.dp(10)
+            WindDirectionDial { degrees: tuning.values.direction; Layout.fillWidth: true; Layout.minimumWidth: 0; onEdited: function(value){tuning.backend.setValue("direction",value)} }
+            WeatherNumber { backend: tuning.backend; fieldKey: "strength"; label: qsTr("Siła wyjściowa · m/s"); maximum: 10; Layout.fillWidth: true; explanation: qsTr("Mocny wiatr może być stabilny, a słaby — zmienny.") }
+            WeatherNumber { backend: tuning.backend; fieldKey: "variability"; factor: .1; label: qsTr("Zmienność w czasie · 0–10"); maximum: 10; Layout.fillWidth: true; explanation: qsTr("0: bez zmian. Wyżej: silniejsze podmuchy i szybsze zmiany.") }
+            WeatherNumber { backend: tuning.backend; fieldKey: "differences"; factor: .1; label: qsTr("Różnice na zeskoku · 0–10"); maximum: 10; Layout.fillWidth: true; explanation: qsTr("Wyższa wartość: większe różnice wzdłuż skoczni.") }
+        }
+        Rectangle { Layout.fillWidth: true; Layout.preferredHeight: 1; color: Theme.divider }
+        SButton { objectName: "weatherLocalToggle"; text: tuning.localEditing ? qsTr("Ukryj punkty na zeskoku") : qsTr("Dostosuj w wybranym miejscu"); primary: tuning.localEditing; onClicked: tuning.localEditing=!tuning.localEditing }
+        Loader { active: tuning.localEditing; visible: active; Layout.fillWidth: true; Layout.preferredHeight: status===Loader.Ready && item ? item.implicitHeight : 0; sourceComponent: Component { WeatherLocalWind { backend: tuning.backend } } }
     }
 }

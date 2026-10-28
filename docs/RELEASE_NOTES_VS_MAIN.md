@@ -1954,3 +1954,9 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 - Ręczny generator formy obsługuje nowy profil zawodnika: zmienia aktywną formę
   1–100, zachowując OVR i perki. Poprawiono granice oraz dzielenie przez zero
   w obliczeniach niestabilności.
+
+- Scenariusze wiatru są domyślnie zwinięte. Zwykła konfiguracja pokazuje
+  losowanie według skoczni; kafelki rozwija się na życzenie.
+- Dodano interaktywny kierunek 360° i precyzyjne stopnie. W wyróżnionej sekcji
+  dostosowania można wskazać metr zeskoku i zmienić lokalny kierunek/siłę.
+  Punkty łączą się płynnie w modelu ciągłym; można je również usuwać.

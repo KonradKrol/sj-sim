@@ -31,6 +31,15 @@ static void simulationV2WeatherSetupRegressions() {
     setup.setValue("precipitationLevel",0);check(setup.field()->precipitation(600)==0,"no precipitation disables the temporal trend");
     setup.setValue("precipitationLevel",3);check(setup.values()["precipitationLevel"].toInt()==3,"rain intensity can be reenabled after no precipitation");
     check(setup.presets().size()==SimulationV2::weatherPresetCount,"all scenario names match available sampler choices");
+    setup.setValue("variability",0);const auto localSeed=setup.values()["seed"];
+    setup.putReference(113,1.7,25);const auto local=setup.referenceAt(113);
+    check(local["index"].toInt()>=0 && std::abs(local["strength"].toDouble()-1.7)<1e-8 && std::abs(local["direction"].toDouble()-25)<1e-8,"local reference accepts an exact metre and arbitrary degree angle");
+    check(std::abs(setup.field()->wind(113,0).head-1.7*std::cos(25*3.14159265358979323846/180))<1e-8,"local edit changes the actual continuous field");
+    check(std::abs(setup.field()->wind(113-.0001,0).head-setup.field()->wind(113+.0001,0).head)<.001,"local edit remains continuous around the reference rather than a hard sector");
+    check(setup.values()["seed"]==localSeed,"editing a point never secretly rerolls weather");
+    const auto pointCount=setup.references().size();setup.putReference(113,2.1,138);
+    check(setup.references().size()==pointCount,"editing the same location updates instead of duplicating a reference");
+    setup.removeReference(setup.referenceAt(113)["index"].toInt());check(setup.references().size()==pointCount-1,"local reference can be removed");
     for(int index=5;index<SimulationV2::weatherPresetCount;++index){setup.applyPreset(index);check(setup.values()["preset"].toInt()==index,"all six extra scenarios are selectable");}
     setup.setValue("precipitationScenario",1);setup.setValue("precipitationIntensity",7);
     setup.setValue("precipitationScenario",3);setup.setValue("precipitationIntensity",2);check(setup.precipitationParameters().intensity==8,"heavy precipitation displays its actual minimum intensity");setup.setValue("precipitationScenario",1);setup.setValue("precipitationIntensity",7);

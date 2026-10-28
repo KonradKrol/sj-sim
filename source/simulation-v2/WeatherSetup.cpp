@@ -192,3 +192,29 @@ void SimulationWeatherSetup::setReference(int index,const QString &key,double va
     try {next.validate();}catch(const std::invalid_argument &){error=tr("Punkty muszą być ustawione w rosnącej kolejności odległości.");emit changed();return;}
     wind=std::move(next);modified=true;inferControls();rebuild();
 }
+
+QVariantMap SimulationWeatherSetup::referenceAt(double distance) const {
+    if(!hasHill || !bounded(distance,0,hill.k*1.5))return {};
+    auto base=wind;base.temporalAmplitude=base.spatialAmplitude=base.trendAmplitude=base.gustAmplitude=0;
+    const auto value=SimulationV2::ContinuousWeather(seed,base).wind(distance,0);
+    int index=-1;for(std::size_t i=0;i<wind.references.size();++i)if(std::abs(wind.references[i].distance-distance)<.05){index=int(i);break;}
+    return {{"strength",value.strength()},{"direction",angle(value)},{"index",index}};
+}
+
+void SimulationWeatherSetup::putReference(double distance,double strength,double direction) {
+    if(!hasHill || !bounded(distance,0,hill.k*1.5) || !bounded(strength,0,15) || !bounded(direction,0,360))return;
+    auto next=wind;
+    auto point=std::lower_bound(next.references.begin(),next.references.end(),distance,[](const SimulationV2::WindReference &p,double d){return p.distance<d;});
+    if(point!=next.references.end() && std::abs(point->distance-distance)<.05)point->value=polar(strength,direction);
+    else if(point!=next.references.begin() && std::abs((point-1)->distance-distance)<.05)(point-1)->value=polar(strength,direction);
+    else {
+        if(next.references.size()>=1000){error=tr("Osiągnięto limit punktów wiatru.");emit changed();return;}
+        next.references.insert(point,{distance,polar(strength,direction)});
+    }
+    next.validate();wind=std::move(next);modified=true;inferControls();rebuild();
+}
+
+void SimulationWeatherSetup::removeReference(int index) {
+    if(!hasHill || wind.references.size()<=1 || index<0 || index>=int(wind.references.size()))return;
+    wind.references.erase(wind.references.begin()+index);modified=true;inferControls();rebuild();
+}

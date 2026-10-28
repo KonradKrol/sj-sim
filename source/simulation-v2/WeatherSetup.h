@@ -39,6 +39,9 @@ public:
     Q_INVOKABLE void reroll();
     Q_INVOKABLE void setValue(const QString &key,double value);
     Q_INVOKABLE void setReference(int index,const QString &key,double value);
+    Q_INVOKABLE QVariantMap referenceAt(double distance) const;
+    Q_INVOKABLE void putReference(double distance,double strength,double direction);
+    Q_INVOKABLE void removeReference(int index);
     void setPreviewSeconds(double);
 signals:
     void changed();

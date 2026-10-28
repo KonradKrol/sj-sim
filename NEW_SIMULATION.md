@@ -132,9 +132,11 @@ Użytkownik przede wszystkim wybiera ogólny charakter warunków: dominujący ki
 
 **Najnowszy kierunek UX (28.10):** domyślne i najbardziej widoczne jest losowanie
 według skoczni i jej perków. Kompaktowe **kafelki scenariuszy, bez dropdowna**,
-uporządkowane w grupach kierunku (pod narty, w plecy, boczny i pozostałe),
-mocno widoczny wybór oraz osobny przycisk losowania według skoczni. Do tego
-przycisk ponownego losowania,
+uporządkowane w grupach kierunku (pod narty, w plecy, boczny i pozostałe).
+**Domyślnie kafelki są schowane**, pokazuje je świadome rozwinięcie „Scenariusze”.
+Domyślna akcja to wyraźne „Losuj warunki” według skoczni. Nie wyświetlać napisu
+„Wylosowane dla skoczni” — podgląd może mieć tytuł „Wiatr na zeskoku”. Po wybraniu
+scenariusza umożliwić osobne ponowne losowanie jego wariantu. Do tego
 podgląd i krótkie zdanie o zmienności. Opcjonalnie najwyżej cztery proste ustawienia
 wiatru (kierunek, siła, zmienność, różnice na zeskoku) oraz trzy opadów (rodzaj,
 natężenie, przebieg). **Nie udostępniać teraz pełnego formularza technicznego,
@@ -158,6 +160,20 @@ Ustalenia 28.10.2026 po odpowiedziach użytkownika:
 - „Dostosuj” ujawnia kierunek i siłę wyjściową, zmienność w czasie i różnice wzdłuż
   zeskoku. Na tym kończy się bieżąca konfiguracja; techniczne szczegóły nie są
   pokazywane. Etykiety i krótkie tooltipy tłumaczą efekt bez instrukcji aplikacji.
+- Dodatkowe zaakceptowane dostosowanie: **interaktywny kierunek 0–359°**,
+  nie tylko cztery wybory co 90°. Sekcja ma być silnie odróżniona kontrastem
+  i hierarchią. Pod „Dostosuj w wybranym miejscu” proste kliknięcie zeskoku lub
+  wpisanie metra (np. 113), kierunek i siła. Zmiana działa od razu, punkt można
+  usunąć. Są to punkty odniesienia ciągłego pola, z płynnym przejściem między nimi,
+  a nie sztywne sektory. Wyjaśnić krótko, że podmuchy nadal wynikają ze zmienności.
+
+### Kolejna kontrola deszczu (uwaga użytkownika)
+
+Po ukończeniu edycji wiatru ponownie zbadać i skalibrować deszcz: użytkownik
+podejrzewa bardzo destrukcyjny wpływ na skok. **Nie uznawać obecnej słabszej kary
+deszczu za rozstrzygniętą fizykę.** Osobno tor/odpływ/rodzaj nawierzchni, mocne opady
+oraz możliwy wpływ na lot i kombinezon. Wymagane źródła pierwotne i porównania
+w silniku. W razie braku danych jawnie oddzielić założenia gry od ustaleń.
 - **Siła jest niezależna od loteryjności.** Tylny 1,8 m/s może utrzymywać się
   przez cały konkurs z minimalnymi wahaniami; słaby wiatr także może być loteryjny.
   Edycja siły nie zmienia amplitud/częstości podmuchów ani zmian tendencji.

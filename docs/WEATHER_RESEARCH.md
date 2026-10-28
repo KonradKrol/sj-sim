@@ -40,3 +40,29 @@ namokniętego kombinezonu czy zmiany jego współczynników aerodynamicznych:
 
 Uproszczone opisy UI dotyczą tego modelu. Losowanie według daty i kraju jest
 heurystyką, a nie prognozą ani odtworzeniem klimatu konkretnej skoczni.
+
+## Ponowne sprawdzenie deszczu — w toku po uwadze użytkownika
+
+Użytkownik uważa, że mocny deszcz może działać dużo bardziej destrukcyjnie.
+Obecnego `rainLossPerLevel=0,003` nie uznawać za zatwierdzoną kalibrację.
+Przy natężeniu 10 daje zaledwie 2,4% straty zapasu; trzeba zbadać ciężki deszcz
+osobno, zamiast wnioskować o ulewie z korzystnego nawadniania letniego rozbiegu.
+
+Dodatkowe źródła do dalszej analizy:
+
+- [Hasegawa i in., 2026, badanie w tunelu aerodynamicznym](https://www.jstage.jst.go.jp/article/tvsj/46/7/46_10/_article/-char/en):
+  przepuszczalność tkaniny ma znaczenie, lecz wynik zależy od części ciała;
+  większa przepuszczalność na tułowiu poprawiła stosunek siły nośnej do oporu
+  w tym modelu. **To nie badanie mokrego kombinezonu**, więc nie wyciągać
+  automatycznie wniosku „mokry = gorszy/lepszy lot” z samej przepuszczalności.
+- [Hasegawa i in., 2018](https://www.jstage.jst.go.jp/article/aem/3/0/3_118/_pdf/-char/en):
+  badanie tkanin na walcu eliptycznym; pomocne do zrozumienia mechanizmu,
+  bez kalibracji opadów na metry skoku.
+- [FIS o kombinezonach](https://www.fis-ski.com/ski-jumping/news/2024-25/microchips-for-ski-jumping-suits-levelling-the-playing-field-and-reducing-waste):
+  potwierdza znaczenie materiału i przepuszczalności, bez liczbowego efektu deszczu.
+
+Następny krok: znaleźć bezpośrednie obserwacje mocnego deszczu/zalanych torów,
+odróżnić je od mokrego śniegu i ślizgu na przygotowanym igelicie. Potem kontrolowane
+serie silnika dla 0/2/5/8/10 przy stałych profilach, wietrze i seedach. Ewentualny
+silny efekt ulewy powinien narastać płynnie i być osobnym jawnym współczynnikiem
+gry; nie przedstawiać arbitralnej funkcji jako pomiarów naukowych.

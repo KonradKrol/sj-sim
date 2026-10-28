@@ -215,6 +215,8 @@
 <file>WindEditor.qml</file>
 <file>WeatherWorkspace.qml</file>
 <file>WeatherTuning.qml</file>
+<file>WindDirectionDial.qml</file>
+<file>WeatherLocalWind.qml</file>
 <file>WeatherAdvanced.qml</file>
 <file>WeatherNumber.qml</file>
 <file>WeatherPresetChoice.qml</file>

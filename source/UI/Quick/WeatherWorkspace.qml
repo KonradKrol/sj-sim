@@ -9,7 +9,8 @@ ScrollView {
     readonly property var backend: node.values.backend
     readonly property var values: backend.values
     property bool tuning: false
-    readonly property string scenarioName: values.modified ? qsTr("Własne warunki") : values.preset>=0 ? backend.presets[values.preset] : qsTr("Wylosowane dla skoczni")
+    property bool presetsExpanded: false
+    readonly property string scenarioName: values.modified ? qsTr("Własne warunki") : values.preset>=0 ? backend.presets[values.preset] : qsTr("Wiatr na zeskoku")
     readonly property string variabilityText: values.staticWind ? qsTr("Wiatr nie zmienia się w czasie.") : values.variability<20 ? qsTr("Niewielkie wahania; kierunek zwykle pozostaje podobny.") : values.variability<60 ? qsTr("Warunki wyraźnie się zmieniają, czasem przez kilka kolejnych skoków.") : qsTr("Duże, szybkie zmiany; możliwe silne podmuchy i odwrócenia kierunku.")
     contentWidth: availableWidth
     contentHeight: values.ready ? editor.implicitHeight : availableHeight
@@ -31,23 +32,33 @@ ScrollView {
             }
             RowLayout {
                 Layout.fillWidth: true; spacing: Theme.dp(10)
-                WeatherPresetChoice {
+                SButton {
                     objectName: "weatherSuggest"
-                    Layout.fillWidth: true; Layout.minimumWidth: 0
-                    title: qsTr("Według skoczni"); symbol: "↻"
-                    detail: qsTr("Losowanie uwzględnia perki skoczni")
-                    explanation: qsTr("Wylosuj wiatr i opady dopasowane do skoczni.")
-                    checked: workspace.values.preset<0 && !workspace.values.modified
+                    text: qsTr("Losuj warunki"); primary: true
+                    Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.maximumWidth: Theme.dp(360)
+                    hint: qsTr("Wiatr i opady według skoczni i jej perków.")
                     onClicked: {workspace.forceActiveFocus();workspace.backend.suggest()}
                 }
                 SButton {
-                    objectName: "weatherReroll"
-                    text: qsTr("Losuj ponownie"); primary: true
-                    enabled: workspace.values.ready
-                    onClicked: {workspace.forceActiveFocus();workspace.backend.reroll()}
+                    objectName: "weatherPresetsToggle"
+                    text: workspace.presetsExpanded ? qsTr("Ukryj scenariusze") : qsTr("Scenariusze ▾")
+                    quiet: true
+                    onClicked: workspace.presetsExpanded=!workspace.presetsExpanded
                 }
+                Item { Layout.fillWidth: true }
             }
-            WeatherPresetGrid { backend: workspace.backend; Layout.fillWidth: true }
+            Loader {
+                active: workspace.presetsExpanded; visible: active
+                Layout.fillWidth: true
+                Layout.preferredHeight: status===Loader.Ready && item ? item.implicitHeight : 0
+                sourceComponent: Component { WeatherPresetGrid { backend: workspace.backend } }
+            }
+            SButton {
+                objectName: "weatherReroll"
+                visible: workspace.presetsExpanded && workspace.values.preset>=0
+                text: qsTr("Losuj wariant scenariusza"); quiet: true
+                onClicked: {workspace.forceActiveFocus();workspace.backend.reroll()}
+            }
             GridLayout {
                 Layout.fillWidth: true; columns: width>=Theme.dp(1100)?2:1
                 columnSpacing: Theme.dp(14); rowSpacing: Theme.dp(10)
@@ -56,11 +67,11 @@ ScrollView {
                     spacing: Theme.dp(7)
                     WindSlopePreview { Layout.fillWidth: true; samples: workspace.backend.preview; heading: workspace.scenarioName }
                     Label { text: workspace.variabilityText; color: Theme.muted; font.pointSize: Theme.body; wrapMode: Text.WordWrap; Layout.fillWidth: true }
-                    SButton { objectName: "weatherTuningToggle"; text: workspace.tuning ? qsTr("Ukryj dostosowanie") : qsTr("Dostosuj wiatr"); quiet: true; enabled: workspace.values.ready; onClicked: workspace.tuning=!workspace.tuning }
+                    SButton { objectName: "weatherTuningToggle"; text: workspace.tuning ? qsTr("Ukryj dostosowanie") : qsTr("Dostosuj wiatr"); primary: true; enabled: workspace.values.ready; onClicked: workspace.tuning=!workspace.tuning }
                     Loader {
                         active: workspace.tuning; visible: active
                         Layout.fillWidth: true
-                        Layout.preferredHeight: status===Loader.Ready ? item.implicitHeight : 0
+                        Layout.preferredHeight: status===Loader.Ready && item ? item.implicitHeight : 0
                         sourceComponent: Component { WeatherTuning { backend: workspace.backend } }
                     }
                 }
