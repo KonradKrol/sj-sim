@@ -22,6 +22,7 @@
 <file>HillStudio.qml</file>
 <file>DropdownIndicator.qml</file>
 <file>HillEditor.qml</file>
+<file>SimulationDraftWorkspace.qml</file>
 <file>HillLibrary.qml</file>
 <file>HillNumber.qml</file>
 <file>HillPerkCatalog.qml</file>

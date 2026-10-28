@@ -4,7 +4,7 @@
 static void configDefaultsRegressions(MainWindow &main) {
     auto *database=GlobalDatabase::get();
     check(!database->getEditableGlobalJumpers().isEmpty() && !database->getEditableGlobalHills().isEmpty() && !database->getEditableCompetitionRules().isEmpty(),"required selection fixtures exist");
-    SingleJumpsConfigWindow single;
+    QTemporaryDir catalogStorage;SingleJumpsConfigWindow single(nullptr,isolatedCatalogPaths(catalogStorage.path()));waitForCatalog(single);
     auto *jumper=single.findChild<QComboBox *>("comboBox_existingJumper"),*hill=single.findChild<QComboBox *>("comboBox_existingHill");
     check(jumper->count()==database->getEditableGlobalJumpers().size() && hill->count()==database->getEditableGlobalHills().size(),"single jumps offer only real jumper and hill entries");
     check(jumper->currentIndex()==0 && hill->currentIndex()==0,"single jumps default to first available jumper and hill");

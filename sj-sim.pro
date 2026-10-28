@@ -30,6 +30,7 @@ SOURCES += \
     source/simulation-v2/ProfileMigration.cpp \
     source/simulation-v2/ProfilePackRepository.cpp \
     source/simulation-v2/SimulationCatalog.cpp \
+    source/simulation-v2/ProfileDraft.cpp \
     source/simulation-v2/GameSimulationBridge.cpp \
     source/hills/HillProfile.cpp \
     source/hills/HillStudioController.cpp \
@@ -119,6 +120,7 @@ SOURCES += \
     source/UI/Seasons/Stats/Models/SimulationRecordsTableModel.cpp \
     source/UI/Seasons/Stats/SimulationRatingsWindow.cpp \
     source/UI/SingleJumps/SingleJumpsConfigWindow.cpp \
+    source/UI/EditorWidgets/SimulationProfileEditor.cpp \
     source/UI/AppSettings/AppSettingsWindow.cpp \
     source/UI/DatabaseEditor/DatabaseEditorWindow.cpp \
     source/UI/EditorWidgets/CharacteristicsEditor.cpp \
@@ -200,6 +202,7 @@ HEADERS += \
     source/simulation-v2/ProfileMigration.h \
     source/simulation-v2/ProfilePackRepository.h \
     source/simulation-v2/SimulationCatalog.h \
+    source/simulation-v2/ProfileDraft.h \
     source/hills/HillProfile.h \
     source/hills/HillStudioController.h \
     source/athletes/AthleteProfile.h \
@@ -289,6 +292,7 @@ HEADERS += \
     source/UI/Seasons/Stats/Models/SimulationRecordsTableModel.h \
     source/UI/Seasons/Stats/SimulationRatingsWindow.h \
     source/UI/SingleJumps/SingleJumpsConfigWindow.h \
+    source/UI/EditorWidgets/SimulationProfileEditor.h \
     source/UI/AppSettings/AppSettingsWindow.h \
     source/UI/DatabaseEditor/DatabaseEditorWindow.h \
     source/UI/EditorWidgets/CharacteristicsEditor.h \

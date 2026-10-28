@@ -1,6 +1,6 @@
 # Simulation v2 — postęp i punkty wznowienia
 
-**Ostatnia aktualizacja: 27.10.2026. To główny plik przekazania pracy kolejnej
+**Ostatnia aktualizacja: 28.10.2026. To główny plik przekazania pracy kolejnej
 sesji AI, także na innym komputerze po `git pull`. Zadanie nie jest zakończone.**
 
 ## Start kolejnej sesji
@@ -30,10 +30,12 @@ sesji AI, także na innym komputerze po `git pull`. Zadanie nie jest zakończone
   użytkownika **usunięto przełącznik stary/nowy — nie przywracać go**.
 - Samodzielny kompletny rdzeń skoku: testy ze skryptu poniżej.
 - Adapter gry i migracja: test `--simulation-v2-only`.
-- **Zwykłe uruchomienie gry nadal startuje z dotychczasowym katalogiem.**
-  Gotowy jest wspólny serwis katalogu, ale konfiguracja gry jeszcze go nie wywołuje. Nie oczekuj,
-  że kliknięcie „Skok” na dawnych danych uruchomi nową fizykę. Wybór nowego
-  silnika w adapterze zależy od obecności nowych profili u skoczka i skoczni.
+- **Pojedyncze skoki korzystają już z nowego silnika.** Konfiguracja w tle
+  wczytuje kanoniczne paczki v2, a dawne dane migruje do oddzielnych przybliżonych
+  kopii. Można wybrać paczkę, zawodnika, skocznię, rodzaj skoku i edytować lokalną
+  kopię pełnego nowego profilu bez zmiany źródła. Belka na wejściu jest wyliczana.
+- Konkursy i nowe sezony nadal wymagają podłączenia katalogu; dawne dane w tych
+  ścieżkach wciąż uruchamiają stary silnik. Nie deklaruj zakończenia całej migracji.
 
 ### Budowanie i odtwarzanie testów
 
@@ -43,6 +45,7 @@ Wszystkie polecenia uruchamiaj w głównym katalogu repo:
 scripts/test-simulation-v2-core.sh
 scripts/build-quick-ui.sh
 scripts/test-quick-ui.sh --simulation-v2-only
+scripts/test-quick-ui.sh --simulation-v2-setup-only
 scripts/test-quick-ui.sh --hill-studio-only
 scripts/test-quick-ui.sh --engine-audit-only
 scripts/test-quick-ui.sh --config-defaults-only
@@ -104,7 +107,7 @@ Pliki rdzenia i adaptera są już dodane do `sj-sim.pro`. Projekt używa qmake.
   w `QStandardPaths::AppDataLocation/athlete-studio/<id>/pack.json`, a
   `HillStudioController` w `.../hill-studio/<id>.json`. Oba używają już
   `ProfilePackRepository`, a `SimulationCatalog` czyta te same pliki.
-  Brakuje podłączenia tego katalogu do okien konfiguracji. Nie twórz drugiej
+  Pojedyncze skoki już używają katalogu; pozostają konkursy i sezony. Nie twórz drugiej
   niezależnej kopii edytowanych parametrów w `GlobalDatabase` lub indeksie.
 - `GlobalDatabase` nadal czyta/pisze dawne `userData/GlobalDatabase` i ma kopie
   aktywnych wektorów. Przed migracją przejrzyj `loadPacks`, `writePacks`,
@@ -140,9 +143,8 @@ Pliki rdzenia i adaptera są już dodane do `sj-sim.pro`. Projekt używa qmake.
   komunikat o nieobsługiwanych starych zapisach i migracja domyślnego katalogu
   nie zostały wdrożone. Nie deklaruj zakończonej zgodności zapisów.
 
-Poniżej znajduje się pełny postęp i kolejka. Najbliższe zadanie to podłączenie
-gotowego `SimulationCatalog` do konfiguracji gry, zaczynając od pojedynczych skoków;
-potem UX pogody i playground. Nie zaczynaj od ponownego strojenia gotowego rdzenia.
+Poniżej znajduje się pełny postęp i kolejka. Najbliższe zadanie to pełny UX pogody i dalsze podłączenie
+`SimulationCatalog` do konfiguracji konkursów i nowych sezonów; potem playground. Nie zaczynaj od ponownego strojenia gotowego rdzenia.
 
 ### Zakończone commity tego etapu
 
@@ -399,8 +401,7 @@ Testy rdzenia z AddressSanitizer/UndefinedBehaviorSanitizer również przechodz�
 ## Następne zadania — wznowienie
 
 1. **Serwis katalogu i wspólny zapis już są gotowe.** Podłączyć `SimulationCatalog`
-   do zwykłego workflow, najpierw `SingleJumpsConfigWindow`, potem konfiguracji
-   konkursu i nowego sezonu. Nie zaczynać nowego katalogu od zera. Wyraźnie
+   do konfiguracji konkursu i nowego sezonu. Pojedyncze skoki są już podłączone. Nie zaczynać nowego katalogu od zera. Wyraźnie
    pokazać ostrzeżenie o przybliżeniu oraz pochodzenie w edytorze i wyborze paczki.
 2. Przełączyć bazę i konfigurację nowych konkursów, sezonów oraz pojedynczych
    skoków na zgodne paczki v2. Dopilnować, żeby dawne widgety nie edytowały
@@ -450,7 +451,7 @@ poprawnych paczek i nie jest automatycznie nadpisywany.
 - Zawodnikom nadaje `simulation-pack-id` i nietrwały kontekst folderu zdjęć.
   Identyfikator można zapisać, lokalnej ścieżki katalogu nie zapisuje się w JSON.
 
-**Nie jest jeszcze wywoływany przez produkcyjne okna konfiguracji.** Testy
+**Jest już wywoływany przez `SingleJumpsConfigWindow`; konkursy i sezony jeszcze go nie używają.** Testy
 korzystają z jawnych tymczasowych ścieżek. `CatalogPaths::defaults()` odpowiada
 obecnym folderom nowych edytorów; ustal organizację/nazwę aplikacji przed jego
 wywołaniem (przyszły CLI powinien używać tych samych ścieżek co gra albo przyjąć
@@ -465,27 +466,46 @@ ochrona źródeł i uszkodzonego indeksu, stabilny wybór i brak drugiej kopii p
 nowe importy bez ponownego przybliżania, odświeżanie snapshotu i przenośny JSON
 kontekstu zdjęć. `--athlete-patches-only` i `--hill-studio-only` również PASS.
 
+## Pojedyncze skoki — podłączone do nowego modelu (28.10.2026)
+
+- `SingleJumpsConfigWindow` wczytuje snapshot `SimulationCatalog` w tle przez
+  QtConcurrent. Do ukończenia odczytu start jest zablokowany; zamknięcie okna nie
+  pozostawia callbacku do martwego UI. Testy przekazują własne `CatalogPaths`.
+- Wybór paczki i jej pozycji jest jawny. Źródło migracji i niedokładność są
+  wyświetlane, gdy wybrano przybliżoną paczkę. Liczne uwagi o brakujących zdjęciach
+  nie zalewają formularza — jest liczba uwag i szczegóły na życzenie.
+- `SimulationProfileDraft` przechowuje lokalną kopię zawodnika/skoczni i oryginał
+  do przywrócenia. Ścisła walidacja, pełne nowe parametry/perki, zdjęcia względne,
+  żadnych zapisów do paczek. Przełączenie wyboru odświeża cały profil.
+- Quick korzysta z `SimulationDraftWorkspace`, `AthletePatches` i `HillEditor`.
+  Zachowany frontend Widgets ma mały `SimulationProfileEditor` z tym samym
+  backendem; stare komponenty pozostały w repo, ale nie edytują ignorowanych ratingów.
+- `MainWindow` przekazuje managerowi skonfigurowane kopie v2, nie rekonstrukcję
+  z dawnych pól. Rodzaj skoku to trening/próbna/kwalifikacje/konkurs; stara liczbowa
+  ważność zniknęła z UI tej ścieżki. Auto-gate wylicza liczbę przy otwarciu.
+- `JumpSimulator::setSimulationSeed` pozwala podać seed zamiast trzech losowań
+  globalnych. `SingleJumpsManager` przypisuje seed oraz czas przez indeks skoku,
+  niezależnie od pracownika, i przekazuje rodzaj wydarzenia.
+- **Ograniczenie:** interfejs wiatru nadal jest dawny. Przy włączonym losowaniu
+  stary `WindsGenerator` w batchu wciąż nie jest deterministyczny między wątkami.
+  Test identyczności 1/4 wątków dotyczy stałych warunków; nie rozszerzać tej
+  deklaracji na zmienny wiatr przed zastąpieniem generatora wspólnym nowym polem.
+- Nowe testy `--simulation-v2-setup-only`: wybór gotowych paczek, lokalna edycja,
+  walidacja i przywracanie, przełączanie, synchronizacja K z wiatrem, ochrona
+  źródłowych plików/globalnej bazy, rodzaj skoku, auto-gate, rendery małych i dużych
+  ekranów, identyczność 2048 skoków ze stałymi warunkami na 1/4 wątkach i czas per indeks.
+
 ### Najbliższy konkretny krok
 
-Zamiast kolejnych helperów danych uruchomić nowy silnik w normalnych pojedynczych
-skokach. Punkty wejścia:
-
-- `source/UI/SingleJumps/SingleJumpsConfigWindow.cpp`: dziś listy pochodzą z
-  `GlobalDatabase`, a edycja z dawnych widgetów. Potrzebny własny snapshot v2
-  i lokalna edycja kopii nowych parametrów, bez kontrolek ignorowanych przez silnik.
-- `source/UI/Quick/QuickBridge.cpp`, sekcja `SingleJumpsConfigWindow` (~1129):
-  dziś generuje konfigurację, stare strony zawodnika/skoczni i liczbową ważność.
-  Podłączyć nowy backend i właściwe komponenty profilu; usunąć liczbową ważność
-  z nowej ścieżki. Zachować liczbę skoków, belkę i wszystkie kompatybilne opcje.
-- `source/UI/mainwindow.cpp`, `on_pushButton_singleJumps_clicked` (~84):
-  pobiera obiekty z `getJumperEditor/getHillEditor`; zmienić na skonfigurowane
-  kopie v2. Okno konfiguracji żyje przez cały przebieg managera i wyników,
-  ale manager powinien nadal otrzymywać własne kopie danych.
-- `SingleJumpsManager` wywołuje `JumpSimulator`, więc nowe profile uruchomią
-  gotowy adapter. Przenieść też seed/czas per indeks, poprawny auto-gate,
-  parametry pogody i wydajną historię w nowych batchach.
-- `DatabaseEditorWindow` powinien przygotować katalog przed odczytem paczek,
-  aby dawne dane były dostępne jako wyraźnie oznaczone przybliżone kopie.
-  Wprowadzić to bez nadpisywania starych plików i bez blokowania GUI długą migracją.
-  Uważać na testy: produkcyjne domyślne ścieżki to AppData; testy muszą dostać
-  własny katalog, żeby automatyczna migracja nie zostawiała danych między testami.
+1. Nowy backend/UX pogody w pojedynczych skokach, a potem współdzielony w konkursie:
+   automatyczna propozycja z perków, proste kierunek/siła/loteryjność/spójność,
+   opady, zaawansowane referencje. Przekazywać immutable `ContinuousWeather`
+   i jawny pomiar do managera; wspólny seed/czas niezależny od wątków. Nie zostawiać
+   kontrolek starego generatora, które nowa ścieżka ignoruje.
+2. Podłączyć ten sam katalog do `CompetitionConfigWindow`/nowych sezonów. Zachować
+   tożsamość obiektów i wskaźniki list/archiwum. Nowy format i wersja zapisu sezonu.
+3. Uporządkować szczegóły skoku v2 (stare ratingi nie mają już znaczenia), dodać
+   podgląd historii pogody na życzenie i nową manipulację. Pełny playground/CLI.
+4. `DatabaseEditorWindow` nadal powinien przygotowywać katalog przed odczytem paczek,
+   aby przybliżone dawne dane były od razu widoczne w studiach, nawet zanim użytkownik
+   otworzy konfigurację skoków. Nie nadpisywać oryginałów ani blokować GUI migracją.

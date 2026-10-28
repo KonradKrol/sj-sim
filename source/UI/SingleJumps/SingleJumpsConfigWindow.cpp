@@ -1,4 +1,4 @@
-﻿#include "SingleJumpsConfigWindow.h"
+#include "SingleJumpsConfigWindow.h"
 #include "ui_SingleJumpsConfigWindow.h"
 
 #include "../EditorWidgets/JumperEditorWidget.h"
@@ -19,14 +19,21 @@
 #include <QResizeEvent>
 #include <QSplitter>
 #include <cmath>
+#include <QtConcurrent>
+#include <QFutureWatcher>
+#include <QFormLayout>
+#include "../EditorWidgets/SimulationProfileEditor.h"
+#include <QSignalBlocker>
+#include <QTimer>
 #include "../../simulator/JumpSimulator.h"
 #include "../../simulator/JumpManipulator.h"
 
-SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent) :
+SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent,const SimulationV2::CatalogPaths &paths) :
     QDialog(parent),
     ui(new Ui::SingleJumpsConfigWindow),
     contentSplitter(nullptr),
-    compactLayout(false)
+    compactLayout(false),
+    catalog(paths)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::Window);
@@ -123,32 +130,60 @@ SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent) :
     windsGeneratorSettingsEditor = new WindsGeneratorSettingsEditorWidget;
     windsGeneratorSettingsEditor->setRemovingSubmitButtons(true);
     windsGeneratorSettingsEditor->removeSubmitButton();
+    windsGeneratorSettingsEditor->setKPoint(0);
 
-    for(const auto & jumper : GlobalDatabase::get()->getGlobalJumpers())
-    {
-        ui->comboBox_existingJumper->addItem(QIcon(QPixmap(CountryFlagsManager::getFlagPixmap(jumper.getCountryCode().toLower()))) ,jumper.getNameAndSurname());
-    }
-
-    for(const auto & hill : GlobalDatabase::get()->getGlobalHills())
-    {
-        ui->comboBox_existingHill->addItem(QIcon(QPixmap(CountryFlagsManager::getFlagPixmap(hill.getCountryCode().toLower()))) ,hill.getName() + " HS" + QString::number(hill.getHSPoint()));
-    }
-
+    athleteDraft = new SimulationProfileDraft(DataPack::Jumpers,this);
+    hillDraft = new SimulationProfileDraft(DataPack::Hills,this);
+    setProperty("athleteDraft",QVariant::fromValue(static_cast<QObject *>(athleteDraft)));
+    setProperty("hillDraft",QVariant::fromValue(static_cast<QObject *>(hillDraft)));
+    auto *sources=new QWidget(this);auto *sourceForm=new QFormLayout(sources);
+    athletePack=new QComboBox(sources);athletePack->setObjectName("comboBox_athletePack");
+    hillPack=new QComboBox(sources);hillPack->setObjectName("comboBox_hillPack");
+    eventKind=new QComboBox(sources);eventKind->setObjectName("comboBox_simulationEvent");
+    eventKind->addItems({tr("Trening"),tr("Seria próbna"),tr("Kwalifikacje"),tr("Konkurs")});eventKind->setCurrentIndex(3);
+    sourceForm->addRow(tr("Paczka zawodników"),athletePack);sourceForm->addRow(tr("Paczka skoczni"),hillPack);
+    sourceForm->addRow(tr("Rodzaj skoku"),eventKind);
+    catalogStatus=new QLabel(tr("Wczytywanie paczek…"),this);catalogStatus->setObjectName("label_catalogStatus");catalogStatus->setWordWrap(true);
+    ui->verticalLayout_singleJumpsSettings->insertWidget(0,sources);
+    ui->verticalLayout_singleJumpsSettings->insertWidget(1,catalogStatus);
+    auto *catalogDetails=new QPushButton(tr("Szczegóły wczytywania"),this);catalogDetails->setObjectName("pushButton_catalogDetails");catalogDetails->hide();
+    ui->verticalLayout_singleJumpsSettings->insertWidget(2,catalogDetails);
+    connect(catalogDetails,&QPushButton::clicked,this,[this]{
+        QMessageBox details(QMessageBox::Information,tr("Wczytywanie paczek"),tr("Uwagi: %1").arg(snapshot.issues.size()),QMessageBox::Ok,this);
+        details.setDetailedText(snapshot.issues.join("\n"));details.exec();
+    });
+    ui->pushButton_submit->setEnabled(false);
+    connect(athletePack,QOverload<int>::of(&QComboBox::currentIndexChanged),this,[this]{if(!filling)fillPack(DataPack::Jumpers);});
+    connect(hillPack,QOverload<int>::of(&QComboBox::currentIndexChanged),this,[this]{if(!filling)fillPack(DataPack::Hills);});
+    connect(athleteDraft,&SimulationProfileDraft::changed,this,&SingleJumpsConfigWindow::updateReadiness);
+    connect(hillDraft,&SimulationProfileDraft::changed,this,[this]{
+        if(hillDraft->valid() && windsGeneratorSettingsEditor->getKPoint()!=configuredHill().getKPoint()) {
+            windsGeneratorSettingsEditor->setKPoint(configuredHill().getKPoint());
+            windsGeneratorSettingsEditor->setWindGenerationSettings(&defaultWinds);
+            windsGeneratorSettingsEditor->fillWindGenerationSettingsByDefault();windsGeneratorSettingsEditor->fillSettingsInputs();
+        }
+        updateReadiness();
+    });
     ui->verticalLayout_jumperContent->addWidget(jumperEditor);
     ui->verticalLayout_hillContent->addWidget(hillEditor);
     ui->verticalLayout_windsGeneratorSettings->addWidget(windsGeneratorSettingsEditor);
     connect(hillEditor, &HillEditorWidget::KPointInputChanged, this, [this](){
         windsGeneratorSettingsEditor->setKPoint(hillEditor->getKPointFromInput());
-        windsGeneratorSettingsEditor->setWindGenerationSettings(new QVector<WindGenerationSettings>());
+        windsGeneratorSettingsEditor->setWindGenerationSettings(&defaultWinds);
         windsGeneratorSettingsEditor->fillWindGenerationSettingsByDefault();
         windsGeneratorSettingsEditor->fillSettingsInputs();
     });
 
     ui->toolBox->setCurrentIndex(0);
 
-    ConfigSelections::importancePresets(ui->comboBox_jumpsImportancePreset,ui->doubleSpinBox_jumpsImportance,GlobalDatabase::get()->getJumpsImportancePresetsReference());
-    on_comboBox_existingJumper_currentIndexChanged(ui->comboBox_existingJumper->currentIndex());
-    on_comboBox_existingHill_currentIndexChanged(ui->comboBox_existingHill->currentIndex());
+    // Preserve the legacy components, but edit only parameters used by the new engine.
+    jumperEditor->hide();hillEditor->hide();
+    // The retained Widgets frontend also edits the new model, never ignored old skills.
+    ui->verticalLayout_jumperContent->addWidget(createSimulationProfileEditor(athleteDraft,false,this));
+    ui->verticalLayout_hillContent->addWidget(createSimulationProfileEditor(hillDraft,true,this));
+    ui->label_6->hide();
+    ui->doubleSpinBox_jumpsImportance->setVisible(false);ui->comboBox_jumpsImportancePreset->setVisible(false);
+    QTimer::singleShot(0,this,&SingleJumpsConfigWindow::loadCatalog);
 
     const auto updateWindCompensationInputs = [this](){
         const bool enabled = ui->checkBox_hasWindCompensation->isChecked();
@@ -190,50 +225,94 @@ void SingleJumpsConfigWindow::resizeEvent(QResizeEvent *event)
     updateResponsiveLayout(event->size().width());
 }
 
+void SingleJumpsConfigWindow::loadCatalog()
+{
+    const auto *db=GlobalDatabase::get();const auto packs=db->getPacks();
+    const QStringList active{db->activePackId(DataPack::Jumpers),db->activePackId(DataPack::Hills),db->activePackId(DataPack::Rules)};
+    const auto maximum=GlobalSimulationSettings::get()->getMaxSkills();const auto service=catalog;
+    auto *watcher=new QFutureWatcher<SimulationV2::CatalogSnapshot>(this);
+    connect(watcher,&QFutureWatcher<SimulationV2::CatalogSnapshot>::finished,this,[this,watcher]{
+        snapshot=watcher->result();watcher->deleteLater();filling=true;
+        for(const auto &pack:snapshot.packs) {
+            auto *combo=pack.data.kind==DataPack::Jumpers?athletePack:pack.data.kind==DataPack::Hills?hillPack:nullptr;
+            if(combo)combo->addItem(pack.data.name,pack.data.id);
+        }
+        athletePack->setCurrentIndex(athletePack->findData(snapshot.active.value(0)));
+        hillPack->setCurrentIndex(hillPack->findData(snapshot.active.value(1)));
+        filling=false;ready=true;fillPack(DataPack::Jumpers);fillPack(DataPack::Hills);updateReadiness();
+        const int gate=suggestedGate();if(gate>=0)ui->spinBox_gate->setValue(gate);
+    });
+    watcher->setFuture(QtConcurrent::run([=]{return service.load(packs,maximum,active);}));
+}
+
+void SingleJumpsConfigWindow::fillPack(DataPack::Kind kind)
+{
+    auto *selector=kind==DataPack::Jumpers?athletePack:hillPack;
+    const auto *pack=snapshot.find(kind,selector->currentData().toString());
+    auto *items=kind==DataPack::Jumpers?ui->comboBox_existingJumper:ui->comboBox_existingHill;
+    filling=true;items->clear();
+    if(pack) {
+        if(kind==DataPack::Jumpers)for(const auto &item:pack->data.jumpers)items->addItem(QIcon(CountryFlagsManager::getFlagPixmap(item.getCountryCode().toLower())),item.getNameAndSurname());
+        else for(const auto &item:pack->data.hills)items->addItem(QIcon(CountryFlagsManager::getFlagPixmap(item.getCountryCode().toLower())),item.getName()+" HS"+QString::number(item.getHSPoint()));
+        QString error;
+        if(snapshot.selectionWritable && !catalog.select(snapshot,kind,pack->data.id,error))snapshot.issues.append(error);
+    }
+    filling=false;
+    if(kind==DataPack::Jumpers)on_comboBox_existingJumper_currentIndexChanged(items->currentIndex());
+    else on_comboBox_existingHill_currentIndexChanged(items->currentIndex());
+}
+
+void SingleJumpsConfigWindow::updateReadiness()
+{
+    ui->pushButton_submit->setEnabled(ready && athleteDraft->valid() && hillDraft->valid());
+    if(!ready)return;
+    QStringList messages;
+    if(!athleteDraft->valid())messages.append(tr("Dodaj zawodnika w bazie danych lub wybierz inną paczkę."));
+    if(!hillDraft->valid())messages.append(tr("Dodaj skocznię w bazie danych lub wybierz inną paczkę."));
+    for(auto kind:{DataPack::Jumpers,DataPack::Hills}) {
+        const auto *combo=kind==DataPack::Jumpers?athletePack:hillPack;
+        if(const auto *pack=snapshot.find(kind,combo->currentData().toString());pack && !pack->migrationNotice.isEmpty())messages.append(pack->migrationNotice);
+    }
+    messages.removeDuplicates();
+    if(!snapshot.issues.isEmpty())messages.append(tr("Uwagi przy wczytywaniu paczek: %1. Szczegóły są dostępne poniżej.").arg(snapshot.issues.size()));
+    findChild<QPushButton *>("pushButton_catalogDetails")->setVisible(!snapshot.issues.isEmpty());
+    catalogStatus->setText(messages.join("\n"));catalogStatus->setVisible(!messages.isEmpty());
+}
+
 void SingleJumpsConfigWindow::on_comboBox_existingJumper_currentIndexChanged(int index)
 {
+    if(filling || !ready)return;
     if(index<0 && ui->comboBox_existingJumper->count()>0){ui->comboBox_existingJumper->setCurrentIndex(0);return;}
-    if(index >= 0 && index<GlobalDatabase::get()->getEditableGlobalJumpers().size()){
-        jumperEditor->setJumper(&GlobalDatabase::get()->getEditableGlobalJumpers()[index]);
-        jumperEditor->fillJumperInputs();
-    }
-    else jumperEditor->resetJumperInputs();
+    const auto *pack=snapshot.find(DataPack::Jumpers,athletePack->currentData().toString());
+    if(pack && index>=0 && index<pack->data.jumpers.size()) {
+        widgetAthlete=pack->data.jumpers[index];athleteDraft->load(widgetAthlete,pack->directory);
+        jumperEditor->setJumper(&widgetAthlete);jumperEditor->fillJumperInputs();
+    } else athleteDraft->clear();
 }
 
 void SingleJumpsConfigWindow::on_comboBox_existingHill_currentIndexChanged(int index)
 {
+    if(filling || !ready)return;
     if(index<0 && ui->comboBox_existingHill->count()>0){ui->comboBox_existingHill->setCurrentIndex(0);return;}
-    if(index >= 0 && index<GlobalDatabase::get()->getEditableGlobalHills().size()){
-        hillEditor->setHill(&GlobalDatabase::get()->getEditableGlobalHills()[index]);
-        hillEditor->fillHillInputs();
-        emit hillEditor->KPointInputChanged(GlobalDatabase::get()->getEditableGlobalHills()[index].getKPoint());
-    }
-    else hillEditor->resetHillInputs();
+    const auto *pack=snapshot.find(DataPack::Hills,hillPack->currentData().toString());
+    if(pack && index>=0 && index<pack->data.hills.size()) {
+        widgetHill=pack->data.hills[index];hillDraft->load(widgetHill);
+        hillEditor->setHill(&widgetHill);hillEditor->fillHillInputs();
+    } else hillDraft->clear();
 }
 
 void SingleJumpsConfigWindow::on_pushButton_submit_clicked()
 {
-    const Jumper jumper = jumperEditor->getJumperFromWidgetInput();
-    if(jumper.getNameAndSurname().trimmed().isEmpty())
-    {
-        QMessageBox::warning(this, tr("Brak zawodnika"),
-                             tr("Wybierz istniejącego zawodnika albo wpisz jego imię i nazwisko."), QMessageBox::Ok);
-        ui->toolBox->setCurrentIndex(0);
-        ui->comboBox_existingJumper->setFocus();
-        return;
+    if(!ready || !athleteDraft->valid() || !hillDraft->valid())return;
+    if(configuredJumper().getNameAndSurname().trimmed().isEmpty()) {
+        QMessageBox::warning(this,tr("Brak zawodnika"),tr("Wpisz imię lub nazwisko zawodnika."),QMessageBox::Ok);return;
     }
-
-    const Hill hill = hillEditor->getHillFromWidgetInput();
-    if(hill.getKPoint() <= 0 || hill.getHSPoint() <= 0 || hill.getHSPoint() < hill.getKPoint())
-    {
-        QMessageBox::warning(this, tr("Nieprawidłowa skocznia"),
-                             tr("Wybierz lub skonfiguruj skocznię z dodatnim punktem K oraz punktem HS nie mniejszym od K."), QMessageBox::Ok);
-        ui->toolBox->setCurrentIndex(1);
-        ui->comboBox_existingHill->setFocus();
-        return;
-    }
-
     accept();
+}
+
+SimulationV2::EventKind SingleJumpsConfigWindow::simulationEvent() const
+{
+    return static_cast<SimulationV2::EventKind>(eventKind->currentIndex());
 }
 
 WindsGeneratorSettingsEditorWidget *SingleJumpsConfigWindow::getWindsGeneratorSettingsEditor() const
@@ -263,8 +342,9 @@ short SingleJumpsConfigWindow::getWindCompensationDistanceEffect()
 
 int SingleJumpsConfigWindow::suggestedGate()
 {
-    Jumper jumper = jumperEditor->getJumperFromWidgetInput();
-    Hill hill = hillEditor->getHillFromWidgetInput();
+    if(!ready || !athleteDraft->valid() || !hillDraft->valid())return -1;
+    Jumper jumper = configuredJumper();
+    Hill hill = configuredHill();
     if(jumper.getNameAndSurname().trimmed().isEmpty() ||
        !std::isfinite(hill.getHSPoint()) || hill.getHSPoint() <= 0 ||
        hill.getKPoint() <= 0 || hill.getHSPoint() < hill.getKPoint() ||
@@ -276,6 +356,7 @@ int SingleJumpsConfigWindow::suggestedGate()
     JumpSimulator simulator;
     simulator.setJumper(&jumper);simulator.setHill(&hill);
     simulator.setCompetitionRules(&rules);simulator.setManipulator(&manipulation);
+    simulator.setSimulationEvent(simulationEvent());
     QVector<Wind> winds;
     const auto settings = windsGeneratorSettingsEditor->getWindsGenerationSettingsFromInputs();
     for(const auto &setting : settings)

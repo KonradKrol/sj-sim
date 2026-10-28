@@ -98,10 +98,13 @@ void JumpSimulator::simulateV2()
     const auto input=requestFor(*jumper,*hill,*competitionRules,gate,competitionStartGate,hasCoachGate,coachGate,DSQBaseProbability,simulationEvent,simulationTime,manipulator);
     // Sequence the draws explicitly: operand evaluation order must not change
     // the seed between compilers/platforms.
-    const SimulationV2::Seed high=MyRandom::randomInt(0,0x3fffff);
-    const SimulationV2::Seed middle=MyRandom::randomInt(0,0x1fffff);
-    const SimulationV2::Seed low=MyRandom::randomInt(0,0x1fffff);
-    const SimulationV2::Seed seed=(high<<42)|(middle<<21)|low;
+    const SimulationV2::Seed seed=[this] {
+        if(simulationSeed)return *simulationSeed;
+        const SimulationV2::Seed high=MyRandom::randomInt(0,0x3fffff);
+        const SimulationV2::Seed middle=MyRandom::randomInt(0,0x1fffff);
+        const SimulationV2::Seed low=MyRandom::randomInt(0,0x1fffff);
+        return (high<<42)|(middle<<21)|low;
+    }();
     SimulationV2::SeededRandom rng(seed);
     const auto result=simulationEngine.simulate(input,rng,simulationWeather?*simulationWeather:*fallbackWeather,
         simulationMeasurement?*simulationMeasurement:static_cast<const SimulationV2::WindMeasurement &>(measurement));

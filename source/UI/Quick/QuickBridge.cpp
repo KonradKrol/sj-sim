@@ -1128,17 +1128,23 @@ void QuickBridge::compose(QuickNode *base) {
     }
     if(profile()=="SingleJumpsConfigWindow") {
         QVariantList pages;
-        pages.append(group("parameters",tr("Konfiguracja"),{group("jump-plan",QString(),fields({
-            {"comboBox_existingJumper",tr("Zawodnik")},{"comboBox_existingHill",tr("Skocznia")},
-            {"spinBox_jumpsCount",tr("Liczba skoków")},{"spinBox_gate",tr("Belka startowa")},{"pushButton_autoGate",""},
-            {"doubleSpinBox_jumpsImportance",tr("Ważność skoków")},{"comboBox_jumpsImportancePreset",tr("Preset ważności")}}),"form")}));
+        pages.append(group("parameters",QString(),{
+            group("catalog-status",QString(),fields({{"label_catalogStatus",""},{"pushButton_catalogDetails",""}})),
+            group("jump-sources",QString(),{
+                group("jump-athlete",tr("Zawodnik"),fields({{"comboBox_athletePack",tr("Paczka zawodników")},{"comboBox_existingJumper",tr("Zawodnik")}}),"panel"),
+                group("jump-hill",tr("Skocznia"),fields({{"comboBox_hillPack",tr("Paczka skoczni")},{"comboBox_existingHill",tr("Skocznia")}}),"panel")},"sections"),
+            group("jump-plan",tr("Symulacja"),{group("jump-run-fields",QString(),fields({
+                {"comboBox_simulationEvent",tr("Rodzaj skoku")},{"spinBox_jumpsCount",tr("Liczba skoków")},
+                {"spinBox_gate",tr("Belka startowa")},{"pushButton_autoGate",""}}),"form")},"panel")},"column"));
         QStringList labels{tr("Konfiguracja")};
-        for(const auto &page:QList<QPair<QString,QString>>{{"page_jumper",tr("Zawodnik")},{"page_hill",tr("Skocznia")},{"page_windsGeneratorSettings",tr("Wiatr")}}) {
-            if(auto *widget=m_content->findChild<QWidget *>(page.first)) {
-                widget->setProperty("quickExposePage",true);
-                auto *entry=node(widget,true);
-                if(entry) { pages.append(group(page.first,page.second,{QVariant::fromValue(entry)}));labels.append(page.second); }
-            }
+        for(const auto &entry:QList<QPair<QString,QString>>{{"athleteDraft",tr("Zawodnik")},{"hillDraft",tr("Skocznia")}}) {
+            auto *draft=identity(m_window->property(entry.first.toLatin1().constData()).value<QObject *>());
+            draft->update({{"kind","simulationDraft"},{"hill",entry.first=="hillDraft"},{"backend",m_window->property(entry.first.toLatin1().constData())}});
+            pages.append(QVariant::fromValue(draft));labels.append(entry.second);
+        }
+        if(auto *widget=m_content->findChild<QWidget *>("page_windsGeneratorSettings")) {
+            widget->setProperty("quickExposePage",true);auto *entry=node(widget,true);
+            if(entry){pages.append(group("page_windsGeneratorSettings",tr("Wiatr"),{QVariant::fromValue(entry)}));labels.append(tr("Wiatr"));}
         }
         pages.append(group("jump-options",tr("Opcje"),{group("jump-option-fields",QString(),fields({
             {"spinBox_dsqProbability",tr("Prawdopodobieństwo dyskwalifikacji")},

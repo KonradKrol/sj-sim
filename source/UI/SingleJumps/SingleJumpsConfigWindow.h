@@ -2,6 +2,13 @@
 #define SINGLEJUMPSCONFIGWINDOW_H
 
 #include <QDialog>
+#include "../../simulation-v2/SimulationCatalog.h"
+#include "../../simulation-v2/ProfileDraft.h"
+#include "../../simulation-v2/QualityModel.h"
+#include "../../simulator/wind-generation/WindGenerationSettings.h"
+
+class QComboBox;
+class QLabel;
 
 class JumperEditorWidget;
 class HillEditorWidget;
@@ -18,7 +25,14 @@ class SingleJumpsConfigWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit SingleJumpsConfigWindow(QWidget *parent = nullptr);
+    explicit SingleJumpsConfigWindow(QWidget *parent = nullptr,
+        const SimulationV2::CatalogPaths &paths = SimulationV2::CatalogPaths::defaults());
+    bool catalogReady() const {return ready;}
+    Jumper configuredJumper() const {return athleteDraft->configuredJumper();}
+    Hill configuredHill() const {return hillDraft->configuredHill();}
+    SimulationProfileDraft *getAthleteDraft() const {return athleteDraft;}
+    SimulationProfileDraft *getHillDraft() const {return hillDraft;}
+    SimulationV2::EventKind simulationEvent() const;
     ~SingleJumpsConfigWindow();
 
     JumperEditorWidget *getJumperEditor() const;
@@ -42,6 +56,18 @@ private:
     HillEditorWidget * hillEditor;
     WindsGeneratorSettingsEditorWidget * windsGeneratorSettingsEditor;
 
+    SimulationV2::SimulationCatalog catalog;
+    SimulationV2::CatalogSnapshot snapshot;
+    SimulationProfileDraft *athleteDraft, *hillDraft;
+    QComboBox *athletePack, *hillPack, *eventKind;
+    QLabel *catalogStatus;
+    bool ready=false, filling=false;
+    QVector<WindGenerationSettings> defaultWinds;
+    Jumper widgetAthlete;
+    Hill widgetHill;
+    void loadCatalog();
+    void fillPack(DataPack::Kind kind);
+    void updateReadiness();
     void updateResponsiveLayout(int windowWidth);
 
 protected:

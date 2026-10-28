@@ -90,10 +90,11 @@ void MainWindow::on_pushButton_singleJumps_clicked()
         manager.setJumpsCount(singleJumpsConfig.getJumpsCountFromInput());
         manager.setChangeableWind(singleJumpsConfig.getChangeableWindFromInput());
         manager.setGate(singleJumpsConfig.getGateFromInput());
-        manager.setJumper(singleJumpsConfig.getJumperEditor()->getJumperFromWidgetInput());
-        manager.setHill(singleJumpsConfig.getHillEditor()->getHillFromWidgetInput());
+        manager.setJumper(singleJumpsConfig.configuredJumper());
+        manager.setHill(singleJumpsConfig.configuredHill());
         manager.setWindsGeneratorSettings(singleJumpsConfig.getWindsGeneratorSettingsEditor()->getWindsGenerationSettingsFromInputs());
         manager.setImportance(singleJumpsConfig.importance());
+        manager.setSimulationEvent(singleJumpsConfig.simulationEvent());
         if(singleJumpsConfig.getDSQProbabilityFromInput() > (-1)){
             manager.getRules().setHasDsq(true);
             manager.setDSQProbability(singleJumpsConfig.getDSQProbabilityFromInput());

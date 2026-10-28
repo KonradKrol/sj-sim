@@ -38,6 +38,7 @@ private:
     SimulationV2::Engine simulationEngine;
     SimulationV2::EventKind simulationEvent=SimulationV2::EventKind::Competition;
     double simulationTime=0;
+    std::optional<SimulationV2::Seed> simulationSeed;
     std::shared_ptr<const SimulationV2::WeatherField> simulationWeather;
     std::shared_ptr<const SimulationV2::WindMeasurement> simulationMeasurement;
     void simulateV2();
@@ -50,6 +51,7 @@ public:
     void simulateJump();
     double previewDistance();
     void setSimulationEvent(SimulationV2::EventKind event) { simulationEvent=event; }
+    void setSimulationSeed(SimulationV2::Seed seed) {simulationSeed=seed;}
     void setSimulationTime(double seconds) { simulationTime=seconds; }
     void setSimulationParameters(const SimulationV2::EngineParameters &parameters) { simulationEngine=SimulationV2::Engine(parameters); }
     void setSimulationWeather(std::shared_ptr<const SimulationV2::WeatherField>,std::shared_ptr<const SimulationV2::WindMeasurement>);

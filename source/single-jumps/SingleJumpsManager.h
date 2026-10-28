@@ -19,6 +19,8 @@ public:
     SingleJumpsManager(int gate = 0, int jumpsCount = 0, const QString &resultsFileName = "", bool changeableWind = false, short resultsFormat = 0);
 
     void simulate();
+    void setSimulationEvent(SimulationV2::EventKind value) {simulationEvent=value;}
+    void setSimulationSeed(SimulationV2::Seed value) {simulationSeed=value;}
     struct BatchControl {
         std::atomic_bool canceled{false};
         std::atomic_int completed{0};
@@ -50,6 +52,8 @@ private:
     double importance;
 
     CompetitionRules rules;
+    SimulationV2::EventKind simulationEvent=SimulationV2::EventKind::Competition;
+    SimulationV2::Seed simulationSeed;
 
     QVector<JumpData> jumps;
 

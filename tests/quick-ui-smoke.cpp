@@ -2013,7 +2013,9 @@ static void normalSamplingRegression() {
 }
 
 static void singleGateRegression(MainWindow &main) {
-    SingleJumpsConfigWindow config;
+    QTemporaryDir catalogStorage;
+    SingleJumpsConfigWindow config(nullptr,{catalogStorage.path()+"/athletes",catalogStorage.path()+"/hills",catalogStorage.path()+"/catalog.json",catalogStorage.path()+"/photos"});
+    QElapsedTimer loading;loading.start();while(!config.catalogReady() && loading.elapsed()<15000)QTest::qWait(10);check(config.catalogReady(),"single jump catalog ready");
     auto *db=GlobalDatabase::get();
     config.getJumperEditor()->setJumper(&db->getEditableGlobalJumpers().first());config.getJumperEditor()->fillJumperInputs();
     config.getHillEditor()->setHill(&db->getEditableGlobalHills().first());config.getHillEditor()->fillHillInputs();
@@ -2027,7 +2029,7 @@ static void singleGateRegression(MainWindow &main) {
     render(&config,"single-jump-auto-gate",true);
     main.resize(1024,640);QTest::qWait(100);clickControl(scene(&config),"action-pushButton_autoGate");
     check(gate->value()==tailwind,"auto gate action applies a concrete calculated number");
-    config.getJumperEditor()->resetJumperInputs();gate->setValue(17);config.findChild<QPushButton *>("pushButton_autoGate")->click();
+    config.getAthleteDraft()->clear();gate->setValue(17);config.findChild<QPushButton *>("pushButton_autoGate")->click();
     check(config.suggestedGate()==-1 && gate->value()==17,"incomplete single-jump setup cannot replace a manual gate");
     config.reject();QTest::qWait(100);
     qInfo()<<"PASS: single-jump auto gate uses current athlete, hill and wind";
@@ -2475,6 +2477,7 @@ static void interactionRegressions(MainWindow &main) {
 #include "playground-regressions.h"
 #include "athlete-studio-regressions.h"
 #include "hill-studio-regressions.h"
+#include "simulation-v2-setup-regressions.h"
 #include "config-defaults-regressions.h"
 #include "motion-feedback-regressions.h"
 #include "simulation-v2-bridge-regressions.h"
@@ -2527,6 +2530,7 @@ int main(int argc,char **argv) {
         qInfo()<<"PASS: live language switching";return 0;
     }
     if(app.arguments().contains("--config-defaults-only")){configDefaultsRegressions(main);return 0;}
+    if(app.arguments().contains("--simulation-v2-setup-only")){simulationV2SetupRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-only")){simulationV2BridgeRegressions();simulationV2RepositoryRegressions();simulationV2CatalogRegressions();return 0;}
     if(app.arguments().contains("--motion-feedback-only")){motionFeedbackRegressions(main);return 0;}
     if(app.arguments().contains("--hill-studio-only")){hillStudioRegressions(main);return 0;}
@@ -2632,7 +2636,7 @@ int main(int argc,char **argv) {
         SimulationSavesWindow dialog; render(&dialog,"saves",true); dialog.hide();
     }
     {
-        SingleJumpsConfigWindow dialog; render(&dialog,"jump-config",true); dialog.hide();
+        QTemporaryDir catalogStorage;SingleJumpsConfigWindow dialog(nullptr,isolatedCatalogPaths(catalogStorage.path()));waitForCatalog(dialog); render(&dialog,"jump-config",true); dialog.hide();
     }
     {
         CompetitionConfigWindow dialog(CompetitionConfigWindow::SingleCompetition); render(&dialog,"competition-config",true);

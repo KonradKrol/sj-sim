@@ -20,7 +20,7 @@ Control {
         RowLayout {
             Layout.fillWidth: true
             Label { text: qsTr("Lądowanie"); color: landing.design.muted; font.family: Theme.bodyFamily; font.pointSize: Theme.caption; Layout.fillWidth: true }
-            Label { text: landing.names[landing.backend.profile.landing]; color: landing.design.ink; font.family: Theme.bodyFamily; font.pointSize: Theme.body; font.bold: true }
+            Label { text: landing.names[Number(landing.backend.profile.landing || 0)]; color: landing.design.ink; font.family: Theme.bodyFamily; font.pointSize: Theme.body; font.bold: true }
         }
         RowLayout {
             id: steps
