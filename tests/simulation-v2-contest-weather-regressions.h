@@ -99,15 +99,26 @@ static void simulationV2ContestWeatherRegressions(MainWindow &main) {
                 auto *app=qobject_cast<QApplication *>(QCoreApplication::instance());
                 check(GlobalTranslators::get()->setLanguage(app,GlobalAppSettings::English),"English catalog loads for dynamic competition captions");QTest::qWait(30);
                 check(button->text()=="Finish competition","already-visible end-competition button updates to English");
+                check(QCoreApplication::translate("QObject","FIS — przybliżenie")==QString::fromUtf8("FIS — approximation"),"new measurement controls have a compiled English catalog entry");
                 check(GlobalTranslators::get()->setLanguage(app,GlobalAppSettings::Czech),"Czech catalog loads for dynamic competition captions");QTest::qWait(30);
                 check(button->text()==QString::fromUtf8("Ukončit závod"),"already-visible end-competition button updates to Czech");
                 GlobalTranslators::get()->setLanguage(app,GlobalAppSettings::Polish);QTest::qWait(30);
                 check(button->text()==QString::fromUtf8("Zakończ konkurs") && QJsonDocument(CompetitionResults::getJsonObject(info.getResultsReference())).toJson()==original,"language change restores Polish without resetting scores or competition state");
+                QSignalSpy accepted(&window,&QDialog::accepted);button->click();
+                check(accepted.count()==1,"retranslation cannot attach duplicate finish handlers");
                 QDialog archive(&main);archive.setObjectName("competitionResultsArchive");auto *layout=new QVBoxLayout(&archive);
                 auto *history=new ResultsHistoryWidget(&info,false,&archive);layout->addWidget(history);archive.show();QTest::qWait(100);
                 auto *table=history->tableView();table->clicked(table->model()->index(0,0));
                 auto *bridge=archive.findChild<QuickBridge *>();bridge->refresh();QTest::qWait(50);
                 check(!bridge->jumpSummary().value("windProfile").toMap().isEmpty(),"archive jump card exposes recorded corridors through the same profile view");archive.reject();
+            }
+            if(mode==3 || mode==4) {
+                auto *app=qobject_cast<QApplication *>(QCoreApplication::instance());
+                GlobalTranslators::get()->setLanguage(app,GlobalAppSettings::English);QTest::qWait(20);
+                GlobalTranslators::get()->setLanguage(app,GlobalAppSettings::Czech);QTest::qWait(20);
+                GlobalTranslators::get()->setLanguage(app,GlobalAppSettings::Polish);QTest::qWait(20);
+                window.findChild<QPushButton *>("pushButton_goToNext")->click();
+                check(mode==3?manager->getActualRound()==2:static_cast<TeamCompetitionManager *>(manager.get())->getActualGroup()==2,"language changes cannot multiply next-round or next-group actions");
             }
         }
         dialogs.stop();window.reject();

@@ -33,3 +33,10 @@ Nie deklarować, że cała aplikacja ma już kompletne tłumaczenia. Do sprawdze
 
 Nie zastępować tego kontrolą samych katalogów TS: zgłoszony błąd miał tłumaczenie
 w pliku, ale nie odświeżał wartości ustawionej w runtime.
+
+Dodatkowe zabezpieczenie: przełączanie języka zmienia **wyłącznie podpis**, według
+zapamiętanego rodzaju akcji. Nie wywołuje funkcji konfigurujących przycisk,
+które podpinają obsługę kliknięcia i zmieniają stan sterowania. Regresja sprawdza
+jedno zakończenie po trzech zmianach języka oraz przejście dokładnie o jedną serię
+lub jedną grupę. Zachowany jest też odrębny podpis przejścia z kwalifikacji do
+konkursu. Testy PASS.

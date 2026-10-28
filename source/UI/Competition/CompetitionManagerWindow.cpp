@@ -562,6 +562,7 @@ void CompetitionManagerWindow::showMessageBoxForNextGroup()
 
 void CompetitionManagerWindow::setupGoToNextButtonForNextGroup()
 {
+    ui->pushButton_goToNext->setProperty("captionKind","group");
     if(getType() == CompetitionRules::Team){
         TeamCompetitionManager * tmManager = dynamic_cast<TeamCompetitionManager *>(manager);
         ui->pushButton_goToNext->show();
@@ -699,6 +700,7 @@ void CompetitionManagerWindow::editNextKoGroups()
 
 void CompetitionManagerWindow::setupGoToNextButtonForNextRound()
 {
+    ui->pushButton_goToNext->setProperty("captionKind","round");
     ui->pushButton_goToNext->show();
     ui->pushButton_goToNext->setText(tr("Przejdź do ") + QString::number(manager->getActualRound() + 1) + tr(" serii"));
     ui->pushButton_goToNext->setFocus();
@@ -783,6 +785,7 @@ void CompetitionManagerWindow::showMessageBoxForQualificationsEnd()
 
 void CompetitionManagerWindow::setupGoToNextButtonForQualificationsEnd()
 {
+    ui->pushButton_goToNext->setProperty("captionKind","qualifications");
     ui->pushButton_goToNext->show();
     ui->pushButton_goToNext->setText(tr("Przejdź do konkursu"));
     ui->pushButton_goToNext->setFocus();
@@ -838,6 +841,7 @@ void CompetitionManagerWindow::showMessageBoxForCompetitionEnd()
 
 void CompetitionManagerWindow::setupGoToNextButtonForCompetitionEnd()
 {
+    ui->pushButton_goToNext->setProperty("captionKind","end");
     ui->pushButton_goToNext->show();
     switch(manager->getCompetitionInfo()->getSerieType()){
     case CompetitionInfo::Competition:
@@ -874,9 +878,17 @@ void CompetitionManagerWindow::changeEvent(QEvent *event)
     if(event->type()!=QEvent::LanguageChange || !ui || !manager)return;
     // These captions are assigned at runtime, so retranslateUi cannot refresh
     // them. Do not reset the form: it also contains current scores and flags.
-    if(manager->checkCompetitionEnd())setupGoToNextButtonForCompetitionEnd();
-    else if(manager->checkRoundEnd())setupGoToNextButtonForNextRound();
-    else if(auto *team=dynamic_cast<TeamCompetitionManager *>(manager);team && team->checkGroupEnd())setupGoToNextButtonForNextGroup();
+    const auto kind=ui->pushButton_goToNext->property("captionKind").toString();
+    if(kind=="end")switch(manager->getCompetitionInfo()->getSerieType()) {
+    case CompetitionInfo::Competition:ui->pushButton_goToNext->setText(tr("Zakończ konkurs"));break;
+    case CompetitionInfo::Qualifications:ui->pushButton_goToNext->setText(tr("Zakończ kwalifikacje"));break;
+    case CompetitionInfo::TrialRound:ui->pushButton_goToNext->setText(tr("Zakończ serię próbną"));break;
+    case CompetitionInfo::Training:ui->pushButton_goToNext->setText(tr("Zakończ trening"));break;
+    }
+    else if(kind=="qualifications")ui->pushButton_goToNext->setText(tr("Przejdź do konkursu"));
+    else if(kind=="round")ui->pushButton_goToNext->setText(tr("Przejdź do ")+QString::number(manager->getActualRound()+1)+tr(" serii"));
+    else if(kind=="group")if(auto *team=dynamic_cast<TeamCompetitionManager *>(manager))
+        ui->pushButton_goToNext->setText(tr("Przejdź do ")+QString::number(team->getActualGroup()+1)+tr(" grupy"));
 }
 
 
