@@ -37,6 +37,9 @@ void FlightParameters::validate() const
     bound(precipitationLossPerLevel,0,.1,"Precipitation effect out of range");
     bound(rainLossPerLevel,0,.1,"Rain effect out of range");
     bound(rainLossThreshold,0,10,"Rain threshold out of range");
+    bound(rainHeavyThreshold,0,9.9,"Heavy rain threshold out of range");
+    bound(rainHeavyLossAtMaximum,0,.5,"Heavy rain effect out of range");
+    bound(rainHeavyExponent,1,6,"Heavy rain exponent out of range");
     bound(stepMetres,.05,5,"Integration step out of range");
     bound(secondsPerK,.1,30,"Flight time scale out of range");
     bound(windReservePerMetre,0,1,"Wind effect out of range");bound(crosswindDrag,0,1,"Crosswind drag out of range");
@@ -65,10 +68,12 @@ double FlightModel::reserve(double quality,const Hill &hill,int gate,double prec
     const double distance=hill.k*config.referenceDistanceAtK+(quality-config.referenceQuality)*config.qualityMetresAtK120*hill.k/120;
     const double gateEffect=(gate-config.referenceGate)*config.gateMetresAtK120*hill.k/120
         *(1+config.gateTailwindInteraction*std::max(0.0,-initialHeadwind));
-    // Approximate track condition, not a rain-induced loss of aerodynamic lift.
-    // Light water is normal on prepared tracks; only excess rain receives a loss.
+    // Tunable net precipitation effect, not a physical wet-suit/track simulation.
+    // Light water is normal on prepared tracks; heavy rain has an additional cost.
+    const double heavy=std::max(0.0,(precipitation-config.rainHeavyThreshold)/(10-config.rainHeavyThreshold));
     const double loss=kind==PrecipitationKind::Snow ? config.precipitationLossPerLevel*precipitation
-        : config.rainLossPerLevel*std::max(0.0,precipitation-config.rainLossThreshold);
+        : config.rainLossPerLevel*std::max(0.0,precipitation-config.rainLossThreshold)
+          +config.rainHeavyLossAtMaximum*std::pow(heavy,config.rainHeavyExponent);
     return std::clamp((distance+gateEffect)*(1-loss),0.0,1000000.0);
 }
 

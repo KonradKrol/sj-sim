@@ -49,7 +49,8 @@ int main()
         check(engine.previewDistance(request,cross)<=preview,"side wind does not act as headwind");
         calm.precip=10;const auto snowy=engine.previewDistance(request,calm);check(snowy<preview,"snow worsens jump");
         calm.kind=PrecipitationKind::Rain;const auto rainy=engine.previewDistance(request,calm);
-        check(rainy>snowy && rainy<preview,"heavy rain and heavy snow have separate track effects");
+        check(rainy<snowy && rainy<preview,"maximum rain can be substantially more damaging than snowfall");
+        double previousRain=preview;for(int level=0;level<=100;++level){calm.precip=level/10.;const double current=engine.previewDistance(request,calm);check(current<=previousRain+1e-10 && previousRain-current<2,"rain effect grows continuously rather than switching to an arbitrary cutoff");previousRain=current;}
         calm.precip=2;near(engine.previewDistance(request,calm),preview,1e-12,"light rain is not automatically penalized like snow");
         const auto rainyJump=engine.simulate(request,rng,calm,measurement);check(rainyJump.flight.precipitationKind==PrecipitationKind::Rain,"result retains precipitation kind");
         calm.precip=0;calm.kind=PrecipitationKind::Snow;

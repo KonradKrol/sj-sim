@@ -122,6 +122,7 @@ belka = (belka rzeczywista − 10) × 2,5 × K/120
         × (1 + 0,04 × max(0, −wiatr przy starcie))
 strata śniegu = 0,008 × opady
 strata deszczu = 0,003 × max(0, opady − 2)
+                + 0,15 × max(0, (opady − 5) / 5)²
 zapas = max(0, (baza + belka) × (1 − strata właściwego rodzaju opadów))
 ```
 
@@ -132,7 +133,8 @@ przy tylnym wietrze; ten wpływ można wyzerować.
 
 Śnieg i deszcz rozróżnia `WeatherField::precipitationKind()` (domyślnie śnieg
 dla starszych callerów). Osobne `precipitationLossPerLevel`, `rainLossPerLevel`
-i `rainLossThreshold` są parametrami gry do kalibracji, nie wartościami z badań.
+i `rainLossThreshold` oraz `rainHeavyThreshold`, `rainHeavyLossAtMaximum`,
+`rainHeavyExponent` są parametrami gry do kalibracji, nie wartościami z badań.
 Typ nie zmienia nawierzchni. Preview i pełny skok używają tej samej zależności.
 Podstawy i ograniczenia: [WEATHER_RESEARCH.md](WEATHER_RESEARCH.md).
 

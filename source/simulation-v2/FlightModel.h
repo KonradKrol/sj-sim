@@ -22,6 +22,9 @@ struct FlightParameters {
     double precipitationLossPerLevel=.008;
     double rainLossPerLevel=.003;
     double rainLossThreshold=2;
+    double rainHeavyThreshold=5;
+    double rainHeavyLossAtMaximum=.15;
+    double rainHeavyExponent=2;
     double stepMetres=1;
     double secondsPerK=4; // time coordinate only; no trajectory/speed simulation
     double windReservePerMetre=.055;

@@ -1960,3 +1960,8 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 - Dodano interaktywny kierunek 360° i precyzyjne stopnie. W wyróżnionej sekcji
   dostosowania można wskazać metr zeskoku i zmienić lokalny kierunek/siłę.
   Punkty łączą się płynnie w modelu ciągłym; można je również usuwać.
+
+- Deszcz ma dodatkowy, regulowany koszt ulewy, narastający płynnie powyżej
+  natężenia 5/10. Silne opady mogą znacząco skracać skoki; lekki deszcz zachowuje
+  dotychczasowy efekt. Dodano odtwarzalną analizę CLI i porównanie 300 000 skoków.
+  Parametry pozostają założeniami gry do strojenia, a nie pomiarami FIS.

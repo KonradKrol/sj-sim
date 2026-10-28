@@ -30,10 +30,11 @@ Model przybliża **warunki rozbiegu**, nie symuluje fizycznej prędkości, masy
 namokniętego kombinezonu czy zmiany jego współczynników aerodynamicznych:
 
 - śnieg: dotychczasowy regulowany spadek zapasu `precipitationLossPerLevel × poziom`;
-- deszcz: osobny `rainLossPerLevel × max(0, poziom − rainLossThreshold)`;
+- deszcz: osobny `rainLossPerLevel × max(0, poziom − rainLossThreshold)`
+  oraz dodatkowy nieliniowy koszt ulewy opisany poniżej;
 - domyślnie odpowiednio 0,008, 0,003 i próg 2/10. To **założenia gry do strojenia**,
   a nie współczynniki potwierdzone badaniami. Lekki deszcz nie dostaje kary;
-  większy deszcz ma mniejszy efekt niż ten sam poziom śniegu;
+  ulewa ma teraz dodatkowy koszt i może działać mocniej niż śnieg;
 - nie dodajemy twierdzenia, że każdy deszcz pogarsza lot lub podnosi ryzyko upadku.
   Nie mamy wystarczającej podstawy do konkretnej zależności. Nie modelujemy
   obecnie czyszczenia torów, temperatury, drożności odpływu ani retencji wody.
@@ -41,7 +42,7 @@ namokniętego kombinezonu czy zmiany jego współczynników aerodynamicznych:
 Uproszczone opisy UI dotyczą tego modelu. Losowanie według daty i kraju jest
 heurystyką, a nie prognozą ani odtworzeniem klimatu konkretnej skoczni.
 
-## Ponowne sprawdzenie deszczu — w toku po uwadze użytkownika
+## Ponowne sprawdzenie deszczu — badanie i kalibracja 28.10
 
 Użytkownik uważa, że mocny deszcz może działać dużo bardziej destrukcyjnie.
 Obecnego `rainLossPerLevel=0,003` nie uznawać za zatwierdzoną kalibrację.
@@ -66,3 +67,56 @@ odróżnić je od mokrego śniegu i ślizgu na przygotowanym igelicie. Potem kon
 serie silnika dla 0/2/5/8/10 przy stałych profilach, wietrze i seedach. Ewentualny
 silny efekt ulewy powinien narastać płynnie i być osobnym jawnym współczynnikiem
 gry; nie przedstawiać arbitralnej funkcji jako pomiarów naukowych.
+
+### Bezpośrednie źródła dotyczące deszczu
+
+- [FIS: Guideline for Inrun track profile](https://assets.fis-ski.com/f/252177/x/d3dc008ef1/guideline-inrun-track-structure.pdf)
+  wymaga rozwiązań umożliwiających odpływ deszczówki z torów. Potwierdza znaczenie
+  wody i przygotowania nawierzchni; nie podaje uniwersalnej straty w metrach.
+- [FIS: relacja z Oberstdorfu](https://www.fis-ski.com/ski-jumping/news/2018-19/articlekamil-stoch-takes-the-win-oberstdorf)
+  zawiera wypowiedź Tande o mokrym kombinezonie oraz zazwyczaj szybkim rozbiegu
+  przy niewielkim deszczu. To relacja zawodnika, a nie kontrolowany pomiar.
+- [FIS: Klingenthal 2022](https://www.fis-ski.com/ski-jumping/news/2022-23/dawid-kubacki-takes-it-all-in-klingenthal)
+  opisuje bardzo trudną fazę konkursu podczas mocnego deszczu i zmieniającego się
+  wiatru. **Nie izoluje wpływu deszczu**. Nie przypisywać wszystkich różnic w wynikach
+  samym opadom ani nie odczytywać z tej relacji dokładnych współczynników.
+
+Wniosek implementacyjny: odróżniamy mały deszcz od ulewy i umożliwiamy duży wpływ
+mocnych opadów. Nie udajemy, że mamy empiryczny wzór na namoknięty kombinezon.
+Nie dodajemy osobnych, niepotwierdzonych współczynników siły nośnej czy oporu.
+
+### Przyjęta kalibracja gry
+
+Do poprzedniego łagodnego kosztu dodano:
+
+```
+ulewa = max(0, (natężenie − 5) / (10 − 5))
+dodatkowa strata zapasu = 0,15 × ulewa²
+```
+
+Wszystkie trzy liczby to jawne `FlightParameters`: `rainHeavyThreshold`,
+`rainHeavyLossAtMaximum`, `rainHeavyExponent`. Domyślna łączna strata zapasu:
+0% przy 0–2, 0,9% przy 5, 7,2% przy 8 i 17,4% przy 10. Krzywa jest płynna;
+nie włącza nagłej kary przy przekroczeniu progu. Śnieg pozostaje osobnym modelem.
+**To propozycja balansu Sj.Sima, nie wartości zmierzone przez FIS.**
+
+Kontrolowane porównanie 300 000 skoków: 3 skocznie × 5 natężeń × 2 modele ×
+10 000 powtórzeń, OVR 80, forma 70, brak perków, stała belka 10 i brak wiatru.
+Każdy wariant używa identycznych seedów jakości. Dla K120/HS134 średnia odległość:
+
+| Deszcz | Poprzednio | Po kalibracji |
+| --- | ---: | ---: |
+| 0/10 | 120,849 m | 120,849 m |
+| 2/10 | 120,849 m | 120,849 m |
+| 5/10 | 119,759 m | 119,759 m |
+| 8/10 | 118,671 m | 112,146 m |
+| 10/10 | 117,950 m | 99,822 m |
+
+Maksymalna ulewa skraca w tym porównaniu średnią o 16,65 m na K95, 21,03 m na
+K120 i 35,05 m na K200 względem braku opadów. Brak dodatkowych losowych kar
+zależnych od gracza; zmienność pochodzi z istniejącej jakości i czasowego pola.
+
+Odtworzenie: `scripts/analyze-rain-v2.sh 10000`. Program wypisuje CSV także
+z punktami i częstością upadków. Spadek liczby upadków przy krótszych skokach
+jest skutkiem mniejszej odległości — nie dodano niezweryfikowanego wzrostu ryzyka
+upadku tylko dlatego, że pada. Nadal nie ma retencji wody/czyszczenia torów.

@@ -43,7 +43,7 @@ Control {
             }
         }
         Label {
-            text: precipitation.values.precipitationKind===0 ? qsTr("Śnieg w torach spowalnia rozbieg.") : qsTr("Lekki deszcz nie musi hamować. Ulewa pogarsza ślizg.")
+            text: precipitation.values.precipitationKind===0 ? qsTr("Śnieg w torach spowalnia rozbieg.") : qsTr("Lekki deszcz nie musi hamować. Ulewa mocno pogarsza skoki.")
             color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap; Layout.fillWidth: true
         }
     }

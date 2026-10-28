@@ -46,7 +46,7 @@ QWidget *createWeatherSetupEditor(SimulationWeatherSetup *backend,QWidget *paren
     choice("precipitationLevel",QObject::tr("Natężenie"),{QObject::tr("Bez opadów"),QObject::tr("Słabe"),QObject::tr("Umiarkowane"),QObject::tr("Silne")});
     choice("precipitationPattern",QObject::tr("Przebieg"),{QObject::tr("Stałe"),QObject::tr("Zmienne"),QObject::tr("Nasilające się")});
     auto *explanation=new QLabel(panel);explanation->setWordWrap(true);form->addRow(explanation);
-    const auto updateExplanation=[=]{explanation->setText(backend->values()["precipitationKind"].toInt()==0?QObject::tr("Śnieg w torach spowalnia rozbieg."):QObject::tr("Lekki deszcz nie musi hamować. Ulewa pogarsza ślizg."));};
+    const auto updateExplanation=[=]{explanation->setText(backend->values()["precipitationKind"].toInt()==0?QObject::tr("Śnieg w torach spowalnia rozbieg."):QObject::tr("Lekki deszcz nie musi hamować. Ulewa mocno pogarsza skoki."));};
     QObject::connect(backend,&SimulationWeatherSetup::changed,explanation,updateExplanation);updateExplanation();
     return panel;
 }

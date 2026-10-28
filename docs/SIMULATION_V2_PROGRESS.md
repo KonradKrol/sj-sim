@@ -845,3 +845,26 @@ kompletne perki, przenośna ścieżka, nieznana wersja i mieszany profil).
 kierunku i prostych zmian na strzałkach **głównego** schematu wiatru.
 Użytkownik odrzucił obecny duży formularz punktów i nieczytelną orientację tarczy.
 Sprawdzić cofające się inputy. Dopiero po tych uwagach wrócić do kolejki sezonów.
+
+## Deszcz — kalibracja wykonana przed kolejną poprawką UX
+
+Research uzupełniony o wytyczne FIS odpływu wody oraz bezpośrednie relacje z
+Oberstdorfu i Klingenthal. Materiały potwierdzają rozróżnienie niewielkiego deszczu
+i trudnych ulew, ale **nie dają izolowanej krzywej deszcz → metry**. Nie odtwarzamy
+fizyki mokrego kombinezonu z badań samej przepuszczalności.
+
+Do `FlightParameters` dodano osobny koszt ulewy powyżej 5/10, rosnący kwadratowo
+do dodatkowych 15% zapasu przy 10/10 (łącznie z poprzednią karą 17,4%). Wszystko
+regulowane. Lekki/umiarkowany deszcz pozostaje bez nowej kary. Śnieg osobno.
+To **balans gry**, nie współczynniki FIS. Szczegóły i źródła: `WEATHER_RESEARCH.md`.
+
+`scripts/analyze-rain-v2.sh 10000` odtwarza 300 000 parowanych skoków; dane:
+`docs/data/simulation-v2-rain-calibration.csv`. K120: średnia przy deszczu 0/2/5/8/10
+to 120,849 / 120,849 / 119,759 / 112,146 / 99,822 m. Poprzednio przy 10 było
+117,950 m. Zachowane seedy jakości, ta sama belka, brak wiatru. Testy rdzenia,
+`--simulation-v2-setup-only`, `--simulation-v2-only`: PASS; kalibracja OVR pozostaje
+15,3476 m przy suchych warunkach.
+
+Teraz wykonać ostatnią uwagę użytkownika: czytelne kierunki względem skoczka/nart,
+sprawdzić inputy i **usunąć duży formularz lokalnych punktów**, przenosząc prostą
+edycję na sześć strzałek głównego `WindSlopePreview`. Dopiero potem wrócić do sezonów.
