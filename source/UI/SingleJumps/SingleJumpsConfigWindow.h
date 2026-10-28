@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "../../simulation-v2/SimulationCatalog.h"
 #include "../../simulation-v2/ProfileDraft.h"
+#include "../../simulation-v2/WeatherSetup.h"
 #include "../../simulation-v2/QualityModel.h"
 #include "../../simulator/wind-generation/WindGenerationSettings.h"
 
@@ -33,6 +34,7 @@ public:
     SimulationProfileDraft *getAthleteDraft() const {return athleteDraft;}
     SimulationProfileDraft *getHillDraft() const {return hillDraft;}
     SimulationV2::EventKind simulationEvent() const;
+    SimulationWeatherSetup *getWeatherSetup() const {return weatherSetup;}
     ~SingleJumpsConfigWindow();
 
     JumperEditorWidget *getJumperEditor() const;
@@ -59,6 +61,7 @@ private:
     SimulationV2::SimulationCatalog catalog;
     SimulationV2::CatalogSnapshot snapshot;
     SimulationProfileDraft *athleteDraft, *hillDraft;
+    SimulationWeatherSetup *weatherSetup;
     QComboBox *athletePack, *hillPack, *eventKind;
     QLabel *catalogStatus;
     bool ready=false, filling=false;
@@ -68,6 +71,7 @@ private:
     void loadCatalog();
     void fillPack(DataPack::Kind kind);
     void updateReadiness();
+    void updateGateSuggestion();
     void updateResponsiveLayout(int windowWidth);
 
 protected:

@@ -21,11 +21,26 @@
 #include <QThreadPool>
 #include <QThread>
 #include <QRandomGenerator>
+#include <cmath>
+#include <algorithm>
+#include "../simulation-v2/FieldWindMeasurement.h"
 #include <optional>
 #include <vector>
 #include "../global/GlobalSimulationSettings.h"
 
 #include "../simulator/JumpManipulator.h"
+
+namespace {
+SimulationV2::Seed nextJumpIndex(const QVector<JumpData> &jumps) {
+    SimulationV2::Seed index=static_cast<SimulationV2::Seed>(jumps.size());
+    for(const auto &jump:jumps) {
+        const auto &data=jump.getSimulationV2Data();const double time=data["startSeconds"].toDouble(-1);
+        if(data["engineVersion"].toInt()==2 && std::isfinite(time) && time>=0 && time<=1e12-100000)
+            index=std::max(index,static_cast<SimulationV2::Seed>(std::floor(time/30))+1);
+    }
+    return index;
+}
+}
 
 SingleJumpsManager::SingleJumpsManager(int gate, int jumpsCount, const QString &resultsFileName, bool changeableWind, short resultsFormat) :
     jumpsCount(jumpsCount),
@@ -43,7 +58,9 @@ QFuture<QVector<JumpData>> SingleJumpsManager::simulateAsync(int count,int threa
     count=qMax(0,count);
     const auto athleteSnapshot=jumper;const auto hillSnapshot=hill;const auto rulesSnapshot=rules;
     const auto windSettings=windsGeneratorSettings;const bool varying=changeableWind;
-    const auto event=simulationEvent;const auto seed=simulationSeed;const int offset=jumps.size();
+    const auto event=simulationEvent;const auto seed=simulationSeed;const auto offset=nextJumpIndex(jumps);
+    const bool v2=bool(athleteSnapshot.getSimulationProfile()) && bool(hillSnapshot.getSimulationProfile());
+    const auto field=v2?simulationWeather:nullptr;
     const auto settings=GlobalSimulationSettings::snapshot();const int batchGate=gate,dsq=DSQProbability;const double priority=importance;
     if(!control)control=std::make_shared<BatchControl>();
     const int workers=qBound(1,threads>0?threads:qMax(1,QThread::idealThreadCount()),qMin(4,qMax(1,count/512)));
@@ -56,17 +73,20 @@ QFuture<QVector<JumpData>> SingleJumpsManager::simulateAsync(int count,int threa
             JumpManipulator manipulation;JumpSimulator simulator(&athlete,{},&venue);
             simulator.setCompetitionRules(&competitionRules);simulator.setManipulator(&manipulation);simulator.setGate(batchGate);simulator.setCompetitionStartGate(batchGate);simulator.setDSQBaseProbability(dsq);simulator.setJumpsImportance(priority);
             simulator.setSimulationEvent(event);
+            if(field)simulator.setSimulationWeather(field,std::make_shared<SimulationV2::FieldWindMeasurement>(venue.getKPoint(),competitionRules));
             WindsGenerator generator(windSettings);QVector<Wind> fixed;
             if(!varying){for(const auto &value:windSettings){Wind wind;wind.setDirection(value.getBaseDirection());wind.setStrength(value.getBaseWindStrength());fixed.append(wind);}simulator.setWinds(fixed);}
             while(!control->canceled.load(std::memory_order_relaxed)) {
                 const int first=next.fetch_add(32,std::memory_order_relaxed);if(first>=count)break;
                 for(int index=first;index<qMin(count,first+32);++index) {
                     if(control->canceled.load(std::memory_order_relaxed))break;
-                    if(athlete.getSimulationProfile() && venue.getSimulationProfile()) {
+                    if(v2) {
                         simulator.setSimulationSeed(SimulationV2::deriveSeed(seed,quint64(offset)+index));
                         simulator.setSimulationTime((double(offset)+index)*30);
                     }
-                    if(varying)simulator.setWinds(generator.generateWinds());simulator.simulateJump();
+                    if(field)simulator.setWinds(SimulationV2::fieldWindSnapshot(*field,venue.getKPoint(),(double(offset)+index)*30));
+                    else if(varying)simulator.setWinds(generator.generateWinds());
+                    simulator.simulateJump();
                     auto jump=simulator.getJumpData();jump.setJumper(nullptr);jump.setHill(nullptr);jump.setSimulator(nullptr);jump.setInSingleJumps(true);
                     results[static_cast<size_t>(index)]=std::move(jump);control->completed.fetch_add(1,std::memory_order_relaxed);
                 }
@@ -79,7 +99,8 @@ QFuture<QVector<JumpData>> SingleJumpsManager::simulateAsync(int count,int threa
             for(auto &task:tasks)task.waitForFinished();
         }
         QVector<JumpData> completed;completed.reserve(control->completed.load(std::memory_order_relaxed));
-        for(auto &jump:results)if(jump)completed.append(std::move(*jump));return completed;
+        for(auto &jump:results)if(jump)completed.append(std::move(*jump));
+        return completed;
     });
 }
 
@@ -95,6 +116,9 @@ void SingleJumpsManager::simulate()
     jumpSimulator.setManipulator(&manipulator);
     jumpSimulator.setJumpsImportance(importance);
     jumpSimulator.setSimulationEvent(simulationEvent);
+    const bool v2=bool(jumper.getSimulationProfile()) && bool(hill.getSimulationProfile());
+    const auto field=v2?simulationWeather:nullptr;
+    jumpSimulator.setSimulationWeather(field,field?std::make_shared<SimulationV2::FieldWindMeasurement>(hill.getKPoint(),rules):nullptr);
 
     jumps.reserve(jumps.size() + qMax(0,jumpsCount));
     windsGenerator.setGenerationSettings(windsGeneratorSettings);
@@ -124,6 +148,7 @@ void SingleJumpsManager::simulate()
     dialog.show();
 
     const int initialCount = jumps.size();
+    const auto startIndex=nextJumpIndex(jumps);
     const auto updateProgress = [&](int count) {
         dialog.setLabelText(QString(QObject::tr("Przesymulowano %1 z %2 skoków")).arg(count).arg(jumpsCount));
         dialog.setValue(count);
@@ -150,13 +175,14 @@ void SingleJumpsManager::simulate()
         if(dialog.wasCanceled())
             break;
 
-        if(getChangeableWind() == true){
+        if(!field && getChangeableWind() == true){
             jumpSimulator.setWinds(windsGenerator.generateWinds());
         }
-        if(jumper.getSimulationProfile() && hill.getSimulationProfile()) {
-            jumpSimulator.setSimulationSeed(SimulationV2::deriveSeed(simulationSeed,quint64(initialCount)+i));
-            jumpSimulator.setSimulationTime((double(initialCount)+i)*30);
+        if(v2) {
+            jumpSimulator.setSimulationSeed(SimulationV2::deriveSeed(simulationSeed,startIndex+i));
+            jumpSimulator.setSimulationTime((double(startIndex)+i)*30);
         }
+        if(field)jumpSimulator.setWinds(SimulationV2::fieldWindSnapshot(*field,hill.getKPoint(),(double(startIndex)+i)*30));
         jumpSimulator.simulateJump();
         jumps.push_back(jumpSimulator.getJumpData());
         jumps.last().setInSingleJumps(true);

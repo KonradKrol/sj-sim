@@ -12,6 +12,36 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
 - Starsze raporty opisują kolejne etapy prac. W razie rozbieżności stan końcowy opisany tutaj ma pierwszeństwo. Szczególnie istotne korekty są zebrane w sekcji „Rozwiązania zastąpione podczas prac”.
 
+## Uzupełnienie — nowy silnik i scenariusze pogody (28.10.2026)
+
+Praca rozwijana na `feature/simulation-v2`, wyprowadzonej z gałęzi Qt Quick.
+**Migracja całej gry nie jest zakończona.** Poniższe funkcje są już dostępne
+w pojedynczych skokach; konkursy, sezony i nowy playground pozostają w integracji.
+
+- Nowe profile zawodnika/skoczni, oddzielna przybliżona migracja dawnych paczek,
+  kanoniczny zapis wspólny z edytorami oraz przenośne zdjęcia w folderze paczki.
+  Zniknął przełącznik starego/nowego edytora; otwierają się nowe edytory.
+- Pojedyncze skoki wybierają paczki v2, mają lokalną edycję profili bez zmiany źródła,
+  jawny rodzaj wydarzenia i liczbową automatyczną belkę.
+- Nowy rdzeń: OVR/forma, perki, krzywa znaczenia wybicia/lotu od K, zapas lotu
+  reagujący na osiągnięte odcinki, ograniczenie geometrią, ryzyko lądowania i noty.
+- Ciągła pogoda z podmuchami, lokalnymi różnicami, dłuższymi zmianami tendencji
+  i okresami niestabilności. Siła i loteryjność są niezależne.
+- Pięć scenariuszy wiatru losujących różne warianty: stabilny tylny, mocny przedni,
+  loteria, zmienny boczny, cisza. Prosty schemat zeskoku, jedno zdanie o zmienności,
+  ponowne losowanie na życzenie i stopniowe ujawnianie ustawień.
+- Pięć wariantów opadów, natężenie i niezależny wybór śniegu/deszczu. Na desktopie
+  opady mieszczą się obok wiatru; na wąskich ekranach układ jest pionowy.
+- Start zachowuje dokładnie wariant z podglądu. Batch współdzieli pogodę i stosuje
+  seed/czas według indeksu, dając identyczne wyniki na 1 i 4 wątkach. Kontynuacja
+  przerwanego batcha omija już wykorzystane indeksy.
+- Nowy pomiar podczas lotu i zachowane opcje dotychczasowego uśredniania. W nowych
+  pojedynczych skokach domyślna jest składowa wzdłuż zeskoku. Dokładny system FIS
+  nie został jeszcze zweryfikowany — nie przedstawiać tej metody jako pełnej zgodności.
+
+Szczegóły, ograniczenia i wznowienie: [postęp v2](SIMULATION_V2_PROGRESS.md),
+[model silnika i pogody](SIMULATION_V2_ENGINE.md), [pełna specyfikacja](../NEW_SIMULATION.md).
+
 ## Uzupełnienie — start Qt Quick na Linuksie (27.10.2026)
 
 - Przywrócono zgodne z Qt 5.15 importy komponentów menu, edytora skoczni i kontrolek perków, zachowując składnię używaną także z Qt 6. Zastąpiono właściwości siatki dostępne tylko w Qt 6 tak, aby karty menu nadal miały równe wymiary. Wyeliminowano pętle wysokości w kafelkach menu i przypisanych perkach. Build, start właściwego programu oraz regresje menu, animacji i edytorów skoczni i skoczków przeszły na Qt 5.15.3; Qt 6 nie budowano w tym środowisku. [Szczegóły i polecenia](LINUX_QT5_STARTUP_2026-10-27.md).

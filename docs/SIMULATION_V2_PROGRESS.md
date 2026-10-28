@@ -143,8 +143,8 @@ Pliki rdzenia i adaptera są już dodane do `sj-sim.pro`. Projekt używa qmake.
   komunikat o nieobsługiwanych starych zapisach i migracja domyślnego katalogu
   nie zostały wdrożone. Nie deklaruj zakończonej zgodności zapisów.
 
-Poniżej znajduje się pełny postęp i kolejka. Najbliższe zadanie to pełny UX pogody i dalsze podłączenie
-`SimulationCatalog` do konfiguracji konkursów i nowych sezonów; potem playground. Nie zaczynaj od ponownego strojenia gotowego rdzenia.
+Poniżej znajduje się pełny postęp i kolejka. Najbliższe zadanie to podłączenie
+`SimulationCatalog` i gotowego UX pogody do konkursów i nowych sezonów; potem playground. Nie zaczynaj od ponownego strojenia gotowego rdzenia.
 
 ### Zakończone commity tego etapu
 
@@ -486,10 +486,9 @@ kontekstu zdjęć. `--athlete-patches-only` i `--hill-studio-only` również PAS
 - `JumpSimulator::setSimulationSeed` pozwala podać seed zamiast trzech losowań
   globalnych. `SingleJumpsManager` przypisuje seed oraz czas przez indeks skoku,
   niezależnie od pracownika, i przekazuje rodzaj wydarzenia.
-- **Ograniczenie:** interfejs wiatru nadal jest dawny. Przy włączonym losowaniu
-  stary `WindsGenerator` w batchu wciąż nie jest deterministyczny między wątkami.
-  Test identyczności 1/4 wątków dotyczy stałych warunków; nie rozszerzać tej
-  deklaracji na zmienny wiatr przed zastąpieniem generatora wspólnym nowym polem.
+- **Uzupełnienie:** pojedyncze skoki mają już nowy panel pogody i przekazują wspólne
+  ciągłe pole do managera. Dokładny stan i nowe testy opisano w rozdziale poniżej.
+  Dawny generator pozostał dla legacy/API bez przekazanego pola.
 - Nowe testy `--simulation-v2-setup-only`: wybór gotowych paczek, lokalna edycja,
   walidacja i przywracanie, przełączanie, synchronizacja K z wiatrem, ochrona
   źródłowych plików/globalnej bazy, rodzaj skoku, auto-gate, rendery małych i dużych
@@ -497,7 +496,7 @@ kontekstu zdjęć. `--athlete-patches-only` i `--hill-studio-only` również PAS
 
 ### Najbliższy konkretny krok
 
-1. Nowy backend/UX pogody w pojedynczych skokach, a potem współdzielony w konkursie:
+1. Backend/UX pogody w pojedynczych skokach już działa. Podłączyć go do konkursów:
    automatyczna propozycja z perków, proste kierunek/siła/loteryjność/spójność,
    opady, zaawansowane referencje. Przekazywać immutable `ContinuousWeather`
    i jawny pomiar do managera; wspólny seed/czas niezależny od wątków. Nie zostawiać
@@ -521,15 +520,14 @@ okresów aktywności: `trendAmplitude`, `trendPeriodSeconds`,
 `trendTransitionSeconds`, `activityVariation`, `activityCorrelationSeconds`,
 `fastCorrelationSeconds`. Szczegóły i początkowe propozycje są w opisie silnika.
 Domyślne zerowe amplitudy pozostawiają konfiguracje stałe rzeczywiście stałymi.
-To nadal nie jest podłączony nowy panel pogody — ta praca pozostaje następna.
+Nowy panel i przekazanie pola są już podłączone do pojedynczych skoków;
+konkursy/sezony nadal czekają na migrację katalogu i pogody.
 
-Zadano **dwa pytania, odpowiedzi oczekiwane**, nie traktować upływu czasu jako wyboru:
-
-1. Jeden główny wybór „Stały / Spokojny / Zmienny / Loteryjny” i szczegóły w
-   zaawansowanych (zalecane), czy osobne główne ustawienia zmian między skokami
-   i podmuchów podczas lotu?
-2. Czy ręcznie wskazany kierunek jest tylko punktem wyjścia i przy wysokiej
-   loteryjności może się odwracać (zalecane), czy ma być utrzymany?
+Wszystkie trzy odpowiedzi otrzymano. Użytkownik wybrał scenariusze losujące
+parametry w zakresach, prosty podgląd graficzny i jedno zdanie o loteryjności,
+parametry dopiero po rozwinięciu, możliwość odwróceń kierunku oraz zachowanie
+tego samego wariantu przy starcie. Podkreślił niezależność siły i loteryjności.
+Pełny zapis jest w NEW_SIMULATION.md. Nie zadawać tych pytań ponownie.
 
 Commit `d27eb28` z podłączeniem pojedynczych skoków jest już na remote.
 
@@ -537,3 +535,68 @@ Testy po dodaniu tendencji: `test-simulation-v2-core.sh` PASS (w tym trwałość
 odwrócenia, ciągłość, epizody szybkich zmian); pełny build Qt 5.15 i
 `--simulation-v2-only` PASS. Parametry zerowe pozostawiają kalibrację
 OVR90/70 bez zmiany: 15,3476 m.
+
+
+## Scenariusze i UI pogody — praca 28.10.2026
+
+Nowe moduły:
+
+- `WeatherPresets.*`: pięć jawnych scenariuszy, losowanie parametrów w zakresach.
+  Mocny wiatr nie otrzymuje automatycznie większej loteryjności. Cisza jest zerowa.
+- `WeatherSetup.*`: QObject konfiguracji; automatyczna propozycja z perków skoczni,
+  ręczne scenariusze, dostosowanie, dokładne punkty, opady, podgląd innej chwili.
+  Ręczna edycja nie zapisuje paczki i nie dostaje ukrytych mnożników od perków.
+  Widoki dostają bieżące dane; batch dostaje `shared_ptr<const WeatherField>`.
+- `FieldWindMeasurement.*`: pomiar w czasie lotu z kolejnych stanowisk oraz
+  snapshot przed skokiem dla dotychczasowych widoków. Zachowuje wybierane stare
+  sposoby uśredniania i uwzględniania odległości. **To polityka kompatybilności,
+  nie zweryfikowany dokładny pomiar FIS.**
+- `WeatherWorkspace`, `WindSlopePreview`, `WeatherPresetChoice`, `WeatherTuning`,
+  `WeatherAdvanced`, `WeatherNumber`: nowy panel Qt Quick, proste scenariusze,
+  schemat zeskoku i ujawnianie parametrów na życzenie. Opady osobno, pięć wariantów.
+- `WeatherSetupEditor`: mały fallback Widgets z tym samym backendem. Stare
+  komponenty pozostały w projekcie. Nie ma dwóch działających modeli wiatru w UI.
+
+`SingleJumpsConfigWindow` ma teraz `getWeatherSetup()`, a `MainWindow` przekazuje
+jego pole do managera. `suggestedGate()` korzysta z tego samego pola; etykieta
+sugestii reaguje na zmianę warunków przez krótki debounce, zamiast przeliczać
+lot przy każdym odświeżeniu UI. Zmiana czasu podglądu nie zmienia czasu startu.
+
+`SingleJumpsManager` dla nowych profili i podanego pola pomija dawny generator,
+przypisuje czas i seed przez indeks, współdzieli immutable pogodę między wątkami.
+Pomiar i snapshot pochodzą z tego pola. Fallback dla starych wywołań bez pola
+pozostaje. Nowy panel jest na razie **tylko w pojedynczych skokach**, nie deklarować
+przeniesienia go już do konkursów i sezonów.
+
+Testy rozszerzono o zakresy scenariuszy, siłę niezależną od loteryjności, dokładną
+ciszę i statyczne lokalne różnice, odwracanie kierunku, zachowanie podglądu i snapshotu,
+walidację, opady niezależne od wyboru scenariusza, pomiar bez obcinania kątów,
+klikanie UI i identyczność batcha w zmiennej pogodzie na 1 i 4 wątkach.
+**Wynik: PASS** — `scripts/test-simulation-v2-core.sh`, produkcyjny build Qt 5.15.3,
+`--simulation-v2-setup-only` (także rendery 1440/1024/520/360 px, oba motywy i większy
+tekst), `--simulation-v2-only`, `--config-defaults-only`, `--single-jumps-only`.
+Ten ostatni obejmuje też wcześniejsze audyty silnika i podstawowe regresje konkursu.
+Nie testowano etapu na Windowsie ani Qt 6. Brak nowych pętli układów/ostrzeżeń QML.
+Schemat używa SVG i zwykłych elementów Quick, bez nowej zależności od Qt Quick Shapes.
+
+Drobne uzupełnienia wynikające z testów:
+
+- Przy pustym wyborze skoczni jest empty state z powrotem do konfiguracji.
+- Zmiana nazwy/kraju/HS aktualizuje nagłówek bez ponownego losowania.
+- Przy zerowym wietrze można najpierw wybrać kierunek, a potem dodać siłę.
+- Duże opady pokazują faktyczne minimum 8, zamiast przyjmować w UI np. 2 i używać 8.
+- Pomiar ma dodatkowy, domyślny wariant składowej wzdłuż zeskoku. Pozostałe dwa
+  dawne warianty zostały zachowane; dokładny algorytm FIS nadal wymaga weryfikacji.
+- Po przerwanym równoległym batchu zegar/seed startują za największym ukończonym
+  indeksem, a nie od liczby zwróconych wyników. To chroni przed powtórzeniem
+  skoków/czasu, jeśli anulowanie zostawiło luki między ukończonymi zadaniami.
+
+### Następny krok po tym etapie
+
+`CompetitionConfigWindow` w trybie pojedynczego konkursu musi otrzymać własny
+snapshot katalogu v2 (bez podmieniania aktywnych wektorów GlobalDatabase w trakcie
+życia innych okien). Podłączyć gotowy `SimulationWeatherSetup` oraz `WeatherWorkspace`.
+Następnie `CompetitionManagerWindow::setupSimulator` ma dostać pole i pomiar
+oraz wspólny logiczny zegar; nie pokazywać nowego panelu dla ścieżki, która nadal
+wywołuje stary generator. Dalej migracja nowych sezonów/format zapisów, manipulacje,
+podgląd historii wiatru w wynikach i playground. Nie zaczynać UI wiatru od zera.

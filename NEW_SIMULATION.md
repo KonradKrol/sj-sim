@@ -122,6 +122,29 @@ Użytkownik przede wszystkim wybiera ogólny charakter warunków: dominujący ki
 
 Dokładne wartości, kierunki i punkty odniesienia udostępnić w opcjach zaawansowanych. Proste ustawienia mają być nadrzędnym, wygodnym sposobem przygotowania konkursu, a nie dodatkowym krokiem przed obowiązkową szczegółową konfiguracją. Nie wprowadzać wielu drobiazgowych parametrów na głównym ekranie.
 
+
+Ustalenia 28.10.2026 po odpowiedziach użytkownika:
+
+- Prosty widok zaczyna się od **scenariuszy**, nie od zestawu parametrów:
+  „Stabilny w plecy”, „Mocno pod narty”, „Loteria”, „Zmienny boczny”, „Cisza”.
+  Jeden scenariusz określa zakresy i może w różnych konkursach losować trochę
+  inne parametry oraz inny przebieg pogody. „Cisza” oznacza rzeczywisty brak wiatru.
+- Domyślnie pokazywać schemat kierunków/sił na zeskoku, krótkie zdanie o zmienności
+  i „Losuj ponownie”. Użytkownik nie musi rozumieć technicznych współczynników.
+- „Dostosuj” ujawnia kierunek i siłę wyjściową, zmienność w czasie i różnice wzdłuż
+  zeskoku. Rzadkie szczegóły można rozwinąć dalej; etykiety podają jednostki,
+  a krótkie tooltipy tłumaczą konkretny efekt bez instrukcji aplikacji.
+- **Siła jest niezależna od loteryjności.** Tylny 1,8 m/s może utrzymywać się
+  przez cały konkurs z minimalnymi wahaniami; słaby wiatr także może być loteryjny.
+  Edycja siły nie zmienia amplitud/częstości podmuchów ani zmian tendencji.
+- Użytkownik zaakceptował czasowe odwracanie kierunku, gdy wynika to z ustawień
+  i przebiegu pola. Nie jest to przełącznik „odwróć/nie odwracaj” ani dodatkowe
+  losowanie po każdym skoku — zależność ma być płynna.
+- **Wariant z podglądu zostaje przy starcie.** Nie wykonywać ukrytego ponownego
+  losowania parametrów ani seeda po zaakceptowaniu konfiguracji. Pogoda nadal
+  ewoluuje w czasie. Nowy wariant losuje się świadomie przyciskiem lub wyborem
+  scenariusza; odczyty, rendery i podgląd czasu nie mogą go zmieniać.
+
 ### Informacja podczas konkursu i po skoku
 
 - **Domyślnie po skoku pokazywać uśredniony wiatr tak jak obecnie.** Nie zastępować tej informacji dużym widokiem sektorów i nie zwiększać obowiązkowej ilości danych.
@@ -138,8 +161,7 @@ z innym dominującym wiatrem, a także odcinki konkursu, w których warunki zmie
 się niemal co skok. Nie każdy konkurs ma być loteryjny: charakter ustala użytkownik,
 a osobne parametry silnika kontrolują siłę zmian, ich czas i podmuchy. Spokojne
 ustawienia mają rzeczywiście dawać spokojny przebieg, stałe — brak zmian w czasie.
-Pytania o główny wybór zmienności oraz dopuszczanie odwróceń ręcznie wybranego
-kierunku zostały zadane 28.10; przed zamknięciem UX zapisać odpowiedzi.
+Odpowiedzi i układ scenariuszy zapisano powyżej w ustaleniach z 28.10.
 
 
 ### Założenia

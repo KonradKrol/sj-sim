@@ -316,6 +316,48 @@ charakteru: amplituda tendencji 0,15/1,2/2,8 m/s, okres 300/150/60 s, przejście
 nie statystyki rzeczywistej pogody. Perki wpływają na wybór propozycji; ręcznie
 podane parametry nie otrzymują dodatkowego ukrytego mnożnika od skoczni.
 
-**Ta warstwa jest gotowa w rdzeniu i propozycjach, ale UI gry nie przekazuje
-jeszcze wspólnego nowego pola.** Pojedyncze skoki nadal używają adaptera dawnych
-ustawień wiatru. Nie deklarować, że nowe tendencje są już aktywne w zwykłym konkursie.
+**Pojedyncze skoki przekazują już wspólne pole z nowego panelu.**
+W konkursach i sezonach integracja jeszcze nie jest zakończona; nie deklarować,
+że tendencje są już aktywne w zwykłym konkursie.
+
+
+## Scenariusze, konfiguracja i pomiar z pola
+
+`sampleWeatherPreset` jest czystą, seedowaną funkcją. Ręcznie wybrany scenariusz
+nie jest dodatkowo mnożony przez perki skoczni. Automatyczna propozycja nadal
+korzysta z `proposeWeather` i kontekstu skoczni. Siła wyjściowa i loteryjność to
+niezależne parametry; zmiana samej siły przesuwa bazowe wektory bez zmiany amplitud
+lub częstości zmian.
+
+| Scenariusz | Siła wyjściowa | Przebieg |
+| --- | --- | --- |
+| Stabilny w plecy | 0,6–2,3 m/s | Małe wahania i podmuchy, dłuższe tendencje |
+| Mocno pod narty | 2–4 m/s | Przewaga wiatru przedniego; siła nie wymusza loterii |
+| Loteria | 0,2–2,5 m/s | Duże amplitudy, lokalne różnice, szybkie zmiany i odwrócenia |
+| Zmienny boczny | 1–3 m/s | Dominujący boczny, silniejsze podmuchy i zmiany |
+| Cisza | 0 | Wszystkie składniki wiatru zerowe, opady niezależne |
+
+To zakresy bazowe, nie gwarantowane minimum/maksimum odczytów w trakcie lotu.
+Wariant losuje się przy wyborze scenariusza lub „Losuj ponownie”. `field()`
+zwraca immutable snapshot. Odczyt UI, zmiana czasu podglądu i uruchomienie managera
+nie wykonują ponownego losowania.
+
+`SimulationWeatherSetup` pilnuje zakresów i kolejności referencji. Zmienność 0
+wyłącza wszystkie zmiany czasowe, zachowując stałe różnice między referencjami.
+Główne dostosowanie mapuje prostą skalę na parametry tendencji/podmuchów; opcje
+szczegółowe pozwalają je zmienić osobno. Opady są niezależne od ręcznego wyboru
+scenariusza wiatru. Zmiana kontekstu skoczni bez zmiany jej ID nie nadpisuje
+ręcznych warunków. K przeskalowuje rozmieszczenie punktów; perki wpływają dopiero
+na jawne ponowne proponowanie.
+
+`FieldWindMeasurement` pobiera po 9 próbek czasowych z każdego stanowiska podczas
+lotu, uśrednia wektory, potem stosuje wybierany dotychczasowy sposób uśredniania
+oraz opcję wpływu odległości. Nowa konfiguracja pojedynczych skoków domyślnie
+wybiera składową wzdłuż zeskoku, bez progowego klasyfikowania bocznych kierunków.
+**To nadal metoda kompatybilności, nie deklaracja dokładnego pomiaru FIS.**
+Rekompensata używa wyniku tego pomiaru, ekspozycja lotu pozostaje oddzielna.
+
+`SingleJumpsManager` ze współdzielonym polem nie uruchamia dawnego losowania
+korytarzy. Przypisuje czas/seed według indeksu, a podgląd wiatru przed skokiem i
+pomiar podczas lotu korzystają z tego samego pola. Test 2048 skoków potwierdza
+identyczność metadanych/punktów dla 1 i 4 wątków także w zmiennej pogodzie.

@@ -1,4 +1,5 @@
 #include "../source/simulation-v2/Weather.h"
+#include "../source/simulation-v2/WeatherPresets.h"
 
 #include <cmath>
 #include <future>
@@ -107,6 +108,15 @@ int main()
         }
         check(heads>9000 && tails<1000,"direction traits strongly bias automatic proposals");
         check(stable>8000 && lottery<1200,"lottery traits strongly bias automatic proposals");
+        SeededRandom presetRng(111);double previousStrength=-1;bool variants=false;
+        for(int index=0;index<5;++index)for(int draw=0;draw<500;++draw) {
+            auto proposal=sampleWeatherPreset(static_cast<WeatherPreset>(index),120,presetRng);proposal.wind.validate();
+            Wind average;for(const auto &point:proposal.wind.references){average.head+=point.value.head/6;average.cross+=point.value.cross/6;}
+            if(index==0){check(average.head<0 && average.strength()>=.6 && average.strength()<=2.3,"stable-tail scenario stays inside its base range");if(previousStrength>=0 && previousStrength!=average.strength())variants=true;previousStrength=average.strength();}
+            if(index==1)check(average.head>0 && average.strength()>=2 && average.strength()<=4,"strong headwind has a bounded base and independent variation");
+            if(index==4){ContinuousWeather calm(1,proposal.wind);for(double t:{0.,300.,10000.})near(calm.wind(90,t).strength(),0,1e-12,"calm is truly windless");}
+        }
+        check(variants,"the same named preset samples different parameter variants");
         rejects([]{WindParameters v;v.references.clear();ContinuousWeather f(1,v);});
         rejects([]{WindParameters v;v.references={{10,{}},{10,{}}};ContinuousWeather f(1,v);});
         rejects([&]{weather.wind(0,std::numeric_limits<double>::infinity());});

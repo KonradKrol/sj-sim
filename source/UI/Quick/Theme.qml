@@ -27,6 +27,7 @@ QtObject {
     readonly property color advancementInk: Qt.rgba(success.r*.8+muted.r*.2,success.g*.8+muted.g*.2,success.b*.8+muted.b*.2,1)
     readonly property color danger: dark ? "#ffb4a7" : "#a32f25"
     readonly property color stadium: "#142e42"
+    readonly property color stadiumDanger: "#ffb4a7"
     readonly property color snow: "#f1f6ff"
     readonly property color signal: "#d8ee85"
     readonly property string mono: "IBM Plex Mono"

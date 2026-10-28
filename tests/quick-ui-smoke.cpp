@@ -2022,9 +2022,10 @@ static void singleGateRegression(MainWindow &main) {
     QVector<WindGenerationSettings> settings(6,WindGenerationSettings(Wind::Front,0,2,0));
     auto *wind=config.getWindsGeneratorSettingsEditor();wind->setWindGenerationSettings(&settings);wind->setKPoint(config.getHillEditor()->getKPointFromInput());wind->fillSettingsInputs();
     auto *gate=config.findChild<QSpinBox *>("spinBox_gate");gate->setValue(17);
+    config.getWeatherSetup()->applyPreset(4);config.getWeatherSetup()->setValue("strength",2);config.getWeatherSetup()->setValue("direction",0);
     const int headwind=config.suggestedGate();
     check(headwind>=gate->minimum() && headwind<=gate->maximum() && headwind==config.suggestedGate() && gate->value()==17,"single-jump gate preview is bounded, deterministic and preserves manual input");
-    settings.fill(WindGenerationSettings(Wind::Back,0,2,0));wind->fillSettingsInputs();const int tailwind=config.suggestedGate();
+    settings.fill(WindGenerationSettings(Wind::Back,0,2,0));wind->fillSettingsInputs();config.getWeatherSetup()->setValue("direction",180);const int tailwind=config.suggestedGate();
     check(headwind<=tailwind,"single-jump gate accounts for configured headwind and tailwind");
     render(&config,"single-jump-auto-gate",true);
     main.resize(1024,640);QTest::qWait(100);clickControl(scene(&config),"action-pushButton_autoGate");
@@ -2477,6 +2478,7 @@ static void interactionRegressions(MainWindow &main) {
 #include "playground-regressions.h"
 #include "athlete-studio-regressions.h"
 #include "hill-studio-regressions.h"
+#include "simulation-v2-weather-setup-regressions.h"
 #include "simulation-v2-setup-regressions.h"
 #include "config-defaults-regressions.h"
 #include "motion-feedback-regressions.h"
@@ -2530,7 +2532,7 @@ int main(int argc,char **argv) {
         qInfo()<<"PASS: live language switching";return 0;
     }
     if(app.arguments().contains("--config-defaults-only")){configDefaultsRegressions(main);return 0;}
-    if(app.arguments().contains("--simulation-v2-setup-only")){simulationV2SetupRegressions(main);return 0;}
+    if(app.arguments().contains("--simulation-v2-setup-only")){simulationV2WeatherSetupRegressions();simulationV2SetupRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-only")){simulationV2BridgeRegressions();simulationV2RepositoryRegressions();simulationV2CatalogRegressions();return 0;}
     if(app.arguments().contains("--motion-feedback-only")){motionFeedbackRegressions(main);return 0;}
     if(app.arguments().contains("--hill-studio-only")){hillStudioRegressions(main);return 0;}

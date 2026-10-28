@@ -21,6 +21,9 @@ SOURCES += \
     source/simulation-v2/HillSkillCurve.cpp \
     source/simulation-v2/QualityModel.cpp \
     source/simulation-v2/Weather.cpp \
+    source/simulation-v2/WeatherPresets.cpp \
+    source/simulation-v2/WeatherSetup.cpp \
+    source/simulation-v2/FieldWindMeasurement.cpp \
     source/simulation-v2/FlightModel.cpp \
     source/simulation-v2/LandingModel.cpp \
     source/simulation-v2/Scoring.cpp \
@@ -121,6 +124,7 @@ SOURCES += \
     source/UI/Seasons/Stats/SimulationRatingsWindow.cpp \
     source/UI/SingleJumps/SingleJumpsConfigWindow.cpp \
     source/UI/EditorWidgets/SimulationProfileEditor.cpp \
+    source/UI/EditorWidgets/WeatherSetupEditor.cpp \
     source/UI/AppSettings/AppSettingsWindow.cpp \
     source/UI/DatabaseEditor/DatabaseEditorWindow.cpp \
     source/UI/EditorWidgets/CharacteristicsEditor.cpp \
@@ -193,6 +197,9 @@ HEADERS += \
     source/simulation-v2/HillSkillCurve.h \
     source/simulation-v2/QualityModel.h \
     source/simulation-v2/Weather.h \
+    source/simulation-v2/WeatherPresets.h \
+    source/simulation-v2/WeatherSetup.h \
+    source/simulation-v2/FieldWindMeasurement.h \
     source/simulation-v2/FlightModel.h \
     source/simulation-v2/LandingModel.h \
     source/simulation-v2/Scoring.h \
@@ -293,6 +300,7 @@ HEADERS += \
     source/UI/Seasons/Stats/SimulationRatingsWindow.h \
     source/UI/SingleJumps/SingleJumpsConfigWindow.h \
     source/UI/EditorWidgets/SimulationProfileEditor.h \
+    source/UI/EditorWidgets/WeatherSetupEditor.h \
     source/UI/AppSettings/AppSettingsWindow.h \
     source/UI/DatabaseEditor/DatabaseEditorWindow.h \
     source/UI/EditorWidgets/CharacteristicsEditor.h \

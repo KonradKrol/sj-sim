@@ -213,6 +213,14 @@
 <file>RosterDragArea.qml</file>
 <file>RosterRow.qml</file>
 <file>WindEditor.qml</file>
+<file>WeatherWorkspace.qml</file>
+<file>WeatherTuning.qml</file>
+<file>WeatherAdvanced.qml</file>
+<file>WeatherNumber.qml</file>
+<file>WeatherPresetChoice.qml</file>
+<file>WeatherPrecipitation.qml</file>
+<file>WindSlopePreview.qml</file>
+<file>icons/weather/slope.svg</file>
 <file>WindFields.qml</file>
 <file>WindSectorStrip.qml</file>
 <file>PlaygroundScreen.qml</file>

@@ -21,6 +21,7 @@ public:
     void simulate();
     void setSimulationEvent(SimulationV2::EventKind value) {simulationEvent=value;}
     void setSimulationSeed(SimulationV2::Seed value) {simulationSeed=value;}
+    void setSimulationWeather(std::shared_ptr<const SimulationV2::WeatherField> value) {simulationWeather=std::move(value);}
     struct BatchControl {
         std::atomic_bool canceled{false};
         std::atomic_int completed{0};
@@ -54,6 +55,7 @@ private:
     CompetitionRules rules;
     SimulationV2::EventKind simulationEvent=SimulationV2::EventKind::Competition;
     SimulationV2::Seed simulationSeed;
+    std::shared_ptr<const SimulationV2::WeatherField> simulationWeather;
 
     QVector<JumpData> jumps;
 

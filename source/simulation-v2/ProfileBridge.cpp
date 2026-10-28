@@ -1,4 +1,5 @@
 #include "ProfileBridge.h"
+#include "../global/CountryCodes.h"
 
 #include <stdexcept>
 
@@ -19,7 +20,7 @@ Hill hillInput(const HillProfile &profile)
 
 WeatherProposalContext weatherProposalContext(const HillProfile &profile,Surface surface,int month)
 {
-    return {profile.k,profile.perks[2],profile.perks[3],surface,month,profile.country.toStdString()};
+    return {profile.k,profile.perks[2],profile.perks[3],surface,month,CountryCodes::toIso(profile.country).toStdString()};
 }
 
 }

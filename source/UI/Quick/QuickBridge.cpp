@@ -517,6 +517,11 @@ void QuickBridge::refresh() {
         actions.append(QVariantMap{{"id",id},{"owner",owner?idFor(owner):-1},{"text",text},{"sequence",sequence},{"enabled",action->isEnabled() && (!owner || !owner->isHidden())}});
     }
     if(actions!=m_actions) { m_actions=actions; emit changed(); }
+    if(profile()=="SingleJumpsConfigWindow") {
+        QVariantMap context{{"suggestedGate",m_window->property("suggestedGate")}};
+        if(auto *gate=m_content->findChild<QSpinBox *>("spinBox_gate"))context["startingGate"]=gate->value();
+        if(context!=m_context){m_context=context;emit changed();}
+    }
     if(auto *configuration=qobject_cast<CompetitionConfigWindow *>(m_window)) {
         QVariantMap context;context["suggestedGate"]=configuration->suggestedGate();if(auto *gate=m_content->findChild<QSpinBox *>("spinBox_startGate"))context["startingGate"]=gate->value();
         if(context!=m_context){m_context=context;emit changed();}
@@ -1142,13 +1147,12 @@ void QuickBridge::compose(QuickNode *base) {
             draft->update({{"kind","simulationDraft"},{"hill",entry.first=="hillDraft"},{"backend",m_window->property(entry.first.toLatin1().constData())}});
             pages.append(QVariant::fromValue(draft));labels.append(entry.second);
         }
-        if(auto *widget=m_content->findChild<QWidget *>("page_windsGeneratorSettings")) {
-            widget->setProperty("quickExposePage",true);auto *entry=node(widget,true);
-            if(entry){pages.append(group("page_windsGeneratorSettings",tr("Wiatr"),{QVariant::fromValue(entry)}));labels.append(tr("Wiatr"));}
-        }
+        auto *weather=identity(m_window->property("weatherSetup").value<QObject *>());
+        weather->update({{"kind","weatherSetup"},{"backend",m_window->property("weatherSetup")}});
+        pages.append(QVariant::fromValue(weather));labels.append(tr("Warunki"));
         pages.append(group("jump-options",tr("Opcje"),{group("jump-option-fields",QString(),fields({
             {"spinBox_dsqProbability",tr("Prawdopodobieństwo dyskwalifikacji")},
-            {"checkBox_changeableWind",""},{"checkBox_hasJudges",""},{"checkBox_hasWindCompensation",""},
+            {"checkBox_hasJudges",""},{"checkBox_hasWindCompensation",""},
             {"comboBox_windAverageCalculatingType",tr("Obliczanie średniego wiatru")},
             {"comboBox_windCompensationDistanceEffect",tr("Wpływ odległości na rekompensatę")}}),"form")}));
         labels.append(tr("Opcje"));

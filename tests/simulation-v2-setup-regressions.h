@@ -47,19 +47,36 @@ static void simulationV2SetupRegressions(MainWindow &main) {
         check(item(scene(&window)->rootObject(),"simulationDraftWorkspace"),"new profile editor replaces ignored legacy parameters");
         scene(&window)->grabFramebuffer().save(output+(page==QString::fromUtf8("Zawodnik")?"/simulation-v2-athlete.png":"/simulation-v2-hill.png"));
     }
+    main.resize(1024,640);QTest::qWait(100);
+    bridge->edit(bridge->root()->values().value("id").toInt(),labels.indexOf(QString::fromUtf8("Warunki")));QTest::qWait(150);
+    check(item(scene(&window)->rootObject(),"weatherWorkspace"),"new weather workspace replaces the old sector editor");
+    clickControl(scene(&window),"weatherPreset-2");check(window.getWeatherSetup()->values()["preset"].toInt()==2,"preset card updates the actual weather backend");
+    const auto selectedSeed=window.getWeatherSetup()->values()["seed"];
+    render(&window,"simulation-v2-weather",true);
+    check(window.getWeatherSetup()->values()["seed"]==selectedSeed,"screen renders never reroll selected weather");
+    main.resize(1024,640);QTest::qWait(100);clickControl(scene(&window),"weatherTuningToggle");QTest::qWait(50);
+    check(item(scene(&window)->rootObject(),"weatherDirection"),"customization is optional and reveals the four simple controls");
+    clickControl(scene(&window),"weatherAdvancedToggle");QTest::qWait(50);
+    check(item(scene(&window)->rootObject(),"weather-gustProbability"),"advanced weather controls remain available inline");
+    scene(&window)->grabFramebuffer().save(output+"/simulation-v2-weather-advanced.png");
     window.reject();QTest::qWait(50);
     // New batch jump identity and random quality must not depend on worker scheduling.
     SingleJumpsManager manager;manager.setJumper(window.configuredJumper());manager.setHill(window.configuredHill());
     manager.setGate(10);manager.setChangeableWind(false);manager.getRules().setHasDsq(false);manager.getRules().setHasJudgesPoints(true);
+    manager.setSimulationWeather(window.getWeatherSetup()->field());manager.setChangeableWind(true);
     manager.setSimulationSeed(123456789);manager.setSimulationEvent(SimulationV2::EventKind::Training);
     auto one=manager.simulateAsync(2048,1);one.waitForFinished();const auto sequential=one.result();
     auto many=manager.simulateAsync(2048,4);many.waitForFinished();const auto parallel=many.result();
     check(sequential.size()==2048 && parallel.size()==sequential.size(),"v2 batch produces all requested jumps");
+    check(sequential[0].getSimulationV2Data()["experiencedWind"]!=sequential[1].getSimulationV2Data()["experiencedWind"],"actual continuous weather evolves between indexed batch jumps");
     for(int i=0;i<sequential.size();++i) {
-        check(sequential[i].getSimulationV2Data()==parallel[i].getSimulationV2Data() && sequential[i].getPoints()==parallel[i].getPoints(),"fixed-weather v2 batch is identical with one or four workers");
+        check(sequential[i].getSimulationV2Data()==parallel[i].getSimulationV2Data() && sequential[i].getPoints()==parallel[i].getPoints(),"changing-weather v2 batch is identical with one or four workers");
         const auto metadata=sequential[i].getSimulationV2Data();
         check(metadata["startSeconds"].toDouble()==i*30. && metadata["event"].toInt()==int(SimulationV2::EventKind::Training),"each batch jump has its own logical time and selected category");
     }
+    auto restored=sequential.first();auto metadata=restored.getSimulationV2Data();metadata["startSeconds"]=30000.;restored.setSimulationV2Data(metadata);manager.setJumps({restored});
+    auto continued=manager.simulateAsync(1,1);continued.waitForFinished();
+    check(continued.result().first().getSimulationV2Data()["startSeconds"].toDouble()==30030.,"continuing a partial batch advances past the last completed index rather than reusing time and seed");
     // Empty canonical sources must not pretend an editable old profile is usable.
     SimulationProfileDraft empty(DataPack::Jumpers);check(!empty.valid() && empty.profile().isEmpty(),"unselected drafts expose a clear empty state");
     main.resize(1024,640);qInfo()<<"PASS: v2 setup, local drafts, canonical data protection, auto gate and indexed parallel jump seeds";

@@ -19,10 +19,12 @@
 #include <QResizeEvent>
 #include <QSplitter>
 #include <cmath>
+#include "../../simulation-v2/FieldWindMeasurement.h"
 #include <QtConcurrent>
 #include <QFutureWatcher>
 #include <QFormLayout>
 #include "../EditorWidgets/SimulationProfileEditor.h"
+#include "../EditorWidgets/WeatherSetupEditor.h"
 #include <QSignalBlocker>
 #include <QTimer>
 #include "../../simulator/JumpSimulator.h"
@@ -36,6 +38,11 @@ SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent,const Simulatio
     catalog(paths)
 {
     ui->setupUi(this);
+    ui->comboBox_windAverageCalculatingType->setItemText(WindsCalculator::Simple,tr("Uproszczone"));
+    ui->comboBox_windAverageCalculatingType->setItemText(WindsCalculator::SimpleImproved,tr("Uproszczone z korektą kierunku"));
+    ui->comboBox_windAverageCalculatingType->addItem(tr("Składowa wzdłuż zeskoku"));
+    ui->comboBox_windAverageCalculatingType->setCurrentIndex(WindsCalculator::Original);
+    ui->comboBox_windAverageCalculatingType->setToolTip(tr("Pomiar wzdłuż skoczni płynnie uwzględnia kierunek. Wiatr dokładnie boczny daje zerową składową przednią i tylną."));
     setWindowFlags(Qt::Window);
 
     ui->horizontalLayout_underTitle->removeWidget(ui->toolBox);
@@ -132,6 +139,8 @@ SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent,const Simulatio
     windsGeneratorSettingsEditor->removeSubmitButton();
     windsGeneratorSettingsEditor->setKPoint(0);
 
+    weatherSetup=new SimulationWeatherSetup(this);
+    setProperty("weatherSetup",QVariant::fromValue(static_cast<QObject *>(weatherSetup)));
     athleteDraft = new SimulationProfileDraft(DataPack::Jumpers,this);
     hillDraft = new SimulationProfileDraft(DataPack::Hills,this);
     setProperty("athleteDraft",QVariant::fromValue(static_cast<QObject *>(athleteDraft)));
@@ -157,6 +166,8 @@ SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent,const Simulatio
     connect(hillPack,QOverload<int>::of(&QComboBox::currentIndexChanged),this,[this]{if(!filling)fillPack(DataPack::Hills);});
     connect(athleteDraft,&SimulationProfileDraft::changed,this,&SingleJumpsConfigWindow::updateReadiness);
     connect(hillDraft,&SimulationProfileDraft::changed,this,[this]{
+        if(hillDraft->valid())weatherSetup->setHill(*configuredHill().getSimulationProfile());
+        else weatherSetup->clearHill();
         if(hillDraft->valid() && windsGeneratorSettingsEditor->getKPoint()!=configuredHill().getKPoint()) {
             windsGeneratorSettingsEditor->setKPoint(configuredHill().getKPoint());
             windsGeneratorSettingsEditor->setWindGenerationSettings(&defaultWinds);
@@ -167,6 +178,8 @@ SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent,const Simulatio
     ui->verticalLayout_jumperContent->addWidget(jumperEditor);
     ui->verticalLayout_hillContent->addWidget(hillEditor);
     ui->verticalLayout_windsGeneratorSettings->addWidget(windsGeneratorSettingsEditor);
+    windsGeneratorSettingsEditor->hide();
+    ui->verticalLayout_windsGeneratorSettings->addWidget(createWeatherSetupEditor(weatherSetup,this));
     connect(hillEditor, &HillEditorWidget::KPointInputChanged, this, [this](){
         windsGeneratorSettingsEditor->setKPoint(hillEditor->getKPointFromInput());
         windsGeneratorSettingsEditor->setWindGenerationSettings(&defaultWinds);
@@ -182,8 +195,19 @@ SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent,const Simulatio
     ui->verticalLayout_jumperContent->addWidget(createSimulationProfileEditor(athleteDraft,false,this));
     ui->verticalLayout_hillContent->addWidget(createSimulationProfileEditor(hillDraft,true,this));
     ui->label_6->hide();
+    ui->checkBox_changeableWind->hide();
     ui->doubleSpinBox_jumpsImportance->setVisible(false);ui->comboBox_jumpsImportancePreset->setVisible(false);
     QTimer::singleShot(0,this,&SingleJumpsConfigWindow::loadCatalog);
+
+    auto *gateLabel=new QLabel(this);gateLabel->setObjectName("label_suggestedGate");gateLabel->setWordWrap(true);
+    ui->verticalLayout_singleJumpsSettings->addWidget(gateLabel);
+    auto *gateTimer=new QTimer(this);gateTimer->setSingleShot(true);gateTimer->setInterval(40);
+    connect(gateTimer,&QTimer::timeout,this,&SingleJumpsConfigWindow::updateGateSuggestion);
+    connect(weatherSetup,&SimulationWeatherSetup::changed,gateTimer,QOverload<>::of(&QTimer::start));
+    connect(athleteDraft,&SimulationProfileDraft::changed,gateTimer,QOverload<>::of(&QTimer::start));
+    connect(hillDraft,&SimulationProfileDraft::changed,gateTimer,QOverload<>::of(&QTimer::start));
+    connect(eventKind,QOverload<int>::of(&QComboBox::currentIndexChanged),gateTimer,QOverload<>::of(&QTimer::start));
+    connect(ui->spinBox_gate,QOverload<int>::of(&QSpinBox::valueChanged),gateTimer,QOverload<>::of(&QTimer::start));
 
     const auto updateWindCompensationInputs = [this](){
         const bool enabled = ui->checkBox_hasWindCompensation->isChecked();
@@ -362,6 +386,7 @@ int SingleJumpsConfigWindow::suggestedGate()
     for(const auto &setting : settings)
         winds.append(Wind(setting.getBaseDirection(), setting.getBaseWindStrength()));
     simulator.setWinds(winds);
+    simulator.setSimulationWeather(weatherSetup->field(),std::make_shared<SimulationV2::FieldWindMeasurement>(hill.getKPoint(),rules));
     int low = ui->spinBox_gate->minimum(), high = ui->spinBox_gate->maximum();
     while(low < high) {
         const int middle = (low + high + 1) / 2;
@@ -372,6 +397,15 @@ int SingleJumpsConfigWindow::suggestedGate()
         else high = middle - 1;
     }
     return low;
+}
+
+void SingleJumpsConfigWindow::updateGateSuggestion()
+{
+    const int suggested=suggestedGate();auto *label=findChild<QLabel *>("label_suggestedGate");
+    setProperty("suggestedGate",suggested);
+    if(suggested<0){label->clear();return;}
+    const int difference=suggested-ui->spinBox_gate->value();
+    label->setText(tr("Sugerowana belka: %1").arg(suggested)+(difference?QString(" (%1%2)").arg(difference>0?"+":"").arg(difference):QString()));
 }
 
 int SingleJumpsConfigWindow::getGateFromInput()

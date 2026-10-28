@@ -7,6 +7,7 @@ ColumnLayout {
     readonly property bool tabbed: ui.root.values.kind === "tabs"
     readonly property bool season: ui.profile === "SimulationSaveManagerWindow"
     readonly property var contentNode: tabbed && ui.root.children.length ? ui.root.children[0] : ui.root
+    readonly property bool weatherPage: contentNode && contentNode.values.kind === "weatherSetup"
     readonly property bool simulationDraftPage: contentNode && contentNode.values.kind === "simulationDraft"
     readonly property bool formPage: contentNode && contentNode.values.kind === "formGenerator"
     readonly property bool koPage: contentNode && contentNode.values.kind === "koGroups"
@@ -44,7 +45,7 @@ ColumnLayout {
         }
         ScrollView {
         id: scroll
-        visible: !workspace.koPage && !workspace.catalogPage && !workspace.calendarPage && !workspace.rosterPage && !workspace.formPage && !workspace.simulationDraftPage
+        visible: !workspace.koPage && !workspace.catalogPage && !workspace.calendarPage && !workspace.rosterPage && !workspace.formPage && !workspace.simulationDraftPage && !workspace.weatherPage
         objectName: "workspaceScroll"
         Layout.fillWidth: true; Layout.fillHeight: true
         Layout.minimumWidth: 0; Layout.minimumHeight: 0
@@ -55,9 +56,15 @@ ColumnLayout {
             width: scroll.availableWidth
             padding: Theme.compact ? 4 : workspace.width < 700 ? 12 : 24
             background: Item {}
-            contentItem: Node { node: workspace.koPage || workspace.catalogPage || workspace.calendarPage || workspace.rosterPage || workspace.formPage || workspace.simulationDraftPage ? null : workspace.contentNode }
+            contentItem: Node { node: workspace.koPage || workspace.catalogPage || workspace.calendarPage || workspace.rosterPage || workspace.formPage || workspace.simulationDraftPage || workspace.weatherPage ? null : workspace.contentNode }
         }
     }
+        Loader {
+            visible: active; active: workspace.weatherPage
+            Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
+            Layout.margins: Theme.dp(8)
+            sourceComponent: Component { WeatherWorkspace { node: workspace.contentNode } }
+        }
         Loader {
             visible: active; active: workspace.simulationDraftPage
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
@@ -109,5 +116,5 @@ ColumnLayout {
         Layout.preferredHeight: active && item ? item.implicitHeight : 0
         sourceComponent: Component { SeasonFooter {} }
     }
-    ActionBar { visible: ui.actions.length > 0 && !workspace.formPage && !workspace.simulationDraftPage && !workspace.rosterPage && !workspace.koPage; Layout.fillWidth: true }
+    ActionBar { visible: ui.actions.length > 0 && !workspace.formPage && !workspace.simulationDraftPage && !workspace.weatherPage && !workspace.rosterPage && !workspace.koPage; Layout.fillWidth: true }
 }

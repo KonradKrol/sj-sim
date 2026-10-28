@@ -95,6 +95,7 @@ void MainWindow::on_pushButton_singleJumps_clicked()
         manager.setWindsGeneratorSettings(singleJumpsConfig.getWindsGeneratorSettingsEditor()->getWindsGenerationSettingsFromInputs());
         manager.setImportance(singleJumpsConfig.importance());
         manager.setSimulationEvent(singleJumpsConfig.simulationEvent());
+        manager.setSimulationWeather(singleJumpsConfig.getWeatherSetup()->field());
         if(singleJumpsConfig.getDSQProbabilityFromInput() > (-1)){
             manager.getRules().setHasDsq(true);
             manager.setDSQProbability(singleJumpsConfig.getDSQProbabilityFromInput());
