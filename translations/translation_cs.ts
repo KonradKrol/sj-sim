@@ -6966,6 +6966,14 @@ li.checked::marker { content: "\2612"; }
             <source>Edytuj wiatr</source>
             <translation>Upravit vítr</translation>
         </message>
+        <message>
+            <source>Zmiana następnego skoku</source>
+            <translation>Upravit další skok</translation>
+        </message>
+        <message>
+            <source>Zastosuj</source>
+            <translation>Použít</translation>
+        </message>
     </context>
     <context>
         <name>JumpWeights</name>
@@ -11543,6 +11551,90 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Zachowuje wcześniejsze ustawienia sposobu kierunków i wpływu odległości na pomiar. Nie oznacza zgodności z FIS.</source>
             <translation>Zachovává původní nastavení směru a vlivu délky na měření. Neznamená to shodu s pravidly FIS.</translation>
         </message>
+        <message>
+            <source>Lot</source>
+            <translation>Let</translation>
+        </message>
+        <message>
+            <source>Lądowanie i noty</source>
+            <translation>Dopad a známky</translation>
+        </message>
+        <message>
+            <source>Warunki</source>
+            <translation>Podmínky</translation>
+        </message>
+        <message>
+            <source>Korekta</source>
+            <translation>Úprava</translation>
+        </message>
+        <message>
+            <source>Ogranicz zakres</source>
+            <translation>Omezit rozsah</translation>
+        </message>
+        <message>
+            <source>Minimum</source>
+            <translation>Minimum</translation>
+        </message>
+        <message>
+            <source>Maksimum</source>
+            <translation>Maximum</translation>
+        </message>
+        <message>
+            <source>Jakość skoku</source>
+            <translation>Kvalita skoku</translation>
+        </message>
+        <message>
+            <source>Odległość</source>
+            <translation>Délka</translation>
+        </message>
+        <message>
+            <source>Losuj</source>
+            <translation>Automaticky</translation>
+        </message>
+        <message>
+            <source>Podparty</source>
+            <translation>S oporou</translation>
+        </message>
+        <message>
+            <source>Lądowanie</source>
+            <translation>Dopad</translation>
+        </message>
+        <message>
+            <source>Nota sędziego %1</source>
+            <translation>Známka rozhodčího %1</translation>
+        </message>
+        <message>
+            <source>Ryzyko dyskwalifikacji · %</source>
+            <translation>Riziko diskvalifikace · %</translation>
+        </message>
+        <message>
+            <source>Ustaw wiatr dla tego skoku</source>
+            <translation>Nastavit vítr pro tento skok</translation>
+        </message>
+        <message>
+            <source>Odcinek</source>
+            <translation>Úsek</translation>
+        </message>
+        <message>
+            <source>Kierunek · °</source>
+            <translation>Směr · °</translation>
+        </message>
+        <message>
+            <source>Natężenie opadów</source>
+            <translation>Intenzita srážek</translation>
+        </message>
+        <message>
+            <source>Pomiar do punktacji</source>
+            <translation>Měření pro bodování</translation>
+        </message>
+        <message>
+            <source>Wyczyść</source>
+            <translation>Vymazat</translation>
+        </message>
+        <message>
+            <source>Zastosuj</source>
+            <translation>Použít</translation>
+        </message>
     </context>
     <context>
         <name>QuickBridge</name>
@@ -15808,6 +15900,198 @@ li.checked::marker { content: "\2612"; }
         <message>
             <source>Zmiany tylko dla tej symulacji</source>
             <translation>Změny platí pouze pro tuto simulaci</translation>
+        </message>
+    </context>
+    <context>
+        <name>JumpManipulationWorkspace</name>
+        <message>
+            <source>Następny skok</source>
+            <translation>Další skok</translation>
+        </message>
+        <message>
+            <source>Wyczyść</source>
+            <translation>Vymazat</translation>
+        </message>
+        <message>
+            <source>Zmiany dotyczą wyłącznie następnego skoku.</source>
+            <translation>Změny platí pouze pro další skok.</translation>
+        </message>
+        <message>
+            <source>Lot</source>
+            <translation>Let</translation>
+        </message>
+        <message>
+            <source>Lądowanie i noty</source>
+            <translation>Dopad a známky</translation>
+        </message>
+        <message>
+            <source>Warunki</source>
+            <translation>Podmínky</translation>
+        </message>
+        <message>
+            <source>Jakość skoku</source>
+            <translation>Kvalita skoku</translation>
+        </message>
+        <message>
+            <source>pkt jakości</source>
+            <translation>bodů kvality</translation>
+        </message>
+        <message>
+            <source>Koryguje jakość tego skoku na skali OVR i formy. Nie zmienia parametrów zawodnika.</source>
+            <translation>Upraví kvalitu tohoto skoku na stupnici OVR a formy. Nemění vlastnosti závodníka.</translation>
+        </message>
+        <message>
+            <source>Odległość</source>
+            <translation>Délka</translation>
+        </message>
+        <message>
+            <source>Korekta jest dodawana przed ograniczeniem zakresu. Jednakowe minimum i maksimum oznaczają dokładną odległość. Granice skoczni nadal obowiązują.</source>
+            <translation>Úprava se přičte před omezením rozsahu. Shodné minimum a maximum určí přesnou délku. Omezení můstku stále platí.</translation>
+        </message>
+        <message>
+            <source>Lądowanie</source>
+            <translation>Dopad</translation>
+        </message>
+        <message>
+            <source>Losuj</source>
+            <translation>Automaticky</translation>
+        </message>
+        <message>
+            <source>Telemark</source>
+            <translation>Telemark</translation>
+        </message>
+        <message>
+            <source>Na dwie nogi</source>
+            <translation>Na obě nohy</translation>
+        </message>
+        <message>
+            <source>Podparty</source>
+            <translation>S oporou</translation>
+        </message>
+        <message>
+            <source>Upadek</source>
+            <translation>Pád</translation>
+        </message>
+        <message>
+            <source>Ustaw ryzyko DSQ</source>
+            <translation>Nastavit riziko DSQ</translation>
+        </message>
+        <message>
+            <source>Ryzyko dyskwalifikacji · %</source>
+            <translation>Riziko diskvalifikace · %</translation>
+        </message>
+        <message>
+            <source>DSQ wyłączone w zasadach konkursu</source>
+            <translation>DSQ je v pravidlech závodu vypnuto</translation>
+        </message>
+        <message>
+            <source>Ustaw wiatr dla tego skoku</source>
+            <translation>Nastavit vítr pro tento skok</translation>
+        </message>
+        <message>
+            <source>Wiatr tego skoku</source>
+            <translation>Vítr tohoto skoku</translation>
+        </message>
+        <message>
+            <source>Natężenie opadów</source>
+            <translation>Intenzita srážek</translation>
+        </message>
+        <message>
+            <source>poziom 0–10</source>
+            <translation>úroveň 0–10</translation>
+        </message>
+        <message>
+            <source>Zmienia natężenie opadów tylko podczas tego skoku. Rodzaj opadów pozostaje zgodny z warunkami konkursu.</source>
+            <translation>Změní intenzitu srážek pouze pro tento skok. Druh srážek odpovídá podmínkám závodu.</translation>
+        </message>
+        <message>
+            <source>Pomiar do punktacji</source>
+            <translation>Měření pro bodování</translation>
+        </message>
+        <message>
+            <source>Zmienia pomiar do rekompensaty, nie fizyczny wiatr. Kierunek dodatni: pod narty; ujemny: w plecy.</source>
+            <translation>Změní měření pro kompenzaci, nikoli skutečný vítr. Kladný: protivítr; záporný: zadní vítr.</translation>
+        </message>
+        <message>
+            <source>Zmiany: %1</source>
+            <translation>Změny: %1</translation>
+        </message>
+        <message>
+            <source>Brak zmian</source>
+            <translation>Beze změn</translation>
+        </message>
+        <message>
+            <source>Zastosuj</source>
+            <translation>Použít</translation>
+        </message>
+    </context>
+    <context>
+        <name>JumpAdjustmentFields</name>
+        <message>
+            <source>Korekta · %1</source>
+            <translation>Úprava · %1</translation>
+        </message>
+        <message>
+            <source>Ogranicz zakres</source>
+            <translation>Omezit rozsah</translation>
+        </message>
+        <message>
+            <source>Minimum</source>
+            <translation>Minimum</translation>
+        </message>
+        <message>
+            <source>Maksimum</source>
+            <translation>Maximum</translation>
+        </message>
+    </context>
+    <context>
+        <name>JumpJudgesEditor</name>
+        <message>
+            <source>Noty sędziów</source>
+            <translation>Známky rozhodčích</translation>
+        </message>
+        <message>
+            <source>Zaznacz tylko noty do ustawienia ręcznie. Pozostałe zostaną wylosowane.</source>
+            <translation>Vyberte pouze známky, které chcete nastavit ručně. Ostatní se vylosují.</translation>
+        </message>
+        <message>
+            <source>Ustaw notę sędziego %1</source>
+            <translation>Nastavit známku rozhodčího %1</translation>
+        </message>
+        <message>
+            <source>Nota sędziego %1</source>
+            <translation>Známka rozhodčího %1</translation>
+        </message>
+    </context>
+    <context>
+        <name>SimulationJumpDraft</name>
+        <message>
+            <source>Jakość</source>
+            <translation>Kvalita</translation>
+        </message>
+        <message>
+            <source>Odległość</source>
+            <translation>Délka</translation>
+        </message>
+        <message>
+            <source>Opady</source>
+            <translation>Srážky</translation>
+        </message>
+        <message>
+            <source>Pomiar wiatru</source>
+            <translation>Měření větru</translation>
+        </message>
+        <message>
+            <source>%1: minimum nie może przekraczać maksimum.</source>
+            <translation>%1: minimum nesmí překročit maximum.</translation>
+        </message>
+        <message>
+            <source>Sprawdź zakresy, noty i prawdopodobieństwo dyskwalifikacji.</source>
+            <translation>Zkontrolujte rozsahy, známky a pravděpodobnost diskvalifikace.</translation>
+        </message>
+        <message>
+            <source>Wpisz poprawną liczbę.</source>
+            <translation>Zadejte platné číslo.</translation>
         </message>
     </context>
 </TS>

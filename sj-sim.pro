@@ -34,6 +34,7 @@ SOURCES += \
     source/simulation-v2/ProfilePackRepository.cpp \
     source/simulation-v2/SimulationCatalog.cpp \
     source/simulation-v2/ProfileDraft.cpp \
+    source/simulation-v2/JumpDraft.cpp \
     source/simulation-v2/GameSimulationBridge.cpp \
     source/hills/HillProfile.cpp \
     source/hills/HillStudioController.cpp \
@@ -210,6 +211,7 @@ HEADERS += \
     source/simulation-v2/ProfilePackRepository.h \
     source/simulation-v2/SimulationCatalog.h \
     source/simulation-v2/ProfileDraft.h \
+    source/simulation-v2/JumpDraft.h \
     source/hills/HillProfile.h \
     source/hills/HillStudioController.h \
     source/athletes/AthleteProfile.h \

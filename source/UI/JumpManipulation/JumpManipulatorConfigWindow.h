@@ -4,6 +4,8 @@
 #include <QDialog>
 #include "../../simulator/JumpManipulator.h"
 #include "../../simulator/wind-generation/WindGenerationSettings.h"
+#include "../../hills/HillProfile.h"
+class SimulationJumpDraft;
 
 namespace Ui {
 class JumpManipulatorConfigWindow;
@@ -18,6 +20,7 @@ public:
     ~JumpManipulatorConfigWindow();
 
     JumpManipulator getJumpManipulatorFromInputs() const;
+    void configureSimulationV2(const JumpManipulator &,const HillProfile &,const QVector<Wind> &,bool allowDsq);
 
 signals:
     void submitted();
@@ -30,9 +33,10 @@ private slots:
 private:
     Ui::JumpManipulatorConfigWindow *ui;
 
-    QVector<WindGenerationSettings> * windGenerationSettings;
+    QVector<WindGenerationSettings> * windGenerationSettings=nullptr;
     QVector<Wind> exactWinds;
-    double KPoint;
+    double KPoint=120;
+    SimulationJumpDraft *draft=nullptr;
 
 public:
     QVector<WindGenerationSettings> *getWindGenerationSettings() const;

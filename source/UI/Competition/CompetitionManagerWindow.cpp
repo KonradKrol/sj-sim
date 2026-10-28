@@ -1829,15 +1829,16 @@ void CompetitionManagerWindow::editSimulationWeather()
     dialog.exec();setup->setPreviewOrigin(0);
 }
 
-void CompetitionManagerWindow::refreshWindSnapshot()
+void CompetitionManagerWindow::refreshWindSnapshot(bool includeManipulation)
 {
-    if(simulationWeather)setActualWinds(SimulationV2::fieldWindSnapshot(*simulationWeather,manager->getCompetitionInfo()->getHill()->getKPoint(),simulationSeconds));
+    const auto field=includeManipulation && currentInputJumpManipulator.getExactSimulationWind()?currentInputJumpManipulator.getExactSimulationWind():simulationWeather;
+    if(field)setActualWinds(SimulationV2::fieldWindSnapshot(*field,manager->getCompetitionInfo()->getHill()->getKPoint(),simulationSeconds));
     else setActualWinds(windsGenerator.generateWinds());
     QVariantList preview;
-    if(simulationWeather) {
+    if(field) {
         const double width=manager->getCompetitionInfo()->getHill()->getKPoint()*1.2/6;
         for(int i=0;i<6;++i) {
-            const double distance=(i+.5)*width;const auto wind=simulationWeather->wind(distance,simulationSeconds);
+            const double distance=(i+.5)*width;const auto wind=field->wind(distance,simulationSeconds);
             const double strength=std::hypot(wind.head,wind.cross);
             double direction=strength>1e-9?std::atan2(wind.cross,wind.head)*180/3.14159265358979323846:0;
             if(direction<0)direction+=360;
@@ -1845,11 +1846,11 @@ void CompetitionManagerWindow::refreshWindSnapshot()
                 {"cross",wind.cross},{"strength",strength},{"direction",direction},{"available",true}});
         }
     }
-    if(simulationWeather && manager->getCompetitionRules()->getWindMeasurementType()!=CompetitionRules::LegacyWindMeasurement) {
+    if(field && manager->getCompetitionRules()->getWindMeasurementType()!=CompetitionRules::LegacyWindMeasurement) {
         const double k=manager->getCompetitionInfo()->getHill()->getKPoint();
         SimulationV2::FlightResult snapshot;snapshot.distance=k;
-        for(int i=0;i<24;++i)snapshot.experiencedWind.head+=simulationWeather->wind((i+.5)*k/24,simulationSeconds).head/24;
-        manager->setProperty("predictedMeasuredWind",SimulationV2::FieldWindMeasurement(k,*manager->getCompetitionRules()).measure(*simulationWeather,snapshot,simulationSeconds));
+        for(int i=0;i<24;++i)snapshot.experiencedWind.head+=field->wind((i+.5)*k/24,simulationSeconds).head/24;
+        manager->setProperty("predictedMeasuredWind",SimulationV2::FieldWindMeasurement(k,*manager->getCompetitionRules()).measure(*field,snapshot,simulationSeconds));
     } else manager->setProperty("predictedMeasuredWind",QVariant());
     setProperty("simulationWindPreview",preview);setProperty("simulationWindPreviewTime",simulationSeconds);
 }
@@ -2173,15 +2174,23 @@ void CompetitionManagerWindow::on_pushButton_inrunSnowGeneratorSettings_clicked(
 
 void CompetitionManagerWindow::on_pushButton_manipulateJump_clicked()
 {
+    if(!manager || jumpInProgress || manager->isAllJumpsAreFinished() || property("resultHistoryPaused").toBool())return;
     JumpManipulatorConfigWindow window(this);
     window.setWindGenerationSettings(&manager->getWindGenerationSettingsReference());
     window.setKPoint(manager->getCompetitionInfo()->getHill()->getKPoint());
+    const bool modern=bool(manager->getCompetitionInfo()->getHill()->getSimulationProfile());
+    if(modern) {
+        window.configureSimulationV2(currentInputJumpManipulator,*manager->getCompetitionInfo()->getHill()->getSimulationProfile(),actualWinds,manager->getCompetitionRules()->getHasDsq());
+        window.setProperty("manipulationAthlete",manager->getActualJumper()?manager->getActualJumper()->getNameAndSurname():QString());
+        window.setProperty("manipulationCountry",manager->getActualJumper()?manager->getActualJumper()->getCountryCode():QString());
+    }
     connect(&window, &JumpManipulatorConfigWindow::submitted, &window, &JumpManipulatorConfigWindow::accept);
     if(window.exec() == QDialog::Accepted){
         JumpManipulator manipulator = window.getJumpManipulatorFromInputs();
         currentInputJumpManipulator = (manipulator);
-        updateManipulationIndicator(true);
-        if(manipulator.getExactWinds().size() > 0)
+        updateManipulationIndicator(!modern || manipulator.simulationInput().active() || !manipulator.getExactWinds().isEmpty());
+        if(modern && simulationWeather)refreshWindSnapshot(true);
+        if(!modern && manipulator.getExactWinds().size() > 0)
             setActualWinds(manipulator.getExactWinds());      
         updateAvgWindLabel();
         updateActualInrunSnowLevelLabel();

@@ -158,6 +158,9 @@
 <file>RaceAthlete.qml</file>
 <file>RaceControls.qml</file>
 <file>RaceLastJump.qml</file>
+<file>JumpManipulationWorkspace.qml</file>
+<file>JumpAdjustmentFields.qml</file>
+<file>JumpJudgesEditor.qml</file>
 <file>JumpWindProfile.qml</file>
 <file>JumpWeights.qml</file>
     <file>JumpMetric.qml</file>

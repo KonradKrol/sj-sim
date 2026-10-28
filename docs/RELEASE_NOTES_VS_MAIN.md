@@ -2017,3 +2017,14 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
   w głównym schemacie. Zastępuje to duży formularz i listę punktów.
 - Kierunek ma odniesienie do nart/skoczka, podpisy i zgodną geometrię wskaźnika.
   Pola wiatru przyjmują oba separatory dziesiętne i rozdzielają drafty wybranych miejsc.
+
+- Nowy edytor manipulacji pojedynczego skoku z sekcjami Lot, Lądowanie i noty,
+  Warunki: opcjonalne korekty jakości/odległości, zakresy, częściowe noty,
+  lądowanie i ryzyko DSQ w procentach. Wyczyść, walidacja i zachowanie
+  zaakceptowanego draftu przy anulowaniu kolejnej edycji.
+- Lokalny ciągły wiatr zmienia się na tym samym schemacie sześciu strzałek.
+  Korekta działa przez jeden skok, zachowuje deszcz/śnieg i wspólną pogodę;
+  niezależny pomiar do punktacji pozwala odróżnić go od fizycznego wiatru.
+- Edytor ma osobny widok Widgets dla tego samego modelu, tłumaczenia EN/CS,
+  stały przycisk zatwierdzenia i układ na małe okna. Usunięto pętlę przeliczania
+  responsywnej siatki sędziów.

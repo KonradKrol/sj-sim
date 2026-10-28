@@ -4,6 +4,9 @@
 #include "JumperSkills.h"
 #include "WindsCalculator.h"
 #include <QPair>
+#include "../simulation-v2/Manipulation.h"
+#include <optional>
+#include <memory>
 
 
 class JumpManipulator
@@ -29,9 +32,15 @@ private:
     QVector<double> exactJudges;
     QVector<Wind> exactWinds;
     int exactDSQProbability;
+    std::optional<SimulationV2::JumpManipulation> simulationManipulation;
+    std::shared_ptr<const SimulationV2::WeatherField> exactSimulationWind;
 
 
 public:
+    SimulationV2::JumpManipulation simulationInput(bool allowDsq=true) const;
+    void setSimulationInput(const SimulationV2::JumpManipulation &value) {value.validate();simulationManipulation=value;}
+    std::shared_ptr<const SimulationV2::WeatherField> getExactSimulationWind() const {return exactSimulationWind;}
+    void setExactSimulationWind(std::shared_ptr<const SimulationV2::WeatherField> value) {exactSimulationWind=std::move(value);}
     QPair<double, double> getDistanceRange() const;
     void setDistanceRange(const QPair<double, double> &newDistanceRange);
     QPair<double, double> getTakeoffRatingRange() const;

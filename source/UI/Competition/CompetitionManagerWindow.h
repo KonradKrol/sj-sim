@@ -121,7 +121,7 @@ private:
     JumpSimulator simulator;
     void setupSimulator();
     JumpData simulateCurrentJump(bool skip=false);
-    void refreshWindSnapshot();
+    void refreshWindSnapshot(bool includeManipulation=false);
     std::shared_ptr<const SimulationV2::WeatherField> simulationWeather;
     std::shared_ptr<const SimulationV2::WindMeasurement> simulationMeasurement;
     SimulationV2::Seed simulationQualitySeed=0;

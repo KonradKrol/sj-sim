@@ -431,3 +431,20 @@ zmiana w czasie, ważenie przestrzeni, podmuch między czujnikami, serializacja,
 nieznane ID, ukrywanie dawnych opcji, niezmienny lot/noty przy zmianie metody,
 różna punktacja, wymuszenie wiatru i DNS. Dodatkowo testy konkursu ćwiczą wszystkie
 nowe metody w przebiegach manualnych, automatycznych, KO i drużynowych.
+
+## Jednorazowe korekty skoku
+
+`JumpManipulator::simulationInput()` jest jedynym adapterem manipulacji do
+`JumpManipulation`: przyjmuje bezpośrednią jakość/range, landing, częściowe noty,
+procentowe DSQ i kompatybilne stare pola. `allowDsq=false` usuwa override DSQ.
+`SimulationJumpDraft` waliduje draft przed zatwierdzeniem, zachowując niepoprawne
+przejściowe zakresy w polach; nie modyfikuje źródła. Wyższy poziom gry konsumuje
+przyjęty draft po jednym skoku.
+
+`exactSimulationWind` przechowuje współdzieloną stałą kopię ciągłego pola dla
+jednego skoku. Adapter `WindOverrideWeather` deleguje tylko wind do kopii;
+precipitation/type nadal czyta z pola konkursu przy rzeczywistym czasie.
+Fizyczny override i `measuredWind` są niezależne. Ta sama wybrana strategia
+pomiaru działa także na lokalnym polu. `exactWinds` pozostaje równoległym sześciu-
+próbkowym przedstawieniem dla zgodności z istniejącym modelem i podglądem.
+Metadane zapisują `exactWindOverride`/`manipulated` i rzeczywiście przebyte pole.

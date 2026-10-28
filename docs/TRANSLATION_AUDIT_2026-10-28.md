@@ -40,3 +40,7 @@ które podpinają obsługę kliknięcia i zmieniają stan sterowania. Regresja s
 jedno zakończenie po trzech zmianach języka oraz przejście dokładnie o jedną serię
 lub jedną grupę. Zachowany jest też odrębny podpis przejścia z kwalifikacji do
 konkursu. Testy PASS.
+
+Nowy edytor manipulacji: dopisano EN/CS dla Quick, draftu walidacji i natywnej
+prezentacji. `scripts/check-translations.py` przechodzi (kompletność obecnych
+katalogów i argumentów). Nadal nie jest to audyt wszystkich źródeł aplikacji.

@@ -6965,6 +6965,14 @@ li.checked::marker { content: "\2612"; }
             <source>Edytuj wiatr</source>
             <translation>Edit wind</translation>
         </message>
+        <message>
+            <source>Zmiana następnego skoku</source>
+            <translation>Adjust next jump</translation>
+        </message>
+        <message>
+            <source>Zastosuj</source>
+            <translation>Apply</translation>
+        </message>
     </context>
     <context>
         <name>JumpWeights</name>
@@ -11542,6 +11550,90 @@ Check that you selected the correct file.</translation>
             <source>Zachowuje wcześniejsze ustawienia sposobu kierunków i wpływu odległości na pomiar. Nie oznacza zgodności z FIS.</source>
             <translation>Keeps the previous direction and distance measurement settings. This does not imply FIS compliance.</translation>
         </message>
+        <message>
+            <source>Lot</source>
+            <translation>Flight</translation>
+        </message>
+        <message>
+            <source>Lądowanie i noty</source>
+            <translation>Landing and judges</translation>
+        </message>
+        <message>
+            <source>Warunki</source>
+            <translation>Conditions</translation>
+        </message>
+        <message>
+            <source>Korekta</source>
+            <translation>Adjustment</translation>
+        </message>
+        <message>
+            <source>Ogranicz zakres</source>
+            <translation>Limit range</translation>
+        </message>
+        <message>
+            <source>Minimum</source>
+            <translation>Minimum</translation>
+        </message>
+        <message>
+            <source>Maksimum</source>
+            <translation>Maximum</translation>
+        </message>
+        <message>
+            <source>Jakość skoku</source>
+            <translation>Jump quality</translation>
+        </message>
+        <message>
+            <source>Odległość</source>
+            <translation>Distance</translation>
+        </message>
+        <message>
+            <source>Losuj</source>
+            <translation>Automatic</translation>
+        </message>
+        <message>
+            <source>Podparty</source>
+            <translation>Supported landing</translation>
+        </message>
+        <message>
+            <source>Lądowanie</source>
+            <translation>Landing</translation>
+        </message>
+        <message>
+            <source>Nota sędziego %1</source>
+            <translation>Judge %1’s mark</translation>
+        </message>
+        <message>
+            <source>Ryzyko dyskwalifikacji · %</source>
+            <translation>Disqualification risk · %</translation>
+        </message>
+        <message>
+            <source>Ustaw wiatr dla tego skoku</source>
+            <translation>Set wind for this jump</translation>
+        </message>
+        <message>
+            <source>Odcinek</source>
+            <translation>Section</translation>
+        </message>
+        <message>
+            <source>Kierunek · °</source>
+            <translation>Direction · °</translation>
+        </message>
+        <message>
+            <source>Natężenie opadów</source>
+            <translation>Precipitation intensity</translation>
+        </message>
+        <message>
+            <source>Pomiar do punktacji</source>
+            <translation>Scoring measurement</translation>
+        </message>
+        <message>
+            <source>Wyczyść</source>
+            <translation>Clear</translation>
+        </message>
+        <message>
+            <source>Zastosuj</source>
+            <translation>Apply</translation>
+        </message>
     </context>
     <context>
         <name>QuickBridge</name>
@@ -15807,6 +15899,198 @@ li.checked::marker { content: "\2612"; }
         <message>
             <source>Zmiany tylko dla tej symulacji</source>
             <translation>Changes apply only to this simulation</translation>
+        </message>
+    </context>
+    <context>
+        <name>JumpManipulationWorkspace</name>
+        <message>
+            <source>Następny skok</source>
+            <translation>Next jump</translation>
+        </message>
+        <message>
+            <source>Wyczyść</source>
+            <translation>Clear</translation>
+        </message>
+        <message>
+            <source>Zmiany dotyczą wyłącznie następnego skoku.</source>
+            <translation>Changes apply to the next jump only.</translation>
+        </message>
+        <message>
+            <source>Lot</source>
+            <translation>Flight</translation>
+        </message>
+        <message>
+            <source>Lądowanie i noty</source>
+            <translation>Landing and judges</translation>
+        </message>
+        <message>
+            <source>Warunki</source>
+            <translation>Conditions</translation>
+        </message>
+        <message>
+            <source>Jakość skoku</source>
+            <translation>Jump quality</translation>
+        </message>
+        <message>
+            <source>pkt jakości</source>
+            <translation>quality points</translation>
+        </message>
+        <message>
+            <source>Koryguje jakość tego skoku na skali OVR i formy. Nie zmienia parametrów zawodnika.</source>
+            <translation>Adjusts this jump’s quality on the OVR and form scale. Does not change the athlete’s attributes.</translation>
+        </message>
+        <message>
+            <source>Odległość</source>
+            <translation>Distance</translation>
+        </message>
+        <message>
+            <source>Korekta jest dodawana przed ograniczeniem zakresu. Jednakowe minimum i maksimum oznaczają dokładną odległość. Granice skoczni nadal obowiązują.</source>
+            <translation>The adjustment is added before the range limit. Equal minimum and maximum set an exact distance. Hill limits still apply.</translation>
+        </message>
+        <message>
+            <source>Lądowanie</source>
+            <translation>Landing</translation>
+        </message>
+        <message>
+            <source>Losuj</source>
+            <translation>Automatic</translation>
+        </message>
+        <message>
+            <source>Telemark</source>
+            <translation>Telemark</translation>
+        </message>
+        <message>
+            <source>Na dwie nogi</source>
+            <translation>Two-foot landing</translation>
+        </message>
+        <message>
+            <source>Podparty</source>
+            <translation>Supported landing</translation>
+        </message>
+        <message>
+            <source>Upadek</source>
+            <translation>Fall</translation>
+        </message>
+        <message>
+            <source>Ustaw ryzyko DSQ</source>
+            <translation>Set DSQ risk</translation>
+        </message>
+        <message>
+            <source>Ryzyko dyskwalifikacji · %</source>
+            <translation>Disqualification risk · %</translation>
+        </message>
+        <message>
+            <source>DSQ wyłączone w zasadach konkursu</source>
+            <translation>DSQ disabled in competition rules</translation>
+        </message>
+        <message>
+            <source>Ustaw wiatr dla tego skoku</source>
+            <translation>Set wind for this jump</translation>
+        </message>
+        <message>
+            <source>Wiatr tego skoku</source>
+            <translation>Wind for this jump</translation>
+        </message>
+        <message>
+            <source>Natężenie opadów</source>
+            <translation>Precipitation intensity</translation>
+        </message>
+        <message>
+            <source>poziom 0–10</source>
+            <translation>level 0–10</translation>
+        </message>
+        <message>
+            <source>Zmienia natężenie opadów tylko podczas tego skoku. Rodzaj opadów pozostaje zgodny z warunkami konkursu.</source>
+            <translation>Changes precipitation intensity for this jump only. Precipitation type follows competition conditions.</translation>
+        </message>
+        <message>
+            <source>Pomiar do punktacji</source>
+            <translation>Scoring measurement</translation>
+        </message>
+        <message>
+            <source>Zmienia pomiar do rekompensaty, nie fizyczny wiatr. Kierunek dodatni: pod narty; ujemny: w plecy.</source>
+            <translation>Changes the compensation measurement, not the actual wind. Positive: headwind; negative: tailwind.</translation>
+        </message>
+        <message>
+            <source>Zmiany: %1</source>
+            <translation>Changes: %1</translation>
+        </message>
+        <message>
+            <source>Brak zmian</source>
+            <translation>No changes</translation>
+        </message>
+        <message>
+            <source>Zastosuj</source>
+            <translation>Apply</translation>
+        </message>
+    </context>
+    <context>
+        <name>JumpAdjustmentFields</name>
+        <message>
+            <source>Korekta · %1</source>
+            <translation>Adjustment · %1</translation>
+        </message>
+        <message>
+            <source>Ogranicz zakres</source>
+            <translation>Limit range</translation>
+        </message>
+        <message>
+            <source>Minimum</source>
+            <translation>Minimum</translation>
+        </message>
+        <message>
+            <source>Maksimum</source>
+            <translation>Maximum</translation>
+        </message>
+    </context>
+    <context>
+        <name>JumpJudgesEditor</name>
+        <message>
+            <source>Noty sędziów</source>
+            <translation>Judges’ marks</translation>
+        </message>
+        <message>
+            <source>Zaznacz tylko noty do ustawienia ręcznie. Pozostałe zostaną wylosowane.</source>
+            <translation>Select only the marks to set manually. The others will be generated.</translation>
+        </message>
+        <message>
+            <source>Ustaw notę sędziego %1</source>
+            <translation>Set judge %1’s mark</translation>
+        </message>
+        <message>
+            <source>Nota sędziego %1</source>
+            <translation>Judge %1’s mark</translation>
+        </message>
+    </context>
+    <context>
+        <name>SimulationJumpDraft</name>
+        <message>
+            <source>Jakość</source>
+            <translation>Quality</translation>
+        </message>
+        <message>
+            <source>Odległość</source>
+            <translation>Distance</translation>
+        </message>
+        <message>
+            <source>Opady</source>
+            <translation>Precipitation</translation>
+        </message>
+        <message>
+            <source>Pomiar wiatru</source>
+            <translation>Wind measurement</translation>
+        </message>
+        <message>
+            <source>%1: minimum nie może przekraczać maksimum.</source>
+            <translation>%1: minimum cannot exceed maximum.</translation>
+        </message>
+        <message>
+            <source>Sprawdź zakresy, noty i prawdopodobieństwo dyskwalifikacji.</source>
+            <translation>Check ranges, marks and disqualification probability.</translation>
+        </message>
+        <message>
+            <source>Wpisz poprawną liczbę.</source>
+            <translation>Enter a valid number.</translation>
         </message>
     </context>
 </TS>

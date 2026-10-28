@@ -860,6 +860,11 @@ void QuickBridge::compose(QuickNode *base) {
         entry->update({{"kind","catalog"},{"athleteStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_jumpers"?m_window->property("athleteStudio"):QVariant()},{"hillStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_hills"?m_window->property("hillStudio"):QVariant()},{"singleClickEdit",view->property("quickSingleClickEdit").toBool() || (profile()=="DatabaseEditorWindow" && view->model() && QByteArray(view->model()->metaObject()->className())=="JumpersListModel")},{"actionsRow",actions},{"list",QVariant::fromValue(node(view,true))},{"editor",QVariant::fromValue(editor)},{"toolbar",toolbar},{"editRequest",entry->property("editRequest").toInt()}});
         return entry;
     };
+    if(m_window->property("jumpDraft").isValid()) {
+        m_root->update({{"kind","jumpManipulation"},{"backend",m_window->property("jumpDraft")},
+            {"athlete",m_window->property("manipulationAthlete")},{"flag",quickPicture(CountryFlagsManager::getFlagPixmap(m_window->property("manipulationCountry").toString().toLower()))},
+            {"submitId",idFor(m_content->findChild<QPushButton *>("pushButton_submit_2"))}});return;
+    }
     if(m_window->property("playgroundController").isValid()){m_root->update({{"kind","playground"},{"backend",m_window->property("playgroundController")}});return;}
     if(m_window->objectName()=="classificationContributionDetails"){
         auto *table=m_content->findChild<QTableView *>("classificationContributionTable");

@@ -1055,3 +1055,70 @@ oraz `--translation-only`. Qt5.15.3; Windows/Qt6 nadal bez weryfikacji tego etap
    `TRANSLATION_AUDIT_2026-10-28.md`. Nie deklarować pełnej kompletności języków.
 4. Całe zadanie `NEW_SIMULATION.md` nadal trwa. Main nietknięty; pracować solo,
    commitować i wypychać kolejne ukończone etapy na `feature/simulation-v2`.
+
+## Manipulacja pojedynczego skoku — nowy edytor
+
+`SimulationJumpDraft` i `JumpManipulationWorkspace` zastępują dawny formularz
+przy konkursie z profilem v2. Trzy sekcje: **Lot / Lądowanie i noty / Warunki**.
+Każda korekta jest opcjonalna. Jakość, odległość, opady i pomiar mają bonus oraz
+opcjonalny zakres; równe granice wymuszają wartość. Lądowanie, pojedyncze noty
+sędziów i ryzyko DSQ są niezależne. Noty normalizują się do pół punktu, ryzyko
+jest czytelnym procentem; DSQ wyłączone w zasadach nie da się wymusić.
+Nie ma już fikcyjnych suwaków dawnej techniki wybicia/lotu dla nowego modelu.
+
+Wiatr ustawia się przez te same sześć strzałek i edytor kierunku względem nart.
+Zatwierdzenie tworzy niemutowalną, ciągłą lokalną kopię pola wiatru. Nie zmienia
+wspólnego pola konkursu, typu deszcz/śnieg ani jego zegara. Osobno można zmienić
+sam pomiar do punktacji: taki zabieg nie zmienia fizycznego lotu. Bieżący podgląd
+wiatru respektuje przyjętą lokalną korektę i wraca do pola konkursu po skoku.
+
+Zmiany zaczynają działać dopiero po „Zastosuj”, tylko na najbliższy skok.
+Ponowne otwarcie zachowuje przyjęty draft; Wstecz nie nadpisuje go. „Wyczyść”
+usuwa wszystkie korekty, a zatwierdzenie pustego draftu zdejmuje wskaźnik.
+Niepoprawne minimum/maksimum pozostaje do poprawienia bez cofania wpisywanych
+wartości, blokuje zatwierdzenie i ma komunikat przy stałym przycisku na dole.
+
+Pozostawiono Widgets, z osobnym natywnym widokiem tego samego draftu v2.
+Stary formularz pozostaje dla starego silnika. Zabezpieczono też pusty wskaźnik
+ustawień wiatru w dawnym formularzu. Katalogi EN/CS obejmują nowe kontrolki.
+
+Usunięto źródło `Detected recursive rearrange` w nowej siatce sędziów: liczba
+kolumn wynika z szerokości viewportu, nie z implicitWidth tej samej siatki.
+Testy mają bogatszą identyfikację ekranu/rozmiaru przy podobnych ostrzeżeniach.
+
+### Następna praca po tym etapie
+
+1. **Playground pełnego silnika v2**. Dotychczasowy `source/playground` nadal
+   opisuje stare techniki i sektory — nie podpinać go do v2 pozornie i nie
+   deklarować ukończenia. Nowe profile/parametry EngineParameters, wspólne seedy
+   porównań, ciągła pogoda, krzywe lądowania/not, statystyki indywidualne i makro,
+   praca w tle/anulowanie/debounce/multithreading, CLI i eksport. Wymagania
+   szczegółowe są w `NEW_SIMULATION.md`; dawny playground użytkownik odrzucił.
+2. Audyt przejścia do następnego sezonu i presetów/list przy zachowaniu UUID,
+   profili v2, powiązań i zdjęć; regresje KO/drużyn oraz danych zapisanych.
+3. Pełny audyt tłumaczeń, końcowa regresja i spójny raport względem maina.
+   Automatyczny nowy rozwój formy nadal odłożony. Całe zadanie nadal trwa.
+
+### Nowe uwagi użytkownika — zrobić zaraz po manipulacji, przed playgroundem
+
+- Kierunek wiatru: wyraźniejszy skoczek i lepsza ikona, usunąć dwie pomocnicze
+  strzałki; naprawić przerwanie obrotu po wyjściu kursorem poza okrąg.
+- Rozdzielić „zmienność w czasie” i „różnice na zeskoku”: edycja jednej wartości
+  nie powinna przestawiać drugiej. Sprawdzić zarówno model, jak i drafty inputów.
+- Ten sam kierunek/siła/zmienność/różnice ma dawać różne realizacje po ponownym
+  losowaniu. Zachować ustawienia, zmieniać seed, nie mylić z wyborem scenariusza.
+- Opady: jeden wybór **Bez opadów / Śnieg / Deszcz**, czytelne ikony. Nie pokazywać
+  rodzaju opadów dla wariantu bez opadów.
+- Ikony scenariuszy wiatru nie mogą przypominać jakości połączenia sieciowego.
+- Jednoczesne rozwinięcie edycji lokalnego wiatru i dostosowania całości nie może
+  się zlewać: kontrast, hierarchia, wyraźne zakresy oddziaływania, balans.
+- Wiadomość kończy się pustym „8.”; żadnego dodatkowego wymagania nie dopowiadać.
+
+Weryfikacja manipulacji: `--simulation-v2-manipulation-only` PASS, w tym
+prawdziwe wejście przez opcje konkursu, ponowne otwarcie/anulowanie, pierwszy
+skok z korektą i drugi bez niej, zachowany deszcz i zegar. Natywna prezentacja
+tego samego draftu również sprawdzona. Render obu motywów 1440/1024/520/360,
+powiększony tekst, wpisywanie przecinka/kropki i not częściowych. Brak błędów
+QML, pętli bindingów i recursive rearrange. PASS również: rdzeń v2, pomiary,
+adapter/zapis, konfiguracja, konkurs kanoniczny, pogoda konkursowa, sezony,
+stare ścieżki bulk i zmiana języków. Windows/Qt6 tego etapu bez weryfikacji.

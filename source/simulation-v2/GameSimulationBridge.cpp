@@ -21,6 +21,19 @@ private:
     QVector<Wind> values;double k;CompetitionRules rules;
 };
 
+class WindOverrideWeather final:public SimulationV2::WeatherField {
+public:
+    WindOverrideWeather(std::shared_ptr<const SimulationV2::WeatherField> wind,
+        std::shared_ptr<const SimulationV2::WeatherField> base,double precipitation)
+        :windSource(std::move(wind)),base(std::move(base)),fallbackPrecipitation(precipitation) {}
+    SimulationV2::Wind wind(double distance,double time) const override {return windSource->wind(distance,time);}
+    double precipitation(double time) const override {return base?base->precipitation(time):fallbackPrecipitation;}
+    SimulationV2::PrecipitationKind precipitationKind() const override {return base?base->precipitationKind():SimulationV2::PrecipitationKind::Snow;}
+private:
+    std::shared_ptr<const SimulationV2::WeatherField> windSource,base;
+    double fallbackPrecipitation;
+};
+
 SimulationV2::ContinuousWeather referenceWeather(const QVector<Wind> &winds,double k,double precipitation,SimulationV2::PrecipitationKind kind=SimulationV2::PrecipitationKind::Snow)
 {
     SimulationV2::WindParameters config;config.references.clear();
@@ -33,12 +46,6 @@ SimulationV2::ContinuousWeather referenceWeather(const QVector<Wind> &winds,doub
     SimulationV2::PrecipitationParameters precip;precip.scenario=SimulationV2::PrecipitationScenario::Stable;precip.intensity=std::clamp(precipitation,0.0,10.0);
     precip.kind=kind;
     return SimulationV2::ContinuousWeather(0,config,precip);
-}
-
-std::optional<SimulationV2::ValueRange> range(QPair<double,double> value,double lo,double hi)
-{
-    if(value.first<=lo && value.second<0)return std::nullopt;
-    return SimulationV2::ValueRange{std::max(lo,value.first),value.second<0?hi:value.second};
 }
 
 SimulationV2::JumpRequest requestFor(const Jumper &jumper,const Hill &hill,const CompetitionRules &rules,
@@ -54,18 +61,7 @@ SimulationV2::JumpRequest requestFor(const Jumper &jumper,const Hill &hill,const
     input.scoring.judges=rules.getHasJudgesPoints();input.scoring.coach95PercentRule=rules.getHas95HSRule();
     // The legacy setting means one in N, not N percent.
     input.dsqProbability=rules.getHasDsq() && std::isfinite(dsq) && dsq>0?1/std::max(1.0,dsq):0;
-    if(manipulator) {
-        auto &m=input.manipulation;
-        m.distance={manipulator->getDistanceBonus(),range(manipulator->getDistanceRange(),0,1000)};
-        m.precipitation={manipulator->getInrunSnowBonus(),range(manipulator->getInrunSnowRange(),0,10)};
-        m.measuredWind.bonus=manipulator->getAveragedWindBonus();
-        if(manipulator->getAveragedWindRangeEnabled()) {const auto r=manipulator->getAveragedWindRange();m.measuredWind.range=SimulationV2::ValueRange{r.first,r.second};}
-        if(manipulator->getExactLandingType()>=0)m.landing=static_cast<SimulationV2::LandingKind>(manipulator->getExactLandingType());
-        const auto marks=manipulator->getExactJudges();for(int i=0;i<std::min(5,marks.size());++i)if(marks[i]>=0)m.judges[std::size_t(i)]=marks[i];
-        if(manipulator->getExactDSQProbability()>=0 && rules.getHasDsq()) {
-            const int inverse=manipulator->getExactDSQProbability();m.dsqProbability=inverse==0?0:1.0/inverse;
-        }
-    }
+    if(manipulator)input.manipulation=manipulator->simulationInput(rules.getHasDsq());
     return input;
 }
 
@@ -93,10 +89,15 @@ void JumpSimulator::setSimulationWeather(std::shared_ptr<const SimulationV2::Wea
 
 void JumpSimulator::simulateV2()
 {
-    const bool exactWindOverride=manipulator && !manipulator->getExactWinds().isEmpty();
+    const auto exactField=manipulator?manipulator->getExactSimulationWind():nullptr;
+    const bool exactWindOverride=exactField || (manipulator && !manipulator->getExactWinds().isEmpty());
     const auto activeWinds=exactWindOverride?manipulator->getExactWinds():winds;
     std::optional<SimulationV2::ContinuousWeather> fallbackWeather;
     if(!simulationWeather || exactWindOverride)fallbackWeather.emplace(referenceWeather(activeWinds,hill->getKPoint(),simulationWeather?simulationWeather->precipitation(simulationTime):inrunSnow,simulationWeather?simulationWeather->precipitationKind():SimulationV2::PrecipitationKind::Snow));
+    std::optional<WindOverrideWeather> windOverride;
+    if(exactField)windOverride.emplace(exactField,simulationWeather,inrunSnow);
+    const SimulationV2::WeatherField &activeWeather=windOverride?static_cast<const SimulationV2::WeatherField &>(*windOverride)
+        :simulationWeather && !exactWindOverride?*simulationWeather:*fallbackWeather;
     const LegacyMeasurement measurement(activeWinds,hill->getKPoint(),*competitionRules);
     const SimulationV2::FieldWindMeasurement configuredMeasurement(hill->getKPoint(),*competitionRules);
     auto input=requestFor(*jumper,*hill,*competitionRules,gate,competitionStartGate,hasCoachGate,coachGate,DSQBaseProbability,simulationEvent,simulationTime,manipulator);
@@ -111,7 +112,7 @@ void JumpSimulator::simulateV2()
         return (high<<42)|(middle<<21)|low;
     }();
     SimulationV2::SeededRandom rng(seed);
-    const auto result=simulationEngine.simulate(input,rng,simulationWeather && !exactWindOverride?*simulationWeather:*fallbackWeather,
+    const auto result=simulationEngine.simulate(input,rng,activeWeather,
         simulationMeasurement && !exactWindOverride?*simulationMeasurement:competitionRules->getWindMeasurementType()==CompetitionRules::LegacyWindMeasurement
             ?static_cast<const SimulationV2::WindMeasurement &>(measurement):static_cast<const SimulationV2::WindMeasurement &>(configuredMeasurement));
     jumpData=JumpData(jumper,hill);jumpData.setSimulator(this);simulationData=&jumpData.getSimulationDataReference();
@@ -138,10 +139,15 @@ void JumpSimulator::simulateV2()
 double JumpSimulator::previewV2() const
 {
     if(!competitionRules)throw std::invalid_argument("New preview requires competition rules");
-    const bool exactWindOverride=manipulator && !manipulator->getExactWinds().isEmpty();
+    const auto exactField=manipulator?manipulator->getExactSimulationWind():nullptr;
+    const bool exactWindOverride=exactField || (manipulator && !manipulator->getExactWinds().isEmpty());
     const auto activeWinds=exactWindOverride?manipulator->getExactWinds():winds;
     std::optional<SimulationV2::ContinuousWeather> fallbackWeather;
     if(!simulationWeather || exactWindOverride)fallbackWeather.emplace(referenceWeather(activeWinds,hill->getKPoint(),simulationWeather?simulationWeather->precipitation(simulationTime):inrunSnow,simulationWeather?simulationWeather->precipitationKind():SimulationV2::PrecipitationKind::Snow));
     const auto input=requestFor(*jumper,*hill,*competitionRules,gate,competitionStartGate,hasCoachGate,coachGate,DSQBaseProbability,simulationEvent,simulationTime,manipulator);
-    return simulationEngine.previewDistance(input,simulationWeather && !exactWindOverride?*simulationWeather:*fallbackWeather);
+    std::optional<WindOverrideWeather> windOverride;
+    if(exactField)windOverride.emplace(exactField,simulationWeather,inrunSnow);
+    const SimulationV2::WeatherField &activeWeather=windOverride?static_cast<const SimulationV2::WeatherField &>(*windOverride)
+        :simulationWeather && !exactWindOverride?*simulationWeather:*fallbackWeather;
+    return simulationEngine.previewDistance(input,activeWeather);
 }

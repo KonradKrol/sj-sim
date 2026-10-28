@@ -147,6 +147,7 @@ static QString output;
 static int renders=0;
 static std::unique_ptr<CompetitionInfo> finishedCompetition;
 static void render(QWidget *window,const QString &name,bool sweep=false) {
+    qApp->setProperty("athleteTestStage",name+" initial show");
     window->show(); QTest::qWait(200);
     auto *view=scene(window);
     check(view && view->status()==QQuickWidget::Ready,"load "+name);
@@ -158,6 +159,7 @@ static void render(QWidget *window,const QString &name,bool sweep=false) {
     for(const auto &size:sizes) {
         presentation(window)->resize(size);
         for(bool dark:sweep?QList<bool>{false,true}:QList<bool>{false}) {
+            qApp->setProperty("athleteTestStage",QString("%1 %2x%3 %4").arg(name).arg(size.width()).arg(size.height()).arg(dark?"dark":"light"));
             appearance->setDark(dark); QTest::qWait(name=="home-tools"?850:200);
             // A grab flushes pending Quick layout polish in the offscreen widget.
             auto image=presentation(window)->grab().toImage(); if(image.isNull()) qCritical()<<"Geometry"<<window->size()<<view->size(); check(!image.isNull(),"frame "+name);
@@ -235,6 +237,7 @@ static void render(QWidget *window,const QString &name,bool sweep=false) {
         }
     }
     if(sweep) {
+        qApp->setProperty("athleteTestStage",name+" large text");
         appearance->setTextScale(1.3); QTest::qWait(100);
         view->grabFramebuffer().save(output+"/"+name+"-large-text.png");
         appearance->setTextScale(1);
@@ -2501,6 +2504,7 @@ static void interactionRegressions(MainWindow &main) {
 #include "simulation-v2-catalog-regressions.h"
 #include "simulation-v2-season-regressions.h"
 #include "simulation-v2-measurement-regressions.h"
+#include "simulation-v2-manipulation-regressions.h"
 
 int main(int argc,char **argv) {
     QApplication app(argc,argv);
@@ -2552,6 +2556,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--simulation-v2-competition-only")){simulationV2CompetitionRegressions();simulationV2CanonicalCompetitionRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-setup-only")){simulationV2WeatherSetupRegressions();simulationV2SetupRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-only")){simulationV2BridgeRegressions();simulationV2RepositoryRegressions();simulationV2CatalogRegressions();return 0;}
+    if(app.arguments().contains("--simulation-v2-manipulation-only")){simulationV2ManipulationRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-measurement-only")){simulationV2MeasurementRegressions();return 0;}
     if(app.arguments().contains("--simulation-v2-season-only")){simulationV2SeasonEditorRegressions(main);simulationV2SeasonCreationRegressions(main);return 0;}
     if(app.arguments().contains("--motion-feedback-only")){motionFeedbackRegressions(main);return 0;}
