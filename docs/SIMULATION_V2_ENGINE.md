@@ -285,3 +285,37 @@ zapisuje tylko ID paczki i względną ścieżkę. Po odczytaniu sezonu kontekst
 plików trzeba przywrócić przez warstwę danych; domenowy parser nie zakłada
 lokalizacji plików konkretnego komputera. Brak pakietu zdjęć oznacza pusty
 portret, bez wpływu na obliczenia.
+
+## Zmiany tendencji i okresy niestabilności — 28.10.2026
+
+`ContinuousWeather` ma dodatkową, opcjonalną ewolucję dominującego wiatru:
+
+- `trendAmplitude` (m/s, domyślnie 0) — zakres przesunięcia ogólnego wektora
+  względem referencji. Może odwrócić kierunek, gdy przekroczy wyjściową siłę.
+- `trendPeriodSeconds` (domyślnie 180 s) — orientacyjny czas jednej tendencji.
+  Granice są deterministycznie przesunięte o maksymalnie 25% okresu; pojedyncza
+  tendencja może zatem utrzymywać się przez różną liczbę skoków.
+- `trendTransitionSeconds` (15 s, maks. 30% okresu) — płynne przejście między
+  tendencjami, z dłuższym stałym poziomem pomiędzy przejściami.
+- `activityVariation` (0..1, domyślnie 0), `activityCorrelationSeconds` (180 s)
+  oraz `fastCorrelationSeconds` (8 s) — okresy spokojnych i szybkich wahań.
+  Mieszają wolny przebieg z szybszym oraz zmieniają jego natężenie. Nie wyliczają
+  czasu przez mnożenie bezwzględnego zegara przez zmienną częstotliwość, co
+  powodowałoby sztuczne skoki fazy pod koniec długiego konkursu.
+
+Zmiana ogólnej tendencji jest wspólna dla skoczni, ale nie usuwa różnic lokalnych.
+Lokalne podmuchy nadal mogą przejść przez jedynie fragment zeskoku. Referencje są
+punktem wyjścia funkcji od miejsca i bezwzględnego czasu, a nie niezmiennym wiatrem.
+Implementacja pozostaje bezstanowa i powtarzalna; odczyt UI lub inna kolejność
+pracy wątków nie przesuwa pogody. Stałe ustawienia z zerowymi amplitudami nie
+uruchamiają nowych warstw.
+
+Automatyczne propozycje mają różne wartości dla spokojnego/zmiennego/loteryjnego
+charakteru: amplituda tendencji 0,15/1,2/2,8 m/s, okres 300/150/60 s, przejście
+30/15/5 s, zmienność aktywności 0,15/0,5/0,95. To parametry początkowe do strojenia,
+nie statystyki rzeczywistej pogody. Perki wpływają na wybór propozycji; ręcznie
+podane parametry nie otrzymują dodatkowego ukrytego mnożnika od skoczni.
+
+**Ta warstwa jest gotowa w rdzeniu i propozycjach, ale UI gry nie przekazuje
+jeszcze wspólnego nowego pola.** Pojedyncze skoki nadal używają adaptera dawnych
+ustawień wiatru. Nie deklarować, że nowe tendencje są już aktywne w zwykłym konkursie.

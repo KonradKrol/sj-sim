@@ -65,6 +65,34 @@ int main()
             auto field=ContinuousWeather(1,p,rain);
             for(int i=0;i<1000;++i){const auto v=field.precipitation(i*3);check(v>=0 && v<=10,"all precipitation scenarios bounded");}
         }
+        // A prevailing tendency can last several jumps, then change sign.
+        auto regimes=constant();regimes.references={{0,{1.8,0}},{150,{-.4,.6}}};
+        regimes.trendAmplitude=6;regimes.trendPeriodSeconds=150;regimes.trendTransitionSeconds=10;
+        ContinuousWeather evolving(42,regimes);
+        int plateaus=0;bool front=false,back=false;
+        for(int time=0;time<7200;++time) {
+            const auto a=evolving.wind(0,time),b=evolving.wind(0,time+.00001);
+            check(std::abs(a.head-b.head)<.0001 && std::abs(a.cross-b.cross)<.0001,"weather regime transitions stay continuous");
+            if(std::abs(a.head-evolving.wind(0,time+1).head)<1e-12)++plateaus;
+            front|=a.head>2;back|=a.head< -2;
+            near(a.head-evolving.wind(150,time).head,2.2,1e-10,"prevailing change is shared across positions without erasing local differences");
+        }
+        check(plateaus>5000 && front && back,"tendencies persist across jumps and can reverse the prevailing direction");
+        auto intermittent=constant();intermittent.temporalAmplitude=1;intermittent.correlationSeconds=600;
+        auto quiet=ContinuousWeather(123,intermittent);intermittent.activityVariation=1;
+        auto active=ContinuousWeather(123,intermittent);
+        double slowChanges=0,intermittentChanges=0;
+        for(int time=0;time<12000;time+=30) {
+            slowChanges+=std::pow(quiet.wind(0,time+30).head-quiet.wind(0,time).head,2);
+            intermittentChanges+=std::pow(active.wind(0,time+30).head-active.wind(0,time).head,2);
+        }
+        check(intermittentChanges>slowChanges*2,"activity episodes permit changes between consecutive jumps rather than only slow drift");
+        const auto remembered=evolving.wind(70,1234);
+        for(int i=0;i<100;++i)evolving.wind(i*3,7000-i*21);
+        near(evolving.wind(70,1234).head,remembered.head,1e-14,"unrelated past/future queries never advance the weather clock");
+        rejects([]{WindParameters v;v.activityVariation=1.1;v.validate();});
+        rejects([]{WindParameters v;v.trendAmplitude=-1;v.validate();});
+        rejects([]{WindParameters v;v.trendTransitionSeconds=100;v.trendPeriodSeconds=100;v.validate();});
         // Same random stream isolates the effect of proposal preferences.
         SeededRandom headRng(12),tailRng(12),stableRng(14),lotteryRng(14);
         int heads=0,tails=0,stable=0,lottery=0;
@@ -84,6 +112,6 @@ int main()
         rejects([&]{weather.wind(0,std::numeric_limits<double>::infinity());});
         rejects([&]{weather.wind(-1,0);});
         rejects([]{WeatherProposalContext c;c.directionPerk=4;SeededRandom r(0);proposeWeather(c,r);});
-        std::cout<<"PASS simulation-v2 weather: continuity, correlation, moving gusts, parallel queries, 10000 proposals\n";
+        std::cout<<"PASS simulation-v2 weather: continuity, correlation, persistent/reversing tendencies, activity episodes, moving gusts, parallel queries, 10000 proposals\n";
     } catch(const std::exception &e) { std::cerr<<"FAIL: "<<e.what()<<'\n';return 1; }
 }

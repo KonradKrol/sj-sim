@@ -132,6 +132,16 @@ Dokładne wartości, kierunki i punkty odniesienia udostępnić w opcjach zaawan
 
 ## Ciągły model wiatru i lotu
 
+Doprecyzowanie użytkownika 28.10.2026: **zmienia się także ogólna tendencja pola**,
+nie tylko drobne podmuchy wokół stałej bazy. Mogą występować okresy kilku skoków
+z innym dominującym wiatrem, a także odcinki konkursu, w których warunki zmieniają
+się niemal co skok. Nie każdy konkurs ma być loteryjny: charakter ustala użytkownik,
+a osobne parametry silnika kontrolują siłę zmian, ich czas i podmuchy. Spokojne
+ustawienia mają rzeczywiście dawać spokojny przebieg, stałe — brak zmian w czasie.
+Pytania o główny wybór zmienności oraz dopuszczanie odwróceń ręcznie wybranego
+kierunku zostały zadane 28.10; przed zamknięciem UX zapisać odpowiedzi.
+
+
 ### Założenia
 
 Wiatr jest **ciągłym polem warunków wzdłuż skoczni, zmieniającym się w czasie**. Skoczek odczuwa warunki napotkane w czasie swojego lotu, a nie jedną średnią dla całego skoku. To nadal ma być szybka symulacja oparta na losowości i wzorach możliwych do dostrojenia — bez konieczności obliczania rzeczywistej wysokości, prędkości, trajektorii i pełnej aerodynamiki.

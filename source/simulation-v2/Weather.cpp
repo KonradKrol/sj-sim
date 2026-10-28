@@ -56,6 +56,12 @@ void WindParameters::validate() const
     bounded(gustWidthMetres,.1,100000,"Gust width out of range");
     bounded(gustTravelMetresPerSecond,0,100,"Gust travel speed out of range");
     bounded(maximumStrength,.01,100,"Maximum wind strength out of range");
+    bounded(trendAmplitude,0,100,"Wind tendency amplitude out of range");
+    bounded(trendPeriodSeconds,1,100000,"Wind tendency duration out of range");
+    bounded(trendTransitionSeconds,.1,trendPeriodSeconds*.3,"Wind tendency transition out of range");
+    bounded(activityVariation,0,1,"Wind activity variation out of range");
+    bounded(activityCorrelationSeconds,.1,100000,"Wind activity correlation out of range");
+    bounded(fastCorrelationSeconds,.1,100000,"Fast wind correlation out of range");
 }
 
 void PrecipitationParameters::validate() const
@@ -86,11 +92,36 @@ Wind ContinuousWeather::wind(double distance,double seconds) const
         const double t=smooth((distance-a.distance)/(b.distance-a.distance));
         result={mix(a.value.head,b.value.head,t),mix(a.value.cross,b.value.cross,t)};
     }
+    // A weather regime is shared across the hill. Boundaries jitter in time,
+    // with a short continuous transition and a long plateau; no per-jump reroll.
+    if(config.trendAmplitude>0) {
+        const auto boundary=[&](std::int64_t n) {
+            if(n<=0)return 0.0;
+            return (double(n)+.25*lattice(deriveSeed(seed,7),n,0))*config.trendPeriodSeconds;
+        };
+        const auto target=[&](std::int64_t n) {
+            if(n<=0)return Wind{};
+            return Wind{config.trendAmplitude*lattice(deriveSeed(seed,8),n,0),
+                        config.trendAmplitude*lattice(deriveSeed(seed,9),n,0)};
+        };
+        auto regime=std::int64_t(std::floor(seconds/config.trendPeriodSeconds));
+        if(seconds<boundary(regime))--regime;
+        else if(seconds>=boundary(regime+1))++regime;
+        const auto from=target(regime-1),to=target(regime);
+        const double blend=smooth(std::clamp((seconds-boundary(regime))/config.trendTransitionSeconds,0.0,1.0));
+        result.head+=mix(from.head,to.head,blend);result.cross+=mix(from.cross,to.cross,blend);
+    }
     const double x=distance/config.correlationMetres, t=seconds/config.correlationSeconds;
-    result.head+=config.temporalAmplitude*noise(deriveSeed(seed,1),0,t)
-        +config.spatialAmplitude*noise(deriveSeed(seed,2),x,t*1.7);
-    result.cross+=config.temporalAmplitude*noise(deriveSeed(seed,3),0,t)
-        +config.spatialAmplitude*noise(deriveSeed(seed,4),x,t*1.7);
+    const double activity=config.activityVariation>0 ? config.activityVariation*smooth(.5+.5*noise(deriveSeed(seed,10),0,seconds/config.activityCorrelationSeconds)) : 0;
+    const auto fluctuation=[&](Seed stream) {
+        const double slow=noise(deriveSeed(seed,stream),0,t);
+        if(activity==0)return slow;
+        return mix(slow,noise(deriveSeed(seed,stream+20),0,seconds/config.fastCorrelationSeconds),activity)*(1+2*activity);
+    };
+    result.head+=config.temporalAmplitude*fluctuation(1)
+        +config.spatialAmplitude*noise(deriveSeed(seed,2),x,t*1.7)*(1+activity);
+    result.cross+=config.temporalAmplitude*fluctuation(3)
+        +config.spatialAmplitude*noise(deriveSeed(seed,4),x,t*1.7)*(1+activity);
     if(config.gustAmplitude>0 && config.gustProbability>0) {
         const auto slot=std::int64_t(std::floor(seconds/config.gustPeriodSeconds));
         // Pulses last at most 1.6 periods. Only these three slots can be active.
@@ -155,6 +186,9 @@ WeatherProposal proposeWeather(const WeatherProposalContext &context,RandomSourc
     result.wind.temporalAmplitude=temporal[character];result.wind.spatialAmplitude=spatial[character];
     result.wind.gustAmplitude=gusts[character];result.wind.gustProbability=chance[character];
     result.wind.correlationSeconds=times[character];
+    static const double trendAmplitude[]{.15,1.2,2.8},trendPeriod[]{300,150,60},transitions[]{30,15,5},activity[]{.15,.5,.95};
+    result.wind.trendAmplitude=trendAmplitude[character];result.wind.trendPeriodSeconds=trendPeriod[character];
+    result.wind.trendTransitionSeconds=transitions[character];result.wind.activityVariation=activity[character];
     result.wind.correlationMetres=context.k*(character==0?.8:.35);
     result.wind.gustWidthMetres=context.k*.35;
     result.wind.references={{0,base},{context.k*.5,{base.head+rng.uniform(-spatial[character],spatial[character]),base.cross}},

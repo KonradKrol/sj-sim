@@ -35,6 +35,14 @@ struct WindParameters {
     double gustWidthMetres=45;
     double gustTravelMetresPerSecond=3;
     double maximumStrength=15;
+    // Changes in the prevailing tendency, held across several jumps. Zero disables.
+    double trendAmplitude=0;
+    double trendPeriodSeconds=180;
+    double trendTransitionSeconds=15;
+    // Slowly varying episodes blend calm fluctuations and fast, chaotic ones.
+    double activityVariation=0;
+    double activityCorrelationSeconds=180;
+    double fastCorrelationSeconds=8;
     void validate() const;
 };
 

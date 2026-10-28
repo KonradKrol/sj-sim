@@ -509,3 +509,31 @@ kontekstu zdjęć. `--athlete-patches-only` i `--hill-studio-only` również PAS
 4. `DatabaseEditorWindow` nadal powinien przygotowywać katalog przed odczytem paczek,
    aby przybliżone dawne dane były od razu widoczne w studiach, nawet zanim użytkownik
    otworzy konfigurację skoków. Nie nadpisywać oryginałów ani blokować GUI migracją.
+
+### Uzupełnienie wiatru podczas kontynuacji 28.10
+
+Użytkownik podkreślił, że zmieniać ma się samo ogólne pole/tendencja: inny wiatr
+przez kilka skoków oraz okresy niemal ciągłych gwałtownych zmian. Nie wszystkie
+konkursy mają być loteryjne — charakter ma być ustawiany. Zapisano to też w specyfikacji.
+
+Rdzeń ma teraz parametry tendencji utrzymywanych przez wiele skoków oraz
+okresów aktywności: `trendAmplitude`, `trendPeriodSeconds`,
+`trendTransitionSeconds`, `activityVariation`, `activityCorrelationSeconds`,
+`fastCorrelationSeconds`. Szczegóły i początkowe propozycje są w opisie silnika.
+Domyślne zerowe amplitudy pozostawiają konfiguracje stałe rzeczywiście stałymi.
+To nadal nie jest podłączony nowy panel pogody — ta praca pozostaje następna.
+
+Zadano **dwa pytania, odpowiedzi oczekiwane**, nie traktować upływu czasu jako wyboru:
+
+1. Jeden główny wybór „Stały / Spokojny / Zmienny / Loteryjny” i szczegóły w
+   zaawansowanych (zalecane), czy osobne główne ustawienia zmian między skokami
+   i podmuchów podczas lotu?
+2. Czy ręcznie wskazany kierunek jest tylko punktem wyjścia i przy wysokiej
+   loteryjności może się odwracać (zalecane), czy ma być utrzymany?
+
+Commit `d27eb28` z podłączeniem pojedynczych skoków jest już na remote.
+
+Testy po dodaniu tendencji: `test-simulation-v2-core.sh` PASS (w tym trwałość,
+odwrócenia, ciągłość, epizody szybkich zmian); pełny build Qt 5.15 i
+`--simulation-v2-only` PASS. Parametry zerowe pozostawiają kalibrację
+OVR90/70 bez zmiany: 15,3476 m.
