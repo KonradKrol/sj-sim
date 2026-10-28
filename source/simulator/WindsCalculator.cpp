@@ -50,6 +50,7 @@ Wind WindsCalculator::getAveragedWind(QVector<Wind> winds, short type)
         i++;
     }
     windAvg /= 100;
+    if(std::abs(windAvg)<1e-10)windAvg=0;
     windAvg = roundDoubleToTwoPlaces(windAvg);
 
     return Wind(windAvg);

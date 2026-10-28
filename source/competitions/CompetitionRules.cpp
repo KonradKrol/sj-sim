@@ -92,6 +92,7 @@ QJsonObject CompetitionRules::getJsonObject(const CompetitionRules &competitionR
     object.insert("competition-type", competitionRules.getCompetitionType());
     object.insert("wind-compensation-distance-effect", competitionRules.getWindCompensationDistanceEffect());
     object.insert("wind-average-calculating-type", competitionRules.getWindAverageCalculatingType());
+    object.insert("wind-measurement-type",competitionRules.getWindMeasurementType());
     object.insert("hill-record-breaking", competitionRules.getHillRecordBreaking());
 
     QJsonArray roundsArray;
@@ -159,6 +160,7 @@ CompetitionRules CompetitionRules::getFromJson(const QJsonObject &obj)
     rules.setCompetitionType(obj.value("competition-type").toInt());
     rules.setWindCompensationDistanceEffect(obj.value("wind-compensation-distance-effect").toInt());
     rules.setWindAverageCalculatingType(obj.value("wind-average-calculating-type").toInt());
+    rules.setWindMeasurementType(obj.value("wind-measurement-type").toInt(LegacyWindMeasurement));
     rules.setHillRecordBreaking(obj.value("hill-record-breaking").toBool(true));
 
     QJsonArray roundsArray = obj.value("rounds").toArray();
@@ -266,4 +268,12 @@ bool CompetitionRules::getHas95HSRule() const
 void CompetitionRules::setHas95HSRule(bool newHas95HSRule)
 {
     has95HSRule = newHas95HSRule;
+}
+
+bool CompetitionRules::validateWindMeasurementJson(const QJsonObject &object)
+{
+    if(!object.contains("wind-measurement-type"))return true;
+    const auto value=object["wind-measurement-type"];
+    return value.isDouble() && value.toDouble()==value.toInt(-1)
+        && value.toInt(-1)>=LegacyWindMeasurement && value.toInt(-1)<=FlightWindMeasurement;
 }

@@ -1,8 +1,10 @@
 # Pomiar wiatru — badanie przed wyborem metod
 
-Stan: **rozpoczęte, algorytmy wyboru jeszcze nie wdrożone**. To nie opis gotowej
-zgodności z FIS. Dotychczas `FieldWindMeasurement` respektuje stare ustawienia
-gry (9 próbek w czasie w każdym stanowisku, stare sposoby kierunków/odległości).
+Stan: **wdrożono sześć metod**, w tym „FIS — przybliżenie”. Użytkownik jawnie
+zaakceptował przybliżenie po informacji o brakujących dokładnych wagach i oknach.
+Nie jest to deklaracja dokładnej zgodności technicznej. Wariant dotychczasowego
+Sj.Sima pozostaje dostępny i zachowuje wcześniejsze ustawienia.
+Wzory, identyfikatory i parametry: `SIMULATION_V2_ENGINE.md`, sekcja o metodach.
 
 Użytkownik chce **3–7 nazwanych metod**, różne stopnie realizmu, także opcję/opcje
 oficjalne. Pomiar ma pozostać niedoskonały tak jak rzeczywisty system, bez osobnej
@@ -35,7 +37,7 @@ wyjaśnienia w pomocy. Nie mnożyć 30 technicznych inputów.
   indeksem dalszych wytycznych. Stary link do fact sheet 2009 w pracy 2020:
   `http://www.fis-ski.com/mm/Document/document/General/04/23/02/July292009NewrulesatSkiJumpingandNordicCombinedSummerGrandPrix2009_Neutral.pdf`.
 
-## Co trzeba jeszcze rozstrzygnąć
+## Dalsze badanie i świadomie zachowane ograniczenia
 
 1. Dokładne, wersjonowane pozycje/wagi czujników, okna czasowe, wpływ krótkiego
    skoku, projekcja kierunku, kolejność zaokrągleń w wariancie oficjalnym.
@@ -45,8 +47,18 @@ wyjaśnienia w pomocy. Nie mnożyć 30 technicznych inputów.
    średnia z równoważnych czujników przez czas lotu; ważona sieć pomiarowa;
    gęstsza sieć pomiarowa; średnia rzeczywiście doświadczana na przebytej trasie
    (symulacyjny punkt odniesienia, **nie** idealne wyrównanie odległości).
-   Ostateczna lista 3–7 opcji ma wynikać z realnych różnic, nie z mnożenia nazw.
+   Wdrożono pięć nowych modeli i zgodność (sześć opcji), zgodnie z tym podziałem.
 4. Testy: stałe jednolite pole, czysty boczny wiatr, lokalny podmuch między
    czujnikami, zmiana po mijaniu sektora, krótki skok, brak ekspozycji (DNS/DSQ),
    zgodność zapisu i deterministyczna praca wielowątkowa. Lot nie zmienia się
    wskutek samego przełączenia metody pomiaru — zmienia się pomiar/punktacja.
+
+
+## Zatwierdzone przybliżenie
+
+Model 3 zachowuje zasadę projekcji wzdłuż zeskoku, stałych czujników, okna czasowego
+i wag większych w środkowej/dalszej części. **Własny dobór gry:** progi K dla
+liczby czujników, ich rozmieszczenie, zasięg 1,1K, 17 próbek czasowych i trójkątne
+wagi ze szczytem 0,65. Nie przypisywać tych liczb FIS. Dokładniejsze odtworzenie
+może powstać później po uzyskaniu technicznej specyfikacji; nie blokuje już
+zaakceptowanego wdrożenia.

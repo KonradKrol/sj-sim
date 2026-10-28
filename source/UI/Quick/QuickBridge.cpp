@@ -1185,6 +1185,7 @@ void QuickBridge::compose(QuickNode *base) {
         pages.append(group("jump-options",tr("Opcje"),{group("jump-option-fields",QString(),fields({
             {"spinBox_dsqProbability",tr("Prawdopodobieństwo dyskwalifikacji")},
             {"checkBox_hasJudges",""},{"checkBox_hasWindCompensation",""},
+            {"comboBox_windMeasurementType",tr("Pomiar wiatru")},
             {"comboBox_windAverageCalculatingType",tr("Obliczanie średniego wiatru")},
             {"comboBox_windCompensationDistanceEffect",tr("Wpływ odległości na rekompensatę")}}),"form")}));
         labels.append(tr("Opcje"));

@@ -12,6 +12,23 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
 - Starsze raporty opisują kolejne etapy prac. W razie rozbieżności stan końcowy opisany tutaj ma pierwszeństwo. Szczególnie istotne korekty są zebrane w sekcji „Rozwiązania zastąpione podczas prac”.
 
+## Uzupełnienie — metody pomiaru i zmiana języka (28.10.2026)
+
+- Sześć metod średniego wiatru, w tym jawnie oznaczone przybliżenie FIS, pomiar
+  przez czas lotu, gęsta sieć, odczyt przy wybiciu, średnia na trasie i zgodność.
+  Wybór nie zmienia samego lotu; wpływa na pomiar i punkty. Zapisany w zasadach.
+- Jedna kontrolka z pomocą; wcześniejsze przełączniki dostępne tylko dla zgodności.
+  Nowe ustawienia są przekazywane także do równoległych pojedynczych skoków.
+- Dokładnie wymuszony wiatr zachowuje wybraną metodę. Nieznane ID metod są odrzucane
+  w paczkach/zapisach. Naprawiono śladowe +0,01 m/s dla czysto bocznego wiatru.
+- Prognozy odległości i pasek wiatru uwzględniają wybraną metodę na aktualnym polu.
+- Napisy końca zawodów/serii/grupy odświeżają się po zmianie języka w otwartym
+  konkursie. Test końca konkursu PL/EN/CS potwierdza zachowanie wyników.
+- Dodano po 40 wpisów EN/CS dla nowych kontrolek. Usunięto pętlę wysokości stopki
+  ujawnioną przez przełączanie języków. Pełny audyt tłumaczeń pozostaje w kolejce.
+- Testy jednostkowe metod, normalne konkursy, KO/drużynówki, sezony, zapis,
+  konfiguracja i regresje językowe PASS na Qt 5.15.3.
+
 ## Uzupełnienie — podgląd przebiegu wiatru (28.10.2026)
 
 - Opcjonalny schemat bieżącego pola przed skokiem, bez zmiany czasu ani losowania.

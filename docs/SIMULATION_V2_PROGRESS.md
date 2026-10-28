@@ -1007,3 +1007,51 @@ liczby aktywnych czujników w algorytmie). Praca Pietschnig 2020 opisuje history
 5/7/10, wagi i zmianę w 2016; nie podaje kompletu wag i okien. Nie podpisywać
 arbitralnego układu jako „oficjalny”. Dalsze szczegóły w `WIND_MEASUREMENT_RESEARCH.md`.
 Dopiero po metodach wrócić do manipulacji, audytu następnego sezonu i playgroundu.
+
+## Wybór sześciu metod pomiaru — wdrożony
+
+Użytkownik zaakceptował **„FIS — przybliżenie”** po wyjaśnieniu braku pełnej
+technicznej receptury. Nie blokować dalszej pracy poszukiwaniem dokładnych wag;
+nie przedstawiać naszych liczb jako oficjalnych. `NEW_SIMULATION.md`,
+`WIND_MEASUREMENT_RESEARCH.md` i opis silnika zawierają tę decyzję.
+
+Sześć metod: FIS — przybliżenie, Pomiar przez czas lotu, Gęsta sieć czujników,
+Odczyt przed skokiem, Wiatr na trasie lotu, Dotychczasowy Sj.Sim. Jedna kontrolka
+w zasadach i opcjach pojedynczych skoków, pomoc w tooltipie. Dawne przełączniki
+kierunków i odległości ujawniają się tylko dla zgodności. Nowy ekran pojedynczych
+skoków/reset zasad wybiera przybliżenie FIS, a istniejący preset zachowuje swoją
+metodę. Brak pola w dawnym pliku = zgodność. ID są walidowane w paczkach i
+zapisach (także zagnieżdżonych kopiach zasad kalendarza).
+
+Metoda jest niezależna od lotu: ten sam seed daje tę samą odległość/lądowanie/
+noty, a inną średnią do punktacji. Nawet średnia po trasie nie „odwraca” modelu
+lotu. Nowe modele są deterministyczne, z walidowanymi współczynnikami i limitami
+kosztu. Wymuszone dokładne wiatry używają wybranego pomiaru także na polu zastępczym.
+Metadane zapisują ID/wersję; niestandardowa wstrzyknięta strategia ma ID -1.
+
+Pasek aktualnego wiatru i prognozy „do prowadzenia/awansu” korzystają z buforowanej
+średniej obecnego pola dla wybranej metody, bez podglądania przyszłego pola.
+Nie stosują dawnych progów kierunku ani wpływu odległości do nowych metod.
+W dawnej matematyce usunięto artefakt: czysty boczny wiatr przez drobny błąd
+cos(90°) i ceil dawał +0,01 m/s zamiast 0. Zgodność poza tym zachowana.
+
+`--simulation-v2-measurement-only`: PASS (6 metod, pole stałe/boczne/zmienne,
+ważenie, podmuch między czujnikami, brak zmiany lotu przy zmianie pomiaru,
+różne punkty, zapis, nieznane ID, konfiguracja, dokładne wymuszenie i DNS).
+`--simulation-v2-contest-weather-only` ćwiczy nowe metody w każdej ścieżce,
+KO/drużynówce, plus poprawkę zmiany języka na otwartych zawodach: PASS.
+Ponadto PASS: konfiguracja v2, zwykły konkurs, sezon, adapter/zapis, audyt silnika
+oraz `--translation-only`. Qt5.15.3; Windows/Qt6 nadal bez weryfikacji tego etapu.
+
+### Najnowszy punkt wznowienia
+
+1. Metody pomiaru i podgląd korytarzy są gotowe; **nie implementować ich od nowa**.
+2. Kontynuować nowy UX manipulacji z `NEW_SIMULATION.md`, następnie pełną
+   integrację strojenia/playgroundu i pozostający audyt przejść sezonów/presetów.
+   Automatyczny nowy model formy pozostaje odłożony przez użytkownika.
+3. Użytkownik zgłosił tłumaczenie „Zakończ konkurs”. Naprawiono odświeżanie
+   runtime PL/EN/CS i pętlę stopki; dodano 40 wpisów na język dla nowych kontrolek.
+   **Pełny audyt tłumaczeń może poczekać**, zgodnie z jego zgodą. Kolejka i testy:
+   `TRANSLATION_AUDIT_2026-10-28.md`. Nie deklarować pełnej kompletności języków.
+4. Całe zadanie `NEW_SIMULATION.md` nadal trwa. Main nietknięty; pracować solo,
+   commitować i wypychać kolejne ukończone etapy na `feature/simulation-v2`.

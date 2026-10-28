@@ -367,14 +367,67 @@ scenariusza wiatru. Zmiana kontekstu skoczni bez zmiany jej ID nie nadpisuje
 ręcznych warunków. K przeskalowuje rozmieszczenie punktów; perki wpływają dopiero
 na jawne ponowne proponowanie.
 
-`FieldWindMeasurement` pobiera po 9 próbek czasowych z każdego stanowiska podczas
-lotu, uśrednia wektory, potem stosuje wybierany dotychczasowy sposób uśredniania
-oraz opcję wpływu odległości. Nowa konfiguracja pojedynczych skoków domyślnie
-wybiera składową wzdłuż zeskoku, bez progowego klasyfikowania bocznych kierunków.
-**To nadal metoda kompatybilności, nie deklaracja dokładnego pomiaru FIS.**
-Rekompensata używa wyniku tego pomiaru, ekspozycja lotu pozostaje oddzielna.
+`FieldWindMeasurement` ma sześć wybieralnych metod. Ścieżka zgodności nadal
+pobiera po 9 próbek czasowych na dawnym stanowisku i zachowuje dotychczasowe
+sposoby kierunków/odległości. Nowe metody opisano niżej. Użytkownik zaakceptował
+**jawne przybliżenie FIS**, bez domniemania dokładnej zgodności technicznej.
+Rekompensata używa wyniku pomiaru; ekspozycja fizycznego lotu pozostaje oddzielna.
 
 `SingleJumpsManager` ze współdzielonym polem nie uruchamia dawnego losowania
 korytarzy. Przypisuje czas/seed według indeksu, a podgląd wiatru przed skokiem i
 pomiar podczas lotu korzystają z tego samego pola. Test 2048 skoków potwierdza
 identyczność metadanych/punktów dla 1 i 4 wątków także w zmiennej pogodzie.
+
+
+## Sześć metod pomiaru wiatru — wersja 1
+
+Wybór jest zapisany w `CompetitionRules.wind-measurement-type`. Brak pola w
+starym pliku oznacza 0 (zgodność), a nie cichą zmianę metody. Nowe UI ustawień
+pojedynczych skoków i resetu nowego zestawu zasad wybiera 3. Istniejący preset
+zachowuje swój wybór. Nowe metody ignorują dwa dawne przełączniki kierunków/
+odległości, ujawniane wyłącznie po wybraniu zgodności.
+
+| ID | Nazwa w UI | Pomiar |
+| --- | --- | --- |
+| 0 | Dotychczasowy Sj.Sim | Dawna siatka, 9 próbek czasowych, stare dwa przełączniki |
+| 1 | Odczyt przed skokiem | Równe czujniki, tylko czas wybicia |
+| 2 | Pomiar przez czas lotu | Równe czujniki, okno od wybicia do końca lotu |
+| 3 | FIS — przybliżenie | Nieruchome czujniki, okno lotu, większe wagi środka/dalszej części |
+| 4 | Gęsta sieć czujników | Równe czujniki co około 5 m, okno lotu |
+| 5 | Wiatr na trasie lotu | `flight.experiencedWind.head`, średnia po przebytych metrach |
+
+**3 jest przybliżeniem zaakceptowanym przez użytkownika, nie oficjalnym
+odtworzeniem.** Źródła i ograniczenia: `WIND_MEASUREMENT_RESEARCH.md`.
+Niedoskonałość wynika z oddzielenia czujników i chwil lotu. Odczyt po minięciu
+miejsca nadal może wejść do średniej czujnika; podmuch między rzadkimi czujnikami
+może nie zostać zauważony. Nie ma dodatkowego losowania błędu/krzywdy.
+Także 5 nie odwraca idealnie wpływu wiatru: wynik lotu uwzględnia m.in. kolejność
+warunków, odpowiedź lotu, boczny wiatr i geometrię, a rekompensata pozostaje
+liniowym przeliczeniem pojedynczego pomiaru.
+
+Parametry modeli 1–4 w `FieldWindMeasurementParameters` (nie mnożą inputów UI):
+`temporalSamples=17`, `extentK=1.1`, `denseSpacingMetres=5`, `weightPeak=.65`,
+`weightStrength=1.5`. Zwykła sieć ma 5 czujników dla K<100, 7 dla K<170,
+10 dla większych; pozycje `(i+.5)/n * extentK*K`. To **dobór modelowy**, nie
+publikowane dokładne pozycje FIS. Gęsta sieć ma `ceil(extentK*K/spacing)` punktów,
+zakres 2–128. Próbki czasu są środkami równych przedziałów okna lotu.
+Waga w 3: `1 + strength*r`, gdzie `r=p/peak` do punktu peak i
+`r=(1-p)/(1-peak)` dalej. Wynik nowych metod jest zaokrąglany do 0,01 m/s.
+Parametry i wejściowy czas/dystans są walidowane przed obliczeniami.
+
+Normalne ścieżki gry przekazują tę samą strategię do silnika i pojedynczych
+skoków w wątkach. Wymuszenie dokładnego wiatru tworzy pole zastępcze, ale zachowuje
+wybraną metodę. Metadane skoku zawierają `windMeasurementType` i wersję 1;
+wstrzyknięta inna strategia eksperymentalna ma ID -1 zamiast fałszywego ID zasad.
+Zapisane wyniki i korytarze nie są ponownie przeliczane po zmianie ustawień.
+
+Prognozowane „do prowadzenia/awansu” i bieżący pasek używają buforowanego
+pomiaru aktualnego pola, z zerowym czasem lotu (bez podglądania przyszłości).
+Dla 5 średnia bieżącego pola na referencyjnej trasie 0–K ma 24 próbki.
+To prognoza, nie obietnica zgodności z późniejszym zmiennym wiatrem.
+
+Regresja `--simulation-v2-measurement-only`: jednolite pole, czysty boczny wiatr,
+zmiana w czasie, ważenie przestrzeni, podmuch między czujnikami, serializacja,
+nieznane ID, ukrywanie dawnych opcji, niezmienny lot/noty przy zmianie metody,
+różna punktacja, wymuszenie wiatru i DNS. Dodatkowo testy konkursu ćwiczą wszystkie
+nowe metody w przebiegach manualnych, automatycznych, KO i drużynowych.

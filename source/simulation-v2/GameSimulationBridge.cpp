@@ -1,5 +1,6 @@
 #include "../simulator/JumpSimulator.h"
 #include "ProfileBridge.h"
+#include "FieldWindMeasurement.h"
 #include "../global/MyRandom.h"
 #include "../simulator/wind-generation/WindsGenerator.h"
 #include <QJsonArray>
@@ -97,6 +98,7 @@ void JumpSimulator::simulateV2()
     std::optional<SimulationV2::ContinuousWeather> fallbackWeather;
     if(!simulationWeather || exactWindOverride)fallbackWeather.emplace(referenceWeather(activeWinds,hill->getKPoint(),simulationWeather?simulationWeather->precipitation(simulationTime):inrunSnow,simulationWeather?simulationWeather->precipitationKind():SimulationV2::PrecipitationKind::Snow));
     const LegacyMeasurement measurement(activeWinds,hill->getKPoint(),*competitionRules);
+    const SimulationV2::FieldWindMeasurement configuredMeasurement(hill->getKPoint(),*competitionRules);
     auto input=requestFor(*jumper,*hill,*competitionRules,gate,competitionStartGate,hasCoachGate,coachGate,DSQBaseProbability,simulationEvent,simulationTime,manipulator);
     input.skip=simulationSkip;
     // Sequence the draws explicitly: operand evaluation order must not change
@@ -110,7 +112,8 @@ void JumpSimulator::simulateV2()
     }();
     SimulationV2::SeededRandom rng(seed);
     const auto result=simulationEngine.simulate(input,rng,simulationWeather && !exactWindOverride?*simulationWeather:*fallbackWeather,
-        simulationMeasurement && !exactWindOverride?*simulationMeasurement:static_cast<const SimulationV2::WindMeasurement &>(measurement));
+        simulationMeasurement && !exactWindOverride?*simulationMeasurement:competitionRules->getWindMeasurementType()==CompetitionRules::LegacyWindMeasurement
+            ?static_cast<const SimulationV2::WindMeasurement &>(measurement):static_cast<const SimulationV2::WindMeasurement &>(configuredMeasurement));
     jumpData=JumpData(jumper,hill);jumpData.setSimulator(this);simulationData=&jumpData.getSimulationDataReference();
     jumpData.setGate(gate);jumpData.setHasCoachGate(hasCoachGate);jumpData.setCoachGate(coachGate);
     jumpData.setJumperForm(input.athlete.form);jumpData.setDSQ(result.status==SimulationV2::JumpStatus::Disqualified);
@@ -124,6 +127,9 @@ void JumpSimulator::simulateV2()
     simulationData->setInrunSnow(result.flight.precipitation);
     simulationData->setDSQProbability(std::isfinite(DSQBaseProbability) && DSQBaseProbability>=0 && DSQBaseProbability<=std::numeric_limits<int>::max()?int(DSQBaseProbability):0);
     auto data=metadata(result,seed,simulationTime,simulationEvent);
+    const bool customMeasurement=simulationMeasurement && !exactWindOverride
+        && !dynamic_cast<const SimulationV2::FieldWindMeasurement *>(simulationMeasurement.get());
+    data["windMeasurementType"]=customMeasurement?-1:competitionRules->getWindMeasurementType();data["windMeasurementVersion"]=1;
     if(exactWindOverride){data["exactWindOverride"]=true;data["manipulated"]=true;}
     jumpData.setSimulationV2Data(data);
     simulationTime+=30;

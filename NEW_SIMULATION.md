@@ -269,6 +269,11 @@ Użytkownik ma móc na życzenie zobaczyć **przybliżony obraz warunków w posz
   techniczna receptura oficjalnego wariantu nie jest dostępna, opisać ograniczenie
   i nie podpisywać wymyślonych wag/okien jako oficjalnych. Dobór metody powinien
   być prosty; szczegóły w pomocy, zapis wyboru w zasadach/eksperymencie.
+- **Odpowiedź użytkownika na ograniczenia dostępnej dokumentacji:** wariant
+  **„FIS — przybliżenie” wystarczy**, o ile jest jawnie oznaczony. Nie wymagać
+  dalszej zgody i nie blokować wdrożenia poszukiwaniem niedostępnej dokładnej
+  receptury. Zachować udokumentowaną zasadę czujników, projekcji wiatru,
+  uśredniania w czasie i wag, a własne pozycje/wagi opisać jako model gry.
 - Przed implementacją zweryfikować w aktualnych oficjalnych przepisach i dokumentacji technicznej dokładny układ punktów pomiarowych dla systemu rekompensaty, okna czasowe, ważenie, sposób uwzględniania odległości i zaokrąglanie. Nie wymyślać ich ani nie zakładać, że trzy ogólne stanowiska pomiaru warunków opisane w ICR są automatycznie całym układem używanym przez system wind/gate; ICR odsyła tu do osobnych zasad. [FIS ICR, art. 415.3](https://assets.fis-ski.com/f/252177/x/c67426c343/icr-ski-jumping-2024_e_clean.pdf).
 - **Stan obecny Sj.Sim:** istnieje już wyliczanie średniego wiatru i rekompensaty z osobnymi współczynnikami skoczni dla wiatru przedniego i tylnego, a także rekompensata za belkę oraz logika progu 95% HS. Dostępne są różne sposoby uśredniania i uwzględniania odległości; sam fakt, że kod istnieje, nie potwierdza jeszcze pełnej zgodności z aktualną metodą FIS. Przed migracją porównać te mechanizmy z przepisami, zachować lub świadomie zmigrować ustawienia i stare zapisy oraz dodać przykłady i testy zgodności.
 

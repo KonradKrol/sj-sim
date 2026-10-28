@@ -176,8 +176,11 @@ double distanceForPoints(AbstractCompetitionManager *manager,double target,bool 
         double points=hill->getPointsForKPoint()+(distance-hill->getKPoint())*hill->getPointsForMeter();
         if(rules->getHasJudgesPoints())points+=manager->getLast10Judges();
         if(rules->getHasWindCompensations()) {
-            const auto winds=WindsCalculator::getScoringWinds(*manager->getActualWinds(),distance,hill->getKPoint(),rules->getWindCompensationDistanceEffect());
-            points+=WindsCalculator::getWindCompensation(WindsCalculator::getAveragedWind(winds,rules->getWindAverageCalculatingType()),hill);
+            const bool legacy=rules->getWindMeasurementType()==CompetitionRules::LegacyWindMeasurement;
+            const auto forecast=manager->property("predictedMeasuredWind");
+            const auto winds=legacy?WindsCalculator::getScoringWinds(*manager->getActualWinds(),distance,hill->getKPoint(),rules->getWindCompensationDistanceEffect()):*manager->getActualWinds();
+            const auto measured=!legacy && forecast.isValid()?Wind(forecast.toDouble()):WindsCalculator::getAveragedWind(winds,legacy?rules->getWindAverageCalculatingType():WindsCalculator::Original);
+            points+=WindsCalculator::getWindCompensation(measured,hill);
         }
         if(rules->getHasGateCompensations()) {
             double gates=WindsCalculator::getGateCompensation(manager->getRoundsStartingGatesReference()[manager->getActualRound()-1],manager->getActualGate(),hill);

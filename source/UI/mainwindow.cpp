@@ -106,6 +106,7 @@ void MainWindow::on_pushButton_singleJumps_clicked()
         manager.getRules().setHasWindCompensations(singleJumpsConfig.getHasWindCompensationFromInput());
         manager.getRules().setHasGateCompensations(false);
         manager.getRules().setWindAverageCalculatingType(singleJumpsConfig.getWindAverageCalculatingType());
+        manager.getRules().setWindMeasurementType(singleJumpsConfig.getWindMeasurementType());
         manager.getRules().setWindCompensationDistanceEffect(singleJumpsConfig.getWindCompensationDistanceEffect());
         manager.simulate();
 

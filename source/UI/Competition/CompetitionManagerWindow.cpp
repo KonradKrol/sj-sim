@@ -438,7 +438,10 @@ void CompetitionManagerWindow::updatePointsToTheLeaderLabel()
 
 void CompetitionManagerWindow::updateAvgWindLabel()
 {
-    double wind = WindsCalculator::getAveragedWind(actualWinds, manager->getCompetitionRules()->getWindAverageCalculatingType()).getStrengthToAveragedWind();
+    const auto *rules=manager->getCompetitionRules();
+    const bool legacy=rules->getWindMeasurementType()==CompetitionRules::LegacyWindMeasurement;
+    const auto forecast=manager->property("predictedMeasuredWind");
+    const double wind=!legacy && forecast.isValid()?forecast.toDouble():WindsCalculator::getAveragedWind(actualWinds,legacy?rules->getWindAverageCalculatingType():WindsCalculator::Original).getStrengthToAveragedWind();
     ui->label_actualAvgWind->setText(QString::number(wind) + " m/s");
     if(wind > 0)
         ui->label->setStyleSheet("color: rgb(68, 130, 26);");
@@ -1001,7 +1004,7 @@ void CompetitionManagerWindow::autoSimulateRound()
     updateToBeatDistanceLabel();
     updateToAdvanceDistanceLabel();
     updatePointsToTheLeaderLabel();
-    ui->label_actualAvgWind->setText(QString::number(WindsCalculator::getAveragedWind(actualWinds, manager->getCompetitionRules()->getWindAverageCalculatingType()).getStrengthToAveragedWind()) + " m/s");
+    updateAvgWindLabel();
     updateActualInrunSnowLevelLabel();
 
     manager->updateCompetitorsAdvanceStatuses();
@@ -1166,7 +1169,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
     updateToBeatDistanceLabel();
     updateToAdvanceDistanceLabel();
     updatePointsToTheLeaderLabel();
-    ui->label_actualAvgWind->setText(QString::number(WindsCalculator::getAveragedWind(actualWinds, manager->getCompetitionRules()->getWindAverageCalculatingType()).getStrengthToAveragedWind()) + " m/s");
+    updateAvgWindLabel();
     updateActualInrunSnowLevelLabel();
     emit ui->comboBox_virtualClassification->currentIndexChanged(ui->comboBox_virtualClassification->currentIndex());
 
@@ -1248,7 +1251,7 @@ void CompetitionManagerWindow::autoSimulateGroup()
         updateToBeatDistanceLabel();
         updateToAdvanceDistanceLabel();
         updatePointsToTheLeaderLabel();
-        ui->label_actualAvgWind->setText(QString::number(WindsCalculator::getAveragedWind(actualWinds, manager->getCompetitionRules()->getWindAverageCalculatingType()).getStrengthToAveragedWind()) + " m/s");
+        updateAvgWindLabel();
         updateActualInrunSnowLevelLabel();
 
         manager->updateCompetitorsAdvanceStatuses();
@@ -1428,7 +1431,7 @@ void CompetitionManagerWindow::autoSimulateJumps()
         updateToBeatDistanceLabel();
         updateToAdvanceDistanceLabel();
         updatePointsToTheLeaderLabel();
-        ui->label_actualAvgWind->setText(QString::number(WindsCalculator::getAveragedWind(actualWinds, manager->getCompetitionRules()->getWindAverageCalculatingType()).getStrengthToAveragedWind()) + " m/s");
+        updateAvgWindLabel();
         updateActualInrunSnowLevelLabel();
         emit ui->comboBox_virtualClassification->currentIndexChanged(ui->comboBox_virtualClassification->currentIndex());
 
@@ -1842,6 +1845,12 @@ void CompetitionManagerWindow::refreshWindSnapshot()
                 {"cross",wind.cross},{"strength",strength},{"direction",direction},{"available",true}});
         }
     }
+    if(simulationWeather && manager->getCompetitionRules()->getWindMeasurementType()!=CompetitionRules::LegacyWindMeasurement) {
+        const double k=manager->getCompetitionInfo()->getHill()->getKPoint();
+        SimulationV2::FlightResult snapshot;snapshot.distance=k;
+        for(int i=0;i<24;++i)snapshot.experiencedWind.head+=simulationWeather->wind((i+.5)*k/24,simulationSeconds).head/24;
+        manager->setProperty("predictedMeasuredWind",SimulationV2::FieldWindMeasurement(k,*manager->getCompetitionRules()).measure(*simulationWeather,snapshot,simulationSeconds));
+    } else manager->setProperty("predictedMeasuredWind",QVariant());
     setProperty("simulationWindPreview",preview);setProperty("simulationWindPreviewTime",simulationSeconds);
 }
 

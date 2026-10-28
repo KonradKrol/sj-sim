@@ -3,6 +3,7 @@
 #include "ui_CompetitionRulesEditorWidget.h"
 
 #include "RoundInfoEditorWidget.h"
+#include "WindMeasurementChoice.h"
 #include <QEvent>
 #include <QTimer>
 #include <QScopedValueRollback>
@@ -14,6 +15,9 @@ CompetitionRulesEditorWidget::CompetitionRulesEditorWidget(QWidget *parent) :
     ui(new Ui::CompetitionRulesEditorWidget)
 {
     ui->setupUi(this);
+    windMeasurementChoice=createWindMeasurementChoice(this);
+    ui->formLayout->insertRow(11,tr("Pomiar wiatru"),windMeasurementChoice);
+    bindLegacyWindInputs(windMeasurementChoice,{ui->comboBox_windAverageCalculatingType,ui->comboBox_windCompensationDistanceEffect,ui->label_2,ui->label_3});
     competitionRules = nullptr;
 
     ui->toolBox_rounds->removeItem(0);
@@ -69,6 +73,7 @@ void CompetitionRulesEditorWidget::resetInputs()
     ui->spinBox_jumpersInTeamCount->setValue(0);
     ui->comboBox_competitionType->setCurrentIndex(CompetitionRules::Individual);
     ui->comboBox_windAverageCalculatingType->setCurrentIndex(2);
+    windMeasurementChoice->setCurrentIndex(windMeasurementChoice->findData(CompetitionRules::FisApproximationWindMeasurement));
     ui->comboBox_windCompensationDistanceEffect->setCurrentIndex(1);
     ui->checkBox_hillRecordBreaking->setChecked(true);
 }
@@ -89,6 +94,7 @@ void CompetitionRulesEditorWidget::fillCompetitionRulesInputs()
     }
     ui->comboBox_competitionType->setCurrentIndex(competitionRules->getCompetitionType());
     ui->comboBox_windAverageCalculatingType->setCurrentIndex(competitionRules->getWindAverageCalculatingType());
+    windMeasurementChoice->setCurrentIndex(windMeasurementChoice->findData(competitionRules->getWindMeasurementType()));
     ui->comboBox_windCompensationDistanceEffect->setCurrentIndex(competitionRules->getWindCompensationDistanceEffect());
     ui->checkBox_hillRecordBreaking->setChecked(competitionRules->getHillRecordBreaking());
     fillRoundsInputs(true);
@@ -219,6 +225,7 @@ CompetitionRules CompetitionRulesEditorWidget::getCompetitionRulesFromWidgetInpu
     rules.setCompetitionType(getCompetitionTypeFromInput());
     rules.setRounds(getRoundsFromInput());
     rules.setWindAverageCalculatingType(getWindAverageCalculatingTypeFromInput());
+    rules.setWindMeasurementType(windMeasurementChoice->currentData().toInt());
     rules.setWindCompensationDistanceEffect(getWindCompensationDistanceEffectFromInput());
     rules.setJumpersInTeamCount(getJumpersCountInTeam());
     rules.setHillRecordBreaking(ui->checkBox_hillRecordBreaking->isChecked());

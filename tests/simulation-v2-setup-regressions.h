@@ -93,6 +93,7 @@ static void simulationV2SetupRegressions(MainWindow &main) {
     // New batch jump identity and random quality must not depend on worker scheduling.
     SingleJumpsManager manager;manager.setJumper(window.configuredJumper());manager.setHill(window.configuredHill());
     manager.setGate(10);manager.setChangeableWind(false);manager.getRules().setHasDsq(false);manager.getRules().setHasJudgesPoints(true);
+    manager.getRules().setWindMeasurementType(CompetitionRules::FisApproximationWindMeasurement);manager.getRules().setHasWindCompensations(true);
     manager.setSimulationWeather(window.getWeatherSetup()->field());manager.setChangeableWind(true);
     manager.setSimulationSeed(123456789);manager.setSimulationEvent(SimulationV2::EventKind::Training);
     auto one=manager.simulateAsync(2048,1);one.waitForFinished();const auto sequential=one.result();
@@ -102,6 +103,7 @@ static void simulationV2SetupRegressions(MainWindow &main) {
     for(int i=0;i<sequential.size();++i) {
         check(sequential[i].getSimulationV2Data()==parallel[i].getSimulationV2Data() && sequential[i].getPoints()==parallel[i].getPoints(),"changing-weather v2 batch is identical with one or four workers");
         const auto metadata=sequential[i].getSimulationV2Data();
+        check(metadata["windMeasurementType"].toInt()==CompetitionRules::FisApproximationWindMeasurement,"parallel single jumps retain the selected FIS approximation");
         check(metadata["startSeconds"].toDouble()==i*30. && metadata["event"].toInt()==int(SimulationV2::EventKind::Training),"each batch jump has its own logical time and selected category");
     }
     auto restored=sequential.first();auto metadata=restored.getSimulationV2Data();metadata["startSeconds"]=30000.;restored.setSimulationV2Data(metadata);manager.setJumps({restored});

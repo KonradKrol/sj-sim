@@ -7,6 +7,7 @@
 namespace Ui {
 class CompetitionRulesEditorWidget;
 }
+class QComboBox;
 
 class CompetitionRulesEditorWidget : public QWidget
 {
@@ -51,6 +52,7 @@ private:
     Ui::CompetitionRulesEditorWidget *ui;
 
     CompetitionRules * competitionRules;
+    QComboBox *windMeasurementChoice;
 
 public:
     CompetitionRules *getCompetitionRules() const;

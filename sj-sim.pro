@@ -337,6 +337,7 @@ HEADERS += \
     source/global/JumpDataInfoChoice.h \
     source/global/JumpsImportancePreset.h \
     source/UI/EditorWidgets/ConfigSelections.h \
+    source/UI/EditorWidgets/WindMeasurementChoice.h \
     source/global/PointsForPlacesPreset.h \
     source/global/TreeItem.h \
     source/global/Uuid.h \

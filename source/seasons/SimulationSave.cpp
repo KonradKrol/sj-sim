@@ -40,6 +40,7 @@ bool hasValidUuidFields(const QJsonValue &value)
         return true;
 
     const QJsonObject object = value.toObject();
+    if(!CompetitionRules::validateWindMeasurementJson(object))return false;
     for(auto it = object.constBegin(); it != object.constEnd(); ++it)
     {
         if(it.key() == QStringLiteral("id") || it.key().endsWith(QStringLiteral("-id")))

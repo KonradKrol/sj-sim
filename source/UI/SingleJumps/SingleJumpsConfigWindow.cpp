@@ -25,6 +25,7 @@
 #include <QFormLayout>
 #include "../EditorWidgets/SimulationProfileEditor.h"
 #include "../EditorWidgets/WeatherSetupEditor.h"
+#include "../EditorWidgets/WindMeasurementChoice.h"
 #include <QSignalBlocker>
 #include <QTimer>
 #include "../../simulator/JumpSimulator.h"
@@ -38,6 +39,10 @@ SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent,const Simulatio
     catalog(paths)
 {
     ui->setupUi(this);
+    windMeasurementChoice=createWindMeasurementChoice(this);
+    ui->verticalLayout_singleJumpsSettings->addWidget(new QLabel(tr("Pomiar wiatru"),this));
+    ui->verticalLayout_singleJumpsSettings->addWidget(windMeasurementChoice);
+    bindLegacyWindInputs(windMeasurementChoice,{ui->comboBox_windAverageCalculatingType,ui->comboBox_windCompensationDistanceEffect,ui->label_2,ui->label_3});
     ui->comboBox_windAverageCalculatingType->setItemText(WindsCalculator::Simple,tr("Uproszczone"));
     ui->comboBox_windAverageCalculatingType->setItemText(WindsCalculator::SimpleImproved,tr("Uproszczone z korektą kierunku"));
     ui->comboBox_windAverageCalculatingType->addItem(tr("Składowa wzdłuż zeskoku"));
@@ -211,6 +216,7 @@ SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent,const Simulatio
 
     const auto updateWindCompensationInputs = [this](){
         const bool enabled = ui->checkBox_hasWindCompensation->isChecked();
+        windMeasurementChoice->setEnabled(enabled);
         ui->comboBox_windCompensationDistanceEffect->setEnabled(enabled);
         ui->comboBox_windAverageCalculatingType->setEnabled(enabled);
     };
@@ -358,6 +364,8 @@ short SingleJumpsConfigWindow::getWindAverageCalculatingType()
 {
     return ui->comboBox_windAverageCalculatingType->currentIndex();
 }
+
+int SingleJumpsConfigWindow::getWindMeasurementType() const {return windMeasurementChoice->currentData().toInt();}
 
 short SingleJumpsConfigWindow::getWindCompensationDistanceEffect()
 {

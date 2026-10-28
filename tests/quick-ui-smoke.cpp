@@ -2500,6 +2500,7 @@ static void interactionRegressions(MainWindow &main) {
 #include "simulation-v2-repository-regressions.h"
 #include "simulation-v2-catalog-regressions.h"
 #include "simulation-v2-season-regressions.h"
+#include "simulation-v2-measurement-regressions.h"
 
 int main(int argc,char **argv) {
     QApplication app(argc,argv);
@@ -2551,6 +2552,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--simulation-v2-competition-only")){simulationV2CompetitionRegressions();simulationV2CanonicalCompetitionRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-setup-only")){simulationV2WeatherSetupRegressions();simulationV2SetupRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-only")){simulationV2BridgeRegressions();simulationV2RepositoryRegressions();simulationV2CatalogRegressions();return 0;}
+    if(app.arguments().contains("--simulation-v2-measurement-only")){simulationV2MeasurementRegressions();return 0;}
     if(app.arguments().contains("--simulation-v2-season-only")){simulationV2SeasonEditorRegressions(main);simulationV2SeasonCreationRegressions(main);return 0;}
     if(app.arguments().contains("--motion-feedback-only")){motionFeedbackRegressions(main);return 0;}
     if(app.arguments().contains("--hill-studio-only")){hillStudioRegressions(main);return 0;}

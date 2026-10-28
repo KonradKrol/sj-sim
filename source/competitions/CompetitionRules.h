@@ -24,6 +24,21 @@ public:
         Random,
         Manual
     };
+    enum WindMeasurementType {
+        LegacyWindMeasurement=0,
+        InstantWindMeasurement,
+        SensorWindMeasurement,
+        WeightedWindMeasurement,
+        FisApproximationWindMeasurement=WeightedWindMeasurement,
+        DenseWindMeasurement,
+        FlightWindMeasurement
+    };
+    int getWindMeasurementType() const { return windMeasurementType; }
+    bool setWindMeasurementType(int value) {
+        if(value<LegacyWindMeasurement || value>FlightWindMeasurement)return false;
+        windMeasurementType=static_cast<WindMeasurementType>(value);return true;
+    }
+    static bool validateWindMeasurementJson(const QJsonObject &object);
 
 private:
     QString name;
@@ -40,6 +55,7 @@ private:
 
     short windAverageCalculatingType;
     short windCompensationDistanceEffect;
+    WindMeasurementType windMeasurementType=LegacyWindMeasurement;
 
     bool hillRecordBreaking;
 

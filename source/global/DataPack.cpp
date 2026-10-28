@@ -118,7 +118,10 @@ bool DataPack::fromJson(const QJsonObject &o, DataPack &result, QString &error)
             if(p.engineVersion==2 && !entry.contains("simulation-v2"))return fail(QObject::tr("Brak nowego profilu skoczni w paczce v2."));
             p.hills.append(Hill::getFromJson(entry));
         }
-        else p.rules.append(CompetitionRules::getFromJson(entry));
+        else {
+            if(!CompetitionRules::validateWindMeasurementJson(entry))return fail(QObject::tr("Nieobsługiwana metoda pomiaru wiatru."));
+            p.rules.append(CompetitionRules::getFromJson(entry));
+        }
     }
     if (p.kind == Rules) {
         if (!o.value("pointsForPlacesPresets").isArray()) return fail(QObject::tr("Brak listy presetów punktów."));

@@ -13,6 +13,8 @@ static void simulationV2ContestWeatherRegressions(MainWindow &main) {
         }
         auto profile=HillProfile::create();profile.name="Contest weather";profile.record=200;Hill hill;check(hill.setSimulationProfile(profile,error),"new contest hill fixture");
         CompetitionInfo info(&hill);CompetitionRules rules;rules.setCompetitionType(teams?CompetitionRules::Team:CompetitionRules::Individual);rules.setJumpersInTeamCount(2);rules.setHasDsq(false);rules.setHasJudgesPoints(true);rules.setWindAverageCalculatingType(WindsCalculator::Original);
+        const int methods[]{CompetitionRules::FisApproximationWindMeasurement,CompetitionRules::InstantWindMeasurement,CompetitionRules::SensorWindMeasurement,CompetitionRules::FisApproximationWindMeasurement,CompetitionRules::DenseWindMeasurement,CompetitionRules::FlightWindMeasurement};
+        rules.setWindMeasurementType(methods[mode]);
         rules.setRounds({RoundInfo(teams?2:4,true),RoundInfo(2,true)});
         if(ko){rules.getRoundsReference()[0].setKO(true);rules.getRoundsReference()[0].setCountInKOGroup(2);rules.getRoundsReference()[0].setAdvancingFromKOGroup(1);}
         info.setRules(rules);

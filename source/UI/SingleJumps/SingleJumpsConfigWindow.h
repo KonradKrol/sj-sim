@@ -63,6 +63,7 @@ private:
     SimulationProfileDraft *athleteDraft, *hillDraft;
     SimulationWeatherSetup *weatherSetup;
     QComboBox *athletePack, *hillPack, *eventKind;
+    QComboBox *windMeasurementChoice;
     QLabel *catalogStatus;
     bool ready=false, filling=false;
     QVector<WindGenerationSettings> defaultWinds;
@@ -82,6 +83,7 @@ public:
     bool getChangeableWindFromInput();
     short getResultsFormatFromInput();
     short getWindAverageCalculatingType();
+    int getWindMeasurementType() const;
     short getWindCompensationDistanceEffect();
     int getGateFromInput();
     int suggestedGate();
