@@ -66,6 +66,7 @@ public:
     QString getImageFilePath() const;
     void setSimulationPackContext(const QString &packId,const QString &assetDirectory);
     QString getSimulationPackId() const { return simulationPackId; }
+    QString getSimulationAssetDirectory() const { return simulationAssetDirectory; }
     std::optional<AthleteProfile> getSimulationProfile() const;
     bool setSimulationProfile(const AthleteProfile &, QString &error);
     static bool validateSimulationProfileJson(const QJsonObject &, QString &error);

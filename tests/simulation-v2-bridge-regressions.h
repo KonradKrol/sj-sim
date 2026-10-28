@@ -86,5 +86,17 @@ static void simulationV2BridgeRegressions()
     jumper.setPersonalBest(550);AthleteProfile largeRecord;
     check(AthleteProfile::fromJson(jumper.getSimulationProfile()->toJson(),largeRecord,error),"record from a valid large custom hill remains serializable");
     venue.record=750;HillProfile largeHillRecord;check(HillProfile::fromJson(venue.toJson(),largeHillRecord,error),"hill record range covers legal engine distances");
+    {
+        SimulationSave save;check(save.setEngineVersion(2) && !save.setEngineVersion(3),"season engine marker accepts only supported versions");
+        auto *savedAthlete=new Jumper(jumper);const auto packId=QUuid::createUuid().toString(QUuid::WithoutBraces);savedAthlete->setSimulationPackContext(packId,"/old-machine/athletes");
+        save.setJumpers({savedAthlete});save.setHills({new Hill(hill)});Season season;season.setSeasonNumber(2026);save.setSeasons({season});save.setActualSeason(&save.getSeasonsReference().first());
+        auto json=SimulationSave::getJsonObject(save);check(json["engine-version"]==2 && !QJsonDocument(json).toJson().contains("/old-machine"),"new season persists engine marker and portable photo identity");
+        std::unique_ptr<SimulationSave> restored(SimulationSave::getFromJson(json,nullptr));
+        check(restored && restored->getEngineVersion()==2 && restored->getJumpers().first()->getSimulationProfile()->perks==jumper.getSimulationProfile()->perks,"new season round trip preserves complete profiles");
+        check(restored->getJumpers().first()->getSimulationAssetDirectory()==QDir(SimulationV2::CatalogPaths::defaults().athletes).filePath(packId),"season reload resolves photo folder for the current machine");
+        auto invalid=json;invalid["engine-version"]=3;check(!SimulationSave::getFromJson(invalid,nullptr),"future engine versions cannot silently run on the old engine");
+        invalid=json;auto values=invalid["jumpers"].toArray();auto actor=values[0].toObject();actor.remove("simulation-v2");values[0]=actor;invalid["jumpers"]=values;
+        check(!SimulationSave::getFromJson(invalid,nullptr),"new-engine season rejects mixed legacy profiles");
+    }
     qInfo()<<"PASS: simulation-v2 game bridge, profiles, pack import, identity, weather persistence, preview and manipulation";
 }

@@ -28,8 +28,11 @@ public:
     void repairDatabase();
     void fixJumpersFormInstabilities();
     double * getJumperFormInstability(Jumper *j);
+    int getEngineVersion() const {return engineVersion;}
+    bool setEngineVersion(int value) {if(value!=1 && value!=2)return false;engineVersion=value;return true;}
 
 private:
+    int engineVersion=1;
     QString name;
     QVector<Season> seasons;
     Season * actualSeason;

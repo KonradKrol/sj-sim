@@ -827,3 +827,21 @@ Wynik: PASS, produkcyjny build Qt 5.15.3 PASS; bez nowych ostrzeżeń QML.
 deszczu na skoki. Po tym UI wrócić do źródeł i kalibracji mocnego deszczu.
 Nie uznawać obecnego łagodniejszego współczynnika za wynik badań. Kolejka
 sezonów pozostaje aktywna i jest opisana powyżej.
+
+## Format sezonu przygotowany — bez przełączania tworzenia sezonów
+
+`SimulationSave` ma jawne `engine-version` 1/2. Nieznana wersja i zapis oznaczony
+jako v2 z dawnym zawodnikiem/skocznią są odrzucane. Zapis v2 nie może utrwalić
+mieszanego grafu. Dotychczasowe zapisy bez znacznika nadal są czytane jako 1.
+Nowe tworzenie sezonu trzeba dopiero przełączyć na kanoniczne źródła i jawne 2.
+
+Po odczycie profilu v2 katalog zdjęcia jest odtwarzany z `simulation-pack-id`
+według kanonicznego katalogu aktualnego komputera. Absolutne ścieżki pozostają
+wyłącznie kontekstem w pamięci. Dodano odczyt tego kontekstu dla przyszłego
+edytora sezonowych zawodników. `--simulation-v2-only`: PASS (round trip formatu,
+kompletne perki, przenośna ścieżka, nieznana wersja i mieszany profil).
+
+**Priorytet po ostatniej uwadze:** najpierw kalibracja deszczu, potem poprawa UX
+kierunku i prostych zmian na strzałkach **głównego** schematu wiatru.
+Użytkownik odrzucił obecny duży formularz punktów i nieczytelną orientację tarczy.
+Sprawdzić cofające się inputy. Dopiero po tych uwagach wrócić do kolejki sezonów.

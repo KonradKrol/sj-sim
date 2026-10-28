@@ -11,6 +11,7 @@
 #include <QSet>
 #include <QSysInfo>
 #include "../global/Uuid.h"
+#include "../simulation-v2/SimulationCatalog.h"
 
 extern Uuid globalIDGenerator;
 
@@ -59,9 +60,12 @@ bool hasValidUuidFields(const QJsonValue &value)
 
 bool hasRequiredSaveStructure(const QJsonObject &object)
 {
+    if(object.contains("engine-version") && (!object["engine-version"].isDouble()
+        || (object["engine-version"].toDouble()!=1 && object["engine-version"].toDouble()!=2)))return false;
+    const bool v2=object["engine-version"].toInt(1)==2;
     QString profileError;
-    for(const auto &value:object["jumpers"].toArray())if(!Jumper::validateSimulationProfileJson(value.toObject(),profileError))return false;
-    for(const auto &value:object["hills"].toArray())if(!Hill::validateSimulationProfileJson(value.toObject(),profileError))return false;
+    for(const auto &value:object["jumpers"].toArray())if((v2 && !value.toObject().contains("simulation-v2")) || !Jumper::validateSimulationProfileJson(value.toObject(),profileError))return false;
+    for(const auto &value:object["hills"].toArray())if((v2 && !value.toObject().contains("simulation-v2")) || !Hill::validateSimulationProfileJson(value.toObject(),profileError))return false;
     return object.value(QStringLiteral("id")).isString()
         && object.value(QStringLiteral("actual-season-id")).isString()
         && object.value(QStringLiteral("jumpers")).isArray()
@@ -80,10 +84,10 @@ bool hasSerializableGraph(SimulationSave &save)
         return false;
 
     for(auto *jumper : save.getJumpersReference())
-        if(jumper == nullptr)
+        if(jumper == nullptr || (save.getEngineVersion()==2 && !jumper->getSimulationProfile()))
             return false;
     for(auto *hill : save.getHillsReference())
-        if(hill == nullptr)
+        if(hill == nullptr || (save.getEngineVersion()==2 && !hill->getSimulationProfile()))
             return false;
     for(const auto &list : save.getJumpersListsReference())
         for(auto *jumper : list.getJumpers())
@@ -152,6 +156,7 @@ SimulationSave * SimulationSave::getFromJson(QJsonObject obj, IdentifiableObject
         return nullptr;
 
     SimulationSave * save = new SimulationSave();
+    save->setEngineVersion(obj["engine-version"].toInt(1));
     if(storage == nullptr)
     {
         storage = save;
@@ -162,8 +167,12 @@ SimulationSave * SimulationSave::getFromJson(QJsonObject obj, IdentifiableObject
 
     QJsonArray array = obj.value("jumpers").toArray();
     QVector<Jumper *> jumpers;
-    for(const auto &value : qAsConst(array))
-        jumpers.append(new Jumper(Jumper::getFromJson(value.toObject())));
+    for(const auto &value : qAsConst(array)) {
+        auto *jumper=new Jumper(Jumper::getFromJson(value.toObject()));
+        if(jumper->getSimulationProfile() && !jumper->getSimulationPackId().isEmpty())
+            jumper->setSimulationPackContext(jumper->getSimulationPackId(),QDir(SimulationV2::CatalogPaths::defaults().athletes).filePath(jumper->getSimulationPackId()));
+        jumpers.append(jumper);
+    }
     save->setJumpers(jumpers);
     storage->add(save->getJumpersReference());
 
@@ -232,6 +241,7 @@ SimulationSave * SimulationSave::getFromJson(QJsonObject obj, IdentifiableObject
 QJsonObject SimulationSave::getJsonObject(SimulationSave &save)
 {
     QJsonObject object;
+    object.insert("engine-version",save.getEngineVersion());
     object.insert("id", save.getIDStr());
 
     QJsonArray jumpersArray;
