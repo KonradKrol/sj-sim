@@ -1950,3 +1950,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 - Scenariusze wiatru w Quick są kompaktowymi kafelkami, pogrupowanymi według
   kierunku. Wszystkie opcje pozostają widoczne; wybrana jest mocno zaznaczona.
   Losowanie według skoczni ma własny przycisk nad siatką.
+
+- Ręczny generator formy obsługuje nowy profil zawodnika: zmienia aktywną formę
+  1–100, zachowując OVR i perki. Poprawiono granice oraz dzielenie przez zero
+  w obliczeniach niestabilności.

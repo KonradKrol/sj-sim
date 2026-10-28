@@ -33,6 +33,9 @@ Jumper *JumperFormGeneratorSettings::getJumper() const
 void JumperFormGeneratorSettings::setJumper(Jumper *newJumper)
 {
     jumper = newJumper;
+    if(jumper && jumper->getSimulationProfile()) {
+        minForm=qBound(1.0,minForm,100.0);maxForm=qBound(minForm,maxForm,100.0);
+    }
 }
 
 double JumperFormGeneratorSettings::getFormVariability() const
@@ -62,7 +65,8 @@ double JumperFormGeneratorSettings::getMinForm() const
 
 void JumperFormGeneratorSettings::setMinForm(double newMinForm)
 {
-    minForm = newMinForm;
+    minForm = jumper && jumper->getSimulationProfile()?qBound(1.0,newMinForm,100.0):newMinForm;
+    if(jumper && jumper->getSimulationProfile() && maxForm<minForm)maxForm=minForm;
 }
 
 double JumperFormGeneratorSettings::getMaxForm() const
@@ -72,5 +76,5 @@ double JumperFormGeneratorSettings::getMaxForm() const
 
 void JumperFormGeneratorSettings::setMaxForm(double newMaxForm)
 {
-    maxForm = newMaxForm;
+    maxForm = jumper && jumper->getSimulationProfile()?qBound(minForm,newMaxForm,100.0):newMaxForm;
 }

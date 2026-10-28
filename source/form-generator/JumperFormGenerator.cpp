@@ -1,6 +1,8 @@
 #include "JumperFormGenerator.h"
 #include <QDebug>
 #include "../global/MyRandom.h"
+#include <algorithm>
+#include <cmath>
 
 JumperFormGenerator::JumperFormGenerator()
 {
@@ -9,7 +11,9 @@ JumperFormGenerator::JumperFormGenerator()
 
 void JumperFormGenerator::generateJumperForm()
 {
-    double oldForm = jumper->getJumperSkillsPointer()->getForm();
+    if(!jumper || !instability)return;
+    auto profile=jumper->getSimulationProfile();
+    double oldForm = profile?profile->form:jumper->getJumperSkillsPointer()->getForm();
     double newForm;
     double oldInstability = *instability;
     double newInstability = oldInstability;
@@ -45,22 +49,24 @@ void JumperFormGenerator::generateJumperForm()
         change /= 1 + ((50 - (oldForm)) / 41);
     }
 
-    newInstability /= (1.30 * settings.getFormVariability());
+    if(settings.getFormVariability()>0)newInstability /= (1.30 * settings.getFormVariability());
+    const double denominator=std::max(1.0,oldForm+change);
+    const double previousDenominator=std::max(1.0,oldForm);
     if(oldForm + change > 50 && change > 0)
     {
-        newInstability += (((oldForm + change) / oldForm) - 1) / 1.5;
+        newInstability += (((oldForm + change) / previousDenominator) - 1) / 1.5;
     }
     else if(oldForm + change < 50 && change < 0)
     {
-        newInstability += ((oldForm / (oldForm + change)) - 1) / 1.5;
+        newInstability += ((oldForm / denominator) - 1) / 1.5;
     }
     else if(oldForm + change > 50 && change < 0)
     {
-        newInstability += (((oldForm + change) / oldForm) - 1) / 1.5;
+        newInstability += (((oldForm + change) / previousDenominator) - 1) / 1.5;
     }
     else if(oldForm + change < 50 && change > 0)
     {
-        newInstability += ((oldForm / (oldForm + change)) - 1) / 1.5;
+        newInstability += ((oldForm / denominator) - 1) / 1.5;
     }
     if(newInstability < 0.01)
         newInstability = 0.01;
@@ -81,7 +87,10 @@ void JumperFormGenerator::generateJumperForm()
     else if(newForm > settings.getMaxForm())
         newForm = settings.getMaxForm();
 
-    jumper->getJumperSkillsPointer()->setForm(newForm);
+    if(profile) {
+        profile->form=int(std::round(std::clamp(newForm,1.0,100.0)));
+        QString error;if(!jumper->setSimulationProfile(*profile,error))return;
+    } else jumper->getJumperSkillsPointer()->setForm(newForm);
     *instability = newInstability;
     qDebug()<<jumper->getNameAndSurname() + QString(": (Forma %1 --> %2) (Niestabilność %3 --> %4)").arg(QString::number(oldForm)).arg(QString::number(newForm)).arg(QString::number(oldInstability)).arg(QString::number(newInstability));
 }

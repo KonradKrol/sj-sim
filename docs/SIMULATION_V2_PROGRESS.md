@@ -783,3 +783,19 @@ i skali tekstu. Nie przywracać dropdowna w Quick jako uproszczenia.
 powrót do losowania według skoczni, wszystkie 11 kafelków, oba motywy i rendery
 360–1440 px. Bez nowych ostrzeżeń QML/pętli układów. Stan integracji sezonów
 pozostaje jak w kolejce powyżej; prace nad generatorem formy są osobną zmianą.
+
+## Generator formy przygotowany do nowych sezonów
+
+`JumperFormGenerator` czyta i zapisuje nową `AthleteProfile::form`, gdy zawodnik
+ma v2. Nie zmienia OVR, ID, perków ani zdjęcia; dawne techniki nie są źródłem formy.
+Nowa forma jest całkowita 1–100. Ustawienia i walidacja tabeli respektują minimum 1
+dla nowych profili; dotychczasowe profile zachowują swój zakres i ścieżkę.
+Usunięto dzielenie przez zero przy zmienności 0 i przy spadku formy do zera oraz
+niezainicjalizowane pointery generatora. Nie dodaje to automatycznego rozwoju
+formy w sezonie — ten pozostaje odłożony zgodnie ze specyfikacją.
+
+`--audit-form-only` PASS: ręczna zmiana faktycznej nowej formy, bonus i granice,
+2000 kolejnych generacji bez utraty parametrów/ID i bez NaN niestabilności,
+oraz poprzednie audyty ustawień. Teraz można bezpiecznie podpinać to narzędzie
+do nowych sezonów; pozostałe zadania sezonowe (katalog, edycja, format, pogoda)
+nie zostały jeszcze zakończone.

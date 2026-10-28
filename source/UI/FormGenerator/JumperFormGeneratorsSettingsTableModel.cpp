@@ -121,8 +121,8 @@ bool JumperFormGeneratorsSettingsTableModel::setData(const QModelIndex &index, c
     switch(index.column()) {
     case 1: if(number<0 || number>20)return false;settings.setFormVariability(number);break;
     case 2: if(number< -100 || number>100)return false;settings.setFormBonus(number);break;
-    case 3: if(number<0 || number>settings.getMaxForm())return false;settings.setMinForm(number);break;
-    case 4: if(number<settings.getMinForm() || number>100)return false;settings.setMaxForm(number);break;
+    case 3: if(number<(settings.getJumper() && settings.getJumper()->getSimulationProfile()?1:0) || number>settings.getMaxForm())return false;settings.setMinForm(number);break;
+    case 4: if(number<std::max(settings.getMinForm(),settings.getJumper() && settings.getJumper()->getSimulationProfile()?1.0:0.0) || number>100)return false;settings.setMaxForm(number);break;
     }
     emit dataChanged(index,index,{Qt::DisplayRole,Qt::EditRole});return true;
 }

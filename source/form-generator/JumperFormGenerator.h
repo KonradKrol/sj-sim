@@ -15,8 +15,8 @@ private:
 private:
     JumperFormGeneratorSettings settings;
 
-    Jumper * jumper;
-    double * instability;
+    Jumper * jumper=nullptr;
+    double * instability=nullptr;
 public:
     JumperFormGeneratorSettings & getSettingsReference();
     void setSettings(const JumperFormGeneratorSettings &newSettings);

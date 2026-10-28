@@ -1595,7 +1595,19 @@ static void auditDataRegressions() {
     qInfo()<<"PASS: audit 1-3 archive ties, competition ranges and filter rebuilding";
 }
 
+#include "../source/form-generator/JumperFormGenerator.h"
 static void auditFormRegressions() {
+    {
+        Jumper athlete;auto profile=AthleteProfile::create();profile.overall=91;profile.form=82;profile.perks={3,-2,1};QString error;
+        check(athlete.setSimulationProfile(profile,error),"form generator v2 fixture");athlete.getJumperSkillsPointer()->setForm(7);
+        JumperFormGenerator generator;generator.generateJumperForm();double instability=.5;
+        JumperFormGeneratorSettings settings;settings.setJumper(&athlete);settings.setFormVariability(0);settings.setFormBonus(-12);generator.setSettings(settings);generator.setInstability(&instability);generator.generateJumperForm();
+        check(athlete.getSimulationProfile()->form==70 && athlete.getJumperSkillsPointer()->getForm()==7,"manual form generator edits active v2 form rather than ignored legacy skills");
+        settings.setFormBonus(-100);generator.setSettings(settings);generator.generateJumperForm();check(athlete.getSimulationProfile()->form==1,"v2 generated form cannot fall below one");
+        settings.setFormBonus(100);generator.setSettings(settings);generator.generateJumperForm();check(athlete.getSimulationProfile()->form==100,"v2 generated form cannot exceed one hundred");
+        settings.setFormBonus(0);settings.setFormVariability(2);generator.setSettings(settings);
+        for(int i=0;i<2000;++i){generator.generateJumperForm();const auto current=*athlete.getSimulationProfile();check(current.form>=1 && current.form<=100 && std::isfinite(instability) && current.overall==91 && current.perks==profile.perks && current.id==profile.id,"v2 form evolution preserves valid bounds, OVR, identity and perks");}
+    }
     Jumper a("A","One","POL"),b("B","Two","NOR");QVector<Jumper *> athletes{&a,&b};
     JumperFormGeneratorsSettingsTableModel model;model.setGeneratorsSettings(JumperFormGeneratorSettings::constructJumperFormGeneratorsSettingsVector(athletes));
     check(!model.setData(model.index(0,2),QString("abc"),Qt::EditRole),"audit 4: invalid text cannot silently become zero bonus");
