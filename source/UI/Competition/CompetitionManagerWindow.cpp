@@ -1806,6 +1806,19 @@ void CompetitionManagerWindow::refreshWindSnapshot()
 {
     if(simulationWeather)setActualWinds(SimulationV2::fieldWindSnapshot(*simulationWeather,manager->getCompetitionInfo()->getHill()->getKPoint(),simulationSeconds));
     else setActualWinds(windsGenerator.generateWinds());
+    QVariantList preview;
+    if(simulationWeather) {
+        const double width=manager->getCompetitionInfo()->getHill()->getKPoint()*1.2/6;
+        for(int i=0;i<6;++i) {
+            const double distance=(i+.5)*width;const auto wind=simulationWeather->wind(distance,simulationSeconds);
+            const double strength=std::hypot(wind.head,wind.cross);
+            double direction=strength>1e-9?std::atan2(wind.cross,wind.head)*180/3.14159265358979323846:0;
+            if(direction<0)direction+=360;
+            preview.append(QVariantMap{{"distance",distance},{"begin",i*width},{"end",(i+1)*width},{"head",wind.head},
+                {"cross",wind.cross},{"strength",strength},{"direction",direction},{"available",true}});
+        }
+    }
+    setProperty("simulationWindPreview",preview);setProperty("simulationWindPreviewTime",simulationSeconds);
 }
 
 JumpData CompetitionManagerWindow::simulateCurrentJump(bool skip)

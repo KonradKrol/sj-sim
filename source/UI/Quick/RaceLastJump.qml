@@ -8,6 +8,15 @@ Pane {
     property bool dense: false
     readonly property var summary: ui.jumpSummary
     readonly property bool narrow: width<480
+    property bool windOpen: false
+    readonly property string windKey: summary.windProfileKey || ""
+    onWindKeyChanged: windOpen=false
+    Loader {
+        objectName: "jumpWindLoader"
+        active: jump.windOpen && !!jump.summary.windProfile
+        onLoaded: if(status===Loader.Ready && item)item.open()
+        sourceComponent: Component { JumpWindProfile { recorded: jump.summary.windProfile || ({}); athlete: jump.summary.name || ""; onClosed: jump.windOpen=false } }
+    }
     ChangeFeedback { id: resultArrival; target: jump; trigger: [jump.summary.name,jump.summary.distance,jump.summary.points,jump.summary.selectedRound].join("|"); duration: Theme.motion*2 }
     implicitHeight: content.implicitHeight + topPadding + bottomPadding
     padding: dense ? 4 : 8
@@ -75,7 +84,7 @@ Pane {
         GridLayout {
             width: parent.width
             columns: jump.narrow ? 3 : 4; columnSpacing: 8; rowSpacing: 2
-            JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Wiatr"); value: jump.signedText(jump.summary.wind,jump.summary.windValue); valueColor: jump.signedColor(jump.summary.windValue); objectName: "lastJumpWind"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
+            JumpMetric { inlineValue: !jump.narrow; caption: jump.summary.windProfile ? qsTr("Wiatr ↗") : qsTr("Wiatr"); value: jump.signedText(jump.summary.wind,jump.summary.windValue); valueColor: jump.signedColor(jump.summary.windValue); interactive: !!jump.summary.windProfile; onClicked: jump.windOpen=true; objectName: "lastJumpWind"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
             JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Belka"); value: jump.summary.gate || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
             JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Ląd."); value: jump.summary.landing || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
             JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Rekomp."); value: jump.signedText(jump.summary.compensation,jump.summary.compensationValue); valueColor: jump.signedColor(jump.summary.compensationValue); objectName: "lastJumpCompensation"; Layout.fillWidth: true; Layout.minimumWidth: 0 }

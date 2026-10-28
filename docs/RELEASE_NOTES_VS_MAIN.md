@@ -12,6 +12,17 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
 - Starsze raporty opisują kolejne etapy prac. W razie rozbieżności stan końcowy opisany tutaj ma pierwszeństwo. Szczególnie istotne korekty są zebrane w sekcji „Rozwiązania zastąpione podczas prac”.
 
+## Uzupełnienie — podgląd przebiegu wiatru (28.10.2026)
+
+- Opcjonalny schemat bieżącego pola przed skokiem, bez zmiany czasu ani losowania.
+- W karcie skoku podgląd trzech faz wiatru: przed, średni wiatr na przebytych
+  odcinkach oraz po. Korzysta z zapisu skoku, działa także w archiwum.
+- Nieprzebyte odcinki pozostają puste; duża liczba odcinków jest grupowana
+  z wagami długości. Podstawowy układ karty i średni wiatr pozostają kompaktowe.
+- Testy kliknięć, małego okna, zapisu, archiwum, sezonów i konfiguracji PASS.
+- Oddzielne rozszerzenie wyboru 3–7 metod uśredniania jest **w kolejce**;
+  ten etap nie deklaruje oficjalnego algorytmu FIS.
+
 ## Uzupełnienie — sezony z nowym silnikiem (28.10.2026)
 
 - Nowa symulacja korzysta domyślnie z kanonicznych paczek v2, wczytywanych w tle.

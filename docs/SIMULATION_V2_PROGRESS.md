@@ -967,3 +967,43 @@ Nie zweryfikowano tego etapu na Windows/Qt 6.
    **odłożony** w specyfikacji; gotowy jest ręczny generator zgodny z v2.
 4. Nowy UX manipulacji oraz pozostały zakres `NEW_SIMULATION.md`, w tym playground
    i strojenie pełnego silnika. Nie oznaczać całego zadania jako zakończonego.
+
+## Opcjonalny podgląd wiatru przed skokiem i zapisanych korytarzy
+
+`RaceAthlete` ma dyskretne „Wiatr ↗” w istniejącym wierszu statusu. Otwiera
+sześć przybliżonych próbek **obecnego pola i czasu konkursu**, bez losowania,
+zmiany pogody, uruchamiania lotu ani przewidywania końcowej rekompensaty.
+Snapshot jest liczony w `refreshWindSnapshot`, a nie przy każdym bindingu Quick.
+Zmiana czasu zamyka ten podgląd; nie pokazuje się w trakcie animacji live ani
+po zakończeniu serii/konkursu.
+
+W karcie wybranego skoku klikalne „Wiatr ↗” zachowuje średni wiatr jako główną
+wartość. Na żądanie otwiera schemat w fazach **Przed / W locie / Po**.
+`QuickWindProfile::fromMetadata` czyta wyłącznie utrwalone `exposures`: pole przed,
+średnią po faktycznie przebytych odcinkach oraz pole w chwili zakończenia lotu.
+Odcinki nieprzebyte mają „—”, nie udają bezwietrznego lotu. Przy więcej niż sześciu
+odcinkach grupowanie ma wagi długości (w locie długości rzeczywiście przebytej).
+To schemat, nie precyzyjna trajektoria. Brak/nieprawidłowe metadane, DNS/DSQ
+oraz niedokończony live nie udostępniają fałszywego podglądu. Wspólny komponent
+obsługuje także kartę w archiwum i zmianę wybranej serii.
+
+Podgląd jest tylko do odczytu, bez kontrolek edycji, i nie zmienia podstawowego
+układu karty. Popup mieści się w małym oknie i ma wewnętrzny scroll dla dużego
+tekstu. Edytowalny główny schemat warunków pozostaje dotychczasowym narzędziem.
+
+Build Qt5 i `--simulation-v2-contest-weather-only` PASS: rzeczywiste kliknięcia,
+trzy fazy, najmniejsze okno, bieżący czas prognozy bez jego przesunięcia, archiwum
+oraz manualne/automatyczne ścieżki konkursu. `--simulation-v2-only` PASS: zapis/
+odczyt profilu, ważone grupowanie, odcinki nieprzebyte i uszkodzone dane.
+`--simulation-v2-setup-only` i `--simulation-v2-season-only` również PASS.
+Brak błędów QML i pętli układów.
+
+**Najnowsze polecenie użytkownika — kolejny etap:** dodać 3–7 metod uśredniania
+z różnym realizmem, w tym oficjalne warianty FIS. Pomiar ma być **nieidealny**,
+nie odwracać idealnie fizycznego wpływu lotu. Zapisane w `NEW_SIMULATION.md`.
+Badanie już rozpoczęto: bieżące ICR 415.3 odsyła do osobnych zasad; katalog
+Swiss Timing 2025/26 wymienia 8 urządzeń / 12 na lotach (to wyposażenie, nie dowód
+liczby aktywnych czujników w algorytmie). Praca Pietschnig 2020 opisuje historyczne
+5/7/10, wagi i zmianę w 2016; nie podaje kompletu wag i okien. Nie podpisywać
+arbitralnego układu jako „oficjalny”. Dalsze szczegóły w `WIND_MEASUREMENT_RESEARCH.md`.
+Dopiero po metodach wrócić do manipulacji, audytu następnego sezonu i playgroundu.

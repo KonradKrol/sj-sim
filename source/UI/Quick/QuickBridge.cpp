@@ -1,4 +1,5 @@
 #include "QuickUi.h"
+#include "QuickWindProfile.h"
 #include "QuickView.h"
 #include "QuickCalendar.h"
 #include "QuickRoster.h"
@@ -545,6 +546,8 @@ void QuickBridge::refresh() {
         QVariantMap context{{"complete",manager->checkCompetitionEnd()},{"roundComplete",manager->checkRoundEnd()},{"liveStage",window->getLiveStage()},{"round",manager->getActualRound()},{"roundCount",manager->effectiveRoundsCount()},{"qualifications",manager->getCompetitionInfo()->getSerieType()==CompetitionInfo::Qualifications},
                             {"athlete",qMin(manager->getActualStartListIndex()+1,manager->getStartListStatusesReference().size())},{"athleteCount",manager->getStartListStatusesReference().size()}};
         if(auto *team=dynamic_cast<TeamCompetitionManager *>(manager))context["group"]=team->getActualGroup();
+        context["windPreview"]=window->property("simulationWindPreview");
+        context["windPreviewTime"]=window->property("simulationWindPreviewTime");
         context["nextKoEditable"]=dynamic_cast<IndividualCompetitionManager *>(manager) && manager->checkRoundEnd() && !manager->checkCompetitionEnd() && manager->getActualRound()<manager->effectiveRoundsCount() && manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getKO();
         if(auto *hill=manager->getCompetitionInfo()->getHill())context["hillFlag"]=quickPicture(CountryFlagsManager::getFlagPixmap(hill->getCountryCode().toLower()));
         double wind=0;if(auto *label=m_content->findChild<QLabel *>("label_actualAvgWind")){auto value=label->text();value.remove(QRegularExpression("[^0-9.,+−-]"));value.replace(',', '.');value.replace(QChar(0x2212),'-');wind=value.toDouble();}context["windValue"]=wind;
@@ -612,6 +615,13 @@ void QuickBridge::refresh() {
             }
             for(auto *info:selected->findChildren<JumpDataDetailedInfoWindow *>())if(info->isVisibleTo(m_content) && info->getJumpData()) {
                 auto *jump=info->getJumpData();
+                if((stage==0 || stage>=5) && !jump->getDNS() && !jump->getDSQ()) {
+                    const auto profile=QuickWindProfile::fromMetadata(jump->getSimulationV2Data());
+                    if(!profile.isEmpty()) {
+                        summary["windProfile"]=profile;
+                        summary["windProfileKey"]=jump->getSimulationV2Data()["seed"].toString()+":"+QString::number(jump->getSimulationV2Data()["startSeconds"].toDouble());
+                    }
+                }
                 if(jump->getDNS()){summary["dns"]=true;summary["dsq"]="DNS";summary["distance"]="DNS";}else if(jump->getDSQ()){summary["dsq"]="DSQ";summary["distance"]="DSQ";}
                 if(jump->getCompetition() && (stage==0 || stage>=5)) {
                     const int position=jump->getCompetition()->getRules().getCompetitionType()==CompetitionRules::Team ? jump->getPositionInRoundForTeamCompetition() : jump->getPositionInRound();

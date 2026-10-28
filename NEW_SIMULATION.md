@@ -262,6 +262,13 @@ Użytkownik ma móc na życzenie zobaczyć **przybliżony obraz warunków w posz
 
 - Dla pomiaru wiatru wzdłuż zeskoku stosować odpowiedni współczynnik skoczni: przy korzystnym wietrze pod narty punkty są odejmowane, przy tylnym dodawane; przy zerze nie ma punktów za wiatr. Uwzględnić właściwe współczynniki dla obu kierunków i zasady zaokrąglania. Przykład oficjalny: pomiar +0,39 m/s i współczynnik 9,26 pkt/(m/s) daje −3,6 pkt. [Zasady zawodów olimpijskich 2026](https://wmr-static-assets.scd.dgplatform.net/wmr/static/_PDF/OWG2026/SJP/2026-02-02/SJP-------------------------------__N02A_1.0.pdf).
 - Uwzględnić także rzeczywiste zasady rekompensaty za belkę, w tym rozróżnienie decyzji jury i obniżenia przez trenera oraz próg 95% HS tam, gdzie wymagają tego przepisy. [Przepisy FIS, art. 422.1](https://assets.fis-ski.com/f/252177/x/c67426c343/icr-ski-jumping-2024_e_clean.pdf).
+- **Doprecyzowanie użytkownika podczas integracji:** pomiar ma pozostać nieidealny,
+  jak rzeczywisty FIS. Dodać **3–7 nazwanych opcji uśredniania** o różnym stopniu
+  realizmu, w tym oficjalny wariant/warianty potwierdzone źródłem. Nie tworzyć
+  sztucznej losowej „krzywdy” ani idealnego odwracania wpływu lotu. Jeśli dokładna
+  techniczna receptura oficjalnego wariantu nie jest dostępna, opisać ograniczenie
+  i nie podpisywać wymyślonych wag/okien jako oficjalnych. Dobór metody powinien
+  być prosty; szczegóły w pomocy, zapis wyboru w zasadach/eksperymencie.
 - Przed implementacją zweryfikować w aktualnych oficjalnych przepisach i dokumentacji technicznej dokładny układ punktów pomiarowych dla systemu rekompensaty, okna czasowe, ważenie, sposób uwzględniania odległości i zaokrąglanie. Nie wymyślać ich ani nie zakładać, że trzy ogólne stanowiska pomiaru warunków opisane w ICR są automatycznie całym układem używanym przez system wind/gate; ICR odsyła tu do osobnych zasad. [FIS ICR, art. 415.3](https://assets.fis-ski.com/f/252177/x/c67426c343/icr-ski-jumping-2024_e_clean.pdf).
 - **Stan obecny Sj.Sim:** istnieje już wyliczanie średniego wiatru i rekompensaty z osobnymi współczynnikami skoczni dla wiatru przedniego i tylnego, a także rekompensata za belkę oraz logika progu 95% HS. Dostępne są różne sposoby uśredniania i uwzględniania odległości; sam fakt, że kod istnieje, nie potwierdza jeszcze pełnej zgodności z aktualną metodą FIS. Przed migracją porównać te mechanizmy z przepisami, zachować lub świadomie zmigrować ustawienia i stare zapisy oraz dodać przykłady i testy zgodności.
 

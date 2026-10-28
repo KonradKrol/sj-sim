@@ -10,12 +10,32 @@ Pane {
     readonly property var beatNode: ui.find("label_toBeatDistance")
     readonly property var advanceNode: ui.find("label_toAdvancementDistance")
     property bool dense: false
+    property bool windOpen: false
+    readonly property real windTime: Number(ui.context.windPreviewTime || 0)
+    onWindTimeChanged: windOpen=false
+    Loader {
+        objectName: "nextJumpWindLoader"
+        active: athlete.windOpen
+        onLoaded: if(status===Loader.Ready && item)item.open()
+        sourceComponent: Component { JumpWindProfile { forecast: true; athlete: athlete.nameNode ? athlete.nameNode.values.text : ""; recorded: ({before: ui.context.windPreview || []}); onClosed: athlete.windOpen=false } }
+    }
     ChangeFeedback { id: athleteArrival; target: athlete; trigger: athlete.nameNode ? athlete.nameNode.values.text : ""; duration: Theme.motion*2 }
     padding: dense ? 8 : 12
     background: Surface { fillColor: Theme.stadium; sweep: 28 }
     contentItem: ColumnLayout {
         spacing: 4
-        Label { text: ui.context.complete ? qsTr("Zakończono") : ui.context.roundComplete ? qsTr("Koniec serii") : qsTr("NA BELCE"); color: Theme.signal; font.pointSize: Theme.caption; font.family: Theme.mono }
+        RowLayout {
+            Layout.fillWidth: true
+            Label { text: ui.context.complete ? qsTr("Zakończono") : ui.context.roundComplete ? qsTr("Koniec serii") : qsTr("NA BELCE"); color: Theme.signal; font.pointSize: Theme.caption; font.family: Theme.mono; Layout.fillWidth: true }
+            SButton {
+                objectName: "nextJumpWind"
+                visible: (ui.context.windPreview || []).length>0 && !ui.context.complete && !ui.context.roundComplete && !ui.context.liveStage
+                text: qsTr("Wiatr ↗"); quiet: true; inverse: true; font.pointSize: Theme.caption; padding: 0
+                implicitHeight: Theme.captionMetrics.height+2
+                Accessible.name: qsTr("Podgląd wiatru przed skokiem")
+                onClicked: athlete.windOpen=true
+            }
+        }
         RowLayout {
             Layout.fillWidth: true
             opacity: 0.65+athleteArrival.progress*0.35

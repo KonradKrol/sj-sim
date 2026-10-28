@@ -56,6 +56,21 @@ static void simulationV2BridgeRegressions()
     const auto restored=JumpData::getFromJson(JumpData::getJsonObject(jump),&objects);
     check(restored.getSimulationV2Data()==jump.getSimulationV2Data() && restored.getJumper()==&jumper,"weather history persists with result, independently of seed replay");
     auto reset=restored;reset.setupForNextJumper();check(reset.getSimulationV2Data().isEmpty(),"next jumper cannot inherit historical weather");
+    check(!QuickWindProfile::fromMetadata(restored.getSimulationV2Data()).isEmpty() && QuickWindProfile::fromMetadata(restored.getSimulationV2Data())==QuickWindProfile::fromMetadata(jump.getSimulationV2Data()),"recorded wind phases survive JumpData serialization");
+    {
+        QJsonArray parts;double position=0;
+        for(int i=0;i<12;++i) {
+            const double length=i%2?3:1;
+            parts.append(QJsonObject{{"begin",position},{"end",position+length},{"traversed",i<6?length:0},
+                {"before",QJsonArray{i%2?3:1,0}},{"experienced",QJsonArray{2,0}},{"after",QJsonArray{-1,0}}});position+=length;
+        }
+        QJsonObject metadata{{"engineVersion",2},{"exposures",parts}};const auto profile=QuickWindProfile::fromMetadata(metadata);
+        const auto before=profile["before"].toList(),during=profile["during"].toList(),after=profile["after"].toList();
+        check(before.size()==6 && before[0].toMap()["head"].toDouble()==2.5 && after[0].toMap()["direction"].toDouble()==180,"wind profile compacts many sections with length weights and preserves direction");
+        check(during[0].toMap()["available"].toBool() && !during[5].toMap()["available"].toBool(),"unreached sections cannot masquerade as calm experienced wind");
+        auto bad=parts[0].toObject();bad["before"]=QJsonArray{1};parts[0]=bad;metadata["exposures"]=parts;
+        check(QuickWindProfile::fromMetadata(metadata).isEmpty() && QuickWindProfile::fromMetadata({}).isEmpty(),"malformed or absent historical wind has no misleading profile view");
+    }
     // Preview shares the new model and ignores all obsolete legacy skills.
     const double preview=simulator.previewDistance();jumper.getJumperSkillsPointer()->setTakeoffTechnique(0);jumper.getJumperSkillsPointer()->setFlightTechnique(10000);
     check(std::abs(preview-simulator.previewDistance())<1e-10,"new engine reads new OVR/form, not old techniques");

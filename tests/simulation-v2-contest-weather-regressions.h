@@ -1,4 +1,5 @@
 #pragma once
+#include "../source/UI/Quick/QuickWindProfile.h"
 
 static void simulationV2ContestWeatherRegressions(MainWindow &main) {
     const bool previousLive=GlobalAppSettings::get()->getLiveCompetition();GlobalAppSettings::get()->setLiveCompetition(false);
@@ -46,6 +47,31 @@ static void simulationV2ContestWeatherRegressions(MainWindow &main) {
             const auto historical=a.getSimulationV2Data();setup.applyPreset(0);
             check(window.getSimulationSeconds()==120 && info.getResultsReference().getResultOfIndividualJumper(first)->getJumps().last().getSimulationV2Data()==historical,"changing conditions keeps the clock and historical jump weather intact");
             window.show();QTest::qWait(150);bool editorOpened=false;int editorTicks=0;QTimer closeEditor;
+            auto *bridge=window.findChild<QuickBridge *>();bridge->refresh();QTest::qWait(80);
+            const auto recorded=bridge->jumpSummary().value("windProfile").toMap();
+            check(recorded==QuickWindProfile::fromMetadata(c.getSimulationV2Data()) && recorded.value("during").toList().size()==6,"visible jump wind comes from that jump's recorded exposure, independent of changed current weather");
+            clickControl(scene(&window),"lastJumpWind");QTest::qWait(80);
+            auto *loader=item(scene(&window)->rootObject(),"jumpWindLoader");
+            auto *wind=loader?loader->property("item").value<QObject *>():nullptr;
+            auto *slope=item(scene(&window)->quickWindow()->contentItem(),"recordedWindSlope");
+            check(wind && wind->property("visible").toBool() && slope && !slope->property("interactive").toBool(),"wind metric opens a read-only profile without enabling configuration edits");
+            presentation(&window)->grab().save(output+"/recorded-wind-profile.png");
+            auto *phase=item(scene(&window)->quickWindow()->contentItem(),"jumpWindPhase");check(phase,"recorded wind exposes three clear phases");
+            QMetaObject::invokeMethod(phase,"selected",Q_ARG(int,0));QTest::qWait(20);
+            const auto samples=[&]{const auto value=slope->property("samples");return value.userType()==qMetaTypeId<QJSValue>()?value.value<QJSValue>().toVariant().toList():value.toList();};
+            check(samples()==recorded.value("before").toList(),"before phase uses the persisted pre-takeoff field");
+            QMetaObject::invokeMethod(phase,"selected",Q_ARG(int,2));QTest::qWait(20);
+            check(samples()==recorded.value("after").toList(),"after phase uses the persisted field at landing time");
+            main.resize(360,480);QTest::qWait(80);
+            check(wind->property("y").toDouble()>=0 && wind->property("y").toDouble()+wind->property("height").toDouble()<=scene(&window)->height(),"recorded wind popup fits the smallest viewport");
+            presentation(&window)->grab().save(output+"/recorded-wind-profile-small.png");
+            QMetaObject::invokeMethod(wind,"close");main.resize(1024,640);QTest::qWait(80);
+            const auto forecast=bridge->context().value("windPreview").toList();
+            check(forecast.size()==6 && forecast.first().toMap()["head"].toDouble()==setup.field()->wind(forecast.first().toMap()["distance"].toDouble(),120).head,"pre-jump preview samples the current field at the actual contest time");
+            clickControl(scene(&window),"nextJumpWind");QTest::qWait(60);
+            auto *nextLoader=item(scene(&window)->rootObject(),"nextJumpWindLoader");auto *nextWind=nextLoader?nextLoader->property("item").value<QObject *>():nullptr;
+            check(nextWind && nextWind->property("visible").toBool() && nextWind->property("forecast").toBool() && window.getSimulationSeconds()==120,"optional pre-jump preview opens without advancing time or changing weather");
+            QMetaObject::invokeMethod(nextWind,"close");QTest::qWait(40);
             QObject::connect(&closeEditor,&QTimer::timeout,&window,[&]{
                 check(++editorTicks<500,"continuous weather editor opens without getting stuck");
                 for(auto *widget:QApplication::allWidgets())if(auto *dialog=qobject_cast<QDialog *>(widget);dialog && dialog->objectName()=="continuousWeatherEditor" && dialog->isVisible()) {
@@ -66,6 +92,13 @@ static void simulationV2ContestWeatherRegressions(MainWindow &main) {
             check(jumps>0 && times.size()==jumps && window.getSimulationSeconds()==jumps*30,"automatic N/group/round/contest paths use one unique time slot per jump");
             if(mode==1 || mode==4)check(jumps==2,"N and team-group simulation keep their requested scope");
             if(mode==2 || ko)check(manager->checkCompetitionEnd(),"whole-competition simulation completes both normal and KO contests");
+            if(mode==2) {
+                QDialog archive(&main);archive.setObjectName("competitionResultsArchive");auto *layout=new QVBoxLayout(&archive);
+                auto *history=new ResultsHistoryWidget(&info,false,&archive);layout->addWidget(history);archive.show();QTest::qWait(100);
+                auto *table=history->tableView();table->clicked(table->model()->index(0,0));
+                auto *bridge=archive.findChild<QuickBridge *>();bridge->refresh();QTest::qWait(50);
+                check(!bridge->jumpSummary().value("windProfile").toMap().isEmpty(),"archive jump card exposes recorded corridors through the same profile view");archive.reject();
+            }
         }
         dialogs.stop();window.reject();
     }

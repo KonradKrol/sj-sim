@@ -7,11 +7,24 @@ Item {
     property string value: "—"
     property color valueColor: Theme.ink
     property bool inlineValue: false
+    property bool interactive: false
+    signal clicked()
     ChangeFeedback { id: valueFeedback; target: metric; trigger: metric.value }
     implicitWidth: inlineValue ? inlineTitle.implicitWidth+inlineNumber.implicitWidth+6 : Math.max(title.implicitWidth,number.implicitWidth)
     implicitHeight: inlineValue ? Math.max(inlineTitle.implicitHeight,inlineNumber.implicitHeight) : stacked.implicitHeight
-    Accessible.role: Accessible.StaticText
+    Accessible.role: interactive ? Accessible.Button : Accessible.StaticText
     Accessible.name: caption + ": " + value
+    Accessible.onPressAction: if(interactive)clicked()
+    activeFocusOnTab: interactive
+    Keys.onReturnPressed: if(interactive)clicked()
+    Keys.onSpacePressed: if(interactive)clicked()
+    Rectangle { anchors.fill: parent; visible: metric.interactive && (pointer.containsMouse || metric.activeFocus); color: Theme.selection; radius: 3 }
+    MouseArea {
+        id: pointer
+        anchors.fill: parent; enabled: metric.interactive; hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
+        onClicked: {metric.forceActiveFocus();metric.clicked()}
+    }
     Column {
         id: stacked
         visible: !metric.inlineValue
