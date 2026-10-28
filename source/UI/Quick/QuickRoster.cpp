@@ -91,6 +91,7 @@ void QuickRoster::write(const QVector<Jumper *> &value){
         if(config->type==CompetitionConfigWindow::SingleCompetition)config->competitionJumpers=value;else config->seasonCompetitionJumpers=value;
         config->jumpersListView->setupListModel();
         if(config->usesCanonicalCatalog())config->updateCanonicalReadiness();
+        else if(config->getWeatherSetup())config->updateCanonicalGateSuggestion();
         if(config->KOGroupsList&&!config->comboBox_groupsSelectionType->isHidden()&&config->comboBox_groupsSelectionType->currentIndex()>0){
             auto &groups=config->type==CompetitionConfigWindow::SingleCompetition?config->competitionGroups:config->seasonCompetitionGroups;
             const auto rules=config->seasonCompetition?config->seasonCompetition->getRules():config->competitionRulesEditor->getCompetitionRulesFromWidgetInputs();

@@ -282,7 +282,7 @@ FocusScope {
             if (!tableRoot.restoringScroll) return
             var revision=++tableRoot.resetRevision
             Qt.callLater(function(){
-                if (revision!==tableRoot.resetRevision) return
+                if (!tableRoot || !rows || revision!==tableRoot.resetRevision) return
                 rows.contentY=rows.originY+Math.max(0,Math.min(tableRoot.savedScrollY,rows.contentHeight-rows.height))
                 tableRoot.restoringScroll=false
             })

@@ -539,6 +539,10 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
     updateResponsiveLayout(width());
     ResponsiveWindowUtils::manageWindowGeometry(this, "CompetitionConfigWindow");
     if(usesCanonicalCatalog())setupCanonicalCatalog();
+    else if(type==SeasonCompetition && simulationSave && simulationSave->getEngineVersion()==2
+            && seasonCompetition && seasonCompetition->getHill() && seasonCompetition->getHill()->getSimulationProfile()) {
+        setupWeather();on_pushButton_autoGate_clicked();updateCanonicalGateSuggestion();
+    }
 }
 
 CompetitionConfigWindow::~CompetitionConfigWindow()
@@ -562,9 +566,8 @@ QVector<Jumper *> CompetitionConfigWindow::availableJumpers() const
 void CompetitionConfigWindow::setupCanonicalCatalog()
 {
     hillDraft=new SimulationProfileDraft(DataPack::Hills,this);
-    weatherSetup=new SimulationWeatherSetup(this);
+    setupWeather();
     setProperty("hillDraft",QVariant::fromValue(static_cast<QObject *>(hillDraft)));
-    setProperty("weatherSetup",QVariant::fromValue(static_cast<QObject *>(weatherSetup)));
     hillEditor->hide();
     ui->verticalLayout_hillEditorWidget->addWidget(createSimulationProfileEditor(hillDraft,true,this));
     auto *sources=new QWidget(this);auto *form=new QFormLayout(sources);
@@ -579,12 +582,7 @@ void CompetitionConfigWindow::setupCanonicalCatalog()
     ui->verticalLayout_hillEditorWidget->insertWidget(2,details);
     auto *gateLabel=new QLabel(this);gateLabel->setObjectName("label_suggestedGate");form->addRow(gateLabel);
     connect(details,&QPushButton::clicked,this,[this]{QMessageBox box(QMessageBox::Information,tr("Wczytywanie paczek"),tr("Uwagi: %1").arg(snapshot.issues.size()),QMessageBox::Ok,this);box.setDetailedText(snapshot.issues.join('\n'));box.exec();});
-    for(int i=ui->toolBox->count()-1;i>=0;--i)if(ui->toolBox->widget(i)==windsGeneratorSettingsEditor || ui->toolBox->widget(i)==inrunSnowGeneratorSettingsEditor) {
-        ui->toolBox->widget(i)->hide();ui->toolBox->removeItem(i);
-    }
-    ui->toolBox->addItem(createWeatherSetupEditor(weatherSetup,this),tr("Warunki"));
-    for(auto *widget:QList<QWidget *>{ui->label_jumpsImportance,ui->doubleSpinBox_jumpsImportance,ui->comboBox_jumpsImportancePreset})widget->hide();
-    ui->spinBox_startGate->setMaximum(200);ui->pushButton_submit->setEnabled(false);
+    ui->pushButton_submit->setEnabled(false);
     connect(athletePack,QOverload<int>::of(&QComboBox::currentIndexChanged),this,[this]{if(!filling)selectCanonicalPack(DataPack::Jumpers);});
     connect(hillPack,QOverload<int>::of(&QComboBox::currentIndexChanged),this,[this]{if(!filling)selectCanonicalPack(DataPack::Hills);});
     connect(rulesPack,QOverload<int>::of(&QComboBox::currentIndexChanged),this,[this]{if(!filling)selectCanonicalPack(DataPack::Rules);});
@@ -595,6 +593,19 @@ void CompetitionConfigWindow::setupCanonicalCatalog()
         } else weatherSetup->clearHill();
         updateCanonicalReadiness();
     });
+    QTimer::singleShot(0,this,&CompetitionConfigWindow::loadCanonicalCatalog);
+}
+
+void CompetitionConfigWindow::setupWeather()
+{
+    weatherSetup=new SimulationWeatherSetup(this);
+    setProperty("weatherSetup",QVariant::fromValue(static_cast<QObject *>(weatherSetup)));
+    for(int i=ui->toolBox->count()-1;i>=0;--i)if(ui->toolBox->widget(i)==windsGeneratorSettingsEditor || ui->toolBox->widget(i)==inrunSnowGeneratorSettingsEditor) {
+        ui->toolBox->widget(i)->hide();ui->toolBox->removeItem(i);
+    }
+    ui->toolBox->addItem(createWeatherSetupEditor(weatherSetup,this),tr("Warunki"));
+    for(auto *widget:QList<QWidget *>{ui->label_jumpsImportance,ui->doubleSpinBox_jumpsImportance,ui->comboBox_jumpsImportancePreset})widget->hide();
+    ui->spinBox_startGate->setMaximum(200);
     auto *gateTimer=new QTimer(this);gateTimer->setSingleShot(true);gateTimer->setInterval(40);
     connect(weatherSetup,&SimulationWeatherSetup::changed,gateTimer,QOverload<>::of(&QTimer::start));
     connect(gateTimer,&QTimer::timeout,this,&CompetitionConfigWindow::updateCanonicalGateSuggestion);
@@ -603,7 +614,11 @@ void CompetitionConfigWindow::setupCanonicalCatalog()
     connect(competitionRulesEditor,&CompetitionRulesEditorWidget::competitionTypeChanged,gateTimer,QOverload<>::of(&QTimer::start));
     connect(competitionRulesEditor,&CompetitionRulesEditorWidget::jumpersCountInTeamChanged,gateTimer,QOverload<>::of(&QTimer::start));
     for(auto *input:competitionRulesEditor->findChildren<QCheckBox *>())connect(input,&QCheckBox::toggled,gateTimer,QOverload<>::of(&QTimer::start));
-    QTimer::singleShot(0,this,&CompetitionConfigWindow::loadCanonicalCatalog);
+    if(type==SeasonCompetition && seasonCompetition && seasonCompetition->getHill()) {
+        const auto *season=simulationSave->getActualSeason();
+        weatherSetup->setDate(season && season->getDatesEnabled()?seasonCompetition->getScheduledDate():QDate());
+        weatherSetup->setHill(*seasonCompetition->getHill()->getSimulationProfile());
+    }
 }
 
 void CompetitionConfigWindow::loadCanonicalCatalog()

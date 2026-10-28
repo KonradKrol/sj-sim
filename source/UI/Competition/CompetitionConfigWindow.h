@@ -122,6 +122,7 @@ private:
     QString importNotice;
     std::vector<std::unique_ptr<Jumper>> importedStorage;
     void setupCanonicalCatalog();
+    void setupWeather();
     void loadCanonicalCatalog();
     void selectCanonicalPack(DataPack::Kind);
     void selectCanonicalHill(int);

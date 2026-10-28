@@ -320,15 +320,23 @@ void DatabaseItemsListView::onInsertActionTriggered()
             switch(type){
             case SeasonJumpersItems:{
                 SeasonJumpersListModel * jumpersListModel = dynamic_cast<SeasonJumpersListModel *>(listModel);
-                jumpersListModel->insertRows(rowToInsert, 1);
-                jumpersListModel->getSeasonJumpers()->insert(rowToInsert, 1, new Jumper("Name", "Surname", "XXX"));
+                auto *jumper=new Jumper("Name","Surname","XXX");
+                if(property("simulationV2").toBool()) {
+                    auto profile=AthleteProfile::create();profile.name=tr("Nowy");profile.surname=tr("zawodnik");
+                    QString error;jumper->setSimulationProfile(profile,error);
+                }
+                jumpersListModel->insertItem(rowToInsert,jumper);
                 emit jumpersListModel->dataChanged(jumpersListModel->index(rowToInsert), jumpersListModel->index(jumpersListModel->rowCount() - 1));
                 break;
             }
             case SeasonHillsItems:{
                 SeasonHillsListModel * hillsListModel = dynamic_cast<SeasonHillsListModel *>(listModel);
-                hillsListModel->insertRows(rowToInsert, 1);
-                hillsListModel->getSeasonHills()->insert(rowToInsert, 1, new Hill("Hill"));
+                auto *hill=new Hill("Hill");
+                if(property("simulationV2").toBool()) {
+                    auto profile=HillProfile::create();profile.name=tr("Nowa skocznia");
+                    QString error;hill->setSimulationProfile(profile,error);
+                }
+                hillsListModel->insertItem(rowToInsert,hill);
                 emit hillsListModel->dataChanged(hillsListModel->index(rowToInsert), hillsListModel->index(hillsListModel->rowCount() - 1));
                 break;
             }

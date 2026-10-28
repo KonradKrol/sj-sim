@@ -62,7 +62,7 @@ static void simulationOnboardingRegressions(MainWindow &main) {
     DataPack pack=*database->activePack(DataPack::Jumpers);pack.name="Onboarding test";pack.jumpers.resize(2);
     const auto custom=database->addPack(pack);database->selectPack(original);
     {
-        NewSimulationSaveConfigurationWindow dialog({},&main);render(&dialog,"new-simulation-packs",true);
+        NewSimulationSaveConfigurationWindow dialog({},&main,NewSimulationSaveConfigurationWindow::DataSource::LegacyCompatibility);render(&dialog,"new-simulation-packs",true);
         check(item(scene(&dialog)->rootObject(),"newSimulationPage"),"simulation creation uses its dedicated single-screen layout");
         auto *choice=dialog.findChild<QComboBox *>("simulationPack0");choice->setCurrentIndex(choice->findData(custom));QTest::qWait(80);
         check(dialog.selectedPack(DataPack::Jumpers).jumpers.size()==2 && dialog.findChild<QLabel *>("simulationPackCount0")->text().contains('2'),"pack selection updates its count without editing the source data");
@@ -71,7 +71,7 @@ static void simulationOnboardingRegressions(MainWindow &main) {
         QMetaObject::invokeMethod(&dialog,"on_pushButton_submit_clicked");check(dialog.result()==QDialog::Accepted && dialog.getDatesEnabledFromInput(),"one-screen creation accepts selected packs and dates");
     }
     {
-        NewSimulationSaveConfigurationWindow dialog({},&main);check(dialog.selectedPack(DataPack::Jumpers).id==custom,"accepted pack choices are remembered for the next creation");dialog.reject();
+        NewSimulationSaveConfigurationWindow dialog({},&main,NewSimulationSaveConfigurationWindow::DataSource::LegacyCompatibility);check(dialog.selectedPack(DataPack::Jumpers).id==custom,"accepted pack choices are remembered for the next creation");dialog.reject();
     }
     QSettings().remove("newSimulation");QString error;check(database->restorePacks(snapshot,error),"restore onboarding database fixture");
     SimulationSave save;save.setName("Empty onboarding");save.setHills({new Hill(database->getEditableGlobalHills().first())});save.setCompetitionRules({database->getEditableCompetitionRules().first()});Season season;season.setSeasonNumber(2026);save.setSeasons({season});save.setActualSeason(&save.getSeasonsReference().first());save.updateNextCompetitionIndex();

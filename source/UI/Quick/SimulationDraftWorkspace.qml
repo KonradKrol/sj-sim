@@ -12,7 +12,7 @@ ColumnLayout {
     RowLayout {
         Layout.fillWidth: true
         Label { text: qsTr("Zmiany tylko dla tej symulacji"); color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap; Layout.fillWidth: true }
-        SButton { text: qsTr("Przywróć z paczki"); enabled: workspace.backend.valid; onClicked: {workspace.forceActiveFocus(); workspace.backend.reset()} }
+        SButton { text: workspace.node.values.season ? qsTr("Cofnij edycję") : qsTr("Przywróć z paczki"); enabled: workspace.backend.valid; onClicked: {workspace.forceActiveFocus(); workspace.backend.reset()} }
     }
     Label { visible: text.length>0; text: workspace.backend.message; color: Theme.danger; font.pointSize: Theme.body; wrapMode: Text.WordWrap; Layout.fillWidth: true }
     EmptyState {

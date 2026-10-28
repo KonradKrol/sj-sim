@@ -279,6 +279,12 @@ QVariantList QuickBridge::widgetChildren(QWidget *widget) {
 QuickNode *QuickBridge::node(QWidget *widget,bool force) {
     if(!widget || (widget->isHidden() && !force) || qobject_cast<QQuickWidget *>(widget)) return nullptr;
     if(!force && widget->property("quickMenuOnly").toBool()) return nullptr;
+    if(widget->property("simulationDraft").isValid()) {
+        auto *entry=identity(widget);
+        entry->update({{"kind","simulationDraft"},{"backend",widget->property("simulationDraft")},
+            {"hill",widget->property("simulationDraftHill")},{"season",widget->property("simulationDraftSeason")}});
+        return entry;
+    }
     // The dedicated KO workspace owns this node; never rebuild its hidden Widgets tree.
     if(qobject_cast<KOGroupsListView *>(widget)) return identity(widget);
     if(auto *history=qobject_cast<ResultsHistoryWidget *>(widget)) {
@@ -523,7 +529,7 @@ void QuickBridge::refresh() {
         if(context!=m_context){m_context=context;emit changed();}
     }
     if(auto *configuration=qobject_cast<CompetitionConfigWindow *>(m_window)) {
-        QVariantMap context;context["suggestedGate"]=configuration->usesCanonicalCatalog()?m_window->property("suggestedGate"):QVariant(configuration->suggestedGate());if(auto *gate=m_content->findChild<QSpinBox *>("spinBox_startGate"))context["startingGate"]=gate->value();
+        QVariantMap context;context["suggestedGate"]=configuration->getWeatherSetup()?m_window->property("suggestedGate"):QVariant(configuration->suggestedGate());if(auto *gate=m_content->findChild<QSpinBox *>("spinBox_startGate"))context["startingGate"]=gate->value();
         if(context!=m_context){m_context=context;emit changed();}
     }
     if(auto *season=qobject_cast<SimulationSaveManagerWindow *>(m_window)) {
@@ -838,10 +844,10 @@ void QuickBridge::compose(QuickNode *base) {
         }
         QuickNode *editor=nullptr;QWidget *nativeEditor=nullptr;
         const QStringList editorTypes{"JumperEditorWidget","HillEditorWidget","CompetitionRulesEditorWidget","ClassificationEditorWidget","PointsForPlacesPresetEditorWidget","JumpersListsListItemWidget"};
-        for(auto *widget:page->findChildren<QWidget *>())if(editorTypes.contains(QString::fromLatin1(widget->metaObject()->className()))&&widget->isVisibleTo(page)){editor=node(widget,true);nativeEditor=widget;break;}
+        for(auto *widget:page->findChildren<QWidget *>())if((widget->property("simulationDraft").isValid() || editorTypes.contains(QString::fromLatin1(widget->metaObject()->className())))&&widget->isVisibleTo(page)){editor=node(widget,true);nativeEditor=widget;break;}
         QVariantList actions;
         for(auto *button:page->findChildren<QPushButton *>())if(button->isVisibleTo(page)&&!container->isAncestorOf(button)&&(!nativeEditor||!nativeEditor->isAncestorOf(button)))actions.append(QVariant::fromValue(node(button,true)));
-        entry->update({{"kind","catalog"},{"athleteStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_jumpers"?m_window->property("athleteStudio"):QVariant()},{"hillStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_hills"?m_window->property("hillStudio"):QVariant()},{"singleClickEdit",profile()=="DatabaseEditorWindow" && view->model() && QByteArray(view->model()->metaObject()->className())=="JumpersListModel"},{"actionsRow",actions},{"list",QVariant::fromValue(node(view,true))},{"editor",QVariant::fromValue(editor)},{"toolbar",toolbar},{"editRequest",entry->property("editRequest").toInt()}});
+        entry->update({{"kind","catalog"},{"athleteStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_jumpers"?m_window->property("athleteStudio"):QVariant()},{"hillStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_hills"?m_window->property("hillStudio"):QVariant()},{"singleClickEdit",view->property("quickSingleClickEdit").toBool() || (profile()=="DatabaseEditorWindow" && view->model() && QByteArray(view->model()->metaObject()->className())=="JumpersListModel")},{"actionsRow",actions},{"list",QVariant::fromValue(node(view,true))},{"editor",QVariant::fromValue(editor)},{"toolbar",toolbar},{"editRequest",entry->property("editRequest").toInt()}});
         return entry;
     };
     if(m_window->property("playgroundController").isValid()){m_root->update({{"kind","playground"},{"backend",m_window->property("playgroundController")}});return;}

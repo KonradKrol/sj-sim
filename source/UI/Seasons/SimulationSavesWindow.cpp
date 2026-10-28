@@ -99,26 +99,8 @@ void SimulationSavesWindow::on_pushButton_add_clicked()
     bool savedToDisk = false;
     try
     {
-        std::unique_ptr<SimulationSave> simulationSave = std::make_unique<SimulationSave>();
-        simulationSave->setName(simulationSaveWindow.getNameFromInput());
-        QVector<Jumper *> jumpers;for(const auto &jumper:simulationSaveWindow.selectedPack(DataPack::Jumpers).jumpers)jumpers.append(new Jumper(jumper));
-        QVector<Hill *> hills;for(const auto &hill:simulationSaveWindow.selectedPack(DataPack::Hills).hills)hills.append(new Hill(hill));
-        simulationSave->setJumpers(jumpers);simulationSave->setHills(hills);
-        simulationSave->setCompetitionRules(simulationSaveWindow.selectedPack(DataPack::Rules).rules);
-
-        Season season;
-        season.setSeasonNumber(simulationSaveWindow.getSeasonNumberFromInput());
-        season.setDatesEnabled(simulationSaveWindow.getDatesEnabledFromInput());
-        season.setActualCalendar(nullptr);
-        simulationSave->getSeasonsReference().push_back(season);
-        simulationSave->setActualSeason(&simulationSave->getSeasonsReference().last());
-        simulationSave->fixJumpersFormInstabilities();
-        simulationSave->updateNextCompetitionIndex();
-
-        // Global databases from older versions may contain duplicate or null
-        // object IDs. A save must have independent, unique IDs before its first
-        // serialization so calendar relationships remain resolvable on reload.
-        simulationSave->repairDatabase();
+        auto simulationSave=simulationSaveWindow.createSave();
+        if(!simulationSave)throw std::runtime_error("Incomplete simulation data");
 
         GlobalDatabase::get()->getEditableGlobalSimulationSaves().reserve(
             GlobalDatabase::get()->getEditableGlobalSimulationSaves().size() + 1);

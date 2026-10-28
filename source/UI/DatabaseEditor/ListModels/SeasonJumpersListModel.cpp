@@ -91,3 +91,12 @@ void SeasonJumpersListModel::setSeasonJumpers(QVector<Jumper *> *newSeasonJumper
 {
     seasonJumpers = newSeasonJumpers;
 }
+
+bool SeasonJumpersListModel::insertItem(int row, Jumper *value)
+{
+    if(!value || row<0 || row>seasonJumpers->size())return false;
+    beginInsertRows(QModelIndex(),row,row);
+    seasonJumpers->insert(row,value);
+    endInsertRows();
+    return true;
+}

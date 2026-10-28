@@ -48,6 +48,8 @@ Item {
                         }
                     }
                 }
+                Node { node: ui.find("simulationCatalogStatus"); Layout.fillWidth: true }
+                Node { node: ui.find("simulationCatalogDetails"); Layout.alignment: Qt.AlignLeft }
                 Node { node: ui.find("newSeasonDates"); Layout.fillWidth: true }
                 Node { node: ui.find("rememberSimulationPacks"); Layout.fillWidth: true }
             }

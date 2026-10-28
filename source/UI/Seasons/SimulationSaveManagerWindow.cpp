@@ -23,10 +23,13 @@
 #include "Stats/SimulationRatingsWindow.h"
 #include "NewSeasonConfiguratorWindow.h"
 #include "../ResponsiveWindowUtils.h"
+#include "../EditorWidgets/SimulationProfileEditor.h"
+#include "../../simulation-v2/ProfileDraft.h"
 #include <QMessageBox>
 #include <memory>
 #include <QTimer>
 #include <QProgressDialog>
+#include <QRandomGenerator>
 #include <QPushButton>
 #include <QSignalBlocker>
 #include <QInputDialog>
@@ -107,6 +110,8 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     //-----//
 
     jumpersListView = new DatabaseItemsListView(DatabaseItemsListView::SeasonJumpersItems, true, false, true, this);
+    jumpersListView->setProperty("simulationV2",simulationSave->getEngineVersion()==2);
+    jumpersListView->getListView()->setProperty("quickSingleClickEdit",true);
     jumpersListView->setSeasonJumpers(&simulationSave->getJumpersReference());
     jumpersListView->setupListModel();
     ui->verticalLayout_jumpersList->addWidget(jumpersListView);
@@ -114,9 +119,27 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     jumperEditor = new JumperEditorWidget();
     jumperEditor->hide();
     ui->verticalLayout_jumperEditor->addWidget(jumperEditor);
+    athleteDraft=new SimulationProfileDraft(DataPack::Jumpers,this);
+    athleteDraft->setObjectName("seasonAthleteDraft");
+    athleteProfileEditor=createSimulationProfileEditor(athleteDraft,false,this);
+    athleteProfileEditor->setProperty("simulationDraft",QVariant::fromValue<QObject *>(athleteDraft));
+    athleteProfileEditor->setProperty("simulationDraftSeason",true);
+    athleteProfileEditor->hide();
+    ui->verticalLayout_jumperEditor->addWidget(athleteProfileEditor);
+    connect(athleteDraft,&SimulationProfileDraft::changed,this,[this]{
+        const int row=simulationSave->getJumpersReference().indexOf(editedAthlete);
+        if(row<0 || !athleteDraft->valid() || !athleteDraft->message().isEmpty())return;
+        *editedAthlete=athleteDraft->configuredJumper();
+        emit jumpersListView->getListModel()->dataChanged(jumpersListView->getListModel()->index(row),jumpersListView->getListModel()->index(row));
+    });
     connect(jumpersListView, &DatabaseItemsListView::listViewDoubleClicked, this, [this](const QModelIndex & index){
+        if(index.row()<0 || index.row()>=simulationSave->getJumpersReference().size())return;
+        editedAthlete=simulationSave->getJumpersReference()[index.row()];
+        const bool modern=bool(editedAthlete->getSimulationProfile());
+        athleteProfileEditor->setVisible(modern);
+        if(modern){jumperEditor->hide();athleteDraft->load(*editedAthlete,editedAthlete->getSimulationAssetDirectory());return;}
         jumperEditor->show();
-        jumperEditor->setJumper(simulationSave->getJumpersReference()[index.row()]);
+        jumperEditor->setJumper(editedAthlete);
         if(simulationSave->getShowInstability() == true)
             jumperEditor->setFormInstability(simulationSave->getJumperFormInstability(jumperEditor->getJumper()));
         else jumperEditor->setFormInstability(nullptr);
@@ -124,7 +147,8 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         jumperEditor->setShowForm(simulationSave->getShowForm());
     });
     connect(jumperEditor, &JumperEditorWidget::submitted, this, [this](){
-        int idx = jumpersListView->getLastDoubleClickedIndex();
+        const int idx=simulationSave->getJumpersReference().indexOf(jumperEditor->getJumper());
+        if(idx<0 || jumperEditor->getJumper()->getSimulationProfile())return;
         *simulationSave->getJumpersReference()[idx] = jumperEditor->getJumperFromWidgetInput();
         simulationSave->getJumpersFormInstabilitiesReference()[jumperEditor->getJumper()] = jumperEditor->getFormInstabilityFromUI();
         emit jumpersListView->getListModel()->dataChanged(jumpersListView->getListModel()->index(idx), jumpersListView->getListModel()->index(idx));
@@ -133,6 +157,8 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     //-----//
 
     hillsListView = new DatabaseItemsListView(DatabaseItemsListView::SeasonHillsItems, true, false, true, this);
+    hillsListView->setProperty("simulationV2",simulationSave->getEngineVersion()==2);
+    hillsListView->getListView()->setProperty("quickSingleClickEdit",true);
     hillsListView->setSeasonHills(&simulationSave->getHillsReference());
     hillsListView->setupListModel();
     ui->verticalLayout_hillsList->addWidget(hillsListView);
@@ -140,13 +166,33 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     hillEditor = new HillEditorWidget();
     hillEditor->hide();
     ui->verticalLayout_hillEditor->addWidget(hillEditor);
+    hillDraft=new SimulationProfileDraft(DataPack::Hills,this);
+    hillDraft->setObjectName("seasonHillDraft");
+    hillProfileEditor=createSimulationProfileEditor(hillDraft,true,this);
+    hillProfileEditor->setProperty("simulationDraft",QVariant::fromValue<QObject *>(hillDraft));
+    hillProfileEditor->setProperty("simulationDraftHill",true);
+    hillProfileEditor->setProperty("simulationDraftSeason",true);
+    hillProfileEditor->hide();
+    ui->verticalLayout_hillEditor->addWidget(hillProfileEditor);
+    connect(hillDraft,&SimulationProfileDraft::changed,this,[this]{
+        const int row=simulationSave->getHillsReference().indexOf(editedHill);
+        if(row<0 || !hillDraft->valid() || !hillDraft->message().isEmpty())return;
+        *editedHill=hillDraft->configuredHill();
+        emit hillsListView->getListModel()->dataChanged(hillsListView->getListModel()->index(row),hillsListView->getListModel()->index(row));
+    });
     connect(hillsListView, &DatabaseItemsListView::listViewDoubleClicked, this, [this](const QModelIndex & index){
+        if(index.row()<0 || index.row()>=simulationSave->getHillsReference().size())return;
+        editedHill=simulationSave->getHillsReference()[index.row()];
+        const bool modern=bool(editedHill->getSimulationProfile());
+        hillProfileEditor->setVisible(modern);
+        if(modern){hillEditor->hide();hillDraft->load(*editedHill);return;}
         hillEditor->show();
-        hillEditor->setHill(simulationSave->getHillsReference()[index.row()]);
+        hillEditor->setHill(editedHill);
         hillEditor->fillHillInputs();
     });
     connect(hillEditor, &HillEditorWidget::submitted, this, [this](){
-        int idx = hillsListView->getLastDoubleClickedIndex();
+        const int idx=simulationSave->getHillsReference().indexOf(hillEditor->getHill());
+        if(idx<0 || hillEditor->getHill()->getSimulationProfile())return;
         *simulationSave->getHillsReference()[idx] = hillEditor->getHillFromWidgetInput();
         emit hillsListView->getListModel()->dataChanged(hillsListView->getListModel()->index(idx), hillsListView->getListModel()->index(idx));
     });
@@ -370,6 +416,10 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         ui->checkBox_compactSaveFile->setChecked(simulationSave->getSaveFileSizeReduce());
         ui->checkBox_showForm->setChecked(simulationSave->getShowForm());
         ui->checkBox_showInstability->setChecked(simulationSave->getShowInstability());
+        if(simulationSave->getEngineVersion()==2) {
+            ui->checkBox_showForm->hide();
+            ui->checkBox_showInstability->hide();
+        }
     }
 
     connect(ui->checkBox_calendarDates,&QCheckBox::toggled,this,[this](bool enabled){
@@ -911,7 +961,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
         configNextSeason();
     }
     else if(simulationSave->getNextCompetition() != nullptr){
-        CompetitionConfigWindow * configWindow = new CompetitionConfigWindow(CompetitionConfigWindow::SeasonCompetition, this, simulationSave);
+        auto configWindow=std::make_unique<CompetitionConfigWindow>(CompetitionConfigWindow::SeasonCompetition,this,simulationSave);
         configWindow->setModal(true);
 
         if(Classification::getSpecificTypeClassifications(simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference(), simulationSave->getNextCompetition()->getRulesPointer()->getCompetitionType()).count() > 0)
@@ -925,11 +975,13 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
             for (auto & team : configWindow->getCompetitionTeamsReference())
                 Team::cutTeamJumpers(&team, competition->getRulesPointer()->getJumpersInTeamCount());
 
+            std::unique_ptr<AbstractCompetitionManager> managerOwner;
             AbstractCompetitionManager * competitionManager = nullptr;
             if(type == CompetitionRules::Individual)
                 competitionManager = new IndividualCompetitionManager();
             else if(type == CompetitionRules::Team)
                 competitionManager = new TeamCompetitionManager();
+            managerOwner.reset(competitionManager);
 
             if(competition->getQualifyingCompetitionsReference().count() > 0
                 && competition->getQualifyingCompetitionsReference()[0]->getRulesPointer()->getRoundsReference().isEmpty() == false)
@@ -972,8 +1024,10 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
             competitionManager->setActualStartListIndex(0);
             competitionManager->getRoundsStartingGatesReference().push_back(competitionManager->getActualGate());
 
-            CompetitionManagerWindow * managerWindow = new CompetitionManagerWindow(competitionManager, this);
+            auto managerWindow=std::make_unique<CompetitionManagerWindow>(competitionManager,this);
             managerWindow->setInrunSnowGenerator(InrunSnowGenerator(configWindow->getInrunSnowGeneratorSettingsWidget()->getBase(), configWindow->getInrunSnowGeneratorSettingsWidget()->getDeviation()));
+            if(configWindow->getWeatherSetup())
+                managerWindow->bindWeatherSetup(configWindow->getWeatherSetup(),QRandomGenerator::global()->generate64());
             simulationSave->getActualSeason()->markStarted();
             if(managerWindow->exec() == QDialog::Accepted)
             {
@@ -1034,12 +1088,12 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
                 }
 
                 for(auto & season : simulationSave->getSeasonsReference())
-                    for(auto & comp : season.getActualCalendar()->getCompetitionsReference())
-                    {
-                        comp->getResultsReference().fixSingleResultsJumps();
-                    }
+                    for(auto *calendar:season.getCalendarsReference())if(calendar)
+                        for(auto *comp:calendar->getCompetitionsReference())if(comp)
+                            comp->getResultsReference().fixSingleResultsJumps();
 
                 simulationSave->updateNextCompetitionIndex();
+                refreshProfileDrafts();
                 fillNextCompetitionInformations();
                 updateArchive();
                 simulationSave->saveToFile("simulationSaves/");
@@ -1338,8 +1392,16 @@ void SimulationSaveManagerWindow::on_pushButton_formGenerator_clicked()
     window.on_doubleSpinBox_maxForm_editingFinished();
     if(window.exec() == QDialog::Accepted)
     {
-
+        refreshProfileDrafts();
     }
+}
+
+void SimulationSaveManagerWindow::refreshProfileDrafts()
+{
+    if(simulationSave->getJumpersReference().contains(editedAthlete) && editedAthlete->getSimulationProfile())
+        athleteDraft->load(*editedAthlete,editedAthlete->getSimulationAssetDirectory());
+    if(simulationSave->getHillsReference().contains(editedHill) && editedHill->getSimulationProfile())
+        hillDraft->load(*editedHill);
 }
 
 

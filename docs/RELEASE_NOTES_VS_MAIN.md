@@ -12,6 +12,25 @@ Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru
 - main nie był modyfikowany. Podstawą porównania są diff, historia commitów, kod końcowy i raporty testów.
 - Starsze raporty opisują kolejne etapy prac. W razie rozbieżności stan końcowy opisany tutaj ma pierwszeństwo. Szczególnie istotne korekty są zebrane w sekcji „Rozwiązania zastąpione podczas prac”.
 
+## Uzupełnienie — sezony z nowym silnikiem (28.10.2026)
+
+- Nowa symulacja korzysta domyślnie z kanonicznych paczek v2, wczytywanych w tle.
+  Widoczne liczebności, zachowane wybory i ostrzeżenie przybliżonej migracji.
+- Własne pełne dane sezonu, jawna wersja silnika, przenośny kontekst zdjęć;
+  edycja i rozegranie nie nadpisują źródłowych paczek.
+- Nowe edytory zawodników/skoczni w sezonie, jeden klik, bieżąca aktualizacja
+  profilu oraz przywrócenie stanu z wyboru. Dodawane pozycje mają pełne profile.
+- Pogoda sezonowa korzysta z tego samego uproszczonego edytora i ciągłego pola
+  co pojedyncze konkursy. Kontekst daty, rodzaj wydarzenia i opadów, konkretna
+  sugerowana belka oraz wspólny zegar wszystkich skoków danego wydarzenia.
+- Edytor odświeża formę i rekordy po ich zmianie. Okna zawodów są zwalniane po
+  zamknięciu; brak aktywnego kalendarza w starym sezonie nie wywraca końca zawodów.
+- Usunięto pętlę podpisów przypisanych naszywek i odwołanie tabeli do zamkniętego
+  widoku podczas opóźnionego przywracania scrolla.
+- Test normalnego tworzenia i rozgrywania indywidualnego/drużynowego sezonu,
+  serializacji, edycji i regresji pojedynczych konkursów: PASS na Qt 5.15.3.
+  Cała migracja silnika nadal trwa; stan i kolejka w `SIMULATION_V2_PROGRESS.md`.
+
 ## Uzupełnienie — nowy silnik i scenariusze pogody (28.10.2026)
 
 Praca rozwijana na `feature/simulation-v2`, wyprowadzonej z gałęzi Qt Quick.

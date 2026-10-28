@@ -75,3 +75,12 @@ void SeasonHillsListModel::setSeasonHills(QVector<Hill *> *newSeasonHills)
 {
     seasonHills = newSeasonHills;
 }
+
+bool SeasonHillsListModel::insertItem(int row, Hill *value)
+{
+    if(!value || row<0 || row>seasonHills->size())return false;
+    beginInsertRows(QModelIndex(),row,row);
+    seasonHills->insert(row,value);
+    endInsertRows();
+    return true;
+}

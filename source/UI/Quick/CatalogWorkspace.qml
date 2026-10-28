@@ -7,6 +7,7 @@ ColumnLayout {
     property var node
     readonly property var fields: node ? node.values : ({})
     readonly property var editor: fields.editor || null
+    readonly property bool draftEditor: !!editor && editor.values.kind === "simulationDraft"
     readonly property var list: fields.list ? fields.list.values : ({})
     readonly property bool parallel: width>=850
     property bool editing: false
@@ -63,11 +64,18 @@ ColumnLayout {
         ScrollView {
             id: editorScroll
             objectName: "catalogEditorScroll"
-            visible: !!catalog.editor && (catalog.parallel || catalog.editing)
+            visible: !catalog.draftEditor && !!catalog.editor && (catalog.parallel || catalog.editing)
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
             Layout.preferredWidth: 620
             contentWidth: availableWidth; clip: true
             Node { width: editorScroll.availableWidth; node: catalog.editor }
+        }
+        Loader {
+            visible: active
+            active: catalog.draftEditor && (catalog.parallel || catalog.editing)
+            Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
+            Layout.preferredWidth: 620
+            sourceComponent: Component { SimulationDraftWorkspace { node: catalog.editor } }
         }
     }
 }

@@ -36,8 +36,11 @@ sesji AI, także na innym komputerze po `git pull`. Zadanie nie jest zakończone
   kopię pełnego nowego profilu bez zmiany źródła. Belka na wejściu jest wyliczana.
 - **Zwykły konkurs ma już podłączony katalog v2 i wspólną pogodę.** Wybór trzech
   paczek, nowy lokalny edytor skoczni, uproszczone Warunki; kwalifikacje i konkurs
-  zachowują seed pola oraz wspólny czas. Nowe sezony nadal wymagają integracji.
-  Nie deklaruj zakończenia całej migracji.
+  zachowują seed pola oraz wspólny czas.
+- **Nowe sezony są domyślnie v2:** kanoniczne trzy paczki, własne pełne profile,
+  nowy edytor sezonowych zawodników/skoczni, ta sama konfiguracja pogody oraz
+  zegar skoków w konkursach indywidualnych i drużynowych. Format `engine-version=2`.
+  To nie kończy całej specyfikacji: najnowszą kolejkę czytaj na końcu tego pliku.
 
 ### Budowanie i odtwarzanie testów
 
@@ -48,6 +51,7 @@ scripts/test-simulation-v2-core.sh
 scripts/build-quick-ui.sh
 scripts/test-quick-ui.sh --simulation-v2-only
 scripts/test-quick-ui.sh --simulation-v2-setup-only
+scripts/test-quick-ui.sh --simulation-v2-season-only
 scripts/test-quick-ui.sh --hill-studio-only
 scripts/test-quick-ui.sh --engine-audit-only
 scripts/test-quick-ui.sh --config-defaults-only
@@ -897,3 +901,69 @@ Końcowy `--simulation-v2-setup-only`: PASS, także wpisanie wartości na strza�
 i przejście do następnej bez utraty poprzedniej. Produkcyjny build Qt 5.15.3 PASS,
 brak nowych ostrzeżeń QML i pętli układów. Zmiany gotowe do ręcznego testowania.
 Po ukończeniu tej poprawki wrócić do nowych sezonów według kolejki wyżej.
+
+
+## Nowe sezony domyślnie v2 — ukończona integracja
+
+`NewSimulationSaveConfigurationWindow` asynchronicznie wczytuje własny snapshot
+`SimulationCatalog`, bez `syncActivePacks` i bez podmieniania globalnej bazy.
+Trzy wybory, liczebności i zapamiętywanie zachowane; dawne zapamiętane ID mogą
+wskazać odpowiadającą przybliżoną kopię. Ostrzeżenia migracji są jawne. Podczas
+wczytywania nie można utworzyć niekompletnego zapisu. `createSave()` jest jedyną
+fabryką używaną przez normalny przycisk tworzenia: własne profile, kontekst zdjęć,
+reguły, rok/daty, stabilne ID, jawne `engine-version=2`, pusty kalendarz.
+`LegacyCompatibility` służy wyłącznie wewnętrznym testom zgodności dawnego UI;
+nie ma przełącznika dla użytkownika.
+
+W sezonie v2 listy zawodników i skoczni otwierają nowe edytory profili (jeden
+klik). Poprawne zmiany od razu trafiają do istniejącego obiektu zapisu, zachowując
+jego adres, UUID, OVR/formę/perki i ścieżki zdjęć. Źródłowa paczka nietknięta.
+„Cofnij edycję” przywraca stan z wyboru pozycji. Błędne wartości nie nadpisują
+danych sezonu. Nowe pozycje z + też mają pełny profil v2, dostępny już podczas
+`rowsInserted`; dotychczas widoki dostawały sygnał przed zmianą kontenera.
+Po generatorze formy i zakończeniu zawodów draft jest przeładowywany, aby następna
+edycja nie cofnęła nowej formy/rekordu. Ukryto dawne opcje pokazywania formy/
+niestabilności w ustawieniach zapisu v2. Qt Widgets pozostają w repo i obsługują
+wewnętrzną zgodność dawnych danych.
+
+`CompetitionConfigWindow::setupWeather()` jest wspólne dla zwykłego konkursu
+i sezonu v2. Losuje dla skoczni po ustawieniu daty wydarzenia; bez dat używa
+nieznanego miesiąca, nie daty komputera. Ukrywa stare generatory i ważność skoków.
+Kategoria wynika z wydarzenia kalendarza. W sezonie manager otrzymuje kontroler
+przez `bindWeatherSetup`: manualne i automatyczne skoki używają tej samej pogody,
+rodzaju opadów i zegara. Sugestia belki jest buforowana i odświeżana po zmianach
+pogody/listy; wyświetlana jest konkretna liczba. Oddzielne wydarzenia kalendarza
+mają oddzielne konfiguracje pogody — nie obiecujemy wspólnego pola całego weekendu.
+
+Okna konfiguracji i runtime sezonu mają teraz ograniczoną własność RAII, zwalnianą
+po zakończeniu wydarzenia, zamiast pozostawać dziećmi managera całego sezonu.
+Naprawa referencji skoków po konkursie obejmuje wszystkie kalendarze i pomija
+puste, zamiast dereferencji brakującego aktywnego kalendarza starego sezonu.
+
+Usunięto pętlę bindingu podpisu przypisanej naszywki: pomiar i podpis korzystają
+z zapamiętanej prezentowanej wartości. Draft nie emituje zmian dla identycznej
+wartości. Opóźnione odtworzenie scrolla tabeli sprawdza, czy widok nadal istnieje.
+
+**Walidacja Qt 5.15.3:** produkcyjny build i `--simulation-v2-season-only` PASS.
+Test używa normalnej fabryki, renderuje nowe edytory i tworzenie sezonu w obu
+motywach/małych rozmiarach, sprawdza walidację/reset/źródła/tożsamość/dodawanie,
+otwiera normalną konfigurację i kończy konkurs indywidualny (trening) oraz
+drużynowy. Każdy ma 8 skoków i 240 s zegara; zapisane Rain i kategoria skoku;
+pełny zapis po rozegraniu ponownie się wczytuje. Osobny pusty poprzedni sezon
+nie powoduje crasha. Brak błędów QML, pętli bindingów i recursive rearrange.
+Ponadto PASS: `--onboarding-only`, `--simulation-v2-competition-only`,
+`--simulation-v2-only`, `--simulation-v2-setup-only`, `--audit-form-only`.
+Nie zweryfikowano tego etapu na Windows/Qt 6.
+
+### Aktualna kolejka po sezonach — nie powtarzać gotowej integracji
+
+1. Podgląd korytarzy **konkretnego zapisanego skoku** w konkursie i archiwum:
+   użyć utrwalonych `exposures`, nigdy aktualnego pola/replay. Przed skokiem
+   opcjonalna prognoza obecnego pola; średni wiatr pozostaje podstawową informacją.
+2. Zweryfikować uśrednianie wiatru według źródeł FIS. Aktualny pomiar zachowuje
+   ustawienia gry; nie deklarować pełnej zgodności z FIS bez dowodów.
+3. Dalszy audyt przejścia do następnego sezonu, list/presetów i przypadków KO,
+   z zachowaniem kompletnych profili v2. Automatyczny nowy model formy jest
+   **odłożony** w specyfikacji; gotowy jest ręczny generator zgodny z v2.
+4. Nowy UX manipulacji oraz pozostały zakres `NEW_SIMULATION.md`, w tym playground
+   i strojenie pełnego silnika. Nie oznaczać całego zadania jako zakończonego.

@@ -14,6 +14,7 @@
 #include "../../seasons/SimulationSave.h"
 
 class QLabel;
+class SimulationProfileDraft;
 
 namespace Ui {
 class SimulationSaveManagerWindow;
@@ -61,6 +62,13 @@ private:
 
     DatabaseItemsListView * hillsListView;
     HillEditorWidget * hillEditor;
+    SimulationProfileDraft *athleteDraft=nullptr;
+    SimulationProfileDraft *hillDraft=nullptr;
+    QWidget *athleteProfileEditor=nullptr;
+    QWidget *hillProfileEditor=nullptr;
+    Jumper *editedAthlete=nullptr;
+    Hill *editedHill=nullptr;
+    void refreshProfileDrafts();
 
     DatabaseItemsListView * rulesListView;
     CompetitionRulesEditorWidget * rulesEditor;
