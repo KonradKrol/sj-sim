@@ -6,11 +6,10 @@ Row {
     property var backend
     property var perk
     property string prefix: "athletePerk"
-    property var levelNames: [qsTr("Zwykły"),qsTr("Wzmocniony"),qsTr("Potężny")]
+    readonly property var levelNames: [qsTr("Lekko"),qsTr("Wyraźnie"),qsTr("Skrajnie")]
     readonly property int selected: Number((backend.selectedPerks || [])[perk.pair] || 0)
     readonly property int tier: selected*perk.side>0 ? Math.abs(selected) : 0
     signal applied(int level)
-    readonly property real cellSize: Math.max(28,Theme.dp(36))
     spacing: Theme.dp(4)
     Repeater {
         model: 3
@@ -19,32 +18,44 @@ Row {
             required property int index
             objectName: selector.prefix+"-"+selector.perk.key+"-"+(index+1)
             hoverEnabled: true
-            checkable: true
-            checked: selector.tier===index+1
-            width: selector.cellSize; height: width
+            readonly property bool selectedTier: selector.tier===index+1
+            checked: selectedTier
+            leftPadding: Theme.dp(7); rightPadding: leftPadding
+            topPadding: Theme.dp(6); bottomPadding: topPadding
+            width: Math.max(Theme.dp(62),contentItem.implicitWidth+Theme.dp(14))
+            height: Math.max(28,contentItem.implicitHeight+Theme.dp(12))
             Accessible.role: Accessible.CheckBox
             Accessible.name: selector.perk.name+": "+selector.levelNames[index]
-            Accessible.checked: checked
-            contentItem: Item {
-                Row {
-                    anchors.centerIn: parent
-                    height: 16; spacing: 3
+            Accessible.checked: selectedTier
+            Accessible.description: selectedTier ? qsTr("Kliknij ponownie, aby usunąć perk.") : qsTr("Wybierz tę siłę perka.")
+            contentItem: Row {
+                spacing: Theme.dp(5)
+                Item {
+                    width: Theme.dp(12); height: levelName.implicitHeight
                     Repeater {
                         model: 3
                         Rectangle {
                             required property int index
-                            width: 3; height: 6+index*5; y: parent.height-height
+                            x: Theme.dp(index*4); y: (parent.height+Theme.dp(10))/2-height
+                            width: Theme.dp(2); height: Theme.dp(4+index*3)
                             radius: 1
-                            color: index<=strength.index ? (strength.checked ? Theme.snow : Theme.accent) : (strength.checked ? Theme.track : Theme.divider)
+                            color: index<=strength.index ? (strength.selectedTier ? "#142e42" : Theme.accent) : Theme.divider
                         }
                     }
                 }
+                Label {
+                    id: levelName
+                    text: selector.levelNames[strength.index]
+                    color: strength.selectedTier ? "#142e42" : Theme.ink
+                    font.family: Theme.bodyFamily; font.pointSize: Theme.caption; font.bold: strength.selectedTier
+                }
             }
-            background: Rectangle { color: strength.checked ? Theme.stadium : strength.hovered ? Theme.selection : Theme.surface; radius: Theme.dp(4); border.width: strength.visualFocus ? 2 : 1; border.color: strength.visualFocus ? Theme.accent : Theme.divider; Behavior on color { ColorAnimation { duration: Theme.motion } } }
-            ToolTip.visible: hovered || visualFocus
-            ToolTip.text: selector.levelNames[index]
-            ToolTip.delay: hovered ? 450 : 0
-            ToolTip.timeout: 3000
+            background: Rectangle {
+                color: strength.selectedTier ? "#ffcd57" : strength.hovered ? Theme.selection : Theme.surface
+                radius: Theme.dp(4)
+                border.width: strength.selectedTier || strength.visualFocus ? 2 : 1
+                border.color: strength.visualFocus ? Theme.accent : strength.selectedTier ? "#b37a14" : Theme.outline
+            }
             onClicked: {
                 selector.backend.setPerk(selector.perk.pair,selector.perk.side,index+1,selector.tier===index+1)
                 selector.applied(selector.tier)

@@ -12,6 +12,7 @@ Item {
     property bool ribbon: false
     property bool managedLevel: false
     property bool hill: false
+    property string prefix: "athletePerk"
     property real perkPulse: 1
     property real burstProgress: 1
     SequentialAnimation {
@@ -33,32 +34,35 @@ Item {
     readonly property bool empowered: tier===3
     onEmpoweredChanged: if(!empowered){powerBurst.stop();burstProgress=1}
     readonly property real artSize: Theme.dp(ribbon ? 34 : 70)
-    readonly property bool inlineLevels: ribbon && width>=Math.max(220,Theme.dp(320))
+    readonly property bool inlineLevels: ribbon && width>=strengths.implicitWidth+artSize+Math.max(100,Theme.dp(160))+Theme.dp(32)
     readonly property real headerHeight: ribbon ? Math.max(artSize+Theme.dp(8),name.implicitHeight+Theme.dp(10)) : artSize+name.implicitHeight+Theme.dp(8)
     implicitWidth: Theme.dp(ribbon ? 250 : 160)
     implicitHeight: (inlineLevels ? Math.max(headerHeight,strengths.implicitHeight) : headerHeight+strengths.implicitHeight)+Theme.dp(8)
+    Rectangle {
+        anchors.fill: parent
+        color: badge.empowered ? "#241237" : badge.ribbon ? (badge.chosen ? (badge.managedLevel ? Theme.stadium : badge.perk.color) : badge.design.surface) : "transparent"
+        radius: badge.ribbon ? Theme.dp(2) : Theme.dp(10)
+        border.width: badge.empowered || badge.enhanced ? 2 : pick.activeFocus ? 2 : badge.ribbon ? 1 : 0
+        border.color: pick.activeFocus ? badge.design.accent : badge.enhanced ? "#ffb941" : badge.chosen ? (badge.managedLevel ? "#96c2ff" : badge.perk.color) : badge.design.line
+        Rectangle { visible: badge.enhanced; anchors.fill: parent; anchors.margins: Theme.dp(4); color: "transparent"; border.width: 1; border.color: "#a98136"; radius: Theme.dp(1) }
+        Rectangle { visible: badge.ribbon && badge.chosen && !badge.managedLevel; anchors.right: parent.right; width: Theme.dp(5); height: parent.height; color: badge.tier===2 ? "#f1cf87" : "#ffffff" }
+    }
     AbstractButton {
         id: pick
-        objectName: "athletePerk-"+badge.perk.key
-        anchors.fill: parent
+        objectName: badge.prefix+"-"+badge.perk.key
+        width: badge.inlineLevels ? badge.width-strengths.width-Theme.dp(12) : badge.width
+        height: badge.headerHeight
         hoverEnabled: true
         property bool suppressed: false
         property bool helpRequested: false
         checked: badge.chosen
         Accessible.role: Accessible.CheckBox; Accessible.checked: checked
-        Accessible.name: qsTr("%1%2").arg(badge.perk.name).arg(badge.chosen ? qsTr(" · poziom %1").arg(badge.tier) : "")
+        Accessible.name: badge.perk.name+(badge.chosen ? " · "+strengths.levelNames[badge.tier-1] : "")
         Accessible.description: badge.perk.description
         onHoveredChanged: if(!hovered){suppressed=false;helpRequested=false}
         onActiveFocusChanged: if(!activeFocus)helpRequested=false
         Keys.onPressed: {if(event.key===Qt.Key_F1){helpRequested=true;event.accepted=true}else event.accepted=false}
-        background: Rectangle {
-            color: badge.empowered ? "#241237" : badge.ribbon ? (badge.chosen ? (badge.enhanced ? "#ffcd57" : badge.managedLevel ? Theme.stadium : badge.perk.color) : badge.design.surface) : "transparent"
-            radius: badge.ribbon ? Theme.dp(2) : Theme.dp(10)
-            border.width: badge.empowered || badge.enhanced ? 2 : pick.activeFocus ? 2 : badge.ribbon ? 1 : 0
-            border.color: badge.empowered ? "#ffb941" : badge.enhanced ? "#64400a" : pick.activeFocus ? badge.design.accent : badge.chosen ? (badge.managedLevel ? Theme.accent : badge.perk.color) : badge.design.line
-            Rectangle { visible: badge.enhanced; anchors.fill: parent; anchors.margins: Theme.dp(4); color: "transparent"; border.width: 1; border.color: "#946716"; radius: Theme.dp(1) }
-            Rectangle { visible: badge.ribbon && badge.chosen && !badge.managedLevel; anchors.right: parent.right; width: Theme.dp(5); height: parent.height; color: badge.tier===2 ? "#f1cf87" : "#ffffff" }
-        }
+        background: null
         onClicked: {suppressed=true;helpRequested=false;badge.backend.setPerk(badge.perk.pair,badge.perk.side,badge.chosen ? badge.tier : 1,true);if(badge.chosen)badge.animateSelection()}
         ToolTip {
             visible: pick.helpRequested || pick.hovered && !pick.suppressed && !pick.down
@@ -108,7 +112,7 @@ Item {
         y: badge.ribbon ? (badge.headerHeight-height)/2 : badge.artSize+Theme.dp(2)
         width: badge.ribbon ? Math.max(0,badge.width-x-Theme.dp(10)-(badge.inlineLevels ? strengths.implicitWidth+Theme.dp(8) : 0)) : badge.width-Theme.dp(4)
         text: badge.perk.name
-        color: badge.empowered ? "#fff1d2" : badge.enhanced ? "#30210c" : badge.ribbon && badge.chosen ? "#ffffff" : badge.chosen ? badge.design.ink : badge.design.muted
+        color: badge.empowered ? "#fff1d2" : badge.ribbon && badge.chosen ? "#ffffff" : badge.chosen ? badge.design.ink : badge.design.muted
         font.family: badge.ribbon ? Theme.bodyFamily : Theme.displayFamily
         font.pointSize: badge.ribbon ? Theme.body : Theme.section
         font.weight: badge.chosen ? Font.Bold : Font.Medium
@@ -119,7 +123,7 @@ Item {
         id: strengths
         x: badge.inlineLevels ? badge.width-width-Theme.dp(6) : badge.ribbon ? Theme.dp(5) : (badge.width-width)/2
         y: badge.inlineLevels ? (badge.headerHeight-height)/2 : badge.headerHeight
-        backend: badge.backend; perk: badge.perk
+        backend: badge.backend; perk: badge.perk; prefix: badge.prefix
         onApplied: function(level){if(level>0)badge.animateSelection()}
     }
 }

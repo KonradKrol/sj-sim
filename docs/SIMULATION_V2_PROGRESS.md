@@ -662,3 +662,18 @@ Walidacja Qt 5.15.3: `--simulation-v2-contest-weather-only` PASS (ręcznie, DNS,
 czekanie, edycja, N, grupa drużynowa, seria, cały konkurs i KO; unikalne czasy
 co 30 s), `--bulk-only` PASS (stare ścieżki), `--simulation-v2-setup-only` PASS,
 `--simulation-v2-only` PASS. Bez nowych ostrzeżeń QML/pętli układów.
+
+## Uwagi UI i dalszy kierunek — 28.10
+
+- Skocznie i skoczkowie używają wspólnego `AthleteBadge` oraz
+  `PerkStrengthSelector`: trzy stale widoczne podpisy **Lekko / Wyraźnie / Skrajnie**,
+  mocno kontrastujący złoty wybór, wspólne obramowania i zachowanie. Zmiana poziomu
+  nie odznacza, ponowny wybór tego samego odznacza, przeciwna strona zastępuje.
+  Nagłówek naszywki ma osobny obszar kliknięcia, bez nakładania na wybór poziomu.
+- Lista skoczni: flaga aktualizowana z krajem i zwarty zapis **HS140**.
+- Najnowsza uwaga użytkownika określa **kierunek całego UI pogody**, nie tylko
+  pojedynczą poprawkę: domyślne, widoczne losowanie według charakterystyki skoczni,
+  kilka opcji łącznie, bez rozbudowanego UI szczegółowego. Rozdzielić deszcz i śnieg,
+  krótko wyjaśnić realny wpływ po researchu. Cisza = słaby wiatr zwykle 0,1–0,3 m/s,
+  nie matematyczne zero. Dodać 5–6 scenariuszy. Po tych uwagach kontynuować
+  integrację konkursu, sezonów i pozostałej specyfikacji — nie uznać ich za porzucone.

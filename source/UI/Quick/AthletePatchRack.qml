@@ -34,7 +34,7 @@ ColumnLayout {
                     Rectangle { Layout.fillWidth: true; height: 1; color: Theme.divider }
                 }
                 GridLayout {
-                    Layout.fillWidth: true; columns: width<Theme.dp(440) ? 1 : 2
+                    Layout.fillWidth: true; columns: width<Theme.fontSize(640) ? 1 : 2
                     columnSpacing: Theme.dp(8); rowSpacing: Theme.dp(5)
                     Repeater {
                         model: 2

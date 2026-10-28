@@ -6,6 +6,7 @@ ColumnLayout {
     id: set
     property var backend
     AthletePerkCatalog { id: catalog }
+    readonly property var levelNames: [qsTr("Lekko"),qsTr("Wyraźnie"),qsTr("Skrajnie")]
     spacing: Theme.dp(4)
     Label { text: qsTr("Przypisane perki"); color: Theme.muted; font.pointSize: Theme.caption }
     Label { visible: (set.backend.selectedPerks || []).every(function(v){return v===0}); text: qsTr("Brak"); color: Theme.muted; font.pointSize: Theme.body }
@@ -38,7 +39,7 @@ ColumnLayout {
             contentItem: RowLayout {
                 spacing: Theme.dp(6)
                 AthletePerkArt { family: "patch"; perkKey: assigned.perk.key; tier: Math.abs(assigned.value); sourceSize.width: 96; sourceSize.height: 96; Layout.preferredWidth: Theme.dp(30); Layout.preferredHeight: Theme.dp(33); Accessible.ignored: true }
-                Label { id: nameLabel; text: qsTr("%1 · %2").arg(assigned.perk.name).arg(["","I","II","III"][Math.abs(assigned.value)]); Layout.fillWidth: true; Layout.minimumWidth: 0; wrapMode: Text.WordWrap; color: assigned.empowered ? "#fff1d2" : assigned.enhanced ? "#30210c" : Theme.ink; font.family: Theme.bodyFamily; font.pointSize: Theme.body }
+                Label { id: nameLabel; text: assigned.perk.name+(assigned.value ? " · "+set.levelNames[Math.abs(assigned.value)-1] : ""); Layout.fillWidth: true; Layout.minimumWidth: 0; wrapMode: Text.WordWrap; color: assigned.empowered ? "#fff1d2" : assigned.enhanced ? "#30210c" : Theme.ink; font.family: Theme.bodyFamily; font.pointSize: Theme.body }
                 Label { id: removeLabel; text: "×"; color: assigned.empowered ? "#fff1d2" : assigned.enhanced ? "#30210c" : Theme.muted; font.pointSize: Theme.section }
             }
             onClicked: set.backend.setPerk(index,value>0?1:-1,Math.abs(value),true)

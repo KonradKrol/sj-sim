@@ -28,10 +28,15 @@ static void hillStudioRegressions(MainWindow &main){
     check(item(scene(&window)->rootObject(),"hillStudio"),"modern hill studio opens in hills catalog");clickControl(scene(&window),"hillAdd");QTest::qWait(60);
     uiBackend->setValue("name","Vikersund");uiBackend->setValue("hs",225);uiBackend->setPerk(1,1,3,false);QTest::qWait(60);
     check(item(scene(&window)->rootObject(),"hillScoring")->isVisible(),"hill scoring is expanded by default");
+    uiBackend->setValue("country","NOR");QTest::qWait(20);
+    check(item(scene(&window)->rootObject(),"hillListFlag-0")->property("source").toUrl()==QUrl(uiBackend->profile()["flag"].toString()),"hill list flag follows the edited country");
+    check(item(scene(&window)->rootObject(),"hillListHs-0")->property("text").toString()=="HS225","hill list HS has no extra space");
     clickControl(scene(&window),"hillPerk-takeoff-1");check(uiBackend->profile()["perks"].toList()[0].toInt()==1,"hill strength selector applies light preference");
     clickControl(scene(&window),"hillPerk-takeoff-3");check(uiBackend->profile()["perks"].toList()[0].toInt()==3,"strong hill preference can be selected directly");
     check(item(scene(&window)->rootObject(),"hillPerk-takeoff-3")->property("checked").toBool() && !item(scene(&window)->rootObject(),"hillPerk-takeoff-1")->property("checked").toBool(),"current hill strength is highlighted");
     clickControl(scene(&window),"hillPerk-takeoff-3");check(uiBackend->profile()["perks"].toList()[0].toInt()==0,"clicking selected strength removes the hill perk");
+    clickControl(scene(&window),"hillPerk-takeoff-2");clickControl(scene(&window),"hillPerk-flying-3");check(uiBackend->selectedPerks()[0].toInt()==-3,"opposite hill badge directly replaces the selected strength");
+    clickControl(scene(&window),"hillPerk-flying");check(uiBackend->selectedPerks()[0].toInt()==0,"clicking the selected hill badge header removes the perk");
     clickControl(scene(&window),"hillPerk-takeoff-1");
     auto *view=scene(&window);
     for(const QString name:{QString("hillPerk-takeoff-1"),QString("hillPerk-takeoff-3")}){
@@ -58,6 +63,7 @@ SChoice { property int selected: 0; currentIndex: selected; width: 300; searchab
         uiBackend->add();uiBackend->setValue("k",90);QTest::qWait(10);check(number->property("draft").toString()!=QString("999") && !input->property("dirty").toBool(),"changing hill discards the previous numeric draft");
         auto *library=item(view->rootObject(),"hillLibrary");check(library,"hill library fixture");library->setProperty("query","Vikersund");QTest::qWait(10);auto *list=item(library,"hillList");check(list && list->property("count").toInt()==1 && list->property("currentIndex").toInt()==-1,"filtered-out selection leaves no stale keyboard row");library->setProperty("query","");
     }
+    uiBackend->setPerk(0,1,1,false);uiBackend->setPerk(1,1,2,false);uiBackend->setPerk(2,1,3,false);
     main.resize(1366,768);render(&window,"hill-studio-1366",true);main.resize(360,480);render(&window,"hill-studio-small",true);check(item(scene(&window)->rootObject(),"hillEditorScroll"),"small hill editor remains scrollable");window.hide();
     qInfo()<<"PASS: hill profiles, perk strengths, atomic persistence, packs, undo and responsive hill editor";
 }

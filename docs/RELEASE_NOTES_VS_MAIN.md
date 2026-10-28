@@ -1912,3 +1912,11 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 - Edycja warunków zachowuje czas konkursu i historię; podgląd pokazuje aktualną
   chwilę. Warstwa jest gotowa do podłączenia do nowej konfiguracji konkursu;
   zwykły konkurs z menu nie jest jeszcze przełączony na ten model.
+
+### Wspólny wybór perków skoczków i skoczni
+
+- Te same naszywki, obramowania i zasady wyboru w obu edytorach.
+- Widoczne nazwy siły: Lekko, Wyraźnie, Skrajnie. Wybrany poziom ma złote tło.
+- Rozdzielono obszary kliknięcia naszywki i poziomów: można bezpośrednio zmienić
+  siłę, zastąpić przeciwny perk albo ponownie kliknąć wybrany, żeby go usunąć.
+- Na liście skoczni dodano flagi krajów i zwarty zapis HS bez odstępu.

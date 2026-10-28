@@ -61,7 +61,11 @@ Przed zadaniem pytań poeksploruj wpierw bazę kodu.
 1. Nowy silnik obowiązuje dla nowych sezonów. Nie wymagać wstecznej kompatybilności z Sj.Sim 1.3.0-beta2 ani automatycznie przepisywać wyników starych sezonów do nowego silnika. Nie niszczyć źródłowych plików; nieobsługiwany zapis ma otrzymać czytelny komunikat.
 2. Stare paczki można przybliżenie przekonwertować: OVR ze średniej dawnych technik wybicia i lotu, zachowana/przeliczona forma, przybliżona klasa lądowania i perki od zera. **Bardzo wyraźnie zaznaczać, że to niedokładna, przybliżona migracja**, nie wierne odtworzenie możliwości dawnego zawodnika.
 3. Zachować gotowe nowe paczki. Stare przeliczać jako osobne paczki bez nadpisywania nowych danych.
-4. Zachować trzy poziomy perków skoczków i skoczni.
+4. Zachować trzy poziomy perków skoczków i skoczni: **Lekko, Wyraźnie, Skrajnie**.
+   Oba edytory mają używać tego samego komponentu, obramowań i sposobu zaznaczania.
+   Wszystkie trzy podpisane opcje pozostają widoczne; wybrana mocno kontrastuje.
+   Inny poziom zmienia siłę, przeciwna strona zastępuje perk, a ponowne kliknięcie
+   zaznaczonego poziomu lub całej przypisanej naszywki usuwa perk.
 5. Początkowo przyjąć około 70% wpływu OVR i 30% formy na jakość bazową. To parametr do zmiany w playgroundzie, a nie stała konstrukcyjna silnika.
 6. Podział 65/35 oznacza udział **łącznego wpływu losowych strat i bonusów** po obu stronach: około 65% wpływu ujemnego i 35% dodatniego. Nie oznacza 65% słabszych odległości ani narzuconej proporcji liczby zdarzeń. Wpływ, rozkład, asymetria i różnice ważności serii mają być parametryzowalne oraz mierzalne w playgroundzie.
 7. Nie skracać gotowego skoku po fakcie. Już w okolicach real HS dalsze metry mają być coraz trudniejsze do uzyskania, a wypłaszczający się zeskok ma ograniczać dalszy lot. Osobno wzrasta ryzyko trudnego lądowania i upadku. Nie dopuścić do absurdalnych lądowań daleko za końcem użytecznego zeskoku; granice i tempo wzrostu trudności muszą być związane ze skocznią i dostępne do strojenia. Playground ma pokazywać krzywe szans upadku, lądowania i not w zależności od odległości oraz parametrów.
