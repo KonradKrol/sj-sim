@@ -48,3 +48,17 @@ katalogów i argumentów). Nadal nie jest to audyt wszystkich źródeł aplikacj
 Dalszy etap: uzupełniono teksty Quick modułu konfiguracji wiatru (scenariusze,
 dial, cztery parametry, lokalny edytor, opady i komunikaty). Kontrola katalogów
 oraz test zmiany języka PASS. Pełny audyt innych modułów pozostaje w kolejce.
+
+## Aktualizacja — pełna synchronizacja źródeł i playground v2
+
+Uruchomiono lupdate na całym `source`, zachowując aktualne lokalizacje wpisów.
+Uzupełniono brakujące EN/CS z wcześniejszych prac v2 (paczki, migracja, profile,
+konfiguracja i pogoda) oraz wszystkie nowe widoki/metadane playgroundu.
+Katalogi końcowe: 3367 wpisów na język, bez unfinished i rozbieżności argumentów.
+Przy ponownym wejściu do języka odświeżają się również metadane parametrów
+playgroundu i jego pozycje syntetycznych źródeł. Liczby wykresów i wyników używają
+locale aplikacji; dane JSON/CSV pozostają maszynowym formatem z kropką dziesiętną.
+
+Windows/Qt6: runtime PL/EN/CS PASS, również regresja języka w otwartym konkursie
+w zestawie pogody. Nowy playground przeszedł rendery obu motywów, 360/520/1024/1440
+oraz powiększony tekst. Szczegóły: PLAYGROUND_V2.md i SIMULATION_V2_PROGRESS.md.

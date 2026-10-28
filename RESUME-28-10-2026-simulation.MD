@@ -1,5 +1,33 @@
 # Wznowienie prac nad nową symulacją — 28.10.2026
 
+## Aktualizacja po pracach na Windows — najnowszy stan
+
+**Nowy playground v2 został wdrożony.** Szczegóły: `docs/PLAYGROUND_V2.md`
+i końcowa sekcja `docs/SIMULATION_V2_PROGRESS.md`. Starsza kolejka poniżej
+opisuje punkt przekazania przed tym etapem; nie implementować playgroundu od nowa.
+
+- 199 ustawień, bezpośredni Engine v2, kanoniczne źródła, dwa tryby zegara,
+  porównania, skoczek, cała stawka, lądowanie/noty i pełna analiza pola wiatru.
+- Podgląd w tle z debounce i odrzucaniem starych wyników, duże batchowe próby,
+  zapis konfiguracji/historii, replay, cele kalibracji, CLI i eksport analizy.
+- Audyt następnego sezonu: nowe drafty, poprawne wstawianie profili v2,
+  zachowane UUID, perki, zdjęcia i izolacja anulowanych zmian.
+- Naprawiona publikacja migracji skoczni na Windows: member rename pliku
+  tymczasowego oraz wyłączenie autoRemove po udanym opublikowaniu.
+- Zsynchronizowane źródła lupdate, EN/CS bez unfinished i błędów placeholderów;
+  uzupełnione również brakujące teksty z wcześniejszych etapów v2.
+- Windows/Qt 6.8.3: build i regresje playgroundu, migracji/katalogu, konfiguracji,
+  konkursów, pogody, manipulacji, sezonów, edytorów, list, kalendarza i języków PASS.
+  Rdzeń bez Qt: cztery zestawy MSVC PASS. Polecenie:
+  `powershell -ExecutionPolicy Bypass -File scripts/test-simulation-v2-core.ps1`.
+
+Następny kierunek: kalibracja na podstawie eksperymentów i oceny użytkownika.
+Playground jest odizolowany od parametrów normalnej gry. KO/drużyny w samym
+playgroundzie są świadomie poza pierwszą wersją, zgodnie z odpowiedzią użytkownika;
+normalna gra zachowuje te tryby. Automatyczny rozwój formy nadal jest odłożony.
+Ostatnie zmiany testowano na Windows/Qt6; wcześniejsze Linux/Qt5 zachowują
+odrębne wyniki, bez deklaracji ponownego uruchomienia tej nowej wersji na Linuxie.
+
 Ten plik jest punktem startowym dla kolejnej sesji AI na innym komputerze.
 Zakładamy aktualny pull całego repo. **Całość `NEW_SIMULATION.md` nie jest jeszcze
 ukończona.** Nie rozpoczynać ponownie gotowych etapów.

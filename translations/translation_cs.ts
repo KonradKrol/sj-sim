@@ -3,7 +3,7 @@
     <context>
         <name>AppFooter</name>
         <message>
-            <location filename="../source/UI/Quick/AppFooter.qml" line="12" />
+            <location filename="../source/UI/Quick/AppFooter.qml" line="13" />
             <source>Shift+klik · skok z wybranej serii</source>
             <translation>Shift+kliknutí · skok z vybraného kola</translation>
         </message>
@@ -460,19 +460,6 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
         </message>
     </context>
     <context>
-        <name>AthleteBadge</name>
-        <message>
-            <location filename="../source/UI/Quick/AthleteBadge.qml" line="48" />
-            <source>%1%2</source>
-            <translation>%1%2</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/AthleteBadge.qml" line="48" />
-            <source> · poziom %1</source>
-            <translation> · úroveň %1</translation>
-        </message>
-    </context>
-    <context>
         <name>AthleteBadgeRack</name>
         <message>
             <location filename="../source/UI/Quick/AthleteBadgeRack.qml" line="16" />
@@ -698,47 +685,47 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
     <context>
         <name>AthleteLibrary</name>
         <message>
-            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="57" />
+            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="58" />
             <source>Skoczkowie · %1</source>
             <translation>Skokani · %1</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="62" />
+            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="63" />
             <source>Szukaj skoczka lub kraju…</source>
             <translation>Hledat skokana nebo zemi…</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="73" />
+            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="75" />
             <source>Skoczkowie</source>
             <translation>Skokani</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="99" />
+            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="101" />
             <source>%1, %2, OVR %3</source>
             <translation>%1, %2, OVR %3</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="114" />
+            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="116" />
             <source>Brak wyników</source>
             <translation>Žádné výsledky</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="114" />
+            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="116" />
             <source>Brak skoczków</source>
             <translation>Žádní skokani</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="114" />
+            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="116" />
             <source>Zmień nazwisko lub kraj.</source>
             <translation>Změňte příjmení nebo zemi.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="114" />
+            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="116" />
             <source>Dodaj skoczka do paczki.</source>
             <translation>Přidejte skokana do balíčku.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="114" />
+            <location filename="../source/UI/Quick/AthleteLibrary.qml" line="116" />
             <source>Wyczyść filtr</source>
             <translation>Vymazat filtr</translation>
         </message>
@@ -777,29 +764,39 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
     <context>
         <name>AthletePatchSet</name>
         <message>
-            <location filename="../source/UI/Quick/AthletePatchSet.qml" line="10" />
+            <location filename="../source/UI/Quick/AthletePatchSet.qml" line="11" />
             <source>Przypisane perki</source>
             <translation>Přiřazené vlastnosti</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AthletePatchSet.qml" line="11" />
+            <location filename="../source/UI/Quick/AthletePatchSet.qml" line="12" />
             <source>Brak</source>
             <translation>Žádný</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AthletePatchSet.qml" line="25" />
+            <location filename="../source/UI/Quick/AthletePatchSet.qml" line="32" />
             <source>Usuń przypisany perk: %1</source>
             <translation>Odebrat přiřazenou vlastnost: %1</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/AthletePatchSet.qml" line="30" />
-            <source>%1 · %2</source>
-            <translation>%1 · %2</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/AthletePatchSet.qml" line="35" />
+            <location filename="../source/UI/Quick/AthletePatchSet.qml" line="48" />
             <source>Usuń perk</source>
             <translation>Odebrat vlastnost</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/AthletePatchSet.qml" line="9" />
+            <source>Lekko</source>
+            <translation>Mírně</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/AthletePatchSet.qml" line="9" />
+            <source>Wyraźnie</source>
+            <translation>Výrazně</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/AthletePatchSet.qml" line="9" />
+            <source>Skrajnie</source>
+            <translation>Extrémně</translation>
         </message>
     </context>
     <context>
@@ -926,11 +923,6 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
     <context>
         <name>AthleteStudio</name>
         <message>
-            <location filename="../source/UI/Quick/AthleteStudio.qml" line="20" />
-            <source>Paczka nowego modelu</source>
-            <translation>Balíček nového modelu</translation>
-        </message>
-        <message>
             <location filename="../source/UI/Quick/AthleteStudio.qml" line="26" />
             <source>+ Skoczek</source>
             <translation>+ Skokan</translation>
@@ -1030,170 +1022,148 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <source>Dodaj skoczka</source>
             <translation>Přidat skokana</translation>
         </message>
+        <message>
+            <location filename="../source/UI/Quick/AthleteStudio.qml" line="20" />
+            <source>Paczka zawodników</source>
+            <translation>Balíček skokanů</translation>
+        </message>
     </context>
     <context>
         <name>AthleteStudioController</name>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="54" />
-            <source>Nie wczytano paczki %1: %2</source>
-            <translation>Balíček %1 se nepodařilo načíst: %2</translation>
-        </message>
-        <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="56" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="55" />
             <source>Moi skoczkowie</source>
             <translation>Moji skokani</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="67" />
-            <source>Nie udało się zapisać paczki. Zmiana nie została zastosowana.</source>
-            <translation>Balíček se nepodařilo uložit. Změna nebyla provedena.</translation>
-        </message>
-        <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="68" />
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="113" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="69" />
             <source>Paczka może mieć najwyżej 10 000 profili.</source>
             <translation>Balíček může obsahovat nejvýše 10 000 profilů.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="68" />
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="113" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="69" />
             <source>Powtórzony identyfikator skoczka.</source>
             <translation>Duplicitní identifikátor skokana.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="68" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="69" />
             <source>Zapisano</source>
             <translation>Uloženo</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="87" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="88" />
             <source>Nazwa paczki musi mieć od 1 do 100 znaków.</source>
             <translation>Název balíčku musí mít 1 až 100 znaků.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="88" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="89" />
             <source>Nowa paczka %1</source>
             <translation>Nový balíček %1</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="88" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="89" />
             <source>Utworzono paczkę</source>
             <translation>Balíček vytvořen</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="90" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="91" />
             <source>Dodano skoczka</source>
             <translation>Skokan přidán</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="91" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="92" />
             <source> — kopia</source>
             <translation> — kopie</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="91" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="92" />
             <source>Utworzono kopię</source>
             <translation>Kopie vytvořena</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="92" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="93" />
             <source>Usunięto skoczka · możesz cofnąć</source>
             <translation>Skokan odebrán · můžete akci vrátit</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="95" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="96" />
             <source>Cofnięto</source>
             <translation>Vráceno</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="96" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="97" />
             <source>Ponowiono</source>
             <translation>Zopakováno</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="97" />
-            <source>Skopiowano. OVR i forma są przeliczone; lądowanie przybliżone. Perki dobierz od zera. Plik zdjęcia nie jest kopiowany.</source>
-            <translation>Zkopírováno. OVR a forma jsou přepočítány; doskok je přibližný. Vlastnosti vyberte znovu. Soubor fotografie se nekopíruje.</translation>
-        </message>
-        <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="106" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="107" />
             <source>Zdjęcie musi znajdować się w folderze paczki.</source>
             <translation>Fotografie musí být ve složce balíčku.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="109" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="110" />
             <source>Zdjęcie z folderu paczki</source>
             <translation>Fotografie ze složky balíčku</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="109" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="110" />
             <source>Zdjęcia (*.png *.jpg *.jpeg *.webp)</source>
             <translation>Obrázky (*.png *.jpg *.jpeg *.webp)</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="110" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="111" />
             <source>Nie udało się otworzyć folderu paczki: %1</source>
             <translation>Složku balíčku se nepodařilo otevřít: %1</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="113" />
-            <source>Nie można odczytać paczki (limit 20 MB). Zdjęcia są w osobnym folderze.</source>
-            <translation>Balíček nelze přečíst (limit 20 MB). Fotografie jsou v samostatné složce.</translation>
-        </message>
-        <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="113" />
-            <source>Nieprawidłowy format nowej paczki skoczków.</source>
-            <translation>Neplatný formát nového balíčku skokanů.</translation>
-        </message>
-        <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="113" />
-            <source>Nieprawidłowy wpis skoczka w paczce.</source>
-            <translation>Neplatný záznam skokana v balíčku.</translation>
-        </message>
-        <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="115" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="118" />
             <source>Wybierz nowy folder. Istniejące pliki nie zostaną nadpisane.</source>
             <translation>Vyberte novou složku. Stávající soubory nebudou přepsány.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="116" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="119" />
             <source>Nie udało się utworzyć folderu eksportu.</source>
             <translation>Nepodařilo se vytvořit složku pro export.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="118" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="121" />
             <source>Nie udało się wyeksportować paczki.</source>
             <translation>Balíček se nepodařilo exportovat.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="119" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="122" />
             <source>Wyeksportowano paczkę</source>
             <translation>Balíček exportován</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="123" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="126" />
             <source>Nie udało się utworzyć folderu paczki.</source>
             <translation>Nepodařilo se vytvořit složku balíčku.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="125" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="128" />
             <source>Wczytano kopię paczki</source>
             <translation>Kopie balíčku načtena</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="128" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="131" />
             <source>Folder docelowy paczki</source>
             <translation>Cílová složka balíčku</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="129" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="132" />
             <source>Wczytaj nową paczkę skoczków</source>
             <translation>Načíst nový balíček skokanů</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="129" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="132" />
             <source>Paczka skoczków (pack.json)</source>
             <translation>Balíček skokanů (pack.json)</translation>
+        </message>
+        <message>
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="98" />
+            <source>To niedokładna, przybliżona migracja. OVR i forma są przeliczone, lądowanie przybliżone, perki od zera. Plik zdjęcia nie jest kopiowany.</source>
+            <translation>Jde o nepřesný, přibližný převod. OVR a forma jsou přepočteny, přistání odhadnuto a perky vynulovány. Soubor fotografie se nekopíruje.</translation>
         </message>
     </context>
     <context>
@@ -1255,7 +1225,7 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
         <message>
             <location filename="../source/UI/AuthorWindow.cpp" line="14" />
             <location filename="../source/UI/AuthorWindow.cpp" line="67" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="169" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="170" />
             <source>O autorze</source>
             <translation>O autorovi</translation>
         </message>
@@ -2481,7 +2451,7 @@ li.checked::marker { content: "\2612"; }
         </message>
         <message>
             <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="106" />
-            <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="154" />
+            <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="156" />
             <source>Dodaj konkurs</source>
             <translation>Přidat závod</translation>
         </message>
@@ -2566,27 +2536,27 @@ li.checked::marker { content: "\2612"; }
             <translation>Nadcházející</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="151" />
+            <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="153" />
             <source>Kalendarz jest pusty</source>
             <translation>Kalendář je prázdný</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="151" />
+            <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="153" />
             <source>Utwórz pierwszy kalendarz</source>
             <translation>Vytvořte první kalendář</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="152" />
+            <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="154" />
             <source>Dodaj konkursy lub wczytaj preset. Potem ustalisz skocznie i zasady.</source>
             <translation>Přidejte závody nebo načtěte předvolbu. Poté nastavte můstky a pravidla.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="152" />
+            <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="154" />
             <source>Kalendarz określa konkursy i ich kolejność w sezonie.</source>
             <translation>Kalendář určuje závody a jejich pořadí v sezóně.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="154" />
+            <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="156" />
             <source>Utwórz kalendarz</source>
             <translation>Vytvořit kalendář</translation>
         </message>
@@ -2602,27 +2572,12 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>CatalogWorkspace</name>
         <message>
-            <location filename="../source/UI/Quick/CatalogWorkspace.qml" line="24" />
-            <source>Klasyczny</source>
-            <translation>Klasický</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/CatalogWorkspace.qml" line="25" />
-            <source>Nowy edytor</source>
-            <translation>Nový editor</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/CatalogWorkspace.qml" line="27" />
-            <source>Osobny zapis · bez zmian w grze</source>
-            <translation>Samostatné uložení · bez změn ve hře</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/CatalogWorkspace.qml" line="54" />
+            <location filename="../source/UI/Quick/CatalogWorkspace.qml" line="46" />
             <source>Lista</source>
             <translation>Seznam</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/CatalogWorkspace.qml" line="54" />
+            <location filename="../source/UI/Quick/CatalogWorkspace.qml" line="46" />
             <source>Edycja</source>
             <translation>Úpravy</translation>
         </message>
@@ -3463,198 +3418,318 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>CompetitionConfigWindow</name>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="62" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="76" />
             <source>Sprawdź ustawienia i rozpocznij symulację (Enter)</source>
             <translation>Zkontrolovat nastavení a zahájit simulaci (Enter)</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="64" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="78" />
             <source>Dobierz bezpieczną belkę na podstawie najmocniejszego zawodnika</source>
             <translation>Vybrat bezpečné nájezdové okno podle nejsilnějšího skokana</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="65" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="79" />
             <source>Wczytaj listę zawodników z pliku JSON</source>
             <translation>Načíst seznam skokanů ze souboru JSON</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="85" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="99" />
             <source>Zasady</source>
             <translation>Pravidla</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="90" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="104" />
             <source>Ustawienia generatora wiatru</source>
             <translation>Nastavení generátoru větru</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="91" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="105" />
             <source>Losowe ustawienia generatora wiatru</source>
             <translation>Náhodné nastavení generátoru větru</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="104" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="118" />
             <source>Ustawienia generatora śniegu na najeździe</source>
             <translation>Nastavení generátoru sněhu na nájezdu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="251" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="265" />
             <source>Konfiguracja konkursu</source>
             <translation>Nastavení závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="301" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="315" />
             <source>Przeprowadzenie kwalifikacji</source>
             <translation>Uspořádat kvalifikaci</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="406" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="420" />
             <source>Dobierz grupy</source>
             <translation>Vybrat skupiny</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="407" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="421" />
             <source>Klasycznie</source>
             <translation>Klasicky</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="408" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="422" />
             <source>Klasycznie (Dla dużych grup)</source>
             <translation>Klasicky (pro velké skupiny)</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="409" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="423" />
             <source>Losowo (Z podziałem na koszyki)</source>
             <translation>Náhodně (s rozdělením do košů)</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="410" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="424" />
             <source>Losowo</source>
             <translation>Náhodně</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="611" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="834" />
             <source>Istniejące zasady konkursu</source>
             <translation>Existující pravidla závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="621" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="844" />
             <source>Zasady konkursu</source>
             <translation>Pravidla závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="786" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1013" />
             <source>Brak serii</source>
             <translation>Žádná kola</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="787" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1014" />
             <source>Konkurs musi zawierać co najmniej jedną serię.</source>
             <translation>Závod musí obsahovat alespoň jedno kolo.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="796" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1023" />
             <source>Nieprawidłowa skocznia</source>
             <translation>Neplatný můstek</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="797" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1024" />
             <source>Wybierz lub skonfiguruj skocznię z dodatnim punktem K oraz punktem HS nie mniejszym od K.</source>
             <translation>Vyberte nebo nastavte můstek s kladným bodem K a bodem HS nejméně rovným K.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="812" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1039" />
             <source>Pusta lista startowa</source>
             <translation>Prázdná startovní listina</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="813" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1040" />
             <source>Dodaj co najmniej jednego prawidłowego zawodnika przed rozpoczęciem konkursu.</source>
             <translation>Před zahájením závodu přidejte alespoň jednoho platného skokana.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="833" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1060" />
             <source>Niekompletne grupy KO</source>
             <translation>Neúplné skupiny KO</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="834" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1061" />
             <source>Wybierz sposób tworzenia grup i upewnij się, że każdy zawodnik znajduje się w grupie KO.</source>
             <translation>Vyberte způsob vytvoření skupin a ujistěte se, že každý skokan patří do skupiny KO.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="843" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1070" />
             <source>Brak drużyn</source>
             <translation>Žádná družstva</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="844" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1071" />
             <source>Dodaj co najmniej jedną drużynę przed rozpoczęciem konkursu.</source>
             <translation>Před zahájením závodu přidejte alespoň jedno družstvo.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="851" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1078" />
             <source>Nieprawidłowy skład drużyny</source>
             <translation>Neplatná sestava družstva</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="852" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1079" />
             <source>Liczba zawodników w drużynie musi być większa od zera.</source>
             <translation>Počet skokanů v družstvu musí být větší než nula.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="862" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1089" />
             <source>Niekompletna drużyna</source>
             <translation>Neúplné družstvo</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="863" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1090" />
             <source>Każda drużyna musi mieć co najmniej %1 zawodników.</source>
             <translation>Každé družstvo musí mít alespoň %1 skokanů.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1120" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1373" />
             <source>Wybierz plik z zawodnikami</source>
             <translation>Vybrat soubor se skokany</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1127" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1380" />
             <source>Nie można otworzyć pliku z zawodnikami</source>
             <translation>Soubor se skokany nelze otevřít</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1127" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1380" />
             <source>Nie udało się otworzyć wybranego pliku
 Upewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia</source>
             <translation>Vybraný soubor se nepodařilo otevřít.
 Ověřte, že existuje a má odpovídající oprávnění.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1138" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1391" />
             <source>Nieprawidłowy plik zawodników</source>
             <translation>Neplatný soubor se skokany</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1139" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1392" />
             <source>Wybrany plik nie zawiera prawidłowej listy zawodników JSON.
 %1</source>
             <translation>Vybraný soubor neobsahuje platný seznam skokanů ve formátu JSON.
 %1</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1161" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1438" />
             <source>Pusta lista zawodników</source>
             <translation>Prázdný seznam skokanů</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1162" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1439" />
             <source>Wybrany plik nie zawiera żadnych prawidłowych zawodników.</source>
             <translation>Vybraný soubor neobsahuje žádné platné skokany.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1332" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1609" />
             <source>Wybierz listę zawodników</source>
             <translation>Vybrat seznam skokanů</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="574" />
+            <source>Paczka zawodników</source>
+            <translation>Balíček skokanů</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="574" />
+            <source>Paczka skoczni</source>
+            <translation>Balíček můstků</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="574" />
+            <source>Paczka zasad</source>
+            <translation>Balíček pravidel</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="579" />
+            <source>Wczytywanie paczek…</source>
+            <translation>Načítání balíčků…</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="581" />
+            <source>Szczegóły wczytywania</source>
+            <translation>Podrobnosti načítání</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="584" />
+            <source>Wczytywanie paczek</source>
+            <translation>Načítání balíčků</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="584" />
+            <source>Uwagi: %1</source>
+            <translation>Poznámky: %1</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="606" />
+            <source>Warunki</source>
+            <translation>Podmínky</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="711" />
+            <source>Dodaj zawodników w bazie danych lub wybierz inną paczkę.</source>
+            <translation>Přidejte skokany v databázi nebo vyberte jiný balíček.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="712" />
+            <source>Dodaj skocznię w bazie danych lub wybierz inną paczkę.</source>
+            <translation>Přidejte můstek v databázi nebo vyberte jiný balíček.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="713" />
+            <source>Wybierz paczkę z zasadami konkursu.</source>
+            <translation>Vyberte balíček pravidel závodu.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="719" />
+            <source>Uwagi przy wczytywaniu paczek: %1.</source>
+            <translation>Poznámky k načítání balíčků: %1.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="730" />
+            <source>Sugerowana belka: —</source>
+            <translation>Doporučené nájezdové okno: —</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="730" />
+            <source>Sugerowana belka: %1 (%2%3)</source>
+            <translation>Doporučené nájezdové okno: %1 (%2%3)</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="753" />
+            <source>Nie zapisano rekordów</source>
+            <translation>Rekordy nebyly uloženy</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1005" />
+            <source>Niepełna konfiguracja</source>
+            <translation>Neúplná konfigurace</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1005" />
+            <source>Poczekaj na paczki i wybierz skocznię oraz zasady konkursu.</source>
+            <translation>Počkejte na balíčky a vyberte můstek a pravidla závodu.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1099" />
+            <source>Nieprawidłowa belka</source>
+            <translation>Neplatné nájezdové okno</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1099" />
+            <source>Wybierz belkę w zakresie od 0 do 200.</source>
+            <translation>Vyberte nájezdové okno od 0 do 200.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1107" />
+            <source>Niezgodne profile</source>
+            <translation>Nekompatibilní profily</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1108" />
+            <source>Zawodnicy i skocznia muszą korzystać z tej samej wersji modelu. Wybierz zgodne paczki; nie można mieszać dawnych umiejętności z nowymi profilami.</source>
+            <translation>Skokani a můstek musí používat stejnou verzi modelu. Vyberte kompatibilní balíčky; staré dovednosti nelze kombinovat s novými profily.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1401" />
+            <source>Nieprawidłowa paczka</source>
+            <translation>Neplatný balíček</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1404" />
+            <source>Import zawodników</source>
+            <translation>Import skokanů</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="1408" />
+            <source>Nie udało się przeliczyć zawodników</source>
+            <translation>Skokany se nepodařilo převést</translation>
         </message>
     </context>
     <context>
@@ -3913,7 +3988,7 @@ trenéra</translation>
         </message>
         <message>
             <location filename="../source/UI/Competition/CompetitionManagerWindow.ui" line="1148" />
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="395" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="403" />
             <source>Manipuluj</source>
             <translation>Upravit</translation>
         </message>
@@ -3934,7 +4009,7 @@ trenéra</translation>
         </message>
         <message>
             <location filename="../source/UI/Competition/CompetitionManagerWindow.ui" line="1304" />
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="501" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="513" />
             <source>Bardzo wysoki</source>
             <translation>Velmi vysoký</translation>
         </message>
@@ -3963,538 +4038,562 @@ nový vítr</translation>
             <translation>Přejít do 2. kola</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="105" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="113" />
             <source>Kliknij dwukrotnie dowolne miejsce w wierszu, aby zobaczyć szczegóły wyniku</source>
             <translation>Dvojitým kliknutím na řádek zobrazíte podrobnosti výsledku</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="106" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="114" />
             <source>Oddaj skok aktualnego zawodnika (spacja, gdy przycisk ma fokus)</source>
             <translation>Odskok aktuálního skokana (mezerník při zaměření tlačítka)</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="107" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="115" />
             <source>Wylosuj nowe warunki wiatrowe dla następnego skoku</source>
             <translation>Vylosovat vítr pro další skok</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="108" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="116" />
             <source>Edytuj sposób generowania wiatru dla kolejnych skoków</source>
             <translation>Upravit generování větru pro další skoky</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="109" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="117" />
             <source>Edytuj poziom śniegu na rozbiegu dla kolejnych skoków</source>
             <translation>Upravit množství sněhu na nájezdu pro další skoky</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="110" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="118" />
             <source>Ustaw obniżenie belki wyłącznie dla następnego zawodnika</source>
             <translation>Snížit nájezdové okno pouze pro dalšího skokana</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="111" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="119" />
             <source>Odwołanie konkursu lub serii wymaga potwierdzenia</source>
             <translation>Zrušení závodu nebo kola vyžaduje potvrzení</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="112" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="120" />
             <source>Automatycznie rozegraj wybraną część konkursu</source>
             <translation>Automaticky odsimulovat vybranou část závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="171" />
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1455" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="179" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1482" />
             <source>Rekord: </source>
             <translation>Rekord: </translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="300" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="308" />
             <source>Odwołaj konkurs</source>
             <translation>Zrušit závod</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="301" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="309" />
             <source>Odwołaj aktualną rundę</source>
             <translation>Zrušit aktuální kolo</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="308" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="316" />
             <source>Auto-symulacja konkursu</source>
             <translation>Automaticky simulovat závod</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="309" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="317" />
             <source>Auto-symulacja serii</source>
             <translation>Automaticky simulovat kolo</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="310" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="318" />
             <source>Auto-symulacja skoków</source>
             <translation>Automaticky simulovat skoky</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="311" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="319" />
             <source>Rozegraj automatycznie cały pozostały konkurs</source>
             <translation>Automaticky odsimulovat zbytek závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="312" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="320" />
             <source>Rozegraj automatycznie pozostałą część aktualnej serii</source>
             <translation>Automaticky odsimulovat zbytek aktuálního kola</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="313" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="321" />
             <source>Wybierz ograniczoną liczbę kolejnych skoków</source>
             <translation>Vybrat omezený počet následujících skoků</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="316" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="324" />
             <source>Auto-symulacja grupy</source>
             <translation>Automaticky simulovat skupinu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="388" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="396" />
             <source>Oddaj skok zawodnika %1 (spacja, gdy przycisk ma fokus)</source>
             <translation>Odskok skokana %1 (mezerník při zaměření tlačítka)</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="395" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="403" />
             <source>Manipulacja ustawiona</source>
             <translation>Úprava nastavena</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="398" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="406" />
             <source>Zmiany są gotowe i zostaną użyte tylko przy następnym skoku. Kliknij, aby je edytować.</source>
             <translation>Změny jsou připraveny a použijí se pouze pro další skok. Kliknutím je upravíte.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="399" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="407" />
             <source>Ustaw jednorazowe parametry następnego skoku</source>
             <translation>Nastavit jednorázové parametry dalšího skoku</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="456" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="468" />
             <source>Brak</source>
             <translation>Žádný</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="461" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="473" />
             <source>Bardzo niski</source>
             <translation>Velmi nízký</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="466" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="478" />
             <source>Niski</source>
             <translation>Nízký</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="471" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="483" />
             <source>Dosyć niski</source>
             <translation>Poměrně nízký</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="476" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="488" />
             <source>Poniżej średniej</source>
             <translation>Podprůměrný</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="481" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="493" />
             <source>Średni</source>
             <translation>Průměrný</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="486" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="498" />
             <source>Powyżej średniej</source>
             <translation>Nadprůměrný</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="491" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="503" />
             <source>Dość wysoki</source>
             <translation>Poměrně vysoký</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="496" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="508" />
             <source>Wysoki</source>
             <translation>Vysoký</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="506" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="518" />
             <source>Ekstremalny</source>
             <translation>Extrémní</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="546" />
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="586" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="558" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="599" />
             <source>Zakończenie </source>
             <translation>Konec </translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="546" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="558" />
             <source> grupy zawodników</source>
             <translation> skupiny skokanů</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="547" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="559" />
             <source>Aby przejść do następnej grupy zawodników, wciśnij przycisk na dole okna konkursu</source>
             <translation>Pro přechod na další skupinu stiskněte tlačítko dole v okně závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="559" />
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="694" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="572" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="708" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="892" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="894" />
             <source>Przejdź do </source>
             <translation>Přejít na </translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="559" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="572" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="894" />
             <source> grupy</source>
             <translation> skupinu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="586" />
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="694" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="599" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="708" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="892" />
             <source> serii</source>
             <translation> kolo</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="587" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="600" />
             <source>Aby przejść do następnej serii, wciśnij przycisk na dole okna konkursu</source>
             <translation>Pro přechod do dalšího kola stiskněte tlačítko dole v okně závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="623" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="636" />
             <source>Dobór grup KO</source>
             <translation>Výběr skupin KO</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="630" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="643" />
             <source>Dobór grup</source>
             <translation>Výběr skupin</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="630" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="643" />
             <source>Klasyczne</source>
             <translation>Klasické</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="630" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="643" />
             <source>Dla dużych grup</source>
             <translation>Pro velké skupiny</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="630" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="643" />
             <source>Losowe (Z podziałem na koszyki)</source>
             <translation>Náhodně (s rozdělením do košů)</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="630" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="643" />
             <source>Losowe</source>
             <translation>Náhodné</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="654" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="667" />
             <source>Rozpocznij serię</source>
             <translation>Zahájit kolo</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="655" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="668" />
             <source>Anuluj</source>
             <translation>Zrušit</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="675" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="688" />
             <source>Wybierz klasyfikację</source>
             <translation>Vybrat pořadí</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="767" />
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="810" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="781" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="825" />
             <source>Zakończenie kwalifikacji</source>
             <translation>Konec kvalifikace</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="768" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="782" />
             <source>Aby przejść do konkursu, wciśnij przycisk na dole okna konkursu</source>
             <translation>Pro přechod do závodu stiskněte tlačítko dole v okně závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="778" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="793" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="891" />
             <source>Przejdź do konkursu</source>
             <translation>Přejít na závod</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="805" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="820" />
             <source>Zakończenie konkursu</source>
             <translation>Konec závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="806" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="821" />
             <source>Aby zakończyć konkurs, wciśnij przycisk na dole okna konkursu</source>
             <translation>Pro ukončení závodu stiskněte tlačítko dole v okně závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="811" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="826" />
             <source>Aby zakończyć kwalifikacje, wciśnij przycisk na dole okna konkursu</source>
             <translation>Pro ukončení kvalifikace stiskněte tlačítko dole v okně závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="815" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="830" />
             <source>Zakończenie serii próbnej</source>
             <translation>Konec zkušebního kola</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="816" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="831" />
             <source>Aby zakończyć serię próbną, wciśnij przycisk na dole okna konkursu</source>
             <translation>Pro ukončení zkušebního kola stiskněte tlačítko dole v okně závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="820" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="835" />
             <source>Zakończenie treningu</source>
             <translation>Konec tréninku</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="821" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="836" />
             <source>Aby zakończyć trening, wciśnij przycisk na dole okna konkursu</source>
             <translation>Pro ukončení tréninku stiskněte tlačítko dole v okně závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="835" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="851" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="886" />
             <source>Zakończ konkurs</source>
             <translation>Ukončit závod</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="838" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="854" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="887" />
             <source>Zakończ kwalifikacje</source>
             <translation>Ukončit kvalifikaci</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="841" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="857" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="888" />
             <source>Zakończ serię próbną</source>
             <translation>Ukončit zkušební kolo</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="844" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="860" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="889" />
             <source>Zakończ trening</source>
             <translation>Ukončit trénink</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="868" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="903" />
             <source>Automatyczna symulacja serii</source>
             <translation>Automatická simulace kola</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="869" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="904" />
             <source>Rozegrać automatycznie wszystkie pozostałe skoki w aktualnej serii?</source>
             <translation>Automaticky odsimulovat všechny zbývající skoky aktuálního kola?</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="997" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1030" />
             <source>Automatyczna symulacja konkursu</source>
             <translation>Automatická simulace závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="998" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1031" />
             <source>Rozegrać automatycznie cały pozostały konkurs? Tej operacji nie można cofnąć.</source>
             <translation>Automaticky odsimulovat zbytek závodu? Tuto akci nelze vrátit.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1160" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1191" />
             <source>Automatyczna symulacja grupy</source>
             <translation>Automatická simulace skupiny</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1161" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1192" />
             <source>Rozegrać automatycznie wszystkie pozostałe skoki w aktualnej grupie?</source>
             <translation>Automaticky odsimulovat všechny zbývající skoky aktuální skupiny?</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1255" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1284" />
             <source>Symulacja kilku skoków</source>
             <translation>Simulace několika skoků</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1256" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1285" />
             <source>Liczba kolejnych skoków (maksymalnie 10 000)</source>
             <translation>Počet následujících skoků (nejvýše 10 000)</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1429" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1456" />
             <source>Nie pokazuj podczas tego konkursu</source>
             <translation>Nezobrazovat během tohoto závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1442" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1469" />
             <source>%1 wyrównał rekord skoczni %2, wynoszący %3m</source>
             <translation>%1 vyrovnal rekord můstku %2 o délce %3 m</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1446" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1473" />
             <source>Po skoku na odległość %1m, %2 ustanowił nowy rekord skoczni %3 (wcześniej %4m).</source>
             <translation>Skokem dlouhým %1 m vytvořil %2 nový rekord můstku %3 (dříve %4 m).</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1462" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1489" />
             <source>%1 wyrównał swój własny rekord życiowy, skacząc %2m</source>
             <translation>%1 vyrovnal svůj osobní rekord skokem dlouhým %2 m</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1468" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1495" />
             <source>Pobicie rekordu życiowego</source>
             <translation>Překonání osobního rekordu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1469" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1496" />
             <source>%1 pobił swój własny rekord życiowy, skacząc %2m (poprzedni rekord: %3m)</source>
             <translation>%1 překonal svůj osobní rekord skokem dlouhým %2 m (předchozí rekord: %3 m)</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1603" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1630" />
             <source>Niestety fatalne wieści dopłynęły do nas z austriackiego Innsbrucka. Nie udało się odratować %1 który zmarł na miejscu.</source>
             <translation>Z rakouského Innsbrucku bohužel přišla tragická zpráva. %1 se nepodařilo zachránit a zemřel na místě.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1605" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1632" />
             <source>Zawodnik został poważnie poturbowany ale nic nie zagraża jego życiu.</source>
             <translation>Skokan byl vážně zraněn, ale jeho život není ohrožen.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1607" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1634" />
             <source>Zawodnik na szczęście wyszedł bez szwanku.</source>
             <translation>Skokan naštěstí vyvázl bez zranění.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1608" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1635" />
             <source>Niebezpieczna sytuacja na skoczni</source>
             <translation>Nebezpečná situace na můstku</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1608" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1635" />
             <source>Zawodnik %1 nie zdążył wyhamować i w niebezpieczny sposób przeleciał przez bandę.
 %2</source>
             <translation>Skokan %1 nestihl zabrzdit a nebezpečně přeletěl přes hrazení.
 %2</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1608" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1635" />
             <source>Jestem wzruszony</source>
             <translation>Jsem dojatý</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1608" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1635" />
             <source>Dobrze tak temu łajdakowi</source>
             <translation>Tomu darebákovi tak patří</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1608" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1635" />
             <source>Mam nadzieje że wzrost populacji krokodyli nastąpi maksymalnie do 2028 roku</source>
             <translation>Doufám, že populace krokodýlů vzroste nejpozději do roku 2028</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1613" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1640" />
             <source>Koniec konkursu!!!</source>
             <translation>Konec závodu!!!</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1613" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1640" />
             <source>Niestety konkurs musi zostać odwołany w trybie NATYCHMIASTOWYM. Pod skocznią wykryto bombę która w każdej chwili może wybuchnąć. Przepraszamy za niedogodności.</source>
             <translation>Závod musí být bohužel OKAMŽITĚ zrušen. Pod můstkem byla nalezena bomba, která může kdykoli vybuchnout. Omlouváme se za nepříjemnosti.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1613" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1640" />
             <source>XD</source>
             <translation>XD</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1613" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1640" />
             <source>Ez super mega ok</source>
             <translation>Ez super mega ok</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1613" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1640" />
             <source>Też tak myślę</source>
             <translation>Také si to myslím</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1663" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1690" />
             <source>Odwołanie konkursu</source>
             <translation>Zrušení závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1664" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1691" />
             <source>Odwołać cały konkurs? Wszystkie uzyskane w nim wyniki zostaną usunięte.</source>
             <translation>Zrušit celý závod? Všechny dosažené výsledky budou smazány.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1704" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1731" />
             <source>Odwołanie aktualnej serii</source>
             <translation>Zrušení aktuálního kola</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1705" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1732" />
             <source>Odwołać aktualną serię? Wszystkie skoki oddane w tej serii zostaną usunięte.</source>
             <translation>Zrušit aktuální kolo? Všechny skoky v tomto kole budou smazány.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1762" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1789" />
             <source>Dyskwalifikacja drużyny</source>
             <translation>Diskvalifikace družstva</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1762" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1789" />
             <source>%1: dyskwalifikacja zawodnika %2 oznacza dyskwalifikację całej drużyny. Pozostali zawodnicy tej drużyny nie oddadzą kolejnych skoków w tym konkursie.</source>
             <translation>%1: diskvalifikace skokana %2 znamená diskvalifikaci celého družstva. Ostatní členové družstva již v tomto závodě nebudou skákat.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2008" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2124" />
             <source>Wiatr</source>
             <translation>Vítr</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2037" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2154" />
             <source>Śnieg</source>
             <translation>Sníh</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2083" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2208" />
             <source>Obniżenie belki</source>
             <translation>Snížení nájezdového okna</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2084" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2209" />
             <source>Belka jest już ustawiona na najniższej dostępnej pozycji.</source>
             <translation>Nájezdové okno je již v nejnižší dostupné poloze.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2089" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2214" />
             <source>Obniżenie belki na życzenie trenera</source>
             <translation>Snížení nájezdového okna na žádost trenéra</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2089" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2214" />
             <source>O ile stopni obniżyć belkę?
 Aby uzyskać dodatkową rekompensatę, zawodnik musi osiągnąć 95% punktu HS (%1 m)</source>
             <translation>O kolik pozic snížit nájezdové okno?
 Pro dodatečnou kompenzaci musí skokan dosáhnout 95 % bodu HS (%1 m).</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2166" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2291" />
             <source>Skok w toku</source>
             <translation>Probíhá skok</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2167" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2292" />
             <source>Poczekaj na zakończenie aktualnego skoku, a następnie spróbuj ponownie.</source>
             <translation>Počkejte na dokončení aktuálního skoku a zkuste to znovu.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2185" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2310" />
             <source>Wyjście z konkursu</source>
             <translation>Opuštění závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2186" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="2311" />
             <source>Na pewno chcesz wyjść z tego okna? Spowoduje to odwołanie aktualnie rozgrywanego konkursu i usunięcie jego wyników.</source>
             <translation>Opravdu opustit toto okno? Aktuální závod bude zrušen a jeho výsledky budou smazány.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1799" />
+            <source>Odczekaj 30 s</source>
+            <translation>Počkat 30 s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1800" />
+            <source>Przesuń czas konkursu o 30 sekund. Pogoda zmienia się zgodnie z wybranym scenariuszem.</source>
+            <translation>Posuňte čas závodu o 30 sekund. Počasí se mění podle vybraného scénáře.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1822" />
+            <source>Warunki</source>
+            <translation>Podmínky</translation>
         </message>
     </context>
     <context>
@@ -4758,6 +4857,7 @@ průměrného větru</translation>
             <translation>OK</translation>
         </message>
         <message>
+            <location filename="../source/UI/EditorWidgets/CompetitionRulesEditorWidget.cpp" line="19" />
             <source>Pomiar wiatru</source>
             <translation>Měření větru</translation>
         </message>
@@ -5186,6 +5286,21 @@ li.checked::marker { content: "\2612"; }
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-size:12pt; font-weight:700;"&gt;Ctrl+D&lt;/span&gt;&lt;span style=" font-size:11pt;"&gt; --&amp;gt; Usuń&lt;/span&gt;&lt;/p&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-size:12pt; font-weight:700;"&gt;Ctrl+Strzałki&lt;/span&gt;&lt;span style=" font-size:12pt;"&gt; &lt;/span&gt;&lt;span style=" font-size:11pt;"&gt;--&amp;gt; Przesuwaj&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
             <translation>&lt;p&gt;Ctrl+A → Přidat (pouze v editoru databáze)&lt;/p&gt;&lt;p&gt;Ctrl+D → Odebrat&lt;/p&gt;&lt;p&gt;Ctrl+šipky → Přesunout&lt;/p&gt;</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/DatabaseEditor/DatabaseItemsListView.cpp" line="325" />
+            <source>Nowy</source>
+            <translation>Nový</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/DatabaseEditor/DatabaseItemsListView.cpp" line="325" />
+            <source>zawodnik</source>
+            <translation>skokan</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/DatabaseEditor/DatabaseItemsListView.cpp" line="336" />
+            <source>Nowa skocznia</source>
+            <translation>Nový můstek</translation>
         </message>
     </context>
     <context>
@@ -5787,16 +5902,6 @@ li.checked::marker { content: "\2612"; }
             <translation>Vlastnosti</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillEditor.qml" line="56" />
-            <source>Wybierz siłę działania perka: lekko, wyraźnie lub mocno. Jedna strona każdej pary lub brak. Kliknij zaznaczoną opcję ponownie, aby usunąć perk.</source>
-            <translation>Vyberte sílu perku: mírně, výrazně nebo silně. Zvolte jednu stranu každé dvojice, nebo žádnou. Opětovným kliknutím na vybranou možnost perk odeberete.</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/HillEditor.qml" line="79" />
-            <source>Zeskok zaczyna się wypłaszczać od %1 m.</source>
-            <translation>Dopadový svah se začíná zplošťovat od %1 m.</translation>
-        </message>
-        <message>
             <location filename="../source/UI/Quick/HillEditor.qml" line="43" />
             <source>Punktacja skoczni</source>
             <translation>Bodování můstku</translation>
@@ -5825,6 +5930,26 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/HillEditor.qml" line="51" />
             <source>Punkty za wiatr tylni</source>
             <translation>Body za vítr do zad</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/HillEditor.qml" line="56" />
+            <source>opcjonalne</source>
+            <translation>volitelné</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/HillEditor.qml" line="58" />
+            <source>Wybrane: %1</source>
+            <translation>Vybráno: %1</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/HillEditor.qml" line="59" />
+            <source>Wybierz jeden perk z każdej pary lub pozostaw ją pustą. Siła: lekko, wyraźnie lub skrajnie. Kliknij zaznaczoną opcję ponownie, aby usunąć perk. Opis: najedź lub naciśnij F1.</source>
+            <translation>Vyberte jeden perk z každé dvojice nebo ji ponechte prázdnou. Síla: mírně, výrazně nebo extrémně. Opětovným kliknutím na vybranou možnost perk odstraníte. Popis: najeďte myší nebo stiskněte F1.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/HillEditor.qml" line="87" />
+            <source>Próg trudnego lądowania: %1 m.</source>
+            <translation>Hranice obtížného přistání: %1 m.</translation>
         </message>
     </context>
     <context>
@@ -5935,22 +6060,22 @@ li.checked::marker { content: "\2612"; }
             <translation>Můstky</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillLibrary.qml" line="63" />
+            <location filename="../source/UI/Quick/HillLibrary.qml" line="67" />
             <source>Brak wyników</source>
             <translation>Žádné výsledky</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillLibrary.qml" line="63" />
+            <location filename="../source/UI/Quick/HillLibrary.qml" line="67" />
             <source>Brak skoczni</source>
             <translation>Žádný můstek</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillLibrary.qml" line="63" />
+            <location filename="../source/UI/Quick/HillLibrary.qml" line="67" />
             <source>Zmień nazwę lub kraj.</source>
             <translation>Změňte název nebo zemi.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillLibrary.qml" line="63" />
+            <location filename="../source/UI/Quick/HillLibrary.qml" line="67" />
             <source>Dodaj skocznię lub skopiuj ją z klasycznego modelu.</source>
             <translation>Přidejte můstek nebo jej zkopírujte z klasického modelu.</translation>
         </message>
@@ -5966,11 +6091,6 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="4" />
             <source>Lądowanie za HS</source>
             <translation>Doskok za HS</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="4" />
-            <source>Wiatr</source>
-            <translation>Vítr</translation>
         </message>
         <message>
             <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="6" />
@@ -6023,32 +6143,44 @@ li.checked::marker { content: "\2612"; }
             <translation>Obtížné doskoky začínají dříve. Opatrnost je nutná i v okolí HS.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="4" />
+            <source>Zmienność wiatru</source>
+            <translation>Proměnlivost větru</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="4" />
+            <source>Dominujący kierunek</source>
+            <translation>Převládající směr</translation>
+        </message>
+        <message>
             <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="10" />
-            <source>Sprzyja częstszym i mocniejszym wahaniom wiatru podczas konkursu.</source>
-            <translation>Podporuje častější a silnější změny větru během závodu.</translation>
+            <source>Gra częściej proponuje loteryjne, gwałtownie zmieniające się warunki. Nie zmienia ręcznych ustawień pogody.</source>
+            <translation>Hra častěji navrhuje nevyzpytatelné, rychle se měnící podmínky. Ruční nastavení počasí neovlivňuje.</translation>
         </message>
         <message>
             <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="11" />
-            <source>Sprzyja równiejszym warunkom i mniejszym wahaniom wiatru.</source>
-            <translation>Podporuje vyrovnanější podmínky a menší změny větru.</translation>
-        </message>
-    </context>
-    <context>
-        <name>HillPerkChoice</name>
-        <message>
-            <location filename="../source/UI/Quick/HillPerkChoice.qml" line="27" />
-            <source>Lekko</source>
-            <translation>Mírně</translation>
+            <source>Gra częściej proponuje równy, stabilny wiatr. Nie zmienia ręcznych ustawień pogody.</source>
+            <translation>Hra častěji navrhuje rovnoměrný, stabilní vítr. Ruční nastavení počasí neovlivňuje.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillPerkChoice.qml" line="27" />
-            <source>Wyraźnie</source>
-            <translation>Výrazně</translation>
+            <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="12" />
+            <source>Dominuje wiatr przedni</source>
+            <translation>Převládá protivítr</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HillPerkChoice.qml" line="27" />
-            <source>Mocno</source>
-            <translation>Silně</translation>
+            <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="12" />
+            <source>Przy losowaniu warunków częściej pojawia się wiatr pod narty. Ręcznie wybrany kierunek pozostaje bez zmian.</source>
+            <translation>Při losování podmínek je pravděpodobnější protivítr. Ručně zvolený směr se nemění.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="13" />
+            <source>Dominuje wiatr tylny</source>
+            <translation>Převládá zadní vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/HillPerkCatalog.qml" line="13" />
+            <source>Przy losowaniu warunków częściej pojawia się wiatr w plecy. Ręcznie wybrany kierunek pozostaje bez zmian.</source>
+            <translation>Při losování podmínek je pravděpodobnější zadní vítr. Ručně zvolený směr se nemění.</translation>
         </message>
     </context>
     <context>
@@ -6155,112 +6287,95 @@ li.checked::marker { content: "\2612"; }
         </message>
         <message>
             <location filename="../source/UI/Quick/HillStudio.qml" line="47" />
-            <source>Punkt K, HS i trzy pary perków. Zacznij od nowej skoczni lub kopii klasycznego modelu.</source>
-            <translation>Bod K, HS a tři dvojice vlastností. Začněte novým můstkem nebo kopií klasického modelu.</translation>
+            <source>Dodaj skocznię</source>
+            <translation>Přidat můstek</translation>
         </message>
         <message>
             <location filename="../source/UI/Quick/HillStudio.qml" line="47" />
-            <source>Dodaj skocznię</source>
-            <translation>Přidat můstek</translation>
+            <source>Punkt K, HS i perki. Dodaj skocznię lub zaimportuj starsze dane.</source>
+            <translation>Bod K, HS a perky. Přidejte můstek nebo importujte starší data.</translation>
         </message>
     </context>
     <context>
         <name>HillStudioController</name>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="28" />
-            <location filename="../source/hills/HillStudioController.cpp" line="72" />
+            <location filename="../source/hills/HillStudioController.cpp" line="66" />
             <source>Nie można odczytać paczki skoczni.</source>
             <translation>Balíček můstků nelze přečíst.</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="32" />
+            <location filename="../source/hills/HillStudioController.cpp" line="29" />
             <source>Moje skocznie</source>
             <translation>Moje můstky</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="42" />
-            <location filename="../source/hills/HillStudioController.cpp" line="43" />
-            <source>Nieprawidłowy format paczki skoczni.</source>
-            <translation>Neplatný formát balíčku můstků.</translation>
-        </message>
-        <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="43" />
-            <source>Powtórzony identyfikator skoczni.</source>
-            <translation>Duplicitní identifikátor můstku.</translation>
-        </message>
-        <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="47" />
-            <source>Nie udało się zapisać paczki. Zmiana nie została zastosowana.</source>
-            <translation>Balíček se nepodařilo uložit. Změna nebyla provedena.</translation>
-        </message>
-        <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="52" />
+            <location filename="../source/hills/HillStudioController.cpp" line="46" />
             <source>Zapisano</source>
             <translation>Uloženo</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="60" />
+            <location filename="../source/hills/HillStudioController.cpp" line="54" />
             <source>Nowa paczka %1</source>
             <translation>Nový balíček %1</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="63" />
+            <location filename="../source/hills/HillStudioController.cpp" line="57" />
             <source>Dodano skocznię</source>
             <translation>Můstek přidán</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="64" />
+            <location filename="../source/hills/HillStudioController.cpp" line="58" />
             <source> — kopia</source>
             <translation> — kopie</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="65" />
+            <location filename="../source/hills/HillStudioController.cpp" line="59" />
             <source>Usunięto skocznię · możesz cofnąć</source>
             <translation>Můstek odebrán · můžete akci vrátit</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="68" />
+            <location filename="../source/hills/HillStudioController.cpp" line="62" />
             <source>Skopiowano skocznię. Perki dobierz od zera.</source>
             <translation>Můstek zkopírován. Vlastnosti vyberte znovu.</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="69" />
+            <location filename="../source/hills/HillStudioController.cpp" line="63" />
             <source>Cofnięto</source>
             <translation>Vráceno</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="70" />
+            <location filename="../source/hills/HillStudioController.cpp" line="64" />
             <source>Ponowiono</source>
             <translation>Zopakováno</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="71" />
+            <location filename="../source/hills/HillStudioController.cpp" line="65" />
             <source>Nie udało się wyeksportować paczki.</source>
             <translation>Balíček se nepodařilo exportovat.</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="71" />
+            <location filename="../source/hills/HillStudioController.cpp" line="65" />
             <source>Wyeksportowano paczkę</source>
             <translation>Balíček exportován</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="72" />
+            <location filename="../source/hills/HillStudioController.cpp" line="66" />
             <source>Wczytano kopię paczki</source>
             <translation>Kopie balíčku načtena</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="73" />
+            <location filename="../source/hills/HillStudioController.cpp" line="67" />
             <source>Eksportuj paczkę</source>
             <translation>Exportovat balíček</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="73" />
-            <location filename="../source/hills/HillStudioController.cpp" line="74" />
+            <location filename="../source/hills/HillStudioController.cpp" line="67" />
+            <location filename="../source/hills/HillStudioController.cpp" line="68" />
             <source>Paczka skoczni (*.json)</source>
             <translation>Balíček můstků (*.json)</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="74" />
+            <location filename="../source/hills/HillStudioController.cpp" line="68" />
             <source>Importuj paczkę</source>
             <translation>Importovat balíček</translation>
         </message>
@@ -6405,17 +6520,17 @@ li.checked::marker { content: "\2612"; }
             <translation>Upravit databázi</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HomeTools.qml" line="30" />
+            <location filename="../source/UI/Quick/HomeTools.qml" line="32" />
             <source>Ustawienia</source>
             <translation>Nastavení</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HomeTools.qml" line="31" />
+            <location filename="../source/UI/Quick/HomeTools.qml" line="33" />
             <source>Preferencje aplikacji i ustawienia symulacji.</source>
             <translation>Předvolby aplikace a nastavení simulace.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/HomeTools.qml" line="32" />
+            <location filename="../source/UI/Quick/HomeTools.qml" line="34" />
             <source>Otwórz ustawienia</source>
             <translation>Otevřít nastavení</translation>
         </message>
@@ -6452,7 +6567,7 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>JudgeMarks</name>
         <message>
-            <location filename="../source/UI/Quick/JudgeMarks.qml" line="15" />
+            <location filename="../source/UI/Quick/JudgeMarks.qml" line="21" />
             <source> · nota odrzucona</source>
             <translation> · škrtnutá známka</translation>
         </message>
@@ -6962,15 +7077,17 @@ li.checked::marker { content: "\2612"; }
             <translation>OK</translation>
         </message>
         <message>
-            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="84" />
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="186" />
             <source>Edytuj wiatr</source>
             <translation>Upravit vítr</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="162" />
             <source>Zmiana następnego skoku</source>
             <translation>Upravit další skok</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="163" />
             <source>Zastosuj</source>
             <translation>Použít</translation>
         </message>
@@ -8361,12 +8478,12 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>NewSeasonConfiguratorWindow</name>
         <message>
-            <location filename="../source/UI/Seasons/NewSeasonConfiguratorWindow.cpp" line="254" />
+            <location filename="../source/UI/Seasons/NewSeasonConfiguratorWindow.cpp" line="245" />
             <source>Edytor kalendarzy</source>
             <translation>Editor kalendářů</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSeasonConfiguratorWindow.cpp" line="255" />
+            <location filename="../source/UI/Seasons/NewSeasonConfiguratorWindow.cpp" line="246" />
             <source>Aby dodać konkurs do kalendarza użyj "Ctrl + A". Żeby usunąć zawody użyj "Ctrl + D".
  Aby przesuwać konkursy, użyj Ctrl i strzałek na klawiaturze.
 Aby edytować informacje o konkursie zaznacz w tabeli wiersze informacji o konkursie które chcesz edytować (Wszystkie w tej samej kolumnie) i naciśnij "Ctrl + E".
@@ -8374,7 +8491,7 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
             <translation>Pro přidání závodu použijte Ctrl+A, pro odebrání Ctrl+D a pro přesunutí Ctrl+šipky. Vyberte buňky ve stejném sloupci a stiskněte Ctrl+E pro úpravu informací. Lze upravovat více závodů najednou, kromě sloupce Postup (závod), kde lze vybrat pouze jeden řádek.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSeasonConfiguratorWindow.cpp" line="257" />
+            <location filename="../source/UI/Seasons/NewSeasonConfiguratorWindow.cpp" line="248" />
             <source>Nie pokazuj ponownie</source>
             <translation>Znovu nezobrazovat</translation>
         </message>
@@ -8441,105 +8558,130 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
             <translation>OK</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="17" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="23" />
             <source>Używaj dat zawodów</source>
             <translation>Používat termíny závodů</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="18" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="24" />
             <source>Opcjonalny kalendarz z datami. Możesz włączyć go później, przed rozpoczęciem sezonu.</source>
             <translation>Volitelný kalendář s termíny. Můžete jej zapnout později před začátkem sezóny.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="20" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="29" />
             <source>Paczka skoczków</source>
             <translation>Balíček skokanů</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="20" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="29" />
             <source>Paczka skoczni</source>
             <translation>Balíček můstků</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="20" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="29" />
             <source>Paczka zasad</source>
             <translation>Balíček pravidel</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="22" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="31" />
             <source>Zapamiętaj wybór paczek</source>
             <translation>Zapamatovat výběr balíčků</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="31" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="38" />
             <source>Skoczkowie: %1</source>
             <translation>Skokani: %1</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="31" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="38" />
             <source>Skocznie: %1</source>
             <translation>Můstky: %1</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="31" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="38" />
             <source>Zestawy zasad: %1</source>
             <translation>Sady pravidel: %1</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="35" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="42" />
             <source>Utwórz symulację</source>
             <translation>Vytvořit simulaci</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="38" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="45" />
             <source>Np. Puchar Świata 2026</source>
             <translation>Např. Světový pohár 2026</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="69" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="79" />
             <source>Brak nazwy</source>
             <translation>Chybí název</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="69" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="79" />
             <source>Wpisz nazwę zapisu symulacji.</source>
             <translation>Zadejte název uložené simulace.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="78" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="88" />
             <source>Nazwa jest zajęta</source>
             <translation>Název je již použit</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="78" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="88" />
             <source>Wybierz nazwę, która nie została jeszcze użyta na liście zapisów symulacji.</source>
             <translation>Vyberte název, který ještě není použit v seznamu uložených simulací.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="97" />
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="112" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="107" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="122" />
             <source>Nieprawidłowa nazwa</source>
             <translation>Neplatný název</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="98" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="108" />
             <source>Nazwa nie może zawierać znaków \ / : * ? " &lt; &gt; | ani kończyć się kropką.</source>
             <translation>Název nesmí obsahovat znaky \ / : * ? " &lt; &gt; | ani končit tečkou.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="113" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="123" />
             <source>Ta nazwa jest zarezerwowana przez system. Wybierz inną.</source>
             <translation>Tento název je rezervován systémem. Vyberte jiný.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="124" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="134" />
             <source>Pusta paczka</source>
             <translation>Prázdný balíček</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="124" />
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="134" />
             <source>Wybierz paczki zawierające skoczków, skocznie i zasady konkursów.</source>
             <translation>Vyberte balíčky obsahující skokany, můstky a pravidla závodů.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="25" />
+            <source>Wczytywanie paczek…</source>
+            <translation>Načítání balíčků…</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="27" />
+            <source>Szczegóły wczytywania</source>
+            <translation>Podrobnosti načítání</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="28" />
+            <source>Wczytywanie paczek</source>
+            <translation>Načítání balíčků</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="28" />
+            <source>Uwagi: %1</source>
+            <translation>Poznámky: %1</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Seasons/NewSimulationSaveConfigurationWindow.cpp" line="225" />
+            <source>Uwagi przy wczytywaniu paczek: %1.</source>
+            <translation>Poznámky k načítání balíčků: %1.</translation>
         </message>
     </context>
     <context>
@@ -8561,17 +8703,17 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
     <context>
         <name>NumberField</name>
         <message>
-            <location filename="../source/UI/Quick/NumberField.qml" line="43" />
+            <location filename="../source/UI/Quick/NumberField.qml" line="46" />
             <source>Różne wartości</source>
             <translation>Různé hodnoty</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/NumberField.qml" line="57" />
+            <location filename="../source/UI/Quick/NumberField.qml" line="62" />
             <source>Zwiększ wartość</source>
             <translation>Zvýšit hodnotu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/NumberField.qml" line="58" />
+            <location filename="../source/UI/Quick/NumberField.qml" line="63" />
             <source>Zmniejsz wartość</source>
             <translation>Snížit hodnotu</translation>
         </message>
@@ -8579,120 +8721,133 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
     <context>
         <name>PerkStrengthSelector</name>
         <message>
-            <location filename="../source/UI/Quick/PerkStrengthSelector.qml" line="10" />
-            <source>Zwykły</source>
-            <translation>Běžný</translation>
+            <location filename="../source/UI/Quick/PerkStrengthSelector.qml" line="9" />
+            <source>Lekko</source>
+            <translation>Mírně</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PerkStrengthSelector.qml" line="10" />
-            <source>Wzmocniony</source>
-            <translation>Posílený</translation>
+            <location filename="../source/UI/Quick/PerkStrengthSelector.qml" line="9" />
+            <source>Wyraźnie</source>
+            <translation>Výrazně</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PerkStrengthSelector.qml" line="10" />
-            <source>Potężny</source>
-            <translation>Mocný</translation>
+            <location filename="../source/UI/Quick/PerkStrengthSelector.qml" line="9" />
+            <source>Skrajnie</source>
+            <translation>Extrémně</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PerkStrengthSelector.qml" line="30" />
+            <source>Kliknij ponownie, aby usunąć perk.</source>
+            <translation>Opětovným kliknutím perk odstraníte.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PerkStrengthSelector.qml" line="30" />
+            <source>Wybierz tę siłę perka.</source>
+            <translation>Vyberte tuto sílu perku.</translation>
         </message>
     </context>
     <context>
         <name>PlaygroundController</name>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="28" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="31" />
+            <location filename="../source/playground/PlaygroundController.h" line="58" />
             <source>Stawka syntetyczna</source>
             <translation>Syntetické startovní pole</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="28" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="31" />
+            <location filename="../source/playground/PlaygroundController.h" line="58" />
             <source>Skocznia syntetyczna</source>
             <translation>Syntetický můstek</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="28" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="31" />
+            <location filename="../source/playground/PlaygroundController.h" line="58" />
             <source>Zasady eksperymentu</source>
             <translation>Pravidla experimentu</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="35" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="44" />
             <source>Przerwano. Zachowano %1 pełnych porównań.</source>
             <translation>Přerušeno. Uloženo %1 úplných porovnání.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="35" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="44" />
             <source>Zakończono %1 porównań. Wyniki zapisano w historii.</source>
             <translation>Dokončeno %1 porovnání. Výsledky byly uloženy do historie.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="35" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="44" />
             <source>Wyniki są dostępne; zapis historii nie powiódł się: %1</source>
             <translation>Výsledky jsou dostupné; uložení historie selhalo: %1</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="36" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="45" />
             <source>Odtworzono konkurs %1.</source>
             <translation>Závod %1 byl přehrán.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="46" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="68" />
             <source>Wariant %1</source>
             <translation>Varianta %1</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="48" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="70" />
             <source>Bazowy</source>
             <translation>Základní</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="53" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="92" />
             <source>Trwa eksperyment. Możesz przeglądać dotychczasowe wyniki.</source>
             <translation>Experiment probíhá. Můžete procházet dosavadní výsledky.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="54" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="93" />
             <source>Przerywanie. Ukończone porównania zostaną zapisane.</source>
             <translation>Přerušování. Dokončená porovnání budou uložena.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="57" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="96" />
             <source>Nieprawidłowy raport.</source>
             <translation>Neplatná zpráva.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="57" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="96" />
             <source>Wczytano zapisany wynik eksperymentu.</source>
             <translation>Uložený výsledek experimentu byl načten.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="58" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="97" />
             <source>Folder eksportu playgroundu</source>
             <translation>Složka exportu laboratoře</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="58" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="97" />
             <source>Wyeksportowano do %1</source>
             <translation>Exportováno do %1</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="59" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="98" />
             <source>Zapisz eksperyment</source>
             <translation>Uložit experiment</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="59" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="98" />
             <source>Zapisano konfigurację.</source>
             <translation>Konfigurace uložena.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="59" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="98" />
             <source>Nie udało się zapisać konfiguracji.</source>
             <translation>Konfiguraci se nepodařilo uložit.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="60" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="99" />
             <source>Wczytaj eksperyment</source>
             <translation>Načíst experiment</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="60" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="99" />
             <source>Wczytano konfigurację eksperymentu.</source>
             <translation>Konfigurace experimentu načtena.</translation>
         </message>
@@ -8816,11 +8971,6 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
             <translation>Vítr %1 m/s · kompenzace %2 b · známky %3 b</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundReplay.qml" line="73" />
-            <source>Wybicie %1 · lot %2 · losowa część %3</source>
-            <translation>Odraz %1 · let %2 · náhodná složka %3</translation>
-        </message>
-        <message>
             <location filename="../source/UI/Quick/PlaygroundReplay.qml" line="80" />
             <source>Odtwórz dowolny konkurs</source>
             <translation>Přehrát libovolný závod</translation>
@@ -8829,6 +8979,11 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
             <location filename="../source/UI/Quick/PlaygroundReplay.qml" line="80" />
             <source>Wybierz wariant i numer. Zobaczysz pełne wyniki oraz parametry każdego skoku.</source>
             <translation>Vyberte variantu a číslo. Zobrazí se úplné výsledky a parametry každého skoku.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundReplay.qml" line="73" />
+            <source>Jakość %1 · odczuty wiatr %2 m/s · losowa część %3</source>
+            <translation>Kvalita %1 · pociťovaný vítr %2 m/s · náhodný vliv %3</translation>
         </message>
     </context>
     <context>
@@ -9033,11 +9188,6 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
     <context>
         <name>PlaygroundScreen</name>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="19" />
-            <source>Eksperymenty symulacji</source>
-            <translation>Simulační experimenty</translation>
-        </message>
-        <message>
             <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="20" />
             <source>Odizolowane dane · powtarzalne losowanie · porównania wariantów</source>
             <translation>Oddělená data · opakovatelné losování · porovnání variant</translation>
@@ -9103,289 +9253,368 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
             <translation>Historie</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="61" />
+            <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="65" />
             <source>Brak zapisanych eksperymentów</source>
             <translation>Žádné uložené experimenty</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="61" />
+            <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="65" />
             <source>Zakończony lub normalnie przerwany eksperyment zapisuje ukończone porównania. Konfigurację można później ponownie uruchomić.</source>
             <translation>Dokončený nebo běžně přerušený experiment uloží dokončená porovnání. Konfiguraci lze později znovu spustit.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="71" />
+            <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="75" />
             <source>Automatyzacja i analiza poza aplikacją</source>
             <translation>Automatizace a analýza mimo aplikaci</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="72" />
+            <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="76" />
             <source>Zapisz konfigurację z tego ekranu albo wygeneruj przykład. CLI korzysta z tego samego silnika i uruchamia się bez interfejsu graficznego.</source>
             <translation>Uložte konfiguraci z této obrazovky nebo vygenerujte příklad. CLI používá stejné jádro a běží bez grafického rozhraní.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="74" />
+            <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="78" />
             <source>Windows: użyj sj-sim.exe. Indeksy wariantu i konkursu w CLI liczą się od zera. Folder wyniku musi być nowy; istniejące raporty nie są nadpisywane.</source>
             <translation>Windows: použijte sj-sim.exe. Indexy variant a závodů v CLI začínají od nuly. Složka výsledků musí být nová; existující zprávy se nepřepisují.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="75" />
+            <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="79" />
             <source>Eksport: pełny raport JSON, konfiguracja, porównania CSV, agregaty każdego skoczka i przykładowe skoki. Analiza w Pythonie lub przez agenta nie wymaga klikania w UI.</source>
             <translation>Export obsahuje úplnou zprávu JSON, konfiguraci, porovnání CSV, souhrny každého skokana a ukázkové skoky. Analýza v Pythonu nebo agentem nevyžaduje ovládání rozhraní.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="40" />
+            <source>Stawka</source>
+            <translation>Startovní pole</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="19" />
+            <source>Laboratorium symulacji v2</source>
+            <translation>Laboratoř simulace v2</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="40" />
+            <source>Lądowanie</source>
+            <translation>Přistání</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="40" />
+            <source>Wiatr</source>
+            <translation>Vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundScreen.qml" line="40" />
+            <source>Kalibracja</source>
+            <translation>Kalibrace</translation>
         </message>
     </context>
     <context>
         <name>PlaygroundSetup</name>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="13" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="15" />
             <source>Zawodnik %1</source>
             <translation>Skokan %1</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="31" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="35" />
             <source>Dane i liczba prób</source>
             <translation>Data a počet pokusů</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="32" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="36" />
             <source>Nazwa eksperymentu</source>
             <translation>Název experimentu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="35" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="39" />
             <source>Konkursy na wariant</source>
             <translation>Závody na variantu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="36" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="40" />
             <source>Wątki</source>
             <translation>Vlákna</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="37" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="41" />
             <source>Skoczkowie</source>
             <translation>Skokani</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="37" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="41" />
             <source>Zmiana liczby przełącza na stawkę syntetyczną.</source>
             <translation>Změna počtu přepne na syntetické startovní pole.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="38" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="42" />
             <source>Przykłady konkursów</source>
             <translation>Příklady závodů</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="38" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="42" />
             <source>Liczba pierwszych konkursów ze szczegółami wybranego skoczka. Wszystkie konkursy wchodzą do statystyk. Dowolny konkurs można odtworzyć z jego numeru.</source>
             <translation>Počet prvních závodů s podrobnostmi vybraného skokana. Všechny závody se započítávají do statistik. Libovolný závod lze přehrát podle jeho čísla.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="40" />
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="41" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="44" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="45" />
             <source>Ziarno losowania</source>
             <translation>Semeno generátoru</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="42" />
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="80" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="47" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="85" />
             <source>Stawka</source>
             <translation>Startovní pole</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="43" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="48" />
             <source>Stawka z konfiguracji</source>
             <translation>Startovní pole z konfigurace</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="43" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="48" />
             <source>Stawka syntetyczna</source>
             <translation>Syntetické startovní pole</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="44" />
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="80" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="49" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="85" />
             <source>Skocznia</source>
             <translation>Můstek</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="48" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="53" />
             <source>K</source>
             <translation>K</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="49" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="54" />
             <source>HS</source>
             <translation>HS</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="51" />
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="80" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="56" />
             <source>Zasady</source>
             <translation>Pravidla</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="51" />
-            <source>Batch korzysta z zasad gry. Ręczny dobór grup KO jest zastępowany losowaniem z zapisanym ziarnem, aby nie zatrzymywać obliczeń.</source>
-            <translation>Dávka používá pravidla hry. Ruční výběr skupin KO je nahrazen losováním s uloženým semenem, aby se výpočty nezastavily.</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="52" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="57" />
             <source>Zasady eksperymentu</source>
             <translation>Pravidla experimentu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="55" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="60" />
             <source>Serie</source>
             <translation>Kola</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="56" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="61" />
             <source>Limit po pierwszej serii</source>
             <translation>Limit po prvním kole</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="58" />
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="59" />
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="80" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="63" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="64" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="85" />
             <source>Wybrany skoczek</source>
             <translation>Vybraný skokan</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="60" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="65" />
             <source>%1 konkursów × %2 wariantów = %3 konkursów</source>
             <translation>%1 závodů × %2 variant = %3 závodů</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="68" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="73" />
             <source>Warianty i parametry</source>
             <translation>Varianty a parametry</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="69" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="74" />
             <source>Pierwszy wariant jest odniesieniem. Pozostałe dziedziczą wspólne wartości, chyba że ustawisz własne.</source>
             <translation>První varianta je referenční. Ostatní dědí společné hodnoty, pokud nenastavíte vlastní.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="73" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="78" />
             <source>Dodaj wariant</source>
             <translation>Přidat variantu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="77" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="82" />
             <source>Nazwa wariantu</source>
             <translation>Název varianty</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="78" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="83" />
             <source>Usuń</source>
             <translation>Odebrat</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="80" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="85" />
             <source>Warunki</source>
             <translation>Podmínky</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="80" />
-            <source>Silnik</source>
-            <translation>Jádro</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="80" />
-            <source>Współczynniki eksperymentalne</source>
-            <translation>Experimentální koeficienty</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="80" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="85" />
             <source>Grupa parametrów</source>
             <translation>Skupina parametrů</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="86" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="105" />
             <source>Gotowe porównania</source>
             <translation>Předvolby porovnání</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="89" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="108" />
             <source>Wiatr</source>
             <translation>Vítr</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="89" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="108" />
             <source>Przewaga wiatru</source>
             <translation>Výhoda větru</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="89" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="108" />
             <source>Forma</source>
             <translation>Forma</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="89" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="108" />
             <source>Wybicie / lot</source>
             <translation>Odraz / let</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="89" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="108" />
             <source>Lądowanie</source>
             <translation>Doskok</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="89" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="108" />
             <source>Losowość</source>
             <translation>Náhoda</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="91" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="110" />
             <source>Skanowanie parametru</source>
             <translation>Procházení parametru</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="92" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="111" />
             <source>Parametr do skanowania</source>
             <translation>Parametr k procházení</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="95" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="114" />
             <source>Od</source>
             <translation>Od</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="96" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="115" />
             <source>Do</source>
             <translation>Do</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="97" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="116" />
             <source>Wartości</source>
             <translation>Hodnoty</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="99" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="118" />
             <source>Zbuduj warianty skanowania</source>
             <translation>Vytvořit varianty procházení</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="100" />
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="119" />
             <source>Tworzenie skanowania zastępuje listę wariantów. Dane gry pozostają bez zmian.</source>
             <translation>Vytvoření procházení nahradí seznam variant. Herní data zůstanou beze změny.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="46" />
+            <source>Uwagi dotyczące paczek</source>
+            <translation>Poznámky k balíčkům</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="56" />
+            <source>Konkursy indywidualne bez KO. Profile v2 i punktacja są wspólne z grą; eksperyment nie zmienia danych gry.</source>
+            <translation>Individuální závody bez KO. Profily v2 a bodování jsou společné s hrou; experiment nemění herní data.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="85" />
+            <source>Jakość i perki</source>
+            <translation>Kvalita a perky</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="85" />
+            <source>Lot i geometria</source>
+            <translation>Let a geometrie</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="85" />
+            <source>Lądowanie i noty</source>
+            <translation>Dopad a známky</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="85" />
+            <source>Pole wiatru</source>
+            <translation>Větrné pole</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="85" />
+            <source>Opady</source>
+            <translation>Srážky</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="85" />
+            <source>Pomiar wiatru</source>
+            <translation>Měření větru</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="85" />
+            <source>Punktacja</source>
+            <translation>Bodování</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="85" />
+            <source>Analiza</source>
+            <translation>Analýza</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="86" />
+            <source>Szukaj parametru w grupie…</source>
+            <translation>Hledat parametr ve skupině…</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="87" />
+            <source>Domyślna wartość i jednostka są pod każdym polem. ↺ przywraca dziedziczenie lub wartość silnika.</source>
+            <translation>Výchozí hodnota a jednotka jsou pod každým polem. ↺ obnoví dědění nebo výchozí hodnotu enginu.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="98" />
+            <source>Domyślnie: %1</source>
+            <translation>Výchozí: %1</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundSetup.qml" line="99" />
+            <source>Przywróć parametr %1</source>
+            <translation>Obnovit parametr %1</translation>
         </message>
     </context>
     <context>
         <name>PlaygroundWindow</name>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="61" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="100" />
             <source>Playground symulacji</source>
             <translation>Simulační laboratoř</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="61" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="100" />
             <source>Eksperymenty na odizolowanych kopiach danych. Konfiguracja i raport są dostępne również przez CLI.</source>
             <translation>Experimenty na oddělených kopiích dat. Konfigurace a zpráva jsou dostupné také přes CLI.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="61" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="100" />
             <source>Uruchom eksperyment</source>
             <translation>Spustit experiment</translation>
         </message>
@@ -9482,33 +9711,28 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
             <translation>Parametry skokana jsou mimo rozsah.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteProfile.cpp" line="32" />
-            <source>Rekord musi mieścić się między 0 a 500 m.</source>
-            <translation>Osobní rekord musí být mezi 0 a 500 m.</translation>
-        </message>
-        <message>
             <location filename="../source/athletes/AthleteProfile.cpp" line="33" />
             <source>Nieprawidłowy zestaw perków.</source>
             <translation>Neplatná sada vlastností.</translation>
         </message>
         <message>
             <location filename="../source/athletes/AthleteProfile.cpp" line="34" />
-            <location filename="../source/hills/HillProfile.cpp" line="25" />
+            <location filename="../source/hills/HillProfile.cpp" line="27" />
             <source>Nieprawidłowy poziom perka.</source>
             <translation>Neplatná úroveň vlastnosti.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="25" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="26" />
             <source>Nowy skoczek</source>
             <translation>Nový skokan</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="40" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="41" />
             <source>Zdjęcie musi znajdować się w folderze paczki.</source>
             <translation>Fotografie musí být ve složce balíčku.</translation>
         </message>
         <message>
-            <location filename="../source/athletes/AthleteStudioController.cpp" line="42" />
+            <location filename="../source/athletes/AthleteStudioController.cpp" line="43" />
             <source>Nie udało się przenieść zdjęć razem z paczką.</source>
             <translation>Fotografie se nepodařilo přenést spolu s balíčkem.</translation>
         </message>
@@ -9521,7 +9745,7 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
             <location filename="../source/competitions/CompetitionInfo.cpp" line="76" />
             <location filename="../source/form-generator/JumperFormGeneratorSettingsPreset.cpp" line="81" />
             <location filename="../source/seasons/SeasonCalendarPreset.cpp" line="160" />
-            <location filename="../source/seasons/SimulationSave.cpp" line="313" />
+            <location filename="../source/seasons/SimulationSave.cpp" line="327" />
             <source>Nie udało się otworzyć pliku </source>
             <translation>Soubor se nepodařilo otevřít </translation>
         </message>
@@ -9563,7 +9787,7 @@ Ověřte, že požadované složky existují a aplikace má odpovídající opr�
         </message>
         <message>
             <location filename="../source/competitions/CompetitionInfo.cpp" line="112" />
-            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="166" />
+            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="205" />
             <source>Nota laczna</source>
             <translation>Celkové body</translation>
         </message>
@@ -9599,22 +9823,26 @@ Ověřte, že požadované složky existují a aplikace má odpovídající opr�
         </message>
         <message>
             <location filename="../source/competitions/CompetitionInfo.cpp" line="220" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
             <source>Konkurs</source>
             <translation>Závod</translation>
         </message>
         <message>
             <location filename="../source/competitions/CompetitionInfo.cpp" line="222" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
             <source>Kwalifikacje</source>
             <translation>Kvalifikace</translation>
         </message>
         <message>
             <location filename="../source/competitions/CompetitionInfo.cpp" line="224" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
             <location filename="../source/UI/Seasons/CalendarEditor/CalendarEditorWidget.cpp" line="208" />
             <source>Seria próbna</source>
             <translation>Zkušební kolo</translation>
         </message>
         <message>
             <location filename="../source/competitions/CompetitionInfo.cpp" line="226" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
             <location filename="../source/UI/Seasons/CalendarEditor/CalendarEditorWidget.cpp" line="210" />
             <source>Trening</source>
             <translation>Trénink</translation>
@@ -9638,7 +9866,7 @@ Ověřte, že požadované složky existují a aplikace má odpovídající opr�
             <location filename="../source/competitions/CompetitionSingleResult.cpp" line="212" />
             <location filename="../source/seasons/Classification.cpp" line="282" />
             <location filename="../source/seasons/Classification.cpp" line="294" />
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="426" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="434" />
             <source>pkt</source>
             <translation>b</translation>
         </message>
@@ -9746,77 +9974,77 @@ __</translation>
             <translation> (družstevní)</translation>
         </message>
         <message>
-            <location filename="../source/global/DataPack.cpp" line="35" />
+            <location filename="../source/global/DataPack.cpp" line="63" />
             <source>Nieobsługiwany format paczki.</source>
             <translation>Nepodporovaný formát balíčku.</translation>
         </message>
         <message>
-            <location filename="../source/global/DataPack.cpp" line="38" />
+            <location filename="../source/global/DataPack.cpp" line="68" />
             <source>Paczka musi mieć nazwę.</source>
             <translation>Balíček musí mít název.</translation>
         </message>
         <message>
-            <location filename="../source/global/DataPack.cpp" line="44" />
+            <location filename="../source/global/DataPack.cpp" line="74" />
             <source>Nieznany rodzaj paczki.</source>
             <translation>Neznámý typ balíčku.</translation>
         </message>
         <message>
-            <location filename="../source/global/DataPack.cpp" line="46" />
+            <location filename="../source/global/DataPack.cpp" line="77" />
             <source>Brak listy zawartości paczki.</source>
             <translation>Chybí seznam obsahu balíčku.</translation>
         </message>
         <message>
-            <location filename="../source/global/DataPack.cpp" line="49" />
+            <location filename="../source/global/DataPack.cpp" line="80" />
             <source>Nieznany format wieku.</source>
             <translation>Neznámý formát věku.</translation>
         </message>
         <message>
-            <location filename="../source/global/DataPack.cpp" line="52" />
+            <location filename="../source/global/DataPack.cpp" line="83" />
             <source>Podaj rok odniesienia od 1 do 9999.</source>
             <translation>Zadejte referenční rok od 1 do 9999.</translation>
         </message>
         <message>
-            <location filename="../source/global/DataPack.cpp" line="55" />
+            <location filename="../source/global/DataPack.cpp" line="86" />
             <source>Nieprawidłowy wpis w paczce.</source>
             <translation>Neplatný záznam v balíčku.</translation>
         </message>
         <message>
-            <location filename="../source/global/DataPack.cpp" line="62" />
+            <location filename="../source/global/DataPack.cpp" line="93" />
             <source>Nieprawidłowy identyfikator wpisu w paczce.</source>
             <translation>Neplatný identifikátor záznamu v balíčku.</translation>
         </message>
         <message>
-            <location filename="../source/global/DataPack.cpp" line="67" />
+            <location filename="../source/global/DataPack.cpp" line="100" />
             <source>Nieprawidłowy rok urodzenia.</source>
             <translation>Neplatný rok narození.</translation>
         </message>
         <message>
-            <location filename="../source/global/DataPack.cpp" line="70" />
+            <location filename="../source/global/DataPack.cpp" line="103" />
             <source>Data i rok urodzenia są sprzeczne.</source>
             <translation>Datum a rok narození si odporují.</translation>
         </message>
         <message>
-            <location filename="../source/global/DataPack.cpp" line="74" />
+            <location filename="../source/global/DataPack.cpp" line="107" />
             <source>Nieprawidłowa data urodzenia; użyj RRRR-MM-DD.</source>
             <translation>Neplatné datum narození; použijte RRRR-MM-DD.</translation>
         </message>
         <message>
-            <location filename="../source/global/DataPack.cpp" line="77" />
+            <location filename="../source/global/DataPack.cpp" line="110" />
             <source>Nieprawidłowy wiek skoczka.</source>
             <translation>Neplatný věk skokana.</translation>
         </message>
         <message>
-            <location filename="../source/global/DataPack.cpp" line="79" />
+            <location filename="../source/global/DataPack.cpp" line="112" />
             <source>Wiek i rok urodzenia są sprzeczne.</source>
             <translation>Věk a rok narození si odporují.</translation>
         </message>
         <message>
-            <location filename="../source/global/DataPack.cpp" line="87" />
+            <location filename="../source/global/DataPack.cpp" line="127" />
             <source>Brak listy presetów punktów.</source>
             <translation>Chybí seznam bodových předvoleb.</translation>
         </message>
         <message>
-            <location filename="../source/global/DataPack.cpp" line="89" />
+            <location filename="../source/global/DataPack.cpp" line="129" />
             <source>Nieprawidłowy preset punktów.</source>
             <translation>Neplatná bodová předvolba.</translation>
         </message>
@@ -9957,12 +10185,12 @@ Ověřte, že existuje a má odpovídající oprávnění.</translation>
 %1</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="25" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="27" />
             <source>Nie można odczytać pliku.</source>
             <translation>Soubor nelze přečíst.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundController.cpp" line="25" />
+            <location filename="../source/playground/PlaygroundController.cpp" line="27" />
             <source>Nieprawidłowy plik JSON.</source>
             <translation>Neplatný soubor JSON.</translation>
         </message>
@@ -9998,44 +10226,44 @@ Ověřte, že existuje a má odpovídající oprávnění.</translation>
 *Zpráva odeslaná ze Sj.Sim</translation>
         </message>
         <message>
-            <location filename="../source/seasons/SimulationSave.cpp" line="282" />
+            <location filename="../source/seasons/SimulationSave.cpp" line="296" />
             <source>Nie moĹĽna zapisaÄ‡ zapisu symulacji</source>
             <translation>Simulaci nelze uložit</translation>
         </message>
         <message>
-            <location filename="../source/seasons/SimulationSave.cpp" line="283" />
+            <location filename="../source/seasons/SimulationSave.cpp" line="297" />
             <source>Zapis zawiera nieprawidĹ‚owe powiÄ…zania. Plik nie zostaĹ‚ zmieniony.</source>
             <translation>Uložená simulace obsahuje neplatné vazby. Soubor nebyl změněn.</translation>
         </message>
         <message>
-            <location filename="../source/seasons/SimulationSave.cpp" line="299" />
+            <location filename="../source/seasons/SimulationSave.cpp" line="313" />
             <source>Nie można utworzyć folderu zapisu</source>
             <translation>Složku uložené simulace nelze vytvořit</translation>
         </message>
         <message>
-            <location filename="../source/seasons/SimulationSave.cpp" line="300" />
+            <location filename="../source/seasons/SimulationSave.cpp" line="314" />
             <source>Nie udało się utworzyć folderu %1.</source>
             <translation>Nepodařilo se vytvořit složku %1.</translation>
         </message>
         <message>
-            <location filename="../source/seasons/SimulationSave.cpp" line="313" />
+            <location filename="../source/seasons/SimulationSave.cpp" line="327" />
             <source>Nie można otworzyć pliku z zapisem symulacji </source>
             <translation>Soubor uložené simulace nelze otevřít </translation>
         </message>
         <message>
-            <location filename="../source/seasons/SimulationSave.cpp" line="313" />
+            <location filename="../source/seasons/SimulationSave.cpp" line="327" />
             <source>
 Upewnij się, że folder istnieje i ma odpowiednie uprawnienia</source>
             <translation>
 Ověřte, že složka existuje a má odpovídající oprávnění.</translation>
         </message>
         <message>
-            <location filename="../source/seasons/SimulationSave.cpp" line="335" />
+            <location filename="../source/seasons/SimulationSave.cpp" line="349" />
             <source>Nie można zapisać zapisu symulacji</source>
             <translation>Simulaci nelze uložit</translation>
         </message>
         <message>
-            <location filename="../source/seasons/SimulationSave.cpp" line="336" />
+            <location filename="../source/seasons/SimulationSave.cpp" line="350" />
             <source>Nie udało się bezpiecznie zapisać pliku %1. Poprzedni plik pozostał bez zmian.</source>
             <translation>Soubor %1 se nepodařilo bezpečně uložit. Původní soubor zůstal beze změny.</translation>
         </message>
@@ -10391,11 +10619,13 @@ Ověřte, že složka existuje a má odpovídající oprávnění.</translation>
         </message>
         <message>
             <location filename="../source/simulator/Landing.cpp" line="12" />
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="52" />
             <source>Telemark</source>
             <translation>Telemark</translation>
         </message>
         <message>
             <location filename="../source/simulator/Landing.cpp" line="13" />
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="52" />
             <source>Na dwie nogi</source>
             <translation>Doskok na obě nohy</translation>
         </message>
@@ -10406,6 +10636,7 @@ Ověřte, že složka existuje a má odpovídající oprávnění.</translation>
         </message>
         <message>
             <location filename="../source/simulator/Landing.cpp" line="15" />
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="52" />
             <source>Upadek</source>
             <translation>Pád</translation>
         </message>
@@ -10435,684 +10666,137 @@ Ověřte, že složka existuje a má odpovídající oprávnění.</translation>
             <translation>U</translation>
         </message>
         <message>
-            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="109" />
+            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="142" />
             <source>Symulacja pojedynczych skoków</source>
             <translation>Simulace jednotlivých skoků</translation>
         </message>
         <message>
-            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="110" />
-            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="119" />
+            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="143" />
+            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="153" />
             <source>Przesymulowano %1 z %2 skoków</source>
             <translation>Odsimulováno %1 z %2 skoků</translation>
         </message>
         <message>
-            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="111" />
+            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="144" />
             <source>Przerwij</source>
             <translation>Přerušit</translation>
         </message>
         <message>
-            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="166" />
+            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="205" />
             <source>Lp.</source>
             <translation>Č.</translation>
         </message>
         <message>
-            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="166" />
+            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="205" />
             <source>Odleglosc</source>
             <translation>Vzdálenost</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="13" />
-            <source>Średni wiatr</source>
-            <translation>Průměrný vítr</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="13" />
-            <source>Dodatni: pod narty. Ujemny: w plecy. m/s.</source>
-            <translation>Kladný: protivítr. Záporný: vítr do zad. m/s.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="14" />
-            <source>Zmienność wiatru</source>
-            <translation>Proměnlivost větru</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="14" />
-            <source>Odchylenie standardowe w m/s. Wiatr jest losowany osobno dla skoku.</source>
-            <translation>Směrodatná odchylka v m/s. Vítr se losuje pro každý skok zvlášť.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="15" />
-            <source>Zmienność wzdłuż zeskoku</source>
-            <translation>Proměnlivost podél doskočiště</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="15" />
-            <source>Odchylenie wiatru pomiędzy pięcioma sektorami. Pozwala badać uśrednianie i rekompensatę przy nierównym wietrze.</source>
-            <translation>Odchylka větru mezi pěti sektory. Umožňuje zkoumat průměrování a kompenzaci při nerovnoměrném větru.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="16" />
-            <source>Śnieg na rozbiegu</source>
-            <translation>Sníh na nájezdu</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="16" />
-            <source>Stały poziom śniegu w eksperymencie.</source>
-            <translation>Stálá úroveň sněhu v experimentu.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="17" />
-            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="166" />
+            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="205" />
             <source>Belka</source>
             <translation>Nájezdové okno</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="17" />
-            <source>0 dobiera wspólną belkę z wariantu bazowego. Pozostałe wartości ustalają ją ręcznie.</source>
-            <translation>0 vybere společné okno ze základní varianty. Ostatní hodnoty je nastaví ručně.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="18" />
-            <source>Znaczenie skoku</source>
-            <translation>Důležitost skoku</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="18" />
-            <source>Parametr znaczenia używany przez rzeczywisty silnik skoku.</source>
-            <translation>Parametr důležitosti používaný skutečným jádrem skoku.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="19" />
-            <source>Zakres umiejętności</source>
-            <translation>Rozsah dovedností</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="19" />
-            <source>Górny limit umiejętności używany przez silnik w tym eksperymencie.</source>
-            <translation>Horní limit dovedností používaný jádrem v tomto experimentu.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="20" />
-            <source>Automatyczne parametry skoczni</source>
-            <translation>Automatické parametry můstku</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="20" />
-            <source>Automatyczne dopasowanie parametrów skoczni zgodne z ustawieniem silnika.</source>
-            <translation>Automatické přizpůsobení parametrů můstku podle nastavení jádra.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="21" />
-            <source>Losowość silnika</source>
-            <translation>Náhoda jádra</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="21" />
-            <source>Mnożnik losowej części symulacji.</source>
-            <translation>Násobitel náhodné složky simulace.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="22" />
-            <source>Wpływ formy na wybicie</source>
-            <translation>Vliv formy na odraz</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="22" />
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="23" />
-            <source>Współczynnik formy działający tylko w tym eksperymencie.</source>
-            <translation>Koeficient formy platný pouze pro tento experiment.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="23" />
-            <source>Wpływ formy na lot</source>
-            <translation>Vliv formy na let</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="24" />
-            <source>Wpływ skoczni</source>
-            <translation>Vliv můstku</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="24" />
-            <source>Mnożnik charakterystyki skoczni.</source>
-            <translation>Násobitel charakteristiky můstku.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="25" />
-            <source>Parametr DSQ</source>
-            <translation>Parametr DSQ</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="25" />
-            <source>0 wyłącza DSQ. Bez dodatkowych cech: 1 = 100%, 100 ≈ 1%, 200 ≈ 0,5%. Większa wartość oznacza mniejsze ryzyko.</source>
-            <translation>0 vypne DSQ. Bez dalších vlastností: 1 = 100 %, 100 ≈ 1 %, 200 ≈ 0,5 %. Vyšší hodnota znamená nižší riziko.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="26" />
-            <source>Różnica wiatru dla skoczka</source>
-            <translation>Rozdíl větru pro skokana</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="26" />
-            <source>Dodatkowy wiatr tylko dla wybranego skoczka. Pozwala porównać korzyść z warunków względem reszty stawki.</source>
-            <translation>Dodatečný vítr pouze pro vybraného skokana. Porovnejte výhodu podmínek oproti zbytku startovního pole.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="27" />
-            <source>Styl lotu skoczka</source>
-            <translation>Styl letu skokana</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="27" />
-            <source>Styl lotu wybranego skoczka.</source>
-            <translation>Styl letu vybraného skokana.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="28" />
-            <source>Styl lotu stawki</source>
-            <translation>Styl letu startovního pole</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="28" />
-            <source>Styl lotu pozostałych zawodników.</source>
-            <translation>Styl letu ostatních skokanů.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="29" />
-            <source>Wybicie skoczka</source>
-            <translation>Odraz skokana</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="29" />
-            <source>Umiejętność wybranego skoczka; reszta stawki pozostaje bez zmian.</source>
-            <translation>Dovednost vybraného skokana; zbytek startovního pole se nemění.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="30" />
-            <source>Lot skoczka</source>
-            <translation>Let skokana</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="30" />
-            <source>Umiejętność wybranego skoczka.</source>
-            <translation>Dovednost vybraného skokana.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="31" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="145" />
             <source>Forma skoczka</source>
             <translation>Forma skokana</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="31" />
-            <source>Forma wybranego skoczka.</source>
-            <translation>Forma vybraného skokana.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="32" />
-            <source>Lądowanie skoczka</source>
-            <translation>Doskok skokana</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="32" />
-            <source>Umiejętność lądowania wybranego skoczka.</source>
-            <translation>Schopnost doskoku vybraného skokana.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="33" />
-            <source>Równość skoczka</source>
-            <translation>Vyrovnanost skokana</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="33" />
-            <source>Wpływ równości zgodny z aktualnym silnikiem.</source>
-            <translation>Vliv vyrovnanosti podle aktuálního jádra.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="34" />
-            <source>Poziom stawki</source>
-            <translation>Úroveň startovního pole</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="34" />
-            <source>Środkowy poziom wybicia i lotu syntetycznej stawki.</source>
-            <translation>Střední úroveň odrazu a letu syntetického startovního pole.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="35" />
-            <source>Rozpiętość stawki</source>
-            <translation>Rozpětí startovního pole</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="35" />
-            <source>Różnica umiejętności między skrajnymi syntetycznymi zawodnikami.</source>
-            <translation>Rozdíl dovedností mezi nejsilnějším a nejslabším syntetickým skokanem.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="36" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="142" />
             <source>Forma stawki</source>
             <translation>Forma startovního pole</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="36" />
-            <source>Forma wszystkich zawodników, z wyjątkiem jawnego ustawienia wybranego skoczka.</source>
-            <translation>Forma všech skokanů kromě výslovného nastavení vybraného skokana.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="37" />
-            <source>Lądowanie stawki</source>
-            <translation>Doskok startovního pole</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="37" />
-            <source>Umiejętność lądowania całej stawki.</source>
-            <translation>Schopnost doskoku celého startovního pole.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="38" />
-            <source>Równość stawki</source>
-            <translation>Vyrovnanost startovního pole</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="38" />
-            <source>Równość całej stawki.</source>
-            <translation>Vyrovnanost celého startovního pole.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="39" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="147" />
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="25" />
             <source>Punkt K</source>
             <translation>Bod K</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="39" />
-            <source>Zmiana K przelicza punkty za metry. HS musi pozostać co najmniej równy K.</source>
-            <translation>Změna K přepočítá body za metry. HS musí zůstat alespoň rovno K.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="40" />
-            <source>Rozmiar HS</source>
-            <translation>Velikost můstku HS</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="40" />
-            <source>Rozmiar skoczni; wspólna belka jest wyznaczana z wariantu bazowego.</source>
-            <translation>Velikost můstku; společné okno je určeno ze základní varianty.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="41" />
-            <source>Balans wybicie–lot</source>
-            <translation>Poměr odrazu a letu</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="41" />
-            <source>Oryginalny parametr balance skoczni; sprawdź jego efekt porównaniem wariantów.</source>
-            <translation>Původní parametr poměru můstku; jeho vliv ověřte porovnáním variant.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="42" />
-            <source>Mnożnik odległości skoczni</source>
-            <translation>Násobitel vzdálenosti můstku</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="42" />
-            <source>Mnożnik odległości dostępny w danych skoczni.</source>
-            <translation>Násobitel vzdálenosti z dat můstku.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="43" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="154" />
             <source>Rekompensata pod narty</source>
             <translation>Kompenzace za protivítr</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="43" />
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="44" />
-            <source>Punkty rekompensaty za 1 m/s.</source>
-            <translation>Body kompenzace za 1 m/s.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="44" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="155" />
             <source>Rekompensata w plecy</source>
             <translation>Kompenzace za vítr do zad</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="45" />
-            <source>Uśrednianie wiatru</source>
-            <translation>Průměrování větru</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="45" />
-            <source>Oryginalne metody uśredniania wiatru z silnika gry.</source>
-            <translation>Původní metody průměrování větru z herního jádra.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="46" />
-            <source>Wiatr a długość skoku</source>
-            <translation>Vítr a délka skoku</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="46" />
-            <source>Zasięg sektorów wiatru branych do rekompensaty w zależności od długości skoku.</source>
-            <translation>Rozsah větrných sektorů pro kompenzaci podle délky skoku.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="47" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="159" />
             <source>Rekompensata za wiatr</source>
             <translation>Kompenzace za vítr</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="47" />
-            <source>Włącza lub wyłącza naliczanie punktów za wiatr.</source>
-            <translation>Zapíná nebo vypíná body za vítr.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="48" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="160" />
             <source>Rekompensata za belkę</source>
             <translation>Kompenzace za nájezdové okno</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="48" />
-            <source>Naliczanie punktów za zmianę belki.</source>
-            <translation>Přidělování bodů za změnu okna.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="49" />
-            <source>Noty sędziowskie</source>
-            <translation>Známky rozhodčích</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="49" />
-            <source>Uwzględnianie not sędziów w punktach.</source>
-            <translation>Zahrnout známky rozhodčích do bodů.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="50" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="162" />
             <source>Reguła 95% HS</source>
             <translation>Pravidlo 95 % HS</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="50" />
-            <source>Awans po upadku na odległość co najmniej 95% HS, zgodnie z regułami gry.</source>
-            <translation>Postup po pádu na vzdálenost alespoň 95 % HS podle pravidel hry.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="51" />
-            <source>Mnożnik metrów z wybicia</source>
-            <translation>Násobitel metrů z odrazu</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="51" />
-            <source>Eksperymentalny mnożnik wkładu wybicia w odległość. 1 zachowuje silnik gry; działa tylko w playgroundzie.</source>
-            <translation>Experimentální násobitel příspěvku odrazu ke vzdálenosti. 1 zachová herní jádro; platí pouze v laboratoři.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="52" />
-            <source>Mnożnik metrów z lotu</source>
-            <translation>Násobitel metrů z letu</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="52" />
-            <source>Eksperymentalny mnożnik wkładu lotu w odległość.</source>
-            <translation>Experimentální násobitel příspěvku letu ke vzdálenosti.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="53" />
-            <source>Mnożnik wpływu wiatru na metry</source>
-            <translation>Násobitel vlivu větru na vzdálenost</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="53" />
-            <source>Zmienia fizyczny wpływ wiatru na odległość; rekompensata punktowa pozostaje osobnym mechanizmem.</source>
-            <translation>Mění fyzický vliv větru na vzdálenost; bodová kompenzace zůstává samostatná.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="54" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="190" />
             <source>Dyskwalifikacje</source>
             <translation>Diskvalifikace</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="54" />
-            <source>Dopuszcza DSQ zgodnie z regułami; prawdopodobieństwo ustala parametr silnika DSQ.</source>
-            <translation>Povoluje DSQ podle pravidel; pravděpodobnost určuje parametr DSQ jádra.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="55" />
-            <source>Korekta oceny wybicia</source>
-            <translation>Úprava hodnocení odrazu</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="55" />
-            <source>Eksperymentalny bonus z mechanizmu JumpManipulator. Nie zmienia ustawień zwykłej gry.</source>
-            <translation>Experimentální bonus JumpManipulator. Nemění nastavení běžné hry.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="56" />
-            <source>Korekta oceny lotu</source>
-            <translation>Úprava hodnocení letu</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="56" />
-            <source>Eksperymentalny bonus z mechanizmu JumpManipulator.</source>
-            <translation>Experimentální bonus JumpManipulator.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="57" />
-            <source>Korekta odległości</source>
-            <translation>Úprava vzdálenosti</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="57" />
-            <source>Dodatkowe metry z mechanizmu JumpManipulator; wpływają także na lądowanie.</source>
-            <translation>Dodatečné metry z JumpManipulator; ovlivňují také doskok.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="58" />
-            <source>Wyłączony</source>
-            <translation>Vypnuto</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="58" />
-            <source>Pełny</source>
-            <translation>Úplný</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="58" />
-            <source>Oryginalne</source>
-            <translation>Původní</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="58" />
-            <source>Oryginalny</source>
-            <translation>Původní</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="58" />
-            <source>Nowoczesne V</source>
-            <translation>Moderní V</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="58" />
-            <source>Szerokie V</source>
-            <translation>Široké V</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="58" />
-            <source>Proste</source>
-            <translation>Jednoduché</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="58" />
-            <source>Proste ulepszone</source>
-            <translation>Vylepšené jednoduché</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="65" />
-            <source>Wpływ wiatru</source>
-            <translation>Vliv větru</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="65" />
-            <source>Bez wiatru</source>
-            <translation>Bez větru</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="65" />
-            <source>Pod narty</source>
-            <translation>Protivítr</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="65" />
-            <source>W plecy</source>
-            <translation>Vítr do zad</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="69" />
-            <source>Nieobsługiwana wersja konfiguracji playgroundu.</source>
-            <translation>Nepodporovaná verze konfigurace laboratoře.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="71" />
-            <source>Sprawdź liczbę konkursów (1–1000000), skoczków (2–512), wybranego skoczka, wątków (1–64) i próbkę (0–4096).</source>
-            <translation>Zkontrolujte počet závodů (1–1000000), skokanů (2–512), vybraného skokana, vláken (1–64) a vzorek (0–4096).</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="72" />
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="52" />
             <source>Ziarno musi być nieujemną liczbą całkowitą zapisaną jako tekst.</source>
             <translation>Semeno musí být nezáporné celé číslo uložené jako text.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="75" />
-            <source>Nieznany parametr: </source>
-            <translation>Neznámý parametr: </translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="77" />
-            <source>: wymagana jest skończona liczba.</source>
-            <translation>: je vyžadováno konečné číslo.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="78" />
-            <source>: wymagana jest liczba całkowita.</source>
-            <translation>: je vyžadováno celé číslo.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="79" />
-            <source>%1: zakres %2–%3.</source>
-            <translation>%1: rozsah %2–%3.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="81" />
-            <source>Parametry muszą być obiektem JSON.</source>
-            <translation>Parametry musí být objekt JSON.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="83" />
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="53" />
             <source>Wybierz od 1 do 32 wariantów.</source>
             <translation>Vyberte 1 až 32 variant.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="84" />
-            <source>Wariant musi być obiektem.</source>
-            <translation>Varianta musí být objekt.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="84" />
-            <source>Warianty wymagają różnych nazw i poprawnych zmian parametrów.</source>
-            <translation>Varianty vyžadují různé názvy a platné změny parametrů.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="84" />
-            <source>: poziom i rozpiętość dotyczą stawki syntetycznej. Wybierz inny parametr skanowania lub stawkę syntetyczną.</source>
-            <translation>: úroveň a rozpětí platí pro syntetické startovní pole. Vyberte jiný parametr procházení nebo syntetické pole.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="85" />
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="59" />
             <source>Limity serii muszą być dodatnie i nie mogą rosnąć.</source>
             <translation>Limity kol musí být kladné a nesmí růst.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="85" />
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="58" />
             <source>Wybierz od 1 do 8 serii.</source>
             <translation>Vyberte 1 až 8 kol.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="86" />
-            <source>Skocznia wymaga K 10–300 i HS od K do 400.</source>
-            <translation>Můstek vyžaduje K 10–300 a HS od K do 400.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="87" />
-            <source>Liczba zawodników musi odpowiadać zaimportowanej stawce.</source>
-            <translation>Počet skokanů musí odpovídat importovanému startovnímu poli.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="89" />
-            <source>Nieprawidłowy preset zasad lub jego identyfikator.</source>
-            <translation>Neplatná předvolba pravidel nebo její identifikátor.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="91" />
-            <source>Nieprawidłowy rodzaj konkursu.</source>
-            <translation>Neplatný typ závodu.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="92" />
-            <source>Nieprawidłowe serie lub skład drużyny w presecie.</source>
-            <translation>Neplatná kola nebo sestava družstva v předvolbě.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="93" />
-            <source>Nieprawidłowe limity lub grupy KO w presecie.</source>
-            <translation>Neplatné limity nebo skupiny KO v předvolbě.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="95" />
-            <source>W każdym wariancie HS musi być co najmniej równe K.</source>
-            <translation>V každé variantě musí být HS alespoň rovno K.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="97" />
-            <source>Nieprawidłowe źródło danych skoczni.</source>
-            <translation>Neplatný zdroj dat můstku.</translation>
-        </message>
-        <message>
-            <location filename="../source/playground/PlaygroundConfig.cpp" line="98" />
-            <source>Nieprawidłowe dane zaimportowanego skoczka.</source>
-            <translation>Neplatná data importovaného skokana.</translation>
-        </message>
-        <message>
-            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="166" />
+            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="205" />
             <source>Usredniony wiatr</source>
             <translation>Průměrný vítr</translation>
         </message>
         <message>
-            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="166" />
+            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="205" />
             <source>Punkty za wiatr</source>
             <translation>Body za vítr</translation>
         </message>
         <message>
-            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="166" />
+            <location filename="../source/single-jumps/SingleJumpsManager.cpp" line="205" />
             <source>Punkty za styl</source>
             <translation>Body za styl</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1115" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1170" />
             <source>Naprawia zapisów symulacji </source>
             <translation>Oprava uložených simulací </translation>
         </message>
         <message>
-            <location filename="../source/competitions/CompetitionRules.cpp" line="126" />
-            <location filename="../source/competitions/CompetitionRules.cpp" line="135" />
+            <location filename="../source/competitions/CompetitionRules.cpp" line="127" />
+            <location filename="../source/competitions/CompetitionRules.cpp" line="136" />
             <source>Błąd przy wczytytywaniu zasad konkursów</source>
             <translation>Chyba při načítání pravidel závodů</translation>
         </message>
         <message>
-            <location filename="../source/competitions/CompetitionRules.cpp" line="126" />
+            <location filename="../source/competitions/CompetitionRules.cpp" line="127" />
             <source>Nie udało się wczytać zawodników z pliku userData/GlobalDatabase/globalCompetitionsRules.json
 Treść błędu: </source>
             <translation>Nepodařilo se načíst pravidla závodů ze souboru userData/GlobalDatabase/globalCompetitionsRules.json
 Podrobnosti chyby: </translation>
         </message>
         <message>
-            <location filename="../source/competitions/CompetitionRules.cpp" line="135" />
+            <location filename="../source/competitions/CompetitionRules.cpp" line="136" />
             <source>Prawdopodobnie w tym pliku nie ma listy z zasadami konkursów
 Upewnij się, że wybrałeś właściwy plik!</source>
             <translation>Tento soubor pravděpodobně neobsahuje seznam pravidel závodů.
@@ -11234,47 +10918,47 @@ Treść błędu: </source>
 Podrobnosti chyby: </translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundIo.cpp" line="28" />
+            <location filename="../source/playground/PlaygroundIo.cpp" line="29" />
             <source>Nie udało się zapisać: </source>
             <translation>Nepodařilo se uložit: </translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundIo.cpp" line="32" />
+            <location filename="../source/playground/PlaygroundIo.cpp" line="33" />
             <source>Nie można utworzyć folderu raportu.</source>
             <translation>Složku zprávy nelze vytvořit.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundIo.cpp" line="32" />
+            <location filename="../source/playground/PlaygroundIo.cpp" line="33" />
             <source>Folder zawiera już raport. Wybierz nowy folder: </source>
             <translation>Složka již obsahuje zprávu. Vyberte novou složku: </translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundRunner.cpp" line="132" />
+            <location filename="../source/playground/PlaygroundRunner.cpp" line="154" />
             <source>Mała próba: zwiększ liczbę konkursów przed oceną drobnych różnic.</source>
             <translation>Malý vzorek: před posuzováním drobných rozdílů zvyšte počet závodů.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundRunner.cpp" line="132" />
+            <location filename="../source/playground/PlaygroundRunner.cpp" line="154" />
             <source>Zmiana średniego miejsca wybranego skoczka ma przedział 95% po jednej stronie zera.</source>
             <translation>Změna průměrného umístění vybraného skokana má 95% interval na jedné straně nuly.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundRunner.cpp" line="132" />
+            <location filename="../source/playground/PlaygroundRunner.cpp" line="154" />
             <source>Próba nie rozstrzyga kierunku zmiany średniego miejsca wybranego skoczka.</source>
             <translation>Vzorek neurčuje směr změny průměrného umístění vybraného skokana.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundRunner.cpp" line="132" />
+            <location filename="../source/playground/PlaygroundRunner.cpp" line="154" />
             <source>Częstość upadków: udział w oddanych skokach, razem z DSQ w mianowniku.</source>
             <translation>Četnost pádů: podíl provedených skoků, včetně DSQ ve jmenovateli.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundRunner.cpp" line="132" />
+            <location filename="../source/playground/PlaygroundRunner.cpp" line="154" />
             <source>Nieklasyfikowane starty nie są wliczane do średniego miejsca. Są osobno w histogramie.</source>
             <translation>Neklasifikované starty se nezapočítávají do průměrného umístění a v histogramu jsou samostatně.</translation>
         </message>
         <message>
-            <location filename="../source/playground/PlaygroundRunner.cpp" line="132" />
+            <location filename="../source/playground/PlaygroundRunner.cpp" line="154" />
             <source>Korelacje opisują zależność w tej próbie. Efekt zmiany parametru oceniaj przez kontrolowane warianty.</source>
             <translation>Korelace popisují vztahy v tomto vzorku. Vliv změny parametru posuzujte pomocí kontrolovaných variant.</translation>
         </message>
@@ -11305,62 +10989,62 @@ Podrobnosti chyby: </translation>
             <translation>Nelze otevřít soubor s předvolbou kalendáře </translation>
         </message>
         <message>
-            <location filename="../source/simulator/Hill.cpp" line="192" />
-            <location filename="../source/simulator/Hill.cpp" line="202" />
+            <location filename="../source/simulator/Hill.cpp" line="229" />
+            <location filename="../source/simulator/Hill.cpp" line="239" />
             <source>Błąd przy wczytytywaniu skoczni</source>
             <translation>Chyba při načítání můstků</translation>
         </message>
         <message>
-            <location filename="../source/simulator/Hill.cpp" line="192" />
+            <location filename="../source/simulator/Hill.cpp" line="229" />
             <source>Nie udało się wczytać skoczni z pliku userData/GlobalDatabase/globalHills.json
 Treść błędu: </source>
             <translation>Nepodařilo se načíst můstky ze souboru userData/GlobalDatabase/globalHills.json
 Podrobnosti chyby: </translation>
         </message>
         <message>
-            <location filename="../source/simulator/Hill.cpp" line="202" />
+            <location filename="../source/simulator/Hill.cpp" line="239" />
             <source>Prawdopodobnie w tym pliku nie ma listy ze skoczniami
 Upewnij się, że wybrałeś właściwy plik!</source>
             <translation>Tento soubor pravděpodobně neobsahuje seznam můstků.
 Ověřte, že jste vybrali správný soubor.</translation>
         </message>
         <message>
-            <location filename="../source/simulator/Jumper.cpp" line="167" />
-            <location filename="../source/simulator/Jumper.cpp" line="176" />
+            <location filename="../source/simulator/Jumper.cpp" line="233" />
+            <location filename="../source/simulator/Jumper.cpp" line="242" />
             <source>Błąd przy wczytytywaniu zawodników</source>
             <translation>Chyba při načítání skokanů</translation>
         </message>
         <message>
-            <location filename="../source/simulator/Jumper.cpp" line="167" />
+            <location filename="../source/simulator/Jumper.cpp" line="233" />
             <source>Nie udało się wczytać zawodników z pliku userData/GlobalDatabase/globalJumpers.json
 Treść błędu: </source>
             <translation>Nepodařilo se načíst skokany ze souboru userData/GlobalDatabase/globalJumpers.json
 Podrobnosti chyby: </translation>
         </message>
         <message>
-            <location filename="../source/simulator/Jumper.cpp" line="176" />
+            <location filename="../source/simulator/Jumper.cpp" line="242" />
             <source>Prawdopodobnie w tym pliku nie ma listy ze skoczkami
 Upewnij się, że wybrałeś właściwy plik!</source>
             <translation>Tento soubor pravděpodobně neobsahuje seznam skokanů.
 Ověřte, že jste vybrali správný soubor.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="187" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="195" />
             <source> po %1 serii</source>
             <translation> po %1. kole</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1442" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1469" />
             <source>Wyrównanie rekordu skoczni</source>
             <translation>Vyrovnání rekordu můstku</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1446" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1473" />
             <source>Nowy rekord skoczni</source>
             <translation>Nový rekord můstku</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1462" />
+            <location filename="../source/UI/Competition/CompetitionManagerWindow.cpp" line="1489" />
             <source>Wyrównanie rekordu życiowego</source>
             <translation>Vyrovnání osobního rekordu</translation>
         </message>
@@ -11425,37 +11109,33 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <translation>Zkontrolujte název můstku a třípísmenný kód země.</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillProfile.cpp" line="22" />
-            <source>Punkt K musi być dodatni, HS nie mniejszy od K, a rekord w zakresie 0–600 m.</source>
-            <translation>Bod K musí být kladný, HS alespoň rovno K a rekord v rozsahu 0–600 m.</translation>
-        </message>
-        <message>
             <location filename="../source/hills/HillProfile.cpp" line="23" />
             <source>Punktacja skoczni jest poza zakresem.</source>
             <translation>Bodování můstku je mimo rozsah.</translation>
         </message>
         <message>
             <location filename="../source/hills/HillProfile.cpp" line="24" />
+            <location filename="../source/hills/HillProfile.cpp" line="26" />
             <source>Nieprawidłowy zestaw perków skoczni.</source>
             <translation>Neplatná sada vlastností můstku.</translation>
         </message>
         <message>
-            <location filename="../source/hills/HillStudioController.cpp" line="20" />
+            <location filename="../source/hills/HillStudioController.cpp" line="21" />
             <source>Nowa skocznia</source>
             <translation>Nový můstek</translation>
         </message>
         <message>
-            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="306" />
+            <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="320" />
             <source>Konfiguracja pojedynczego konkursu</source>
             <translation>Nastavení samostatného závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/DatabaseEditor/DatabaseItemsListView.cpp" line="366" />
+            <location filename="../source/UI/DatabaseEditor/DatabaseItemsListView.cpp" line="374" />
             <source>Preset</source>
             <translation>Předvolba</translation>
         </message>
         <message>
-            <location filename="../source/UI/EditorWidgets/CompetitionRulesEditorWidget.cpp" line="116" />
+            <location filename="../source/UI/EditorWidgets/CompetitionRulesEditorWidget.cpp" line="122" />
             <source>Seria </source>
             <translation>Kolo </translation>
         </message>
@@ -11472,7 +11152,7 @@ Ověřte, že jste vybrali správný soubor.</translation>
         <message>
             <location filename="../source/UI/Seasons/CalendarEditor/CalendarEditorWidget.cpp" line="903" />
             <location filename="../source/UI/Seasons/CalendarEditor/CalendarEditorWidget.cpp" line="971" />
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="678" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="728" />
             <source>BRAK</source>
             <translation>ŽÁDNÝ</translation>
         </message>
@@ -11504,752 +11184,2178 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <translation>Vlastní nastavení</translation>
         </message>
         <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="12" />
             <source>FIS — przybliżenie</source>
             <translation>FIS — přiblížení</translation>
         </message>
         <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="14" />
             <source>Pomiar przez czas lotu</source>
             <translation>Měření během letu</translation>
         </message>
         <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="16" />
             <source>Gęsta sieć czujników</source>
             <translation>Hustá síť čidel</translation>
         </message>
         <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="18" />
             <source>Odczyt przed skokiem</source>
             <translation>Odečet při odrazu</translation>
         </message>
         <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="20" />
             <source>Wiatr na trasie lotu</source>
             <translation>Vítr na trase letu</translation>
         </message>
         <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="22" />
             <source>Dotychczasowy Sj.Sim</source>
             <translation>Původní Sj.Sim</translation>
         </message>
         <message>
+            <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="13" />
             <source>Ważony pomiar z nieruchomych czujników przez czas lotu. Wagi i rozmieszczenie są przybliżone; nie jest to dokładna oficjalna receptura FIS. Pomiar może rozmijać się z warunkami zawodnika.</source>
             <translation>Vážené údaje z pevných čidel během letu. Váhy a rozmístění jsou přibližné, nejde o přesnou oficiální metodu FIS. Měření se může lišit od podmínek závodníka.</translation>
         </message>
         <message>
+            <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="15" />
             <source>Równe wagi czujników przez cały lot. Krótki podmuch może umknąć pomiarowi lub wpływać na wynik już po minięciu czujnika.</source>
             <translation>Stejné váhy čidel po celý let. Krátký poryv může měření uniknout nebo jej ovlivnit až po průletu závodníka kolem čidla.</translation>
         </message>
         <message>
+            <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="17" />
             <source>Pomiar co około 5 m przez czas lotu. Lepiej wykrywa lokalne podmuchy, ale nadal nie odtwarza warunków zawodnika co do chwili.</source>
             <translation>Měření přibližně každých 5 m během letu. Lépe zachytí místní poryvy, ale stále nesleduje podmínky závodníka v každém okamžiku.</translation>
         </message>
         <message>
+            <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="19" />
             <source>Jednorazowy odczyt czujników przy wybiciu. Zmiany w trakcie lotu nie wpływają na pomiar do punktacji.</source>
             <translation>Jediný odečet čidel při odrazu. Změny během letu neovlivňují měření pro bodování.</translation>
         </message>
         <message>
+            <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="21" />
             <source>Średnia wiatru rzeczywiście napotkanego podczas lotu. Punkt odniesienia do symulacji, bez idealnego wyrównania wpływu na odległość.</source>
             <translation>Průměr větru skutečně zaznamenaného za letu. Referenční model simulace, bez dokonalého vyrovnání vlivu na délku.</translation>
         </message>
         <message>
+            <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="23" />
             <source>Zachowuje wcześniejsze ustawienia sposobu kierunków i wpływu odległości na pomiar. Nie oznacza zgodności z FIS.</source>
             <translation>Zachovává původní nastavení směru a vlivu délky na měření. Neznamená to shodu s pravidly FIS.</translation>
         </message>
         <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="34" />
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="29" />
             <source>Lot</source>
             <translation>Let</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="29" />
             <source>Lądowanie i noty</source>
             <translation>Dopad a známky</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="29" />
             <source>Warunki</source>
             <translation>Podmínky</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="45" />
             <source>Korekta</source>
             <translation>Úprava</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="46" />
             <source>Ogranicz zakres</source>
             <translation>Omezit rozsah</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="47" />
             <source>Minimum</source>
             <translation>Minimum</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="47" />
             <source>Maksimum</source>
             <translation>Maximum</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="51" />
             <source>Jakość skoku</source>
             <translation>Kvalita skoku</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="51" />
             <source>Odległość</source>
             <translation>Délka</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="52" />
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="62" />
             <source>Losuj</source>
             <translation>Automaticky</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="52" />
             <source>Podparty</source>
             <translation>S oporou</translation>
         </message>
         <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="30" />
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="53" />
             <source>Lądowanie</source>
             <translation>Dopad</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="57" />
             <source>Nota sędziego %1</source>
             <translation>Známka rozhodčího %1</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="62" />
             <source>Ryzyko dyskwalifikacji · %</source>
             <translation>Riziko diskvalifikace · %</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="64" />
             <source>Ustaw wiatr dla tego skoku</source>
             <translation>Nastavit vítr pro tento skok</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="66" />
             <source>Odcinek</source>
             <translation>Úsek</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="66" />
             <source>Kierunek · °</source>
             <translation>Směr · °</translation>
         </message>
         <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="94" />
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="76" />
             <source>Natężenie opadów</source>
             <translation>Intenzita srážek</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="76" />
             <source>Pomiar do punktacji</source>
             <translation>Měření pro bodování</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="77" />
             <source>Wyczyść</source>
             <translation>Vymazat</translation>
         </message>
         <message>
+            <location filename="../source/UI/JumpManipulation/JumpManipulatorConfigWindow.cpp" line="77" />
             <source>Zastosuj</source>
             <translation>Použít</translation>
         </message>
         <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="48" />
             <source>Bez opadów</source>
             <translation>Beze srážek</translation>
         </message>
         <message>
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="48" />
             <source>Rodzaj opadów</source>
             <translation>Druh srážek</translation>
         </message>
         <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="48" />
             <source>Deszcz</source>
             <translation>Déšť</translation>
+        </message>
+        <message>
+            <location filename="../source/athletes/AthleteProfile.cpp" line="32" />
+            <source>Rekord musi mieścić się między 0 a 1000 m.</source>
+            <translation>Rekord musí být mezi 0 a 1000 m.</translation>
+        </message>
+        <message>
+            <location filename="../source/global/DataPack.cpp" line="43" />
+            <source>Nieprawidłowy format nowej paczki.</source>
+            <translation>Neplatný formát nového balíčku.</translation>
+        </message>
+        <message>
+            <location filename="../source/global/DataPack.cpp" line="46" />
+            <source>Nieprawidłowy profil w paczce.</source>
+            <translation>Neplatný profil v balíčku.</translation>
+        </message>
+        <message>
+            <location filename="../source/global/DataPack.cpp" line="57" />
+            <source>Powtórzony identyfikator profilu w paczce.</source>
+            <translation>Duplicitní identifikátor profilu v balíčku.</translation>
+        </message>
+        <message>
+            <location filename="../source/global/DataPack.cpp" line="75" />
+            <source>Nieobsługiwana wersja paczki zasad.</source>
+            <translation>Nepodporovaná verze balíčku pravidel.</translation>
+        </message>
+        <message>
+            <location filename="../source/global/DataPack.cpp" line="96" />
+            <source>Brak nowego profilu skoczka w paczce v2.</source>
+            <translation>V balíčku v2 chybí nový profil skokana.</translation>
+        </message>
+        <message>
+            <location filename="../source/global/DataPack.cpp" line="118" />
+            <source>Brak nowego profilu skoczni w paczce v2.</source>
+            <translation>V balíčku v2 chybí nový profil můstku.</translation>
+        </message>
+        <message>
+            <location filename="../source/global/DataPack.cpp" line="122" />
+            <source>Nieobsługiwana metoda pomiaru wiatru.</source>
+            <translation>Nepodporovaná metoda měření větru.</translation>
+        </message>
+        <message>
+            <location filename="../source/hills/HillProfile.cpp" line="22" />
+            <source>Punkt K musi być dodatni, HS nie mniejszy od K, a rekord w zakresie 0–1000 m.</source>
+            <translation>Bod K musí být kladný, HS alespoň K a rekord mezi 0 a 1000 m.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="14" />
+            <source>Strojenie silnika v2</source>
+            <translation>Ladění enginu v2</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="17" />
+            <source>Bazowy</source>
+            <translation>Základní</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="17" />
+            <source>Porównanie</source>
+            <translation>Porovnání</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="49" />
+            <source>Wymagana konfiguracja playgroundu v2. Stare eksperymenty nie opisują nowego silnika.</source>
+            <translation>Je vyžadována konfigurace playgroundu v2. Staré experimenty nepopisují nový engine.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="51" />
+            <source>Nieprawidłowa liczba prób, skoczków, wątków lub indeks skoczka.</source>
+            <translation>Neplatný počet pokusů, skokanů, vláken nebo index skokana.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="55" />
+            <source>Nieprawidłowy parametr: %1</source>
+            <translation>Neplatný parametr: %1</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="56" />
+            <source>Nieprawidłowy zestaw wartości domyślnych.</source>
+            <translation>Neplatná sada výchozích hodnot.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="60" />
+            <source>Nieprawidłowa stawka.</source>
+            <translation>Neplatná startovní listina.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="60" />
+            <source>Stawka wymaga pełnych profili v2: %1</source>
+            <translation>Startovní listina vyžaduje úplné profily v2: %1</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="62" />
+            <source>Nieprawidłowe zasady.</source>
+            <translation>Neplatná pravidla.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="64" />
+            <source>Playground v2 obsługuje obecnie konkursy indywidualne.</source>
+            <translation>Playground v2 nyní podporuje individuální závody.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="65" />
+            <source>Na tym etapie użyj zwykłych serii indywidualnych bez KO.</source>
+            <translation>V této fázi použijte běžná individuální kola bez KO.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="69" />
+            <source>Warianty wymagają różnych nazw i poprawnych parametrów.</source>
+            <translation>Varianty musí mít různé názvy a platné parametry.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="72" />
+            <source>Niespójne parametry: %1</source>
+            <translation>Neslučitelné parametry: %1</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="73" />
+            <source>Maksymalnie 64 cele kalibracji.</source>
+            <translation>Nejvýše 64 cílů kalibrace.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="74" />
+            <source>Nieprawidłowy cel kalibracji.</source>
+            <translation>Neplatný cíl kalibrace.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundConfig.cpp" line="76" />
+            <source>Zmniejsz liczbę zachowanych przykładów lub wariantów.</source>
+            <translation>Snižte počet uchovávaných vzorků nebo variant.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="10" />
+            <source>Udział OVR</source>
+            <translation>Váha OVR</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="11" />
+            <source>Udział ujemnego wpływu losowości</source>
+            <translation>Podíl záporného vlivu náhody</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="12" />
+            <source>Rozkład: 0 normalny, 1 Laplace’a</source>
+            <translation>Rozdělení: 0 normální, 1 Laplaceovo</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="13" />
+            <source>Wpływ preferencji skoczni</source>
+            <translation>Síla preference můstku</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="14" />
+            <source>Jakość odniesienia</source>
+            <translation>Referenční kvalita</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="15" />
+            <source>Odległość odniesienia / K</source>
+            <translation>Referenční vzdálenost / K</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="16" />
+            <source>Metry za punkt jakości na K120</source>
+            <translation>Metry za bod kvality na K120</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="17" />
+            <source>Belka odniesienia</source>
+            <translation>Referenční nájezdové okno</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="18" />
+            <source>Metry za belkę na K120</source>
+            <translation>Metry za okno na K120</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="19" />
+            <source>Dodatkowy wpływ belki w plecy</source>
+            <translation>Dodatečný vliv okna v zadním větru</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="20" />
+            <source>Strata zapasu za poziom śniegu</source>
+            <translation>Ztráta rezervy za úroveň sněhu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="21" />
+            <source>Strata zapasu za poziom deszczu</source>
+            <translation>Ztráta rezervy za úroveň deště</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="22" />
+            <source>Próg wpływu deszczu</source>
+            <translation>Práh vlivu deště</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="23" />
+            <source>Próg ulewy</source>
+            <translation>Práh lijáku</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="24" />
+            <source>Strata zapasu w maksymalnej ulewie</source>
+            <translation>Ztráta rezervy při největším lijáku</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="25" />
+            <source>Wykładnik wpływu ulewy</source>
+            <translation>Exponent vlivu lijáku</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="26" />
+            <source>Krok całkowania</source>
+            <translation>Krok integrace</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="27" />
+            <source>Czas lotu do K</source>
+            <translation>Doba letu k bodu K</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="28" />
+            <source>Wpływ wiatru na zapas lotu</source>
+            <translation>Vliv větru na letovou rezervu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="29" />
+            <source>Opór wiatru bocznego</source>
+            <translation>Odpor bočního větru</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="30" />
+            <source>Dystans narastania reakcji na wiatr</source>
+            <translation>Vzdálenost náběhu reakce na vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="31" />
+            <source>Wrażliwość na wiatr na początku</source>
+            <translation>Citlivost na vítr na začátku letu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="32" />
+            <source>Wrażliwość na wiatr w końcu lotu</source>
+            <translation>Citlivost na vítr na konci letu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="33" />
+            <source>Maksymalna pomoc wiatru</source>
+            <translation>Maximální pomoc větru</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="34" />
+            <source>Początek oporu zeskoku / real HS</source>
+            <translation>Začátek odporu doskoku / real HS</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="35" />
+            <source>Przedłużenie zeskoku / K</source>
+            <translation>Prodloužení doskoku / K</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="36" />
+            <source>Opór wypłaszczonego zeskoku</source>
+            <translation>Odpor zploštěného doskoku</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="37" />
+            <source>Liczba odcinków zapisu lotu</source>
+            <translation>Počet zaznamenaných úseků letu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="38" />
+            <source>Upadek: ryzyko bazowe</source>
+            <translation>Pád: základní riziko</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="39" />
+            <source>Upadek: wzrost ryzyka</source>
+            <translation>Pád: nárůst rizika</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="40" />
+            <source>Upadek: środek krzywej / real HS</source>
+            <translation>Pád: střed křivky / real HS</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="41" />
+            <source>Upadek: szerokość krzywej</source>
+            <translation>Pád: šířka křivky</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="42" />
+            <source>Podpórka: ryzyko bazowe</source>
+            <translation>Opora: základní riziko</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="43" />
+            <source>Podpórka: wzrost ryzyka</source>
+            <translation>Opora: nárůst rizika</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="44" />
+            <source>Podpórka: środek krzywej / real HS</source>
+            <translation>Opora: střed křivky / real HS</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="45" />
+            <source>Podpórka: szerokość krzywej</source>
+            <translation>Opora: šířka křivky</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="46" />
+            <source>Dwie nogi: ryzyko bazowe</source>
+            <translation>Obě nohy: základní riziko</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="47" />
+            <source>Dwie nogi: wzrost ryzyka</source>
+            <translation>Obě nohy: nárůst rizika</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="48" />
+            <source>Dwie nogi: środek krzywej / real HS</source>
+            <translation>Obě nohy: střed křivky / real HS</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="49" />
+            <source>Dwie nogi: szerokość krzywej</source>
+            <translation>Obě nohy: šířka křivky</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="50" />
+            <source>Wiatr boczny: wzrost ryzyka upadku</source>
+            <translation>Boční vítr: nárůst rizika pádu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="51" />
+            <source>Wiatr boczny: wzrost ryzyka podpórki</source>
+            <translation>Boční vítr: nárůst rizika opory</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="52" />
+            <source>Wiatr boczny: wzrost ryzyka dwóch nóg</source>
+            <translation>Boční vítr: nárůst rizika dopadu na obě nohy</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="53" />
+            <source>Wspólne odchylenie not</source>
+            <translation>Společná odchylka známek</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="54" />
+            <source>Odchylenie pojedynczego sędziego</source>
+            <translation>Odchylka jednotlivého rozhodčího</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="55" />
+            <source>Kara za trudne lądowanie</source>
+            <translation>Srážka za obtížné přistání</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="56" />
+            <source>Odchylenie serii</source>
+            <translation>Odchylka kola</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="57" />
+            <source>Siła specjalizacji</source>
+            <translation>Síla specializace</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="58" />
+            <source>Bonus treningowy</source>
+            <translation>Tréninkový bonus</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="59" />
+            <source>Kara konkursowa</source>
+            <translation>Srážka v závodě</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="60" />
+            <source>Oszczędzanie: kara</source>
+            <translation>Šetření sil: srážka</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="61" />
+            <source>Oszczędzanie: odchylenie</source>
+            <translation>Šetření sil: odchylka</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="62" />
+            <source>Regularny: straty</source>
+            <translation>Pravidelný: ztráty</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="63" />
+            <source>Regularny: bonusy</source>
+            <translation>Pravidelný: bonusy</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="64" />
+            <source>Nieprzewidywalny: straty</source>
+            <translation>Nevyzpytatelný: ztráty</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="65" />
+            <source>Nieprzewidywalny: bonusy</source>
+            <translation>Nevyzpytatelný: bonusy</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="66" />
+            <source>Średnia nota klasy lądowania</source>
+            <translation>Průměrná známka podle třídy přistání</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="67" />
+            <source>Kara za rodzaj lądowania</source>
+            <translation>Srážka podle typu přistání</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="68" />
+            <source>Poza krzywą: 0 stała, 1 liniowa</source>
+            <translation>Mimo křivku: 0 konstantní, 1 lineární</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="70" />
+            <source>Punkt krzywej K</source>
+            <translation>Bod K křivky</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="71" />
+            <source>Udział wybicia</source>
+            <translation>Podíl odrazu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="75" />
+            <source>Amplituda zmian w czasie</source>
+            <translation>Amplituda změn v čase</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="76" />
+            <source>Amplituda różnic wzdłuż zeskoku</source>
+            <translation>Amplituda rozdílů podél doskoku</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="77" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="96" />
+            <source>Skala korelacji w czasie</source>
+            <translation>Časové měřítko korelace</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="78" />
+            <source>Skala korelacji wzdłuż zeskoku</source>
+            <translation>Prostorové měřítko korelace</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="79" />
+            <source>Amplituda podmuchów</source>
+            <translation>Amplituda poryvů</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="80" />
+            <source>Prawdopodobieństwo podmuchu</source>
+            <translation>Pravděpodobnost poryvu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="81" />
+            <source>Okres podmuchów</source>
+            <translation>Perioda poryvů</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="82" />
+            <source>Szerokość podmuchu</source>
+            <translation>Šířka poryvu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="83" />
+            <source>Prędkość przemieszczania podmuchu</source>
+            <translation>Rychlost pohybu poryvu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="84" />
+            <source>Limit siły wiatru</source>
+            <translation>Limit síly větru</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="85" />
+            <source>Amplituda zmian tendencji</source>
+            <translation>Amplituda změn převládajícího větru</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="86" />
+            <source>Okres tendencji</source>
+            <translation>Perioda tendence</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="87" />
+            <source>Czas zmiany tendencji</source>
+            <translation>Doba změny tendence</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="88" />
+            <source>Zmienność aktywności</source>
+            <translation>Proměnlivost aktivity</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="89" />
+            <source>Czas epizodu aktywności</source>
+            <translation>Doba epizody aktivity</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="90" />
+            <source>Skala szybkich zmian</source>
+            <translation>Měřítko rychlých změn</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="93" />
+            <source>Przebieg: brak / stały / zmienny / silny / narastający</source>
+            <translation>Průběh: žádné / stálé / proměnlivé / silné / zesilující</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="95" />
+            <source>Zmienność opadów</source>
+            <translation>Proměnlivost srážek</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="97" />
+            <source>Przyrost opadów na minutę</source>
+            <translation>Nárůst srážek za minutu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="98" />
+            <source>Rodzaj: 0 śnieg, 1 deszcz</source>
+            <translation>Druh: 0 sníh, 1 déšť</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="101" />
+            <source>Liczba próbek pomiaru</source>
+            <translation>Počet vzorků měření</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="102" />
+            <source>Zasięg pomiaru / K</source>
+            <translation>Dosah měření / K</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="103" />
+            <source>Rozstaw gęstej sieci</source>
+            <translation>Rozestup husté sítě</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="104" />
+            <source>Położenie szczytu wag / zasięg</source>
+            <translation>Poloha vrcholu vah / dosah</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="105" />
+            <source>Siła ważenia pomiaru</source>
+            <translation>Síla vážení měření</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="108" />
+            <source>Udział OVR w jakości bazowej. Pozostała część pochodzi z formy; 0,70 oznacza 70% OVR i 30% formy.</source>
+            <translation>Podíl OVR na základní kvalitě. Zbytek tvoří forma; 0,70 znamená 70 % OVR a 30 % formy.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="109" />
+            <source>Udział siły losowych strat w łącznym wpływie losowości, nie odsetek słabych skoków.</source>
+            <translation>Podíl síly náhodných ztrát na celkovém vlivu náhody, nikoli procento slabých skoků.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="110" />
+            <source>Punkty K muszą rosnąć, a udział wybicia nie może rosnąć. Krzywa dotyczy preferencji skoczni i specjalizacji, nie ukrytego skilla.</source>
+            <translation>Body K musí růst a podíl odrazu nesmí růst. Křivka popisuje preferenci můstku a specializaci, nikoli skrytou dovednost.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="111" />
+            <source>Parametr jakości lub perka. Poziomy perków: 0 brak, 1–3 siła. Serie: 0 trening, 1 próba, 2 kwalifikacje, 3 konkurs.</source>
+            <translation>Parametr kvality nebo perku. Úrovně perků: 0 žádný, 1–3 síla. Kola: 0 trénink, 1 zkušební, 2 kvalifikace, 3 závod.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="112" />
+            <source>Amplitudy zmieniają siłę wahań; skale czasu i odległości ich tempo oraz podobieństwo. Korekty punktów dodają się do wspólnego wiatru. Nie zmienia to metody pomiaru.</source>
+            <translation>Amplitudy mění sílu výkyvů; časová a prostorová měřítka jejich tempo a podobnost. Odchylky bodů se přičítají ke společnému větru. Metoda měření se nemění.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="113" />
+            <source>Zmienia odczyt wiatru do punktacji, nie fizyczny lot. Wagi przybliżenia FIS są parametrami gry.</source>
+            <translation>Mění měření větru pro bodování, nikoli fyzický let. Váhy přibližného modelu FIS jsou herní parametry.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="114" />
+            <source>Zmienia zapas lotu, jego zużycie lub reakcję na warunki. Opór geometrii działa w trakcie lotu; nie skraca gotowego wyniku.</source>
+            <translation>Mění letovou rezervu, její spotřebu nebo reakci na podmínky. Odpor geometrie působí během letu; nezkracuje hotový výsledek.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="115" />
+            <source>Środki krzywych odnoszą się do odległości / real HS, szerokość steruje łagodnością przejścia. Klasa lądowania zmienia noty, nie prawdopodobieństwa lądowania.</source>
+            <translation>Středy křivek používají vzdálenost / real HS; šířka řídí plynulost přechodu. Třída přistání mění známky, nikoli pravděpodobnosti přistání.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="116" />
+            <source>Steruje opadami w czasie. Fizyczny wpływ śniegu i deszczu ma osobne współczynniki w grupie Lot i geometria.</source>
+            <translation>Řídí srážky v čase. Fyzické vlivy sněhu a deště mají samostatné koeficienty ve skupině Let a geometrie.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="117" />
+            <source>Dodatnie perki: błyszczy na treningach, lotnik, regularny. Ujemne: oszczędza siły, małe skocznie, nieprzewidywalny. Klasa lądowania 0–4 wpływa tylko na noty.</source>
+            <translation>Kladné perky: září v tréninku, letec, pravidelný. Záporné: šetří síly, malé můstky, nevyzpytatelný. Třída přistání 0–4 ovlivňuje pouze známky.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="118" />
+            <source>Geometria, preferencja i punktacja skoczni są niezależne. Sam punkt K nie podmienia ręcznie ustawionej punktacji.</source>
+            <translation>Geometrie, preference a bodování můstku jsou nezávislé. Samotný bod K nenahrazuje ručně nastavené bodování.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="119" />
+            <source>Zmienia zakres lub dokładność analizy. Gęstsze próbkowanie zwiększa koszt, ale nie zmienia pola pogody ani silnika.</source>
+            <translation>Mění rozsah nebo přesnost analýzy. Hustší vzorkování zvyšuje výpočetní náklady, ale nemění pole počasí ani engine.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="120" />
+            <source>Włącza składnik punktacji lub regułę eksperymentu. Dane normalnej gry pozostają bez zmian.</source>
+            <translation>Zapíná složku bodování nebo pravidlo experimentu. Data běžné hry se nemění.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="121" />
+            <source>W trybie kontrolowanym wszystkie starty mają czas 0. W przebiegu konkursu wspólny zegar przesuwa się między skokami. Belka 0 dobiera wspólną belkę z bazy.</source>
+            <translation>V kontrolovaném režimu mají všechny starty čas 0. V režimu závodu se společný čas posouvá mezi skoky. Okno 0 zvolí společné okno podle základní varianty.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="124" />
+            <source>%1 · jednostka: %2 · domyślnie: %3</source>
+            <translation>%1 · jednotka: %2 · výchozí: %3</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="135" />
+            <source>Belka (0: automatyczna)</source>
+            <translation>Nájezdové okno (0: automaticky)</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="136" />
+            <source>Seria: trening / próba / kwalifikacje / konkurs</source>
+            <translation>Kolo: trénink / zkušební / kvalifikace / závod</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="137" />
+            <source>Warunki: 0 kontrolowane, 1 przebieg konkursu</source>
+            <translation>Podmínky: 0 kontrolované, 1 průběh závodu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="138" />
+            <source>Czas między skokami</source>
+            <translation>Čas mezi skoky</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="139" />
+            <source>Ryzyko DSQ</source>
+            <translation>Pravděpodobnost DSQ</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="140" />
+            <source>OVR stawki</source>
+            <translation>OVR startovního pole</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="141" />
+            <source>Rozpiętość OVR stawki</source>
+            <translation>Rozpětí OVR startovního pole</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="143" />
+            <source>Klasa lądowania stawki</source>
+            <translation>Třída přistání startovního pole</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="144" />
+            <source>OVR skoczka</source>
+            <translation>OVR skokana</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="146" />
+            <source>Klasa lądowania skoczka</source>
+            <translation>Třída přistání skokana</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="148" />
+            <source>HS</source>
+            <translation>HS</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="149" />
+            <source>Początek wypłaszczenia</source>
+            <translation>Začátek zplošťování doskoku</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="150" />
+            <source>Preferencja: lot (−1), wybicie (+1)</source>
+            <translation>Preference: let (−1), odraz (+1)</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="151" />
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="26" />
+            <source>Punkty za K</source>
+            <translation>Body za bod K</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="152" />
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="26" />
+            <source>Punkty za metr</source>
+            <translation>Body za metr</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="153" />
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="27" />
+            <source>Punkty za belkę</source>
+            <translation>Body za nájezdové okno</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="156" />
+            <source>Wiatr przedni (+) / tylny (−)</source>
+            <translation>Protivítr (+) / zadní vítr (−)</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="157" />
+            <source>Wiatr boczny</source>
+            <translation>Boční vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="158" />
+            <source>Metoda pomiaru wiatru (0–5)</source>
+            <translation>Metoda měření větru (0–5)</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="161" />
+            <source>Noty za styl</source>
+            <translation>Známky za styl</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="163" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="166" />
+            <source>Podejście (−3…+3)</source>
+            <translation>Přístup (−3…+3)</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="164" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="167" />
+            <source>Specjalizacja (−3…+3)</source>
+            <translation>Specializace (−3…+3)</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="165" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="168" />
+            <source>Regularność (−3…+3)</source>
+            <translation>Pravidelnost (−3…+3)</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="169" />
+            <source>Punkt 1: przód / tył</source>
+            <translation>Bod 1: proti / zezadu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="170" />
+            <source>Punkt 1: bok</source>
+            <translation>Bod 1: bok</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="171" />
+            <source>Punkt 2: przód / tył</source>
+            <translation>Bod 2: proti / zezadu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="172" />
+            <source>Punkt 2: bok</source>
+            <translation>Bod 2: bok</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="173" />
+            <source>Punkt 3: przód / tył</source>
+            <translation>Bod 3: proti / zezadu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="174" />
+            <source>Punkt 3: bok</source>
+            <translation>Bod 3: bok</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="175" />
+            <source>Punkt 4: przód / tył</source>
+            <translation>Bod 4: proti / zezadu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="176" />
+            <source>Punkt 4: bok</source>
+            <translation>Bod 4: bok</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="177" />
+            <source>Punkt 5: przód / tył</source>
+            <translation>Bod 5: proti / zezadu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="178" />
+            <source>Punkt 5: bok</source>
+            <translation>Bod 5: bok</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="179" />
+            <source>Punkt 6: przód / tył</source>
+            <translation>Bod 6: proti / zezadu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="180" />
+            <source>Punkt 6: bok</source>
+            <translation>Bod 6: bok</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="181" />
+            <source>Horyzont analizy wiatru</source>
+            <translation>Časový horizont analýzy větru</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="182" />
+            <source>Chwila przekroju zeskoku</source>
+            <translation>Čas řezu doskokem</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="183" />
+            <source>Miejsce odczytu w czasie</source>
+            <translation>Místo odpočtu časové řady</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="184" />
+            <source>Pozycja punktu / K</source>
+            <translation>Poloha referenčního bodu / K</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="185" />
+            <source>Skala mapy wiatru ±</source>
+            <translation>Stupnice mapy větru ±</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="186" />
+            <source>Próbki czasu analizy</source>
+            <translation>Časové vzorky analýzy</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="187" />
+            <source>Próbki odległości analizy</source>
+            <translation>Prostorové vzorky analýzy</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <source>Kontrolowane warunki</source>
+            <translation>Kontrolované podmínky</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <source>Przebieg konkursu</source>
+            <translation>Průběh závodu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <source>Normalny</source>
+            <translation>Normální</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <source>Laplace’a</source>
+            <translation>Laplaceovo</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="48" />
+            <source>Śnieg</source>
+            <translation>Sníh</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="55" />
+            <source>Stałe</source>
+            <translation>Stálé</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="55" />
+            <source>Zmienne</source>
+            <translation>Proměnlivé</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="54" />
+            <source>Silne</source>
+            <translation>Silné</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <source>Narastające</source>
+            <translation>Zesilující</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="189" />
+            <source>Skoki w próbie analizy wiatru</source>
+            <translation>Skoky ve vzorku analýzy větru</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfileMigration.cpp" line="14" />
+            <source>Wybierz starą paczkę skoczków lub skoczni. Nowe profile nie wymagają migracji.</source>
+            <translation>Vyberte starý balíček skokanů nebo můstků. Nové profily převod nepotřebují.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfileMigration.cpp" line="16" />
+            <source>Nieprawidłowa skala dawnych umiejętności.</source>
+            <translation>Neplatná stupnice starých dovedností.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfileMigration.cpp" line="18" />
+            <source> — przybliżenie</source>
+            <translation> — přibližně</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfileMigration.cpp" line="21" />
+            <source>To niedokładna, przybliżona migracja. OVR i forma są przeliczone, lądowanie przybliżone, a wszystkie perki ustawione od zera. Oryginalna paczka pozostaje bez zmian.</source>
+            <translation>Jde o nepřesný, přibližný převod. OVR a forma jsou přepočteny, přistání odhadnuto a všechny perky vynulovány. Původní balíček se nemění.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfileMigration.cpp" line="23" />
+            <location filename="../source/simulation-v2/ProfileMigration.cpp" line="39" />
+            <source>Paczka zawiera już nowe profile. Nie przeliczono ich ponownie.</source>
+            <translation>Balíček již obsahuje nové profily. Nebyly znovu přepočítány.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfileMigration.cpp" line="26" />
+            <source>Skoczek %1 ma nieprawidłowe parametry.</source>
+            <translation>Skokan %1 má neplatné parametry.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="43" />
+            <source>Nieprawidłowy format paczki profili.</source>
+            <translation>Neplatný formát balíčku profilů.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="46" />
+            <source>Nieprawidłowe pochodzenie migrowanej paczki.</source>
+            <translation>Neplatný původ převedeného balíčku.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="72" />
+            <source>Nie można odczytać paczki (limit 20 MB).</source>
+            <translation>Balíček nelze načíst (limit 20 MB).</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="76" />
+            <source>Nieprawidłowy JSON paczki: %1</source>
+            <translation>Neplatný JSON balíčku: %1</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="77" />
+            <source>Plik paczki musi zawierać obiekt JSON.</source>
+            <translation>Soubor balíčku musí obsahovat objekt JSON.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="94" />
+            <source>Niezgodny identyfikator paczki: %1</source>
+            <translation>Neshodný identifikátor balíčku: %1</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="104" />
+            <source>Paczka przekracza limit 20 MB.</source>
+            <translation>Balíček překračuje 20 MB.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="105" />
+            <source>Nie można utworzyć folderu paczki.</source>
+            <translation>Nelze vytvořit složku balíčku.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="108" />
+            <source>Nie udało się zapisać paczki. Zmiana nie została zastosowana.</source>
+            <translation>Balíček se nepodařilo uložit. Změna nebyla provedena.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="117" />
+            <source>Wybierz starą paczkę z identyfikatorem. Nowe profile nie wymagają migracji.</source>
+            <translation>Vyberte starý balíček s identifikátorem. Nové profily převod nepotřebují.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="121" />
+            <source>Nieprawidłowy rodzaj paczki do migracji.</source>
+            <translation>Neplatný druh balíčku pro převod.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="123" />
+            <source>Nie można utworzyć folderu paczek.</source>
+            <translation>Nelze vytvořit složku balíčků.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="125" />
+            <source>Trwa migracja paczek w innej instancji aplikacji.</source>
+            <translation>Převod balíčků probíhá v jiné instanci aplikace.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="141" />
+            <source>Nie można przygotować folderu migracji.</source>
+            <translation>Nelze připravit složku převodu.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="145" />
+            <source>Nie przeniesiono zdjęcia %1; profil pozostaje dostępny bez zdjęcia.</source>
+            <translation>Fotografie %1 nebyla přenesena; profil je dostupný bez ní.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="149" />
+            <source>Nie udało się skopiować zdjęć. Oryginalna paczka pozostaje bez zmian.</source>
+            <translation>Fotografie se nepodařilo zkopírovat. Původní balíček se nemění.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="156" />
+            <source>Nie udało się opublikować migrowanej paczki. Oryginał pozostaje bez zmian.</source>
+            <translation>Převedený balíček se nepodařilo zveřejnit. Originál se nemění.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="162" />
+            <source>Nie udało się przygotować migrowanej paczki.</source>
+            <translation>Převedený balíček se nepodařilo připravit.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfilePackRepository.cpp" line="166" />
+            <source>Nie udało się opublikować migrowanej paczki. Istniejące pliki pozostają bez zmian.</source>
+            <translation>Převedený balíček se nepodařilo zveřejnit. Existující soubory se nemění.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/SimulationCatalog.cpp" line="48" />
+            <source>Uszkodzony plik wyboru paczek nie zostanie nadpisany.</source>
+            <translation>Poškozený soubor výběru balíčků nebude přepsán.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/SimulationCatalog.cpp" line="52" />
+            <source>Nie można utworzyć folderu katalogu.</source>
+            <translation>Nelze vytvořit složku katalogu.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/SimulationCatalog.cpp" line="55" />
+            <source>Nie udało się zapisać wyboru paczek.</source>
+            <translation>Výběr balíčků se nepodařilo uložit.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/SimulationCatalog.cpp" line="83" />
+            <source>Paczka nie zawiera kompletnych nowych profili.</source>
+            <translation>Balíček neobsahuje úplné nové profily.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/SimulationCatalog.cpp" line="86" />
+            <source>Plik docelowy już istnieje i nie zostanie nadpisany.</source>
+            <translation>Cílový soubor již existuje a nebude přepsán.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/SimulationCatalog.cpp" line="90" />
+            <source>Nie przeniesiono paczki %1 do nowego katalogu: %2. Źródło pozostaje bez zmian.</source>
+            <translation>Balíček %1 nebyl přenesen do nového katalogu: %2. Zdroj se nemění.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/SimulationCatalog.cpp" line="94" />
+            <source>Sprawdź pliki zdjęć w przeniesionej paczce %1.</source>
+            <translation>Zkontrolujte fotografie v přeneseném balíčku %1.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/SimulationCatalog.cpp" line="122" />
+            <source>Nie wczytano wyboru paczek. Uszkodzony katalog nie zostanie nadpisany.</source>
+            <translation>Výběr balíčků se nepodařilo načíst. Poškozený katalog nebude přepsán.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/SimulationCatalog.cpp" line="150" />
+            <source>Nie znaleziono paczki tego rodzaju.</source>
+            <translation>Nebyl nalezen balíček tohoto druhu.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulator/Hill.cpp" line="217" />
+            <source>Niezgodne identyfikatory skoczni i nowego profilu.</source>
+            <translation>Identifikátor můstku a nového profilu se neshodují.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulator/Hill.cpp" line="249" />
+            <source>Skocznie</source>
+            <translation>Můstky</translation>
+        </message>
+        <message>
+            <location filename="../source/simulator/Jumper.cpp" line="214" />
+            <source>Niezgodne identyfikatory skoczka i nowego profilu.</source>
+            <translation>Identifikátor skokana a nového profilu se neshodují.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulator/Jumper.cpp" line="218" />
+            <source>Nieprawidłowy identyfikator paczki zdjęć zawodnika.</source>
+            <translation>Neplatný identifikátor balíčku fotografií skokana.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulator/Jumper.cpp" line="253" />
+            <source>Skoczkowie</source>
+            <translation>Skokani</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="23" />
+            <source>Nazwa</source>
+            <translation>Název</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="23" />
+            <source>Imię</source>
+            <translation>Jméno</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="23" />
+            <source>Nazwisko</source>
+            <translation>Příjmení</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="23" />
+            <source>Kraj · kod FIS</source>
+            <translation>Země · kód FIS</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="25" />
+            <source>Rekord</source>
+            <translation>Rekord</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="27" />
+            <source>Wiatr przedni · punkty</source>
+            <translation>Protivítr · body</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="27" />
+            <source>Wiatr tylny · punkty</source>
+            <translation>Zadní vítr · body</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="29" />
+            <source>Forma</source>
+            <translation>Forma</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="29" />
+            <source>Rekord życiowy</source>
+            <translation>Osobní rekord</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="29" />
+            <source>Rok urodzenia · 0 = brak</source>
+            <translation>Rok narození · 0 = neuveden</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="29" />
+            <source>Zdjęcie · plik w paczce</source>
+            <translation>Fotografie · soubor v balíčku</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="30" />
+            <source>Niechlujne</source>
+            <translation>Nedbalý</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="30" />
+            <source>Niestaranne</source>
+            <translation>Nepřesný</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="30" />
+            <source>Poprawne</source>
+            <translation>Správný</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="30" />
+            <source>Eleganckie</source>
+            <translation>Elegantní</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="30" />
+            <source>Stylista</source>
+            <translation>Stylista</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="34" />
+            <source>Wybicie</source>
+            <translation>Odraz</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="34" />
+            <source>Łagodniejsze lądowanie</source>
+            <translation>Snazší přistání</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="34" />
+            <source>Trudniejsze lądowanie</source>
+            <translation>Obtížnější přistání</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="34" />
+            <source>Loteryjny wiatr</source>
+            <translation>Nevyzpytatelný vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="34" />
+            <source>Stabilny wiatr</source>
+            <translation>Stabilní vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="34" />
+            <source>Wiatr przedni</source>
+            <translation>Protivítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="34" />
+            <source>Wiatr tylny</source>
+            <translation>Zadní vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="34" />
+            <source>Błyszczy na treningach</source>
+            <translation>Hvězda tréninků</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="34" />
+            <source>Oszczędza siły</source>
+            <translation>Šetří síly</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="34" />
+            <source>Lotnik</source>
+            <translation>Specialista na lety</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="34" />
+            <source>Specjalista małych skoczni</source>
+            <translation>Specialista na malé můstky</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="34" />
+            <source>Regularny</source>
+            <translation>Vyrovnaný</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="34" />
+            <source>Nieprzewidywalny</source>
+            <translation>Nepředvídatelný</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="36" />
+            <source>Brak</source>
+            <translation>Žádný</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="38" />
+            <source>Perk %1</source>
+            <translation>Perk %1</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="15" />
+            <source>Losowo · według skoczni</source>
+            <translation>Náhodně · podle můstku</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="17" />
+            <source>Własne warunki</source>
+            <translation>Vlastní podmínky</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="17" />
+            <source>Wiatr</source>
+            <translation>Vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="22" />
+            <source>Losuj ponownie</source>
+            <translation>Vylosovat znovu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="23" />
+            <source>Dostosuj wiatr</source>
+            <translation>Upravit vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="32" />
+            <source>Kierunek · 0° pod narty, 180° w plecy</source>
+            <translation>Směr · 0° protivítr, 180° zadní vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="33" />
+            <source>Siła wyjściowa · m/s</source>
+            <translation>Výchozí síla · m/s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="34" />
+            <source>Zmienność w czasie · 0–10</source>
+            <translation>Proměnlivost v čase · 0–10</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="35" />
+            <source>Różnice na zeskoku · 0–10</source>
+            <translation>Rozdíly na dopadu · 0–10</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="54" />
+            <source>Natężenie</source>
+            <translation>Intenzita</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="54" />
+            <source>Słabe</source>
+            <translation>Slabé</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="54" />
+            <source>Umiarkowane</source>
+            <translation>Mírné</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="55" />
+            <source>Przebieg</source>
+            <translation>Průběh</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="55" />
+            <source>Nasilające się</source>
+            <translation>Zesilující</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="57" />
+            <source>Śnieg w torach spowalnia rozbieg.</source>
+            <translation>Sníh ve stopě zpomaluje nájezd.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/EditorWidgets/WeatherSetupEditor.cpp" line="57" />
+            <source>Lekki deszcz nie musi hamować. Ulewa mocno pogarsza skoki.</source>
+            <translation>Slabý déšť nemusí brzdit. Prudký déšť výrazně zhoršuje skoky.</translation>
         </message>
     </context>
     <context>
         <name>QuickBridge</name>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="89" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="90" />
             <source>OK</source>
             <translation>OK</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="90" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="91" />
             <source>Tak</source>
             <translation>Ano</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="91" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="92" />
             <source>Nie</source>
             <translation>Ne</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="92" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="93" />
             <source>Anuluj</source>
             <translation>Zrušit</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="93" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="94" />
             <source>Zamknij</source>
             <translation>Zavřít</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="94" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="95" />
             <source>Zapisz</source>
             <translation>Uložit</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="95" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="96" />
             <source>Zapisz wszystko</source>
             <translation>Uložit vše</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="96" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="97" />
             <source>Odrzuć</source>
             <translation>Zahodit</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="97" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="98" />
             <source>Zastosuj</source>
             <translation>Použít</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="98" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="99" />
             <source>Resetuj</source>
             <translation>Obnovit</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="99" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="100" />
             <source>Przywróć domyślne</source>
             <translation>Obnovit výchozí</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="100" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="101" />
             <source>Ponów</source>
             <translation>Znovu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="101" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="102" />
             <source>Ignoruj</source>
             <translation>Ignorovat</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="102" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="103" />
             <source>Przerwij</source>
             <translation>Přerušit</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="103" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="104" />
             <source>Tak dla wszystkich</source>
             <translation>Ano všem</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="104" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="105" />
             <source>Nie dla wszystkich</source>
             <translation>Ne všem</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="105" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="106" />
             <source>Otwórz</source>
             <translation>Otevřít</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="106" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="107" />
             <source>Pomoc</source>
             <translation>Nápověda</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="168" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="169" />
             <source>Generator formy</source>
             <translation>Generátor formy</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="168" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="169" />
             <source>Lista zawodników</source>
             <translation>Seznam skokanů</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="168" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="169" />
             <source>Konkurs</source>
             <translation>Závod</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="168" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="169" />
             <source>Pojedyncze skoki</source>
             <translation>Jednotlivé skoky</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="168" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="169" />
             <source>Ustawienia</source>
             <translation>Nastavení</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="168" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="169" />
             <source>Baza danych</source>
             <translation>Databáze</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="168" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="169" />
             <source>Zapisy</source>
             <translation>Uložené simulace</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="168" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="169" />
             <source>Sezon</source>
             <translation>Sezóna</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="168" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="860" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="169" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="886" />
             <source>Nowy zapis</source>
             <translation>Nová uložená simulace</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="170" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="171" />
             <source>Grupa KO</source>
             <translation>Skupina KO</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="171" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="172" />
             <source>Postęp</source>
             <translation>Průběh</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="313" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="396" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="516" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="320" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="403" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="523" />
             <source>W górę</source>
             <translation>Posunout nahoru</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="313" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="396" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="516" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="320" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="403" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="523" />
             <source>W dół</source>
             <translation>Posunout dolů</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="313" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="396" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="516" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="860" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="320" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="403" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="523" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="886" />
             <source>Usuń</source>
             <translation>Odebrat</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="313" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="396" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="516" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="320" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="403" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="523" />
             <source>Dodaj</source>
             <translation>Přidat</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="313" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="516" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="320" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="523" />
             <source>Edytuj</source>
             <translation>Upravit</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="313" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="516" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="320" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="523" />
             <source>Wypełnij wszystkie</source>
             <translation>Vyplnit vše</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="313" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="516" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="320" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="523" />
             <source>Szczegóły</source>
             <translation>Podrobnosti</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="396" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="403" />
             <source>Wybierz</source>
             <translation>Vybrat</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="438" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="445" />
             <source>Profil zawodnika</source>
             <translation>Profil skokana</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="438" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="445" />
             <source>Parametry skoczni</source>
             <translation>Parametry můstku</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="439" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1045" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1117" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="446" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1070" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1076" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1152" />
             <source>Zasady konkursu</source>
             <translation>Pravidla závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="439" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="446" />
             <source>Warunki wietrzne</source>
             <translation>Větrné podmínky</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="440" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="447" />
             <source>Śnieg na rozbiegu</source>
             <translation>Sníh na nájezdu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="440" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1002" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="447" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1028" />
             <source>Klasyfikacja</source>
             <translation>Pořadí</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="441" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="448" />
             <source>Punkty za miejsca</source>
             <translation>Body za umístění</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="441" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="448" />
             <source>Konkurs w kalendarzu</source>
             <translation>Závod v kalendáři</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="442" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="449" />
             <source>Zasady serii</source>
             <translation>Pravidla kola</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="442" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="449" />
             <source>Skład drużyny</source>
             <translation>Sestava družstva</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="477" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="484" />
             <source>Dane</source>
             <translation>Údaje</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="478" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="485" />
             <source>Punktacja</source>
             <translation>Bodování</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="479" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="486" />
             <source>Umiejętności</source>
             <translation>Dovednosti</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="479" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="486" />
             <source>Parametry</source>
             <translation>Parametry</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="480" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="487" />
             <source>Cechy</source>
             <translation>Vlastnosti</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="581" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="595" />
             <source>Seria %1</source>
             <translation>Kolo %1</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="584" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="594" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="612" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="613" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="620" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="598" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="608" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="633" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="634" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="641" />
             <source> pkt</source>
             <translation> b</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="799" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="820" />
             <source>Klasycznie</source>
             <translation>Klasicky</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="799" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="820" />
             <source>Klasycznie · większe grupy</source>
             <translation>Klasicky · větší skupiny</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="799" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="820" />
             <source>Losowo z koszyków</source>
             <translation>Náhodně z košů</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="799" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="820" />
             <source>Losowo</source>
             <translation>Náhodně</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="860" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="886" />
             <source>Wczytaj</source>
             <translation>Načíst</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="912" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="938" />
             <source>Informacje o skoku</source>
             <translation>Informace o skoku</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="913" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="937" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="953" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="939" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="963" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="979" />
             <source>Silnik symulacji</source>
             <translation>Simulační jádro</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="914" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="939" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1121" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1136" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="940" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="965" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1160" />
             <source>Wiatr</source>
             <translation>Vítr</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="947" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="973" />
             <source>Zmienność formy</source>
             <translation>Kolísání formy</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="947" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="973" />
             <source>Bonus formy</source>
             <translation>Bonus formy</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="947" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="973" />
             <source>Minimalna forma</source>
             <translation>Minimální forma</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="947" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="973" />
             <source>Maksymalna forma</source>
             <translation>Maximální forma</translation>
         </message>
         <message>
             <location filename="../source/UI/Quick/AppearanceMenu.qml" line="24" />
             <location filename="../source/UI/Quick/AppearanceMenu.qml" line="31" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="954" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="980" />
             <source>Język interfejsu</source>
             <translation>Jazyk rozhraní</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="954" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="980" />
             <source>Zakres umiejętności</source>
             <translation>Rozsah dovedností</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="955" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="981" />
             <source>Bazowe prawdopodobieństwo dyskwalifikacji</source>
             <translation>Základní pravděpodobnost diskvalifikace</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="956" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="982" />
             <source>Mnożnik losowości</source>
             <translation>Násobitel náhody</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="956" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="982" />
             <source>Wpływ parametrów skoczni</source>
             <translation>Vliv parametrů můstku</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="957" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="983" />
             <source>Wpływ formy na wybicie</source>
             <translation>Vliv formy na odraz</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="957" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="983" />
             <source>Wpływ formy na lot</source>
             <translation>Vliv formy na let</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="958" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="984" />
             <source>Tempo konkursu na żywo</source>
             <translation>Rychlost živého závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="960" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="968" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="986" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="994" />
             <source>Baza danych i narzędzia</source>
             <translation>Databáze a nástroje</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="965" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="968" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="991" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="994" />
             <source>Udostępnianie wyników</source>
             <translation>Sdílení výsledků</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="966" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="992" />
             <source>Webhook: pojedynczy skok</source>
             <translation>Webhook: jednotlivý skok</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="966" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="992" />
             <source>Webhook: wynik zawodnika</source>
             <translation>Webhook: výsledek skokana</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="967" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="993" />
             <source>Webhook: wyniki konkursu</source>
             <translation>Webhook: výsledky závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="967" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="993" />
             <source>Webhook: klasyfikacja</source>
             <translation>Webhook: pořadí</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="968" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="994" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1178" />
             <source>Symulacja</source>
             <translation>Simulace</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="980" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1006" />
             <source>Narzędzia</source>
             <translation>Nástroje</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="994" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1020" />
             <source>Zacznij od kalendarza</source>
             <translation>Začněte kalendářem</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="994" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1020" />
             <source>Utwórz kalendarz, a następnie dodaj konkursy lub wczytaj preset.</source>
             <translation>Vytvořte kalendář a poté přidejte závody nebo načtěte předvolbu.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="996" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1022" />
             <source>Wybierz aktywny kalendarz</source>
             <translation>Vyberte aktivní kalendář</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="996" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1022" />
             <source>W sekcji Kalendarz wybierz kalendarz i użyj przycisku Ustaw jako aktywny.</source>
             <translation>V části Kalendář vyberte kalendář a použijte tlačítko Nastavit jako aktivní.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="998" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1024" />
             <source>Dodaj pierwszy konkurs</source>
             <translation>Přidejte první závod</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="998" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1024" />
             <source>Kalendarz jest gotowy. Dodaj konkursy lub wczytaj preset, aby rozpocząć sezon.</source>
             <translation>Kalendář je připraven. Pro zahájení sezóny přidejte závody nebo načtěte předvolbu.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1000" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1026" />
             <source>Brak wyników klasyfikacji</source>
             <translation>Žádné výsledky pořadí</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1000" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1026" />
             <source>Dodaj klasyfikację w kalendarzu i przypisz do niej konkursy. Wyniki pojawią się po ich rozegraniu.</source>
             <translation>Přidejte pořadí do kalendáře a přiřaďte mu závody. Výsledky se objeví po jejich dokončení.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1002" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1028" />
             <source>Następny konkurs</source>
             <translation>Další závod</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1003" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1029" />
             <source>Przegląd</source>
             <translation>Přehled</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1036" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1066" />
             <source>Brak skoczni</source>
             <translation>Žádný můstek</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1039" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1116" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1132" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1136" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1069" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1150" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1151" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1177" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1182" />
             <source>Skocznia</source>
             <translation>Můstek</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1052" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1133" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1083" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1180" />
             <source>Belka startowa</source>
             <translation>Nájezdové okno</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1053" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1144" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1084" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1191" />
             <source>Prawdopodobieństwo dyskwalifikacji</source>
             <translation>Pravděpodobnost diskvalifikace</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1053" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1134" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1084" />
             <source>Ważność skoków</source>
             <translation>Důležitost skoků</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1054" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1134" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1085" />
             <source>Preset ważności</source>
             <translation>Předvolba důležitosti</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1056" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1087" />
             <source>Plan symulacji</source>
             <translation>Plán simulace</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1081" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1112" />
             <source>Opcje listy</source>
             <translation>Možnosti seznamu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1085" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1095" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1116" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1126" />
             <source>Lista startowa</source>
             <translation>Startovní listina</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1093" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1124" />
             <source>Przygotowanie</source>
             <translation>Příprava</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1093" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1131" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1135" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1124" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1181" />
             <source>Konfiguracja</source>
             <translation>Nastavení</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1110" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1141" />
             <source>Grupy KO</source>
             <translation>Skupiny KO</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1113" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1144" />
             <source>Kolejność według wyników</source>
             <translation>Pořadí podle výsledků</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1121" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1160" />
             <source>Śnieg</source>
             <translation>Sníh</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1124" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1143" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1148" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1163" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1190" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1196" />
             <source>Opcje</source>
             <translation>Možnosti</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1132" />
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1136" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1176" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1182" />
             <source>Zawodnik</source>
             <translation>Skokan</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1133" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1179" />
             <source>Liczba skoków</source>
             <translation>Počet skoků</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1146" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1194" />
             <source>Obliczanie średniego wiatru</source>
             <translation>Výpočet průměrného větru</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1147" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1195" />
             <source>Wpływ odległości na rekompensatę</source>
             <translation>Vliv vzdálenosti na kompenzaci</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1193" />
             <source>Pomiar wiatru</source>
             <translation>Měření větru</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1062" />
+            <source>Paczki</source>
+            <translation>Balíčky</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1062" />
+            <source>Zawodnicy</source>
+            <translation>Skokani</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1062" />
+            <source>Skocznie</source>
+            <translation>Můstky</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1062" />
+            <source>Zasady</source>
+            <translation>Pravidla</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1156" />
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1189" />
+            <source>Warunki</source>
+            <translation>Podmínky</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1176" />
+            <source>Paczka zawodników</source>
+            <translation>Balíček skokanů</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1177" />
+            <source>Paczka skoczni</source>
+            <translation>Balíček můstků</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/QuickBridge.cpp" line="1179" />
+            <source>Rodzaj skoku</source>
+            <translation>Druh skoku</translation>
         </message>
     </context>
     <context>
@@ -12696,7 +13802,7 @@ Ověřte, že jste vybrali správný soubor.</translation>
     <context>
         <name>QuickUi</name>
         <message>
-            <location filename="../source/UI/Quick/QuickUi.cpp" line="176" />
+            <location filename="../source/UI/Quick/QuickUi.cpp" line="177" />
             <source>Menu główne</source>
             <translation>Hlavní nabídka</translation>
         </message>
@@ -12704,55 +13810,57 @@ Ověřte, že jste vybrali správný soubor.</translation>
     <context>
         <name>RaceAthlete</name>
         <message>
-            <location filename="../source/UI/Quick/RaceAthlete.qml" line="17" />
+            <location filename="../source/UI/Quick/RaceAthlete.qml" line="29" />
             <source>Zakończono</source>
             <translation>Dokončeno</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceAthlete.qml" line="17" />
+            <location filename="../source/UI/Quick/RaceAthlete.qml" line="29" />
             <source>Koniec serii</source>
             <translation>Konec kola</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceAthlete.qml" line="17" />
+            <location filename="../source/UI/Quick/RaceAthlete.qml" line="29" />
             <source>NA BELCE</source>
             <translation>NA OKNĚ</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceAthlete.qml" line="25" />
+            <location filename="../source/UI/Quick/RaceAthlete.qml" line="48" />
             <source>po %1 serii</source>
             <translation>po %1. kole</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceAthlete.qml" line="33" />
+            <location filename="../source/UI/Quick/RaceAthlete.qml" line="56" />
             <source>Ma przewagę %1 pkt</source>
             <translation>Vede o %1 b</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceAthlete.qml" line="33" />
+            <location filename="../source/UI/Quick/RaceAthlete.qml" line="56" />
             <source>Traci %1 pkt do lidera</source>
             <translation>Ztrácí %1 b na vedoucího</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceAthlete.qml" line="38" />
+            <location filename="../source/UI/Quick/RaceAthlete.qml" line="61" />
             <source>Punkty sprzed bieżącej serii, po wagach, porównane z punktami aktualnego lidera sprzed tej samej serii.</source>
             <translation>Vážené body před aktuálním kolem ve srovnání s body současného vedoucího před stejným kolem.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceAthlete.qml" line="45" />
+            <location filename="../source/UI/Quick/RaceAthlete.qml" line="68" />
             <source>Do prowadzenia</source>
             <translation>K vedení</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceAthlete.qml" line="50" />
+            <location filename="../source/UI/Quick/RaceAthlete.qml" line="73" />
             <source>Do awansu</source>
             <translation>K postupu</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/RaceAthlete.qml" line="33" />
             <source>Wiatr ↗</source>
             <translation>Vítr ↗</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/RaceAthlete.qml" line="35" />
             <source>Podgląd wiatru przed skokiem</source>
             <translation>Náhled větru před skokem</translation>
         </message>
@@ -12793,96 +13901,97 @@ Ověřte, že jste vybrali správný soubor.</translation>
     <context>
         <name>RaceLastJump</name>
         <message>
-            <location filename="../source/UI/Quick/RaceLastJump.qml" line="35" />
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="47" />
             <source>Do lidera: %1 pkt</source>
             <translation>Na vedoucího: %1 b</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceLastJump.qml" line="35" />
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="47" />
             <source>Lider</source>
             <translation>Vedoucí</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceLastJump.qml" line="44" />
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="56" />
             <source>Seria skoku</source>
             <translation>Kolo skoku</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceLastJump.qml" line="54" />
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="66" />
             <source>miejsce</source>
             <translation>místo</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceLastJump.qml" line="75" />
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="87" />
             <source>Wiatr</source>
             <translation>Vítr</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceLastJump.qml" line="76" />
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="88" />
             <source>Belka</source>
             <translation>Nájezdové okno</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceLastJump.qml" line="77" />
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="89" />
             <source>Ląd.</source>
             <translation>Doskok</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceLastJump.qml" line="78" />
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="90" />
             <source>Rekomp.</source>
             <translation>Komp.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceLastJump.qml" line="79" />
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="91" />
             <source>Za wiatr</source>
             <translation>Vítr</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceLastJump.qml" line="80" />
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="92" />
             <source>Za belkę</source>
             <translation>Okno</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceLastJump.qml" line="81" />
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="93" />
             <source>W serii</source>
             <translation>V kole</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceLastJump.qml" line="82" />
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="94" />
             <source>Grupa</source>
             <translation>Skupina</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceLastJump.qml" line="83" />
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="95" />
             <source>Konkurs</source>
             <translation>Závod</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceLastJump.qml" line="84" />
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="96" />
             <source>Suma</source>
             <translation>Součet</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceLastJump.qml" line="90" />
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="102" />
             <source>Wybicie</source>
             <translation>Odraz</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceLastJump.qml" line="91" />
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="103" />
             <source>Lot</source>
             <translation>Let</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceLastJump.qml" line="92" />
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="104" />
             <source>Los.</source>
             <translation>Náh.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceLastJump.qml" line="93" />
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="105" />
             <source>Śnieg</source>
             <translation>Sníh</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/RaceLastJump.qml" line="87" />
             <source>Wiatr ↗</source>
             <translation>Vítr ↗</translation>
         </message>
@@ -12923,29 +14032,29 @@ Ověřte, že jste vybrali správný soubor.</translation>
     <context>
         <name>RaceScreen</name>
         <message>
-            <location filename="../source/UI/Quick/RaceScreen.qml" line="59" />
-            <location filename="../source/UI/Quick/RaceScreen.qml" line="76" />
+            <location filename="../source/UI/Quick/RaceScreen.qml" line="61" />
+            <location filename="../source/UI/Quick/RaceScreen.qml" line="78" />
             <source>Wyniki</source>
             <translation>Výsledky</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceScreen.qml" line="88" />
-            <location filename="../source/UI/Quick/RaceScreen.qml" line="94" />
+            <location filename="../source/UI/Quick/RaceScreen.qml" line="90" />
+            <location filename="../source/UI/Quick/RaceScreen.qml" line="96" />
             <source>Lista startowa</source>
             <translation>Startovní listina</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceScreen.qml" line="117" />
+            <location filename="../source/UI/Quick/RaceScreen.qml" line="119" />
             <source>Tylko wyniki bieżącej drużyny</source>
             <translation>Pouze výsledky aktuálního družstva</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceScreen.qml" line="117" />
+            <location filename="../source/UI/Quick/RaceScreen.qml" line="119" />
             <source>Tylko suma drużyny</source>
             <translation>Pouze součet družstva</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceScreen.qml" line="117" />
+            <location filename="../source/UI/Quick/RaceScreen.qml" line="119" />
             <source>Pokaż pełne wyniki</source>
             <translation>Zobrazit úplné výsledky</translation>
         </message>
@@ -13001,42 +14110,42 @@ Ověřte, že jste vybrali správný soubor.</translation>
     <context>
         <name>RaceStatus</name>
         <message>
-            <location filename="../source/UI/Quick/RaceStatus.qml" line="25" />
+            <location filename="../source/UI/Quick/RaceStatus.qml" line="28" />
             <source>Kwalifikacje</source>
             <translation>Kvalifikace</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceStatus.qml" line="25" />
+            <location filename="../source/UI/Quick/RaceStatus.qml" line="28" />
             <source>Seria %1 / %2</source>
             <translation>Kolo %1 / %2</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceStatus.qml" line="26" />
+            <location filename="../source/UI/Quick/RaceStatus.qml" line="29" />
             <source> · Grupa %1</source>
             <translation> · Skupina %1</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceStatus.qml" line="28" />
+            <location filename="../source/UI/Quick/RaceStatus.qml" line="31" />
             <source>Awans: %1 ↑%2</source>
             <translation>Posun: %1 ↑%2</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceStatus.qml" line="28" />
+            <location filename="../source/UI/Quick/RaceStatus.qml" line="31" />
             <source>Największy awans: %1 ↑%2</source>
             <translation>Největší posun: %1 ↑%2</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceStatus.qml" line="34" />
+            <location filename="../source/UI/Quick/RaceStatus.qml" line="37" />
             <source>Względem poprzedniej serii, po odjęciu zawodników oczekujących na skok.</source>
             <translation>Oproti předchozímu kolu po odečtení skokanů čekajících na skok.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceStatus.qml" line="38" />
+            <location filename="../source/UI/Quick/RaceStatus.qml" line="41" />
             <source>Wiatr: %1</source>
             <translation>Vítr: %1</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RaceStatus.qml" line="39" />
+            <location filename="../source/UI/Quick/RaceStatus.qml" line="42" />
             <source>Śnieg: %1</source>
             <translation>Sníh: %1</translation>
         </message>
@@ -13307,42 +14416,42 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <translation>Zavřít</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RosterOrder.qml" line="45" />
+            <location filename="../source/UI/Quick/RosterOrder.qml" line="46" />
             <source>Lista startowa jest pusta</source>
             <translation>Startovní listina je prázdná</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RosterOrder.qml" line="45" />
+            <location filename="../source/UI/Quick/RosterOrder.qml" line="46" />
             <source>Brak pasujących zawodników</source>
             <translation>Žádní odpovídající skokani</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RosterOrder.qml" line="45" />
+            <location filename="../source/UI/Quick/RosterOrder.qml" line="46" />
             <source>Wybierz zawodników w panelu wyboru lub wczytaj zapisany skład.</source>
             <translation>Vyberte skokany v panelu výběru nebo načtěte uloženou sestavu.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RosterOrder.qml" line="45" />
+            <location filename="../source/UI/Quick/RosterOrder.qml" line="46" />
             <source>Zmień filtry, aby zobaczyć zawodników z listy.</source>
             <translation>Změňte filtry a zobrazte skokany ze seznamu.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RosterOrder.qml" line="57" />
+            <location filename="../source/UI/Quick/RosterOrder.qml" line="58" />
             <source>Zaznaczono: %1</source>
             <translation>Vybráno: %1</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RosterOrder.qml" line="57" />
+            <location filename="../source/UI/Quick/RosterOrder.qml" line="58" />
             <source>W składzie: %1</source>
             <translation>V sestavě: %1</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RosterOrder.qml" line="57" />
+            <location filename="../source/UI/Quick/RosterOrder.qml" line="58" />
             <source>Kolejność startu</source>
             <translation>Startovní pořadí</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RosterOrder.qml" line="58" />
+            <location filename="../source/UI/Quick/RosterOrder.qml" line="59" />
             <source>Usuń zaznaczonych</source>
             <translation>Odebrat vybrané</translation>
         </message>
@@ -13378,37 +14487,37 @@ Ověřte, že jste vybrali správný soubor.</translation>
     <context>
         <name>RosterRow</name>
         <message>
-            <location filename="../source/UI/Quick/RosterRow.qml" line="24" />
+            <location filename="../source/UI/Quick/RosterRow.qml" line="25" />
             <source>%1. %2, %3</source>
             <translation>%1. %2, %3</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RosterRow.qml" line="47" />
+            <location filename="../source/UI/Quick/RosterRow.qml" line="48" />
             <source>Przenieś %1</source>
             <translation>Přesunout %1</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RosterRow.qml" line="48" />
+            <location filename="../source/UI/Quick/RosterRow.qml" line="49" />
             <source>Przeciągnij lub wybierz pozycję</source>
             <translation>Přetáhněte nebo vyberte pozici</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RosterRow.qml" line="48" />
+            <location filename="../source/UI/Quick/RosterRow.qml" line="49" />
             <source>Przeciągnij na zawodnika, aby zamienić miejsca</source>
             <translation>Přetažením na skokana vyměníte místa</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RosterRow.qml" line="55" />
+            <location filename="../source/UI/Quick/RosterRow.qml" line="58" />
             <source>Skład</source>
             <translation>Sestava</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RosterRow.qml" line="55" />
+            <location filename="../source/UI/Quick/RosterRow.qml" line="58" />
             <source>Rezerwa</source>
             <translation>Náhradník</translation>
         </message>
         <message>
-            <location filename="../source/UI/Quick/RosterRow.qml" line="59" />
+            <location filename="../source/UI/Quick/RosterRow.qml" line="62" />
             <source>Usuń %1 z listy</source>
             <translation>Odebrat %1 ze seznamu</translation>
         </message>
@@ -14371,7 +15480,7 @@ do pořadí družstev</translation>
         </message>
         <message>
             <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.ui" line="213" />
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1314" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1369" />
             <source>Statystyki zapisu</source>
             <translation>Statistiky uložené simulace</translation>
         </message>
@@ -14397,7 +15506,7 @@ do pořadí družstev</translation>
         </message>
         <message>
             <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.ui" line="392" />
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1260" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1315" />
             <source>Statystyki zawodnika</source>
             <translation>Statistiky skokana</translation>
         </message>
@@ -14523,246 +15632,246 @@ li.checked::marker { content: "\2612"; }
         </message>
         <message>
             <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.ui" line="1079" />
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="730" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="780" />
             <source>Konfiguruj konkurs</source>
             <translation>Nastavit závod</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="94" />
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="836" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="97" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="887" />
             <source>BRAK</source>
             <translation>ŽÁDNÝ</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="190" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="236" />
             <source>Utwórz kalendarz, a następnie kliknij go dwukrotnie, aby rozpocząć edycję.</source>
             <translation>Vytvořte kalendář a dvojitým kliknutím jej začněte upravovat.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="201" />
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="449" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="247" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="499" />
             <source>Sprawdź i napraw powiązania w aktualnym zapisie</source>
             <translation>Zkontrolovat a opravit vazby v aktuální uložené simulaci</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="202" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="248" />
             <source>Najpierw utwórz i wybierz kalendarz</source>
             <translation>Nejprve vytvořte a vyberte kalendář</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="382" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="432" />
             <source>Brak</source>
             <translation>Žádný</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="625" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="675" />
             <source>Edycja zawodników i skoczni</source>
             <translation>Úprava skokanů a můstků</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="626" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="676" />
             <source>BARDZO WAŻNE: Zawodników i skoczni które dodano, nie można już później usunąć. Bądź ostrożny podczas dodawania!</source>
             <translation>VELMI DŮLEŽITÉ: Přidané skokany a můstky již později nelze odebrat. Při přidávání buďte opatrní!</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="627" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="677" />
             <source>Nie pokazuj ponownie</source>
             <translation>Znovu nezobrazovat</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="657" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="707" />
             <source>Konkurs</source>
             <translation>Závod</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="660" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="710" />
             <source>Kwalifikacje</source>
             <translation>Kvalifikace</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="663" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="713" />
             <source>Seria próbna</source>
             <translation>Zkušební kolo</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="670" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="720" />
             <source>Trening </source>
             <translation>Trénink </translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="705" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="755" />
             <source>Konfiguruj nowy sezon</source>
             <translation>Nastavit novou sezónu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="715" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="765" />
             <source>Utwórz kalendarz</source>
             <translation>Vytvořit kalendář</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="715" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="765" />
             <source>Wybierz aktywny kalendarz</source>
             <translation>Vyberte aktivní kalendář</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="716" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="766" />
             <source>Przejdź do karty Kalendarz</source>
             <translation>Přejít na kartu Kalendář</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="721" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="771" />
             <source>Dodaj konkurs w kalendarzu</source>
             <translation>Přidat závod do kalendáře</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="722" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="772" />
             <source>Dodaj konkurs w aktualnym kalendarzu</source>
             <translation>Přidat závod do aktuálního kalendáře</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="726" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="776" />
             <source>Popraw kolejność kwalifikacji</source>
             <translation>Opravit pořadí kvalifikace</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="726" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="776" />
             <source>Źródło kwalifikacji musi poprzedzać konkurs. Powiązanie zostało zachowane.</source>
             <translation>Zdroj kvalifikace musí předcházet závodu. Propojení bylo zachováno.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="740" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="790" />
             <source>Wybierz kalendarz z konkursem</source>
             <translation>Vyberte kalendář se závodem</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="741" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="791" />
             <source>Wybierz kalendarz zawierający nierozgrany konkurs</source>
             <translation>Vyberte kalendář obsahující neuskutečněný závod</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1051" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1106" />
             <source>Koniec sezonu</source>
             <translation>Konec sezóny</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1051" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1106" />
             <source>Sezon dobiegł końca! Aby skonfigurować kolejny sezon, wciśnij odpowiedni przycisk w oknie.</source>
             <translation>Sezóna skončila! Další sezónu nastavíte příslušným tlačítkem v okně.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1055" />
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1061" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1110" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1116" />
             <source>Koniec kalendarza</source>
             <translation>Konec kalendáře</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1055" />
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1061" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1110" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1116" />
             <source>Nie ma więcej zaplanowanych konkursów w tym kalendarzu. Czas na rozegranie konkursów z innych kalendarzy!</source>
             <translation>V tomto kalendáři již nejsou žádné plánované závody. Je čas na závody z ostatních kalendářů!</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1068" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1123" />
             <source>Zapis do pliku</source>
             <translation>Uložení do souboru</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1068" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1123" />
             <source>Pomyślnie zapisano aktualny zapis symulacji do pliku</source>
             <translation>Aktuální simulace byla úspěšně uložena do souboru</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1073" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1128" />
             <source>Otwórz folder</source>
             <translation>Otevřít složku</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1077" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1132" />
             <source>Nazwa kopii zapisu symulacji</source>
             <translation>Název kopie uložené simulace</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1077" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1132" />
             <source>Nazwa kopii</source>
             <translation>Název kopie</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1083" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1138" />
             <source>Nieprawidłowa nazwa kopii</source>
             <translation>Neplatný název kopie</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1084" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1139" />
             <source>Wpisz nazwę pliku, która nie zawiera ukośników.</source>
             <translation>Zadejte název souboru bez lomítek.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1091" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1146" />
             <source>Kopia zapisu symulacji</source>
             <translation>Kopie uložené simulace</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1091" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1146" />
             <source>Pomyślnie zapisano kopię aktualnego zapisu symulacji do pliku</source>
             <translation>Kopie aktuální simulace byla úspěšně uložena</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1099" />
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1104" />
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1140" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1154" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1159" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1195" />
             <source>Naprawa bazy danych</source>
             <translation>Oprava databáze</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1100" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1155" />
             <source>Najpierw utwórz i wybierz kalendarz oraz upewnij się, że zapis zawiera co najmniej jedną skocznię.</source>
             <translation>Nejprve vytvořte a vyberte kalendář a ujistěte se, že uložená simulace obsahuje alespoň jeden můstek.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1105" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1160" />
             <source>Funkcja poprawi powiązania kalendarza, a następnie zapisze symulację. Kontynuować?</source>
             <translation>Opraví se vazby kalendáře a simulace se uloží. Pokračovat?</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1140" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1195" />
             <source>Naprawiono bazę danych tego zapisu symulacji i zapisano do pliku.</source>
             <translation>Databáze této uložené simulace byla opravena a uložena do souboru.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1197" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1252" />
             <source>Wyniki konkursu</source>
             <translation>Výsledky závodu</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1199" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1254" />
             <source>Wyślij webhooka</source>
             <translation>Odeslat webhook</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1227" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1282" />
             <source>Statystyki skoczka</source>
             <translation>Statistiky skokana</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1227" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1282" />
             <source>Najpierw zaznacz jakiegoś zawodnika!</source>
             <translation>Nejprve vyberte skokana!</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1261" />
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1315" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1316" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1370" />
             <source>Tępy kretynie! Jakim cudem chcesz zobaczyć statystyki, jeśli nie rozegrałeś jeszcze żadnego konkursu?</source>
             <translation>Ty hlupáku! Jak chceš zobrazit statistiky, když jsi ještě neuskutečnil žádný závod?</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1262" />
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1316" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1317" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1371" />
             <source>Przepraszam, to się więcej nie powtórzy</source>
             <translation>Promiň, už se to nebude opakovat</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1263" />
-            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1317" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1318" />
+            <location filename="../source/UI/Seasons/SimulationSaveManagerWindow.cpp" line="1372" />
             <source>Pokaż statystyki mimo to</source>
             <translation>Přesto zobrazit statistiky</translation>
         </message>
@@ -14806,53 +15915,53 @@ li.checked::marker { content: "\2612"; }
             <translation>Kliknutím na uloženou simulaci zobrazíte podrobnosti. Enter ji otevře, Delete smaže.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="145" />
+            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="127" />
             <source>Brak pamięci</source>
             <translation>Nedostatek paměti</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="147" />
+            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="129" />
             <source>Zapis został utworzony na dysku, ale zabrakło pamięci, aby go otworzyć. Uruchom aplikację ponownie.</source>
             <translation>Uložená simulace byla vytvořena na disku, ale není dostatek paměti k jejímu otevření. Restartujte aplikaci.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="148" />
+            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="130" />
             <source>Nie udało się utworzyć symulacji, ponieważ zabrakło pamięci. Zamknij inne programy i spróbuj ponownie.</source>
             <translation>Simulaci se nepodařilo vytvořit kvůli nedostatku paměti. Zavřete ostatní programy a zkuste to znovu.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="152" />
-            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="157" />
+            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="134" />
+            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="139" />
             <source>Nie udało się utworzyć symulacji</source>
             <translation>Simulaci se nepodařilo vytvořit</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="153" />
+            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="135" />
             <source>Wystąpił błąd podczas tworzenia symulacji: %1</source>
             <translation>Při vytváření simulace došlo k chybě: %1</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="158" />
+            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="140" />
             <source>Wystąpił nieoczekiwany błąd podczas tworzenia symulacji.</source>
             <translation>Při vytváření simulace došlo k neočekávané chybě.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="191" />
+            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="173" />
             <source>Usunięcie zapisu symulacji</source>
             <translation>Smazání uložené simulace</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="192" />
+            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="174" />
             <source>Czy na pewno chcesz usunąć zapis „%1”? Tej operacji nie można cofnąć.</source>
             <translation>Opravdu smazat uloženou simulaci „%1“? Tuto akci nelze vrátit.</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="199" />
+            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="181" />
             <source>Nie udało się usunąć zapisu</source>
             <translation>Uloženou simulaci se nepodařilo smazat</translation>
         </message>
         <message>
-            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="200" />
+            <location filename="../source/UI/Seasons/SimulationSavesWindow.cpp" line="182" />
             <source>Plik zapisu nie został usunięty. Sprawdź uprawnienia do pliku i spróbuj ponownie.</source>
             <translation>Uložený soubor nebyl smazán. Zkontrolujte oprávnění a zkuste to znovu.</translation>
         </message>
@@ -15094,48 +16203,134 @@ za vítr</translation>
             <translation>Simulovat</translation>
         </message>
         <message>
-            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="65" />
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="84" />
             <source>Rozpocznij symulację z aktualnymi ustawieniami (Enter)</source>
             <translation>Zahájit simulaci s aktuálním nastavením (Enter)</translation>
         </message>
         <message>
-            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="66" />
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="85" />
             <source>Liczba skoków do wykonania; minimum to 1</source>
             <translation>Počet skoků k provedení; minimum je 1</translation>
         </message>
         <message>
-            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="67" />
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="86" />
             <source>Dobierz belkę</source>
             <translation>Vybrat nájezdové okno</translation>
         </message>
         <message>
-            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="69" />
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="88" />
             <source>Oblicz belkę dla zawodnika, skoczni i ustawionego wiatru</source>
             <translation>Vypočítat okno pro skokana, můstek a nastavený vítr</translation>
         </message>
         <message>
-            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="219" />
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="338" />
             <source>Brak zawodnika</source>
             <translation>Žádný skokan</translation>
         </message>
         <message>
-            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="220" />
-            <source>Wybierz istniejącego zawodnika albo wpisz jego imię i nazwisko.</source>
-            <translation>Vyberte existujícího skokana nebo zadejte jeho jméno a příjmení.</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="229" />
-            <source>Nieprawidłowa skocznia</source>
-            <translation>Neplatný můstek</translation>
-        </message>
-        <message>
-            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="230" />
-            <source>Wybierz lub skonfiguruj skocznię z dodatnim punktem K oraz punktem HS nie mniejszym od K.</source>
-            <translation>Vyberte nebo nastavte můstek s kladným bodem K a bodem HS nejméně rovným K.</translation>
-        </message>
-        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="43" />
             <source>Pomiar wiatru</source>
             <translation>Měření větru</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="46" />
+            <source>Uproszczone</source>
+            <translation>Zjednodušené</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="47" />
+            <source>Uproszczone z korektą kierunku</source>
+            <translation>Zjednodušené s korekcí směru</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="48" />
+            <source>Składowa wzdłuż zeskoku</source>
+            <translation>Složka podél doskoku</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="50" />
+            <source>Pomiar wzdłuż skoczni płynnie uwzględnia kierunek. Wiatr dokładnie boczny daje zerową składową przednią i tylną.</source>
+            <translation>Měření podél můstku plynule zohledňuje směr. Čistě boční vítr má nulovou složku protivětru i zadního větru.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="157" />
+            <source>Trening</source>
+            <translation>Trénink</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="157" />
+            <source>Seria próbna</source>
+            <translation>Zkušební kolo</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="157" />
+            <source>Kwalifikacje</source>
+            <translation>Kvalifikace</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="157" />
+            <source>Konkurs</source>
+            <translation>Závod</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="158" />
+            <source>Paczka zawodników</source>
+            <translation>Balíček skokanů</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="158" />
+            <source>Paczka skoczni</source>
+            <translation>Balíček můstků</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="159" />
+            <source>Rodzaj skoku</source>
+            <translation>Druh skoku</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="160" />
+            <source>Wczytywanie paczek…</source>
+            <translation>Načítání balíčků…</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="163" />
+            <source>Szczegóły wczytywania</source>
+            <translation>Podrobnosti načítání</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="166" />
+            <source>Wczytywanie paczek</source>
+            <translation>Načítání balíčků</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="166" />
+            <source>Uwagi: %1</source>
+            <translation>Poznámky: %1</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="300" />
+            <source>Dodaj zawodnika w bazie danych lub wybierz inną paczkę.</source>
+            <translation>Přidejte skokana v databázi nebo vyberte jiný balíček.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="301" />
+            <source>Dodaj skocznię w bazie danych lub wybierz inną paczkę.</source>
+            <translation>Přidejte můstek v databázi nebo vyberte jiný balíček.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="307" />
+            <source>Uwagi przy wczytywaniu paczek: %1. Szczegóły są dostępne poniżej.</source>
+            <translation>Poznámky k načítání balíčků: %1. Podrobnosti jsou níže.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="338" />
+            <source>Wpisz imię lub nazwisko zawodnika.</source>
+            <translation>Zadejte jméno nebo příjmení skokana.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/SingleJumps/SingleJumpsConfigWindow.cpp" line="416" />
+            <source>Sugerowana belka: %1</source>
+            <translation>Doporučené okno: %1</translation>
         </message>
     </context>
     <context>
@@ -15820,50 +17015,62 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>JumpWindProfile</name>
         <message>
+            <location filename="../source/UI/Quick/JumpWindProfile.qml" line="26" />
             <source>Wiatr przed skokiem</source>
             <translation>Vítr před skokem</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpWindProfile.qml" line="26" />
             <source>Wiatr na zeskoku</source>
             <translation>Vítr na doskočišti</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpWindProfile.qml" line="29" />
             <source>Zamknij podgląd wiatru</source>
             <translation>Zavřít náhled větru</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpWindProfile.qml" line="35" />
             <source>Przed</source>
             <translation>Před</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpWindProfile.qml" line="35" />
             <source>W locie</source>
             <translation>Za letu</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpWindProfile.qml" line="35" />
             <source>Po</source>
             <translation>Po</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpWindProfile.qml" line="47" />
             <source>Teraz</source>
             <translation>Nyní</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpWindProfile.qml" line="47" />
             <source>Zapisany wiatr</source>
             <translation>Zaznamenaný vítr</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpWindProfile.qml" line="51" />
             <source>Przybliżony układ wiatru. Warunki mogą zmienić się w trakcie skoku.</source>
             <translation>Přibližný profil větru. Podmínky se mohou během skoku změnit.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpWindProfile.qml" line="51" />
             <source>Średnia na przebytym odcinku. — oznacza odcinek poza skokiem.</source>
             <translation>Průměr na proletěném úseku. — označuje úsek mimo skok.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpWindProfile.qml" line="51" />
             <source>Pole wiatru tuż przed wybiciem.</source>
             <translation>Pole větru těsně před odrazem.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpWindProfile.qml" line="51" />
             <source>Pole wiatru w chwili zakończenia skoku.</source>
             <translation>Pole větru v okamžiku ukončení skoku.</translation>
         </message>
@@ -15871,30 +17078,37 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>WindSlopePreview</name>
         <message>
+            <location filename="../source/UI/Quick/WindSlopePreview.qml" line="39" />
             <source>%1 m: poza skokiem</source>
             <translation>%1 m: mimo skok</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindSlopePreview.qml" line="39" />
             <source>%1 m: %2 m/s</source>
             <translation>%1 m: %2 m/s</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindSlopePreview.qml" line="45" />
             <source>%1 m</source>
             <translation>%1 m</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindSlopePreview.qml" line="56" />
             <source>↖ Pod narty    ↘ W plecy</source>
             <translation>↖ Protivítr    ↘ Vítr do zad</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindSlopePreview.qml" line="50" />
             <source>Zmień wiatr w tym miejscu</source>
             <translation>Upravit vítr na tomto místě</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindSlopePreview.qml" line="50" />
             <source>Odcinek poza skokiem</source>
             <translation>Úsek mimo skok</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindSlopePreview.qml" line="50" />
             <source>Odcinek %1–%2 m</source>
             <translation>Úsek %1–%2 m</translation>
         </message>
@@ -15902,137 +17116,185 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>SimulationDraftWorkspace</name>
         <message>
+            <location filename="../source/UI/Quick/SimulationDraftWorkspace.qml" line="15" />
             <source>Cofnij edycję</source>
             <translation>Vrátit úpravy</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/SimulationDraftWorkspace.qml" line="15" />
             <source>Przywróć z paczki</source>
             <translation>Obnovit z balíčku</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/SimulationDraftWorkspace.qml" line="14" />
             <source>Zmiany tylko dla tej symulacji</source>
             <translation>Změny platí pouze pro tuto simulaci</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/SimulationDraftWorkspace.qml" line="21" />
+            <source>Nie wybrano skoczni</source>
+            <translation>Není vybrán můstek</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/SimulationDraftWorkspace.qml" line="21" />
+            <source>Nie wybrano zawodnika</source>
+            <translation>Není vybrán skokan</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/SimulationDraftWorkspace.qml" line="22" />
+            <source>Wybierz paczkę i jej pozycję w sekcji Konfiguracja.</source>
+            <translation>Vyberte balíček a položku v Konfiguraci.</translation>
         </message>
     </context>
     <context>
         <name>JumpManipulationWorkspace</name>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="23" />
             <source>Następny skok</source>
             <translation>Další skok</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="24" />
             <source>Wyczyść</source>
             <translation>Vymazat</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="26" />
             <source>Zmiany dotyczą wyłącznie następnego skoku.</source>
             <translation>Změny platí pouze pro další skok.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="31" />
             <source>Lot</source>
             <translation>Let</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="31" />
             <source>Lądowanie i noty</source>
             <translation>Dopad a známky</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="31" />
             <source>Warunki</source>
             <translation>Podmínky</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="40" />
             <source>Jakość skoku</source>
             <translation>Kvalita skoku</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="40" />
             <source>pkt jakości</source>
             <translation>bodů kvality</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="40" />
             <source>Koryguje jakość tego skoku na skali OVR i formy. Nie zmienia parametrów zawodnika.</source>
             <translation>Upraví kvalitu tohoto skoku na stupnici OVR a formy. Nemění vlastnosti závodníka.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="41" />
             <source>Odległość</source>
             <translation>Délka</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="41" />
             <source>Korekta jest dodawana przed ograniczeniem zakresu. Jednakowe minimum i maksimum oznaczają dokładną odległość. Granice skoczni nadal obowiązują.</source>
             <translation>Úprava se přičte před omezením rozsahu. Shodné minimum a maximum určí přesnou délku. Omezení můstku stále platí.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="46" />
             <source>Lądowanie</source>
             <translation>Dopad</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="50" />
             <source>Losuj</source>
             <translation>Automaticky</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="50" />
             <source>Telemark</source>
             <translation>Telemark</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="50" />
             <source>Na dwie nogi</source>
             <translation>Na obě nohy</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="50" />
             <source>Podparty</source>
             <translation>S oporou</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="50" />
             <source>Upadek</source>
             <translation>Pád</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="58" />
             <source>Ustaw ryzyko DSQ</source>
             <translation>Nastavit riziko DSQ</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="61" />
             <source>Ryzyko dyskwalifikacji · %</source>
             <translation>Riziko diskvalifikace · %</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="67" />
             <source>DSQ wyłączone w zasadach konkursu</source>
             <translation>DSQ je v pravidlech závodu vypnuto</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="71" />
             <source>Ustaw wiatr dla tego skoku</source>
             <translation>Nastavit vítr pro tento skok</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="75" />
             <source>Wiatr tego skoku</source>
             <translation>Vítr tohoto skoku</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="77" />
             <source>Natężenie opadów</source>
             <translation>Intenzita srážek</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="77" />
             <source>poziom 0–10</source>
             <translation>úroveň 0–10</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="77" />
             <source>Zmienia natężenie opadów tylko podczas tego skoku. Rodzaj opadów pozostaje zgodny z warunkami konkursu.</source>
             <translation>Změní intenzitu srážek pouze pro tento skok. Druh srážek odpovídá podmínkám závodu.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="78" />
             <source>Pomiar do punktacji</source>
             <translation>Měření pro bodování</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="78" />
             <source>Zmienia pomiar do rekompensaty, nie fizyczny wiatr. Kierunek dodatni: pod narty; ujemny: w plecy.</source>
             <translation>Změní měření pro kompenzaci, nikoli skutečný vítr. Kladný: protivítr; záporný: zadní vítr.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="85" />
             <source>Zmiany: %1</source>
             <translation>Změny: %1</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="85" />
             <source>Brak zmian</source>
             <translation>Beze změn</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpManipulationWorkspace.qml" line="86" />
             <source>Zastosuj</source>
             <translation>Použít</translation>
         </message>
@@ -16040,18 +17302,22 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>JumpAdjustmentFields</name>
         <message>
+            <location filename="../source/UI/Quick/JumpAdjustmentFields.qml" line="35" />
             <source>Korekta · %1</source>
             <translation>Úprava · %1</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpAdjustmentFields.qml" line="46" />
             <source>Ogranicz zakres</source>
             <translation>Omezit rozsah</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpAdjustmentFields.qml" line="53" />
             <source>Minimum</source>
             <translation>Minimum</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpAdjustmentFields.qml" line="53" />
             <source>Maksimum</source>
             <translation>Maximum</translation>
         </message>
@@ -16059,18 +17325,22 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>JumpJudgesEditor</name>
         <message>
+            <location filename="../source/UI/Quick/JumpJudgesEditor.qml" line="13" />
             <source>Noty sędziów</source>
             <translation>Známky rozhodčích</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpJudgesEditor.qml" line="14" />
             <source>Zaznacz tylko noty do ustawienia ręcznie. Pozostałe zostaną wylosowane.</source>
             <translation>Vyberte pouze známky, které chcete nastavit ručně. Ostatní se vylosují.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpJudgesEditor.qml" line="34" />
             <source>Ustaw notę sędziego %1</source>
             <translation>Nastavit známku rozhodčího %1</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/JumpJudgesEditor.qml" line="39" />
             <source>Nota sędziego %1</source>
             <translation>Známka rozhodčího %1</translation>
         </message>
@@ -16078,30 +17348,37 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>SimulationJumpDraft</name>
         <message>
+            <location filename="../source/simulation-v2/JumpDraft.cpp" line="65" />
             <source>Jakość</source>
             <translation>Kvalita</translation>
         </message>
         <message>
+            <location filename="../source/simulation-v2/JumpDraft.cpp" line="65" />
             <source>Odległość</source>
             <translation>Délka</translation>
         </message>
         <message>
+            <location filename="../source/simulation-v2/JumpDraft.cpp" line="65" />
             <source>Opady</source>
             <translation>Srážky</translation>
         </message>
         <message>
+            <location filename="../source/simulation-v2/JumpDraft.cpp" line="65" />
             <source>Pomiar wiatru</source>
             <translation>Měření větru</translation>
         </message>
         <message>
+            <location filename="../source/simulation-v2/JumpDraft.cpp" line="68" />
             <source>%1: minimum nie może przekraczać maksimum.</source>
             <translation>%1: minimum nesmí překročit maximum.</translation>
         </message>
         <message>
+            <location filename="../source/simulation-v2/JumpDraft.cpp" line="70" />
             <source>Sprawdź zakresy, noty i prawdopodobieństwo dyskwalifikacji.</source>
             <translation>Zkontrolujte rozsahy, známky a pravděpodobnost diskvalifikace.</translation>
         </message>
         <message>
+            <location filename="../source/simulation-v2/JumpDraft.cpp" line="79" />
             <source>Wpisz poprawną liczbę.</source>
             <translation>Zadejte platné číslo.</translation>
         </message>
@@ -16109,94 +17386,117 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>WeatherWorkspace</name>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="13" />
             <source>Własne warunki</source>
             <translation>Vlastní podmínky</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="13" />
             <source>Wiatr na zeskoku</source>
             <translation>Vítr na doskočišti</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="14" />
             <source>Wiatr nie zmienia się w czasie.</source>
             <translation>Vítr se v čase nemění.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="14" />
             <source>Niewielkie wahania; kierunek zwykle pozostaje podobny.</source>
             <translation>Malé výkyvy; směr obvykle zůstává podobný.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="14" />
             <source>Warunki wyraźnie się zmieniają, czasem przez kilka kolejnych skoków.</source>
             <translation>Podmínky se výrazně mění, někdy po několik skoků za sebou.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="14" />
             <source>Duże, szybkie zmiany; możliwe silne podmuchy i odwrócenia kierunku.</source>
             <translation>Velké a rychlé změny; možné jsou silné poryvy i obrácení směru.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="29" />
             <source>Warunki</source>
             <translation>Podmínky</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="31" />
             <source>%1 · HS%2</source>
             <translation>%1 · HS%2</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="37" />
             <source>Losuj warunki</source>
             <translation>Vylosovat podmínky</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="39" />
             <source>Wiatr i opady według skoczni i jej perków.</source>
             <translation>Vítr a srážky podle můstku a jeho perků.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="44" />
             <source>Ukryj scenariusze</source>
             <translation>Skrýt scénáře</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="44" />
             <source>Scenariusze ▾</source>
             <translation>Scénáře ▾</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="59" />
             <source>Losuj wariant scenariusza</source>
             <translation>Vylosovat variantu scénáře</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="73" />
             <source>Ustawienia wyjściowe</source>
             <translation>Výchozí nastavení</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="76" />
             <source>Podgląd ustawień bez chwilowych podmuchów.</source>
             <translation>Náhled nastavení bez okamžitých poryvů.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="78" />
             <source>Ukryj dostosowanie</source>
             <translation>Skrýt úpravy</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="78" />
             <source>Dostosuj wiatr</source>
             <translation>Upravit vítr</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="93" />
             <source>Zastosuj belkę</source>
             <translation>Použít nájezdové okno</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="97" />
             <source>Losuj nowy układ</source>
             <translation>Vylosovat nový průběh</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="98" />
             <source>Zachowuje cztery ustawienia całej skoczni. Losuje nowe odcinki i podmuchy, zastępując ręczne zmiany miejsc.</source>
             <translation>Zachová čtyři nastavení celého můstku. Vylosuje nové úseky a poryvy a nahradí ruční místní změny.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="107" />
             <source>Nie wybrano skoczni</source>
             <translation>Není vybrán můstek</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="108" />
             <source>Wybierz paczkę i skocznię w konfiguracji symulacji.</source>
             <translation>V nastavení simulace vyberte balíček a můstek.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherWorkspace.qml" line="109" />
             <source>Konfiguracja</source>
             <translation>Nastavení</translation>
         </message>
@@ -16204,34 +17504,42 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>WeatherTuning</name>
         <message>
+            <location filename="../source/UI/Quick/WeatherTuning.qml" line="18" />
             <source>Cała skocznia</source>
             <translation>Celý můstek</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherTuning.qml" line="19" />
             <source>Kierunek i siła dotyczą całej skoczni. Różnice na zeskoku losują nowy układ miejsc. Zmienność określa późniejsze zmiany w czasie.</source>
             <translation>Směr a síla platí pro celý můstek. Rozdíly na dopadu vylosují nový prostorový průběh. Proměnlivost určuje pozdější změny v čase.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherTuning.qml" line="25" />
             <source>Siła wyjściowa · m/s</source>
             <translation>Výchozí síla · m/s</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherTuning.qml" line="25" />
             <source>Mocny wiatr może być stabilny, a słaby — zmienny.</source>
             <translation>Silný vítr může být stálý a slabý proměnlivý.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherTuning.qml" line="26" />
             <source>Zmienność w czasie · 0–10</source>
             <translation>Proměnlivost v čase · 0–10</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherTuning.qml" line="26" />
             <source>0: bez zmian. Wyżej: silniejsze podmuchy i szybsze zmiany.</source>
             <translation>0: beze změn. Vyšší: silnější poryvy a rychlejší změny.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherTuning.qml" line="27" />
             <source>Różnice na zeskoku · 0–10</source>
             <translation>Rozdíly na dopadu · 0–10</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherTuning.qml" line="27" />
             <source>Wyższa wartość: większe różnice wzdłuż skoczni.</source>
             <translation>Vyšší hodnota znamená větší rozdíly podél můstku.</translation>
         </message>
@@ -16239,26 +17547,32 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>WindStationEditor</name>
         <message>
+            <location filename="../source/UI/Quick/WindStationEditor.qml" line="15" />
             <source>Odcinek · %1 m</source>
             <translation>Úsek · %1 m</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindStationEditor.qml" line="16" />
             <source>Zmienia tylko okolice wskazanego miejsca. Podmuchy nadal zależą od zmienności w czasie.</source>
             <translation>Změní pouze okolí vybraného místa. Poryvy stále závisejí na proměnlivosti v čase.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindStationEditor.qml" line="17" />
             <source>Zamknij edycję miejsca</source>
             <translation>Zavřít místní editor</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindStationEditor.qml" line="21" />
             <source>Skąd wieje</source>
             <translation>Odkud fouká</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindStationEditor.qml" line="24" />
             <source>Siła wyjściowa · m/s</source>
             <translation>Výchozí síla · m/s</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindStationEditor.qml" line="27" />
             <source>Siła wiatru w wybranym miejscu</source>
             <translation>Síla větru na vybraném místě</translation>
         </message>
@@ -16266,62 +17580,77 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>WeatherPrecipitation</name>
         <message>
+            <location filename="../source/UI/Quick/WeatherPrecipitation.qml" line="15" />
             <source>Opady</source>
             <translation>Srážky</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPrecipitation.qml" line="22" />
             <source>Bez opadów</source>
             <translation>Beze srážek</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPrecipitation.qml" line="22" />
             <source>Śnieg</source>
             <translation>Sníh</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPrecipitation.qml" line="22" />
             <source>Deszcz</source>
             <translation>Déšť</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPrecipitation.qml" line="25" />
             <source>Rodzaj opadów</source>
             <translation>Druh srážek</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPrecipitation.qml" line="32" />
             <source>Słabe</source>
             <translation>Slabé</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPrecipitation.qml" line="32" />
             <source>Umiarkowane</source>
             <translation>Mírné</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPrecipitation.qml" line="32" />
             <source>Silne</source>
             <translation>Silné</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPrecipitation.qml" line="34" />
             <source>Natężenie opadów</source>
             <translation>Intenzita srážek</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPrecipitation.qml" line="41" />
             <source>Stałe</source>
             <translation>Stálé</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPrecipitation.qml" line="41" />
             <source>Zmienne</source>
             <translation>Proměnlivé</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPrecipitation.qml" line="41" />
             <source>Nasilające się</source>
             <translation>Zesilující</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPrecipitation.qml" line="43" />
             <source>Przebieg opadów</source>
             <translation>Průběh srážek</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPrecipitation.qml" line="49" />
             <source>Śnieg w torach spowalnia rozbieg.</source>
             <translation>Sníh ve stopě zpomaluje nájezd.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPrecipitation.qml" line="49" />
             <source>Lekki deszcz nie musi hamować. Ulewa mocno pogarsza skoki.</source>
             <translation>Slabý déšť nemusí brzdit. Prudký déšť výrazně zhoršuje skoky.</translation>
         </message>
@@ -16329,46 +17658,61 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>WeatherPresetGrid</name>
         <message>
+            <location filename="../source/UI/Quick/WeatherPresetGrid.qml" line="10" />
             <source>Pod narty</source>
             <translation>Protivítr</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPresetGrid.qml" line="10" />
+            <location filename="../source/UI/Quick/WeatherPresetGrid.qml" line="12" />
             <source>Spokojny</source>
             <translation>Klidný</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPresetGrid.qml" line="10" />
+            <location filename="../source/UI/Quick/WeatherPresetGrid.qml" line="11" />
             <source>Mocny</source>
             <translation>Silný</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPresetGrid.qml" line="10" />
+            <location filename="../source/UI/Quick/WeatherPresetGrid.qml" line="11" />
+            <location filename="../source/UI/Quick/WeatherPresetGrid.qml" line="12" />
             <source>Zmienny</source>
             <translation>Proměnlivý</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPresetGrid.qml" line="11" />
             <source>W plecy</source>
             <translation>Vítr do zad</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPresetGrid.qml" line="11" />
             <source>Stabilny</source>
             <translation>Stálý</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPresetGrid.qml" line="12" />
             <source>Boczny</source>
             <translation>Boční</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPresetGrid.qml" line="13" />
             <source>Pozostałe</source>
             <translation>Ostatní</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPresetGrid.qml" line="13" />
             <source>Cisza</source>
             <translation>Bezvětří</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPresetGrid.qml" line="13" />
             <source>Różny na zeskoku</source>
             <translation>Různý na dopadu</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WeatherPresetGrid.qml" line="13" />
             <source>Loteria</source>
             <translation>Loterie</translation>
         </message>
@@ -16376,44 +17720,672 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>WindDirectionDial</name>
         <message>
+            <location filename="../source/UI/Quick/WindDirectionDial.qml" line="8" />
             <source>Kierunek wyjściowy</source>
             <translation>Výchozí směr</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindDirectionDial.qml" line="13" />
             <source>Pod narty + boczny</source>
             <translation>Protivítr + boční vítr</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindDirectionDial.qml" line="13" />
             <source>Pod narty</source>
             <translation>Protivítr</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindDirectionDial.qml" line="13" />
             <source>W plecy + boczny</source>
             <translation>Zadní + boční vítr</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindDirectionDial.qml" line="13" />
             <source>W plecy</source>
             <translation>Vítr do zad</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindDirectionDial.qml" line="13" />
             <source>Boczny z lewej</source>
             <translation>Boční zleva</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindDirectionDial.qml" line="13" />
             <source>Boczny z prawej</source>
             <translation>Boční zprava</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindDirectionDial.qml" line="24" />
             <source>Wybierz skąd wieje wiatr. Strzałki klawiatury zmieniają kąt o jeden stopień.</source>
             <translation>Vyberte, odkud vítr fouká. Šipky na klávesnici mění úhel o jeden stupeň.</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindDirectionDial.qml" line="33" />
             <source>POD NARTY</source>
             <translation>PROTIVÍTR</translation>
         </message>
         <message>
+            <location filename="../source/UI/Quick/WindDirectionDial.qml" line="34" />
             <source>W PLECY</source>
             <translation>ZADNÍ VÍTR</translation>
+        </message>
+    </context>
+    <context>
+        <name>PlaygroundAnalysis</name>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="20" />
+            <source>Przód (+) / tył (−)</source>
+            <translation>Proti (+) / zezadu (−)</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="20" />
+            <source>Bok</source>
+            <translation>Boční vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="20" />
+            <source>Siła</source>
+            <translation>Síla</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="30" />
+            <source>Analiza ciągłego pola wiatru</source>
+            <translation>Analýza spojitého větrného pole</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="30" />
+            <source>Lądowanie i noty względem odległości</source>
+            <translation>Přistání a známky podle vzdálenosti</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="31" />
+            <source>Analizowany wariant</source>
+            <translation>Analyzovaná varianta</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="33" />
+            <source>Przeliczanie analizy…</source>
+            <translation>Přepočítávání analýzy…</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="33" />
+            <source>Zmieniaj parametry w Eksperymencie. Analiza przelicza się w tle.</source>
+            <translation>Parametry měňte v Experimentu. Analýza se přepočítává na pozadí.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="34" />
+            <source>Linie pokazują dokładne prawdopodobieństwa przy ustalonym bocznym wietrze. Noty i częstości są estymacją z 128 prób na odległość. Klasa lądowania zmienia noty, nie ryzyko upadku.</source>
+            <translation>Křivky ukazují přesné pravděpodobnosti při stálém bočním větru. Známky a četnosti jsou odhady ze 128 pokusů pro každou vzdálenost. Třída přistání ovlivňuje známky, nikoli riziko pádu.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="35" />
+            <source>Ustawienia analizy</source>
+            <translation>Nastavení analýzy</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="40" />
+            <source>Prawdopodobieństwo rodzaju lądowania</source>
+            <translation>Pravděpodobnost typu přistání</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="40" />
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="41" />
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="42" />
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="43" />
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="58" />
+            <source>Odległość · m</source>
+            <translation>Vzdálenost · m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="40" />
+            <source>Telemark</source>
+            <translation>Telemark</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="40" />
+            <source>Dwie nogi</source>
+            <translation>Na obě nohy</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="40" />
+            <source>Podpórka</source>
+            <translation>Dotyk rukou</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="40" />
+            <source>Upadek</source>
+            <translation>Pád</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="41" />
+            <source>Upadki · model i próba kontrolowana</source>
+            <translation>Pády · model a kontrolovaný vzorek</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="41" />
+            <source>Model</source>
+            <translation>Model</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="41" />
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="42" />
+            <source>Próba</source>
+            <translation>Vzorek</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="42" />
+            <source>Średnia nota jednego sędziego</source>
+            <translation>Průměrná známka jednoho rozhodčího</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="42" />
+            <source>Punkty</source>
+            <translation>Body</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="42" />
+            <source>Średnia ważona rodzajem lądowania</source>
+            <translation>Průměr vážený typem přistání</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="43" />
+            <source>Upadki w pełnej próbie pogodowej</source>
+            <translation>Pády v úplné simulaci počasí</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="43" />
+            <source>Częstość · przedziały po 2 m</source>
+            <translation>Četnost · intervaly po 2 m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="44" />
+            <source>Próba pogodowa używa pełnego lotu. Wyniki przy rzadkich odległościach mogą mieć niewiele obserwacji; liczebności przedziałów są w eksporcie analizy.</source>
+            <translation>Vzorek s počasím používá úplnou simulaci letu. U vzácných vzdáleností může být málo pozorování; počty jsou v exportu analýzy.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="45" />
+            <source>Wypłaszczenie: %1 m · granica modelu zeskoku: %2 m</source>
+            <translation>Zplošťování: %1 m · mez dopadu v modelu: %2 m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="56" />
+            <source>Średni wiatr: %1 m/s · odchylenie: %2 · zakres: %3…%4 · zmiany znaku: %5</source>
+            <translation>Průměrný vítr: %1 m/s · odchylka: %2 · rozsah: %3…%4 · změny znaménka: %5</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="57" />
+            <source>Wiatr w czasie · %1 m</source>
+            <translation>Vítr v čase · %1 m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="57" />
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="62" />
+            <source>Czas · s</source>
+            <translation>Čas · s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="58" />
+            <source>Wiatr wzdłuż zeskoku · %1 s</source>
+            <translation>Vítr podél můstku · %1 s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="59" />
+            <source>Mapa przód / tył · czas poziomo, odległość pionowo</source>
+            <translation>Mapa protivětru a zadního větru · čas vodorovně, vzdálenost svisle</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="60" />
+            <source>Mapa wiatru: niebieski pod narty, pomarańczowy w plecy. Wartości liczbowe na wykresach.</source>
+            <translation>Mapa větru: modrá je protivítr, oranžová zadní vítr. Číselné hodnoty jsou v grafech.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="61" />
+            <source>Niebieski: pod narty · pomarańczowy: w plecy · jasny: blisko zera. Mapa ma stałą skalę ±%1 m/s.</source>
+            <translation>Modrá: protivítr · oranžová: zadní vítr · světlá: téměř nula. Pevná stupnice mapy ±%1 m/s.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="62" />
+            <source>Przebieg opadów</source>
+            <translation>Průběh srážek</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="62" />
+            <source>Poziom 0–10</source>
+            <translation>Úroveň 0–10</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="62" />
+            <source>Opady</source>
+            <translation>Srážky</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="63" />
+            <source>Odczuty wiatr i pomiar do punktacji</source>
+            <translation>Pociťovaný vítr a měření pro bodování</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="63" />
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="64" />
+            <source>Czas startu · s</source>
+            <translation>Čas odrazu · s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="63" />
+            <source>Odczuty wiatr</source>
+            <translation>Pociťovaný vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="63" />
+            <source>Pomiar do punktacji</source>
+            <translation>Měření pro bodování</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="64" />
+            <source>Wpływ wiatru na odległość · te same seedy</source>
+            <translation>Vliv větru na vzdálenost · společná semena</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="64" />
+            <source>Różnica względem skoku bez wiatru</source>
+            <translation>Rozdíl proti skoku bez větru</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundAnalysis.qml" line="65" />
+            <source>Pomiar do punktacji i odczuty wiatr są zapisane osobno przy skokach w widoku Konkurs oraz w eksporcie. Podgląd pola nie jest oficjalnym pomiarem FIS.</source>
+            <translation>Měření pro bodování a pociťovaný vítr se ukládají zvlášť u skoků v Závodě i v exportu. Náhled pole není oficiální měření FIS.</translation>
+        </message>
+    </context>
+    <context>
+        <name>PlaygroundField</name>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundField.qml" line="18" />
+            <source>Cała stawka · agregaty konkursów</source>
+            <translation>Celé startovní pole · souhrny závodů</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundField.qml" line="21" />
+            <source>Wariant</source>
+            <translation>Varianta</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundField.qml" line="22" />
+            <source>Średnie miejsce</source>
+            <translation>Průměrné umístění</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundField.qml" line="22" />
+            <source>Średnia suma</source>
+            <translation>Průměrný součet</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundField.qml" line="22" />
+            <source>Średnia odległość</source>
+            <translation>Průměrná vzdálenost</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundField.qml" line="22" />
+            <source>Sortowanie wyników</source>
+            <translation>Řazení výsledků</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundField.qml" line="24" />
+            <source>Szukaj skoczka…</source>
+            <translation>Hledat skokana…</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundField.qml" line="25" />
+            <source>Kliknij skoczka, aby zbadać jego rozkłady. Różnice odnoszą się do wariantu bazowego; statystyki obejmują wszystkie ukończone konkursy.</source>
+            <translation>Kliknutím na skokana prozkoumáte jeho rozdělení. Rozdíly se vztahují k základní variantě; statistiky zahrnují všechny dokončené závody.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundField.qml" line="40" />
+            <source>Miejsce: %1</source>
+            <translation>Umístění: %1</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundField.qml" line="41" />
+            <source>Suma: %1 pkt</source>
+            <translation>Součet: %1 b</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundField.qml" line="42" />
+            <source>Odległość: %1 m</source>
+            <translation>Vzdálenost: %1 m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundField.qml" line="43" />
+            <source>Zwycięstwa: %1 %</source>
+            <translation>Vítězství: %1 %</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundField.qml" line="45" />
+            <source>Zmiana miejsca: %1 · metrów: %2 · starty: %3</source>
+            <translation>Změna místa: %1 · metrů: %2 · starty: %3</translation>
+        </message>
+    </context>
+    <context>
+        <name>PlaygroundLive</name>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundLive.qml" line="16" />
+            <source>Przeliczanie podglądu…</source>
+            <translation>Přepočítávání náhledu…</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundLive.qml" line="16" />
+            <source>Szybki podgląd · %1 konkursów na wariant</source>
+            <translation>Rychlý náhled · %1 závodů na variantu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundLive.qml" line="18" />
+            <source>Skoczek: %1 m · %2 pkt · miejsce %3</source>
+            <translation>Skokan: %1 m · %2 b. · místo %3</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundLive.qml" line="19" />
+            <source>Mała próba służy do oceny kierunku zmian. Dokładne porównanie uruchom przyciskiem Uruchom.</source>
+            <translation>Malý vzorek ukazuje směr změn. Podrobné porovnání spusťte tlačítkem Spustit.</translation>
+        </message>
+    </context>
+    <context>
+        <name>PlaygroundTargets</name>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundTargets.qml" line="14" />
+            <source>Cele kalibracji</source>
+            <translation>Cíle kalibrace</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundTargets.qml" line="15" />
+            <source>Zapisz oczekiwany zakres różnicy wariantu względem bazy dla wybranego skoczka. Ocena korzysta z przedziału 95% po ręcznym uruchomieniu pełnej próby. Wewnątrz zakresu: spełniony; całkowicie poza nim: niespełniony; pozostałe: nierozstrzygnięty.</source>
+            <translation>Uložte očekávaný rozsah rozdílu varianty oproti základu pro vybraného skokana. Vyhodnocení používá 95% interval po ručním spuštění celé zkoušky. Uvnitř rozsahu: splněno; zcela mimo: nesplněno; jinak: nerozhodnuto.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundTargets.qml" line="25" />
+            <source>Nazwa celu</source>
+            <translation>Název cíle</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundTargets.qml" line="28" />
+            <source>Wariant celu</source>
+            <translation>Varianta cíle</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundTargets.qml" line="29" />
+            <source>Różnica odległości · m</source>
+            <translation>Rozdíl vzdálenosti · m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundTargets.qml" line="29" />
+            <source>Różnica sumy · pkt</source>
+            <translation>Rozdíl součtu · b.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundTargets.qml" line="29" />
+            <source>Różnica miejsca</source>
+            <translation>Rozdíl umístění</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundTargets.qml" line="29" />
+            <source>Miara celu</source>
+            <translation>Metrika cíle</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundTargets.qml" line="30" />
+            <source>Minimum</source>
+            <translation>Minimum</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundTargets.qml" line="31" />
+            <source>Maksimum</source>
+            <translation>Maximum</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundTargets.qml" line="33" />
+            <source>Usuń cel</source>
+            <translation>Odstranit cíl</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundTargets.qml" line="37" />
+            <source>Dodaj cel</source>
+            <translation>Přidat cíl</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundTargets.qml" line="37" />
+            <source>Nowy cel</source>
+            <translation>Nový cíl</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundTargets.qml" line="38" />
+            <source>Wyniki ostatniej pełnej próby</source>
+            <translation>Výsledky poslední úplné zkoušky</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundTargets.qml" line="43" />
+            <source>Spełniony</source>
+            <translation>Splněno</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundTargets.qml" line="43" />
+            <source>Niespełniony</source>
+            <translation>Nesplněno</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/PlaygroundTargets.qml" line="43" />
+            <source>Nierozstrzygnięty</source>
+            <translation>Nerozhodnuto</translation>
+        </message>
+    </context>
+    <context>
+        <name>SimulationProfileDraft</name>
+        <message>
+            <location filename="../source/simulation-v2/ProfileDraft.cpp" line="66" />
+            <source>Zdjęcie w folderze paczki</source>
+            <translation>Fotografie ve složce balíčku</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/ProfileDraft.cpp" line="66" />
+            <source>Obrazy (*.png *.jpg *.jpeg *.webp)</source>
+            <translation>Obrázky (*.png *.jpg *.jpeg *.webp)</translation>
+        </message>
+    </context>
+    <context>
+        <name>SimulationWeatherSetup</name>
+        <message>
+            <location filename="../source/simulation-v2/WeatherSetup.cpp" line="100" />
+            <source>Stabilny w plecy</source>
+            <translation>Stálý zadní vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/WeatherSetup.cpp" line="100" />
+            <source>Mocno pod narty</source>
+            <translation>Silný protivítr</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/WeatherSetup.cpp" line="100" />
+            <source>Loteria</source>
+            <translation>Loterie</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/WeatherSetup.cpp" line="100" />
+            <source>Zmienny boczny</source>
+            <translation>Proměnlivý boční vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/WeatherSetup.cpp" line="100" />
+            <source>Cisza</source>
+            <translation>Bezvětří</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/WeatherSetup.cpp" line="101" />
+            <source>Spokojnie pod narty</source>
+            <translation>Klidný protivítr</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/WeatherSetup.cpp" line="101" />
+            <source>Mocno w plecy</source>
+            <translation>Silný zadní vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/WeatherSetup.cpp" line="101" />
+            <source>Spokojny boczny</source>
+            <translation>Klidný boční vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/WeatherSetup.cpp" line="101" />
+            <source>Zmiennie pod narty</source>
+            <translation>Proměnlivý protivítr</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/WeatherSetup.cpp" line="102" />
+            <source>Zmiennie w plecy</source>
+            <translation>Proměnlivý zadní vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/WeatherSetup.cpp" line="102" />
+            <source>Różny na zeskoku</source>
+            <translation>Různý na dopadu</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/WeatherSetup.cpp" line="197" />
+            <source>Wartość poza zakresem. Zachowano poprzednie ustawienia.</source>
+            <translation>Hodnota mimo rozsah. Předchozí nastavení zůstalo zachováno.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/WeatherSetup.cpp" line="217" />
+            <source>Punkty muszą być ustawione w rosnącej kolejności odległości.</source>
+            <translation>Body musí být seřazeny podle rostoucí vzdálenosti.</translation>
+        </message>
+        <message>
+            <location filename="../source/simulation-v2/WeatherSetup.cpp" line="236" />
+            <source>Osiągnięto limit punktów wiatru.</source>
+            <translation>Byl dosažen limit bodů větru.</translation>
+        </message>
+    </context>
+    <context>
+        <name>WeatherAdvanced</name>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="9" />
+            <source>Zmiany między skokami</source>
+            <translation>Změny mezi skoky</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="12" />
+            <source>Zmiana tendencji · m/s</source>
+            <translation>Změna tendence · m/s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="12" />
+            <source>O ile ogólny wiatr może odchodzić od punktu wyjścia przez kilka kolejnych skoków.</source>
+            <translation>O kolik se může převládající vítr odchýlit od výchozího stavu během několika skoků.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="13" />
+            <source>Jedna tendencja · ok. skoków</source>
+            <translation>Jedna tendence · přibližně skoků</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="13" />
+            <source>Orientacyjny czas trwania przy odstępie 30 s między skokami. Poszczególne okresy są różnej długości.</source>
+            <translation>Přibližná doba při rozestupu 30 s mezi skoky. Jednotlivá období mají různou délku.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="14" />
+            <source>Przejście między tendencjami · s</source>
+            <translation>Přechod mezi tendencemi · s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="15" />
+            <source>Bieżące wahania · m/s</source>
+            <translation>Průběžné výkyvy · m/s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="16" />
+            <source>Tempo bieżących wahań · s</source>
+            <translation>Časové měřítko výkyvů · s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="16" />
+            <source>Krótszy czas oznacza szybsze zmiany wiatru.</source>
+            <translation>Kratší čas znamená rychlejší změny větru.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="17" />
+            <source>Okresy większej niestabilności · %</source>
+            <translation>Období větší nestability · %</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="17" />
+            <source>Jak bardzo spokojniejsze okresy mogą przeplatać się z okresami szybkich zmian.</source>
+            <translation>Nakolik se mohou klidnější období střídat s obdobími rychlých změn.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="19" />
+            <source>Podmuchy i różnice lokalne</source>
+            <translation>Poryvy a místní rozdíly</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="22" />
+            <source>Siła podmuchów · m/s</source>
+            <translation>Síla poryvů · m/s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="23" />
+            <source>Częstość podmuchów · %</source>
+            <translation>Četnost poryvů · %</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="23" />
+            <source>Szansa pojawienia się podmuchu w jednym przedziale czasu. Nie oznacza szansy na lepszy skok.</source>
+            <translation>Pravděpodobnost poryvu v jednom časovém intervalu. Nejde o šanci na lepší skok.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="24" />
+            <source>Odstęp prób podmuchu · s</source>
+            <translation>Interval pokusů o poryv · s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="25" />
+            <source>Zasięg podmuchu · m</source>
+            <translation>Dosah poryvu · m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="26" />
+            <source>Lokalne wahania · m/s</source>
+            <translation>Místní výkyvy · m/s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="27" />
+            <source>Podobieństwo sąsiednich miejsc · m</source>
+            <translation>Podobnost sousedních míst · m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="27" />
+            <source>Na jak długim fragmencie lokalne zmiany wiatru są do siebie podobne.</source>
+            <translation>Délka úseku doskoku, na němž jsou místní změny větru podobné.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="31" />
+            <source>Punkty odniesienia</source>
+            <translation>Referenční body</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="32" />
+            <source>Wiatr płynnie zmienia się między punktami. Kierunek: 0° pod narty, 180° w plecy, 90° i 270° boczny. Podmuchy i zmiany w czasie dochodzą do tych wartości.</source>
+            <translation>Vítr se mezi body mění plynule. Směr: 0° protivítr, 180° zadní vítr, 90° a 270° boční vítr. K těmto hodnotám se přidávají poryvy a změny v čase.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="42" />
+            <source>Odległość · m</source>
+            <translation>Vzdálenost · m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="42" />
+            <source>Siła · m/s</source>
+            <translation>Síla · m/s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="42" />
+            <source>Kierunek · °</source>
+            <translation>Směr · °</translation>
         </message>
     </context>
 </TS>

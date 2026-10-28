@@ -44,8 +44,9 @@ static void simulationV2RepositoryRegressions()
     DataPack hillSource;hillSource.kind=DataPack::Hills;hillSource.name="Legacy hills";hillSource.hills.append(GlobalDatabase::get()->getGlobalHills().first());
     const auto originalHills=hillSource.toJson();
     ProfilePackRepository hills(ProfilePackKind::Hills,storage.path()+"/hills");QJsonObject migratedHills;
-    check(hills.migrate(hillSource,100,{},migratedHills,issues,error) && hillSource.toJson()==originalHills,"hill migration publishes a new file without touching source");
+    check(hills.migrate(hillSource,100,{},migratedHills,issues,error) && hillSource.toJson()==originalHills,QString("hill migration publishes a new file without touching source: %1").arg(error));
     check(hills.load().packs.size()==1 && hills.read(hills.filePath(migratedHills),read,error),"migrated hill file is readable by canonical repository");
+    auto preservedHill=migratedHills;preservedHill["name"]="Edited hill pack";check(hills.save(preservedHill,error) && hills.migrate(hillSource,100,{},migratedHills,issues,error) && migratedHills==preservedHill && hills.load().packs.size()==1,"repeated hill migration preserves published edits without duplicate files");
     check(!hills.migrate(source,100,photos,again,issues,error),"repository rejects wrong source kind");
     AthleteStudioController athleteEditor(nullptr,storage.path()+"/athletes");
     check(athleteEditor.profiles().size()==4 && athleteEditor.profile()["photoAvailable"].toBool(),"studio opens canonical migrated athletes with pack-owned photos");

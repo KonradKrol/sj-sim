@@ -16,7 +16,7 @@ ColumnLayout {
         Layout.fillWidth: true; spacing: 8
         ColumnLayout {
             Layout.fillWidth: true; spacing: 2
-            Label { text: qsTr("Eksperymenty symulacji"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading }
+            Label { text: qsTr("Laboratorium symulacji v2"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading }
             Label { text: qsTr("Odizolowane dane · powtarzalne losowanie · porównania wariantów"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         }
         SButton { objectName: "playgroundRun"; text: qsTr("Uruchom"); primary: true; enabled: !playground.backend.busy; onClicked: playground.backend.start() }
@@ -37,17 +37,21 @@ ColumnLayout {
     Label { visible: playground.backend.message.length>0; text: playground.backend.message; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     SectionTabs {
         Layout.fillWidth: true
-        options: [qsTr("Eksperyment"),qsTr("Porównanie"),qsTr("Skoczek"),qsTr("Konkurs"),qsTr("Historia"),"CLI"]
-        optionEnabled: [true,playground.hasReport,playground.hasReport,playground.hasReport,true,true]
+        options: [qsTr("Eksperyment"),qsTr("Porównanie"),qsTr("Skoczek"),qsTr("Konkurs"),qsTr("Historia"),"CLI",qsTr("Lądowanie"),qsTr("Wiatr"),qsTr("Kalibracja"),qsTr("Stawka")]
+        optionEnabled: [true,playground.hasReport,playground.hasReport,playground.hasReport,true,true,true,true,true,playground.hasReport]
         currentIndex: playground.section
         onSelected: playground.section=index
     }
     Loader {
         id: content
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
-        sourceComponent: playground.section===0?setup:playground.section===1?comparison:playground.section===2?athlete:playground.section===3?replay:playground.section===4?history:cli
+        sourceComponent: playground.section===0?setup:playground.section===1?comparison:playground.section===2?athlete:playground.section===3?replay:playground.section===4?history:playground.section===5?cli:playground.section===6?landing:playground.section===7?wind:playground.section===8?targets:field
     }
     Connections { target: playground.backend; function onReportChanged(){if(playground.hasReport){playground.resultVariant=Math.min(playground.resultVariant,playground.backend.report.variants.length-1);playground.resultAthlete=playground.backend.report.config.focus;playground.section=1}} }
+    Component { id: field; PlaygroundField { backend: playground.backend; selectedVariant: playground.resultVariant; onVariantSelected: function(index){playground.resultVariant=index}; onAthleteSelected: function(index){playground.resultAthlete=index;playground.section=2} } }
+    Component { id: landing; PlaygroundAnalysis { backend: playground.backend; wind: false } }
+    Component { id: wind; PlaygroundAnalysis { backend: playground.backend; wind: true } }
+    Component { id: targets; PlaygroundTargets { backend: playground.backend } }
     Component { id: setup; PlaygroundSetup { backend: playground.backend } }
     Component { id: comparison; PlaygroundResults { backend: playground.backend; selectedVariant: playground.resultVariant; selectedAthlete: playground.resultAthlete; onVariantSelected: function(index){playground.resultVariant=index}; onAthleteSelected: function(index){playground.resultAthlete=index} } }
     Component { id: athlete; PlaygroundResults { backend: playground.backend; individual: true; selectedVariant: playground.resultVariant; selectedAthlete: playground.resultAthlete; onVariantSelected: function(index){playground.resultVariant=index}; onAthleteSelected: function(index){playground.resultAthlete=index}; onReplayRequested: {playground.section=3;playground.backend.replay(variant,competition)} } }
@@ -70,7 +74,7 @@ ColumnLayout {
                 width: cliScroll.availableWidth; spacing: 12
                 Label { text: qsTr("Automatyzacja i analiza poza aplikacją"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 Label { text: qsTr("Zapisz konfigurację z tego ekranu albo wygeneruj przykład. CLI korzysta z tego samego silnika i uruchamia się bez interfejsu graficznego."); color: Theme.ink; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-                TextArea { Layout.fillWidth: true; readOnly: true; selectByMouse: true; wrapMode: TextEdit.Wrap; font.family: Theme.mono; font.pointSize: Theme.body; text: "sj-sim --playground-example experiment.json\n\nsj-sim --playground --config experiment.json --output results/run-01 --threads 8\n\nsj-sim --playground --config experiment.json --replay 1:42 --output replay.json"; background: Rectangle { color: Theme.surface; radius: 8 } }
+                TextArea { Layout.fillWidth: true; readOnly: true; selectByMouse: true; wrapMode: TextEdit.Wrap; font.family: Theme.mono; font.pointSize: Theme.body; text: "sj-sim --playground-example experiment.json\n\nsj-sim --playground --config experiment.json --output results/run-01 --threads 8\n\nsj-sim --playground --config experiment.json --replay 1:42 --output replay.json\n\nsj-sim --playground --config experiment.json --analysis 1 --output analysis.json"; background: Rectangle { color: Theme.surface; radius: 8 } }
                 Label { text: qsTr("Windows: użyj sj-sim.exe. Indeksy wariantu i konkursu w CLI liczą się od zera. Folder wyniku musi być nowy; istniejące raporty nie są nadpisywane."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 Label { text: qsTr("Eksport: pełny raport JSON, konfiguracja, porównania CSV, agregaty każdego skoczka i przykładowe skoki. Analiza w Pythonie lub przez agenta nie wymaga klikania w UI."); color: Theme.ink; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
             }

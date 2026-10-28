@@ -14,6 +14,7 @@
 class DatabaseItemsListView;
 class QResizeEvent;
 class QSplitter;
+class SimulationProfileDraft;
 
 namespace Ui {
 class NewSeasonConfiguratorDialog;
@@ -50,6 +51,12 @@ private:
     HillEditorWidget * hillEditor;
     CompetitionRulesEditorWidget * rulesEditor;
 
+    SimulationProfileDraft *athleteDraft=nullptr,*hillDraft=nullptr;
+    QWidget *athleteProfileEditor=nullptr,*hillProfileEditor=nullptr;
+    Jumper *editedAthlete=nullptr;
+    Hill *editedHill=nullptr;
+    void showAthlete(int row);
+    void showHill(int row);
     int actualJumperIndex;
     int actualHillIndex;
     int actualRulesIndex;

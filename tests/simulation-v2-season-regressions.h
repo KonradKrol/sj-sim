@@ -2,8 +2,22 @@
 
 #include "../source/simulation-v2/ProfileDraft.h"
 
+static void simulationV2NextSeasonDraftRegressions(MainWindow &main) {
+    QString error;auto athlete=AthleteProfile::create();athlete.name="Next";athlete.surname="Season";athlete.overall=84;athlete.form=39;athlete.perks={{3,-2,1}};athlete.photoPath="photos/jumper.png";
+    auto venue=HillProfile::create();venue.name="Next hill";venue.perks={{-2,3,1,-3}};
+    Jumper original;Hill originalHill;check(original.setSimulationProfile(athlete,error) && originalHill.setSimulationProfile(venue,error),"next season fixtures");original.setSimulationPackContext(QUuid::createUuid().toString(QUuid::WithoutBraces),"portable-pack");
+    NewSeasonConfiguratorWindow window(true,&main);window.setProperty("simulationV2",true);window.setJumpers({new Jumper(original)});window.setHills({new Hill(originalHill)});
+    auto *draft=window.findChild<SimulationProfileDraft *>("nextSeasonAthleteDraft");auto *hillDraft=window.findChild<SimulationProfileDraft *>("nextSeasonHillDraft");check(draft && hillDraft && draft->valid() && hillDraft->valid(),"next season uses real v2 drafts");
+    draft->setValue("overall",93);draft->setPerk(2,-1,3,false);hillDraft->setValue("k",125);
+    auto *changed=window.getJumpersReference().first();check(changed->getSimulationProfile()->overall==93 && changed->getSimulationProfile()->perks[2]==-3 && changed->getID()==original.getID() && changed->getSimulationAssetDirectory()==original.getSimulationAssetDirectory() && changed->getSimulationProfile()->photoPath==athlete.photoPath,"next season edit preserves identity, photo path and full v2 profile");check(window.getHillsReference().first()->getSimulationProfile()->k==125 && window.getHillsReference().first()->getSimulationProfile()->perks==venue.perks,"next season hill retains all perk pairs");
+    auto lists=window.findChildren<DatabaseItemsListView *>();int inserted=0;for(auto *list:lists)if(list->property("simulationV2").toBool()){check(QMetaObject::invokeMethod(list,"onInsertActionTriggered"),"next season insertion action");++inserted;}check(inserted==2 && window.getJumpersReference().last()->getSimulationProfile() && window.getHillsReference().last()->getSimulationProfile(),"next season insertions are canonical before publication");
+    window.reject();check(original.getSimulationProfile()->overall==84 && originalHill.getSimulationProfile()->k==120,"canceling next season leaves source data untouched");
+    qInfo()<<"PASS: next season v2 drafts, insertions, UUID/photo/perk preservation and cancel isolation";
+}
+
 static void simulationV2SeasonEditorRegressions(MainWindow &main)
 {
+    simulationV2NextSeasonDraftRegressions(main);
     QString error;
     auto profile=AthleteProfile::create();profile.name="Season";profile.surname="Athlete";profile.overall=83;profile.form=61;profile.perks={{1,-2,3}};
     auto venue=HillProfile::create();venue.name="Season hill";venue.perks={{1,-1,2,-3}};

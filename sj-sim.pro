@@ -41,6 +41,8 @@ SOURCES += \
     source/athletes/AthleteProfile.cpp \
     source/athletes/AthleteStudioController.cpp \
     source/simulator/ExperimentalSimulation.cpp \
+    source/playground/PlaygroundAnalysis.cpp \
+    source/playground/PlaygroundModel.cpp \
     source/playground/PlaygroundConfig.cpp \
     source/playground/PlaygroundController.cpp \
     source/playground/PlaygroundRunner.cpp \
@@ -217,6 +219,7 @@ HEADERS += \
     source/athletes/AthleteProfile.h \
     source/athletes/AthleteStudioController.h \
     source/simulator/ExperimentalSimulation.h \
+    source/playground/PlaygroundModel.h \
     source/playground/PlaygroundExperiment.h \
     source/playground/PlaygroundController.h \
     source/seasons/SimulationSaveListOrder.h \

@@ -796,6 +796,7 @@ void SimulationSaveManagerWindow::updateCompetitionConfigButton()
 void SimulationSaveManagerWindow::configNextSeason()
 {
     auto newSeasonConfig = std::make_unique<NewSeasonConfiguratorWindow>(true, this);
+    newSeasonConfig->setProperty("simulationV2",simulationSave->getEngineVersion()==2);
     QHash<Jumper *, Jumper *> originalJumpers;
     QHash<Hill *, Hill *> originalHills;
     QVector<Jumper *> draftJumpers;

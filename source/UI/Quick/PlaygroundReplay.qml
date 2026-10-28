@@ -70,7 +70,7 @@ ColumnLayout {
                             }
                             Label { text: replay.format(parent.parent.modelData.distance)+" m · "+replay.format(parent.parent.modelData.points)+qsTr(" pkt"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading }
                             Label { text: qsTr("Wiatr %1 m/s · rekompensata %2 pkt · noty %3 pkt").arg(replay.format(parent.parent.modelData.wind)).arg(replay.format(parent.parent.modelData.compensation)).arg(replay.format(parent.parent.modelData.judges)); color: Theme.ink; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-                            Label { text: qsTr("Wybicie %1 · lot %2 · losowa część %3").arg(replay.format(parent.parent.modelData.takeoff)).arg(replay.format(parent.parent.modelData.flight)).arg(replay.format(parent.parent.modelData.random)); color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                            Label { text: qsTr("Jakość %1 · odczuty wiatr %2 m/s · losowa część %3").arg(replay.format(parent.parent.modelData.quality)).arg(replay.format(parent.parent.modelData.experiencedWind)).arg(replay.format(parent.parent.modelData.random)); color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                         }
                     }
                 }

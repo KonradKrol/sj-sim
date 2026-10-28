@@ -1,101 +1,79 @@
+#include "PlaygroundModel.h"
+#include "../simulation-v2/ProfileBridge.h"
+#include "../simulator/Jumper.h"
+#include "../simulator/Hill.h"
 #include <QObject>
-#include "PlaygroundExperiment.h"
 #include <QSet>
-#include <QUuid>
-#include "../competitions/CompetitionRules.h"
 #include <QThread>
 #include <cmath>
+#include <stdexcept>
 
 namespace Playground {
-QJsonArray parameters() {
-    QJsonArray result;
-    const auto add=[&](const char *key,const QString &label,const char *group,double value,double minimum,double maximum,double step,const QString &help){result.append(QJsonObject{{"key",key},{"label",label},{"group",group},{"default",value},{"minimum",minimum},{"maximum",maximum},{"step",step},{"help",help}});};
-    add("wind.mean",QObject::tr("Średni wiatr"),"conditions",0,-8,8,.1,QObject::tr("Dodatni: pod narty. Ujemny: w plecy. m/s."));
-    add("wind.deviation",QObject::tr("Zmienność wiatru"),"conditions",.5,0,4,.1,QObject::tr("Odchylenie standardowe w m/s. Wiatr jest losowany osobno dla skoku."));
-    add("wind.segmentDeviation",QObject::tr("Zmienność wzdłuż zeskoku"),"conditions",.2,0,4,.1,QObject::tr("Odchylenie wiatru pomiędzy pięcioma sektorami. Pozwala badać uśrednianie i rekompensatę przy nierównym wietrze."));
-    add("snow",QObject::tr("Śnieg na rozbiegu"),"conditions",0,0,10,.1,QObject::tr("Stały poziom śniegu w eksperymencie."));
-    add("gate",QObject::tr("Belka"),"conditions",0,0,100,1,QObject::tr("0 dobiera wspólną belkę z wariantu bazowego. Pozostałe wartości ustalają ją ręcznie."));
-    add("importance",QObject::tr("Znaczenie skoku"),"conditions",5,0,10,.1,QObject::tr("Parametr znaczenia używany przez rzeczywisty silnik skoku."));
-    add("engine.maxSkills",QObject::tr("Zakres umiejętności"),"engine",100,1,200,1,QObject::tr("Górny limit umiejętności używany przez silnik w tym eksperymencie."));
-    add("engine.autoHillEffects",QObject::tr("Automatyczne parametry skoczni"),"engine",0,0,1,1,QObject::tr("Automatyczne dopasowanie parametrów skoczni zgodne z ustawieniem silnika."));
-    add("engine.randomness",QObject::tr("Losowość silnika"),"engine",1,0,5,.05,QObject::tr("Mnożnik losowej części symulacji."));
-    add("engine.takeoffForm",QObject::tr("Wpływ formy na wybicie"),"engine",.1,0,2,.01,QObject::tr("Współczynnik formy działający tylko w tym eksperymencie."));
-    add("engine.flightForm",QObject::tr("Wpływ formy na lot"),"engine",.1,0,2,.01,QObject::tr("Współczynnik formy działający tylko w tym eksperymencie."));
-    add("engine.hillEffects",QObject::tr("Wpływ skoczni"),"engine",1,0,5,.05,QObject::tr("Mnożnik charakterystyki skoczni."));
-    add("engine.dsq",QObject::tr("Parametr DSQ"),"engine",0,0,10000,1,QObject::tr("0 wyłącza DSQ. Bez dodatkowych cech: 1 = 100%, 100 ≈ 1%, 200 ≈ 0,5%. Większa wartość oznacza mniejsze ryzyko."));
-    add("athlete.windBias",QObject::tr("Różnica wiatru dla skoczka"),"athlete",0,-6,6,.1,QObject::tr("Dodatkowy wiatr tylko dla wybranego skoczka. Pozwala porównać korzyść z warunków względem reszty stawki."));
-    add("athlete.flightStyle",QObject::tr("Styl lotu skoczka"),"athlete",1,0,3,1,QObject::tr("Styl lotu wybranego skoczka."));
-    add("field.flightStyle",QObject::tr("Styl lotu stawki"),"field",1,0,3,1,QObject::tr("Styl lotu pozostałych zawodników."));
-    add("athlete.takeoff",QObject::tr("Wybicie skoczka"),"athlete",70,0,200,.5,QObject::tr("Umiejętność wybranego skoczka; reszta stawki pozostaje bez zmian."));
-    add("athlete.flight",QObject::tr("Lot skoczka"),"athlete",70,0,200,.5,QObject::tr("Umiejętność wybranego skoczka."));
-    add("athlete.form",QObject::tr("Forma skoczka"),"athlete",70,0,200,.5,QObject::tr("Forma wybranego skoczka."));
-    add("athlete.landing",QObject::tr("Lądowanie skoczka"),"athlete",10,0,20,.1,QObject::tr("Umiejętność lądowania wybranego skoczka."));
-    add("athlete.equality",QObject::tr("Równość skoczka"),"athlete",0,-5,5,.1,QObject::tr("Wpływ równości zgodny z aktualnym silnikiem."));
-    add("field.skill",QObject::tr("Poziom stawki"),"field",70,0,200,.5,QObject::tr("Środkowy poziom wybicia i lotu syntetycznej stawki."));
-    add("field.spread",QObject::tr("Rozpiętość stawki"),"field",30,0,200,1,QObject::tr("Różnica umiejętności między skrajnymi syntetycznymi zawodnikami."));
-    add("field.form",QObject::tr("Forma stawki"),"field",70,0,200,.5,QObject::tr("Forma wszystkich zawodników, z wyjątkiem jawnego ustawienia wybranego skoczka."));
-    add("field.landing",QObject::tr("Lądowanie stawki"),"field",10,0,20,.1,QObject::tr("Umiejętność lądowania całej stawki."));
-    add("field.equality",QObject::tr("Równość stawki"),"field",0,-5,5,.1,QObject::tr("Równość całej stawki."));
-    add("hill.k",QObject::tr("Punkt K"),"hill",120,10,300,.5,QObject::tr("Zmiana K przelicza punkty za metry. HS musi pozostać co najmniej równy K."));
-    add("hill.hs",QObject::tr("Rozmiar HS"),"hill",134,10,400,.5,QObject::tr("Rozmiar skoczni; wspólna belka jest wyznaczana z wariantu bazowego."));
-    add("hill.balance",QObject::tr("Balans wybicie–lot"),"hill",1,.05,5,.05,QObject::tr("Oryginalny parametr balance skoczni; sprawdź jego efekt porównaniem wariantów."));
-    add("hill.distance",QObject::tr("Mnożnik odległości skoczni"),"hill",1,.2,3,.01,QObject::tr("Mnożnik odległości dostępny w danych skoczni."));
-    add("hill.headwindPoints",QObject::tr("Rekompensata pod narty"),"hill",8,0,40,.1,QObject::tr("Punkty rekompensaty za 1 m/s."));
-    add("hill.tailwindPoints",QObject::tr("Rekompensata w plecy"),"hill",12,0,60,.1,QObject::tr("Punkty rekompensaty za 1 m/s."));
-    add("rules.windAverage",QObject::tr("Uśrednianie wiatru"),"rules",0,0,2,1,QObject::tr("Oryginalne metody uśredniania wiatru z silnika gry."));
-    add("rules.windDistance",QObject::tr("Wiatr a długość skoku"),"rules",1,0,2,1,QObject::tr("Zasięg sektorów wiatru branych do rekompensaty w zależności od długości skoku."));
-    add("rules.windCompensation",QObject::tr("Rekompensata za wiatr"),"rules",1,0,1,1,QObject::tr("Włącza lub wyłącza naliczanie punktów za wiatr."));
-    add("rules.gateCompensation",QObject::tr("Rekompensata za belkę"),"rules",1,0,1,1,QObject::tr("Naliczanie punktów za zmianę belki."));
-    add("rules.judges",QObject::tr("Noty sędziowskie"),"rules",1,0,1,1,QObject::tr("Uwzględnianie not sędziów w punktach."));
-    add("rules.95hs",QObject::tr("Reguła 95% HS"),"rules",1,0,1,1,QObject::tr("Awans po upadku na odległość co najmniej 95% HS, zgodnie z regułami gry."));
-    add("experimental.takeoffScale",QObject::tr("Mnożnik metrów z wybicia"),"experimental",1,0,3,.05,QObject::tr("Eksperymentalny mnożnik wkładu wybicia w odległość. 1 zachowuje silnik gry; działa tylko w playgroundzie."));
-    add("experimental.flightScale",QObject::tr("Mnożnik metrów z lotu"),"experimental",1,0,3,.05,QObject::tr("Eksperymentalny mnożnik wkładu lotu w odległość."));
-    add("experimental.windScale",QObject::tr("Mnożnik wpływu wiatru na metry"),"experimental",1,0,3,.05,QObject::tr("Zmienia fizyczny wpływ wiatru na odległość; rekompensata punktowa pozostaje osobnym mechanizmem."));
-    add("rules.dsq",QObject::tr("Dyskwalifikacje"),"rules",1,0,1,1,QObject::tr("Dopuszcza DSQ zgodnie z regułami; prawdopodobieństwo ustala parametr silnika DSQ."));
-    add("experimental.takeoffBias",QObject::tr("Korekta oceny wybicia"),"experimental",0,-30,30,.1,QObject::tr("Eksperymentalny bonus z mechanizmu JumpManipulator. Nie zmienia ustawień zwykłej gry."));
-    add("experimental.flightBias",QObject::tr("Korekta oceny lotu"),"experimental",0,-30,30,.1,QObject::tr("Eksperymentalny bonus z mechanizmu JumpManipulator."));
-    add("experimental.distanceBias",QObject::tr("Korekta odległości"),"experimental",0,-30,30,.1,QObject::tr("Dodatkowe metry z mechanizmu JumpManipulator; wpływają także na lądowanie."));
-    for(int i=0;i<result.size();++i){auto p=result[i].toObject();const auto key=p["key"].toString();if(p["maximum"].toInt()==1 && p["minimum"].toInt()==0)p["type"]="boolean";else if(key=="gate" || key=="engine.dsq" || key=="engine.maxSkills" || key.endsWith("flightStyle") || key=="rules.windAverage" || key=="rules.windDistance")p["type"]="integer";if(key.endsWith("flightStyle"))p["options"]=QJsonArray{"V",QObject::tr("Nowoczesne V"),QObject::tr("Szerokie V"),"H"};if(key=="rules.windAverage")p["options"]=QJsonArray{QObject::tr("Proste"),QObject::tr("Proste ulepszone"),QObject::tr("Oryginalne")};if(key=="rules.windDistance")p["options"]=QJsonArray{QObject::tr("Wyłączony"),QObject::tr("Oryginalny"),QObject::tr("Pełny")};result[i]=p;}
-    return result;
-}
 QJsonObject example() {
-    QJsonObject values;
-    for(const auto &entry:parameters()){const auto p=entry.toObject();values.insert(p["key"].toString(),p["default"]);}
-    values.remove("hill.k");values.remove("hill.hs");
-    return {{"schema",1},{"name",QObject::tr("Wpływ wiatru")},{"seed","20261025"},{"competitions",1000},{"threads",qMax(1,qMin(16,QThread::idealThreadCount()-1))},{"athletes",50},{"focus",24},{"sampleLimit",256},{"hill",QJsonObject{{"name","HS134"},{"k",120},{"hs",134}}},{"rounds",QJsonArray{50,30}},{"parameters",values},{"variants",QJsonArray{QJsonObject{{"name",QObject::tr("Bez wiatru")},{"changes",QJsonObject{{"wind.mean",0}}}},QJsonObject{{"name",QObject::tr("Pod narty")},{"changes",QJsonObject{{"wind.mean",2}}}},QJsonObject{{"name",QObject::tr("W plecy")},{"changes",QJsonObject{{"wind.mean",-2}}}}}}};
+    QJsonObject defaults;for(const auto &entry:parameters()){auto d=entry.toObject();defaults[d["key"].toString()]=d["default"];}
+    return {{"schema",2},{"name",QObject::tr("Strojenie silnika v2")},{"seed","20261028"},
+        {"competitions",1000},{"threads",qMax(1,qMin(16,QThread::idealThreadCount()-1))},{"athletes",50},{"focus",24},{"sampleLimit",64},
+        {"hill",QJsonObject{{"name","K120 / HS134"},{"k",120},{"hs",134}}},{"rounds",QJsonArray{50}},
+        {"defaults",defaults},{"parameters",QJsonObject{{"gate",10},{"clock.mode",0},{"wind.temporalAmplitude",0},{"wind.spatialAmplitude",0},{"wind.gustAmplitude",0}}},{"variants",QJsonArray{QJsonObject{{"name",QObject::tr("Bazowy")},{"changes",QJsonObject()}},QJsonObject{{"name",QObject::tr("Porównanie")},{"changes",QJsonObject{{"athlete.overall",90}}}}}},
+        {"targets",QJsonArray{QJsonObject{{"name","OVR 90–70"},{"metric","pairedDistance"},{"variant",1},{"minimum",14},{"maximum",17}}}}};
+}
+QJsonObject valuesFor(const QJsonObject &config,int variant) {
+    static const QJsonObject baseline=[] {QJsonObject result;for(const auto &row:parameters()){auto d=row.toObject();result[d["key"].toString()]=d["default"];}return result;}();
+    QJsonObject p=baseline;
+    const auto defaults=config["defaults"].toObject();for(auto it=defaults.begin();it!=defaults.end();++it)p[it.key()]=it.value();
+    const auto roster=config["roster"].toArray();
+    if(!roster.isEmpty()) {
+        auto source=Jumper::getFromJson(roster[config["focus"].toInt()].toObject()).getSimulationProfile();
+        if(!source)throw std::invalid_argument("Playground v2 requires canonical athlete profiles");
+        p["athlete.overall"]=source->overall;p["athlete.form"]=source->form;p["athlete.landing"]=source->landing;
+        for(int i=0;i<3;++i)p[QString("athlete.perk.%1").arg(i)]=source->perks[i];
+    }
+    auto h=config["hill"].toObject();p["hill.k"]=h["k"];p["hill.hs"]=h["hs"];p["hill.realHs"]=h["hs"];
+    if(h["source"].isObject()) {
+        auto source=Hill::getFromJson(h["source"].toObject()).getSimulationProfile();
+        if(!source)throw std::invalid_argument("Playground v2 requires canonical hill profiles");
+        auto input=SimulationV2::hillInput(*source);
+        p["hill.k"]=input.k;p["hill.hs"]=input.hs;p["hill.realHs"]=input.realHs;p["hill.takeoffBias"]=input.takeoffBias;
+        p["hill.pointsAtK"]=input.pointsAtK;p["hill.pointsPerMetre"]=input.pointsPerMetre;p["hill.gatePoints"]=input.gatePoints;p["hill.headwindPoints"]=input.headwindPoints;p["hill.tailwindPoints"]=input.tailwindPoints;
+    }
+    if(config["rulesData"].isObject()) {
+        auto rules=CompetitionRules::getFromJson(config["rulesData"].toObject());
+        p["rules.dsq"]=int(rules.getHasDsq());p["rules.measurement"]=rules.getWindMeasurementType();p["rules.windCompensation"]=int(rules.getHasWindCompensations());p["rules.gateCompensation"]=int(rules.getHasGateCompensations());p["rules.judges"]=int(rules.getHasJudgesPoints());p["rules.95hs"]=int(rules.getHas95HSRule());
+    }
+    for(const auto &layer:{config["parameters"].toObject(),config["variants"].toArray()[variant].toObject()["changes"].toObject()})
+        for(auto it=layer.begin();it!=layer.end();++it)p[it.key()]=it.value();
+    return p;
 }
 bool validate(const QJsonObject &config,QString &error) {
     const auto fail=[&](const QString &message){error=message;return false;};
-    if(config["schema"].toInt()!=1)return fail(QObject::tr("Nieobsługiwana wersja konfiguracji playgroundu."));
-    const auto integer=[&](const char *key,int minimum,int maximum){const auto value=config[key];return value.isDouble() && std::isfinite(value.toDouble()) && value.toDouble()==std::floor(value.toDouble()) && value.toDouble()>=minimum && value.toDouble()<=maximum;};
-    if(!integer("competitions",1,1000000) || !integer("athletes",2,512) || !integer("focus",0,config["athletes"].toInt()-1) || !integer("threads",1,64) || !integer("sampleLimit",0,4096))return fail(QObject::tr("Sprawdź liczbę konkursów (1–1000000), skoczków (2–512), wybranego skoczka, wątków (1–64) i próbkę (0–4096)."));
+    if(config["schema"].toInt()!=2)return fail(QObject::tr("Wymagana konfiguracja playgroundu v2. Stare eksperymenty nie opisują nowego silnika."));
+    const auto integer=[&](const char *key,int lo,int hi){auto v=config[key];return v.isDouble() && std::isfinite(v.toDouble()) && std::floor(v.toDouble())==v.toDouble() && v.toDouble()>=lo && v.toDouble()<=hi;};
+    if(!integer("competitions",1,1000000) || !integer("athletes",2,512) || !integer("focus",0,config["athletes"].toInt()-1) || !integer("threads",1,64) || !integer("sampleLimit",0,4096))return fail(QObject::tr("Nieprawidłowa liczba prób, skoczków, wątków lub indeks skoczka."));
     bool seedOk=false;config["seed"].toString().toULongLong(&seedOk);if(!seedOk)return fail(QObject::tr("Ziarno musi być nieujemną liczbą całkowitą zapisaną jako tekst."));
-    QHash<QString,QJsonObject> definitions;for(const auto &entry:parameters()){const auto p=entry.toObject();definitions.insert(p["key"].toString(),p);}
-    const auto checkParameters=[&](const QJsonObject &values){for(auto it=values.begin();it!=values.end();++it){
-        if(!definitions.contains(it.key())){error=QObject::tr("Nieznany parametr: ")+it.key();return false;}
-        const auto definition=definitions[it.key()];const auto label=definition["label"].toString();
-        if(!it.value().isDouble() || !std::isfinite(it.value().toDouble())){error=label+QObject::tr(": wymagana jest skończona liczba.");return false;}
-        if((definition["type"].toString()=="integer" || definition["type"].toString()=="boolean") && it.value().toDouble()!=std::floor(it.value().toDouble())){error=label+QObject::tr(": wymagana jest liczba całkowita.");return false;}
-        if(it.value().toDouble()<definition["minimum"].toDouble() || it.value().toDouble()>definition["maximum"].toDouble()){error=QObject::tr("%1: zakres %2–%3.").arg(label).arg(definition["minimum"].toDouble()).arg(definition["maximum"].toDouble());return false;}
-    }return true;};
-    if(!config["parameters"].isObject())return fail(QObject::tr("Parametry muszą być obiektem JSON."));
-    if(!checkParameters(config["parameters"].toObject()))return false;
-    const auto variants=config["variants"].toArray();if(variants.isEmpty() || variants.size()>32)return fail(QObject::tr("Wybierz od 1 do 32 wariantów."));
-    QSet<QString> names;for(const auto &entry:variants){if(!entry.isObject())return fail(QObject::tr("Wariant musi być obiektem."));const auto variant=entry.toObject();const auto name=variant["name"].toString().trimmed();if(name.isEmpty() || names.contains(name) || !variant["changes"].isObject())return fail(QObject::tr("Warianty wymagają różnych nazw i poprawnych zmian parametrów."));if(!checkParameters(variant["changes"].toObject())){error=name+": "+error;return false;}if(config["roster"].isArray() && (variant["changes"].toObject().contains("field.skill") || variant["changes"].toObject().contains("field.spread")))return fail(name+QObject::tr(": poziom i rozpiętość dotyczą stawki syntetycznej. Wybierz inny parametr skanowania lub stawkę syntetyczną."));names.insert(name);}
-    const auto rounds=config["rounds"].toArray();if(rounds.isEmpty() || rounds.size()>8)return fail(QObject::tr("Wybierz od 1 do 8 serii."));int previous=config["athletes"].toInt();for(const auto &value:rounds){if(!value.isDouble() || value.toDouble()!=std::floor(value.toDouble()) || value.toInt()<1 || value.toInt()>previous)return fail(QObject::tr("Limity serii muszą być dodatnie i nie mogą rosnąć."));previous=value.toInt();}
-    const auto hill=config["hill"].toObject();const double k=hill["k"].toDouble(),hs=hill["hs"].toDouble();if(!std::isfinite(k) || !std::isfinite(hs) || k<10 || k>300 || hs<k || hs>400)return fail(QObject::tr("Skocznia wymaga K 10–300 i HS od K do 400."));
-    if(config.contains("roster") && (!config["roster"].isArray() || config["roster"].toArray().size()!=config["athletes"].toInt()))return fail(QObject::tr("Liczba zawodników musi odpowiadać zaimportowanej stawce."));
-    if(config.contains("rulesData")){
-        if(!config["rulesData"].isObject() || QUuid(config["rulesData"].toObject()["id"].toString()).isNull())return fail(QObject::tr("Nieprawidłowy preset zasad lub jego identyfikator."));
-        const auto rules=CompetitionRules::getFromJson(config["rulesData"].toObject());
-        if(rules.getCompetitionType()!=CompetitionRules::Individual && rules.getCompetitionType()!=CompetitionRules::Team)return fail(QObject::tr("Nieprawidłowy rodzaj konkursu."));
-        if(rules.getRounds().isEmpty() || rules.getRounds().size()>8 || (rules.getCompetitionType()==CompetitionRules::Team && (rules.getJumpersInTeamCount()<1 || rules.getJumpersInTeamCount()>8)))return fail(QObject::tr("Nieprawidłowe serie lub skład drużyny w presecie."));
-        for(const auto &round:rules.getRounds())if(round.getCount()<0 || round.getCount()>512 || (round.getKO() && (rules.getCompetitionType()==CompetitionRules::Team || round.getCountInKOGroup()<1 || round.getCountInKOGroup()>512 || round.getAdvancingFromKOGroup()<1 || round.getAdvancingFromKOGroup()>round.getCountInKOGroup() || round.getKoGroupsSelectionType()<0 || round.getKoGroupsSelectionType()>4)))return fail(QObject::tr("Nieprawidłowe limity lub grupy KO w presecie."));
+    auto variants=config["variants"].toArray();if(variants.isEmpty() || variants.size()>32)return fail(QObject::tr("Wybierz od 1 do 32 wariantów."));
+    QHash<QString,QJsonObject> defs;for(const auto &row:parameters()){auto d=row.toObject();defs[d["key"].toString()]=d;}
+    auto checkValues=[&](const QJsonObject &values){for(auto it=values.begin();it!=values.end();++it){auto d=defs.value(it.key());double v=it.value().toDouble();if(d.isEmpty() || !it.value().isDouble() || !std::isfinite(v) || v<d["minimum"].toDouble() || v>d["maximum"].toDouble() || (d["type"]=="integer" && v!=std::floor(v))){error=QObject::tr("Nieprawidłowy parametr: %1").arg(it.key());return false;}}return true;};
+    if(!config["defaults"].isObject() || !checkValues(config["defaults"].toObject()))return fail(QObject::tr("Nieprawidłowy zestaw wartości domyślnych."));
+    if(!config["parameters"].isObject() || !checkValues(config["parameters"].toObject()))return false;
+    auto rounds=config["rounds"].toArray();if(rounds.isEmpty() || rounds.size()>8)return fail(QObject::tr("Wybierz od 1 do 8 serii."));
+    int previous=config["athletes"].toInt();for(const auto &r:rounds){if(!r.isDouble() || r.toDouble()!=std::floor(r.toDouble()) || r.toInt()<1 || r.toInt()>previous)return fail(QObject::tr("Limity serii muszą być dodatnie i nie mogą rosnąć."));previous=r.toInt();}
+    if(config.contains("roster")){if(!config["roster"].isArray() || config["roster"].toArray().size()!=config["athletes"].toInt())return fail(QObject::tr("Nieprawidłowa stawka."));for(const auto &row:config["roster"].toArray()){QString e;if(!row.isObject() || !Jumper::validateSimulationProfileJson(row.toObject(),e) || !Jumper::getFromJson(row.toObject()).getSimulationProfile())return fail(QObject::tr("Stawka wymaga pełnych profili v2: %1").arg(e));}}
+    if(config.contains("rulesData")) {
+        if(!config["rulesData"].isObject() || !CompetitionRules::validateWindMeasurementJson(config["rulesData"].toObject()))return fail(QObject::tr("Nieprawidłowe zasady."));
+        auto rules=CompetitionRules::getFromJson(config["rulesData"].toObject());
+        if(rules.getCompetitionType()!=CompetitionRules::Individual || rules.getRounds().isEmpty() || rules.getRounds().size()>8)return fail(QObject::tr("Playground v2 obsługuje obecnie konkursy indywidualne."));
+        for(const auto &r:rules.getRounds())if(r.getKO() || r.getCount()<1 || r.getCount()>config["athletes"].toInt())return fail(QObject::tr("Na tym etapie użyj zwykłych serii indywidualnych bez KO."));
     }
-    for(const auto &variant:variants){auto combined=config["parameters"].toObject();const auto changes=variant.toObject()["changes"].toObject();for(auto it=changes.begin();it!=changes.end();++it)combined[it.key()]=it.value();const double variantK=combined["hill.k"].toDouble(k),variantHS=combined["hill.hs"].toDouble(hs);if(variantHS<variantK)return fail(QObject::tr("W każdym wariancie HS musi być co najmniej równe K."));}
-    const auto validObject=[](const QJsonObject &object){if(QUuid(object["id"].toString()).isNull())return false;for(auto it=object.begin();it!=object.end();++it)if(it.value().isDouble() && !std::isfinite(it.value().toDouble()))return false;for(const auto &entry:object["characteristics"].toArray()){const auto level=entry.toObject()["level"];if(!level.isDouble() || !std::isfinite(level.toDouble()) || std::abs(level.toDouble())>1000000)return false;}return true;};
-    if(hill.contains("source") && (!hill["source"].isObject() || !validObject(hill["source"].toObject())))return fail(QObject::tr("Nieprawidłowe źródło danych skoczni."));
-    for(const auto &entry:config["roster"].toArray())if(!entry.isObject() || !validObject(entry.toObject()))return fail(QObject::tr("Nieprawidłowe dane zaimportowanego skoczka."));
+    QSet<QString> names;
+    try {
+        for(int i=0;i<variants.size();++i){auto v=variants[i].toObject();auto name=v["name"].toString().trimmed();if(name.isEmpty() || names.contains(name) || !v["changes"].isObject() || !checkValues(v["changes"].toObject()))return fail(error.isEmpty()?QObject::tr("Warianty wymagają różnych nazw i poprawnych parametrów."):error);names.insert(name);
+            auto p=valuesFor(config,i);if(p["analysis.timeSamples"].toDouble()*p["analysis.spaceSamples"].toDouble()>200000)throw std::invalid_argument("Analysis grid limit is 200000 samples");engineParameters(p);windParameters(p);precipitationParameters(p);measurementParameters(p);hillInput(p);athleteInput(p,"athlete");
+        }
+    } catch(const std::exception &e){return fail(QObject::tr("Niespójne parametry: %1").arg(QString::fromUtf8(e.what())));}
+    if(config["targets"].toArray().size()>64)return fail(QObject::tr("Maksymalnie 64 cele kalibracji."));
+    for(const auto &row:config["targets"].toArray()){auto t=row.toObject();if(!row.isObject() || !t["variant"].isDouble() || t["variant"].toDouble()!=t["variant"].toInt() || t["variant"].toInt()<1 || t["variant"].toInt()>=variants.size() || !QStringList{"pairedDistance","pairedPoints","pairedPlace"}.contains(t["metric"].toString()) || !t["minimum"].isDouble() || !t["maximum"].isDouble() || t["minimum"].toDouble()>t["maximum"].toDouble())return fail(QObject::tr("Nieprawidłowy cel kalibracji."));}
+    // Keep retained JSON samples bounded independently of worker memory.
+    if(qint64(config["sampleLimit"].toInt())*variants.size()*rounds.size()>65536)return fail(QObject::tr("Zmniejsz liczbę zachowanych przykładów lub wariantów."));
     error.clear();return true;
 }
 }

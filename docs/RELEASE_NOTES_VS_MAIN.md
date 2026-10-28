@@ -2041,3 +2041,27 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
   zastąpiły słupki przy scenariuszach.
 - Edycja całej skoczni i jednego odcinka otwierają się zamiennie; rozdzielono
   ich zakres i hierarchię. Uzupełniono EN/CS modułu warunków.
+
+## Playground silnika v2 i końcowy audyt Windows (28.10.2026)
+
+- Nowy model eksperymentu schema 2: bezpośredni silnik v2, 199 ustawień z opisem,
+  jednostką i resetem; źródła z kanonicznych paczek ładowane w tle. Stare techniki,
+  liczbowa ważność i niezależnie losowane sektory nie sterują nowym modelem.
+- Porównania wariantów, rozkłady konkretnego skoczka i tabela całej stawki.
+  Początkowy zakres to indywidualne zawody bez KO, zgodnie z decyzją użytkownika.
+- Kontrolowane warunki i wspólny zegar konkursu; wspólne seedy oraz stabilne
+  próbki przy zmianie wątków. Mały podgląd automatyczny, debounce, anulowanie
+  przestarzałych zadań i niezależne uruchamianie dużych prób z ograniczeniem pamięci.
+- Krzywe rodzaju lądowania, noty, częstości z próby i pełny lot pogodowy.
+  Wiatr: przekroje czas/przestrzeń, mapa z jawną skalą, opady, odczyt pomiarowy
+  kontra odczuty wiatr i sparowany wpływ na metry. Eksport JSON/CSV oraz CLI
+  z nową opcją --analysis. Nazwane cele kalibracji z oceną przedziału 95%.
+- Konfiguracje i raporty pozostają poza parametrami normalnej gry. Nowa historia
+  nie miesza dawnych eksperymentów z nowym modelem.
+- Następny sezon używa draftów profili v2, zachowuje UUID/perki/zdjęcia i dodaje
+  nowe pozycje tego samego modelu; anulowanie nie modyfikuje danych sezonu.
+- Poprawiona publikacja migrowanych skoczni pod Windows i zachowanie plików po
+  zamknięciu QTemporaryFile. Ponowna migracja nie nadpisuje edytowanych paczek.
+- Synchronizacja tłumaczeń ze wszystkimi źródłami i EN/CS bez unfinished.
+  Build, cztery zestawy rdzenia MSVC, testy playgroundu i regresje integracji PASS.
+  Szczegóły/ograniczenia: PLAYGROUND_V2.md, SIMULATION_V2_PROGRESS.md.

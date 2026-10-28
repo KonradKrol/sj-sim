@@ -2319,14 +2319,16 @@ static void dataPackUiRegressions(MainWindow &main) {
     check(choice->count() == count + 1 && db->getGlobalJumpers().first().ageInYear(2026) == 28,"import adds independent named pack through visible action");
     qInfo()<<"PASS: pack import completed";
     main.resize(1024,720);
-    clickControl(scene(&dialog),"manageDataPack");
+    // Canonical studios replace the legacy pack bar in normal QML screens.
+    // Exercise the retained Widgets controller through its original actions.
     QTimer::singleShot(120,[] {
         QInputDialog *input = nullptr;
         for (auto *w : QApplication::topLevelWidgets()) if ((input=qobject_cast<QInputDialog *>(w)) && input->isVisible()) break;
         check(input && input->isVisible(),"new pack name prompt opens"); input->setTextValue("Empty pack"); input->accept();
     });
-    clickControl(scene(&dialog),"action-createDataPack");
-    check(choice->count() == count + 2 && db->getGlobalJumpers().isEmpty(),"new pack action creates a named empty roster");
+    bridge->activate(id(bridge,"createDataPack"));
+    QElapsedTimer creatingPack;creatingPack.start();while((choice->count()!=count+2 || !db->getGlobalJumpers().isEmpty()) && creatingPack.elapsed()<3000)QTest::qWait(20);
+    check(choice->count() == count + 2 && db->getGlobalJumpers().isEmpty(),QString("new pack action creates a named empty roster (count=%1, expected=%2, jumpers=%3)").arg(choice->count()).arg(count+2).arg(db->getGlobalJumpers().size()));
     bridge->edit(id(bridge,"dataPackChoice"),choice->count()-2);
     QMetaObject::invokeMethod(&dialog,"onJumpersListViewDoubleClicked",Qt::DirectConnection,Q_ARG(QModelIndex,list->getListModel()->index(0,0)));
     qInfo()<<"PASS: empty pack created";
@@ -2335,13 +2337,12 @@ static void dataPackUiRegressions(MainWindow &main) {
     // the interaction fixture before continuing the pack persistence checks.
     main.resize(1024,720);
     QTest::qWait(120);
-    clickControl(scene(&dialog),"closeDataPackSettings");
     auto *tabs = dialog.findChild<QTabWidget *>("tabWidget_main");
     tabs->setCurrentIndex(2); bridge->refresh();
     check(dialog.findChild<QWidget *>("dataPackAgeFormat")->parentWidget()->isHidden(),"age settings only apply to jumper packs");
     const auto rulesId = db->activePackId(DataPack::Rules);
     tabs->setCurrentIndex(3); check(choice->currentData().toString() == rulesId,"points and rules select the same pack");
-    qInfo()<<"PASS: pack settings popup closed, controller visible"<<dialog.isVisible();
+    qInfo()<<"PASS: legacy pack controller remains available"<<dialog.isVisible();
     auto answer = [](QMessageBox::StandardButton value) {
         QTimer::singleShot(120,[value] {
             QMessageBox *message = nullptr;
@@ -2360,7 +2361,7 @@ static void dataPackUiRegressions(MainWindow &main) {
         check(db->loadPacks() && db->activePack(DataPack::Jumpers)->name == "Saved roster", "save and reload preserve pack edits");
     }
     check(db->restorePacks(original,error) && db->writePacks(),"restore UI fixture packs");
-    main.resize(1024,640); qInfo()<<"PASS: pack editor switching, birth formats, import, export, save, discard and responsive layouts";
+    main.resize(1024,640); qInfo()<<"PASS: legacy pack controller switching, birth formats, import, export, save and discard";
 }
 
 #include "classification-regressions.h"

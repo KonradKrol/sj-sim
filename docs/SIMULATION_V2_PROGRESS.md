@@ -1155,3 +1155,78 @@ języków i kontrola TS. Brak błędów QML/bindingów/recursive rearrange.
 **Następnie: nowy playground pełnego silnika v2**, potem audyt następnego sezonu,
 presetów/list i szersze tłumaczenia. Poprzednie kolejki „po manipulacji poprawić
 wiatr” są już wykonane. Nowy playground nie był jeszcze implementowany.
+
+## 28.10.2026 — nowy playground v2 i audyt następnego sezonu (weryfikacja w toku)
+
+Ustalenia użytkownika: wszystkie trzy perspektywy analizy, na początek konkursy
+indywidualne bez KO, pełny dostęp do współczynników silnika i wiatru, osobna pełna
+analiza pola, tryb kontrolowany i przebieg konkursu, odizolowane eksperymenty,
+automatyczny mały podgląd oraz edytowalne cele kalibracji. Szczegóły i architektura:
+`PLAYGROUND_V2.md`. Automatyczny rozwój formy nadal odłożony.
+
+Zaimplementowano nowy schemat 2, bezpośrednie wywołanie Engine v2, registry
+parametrów, ciągłą pogodę, asynchroniczne kanoniczne źródła, widoki lądowania,
+wiatru, kalibracji i całej stawki oraz ograniczony koszt podglądu z debounce.
+Zachowano statystykę konkursową, porównania, historię, replay i eksporty.
+CLI `--analysis` zapisuje krzywe, przekroje, siatkę i porównania lotu bez/z wiatrem.
+
+Audyt znalazł lukę w NewSeasonConfiguratorWindow: nadal pokazywał dawne edytory
+profili i nie oznaczał list do dodawania danych jako v2. Dodano wspólne drafty
+profili, zachowanie zdjęć/UUID/perków oraz właściwy tryb wstawiania nowych pozycji.
+Trwa weryfikacja regresją draftów i normalnego sezonu.
+
+Zweryfikowano dotąd na Windows/Qt 6.8.3:
+- pełny build stanu pobranego z remote;
+- build pierwszej implementacji playgroundu;
+- CLI: sparowany batch i eksport raportu;
+- CLI: analiza z 81 punktami krzywych, siatką 11809 odczytów i 512 porównaniami lotu;
+- synchronizacja źródeł lupdate oraz EN/CS, brak unfinished i rozbieżności argumentów.
+
+Pełna przebudowa smoke po zmianie gałęzi była droga. Po końcowych zmianach nagłówków
+trzeba wykonać przyrostowy build przed uznaniem testów runtime za miarodajne.
+**Nie jest to jeszcze końcowy raport PASS nowych testów/UI.** Wyniki zostaną
+uzupełnione po weryfikacji. Main bez zmian, praca bez subagentów.
+
+## Zakończenie etapu — 28.10.2026, Windows/Qt 6.8.3
+
+Playground v2 i opisany audyt zostały ukończone oraz zweryfikowane. Poprzednia
+adnotacja „weryfikacja w toku” jest historycznym zapisem przebiegu tego etapu.
+199 ustawień obejmuje wszystkie publiczne współczynniki modeli jakości, lotu,
+lądowania, pola wiatru i pomiaru oraz wejścia profili i ustawienia analizy.
+Tooltipy opisują skutki, jednostki i wartości domyślne. Kopia wartości domyślnych
+w obliczeniach jest buforowana; metadane tekstowe nie powstają dla każdego konkursu.
+
+PASS:
+- `--playground-only`: zgodność z bezpośrednim silnikiem v2, wspólne seedy,
+  histogramy/próbki 1 i 4 wątki, oba zegary, DSQ zgodne z zasadami, anulowanie,
+  eksport, rzeczywiste run/replay, historia i wszystkie nowe widoki w obu motywach,
+  małe okna i powiększony tekst; podgląd wznowiony po zakończeniu batcha;
+- `--simulation-v2-only`: adapter, repozytorium, katalog, migracja, idempotencja,
+  zdjęcia, ochrona uszkodzonych danych i zachowanie gotowych paczek;
+- `--simulation-v2-competition-only`, `--simulation-v2-manipulation-only`,
+  `--simulation-v2-contest-weather-only`, `--simulation-v2-setup-only`,
+  `--simulation-v2-season-only`, `--simulation-v2-measurement-only`;
+- `--bulk-only`, `--workflow-only`, `--rosters-only`, `--dates-only`,
+  `--packs-only`, `--save-storage-only`, `--appearance-only`,
+  `--athlete-studio-only`, `--hill-studio-only`, `--translation-only`;
+- cztery niezależne zestawy rdzenia na MSVC: random, quality, weather, engine;
+- końcowy build produkcyjny oraz katalogi EN/CS: 0 unfinished, 0 błędów argumentów.
+
+CLI dodatkowo zweryfikowano na niejednolitym, zmiennym polu z podmuchami:
+identyczna analiza powtórzona dwa razy, stabilność przy 1/4 wątkach, niezmieniony
+fizyczny lot przy zmianie metody pomiaru i działający cel kalibracji OVR90–70.
+512 konkursów kontrolnych dało średnią przewagę **15,357421875 m** (cel 14–17 m).
+Niezależny test rdzenia pod MSVC uzyskał 15,3476 m w większej próbie.
+
+Audyt ujawnił dodatkowy błąd Windows w publikacji migrowanej skoczni:
+statyczny QFile::rename nie obsługiwał prawidłowo uchwytu QTemporaryFile.
+Własna metoda rename oraz setAutoRemove(false) po sukcesie zachowują nowy plik.
+Regresja obejmuje odczyt opublikowanego pliku i ponowną migrację po edycji paczki.
+
+Test dawnego zarządzania paczkami odwoływał się do nieobecnego już menu w nowym
+studio. Testuje teraz oryginalne akcje zachowanego kontrolera Widgets i czeka
+na wykonanie akcji kolejkowanej przez QuickBridge. Nie przywrócono przełącznika
+starego/nowego edytora. Nowy katalog i oba studia mają osobne regresje.
+
+Następnie: strojenie/kalibracja według oceny użytkownika, bez automatycznego
+nadpisywania normalnej gry. Automatyczny rozwój formy nadal odłożony.

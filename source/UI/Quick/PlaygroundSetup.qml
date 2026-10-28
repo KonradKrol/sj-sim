@@ -8,18 +8,22 @@ ScrollView {
     readonly property var config: backend.config
     property int selectedVariant: 0
     property int selectedGroup: 0
-    readonly property var groups: ["conditions","athlete","field","hill","engine","rules","experimental"]
-    readonly property var definitions: backend.definitions.filter(function(p){return p.group===setup.groups[setup.selectedGroup]})
+    property string parameterSearch: ""
+    onSelectedVariantChanged: backend.setAnalysisVariant(selectedVariant)
+    readonly property var groups: ["conditions","athlete","field","hill","quality","flight","landing","wind","precipitation","measurement","rules","analysis"]
+    readonly property var definitions: backend.definitions.filter(function(p){return p.group===setup.groups[setup.selectedGroup] && (!setup.parameterSearch.length || (p.label+" "+p.key).toLowerCase().indexOf(setup.parameterSearch.toLowerCase())>=0)})
     readonly property string focusNamesKey: {var names=[];for(var i=0;i<config.athletes;i++)names.push(config.roster ? config.roster[i].name+" "+config.roster[i].surname : qsTr("Zawodnik %1").arg(i+1));return JSON.stringify(names)}
     property int sweepKey: 0
     readonly property real sweepMinimum: backend.definitions[sweepKey].key==="hill.hs"?config.hill.k:backend.definitions[sweepKey].minimum
     readonly property real sweepMaximum: backend.definitions[sweepKey].key==="hill.k"?config.hill.hs:backend.definitions[sweepKey].maximum
-    function parameterValue(key,index){var changes=config.variants[index].changes;return changes[key]!==undefined?changes[key]:config.parameters[key]!==undefined?config.parameters[key]:key==="hill.k"?config.hill.k:key==="hill.hs"?config.hill.hs:backend.definitions.filter(function(p){return p.key===key})[0].default}
+    function parameterValue(key,index){return backend.effective[index] ? backend.effective[index][key] : 0}
+
     contentWidth: availableWidth; clip: true
     onConfigChanged: selectedVariant=Math.max(0,Math.min(selectedVariant,config.variants.length-1))
     ColumnLayout {
         width: setup.availableWidth; spacing: 12
         enabled: !setup.backend.busy
+        PlaygroundLive { Layout.fillWidth: true; backend: setup.backend; selectedVariant: setup.selectedVariant }
         GridLayout {
             columns: setup.width<780?1:2
             Layout.fillWidth: true; columnSpacing: 14; rowSpacing: 12
@@ -39,6 +43,7 @@ ScrollView {
                     }
                     Label { text: qsTr("Ziarno losowania"); color: Theme.muted; font.pointSize: Theme.caption }
                     SField { objectName: "playgroundSeed"; Layout.fillWidth: true; text: setup.config.seed; validator: RegularExpressionValidator { regularExpression: /[0-9]{1,20}/ } Accessible.name: qsTr("Ziarno losowania"); onEditingFinished: setup.backend.setValue("seed",text) }
+                    RowLayout { visible: setup.backend.sourceNotes.length>0; Layout.fillWidth: true; Label { text: qsTr("Uwagi dotyczące paczek"); color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap } HelpDot { explanation: setup.backend.sourceNotes } }
                     Label { text: qsTr("Stawka"); color: Theme.muted; font.pointSize: Theme.caption }
                     SChoice { objectName: "playgroundRoster"; Layout.fillWidth: true; model: setup.backend.athletePacks; displayText: setup.config.roster ? setup.config.rosterName || qsTr("Stawka z konfiguracji") : qsTr("Stawka syntetyczna"); onActivated: setup.backend.useAthletePack(currentIndex) }
                     Label { text: qsTr("Skocznia"); color: Theme.muted; font.pointSize: Theme.caption }
@@ -48,7 +53,7 @@ ScrollView {
                         PlaygroundNumber { Layout.fillWidth: true; name: "playground-k"; caption: qsTr("K"); value: setup.config.hill.k; minimum: 10; maximum: 300; onCommitted: {var hill=Object.assign({},setup.config.hill);hill.k=value;hill.hs=Math.max(value,hill.hs);setup.backend.setValue("hill",hill)} }
                         PlaygroundNumber { Layout.fillWidth: true; name: "playground-hs"; caption: qsTr("HS"); value: setup.config.hill.hs; minimum: setup.config.hill.k; maximum: 400; onCommitted: {var hill=Object.assign({},setup.config.hill);hill.hs=value;setup.backend.setValue("hill",hill)} }
                     }
-                    RowLayout { Layout.fillWidth: true; Label { text: qsTr("Zasady"); color: Theme.muted; font.pointSize: Theme.caption } HelpDot { explanation: qsTr("Batch korzysta z zasad gry. Ręczny dobór grup KO jest zastępowany losowaniem z zapisanym ziarnem, aby nie zatrzymywać obliczeń.") } Item { Layout.fillWidth: true } }
+                    RowLayout { Layout.fillWidth: true; Label { text: qsTr("Zasady"); color: Theme.muted; font.pointSize: Theme.caption } HelpDot { explanation: qsTr("Konkursy indywidualne bez KO. Profile v2 i punktacja są wspólne z grą; eksperyment nie zmienia danych gry.") } Item { Layout.fillWidth: true } }
                     SChoice { objectName: "playgroundRules"; Layout.fillWidth: true; model: setup.backend.ruleNames; displayText: setup.config.rulesData ? setup.config.rulesData.name : qsTr("Zasady eksperymentu"); onActivated: setup.backend.useRules(currentIndex) }
                     RowLayout {
                         visible: !setup.config.rulesData; Layout.fillWidth: true
@@ -77,10 +82,24 @@ ScrollView {
                         SField { Layout.fillWidth: true; text: setup.config.variants[setup.selectedVariant].name; Accessible.name: qsTr("Nazwa wariantu"); onEditingFinished: setup.backend.renameVariant(setup.selectedVariant,text) }
                         SButton { text: qsTr("Usuń"); quiet: true; enabled: setup.selectedVariant>0; onClicked: setup.backend.removeVariant(setup.selectedVariant) }
                     }
-                    SChoice { Layout.fillWidth: true; model: [qsTr("Warunki"),qsTr("Wybrany skoczek"),qsTr("Stawka"),qsTr("Skocznia"),qsTr("Silnik"),qsTr("Zasady"),qsTr("Współczynniki eksperymentalne")]; Accessible.name: qsTr("Grupa parametrów"); currentIndex: setup.selectedGroup; onActivated: setup.selectedGroup=currentIndex }
+                    SChoice { Layout.fillWidth: true; model: [qsTr("Warunki"),qsTr("Wybrany skoczek"),qsTr("Stawka"),qsTr("Skocznia"),qsTr("Jakość i perki"),qsTr("Lot i geometria"),qsTr("Lądowanie i noty"),qsTr("Pole wiatru"),qsTr("Opady"),qsTr("Pomiar wiatru"),qsTr("Punktacja"),qsTr("Analiza")]; Accessible.name: qsTr("Grupa parametrów"); currentIndex: setup.selectedGroup; onActivated: setup.selectedGroup=currentIndex }
+                    SField { Layout.fillWidth: true; placeholderText: qsTr("Szukaj parametru w grupie…"); Accessible.name: placeholderText; onTextEdited: setup.parameterSearch=text }
+                    Label { text: qsTr("Domyślna wartość i jednostka są pod każdym polem. ↺ przywraca dziedziczenie lub wartość silnika."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                     GridLayout {
-                        Layout.fillWidth: true; columns: 2; columnSpacing: 10; rowSpacing: 8
-                        Repeater { model: setup.definitions; PlaygroundNumber { required property var modelData; Layout.fillWidth: true; Layout.minimumWidth: 0; name: "playground-parameter-"+modelData.key; caption: modelData.label; value: setup.parameterValue(modelData.key,setup.selectedVariant); minimum: modelData.minimum; maximum: modelData.maximum; step: modelData.step; decimals: step<1?2:0; help: modelData.help; enabled: !(setup.config.roster && (modelData.key==="field.skill" || modelData.key==="field.spread")); toggle: modelData.type==="boolean"; options: modelData.options || []; onCommitted: setup.backend.setVariantParameter(setup.selectedVariant,modelData.key,value) } }
+                        Layout.fillWidth: true; columns: setup.width<550?1:2; columnSpacing: 10; rowSpacing: 8
+                        Repeater {
+                            model: setup.definitions
+                            ColumnLayout {
+                                required property var modelData
+                                Layout.fillWidth: true; Layout.minimumWidth: 0; spacing: 2
+                                PlaygroundNumber { Layout.fillWidth: true; name: "playground-parameter-"+modelData.key; caption: modelData.label; value: setup.parameterValue(modelData.key,setup.selectedVariant); minimum: modelData.minimum; maximum: modelData.maximum; step: modelData.step; decimals: step<.01?4:step<1?3:0; help: modelData.help; enabled: !(setup.config.roster && (modelData.key==="field.skill" || modelData.key==="field.spread")); options: modelData.options || []; onCommitted: setup.backend.setVariantParameter(setup.selectedVariant,modelData.key,value) }
+                                RowLayout {
+                                    Layout.fillWidth: true
+                                    Label { text: modelData.unit+" · "+qsTr("Domyślnie: %1").arg(modelData.default); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                                    SButton { text: "↺"; quiet: true; Accessible.name: qsTr("Przywróć parametr %1").arg(modelData.label); onClicked: setup.backend.resetParameter(setup.selectedVariant,modelData.key) }
+                                }
+                            }
+                        }
                     }
                     Rectangle { Layout.fillWidth: true; implicitHeight: 1; color: Theme.outline }
                     Label { text: qsTr("Gotowe porównania"); color: Theme.ink; font.pointSize: Theme.body; font.bold: true }

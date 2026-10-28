@@ -291,3 +291,14 @@ Sprawdź zawartość paczki: `.exe`, biblioteki Qt, plugin `platforms\qwindows.d
 > Przeczytaj WINDOWS_SETUP.MD i sj-sim.pro. Przygotuj środowisko Windows x64 do rozwoju aktualnej gałęzi feature/qml-competition-config. Wykryj istniejące MSVC/SDK/Qt, doinstaluj brakujące zależności zgodnie z instrukcją, zbuduj domyślny interfejs Quick w osobnym buildzie, przygotuj dane obok właściwego .exe i uruchom aplikację oraz odpowiednie testy. Nie pracuj na main, nie nadpisuj istniejącego userData i nie używaj starego eksperymentu competition_quick. Podaj wersje narzędzi, ścieżkę do .exe, wynik testów i ewentualny konkretny błąd wymagający dalszej poprawki.
 
 Dalszy kontekst: [architektura Qt Quick](QUICK_UI_MIGRATION.md), [pełny wykaz zmian](docs/RELEASE_NOTES_VS_MAIN.md), [ostatni stan prac](docs/RESUME_2026-10-22.md). Instrukcje Qt z `.agents/skills` są dołączone do repozytorium i mogą być używane przez Codexa także na Windowsie.
+
+## Samodzielne testy rdzenia v2 pod Windows
+
+Nie wymagają Qt, korzystają z Visual Studio 2022 C++ Build Tools:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test-simulation-v2-core.ps1
+```
+
+Skrypt uruchamia osobno testy RNG, jakości, ciągłej pogody i pełnego silnika.
+Playground v2, CLI, parametry i eksporty: `docs/PLAYGROUND_V2.md`.

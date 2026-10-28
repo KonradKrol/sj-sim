@@ -3,9 +3,10 @@
 Rdzeń w `source/simulation-v2` jest niezależny od Qt i interfejsu użytkownika.
 Osobne pliki `ProfileBridge`, `ProfileMigration` i `GameSimulationBridge`
 integrują go z Qt oraz dotychczasowymi obiektami gry.
-Dotychczasowe dane nadal używają starego silnika. Adapter uruchamia v2 dla
-obiektów z nowymi profilami; domyślna migracja katalogu i przebudowa UI
-nie są jeszcze zakończone.
+Dotychczasowe dane nadal mogą używać starego silnika. Nowe normalne ścieżki
+konkursów, pojedynczych skoków i sezonów korzystają z kanonicznych profili v2;
+przybliżona migracja zachowuje źródłowe paczki. Adapter odrzuca mieszane wersje.
+Strojenie i pomiar modelu opisuje [PLAYGROUND_V2.md](PLAYGROUND_V2.md).
 Współczynniki poniżej są punktem wyjścia do kalibracji, nie modelem
 potwierdzonym na danych rzeczywistych zawodów.
 

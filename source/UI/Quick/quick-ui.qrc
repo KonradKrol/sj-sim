@@ -242,6 +242,11 @@
 <file>WindFields.qml</file>
 <file>WindSectorStrip.qml</file>
 <file>PlaygroundScreen.qml</file>
+<file>PlaygroundLive.qml</file>
+<file>PlaygroundField.qml</file>
+<file>PlaygroundAnalysis.qml</file>
+<file>PlaygroundTargets.qml</file>
+<file>AnalysisPlot.qml</file>
 <file>PlaygroundSetup.qml</file>
 <file>PlaygroundResults.qml</file>
 <file>PlaygroundReplay.qml</file>

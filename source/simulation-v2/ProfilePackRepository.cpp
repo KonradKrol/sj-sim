@@ -161,10 +161,10 @@ bool ProfilePackRepository::migrate(const DataPack &source,double maximumSkills,
         if(bytes.size()>maximumBytes || !file.open() || file.write(bytes)!=bytes.size() || !file.flush()) {
             error=QObject::tr("Nie udało się przygotować migrowanej paczki.");return false;
         }
-        file.close();
-        if(!QFile::rename(file.fileName(),filePath(pack))) {
+        if(!file.rename(filePath(pack))) {
             error=QObject::tr("Nie udało się opublikować migrowanej paczki. Istniejące pliki pozostają bez zmian.");return false;
         }
+        file.setAutoRemove(false);
     }
     result=pack;issues=warnings;error.clear();return true;
 }

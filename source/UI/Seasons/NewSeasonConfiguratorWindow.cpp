@@ -7,6 +7,8 @@
 #include "../DatabaseEditor/DatabaseItemsListView.h"
 #include "../ResponsiveWindowUtils.h"
 #include <QMessageBox>
+#include "../../simulation-v2/ProfileDraft.h"
+#include "../EditorWidgets/SimulationProfileEditor.h"
 #include <QComboBox>
 #include <QInputDialog>
 #include <QDialog>
@@ -64,19 +66,14 @@ NewSeasonConfiguratorWindow::NewSeasonConfiguratorWindow(bool nextSeason, QWidge
     jumperEditor = new JumperEditorWidget();
     jumperEditor->setParent(this);
     ui->verticalLayout_jumperEditor->addWidget(jumperEditor);
-    if(!jumpers.isEmpty())
-    {
-        jumperEditor->setJumper(jumpers.first());
-        jumperEditor->fillJumperInputs();
-    }
-    connect(jumpersListView, &DatabaseItemsListView::listViewDoubleClicked, this, [this](const QModelIndex &index){
-        jumperEditor->show();
-        jumperEditor->setJumper(jumpers[index.row()]);
-        jumperEditor->fillJumperInputs();
-        actualJumperIndex = index.row();
-    });
+    athleteDraft=new SimulationProfileDraft(DataPack::Jumpers,this);athleteDraft->setObjectName("nextSeasonAthleteDraft");
+    athleteProfileEditor=createSimulationProfileEditor(athleteDraft,false,this);athleteProfileEditor->setProperty("simulationDraft",QVariant::fromValue<QObject *>(athleteDraft));athleteProfileEditor->setProperty("simulationDraftSeason",true);ui->verticalLayout_jumperEditor->addWidget(athleteProfileEditor);
+    connect(athleteDraft,&SimulationProfileDraft::changed,this,[this]{int row=jumpers.indexOf(editedAthlete);if(row<0 || !athleteDraft->valid() || !athleteDraft->message().isEmpty())return;*editedAthlete=athleteDraft->configuredJumper();emit jumpersListView->getListModel()->dataChanged(jumpersListView->getListModel()->index(row),jumpersListView->getListModel()->index(row));});
+    showAthlete(jumpers.isEmpty()?-1:0);
+    connect(jumpersListView,&DatabaseItemsListView::listViewDoubleClicked,this,[this](const QModelIndex &index){showAthlete(index.row());});
+    connect(jumpersListView,&DatabaseItemsListView::remove,this,[this]{showAthlete(jumpers.isEmpty()?-1:qMin(actualJumperIndex,int(jumpers.size())-1));});
     connect(jumperEditor, &JumperEditorWidget::submitted, this, [this](){
-        if(actualJumperIndex > (-1) && actualJumperIndex < jumpers.count()){
+        if(actualJumperIndex > (-1) && actualJumperIndex < jumpers.count() && !jumpers[actualJumperIndex]->getSimulationProfile()){
             const auto id = jumpers[actualJumperIndex]->getID();
             *jumpers[actualJumperIndex] = jumperEditor->getJumperFromWidgetInput();
             jumpers[actualJumperIndex]->setID(id);
@@ -95,18 +92,12 @@ NewSeasonConfiguratorWindow::NewSeasonConfiguratorWindow(bool nextSeason, QWidge
 
     hillEditor = new HillEditorWidget(this);
     ui->verticalLayout_hillEditor->addWidget(hillEditor);
-    if(!hills.isEmpty())
-    {
-        hillEditor->setHill(hills.value(0));
-        hillEditor->fillHillInputs();
-    }
-
-    connect(hillsListView, &DatabaseItemsListView::listViewDoubleClicked, this, [this](const QModelIndex &index){
-        hillEditor->show();
-        hillEditor->setHill(hills[index.row()]);
-        hillEditor->fillHillInputs();
-        actualHillIndex = index.row();
-    });
+    hillDraft=new SimulationProfileDraft(DataPack::Hills,this);hillDraft->setObjectName("nextSeasonHillDraft");
+    hillProfileEditor=createSimulationProfileEditor(hillDraft,true,this);hillProfileEditor->setProperty("simulationDraft",QVariant::fromValue<QObject *>(hillDraft));hillProfileEditor->setProperty("simulationDraftHill",true);hillProfileEditor->setProperty("simulationDraftSeason",true);ui->verticalLayout_hillEditor->addWidget(hillProfileEditor);
+    connect(hillDraft,&SimulationProfileDraft::changed,this,[this]{int row=hills.indexOf(editedHill);if(row<0 || !hillDraft->valid() || !hillDraft->message().isEmpty())return;*editedHill=hillDraft->configuredHill();emit hillsListView->getListModel()->dataChanged(hillsListView->getListModel()->index(row),hillsListView->getListModel()->index(row));});
+    showHill(hills.isEmpty()?-1:0);
+    connect(hillsListView,&DatabaseItemsListView::listViewDoubleClicked,this,[this](const QModelIndex &index){showHill(index.row());});
+    connect(hillsListView,&DatabaseItemsListView::remove,this,[this]{showHill(hills.isEmpty()?-1:qMin(actualHillIndex,int(hills.size())-1));});
     connect(hillsListView, &DatabaseItemsListView::insert, this, [this](){
         calendar.fixCompetitionsHills(&hills, hills.value(0));
     });
@@ -114,7 +105,7 @@ NewSeasonConfiguratorWindow::NewSeasonConfiguratorWindow(bool nextSeason, QWidge
         calendar.fixCompetitionsHills(&hills, hills.value(0));
     });
     connect(hillEditor, &HillEditorWidget::submitted, this, [this](){
-        if(actualHillIndex > (-1) && actualHillIndex < hills.count()){
+        if(actualHillIndex > (-1) && actualHillIndex < hills.count() && !hills[actualHillIndex]->getSimulationProfile()){
             const auto id = hills[actualHillIndex]->getID();
             *hills[actualHillIndex] = hillEditor->getHillFromWidgetInput();
             hills[actualHillIndex]->setID(id);
@@ -304,10 +295,8 @@ void NewSeasonConfiguratorWindow::setHills(const QVector<Hill *> &newHills)
 {
     hills = newHills;
     hillsListView->setupListModel();
-    actualHillIndex = hills.isEmpty() ? -1 : 0;
-    hillEditor->setHill(hills.value(0));
-    hillEditor->setVisible(!hills.isEmpty());
-    if(!hills.isEmpty())hillEditor->fillHillInputs();
+    hillsListView->setProperty("simulationV2",property("simulationV2").toBool() || (!hills.isEmpty() && hills.first()->getSimulationProfile()));
+    showHill(hills.isEmpty()?-1:0);
     hillsListView->selectOnlyFirstRow();
 }
 
@@ -365,10 +354,8 @@ void NewSeasonConfiguratorWindow::setJumpers(const QVector<Jumper *> &newJumpers
 {
     jumpers = newJumpers;
     jumpersListView->setupListModel();
-    actualJumperIndex = jumpers.isEmpty() ? -1 : 0;
-    jumperEditor->setJumper(jumpers.value(0));
-    jumperEditor->setVisible(!jumpers.isEmpty());
-    if(!jumpers.isEmpty())jumperEditor->fillJumperInputs();
+    jumpersListView->setProperty("simulationV2",property("simulationV2").toBool() || (!jumpers.isEmpty() && jumpers.first()->getSimulationProfile()));
+    showAthlete(jumpers.isEmpty()?-1:0);
     jumpersListView->selectOnlyFirstRow();
 }
 
@@ -380,4 +367,13 @@ bool NewSeasonConfiguratorWindow::getNextSeason() const
 void NewSeasonConfiguratorWindow::setNextSeason(bool newNextSeason)
 {
     nextSeason = newNextSeason;
+}
+
+void NewSeasonConfiguratorWindow::showAthlete(int row){
+    actualJumperIndex=row;editedAthlete=jumpers.value(row);bool modern=editedAthlete && editedAthlete->getSimulationProfile();athleteProfileEditor->setVisible(modern);jumperEditor->setVisible(editedAthlete && !modern);
+    if(modern)athleteDraft->load(*editedAthlete,editedAthlete->getSimulationAssetDirectory());else if(editedAthlete){jumperEditor->setJumper(editedAthlete);jumperEditor->fillJumperInputs();}
+}
+void NewSeasonConfiguratorWindow::showHill(int row){
+    actualHillIndex=row;editedHill=hills.value(row);bool modern=editedHill && editedHill->getSimulationProfile();hillProfileEditor->setVisible(modern);hillEditor->setVisible(editedHill && !modern);
+    if(modern)hillDraft->load(*editedHill);else if(editedHill){hillEditor->setHill(editedHill);hillEditor->fillHillInputs();}
 }
