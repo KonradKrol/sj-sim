@@ -15,6 +15,7 @@ class SimulationWeatherSetup : public QObject {
     Q_PROPERTY(QVariantMap values READ values NOTIFY changed)
     Q_PROPERTY(QVariantList references READ references NOTIFY changed)
     Q_PROPERTY(QVariantList preview READ preview NOTIFY previewChanged)
+    Q_PROPERTY(QVariantList basePreview READ basePreview NOTIFY changed)
     Q_PROPERTY(QVariantList presets READ presets NOTIFY changed)
     Q_PROPERTY(double previewSeconds READ previewSeconds WRITE setPreviewSeconds NOTIFY previewChanged)
     Q_PROPERTY(QString message READ message NOTIFY changed)
@@ -27,6 +28,7 @@ public:
     QVariantMap values() const;
     QVariantList references() const;
     QVariantList preview() const;
+    QVariantList basePreview() const;
     QVariantList presets() const;
     double previewSeconds() const {return previewTime;}
     double previewOrigin() const {return origin;}
@@ -53,7 +55,7 @@ private:
     HillProfile hill;
     bool hasHill=false,modified=false,precipitationEdited=false;
     int preset=-1;
-    double variability=0,differences=0,previewTime=0,requestedDirection=0,origin=0;
+    double variability=0,differences=0,previewTime=0,requestedDirection=0,requestedStrength=0,origin=0;
     SimulationV2::Surface surface=SimulationV2::Surface::Snow;
     SimulationV2::Seed seed=0;
     std::array<double,6> stationZeroDirections{};

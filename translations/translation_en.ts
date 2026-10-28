@@ -11634,6 +11634,18 @@ Check that you selected the correct file.</translation>
             <source>Zastosuj</source>
             <translation>Apply</translation>
         </message>
+        <message>
+            <source>Bez opadów</source>
+            <translation>No precipitation</translation>
+        </message>
+        <message>
+            <source>Rodzaj opadów</source>
+            <translation>Precipitation type</translation>
+        </message>
+        <message>
+            <source>Deszcz</source>
+            <translation>Rain</translation>
+        </message>
     </context>
     <context>
         <name>QuickBridge</name>
@@ -16091,6 +16103,316 @@ li.checked::marker { content: "\2612"; }
         <message>
             <source>Wpisz poprawną liczbę.</source>
             <translation>Enter a valid number.</translation>
+        </message>
+    </context>
+    <context>
+        <name>WeatherWorkspace</name>
+        <message>
+            <source>Własne warunki</source>
+            <translation>Custom conditions</translation>
+        </message>
+        <message>
+            <source>Wiatr na zeskoku</source>
+            <translation>Wind along the slope</translation>
+        </message>
+        <message>
+            <source>Wiatr nie zmienia się w czasie.</source>
+            <translation>Wind does not change over time.</translation>
+        </message>
+        <message>
+            <source>Niewielkie wahania; kierunek zwykle pozostaje podobny.</source>
+            <translation>Small fluctuations; direction usually stays similar.</translation>
+        </message>
+        <message>
+            <source>Warunki wyraźnie się zmieniają, czasem przez kilka kolejnych skoków.</source>
+            <translation>Conditions change noticeably, sometimes for several consecutive jumps.</translation>
+        </message>
+        <message>
+            <source>Duże, szybkie zmiany; możliwe silne podmuchy i odwrócenia kierunku.</source>
+            <translation>Large, rapid changes; strong gusts and direction reversals are possible.</translation>
+        </message>
+        <message>
+            <source>Warunki</source>
+            <translation>Conditions</translation>
+        </message>
+        <message>
+            <source>%1 · HS%2</source>
+            <translation>%1 · HS%2</translation>
+        </message>
+        <message>
+            <source>Losuj warunki</source>
+            <translation>Generate conditions</translation>
+        </message>
+        <message>
+            <source>Wiatr i opady według skoczni i jej perków.</source>
+            <translation>Wind and precipitation based on the hill and its perks.</translation>
+        </message>
+        <message>
+            <source>Ukryj scenariusze</source>
+            <translation>Hide scenarios</translation>
+        </message>
+        <message>
+            <source>Scenariusze ▾</source>
+            <translation>Scenarios ▾</translation>
+        </message>
+        <message>
+            <source>Losuj wariant scenariusza</source>
+            <translation>Generate scenario variant</translation>
+        </message>
+        <message>
+            <source>Ustawienia wyjściowe</source>
+            <translation>Initial settings</translation>
+        </message>
+        <message>
+            <source>Podgląd ustawień bez chwilowych podmuchów.</source>
+            <translation>Settings preview without momentary gusts.</translation>
+        </message>
+        <message>
+            <source>Ukryj dostosowanie</source>
+            <translation>Hide adjustments</translation>
+        </message>
+        <message>
+            <source>Dostosuj wiatr</source>
+            <translation>Adjust wind</translation>
+        </message>
+        <message>
+            <source>Zastosuj belkę</source>
+            <translation>Apply gate</translation>
+        </message>
+        <message>
+            <source>Losuj nowy układ</source>
+            <translation>Generate new profile</translation>
+        </message>
+        <message>
+            <source>Zachowuje cztery ustawienia całej skoczni. Losuje nowe odcinki i podmuchy, zastępując ręczne zmiany miejsc.</source>
+            <translation>Keeps the four whole-hill settings. Generates new sections and gusts, replacing manual local changes.</translation>
+        </message>
+        <message>
+            <source>Nie wybrano skoczni</source>
+            <translation>No hill selected</translation>
+        </message>
+        <message>
+            <source>Wybierz paczkę i skocznię w konfiguracji symulacji.</source>
+            <translation>Select a pack and hill in simulation setup.</translation>
+        </message>
+        <message>
+            <source>Konfiguracja</source>
+            <translation>Setup</translation>
+        </message>
+    </context>
+    <context>
+        <name>WeatherTuning</name>
+        <message>
+            <source>Cała skocznia</source>
+            <translation>Whole hill</translation>
+        </message>
+        <message>
+            <source>Kierunek i siła dotyczą całej skoczni. Różnice na zeskoku losują nowy układ miejsc. Zmienność określa późniejsze zmiany w czasie.</source>
+            <translation>Direction and strength apply to the whole hill. Slope differences generate a new spatial profile. Variability controls subsequent changes over time.</translation>
+        </message>
+        <message>
+            <source>Siła wyjściowa · m/s</source>
+            <translation>Initial strength · m/s</translation>
+        </message>
+        <message>
+            <source>Mocny wiatr może być stabilny, a słaby — zmienny.</source>
+            <translation>Strong wind can be stable, and weak wind can be variable.</translation>
+        </message>
+        <message>
+            <source>Zmienność w czasie · 0–10</source>
+            <translation>Variability over time · 0–10</translation>
+        </message>
+        <message>
+            <source>0: bez zmian. Wyżej: silniejsze podmuchy i szybsze zmiany.</source>
+            <translation>0: no changes. Higher: stronger gusts and faster changes.</translation>
+        </message>
+        <message>
+            <source>Różnice na zeskoku · 0–10</source>
+            <translation>Differences along the slope · 0–10</translation>
+        </message>
+        <message>
+            <source>Wyższa wartość: większe różnice wzdłuż skoczni.</source>
+            <translation>Higher values mean greater differences along the hill.</translation>
+        </message>
+    </context>
+    <context>
+        <name>WindStationEditor</name>
+        <message>
+            <source>Odcinek · %1 m</source>
+            <translation>Section · %1 m</translation>
+        </message>
+        <message>
+            <source>Zmienia tylko okolice wskazanego miejsca. Podmuchy nadal zależą od zmienności w czasie.</source>
+            <translation>Changes only the area around this position. Gusts still depend on temporal variability.</translation>
+        </message>
+        <message>
+            <source>Zamknij edycję miejsca</source>
+            <translation>Close local editor</translation>
+        </message>
+        <message>
+            <source>Skąd wieje</source>
+            <translation>Wind from</translation>
+        </message>
+        <message>
+            <source>Siła wyjściowa · m/s</source>
+            <translation>Initial strength · m/s</translation>
+        </message>
+        <message>
+            <source>Siła wiatru w wybranym miejscu</source>
+            <translation>Wind strength at the selected position</translation>
+        </message>
+    </context>
+    <context>
+        <name>WeatherPrecipitation</name>
+        <message>
+            <source>Opady</source>
+            <translation>Precipitation</translation>
+        </message>
+        <message>
+            <source>Bez opadów</source>
+            <translation>No precipitation</translation>
+        </message>
+        <message>
+            <source>Śnieg</source>
+            <translation>Snow</translation>
+        </message>
+        <message>
+            <source>Deszcz</source>
+            <translation>Rain</translation>
+        </message>
+        <message>
+            <source>Rodzaj opadów</source>
+            <translation>Precipitation type</translation>
+        </message>
+        <message>
+            <source>Słabe</source>
+            <translation>Light</translation>
+        </message>
+        <message>
+            <source>Umiarkowane</source>
+            <translation>Moderate</translation>
+        </message>
+        <message>
+            <source>Silne</source>
+            <translation>Heavy</translation>
+        </message>
+        <message>
+            <source>Natężenie opadów</source>
+            <translation>Precipitation intensity</translation>
+        </message>
+        <message>
+            <source>Stałe</source>
+            <translation>Steady</translation>
+        </message>
+        <message>
+            <source>Zmienne</source>
+            <translation>Variable</translation>
+        </message>
+        <message>
+            <source>Nasilające się</source>
+            <translation>Increasing</translation>
+        </message>
+        <message>
+            <source>Przebieg opadów</source>
+            <translation>Precipitation pattern</translation>
+        </message>
+        <message>
+            <source>Śnieg w torach spowalnia rozbieg.</source>
+            <translation>Snow in the tracks slows the inrun.</translation>
+        </message>
+        <message>
+            <source>Lekki deszcz nie musi hamować. Ulewa mocno pogarsza skoki.</source>
+            <translation>Light rain need not slow the jump. Heavy rain makes jumps substantially worse.</translation>
+        </message>
+    </context>
+    <context>
+        <name>WeatherPresetGrid</name>
+        <message>
+            <source>Pod narty</source>
+            <translation>Headwind</translation>
+        </message>
+        <message>
+            <source>Spokojny</source>
+            <translation>Calm</translation>
+        </message>
+        <message>
+            <source>Mocny</source>
+            <translation>Strong</translation>
+        </message>
+        <message>
+            <source>Zmienny</source>
+            <translation>Variable</translation>
+        </message>
+        <message>
+            <source>W plecy</source>
+            <translation>Tailwind</translation>
+        </message>
+        <message>
+            <source>Stabilny</source>
+            <translation>Stable</translation>
+        </message>
+        <message>
+            <source>Boczny</source>
+            <translation>Crosswind</translation>
+        </message>
+        <message>
+            <source>Pozostałe</source>
+            <translation>Other</translation>
+        </message>
+        <message>
+            <source>Cisza</source>
+            <translation>Calm</translation>
+        </message>
+        <message>
+            <source>Różny na zeskoku</source>
+            <translation>Varies along the slope</translation>
+        </message>
+        <message>
+            <source>Loteria</source>
+            <translation>Lottery</translation>
+        </message>
+    </context>
+    <context>
+        <name>WindDirectionDial</name>
+        <message>
+            <source>Kierunek wyjściowy</source>
+            <translation>Initial direction</translation>
+        </message>
+        <message>
+            <source>Pod narty + boczny</source>
+            <translation>Headwind + crosswind</translation>
+        </message>
+        <message>
+            <source>Pod narty</source>
+            <translation>Headwind</translation>
+        </message>
+        <message>
+            <source>W plecy + boczny</source>
+            <translation>Tailwind + crosswind</translation>
+        </message>
+        <message>
+            <source>W plecy</source>
+            <translation>Tailwind</translation>
+        </message>
+        <message>
+            <source>Boczny z lewej</source>
+            <translation>Crosswind from the left</translation>
+        </message>
+        <message>
+            <source>Boczny z prawej</source>
+            <translation>Crosswind from the right</translation>
+        </message>
+        <message>
+            <source>Wybierz skąd wieje wiatr. Strzałki klawiatury zmieniają kąt o jeden stopień.</source>
+            <translation>Choose where the wind comes from. Keyboard arrows change the angle by one degree.</translation>
+        </message>
+        <message>
+            <source>POD NARTY</source>
+            <translation>HEADWIND</translation>
+        </message>
+        <message>
+            <source>W PLECY</source>
+            <translation>TAILWIND</translation>
         </message>
     </context>
 </TS>

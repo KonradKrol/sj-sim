@@ -1,6 +1,7 @@
 #include "WeatherSetupEditor.h"
 #include "../../simulation-v2/WeatherSetup.h"
 #include <QComboBox>
+#include <QIcon>
 #include <QDoubleSpinBox>
 #include <QFormLayout>
 #include <QPushButton>
@@ -32,21 +33,28 @@ QWidget *createWeatherSetupEditor(SimulationWeatherSetup *backend,QWidget *paren
     number("strength",QObject::tr("Siła wyjściowa · m/s"),10);
     number("variability",QObject::tr("Zmienność w czasie · 0–10"),10,.1);
     number("differences",QObject::tr("Różnice na zeskoku · 0–10"),10,.1);
-    const auto choice=[&](const QString &key,const QString &label,const QStringList &options) {
+    const auto choice=[&](const QString &key,const QString &label,const QStringList &options,int offset=0) {
         auto *input=new QComboBox(panel);input->addItems(options);form->addRow(label,input);
-        input->setCurrentIndex(backend->values()[key].toInt());
-        if(key=="precipitationPattern") {
-            input->setEnabled(backend->values()["precipitationLevel"].toInt()>0);
-            QObject::connect(backend,&SimulationWeatherSetup::changed,input,[=]{input->setEnabled(backend->values()["precipitationLevel"].toInt()>0);});
-        }
-        QObject::connect(input,QOverload<int>::of(&QComboBox::activated),backend,[=](int index){backend->setValue(key,index);});
-        QObject::connect(backend,&SimulationWeatherSetup::changed,input,[=]{const QSignalBlocker block(input);input->setCurrentIndex(backend->values()[key].toInt());});
+        QObject::connect(input,QOverload<int>::of(&QComboBox::activated),backend,[=](int index){backend->setValue(key,index+offset);});
+        const auto update=[=]{
+            const QSignalBlocker block(input);input->setCurrentIndex(qMax(0,backend->values()[key].toInt()-offset));
+            if(key!="precipitationType") {
+                const bool visible=backend->values()["precipitationType"].toInt()>0;input->setVisible(visible);
+                if(auto *caption=form->labelForField(input))caption->setVisible(visible);
+            }
+        };
+        QObject::connect(backend,&SimulationWeatherSetup::changed,input,update);update();return input;
     };
-    choice("precipitationKind",QObject::tr("Rodzaj opadów"),{QObject::tr("Śnieg"),QObject::tr("Deszcz")});
-    choice("precipitationLevel",QObject::tr("Natężenie"),{QObject::tr("Bez opadów"),QObject::tr("Słabe"),QObject::tr("Umiarkowane"),QObject::tr("Silne")});
+    auto *kind=choice("precipitationType",QObject::tr("Rodzaj opadów"),{QObject::tr("Bez opadów"),QObject::tr("Śnieg"),QObject::tr("Deszcz")});
+#ifdef SJ_QUICK_UI
+    const QStringList icons{"none","snow","rain"};for(int i=0;i<3;++i)kind->setItemIcon(i,QIcon(":/ui/icons/weather/"+icons[i]+".svg"));
+#else
+    Q_UNUSED(kind)
+#endif
+    choice("precipitationLevel",QObject::tr("Natężenie"),{QObject::tr("Słabe"),QObject::tr("Umiarkowane"),QObject::tr("Silne")},1);
     choice("precipitationPattern",QObject::tr("Przebieg"),{QObject::tr("Stałe"),QObject::tr("Zmienne"),QObject::tr("Nasilające się")});
     auto *explanation=new QLabel(panel);explanation->setWordWrap(true);form->addRow(explanation);
-    const auto updateExplanation=[=]{explanation->setText(backend->values()["precipitationKind"].toInt()==0?QObject::tr("Śnieg w torach spowalnia rozbieg."):QObject::tr("Lekki deszcz nie musi hamować. Ulewa mocno pogarsza skoki."));};
+    const auto updateExplanation=[=]{explanation->setVisible(backend->values()["precipitationType"].toInt()>0);explanation->setText(backend->values()["precipitationKind"].toInt()==0?QObject::tr("Śnieg w torach spowalnia rozbieg."):QObject::tr("Lekki deszcz nie musi hamować. Ulewa mocno pogarsza skoki."));};
     QObject::connect(backend,&SimulationWeatherSetup::changed,explanation,updateExplanation);updateExplanation();
     return panel;
 }

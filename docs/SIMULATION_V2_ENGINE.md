@@ -448,3 +448,26 @@ Fizyczny override i `measuredWind` są niezależne. Ta sama wybrana strategia
 pomiaru działa także na lokalnym polu. `exactWinds` pozostaje równoległym sześciu-
 próbkowym przedstawieniem dla zgodności z istniejącym modelem i podglądem.
 Metadane zapisują `exactWindOverride`/`manipulated` i rzeczywiście przebyte pole.
+
+## Niezależne ręczne ustawienia pogody
+
+`SimulationWeatherSetup` przechowuje osobno żądane kierunek/siłę oraz zmienność
+w czasie/różnice na zeskoku. Edycja któregoś z czterech prostych pól lub lokalnej
+referencji nie uruchamia ponownego `inferControls()` i nie przestawia pozostałych
+inputów. Estymacja pozostaje przy wczytaniu propozycji/presetu i API technicznym;
+odwrotność mapowania amplitudy zmienności uwzględnia jej kwadratowy charakter.
+
+`basePreview` pokazuje sześć referencji bez fluktuacji i jest źródłem grafiki
+podczas edycji. `preview` nadal próbkuje rzeczywiste pole przy wybranym czasie.
+Zmiana kąta pojedynczej referencji zachowuje jej długość wektora. Chwilowy odczyt
+fizyczny może mieć inną siłę, bo jest sumą referencji i zmiennych podmuchów.
+
+Dla własnego wariantu jawne `reroll()` zmienia seed i rozkład bazowych referencji,
+zachowując cztery parametry żądane. Nowy profil ma średni wektor równy wybranej
+sile/kierunkowi; rozrzut jest sterowany różnicami na zeskoku. Zastępuje lokalne
+ręczne referencje, co wyjaśnia tooltip przy akcji. Brak zmienności i różnic daje
+nadal jednakowe pole — nie dodaje się sztucznej losowości przy zerowym zakresie.
+
+`precipitationType` jest UI-owym wyborem 0=brak / 1=śnieg / 2=deszcz. Rodzaj i
+natężenie we właściwym silniku pozostają odrębne; wyłączenie opadów ustawia None,
+a ponowne włączenie zachowuje natężenie lub dobiera niewielkie niezerowe.

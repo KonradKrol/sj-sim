@@ -18,6 +18,11 @@ SimulationV2::Wind mean(const SimulationV2::WindParameters &wind) {
 double angle(SimulationV2::Wind value) {return std::fmod(std::atan2(value.cross,value.head)*180/pi+360,360);}
 SimulationV2::Wind polar(double strength,double degrees) {return {strength*std::cos(degrees*pi/180),strength*std::sin(degrees*pi/180)};}
 bool bounded(double v,double lo,double hi) {return std::isfinite(v) && v>=lo && v<=hi;}
+void sampleReferences(SimulationV2::WindParameters &wind,double k,double differences,SimulationV2::Wind centre,SimulationV2::Seed seed) {
+    SimulationV2::SeededRandom rng(SimulationV2::deriveSeed(seed,99));wind.references.clear();SimulationV2::Wind average;
+    for(int i=0;i<6;++i){const SimulationV2::Wind offset{rng.uniform(-1,1),rng.uniform(-1,1)};average.head+=offset.head/6;average.cross+=offset.cross/6;wind.references.push_back({k*1.2*(i+.5)/6,offset});}
+    for(auto &point:wind.references){point.value.head=centre.head+(point.value.head-average.head)*differences*.025;point.value.cross=centre.cross+(point.value.cross-average.cross)*differences*.025;}
+}
 }
 SimulationWeatherSetup::SimulationWeatherSetup(QObject *parent):QObject(parent) {
     seed=QRandomGenerator::global()->generate64();rebuild();
@@ -36,8 +41,8 @@ void SimulationWeatherSetup::setHill(const HillProfile &profile) {
 }
 void SimulationWeatherSetup::clearHill() {if(!hasHill)return;hasHill=false;error.clear();emit changed();emit previewChanged();}
 void SimulationWeatherSetup::inferControls() {
-    variability=std::clamp(std::max({wind.temporalAmplitude/2.2,wind.gustAmplitude/4.8,wind.trendAmplitude/3.7})*100,0.0,100.0);
-    const auto average=mean(wind);if(average.strength()>1e-9)requestedDirection=angle(average);double spread=0;
+    variability=std::clamp(std::sqrt(std::max({wind.temporalAmplitude/2.2,wind.gustAmplitude/4.8,wind.trendAmplitude/3.7}))*100,0.0,100.0);
+    const auto average=mean(wind);requestedStrength=average.strength();if(requestedStrength>1e-9)requestedDirection=angle(average);double spread=0;
     for(const auto &point:wind.references)spread+=std::hypot(point.value.head-average.head,point.value.cross-average.cross)/wind.references.size();
     differences=std::clamp(std::max(wind.spatialAmplitude/1.5,spread/1.5)*100,0.0,100.0);
 }
@@ -64,14 +69,13 @@ void SimulationWeatherSetup::applyPreset(int index) {
 void SimulationWeatherSetup::reroll() {
     if(preset>=0 && !modified){applyPreset(preset);return;}
     if(preset<0 && !modified){regenerate(!precipitationEdited);return;}
-    seed=QRandomGenerator::global()->generate64();rebuild();
+    seed=QRandomGenerator::global()->generate64();sampleReferences(wind,hill.k,differences,polar(requestedStrength,requestedDirection),seed);rebuild();
 }
 QVariantMap SimulationWeatherSetup::values() const {
-    const auto average=mean(wind);
     QVariantMap result{{"ready",hasHill},{"preset",preset},{"modified",modified},{"seed",QString::number(seed)},
-        {"strength",average.strength()},{"direction",requestedDirection},{"variability",variability},{"differences",differences},
+        {"strength",requestedStrength},{"direction",requestedDirection},{"variability",variability},{"differences",differences},
         {"surface",int(surface)},{"precipitationScenario",int(precipitation.scenario)},{"precipitationIntensity",precipitation.intensity},
-        {"precipitationKind",int(precipitation.kind)},
+        {"precipitationKind",int(precipitation.kind)},{"precipitationType",precipitation.scenario==SimulationV2::PrecipitationScenario::None || precipitation.intensity==0 ? 0 : int(precipitation.kind)+1},
         {"precipitationLevel",precipitation.scenario==SimulationV2::PrecipitationScenario::None ? 0 : precipitation.intensity<=3 ? 1 : precipitation.intensity<=6.5 ? 2 : 3},
         {"precipitationPattern",precipitation.scenario==SimulationV2::PrecipitationScenario::Variable ? 1 : precipitation.scenario==SimulationV2::PrecipitationScenario::Increasing ? 2 : 0},
         {"precipitationVariation",precipitation.variation},{"precipitationIncrease",precipitation.increasePerMinute},
@@ -105,6 +109,14 @@ QVariantList SimulationWeatherSetup::preview() const {
     }
     return rows;
 }
+QVariantList SimulationWeatherSetup::basePreview() const {
+    QVariantList rows;
+    for(int i=0;i<6;++i) {
+        auto point=station(i);const double radians=point["direction"].toDouble()*pi/180;
+        point["head"]=point["strength"].toDouble()*std::cos(radians);point["cross"]=point["strength"].toDouble()*std::sin(radians);rows.append(point);
+    }
+    return rows;
+}
 void SimulationWeatherSetup::setPreviewOrigin(double value) {if(!bounded(value,0,1e12-100000) || origin==value)return;origin=value;emit previewChanged();}
 void SimulationWeatherSetup::setPreviewSeconds(double value) {if(!bounded(value,0,3600) || previewTime==value)return;previewTime=value;emit previewChanged();}
 void SimulationWeatherSetup::setValue(const QString &key,double value) {
@@ -132,18 +144,23 @@ void SimulationWeatherSetup::setValue(const QString &key,double value) {
         next.fastCorrelationSeconds=12-8*v;next.spatialAmplitude=1.5*differences/100*v;
     } else if(key=="differences") {
         if(!bounded(value,0,100))return;
-        nextDifferences=value;const auto average=mean(next);
-        SimulationV2::SeededRandom rng(SimulationV2::deriveSeed(seed,99));next.references.clear();
-        SimulationV2::Wind deviationMean;
-        for(int i=0;i<6;++i){const SimulationV2::Wind offset{rng.uniform(-1,1),rng.uniform(-1,1)};deviationMean.head+=offset.head/6;deviationMean.cross+=offset.cross/6;next.references.push_back({hill.k*1.2*i/5,offset});}
-        for(auto &point:next.references){point.value.head=average.head+(point.value.head-deviationMean.head)*value*.025;point.value.cross=average.cross+(point.value.cross-deviationMean.cross)*value*.025;}
+        nextDifferences=value;sampleReferences(next,hill.k,value,polar(requestedStrength,requestedDirection),seed);
         next.spatialAmplitude=1.5*value/100*variability/100;
     } else if(key=="surface") {
         if(value!=0 && value!=1)return;
         surface=static_cast<SimulationV2::Surface>(int(value));emit changed();return;
     } else if(key.startsWith("precipitation")) {
         windEdit=false;
-        if(key=="precipitationKind") {if(value!=0 && value!=1)return;nextPrecipitation.kind=static_cast<SimulationV2::PrecipitationKind>(int(value));}
+        if(key=="precipitationType") {
+            if(value!=std::floor(value) || !bounded(value,0,2))return;
+            if(value==0)nextPrecipitation.scenario=SimulationV2::PrecipitationScenario::None;
+            else {
+                nextPrecipitation.kind=static_cast<SimulationV2::PrecipitationKind>(int(value)-1);
+                if(nextPrecipitation.scenario==SimulationV2::PrecipitationScenario::None)nextPrecipitation.scenario=SimulationV2::PrecipitationScenario::Stable;
+                if(nextPrecipitation.intensity==0)nextPrecipitation.intensity=2;
+            }
+        }
+        else if(key=="precipitationKind") {if(value!=0 && value!=1)return;nextPrecipitation.kind=static_cast<SimulationV2::PrecipitationKind>(int(value));}
         else if(key=="precipitationLevel") {
             if(value!=std::floor(value) || !bounded(value,0,3))return;
             static const double intensities[]{0,2,5,9};nextPrecipitation.intensity=intensities[int(value)];
@@ -179,8 +196,14 @@ void SimulationWeatherSetup::setValue(const QString &key,double value) {
     try {next.validate();nextPrecipitation.validate();}
     catch(const std::invalid_argument &){error=tr("Wartość poza zakresem. Zachowano poprzednie ustawienia.");emit changed();return;}
     wind=std::move(next);precipitation=nextPrecipitation;
-    if(key=="direction")requestedDirection=std::fmod(value,360);
-    if(windEdit){modified=true;inferControls();if(key=="variability")variability=nextVariability;if(key=="differences")differences=nextDifferences;}
+    if(windEdit) {
+        modified=true;
+        if(key=="strength")requestedStrength=value;
+        else if(key=="direction")requestedDirection=std::fmod(value,360);
+        else if(key=="variability")variability=nextVariability;
+        else if(key=="differences")differences=nextDifferences;
+        else inferControls();
+    }
     else precipitationEdited=true;
     rebuild();
 }
@@ -192,7 +215,7 @@ void SimulationWeatherSetup::setReference(int index,const QString &key,double va
     else if(key=="direction" && bounded(value,0,360))point.value=polar(point.value.strength(),value);
     else return;
     try {next.validate();}catch(const std::invalid_argument &){error=tr("Punkty muszą być ustawione w rosnącej kolejności odległości.");emit changed();return;}
-    wind=std::move(next);modified=true;inferControls();rebuild();
+    wind=std::move(next);modified=true;rebuild();
 }
 
 QVariantMap SimulationWeatherSetup::referenceAt(double distance) const {
@@ -213,12 +236,12 @@ void SimulationWeatherSetup::putReference(double distance,double strength,double
         if(next.references.size()>=1000){error=tr("Osiągnięto limit punktów wiatru.");emit changed();return;}
         next.references.insert(point,{distance,polar(strength,direction)});
     }
-    next.validate();wind=std::move(next);modified=true;inferControls();rebuild();
+    next.validate();wind=std::move(next);modified=true;rebuild();
 }
 
 void SimulationWeatherSetup::removeReference(int index) {
     if(!hasHill || wind.references.size()<=1 || index<0 || index>=int(wind.references.size()))return;
-    wind.references.erase(wind.references.begin()+index);modified=true;inferControls();rebuild();
+    wind.references.erase(wind.references.begin()+index);modified=true;rebuild();
 }
 
 QVariantMap SimulationWeatherSetup::station(int index) const {
@@ -240,5 +263,5 @@ void SimulationWeatherSetup::setStation(int index,const QString &key,double valu
     }
     const auto current=station(index);
     next.references[std::size_t(index)].value=polar(key=="strength"?value:current["strength"].toDouble(),key=="direction"?value:current["direction"].toDouble());
-    next.validate();wind=std::move(next);modified=true;inferControls();rebuild();
+    next.validate();wind=std::move(next);modified=true;rebuild();
 }

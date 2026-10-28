@@ -19,18 +19,20 @@ Control {
             SChoice {
                 objectName: "weatherPrecipitationKind"
                 Layout.fillWidth: true; Layout.minimumWidth: 0
-                model: [qsTr("Śnieg"),qsTr("Deszcz")]
-                currentIndex: precipitation.values.precipitationKind
+                model: [qsTr("Bez opadów"),qsTr("Śnieg"),qsTr("Deszcz")]
+                optionImages: ["qrc:/ui/icons/weather/none.svg","qrc:/ui/icons/weather/snow.svg","qrc:/ui/icons/weather/rain.svg"]
+                currentIndex: precipitation.values.precipitationType
                 Accessible.name: qsTr("Rodzaj opadów")
-                onActivated: precipitation.backend.setValue("precipitationKind",index)
+                onActivated: precipitation.backend.setValue("precipitationType",index)
             }
             SChoice {
                 objectName: "weatherPrecipitationLevel"
                 Layout.fillWidth: true; Layout.minimumWidth: 0
-                model: [qsTr("Bez opadów"),qsTr("Słabe"),qsTr("Umiarkowane"),qsTr("Silne")]
-                currentIndex: precipitation.values.precipitationLevel
+                visible: precipitation.values.precipitationType>0
+                model: [qsTr("Słabe"),qsTr("Umiarkowane"),qsTr("Silne")]
+                currentIndex: Math.max(0,precipitation.values.precipitationLevel-1)
                 Accessible.name: qsTr("Natężenie opadów")
-                onActivated: precipitation.backend.setValue("precipitationLevel",index)
+                onActivated: precipitation.backend.setValue("precipitationLevel",index+1)
             }
             SChoice {
                 objectName: "weatherPrecipitationPattern"
@@ -43,6 +45,7 @@ Control {
             }
         }
         Label {
+            visible: precipitation.values.precipitationType>0
             text: precipitation.values.precipitationKind===0 ? qsTr("Śnieg w torach spowalnia rozbieg.") : qsTr("Lekki deszcz nie musi hamować. Ulewa mocno pogarsza skoki.")
             color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap; Layout.fillWidth: true
         }

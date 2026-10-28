@@ -64,5 +64,24 @@ static void simulationV2WeatherSetupRegressions() {
     SimulationV2::ContinuousWeather field(123,constant);SimulationV2::FlightResult flight;flight.distance=125;flight.duration=4;
     check(std::abs(measurement.measure(field,flight,100)-1.25)<1e-9,"continuous wind measurement preserves longitudinal projection without truncating angles");
     setup.clearHill();check(!setup.values()["ready"].toBool(),"empty hill selection has an explicit weather empty state");
+    SimulationWeatherSetup independent;independent.setHill(hill);independent.setValue("direction",225);independent.setValue("strength",1.8);independent.setValue("variability",37);independent.setValue("differences",62);
+    check(independent.values()["variability"].toDouble()==37 && independent.values()["differences"].toDouble()==62,"editing spatial differences preserves the selected temporal variability");
+    independent.setValue("variability",81);
+    check(independent.values()["differences"].toDouble()==62,"editing temporal variability preserves spatial differences");
+    independent.setValue("direction",140);independent.setValue("strength",2.6);
+    check(independent.values()["variability"].toDouble()==81 && independent.values()["differences"].toDouble()==62,"direction and strength never re-estimate either variability control");
+    independent.setStation(2,"strength",2.4);
+    for(int degree=0;degree<360;degree+=17) {
+        independent.setStation(2,"direction",degree);
+        check(std::abs(independent.station(2)["strength"].toDouble()-2.4)<1e-9,"changing one station direction preserves its base strength at every angle");
+        check(independent.values()["variability"].toDouble()==81 && independent.values()["differences"].toDouble()==62,"editing a station does not rewrite whole-hill controls");
+    }
+    const auto preview=independent.basePreview()[2].toMap();check(std::abs(preview["strength"].toDouble()-2.4)<1e-9,"configuration graphic uses exactly the edited base strength instead of a gust-modified reading");
+    const auto settings=independent.values();const auto originalReferences=independent.references();independent.reroll();
+    for(const auto &key:{"direction","strength","variability","differences"})check(independent.values()[key]==settings[key],"rerolling custom conditions preserves all four requested settings");
+    check(independent.values()["seed"]!=settings["seed"] && independent.references()!=originalReferences,"same custom parameters can produce a new spatial arrangement and new time history");
+    independent.setValue("precipitationType",0);check(independent.values()["precipitationType"].toInt()==0 && independent.field()->precipitation(300)==0,"combined no-precipitation option disables all precipitation");
+    independent.setValue("precipitationType",2);check(independent.values()["precipitationType"].toInt()==2 && independent.field()->precipitationKind()==SimulationV2::PrecipitationKind::Rain && independent.field()->precipitation(0)>0,"rain selection enables sensible nonzero precipitation");
+    independent.setValue("precipitationType",1);check(independent.field()->precipitationKind()==SimulationV2::PrecipitationKind::Snow,"combined snow option selects the correct physical kind");
     qInfo()<<"PASS: weather setup, independent strength/lottery, immutable variants, manual overrides and continuous measurement";
 }

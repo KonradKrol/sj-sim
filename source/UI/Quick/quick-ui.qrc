@@ -228,6 +228,17 @@
 <file>WeatherPrecipitation.qml</file>
 <file>WindSlopePreview.qml</file>
 <file>icons/weather/slope.svg</file>
+<file>icons/weather/skier-top.svg</file>
+<file>icons/weather/none.svg</file>
+<file>icons/weather/snow.svg</file>
+<file>icons/weather/rain.svg</file>
+<file>icons/weather/steady.svg</file>
+<file>icons/weather/strong.svg</file>
+<file>icons/weather/variable.svg</file>
+<file>icons/weather/lottery.svg</file>
+<file>icons/weather/profile.svg</file>
+<file>icons/weather/calm.svg</file>
+
 <file>WindFields.qml</file>
 <file>WindSectorStrip.qml</file>
 <file>PlaygroundScreen.qml</file>

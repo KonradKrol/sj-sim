@@ -5,17 +5,19 @@ import QtQuick.Layouts 1.15
 ColumnLayout {
     id: editor
     property var backend
+    property real availableWidth
     property int stationIndex: -1
     readonly property var point: {var references=backend.references;return backend.station(stationIndex)}
     signal closed()
     spacing: Theme.dp(7)
     RowLayout {
         Layout.fillWidth: true
-        Label { text: qsTr("Wiatr · %1 m").arg(Number(editor.point.distance || 0).toLocaleString(Qt.locale(Theme.localeName),'f',0)); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true; Layout.fillWidth: true }
+        Label { text: qsTr("Odcinek · %1 m").arg(Number(editor.point.distance || 0).toLocaleString(Qt.locale(Theme.localeName),'f',0)); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true; Layout.fillWidth: true }
+        HelpDot { explanation: qsTr("Zmienia tylko okolice wskazanego miejsca. Podmuchy nadal zależą od zmienności w czasie.") }
         SButton { text: "×"; quiet: true; Accessible.name: qsTr("Zamknij edycję miejsca"); onClicked: editor.closed() }
     }
     GridLayout {
-        Layout.fillWidth: true; columns: width>Theme.fontSize(540)?2:1; columnSpacing: Theme.dp(14); rowSpacing: Theme.dp(7)
+        Layout.fillWidth: true; columns: editor.availableWidth>Theme.fontSize(540)?2:1; columnSpacing: Theme.dp(14); rowSpacing: Theme.dp(7)
         WindDirectionDial { compact: true; degrees: Number(editor.point.direction || 0); label: qsTr("Skąd wieje"); recordKey: editor.stationIndex+":"+editor.backend.values.seed; Layout.fillWidth: true; Layout.minimumWidth: 0; onEdited: function(value){editor.backend.setStation(editor.stationIndex,"direction",value)} }
         ColumnLayout {
             Layout.fillWidth: true; Layout.minimumWidth: 0

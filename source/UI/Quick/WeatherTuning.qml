@@ -5,19 +5,21 @@ import QtQuick.Layouts 1.15
 Control {
     id: tuning
     property var backend
+    property real viewportWidth
     readonly property var values: backend.values
     padding: Theme.dp(12)
     implicitHeight: contentItem.implicitHeight+topPadding+bottomPadding
-    background: Rectangle { color: Theme.surface; radius: Theme.dp(5); border.width: 2; border.color: Theme.accent }
+    background: Rectangle { color: Theme.raised; radius: Theme.dp(5); border.width: 1; border.color: Theme.outline }
     contentItem: ColumnLayout {
         spacing: Theme.dp(12)
         RowLayout {
             Layout.fillWidth: true
             Rectangle { Layout.preferredWidth: Theme.dp(4); Layout.preferredHeight: Theme.dp(24); color: Theme.accent }
-            Label { text: qsTr("Dostosowanie wiatru"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+            Label { text: qsTr("Cała skocznia"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+            HelpDot { explanation: qsTr("Kierunek i siła dotyczą całej skoczni. Różnice na zeskoku losują nowy układ miejsc. Zmienność określa późniejsze zmiany w czasie.") }
         }
         GridLayout {
-            Layout.fillWidth: true; columns: width>Theme.fontSize(600)?2:1
+            Layout.fillWidth: true; columns: tuning.viewportWidth>Theme.fontSize(600)?2:1
             columnSpacing: Theme.dp(18); rowSpacing: Theme.dp(10)
             WindDirectionDial { degrees: tuning.values.direction; Layout.fillWidth: true; Layout.minimumWidth: 0; onEdited: function(value){tuning.backend.setValue("direction",value)} }
             WeatherNumber { backend: tuning.backend; fieldKey: "strength"; label: qsTr("Siła wyjściowa · m/s"); maximum: 10; Layout.fillWidth: true; explanation: qsTr("Mocny wiatr może być stabilny, a słaby — zmienny.") }

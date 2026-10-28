@@ -35,17 +35,15 @@ RowLayout {
             Rectangle {
                 id: circle
                 anchors.centerIn: parent; width: parent.width-Theme.dp(42); height: width; radius: width/2
-                color: "transparent"; border.width: 1; border.color: Theme.track
+                color: Theme.track; border.width: 2; border.color: Theme.outline
                 Repeater {
                     model: 12
                     Item { required property int index; anchors.centerIn: parent; width: 1; height: parent.height; rotation: index*30; Rectangle { width: 1; height: Theme.dp(3); color: Theme.outline } }
                 }
-                Item {
-                    anchors.centerIn: parent; width: Theme.dp(28); height: Theme.dp(42)
-                    Rectangle { x: Theme.dp(5); width: Theme.dp(5); height: parent.height; radius: width/2; color: Theme.snow }
-                    Rectangle { x: Theme.dp(18); width: Theme.dp(5); height: parent.height; radius: width/2; color: Theme.snow }
-                    Rectangle { anchors.horizontalCenter: parent.horizontalCenter; y: Theme.dp(10); width: Theme.dp(13); height: width; radius: width/2; color: Theme.headerMuted }
-                    Rectangle { anchors.horizontalCenter: parent.horizontalCenter; y: Theme.dp(22); width: Theme.dp(18); height: Theme.dp(7); radius: Theme.dp(3); color: Theme.accent }
+                Image {
+                    anchors.centerIn: parent; width: parent.width*.64; height: parent.height*.84
+                    source: "qrc:/ui/icons/weather/skier-top.svg"; sourceSize.width: 160; sourceSize.height: 224
+                    fillMode: Image.PreserveAspectFit; Accessible.ignored: true
                 }
                 Item {
                     anchors.centerIn: parent; width: 1; height: parent.height+Theme.dp(6); rotation: -direction.degrees
@@ -53,11 +51,10 @@ RowLayout {
                     Label { anchors.horizontalCenter: parent.horizontalCenter; y: Theme.dp(13); text: "▼"; color: direction.tone; font.pixelSize: Theme.dp(18); Accessible.ignored: true }
                 }
             }
-            Label { anchors.left: parent.left; anchors.leftMargin: Theme.dp(4); anchors.verticalCenter: parent.verticalCenter; text: "↦"; color: Theme.headerMuted; font.pointSize: Theme.section; Accessible.ignored: true }
-            Label { anchors.right: parent.right; anchors.rightMargin: Theme.dp(4); anchors.verticalCenter: parent.verticalCenter; text: "↤"; color: Theme.headerMuted; font.pointSize: Theme.section; Accessible.ignored: true }
             MouseArea {
                 objectName: direction.compact?"weatherStationDirectionPointer":"weatherDirectionPointer"
                 anchors.fill: parent; cursorShape: Qt.PointingHandCursor
+                preventStealing: true; scrollGestureEnabled: false; acceptedButtons: Qt.LeftButton
                 function selectAt(x,y){var dx=width/2-x,dy=height/2-y;if(dx*dx+dy*dy<100)return;direction.edited((Math.round(Math.atan2(dx,dy)*180/Math.PI)+360)%360)}
                 onPressed: {dial.forceActiveFocus();selectAt(mouse.x,mouse.y)}
                 onPositionChanged: if(pressed)selectAt(mouse.x,mouse.y)

@@ -44,3 +44,7 @@ konkursu. Testy PASS.
 Nowy edytor manipulacji: dopisano EN/CS dla Quick, draftu walidacji i natywnej
 prezentacji. `scripts/check-translations.py` przechodzi (kompletność obecnych
 katalogów i argumentów). Nadal nie jest to audyt wszystkich źródeł aplikacji.
+
+Dalszy etap: uzupełniono teksty Quick modułu konfiguracji wiatru (scenariusze,
+dial, cztery parametry, lokalny edytor, opady i komunikaty). Kontrola katalogów
+oraz test zmiany języka PASS. Pełny audyt innych modułów pozostaje w kolejce.

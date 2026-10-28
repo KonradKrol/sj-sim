@@ -66,7 +66,7 @@ Control {
                     padding: Theme.dp(10)
                     implicitHeight: contentItem.implicitHeight+topPadding+bottomPadding
                     background: Rectangle { color: Theme.surface; radius: Theme.dp(5); border.width: 2; border.color: Theme.accent }
-                    contentItem: WindStationEditor { backend: preview.backend; stationIndex: preview.selectedStation; onClosed: preview.selectedStation=-1 }
+                    contentItem: WindStationEditor { backend: preview.backend; stationIndex: preview.selectedStation; availableWidth: preview.width-Theme.dp(48); onClosed: preview.selectedStation=-1 }
                 }
             }
         }

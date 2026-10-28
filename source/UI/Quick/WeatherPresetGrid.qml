@@ -7,10 +7,10 @@ GridLayout {
     property var backend
     readonly property var values: backend.values
     readonly property var groups: [
-        {name:qsTr("Pod narty"),symbol:"↖",items:[{id:5,name:qsTr("Spokojny"),power:1},{id:1,name:qsTr("Mocny"),power:3},{id:8,name:qsTr("Zmienny"),power:2}]},
-        {name:qsTr("W plecy"),symbol:"↘",items:[{id:0,name:qsTr("Stabilny"),power:1},{id:6,name:qsTr("Mocny"),power:3},{id:9,name:qsTr("Zmienny"),power:2}]},
-        {name:qsTr("Boczny"),symbol:"↗",items:[{id:7,name:qsTr("Spokojny"),power:1},{id:3,name:qsTr("Zmienny"),power:2}]},
-        {name:qsTr("Pozostałe"),symbol:"↔",items:[{id:4,name:qsTr("Cisza"),power:0},{id:10,name:qsTr("Różny na zeskoku"),power:2},{id:2,name:qsTr("Loteria"),power:3}]}
+        {name:qsTr("Pod narty"),symbol:"↖",items:[{id:5,name:qsTr("Spokojny"),glyph:"steady"},{id:1,name:qsTr("Mocny"),glyph:"strong"},{id:8,name:qsTr("Zmienny"),glyph:"variable"}]},
+        {name:qsTr("W plecy"),symbol:"↘",items:[{id:0,name:qsTr("Stabilny"),glyph:"steady"},{id:6,name:qsTr("Mocny"),glyph:"strong"},{id:9,name:qsTr("Zmienny"),glyph:"variable"}]},
+        {name:qsTr("Boczny"),symbol:"↗",items:[{id:7,name:qsTr("Spokojny"),glyph:"steady"},{id:3,name:qsTr("Zmienny"),glyph:"variable"}]},
+        {name:qsTr("Pozostałe"),symbol:"↔",items:[{id:4,name:qsTr("Cisza"),glyph:"calm"},{id:10,name:qsTr("Różny na zeskoku"),glyph:"profile"},{id:2,name:qsTr("Loteria"),glyph:"lottery"}]}
     ]
     columns: width>=Theme.fontSize(780)?4:width>=Theme.fontSize(450)?2:1
     columnSpacing: Theme.dp(8); rowSpacing: Theme.dp(8)
@@ -37,7 +37,7 @@ GridLayout {
                         objectName: "weatherPreset-"+modelData.id
                         Layout.fillWidth: true; Layout.minimumWidth: 0
                         title: modelData.name; symbol: modelData.id===4?"—":group.modelData.symbol
-                        power: modelData.power
+                        glyph: modelData.glyph
                         accessibleTitle: presets.backend.presets[modelData.id]
                         explanation: accessibleTitle
                         checked: presets.values.preset===modelData.id && !presets.values.modified

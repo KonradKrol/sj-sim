@@ -1122,3 +1122,36 @@ powiększony tekst, wpisywanie przecinka/kropki i not częściowych. Brak błęd
 QML, pętli bindingów i recursive rearrange. PASS również: rdzeń v2, pomiary,
 adapter/zapis, konfiguracja, konkurs kanoniczny, pogoda konkursowa, sezony,
 stare ścieżki bulk i zmiana języków. Windows/Qt6 tego etapu bez weryfikacji.
+
+## Najnowszy stan — poprawki wiatru po manipulacji ukończone
+
+Punktem wejścia na innym komputerze jest teraz
+[`RESUME-28-10-2026-simulation.MD`](../RESUME-28-10-2026-simulation.MD).
+Opisuje gotowe etapy, konkretne pliki, testy i pozostałą kolejkę.
+
+Wszystkie nowe uwagi wiatrowe z listy powyżej zostały obsłużone:
+
+- Cztery ręczne parametry nie są ponownie estymowane po każdej edycji. Kierunek,
+  siła, zmienność i różnice przestrzenne zachowują wpisane wartości. Lokalny
+  obrót referencji zachowuje siłę; sprawdzono wiele kątów 0–359°.
+- `basePreview` podczas konfiguracji pokazuje ustawione referencje bez podmuchów.
+  Zwykły podgląd nadal pokazuje rzeczywiste pole. Nie mylić obu sił wektorowych.
+- Jawne „Losuj nowy układ” zachowuje cztery wartości własnego wariantu i losuje
+  nowe referencje/seed. Tooltip uprzedza o zastąpieniu ręcznych zmian miejsc.
+- Duża ikona skoczka/nart, bez dwóch bocznych pomocniczych strzałek; utrzymany
+  grab myszy także poza dialem, bez przejęcia gestu przez ScrollView.
+- Jeden wybór Bez opadów / Śnieg / Deszcz z ikonami; bez opadów ukrywa dalsze
+  pola/opis. Natywna prezentacja również ma ten flow.
+- Scenariusze mają rysowane ikony wiatru zamiast słupków „zasięgu”.
+- Tuning całej skoczni i edycja lokalna są zamienne; zamykają siebie nawzajem,
+  mają precyzyjne nagłówki i odmienny kontrast. Oszczędza to również wysokość.
+- Uzupełnione tłumaczenia całego widocznego modułu konfiguracji wiatru EN/CS.
+
+PASS: produkcyjny build Qt5 i `--simulation-v2-setup-only` (w tym realne drag
+poza dial i UI opadów oraz identyczne 2048 skoków przy 1/4 wątkach), manipulacja,
+pogoda konkursowa, zwykły konkurs kanoniczny, sezony, metody pomiaru, runtime
+języków i kontrola TS. Brak błędów QML/bindingów/recursive rearrange.
+
+**Następnie: nowy playground pełnego silnika v2**, potem audyt następnego sezonu,
+presetów/list i szersze tłumaczenia. Poprzednie kolejki „po manipulacji poprawić
+wiatr” są już wykonane. Nowy playground nie był jeszcze implementowany.

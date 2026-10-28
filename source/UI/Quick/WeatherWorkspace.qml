@@ -65,14 +65,22 @@ ScrollView {
                 ColumnLayout {
                     Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: Theme.dp(760); Layout.alignment: Qt.AlignTop
                     spacing: Theme.dp(7)
-                    WindSlopePreview { Layout.fillWidth: true; samples: workspace.backend.preview; backend: workspace.backend; heading: workspace.scenarioName }
+                    WindSlopePreview {
+                        id: windGraph
+                        Layout.fillWidth: true
+                        samples: workspace.tuning || selectedStation>=0 ? workspace.backend.basePreview : workspace.backend.preview
+                        backend: workspace.backend
+                        heading: workspace.tuning || selectedStation>=0 ? qsTr("Ustawienia wyjściowe") : workspace.scenarioName
+                        onSelectedStationChanged: if(selectedStation>=0)workspace.tuning=false
+                    }
+                    Label { visible: workspace.tuning || windGraph.selectedStation>=0; text: qsTr("Podgląd ustawień bez chwilowych podmuchów."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                     Label { text: workspace.variabilityText; color: Theme.muted; font.pointSize: Theme.body; wrapMode: Text.WordWrap; Layout.fillWidth: true }
-                    SButton { objectName: "weatherTuningToggle"; text: workspace.tuning ? qsTr("Ukryj dostosowanie") : qsTr("Dostosuj wiatr"); primary: true; enabled: workspace.values.ready; onClicked: workspace.tuning=!workspace.tuning }
+                    SButton { objectName: "weatherTuningToggle"; text: workspace.tuning ? qsTr("Ukryj dostosowanie") : qsTr("Dostosuj wiatr"); primary: true; enabled: workspace.values.ready; onClicked: {workspace.forceActiveFocus();if(!workspace.tuning)windGraph.selectedStation=-1;workspace.tuning=!workspace.tuning} }
                     Loader {
                         active: workspace.tuning; visible: active
                         Layout.fillWidth: true
                         Layout.preferredHeight: status===Loader.Ready && item ? item.implicitHeight : 0
-                        sourceComponent: Component { WeatherTuning { backend: workspace.backend } }
+                        sourceComponent: Component { WeatherTuning { backend: workspace.backend; viewportWidth: workspace.availableWidth } }
                     }
                 }
                 WeatherPrecipitation { backend: workspace.backend; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: Theme.dp(290); Layout.alignment: Qt.AlignTop }
@@ -83,6 +91,12 @@ ScrollView {
                 readonly property var autoGate: ui.find("pushButton_autoGate")
                 Label { text: parent.gateLabel ? parent.gateLabel.values.text || "" : ""; color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap; Layout.fillWidth: true }
                 SButton { text: qsTr("Zastosuj belkę"); quiet: true; visible: ui.context.suggestedGate>=0; enabled: !!parent.autoGate && ui.context.suggestedGate!==ui.context.startingGate; onClicked: {workspace.forceActiveFocus();ui.activate(parent.autoGate.values.id)} }
+            }
+            SButton {
+                objectName: "weatherCustomReroll"; visible: workspace.values.modified
+                text: qsTr("Losuj nowy układ"); quiet: true
+                hint: qsTr("Zachowuje cztery ustawienia całej skoczni. Losuje nowe odcinki i podmuchy, zastępując ręczne zmiany miejsc.")
+                onClicked: {workspace.forceActiveFocus();workspace.backend.reroll()}
             }
             Label { visible: !!text; text: workspace.backend.message; color: Theme.danger; font.pointSize: Theme.body; wrapMode: Text.WordWrap; Layout.fillWidth: true }
         }

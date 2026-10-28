@@ -11635,6 +11635,18 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Zastosuj</source>
             <translation>Použít</translation>
         </message>
+        <message>
+            <source>Bez opadów</source>
+            <translation>Beze srážek</translation>
+        </message>
+        <message>
+            <source>Rodzaj opadów</source>
+            <translation>Druh srážek</translation>
+        </message>
+        <message>
+            <source>Deszcz</source>
+            <translation>Déšť</translation>
+        </message>
     </context>
     <context>
         <name>QuickBridge</name>
@@ -16092,6 +16104,316 @@ li.checked::marker { content: "\2612"; }
         <message>
             <source>Wpisz poprawną liczbę.</source>
             <translation>Zadejte platné číslo.</translation>
+        </message>
+    </context>
+    <context>
+        <name>WeatherWorkspace</name>
+        <message>
+            <source>Własne warunki</source>
+            <translation>Vlastní podmínky</translation>
+        </message>
+        <message>
+            <source>Wiatr na zeskoku</source>
+            <translation>Vítr na doskočišti</translation>
+        </message>
+        <message>
+            <source>Wiatr nie zmienia się w czasie.</source>
+            <translation>Vítr se v čase nemění.</translation>
+        </message>
+        <message>
+            <source>Niewielkie wahania; kierunek zwykle pozostaje podobny.</source>
+            <translation>Malé výkyvy; směr obvykle zůstává podobný.</translation>
+        </message>
+        <message>
+            <source>Warunki wyraźnie się zmieniają, czasem przez kilka kolejnych skoków.</source>
+            <translation>Podmínky se výrazně mění, někdy po několik skoků za sebou.</translation>
+        </message>
+        <message>
+            <source>Duże, szybkie zmiany; możliwe silne podmuchy i odwrócenia kierunku.</source>
+            <translation>Velké a rychlé změny; možné jsou silné poryvy i obrácení směru.</translation>
+        </message>
+        <message>
+            <source>Warunki</source>
+            <translation>Podmínky</translation>
+        </message>
+        <message>
+            <source>%1 · HS%2</source>
+            <translation>%1 · HS%2</translation>
+        </message>
+        <message>
+            <source>Losuj warunki</source>
+            <translation>Vylosovat podmínky</translation>
+        </message>
+        <message>
+            <source>Wiatr i opady według skoczni i jej perków.</source>
+            <translation>Vítr a srážky podle můstku a jeho perků.</translation>
+        </message>
+        <message>
+            <source>Ukryj scenariusze</source>
+            <translation>Skrýt scénáře</translation>
+        </message>
+        <message>
+            <source>Scenariusze ▾</source>
+            <translation>Scénáře ▾</translation>
+        </message>
+        <message>
+            <source>Losuj wariant scenariusza</source>
+            <translation>Vylosovat variantu scénáře</translation>
+        </message>
+        <message>
+            <source>Ustawienia wyjściowe</source>
+            <translation>Výchozí nastavení</translation>
+        </message>
+        <message>
+            <source>Podgląd ustawień bez chwilowych podmuchów.</source>
+            <translation>Náhled nastavení bez okamžitých poryvů.</translation>
+        </message>
+        <message>
+            <source>Ukryj dostosowanie</source>
+            <translation>Skrýt úpravy</translation>
+        </message>
+        <message>
+            <source>Dostosuj wiatr</source>
+            <translation>Upravit vítr</translation>
+        </message>
+        <message>
+            <source>Zastosuj belkę</source>
+            <translation>Použít nájezdové okno</translation>
+        </message>
+        <message>
+            <source>Losuj nowy układ</source>
+            <translation>Vylosovat nový průběh</translation>
+        </message>
+        <message>
+            <source>Zachowuje cztery ustawienia całej skoczni. Losuje nowe odcinki i podmuchy, zastępując ręczne zmiany miejsc.</source>
+            <translation>Zachová čtyři nastavení celého můstku. Vylosuje nové úseky a poryvy a nahradí ruční místní změny.</translation>
+        </message>
+        <message>
+            <source>Nie wybrano skoczni</source>
+            <translation>Není vybrán můstek</translation>
+        </message>
+        <message>
+            <source>Wybierz paczkę i skocznię w konfiguracji symulacji.</source>
+            <translation>V nastavení simulace vyberte balíček a můstek.</translation>
+        </message>
+        <message>
+            <source>Konfiguracja</source>
+            <translation>Nastavení</translation>
+        </message>
+    </context>
+    <context>
+        <name>WeatherTuning</name>
+        <message>
+            <source>Cała skocznia</source>
+            <translation>Celý můstek</translation>
+        </message>
+        <message>
+            <source>Kierunek i siła dotyczą całej skoczni. Różnice na zeskoku losują nowy układ miejsc. Zmienność określa późniejsze zmiany w czasie.</source>
+            <translation>Směr a síla platí pro celý můstek. Rozdíly na dopadu vylosují nový prostorový průběh. Proměnlivost určuje pozdější změny v čase.</translation>
+        </message>
+        <message>
+            <source>Siła wyjściowa · m/s</source>
+            <translation>Výchozí síla · m/s</translation>
+        </message>
+        <message>
+            <source>Mocny wiatr może być stabilny, a słaby — zmienny.</source>
+            <translation>Silný vítr může být stálý a slabý proměnlivý.</translation>
+        </message>
+        <message>
+            <source>Zmienność w czasie · 0–10</source>
+            <translation>Proměnlivost v čase · 0–10</translation>
+        </message>
+        <message>
+            <source>0: bez zmian. Wyżej: silniejsze podmuchy i szybsze zmiany.</source>
+            <translation>0: beze změn. Vyšší: silnější poryvy a rychlejší změny.</translation>
+        </message>
+        <message>
+            <source>Różnice na zeskoku · 0–10</source>
+            <translation>Rozdíly na dopadu · 0–10</translation>
+        </message>
+        <message>
+            <source>Wyższa wartość: większe różnice wzdłuż skoczni.</source>
+            <translation>Vyšší hodnota znamená větší rozdíly podél můstku.</translation>
+        </message>
+    </context>
+    <context>
+        <name>WindStationEditor</name>
+        <message>
+            <source>Odcinek · %1 m</source>
+            <translation>Úsek · %1 m</translation>
+        </message>
+        <message>
+            <source>Zmienia tylko okolice wskazanego miejsca. Podmuchy nadal zależą od zmienności w czasie.</source>
+            <translation>Změní pouze okolí vybraného místa. Poryvy stále závisejí na proměnlivosti v čase.</translation>
+        </message>
+        <message>
+            <source>Zamknij edycję miejsca</source>
+            <translation>Zavřít místní editor</translation>
+        </message>
+        <message>
+            <source>Skąd wieje</source>
+            <translation>Odkud fouká</translation>
+        </message>
+        <message>
+            <source>Siła wyjściowa · m/s</source>
+            <translation>Výchozí síla · m/s</translation>
+        </message>
+        <message>
+            <source>Siła wiatru w wybranym miejscu</source>
+            <translation>Síla větru na vybraném místě</translation>
+        </message>
+    </context>
+    <context>
+        <name>WeatherPrecipitation</name>
+        <message>
+            <source>Opady</source>
+            <translation>Srážky</translation>
+        </message>
+        <message>
+            <source>Bez opadów</source>
+            <translation>Beze srážek</translation>
+        </message>
+        <message>
+            <source>Śnieg</source>
+            <translation>Sníh</translation>
+        </message>
+        <message>
+            <source>Deszcz</source>
+            <translation>Déšť</translation>
+        </message>
+        <message>
+            <source>Rodzaj opadów</source>
+            <translation>Druh srážek</translation>
+        </message>
+        <message>
+            <source>Słabe</source>
+            <translation>Slabé</translation>
+        </message>
+        <message>
+            <source>Umiarkowane</source>
+            <translation>Mírné</translation>
+        </message>
+        <message>
+            <source>Silne</source>
+            <translation>Silné</translation>
+        </message>
+        <message>
+            <source>Natężenie opadów</source>
+            <translation>Intenzita srážek</translation>
+        </message>
+        <message>
+            <source>Stałe</source>
+            <translation>Stálé</translation>
+        </message>
+        <message>
+            <source>Zmienne</source>
+            <translation>Proměnlivé</translation>
+        </message>
+        <message>
+            <source>Nasilające się</source>
+            <translation>Zesilující</translation>
+        </message>
+        <message>
+            <source>Przebieg opadów</source>
+            <translation>Průběh srážek</translation>
+        </message>
+        <message>
+            <source>Śnieg w torach spowalnia rozbieg.</source>
+            <translation>Sníh ve stopě zpomaluje nájezd.</translation>
+        </message>
+        <message>
+            <source>Lekki deszcz nie musi hamować. Ulewa mocno pogarsza skoki.</source>
+            <translation>Slabý déšť nemusí brzdit. Prudký déšť výrazně zhoršuje skoky.</translation>
+        </message>
+    </context>
+    <context>
+        <name>WeatherPresetGrid</name>
+        <message>
+            <source>Pod narty</source>
+            <translation>Protivítr</translation>
+        </message>
+        <message>
+            <source>Spokojny</source>
+            <translation>Klidný</translation>
+        </message>
+        <message>
+            <source>Mocny</source>
+            <translation>Silný</translation>
+        </message>
+        <message>
+            <source>Zmienny</source>
+            <translation>Proměnlivý</translation>
+        </message>
+        <message>
+            <source>W plecy</source>
+            <translation>Vítr do zad</translation>
+        </message>
+        <message>
+            <source>Stabilny</source>
+            <translation>Stálý</translation>
+        </message>
+        <message>
+            <source>Boczny</source>
+            <translation>Boční</translation>
+        </message>
+        <message>
+            <source>Pozostałe</source>
+            <translation>Ostatní</translation>
+        </message>
+        <message>
+            <source>Cisza</source>
+            <translation>Bezvětří</translation>
+        </message>
+        <message>
+            <source>Różny na zeskoku</source>
+            <translation>Různý na dopadu</translation>
+        </message>
+        <message>
+            <source>Loteria</source>
+            <translation>Loterie</translation>
+        </message>
+    </context>
+    <context>
+        <name>WindDirectionDial</name>
+        <message>
+            <source>Kierunek wyjściowy</source>
+            <translation>Výchozí směr</translation>
+        </message>
+        <message>
+            <source>Pod narty + boczny</source>
+            <translation>Protivítr + boční vítr</translation>
+        </message>
+        <message>
+            <source>Pod narty</source>
+            <translation>Protivítr</translation>
+        </message>
+        <message>
+            <source>W plecy + boczny</source>
+            <translation>Zadní + boční vítr</translation>
+        </message>
+        <message>
+            <source>W plecy</source>
+            <translation>Vítr do zad</translation>
+        </message>
+        <message>
+            <source>Boczny z lewej</source>
+            <translation>Boční zleva</translation>
+        </message>
+        <message>
+            <source>Boczny z prawej</source>
+            <translation>Boční zprava</translation>
+        </message>
+        <message>
+            <source>Wybierz skąd wieje wiatr. Strzałki klawiatury zmieniają kąt o jeden stopień.</source>
+            <translation>Vyberte, odkud vítr fouká. Šipky na klávesnici mění úhel o jeden stupeň.</translation>
+        </message>
+        <message>
+            <source>POD NARTY</source>
+            <translation>PROTIVÍTR</translation>
+        </message>
+        <message>
+            <source>W PLECY</source>
+            <translation>ZADNÍ VÍTR</translation>
         </message>
     </context>
 </TS>

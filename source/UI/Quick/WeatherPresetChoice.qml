@@ -9,7 +9,7 @@ AbstractButton {
     property string symbol
     property string detail
     property string explanation
-    property int power: -1
+    property string glyph: "steady"
     property bool helpRequested: false
     property bool hintSuppressed: false
     hoverEnabled: true
@@ -35,20 +35,11 @@ AbstractButton {
     }
     contentItem: RowLayout {
         spacing: Theme.dp(7)
-        Label { text: choice.symbol; color: choice.checked ? Theme.signal : Theme.accent; font.pointSize: Theme.section; font.bold: true; Accessible.ignored: true; Layout.preferredWidth: Theme.dp(20); horizontalAlignment: Text.AlignHCenter }
+        Image { source: "qrc:/ui/icons/weather/"+choice.glyph+".svg"; sourceSize.width: 48; sourceSize.height: 48; Layout.preferredWidth: Theme.dp(22); Layout.preferredHeight: Theme.dp(22); fillMode: Image.PreserveAspectFit; Accessible.ignored: true }
         ColumnLayout {
             Layout.fillWidth: true; Layout.minimumWidth: 0; spacing: Theme.dp(1)
             Label { text: choice.title; color: choice.checked ? Theme.snow : Theme.ink; font.family: Theme.bodyFamily; font.pointSize: Theme.body; font.weight: choice.checked ? Font.Bold : Font.Medium; wrapMode: Text.WordWrap; Layout.fillWidth: true }
             Label { visible: choice.detail.length>0; text: choice.detail; color: choice.checked ? Theme.headerMuted : Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap; Layout.fillWidth: true }
-        }
-        Row {
-            visible: choice.power>=0
-            spacing: Theme.dp(2)
-            Layout.alignment: Qt.AlignVCenter
-            Repeater {
-                model: 3
-                Rectangle { required property int index; width: Theme.dp(2); height: Theme.dp(4+index*3); y: Theme.dp(10)-height; radius: 1; color: index<choice.power ? (choice.checked ? Theme.signal : Theme.accent) : (choice.checked ? Theme.track : Theme.divider) }
-            }
         }
         Label { visible: choice.checked; text: "●"; color: Theme.signal; font.pointSize: Theme.caption; Accessible.ignored: true }
     }

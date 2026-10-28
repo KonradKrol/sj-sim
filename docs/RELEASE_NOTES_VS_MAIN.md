@@ -2028,3 +2028,16 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 - Edytor ma osobny widok Widgets dla tego samego modelu, tłumaczenia EN/CS,
   stały przycisk zatwierdzenia i układ na małe okna. Usunięto pętlę przeliczania
   responsywnej siatki sędziów.
+
+- Cztery ustawienia wiatru przestały samoczynnie zmieniać siebie nawzajem.
+  Obrót pojedynczej referencji zachowuje jej siłę, a grafika podczas edycji
+  pokazuje wartości wyjściowe bez mylących chwilowych podmuchów.
+- Ponowne losowanie własnych warunków zachowuje kierunek, siłę, zmienność i
+  różnice na zeskoku, tworząc nowy układ przestrzenny i przebieg w czasie.
+- Nowa ikona skoczka/nart w wyborze kierunku, usunięte dwie pomocnicze strzałki,
+  płynne przeciąganie także poza pokrętłem bez przejęcia przez przewijanie.
+- Opady wybiera się jednym polem Bez opadów / Śnieg / Deszcz z ikonami.
+  Przy braku opadów ukryte są intensywność, przebieg i opis. Nowe ikony wiatru
+  zastąpiły słupki przy scenariuszach.
+- Edycja całej skoczni i jednego odcinka otwierają się zamiennie; rozdzielono
+  ich zakres i hierarchię. Uzupełniono EN/CS modułu warunków.
