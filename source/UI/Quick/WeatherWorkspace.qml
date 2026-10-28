@@ -29,27 +29,25 @@ ScrollView {
                 Image { source: workspace.values.flag || ""; sourceSize.width: 60; sourceSize.height: 40; fillMode: Image.PreserveAspectFit; Layout.preferredWidth: Theme.dp(28); Layout.preferredHeight: Theme.dp(18); Accessible.ignored: true }
                 Label { visible: workspace.availableWidth>Theme.dp(480); text: qsTr("%1 · HS%2").arg(workspace.values.hillName).arg(workspace.values.hs); color: Theme.muted; font.pointSize: Theme.caption; elide: Text.ElideRight; Layout.maximumWidth: Theme.dp(260) }
             }
-            GridLayout {
-                Layout.fillWidth: true; columns: width>=Theme.dp(560)?2:1
-                columnSpacing: Theme.dp(10); rowSpacing: Theme.dp(6)
-                SChoice {
-                    objectName: "weatherPresetPicker"
+            RowLayout {
+                Layout.fillWidth: true; spacing: Theme.dp(10)
+                WeatherPresetChoice {
+                    objectName: "weatherSuggest"
                     Layout.fillWidth: true; Layout.minimumWidth: 0
-                    model: [qsTr("Losowo · według skoczni")].concat(workspace.backend.presets)
-                    currentIndex: workspace.values.modified ? -1 : workspace.values.preset+1
-                    displayText: workspace.values.modified ? workspace.scenarioName : currentText
-                    enabled: workspace.values.ready
-                    Accessible.name: qsTr("Scenariusz wiatru")
-                    onActivated: {workspace.forceActiveFocus();if(index===0)workspace.backend.suggest();else workspace.backend.applyPreset(index-1)}
+                    title: qsTr("Według skoczni"); symbol: "↻"
+                    detail: qsTr("Losowanie uwzględnia perki skoczni")
+                    explanation: qsTr("Wylosuj wiatr i opady dopasowane do skoczni.")
+                    checked: workspace.values.preset<0 && !workspace.values.modified
+                    onClicked: {workspace.forceActiveFocus();workspace.backend.suggest()}
                 }
                 SButton {
                     objectName: "weatherReroll"
                     text: qsTr("Losuj ponownie"); primary: true
-                    Layout.fillWidth: parent.columns===1
                     enabled: workspace.values.ready
                     onClicked: {workspace.forceActiveFocus();workspace.backend.reroll()}
                 }
             }
+            WeatherPresetGrid { backend: workspace.backend; Layout.fillWidth: true }
             GridLayout {
                 Layout.fillWidth: true; columns: width>=Theme.dp(1100)?2:1
                 columnSpacing: Theme.dp(14); rowSpacing: Theme.dp(10)

@@ -1946,3 +1946,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
   zmian w plikach. Importy mają własną pamięć, a zamknięta konfiguracja jest zwalniana.
 - Poprawiono powiązanie ról obu list zawodników w Qt Quick, które mogło ukrywać
   nazwiska i uchwyty przeciągania oraz generować błędy `model is not defined`.
+
+- Scenariusze wiatru w Quick są kompaktowymi kafelkami, pogrupowanymi według
+  kierunku. Wszystkie opcje pozostają widoczne; wybrana jest mocno zaznaczona.
+  Losowanie według skoczni ma własny przycisk nad siatką.

@@ -769,3 +769,17 @@ KO, N, seria i grupa; także wcześniejsze audyty punktacji i archiwum.
    `exposures`, nie bieżącej pogody/replay zależnego od nowszych współczynników.
 5. Weryfikacja sposobu uśredniania FIS i reszta manipulacji/playgroundu/specyfikacji.
    Aktualna polityka pomiaru pozostaje zgodnością z ustawieniami gry, nie deklaracją FIS.
+
+## Kafelki scenariuszy — ostatnia korekta UI
+
+Użytkownik odrzucił dropdown scenariuszy. Nowy `WeatherPresetGrid` pokazuje wszystkie
+11 wyborów jako zwarte kafelki w czterech grupach: Pod narty, W plecy, Boczny,
+Pozostałe. W grupach krótkie nazwy; pełna nazwa jest w dostępności i podglądzie.
+Wybrany kafelek ma ciemne tło, jasne obramowanie i znacznik; osobno znajduje się
+„Według skoczni” oraz „Losuj ponownie”. Układ ma 4/2/1 kolumny zależnie od miejsca
+i skali tekstu. Nie przywracać dropdowna w Quick jako uproszczenia.
+
+`--simulation-v2-setup-only` PASS: rzeczywiste kliknięcie kafelka, trwałe zaznaczenie,
+powrót do losowania według skoczni, wszystkie 11 kafelków, oba motywy i rendery
+360–1440 px. Bez nowych ostrzeżeń QML/pętli układów. Stan integracji sezonów
+pozostaje jak w kolejce powyżej; prace nad generatorem formy są osobną zmianą.

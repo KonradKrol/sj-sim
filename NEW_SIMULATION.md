@@ -131,7 +131,10 @@ Użytkownik przede wszystkim wybiera ogólny charakter warunków: dominujący ki
 - Mocny, loteryjny wiatr tylny, z typową siłą około 1,8 m/s.
 
 **Najnowszy kierunek UX (28.10):** domyślne i najbardziej widoczne jest losowanie
-według skoczni i jej perków. Jeden wybór scenariusza, przycisk ponownego losowania,
+według skoczni i jej perków. Kompaktowe **kafelki scenariuszy, bez dropdowna**,
+uporządkowane w grupach kierunku (pod narty, w plecy, boczny i pozostałe),
+mocno widoczny wybór oraz osobny przycisk losowania według skoczni. Do tego
+przycisk ponownego losowania,
 podgląd i krótkie zdanie o zmienności. Opcjonalnie najwyżej cztery proste ustawienia
 wiatru (kierunek, siła, zmienność, różnice na zeskoku) oraz trzy opadów (rodzaj,
 natężenie, przebieg). **Nie udostępniać teraz pełnego formularza technicznego,

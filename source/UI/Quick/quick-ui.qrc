@@ -218,6 +218,7 @@
 <file>WeatherAdvanced.qml</file>
 <file>WeatherNumber.qml</file>
 <file>WeatherPresetChoice.qml</file>
+<file>WeatherPresetGrid.qml</file>
 <file>WeatherPrecipitation.qml</file>
 <file>WindSlopePreview.qml</file>
 <file>icons/weather/slope.svg</file>

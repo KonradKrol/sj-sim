@@ -51,8 +51,12 @@ static void simulationV2SetupRegressions(MainWindow &main) {
     bridge->edit(bridge->root()->values().value("id").toInt(),labels.indexOf(QString::fromUtf8("Warunki")));QTest::qWait(150);
     check(item(scene(&window)->rootObject(),"weatherWorkspace"),"new weather workspace replaces the old sector editor");
     check(window.getWeatherSetup()->values()["preset"].toInt()==-1,"weather initially uses automatic hill-based proposal");
-    clickControl(scene(&window),"weatherPresetPicker");QTest::keyClick(scene(&window),Qt::Key_Home);for(int i=0;i<3;++i)QTest::keyClick(scene(&window),Qt::Key_Down);QTest::keyClick(scene(&window),Qt::Key_Return);QTest::qWait(30);
-    check(window.getWeatherSetup()->values()["preset"].toInt()==2,"scenario dropdown selects the actual lottery preset");
+    check(!item(scene(&window)->rootObject(),"weatherPresetPicker"),"wind scenarios are visible tiles rather than a dropdown");
+    for(int index=0;index<SimulationV2::weatherPresetCount;++index)check(item(scene(&window)->rootObject(),QString("weatherPreset-%1").arg(index)),"every wind scenario has a direct tile");
+    clickControl(scene(&window),"weatherPreset-2");check(window.getWeatherSetup()->values()["preset"].toInt()==2,"lottery tile updates the actual weather scenario");
+    check(item(scene(&window)->rootObject(),"weatherPreset-2")->property("checked").toBool(),"selected wind tile remains marked");
+    clickControl(scene(&window),"weatherSuggest");check(window.getWeatherSetup()->values()["preset"].toInt()==-1,"automatic hill-based choice can be restored directly");
+    clickControl(scene(&window),"weatherPreset-2");
     const auto selectedSeed=window.getWeatherSetup()->values()["seed"];
     render(&window,"simulation-v2-weather",true);
     check(window.getWeatherSetup()->values()["seed"]==selectedSeed,"screen renders never reroll selected weather");
