@@ -677,3 +677,34 @@ co 30 s), `--bulk-only` PASS (stare ścieżki), `--simulation-v2-setup-only` PAS
   krótko wyjaśnić realny wpływ po researchu. Cisza = słaby wiatr zwykle 0,1–0,3 m/s,
   nie matematyczne zero. Dodać 5–6 scenariuszy. Po tych uwagach kontynuować
   integrację konkursu, sezonów i pozostałej specyfikacji — nie uznać ich za porzucone.
+
+### Wdrożenie uproszczonego kierunku pogody
+
+`WeatherWorkspace` ma jeden dropdown z domyślnym „Losowo · według skoczni”,
+wyraźne „Losuj ponownie”, grafikę i jedno zdanie. Ręczne dostosowanie kończy się
+na czterech opcjach. Pełny `WeatherAdvanced` nie jest ładowany; pozostaje kodem
+nieużywanym w UI, a API współczynników nadal służy testom/przyszłemu playgroundowi.
+Opady mają trzy wybory: rodzaj, natężenie, przebieg. Nazwy scenariuszy są wspólne
+dla Quick i fallbacku Widgets (`SimulationWeatherSetup::presets`).
+
+11 scenariuszy: pięć dotychczasowych + spokojnie pod narty, mocno w plecy,
+spokojny boczny, zmiennie pod narty, zmiennie w plecy i różny na zeskoku.
+**Cisza nie jest już zerowa:** bazowo 85% próbek 0,1–0,3 m/s, pozostałe
+0,03–0,5, niewielkie zmiany w czasie. Dokładne zero nadal można ustawić świadomie
+przez siłę, zmienność i różnice równe zero; nie utożsamiać go z nazwanym presetem.
+
+`PrecipitationKind` rozdziela śnieg/deszcz niezależnie od nawierzchni. Typ przechodzi
+przez immutable pole, preview, silnik, dokładne wymuszenia wiatru i metadane skoku.
+Śnieg zachowuje dotychczasowy współczynnik; deszcz ma osobny współczynnik i próg,
+poniżej którego nie jest automatycznie karany. Research i ograniczenia zapisano
+w `docs/WEATHER_RESEARCH.md`. Nie dodawać twierdzeń o udowodnionym spadku
+aerodynamiki mokrego kombinezonu ani nie traktować tych współczynników jak pomiarów.
+
+Wyniki: rdzeń PASS (5500 wariantów 11 scenariuszy, statystyka Ciszy, osobne efekty
+deszczu i śniegu); `--simulation-v2-setup-only` PASS (zwykły ekran, wybór scenariusza,
+brak technicznego formularza, 2048 skoków z deszczem 1 vs 4 wątki, oba motywy,
+360–1440 px i większy tekst); `--simulation-v2-contest-weather-only` PASS.
+`--simulation-v2-only` PASS, w tym zachowanie deszczu przy wymuszeniu wiatru.
+Produkcyjny build Qt 5.15.3 PASS; bez nowych ostrzeżeń QML i pętli układów.
+Pozostaje dopięcie katalogu i uruchomienia zwykłego konkursu, a potem sezony,
+historia korytarzy i pozostałe prace specyfikacji. Nowy kierunek obowiązuje też je.

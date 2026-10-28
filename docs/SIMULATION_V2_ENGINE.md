@@ -120,13 +120,21 @@ Początkowy zapas ma jednostki umowne odpowiadające metrom spokojnego lotu:
 baza = K × 0,95 + (jakość − 70) × 1,107142857 × K/120
 belka = (belka rzeczywista − 10) × 2,5 × K/120
         × (1 + 0,04 × max(0, −wiatr przy starcie))
-zapas = max(0, (baza + belka) × (1 − 0,008 × opady))
+strata śniegu = 0,008 × opady
+strata deszczu = 0,003 × max(0, opady − 2)
+zapas = max(0, (baza + belka) × (1 − strata właściwego rodzaju opadów))
 ```
 
 Wszystkie współczynniki są w `FlightParameters`. Dozwolony zakres zapasu
 ma dodatkowy techniczny limit miliona jednostek dla skrajnych eksperymentów.
 Nie jest to późniejsze skracanie wyniku. Wyższa belka może nieco mocniej pomagać
 przy tylnym wietrze; ten wpływ można wyzerować.
+
+Śnieg i deszcz rozróżnia `WeatherField::precipitationKind()` (domyślnie śnieg
+dla starszych callerów). Osobne `precipitationLossPerLevel`, `rainLossPerLevel`
+i `rainLossThreshold` są parametrami gry do kalibracji, nie wartościami z badań.
+Typ nie zmienia nawierzchni. Preview i pełny skok używają tej samej zależności.
+Podstawy i ograniczenia: [WEATHER_RESEARCH.md](WEATHER_RESEARCH.md).
 
 Lot jest całkowany domyślnie krokami 1 m, z dokładnym domknięciem ostatniego
 częściowego kroku. Wiatr jest odczytywany na początku osiągniętego kroku,
@@ -335,7 +343,13 @@ lub częstości zmian.
 | Mocno pod narty | 2–4 m/s | Przewaga wiatru przedniego; siła nie wymusza loterii |
 | Loteria | 0,2–2,5 m/s | Duże amplitudy, lokalne różnice, szybkie zmiany i odwrócenia |
 | Zmienny boczny | 1–3 m/s | Dominujący boczny, silniejsze podmuchy i zmiany |
-| Cisza | 0 | Wszystkie składniki wiatru zerowe, opady niezależne |
+| Cisza | zwykle 0,1–0,3 m/s | 85% losowań w tym zakresie; pozostałe 0,03–0,5; drobne zmiany |
+| Spokojnie pod narty | 0,4–1,7 m/s | Małe wahania i dłuższe tendencje |
+| Mocno w plecy | 2–4 m/s | Mocny, lecz mało loteryjny wiatr |
+| Spokojny boczny | 0,5–2,5 m/s | Boczny bez gwałtownych zmian |
+| Zmiennie pod narty | 0,6–2,2 m/s | Zmienna tendencja i podmuchy |
+| Zmiennie w plecy | 0,6–2,2 m/s | Zmienna tendencja i podmuchy |
+| Różny na zeskoku | 0,2–1 m/s bazowo | Duża różnica wzdłuż skoczni, spokojniejsza w czasie |
 
 To zakresy bazowe, nie gwarantowane minimum/maksimum odczytów w trakcie lotu.
 Wariant losuje się przy wyborze scenariusza lub „Losuj ponownie”. `field()`
@@ -344,8 +358,9 @@ nie wykonują ponownego losowania.
 
 `SimulationWeatherSetup` pilnuje zakresów i kolejności referencji. Zmienność 0
 wyłącza wszystkie zmiany czasowe, zachowując stałe różnice między referencjami.
-Główne dostosowanie mapuje prostą skalę na parametry tendencji/podmuchów; opcje
-szczegółowe pozwalają je zmienić osobno. Opady są niezależne od ręcznego wyboru
+Główne dostosowanie mapuje prostą skalę na parametry tendencji/podmuchów. W UI
+nie ma dalszego formularza technicznego — pozostaje API dla testów i eksperymentów.
+Opady są niezależne od ręcznego wyboru
 scenariusza wiatru. Zmiana kontekstu skoczni bez zmiany jej ID nie nadpisuje
 ręcznych warunków. K przeskalowuje rozmieszczenie punktów; perki wpływają dopiero
 na jawne ponowne proponowanie.

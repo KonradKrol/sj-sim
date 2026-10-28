@@ -20,7 +20,7 @@ private:
     QVector<Wind> values;double k;CompetitionRules rules;
 };
 
-SimulationV2::ContinuousWeather referenceWeather(const QVector<Wind> &winds,double k,double precipitation)
+SimulationV2::ContinuousWeather referenceWeather(const QVector<Wind> &winds,double k,double precipitation,SimulationV2::PrecipitationKind kind=SimulationV2::PrecipitationKind::Snow)
 {
     SimulationV2::WindParameters config;config.references.clear();
     config.temporalAmplitude=config.spatialAmplitude=config.gustAmplitude=0;
@@ -30,6 +30,7 @@ SimulationV2::ContinuousWeather referenceWeather(const QVector<Wind> &winds,doub
     }
     if(config.references.empty())config.references.push_back({0,{}});
     SimulationV2::PrecipitationParameters precip;precip.scenario=SimulationV2::PrecipitationScenario::Stable;precip.intensity=std::clamp(precipitation,0.0,10.0);
+    precip.kind=kind;
     return SimulationV2::ContinuousWeather(0,config,precip);
 }
 
@@ -77,7 +78,7 @@ QJsonObject metadata(const SimulationV2::JumpResult &result,SimulationV2::Seed s
     const auto &q=result.quality;
     return {{"engineVersion",SimulationV2::JumpResult::engineVersion},{"seed",QString::number(seed)},{"startSeconds",time},{"event",int(event)},
         {"quality",QJsonObject{{"overallAndForm",q.overallAndForm},{"takeoffWeight",q.takeoffWeight},{"hill",q.hillEffect},{"event",q.eventEffect},{"random",q.randomEffect},{"manipulation",q.manipulationEffect}}},
-        {"rawDistance",result.flight.distance},{"reserve",result.flight.reserve},{"precipitation",result.flight.precipitation},
+        {"rawDistance",result.flight.distance},{"reserve",result.flight.reserve},{"precipitation",result.flight.precipitation},{"precipitationKind",int(result.flight.precipitationKind)},
         {"experiencedWind",vector(result.flight.experiencedWind)},{"meanAbsoluteCrosswind",result.flight.meanAbsoluteCrosswind},
         {"exposures",exposure},{"manipulated",result.manipulated},{"distanceLimitedByGeometry",result.distanceLimitedByGeometry}};
 }
@@ -94,7 +95,7 @@ void JumpSimulator::simulateV2()
     const bool exactWindOverride=manipulator && !manipulator->getExactWinds().isEmpty();
     const auto activeWinds=exactWindOverride?manipulator->getExactWinds():winds;
     std::optional<SimulationV2::ContinuousWeather> fallbackWeather;
-    if(!simulationWeather || exactWindOverride)fallbackWeather.emplace(referenceWeather(activeWinds,hill->getKPoint(),simulationWeather?simulationWeather->precipitation(simulationTime):inrunSnow));
+    if(!simulationWeather || exactWindOverride)fallbackWeather.emplace(referenceWeather(activeWinds,hill->getKPoint(),simulationWeather?simulationWeather->precipitation(simulationTime):inrunSnow,simulationWeather?simulationWeather->precipitationKind():SimulationV2::PrecipitationKind::Snow));
     const LegacyMeasurement measurement(activeWinds,hill->getKPoint(),*competitionRules);
     auto input=requestFor(*jumper,*hill,*competitionRules,gate,competitionStartGate,hasCoachGate,coachGate,DSQBaseProbability,simulationEvent,simulationTime,manipulator);
     input.skip=simulationSkip;
@@ -134,7 +135,7 @@ double JumpSimulator::previewV2() const
     const bool exactWindOverride=manipulator && !manipulator->getExactWinds().isEmpty();
     const auto activeWinds=exactWindOverride?manipulator->getExactWinds():winds;
     std::optional<SimulationV2::ContinuousWeather> fallbackWeather;
-    if(!simulationWeather || exactWindOverride)fallbackWeather.emplace(referenceWeather(activeWinds,hill->getKPoint(),simulationWeather?simulationWeather->precipitation(simulationTime):inrunSnow));
+    if(!simulationWeather || exactWindOverride)fallbackWeather.emplace(referenceWeather(activeWinds,hill->getKPoint(),simulationWeather?simulationWeather->precipitation(simulationTime):inrunSnow,simulationWeather?simulationWeather->precipitationKind():SimulationV2::PrecipitationKind::Snow));
     const auto input=requestFor(*jumper,*hill,*competitionRules,gate,competitionStartGate,hasCoachGate,coachGate,DSQBaseProbability,simulationEvent,simulationTime,manipulator);
     return simulationEngine.previewDistance(input,simulationWeather && !exactWindOverride?*simulationWeather:*fallbackWeather);
 }

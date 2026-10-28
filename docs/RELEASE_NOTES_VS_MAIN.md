@@ -1920,3 +1920,17 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 - Rozdzielono obszary kliknięcia naszywki i poziomów: można bezpośrednio zmienić
   siłę, zastąpić przeciwny perk albo ponownie kliknąć wybrany, żeby go usunąć.
 - Na liście skoczni dodano flagi krajów i zwarty zapis HS bez odstępu.
+
+### Prostsze warunki i osobny deszcz/śnieg
+
+- Domyślnie gotowe losowanie według skoczni i jej perków, wyraźny przycisk
+  ponownego losowania, jeden wybór scenariusza i graficzny podgląd.
+- 11 scenariuszy wiatru; sześć nowych pokrywa m.in. mocny stabilny wiatr tylny,
+  spokojny boczny i różne warunki wzdłuż zeskoku. Cisza oznacza słaby wiatr,
+  zwykle 0,1–0,3 m/s, z niewielkimi wahaniami.
+- Ręcznie najwyżej cztery opcje wiatru i trzy opadów. Usunięto z interfejsu
+  rozbudowany formularz współczynników i punktów odniesienia.
+- Śnieg i deszcz mają osobny wpływ na rozbieg oraz krótkie objaśnienia.
+  Lekki deszcz nie dostaje automatycznie tej samej kary co zasypane tory;
+  mocny deszcz używa oddzielnego, regulowanego współczynnika. Typ opadów
+  jest niezależny od nawierzchni i pozostaje zapisany z nowym skokiem.

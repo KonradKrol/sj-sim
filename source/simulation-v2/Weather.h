@@ -11,11 +11,14 @@ struct Wind {
     double strength() const;
 };
 
+enum class PrecipitationKind { Snow, Rain };
+
 class WeatherField {
 public:
     virtual ~WeatherField() = default;
     virtual Wind wind(double distance, double seconds) const = 0;
     virtual double precipitation(double seconds) const = 0;
+    virtual PrecipitationKind precipitationKind() const { return PrecipitationKind::Snow; }
 };
 
 struct WindReference {
@@ -51,10 +54,11 @@ enum class Surface { Snow, Mat };
 
 struct PrecipitationParameters {
     PrecipitationScenario scenario=PrecipitationScenario::None;
-    double intensity=0; // 0..10; type comes from the surface, not this value
+    double intensity=0; // 0..10; independent of precipitation kind
     double variation=2;
     double correlationSeconds=120;
     double increasePerMinute=.12;
+    PrecipitationKind kind=PrecipitationKind::Snow;
     void validate() const;
 };
 
@@ -65,6 +69,7 @@ public:
     ContinuousWeather(Seed, WindParameters = {}, PrecipitationParameters = {});
     Wind wind(double distance, double seconds) const override;
     double precipitation(double seconds) const override;
+    PrecipitationKind precipitationKind() const override { return precip.kind; }
 private:
     Seed seed;
     WindParameters config;

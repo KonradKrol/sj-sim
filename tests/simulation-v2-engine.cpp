@@ -14,8 +14,10 @@ void near(double a,double b,double tolerance,const char *message) {check(std::ab
 template<class F> void rejects(F f) {bool rejected=false;try{f();}catch(const std::invalid_argument&){rejected=true;}check(rejected,"invalid engine input rejected");}
 struct ConstantWeather:WeatherField {
     Wind value;double precip=0;
+    PrecipitationKind kind=PrecipitationKind::Snow;
     Wind wind(double,double) const override {return value;}
     double precipitation(double) const override {return precip;}
+    PrecipitationKind precipitationKind() const override {return kind;}
 };
 struct FixedMeasurement:WindMeasurement {
     double value=0;
@@ -45,7 +47,12 @@ int main()
         ConstantWeather head,tail,cross;head.value={2,0};tail.value={-2,0};cross.value={0,2};
         check(engine.previewDistance(request,head)>preview && engine.previewDistance(request,tail)<preview,"wind signs affect flight");
         check(engine.previewDistance(request,cross)<=preview,"side wind does not act as headwind");
-        calm.precip=10;check(engine.previewDistance(request,calm)<preview,"precipitation only worsens jump");calm.precip=0;
+        calm.precip=10;const auto snowy=engine.previewDistance(request,calm);check(snowy<preview,"snow worsens jump");
+        calm.kind=PrecipitationKind::Rain;const auto rainy=engine.previewDistance(request,calm);
+        check(rainy>snowy && rainy<preview,"heavy rain and heavy snow have separate track effects");
+        calm.precip=2;near(engine.previewDistance(request,calm),preview,1e-12,"light rain is not automatically penalized like snow");
+        const auto rainyJump=engine.simulate(request,rng,calm,measurement);check(rainyJump.flight.precipitationKind==PrecipitationKind::Rain,"result retains precipitation kind");
+        calm.precip=0;calm.kind=PrecipitationKind::Snow;
         request.scoring.juryGate=9;check(engine.previewDistance(request,calm)<preview,"lower gate shortens jump");request.scoring.juryGate=10;
 
         FlightModel flight;Hill hill;RescueWeather rescue;ConstantWeather adverse;adverse.value={-2.5,0};

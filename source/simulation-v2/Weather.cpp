@@ -66,6 +66,7 @@ void WindParameters::validate() const
 
 void PrecipitationParameters::validate() const
 {
+    if(kind!=PrecipitationKind::Snow && kind!=PrecipitationKind::Rain)throw std::invalid_argument("Unknown precipitation kind");
     if(int(scenario)<0 || int(scenario)>4) throw std::invalid_argument("Unknown precipitation scenario");
     bounded(intensity,0,10,"Precipitation intensity out of range");
     bounded(variation,0,10,"Precipitation variation out of range");
@@ -199,6 +200,7 @@ WeatherProposal proposeWeather(const WeatherProposalContext &context,RandomSourc
         month=(month+5)%12+1;
     const bool cold=month && (month>=11 || month<=3);
     const bool northern=context.country=="NOR" || context.country=="SWE" || context.country=="FIN" || context.country=="CAN";
+    result.precipitation.kind=context.surface==Surface::Mat || (month && !cold && rng.event(.7)) ? PrecipitationKind::Rain : PrecipitationKind::Snow;
     const double wetChance=context.surface==Surface::Snow ? .25+(cold?.25:0)+(northern?.1:0) : .30;
     if(rng.event(wetChance)) {
         const auto choice=rng.weightedIndex({.45,.25,.08,.22});

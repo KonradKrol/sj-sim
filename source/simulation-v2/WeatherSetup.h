@@ -14,6 +14,7 @@ class SimulationWeatherSetup : public QObject {
     Q_PROPERTY(QVariantMap values READ values NOTIFY changed)
     Q_PROPERTY(QVariantList references READ references NOTIFY changed)
     Q_PROPERTY(QVariantList preview READ preview NOTIFY previewChanged)
+    Q_PROPERTY(QVariantList presets READ presets NOTIFY changed)
     Q_PROPERTY(double previewSeconds READ previewSeconds WRITE setPreviewSeconds NOTIFY previewChanged)
     Q_PROPERTY(QString message READ message NOTIFY changed)
     Q_PROPERTY(double previewOrigin READ previewOrigin WRITE setPreviewOrigin NOTIFY previewChanged)
@@ -25,6 +26,7 @@ public:
     QVariantMap values() const;
     QVariantList references() const;
     QVariantList preview() const;
+    QVariantList presets() const;
     double previewSeconds() const {return previewTime;}
     double previewOrigin() const {return origin;}
     void setPreviewOrigin(double);

@@ -58,6 +58,7 @@ int main()
         near(ContinuousWeather(1,extreme).wind(100,1e12).strength(),12,1e-12,"extreme wind bounded, time range finite");
         PrecipitationParameters rain;rain.scenario=PrecipitationScenario::Stable;rain.intensity=4;
         near(ContinuousWeather(1,p,rain).precipitation(0),4,1e-12,"stable precipitation");
+        rain.kind=PrecipitationKind::Rain;check(ContinuousWeather(1,p,rain).precipitationKind()==PrecipitationKind::Rain,"precipitation kind survives the field snapshot");
         rain.scenario=PrecipitationScenario::Increasing;rain.variation=0;
         auto trend=ContinuousWeather(1,p,rain);check(trend.precipitation(600)>trend.precipitation(0),"increasing precipitation");
         near(trend.precipitation(1e12),10,1e-12,"precipitation capped at 10");
@@ -108,15 +109,26 @@ int main()
         }
         check(heads>9000 && tails<1000,"direction traits strongly bias automatic proposals");
         check(stable>8000 && lottery<1200,"lottery traits strongly bias automatic proposals");
-        SeededRandom presetRng(111);double previousStrength=-1;bool variants=false;
-        for(int index=0;index<5;++index)for(int draw=0;draw<500;++draw) {
+        SeededRandom presetRng(111);double previousStrength=-1;bool variants=false;int lightCalm=0;
+        for(int index=0;index<weatherPresetCount;++index)for(int draw=0;draw<500;++draw) {
             auto proposal=sampleWeatherPreset(static_cast<WeatherPreset>(index),120,presetRng);proposal.wind.validate();
             Wind average;for(const auto &point:proposal.wind.references){average.head+=point.value.head/6;average.cross+=point.value.cross/6;}
             if(index==0){check(average.head<0 && average.strength()>=.6 && average.strength()<=2.3,"stable-tail scenario stays inside its base range");if(previousStrength>=0 && previousStrength!=average.strength())variants=true;previousStrength=average.strength();}
             if(index==1)check(average.head>0 && average.strength()>=2 && average.strength()<=4,"strong headwind has a bounded base and independent variation");
-            if(index==4){ContinuousWeather calm(1,proposal.wind);for(double t:{0.,300.,10000.})near(calm.wind(90,t).strength(),0,1e-12,"calm is truly windless");}
+            if(index==4){
+                lightCalm+=average.strength()>=.1 && average.strength()<=.3;
+                check(average.strength()>=.03 && average.strength()<=.5,"calm samples weak wind instead of exact zero");
+                ContinuousWeather calm(1,proposal.wind);for(double t:{0.,300.,10000.})check(calm.wind(90,t).strength()<.7,"calm remains weak through the event");
+            }
+            if(index==5)check(average.head>0 && average.strength()>=.4 && average.strength()<=1.7,"stable headwind range");
+            if(index==6)check(average.head<0 && average.strength()>=2 && average.strength()<=4 && proposal.wind.temporalAmplitude<.3,"strong tailwind need not be lottery");
+            if(index==7)check(std::abs(average.cross)>std::abs(average.head)*3 && proposal.wind.temporalAmplitude<.15,"crosswind can stay stable");
+            if(index==8 || index==9)check((index==8?average.head:-average.head)>0 && proposal.wind.trendAmplitude>=.7,"variable front and back scenarios preserve starting direction with changing tendency");
+            if(index==10)check(std::abs(proposal.wind.references.front().value.head-proposal.wind.references.back().value.head)>0.1,"mixed slope has real local differences");
         }
         check(variants,"the same named preset samples different parameter variants");
+        check(lightCalm>400,"most calm variants start in the requested 0.1-0.3 range");
+        rejects([]{PrecipitationParameters p;p.kind=static_cast<PrecipitationKind>(2);p.validate();});
         rejects([]{WindParameters v;v.references.clear();ContinuousWeather f(1,v);});
         rejects([]{WindParameters v;v.references={{10,{}},{10,{}}};ContinuousWeather f(1,v);});
         rejects([&]{weather.wind(0,std::numeric_limits<double>::infinity());});

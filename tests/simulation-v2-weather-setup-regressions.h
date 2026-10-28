@@ -14,7 +14,8 @@ static void simulationV2WeatherSetupRegressions() {
         const auto a=stable->wind(distance,0),b=stable->wind(distance,10000);
         check(a.head==b.head && a.cross==b.cross,"zero temporal variability is truly static even with different references along the hill");
     }
-    setup.applyPreset(4);setup.setValue("direction",180);setup.setValue("strength",1.8);
+    setup.applyPreset(4);check(setup.values()["strength"].toDouble()>0 && setup.values()["strength"].toDouble()<=.5,"calm is weak wind rather than zero");
+    setup.setValue("strength",0);setup.setValue("variability",0);setup.setValue("differences",0);setup.setValue("direction",180);setup.setValue("strength",1.8);
     check(setup.field()->wind(70,0).head< -1.79,"direction chosen in calm conditions is retained when strength is added");
     const auto before=setup.values()["seed"];const auto preserved=setup.field()->wind(70,200);
     setup.setPreviewSeconds(180);setup.preview();setup.values();setup.setPreviewSeconds(0);
@@ -24,6 +25,14 @@ static void simulationV2WeatherSetupRegressions() {
     check(setup.values()["seed"]==before && setup.field()->wind(70,200).head==preserved.head,"hill perks never secretly alter manually chosen weather");
     setup.setValue("precipitationScenario",1);setup.setValue("precipitationIntensity",7);setup.applyPreset(2);
     check(setup.field()->precipitation(0)==7,"wind preset does not reset precipitation");
+    setup.setValue("precipitationKind",1);check(setup.field()->precipitationKind()==SimulationV2::PrecipitationKind::Rain && setup.values()["surface"].toInt()==0,"rain is independent of snow landing surface");
+    setup.setValue("precipitationLevel",1);check(setup.field()->precipitation(0)==2,"simple light precipitation selects its actual intensity");
+    setup.setValue("precipitationPattern",2);check(setup.field()->precipitation(600)>setup.field()->precipitation(0),"simple increasing option really evolves in time");
+    setup.setValue("precipitationLevel",0);check(setup.field()->precipitation(600)==0,"no precipitation disables the temporal trend");
+    setup.setValue("precipitationLevel",3);check(setup.values()["precipitationLevel"].toInt()==3,"rain intensity can be reenabled after no precipitation");
+    check(setup.presets().size()==SimulationV2::weatherPresetCount,"all scenario names match available sampler choices");
+    for(int index=5;index<SimulationV2::weatherPresetCount;++index){setup.applyPreset(index);check(setup.values()["preset"].toInt()==index,"all six extra scenarios are selectable");}
+    setup.setValue("precipitationScenario",1);setup.setValue("precipitationIntensity",7);
     setup.setValue("precipitationScenario",3);setup.setValue("precipitationIntensity",2);check(setup.precipitationParameters().intensity==8,"heavy precipitation displays its actual minimum intensity");setup.setValue("precipitationScenario",1);setup.setValue("precipitationIntensity",7);
     const auto frozen=setup.field();const auto frozenSample=frozen->wind(80,300);const auto oldSeed=setup.values()["seed"];
     setup.reroll();check(setup.values()["seed"]!=oldSeed && setup.field()->precipitation(0)==7,"explicit reroll produces a new preset variant without changing manual precipitation");

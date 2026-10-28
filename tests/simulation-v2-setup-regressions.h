@@ -50,15 +50,18 @@ static void simulationV2SetupRegressions(MainWindow &main) {
     main.resize(1024,640);QTest::qWait(100);
     bridge->edit(bridge->root()->values().value("id").toInt(),labels.indexOf(QString::fromUtf8("Warunki")));QTest::qWait(150);
     check(item(scene(&window)->rootObject(),"weatherWorkspace"),"new weather workspace replaces the old sector editor");
-    clickControl(scene(&window),"weatherPreset-2");check(window.getWeatherSetup()->values()["preset"].toInt()==2,"preset card updates the actual weather backend");
+    check(window.getWeatherSetup()->values()["preset"].toInt()==-1,"weather initially uses automatic hill-based proposal");
+    clickControl(scene(&window),"weatherPresetPicker");QTest::keyClick(scene(&window),Qt::Key_Home);for(int i=0;i<3;++i)QTest::keyClick(scene(&window),Qt::Key_Down);QTest::keyClick(scene(&window),Qt::Key_Return);QTest::qWait(30);
+    check(window.getWeatherSetup()->values()["preset"].toInt()==2,"scenario dropdown selects the actual lottery preset");
     const auto selectedSeed=window.getWeatherSetup()->values()["seed"];
     render(&window,"simulation-v2-weather",true);
     check(window.getWeatherSetup()->values()["seed"]==selectedSeed,"screen renders never reroll selected weather");
     main.resize(1024,640);QTest::qWait(100);clickControl(scene(&window),"weatherTuningToggle");QTest::qWait(50);
     check(item(scene(&window)->rootObject(),"weatherDirection"),"customization is optional and reveals the four simple controls");
-    clickControl(scene(&window),"weatherAdvancedToggle");QTest::qWait(50);
-    check(item(scene(&window)->rootObject(),"weather-gustProbability"),"advanced weather controls remain available inline");
-    scene(&window)->grabFramebuffer().save(output+"/simulation-v2-weather-advanced.png");
+    check(!item(scene(&window)->rootObject(),"weatherAdvancedToggle") && !item(scene(&window)->rootObject(),"weather-gustProbability"),"technical weather form is not exposed by customization");
+    check(item(scene(&window)->rootObject(),"weatherPrecipitationKind") && item(scene(&window)->rootObject(),"weatherPrecipitationLevel"),"precipitation exposes a short independent kind and intensity choice");
+    window.getWeatherSetup()->setValue("precipitationKind",1);window.getWeatherSetup()->setValue("precipitationLevel",3);
+    scene(&window)->grabFramebuffer().save(output+"/simulation-v2-weather-custom.png");
     window.reject();QTest::qWait(50);
     // New batch jump identity and random quality must not depend on worker scheduling.
     SingleJumpsManager manager;manager.setJumper(window.configuredJumper());manager.setHill(window.configuredHill());

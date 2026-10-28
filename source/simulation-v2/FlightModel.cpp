@@ -35,6 +35,8 @@ void FlightParameters::validate() const
     bound(gateMetresAtK120,0,20,"Gate distance coefficient out of range");
     bound(gateTailwindInteraction,0,1,"Gate/wind interaction out of range");
     bound(precipitationLossPerLevel,0,.1,"Precipitation effect out of range");
+    bound(rainLossPerLevel,0,.1,"Rain effect out of range");
+    bound(rainLossThreshold,0,10,"Rain threshold out of range");
     bound(stepMetres,.05,5,"Integration step out of range");
     bound(secondsPerK,.1,30,"Flight time scale out of range");
     bound(windReservePerMetre,0,1,"Wind effect out of range");bound(crosswindDrag,0,1,"Crosswind drag out of range");
@@ -54,15 +56,20 @@ double FlightModel::landingLimit(const Hill &hill) const
     hill.validate();return hill.realHs+config.usableLandingBeyondRealHsAtK*hill.k;
 }
 
-double FlightModel::reserve(double quality,const Hill &hill,int gate,double precipitation,double initialHeadwind) const
+double FlightModel::reserve(double quality,const Hill &hill,int gate,double precipitation,double initialHeadwind,PrecipitationKind kind) const
 {
     hill.validate();bound(quality,-1e12,1e12,"Jump quality out of range");
     if(gate<0 || gate>200)throw std::invalid_argument("Starting gate out of range");
     bound(precipitation,0,10,"Precipitation out of range");bound(initialHeadwind,-100,100,"Initial wind out of range");
+    if(kind!=PrecipitationKind::Snow && kind!=PrecipitationKind::Rain)throw std::invalid_argument("Unknown precipitation kind");
     const double distance=hill.k*config.referenceDistanceAtK+(quality-config.referenceQuality)*config.qualityMetresAtK120*hill.k/120;
     const double gateEffect=(gate-config.referenceGate)*config.gateMetresAtK120*hill.k/120
         *(1+config.gateTailwindInteraction*std::max(0.0,-initialHeadwind));
-    return std::clamp((distance+gateEffect)*(1-config.precipitationLossPerLevel*precipitation),0.0,1000000.0);
+    // Approximate track condition, not a rain-induced loss of aerodynamic lift.
+    // Light water is normal on prepared tracks; only excess rain receives a loss.
+    const double loss=kind==PrecipitationKind::Snow ? config.precipitationLossPerLevel*precipitation
+        : config.rainLossPerLevel*std::max(0.0,precipitation-config.rainLossThreshold);
+    return std::clamp((distance+gateEffect)*(1-loss),0.0,1000000.0);
 }
 
 FlightResult FlightModel::fly(double initialReserve,const Hill &hill,const WeatherField &weather,double startSeconds,bool capture) const

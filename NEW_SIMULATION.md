@@ -95,7 +95,13 @@ Między punktami zastosować ciągłą, monotoniczną krzywą bez niezamierzonyc
 <na razie forma jest taka jaka jest, za niedlugo zrobimy auto-zmianę formy w sezonie>
 
 # Zaktualizowany system opadów (śnieg lub deszcz).
-Niech opady po prostu pogarszają skoki i tyle.
+**Aktualizacja kierunku 28.10.2026:** rozdzielić wpływ deszczu i śniegu.
+Śnieg zalegający w torach hamuje rozbieg. Lekkiej wilgoci/deszczu nie traktować
+automatycznie jak śniegu: przygotowane letnie tory są celowo nawadniane.
+Nadmiar wody i utrudniony odpływ może pogarszać ślizg. Współczynniki efektów
+pozostają przybliżeniem do dostrajania, nie danymi pomiarowymi. Krótkie wyjaśnienie
+zależne od wybranego rodzaju ma być widoczne w UI. Typ opadów jest osobny od
+nawierzchni: deszcz może wystąpić także zimą. Podstawy: `docs/WEATHER_RESEARCH.md`.
 Niech będzie 10 poziomów, od 0 do 10.
 Niech to się samo zmienia w trakcie konkursu, np na koniec konkursu większy deszcz. Dynamicznie tak jak obecnie jest bodajże.
 Ale pod względem UX to ma być dużo prostsze. Niech będzie 5 opcji do wyboru ze śniegiem. Albo brak śniegu, albo stabilne opady śniegu, albo bardzo zmienne opady i nie wiadomo czego się spodziewać, albo śnieżyca absolutna. i wymyśl jeszcze jakąś opcję.
@@ -124,7 +130,14 @@ Użytkownik przede wszystkim wybiera ogólny charakter warunków: dominujący ki
 - Średnio mocny wiatr boczny, raczej podobny na całym zeskoku.
 - Mocny, loteryjny wiatr tylny, z typową siłą około 1,8 m/s.
 
-Dokładne wartości, kierunki i punkty odniesienia udostępnić w opcjach zaawansowanych. Proste ustawienia mają być nadrzędnym, wygodnym sposobem przygotowania konkursu, a nie dodatkowym krokiem przed obowiązkową szczegółową konfiguracją. Nie wprowadzać wielu drobiazgowych parametrów na głównym ekranie.
+**Najnowszy kierunek UX (28.10):** domyślne i najbardziej widoczne jest losowanie
+według skoczni i jej perków. Jeden wybór scenariusza, przycisk ponownego losowania,
+podgląd i krótkie zdanie o zmienności. Opcjonalnie najwyżej cztery proste ustawienia
+wiatru (kierunek, siła, zmienność, różnice na zeskoku) oraz trzy opadów (rodzaj,
+natężenie, przebieg). **Nie udostępniać teraz pełnego formularza technicznego,
+także pod przyciskiem „zaawansowane”.** Rozbudowa dopiero po ocenie użytkownika.
+Parametry silnika, seed i dokładne punkty zachować w API/testach/playgroundzie.
+To zmienia kierunek całej integracji konkursów i sezonów, nie tylko obecny ekran.
 
 
 Ustalenia 28.10.2026 po odpowiedziach użytkownika:
@@ -132,12 +145,16 @@ Ustalenia 28.10.2026 po odpowiedziach użytkownika:
 - Prosty widok zaczyna się od **scenariuszy**, nie od zestawu parametrów:
   „Stabilny w plecy”, „Mocno pod narty”, „Loteria”, „Zmienny boczny”, „Cisza”.
   Jeden scenariusz określa zakresy i może w różnych konkursach losować trochę
-  inne parametry oraz inny przebieg pogody. „Cisza” oznacza rzeczywisty brak wiatru.
+  inne parametry oraz inny przebieg pogody. **„Cisza” = słaby wiatr, głównie
+  0,1–0,3 m/s, z niewielkimi zmianami i rzadszymi wariantami poza tym zakresem.**
+  Nie wymuszać matematycznego zera. Dodatkowe scenariusze: spokojnie pod narty,
+  mocno w plecy, spokojny boczny, zmiennie pod narty, zmiennie w plecy,
+  różny na zeskoku — łącznie 11 oraz domyślne losowanie według skoczni.
 - Domyślnie pokazywać schemat kierunków/sił na zeskoku, krótkie zdanie o zmienności
   i „Losuj ponownie”. Użytkownik nie musi rozumieć technicznych współczynników.
 - „Dostosuj” ujawnia kierunek i siłę wyjściową, zmienność w czasie i różnice wzdłuż
-  zeskoku. Rzadkie szczegóły można rozwinąć dalej; etykiety podają jednostki,
-  a krótkie tooltipy tłumaczą konkretny efekt bez instrukcji aplikacji.
+  zeskoku. Na tym kończy się bieżąca konfiguracja; techniczne szczegóły nie są
+  pokazywane. Etykiety i krótkie tooltipy tłumaczą efekt bez instrukcji aplikacji.
 - **Siła jest niezależna od loteryjności.** Tylny 1,8 m/s może utrzymywać się
   przez cały konkurs z minimalnymi wahaniami; słaby wiatr także może być loteryjny.
   Edycja siły nie zmienia amplitud/częstości podmuchów ani zmian tendencji.

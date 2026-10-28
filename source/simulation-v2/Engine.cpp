@@ -55,9 +55,10 @@ JumpResult Engine::simulate(const JumpRequest &input,RandomSource &rng,const Wea
     result.quality.manipulationEffect=input.manipulation.quality.apply(result.quality.value())-result.quality.value();
     const double precip=precipitation(input,weather);
     const double reserve=flightModel.reserve(result.quality.value(),input.hill,input.scoring.juryGate-input.scoring.coachReduction,
-        precip,weather.wind(0,input.startSeconds).head);
+        precip,weather.wind(0,input.startSeconds).head,weather.precipitationKind());
     result.flight=manipulatedFlight(input,flightModel,weather,reserve,result.distanceLimitedByGeometry);
     result.flight.precipitation=precip;
+    result.flight.precipitationKind=weather.precipitationKind();
     result.measuredDistance=std::round(result.flight.distance*2)/2;
     result.landingProbabilities=landingModel.probabilities(result.flight.distance,input.hill.realHs,result.flight.meanAbsoluteCrosswind);
     result.landing=landingModel.sample(result.flight.distance,input.hill.realHs,result.flight.meanAbsoluteCrosswind,rng);
@@ -75,7 +76,7 @@ double Engine::previewDistance(const JumpRequest &input,const WeatherField &weat
     validate(input);
     const auto quality=qualityModel.baseline(input.athlete,input.hill.k,input.hill.takeoffBias,input.event);
     const double reserve=flightModel.reserve(input.manipulation.quality.apply(quality.value()),input.hill,input.scoring.juryGate-input.scoring.coachReduction,
-        precipitation(input,weather),weather.wind(0,input.startSeconds).head);
+        precipitation(input,weather),weather.wind(0,input.startSeconds).head,weather.precipitationKind());
     auto preview=input;preview.captureExposure=false;bool limited=false;
     return manipulatedFlight(preview,flightModel,weather,reserve,limited).distance;
 }

@@ -20,6 +20,8 @@ struct FlightParameters {
     double gateMetresAtK120=2.5;
     double gateTailwindInteraction=.04;
     double precipitationLossPerLevel=.008;
+    double rainLossPerLevel=.003;
+    double rainLossThreshold=2;
     double stepMetres=1;
     double secondsPerK=4; // time coordinate only; no trajectory/speed simulation
     double windReservePerMetre=.055;
@@ -43,6 +45,7 @@ struct WindExposure {
 
 struct FlightResult {
     double distance=0, duration=0, reserve=0, precipitation=0;
+    PrecipitationKind precipitationKind=PrecipitationKind::Snow;
     Wind experiencedWind;
     double meanAbsoluteCrosswind=0;
     std::vector<WindExposure> exposures;
@@ -52,7 +55,8 @@ struct FlightResult {
 class FlightModel {
 public:
     explicit FlightModel(FlightParameters = {});
-    double reserve(double quality, const Hill &, int gate, double precipitation, double initialHeadwind) const;
+    double reserve(double quality, const Hill &, int gate, double precipitation, double initialHeadwind,
+                   PrecipitationKind = PrecipitationKind::Snow) const;
     double landingLimit(const Hill &) const;
     FlightResult fly(double reserve, const Hill &, const WeatherField &, double startSeconds, bool captureExposure=true) const;
     const FlightParameters &parameters() const { return config; }

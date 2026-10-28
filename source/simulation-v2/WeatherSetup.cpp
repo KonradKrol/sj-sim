@@ -54,7 +54,7 @@ void SimulationWeatherSetup::regenerate(bool includePrecipitation) {
 }
 void SimulationWeatherSetup::suggest() {if(!hasHill)return;precipitationEdited=false;regenerate(true);}
 void SimulationWeatherSetup::applyPreset(int index) {
-    if(!hasHill || index<0 || index>4)return;
+    if(!hasHill || index<0 || index>=SimulationV2::weatherPresetCount)return;
     seed=QRandomGenerator::global()->generate64();SimulationV2::SeededRandom rng(SimulationV2::deriveSeed(seed,0));
     wind=SimulationV2::sampleWeatherPreset(static_cast<SimulationV2::WeatherPreset>(index),hill.k,rng).wind;
     preset=index;modified=false;inferControls();rebuild();
@@ -69,6 +69,9 @@ QVariantMap SimulationWeatherSetup::values() const {
     QVariantMap result{{"ready",hasHill},{"preset",preset},{"modified",modified},{"seed",QString::number(seed)},
         {"strength",average.strength()},{"direction",requestedDirection},{"variability",variability},{"differences",differences},
         {"surface",int(surface)},{"precipitationScenario",int(precipitation.scenario)},{"precipitationIntensity",precipitation.intensity},
+        {"precipitationKind",int(precipitation.kind)},
+        {"precipitationLevel",precipitation.scenario==SimulationV2::PrecipitationScenario::None ? 0 : precipitation.intensity<=3 ? 1 : precipitation.intensity<=6.5 ? 2 : 3},
+        {"precipitationPattern",precipitation.scenario==SimulationV2::PrecipitationScenario::Variable ? 1 : precipitation.scenario==SimulationV2::PrecipitationScenario::Increasing ? 2 : 0},
         {"precipitationVariation",precipitation.variation},{"precipitationIncrease",precipitation.increasePerMinute},
         {"hillName",hill.name},{"hs",hill.hs},{"flag",QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(hill.country)+".svg")).toString()},{"k",hill.k}};
     result["staticWind"]=wind.temporalAmplitude==0 && wind.spatialAmplitude==0 && (wind.gustAmplitude==0 || wind.gustProbability==0) && wind.trendAmplitude==0;
@@ -86,6 +89,11 @@ QVariantList SimulationWeatherSetup::references() const {
     QVariantList rows;
     for(const auto &point:wind.references)rows.append(QVariantMap{{"distance",point.distance},{"strength",point.value.strength()},{"direction",angle(point.value)}});
     return rows;
+}
+QVariantList SimulationWeatherSetup::presets() const {
+    return {tr("Stabilny w plecy"),tr("Mocno pod narty"),tr("Loteria"),tr("Zmienny boczny"),tr("Cisza"),
+        tr("Spokojnie pod narty"),tr("Mocno w plecy"),tr("Spokojny boczny"),tr("Zmiennie pod narty"),
+        tr("Zmiennie w plecy"),tr("Różny na zeskoku")};
 }
 QVariantList SimulationWeatherSetup::preview() const {
     QVariantList rows;
@@ -133,7 +141,21 @@ void SimulationWeatherSetup::setValue(const QString &key,double value) {
         surface=static_cast<SimulationV2::Surface>(int(value));emit changed();return;
     } else if(key.startsWith("precipitation")) {
         windEdit=false;
-        if(key=="precipitationScenario") {if(value!=std::floor(value) || !bounded(value,0,4))return;nextPrecipitation.scenario=static_cast<SimulationV2::PrecipitationScenario>(int(value));if(value>0 && nextPrecipitation.intensity==0)nextPrecipitation.intensity=value==3?9:3;if(value==3)nextPrecipitation.intensity=std::max(8.0,nextPrecipitation.intensity);}
+        if(key=="precipitationKind") {if(value!=0 && value!=1)return;nextPrecipitation.kind=static_cast<SimulationV2::PrecipitationKind>(int(value));}
+        else if(key=="precipitationLevel") {
+            if(value!=std::floor(value) || !bounded(value,0,3))return;
+            static const double intensities[]{0,2,5,9};nextPrecipitation.intensity=intensities[int(value)];
+            if(value==0)nextPrecipitation.scenario=SimulationV2::PrecipitationScenario::None;
+            else if(nextPrecipitation.scenario==SimulationV2::PrecipitationScenario::None || nextPrecipitation.scenario==SimulationV2::PrecipitationScenario::Blizzard)
+                nextPrecipitation.scenario=SimulationV2::PrecipitationScenario::Stable;
+        }
+        else if(key=="precipitationPattern") {
+            if(value!=std::floor(value) || !bounded(value,0,2))return;
+            static const SimulationV2::PrecipitationScenario scenarios[]{SimulationV2::PrecipitationScenario::Stable,SimulationV2::PrecipitationScenario::Variable,SimulationV2::PrecipitationScenario::Increasing};
+            nextPrecipitation.scenario=scenarios[int(value)];
+            if(nextPrecipitation.intensity==0)nextPrecipitation.intensity=2;
+        }
+        else if(key=="precipitationScenario") {if(value!=std::floor(value) || !bounded(value,0,4))return;nextPrecipitation.scenario=static_cast<SimulationV2::PrecipitationScenario>(int(value));if(value>0 && nextPrecipitation.intensity==0)nextPrecipitation.intensity=value==3?9:3;if(value==3)nextPrecipitation.intensity=std::max(8.0,nextPrecipitation.intensity);}
         else if(key=="precipitationIntensity")nextPrecipitation.intensity=nextPrecipitation.scenario==SimulationV2::PrecipitationScenario::Blizzard && bounded(value,0,10)?std::max(8.0,value):value;
         else if(key=="precipitationVariation")nextPrecipitation.variation=value;
         else if(key=="precipitationIncrease")nextPrecipitation.increasePerMinute=value;

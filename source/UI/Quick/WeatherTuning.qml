@@ -5,7 +5,6 @@ import QtQuick.Layouts 1.15
 ColumnLayout {
     id: tuning
     property var backend
-    property bool advanced: false
     readonly property var values: backend.values
     spacing: Theme.dp(10)
     GridLayout {
@@ -27,12 +26,5 @@ ColumnLayout {
         WeatherNumber { backend: tuning.backend; fieldKey: "strength"; label: qsTr("Siła wyjściowa · m/s"); maximum: 10; Layout.fillWidth: true; explanation: qsTr("Punkt wyjścia. Mocny wiatr może być stabilny, a słaby — bardzo zmienny.") }
         WeatherNumber { backend: tuning.backend; fieldKey: "variability"; factor: .1; label: qsTr("Zmienność w czasie · 0–10"); maximum: 10; Layout.fillWidth: true; explanation: qsTr("0: bez zmian w czasie. Wyżej: większe i szybsze zmiany, podmuchy oraz możliwe odwrócenia kierunku.") }
         WeatherNumber { backend: tuning.backend; fieldKey: "differences"; factor: .1; label: qsTr("Różnice na zeskoku · 0–10"); maximum: 10; Layout.fillWidth: true; explanation: qsTr("0: podobny wiatr wzdłuż zeskoku. Wyżej: poszczególne fragmenty mogą mieć znacznie inne warunki.") }
-    }
-    SButton { objectName: "weatherAdvancedToggle"; text: tuning.advanced ? qsTr("Ukryj szczegóły") : qsTr("Ustawienia szczegółowe"); quiet: true; onClicked: tuning.advanced=!tuning.advanced }
-    Loader {
-        active: tuning.advanced; visible: active
-        Layout.fillWidth: true
-        Layout.preferredHeight: status===Loader.Ready ? item.implicitHeight : 0
-        sourceComponent: Component { WeatherAdvanced { backend: tuning.backend } }
     }
 }

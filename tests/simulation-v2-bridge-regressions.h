@@ -59,7 +59,8 @@ static void simulationV2BridgeRegressions()
     // Preview shares the new model and ignores all obsolete legacy skills.
     const double preview=simulator.previewDistance();jumper.getJumperSkillsPointer()->setTakeoffTechnique(0);jumper.getJumperSkillsPointer()->setFlightTechnique(10000);
     check(std::abs(preview-simulator.previewDistance())<1e-10,"new engine reads new OVR/form, not old techniques");
-    const auto weather=std::make_shared<SimulationV2::ContinuousWeather>(7);
+    SimulationV2::PrecipitationParameters rain;rain.scenario=SimulationV2::PrecipitationScenario::Stable;rain.intensity=8;rain.kind=SimulationV2::PrecipitationKind::Rain;
+    const auto weather=std::make_shared<SimulationV2::ContinuousWeather>(7,SimulationV2::WindParameters{},rain);
     const auto measurement=std::make_shared<SimulationV2::SensorWindMeasurement>(std::vector<SimulationV2::WindSensor>{{0,1},{60,1},{120,1}});
     simulator.setSimulationWeather(weather,measurement);simulator.setSimulationTime(100);simulator.simulateJump();
     check(simulator.getJumpData().getSimulationV2Data()["startSeconds"]==100,"game bridge accepts continuous weather with explicit contest time");
@@ -79,6 +80,7 @@ static void simulationV2BridgeRegressions()
     check(forcedHead>forcedTail,"exact wind overrides an injected field in preview, rather than changing only the recorded winds");
     simulator.simulateJump();const auto forcedJump=simulator.getJumpData();
     check(forcedJump.getAveragedWind()<0 && forcedJump.getSimulationV2Data()["experiencedWind"].toArray()[0].toDouble()<0 && forcedJump.getSimulationV2Data()["exactWindOverride"].toBool(),"exact wind affects flight, measurement and explicit manipulation metadata");
+    check(forcedJump.getSimulationV2Data()["precipitationKind"].toInt()==1 && forcedJump.getSimulationV2Data()["precipitation"].toDouble()==8,"exact wind override preserves rain kind and intensity");
     auto zeroMetre=venue;zeroMetre.pointsPerMetre=0;check(hill.setSimulationProfile(zeroMetre,error),"new hill allows explicit zero metre value");simulator.setManipulator(nullptr);simulator.simulateJump();
     check(std::isfinite(simulator.getJumpData().getPoints()),"zero metre value does not block new-model flight");
     jumper.setPersonalBest(550);AthleteProfile largeRecord;
