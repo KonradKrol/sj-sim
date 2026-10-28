@@ -91,9 +91,10 @@ void JumpSimulator::setSimulationWeather(std::shared_ptr<const SimulationV2::Wea
 
 void JumpSimulator::simulateV2()
 {
-    const auto activeWinds=manipulator && !manipulator->getExactWinds().isEmpty()?manipulator->getExactWinds():winds;
+    const bool exactWindOverride=manipulator && !manipulator->getExactWinds().isEmpty();
+    const auto activeWinds=exactWindOverride?manipulator->getExactWinds():winds;
     std::optional<SimulationV2::ContinuousWeather> fallbackWeather;
-    if(!simulationWeather)fallbackWeather.emplace(referenceWeather(activeWinds,hill->getKPoint(),inrunSnow));
+    if(!simulationWeather || exactWindOverride)fallbackWeather.emplace(referenceWeather(activeWinds,hill->getKPoint(),simulationWeather?simulationWeather->precipitation(simulationTime):inrunSnow));
     const LegacyMeasurement measurement(activeWinds,hill->getKPoint(),*competitionRules);
     const auto input=requestFor(*jumper,*hill,*competitionRules,gate,competitionStartGate,hasCoachGate,coachGate,DSQBaseProbability,simulationEvent,simulationTime,manipulator);
     // Sequence the draws explicitly: operand evaluation order must not change
@@ -106,8 +107,8 @@ void JumpSimulator::simulateV2()
         return (high<<42)|(middle<<21)|low;
     }();
     SimulationV2::SeededRandom rng(seed);
-    const auto result=simulationEngine.simulate(input,rng,simulationWeather?*simulationWeather:*fallbackWeather,
-        simulationMeasurement?*simulationMeasurement:static_cast<const SimulationV2::WindMeasurement &>(measurement));
+    const auto result=simulationEngine.simulate(input,rng,simulationWeather && !exactWindOverride?*simulationWeather:*fallbackWeather,
+        simulationMeasurement && !exactWindOverride?*simulationMeasurement:static_cast<const SimulationV2::WindMeasurement &>(measurement));
     jumpData=JumpData(jumper,hill);jumpData.setSimulator(this);simulationData=&jumpData.getSimulationDataReference();
     jumpData.setGate(gate);jumpData.setHasCoachGate(hasCoachGate);jumpData.setCoachGate(coachGate);
     jumpData.setJumperForm(input.athlete.form);jumpData.setDSQ(result.status==SimulationV2::JumpStatus::Disqualified);
@@ -120,16 +121,19 @@ void JumpSimulator::simulateV2()
     jumpData.setTotalCompensation(result.score.wind+result.score.gate);jumpData.setBeats95HSPercents(result.score.coachThresholdReached);
     simulationData->setInrunSnow(result.flight.precipitation);
     simulationData->setDSQProbability(std::isfinite(DSQBaseProbability) && DSQBaseProbability>=0 && DSQBaseProbability<=std::numeric_limits<int>::max()?int(DSQBaseProbability):0);
-    jumpData.setSimulationV2Data(metadata(result,seed,simulationTime,simulationEvent));
+    auto data=metadata(result,seed,simulationTime,simulationEvent);
+    if(exactWindOverride){data["exactWindOverride"]=true;data["manipulated"]=true;}
+    jumpData.setSimulationV2Data(data);
     simulationTime+=30;
 }
 
 double JumpSimulator::previewV2() const
 {
     if(!competitionRules)throw std::invalid_argument("New preview requires competition rules");
-    const auto activeWinds=manipulator && !manipulator->getExactWinds().isEmpty()?manipulator->getExactWinds():winds;
+    const bool exactWindOverride=manipulator && !manipulator->getExactWinds().isEmpty();
+    const auto activeWinds=exactWindOverride?manipulator->getExactWinds():winds;
     std::optional<SimulationV2::ContinuousWeather> fallbackWeather;
-    if(!simulationWeather)fallbackWeather.emplace(referenceWeather(activeWinds,hill->getKPoint(),inrunSnow));
+    if(!simulationWeather || exactWindOverride)fallbackWeather.emplace(referenceWeather(activeWinds,hill->getKPoint(),simulationWeather?simulationWeather->precipitation(simulationTime):inrunSnow));
     const auto input=requestFor(*jumper,*hill,*competitionRules,gate,competitionStartGate,hasCoachGate,coachGate,DSQBaseProbability,simulationEvent,simulationTime,manipulator);
-    return simulationEngine.previewDistance(input,simulationWeather?*simulationWeather:*fallbackWeather);
+    return simulationEngine.previewDistance(input,simulationWeather && !exactWindOverride?*simulationWeather:*fallbackWeather);
 }

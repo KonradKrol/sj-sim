@@ -626,3 +626,13 @@ sezonowy `CompetitionConfigWindow` dostaje już własne stabilne profile z zapis
 `CompetitionManagerWindow` nadal ma pięć ścieżek wykonywania skoku (ręczna,
 N, grupa, seria, cały konkurs) oraz osobne DNS. Przy podłączaniu nowego pola trzeba
 ujednolicić zegar we wszystkich ścieżkach i zachować ciągłość kwalifikacje → konkurs.
+
+## Dokładne wymuszenie wiatru przy podanym polu — poprawka
+
+`GameSimulationBridge` pomijał dokładne wiatry z `JumpManipulator`, gdy caller
+przekazywał `ContinuousWeather`: zmieniały się zapisane wartości, a lot nadal
+korzystał z pola. Wymuszenie teraz podmienia lokalny wiatr i pomiar dla tego skoku,
+zachowując opady bieżącego pola oraz pozostałe manipulacje. Działa tak samo
+w preview i pełnym skoku. Wynik zapisuje `exactWindOverride=true` i flagę manipulacji;
+nie zmienia wspólnej pogody następnych skoków. `--simulation-v2-only`: PASS,
+w tym przeciwne wymuszenia ±3 m/s przy wstrzykniętym polu.

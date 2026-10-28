@@ -1899,3 +1899,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
   wyjątkiem nowego silnika. Podgląd takiej konfiguracji bezpiecznie nie daje sugestii.
 - Usunięto crash wyszukiwania belki poza zakresem 0–200 nowego silnika, dodając
   zgodny limit sugestii, walidację startu i zakres sterowania belką w konkursie v2.
+
+- W nowym silniku poprawiono dokładne wymuszanie wiatrów przy aktywnym ciągłym
+  polu: obejmuje faktyczny lot, preview i pomiar, a nie tylko zapisane wartości.
+  Zachowuje opady i nie nadpisuje wspólnej pogody kolejnych skoków.

@@ -72,6 +72,13 @@ static void simulationV2BridgeRegressions()
     }
     JumpManipulator manipulator;manipulator.setDistanceRange({120,120});manipulator.setExactJudges({18,18.5,19,19.5,20});simulator.setManipulator(&manipulator);simulator.simulateJump();
     check(simulator.getJumpData().getDistance()==120 && simulator.getJumpData().getJudges()==manipulator.getExactJudges(),"compatible legacy manipulation maps to new engine overrides");
+    JumpManipulator exactWind;simulator.setManipulator(&exactWind);simulator.setSimulationSeed(123456);
+    QVector<Wind> forced(6);for(auto &w:forced){w.setDirection(0);w.setStrength(3);}exactWind.setExactWinds(forced);
+    const double forcedHead=simulator.previewDistance();
+    for(auto &w:forced)w.setDirection(180);exactWind.setExactWinds(forced);const double forcedTail=simulator.previewDistance();
+    check(forcedHead>forcedTail,"exact wind overrides an injected field in preview, rather than changing only the recorded winds");
+    simulator.simulateJump();const auto forcedJump=simulator.getJumpData();
+    check(forcedJump.getAveragedWind()<0 && forcedJump.getSimulationV2Data()["experiencedWind"].toArray()[0].toDouble()<0 && forcedJump.getSimulationV2Data()["exactWindOverride"].toBool(),"exact wind affects flight, measurement and explicit manipulation metadata");
     auto zeroMetre=venue;zeroMetre.pointsPerMetre=0;check(hill.setSimulationProfile(zeroMetre,error),"new hill allows explicit zero metre value");simulator.setManipulator(nullptr);simulator.simulateJump();
     check(std::isfinite(simulator.getJumpData().getPoints()),"zero metre value does not block new-model flight");
     jumper.setPersonalBest(550);AthleteProfile largeRecord;
