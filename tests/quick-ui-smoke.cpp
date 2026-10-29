@@ -2564,6 +2564,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--simulation-v2-only")){simulationV2BridgeRegressions();simulationV2RepositoryRegressions();simulationV2CatalogRegressions();return 0;}
     if(app.arguments().contains("--simulation-v2-manipulation-only")){simulationV2ManipulationRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-measurement-only")){simulationV2MeasurementRegressions();return 0;}
+    if(app.arguments().contains("--example-season-only")){exampleSeasonRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-season-only")){simulationV2SeasonEditorRegressions(main);simulationV2SeasonCreationRegressions(main);return 0;}
     if(app.arguments().contains("--motion-feedback-only")){motionFeedbackRegressions(main);return 0;}
     if(app.arguments().contains("--hill-studio-only")){hillStudioRegressions(main);return 0;}

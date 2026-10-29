@@ -36,6 +36,7 @@ private slots:
     void on_pushButton_reportIssue_clicked();
 
     void on_pushButton_season_clicked();
+    void startExampleSeason();
 
     void on_pushButton_help_clicked();
 

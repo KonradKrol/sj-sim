@@ -145,3 +145,29 @@ static void simulationV2SeasonCreationRegressions(MainWindow &main)
     GlobalAppSettings::get()->setLiveCompetition(oldLive);manager.reject();main.resize(1024,640);QSettings().remove("newSimulation");
     qInfo()<<"PASS: canonical season creation, owned source snapshot, individual/team runtime, continuous weather and persisted results";
 }
+
+static void exampleSeasonRegressions(MainWindow &main) {
+    QTemporaryDir data;check(data.isValid(),"example season isolated storage");
+    auto *database=GlobalDatabase::get();const auto originalSaves=database->getEditableGlobalSimulationSaves();const auto packs=database->packsSnapshot();const bool loaded=database->getLoadedSimulationSaves();
+    const auto oldName=QCoreApplication::applicationName();QCoreApplication::setApplicationName("ExampleSeasonTest-"+QUuid::createUuid().toString(QUuid::WithoutBraces));database->getEditableGlobalSimulationSaves().clear();database->setLoadedSimulationSaves(true);const auto privateCatalogRoot=QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    const auto oldRoot=qApp->property("exampleSeasonStorageRoot");qApp->setProperty("exampleSeasonStorageRoot",data.path());QSettings().remove("onboarding/welcomeDismissed");
+    QFile occupied(data.path()+"/Przykładowy sezon.json");check(occupied.open(QIODevice::WriteOnly) && occupied.write("existing save")>0,"existing file name fixture");occupied.close();
+    main.show();main.resize(1280,800);auto *bridge=main.findChild<QuickBridge *>();bridge->refresh();QTest::qWait(50);check(bridge->context()["showWelcome"].toBool() && item(scene(&main)->rootObject(),"homeWelcomeExample"),"first launch offers the example directly");
+    render(&main,"first-launch-welcome",true);
+    QStringList errors;QTimer dismissErrors;QObject::connect(&dismissErrors,&QTimer::timeout,&main,[&]{for(auto *widget:QApplication::allWidgets())if(auto *box=qobject_cast<QMessageBox *>(widget);box && box->isVisible()){errors.append(box->text());box->accept();}});dismissErrors.start(20);
+    QString firstName;
+    for(int run=0;run<2;++run) {
+        bridge->launch("example");QElapsedTimer timer;timer.start();SimulationSaveManagerWindow *manager=nullptr;
+        while(!manager && errors.isEmpty() && timer.elapsed()<30000){QTest::qWait(20);for(auto *window:main.findChildren<SimulationSaveManagerWindow *>())if(window->isVisible()){manager=window;break;}}
+        check(manager,qPrintable("one-click example opens its season: "+errors.join("; ")));auto *save=manager->getSimulationSave();
+        check(save->getEngineVersion()==2 && save->getActualSeason()->getCalendarsReference().size()==1 && save->getNextCompetition(),"example owns complete v2 packs and one playable calendar");
+        check(!save->getJumpersReference().isEmpty() && !save->getHillsReference().isEmpty() && save->getJumpersReference()[0]->getSimulationProfile(),"example uses familiar ready athlete and hill data");
+        auto *calendar=save->getActualSeason()->getActualCalendar();check(calendar && calendar->getCompetitionsReference().size()>20 && !calendar->getClassificationsReference().isEmpty(),"example includes a full winter calendar and classification");
+        for(auto *event:calendar->getCompetitionsReference())check(!event->getPlayed() && save->getHillsReference().contains(event->getHill()),"every example event references an owned hill and starts unplayed");
+        if(run==0)firstName=save->getName();else check(save->getName()!=firstName,"another example uses a unique save name");
+        check(QFileInfo::exists(data.path()+"/"+save->getName()+".json"),"one-click example is saved before opening");manager->reject();QTest::qWait(80);
+    }
+    dismissErrors.stop();check(occupied.open(QIODevice::ReadOnly) && occupied.readAll()=="existing save","example never overwrites an occupied save file");occupied.close();bridge->refresh();check(!bridge->context()["showWelcome"].toBool() && item(scene(&main)->rootObject(),"homeExample"),"welcome dismisses after success while the menu retains the example action");
+    check(database->packsSnapshot()==packs,"examples never modify global authoring packs");qDeleteAll(database->getEditableGlobalSimulationSaves());database->getEditableGlobalSimulationSaves()=originalSaves;database->setLoadedSimulationSaves(loaded);qApp->setProperty("exampleSeasonStorageRoot",oldRoot);QCoreApplication::setApplicationName(oldName);QDir(privateCatalogRoot).removeRecursively();bridge->refresh();
+    qInfo()<<"PASS: first-launch welcome, one-click winter season, owned packs, playable events, unique names and occupied-file protection";
+}

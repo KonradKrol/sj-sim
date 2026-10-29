@@ -27,6 +27,18 @@
 #include "EditorWidgets/HillEditorWidget.h"
 #include "EditorWidgets/WindsGeneratorSettingsEditorWidget.h"
 #include "Seasons/SimulationSavesWindow.h"
+#include "../seasons/SimulationSaveListOrder.h"
+#include "Seasons/NewSimulationSaveConfigurationWindow.h"
+#include "Seasons/SimulationSaveManagerWindow.h"
+#include <QTimer>
+#include <QDateTime>
+#include <QLineEdit>
+#include <QSettings>
+#include <QSysInfo>
+#include <QFileInfo>
+#include <QDir>
+#include <QMessageBox>
+#include <exception>
 
 #include "HelpWindow.h"
 #include "ThanksWindow.h"
@@ -186,6 +198,36 @@ void MainWindow::setParentApplication(QApplication *newParentApplication)
 void MainWindow::on_pushButton_reportIssue_clicked()
 {
     QDesktopServices::openUrl(QUrl("https://github.com/SiekamCebule/sj-sim/issues/new"));
+}
+
+void MainWindow::startExampleSeason()
+{
+    if(property("exampleSeasonPreparing").toBool())return;
+    auto *database=GlobalDatabase::get();
+    if(!database->getLoadedSimulationSaves()){database->loadSimulationSaves(true);database->setLoadedSimulationSaves(true);}
+    QDir root(QCoreApplication::applicationDirPath());if(!root.exists("userData") && QSysInfo::productType()=="windows")root.cdUp();
+    const QString testRoot=qApp->property("exampleSeasonStorageRoot").toString();
+    const QString directory=(testRoot.isEmpty()?root.absoluteFilePath("simulationSaves"):testRoot)+"/";QStringList names;
+    for(auto *save:database->getEditableGlobalSimulationSaves())if(save)names.append(save->getName());
+    for(const auto &file:QDir(directory).entryInfoList({"*.json"},QDir::Files))names.append(file.completeBaseName());
+    auto *setup=new NewSimulationSaveConfigurationWindow(names,this);auto *poll=new QTimer(setup);poll->setInterval(40);
+    setProperty("exampleSeasonPreparing",true);const auto deadline=QDateTime::currentMSecsSinceEpoch()+30000;
+    connect(poll,&QTimer::timeout,this,[this,setup,poll,directory,deadline] {
+        if(!setup->catalogReady() && QDateTime::currentMSecsSinceEpoch()<deadline)return;
+        poll->stop();setProperty("exampleSeasonPreparing",false);
+        bool stored=false;
+        try {
+            auto save=setup->createExampleSave();
+            if(!save){setup->deleteLater();QMessageBox::information(this,tr("Przykładowy sezon"),tr("Nie udało się przygotować przykładu. Potrzebne są kompletne paczki skoczków, skoczni i zasad oraz zimowy preset kalendarza."));return;}
+            const QString base=save->getName();for(int n=2;QFileInfo::exists(directory+save->getName()+".json");++n)save->setName(base+" "+QString::number(n));
+            auto &saves=GlobalDatabase::get()->getEditableGlobalSimulationSaves();saves.reserve(saves.size()+1);
+            if(!save->saveToFile(directory)){setup->deleteLater();return;}
+            auto *ready=save.get();saves.append(ready);save.release();stored=true;SimulationSaveListOrder::remember(saves);
+            setup->deleteLater();QSettings().setValue("onboarding/welcomeDismissed",true);
+            auto *manager=new SimulationSaveManagerWindow(ready,this);manager->setAttribute(Qt::WA_DeleteOnClose);manager->show();
+        }catch(const std::exception &error){setup->deleteLater();QMessageBox::critical(this,tr("Przykładowy sezon"),(stored?tr("Sezon został zapisany, ale nie udało się go otworzyć: %1"):tr("Nie udało się utworzyć przykładowego sezonu: %1")).arg(QString::fromUtf8(error.what())));}
+    });
+    poll->start();
 }
 
 void MainWindow::on_pushButton_season_clicked()

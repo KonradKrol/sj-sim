@@ -33,6 +33,7 @@ public:
     bool catalogReady() const { return ready; }
     int engineVersion() const { return source==DataSource::Canonical?2:1; }
     std::unique_ptr<SimulationSave> createSave() const;
+    std::unique_ptr<SimulationSave> createExampleSave();
 
 private slots:
     void on_pushButton_submit_clicked();

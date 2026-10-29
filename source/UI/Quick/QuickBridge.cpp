@@ -508,6 +508,10 @@ void QuickBridge::refresh() {
         m_refreshing=false;
         return;
     }
+    if(m_home) {
+        const QVariantMap context{{"exampleBusy",m_window->property("exampleSeasonPreparing").toBool()},{"showWelcome",!QSettings().value("onboarding/welcomeDismissed",false).toBool()}};
+        if(context!=m_context){m_context=context;emit changed();}
+    }
     if(!m_home) {
         auto *root=layoutNode(m_content->layout());
         compose(root);
@@ -738,13 +742,14 @@ bool QuickBridge::shortcut(int owner,const QString &sequence) {
     return false;
 }
 void QuickBridge::launch(const QString &destination) {
+    if(m_home && destination=="dismissWelcome"){QSettings().setValue("onboarding/welcomeDismissed",true);refresh();return;}
     if(m_home && destination=="balanceLab"){QTimer::singleShot(0,this,[this]{if(m_window){auto *window=new BalanceLabWindow(m_window);window->setAttribute(Qt::WA_DeleteOnClose);window->show();}});return;}
     static const QHash<QString,const char *> destinations{{"competition","on_pushButton_singleCompetition_clicked"},{"jumps","on_pushButton_singleJumps_clicked"},
-        {"seasons","on_pushButton_season_clicked"},{"database","on_pushButton_databaseEdit_clicked"},{"settings","on_pushButton_settings_clicked"},
+        {"example","startExampleSeason"},{"seasons","on_pushButton_season_clicked"},{"database","on_pushButton_databaseEdit_clicked"},{"settings","on_pushButton_settings_clicked"},
         {"author","showAuthor"},{"help","on_pushButton_help_clicked"},{"credits","on_pushButton_thanks_clicked"},{"issue","on_pushButton_reportIssue_clicked"}};
     const auto slot=destinations.value(destination,nullptr);
     if(!m_home || !slot) return;
-    QTimer::singleShot(0,this,[this,slot] { if(m_window) QMetaObject::invokeMethod(m_window,slot); emit changed(); });
+    QTimer::singleShot(0,this,[this,slot] { if(m_window) QMetaObject::invokeMethod(m_window,slot); refresh(); emit changed(); });
 }
 void QuickBridge::showAuthorCredits() {
     if(auto *author=qobject_cast<AuthorWindow *>(m_window))QTimer::singleShot(0,author,&AuthorWindow::showCredits);

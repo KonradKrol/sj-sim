@@ -12,6 +12,9 @@
 #include <QFutureWatcher>
 #include <QtConcurrent/QtConcurrentRun>
 #include <QTimer>
+#include <QLineEdit>
+#include <limits>
+#include <cmath>
 
 NewSimulationSaveConfigurationWindow::NewSimulationSaveConfigurationWindow(QStringList otherNames, QWidget *parent,
     DataSource source,const SimulationV2::CatalogPaths &paths) :
@@ -169,6 +172,43 @@ std::unique_ptr<SimulationSave> NewSimulationSaveConfigurationWindow::createSave
     save->getSeasonsReference().append(season);save->setActualSeason(&save->getSeasonsReference().last());
     save->fixJumpersFormInstabilities();save->updateNextCompetitionIndex();save->repairDatabase();
     return save;
+}
+
+std::unique_ptr<SimulationSave> NewSimulationSaveConfigurationWindow::createExampleSave()
+{
+    if(!ready)return {};
+    const auto legacy=GlobalDatabase::get()->getPacks();
+    for(int kind=0;kind<3;++kind) {
+        QString original;for(const auto &pack:legacy)if(int(pack.kind)==kind){original=pack.id;break;}
+        int fallback=-1,preferred=-1;
+        for(int i=0;i<packChoices[kind]->count();++i) {
+            const auto *entry=snapshot.find(DataPack::Kind(kind),packChoices[kind]->itemData(i).toString());if(!entry)continue;
+            const auto &pack=entry->data;const bool usable=kind==0?!pack.jumpers.isEmpty():kind==1?!pack.hills.isEmpty():!pack.rules.isEmpty();if(!usable)continue;
+            if(fallback<0)fallback=i;
+            if(pack.id==original || pack.approximateMigrationSource==original){preferred=i;break;}
+        }
+        packChoices[kind]->setCurrentIndex(preferred>=0?preferred:fallback);
+    }
+    auto &presets=GlobalDatabase::get()->getEditableGlobalCalendarPresets();SeasonCalendarPreset *selected=nullptr;
+    for(auto &preset:presets)if(!preset.getCalendarReference().getCompetitionsReference().isEmpty() && (preset.getName().contains(QString::fromUtf8("PŚ")) || preset.getName().contains("World Cup",Qt::CaseInsensitive))) {
+        if(!selected || preset.getName().contains("2024-25"))selected=&preset;
+    }
+    if(!selected)return {};
+    const QString base=tr("Przykładowy sezon");QString name=base;for(int n=2;otherNames.contains(name,Qt::CaseInsensitive);++n)name=base+" "+QString::number(n);
+    ui->lineEdit_name->setText(name);findChild<QCheckBox *>("newSeasonDates")->setChecked(false);
+    auto save=createSave();if(!save)return {};
+    SeasonCalendarPreset copy(&selected->getCalendarReference());auto calendar=std::make_unique<SeasonCalendar>(copy.getCalendarReference());calendar->setName(tr("Puchar Świata"));
+    const auto &venues=selected->getHillsReference();auto &events=calendar->getCompetitionsReference();
+    for(int i=0;i<events.size();++i) {
+        auto *best=save->getHillsReference().first();double score=std::numeric_limits<double>::max();
+        if(i<venues.size())for(auto *hill:save->getHillsReference()) {
+            const double distance=std::abs(hill->getHSPoint()-venues[i].second)+(hill->getName()==venues[i].first?0:1000);
+            if(distance<score){score=distance;best=hill;}
+        }
+        events[i]->setHill(best);events[i]->setScheduledDate({});
+    }
+    calendar->normalizeCompetitionEvents();save->getActualSeason()->getCalendarsReference().append(calendar.get());save->getActualSeason()->setActualCalendar(calendar.release());
+    save->updateNextCompetitionIndex();save->repairDatabase();return save;
 }
 
 void NewSimulationSaveConfigurationWindow::updateSubmitState() {
