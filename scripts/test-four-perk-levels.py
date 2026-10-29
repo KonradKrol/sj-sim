@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """Check one-time conversion, data preservation, backups and repeat safety."""
+import sys
+sys.dont_write_bytecode=True
 import importlib.util
 import json
 from pathlib import Path
@@ -39,5 +41,15 @@ with tempfile.TemporaryDirectory() as directory:
     assert current['variants']==mixed['variants']
     assert current['roster'][0]['simulation-v2']['perks']==[1,2,-4]
     assert not conversion.needs_conversion(current)
+    invalid=Path(directory) / 'invalid.json'
+    broken={'profiles':[{'id':'bad','overall':80,'perks':[0,0,5]}]}
+    invalid.write_text(json.dumps(broken))
+    before=invalid.read_bytes()
+    try:
+        conversion.convert_file(invalid,True)
+        raise AssertionError('Invalid old levels must be rejected')
+    except ValueError:
+        pass
+    assert invalid.read_bytes()==before and not invalid.with_name('invalid.json.three-levels.bak').exists()
     assert not conversion.needs_conversion({'hello':'unrelated data','perks':[3,3,3]})
 print('PASS: four-level conversion preserves ratings, photos, sides, extremes, new data and exact backups; resampling and repeated runs are safe')

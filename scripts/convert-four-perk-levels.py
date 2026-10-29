@@ -61,6 +61,8 @@ def resample(old):
 
 
 def remap_level(value):
+    if isinstance(value,bool) or not isinstance(value,(int,float)) or not math.isfinite(value) or value!=int(value) or not -3<=value<=3:
+        raise ValueError('Invalid old perk level: ' + str(value))
     return 4 if value == 3 else -4 if value == -3 else value
 
 
@@ -75,6 +77,8 @@ def convert(value, old_scale=True):
         old_scale = False
     result = {k: convert(v, old_scale) for k, v in value.items()}
     if profile(value):
+        if len(value['perks']) not in ((3,4) if 'k' in value else (3,)):
+            raise ValueError('Invalid old perk categories')
         result['perks'] = [remap_level(v) for v in value['perks']]
         if 'k' in value and len(result['perks']) == 3:
             result['perks'].append(0)
