@@ -6,6 +6,11 @@ ColumnLayout {
     id: scoring
     property var backend
     property var entry
+    function updateScoring(patch) {
+        var target=backend
+        var index=entry.index
+        Qt.callLater(function(){target.setClassificationScoring(index,patch)})
+    }
     spacing: 8
     SCheck {
         Layout.fillWidth: true
@@ -28,7 +33,7 @@ ColumnLayout {
             currentIndex: scoring.entry.methodIndex
             displayText: currentIndex < 0 ? qsTr("Różne sposoby") : currentText
             Accessible.name: qsTr("Sposób naliczania punktów: %1").arg(scoring.entry.name)
-            onActivated: if (currentIndex >= 0) scoring.backend.setClassificationScoring(scoring.entry.index, {method: scoring.entry.methodIds[currentIndex]})
+            onActivated: if (currentIndex >= 0) scoring.updateScoring({method: scoring.entry.methodIds[currentIndex]})
         }
         Label {
             visible: scoring.entry.contextAllowed
@@ -56,7 +61,7 @@ ColumnLayout {
                     onClicked: {
                         var patch = {}
                         patch[parameter.modelData.key] = checked ? scoring.entry.defaults[parameter.modelData.key] : null
-                        scoring.backend.setClassificationScoring(scoring.entry.index, patch)
+                        scoring.updateScoring(patch)
                     }
                 }
                 NumberField {
@@ -71,7 +76,7 @@ ColumnLayout {
                     onCommitted: {
                         var patch = {}
                         patch[parameter.modelData.key] = value
-                        scoring.backend.setClassificationScoring(scoring.entry.index, patch)
+                        scoring.updateScoring(patch)
                     }
                 }
             }
