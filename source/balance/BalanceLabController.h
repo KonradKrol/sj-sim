@@ -13,11 +13,12 @@ class BalanceLabController final:public QObject {
     Q_PROPERTY(int question READ question NOTIFY changed)
     Q_PROPERTY(QVariantMap config READ config NOTIFY changed)
     Q_PROPERTY(QVariantMap options READ options NOTIFY changed)
-    Q_PROPERTY(QVariantList definitions READ definitions NOTIFY changed)
+    Q_PROPERTY(QVariantList definitions READ definitions NOTIFY definitionsChanged)
     Q_PROPERTY(QVariantMap values READ values NOTIFY changed)
     Q_PROPERTY(QVariantList athletes READ athletes NOTIFY changed)
     Q_PROPERTY(QVariantMap result READ result NOTIFY resultChanged)
     Q_PROPERTY(QVariantMap fullResult READ fullResult NOTIFY resultChanged)
+    Q_PROPERTY(QVariantMap previewResult READ previewResult NOTIFY resultChanged)
     Q_PROPERTY(QVariantMap replay READ replay NOTIFY resultChanged)
     Q_PROPERTY(QVariantList profiles READ profiles NOTIFY changed)
     Q_PROPERTY(QVariantList history READ history NOTIFY changed)
@@ -42,6 +43,7 @@ public:
     QVariantList athletes()const;
     QVariantMap result()const{return m_result.toVariantMap();}
     QVariantMap fullResult()const{return m_full.toVariantMap();}
+    QVariantMap previewResult()const{return m_preview.toVariantMap();}
     QVariantMap replay()const{return m_replay.toVariantMap();}
     QVariantList profiles()const{return m_profiles;}
     QVariantList history()const{return m_history;}
@@ -82,14 +84,15 @@ public:
     Q_INVOKABLE void saveExperiment();
     Q_INVOKABLE void loadExperiment();
     Q_INVOKABLE void replayContest(int competition,int variant);
-    void invalidateText(){m_rosterRevision=~quint64(0);emit changed();}
+    void invalidateText(){m_rosterRevision=~quint64(0);emit definitionsChanged();emit changed();}
 signals:
+    void definitionsChanged();
     void changed();
     void resultChanged();
     void progressChanged();
 private:
     PlaygroundController *m_sources;
-    QJsonObject m_config,m_options,m_result,m_full,m_replay;
+    QJsonObject m_config,m_options,m_result,m_full,m_preview,m_replay;
     QVariantList m_profiles,m_history;
     mutable quint64 m_rosterRevision=~quint64(0);
     mutable QVariantList m_rosterCache;

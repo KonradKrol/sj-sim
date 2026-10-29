@@ -136,7 +136,79 @@ template<class F> void visitMeasurement(SimulationV2::FieldWindMeasurementParame
     f("measurement.weightStrength",QObject::tr("Siła ważenia pomiaru"),"measurement",m.weightStrength,0,10,0.1,"1");
 }
 QString effectDescription(const QString &key,const QString &group) {
-    if(group=="generator")return QObject::tr("Zakres minimum–maksimum dotyczy losowania scenariusza, nie reakcji skoczka. Wagi są normalizowane. Charakter pogody: [0] spokojny, [1] zmienny, [2] loteryjny. Kierunek: [0] brak perka, [1–3] jego poziom.");
+    if(key=="quality.overallWeight")return QObject::tr("Ile w jakości skoku waży OVR zamiast formy. 0,70 oznacza 70% OVR i 30% formy na skoczni o K odniesienia. Zwiększ, aby stałe umiejętności miały większe znaczenie.");
+    if(key=="quality.formReferenceK")return QObject::tr("Na skoczni o tym K obowiązuje podstawowy udział OVR i formy. Na większych skoczniach forma waży więcej, na mniejszych mniej.");
+    if(key=="quality.formKScale")return QObject::tr("Jak duża różnica punktu K jest potrzebna, aby wyraźnie zmienić udział formy. Większa wartość oznacza łagodniejszą zmianę między rozmiarami skoczni.");
+    if(key=="quality.formHillAmplitude")return QObject::tr("Maksymalna korekta udziału formy zależna od wielkości skoczni. 0,05 to do 5 punktów procentowych; 0 wyłącza tę zależność.");
+    if(key=="quality.negativeInfluence")return QObject::tr("Jak mocne są losowe straty względem losowych bonusów. Powyżej 0,50 straty są mocniejsze. To nie jest prawdopodobieństwo słabego skoku.");
+    if(key=="quality.hillPreferenceStrength")return QObject::tr("Siła dodatkowego premiowania lotnika lub specjalisty małych skoczni przez charakter skoczni. Większa wartość wzmacnia tę różnicę; neutralny skoczek nie zyskuje.");
+    if(key=="quality.noise")return QObject::tr("Kształt losowych wahań jakości skoku. Rozkład Laplace’a częściej daje duże odstępstwa niż normalny przy tym samym odchyleniu.");
+    if(key=="flight.referenceQuality")return QObject::tr("Jakość skoku, dla której wyznaczono odległość odniesienia. Podniesienie tej wartości utrudnia osiągnięcie tej samej odległości przy niezmienionych umiejętnościach.");
+    if(key=="flight.referenceDistanceAtK")return QObject::tr("Bazowa odległość jako część punktu K: 1 oznacza K, 1,10 oznacza 110% K. Większa wartość wydłuża bazowy skok.");
+    if(key=="flight.qualityMetresAtK120")return QObject::tr("Ile metrów daje jeden dodatkowy punkt jakości na K120. Większa wartość zwiększa różnice odległości wynikające z OVR, formy i jakości wykonania.");
+    if(key=="flight.referenceGate")return QObject::tr("Belka, dla której określono bazową odległość silnika. To punkt odniesienia modelu lotu, a nie wybór belki do tego eksperymentu.");
+    if(key=="flight.gateMetresAtK120")return QObject::tr("Wpływ podniesienia belki o jeden stopień na K120. Większa wartość zwiększa różnice odległości między belkami.");
+    if(key=="flight.gateTailwindInteraction")return QObject::tr("Dodatkowa siła wpływu belki przy wietrze w plecy. Większa wartość sprawia, że wybór belki silniej wpływa na odległość w tych warunkach.");
+    if(key=="flight.stepMetres")return QObject::tr("Co ile metrów silnik przelicza lot. Mniejszy krok daje dokładniejsze obliczenia, ale wydłuża symulację; może też lekko zmienić wynik.");
+    if(key=="flight.secondsPerK")return QObject::tr("Czas dotarcia do punktu K w modelu lotu. Większa wartość oznacza późniejsze napotkanie kolejnych podmuchów.");
+    if(key=="flight.windReservePerMetre")return QObject::tr("Jak mocno wiatr wzdłuż skoczni zmienia tempo utraty zapasu lotu. Zwiększenie wzmacnia wpływ wiatru na odległość.");
+    if(key=="flight.crosswindDrag")return QObject::tr("Siła niekorzystnego wpływu wiatru bocznego na lot. Większa wartość zwiększa stratę odległości.");
+    if(key=="flight.windResponseMetres")return QObject::tr("Dystans potrzebny na dostosowanie reakcji do zmiany wiatru. Większa wartość wygładza wpływ krótkich podmuchów.");
+    if(key=="flight.earlyWindSensitivity")return QObject::tr("Wrażliwość początku lotu na wiatr. Większa wartość wzmacnia znaczenie warunków tuż po wybiciu.");
+    if(key=="flight.lateWindSensitivity")return QObject::tr("Wrażliwość końca lotu na wiatr. Większa wartość wzmacnia znaczenie warunków bliżej lądowania.");
+    if(key=="flight.maximumWindAssistance")return QObject::tr("Ograniczenie pomocy wiatru w podtrzymywaniu lotu. Większa wartość pozwala wiatrowi mocniej zmniejszyć utratę zapasu lotu.");
+    if(key=="flight.windVariabilityScale")return QObject::tr("Siła wiatru, przy której różnice w wykorzystaniu podmuchu stają się wyraźne. Większa wartość przesuwa ten efekt ku silniejszemu wiatrowi.");
+    if(key=="flight.windHeadSpread")return QObject::tr("Jak różnie skoczkowie mogą wykorzystać silny wiatr pod narty. Większa wartość daje szerszy rozrzut reakcji; 0 wyłącza tę część losowości.");
+    if(key=="flight.windTailSpread")return QObject::tr("Jak różne mogą być straty przy silnym wietrze w plecy. Większa wartość zwiększa rozrzut strat między skokami.");
+    if(key=="flight.windCrossSpread")return QObject::tr("Jak różne mogą być straty przy silnym wietrze bocznym. Większa wartość zwiększa rozrzut strat między skokami.");
+    if(key=="flight.windHeadSaturation")return QObject::tr("Od jakiej skali wiatru pod narty korzyść zaczyna rosnąć wyraźnie wolniej. Większa wartość opóźnia nasycenie; 0 je wyłącza. Ryzyko złego zdarzenia działa osobno.");
+    if(key=="flight.windAdverseOnset")return QObject::tr("Skala siły wiatru, przy której rośnie ryzyko niekorzystnego zdarzenia. Większa wartość przesuwa ryzyko ku silniejszemu wiatrowi. To płynna zmiana, nie sztywny próg.");
+    if(key=="flight.windAdverseExponent")return QObject::tr("Jak gwałtownie rośnie ryzyko wokół skali złych zdarzeń. Większa wartość oznacza wyraźniejsze przejście: mniej ryzyka poniżej tej skali, więcej powyżej.");
+    if(key=="flight.geometryStartRealHs")return QObject::tr("Gdzie zaczyna narastać opór wypłaszczenia, jako część odległości początku wypłaszczenia. Większa wartość przesuwa początek oporu dalej.");
+    if(key=="flight.usableLandingBeyondRealHsAtK")return QObject::tr("Dodatkowa długość użytecznego zeskoku jako część K. Większa wartość pozwala modelowi lotu sięgać dalej za początek wypłaszczenia.");
+    if(key=="flight.geometryResistance")return QObject::tr("Jak mocno wypłaszczony zeskok ogranicza dalszy lot. Większa wartość mocniej ogranicza bardzo długie skoki.");
+    if(key=="flight.exposureSections")return QObject::tr("Na ile odcinków dzielić zapis wiatru napotkanego podczas lotu. Więcej odcinków daje bardziej szczegółowe odtwarzanie.");
+    if(key=="landing.sharedStyleDeviation")return QObject::tr("Losowa zmiana wspólna dla not wszystkich sędziów w jednym skoku. Większa wartość zwiększa wahania ogólnej oceny stylu.");
+    if(key=="landing.judgeDeviation")return QObject::tr("Jak bardzo ocena pojedynczego sędziego może odbiegać od wspólnej oceny skoku. Większa wartość zwiększa różnice między sędziami.");
+    if(key=="landing.difficultLandingStylePenalty")return QObject::tr("Dodatkowe obniżenie not za lądowanie daleko na zeskoku. Większa wartość mocniej obniża styl przy trudnych lądowaniach.");
+    if(key=="wind.mean")return QObject::tr("Bazowy wiatr wzdłuż skoczni. Dodatnie wartości oznaczają wiatr pod narty, ujemne — w plecy. Lokalne korekty i podmuchy dodają się do tej wartości.");
+    if(key=="wind.cross")return QObject::tr("Bazowy wiatr boczny. Wartość bezwzględna określa siłę, znak rozróżnia strony. Większa siła może utrudnić lot i lądowanie.");
+    if(key=="wind.temporalAmplitude")return QObject::tr("Siła zmian wiatru w czasie konkursu. Większa wartość daje większe różnice warunków między kolejnymi chwilami.");
+    if(key=="wind.spatialAmplitude")return QObject::tr("Siła różnic wiatru między miejscami nad zeskokiem. Większa wartość oznacza mniej jednolite warunki na trasie lotu.");
+    if(key=="wind.correlationSeconds")return QObject::tr("Jak długo warunki pozostają podobne. Większa wartość oznacza wolniejsze zmiany wiatru.");
+    if(key=="wind.correlationMetres")return QObject::tr("Na jak długim odcinku zeskoku wiatr pozostaje podobny. Większa wartość daje większe obszary z podobnymi warunkami.");
+    if(key=="wind.gustAmplitude")return QObject::tr("Siła dodatkowych podmuchów. Zwiększ, aby podmuchy mocniej odróżniały się od tła.");
+    if(key=="wind.gustProbability")return QObject::tr("Szansa aktywnego podmuchu w modelu wiatru. 0,20 oznacza 20% dla losowania w modelu, nie 20% konkursów z podmuchami.");
+    if(key=="wind.gustPeriodSeconds")return QObject::tr("Odstęp czasowy używany do generowania podmuchów. Większa wartość rozciąga ich przebieg w czasie.");
+    if(key=="wind.gustWidthMetres")return QObject::tr("Rozmiar podmuchu wzdłuż zeskoku. Większa wartość pozwala podmuchowi obejmować dłuższą część lotu.");
+    if(key=="wind.maximumStrength")return QObject::tr("Górny limit łącznej siły wiatru. Zwiększenie dopuszcza silniejsze warunki, ale samo ich nie wymusza.");
+    if(key=="wind.trendAmplitude")return QObject::tr("Siła powolnych zmian dominującego wiatru podczas konkursu. Większa wartość daje wyraźniejsze okresy korzystniejszych i gorszych warunków.");
+    if(key=="wind.trendPeriodSeconds")return QObject::tr("Długość okresów dominującej tendencji wiatru. Większa wartość oznacza dłuższe okresy przed zmianą tendencji.");
+    if(key=="wind.trendTransitionSeconds")return QObject::tr("Czas przechodzenia między tendencjami. Większa wartość daje łagodniejszą i wolniejszą zmianę.");
+    if(key=="wind.activityVariation")return QObject::tr("Różnica między spokojniejszymi i bardziej aktywnymi okresami pogody. Większa wartość wzmacnia te kontrasty.");
+    if(key=="wind.activityCorrelationSeconds")return QObject::tr("Długość epizodu spokojniejszej lub bardziej aktywnej pogody. Większa wartość wydłuża podobne epizody.");
+    if(key=="wind.fastCorrelationSeconds")return QObject::tr("Tempo drobnych, szybkich zmian wiatru. Większa wartość spowalnia te zmiany.");
+    if(key=="athlete.overall")return QObject::tr("Ogólny poziom umiejętności analizowanego skoczka, od 1 do 100. Wyższy OVR zwykle zwiększa odległość. Jego znaczenie względem formy ustawisz w regułach symulacji.");
+    if(key=="athlete.form")return QObject::tr("Aktualna dyspozycja analizowanego skoczka, od 1 do 100. Wyższa forma zwykle wydłuża skoki. Jej udział zależy od ustawień silnika i wielkości skoczni.");
+    if(key=="athlete.landing")return QObject::tr("Klasa stylu lądowania: od 0 do 4. Wyższa klasa poprawia noty. W tym modelu nie zmienia prawdopodobieństwa upadku.");
+    if(key=="hill.realHs")return QObject::tr("Od tej odległości zeskok zaczyna się wypłaszczać. Większa wartość przesuwa trudne lądowania dalej. To osobny parametr od oficjalnego HS.");
+    if(key=="hill.k")return QObject::tr("Punkt konstrukcyjny skoczni w metrach. Zmiana w laboratorium skaluje także HS i początek wypłaszczenia, zachowując ich proporcje. Punktacja wymaga osobnego ustawienia.");
+    if(key=="gate")return QObject::tr("Belka startowa dla eksperymentu. Wyższa zwykle wydłuża skoki. 0 dobiera wspólną belkę automatycznie na podstawie wariantu „Balans z gry”.");
+    if(key=="gate.reference")return QObject::tr("Belka odniesienia do rekompensaty punktowej. 0 używa wspólnej belki bazowej. Nie zmienia fizycznej belki, z której skacze zawodnik.");
+    if(key=="gate.coachReduction")return QObject::tr("O ile stopni trener obniża belkę względem belki jury. Większa wartość skraca rozbieg; rekompensata zależy od reguł konkursu.");
+    if(key=="clock.mode")return QObject::tr("Kontrolowane warunki: wszyscy startują w tej samej chwili modelu pogody. Przebieg konkursu: czas płynie między skokami i każdy może trafić na inny wiatr.");
+    if(key=="clock.interval")return QObject::tr("Ile sekund czasu pogody upływa między startami. Zwiększenie zmienia warunki napotykane przez kolejnych skoczków, nie szybkość działania programu.");
+    if(key=="dsq")return QObject::tr("Prawdopodobieństwo dyskwalifikacji pojedynczego skoku. 0,01 oznacza 1%. Działa, gdy dyskwalifikacje są włączone w zasadach.");
+    if(group=="landing" && key.endsWith("Centre"))return QObject::tr("Odległość najszybszego wzrostu ryzyka jako wielokrotność początku wypłaszczenia. 1 oznacza dokładnie tę odległość. Zwiększenie przesuwa wzrost ryzyka dalej.");
+    if(group=="landing" && key.endsWith("Width"))return QObject::tr("Szerokość przejścia od mniejszego do większego ryzyka. Większa wartość oznacza łagodniejszy wzrost rozłożony na dłuższy odcinek; nie oznacza po prostu mniejszego ryzyka wszędzie.");
+    if(group=="landing" && key.endsWith("Base"))return QObject::tr("Bazowy poziom ryzyka przed wzrostem związanym z odległością. 0,01 oznacza 1%. Podpórkę losuje się po wykluczeniu upadku, a dwie nogi po wykluczeniu upadku i podpórki.");
+    if(group=="landing" && key.endsWith("Increase"))return QObject::tr("Dodatkowy wzrost ryzyka przy długich skokach. Większa wartość zwiększa ryzyko za środkiem krzywej. Podpórka i dwie nogi są oceniane dopiero po wykluczeniu poważniejszego błędu.");
+    if(group=="landing" && key.startsWith("landing.crosswind"))return QObject::tr("Dodatkowe ryzyko za każdy 1 m/s bocznego wiatru. Większa wartość mocniej utrudnia ten rodzaj lądowania. 0 wyłącza ten wpływ.");
+    if(key.startsWith("landing.styleMean."))return QObject::tr("Bazowa nota jednego sędziego dla tej klasy lądowania. Zwiększenie podnosi noty; kary za błędy są odejmowane osobno.");
+    if(key.startsWith("landing.landingPenalty."))return QObject::tr("Ile punktów odejmuje sędzia za ten rodzaj lądowania. Większa wartość obniża noty, ale nie zwiększa ryzyka tego zdarzenia.");
+    if(key.startsWith("flight.wind") && key.endsWith("AdverseChance"))return QObject::tr("Górna granica szansy niekorzystnego zdarzenia przy bardzo silnym wietrze. 0,20 oznacza do 20%. Zwiększenie podnosi ryzyko; rzeczywista szansa rośnie płynnie z siłą wiatru.");
+    if(key.startsWith("flight.wind") && key.endsWith("AdverseLoss"))return QObject::tr("Jak dotkliwa jest strata po wylosowaniu niekorzystnego zdarzenia. Większa wartość mocniej skraca skok; nie zwiększa szansy wystąpienia zdarzenia.");
+    if(group=="generator")return QObject::tr("Ustawienie generatora określa, jakie warunki są losowane przed konkursem. Minimum i maksimum wyznaczają zakres losowania. Waga oznacza częstość względem pozostałych wag, nie procent. Wpływ wiatru na skok ustawisz osobno w modelu lotu.");
     if(key.startsWith("hill.perk."))return QObject::tr("Poziomy −3…+3. Pary: lotność / wybicie, trudne / przyjazne lądowanie, stabilność / loteryjność, wiatr w plecy / pod narty. Ręczna preferencja lub real HS ma pierwszeństwo przed odpowiednim perkiem.");
     if(key.startsWith("quality.form") || key=="quality.overallWeight")return QObject::tr("Udział formy = 1 − udział OVR + amplituda × tanh((K − K odniesienia) / skala), ograniczony do 0–1. Amplituda 0 wyłącza zależność od K.");
     if(key.startsWith("flight.wind") && key.contains("Adverse"))return QObject::tr("Szansa = maksimum × r^wykładnik / (1 + r^wykładnik), gdzie r to siła wiatru / skala złych zdarzeń. Siła zdarzenia zwiększa zużycie zapasu lotu; zero wyłącza stratę.");
@@ -268,6 +340,26 @@ QJsonArray parameters() {
     for(int i=0;i<rows.size();++i){auto d=rows[i].toObject();auto k=d["key"].toString();if(k=="clock.mode")d["options"]=QJsonArray{QObject::tr("Kontrolowane warunki"),QObject::tr("Przebieg konkursu")};if(k=="event")d["options"]=QJsonArray{QObject::tr("Trening"),QObject::tr("Seria próbna"),QObject::tr("Kwalifikacje"),QObject::tr("Konkurs")};if(k=="quality.noise")d["options"]=QJsonArray{QObject::tr("Normalny"),QObject::tr("Laplace’a")};if(k=="rules.measurement")d["options"]=QJsonArray{QObject::tr("Dotychczasowy Sj.Sim"),QObject::tr("Odczyt przed skokiem"),QObject::tr("Pomiar przez czas lotu"),QObject::tr("FIS — przybliżenie"),QObject::tr("Gęsta sieć czujników"),QObject::tr("Wiatr na trasie lotu")};if(k=="precipitation.kind")d["options"]=QJsonArray{QObject::tr("Śnieg"),QObject::tr("Deszcz")};if(k=="precipitation.scenario")d["options"]=QJsonArray{QObject::tr("Bez opadów"),QObject::tr("Stałe"),QObject::tr("Zmienne"),QObject::tr("Silne"),QObject::tr("Narastające")};rows[i]=d;}
     input("analysis.jumpSamples",QObject::tr("Skoki w próbie analizy wiatru"),"analysis",512,16,10000,1,"1");
     input("rules.dsq",QObject::tr("Dyskwalifikacje"),"rules",1,0,1,1,"1");
+    const QStringList events{QObject::tr("trening"),QObject::tr("seria próbna"),QObject::tr("kwalifikacje"),QObject::tr("konkurs")};
+    const QStringList landings{QObject::tr("telemark"),QObject::tr("dwie nogi"),QObject::tr("podpórka"),QObject::tr("upadek")};
+    const QStringList presets{QObject::tr("Stały wiatr w plecy"),QObject::tr("Silny wiatr pod narty"),QObject::tr("Loteryjny"),QObject::tr("Zmienny boczny"),QObject::tr("Cisza"),QObject::tr("Stały pod narty"),QObject::tr("Silny w plecy"),QObject::tr("Stały boczny"),QObject::tr("Zmienny pod narty"),QObject::tr("Zmienny w plecy"),QObject::tr("Różne kierunki na zeskoku")};
+    for(int i=0;i<rows.size();++i){auto d=rows[i].toObject();const auto key=d["key"].toString();auto label=d["label"].toString();int n=key.section('.',-1).toInt();
+        if(key.startsWith("quality.eventDeviation."))label=QObject::tr("Losowość jakości — %1").arg(events.value(n));
+        else if(key.startsWith("landing.landingPenalty."))label=QObject::tr("Kara w notach — %1").arg(landings.value(n));
+        else if(key.startsWith("landing.styleMean."))label=QObject::tr("Bazowa nota — klasa lądowania %1").arg(n);
+        else if(key.startsWith("quality.") && label.contains('['))label=label.section(" [",0,0)+QObject::tr(" — poziom perka %1").arg(n);
+        else if(key.startsWith("generator.preset."))label=presets.value(d["preset"].toInt())+" · "+label.section(" · ",1);
+        else if(key.startsWith("generator.auto.") && label.contains('[')){
+            QString context;
+            if(key.contains("headProbability"))context=QObject::tr("poziom perka kierunku %1").arg(n);
+            else if(key.contains("precipitationPattern"))context=QStringList{QObject::tr("stałe"),QObject::tr("zmienne"),QObject::tr("silne"),QObject::tr("narastające")}.value(n);
+            else context=QStringList{QObject::tr("spokojna pogoda"),QObject::tr("zmienna pogoda"),QObject::tr("loteryjna pogoda")}.value(n);
+            label=label.section(" [",0,0)+" — "+context;
+        }
+        if(key=="weather.surface")d["options"]=QJsonArray{QObject::tr("Śnieg"),QObject::tr("Igelit")};
+        if(key=="curve.extension")d["options"]=QJsonArray{QObject::tr("Stały udział poza zakresem K"),QObject::tr("Liniowe przedłużenie krzywej")};
+        d["label"]=label;rows[i]=d;
+    }
     return rows;
 }
 SimulationV2::EngineParameters engineParameters(const QJsonObject &p) {

@@ -14,6 +14,7 @@ ColumnLayout {
     property string help: ""
     property bool toggle: false
     property var options: []
+    property int optionOffset: 0
     readonly property real currentValue: number.currentValue
     signal committed(real value)
     spacing: 3
@@ -23,6 +24,6 @@ ColumnLayout {
         HelpDot { visible: input.help.length>0; explanation: input.help }
     }
     SCheck { visible: input.toggle; text: checked?qsTr("Włączone"):qsTr("Wyłączone"); checked: input.value!==0; onClicked: input.committed(checked?1:0) }
-    SChoice { visible: input.options.length>0; Layout.fillWidth: true; model: input.options; currentIndex: input.value; Accessible.name: input.caption; onActivated: input.committed(currentIndex) }
+    SChoice { visible: input.options.length>0; Layout.fillWidth: true; model: input.options; currentIndex: input.value-input.optionOffset; Accessible.name: input.caption; onActivated: input.committed(currentIndex+input.optionOffset) }
     NumberField { id: number; visible: !input.toggle && !input.options.length; Layout.fillWidth: true; Layout.minimumWidth: 0; direct: false; label: input.caption; fields: ({name:input.name,value:input.value,minimum:input.minimum,maximum:input.maximum,step:input.step,decimals:input.decimals}); onCommitted: input.committed(value) }
 }

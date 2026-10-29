@@ -12724,105 +12724,105 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <translation>Slabý déšť nemusí brzdit. Prudký déšť výrazně zhoršuje skoky.</translation>
         </message>
         <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="11"/>
-        <source>K odniesienia udziału formy</source>
-        <translation>Referenční K pro podíl formy</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="12"/>
-        <source>Skala zmiany udziału formy względem K</source>
-        <translation>Měřítko změny podílu formy podle K</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="13"/>
-        <source>Maksymalna zmiana udziału formy</source>
-        <translation>Maximální změna podílu formy</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="37"/>
-        <source>Siła wiatru aktywująca rozrzut</source>
-        <translation>Síla větru aktivující rozptyl reakce</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="42"/>
-        <source>Siła wiatru aktywująca złe zdarzenia</source>
-        <translation>Síla větru aktivující nepříznivé události</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="43"/>
-        <source>Stromość narastania szansy złego zdarzenia</source>
-        <translation>Strmost růstu pravděpodobnosti nepříznivé události</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="44"/>
-        <source>Maksymalna szansa złego zdarzenia: pod narty</source>
-        <translation>Maximální pravděpodobnost nepříznivé události: protivítr</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="45"/>
-        <source>Siła złego zdarzenia: pod narty</source>
-        <translation>Síla nepříznivé události: protivítr</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="46"/>
-        <source>Maksymalna szansa złego zdarzenia: w plecy</source>
-        <translation>Maximální pravděpodobnost nepříznivé události: zadní vítr</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="47"/>
-        <source>Siła złego zdarzenia: w plecy</source>
-        <translation>Síla nepříznivé události: zadní vítr</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="48"/>
-        <source>Maksymalna szansa złego zdarzenia: boczny</source>
-        <translation>Maximální pravděpodobnost nepříznivé události: boční vítr</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="49"/>
-        <source>Siła złego zdarzenia: boczny</source>
-        <translation>Síla nepříznivé události: boční vítr</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="125"/>
-        <source>Udział formy = 1 − udział OVR + amplituda × tanh((K − K odniesienia) / skala), ograniczony do 0–1. Amplituda 0 wyłącza zależność od K.</source>
-        <translation>Podíl formy = 1 − podíl OVR + amplituda × tanh((K − referenční K) / měřítko), omezený na 0–1. Nulová amplituda vypíná závislost na K.</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="126"/>
-        <source>Szansa = maksimum × r^wykładnik / (1 + r^wykładnik), gdzie r to siła wiatru / skala złych zdarzeń. Siła zdarzenia zwiększa zużycie zapasu lotu; zero wyłącza stratę.</source>
-        <translation>Pravděpodobnost = maximum × r^exponent / (1 + r^exponent), kde r je síla větru / měřítko nepříznivých událostí. Síla události zvyšuje spotřebu letové rezervy; nula vypíná ztrátu.</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="127"/>
-        <source>Pomoc wiatru pod narty rośnie coraz wolniej. Zero wyłącza nasycenie. Złe zdarzenia nadal zależą od rzeczywistej siły wiatru.</source>
-        <translation>Pomoc protivětru roste stále pomaleji. Nula vypíná nasycení. Nepříznivé události nadále závisejí na skutečné síle větru.</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="128"/>
-        <source>Rozrzut rośnie płynnie z siłą wiatru. Reakcja jest losowana raz na skok, nie w każdym kroku lotu. Zerowy rozrzut wyłącza ten składnik losowości.</source>
-        <translation>Rozptyl plynule roste se silou větru. Reakce se losuje jednou na skok, nikoli v každém kroku letu. Nulový rozptyl vypíná tuto složku náhodnosti.</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="38"/>
-        <source>Rozrzut wykorzystania wiatru pod narty</source>
-        <translation>Rozptyl využití protivětru</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="39"/>
-        <source>Rozrzut strat w wietrze w plecy</source>
-        <translation>Rozptyl ztrát při zadním větru</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="40"/>
-        <source>Rozrzut strat w wietrze bocznym</source>
-        <translation>Rozptyl ztrát při bočním větru</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="41"/>
-        <source>Skala nasycenia pomocy wiatru pod narty</source>
-        <translation>Měřítko nasycení pomoci protivětru</translation>
-    </message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="11" />
+            <source>K odniesienia udziału formy</source>
+            <translation>Referenční K pro podíl formy</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="12" />
+            <source>Skala zmiany udziału formy względem K</source>
+            <translation>Měřítko změny podílu formy podle K</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="13" />
+            <source>Maksymalna zmiana udziału formy</source>
+            <translation>Maximální změna podílu formy</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="37" />
+            <source>Siła wiatru aktywująca rozrzut</source>
+            <translation>Síla větru aktivující rozptyl reakce</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="42" />
+            <source>Siła wiatru aktywująca złe zdarzenia</source>
+            <translation>Síla větru aktivující nepříznivé události</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="43" />
+            <source>Stromość narastania szansy złego zdarzenia</source>
+            <translation>Strmost růstu pravděpodobnosti nepříznivé události</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="44" />
+            <source>Maksymalna szansa złego zdarzenia: pod narty</source>
+            <translation>Maximální pravděpodobnost nepříznivé události: protivítr</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="45" />
+            <source>Siła złego zdarzenia: pod narty</source>
+            <translation>Síla nepříznivé události: protivítr</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="46" />
+            <source>Maksymalna szansa złego zdarzenia: w plecy</source>
+            <translation>Maximální pravděpodobnost nepříznivé události: zadní vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="47" />
+            <source>Siła złego zdarzenia: w plecy</source>
+            <translation>Síla nepříznivé události: zadní vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="48" />
+            <source>Maksymalna szansa złego zdarzenia: boczny</source>
+            <translation>Maximální pravděpodobnost nepříznivé události: boční vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="49" />
+            <source>Siła złego zdarzenia: boczny</source>
+            <translation>Síla nepříznivé události: boční vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="125" />
+            <source>Udział formy = 1 − udział OVR + amplituda × tanh((K − K odniesienia) / skala), ograniczony do 0–1. Amplituda 0 wyłącza zależność od K.</source>
+            <translation>Podíl formy = 1 − podíl OVR + amplituda × tanh((K − referenční K) / měřítko), omezený na 0–1. Nulová amplituda vypíná závislost na K.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="126" />
+            <source>Szansa = maksimum × r^wykładnik / (1 + r^wykładnik), gdzie r to siła wiatru / skala złych zdarzeń. Siła zdarzenia zwiększa zużycie zapasu lotu; zero wyłącza stratę.</source>
+            <translation>Pravděpodobnost = maximum × r^exponent / (1 + r^exponent), kde r je síla větru / měřítko nepříznivých událostí. Síla události zvyšuje spotřebu letové rezervy; nula vypíná ztrátu.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="127" />
+            <source>Pomoc wiatru pod narty rośnie coraz wolniej. Zero wyłącza nasycenie. Złe zdarzenia nadal zależą od rzeczywistej siły wiatru.</source>
+            <translation>Pomoc protivětru roste stále pomaleji. Nula vypíná nasycení. Nepříznivé události nadále závisejí na skutečné síle větru.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="128" />
+            <source>Rozrzut rośnie płynnie z siłą wiatru. Reakcja jest losowana raz na skok, nie w każdym kroku lotu. Zerowy rozrzut wyłącza ten składnik losowości.</source>
+            <translation>Rozptyl plynule roste se silou větru. Reakce se losuje jednou na skok, nikoli v každém kroku letu. Nulový rozptyl vypíná tuto složku náhodnosti.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="38" />
+            <source>Rozrzut wykorzystania wiatru pod narty</source>
+            <translation>Rozptyl využití protivětru</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="39" />
+            <source>Rozrzut strat w wietrze w plecy</source>
+            <translation>Rozptyl ztrát při zadním větru</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="40" />
+            <source>Rozrzut strat w wietrze bocznym</source>
+            <translation>Rozptyl ztrát při bočním větru</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="41" />
+            <source>Skala nasycenia pomocy wiatru pod narty</source>
+            <translation>Měřítko nasycení pomoci protivětru</translation>
+        </message>
         <message>
             <location filename="../source/balance/BalanceLabModel.cpp" line="13" />
             <source>OVR i forma</source>
@@ -13278,7 +13278,557 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Standardowy balans</source>
             <translation>Standardní vyvážení</translation>
         </message>
-</context>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="139" />
+            <source>Ile w jakości skoku waży OVR zamiast formy. 0,70 oznacza 70% OVR i 30% formy na skoczni o K odniesienia. Zwiększ, aby stałe umiejętności miały większe znaczenie.</source>
+            <translation>Jak velkou váhu má v kvalitě skoku OVR místo formy. 0,70 znamená 70 % OVR a 30 % formy na můstku s referenčním K. Zvýšením posílíte význam stálých schopností.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="140" />
+            <source>Na skoczni o tym K obowiązuje podstawowy udział OVR i formy. Na większych skoczniach forma waży więcej, na mniejszych mniej.</source>
+            <translation>Na můstku s tímto K platí základní podíl OVR a formy. Na větších můstcích má forma větší váhu, na menších nižší.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="141" />
+            <source>Jak duża różnica punktu K jest potrzebna, aby wyraźnie zmienić udział formy. Większa wartość oznacza łagodniejszą zmianę między rozmiarami skoczni.</source>
+            <translation>Jak velký rozdíl bodu K je potřeba pro znatelnou změnu podílu formy. Vyšší hodnota znamená pozvolnější změnu mezi velikostmi můstků.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="142" />
+            <source>Maksymalna korekta udziału formy zależna od wielkości skoczni. 0,05 to do 5 punktów procentowych; 0 wyłącza tę zależność.</source>
+            <translation>Maximální korekce podílu formy podle velikosti můstku. 0,05 znamená až 5 procentních bodů; 0 tuto závislost vypíná.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="143" />
+            <source>Jak mocne są losowe straty względem losowych bonusów. Powyżej 0,50 straty są mocniejsze. To nie jest prawdopodobieństwo słabego skoku.</source>
+            <translation>Jak silné jsou náhodné ztráty oproti náhodným bonusům. Nad 0,50 jsou ztráty silnější. Nejde o pravděpodobnost slabého skoku.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="144" />
+            <source>Siła dodatkowego premiowania lotnika lub specjalisty małych skoczni przez charakter skoczni. Większa wartość wzmacnia tę różnicę; neutralny skoczek nie zyskuje.</source>
+            <translation>Síla dodatečného zvýhodnění letce nebo specialisty na malé můstky charakterem můstku. Vyšší hodnota posiluje rozdíl; neutrální skokan nic nezíská.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="145" />
+            <source>Kształt losowych wahań jakości skoku. Rozkład Laplace’a częściej daje duże odstępstwa niż normalny przy tym samym odchyleniu.</source>
+            <translation>Tvar náhodných výkyvů kvality skoku. Při stejné směrodatné odchylce dává Laplaceovo rozdělení velké odchylky častěji než normální rozdělení.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="146" />
+            <source>Jakość skoku, dla której wyznaczono odległość odniesienia. Podniesienie tej wartości utrudnia osiągnięcie tej samej odległości przy niezmienionych umiejętnościach.</source>
+            <translation>Kvalita skoku, pro kterou byla určena referenční délka. Zvýšení ztěžuje dosažení stejné délky při nezměněných schopnostech.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="147" />
+            <source>Bazowa odległość jako część punktu K: 1 oznacza K, 1,10 oznacza 110% K. Większa wartość wydłuża bazowy skok.</source>
+            <translation>Základní délka jako podíl bodu K: 1 znamená K, 1,10 znamená 110 % K. Vyšší hodnota prodlužuje základní skok.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="148" />
+            <source>Ile metrów daje jeden dodatkowy punkt jakości na K120. Większa wartość zwiększa różnice odległości wynikające z OVR, formy i jakości wykonania.</source>
+            <translation>Kolik metrů přidá jeden bod kvality na K120. Vyšší hodnota zvětšuje rozdíly délek způsobené OVR, formou a kvalitou provedení.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="149" />
+            <source>Belka, dla której określono bazową odległość silnika. To punkt odniesienia modelu lotu, a nie wybór belki do tego eksperymentu.</source>
+            <translation>Nájezdové okno, pro které je určena základní délka enginu. Jde o referenci modelu letu, ne o výběr okna pro tento experiment.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="150" />
+            <source>Wpływ podniesienia belki o jeden stopień na K120. Większa wartość zwiększa różnice odległości między belkami.</source>
+            <translation>Vliv zvýšení nájezdového okna o jeden stupeň na K120. Vyšší hodnota zvětšuje rozdíly délek mezi okny.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="151" />
+            <source>Dodatkowa siła wpływu belki przy wietrze w plecy. Większa wartość sprawia, że wybór belki silniej wpływa na odległość w tych warunkach.</source>
+            <translation>Dodatečný vliv nájezdového okna při zadním větru. Vyšší hodnota posiluje vliv volby okna na délku v těchto podmínkách.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="152" />
+            <source>Co ile metrów silnik przelicza lot. Mniejszy krok daje dokładniejsze obliczenia, ale wydłuża symulację; może też lekko zmienić wynik.</source>
+            <translation>Vzdálenost mezi kroky výpočtu letu. Menší krok je přesnější, ale pomalejší a může mírně změnit výsledek.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="153" />
+            <source>Czas dotarcia do punktu K w modelu lotu. Większa wartość oznacza późniejsze napotkanie kolejnych podmuchów.</source>
+            <translation>Čas doletu k bodu K v modelu letu. Vyšší hodnota znamená pozdější setkání s dalšími poryvy.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="154" />
+            <source>Jak mocno wiatr wzdłuż skoczni zmienia tempo utraty zapasu lotu. Zwiększenie wzmacnia wpływ wiatru na odległość.</source>
+            <translation>Jak silně vítr podél můstku mění rychlost úbytku letové rezervy. Zvýšení posiluje vliv větru na délku.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="155" />
+            <source>Siła niekorzystnego wpływu wiatru bocznego na lot. Większa wartość zwiększa stratę odległości.</source>
+            <translation>Síla nepříznivého vlivu bočního větru na let. Vyšší hodnota zvyšuje ztrátu délky.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="156" />
+            <source>Dystans potrzebny na dostosowanie reakcji do zmiany wiatru. Większa wartość wygładza wpływ krótkich podmuchów.</source>
+            <translation>Vzdálenost potřebná k přizpůsobení reakce změně větru. Vyšší hodnota vyhlazuje vliv krátkých poryvů.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="157" />
+            <source>Wrażliwość początku lotu na wiatr. Większa wartość wzmacnia znaczenie warunków tuż po wybiciu.</source>
+            <translation>Citlivost začátku letu na vítr. Vyšší hodnota posiluje význam podmínek těsně po odrazu.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="158" />
+            <source>Wrażliwość końca lotu na wiatr. Większa wartość wzmacnia znaczenie warunków bliżej lądowania.</source>
+            <translation>Citlivost konce letu na vítr. Vyšší hodnota posiluje význam podmínek blízko doskoku.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="159" />
+            <source>Ograniczenie pomocy wiatru w podtrzymywaniu lotu. Większa wartość pozwala wiatrowi mocniej zmniejszyć utratę zapasu lotu.</source>
+            <translation>Omezení pomoci větru při udržování letu. Vyšší hodnota dovoluje větru více snižovat úbytek letové rezervy.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="160" />
+            <source>Siła wiatru, przy której różnice w wykorzystaniu podmuchu stają się wyraźne. Większa wartość przesuwa ten efekt ku silniejszemu wiatrowi.</source>
+            <translation>Síla větru, při které se projeví rozdíly ve využití poryvu. Vyšší hodnota posouvá tento efekt k silnějšímu větru.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="161" />
+            <source>Jak różnie skoczkowie mogą wykorzystać silny wiatr pod narty. Większa wartość daje szerszy rozrzut reakcji; 0 wyłącza tę część losowości.</source>
+            <translation>Jak rozdílně mohou skokani využít silný protivítr. Vyšší hodnota rozšiřuje rozptyl reakcí; 0 vypíná tuto část náhodnosti.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="162" />
+            <source>Jak różne mogą być straty przy silnym wietrze w plecy. Większa wartość zwiększa rozrzut strat między skokami.</source>
+            <translation>Jak rozdílné mohou být ztráty při silném zadním větru. Vyšší hodnota zvyšuje rozptyl ztrát mezi skoky.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="163" />
+            <source>Jak różne mogą być straty przy silnym wietrze bocznym. Większa wartość zwiększa rozrzut strat między skokami.</source>
+            <translation>Jak rozdílné mohou být ztráty při silném bočním větru. Vyšší hodnota zvyšuje rozptyl ztrát mezi skoky.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="164" />
+            <source>Od jakiej skali wiatru pod narty korzyść zaczyna rosnąć wyraźnie wolniej. Większa wartość opóźnia nasycenie; 0 je wyłącza. Ryzyko złego zdarzenia działa osobno.</source>
+            <translation>Měřítko protivětru, při kterém přínos začíná růst výrazně pomaleji. Vyšší hodnota oddaluje nasycení; 0 jej vypíná. Riziko nepříznivých událostí působí samostatně.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="165" />
+            <source>Skala siły wiatru, przy której rośnie ryzyko niekorzystnego zdarzenia. Większa wartość przesuwa ryzyko ku silniejszemu wiatrowi. To płynna zmiana, nie sztywny próg.</source>
+            <translation>Měřítko síly větru, při kterém roste riziko nepříznivé události. Vyšší hodnota posouvá riziko k silnějšímu větru. Jde o plynulou změnu, ne pevnou hranici.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="166" />
+            <source>Jak gwałtownie rośnie ryzyko wokół skali złych zdarzeń. Większa wartość oznacza wyraźniejsze przejście: mniej ryzyka poniżej tej skali, więcej powyżej.</source>
+            <translation>Jak prudce roste riziko kolem měřítka nepříznivých událostí. Vyšší hodnota znamená výraznější přechod: méně rizika pod tímto měřítkem, více nad ním.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="167" />
+            <source>Gdzie zaczyna narastać opór wypłaszczenia, jako część odległości początku wypłaszczenia. Większa wartość przesuwa początek oporu dalej.</source>
+            <translation>Kde začíná narůstat odpor zploštění, jako podíl vzdálenosti začátku zplošťování. Vyšší hodnota posouvá začátek odporu dále.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="168" />
+            <source>Dodatkowa długość użytecznego zeskoku jako część K. Większa wartość pozwala modelowi lotu sięgać dalej za początek wypłaszczenia.</source>
+            <translation>Dodatečná délka použitelného doskočiště jako podíl K. Vyšší hodnota dovoluje modelu letu dosáhnout dále za začátek zplošťování.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="169" />
+            <source>Jak mocno wypłaszczony zeskok ogranicza dalszy lot. Większa wartość mocniej ogranicza bardzo długie skoki.</source>
+            <translation>Jak silně zploštěné doskočiště omezuje další let. Vyšší hodnota více omezuje velmi dlouhé skoky.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="170" />
+            <source>Na ile odcinków dzielić zapis wiatru napotkanego podczas lotu. Więcej odcinków daje bardziej szczegółowe odtwarzanie.</source>
+            <translation>Počet úseků pro záznam větru během letu. Více úseků poskytuje podrobnější přehrávání.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="171" />
+            <source>Losowa zmiana wspólna dla not wszystkich sędziów w jednym skoku. Większa wartość zwiększa wahania ogólnej oceny stylu.</source>
+            <translation>Náhodná změna společná známkám všech rozhodčích v jednom skoku. Vyšší hodnota zvyšuje kolísání celkového hodnocení stylu.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="172" />
+            <source>Jak bardzo ocena pojedynczego sędziego może odbiegać od wspólnej oceny skoku. Większa wartość zwiększa różnice między sędziami.</source>
+            <translation>Jak moc se může známka jednoho rozhodčího lišit od společného hodnocení. Vyšší hodnota zvětšuje rozdíly mezi rozhodčími.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="173" />
+            <source>Dodatkowe obniżenie not za lądowanie daleko na zeskoku. Większa wartość mocniej obniża styl przy trudnych lądowaniach.</source>
+            <translation>Dodatečná srážka známek za doskok daleko na doskočišti. Vyšší hodnota více snižuje styl u obtížných doskoků.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="174" />
+            <source>Bazowy wiatr wzdłuż skoczni. Dodatnie wartości oznaczają wiatr pod narty, ujemne — w plecy. Lokalne korekty i podmuchy dodają się do tej wartości.</source>
+            <translation>Základní vítr podél můstku. Kladné hodnoty znamenají protivítr, záporné zadní vítr. K této hodnotě se přičítají místní korekce a poryvy.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="175" />
+            <source>Bazowy wiatr boczny. Wartość bezwzględna określa siłę, znak rozróżnia strony. Większa siła może utrudnić lot i lądowanie.</source>
+            <translation>Základní boční vítr. Absolutní hodnota určuje sílu, znaménko rozlišuje strany. Silnější vítr může ztížit let i doskok.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="176" />
+            <source>Siła zmian wiatru w czasie konkursu. Większa wartość daje większe różnice warunków między kolejnymi chwilami.</source>
+            <translation>Síla změn větru v čase závodu. Vyšší hodnota dává větší rozdíly podmínek mezi jednotlivými okamžiky.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="177" />
+            <source>Siła różnic wiatru między miejscami nad zeskokiem. Większa wartość oznacza mniej jednolite warunki na trasie lotu.</source>
+            <translation>Síla rozdílů větru mezi místy nad doskočištěm. Vyšší hodnota znamená méně jednotné podmínky podél letu.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="178" />
+            <source>Jak długo warunki pozostają podobne. Większa wartość oznacza wolniejsze zmiany wiatru.</source>
+            <translation>Jak dlouho zůstávají podmínky podobné. Vyšší hodnota znamená pomalejší změny větru.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="179" />
+            <source>Na jak długim odcinku zeskoku wiatr pozostaje podobny. Większa wartość daje większe obszary z podobnymi warunkami.</source>
+            <translation>Délka úseku doskočiště, na kterém zůstává vítr podobný. Vyšší hodnota vytváří větší oblasti podobných podmínek.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="180" />
+            <source>Siła dodatkowych podmuchów. Zwiększ, aby podmuchy mocniej odróżniały się od tła.</source>
+            <translation>Síla dodatečných poryvů. Zvýšením se poryvy více odliší od základního větru.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="181" />
+            <source>Szansa aktywnego podmuchu w modelu wiatru. 0,20 oznacza 20% dla losowania w modelu, nie 20% konkursów z podmuchami.</source>
+            <translation>Šance aktivního poryvu v modelu větru. 0,20 znamená 20 % pro losování v modelu, ne 20 % závodů s poryvy.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="182" />
+            <source>Odstęp czasowy używany do generowania podmuchów. Większa wartość rozciąga ich przebieg w czasie.</source>
+            <translation>Časový interval používaný pro generování poryvů. Vyšší hodnota rozšiřuje jejich průběh v čase.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="183" />
+            <source>Rozmiar podmuchu wzdłuż zeskoku. Większa wartość pozwala podmuchowi obejmować dłuższą część lotu.</source>
+            <translation>Velikost poryvu podél doskočiště. Vyšší hodnota dovoluje poryvu zasáhnout delší část letu.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="184" />
+            <source>Górny limit łącznej siły wiatru. Zwiększenie dopuszcza silniejsze warunki, ale samo ich nie wymusza.</source>
+            <translation>Horní limit celkové síly větru. Zvýšení dovoluje silnější podmínky, ale samo je nevynucuje.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="185" />
+            <source>Siła powolnych zmian dominującego wiatru podczas konkursu. Większa wartość daje wyraźniejsze okresy korzystniejszych i gorszych warunków.</source>
+            <translation>Síla pomalých změn převládajícího větru během závodu. Vyšší hodnota vytváří výraznější období lepších a horších podmínek.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="186" />
+            <source>Długość okresów dominującej tendencji wiatru. Większa wartość oznacza dłuższe okresy przed zmianą tendencji.</source>
+            <translation>Délka období převládající tendence větru. Vyšší hodnota znamená delší období před změnou tendence.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="187" />
+            <source>Czas przechodzenia między tendencjami. Większa wartość daje łagodniejszą i wolniejszą zmianę.</source>
+            <translation>Doba přechodu mezi tendencemi. Vyšší hodnota dává pozvolnější a pomalejší změnu.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <source>Różnica między spokojniejszymi i bardziej aktywnymi okresami pogody. Większa wartość wzmacnia te kontrasty.</source>
+            <translation>Rozdíl mezi klidnějšími a aktivnějšími obdobími počasí. Vyšší hodnota posiluje tyto kontrasty.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="189" />
+            <source>Długość epizodu spokojniejszej lub bardziej aktywnej pogody. Większa wartość wydłuża podobne epizody.</source>
+            <translation>Délka epizody klidnějšího nebo aktivnějšího počasí. Vyšší hodnota prodlužuje podobné epizody.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="190" />
+            <source>Tempo drobnych, szybkich zmian wiatru. Większa wartość spowalnia te zmiany.</source>
+            <translation>Tempo drobných, rychlých změn větru. Vyšší hodnota tyto změny zpomaluje.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="191" />
+            <source>Ogólny poziom umiejętności analizowanego skoczka, od 1 do 100. Wyższy OVR zwykle zwiększa odległość. Jego znaczenie względem formy ustawisz w regułach symulacji.</source>
+            <translation>Celková úroveň schopností analyzovaného skokana od 1 do 100. Vyšší OVR obvykle prodlužuje skok. Jeho váhu vůči formě nastavíte v pravidlech simulace.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="192" />
+            <source>Aktualna dyspozycja analizowanego skoczka, od 1 do 100. Wyższa forma zwykle wydłuża skoki. Jej udział zależy od ustawień silnika i wielkości skoczni.</source>
+            <translation>Aktuální forma analyzovaného skokana od 1 do 100. Vyšší forma obvykle prodlužuje skoky. Její podíl závisí na nastavení enginu a velikosti můstku.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="193" />
+            <source>Klasa stylu lądowania: od 0 do 4. Wyższa klasa poprawia noty. W tym modelu nie zmienia prawdopodobieństwa upadku.</source>
+            <translation>Třída stylu doskoku od 0 do 4. Vyšší třída zlepšuje známky. V tomto modelu nemění pravděpodobnost pádu.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="194" />
+            <source>Od tej odległości zeskok zaczyna się wypłaszczać. Większa wartość przesuwa trudne lądowania dalej. To osobny parametr od oficjalnego HS.</source>
+            <translation>Od této vzdálenosti se doskočiště začíná zplošťovat. Vyšší hodnota posouvá obtížné doskoky dále. Jde o samostatný parametr od oficiálního HS.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="195" />
+            <source>Punkt konstrukcyjny skoczni w metrach. Zmiana w laboratorium skaluje także HS i początek wypłaszczenia, zachowując ich proporcje. Punktacja wymaga osobnego ustawienia.</source>
+            <translation>Konstrukční bod můstku v metrech. Změna v laboratoři mění také HS a začátek zplošťování se zachováním poměrů. Bodování je třeba nastavit samostatně.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="196" />
+            <source>Belka startowa dla eksperymentu. Wyższa zwykle wydłuża skoki. 0 dobiera wspólną belkę automatycznie na podstawie wariantu „Balans z gry”.</source>
+            <translation>Nájezdové okno pro experiment. Vyšší obvykle prodlužuje skoky. 0 automaticky vybere společné okno podle varianty „Vyvážení hry“.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="197" />
+            <source>Belka odniesienia do rekompensaty punktowej. 0 używa wspólnej belki bazowej. Nie zmienia fizycznej belki, z której skacze zawodnik.</source>
+            <translation>Referenční okno pro bodovou kompenzaci. 0 používá společné základní okno. Nemění skutečné okno, ze kterého skokan startuje.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="198" />
+            <source>O ile stopni trener obniża belkę względem belki jury. Większa wartość skraca rozbieg; rekompensata zależy od reguł konkursu.</source>
+            <translation>O kolik stupňů trenér sníží okno oproti oknu jury. Vyšší hodnota zkracuje nájezd; kompenzace závisí na pravidlech závodu.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="199" />
+            <source>Kontrolowane warunki: wszyscy startują w tej samej chwili modelu pogody. Przebieg konkursu: czas płynie między skokami i każdy może trafić na inny wiatr.</source>
+            <translation>Kontrolované podmínky: všichni startují ve stejném okamžiku modelu počasí. Průběh závodu: čas mezi skoky plyne a každý může potkat jiný vítr.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="200" />
+            <source>Ile sekund czasu pogody upływa między startami. Zwiększenie zmienia warunki napotykane przez kolejnych skoczków, nie szybkość działania programu.</source>
+            <translation>Počet sekund času počasí mezi starty. Zvýšení mění podmínky pro další skokany, ne rychlost běhu programu.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="201" />
+            <source>Prawdopodobieństwo dyskwalifikacji pojedynczego skoku. 0,01 oznacza 1%. Działa, gdy dyskwalifikacje są włączone w zasadach.</source>
+            <translation>Pravděpodobnost diskvalifikace jednoho skoku. 0,01 znamená 1 %. Platí při zapnutých diskvalifikacích v pravidlech.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="202" />
+            <source>Odległość najszybszego wzrostu ryzyka jako wielokrotność początku wypłaszczenia. 1 oznacza dokładnie tę odległość. Zwiększenie przesuwa wzrost ryzyka dalej.</source>
+            <translation>Vzdálenost nejrychlejšího nárůstu rizika jako násobek začátku zplošťování. 1 znamená přesně tuto vzdálenost. Zvýšení posouvá nárůst rizika dále.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="203" />
+            <source>Szerokość przejścia od mniejszego do większego ryzyka. Większa wartość oznacza łagodniejszy wzrost rozłożony na dłuższy odcinek; nie oznacza po prostu mniejszego ryzyka wszędzie.</source>
+            <translation>Šířka přechodu od nižšího k vyššímu riziku. Vyšší hodnota rozkládá pozvolnější nárůst na delší úsek; neznamená prostě nižší riziko všude.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="204" />
+            <source>Bazowy poziom ryzyka przed wzrostem związanym z odległością. 0,01 oznacza 1%. Podpórkę losuje się po wykluczeniu upadku, a dwie nogi po wykluczeniu upadku i podpórki.</source>
+            <translation>Základní riziko před nárůstem spojeným s délkou. 0,01 znamená 1 %. Dotyk rukou se losuje po vyloučení pádu a doskok na obě nohy po vyloučení pádu i dotyku rukou.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="205" />
+            <source>Dodatkowy wzrost ryzyka przy długich skokach. Większa wartość zwiększa ryzyko za środkiem krzywej. Podpórka i dwie nogi są oceniane dopiero po wykluczeniu poważniejszego błędu.</source>
+            <translation>Dodatečný nárůst rizika při dlouhých skocích. Vyšší hodnota zvyšuje riziko za středem křivky. Dotyk rukou a doskok na obě nohy se hodnotí po vyloučení závažnější chyby.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="206" />
+            <source>Dodatkowe ryzyko za każdy 1 m/s bocznego wiatru. Większa wartość mocniej utrudnia ten rodzaj lądowania. 0 wyłącza ten wpływ.</source>
+            <translation>Dodatečné riziko za každý 1 m/s bočního větru. Vyšší hodnota zvyšuje pravděpodobnost tohoto typu doskoku. 0 tento vliv vypíná.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="207" />
+            <source>Bazowa nota jednego sędziego dla tej klasy lądowania. Zwiększenie podnosi noty; kary za błędy są odejmowane osobno.</source>
+            <translation>Základní známka jednoho rozhodčího pro tuto třídu doskoku. Zvýšení zvyšuje známky; srážky za chyby se odečítají samostatně.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="208" />
+            <source>Ile punktów odejmuje sędzia za ten rodzaj lądowania. Większa wartość obniża noty, ale nie zwiększa ryzyka tego zdarzenia.</source>
+            <translation>Kolik bodů rozhodčí odečítá za tento typ doskoku. Vyšší hodnota snižuje známky, ale nezvyšuje riziko tohoto výsledku.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="209" />
+            <source>Górna granica szansy niekorzystnego zdarzenia przy bardzo silnym wietrze. 0,20 oznacza do 20%. Zwiększenie podnosi ryzyko; rzeczywista szansa rośnie płynnie z siłą wiatru.</source>
+            <translation>Horní hranice šance nepříznivé události při velmi silném větru. 0,20 znamená až 20 %. Zvýšení zvyšuje riziko; skutečná šance roste plynule se silou větru.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="210" />
+            <source>Jak dotkliwa jest strata po wylosowaniu niekorzystnego zdarzenia. Większa wartość mocniej skraca skok; nie zwiększa szansy wystąpienia zdarzenia.</source>
+            <translation>Závažnost ztráty po vylosování nepříznivé události. Vyšší hodnota více zkracuje skok; nezvyšuje šanci události.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="211" />
+            <source>Ustawienie generatora określa, jakie warunki są losowane przed konkursem. Minimum i maksimum wyznaczają zakres losowania. Waga oznacza częstość względem pozostałych wag, nie procent. Wpływ wiatru na skok ustawisz osobno w modelu lotu.</source>
+            <translation>Nastavení generátoru určují podmínky losované před závodem. Minimum a maximum určují rozsah losování. Váha znamená četnost vůči ostatním vahám, ne procento. Vliv větru na skok nastavíte samostatně v modelu letu.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="343" />
+            <source>trening</source>
+            <translation>trénink</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="343" />
+            <source>seria próbna</source>
+            <translation>zkušební kolo</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="343" />
+            <source>kwalifikacje</source>
+            <translation>kvalifikace</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="343" />
+            <source>konkurs</source>
+            <translation>závod</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="344" />
+            <source>telemark</source>
+            <translation>telemark</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="344" />
+            <source>dwie nogi</source>
+            <translation>doskok na obě nohy</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="344" />
+            <source>podpórka</source>
+            <translation>dotyk rukou</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="344" />
+            <source>upadek</source>
+            <translation>pád</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Stały wiatr w plecy</source>
+            <translation>Stálý zadní vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Silny wiatr pod narty</source>
+            <translation>Silný protivítr</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Loteryjny</source>
+            <translation>Nevyrovnaný</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Zmienny boczny</source>
+            <translation>Proměnlivý boční vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Cisza</source>
+            <translation>Bezvětří</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Stały pod narty</source>
+            <translation>Stálý protivítr</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Silny w plecy</source>
+            <translation>Silný zadní vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Stały boczny</source>
+            <translation>Stálý boční vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Zmienny pod narty</source>
+            <translation>Proměnlivý protivítr</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Zmienny w plecy</source>
+            <translation>Proměnlivý zadní vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Różne kierunki na zeskoku</source>
+            <translation>Různé směry podél doskočiště</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="347" />
+            <source>Losowość jakości — %1</source>
+            <translation>Náhodnost kvality — %1</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="348" />
+            <source>Kara w notach — %1</source>
+            <translation>Srážka známek — %1</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="349" />
+            <source>Bazowa nota — klasa lądowania %1</source>
+            <translation>Základní známka — třída doskoku %1</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="350" />
+            <source> — poziom perka %1</source>
+            <translation> — úroveň perku %1</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="354" />
+            <source>poziom perka kierunku %1</source>
+            <translation>úroveň perku směru %1</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="355" />
+            <source>stałe</source>
+            <translation>stálé</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="355" />
+            <source>zmienne</source>
+            <translation>proměnlivé</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="355" />
+            <source>silne</source>
+            <translation>silné</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="355" />
+            <source>narastające</source>
+            <translation>zesilující</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="356" />
+            <source>spokojna pogoda</source>
+            <translation>klidné počasí</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="356" />
+            <source>zmienna pogoda</source>
+            <translation>proměnlivé počasí</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="356" />
+            <source>loteryjna pogoda</source>
+            <translation>nevyzpytatelné počasí</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="359" />
+            <source>Igelit</source>
+            <translation>Igelit</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="360" />
+            <source>Stały udział poza zakresem K</source>
+            <translation>Stálý podíl mimo rozsah K</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="360" />
+            <source>Liniowe przedłużenie krzywej</source>
+            <translation>Lineární prodloužení křivky</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="50" />
+            <source>Balans z gry</source>
+            <translation>Vyvážení hry</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="50" />
+            <source>Zapamiętane ustawienia</source>
+            <translation>Zapamatovaná nastavení</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="50" />
+            <source>Twoje zmiany</source>
+            <translation>Vaše změny</translation>
+        </message>
+    </context>
     <context>
         <name>QuickBridge</name>
         <message>
@@ -19056,6 +19606,21 @@ li.checked::marker { content: "\2612"; }
             <source>Wczytaj eksperyment</source>
             <translation>Načíst experiment</translation>
         </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="42" />
+            <source>Szybki podgląd jest gotowy. Pełna próba pozostaje zachowana.</source>
+            <translation>Rychlý náhled je připraven. Výsledek úplné simulace zůstává zachován.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="93" />
+            <source>Zapamiętane ustawienia</source>
+            <translation>Zapamatovaná nastavení</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="94" />
+            <source>Twoje zmiany</source>
+            <translation>Vaše změny</translation>
+        </message>
     </context>
     <context>
         <name>BalanceLabControls</name>
@@ -19499,6 +20064,177 @@ li.checked::marker { content: "\2612"; }
             <source>Kliknij komórkę, aby przenieść wartości do bieżącego wariantu. Liczba prób na komórkę jest pokazana przy mapie.</source>
             <translation>Kliknutím na buňku přenesete její hodnoty do aktuální varianty. Počet pokusů na buňku je uveden u mapy.</translation>
         </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="31" />
+            <source>Dane próby</source>
+            <translation>Data experimentu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="31" />
+            <source>Reguły symulacji</source>
+            <translation>Pravidla simulace</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="31" />
+            <source>Wykres i mapa</source>
+            <translation>Graf a mapa</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="41" />
+            <source>Kto skacze i w jakim konkursie?</source>
+            <translation>Kdo skáče a v jakém závodě?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="42" />
+            <source>Paczka i zasady są wspólne dla trzech wariantów. Pola parametrów poniżej zmieniają tylko serię „Twoje zmiany”.</source>
+            <translation>Balíček a pravidla závodu jsou společné pro všechny tři varianty. Pole parametrů níže mění pouze variantu „Vaše změny“.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="49" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="50" />
+            <source>Skoczek, którego wyniki analizujesz</source>
+            <translation>Skokan, jehož výsledky analyzujete</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="51" />
+            <source>Liczba konkursów dla każdego wariantu</source>
+            <translation>Počet závodů pro každou variantu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="53" />
+            <source>Numer losowania — ten sam numer pozwala powtórzyć próbę</source>
+            <translation>Číslo losování — stejné číslo umožňuje zopakovat simulaci</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="54" />
+            <source>Pełna próba liczy trzy warianty, więc 500 konkursów oznacza 1500 symulowanych konkursów. Punkty wykresu i komórki mapy to dodatkowe próby z osobnym limitem.</source>
+            <translation>Úplná simulace počítá tři varianty, takže 500 závodů znamená 1 500 simulovaných závodů. Body grafu a buňky mapy jsou další simulace se samostatným limitem.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="60" />
+            <source>Zestaw zasad konkursu</source>
+            <translation>Sada pravidel závodu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="66" />
+            <source>Liczba uczestników w kolejnych seriach</source>
+            <translation>Počet účastníků v jednotlivých kolech</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="68" />
+            <source>Wpisz limity oddzielone przecinkami, np. 50, 30: pierwsza seria do 50 uczestników, druga do 30. W konkursie drużynowym są to drużyny.</source>
+            <translation>Zadejte limity oddělené čárkami, např. 50, 30: až 50 účastníků v prvním kole a 30 ve druhém. V závodě družstev jde o družstva.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="73" />
+            <source>Zmieniasz skoczka w serii „Twoje zmiany”</source>
+            <translation>Upravujete skokana ve variantě „Vaše změny“</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="74" />
+            <source>Wybór analizowanego skoczka zmienisz w „Dane próby”. Edycje tutaj służą tylko eksperymentowi i nie zapisują się do paczki.</source>
+            <translation>Analyzovaného skokana vyberete v části „Data experimentu“. Změny zde platí jen pro experiment a neukládají se do balíčku.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="95" />
+            <source>Nowa wartość dla każdego zaznaczonego skoczka</source>
+            <translation>Nová hodnota pro každého vybraného skokana</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="95" />
+            <source>Ile dodać? Wartość ujemna odejmuje</source>
+            <translation>Kolik přidat? Záporná hodnota odečítá</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="103" />
+            <source>Parametry istotne dla tego tematu</source>
+            <translation>Parametry důležité pro toto téma</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="104" />
+            <source>Zmieniaj jeden parametr i obserwuj podgląd. Opis pod polem wyjaśnia jego działanie. Pełna próba pozwala sprawdzić, czy mała różnica jest powtarzalna.</source>
+            <translation>Změňte jeden parametr a sledujte náhled. Popis pod polem vysvětluje jeho vliv. Úplná simulace pomůže ověřit, zda se malý rozdíl opakuje.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="105" />
+            <source>Pokaż wszystkie parametry symulacji</source>
+            <translation>Zobrazit všechny parametry simulace</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="121" />
+            <source>Jakie wartości chcesz porównać?</source>
+            <translation>Jaké hodnoty chcete porovnat?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="122" />
+            <source>Wykres testuje wartości jednego parametru. Mapa testuje każdą parę wartości z dwóch osi. Parametry osi są zmieniane we wszystkich trzech wariantach; pozostałe różnice między wariantami zostają.</source>
+            <translation>Graf testuje hodnoty jednoho parametru. Mapa testuje každou dvojici hodnot ze dvou os. Parametry os se mění ve všech třech variantách; ostatní rozdíly mezi variantami zůstávají.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="125" />
+            <source>Poziomo — zmieniany parametr</source>
+            <translation>Vodorovně — měněný parametr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="127" />
+            <source>Najmniejsza wartość na osi poziomej</source>
+            <translation>Nejnižší hodnota na vodorovné ose</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="128" />
+            <source>Największa wartość na osi poziomej</source>
+            <translation>Nejvyšší hodnota na vodorovné ose</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="129" />
+            <source>Pionowo — drugi parametr mapy</source>
+            <translation>Svisle — druhý parametr mapy</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="131" />
+            <source>Najmniejsza wartość na osi pionowej</source>
+            <translation>Nejnižší hodnota na svislé ose</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="132" />
+            <source>Największa wartość na osi pionowej</source>
+            <translation>Nejvyšší hodnota na svislé ose</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="133" />
+            <source>Liczba testowanych wartości na każdej osi</source>
+            <translation>Počet testovaných hodnot na každé ose</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="134" />
+            <source>Mapa %1 × %1 = %2 kombinacji parametrów. Więcej wartości oznacza gęstszą mapę i dłuższe obliczenia.</source>
+            <translation>Mapa %1 × %1 = %2 kombinací parametrů. Více hodnot znamená hustší mapu a delší výpočet.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="135" />
+            <source>Uruchom porównanie na mapie</source>
+            <translation>Spustit porovnání na mapě</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="88" />
+            <source>%1 (%2) · OVR: %3 · forma: %4</source>
+            <translation>%1 (%2) · OVR: %3 · forma: %4</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="91" />
+            <source>Co zmienić zaznaczonym skoczkom?</source>
+            <translation>Co změnit vybraným skokanům?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="93" />
+            <source>Jak zastosować zmianę?</source>
+            <translation>Jak změnu použít?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="106" />
+            <source>Szukaj, np. upadek, forma, podmuch…</source>
+            <translation>Hledat, např. pád, forma, poryv…</translation>
+        </message>
     </context>
     <context>
         <name>BalanceLabGenerator</name>
@@ -19597,6 +20333,26 @@ li.checked::marker { content: "\2612"; }
             <source>Średnia %1 m/s · zakres %2–%3 · pod narty %4% · w plecy %5% · prób %6</source>
             <translation>Průměr %1 m/s · rozsah %2–%3 · protivítr %4% · zadní vítr %5% · pokusy %6</translation>
         </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="10" />
+            <source>Balans z gry</source>
+            <translation>Vyvážení hry</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="10" />
+            <source>Zapamiętane ustawienia</source>
+            <translation>Zapamatovaná nastavení</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="10" />
+            <source>Twoje zmiany</source>
+            <translation>Vaše změny</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="16" />
+            <source>Szczegóły poniżej dotyczą serii „Twoje zmiany”. Procent kierunków opisuje odczyty referencyjne; wiatr boczny może występować równocześnie z wiatrem pod narty lub w plecy.</source>
+            <translation>Podrobnosti níže patří k variantě „Vaše změny“. Procenta směrů popisují referenční měření; boční vítr může působit současně s protivětrem nebo zadním větrem.</translation>
+        </message>
     </context>
     <context>
         <name>BalanceLabParameter</name>
@@ -19609,6 +20365,23 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/BalanceLabParameter.qml" line="25" />
             <source>Reset</source>
             <translation>Obnovit</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabParameter.qml" line="19" />
+            <source>%1 (%2)</source>
+            <translation>%1 (%2)</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabParameter.qml" line="35" />
+            <source>Zakres i szczegóły</source>
+            <translation>Rozsah a podrobnosti</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabParameter.qml" line="39" />
+            <source>Dozwolony zakres: %1–%2. Domyślna wartość silnika: %3.
+Klucz techniczny: %4</source>
+            <translation>Povolený rozsah: %1–%2. Výchozí hodnota enginu: %3.
+Technický klíč: %4</translation>
         </message>
     </context>
     <context>
@@ -19687,6 +20460,61 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="44" />
             <source>Eksportuj raport i CSV</source>
             <translation>Exportovat zprávu a CSV</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="15" />
+            <source>Zapisane ustawienia i wyniki prób</source>
+            <translation>Uložená nastavení a výsledky simulací</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="17" />
+            <source>Nazwa zestawu ustawień</source>
+            <translation>Název sady nastavení</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="21" />
+            <source>Zapisz zestaw ustawień</source>
+            <translation>Uložit sadu nastavení</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="22" />
+            <source>Używaj tych ustawień w grze</source>
+            <translation>Používat tato nastavení ve hře</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="23" />
+            <source>Przywróć domyślny balans gry</source>
+            <translation>Obnovit výchozí vyvážení hry</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="27" />
+            <source>Zestawy ustawień</source>
+            <translation>Sady nastavení</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="27" />
+            <source>Wyniki pełnych prób</source>
+            <translation>Výsledky úplných simulací</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="27" />
+            <source>Co zmieniono?</source>
+            <translation>Co se změnilo?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="28" />
+            <source>Zestaw zapisuje ustawienia do dalszej pracy. Historia przechowuje ukończone wyniki. Kliknij zapis na liście, aby go otworzyć.</source>
+            <translation>Sada ukládá nastavení pro další práci. Historie uchovává dokončené výsledky. Kliknutím otevřete záznam.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="45" />
+            <source>Zapisz eksperyment do pliku</source>
+            <translation>Uložit experiment do souboru</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="46" />
+            <source>Otwórz eksperyment z pliku</source>
+            <translation>Otevřít experiment ze souboru</translation>
         </message>
     </context>
     <context>
@@ -19795,6 +20623,41 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="30" />
             <source>Belka jury: %1 · faktyczna: %2 · odniesienie: %3 · rekompensata belki: %4 pkt</source>
             <translation>Okno jury: %1 · skutečné: %2 · referenční: %3 · kompenzace za okno: %4 bodů</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="18" />
+            <source>Odtwórz konkurs i obejrzyj wiatr faktycznie napotkany przez wybranego skoczka. Odtwarzanie korzysta z zachowanej pełnej próby, nawet jeśli edytujesz już inne ustawienia. Każdy krok pokazuje kolejny odcinek lotu.</source>
+            <translation>Přehrajte závod a prohlédněte si vítr, který vybraný skokan skutečně potkal. Přehrávání používá zachovanou úplnou simulaci, i když už upravujete jiná nastavení. Každý krok ukazuje další úsek letu.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="19" />
+            <source>Który wariant zachowanej próby odtworzyć?</source>
+            <translation>Kterou variantu zachované simulace přehrát?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="20" />
+            <source>Balans z gry</source>
+            <translation>Vyvážení hry</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="20" />
+            <source>Zapamiętane ustawienia</source>
+            <translation>Zapamatovaná nastavení</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="20" />
+            <source>Twoje zmiany</source>
+            <translation>Vaše změny</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="22" />
+            <source>Najpierw uruchom pełną próbę. Potem wybierz numer konkursu i kliknij „Odtwórz konkurs”.</source>
+            <translation>Nejprve spusťte úplnou simulaci. Potom vyberte číslo závodu a klikněte na „Přehrát závod“.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="25" />
+            <source>Wybierz skok z odtworzonego konkursu</source>
+            <translation>Vyberte skok z přehrávaného závodu</translation>
         </message>
     </context>
     <context>
@@ -20067,6 +20930,216 @@ li.checked::marker { content: "\2612"; }
             <source>Wybierz dane i zmień parametr. Pierwszy podgląd pojawi się automatycznie.</source>
             <translation>Vyberte vstupy a změňte parametr. První náhled se zobrazí automaticky.</translation>
         </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="34" />
+            <source>Balans z gry</source>
+            <translation>Vyvážení hry</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="34" />
+            <source>Zapamiętane ustawienia</source>
+            <translation>Zapamatovaná nastavení</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="34" />
+            <source>Twoje zmiany</source>
+            <translation>Vaše změny</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="36" />
+            <source>Miejsce w konkursie — mniej znaczy lepiej</source>
+            <translation>Umístění v závodě — méně je lépe</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="36" />
+            <source>Suma punktów w konkursie</source>
+            <translation>Celkový počet bodů v závodě</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="36" />
+            <source>Wygrane konkursy · %</source>
+            <translation>Vyhrané závody · %</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="54" />
+            <source>Brak wystarczających wyników klasyfikowanych startów do porównania średnich.</source>
+            <translation>Není dost klasifikovaných výsledků pro porovnání průměrů.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="55" />
+            <source>W tej próbie „Twoje zmiany” względem „Balansu z gry”: różnica średniej odległości %1 m; różnica średniego miejsca %2. Minus przy miejscu oznacza poprawę, np. −3 to średnio o trzy pozycje wyżej. To opis próby, nie dowód istotności różnicy.</source>
+            <translation>V této simulaci mají „Vaše změny“ oproti „Vyvážení hry“ rozdíl průměrné délky %1 m a průměrného umístění %2. Záporný rozdíl umístění znamená zlepšení, např. −3 je v průměru o tři místa výše. Jde o popis vzorku, ne důkaz významnosti rozdílu.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="58" />
+            <source>Y / X</source>
+            <translation>Y / X</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="66" />
+            <source>%1: %2; %3: %4. %5: %6.</source>
+            <translation>%1: %2; %3: %4. %5: %6.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="67" />
+            <source> Wybrane pasmo: %1–%2.</source>
+            <translation> Vybrané pásmo: %1–%2.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="74" />
+            <source>Wynik pełnej próby — zachowany</source>
+            <translation>Výsledek úplné simulace — zachován</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="74" />
+            <source>Szybki podgląd — orientacyjny wynik</source>
+            <translation>Rychlý náhled — orientační výsledek</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="79" />
+            <source>Analizowany skoczek: %1. Konkursów w każdym z trzech wariantów: %2. Skocznia: %3.</source>
+            <translation>Analyzovaný skokan: %1. Závodů v každé ze tří variant: %2. Můstek: %3.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="84" />
+            <source>To wynik wcześniejszych ustawień. Jest bezpiecznie zachowany. Nowe ustawienia sprawdzisz w podglądzie poniżej albo przyciskiem „Uruchom pełną próbę”.</source>
+            <translation>Tento výsledek používá dřívější nastavení. Je bezpečně zachován. Nová nastavení ověříte v náhledu níže nebo tlačítkem „Spustit úplnou simulaci“.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="84" />
+            <source>Ustawienia się zmieniły. Te liczby pochodzą z poprzedniego podglądu; trwa aktualizacja.</source>
+            <translation>Nastavení se změnila. Tato čísla patří k předchozímu náhledu; probíhá aktualizace.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="91" />
+            <source>Szybki podgląd nowych ustawień</source>
+            <translation>Rychlý náhled nových nastavení</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="93" />
+            <source>Aktualizowanie podglądu… pełna próba pozostaje na ekranie.</source>
+            <translation>Aktualizace náhledu… úplná simulace zůstává na obrazovce.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="93" />
+            <source>Tylko %1 konkursów na wariant. Twoje zmiany: średnio %2 m i miejsce %3. To wstępna wskazówka, nie dokładny pomiar.</source>
+            <translation>Pouze %1 závodů na variantu. Vaše změny: průměrně %2 m a umístění %3. Jde o první vodítko, ne přesné měření.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="93" />
+            <source>Zmień parametr, a tutaj pojawi się osobny podgląd. Wynik pełnej próby nie zostanie zastąpiony.</source>
+            <translation>Změňte parametr a zde se objeví samostatný náhled. Výsledek úplné simulace nebude nahrazen.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="98" />
+            <source>Wróć do zachowanej pełnej próby</source>
+            <translation>Vrátit se k zachované úplné simulaci</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="98" />
+            <source>Obejrzyj wykresy szybkiego podglądu</source>
+            <translation>Prohlédnout grafy rychlého náhledu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="104" />
+            <source>Trzy warianty tego samego eksperymentu</source>
+            <translation>Tři varianty stejného experimentu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="115" />
+            <source>Punkt startowy: balans gry i dane wybranej próby.</source>
+            <translation>Výchozí bod: vyvážení hry a data vybraného experimentu.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="115" />
+            <source>Kopia ustawień z przycisku „Zapamiętaj do porównania”. Możesz porównać poprzedni pomysł z nowym.</source>
+            <translation>Kopie vytvořená tlačítkem „Zapamatovat pro porovnání“. Porovnejte předchozí nápad s novým.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="115" />
+            <source>Efekt parametrów, które edytujesz w laboratorium. Karty poniżej pokazują tę serię z wyświetlonej próby.</source>
+            <translation>Vliv parametrů, které upravujete v laboratoři. Karty níže ukazují tuto sérii ze zobrazené simulace.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="130" />
+            <source>Średnia suma punktów w konkursie</source>
+            <translation>Průměrný součet bodů v závodě</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="131" />
+            <source>Dyskwalifikacje: %1 · ocenione skoki: %2</source>
+            <translation>Diskvalifikace: %1 · hodnocené skoky: %2</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="133" />
+            <source>Wyniki wszystkich skoczków</source>
+            <translation>Výsledky všech skokanů</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="133" />
+            <source>Cele strojenia</source>
+            <translation>Cíle ladění</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="140" />
+            <source>%1 · średnie miejsce: %2 · odległość: %3 m · suma: %4 pkt</source>
+            <translation>%1 · průměrné umístění: %2 · délka: %3 m · součet: %4 b.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="148" />
+            <source>Co pokazuje wykres lub mapa?</source>
+            <translation>Co zobrazuje graf nebo mapa?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="152" />
+            <source>Typowe wyniki — środkowe 80%</source>
+            <translation>Typické výsledky — prostředních 80 %</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="152" />
+            <source>Dokładność średniej — przedział ufności 95%</source>
+            <translation>Přesnost průměru — 95% interval spolehlivosti</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="152" />
+            <source>Pokaż tylko średnią</source>
+            <translation>Zobrazit pouze průměr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="154" />
+            <source>Pasmo obejmuje środkowe 80% wyników: odrzuca po 10% skrajnych z każdej strony. Dla miejsc chodzi o konkursy, dla odległości o skoki. Szersze pasmo oznacza większy rozrzut; odczyt z histogramu jest przybliżony.</source>
+            <translation>Pásmo obsahuje prostředních 80 % výsledků a vynechává 10 % na každém konci. Umístění se týkají závodů, délky skoků. Širší pásmo znamená větší rozptyl; údaje z histogramu jsou přibližné.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="154" />
+            <source>Przedział ufności 95% pokazuje dokładność oszacowanej średniej, nie zakres miejsc ani odległości pojedynczych startów. Więcej konkursów zwykle go zawęża.</source>
+            <translation>95% interval spolehlivosti ukazuje přesnost odhadnutého průměru, ne rozsah umístění nebo délek jednotlivých startů. Více závodů jej obvykle zužuje.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="154" />
+            <source>Pokazujesz same średnie. Wybierz pasmo powyżej, aby zobaczyć rozrzut wyników lub dokładność średniej.</source>
+            <translation>Zobrazujete pouze průměry. Vyberte pásmo výše pro rozptyl výsledků nebo přesnost průměru.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="157" />
+            <source>Jak wynik zmienia się wraz z parametrem?</source>
+            <translation>Jak se výsledek mění s parametrem?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="161" />
+            <source>Który wariant chcesz obejrzeć na mapie?</source>
+            <translation>Kterou variantu chcete zobrazit na mapě?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="164" />
+            <source>Kolumny: %1. Wiersze: %2. Liczba w komórce oznacza: %3. Kolor pokazuje wielkość wartości, nie ocenę „dobrze” lub „źle”.</source>
+            <translation>Sloupce: %1. Řádky: %2. Číslo v buňce znamená: %3. Barva ukazuje velikost hodnoty, ne hodnocení „dobře“ nebo „špatně“.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="194" />
+            <source>To zachowana mapa. Możesz odczytywać wyniki; aby przenieść komórkę do aktualnego eksperymentu, najpierw przelicz mapę dla nowych ustawień.</source>
+            <translation>Toto je zachovaná mapa. Výsledky si můžete prohlížet; pro přenesení buňky do aktuálního experimentu nejprve přepočítejte mapu s novými nastaveními.</translation>
+        </message>
     </context>
     <context>
         <name>BalanceLabScreen</name>
@@ -20134,6 +21207,51 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="32" />
             <source>Cofnij</source>
             <translation>Zpět</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="19" />
+            <source>Wybierz temat</source>
+            <translation>Vybrat téma</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="25" />
+            <source>Parametry próby</source>
+            <translation>Parametry experimentu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="26" />
+            <source>Przerwij obliczenia</source>
+            <translation>Přerušit výpočet</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="26" />
+            <source>Uruchom pełną próbę</source>
+            <translation>Spustit úplnou simulaci</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="27" />
+            <source>Zapisy i historia</source>
+            <translation>Uložené položky a historie</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="32" />
+            <source>Obliczanie: %1 zestawów po 3 konkursy · czas: %2 s</source>
+            <translation>Výpočet: %1 sad po 3 závodech · čas: %2 s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="33" />
+            <source>Zapamiętaj do porównania</source>
+            <translation>Zapamatovat pro porovnání</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="33" />
+            <source>Kopiuje Twoje zmiany do serii „Zapamiętane ustawienia”. Potem możesz dalej stroić i porównywać oba pomysły. Zastępuje poprzednio zapamiętany wariant; nie zapisuje wyniku próby.</source>
+            <translation>Zkopíruje Vaše změny do série „Zapamatovaná nastavení“. Potom můžete pokračovat v ladění a porovnat oba nápady. Nahradí dříve zapamatovanou variantu; neukládá výsledek simulace.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="34" />
+            <source>Cofnij zmianę</source>
+            <translation>Vrátit změnu</translation>
         </message>
     </context>
     <context>
@@ -20293,6 +21411,61 @@ li.checked::marker { content: "\2612"; }
             <source>Wynik: %1 · przedział 95%: %2–%3 · cel: %4–%5</source>
             <translation>Výsledek: %1 · 95% interval: %2–%3 · cíl: %4–%5</translation>
         </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="13" />
+            <source>Za mało pewności, aby ocenić</source>
+            <translation>Nedostatek jistoty k vyhodnocení</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="19" />
+            <source>Przykład: wybierz średnią odległość i wpisz oczekiwany zakres 130–135 m. Wynik oceny pojawi się po pełnej próbie. Dla różnicy miejsc wartość ujemna oznacza poprawę.</source>
+            <translation>Příklad: vyberte průměrnou délku a zadejte očekávaný rozsah 130–135 m. Vyhodnocení se objeví po úplné simulaci. U rozdílu umístění znamená záporná hodnota zlepšení.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="30" />
+            <source>Nazwa — co chcesz osiągnąć?</source>
+            <translation>Název — čeho chcete dosáhnout?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="32" />
+            <source>Co ma spełniać oczekiwany zakres?</source>
+            <translation>Co má splňovat očekávaný rozsah?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="34" />
+            <source>Wariant oceniany przez ten cel</source>
+            <translation>Varianta hodnocená tímto cílem</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="36" />
+            <source>Zachowaj te dane do kolejnych kontroli celu</source>
+            <translation>Zachovat tato data pro další kontroly cíle</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="41" />
+            <source>Dolna granica oczekiwanego wyniku</source>
+            <translation>Dolní hranice očekávaného výsledku</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="42" />
+            <source>Górna granica oczekiwanego wyniku</source>
+            <translation>Horní hranice očekávaného výsledku</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="35" />
+            <source>Balans z gry</source>
+            <translation>Vyvážení hry</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="35" />
+            <source>Zapamiętane ustawienia</source>
+            <translation>Zapamatovaná nastavení</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="35" />
+            <source>Twoje zmiany</source>
+            <translation>Vaše změny</translation>
+        </message>
     </context>
     <context>
         <name>BalanceLabWind</name>
@@ -20403,6 +21576,36 @@ li.checked::marker { content: "\2612"; }
             <source>Każda para używa tego samego skoczka, belki i seeda. Różnica końcowych punktów obejmuje także zmianę odległości i lądowania. Rekompensata nie musi dokładnie wyrównać fizycznego wpływu wiatru.</source>
             <translation>Každá dvojice používá stejného skokana, nájezdové okno a seed. Rozdíl konečných bodů zahrnuje i změnu délky skoku a doskoku. Kompenzace nemusí přesně vyrovnat fyzický vliv větru.</translation>
         </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="21" />
+            <source>Który wariant pokazują szczegóły warunków i pomiaru?</source>
+            <translation>Kterou variantu zobrazují podrobnosti podmínek a měření?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="34" />
+            <source>Jak zmienia się wiatr %1 m od progu?</source>
+            <translation>Jak se mění vítr %1 m od odrazové hrany?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="36" />
+            <source>Wybrany moment konkursu: %1 s</source>
+            <translation>Vybraný okamžik závodu: %1 s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="38" />
+            <source>Wiatr wzdłuż zeskoku w chwili %1 s</source>
+            <translation>Vítr podél doskočiště v čase %1 s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="42" />
+            <source>W kolejnych dwóch wykresach zero oznacza wynik jak przy bezwietrznej pogodzie. Wartości dodatnie to zysk, ujemne — strata. Porównanie uwzględnia ten sam skok z wiatrem i bez niego.</source>
+            <translation>Na dalších dvou grafech nula znamená výsledek jako při bezvětří. Kladné hodnoty jsou zisk, záporné ztráta. Porovnání používá stejný skok s větrem a bez něj.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="45" />
+            <source>Każda para używa tego samego skoczka, belki i numeru losowania. Różnica końcowych punktów obejmuje także zmianę odległości i lądowania. Rekompensata nie musi dokładnie wyrównać fizycznego wpływu wiatru.</source>
+            <translation>Každá dvojice používá stejného skokana, nájezdové okno a číslo losování. Rozdíl konečných bodů zahrnuje i změnu délky a doskoku. Kompenzace nemusí přesně vyrovnat fyzický vliv větru.</translation>
+        </message>
     </context>
     <context>
         <name>BalanceLabWindow</name>
@@ -20415,6 +21618,24 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/balance/BalanceLabController.cpp" line="133" />
             <source>Laboratorium balansu — otwórz interfejs Qt Quick, aby korzystać z wykresów.</source>
             <translation>Laboratoř vyvážení — pro grafy otevřete rozhraní Qt Quick.</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabPlot</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabPlot.qml" line="83" />
+            <source>Najedź na wykres lub użyj strzałek, aby odczytać wartości poniżej.</source>
+            <translation>Najeďte na graf nebo použijte šipky a přečtěte si hodnoty níže.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabPlot.qml" line="90" />
+            <source>%1 — %2: %3; %4: %5</source>
+            <translation>%1 — %2: %3; %4: %5</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabPlot.qml" line="90" />
+            <source>; pasmo: %1–%2</source>
+            <translation>; pásmo: %1–%2</translation>
         </message>
     </context>
 </TS>

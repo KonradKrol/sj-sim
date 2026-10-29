@@ -12723,105 +12723,105 @@ Check that you selected the correct file.</translation>
             <translation>Light rain need not slow the jump. Heavy rain makes jumps substantially worse.</translation>
         </message>
         <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="11"/>
-        <source>K odniesienia udziału formy</source>
-        <translation>Reference K for form share</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="12"/>
-        <source>Skala zmiany udziału formy względem K</source>
-        <translation>Scale of form share change with K</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="13"/>
-        <source>Maksymalna zmiana udziału formy</source>
-        <translation>Maximum form share adjustment</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="37"/>
-        <source>Siła wiatru aktywująca rozrzut</source>
-        <translation>Wind strength activating response spread</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="42"/>
-        <source>Siła wiatru aktywująca złe zdarzenia</source>
-        <translation>Wind strength activating adverse events</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="43"/>
-        <source>Stromość narastania szansy złego zdarzenia</source>
-        <translation>Adverse event probability steepness</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="44"/>
-        <source>Maksymalna szansa złego zdarzenia: pod narty</source>
-        <translation>Maximum adverse event probability: headwind</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="45"/>
-        <source>Siła złego zdarzenia: pod narty</source>
-        <translation>Adverse event severity: headwind</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="46"/>
-        <source>Maksymalna szansa złego zdarzenia: w plecy</source>
-        <translation>Maximum adverse event probability: tailwind</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="47"/>
-        <source>Siła złego zdarzenia: w plecy</source>
-        <translation>Adverse event severity: tailwind</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="48"/>
-        <source>Maksymalna szansa złego zdarzenia: boczny</source>
-        <translation>Maximum adverse event probability: crosswind</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="49"/>
-        <source>Siła złego zdarzenia: boczny</source>
-        <translation>Adverse event severity: crosswind</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="125"/>
-        <source>Udział formy = 1 − udział OVR + amplituda × tanh((K − K odniesienia) / skala), ograniczony do 0–1. Amplituda 0 wyłącza zależność od K.</source>
-        <translation>Form share = 1 − OVR share + amplitude × tanh((K − reference K) / scale), bounded to 0–1. Zero amplitude disables the dependence on K.</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="126"/>
-        <source>Szansa = maksimum × r^wykładnik / (1 + r^wykładnik), gdzie r to siła wiatru / skala złych zdarzeń. Siła zdarzenia zwiększa zużycie zapasu lotu; zero wyłącza stratę.</source>
-        <translation>Probability = maximum × r^exponent / (1 + r^exponent), where r is wind strength / adverse event scale. Event severity increases flight reserve consumption; zero disables the loss.</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="127"/>
-        <source>Pomoc wiatru pod narty rośnie coraz wolniej. Zero wyłącza nasycenie. Złe zdarzenia nadal zależą od rzeczywistej siły wiatru.</source>
-        <translation>Headwind assistance grows progressively more slowly. Zero disables saturation. Adverse events still depend on actual wind strength.</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="128"/>
-        <source>Rozrzut rośnie płynnie z siłą wiatru. Reakcja jest losowana raz na skok, nie w każdym kroku lotu. Zerowy rozrzut wyłącza ten składnik losowości.</source>
-        <translation>Spread grows smoothly with wind strength. Response is sampled once per jump, rather than at every integration step. Zero spread disables this randomness component.</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="38"/>
-        <source>Rozrzut wykorzystania wiatru pod narty</source>
-        <translation>Headwind response spread</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="39"/>
-        <source>Rozrzut strat w wietrze w plecy</source>
-        <translation>Tailwind loss spread</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="40"/>
-        <source>Rozrzut strat w wietrze bocznym</source>
-        <translation>Crosswind loss spread</translation>
-    </message>
-    <message>
-        <location filename="../source/playground/PlaygroundModel.cpp" line="41"/>
-        <source>Skala nasycenia pomocy wiatru pod narty</source>
-        <translation>Headwind assistance saturation scale</translation>
-    </message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="11" />
+            <source>K odniesienia udziału formy</source>
+            <translation>Reference K for form share</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="12" />
+            <source>Skala zmiany udziału formy względem K</source>
+            <translation>Scale of form share change with K</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="13" />
+            <source>Maksymalna zmiana udziału formy</source>
+            <translation>Maximum form share adjustment</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="37" />
+            <source>Siła wiatru aktywująca rozrzut</source>
+            <translation>Wind strength activating response spread</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="42" />
+            <source>Siła wiatru aktywująca złe zdarzenia</source>
+            <translation>Wind strength activating adverse events</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="43" />
+            <source>Stromość narastania szansy złego zdarzenia</source>
+            <translation>Adverse event probability steepness</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="44" />
+            <source>Maksymalna szansa złego zdarzenia: pod narty</source>
+            <translation>Maximum adverse event probability: headwind</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="45" />
+            <source>Siła złego zdarzenia: pod narty</source>
+            <translation>Adverse event severity: headwind</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="46" />
+            <source>Maksymalna szansa złego zdarzenia: w plecy</source>
+            <translation>Maximum adverse event probability: tailwind</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="47" />
+            <source>Siła złego zdarzenia: w plecy</source>
+            <translation>Adverse event severity: tailwind</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="48" />
+            <source>Maksymalna szansa złego zdarzenia: boczny</source>
+            <translation>Maximum adverse event probability: crosswind</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="49" />
+            <source>Siła złego zdarzenia: boczny</source>
+            <translation>Adverse event severity: crosswind</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="125" />
+            <source>Udział formy = 1 − udział OVR + amplituda × tanh((K − K odniesienia) / skala), ograniczony do 0–1. Amplituda 0 wyłącza zależność od K.</source>
+            <translation>Form share = 1 − OVR share + amplitude × tanh((K − reference K) / scale), bounded to 0–1. Zero amplitude disables the dependence on K.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="126" />
+            <source>Szansa = maksimum × r^wykładnik / (1 + r^wykładnik), gdzie r to siła wiatru / skala złych zdarzeń. Siła zdarzenia zwiększa zużycie zapasu lotu; zero wyłącza stratę.</source>
+            <translation>Probability = maximum × r^exponent / (1 + r^exponent), where r is wind strength / adverse event scale. Event severity increases flight reserve consumption; zero disables the loss.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="127" />
+            <source>Pomoc wiatru pod narty rośnie coraz wolniej. Zero wyłącza nasycenie. Złe zdarzenia nadal zależą od rzeczywistej siły wiatru.</source>
+            <translation>Headwind assistance grows progressively more slowly. Zero disables saturation. Adverse events still depend on actual wind strength.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="128" />
+            <source>Rozrzut rośnie płynnie z siłą wiatru. Reakcja jest losowana raz na skok, nie w każdym kroku lotu. Zerowy rozrzut wyłącza ten składnik losowości.</source>
+            <translation>Spread grows smoothly with wind strength. Response is sampled once per jump, rather than at every integration step. Zero spread disables this randomness component.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="38" />
+            <source>Rozrzut wykorzystania wiatru pod narty</source>
+            <translation>Headwind response spread</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="39" />
+            <source>Rozrzut strat w wietrze w plecy</source>
+            <translation>Tailwind loss spread</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="40" />
+            <source>Rozrzut strat w wietrze bocznym</source>
+            <translation>Crosswind loss spread</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="41" />
+            <source>Skala nasycenia pomocy wiatru pod narty</source>
+            <translation>Headwind assistance saturation scale</translation>
+        </message>
         <message>
             <location filename="../source/balance/BalanceLabModel.cpp" line="13" />
             <source>OVR i forma</source>
@@ -13277,7 +13277,557 @@ Check that you selected the correct file.</translation>
             <source>Standardowy balans</source>
             <translation>Standard balance</translation>
         </message>
-</context>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="139" />
+            <source>Ile w jakości skoku waży OVR zamiast formy. 0,70 oznacza 70% OVR i 30% formy na skoczni o K odniesienia. Zwiększ, aby stałe umiejętności miały większe znaczenie.</source>
+            <translation>How much jump quality depends on OVR rather than form. 0.70 means 70% OVR and 30% form on the reference K hill. Increase it to give lasting skills more influence.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="140" />
+            <source>Na skoczni o tym K obowiązuje podstawowy udział OVR i formy. Na większych skoczniach forma waży więcej, na mniejszych mniej.</source>
+            <translation>The basic OVR/form shares apply on a hill with this K. Form matters more on larger hills and less on smaller ones.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="141" />
+            <source>Jak duża różnica punktu K jest potrzebna, aby wyraźnie zmienić udział formy. Większa wartość oznacza łagodniejszą zmianę między rozmiarami skoczni.</source>
+            <translation>How large a K difference is needed to noticeably change the share of form. A higher value makes the change between hill sizes gentler.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="142" />
+            <source>Maksymalna korekta udziału formy zależna od wielkości skoczni. 0,05 to do 5 punktów procentowych; 0 wyłącza tę zależność.</source>
+            <translation>Maximum adjustment to the share of form based on hill size. 0.05 means up to 5 percentage points; 0 disables this dependence.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="143" />
+            <source>Jak mocne są losowe straty względem losowych bonusów. Powyżej 0,50 straty są mocniejsze. To nie jest prawdopodobieństwo słabego skoku.</source>
+            <translation>How strong random losses are compared with random bonuses. Above 0.50, losses are stronger. This is not the probability of a poor jump.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="144" />
+            <source>Siła dodatkowego premiowania lotnika lub specjalisty małych skoczni przez charakter skoczni. Większa wartość wzmacnia tę różnicę; neutralny skoczek nie zyskuje.</source>
+            <translation>Strength of the hill character’s extra benefit for flyers or small-hill specialists. A higher value amplifies the difference; a neutral jumper gains nothing.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="145" />
+            <source>Kształt losowych wahań jakości skoku. Rozkład Laplace’a częściej daje duże odstępstwa niż normalny przy tym samym odchyleniu.</source>
+            <translation>Shape of random variations in jump quality. At the same standard deviation, the Laplace distribution produces large deviations more often than the normal distribution.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="146" />
+            <source>Jakość skoku, dla której wyznaczono odległość odniesienia. Podniesienie tej wartości utrudnia osiągnięcie tej samej odległości przy niezmienionych umiejętnościach.</source>
+            <translation>Jump quality used to define the reference distance. Increasing this makes the same distance harder to reach with unchanged skills.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="147" />
+            <source>Bazowa odległość jako część punktu K: 1 oznacza K, 1,10 oznacza 110% K. Większa wartość wydłuża bazowy skok.</source>
+            <translation>Base distance as a share of K: 1 means K, 1.10 means 110% of K. A higher value lengthens the base jump.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="148" />
+            <source>Ile metrów daje jeden dodatkowy punkt jakości na K120. Większa wartość zwiększa różnice odległości wynikające z OVR, formy i jakości wykonania.</source>
+            <translation>Metres gained per extra quality point on K120. A higher value increases distance differences caused by OVR, form and execution quality.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="149" />
+            <source>Belka, dla której określono bazową odległość silnika. To punkt odniesienia modelu lotu, a nie wybór belki do tego eksperymentu.</source>
+            <translation>Gate used to define the engine’s base distance. This is a reference for the flight model, not the gate selected for this experiment.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="150" />
+            <source>Wpływ podniesienia belki o jeden stopień na K120. Większa wartość zwiększa różnice odległości między belkami.</source>
+            <translation>Effect of raising the gate by one step on K120. A higher value increases distance differences between gates.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="151" />
+            <source>Dodatkowa siła wpływu belki przy wietrze w plecy. Większa wartość sprawia, że wybór belki silniej wpływa na odległość w tych warunkach.</source>
+            <translation>Extra gate influence in tailwind. A higher value makes gate selection affect distance more strongly in these conditions.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="152" />
+            <source>Co ile metrów silnik przelicza lot. Mniejszy krok daje dokładniejsze obliczenia, ale wydłuża symulację; może też lekko zmienić wynik.</source>
+            <translation>Distance between flight calculation steps. A smaller step is more precise but slower, and may slightly change the result.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="153" />
+            <source>Czas dotarcia do punktu K w modelu lotu. Większa wartość oznacza późniejsze napotkanie kolejnych podmuchów.</source>
+            <translation>Time to reach K in the flight model. A higher value means encountering subsequent gusts later.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="154" />
+            <source>Jak mocno wiatr wzdłuż skoczni zmienia tempo utraty zapasu lotu. Zwiększenie wzmacnia wpływ wiatru na odległość.</source>
+            <translation>How strongly wind along the hill changes the rate of flight reserve loss. Increasing it strengthens wind’s effect on distance.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="155" />
+            <source>Siła niekorzystnego wpływu wiatru bocznego na lot. Większa wartość zwiększa stratę odległości.</source>
+            <translation>Strength of crosswind’s adverse effect on flight. A higher value increases distance loss.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="156" />
+            <source>Dystans potrzebny na dostosowanie reakcji do zmiany wiatru. Większa wartość wygładza wpływ krótkich podmuchów.</source>
+            <translation>Distance needed for the response to adjust to changing wind. A higher value smooths the effect of short gusts.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="157" />
+            <source>Wrażliwość początku lotu na wiatr. Większa wartość wzmacnia znaczenie warunków tuż po wybiciu.</source>
+            <translation>Sensitivity to wind at the start of flight. A higher value makes conditions just after take-off more important.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="158" />
+            <source>Wrażliwość końca lotu na wiatr. Większa wartość wzmacnia znaczenie warunków bliżej lądowania.</source>
+            <translation>Sensitivity to wind near the end of flight. A higher value makes conditions near landing more important.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="159" />
+            <source>Ograniczenie pomocy wiatru w podtrzymywaniu lotu. Większa wartość pozwala wiatrowi mocniej zmniejszyć utratę zapasu lotu.</source>
+            <translation>Limit on wind assistance in sustaining flight. A higher value lets wind reduce flight reserve loss more strongly.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="160" />
+            <source>Siła wiatru, przy której różnice w wykorzystaniu podmuchu stają się wyraźne. Większa wartość przesuwa ten efekt ku silniejszemu wiatrowi.</source>
+            <translation>Wind strength at which differences in using gusts become noticeable. A higher value shifts this effect towards stronger wind.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="161" />
+            <source>Jak różnie skoczkowie mogą wykorzystać silny wiatr pod narty. Większa wartość daje szerszy rozrzut reakcji; 0 wyłącza tę część losowości.</source>
+            <translation>How differently jumpers may use strong headwind. A higher value widens the response variation; 0 disables this part of randomness.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="162" />
+            <source>Jak różne mogą być straty przy silnym wietrze w plecy. Większa wartość zwiększa rozrzut strat między skokami.</source>
+            <translation>How much losses may vary in strong tailwind. A higher value increases variation in losses between jumps.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="163" />
+            <source>Jak różne mogą być straty przy silnym wietrze bocznym. Większa wartość zwiększa rozrzut strat między skokami.</source>
+            <translation>How much losses may vary in strong crosswind. A higher value increases variation in losses between jumps.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="164" />
+            <source>Od jakiej skali wiatru pod narty korzyść zaczyna rosnąć wyraźnie wolniej. Większa wartość opóźnia nasycenie; 0 je wyłącza. Ryzyko złego zdarzenia działa osobno.</source>
+            <translation>Headwind scale at which benefits begin growing much more slowly. A higher value delays saturation; 0 disables it. Adverse-event risk acts separately.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="165" />
+            <source>Skala siły wiatru, przy której rośnie ryzyko niekorzystnego zdarzenia. Większa wartość przesuwa ryzyko ku silniejszemu wiatrowi. To płynna zmiana, nie sztywny próg.</source>
+            <translation>Wind strength scale at which adverse-event risk grows. A higher value shifts the risk towards stronger wind. This is a smooth change, not a hard threshold.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="166" />
+            <source>Jak gwałtownie rośnie ryzyko wokół skali złych zdarzeń. Większa wartość oznacza wyraźniejsze przejście: mniej ryzyka poniżej tej skali, więcej powyżej.</source>
+            <translation>How steeply risk grows around the adverse-event scale. A higher value makes the transition sharper: less risk below this scale, more above it.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="167" />
+            <source>Gdzie zaczyna narastać opór wypłaszczenia, jako część odległości początku wypłaszczenia. Większa wartość przesuwa początek oporu dalej.</source>
+            <translation>Where flattening resistance starts increasing, as a share of the flattening-start distance. A higher value moves the start of resistance farther out.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="168" />
+            <source>Dodatkowa długość użytecznego zeskoku jako część K. Większa wartość pozwala modelowi lotu sięgać dalej za początek wypłaszczenia.</source>
+            <translation>Extra usable landing-slope length as a share of K. A higher value lets the flight model reach farther beyond the start of flattening.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="169" />
+            <source>Jak mocno wypłaszczony zeskok ogranicza dalszy lot. Większa wartość mocniej ogranicza bardzo długie skoki.</source>
+            <translation>How strongly the flattened slope restricts further flight. A higher value restricts very long jumps more strongly.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="170" />
+            <source>Na ile odcinków dzielić zapis wiatru napotkanego podczas lotu. Więcej odcinków daje bardziej szczegółowe odtwarzanie.</source>
+            <translation>Number of sections used to record wind encountered during flight. More sections give a more detailed replay.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="171" />
+            <source>Losowa zmiana wspólna dla not wszystkich sędziów w jednym skoku. Większa wartość zwiększa wahania ogólnej oceny stylu.</source>
+            <translation>Random shift shared by every judge’s mark for one jump. A higher value increases variation in the overall style assessment.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="172" />
+            <source>Jak bardzo ocena pojedynczego sędziego może odbiegać od wspólnej oceny skoku. Większa wartość zwiększa różnice między sędziami.</source>
+            <translation>How far one judge’s mark may differ from the shared assessment. A higher value increases differences between judges.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="173" />
+            <source>Dodatkowe obniżenie not za lądowanie daleko na zeskoku. Większa wartość mocniej obniża styl przy trudnych lądowaniach.</source>
+            <translation>Extra style deduction for landing far down the slope. A higher value reduces marks more for difficult landings.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="174" />
+            <source>Bazowy wiatr wzdłuż skoczni. Dodatnie wartości oznaczają wiatr pod narty, ujemne — w plecy. Lokalne korekty i podmuchy dodają się do tej wartości.</source>
+            <translation>Base wind along the hill. Positive values mean headwind; negative values mean tailwind. Local adjustments and gusts are added to this value.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="175" />
+            <source>Bazowy wiatr boczny. Wartość bezwzględna określa siłę, znak rozróżnia strony. Większa siła może utrudnić lot i lądowanie.</source>
+            <translation>Base crosswind. Absolute value sets strength; the sign distinguishes sides. Stronger wind can make flight and landing harder.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="176" />
+            <source>Siła zmian wiatru w czasie konkursu. Większa wartość daje większe różnice warunków między kolejnymi chwilami.</source>
+            <translation>Strength of wind changes over competition time. A higher value produces larger differences between successive moments.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="177" />
+            <source>Siła różnic wiatru między miejscami nad zeskokiem. Większa wartość oznacza mniej jednolite warunki na trasie lotu.</source>
+            <translation>Strength of wind differences between locations above the landing slope. A higher value makes conditions less uniform along the flight.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="178" />
+            <source>Jak długo warunki pozostają podobne. Większa wartość oznacza wolniejsze zmiany wiatru.</source>
+            <translation>How long conditions stay similar. A higher value means slower wind changes.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="179" />
+            <source>Na jak długim odcinku zeskoku wiatr pozostaje podobny. Większa wartość daje większe obszary z podobnymi warunkami.</source>
+            <translation>Length of slope over which wind stays similar. A higher value produces larger areas of similar conditions.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="180" />
+            <source>Siła dodatkowych podmuchów. Zwiększ, aby podmuchy mocniej odróżniały się od tła.</source>
+            <translation>Strength of extra gusts. Increase it to make gusts stand out more from the background wind.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="181" />
+            <source>Szansa aktywnego podmuchu w modelu wiatru. 0,20 oznacza 20% dla losowania w modelu, nie 20% konkursów z podmuchami.</source>
+            <translation>Chance of an active gust in the wind model. 0.20 means 20% for a model draw, not 20% of competitions having gusts.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="182" />
+            <source>Odstęp czasowy używany do generowania podmuchów. Większa wartość rozciąga ich przebieg w czasie.</source>
+            <translation>Time interval used to generate gusts. A higher value stretches their development over time.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="183" />
+            <source>Rozmiar podmuchu wzdłuż zeskoku. Większa wartość pozwala podmuchowi obejmować dłuższą część lotu.</source>
+            <translation>Size of a gust along the slope. A higher value lets a gust cover a longer part of the flight.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="184" />
+            <source>Górny limit łącznej siły wiatru. Zwiększenie dopuszcza silniejsze warunki, ale samo ich nie wymusza.</source>
+            <translation>Upper limit on total wind strength. Increasing it allows stronger conditions but does not force them to occur.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="185" />
+            <source>Siła powolnych zmian dominującego wiatru podczas konkursu. Większa wartość daje wyraźniejsze okresy korzystniejszych i gorszych warunków.</source>
+            <translation>Strength of slow changes in the prevailing wind during a competition. A higher value produces more distinct periods of better and worse conditions.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="186" />
+            <source>Długość okresów dominującej tendencji wiatru. Większa wartość oznacza dłuższe okresy przed zmianą tendencji.</source>
+            <translation>Length of periods with a prevailing wind trend. A higher value means longer periods before the trend changes.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="187" />
+            <source>Czas przechodzenia między tendencjami. Większa wartość daje łagodniejszą i wolniejszą zmianę.</source>
+            <translation>Transition time between trends. A higher value makes changes gentler and slower.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="188" />
+            <source>Różnica między spokojniejszymi i bardziej aktywnymi okresami pogody. Większa wartość wzmacnia te kontrasty.</source>
+            <translation>Difference between calmer and more active weather periods. A higher value strengthens these contrasts.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="189" />
+            <source>Długość epizodu spokojniejszej lub bardziej aktywnej pogody. Większa wartość wydłuża podobne epizody.</source>
+            <translation>Duration of a calmer or more active weather episode. A higher value lengthens similar episodes.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="190" />
+            <source>Tempo drobnych, szybkich zmian wiatru. Większa wartość spowalnia te zmiany.</source>
+            <translation>Pace of small, rapid wind changes. A higher value slows these changes down.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="191" />
+            <source>Ogólny poziom umiejętności analizowanego skoczka, od 1 do 100. Wyższy OVR zwykle zwiększa odległość. Jego znaczenie względem formy ustawisz w regułach symulacji.</source>
+            <translation>Overall skill of the analysed jumper, from 1 to 100. Higher OVR usually increases distance. Set its weight relative to form in the simulation rules.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="192" />
+            <source>Aktualna dyspozycja analizowanego skoczka, od 1 do 100. Wyższa forma zwykle wydłuża skoki. Jej udział zależy od ustawień silnika i wielkości skoczni.</source>
+            <translation>Current form of the analysed jumper, from 1 to 100. Higher form usually lengthens jumps. Its share depends on engine settings and hill size.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="193" />
+            <source>Klasa stylu lądowania: od 0 do 4. Wyższa klasa poprawia noty. W tym modelu nie zmienia prawdopodobieństwa upadku.</source>
+            <translation>Landing style class, from 0 to 4. A higher class improves marks. In this model it does not change fall probability.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="194" />
+            <source>Od tej odległości zeskok zaczyna się wypłaszczać. Większa wartość przesuwa trudne lądowania dalej. To osobny parametr od oficjalnego HS.</source>
+            <translation>The landing slope starts flattening at this distance. A higher value moves difficult landings farther out. This is separate from the official HS.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="195" />
+            <source>Punkt konstrukcyjny skoczni w metrach. Zmiana w laboratorium skaluje także HS i początek wypłaszczenia, zachowując ich proporcje. Punktacja wymaga osobnego ustawienia.</source>
+            <translation>Hill construction point in metres. Changing it in the laboratory also scales HS and the start of flattening, keeping their proportions. Scoring must be set separately.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="196" />
+            <source>Belka startowa dla eksperymentu. Wyższa zwykle wydłuża skoki. 0 dobiera wspólną belkę automatycznie na podstawie wariantu „Balans z gry”.</source>
+            <translation>Starting gate for the experiment. A higher gate usually lengthens jumps. 0 automatically selects a shared gate based on “Game balance”.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="197" />
+            <source>Belka odniesienia do rekompensaty punktowej. 0 używa wspólnej belki bazowej. Nie zmienia fizycznej belki, z której skacze zawodnik.</source>
+            <translation>Reference gate for point compensation. 0 uses the shared base gate. It does not change the actual gate the jumper starts from.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="198" />
+            <source>O ile stopni trener obniża belkę względem belki jury. Większa wartość skraca rozbieg; rekompensata zależy od reguł konkursu.</source>
+            <translation>How many steps the coach lowers the gate below the jury gate. A higher value shortens the inrun; compensation depends on competition rules.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="199" />
+            <source>Kontrolowane warunki: wszyscy startują w tej samej chwili modelu pogody. Przebieg konkursu: czas płynie między skokami i każdy może trafić na inny wiatr.</source>
+            <translation>Controlled conditions: everyone starts at the same moment in the weather model. Competition timeline: time advances between jumps, so each jumper may face different wind.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="200" />
+            <source>Ile sekund czasu pogody upływa między startami. Zwiększenie zmienia warunki napotykane przez kolejnych skoczków, nie szybkość działania programu.</source>
+            <translation>Seconds of weather time between starts. Increasing this changes the conditions encountered by successive jumpers, not the program’s execution speed.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="201" />
+            <source>Prawdopodobieństwo dyskwalifikacji pojedynczego skoku. 0,01 oznacza 1%. Działa, gdy dyskwalifikacje są włączone w zasadach.</source>
+            <translation>Disqualification probability for a single jump. 0.01 means 1%. Applies when disqualifications are enabled in the rules.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="202" />
+            <source>Odległość najszybszego wzrostu ryzyka jako wielokrotność początku wypłaszczenia. 1 oznacza dokładnie tę odległość. Zwiększenie przesuwa wzrost ryzyka dalej.</source>
+            <translation>Distance of the steepest risk increase as a multiple of the flattening-start distance. 1 means exactly that distance. Increasing this shifts the risk increase farther out.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="203" />
+            <source>Szerokość przejścia od mniejszego do większego ryzyka. Większa wartość oznacza łagodniejszy wzrost rozłożony na dłuższy odcinek; nie oznacza po prostu mniejszego ryzyka wszędzie.</source>
+            <translation>Width of the transition from lower to higher risk. A higher value spreads a gentler increase over a longer distance; it does not simply reduce risk everywhere.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="204" />
+            <source>Bazowy poziom ryzyka przed wzrostem związanym z odległością. 0,01 oznacza 1%. Podpórkę losuje się po wykluczeniu upadku, a dwie nogi po wykluczeniu upadku i podpórki.</source>
+            <translation>Base risk before the increase caused by distance. 0.01 means 1%. A hand touch is considered after excluding a fall, and two-foot landing after excluding both a fall and a hand touch.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="205" />
+            <source>Dodatkowy wzrost ryzyka przy długich skokach. Większa wartość zwiększa ryzyko za środkiem krzywej. Podpórka i dwie nogi są oceniane dopiero po wykluczeniu poważniejszego błędu.</source>
+            <translation>Additional risk increase for long jumps. A higher value increases risk beyond the curve’s centre. Hand touches and two-foot landings are assessed after excluding more serious errors.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="206" />
+            <source>Dodatkowe ryzyko za każdy 1 m/s bocznego wiatru. Większa wartość mocniej utrudnia ten rodzaj lądowania. 0 wyłącza ten wpływ.</source>
+            <translation>Extra risk per 1 m/s of crosswind. A higher value makes this landing outcome more likely. 0 disables this effect.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="207" />
+            <source>Bazowa nota jednego sędziego dla tej klasy lądowania. Zwiększenie podnosi noty; kary za błędy są odejmowane osobno.</source>
+            <translation>Base mark from one judge for this landing class. Increasing it raises marks; deductions for errors are applied separately.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="208" />
+            <source>Ile punktów odejmuje sędzia za ten rodzaj lądowania. Większa wartość obniża noty, ale nie zwiększa ryzyka tego zdarzenia.</source>
+            <translation>Points deducted by a judge for this landing type. A higher value lowers marks but does not increase the chance of this outcome.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="209" />
+            <source>Górna granica szansy niekorzystnego zdarzenia przy bardzo silnym wietrze. 0,20 oznacza do 20%. Zwiększenie podnosi ryzyko; rzeczywista szansa rośnie płynnie z siłą wiatru.</source>
+            <translation>Upper limit on adverse-event probability in very strong wind. 0.20 means up to 20%. Increasing it raises risk; the actual chance grows smoothly with wind strength.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="210" />
+            <source>Jak dotkliwa jest strata po wylosowaniu niekorzystnego zdarzenia. Większa wartość mocniej skraca skok; nie zwiększa szansy wystąpienia zdarzenia.</source>
+            <translation>Severity of the loss after an adverse event is drawn. A higher value shortens the jump more; it does not make the event more likely.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="211" />
+            <source>Ustawienie generatora określa, jakie warunki są losowane przed konkursem. Minimum i maksimum wyznaczają zakres losowania. Waga oznacza częstość względem pozostałych wag, nie procent. Wpływ wiatru na skok ustawisz osobno w modelu lotu.</source>
+            <translation>Generator settings determine conditions drawn before a competition. Minimum and maximum set the sampling range. A weight means frequency relative to other weights, not a percentage. Wind’s effect on a jump is configured separately in the flight model.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="343" />
+            <source>trening</source>
+            <translation>training</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="343" />
+            <source>seria próbna</source>
+            <translation>trial round</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="343" />
+            <source>kwalifikacje</source>
+            <translation>qualification</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="343" />
+            <source>konkurs</source>
+            <translation>competition</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="344" />
+            <source>telemark</source>
+            <translation>telemark</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="344" />
+            <source>dwie nogi</source>
+            <translation>two-foot landing</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="344" />
+            <source>podpórka</source>
+            <translation>hand touch</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="344" />
+            <source>upadek</source>
+            <translation>fall</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Stały wiatr w plecy</source>
+            <translation>Steady tailwind</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Silny wiatr pod narty</source>
+            <translation>Strong headwind</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Loteryjny</source>
+            <translation>Unpredictable</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Zmienny boczny</source>
+            <translation>Variable crosswind</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Cisza</source>
+            <translation>Calm</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Stały pod narty</source>
+            <translation>Steady headwind</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Silny w plecy</source>
+            <translation>Strong tailwind</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Stały boczny</source>
+            <translation>Steady crosswind</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Zmienny pod narty</source>
+            <translation>Variable headwind</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Zmienny w plecy</source>
+            <translation>Variable tailwind</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="345" />
+            <source>Różne kierunki na zeskoku</source>
+            <translation>Different directions along the slope</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="347" />
+            <source>Losowość jakości — %1</source>
+            <translation>Quality randomness — %1</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="348" />
+            <source>Kara w notach — %1</source>
+            <translation>Style deduction — %1</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="349" />
+            <source>Bazowa nota — klasa lądowania %1</source>
+            <translation>Base mark — landing class %1</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="350" />
+            <source> — poziom perka %1</source>
+            <translation> — perk level %1</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="354" />
+            <source>poziom perka kierunku %1</source>
+            <translation>direction perk level %1</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="355" />
+            <source>stałe</source>
+            <translation>steady</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="355" />
+            <source>zmienne</source>
+            <translation>variable</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="355" />
+            <source>silne</source>
+            <translation>heavy</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="355" />
+            <source>narastające</source>
+            <translation>increasing</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="356" />
+            <source>spokojna pogoda</source>
+            <translation>calm weather</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="356" />
+            <source>zmienna pogoda</source>
+            <translation>variable weather</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="356" />
+            <source>loteryjna pogoda</source>
+            <translation>lottery weather</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="359" />
+            <source>Igelit</source>
+            <translation>Plastic mat</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="360" />
+            <source>Stały udział poza zakresem K</source>
+            <translation>Constant share outside the K range</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="360" />
+            <source>Liniowe przedłużenie krzywej</source>
+            <translation>Linear curve extension</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="50" />
+            <source>Balans z gry</source>
+            <translation>Game balance</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="50" />
+            <source>Zapamiętane ustawienia</source>
+            <translation>Remembered settings</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="50" />
+            <source>Twoje zmiany</source>
+            <translation>Your changes</translation>
+        </message>
+    </context>
     <context>
         <name>QuickBridge</name>
         <message>
@@ -19055,6 +19605,21 @@ li.checked::marker { content: "\2612"; }
             <source>Wczytaj eksperyment</source>
             <translation>Load experiment</translation>
         </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="42" />
+            <source>Szybki podgląd jest gotowy. Pełna próba pozostaje zachowana.</source>
+            <translation>Quick preview is ready. The full run has been preserved.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="93" />
+            <source>Zapamiętane ustawienia</source>
+            <translation>Remembered settings</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="94" />
+            <source>Twoje zmiany</source>
+            <translation>Your changes</translation>
+        </message>
     </context>
     <context>
         <name>BalanceLabControls</name>
@@ -19498,6 +20063,177 @@ li.checked::marker { content: "\2612"; }
             <source>Kliknij komórkę, aby przenieść wartości do bieżącego wariantu. Liczba prób na komórkę jest pokazana przy mapie.</source>
             <translation>Click a cell to use its values in the current variant. The number of trials per cell is shown next to the map.</translation>
         </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="31" />
+            <source>Dane próby</source>
+            <translation>Experiment data</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="31" />
+            <source>Reguły symulacji</source>
+            <translation>Simulation rules</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="31" />
+            <source>Wykres i mapa</source>
+            <translation>Chart and map</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="41" />
+            <source>Kto skacze i w jakim konkursie?</source>
+            <translation>Who is jumping, and in which competition?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="42" />
+            <source>Paczka i zasady są wspólne dla trzech wariantów. Pola parametrów poniżej zmieniają tylko serię „Twoje zmiany”.</source>
+            <translation>The pack and competition rules are shared by all three variants. Parameter fields below change only “Your changes”.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="49" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="50" />
+            <source>Skoczek, którego wyniki analizujesz</source>
+            <translation>Jumper whose results you are analysing</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="51" />
+            <source>Liczba konkursów dla każdego wariantu</source>
+            <translation>Number of competitions for each variant</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="53" />
+            <source>Numer losowania — ten sam numer pozwala powtórzyć próbę</source>
+            <translation>Random seed — use the same number to repeat a run</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="54" />
+            <source>Pełna próba liczy trzy warianty, więc 500 konkursów oznacza 1500 symulowanych konkursów. Punkty wykresu i komórki mapy to dodatkowe próby z osobnym limitem.</source>
+            <translation>A full run computes three variants, so 500 competitions means 1,500 simulated competitions. Chart points and map cells are additional runs with a separate limit.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="60" />
+            <source>Zestaw zasad konkursu</source>
+            <translation>Competition rule set</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="66" />
+            <source>Liczba uczestników w kolejnych seriach</source>
+            <translation>Number of participants in successive rounds</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="68" />
+            <source>Wpisz limity oddzielone przecinkami, np. 50, 30: pierwsza seria do 50 uczestników, druga do 30. W konkursie drużynowym są to drużyny.</source>
+            <translation>Enter comma-separated limits, e.g. 50, 30: up to 50 participants in round one and 30 in round two. In team competitions these are teams.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="73" />
+            <source>Zmieniasz skoczka w serii „Twoje zmiany”</source>
+            <translation>You are editing the jumper in “Your changes”</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="74" />
+            <source>Wybór analizowanego skoczka zmienisz w „Dane próby”. Edycje tutaj służą tylko eksperymentowi i nie zapisują się do paczki.</source>
+            <translation>Choose the jumper in “Experiment data”. Edits here affect only the experiment and are not saved to the source pack.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="95" />
+            <source>Nowa wartość dla każdego zaznaczonego skoczka</source>
+            <translation>New value for every selected jumper</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="95" />
+            <source>Ile dodać? Wartość ujemna odejmuje</source>
+            <translation>How much to add? Negative values subtract</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="103" />
+            <source>Parametry istotne dla tego tematu</source>
+            <translation>Parameters relevant to this topic</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="104" />
+            <source>Zmieniaj jeden parametr i obserwuj podgląd. Opis pod polem wyjaśnia jego działanie. Pełna próba pozwala sprawdzić, czy mała różnica jest powtarzalna.</source>
+            <translation>Change one parameter and watch the preview. The description below each field explains its effect. A full run helps check whether a small difference is repeatable.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="105" />
+            <source>Pokaż wszystkie parametry symulacji</source>
+            <translation>Show all simulation parameters</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="121" />
+            <source>Jakie wartości chcesz porównać?</source>
+            <translation>Which values do you want to compare?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="122" />
+            <source>Wykres testuje wartości jednego parametru. Mapa testuje każdą parę wartości z dwóch osi. Parametry osi są zmieniane we wszystkich trzech wariantach; pozostałe różnice między wariantami zostają.</source>
+            <translation>A chart tests values of one parameter. A map tests every pair of values on two axes. Axis parameters change in all three variants; other differences between variants remain.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="125" />
+            <source>Poziomo — zmieniany parametr</source>
+            <translation>Horizontal — parameter to vary</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="127" />
+            <source>Najmniejsza wartość na osi poziomej</source>
+            <translation>Lowest value on the horizontal axis</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="128" />
+            <source>Największa wartość na osi poziomej</source>
+            <translation>Highest value on the horizontal axis</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="129" />
+            <source>Pionowo — drugi parametr mapy</source>
+            <translation>Vertical — second map parameter</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="131" />
+            <source>Najmniejsza wartość na osi pionowej</source>
+            <translation>Lowest value on the vertical axis</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="132" />
+            <source>Największa wartość na osi pionowej</source>
+            <translation>Highest value on the vertical axis</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="133" />
+            <source>Liczba testowanych wartości na każdej osi</source>
+            <translation>Number of tested values on each axis</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="134" />
+            <source>Mapa %1 × %1 = %2 kombinacji parametrów. Więcej wartości oznacza gęstszą mapę i dłuższe obliczenia.</source>
+            <translation>Map: %1 × %1 = %2 parameter combinations. More values produce a denser map and take longer to compute.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="135" />
+            <source>Uruchom porównanie na mapie</source>
+            <translation>Run map comparison</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="88" />
+            <source>%1 (%2) · OVR: %3 · forma: %4</source>
+            <translation>%1 (%2) · OVR: %3 · form: %4</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="91" />
+            <source>Co zmienić zaznaczonym skoczkom?</source>
+            <translation>What should change for the selected jumpers?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="93" />
+            <source>Jak zastosować zmianę?</source>
+            <translation>How should the change be applied?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="106" />
+            <source>Szukaj, np. upadek, forma, podmuch…</source>
+            <translation>Search, e.g. fall, form, gust…</translation>
+        </message>
     </context>
     <context>
         <name>BalanceLabGenerator</name>
@@ -19596,6 +20332,26 @@ li.checked::marker { content: "\2612"; }
             <source>Średnia %1 m/s · zakres %2–%3 · pod narty %4% · w plecy %5% · prób %6</source>
             <translation>Mean %1 m/s · range %2–%3 · headwind %4% · tailwind %5% · samples %6</translation>
         </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="10" />
+            <source>Balans z gry</source>
+            <translation>Game balance</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="10" />
+            <source>Zapamiętane ustawienia</source>
+            <translation>Remembered settings</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="10" />
+            <source>Twoje zmiany</source>
+            <translation>Your changes</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="16" />
+            <source>Szczegóły poniżej dotyczą serii „Twoje zmiany”. Procent kierunków opisuje odczyty referencyjne; wiatr boczny może występować równocześnie z wiatrem pod narty lub w plecy.</source>
+            <translation>Details below refer to “Your changes”. Direction percentages describe reference readings; crosswind can occur alongside headwind or tailwind.</translation>
+        </message>
     </context>
     <context>
         <name>BalanceLabParameter</name>
@@ -19608,6 +20364,23 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/BalanceLabParameter.qml" line="25" />
             <source>Reset</source>
             <translation>Reset</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabParameter.qml" line="19" />
+            <source>%1 (%2)</source>
+            <translation>%1 (%2)</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabParameter.qml" line="35" />
+            <source>Zakres i szczegóły</source>
+            <translation>Range and details</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabParameter.qml" line="39" />
+            <source>Dozwolony zakres: %1–%2. Domyślna wartość silnika: %3.
+Klucz techniczny: %4</source>
+            <translation>Allowed range: %1–%2. Engine default: %3.
+Technical key: %4</translation>
         </message>
     </context>
     <context>
@@ -19686,6 +20459,61 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="44" />
             <source>Eksportuj raport i CSV</source>
             <translation>Export report and CSV</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="15" />
+            <source>Zapisane ustawienia i wyniki prób</source>
+            <translation>Saved settings and run results</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="17" />
+            <source>Nazwa zestawu ustawień</source>
+            <translation>Settings set name</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="21" />
+            <source>Zapisz zestaw ustawień</source>
+            <translation>Save settings set</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="22" />
+            <source>Używaj tych ustawień w grze</source>
+            <translation>Use these settings in the game</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="23" />
+            <source>Przywróć domyślny balans gry</source>
+            <translation>Restore default game balance</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="27" />
+            <source>Zestawy ustawień</source>
+            <translation>Settings sets</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="27" />
+            <source>Wyniki pełnych prób</source>
+            <translation>Full run results</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="27" />
+            <source>Co zmieniono?</source>
+            <translation>What changed?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="28" />
+            <source>Zestaw zapisuje ustawienia do dalszej pracy. Historia przechowuje ukończone wyniki. Kliknij zapis na liście, aby go otworzyć.</source>
+            <translation>A set saves settings for later work. History keeps completed results. Click an entry to open it.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="45" />
+            <source>Zapisz eksperyment do pliku</source>
+            <translation>Save experiment to file</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="46" />
+            <source>Otwórz eksperyment z pliku</source>
+            <translation>Open experiment from file</translation>
         </message>
     </context>
     <context>
@@ -19794,6 +20622,41 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="30" />
             <source>Belka jury: %1 · faktyczna: %2 · odniesienie: %3 · rekompensata belki: %4 pkt</source>
             <translation>Jury gate: %1 · actual: %2 · reference: %3 · gate compensation: %4 pts</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="18" />
+            <source>Odtwórz konkurs i obejrzyj wiatr faktycznie napotkany przez wybranego skoczka. Odtwarzanie korzysta z zachowanej pełnej próby, nawet jeśli edytujesz już inne ustawienia. Każdy krok pokazuje kolejny odcinek lotu.</source>
+            <translation>Replay a competition and inspect the wind the selected jumper actually encountered. Replay uses the preserved full run even if you are editing different settings now. Each step shows the next section of the flight.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="19" />
+            <source>Który wariant zachowanej próby odtworzyć?</source>
+            <translation>Which variant of the saved run should be replayed?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="20" />
+            <source>Balans z gry</source>
+            <translation>Game balance</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="20" />
+            <source>Zapamiętane ustawienia</source>
+            <translation>Remembered settings</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="20" />
+            <source>Twoje zmiany</source>
+            <translation>Your changes</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="22" />
+            <source>Najpierw uruchom pełną próbę. Potem wybierz numer konkursu i kliknij „Odtwórz konkurs”.</source>
+            <translation>Run a full simulation first. Then choose a competition number and click “Replay competition”.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="25" />
+            <source>Wybierz skok z odtworzonego konkursu</source>
+            <translation>Choose a jump from the replayed competition</translation>
         </message>
     </context>
     <context>
@@ -20066,6 +20929,216 @@ li.checked::marker { content: "\2612"; }
             <source>Wybierz dane i zmień parametr. Pierwszy podgląd pojawi się automatycznie.</source>
             <translation>Select inputs and change a parameter. The first preview appears automatically.</translation>
         </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="34" />
+            <source>Balans z gry</source>
+            <translation>Game balance</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="34" />
+            <source>Zapamiętane ustawienia</source>
+            <translation>Remembered settings</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="34" />
+            <source>Twoje zmiany</source>
+            <translation>Your changes</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="36" />
+            <source>Miejsce w konkursie — mniej znaczy lepiej</source>
+            <translation>Competition place — lower is better</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="36" />
+            <source>Suma punktów w konkursie</source>
+            <translation>Total competition points</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="36" />
+            <source>Wygrane konkursy · %</source>
+            <translation>Competitions won · %</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="54" />
+            <source>Brak wystarczających wyników klasyfikowanych startów do porównania średnich.</source>
+            <translation>There are not enough classified results to compare averages.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="55" />
+            <source>W tej próbie „Twoje zmiany” względem „Balansu z gry”: różnica średniej odległości %1 m; różnica średniego miejsca %2. Minus przy miejscu oznacza poprawę, np. −3 to średnio o trzy pozycje wyżej. To opis próby, nie dowód istotności różnicy.</source>
+            <translation>In this run, “Your changes” compared with “Game balance”: average distance difference %1 m; average place difference %2. A negative place difference means improvement, e.g. −3 means three places higher on average. This describes the sample, not proof of a significant difference.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="58" />
+            <source>Y / X</source>
+            <translation>Y / X</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="66" />
+            <source>%1: %2; %3: %4. %5: %6.</source>
+            <translation>%1: %2; %3: %4. %5: %6.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="67" />
+            <source> Wybrane pasmo: %1–%2.</source>
+            <translation> Selected band: %1–%2.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="74" />
+            <source>Wynik pełnej próby — zachowany</source>
+            <translation>Full run result — preserved</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="74" />
+            <source>Szybki podgląd — orientacyjny wynik</source>
+            <translation>Quick preview — approximate result</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="79" />
+            <source>Analizowany skoczek: %1. Konkursów w każdym z trzech wariantów: %2. Skocznia: %3.</source>
+            <translation>Jumper analysed: %1. Competitions in each of the three variants: %2. Hill: %3.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="84" />
+            <source>To wynik wcześniejszych ustawień. Jest bezpiecznie zachowany. Nowe ustawienia sprawdzisz w podglądzie poniżej albo przyciskiem „Uruchom pełną próbę”.</source>
+            <translation>This result uses earlier settings. It is safely preserved. Check new settings in the preview below or with “Run full simulation”.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="84" />
+            <source>Ustawienia się zmieniły. Te liczby pochodzą z poprzedniego podglądu; trwa aktualizacja.</source>
+            <translation>Settings have changed. These numbers belong to the previous preview; an update is in progress.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="91" />
+            <source>Szybki podgląd nowych ustawień</source>
+            <translation>Quick preview of new settings</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="93" />
+            <source>Aktualizowanie podglądu… pełna próba pozostaje na ekranie.</source>
+            <translation>Updating preview… the full run remains on screen.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="93" />
+            <source>Tylko %1 konkursów na wariant. Twoje zmiany: średnio %2 m i miejsce %3. To wstępna wskazówka, nie dokładny pomiar.</source>
+            <translation>Only %1 competitions per variant. Your changes: average %2 m and place %3. This is an initial indication, not a precise measurement.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="93" />
+            <source>Zmień parametr, a tutaj pojawi się osobny podgląd. Wynik pełnej próby nie zostanie zastąpiony.</source>
+            <translation>Change a parameter to see a separate preview here. The full run result will not be replaced.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="98" />
+            <source>Wróć do zachowanej pełnej próby</source>
+            <translation>Return to the preserved full run</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="98" />
+            <source>Obejrzyj wykresy szybkiego podglądu</source>
+            <translation>View quick preview charts</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="104" />
+            <source>Trzy warianty tego samego eksperymentu</source>
+            <translation>Three variants of the same experiment</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="115" />
+            <source>Punkt startowy: balans gry i dane wybranej próby.</source>
+            <translation>Starting point: game balance and the selected experiment data.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="115" />
+            <source>Kopia ustawień z przycisku „Zapamiętaj do porównania”. Możesz porównać poprzedni pomysł z nowym.</source>
+            <translation>A copy made with “Remember for comparison”. Compare your previous idea with the new one.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="115" />
+            <source>Efekt parametrów, które edytujesz w laboratorium. Karty poniżej pokazują tę serię z wyświetlonej próby.</source>
+            <translation>The effect of parameters you edit in the laboratory. Cards below show this series from the displayed run.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="130" />
+            <source>Średnia suma punktów w konkursie</source>
+            <translation>Average total points per competition</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="131" />
+            <source>Dyskwalifikacje: %1 · ocenione skoki: %2</source>
+            <translation>Disqualifications: %1 · scored jumps: %2</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="133" />
+            <source>Wyniki wszystkich skoczków</source>
+            <translation>All jumpers’ results</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="133" />
+            <source>Cele strojenia</source>
+            <translation>Tuning goals</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="140" />
+            <source>%1 · średnie miejsce: %2 · odległość: %3 m · suma: %4 pkt</source>
+            <translation>%1 · average place: %2 · distance: %3 m · total: %4 pts</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="148" />
+            <source>Co pokazuje wykres lub mapa?</source>
+            <translation>What does the chart or map show?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="152" />
+            <source>Typowe wyniki — środkowe 80%</source>
+            <translation>Typical results — middle 80%</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="152" />
+            <source>Dokładność średniej — przedział ufności 95%</source>
+            <translation>Precision of the mean — 95% confidence interval</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="152" />
+            <source>Pokaż tylko średnią</source>
+            <translation>Show the mean only</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="154" />
+            <source>Pasmo obejmuje środkowe 80% wyników: odrzuca po 10% skrajnych z każdej strony. Dla miejsc chodzi o konkursy, dla odległości o skoki. Szersze pasmo oznacza większy rozrzut; odczyt z histogramu jest przybliżony.</source>
+            <translation>The band contains the middle 80% of results, excluding 10% at each extreme. Places refer to competitions; distances refer to jumps. A wider band means more variation; histogram readings are approximate.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="154" />
+            <source>Przedział ufności 95% pokazuje dokładność oszacowanej średniej, nie zakres miejsc ani odległości pojedynczych startów. Więcej konkursów zwykle go zawęża.</source>
+            <translation>The 95% confidence interval shows the precision of the estimated mean, not the range of places or distances in individual starts. More competitions usually make it narrower.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="154" />
+            <source>Pokazujesz same średnie. Wybierz pasmo powyżej, aby zobaczyć rozrzut wyników lub dokładność średniej.</source>
+            <translation>You are showing averages only. Select a band above to see result variation or precision of the mean.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="157" />
+            <source>Jak wynik zmienia się wraz z parametrem?</source>
+            <translation>How does the result change with the parameter?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="161" />
+            <source>Który wariant chcesz obejrzeć na mapie?</source>
+            <translation>Which variant do you want to see on the map?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="164" />
+            <source>Kolumny: %1. Wiersze: %2. Liczba w komórce oznacza: %3. Kolor pokazuje wielkość wartości, nie ocenę „dobrze” lub „źle”.</source>
+            <translation>Columns: %1. Rows: %2. Each cell shows: %3. Colour indicates the value, not whether it is “good” or “bad”.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="194" />
+            <source>To zachowana mapa. Możesz odczytywać wyniki; aby przenieść komórkę do aktualnego eksperymentu, najpierw przelicz mapę dla nowych ustawień.</source>
+            <translation>This is a preserved map. You can read its results; to apply a cell to the current experiment, first recompute the map for the new settings.</translation>
+        </message>
     </context>
     <context>
         <name>BalanceLabScreen</name>
@@ -20133,6 +21206,51 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="32" />
             <source>Cofnij</source>
             <translation>Undo</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="19" />
+            <source>Wybierz temat</source>
+            <translation>Choose topic</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="25" />
+            <source>Parametry próby</source>
+            <translation>Experiment parameters</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="26" />
+            <source>Przerwij obliczenia</source>
+            <translation>Stop calculation</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="26" />
+            <source>Uruchom pełną próbę</source>
+            <translation>Run full simulation</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="27" />
+            <source>Zapisy i historia</source>
+            <translation>Saves and history</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="32" />
+            <source>Obliczanie: %1 zestawów po 3 konkursy · czas: %2 s</source>
+            <translation>Computing: %1 sets of 3 competitions · time: %2 s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="33" />
+            <source>Zapamiętaj do porównania</source>
+            <translation>Remember for comparison</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="33" />
+            <source>Kopiuje Twoje zmiany do serii „Zapamiętane ustawienia”. Potem możesz dalej stroić i porównywać oba pomysły. Zastępuje poprzednio zapamiętany wariant; nie zapisuje wyniku próby.</source>
+            <translation>Copies Your changes to “Remembered settings”. You can then keep tuning and compare both ideas. Replaces the previously remembered variant; does not save a run result.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="34" />
+            <source>Cofnij zmianę</source>
+            <translation>Undo change</translation>
         </message>
     </context>
     <context>
@@ -20292,6 +21410,61 @@ li.checked::marker { content: "\2612"; }
             <source>Wynik: %1 · przedział 95%: %2–%3 · cel: %4–%5</source>
             <translation>Result: %1 · 95% interval: %2–%3 · target: %4–%5</translation>
         </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="13" />
+            <source>Za mało pewności, aby ocenić</source>
+            <translation>Not enough certainty to assess</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="19" />
+            <source>Przykład: wybierz średnią odległość i wpisz oczekiwany zakres 130–135 m. Wynik oceny pojawi się po pełnej próbie. Dla różnicy miejsc wartość ujemna oznacza poprawę.</source>
+            <translation>Example: select average distance and enter a target range of 130–135 m. Assessment appears after a full run. For place differences, a negative value means improvement.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="30" />
+            <source>Nazwa — co chcesz osiągnąć?</source>
+            <translation>Name — what do you want to achieve?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="32" />
+            <source>Co ma spełniać oczekiwany zakres?</source>
+            <translation>What should fall within the target range?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="34" />
+            <source>Wariant oceniany przez ten cel</source>
+            <translation>Variant assessed by this goal</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="36" />
+            <source>Zachowaj te dane do kolejnych kontroli celu</source>
+            <translation>Keep these data for future goal checks</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="41" />
+            <source>Dolna granica oczekiwanego wyniku</source>
+            <translation>Lower bound of the expected result</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="42" />
+            <source>Górna granica oczekiwanego wyniku</source>
+            <translation>Upper bound of the expected result</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="35" />
+            <source>Balans z gry</source>
+            <translation>Game balance</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="35" />
+            <source>Zapamiętane ustawienia</source>
+            <translation>Remembered settings</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="35" />
+            <source>Twoje zmiany</source>
+            <translation>Your changes</translation>
+        </message>
     </context>
     <context>
         <name>BalanceLabWind</name>
@@ -20402,6 +21575,36 @@ li.checked::marker { content: "\2612"; }
             <source>Każda para używa tego samego skoczka, belki i seeda. Różnica końcowych punktów obejmuje także zmianę odległości i lądowania. Rekompensata nie musi dokładnie wyrównać fizycznego wpływu wiatru.</source>
             <translation>Each pair uses the same jumper, gate and seed. The final points difference also includes changes in distance and landing. Compensation need not exactly offset the wind's physical effect.</translation>
         </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="21" />
+            <source>Który wariant pokazują szczegóły warunków i pomiaru?</source>
+            <translation>Which variant supplies the weather and measurement details?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="34" />
+            <source>Jak zmienia się wiatr %1 m od progu?</source>
+            <translation>How does the wind change %1 m from the take-off?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="36" />
+            <source>Wybrany moment konkursu: %1 s</source>
+            <translation>Selected competition time: %1 s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="38" />
+            <source>Wiatr wzdłuż zeskoku w chwili %1 s</source>
+            <translation>Wind along the landing slope at %1 s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="42" />
+            <source>W kolejnych dwóch wykresach zero oznacza wynik jak przy bezwietrznej pogodzie. Wartości dodatnie to zysk, ujemne — strata. Porównanie uwzględnia ten sam skok z wiatrem i bez niego.</source>
+            <translation>On the next two charts, zero means the result matches calm conditions. Positive values are gains; negative values are losses. The comparison uses the same jump with and without wind.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="45" />
+            <source>Każda para używa tego samego skoczka, belki i numeru losowania. Różnica końcowych punktów obejmuje także zmianę odległości i lądowania. Rekompensata nie musi dokładnie wyrównać fizycznego wpływu wiatru.</source>
+            <translation>Each pair uses the same jumper, gate and random seed. The difference in final points also includes changes in distance and landing. Compensation need not exactly offset the physical effect of wind.</translation>
+        </message>
     </context>
     <context>
         <name>BalanceLabWindow</name>
@@ -20414,6 +21617,24 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/balance/BalanceLabController.cpp" line="133" />
             <source>Laboratorium balansu — otwórz interfejs Qt Quick, aby korzystać z wykresów.</source>
             <translation>Balance laboratory — open the Qt Quick interface to use charts.</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabPlot</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabPlot.qml" line="83" />
+            <source>Najedź na wykres lub użyj strzałek, aby odczytać wartości poniżej.</source>
+            <translation>Hover over the chart or use the arrow keys to read values below.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabPlot.qml" line="90" />
+            <source>%1 — %2: %3; %4: %5</source>
+            <translation>%1 — %2: %3; %4: %5</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabPlot.qml" line="90" />
+            <source>; pasmo: %1–%2</source>
+            <translation>; band: %1–%2</translation>
         </message>
     </context>
 </TS>

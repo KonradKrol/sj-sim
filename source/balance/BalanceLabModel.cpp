@@ -47,7 +47,7 @@ bool validateProfile(const QJsonObject &values,QString &error) {
 }
 QJsonObject initialConfig() {
     auto c=Playground::example();c["name"]=QObject::tr("Mój eksperyment balansu");c["competitions"]=500;c["targets"]=QJsonArray();
-    c["variants"]=QJsonArray{QJsonObject{{"name",QObject::tr("Ustawienia gry")},{"changes",QJsonObject()}},QJsonObject{{"name",QObject::tr("Punkt odniesienia")},{"changes",QJsonObject()}},QJsonObject{{"name",QObject::tr("Bieżące")},{"changes",QJsonObject()}}};
+    c["variants"]=QJsonArray{QJsonObject{{"name",QObject::tr("Balans z gry")},{"changes",QJsonObject()}},QJsonObject{{"name",QObject::tr("Zapamiętane ustawienia")},{"changes",QJsonObject()}},QJsonObject{{"name",QObject::tr("Twoje zmiany")},{"changes",QJsonObject()}}};
     c["labTargets"]=QJsonArray();return c;
 }
 QJsonObject profileDiff(const QJsonObject &a,const QJsonObject &b) {
@@ -99,18 +99,20 @@ QJsonArray evaluateTargets(const QJsonObject &config,const QJsonObject &result){
 QJsonObject evaluate(QJsonObject config,QJsonObject options,bool full,const std::shared_ptr<Playground::Control> &control) {
     QString error;if(!Playground::validate(config,error))throw std::invalid_argument(error.toStdString());
     const auto original=config;const int focus=config["focus"].toInt();int perContest=0;for(auto r:config["rounds"].toArray())perContest+=r.toInt();
-    if(!full){config["competitions"]=qBound(2,1200/qMax(1,perContest*3),12);config["sampleLimit"]=1;config["threads"]=2;}
+    if(!full){config["competitions"]=qBound(2,600/qMax(1,config["athletes"].toInt()*3),4);config["sampleLimit"]=1;config["threads"]=2;}
     auto report=Playground::run(config,control);if(canceled(control))return {{"canceled",true}};
     QJsonObject out{{"report",report},{"full",full},{"config",original},{"options",options},{"engineBuild",Playground::engineBuild()}};
     QJsonArray summaries;for(auto v:report["variants"].toArray())summaries.append(summary(v.toObject(),focus));out["summaries"]=summaries;
     const QString view=options["view"].toString("curve");
     if(view=="landing" || view=="wind") {
-        QJsonArray analyses;for(int i=0;i<3;++i){if(canceled(control))return {{"canceled",true}};auto c=config;if(!full){auto variants=c["variants"].toArray();for(int v=0;v<variants.size();++v){auto row=variants[v].toObject(),changes=row["changes"].toObject();auto values=Playground::valuesFor(c,v);changes["analysis.jumpSamples"]=qMin(64,values["analysis.jumpSamples"].toInt());changes["analysis.timeSamples"]=qMin(81,values["analysis.timeSamples"].toInt());changes["analysis.spaceSamples"]=qMin(25,values["analysis.spaceSamples"].toInt());row["changes"]=changes;variants[v]=row;}c["variants"]=variants;}c["diagnosticsMode"]=view;analyses.append(Playground::diagnostics(c,i,control));}out["analyses"]=analyses;
+        QJsonArray analyses;for(int i=0;i<3;++i){if(canceled(control))return {{"canceled",true}};auto c=config;if(!full){auto variants=c["variants"].toArray();for(int v=0;v<variants.size();++v){auto row=variants[v].toObject(),changes=row["changes"].toObject();auto values=Playground::valuesFor(c,v);changes["analysis.jumpSamples"]=qMin(24,values["analysis.jumpSamples"].toInt());changes["analysis.timeSamples"]=qMin(41,values["analysis.timeSamples"].toInt());changes["analysis.spaceSamples"]=qMin(17,values["analysis.spaceSamples"].toInt());row["changes"]=changes;variants[v]=row;}c["variants"]=variants;}c["diagnosticsMode"]=view;if(!full)c["diagnosticsPreview"]=true;
+            int same=-1;auto signature=c["variants"].toArray()[i].toObject();signature.remove("name");for(int previous=0;previous<i;++previous){auto other=c["variants"].toArray()[previous].toObject();other.remove("name");if(signature==other){same=previous;break;}}
+            auto diagnostic=same>=0?analyses[same].toObject():Playground::diagnostics(c,i,control);diagnostic["variant"]=i;analyses.append(diagnostic);}out["analyses"]=analyses;
     }
     const bool matrix=options["matrix"].toBool();
     if(view=="curve" || matrix) {
-        const QString x=options["axisX"].toString("athlete.overall"),y=options["axisY"].toString("athlete.form");const int steps=matrix?qBound(3,options["resolution"].toInt(5),15):qBound(3,options["resolution"].toInt(7),21);const int cells=matrix?steps*steps:steps;
-        QJsonArray grid,series;auto base=config;base["targets"]=QJsonArray();base["sampleLimit"]=0;base["competitions"]=full?qMin(config["competitions"].toInt(),qMax(2,200000/qMax(1,cells*perContest*3))):qBound(2,2400/qMax(1,cells*perContest*3),8);
+        const QString x=options["axisX"].toString("athlete.overall"),y=options["axisY"].toString("athlete.form");const int steps=!full?3:matrix?qBound(3,options["resolution"].toInt(5),15):qBound(3,options["resolution"].toInt(7),21);const int cells=matrix?steps*steps:steps;
+        QJsonArray grid,series;auto base=config;base["targets"]=QJsonArray();base["sampleLimit"]=0;base["competitions"]=full?qMin(config["competitions"].toInt(),qMax(2,200000/qMax(1,cells*perContest*3))):2;
         QHash<QString,bool> integers;for(auto d:Playground::parameters()){auto def=d.toObject();integers[def["key"].toString()]=def["type"]=="integer";}
         const int xSteps=integers.value(x)?qMin(steps,qMax(1,int(std::abs(options["toX"].toDouble(100)-options["fromX"].toDouble(40)))+1)):steps;
         const int ySteps=!matrix?1:integers.value(y)?qMin(steps,qMax(1,int(std::abs(options["toY"].toDouble(100)-options["fromY"].toDouble(20)))+1)):steps;

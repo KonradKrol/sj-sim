@@ -81,3 +81,38 @@ i decyzji użytkownika; gotowy warsztat nie oznacza skalibrowanej symulacji.
   `build-win/release/sj-sim-perf.exe` w tym samym katalogu. Przy następnym buildzie
   należy po zamknięciu gry odbudować `sj-sim.exe` i przywrócić cel skrótu; w przeciwnym
   razie skrót nadal będzie uruchamiać poprzednią kompilację `sj-sim-perf.exe`.
+
+
+## UX i szybki podgląd — 29 października 2026
+
+Zachowano układ laboratorium oraz trzy serie. Ujednolicono nazwy na „Balans
+z gry”, „Zapamiętane ustawienia” i „Twoje zmiany”. Formularze mają stałe etykiety,
+jednostki, widoczne opisy skutków i rozwijane szczegóły techniczne. Nazwy
+indeksowanych współczynników jakości i lądowania opisują serie i typy lądowania.
+Wykresy mają podziałki liczbowe, opis pasm i czytelne odczyty; mapy mają nagłówki
+obu osi i przewijanie poziome. Dodano 218 nowych komunikatów PL/EN/CS.
+
+Pełny wynik pozostaje głównym wynikiem po zmianie parametru. Podgląd ma osobną
+właściwość `previewResult` oraz osobny panel. Zapisane wyniki używają własnego
+rodzaju analizy, a odczyt historii blokuje spóźnione podglądy poprzedniej rewizji.
+
+Przyspieszenie: identyczne warianty współdzielą zasiany przebieg konkursu,
+z osobną agregacją i porównaniem każdego wariantu. Diagnostyki identycznych
+wariantów też są współdzielone. Podgląd używa 2–4 konkursów, 3 wartości osi,
+2 konkursów na punkt oraz mniejszych prób diagnostycznych. Pełna dokładność
+nie została zmniejszona. Katalog parametrów nie jest odtwarzany w QML przy
+każdej zmianie wartości; debounce skrócono z 300 do 120 ms.
+
+Pomiar CLI na paczce 146 skoczków, jeden wątek w konfiguracji (podgląd używa
+2 wątków), czasy wraz ze startem procesu: konkurs 1,55 → 0,66 s; wykres
+4,12 → 1,44 s; lądowanie 2,07 → 0,78 s; wiatr 2,07 → 0,82 s. To szybszy,
+celowo bardziej orientacyjny podgląd; wynik zależy od sprzętu i ustawień.
+
+Weryfikacja: regresje backendu i rzeczywistego UI laboratorium — PASS, w tym
+zachowanie pełnego wyniku po zakończonym podglądzie i przywracanie historii.
+Sprawdzono renderowanie małych i dużych okien, oba motywy i powiększony tekst.
+Test CLI z porównaniem 1/4 wątków — PASS. Raporty wariantów i zapisane skoki
+pełnej próby 12 konkursów na paczce 146 skoczków były identyczne przed i po
+optymalizacji. Kontrola tłumaczeń: brak unfinished i błędów placeholderów.
+Skrót na pulpicie ponownie wskazuje aktualny `build-win/release/sj-sim.exe`;
+otwarta wcześniej instancja `sj-sim-perf.exe` pozostaje bez ingerencji.

@@ -10,27 +10,27 @@ dane; nie nadpisują paczki skoczków, skoczni ani zasad.
 ## Pierwsza próba
 
 1. Wybierz pytanie, np. **OVR i forma**, **Lądowanie** albo **Pole wiatru**.
-2. Po lewej w **Próba** wybierz własną paczkę, skocznię i badanego skoczka.
+2. Po lewej w **Dane próby** wybierz własną paczkę, skocznię i badanego skoczka.
    Uwagi do importu są zwijane. Możesz też pracować na stawce syntetycznej.
-3. W **Skoczkowie** zmieniaj dane badanego profilu. W **Silnik** zmieniaj reguły
+3. W **Skoczkowie** zmieniaj dane badanego profilu. W **Reguły symulacji** zmieniaj reguły
    badanego mechanizmu. Podgląd przeliczy się w tle po krótkiej przerwie.
-4. Kliknij **Zamroź odniesienie**, żeby zachować obecny wariant do porównania.
-5. Po wstępnej ocenie wybierz **Pełna próba**. Liczbę konkursów ustawisz w **Próba**.
+4. Kliknij **Zapamiętaj do porównania**, żeby zachować obecny wariant do porównania.
+5. Po wstępnej ocenie wybierz **Uruchom pełną próbę**. Liczbę konkursów ustawisz w **Dane próby**.
 
-Na wąskim ekranie panel po lewej otwiera przycisk **Ustawienia / Opcje**.
-Przycisk **Pytania** wraca do wyboru obszaru, zachowując dane eksperymentu.
-**Cofnij** cofa zmianę konfiguracji; **Reset** przy parametrze przywraca wartość
+Na wąskim ekranie panel po lewej otwiera przycisk **Parametry próby**.
+Przycisk **Wybierz temat** wraca do wyboru obszaru, zachowując dane eksperymentu.
+**Cofnij zmianę** cofa zmianę konfiguracji; **Przywróć wartość z gry** przy parametrze przywraca wartość
 wariantu ustawień gry.
 
-Domyślnie panel **Silnik** pokazuje parametry danego obszaru. Przełącznik
-**Pełny rejestr parametrów** otwiera wszystkie 607 ustawień wraz z wyszukiwarką.
+Domyślnie panel **Reguły symulacji** pokazuje parametry danego obszaru. Przełącznik
+**Pokaż wszystkie parametry symulacji** otwiera wszystkie 607 ustawień wraz z wyszukiwarką.
 Pozwala dotrzeć również do rzadziej zmienianych danych technicznych próby.
 
 ## Co porównują trzy serie
 
-- **Ustawienia gry**: wariant odniesienia z parametrami aktywnego balansu.
-- **Punkt odniesienia**: kopia badanego wariantu z chwili zamrożenia.
-- **Bieżące**: wariant edytowany w warsztacie.
+- **Balans z gry**: wariant odniesienia z parametrami aktywnego balansu.
+- **Zapamiętane ustawienia**: kopia badanego wariantu z chwili zamrożenia.
+- **Twoje zmiany**: wariant edytowany w warsztacie.
 
 Zmiany paczki, skoczni, formatu i seeda są wspólne dla porównań. Edycja danych
 skoczka lub grupy dotyczy bieżącego wariantu; ustawienia silnika dotyczą w nim
@@ -48,10 +48,18 @@ raport i historię. Mapa ogranicza koszt do budżetu planowanych skoków; faktyc
 liczba konkursów na komórkę jest podana przy wyniku i może być mniejsza od
 głównej próby. Stary wynik podczas przeliczania ma wyraźny opis nieaktualności.
 
-Po zmianie parametru szybki podgląd może zastąpić wykres pełnej próby. Przycisk
-**Pokaż ostatnią pełną próbę** przywraca zapisany wynik bez ponownego liczenia;
-oznaczenie ostrzega, że ustawienia zmieniły się od jego wykonania. Po kolejnym
-uruchomieniu programu ukończone próby są dostępne również w **Profile → Historia**.
+Po zmianie parametru pełna próba zostaje głównym wynikiem. Osobny panel pokazuje
+szybki podgląd nowych ustawień. **Obejrzyj wykresy szybkiego podglądu** przełącza
+wyświetlane wykresy, a **Wróć do zachowanej pełnej próby** wraca do dużej próby.
+Wynik z wcześniejszych ustawień ma ostrzeżenie. Po ponownym uruchomieniu zapisane
+wyniki otworzysz w **Zapisy i historia → Wyniki pełnych prób**. Wczytanie historii
+nie uruchamia podglądu, który mógłby zasłonić wczytany wynik.
+
+Podgląd automatyczny używa 2–4 konkursów na wariant, trzech wartości osi i po
+2 konkursy na punkt/komórkę. Diagnostyka wiatru i oszacowanie not mają mniejszą
+próbę; dokładna krzywa prawdopodobieństw lądowania pozostaje dokładna. Pełne
+obliczenia nadal respektują ustawienia dokładnej próby. Na mapie wartości obu
+osi są widoczne w nagłówkach; dymek komórki podaje wybraną miarę i pasmo.
 
 ## OVR, forma, perki i konkursy
 
@@ -60,8 +68,8 @@ Można ustawić im jedną wartość albo dodać zmianę do dotychczasowych warto
 Przy dojściu do granic zakresu komunikat informuje o ograniczeniu wartości.
 Przycisk **Tylko zaznaczeni w stawce** tworzy podzbiór do kontrolowanej próby.
 
-W **Osie** wybierz gotowe **OVR × forma** lub **Belka × wiatr**, albo dowolne dwa
-liczbowe parametry. **Policz mapę** tworzy siatkę; kliknięcie komórki ustawia
+W **Wykres i mapa** wybierz gotowe **OVR × forma** lub **Belka × wiatr**, albo dowolne dwa
+liczbowe parametry. **Uruchom porównanie na mapie** tworzy siatkę; kliknięcie komórki ustawia
 obie wartości w bieżącym wariancie. Wykres jednowymiarowy działa w obszarach
 krzywych; inne obszary zachowują swoje wykresy diagnostyczne.
 
@@ -72,7 +80,7 @@ własnych drużyn testowych. Skład zawężaj wyborem badanej stawki. Miejsce i 
 w raporcie drużynowym opisują wynik drużyny danego skoczka.
 
 Przykład proporcji OVR–forma: wybierz własną paczkę, zamroź odniesienie,
-w **Silnik** zmieniaj **Udział OVR** i współczynniki zależności formy od K.
+w **Reguły symulacji** zmieniaj **Udział OVR** i współczynniki zależności formy od K.
 Porównuj metry oraz miejsca i podium. Powtórz próbę na mniejszym i większym K.
 Nie wyciągaj wniosków o miejscach wyłącznie z izolowanej średniej odległości.
 
@@ -96,7 +104,7 @@ w niebezpieczną część zeskoku.
 To trzy odrębne pytania:
 
 1. **Losowanie pogody** bada automatyczną propozycję i 11 presetów. Pokazuje
-   rozkłady siły, zakresy i udział wiatru pod narty oraz w plecy. W **Silnik**
+   rozkłady siły, zakresy i udział wiatru pod narty oraz w plecy. W **Reguły symulacji**
    wybierasz generator do edycji: jego zakresy, wagi i współczynniki.
 2. **Pole wiatru** pokazuje przebieg w czasie, przekrój nad zeskokiem i mapę
    czas–odległość. Suwak wybiera moment przekroju. Rozwijany panel ustawia zakres
@@ -105,7 +113,7 @@ To trzy odrębne pytania:
    zysk/stratę metrów względem ciszy i końcową różnicę punktów. Efekty w metrach
    i punktach porównują trzy warianty. Pole i pomiar można przełączać osobno.
 
-W **Próba** wybierz źródło pogody. **Ręczne pole** używa parametrów `wind.*`
+W **Dane próby** wybierz źródło pogody. **Ręczne pole** używa parametrów `wind.*`
 i `precipitation.*`; tryby losowania używają współczynników `generator.*`.
 Losowanie w konkursach uwzględnia K, perki skoczni, miesiąc, nawierzchnię i kraj
 źródłowej skoczni. Zmiana samego pomiaru nie zmienia fizycznego wiatru.

@@ -7,12 +7,13 @@ ColumnLayout {
     property var data: ({})
     property var shown: [true,true,true]
     readonly property var names: [qsTr("Automatyczna propozycja"),qsTr("Stały wiatr w plecy"),qsTr("Silny wiatr pod narty"),qsTr("Loteryjny"),qsTr("Zmienny boczny"),qsTr("Cisza"),qsTr("Stały pod narty"),qsTr("Silny w plecy"),qsTr("Stały boczny"),qsTr("Zmienny pod narty"),qsTr("Zmienny w plecy"),qsTr("Różne kierunki na zeskoku")]
-    readonly property var seriesNames: [qsTr("Ustawienia gry"),qsTr("Punkt odniesienia"),qsTr("Bieżące")]
+    readonly property var seriesNames: [qsTr("Balans z gry"),qsTr("Zapamiętane ustawienia"),qsTr("Twoje zmiany")]
     function format(v){return Number(v).toLocaleString(Qt.locale(Theme.localeName),'f',2)}
     function series(){var out=[];for(var v=0;v<3;++v){if(!shown[v])continue;out.push({name:seriesNames[v],colorIndex:v,points:(data.generators[v] || []).map(function(r,i){return {x:i,y:r.mean,lo:r.min,hi:r.max}})})}return out}
     spacing: Theme.dp(12)
     Label { text: qsTr("Każdy preset losujemy wielokrotnie. Wykres pokazuje średnią siłę referencyjnego wiatru oraz minimum i maksimum w tej próbie — zanim zacznie działać zmienność pola. To analiza generatora, nie odległości skoków."); color: Theme.muted; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     BalanceLabPlot { Layout.fillWidth: true; caption: qsTr("Jak silne warunki losują presety?"); xLabel: qsTr("Numer scenariusza — nazwy poniżej"); yLabel: "m/s"; series: generator.series() }
+    Label { text: qsTr("Szczegóły poniżej dotyczą serii „Twoje zmiany”. Procent kierunków opisuje odczyty referencyjne; wiatr boczny może występować równocześnie z wiatrem pod narty lub w plecy."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     Repeater {
         model: generator.data.generators ? generator.data.generators[2] : []
         Pane {

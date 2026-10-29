@@ -27,10 +27,10 @@ ColumnLayout {
     function format(v){return Number(v).toLocaleString(Qt.locale(Theme.localeName),'f',2)}
     spacing: 5
     Label { text: plot.caption; color: Theme.ink; font.pointSize: Theme.section; font.family: Theme.displayFamily; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-    Label { text: plot.yLabel+" · "+plot.format(plot.minY)+" – "+plot.format(plot.maxY); color: Theme.muted; font.pointSize: Theme.caption }
+    Label { text: plot.yLabel; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     Rectangle {
         id: chart
-        Layout.fillWidth: true; implicitHeight: Theme.dp(205)
+        Layout.fillWidth: true; implicitHeight: Theme.dp(235)
         color: Theme.surface; radius: Theme.dp(7)
         activeFocusOnTab: true
         Accessible.role: Accessible.Graphic; Accessible.name: plot.caption+" · "+plot.xLabel+" · "+plot.yLabel
@@ -39,7 +39,7 @@ ColumnLayout {
         Keys.onReturnPressed: {if(plot.series.length && plot.series[0].points[plot.selectedPoint])plot.pointSelected(plot.series[0].points[plot.selectedPoint].x)}
         Item {
             id: graph
-            anchors.fill: parent; anchors.margins: Theme.dp(12); clip: true
+            anchors.fill: parent; anchors.leftMargin: Theme.dp(66); anchors.rightMargin: Theme.dp(16); anchors.topMargin: Theme.dp(18); anchors.bottomMargin: Theme.dp(32); clip: true
             Repeater { model: 5; Rectangle { required property int index; width: graph.width; height: 1; y: index*graph.height/4; color: Theme.divider } }
             Repeater {
                 model: plot.series
@@ -49,7 +49,7 @@ ColumnLayout {
                     readonly property color tint: plot.colors[modelData.colorIndex!==undefined?modelData.colorIndex:index]
                     anchors.fill: parent
                     ShapePath { strokeWidth: 0; strokeColor: "transparent"; fillColor: Qt.rgba(tint.r,tint.g,tint.b,.10); PathPolyline { path: plot.band(modelData.points || []) } }
-                    ShapePath { strokeWidth: 2; strokeColor: tint; fillColor: "transparent"; startX: modelData.points.length?plot.px(modelData.points[0].x):0; startY: modelData.points.length?plot.py(modelData.points[0].y):0; PathPolyline { path: plot.line(modelData.points || []) } }
+                    ShapePath { strokeWidth: 2; strokeColor: tint; strokeStyle: modelData.colorIndex===1 ? ShapePath.DashLine : ShapePath.SolidLine; fillColor: "transparent"; startX: modelData.points.length?plot.px(modelData.points[0].x):0; startY: modelData.points.length?plot.py(modelData.points[0].y):0; PathPolyline { path: plot.line(modelData.points || []) } }
                 }
             }
             MouseArea {
@@ -60,15 +60,34 @@ ColumnLayout {
             }
             Rectangle { visible: plot.forcedPoint>=0 || hover.containsMouse || chart.activeFocus; x: plot.series.length && plot.series[0].points.length ? plot.px(plot.series[0].points[Math.max(0,Math.min(plot.displayedPoint,plot.series[0].points.length-1))].x) : 0; height: graph.height; width: 1; color: Theme.ink; opacity: .45; Accessible.ignored: true }
         }
+        Repeater {
+            model: 5
+            Label {
+                required property int index
+                text: plot.format(plot.maxY+plot.pad-index*(plot.maxY-plot.minY+2*plot.pad)/4)
+                x: Theme.dp(4); y: graph.y+index*graph.height/4-height/2; width: graph.x-Theme.dp(10)
+                horizontalAlignment: Text.AlignRight; color: Theme.muted; font.pointSize: Theme.caption
+            }
+        }
+        Repeater {
+            model: 3
+            Label {
+                required property int index
+                text: plot.format(plot.minX+index*(plot.maxX-plot.minX)/2)
+                x: graph.x+index*graph.width/2-(index===2?width:index===1?width/2:0); y: graph.y+graph.height+Theme.dp(6)
+                color: Theme.muted; font.pointSize: Theme.caption
+            }
+        }
     }
-    Label { text: plot.xLabel+" · "+plot.format(plot.minX)+" – "+plot.format(plot.maxX); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; horizontalAlignment: Text.AlignRight; wrapMode: Text.WordWrap }
+    Label { text: plot.xLabel; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; horizontalAlignment: Text.AlignRight; wrapMode: Text.WordWrap }
+    Label { text: qsTr("Najedź na wykres lub użyj strzałek, aby odczytać wartości poniżej."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     Repeater {
         model: plot.series
         Label {
             required property var modelData
             required property int index
             readonly property var point: modelData.points[Math.max(0,Math.min(plot.displayedPoint,modelData.points.length-1))]
-            text: modelData.name+(point ? " · "+plot.format(point.x)+": "+plot.format(point.y)+(point.lo!==undefined?" ["+plot.format(point.lo)+" – "+plot.format(point.hi)+"]":"") : "")
+            text: point ? qsTr("%1 — %2: %3; %4: %5").arg(modelData.name).arg(plot.xLabel).arg(plot.format(point.x)).arg(plot.yLabel).arg(plot.format(point.y))+(point.lo!==undefined?qsTr("; pasmo: %1–%2").arg(plot.format(point.lo)).arg(plot.format(point.hi)):"") : modelData.name
             color: plot.colors[modelData.colorIndex!==undefined?modelData.colorIndex:index]; font.pointSize: Theme.caption
             Layout.fillWidth: true; wrapMode: Text.WordWrap
         }

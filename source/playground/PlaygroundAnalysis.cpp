@@ -16,7 +16,7 @@ QJsonObject diagnostics(const QJsonObject &config,int variant,const std::shared_
     QJsonArray curves,timeline,spatial,grid;const double cross=std::abs(p["wind.cross"].toDouble());
     // Exact landing probabilities. Judge expectations include clipping/rounding and
     // are Monte Carlo estimates, sharing seeds between neighbouring distances.
-    const int samples=128;
+    const int samples=config["diagnosticsPreview"].toBool()?16:128;
     for(int i=0;i<=(config["diagnosticsMode"]=="wind"?-1:80);++i){if(canceled())return {};double d=hill.realHs*(.6+.6*i/80);auto probabilities=engine.landing().probabilities(d,hill.realHs,cross);QJsonArray probs;for(double v:probabilities.values)probs.append(v);
         double markSum=0;std::array<int,4> observed{};double sampledNotes=0;int high=0;
         for(int n=0;n<samples;++n){SimulationV2::SeededRandom rng(SimulationV2::deriveSeed(seed,n));auto kind=engine.landing().sample(d,hill.realHs,cross,rng);++observed[int(kind)];auto marks=engine.landing().judges(athlete.landing,kind,d,hill.realHs,rng);double note=0;for(double mark:marks){note+=mark/5;if(mark>=19.5)++high;}sampledNotes+=note;}
