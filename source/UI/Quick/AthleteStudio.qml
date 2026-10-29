@@ -34,11 +34,10 @@ ColumnLayout {
                 onClicked: tools.open()
                 ActionMenu {
                     id: tools; y: packTools.height
-                    entries: [{key:"copy",text:qsTr("Skopiuj ze starego modelu")},{key:"duplicate",text:qsTr("Duplikuj skoczka"),enabled:studio.backend.selectedIndex>=0},{key:"remove",text:qsTr("Usuń skoczka"),enabled:studio.backend.selectedIndex>=0},{key:"new",text:qsTr("Nowa paczka")},{key:"rename",text:qsTr("Zmień nazwę paczki")},{key:"folder",text:qsTr("Otwórz folder paczki")},{key:"import",text:qsTr("Importuj paczkę")},{key:"export",text:qsTr("Eksportuj paczkę")}]
+                    entries: [{key:"copy",text:qsTr("Skopiuj ze starego modelu")},{key:"duplicate",text:qsTr("Duplikuj skoczka"),enabled:studio.backend.selectedIndex>=0},{key:"new",text:qsTr("Nowa paczka")},{key:"rename",text:qsTr("Zmień nazwę paczki")},{key:"folder",text:qsTr("Otwórz folder paczki")},{key:"import",text:qsTr("Importuj paczkę")},{key:"export",text:qsTr("Eksportuj paczkę")}]
                     onSelected: {
                         if(entry.key==="copy"){studio.copying=!studio.copying;studio.editing=true}
                         else if(entry.key==="duplicate")studio.backend.duplicate()
-                        else if(entry.key==="remove")studio.backend.remove()
                         else if(entry.key==="new")studio.backend.createPack()
                         else if(entry.key==="rename")studio.renaming=!studio.renaming
                         else if(entry.key==="folder")studio.backend.openPackFolder()
@@ -47,7 +46,7 @@ ColumnLayout {
                     }
                 }
             }
-            HelpDot { explanation: qsTr("Nowy model ma osobny zapis i nie zmienia jeszcze symulacji. Zmiany zapisują się od razu; możesz je cofać.") }
+            HelpDot { explanation: qsTr("Zmiany paczki zapisują się od razu; możesz je cofać. Istniejące sezony zachowują własną kopię zawodników.") }
         }
     }
     SField { visible: studio.renaming; Layout.fillWidth: true; text: studio.backend.packName; maximumLength: 100; Accessible.name: qsTr("Nazwa paczki"); onEditingFinished: {studio.backend.renamePack(text);studio.renaming=false} }
