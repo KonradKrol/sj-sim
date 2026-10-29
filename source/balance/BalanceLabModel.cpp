@@ -72,7 +72,9 @@ QJsonObject summary(const QJsonObject &variant,int focus) {
 }
 static QJsonArray targetResults(const QJsonObject &config,const QJsonObject &result,const std::shared_ptr<Playground::Control> &control) {
     QJsonArray out;QMap<QByteArray,QJsonObject> reports;
+    int targetIndex=0;
     for(auto entry:config["labTargets"].toArray()){
+        if(control)control->labProgressDone.store(targetIndex++);
         if(canceled(control))return {};
         auto t=entry.toObject();const int variant=t["variant"].toInt(2);QJsonObject metric;QString state="inconclusive";const QString kind=t["metric"].toString();
         auto scene=config;auto report=result["report"].toObject();
@@ -100,34 +102,40 @@ QJsonObject evaluate(QJsonObject config,QJsonObject options,bool full,const std:
     QString error;if(!Playground::validate(config,error))throw std::invalid_argument(error.toStdString());
     const auto original=config;const int focus=config["focus"].toInt();int perContest=0;for(auto r:config["rounds"].toArray())perContest+=r.toInt();
     if(!full){config["competitions"]=7;config["sampleLimit"]=1;config["threads"]=2;}
+    const QString view=options["view"].toString("curve");
+    const bool matrix=options["matrix"].toBool();
+    if(control){std::lock_guard<std::mutex> lock(control->labProgressMutex);control->labProgress={};control->labProgress.phases=2+int(view=="landing" || view=="wind")+int(view=="curve" || matrix)+int(view=="generator")+int(!config["labTargets"].toArray().isEmpty());}
+    if(control)control->beginLabPhase(1,config["competitions"].toInt(),true);
     auto report=Playground::run(config,control);if(canceled(control))return {{"canceled",true}};
     QJsonObject out{{"report",report},{"full",full},{"config",original},{"options",options},{"engineBuild",Playground::engineBuild()}};
     QJsonArray summaries;for(auto v:report["variants"].toArray())summaries.append(summary(v.toObject(),focus));out["summaries"]=summaries;
-    const QString view=options["view"].toString("curve");
     if(view=="landing" || view=="wind") {
+        if(control)control->beginLabPhase(2,3);
         QJsonArray analyses;for(int i=0;i<3;++i){if(canceled(control))return {{"canceled",true}};auto c=config;if(!full){auto variants=c["variants"].toArray();for(int v=0;v<variants.size();++v){auto row=variants[v].toObject(),changes=row["changes"].toObject();auto values=Playground::valuesFor(c,v);changes["analysis.jumpSamples"]=qMin(24,values["analysis.jumpSamples"].toInt());changes["analysis.timeSamples"]=qMin(41,values["analysis.timeSamples"].toInt());changes["analysis.spaceSamples"]=qMin(17,values["analysis.spaceSamples"].toInt());row["changes"]=changes;variants[v]=row;}c["variants"]=variants;}c["diagnosticsMode"]=view;if(!full)c["diagnosticsPreview"]=true;
             int same=-1;auto signature=c["variants"].toArray()[i].toObject();signature.remove("name");for(int previous=0;previous<i;++previous){auto other=c["variants"].toArray()[previous].toObject();other.remove("name");if(signature==other){same=previous;break;}}
-            auto diagnostic=same>=0?analyses[same].toObject():Playground::diagnostics(c,i,control);diagnostic["variant"]=i;analyses.append(diagnostic);}out["analyses"]=analyses;
+            auto diagnostic=same>=0?analyses[same].toObject():Playground::diagnostics(c,i,control);diagnostic["variant"]=i;analyses.append(diagnostic);if(control)control->labProgressDone.fetch_add(1);}out["analyses"]=analyses;
     }
-    const bool matrix=options["matrix"].toBool();
     if(view=="curve" || matrix) {
         const QString x=options["axisX"].toString("athlete.overall"),y=options["axisY"].toString("athlete.form");const int steps=!full?3:matrix?qBound(3,options["resolution"].toInt(5),15):qBound(3,options["resolution"].toInt(7),21);const int cells=matrix?steps*steps:steps;
         QJsonArray grid,series;auto base=config;base["targets"]=QJsonArray();base["sampleLimit"]=0;base["competitions"]=full?qMin(config["competitions"].toInt(),qMax(2,200000/qMax(1,cells*perContest*3))):7;
         QHash<QString,bool> integers;for(auto d:Playground::parameters()){auto def=d.toObject();integers[def["key"].toString()]=def["type"]=="integer";}
         const int xSteps=integers.value(x)?qMin(steps,qMax(1,int(std::abs(options["toX"].toDouble(100)-options["fromX"].toDouble(40)))+1)):steps;
         const int ySteps=!matrix?1:integers.value(y)?qMin(steps,qMax(1,int(std::abs(options["toY"].toDouble(100)-options["fromY"].toDouble(20)))+1)):steps;
+        if(control)control->beginLabPhase(3,xSteps*ySteps*base["competitions"].toInt(),true);
         out["columns"]=xSteps;out["rows"]=ySteps;
         for(int iy=0;iy<ySteps;++iy)for(int ix=0;ix<xSteps;++ix){if(canceled(control))return {{"canceled",true}};
             double xv=options["fromX"].toDouble(40)+(options["toX"].toDouble(100)-options["fromX"].toDouble(40))*(xSteps>1?double(ix)/(xSteps-1):0);double yv=options["fromY"].toDouble(20)+(options["toY"].toDouble(100)-options["fromY"].toDouble(20))*(ySteps>1?double(iy)/(ySteps-1):0);if(integers.value(x))xv=std::round(xv);if(integers.value(y))yv=std::round(yv);
             auto c=base;for(int v=0;v<3;++v){overrideValue(c,v,x,xv);if(matrix)overrideValue(c,v,y,yv);}QString invalid;
-            if(!Playground::validate(c,invalid)){grid.append(QJsonObject{{"x",xv},{"y",yv},{"error",invalid}});continue;}
+            if(!Playground::validate(c,invalid)){grid.append(QJsonObject{{"x",xv},{"y",yv},{"error",invalid}});if(control)control->labSkippedRuns.fetch_add(base["competitions"].toInt());continue;}
             auto r=Playground::run(c,control);QJsonArray values;for(auto v:r["variants"].toArray())values.append(summary(v.toObject(),focus));grid.append(QJsonObject{{"x",xv},{"y",yv},{"values",values},{"count",base["competitions"]}});
         }
         out["grid"]=grid;out["gridSamplesPerCell"]=base["competitions"];out["matrix"]=matrix;
     }
     if(view=="generator") {
-        QJsonArray generators;for(int v=0;v<3;++v){auto p=Playground::valuesFor(config,v);auto tuning=generatorValues(p);SimulationV2::WeatherProposalContext context;context.k=p["hill.k"].toDouble();context.country=config["hill"].toObject()["source"].toObject()["country-code"].toString().toStdString();context.variabilityPerk=p["hill.perk.2"].toInt();context.directionPerk=p["hill.perk.3"].toInt();context.month=p["weather.month"].toInt();context.surface=p["weather.surface"].toInt()==1?SimulationV2::Surface::Mat:SimulationV2::Surface::Snow;QJsonArray scenarios;const int count=full?2000:128;for(int preset=-1;preset<SimulationV2::weatherPresetCount;++preset){double sum=0,sq=0,head=0,tail=0,cross=0,lo=1e9,hi=-1e9;QJsonArray samples;for(int n=0;n<count;++n){if(canceled(control))return {{"canceled",true}};SimulationV2::SeededRandom rng(SimulationV2::deriveSeed(config["seed"].toString().toULongLong(),n));auto proposal=preset<0?SimulationV2::proposeWeather(context,rng,tuning):SimulationV2::sampleWeatherPreset(SimulationV2::WeatherPreset(preset),p["hill.k"].toDouble(),rng,tuning);double strength=0;for(auto r:proposal.wind.references){strength+=r.value.strength()/proposal.wind.references.size();head+=double(r.value.head>.1)/(count*proposal.wind.references.size());tail+=double(r.value.head<-.1)/(count*proposal.wind.references.size());cross+=std::abs(r.value.cross)/(count*proposal.wind.references.size());}sum+=strength;sq+=strength*strength;lo=qMin(lo,strength);hi=qMax(hi,strength);samples.append(strength);}scenarios.append(QJsonObject{{"preset",preset},{"mean",sum/count},{"sd",std::sqrt(qMax(0.,sq/count-std::pow(sum/count,2)))},{"min",lo},{"max",hi},{"headShare",head},{"tailShare",tail},{"meanCross",cross},{"count",count},{"samples",samples}});}generators.append(scenarios);}out["generators"]=generators;
+        if(control)control->beginLabPhase(4,3*(SimulationV2::weatherPresetCount+1)*(full?2000:128));
+        QJsonArray generators;for(int v=0;v<3;++v){auto p=Playground::valuesFor(config,v);auto tuning=generatorValues(p);SimulationV2::WeatherProposalContext context;context.k=p["hill.k"].toDouble();context.country=config["hill"].toObject()["source"].toObject()["country-code"].toString().toStdString();context.variabilityPerk=p["hill.perk.2"].toInt();context.directionPerk=p["hill.perk.3"].toInt();context.month=p["weather.month"].toInt();context.surface=p["weather.surface"].toInt()==1?SimulationV2::Surface::Mat:SimulationV2::Surface::Snow;QJsonArray scenarios;const int count=full?2000:128;for(int preset=-1;preset<SimulationV2::weatherPresetCount;++preset){double sum=0,sq=0,head=0,tail=0,cross=0,lo=1e9,hi=-1e9;QJsonArray samples;for(int n=0;n<count;++n){if(canceled(control))return {{"canceled",true}};SimulationV2::SeededRandom rng(SimulationV2::deriveSeed(config["seed"].toString().toULongLong(),n));auto proposal=preset<0?SimulationV2::proposeWeather(context,rng,tuning):SimulationV2::sampleWeatherPreset(SimulationV2::WeatherPreset(preset),p["hill.k"].toDouble(),rng,tuning);double strength=0;for(auto r:proposal.wind.references){strength+=r.value.strength()/proposal.wind.references.size();head+=double(r.value.head>.1)/(count*proposal.wind.references.size());tail+=double(r.value.head<-.1)/(count*proposal.wind.references.size());cross+=std::abs(r.value.cross)/(count*proposal.wind.references.size());}sum+=strength;sq+=strength*strength;lo=qMin(lo,strength);hi=qMax(hi,strength);samples.append(strength);if(control)control->labProgressDone.fetch_add(1);}scenarios.append(QJsonObject{{"preset",preset},{"mean",sum/count},{"sd",std::sqrt(qMax(0.,sq/count-std::pow(sum/count,2)))},{"min",lo},{"max",hi},{"headShare",head},{"tailShare",tail},{"meanCross",cross},{"count",count},{"samples",samples}});}generators.append(scenarios);}out["generators"]=generators;
     }
-    out["targets"]=targetResults(original,out,control);if(canceled(control))return {{"canceled",true}};return out;
+    if(control && !original["labTargets"].toArray().isEmpty())control->beginLabPhase(5,original["labTargets"].toArray().size());
+    out["targets"]=targetResults(original,out,control);if(canceled(control))return {{"canceled",true}};if(control)control->beginLabPhase(6,1);return out;
 }
 }

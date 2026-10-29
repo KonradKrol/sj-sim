@@ -48,6 +48,16 @@ BalanceLabController::BalanceLabController(QObject *parent):QObject(parent),m_so
     refreshFiles();m_sources->configure(m_config.toVariantMap());schedule();
 }
 BalanceLabController::~BalanceLabController(){m_debounce.stop();m_autosave.stop();saveWorkspace();if(m_control)m_control->canceled.store(true);m_watcher.waitForFinished();}
+QVariantMap BalanceLabController::progress()const {
+    if(!m_control)return {};
+    std::lock_guard<std::mutex> lock(m_control->labProgressMutex);
+    const auto p=m_control->labProgress;
+    const int done=qBound(0,p.countRuns?m_control->completed.load()-p.runStart+m_control->labSkippedRuns.load():m_control->labProgressDone.load(),qMax(0,p.total));
+    const double fraction=p.phases>0?qBound(0.,(p.phase-1+double(done)/qMax(1,p.total))/p.phases,.99):0;
+    const QStringList stages{tr("Przygotowywanie"),tr("Konkursy porównawcze"),tr("Analiza szczegółowa"),tr("Wykres i mapa"),tr("Losowanie pogody"),tr("Sprawdzanie celów"),tr("Zapisywanie wyników")};
+    const bool preparing=property("balanceFullQueued").toBool() || property("balanceReplayQueued").toMap().size()>0;
+    return {{"stage",preparing?stages[0]:stages.value(p.stage)},{"phase",p.phase},{"phases",p.phases},{"done",done},{"total",p.total},{"fraction",preparing?0:fraction},{"remainingSeconds",!preparing && fraction>.01 && elapsed()>2?elapsed()*(1-fraction)/fraction:-1}};
+}
 QVariantMap BalanceLabController::values()const {try{auto p=Playground::valuesFor(m_config,2);auto a=Playground::athleteInput(p,"athlete");Playground::applyAthleteEdits(a,m_config,2,m_config["focus"].toInt());p["athlete.overall"]=a.overall;p["athlete.form"]=a.form;p["athlete.landing"]=a.landing;for(int i=0;i<3;++i)p[QString("athlete.perk.%1").arg(i)]=a.perks[i];return p.toVariantMap();}catch(...){return {};}}
 QVariantList BalanceLabController::definitions()const{return m_sources->definitions();}
 QVariantMap BalanceLabController::diff()const{auto difference=BalanceLab::profileDiff(Playground::valuesFor(m_config,0),Playground::valuesFor(m_config,2));QJsonArray changes;for(auto row:difference["changes"].toArray())if(!row.toObject()["key"].toString().startsWith("athlete."))changes.append(row);const auto base=Playground::rosterDetails(m_config,0);const auto current=athletes();for(int i=0;i<base.size() && i<current.size();++i){const auto a=base[i].toObject(),b=QJsonObject::fromVariantMap(current[i].toMap());for(auto field:{"overall","form","landing","perk0","perk1","perk2"})if(a[field]!=b[field])changes.append(QJsonObject{{"key",b["name"].toString()+" / "+field},{"before",a[field]},{"after",b[field]}});}difference["changes"]=changes;difference["count"]=changes.size();return difference.toVariantMap();}

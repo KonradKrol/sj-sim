@@ -29,6 +29,7 @@ class BalanceLabController final:public QObject {
     Q_PROPERTY(bool previewBusy READ previewBusy NOTIFY progressChanged)
     Q_PROPERTY(bool previewEnabled READ previewEnabled WRITE setPreviewEnabled NOTIFY changed)
     Q_PROPERTY(bool stale READ stale NOTIFY changed)
+    Q_PROPERTY(QVariantMap progress READ progress NOTIFY progressChanged)
     Q_PROPERTY(int completed READ completed NOTIFY progressChanged)
     Q_PROPERTY(double elapsed READ elapsed NOTIFY progressChanged)
 public:
@@ -56,6 +57,7 @@ public:
     bool previewEnabled()const{return m_options["previewEnabled"].toBool(false);}
     Q_INVOKABLE void setPreviewEnabled(bool);
     bool stale()const{return m_full.isEmpty() || m_full["sourceRevision"].toString()!=QString::number(m_revision);}
+    QVariantMap progress()const;
     int completed()const{return m_control?m_control->completed.load():0;}
     double elapsed()const{return m_clock.isValid()?m_clock.elapsed()/1000.:0;}
     Q_INVOKABLE void chooseQuestion(int);

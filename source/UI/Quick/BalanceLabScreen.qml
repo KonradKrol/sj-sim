@@ -10,6 +10,7 @@ ColumnLayout {
     spacing: Theme.dp(10)
     readonly property var backend: ui.root.values.backend
     readonly property var question: backend.questions[backend.question] || ({})
+    readonly property var progress: backend.progress || ({})
     readonly property bool choosing: backend.options.started !== true
     property bool settingsOpen: false
     property bool profilesOpen: false
@@ -29,7 +30,12 @@ ColumnLayout {
     GridLayout {
         columns: lab.width < 780 ? 2 : 4
         visible: !lab.choosing; Layout.fillWidth: true
-        Label { text: lab.backend.busy ? qsTr("Obliczanie: %1 zestawów po 3 konkursy · czas: %2 s").arg(lab.backend.completed).arg(Number(lab.backend.elapsed).toLocaleString(Qt.locale(Theme.localeName),'f',1)) : lab.backend.previewBusy ? qsTr("Aktualizowanie podglądu…") : lab.backend.message; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        ColumnLayout {
+            Layout.fillWidth: true; spacing: Theme.dp(3)
+            Label { objectName: "balanceExperimentProgress"; text: lab.backend.busy ? qsTr("%1 · %2 / %3 · etap %4 / %5").arg(lab.progress.stage || "").arg(lab.progress.done || 0).arg(lab.progress.total || 0).arg(lab.progress.phase || 0).arg(lab.progress.phases || 0) : lab.backend.previewBusy ? qsTr("Aktualizowanie podglądu…") : lab.backend.message; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+            ProgressBar { visible: lab.backend.busy; Layout.fillWidth: true; value: lab.progress.fraction || 0; indeterminate: !lab.progress.phases; Accessible.name: qsTr("Postęp etapów eksperymentu") }
+            Label { visible: lab.backend.busy; text: lab.progress.remainingSeconds>=0 ? qsTr("%1% etapów · pozostało około %2 min %3 s").arg(Math.floor(100*(lab.progress.fraction || 0))).arg(Math.floor(lab.progress.remainingSeconds/60)).arg(Math.ceil(lab.progress.remainingSeconds%60)) : qsTr("Szacowanie pozostałego czasu…"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        }
         SButton { text: qsTr("Zapamiętaj do porównania"); hint: qsTr("Kopiuje Twoje zmiany do serii „Zapamiętane ustawienia”. Potem możesz dalej stroić i porównywać oba pomysły. Zastępuje poprzednio zapamiętany wariant; nie zapisuje wyniku próby."); quiet: true; enabled: !lab.backend.busy; onClicked: lab.backend.freeze() }
         SButton { text: qsTr("Cofnij zmianę"); quiet: true; enabled: !lab.backend.busy; onClicked: lab.backend.undo() }
     }
