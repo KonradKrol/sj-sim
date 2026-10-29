@@ -312,7 +312,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
     }
     else if(getType() == SingleCompetition)
     {
-        checkBox_singleCompetitionQualifications = new QCheckBox(tr("Przeprowadzenie kwalifikacji"), this);
+        checkBox_singleCompetitionQualifications = new QCheckBox(tr("Przeprowadź kwalifikacje"), this);
         checkBox_singleCompetitionQualifications->setStyleSheet("color: rgb(30, 30, 30);\nQCheckBox::indicator{\nwidth: 40px;\nheight: 30px;\n}");
         checkBox_singleCompetitionQualifications->setFont(QFont("Quicksand Medium", 12, 650));
         ui->verticalLayout_competitionOptions->insertWidget(0, checkBox_singleCompetitionQualifications);

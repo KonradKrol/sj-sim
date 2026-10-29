@@ -77,7 +77,7 @@
         <string notr="true">color: black;</string>
        </property>
        <property name="text">
-        <string>Rozgrywanie konkursu &quot;na żywo&quot;</string>
+        <string>Rozgrywaj konkurs na żywo</string>
        </property>
       </widget>
      </item>

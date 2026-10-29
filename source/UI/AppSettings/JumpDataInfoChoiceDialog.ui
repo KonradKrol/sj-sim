@@ -35,63 +35,63 @@
        <item>
         <widget class="QCheckBox" name="checkBox_distance">
          <property name="text">
-          <string>Odległość</string>
+          <string>Pokaż odległość</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="checkBox_points">
          <property name="text">
-          <string>Nota łączna</string>
+          <string>Pokaż notę łączną</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="checkBox_gate">
          <property name="text">
-          <string>Belka</string>
+          <string>Pokaż belkę</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="checkBox_averagedWind">
          <property name="text">
-          <string>Uśredniony wiatr</string>
+          <string>Pokaż średni wiatr</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="checkBox_gateCompensation">
          <property name="text">
-          <string>Rekompensata za belkę</string>
+          <string>Pokaż rekompensatę za belkę</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="checkBox_windCompensation">
          <property name="text">
-          <string>Rekompensata za wiatr</string>
+          <string>Pokaż rekompensatę za wiatr</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="checkBox_totalCompensation">
          <property name="text">
-          <string>Łączna rekompensata</string>
+          <string>Pokaż łączną rekompensatę</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="checkBox_judges">
          <property name="text">
-          <string>Noty sędziowskie</string>
+          <string>Pokaż noty sędziowskie</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="checkBox_judgesPoints">
          <property name="text">
-          <string>Punkty od sędziów (suma not)</string>
+          <string>Pokaż sumę not sędziowskich</string>
          </property>
         </widget>
        </item>
@@ -102,56 +102,56 @@
        <item>
         <widget class="QCheckBox" name="checkBox_landingType">
          <property name="text">
-          <string>Rodzaj lądowania</string>
+          <string>Pokaż rodzaj lądowania</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="checkBox_specificWind">
          <property name="text">
-          <string>Szczegółowy wiatr przy skoku</string>
+          <string>Pokaż szczegóły wiatru</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="checkBox_positionAfterJump">
          <property name="text">
-          <string>Miejsce po skoku</string>
+          <string>Pokaż miejsce po skoku</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="checkBox_jumpPositionInRound">
          <property name="text">
-          <string>Pozycja danej noty w danej serii</string>
+          <string>Pokaż miejsce skoku w serii</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="checkBox_takeoffRating">
          <property name="text">
-          <string>Ocena wybicia</string>
+          <string>Pokaż ocenę wybicia</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="checkBox_flightRating">
          <property name="text">
-          <string>Ocena lotu</string>
+          <string>Pokaż ocenę lotu</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="checkBox_distanceRandom">
          <property name="text">
-          <string>Losowość odległości</string>
+          <string>Pokaż losowość odległości</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="checkBox_snowRain">
          <property name="text">
-          <string>Śnieg/Deszcz przy skoku</string>
+          <string>Pokaż opady przy skoku</string>
          </property>
         </widget>
        </item>

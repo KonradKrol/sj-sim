@@ -72,8 +72,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Sortowanie
-listy startowej</string>
+        <string>Sortuj listę startową</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -137,7 +136,7 @@ listy startowej</string>
         </font>
        </property>
        <property name="text">
-        <string>Runda K.O</string>
+        <string>Rozegraj serię KO</string>
        </property>
        <property name="checked">
         <bool>true</bool>
