@@ -43,6 +43,9 @@ zapisywana w konkursie. Nowe kopie kalendarzy nie dziedziczą balansu starego ev
   jest ograniczana; pełna analiza respektuje ustawienia użytkownika.
 - Odtwarzanie pokazuje zapisane odcinki ekspozycji na wiatr, a nie animowany tor
   lotu. Raporty z innej kompilacji mają ostrzeżenie przy nowym odtwarzaniu.
+- Ostatnią pełną próbę można przywrócić jednym przyciskiem po zmianie parametrów;
+  wynik z wcześniejszych ustawień jest oznaczony i nie daje stosować komórek mapy
+  do nowych osi. Historia pozostaje dostępna po ponownym uruchomieniu.
 - Indywidualne, KO i drużyny korzystają z menedżerów gry. Naprawiono dodawanie
   wyników drużynowych w runnerze; nie tworzy się wyników z pustym wskaźnikiem drużyny.
 - Warsztat, profile i historia są osobno w AppData/balance-lab. Testy mają prywatny
@@ -62,6 +65,9 @@ i decyzji użytkownika; gotowy warsztat nie oznacza skalibrowanej symulacji.
   na 1/4 wątkach, mapa, diagnostyka, odtwarzanie i odrzucanie błędnych zakresów — PASS.
 - CLI dotychczasowego playgroundu: powtarzalność, niezależny pomiar i cel OVR90–70
   — PASS, przewaga 15,3574 m w istniejącym scenariuszu kontrolnym.
+- Przyspieszenie obliczania awansów: na próbce 60 konkursów z paczką 146 skoczków,
+  jednym wątkiem i trzema wariantami czas spadł z 17,95 do 12,28 s; raporty
+  wariantów oraz szczegółowe próbki były identyczne. Wynik zależy od próby i sprzętu.
 - Natywne regresje: dotychczasowy playground, adapter/katalog v2, pomiar, zegar
   konkursu, sezon, konfiguracja, zapis, seryjna symulacja i języki — PASS.
 - Backend laboratorium: mapy, grupy, cele i zamrożone scenariusze, generator,
@@ -70,5 +76,8 @@ i decyzji użytkownika; gotowy warsztat nie oznacza skalibrowanej symulacji.
   generator, mapa, odtwarzanie, wypełniony cel i profile. Zrzuty dla 1440×900,
   1024×640, 520×600 i 360×480, oba motywy i tekst 130%; sprawdzone wizualnie.
   Test kontroluje również ostrzeżenia QML i powiązanie formularza celów z backendem.
-- Końcowa kompilacja aplikacji i testów Windows/Qt 6.8.3/MSVC — PASS.
-  Skrót `Sj.Sim QML.lnk` wskazuje aktualny `build-win/release/sj-sim.exe`.
+- Kompilacja aplikacji i testów Windows/Qt 6.8.3/MSVC — PASS. Ponieważ podczas
+  ostatniej aktualizacji gra była uruchomiona, skrót `Sj.Sim QML.lnk` wskazuje
+  `build-win/release/sj-sim-perf.exe` w tym samym katalogu. Przy następnym buildzie
+  należy po zamknięciu gry odbudować `sj-sim.exe` i przywrócić cel skrótu; w przeciwnym
+  razie skrót nadal będzie uruchamiać poprzednią kompilację `sj-sim-perf.exe`.

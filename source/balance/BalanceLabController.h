@@ -71,6 +71,7 @@ public:
     Q_INVOKABLE void setTargets(const QVariantList &);
     Q_INVOKABLE void start(bool matrix=false);
     Q_INVOKABLE void cancel();
+    Q_INVOKABLE void showFullResult();
     Q_INVOKABLE void selectCell(double x,double y);
     Q_INVOKABLE void saveProfile(const QString &name);
     Q_INVOKABLE void loadProfile(int);

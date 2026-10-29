@@ -38,6 +38,7 @@ ScrollView {
     ColumnLayout {
         width: results.availableWidth; spacing: Theme.dp(14)
         Label { text: results.data.outdated ? qsTr("Poprzedni wynik — oczekiwanie na aktualny podgląd") : results.data.full ? (results.backend.stale ? qsTr("Ostatnia pełna próba — ustawienia zostały zmienione") : qsTr("Pełna próba")) : qsTr("Szybki podgląd — mała próba"); color: results.data.outdated || results.data.full && results.backend.stale ? Theme.warning : Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        SButton { objectName: "balanceLabShowFull"; visible: !!results.backend.fullResult.report && !results.data.full; text: qsTr("Pokaż ostatnią pełną próbę"); quiet: true; enabled: !results.backend.busy; onClicked: results.backend.showFullResult() }
         Label { text: qsTr("%1 konkursów na wariant. Dodatnia zmiana miejsca oznacza pogorszenie; średnia pomija nieklasyfikowane starty.").arg(results.data.report ? results.data.report.completed : 0); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         Flow {
             Layout.fillWidth: true
@@ -74,7 +75,7 @@ ScrollView {
             Label { text: results.band===0 ? qsTr("Rozrzut opisuje różnice między skokami. Pasma z histogramów są przybliżone; nie są niepewnością średniej.") : qsTr("Przedział średniej opisuje niepewność pomiaru. Węższy przedział wymaga większej próby."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
             Loader {
                 active: !results.data.matrix && (results.data.grid || []).length>0; visible: active; Layout.fillWidth: true
-                sourceComponent: Component { BalanceLabPlot { Layout.fillWidth: true; caption: results.question.prompt || ""; xLabel: results.axisLabel(results.data.options?results.data.options.axisX:""); yLabel: results.labels[results.metric]; series: results.curves(); onPointSelected: function(x){if(!results.backend.busy && !results.backend.previewBusy)results.backend.selectCell(x,0)} } }
+                sourceComponent: Component { BalanceLabPlot { Layout.fillWidth: true; caption: results.question.prompt || ""; xLabel: results.axisLabel(results.data.options?results.data.options.axisX:""); yLabel: results.labels[results.metric]; series: results.curves(); onPointSelected: function(x){if(!results.backend.busy && !results.backend.previewBusy && !(results.data.full && results.backend.stale))results.backend.selectCell(x,0)} } }
             }
             ColumnLayout {
                 visible: !!results.data.matrix; Layout.fillWidth: true
@@ -90,7 +91,7 @@ ScrollView {
                             readonly property real amount: modelData.values ? (results.value(modelData.values[results.mapVariant],results.metrics[results.metric])-results.mapMin)/Math.max(.00001,results.mapMax-results.mapMin) : 0
                             Layout.fillWidth: true; Layout.preferredHeight: Math.max(Theme.dp(40),implicitContentHeight+8)
                             text: modelData.error ? "—" : results.format(results.value(modelData.values[results.mapVariant],results.metrics[results.metric]),1)
-                            enabled: !modelData.error && !results.backend.busy && !results.backend.previewBusy
+                            enabled: !modelData.error && !results.backend.busy && !results.backend.previewBusy && !(results.data.full && results.backend.stale)
                             contentItem: Label { text: cell.text; color: cell.amount>.55?Theme.accentText:Theme.ink; font.pointSize: Theme.caption; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
                             background: Rectangle { radius: 4; color: cell.amount>.55?Theme.accent:Theme.raised; border.color: cell.activeFocus?Theme.ink:Theme.divider }
                             Accessible.name: results.backend.options.axisX+" "+modelData.x+", "+results.backend.options.axisY+" "+modelData.y+", "+text

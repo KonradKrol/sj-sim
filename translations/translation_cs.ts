@@ -19800,6 +19800,10 @@ li.checked::marker { content: "\2612"; }
     <context>
         <name>BalanceLabResults</name>
         <message>
+            <source>Pokaż ostatnią pełną próbę</source>
+            <translation>Zobrazit poslední úplný pokus</translation>
+        </message>
+        <message>
             <location filename="../source/UI/Quick/BalanceLabResults.qml" line="20" />
             <source>Ustawienia gry</source>
             <translation>Nastavení hry</translation>

@@ -133,7 +133,9 @@ Trial simulate(const QJsonObject &config,int variant,int index,int commonGate,co
             }
             if(trial.team && group<groups)teamManager.setupNextGroup();
         }
-        manager->updateCompetitorsAdvanceStatuses();
+        // Only a following round consumes these statuses. Individual setupNextRound
+        // already refreshes them; teams need the refresh before setupNextRound.
+        if(trial.team && round<rules->getRounds().size())manager->updateCompetitorsAdvanceStatuses();
         if(round<rules->getRounds().size()){contestRandom.reseed(mix(contestSeed^0x47524f5550ULL^quint64(round)));if(trial.team){teamManager.setupNextRound();if(teamManager.getActualRoundTeamsReference().isEmpty())break;}else {individual.setupNextRound();if(individual.getActualRoundJumpersReference().isEmpty())break;}}
     }
     results.sortInDescendingOrder();

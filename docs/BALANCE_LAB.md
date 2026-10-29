@@ -48,6 +48,11 @@ raport i historię. Mapa ogranicza koszt do budżetu planowanych skoków; faktyc
 liczba konkursów na komórkę jest podana przy wyniku i może być mniejsza od
 głównej próby. Stary wynik podczas przeliczania ma wyraźny opis nieaktualności.
 
+Po zmianie parametru szybki podgląd może zastąpić wykres pełnej próby. Przycisk
+**Pokaż ostatnią pełną próbę** przywraca zapisany wynik bez ponownego liczenia;
+oznaczenie ostrzega, że ustawienia zmieniły się od jego wykonania. Po kolejnym
+uruchomieniu programu ukończone próby są dostępne również w **Profile → Historia**.
+
 ## OVR, forma, perki i konkursy
 
 W **Skoczkowie** możesz zaznaczyć jednego skoczka, wybraną grupę lub wszystkich.
