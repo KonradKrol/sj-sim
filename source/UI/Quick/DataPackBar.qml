@@ -16,6 +16,8 @@ RowLayout {
         onClicked: settings.open()
     }
     Popup {
+        enter: PopupFade {}
+        exit: PopupFade { leaving: true }
         id: settings
         parent: Overlay.overlay
         anchors.centerIn: parent

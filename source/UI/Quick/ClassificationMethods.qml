@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 Pane {
     id: methods
+    ViewArrival { target: methods; expressive: false }
     property var workspace
     readonly property var choice: workspace.value("classificationScoringMethod")
     function select(index) {

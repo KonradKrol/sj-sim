@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 ScrollView {
     id: workspace
+    ViewArrival { target: workspace; expressive: true; emphasis: arrivalHeading }
     objectName: "weatherWorkspace"
     property var node
     readonly property var backend: node.values.backend
@@ -26,7 +27,7 @@ ScrollView {
             spacing: Theme.dp(12)
             RowLayout {
                 Layout.fillWidth: true
-                Label { text: qsTr("Warunki"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.title; font.bold: true; Layout.fillWidth: true }
+                Label { id: arrivalHeading; text: qsTr("Warunki"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.title; font.bold: true; Layout.fillWidth: true }
                 Image { source: workspace.values.flag || ""; sourceSize.width: 60; sourceSize.height: 40; fillMode: Image.PreserveAspectFit; Layout.preferredWidth: Theme.dp(28); Layout.preferredHeight: Theme.dp(18); Accessible.ignored: true }
                 Label { visible: workspace.availableWidth>Theme.dp(480); text: qsTr("%1 · HS%2").arg(workspace.values.hillName).arg(workspace.values.hs); color: Theme.muted; font.pointSize: Theme.caption; elide: Text.ElideRight; Layout.maximumWidth: Theme.dp(260) }
             }

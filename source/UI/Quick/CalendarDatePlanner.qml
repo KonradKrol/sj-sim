@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 Pane {
     id: planner
+    ViewArrival { target: planner; expressive: true; emphasis: arrivalHeading }
     objectName: "calendarDatePlanner"
     property var backend
     property string startDate: backend.suggestedDate
@@ -15,7 +16,7 @@ Pane {
     background: Surface { fillColor: Theme.surface; sweep: 20 }
     contentItem: ColumnLayout {
         spacing: 12
-        Label { text: qsTr("Zaplanuj terminy"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.title; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        Label { id: arrivalHeading; text: qsTr("Zaplanuj terminy"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.title; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         GridLayout {
             Layout.fillWidth: true; columns: planner.width>Theme.dp(450)?2:1
             columnSpacing: Theme.dp(8); rowSpacing: Theme.dp(8)

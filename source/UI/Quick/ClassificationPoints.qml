@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 ColumnLayout {
     id: points
+    ViewArrival { target: points; expressive: false }
     property var workspace
     readonly property bool alternative: workspace.pointsSource===1
     readonly property var tableNode: alternative ? workspace.controls.tableView_altPointsForPlaces : workspace.controls.tableView_pointsForPlaces

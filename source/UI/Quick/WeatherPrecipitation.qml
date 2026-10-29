@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 Control {
     id: precipitation
+    ViewArrival { target: precipitation; expressive: false }
     objectName: "weatherPrecipitation"
     property var backend
     readonly property var values: backend.values

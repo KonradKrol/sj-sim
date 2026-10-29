@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 ScrollView {
     id: editor
+    ViewArrival { target: editor; expressive: true; emphasis: arrivalHeading }
     objectName: "hillEditorScroll"
     property var backend
     readonly property var profile: backend.profile
@@ -18,7 +19,7 @@ ScrollView {
             spacing: Theme.dp(10)
             RowLayout {
                 Layout.fillWidth: true
-                Label { text: qsTr("Skocznia"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.title; font.bold: true; Layout.fillWidth: true }
+                Label { id: arrivalHeading; text: qsTr("Skocznia"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.title; font.bold: true; Layout.fillWidth: true }
                 Image { source: editor.profile.flag || ""; sourceSize.width: 70; sourceSize.height: 44; Layout.preferredWidth: Theme.dp(35); Layout.preferredHeight: Theme.dp(22); fillMode: Image.PreserveAspectFit; Accessible.ignored: true }
             }
             GridLayout {

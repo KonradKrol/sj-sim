@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 ColumnLayout {
     id: weekend
+    ViewArrival { target: weekend; expressive: false }
     property var backend
     property string start: backend.suggestedDate
     readonly property string rulesKey: JSON.stringify(backend.rules)

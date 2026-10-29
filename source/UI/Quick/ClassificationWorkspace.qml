@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 ColumnLayout {
     id: workspace
+    ViewArrival { target: workspace; expressive: true; emphasis: arrivalHeading }
     objectName: "classificationWorkspace"
     property var node
     readonly property var fields: node ? node.values : ({})
@@ -23,7 +24,7 @@ ColumnLayout {
         background: Surface { fillColor: Theme.surface; sweep: 22 }
         contentItem: ColumnLayout {
             spacing: 8
-            Label { text: qsTr("Klasyfikacja"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading }
+            Label { id: arrivalHeading; text: qsTr("Klasyfikacja"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading }
             GridLayout {
                 columns: workspace.width<440 ? 1 : 2
                 Layout.fillWidth: true; columnSpacing: 16; rowSpacing: 4

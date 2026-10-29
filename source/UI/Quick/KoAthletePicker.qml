@@ -3,6 +3,8 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
 Popup {
+    enter: PopupFade {}
+    exit: PopupFade { leaving: true }
     id: picker
     objectName: "koAthletePicker"
     property var fields: ({})
@@ -39,7 +41,8 @@ Popup {
     padding: 6
     margins: 8
     implicitHeight: Math.min(Theme.dp(320),parent ? parent.height-16 : Theme.dp(320))
-    onOpened: { search.clear(); results.currentIndex=0; search.forceActiveFocus() }
+    onAboutToShow: { search.clear(); results.currentIndex=0 }
+    onOpened: search.forceActiveFocus()
     contentItem: ColumnLayout {
         spacing: 6
         SField {

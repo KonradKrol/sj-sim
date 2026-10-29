@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 Item {
     id: roster
+    ViewArrival { target: roster; expressive: true; emphasis: arrivalHeading }
     objectName: "rosterWorkspace"
     property var node
     readonly property var fields: node ? node.values : ({})
@@ -23,7 +24,7 @@ Item {
         RowLayout {
             Layout.fillWidth: true
             SButton { objectName: "rosterChoose"; visible: roster.backend.membership && roster.compact; text: roster.choosing ? qsTr("Lista · %1").arg(roster.backend.count) : (roster.backend.presets.length>0 ? qsTr("Dodaj") : qsTr("Dodaj zawodników")); primary: !roster.choosing; Layout.fillWidth: true; onClicked: roster.choosing=!roster.choosing }
-            Label { visible: !roster.compact; text: roster.backend.membership ? qsTr("Wybór i kolejność") : qsTr("Kolejność skoczków"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; Layout.fillWidth: true }
+            Label { id: arrivalHeading; visible: !roster.compact; text: roster.backend.membership ? qsTr("Wybór i kolejność") : qsTr("Kolejność skoczków"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; Layout.fillWidth: true }
             SButton { objectName: "rosterOpenPresets"; visible: roster.compact && roster.backend.presets.length>0; text: qsTr("Listy"); Accessible.name: qsTr("Zapisane listy"); hint: qsTr("Zapisane listy"); onClicked: savedLists.open() }
             SButton { objectName: "rosterUndo"; text: qsTr("Cofnij"); enabled: roster.backend.canUndo; quiet: true; onClicked: roster.backend.undo() }
             SButton {
@@ -50,6 +51,8 @@ Item {
         ProjectedControl { visible: !!roster.fields.submit; node: roster.fields.submit || null; Layout.fillWidth: true; Layout.preferredHeight: visible ? implicitHeight : 0 }
     }
     Popup {
+        enter: PopupFade {}
+        exit: PopupFade { leaving: true }
         id: savedLists; objectName: "rosterPresetsPanel"
         parent: Overlay.overlay
         x: Math.max(8,(parent.width-width)/2); y: Math.max(8,(parent.height-height)/2)

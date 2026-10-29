@@ -108,6 +108,8 @@ ScrollView {
     }
     Connections { target: ui; function onResultViewOptionsRequested(field,x,y,width){var origin=viewOptions.parent.mapToGlobal(0,0);viewOptions.anchorX=x<0 ? -1 : x-origin.x;viewOptions.anchorY=y<0 ? 8 : Math.max(4,y-origin.y+4);viewOptions.anchorWidth=width;viewOptions.selector=field;viewOptions.open()} }
     Popup {
+        enter: PopupFade {}
+        exit: PopupFade { leaving: true }
         id: viewOptions
         objectName: "raceViewOptions"
         property int selector: -1
@@ -159,6 +161,8 @@ ScrollView {
         background: Rectangle { color: Theme.surface; border.color: Theme.outline; radius: Theme.radius }
     }
     Popup {
+        enter: PopupFade {}
+        exit: PopupFade { leaving: true }
         id: options
         objectName: "raceOptionsPanel"
         parent: Overlay.overlay

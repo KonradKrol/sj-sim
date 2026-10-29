@@ -3,6 +3,8 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
 Popup {
+    enter: PopupFade {}
+    exit: PopupFade { leaving: true }
     id: popup
     width: 300
     height: Math.min(implicitHeight,parent ? parent.height : implicitHeight)

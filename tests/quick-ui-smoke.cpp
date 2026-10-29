@@ -1461,6 +1461,7 @@ static void koGroupingRegressions(MainWindow &main) {
     check(idleUpdates==0,"idle bridge refresh preserves dedicated KO node instead of rebuilding all groups");
     check(methodPopup->property("visible").toBool(),"KO method popup stays open across periodic refreshes");
     QMetaObject::invokeMethod(methodPopup,"close");
+    check(QTest::qWaitFor([&]{view->grabFramebuffer();return !methodPopup->property("visible").toBool();},1000),"KO method popup finishes closing before clicking the athlete beneath it");
     QObject::disconnect(koNode,nullptr,&config,nullptr);
     auto before=config.getCompetitionGroups();check(before.size()>1,"KO assignment fixture has several groups");
     const auto firstMember=before[0].getJumpers().first(),second=before[1].getJumpers().first();
@@ -1468,8 +1469,7 @@ static void koGroupingRegressions(MainWindow &main) {
     QMetaObject::invokeMethod(member,"activated",Q_ARG(int,athletes.indexOf(second)));QTest::qWait(100);
     const auto after=config.getCompetitionGroups();check(after[0].getJumpers().first()==second && after[1].getJumpers().first()==firstMember,"inline member choice swaps both occupied slots without a dialog or duplication");
     member=item(view->rootObject(),"koMember-"+before[0].getIDStr()+"-0");
-    auto at=member->mapToItem(view->rootObject(),member->boundingRect().center()).toPoint();
-    QTest::mouseClick(view,Qt::LeftButton,Qt::NoModifier,at);QTest::qWait(80);
+    clickControl(view,member->objectName());
     auto *picker=view->rootObject()->findChild<QObject *>("koAthletePicker");check(picker && picker->property("visible").toBool(),"clicking a KO member opens searchable athlete picker");
     auto *search=item(view->quickWindow()->contentItem(),"koAthleteSearch");check(search,"KO athlete search field exists");
     search->setProperty("text",QStringLiteral("zzzz-no-athlete"));QTest::qWait(30);
@@ -1477,7 +1477,8 @@ static void koGroupingRegressions(MainWindow &main) {
     search->setProperty("text",firstMember->getNameAndSurname());QTest::qWait(300);
     check(search->property("text").toString()==firstMember->getNameAndSurname() && picker->property("visible").toBool(),"KO search and popup survive periodic refreshes");
     const auto matches=picker->property("matches").toList();check(matches.contains(athletes.indexOf(firstMember)),"athlete search retains original pool indices");
-    QTest::keyClick(view,Qt::Key_Return);QTest::qWait(100);
+    QTest::keyClick(view,Qt::Key_Return);
+    check(QTest::qWaitFor([&]{view->grabFramebuffer();return !picker->property("visible").toBool();},1000),"KO search finishes its exit transition after keyboard selection");
     check(!picker->property("visible").toBool() && config.getCompetitionGroups()[0].getJumpers().first()==firstMember,"keyboard search selection swaps the chosen athlete into the group");
     auto *from=item(view->rootObject(),"koMember-"+before[0].getIDStr()+"-0"),*to=item(view->rootObject(),"koMember-"+before[1].getIDStr()+"-0");
     check(from && to,"drag fixture has two visible group slots");
@@ -2547,6 +2548,7 @@ int main(int argc,char **argv) {
         main.show();
         AppSettingsWindow dialog; dialog.setMainWindowParent(&main); dialog.setupLanguagesComboBox(); render(&dialog,"translation-settings",true);
         auto *bridge=dialog.findChild<QuickBridge *>();
+        bridge->edit(id(bridge,"comboBox_language"),0);
         auto *headline=item(scene(&main)->rootObject(),"homeDescription");
         check(headline,"home headline exists");
         bridge->edit(id(bridge,"comboBox_language"),1);QTest::qWait(150);

@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 ColumnLayout {
     id: page
+    ViewArrival { target: page; expressive: false }
     readonly property var fields: ui.root.values
     readonly property var entry: fields.tableField || null
     spacing: Theme.dp(8)

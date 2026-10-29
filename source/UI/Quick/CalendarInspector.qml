@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 Pane {
     id: inspector
+    ViewArrival { target: inspector; expressive: false }
     objectName: "calendarInspector"
     property var backend
     property bool compact: false

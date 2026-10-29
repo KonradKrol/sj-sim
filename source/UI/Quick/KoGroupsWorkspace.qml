@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 ColumnLayout {
     id: workspace
+    ViewArrival { target: workspace; expressive: true; emphasis: arrivalHeading }
     objectName: "koGroupsWorkspace"
     property var node
     readonly property var fields: node ? node.values : ({})
@@ -12,7 +13,7 @@ ColumnLayout {
     function generate(index) { savedY=0;ui.edit(fields.methodId,index+1) }
     RowLayout {
         Layout.fillWidth: true
-        Label { text: qsTr("Grupy KO"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true; Layout.fillWidth: true }
+        Label { id: arrivalHeading; text: qsTr("Grupy KO"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true; Layout.fillWidth: true }
         Label { text: qsTr("%1 grup · %2 zawodników").arg((workspace.fields.groups || []).length).arg((workspace.fields.athletes || []).length); color: Theme.muted; font.pointSize: Theme.caption }
     }
     RowLayout {

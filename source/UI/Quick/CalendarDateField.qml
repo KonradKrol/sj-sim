@@ -34,6 +34,8 @@ ColumnLayout {
     }
     Label { visible: !!field.error; text: field.error; color: Theme.danger; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     Popup {
+        enter: PopupFade {}
+        exit: PopupFade { leaving: true }
         id: picker
         objectName: "date-popup-"+field.name
         parent: Overlay.overlay

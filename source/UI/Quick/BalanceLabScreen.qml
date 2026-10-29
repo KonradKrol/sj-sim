@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 ColumnLayout {
     id: lab
+    ViewArrival { target: lab; expressive: true; emphasis: arrivalHeading }
     objectName: "balanceLabScreen"
     anchors.fill: parent
     anchors.margins: Theme.dp(14)
@@ -20,7 +21,7 @@ ColumnLayout {
         SButton { visible: !lab.choosing; text: qsTr("Wybierz temat"); Accessible.name: qsTr("Wybierz temat"); quiet: true; onClicked: lab.backend.setOption("started",false) }
         ColumnLayout {
             Layout.fillWidth: true; spacing: 2
-            Label { text: lab.choosing ? qsTr("Laboratorium balansu") : lab.question.name; color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+            Label { id: arrivalHeading; text: lab.choosing ? qsTr("Laboratorium balansu") : lab.question.name; color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; Layout.fillWidth: true; wrapMode: Text.WordWrap }
             Label { text: lab.choosing ? qsTr("Co chcesz sprawdzić?") : lab.question.prompt; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         }
         SButton { visible: !lab.choosing && lab.width < 920; text: qsTr("Parametry próby"); Accessible.name: qsTr("Ustawienia"); onClicked: lab.settingsOpen = !lab.settingsOpen }
@@ -92,6 +93,8 @@ ColumnLayout {
         }
     }
     Popup {
+        enter: PopupFade {}
+        exit: PopupFade { leaving: true }
         id: profiles
         visible: lab.profilesOpen
         parent: Overlay.overlay

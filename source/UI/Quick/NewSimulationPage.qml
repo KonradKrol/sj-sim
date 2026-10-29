@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 Item {
     id: page
+    ViewArrival { target: page; expressive: true; emphasis: arrivalHeading }
     objectName: "newSimulationPage"
     readonly property bool dense: height<650 || Theme.compact
     readonly property var submit: ui.find("pushButton_submit")
@@ -21,7 +22,7 @@ Item {
                     background: Surface { fillColor: Theme.stadium; sweep: 28 }
                     contentItem: ColumnLayout {
                         spacing: 8
-                        Label { text: qsTr("Nowa symulacja"); color: Theme.snow; font.family: Theme.displayFamily; font.pointSize: page.dense ? Theme.heading : Theme.heading*1.5; font.weight: Font.ExtraBold; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                        Label { id: arrivalHeading; text: qsTr("Nowa symulacja"); color: Theme.snow; font.family: Theme.displayFamily; font.pointSize: page.dense ? Theme.heading : Theme.heading*1.5; font.weight: Font.ExtraBold; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                         Label { text: qsTr("Wybierz dane sezonu. Kalendarz utworzysz w kolejnym kroku."); color: Theme.headerMuted; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                     }
                 }

@@ -3,6 +3,8 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
 Popup {
+    enter: PopupFade {}
+    exit: PopupFade { leaving: true }
     id: profile
     objectName: "jumpWindProfile"
     property var recorded: ({})

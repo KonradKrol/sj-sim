@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 ColumnLayout {
     id: advanced
+    ViewArrival { target: advanced; expressive: false }
     property var backend
     spacing: Theme.dp(10)
     Label { text: qsTr("Zmiany między skokami"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true }

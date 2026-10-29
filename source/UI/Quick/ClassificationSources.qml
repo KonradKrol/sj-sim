@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 ColumnLayout {
     id: sources
+    ViewArrival { target: sources; expressive: false }
     objectName: "classificationPointsSource"
     property var workspace
     readonly property bool individual: workspace.value("comboBox_type").value===0

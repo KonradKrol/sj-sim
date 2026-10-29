@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 Item {
     id: calendar
+    ViewArrival { target: calendar; expressive: true; emphasis: arrivalHeading }
     objectName: "calendarWorkspace"
     property var node
     readonly property var backend: node ? node.values.backend : null
@@ -25,7 +26,7 @@ Item {
             background: Surface { fillColor: Theme.surface; sweep: 22 }
             contentItem: ColumnLayout {
                 spacing: 8
-                Label { text: qsTr("Kalendarze"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section }
+                Label { id: arrivalHeading; text: qsTr("Kalendarze"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section }
                 SButton { objectName: "calendarCreateSidebar"; text: qsTr("Nowy kalendarz"); primary: true; Layout.fillWidth: true; onClicked: {calendar.backend.catalogAction("add");calendar.renaming=true;calendar.editing=false} }
                 ListView {
                     Layout.fillWidth: true; Layout.fillHeight: true; clip: true; spacing: 4

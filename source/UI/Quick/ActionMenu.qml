@@ -4,6 +4,8 @@ import QtQml.Models 2.15
 import QtQuick.Window 2.15
 
 Menu {
+    enter: PopupFade {}
+    exit: PopupFade { leaving: true }
     id: menu
     objectName: "actionMenu"
     property var entries: []

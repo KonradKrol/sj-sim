@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 ColumnLayout {
     id: classes
+    ViewArrival { target: classes; expressive: false }
     objectName: "calendarClassesWorkspace"
     property var backend
     property var editorNode

@@ -148,6 +148,8 @@
         <file>HomeTools.qml</file>
         <file>HomeTool.qml</file>
         <file>MenuEntrance.qml</file>
+        <file>ViewArrival.qml</file>
+        <file>PopupFade.qml</file>
         <file>HillPerkChoice.qml</file>
         <file>PerkStrengthSelector.qml</file>
         <file>ChangeFeedback.qml</file>

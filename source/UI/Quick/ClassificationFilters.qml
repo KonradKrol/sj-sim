@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 Pane {
     id: filters
+    ViewArrival { target: filters; expressive: false }
     property var workspace
     readonly property var age: workspace.value("classificationAgeFilter")
     readonly property var country: workspace.value("classificationCountrySelection")
