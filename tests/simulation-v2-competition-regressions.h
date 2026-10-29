@@ -37,6 +37,10 @@ static void simulationV2CanonicalCompetitionRegressions(MainWindow &main) {
     auto *selector=window.findChild<QComboBox *>("comboBox_athletePack");selector->setCurrentIndex(selector->findData(pack["id"].toString()));
     const auto original=window.getCompetitionJumpers();check(original.size()==6,"canonical athlete pack populates the actual start list");
     window.show();QTest::qWait(150);auto *bridge=window.findChild<QuickBridge *>();auto *roster=bridge->findChild<QuickRoster *>();check(roster,"canonical competition has roster editor");
+    const auto setupTabs=bridge->root()->values()["options"].toStringList();const auto hillTab=setupTabs.indexOf(QString::fromUtf8("Skocznia"));check(hillTab>=0,"hill configuration section exists");
+    bridge->edit(bridge->root()->values()["id"].toInt(),hillTab);QTest::qWait(80);
+    check(item(scene(&window)->rootObject(),"inlineHillPack") && item(scene(&window)->rootObject(),"inlineHillChoice"),"advanced hill editor exposes the existing pack and hill selectors inline");
+    bridge->edit(bridge->root()->values()["id"].toInt(),0);QTest::qWait(50);
     selector->setCurrentIndex(selector->findData(other["id"].toString()));bridge->refresh();roster->sync();
     check(window.getCompetitionJumpers().size()==1 && roster->library()->rowCount()==1,"pack change clears old roster candidates");
     check(original.first()->getName()=="Canonical","previous pack pointers remain valid after switching packs");
@@ -45,7 +49,7 @@ static void simulationV2CanonicalCompetitionRegressions(MainWindow &main) {
     window.getCompetitionRulesEditor()->setCompetitionRules(&rules);window.getCompetitionRulesEditor()->fillCompetitionRulesInputs();
     window.getWeatherSetup()->applyPreset(4);window.getWeatherSetup()->setValue("precipitationKind",1);window.getWeatherSetup()->setValue("precipitationLevel",1);
     window.getHillDraft()->setPerk(0,1,2,false);check(window.configuredHill().getSimulationProfile()->perks[0]==2,"hill draft is the actual competition input");
-    for(auto *checkBox:window.findChildren<QCheckBox *>())if(checkBox->text().contains(QString::fromUtf8("kwalifikacji")))checkBox->setChecked(true);
+    for(auto *checkBox:window.findChildren<QCheckBox *>())if(checkBox->text().contains(QString::fromUtf8("kwalifikac")))checkBox->setChecked(true);
     const auto seed=window.getWeatherSetup()->values()["seed"];
     const auto labels=bridge->root()->values()["options"].toStringList();bridge->edit(bridge->root()->values()["id"].toInt(),labels.indexOf(QString::fromUtf8("Warunki")));QTest::qWait(50);
     check(item(scene(&window)->rootObject(),"weatherWorkspace"),"normal competition exposes the shared simplified weather screen");

@@ -14,6 +14,16 @@ ColumnLayout {
         Label { text: qsTr("Zmiany tylko dla tej symulacji"); color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap; Layout.fillWidth: true }
         SButton { text: workspace.node.values.season ? qsTr("Cofnij edycję") : qsTr("Przywróć z paczki"); enabled: workspace.backend.valid; onClicked: {workspace.forceActiveFocus(); workspace.backend.reset()} }
     }
+    ColumnLayout {
+        visible: workspace.hill && ui.profile==="CompetitionConfigWindow" && !workspace.node.values.season
+        Layout.fillWidth: true; spacing: Theme.dp(5)
+        Label { text: qsTr("Zaawansowana edycja skoczni"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true }
+        RowLayout {
+            Layout.fillWidth: true
+            Node { objectName: "inlineHillPack"; node: ui.find("comboBox_hillPack"); Layout.fillWidth: true; Layout.minimumWidth: 0 }
+            Node { objectName: "inlineHillChoice"; node: ui.find("comboBox_existingHill"); Layout.fillWidth: true; Layout.minimumWidth: 0 }
+        }
+    }
     Label { visible: text.length>0; text: workspace.backend.message; color: Theme.danger; font.pointSize: Theme.body; wrapMode: Text.WordWrap; Layout.fillWidth: true }
     EmptyState {
         visible: !workspace.backend.valid
