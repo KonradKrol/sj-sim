@@ -565,12 +565,21 @@ void QuickBridge::refresh() {
                 context["previousPosition"]=standing.value("position");
                 QVector<const CompetitionSingleResult *> rivals;
                 for(const auto &entry:manager->getResults()->getResultsReference())rivals.append(&entry);
+                if(auto *individual=dynamic_cast<IndividualCompetitionManager *>(manager);individual && individual->getKOManager()) {
+                    if(auto *group=individual->getKOManager()->getActualGroup();group && group->getJumpers().contains(manager->getActualJumper())) {
+                        QVector<const CompetitionSingleResult *> groupResults;bool hasLeader=false;
+                        for(auto *jumper:group->getJumpers())if(auto *result=manager->getResults()->getResultOfIndividualJumper(jumper)) {
+                            groupResults.append(result);if(result->getJumps().size()>count)hasLeader=true;
+                        }
+                        if(hasLeader){rivals=groupResults;context["currentGapGroup"]=true;}
+                    }
+                }
                 const auto gap=QuickRaceStats::currentLeaderPreviousGap(*ranked,rivals,manager->getActualRound());
                 if(gap.contains("gap"))context["currentGap"]=gap.value("gap");
             }
         }
         if(window->getLiveStage()>0 && window->getLiveStage()<5)
-            for(const auto &key:{"currentGap"}) {if(m_context.contains(key))context[key]=m_context.value(key);else context.remove(key);}
+            for(const auto &key:{"currentGap","currentGapGroup"}) {if(m_context.contains(key))context[key]=m_context.value(key);else context.remove(key);}
         if(context!=m_context) { m_context=context;emit changed(); }
     }
     if(auto *window=qobject_cast<CompetitionManagerWindow *>(m_window);window || m_content->findChild<ResultsHistoryWidget *>()) {
