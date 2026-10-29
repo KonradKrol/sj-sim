@@ -30,13 +30,22 @@ GridLayout {
     }
     RowLayout {
         Layout.columnSpan: controls.width<800 ? 2 : 1
-        Layout.fillWidth: true; spacing: 2
+        Layout.fillWidth: true; spacing: Theme.dp(4)
+        Label { text: qsTr("Opcje"); color: Theme.muted; font.pointSize: Theme.caption }
         Repeater {
             model: [qsTr("Przebieg"),qsTr("Warunki"),qsTr("Skok")]
             SButton {
                 objectName: index===0 ? "raceOptions" : index===1 ? "raceConditionsOptions" : "raceJumpOptions"
-                text: modelData; quiet: true; padding: 6; font.pointSize: Theme.caption
-                implicitWidth: contentItem.implicitWidth+12
+                id: optionButton
+                text: modelData; padding: Theme.dp(6); font.pointSize: Theme.caption
+                hint: qsTr("Ustawienia: %1").arg(modelData)
+                implicitWidth: contentItem.implicitWidth+Theme.dp(12)
+                contentItem: RowLayout {
+                    spacing: Theme.dp(4)
+                    Label { text: optionButton.text; color: Theme.ink; font: optionButton.font; Layout.fillWidth: true; elide: Text.ElideRight }
+                    DropdownIndicator { tint: Theme.accent; Layout.preferredWidth: Theme.dp(10); Layout.preferredHeight: Theme.dp(7) }
+                }
+                background: Rectangle { color: optionButton.hovered || optionButton.down ? Theme.selection : Theme.raised; radius: Theme.dp(4); border.width: optionButton.visualFocus ? 2 : 1; border.color: optionButton.hovered || optionButton.visualFocus ? Theme.accent : Theme.outline }
                 Layout.fillWidth: true; Layout.minimumWidth: 0
                 onClicked: controls.optionsRequested(index)
             }
