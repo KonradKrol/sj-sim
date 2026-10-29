@@ -15,7 +15,7 @@ bool approximateLegacyPack(const DataPack &source,double maximumSkills,PackMigra
     if(!std::isfinite(maximumSkills) || maximumSkills<=0)
         return fail(QObject::tr("Nieprawidłowa skala dawnych umiejętności."));
     PackMigration migration;migration.pack.kind=source.kind;migration.pack.engineVersion=2;
-    migration.pack.name=source.name.left(75)+QObject::tr(" — przybliżenie");
+    migration.pack.name=source.name.left(75)+QObject::tr(" — ze starej wersji");
     migration.pack.ageMode=source.ageMode;migration.pack.referenceYear=source.referenceYear;
     migration.pack.approximateMigrationSource=source.id;
     migration.warning=QObject::tr("To niedokładna, przybliżona migracja. OVR i forma są przeliczone, lądowanie przybliżone, a wszystkie perki ustawione od zera. Oryginalna paczka pozostaje bez zmian.");

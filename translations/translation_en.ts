@@ -12303,8 +12303,8 @@ Check that you selected the correct file.</translation>
         </message>
         <message>
             <location filename="../source/simulation-v2/ProfileMigration.cpp" line="18" />
-            <source> — przybliżenie</source>
-            <translation> — approximation</translation>
+            <source> — ze starej wersji</source>
+            <translation> — from older version</translation>
         </message>
         <message>
             <location filename="../source/simulation-v2/ProfileMigration.cpp" line="21" />

@@ -98,6 +98,11 @@ CatalogSnapshot SimulationCatalog::load(const QVector<DataPack> &legacy,double m
         for(const auto &object:listing.packs) {
             DataPack pack;QString error;
             if(DataPack::fromJson(object,pack,error)) {
+                if(!object["approximate-migration-source"].toString().isEmpty()) {
+                    for(const auto &suffix:QStringList{QString::fromUtf8(" — przybliżenie"),QStringLiteral(" — approximation"),QString::fromUtf8(" — přibližně")})if(pack.name.endsWith(suffix)) {
+                        pack.name.chop(suffix.size());pack.name+=QObject::tr(" — ze starej wersji");break;
+                    }
+                }
                 const auto directory=store.packDirectory(object);
                 for(auto &athlete:pack.jumpers)athlete.setSimulationPackContext(pack.id,directory);
                 snapshot.packs.append({pack,directory,object["migration-notice"].toString()});

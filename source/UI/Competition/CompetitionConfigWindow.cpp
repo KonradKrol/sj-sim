@@ -707,14 +707,10 @@ void CompetitionConfigWindow::updateCanonicalReadiness()
     ui->pushButton_submit->setEnabled(ready && hillDraft->valid() && !competitionJumpers.isEmpty() && existingCompetitionRulesComboBox->currentIndex()>=0);
     if(!ready)return;
     QStringList messages;
-    if(!importNotice.isEmpty())messages.append(importNotice);
+
     if(sourceJumpers.isEmpty() && importedJumpers.isEmpty())messages.append(tr("Dodaj zawodników w bazie danych lub wybierz inną paczkę."));
     if(!hillDraft->valid())messages.append(tr("Dodaj skocznię w bazie danych lub wybierz inną paczkę."));
     if(existingCompetitionRulesComboBox->currentIndex()<0)messages.append(tr("Wybierz paczkę z zasadami konkursu."));
-    for(auto kind:{DataPack::Jumpers,DataPack::Hills}) {
-        auto *combo=kind==DataPack::Jumpers?athletePack:hillPack;
-        if(const auto *pack=snapshot.find(kind,combo->currentData().toString());pack && !pack->migrationNotice.isEmpty())messages.append(pack->migrationNotice);
-    }
     messages.removeDuplicates();
     if(!snapshot.issues.isEmpty())messages.append(tr("Uwagi przy wczytywaniu paczek: %1.").arg(snapshot.issues.size()));
     findChild<QPushButton *>("pushButton_catalogDetails")->setVisible(!snapshot.issues.isEmpty());

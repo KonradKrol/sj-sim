@@ -299,10 +299,6 @@ void SingleJumpsConfigWindow::updateReadiness()
     QStringList messages;
     if(!athleteDraft->valid())messages.append(tr("Dodaj zawodnika w bazie danych lub wybierz inną paczkę."));
     if(!hillDraft->valid())messages.append(tr("Dodaj skocznię w bazie danych lub wybierz inną paczkę."));
-    for(auto kind:{DataPack::Jumpers,DataPack::Hills}) {
-        const auto *combo=kind==DataPack::Jumpers?athletePack:hillPack;
-        if(const auto *pack=snapshot.find(kind,combo->currentData().toString());pack && !pack->migrationNotice.isEmpty())messages.append(pack->migrationNotice);
-    }
     messages.removeDuplicates();
     if(!snapshot.issues.isEmpty())messages.append(tr("Uwagi przy wczytywaniu paczek: %1. Szczegóły są dostępne poniżej.").arg(snapshot.issues.size()));
     findChild<QPushButton *>("pushButton_catalogDetails")->setVisible(!snapshot.issues.isEmpty());

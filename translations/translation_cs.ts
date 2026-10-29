@@ -12304,8 +12304,8 @@ Ověřte, že jste vybrali správný soubor.</translation>
         </message>
         <message>
             <location filename="../source/simulation-v2/ProfileMigration.cpp" line="18" />
-            <source> — przybliżenie</source>
-            <translation> — přibližně</translation>
+            <source> — ze starej wersji</source>
+            <translation> — ze starší verze</translation>
         </message>
         <message>
             <location filename="../source/simulation-v2/ProfileMigration.cpp" line="21" />
