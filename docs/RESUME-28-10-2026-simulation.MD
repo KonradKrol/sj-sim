@@ -1,7 +1,17 @@
 # Wznowienie prac nad nową symulacją — 28.10.2026
 
+## Aktualny punkt kontynuacji — 29.10.2026
+
+Pracuj solo na feature/simulation-v2; commit i push po każdej ukończonej zmianie.
+Cztery poziomy perków, nowy przegląd sezonu i przykład uruchamiany jednym
+kliknięciem są już gotowe i wypchnięte. Szczegóły i commity w punktach18/19/31
+na końcu tego pliku. Punkt32 też GOTOWY: 7f6fbe9, pakiet30animacji i testy.
+Starych instrukcji WIP poniżej nie traktuj jako nakazu ponownego wdrażania.
+Ważne: dane otwartej starej gry NIE zostały przekonwertowane; po jej zamknięciu
+użyć narzędzia z docs/PERK_LEVELS_4.md. Nie zabijaj uruchomionej gry użytkownika.
+
 Aktualizacja 29.10: wdrożono osobne laboratorium balansu obok starego playgroundu.
-15 pytań, 607 ustawień, trzy serie, paczki i grupy, mapy, lądowanie, pełna analiza
+15 pytań, 617 ustawień, trzy serie, paczki i grupy, mapy, lądowanie, pełna analiza
 wiatru, generator, scenariusze celów, profile, historia, odtwarzanie i CLI.
 Profile stosuje się osobno od następnego konkursu/sesji, również w sezonie;
 rozpoczęty konkurs zachowuje kopię. KO, reprezentacje i drużyny testowe są w zakresie.
@@ -374,3 +384,112 @@ potrzebne wyniki i skrypt do wersjonowanych plików przed końcem sesji.
 Aktualizacja statusu commitów: etykiety a350ca2, potwierdzenie sortowania
  e0c879f i przyciski opcji88ed939 są już commitowane i wypchnięte. Wcześniejsza
  lista niezacommitowanych plików wyżej jest w tych trzech pozycjach nieaktualna.
+
+### Aktualizacja 29.10 — lab i paczka gotowe, kolejne zadania
+
+- 01d381e: podgląd wyłącznie po włączeniu, 7 konkursów/variant i punkt mapy.
+- 1fcd4ff: stabilny formularz reguł, wpisy ujemne/przecinek/kropka, wyszukiwanie
+  w całym rejestrze (także opisy, bez znaków diakrytycznych), brak wyników.
+- 0aa179e: konkretne opisy wszystkich 607 parametrów, usunięte opisy grup jako
+  zastępstwo wyjaśnienia pola; jednostki generatora poprawione. Nowe dłuższe
+  opisy źródłowe PL wymagają osobnego uzupełnienia tłumaczeń EN/CS — checker
+  TS sprawdza istniejące wpisy, nie wykrywa brakujących nowych kluczy.
+- 12162da: etapy obliczeń, done/total etapu, procent etapów i przybliżony ETA.
+  To estymata oparta na etapach, nie dokładny procent czasu CPU. 100% nie
+  pojawia się w trakcie mapy/celów. Mutex/atomiki w Playground::Control.
+- fd06925 + 670d383: PACZKA GOTOWA: data/packs/men-2026/pack.json, 98 osób,
+  OVR70/form70/landing2/perks0; import ręczny w edytorze. Dane i źródła obok.
+  Użytkownik potwierdził, że 7 osób ma prawidłowo BRAK REKORDU — nie szukać
+  dalej, nie traktować tego jako niekompletnej paczki. Nieustalony birthYear0
+  pozostaje opcjonalny. Import wykonany w izolowanym edytorze w teście PASS.
+- d4b8471: starszy engineVersion nie otwiera edytora sezonu (decyzja usera
+  „nie utrzymuj kompatybilności”); pliki pozostają nietknięte.
+- b47e7e5: tłumaczenia wcześniejszych nowych etykiet i postępu labu; poprawka
+  testu multi-DEL: pobierać delegat PO aktualizacji modelu, nie przed. GDB
+  wskazał crash właśnie w teście forceActiveFocus na nieważnym delegacie;
+  po poprawce --rosters-only PASS. Nie był to crash produkcyjnego inputa.
+
+Testy PASS: --balance-lab-only (ujemne -3/-3,5 i stabilność odświeżania),
+--athlete-studio-only (także import98), --motion-feedback-only,
+--roster-inputs-only, --rosters-only, --simulation-v2-season-only (przed WIP
+nowego przeglądu), CLI scripts/test-balance-lab-cli.py, check-translations.py.
+
+28. Nowe zadanie: prostsze usuwanie skoczka z DB. Widoczna akcja dla zaznaczonego
+    zawodnika, bez szukania w menu; sprawdzić Cofnij i klawiaturę. DO ZROBIENIA.
+29. Nowe zadanie: OVR/forma podczas przesuwania suwaka ma pokazywać bieżącą
+    wartość w podglądzie, a nie dopiero po puszczeniu. Oddzielić podgląd edycji
+    od trwałego zapisu/historii, żeby jeden gest nie tworzył setek kroków Cofnij.
+    DO ZROBIENIA, sprawdzić AthleteRating.qml i odbiorców podglądu.
+
+WIP TERAZ: nowy SeasonOverview.qml (Node kind seasonOverview) + QuickBridge.cpp.
+Pięć głównych nadchodzących wydarzeń; treningi/próba w obrębie wiersza, flagi,
+postęp kalendarza, liczba pozostałych krajów; istniejący przycisk startu i next
+Event. Nie jest jeszcze commitowany. Błąd statycznej zależności Node→overview
+→Node usunięty przez bezpośredni SButton; trwa --simulation-v2-season-only
+(/tmp/sj-season-overview.log). Dokończyć test z 5+ wydarzeniami i renderami.
+Następne większe rzeczy: przykład sezonu/powitanie, 30 nowych sensownych
+animacji (nie liczyć już istniejących jako nowych), potem28/29. Dokładna lista
+pozostałych wcześniejszych zadań i decyzji znajduje się wyżej.
+
+30. Zmiana lądowania bez fade'a całego edytora — GOTOWE eb98941. Powodem był
+    trigger var zależny od całego profilu; osobny typed string selectedProfileId
+    izoluje zmianę zawodnika. Test kliknięcia lądowania sprawdza stałą instancję
+    edytora i brak animacji. 28 GOTOWE19a6973; 29 GOTOWEa500c9f (przywracanie
+    bindingu uwzględnia slider.pressed; jeden gest to jedna pozycja Cofnij).
+18. Przegląd GOTOWY81631ee; 5 wydarzeń, treningi/próba w wierszu, flagi,
+    postęp, najbliższy typ wydarzenia i akcja. Test 7 przyszłych wydarzeń
+    sprawdza dokładnie5 w projekcji; --simulation-v2-season-only PASS.
+
+31. GOTOWE: cztery poziomy siły perków: Lekko1/Wyraźnie2/Mocno3/Skrajnie4.
+    Użytkownik doprecyzował: wpływ poziomu2 TAKŻE ma się zmienić. Cała stara
+    krzywa jest próbkowana w punktach 0/.75/1.5/2.25/3, czyli wszystkie poziomy
+    1–3 mają przeliczone wpływy, a4 zachowuje dawne ekstremum. eventDeviation
+    nadal ma4 elementy (rodzaje wydarzeń), współczynniki perków mają5 (0–4).
+    Commity1fc6533,6e4670e,e2251ce,125ec44; wszystkie wypchnięte.
+    Profile, eksperymenty i balans wymagają perkLevels4; brak silnika3poziomów.
+    Konwersja jednorazowa: scripts/convert-four-perk-levels.py, instrukcja
+    docs/PERK_LEVELS_4.md. Stare1→1,2→2,3→4; współczynniki przeskalowane.
+    Backup, idempotencja, mieszane zagnieżdżone eksperymenty oraz odrzucenie
+    uszkodzonych danych są przetestowane. NIE konwertowano danych użytkownika
+    przy otwartej grze. Po zamknięciu starszej instancji uruchomić:
+      python3 scripts/convert-four-perk-levels.py --app-data --apply
+    Testy core, katalogu, sezonu, obu edytorów, labu i CLI617parametrów PASS.
+
+19. GOTOWE b6e8d1c +125ec44: powitanie oraz przycisk przykładowego sezonu
+    w menu głównym. Automatyczny wybór domyślnych paczek, zimowy kalendarz
+    PŚ2024-25 pod ogólną nazwą Puchar Świata, lokalne skocznie, wyczyszczone
+    wyniki, nowy unikalny zapis i otwarcie edytowalnego sezonu. Test dwóch
+    kolejnych uruchomień, zajętej nazwy, lokalnych profili i zachowania źródeł
+    --example-season-only PASS. Bieżący etap nie odtwarza tego od nowa.
+
+32. GOTOWE 7f6fbe9: 30 miejsc animacji nawigacji (10 wyraźniejszych i20 subtelnych).
+    Lista docs/UI_MOTION_2026-10-29.md; ViewArrival.qml i PopupFade.qml.
+    Skala animowana tylko na nieklikalnych nagłówkach; pola mają stałe położenie.
+    NumberAnimation utrzymuje opacity/skale wątku GUI spójne z renderingiem
+    także w QQuickWidget/Qt5; Animator powodował utratę kliknięć. Początek .3/.65.
+    Zmiany lądowania/OVR/formy nie uruchamiają wejścia całego widoku.
+    Test --classifications-only PASS po naprawie09323c5: zmiana sposobu
+    punktowania niszczyła dropdown podczas jego activated/focusOut. Wywołania
+    CalendarClassificationScoring.updateScoring wykonują się przez Qt.callLater.
+    GDB potwierdził crash QtQml::qmlExecuteDeferred/QQuickComboBox::focusOutEvent.
+    Pełny log /tmp/sj-class-deferred.log. Interakcje w czasie animacji poprawione
+    przez NumberAnimation zamiast Animator; dodany rzeczywisty test kliknięcia.
+    PASS: motion-feedback, dates, classifications, ko-groups, archive-history,
+    race-options, simulation-v2-setup, athlete-patches, balance-lab, translation.
+    Logi /tmp/sj-motion-*-final.log oraz /tmp/sj-class-deferred.log.
+    Bez recursive rearrange, Binding loop, ReferenceError i TypeError.
+    Wyszukiwanie KO czyści pole przed wejściem, żeby nie kasować wczesnego tekstu;
+    test czeka na koniec zamykania popupu, nie na sztywne100ms.
+    Test języków inicjalizuje PL przed zmianą, niezależnie od języka w skopiowanych
+    ustawieniach; lokalny build/userData miał English. Danych gry nie zmieniano.
+    Build gotowy w build-quick-ui/sj-sim. Wszystkie feature-commity wypchnięte.
+    Test konwertera czterech poziomów i kontrola istniejących TS też PASS.
+    Odświeżyć dokumentację kolejki przed kolejnym dużym zadaniem; nie wdrażać
+    ponownie gotowych punktów na podstawie starszych historycznych sekcji.
+
+Pozostałe ograniczenia do uczciwego przekazania:
+- Długie nowe opisy parametrów labu wymagają jeszcze tłumaczeń EN/CS.
+  check-translations.py sprawdza istniejące klucze, nie brakujące nowe źródła.
+- Pełny stary smoke ma założenie o Qt Widgets database table; nowy studio
+  używa własnej listy. Nie przywracać starego edytora dla spełnienia testu.
+  Ukierunkowane testy nowego studia przechodzą.

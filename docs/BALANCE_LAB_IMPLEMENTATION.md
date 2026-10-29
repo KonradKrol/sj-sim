@@ -22,7 +22,7 @@ Wejście: menu główne oraz Ustawienia → Symulacja obok starego playgroundu.
 
 Obejmuje: 15 pytań/obszarów, trzy warianty, dane z katalogu, edycję grup, mapy,
 lądowanie, wiatr, generator, punkty, profile, cele, historię, odtwarzanie i CLI.
-Wspólny rejestr ma 607 ustawień. Domyślnie panel pokazuje parametry związane
+Wspólny rejestr ma 617 ustawień. Domyślnie panel pokazuje parametry związane
 z pytaniem, a pełny rejestr jest dostępny osobnym przełącznikiem i wyszukiwarką.
 Instrukcja i przykłady: [BALANCE_LAB.md](BALANCE_LAB.md).
 Generator presetów ma edytowalne zakresy; automatyczna propozycja ma edytowalne
@@ -61,7 +61,7 @@ i decyzji użytkownika; gotowy warsztat nie oznacza skalibrowanej symulacji.
 ## Weryfikacja
 
 - Cztery zestawy rdzenia MSVC: random, quality, weather i engine — PASS.
-- CLI nowego laboratorium: trzy warianty, 607 ustawień, zgodność próbek i rozkładów
+- CLI nowego laboratorium: trzy warianty, 617 ustawień, zgodność próbek i rozkładów
   na 1/4 wątkach, mapa, diagnostyka, odtwarzanie i odrzucanie błędnych zakresów — PASS.
 - CLI dotychczasowego playgroundu: powtarzalność, niezależny pomiar i cel OVR90–70
   — PASS, przewaga 15,3574 m w istniejącym scenariuszu kontrolnym.
@@ -116,3 +116,21 @@ pełnej próby 12 konkursów na paczce 146 skoczków były identyczne przed i po
 optymalizacji. Kontrola tłumaczeń: brak unfinished i błędów placeholderów.
 Skrót na pulpicie ponownie wskazuje aktualny `build-win/release/sj-sim.exe`;
 otwarta wcześniej instancja `sj-sim-perf.exe` pozostaje bez ingerencji.
+
+## Aktualizacja 29.10.2026
+
+Podgląd jest teraz opcjonalny i liczy **7 konkursów na wariant** oraz 7 na punkt
+wykresu/mapy. Opisane wyżej wcześniejsze budżety 2–4/2 są historyczne. Ukryty
+podgląd nie uruchamia symulacji; włączenie podglądu uruchamia aktualizację.
+Pełna próba, historia i odtwarzanie zachowują oddzielny wynik.
+
+Wskaźnik obliczeń pokazuje etap, jego licznik, procent ukończenia etapów i
+przybliżony pozostały czas. Etapy mogą mieć różne koszty, więc ETA jest estymatą
+aktualizowaną w trakcie pracy. Mapa, diagnostyka oraz cele mają osobne etapy;
+podstawowe konkursy nie oznaczają zakończenia całego eksperymentu.
+
+Wyszukiwanie w regułach obejmuje cały rejestr: etykiety, klucze i opisy, także
+bez polskich znaków. Odświeżanie wartości nie odtwarza delegatów formularza.
+Inputy przyjmują liczby ujemne oraz przecinek lub kropkę jako separator.
+Opisy pól wyjaśniają ich rzeczywisty wpływ i ograniczenia; opisy współczynników
+perkowych odróżniają szansę zdarzenia od wielkości efektu.
