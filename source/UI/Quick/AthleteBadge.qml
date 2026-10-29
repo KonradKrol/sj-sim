@@ -31,7 +31,7 @@ Item {
     readonly property bool chosen: selected*perk.side>0
     readonly property int tier: chosen ? Math.abs(selected) : 0
     readonly property bool enhanced: managedLevel && tier>=2
-    readonly property bool empowered: tier===3
+    readonly property bool empowered: tier===4
     onEmpoweredChanged: if(!empowered){powerBurst.stop();burstProgress=1}
     readonly property real artSize: Theme.dp(ribbon ? 34 : 70)
     readonly property bool inlineLevels: ribbon && width>=strengths.implicitWidth+artSize+Math.max(100,Theme.dp(160))+Theme.dp(32)
@@ -123,6 +123,7 @@ Item {
         id: strengths
         x: badge.inlineLevels ? badge.width-width-Theme.dp(6) : badge.ribbon ? Theme.dp(5) : (badge.width-width)/2
         y: badge.inlineLevels ? (badge.headerHeight-height)/2 : badge.headerHeight
+        availableWidth: badge.width-Theme.dp(12)
         backend: badge.backend; perk: badge.perk; prefix: badge.prefix
         onApplied: function(level){if(level>0)badge.animateSelection()}
     }

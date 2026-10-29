@@ -6,7 +6,7 @@ ColumnLayout {
     id: set
     property var backend
     AthletePerkCatalog { id: catalog }
-    readonly property var levelNames: [qsTr("Lekko"),qsTr("Wyraźnie"),qsTr("Skrajnie")]
+    readonly property var levelNames: [qsTr("Lekko"),qsTr("Wyraźnie"),qsTr("Mocno"),qsTr("Skrajnie")]
     spacing: Theme.dp(4)
     Label { text: qsTr("Przypisane perki"); color: Theme.muted; font.pointSize: Theme.caption }
     Label { visible: (set.backend.selectedPerks || []).every(function(v){return v===0}); text: qsTr("Brak"); color: Theme.muted; font.pointSize: Theme.body }
@@ -22,7 +22,7 @@ ColumnLayout {
             property real reveal: value!==0 ? 1 : 0
             Behavior on reveal { NumberAnimation { duration: Theme.motion; easing.type: Easing.OutCubic } }
             readonly property bool enhanced: Math.abs(value)>=2
-            readonly property bool empowered: Math.abs(value)===3
+            readonly property bool empowered: Math.abs(value)===4
             readonly property var perk: catalog.selected(index,displayedValue)
             readonly property string labelText: perk.name+(displayedValue ? " · "+set.levelNames[Math.abs(displayedValue)-1] : "")
             objectName: "athleteAssigned-"+index

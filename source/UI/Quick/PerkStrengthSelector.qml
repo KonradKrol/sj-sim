@@ -1,18 +1,20 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-Row {
+Grid {
     id: selector
+    property real availableWidth: Infinity
+    columns: availableWidth<Theme.dp(285) ? 2 : 4
     property var backend
     property var perk
     property string prefix: "athletePerk"
-    readonly property var levelNames: [qsTr("Lekko"),qsTr("Wyraźnie"),qsTr("Skrajnie")]
+    readonly property var levelNames: [qsTr("Lekko"),qsTr("Wyraźnie"),qsTr("Mocno"),qsTr("Skrajnie")]
     readonly property int selected: Number((backend.selectedPerks || [])[perk.pair] || 0)
     readonly property int tier: selected*perk.side>0 ? Math.abs(selected) : 0
     signal applied(int level)
     spacing: Theme.dp(4)
     Repeater {
-        model: 3
+        model: 4
         AbstractButton {
             id: strength
             required property int index
@@ -31,9 +33,9 @@ Row {
             contentItem: Row {
                 spacing: Theme.dp(5)
                 Item {
-                    width: Theme.dp(12); height: levelName.implicitHeight
+                    width: Theme.dp(16); height: levelName.implicitHeight
                     Repeater {
-                        model: 3
+                        model: 4
                         Rectangle {
                             required property int index
                             x: Theme.dp(index*4); y: (parent.height+Theme.dp(10))/2-height

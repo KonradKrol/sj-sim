@@ -8,11 +8,12 @@
 HillProfile HillProfile::create(){HillProfile p;p.id=QUuid::createUuid().toString(QUuid::WithoutBraces);return p;}
 QJsonObject HillProfile::toJson()const {
     QJsonArray values;for(int value:perks)values.append(value);
-    return {{"id",id},{"name",name},{"country",country},{"sourceId",sourceId},{"k",k},{"hs",hs},{"record",record},
+    return {{"perkLevels",4},{"id",id},{"name",name},{"country",country},{"sourceId",sourceId},{"k",k},{"hs",hs},{"record",record},
         {"pointsAtK",pointsAtK},{"pointsPerMetre",pointsPerMetre},{"gatePoints",gatePoints},{"headwindPoints",headwindPoints},{"tailwindPoints",tailwindPoints},{"perks",values}};
 }
 bool HillProfile::fromJson(const QJsonObject &json,HillProfile &profile,QString &error){
     const auto fail=[&](const QString &message){error=message;return false;};
+    if(json["perkLevels"].toDouble()!=4)return fail(QObject::tr("Paczka wymaga jednorazowej konwersji do czterech poziomów perków."));
     HillProfile p;p.id=json["id"].toString();
     if(QUuid(p.id).isNull() || QUuid(p.id).toString(QUuid::WithoutBraces)!=p.id)return fail(QObject::tr("Nieprawidłowy identyfikator skoczni."));
     for(const auto *key:{"name","country","sourceId"})if(!json[key].isString())return fail(QObject::tr("Nieprawidłowe dane skoczni."));
@@ -24,13 +25,13 @@ bool HillProfile::fromJson(const QJsonObject &json,HillProfile &profile,QString 
     if(!json["perks"].isArray())return fail(QObject::tr("Nieprawidłowy zestaw perków skoczni."));
     const auto values=json["perks"].toArray();
     if(values.size()!=3 && values.size()!=4)return fail(QObject::tr("Nieprawidłowy zestaw perków skoczni."));
-    for(int i=0;i<values.size();++i){double value=values[i].toDouble(99);if(!values[i].isDouble() || !std::isfinite(value) || value!=std::floor(value) || value< -3 || value>3)return fail(QObject::tr("Nieprawidłowy poziom perka."));p.perks[std::size_t(i)]=int(value);}
+    for(int i=0;i<values.size();++i){double value=values[i].toDouble(99);if(!values[i].isDouble() || !std::isfinite(value) || value!=std::floor(value) || value< -4 || value>4)return fail(QObject::tr("Nieprawidłowy poziom perka."));p.perks[std::size_t(i)]=int(value);}
     profile=p;error.clear();return true;
 }
 double HillProfile::realHs()const {
-    static const double easy[]{0,.03,.06,.10},hard[]{0,.015,.03,.05};
-    const int value=qBound(-3,perks[1],3);return hs*(value>=0?1+easy[value]:1-hard[-value]);
+    static const double easy[]{0,0.0225,0.045,0.07,0.1},hard[]{0,0.01125,0.0225,0.035,0.05};
+    const int value=qBound(-4,perks[1],4);return hs*(value>=0?1+easy[value]:1-hard[-value]);
 }
-double HillProfile::takeoffBias()const{static const double strength[]{0,.15,.30,.55};const int value=qBound(-3,perks[0],3);return (value>=0?1:-1)*strength[std::abs(value)];}
-double HillProfile::windVariability()const{static const double variable[]{1,1.35,1.8,2.5},stable[]{1,.75,.5,.25};const int value=qBound(-3,perks[2],3);return value>=0?variable[value]:stable[-value];}
-double HillProfile::headwindProbability()const{static const double probability[]{.5,.70,.84,.94};const int value=qBound(-3,perks[3],3);return value>=0?probability[value]:1-probability[-value];}
+double HillProfile::takeoffBias()const{static const double strength[]{0,0.1125,0.225,0.3625,0.55};const int value=qBound(-4,perks[0],4);return (value>=0?1:-1)*strength[std::abs(value)];}
+double HillProfile::windVariability()const{static const double variable[]{1,1.2625,1.575,1.975,2.5},stable[]{1,0.8125,0.625,0.4375,0.25};const int value=qBound(-4,perks[2],4);return value>=0?variable[value]:stable[-value];}
+double HillProfile::headwindProbability()const{static const double probability[]{0.5,0.65,0.77,0.865,0.94};const int value=qBound(-4,perks[3],4);return value>=0?probability[value]:1-probability[-value];}

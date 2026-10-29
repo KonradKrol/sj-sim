@@ -37,8 +37,8 @@ static void athleteStudioRegressions(MainWindow &main,bool patchesOnly=false){
     auto *database=GlobalDatabase::get();const auto original=database->packsSnapshot();
     AthleteProfile decoded;QString error;auto fresh=AthleteProfile::create();
     check(AthleteProfile::fromJson(fresh.toJson(),decoded,error),"new profile round trip");
-    auto invalid=fresh.toJson();invalid["overall"]=0;check(!AthleteProfile::fromJson(invalid,decoded,error),"OVR zero rejected");invalid=fresh.toJson();invalid["portrait"]="../escape.png";check(!AthleteProfile::fromJson(invalid,decoded,error),"portrait traversal rejected");invalid=fresh.toJson();invalid["perks"]=QJsonArray{1,2,4};check(!AthleteProfile::fromJson(invalid,decoded,error),"invalid perk tier rejected");
-    invalid["perks"]=QJsonArray{3,-3,0};check(AthleteProfile::fromJson(invalid,decoded,error) && decoded.perks[0]==3 && decoded.perks[1]==-3,"both third-tier perk sides survive serialization");
+    auto invalid=fresh.toJson();invalid["overall"]=0;check(!AthleteProfile::fromJson(invalid,decoded,error),"OVR zero rejected");invalid=fresh.toJson();invalid["portrait"]="../escape.png";check(!AthleteProfile::fromJson(invalid,decoded,error),"portrait traversal rejected");invalid=fresh.toJson();invalid["perks"]=QJsonArray{1,2,5};check(!AthleteProfile::fromJson(invalid,decoded,error),"invalid perk tier rejected");
+    invalid["perks"]=QJsonArray{4,-4,0};check(AthleteProfile::fromJson(invalid,decoded,error) && decoded.perks[0]==4 && decoded.perks[1]==-4,"both extreme fourth-tier perk sides survive serialization");auto oldLevels=fresh.toJson();oldLevels.remove("perkLevels");check(!AthleteProfile::fromJson(oldLevels,decoded,error),"three-level data is not silently reinterpreted as four levels");
     AthleteStudioController controller(nullptr,data.path()+"/library");
     controller.add();
     QSignalSpy broadUpdates(&controller,&AthleteStudioController::changed),perkUpdates(&controller,&AthleteStudioController::perksChanged),historyUpdates(&controller,&AthleteStudioController::historyChanged);
@@ -74,13 +74,13 @@ static void athleteStudioRegressions(MainWindow &main,bool patchesOnly=false){
         auto *name=item(scene(&window)->rootObject(),"athleteName");auto *rating=item(scene(&window)->rootObject(),"athleteOverall");check(name && rating && name->mapToScene(QPointF()).y()<rating->mapToScene(QPointF()).y(),"identity precedes ratings in every concept");
         backend->setPerk(0,1,1,false);backend->setPerk(0,1,1,true);QTest::qWait(30);
         clickControl(scene(&window),"athletePerk-training");check(backend->profile()["perks"].toList()[0].toInt()==1,"badge equips perk in every concept");
-        clickControl(scene(&window),"athletePerk-training-3");check(backend->profile()["perks"].toList()[0].toInt()==3,"third tier can be selected directly in every concept");
+        clickControl(scene(&window),"athletePerk-training-3");check(backend->profile()["perks"].toList()[0].toInt()==3,"new intermediate third tier can be selected");clickControl(scene(&window),"athletePerk-training-4");check(backend->profile()["perks"].toList()[0].toInt()==4,"extreme fourth tier can be selected in every concept");
         if(view==1){
             auto *appearance=scene(&window)->rootContext()->contextProperty("appearance").value<QuickAppearance *>();const bool previousMotion=appearance->reducedMotion();
             appearance->setReducedMotion(true);QTest::qWait(20);auto *badge=item(scene(&window)->rootObject(),"athletePerk-training")->parentItem();
             check(badge->property("burstProgress").toReal()==1 && badge->property("perkPulse").toReal()==1,"reduced motion stops decorative perk effects immediately");appearance->setReducedMotion(previousMotion);
         }
-        check(item(scene(&window)->rootObject(),"athletePerk-training-3")->property("checked").toBool(),"selected third tier is visible");
+        check(item(scene(&window)->rootObject(),"athletePerk-training-4")->property("checked").toBool(),"selected extreme fourth tier is visible");
         clickControl(scene(&window),"athletePerk-training-1");check(backend->profile()["perks"].toList()[0].toInt()==1,"ordinary tier can be selected directly");
         clickControl(scene(&window),"athletePerk-training-2");
         if(view==1){clickControl(scene(&window),"athleteAssigned-0");check(backend->profile()["perks"].toList()[0].toInt()==0,"clicking assigned patch removes it");backend->undo();check(backend->profile()["perks"].toList()[0].toInt()==2,"removing an assigned patch is one undoable action");clickControl(scene(&window),"athletePerk-training");check(backend->profile()["perks"].toList()[0].toInt()==0,"clicking selected patch also removes it");clickControl(scene(&window),"athletePerk-training");check(backend->profile()["perks"].toList()[0].toInt()==1,"new patch starts at ordinary level");clickControl(scene(&window),"athletePerk-training-2");check(backend->profile()["perks"].toList()[0].toInt()==2,"direct strength action restores level II");}

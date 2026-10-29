@@ -178,10 +178,10 @@ WeatherProposal proposeWeather(const WeatherProposalContext &context,RandomSourc
 {
     const auto get=[&](const std::string &key,double fallback){return p.get("generator.auto."+key,fallback);};
     if(!std::isfinite(context.k) || context.k<1 || context.k>400)throw std::invalid_argument("Proposal K out of range");
-    if(context.variabilityPerk< -3 || context.variabilityPerk>3 || context.directionPerk< -3 || context.directionPerk>3
+    if(context.variabilityPerk< -4 || context.variabilityPerk>4 || context.directionPerk< -4 || context.directionPerk>4
         || context.month<0 || context.month>12 || (context.surface!=Surface::Snow && context.surface!=Surface::Mat))
         throw std::invalid_argument("Invalid weather proposal context");
-    const double headProbability[]{get("headProbability.0",.5),get("headProbability.1",.70),get("headProbability.2",.84),get("headProbability.3",.94)};
+    const double headProbability[]{get("headProbability.0",.5),get("headProbability.1",.65),get("headProbability.2",.77),get("headProbability.3",.865),get("headProbability.4",.94)};
     double probability=headProbability[std::abs(context.directionPerk)];
     if(context.directionPerk<0) probability=1-probability;
     const bool head=rng.event(probability);
@@ -189,7 +189,7 @@ WeatherProposal proposeWeather(const WeatherProposalContext &context,RandomSourc
     const double magnitude=rng.uniform(get("strength.min",.2),get("strength.max",2.5));
     Wind base{(head?1:-1)*magnitude*(cross?.15:1),cross?(rng.event(.5)?1:-1)*magnitude:0};
     // Three broad weather characters, substantially biased by hill lottery.
-    const double lottery=context.variabilityPerk/3.0;
+    const double lottery=context.variabilityPerk/4.0;
     std::vector<double> weights;for(int i=0;i<3;++i){const double neutral[]{.45,.40,.15},stable[]{get("stable.0",.85),get("stable.1",.14),get("stable.2",.01)},unstable[]{get("unstable.0",.08),get("unstable.1",.42),get("unstable.2",.50)};double a=get("characterNeutral."+std::to_string(i),neutral[i]),b=get((lottery<0?"characterStable.":"characterLottery.")+std::to_string(i),lottery<0?stable[i]:unstable[i]);weights.push_back(a+(b-a)*std::abs(lottery));}const std::size_t character=rng.weightedIndex(weights);
     const double temporal[]{get("temporal.0",.15),get("temporal.1",.7),get("temporal.2",1.8)},spatial[]{get("spatial.0",.08),get("spatial.1",.55),get("spatial.2",1.4)},gusts[]{get("gusts.0",.3),get("gusts.1",1.8),get("gusts.2",4)};
     const double chance[]{get("chance.0",.03),get("chance.1",.25),get("chance.2",.65)},times[]{get("times.0",100),get("times.1",45),get("times.2",18)};
@@ -228,9 +228,10 @@ WeatherProposal proposeWeather(const WeatherProposalContext &context,RandomSourc
 const std::vector<GeneratorScalar> &weatherGeneratorScalars(){
 static const std::vector<GeneratorScalar> result{
 {"generator.auto.headProbability.0","headProbability",0,.5,0,1},
-{"generator.auto.headProbability.1","headProbability",1,.70,0,1},
-{"generator.auto.headProbability.2","headProbability",2,.84,0,1},
-{"generator.auto.headProbability.3","headProbability",3,.94,0,1},
+{"generator.auto.headProbability.1","headProbability",1,.65,0,1},
+{"generator.auto.headProbability.2","headProbability",2,.77,0,1},
+{"generator.auto.headProbability.3","headProbability",3,.865,0,1},
+{"generator.auto.headProbability.4","headProbability",4,.94,0,1},
 {"generator.auto.temporal.0","temporal",0,.15,0,100},
 {"generator.auto.temporal.1","temporal",1,.7,0,100},
 {"generator.auto.temporal.2","temporal",2,1.8,0,100},

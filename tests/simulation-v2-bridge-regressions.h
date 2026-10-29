@@ -18,7 +18,7 @@ static void simulationV2BridgeRegressions()
     HillEditorWidget hillEditor;hillEditor.setHill(&hill);hillEditor.fillHillInputs();
     check(hillEditor.getHillFromWidgetInput().getSimulationProfile().has_value(),"competition configuration cannot silently drop the new hill profile");
     jumper.setName("Renamed");check(jumper.getSimulationProfile()->name=="Renamed","identity edits remain synchronized with profile serialization");
-    hill.setHSPoint(140);hill.setRealHSByCharacteristic();check(std::abs(hill.getRealHS()-144.2)<1e-8,"new hill real HS uses new perks and current HS");hill.setHSPoint(venue.hs);
+    hill.setHSPoint(140);hill.setRealHSByCharacteristic();check(std::abs(hill.getRealHS()-143.15)<1e-8,"new hill real HS uses new perks and current HS");hill.setHSPoint(venue.hs);
     auto broken=athleteJson;auto wrong=athlete.toJson();wrong["overall"]=0;broken["simulation-v2"]=wrong;
     check(!Jumper::validateSimulationProfileJson(broken,error),"invalid new athlete cannot silently load as legacy");
     broken=athleteJson;wrong=athlete.toJson();wrong["id"]=QUuid::createUuid().toString(QUuid::WithoutBraces);broken["simulation-v2"]=wrong;

@@ -89,7 +89,14 @@ ProfilePackListing ProfilePackRepository::load() const
     for(const auto &file:files) {
         const QString path=kind==ProfilePackKind::Athletes?QDir(file.absoluteFilePath()).filePath("pack.json"):file.absoluteFilePath();
         QJsonObject pack;QString error;
-        if(!read(path,pack,error)) {result.issues.append(file.fileName()+": "+error);continue;}
+        if(!read(path,pack,error)) {
+            result.issues.append(file.fileName()+": "+error);
+            QFile original(path);if(original.open(QIODevice::ReadOnly) && original.size()<=maximumBytes) {
+                const auto profiles=QJsonDocument::fromJson(original.readAll()).object()["profiles"].toArray();
+                for(auto profile:profiles)if(profile.toObject().contains("perks") && profile.toObject()["perkLevels"].toDouble()!=4)result.needsPerkConversion=true;
+            }
+            continue;
+        }
         const QString expected=kind==ProfilePackKind::Athletes?file.fileName():file.completeBaseName();
         if(expected!=pack["id"].toString()) {result.issues.append(QObject::tr("Niezgodny identyfikator paczki: %1").arg(file.fileName()));continue;}
         result.packs.append(pack);
@@ -124,6 +131,7 @@ bool ProfilePackRepository::migrate(const DataPack &source,double maximumSkills,
     QLockFile lock(QDir(root).filePath(".migration.lock"));
     if(!lock.tryLock(100)) {error=QObject::tr("Trwa migracja paczek w innej instancji aplikacji.");return false;}
     const auto existing=load();
+    if(existing.needsPerkConversion){error=QObject::tr("Najpierw skonwertuj istniejące paczki do czterech poziomów perków. Nie utworzono zastępczych kopii.");return false;}
     for(const auto &pack:existing.packs)if(pack["approximate-migration-source"].toString()==source.id) {
         result=pack;issues=existing.issues;error.clear();return true;
     }

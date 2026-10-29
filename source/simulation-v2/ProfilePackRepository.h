@@ -11,6 +11,7 @@ enum class ProfilePackKind { Athletes, Hills };
 struct ProfilePackListing {
     QVector<QJsonObject> packs;
     QStringList issues;
+    bool needsPerkConversion=false;
 };
 
 // Canonical authoring-file persistence shared by studios and the game catalog.

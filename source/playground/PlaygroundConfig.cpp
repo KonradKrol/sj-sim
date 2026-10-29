@@ -18,7 +18,7 @@ void applyAthleteEdits(SimulationV2::Athlete &a,const QJsonObject &config,int va
 }
 QJsonObject example() {
     QJsonObject defaults;for(const auto &entry:parameters()){auto d=entry.toObject();defaults[d["key"].toString()]=d["default"];}
-    return {{"schema",2},{"name",QObject::tr("Strojenie silnika v2")},{"seed","20261028"},
+    return {{"schema",2},{"perkLevels",4},{"name",QObject::tr("Strojenie silnika v2")},{"seed","20261028"},
         {"competitions",1000},{"threads",qMax(1,qMin(16,QThread::idealThreadCount()-1))},{"athletes",50},{"focus",24},{"sampleLimit",64},
         {"hill",QJsonObject{{"name","K120 / HS134"},{"k",120},{"hs",134}}},{"rounds",QJsonArray{50}},
         {"defaults",defaults},{"parameters",QJsonObject{{"gate",10},{"clock.mode",0},{"wind.temporalAmplitude",0},{"wind.spatialAmplitude",0},{"wind.gustAmplitude",0}}},{"variants",QJsonArray{QJsonObject{{"name",QObject::tr("Bazowy")},{"changes",QJsonObject()}},QJsonObject{{"name",QObject::tr("Porównanie")},{"changes",QJsonObject{{"athlete.overall",90}}}}}},
@@ -51,12 +51,13 @@ QJsonObject valuesFor(const QJsonObject &config,int variant) {
     for(const auto &layer:{config["parameters"].toObject(),config["variants"].toArray()[variant].toObject()["changes"].toObject()})
         for(auto it=layer.begin();it!=layer.end();++it)p[it.key()]=it.value();
     const auto explicitKey=[&](const QString &key){return config["parameters"].toObject().contains(key) || config["variants"].toArray()[variant].toObject()["changes"].toObject().contains(key);};
-    if(explicitKey("hill.perk.0") && !explicitKey("hill.takeoffBias")){const double strength[]{0,.15,.30,.55};const int level=p["hill.perk.0"].toInt();p["hill.takeoffBias"]=(level>=0?1:-1)*strength[std::abs(level)];}
-    if(explicitKey("hill.perk.1") && !explicitKey("hill.realHs")){const double easy[]{0,.03,.06,.10},hard[]{0,.015,.03,.05};const int level=p["hill.perk.1"].toInt();p["hill.realHs"]=p["hill.hs"].toDouble()*(level>=0?1+easy[level]:1-hard[-level]);}
+    if(explicitKey("hill.perk.0") && !explicitKey("hill.takeoffBias")){const double strength[]{0,0.1125,0.225,0.3625,0.55};const int level=p["hill.perk.0"].toInt();p["hill.takeoffBias"]=(level>=0?1:-1)*strength[std::abs(level)];}
+    if(explicitKey("hill.perk.1") && !explicitKey("hill.realHs")){const double easy[]{0,0.0225,0.045,0.07,0.1},hard[]{0,0.01125,0.0225,0.035,0.05};const int level=p["hill.perk.1"].toInt();p["hill.realHs"]=p["hill.hs"].toDouble()*(level>=0?1+easy[level]:1-hard[-level]);}
     return p;
 }
 bool validate(const QJsonObject &config,QString &error) {
     const auto fail=[&](const QString &message){error=message;return false;};
+    if(config["perkLevels"].toDouble()!=4)return fail(QObject::tr("Eksperyment wymaga jednorazowej konwersji do czterech poziomów perków."));
     if(config["schema"].toInt()!=2)return fail(QObject::tr("Wymagana konfiguracja playgroundu v2. Stare eksperymenty nie opisują nowego silnika."));
     const auto integer=[&](const char *key,int lo,int hi){auto v=config[key];return v.isDouble() && std::isfinite(v.toDouble()) && std::floor(v.toDouble())==v.toDouble() && v.toDouble()>=lo && v.toDouble()<=hi;};
     if(!integer("competitions",1,1000000) || !integer("athletes",2,512) || !integer("focus",0,config["athletes"].toInt()-1) || !integer("threads",1,64) || !integer("sampleLimit",0,4096))return fail(QObject::tr("Nieprawidłowa liczba prób, skoczków, wątków lub indeks skoczka."));

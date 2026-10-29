@@ -78,8 +78,8 @@ private:
 
 struct WeatherProposalContext {
     double k=120;
-    int variabilityPerk=0; // positive lottery, negative stable, magnitude 1..3
-    int directionPerk=0; // positive head, negative tail, magnitude 1..3
+    int variabilityPerk=0; // positive lottery, negative stable, magnitude 1..4
+    int directionPerk=0; // positive head, negative tail, magnitude 1..4
     Surface surface=Surface::Snow;
     int month=0; // unknown date = 0
     std::string country;

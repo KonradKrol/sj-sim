@@ -20,7 +20,7 @@ QJsonArray questions() {
         q("geometry",QObject::tr("Geometria skoczni"),QObject::tr("Jak wypłaszczenie i charakter skoczni ograniczają odległość?"),"hill,flight,quality","hill.realHs",120,155,"curve"),
         q("landing",QObject::tr("Lądowanie"),QObject::tr("Gdzie rośnie ryzyko podpórki i upadku — i co dzieje się w pełnych skokach?"),"landing,hill,flight,wind,athlete,analysis","hill.realHs",120,155,"landing"),
         q("marks",QObject::tr("Noty"),QObject::tr("Jak klasa lądowania i kary zmieniają noty oraz punkty?"),"landing,athlete,hill,wind","athlete.landing",0,4,"landing"),
-        q("perks",QObject::tr("Perki"),QObject::tr("Co daje każdy poziom perka na różnych skoczniach i w różnych seriach?"),"athlete,field,quality,hill,rules","athlete.perk.1",-3,3,"curve"),
+        q("perks",QObject::tr("Perki"),QObject::tr("Co daje każdy poziom perka na różnych skoczniach i w różnych seriach?"),"athlete,field,quality,hill,rules","athlete.perk.1",-4,4,"curve"),
         q("precipitation",QObject::tr("Opady"),QObject::tr("Ile kosztują śnieg i deszcz przy różnym natężeniu?"),"precipitation,flight,athlete","precipitation.intensity",0,10,"curve"),
         q("contest",QObject::tr("Pełny konkurs"),QObject::tr("Jak zmieniają się zwycięzcy, miejsca i awanse w mojej paczce?"),"athlete,field,rules,wind,hill,quality","athlete.form",30,100,"contest"),
         q("rules",QObject::tr("Dyskwalifikacje i zasady"),QObject::tr("Jak DSQ, awans i odstępy między skokami zmieniają wyniki?"),"rules,clock","dsq",0,.15,"curve"),
@@ -42,7 +42,7 @@ bool validateProfile(const QJsonObject &values,QString &error) {
     QHash<QString,QJsonObject> defs;
     for(auto row:Playground::parameters()){auto d=row.toObject();defs[d["key"].toString()]=d;}
     for(auto it=values.begin();it!=values.end();++it){const auto d=defs.value(it.key());const double v=it.value().toDouble();if(d.isEmpty() || !engineValues(QJsonObject{{it.key(),it.value()}}).contains(it.key()) || !it.value().isDouble() || !std::isfinite(v) || v<d["minimum"].toDouble() || v>d["maximum"].toDouble() || (d["type"]=="integer" && v!=std::floor(v))){error=QObject::tr("Nieprawidłowy współczynnik profilu: %1").arg(it.key());return false;}}
-    try {Playground::engineParameters(values);Playground::measurementParameters(values);Playground::validateGenerator(values);const auto g=generatorValues(values);for(int i=0;i<SimulationV2::weatherPresetCount;++i){SimulationV2::SeededRandom rng(123);SimulationV2::sampleWeatherPreset(SimulationV2::WeatherPreset(i),120,rng,g);}for(int level:{-3,0,3}){SimulationV2::SeededRandom rng(123);SimulationV2::WeatherProposalContext context;context.variabilityPerk=level;SimulationV2::proposeWeather(context,rng,g);}}
+    try {Playground::engineParameters(values);Playground::measurementParameters(values);Playground::validateGenerator(values);const auto g=generatorValues(values);for(int i=0;i<SimulationV2::weatherPresetCount;++i){SimulationV2::SeededRandom rng(123);SimulationV2::sampleWeatherPreset(SimulationV2::WeatherPreset(i),120,rng,g);}for(int level:{-4,0,4}){SimulationV2::SeededRandom rng(123);SimulationV2::WeatherProposalContext context;context.variabilityPerk=level;SimulationV2::proposeWeather(context,rng,g);}}
     catch(const std::exception &e){error=QString::fromUtf8(e.what());return false;}return true;
 }
 QJsonObject initialConfig() {

@@ -17,6 +17,13 @@ static void simulationV2CatalogRegressions()
     DataPack oldHills;oldHills.kind=DataPack::Hills;oldHills.name="Legacy hills";oldHills.hills.append(GlobalDatabase::get()->getGlobalHills().first());
     DataPack rules;rules.kind=DataPack::Rules;rules.name="Rules";rules.rules.append(GlobalDatabase::get()->getGlobalCompetitionsRules().first());
     const QVector<DataPack> source{oldAthletes,oldHills,rules};const auto originalAthletes=oldAthletes.toJson(),originalHills=oldHills.toJson();
+    {
+        SimulationV2::ProfilePackRepository unconverted(SimulationV2::ProfilePackKind::Athletes,storage.path()+"/unconverted");
+        auto oldPack=ready;auto oldProfile=athlete.toJson();oldProfile.remove("perkLevels");oldProfile["perks"]=QJsonArray{1,2,3};oldPack["profiles"]=QJsonArray{oldProfile};oldPack["approximate-migration-source"]=oldAthletes.id;
+        check(QDir().mkpath(unconverted.packDirectory(oldPack)),"old-scale pack directory fixture");QFile original(unconverted.filePath(oldPack));const auto bytes=QJsonDocument(oldPack).toJson();check(original.open(QIODevice::WriteOnly) && original.write(bytes)==bytes.size(),"old-scale source fixture saved");original.close();
+        check(unconverted.load().needsPerkConversion,"repository distinguishes unconverted perk data from missing packs");QJsonObject created;QStringList issues;check(!unconverted.migrate(oldAthletes,100,{},created,issues,error),"old-scale authoring packs block replacement migration instead of silently regenerating defaults");
+        check(original.open(QIODevice::ReadOnly) && original.readAll()==bytes && QDir(storage.path()+"/unconverted").entryList(QDir::Dirs|QDir::NoDotAndDotDot).size()==1,"conversion requirement leaves edited source bytes and catalog directories intact");
+    }
     const auto originalGlobal=GlobalDatabase::get()->packsSnapshot();
     SimulationV2::SimulationCatalog catalog(paths);
     auto snapshot=catalog.load(source,100,{oldAthletes.id,oldHills.id,rules.id});

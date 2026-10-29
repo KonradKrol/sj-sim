@@ -100,11 +100,11 @@ int main()
         int heads=0,tails=0,stable=0,lottery=0;
         constexpr int proposals=10000;
         for(int i=0;i<proposals;++i) {
-            WeatherProposalContext context;context.directionPerk=3;
-            auto a=proposeWeather(context,headRng);context.directionPerk=-3;auto b=proposeWeather(context,tailRng);
+            WeatherProposalContext context;context.directionPerk=4;
+            auto a=proposeWeather(context,headRng);context.directionPerk=-4;auto b=proposeWeather(context,tailRng);
             heads+=a.wind.references.front().value.head>0;tails+=b.wind.references.front().value.head>0;
-            context.directionPerk=0;context.variabilityPerk=-3;auto c=proposeWeather(context,stableRng);
-            context.variabilityPerk=3;auto d=proposeWeather(context,lotteryRng);
+            context.directionPerk=0;context.variabilityPerk=-4;auto c=proposeWeather(context,stableRng);
+            context.variabilityPerk=4;auto d=proposeWeather(context,lotteryRng);
             stable+=c.wind.temporalAmplitude<.2;lottery+=d.wind.temporalAmplitude<.2;
         }
         check(heads>9000 && tails<1000,"direction traits strongly bias automatic proposals");
@@ -133,7 +133,7 @@ int main()
         rejects([]{WindParameters v;v.references={{10,{}},{10,{}}};ContinuousWeather f(1,v);});
         rejects([&]{weather.wind(0,std::numeric_limits<double>::infinity());});
         rejects([&]{weather.wind(-1,0);});
-        rejects([]{WeatherProposalContext c;c.directionPerk=4;SeededRandom r(0);proposeWeather(c,r);});
+        rejects([]{WeatherProposalContext c;c.directionPerk=5;SeededRandom r(0);proposeWeather(c,r);});
         std::cout<<"PASS simulation-v2 weather: continuity, correlation, persistent/reversing tendencies, activity episodes, moving gusts, parallel queries, 10000 proposals\n";
     } catch(const std::exception &e) { std::cerr<<"FAIL: "<<e.what()<<'\n';return 1; }
 }

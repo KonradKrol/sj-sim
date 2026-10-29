@@ -12,7 +12,7 @@ void Athlete::validate() const
     if (overall<1 || overall>100 || form<1 || form>100 || landing<0 || landing>4)
         throw std::invalid_argument("Athlete OVR/form must be 1..100 and landing 0..4");
     for (int perk:perks)
-        if (perk< -3 || perk>3) throw std::invalid_argument("Athlete perks must be -3..3");
+        if (perk< -4 || perk>4) throw std::invalid_argument("Athlete perks must be -4..4");
 }
 
 void QualityParameters::validate() const
@@ -25,12 +25,13 @@ void QualityParameters::validate() const
         || !std::isfinite(hillPreferenceStrength) || hillPreferenceStrength<0 || hillPreferenceStrength>10
         || (noise!=NoiseShape::Normal && noise!=NoiseShape::Laplace))
         throw std::invalid_argument("Invalid quality parameters");
-    for (const auto *values:{&eventDeviation,&specialistBias,&trainingBonus,&competitionPenalty,
+    const auto validateCoefficient=[](double value){if(!std::isfinite(value) || value<0 || value>100)throw std::invalid_argument("Quality coefficients must be finite and in [0,100]");};
+    for(double value:eventDeviation)validateCoefficient(value);
+    for (const auto *values:{&specialistBias,&trainingBonus,&competitionPenalty,
              &conservedEffortPenalty,&conservedEffortDeviation,&regularNegative,&regularPositive,
              &unpredictableNegative,&unpredictablePositive})
         for (double value:*values)
-            if (!std::isfinite(value) || value<0 || value>100)
-                throw std::invalid_argument("Quality coefficients must be finite and in [0,100]");
+            validateCoefficient(value);
 }
 
 QualityModel::QualityModel(QualityParameters parameters, HillSkillCurve weights)

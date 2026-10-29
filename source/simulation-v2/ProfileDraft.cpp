@@ -56,7 +56,7 @@ void SimulationProfileDraft::setValue(const QString &key,const QVariant &value) 
     apply(json);
 }
 void SimulationProfileDraft::setPerk(int pair,int side,int level,bool toggle) {
-    if(!loaded || pair<0 || pair>=(kind==DataPack::Jumpers?3:4) || (side!=1 && side!=-1) || level<1 || level>3)return;
+    if(!loaded || pair<0 || pair>=(kind==DataPack::Jumpers?3:4) || (side!=1 && side!=-1) || level<1 || level>4)return;
     auto json=kind==DataPack::Jumpers?athlete.getSimulationProfile()->toJson():hill.getSimulationProfile()->toJson();
     auto values=json["perks"].toArray();values[pair]=toggle && values[pair].toInt()*side>0?0:side*level;json["perks"]=values;apply(json);
 }

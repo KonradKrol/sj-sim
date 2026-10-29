@@ -54,15 +54,17 @@ int main()
         near(QualityModel(flatForm).baseline(athlete,220,0,EventKind::Competition).overallAndForm,q.overallAndForm,1e-12,"form hill effect can be disabled");
         rejects([]{auto p=QualityParameters();p.formKScale=0;QualityModel invalid(p);});
         near(model.baseline(athlete,120,.55,EventKind::Competition).value(),q.value(),1e-12,"neutral athlete unaffected by hill preference");
-        athlete.perks[1]=3;
+        near(model.parameters().regularNegative[2],.7,1e-12,"level two is rescaled to the new four-level range");
+        near(model.parameters().regularNegative[4],.4,1e-12,"new extreme preserves the former maximum effect");
+        athlete.perks[1]=4;
         check(model.baseline(athlete,200,0,EventKind::Competition).hillEffect>0,"flier benefits on big hills");
         check(model.baseline(athlete,80,0,EventKind::Competition).hillEffect<0,"flier loses on small hills");
         near(model.baseline(athlete,110,0,EventKind::Competition).hillEffect,0,1e-12,"K110 is balanced");
         check(model.baseline(athlete,120,.55,EventKind::Competition).hillEffect<model.baseline(athlete,120,-.55,EventKind::Competition).hillEffect,"hill takeoff preference interacts with flier");
-        athlete.perks={{3,0,0}};
+        athlete.perks={{4,0,0}};
         near(model.baseline(athlete,120,0,EventKind::Qualification).eventEffect,2.5,1e-12,"qualification gets half training bonus");
         check(model.baseline(athlete,120,0,EventKind::Competition).eventEffect<0,"training perk weakens competition");
-        athlete.perks[0]=-3;
+        athlete.perks[0]=-4;
         near(model.baseline(athlete,120,0,EventKind::Competition).eventEffect,0,1e-12,"conserving effort gives no competition bonus");
         check(model.baseline(athlete,120,0,EventKind::Trial).eventEffect<0,"conserving effort weakens trial");
         athlete.perks={{0,0,0}};
@@ -72,8 +74,8 @@ int main()
         for (int i=0;i<n;++i) {
             athlete.perks[2]=0;base.add(model.sample(athlete,120,0,EventKind::Competition,a).randomEffect);
             training.add(model.sample(athlete,120,0,EventKind::Training,d).randomEffect);
-            athlete.perks[2]=3;regular.add(model.sample(athlete,120,0,EventKind::Competition,b).randomEffect);
-            athlete.perks[2]=-3;unpredictable.add(model.sample(athlete,120,0,EventKind::Competition,c).randomEffect);
+            athlete.perks[2]=4;regular.add(model.sample(athlete,120,0,EventKind::Competition,b).randomEffect);
+            athlete.perks[2]=-4;unpredictable.add(model.sample(athlete,120,0,EventKind::Competition,c).randomEffect);
         }
         near(base.negative/(base.positive+base.negative),.65,.004,"65% is aggregate influence");
         near(double(base.negativeCount)/n,.5,.004,"65% is not negative event probability");
