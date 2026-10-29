@@ -739,6 +739,18 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <source>Wyczyść filtr</source>
             <translation>Clear filter</translation>
         </message>
+        <message>
+            <source>Usuń</source>
+            <translation>Delete</translation>
+        </message>
+        <message>
+            <source>Usuń wybranego skoczka</source>
+            <translation>Delete selected athlete</translation>
+        </message>
+        <message>
+            <source>Delete · możesz cofnąć usunięcie</source>
+            <translation>Delete · deletion can be undone</translation>
+        </message>
     </context>
     <context>
         <name>AthleteMedals</name>
@@ -807,6 +819,10 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <location filename="../source/UI/Quick/AthletePatchSet.qml" line="9" />
             <source>Skrajnie</source>
             <translation>Extreme</translation>
+        </message>
+        <message>
+            <source>Mocno</source>
+            <translation>Strong</translation>
         </message>
     </context>
     <context>
@@ -1036,6 +1052,10 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <location filename="../source/UI/Quick/AthleteStudio.qml" line="20" />
             <source>Paczka zawodników</source>
             <translation>Jumper pack</translation>
+        </message>
+        <message>
+            <source>Zmiany paczki zapisują się od razu; możesz je cofać. Istniejące sezony zachowują własną kopię zawodników.</source>
+            <translation>Pack changes are saved immediately and can be undone. Existing seasons keep their own athlete snapshots.</translation>
         </message>
     </context>
     <context>
@@ -6542,6 +6562,30 @@ li.checked::marker { content: "\2612"; }
             <source>Laboratorium balansu</source>
             <translation>Balance laboratory</translation>
         </message>
+        <message>
+            <source>Witaj w Sj.Sim</source>
+            <translation>Welcome to Sj.Sim</translation>
+        </message>
+        <message>
+            <source>Rozpocznij gotowy sezon ze znanymi skoczkami i zimowym kalendarzem. Wszystko możesz później edytować.</source>
+            <translation>Start a ready-to-play season with familiar athletes and a winter calendar. You can edit everything later.</translation>
+        </message>
+        <message>
+            <source>Przygotowywanie…</source>
+            <translation>Preparing…</translation>
+        </message>
+        <message>
+            <source>Rozpocznij przykładowy sezon</source>
+            <translation>Start an example season</translation>
+        </message>
+        <message>
+            <source>Przejdź do menu</source>
+            <translation>Go to menu</translation>
+        </message>
+        <message>
+            <source>Przykładowy sezon</source>
+            <translation>Example season</translation>
+        </message>
     </context>
     <context>
         <name>HomeHero</name>
@@ -8440,6 +8484,22 @@ li.checked::marker { content: "\2612"; }
             <source>O autorze</source>
             <translation>About the author</translation>
         </message>
+        <message>
+            <source>Przykładowy sezon</source>
+            <translation>Example season</translation>
+        </message>
+        <message>
+            <source>Nie udało się przygotować przykładu. Potrzebne są kompletne paczki skoczków, skoczni i zasad oraz zimowy preset kalendarza.</source>
+            <translation>The example could not be prepared. Complete athlete, hill and rules packs and a winter calendar preset are required.</translation>
+        </message>
+        <message>
+            <source>Sezon został zapisany, ale nie udało się go otworzyć: %1</source>
+            <translation>The season was saved but could not be opened: %1</translation>
+        </message>
+        <message>
+            <source>Nie udało się utworzyć przykładowego sezonu: %1</source>
+            <translation>Could not create the example season: %1</translation>
+        </message>
     </context>
     <context>
         <name>MultipleTrainingsEditDialog</name>
@@ -8805,6 +8865,14 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
             <source>Uwagi przy wczytywaniu paczek: %1.</source>
             <translation>Pack loading notes: %1.</translation>
         </message>
+        <message>
+            <source>Przykładowy sezon</source>
+            <translation>Example season</translation>
+        </message>
+        <message>
+            <source>Puchar Świata</source>
+            <translation>World Cup</translation>
+        </message>
     </context>
     <context>
         <name>Node</name>
@@ -8866,6 +8934,10 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
             <location filename="../source/UI/Quick/PerkStrengthSelector.qml" line="30" />
             <source>Wybierz tę siłę perka.</source>
             <translation>Select this perk strength.</translation>
+        </message>
+        <message>
+            <source>Mocno</source>
+            <translation>Strong</translation>
         </message>
     </context>
     <context>
@@ -13938,6 +14010,30 @@ Check that you selected the correct file.</translation>
             <location filename="../source/balance/BalanceLabModel.cpp" line="50" />
             <source>Twoje zmiany</source>
             <translation>Your changes</translation>
+        </message>
+        <message>
+            <source>Paczka wymaga jednorazowej konwersji do czterech poziomów perków.</source>
+            <translation>The pack requires a one-time conversion to four perk levels.</translation>
+        </message>
+        <message>
+            <source>Eksperyment wymaga jednorazowej konwersji do czterech poziomów perków.</source>
+            <translation>The experiment requires a one-time conversion to four perk levels.</translation>
+        </message>
+        <message>
+            <source>Najpierw skonwertuj istniejące paczki do czterech poziomów perków. Nie utworzono zastępczych kopii.</source>
+            <translation>Convert existing packs to four perk levels first. No replacement copies were created.</translation>
+        </message>
+        <message>
+            <source>Podejście (−4…+4)</source>
+            <translation>Approach (−4…+4)</translation>
+        </message>
+        <message>
+            <source>Specjalizacja (−4…+4)</source>
+            <translation>Specialization (−4…+4)</translation>
+        </message>
+        <message>
+            <source>Regularność (−4…+4)</source>
+            <translation>Consistency (−4…+4)</translation>
         </message>
     </context>
     <context>
@@ -21887,6 +21983,45 @@ Technical key: %4</translation>
             <location filename="../source/UI/Quick/BalanceLabPlot.qml" line="90" />
             <source>; pasmo: %1–%2</source>
             <translation>; band: %1–%2</translation>
+        </message>
+    </context>
+    <context>
+        <name>SeasonOverview</name>
+        <message>
+            <source>Rozegrano %1 / %2</source>
+            <translation>Completed %1 / %2</translation>
+        </message>
+        <message>
+            <source>Pozostałe kraje: %1</source>
+            <translation>Countries remaining: %1</translation>
+        </message>
+        <message>
+            <source>Postęp sezonu</source>
+            <translation>Season progress</translation>
+        </message>
+        <message>
+            <source>Kwalifikacje</source>
+            <translation>Qualifications</translation>
+        </message>
+        <message>
+            <source>%1 · %2</source>
+            <translation>%1 · %2</translation>
+        </message>
+        <message>
+            <source>Treningi %1/%2</source>
+            <translation>Training %1/%2</translation>
+        </message>
+        <message>
+            <source>Próba rozegrana</source>
+            <translation>Trial completed</translation>
+        </message>
+        <message>
+            <source>Próba przed konkursem</source>
+            <translation>Trial before competition</translation>
+        </message>
+        <message>
+            <source>Teraz: %1</source>
+            <translation>Next: %1</translation>
         </message>
     </context>
 </TS>

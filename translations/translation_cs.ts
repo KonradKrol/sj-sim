@@ -739,6 +739,18 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <source>Wyczyść filtr</source>
             <translation>Vymazat filtr</translation>
         </message>
+        <message>
+            <source>Usuń</source>
+            <translation>Odstranit</translation>
+        </message>
+        <message>
+            <source>Usuń wybranego skoczka</source>
+            <translation>Odstranit vybraného závodníka</translation>
+        </message>
+        <message>
+            <source>Delete · możesz cofnąć usunięcie</source>
+            <translation>Delete · odstranění lze vrátit</translation>
+        </message>
     </context>
     <context>
         <name>AthleteMedals</name>
@@ -807,6 +819,10 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <location filename="../source/UI/Quick/AthletePatchSet.qml" line="9" />
             <source>Skrajnie</source>
             <translation>Extrémně</translation>
+        </message>
+        <message>
+            <source>Mocno</source>
+            <translation>Silně</translation>
         </message>
     </context>
     <context>
@@ -1036,6 +1052,10 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <location filename="../source/UI/Quick/AthleteStudio.qml" line="20" />
             <source>Paczka zawodników</source>
             <translation>Balíček skokanů</translation>
+        </message>
+        <message>
+            <source>Zmiany paczki zapisują się od razu; możesz je cofać. Istniejące sezony zachowują własną kopię zawodników.</source>
+            <translation>Změny balíčku se ukládají ihned a lze je vrátit. Existující sezóny si ponechávají vlastní kopie závodníků.</translation>
         </message>
     </context>
     <context>
@@ -6543,6 +6563,30 @@ li.checked::marker { content: "\2612"; }
             <source>Laboratorium balansu</source>
             <translation>Laboratoř vyvážení</translation>
         </message>
+        <message>
+            <source>Witaj w Sj.Sim</source>
+            <translation>Vítejte v Sj.Sim</translation>
+        </message>
+        <message>
+            <source>Rozpocznij gotowy sezon ze znanymi skoczkami i zimowym kalendarzem. Wszystko możesz później edytować.</source>
+            <translation>Spusťte připravenou sezónu se známými závodníky a zimním kalendářem. Vše můžete později upravit.</translation>
+        </message>
+        <message>
+            <source>Przygotowywanie…</source>
+            <translation>Příprava…</translation>
+        </message>
+        <message>
+            <source>Rozpocznij przykładowy sezon</source>
+            <translation>Spustit ukázkovou sezónu</translation>
+        </message>
+        <message>
+            <source>Przejdź do menu</source>
+            <translation>Přejít do nabídky</translation>
+        </message>
+        <message>
+            <source>Przykładowy sezon</source>
+            <translation>Ukázková sezóna</translation>
+        </message>
     </context>
     <context>
         <name>HomeHero</name>
@@ -8441,6 +8485,22 @@ li.checked::marker { content: "\2612"; }
             <source>O autorze</source>
             <translation>O autorovi</translation>
         </message>
+        <message>
+            <source>Przykładowy sezon</source>
+            <translation>Ukázková sezóna</translation>
+        </message>
+        <message>
+            <source>Nie udało się przygotować przykładu. Potrzebne są kompletne paczki skoczków, skoczni i zasad oraz zimowy preset kalendarza.</source>
+            <translation>Ukázku se nepodařilo připravit. Jsou potřeba kompletní balíčky závodníků, můstků a pravidel a zimní předvolba kalendáře.</translation>
+        </message>
+        <message>
+            <source>Sezon został zapisany, ale nie udało się go otworzyć: %1</source>
+            <translation>Sezóna byla uložena, ale nepodařilo se ji otevřít: %1</translation>
+        </message>
+        <message>
+            <source>Nie udało się utworzyć przykładowego sezonu: %1</source>
+            <translation>Ukázkovou sezónu se nepodařilo vytvořit: %1</translation>
+        </message>
     </context>
     <context>
         <name>MultipleTrainingsEditDialog</name>
@@ -8806,6 +8866,14 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
             <source>Uwagi przy wczytywaniu paczek: %1.</source>
             <translation>Poznámky k načítání balíčků: %1.</translation>
         </message>
+        <message>
+            <source>Przykładowy sezon</source>
+            <translation>Ukázková sezóna</translation>
+        </message>
+        <message>
+            <source>Puchar Świata</source>
+            <translation>Světový pohár</translation>
+        </message>
     </context>
     <context>
         <name>Node</name>
@@ -8867,6 +8935,10 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
             <location filename="../source/UI/Quick/PerkStrengthSelector.qml" line="30" />
             <source>Wybierz tę siłę perka.</source>
             <translation>Vyberte tuto sílu perku.</translation>
+        </message>
+        <message>
+            <source>Mocno</source>
+            <translation>Silně</translation>
         </message>
     </context>
     <context>
@@ -13939,6 +14011,30 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <location filename="../source/balance/BalanceLabModel.cpp" line="50" />
             <source>Twoje zmiany</source>
             <translation>Vaše změny</translation>
+        </message>
+        <message>
+            <source>Paczka wymaga jednorazowej konwersji do czterech poziomów perków.</source>
+            <translation>Balíček vyžaduje jednorázový převod na čtyři úrovně perků.</translation>
+        </message>
+        <message>
+            <source>Eksperyment wymaga jednorazowej konwersji do czterech poziomów perków.</source>
+            <translation>Experiment vyžaduje jednorázový převod na čtyři úrovně perků.</translation>
+        </message>
+        <message>
+            <source>Najpierw skonwertuj istniejące paczki do czterech poziomów perków. Nie utworzono zastępczych kopii.</source>
+            <translation>Nejprve převeďte existující balíčky na čtyři úrovně perků. Náhradní kopie nebyly vytvořeny.</translation>
+        </message>
+        <message>
+            <source>Podejście (−4…+4)</source>
+            <translation>Přístup (−4…+4)</translation>
+        </message>
+        <message>
+            <source>Specjalizacja (−4…+4)</source>
+            <translation>Specializace (−4…+4)</translation>
+        </message>
+        <message>
+            <source>Regularność (−4…+4)</source>
+            <translation>Vyrovnanost (−4…+4)</translation>
         </message>
     </context>
     <context>
@@ -21888,6 +21984,45 @@ Technický klíč: %4</translation>
             <location filename="../source/UI/Quick/BalanceLabPlot.qml" line="90" />
             <source>; pasmo: %1–%2</source>
             <translation>; pásmo: %1–%2</translation>
+        </message>
+    </context>
+    <context>
+        <name>SeasonOverview</name>
+        <message>
+            <source>Rozegrano %1 / %2</source>
+            <translation>Odehráno %1 / %2</translation>
+        </message>
+        <message>
+            <source>Pozostałe kraje: %1</source>
+            <translation>Zbývající země: %1</translation>
+        </message>
+        <message>
+            <source>Postęp sezonu</source>
+            <translation>Průběh sezóny</translation>
+        </message>
+        <message>
+            <source>Kwalifikacje</source>
+            <translation>Kvalifikace</translation>
+        </message>
+        <message>
+            <source>%1 · %2</source>
+            <translation>%1 · %2</translation>
+        </message>
+        <message>
+            <source>Treningi %1/%2</source>
+            <translation>Tréninky %1/%2</translation>
+        </message>
+        <message>
+            <source>Próba rozegrana</source>
+            <translation>Zkušební kolo odehráno</translation>
+        </message>
+        <message>
+            <source>Próba przed konkursem</source>
+            <translation>Zkušební kolo před závodem</translation>
+        </message>
+        <message>
+            <source>Teraz: %1</source>
+            <translation>Nyní: %1</translation>
         </message>
     </context>
 </TS>
