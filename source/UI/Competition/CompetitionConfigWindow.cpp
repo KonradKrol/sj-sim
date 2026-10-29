@@ -1029,7 +1029,7 @@ bool CompetitionConfigWindow::validateSimulationInputs()
             : competitionJumpers;
         bool validStartList = !jumpers.isEmpty();
         for(Jumper *jumper : jumpers)
-            validStartList = validStartList && jumper != nullptr && !jumper->getNameAndSurname().trimmed().isEmpty();
+            validStartList = validStartList && jumper != nullptr;
         if(!validStartList)
         {
             QMessageBox::warning(this, tr("Pusta lista startowa"),

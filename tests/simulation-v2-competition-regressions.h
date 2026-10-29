@@ -23,7 +23,7 @@ static void simulationV2CanonicalCompetitionRegressions(MainWindow &main) {
     QTemporaryDir storage;check(storage.isValid(),"isolated canonical competition");
     SimulationV2::CatalogPaths paths{storage.path()+"/athletes",storage.path()+"/hills",storage.path()+"/catalog.json",storage.path()+"/photos"};
     SimulationV2::ProfilePackRepository athletes(SimulationV2::ProfilePackKind::Athletes,paths.athletes),hills(SimulationV2::ProfilePackKind::Hills,paths.hills);
-    QJsonArray entries;for(int i=0;i<6;++i){auto p=AthleteProfile::create();p.name="Canonical";p.surname=QString::number(i);p.country=i<3?"POL":"NOR";entries.append(p.toJson());}
+    QJsonArray entries;for(int i=0;i<6;++i){auto p=AthleteProfile::create();p.name="Canonical";p.surname=QString::number(i);p.country=i<3?"POL":"NOR";if(i==5){p.name.clear();p.surname.clear();}entries.append(p.toJson());}
     QJsonObject pack{{"format","sj-sim-athlete-pack"},{"version",1},{"id",QUuid::createUuid().toString(QUuid::WithoutBraces)},{"name","Canonical athletes"},{"profiles",entries}};
     auto other=pack;other["id"]=QUuid::createUuid().toString(QUuid::WithoutBraces);other["name"]="Second pack";other["profiles"]=QJsonArray{AthleteProfile::create().toJson()};
     auto venue=HillProfile::create();venue.name="Canonical hill";
