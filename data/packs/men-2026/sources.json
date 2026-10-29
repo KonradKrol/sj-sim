@@ -260,7 +260,10 @@
       "name": "Julijan",
       "surname": "Smid",
       "birthYear": 2003,
-      "recordSource": "https://www.skijumping.pl/zawodnicy/3561/julijan-smid/"
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3561/julijan-smid/",
+      "personalBest": 0,
+      "recordStatus": "none-confirmed-by-project-owner",
+      "recordNote": "Brak rekordu — potwierdzone przez autora projektu 29.10.2026."
     },
     {
       "fisId": "221383",
@@ -276,7 +279,10 @@
       "name": "Jakob",
       "surname": "Steinberger",
       "birthYear": 2005,
-      "recordSource": "https://www.skijumping.pl/zawodnicy/3939/jakob-steinberger/"
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3939/jakob-steinberger/",
+      "personalBest": 0,
+      "recordStatus": "none-confirmed-by-project-owner",
+      "recordNote": "Brak rekordu — potwierdzone przez autora projektu 29.10.2026."
     },
     {
       "fisId": "221384",
@@ -292,7 +298,10 @@
       "name": "Simon",
       "surname": "Steinberger",
       "birthYear": 2005,
-      "recordSource": "https://www.skijumping.pl/zawodnicy/3940/simon-steinberger/"
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3940/simon-steinberger/",
+      "personalBest": 0,
+      "recordStatus": "none-confirmed-by-project-owner",
+      "recordNote": "Brak rekordu — potwierdzone przez autora projektu 29.10.2026."
     },
     {
       "fisId": "196759",
@@ -953,7 +962,10 @@
       ],
       "name": "Yuto",
       "surname": "Nakamura",
-      "birthYear": 0
+      "birthYear": 0,
+      "personalBest": 0,
+      "recordStatus": "none-confirmed-by-project-owner",
+      "recordNote": "Brak rekordu — potwierdzone przez autora projektu 29.10.2026."
     },
     {
       "fisId": "194909",
@@ -1310,7 +1322,10 @@
       "name": "Jan",
       "surname": "Galica",
       "birthYear": 2004,
-      "recordSource": "https://www.skijumping.pl/zawodnicy/3530/jan-galica/"
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3530/jan-galica/",
+      "personalBest": 0,
+      "recordStatus": "none-confirmed-by-project-owner",
+      "recordNote": "Brak rekordu — potwierdzone przez autora projektu 29.10.2026."
     },
     {
       "fisId": "229687",
@@ -1508,7 +1523,10 @@
       ],
       "name": "Enej",
       "surname": "Faletic",
-      "birthYear": 0
+      "birthYear": 0,
+      "personalBest": 0,
+      "recordStatus": "none-confirmed-by-project-owner",
+      "recordNote": "Brak rekordu — potwierdzone przez autora projektu 29.10.2026."
     },
     {
       "fisId": "269726",
@@ -1953,7 +1971,10 @@
       ],
       "name": "Henry",
       "surname": "Loher",
-      "birthYear": 0
+      "birthYear": 0,
+      "personalBest": 0,
+      "recordStatus": "none-confirmed-by-project-owner",
+      "recordNote": "Brak rekordu — potwierdzone przez autora projektu 29.10.2026."
     },
     {
       "fisId": "202354",

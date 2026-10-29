@@ -17,12 +17,12 @@ Nazwy plików nie zawierają spacji, łączników ani znaków diakrytycznych.
 Po imporcie użyj przycisku otwierającego folder paczki i umieść tam zdjęcia.
 Brak pliku zdjęcia nie przeszkadza w edycji ani grze.
 
-## Dane i brakujące informacje
+## Dane i źródła
 
-Dla 91 zawodników wpisano odnaleziony rekord życiowy. U siedmiu rekord pozostaje
-pusty (`0`): Julijan Smid, Jakob Steinberger, Simon Steinberger, Yuto Nakamura,
-Jan Galica, Enej Faletic i Henry Loher. Nie zastępowano go przypadkową odległością
-z zawodów. Nieustalony rok urodzenia również pozostaje pusty (`0`).
+Dla 91 zawodników wpisano rekord życiowy. Pozostałych siedmiu ma prawidłowo
+ustawiony brak rekordu (`0`), zgodnie z potwierdzeniem autora projektu: Julijan Smid, Jakob Steinberger, Simon Steinberger, Yuto Nakamura,
+Jan Galica, Enej Faletic i Henry Loher. Nie jest to lista zaległych rekordów do wyszukania. Nieustalony rok urodzenia
+pozostaje pusty (`0`).
 
 Nazwy i przynależność do rankingów pochodzą z FIS. Zachowano pisownię danych FIS,
 która nie zawsze zawiera narodowe znaki. Rekordy i dodatkowe lata urodzenia
