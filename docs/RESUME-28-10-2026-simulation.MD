@@ -310,3 +310,67 @@ Dalszy postęp:
 - 6: WIP mocne dwa kafle trybu w CalendarDatePlanner i wyjaśnienie istniejących
   treningów; dodany wzorzec fri-sun w API/QML. Jeszcze testy/tłumaczenia/commit.
 - 12: WIP jak wyżej, nie zgubić 6 nowych SVG i wpisów qrc.
+
+21. Kolejny punkt użytkownika nazwany „20”: Przebieg/Warunki/Skok na ekranie
+    konkursu mają wyraźniej wyglądać na klikalne ustawienia; poprawić miejsce
+    lub oprawę. Zachować dotychczasowe wymaganie oszczędzania wysokości tabel.
+15. Doprecyzowanie: użytkownik zamiast niekompletnej paczki zdecydował się na
+    DOMYŚLNE OVR/formę/lądowanie/perki. Można użyć standardów modelu, jawnie nie
+    udawać indywidualnej oceny zawodników. Paczka ma być normalnie używalna.
+    Oficjalne finałowe tabele potwierdzone przez web:
+    https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M
+    (Planica 29.03.2026, 33/33)
+    https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M
+    (Klingenthal 24.10.2026, 7/7).
+    Biogramy FIS mają Birthdate, np. Domen competitorid=186516; PB wymaga
+    osobnej weryfikacji, nie wpisywać wymyślonych rekordów.
+
+22. Lab: user chce realnie widzieć ile zostało do końca eksperymentu, nie tylko
+    liczbę ukończonych porównań. DO WDROŻENIA: mianownik, procent i szacowane
+    pozostałe sekundy, z uwzględnieniem faz mapy/diagnostyk/celów, bez 100% za wcześnie.
+23. Podgląd ma liczyć 7 konkursów na wariant, także punkty wykresu/mapy (zamiast2).
+    WIP BalanceLabModel.cpp: ustawione 7 dla bazowego podglądu, komórek i celów.
+24. Nie obliczać ukrytego podglądu. WIP: backend previewEnabled, schedule/launch
+    respektują flagę, QML toggle steruje flagą; pełna próba nie jest anulowana
+    wyłączeniem podglądu. Włączony podgląd uruchamia się na żądanie.
+    --balance-lab-only PASS w /tmp/sj-lab-preview-opt-in.log, ale po nim dopisano
+    jeszcze wyłączanie flagi przy loadHistory/showFullResult; sprawdzić finalny build.
+    Pełny wynik po zakończeniu wyłącza podgląd, żeby nie liczyć niewidocznych prób.
+20. Doprecyzowanie użytkownika: NIE utrzymywać kompatybilności starych sezonów.
+    WIP SimulationSavesWindow::openSelectedSave odrzuca engineVersion!=2 z jasnym
+    komunikatem. Dane na dysku pozostają nietknięte. Nie dopisywać starego UI.
+
+Daty i planner: f299752 + 3c52b38 push; --dates-only PASS obejmuje teraz testy
+backendu i UI, także blokadę kopiowania oraz dodawania weekendu w złym miejscu,
+chronologię treningów/próbnych między konkursami i datę następnego eventu w pasku.
+Opady/ikony: 903478c push, konfiguracja i konkurs PASS. Reguły FIS nie są zmieniane.
+Nadal niezacommitowane: 22 etykiety, potwierdzenie sortowania, przyciski opcji
+konkursu, nowe tłumaczenia, ograniczenie starych zapisów, lab7/previewEnabled.
+Paczka98: research /tmp/sj-2026-pack-research/; FIS zablokował szybkie zapytania429,
+nie ponawiać równolegle. Tabele końcowe i20biografii zcache'owane. Opracowanie
+Skijumping profiles trwa, /tmp/.../people-records.json ma źródła i potwierdzonePB.
+Kod roboczy collect.py i records.py nie jest jeszcze częścią repo; przenieść
+potrzebne wyniki i skrypt do wersjonowanych plików przed końcem sesji.
+25. PRIORYTET lab inputów: np. Regularność wpisywane -3 samo wraca do +3;
+    zbadać BalanceLabParameter/PlaygroundNumber/setParameter i odświeżanie.
+    Naprawić cały wzorzec, nie tylko pojedyncze pole; sprawdzić wpisywanie minus,
+    edycję w trakcie powrotu wyników i brak aktualizacji przez ukryty podgląd.
+
+26. Nowa uwaga użytkownika (jego punkt22): opisy parametrów labu są zbyt
+    ogólne i powielane. Przepisać je na podstawie rzeczywistych wzorów silnika:
+    co zmienia parametr, w którą stronę działa, jednostka/skala i istotne
+    ograniczenia. Nie zastępować opisu konkretnego pola opisem całej grupy.
+    Źródło: source/playground/PlaygroundModel.cpp (help/opisy), modele
+    source/simulation-v2/, prezentacja BalanceLabParameter.qml. Opisy są W KOLEJCE,
+    nie zostały jeszcze poprawione.
+27. Nowa uwaga użytkownika (jego punkt23): wyszukiwanie parametrów w sekcji
+    „Reguły symulacji”. BalanceLabControls.qml już ma pole search, ale filtruje
+    tylko parametry bieżącego tematu i przeszukuje nazwę/klucz. Poprawić tak,
+    żeby wpisanie szukanego parametru rzeczywiście znajdowało go w pełnym
+    rejestrze, bez konieczności domyślenia się przełącznika „Pokaż wszystkie”.
+    Uwzględnić opisy/synonimy i czytelny brak wyników. Nie przebudowywać
+    delegatów przy zmianie wartości, żeby nie gubić rozpoczętej edycji.
+
+Aktualizacja statusu commitów: etykiety a350ca2, potwierdzenie sortowania
+ e0c879f i przyciski opcji88ed939 są już commitowane i wypchnięte. Wcześniejsza
+ lista niezacommitowanych plików wyżej jest w tych trzech pozycjach nieaktualna.
