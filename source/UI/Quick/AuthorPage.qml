@@ -15,6 +15,9 @@ ScrollView {
         Pane {
             id: sheet
             objectName: "authorSheet"
+            MenuEntrance { id: authorEntrance; target: sheet }
+            opacity: authorEntrance.progress
+            transform: Translate { y: Theme.dp(20)*(1-authorEntrance.progress) }
             x: (parent.width-width)/2; y: author.inset
             width: Math.min(parent.width-author.inset*2,1160)
             padding: 0
