@@ -73,8 +73,8 @@ def convert(value, old_scale=True):
         return value
     if profile(value) and value.get('perkLevels') == 4:
         return copy.deepcopy(value)
-    if (experiment(value) or balance(value)) and value.get('perkLevels') == 4:
-        old_scale = False
+    if experiment(value) or balance(value):
+        old_scale = value.get('perkLevels') != 4
     result = {k: convert(v, old_scale) for k, v in value.items()}
     if profile(value):
         if len(value['perks']) not in ((3,4) if 'k' in value else (3,)):

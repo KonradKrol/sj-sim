@@ -41,6 +41,11 @@ with tempfile.TemporaryDirectory() as directory:
     assert current['variants']==mixed['variants']
     assert current['roster'][0]['simulation-v2']['perks']==[1,2,-4]
     assert not conversion.needs_conversion(current)
+    mixed['labScenarios']={'old':experiment}
+    nested=conversion.convert(mixed)
+    assert nested['variants']==mixed['variants']
+    assert nested['labScenarios']['old']['variants'][0]['changes']['athlete.perk.2']==4
+    assert not conversion.needs_conversion(nested)
     invalid=Path(directory) / 'invalid.json'
     broken={'profiles':[{'id':'bad','overall':80,'perks':[0,0,5]}]}
     invalid.write_text(json.dumps(broken))
