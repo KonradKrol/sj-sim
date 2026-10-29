@@ -15,11 +15,30 @@ Pane {
     background: Surface { fillColor: Theme.surface; sweep: 20 }
     contentItem: ColumnLayout {
         spacing: 12
-        Label { text: qsTr("Zaplanuj terminy"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-        RowLayout {
-            Layout.fillWidth: true; spacing: 6
-            SButton { objectName: "date-plan-existing"; text: qsTr("Ustal terminy"); primary: !planner.weekendMode; Layout.fillWidth: true; Layout.preferredWidth: 1; implicitHeight: Theme.controlHeight; font.pointSize: Theme.body; onClicked: {planner.invalidate();planner.backend.discardWeekend();planner.weekendMode=false} }
-            SButton { objectName: "date-open-weekend"; text: qsTr("Dodaj weekend"); primary: planner.weekendMode; Layout.fillWidth: true; Layout.preferredWidth: 1; implicitHeight: Theme.controlHeight; font.pointSize: Theme.body; onClicked: {planner.invalidate();planner.weekendMode=true} }
+        Label { text: qsTr("Zaplanuj terminy"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.title; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        GridLayout {
+            Layout.fillWidth: true; columns: planner.width>Theme.dp(450)?2:1
+            columnSpacing: Theme.dp(8); rowSpacing: Theme.dp(8)
+            Repeater {
+                model: [{title:qsTr("Ustal terminy"),detail:qsTr("Zmień daty konkursów w kalendarzu.")},{title:qsTr("Dodaj weekend"),detail:qsTr("Utwórz konkursy i kwalifikacje.")}]
+                ItemDelegate {
+                    required property int index
+                    required property var modelData
+                    readonly property bool chosen: planner.weekendMode===(index===1)
+                    objectName: index===0 ? "date-plan-existing" : "date-open-weekend"
+                    Layout.fillWidth: true; Layout.fillHeight: true; Layout.preferredWidth: 0; Layout.minimumWidth: 0
+                    padding: Theme.dp(12)
+                    implicitHeight: contentItem.implicitHeight+topPadding+bottomPadding
+                    background: Rectangle { color: parent.chosen ? Theme.stadium : parent.hovered ? Theme.selection : Theme.raised; radius: Theme.dp(6); border.width: parent.visualFocus ? 2 : 1; border.color: parent.chosen ? Theme.accent : Theme.outline }
+                    contentItem: ColumnLayout {
+                        spacing: Theme.dp(4)
+                        Label { text: modelData.title; color: parent.parent.chosen ? Theme.snow : Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                        Label { text: modelData.detail; color: parent.parent.chosen ? Theme.headerMuted : Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                    }
+                    Accessible.name: modelData.title
+                    onClicked: {planner.forceActiveFocus();planner.invalidate();planner.backend.discardWeekend();planner.weekendMode=index===1}
+                }
+            }
         }
         Label { text: planner.weekendMode ? qsTr("Dodawanie nowych konkursów") : qsTr("Daty istniejących konkursów"); color: Theme.ink; font.pointSize: Theme.body; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         Label { visible: !planner.weekendMode; text: qsTr("Ustal lub zmień daty konkursów, które są już w kalendarzu."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
@@ -37,11 +56,11 @@ Pane {
                 id: pattern
                 objectName: "date-plan-pattern"
                 Layout.fillWidth: true
-                model: [qsTr("Sobota i niedziela"),qsTr("Ten sam dzień co tydzień"),qsTr("Co kilka dni"),qsTr("Wszystkie jednego dnia"),qsTr("Przesuń, zachowując odległości między datami")]
+                model: [qsTr("Sobota i niedziela"),qsTr("Ten sam dzień co tydzień"),qsTr("Co kilka dni"),qsTr("Wszystkie jednego dnia"),qsTr("Przesuń, zachowując odległości między datami"),qsTr("Piątek, sobota i niedziela")]
                 Accessible.name: qsTr("Rozkład terminów")
                 onActivated: planner.invalidate()
             }
-            Label { Layout.fillWidth: true; text: [qsTr("Sobota → niedziela → kolejna sobota."),qsTr("Np. każda sobota, zaczynając od wybranej daty."),qsTr("Ustal, ile dni ma dzielić kolejne konkursy."),qsTr("Wszystkie wybrane konkursy otrzymają tę samą datę."),qsTr("Np. dwa dni między konkursami pozostaną dwoma dniami.")][pattern.currentIndex]; color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap }
+            Label { Layout.fillWidth: true; text: [qsTr("Sobota → niedziela → kolejna sobota."),qsTr("Np. każda sobota, zaczynając od wybranej daty."),qsTr("Ustal, ile dni ma dzielić kolejne konkursy."),qsTr("Wszystkie wybrane konkursy otrzymają tę samą datę."),qsTr("Np. dwa dni między konkursami pozostaną dwoma dniami."),qsTr("Piątek → sobota → niedziela → kolejny piątek.")][pattern.currentIndex]; color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap }
             ColumnLayout {
                 visible: pattern.currentIndex===2; Layout.fillWidth: true; spacing: 3
                 Label { text: qsTr("Co ile dni?"); color: Theme.ink; font.pointSize: Theme.caption }
@@ -49,12 +68,13 @@ Pane {
             }
             ColumnLayout {
                 visible: pattern.currentIndex!==4; Layout.fillWidth: true; spacing: 3
-                Label { text: qsTr("Treningi"); color: Theme.muted; font.pointSize: Theme.caption }
+                Label { text: qsTr("Kiedy mają odbyć się treningi?"); color: Theme.muted; font.pointSize: Theme.caption }
+                Label { text: qsTr("Dotyczy treningów już dodanych do tych konkursów."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 SChoice { id: trainingDay; Layout.fillWidth: true; model: [qsTr("W dniu konkursu"),qsTr("Dzień przed konkursem"),qsTr("Dwa dni przed konkursem"),qsTr("Inna liczba dni wcześniej")]; Accessible.name: qsTr("Kiedy zaplanować treningi"); onActivated: planner.invalidate() }
                 Label { visible: trainingDay.currentIndex===3; text: qsTr("Ile dni przed konkursem?"); color: Theme.ink; font.pointSize: Theme.caption }
                 NumberField { id: trainings; visible: trainingDay.currentIndex===3; Layout.fillWidth: true; direct: false; label: qsTr("Dni przed konkursem"); fields: ({name:"date-plan-training-days",value:3,minimum:0,maximum:14,step:1,decimals:0,suffix:qsTr("dni")}); onCommitted: planner.invalidate() }
             }
-            SButton { objectName: "date-plan-preview"; text: qsTr("Podgląd terminów"); primary: true; Layout.fillWidth: true; enabled: !startField.error && (planner.future || (planner.backend.selection.count>0 && !planner.backend.selection.locked)); onClicked: {planner.requested=true;planner.backend.planDates(planner.startDate,["weekends","weekly","interval","same","preserve"][pattern.currentIndex],interval.currentValue,planner.future,trainingDay.currentIndex===3?trainings.currentValue:trainingDay.currentIndex,missing.checked)} }
+            SButton { objectName: "date-plan-preview"; text: qsTr("Podgląd terminów"); primary: true; Layout.fillWidth: true; enabled: !startField.error && (planner.future || (planner.backend.selection.count>0 && !planner.backend.selection.locked)); onClicked: {planner.requested=true;planner.backend.planDates(planner.startDate,["weekends","weekly","interval","same","preserve","fri-sun"][pattern.currentIndex],interval.currentValue,planner.future,trainingDay.currentIndex===3?trainings.currentValue:trainingDay.currentIndex,missing.checked)} }
             Label { visible: planner.requested && !planner.backend.datePlan.length && !!planner.backend.message; text: planner.backend.message; color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
             ColumnLayout {
                 visible: planner.backend.datePlan.length>0; Layout.fillWidth: true; spacing: 8
