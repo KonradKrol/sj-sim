@@ -239,7 +239,7 @@ Focused checks are available as `--navigation-only`, `--menus-only` and
 
 ## Logic and UX audit, 2026-10-21
 
-[The audit report](docs/BUGFIX_AUDIT_2026-10-21.md) records thirteen individually
+[The audit report](BUGFIX_AUDIT_2026-10-21.md) records thirteen individually
 committed fixes, their reproduction scenarios, regression checks and commit IDs.
 Run `scripts/test-quick-ui.sh --audit-only` for the focused audit checks; they are
 also included in the default integration suite. The full updated suite passes
@@ -248,7 +248,7 @@ with 292 responsive renders, and the Widgets-only build remains supported.
 
 ## Five-workflow UX redesign, 2026-10-21
 
-[The UX report](docs/UX_IMPROVEMENTS_2026-10-21.md) describes explicit form
+[The UX report](UX_IMPROVEMENTS_2026-10-21.md) describes explicit form
 parameter application, visible table search/selection, direct saved-list actions,
 contextual competition tools and calendar selection without forced navigation.
 Run `scripts/test-quick-ui.sh --ux-only` for these workflows and an individual
@@ -260,7 +260,7 @@ windows use tighter header spacing to retain both critical tables, including KO.
 
 ## Available space and last jump, 2026-10-21
 
-[The follow-up report](docs/SPACE_AND_LAST_JUMP_2026-10-21.md) covers full-height
+[The follow-up report](SPACE_AND_LAST_JUMP_2026-10-21.md) covers full-height
 catalog lists in the database, season and save selection; independent scrolling
 for editors; and compact secondary actions. `--space-only` checks catalog growth
 and editor boundaries. The competition summary now exposes judges, wind, gate,
@@ -311,4 +311,4 @@ stays blank during flight. The next-event footer adds the flag, type, HS and for
 
 The full suite passes with 350 renders, including the new classification layouts,
 and the Widgets-only build passes. See
-[the manual checklist and validation report](docs/SEASON_WORKSPACE_2026-10-22.md).
+[the manual checklist and validation report](SEASON_WORKSPACE_2026-10-22.md).

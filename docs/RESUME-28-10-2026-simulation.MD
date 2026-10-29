@@ -1,9 +1,15 @@
 # Wznowienie prac nad nową symulacją — 28.10.2026
 
+Aktualizacja 29.10: wdrożono udział formy zależny od K i losową reakcję na wiatr,
+obecny playground ma 215 ustawień. Projekt nowego, osobnego laboratorium oraz
+odpowiedzi użytkownika: [BALANCE_LAB_DESIGN.md](BALANCE_LAB_DESIGN.md).
+Nowego UI jeszcze nie rozpoczęto — najpierw uzgadniamy zakres. Pełne szczegóły
+i weryfikacja są w końcowej sekcji [postępu](SIMULATION_V2_PROGRESS.md).
+
 ## Aktualizacja po pracach na Windows — najnowszy stan
 
-**Nowy playground v2 został wdrożony.** Szczegóły: `docs/PLAYGROUND_V2.md`
-i końcowa sekcja `docs/SIMULATION_V2_PROGRESS.md`. Starsza kolejka poniżej
+**Nowy playground v2 został wdrożony.** Szczegóły: `PLAYGROUND_V2.md`
+i końcowa sekcja `SIMULATION_V2_PROGRESS.md`. Starsza kolejka poniżej
 opisuje punkt przekazania przed tym etapem; nie implementować playgroundu od nowa.
 
 - 199 ustawień, bezpośredni Engine v2, kanoniczne źródła, dwa tryby zegara,
@@ -49,17 +55,17 @@ ukończona.** Nie rozpoczynać ponownie gotowych etapów.
 ## Co czytać i w jakiej kolejności
 
 1. [`NEW_SIMULATION.md`](NEW_SIMULATION.md) — pełne wymagania i decyzje użytkownika.
-2. **Końcówkę** [`docs/SIMULATION_V2_PROGRESS.md`](docs/SIMULATION_V2_PROGRESS.md)
+2. **Końcówkę** [`SIMULATION_V2_PROGRESS.md`](SIMULATION_V2_PROGRESS.md)
    — szczegółowy aktualny stan, ukończone etapy, testy i kolejka. Starsze sekcje
    opisują wcześniejsze etapy, czasem już zastąpione nowszymi.
-3. [`docs/SIMULATION_V2_ENGINE.md`](docs/SIMULATION_V2_ENGINE.md) — model, wzory,
+3. [`docs/SIMULATION_V2_ENGINE.md`](SIMULATION_V2_ENGINE.md) — model, wzory,
    parametry i integracja.
-4. [`docs/WIND_MEASUREMENT_RESEARCH.md`](docs/WIND_MEASUREMENT_RESEARCH.md) oraz
-   [`docs/WEATHER_RESEARCH.md`](docs/WEATHER_RESEARCH.md) — źródła i granice
+4. [`docs/WIND_MEASUREMENT_RESEARCH.md`](WIND_MEASUREMENT_RESEARCH.md) oraz
+   [`docs/WEATHER_RESEARCH.md`](WEATHER_RESEARCH.md) — źródła i granice
    założeń dotyczących pomiaru oraz deszczu.
-5. [`docs/TRANSLATION_AUDIT_2026-10-28.md`](docs/TRANSLATION_AUDIT_2026-10-28.md)
+5. [`docs/TRANSLATION_AUDIT_2026-10-28.md`](TRANSLATION_AUDIT_2026-10-28.md)
    — naprawy tłumaczeń i świadomie pozostawiony szerszy audyt.
-6. [`docs/RELEASE_NOTES_VS_MAIN.md`](docs/RELEASE_NOTES_VS_MAIN.md) — dopisywać
+6. [`docs/RELEASE_NOTES_VS_MAIN.md`](RELEASE_NOTES_VS_MAIN.md) — dopisywać
    szczegółowe zmiany do późniejszych release notes.
 
 ## Gotowe przed ostatnią poprawką wiatru

@@ -43,6 +43,13 @@ void FlightParameters::validate() const
     bound(stepMetres,.05,5,"Integration step out of range");
     bound(secondsPerK,.1,30,"Flight time scale out of range");
     bound(windReservePerMetre,0,1,"Wind effect out of range");bound(crosswindDrag,0,1,"Crosswind drag out of range");
+    bound(windVariabilityScale,.1,100,"Wind variability scale out of range");
+    for(double v:{windHeadSpread,windTailSpread,windCrossSpread})bound(v,0,1,"Wind spread out of range");
+    bound(windHeadSaturation,0,100,"Headwind saturation out of range");
+    bound(windAdverseOnset,.1,100,"Wind adverse onset out of range");
+    bound(windAdverseExponent,1,10,"Wind adverse exponent out of range");
+    for(double v:{windHeadAdverseChance,windTailAdverseChance,windCrossAdverseChance})bound(v,0,1,"Wind adverse chance out of range");
+    for(double v:{windHeadAdverseLoss,windTailAdverseLoss,windCrossAdverseLoss})bound(v,0,10,"Wind adverse loss out of range");
     bound(windResponseMetres,0,100,"Wind response scale out of range");
     bound(earlyWindSensitivity,0,10,"Early phase sensitivity out of range");bound(lateWindSensitivity,0,10,"Late phase sensitivity out of range");
     bound(maximumWindAssistance,0,.99,"Wind assistance must remain below consumption");
@@ -77,11 +84,14 @@ double FlightModel::reserve(double quality,const Hill &hill,int gate,double prec
     return std::clamp((distance+gateEffect)*(1-loss),0.0,1000000.0);
 }
 
-FlightResult FlightModel::fly(double initialReserve,const Hill &hill,const WeatherField &weather,double startSeconds,bool capture) const
+FlightResult FlightModel::fly(double initialReserve,const Hill &hill,const WeatherField &weather,double startSeconds,bool capture,WindResponseSample reaction) const
 {
     hill.validate();bound(initialReserve,0,1000000,"Flight reserve out of range");
     bound(startSeconds,0,1e12-100000,"Flight start time out of range");
-    FlightResult result;result.reserve=initialReserve;
+    bound(reaction.variation,-1,1,"Wind response variation out of range");
+    bound(reaction.adverseQuantile,0,1,"Wind response quantile out of range");
+    bound(reaction.severity,0,1,"Wind response severity out of range");
+    FlightResult result;result.reserve=initialReserve;result.windResponse=reaction;
     const double limit=landingLimit(hill), geometryStart=hill.realHs*config.geometryStartRealHs;
     const double sectionWidth=hill.k/config.exposureSections;
     if(capture) {
@@ -120,9 +130,26 @@ FlightResult FlightModel::fly(double initialReserve,const Hill &hill,const Weath
             const double terrain=1+config.geometryResistance*progress*progress/(1-progress);
             const double phase=std::clamp(mid/hill.k,0.0,1.0);
             const double sensitivity=config.earlyWindSensitivity+(config.lateWindSensitivity-config.earlyWindSensitivity)*phase;
+            const double head=filtered(length), side=std::abs(wind.cross);
+            const auto activation=[&](double speed) {const double r=speed/config.windVariabilityScale;return r*r/(1+r*r);};
+            const double effectiveHead=head>0 && config.windHeadSaturation>0
+                ? head/std::hypot(1.0,head/config.windHeadSaturation):head;
+            const double spread=head>=0?config.windHeadSpread:config.windTailSpread;
             const double assistance=std::min(config.maximumWindAssistance*terrain,
-                config.windReservePerMetre*filtered(length)*sensitivity);
-            return length*(terrain*(1+config.crosswindDrag*wind.cross*wind.cross)-assistance);
+                config.windReservePerMetre*effectiveHead*sensitivity*(1+spread*activation(std::abs(head))*reaction.variation));
+            const auto adverse=[&](double speed,double chance,double loss) {
+                const double r=std::pow(speed/config.windAdverseOnset,config.windAdverseExponent);
+                const double probability=chance*r/(1+r);
+                // Fixed quantile, continuous onset even within one flight: crossing
+                // the event boundary must not cause a sudden reserve-consumption jump.
+                return reaction.adverseQuantile<probability
+                    ? loss*activation(speed)*reaction.severity*(1-reaction.adverseQuantile/probability):0.0;
+            };
+            const double extra=adverse(std::abs(head),head>=0?config.windHeadAdverseChance:config.windTailAdverseChance,
+                head>=0?config.windHeadAdverseLoss:config.windTailAdverseLoss)
+                +adverse(side,config.windCrossAdverseChance,config.windCrossAdverseLoss);
+            const double crossDrag=config.crosswindDrag*side*side*(1+config.windCrossSpread*activation(side)*reaction.variation);
+            return length*(terrain*(1+crossDrag+extra)-assistance);
         };
         double spent=cost(step);
         if(spent>remaining) {

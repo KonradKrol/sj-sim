@@ -15,8 +15,10 @@ potwierdzonym na danych rzeczywistych zawodów.
 `QualityModel` otrzymuje profil zawodnika, K, preferencję skoczni,
 kategorię wydarzenia i wstrzyknięte źródło losowości.
 
-- Jakość bazowa: `overallWeight × OVR + (1 − overallWeight) × forma`.
-  Domyślnie 70/30; oba parametry zawodnika pozostają niezależne, 1–100.
+- Jakość bazowa: `(1 − f) × OVR + f × forma`, gdzie
+  `f = clamp(1 − overallWeight + formHillAmplitude × tanh((K − formReferenceK) / formKScale), 0, 1)`.
+  Domyślnie 70/30 na K120; udział formy około 28,8% na K90 i 33% na K220.
+  Amplituda 0 wyłącza korektę. OVR i forma pozostają niezależne, 1–100.
 - Nie ma dwóch ukrytych umiejętności wybicia i lotu. Zawodnik bez perka
   specjalizacji zachowuje tę samą jakość na skoczniach premiujących
   wybicie lub lot.

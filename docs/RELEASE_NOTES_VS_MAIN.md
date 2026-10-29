@@ -87,7 +87,7 @@ w pojedynczych skokach; konkursy, sezony i nowy playground pozostają w integrac
   nie został jeszcze zweryfikowany — nie przedstawiać tej metody jako pełnej zgodności.
 
 Szczegóły, ograniczenia i wznowienie: [postęp v2](SIMULATION_V2_PROGRESS.md),
-[model silnika i pogody](SIMULATION_V2_ENGINE.md), [pełna specyfikacja](../NEW_SIMULATION.md).
+[model silnika i pogody](SIMULATION_V2_ENGINE.md), [pełna specyfikacja](NEW_SIMULATION.md).
 
 ## Uzupełnienie — start Qt Quick na Linuksie (27.10.2026)
 
@@ -700,7 +700,7 @@ Ta sekcja chroni przed skopiowaniem do release notes nieaktualnego opisu z wcze�
 - [Wyszukiwanie skoczni i aktualne informacje konkursu](COMPETITION_AND_HILL_SEARCH_2026-10-22.md).
 - [Optymalizacja masowej symulacji i silnika — pomiary przed/po](SIMULATION_PERFORMANCE_2026-10-22.md).
 
-- [Migracja i architektura](../QUICK_UI_MIGRATION.md).
+- [Migracja i architektura](QUICK_UI_MIGRATION.md).
 - [Pierwsze 10 błędów i 3 dodatkowe awarie](BUGFIX_AUDIT_2026-10-21.md).
 - [Pięć przebudowanych przepływów UX](UX_IMPROVEMENTS_2026-10-21.md).
 - [Wykorzystanie miejsca i szczegóły karty skoku](SPACE_AND_LAST_JUMP_2026-10-21.md).
@@ -774,7 +774,7 @@ Dla każdej usterki wykonano test odtwarzający błąd przed poprawką. Szczegó
 
 ### 19.8. Przygotowanie środowiska Windows
 
-- Dodano [WINDOWS_SETUP.MD](../WINDOWS_SETUP.MD) w katalogu głównym: komplet zależności, Qt 6.8.3/MSVC 2022 x64 zgodne z konfiguracją CI, instalacja ręczna i przez aqt, środowisko PowerShell, qmake, dane obok pliku wykonywalnego, testy, diagnostyka i pakowanie QML z `--qmldir`. Instrukcja nie zmienia konfiguracji aplikacji; nie wykonywano jej na Windowsie w tej sesji.
+- Dodano [WINDOWS_SETUP.MD](WINDOWS_SETUP.MD) w katalogu głównym: komplet zależności, Qt 6.8.3/MSVC 2022 x64 zgodne z konfiguracją CI, instalacja ręczna i przez aqt, środowisko PowerShell, qmake, dane obok pliku wykonywalnego, testy, diagnostyka i pakowanie QML z `--qmldir`. Instrukcja nie zmienia konfiguracji aplikacji; nie wykonywano jej na Windowsie w tej sesji.
 
 ## 20. Awans, remisy i ergonomia konkursów — 24.10.2026
 
@@ -1196,9 +1196,9 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 
 | Status | Plik | + | − |
 | --- | --- | ---: | ---: |
-| A | [QML_COMPETITION_LIVE.md](../QML_COMPETITION_LIVE.md) | 42 | 0 |
-| A | [QML_COMPETITION_PREVIEW.md](../QML_COMPETITION_PREVIEW.md) | 60 | 0 |
-| A | [QUICK_UI_MIGRATION.md](../QUICK_UI_MIGRATION.md) | 314 | 0 |
+| A | [QML_COMPETITION_LIVE.md](QML_COMPETITION_LIVE.md) | 42 | 0 |
+| A | [QML_COMPETITION_PREVIEW.md](QML_COMPETITION_PREVIEW.md) | 60 | 0 |
+| A | [QUICK_UI_MIGRATION.md](QUICK_UI_MIGRATION.md) | 314 | 0 |
 | A | [docs/ATHLETE_LIBRARY_2026-10-27.md](../docs/ATHLETE_LIBRARY_2026-10-27.md) | 34 | 0 |
 | A | [docs/ATHLETE_PATCHES_UX_2026-10-26.md](../docs/ATHLETE_PATCHES_UX_2026-10-26.md) | 46 | 0 |
 | A | [docs/ATHLETE_STUDIO_2026-10-26.md](../docs/ATHLETE_STUDIO_2026-10-26.md) | 76 | 0 |
@@ -1677,7 +1677,7 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 | Status | Plik | + | − |
 | --- | --- | ---: | ---: |
 | M | [.gitignore](../.gitignore) | 5 | 0 |
-| A | [WINDOWS_SETUP.MD](../WINDOWS_SETUP.MD) | 293 | 0 |
+| A | [WINDOWS_SETUP.MD](WINDOWS_SETUP.MD) | 293 | 0 |
 | M | [assets.qrc](../assets.qrc) | 1 | 0 |
 | A | [examples/playground/form.json](../examples/playground/form.json) | 106 | 0 |
 | A | [examples/playground/randomness.json](../examples/playground/randomness.json) | 94 | 0 |

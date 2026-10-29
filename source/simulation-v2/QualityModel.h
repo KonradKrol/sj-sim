@@ -18,6 +18,9 @@ struct Athlete {
 
 struct QualityParameters {
     double overallWeight=.70;
+    double formReferenceK=120;
+    double formKScale=100;
+    double formHillAmplitude=.04; // maximum change of form share, in either direction
     double negativeInfluence=.65;
     NoiseShape noise=NoiseShape::Normal;
     std::array<double,4> eventDeviation{{7,5.8,4.2,3.5}};

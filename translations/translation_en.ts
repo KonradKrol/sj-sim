@@ -12711,7 +12711,107 @@ Check that you selected the correct file.</translation>
             <source>Lekki deszcz nie musi hamować. Ulewa mocno pogarsza skoki.</source>
             <translation>Light rain need not slow the jump. Heavy rain makes jumps substantially worse.</translation>
         </message>
-    </context>
+        <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="11"/>
+        <source>K odniesienia udziału formy</source>
+        <translation>Reference K for form share</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="12"/>
+        <source>Skala zmiany udziału formy względem K</source>
+        <translation>Scale of form share change with K</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="13"/>
+        <source>Maksymalna zmiana udziału formy</source>
+        <translation>Maximum form share adjustment</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="37"/>
+        <source>Siła wiatru aktywująca rozrzut</source>
+        <translation>Wind strength activating response spread</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="42"/>
+        <source>Siła wiatru aktywująca złe zdarzenia</source>
+        <translation>Wind strength activating adverse events</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="43"/>
+        <source>Stromość narastania szansy złego zdarzenia</source>
+        <translation>Adverse event probability steepness</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="44"/>
+        <source>Maksymalna szansa złego zdarzenia: pod narty</source>
+        <translation>Maximum adverse event probability: headwind</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="45"/>
+        <source>Siła złego zdarzenia: pod narty</source>
+        <translation>Adverse event severity: headwind</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="46"/>
+        <source>Maksymalna szansa złego zdarzenia: w plecy</source>
+        <translation>Maximum adverse event probability: tailwind</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="47"/>
+        <source>Siła złego zdarzenia: w plecy</source>
+        <translation>Adverse event severity: tailwind</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="48"/>
+        <source>Maksymalna szansa złego zdarzenia: boczny</source>
+        <translation>Maximum adverse event probability: crosswind</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="49"/>
+        <source>Siła złego zdarzenia: boczny</source>
+        <translation>Adverse event severity: crosswind</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="125"/>
+        <source>Udział formy = 1 − udział OVR + amplituda × tanh((K − K odniesienia) / skala), ograniczony do 0–1. Amplituda 0 wyłącza zależność od K.</source>
+        <translation>Form share = 1 − OVR share + amplitude × tanh((K − reference K) / scale), bounded to 0–1. Zero amplitude disables the dependence on K.</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="126"/>
+        <source>Szansa = maksimum × r^wykładnik / (1 + r^wykładnik), gdzie r to siła wiatru / skala złych zdarzeń. Siła zdarzenia zwiększa zużycie zapasu lotu; zero wyłącza stratę.</source>
+        <translation>Probability = maximum × r^exponent / (1 + r^exponent), where r is wind strength / adverse event scale. Event severity increases flight reserve consumption; zero disables the loss.</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="127"/>
+        <source>Pomoc wiatru pod narty rośnie coraz wolniej. Zero wyłącza nasycenie. Złe zdarzenia nadal zależą od rzeczywistej siły wiatru.</source>
+        <translation>Headwind assistance grows progressively more slowly. Zero disables saturation. Adverse events still depend on actual wind strength.</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="128"/>
+        <source>Rozrzut rośnie płynnie z siłą wiatru. Reakcja jest losowana raz na skok, nie w każdym kroku lotu. Zerowy rozrzut wyłącza ten składnik losowości.</source>
+        <translation>Spread grows smoothly with wind strength. Response is sampled once per jump, rather than at every integration step. Zero spread disables this randomness component.</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="38"/>
+        <source>Rozrzut wykorzystania wiatru pod narty</source>
+        <translation>Headwind response spread</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="39"/>
+        <source>Rozrzut strat w wietrze w plecy</source>
+        <translation>Tailwind loss spread</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="40"/>
+        <source>Rozrzut strat w wietrze bocznym</source>
+        <translation>Crosswind loss spread</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="41"/>
+        <source>Skala nasycenia pomocy wiatru pod narty</source>
+        <translation>Headwind assistance saturation scale</translation>
+    </message>
+</context>
     <context>
         <name>QuickBridge</name>
         <message>

@@ -4,8 +4,8 @@ Instrukcja dla osoby pobierającej projekt oraz dla Codexa przygotowującego śr
 
 ## 1. Najważniejsze informacje dla Codexa
 
-- Projekt buduje **qmake**, plik wejściowy: [`sj-sim.pro`](sj-sim.pro). Standard języka: **C++17**.
-- Zalecany zestaw Windows: **Qt 6.8.3 / MSVC 2022 / x64**. Takie wersje wskazuje [workflow Windows](.github/workflows/release.yml); nie wybieraj automatycznie najnowszego Qt ani innego kompilatora.
+- Projekt buduje **qmake**, plik wejściowy: [`sj-sim.pro`](../sj-sim.pro). Standard języka: **C++17**.
+- Zalecany zestaw Windows: **Qt 6.8.3 / MSVC 2022 / x64**. Takie wersje wskazuje [workflow Windows](../.github/workflows/release.yml); nie wybieraj automatycznie najnowszego Qt ani innego kompilatora.
 - Weryfikacja Windows x64 (22.10.2026): Qt 6.8.3, Build Tools 2022 17.14.42, MSVC 19.44.35229 i SDK 10.0.26100.0. Zbudowano Release Quick i program testowy; uruchomiono natywne okno aplikacji, a `--backend-only` i `--author-only` zakończyły się kodem 0. Pełny zestaw GUI i osobny build Widgets-only nie były wykonywane na Windowsie. Wcześniejsze testy pełnego zestawu wykonywano na Linuxie z Qt 5.15.3.
 - Nowy interfejs jest w `source/UI/Quick`. Eksperyment `source/UI/Competition/Quick` jest starszą, odrębną implementacją. **Nie dodawaj `CONFIG+=competition_quick` do zwykłego buildu.**
 - Widoki Quick nadal korzystają z kontrolerów Widgets. Potrzebne są oba zestawy bibliotek. `--widgets` przełącza UI podczas uruchamiania; `CONFIG+=widgets_only` tworzy osobny build bez Quick.
@@ -247,9 +247,9 @@ Weryfikacja poprawek Windows (22.10.2026, Release): oba zakresy zakończyły si�
 
 Inne przydatne zakresy: `--single-jumps-only`, `--ux-only`, `--workflow-only`, `--appearance-only`; pomiar: `--single-jumps-benchmark`. Testy pracują na tymczasowych kopiach danych i ustawień, ale pliki bazowe nadal muszą znajdować się obok testowego `.exe`. Obrazy trafiają do `ui-renders` przy tym pliku. Testy GUI trzeba zweryfikować również na Windowsie — pozytywny wynik linuksowego renderera offscreen nie potwierdza wszystkich zachowań Windows/GPU.
 
-`--round-points-only` sprawdza normalnie widoczny reset punktów przed serią oraz rozwijane wagi zaawansowane. Obliczenia i zgodność starych zapisów są częścią regresji backendu. Opis funkcji: [reset i wagi punktów](docs/ROUND_POINT_WEIGHTS.md).
+`--round-points-only` sprawdza normalnie widoczny reset punktów przed serią oraz rozwijane wagi zaawansowane. Obliczenia i zgodność starych zapisów są częścią regresji backendu. Opis funkcji: [reset i wagi punktów](ROUND_POINT_WEIGHTS.md).
 
-Aktualizacja 23.10.2026: natywne testy sprawdzają także ukrycie kontrolerów przed pierwszym `Show` oraz systemowe `IsWindowVisible`. `--race-options-only` klika „Przebieg”, „Warunki” i „Skok” przy dwóch szerokościach, sprawdza ich widoczną zawartość i zamyka panele. Szczegóły poprawek i zgodności starych zapisów z kodami FIS: [raport Windows UI i FIS](docs/WINDOWS_UI_AND_FIS_2026-10-23.md).
+Aktualizacja 23.10.2026: natywne testy sprawdzają także ukrycie kontrolerów przed pierwszym `Show` oraz systemowe `IsWindowVisible`. `--race-options-only` klika „Przebieg”, „Warunki” i „Skok” przy dwóch szerokościach, sprawdza ich widoczną zawartość i zamyka panele. Szczegóły poprawek i zgodności starych zapisów z kodami FIS: [raport Windows UI i FIS](WINDOWS_UI_AND_FIS_2026-10-23.md).
 
 Do testu zgodności Widgets utwórz **osobny** katalog, np. `build-win-widgets`, i powtórz build z `CONFIG+=release CONFIG+=widgets_only`, bez `quick_ui_smoke`. Przygotuj jego dane tak samo. Nie usuwaj Widgets ani jego zależności z normalnego buildu Quick.
 
@@ -290,7 +290,7 @@ Sprawdź zawartość paczki: `.exe`, biblioteki Qt, plugin `platforms\qwindows.d
 
 > Przeczytaj WINDOWS_SETUP.MD i sj-sim.pro. Przygotuj środowisko Windows x64 do rozwoju aktualnej gałęzi feature/qml-competition-config. Wykryj istniejące MSVC/SDK/Qt, doinstaluj brakujące zależności zgodnie z instrukcją, zbuduj domyślny interfejs Quick w osobnym buildzie, przygotuj dane obok właściwego .exe i uruchom aplikację oraz odpowiednie testy. Nie pracuj na main, nie nadpisuj istniejącego userData i nie używaj starego eksperymentu competition_quick. Podaj wersje narzędzi, ścieżkę do .exe, wynik testów i ewentualny konkretny błąd wymagający dalszej poprawki.
 
-Dalszy kontekst: [architektura Qt Quick](QUICK_UI_MIGRATION.md), [pełny wykaz zmian](docs/RELEASE_NOTES_VS_MAIN.md), [ostatni stan prac](docs/RESUME_2026-10-22.md). Instrukcje Qt z `.agents/skills` są dołączone do repozytorium i mogą być używane przez Codexa także na Windowsie.
+Dalszy kontekst: [architektura Qt Quick](QUICK_UI_MIGRATION.md), [pełny wykaz zmian](RELEASE_NOTES_VS_MAIN.md), [ostatni stan prac](RESUME_2026-10-22.md). Instrukcje Qt z `.agents/skills` są dołączone do repozytorium i mogą być używane przez Codexa także na Windowsie.
 
 ## Samodzielne testy rdzenia v2 pod Windows
 
@@ -301,4 +301,4 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test-simulation-v2-c
 ```
 
 Skrypt uruchamia osobno testy RNG, jakości, ciągłej pogody i pełnego silnika.
-Playground v2, CLI, parametry i eksporty: `docs/PLAYGROUND_V2.md`.
+Playground v2, CLI, parametry i eksporty: `PLAYGROUND_V2.md`.

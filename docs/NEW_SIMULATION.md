@@ -1,6 +1,6 @@
 > **Wznowienie pracy w nowej sesji:** najpierw przeczytaj
-> [docs/SIMULATION_V2_PROGRESS.md](docs/SIMULATION_V2_PROGRESS.md), potem
-> [docs/SIMULATION_V2_ENGINE.md](docs/SIMULATION_V2_ENGINE.md).
+> [docs/SIMULATION_V2_PROGRESS.md](SIMULATION_V2_PROGRESS.md), potem
+> [docs/SIMULATION_V2_ENGINE.md](SIMULATION_V2_ENGINE.md).
 > Ten plik jest specyfikacją i zawiera także już wykonane polecenia startowe.
 > Gałąź `feature/simulation-v2` już istnieje. Nie twórz jej ponownie, nie cofaj
 > wykonanych zmian i nie pracuj na mainie. Implementacja całości trwa;

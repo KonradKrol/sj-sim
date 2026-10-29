@@ -1,6 +1,6 @@
 # Simulation v2 — postęp i punkty wznowienia
 
-**Ostatnia aktualizacja: 28.10.2026. To główny plik przekazania pracy kolejnej
+**Ostatnia aktualizacja: 29.10.2026. To główny plik przekazania pracy kolejnej
 sesji AI, także na innym komputerze po `git pull`. Zadanie nie jest zakończone.**
 
 ## Start kolejnej sesji
@@ -8,7 +8,7 @@ sesji AI, także na innym komputerze po `git pull`. Zadanie nie jest zakończone
 1. Sprawdź `git status --short --branch`. Pracuj na istniejącej gałęzi
    `feature/simulation-v2`; pobieraj jej zmiany bez nadpisywania lokalnej pracy.
    Nie modyfikuj maina. Nie zaczynaj implementacji silnika ponownie.
-2. Przeczytaj ten plik, pełne [NEW_SIMULATION.md](../NEW_SIMULATION.md)
+2. Przeczytaj ten plik, pełne [NEW_SIMULATION.md](NEW_SIMULATION.md)
    i [opis silnika](SIMULATION_V2_ENGINE.md). Odpowiedzi na 12 pytań są już
    rozstrzygnięte w specyfikacji, nie trzeba ich ponownie zadawać.
 3. Pracuj samodzielnie, **bez subagentów** — wyraźna prośba użytkownika.
@@ -62,7 +62,7 @@ Skrypt Quick Test przygotowuje izolowane dane testowe. Pełny domyślny smoke-te
 jest duży; do etapu dobieraj konkretne przypadki. `SJ_BUILD_JOBS` steruje liczbą
 zadań kompilacji. Lokalnie używano Qt 5.15.3 na Linuksie; staging Qt jest
 automatycznie wykrywany przez skrypty. **Nie zweryfikowano tego etapu na Qt 6
-ani Windowsie.** Instrukcja Windows: [WINDOWS_SETUP.MD](../WINDOWS_SETUP.MD).
+ani Windowsie.** Instrukcja Windows: [WINDOWS_SETUP.MD](WINDOWS_SETUP.MD).
 
 Wyniki dotychczasowych sprawdzeń:
 
@@ -169,7 +169,7 @@ Szczegóły każdego etapu są w `git show <commit>`. Ten wykaz nie zastępuje
 checklisty prac pozostałych poniżej.
 
 Gałąź: `feature/simulation-v2`, utworzona z `6095d31` gałęzi
-`feature/qml-competition-config`. Wymagania: [NEW_SIMULATION.md](../NEW_SIMULATION.md).
+`feature/qml-competition-config`. Wymagania: [NEW_SIMULATION.md](NEW_SIMULATION.md).
 Stan: gotowy i przetestowany rdzeń v2 oraz adapter nowych profili do gry.
 Wytyczne i wszystkie 12 odpowiedzi zapisano w specyfikacji. **Pełna migracja
 nie jest zakończona**: dotychczasowe dane nadal używają starego silnika,
@@ -1126,7 +1126,7 @@ stare ścieżki bulk i zmiana języków. Windows/Qt6 tego etapu bez weryfikacji.
 ## Najnowszy stan — poprawki wiatru po manipulacji ukończone
 
 Punktem wejścia na innym komputerze jest teraz
-[`RESUME-28-10-2026-simulation.MD`](../RESUME-28-10-2026-simulation.MD).
+[`RESUME-28-10-2026-simulation.MD`](RESUME-28-10-2026-simulation.MD).
 Opisuje gotowe etapy, konkretne pliki, testy i pozostałą kolejkę.
 
 Wszystkie nowe uwagi wiatrowe z listy powyżej zostały obsłużone:
@@ -1230,3 +1230,35 @@ starego/nowego edytora. Nowy katalog i oba studia mają osobne regresje.
 
 Następnie: strojenie/kalibracja według oceny użytkownika, bez automatycznego
 nadpisywania normalnej gry. Automatyczny rozwój formy nadal odłożony.
+# 29.10.2026 — przygotowanie do pełnej kalibracji
+
+- Uporządkowano główny katalog: dokumenty przeniesione do docs, poprawione linki;
+  niczego nie skasowano. README pozostaje w root.
+- Przejrzano źródła laboratorium Kariera Skoczka z archiwum użytkownika.
+  Projekt osobnego laboratorium i odpowiedzi na osiem pytań zapisano w
+  [BALANCE_LAB_DESIGN.md](BALANCE_LAB_DESIGN.md). Dotychczasowy playground zostaje.
+- Użytkownik potwierdził rozszerzalne obszary, dane i reguły po lewej, wykresy obok,
+  badanie jednego skoczka i całej stawki, trzy serie, pełną analizę pogody/lotu/
+  rekompensat z odtwarzaniem oraz profile z osobnym zastosowaniem w grze.
+- Docelowo gracz ma otrzymać tylko 1–5 prostych ustawień. Publiczny import silnika
+  i system modowania są poza obecnym zakresem.
+- Wdrożono płynny udział formy zależny od K (domyślnie 28,8/30/33% dla
+  K90/120/220) oraz losową reakcję na wiatr: rozrzut zależny od siły,
+  nasycenie pomocy pod narty i osobne szanse/siły strat dla trzech kierunków.
+- Ograniczona reakcja jest losowana raz na skok, we własnym strumieniu;
+  manipulacja dystansu używa tej samej reakcji. Przejście złego zdarzenia jest
+  ciągłe także dla pojedynczego skoku. Rzeczywiste pole i pomiar pozostają jawne.
+- 16 nowych współczynników jest w wspólnym rejestrze UI/CLI (łącznie 215).
+  Eksporty szczegółów zawierają wylosowaną reakcję. EN/CS uzupełnione.
+- Damped Cauchy referencji x/(1+d*x²) nie został skopiowany do wiatru: największe
+  losowania wracają do zera. Użyto tanh(normalnego) plus jawne ryzyko strat.
+- Weryfikacja rdzenia Windows/MSVC: wszystkie cztery zestawy PASS, w tym nowe
+  próby populacyjne i zbieżność kroku. Kontrola tłumaczeń: zero unfinished i
+  błędów placeholderów. Wyniki budowy/integracji dopisane po zakończeniu poniżej.
+- Końcowa kompilacja Windows/Qt 6.8.3 aplikacji i testów PASS; aktualny exe
+  pozostaje w build-win/release. Natywne --playground-only,
+  --simulation-v2-only i --translation-only PASS na końcowym kodzie.
+- CLI PASS: powtarzalna analiza, porównania przy 1/4 wątkach, pomiar niezależny
+  od fizycznego lotu, cel kalibracji OVR90–70 (15,3574 m) oraz 215 ustawień.
+  Ziarno reakcji wiatrowej jest wydzielane przed losowaniem jakości: zmiana jej
+  rozkładu lub wyzerowanie odchylenia nie zmienia reakcji na wiatr (nowa regresja).

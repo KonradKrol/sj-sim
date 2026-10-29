@@ -20,9 +20,9 @@ double precipitation(const JumpRequest &input,const WeatherField &weather)
     return std::clamp(input.manipulation.precipitation.apply(value),0.0,10.0);
 }
 
-FlightResult manipulatedFlight(const JumpRequest &input,const FlightModel &model,const WeatherField &weather,double reserve,bool &limited)
+FlightResult manipulatedFlight(const JumpRequest &input,const FlightModel &model,const WeatherField &weather,double reserve,bool &limited,WindResponseSample response={})
 {
-    auto flight=model.fly(reserve,input.hill,weather,input.startSeconds,input.captureExposure);
+    auto flight=model.fly(reserve,input.hill,weather,input.startSeconds,input.captureExposure,response);
     if(!input.manipulation.distance.active())return flight;
     const double desired=input.manipulation.distance.apply(flight.distance);
     // A requested result is realised by adjusting starting reserve and flying
@@ -35,9 +35,9 @@ FlightResult manipulatedFlight(const JumpRequest &input,const FlightModel &model
     double lo=0,hi=1000000;
     for(int i=0;i<36;++i) {
         const double mid=(lo+hi)/2;
-        if(model.fly(mid,input.hill,weather,input.startSeconds,false).distance<target)lo=mid;else hi=mid;
+        if(model.fly(mid,input.hill,weather,input.startSeconds,false,response).distance<target)lo=mid;else hi=mid;
     }
-    return model.fly((lo+hi)/2,input.hill,weather,input.startSeconds,input.captureExposure);
+    return model.fly((lo+hi)/2,input.hill,weather,input.startSeconds,input.captureExposure,response);
 }
 }
 
@@ -51,12 +51,19 @@ JumpResult Engine::simulate(const JumpRequest &input,RandomSource &rng,const Wea
     validate(input);JumpResult result;result.manipulated=input.manipulation.active();
     if(input.skip) {result.status=JumpStatus::DidNotStart;return result;}
     if(rng.event(input.manipulation.dsqProbability.value_or(input.dsqProbability))) {result.status=JumpStatus::Disqualified;return result;}
+    // Reserve this seed before sampling quality: changing its distribution or
+    // setting its deviation to zero must not change the wind-response draw.
+    const Seed responseSeed=rng.next();
     result.quality=qualityModel.sample(input.athlete,input.hill.k,input.hill.takeoffBias,input.event,rng);
     result.quality.manipulationEffect=input.manipulation.quality.apply(result.quality.value())-result.quality.value();
     const double precip=precipitation(input,weather);
     const double reserve=flightModel.reserve(result.quality.value(),input.hill,input.scoring.juryGate-input.scoring.coachReduction,
         precip,weather.wind(0,input.startSeconds).head,weather.precipitationKind());
-    result.flight=manipulatedFlight(input,flightModel,weather,reserve,result.distanceLimitedByGeometry);
+    // Fixed separate stream: identical input seeds couple weather/no-weather trials,
+    // while landing draws do not depend on the number of integration steps.
+    SeededRandom responseRng(responseSeed);
+    const WindResponseSample response{std::tanh(responseRng.normal(0,1)),responseRng.unit(),responseRng.uniform(.5,1)};
+    result.flight=manipulatedFlight(input,flightModel,weather,reserve,result.distanceLimitedByGeometry,response);
     result.flight.precipitation=precip;
     result.flight.precipitationKind=weather.precipitationKind();
     result.measuredDistance=std::round(result.flight.distance*2)/2;

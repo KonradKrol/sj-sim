@@ -1,5 +1,10 @@
 # Sj.Sim
 
+Development documentation: [Windows setup](docs/WINDOWS_SETUP.MD),
+[simulation v2 progress](docs/SIMULATION_V2_PROGRESS.md),
+[current playground](docs/PLAYGROUND_V2.md), and
+[new balance laboratory design](docs/BALANCE_LAB_DESIGN.md).
+
 Sj.Sim is a ski jumping results simulator with a graphical interface built using Qt Widgets (C++).
 
 The project was mainly developed between January and November 2023.

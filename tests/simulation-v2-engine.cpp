@@ -76,6 +76,28 @@ int main()
         const double a=flight.fly(125,hill,calm,0,false).distance,b=flight.fly(145,hill,calm,0,false).distance,c=flight.fly(165,hill,calm,0,false).distance;
         check(c-b<b-a,"geometry makes additional long-jump metres progressively harder");
 
+        // Response is coherent and reproducible, not resampled per integration step.
+        const WindResponseSample good{1,1,1},bad{-1,0,1};
+        ConstantWeather light,strong,back,side;
+        light.value={.1,0};strong.value={6,0};back.value={-6,0};side.value={0,6};
+        check(flight.fly(114,hill,strong,0,false,good).distance>flight.fly(114,hill,strong,0,false,bad).distance+10,"strong headwind has broad response range");
+        check(flight.fly(114,hill,strong,0,false,bad).distance<flight.fly(114,hill,calm,0,false).distance,"strong headwind can hurt");
+        near(flight.fly(114,hill,light,0,false,good).distance,flight.fly(114,hill,light,0,false,{-1,1,1}).distance,.02,"light wind almost independent of response");
+        for(auto *w:{&back,&side})check(flight.fly(114,hill,*w,0,false,bad).distance<flight.fly(114,hill,*w,0,false,{-1,1,1}).distance-5,"adverse tail and side responses cause extra loss");
+        near(flight.fly(114,hill,strong,0,false,bad).distance,fine.fly(114,hill,strong,0,false,bad).distance,.15,"stochastic response converges across integration steps");
+        near(flight.fly(114,hill,calm,0,false,bad).distance,flight.fly(114,hill,calm,0,false,good).distance,1e-12,"response cannot alter calm flight");
+        rejects([]{auto p=FlightParameters();p.windAdverseOnset=0;FlightModel invalid(p);});
+        // Remove quality noise to isolate wind-response population statistics.
+        EngineParameters isolated;isolated.quality.eventDeviation.fill(0);Engine windEngine(isolated);
+        SeededRandom coupledA(123),coupledB(123);
+        const auto noisyResponse=engine.simulate(request,coupledA,strong,measurement).flight.windResponse;
+        const auto quietResponse=windEngine.simulate(request,coupledB,strong,measurement).flight.windResponse;
+        near(noisyResponse.variation,quietResponse.variation,1e-12,"quality noise does not change wind response stream");
+        near(noisyResponse.adverseQuantile,quietResponse.adverseQuantile,1e-12,"quality noise does not change adverse event quantile");
+        double weakSum=0,weakSquares=0,strongSum=0,strongSquares=0;int hurt=0;
+        for(int i=0;i<3000;++i){SeededRandom a(i),b(i);const double x=windEngine.simulate(request,a,light,measurement).flight.distance,y=windEngine.simulate(request,b,strong,measurement).flight.distance;weakSum+=x;weakSquares+=x*x;strongSum+=y;strongSquares+=y*y;hurt+=y<windEngine.previewDistance(request,calm);}
+        check(strongSquares/3000-std::pow(strongSum/3000,2)>weakSquares/3000-std::pow(weakSum/3000,2)+1,"strong wind increases population spread");
+        check(hurt>50 && hurt<2000,"strong headwind has both beneficial and harmful outcomes");
         LandingModel landing;double previousFall=0;
         for(double distance=20;distance<170;distance+=.1) {
             const auto p=landing.probabilities(distance,134,0);double sum=0;

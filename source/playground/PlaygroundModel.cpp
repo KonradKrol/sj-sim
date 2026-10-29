@@ -8,6 +8,9 @@ namespace Playground {
 namespace {
 template<class F> void visitEngine(SimulationV2::EngineParameters &m,F f) {
     f("quality.overallWeight",QObject::tr("Udział OVR"),"quality",m.quality.overallWeight,0,1,0.01,"1");
+    f("quality.formReferenceK",QObject::tr("K odniesienia udziału formy"),"quality",m.quality.formReferenceK,1,400,1,"m");
+    f("quality.formKScale",QObject::tr("Skala zmiany udziału formy względem K"),"quality",m.quality.formKScale,1,1000,1,"m");
+    f("quality.formHillAmplitude",QObject::tr("Maksymalna zmiana udziału formy"),"quality",m.quality.formHillAmplitude,0,1,.005,"1");
     f("quality.negativeInfluence",QObject::tr("Udział ujemnego wpływu losowości"),"quality",m.quality.negativeInfluence,0,1,0.01,"1");
     f("quality.noise",QObject::tr("Rozkład: 0 normalny, 1 Laplace’a"),"quality",m.quality.noise,0,1,1,"1");
     f("quality.hillPreferenceStrength",QObject::tr("Wpływ preferencji skoczni"),"quality",m.quality.hillPreferenceStrength,0,10,0.05,"1");
@@ -31,6 +34,19 @@ template<class F> void visitEngine(SimulationV2::EngineParameters &m,F f) {
     f("flight.earlyWindSensitivity",QObject::tr("Wrażliwość na wiatr na początku"),"flight",m.flight.earlyWindSensitivity,0,10,0.05,"1");
     f("flight.lateWindSensitivity",QObject::tr("Wrażliwość na wiatr w końcu lotu"),"flight",m.flight.lateWindSensitivity,0,10,0.05,"1");
     f("flight.maximumWindAssistance",QObject::tr("Maksymalna pomoc wiatru"),"flight",m.flight.maximumWindAssistance,0,0.99,0.01,"1");
+    f("flight.windVariabilityScale",QObject::tr("Siła wiatru aktywująca rozrzut"),"flight",m.flight.windVariabilityScale,0.1,100,0.1,"m/s");
+    f("flight.windHeadSpread",QObject::tr("Rozrzut wykorzystania wiatru pod narty"),"flight",m.flight.windHeadSpread,0,1,0.01,"1");
+    f("flight.windTailSpread",QObject::tr("Rozrzut strat w wietrze w plecy"),"flight",m.flight.windTailSpread,0,1,0.01,"1");
+    f("flight.windCrossSpread",QObject::tr("Rozrzut strat w wietrze bocznym"),"flight",m.flight.windCrossSpread,0,1,0.01,"1");
+    f("flight.windHeadSaturation",QObject::tr("Skala nasycenia pomocy wiatru pod narty"),"flight",m.flight.windHeadSaturation,0,100,0.1,"m/s");
+    f("flight.windAdverseOnset",QObject::tr("Siła wiatru aktywująca złe zdarzenia"),"flight",m.flight.windAdverseOnset,0.1,100,0.1,"m/s");
+    f("flight.windAdverseExponent",QObject::tr("Stromość narastania szansy złego zdarzenia"),"flight",m.flight.windAdverseExponent,1,10,0.1,"1");
+    f("flight.windHeadAdverseChance",QObject::tr("Maksymalna szansa złego zdarzenia: pod narty"),"flight",m.flight.windHeadAdverseChance,0,1,0.01,"1");
+    f("flight.windHeadAdverseLoss",QObject::tr("Siła złego zdarzenia: pod narty"),"flight",m.flight.windHeadAdverseLoss,0,10,0.01,"1");
+    f("flight.windTailAdverseChance",QObject::tr("Maksymalna szansa złego zdarzenia: w plecy"),"flight",m.flight.windTailAdverseChance,0,1,0.01,"1");
+    f("flight.windTailAdverseLoss",QObject::tr("Siła złego zdarzenia: w plecy"),"flight",m.flight.windTailAdverseLoss,0,10,0.01,"1");
+    f("flight.windCrossAdverseChance",QObject::tr("Maksymalna szansa złego zdarzenia: boczny"),"flight",m.flight.windCrossAdverseChance,0,1,0.01,"1");
+    f("flight.windCrossAdverseLoss",QObject::tr("Siła złego zdarzenia: boczny"),"flight",m.flight.windCrossAdverseLoss,0,10,0.01,"1");
     f("flight.geometryStartRealHs",QObject::tr("Początek oporu zeskoku / real HS"),"flight",m.flight.geometryStartRealHs,0.5,1,0.01,"1");
     f("flight.usableLandingBeyondRealHsAtK",QObject::tr("Przedłużenie zeskoku / K"),"flight",m.flight.usableLandingBeyondRealHsAtK,0.01,0.5,0.01,"1");
     f("flight.geometryResistance",QObject::tr("Opór wypłaszczonego zeskoku"),"flight",m.flight.geometryResistance,0.01,100,0.1,"1");
@@ -105,7 +121,10 @@ template<class F> void visitMeasurement(SimulationV2::FieldWindMeasurementParame
     f("measurement.weightStrength",QObject::tr("Siła ważenia pomiaru"),"measurement",m.weightStrength,0,10,0.1,"1");
 }
 QString effectDescription(const QString &key,const QString &group) {
-    if(key=="quality.overallWeight")return QObject::tr("Udział OVR w jakości bazowej. Pozostała część pochodzi z formy; 0,70 oznacza 70% OVR i 30% formy.");
+    if(key.startsWith("quality.form") || key=="quality.overallWeight")return QObject::tr("Udział formy = 1 − udział OVR + amplituda × tanh((K − K odniesienia) / skala), ograniczony do 0–1. Amplituda 0 wyłącza zależność od K.");
+    if(key.startsWith("flight.wind") && key.contains("Adverse"))return QObject::tr("Szansa = maksimum × r^wykładnik / (1 + r^wykładnik), gdzie r to siła wiatru / skala złych zdarzeń. Siła zdarzenia zwiększa zużycie zapasu lotu; zero wyłącza stratę.");
+    if(key=="flight.windHeadSaturation")return QObject::tr("Pomoc wiatru pod narty rośnie coraz wolniej. Zero wyłącza nasycenie. Złe zdarzenia nadal zależą od rzeczywistej siły wiatru.");
+    if(key=="flight.windVariabilityScale" || key.endsWith("Spread"))return QObject::tr("Rozrzut rośnie płynnie z siłą wiatru. Reakcja jest losowana raz na skok, nie w każdym kroku lotu. Zerowy rozrzut wyłącza ten składnik losowości.");
     if(key=="quality.negativeInfluence")return QObject::tr("Udział siły losowych strat w łącznym wpływie losowości, nie odsetek słabych skoków.");
     if(key.startsWith("curve."))return QObject::tr("Punkty K muszą rosnąć, a udział wybicia nie może rosnąć. Krzywa dotyczy preferencji skoczni i specjalizacji, nie ukrytego skilla.");
     if(group=="quality")return QObject::tr("Parametr jakości lub perka. Poziomy perków: 0 brak, 1–3 siła. Serie: 0 trening, 1 próba, 2 kwalifikacje, 3 konkurs.");

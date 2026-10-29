@@ -48,6 +48,11 @@ int main()
         Athlete athlete;athlete.overall=90;athlete.form=30;
         auto q=model.baseline(athlete,120,0,EventKind::Competition);
         near(q.overallAndForm,72,1e-12,"OVR and independent form use 70/30");
+        check(model.baseline(athlete,70,0,EventKind::Competition).overallAndForm>q.overallAndForm,"weak form matters less on small hills");
+        check(model.baseline(athlete,220,0,EventKind::Competition).overallAndForm<q.overallAndForm,"weak form matters more on flying hills");
+        QualityParameters flatForm;flatForm.formHillAmplitude=0;
+        near(QualityModel(flatForm).baseline(athlete,220,0,EventKind::Competition).overallAndForm,q.overallAndForm,1e-12,"form hill effect can be disabled");
+        rejects([]{auto p=QualityParameters();p.formKScale=0;QualityModel invalid(p);});
         near(model.baseline(athlete,120,.55,EventKind::Competition).value(),q.value(),1e-12,"neutral athlete unaffected by hill preference");
         athlete.perks[1]=3;
         check(model.baseline(athlete,200,0,EventKind::Competition).hillEffect>0,"flier benefits on big hills");

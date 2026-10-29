@@ -1,5 +1,14 @@
 # Laboratorium symulacji v2
 
+Aktualizacja 29.10.2026: silnik ma zależność udziału formy od K i losową,
+spójną podczas lotu reakcję na wiatr. Wszystkie 16 nowych współczynników
+jest dostępnych w obecnym playgroundzie i CLI (łącznie 215 ustawień).
+Zapisane seedy z poprzedniej kompilacji nie gwarantują tych samych wyników.
+Podgląd dystansu bez RNG pokazuje reakcję neutralną, nie średnią uwzględniającą
+ryzyko złych zdarzeń. Próby statystyczne uwzględniają pełny model.
+Projekt osobnego laboratorium: [BALANCE_LAB_DESIGN.md](BALANCE_LAB_DESIGN.md).
+Obecny playground pozostaje dostępny.
+
 ## Ustalenia z użytkownikiem — 28.10.2026
 
 - Trzy perspektywy: porównanie wariantów, konkretny skoczek i cała stawka.

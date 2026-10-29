@@ -12712,7 +12712,107 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Lekki deszcz nie musi hamować. Ulewa mocno pogarsza skoki.</source>
             <translation>Slabý déšť nemusí brzdit. Prudký déšť výrazně zhoršuje skoky.</translation>
         </message>
-    </context>
+        <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="11"/>
+        <source>K odniesienia udziału formy</source>
+        <translation>Referenční K pro podíl formy</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="12"/>
+        <source>Skala zmiany udziału formy względem K</source>
+        <translation>Měřítko změny podílu formy podle K</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="13"/>
+        <source>Maksymalna zmiana udziału formy</source>
+        <translation>Maximální změna podílu formy</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="37"/>
+        <source>Siła wiatru aktywująca rozrzut</source>
+        <translation>Síla větru aktivující rozptyl reakce</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="42"/>
+        <source>Siła wiatru aktywująca złe zdarzenia</source>
+        <translation>Síla větru aktivující nepříznivé události</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="43"/>
+        <source>Stromość narastania szansy złego zdarzenia</source>
+        <translation>Strmost růstu pravděpodobnosti nepříznivé události</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="44"/>
+        <source>Maksymalna szansa złego zdarzenia: pod narty</source>
+        <translation>Maximální pravděpodobnost nepříznivé události: protivítr</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="45"/>
+        <source>Siła złego zdarzenia: pod narty</source>
+        <translation>Síla nepříznivé události: protivítr</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="46"/>
+        <source>Maksymalna szansa złego zdarzenia: w plecy</source>
+        <translation>Maximální pravděpodobnost nepříznivé události: zadní vítr</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="47"/>
+        <source>Siła złego zdarzenia: w plecy</source>
+        <translation>Síla nepříznivé události: zadní vítr</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="48"/>
+        <source>Maksymalna szansa złego zdarzenia: boczny</source>
+        <translation>Maximální pravděpodobnost nepříznivé události: boční vítr</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="49"/>
+        <source>Siła złego zdarzenia: boczny</source>
+        <translation>Síla nepříznivé události: boční vítr</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="125"/>
+        <source>Udział formy = 1 − udział OVR + amplituda × tanh((K − K odniesienia) / skala), ograniczony do 0–1. Amplituda 0 wyłącza zależność od K.</source>
+        <translation>Podíl formy = 1 − podíl OVR + amplituda × tanh((K − referenční K) / měřítko), omezený na 0–1. Nulová amplituda vypíná závislost na K.</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="126"/>
+        <source>Szansa = maksimum × r^wykładnik / (1 + r^wykładnik), gdzie r to siła wiatru / skala złych zdarzeń. Siła zdarzenia zwiększa zużycie zapasu lotu; zero wyłącza stratę.</source>
+        <translation>Pravděpodobnost = maximum × r^exponent / (1 + r^exponent), kde r je síla větru / měřítko nepříznivých událostí. Síla události zvyšuje spotřebu letové rezervy; nula vypíná ztrátu.</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="127"/>
+        <source>Pomoc wiatru pod narty rośnie coraz wolniej. Zero wyłącza nasycenie. Złe zdarzenia nadal zależą od rzeczywistej siły wiatru.</source>
+        <translation>Pomoc protivětru roste stále pomaleji. Nula vypíná nasycení. Nepříznivé události nadále závisejí na skutečné síle větru.</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="128"/>
+        <source>Rozrzut rośnie płynnie z siłą wiatru. Reakcja jest losowana raz na skok, nie w każdym kroku lotu. Zerowy rozrzut wyłącza ten składnik losowości.</source>
+        <translation>Rozptyl plynule roste se silou větru. Reakce se losuje jednou na skok, nikoli v každém kroku letu. Nulový rozptyl vypíná tuto složku náhodnosti.</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="38"/>
+        <source>Rozrzut wykorzystania wiatru pod narty</source>
+        <translation>Rozptyl využití protivětru</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="39"/>
+        <source>Rozrzut strat w wietrze w plecy</source>
+        <translation>Rozptyl ztrát při zadním větru</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="40"/>
+        <source>Rozrzut strat w wietrze bocznym</source>
+        <translation>Rozptyl ztrát při bočním větru</translation>
+    </message>
+    <message>
+        <location filename="../source/playground/PlaygroundModel.cpp" line="41"/>
+        <source>Skala nasycenia pomocy wiatru pod narty</source>
+        <translation>Měřítko nasycení pomoci protivětru</translation>
+    </message>
+</context>
     <context>
         <name>QuickBridge</name>
         <message>

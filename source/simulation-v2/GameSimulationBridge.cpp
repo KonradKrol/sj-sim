@@ -76,6 +76,7 @@ QJsonObject metadata(const SimulationV2::JumpResult &result,SimulationV2::Seed s
     return {{"engineVersion",SimulationV2::JumpResult::engineVersion},{"seed",QString::number(seed)},{"startSeconds",time},{"event",int(event)},
         {"quality",QJsonObject{{"overallAndForm",q.overallAndForm},{"takeoffWeight",q.takeoffWeight},{"hill",q.hillEffect},{"event",q.eventEffect},{"random",q.randomEffect},{"manipulation",q.manipulationEffect}}},
         {"rawDistance",result.flight.distance},{"reserve",result.flight.reserve},{"precipitation",result.flight.precipitation},{"precipitationKind",int(result.flight.precipitationKind)},
+        {"windResponse",QJsonObject{{"variation",result.flight.windResponse.variation},{"adverseQuantile",result.flight.windResponse.adverseQuantile},{"severity",result.flight.windResponse.severity}}},
         {"experiencedWind",vector(result.flight.experiencedWind)},{"meanAbsoluteCrosswind",result.flight.meanAbsoluteCrosswind},
         {"exposures",exposure},{"manipulated",result.manipulated},{"distanceLimitedByGeometry",result.distanceLimitedByGeometry}};
 }
