@@ -1516,8 +1516,8 @@ static void rosterRegressions(MainWindow &main) {
     roster->mark(QuickRoster::key(pool[0]));roster->mark(QuickRoster::key(pool[2]),Qt::ControlModifier);roster->moveBefore(QuickRoster::key(pool[0]),QuickRoster::key(pool[5]),true);
     check(config.getCompetitionJumpers().mid(4,2)==QVector<Jumper *>({pool[0],pool[2]}),"moving multiple athletes preserves their relative order");roster->undo();
     roster->removeMarked();check(roster->count()==6 && !config.getCompetitionJumpers().contains(pool[0]),"remove selected updates source competition");roster->undo();check(config.getCompetitionJumpers()==pool.mid(0,8),"undo restores all original start list identities and order");
-    auto *selectedRow=item(scene(&config)->rootObject(),"roster-entry-"+QuickRoster::key(pool[0]));
-    roster->mark(QuickRoster::key(pool[0]));roster->mark(QuickRoster::key(pool[2]),Qt::ControlModifier);QTest::qWait(30);selectedRow->forceActiveFocus();QTest::keyClick(scene(&config),Qt::Key_Delete);QTest::qWait(30);
+    roster->mark(QuickRoster::key(pool[0]));roster->mark(QuickRoster::key(pool[2]),Qt::ControlModifier);QTest::qWait(30);
+    auto *selectedRow=item(scene(&config)->rootObject(),"roster-entry-"+QuickRoster::key(pool[0]));check(selectedRow,"selected roster row exists after model and selection refresh");selectedRow->forceActiveFocus();QTest::keyClick(scene(&config),Qt::Key_Delete);QTest::qWait(30);
     check(roster->count()==6 && !config.getCompetitionJumpers().contains(pool[0]) && !config.getCompetitionJumpers().contains(pool[2]),"Delete on a marked row removes the entire multi-selection");roster->undo();
     auto *view=scene(&config);clickControl(view,"rosterSearch");QTest::keyClicks(view,pool[12]->getCountryCode());QTest::qWait(100);check(roster->query()==pool[12]->getCountryCode(),"pointer and keyboard filter the athlete library");
     for(int i=0;i<roster->library()->rowCount();++i)check(roster->library()->get(i).value("countryCode").toString()==pool[12]->getCountryCode(),"country text filter excludes other countries");

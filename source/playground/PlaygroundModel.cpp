@@ -112,7 +112,7 @@ template<class F> void visitWind(SimulationV2::WindParameters &m,F f) {
     f("wind.gustProbability",QObject::tr("Prawdopodobieństwo podmuchu"),"wind",m.gustProbability,0,1,0.01,"1");
     f("wind.gustPeriodSeconds",QObject::tr("Okres podmuchów"),"wind",m.gustPeriodSeconds,0.1,100000,1,"s");
     f("wind.gustWidthMetres",QObject::tr("Szerokość podmuchu"),"wind",m.gustWidthMetres,0.1,100000,1,"m");
-    f("wind.gustTravelMetresPerSecond",QObject::tr("Prędkość przemieszczania podmuchu"),"wind",m.gustTravelMetresPerSecond,0,100,0.1,"m");
+    f("wind.gustTravelMetresPerSecond",QObject::tr("Prędkość przemieszczania podmuchu"),"wind",m.gustTravelMetresPerSecond,0,100,0.1,"m/s");
     f("wind.maximumStrength",QObject::tr("Limit siły wiatru"),"wind",m.maximumStrength,0.01,100,0.1,"m/s");
     f("wind.trendAmplitude",QObject::tr("Amplituda zmian tendencji"),"wind",m.trendAmplitude,0,100,0.1,"m/s");
     f("wind.trendPeriodSeconds",QObject::tr("Okres tendencji"),"wind",m.trendPeriodSeconds,1,100000,1,"s");
@@ -286,7 +286,7 @@ QString effectDescription(const QString &key,const QString &group) {
         QString help;
         if(field=="strength")help=QObject::tr("Bazowa siła wiatru przed doliczeniem lokalnych różnic i zmian w czasie, w m/s.");
         else if(field=="strength2")help=QObject::tr("Bazowa siła wiatru w rzadszym wariancie ciszy, wybieranym z szansą 15%, w m/s.");
-        else if(field=="angle")help=QObject::tr("Kąt w stopniach: w presetach pod narty i w plecy jest odchyleniem od ich kierunku, a w ciszy i loterii pełnym kierunkiem 0–360°.");
+        else if(field=="angle")help=QObject::tr("Kąt w stopniach: w presetach o ustalonym kierunku jest odchyleniem od niego, a w ciszy i loterii pełnym kierunkiem 0–360°.");
         else if(field=="difference")help=QObject::tr("Maksymalna losowa korekta składowych wiatru w kolejnych punktach zeskoku, w m/s. Większa wartość daje bardziej różnorodny profil początkowy.");
         else if(field=="mixedAmplitude")help=QObject::tr("Siła odwrócenia wiatru między częściami zeskoku w scenariuszu różnych kierunków, w m/s.");
         else if(field=="temporalAmplitude")help=QObject::tr("Siła wahań wiatru w czasie, w m/s. Większa wartość zwiększa różnice warunków między chwilami konkursu.");

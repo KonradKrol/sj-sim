@@ -312,6 +312,10 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <source>Laboratorium balansu</source>
             <translation>Balance laboratory</translation>
         </message>
+        <message>
+            <source>Rozgrywaj konkurs na żywo</source>
+            <translation>Run competitions live</translation>
+        </message>
     </context>
     <context>
         <name>AppearanceMenu</name>
@@ -1735,6 +1739,30 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <location filename="../source/UI/Quick/CalendarDatePlanner.qml" line="89" />
             <source>Zaznacz konkursy bez daty</source>
             <translation>Select undated competitions</translation>
+        </message>
+        <message>
+            <source>Zmień daty konkursów w kalendarzu.</source>
+            <translation>Change dates of existing calendar competitions.</translation>
+        </message>
+        <message>
+            <source>Utwórz konkursy i kwalifikacje.</source>
+            <translation>Create competitions and qualifications.</translation>
+        </message>
+        <message>
+            <source>Kiedy mają odbyć się treningi?</source>
+            <translation>When should training take place?</translation>
+        </message>
+        <message>
+            <source>Dotyczy treningów już dodanych do tych konkursów.</source>
+            <translation>Applies to training already attached to these competitions.</translation>
+        </message>
+        <message>
+            <source>Piątek, sobota i niedziela</source>
+            <translation>Friday, Saturday and Sunday</translation>
+        </message>
+        <message>
+            <source>Piątek → sobota → niedziela → kolejny piątek.</source>
+            <translation>Friday → Saturday → Sunday → next Friday.</translation>
         </message>
     </context>
     <context>
@@ -3737,6 +3765,10 @@ Check that it exists and has appropriate permissions.</translation>
             <source>Nie udało się przeliczyć zawodników</source>
             <translation>Could not convert jumpers</translation>
         </message>
+        <message>
+            <source>Przeprowadź kwalifikacje</source>
+            <translation>Run qualifications</translation>
+        </message>
     </context>
     <context>
         <name>CompetitionInfoEditorWidget</name>
@@ -4600,6 +4632,10 @@ For additional compensation, the jumper must reach 95% of HS (%1 m).</translatio
             <source>Warunki</source>
             <translation>Conditions</translation>
         </message>
+        <message>
+            <source>Rozgrywaj konkurs na żywo</source>
+            <translation>Run competitions live</translation>
+        </message>
     </context>
     <context>
         <name>CompetitionQuickBridge</name>
@@ -5269,6 +5305,14 @@ calculation</translation>
             <location filename="../source/UI/DatabaseEditor/DatabaseEditorWindow.cpp" line="512" />
             <source>Nie udało się zapisać pliku paczki.</source>
             <translation>Could not save the pack file.</translation>
+        </message>
+        <message>
+            <source>Sortowanie według krajów</source>
+            <translation>Sort by country</translation>
+        </message>
+        <message>
+            <source>Posortować paczkę według krajów? Zmieni to obecną kolejność elementów.</source>
+            <translation>Sort the pack by country? This will change the current order.</translation>
         </message>
     </context>
     <context>
@@ -6961,6 +7005,74 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/AppSettings/JumpDataInfoChoiceDialog.ui" line="208" />
             <source>OK</source>
             <translation>OK</translation>
+        </message>
+        <message>
+            <source>Pokaż odległość</source>
+            <translation>Show distance</translation>
+        </message>
+        <message>
+            <source>Pokaż notę łączną</source>
+            <translation>Show total score</translation>
+        </message>
+        <message>
+            <source>Pokaż belkę</source>
+            <translation>Show start gate</translation>
+        </message>
+        <message>
+            <source>Pokaż średni wiatr</source>
+            <translation>Show average wind</translation>
+        </message>
+        <message>
+            <source>Pokaż rekompensatę za belkę</source>
+            <translation>Show gate compensation</translation>
+        </message>
+        <message>
+            <source>Pokaż rekompensatę za wiatr</source>
+            <translation>Show wind compensation</translation>
+        </message>
+        <message>
+            <source>Pokaż łączną rekompensatę</source>
+            <translation>Show total compensation</translation>
+        </message>
+        <message>
+            <source>Pokaż noty sędziowskie</source>
+            <translation>Show judges' marks</translation>
+        </message>
+        <message>
+            <source>Pokaż sumę not sędziowskich</source>
+            <translation>Show judges' points (sum of marks)</translation>
+        </message>
+        <message>
+            <source>Pokaż rodzaj lądowania</source>
+            <translation>Show landing type</translation>
+        </message>
+        <message>
+            <source>Pokaż szczegóły wiatru</source>
+            <translation>Show detailed wind during jump</translation>
+        </message>
+        <message>
+            <source>Pokaż miejsce po skoku</source>
+            <translation>Show position after jump</translation>
+        </message>
+        <message>
+            <source>Pokaż miejsce skoku w serii</source>
+            <translation>Show position of this score in this round</translation>
+        </message>
+        <message>
+            <source>Pokaż ocenę wybicia</source>
+            <translation>Show take-off rating</translation>
+        </message>
+        <message>
+            <source>Pokaż ocenę lotu</source>
+            <translation>Show flight rating</translation>
+        </message>
+        <message>
+            <source>Pokaż losowość odległości</source>
+            <translation>Show distance randomness</translation>
+        </message>
+        <message>
+            <source>Pokaż opady przy skoku</source>
+            <translation>Show snow/rain during jump</translation>
         </message>
     </context>
     <context>
@@ -14472,6 +14584,10 @@ Check that you selected the correct file.</translation>
             <source>Rodzaj skoku</source>
             <translation>Jump category</translation>
         </message>
+        <message>
+            <source>Data sezonu: %1</source>
+            <translation>Season date: %1</translation>
+        </message>
     </context>
     <context>
         <name>QuickCalendar</name>
@@ -14809,6 +14925,18 @@ Check that you selected the correct file.</translation>
             <source>Zaznaczone konkursy nie mają jeszcze dat.</source>
             <translation>Selected competitions do not have dates yet.</translation>
         </message>
+        <message>
+            <source>Konkurs %1 (%2) nie może być przed konkursem %3 (%4). Popraw daty lub kolejność.</source>
+            <translation>Competition %1 (%2) cannot precede competition %3 (%4). Adjust the dates or order.</translation>
+        </message>
+        <message>
+            <source>Trening nie może odbyć się po konkursie %1.</source>
+            <translation>Training cannot take place after competition %1.</translation>
+        </message>
+        <message>
+            <source>Seria próbna nie może odbyć się po konkursie %1.</source>
+            <translation>The trial round cannot take place after competition %1.</translation>
+        </message>
     </context>
     <context>
         <name>QuickPlot</name>
@@ -14979,6 +15107,10 @@ Check that you selected the correct file.</translation>
             <source>Podgląd wiatru przed skokiem</source>
             <translation>Preview wind before the jump</translation>
         </message>
+        <message>
+            <source>Traci %1 pkt do lidera grupy</source>
+            <translation>%1 pts behind the group leader</translation>
+        </message>
     </context>
     <context>
         <name>RaceControls</name>
@@ -15011,6 +15143,14 @@ Check that you selected the correct file.</translation>
             <location filename="../source/UI/Quick/RaceControls.qml" line="35" />
             <source>Skok</source>
             <translation>Jump</translation>
+        </message>
+        <message>
+            <source>Opcje</source>
+            <translation>Options</translation>
+        </message>
+        <message>
+            <source>Ustawienia: %1</source>
+            <translation>Settings: %1</translation>
         </message>
     </context>
     <context>
@@ -15852,6 +15992,14 @@ sorting</translation>
             <location filename="../source/UI/EditorWidgets/RoundInfoEditorWidget.ui" line="91" />
             <source>Sortowanie zawodników po grupach</source>
             <translation>Sort jumpers by groups</translation>
+        </message>
+        <message>
+            <source>Sortuj listę startową</source>
+            <translation>Sort the start list</translation>
+        </message>
+        <message>
+            <source>Rozegraj serię KO</source>
+            <translation>Use a KO round</translation>
         </message>
     </context>
     <context>
@@ -17080,6 +17228,14 @@ li.checked::marker { content: "\2612"; }
             <source>Plik zapisu nie został usunięty. Sprawdź uprawnienia do pliku i spróbuj ponownie.</source>
             <translation>The save file was not deleted. Check file permissions and try again.</translation>
         </message>
+        <message>
+            <source>Zapis starszej wersji</source>
+            <translation>Older save version</translation>
+        </message>
+        <message>
+            <source>Ten zapis korzysta ze starszego modelu symulacji. Utwórz nową symulację, aby używać nowych zawodników i skoczni.</source>
+            <translation>This save uses the older simulation model. Create a new simulation to use the new athletes and hills.</translation>
+        </message>
     </context>
     <context>
         <name>SingleCompetitionConfigWindow</name>
@@ -18260,6 +18416,10 @@ li.checked::marker { content: "\2612"; }
             <source>Wybierz paczkę i jej pozycję w sekcji Konfiguracja.</source>
             <translation>Choose a pack and an item in Configuration.</translation>
         </message>
+        <message>
+            <source>Zaawansowana edycja skoczni</source>
+            <translation>Advanced hill editing</translation>
+        </message>
     </context>
     <context>
         <name>JumpManipulationWorkspace</name>
@@ -18768,6 +18928,38 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/WeatherPrecipitation.qml" line="49" />
             <source>Lekki deszcz nie musi hamować. Ulewa mocno pogarsza skoki.</source>
             <translation>Light rain need not slow the jump. Heavy rain makes jumps substantially worse.</translation>
+        </message>
+        <message>
+            <source>Słabe opady</source>
+            <translation>Light precipitation</translation>
+        </message>
+        <message>
+            <source>Umiarkowane opady</source>
+            <translation>Moderate precipitation</translation>
+        </message>
+        <message>
+            <source>Silne opady</source>
+            <translation>Heavy precipitation</translation>
+        </message>
+        <message>
+            <source>Stałe natężenie</source>
+            <translation>Steady intensity</translation>
+        </message>
+        <message>
+            <source>Zmienne natężenie</source>
+            <translation>Variable intensity</translation>
+        </message>
+        <message>
+            <source>Coraz silniejsze</source>
+            <translation>Getting heavier</translation>
+        </message>
+        <message>
+            <source>Śnieg stopniowo skraca skoki. Silniejsze opady oznaczają większą stratę odległości.</source>
+            <translation>Snow gradually shortens jumps. Heavier snowfall means a greater loss of distance.</translation>
+        </message>
+        <message>
+            <source>Słaby deszcz ma niewielki wpływ. Przy ulewie strata odległości rośnie znacznie szybciej.</source>
+            <translation>Light rain has little effect. In heavy rain, the loss of distance grows much faster.</translation>
         </message>
     </context>
     <context>
@@ -19620,6 +19812,34 @@ li.checked::marker { content: "\2612"; }
             <source>Twoje zmiany</source>
             <translation>Your changes</translation>
         </message>
+        <message>
+            <source>Przygotowywanie</source>
+            <translation>Preparing</translation>
+        </message>
+        <message>
+            <source>Konkursy porównawcze</source>
+            <translation>Comparison competitions</translation>
+        </message>
+        <message>
+            <source>Analiza szczegółowa</source>
+            <translation>Detailed analysis</translation>
+        </message>
+        <message>
+            <source>Wykres i mapa</source>
+            <translation>Chart and map</translation>
+        </message>
+        <message>
+            <source>Losowanie pogody</source>
+            <translation>Weather sampling</translation>
+        </message>
+        <message>
+            <source>Sprawdzanie celów</source>
+            <translation>Checking targets</translation>
+        </message>
+        <message>
+            <source>Zapisywanie wyników</source>
+            <translation>Saving results</translation>
+        </message>
     </context>
     <context>
         <name>BalanceLabControls</name>
@@ -20233,6 +20453,14 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/BalanceLabControls.qml" line="106" />
             <source>Szukaj, np. upadek, forma, podmuch…</source>
             <translation>Search, e.g. fall, form, gust…</translation>
+        </message>
+        <message>
+            <source>W całej symulacji: %1 wyników</source>
+            <translation>Across the simulation: %1 results</translation>
+        </message>
+        <message>
+            <source>Nie znaleziono parametrów. Spróbuj krótszej nazwy lub opisu działania.</source>
+            <translation>No parameters found. Try a shorter name or describe the effect.</translation>
         </message>
     </context>
     <context>
@@ -21139,6 +21367,10 @@ Technical key: %4</translation>
             <source>To zachowana mapa. Możesz odczytywać wyniki; aby przenieść komórkę do aktualnego eksperymentu, najpierw przelicz mapę dla nowych ustawień.</source>
             <translation>This is a preserved map. You can read its results; to apply a cell to the current experiment, first recompute the map for the new settings.</translation>
         </message>
+        <message>
+            <source>Włącz szybki podgląd lub uruchom pełną próbę.</source>
+            <translation>Enable the quick preview or run a full experiment.</translation>
+        </message>
     </context>
     <context>
         <name>BalanceLabScreen</name>
@@ -21251,6 +21483,26 @@ Technical key: %4</translation>
             <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="34" />
             <source>Cofnij zmianę</source>
             <translation>Undo change</translation>
+        </message>
+        <message>
+            <source>Pokazuj szybki podgląd · 7 konkursów na wariant</source>
+            <translation>Show quick preview · 7 competitions per variant</translation>
+        </message>
+        <message>
+            <source>%1 · %2 / %3 · etap %4 / %5</source>
+            <translation>%1 · %2 / %3 · stage %4 / %5</translation>
+        </message>
+        <message>
+            <source>Postęp etapów eksperymentu</source>
+            <translation>Experiment stage progress</translation>
+        </message>
+        <message>
+            <source>%1% etapów · pozostało około %2 min %3 s</source>
+            <translation>%1% of stages · approximately %2 min %3 s remaining</translation>
+        </message>
+        <message>
+            <source>Szacowanie pozostałego czasu…</source>
+            <translation>Estimating remaining time…</translation>
         </message>
     </context>
     <context>

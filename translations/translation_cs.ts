@@ -312,6 +312,10 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <source>Laboratorium balansu</source>
             <translation>Laboratoř vyvážení</translation>
         </message>
+        <message>
+            <source>Rozgrywaj konkurs na żywo</source>
+            <translation>Simulovat závody živě</translation>
+        </message>
     </context>
     <context>
         <name>AppearanceMenu</name>
@@ -1735,6 +1739,30 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <location filename="../source/UI/Quick/CalendarDatePlanner.qml" line="89" />
             <source>Uporządkuj nierozegrane według dat</source>
             <translation>Seřadit neuskutečněné závody podle data</translation>
+        </message>
+        <message>
+            <source>Zmień daty konkursów w kalendarzu.</source>
+            <translation>Změňte data závodů v kalendáři.</translation>
+        </message>
+        <message>
+            <source>Utwórz konkursy i kwalifikacje.</source>
+            <translation>Vytvořte závody a kvalifikace.</translation>
+        </message>
+        <message>
+            <source>Kiedy mają odbyć się treningi?</source>
+            <translation>Kdy se mají konat tréninky?</translation>
+        </message>
+        <message>
+            <source>Dotyczy treningów już dodanych do tych konkursów.</source>
+            <translation>Platí pro tréninky již přidané k těmto závodům.</translation>
+        </message>
+        <message>
+            <source>Piątek, sobota i niedziela</source>
+            <translation>Pátek, sobota a neděle</translation>
+        </message>
+        <message>
+            <source>Piątek → sobota → niedziela → kolejny piątek.</source>
+            <translation>Pátek → sobota → neděle → další pátek.</translation>
         </message>
     </context>
     <context>
@@ -3737,6 +3765,10 @@ Ověřte, že existuje a má odpovídající oprávnění.</translation>
             <source>Nie udało się przeliczyć zawodników</source>
             <translation>Skokany se nepodařilo převést</translation>
         </message>
+        <message>
+            <source>Przeprowadź kwalifikacje</source>
+            <translation>Uspořádat kvalifikaci</translation>
+        </message>
     </context>
     <context>
         <name>CompetitionInfoEditorWidget</name>
@@ -4601,6 +4633,10 @@ Pro dodatečnou kompenzaci musí skokan dosáhnout 95 % bodu HS (%1 m).</transla
             <source>Warunki</source>
             <translation>Podmínky</translation>
         </message>
+        <message>
+            <source>Rozgrywaj konkurs na żywo</source>
+            <translation>Simulovat závody živě</translation>
+        </message>
     </context>
     <context>
         <name>CompetitionQuickBridge</name>
@@ -5270,6 +5306,14 @@ průměrného větru</translation>
             <location filename="../source/UI/DatabaseEditor/DatabaseEditorWindow.cpp" line="512" />
             <source>Nie udało się zapisać pliku paczki.</source>
             <translation>Soubor balíčku se nepodařilo uložit.</translation>
+        </message>
+        <message>
+            <source>Sortowanie według krajów</source>
+            <translation>Řazení podle zemí</translation>
+        </message>
+        <message>
+            <source>Posortować paczkę według krajów? Zmieni to obecną kolejność elementów.</source>
+            <translation>Seřadit balíček podle zemí? Změní se současné pořadí položek.</translation>
         </message>
     </context>
     <context>
@@ -6962,6 +7006,74 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/AppSettings/JumpDataInfoChoiceDialog.ui" line="208" />
             <source>OK</source>
             <translation>OK</translation>
+        </message>
+        <message>
+            <source>Pokaż odległość</source>
+            <translation>Zobrazit: Vzdálenost</translation>
+        </message>
+        <message>
+            <source>Pokaż notę łączną</source>
+            <translation>Zobrazit: Celkové body</translation>
+        </message>
+        <message>
+            <source>Pokaż belkę</source>
+            <translation>Zobrazit: Nájezdové okno</translation>
+        </message>
+        <message>
+            <source>Pokaż średni wiatr</source>
+            <translation>Zobrazit: Průměrný vítr</translation>
+        </message>
+        <message>
+            <source>Pokaż rekompensatę za belkę</source>
+            <translation>Zobrazit: Kompenzace za nájezdové okno</translation>
+        </message>
+        <message>
+            <source>Pokaż rekompensatę za wiatr</source>
+            <translation>Zobrazit: Kompenzace za vítr</translation>
+        </message>
+        <message>
+            <source>Pokaż łączną rekompensatę</source>
+            <translation>Zobrazit: Celková kompenzace</translation>
+        </message>
+        <message>
+            <source>Pokaż noty sędziowskie</source>
+            <translation>Zobrazit: Známky rozhodčích</translation>
+        </message>
+        <message>
+            <source>Pokaż sumę not sędziowskich</source>
+            <translation>Zobrazit: Body od rozhodčích (součet známek)</translation>
+        </message>
+        <message>
+            <source>Pokaż rodzaj lądowania</source>
+            <translation>Zobrazit: Typ doskoku</translation>
+        </message>
+        <message>
+            <source>Pokaż szczegóły wiatru</source>
+            <translation>Zobrazit: Podrobný vítr při skoku</translation>
+        </message>
+        <message>
+            <source>Pokaż miejsce po skoku</source>
+            <translation>Zobrazit: Umístění po skoku</translation>
+        </message>
+        <message>
+            <source>Pokaż miejsce skoku w serii</source>
+            <translation>Zobrazit: Pořadí tohoto bodového hodnocení v daném kole</translation>
+        </message>
+        <message>
+            <source>Pokaż ocenę wybicia</source>
+            <translation>Zobrazit: Hodnocení odrazu</translation>
+        </message>
+        <message>
+            <source>Pokaż ocenę lotu</source>
+            <translation>Zobrazit: Hodnocení letu</translation>
+        </message>
+        <message>
+            <source>Pokaż losowość odległości</source>
+            <translation>Zobrazit: Náhodná složka vzdálenosti</translation>
+        </message>
+        <message>
+            <source>Pokaż opady przy skoku</source>
+            <translation>Zobrazit: Sníh/déšť při skoku</translation>
         </message>
     </context>
     <context>
@@ -14473,6 +14585,10 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Rodzaj skoku</source>
             <translation>Druh skoku</translation>
         </message>
+        <message>
+            <source>Data sezonu: %1</source>
+            <translation>Datum sezóny: %1</translation>
+        </message>
     </context>
     <context>
         <name>QuickCalendar</name>
@@ -14810,6 +14926,18 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Dodano weekend. Dwa konkursy są zaznaczone; możesz przypisać im klasyfikacje.</source>
             <translation>Víkend přidán. Jsou vybrány dva závody; můžete jim přiřadit pořadí.</translation>
         </message>
+        <message>
+            <source>Konkurs %1 (%2) nie może być przed konkursem %3 (%4). Popraw daty lub kolejność.</source>
+            <translation>Závod %1 (%2) nemůže předcházet závodu %3 (%4). Upravte data nebo pořadí.</translation>
+        </message>
+        <message>
+            <source>Trening nie może odbyć się po konkursie %1.</source>
+            <translation>Trénink se nemůže konat po závodě %1.</translation>
+        </message>
+        <message>
+            <source>Seria próbna nie może odbyć się po konkursie %1.</source>
+            <translation>Zkušební kolo se nemůže konat po závodě %1.</translation>
+        </message>
     </context>
     <context>
         <name>QuickPlot</name>
@@ -14980,6 +15108,10 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Podgląd wiatru przed skokiem</source>
             <translation>Náhled větru před skokem</translation>
         </message>
+        <message>
+            <source>Traci %1 pkt do lidera grupy</source>
+            <translation>Ztrácí %1 b. na vedoucího skupiny</translation>
+        </message>
     </context>
     <context>
         <name>RaceControls</name>
@@ -15012,6 +15144,14 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <location filename="../source/UI/Quick/RaceControls.qml" line="35" />
             <source>Skok</source>
             <translation>Skok</translation>
+        </message>
+        <message>
+            <source>Opcje</source>
+            <translation>Možnosti</translation>
+        </message>
+        <message>
+            <source>Ustawienia: %1</source>
+            <translation>Nastavení: %1</translation>
         </message>
     </context>
     <context>
@@ -15853,6 +15993,14 @@ startovní listiny</translation>
             <location filename="../source/UI/EditorWidgets/RoundInfoEditorWidget.cpp" line="125" />
             <source>Waga punktów z serii %1</source>
             <translation>Váha bodů z kola %1</translation>
+        </message>
+        <message>
+            <source>Sortuj listę startową</source>
+            <translation>Seřadit startovní listinu</translation>
+        </message>
+        <message>
+            <source>Rozegraj serię KO</source>
+            <translation>Použít KO kolo</translation>
         </message>
     </context>
     <context>
@@ -17081,6 +17229,14 @@ li.checked::marker { content: "\2612"; }
             <source>Plik zapisu nie został usunięty. Sprawdź uprawnienia do pliku i spróbuj ponownie.</source>
             <translation>Uložený soubor nebyl smazán. Zkontrolujte oprávnění a zkuste to znovu.</translation>
         </message>
+        <message>
+            <source>Zapis starszej wersji</source>
+            <translation>Uložená hra ze starší verze</translation>
+        </message>
+        <message>
+            <source>Ten zapis korzysta ze starszego modelu symulacji. Utwórz nową symulację, aby używać nowych zawodników i skoczni.</source>
+            <translation>Tato uložená hra používá starší model simulace. Pro nové závodníky a můstky vytvořte novou simulaci.</translation>
+        </message>
     </context>
     <context>
         <name>SingleCompetitionConfigWindow</name>
@@ -18261,6 +18417,10 @@ li.checked::marker { content: "\2612"; }
             <source>Wybierz paczkę i jej pozycję w sekcji Konfiguracja.</source>
             <translation>Vyberte balíček a položku v Konfiguraci.</translation>
         </message>
+        <message>
+            <source>Zaawansowana edycja skoczni</source>
+            <translation>Pokročilá úprava můstku</translation>
+        </message>
     </context>
     <context>
         <name>JumpManipulationWorkspace</name>
@@ -18769,6 +18929,38 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/WeatherPrecipitation.qml" line="49" />
             <source>Lekki deszcz nie musi hamować. Ulewa mocno pogarsza skoki.</source>
             <translation>Slabý déšť nemusí brzdit. Prudký déšť výrazně zhoršuje skoky.</translation>
+        </message>
+        <message>
+            <source>Słabe opady</source>
+            <translation>Slabé srážky</translation>
+        </message>
+        <message>
+            <source>Umiarkowane opady</source>
+            <translation>Mírné srážky</translation>
+        </message>
+        <message>
+            <source>Silne opady</source>
+            <translation>Silné srážky</translation>
+        </message>
+        <message>
+            <source>Stałe natężenie</source>
+            <translation>Stálá intenzita</translation>
+        </message>
+        <message>
+            <source>Zmienne natężenie</source>
+            <translation>Proměnlivá intenzita</translation>
+        </message>
+        <message>
+            <source>Coraz silniejsze</source>
+            <translation>Zesilující</translation>
+        </message>
+        <message>
+            <source>Śnieg stopniowo skraca skoki. Silniejsze opady oznaczają większą stratę odległości.</source>
+            <translation>Sníh postupně zkracuje skoky. Silnější sněžení znamená větší ztrátu délky.</translation>
+        </message>
+        <message>
+            <source>Słaby deszcz ma niewielki wpływ. Przy ulewie strata odległości rośnie znacznie szybciej.</source>
+            <translation>Slabý déšť má malý vliv. Při prudkém dešti ztráta délky roste mnohem rychleji.</translation>
         </message>
     </context>
     <context>
@@ -19621,6 +19813,34 @@ li.checked::marker { content: "\2612"; }
             <source>Twoje zmiany</source>
             <translation>Vaše změny</translation>
         </message>
+        <message>
+            <source>Przygotowywanie</source>
+            <translation>Příprava</translation>
+        </message>
+        <message>
+            <source>Konkursy porównawcze</source>
+            <translation>Srovnávací závody</translation>
+        </message>
+        <message>
+            <source>Analiza szczegółowa</source>
+            <translation>Podrobná analýza</translation>
+        </message>
+        <message>
+            <source>Wykres i mapa</source>
+            <translation>Graf a mapa</translation>
+        </message>
+        <message>
+            <source>Losowanie pogody</source>
+            <translation>Losování počasí</translation>
+        </message>
+        <message>
+            <source>Sprawdzanie celów</source>
+            <translation>Kontrola cílů</translation>
+        </message>
+        <message>
+            <source>Zapisywanie wyników</source>
+            <translation>Ukládání výsledků</translation>
+        </message>
     </context>
     <context>
         <name>BalanceLabControls</name>
@@ -20234,6 +20454,14 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/BalanceLabControls.qml" line="106" />
             <source>Szukaj, np. upadek, forma, podmuch…</source>
             <translation>Hledat, např. pád, forma, poryv…</translation>
+        </message>
+        <message>
+            <source>W całej symulacji: %1 wyników</source>
+            <translation>V celé simulaci: %1 výsledků</translation>
+        </message>
+        <message>
+            <source>Nie znaleziono parametrów. Spróbuj krótszej nazwy lub opisu działania.</source>
+            <translation>Nebyly nalezeny žádné parametry. Zkuste kratší název nebo popis účinku.</translation>
         </message>
     </context>
     <context>
@@ -21140,6 +21368,10 @@ Technický klíč: %4</translation>
             <source>To zachowana mapa. Możesz odczytywać wyniki; aby przenieść komórkę do aktualnego eksperymentu, najpierw przelicz mapę dla nowych ustawień.</source>
             <translation>Toto je zachovaná mapa. Výsledky si můžete prohlížet; pro přenesení buňky do aktuálního experimentu nejprve přepočítejte mapu s novými nastaveními.</translation>
         </message>
+        <message>
+            <source>Włącz szybki podgląd lub uruchom pełną próbę.</source>
+            <translation>Zapněte rychlý náhled nebo spusťte úplný experiment.</translation>
+        </message>
     </context>
     <context>
         <name>BalanceLabScreen</name>
@@ -21252,6 +21484,26 @@ Technický klíč: %4</translation>
             <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="34" />
             <source>Cofnij zmianę</source>
             <translation>Vrátit změnu</translation>
+        </message>
+        <message>
+            <source>Pokazuj szybki podgląd · 7 konkursów na wariant</source>
+            <translation>Zobrazovat rychlý náhled · 7 závodů na variantu</translation>
+        </message>
+        <message>
+            <source>%1 · %2 / %3 · etap %4 / %5</source>
+            <translation>%1 · %2 / %3 · fáze %4 / %5</translation>
+        </message>
+        <message>
+            <source>Postęp etapów eksperymentu</source>
+            <translation>Průběh fází experimentu</translation>
+        </message>
+        <message>
+            <source>%1% etapów · pozostało około %2 min %3 s</source>
+            <translation>%1% fází · zbývá přibližně %2 min %3 s</translation>
+        </message>
+        <message>
+            <source>Szacowanie pozostałego czasu…</source>
+            <translation>Odhaduje se zbývající čas…</translation>
         </message>
     </context>
     <context>
