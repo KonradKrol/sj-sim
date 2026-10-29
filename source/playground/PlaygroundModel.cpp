@@ -1,6 +1,7 @@
 #include "PlaygroundModel.h"
 #include "../simulation-v2/WeatherCalibration.h"
 #include <QObject>
+#include <QSet>
 #include <type_traits>
 #include <cmath>
 #include <stdexcept>
@@ -208,25 +209,139 @@ QString effectDescription(const QString &key,const QString &group) {
     if(key.startsWith("landing.landingPenalty."))return QObject::tr("Ile punktów odejmuje sędzia za ten rodzaj lądowania. Większa wartość obniża noty, ale nie zwiększa ryzyka tego zdarzenia.");
     if(key.startsWith("flight.wind") && key.endsWith("AdverseChance"))return QObject::tr("Górna granica szansy niekorzystnego zdarzenia przy bardzo silnym wietrze. 0,20 oznacza do 20%. Zwiększenie podnosi ryzyko; rzeczywista szansa rośnie płynnie z siłą wiatru.");
     if(key.startsWith("flight.wind") && key.endsWith("AdverseLoss"))return QObject::tr("Jak dotkliwa jest strata po wylosowaniu niekorzystnego zdarzenia. Większa wartość mocniej skraca skok; nie zwiększa szansy wystąpienia zdarzenia.");
-    if(group=="generator")return QObject::tr("Ustawienie generatora określa, jakie warunki są losowane przed konkursem. Minimum i maksimum wyznaczają zakres losowania. Waga oznacza częstość względem pozostałych wag, nie procent. Wpływ wiatru na skok ustawisz osobno w modelu lotu.");
-    if(key.startsWith("hill.perk."))return QObject::tr("Poziomy −3…+3. Pary: lotność / wybicie, trudne / przyjazne lądowanie, stabilność / loteryjność, wiatr w plecy / pod narty. Ręczna preferencja lub real HS ma pierwszeństwo przed odpowiednim perkiem.");
-    if(key.startsWith("quality.form") || key=="quality.overallWeight")return QObject::tr("Udział formy = 1 − udział OVR + amplituda × tanh((K − K odniesienia) / skala), ograniczony do 0–1. Amplituda 0 wyłącza zależność od K.");
-    if(key.startsWith("flight.wind") && key.contains("Adverse"))return QObject::tr("Szansa = maksimum × r^wykładnik / (1 + r^wykładnik), gdzie r to siła wiatru / skala złych zdarzeń. Siła zdarzenia zwiększa zużycie zapasu lotu; zero wyłącza stratę.");
-    if(key=="flight.windHeadSaturation")return QObject::tr("Pomoc wiatru pod narty rośnie coraz wolniej. Zero wyłącza nasycenie. Złe zdarzenia nadal zależą od rzeczywistej siły wiatru.");
-    if(key=="flight.windVariabilityScale" || key.endsWith("Spread"))return QObject::tr("Rozrzut rośnie płynnie z siłą wiatru. Reakcja jest losowana raz na skok, nie w każdym kroku lotu. Zerowy rozrzut wyłącza ten składnik losowości.");
-    if(key=="quality.negativeInfluence")return QObject::tr("Udział siły losowych strat w łącznym wpływie losowości, nie odsetek słabych skoków.");
-    if(key.startsWith("curve."))return QObject::tr("Punkty K muszą rosnąć, a udział wybicia nie może rosnąć. Krzywa dotyczy preferencji skoczni i specjalizacji, nie ukrytego skilla.");
-    if(group=="quality")return QObject::tr("Parametr jakości lub perka. Poziomy perków: 0 brak, 1–3 siła. Serie: 0 trening, 1 próba, 2 kwalifikacje, 3 konkurs.");
-    if(group=="wind")return QObject::tr("Amplitudy zmieniają siłę wahań; skale czasu i odległości ich tempo oraz podobieństwo. Korekty punktów dodają się do wspólnego wiatru. Nie zmienia to metody pomiaru.");
-    if(group=="measurement")return QObject::tr("Zmienia odczyt wiatru do punktacji, nie fizyczny lot. Wagi przybliżenia FIS są parametrami gry.");
-    if(group=="flight")return QObject::tr("Zmienia zapas lotu, jego zużycie lub reakcję na warunki. Opór geometrii działa w trakcie lotu; nie skraca gotowego wyniku.");
-    if(group=="landing")return QObject::tr("Środki krzywych odnoszą się do odległości / real HS, szerokość steruje łagodnością przejścia. Klasa lądowania zmienia noty, nie prawdopodobieństwa lądowania.");
-    if(group=="precipitation")return QObject::tr("Steruje opadami w czasie. Fizyczny wpływ śniegu i deszczu ma osobne współczynniki w grupie Lot i geometria.");
-    if(group=="athlete" || group=="field")return QObject::tr("Dodatnie perki: błyszczy na treningach, lotnik, regularny. Ujemne: oszczędza siły, małe skocznie, nieprzewidywalny. Klasa lądowania 0–4 wpływa tylko na noty.");
-    if(group=="hill")return QObject::tr("Geometria, preferencja i punktacja skoczni są niezależne. Sam punkt K nie podmienia ręcznie ustawionej punktacji.");
-    if(group=="analysis")return QObject::tr("Zmienia zakres lub dokładność analizy. Gęstsze próbkowanie zwiększa koszt, ale nie zmienia pola pogody ani silnika.");
-    if(group=="rules")return QObject::tr("Włącza składnik punktacji lub regułę eksperymentu. Dane normalnej gry pozostają bez zmian.");
-    return QObject::tr("W trybie kontrolowanym wszystkie starty mają czas 0. W przebiegu konkursu wspólny zegar przesuwa się między skokami. Belka 0 dobiera wspólną belkę z bazy.");
+    if(key=="flight.precipitationLossPerLevel")return QObject::tr("Ile początkowego zapasu lotu odbiera jeden poziom śniegu. 0,008 oznacza 0,8% na poziom, czyli 8% przy natężeniu 10. To nie jest bezpośrednia strata metrów.");
+    if(key=="flight.rainLossPerLevel")return QObject::tr("Utrata początkowego zapasu lotu za każdy poziom deszczu powyżej progu wpływu. 0,003 oznacza 0,3% na poziom; strata od ulewy dodaje się osobno.");
+    if(key=="flight.rainLossThreshold")return QObject::tr("Do tego natężenia liniowa strata od deszczu wynosi zero. Podniesienie progu zmniejsza ten składnik straty. Nie wyłącza osobnego wpływu ulewy.");
+    if(key=="flight.rainHeavyThreshold")return QObject::tr("Natężenie, powyżej którego zaczyna działać dodatkowa strata od ulewy. Podniesienie progu ogranicza ją do mocniejszych opadów.");
+    if(key=="flight.rainHeavyLossAtMaximum")return QObject::tr("Dodatkowa część zapasu lotu tracona przy deszczu o natężeniu 10. 0,15 oznacza 15%; liniowa strata od deszczu jest doliczana osobno.");
+    if(key=="flight.rainHeavyExponent")return QObject::tr("Kształt narastania dodatkowej straty od ulewy między jej progiem a natężeniem 10. Większy wykładnik zmniejsza stratę pośrednią, bez zmiany straty przy 10.");
+    if(key=="wind.gustTravelMetresPerSecond")return QObject::tr("O ile metrów na sekundę przemieszcza się podmuch wzdłuż zeskoku. Większa wartość szybciej przenosi jego wpływ między miejscami; 0 pozostawia go w miejscu.");
+    if(key=="precipitation.scenario")return QObject::tr("Wybierz przebieg opadów. Stałe utrzymują natężenie, zmienne wahają się wokół niego, silne mają bazę co najmniej 8, a narastające zwiększają natężenie z czasem.");
+    if(key=="precipitation.kind")return QObject::tr("Śnieg i deszcz mają osobne wzory straty zapasu lotu. Śnieg działa liniowo od pierwszego poziomu; deszcz ma próg wpływu oraz dodatkowy składnik ulewy.");
+    if(key=="precipitation.intensity")return QObject::tr("Bazowe natężenie w skali 0–10. Wyższe natężenie skraca skoki według współczynników śniegu lub deszczu. W przebiegu silnym baza wynosi co najmniej 8.");
+    if(key=="precipitation.variation")return QObject::tr("Siła losowych wahań natężenia. Działa w przebiegu zmiennym, słabiej w silnym i narastającym; w stałym i bez opadów nie ma wpływu.");
+    if(key=="precipitation.correlationSeconds")return QObject::tr("Skala czasu podobnego natężenia opadów. Większa wartość spowalnia wahania; nie zmienia bazowej siły opadów.");
+    if(key=="precipitation.increasePerMinute")return QObject::tr("O ile poziomów na minutę rośnie natężenie w przebiegu narastającym. 0,5 daje wzrost o 1 poziom w dwie minuty, do limitu 10.");
+    if(key=="measurement.temporalSamples")return QObject::tr("Liczba odczytów z każdego czujnika podczas lotu. Więcej próbek dokładniej uwzględnia zmiany w czasie, ale zwiększa koszt obliczeń. Pomiar przed skokiem zawsze używa jednej próbki; metoda dotychczasowa ma własne próbkowanie.");
+    if(key=="measurement.extentK")return QObject::tr("Zasięg rozmieszczenia czujników jako część K: 1,2 na K120 oznacza 144 m. Nie zmienia lotu ani metody opartej na wietrze napotkanym przez skoczka. Metoda dotychczasowa używa własnego zasięgu.");
+    if(key=="measurement.denseSpacingMetres")return QObject::tr("Docelowy odstęp między czujnikami gęstej sieci. Mniejszy odstęp daje więcej czujników, do limitu 128. Pozostałe metody go nie używają.");
+    if(key=="measurement.weightPeak")return QObject::tr("Miejsce największej wagi czujników w przybliżeniu FIS, jako część zasięgu pomiaru. 0,5 wyróżnia środek sieci, 0,75 dalszą część zeskoku.");
+    if(key=="measurement.weightStrength")return QObject::tr("Jak mocno czujniki bliżej szczytu wag dominują w przybliżeniu FIS. 0 daje równe wagi. Zmienia rekompensatę, a nie fizyczny wpływ wiatru.");
+    if(key=="athlete.perk.0")return QObject::tr("0: bez perka; +1…+3: Błyszczy na treningach; −1…−3: Oszczędza siły. Większa wartość bezwzględna wzmacnia wybrany perk. Zmieniasz tylko analizowanego skoczka.");
+    if(key=="athlete.perk.1")return QObject::tr("0: bez perka; +1…+3: Lotnik; −1…−3: Specjalista małych skoczni. Lotnik zyskuje przy przewadze lotu, specjalista przy przewadze wybicia. Zmieniasz tylko analizowanego skoczka.");
+    if(key=="athlete.perk.2")return QObject::tr("0: bez perka; +1…+3: Regularny; −1…−3: Nieprzewidywalny. Dodatni poziom ogranicza rozrzut, ujemny zwiększa go, zwłaszcza w stronę strat. Siłę określają współczynniki perków.");
+    if(key=="hill.perk.0")return QObject::tr("Dodatnie poziomy premiują wybicie, ujemne lot; 0 jest neutralne. Działa na specjalizację skoczka. Ręcznie ustawiona preferencja skoczni ma pierwszeństwo.");
+    if(key=="hill.perk.1")return QObject::tr("Dodatnie poziomy przesuwają wypłaszczenie dalej, ujemne bliżej HS. Ręczna zmiana początku wypłaszczenia ma pierwszeństwo przed tym perkiem.");
+    if(key=="hill.perk.2")return QObject::tr("Dodatnie poziomy zwiększają szansę loteryjnej pogody, ujemne spokojnej. Działa tylko przy automatycznej propozycji pogody; nie zmienia ręcznego pola ani wybranego presetu.");
+    if(key=="hill.perk.3")return QObject::tr("Dodatnie poziomy zwiększają szansę wiatru pod narty, ujemne w plecy. Dotyczy automatycznej propozycji pogody, nie ręcznego pola ani wybranego presetu.");
+    if(key=="hill.hs")return QObject::tr("Oficjalny rozmiar skoczni w metrach. Służy m.in. regule 95% HS. Początek wypłaszczenia jest osobnym parametrem; samo zwiększenie HS nie zwiększa zapasu lotu.");
+    if(key=="hill.takeoffBias")return QObject::tr("Przesuwa udział wybicia i lotu w działaniu specjalizacji: +1 w stronę wybicia, −1 w stronę lotu. Nie daje dodatkowego skilla skoczkowi bez perka specjalizacji.");
+    if(key=="hill.pointsAtK")return QObject::tr("Punkty za odległość równą K. Większa wartość podnosi bazę punktacji każdego skoku, bez zmiany jego odległości.");
+    if(key=="hill.pointsPerMetre")return QObject::tr("Ile punktów daje każdy metr ponad K lub odbiera każdy metr przed K. Zwiększenie wzmacnia znaczenie odległości względem not i rekompensat.");
+    if(key=="hill.gatePoints")return QObject::tr("Rekompensata punktowa za obniżenie belki o jeden stopień względem odniesienia. Nie zmienia wpływu belki na odległość.");
+    if(key=="hill.headwindPoints")return QObject::tr("Ile punktów odjąć za każdy 1 m/s zmierzonego wiatru pod narty, gdy rekompensaty są włączone. Nie zmienia samego lotu.");
+    if(key=="hill.tailwindPoints")return QObject::tr("Ile punktów dodać za każdy 1 m/s zmierzonego wiatru w plecy, gdy rekompensaty są włączone. Nie zmienia samego lotu.");
+    if(key=="gate")return QObject::tr("Belka startowa eksperymentu. Wyższa zwykle wydłuża skoki. 0 uruchamia dobór automatyczny; nie oznacza fizycznej belki zerowej.");
+    if(key=="gate.reference")return QObject::tr("Belka, względem której naliczana jest rekompensata. 0 oznacza wspólną bazę eksperymentu. To nie belka odniesienia wzoru odległości.");
+    if(key=="gate.coachReduction")return QObject::tr("O ile stopni trener obniża belkę wybranego skoczka. Zmniejsza odległość; ewentualne punkty za obniżenie zależą od zasad, w tym reguły 95% HS.");
+    if(key=="event")return QObject::tr("Rodzaj skoku wpływa na perki podejścia i odchylenie jakości. Błyszczy na treningach ma połowę bonusu w kwalifikacjach, a karę w konkursie.");
+    if(key=="weather.month")return QObject::tr("Miesiąc używany przez automatyczne losowanie opadów; 0 pomija porę roku. Nie ustawia daty sezonu. Na półkuli południowej pory roku są odwrócone.");
+    if(key=="weather.surface")return QObject::tr("Nawierzchnia dla automatycznego losowania opadów. Igelit wybiera deszcz, śnieg dopuszcza zależność od miesiąca. Nie nadpisuje ręcznie ustawionego rodzaju opadów.");
+    if(key=="field.skill")return QObject::tr("Środkowy OVR syntetycznej stawki. Pozostali skoczkowie rozkładają się wokół niego według rozpiętości OVR. Nie zmienia zawodników z wczytanej paczki.");
+    if(key=="field.spread")return QObject::tr("Różnica OVR między najmocniejszym a najsłabszym w syntetycznej stawce. 30 wokół OVR 70 daje zakres 55–85, ograniczony do 1–100. Nie zmienia wczytanej paczki.");
+    if(key=="field.form")return QObject::tr("Forma pozostałych zawodników, także z wczytanej paczki po ręcznej zmianie tego pola. Analizowany skoczek ma osobne pole formy; indywidualne poprawki mają pierwszeństwo.");
+    if(key=="field.landing")return QObject::tr("Klasa stylu pozostałych zawodników, od 0 do 4; po ręcznej zmianie nadpisuje także paczkę. Wyższa poprawia noty, nie zmienia ryzyka upadku. Indywidualne poprawki mają pierwszeństwo.");
+    if(key=="rules.dsq")return QObject::tr("Włącz losowanie dyskwalifikacji z ustawionym ryzykiem DSQ. Wyłączenie usuwa DSQ z eksperymentu, niezależnie od wartości ryzyka.");
+    if(key=="rules.windCompensation")return QObject::tr("Dolicz rekompensatę za zmierzony wiatr. Wyłączenie zmienia punktację; wiatr nadal wpływa na lot.");
+    if(key=="rules.gateCompensation")return QObject::tr("Dolicz rekompensatę za różnicę belki względem odniesienia. Wyłączenie nie usuwa wpływu belki na odległość.");
+    if(key=="rules.judges")return QObject::tr("Dolicz trzy środkowe noty spośród pięciu sędziów. Wyłączenie usuwa punkty za styl, bez zmiany odległości i ryzyka lądowania.");
+    if(key=="rules.95hs")return QObject::tr("Przy obniżeniu belki przez trenera przyznaj rekompensatę dopiero po osiągnięciu 95% HS. Nie dotyczy zwykłej zmiany belki przez jury.");
+    if(key=="rules.measurement")return QObject::tr("Sposób wyznaczenia średniego wiatru do rekompensaty. Możesz porównać odczyt przed startem, czujniki podczas lotu lub wiatr napotkany przez skoczka. Nie zmienia fizycznego pola wiatru.");
+    if(key=="analysis.duration")return QObject::tr("Jak długi przebieg wiatru obejmuje analiza, w sekundach. Zwiększenie pokazuje dłuższy fragment pogody; nie wydłuża konkursu.");
+    if(key=="analysis.time")return QObject::tr("Sekunda modelu pogody, dla której pokazać przekrój wiatru wzdłuż zeskoku. Nie przesuwa czasu startu w konkursie.");
+    if(key=="analysis.distance")return QObject::tr("Miejsce nad zeskokiem, w metrach od progu, dla którego analizować zmiany wiatru w czasie.");
+    if(key=="analysis.scale")return QObject::tr("Zakres kolorów mapy wiatru po obu stronach zera. Mniejszy zakres mocniej uwidacznia drobne różnice, ale nasyca kolory dla silnego wiatru.");
+    if(key=="analysis.timeSamples")return QObject::tr("Liczba chwil próbkowania na wykresie i mapie wiatru. Więcej próbek daje dokładniejszy obraz zmian, kosztem dłuższych obliczeń.");
+    if(key=="analysis.spaceSamples")return QObject::tr("Liczba miejsc próbkowania wzdłuż zeskoku. Więcej próbek ujawnia drobniejsze różnice przestrzenne, ale zwiększa koszt analizy.");
+    if(key=="analysis.jumpSamples")return QObject::tr("Liczba testowych skoków do analizy wiatru. Większa próba stabilizuje rozkłady i zależności, ale wydłuża obliczenia.");
+    if(key=="curve.extension")return QObject::tr("Zachowanie udziału wybicia poza skrajnymi punktami K krzywej: utrzymaj skrajną wartość albo przedłuż ostatni odcinek liniowo. Wynik pozostaje w zakresie 0–1.");
+    if(key.startsWith("quality.eventDeviation."))return QObject::tr("Odchylenie losowej jakości w tym rodzaju skoku. Większa wartość zwiększa rozrzut zarówno strat, jak bonusów; 0 usuwa ten składnik losowości. Jednostką jest punkt jakości, nie metr.");
+    if(key.startsWith("quality.specialistBias."))return QObject::tr("Siła specjalizacji na tym poziomie perka. Wzmacnia korzyść lotnika na skoczni preferującej lot oraz jego stratę na skoczni preferującej wybicie; dla specjalisty małych skoczni działa odwrotnie.");
+    if(key.startsWith("quality.trainingBonus."))return QObject::tr("Punkty jakości dodawane za Błyszczy na treningach na tym poziomie. Pełny bonus działa w treningu i próbie, połowa w kwalifikacjach; w konkursie używana jest osobna kara.");
+    if(key.startsWith("quality.competitionPenalty."))return QObject::tr("Punkty jakości odejmowane w konkursie za Błyszczy na treningach na tym poziomie. Większa kara skraca skoki konkursowe; nie zmienia bonusu w treningu.");
+    if(key.startsWith("quality.conservedEffortPenalty."))return QObject::tr("Punkty jakości odejmowane w treningu i próbie za Oszczędza siły na tym poziomie. Nie jest to bonus konkursowy; w konkursie i kwalifikacjach ta kara nie działa.");
+    if(key.startsWith("quality.conservedEffortDeviation."))return QObject::tr("Mnożnik rozrzutu jakości w treningu i próbie za Oszczędza siły na tym poziomie. 1 nie zmienia rozrzutu, 1,5 zwiększa go o połowę. Nie działa w konkursie ani kwalifikacjach.");
+    if(key.startsWith("quality.regularNegative."))return QObject::tr("Mnożnik losowych strat jakości za Regularny na tym poziomie. 0,5 zmniejsza je o połowę, 1 pozostawia bez zmian. Nie zmienia dodatnich losowań.");
+    if(key.startsWith("quality.regularPositive."))return QObject::tr("Mnożnik losowych bonusów jakości za Regularny na tym poziomie. 0,5 zmniejsza je o połowę, 1 pozostawia bez zmian. Nie zmienia ujemnych losowań.");
+    if(key.startsWith("quality.unpredictableNegative."))return QObject::tr("Mnożnik losowych strat jakości za Nieprzewidywalny na tym poziomie. 1,5 zwiększa wielkość strat o połowę, a nie szansę ich wylosowania.");
+    if(key.startsWith("quality.unpredictablePositive."))return QObject::tr("Mnożnik losowych bonusów jakości za Nieprzewidywalny na tym poziomie. 1,2 zwiększa wielkość bonusów o 20%, a nie szansę ich wylosowania.");
+    if(key.startsWith("field.perk."))return effectDescription("athlete.perk."+key.section('.',-1),"athlete")+" "+QObject::tr("W tym polu ustawiasz pozostałych skoczków stawki, także z wczytanej paczki; nie analizowanego zawodnika. Indywidualne poprawki zawodników mają pierwszeństwo.");
+    if(key.startsWith("wind.reference.")) {
+        if(key.endsWith("positionK"))return QObject::tr("Położenie punktu korekty wiatru jako część K: 0,5 na K120 to 60 m od progu. Między punktami wiatr zmienia się płynnie; nie są to sztywne sektory.");
+        if(key.endsWith("head"))return QObject::tr("Lokalna korekta bazowego wiatru wzdłuż skoczni w tym punkcie. +1 dodaje 1 m/s pod narty, −1 w plecy. Korekty między punktami są interpolowane.");
+        return QObject::tr("Lokalna korekta bocznego wiatru w tym punkcie, w m/s. Znak określa stronę. Dodaje się do bazowego wiatru bocznego i płynnie łączy z sąsiednimi punktami.");
+    }
+    if(key.startsWith("generator.preset.")) {
+        const auto field=key.section('.',3,3);
+        QString help;
+        if(field=="strength")help=QObject::tr("Bazowa siła wiatru przed doliczeniem lokalnych różnic i zmian w czasie, w m/s.");
+        else if(field=="strength2")help=QObject::tr("Bazowa siła wiatru w rzadszym wariancie ciszy, wybieranym z szansą 15%, w m/s.");
+        else if(field=="angle")help=QObject::tr("Kąt w stopniach: w presetach pod narty i w plecy jest odchyleniem od ich kierunku, a w ciszy i loterii pełnym kierunkiem 0–360°.");
+        else if(field=="difference")help=QObject::tr("Maksymalna losowa korekta składowych wiatru w kolejnych punktach zeskoku, w m/s. Większa wartość daje bardziej różnorodny profil początkowy.");
+        else if(field=="mixedAmplitude")help=QObject::tr("Siła odwrócenia wiatru między częściami zeskoku w scenariuszu różnych kierunków, w m/s.");
+        else if(field=="temporalAmplitude")help=QObject::tr("Siła wahań wiatru w czasie, w m/s. Większa wartość zwiększa różnice warunków między chwilami konkursu.");
+        else if(field=="spatialAmplitude")help=QObject::tr("Siła różnic wiatru wzdłuż zeskoku, w m/s. Większa wartość daje mniej jednolite warunki na trasie lotu.");
+        else if(field=="trendAmplitude")help=QObject::tr("Siła zmian dominującej tendencji wiatru podczas konkursu, w m/s. Większa wartość dopuszcza wyraźniejsze zmiany kierunku i siły.");
+        else if(field=="trendPeriodSeconds")help=QObject::tr("Długość okresu tendencji w sekundach. Większa wartość oznacza dłuższe utrzymywanie się podobnego tła wiatru.");
+        else if(field=="gustAmplitude")help=QObject::tr("Siła dodatkowych podmuchów w m/s. Większa wartość wzmacnia chwilowe odstępstwa od tła.");
+        else if(field=="gustProbability")help=QObject::tr("Szansa aktywnego podmuchu w modelu. 0,2 oznacza 20% dla losowania podmuchu, nie odsetek konkursów.");
+        else if(field=="correlationSeconds")help=QObject::tr("Skala podobieństwa wiatru w czasie, w sekundach. Większa wartość spowalnia zmiany.");
+        else if(field=="activityVariation")help=QObject::tr("Kontrast między spokojnymi i aktywnymi okresami konkursu. Większa wartość mocniej różnicuje te epizody.");
+        else if(field=="correlationK")help=QObject::tr("Długość podobnych warunków jako część K. 0,5 na K120 oznacza skalę 60 m; większa wartość daje szersze obszary podobnego wiatru.");
+        else if(field=="gustWidthK")help=QObject::tr("Szerokość podmuchu jako część K. 0,3 na K120 oznacza 36 m; większa wartość obejmuje dłuższą część lotu.");
+        else if(field=="transitionSeconds")help=QObject::tr("Czas przejścia między tendencjami w sekundach. Większa wartość wygładza zmianę dominującego wiatru.");
+        return help+" "+(key.endsWith(".min")?QObject::tr("Dolna granica losowania tego parametru w wybranym presecie; nie może przekroczyć maksimum."):QObject::tr("Górna granica losowania tego parametru w wybranym presecie; nie może być mniejsza od minimum."));
+    }
+    if(key.startsWith("generator.auto.")) {
+        const auto field=key.mid(15);
+        if(field=="strengthScale")return QObject::tr("Mnożnik bazowej siły automatycznie proponowanego wiatru. 1 zachowuje siłę, 0,5 zmniejsza ją o połowę. Nie skaluje podmuchów ani zmian w czasie.");
+        if(field=="variationScale")return QObject::tr("Wspólny mnożnik wahań w czasie i różnic przestrzennych w automatycznej propozycji. Nie zmienia bazowej siły, podmuchów ani tendencji.");
+        if(field=="gustScale")return QObject::tr("Mnożnik siły podmuchów w automatycznej propozycji. 2 podwaja amplitudę, bez zmiany prawdopodobieństwa podmuchu.");
+        if(field=="trendScale")return QObject::tr("Mnożnik amplitudy tendencji w automatycznej propozycji. Większa wartość wzmacnia zmiany dominującego wiatru, bez zmiany ich okresu.");
+        if(field=="timeScale")return QObject::tr("Mnożnik czasu korelacji, okresu tendencji i czasu przejścia w automatycznej propozycji. 2 dwukrotnie spowalnia te procesy.");
+        if(field=="crossProbability")return QObject::tr("Szansa dominującego wiatru bocznego w automatycznej propozycji. 0,15 oznacza 15%. Nie jest siłą wiatru bocznego.");
+        if(field=="correlationKStable")return QObject::tr("Skala podobnego wiatru wzdłuż zeskoku w spokojnym wariancie automatycznej pogody, jako część K. Większa wartość daje dłuższe obszary podobnych warunków.");
+        if(field=="correlationKVariable")return QObject::tr("Skala podobnego wiatru wzdłuż zeskoku w zmiennym i loteryjnym wariancie automatycznej pogody, jako część K. Większa wartość daje dłuższe obszary podobnych warunków.");
+        if(field=="gustWidthK")return QObject::tr("Szerokość automatycznie proponowanego podmuchu jako część K. 0,35 na K120 to 42 m.");
+        if(field=="rainProbability")return QObject::tr("Szansa wybrania deszczu zamiast śniegu poza zimnymi miesiącami, na nawierzchni śnieżnej. Na igelicie opadem zawsze jest deszcz; samo wystąpienie opadów jest losowane osobno.");
+        if(field=="wetSnow")return QObject::tr("Bazowa szansa opadów na nawierzchni śnieżnej. Dodatki za zimny miesiąc i kraj północny sumują się z nią, do maksymalnie 100%.");
+        if(field=="wetColdBonus")return QObject::tr("Dodatkowe prawdopodobieństwo opadów w zimnym miesiącu na nawierzchni śnieżnej. 0,1 dodaje 10 punktów procentowych do bazowej szansy.");
+        if(field=="wetNorthBonus")return QObject::tr("Dodatkowe prawdopodobieństwo opadów w Norwegii, Szwecji, Finlandii i Kanadzie, na śniegu. 0,1 dodaje 10 punktów procentowych.");
+        if(field=="wetMat")return QObject::tr("Szansa opadów na igelicie; 0,3 oznacza 30%. Wylosowanym opadem jest deszcz.");
+        if(field.startsWith("headProbability."))return QObject::tr("Szansa wiatru pod narty dla tego poziomu perka kierunku. Przy ujemnym perku szansa jest odwrócona, np. 0,84 daje 84% wiatru w plecy. Poziom 0 dotyczy skoczni neutralnej.");
+        if(field.startsWith("character"))return QObject::tr("Względna waga tego charakteru pogody: spokojnego, zmiennego albo loteryjnego. Zwiększenie podnosi jego szansę względem pozostałych wag. Perk skoczni płynnie miesza wagi neutralne z wagami stabilnymi lub loteryjnymi.");
+        if(field.startsWith("stable.") || field.startsWith("unstable."))return QObject::tr("Zapasowa waga charakteru pogody dla skoczni stabilnej lub loteryjnej. Działa tylko przy braku odpowiedniej wagi characterStable lub characterLottery; zwykle zmieniaj tamte pola.");
+        if(field.startsWith("precipitationPattern."))return QObject::tr("Względna waga tego przebiegu opadów, gdy opady zostały już wylosowane. Większa waga zwiększa jego szansę względem pozostałych; nie zwiększa szansy wystąpienia samych opadów.");
+        if(field.startsWith("strength."))return QObject::tr("Granica losowania bazowej siły wiatru w automatycznej propozycji, w m/s. Podmuchy i lokalne różnice są dodawane osobno. Minimum nie może przekraczać maksimum.");
+        if(field.startsWith("heavyPrecipitation."))return QObject::tr("Granica losowania początkowego natężenia silnych opadów, w skali 0–10. W przebiegu silnym model i tak stosuje bazę co najmniej 8.");
+        if(field.startsWith("precipitationVariation."))return QObject::tr("Granica losowania amplitudy wahań w zmiennym przebiegu opadów. Większa amplituda daje większe różnice natężenia między chwilami; nie ustala jego poziomu bazowego.");
+        if(field.startsWith("precipitation."))return QObject::tr("Granica losowania bazowego natężenia zwykłych opadów, w skali 0–10. Silny przebieg ma osobny zakres. Minimum nie może przekraczać maksimum.");
+        const auto quantity=field.section('.',0,0);
+        if(quantity=="temporal")return QObject::tr("Amplituda wahań wiatru w czasie dla wskazanego charakteru pogody, w m/s. Większa wartość zwiększa różnice między chwilami konkursu.");
+        if(quantity=="spatial")return QObject::tr("Amplituda różnic wiatru wzdłuż zeskoku dla wskazanego charakteru pogody, w m/s. Większa wartość daje mniej jednolite warunki na trasie lotu.");
+        if(quantity=="gusts")return QObject::tr("Siła podmuchów dla wskazanego charakteru pogody, w m/s. Nie zmienia ich szansy wystąpienia.");
+        if(quantity=="chance")return QObject::tr("Szansa aktywnego podmuchu dla wskazanego charakteru pogody. 0,25 oznacza 25% dla losowania w modelu podmuchów.");
+        if(quantity=="times")return QObject::tr("Czas korelacji wiatru dla wskazanego charakteru pogody, w sekundach. Większa wartość spowalnia zmiany.");
+        if(quantity=="trendAmplitude")return QObject::tr("Amplituda dominującej tendencji dla wskazanego charakteru pogody, w m/s. Większa wartość daje silniejsze zmiany tła wiatru.");
+        if(quantity=="trendPeriod")return QObject::tr("Okres tendencji dla wskazanego charakteru pogody, w sekundach. Większa wartość wydłuża utrzymywanie się tła wiatru.");
+        if(quantity=="transitions")return QObject::tr("Czas przejścia między tendencjami dla wskazanego charakteru pogody, w sekundach. Większa wartość daje łagodniejszą zmianę.");
+        if(quantity=="activity")return QObject::tr("Kontrast spokojnych i aktywnych epizodów dla wskazanego charakteru pogody. Większa wartość silniej różnicuje ich aktywność.");
+    }
+
+    if(key.startsWith("curve.k."))return QObject::tr("Punkt K kotwicy krzywej specjalizacji. Przesunięcie zmienia rozmiary skoczni, między którymi interpolowany jest udział wybicia. Punkty K muszą rosnąć.");
+    if(key.startsWith("curve.takeoff."))return QObject::tr("Udział wybicia w tej kotwicy: 0,60 oznacza 60% wybicia i 40% lotu. Zmienia korzyści specjalisty względem lotnika; udziały muszą maleć lub pozostawać równe wraz ze wzrostem K.");
+    return {};
+
 }
 QJsonObject definition(const QString &key,const QString &label,const QString &group,double value,double lo,double hi,double step,const QString &unit,bool integer) {
     return {{"key",key},{"label",label},{"group",group},{"default",value},{"minimum",lo},{"maximum",hi},{"step",step},{"unit",unit},{"type",integer?"integer":"number"},{"help",effectDescription(key,group)+"\n"+QObject::tr("%1 · jednostka: %2 · domyślnie: %3").arg(key,unit).arg(value,0,'g',9)}};
@@ -270,7 +385,7 @@ QJsonArray parameters() {
     for(const auto &r:SimulationV2::weatherGeneratorScalars()){
         const auto field=QString::fromStdString(r.field);QString label=automaticLabels.value(field,field);if(r.level>=0)label+=QString(" [%1]").arg(r.level);
         const bool time=field=="times" || field=="trendPeriod" || field=="transitions";
-        auto d=definition(QString::fromStdString(r.key),label,"generator",r.value,time?qMax(.1,r.minimum):r.minimum,r.maximum,time?1:.01,time?"s":"1",false);d["preset"]=-1;rows.append(d);
+        auto d=definition(QString::fromStdString(r.key),label,"generator",r.value,time?qMax(.1,r.minimum):r.minimum,r.maximum,time?1:.01,time?"s":QSet<QString>{"temporal","spatial","gusts","trendAmplitude","strength.min","strength.max"}.contains(field)?"m/s":"1",false);d["preset"]=-1;rows.append(d);
     }
     SimulationV2::WindParameters wind;visitWind(wind,add);
     SimulationV2::PrecipitationParameters precipitation;visitPrecipitation(precipitation,add);
@@ -341,12 +456,13 @@ QJsonArray parameters() {
     input("analysis.jumpSamples",QObject::tr("Skoki w próbie analizy wiatru"),"analysis",512,16,10000,1,"1");
     input("rules.dsq",QObject::tr("Dyskwalifikacje"),"rules",1,0,1,1,"1");
     const QStringList events{QObject::tr("trening"),QObject::tr("seria próbna"),QObject::tr("kwalifikacje"),QObject::tr("konkurs")};
+    const QStringList landingStyles{QObject::tr("Niechlujne"),QObject::tr("Niestaranne"),QObject::tr("Poprawne"),QObject::tr("Eleganckie"),QObject::tr("Stylista")};
     const QStringList landings{QObject::tr("telemark"),QObject::tr("dwie nogi"),QObject::tr("podpórka"),QObject::tr("upadek")};
     const QStringList presets{QObject::tr("Stały wiatr w plecy"),QObject::tr("Silny wiatr pod narty"),QObject::tr("Loteryjny"),QObject::tr("Zmienny boczny"),QObject::tr("Cisza"),QObject::tr("Stały pod narty"),QObject::tr("Silny w plecy"),QObject::tr("Stały boczny"),QObject::tr("Zmienny pod narty"),QObject::tr("Zmienny w plecy"),QObject::tr("Różne kierunki na zeskoku")};
     for(int i=0;i<rows.size();++i){auto d=rows[i].toObject();const auto key=d["key"].toString();auto label=d["label"].toString();int n=key.section('.',-1).toInt();
         if(key.startsWith("quality.eventDeviation."))label=QObject::tr("Losowość jakości — %1").arg(events.value(n));
         else if(key.startsWith("landing.landingPenalty."))label=QObject::tr("Kara w notach — %1").arg(landings.value(n));
-        else if(key.startsWith("landing.styleMean."))label=QObject::tr("Bazowa nota — klasa lądowania %1").arg(n);
+        else if(key.startsWith("landing.styleMean."))label=QObject::tr("Bazowa nota — %1").arg(landingStyles.value(n));
         else if(key.startsWith("quality.") && label.contains('['))label=label.section(" [",0,0)+QObject::tr(" — poziom perka %1").arg(n);
         else if(key.startsWith("generator.preset."))label=presets.value(d["preset"].toInt())+" · "+label.section(" · ",1);
         else if(key.startsWith("generator.auto.") && label.contains('[')){

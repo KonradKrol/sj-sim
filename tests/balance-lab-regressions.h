@@ -12,6 +12,9 @@ static void balanceLabBackendRegressions(){
 
     QTemporaryDir storage;check(storage.isValid(),"private balance storage");const auto previousRoot=qApp->property("balanceLabStorageRoot");qApp->setProperty("balanceLabStorageRoot",storage.path()+"/balance-lab");
     const auto oldName=QCoreApplication::applicationName();QCoreApplication::setApplicationName("BalanceLabRegression-"+QUuid::createUuid().toString(QUuid::WithoutBraces));
+    for(auto row:Playground::parameters()) {
+        const auto d=row.toObject();check(!d["help"].toString().section('\n',0,0).trimmed().isEmpty(),qPrintable("missing field-specific help: "+d["key"].toString()));
+    }
     QString error;check(BalanceRuntime::reset(error),"isolated default balance");auto c=smallBalanceConfig();check(Playground::validate(c,error),qPrintable(error));
     QJsonObject options{{"view","curve"},{"axisX","athlete.overall"},{"fromX",50},{"toX",90},{"axisY","athlete.form"},{"fromY",40},{"toY",80},{"resolution",3},{"matrix",true},{"started",true}};
     auto single=c;single["threads"]=1;const auto duplicated=Playground::run(single,{});auto forced=single;auto distinct=forced["variants"].toArray();for(int i=0;i<distinct.size();++i){auto v=distinct[i].toObject();v["testDistinctTrial"]=i;distinct[i]=v;}forced["variants"]=distinct;const auto independent=Playground::run(forced,{});
