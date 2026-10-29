@@ -206,3 +206,107 @@ Nie zweryfikowano ostatnich zmian na Windows/Qt6.
 **Następna sesja: zacząć od zaplanowania i wdrażania nowego playgroundu v2**,
 a następnie pozostałego audytu sezonów/presetów i tłumaczeń. Szczegóły powyżej.
 Nie mylić domknięcia tych dwóch etapów z ukończeniem całego `NEW_SIMULATION.md`.
+
+## Aktywne zlecenie UX — 29.10 wieczorem (po pull 61846d4)
+
+Pracować solo na feature/simulation-v2. Każdy skończony commit wypychać.
+Użytkownik zlecił cały poniższy zestaw, nie tylko laboratorium:
+1. Zastąpić przewijane poziomo zakładki lewego panelu labu (Dane próby itd.)
+   nawigacją, w której wszystkie sekcje widać. WIP: siatka 2×2 w BalanceLabControls.
+2. Ukryć lab w menu głównym (pozostaje w ustawieniach). WIP Home.qml.
+3. Ładna animacja O autorze. WIP AuthorPage: MenuEntrance + przesunięcie/opacity,
+   respektuje reduced motion.
+4. Czytelna nazwa paczek po migracji zamiast „przybliżenie”, także już istniejących.
+5. Daty logiczne. Odpowiedzi na 3 pytania: BLOKOWAĆ zmianę daty/kolejności,
+   jeśli psuje chronologię i wskazać konflikt; ten sam dzień ma ręczną kolejność,
+   BEZ godzin; aktualna data automatycznie wskazuje następne wydarzenie i jest
+   widoczna w przeglądzie sezonu.
+6. Przebudować Zaplanuj terminy: mocna hierarchia, wyraźny wybór Ustal terminy /
+   Dodaj weekend, zrozumiały wybór dotyczący treningów, wariant konkursów pt-sb-nd.
+7. KO przed skokiem: porównywać do lidera GRUPY, a dopiero przy jego braku do
+   lidera konkursu. Seria>1, po wagach, pomijać reset. QuickBridge.cpp currentGap.
+8. 30 dodatkowych sensownych animacji: 10 wyrazistych, 20 dyskretnych funkcjonalnych.
+   Nie odhaczać samego dodania animacji bez użycia i reduced-motion.
+9. Skocznia przed pojedynczym konkursem: podkreślić zaawansowaną edycję i dodać
+   wybór skoczni/paczki bez powrotu do Konfiguracji.
+10. Komunikaty o niedokładnej migracji wyłącznie w edytorze bazy; usunąć je przed
+    konkursem (CompetitionConfigWindow updateCanonicalReadiness), sprawdzić
+    SingleJumpsConfigWindow i inne widoki.
+11. Czasownikowe checkboxy, np. Przeprowadź kwalifikacje; znaleźć do 20 miejsc.
+12. Ikony natężenia i przebiegu opadów + jasne etykiety/opisy rzeczywistego wpływu
+    deszczu/śniegu na skok (nie tekst o prędkości rozbiegu). Wyjaśniono użytkownikowi:
+    słaby deszcz ma mały wpływ, ulewa silny nieliniowy; śnieg narastający z natężeniem.
+13. DEL usuwał tylko jednego z wielu zaznaczonych. NAPRAWIONE: RosterRow nie
+    nadpisuje zaznaczenia przed removeMarked, jeśli bieżący jest zaznaczony.
+    Regresja prawdziwego keypress+undo PASS --rosters-only. Commit 3c7f9c4,
+    push wykonany. Nie implementować ponownie.
+14. Częsty fałszywy komunikat Pusta lista startowa — DO DIAGNOZY. Kod
+    CompetitionConfigWindow::validateSimulationInputs wspólnie zgłasza pustą
+    listę, null oraz brak imienia/nazwiska; samo poprawienie treści nie wystarczy,
+    trzeba sprawdzić synchronizację i rzeczywisty przypadek niepustej listy.
+15. Pusta pozycja w wiadomości — nie dopowiadać wymagań.
+
+Lokalna zależność Linux Qt5 uzupełniona po pull: QtQuick.Shapes. Pakiety
+qml-module-qtquick-shapes i libqt5quickshapes5 pobrane apt-get download i wypakowane
+w ignorowanym build-qml-preview/qt-runtime (brak sudo bez hasła). Build, rdzeń,
+CLI i pełne UI nowego laboratorium z remote przeszły przed tym zleceniem.
+
+### Rozszerzenie zlecenia: punkty 15–19
+
+15. Nowa paczka SZKIELETOWA: wszystkie osoby z punktami w męskim PŚ 2025/26
+    LUB męskim LGP 2026; dane osobowe i zweryfikowane PB; ścieżki
+    CountryCode_NameSurname.png; sortowanie krajami; BEZ wpisywania OVR/formy/
+    parametrów skilla. Wymaga źródeł i świadomej obsługi nieuzupełnionych danych,
+    nie wstawiać wymyślonych parametrów. Research rozpoczęty: oficjalne FIS
+    cup-standings, winter seasoncode=2026 cupcode=WC; letnie LGP2026 należy do
+    sezonu FIS2027, cupcode=GP. Wynik wyszukiwarki był częściowy (po Courchevel),
+    trzeba pobrać FINAŁOWĄ tabelę, nie uznać częściowej za kompletną.
+16. Potwierdzenie przed sortowaniem paczki według krajów w edytorze bazy.
+17. Proste parametry wiatru 0–10 krok0.5 (kierunek zostaje w stopniach).
+18. Hierarchia, kontrast, clarity zapisane w root AGENTS.md. Nowy piękny przegląd
+    sezonu: pięć następnych konkursów bez nagłówka „5 następnych”; treningi i
+    próbne jako statusy w wierszu konkursu, 1–2 użyteczne dodatkowe informacje.
+19. Pierwsze uruchomienie: powitanie z jednym przyciskiem tworzącym przykładowy
+    sezon, także opcja menu głównego; domyślne paczki skoczków/skoczni/zasad,
+    jeden kalendarz z istniejącego zimowego presetu. Bez konfiguracji przez gracza.
+
+Postęp zlecenia wieczornego:
+- 13: 3c7f9c4 push, test multi-delete+undo PASS.
+- 1+2: cabd0f0 push, pełny --balance-lab-only PASS.
+- 3: 140b304 push, --author-only PASS.
+- 4+10: fbe542e push, --simulation-v2-only PASS. Dalszy audyt migracji poza
+  konfiguracją konkursu/pojedynczych skoków pozostaje do sprawdzenia.
+- 7: d30b183 push, --round-points-bulk-only PASS, fallback lidera grupy/konkursu.
+- 14: kod i test GOTOWE, jeszcze commit: walidator odrzucał profil bez imienia
+  i nazwiska mimo że AthleteProfile go legalnie dopuszcza. Usunięto wymaganie
+  nazwiska jako wyznacznika niepustości listy; null/pusta lista dalej odrzucane.
+  Test konkursu z jednym anonimowym profilem PASS --simulation-v2-competition-only.
+- 9: WIP SimulationDraftWorkspace, dodany Node paczki/skoczni w advanced hill,
+  build i test canonical competition PASS; warto dodać asercję otwarcia zakładki.
+- 12: WIP WeatherPrecipitation +6 SVG w qrc, nowe ikony intensywności/trendu i
+  proste opisy efektu opadów. Jeszcze tłumaczenia, testy i osobny commit/push.
+- Reszta punktów 5,6,8,11,15–19 (poza zapisaniem zasad) nadal DO WYKONANIA.
+
+20. Użytkownik dodał kolejny punkt (ponownie nazwany „19”): edytory danych
+    skoczków/skoczni/wszystkiego w sezonie mają zawsze być nowe. Pozwolił usunąć
+    stare komponenty; nie jest to nakaz kasowania bez sprawdzenia zależności.
+    Sprawdzić NewSeasonConfiguratorWindow, SimulationSaveManagerWindow,
+    ProfileDraft i ścieżki engine-version1/2. Nie wystarczy nowy edytor bazy,
+    sezon nie ma wracać do starych formularzy.
+
+Dalszy postęp:
+- 14: 873d16c push, --simulation-v2-competition-only PASS z anonimowym profilem.
+- 9: 1dfbd31 push, osobny test otwarcia Skocznia i obu inline selectorów PASS.
+- 17: 47a80e6 push, opt-in NumberField.quantum, trzy podstawowe pola krok0.5,
+  --simulation-v2-setup-only PASS. Kierunek dalej stopnie.
+- 11: WIP zmienione 22 etykiety checkboxów w .ui i kwalifikacje w C++, jeszcze
+  tłumaczenia/test/commit. Lista zmian roboczo /tmp/sj-checkbox-copy.json.
+- 16: WIP QMessageBox Yes/No (default No) przed sortowaniem bazy.
+- 5: WIP validateDateOrder w QuickCalendarDates + guards date plan/apply/move/
+  drag/duplicate/weekend. Tylko chronologia głównych wydarzeń, oraz trening/
+  próbna nie później niż rodzic. Równe dni dozwolone. Jeszcze bez daty w przeglądzie.
+  Tests/calendar-dates-regressions dostosowane do blokowania błędnych zmian.
+  Pierwszy przebieg użył starego fixture'a; trwa powtórka /tmp/sj-logical-dates-final.log.
+- 6: WIP mocne dwa kafle trybu w CalendarDatePlanner i wyjaśnienie istniejących
+  treningów; dodany wzorzec fri-sun w API/QML. Jeszcze testy/tłumaczenia/commit.
+- 12: WIP jak wyżej, nie zgubić 6 nowych SVG i wpisów qrc.
