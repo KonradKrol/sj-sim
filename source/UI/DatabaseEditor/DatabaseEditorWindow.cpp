@@ -375,6 +375,9 @@ void DatabaseEditorWindow::setJumpersListModel(JumpersListModel *newJumpersListM
 
 void DatabaseEditorWindow::on_pushButton_sortByCountries_clicked()
 {
+    if(QMessageBox::question(this,tr("Sortowanie według krajów"),
+        tr("Posortować paczkę według krajów? Zmieni to obecną kolejność elementów."),
+        QMessageBox::Yes|QMessageBox::No,QMessageBox::No)!=QMessageBox::Yes)return;
     if (!saveOpenEditors()) return;
     if(ui->tabWidget_main->currentWidget() == ui->tab_jumpers)
     {
