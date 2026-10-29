@@ -18,13 +18,22 @@ ColumnLayout {
     readonly property var axisLabels: definitions.map(function(d){return d.label + (d.unit && d.unit!=="1" ? " · " + d.unit : "")})
     readonly property var dataKeys: ["athlete.overall","athlete.form","athlete.landing","athlete.perk.0","athlete.perk.1","athlete.perk.2"]
     function definition(key){var i=keys.indexOf(key);return i>=0?definitions[i]:({})}
+    readonly property string questionId: question.id || ""
+    readonly property string questionGroups: String(question.groups || "")
+    function normalized(text) { return String(text).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ł/g, "l") }
+    readonly property string query: normalized(search.text.trim())
+    readonly property var matchingDefinitions: definitions.filter(function(d) {
+        if (!query.length) return relevant(d)
+        var haystack=normalized(d.label + " " + d.key + " " + d.help)
+        return query.split(/\s+/).every(function(word) { return haystack.indexOf(word)>=0 })
+    })
     function relevant(d){
         if(fullRegistry)return true
-        var q=question.id
+        var q=questionId
         if(d.group==="generator")return q==="generator" && d.preset===generatorPreset
         if(q==="landing" || q==="marks")return d.group==="landing" || d.key==="hill.realHs" || d.key==="wind.cross" || d.key.indexOf("flight.geometry")===0 || d.key==="flight.usableLandingBeyondRealHsAtK"
         if(d.group==="hill")return (q==="scoring" || q==="gate") && ["hill.pointsAtK","hill.pointsPerMetre","hill.gatePoints","hill.headwindPoints","hill.tailwindPoints"].indexOf(d.key)>=0 || q==="geometry" && d.key==="hill.takeoffBias"
-        return String(question.groups || "").split(",").indexOf(d.group)>=0 && ["athlete","field","hill","rules","clock","analysis"].indexOf(d.group)<0
+        return questionGroups.split(",").indexOf(d.group)>=0 && ["athlete","field","hill","rules","clock","analysis"].indexOf(d.group)<0
     }
     function toggle(index){var copy=selected.slice();var at=copy.indexOf(index);if(at<0)copy.push(index);else copy.splice(at,1);selected=copy}
     spacing: Theme.dp(8)
@@ -119,15 +128,17 @@ ColumnLayout {
                 Label { text: qsTr("Parametry istotne dla tego tematu"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 Label { text: qsTr("Zmieniaj jeden parametr i obserwuj podgląd. Opis pod polem wyjaśnia jego działanie. Pełna próba pozwala sprawdzić, czy mała różnica jest powtarzalna."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 SCheck { text: qsTr("Pokaż wszystkie parametry symulacji"); checked: controls.fullRegistry; onClicked: controls.fullRegistry=!controls.fullRegistry }
-                SField { id: search; Layout.fillWidth: true; placeholderText: qsTr("Szukaj, np. upadek, forma, podmuch…"); Accessible.name: qsTr("Szukaj parametru") }
-                SChoice { visible: controls.question.id==="generator"; Layout.fillWidth: true; model: [qsTr("Automatyczna propozycja"),qsTr("Stały wiatr w plecy"),qsTr("Silny wiatr pod narty"),qsTr("Loteryjny"),qsTr("Zmienny boczny"),qsTr("Cisza"),qsTr("Stały pod narty"),qsTr("Silny w plecy"),qsTr("Stały boczny"),qsTr("Zmienny pod narty"),qsTr("Zmienny w plecy"),qsTr("Różne kierunki na zeskoku")]; Accessible.name: qsTr("Badany preset pogody"); onActivated: controls.generatorPreset=currentIndex-1 }
+                SField { id: search; objectName: "balanceParameterSearch"; Layout.fillWidth: true; placeholderText: qsTr("Szukaj, np. upadek, forma, podmuch…"); Accessible.name: qsTr("Szukaj parametru") }
+                Label { visible: controls.query.length>0; text: qsTr("W całej symulacji: %1 wyników").arg(controls.matchingDefinitions.length); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                Label { visible: controls.matchingDefinitions.length===0; text: qsTr("Nie znaleziono parametrów. Spróbuj krótszej nazwy lub opisu działania."); color: Theme.ink; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                SChoice { visible: controls.question.id==="generator" && !controls.query.length; Layout.fillWidth: true; model: [qsTr("Automatyczna propozycja"),qsTr("Stały wiatr w plecy"),qsTr("Silny wiatr pod narty"),qsTr("Loteryjny"),qsTr("Zmienny boczny"),qsTr("Cisza"),qsTr("Stały pod narty"),qsTr("Silny w plecy"),qsTr("Stały boczny"),qsTr("Zmienny pod narty"),qsTr("Zmienny w plecy"),qsTr("Różne kierunki na zeskoku")]; Accessible.name: qsTr("Badany preset pogody"); onActivated: controls.generatorPreset=currentIndex-1 }
                 Loader {
                     active: controls.panel===2
                     Layout.fillWidth: true
                     sourceComponent: Component {
                         ColumnLayout {
                             spacing: Theme.dp(10)
-                            Repeater { model: controls.definitions.filter(function(d){return controls.relevant(d) && (!search.text.length || (d.label+" "+d.key).toLowerCase().indexOf(search.text.toLowerCase())>=0)}); BalanceLabParameter { required property var modelData; backend: controls.backend; definition: modelData } }
+                            Repeater { model: controls.matchingDefinitions; BalanceLabParameter { required property var modelData; backend: controls.backend; definition: modelData } }
                         }
                     }
                 }

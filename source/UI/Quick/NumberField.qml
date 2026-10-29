@@ -28,6 +28,7 @@ Item {
     function setValue(value) { if(quantum>0)value=Math.round(value/quantum)*quantum;currentValue=Math.max(fields.minimum,Math.min(fields.maximum,value));input.dirty=false;draft=formattedValue();if(direct)ui.edit(fields.id,currentValue);committed(currentValue) }
     function formattedValue() {return currentValue===fields.minimum && fields.specialText ? fields.specialText : currentValue.toLocaleString(Qt.locale(Theme.localeName),'f',fields.decimals).split(Qt.locale(Theme.localeName).groupSeparator).join("")}
     function commitInput() {
+        if(!input.dirty && draft===formattedValue())return
         input.dirty=false
         if(fields.mixed && draft.length===0)return
         if(currentValue===fields.minimum && draft===fields.specialText)return

@@ -43,6 +43,28 @@ static void balanceLabUiRegressions(MainWindow &main){
     {
         BalanceLabWindow window(&main);auto *controller=window.findChild<BalanceLabController *>();check(controller,"balance controller exists");auto fixture=smallBalanceConfig();fixture["labTargets"]=QJsonArray{QJsonObject{{"name","Landing target"},{"variant",2},{"metric","fallProbability"},{"distance",140},{"minimum",0},{"maximum",100}}};check(controller->configure(fixture.toVariantMap()),"small laboratory UI fixture");render(&window,"balance-questions",true);QStringList qmlErrors;QObject::connect(scene(&window)->engine(),&QQmlEngine::warnings,&window,[&](const QList<QQmlError> &errors){for(const auto &error:errors)if(error.url().toString().contains("BalanceLab"))qmlErrors.append(error.toString());});check(item(scene(&window)->rootObject(),"balanceLabScreen"),"new laboratory has dedicated screen");
         controller->setPreviewEnabled(true);clickControl(scene(&window),"balanceQuestion0");QElapsedTimer timer;timer.start();while(controller->previewBusy() && timer.elapsed()<20000)QTest::qWait(20);check(controller->options()["started"].toBool() && controller->result().contains("report"),qPrintable("laboratory preview: "+controller->message()));render(&window,"balance-ability",true);
+        presentation(&window)->resize(1440,900);QTest::qWait(100);
+        auto *inputControls=item(scene(&window)->rootObject(),"balanceLabControls");
+        check(inputControls,"input controls exist");inputControls->setProperty("panel",1);controller->setParameter("athlete.perk.2",3);QTest::qWait(50);
+        auto *regularity=item(scene(&window)->rootObject(),"input-balance-athlete.perk.2");check(regularity,"regularity input exists");
+        regularity->forceActiveFocus();QTest::keyClick(scene(&window),Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(scene(&window),"-");
+        controller->setOption("band",false);QTest::qWait(180);
+        check(regularity->property("text").toString()=="-","background refresh preserves the unfinished negative value");
+        QTest::keyClicks(scene(&window),"3");QTest::keyClick(scene(&window),Qt::Key_Tab);QTest::qWait(50);
+        check(controller->values()["athlete.perk.2"].toInt()==-3,"typed negative regularity is committed without reverting");
+        inputControls->setProperty("panel",2);QTest::qWait(40);
+        auto *parameterSearch=item(scene(&window)->rootObject(),"balanceParameterSearch");check(parameterSearch,"simulation rule search exists");
+        parameterSearch->setProperty("text","regularnosc");QTest::qWait(40);
+        check(!inputControls->property("fullRegistry").toBool() && item(scene(&window)->rootObject(),"input-balance-athlete.perk.2"),"search finds parameters outside the selected topic without enabling all parameters");
+        parameterSearch->setProperty("text","wind.mean");QTest::qWait(40);
+        auto *windInput=item(scene(&window)->rootObject(),"input-balance-wind.mean");check(windInput,"global search finds wind parameter");
+        windInput->forceActiveFocus();QTest::keyClick(scene(&window),Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(scene(&window),"-");
+        controller->setOption("band",true);QTest::qWait(180);
+        check(item(scene(&window)->rootObject(),"input-balance-wind.mean")==windInput && windInput->property("text").toString()=="-","refresh does not recreate rule input or discard unfinished minus");
+        QTest::keyClicks(scene(&window),"3,5");QTest::keyClick(scene(&window),Qt::Key_Tab);QTest::qWait(40);
+        check(std::abs(controller->values()["wind.mean"].toDouble()+3.5)<1e-9,"negative fractional rule value survives commit and refresh");
+        controller->setParameter("wind.mean",0);parameterSearch->setProperty("text","");inputControls->setProperty("panel",0);
+
         controller->chooseQuestion(8);timer.restart();while(controller->previewBusy() && timer.elapsed()<20000)QTest::qWait(20);check(controller->result()["analyses"].toList().size()==3,qPrintable("landing diagnostics: "+controller->message()));presentation(&window)->resize(1440,900);QTest::qWait(200);auto *controls=item(scene(&window)->rootObject(),"balanceLabControls");check(controls,"laboratory settings panel exists");controls->setProperty("panel",2);render(&window,"balance-landing",true);
         controller->chooseQuestion(3);timer.restart();while(controller->previewBusy() && timer.elapsed()<20000)QTest::qWait(20);check(controller->result()["analyses"].toList().size()==3,"wind diagnostics are visible");render(&window,"balance-wind",true);
         controller->chooseQuestion(2);timer.restart();while(controller->previewBusy() && timer.elapsed()<20000)QTest::qWait(20);check(controller->result().contains("generators"),"preset diagnostics available");render(&window,"balance-generator",true);
