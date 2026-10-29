@@ -26,7 +26,7 @@ Item {
     Accessible.selected: marked
     Accessible.checked: included
     Keys.onSpacePressed: ordered ? backend.mark(athleteId,event.modifiers) : backend.toggle(athleteId)
-    Keys.onDeletePressed: if(ordered && backend.membership){backend.mark(athleteId);backend.removeMarked()}
+    Keys.onDeletePressed: if(ordered && backend.membership){if(!marked)backend.mark(athleteId);backend.removeMarked();event.accepted=true}
     Keys.onPressed: {
         if(ordered && (event.modifiers & Qt.ControlModifier) && (event.key === Qt.Key_Up || event.key === Qt.Key_Down)){
             if(!marked)backend.mark(athleteId)
