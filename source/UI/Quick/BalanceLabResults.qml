@@ -13,10 +13,10 @@ ScrollView {
     property int mapVariant: 2
     property int landingKind: 3
     property int tab: 0
-    property bool showPreview: false
+    readonly property bool showPreview: backend.previewEnabled
     readonly property bool hasFull: !!backend.fullResult.report
     readonly property var preview: backend.previewResult || ({})
-    readonly property var data: showPreview && preview.report ? preview : backend.result || ({})
+    readonly property var data: showPreview ? preview : backend.fullResult || ({})
     readonly property var savedConfig: data.config || ({})
     readonly property string savedView: data.options ? data.options.view : question.view
     readonly property string focusName: data.report && data.report.variants ? data.report.variants[2].focus.name : ""
@@ -25,7 +25,7 @@ ScrollView {
         target: results.backend
         function onResultChanged() {
             var revision=String(results.backend.fullResult.sourceRevision || "")
-            if(revision!==results.lastFullRevision){results.showPreview=false;results.lastFullRevision=revision}
+            if(revision!==results.lastFullRevision){results.lastFullRevision=revision}
         }
     }
     readonly property var summaries: data.summaries || []
@@ -96,8 +96,8 @@ ScrollView {
                 SButton {
                     objectName: "balanceLabShowFull"
                     text: results.showPreview ? qsTr("Wróć do zachowanej pełnej próby") : qsTr("Obejrzyj wykresy szybkiego podglądu")
-                    enabled: results.showPreview || !!results.preview.report && !results.preview.outdated
-                    quiet: true; onClicked: results.showPreview=!results.showPreview
+                    enabled: !results.backend.busy
+                    quiet: true; onClicked: results.backend.setPreviewEnabled(!results.showPreview)
                 }
             }
         }
@@ -212,6 +212,6 @@ ScrollView {
             Loader { active: results.savedView==="generator" && !!results.data.generators; visible: active; Layout.fillWidth: true; sourceComponent: Component { BalanceLabGenerator { data: results.data; shown: results.shown } } }
             PlaygroundHistogram { visible: !!results.data.report && !!results.data.report.variants; Layout.fillWidth: true; caption: qsTr("Rozkład odległości wybranego skoczka"); series: results.data.report && results.data.report.variants ? results.data.report.variants.map(function(v,i){return {name:results.names[i],bins:v.focus.distance.histogram,shown:results.shown[i]}}).filter(function(v){return v.shown}) : [] }
         }
-        Label { visible: !results.data.report; text: qsTr("Wybierz dane i zmień parametr. Pierwszy podgląd pojawi się automatycznie."); color: Theme.muted; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        Label { visible: !results.data.report; text: qsTr("Włącz szybki podgląd lub uruchom pełną próbę."); color: Theme.muted; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     }
 }

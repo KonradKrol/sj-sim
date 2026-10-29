@@ -27,6 +27,7 @@ class BalanceLabController final:public QObject {
     Q_PROPERTY(QString message READ message NOTIFY changed)
     Q_PROPERTY(bool busy READ busy NOTIFY progressChanged)
     Q_PROPERTY(bool previewBusy READ previewBusy NOTIFY progressChanged)
+    Q_PROPERTY(bool previewEnabled READ previewEnabled WRITE setPreviewEnabled NOTIFY changed)
     Q_PROPERTY(bool stale READ stale NOTIFY changed)
     Q_PROPERTY(int completed READ completed NOTIFY progressChanged)
     Q_PROPERTY(double elapsed READ elapsed NOTIFY progressChanged)
@@ -52,6 +53,8 @@ public:
     QString message()const{return m_message;}
     bool busy()const{return m_fullPending;}
     bool previewBusy()const{return m_pending || (property("balanceJobPending").toBool() && !m_fullPending);}
+    bool previewEnabled()const{return m_options["previewEnabled"].toBool(false);}
+    Q_INVOKABLE void setPreviewEnabled(bool);
     bool stale()const{return m_full.isEmpty() || m_full["sourceRevision"].toString()!=QString::number(m_revision);}
     int completed()const{return m_control?m_control->completed.load():0;}
     double elapsed()const{return m_clock.isValid()?m_clock.elapsed()/1000.:0;}

@@ -27,12 +27,13 @@ ColumnLayout {
         SButton { text: qsTr("Zapisy i historia"); Accessible.name: qsTr("Profile"); onClicked: lab.profilesOpen = true }
     }
     GridLayout {
-        columns: lab.width < 780 ? 1 : 3
+        columns: lab.width < 780 ? 2 : 4
         visible: !lab.choosing; Layout.fillWidth: true
         Label { text: lab.backend.busy ? qsTr("Obliczanie: %1 zestawów po 3 konkursy · czas: %2 s").arg(lab.backend.completed).arg(Number(lab.backend.elapsed).toLocaleString(Qt.locale(Theme.localeName),'f',1)) : lab.backend.previewBusy ? qsTr("Aktualizowanie podglądu…") : lab.backend.message; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         SButton { text: qsTr("Zapamiętaj do porównania"); hint: qsTr("Kopiuje Twoje zmiany do serii „Zapamiętane ustawienia”. Potem możesz dalej stroić i porównywać oba pomysły. Zastępuje poprzednio zapamiętany wariant; nie zapisuje wyniku próby."); quiet: true; enabled: !lab.backend.busy; onClicked: lab.backend.freeze() }
         SButton { text: qsTr("Cofnij zmianę"); quiet: true; enabled: !lab.backend.busy; onClicked: lab.backend.undo() }
     }
+    SCheck { objectName: "balancePreviewToggle"; visible: !lab.choosing; text: qsTr("Pokazuj szybki podgląd · 7 konkursów na wariant"); checked: lab.backend.previewEnabled; onClicked: lab.backend.setPreviewEnabled(checked) }
     Loader {
         visible: lab.choosing; active: visible
         Layout.fillWidth: true; Layout.fillHeight: true
