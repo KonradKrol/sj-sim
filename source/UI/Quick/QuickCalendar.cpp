@@ -365,7 +365,11 @@ void QuickCalendar::addMany(int count) {
         m_selected.clear();for(int i=0;i<count;++i){auto *event=new CompetitionInfo(m_editor->getModel()->getHillsList()->first());if(!m_editor->getModel()->getRulesList()->isEmpty())event->setRules(m_editor->getModel()->getRulesList()->first());order.insert(at++,event);m_selected.append(event->getIDStr());}setOrder(order);});
 }
 void QuickCalendar::duplicate() {
-    sync();const auto items=selected();if(items.isEmpty())return;m_message=tr("Skopiowano konkursy");
+    sync();const auto items=selected();if(items.isEmpty())return;
+    auto proposed=mains();int insertion=locked(items.last())?proposed.size():proposed.indexOf(items.last())+1;
+    for(auto *event:items)proposed.insert(insertion++,event);
+    if(!validateDateOrder(proposed))return;
+    m_message=tr("Skopiowano konkursy");
     mutate([&]{
         auto order=mains();int at=locked(items.last())?order.size():order.indexOf(items.last())+1;
         QHash<CompetitionInfo *,CompetitionInfo *> copies;m_selected.clear();
@@ -395,6 +399,7 @@ void QuickCalendar::move(int direction) {
     if(direction<0){for(int i=1;i<order.size();++i)if(items.contains(order[i])&&!items.contains(order[i-1])&&!locked(order[i-1])){qSwap(order[i],order[i-1]);moved=true;}}
     else for(int i=order.size()-2;i>=0;--i)if(items.contains(order[i])&&!items.contains(order[i+1])&&!locked(order[i+1])){qSwap(order[i],order[i+1]);moved=true;}
     if(moved){
+        if(!validateDateOrder(order))return;
         m_message=tr("Zmieniono kolejność konkursów");mutate([&]{setOrder(order);});
     }
 }
@@ -436,6 +441,7 @@ void QuickCalendar::moveBefore(const QString &sourceId,const QString &targetId,b
     if(!source||!target||source==target||locked(source)||locked(target))return;
     if(!m_selected.contains(sourceId))m_selected=QStringList{sourceId};const auto items=selected();if(!editable()||items.contains(target))return;
     for(auto *event:items)order.removeAll(event);int at=order.indexOf(target)+(after?1:0);for(auto *event:items)order.insert(at++,event);
+    if(!validateDateOrder(order))return;
     m_message=tr("Zmieniono kolejność konkursów");mutate([&]{setOrder(order);});
 }
 void QuickCalendar::resetCustomRules(){

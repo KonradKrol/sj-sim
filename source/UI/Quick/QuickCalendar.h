@@ -162,6 +162,7 @@ private:
     struct WeekendPlan {QString calendar,hill,rules;QDate friday;CompetitionRules definition;bool saturdayQualification=false,sharedSunday=false;} m_weekendPlan;
     QHash<CompetitionInfo *,QDate> m_plannedDates;
     void applyDates(const QHash<CompetitionInfo *,QDate> &dates);
+    bool validateDateOrder(const QVector<CompetitionInfo *> &,const QHash<CompetitionInfo *,QDate> & = {});
     QVariantMap m_selection;
     QString m_message,m_language;
     QString m_newCalendarId;
