@@ -27,6 +27,13 @@ static void athleteLibraryRegressions(QQuickWidget *view,AthleteStudioController
 static void athleteStudioRegressions(MainWindow &main,bool patchesOnly=false){
     QStandardPaths::setTestModeEnabled(true);
     QTemporaryDir data;check(data.isValid(),"athlete studio isolated data");
+    {
+        AthleteStudioController imported(nullptr,data.path()+"/men-2026");
+        const auto file=QFINDTESTDATA("../data/packs/men-2026/pack.json");check(!file.isEmpty() && imported.importFrom(file),"2026 men pack imports through the real editor");
+        const auto profiles=imported.profiles();check(profiles.size()==98,"union of ranked men contains 98 distinct profiles");
+        QString country;QSet<QString> ids;
+        for(auto row:profiles){const auto p=row.toMap();check(p["country"].toString()>=country,"new pack is sorted by country");country=p["country"].toString();check(!ids.contains(p["id"].toString()),"new pack profile identities are unique");ids.insert(p["id"].toString());check(p["overall"].toInt()==70 && p["form"].toInt()==70 && p["landing"].toInt()==2 && p["perks"].toList()==QVariantList({0,0,0}),"new pack skills are editable model defaults");check(p["photoPath"].toString().startsWith(country+"_") && p["photoPath"].toString().endsWith(".png"),"new pack photo references use country and name");}
+    }
     auto *database=GlobalDatabase::get();const auto original=database->packsSnapshot();
     AthleteProfile decoded;QString error;auto fresh=AthleteProfile::create();
     check(AthleteProfile::fromJson(fresh.toJson(),decoded,error),"new profile round trip");

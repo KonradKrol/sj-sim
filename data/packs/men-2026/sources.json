@@ -1,0 +1,1976 @@
+{
+  "checkedOn": "2026-10-29",
+  "defaultSkills": {
+    "overall": 70,
+    "form": 70,
+    "landing": 2,
+    "perks": [
+      0,
+      0,
+      0
+    ]
+  },
+  "athletes": [
+    {
+      "fisId": "128447",
+      "country": "AUT",
+      "rankingName": "AIGNER Clemens",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Clemens",
+      "surname": "Aigner",
+      "birthYear": 1993,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2177/clemens-aigner/",
+      "personalBest": 216.5
+    },
+    {
+      "fisId": "229566",
+      "country": "AUT",
+      "rankingName": "EMBACHER Stephan",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Stephan",
+      "surname": "Embacher",
+      "birthYear": 2006,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=229566&type=biog",
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3853/stephan-embacher/",
+      "personalBest": 240.5
+    },
+    {
+      "fisId": "17013",
+      "country": "AUT",
+      "rankingName": "FETTNER Manuel",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Manuel",
+      "surname": "Fettner",
+      "birthYear": 1985,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=17013&type=biog",
+      "personalBest": 243.0,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "229736",
+      "country": "AUT",
+      "rankingName": "HAAGEN Lukas",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Lukas",
+      "surname": "Haagen",
+      "birthYear": 0,
+      "personalBest": 211.0,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "197640",
+      "country": "AUT",
+      "rankingName": "HOERL Jan",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Jan",
+      "surname": "Hoerl",
+      "birthYear": 1998,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=197640&type=biog",
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3258/jan-hoerl/",
+      "personalBest": 242.5
+    },
+    {
+      "fisId": "128286",
+      "country": "AUT",
+      "rankingName": "KRAFT Stefan",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Stefan",
+      "surname": "Kraft",
+      "birthYear": 1993,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=128286&type=biog",
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2066/stefan-kraft/",
+      "personalBest": 253.5
+    },
+    {
+      "fisId": "189069",
+      "country": "AUT",
+      "rankingName": "LANDERER Hannes",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Hannes",
+      "surname": "Landerer",
+      "birthYear": 2002,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3560/hannes-landerer/",
+      "personalBest": 198.0
+    },
+    {
+      "fisId": "227609",
+      "country": "AUT",
+      "rankingName": "MUELLER Markus",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Markus",
+      "surname": "Mueller",
+      "birthYear": 2002,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3519/markus-mueller/",
+      "personalBest": 232.5
+    },
+    {
+      "fisId": "209633",
+      "country": "AUT",
+      "rankingName": "ORTNER Maximilian",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Maximilian",
+      "surname": "Ortner",
+      "birthYear": 2002,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=209633&type=biog",
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3520/maximilian-ortner/",
+      "personalBest": 226.0
+    },
+    {
+      "fisId": "253269",
+      "country": "AUT",
+      "rankingName": "POELZ Johannes",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Johannes",
+      "surname": "Poelz",
+      "birthYear": 2005,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3851/johannes-poelz/",
+      "personalBest": 211.5
+    },
+    {
+      "fisId": "174516",
+      "country": "AUT",
+      "rankingName": "REISENAUER Janni",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Janni",
+      "surname": "Reisenauer",
+      "birthYear": 0,
+      "personalBest": 211.0,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "196784",
+      "country": "AUT",
+      "rankingName": "SCHUSTER Jonas",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Jonas",
+      "surname": "Schuster",
+      "birthYear": 2003,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=196784&type=biog",
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3462/jonas-schuster/",
+      "personalBest": 237.0
+    },
+    {
+      "fisId": "212524",
+      "country": "AUT",
+      "rankingName": "SMID Julijan",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Julijan",
+      "surname": "Smid",
+      "birthYear": 2003,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3561/julijan-smid/"
+    },
+    {
+      "fisId": "221383",
+      "country": "AUT",
+      "rankingName": "STEINBERGER Jakob",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Jakob",
+      "surname": "Steinberger",
+      "birthYear": 2005,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3939/jakob-steinberger/"
+    },
+    {
+      "fisId": "221384",
+      "country": "AUT",
+      "rankingName": "STEINBERGER Simon",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Simon",
+      "surname": "Steinberger",
+      "birthYear": 2005,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3940/simon-steinberger/"
+    },
+    {
+      "fisId": "196759",
+      "country": "AUT",
+      "rankingName": "TSCHOFENIG Daniel",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Daniel",
+      "surname": "Tschofenig",
+      "birthYear": 2002,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=196759&type=biog",
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3495/daniel-tschofenig/",
+      "personalBest": 239.0
+    },
+    {
+      "fisId": "218403",
+      "country": "AUT",
+      "rankingName": "WOERGOETTER Marco",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Marco",
+      "surname": "Woergoetter",
+      "birthYear": 2002,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3370/marco-woergoetter/",
+      "personalBest": 214.0
+    },
+    {
+      "fisId": "111930",
+      "country": "BUL",
+      "rankingName": "ZOGRAFSKI Vladimir",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Vladimir",
+      "surname": "Zografski",
+      "birthYear": 1993,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=111930&type=biog",
+      "personalBest": 215.0,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "78803",
+      "country": "CAN",
+      "rankingName": "BOYD-CLOWES Mackenzie",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Mackenzie",
+      "surname": "Boyd-Clowes",
+      "birthYear": 0,
+      "personalBest": 224.0,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "237724",
+      "country": "CHN",
+      "rankingName": "SONG Qiwu",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Qiwu",
+      "surname": "Song",
+      "birthYear": 2001,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3773/qiwu-song/",
+      "personalBest": 141.5
+    },
+    {
+      "fisId": "104161",
+      "country": "CZE",
+      "rankingName": "KOUDELKA Roman",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Roman",
+      "surname": "Koudelka",
+      "birthYear": 1989,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/297/roman-koudelka/",
+      "personalBest": 229.0
+    },
+    {
+      "fisId": "181027",
+      "country": "EST",
+      "rankingName": "AIGRO Artti",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Artti",
+      "surname": "Aigro",
+      "birthYear": 1999,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2572/artti-aigro/",
+      "personalBest": 228.0
+    },
+    {
+      "fisId": "238368",
+      "country": "EST",
+      "rankingName": "VAGUL Kaimar",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Kaimar",
+      "surname": "Vagul",
+      "birthYear": 2007,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3686/kaimar-vagul/",
+      "personalBest": 186.0
+    },
+    {
+      "fisId": "182547",
+      "country": "FIN",
+      "rankingName": "AALTO Antti",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Antti",
+      "surname": "Aalto",
+      "birthYear": 1995,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2457/antti-aalto/",
+      "personalBest": 235.5
+    },
+    {
+      "fisId": "180889",
+      "country": "FIN",
+      "rankingName": "KYTOSAHO Niko",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Niko",
+      "surname": "Kytosaho",
+      "birthYear": 1999,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2656/niko-kytosaho/",
+      "personalBest": 233.0
+    },
+    {
+      "fisId": "136813",
+      "country": "FIN",
+      "rankingName": "MAATTA Jarkko",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Jarkko",
+      "surname": "Maatta",
+      "birthYear": 1994,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/1960/jarkko-maatta/",
+      "personalBest": 216.5
+    },
+    {
+      "fisId": "196315",
+      "country": "FIN",
+      "rankingName": "NOUSIAINEN Eetu",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Eetu",
+      "surname": "Nousiainen",
+      "birthYear": 1997,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2706/eetu-nousiainen/",
+      "personalBest": 223.5
+    },
+    {
+      "fisId": "239973",
+      "country": "FIN",
+      "rankingName": "PALOSAARI Vilho",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Vilho",
+      "surname": "Palosaari",
+      "birthYear": 2004,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3505/vilho-palosaari/",
+      "personalBest": 190.0
+    },
+    {
+      "fisId": "212624",
+      "country": "FIN",
+      "rankingName": "VALTO Kasperi",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Kasperi",
+      "surname": "Valto",
+      "birthYear": 2003,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3508/kasperi-valto/",
+      "personalBest": 212.5
+    },
+    {
+      "fisId": "218366",
+      "country": "FRA",
+      "rankingName": "CHERVET Jules",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Jules",
+      "surname": "Chervet",
+      "birthYear": 2003,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3734/jules-chervet/",
+      "personalBest": 200.5
+    },
+    {
+      "fisId": "212387",
+      "country": "FRA",
+      "rankingName": "FOUBERT Valentin",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Valentin",
+      "surname": "Foubert",
+      "birthYear": 2002,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=212387&type=biog",
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3331/valentin-foubert/",
+      "personalBest": 239.0
+    },
+    {
+      "fisId": "218365",
+      "country": "FRA",
+      "rankingName": "MILESI Enzo",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Enzo",
+      "surname": "Milesi",
+      "birthYear": 2003,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3634/enzo-milesi/",
+      "personalBest": 184.5
+    },
+    {
+      "fisId": "221813",
+      "country": "GER",
+      "rankingName": "BAYER Ben",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Ben",
+      "surname": "Bayer",
+      "birthYear": 2004,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3589/ben-bayer/",
+      "personalBest": 201.0
+    },
+    {
+      "fisId": "128621",
+      "country": "GER",
+      "rankingName": "GEIGER Karl",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Karl",
+      "surname": "Geiger",
+      "birthYear": 1993,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2166/karl-geiger/",
+      "personalBest": 243.5
+    },
+    {
+      "fisId": "166436",
+      "country": "GER",
+      "rankingName": "HOFFMANN Felix",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Felix",
+      "surname": "Hoffmann",
+      "birthYear": 1997,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=166436&type=biog",
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2796/felix-hoffmann/",
+      "personalBest": 235.0
+    },
+    {
+      "fisId": "99976",
+      "country": "GER",
+      "rankingName": "PASCHKE Pius",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Pius",
+      "surname": "Paschke",
+      "birthYear": 1990,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/1895/pius-paschke/",
+      "personalBest": 237.0
+    },
+    {
+      "fisId": "196090",
+      "country": "GER",
+      "rankingName": "RAIMUND Philipp",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Philipp",
+      "surname": "Raimund",
+      "birthYear": 2000,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=196090&type=biog",
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3256/philipp-raimund/",
+      "personalBest": 225.5
+    },
+    {
+      "fisId": "188723",
+      "country": "GER",
+      "rankingName": "ROTH Luca",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Luca",
+      "surname": "Roth",
+      "birthYear": 2000,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3212/luca-roth/",
+      "personalBest": 220.0
+    },
+    {
+      "fisId": "174244",
+      "country": "GER",
+      "rankingName": "WELLINGER Andreas",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Andreas",
+      "surname": "Wellinger",
+      "birthYear": 1995,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2317/andreas-wellinger/",
+      "personalBest": 245.0
+    },
+    {
+      "fisId": "195981",
+      "country": "ITA",
+      "rankingName": "BRESADOLA Giovanni",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Giovanni",
+      "surname": "Bresadola",
+      "birthYear": 0,
+      "personalBest": 228.0,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "201641",
+      "country": "ITA",
+      "rankingName": "CECON Francesco",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Francesco",
+      "surname": "Cecon",
+      "birthYear": 0,
+      "personalBest": 211.0,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "175089",
+      "country": "ITA",
+      "rankingName": "INSAM Alex",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Alex",
+      "surname": "Insam",
+      "birthYear": 0,
+      "personalBest": 234.0,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "126003",
+      "country": "JPN",
+      "rankingName": "KOBAYASHI Junshiro",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Junshiro",
+      "surname": "Kobayashi",
+      "birthYear": 1991,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2304/junshiro-kobayashi/",
+      "personalBest": 239.5
+    },
+    {
+      "fisId": "155620",
+      "country": "JPN",
+      "rankingName": "KOBAYASHI Ryoyu",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Ryoyu",
+      "surname": "Kobayashi",
+      "birthYear": 1996,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=155620&type=biog",
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2600/ryoyu-kobayashi/",
+      "personalBest": 291.0
+    },
+    {
+      "fisId": "223050",
+      "country": "JPN",
+      "rankingName": "KOBAYASHI Sakutaro",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Sakutaro",
+      "surname": "Kobayashi",
+      "birthYear": 2000,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3990/sakutaro-kobayashi/",
+      "personalBest": 225.5
+    },
+    {
+      "fisId": "117102",
+      "country": "JPN",
+      "rankingName": "NAITO Tomofumi",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Tomofumi",
+      "surname": "Naito",
+      "birthYear": 1993,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3269/tomofumi-naito/",
+      "personalBest": 242.5
+    },
+    {
+      "fisId": "160506",
+      "country": "JPN",
+      "rankingName": "NAKAMURA Naoki",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Naoki",
+      "surname": "Nakamura",
+      "birthYear": 1996,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=160506&type=biog",
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2604/naoki-nakamura/",
+      "personalBest": 237.5
+    },
+    {
+      "fisId": "237825",
+      "country": "JPN",
+      "rankingName": "NAKAMURA Yuto",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Yuto",
+      "surname": "Nakamura",
+      "birthYear": 0
+    },
+    {
+      "fisId": "194909",
+      "country": "JPN",
+      "rankingName": "NIKAIDO Ren",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Ren",
+      "surname": "Nikaido",
+      "birthYear": 2001,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=194909&type=biog",
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3215/ren-nikaido/",
+      "personalBest": 237.5
+    },
+    {
+      "fisId": "182815",
+      "country": "JPN",
+      "rankingName": "SATO Keiichi",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Keiichi",
+      "surname": "Sato",
+      "birthYear": 1997,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2748/keiichi-sato/",
+      "personalBest": 219.0
+    },
+    {
+      "fisId": "149215",
+      "country": "JPN",
+      "rankingName": "SATO Yukiya",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Yukiya",
+      "surname": "Sato",
+      "birthYear": 1995,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2191/yukiya-sato/",
+      "personalBest": 242.5
+    },
+    {
+      "fisId": "239926",
+      "country": "KAZ",
+      "rankingName": "MIZERNYKH Ilya",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Ilya",
+      "surname": "Mizernykh",
+      "birthYear": 0,
+      "personalBest": 219.0,
+      "recordSource": "https://sport.interia.pl/skoki-narciarskie/news-musial-pozyczyc-narty-wlasnie-pobil-rekord-zyciowy-japonczyk,nId,22607930"
+    },
+    {
+      "fisId": "252513",
+      "country": "KAZ",
+      "rankingName": "NAZARENKO Svyatoslav",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Svyatoslav",
+      "surname": "Nazarenko",
+      "birthYear": 0,
+      "personalBest": 175.5,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "213180",
+      "country": "KAZ",
+      "rankingName": "VASSILYEV Danil",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Danil",
+      "surname": "Vassilyev",
+      "birthYear": 0,
+      "personalBest": 194.5,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "147549",
+      "country": "NOR",
+      "rankingName": "FORFANG Johann Andre",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Johann Andre",
+      "surname": "Forfang",
+      "birthYear": 1995,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=147549&type=biog",
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2380/johann-andre-forfang/",
+      "personalBest": 246.0
+    },
+    {
+      "fisId": "180709",
+      "country": "NOR",
+      "rankingName": "GRANERUD Halvor Egner",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Halvor Egner",
+      "surname": "Granerud",
+      "birthYear": 1996,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2538/halvor-egner-granerud/",
+      "personalBest": 244.5
+    },
+    {
+      "fisId": "227859",
+      "country": "NOR",
+      "rankingName": "GUNDERSRUD Adrian Thon",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Adrian Thon",
+      "surname": "Gundersrud",
+      "birthYear": 2002,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3627/adrian-thon-gundersrud/",
+      "personalBest": 228.5
+    },
+    {
+      "fisId": "253455",
+      "country": "NOR",
+      "rankingName": "LANGMO Isak Andreas",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Isak Andreas",
+      "surname": "Langmo",
+      "birthYear": 2004,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3830/isak-andreas-langmo/",
+      "personalBest": 239.0
+    },
+    {
+      "fisId": "174872",
+      "country": "NOR",
+      "rankingName": "LINDVIK Marius",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Marius",
+      "surname": "Lindvik",
+      "birthYear": 1998,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=174872&type=biog",
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2754/marius-lindvik/",
+      "personalBest": 245.5
+    },
+    {
+      "fisId": "212601",
+      "country": "NOR",
+      "rankingName": "OESTVOLD Benjamin",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Benjamin",
+      "surname": "Oestvold",
+      "birthYear": 2001,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3282/benjamin-oestvold/",
+      "personalBest": 243.5
+    },
+    {
+      "fisId": "185562",
+      "country": "NOR",
+      "rankingName": "PEDERSEN Robin",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Robin",
+      "surname": "Pedersen",
+      "birthYear": 1996,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2616/robin-pedersen/",
+      "personalBest": 232.5
+    },
+    {
+      "fisId": "236223",
+      "country": "NOR",
+      "rankingName": "STRAND Soelve Jokerud",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Soelve Jokerud",
+      "surname": "Strand",
+      "birthYear": 2000,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3448/soelve-jokerud-strand/",
+      "personalBest": 222.0
+    },
+    {
+      "fisId": "219189",
+      "country": "NOR",
+      "rankingName": "STROEM Joergen Oliver",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Joergen Oliver",
+      "surname": "Stroem",
+      "birthYear": 2000,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb",
+      "personalBest": 228.5
+    },
+    {
+      "fisId": "219184",
+      "country": "NOR",
+      "rankingName": "SUNDAL Kristoffer Eriksen",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Kristoffer Eriksen",
+      "surname": "Sundal",
+      "birthYear": 2001,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=219184&type=biog",
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3314/kristoffer-eriksen-sundal/",
+      "personalBest": 230.5
+    },
+    {
+      "fisId": "240094",
+      "country": "POL",
+      "rankingName": "GALICA Jan",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Jan",
+      "surname": "Galica",
+      "birthYear": 2004,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3530/jan-galica/"
+    },
+    {
+      "fisId": "229687",
+      "country": "POL",
+      "rankingName": "JONIAK Klemens",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Klemens",
+      "surname": "Joniak",
+      "birthYear": 2005,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3547/klemens-joniak/",
+      "personalBest": 197.0
+    },
+    {
+      "fisId": "118113",
+      "country": "POL",
+      "rankingName": "KOT Maciej",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Maciej",
+      "surname": "Kot",
+      "birthYear": 1991,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/1131/maciej-kot/",
+      "personalBest": 244.5
+    },
+    {
+      "fisId": "111251",
+      "country": "POL",
+      "rankingName": "KUBACKI Dawid",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Dawid",
+      "surname": "Kubacki",
+      "birthYear": 1990,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/1122/dawid-kubacki/",
+      "personalBest": 236.5
+    },
+    {
+      "fisId": "73228",
+      "country": "POL",
+      "rankingName": "STOCH Kamil",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Kamil",
+      "surname": "Stoch",
+      "birthYear": 1987,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/466/kamil-stoch/",
+      "personalBest": 251.5
+    },
+    {
+      "fisId": "239625",
+      "country": "POL",
+      "rankingName": "TOMASIAK Kacper",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Kacper",
+      "surname": "Tomasiak",
+      "birthYear": 2007,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3779/kacper-tomasiak/",
+      "personalBest": 186.5
+    },
+    {
+      "fisId": "182407",
+      "country": "POL",
+      "rankingName": "WASEK Pawel",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Pawel",
+      "surname": "Wasek",
+      "birthYear": 1999,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/1760/pawel-wasek/",
+      "personalBest": 233.0
+    },
+    {
+      "fisId": "149455",
+      "country": "POL",
+      "rankingName": "WOLNY Jakub",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Jakub",
+      "surname": "Wolny",
+      "birthYear": 1995,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/1219/jakub-wolny/",
+      "personalBest": 237.5
+    },
+    {
+      "fisId": "128281",
+      "country": "POL",
+      "rankingName": "ZNISZCZOL Aleksander",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Aleksander",
+      "surname": "Zniszczol",
+      "birthYear": 1994,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/1211/aleksander-zniszczol/",
+      "personalBest": 243.0
+    },
+    {
+      "fisId": "73232",
+      "country": "POL",
+      "rankingName": "ZYLA Piotr",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Piotr",
+      "surname": "Zyla",
+      "birthYear": 1987,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/916/piotr-zyla/",
+      "personalBest": 248.0
+    },
+    {
+      "fisId": "251771",
+      "country": "SLO",
+      "rankingName": "FALETIC Enej",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Enej",
+      "surname": "Faletic",
+      "birthYear": 0
+    },
+    {
+      "fisId": "269726",
+      "country": "SLO",
+      "rankingName": "JANCAR Ziga",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Ziga",
+      "surname": "Jancar",
+      "birthYear": 0,
+      "personalBest": 204.0,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "164624",
+      "country": "SLO",
+      "rankingName": "JELAR Ziga",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Ziga",
+      "surname": "Jelar",
+      "birthYear": 0,
+      "personalBest": 239.0,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "162711",
+      "country": "SLO",
+      "rankingName": "LANISEK Anze",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Anze",
+      "surname": "Lanisek",
+      "birthYear": 1996,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=162711&type=biog",
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2207/anze-lanisek/",
+      "personalBest": 247.5
+    },
+    {
+      "fisId": "201766",
+      "country": "SLO",
+      "rankingName": "MOGEL Zak",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Zak",
+      "surname": "Mogel",
+      "birthYear": 0,
+      "personalBest": 227.0,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "201761",
+      "country": "SLO",
+      "rankingName": "OBLAK Rok",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Rok",
+      "surname": "Oblak",
+      "birthYear": 0,
+      "personalBest": 233.5,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "186516",
+      "country": "SLO",
+      "rankingName": "PREVC Domen",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Domen",
+      "surname": "Prevc",
+      "birthYear": 1999,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=186516&type=biog",
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2523/domen-prevc/",
+      "personalBest": 254.5
+    },
+    {
+      "fisId": "188590",
+      "country": "SLO",
+      "rankingName": "ZAJC Timi",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Timi",
+      "surname": "Zajc",
+      "birthYear": 0,
+      "personalBest": 245.0,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "973",
+      "country": "SUI",
+      "rankingName": "AMMANN Simon",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Simon",
+      "surname": "Ammann",
+      "birthYear": 1981,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/69/simon-ammann/",
+      "personalBest": 239.5
+    },
+    {
+      "fisId": "124118",
+      "country": "SUI",
+      "rankingName": "DESCHWANDEN Gregor",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Gregor",
+      "surname": "Deschwanden",
+      "birthYear": 1991,
+      "bioSource": "https://www.fis-ski.com/DB/general/athlete-biography.html?sectorcode=JP&competitorid=124118&type=biog",
+      "recordSource": "https://www.skijumping.pl/zawodnicy/1728/gregor-deschwanden/",
+      "personalBest": 235.5
+    },
+    {
+      "fisId": "182595",
+      "country": "SUI",
+      "rankingName": "HAUSWIRTH Sandro",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Sandro",
+      "surname": "Hauswirth",
+      "birthYear": 2000,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2717/sandro-hauswirth/",
+      "personalBest": 237.0
+    },
+    {
+      "fisId": "204197",
+      "country": "SUI",
+      "rankingName": "IMHOF Remo",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Remo",
+      "surname": "Imhof",
+      "birthYear": 2003,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2970/remo-imhof/",
+      "personalBest": 218.5
+    },
+    {
+      "fisId": "229759",
+      "country": "SUI",
+      "rankingName": "KESSELI Juri",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Juri",
+      "surname": "Kesseli",
+      "birthYear": 0,
+      "personalBest": 191.0,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "153777",
+      "country": "SUI",
+      "rankingName": "PEIER Killian",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Killian",
+      "surname": "Peier",
+      "birthYear": 1995,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2243/killian-peier/",
+      "personalBest": 209.5
+    },
+    {
+      "fisId": "229337",
+      "country": "SUI",
+      "rankingName": "TRUNZ Felix",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Felix",
+      "surname": "Trunz",
+      "birthYear": 2006,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3826/felix-trunz/",
+      "personalBest": 204.5
+    },
+    {
+      "fisId": "204198",
+      "country": "SUI",
+      "rankingName": "WASSER Yanick",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Yanick",
+      "surname": "Wasser",
+      "birthYear": 2004,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2995/yanick-wasser/",
+      "personalBest": 197.0
+    },
+    {
+      "fisId": "239041",
+      "country": "SVK",
+      "rankingName": "KAPUSTIK Hektor",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Hektor",
+      "surname": "Kapustik",
+      "birthYear": 0,
+      "personalBest": 235.5,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "131524",
+      "country": "UKR",
+      "rankingName": "KALINICHENKO Vitaliy",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Vitaliy",
+      "surname": "Kalinichenko",
+      "birthYear": 0,
+      "personalBest": 195.5,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "190011",
+      "country": "UKR",
+      "rankingName": "MARUSIAK Yevhen",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Yevhen",
+      "surname": "Marusiak",
+      "birthYear": 0,
+      "personalBest": 228.5,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    },
+    {
+      "fisId": "173399",
+      "country": "USA",
+      "rankingName": "BICKNER Kevin",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Kevin",
+      "surname": "Bickner",
+      "birthYear": 1996,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/2426/kevin-bickner/",
+      "personalBest": 244.5
+    },
+    {
+      "fisId": "261496",
+      "country": "USA",
+      "rankingName": "COLBY Jason",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Jason",
+      "surname": "Colby",
+      "birthYear": 2006,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3912/jason-colby/",
+      "personalBest": 173.0
+    },
+    {
+      "fisId": "274243",
+      "country": "USA",
+      "rankingName": "FRANTZ Tate",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        },
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Tate",
+      "surname": "Frantz",
+      "birthYear": 2005,
+      "recordSource": "https://www.skijumping.pl/zawodnicy/3913/tate-frantz/",
+      "personalBest": 231.5
+    },
+    {
+      "fisId": "280175",
+      "country": "USA",
+      "rankingName": "LOHER Henry",
+      "membership": [
+        {
+          "cup": "GP",
+          "season": 2027,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2027&cupcode=GP&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Henry",
+      "surname": "Loher",
+      "birthYear": 0
+    },
+    {
+      "fisId": "202354",
+      "country": "USA",
+      "rankingName": "URLAUB Andrew",
+      "membership": [
+        {
+          "cup": "WC",
+          "season": 2026,
+          "source": "https://www.fis-ski.com/DB/ski-jumping/cup-standings.html?sectorcode=JP&seasoncode=2026&cupcode=WC&disciplinecode=ALL&gendercode=M"
+        }
+      ],
+      "name": "Andrew",
+      "surname": "Urlaub",
+      "birthYear": 0,
+      "personalBest": 189.0,
+      "recordSource": "https://www.skokinarciarskie.pl/index.php?a=rekordy&b=index&order=nazwisko&typ=pb"
+    }
+  ]
+}
