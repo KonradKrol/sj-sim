@@ -39,7 +39,6 @@ Rectangle {
                     HomeTools { Layout.fillWidth: true; compact: home.width < 700 }
                     RowLayout {
                         Layout.fillWidth: true
-                        SButton { objectName: "homeBalanceLab"; text: qsTr("Laboratorium balansu"); quiet: true; onClicked: ui.launch("balanceLab") }
                         Item { Layout.fillWidth: true }
                         SButton { objectName: "openAuthor"; text: qsTr("O autorze"); quiet: true; onClicked: ui.launch("author") }
                         SButton { text: qsTr("Zgłoś problem"); quiet: true; onClicked: ui.launch("issue") }

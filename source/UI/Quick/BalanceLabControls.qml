@@ -28,7 +28,23 @@ ColumnLayout {
     }
     function toggle(index){var copy=selected.slice();var at=copy.indexOf(index);if(at<0)copy.push(index);else copy.splice(at,1);selected=copy}
     spacing: Theme.dp(8)
-    SectionTabs { Layout.fillWidth: true; options: [qsTr("Dane próby"),qsTr("Skoczkowie"),qsTr("Reguły symulacji"),qsTr("Wykres i mapa")]; currentIndex: controls.panel; onSelected: controls.panel=index }
+    GridLayout {
+        Layout.fillWidth: true; columns: 2; columnSpacing: Theme.dp(5); rowSpacing: Theme.dp(5)
+        Repeater {
+            model: [qsTr("Dane próby"),qsTr("Skoczkowie"),qsTr("Reguły symulacji"),qsTr("Wykres i mapa")]
+            SButton {
+                required property int index
+                required property string modelData
+                Layout.fillWidth: true; Layout.fillHeight: true; Layout.preferredWidth: 0; Layout.minimumWidth: 0
+                text: modelData; checkable: true; checked: controls.panel===index
+                font.family: Theme.displayFamily; font.pointSize: Theme.section
+                foreground: checked ? Theme.snow : Theme.ink
+                background: Rectangle { color: parent.checked ? Theme.stadium : parent.hovered ? Theme.selection : Theme.raised; radius: Theme.dp(5); border.width: parent.visualFocus ? 2 : 0; border.color: Theme.accent }
+                Accessible.role: Accessible.RadioButton
+                onClicked: {controls.forceActiveFocus();controls.panel=index}
+            }
+        }
+    }
     ScrollView {
         id: settingsScroll
         Layout.fillWidth: true; Layout.fillHeight: true
