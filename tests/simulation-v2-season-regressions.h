@@ -132,6 +132,16 @@ static void simulationV2SeasonCreationRegressions(MainWindow &main)
     std::unique_ptr<SimulationSave> restored(SimulationSave::getFromJson(SimulationSave::getJsonObject(*save),nullptr));
     check(restored && restored->getEngineVersion()==2 && restored->getActualSeason()->getActualCalendar()->getCompetitionsReference()[0]->getPlayed(),"completed canonical season reloads with played events");
     check(GlobalDatabase::get()->packsSnapshot()==globals,"season creation and competition never mutate global source packs");
+    for(int n=0;n<7;++n){
+        auto *event=new CompetitionInfo(save->getHillsReference()[0]);event->setRules(rules);event->setScheduledDate(QDate(2027,1,6+n));
+        if(n==0){auto *training=new CompetitionInfo(event->getHill());training->setSerieType(CompetitionInfo::Training);training->setRules(rules);training->setScheduledDate(event->getScheduledDate());event->setTrainings({training});auto *trial=new CompetitionInfo(event->getHill());trial->setSerieType(CompetitionInfo::TrialRound);trial->setRules(rules);trial->setScheduledDate(event->getScheduledDate());event->setTrialRound(trial);}
+        calendar->getCompetitionsReference().append(event);
+    }
+    calendar->normalizeCompetitionEvents();manager.refreshCalendarState();auto *overviewBridge=manager.findChild<QuickBridge *>();overviewBridge->refresh();QTest::qWait(80);
+    auto *overviewNode=qobject_cast<QuickNode *>(overviewBridge->find("quickSeasonOverview"));check(overviewNode,"season overview has a dedicated data projection");
+    const auto upcoming=overviewNode->values()["events"].toList();check(upcoming.size()==5,"overview projects five upcoming main events, not seven or separate training rows");
+    check(upcoming[0].toMap()["trainingCount"].toInt()==1 && upcoming[0].toMap()["trial"].toBool() && !upcoming[0].toMap()["flag"].toString().isEmpty(),"training, trial and flag stay inside the parent competition preview");
+    render(&manager,"season-overview-upcoming",true);
     GlobalAppSettings::get()->setLiveCompetition(oldLive);manager.reject();main.resize(1024,640);QSettings().remove("newSimulation");
     qInfo()<<"PASS: canonical season creation, owned source snapshot, individual/team runtime, continuous weather and persisted results";
 }

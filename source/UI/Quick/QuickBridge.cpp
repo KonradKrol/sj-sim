@@ -1040,8 +1040,32 @@ void QuickBridge::compose(QuickNode *base) {
                 overview={empty("season-empty-calendar",tr("Dodaj pierwszy konkurs"),tr("Kalendarz jest gotowy. Dodaj konkursy lub wczytaj preset, aby rozpocząć sezon."),m_content->findChild<QPushButton *>("pushButton_competitionConfig"))};
             auto *activeCalendar=season->getSimulationSave()->getActualSeason()->getActualCalendar();
             if(standings.isEmpty() || !activeCalendar || activeCalendar->getClassificationsReference().isEmpty())standings={empty("season-no-standings",tr("Brak wyników klasyfikacji"),tr("Dodaj klasyfikację w kalendarzu i przypisz do niej konkursy. Wyniki pojawią się po ich rozegraniu."))};
+            if(activeCalendar) {
+                QVariantList upcoming;int total=0,played=0;QSet<QString> countries;
+                for(auto *event:activeCalendar->getCompetitionsReference()) {
+                    if(!event || event->getSerieType()==CompetitionInfo::Training || event->getSerieType()==CompetitionInfo::TrialRound)continue;
+                    ++total;if(event->getPlayed()){++played;continue;}
+                    auto *hill=event->getHill();if(hill)countries.insert(hill->getCountryCode());
+                    if(upcoming.size()>=5)continue;
+                    const auto trainings=event->getTrainings();int completedTrainings=0;for(auto *training:trainings)if(training && training->getPlayed())++completedTrainings;
+                    auto *trial=event->getTrialRound();
+                    const auto date=event->getScheduledDate();
+                    upcoming.append(QVariantMap{{"hill",hill?hill->getName():tr("Wybierz skocznię")},{"hs",hill?QString::number(hill->getHSPoint(),'f',0):QString()},
+                        {"country",hill?hill->getCountryCode():QString()},{"flag",hill?QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(hill->getCountryCode())+".svg")).toString():QString()},
+                        {"date",showDate && date.isValid()?date.toString("dd.MM.yyyy"):QString()},
+                        {"type",event->getRules().getCompetitionType()==CompetitionRules::Team?tr("Drużynowy"):tr("Indywidualny")},
+                        {"qualification",event->getSerieType()==CompetitionInfo::Qualifications},{"trainingCount",trainings.size()},{"trainingPlayed",completedTrainings},
+                        {"trial",bool(trial)},{"trialPlayed",trial && trial->getPlayed()}});
+                }
+                if(!upcoming.isEmpty()) {
+                    auto *preview=m_groups.value("quickSeasonOverview");if(!preview){preview=new QuickNode(this);m_groups.insert("quickSeasonOverview",preview);}
+                    preview->update({{"kind","seasonOverview"},{"events",upcoming},{"total",total},{"played",played},{"countries",countries.size()},
+                        {"nextEvent",nextEvent?nextEvent->getLongSerieTypeText():QString()},{"action",QVariant::fromValue(node(m_content->findChild<QPushButton *>("pushButton_competitionConfig")))}});
+                    overview={QVariant::fromValue(preview)};
+                }
+            }
             QVariantList pages{group("season-overview",QString(),{
-                group("season-next",tr("Następny konkurs"),overview),group("season-standings",tr("Klasyfikacja"),standings)},"sections")};
+                group("season-next",QString(),overview),group("season-standings",tr("Klasyfikacja"),standings)},"sections")};
             QStringList labels{tr("Przegląd")};
             QVariantList sourceIndexes{-1};
             for(int i=0;i<source->count();++i) {

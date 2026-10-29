@@ -185,6 +185,7 @@
 <file>SectionTabs.qml</file>
 <file>SectionRail.qml</file>
 <file>SeasonBar.qml</file>
+<file>SeasonOverview.qml</file>
 <file>SeasonFooter.qml</file>
 <file>SetupFooter.qml</file>
 <file>TableRow.qml</file>
