@@ -151,7 +151,11 @@ void SimulationSavesWindow::openSelectedSave(bool focusCalendar)
 {
     const int row = selectedSaveRow();
     if(row >= 0){
-        SimulationSaveManagerWindow * manager = new SimulationSaveManagerWindow(GlobalDatabase::get()->getEditableGlobalSimulationSaves().at(row), this);
+        auto *save=GlobalDatabase::get()->getEditableGlobalSimulationSaves().at(row);
+        if(save->getEngineVersion()!=2) {
+            QMessageBox::information(this,tr("Zapis starszej wersji"),tr("Ten zapis korzysta ze starszego modelu symulacji. Utwórz nową symulację, aby używać nowych zawodników i skoczni."),QMessageBox::Ok);return;
+        }
+        SimulationSaveManagerWindow * manager = new SimulationSaveManagerWindow(save, this);
         manager->getSimulationSave()->fixJumpersFormInstabilities();
         manager->getSimulationSave()->updateNextCompetitionIndex();
         manager->updateCompetitionConfigButton();
