@@ -27,11 +27,29 @@ kary, rozrzut, specjalizację i parametry skoczni. W automatycznej pogodzie
 wpływ loteryjności skoczni używa poziomu / 4. Natężenie wiatru i opady nie
 zyskują dodatkowych poziomów — to osobne ustawienia.
 
-## Jednorazowa konwersja danych
+## Automatyczna konwersja paczek
+
+Paczki skoczków i skoczni konwertują się automatycznie podczas wczytywania
+przez edytory i katalog gry. Nie trzeba uruchamiać skryptu. Zachowują UUID,
+nazwy, OVR, formę, zdjęcia oraz kolejność profili. Stare poziomy 1→1, 2→2,
+3→4, również dla przeciwstawnych perków; aktualny poziom3 pozostaje3.
+
+Przed atomowym zapisem zmienionej paczki powstaje dokładna kopia
+`.three-levels.bak`. Istniejąca inna kopia nie jest nadpisywana — kolejny
+oryginał dostaje osobną nazwę z UUID. Nieprawidłowych lub przyszłych formatów
+gra nie zgaduje ani nie nadpisuje. Zewnętrzny plik importu jest konwertowany
+w pamięci, a oryginał pozostaje nietknięty. Kolejne uruchomienia nie przeliczają
+ponownie już aktualnych profili. Konwersja nie uruchamia Pythona.
+
+## Ręczne narzędzie dla pozostałych danych
+
+Poniższy skrypt pozostaje opcjonalnym narzędziem m.in. dla konfiguracji labu
+i zapisów. Automatyczna konwersja w grze dotyczy paczek, nie sezonów.
+
 
 Gra nie utrzymuje osobnego silnika ani skali trzech poziomów. Profile i
-konfiguracje eksperymentów zapisują `perkLevels: 4`; brak znacznika wymaga
-jednorazowej konwersji, zamiast cichego odczytania starego Skrajnie jako Mocno.
+konfiguracje eksperymentów zapisują `perkLevels: 4`; brak znacznika oznacza
+stary format, zamiast cichego odczytania starego Skrajnie jako Mocno.
 
 **Zamknij grę przed konwersją**, aby otwarta instancja nie zapisała ponownie
 danych starego formatu. W głównym folderze repozytorium uruchom:

@@ -14036,6 +14036,10 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Regularność (−4…+4)</source>
             <translation>Vyrovnanost (−4…+4)</translation>
         </message>
+        <message>
+            <source>Nie udało się utworzyć kopii zapasowej paczki.</source>
+            <translation>Nepodařilo se vytvořit záložní kopii balíčku.</translation>
+        </message>
     </context>
     <context>
         <name>QuickBridge</name>

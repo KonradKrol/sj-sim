@@ -14035,6 +14035,10 @@ Check that you selected the correct file.</translation>
             <source>Regularność (−4…+4)</source>
             <translation>Consistency (−4…+4)</translation>
         </message>
+        <message>
+            <source>Nie udało się utworzyć kopii zapasowej paczki.</source>
+            <translation>Could not create a backup of the pack.</translation>
+        </message>
     </context>
     <context>
         <name>QuickBridge</name>

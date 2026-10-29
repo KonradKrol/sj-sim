@@ -21,8 +21,34 @@ static void simulationV2CatalogRegressions()
         SimulationV2::ProfilePackRepository unconverted(SimulationV2::ProfilePackKind::Athletes,storage.path()+"/unconverted");
         auto oldPack=ready;auto oldProfile=athlete.toJson();oldProfile.remove("perkLevels");oldProfile["perks"]=QJsonArray{1,2,3};oldPack["profiles"]=QJsonArray{oldProfile};oldPack["approximate-migration-source"]=oldAthletes.id;
         check(QDir().mkpath(unconverted.packDirectory(oldPack)),"old-scale pack directory fixture");QFile original(unconverted.filePath(oldPack));const auto bytes=QJsonDocument(oldPack).toJson();check(original.open(QIODevice::WriteOnly) && original.write(bytes)==bytes.size(),"old-scale source fixture saved");original.close();
-        check(unconverted.load().needsPerkConversion,"repository distinguishes unconverted perk data from missing packs");QJsonObject created;QStringList issues;check(!unconverted.migrate(oldAthletes,100,{},created,issues,error),"old-scale authoring packs block replacement migration instead of silently regenerating defaults");
-        check(original.open(QIODevice::ReadOnly) && original.readAll()==bytes && QDir(storage.path()+"/unconverted").entryList(QDir::Dirs|QDir::NoDotAndDotDot).size()==1,"conversion requirement leaves edited source bytes and catalog directories intact");
+        const auto loaded=unconverted.load();
+        check(loaded.packs.size()==1 && !loaded.needsPerkConversion && loaded.issues.isEmpty(),"old-scale authoring packs convert automatically instead of disappearing");
+        const auto converted=loaded.packs.first()["profiles"].toArray().first().toObject();
+        check(converted["perks"].toArray()==QJsonArray({1,2,4}) && converted["perkLevels"]==4 && converted["overall"]==oldProfile["overall"] && converted["photoPath"]==oldProfile["photoPath"],"automatic conversion maps 1/2/3 to 1/2/4 and preserves ratings and photo paths");
+        QFile backup(original.fileName()+".three-levels.bak");check(backup.open(QIODevice::ReadOnly) && backup.readAll()==bytes,"automatic pack conversion preserves an exact original backup");backup.close();
+        QJsonObject created;QStringList issues;check(unconverted.migrate(oldAthletes,100,{},created,issues,error) && created["id"]==oldPack["id"],"migration reuses the converted edited pack instead of generating replacement defaults");
+        check(original.open(QIODevice::ReadOnly),"converted pack can be read");const auto savedBytes=original.readAll();original.close();
+        check(unconverted.load().packs.size()==1 && original.open(QIODevice::ReadOnly) && original.readAll()==savedBytes,"second load leaves four-level data byte-for-byte unchanged");original.close();
+        check(QDir(storage.path()+"/unconverted").entryList(QDir::Dirs|QDir::NoDotAndDotDot).size()==1,"conversion preserves canonical pack identity and folder");
+        auto negative=oldProfile;negative["perks"]=QJsonArray{-1,-2,-3};auto current=athlete.toJson();current["id"]=QUuid::createUuid().toString(QUuid::WithoutBraces);current["perks"]=QJsonArray{3,-3,4};negative["id"]=QUuid::createUuid().toString(QUuid::WithoutBraces);
+        auto mixed=oldPack;mixed["profiles"]=QJsonArray{negative,current};const auto mixedBytes=QJsonDocument(mixed).toJson();
+        check(original.open(QIODevice::WriteOnly|QIODevice::Truncate) && original.write(mixedBytes)==mixedBytes.size(),"mixed-scale fixture");original.close();
+        const auto mixedLoaded=unconverted.load();const auto mixedProfiles=mixedLoaded.packs.first()["profiles"].toArray();
+        check(mixedProfiles[0].toObject()["perks"].toArray()==QJsonArray({-1,-2,-4}) && mixedProfiles[1].toObject()==current,"negative perks convert while current level three stays level three");
+        check(backup.open(QIODevice::ReadOnly) && backup.readAll()==bytes,"different later source never overwrites the first backup");backup.close();
+        check(QDir(unconverted.packDirectory(oldPack)).entryList({"*.bak"},QDir::Files).size()==2,"a different old source receives a separate backup");
+        QFile exported(storage.path()+"/export.json");check(exported.open(QIODevice::WriteOnly) && exported.write(bytes)==bytes.size(),"old exported pack fixture");exported.close();QJsonObject imported;
+        check(unconverted.read(exported.fileName(),imported,error) && imported["profiles"].toArray()[0].toObject()["perks"].toArray()==QJsonArray({1,2,4}),"import accepts an old exported pack without manual scripts");
+        check(exported.open(QIODevice::ReadOnly) && exported.readAll()==bytes && !QFileInfo::exists(exported.fileName()+".three-levels.bak"),"external export is never rewritten by importing it");exported.close();
+        auto broken=oldPack;auto bad=oldProfile;bad["perks"]=QJsonArray{1,2,4};broken["profiles"]=QJsonArray{bad};const auto brokenBytes=QJsonDocument(broken).toJson();
+        check(original.open(QIODevice::WriteOnly|QIODevice::Truncate) && original.write(brokenBytes)==brokenBytes.size(),"invalid old pack fixture");original.close();
+        check(!unconverted.read(original.fileName(),imported,error) && original.open(QIODevice::ReadOnly) && original.readAll()==brokenBytes,"invalid old data is rejected without overwriting the source");original.close();
+        bad=oldProfile;bad["perkLevels"]=5;broken["profiles"]=QJsonArray{bad};const auto futureBytes=QJsonDocument(broken).toJson();check(original.open(QIODevice::WriteOnly|QIODevice::Truncate) && original.write(futureBytes)==futureBytes.size(),"future-scale fixture");original.close();
+        check(!unconverted.read(original.fileName(),imported,error),"future perk scales are never guessed or downgraded");
+        SimulationV2::ProfilePackRepository hills(SimulationV2::ProfilePackKind::Hills,storage.path()+"/old-hills");auto h=HillProfile::create().toJson();h.remove("perkLevels");h["perks"]=QJsonArray{-3,2,1};
+        auto hp=oldPack;hp["format"]="sj-sim-hill-pack";hp["profiles"]=QJsonArray{h};QDir().mkpath(storage.path()+"/old-hills");QFile hf(hills.filePath(hp));const auto hb=QJsonDocument(hp).toJson();check(hf.open(QIODevice::WriteOnly) && hf.write(hb)==hb.size(),"old hill pack fixture");hf.close();
+        const auto hl=hills.load();check(hl.packs.size()==1 && hl.packs[0]["profiles"].toArray()[0].toObject()["perks"].toArray()==QJsonArray({-4,2,1,0}),"hill packs automatically convert signs, strengths and the optional fourth category");
+
     }
     const auto originalGlobal=GlobalDatabase::get()->packsSnapshot();
     SimulationV2::SimulationCatalog catalog(paths);

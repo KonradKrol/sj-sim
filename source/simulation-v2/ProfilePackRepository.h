@@ -33,6 +33,7 @@ private:
     ProfilePackKind kind;
     QString root;
     bool validateEnvelope(const QJsonObject &, QString &error) const;
+    bool convertPerkLevels(QJsonObject &, bool &changed, QString &error) const;
 };
 
 }

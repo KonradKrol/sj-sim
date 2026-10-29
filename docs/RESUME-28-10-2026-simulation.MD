@@ -7,8 +7,8 @@ Cztery poziomy perków, nowy przegląd sezonu i przykład uruchamiany jednym
 kliknięciem są już gotowe i wypchnięte. Szczegóły i commity w punktach18/19/31
 na końcu tego pliku. Punkt32 też GOTOWY: 7f6fbe9, pakiet30animacji i testy.
 Starych instrukcji WIP poniżej nie traktuj jako nakazu ponownego wdrażania.
-Ważne: dane otwartej starej gry NIE zostały przekonwertowane; po jej zamknięciu
-użyć narzędzia z docs/PERK_LEVELS_4.md. Nie zabijaj uruchomionej gry użytkownika.
+Najnowsza decyzja: paczki konwertować AUTOMATYCZNIE, sezony pominąć.
+Aktualna poprawka opisana na końcu. Nie zabijaj uruchomionej gry użytkownika.
 
 Aktualizacja 29.10: wdrożono osobne laboratorium balansu obok starego playgroundu.
 15 pytań, 617 ustawień, trzy serie, paczki i grupy, mapy, lądowanie, pełna analiza
@@ -493,3 +493,29 @@ Pozostałe ograniczenia do uczciwego przekazania:
 - Pełny stary smoke ma założenie o Qt Widgets database table; nowy studio
   używa własnej listy. Nie przywracać starego edytora dla spełnienia testu.
   Ukierunkowane testy nowego studia przechodzą.
+
+## Kolejna poprawka: automatyczna konwersja paczek
+
+Użytkownik zgłosił brak wszystkich paczek po przejściu na cztery poziomy.
+Przyczyna: wymagany perkLevels4 i pozostawienie migracji jako kroku ręcznego.
+Wyraźna decyzja: paczki konwertować automatycznie, sezonów dalej nie zmieniać.
+Mapowanie 1→1,2→2,3→4; aktualne profile4 zachowują swoje poziomy, także3.
+
+ProfilePackRepository::read konwertuje i waliduje cały pakiet; dla własnych
+kanonicznych plików robi dokładny backup i atomowy zapis pod blokadą. Importy
+zewnętrzne przelicza tylko w pamięci. HillStudioController::importFrom używa
+tej samej ścieżki co import skoczków. Nieprawidłowe i przyszłe formaty nie są
+zgadywane, pierwsza kopia nie jest nadpisywana, nowe i mieszane paczki są
+obsługiwane bez ponownego przeliczenia aktualnych profili.
+
+Lokalne dane przy zamkniętej grze przeliczono narzędziem ręcznym przed tą
+poprawką: 4 paczki skoczków (248 profili),1 skoczni (126 profili); wszystkie
+mają teraz perkLevels4 i kopie oryginałów. Narzędzie objęło też lab i1zapis
+przed późniejszą decyzją o pominięciu sezonów. Nie jest to mechanizm startowy
+nowej poprawki — gra konwertuje paczki natywnie w C++, bez Pythona.
+Instrukcja docs/PERK_LEVELS_4.md zaktualizowana: ręczny krok dla paczek zbędny.
+
+Weryfikacja tej poprawki: produkcyjny build Qt5, --simulation-v2-only (bridge,
+repozytorium, katalog i scenariusze automatycznej konwersji), --athlete-studio-only,
+--hill-studio-only oraz kontrola tłumaczeń EN/CS — PASS. Logi
+/tmp/sj-auto-pack-conversion.log i /tmp/sj-auto-pack-*-studio.log.

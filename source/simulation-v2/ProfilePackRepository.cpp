@@ -11,6 +11,7 @@
 #include <QTemporaryDir>
 #include <QTemporaryFile>
 #include <QUuid>
+#include <cmath>
 #include <utility>
 
 namespace SimulationV2 {
@@ -65,18 +66,83 @@ QString ProfilePackRepository::filePath(const QJsonObject &pack) const
         :QDir(root).filePath(pack["id"].toString()+".json");
 }
 
+bool ProfilePackRepository::convertPerkLevels(QJsonObject &pack,bool &changed,QString &error) const
+{
+    changed=false;
+    if(!validateEnvelope(pack,error))return false;
+    auto profiles=pack["profiles"].toArray();
+    for(int i=0;i<profiles.size();++i) {
+        auto profile=profiles[i].toObject();
+        const auto marker=profile.value("perkLevels");
+        if(marker.isDouble() && marker.toDouble()==4)continue;
+        if(!marker.isUndefined() && (!marker.isDouble() || marker.toDouble()!=3)) {
+            error=QObject::tr("Nieprawidłowy poziom perka.");return false;
+        }
+        if(!profile["perks"].isArray()) {error=QObject::tr("Nieprawidłowy zestaw perków.");return false;}
+        auto perks=profile["perks"].toArray();
+        if(perks.size()!=3 && !(kind==ProfilePackKind::Hills && perks.size()==4)) {
+            error=QObject::tr("Nieprawidłowy zestaw perków.");return false;
+        }
+        for(int level=0;level<perks.size();++level) {
+            const double value=perks[level].toDouble(99);
+            if(!perks[level].isDouble() || !std::isfinite(value) || value!=std::floor(value) || value< -3 || value>3) {
+                error=QObject::tr("Nieprawidłowy poziom perka.");return false;
+            }
+            if(value==3)perks[level]=4;
+            else if(value== -3)perks[level]= -4;
+        }
+        if(kind==ProfilePackKind::Hills && perks.size()==3)perks.append(0);
+        profile["perks"]=perks;profile["perkLevels"]=4;profiles[i]=profile;changed=true;
+    }
+    pack["profiles"]=profiles;
+    return validate(pack,error);
+}
+
 bool ProfilePackRepository::read(const QString &path,QJsonObject &result,QString &error) const
 {
-    QFile file(path);
-    if(!file.open(QIODevice::ReadOnly) || file.size()>maximumBytes) {
-        error=QObject::tr("Nie można odczytać paczki (limit 20 MB).");return false;
+    error.clear();
+    QByteArray original;
+    QJsonObject pack;
+    bool converted=false;
+    const auto readFile=[&] {
+        QFile file(path);
+        if(!file.open(QIODevice::ReadOnly) || file.size()>maximumBytes) {
+            error=QObject::tr("Nie można odczytać paczki (limit 20 MB).");return false;
+        }
+        original=file.readAll();
+        QJsonParseError parse;const auto document=QJsonDocument::fromJson(original,&parse);
+        if(parse.error!=QJsonParseError::NoError || !document.isObject()) {
+            error=parse.error!=QJsonParseError::NoError?QObject::tr("Nieprawidłowy JSON paczki: %1").arg(parse.errorString())
+                :QObject::tr("Plik paczki musi zawierać obiekt JSON.");return false;
+        }
+        pack=document.object();return convertPerkLevels(pack,converted,error);
+    };
+    if(!readFile())return false;
+    // Imported files are converted in memory; only canonical authoring files are rewritten.
+    if(converted && inside(path,root) && QFileInfo(path)==QFileInfo(filePath(pack))) {
+        QLockFile lock(path+".perk-levels.lock");
+        if(!lock.tryLock(100) || !readFile()) {
+            if(error.isEmpty())error=QObject::tr("Trwa migracja paczek w innej instancji aplikacji.");
+            return false;
+        }
+        if(converted) {
+            QString backupPath=path+".three-levels.bak";
+            QFile backup(backupPath);
+            const bool matchingBackup=backup.open(QIODevice::ReadOnly) && backup.readAll()==original;
+            backup.close();
+            if(!matchingBackup) {
+                if(QFileInfo::exists(backupPath))backupPath=path+".three-levels."+QUuid::createUuid().toString(QUuid::WithoutBraces)+".bak";
+                if(!QFile::copy(path,backupPath)) {error=QObject::tr("Nie udało się utworzyć kopii zapasowej paczki.");return false;}
+                QFile copied(backupPath);
+                if(!copied.open(QIODevice::ReadOnly) || copied.readAll()!=original) {error=QObject::tr("Nie udało się utworzyć kopii zapasowej paczki.");return false;}
+            }
+            const auto bytes=QJsonDocument(pack).toJson(QJsonDocument::Indented);
+            QSaveFile file(path);
+            if(bytes.size()>maximumBytes || !file.open(QIODevice::WriteOnly) || file.write(bytes)!=bytes.size() || !file.commit()) {
+                error=QObject::tr("Nie udało się zapisać paczki. Zmiana nie została zastosowana.");return false;
+            }
+        }
     }
-    QJsonParseError parse;const auto document=QJsonDocument::fromJson(file.readAll(),&parse);
-    if(parse.error!=QJsonParseError::NoError || !document.isObject()) {
-        error=parse.error!=QJsonParseError::NoError?QObject::tr("Nieprawidłowy JSON paczki: %1").arg(parse.errorString())
-            :QObject::tr("Plik paczki musi zawierać obiekt JSON.");return false;
-    }
-    const auto pack=document.object();if(!validate(pack,error))return false;
     result=pack;error.clear();return true;
 }
 
