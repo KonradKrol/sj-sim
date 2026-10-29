@@ -232,6 +232,13 @@
 <file>icons/weather/none.svg</file>
 <file>icons/weather/snow.svg</file>
 <file>icons/weather/rain.svg</file>
+<file>icons/weather/intensity-light.svg</file>
+<file>icons/weather/intensity-medium.svg</file>
+<file>icons/weather/intensity-heavy.svg</file>
+<file>icons/weather/pattern-steady.svg</file>
+<file>icons/weather/pattern-variable.svg</file>
+<file>icons/weather/pattern-increasing.svg</file>
+
 <file>icons/weather/steady.svg</file>
 <file>icons/weather/strong.svg</file>
 <file>icons/weather/variable.svg</file>

@@ -29,7 +29,8 @@ Control {
                 objectName: "weatherPrecipitationLevel"
                 Layout.fillWidth: true; Layout.minimumWidth: 0
                 visible: precipitation.values.precipitationType>0
-                model: [qsTr("Słabe"),qsTr("Umiarkowane"),qsTr("Silne")]
+                model: [qsTr("Słabe opady"),qsTr("Umiarkowane opady"),qsTr("Silne opady")]
+                optionImages: ["qrc:/ui/icons/weather/intensity-light.svg","qrc:/ui/icons/weather/intensity-medium.svg","qrc:/ui/icons/weather/intensity-heavy.svg"]
                 currentIndex: Math.max(0,precipitation.values.precipitationLevel-1)
                 Accessible.name: qsTr("Natężenie opadów")
                 onActivated: precipitation.backend.setValue("precipitationLevel",index+1)
@@ -38,7 +39,8 @@ Control {
                 objectName: "weatherPrecipitationPattern"
                 visible: precipitation.values.precipitationLevel>0
                 Layout.fillWidth: true; Layout.minimumWidth: 0
-                model: [qsTr("Stałe"),qsTr("Zmienne"),qsTr("Nasilające się")]
+                model: [qsTr("Stałe natężenie"),qsTr("Zmienne natężenie"),qsTr("Coraz silniejsze")]
+                optionImages: ["qrc:/ui/icons/weather/pattern-steady.svg","qrc:/ui/icons/weather/pattern-variable.svg","qrc:/ui/icons/weather/pattern-increasing.svg"]
                 currentIndex: precipitation.values.precipitationPattern
                 Accessible.name: qsTr("Przebieg opadów")
                 onActivated: precipitation.backend.setValue("precipitationPattern",index)
@@ -46,7 +48,7 @@ Control {
         }
         Label {
             visible: precipitation.values.precipitationType>0
-            text: precipitation.values.precipitationKind===0 ? qsTr("Śnieg w torach spowalnia rozbieg.") : qsTr("Lekki deszcz nie musi hamować. Ulewa mocno pogarsza skoki.")
+            text: precipitation.values.precipitationKind===0 ? qsTr("Śnieg stopniowo skraca skoki. Silniejsze opady oznaczają większą stratę odległości.") : qsTr("Słaby deszcz ma niewielki wpływ. Przy ulewie strata odległości rośnie znacznie szybciej.")
             color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap; Layout.fillWidth: true
         }
     }
