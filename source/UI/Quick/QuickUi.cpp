@@ -7,6 +7,7 @@
 #include "../../athletes/AthleteStudioController.h"
 #include "../../hills/HillStudioController.h"
 #include "../../playground/PlaygroundController.h"
+#include "../../balance/BalanceLabController.h"
 #include "../../global/GlobalAppSettings.h"
 #include "../../global/GlobalTranslators.h"
 #include <QComboBox>
@@ -260,6 +261,7 @@ bool QuickUi::eventFilter(QObject *object,QEvent *event) {
                 for(auto *roster:window->findChildren<QuickRoster *>())roster->invalidateText();
                 for(auto *studio:window->findChildren<AthleteStudioController *>())studio->invalidateText();
                 for(auto *studio:window->findChildren<HillStudioController *>())studio->invalidateText();
+                for(auto *lab:window->findChildren<BalanceLabController *>())lab->invalidateText();
                 for(auto *playground:window->findChildren<PlaygroundController *>())playground->invalidateText();
             }
             emit navigationChanged();

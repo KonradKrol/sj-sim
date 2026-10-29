@@ -8,6 +8,8 @@ class Season;
 class Classification;
 #include "../seasons/ClassificationScoring.h"
 #include <QDate>
+#include <optional>
+#include <QJsonObject>
 #include "CompetitionRules.h"
 #include "CompetitionResults.h"
 #include "CompetitionInfo.h"
@@ -21,6 +23,7 @@ class Classification;
 class CompetitionInfo : public Identifiable
 {
 public:
+    std::optional<QJsonObject> simulationBalance;
     CompetitionInfo(Hill * hill = nullptr);
     ~CompetitionInfo();
 

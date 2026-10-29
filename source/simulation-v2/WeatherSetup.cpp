@@ -1,3 +1,5 @@
+#include "../balance/BalanceRuntime.h"
+#include "../balance/BalanceLabModel.h"
 #include "WeatherSetup.h"
 #include "ProfileBridge.h"
 #include <QRandomGenerator>
@@ -25,7 +27,7 @@ void sampleReferences(SimulationV2::WindParameters &wind,double k,double differe
 }
 }
 SimulationWeatherSetup::SimulationWeatherSetup(QObject *parent):QObject(parent) {
-    seed=QRandomGenerator::global()->generate64();rebuild();
+    setProperty("balanceProfile",BalanceRuntime::capture().toVariantMap());seed=QRandomGenerator::global()->generate64();rebuild();
 }
 void SimulationWeatherSetup::setHill(const HillProfile &profile) {
     HillProfile checked;QString validationError;
@@ -53,7 +55,7 @@ void SimulationWeatherSetup::rebuild() {
 void SimulationWeatherSetup::regenerate(bool includePrecipitation) {
     stationZeroDirections.fill(0);
     seed=QRandomGenerator::global()->generate64();SimulationV2::SeededRandom rng(SimulationV2::deriveSeed(seed,0));
-    const auto proposed=SimulationV2::proposeWeather(SimulationV2::weatherProposalContext(hill,surface,eventDate.month()),rng);
+    const auto proposed=SimulationV2::proposeWeather(SimulationV2::weatherProposalContext(hill,surface,eventDate.month()),rng,BalanceLab::generatorValues(QJsonObject::fromVariantMap(property("balanceProfile").toMap())));
     wind=proposed.wind;
     if(includePrecipitation)precipitation=proposed.precipitation;
     preset=-1;modified=false;inferControls();rebuild();
@@ -63,7 +65,7 @@ void SimulationWeatherSetup::applyPreset(int index) {
     if(!hasHill || index<0 || index>=SimulationV2::weatherPresetCount)return;
     stationZeroDirections.fill(0);
     seed=QRandomGenerator::global()->generate64();SimulationV2::SeededRandom rng(SimulationV2::deriveSeed(seed,0));
-    wind=SimulationV2::sampleWeatherPreset(static_cast<SimulationV2::WeatherPreset>(index),hill.k,rng).wind;
+    wind=SimulationV2::sampleWeatherPreset(static_cast<SimulationV2::WeatherPreset>(index),hill.k,rng,BalanceLab::generatorValues(QJsonObject::fromVariantMap(property("balanceProfile").toMap()))).wind;
     preset=index;modified=false;inferControls();rebuild();
 }
 void SimulationWeatherSetup::reroll() {

@@ -14,6 +14,7 @@
 #include <memory>
 
 #include <QMap>
+#include <QJsonObject>
 
 class CompetitionInfo;
 
@@ -36,6 +37,7 @@ private:
     double inrunSnow;
     double jumpsImportance;
     SimulationV2::Engine simulationEngine;
+    QJsonObject balanceSnapshot;
     SimulationV2::EventKind simulationEvent=SimulationV2::EventKind::Competition;
     double simulationTime=0;
     bool simulationSkip=false;
@@ -56,6 +58,8 @@ public:
     void setSimulationSkip(bool skip) {simulationSkip=skip;}
     void setSimulationTime(double seconds) { simulationTime=seconds; }
     void setSimulationParameters(const SimulationV2::EngineParameters &parameters) { simulationEngine=SimulationV2::Engine(parameters); }
+    void setSimulationBalanceProfile(const QJsonObject &);
+    const QJsonObject &simulationBalanceProfile()const{return balanceSnapshot;}
     void setSimulationWeather(std::shared_ptr<const SimulationV2::WeatherField>,std::shared_ptr<const SimulationV2::WindMeasurement>);
 
     void resetTemporaryParameters();

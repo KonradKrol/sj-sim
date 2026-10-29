@@ -11,8 +11,8 @@ $buildRoot = Join-Path $repoRoot $BuildDirectory
 $cases = [ordered]@{
     random = @('RandomSource')
     quality = @('RandomSource', 'HillSkillCurve', 'QualityModel')
-    weather = @('RandomSource', 'Weather', 'WeatherPresets')
-    engine = @('RandomSource', 'HillSkillCurve', 'QualityModel', 'Weather', 'FlightModel', 'LandingModel', 'Scoring', 'Manipulation', 'Engine')
+    weather = @('RandomSource', 'Weather', 'WeatherPresets', 'WeatherCalibration')
+    engine = @('RandomSource', 'HillSkillCurve', 'QualityModel', 'Weather', 'WeatherPresets', 'WeatherCalibration', 'FlightModel', 'LandingModel', 'Scoring', 'Manipulation', 'Engine')
 }
 foreach ($entry in $cases.GetEnumerator()) {
     $caseDirectory = Join-Path $buildRoot $entry.Key

@@ -1,3 +1,4 @@
+#include "WeatherCalibration.h"
 #include "Weather.h"
 
 #include <algorithm>
@@ -164,52 +165,7 @@ double ContinuousWeather::precipitation(double seconds) const
     throw std::invalid_argument("Unknown precipitation scenario");
 }
 
-WeatherProposal proposeWeather(const WeatherProposalContext &context,RandomSource &rng)
-{
-    bounded(context.k,1,400,"Proposal K out of range");
-    if(context.variabilityPerk< -3 || context.variabilityPerk>3 || context.directionPerk< -3 || context.directionPerk>3
-        || context.month<0 || context.month>12 || (context.surface!=Surface::Snow && context.surface!=Surface::Mat))
-        throw std::invalid_argument("Invalid weather proposal context");
-    static const double headProbability[]{.5,.70,.84,.94};
-    double probability=headProbability[std::abs(context.directionPerk)];
-    if(context.directionPerk<0) probability=1-probability;
-    const bool head=rng.event(probability);
-    const bool cross=rng.event(.15);
-    const double magnitude=rng.uniform(.2,2.5);
-    Wind base{(head?1:-1)*magnitude*(cross?.15:1),cross?(rng.event(.5)?1:-1)*magnitude:0};
-    // Three broad weather characters, substantially biased by hill lottery.
-    const double lottery=context.variabilityPerk/3.0;
-    const std::size_t character=lottery>=0 ? rng.weightedIndex({.45-.37*lottery,.40+.02*lottery,.15+.35*lottery})
-        : rng.weightedIndex({.45-.40*lottery,.40+.26*lottery,.15+.14*lottery});
-    static const double temporal[]{.15,.7,1.8},spatial[]{.08,.55,1.4},gusts[]{.3,1.8,4};
-    static const double chance[]{.03,.25,.65},times[]{100,45,18};
-    WeatherProposal result;
-    result.wind.temporalAmplitude=temporal[character];result.wind.spatialAmplitude=spatial[character];
-    result.wind.gustAmplitude=gusts[character];result.wind.gustProbability=chance[character];
-    result.wind.correlationSeconds=times[character];
-    static const double trendAmplitude[]{.15,1.2,2.8},trendPeriod[]{300,150,60},transitions[]{30,15,5},activity[]{.15,.5,.95};
-    result.wind.trendAmplitude=trendAmplitude[character];result.wind.trendPeriodSeconds=trendPeriod[character];
-    result.wind.trendTransitionSeconds=transitions[character];result.wind.activityVariation=activity[character];
-    result.wind.correlationMetres=context.k*(character==0?.8:.35);
-    result.wind.gustWidthMetres=context.k*.35;
-    result.wind.references={{0,base},{context.k*.5,{base.head+rng.uniform(-spatial[character],spatial[character]),base.cross}},
-        {context.k,{base.head+rng.uniform(-spatial[character],spatial[character]),base.cross+rng.uniform(-spatial[character],spatial[character])}}};
-    // Broad editable seasonal suggestions, not a climate model or a forecast.
-    int month=context.month;
-    if(month && (context.country=="AUS" || context.country=="NZL" || context.country=="ARG" || context.country=="CHL"))
-        month=(month+5)%12+1;
-    const bool cold=month && (month>=11 || month<=3);
-    const bool northern=context.country=="NOR" || context.country=="SWE" || context.country=="FIN" || context.country=="CAN";
-    result.precipitation.kind=context.surface==Surface::Mat || (month && !cold && rng.event(.7)) ? PrecipitationKind::Rain : PrecipitationKind::Snow;
-    const double wetChance=context.surface==Surface::Snow ? .25+(cold?.25:0)+(northern?.1:0) : .30;
-    if(rng.event(wetChance)) {
-        const auto choice=rng.weightedIndex({.45,.25,.08,.22});
-        result.precipitation.scenario=static_cast<PrecipitationScenario>(choice+1);
-        result.precipitation.intensity=choice==2?rng.uniform(8,10):rng.uniform(1,5);
-        result.precipitation.variation=choice==1?rng.uniform(2,5):1;
-    }
-    result.wind.validate();result.precipitation.validate();
-    return result;
-}
+WeatherProposal proposeWeather(const WeatherProposalContext &context,RandomSource &rng) {return proposeWeather(context,rng,{});}
+
 
 }

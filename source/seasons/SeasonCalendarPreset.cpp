@@ -15,6 +15,7 @@ SeasonCalendarPreset::SeasonCalendarPreset(SeasonCalendar *seasonCalendar)
         for(auto & comp : seasonCalendar->getCompetitionsReference())
         {
             CompetitionInfo * presetCompetition = new CompetitionInfo(*comp);
+            presetCompetition->simulationBalance.reset();
             presetCompetition->reassign();
             presetCompetition->getResultsReference().reassign();
             presetCompetition->getResultsReference().setCompetition(presetCompetition);

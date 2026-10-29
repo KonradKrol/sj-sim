@@ -1,3 +1,4 @@
+#include "../playground/PlaygroundModel.h"
 #include "SingleJumpsManager.h"
 
 #include <QDebug>
@@ -56,7 +57,7 @@ SingleJumpsManager::SingleJumpsManager(int gate, int jumpsCount, const QString &
 
 QFuture<QVector<JumpData>> SingleJumpsManager::simulateAsync(int count,int threads,std::shared_ptr<BatchControl> control) const {
     count=qMax(0,count);
-    const auto athleteSnapshot=jumper;const auto hillSnapshot=hill;const auto rulesSnapshot=rules;
+    const auto balanceSnapshot=jumpSimulator.simulationBalanceProfile();const auto athleteSnapshot=jumper;const auto hillSnapshot=hill;const auto rulesSnapshot=rules;
     const auto windSettings=windsGeneratorSettings;const bool varying=changeableWind;
     const auto event=simulationEvent;const auto seed=simulationSeed;const auto offset=nextJumpIndex(jumps);
     const bool v2=bool(athleteSnapshot.getSimulationProfile()) && bool(hillSnapshot.getSimulationProfile());
@@ -70,10 +71,10 @@ QFuture<QVector<JumpData>> SingleJumpsManager::simulateAsync(int count,int threa
         const auto work=[&] {
             GlobalSimulationSettings::ScopedSnapshot isolated(settings);
             auto athlete=athleteSnapshot;auto venue=hillSnapshot;auto competitionRules=rulesSnapshot;
-            JumpManipulator manipulation;JumpSimulator simulator(&athlete,{},&venue);
+            JumpManipulator manipulation;JumpSimulator simulator(&athlete,{},&venue);simulator.setSimulationBalanceProfile(balanceSnapshot);
             simulator.setCompetitionRules(&competitionRules);simulator.setManipulator(&manipulation);simulator.setGate(batchGate);simulator.setCompetitionStartGate(batchGate);simulator.setDSQBaseProbability(dsq);simulator.setJumpsImportance(priority);
             simulator.setSimulationEvent(event);
-            if(field)simulator.setSimulationWeather(field,std::make_shared<SimulationV2::FieldWindMeasurement>(venue.getKPoint(),competitionRules));
+            if(field)simulator.setSimulationWeather(field,std::make_shared<SimulationV2::FieldWindMeasurement>(venue.getKPoint(),competitionRules,Playground::measurementParameters(balanceSnapshot)));
             WindsGenerator generator(windSettings);QVector<Wind> fixed;
             if(!varying){for(const auto &value:windSettings){Wind wind;wind.setDirection(value.getBaseDirection());wind.setStrength(value.getBaseWindStrength());fixed.append(wind);}simulator.setWinds(fixed);}
             while(!control->canceled.load(std::memory_order_relaxed)) {
@@ -118,7 +119,7 @@ void SingleJumpsManager::simulate()
     jumpSimulator.setSimulationEvent(simulationEvent);
     const bool v2=bool(jumper.getSimulationProfile()) && bool(hill.getSimulationProfile());
     const auto field=v2?simulationWeather:nullptr;
-    jumpSimulator.setSimulationWeather(field,field?std::make_shared<SimulationV2::FieldWindMeasurement>(hill.getKPoint(),rules):nullptr);
+    jumpSimulator.setSimulationWeather(field,field?std::make_shared<SimulationV2::FieldWindMeasurement>(hill.getKPoint(),rules,Playground::measurementParameters(jumpSimulator.simulationBalanceProfile())):nullptr);
 
     jumps.reserve(jumps.size() + qMax(0,jumpsCount));
     windsGenerator.setGenerationSettings(windsGeneratorSettings);

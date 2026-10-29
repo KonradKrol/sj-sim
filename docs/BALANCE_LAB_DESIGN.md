@@ -1,4 +1,7 @@
-# Laboratorium balansu — projekt do uzgodnienia, 29.10.2026
+# Laboratorium balansu — zatwierdzony projekt, 29.10.2026
+
+Realizacja i decyzje z wdrożenia: [BALANCE_LAB_IMPLEMENTATION.md](BALANCE_LAB_IMPLEMENTATION.md).
+Instrukcja obsługi: [BALANCE_LAB.md](BALANCE_LAB.md).
 
 ## Kierunek potwierdzony przez użytkownika
 
@@ -40,8 +43,8 @@ z JSON, modowanie i instrukcje do tego są poza obecnym zakresem.
   konkretnej odległości, nie tylko średnie różnice między wariantami.
   Automatyczne poszukiwanie współczynników pozostaje na później.
 - Profile balansu można zapisać, porównać i osobno zastosować w grze. Edycja
-  eksperymentu nie zmienia gry. Zastosowanie wymaga ustalenia zakresu nowej gry,
-  istniejących zapisów i trwającego konkursu przed wdrożeniem tej funkcji.
+  eksperymentu nie zmienia gry. Uzgodniono zastosowanie od następnego konkursu
+  lub sesji, również w istniejącym sezonie. Rozpoczęte konkursy zachowują kopię.
 
 ## Obszary i gotowe pytania
 
@@ -106,15 +109,15 @@ To tłumienie nie jest monotonicznym ograniczaniem ogonów. Dlatego na początek
 wiatr używa ograniczonego rozrzutu i jawnej szansy strat. Damped Cauchy można
 później porównać jako alternatywę, jeśli rozkłady wyników pokażą taką potrzebę.
 
-## Kolejność dalszej pracy
+## Dalsza praca po wdrożeniu warsztatu
 
-1. Zatwierdzić zakres pytań i paneli; obecny dokument jest propozycją, nie gotowym UI.
-2. Dodać osobne wejście i wspólny układ pytanie → ustawienia → wykresy.
-3. Uruchomić pionowe przekroje: OVR/forma na paczce, lądowanie i wiatr.
-4. Uzupełnić obszary oraz ekspozycję generatora presetów pogody i wszystkie zależności.
-5. Dodać profile/stosowanie, cele kontrolne i przeprowadzić kalibrację.
+1. Przeprowadzić eksperymenty na paczce użytkownika i zapisać konkretne cele.
+2. Dostroić współczynniki według oceny rozkładów, ryzyka i wyników konkursów.
+3. Po kalibracji wybrać małą pulę prostych ustawień dla gracza.
+4. Automatyczne szukanie współczynników i alternatywne rozkłady rozważać później.
 
 Wymagania przekrojowe: pełne PL/EN/CS, małe laptopy, płynna edycja, anulowanie,
 zapis odtwarzalnych eksperymentów, zgodność z grą oraz CLI. Żaden wynik z małej
-próby nie powinien wyglądać jak potwierdzony balans. KO i drużyny wymagają osobnego
-ustalenia zakresu nowego laboratorium; obecny playground obsługuje indywidualne.
+próby nie powinien wyglądać jak potwierdzony balans. Użytkownik rozszerzył zakres
+nowego laboratorium o KO, reprezentacje i dowolne drużyny testowe; wspólny runner
+obsługuje te formaty. Dawne ograniczenie do indywidualnych nie jest aktualne.

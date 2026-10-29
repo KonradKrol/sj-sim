@@ -1,4 +1,5 @@
 #include "JumpSimulator.h"
+#include "../balance/BalanceRuntime.h"
 #include "ExperimentalSimulation.h"
 #include "wind-generation/WindsGenerator.h"
 #include "../global/GlobalSimulationSettings.h"
@@ -16,6 +17,7 @@ JumpSimulator::JumpSimulator(Jumper *jumper, const QVector<Wind> &winds, Hill *h
     : winds(winds)
     , hill(hill)
 {
+    setSimulationBalanceProfile(BalanceRuntime::capture());
     this->jumper = jumper;
     jumperSkills=nullptr;competitionRules=nullptr;gate=competitionStartGate=0;DSQBaseProbability=0;jumpsImportance=5;
     simulationData = &jumpData.simulationData;

@@ -35,7 +35,7 @@ PlaygroundController::PlaygroundController(QObject *parent):QObject(parent),m_co
         for(const auto &entry:snapshot.packs){const auto &pack=entry.data;if(!entry.migrationNotice.isEmpty())notes.append(pack.name+": "+entry.migrationNotice);
             if(pack.kind==DataPack::Jumpers && pack.jumpers.size()>=2 && pack.jumpers.size()<=512 && std::all_of(pack.jumpers.begin(),pack.jumpers.end(),[](const Jumper &j){return bool(j.getSimulationProfile());})){QJsonArray roster;for(const auto &athlete:pack.jumpers)roster.append(Jumper::getJsonObject(athlete));m_athletePacks.append(pack.name);m_rosters.append(QJsonObject{{"roster",roster}});}
             if(pack.kind==DataPack::Hills)for(const auto &hill:pack.hills)if(hill.getSimulationProfile()){m_hillNames.append(pack.name+" · "+hill.getName()+" HS"+QString::number(hill.getHSPoint()));m_hills.append(Hill::getJsonObject(hill));}
-            if(pack.kind==DataPack::Rules)for(const auto &rules:pack.rules){auto rounds=rules.getRounds();if(rules.getCompetitionType()==CompetitionRules::Individual && !rounds.isEmpty() && std::none_of(rounds.begin(),rounds.end(),[](const RoundInfo &r){return r.getKO();})){m_ruleNames.append(pack.name+" · "+rules.getName());m_rules.append(CompetitionRules::getJsonObject(rules));}}
+            if(pack.kind==DataPack::Rules)for(const auto &rules:pack.rules){auto rounds=rules.getRounds();if(!rounds.isEmpty()){m_ruleNames.append(pack.name+" · "+rules.getName());m_rules.append(CompetitionRules::getJsonObject(rules));}}
         }
         m_sourceNotes=notes.join('\n');emit sourcesChanged();
     });
@@ -80,7 +80,7 @@ void PlaygroundController::refreshEffective(){m_effective.clear();try{for(int i=
 void PlaygroundController::resetParameter(int index,const QString &key){if(busy())return;auto variants=m_config["variants"].toArray();if(index<0 || index>=variants.size())return;auto v=variants[index].toObject(),changes=v["changes"].toObject();changes.remove(key);v["changes"]=changes;variants[index]=v;m_config["variants"]=variants;if(index==0){auto p=m_config["parameters"].toObject();p.remove(key);m_config["parameters"]=p;}emit configChanged();}
 void PlaygroundController::setAnalysisVariant(int index){if(index<0 || index>=m_config["variants"].toArray().size() || index==m_analysisVariant)return;m_analysisVariant=index;++m_revision;m_previewPending=true;if(m_previewControl)m_previewControl->canceled.store(true);m_debounce.start();emit previewChanged();}
 void PlaygroundController::startPreview(){
-    if(busy() || m_previewWatcher.isRunning())return;m_previewPending=false;auto config=m_config;QString error;
+    if(property("balanceLabManaged").toBool()){m_previewPending=false;return;}if(busy() || m_previewWatcher.isRunning())return;m_previewPending=false;auto config=m_config;QString error;
     if(!Playground::validate(config,error)){m_previewReport.clear();m_diagnostics={{"error",error}};emit previewChanged();return;}
     const int selected=qMin(m_analysisVariant,int(config["variants"].toArray().size())-1);
     auto originalVariants=config["variants"].toArray();QJsonArray selectedVariants{originalVariants[0]};if(selected>0)selectedVariants.append(originalVariants[selected]);

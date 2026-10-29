@@ -1,3 +1,4 @@
+#include "../balance/BalanceLabModel.h"
 #include "CompetitionInfo.h"
 
 #include "../simulator/Hill.h"
@@ -518,6 +519,7 @@ QJsonObject CompetitionInfo::getJsonObject(CompetitionInfo &competition)
 {
     QJsonObject object;
     object.insert("id", competition.getIDStr());
+    if(competition.simulationBalance)object.insert("simulation-balance",*competition.simulationBalance);
     if(competition.getHill() != nullptr)
         object.insert("hill-id", competition.getHill()->getIDStr());
     object.insert("results", CompetitionResults::getJsonObject(competition.getResultsReference()));
@@ -584,6 +586,7 @@ QJsonObject CompetitionInfo::getJsonObject(CompetitionInfo &competition)
 CompetitionInfo CompetitionInfo::getFromJson(const QJsonObject &json, IdentifiableObjectsStorage * storage, int * oldId, QMap<ulong, Identifiable*> * before120Map)
 {
     CompetitionInfo comp;
+    if(json["simulation-balance"].isObject()){QString error;if(BalanceLab::validateProfile(json["simulation-balance"].toObject(),error))comp.simulationBalance=json["simulation-balance"].toObject();}
     QJsonArray teamsArray = json.value("teams").toArray();
     for(auto val : teamsArray)
     {

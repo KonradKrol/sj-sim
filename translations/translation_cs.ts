@@ -306,6 +306,12 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <source>Nie</source>
             <translation>Ne</translation>
         </message>
+        <message>
+            <location filename="../source/UI/AppSettings/AppSettingsWindow.cpp" line="32" />
+            <location filename="../source/UI/AppSettings/AppSettingsWindow.cpp" line="112" />
+            <source>Laboratorium balansu</source>
+            <translation>Laboratoř vyvážení</translation>
+        </message>
     </context>
     <context>
         <name>AppearanceMenu</name>
@@ -6487,6 +6493,11 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/Home.qml" line="44" />
             <source>Zgłoś problem</source>
             <translation>Nahlásit problém</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/Home.qml" line="42" />
+            <source>Laboratorium balansu</source>
+            <translation>Laboratoř vyvážení</translation>
         </message>
     </context>
     <context>
@@ -12812,6 +12823,461 @@ Ověřte, že jste vybrali správný soubor.</translation>
         <source>Skala nasycenia pomocy wiatru pod narty</source>
         <translation>Měřítko nasycení pomoci protivětru</translation>
     </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="13" />
+            <source>OVR i forma</source>
+            <translation>OVR a forma</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="13" />
+            <source>Ile daje zmiana OVR lub formy na tej stawce?</source>
+            <translation>Co změní OVR nebo forma proti této startovní listině?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="14" />
+            <source>Rozrzut jakości</source>
+            <translation>Rozptyl kvality</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="14" />
+            <source>Jak często skoczek zawodzi lub oddaje wyjątkowy skok?</source>
+            <translation>Jak často skokan zklame nebo předvede výjimečný skok?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="15" />
+            <source>Losowanie pogody</source>
+            <translation>Losování počasí</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="15" />
+            <source>Jakie warunki rzeczywiście losują presety i automatyczna propozycja?</source>
+            <translation>Jaké podmínky skutečně losují scénáře a automatický návrh?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="16" />
+            <source>Pole wiatru</source>
+            <translation>Větrné pole</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="16" />
+            <source>Jak wiatr zmienia się podczas konkursu i wzdłuż zeskoku?</source>
+            <translation>Jak se vítr mění během závodu a podél doskočiště?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="17" />
+            <source>Wykorzystanie wiatru</source>
+            <translation>Využití větru</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="17" />
+            <source>Ile metrów daje wiatr i jak często potrafi zepsuć skok?</source>
+            <translation>Kolik metrů vítr přidává a jak často může pokazit skok?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="18" />
+            <source>Która belka daje najwięcej punktów i jakie niesie ryzyko?</source>
+            <translation>Které nájezdové okno přináší nejvíce bodů a jaké je riziko?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="19" />
+            <source>Pomiar i punktacja</source>
+            <translation>Měření a bodování</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="19" />
+            <source>Co zostaje z przewagi wiatru po rekompensacie?</source>
+            <translation>Co zůstává z výhody větru po kompenzaci?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="20" />
+            <source>Geometria skoczni</source>
+            <translation>Geometrie můstku</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="20" />
+            <source>Jak wypłaszczenie i charakter skoczni ograniczają odległość?</source>
+            <translation>Jak zploštění doskočiště a charakter můstku omezují vzdálenost?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="21" />
+            <source>Gdzie rośnie ryzyko podpórki i upadku — i co dzieje się w pełnych skokach?</source>
+            <translation>Kde roste riziko podpory rukou a pádu a co se děje při úplných skocích?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="22" />
+            <source>Noty</source>
+            <translation>Známky rozhodčích</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="22" />
+            <source>Jak klasa lądowania i kary zmieniają noty oraz punkty?</source>
+            <translation>Jak třída doskoku a srážky mění známky a body?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="23" />
+            <source>Perki</source>
+            <translation>Vlastnosti</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="23" />
+            <source>Co daje każdy poziom perka na różnych skoczniach i w różnych seriach?</source>
+            <translation>Co přinášejí jednotlivé úrovně perků na různých můstcích a v různých kolech?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="24" />
+            <source>Opady</source>
+            <translation>Srážky</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="24" />
+            <source>Ile kosztują śnieg i deszcz przy różnym natężeniu?</source>
+            <translation>Kolik stojí sníh a déšť při různých intenzitách?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="25" />
+            <source>Pełny konkurs</source>
+            <translation>Celý závod</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="25" />
+            <source>Jak zmieniają się zwycięzcy, miejsca i awanse w mojej paczce?</source>
+            <translation>Jak se v mém balíčku mění vítězové, umístění a postup?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="26" />
+            <source>Dyskwalifikacje i zasady</source>
+            <translation>Diskvalifikace a pravidla</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="26" />
+            <source>Jak DSQ, awans i odstępy między skokami zmieniają wyniki?</source>
+            <translation>Jak DSQ, postup a intervaly mezi skoky mění výsledky?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="27" />
+            <source>Cele balansu</source>
+            <translation>Cíle vyvážení</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="27" />
+            <source>Które oczekiwania spełnia obecny profil i co pogorszyła zmiana?</source>
+            <translation>Které cíle tento profil splňuje a co změna zhoršila?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="44" />
+            <source>Nieprawidłowy współczynnik profilu: %1</source>
+            <translation>Neplatný koeficient profilu: %1</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="49" />
+            <source>Mój eksperyment balansu</source>
+            <translation>Můj experiment vyvážení</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="50" />
+            <source>Ustawienia gry</source>
+            <translation>Nastavení hry</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="50" />
+            <source>Punkt odniesienia</source>
+            <translation>Referenční snímek</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="50" />
+            <source>Bieżące</source>
+            <translation>Aktuální</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="168" />
+            <source>Siła wiatru</source>
+            <translation>Síla větru</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="168" />
+            <source>Siła wiatru — rzadki wariant</source>
+            <translation>Síla větru — vzácná varianta</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="169" />
+            <source>Odchylenie kierunku</source>
+            <translation>Odchylka směru</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="169" />
+            <source>Różnice na zeskoku</source>
+            <translation>Rozdíly podél doskočiště</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="170" />
+            <source>Amplituda w czasie</source>
+            <translation>Amplituda v čase</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="170" />
+            <source>Amplituda w przestrzeni</source>
+            <translation>Amplituda v prostoru</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="171" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="191" />
+            <source>Amplituda tendencji</source>
+            <translation>Amplituda trendu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="172" />
+            <source>Siła podmuchów</source>
+            <translation>Síla poryvů</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="172" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="190" />
+            <source>Szansa podmuchów</source>
+            <translation>Pravděpodobnost poryvů</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="173" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="190" />
+            <source>Czas podobnych warunków</source>
+            <translation>Doba podobných podmínek</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="174" />
+            <source>Odwrócenie wiatru na zeskoku</source>
+            <translation>Obrácení větru na doskočišti</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="174" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="191" />
+            <source>Czas przejścia tendencji</source>
+            <translation>Doba přechodu trendu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="175" />
+            <source>Długość podobnych warunków / K</source>
+            <translation>Délka podobných podmínek / K</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="175" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="193" />
+            <source>Szerokość podmuchu / K</source>
+            <translation>Šířka poryvu / K</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="183" />
+            <source>Preset %1 · %2 · %3</source>
+            <translation>Scénář %1 · %2 · %3</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="183" />
+            <source>maksimum</source>
+            <translation>maximum</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="183" />
+            <source>minimum</source>
+            <translation>minimum</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="185" />
+            <source>Automatyczna pogoda: skala siły</source>
+            <translation>Automatické počasí: měřítko síly</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="185" />
+            <source>Automatyczna pogoda: skala wahań</source>
+            <translation>Automatické počasí: měřítko kolísání</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="185" />
+            <source>Automatyczna pogoda: skala podmuchów</source>
+            <translation>Automatické počasí: měřítko poryvů</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="185" />
+            <source>Automatyczna pogoda: skala tendencji</source>
+            <translation>Automatické počasí: měřítko trendu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="185" />
+            <source>Automatyczna pogoda: skala czasu</source>
+            <translation>Automatické počasí: měřítko času</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="189" />
+            <source>Szansa kierunku preferowanego przez skocznię</source>
+            <translation>Pravděpodobnost směru upřednostňovaného můstkem</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="189" />
+            <source>Wagi charakteru pogody: neutralna skocznia</source>
+            <translation>Váhy charakteru počasí: neutrální můstek</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="189" />
+            <source>Wagi charakteru pogody: spokojna skocznia</source>
+            <translation>Váhy charakteru počasí: klidný můstek</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="189" />
+            <source>Wagi charakteru pogody: wietrzna skocznia</source>
+            <translation>Váhy charakteru počasí: větrný můstek</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="190" />
+            <source>Amplituda różnic na zeskoku</source>
+            <translation>Amplituda rozdílů podél doskočiště</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="192" />
+            <source>Szansa dominującego wiatru bocznego</source>
+            <translation>Pravděpodobnost převážně bočního větru</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="192" />
+            <source>Minimalna siła wiatru</source>
+            <translation>Minimální síla větru</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="192" />
+            <source>Maksymalna siła wiatru</source>
+            <translation>Maximální síla větru</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="193" />
+            <source>Długość podobnych warunków: spokojny charakter / K</source>
+            <translation>Délka podobných podmínek: klidný charakter / K</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="193" />
+            <source>Długość podobnych warunków: zmienny charakter / K</source>
+            <translation>Délka podobných podmínek: proměnlivý charakter / K</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="194" />
+            <source>Szansa deszczu zamiast śniegu</source>
+            <translation>Pravděpodobnost deště místo sněhu</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="194" />
+            <source>Bazowa szansa opadów zimą</source>
+            <translation>Základní pravděpodobnost zimních srážek</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="194" />
+            <source>Dodatkowa szansa opadów w zimnych miesiącach</source>
+            <translation>Dodatečná pravděpodobnost srážek v chladných měsících</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="194" />
+            <source>Dodatkowa szansa opadów w krajach północnych</source>
+            <translation>Dodatečná pravděpodobnost srážek v severních zemích</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="194" />
+            <source>Szansa opadów na igelicie</source>
+            <translation>Pravděpodobnost srážek na umělé hmotě</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="195" />
+            <source>Wagi przebiegów opadów</source>
+            <translation>Váhy průběhů srážek</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="195" />
+            <source>Minimalne natężenie silnych opadów</source>
+            <translation>Minimální intenzita silných srážek</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="195" />
+            <source>Maksymalne natężenie silnych opadów</source>
+            <translation>Maximální intenzita silných srážek</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="196" />
+            <source>Minimalne natężenie opadów</source>
+            <translation>Minimální intenzita srážek</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="196" />
+            <source>Maksymalne natężenie opadów</source>
+            <translation>Maximální intenzita srážek</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="196" />
+            <source>Minimalna zmienność opadów</source>
+            <translation>Minimální proměnlivost srážek</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="196" />
+            <source>Maksymalna zmienność opadów</source>
+            <translation>Maximální proměnlivost srážek</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="208" />
+            <source>Obniżenie belki przez trenera</source>
+            <translation>Snížení nájezdového okna trenérem</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="209" />
+            <source>Belka odniesienia (0: wspólna baza)</source>
+            <translation>Referenční nájezdové okno (0: společný základ)</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="225" />
+            <source>Perk skoczni: lotność / wybicie</source>
+            <translation>Perk můstku: let / odraz</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="226" />
+            <source>Perk skoczni: trudne / przyjazne lądowanie</source>
+            <translation>Perk můstku: obtížný / přívětivý doskok</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="227" />
+            <source>Perk skoczni: stabilny / loteryjny wiatr</source>
+            <translation>Perk můstku: stálý / nevyrovnaný vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="228" />
+            <source>Perk skoczni: kierunek wiatru</source>
+            <translation>Perk můstku: směr větru</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="229" />
+            <source>Miesiąc propozycji pogody (0: nieznany)</source>
+            <translation>Měsíc návrhu počasí (0: neznámý)</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="230" />
+            <source>Nawierzchnia: 0 śnieg, 1 igelit</source>
+            <translation>Povrch: 0 sníh, 1 umělá hmota</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="139" />
+            <source>Zakres minimum–maksimum dotyczy losowania scenariusza, nie reakcji skoczka. Wagi są normalizowane. Charakter pogody: [0] spokojny, [1] zmienny, [2] loteryjny. Kierunek: [0] brak perka, [1–3] jego poziom.</source>
+            <translation>Rozsah minimum–maximum řídí losování scénáře, nikoli reakci skokana. Váhy se normalizují. Charakter počasí: [0] klidný, [1] proměnlivý, [2] nevyrovnaný. Směr: [0] bez perku, [1–3] úroveň perku.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="140" />
+            <source>Poziomy −3…+3. Pary: lotność / wybicie, trudne / przyjazne lądowanie, stabilność / loteryjność, wiatr w plecy / pod narty. Ręczna preferencja lub real HS ma pierwszeństwo przed odpowiednim perkiem.</source>
+            <translation>Úrovně −3…+3. Dvojice: let / odraz, obtížný / přívětivý doskok, stálost / nevyrovnanost, zadní vítr / protivítr. Ruční preference můstku nebo skutečné HS má přednost před příslušným perkem.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceRuntime.cpp" line="25" />
+            <source>Nie można utworzyć folderu profilu balansu.</source>
+            <translation>Nelze vytvořit složku profilů vyvážení.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceRuntime.cpp" line="27" />
+            <source>Nie udało się zapisać aktywnego profilu balansu.</source>
+            <translation>Aktivní profil vyvážení se nepodařilo uložit.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceRuntime.cpp" line="29" />
+            <source>Standardowy balans</source>
+            <translation>Standardní vyvážení</translation>
+        </message>
 </context>
     <context>
         <name>QuickBridge</name>
@@ -18486,6 +18952,1465 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="42" />
             <source>Kierunek · °</source>
             <translation>Směr · °</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabController</name>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="41" />
+            <source>Odtworzono konkurs %1.</source>
+            <translation>Závod %1 byl přehrán.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="42" />
+            <source>Wyniki są dostępne, ale nie udało się zapisać historii.</source>
+            <translation>Výsledky jsou dostupné, ale historii se nepodařilo uložit.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="42" />
+            <source>Pełna próba zakończona. Wyniki zapisano w historii.</source>
+            <translation>Úplný běh dokončen. Výsledky byly uloženy do historie.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="42" />
+            <source>Szybki podgląd — drobne różnice sprawdź pełną próbą.</source>
+            <translation>Rychlý náhled — malé rozdíly ověřte úplným během.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="43" />
+            <source>Przerwano. Poprzednie kompletne wyniki pozostają dostępne.</source>
+            <translation>Přerušeno. Předchozí úplné výsledky zůstávají dostupné.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="54" />
+            <source>Standardowy balans</source>
+            <translation>Standardní vyvážení</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="93" />
+            <source>Punkt odniesienia</source>
+            <translation>Referenční snímek</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="94" />
+            <source>Bieżące</source>
+            <translation>Aktuální</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="104" />
+            <source>Zmieniono grupę. Ograniczenie zakresu dotyczy %1 skoczków.</source>
+            <translation>Skupina byla změněna. Omezení rozsahu se týkalo %1 skokanů.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="119" />
+            <source>Zapisano profil balansu.</source>
+            <translation>Profil vyvážení byl uložen.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="119" />
+            <source>Nie udało się zapisać profilu.</source>
+            <translation>Profil se nepodařilo uložit.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="121" />
+            <source>Profil będzie używany od następnego konkursu lub sesji skoków. Rozpoczęte rozgrywki zachowują swój balans.</source>
+            <translation>Profil se použije od příštího závodu nebo série skoků. Již zahájené závody si ponechají své nastavení vyvážení.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="122" />
+            <source>Przywrócono standardowy balans dla następnych rozgrywek.</source>
+            <translation>Pro příští závody bylo obnoveno standardní vyvážení.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="124" />
+            <source>Eksport laboratorium</source>
+            <translation>Export laboratoře</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="124" />
+            <source>Zapisano raport, analizę i pliki CSV w %1.</source>
+            <translation>Zpráva, analýza a soubory CSV byly uloženy do %1.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="124" />
+            <source>Nie udało się zapisać analizy.</source>
+            <translation>Analýzu se nepodařilo uložit.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="125" />
+            <source>Zapisz eksperyment</source>
+            <translation>Uložit experiment</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="125" />
+            <source>Zapisano eksperyment.</source>
+            <translation>Experiment byl uložen.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="125" />
+            <source>Nie udało się zapisać eksperymentu.</source>
+            <translation>Experiment se nepodařilo uložit.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="126" />
+            <source>Wczytaj eksperyment</source>
+            <translation>Načíst experiment</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabControls</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="106" />
+            <source>Pełny rejestr parametrów</source>
+            <translation>Úplný přehled parametrů</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="27" />
+            <source>Próba</source>
+            <translation>Vzorek</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="27" />
+            <source>Skoczkowie</source>
+            <translation>Skokani</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="27" />
+            <source>Silnik</source>
+            <translation>Simulační model</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="27" />
+            <source>Osie</source>
+            <translation>Osy</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="37" />
+            <source>Dane wspólne dla porównań</source>
+            <translation>Společné vstupy porovnání</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="38" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="39" />
+            <source>Paczka skoczków</source>
+            <translation>Balíček skokanů</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="40" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="41" />
+            <source>Skocznia</source>
+            <translation>Můstek</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="42" />
+            <source>Uwagi do danych (%1)</source>
+            <translation>Poznámky k údajům (%1)</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="44" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="45" />
+            <source>Wybrany skoczek</source>
+            <translation>Vybraný skokan</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="46" />
+            <source>Konkursy w pełnej próbie</source>
+            <translation>Počet závodů v úplném běhu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="47" />
+            <source>Liczba skoczków</source>
+            <translation>Počet skokanů</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="48" />
+            <source>Ziarno losowania</source>
+            <translation>Semeno generátoru</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="49" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="50" />
+            <source>Format konkursu</source>
+            <translation>Formát závodu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="50" />
+            <source>Indywidualny</source>
+            <translation>Individuální</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="50" />
+            <source>KO</source>
+            <translation>KO</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="50" />
+            <source>Drużynowy</source>
+            <translation>Družstevní</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="51" />
+            <source>2 skoczków w drużynie</source>
+            <translation>2 skokani v družstvu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="51" />
+            <source>3 skoczków w drużynie</source>
+            <translation>3 skokani v družstvu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="51" />
+            <source>4 skoczków w drużynie</source>
+            <translation>4 skokani v družstvu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="51" />
+            <source>Wielkość drużyny</source>
+            <translation>Velikost družstva</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="52" />
+            <source>Drużyny według krajów</source>
+            <translation>Družstva podle zemí</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="53" />
+            <source>Zestaw zasad</source>
+            <translation>Sada pravidel</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="54" />
+            <source>Źródło pogody w konkursach</source>
+            <translation>Zdroj počasí v závodech</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="55" />
+            <source>Ręczne pole wiatru</source>
+            <translation>Ručně nastavené větrné pole</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="55" />
+            <source>Automatyczna propozycja w każdym konkursie</source>
+            <translation>Automatický návrh v každém závodě</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="55" />
+            <source>Losuj wybrany preset w każdym konkursie</source>
+            <translation>Losovat vybraný scénář v každém závodě</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="55" />
+            <source>Źródło pogody</source>
+            <translation>Zdroj počasí</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="56" />
+            <source>Ręczne pole używa parametrów wiatru i opadów. Pozostałe tryby losują pogodę według współczynników generatora.</source>
+            <translation>Ruční pole používá parametry větru a srážek. Ostatní režimy losují počasí podle koeficientů generátoru.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Stały wiatr w plecy</source>
+            <translation>Stálý zadní vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Silny wiatr pod narty</source>
+            <translation>Silný protivítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Loteryjny</source>
+            <translation>Nevyrovnaný</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Zmienny boczny</source>
+            <translation>Proměnlivý boční vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Cisza</source>
+            <translation>Bezvětří</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Stały pod narty</source>
+            <translation>Stálý protivítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Silny w plecy</source>
+            <translation>Silný zadní vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Stały boczny</source>
+            <translation>Stálý boční vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Zmienny pod narty</source>
+            <translation>Proměnlivý protivítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Zmienny w plecy</source>
+            <translation>Proměnlivý zadní vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Różne kierunki na zeskoku</source>
+            <translation>Různé směry podél doskočiště</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <source>Preset pogody w konkursach</source>
+            <translation>Scénář počasí v závodech</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="58" />
+            <source>Limity serii, np. 50, 30</source>
+            <translation>Limity kol, např. 50, 30</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="58" />
+            <source>Limity serii</source>
+            <translation>Limity kol</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="63" />
+            <source>Bieżący wariant — wybrany skoczek</source>
+            <translation>Aktuální varianta — vybraný skokan</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="65" />
+            <source>Edycja grupy i składy drużyn</source>
+            <translation>Úpravy skupin a sestavy družstev</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="68" />
+            <source>Wszyscy</source>
+            <translation>Všichni</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="69" />
+            <source>Wyczyść wybór</source>
+            <translation>Zrušit výběr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="71" />
+            <source>Filtruj po nazwisku lub kraju…</source>
+            <translation>Filtrovat podle jména nebo země…</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="71" />
+            <source>Filtr skoczków do edycji grupowej</source>
+            <translation>Filtr skokanů pro skupinové úpravy</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="72" />
+            <source>Zaznacz widocznych</source>
+            <translation>Vybrat zobrazené</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="79" />
+            <source>Tylko zaznaczeni w stawce</source>
+            <translation>Použít pouze vybrané skokany</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="80" />
+            <source>OVR</source>
+            <translation>OVR</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="80" />
+            <source>Forma</source>
+            <translation>Forma</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="80" />
+            <source>Klasa lądowania</source>
+            <translation>Třída doskoku</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="80" />
+            <source>Podejście</source>
+            <translation>Přístup</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="80" />
+            <source>Specjalizacja</source>
+            <translation>Specializace</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="80" />
+            <source>Regularność</source>
+            <translation>Vyrovnanost</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="80" />
+            <source>Zmieniany parametr grupy</source>
+            <translation>Měněný parametr skupiny</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="81" />
+            <source>Ustaw wszystkim</source>
+            <translation>Nastavit všem stejnou hodnotu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="81" />
+            <source>Dodaj do obecnej wartości</source>
+            <translation>Přičíst k aktuální hodnotě</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="81" />
+            <source>Sposób zmiany grupy</source>
+            <translation>Způsob úpravy skupiny</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="82" />
+            <source>Wartość zmiany</source>
+            <translation>Hodnota změny</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="83" />
+            <source>Zmień zaznaczonych (%1)</source>
+            <translation>Změnit vybrané (%1)</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="84" />
+            <source>Numer drużyny testowej</source>
+            <translation>Číslo testovacího družstva</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="85" />
+            <source>Przypisz zaznaczonych do drużyny</source>
+            <translation>Přiřadit vybrané do družstva</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="86" />
+            <source>Reprezentacje bez pełnego składu nie startują. Drużyny testowe łączą dowolnych skoczków; nie zmieniają paczki źródłowej.</source>
+            <translation>Reprezentace bez úplné sestavy nestartují. Testovací družstva mohou spojovat libovolné skokany a nemění zdrojový balíček.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="90" />
+            <source>Reguły związane z tym pytaniem</source>
+            <translation>Pravidla související s touto otázkou</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="91" />
+            <source>Szukaj parametru lub klucza…</source>
+            <translation>Hledat parametr nebo klíč…</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="91" />
+            <source>Szukaj parametru</source>
+            <translation>Hledat parametry</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Automatyczna propozycja</source>
+            <translation>Automatický návrh</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Badany preset pogody</source>
+            <translation>Zkoumaný scénář počasí</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="106" />
+            <source>Krzywa lub mapa dwóch parametrów</source>
+            <translation>Křivka nebo mapa dvou parametrů</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="107" />
+            <source>OVR × forma</source>
+            <translation>OVR × forma</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="108" />
+            <source>Belka × wiatr</source>
+            <translation>Nájezdové okno × vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="109" />
+            <source>Oś X</source>
+            <translation>Osa X</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="110" />
+            <source>Parametr osi X</source>
+            <translation>Parametr osy X</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="111" />
+            <source>X od</source>
+            <translation>X od</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="112" />
+            <source>X do</source>
+            <translation>X do</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="113" />
+            <source>Oś Y</source>
+            <translation>Osa Y</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="114" />
+            <source>Parametr osi Y</source>
+            <translation>Parametr osy Y</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="115" />
+            <source>Y od</source>
+            <translation>Y od</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="116" />
+            <source>Y do</source>
+            <translation>Y do</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="117" />
+            <source>Punkty na osi</source>
+            <translation>Počet bodů na ose</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="118" />
+            <source>Policz mapę</source>
+            <translation>Vypočítat mapu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="119" />
+            <source>Kliknij komórkę, aby przenieść wartości do bieżącego wariantu. Liczba prób na komórkę jest pokazana przy mapie.</source>
+            <translation>Kliknutím na buňku přenesete její hodnoty do aktuální varianty. Počet pokusů na buňku je uveden u mapy.</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabGenerator</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Automatyczna propozycja</source>
+            <translation>Automatický návrh</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Stały wiatr w plecy</source>
+            <translation>Stálý zadní vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Silny wiatr pod narty</source>
+            <translation>Silný protivítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Loteryjny</source>
+            <translation>Nevyrovnaný</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Zmienny boczny</source>
+            <translation>Proměnlivý boční vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Cisza</source>
+            <translation>Bezvětří</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Stały pod narty</source>
+            <translation>Stálý protivítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Silny w plecy</source>
+            <translation>Silný zadní vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Stały boczny</source>
+            <translation>Stálý boční vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Zmienny pod narty</source>
+            <translation>Proměnlivý protivítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Zmienny w plecy</source>
+            <translation>Proměnlivý zadní vítr</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Różne kierunki na zeskoku</source>
+            <translation>Různé směry podél doskočiště</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="10" />
+            <source>Ustawienia gry</source>
+            <translation>Nastavení hry</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="10" />
+            <source>Punkt odniesienia</source>
+            <translation>Referenční snímek</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="10" />
+            <source>Bieżące</source>
+            <translation>Aktuální</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="14" />
+            <source>Każdy preset losujemy wielokrotnie. Wykres pokazuje średnią siłę referencyjnego wiatru oraz minimum i maksimum w tej próbie — zanim zacznie działać zmienność pola. To analiza generatora, nie odległości skoków.</source>
+            <translation>Každý scénář losujeme opakovaně. Graf ukazuje průměrnou sílu referenčního větru a minimum a maximum ve vzorku před uplatněním proměnlivosti pole. Jde o analýzu generátoru, nikoli délek skoků.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="15" />
+            <source>Jak silne warunki losują presety?</source>
+            <translation>Jak silné podmínky losují scénáře?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="15" />
+            <source>Numer scenariusza — nazwy poniżej</source>
+            <translation>Číslo scénáře — názvy níže</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="25" />
+            <source>Średnia %1 m/s · zakres %2–%3 · pod narty %4% · w plecy %5% · prób %6</source>
+            <translation>Průměr %1 m/s · rozsah %2–%3 · protivítr %4% · zadní vítr %5% · pokusy %6</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabParameter</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabParameter.qml" line="25" />
+            <source>Przywróć wartość z gry</source>
+            <translation>Obnovit hodnotu ze hry</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabParameter.qml" line="25" />
+            <source>Reset</source>
+            <translation>Obnovit</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabProfiles</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="14" />
+            <source>Profile i historia balansu</source>
+            <translation>Profily a historie vyvážení</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="14" />
+            <source>Zamknij</source>
+            <translation>Zavřít</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="15" />
+            <source>Aktywny w grze: %1</source>
+            <translation>Aktivní ve hře: %1</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="16" />
+            <source>Nazwa profilu</source>
+            <translation>Název profilu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="19" />
+            <source>Zapisz profil</source>
+            <translation>Uložit profil</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="20" />
+            <source>Zastosuj bieżący balans w grze</source>
+            <translation>Použít aktuální vyvážení ve hře</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="21" />
+            <source>Standardowy balans</source>
+            <translation>Standardní vyvážení</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="23" />
+            <source>Zastosowanie dotyczy następnego konkursu lub sesji skoków, także w istniejącym sezonie. Rozpoczęty konkurs zachowuje swoją kopię ustawień. Dane paczki nie są zmieniane.</source>
+            <translation>Použije se od příštího závodu nebo série skoků, i v existujícím ročníku. Zahájený závod si ponechá vlastní snímek nastavení. Data balíčku se nemění.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="24" />
+            <source>Zmiany danych skoczków i skoczni służą eksperymentom. W grze stosowane są współczynniki silnika, pomiaru i generatora pogody.</source>
+            <translation>Změny údajů skokanů a můstků slouží k experimentům. Ve hře se používají koeficienty simulačního modelu, měření a generátoru počasí.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="25" />
+            <source>Profile</source>
+            <translation>Profily</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="25" />
+            <source>Historia</source>
+            <translation>Historie</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="25" />
+            <source>Różnice</source>
+            <translation>Rozdíly</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="42" />
+            <source>Zapisz eksperyment</source>
+            <translation>Uložit experiment</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="43" />
+            <source>Wczytaj eksperyment</source>
+            <translation>Načíst experiment</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="44" />
+            <source>Eksportuj raport i CSV</source>
+            <translation>Exportovat zprávu a CSV</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabReplay</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="18" />
+            <source>Odtwórz konkurs i obejrzyj wiatr faktycznie napotkany przez wybranego skoczka. Kroki odpowiadają zapisanym odcinkom ekspozycji, a nie animacji fizycznego toru lotu.</source>
+            <translation>Přehrajte závod a prozkoumejte vítr, který vybraný skokan skutečně potkal. Kroky odpovídají zaznamenaným úsekům působení větru, nikoli animaci fyzické dráhy letu.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="19" />
+            <source>Ustawienia gry</source>
+            <translation>Nastavení hry</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="19" />
+            <source>Punkt odniesienia</source>
+            <translation>Referenční snímek</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="19" />
+            <source>Bieżące</source>
+            <translation>Aktuální</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="19" />
+            <source>Wariant odtworzenia</source>
+            <translation>Varianta přehrání</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="20" />
+            <source>Numer konkursu</source>
+            <translation>Číslo závodu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="21" />
+            <source>Odtwórz konkurs</source>
+            <translation>Přehrát závod</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="22" />
+            <source>Raport pochodzi z innej kompilacji silnika. Odtworzenie używa bieżącej wersji i może różnić się od zapisanych wyników.</source>
+            <translation>Zpráva pochází z jiného sestavení modelu. Přehrání používá aktuální verzi a může se lišit od uložených výsledků.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="23" />
+            <source>Seria %1</source>
+            <translation>Kolo %1</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="23" />
+            <source>Skok do analizy</source>
+            <translation>Skok k analýze</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="24" />
+            <source>Pauza</source>
+            <translation>Pozastavit</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="24" />
+            <source>Odtwarzaj odcinki</source>
+            <translation>Přehrát úseky</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="24" />
+            <source>Odcinek %1 / %2</source>
+            <translation>Úsek %1 / %2</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="25" />
+            <source>Odcinek lotu</source>
+            <translation>Úsek letu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="27" />
+            <source>Od %1 do %2 m · wiatr wzdłużny %3 m/s · boczny %4 m/s</source>
+            <translation>Od %1 do %2 m · podélný vítr %3 m/s · boční vítr %4 m/s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="28" />
+            <source>Wiatr na rzeczywiście przebytej trasie</source>
+            <translation>Vítr na skutečně proletěné trase</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="28" />
+            <source>Odległość · m</source>
+            <translation>Vzdálenost · m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="28" />
+            <source>Wzdłużny</source>
+            <translation>Podélný</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="28" />
+            <source>Boczny</source>
+            <translation>Boční</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="29" />
+            <source>Skok: %1 m · %2 pkt · pomiar %3 m/s · odczuty wiatr %4 m/s · rekompensata %5 pkt</source>
+            <translation>Skok: %1 m · %2 bodů · měření %3 m/s · pociťovaný vítr %4 m/s · kompenzace %5 bodů</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="30" />
+            <source>Belka jury: %1 · faktyczna: %2 · odniesienie: %3 · rekompensata belki: %4 pkt</source>
+            <translation>Okno jury: %1 · skutečné: %2 · referenční: %3 · kompenzace za okno: %4 bodů</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabResults</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="20" />
+            <source>Ustawienia gry</source>
+            <translation>Nastavení hry</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="20" />
+            <source>Punkt odniesienia</source>
+            <translation>Referenční snímek</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="20" />
+            <source>Bieżące</source>
+            <translation>Aktuální</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="22" />
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="111" />
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="112" />
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="115" />
+            <source>Odległość · m</source>
+            <translation>Vzdálenost · m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="22" />
+            <source>Miejsce</source>
+            <translation>Umístění</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="22" />
+            <source>Suma w konkursie · pkt</source>
+            <translation>Součet v závodě · body</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="22" />
+            <source>Punkty za skok</source>
+            <translation>Body za skok</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="22" />
+            <source>Upadki · %</source>
+            <translation>Pády · %</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="22" />
+            <source>Wygrane · %</source>
+            <translation>Vítězství · %</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="22" />
+            <source>Podium · %</source>
+            <translation>Stupně vítězů · %</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="32" />
+            <source>Pod narty (+), w plecy (−)</source>
+            <translation>Protivítr (+), zadní vítr (−)</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="32" />
+            <source>Boczny</source>
+            <translation>Boční</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="40" />
+            <source>Ostatnia pełna próba — ustawienia zostały zmienione</source>
+            <translation>Poslední úplný běh — nastavení bylo změněno</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="40" />
+            <source>Pełna próba</source>
+            <translation>Úplný běh</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="40" />
+            <source>Szybki podgląd — mała próba</source>
+            <translation>Rychlý náhled — malý vzorek</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="40" />
+            <source>Poprzedni wynik — oczekiwanie na aktualny podgląd</source>
+            <translation>Předchozí výsledek — čekání na aktuální náhled</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="41" />
+            <source>%1 konkursów na wariant. Dodatnia zmiana miejsca oznacza pogorszenie; średnia pomija nieklasyfikowane starty.</source>
+            <translation>%1 závodů na variantu. Kladná změna umístění znamená zhoršení; průměr nezahrnuje neklasifikované starty.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="50" />
+            <source>Średnia odległość</source>
+            <translation>Průměrná vzdálenost</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="50" />
+            <source>Względem gry: %1 m</source>
+            <translation>Oproti hře: %1 m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="51" />
+            <source>Średnie miejsce</source>
+            <translation>Průměrné umístění</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="51" />
+            <source>Podium: %1 %</source>
+            <translation>Stupně vítězů: %1 %</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="52" />
+            <source>Średnia suma</source>
+            <translation>Průměrný součet</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="52" />
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="62" />
+            <source> pkt</source>
+            <translation> b</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="52" />
+            <source>Względem gry: %1 pkt</source>
+            <translation>Oproti hře: %1 bodů</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="53" />
+            <source>Upadki</source>
+            <translation>Pády</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="53" />
+            <source>DSQ: %1 · skoki: %2</source>
+            <translation>DSQ: %1 · skoky: %2</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="55" />
+            <source>Analiza</source>
+            <translation>Analýza</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="55" />
+            <source>Stawka</source>
+            <translation>Startovní pole</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="55" />
+            <source>Odtwarzanie</source>
+            <translation>Přehrání</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="55" />
+            <source>Cele</source>
+            <translation>Cíle</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="72" />
+            <source>Miara wyniku</source>
+            <translation>Ukazatel výsledku</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="73" />
+            <source>Rozrzut: środkowe 80%</source>
+            <translation>Rozptyl: prostředních 80 %</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="73" />
+            <source>Przedział 95% średniej</source>
+            <translation>95% interval průměru</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="73" />
+            <source>Bez pasma</source>
+            <translation>Bez pásma</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="73" />
+            <source>Rodzaj pasma</source>
+            <translation>Typ pásma</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="75" />
+            <source>Rozrzut opisuje różnice między skokami. Pasma z histogramów są przybliżone; nie są niepewnością średniej.</source>
+            <translation>Rozptyl popisuje rozdíly mezi skoky. Pásma z histogramů jsou přibližná; nevyjadřují nejistotu průměru.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="75" />
+            <source>Przedział średniej opisuje niepewność pomiaru. Węższy przedział wymaga większej próby.</source>
+            <translation>Interval průměru popisuje nejistotu měření. Užší interval vyžaduje větší vzorek.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="82" />
+            <source>Wariant mapy</source>
+            <translation>Varianta mapy</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="83" />
+            <source>Mapa: %1 × %2 · %3 konkursów na komórkę · zakres %4 – %5</source>
+            <translation>Mapa: %1 × %2 · %3 závodů na buňku · rozsah %4 – %5</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="98" />
+            <source>X: %1 · Y: %2 · wynik: %3</source>
+            <translation>X: %1 · Y: %2 · výsledek: %3</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="108" />
+            <source>Telemark</source>
+            <translation>Telemark</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="108" />
+            <source>Dwie nogi</source>
+            <translation>Na obě nohy</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="108" />
+            <source>Podpórka</source>
+            <translation>Dotyk rukou</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="108" />
+            <source>Upadek</source>
+            <translation>Pád</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="108" />
+            <source>Rodzaj lądowania</source>
+            <translation>Typ doskoku</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="111" />
+            <source>Sam mechanizm — zadana odległość</source>
+            <translation>Samotný model — zadaná vzdálenost</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="112" />
+            <source>Pełne skoki — upadki przy osiąganych odległościach</source>
+            <translation>Úplné skoky — pády při dosažených vzdálenostech</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="114" />
+            <source>Lewy wykres: dokładny model przy ustalonym bocznym wietrze. Prawy: próba pełnych lotów, koszyki po 2 m; rzadkie odległości mogą mieć niewiele obserwacji. Klasa lądowania wpływa na noty, a nie ryzyko upadku.</source>
+            <translation>Vlevo: přesný model při stálém bočním větru. Vpravo: úplné lety v intervalech po 2 m; vzácné vzdálenosti mohou mít málo pozorování. Třída doskoku ovlivňuje známky, nikoli riziko pádu.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="115" />
+            <source>Średnia nota jednego sędziego</source>
+            <translation>Průměrná známka jednoho rozhodčího</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="115" />
+            <source>Punkty</source>
+            <translation>Body</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="121" />
+            <source>Rozkład odległości wybranego skoczka</source>
+            <translation>Rozdělení délek skoků vybraného skokana</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="123" />
+            <source>Wybierz dane i zmień parametr. Pierwszy podgląd pojawi się automatycznie.</source>
+            <translation>Vyberte vstupy a změňte parametr. První náhled se zobrazí automaticky.</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabScreen</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="18" />
+            <source>Pytania</source>
+            <translation>Otázky</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="21" />
+            <source>Laboratorium balansu</source>
+            <translation>Laboratoř vyvážení</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="22" />
+            <source>Co chcesz sprawdzić?</source>
+            <translation>Co chcete prozkoumat?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="24" />
+            <source>Ustawienia</source>
+            <translation>Nastavení</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="24" />
+            <source>Opcje</source>
+            <translation>Možnosti</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="25" />
+            <source>Przerwij</source>
+            <translation>Přerušit</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="25" />
+            <source>Test</source>
+            <translation>Test</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="25" />
+            <source>Pełna próba</source>
+            <translation>Úplný běh</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="26" />
+            <source>Profile</source>
+            <translation>Profily</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="30" />
+            <source>Liczenie: %1 ukończonych porównań · %2 s</source>
+            <translation>Výpočet: %1 dokončených porovnání · %2 s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="30" />
+            <source>Aktualizowanie podglądu…</source>
+            <translation>Aktualizace náhledu…</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="31" />
+            <source>Zamroź odniesienie</source>
+            <translation>Zmrazit referenci</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="32" />
+            <source>Cofnij</source>
+            <translation>Zpět</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabTargets</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="12" />
+            <source>Spełniony</source>
+            <translation>Splněno</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="12" />
+            <source>Niespełniony</source>
+            <translation>Nesplněno</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="12" />
+            <source>Nierozstrzygnięty</source>
+            <translation>Nerozhodnuto</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="15" />
+            <source>Cele balansu</source>
+            <translation>Cíle vyvážení</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="16" />
+            <source>Średnie oceniamy przedziałem 95% z pełnej próby. Ryzyko upadku przy zadanej odległości jest dokładną wartością modelu. Zmieniony cel wymaga ponownego sprawdzenia.</source>
+            <translation>Průměry hodnotíme pomocí 95% intervalů z úplného běhu. Riziko pádu při zadané vzdálenosti je přesnou hodnotou modelu. Změněný cíl je třeba znovu ověřit.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="17" />
+            <source>Ocena celu średniej wymaga co najmniej 30 powtórzeń. Przy mniejszej próbie wynik pozostaje nierozstrzygnięty.</source>
+            <translation>Vyhodnocení cíle průměru vyžaduje alespoň 30 opakování. Při menším vzorku zůstává výsledek neprůkazný.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="28" />
+            <source>Nazwa celu</source>
+            <translation>Název cíle</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="29" />
+            <source>Różnica odległości względem gry</source>
+            <translation>Rozdíl vzdálenosti oproti hře</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="29" />
+            <source>Różnica punktów względem gry</source>
+            <translation>Rozdíl bodů oproti hře</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="29" />
+            <source>Różnica miejsca względem gry</source>
+            <translation>Rozdíl umístění oproti hře</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="29" />
+            <source>Średnia odległość</source>
+            <translation>Průměrná vzdálenost</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="29" />
+            <source>Średnie miejsce</source>
+            <translation>Průměrné umístění</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="29" />
+            <source>Średnie punkty za skok</source>
+            <translation>Průměrné body za skok</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="29" />
+            <source>Ryzyko upadku na zadanej odległości · %</source>
+            <translation>Riziko pádu při zadané vzdálenosti · %</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="29" />
+            <source>Miara celu</source>
+            <translation>Metrika cíle</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="30" />
+            <source>Ustawienia gry</source>
+            <translation>Nastavení hry</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="30" />
+            <source>Punkt odniesienia</source>
+            <translation>Referenční snímek</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="30" />
+            <source>Bieżące</source>
+            <translation>Aktuální</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="30" />
+            <source>Wariant celu</source>
+            <translation>Varianta cíle</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="31" />
+            <source>Zapisz ponownie dane scenariusza</source>
+            <translation>Znovu uložit vstupy scénáře</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="31" />
+            <source>Zamroź dane tej próby jako scenariusz</source>
+            <translation>Zmrazit vstupy tohoto pokusu jako scénář</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="32" />
+            <source>Dane skoczków, skoczni i pogody są zapisane. Przy kolejnych kontrolach scenariusz użyje aktualnie strojonych współczynników silnika.</source>
+            <translation>Vstupy skokanů, můstku a počasí jsou uloženy. Příští kontroly použijí právě laděné koeficienty simulačního modelu.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="35" />
+            <source>Odległość · m</source>
+            <translation>Vzdálenost · m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="36" />
+            <source>Minimum</source>
+            <translation>Minimum</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="37" />
+            <source>Maksimum</source>
+            <translation>Maximum</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="39" />
+            <source>Usuń cel</source>
+            <translation>Odstranit cíl</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="43" />
+            <source>Dodaj cel</source>
+            <translation>Přidat cíl</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="43" />
+            <source>Nowy cel</source>
+            <translation>Nový cíl</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="44" />
+            <source>Wyniki celów dotyczą wcześniejszych ustawień. Uruchom pełną próbę.</source>
+            <translation>Výsledky cílů se vztahují k dřívějšímu nastavení. Spusťte úplný běh.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="47" />
+            <source>Poprzednio: %1</source>
+            <translation>Dříve: %1</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="47" />
+            <source>Wynik: %1 · przedział 95%: %2–%3 · cel: %4–%5</source>
+            <translation>Výsledek: %1 · 95% interval: %2–%3 · cíl: %4–%5</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabWind</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="18" />
+            <source>Pod narty (+), w plecy (−)</source>
+            <translation>Protivítr (+), zadní vítr (−)</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="18" />
+            <source>Boczny</source>
+            <translation>Boční</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="21" />
+            <source>Wariant pola i pomiaru wiatru</source>
+            <translation>Varianta větrného pole a měření</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="22" />
+            <source>Rozdzielczość i zakres analizy</source>
+            <translation>Rozlišení a rozsah analýzy</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="32" />
+            <source>Jedno pole pogody: czas oznacza przebieg konkursu, odległość — miejsce nad zeskokiem. Dodatnia składowa pomaga pod narty, ujemna wieje w plecy. Boczny wiatr jest pokazany osobno.</source>
+            <translation>Jedno pole počasí: čas označuje průběh závodu a vzdálenost místo nad doskočištěm. Kladná podélná složka je protivítr, záporná zadní vítr. Boční vítr se zobrazuje samostatně.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="33" />
+            <source>1. Jak zmieniają się warunki w jednym miejscu?</source>
+            <translation>1. Jak se podmínky mění na jednom místě?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="33" />
+            <source>Czas konkursu · s</source>
+            <translation>Čas závodu · s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="34" />
+            <source>Wybierz moment, aby zobaczyć wiatr wzdłuż całej skoczni.</source>
+            <translation>Vyberte okamžik pro zobrazení větru podél celého můstku.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="35" />
+            <source>Moment analizy pola wiatru</source>
+            <translation>Čas analýzy větrného pole</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="36" />
+            <source>2. Gdzie na zeskoku wieje inaczej?</source>
+            <translation>2. Kde na doskočišti fouká jinak?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="36" />
+            <source>Odległość od progu · m</source>
+            <translation>Vzdálenost od hrany · m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="37" />
+            <source>Mapa wiatru: czas poziomo, odległość pionowo</source>
+            <translation>Mapa větru: vodorovně čas, svisle vzdálenost</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="38" />
+            <source>Mapa: czas poziomo, odległość pionowo. Niebieski — pod narty; pomarańczowy — w plecy; jasny — blisko zera. Nasycenie dochodzi do ±%1 m/s. Dokładne wartości są na wykresach.</source>
+            <translation>Mapa: vodorovně čas, svisle vzdálenost. Modrá znamená protivítr, oranžová zadní vítr, světlá hodnoty blízko nuly. Sytost dosahuje ±%1 m/s. Přesné hodnoty jsou v grafech.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="39" />
+            <source>3. Co odczuwa skoczek, a co mierzy punktacja?</source>
+            <translation>3. Co skokan pociťuje a co měří bodování?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="39" />
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="40" />
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="41" />
+            <source>Czas startu · s</source>
+            <translation>Čas odrazu · s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="39" />
+            <source>Wiatr odczuty w locie</source>
+            <translation>Vítr pociťovaný během letu</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="39" />
+            <source>Pomiar do rekompensaty</source>
+            <translation>Vítr měřený pro kompenzaci</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="40" />
+            <source>4. Ile metrów dał lub zabrał wiatr?</source>
+            <translation>4. Kolik metrů vítr přidal nebo ubral?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="41" />
+            <source>Punkty</source>
+            <translation>Body</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="41" />
+            <source>5. Ile punktów zostało po rekompensacie?</source>
+            <translation>5. Kolik bodů zůstalo po kompenzaci?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="42" />
+            <source>Każda para używa tego samego skoczka, belki i seeda. Różnica końcowych punktów obejmuje także zmianę odległości i lądowania. Rekompensata nie musi dokładnie wyrównać fizycznego wpływu wiatru.</source>
+            <translation>Každá dvojice používá stejného skokana, nájezdové okno a seed. Rozdíl konečných bodů zahrnuje i změnu délky skoku a doskoku. Kompenzace nemusí přesně vyrovnat fyzický vliv větru.</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabWindow</name>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="133" />
+            <source>Laboratorium balansu</source>
+            <translation>Laboratoř vyvážení</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="133" />
+            <source>Laboratorium balansu — otwórz interfejs Qt Quick, aby korzystać z wykresów.</source>
+            <translation>Laboratoř vyvážení — pro grafy otevřete rozhraní Qt Quick.</translation>
         </message>
     </context>
 </TS>

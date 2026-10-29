@@ -2492,6 +2492,7 @@ static void interactionRegressions(MainWindow &main) {
 #include "engine-audit-regressions.h"
 #include "roster-translation-regressions.h"
 #include "playground-regressions.h"
+#include "balance-lab-regressions.h"
 #include "athlete-studio-regressions.h"
 #include "hill-studio-regressions.h"
 #include "simulation-v2-contest-weather-regressions.h"
@@ -2508,6 +2509,7 @@ static void interactionRegressions(MainWindow &main) {
 #include "simulation-v2-manipulation-regressions.h"
 
 int main(int argc,char **argv) {
+    qputenv("QT_FORCE_STDERR_LOGGING","1");
     QApplication app(argc,argv);
     LayoutWarningRegressionGuard layoutWarnings;
 #if QT_CONFIG(qml_debug)
@@ -2563,6 +2565,8 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--motion-feedback-only")){motionFeedbackRegressions(main);return 0;}
     if(app.arguments().contains("--hill-studio-only")){hillStudioRegressions(main);return 0;}
     if(app.arguments().contains("--athlete-studio-only") || app.arguments().contains("--athlete-patches-only")){athleteStudioRegressions(main,app.arguments().contains("--athlete-patches-only"));return 0;}
+    if(app.arguments().contains("--balance-lab-only")){balanceLabBackendRegressions();balanceLabUiRegressions(main);return 0;}
+    if(app.arguments().contains("--balance-lab-core-only")){balanceLabBackendRegressions();return 0;}
     if(app.arguments().contains("--playground-only")){playgroundRandomRegressions();playgroundBackendRegressions();playgroundUiRegressions(main);return 0;}
     if(app.arguments().contains("--playground-core-only")){playgroundRandomRegressions();playgroundBackendRegressions();return 0;}
     if(app.arguments().contains("--save-storage-only")){saveStorageRegressions();return 0;}

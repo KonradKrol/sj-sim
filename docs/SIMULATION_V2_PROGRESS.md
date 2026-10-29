@@ -1262,3 +1262,33 @@ nadpisywania normalnej gry. Automatyczny rozwój formy nadal odłożony.
   od fizycznego lotu, cel kalibracji OVR90–70 (15,3574 m) oraz 215 ustawień.
   Ziarno reakcji wiatrowej jest wydzielane przed losowaniem jakości: zmiana jej
   rozkładu lub wyzerowanie odchylenia nie zmienia reakcji na wiatr (nowa regresja).
+
+# 29.10.2026 — osobne laboratorium balansu
+
+Wdrożono nowy warsztat obok dotychczasowego playgroundu. Instrukcja:
+[BALANCE_LAB.md](BALANCE_LAB.md); architektura, decyzje i weryfikacja:
+[BALANCE_LAB_IMPLEMENTATION.md](BALANCE_LAB_IMPLEMENTATION.md).
+
+- 15 pytań i 607 ustawień wspólnego rejestru, panel danych/reguł po lewej,
+  wykresy obok, mały podgląd w tle i oddzielna pełna próba.
+- Trzy serie: aktywny balans gry, zamrożone odniesienie i bieżący wariant.
+  Paczki kanoniczne, edycja pojedynczych skoczków i grup, przesuwanie lub
+  ustawianie wartości, zawężanie stawki, indywidualne/KO/drużyny 2–4.
+- Mapy gotowych i dowolnych liczbowych osi; wybieranie wartości komórką.
+  Dokładne krzywe lądowania obok próby pełnych skoków, noty i punktacja.
+- Pełna ścieżka pogody: współczynniki 11 presetów i automatycznych propozycji,
+  pole w czasie/przestrzeni, mapa, odczuty wiatr i pomiar, metry oraz punkty
+  po rekompensacie. Odtwarzanie zapisanych odcinków ekspozycji na wiatr.
+- Cele z zakresami, zamrażane scenariusze danych, raport zmian i uczciwy stan
+  nierozstrzygnięty przy małej próbie lub przecinającym granicę przedziale.
+- Profile, historia, odtworzenie warsztatu, eksport raportu/CSV i ten sam
+  eksperyment developerski w CLI. Źródłowe paczki pozostają bez zmian.
+- Świadome zastosowanie reguł w grze od następnego konkursu/sesji, również
+  w istniejącym sezonie. Kopia w CompetitionInfo jest zapisywana; rozpoczęte
+  konkursy zachowują balans. Reset standardowego balansu jest osobną akcją.
+- PL/EN/CS; 373 nowe komunikaty, zero unfinished i błędów placeholderów.
+
+Następny etap: rzeczywista kalibracja na paczce użytkownika według zapisanych
+celów. Automatyczne szukanie współczynników, rozwój formy i 1–5 prostych
+ustawień gracza są nadal odłożone. Nie budować ponownie tego laboratorium.
+Nie kopiować damped Cauchy bez osobnego uzasadnionego eksperymentu.

@@ -1,6 +1,7 @@
 #include "AppSettingsWindow.h"
 #include "ui_AppSettingsWindow.h"
 #include "../../playground/PlaygroundController.h"
+#include "../../balance/BalanceLabController.h"
 
 #include <QTranslator>
 #include <QCloseEvent>
@@ -28,6 +29,8 @@ AppSettingsWindow::AppSettingsWindow(QWidget *parent) :
     ui(new Ui::AppSettingsWindow)
 {
     ui->setupUi(this);
+    auto *lab=new QPushButton(tr("Laboratorium balansu"),this);lab->setObjectName("openBalanceLab");ui->verticalLayout_6->insertWidget(0,lab);
+    connect(lab,&QPushButton::clicked,this,[this]{auto *window=new BalanceLabWindow(this);window->setAttribute(Qt::WA_DeleteOnClose);window->show();});
     auto *playground=new QPushButton(tr("Playground symulacji"),this);playground->setObjectName("openSimulationPlayground");playground->setToolTip(tr("Wielowątkowe eksperymenty, porównania parametrów i analiza wyników."));ui->verticalLayout_6->insertWidget(0,playground);
     connect(playground,&QPushButton::clicked,this,[this]{auto *window=new PlaygroundWindow(this);window->setAttribute(Qt::WA_DeleteOnClose);window->show();});
     setWindowFlags(Qt::Window);
@@ -106,6 +109,7 @@ void AppSettingsWindow::myConnect_on_comboBox_language_currentIndexChanged(int i
     }
     GlobalAppSettings::get()->setLanguageID(index);
     ui->retranslateUi(this);
+    if(auto *lab=findChild<QPushButton *>("openBalanceLab"))lab->setText(tr("Laboratorium balansu"));
     if(auto *playground=findChild<QPushButton *>("openSimulationPlayground")) {
         playground->setText(tr("Playground symulacji"));
         playground->setToolTip(tr("Wielowątkowe eksperymenty, porównania parametrów i analiza wyników."));

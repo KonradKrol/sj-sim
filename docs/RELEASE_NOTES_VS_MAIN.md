@@ -2065,3 +2065,14 @@ A: dodany, M: zmieniony, D: usunięty. +/− to liczby linii tekstu; kreska ozna
 - Synchronizacja tłumaczeń ze wszystkimi źródłami i EN/CS bez unfinished.
   Build, cztery zestawy rdzenia MSVC, testy playgroundu i regresje integracji PASS.
   Szczegóły/ograniczenia: PLAYGROUND_V2.md, SIMULATION_V2_PROGRESS.md.
+
+### Laboratorium balansu — 29.10.2026
+
+- Osobny warsztat obok playgroundu: 15 pytań, 607 ustawień, trzy serie,
+  podgląd w tle, mapy, edycja własnej stawki i grup oraz KO/drużyny.
+- Krzywe lądowania i pełne skoki obok siebie; generator pogody, analiza pola,
+  pomiaru i skutków wiatru oraz odtwarzanie ekspozycji konkretnego skoku.
+- Cele z zamrożonymi scenariuszami, profile, historia, automatyczny zapis
+  warsztatu i eksport UI/CLI. Pełne nowe teksty PL/EN/CS.
+- Jawne zastosowanie współczynników od następnego konkursu/sesji; rozpoczęte
+  rozgrywki zachowują swoją zapisywaną kopię. Instrukcja: BALANCE_LAB.md.

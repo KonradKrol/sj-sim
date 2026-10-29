@@ -1,10 +1,25 @@
 #include "PlaygroundModel.h"
+#include "../simulation-v2/WeatherCalibration.h"
 #include <QObject>
 #include <type_traits>
 #include <cmath>
 #include <stdexcept>
 
 namespace Playground {
+void validateGenerator(const QJsonObject &p) {
+    for(const auto &r:SimulationV2::weatherGeneratorRanges()){const auto key=QString::fromStdString(r.key);if(p.value(key+".min").toDouble(r.low)>p.value(key+".max").toDouble(r.high))throw std::invalid_argument(("Reversed generator interval: "+key).toStdString());}
+    QHash<QString,double> defaults;for(const auto &r:SimulationV2::weatherGeneratorScalars())defaults[QString::fromStdString(r.key)]=r.value;
+    for(auto prefix:{"characterNeutral","characterStable","characterLottery","precipitationPattern"}){double total=0;for(int i=0;i<(QString(prefix)=="precipitationPattern"?4:3);++i){const auto k="generator.auto."+QString(prefix)+"."+QString::number(i);total+=p.value(k).toDouble(defaults.value(k));}if(total<=0)throw std::invalid_argument("Weather character weights cannot all be zero");}
+    for(auto prefix:{"strength","heavyPrecipitation","precipitation","precipitationVariation"}){const auto k="generator.auto."+QString(prefix);if(p.value(k+".min").toDouble(defaults.value(k+".min"))>p.value(k+".max").toDouble(defaults.value(k+".max")))throw std::invalid_argument("Reversed automatic weather generator interval");}
+}
+SimulationV2::WeatherProposal weatherInput(const QJsonObject &config,const QJsonObject &p,SimulationV2::Seed seed) {
+    if(config["weatherSource"].toInt()==0)return {windParameters(p),precipitationParameters(p)};
+    SimulationV2::WeatherGeneratorParameters tuning;for(auto i=p.begin();i!=p.end();++i)if(i.key().startsWith("generator."))tuning.values[i.key().toStdString()]=i.value().toDouble();
+    SimulationV2::SeededRandom rng(SimulationV2::deriveSeed(seed,0x505245534554ULL));
+    SimulationV2::WeatherProposalContext context;context.k=p["hill.k"].toDouble();context.country=config["hill"].toObject()["source"].toObject()["country-code"].toString().toStdString();context.variabilityPerk=p["hill.perk.2"].toInt();context.directionPerk=p["hill.perk.3"].toInt();context.month=p["weather.month"].toInt();context.surface=p["weather.surface"].toInt()==1?SimulationV2::Surface::Mat:SimulationV2::Surface::Snow;
+    if(config["weatherSource"].toInt()==1)return SimulationV2::proposeWeather(context,rng,tuning);
+    return SimulationV2::sampleWeatherPreset(SimulationV2::WeatherPreset(config["weatherPreset"].toInt()),context.k,rng,tuning);
+}
 namespace {
 template<class F> void visitEngine(SimulationV2::EngineParameters &m,F f) {
     f("quality.overallWeight",QObject::tr("Udział OVR"),"quality",m.quality.overallWeight,0,1,0.01,"1");
@@ -121,6 +136,8 @@ template<class F> void visitMeasurement(SimulationV2::FieldWindMeasurementParame
     f("measurement.weightStrength",QObject::tr("Siła ważenia pomiaru"),"measurement",m.weightStrength,0,10,0.1,"1");
 }
 QString effectDescription(const QString &key,const QString &group) {
+    if(group=="generator")return QObject::tr("Zakres minimum–maksimum dotyczy losowania scenariusza, nie reakcji skoczka. Wagi są normalizowane. Charakter pogody: [0] spokojny, [1] zmienny, [2] loteryjny. Kierunek: [0] brak perka, [1–3] jego poziom.");
+    if(key.startsWith("hill.perk."))return QObject::tr("Poziomy −3…+3. Pary: lotność / wybicie, trudne / przyjazne lądowanie, stabilność / loteryjność, wiatr w plecy / pod narty. Ręczna preferencja lub real HS ma pierwszeństwo przed odpowiednim perkiem.");
     if(key.startsWith("quality.form") || key=="quality.overallWeight")return QObject::tr("Udział formy = 1 − udział OVR + amplituda × tanh((K − K odniesienia) / skala), ograniczony do 0–1. Amplituda 0 wyłącza zależność od K.");
     if(key.startsWith("flight.wind") && key.contains("Adverse"))return QObject::tr("Szansa = maksimum × r^wykładnik / (1 + r^wykładnik), gdzie r to siła wiatru / skala złych zdarzeń. Siła zdarzenia zwiększa zużycie zapasu lotu; zero wyłącza stratę.");
     if(key=="flight.windHeadSaturation")return QObject::tr("Pomoc wiatru pod narty rośnie coraz wolniej. Zero wyłącza nasycenie. Złe zdarzenia nadal zależą od rzeczywistej siły wiatru.");
@@ -147,11 +164,49 @@ QJsonArray parameters() {
     QJsonArray rows;
     const auto add=[&](const QString &key,const QString &label,const QString &group,auto &value,double lo,double hi,double step,const QString &unit){rows.append(definition(key,label,group,double(value),lo,hi,step,unit,!std::is_floating_point<typename std::decay<decltype(value)>::type>::value));};
     SimulationV2::EngineParameters engine;visitEngine(engine,add);
+    const QHash<QString,QString> generatorLabels{
+        {"strength",QObject::tr("Siła wiatru")},{"strength2",QObject::tr("Siła wiatru — rzadki wariant")},
+        {"angle",QObject::tr("Odchylenie kierunku")},{"difference",QObject::tr("Różnice na zeskoku")},
+        {"temporalAmplitude",QObject::tr("Amplituda w czasie")},{"spatialAmplitude",QObject::tr("Amplituda w przestrzeni")},
+        {"trendAmplitude",QObject::tr("Amplituda tendencji")},{"trendPeriodSeconds",QObject::tr("Okres tendencji")},
+        {"gustAmplitude",QObject::tr("Siła podmuchów")},{"gustProbability",QObject::tr("Szansa podmuchów")},
+        {"correlationSeconds",QObject::tr("Czas podobnych warunków")},{"activityVariation",QObject::tr("Zmienność aktywności")},
+        {"mixedAmplitude",QObject::tr("Odwrócenie wiatru na zeskoku")},{"transitionSeconds",QObject::tr("Czas przejścia tendencji")},
+        {"correlationK",QObject::tr("Długość podobnych warunków / K")},{"gustWidthK",QObject::tr("Szerokość podmuchu / K")}
+    };
+    for(const auto &r:SimulationV2::weatherGeneratorRanges()) {
+        if(r.field=="mixedAmplitude" && r.preset!=10)continue;
+        const auto key=QString::fromStdString(r.key),field=QString::fromStdString(r.field);
+        const bool angle=field=="angle",prob=field=="gustProbability" || field=="activityVariation",time=field.endsWith("Seconds"),scale=field.endsWith("K");
+        const QString unit=angle?QStringLiteral("°"):time?QStringLiteral("s"):prob || scale?QStringLiteral("1"):QStringLiteral("m/s");
+        const double lo=angle?-360:time?.1:scale?.01:0,hi=angle?360:prob?1:time?100000:scale?10:100;
+        for(int end=0;end<2;++end){auto d=definition(key+(end?".max":".min"),QObject::tr("Preset %1 · %2 · %3").arg(r.preset+1).arg(generatorLabels.value(field,field),end?QObject::tr("maksimum"):QObject::tr("minimum")),"generator",end?r.high:r.low,lo,hi,prob?.01:.05,unit,false);d["preset"]=r.preset;rows.append(d);}
+    }
+    for(const auto &entry:QVector<QPair<QString,QString>>{{"strengthScale",QObject::tr("Automatyczna pogoda: skala siły")},{"variationScale",QObject::tr("Automatyczna pogoda: skala wahań")},{"gustScale",QObject::tr("Automatyczna pogoda: skala podmuchów")},{"trendScale",QObject::tr("Automatyczna pogoda: skala tendencji")},{"timeScale",QObject::tr("Automatyczna pogoda: skala czasu")}}) {
+        auto d=definition("generator.auto."+entry.first,entry.second,"generator",1,entry.first=="timeScale"?.1:0,3,.05,"1",false);d["preset"]=-1;rows.append(d);
+    }
+    const QHash<QString,QString> automaticLabels{
+        {"headProbability",QObject::tr("Szansa kierunku preferowanego przez skocznię")},{"characterNeutral",QObject::tr("Wagi charakteru pogody: neutralna skocznia")},{"characterStable",QObject::tr("Wagi charakteru pogody: spokojna skocznia")},{"characterLottery",QObject::tr("Wagi charakteru pogody: wietrzna skocznia")},
+        {"temporal",QObject::tr("Amplituda zmian w czasie")},{"spatial",QObject::tr("Amplituda różnic na zeskoku")},{"gusts",QObject::tr("Amplituda podmuchów")},{"chance",QObject::tr("Szansa podmuchów")},{"times",QObject::tr("Czas podobnych warunków")},
+        {"trendAmplitude",QObject::tr("Amplituda tendencji")},{"trendPeriod",QObject::tr("Okres tendencji")},{"transitions",QObject::tr("Czas przejścia tendencji")},{"activity",QObject::tr("Zmienność aktywności")},
+        {"crossProbability",QObject::tr("Szansa dominującego wiatru bocznego")},{"strength.min",QObject::tr("Minimalna siła wiatru")},{"strength.max",QObject::tr("Maksymalna siła wiatru")},
+        {"correlationKStable",QObject::tr("Długość podobnych warunków: spokojny charakter / K")},{"correlationKVariable",QObject::tr("Długość podobnych warunków: zmienny charakter / K")},{"gustWidthK",QObject::tr("Szerokość podmuchu / K")},
+        {"rainProbability",QObject::tr("Szansa deszczu zamiast śniegu")},{"wetSnow",QObject::tr("Bazowa szansa opadów zimą")},{"wetColdBonus",QObject::tr("Dodatkowa szansa opadów w zimnych miesiącach")},{"wetNorthBonus",QObject::tr("Dodatkowa szansa opadów w krajach północnych")},{"wetMat",QObject::tr("Szansa opadów na igelicie")},
+        {"precipitationPattern",QObject::tr("Wagi przebiegów opadów")},{"heavyPrecipitation.min",QObject::tr("Minimalne natężenie silnych opadów")},{"heavyPrecipitation.max",QObject::tr("Maksymalne natężenie silnych opadów")},
+        {"precipitation.min",QObject::tr("Minimalne natężenie opadów")},{"precipitation.max",QObject::tr("Maksymalne natężenie opadów")},{"precipitationVariation.min",QObject::tr("Minimalna zmienność opadów")},{"precipitationVariation.max",QObject::tr("Maksymalna zmienność opadów")}
+    };
+    for(const auto &r:SimulationV2::weatherGeneratorScalars()){
+        const auto field=QString::fromStdString(r.field);QString label=automaticLabels.value(field,field);if(r.level>=0)label+=QString(" [%1]").arg(r.level);
+        const bool time=field=="times" || field=="trendPeriod" || field=="transitions";
+        auto d=definition(QString::fromStdString(r.key),label,"generator",r.value,time?qMax(.1,r.minimum):r.minimum,r.maximum,time?1:.01,time?"s":"1",false);d["preset"]=-1;rows.append(d);
+    }
     SimulationV2::WindParameters wind;visitWind(wind,add);
     SimulationV2::PrecipitationParameters precipitation;visitPrecipitation(precipitation,add);
     SimulationV2::FieldWindMeasurementParameters measurement;visitMeasurement(measurement,add);
     const auto input=[&](const char *key,const QString &label,const char *group,double value,double lo,double hi,double step,const char *unit="1"){rows.append(definition(key,label,group,value,lo,hi,step,unit,step==1));};
     input("gate",QObject::tr("Belka (0: automatyczna)"),"conditions",0,0,200,1,"1");
+    input("gate.coachReduction",QObject::tr("Obniżenie belki przez trenera"),"rules",0,0,20,1,"1");
+    input("gate.reference",QObject::tr("Belka odniesienia (0: wspólna baza)"),"rules",0,0,200,1,"1");
     input("event",QObject::tr("Seria: trening / próba / kwalifikacje / konkurs"),"conditions",3,0,3,1,"1");
     input("clock.mode",QObject::tr("Warunki: 0 kontrolowane, 1 przebieg konkursu"),"conditions",1,0,1,1,"1");
     input("clock.interval",QObject::tr("Czas między skokami"),"conditions",45,1,600,1,"s");
@@ -167,6 +222,12 @@ QJsonArray parameters() {
     input("hill.hs",QObject::tr("HS"),"hill",134,1,500,0.5,"m");
     input("hill.realHs",QObject::tr("Początek wypłaszczenia"),"hill",134,0.5,600,0.5,"m");
     input("hill.takeoffBias",QObject::tr("Preferencja: lot (−1), wybicie (+1)"),"hill",0,-1,1,0.05,"1");
+    input("hill.perk.0",QObject::tr("Perk skoczni: lotność / wybicie"),"hill",0,-3,3,1,"1");
+    input("hill.perk.1",QObject::tr("Perk skoczni: trudne / przyjazne lądowanie"),"hill",0,-3,3,1,"1");
+    input("hill.perk.2",QObject::tr("Perk skoczni: stabilny / loteryjny wiatr"),"hill",0,-3,3,1,"1");
+    input("hill.perk.3",QObject::tr("Perk skoczni: kierunek wiatru"),"hill",0,-3,3,1,"1");
+    input("weather.month",QObject::tr("Miesiąc propozycji pogody (0: nieznany)"),"weatherContext",0,0,12,1,"1");
+    input("weather.surface",QObject::tr("Nawierzchnia: 0 śnieg, 1 igelit"),"weatherContext",0,0,1,1,"1");
     input("hill.pointsAtK",QObject::tr("Punkty za K"),"hill",60,0,200,0.1,"pkt");
     input("hill.pointsPerMetre",QObject::tr("Punkty za metr"),"hill",1.8,0,20,0.1,"pkt/m");
     input("hill.gatePoints",QObject::tr("Punkty za belkę"),"hill",5,0,100,0.1,"pkt");

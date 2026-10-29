@@ -242,6 +242,17 @@
 <file>WindFields.qml</file>
 <file>WindSectorStrip.qml</file>
 <file>PlaygroundScreen.qml</file>
+<file>BalanceLabScreen.qml</file>
+<file>BalanceLabParameter.qml</file>
+<file>BalanceLabControls.qml</file>
+<file>BalanceLabResults.qml</file>
+<file>BalanceLabPlot.qml</file>
+<file>BalanceLabWind.qml</file>
+<file>BalanceLabGenerator.qml</file>
+<file>BalanceLabTargets.qml</file>
+<file>BalanceLabProfiles.qml</file>
+<file>BalanceLabReplay.qml</file>
+
 <file>PlaygroundLive.qml</file>
 <file>PlaygroundField.qml</file>
 <file>PlaygroundAnalysis.qml</file>

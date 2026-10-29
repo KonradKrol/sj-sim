@@ -41,6 +41,10 @@ SOURCES += \
     source/athletes/AthleteProfile.cpp \
     source/athletes/AthleteStudioController.cpp \
     source/simulator/ExperimentalSimulation.cpp \
+    source/balance/BalanceLabModel.cpp \
+    source/balance/BalanceLabController.cpp \
+    source/balance/BalanceRuntime.cpp \
+    source/simulation-v2/WeatherCalibration.cpp \
     source/playground/PlaygroundAnalysis.cpp \
     source/playground/PlaygroundModel.cpp \
     source/playground/PlaygroundConfig.cpp \
@@ -219,6 +223,10 @@ HEADERS += \
     source/athletes/AthleteProfile.h \
     source/athletes/AthleteStudioController.h \
     source/simulator/ExperimentalSimulation.h \
+    source/balance/BalanceLabModel.h \
+    source/balance/BalanceLabController.h \
+    source/balance/BalanceRuntime.h \
+    source/simulation-v2/WeatherCalibration.h \
     source/playground/PlaygroundModel.h \
     source/playground/PlaygroundExperiment.h \
     source/playground/PlaygroundController.h \

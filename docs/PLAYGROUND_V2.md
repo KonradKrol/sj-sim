@@ -1,4 +1,9 @@
-# Laboratorium symulacji v2
+# Dotychczasowy playground symulacji v2
+
+Aktualnie obok niego jest osobne [laboratorium balansu](BALANCE_LAB.md) z pytaniami,
+trzema seriami, grupami, mapami, celami i profilami. Wspólny rejestr ma teraz
+607 ustawień, w tym generator pogody. Runner obsługuje również KO i drużyny.
+Poniższe ustalenia z 28.10 opisują pierwszy etap; stare wejście pozostaje dostępne.
 
 Aktualizacja 29.10.2026: silnik ma zależność udziału formy od K i losową,
 spójną podczas lotu reakcję na wiatr. Wszystkie 16 nowych współczynników

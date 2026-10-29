@@ -1,12 +1,15 @@
 # Wznowienie prac nad nową symulacją — 28.10.2026
 
-Aktualizacja 29.10: wdrożono udział formy zależny od K i losową reakcję na wiatr,
-obecny playground ma 215 ustawień. Projekt nowego, osobnego laboratorium oraz
-odpowiedzi użytkownika: [BALANCE_LAB_DESIGN.md](BALANCE_LAB_DESIGN.md).
-Nowego UI jeszcze nie rozpoczęto — najpierw uzgadniamy zakres. Pełne szczegóły
-i weryfikacja są w końcowej sekcji [postępu](SIMULATION_V2_PROGRESS.md).
+Aktualizacja 29.10: wdrożono osobne laboratorium balansu obok starego playgroundu.
+15 pytań, 607 ustawień, trzy serie, paczki i grupy, mapy, lądowanie, pełna analiza
+wiatru, generator, scenariusze celów, profile, historia, odtwarzanie i CLI.
+Profile stosuje się osobno od następnego konkursu/sesji, również w sezonie;
+rozpoczęty konkurs zachowuje kopię. KO, reprezentacje i drużyny testowe są w zakresie.
+Instrukcja: [BALANCE_LAB.md](BALANCE_LAB.md), wykonanie i testy:
+[BALANCE_LAB_IMPLEMENTATION.md](BALANCE_LAB_IMPLEMENTATION.md). Historyczna kolejka
+poniżej nie jest poleceniem ponownej implementacji tych funkcji.
 
-## Aktualizacja po pracach na Windows — najnowszy stan
+## Poprzedni etap na Windows — playground v2
 
 **Nowy playground v2 został wdrożony.** Szczegóły: `PLAYGROUND_V2.md`
 i końcowa sekcja `SIMULATION_V2_PROGRESS.md`. Starsza kolejka poniżej

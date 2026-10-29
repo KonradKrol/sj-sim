@@ -1,4 +1,5 @@
 #include "../simulator/JumpSimulator.h"
+#include "../playground/PlaygroundModel.h"
 #include "ProfileBridge.h"
 #include "FieldWindMeasurement.h"
 #include "../global/MyRandom.h"
@@ -82,6 +83,8 @@ QJsonObject metadata(const SimulationV2::JumpResult &result,SimulationV2::Seed s
 }
 }
 
+void JumpSimulator::setSimulationBalanceProfile(const QJsonObject &profile) {balanceSnapshot=profile;simulationEngine=SimulationV2::Engine(Playground::engineParameters(profile));}
+
 void JumpSimulator::setSimulationWeather(std::shared_ptr<const SimulationV2::WeatherField> weather,std::shared_ptr<const SimulationV2::WindMeasurement> measurement)
 {
     if(bool(weather)!=bool(measurement))throw std::invalid_argument("Weather and its measurement policy must be supplied together");
@@ -100,7 +103,7 @@ void JumpSimulator::simulateV2()
     const SimulationV2::WeatherField &activeWeather=windOverride?static_cast<const SimulationV2::WeatherField &>(*windOverride)
         :simulationWeather && !exactWindOverride?*simulationWeather:*fallbackWeather;
     const LegacyMeasurement measurement(activeWinds,hill->getKPoint(),*competitionRules);
-    const SimulationV2::FieldWindMeasurement configuredMeasurement(hill->getKPoint(),*competitionRules);
+    const SimulationV2::FieldWindMeasurement configuredMeasurement(hill->getKPoint(),*competitionRules,Playground::measurementParameters(balanceSnapshot));
     auto input=requestFor(*jumper,*hill,*competitionRules,gate,competitionStartGate,hasCoachGate,coachGate,DSQBaseProbability,simulationEvent,simulationTime,manipulator);
     input.skip=simulationSkip;
     // Sequence the draws explicitly: operand evaluation order must not change

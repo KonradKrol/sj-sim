@@ -1,3 +1,5 @@
+#include "../../balance/BalanceRuntime.h"
+#include "../../playground/PlaygroundModel.h"
 #include <QObject>
 #include <QEvent>
 #include <cmath>
@@ -80,6 +82,7 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     personalBestNotificationsSuppressed(false)
 {
     ui->setupUi(this);
+    if(manager && manager->getCompetitionInfo()){auto *info=manager->getCompetitionInfo();if(!info->simulationBalance)info->simulationBalance=BalanceRuntime::capture();simulator.setSimulationBalanceProfile(*info->simulationBalance);}
     if(manager && manager->getCompetitionInfo() && manager->getCompetitionInfo()->getHill() && manager->getCompetitionInfo()->getHill()->getSimulationProfile())
         ui->spinBox_actualGate->setRange(0,200);
 
@@ -1795,7 +1798,7 @@ void CompetitionManagerWindow::setSimulationWeather(std::shared_ptr<const Simula
         || !manager->getCompetitionInfo()->getHill()->getSimulationProfile() || !std::isfinite(seconds) || seconds<0 || seconds>1e12-100000)
         throw std::invalid_argument("Continuous contest weather requires a new hill and a valid logical clock");
     simulationWeather=std::move(field);simulationQualitySeed=qualitySeed;simulationSeconds=seconds;
-    simulationMeasurement=std::make_shared<SimulationV2::FieldWindMeasurement>(manager->getCompetitionInfo()->getHill()->getKPoint(),*manager->getCompetitionRules());
+    simulationMeasurement=std::make_shared<SimulationV2::FieldWindMeasurement>(manager->getCompetitionInfo()->getHill()->getKPoint(),*manager->getCompetitionRules(),Playground::measurementParameters(simulator.simulationBalanceProfile()));
     ui->pushButton_generateNewWinds->setText(tr("Odczekaj 30 s"));
     ui->pushButton_generateNewWinds->setToolTip(tr("Przesuń czas konkursu o 30 sekund. Pogoda zmienia się zgodnie z wybranym scenariuszem."));
     ui->pushButton_windsGeneratorSettings->setEnabled(bool(simulationWeatherSetup));

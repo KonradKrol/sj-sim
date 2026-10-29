@@ -306,6 +306,12 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <source>Przypisano zawodnikom nazwy zdjęć według wzoru: &lt;Kod kraju&gt;_&lt;Imie&gt;&lt;Nazwisko&gt; (np. POL_AdamN).</source>
             <translation>Jumper photo names were assigned using &lt;country code&gt;_&lt;first name&gt;&lt;last name&gt; (e.g. POL_AdamN).</translation>
         </message>
+        <message>
+            <location filename="../source/UI/AppSettings/AppSettingsWindow.cpp" line="32" />
+            <location filename="../source/UI/AppSettings/AppSettingsWindow.cpp" line="112" />
+            <source>Laboratorium balansu</source>
+            <translation>Balance laboratory</translation>
+        </message>
     </context>
     <context>
         <name>AppearanceMenu</name>
@@ -6486,6 +6492,11 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/Home.qml" line="43" />
             <source>O autorze</source>
             <translation>About the author</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/Home.qml" line="42" />
+            <source>Laboratorium balansu</source>
+            <translation>Balance laboratory</translation>
         </message>
     </context>
     <context>
@@ -12811,6 +12822,461 @@ Check that you selected the correct file.</translation>
         <source>Skala nasycenia pomocy wiatru pod narty</source>
         <translation>Headwind assistance saturation scale</translation>
     </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="13" />
+            <source>OVR i forma</source>
+            <translation>OVR and form</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="13" />
+            <source>Ile daje zmiana OVR lub formy na tej stawce?</source>
+            <translation>What does changing OVR or form do against this field?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="14" />
+            <source>Rozrzut jakości</source>
+            <translation>Quality variation</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="14" />
+            <source>Jak często skoczek zawodzi lub oddaje wyjątkowy skok?</source>
+            <translation>How often does a jumper underperform or produce an exceptional jump?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="15" />
+            <source>Losowanie pogody</source>
+            <translation>Weather generation</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="15" />
+            <source>Jakie warunki rzeczywiście losują presety i automatyczna propozycja?</source>
+            <translation>What conditions do presets and automatic proposals actually generate?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="16" />
+            <source>Pole wiatru</source>
+            <translation>Wind field</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="16" />
+            <source>Jak wiatr zmienia się podczas konkursu i wzdłuż zeskoku?</source>
+            <translation>How does wind change during a competition and along the slope?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="17" />
+            <source>Wykorzystanie wiatru</source>
+            <translation>Wind response</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="17" />
+            <source>Ile metrów daje wiatr i jak często potrafi zepsuć skok?</source>
+            <translation>How many metres does wind provide, and how often can it spoil a jump?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="18" />
+            <source>Która belka daje najwięcej punktów i jakie niesie ryzyko?</source>
+            <translation>Which gate gives the most points, and what is the risk?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="19" />
+            <source>Pomiar i punktacja</source>
+            <translation>Measurement and scoring</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="19" />
+            <source>Co zostaje z przewagi wiatru po rekompensacie?</source>
+            <translation>What remains of the wind advantage after compensation?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="20" />
+            <source>Geometria skoczni</source>
+            <translation>Hill geometry</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="20" />
+            <source>Jak wypłaszczenie i charakter skoczni ograniczają odległość?</source>
+            <translation>How do the flattening slope and hill character limit distance?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="21" />
+            <source>Gdzie rośnie ryzyko podpórki i upadku — i co dzieje się w pełnych skokach?</source>
+            <translation>Where does hand support and fall risk increase, and what happens in full jumps?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="22" />
+            <source>Noty</source>
+            <translation>Judges' marks</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="22" />
+            <source>Jak klasa lądowania i kary zmieniają noty oraz punkty?</source>
+            <translation>How do landing class and deductions change marks and points?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="23" />
+            <source>Perki</source>
+            <translation>Perks</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="23" />
+            <source>Co daje każdy poziom perka na różnych skoczniach i w różnych seriach?</source>
+            <translation>What does each perk level do on different hills and in different rounds?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="24" />
+            <source>Opady</source>
+            <translation>Precipitation</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="24" />
+            <source>Ile kosztują śnieg i deszcz przy różnym natężeniu?</source>
+            <translation>What is the cost of snow and rain at different intensities?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="25" />
+            <source>Pełny konkurs</source>
+            <translation>Full competition</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="25" />
+            <source>Jak zmieniają się zwycięzcy, miejsca i awanse w mojej paczce?</source>
+            <translation>How do winners, places and advancement change in my pack?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="26" />
+            <source>Dyskwalifikacje i zasady</source>
+            <translation>Disqualifications and rules</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="26" />
+            <source>Jak DSQ, awans i odstępy między skokami zmieniają wyniki?</source>
+            <translation>How do DSQ, advancement and start intervals affect results?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="27" />
+            <source>Cele balansu</source>
+            <translation>Balance targets</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="27" />
+            <source>Które oczekiwania spełnia obecny profil i co pogorszyła zmiana?</source>
+            <translation>Which targets does this profile meet, and what did the change worsen?</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="44" />
+            <source>Nieprawidłowy współczynnik profilu: %1</source>
+            <translation>Invalid profile coefficient: %1</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="49" />
+            <source>Mój eksperyment balansu</source>
+            <translation>My balance experiment</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="50" />
+            <source>Ustawienia gry</source>
+            <translation>Game settings</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="50" />
+            <source>Punkt odniesienia</source>
+            <translation>Reference snapshot</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabModel.cpp" line="50" />
+            <source>Bieżące</source>
+            <translation>Current</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="168" />
+            <source>Siła wiatru</source>
+            <translation>Wind strength</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="168" />
+            <source>Siła wiatru — rzadki wariant</source>
+            <translation>Wind strength — rare variant</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="169" />
+            <source>Odchylenie kierunku</source>
+            <translation>Direction deviation</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="169" />
+            <source>Różnice na zeskoku</source>
+            <translation>Differences along the slope</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="170" />
+            <source>Amplituda w czasie</source>
+            <translation>Temporal amplitude</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="170" />
+            <source>Amplituda w przestrzeni</source>
+            <translation>Spatial amplitude</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="171" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="191" />
+            <source>Amplituda tendencji</source>
+            <translation>Trend amplitude</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="172" />
+            <source>Siła podmuchów</source>
+            <translation>Gust strength</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="172" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="190" />
+            <source>Szansa podmuchów</source>
+            <translation>Gust probability</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="173" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="190" />
+            <source>Czas podobnych warunków</source>
+            <translation>Time with similar conditions</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="174" />
+            <source>Odwrócenie wiatru na zeskoku</source>
+            <translation>Wind reversal along the slope</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="174" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="191" />
+            <source>Czas przejścia tendencji</source>
+            <translation>Trend transition time</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="175" />
+            <source>Długość podobnych warunków / K</source>
+            <translation>Length of similar conditions / K</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="175" />
+            <location filename="../source/playground/PlaygroundModel.cpp" line="193" />
+            <source>Szerokość podmuchu / K</source>
+            <translation>Gust width / K</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="183" />
+            <source>Preset %1 · %2 · %3</source>
+            <translation>Preset %1 · %2 · %3</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="183" />
+            <source>maksimum</source>
+            <translation>maximum</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="183" />
+            <source>minimum</source>
+            <translation>minimum</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="185" />
+            <source>Automatyczna pogoda: skala siły</source>
+            <translation>Automatic weather: strength scale</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="185" />
+            <source>Automatyczna pogoda: skala wahań</source>
+            <translation>Automatic weather: variation scale</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="185" />
+            <source>Automatyczna pogoda: skala podmuchów</source>
+            <translation>Automatic weather: gust scale</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="185" />
+            <source>Automatyczna pogoda: skala tendencji</source>
+            <translation>Automatic weather: trend scale</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="185" />
+            <source>Automatyczna pogoda: skala czasu</source>
+            <translation>Automatic weather: time scale</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="189" />
+            <source>Szansa kierunku preferowanego przez skocznię</source>
+            <translation>Probability of the hill's preferred direction</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="189" />
+            <source>Wagi charakteru pogody: neutralna skocznia</source>
+            <translation>Weather character weights: neutral hill</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="189" />
+            <source>Wagi charakteru pogody: spokojna skocznia</source>
+            <translation>Weather character weights: calm hill</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="189" />
+            <source>Wagi charakteru pogody: wietrzna skocznia</source>
+            <translation>Weather character weights: windy hill</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="190" />
+            <source>Amplituda różnic na zeskoku</source>
+            <translation>Amplitude of differences along the slope</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="192" />
+            <source>Szansa dominującego wiatru bocznego</source>
+            <translation>Probability of predominantly crosswind conditions</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="192" />
+            <source>Minimalna siła wiatru</source>
+            <translation>Minimum wind strength</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="192" />
+            <source>Maksymalna siła wiatru</source>
+            <translation>Maximum wind strength</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="193" />
+            <source>Długość podobnych warunków: spokojny charakter / K</source>
+            <translation>Length of similar conditions: calm character / K</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="193" />
+            <source>Długość podobnych warunków: zmienny charakter / K</source>
+            <translation>Length of similar conditions: variable character / K</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="194" />
+            <source>Szansa deszczu zamiast śniegu</source>
+            <translation>Probability of rain instead of snow</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="194" />
+            <source>Bazowa szansa opadów zimą</source>
+            <translation>Base winter precipitation probability</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="194" />
+            <source>Dodatkowa szansa opadów w zimnych miesiącach</source>
+            <translation>Additional precipitation probability in cold months</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="194" />
+            <source>Dodatkowa szansa opadów w krajach północnych</source>
+            <translation>Additional precipitation probability in northern countries</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="194" />
+            <source>Szansa opadów na igelicie</source>
+            <translation>Precipitation probability on plastic matting</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="195" />
+            <source>Wagi przebiegów opadów</source>
+            <translation>Precipitation pattern weights</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="195" />
+            <source>Minimalne natężenie silnych opadów</source>
+            <translation>Minimum heavy precipitation intensity</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="195" />
+            <source>Maksymalne natężenie silnych opadów</source>
+            <translation>Maximum heavy precipitation intensity</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="196" />
+            <source>Minimalne natężenie opadów</source>
+            <translation>Minimum precipitation intensity</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="196" />
+            <source>Maksymalne natężenie opadów</source>
+            <translation>Maximum precipitation intensity</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="196" />
+            <source>Minimalna zmienność opadów</source>
+            <translation>Minimum precipitation variation</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="196" />
+            <source>Maksymalna zmienność opadów</source>
+            <translation>Maximum precipitation variation</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="208" />
+            <source>Obniżenie belki przez trenera</source>
+            <translation>Coach's gate reduction</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="209" />
+            <source>Belka odniesienia (0: wspólna baza)</source>
+            <translation>Reference gate (0: shared baseline)</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="225" />
+            <source>Perk skoczni: lotność / wybicie</source>
+            <translation>Hill perk: flight / takeoff</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="226" />
+            <source>Perk skoczni: trudne / przyjazne lądowanie</source>
+            <translation>Hill perk: difficult / friendly landing</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="227" />
+            <source>Perk skoczni: stabilny / loteryjny wiatr</source>
+            <translation>Hill perk: stable / unpredictable wind</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="228" />
+            <source>Perk skoczni: kierunek wiatru</source>
+            <translation>Hill perk: wind direction</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="229" />
+            <source>Miesiąc propozycji pogody (0: nieznany)</source>
+            <translation>Weather proposal month (0: unknown)</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="230" />
+            <source>Nawierzchnia: 0 śnieg, 1 igelit</source>
+            <translation>Surface: 0 snow, 1 plastic matting</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="139" />
+            <source>Zakres minimum–maksimum dotyczy losowania scenariusza, nie reakcji skoczka. Wagi są normalizowane. Charakter pogody: [0] spokojny, [1] zmienny, [2] loteryjny. Kierunek: [0] brak perka, [1–3] jego poziom.</source>
+            <translation>The minimum–maximum range controls scenario generation, not jumper response. Weights are normalized. Weather character: [0] calm, [1] variable, [2] unpredictable. Direction: [0] no perk, [1–3] perk level.</translation>
+        </message>
+        <message>
+            <location filename="../source/playground/PlaygroundModel.cpp" line="140" />
+            <source>Poziomy −3…+3. Pary: lotność / wybicie, trudne / przyjazne lądowanie, stabilność / loteryjność, wiatr w plecy / pod narty. Ręczna preferencja lub real HS ma pierwszeństwo przed odpowiednim perkiem.</source>
+            <translation>Levels −3…+3. Pairs: flight / takeoff, difficult / friendly landing, stability / unpredictability, tailwind / headwind. Manual hill preference or real HS takes precedence over the corresponding perk.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceRuntime.cpp" line="25" />
+            <source>Nie można utworzyć folderu profilu balansu.</source>
+            <translation>Could not create the balance profile folder.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceRuntime.cpp" line="27" />
+            <source>Nie udało się zapisać aktywnego profilu balansu.</source>
+            <translation>Could not save the active balance profile.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceRuntime.cpp" line="29" />
+            <source>Standardowy balans</source>
+            <translation>Standard balance</translation>
+        </message>
 </context>
     <context>
         <name>QuickBridge</name>
@@ -18485,6 +18951,1465 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/WeatherAdvanced.qml" line="42" />
             <source>Kierunek · °</source>
             <translation>Direction · °</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabController</name>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="41" />
+            <source>Odtworzono konkurs %1.</source>
+            <translation>Competition %1 replayed.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="42" />
+            <source>Wyniki są dostępne, ale nie udało się zapisać historii.</source>
+            <translation>Results are available, but history could not be saved.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="42" />
+            <source>Pełna próba zakończona. Wyniki zapisano w historii.</source>
+            <translation>Full run completed. Results saved to history.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="42" />
+            <source>Szybki podgląd — drobne różnice sprawdź pełną próbą.</source>
+            <translation>Quick preview — verify small differences with a full run.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="43" />
+            <source>Przerwano. Poprzednie kompletne wyniki pozostają dostępne.</source>
+            <translation>Canceled. Previous complete results remain available.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="54" />
+            <source>Standardowy balans</source>
+            <translation>Standard balance</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="93" />
+            <source>Punkt odniesienia</source>
+            <translation>Reference snapshot</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="94" />
+            <source>Bieżące</source>
+            <translation>Current</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="104" />
+            <source>Zmieniono grupę. Ograniczenie zakresu dotyczy %1 skoczków.</source>
+            <translation>Group updated. Range limits affected %1 jumpers.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="119" />
+            <source>Zapisano profil balansu.</source>
+            <translation>Balance profile saved.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="119" />
+            <source>Nie udało się zapisać profilu.</source>
+            <translation>Could not save the profile.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="121" />
+            <source>Profil będzie używany od następnego konkursu lub sesji skoków. Rozpoczęte rozgrywki zachowują swój balans.</source>
+            <translation>The profile will be used from the next competition or jump session. Competitions already in progress keep their balance settings.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="122" />
+            <source>Przywrócono standardowy balans dla następnych rozgrywek.</source>
+            <translation>Standard balance restored for future competitions.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="124" />
+            <source>Eksport laboratorium</source>
+            <translation>Laboratory export</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="124" />
+            <source>Zapisano raport, analizę i pliki CSV w %1.</source>
+            <translation>Report, analysis and CSV files saved to %1.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="124" />
+            <source>Nie udało się zapisać analizy.</source>
+            <translation>Could not save the analysis.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="125" />
+            <source>Zapisz eksperyment</source>
+            <translation>Save experiment</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="125" />
+            <source>Zapisano eksperyment.</source>
+            <translation>Experiment saved.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="125" />
+            <source>Nie udało się zapisać eksperymentu.</source>
+            <translation>Could not save the experiment.</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="126" />
+            <source>Wczytaj eksperyment</source>
+            <translation>Load experiment</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabControls</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="106" />
+            <source>Pełny rejestr parametrów</source>
+            <translation>Full parameter registry</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="27" />
+            <source>Próba</source>
+            <translation>Sample</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="27" />
+            <source>Skoczkowie</source>
+            <translation>Jumpers</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="27" />
+            <source>Silnik</source>
+            <translation>Engine</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="27" />
+            <source>Osie</source>
+            <translation>Axes</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="37" />
+            <source>Dane wspólne dla porównań</source>
+            <translation>Shared comparison inputs</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="38" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="39" />
+            <source>Paczka skoczków</source>
+            <translation>Jumper pack</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="40" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="41" />
+            <source>Skocznia</source>
+            <translation>Hill</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="42" />
+            <source>Uwagi do danych (%1)</source>
+            <translation>Data notes (%1)</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="44" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="45" />
+            <source>Wybrany skoczek</source>
+            <translation>Selected jumper</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="46" />
+            <source>Konkursy w pełnej próbie</source>
+            <translation>Competitions in the full run</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="47" />
+            <source>Liczba skoczków</source>
+            <translation>Number of jumpers</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="48" />
+            <source>Ziarno losowania</source>
+            <translation>Random seed</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="49" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="50" />
+            <source>Format konkursu</source>
+            <translation>Competition format</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="50" />
+            <source>Indywidualny</source>
+            <translation>Individual</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="50" />
+            <source>KO</source>
+            <translation>KO</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="50" />
+            <source>Drużynowy</source>
+            <translation>Team</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="51" />
+            <source>2 skoczków w drużynie</source>
+            <translation>2 jumpers per team</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="51" />
+            <source>3 skoczków w drużynie</source>
+            <translation>3 jumpers per team</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="51" />
+            <source>4 skoczków w drużynie</source>
+            <translation>4 jumpers per team</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="51" />
+            <source>Wielkość drużyny</source>
+            <translation>Team size</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="52" />
+            <source>Drużyny według krajów</source>
+            <translation>Teams by country</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="53" />
+            <source>Zestaw zasad</source>
+            <translation>Rule set</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="54" />
+            <source>Źródło pogody w konkursach</source>
+            <translation>Weather source for competitions</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="55" />
+            <source>Ręczne pole wiatru</source>
+            <translation>Manual wind field</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="55" />
+            <source>Automatyczna propozycja w każdym konkursie</source>
+            <translation>Automatic proposal in each competition</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="55" />
+            <source>Losuj wybrany preset w każdym konkursie</source>
+            <translation>Sample the selected preset in each competition</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="55" />
+            <source>Źródło pogody</source>
+            <translation>Weather source</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="56" />
+            <source>Ręczne pole używa parametrów wiatru i opadów. Pozostałe tryby losują pogodę według współczynników generatora.</source>
+            <translation>The manual field uses wind and precipitation parameters. Other modes draw weather using the generator coefficients.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Stały wiatr w plecy</source>
+            <translation>Steady tailwind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Silny wiatr pod narty</source>
+            <translation>Strong headwind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Loteryjny</source>
+            <translation>Unpredictable</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Zmienny boczny</source>
+            <translation>Variable crosswind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Cisza</source>
+            <translation>Calm</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Stały pod narty</source>
+            <translation>Steady headwind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Silny w plecy</source>
+            <translation>Strong tailwind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Stały boczny</source>
+            <translation>Steady crosswind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Zmienny pod narty</source>
+            <translation>Variable headwind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Zmienny w plecy</source>
+            <translation>Variable tailwind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Różne kierunki na zeskoku</source>
+            <translation>Different directions along the slope</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="57" />
+            <source>Preset pogody w konkursach</source>
+            <translation>Weather preset for competitions</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="58" />
+            <source>Limity serii, np. 50, 30</source>
+            <translation>Round limits, e.g. 50, 30</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="58" />
+            <source>Limity serii</source>
+            <translation>Round limits</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="63" />
+            <source>Bieżący wariant — wybrany skoczek</source>
+            <translation>Current variant — selected jumper</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="65" />
+            <source>Edycja grupy i składy drużyn</source>
+            <translation>Group editing and team lineups</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="68" />
+            <source>Wszyscy</source>
+            <translation>All</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="69" />
+            <source>Wyczyść wybór</source>
+            <translation>Clear selection</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="71" />
+            <source>Filtruj po nazwisku lub kraju…</source>
+            <translation>Filter by name or country…</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="71" />
+            <source>Filtr skoczków do edycji grupowej</source>
+            <translation>Jumper filter for group editing</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="72" />
+            <source>Zaznacz widocznych</source>
+            <translation>Select visible</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="79" />
+            <source>Tylko zaznaczeni w stawce</source>
+            <translation>Use only selected jumpers</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="80" />
+            <source>OVR</source>
+            <translation>OVR</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="80" />
+            <source>Forma</source>
+            <translation>Form</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="80" />
+            <source>Klasa lądowania</source>
+            <translation>Landing class</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="80" />
+            <source>Podejście</source>
+            <translation>Approach</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="80" />
+            <source>Specjalizacja</source>
+            <translation>Specialization</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="80" />
+            <source>Regularność</source>
+            <translation>Consistency</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="80" />
+            <source>Zmieniany parametr grupy</source>
+            <translation>Group parameter to change</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="81" />
+            <source>Ustaw wszystkim</source>
+            <translation>Set the same value for everyone</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="81" />
+            <source>Dodaj do obecnej wartości</source>
+            <translation>Add to the current value</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="81" />
+            <source>Sposób zmiany grupy</source>
+            <translation>Group edit operation</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="82" />
+            <source>Wartość zmiany</source>
+            <translation>Change value</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="83" />
+            <source>Zmień zaznaczonych (%1)</source>
+            <translation>Update selected (%1)</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="84" />
+            <source>Numer drużyny testowej</source>
+            <translation>Test team number</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="85" />
+            <source>Przypisz zaznaczonych do drużyny</source>
+            <translation>Assign selected jumpers to the team</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="86" />
+            <source>Reprezentacje bez pełnego składu nie startują. Drużyny testowe łączą dowolnych skoczków; nie zmieniają paczki źródłowej.</source>
+            <translation>National teams without a complete lineup do not start. Test teams combine any jumpers and do not change the source pack.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="90" />
+            <source>Reguły związane z tym pytaniem</source>
+            <translation>Rules related to this question</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="91" />
+            <source>Szukaj parametru lub klucza…</source>
+            <translation>Search for a parameter or key…</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="91" />
+            <source>Szukaj parametru</source>
+            <translation>Search parameters</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Automatyczna propozycja</source>
+            <translation>Automatic proposal</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="92" />
+            <source>Badany preset pogody</source>
+            <translation>Weather preset to examine</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="106" />
+            <source>Krzywa lub mapa dwóch parametrów</source>
+            <translation>Curve or two-parameter map</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="107" />
+            <source>OVR × forma</source>
+            <translation>OVR × form</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="108" />
+            <source>Belka × wiatr</source>
+            <translation>Gate × wind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="109" />
+            <source>Oś X</source>
+            <translation>X axis</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="110" />
+            <source>Parametr osi X</source>
+            <translation>X-axis parameter</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="111" />
+            <source>X od</source>
+            <translation>X from</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="112" />
+            <source>X do</source>
+            <translation>X to</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="113" />
+            <source>Oś Y</source>
+            <translation>Y axis</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="114" />
+            <source>Parametr osi Y</source>
+            <translation>Y-axis parameter</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="115" />
+            <source>Y od</source>
+            <translation>Y from</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="116" />
+            <source>Y do</source>
+            <translation>Y to</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="117" />
+            <source>Punkty na osi</source>
+            <translation>Points per axis</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="118" />
+            <source>Policz mapę</source>
+            <translation>Calculate map</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabControls.qml" line="119" />
+            <source>Kliknij komórkę, aby przenieść wartości do bieżącego wariantu. Liczba prób na komórkę jest pokazana przy mapie.</source>
+            <translation>Click a cell to use its values in the current variant. The number of trials per cell is shown next to the map.</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabGenerator</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Automatyczna propozycja</source>
+            <translation>Automatic proposal</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Stały wiatr w plecy</source>
+            <translation>Steady tailwind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Silny wiatr pod narty</source>
+            <translation>Strong headwind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Loteryjny</source>
+            <translation>Unpredictable</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Zmienny boczny</source>
+            <translation>Variable crosswind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Cisza</source>
+            <translation>Calm</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Stały pod narty</source>
+            <translation>Steady headwind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Silny w plecy</source>
+            <translation>Strong tailwind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Stały boczny</source>
+            <translation>Steady crosswind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Zmienny pod narty</source>
+            <translation>Variable headwind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Zmienny w plecy</source>
+            <translation>Variable tailwind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="9" />
+            <source>Różne kierunki na zeskoku</source>
+            <translation>Different directions along the slope</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="10" />
+            <source>Ustawienia gry</source>
+            <translation>Game settings</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="10" />
+            <source>Punkt odniesienia</source>
+            <translation>Reference snapshot</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="10" />
+            <source>Bieżące</source>
+            <translation>Current</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="14" />
+            <source>Każdy preset losujemy wielokrotnie. Wykres pokazuje średnią siłę referencyjnego wiatru oraz minimum i maksimum w tej próbie — zanim zacznie działać zmienność pola. To analiza generatora, nie odległości skoków.</source>
+            <translation>Each preset is sampled repeatedly. The chart shows the mean reference wind strength and the sample minimum and maximum, before wind-field variability is applied. This analyzes the generator, not jump distances.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="15" />
+            <source>Jak silne warunki losują presety?</source>
+            <translation>How strong are the conditions generated by presets?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="15" />
+            <source>Numer scenariusza — nazwy poniżej</source>
+            <translation>Scenario number — names below</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabGenerator.qml" line="25" />
+            <source>Średnia %1 m/s · zakres %2–%3 · pod narty %4% · w plecy %5% · prób %6</source>
+            <translation>Mean %1 m/s · range %2–%3 · headwind %4% · tailwind %5% · samples %6</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabParameter</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabParameter.qml" line="25" />
+            <source>Przywróć wartość z gry</source>
+            <translation>Restore the game value</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabParameter.qml" line="25" />
+            <source>Reset</source>
+            <translation>Reset</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabProfiles</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="14" />
+            <source>Profile i historia balansu</source>
+            <translation>Balance profiles and history</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="14" />
+            <source>Zamknij</source>
+            <translation>Close</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="15" />
+            <source>Aktywny w grze: %1</source>
+            <translation>Active in the game: %1</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="16" />
+            <source>Nazwa profilu</source>
+            <translation>Profile name</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="19" />
+            <source>Zapisz profil</source>
+            <translation>Save profile</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="20" />
+            <source>Zastosuj bieżący balans w grze</source>
+            <translation>Apply current balance to the game</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="21" />
+            <source>Standardowy balans</source>
+            <translation>Standard balance</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="23" />
+            <source>Zastosowanie dotyczy następnego konkursu lub sesji skoków, także w istniejącym sezonie. Rozpoczęty konkurs zachowuje swoją kopię ustawień. Dane paczki nie są zmieniane.</source>
+            <translation>Applies from the next competition or jump session, including existing seasons. A competition already in progress keeps its own settings snapshot. Pack data is not changed.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="24" />
+            <source>Zmiany danych skoczków i skoczni służą eksperymentom. W grze stosowane są współczynniki silnika, pomiaru i generatora pogody.</source>
+            <translation>Jumper and hill data changes are used for experiments. The game uses the engine, measurement and weather generator coefficients.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="25" />
+            <source>Profile</source>
+            <translation>Profiles</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="25" />
+            <source>Historia</source>
+            <translation>History</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="25" />
+            <source>Różnice</source>
+            <translation>Changes</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="42" />
+            <source>Zapisz eksperyment</source>
+            <translation>Save experiment</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="43" />
+            <source>Wczytaj eksperyment</source>
+            <translation>Load experiment</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabProfiles.qml" line="44" />
+            <source>Eksportuj raport i CSV</source>
+            <translation>Export report and CSV</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabReplay</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="18" />
+            <source>Odtwórz konkurs i obejrzyj wiatr faktycznie napotkany przez wybranego skoczka. Kroki odpowiadają zapisanym odcinkom ekspozycji, a nie animacji fizycznego toru lotu.</source>
+            <translation>Replay a competition and examine wind actually encountered by the selected jumper. Steps correspond to recorded exposure sections, not a physical flight-path animation.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="19" />
+            <source>Ustawienia gry</source>
+            <translation>Game settings</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="19" />
+            <source>Punkt odniesienia</source>
+            <translation>Reference snapshot</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="19" />
+            <source>Bieżące</source>
+            <translation>Current</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="19" />
+            <source>Wariant odtworzenia</source>
+            <translation>Replay variant</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="20" />
+            <source>Numer konkursu</source>
+            <translation>Competition number</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="21" />
+            <source>Odtwórz konkurs</source>
+            <translation>Replay competition</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="22" />
+            <source>Raport pochodzi z innej kompilacji silnika. Odtworzenie używa bieżącej wersji i może różnić się od zapisanych wyników.</source>
+            <translation>This report comes from a different engine build. Replay uses the current version and may differ from saved results.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="23" />
+            <source>Seria %1</source>
+            <translation>Round %1</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="23" />
+            <source>Skok do analizy</source>
+            <translation>Jump to analyze</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="24" />
+            <source>Pauza</source>
+            <translation>Pause</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="24" />
+            <source>Odtwarzaj odcinki</source>
+            <translation>Play sections</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="24" />
+            <source>Odcinek %1 / %2</source>
+            <translation>Section %1 / %2</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="25" />
+            <source>Odcinek lotu</source>
+            <translation>Flight section</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="27" />
+            <source>Od %1 do %2 m · wiatr wzdłużny %3 m/s · boczny %4 m/s</source>
+            <translation>From %1 to %2 m · longitudinal wind %3 m/s · crosswind %4 m/s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="28" />
+            <source>Wiatr na rzeczywiście przebytej trasie</source>
+            <translation>Wind along the actually traversed flight path</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="28" />
+            <source>Odległość · m</source>
+            <translation>Distance · m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="28" />
+            <source>Wzdłużny</source>
+            <translation>Longitudinal</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="28" />
+            <source>Boczny</source>
+            <translation>Crosswind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="29" />
+            <source>Skok: %1 m · %2 pkt · pomiar %3 m/s · odczuty wiatr %4 m/s · rekompensata %5 pkt</source>
+            <translation>Jump: %1 m · %2 pts · measured %3 m/s · experienced wind %4 m/s · compensation %5 pts</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabReplay.qml" line="30" />
+            <source>Belka jury: %1 · faktyczna: %2 · odniesienie: %3 · rekompensata belki: %4 pkt</source>
+            <translation>Jury gate: %1 · actual: %2 · reference: %3 · gate compensation: %4 pts</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabResults</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="20" />
+            <source>Ustawienia gry</source>
+            <translation>Game settings</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="20" />
+            <source>Punkt odniesienia</source>
+            <translation>Reference snapshot</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="20" />
+            <source>Bieżące</source>
+            <translation>Current</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="22" />
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="111" />
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="112" />
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="115" />
+            <source>Odległość · m</source>
+            <translation>Distance · m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="22" />
+            <source>Miejsce</source>
+            <translation>Position</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="22" />
+            <source>Suma w konkursie · pkt</source>
+            <translation>Competition total · pts</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="22" />
+            <source>Punkty za skok</source>
+            <translation>Points per jump</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="22" />
+            <source>Upadki · %</source>
+            <translation>Falls · %</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="22" />
+            <source>Wygrane · %</source>
+            <translation>Wins · %</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="22" />
+            <source>Podium · %</source>
+            <translation>Podiums · %</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="32" />
+            <source>Pod narty (+), w plecy (−)</source>
+            <translation>Headwind (+), tailwind (−)</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="32" />
+            <source>Boczny</source>
+            <translation>Crosswind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="40" />
+            <source>Ostatnia pełna próba — ustawienia zostały zmienione</source>
+            <translation>Last full run — settings have changed</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="40" />
+            <source>Pełna próba</source>
+            <translation>Full run</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="40" />
+            <source>Szybki podgląd — mała próba</source>
+            <translation>Quick preview — small sample</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="40" />
+            <source>Poprzedni wynik — oczekiwanie na aktualny podgląd</source>
+            <translation>Previous result — waiting for an updated preview</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="41" />
+            <source>%1 konkursów na wariant. Dodatnia zmiana miejsca oznacza pogorszenie; średnia pomija nieklasyfikowane starty.</source>
+            <translation>%1 competitions per variant. A positive place change means a worse result; the mean excludes unclassified starts.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="50" />
+            <source>Średnia odległość</source>
+            <translation>Average distance</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="50" />
+            <source>Względem gry: %1 m</source>
+            <translation>Compared with the game: %1 m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="51" />
+            <source>Średnie miejsce</source>
+            <translation>Average position</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="51" />
+            <source>Podium: %1 %</source>
+            <translation>Podiums: %1 %</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="52" />
+            <source>Średnia suma</source>
+            <translation>Average total</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="52" />
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="62" />
+            <source> pkt</source>
+            <translation> pts</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="52" />
+            <source>Względem gry: %1 pkt</source>
+            <translation>Compared with the game: %1 pts</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="53" />
+            <source>Upadki</source>
+            <translation>Falls</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="53" />
+            <source>DSQ: %1 · skoki: %2</source>
+            <translation>DSQ: %1 · jumps: %2</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="55" />
+            <source>Analiza</source>
+            <translation>Analysis</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="55" />
+            <source>Stawka</source>
+            <translation>Field</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="55" />
+            <source>Odtwarzanie</source>
+            <translation>Replay</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="55" />
+            <source>Cele</source>
+            <translation>Targets</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="72" />
+            <source>Miara wyniku</source>
+            <translation>Result metric</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="73" />
+            <source>Rozrzut: środkowe 80%</source>
+            <translation>Spread: middle 80%</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="73" />
+            <source>Przedział 95% średniej</source>
+            <translation>95% interval for the mean</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="73" />
+            <source>Bez pasma</source>
+            <translation>No band</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="73" />
+            <source>Rodzaj pasma</source>
+            <translation>Band type</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="75" />
+            <source>Rozrzut opisuje różnice między skokami. Pasma z histogramów są przybliżone; nie są niepewnością średniej.</source>
+            <translation>Spread describes differences between jumps. Histogram bands are approximate; they do not show uncertainty in the mean.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="75" />
+            <source>Przedział średniej opisuje niepewność pomiaru. Węższy przedział wymaga większej próby.</source>
+            <translation>The mean interval describes measurement uncertainty. A narrower interval requires a larger sample.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="82" />
+            <source>Wariant mapy</source>
+            <translation>Map variant</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="83" />
+            <source>Mapa: %1 × %2 · %3 konkursów na komórkę · zakres %4 – %5</source>
+            <translation>Map: %1 × %2 · %3 competitions per cell · range %4 – %5</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="98" />
+            <source>X: %1 · Y: %2 · wynik: %3</source>
+            <translation>X: %1 · Y: %2 · result: %3</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="108" />
+            <source>Telemark</source>
+            <translation>Telemark</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="108" />
+            <source>Dwie nogi</source>
+            <translation>Two feet</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="108" />
+            <source>Podpórka</source>
+            <translation>Hand down</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="108" />
+            <source>Upadek</source>
+            <translation>Fall</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="108" />
+            <source>Rodzaj lądowania</source>
+            <translation>Landing type</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="111" />
+            <source>Sam mechanizm — zadana odległość</source>
+            <translation>Landing model — specified distance</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="112" />
+            <source>Pełne skoki — upadki przy osiąganych odległościach</source>
+            <translation>Full jumps — falls at reached distances</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="114" />
+            <source>Lewy wykres: dokładny model przy ustalonym bocznym wietrze. Prawy: próba pełnych lotów, koszyki po 2 m; rzadkie odległości mogą mieć niewiele obserwacji. Klasa lądowania wpływa na noty, a nie ryzyko upadku.</source>
+            <translation>Left: the exact model with fixed crosswind. Right: complete flight trials in 2 m bins; rare distances may have few observations. Landing class affects marks, not fall risk.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="115" />
+            <source>Średnia nota jednego sędziego</source>
+            <translation>Mean mark per judge</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="115" />
+            <source>Punkty</source>
+            <translation>Points</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="121" />
+            <source>Rozkład odległości wybranego skoczka</source>
+            <translation>Selected jumper's distance distribution</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabResults.qml" line="123" />
+            <source>Wybierz dane i zmień parametr. Pierwszy podgląd pojawi się automatycznie.</source>
+            <translation>Select inputs and change a parameter. The first preview appears automatically.</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabScreen</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="18" />
+            <source>Pytania</source>
+            <translation>Questions</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="21" />
+            <source>Laboratorium balansu</source>
+            <translation>Balance laboratory</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="22" />
+            <source>Co chcesz sprawdzić?</source>
+            <translation>What would you like to examine?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="24" />
+            <source>Ustawienia</source>
+            <translation>Settings</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="24" />
+            <source>Opcje</source>
+            <translation>Options</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="25" />
+            <source>Przerwij</source>
+            <translation>Stop</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="25" />
+            <source>Test</source>
+            <translation>Test</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="25" />
+            <source>Pełna próba</source>
+            <translation>Full run</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="26" />
+            <source>Profile</source>
+            <translation>Profiles</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="30" />
+            <source>Liczenie: %1 ukończonych porównań · %2 s</source>
+            <translation>Calculating: %1 completed comparisons · %2 s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="30" />
+            <source>Aktualizowanie podglądu…</source>
+            <translation>Updating preview…</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="31" />
+            <source>Zamroź odniesienie</source>
+            <translation>Freeze reference</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabScreen.qml" line="32" />
+            <source>Cofnij</source>
+            <translation>Undo</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabTargets</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="12" />
+            <source>Spełniony</source>
+            <translation>Pass</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="12" />
+            <source>Niespełniony</source>
+            <translation>Fail</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="12" />
+            <source>Nierozstrzygnięty</source>
+            <translation>Inconclusive</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="15" />
+            <source>Cele balansu</source>
+            <translation>Balance targets</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="16" />
+            <source>Średnie oceniamy przedziałem 95% z pełnej próby. Ryzyko upadku przy zadanej odległości jest dokładną wartością modelu. Zmieniony cel wymaga ponownego sprawdzenia.</source>
+            <translation>Means are evaluated using 95% intervals from the full run. Fall risk at a specified distance is an exact model value. A changed target must be checked again.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="17" />
+            <source>Ocena celu średniej wymaga co najmniej 30 powtórzeń. Przy mniejszej próbie wynik pozostaje nierozstrzygnięty.</source>
+            <translation>A mean target needs at least 30 repetitions for assessment. With a smaller sample, the result remains inconclusive.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="28" />
+            <source>Nazwa celu</source>
+            <translation>Target name</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="29" />
+            <source>Różnica odległości względem gry</source>
+            <translation>Distance difference from the game</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="29" />
+            <source>Różnica punktów względem gry</source>
+            <translation>Points difference from the game</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="29" />
+            <source>Różnica miejsca względem gry</source>
+            <translation>Place difference from the game</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="29" />
+            <source>Średnia odległość</source>
+            <translation>Average distance</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="29" />
+            <source>Średnie miejsce</source>
+            <translation>Average position</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="29" />
+            <source>Średnie punkty za skok</source>
+            <translation>Mean points per jump</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="29" />
+            <source>Ryzyko upadku na zadanej odległości · %</source>
+            <translation>Fall risk at a specified distance · %</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="29" />
+            <source>Miara celu</source>
+            <translation>Target metric</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="30" />
+            <source>Ustawienia gry</source>
+            <translation>Game settings</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="30" />
+            <source>Punkt odniesienia</source>
+            <translation>Reference snapshot</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="30" />
+            <source>Bieżące</source>
+            <translation>Current</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="30" />
+            <source>Wariant celu</source>
+            <translation>Target variant</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="31" />
+            <source>Zapisz ponownie dane scenariusza</source>
+            <translation>Save scenario inputs again</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="31" />
+            <source>Zamroź dane tej próby jako scenariusz</source>
+            <translation>Freeze these trial inputs as a scenario</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="32" />
+            <source>Dane skoczków, skoczni i pogody są zapisane. Przy kolejnych kontrolach scenariusz użyje aktualnie strojonych współczynników silnika.</source>
+            <translation>Jumper, hill and weather inputs are saved. Future checks will use the engine coefficients currently being tuned.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="35" />
+            <source>Odległość · m</source>
+            <translation>Distance · m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="36" />
+            <source>Minimum</source>
+            <translation>Minimum</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="37" />
+            <source>Maksimum</source>
+            <translation>Maximum</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="39" />
+            <source>Usuń cel</source>
+            <translation>Remove target</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="43" />
+            <source>Dodaj cel</source>
+            <translation>Add target</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="43" />
+            <source>Nowy cel</source>
+            <translation>New target</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="44" />
+            <source>Wyniki celów dotyczą wcześniejszych ustawień. Uruchom pełną próbę.</source>
+            <translation>Target results refer to earlier settings. Run a full trial.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="47" />
+            <source>Poprzednio: %1</source>
+            <translation>Previously: %1</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabTargets.qml" line="47" />
+            <source>Wynik: %1 · przedział 95%: %2–%3 · cel: %4–%5</source>
+            <translation>Result: %1 · 95% interval: %2–%3 · target: %4–%5</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabWind</name>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="18" />
+            <source>Pod narty (+), w plecy (−)</source>
+            <translation>Headwind (+), tailwind (−)</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="18" />
+            <source>Boczny</source>
+            <translation>Crosswind</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="21" />
+            <source>Wariant pola i pomiaru wiatru</source>
+            <translation>Wind field and measurement variant</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="22" />
+            <source>Rozdzielczość i zakres analizy</source>
+            <translation>Analysis resolution and range</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="32" />
+            <source>Jedno pole pogody: czas oznacza przebieg konkursu, odległość — miejsce nad zeskokiem. Dodatnia składowa pomaga pod narty, ujemna wieje w plecy. Boczny wiatr jest pokazany osobno.</source>
+            <translation>One weather field: time is competition time, and distance is the position above the slope. Positive longitudinal wind is headwind; negative is tailwind. Crosswind is shown separately.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="33" />
+            <source>1. Jak zmieniają się warunki w jednym miejscu?</source>
+            <translation>1. How do conditions change at one location?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="33" />
+            <source>Czas konkursu · s</source>
+            <translation>Competition time · s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="34" />
+            <source>Wybierz moment, aby zobaczyć wiatr wzdłuż całej skoczni.</source>
+            <translation>Choose a moment to see the wind along the entire hill.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="35" />
+            <source>Moment analizy pola wiatru</source>
+            <translation>Wind-field analysis time</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="36" />
+            <source>2. Gdzie na zeskoku wieje inaczej?</source>
+            <translation>2. Where does the wind differ along the slope?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="36" />
+            <source>Odległość od progu · m</source>
+            <translation>Distance from the takeoff · m</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="37" />
+            <source>Mapa wiatru: czas poziomo, odległość pionowo</source>
+            <translation>Wind map: time horizontally, distance vertically</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="38" />
+            <source>Mapa: czas poziomo, odległość pionowo. Niebieski — pod narty; pomarańczowy — w plecy; jasny — blisko zera. Nasycenie dochodzi do ±%1 m/s. Dokładne wartości są na wykresach.</source>
+            <translation>Map: time horizontally, distance vertically. Blue is headwind; orange is tailwind; pale is near zero. Color saturation reaches ±%1 m/s. Exact values are on the charts.</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="39" />
+            <source>3. Co odczuwa skoczek, a co mierzy punktacja?</source>
+            <translation>3. What does the jumper experience, and what does scoring measure?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="39" />
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="40" />
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="41" />
+            <source>Czas startu · s</source>
+            <translation>Takeoff time · s</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="39" />
+            <source>Wiatr odczuty w locie</source>
+            <translation>Wind experienced during flight</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="39" />
+            <source>Pomiar do rekompensaty</source>
+            <translation>Wind measured for compensation</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="40" />
+            <source>4. Ile metrów dał lub zabrał wiatr?</source>
+            <translation>4. How many metres did the wind add or take away?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="41" />
+            <source>Punkty</source>
+            <translation>Points</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="41" />
+            <source>5. Ile punktów zostało po rekompensacie?</source>
+            <translation>5. How many points remain after compensation?</translation>
+        </message>
+        <message>
+            <location filename="../source/UI/Quick/BalanceLabWind.qml" line="42" />
+            <source>Każda para używa tego samego skoczka, belki i seeda. Różnica końcowych punktów obejmuje także zmianę odległości i lądowania. Rekompensata nie musi dokładnie wyrównać fizycznego wpływu wiatru.</source>
+            <translation>Each pair uses the same jumper, gate and seed. The final points difference also includes changes in distance and landing. Compensation need not exactly offset the wind's physical effect.</translation>
+        </message>
+    </context>
+    <context>
+        <name>BalanceLabWindow</name>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="133" />
+            <source>Laboratorium balansu</source>
+            <translation>Balance laboratory</translation>
+        </message>
+        <message>
+            <location filename="../source/balance/BalanceLabController.cpp" line="133" />
+            <source>Laboratorium balansu — otwórz interfejs Qt Quick, aby korzystać z wykresów.</source>
+            <translation>Balance laboratory — open the Qt Quick interface to use charts.</translation>
         </message>
     </context>
 </TS>

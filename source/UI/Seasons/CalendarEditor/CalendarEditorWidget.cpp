@@ -256,6 +256,7 @@ QTableView *CalendarEditorWidget::getTableView()
         calendarModel->insertRow(insertIndex);
         CompetitionInfo * selectedCompetition = SeasonCalendar::getMainCompetitionByIndex(calendar->getCompetitionsReference(), insertIndex);
         CompetitionInfo * competition = new CompetitionInfo(*selectedCompetition);
+        competition->simulationBalance.reset();
         competition->generateID();
         competition->getResultsReference().generateID();
         competition->getClassificationsReference().detach();
@@ -1405,6 +1406,7 @@ return;
         for(auto & presetCompetition : preset->getCalendarReference().getCompetitionsReference())
         {
             CompetitionInfo * calendarCompetition = new CompetitionInfo(*presetCompetition);
+            calendarCompetition->simulationBalance.reset();
             calendarCompetition->reassign();
             calendarCompetition->getResultsReference().reassign();
             calendarCompetition->getResultsReference().setCompetition(calendarCompetition);

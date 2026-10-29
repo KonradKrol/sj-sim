@@ -1,3 +1,4 @@
+#include "../../balance/BalanceLabController.h"
 #include "QuickUi.h"
 #include "QuickWindProfile.h"
 #include "QuickView.h"
@@ -728,6 +729,7 @@ bool QuickBridge::shortcut(int owner,const QString &sequence) {
     return false;
 }
 void QuickBridge::launch(const QString &destination) {
+    if(m_home && destination=="balanceLab"){QTimer::singleShot(0,this,[this]{if(m_window){auto *window=new BalanceLabWindow(m_window);window->setAttribute(Qt::WA_DeleteOnClose);window->show();}});return;}
     static const QHash<QString,const char *> destinations{{"competition","on_pushButton_singleCompetition_clicked"},{"jumps","on_pushButton_singleJumps_clicked"},
         {"seasons","on_pushButton_season_clicked"},{"database","on_pushButton_databaseEdit_clicked"},{"settings","on_pushButton_settings_clicked"},
         {"author","showAuthor"},{"help","on_pushButton_help_clicked"},{"credits","on_pushButton_thanks_clicked"},{"issue","on_pushButton_reportIssue_clicked"}};
@@ -865,6 +867,7 @@ void QuickBridge::compose(QuickNode *base) {
             {"athlete",m_window->property("manipulationAthlete")},{"flag",quickPicture(CountryFlagsManager::getFlagPixmap(m_window->property("manipulationCountry").toString().toLower()))},
             {"submitId",idFor(m_content->findChild<QPushButton *>("pushButton_submit_2"))}});return;
     }
+    if(m_window->property("balanceLabController").isValid()){m_root->update({{"kind","balanceLab"},{"backend",m_window->property("balanceLabController")}});return;}
     if(m_window->property("playgroundController").isValid()){m_root->update({{"kind","playground"},{"backend",m_window->property("playgroundController")}});return;}
     if(m_window->objectName()=="classificationContributionDetails"){
         auto *table=m_content->findChild<QTableView *>("classificationContributionTable");
@@ -977,7 +980,7 @@ void QuickBridge::compose(QuickNode *base) {
     if(profile()=="AppSettingsWindow") {
         QVariantList sections;
         sections.append(group("simulation",tr("Silnik symulacji"),{group("simulation-settings-fields",QString(),fields({
-            {"openSimulationPlayground",""},{"comboBox_language",tr("Język interfejsu")},{"spinBox_skillsRange",tr("Zakres umiejętności")},
+            {"openBalanceLab",""},{"openSimulationPlayground",""},{"comboBox_language",tr("Język interfejsu")},{"spinBox_skillsRange",tr("Zakres umiejętności")},
             {"spinBox_dsqProbability",tr("Bazowe prawdopodobieństwo dyskwalifikacji")},
             {"doubleSpinBox_randomMultiplier",tr("Mnożnik losowości")},{"doubleSpinBox",tr("Wpływ parametrów skoczni")},
             {"doubleSpinBox_takeoffFormEffect",tr("Wpływ formy na wybicie")},{"doubleSpinBox_flightFormEffect",tr("Wpływ formy na lot")},
