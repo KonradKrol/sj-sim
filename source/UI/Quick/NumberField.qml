@@ -10,6 +10,7 @@ Item {
     property string draft: ""
     property string recordKey: ""
     property bool flexibleDecimal: false
+    property real quantum: 0
     onRecordKeyChanged: { input.dirty=false; synchronize() }
     readonly property string localeName: Theme.localeName
     onLocaleNameChanged: synchronize()
@@ -24,7 +25,7 @@ Item {
     ChangeFeedback { id: invalidFeedback; target: control; duration: Theme.motion*3 }
     implicitHeight: Math.max(Theme.compact ? 28 : 48,Theme.bodyMetrics.height+(Theme.compact ? 4 : 18))
     implicitWidth: 140
-    function setValue(value) { currentValue=Math.max(fields.minimum,Math.min(fields.maximum,value));input.dirty=false;draft=formattedValue();if(direct)ui.edit(fields.id,currentValue);committed(currentValue) }
+    function setValue(value) { if(quantum>0)value=Math.round(value/quantum)*quantum;currentValue=Math.max(fields.minimum,Math.min(fields.maximum,value));input.dirty=false;draft=formattedValue();if(direct)ui.edit(fields.id,currentValue);committed(currentValue) }
     function formattedValue() {return currentValue===fields.minimum && fields.specialText ? fields.specialText : currentValue.toLocaleString(Qt.locale(Theme.localeName),'f',fields.decimals).split(Qt.locale(Theme.localeName).groupSeparator).join("")}
     function commitInput() {
         input.dirty=false

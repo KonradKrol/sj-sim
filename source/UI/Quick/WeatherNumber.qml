@@ -11,6 +11,7 @@ ColumnLayout {
     property real minimum: 0
     property real maximum: 100
     property real step: 0.1
+    property real quantum: 0
     property real factor: 1
     spacing: Theme.dp(3)
     RowLayout {
@@ -21,7 +22,7 @@ ColumnLayout {
     NumberField {
         objectName: "weather-"+control.fieldKey
         Layout.fillWidth: true
-        direct: false; label: control.label; flexibleDecimal: true
+        direct: false; label: control.label; flexibleDecimal: true; quantum: control.quantum
         recordKey: control.fieldKey+":"+control.backend.values.seed
         fields: ({value:Number(control.backend.values[control.fieldKey] || 0)*control.factor,minimum:control.minimum,maximum:control.maximum,step:control.step,decimals:control.step<1?1:0,name:"weather-"+control.fieldKey})
         onCommitted: function(value){control.backend.setValue(control.fieldKey,value/control.factor)}

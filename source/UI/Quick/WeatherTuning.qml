@@ -22,9 +22,9 @@ Control {
             Layout.fillWidth: true; columns: tuning.viewportWidth>Theme.fontSize(600)?2:1
             columnSpacing: Theme.dp(18); rowSpacing: Theme.dp(10)
             WindDirectionDial { degrees: tuning.values.direction; Layout.fillWidth: true; Layout.minimumWidth: 0; onEdited: function(value){tuning.backend.setValue("direction",value)} }
-            WeatherNumber { backend: tuning.backend; fieldKey: "strength"; label: qsTr("Siła wyjściowa · m/s"); maximum: 10; Layout.fillWidth: true; explanation: qsTr("Mocny wiatr może być stabilny, a słaby — zmienny.") }
-            WeatherNumber { backend: tuning.backend; fieldKey: "variability"; factor: .1; label: qsTr("Zmienność w czasie · 0–10"); maximum: 10; Layout.fillWidth: true; explanation: qsTr("0: bez zmian. Wyżej: silniejsze podmuchy i szybsze zmiany.") }
-            WeatherNumber { backend: tuning.backend; fieldKey: "differences"; factor: .1; label: qsTr("Różnice na zeskoku · 0–10"); maximum: 10; Layout.fillWidth: true; explanation: qsTr("Wyższa wartość: większe różnice wzdłuż skoczni.") }
+            WeatherNumber { backend: tuning.backend; fieldKey: "strength"; label: qsTr("Siła wyjściowa · m/s"); maximum: 10; step: .5; quantum: .5; Layout.fillWidth: true; explanation: qsTr("Mocny wiatr może być stabilny, a słaby — zmienny.") }
+            WeatherNumber { backend: tuning.backend; fieldKey: "variability"; factor: .1; label: qsTr("Zmienność w czasie · 0–10"); maximum: 10; step: .5; quantum: .5; Layout.fillWidth: true; explanation: qsTr("0: bez zmian. Wyżej: silniejsze podmuchy i szybsze zmiany.") }
+            WeatherNumber { backend: tuning.backend; fieldKey: "differences"; factor: .1; label: qsTr("Różnice na zeskoku · 0–10"); maximum: 10; step: .5; quantum: .5; Layout.fillWidth: true; explanation: qsTr("Wyższa wartość: większe różnice wzdłuż skoczni.") }
         }
     }
 }

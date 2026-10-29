@@ -79,7 +79,7 @@ static void simulationV2SetupRegressions(MainWindow &main) {
     chooseAngle(pointer->width()/2,3);check(std::abs(window.getWeatherSetup()->values()["direction"].toDouble())<.01,"wind from above the skis means headwind");
     chooseAngle(pointer->width()/2,pointer->height()-3);check(std::abs(window.getWeatherSetup()->values()["direction"].toDouble()-180)<.01,"wind from behind the skier means tailwind");
     auto *strength=item(scene(&window)->rootObject(),"input-weather-strength");check(strength,"wind strength text input exists");
-    for(const auto entry:QList<QPair<QString,double>>{{"2.4",2.4},{"2,6",2.6}}) {
+    for(const auto entry:QList<QPair<QString,double>>{{"2.4",2.5},{"2,6",2.5}}) {
         strength->forceActiveFocus();QTest::keyClick(scene(&window),Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(scene(&window),entry.first);QTest::keyClick(scene(&window),Qt::Key_Tab);QTest::qWait(20);
         check(std::abs(window.getWeatherSetup()->values()["strength"].toDouble()-entry.second)<1e-8,"wind input accepts a dot or comma without reverting the value");
     }
