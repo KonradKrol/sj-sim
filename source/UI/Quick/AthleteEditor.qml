@@ -6,7 +6,8 @@ ColumnLayout {
     id: editor
     property var backend
     property int viewMode: 1
-    ChangeFeedback { id: recordFeedback; target: editor; trigger: editor.backend.profile.id; duration: Theme.motion*2 }
+    readonly property string selectedProfileId: backend.profile.id || ""
+    ChangeFeedback { id: recordFeedback; objectName: "athleteRecordFeedback"; target: editor; trigger: editor.selectedProfileId; duration: Theme.motion*2 }
     spacing: Theme.dp(8)
     ScrollView {
         id: scroll
