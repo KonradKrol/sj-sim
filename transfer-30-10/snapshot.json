@@ -1,0 +1,23 @@
+{
+  "createdUtc": "2026-10-30T07:27:34.602311+00:00",
+  "packs": [
+    {
+      "file": "skoczkowie/pack.json",
+      "name": "Season 2026/2027",
+      "id": "31c2add1-69e3-4b68-8262-81747d86ddd6",
+      "profiles": 96,
+      "sha256": "884bc3e2760c7118fc2d62a35a8e27cab7dc666f7170f89171fc330b72e1f564",
+      "photosCopied": 0,
+      "photosUnavailable": 95
+    },
+    {
+      "file": "skocznie/pack.json",
+      "name": "Domyślna — przybliżenie",
+      "id": "d1759190-45e8-415f-9b48-053256fee702",
+      "profiles": 126,
+      "sha256": "7e5e4e80fdc6f33c8589d6ecd307af700c4d0053836e44d1975e05000d7bc368",
+      "photosCopied": 0,
+      "photosUnavailable": 0
+    }
+  ]
+}
