@@ -519,3 +519,25 @@ Weryfikacja tej poprawki: produkcyjny build Qt5, --simulation-v2-only (bridge,
 repozytorium, katalog i scenariusze automatycznej konwersji), --athlete-studio-only,
 --hill-studio-only oraz kontrola tłumaczeń EN/CS — PASS. Logi
 /tmp/sj-auto-pack-conversion.log i /tmp/sj-auto-pack-*-studio.log.
+
+## Kolejka 30.10 — nowe doprecyzowania
+
+1. PRIORYTET: audyt wszystkich617opisów labu. Jasno co zmienia parametr,
+   kierunek wpływu i prosty przykład. Bez pustych wstawek. 122nowe teksty
+   nie miały EN/CS; najpierw uprościć PL, potem uzupełnić tłumaczenia.
+   Obecne effectDescription w PlaygroundModel.cpp:193wystąpienia tekstów,
+   w tym martwe duplikaty gate; field.perk dziedziczy sprzeczne ograniczenie
+   do analizowanego zawodnika. Sprawdzić przykłady względem wzorów silnika.
+2. Potem layout naszywek: tuż po przejściu do dwóch kolumn karty nachodzą
+   na siebie. Sprawdzić próg i minimum szerokości, mały ekran, oba motywy.
+3. Przy okazji: poziomy perków2i3 delikatnie odróżnić obramowaniem/wypełnieniem,
+   widoczna różnica stopnia, ale znacznie słabsza od kontrastu Skrajnie4.
+
+30.10 — audyt polskich opisów labu GOTOWY: effectDescription ma krótsze
+wyjaśnienia z przykładami; wszystkie617definicji sprawdzone testem na obecność
+przykładu w widocznym opisie. Wzory sprawdzone w QualityModel, FlightModel,
+LandingModel oraz runnerze stawki. Nie podajemy dokładnej liczby metrów tam,
+gdzie wynik jest nieliniowy: przykłady rozróżniają początkowy zapas i odległość.
+Usunięto martwe duplikaty opisów belki, sprzeczność field.perk i zbędne zdania.
+Test --balance-lab-only PASS (/tmp/sj-lab-copy-20261030.log).
+Nadal uzupełnić EN/CS nowych opisów. Następne: layout i subtelne poziomy2/3.
