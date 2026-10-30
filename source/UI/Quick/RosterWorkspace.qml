@@ -11,6 +11,7 @@ Item {
     readonly property var backend: fields.backend
     readonly property bool compact: width < 800
     property bool choosing: false
+    property bool limitsOpen: false
     implicitHeight: 580
     ColumnLayout {
         anchors.fill: parent
@@ -22,12 +23,29 @@ Item {
             ProjectedControl { node: roster.fields.defaultField || null; Layout.fillWidth: true; Layout.minimumWidth: 0 }
         }
         RowLayout {
+            visible: roster.backend.savedList
+            Layout.fillWidth: true; spacing: Theme.dp(6)
+            SectionTabs { Layout.fillWidth: true; Layout.minimumWidth: 0; optionNamePrefix: "rosterView-"; options: [qsTr("Kolejność"),qsTr("Według krajów")]; currentIndex: roster.backend.grouped ? 1 : 0; onSelected: roster.backend.grouped=index===1 }
+            SButton {
+                objectName: "rosterLimitsToggle"
+                text: roster.backend.exceededCountries ? qsTr("Limity (%1)").arg(roster.backend.exceededCountries) : roster.width<500 ? qsTr("Limity") : qsTr("Limity krajów")
+                Accessible.name: qsTr("Limity krajów")
+                hint: roster.backend.exceededCountries ? qsTr("Liczba krajów z przekroczonym limitem: %1").arg(roster.backend.exceededCountries) : ""
+                primary: roster.limitsOpen
+                foreground: primary ? Theme.accentText : roster.backend.exceededCountries ? Theme.danger : Theme.ink
+                implicitHeight: Theme.dp(40); font.pointSize: Theme.body
+                onClicked: roster.limitsOpen=!roster.limitsOpen
+            }
+        }
+        RosterLimits { visible: roster.backend.savedList && roster.limitsOpen; backend: roster.backend; Layout.fillWidth: true; listHeight: Math.min(Theme.dp(150),Math.max(Theme.dp(65),roster.height*0.25)) }
+        RowLayout {
             Layout.fillWidth: true
             SButton { objectName: "rosterChoose"; visible: roster.backend.membership && roster.compact; text: roster.choosing ? qsTr("Lista · %1").arg(roster.backend.count) : (roster.backend.presets.length>0 ? qsTr("Dodaj") : qsTr("Dodaj zawodników")); primary: !roster.choosing; Layout.fillWidth: true; onClicked: roster.choosing=!roster.choosing }
             Label { id: arrivalHeading; visible: !roster.compact; text: roster.backend.membership ? qsTr("Wybór i kolejność") : qsTr("Kolejność skoczków"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; Layout.fillWidth: true }
             SButton { objectName: "rosterOpenPresets"; visible: roster.compact && roster.backend.presets.length>0; text: qsTr("Listy"); Accessible.name: qsTr("Zapisane listy"); hint: qsTr("Zapisane listy"); onClicked: savedLists.open() }
             SButton { objectName: "rosterUndo"; text: qsTr("Cofnij"); enabled: roster.backend.canUndo; quiet: true; onClicked: roster.backend.undo() }
             SButton {
+                visible: !roster.backend.grouped
                 text: "⋯"; quiet: true; Accessible.name: qsTr("Opcje listy"); onClicked: options.open()
                 ActionMenu {
                     id: options
@@ -46,7 +64,7 @@ Item {
             spacing: 20
             RosterLibrary { visible: roster.backend.membership && (!roster.compact || roster.choosing); backend: roster.backend; Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0; Layout.preferredWidth: 380 }
             Rectangle { visible: roster.backend.membership && !roster.compact; Layout.fillHeight: true; Layout.preferredWidth: 1; color: Theme.divider }
-            RosterOrder { visible: !roster.compact || !roster.choosing || !roster.backend.membership; backend: roster.backend; title: roster.backend.membership ? qsTr("Lista startowa") : qsTr("Drużyna"); Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0; Layout.preferredWidth: 500 }
+            RosterOrder { visible: !roster.compact || !roster.choosing || !roster.backend.membership; backend: roster.backend; title: roster.backend.savedList ? qsTr("Wybrani zawodnicy") : roster.backend.membership ? qsTr("Lista startowa") : qsTr("Drużyna"); Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0; Layout.preferredWidth: 500 }
         }
         ProjectedControl { visible: !!roster.fields.submit; node: roster.fields.submit || null; Layout.fillWidth: true; Layout.preferredHeight: visible ? implicitHeight : 0 }
     }

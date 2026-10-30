@@ -6,6 +6,7 @@ Item {
     property var options: []
     property var optionEnabled: []
     property int currentIndex: 0
+    property string optionNamePrefix: ""
     signal selected(int index)
     implicitHeight: row.implicitHeight + (Theme.compact ? 4 : 8)
     readonly property bool overflow: row.width > width
@@ -58,6 +59,7 @@ Item {
             onItemRemoved: Qt.callLater(tabs.revealCurrent)
             model: tabs.options
             SButton {
+                objectName: tabs.optionNamePrefix.length ? tabs.optionNamePrefix + index : ""
                 text: modelData
                 quiet: true
                 font.family: Theme.displayFamily

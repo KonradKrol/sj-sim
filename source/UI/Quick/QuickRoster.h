@@ -1,6 +1,7 @@
 #pragma once
 #include <QAbstractListModel>
 #include <QPointer>
+#include <QMap>
 #include <QSet>
 #include <QVariantMap>
 #include "../../simulator/Jumper.h"
@@ -20,10 +21,25 @@ private:
 signals:
     void countChanged();
 };
+class QuickRosterCountryRows : public QAbstractListModel {
+    Q_OBJECT
+    Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
+public:
+    explicit QuickRosterCountryRows(QObject *parent):QAbstractListModel(parent){}
+    int rowCount(const QModelIndex &parent=QModelIndex()) const override { return parent.isValid()?0:m_rows.size(); }
+    QVariant data(const QModelIndex &index,int role) const override;
+    QHash<int,QByteArray> roleNames() const override;
+    void sync(const QVariantList &rows);
+private:
+    QVariantList m_rows;
+signals:
+    void countChanged();
+};
 class QuickRoster : public QObject {
     Q_OBJECT
     Q_PROPERTY(QuickRosterRows *library READ library CONSTANT)
     Q_PROPERTY(QuickRosterRows *ordered READ ordered CONSTANT)
+    Q_PROPERTY(QuickRosterRows *groupedRows READ groupedRows CONSTANT)
     Q_PROPERTY(QString query READ query WRITE setQuery NOTIFY changed)
     Q_PROPERTY(QString orderQuery READ orderQuery WRITE setOrderQuery NOTIFY changed)
     Q_PROPERTY(QStringList countries READ countries NOTIFY changed)
@@ -35,6 +51,11 @@ class QuickRoster : public QObject {
     Q_PROPERTY(int activeLimit READ activeLimit NOTIFY changed)
     Q_PROPERTY(bool canUndo READ canUndo NOTIFY changed)
     Q_PROPERTY(QStringList presets READ presets NOTIFY changed)
+    Q_PROPERTY(bool savedList READ savedList CONSTANT)
+    Q_PROPERTY(bool grouped READ grouped WRITE setGrouped NOTIFY changed)
+    Q_PROPERTY(QVariantList countryLimits READ countryLimits NOTIFY changed)
+    Q_PROPERTY(QuickRosterCountryRows *limitRows READ limitRows CONSTANT)
+    Q_PROPERTY(int exceededCountries READ exceededCountries NOTIFY changed)
 public:
     explicit QuickRoster(QWidget *source,QObject *parent);
     void sync();
@@ -43,6 +64,7 @@ public:
     static QString key(Jumper *jumper);
     QuickRosterRows *library() const { return m_library; }
     QuickRosterRows *ordered() const { return m_ordered; }
+    QuickRosterRows *groupedRows() const { return m_groupedRows; }
     QString query() const { return m_query; }
     QString orderQuery() const { return m_orderQuery; }
     QStringList countries() const;
@@ -54,6 +76,13 @@ public:
     int activeLimit() const;
     bool canUndo() const { return m_hasUndo; }
     QStringList presets() const;
+    bool savedList() const;
+    bool grouped() const { return m_grouped; }
+    void setGrouped(bool value);
+    QVariantList countryLimits() const { return m_countryLimits; }
+    QuickRosterCountryRows *limitRows() const { return m_limitRows; }
+    int exceededCountries() const;
+    Q_INVOKABLE bool setCountryLimit(const QString &country,int limit);
     void setQuery(const QString &value);
     void setOrderQuery(const QString &value);
     void setCountry(int value);
@@ -71,18 +100,24 @@ public:
     Q_INVOKABLE void applyPreset(int index,int operation);
 private:
     QPointer<QWidget> m_source;
-    QuickRosterRows *m_library,*m_ordered;
+    QuickRosterRows *m_library,*m_ordered,*m_groupedRows;
+    QuickRosterCountryRows *m_limitRows;
     QVector<Jumper *> m_pool,m_current,m_undo;
+    QMap<QString,int> m_undoLimits;
     QSet<QString> m_marked;
     QStringList m_countryCodes,m_presetNames;
+    QVariantList m_countryLimits;
     QString m_query,m_orderQuery,m_anchor;
     int m_country=0;
     bool m_hasUndo=false;
+    bool m_undoLimitChange=false;
+    bool m_grouped=false;
     QVector<Jumper *> read() const;
     QVector<Jumper *> candidates() const;
     void write(const QVector<Jumper *> &value);
     void apply(QVector<Jumper *> value);
     void refresh();
+    void refreshCountryLimits(bool updateModel=true);
     QVector<Jumper *> visiblePool() const;
     Jumper *jumper(const QString &id) const;
 signals:

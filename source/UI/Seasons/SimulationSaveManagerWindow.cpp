@@ -390,6 +390,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     connect(jumpersListsListView, &DatabaseItemsListView::listViewDoubleClicked, this, [this](const QModelIndex & index){
         SaveJumpersList * list = &simulationSave->getJumpersListsReference()[index.row()];
         JumpersListEditorWindow * editor = new JumpersListEditorWindow(this, list->getName(), list->getIsDefault());
+        editor->setCountryLimits(list->getCountryLimits());
         editor->setAllJumpers(simulationSave->getJumpersReference());
         editor->setSelectedJumpers(list->getJumpersReference());
         editor->updateUnselectedJumpers();
@@ -405,6 +406,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
             list->setJumpers(editor->getSelectedJumpers());
             list->setName(editor->getNameFromLineEdit());
             list->setIsDefault(editor->getIsDefaultFromCheckBox());
+            list->setCountryLimits(editor->getCountryLimits());
             markSeasonChanged();
             jumpersListsListView->setupListModel();
             emit jumpersListsListView->getListModel()->dataChanged(jumpersListsListView->getListModel()->index(0), jumpersListsListView->getListModel()->index(jumpersListsListView->getListModel()->rowCount() - 1));

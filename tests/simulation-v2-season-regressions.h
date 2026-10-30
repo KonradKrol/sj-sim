@@ -18,6 +18,52 @@ static void simulationV2NextSeasonDraftRegressions(MainWindow &main) {
 static void simulationV2SeasonEditorRegressions(MainWindow &main)
 {
     simulationV2NextSeasonDraftRegressions(main);
+    SaveJumpersList limitsFixture("Limits");
+    SaveJumpersList sameName("Limits");check(limitsFixture.getId()!=sameName.getId(),"separate rosters with the same name have distinct identities");
+    check(limitsFixture.setCountryLimit("pol",4) && limitsFixture.setCountryLimit("NOR",0),"country limits accept normalized codes and zero");
+    check(!limitsFixture.setCountryLimit("invalid",3) && !limitsFixture.setCountryLimit("POL",10001),"invalid country limits are rejected");
+    auto limitsJson=SaveJumpersList::getJsonObject(limitsFixture);
+    auto limitsReloaded=SaveJumpersList::getFromJson(limitsJson,nullptr);
+    check(limitsReloaded.getId()==limitsFixture.getId() && limitsReloaded.countryLimit("POL")==4 && limitsReloaded.countryLimit("nor")==0 && limitsReloaded.countryLimit("CZE")==-1,"roster identity and advisory limits survive serialization");
+    check(limitsReloaded.setCountryLimit("POL",-1) && limitsReloaded.countryLimit("POL")==-1,"a country limit can be cleared");
+    limitsJson.remove("id");limitsJson.remove("country-limits");
+    auto oldList=SaveJumpersList::getFromJson(limitsJson,nullptr);
+    check(!oldList.getId().isEmpty() && oldList.getCountryLimits().isEmpty(),"legacy rosters gain an identity without imposed limits");
+    {
+        auto a=AthleteProfile::create();a.name="A";a.surname="Pol";a.country="POL";
+        auto b=a;b.name="B";auto c=a;c.name="C";c.country="NOR";
+        Jumper ja,jb,jc;QString fixtureError;
+        check(ja.setSimulationProfile(a,fixtureError) && jb.setSimulationProfile(b,fixtureError) && jc.setSimulationProfile(c,fixtureError),"roster limit fixtures");
+        JumpersListEditorWindow editor;editor.setAllJumpers({&ja,&jb,&jc});editor.setSelectedJumpers({&ja,&jc});editor.updateUnselectedJumpers();editor.show();QTest::qWait(150);
+        auto *rosterBridge=editor.findChild<QuickBridge *>();auto *roster=rosterBridge?rosterBridge->findChild<QuickRoster *>():nullptr;
+        check(roster && roster->savedList(),"saved roster editor exposes country controls");
+        QAbstractItemModelTester limitContract(roster->limitRows(),QAbstractItemModelTester::FailureReportingMode::Fatal);
+        QSignalSpy limitResets(roster->limitRows(),&QAbstractItemModel::modelReset);
+        check(roster->setCountryLimit("POL",1),"country limit is editable");
+        roster->toggle(QuickRoster::key(&jb));QTest::qWait(80);
+        check(editor.getSelectedJumpers().contains(&jb),"exceeding an advisory limit never blocks adding a jumper");
+        QVariantMap pol;for(const auto &value:roster->countryLimits())if(value.toMap().value("country").toString()=="POL")pol=value.toMap();
+        check(pol.value("count").toInt()==2 && pol.value("limit").toInt()==1 && pol.value("over").toBool() && roster->exceededCountries()==1,"country summary reports an exceeded limit");
+        const auto originalOrder=editor.getSelectedJumpers();roster->setGrouped(true);
+        check(editor.getSelectedJumpers()==originalOrder && roster->groupedRows()->get(0).value("countryCode").toString()=="NOR","grouped view sorts by country without changing saved order");
+        roster->setGrouped(false);check(roster->ordered()->get(0).value("athleteId").toString()==QuickRoster::key(&ja),"returning to the normal view restores the original order");roster->setGrouped(true);
+        auto *view=scene(&editor);
+        for(int i=0;i<3;++i){clickControl(view,"rosterView-0");check(!roster->grouped(),"the order tab restores the normal view");clickControl(view,"rosterView-1");check(roster->grouped(),"the country tab opens the grouped view");}
+        clickControl(view,"rosterLimitsToggle");QTest::qWait(100);
+        presentation(&editor)->grab().save(output+"/saved-roster-limits.png");
+        QPointer<QQuickItem> limitInput=item(view->rootObject(),"roster-limit-POL");check(limitInput,"country limit field is visible in the list editor");
+        clickControl(view,"roster-limit-POL");QTest::keyClick(view,Qt::Key_A,Qt::ControlModifier);QTest::keyClick(view,Qt::Key_Backspace);QTest::keyClick(view,Qt::Key_Tab);QTest::qWait(120);
+        check(!editor.getCountryLimits().contains("POL"),"clearing the limit field removes the limit");
+        check(limitInput && item(view->rootObject(),"roster-limit-POL")==limitInput,"editing a limit keeps the existing row and focus target");
+        roster->undo();check(editor.getCountryLimits().value("POL",-1)==1,"undo restores the previous country limit");
+        for(int limit=2;limit<=5;++limit){
+            clickControl(view,"roster-limit-POL");QTest::keyClick(view,Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(view,QString::number(limit));QTest::keyClick(view,Qt::Key_Tab);QTest::qWait(80);
+            check(editor.getCountryLimits().value("POL",-1)==limit && limitInput,"repeated limit edits retain the row and commit each value");
+        }
+        roster->undo();check(editor.getCountryLimits().value("POL",-1)==4,"undo restores the last edited limit");
+        check(limitResets.isEmpty(),"updating limits preserves the list model and its scroll position");
+        editor.reject();
+    }
     QString error;
     auto profile=AthleteProfile::create();profile.name="Season";profile.surname="Athlete";profile.overall=83;profile.form=61;profile.perks={{1,-2,3}};
     auto venue=HillProfile::create();venue.name="Season hill";venue.perks={{1,-1,2,-3}};
@@ -69,6 +115,16 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
     auto oldSave=SimulationSave::getJsonObject(save);oldSave.remove("autosave-enabled");
     std::unique_ptr<SimulationSave> restoredOld(SimulationSave::getFromJson(oldSave,nullptr));
     check(restoredOld && restoredOld->getAutosaveEnabled(),"seasons saved before the toggle keep automatic saving enabled");
+    auto duplicatedIds=SimulationSave::getJsonObject(save);const auto oneList=SaveJumpersList::getJsonObject(limitsFixture);
+    duplicatedIds["jumpers-lists"]=QJsonArray{oneList,oneList};
+    std::unique_ptr<SimulationSave> normalized(SimulationSave::getFromJson(duplicatedIds,nullptr));
+    check(normalized && normalized->getJumpersLists().size()==2 && normalized->getJumpersLists()[0].getId()!=normalized->getJumpersLists()[1].getId(),"duplicate roster identities are repaired without removing either list");
+    SaveJumpersList savedRoster("Limit integration");savedRoster.setJumpers({save.getJumpersReference().first()});save.setJumpersLists({savedRoster});
+    DatabaseItemsListView *savedLists=nullptr;for(auto *list:manager.findChildren<DatabaseItemsListView *>())if(list->getType()==DatabaseItemsListView::JumpersListsItems)savedLists=list;
+    check(savedLists,"season has a saved roster list");savedLists->setupListModel();
+    QTimer::singleShot(100,&manager,[&manager]{auto *editor=manager.findChild<JumpersListEditorWindow *>();check(editor,"saved roster editor opens");editor->setCountryLimits({{"POL",3}});editor->accept();});
+    savedLists->listViewDoubleClicked(savedLists->getListModel()->index(0));
+    check(save.getJumpersListsReference().first().countryLimit("POL")==3,"accepting a roster editor saves its advisory limits in the season");
     bridge->edit(bridge->root()->values().value("id").toInt(),0);QTest::qWait(150);
     check(item(scene(&manager)->rootObject(),"seasonAutosave"),"season overview exposes the automatic saving switch");
     presentation(&manager)->grab().save(output+"/season-autosave.png");
@@ -80,6 +136,7 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
     QFile saved(QCoreApplication::applicationDirPath()+"/simulationSaves/"+saveName+".json");
     auto stored=[&](){check(saved.open(QIODevice::ReadOnly),"season autosave file is readable");const auto root=QJsonDocument::fromJson(saved.readAll()).object();saved.close();return root.value("simulation-save").toObject();};
     check(!stored().value("autosave-enabled").toBool(true),"automatic saving preference is stored in this season");
+    check(stored().value("jumpers-lists").toArray().at(0).toObject().value("country-limits").toObject().value("POL").toInt()==3,"season file stores roster country limits");
     std::unique_ptr<SimulationSave> disabledReload(SimulationSave::getFromJson(stored(),nullptr));
     check(disabledReload && !disabledReload->getAutosaveEnabled(),"disabled automatic saving survives reloading the season");
     manager.markSeasonChanged();check(!timer->isActive(),"disabled automatic saving does not start a timer");

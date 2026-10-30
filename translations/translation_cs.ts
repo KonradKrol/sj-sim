@@ -16667,6 +16667,18 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Usuń zaznaczonych</source>
             <translation>Odebrat vybrané</translation>
         </message>
+        <message>
+            <source>Ten widok nie zmienia kolejności. Aby przestawić zawodników, wybierz „Kolejność”.</source>
+            <translation>Toto zobrazení nemění pořadí. Pro změnu pořadí skokanů zvolte „Pořadí“.</translation>
+        </message>
+        <message>
+            <source>Według krajów</source>
+            <translation>Podle zemí</translation>
+        </message>
+        <message>
+            <source>Kolejność na liście</source>
+            <translation>Pořadí v seznamu</translation>
+        </message>
     </context>
     <context>
         <name>RosterPresets</name>
@@ -16829,6 +16841,34 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <location filename="../source/UI/Quick/RosterWorkspace.qml" line="63" />
             <source>Zamknij</source>
             <translation>Zavřít</translation>
+        </message>
+        <message>
+            <source>Kolejność</source>
+            <translation>Pořadí</translation>
+        </message>
+        <message>
+            <source>Według krajów</source>
+            <translation>Podle zemí</translation>
+        </message>
+        <message>
+            <source>Limity</source>
+            <translation>Limity</translation>
+        </message>
+        <message>
+            <source>Limity krajów</source>
+            <translation>Limity zemí</translation>
+        </message>
+        <message>
+            <source>Wybrani zawodnicy</source>
+            <translation>Vybraní skokani</translation>
+        </message>
+        <message>
+            <source>Limity (%1)</source>
+            <translation>Limity (%1)</translation>
+        </message>
+        <message>
+            <source>Liczba krajów z przekroczonym limitem: %1</source>
+            <translation>Počet zemí překračujících limit: %1</translation>
         </message>
     </context>
     <context>
@@ -22988,6 +23028,37 @@ Technický klíč: %4</translation>
         <message>
             <source>Wyłączony</source>
             <translation>Vypnuto</translation>
+        </message>
+    </context>
+    <context>
+        <name>RosterLimits</name>
+        <message>
+            <source>Limity krajów</source>
+            <translation>Limity zemí</translation>
+        </message>
+        <message>
+            <source>Pomocnicze limity nie blokują wyboru. Puste pole oznacza brak limitu.</source>
+            <translation>Orientační limity neomezují výběr. Prázdné pole znamená bez limitu.</translation>
+        </message>
+        <message>
+            <source>Wybrano: %1</source>
+            <translation>Vybráno: %1</translation>
+        </message>
+        <message>
+            <source>Przekroczono: %1 / %2</source>
+            <translation>Překročen limit: %1 / %2</translation>
+        </message>
+        <message>
+            <source>Bez limitu</source>
+            <translation>Bez limitu</translation>
+        </message>
+        <message>
+            <source>Limit kraju %1</source>
+            <translation>Limit pro %1</translation>
+        </message>
+        <message>
+            <source>Nie ma jeszcze zawodników, dla których można ustawić limit.</source>
+            <translation>Zatím nejsou žádní skokani, pro které lze nastavit limit.</translation>
         </message>
     </context>
 </TS>

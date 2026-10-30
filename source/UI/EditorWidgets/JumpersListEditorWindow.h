@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QString>
 #include <QAction>
+#include <QMap>
 #include "../DatabaseEditor/DatabaseItemsListView.h"
 
 namespace Ui {
@@ -37,7 +38,10 @@ private:
     QVector<Jumper *> selectedJumpers;
     QVector<Jumper *> unselectedJumpers;
     QVector<Jumper *> allJumpers;
+    QMap<QString,int> countryLimits;
 public:
+    QMap<QString,int> getCountryLimits() const { return countryLimits; }
+    void setCountryLimits(const QMap<QString,int> &limits) { countryLimits=limits; }
     QVector<Jumper *> getSelectedJumpers() const;
     QVector<Jumper *> & getSelectedJumpersReference();
     void setSelectedJumpers(const QVector<Jumper *> &newSelectedJumpers);

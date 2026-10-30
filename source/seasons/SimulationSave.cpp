@@ -219,8 +219,12 @@ SimulationSave * SimulationSave::getFromJson(QJsonObject obj, IdentifiableObject
 
     array = obj.value("jumpers-lists").toArray();
     QVector<SaveJumpersList> lists;
-    for(const auto &value : qAsConst(array))
-        lists.append(SaveJumpersList::getFromJson(value.toObject(), storage));
+    QSet<QString> listIds;
+    for(const auto &value : qAsConst(array)) {
+        auto list=SaveJumpersList::getFromJson(value.toObject(), storage);
+        while(listIds.contains(list.getId()))list.reassignId();
+        listIds.insert(list.getId());lists.append(list);
+    }
     save->setJumpersLists(lists);
 
     save->setActualSeason(static_cast<Season *>(storage->get(obj.value("actual-season-id").toString())));

@@ -16666,6 +16666,18 @@ Check that you selected the correct file.</translation>
             <source>Zmień filtry, aby zobaczyć zawodników z listy.</source>
             <translation>Change filters to see jumpers from the list.</translation>
         </message>
+        <message>
+            <source>Ten widok nie zmienia kolejności. Aby przestawić zawodników, wybierz „Kolejność”.</source>
+            <translation>This view does not change the order. Select “Order” to rearrange jumpers.</translation>
+        </message>
+        <message>
+            <source>Według krajów</source>
+            <translation>By country</translation>
+        </message>
+        <message>
+            <source>Kolejność na liście</source>
+            <translation>List order</translation>
+        </message>
     </context>
     <context>
         <name>RosterPresets</name>
@@ -16828,6 +16840,34 @@ Check that you selected the correct file.</translation>
             <location filename="../source/UI/Quick/RosterWorkspace.qml" line="63" />
             <source>Zamknij</source>
             <translation>Close</translation>
+        </message>
+        <message>
+            <source>Kolejność</source>
+            <translation>Order</translation>
+        </message>
+        <message>
+            <source>Według krajów</source>
+            <translation>By country</translation>
+        </message>
+        <message>
+            <source>Limity</source>
+            <translation>Limits</translation>
+        </message>
+        <message>
+            <source>Limity krajów</source>
+            <translation>Country limits</translation>
+        </message>
+        <message>
+            <source>Wybrani zawodnicy</source>
+            <translation>Selected jumpers</translation>
+        </message>
+        <message>
+            <source>Limity (%1)</source>
+            <translation>Limits (%1)</translation>
+        </message>
+        <message>
+            <source>Liczba krajów z przekroczonym limitem: %1</source>
+            <translation>Countries over their limit: %1</translation>
         </message>
     </context>
     <context>
@@ -22987,6 +23027,37 @@ Technical key: %4</translation>
         <message>
             <source>Wyłączony</source>
             <translation>Off</translation>
+        </message>
+    </context>
+    <context>
+        <name>RosterLimits</name>
+        <message>
+            <source>Limity krajów</source>
+            <translation>Country limits</translation>
+        </message>
+        <message>
+            <source>Pomocnicze limity nie blokują wyboru. Puste pole oznacza brak limitu.</source>
+            <translation>Advisory limits do not block selection. An empty field means no limit.</translation>
+        </message>
+        <message>
+            <source>Wybrano: %1</source>
+            <translation>Selected: %1</translation>
+        </message>
+        <message>
+            <source>Przekroczono: %1 / %2</source>
+            <translation>Over limit: %1 / %2</translation>
+        </message>
+        <message>
+            <source>Bez limitu</source>
+            <translation>No limit</translation>
+        </message>
+        <message>
+            <source>Limit kraju %1</source>
+            <translation>Limit for %1</translation>
+        </message>
+        <message>
+            <source>Nie ma jeszcze zawodników, dla których można ustawić limit.</source>
+            <translation>There are no jumpers to set a limit for yet.</translation>
         </message>
     </context>
 </TS>
