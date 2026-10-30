@@ -47,18 +47,8 @@ ColumnLayout {
     Label { text: qsTr("Pierwsze kwalifikacje"); color: Theme.muted; font.pointSize: Theme.caption }
     SChoice { id: first; objectName: "weekend-first-qualification"; Layout.fillWidth: true; model: [qsTr("Piątek · dwa treningi przed kwalifikacjami"),qsTr("Sobota · przed pierwszym konkursem")]; Accessible.name: qsTr("Dzień pierwszych kwalifikacji"); onActivated: weekend.invalidate() }
     Label { text: qsTr("Niedziela"); color: Theme.muted; font.pointSize: Theme.caption }
-    SChoice { id: sunday; objectName: "weekend-sunday"; Layout.fillWidth: true; model: [qsTr("Osobne kwalifikacje"),first.currentIndex===0 ? qsTr("Bierz kwalifikacje z piątku + rozegraj serię próbną") : qsTr("Bierz kwalifikacje z soboty + rozegraj serię próbną")]; Accessible.name: qsTr("Kwalifikacje do niedzielnego konkursu"); onModelChanged: Qt.callLater(function(){sunday.currentIndex=weekend.sharedSunday?1:0}); onActivated: {weekend.sharedSunday=currentIndex===1;weekend.invalidate()}
-        implicitHeight: Math.max(Theme.controlHeight,contentItem.implicitHeight+topPadding+bottomPadding)
-        contentItem: Text { text: sunday.displayText; font: sunday.font; color: Theme.ink; wrapMode: Text.WordWrap; verticalAlignment: Text.AlignVCenter }
-        delegate: ItemDelegate {
-            width: sunday.popup.width
-            implicitHeight: Math.max(Theme.controlHeight,contentItem.implicitHeight+topPadding+bottomPadding)
-            highlighted: sunday.highlightedIndex===index
-            contentItem: Text { text: modelData; font: sunday.font; color: Theme.ink; wrapMode: Text.WordWrap; verticalAlignment: Text.AlignVCenter }
-            background: Rectangle { color: parent.highlighted ? Theme.selection : Theme.surface }
-        }
-    }
-    Label { visible: weekend.sharedSunday; text: qsTr("Oba konkursy korzystają z pierwszych kwalifikacji."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+    SChoice { id: sunday; objectName: "weekend-sunday"; Layout.fillWidth: true; model: [qsTr("Osobne kwalifikacje"),first.currentIndex===0 ? qsTr("Kwalifikacje z piątku") : qsTr("Kwalifikacje z soboty")]; Accessible.name: qsTr("Kwalifikacje do niedzielnego konkursu"); onModelChanged: Qt.callLater(function(){sunday.currentIndex=weekend.sharedSunday?1:0}); onActivated: {weekend.sharedSunday=currentIndex===1;weekend.invalidate()} }
+    Label { visible: weekend.sharedSunday; text: qsTr("Oba konkursy korzystają z tych samych kwalifikacji. W niedzielę odbędzie się seria próbna."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     Label { visible: !date.error && !previewTimer.running && !weekend.backend.weekendPreview.length || weekend.added; text: weekend.added ? weekend.feedback : weekend.backend.message; color: weekend.added ? Theme.accent : Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     ColumnLayout {
         visible: weekend.backend.weekendPreview.length>0; Layout.fillWidth: true; spacing: 10

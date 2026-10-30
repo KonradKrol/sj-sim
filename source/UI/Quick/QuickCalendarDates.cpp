@@ -79,16 +79,16 @@ QVariantList QuickCalendar::dateWarnings() const
     for(auto *event:mains()){
         const auto date=event->getScheduledDate();if(!date.isValid()){++missing;continue;}
         const int number=mains().indexOf(event)+1;
-        if(previous.isValid() && date<previous)warnings.append(tr("Konkurs %1 ma datę wcześniejszą niż poprzedni. Symulacja nadal używa kolejności listy.").arg(number));
+        if(previous.isValid() && date<previous)warnings.append(tr("Konkurs %1 ma datę wcześniejszą niż poprzedni konkurs. Zmień daty lub kolejność — konkursy odbywają się w kolejności listy.").arg(number));
         previous=date;
         const auto venue=event->getHill()?event->getHill()->getName():QString();
-        if(venues.contains(date) && venues.value(date)!=venue)warnings.append(tr("%1: zawody w różnych miejscowościach tego samego dnia.").arg(dateText(date.toString(Qt::ISODate))));
+        if(venues.contains(date) && venues.value(date)!=venue)warnings.append(tr("%1: konkursy odbywają się w różnych miejscowościach tego samego dnia. Sprawdź, czy taki plan jest zamierzony.").arg(dateText(date.toString(Qt::ISODate))));
         venues.insert(date,venue);
         auto *source=event->getAdvancementCompetition();
-        if(source && source->getScheduledDate().isValid() && source->getScheduledDate()>date)warnings.append(tr("Konkurs %1: kwalifikacje mają późniejszą datę.").arg(number));
-        for(auto *training:event->getTrainings())if(training->getScheduledDate().isValid() && training->getScheduledDate()>date){warnings.append(tr("Konkurs %1: trening ma późniejszą datę niż zawody.").arg(number));break;}
+        if(source && source->getScheduledDate().isValid() && source->getScheduledDate()>date)warnings.append(tr("Kwalifikacje do konkursu %1 zaplanowano po konkursie. Zmień ich datę.").arg(number));
+        for(auto *training:event->getTrainings())if(training->getScheduledDate().isValid() && training->getScheduledDate()>date){warnings.append(tr("Trening do konkursu %1 zaplanowano po konkursie. Zmień jego datę.").arg(number));break;}
     }
-    if(missing)warnings.prepend(tr("Bez daty: %1 konkursów. Możesz uzupełnić je zbiorczo.").arg(missing));
+    if(missing)warnings.prepend(tr("%1 konkursów nie ma daty. Możesz ustalić ich terminy w szybkim planowaniu.").arg(missing));
     return warnings;
 }
 void QuickCalendar::discardDatePlan()

@@ -1546,6 +1546,14 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <source>Pokaż konkursy bez daty (%1)</source>
             <translation>Zobrazit závody bez data (%1)</translation>
         </message>
+        <message>
+            <source>Pokaż mniej ostrzeżeń</source>
+            <translation>Zobrazit méně upozornění</translation>
+        </message>
+        <message>
+            <source>Pokaż pozostałe ostrzeżenia (%1)</source>
+            <translation>Zobrazit zbývající upozornění (%1)</translation>
+        </message>
     </context>
     <context>
         <name>CalendarDatePlanner</name>
@@ -1799,6 +1807,22 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
         <message>
             <source>Piątek → sobota → niedziela → kolejny piątek.</source>
             <translation>Pátek → sobota → neděle → další pátek.</translation>
+        </message>
+        <message>
+            <source>Szybkie planowanie</source>
+            <translation>Rychlé plánování</translation>
+        </message>
+        <message>
+            <source>Ustal wiele terminów</source>
+            <translation>Nastavit více termínů</translation>
+        </message>
+        <message>
+            <source>Pokaż mniej ostrzeżeń</source>
+            <translation>Zobrazit méně upozornění</translation>
+        </message>
+        <message>
+            <source>Pokaż pozostałe ostrzeżenia (%1)</source>
+            <translation>Zobrazit zbývající upozornění (%1)</translation>
         </message>
     </context>
     <context>
@@ -2382,6 +2406,18 @@ li.checked::marker { content: "\2612"; }
             <source>Następny weekend możesz dodać od razu — data przesunie się o tydzień.</source>
             <translation>Další víkend můžete přidat ihned; datum se posune o týden.</translation>
         </message>
+        <message>
+            <source>Kwalifikacje z piątku</source>
+            <translation>Páteční kvalifikace</translation>
+        </message>
+        <message>
+            <source>Kwalifikacje z soboty</source>
+            <translation>Sobotní kvalifikace</translation>
+        </message>
+        <message>
+            <source>Oba konkursy korzystają z tych samych kwalifikacji. W niedzielę odbędzie się seria próbna.</source>
+            <translation>Oba závody používají stejnou kvalifikaci. V neděli se uskuteční zkušební kolo.</translation>
+        </message>
     </context>
     <context>
         <name>CalendarWorkspace</name>
@@ -2629,6 +2665,10 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="156" />
             <source>Utwórz kalendarz</source>
             <translation>Vytvořit kalendář</translation>
+        </message>
+        <message>
+            <source>Szybkie planowanie</source>
+            <translation>Rychlé plánování</translation>
         </message>
     </context>
     <context>
@@ -15833,6 +15873,26 @@ Ověřte, že jste vybrali správný soubor.</translation>
         <message>
             <source>Seria próbna nie może odbyć się po konkursie %1.</source>
             <translation>Zkušební kolo se nemůže konat po závodě %1.</translation>
+        </message>
+        <message>
+            <source>Konkurs %1 ma datę wcześniejszą niż poprzedni konkurs. Zmień daty lub kolejność — konkursy odbywają się w kolejności listy.</source>
+            <translation>Závod %1 má datum před předchozím závodem. Změňte data nebo pořadí; závody probíhají v pořadí seznamu.</translation>
+        </message>
+        <message>
+            <source>%1: konkursy odbywają się w różnych miejscowościach tego samego dnia. Sprawdź, czy taki plan jest zamierzony.</source>
+            <translation>%1: závody jsou naplánovány na stejný den v různých místech. Zkontrolujte, zda je to záměr.</translation>
+        </message>
+        <message>
+            <source>Kwalifikacje do konkursu %1 zaplanowano po konkursie. Zmień ich datę.</source>
+            <translation>Kvalifikace pro závod %1 je naplánována po závodu. Změňte její datum.</translation>
+        </message>
+        <message>
+            <source>Trening do konkursu %1 zaplanowano po konkursie. Zmień jego datę.</source>
+            <translation>Trénink pro závod %1 je naplánován po závodu. Změňte jeho datum.</translation>
+        </message>
+        <message>
+            <source>%1 konkursów nie ma daty. Możesz ustalić ich terminy w szybkim planowaniu.</source>
+            <translation>%1 závodů nemá datum. Termíny můžete nastavit pomocí rychlého plánování.</translation>
         </message>
     </context>
     <context>

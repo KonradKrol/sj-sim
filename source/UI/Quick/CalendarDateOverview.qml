@@ -8,6 +8,7 @@ ScrollView {
     property var backend
     property string month: backend.suggestedDate
     property string selectedDay: month
+    property bool allWarnings: false
     readonly property bool compact: availableWidth<680
     readonly property var page: {var events=backend.events;return backend.monthData(month)}
     readonly property var dayEvents: {var events=backend.events;return events.filter(function(e){return e.date===overview.selectedDay})}
@@ -31,6 +32,22 @@ ScrollView {
                 Label { text: qsTr("%1 konkursów w miesiącu · %2 bez daty w sezonie").arg(overview.page.count).arg(overview.page.undated); color: Theme.headerMuted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 SButton { text: qsTr("Pierwsze zawody"); inverse: true; enabled: !!overview.page.firstEvent; onClicked: {overview.month=overview.page.firstEvent;overview.selectedDay=overview.month} }
             }
+        }
+        Repeater {
+            model: overview.allWarnings ? overview.backend.dateWarnings : overview.backend.dateWarnings.slice(0, 3)
+            Pane {
+                id: warningCard
+                required property string modelData
+                Layout.fillWidth: true
+                padding: Theme.dp(10)
+                background: Rectangle { color: Qt.rgba(Theme.warning.r, Theme.warning.g, Theme.warning.b, 0.12); radius: Theme.dp(6); border.color: Theme.warning }
+                contentItem: Label { text: warningCard.modelData; color: Theme.warning; font.pointSize: Theme.body; wrapMode: Text.WordWrap }
+            }
+        }
+        SButton {
+            visible: overview.backend.dateWarnings.length > 3
+            text: overview.allWarnings ? qsTr("Pokaż mniej ostrzeżeń") : qsTr("Pokaż pozostałe ostrzeżenia (%1)").arg(overview.backend.dateWarnings.length - 3)
+            onClicked: overview.allWarnings = !overview.allWarnings
         }
         CalendarDateField { Layout.fillWidth: true; backend: overview.backend; name: "month-jump"; label: qsTr("Przejdź do daty"); value: overview.selectedDay; onCommitted: function(iso){overview.selectedDay=iso;overview.month=iso} }
         Label { text: overview.compact ? qsTr("Agenda miesiąca · wybierz zawody, aby je edytować") : qsTr("Wybierz dzień, aby zobaczyć szczegóły lub przypisać zaznaczone konkursy."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
@@ -100,6 +117,5 @@ ScrollView {
             }
         }
         SButton { visible: overview.page.undated>0; text: qsTr("Pokaż konkursy bez daty (%1)").arg(overview.page.undated); Layout.fillWidth: true; onClicked: {overview.backend.selectUndated();overview.editEvent("")} }
-        Repeater { model: overview.backend.dateWarnings; Label { required property string modelData; text: "! "+modelData; color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap } }
     }
 }

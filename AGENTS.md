@@ -8,6 +8,10 @@ For all UI work, prioritize these requirements from the project owner:
    excessive decoration. Preserve readability in light and dark themes.
 3. **Clarity**: purpose and scope must be apparent before interaction. Use direct,
    conservative Polish labels, visible context and established interaction patterns.
+4. **Low cognitive load**: remove visual noise and redundant information. Use
+   spacing to group related controls and separate unrelated decisions.
+5. **Understandable language**: explain actions, warnings and consequences in
+   plain language, without requiring knowledge of implementation details.
 
 Hierarchy and clarity take precedence over decoration. Maintain the expressive
 alpine identity, compact desktop layout and usability on small laptop screens.

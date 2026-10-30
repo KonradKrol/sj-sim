@@ -1546,6 +1546,14 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <source>dziś</source>
             <translation>today</translation>
         </message>
+        <message>
+            <source>Pokaż mniej ostrzeżeń</source>
+            <translation>Show fewer warnings</translation>
+        </message>
+        <message>
+            <source>Pokaż pozostałe ostrzeżenia (%1)</source>
+            <translation>Show remaining warnings (%1)</translation>
+        </message>
     </context>
     <context>
         <name>CalendarDatePlanner</name>
@@ -1799,6 +1807,22 @@ But to keep you from getting too cheerful, your computer has been infected with 
         <message>
             <source>Piątek → sobota → niedziela → kolejny piątek.</source>
             <translation>Friday → Saturday → Sunday → next Friday.</translation>
+        </message>
+        <message>
+            <source>Szybkie planowanie</source>
+            <translation>Quick scheduling</translation>
+        </message>
+        <message>
+            <source>Ustal wiele terminów</source>
+            <translation>Set multiple dates</translation>
+        </message>
+        <message>
+            <source>Pokaż mniej ostrzeżeń</source>
+            <translation>Show fewer warnings</translation>
+        </message>
+        <message>
+            <source>Pokaż pozostałe ostrzeżenia (%1)</source>
+            <translation>Show remaining warnings (%1)</translation>
         </message>
     </context>
     <context>
@@ -2382,6 +2406,18 @@ li.checked::marker { content: "\2612"; }
             <source>Następny weekend możesz dodać od razu — data przesunie się o tydzień.</source>
             <translation>You can add another weekend immediately; the date will move forward one week.</translation>
         </message>
+        <message>
+            <source>Kwalifikacje z piątku</source>
+            <translation>Friday qualification</translation>
+        </message>
+        <message>
+            <source>Kwalifikacje z soboty</source>
+            <translation>Saturday qualification</translation>
+        </message>
+        <message>
+            <source>Oba konkursy korzystają z tych samych kwalifikacji. W niedzielę odbędzie się seria próbna.</source>
+            <translation>Both competitions use the same qualification. A trial round takes place on Sunday.</translation>
+        </message>
     </context>
     <context>
         <name>CalendarWorkspace</name>
@@ -2629,6 +2665,10 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/CalendarWorkspace.qml" line="100" />
             <source>Zaplanuj terminy</source>
             <translation>Schedule dates</translation>
+        </message>
+        <message>
+            <source>Szybkie planowanie</source>
+            <translation>Quick scheduling</translation>
         </message>
     </context>
     <context>
@@ -15832,6 +15872,26 @@ Check that you selected the correct file.</translation>
         <message>
             <source>Seria próbna nie może odbyć się po konkursie %1.</source>
             <translation>The trial round cannot take place after competition %1.</translation>
+        </message>
+        <message>
+            <source>Konkurs %1 ma datę wcześniejszą niż poprzedni konkurs. Zmień daty lub kolejność — konkursy odbywają się w kolejności listy.</source>
+            <translation>Competition %1 is dated before the previous competition. Change the dates or order; competitions follow the list order.</translation>
+        </message>
+        <message>
+            <source>%1: konkursy odbywają się w różnych miejscowościach tego samego dnia. Sprawdź, czy taki plan jest zamierzony.</source>
+            <translation>%1: competitions are scheduled in different locations on the same day. Check whether this is intentional.</translation>
+        </message>
+        <message>
+            <source>Kwalifikacje do konkursu %1 zaplanowano po konkursie. Zmień ich datę.</source>
+            <translation>The qualification for competition %1 is scheduled after the competition. Change its date.</translation>
+        </message>
+        <message>
+            <source>Trening do konkursu %1 zaplanowano po konkursie. Zmień jego datę.</source>
+            <translation>Training for competition %1 is scheduled after the competition. Change its date.</translation>
+        </message>
+        <message>
+            <source>%1 konkursów nie ma daty. Możesz ustalić ich terminy w szybkim planowaniu.</source>
+            <translation>%1 competitions have no date. Use quick scheduling to set their dates.</translation>
         </message>
     </context>
     <context>

@@ -11,17 +11,34 @@ Pane {
     property bool future: false
     property bool weekendMode: false
     property bool requested: false
+    property bool allWarnings: false
     function invalidate(){requested=false;backend.discardDatePlan()}
     padding: 12
     background: Surface { fillColor: Theme.surface; sweep: 20 }
     contentItem: ColumnLayout {
         spacing: 12
-        Label { id: arrivalHeading; text: qsTr("Zaplanuj terminy"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.title; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        Label { id: arrivalHeading; text: qsTr("Szybkie planowanie"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.title; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        Repeater {
+            model: planner.allWarnings ? planner.backend.dateWarnings : planner.backend.dateWarnings.slice(0, 3)
+            Pane {
+                id: warningCard
+                required property string modelData
+                Layout.fillWidth: true
+                padding: Theme.dp(10)
+                background: Rectangle { color: Qt.rgba(Theme.warning.r, Theme.warning.g, Theme.warning.b, 0.12); radius: Theme.dp(6); border.color: Theme.warning }
+                contentItem: Label { text: warningCard.modelData; color: Theme.warning; font.pointSize: Theme.body; wrapMode: Text.WordWrap }
+            }
+        }
+        SButton {
+            visible: planner.backend.dateWarnings.length > 3
+            text: planner.allWarnings ? qsTr("Pokaż mniej ostrzeżeń") : qsTr("Pokaż pozostałe ostrzeżenia (%1)").arg(planner.backend.dateWarnings.length - 3)
+            onClicked: planner.allWarnings = !planner.allWarnings
+        }
         GridLayout {
             Layout.fillWidth: true; columns: planner.width>Theme.dp(450)?2:1
             columnSpacing: Theme.dp(8); rowSpacing: Theme.dp(8)
             Repeater {
-                model: [{title:qsTr("Ustal terminy"),detail:qsTr("Zmień daty konkursów w kalendarzu.")},{title:qsTr("Dodaj weekend"),detail:qsTr("Utwórz konkursy i kwalifikacje.")}]
+                model: [{title:qsTr("Ustal wiele terminów"),detail:qsTr("Zmień daty konkursów w kalendarzu.")},{title:qsTr("Dodaj weekend"),detail:qsTr("Utwórz konkursy i kwalifikacje.")}]
                 ItemDelegate {
                     required property int index
                     required property var modelData
@@ -41,12 +58,10 @@ Pane {
                 }
             }
         }
-        Label { text: planner.weekendMode ? qsTr("Dodawanie nowych konkursów") : qsTr("Daty istniejących konkursów"); color: Theme.ink; font.pointSize: Theme.body; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-        Label { visible: !planner.weekendMode; text: qsTr("Ustal lub zmień daty konkursów, które są już w kalendarzu."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         CalendarWeekendPlanner { visible: planner.weekendMode; Layout.fillWidth: true; backend: planner.backend }
         ColumnLayout {
             visible: !planner.weekendMode
-            Layout.fillWidth: true; spacing: 8
+            Layout.fillWidth: true; spacing: Theme.dp(12)
             Label { text: qsTr("Konkursy do zaplanowania"); color: Theme.muted; font.pointSize: Theme.caption }
             SChoice { objectName: "date-plan-future"; Layout.fillWidth: true; model: [qsTr("Zaznaczone (%1)").arg(planner.backend.selection.count),qsTr("Wszystkie nierozegrane")]; currentIndex: planner.future?1:0; Accessible.name: qsTr("Konkursy do zaplanowania"); onActivated: {planner.future=currentIndex===1;planner.invalidate()} }
             CheckHelp { Layout.fillWidth: true; controlName: "date-plan-missing"; text: qsTr("Tylko brakujące daty"); checked: missing.checked; explanation: qsTr("Konkursy z ustaloną datą zachowają swoje terminy."); onClicked: {missing.checked=value;planner.invalidate()} }
@@ -106,10 +121,9 @@ Pane {
                 Repeater { model: [-7,-1,1,7]; SButton { required property int modelData; text: qsTr("%1 dni").arg((modelData>0?"+":"")+modelData); enabled: planner.backend.selection.count>0 && !planner.backend.selection.locked; onClicked: planner.backend.shiftDates(modelData) } }
             }
             SButton {
-                text: qsTr("Więcej opcji"); quiet: true; onClicked: more.open()
+                text: qsTr("Więcej opcji") + " ▾"; onClicked: more.open()
                 ActionMenu { id: more; entries: [{id:"clear",text:qsTr("Usuń daty zaznaczonych"),enabled:planner.backend.selection.count>0&&!planner.backend.selection.locked},{id:"missing",text:qsTr("Zaznacz konkursy bez daty")},{id:"sort",text:qsTr("Uporządkuj nierozegrane według dat")}]; onSelected: {if(entry.id==="clear")planner.backend.clearDates();else if(entry.id==="missing")planner.backend.selectUndated();else planner.backend.sortDates()} }
             }
-            Repeater { model: planner.backend.dateWarnings; Label { required property string modelData; text: "! "+modelData; color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap } }
         }
     }
 }

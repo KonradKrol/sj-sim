@@ -75,7 +75,7 @@ Item {
                 RowLayout {
                     Layout.fillWidth: true
                     SButton { text: qsTr("Lista i edycja"); primary: true; onClicked: calendar.monthView=false }
-                    SButton { text: qsTr("Zaplanuj terminy"); onClicked: {calendar.monthView=false;calendar.editing=true;eventInspector.section=3} }
+                    SButton { text: qsTr("Szybkie planowanie"); onClicked: {calendar.monthView=false;calendar.editing=true;eventInspector.section=3} }
                 }
                 CalendarDateOverview { Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; backend: calendar.backend; onEditEvent: function(eventId){if(eventId.length)calendar.backend.select(eventId);calendar.monthView=false;calendar.editing=true;eventInspector.section=0} }
             }
@@ -98,7 +98,7 @@ Item {
                     Layout.fillWidth: true; spacing: 6
                     SButton { objectName: "calendarEnableDates"; visible: !calendar.backend.datesEnabled && (!calendar.tight || calendar.backend.canEnableDates); text: calendar.backend.canEnableDates ? qsTr("Włącz daty zawodów") : qsTr("Sezon bez dat"); enabled: calendar.backend.canEnableDates; hint: qsTr("Daty można włączyć przed rozpoczęciem sezonu. Ustawienie znajdziesz też w ustawieniach symulacji."); onClicked: calendar.backend.setDatesEnabled(true) }
                     SButton { objectName: "calendarMonthToggle"; visible: calendar.backend.datesEnabled; text: calendar.monthView ? qsTr("Lista i edycja") : qsTr("Widok kalendarza"); primary: calendar.monthView; onClicked: calendar.monthView=!calendar.monthView }
-                    SButton { objectName: "calendarPlanDates"; visible: calendar.backend.datesEnabled; text: qsTr("Zaplanuj terminy"); onClicked: {calendar.monthView=false;calendar.editing=true;eventInspector.section=3} }
+                    SButton { objectName: "calendarPlanDates"; visible: calendar.backend.datesEnabled; text: qsTr("Szybkie planowanie"); onClicked: {calendar.monthView=false;calendar.editing=true;eventInspector.section=3} }
                 }
                 Flow {
                     visible: calendar.backend.events.length>0 && (!calendar.compact || !calendar.editing)
