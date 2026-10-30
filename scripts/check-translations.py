@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Report incomplete Qt translations and broken substitution arguments."""
 import collections
+import json
 import pathlib
 import re
 import sys
@@ -36,6 +37,17 @@ for language in ("en", "cs"):
     for context, source in mismatched:
         print(f"  {context}: {source!r}")
     failed |= bool(missing or mismatched)
+# This registry shares descriptions across all generated parameter rows. Checking
+# TS entries alone cannot catch new source strings that were never extracted.
+registry = (root / "source/playground/PlaygroundModel.cpp").read_text()
+registry_keys = {("QObject", json.loads('"' + value + '"'), "")
+                 for value in re.findall(r'QObject::tr\("((?:[^"\\]|\\.)*)"\)', registry)}
+for language in ("en", "cs"):
+    absent = sorted(registry_keys - catalog_keys[language])
+    print(f"{language}: {len(absent)} missing laboratory source strings")
+    for context, source, comment in absent:
+        print(f"  {context}: {source!r}")
+    failed |= bool(absent)
 if catalog_keys['en'] != catalog_keys['cs']:
     print('English and Czech catalogs contain different source keys')
     failed = True

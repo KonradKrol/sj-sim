@@ -782,6 +782,10 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <source>Wybierz jeden perk z każdej pary lub pozostaw ją pustą. Trzy opcje siły są widoczne obok siebie. Kliknij zaznaczoną opcję ponownie, aby usunąć perk. Opis: najedź lub naciśnij F1.</source>
             <translation>Vyberte jeden perk z každé dvojice, nebo žádný. Všechny tři možnosti síly jsou zobrazeny vedle sebe. Opětovným kliknutím na vybranou možnost perk odeberete. Popis zobrazíte najetím myši nebo klávesou F1.</translation>
         </message>
+        <message>
+            <source>Wybierz jeden perk z pary i jeden z czterech poziomów. Kliknij wybrany perk lub poziom ponownie, aby go usunąć. Opis: najedź lub naciśnij F1.</source>
+            <translation>Vyberte jeden perk z dvojice a jednu ze čtyř úrovní. Opětovným kliknutím na vybraný perk nebo úroveň perk odeberete. Popis: najeďte myší nebo stiskněte F1.</translation>
+        </message>
     </context>
     <context>
         <name>AthletePatchSet</name>
@@ -14039,6 +14043,770 @@ Ověřte, že jste vybrali správný soubor.</translation>
         <message>
             <source>Nie udało się utworzyć kopii zapasowej paczki.</source>
             <translation>Nepodařilo se vytvořit záložní kopii balíčku.</translation>
+        </message>
+        <message>
+            <source>Udział OVR w bazowej jakości skoku na K odniesienia; resztę stanowi forma. Np. 0,70 przy OVR 80 i formie 60 daje jakość 74 przed perkami i losowością.</source>
+            <translation>Podíl OVR na základní kvalitě skoku na referenčním K; zbytek tvoří forma. Např. 0,70 při OVR 80 a formě 60 dává kvalitu 74 před perky a náhodou.</translation>
+        </message>
+        <message>
+            <source>Rozmiar skoczni, na którym obowiązuje ustawiony udział OVR i formy. Np. przy K odniesienia 110 forma waży więcej na K140, a mniej na K80.</source>
+            <translation>Velikost můstku, na které platí nastavený poměr OVR a formy. Např. při referenčním K110 má forma větší vliv na K140 a menší na K80.</translation>
+        </message>
+        <message>
+            <source>Określa, jak szybko udział formy zmienia się wraz z rozmiarem skoczni. Np. skala 100 daje łagodniejszą różnicę między K90 i K120 niż skala 20.</source>
+            <translation>Jak rychle se podíl formy mění s velikostí můstku. Např. hodnota 100 dává mírnější rozdíl mezi K90 a K120 než hodnota 20.</translation>
+        </message>
+        <message>
+            <source>Maksymalna zmiana udziału formy między skocznią odniesienia a bardzo małą lub dużą. Np. 0,05 pozwala zmienić udział formy o najwyżej 5 punktów procentowych.</source>
+            <translation>Největší změna podílu formy mezi referenčním a velmi malým či velkým můstkem. Např. 0,05 dovoluje změnu nejvýše o 5 procentních bodů.</translation>
+        </message>
+        <message>
+            <source>Rozdziela siłę losowych strat i bonusów, nie szansę ich wystąpienia. Np. 0,65 zmienia wylosowane −10 na −13, a +10 na +7 przed wpływem perków.</source>
+            <translation>Rozděluje velikost náhodných ztrát a bonusů, nikoli jejich pravděpodobnost. Např. 0,65 změní vylosovaných −10 na −13 a +10 na +7 před vlivem perků.</translation>
+        </message>
+        <message>
+            <source>Wzmacnia wpływ charakteru skoczni na Lotnika i Specjalistę małych skoczni. Np. 0 wyłącza dodatkową preferencję skoczni; specjalizacja zależna od K pozostaje.</source>
+            <translation>Zesiluje dodatečnou preferenci můstku pro Specialistu na lety nebo Specialistu na malé můstky. Např. 0 tuto preferenci vypne; specializace podle K zůstává.</translation>
+        </message>
+        <message>
+            <source>Wybiera rozkład losowej jakości skoków. Np. Laplace’a daje więcej skoków blisko średniej i więcej skrajnych wpadek lub wyskoków niż rozkład normalny.</source>
+            <translation>Volí rozdělení náhodné kvality skoků. Např. Laplaceovo rozdělení dává více skoků blízko průměru i více krajních chyb či mimořádných skoků než normální rozdělení.</translation>
+        </message>
+        <message>
+            <source>Jakość skoku odpowiadająca odległości odniesienia przy bazowej belce i bez opadów. Np. zwiększenie z 70 do 80 sprawia, że jakość 70 zaczyna poniżej tej odległości.</source>
+            <translation>Kvalita odpovídající referenční vzdálenosti při základním nájezdu bez srážek. Např. zvýšení ze 70 na 80 způsobí, že kvalita 70 začne pod touto vzdáleností.</translation>
+        </message>
+        <message>
+            <source>Początkowy zapas lotu jako część K, zanim zadziałają wiatr i geometria zeskoku. Np. 1,10 na K120 daje zapas 132 m; końcowa odległość może być inna.</source>
+            <translation>Počáteční rezerva letu jako část K, před vlivem větru a geometrie můstku. Např. 1,10 na K120 dává rezervu 132 m; konečná vzdálenost může být jiná.</translation>
+        </message>
+        <message>
+            <source>Metry początkowego zapasu za punkt jakości powyżej odniesienia na K120. Np. 0,8 i jakość wyższa o 10 dają dodatkowe 8 m zapasu przed wpływem wiatru.</source>
+            <translation>Metry počáteční rezervy za bod kvality nad referencí na K120. Např. 0,8 a kvalita vyšší o 10 bodů dávají 8 m rezervy navíc před vlivem větru.</translation>
+        </message>
+        <message>
+            <source>Belka, przy której silnik wyznacza bazowy zapas lotu. Np. odniesienie 10 i start z 12 oznaczają doliczenie wpływu dwóch belek.</source>
+            <translation>Nájezdové okno, pro které motor určuje základní rezervu letu. Např. reference 10 a start z 12 přidají vliv dvou oken.</translation>
+        </message>
+        <message>
+            <source>Zmiana początkowego zapasu za jedną belkę na K120, bez wiatru w plecy. Np. 2,0 i podniesienie o 3 belki dają dodatkowe 6 m zapasu.</source>
+            <translation>Změna počáteční rezervy za jedno okno na K120 bez zadního větru. Např. 2,0 a zvýšení o 3 okna dávají 6 m rezervy navíc.</translation>
+        </message>
+        <message>
+            <source>Wzmacnia wpływ różnicy belek przy wietrze w plecy. Np. 0,1 przy 2 m/s w plecy zwiększa ten wpływ o 20%.</source>
+            <translation>Zesiluje vliv rozdílu nájezdových oken při zadním větru. Např. 0,1 při 2 m/s do zad tento vliv zvýší o 20 %.</translation>
+        </message>
+        <message>
+            <source>Odległość między kolejnymi obliczeniami lotu; mniejsza daje dokładniejszą, ale wolniejszą symulację. Np. krok 0,5 m wymaga około dwa razy więcej obliczeń niż 1 m.</source>
+            <translation>Vzdálenost mezi výpočty letu; menší krok je přesnější, ale pomalejší. Např. krok 0,5 m vyžaduje přibližně dvakrát více výpočtů než 1 m.</translation>
+        </message>
+        <message>
+            <source>Czas, po którym skoczek dociera do K w modelu pogody. Np. 4 s oznacza napotkanie wiatru przy K cztery sekundy po starcie.</source>
+            <translation>Čas, za který skokan dorazí ke K v modelu počasí. Např. 4 s znamenají setkání s větrem u K čtyři sekundy po startu.</translation>
+        </message>
+        <message>
+            <source>Siła wpływu wiatru pod narty i w plecy na podtrzymywanie lotu. Np. zwiększenie wartości wzmacnia zarówno pomoc wiatru pod narty, jak straty w wietrze w plecy.</source>
+            <translation>Síla vlivu předního a zadního větru na udržení letu. Např. zvýšení zesílí pomoc předního větru i ztráty při větru do zad.</translation>
+        </message>
+        <message>
+            <source>Siła strat wywołanych wiatrem bocznym. Np. zwiększenie wartości skróci skoki przy 2 m/s z boku, ale nie zmieni skoków przy samym wietrze pod narty.</source>
+            <translation>Síla ztrát způsobených bočním větrem. Např. zvýšení zkrátí skoky při 2 m/s z boku, ale nezmění skoky se samotným předním větrem.</translation>
+        </message>
+        <message>
+            <source>Dystans, na którym skoczek stopniowo reaguje na zmianę wiatru. Np. 20 m łagodzi wpływ krótkiego podmuchu bardziej niż 2 m.</source>
+            <translation>Vzdálenost, na které skokan postupně reaguje na změnu větru. Např. 20 m tlumí vliv krátkého poryvu více než 2 m.</translation>
+        </message>
+        <message>
+            <source>Wpływ wiatru na początku lotu względem końca lotu. Np. zwiększenie tej wartości wzmacnia pomoc podmuchu tuż za progiem.</source>
+            <translation>Vliv větru na začátku letu vůči jeho konci. Např. zvýšení zesílí pomoc poryvu těsně za odrazem.</translation>
+        </message>
+        <message>
+            <source>Wpływ wiatru pod koniec lotu względem początku lotu. Np. zwiększenie tej wartości pozwala późnemu podmuchowi mocniej podtrzymać skok.</source>
+            <translation>Vliv větru na konci letu vůči jeho začátku. Např. zvýšení umožní pozdnímu poryvu výrazněji podpořit skok.</translation>
+        </message>
+        <message>
+            <source>Maksymalne ograniczenie utraty zapasu dzięki korzystnemu wiatrowi. Np. 0,8 pozwala ograniczyć zużycie zapasu do 20% wartości bez tej pomocy.</source>
+            <translation>Největší snížení spotřeby rezervy díky příznivému větru. Např. 0,8 dovoluje snížit spotřebu na 20 % hodnoty bez této pomoci.</translation>
+        </message>
+        <message>
+            <source>Siła wiatru, przy której losowe różnice reakcji stają się wyraźne. Np. zwiększenie z 1 do 3 m/s ogranicza różnice reakcji na słabe podmuchy.</source>
+            <translation>Síla větru, při které jsou náhodné rozdíly reakcí výrazné. Např. zvýšení z 1 na 3 m/s omezí rozdíly reakcí na slabé poryvy.</translation>
+        </message>
+        <message>
+            <source>Rozrzut wykorzystania silnego wiatru pod narty między skokami. Np. większa wartość pozwala jednemu skoczkowi zyskać na tym samym podmuchu więcej niż drugiemu; 0 wyłącza ten rozrzut.</source>
+            <translation>Rozptyl využití silného předního větru mezi skoky. Např. vyšší hodnota umožní jednomu skokanovi získat ze stejného poryvu více než druhému; 0 tento rozptyl vypne.</translation>
+        </message>
+        <message>
+            <source>Rozrzut strat w silnym wietrze w plecy. Np. większa wartość pozwala dwóm podobnym skokom stracić różnie mimo tych samych warunków; 0 wyłącza ten rozrzut.</source>
+            <translation>Rozptyl ztrát při silném zadním větru. Např. vyšší hodnota dovoluje podobným skokům ztratit různě ve stejných podmínkách; 0 tento rozptyl vypne.</translation>
+        </message>
+        <message>
+            <source>Rozrzut strat w silnym wietrze bocznym. Np. większa wartość daje bardziej zróżnicowane reakcje na ten sam boczny podmuch; 0 wyłącza ten rozrzut.</source>
+            <translation>Rozptyl ztrát při silném bočním větru. Např. vyšší hodnota dává odlišnější reakce na stejný boční poryv; 0 tento rozptyl vypne.</translation>
+        </message>
+        <message>
+            <source>Siła wiatru pod narty, od której dalsze wzmacnianie wiatru daje coraz mniej korzyści. Np. niższa wartość sprawia, że wzrost z 3 do 4 m/s pomaga mniej; 0 wyłącza nasycenie.</source>
+            <translation>Síla předního větru, od které další zesílení přináší stále menší užitek. Např. nižší hodnota omezí přínos změny ze 3 na 4 m/s; 0 nasycení vypne.</translation>
+        </message>
+        <message>
+            <source>Siła wiatru, wokół której narasta ryzyko utraty podtrzymania lotu. Np. większa wartość przesuwa to ryzyko w stronę silniejszych podmuchów; nie tworzy ostrego progu.</source>
+            <translation>Síla větru, kolem které narůstá riziko ztráty podpory letu. Např. vyšší hodnota posune riziko k silnějším poryvům; nejde o ostrou hranici.</translation>
+        </message>
+        <message>
+            <source>Ostrość narastania ryzyka przy sile wiatru ustawionej jako próg złych zdarzeń. Np. większa wartość mocniej rozdziela słabszy, bezpieczniejszy wiatr od silniejszego, bardziej ryzykownego.</source>
+            <translation>Ostrost růstu rizika kolem prahu nepříznivých událostí. Např. vyšší hodnota výrazněji oddělí slabší, bezpečnější vítr od silnějšího, rizikovějšího.</translation>
+        </message>
+        <message>
+            <source>Miejsce rozpoczęcia ograniczania lotu przez wypłaszczenie. Np. 0,9 przy początku wypłaszczenia 140 m uruchamia opór od 126 m.</source>
+            <translation>Místo, od kterého zploštění doskočiště omezuje let. Např. 0,9 při začátku zploštění ve 140 m spouští odpor od 126 m.</translation>
+        </message>
+        <message>
+            <source>Maksymalny zasięg lotu za początkiem wypłaszczenia, jako część K. Np. 0,1 na K120 dodaje do tego miejsca 12 m użytecznego zeskoku.</source>
+            <translation>Největší dosah letu za začátkem zploštění jako část K. Např. 0,1 na K120 přidá za toto místo 12 m použitelného doskočiště.</translation>
+        </message>
+        <message>
+            <source>Siła ograniczania lotu przy wypłaszczeniu zeskoku. Np. większa wartość utrudnia dolecenie daleko za HS mimo dużego zapasu po wybiciu.</source>
+            <translation>Síla omezení letu při zploštění doskočiště. Např. vyšší hodnota ztíží let daleko za HS i při velké rezervě po odrazu.</translation>
+        </message>
+        <message>
+            <source>Liczba odcinków w zapisie wiatru napotkanego podczas skoku. Np. 8 daje bardziej szczegółowy podgląd niż 4; nie jest to krok obliczania lotu.</source>
+            <translation>Počet úseků záznamu větru během skoku. Např. 8 dává podrobnější přehled než 4; nejde o krok výpočtu letu.</translation>
+        </message>
+        <message>
+            <source>Losowe przesunięcie wszystkich not w tym samym skoku. Np. dodatnie losowanie podniesie wspólnie oceny pięciu sędziów, zanim pojawią się różnice między nimi.</source>
+            <translation>Náhodný posun společný všem známkám jednoho skoku. Např. kladné losování zvýší všech pět známek před přidáním rozdílů mezi rozhodčími.</translation>
+        </message>
+        <message>
+            <source>Rozrzut oceny pojedynczego sędziego wokół wspólnej oceny skoku. Np. większa wartość częściej daje zestawy takie jak 17,5 / 18,0 / 18,5 zamiast pięciu równych not.</source>
+            <translation>Rozptyl známky jednoho rozhodčího kolem společného hodnocení skoku. Např. vyšší hodnota častěji dává 17,5 / 18,0 / 18,5 místo pěti stejných známek.</translation>
+        </message>
+        <message>
+            <source>Maksymalna dodatkowa kara w nocie każdego sędziego za trudne, dalekie lądowanie. Np. zwiększenie z 1 do 2 może mocniej obniżyć noty za skoki przy wypłaszczeniu.</source>
+            <translation>Největší dodatečná srážka každého rozhodčího za obtížný, daleký dopad. Např. zvýšení z 1 na 2 může více snížit známky při zploštění doskočiště.</translation>
+        </message>
+        <message>
+            <source>Bazowy wiatr wzdłuż skoczni, do którego dodają się podmuchy i lokalne różnice. Np. +1 oznacza 1 m/s pod narty, a −1 oznacza 1 m/s w plecy.</source>
+            <translation>Základní vítr podél můstku před poryvy a místními rozdíly. Např. +1 znamená 1 m/s proti skokanovi a −1 znamená 1 m/s do zad.</translation>
+        </message>
+        <message>
+            <source>Bazowy wiatr boczny; znak wybiera stronę, a wielkość siłę. Np. −2 i +2 oznaczają 2 m/s z przeciwnych stron.</source>
+            <translation>Základní boční vítr; znaménko určuje stranu a velikost sílu. Např. −2 a +2 znamenají 2 m/s z opačných stran.</translation>
+        </message>
+        <message>
+            <source>Siła wahań wiatru podczas konkursu, bez zmiany jego bazowego kierunku i siły. Np. większa wartość daje większą różnicę między warunkami dwóch kolejnych skoczków.</source>
+            <translation>Síla kolísání větru během závodu bez změny základního směru a síly. Např. vyšší hodnota dává větší rozdíly mezi podmínkami po sobě jdoucích skokanů.</translation>
+        </message>
+        <message>
+            <source>Siła różnic wiatru między miejscami nad zeskokiem. Np. większa wartość ułatwia uzyskanie dobrych warunków przy progu i słabych przy lądowaniu w tym samym momencie.</source>
+            <translation>Síla rozdílů větru mezi místy nad doskočištěm. Např. vyšší hodnota usnadní vznik dobrého větru u odrazu a špatného u dopadu ve stejnou chvíli.</translation>
+        </message>
+        <message>
+            <source>Czas utrzymywania się podobnych warunków. Np. 60 s daje wolniejsze zmiany niż 10 s, bez zwiększania samej siły wiatru.</source>
+            <translation>Jak dlouho trvají podobné podmínky. Např. 60 s dává pomalejší změny než 10 s bez zesílení samotného větru.</translation>
+        </message>
+        <message>
+            <source>Długość obszaru o podobnym wietrze. Np. 80 m daje rozleglejsze obszary podobnych warunków niż 20 m.</source>
+            <translation>Délka oblasti s podobným větrem. Např. 80 m vytváří rozsáhlejší oblasti podobných podmínek než 20 m.</translation>
+        </message>
+        <message>
+            <source>Siła dodatkowych, krótkich podmuchów. Np. zwiększenie z 0,5 do 1 m/s wzmacnia podmuchy, bez zwiększania ich częstości.</source>
+            <translation>Síla dodatečných krátkých poryvů. Např. zvýšení z 0,5 na 1 m/s zesílí poryvy bez zvýšení jejich četnosti.</translation>
+        </message>
+        <message>
+            <source>Szansa aktywnego podmuchu przy losowaniu w modelu wiatru. Np. 0,20 oznacza 20%, ale nie oznacza, że dokładnie 20% skoczków trafi na podmuch.</source>
+            <translation>Pravděpodobnost aktivního poryvu při losování v modelu větru. Např. 0,20 znamená 20 %, nikoli že přesně 20 % skokanů zasáhne poryv.</translation>
+        </message>
+        <message>
+            <source>Skala czasu podmuchów. Np. większa wartość rozciąga podmuchy w czasie, zamiast zwiększać ich siłę.</source>
+            <translation>Časové měřítko poryvů. Např. vyšší hodnota protáhne poryvy v čase místo zvýšení jejich síly.</translation>
+        </message>
+        <message>
+            <source>Długość obszaru objętego jednym podmuchem. Np. 40 m pozwala temu samemu podmuchowi wpływać na dłuższy fragment lotu niż 10 m.</source>
+            <translation>Délka oblasti zasažené jedním poryvem. Např. 40 m dovoluje stejnému poryvu ovlivnit delší část letu než 10 m.</translation>
+        </message>
+        <message>
+            <source>Górny limit łącznej siły wiatru po zsumowaniu jego składników. Np. limit 3 m/s nie pozwala modelowi wygenerować silniejszego wiatru.</source>
+            <translation>Horní limit celkové síly větru po sečtení složek. Např. limit 3 m/s nedovolí modelu vytvořit silnější vítr.</translation>
+        </message>
+        <message>
+            <source>Siła zmian głównej tendencji wiatru podczas konkursu. Np. większa wartość ułatwia przejście od okresu wiatru pod narty do okresu wiatru w plecy.</source>
+            <translation>Síla změn hlavní tendence větru během závodu. Např. vyšší hodnota usnadní přechod z období předního větru do období zadního větru.</translation>
+        </message>
+        <message>
+            <source>Długość okresu podobnej tendencji wiatru. Np. 180 s utrzymuje podobne tło dłużej niż 30 s.</source>
+            <translation>Délka období podobné tendence větru. Např. 180 s udrží podobné pozadí déle než 30 s.</translation>
+        </message>
+        <message>
+            <source>Czas płynnej zmiany jednej tendencji w drugą. Np. 20 s daje łagodniejsze przejście od wiatru w plecy do wiatru pod narty niż 2 s.</source>
+            <translation>Čas plynulého přechodu mezi tendencemi větru. Např. 20 s dává mírnější změnu mezi předním a zadním větrem než 2 s.</translation>
+        </message>
+        <message>
+            <source>Różnica między spokojnymi i burzliwymi okresami w tym samym konkursie. Np. 0 wyłącza ten podział, a większa wartość mocniej oddziela oba rodzaje okresów.</source>
+            <translation>Rozdíl mezi klidnými a bouřlivými obdobími téhož závodu. Např. 0 toto rozdělení vypne; vyšší hodnota oba typy výrazněji oddělí.</translation>
+        </message>
+        <message>
+            <source>Czas utrzymywania się spokojniejszego lub bardziej burzliwego okresu. Np. 120 s daje dłuższe epizody niż 20 s.</source>
+            <translation>Délka klidnějšího nebo bouřlivějšího období. Např. 120 s dává delší úseky než 20 s.</translation>
+        </message>
+        <message>
+            <source>Czas drobnych, szybkich wahań wiatru. Np. większa wartość spowalnia te wahania bez zwiększania ich siły.</source>
+            <translation>Časové měřítko drobných rychlých změn větru. Např. vyšší hodnota je zpomalí bez zvýšení jejich síly.</translation>
+        </message>
+        <message>
+            <source>Umiejętności analizowanego skoczka w skali 1–100. Np. podniesienie OVR z 70 do 80 zwykle wydłuży jego skoki przy tej samej formie.</source>
+            <translation>Dovednosti sledovaného skokana na škále 1–100. Např. zvýšení OVR ze 70 na 80 obvykle prodlouží skoky při stejné formě.</translation>
+        </message>
+        <message>
+            <source>Bieżąca dyspozycja analizowanego skoczka w skali 1–100. Np. forma 90 zamiast 50 poprawia bazową jakość skoku; siłę wpływu określa udział formy w silniku.</source>
+            <translation>Aktuální forma sledovaného skokana na škále 1–100. Např. forma 90 místo 50 zlepší základní kvalitu; sílu vlivu určuje podíl formy v motoru.</translation>
+        </message>
+        <message>
+            <source>Styl lądowania analizowanego skoczka: 0 Niechlujne, 4 Stylista. Np. zmiana z 1 na 3 poprawia noty, ale nie zmniejsza ryzyka upadku.</source>
+            <translation>Styl dopadu sledovaného skokana: 0 Nedbalý, 4 Stylista. Např. změna z 1 na 3 zlepší známky, ale nesníží riziko pádu.</translation>
+        </message>
+        <message>
+            <source>Odległość początku wypłaszczenia, od którego trudniej kontynuować lot i lądować. Np. przesunięcie ze 140 na 145 m pozwala bezpieczniej osiągać dalsze odległości.</source>
+            <translation>Vzdálenost začátku zploštění, od které je obtížnější pokračovat v letu i dopadnout. Např. posun ze 140 na 145 m umožní bezpečněji dosahovat delších vzdáleností.</translation>
+        </message>
+        <message>
+            <source>Rozmiar skoczni według punktu K; w labie zmienia proporcjonalnie także HS i początek wypłaszczenia. Np. K120→K60 zmniejsza te odległości o połowę; współczynniki punktacji ustawiasz osobno.</source>
+            <translation>Velikost můstku podle K; v laboratoři úměrně mění i HS a začátek zploštění. Např. K120→K60 tyto vzdálenosti zmenší na polovinu; bodování se nastavuje zvlášť.</translation>
+        </message>
+        <message>
+            <source>Belka startowa eksperymentu; wyższa zwykle wydłuża skoki. Np. 12 ustawia konkretną belkę, a 0 dobiera wspólną belkę automatycznie według wariantu Balans z gry.</source>
+            <translation>Startovní nájezdové okno experimentu; vyšší obvykle prodlužuje skoky. Např. 12 nastaví konkrétní okno a 0 automaticky zvolí společné okno podle varianty Vyvážení ze hry.</translation>
+        </message>
+        <message>
+            <source>Belka odniesienia do rekompensaty, bez zmiany belki startowej. Np. przy odniesieniu 12 i starcie z 10 nalicza się rekompensatę za dwie belki; 0 używa wspólnej bazy.</source>
+            <translation>Referenční okno pro kompenzaci bez změny startovního okna. Např. reference 12 a start z 10 počítají kompenzaci za dvě okna; 0 použije společný základ.</translation>
+        </message>
+        <message>
+            <source>Liczba stopni obniżenia belki przez trenera względem belki jury. Np. 2 przy belce jury 12 daje start z 10; rekompensata zależy m.in. od reguły 95% HS.</source>
+            <translation>Počet oken, o která trenér sníží nájezd vůči jury. Např. 2 při okně jury 12 znamená start z 10; kompenzace závisí mj. na pravidle 95 % HS.</translation>
+        </message>
+        <message>
+            <source>Określa, czy między skokami upływa czas pogody. Np. Kontrolowane warunki daje wszystkim tę samą chwilę, a Przebieg konkursu pozwala trafić na różne podmuchy.</source>
+            <translation>Určuje, zda mezi skoky plyne čas počasí. Např. Kontrolované podmínky dávají všem stejný okamžik, zatímco Průběh závodu dovoluje různé poryvy.</translation>
+        </message>
+        <message>
+            <source>Czas pogody między startami kolejnych skoczków. Np. 30 s daje starty w chwilach 0, 30, 60 s; nie oznacza rzeczywistego oczekiwania przed ekranem.</source>
+            <translation>Čas počasí mezi starty skokanů. Např. 30 s dává starty v časech 0, 30 a 60 s; nejde o skutečné čekání před obrazovkou.</translation>
+        </message>
+        <message>
+            <source>Ryzyko DSQ pojedynczego skoku przy włączonych dyskwalifikacjach. Np. 0,01 oznacza średnio około jednej dyskwalifikacji na 100 prób, nie gwarantowaną liczbę.</source>
+            <translation>Riziko DSQ jednoho skoku při zapnutých diskvalifikacích. Např. 0,01 znamená v průměru asi jednu diskvalifikaci na 100 pokusů, nikoli zaručený počet.</translation>
+        </message>
+        <message>
+            <source>Miejsce połowy wzrostu ryzyka danego błędu, jako część odległości początku wypłaszczenia. Np. 1,05 przy wypłaszczeniu od 140 m oznacza środek wzrostu ryzyka przy 147 m.</source>
+            <translation>Místo poloviny růstu rizika dané chyby, vztažené k začátku zploštění. Např. 1,05 při zploštění od 140 m dává střed růstu rizika ve 147 m.</translation>
+        </message>
+        <message>
+            <source>Odległość, na której ryzyko błędu przechodzi od niskiego do wysokiego. Np. większa wartość rozciąga ten wzrost na więcej metrów, zamiast po prostu wszędzie obniżać ryzyko.</source>
+            <translation>Vzdálenost, na které riziko chyby přechází z nízkého na vysoké. Např. vyšší hodnota rozloží růst na více metrů místo snížení rizika všude.</translation>
+        </message>
+        <message>
+            <source>Ryzyko danego błędu przed doliczeniem wpływu odległości i bocznego wiatru. Np. 0,01 oznacza bazowe 1%; podpórka i dwie nogi są oceniane dopiero po wykluczeniu poważniejszych błędów.</source>
+            <translation>Riziko dané chyby před vlivem vzdálenosti a bočního větru. Např. 0,01 znamená základní 1 %; podpěrka a dopad na obě nohy se hodnotí až po vyloučení závažnějších chyb.</translation>
+        </message>
+        <message>
+            <source>Maksymalny dodatkowy wzrost ryzyka błędu wraz z odległością. Np. 0,20 może dodać do 20 punktów procentowych przed uwzględnieniem kolejności błędów.</source>
+            <translation>Největší dodatečný růst rizika chyby se vzdáleností. Např. 0,20 může přidat až 20 procentních bodů před zohledněním pořadí chyb.</translation>
+        </message>
+        <message>
+            <source>Dodatkowe ryzyko tego błędu za 1 m/s wiatru bocznego. Np. 0,01 przy 2 m/s dodaje 2 punkty procentowe przed uwzględnieniem kolejności błędów.</source>
+            <translation>Dodatečné riziko této chyby za 1 m/s bočního větru. Např. 0,01 při 2 m/s přidá 2 procentní body před zohledněním pořadí chyb.</translation>
+        </message>
+        <message>
+            <source>Początkowa nota jednego sędziego dla tej klasy stylu. Np. 18,5 ustawia bazę 18,5 pkt, od której odejmuje się kary i do której dodaje się losowe wahania.</source>
+            <translation>Počáteční známka jednoho rozhodčího pro tuto třídu stylu. Např. 18,5 nastaví základ 18,5 bodu před srážkami a náhodným kolísáním.</translation>
+        </message>
+        <message>
+            <source>Kara w nocie każdego sędziego za wskazany rodzaj lądowania. Np. 3 odejmuje każdemu sędziemu 3 pkt; nie zwiększa szansy tego błędu.</source>
+            <translation>Srážka ve známce každého rozhodčího za tento typ dopadu. Např. 3 odečte každému 3 body, ale nezvýší pravděpodobnost dané chyby.</translation>
+        </message>
+        <message>
+            <source>Maksymalne ryzyko utraty podtrzymania lotu przy bardzo silnym wietrze. Np. 0,20 oznacza limit 20%; przy słabszym wietrze ryzyko jest mniejsze.</source>
+            <translation>Největší riziko ztráty podpory letu při velmi silném větru. Např. 0,20 znamená limit 20 %; při slabším větru je riziko nižší.</translation>
+        </message>
+        <message>
+            <source>Siła straty po wylosowaniu utraty podtrzymania lotu. Np. większa wartość mocniej skróci pechowy skok, ale nie zwiększy częstości takich zdarzeń.</source>
+            <translation>Síla ztráty po vylosování ztráty podpory letu. Např. vyšší hodnota více zkrátí smolný skok, ale nezvýší četnost těchto událostí.</translation>
+        </message>
+        <message>
+            <source>Część początkowego zapasu lotu tracona za poziom śniegu. Np. 0,008 przy natężeniu 10 odbiera 8% zapasu, niekoniecznie 8% końcowej odległości.</source>
+            <translation>Část počáteční rezervy letu ztracená za úroveň sněžení. Např. 0,008 při intenzitě 10 odebere 8 % rezervy, nikoli nutně 8 % konečné vzdálenosti.</translation>
+        </message>
+        <message>
+            <source>Część zapasu lotu tracona za poziom deszczu ponad próg wpływu. Np. 0,003 i natężenie o 4 wyższe od progu dają stratę 1,2%, przed doliczeniem ulewy.</source>
+            <translation>Část rezervy letu ztracená za úroveň deště nad prahem vlivu. Např. 0,003 a intenzita o 4 nad prahem dávají ztrátu 1,2 % před přičtením lijáku.</translation>
+        </message>
+        <message>
+            <source>Natężenie deszczu, do którego nie działa zwykła strata zapasu. Np. próg 3 oznacza, że przy natężeniu 5 nalicza się stratę za 2 poziomy; ulewa ma osobny próg.</source>
+            <translation>Intenzita deště, do které běžná ztráta rezervy nepůsobí. Např. práh 3 a intenzita 5 počítají ztrátu za 2 úrovně; liják má samostatný práh.</translation>
+        </message>
+        <message>
+            <source>Natężenie deszczu, powyżej którego narasta dodatkowa strata od ulewy. Np. przy progu 7 ulewa nie dodaje straty przy natężeniu 6, ale dodaje ją przy 9.</source>
+            <translation>Intenzita deště, nad kterou narůstá dodatečná ztráta při lijáku. Např. práh 7 nedává tuto ztrátu při intenzitě 6, ale dává ji při 9.</translation>
+        </message>
+        <message>
+            <source>Dodatkowa strata zapasu lotu przy deszczu o natężeniu 10. Np. 0,15 odbiera 15% zapasu, oprócz zwykłej straty od deszczu.</source>
+            <translation>Dodatečná ztráta rezervy při dešti o intenzitě 10. Např. 0,15 odebere 15 % rezervy vedle běžné ztráty z deště.</translation>
+        </message>
+        <message>
+            <source>Określa, jak szybko narasta strata między progiem ulewy a natężeniem 10. Np. wykładnik 2 daje w połowie tego zakresu 25% maksymalnej straty, a wykładnik 1 daje 50%.</source>
+            <translation>Jak rychle roste ztráta mezi prahem lijáku a intenzitou 10. Např. exponent 2 dává v polovině rozsahu 25 % největší ztráty, exponent 1 dává 50 %.</translation>
+        </message>
+        <message>
+            <source>Prędkość przesuwania się podmuchu wzdłuż zeskoku. Np. 5 m/s przesuwa jego środek o 10 m w dwie sekundy; 0 zatrzymuje go w miejscu.</source>
+            <translation>Rychlost posunu poryvu podél doskočiště. Např. 5 m/s posune jeho střed o 10 m za dvě sekundy; 0 jej ponechá na místě.</translation>
+        </message>
+        <message>
+            <source>Wybiera zachowanie opadów w czasie. Np. Narastające stopniowo zwiększają natężenie, a Zmienne wahają się wokół ustawionej bazy.</source>
+            <translation>Volí chování srážek v čase. Např. Narůstající postupně zvyšují intenzitu, zatímco Proměnlivé kolísají kolem nastaveného základu.</translation>
+        </message>
+        <message>
+            <source>Wybiera wzór wpływu opadów na skok. Np. śnieg odbiera zapas od pierwszego poziomu, a deszcz może nie powodować straty aż do ustawionego progu.</source>
+            <translation>Volí vzorec vlivu srážek na skok. Např. sníh ubírá rezervu od první úrovně, kdežto déšť může začít působit až od nastaveného prahu.</translation>
+        </message>
+        <message>
+            <source>Początkowe natężenie opadów w skali 0–10; większe mocniej skraca skoki. Np. w trybie Stałe wartość 4 utrzymuje natężenie 4, a w trybie Silne baza wynosi co najmniej 8.</source>
+            <translation>Počáteční intenzita srážek na škále 0–10; vyšší více zkracuje skoky. Např. Stálé při 4 udržují intenzitu 4, zatímco Silné mají základ alespoň 8.</translation>
+        </message>
+        <message>
+            <source>Siła losowych zmian natężenia opadów. Np. zwiększenie wartości daje większe różnice między spokojną chwilą a silnym opadem; w trybie Stałe parametr nie działa.</source>
+            <translation>Síla náhodných změn intenzity. Např. zvýšení zvětší rozdíl mezi klidnou chvílí a silnými srážkami; v režimu Stálé nepůsobí.</translation>
+        </message>
+        <message>
+            <source>Czas utrzymywania się podobnego natężenia opadów. Np. 60 s daje wolniejsze zmiany niż 10 s, bez zmiany bazowego natężenia.</source>
+            <translation>Jak dlouho trvá podobná intenzita srážek. Např. 60 s dává pomalejší změny než 10 s bez změny základní intenzity.</translation>
+        </message>
+        <message>
+            <source>Wzrost natężenia na minutę w trybie Narastające, do limitu 10. Np. 0,5 zwiększa natężenie o 1 w dwie minuty.</source>
+            <translation>Růst intenzity za minutu v režimu Narůstající, nejvýše do 10. Např. 0,5 zvýší intenzitu o 1 za dvě minuty.</translation>
+        </message>
+        <message>
+            <source>Liczba odczytów z każdego czujnika podczas lotu. Np. 5 odczytów lepiej wychwytuje zmianę podmuchu niż 1, ale liczy się dłużej; odczyt przed startem i metoda dotychczasowa używają własnych zasad.</source>
+            <translation>Počet odečtů z každého čidla během letu. Např. 5 odečtů zachytí změnu poryvu lépe než 1, ale počítá se déle; odečet před startem a původní metoda mají vlastní pravidla.</translation>
+        </message>
+        <message>
+            <source>Długość obszaru z czujnikami, jako część K. Np. 1,2 na K120 ustawia zasięg 144 m; nie zmienia lotu, metody dotychczasowej ani pomiaru na trasie skoczka.</source>
+            <translation>Délka oblasti čidel jako část K. Např. 1,2 na K120 pokrývá 144 m; nemění let, původní metodu ani měření na dráze skokana.</translation>
+        </message>
+        <message>
+            <source>Odstęp czujników wyłącznie w metodzie Gęsta sieć czujników. Np. 5 m daje gęstszą sieć niż 20 m, do limitu 128 czujników.</source>
+            <translation>Rozestup čidel pouze v metodě Hustá síť čidel. Např. 5 m dává hustší síť než 20 m, nejvýše do 128 čidel.</translation>
+        </message>
+        <message>
+            <source>Miejsce najmocniej uwzględnianych czujników w metodzie FIS — przybliżenie. Np. 0,5 wyróżnia środek sieci, a 0,75 jej dalszą część.</source>
+            <translation>Poloha nejdůležitějších čidel v metodě FIS — přiblížení. Např. 0,5 zdůrazní střed sítě a 0,75 její vzdálenější část.</translation>
+        </message>
+        <message>
+            <source>Przewaga ważniejszych czujników nad pozostałymi w metodzie FIS — przybliżenie. Np. 0 daje wszystkim równe wagi; większa wartość wzmacnia wskazany szczyt wag.</source>
+            <translation>Převaha důležitějších čidel v metodě FIS — přiblížení. Např. 0 dává všem stejné váhy; vyšší hodnota zesílí vybraný vrchol vah.</translation>
+        </message>
+        <message>
+            <source>Wybiera perk podejścia i jego poziom; 0 usuwa perk. Np. +2 daje Błyszczy na treningach 2, a −2 daje Oszczędza siły 2; dostępne są poziomy 1–4.</source>
+            <translation>Volí perk přístupu a jeho úroveň; 0 jej odebere. Např. +2 dává Hvězdu tréninků 2 a −2 Šetří síly 2; dostupné jsou úrovně 1–4.</translation>
+        </message>
+        <message>
+            <source>Wybiera specjalizację i jej poziom; 0 usuwa perk. Np. +3 daje Lotnika 3, a −3 daje Specjalistę małych skoczni 3; dostępne są poziomy 1–4.</source>
+            <translation>Volí specializaci a její úroveň; 0 ji odebere. Např. +3 dává Specialistu na lety 3 a −3 Specialistu na malé můstky 3; dostupné jsou úrovně 1–4.</translation>
+        </message>
+        <message>
+            <source>Wybiera regularność i poziom perka; 0 usuwa perk. Np. +2 daje Regularnego 2, a −2 Nieprzewidywalnego 2 z większym rozrzutem, zwłaszcza strat; dostępne są poziomy 1–4.</source>
+            <translation>Volí pravidelnost a úroveň perku; 0 jej odebere. Např. +2 dává Vyrovnaného 2 a −2 Nepředvídatelného 2 s větším rozptylem, zejména ztrát; úrovně jsou 1–4.</translation>
+        </message>
+        <message>
+            <source>Charakter skoczni: dodatnie poziomy premiują wybicie, ujemne lot. Np. +2 wzmacnia specjalistów małych skoczni względem lotników; ręczna preferencja skoczni ma pierwszeństwo.</source>
+            <translation>Charakter můstku: kladné úrovně zvýhodňují odraz, záporné let. Např. +2 pomáhá specialistům na malé můstky vůči letcům; ruční preference má přednost.</translation>
+        </message>
+        <message>
+            <source>Łatwość dalekiego lądowania: dodatnie poziomy odsuwają wypłaszczenie, ujemne je przybliżają. Np. −3 wcześniej utrudnia dalekie skoki; ręczny początek wypłaszczenia ma pierwszeństwo.</source>
+            <translation>Snadnost dalekého dopadu: kladné úrovně posunou zploštění dál, záporné blíž. Např. −3 ztíží dlouhé skoky dříve; ruční začátek zploštění má přednost.</translation>
+        </message>
+        <message>
+            <source>Wpływ skoczni na automatycznie losowaną zmienność pogody. Np. +4 częściej daje loterię, a −4 spokojne warunki; ręczne warunki i wybrany preset pozostają bez zmian.</source>
+            <translation>Vliv můstku na automaticky losovanou proměnlivost počasí. Např. +4 častěji dává loterii a −4 klidné podmínky; ruční počasí a zvolený preset se nemění.</translation>
+        </message>
+        <message>
+            <source>Wpływ skoczni na automatycznie losowany kierunek wiatru. Np. +3 sprzyja wiatrowi pod narty, a −3 w plecy; ręczne warunki i wybrany preset pozostają bez zmian.</source>
+            <translation>Vliv můstku na automaticky losovaný směr větru. Např. +3 zvýhodňuje přední vítr a −3 zadní; ruční počasí a zvolený preset se nemění.</translation>
+        </message>
+        <message>
+            <source>Oficjalny rozmiar skoczni, używany m.in. przy rekompensacie za belkę trenera. Np. HS140 oznacza wymagane 133 m dla reguły 95% HS; wypłaszczenie ustawia się osobno.</source>
+            <translation>Oficiální velikost můstku používaná mj. pro kompenzaci za trenérské snížení nájezdu. Např. HS140 vyžaduje 133 m podle pravidla 95 % HS; zploštění se nastavuje zvlášť.</translation>
+        </message>
+        <message>
+            <source>Dodatkowa preferencja wybicia lub lotu przy działaniu specjalizacji. Np. +0,5 przesuwa charakter w stronę wybicia, a −0,5 w stronę lotu; skoczek bez specjalizacji nie zyskuje bonusu.</source>
+            <translation>Dodatečná preference odrazu či letu při specializaci. Např. +0,5 posouvá charakter k odrazu a −0,5 k letu; skokan bez specializace bonus nezíská.</translation>
+        </message>
+        <message>
+            <source>Punkty za odległość równą K, przed notami i rekompensatami. Np. wartość 60 daje za skok dokładnie na K bazowe 60 pkt.</source>
+            <translation>Body za vzdálenost přesně na K, před známkami a kompenzacemi. Např. 60 dává za skok přesně na K základních 60 bodů.</translation>
+        </message>
+        <message>
+            <source>Punkty dodawane za metr ponad K i odejmowane za metr przed K. Np. 1,8 daje za 5 m ponad K dodatkowe 9 pkt.</source>
+            <translation>Body přidané za metr za K a odečtené za metr před K. Např. 1,8 dává za 5 m nad K dalších 9 bodů.</translation>
+        </message>
+        <message>
+            <source>Rekompensata za jedną belkę obniżenia względem odniesienia. Np. 5 pkt za belkę i obniżenie o 2 dają 10 pkt, jeśli zasady pozwalają je przyznać.</source>
+            <translation>Kompenzace za jedno okno snížení vůči referenci. Např. 5 bodů za okno a snížení o 2 dávají 10 bodů, pokud je pravidla dovolují.</translation>
+        </message>
+        <message>
+            <source>Punkty odejmowane za 1 m/s zmierzonego wiatru pod narty. Np. współczynnik 8 i wiatr 1,5 m/s oznaczają odjęcie 12 pkt przy włączonej rekompensacie.</source>
+            <translation>Body odečtené za 1 m/s změřeného předního větru. Např. koeficient 8 a vítr 1,5 m/s znamenají odečtení 12 bodů při zapnuté kompenzaci.</translation>
+        </message>
+        <message>
+            <source>Punkty dodawane za 1 m/s zmierzonego wiatru w plecy. Np. współczynnik 12 i wiatr 1,5 m/s oznaczają dodanie 18 pkt przy włączonej rekompensacie.</source>
+            <translation>Body přidané za 1 m/s změřeného zadního větru. Např. koeficient 12 a vítr 1,5 m/s znamenají přidání 18 bodů při zapnuté kompenzaci.</translation>
+        </message>
+        <message>
+            <source>Rodzaj wydarzenia, który określa działanie perków podejścia i rozrzut skoków. Np. Błyszczy na treningach daje w kwalifikacjach połowę bonusu treningowego, a w konkursie karę.</source>
+            <translation>Typ události určující perky přístupu a rozptyl skoků. Např. Hvězda tréninků dává v kvalifikaci polovinu tréninkového bonusu a v závodě postih.</translation>
+        </message>
+        <message>
+            <source>Miesiąc używany tylko do automatycznego losowania opadów. Np. 1 oznacza styczeń, a 0 pomija porę roku; na półkuli południowej sezony są odwrócone.</source>
+            <translation>Měsíc pouze pro automatické losování srážek. Např. 1 znamená leden a 0 ignoruje roční období; na jižní polokouli jsou období obrácená.</translation>
+        </message>
+        <message>
+            <source>Nawierzchnia używana przy automatycznym losowaniu opadów. Np. na igelicie wylosowany opad będzie deszczem, a na śniegu możliwy jest także śnieg zależnie od miesiąca.</source>
+            <translation>Povrch pro automatické losování srážek. Např. na igelitu je vylosovanou srážkou déšť; na sněhu je podle měsíce možný i sníh.</translation>
+        </message>
+        <message>
+            <source>Środkowy OVR generowanej stawki, bez zmiany zawodników z paczki. Np. OVR 70 i rozpiętość 20 dają stawkę od 60 do 80.</source>
+            <translation>Střední OVR generované startovní listiny bez změny skokanů z balíčku. Např. OVR 70 a rozpětí 20 dávají rozsah 60–80.</translation>
+        </message>
+        <message>
+            <source>Różnica OVR między najlepszym i najsłabszym w generowanej stawce. Np. rozpiętość 30 i środek 70 dają zakres 55–85; wczytana paczka pozostaje bez zmian.</source>
+            <translation>Rozdíl OVR nejlepšího a nejslabšího generovaného skokana. Např. rozpětí 30 kolem 70 dává 55–85; načtený balíček se nemění.</translation>
+        </message>
+        <message>
+            <source>Wspólna forma pozostałych zawodników po ręcznej zmianie tego pola. Np. 60 ustawia im formę 60, także w paczce; analizowany skoczek i indywidualne poprawki mają osobne wartości.</source>
+            <translation>Společná forma ostatních skokanů po ruční změně tohoto pole. Např. 60 jim nastaví formu 60 i v balíčku; sledovaný skokan a individuální úpravy mají samostatné hodnoty.</translation>
+        </message>
+        <message>
+            <source>Wspólny styl lądowania pozostałych zawodników po ręcznej zmianie pola. Np. 4 ustawia Stylistę, także w paczce; indywidualne poprawki mają pierwszeństwo.</source>
+            <translation>Společný styl dopadu ostatních skokanů po ruční změně pole. Např. 4 nastaví Stylistu i v balíčku; individuální úpravy mají přednost.</translation>
+        </message>
+        <message>
+            <source>Włącza losowanie DSQ według ustawionego ryzyka. Np. po wyłączeniu nie będzie dyskwalifikacji nawet przy ryzyku 0,1.</source>
+            <translation>Zapíná losování DSQ podle nastaveného rizika. Např. po vypnutí nebudou diskvalifikace ani při riziku 0,1.</translation>
+        </message>
+        <message>
+            <source>Włącza punkty rekompensaty za zmierzony wiatr. Np. po wyłączeniu wiatr nadal wydłuża lub skraca lot, ale nie dodaje ani nie odejmuje punktów.</source>
+            <translation>Zapíná bodovou kompenzaci za změřený vítr. Např. po vypnutí vítr stále ovlivňuje let, ale nepřidává ani neodečítá body.</translation>
+        </message>
+        <message>
+            <source>Włącza punkty rekompensaty za różnicę belek. Np. po wyłączeniu obniżona belka nadal skraca skok, ale nie daje za to punktów.</source>
+            <translation>Zapíná bodovou kompenzaci za rozdíl oken. Např. po vypnutí nižší nájezd stále zkracuje skok, ale nedává za něj body.</translation>
+        </message>
+        <message>
+            <source>Włącza doliczanie trzech środkowych not sędziowskich. Np. noty 17 / 18 / 18 / 19 / 20 dają 55 pkt; po wyłączeniu dają 0 pkt.</source>
+            <translation>Přičítá tři prostřední známky rozhodčích. Např. 17 / 18 / 18 / 19 / 20 dávají 55 bodů; po vypnutí dávají za styl 0 bodů.</translation>
+        </message>
+        <message>
+            <source>Uzależnia rekompensatę za obniżenie belki przez trenera od 95% HS. Np. na HS140 trzeba skoczyć co najmniej 133 m; zmiana belki przez jury nie podlega tej regule.</source>
+            <translation>Podmiňuje kompenzaci za snížení trenérem dosažením 95 % HS. Např. na HS140 je třeba alespoň 133 m; změna nájezdu jury tomuto pravidlu nepodléhá.</translation>
+        </message>
+        <message>
+            <source>Wybiera sposób pomiaru średniego wiatru do rekompensaty. Np. odczyt przed startem może dać inną rekompensatę niż pomiar podczas lotu, choć skoczek trafia na ten sam wiatr.</source>
+            <translation>Volí způsob měření průměrného větru pro kompenzaci. Např. odečet před startem může dát jiné body než měření během letu, přestože skokan potká stejný vítr.</translation>
+        </message>
+        <message>
+            <source>Długość analizowanego przebiegu wiatru w sekundach. Np. 300 pokazuje pięć minut warunków, bez wydłużania samego konkursu.</source>
+            <translation>Délka analyzovaného průběhu větru v sekundách. Např. 300 zobrazí pět minut podmínek bez prodloužení závodu.</translation>
+        </message>
+        <message>
+            <source>Chwila pogody, dla której pokazuje się wiatr na całym zeskoku. Np. 60 daje przekrój minutę po początku modelu, bez przesuwania startu zawodników.</source>
+            <translation>Okamžik počasí pro zobrazení větru na celém doskočišti. Např. 60 dává průřez minutu od začátku modelu bez posunu startů skokanů.</translation>
+        </message>
+        <message>
+            <source>Miejsce nad zeskokiem, dla którego pokazuje się zmiany wiatru w czasie. Np. 100 oznacza odczyt 100 m od progu.</source>
+            <translation>Místo nad doskočištěm pro analýzu změn větru v čase. Např. 100 znamená odečet 100 m od odrazu.</translation>
+        </message>
+        <message>
+            <source>Zakres siły wiatru odpowiadający pełnemu nasyceniu kolorów mapy. Np. 2 daje skalę od −2 do +2 m/s; silniejszy wiatr zachowuje kolor skrajny.</source>
+            <translation>Rozsah síly větru odpovídající plnému nasycení barev mapy. Např. 2 dává rozsah −2 až +2 m/s; silnější vítr zachová krajní barvu.</translation>
+        </message>
+        <message>
+            <source>Liczba chwil odczytu na wykresie i mapie wiatru. Np. 101 próbek w ciągu 100 s daje odczyt co sekundę; większa liczba liczy się dłużej.</source>
+            <translation>Počet časových odečtů v grafu a mapě větru. Např. 101 vzorků za 100 s dává odečet každou sekundu; více vzorků se počítá déle.</translation>
+        </message>
+        <message>
+            <source>Liczba miejsc odczytu wzdłuż zeskoku. Np. większa liczba pokazuje węższe obszary różnego wiatru, ale zwiększa czas obliczeń.</source>
+            <translation>Počet míst odečtu podél doskočiště. Např. vyšší počet odhalí užší oblasti rozdílného větru, ale prodlouží výpočty.</translation>
+        </message>
+        <message>
+            <source>Liczba skoków używanych do analizy zależności od wiatru. Np. 1000 daje stabilniejsze rozkłady niż 100, ale wymaga więcej obliczeń.</source>
+            <translation>Počet skoků pro analýzu závislostí na větru. Např. 1000 dává stabilnější rozdělení než 100, ale vyžaduje více výpočtů.</translation>
+        </message>
+        <message>
+            <source>Zachowanie udziału wybicia poza najmniejszym i największym ustawionym K. Np. Stały udział zachowuje proporcję ze skrajnej kotwicy, a Liniowe przedłużenie kontynuuje zmianę, do granic 0–1.</source>
+            <translation>Podíl odrazu mimo nejmenší a největší nastavené K. Např. Stálý zachová poměr krajního bodu, zatímco Lineární pokračuje ve změně, v mezích 0–1.</translation>
+        </message>
+        <message>
+            <source>Rozrzut losowej jakości dla wskazanego rodzaju wydarzenia, w punktach jakości. Np. 0 usuwa bazowe wahania jakości, a większa wartość daje większe bonusy i straty.</source>
+            <translation>Rozptyl náhodné kvality daného typu události v bodech kvality. Např. 0 odstraní základní kolísání kvality a vyšší hodnota dává větší bonusy i ztráty.</translation>
+        </message>
+        <message>
+            <source>Siła specjalizacji na wskazanym poziomie perka. Np. przy 70% lotu współczynnik 10 daje Lotnikowi +4 punkty jakości, a specjaliście małych skoczni −4.</source>
+            <translation>Síla specializace na této úrovni perku. Např. při 70 % letu koeficient 10 dává letci +4 body kvality a specialistovi na malé můstky −4.</translation>
+        </message>
+        <message>
+            <source>Bonus jakości za Błyszczy na treningach na wskazanym poziomie. Np. 4 daje +4 w treningu i próbie oraz +2 w kwalifikacjach; kara konkursowa jest osobna.</source>
+            <translation>Bonus kvality za Hvězdu tréninků na této úrovni. Např. 4 dává +4 v tréninku a zkušebním kole a +2 v kvalifikaci; závodní postih je samostatný.</translation>
+        </message>
+        <message>
+            <source>Kara jakości w konkursie za Błyszczy na treningach na wskazanym poziomie. Np. 2 odejmuje 2 punkty jakości, bez zmiany bonusu treningowego.</source>
+            <translation>Postih kvality v závodě za Hvězdu tréninků na této úrovni. Např. 2 odečte 2 body kvality bez změny tréninkového bonusu.</translation>
+        </message>
+        <message>
+            <source>Kara jakości w treningu i próbie za Oszczędza siły na wskazanym poziomie. Np. 3 odejmuje 3 punkty jakości; w kwalifikacjach i konkursie ta kara nie działa.</source>
+            <translation>Postih kvality v tréninku a zkušebním kole za Šetří síly na této úrovni. Např. 3 odečte 3 body kvality; v kvalifikaci a závodě tento postih nepůsobí.</translation>
+        </message>
+        <message>
+            <source>Mnożnik rozrzutu jakości w treningu i próbie za Oszczędza siły. Np. 1,5 zwiększa rozrzut o połowę, a 1 pozostawia go bez zmian.</source>
+            <translation>Násobitel rozptylu kvality v tréninku a zkušebním kole za Šetří síly. Např. 1,5 zvětší rozptyl o polovinu a 1 jej nezmění.</translation>
+        </message>
+        <message>
+            <source>Mnożnik wielkości losowych strat za Regularny na wskazanym poziomie. Np. 0,5 zmienia stratę −10 w −5, bez zmiany dodatnich losowań.</source>
+            <translation>Násobitel velikosti náhodných ztrát za Vyrovnaného na této úrovni. Např. 0,5 změní −10 na −5 bez změny kladných losování.</translation>
+        </message>
+        <message>
+            <source>Mnożnik wielkości losowych bonusów za Regularny na wskazanym poziomie. Np. 0,5 zmienia bonus +10 w +5, bez zmiany ujemnych losowań.</source>
+            <translation>Násobitel velikosti náhodných bonusů za Vyrovnaného na této úrovni. Např. 0,5 změní +10 na +5 bez změny záporných losování.</translation>
+        </message>
+        <message>
+            <source>Mnożnik wielkości losowych strat za Nieprzewidywalny na wskazanym poziomie. Np. 1,5 zmienia stratę −10 w −15, bez zwiększania szansy ujemnego losowania.</source>
+            <translation>Násobitel velikosti náhodných ztrát za Nepředvídatelného na této úrovni. Např. 1,5 změní −10 na −15 bez zvýšení pravděpodobnosti záporného losování.</translation>
+        </message>
+        <message>
+            <source>Mnożnik wielkości losowych bonusów za Nieprzewidywalny na wskazanym poziomie. Np. 1,2 zmienia bonus +10 w +12, bez zwiększania szansy dodatniego losowania.</source>
+            <translation>Násobitel velikosti náhodných bonusů za Nepředvídatelného na této úrovni. Např. 1,2 změní +10 na +12 bez zvýšení pravděpodobnosti kladného losování.</translation>
+        </message>
+        <message>
+            <source>Dotyczy pozostałych zawodników, także z paczki; indywidualne poprawki mają pierwszeństwo.</source>
+            <translation>Platí pro ostatní skokany včetně balíčku; individuální úpravy mají přednost.</translation>
+        </message>
+        <message>
+            <source>Miejsce lokalnej korekty wiatru jako część K; wiatr między punktami zmienia się płynnie. Np. 0,5 na K120 umieszcza korektę 60 m od progu.</source>
+            <translation>Místo místní korekce větru jako část K; mezi body se vítr mění plynule. Např. 0,5 na K120 umístí korekci 60 m od odrazu.</translation>
+        </message>
+        <message>
+            <source>Lokalna zmiana bazowego wiatru wzdłuż skoczni, płynnie łączona z sąsiednimi punktami. Np. baza −1 m/s i korekta +2 dają w tym miejscu +1 m/s przed podmuchami.</source>
+            <translation>Místní změna základního větru podél můstku, plynule spojená se sousedními body. Např. základ −1 m/s a korekce +2 dávají zde +1 m/s před poryvy.</translation>
+        </message>
+        <message>
+            <source>Lokalna zmiana bocznego wiatru, płynnie łączona z sąsiednimi punktami. Np. baza +1 m/s i korekta −2 dają −1 m/s z przeciwnej strony przed podmuchami.</source>
+            <translation>Místní změna bočního větru, plynule spojená se sousedními body. Např. základ +1 m/s a korekce −2 dávají −1 m/s z opačné strany před poryvy.</translation>
+        </message>
+        <message>
+            <source>Zakres bazowej siły wiatru przed podmuchami i lokalnymi różnicami.</source>
+            <translation>Rozsah základní síly větru před poryvy a místními rozdíly.</translation>
+        </message>
+        <message>
+            <source>Zakres siły rzadszego wariantu presetu Cisza, wybieranego w 15% losowań.</source>
+            <translation>Rozsah síly větru pro vzácnější variantu presetu Klid, volenou v 15 % losování.</translation>
+        </message>
+        <message>
+            <source>Zakres kierunku: w presetach kierunkowych jest odchyleniem, w Ciszy i Loterii pełnym kątem.</source>
+            <translation>Rozsah směru: u směrových presetů odchylka, u Klidu a Loterie celý úhel.</translation>
+        </message>
+        <message>
+            <source>Zakres losowych lokalnych korekt wiatru; większe korekty bardziej różnicują miejsca nad zeskokiem.</source>
+            <translation>Rozsah náhodných místních korekcí větru; větší korekce více odliší místa nad doskočištěm.</translation>
+        </message>
+        <message>
+            <source>Zakres siły przeciwnego wiatru między częściami zeskoku w presecie Różne kierunki na zeskoku.</source>
+            <translation>Rozsah síly opačného větru mezi částmi doskočiště v presetu Různé směry na doskočišti.</translation>
+        </message>
+        <message>
+            <source>Zakres siły wahań wiatru w czasie; większe wartości mocniej różnicują warunki kolejnych skoczków.</source>
+            <translation>Rozsah síly kolísání větru v čase; vyšší hodnoty více odliší podmínky po sobě jdoucích skokanů.</translation>
+        </message>
+        <message>
+            <source>Zakres siły różnic wiatru wzdłuż zeskoku; większe wartości dają mniej jednolite warunki lotu.</source>
+            <translation>Rozsah síly rozdílů větru podél doskočiště; vyšší hodnoty dávají méně jednotné podmínky letu.</translation>
+        </message>
+        <message>
+            <source>Zakres siły zmian głównej tendencji wiatru; większe wartości pozwalają na silniejsze zmiany tła.</source>
+            <translation>Rozsah síly změn hlavní tendence větru; vyšší hodnoty dovolují silnější změny pozadí.</translation>
+        </message>
+        <message>
+            <source>Zakres czasu utrzymywania się podobnej tendencji wiatru; większe wartości wydłużają takie okresy.</source>
+            <translation>Rozsah času podobné tendence větru; vyšší hodnoty prodlužují tato období.</translation>
+        </message>
+        <message>
+            <source>Zakres siły dodatkowych podmuchów, bez zmiany ich częstości.</source>
+            <translation>Rozsah síly dodatečných poryvů bez změny jejich četnosti.</translation>
+        </message>
+        <message>
+            <source>Zakres szansy aktywnego podmuchu; wartość 0,2 oznacza 20% przy losowaniu w modelu.</source>
+            <translation>Rozsah pravděpodobnosti aktivního poryvu; 0,2 znamená 20 % při losování v modelu.</translation>
+        </message>
+        <message>
+            <source>Zakres czasu podobnych warunków; większe wartości spowalniają wahania wiatru.</source>
+            <translation>Rozsah času podobných podmínek; vyšší hodnoty zpomalují kolísání větru.</translation>
+        </message>
+        <message>
+            <source>Zakres różnicy między spokojnymi i burzliwymi okresami konkursu; większe wartości mocniej je rozdzielają.</source>
+            <translation>Rozsah rozdílu mezi klidnými a bouřlivými obdobími závodu; vyšší hodnoty je více oddělují.</translation>
+        </message>
+        <message>
+            <source>Zakres długości obszaru o podobnym wietrze, jako część K; wartość 0,5 na K120 oznacza 60 m.</source>
+            <translation>Rozsah délky oblasti podobného větru jako část K; hodnota 0,5 na K120 znamená 60 m.</translation>
+        </message>
+        <message>
+            <source>Zakres szerokości podmuchu, jako część K; wartość 0,3 na K120 oznacza 36 m.</source>
+            <translation>Rozsah šířky poryvu jako část K; hodnota 0,3 na K120 znamená 36 m.</translation>
+        </message>
+        <message>
+            <source>Zakres czasu płynnego przechodzenia między tendencjami; większe wartości łagodzą zmianę wiatru.</source>
+            <translation>Rozsah času plynulého přechodu mezi tendencemi; vyšší hodnoty zmírňují změnu větru.</translation>
+        </message>
+        <message>
+            <source>Ustawiasz minimum losowania w tym presecie. Np. minimum 1 i maksimum 2 pozwalają wylosować wartość od 1 do 2 w jednostce pola.</source>
+            <translation>Nastavujete minimum losování v tomto presetu. Např. minimum 1 a maximum 2 dovolují hodnotu od 1 do 2 v jednotce pole.</translation>
+        </message>
+        <message>
+            <source>Ustawiasz maksimum losowania w tym presecie. Np. minimum 1 i maksimum 2 pozwalają wylosować wartość od 1 do 2 w jednostce pola.</source>
+            <translation>Nastavujete maximum losování v tomto presetu. Např. minimum 1 a maximum 2 dovolují hodnotu od 1 do 2 v jednotce pole.</translation>
+        </message>
+        <message>
+            <source>Mnożnik bazowej siły automatycznie losowanego wiatru, bez podmuchów i zmienności. Np. 0,5 zmienia propozycję 2 m/s na 1 m/s.</source>
+            <translation>Násobitel základní síly automaticky losovaného větru bez poryvů a proměnlivosti. Např. 0,5 změní návrh 2 m/s na 1 m/s.</translation>
+        </message>
+        <message>
+            <source>Wspólny mnożnik wahań w czasie i różnic na zeskoku w losowanych warunkach. Np. 2 podwaja oba składniki, bez podwajania bazowej siły, podmuchów ani tendencji.</source>
+            <translation>Společný násobitel časových výkyvů a rozdílů na doskočišti v losovaných podmínkách. Např. 2 zdvojnásobí obě složky bez zdvojnásobení základu, poryvů či tendence.</translation>
+        </message>
+        <message>
+            <source>Mnożnik siły automatycznie losowanych podmuchów. Np. 2 zmienia podmuch 0,5 m/s na 1 m/s, bez zmiany jego szansy wystąpienia.</source>
+            <translation>Násobitel síly automaticky losovaných poryvů. Např. 2 změní poryv 0,5 m/s na 1 m/s bez změny jeho pravděpodobnosti.</translation>
+        </message>
+        <message>
+            <source>Mnożnik siły zmian głównej tendencji automatycznie losowanego wiatru. Np. 0 wyłącza ten składnik, a 2 podwaja jego siłę bez zmiany czasu zmian.</source>
+            <translation>Násobitel síly změn hlavní tendence automaticky losovaného větru. Např. 0 tuto složku vypne a 2 zdvojnásobí její sílu bez změny časů.</translation>
+        </message>
+        <message>
+            <source>Mnożnik czasu wahań i zmian tendencji w automatycznie losowanych warunkach. Np. 2 zmienia okres tendencji 60 s na 120 s oraz dwukrotnie wydłuża pozostałe objęte nim czasy.</source>
+            <translation>Násobitel času kolísání a změn tendence v automaticky losovaných podmínkách. Např. 2 změní období 60 s na 120 s a zdvojnásobí ostatní dotčené časy.</translation>
+        </message>
+        <message>
+            <source>Szansa, że w automatycznie losowanych warunkach będzie dominował wiatr boczny. Np. 0,15 oznacza 15% propozycji, a nie wiatr o sile 0,15 m/s.</source>
+            <translation>Pravděpodobnost převahy bočního větru v automatickém návrhu. Např. 0,15 znamená 15 % návrhů, nikoli boční vítr 0,15 m/s.</translation>
+        </message>
+        <message>
+            <source>Długość obszaru podobnego wiatru w spokojnych warunkach losowanych automatycznie. Np. 0,5 na K120 oznacza skalę 60 m; większa wartość daje rozleglejsze obszary.</source>
+            <translation>Délka oblasti podobného větru v automaticky losovaných klidných podmínkách. Např. 0,5 na K120 znamená měřítko 60 m; vyšší hodnota dává větší oblasti.</translation>
+        </message>
+        <message>
+            <source>Długość obszaru podobnego wiatru w zmiennych i loteryjnych warunkach losowanych automatycznie. Np. 0,5 na K120 oznacza skalę 60 m; mniejsza wartość daje drobniejsze różnice.</source>
+            <translation>Délka oblasti podobného větru v losovaných proměnlivých a loterijních podmínkách. Např. 0,5 na K120 znamená měřítko 60 m; menší hodnota dává jemnější rozdíly.</translation>
+        </message>
+        <message>
+            <source>Szerokość automatycznie losowanego podmuchu jako część K. Np. 0,35 na K120 daje 42 m.</source>
+            <translation>Šířka automaticky losovaného poryvu jako část K. Např. 0,35 na K120 dává 42 m.</translation>
+        </message>
+        <message>
+            <source>Szansa deszczu zamiast śniegu, jeśli na śnieżnej nawierzchni poza zimnymi miesiącami wylosowano opad. Np. 0,8 daje 80% deszczu; nie zmienia szansy wystąpienia opadów.</source>
+            <translation>Šance deště místo sněhu, pokud na sněhovém povrchu mimo chladné měsíce vyšly srážky. Např. 0,8 dává 80 % deště bez změny šance samotných srážek.</translation>
+        </message>
+        <message>
+            <source>Bazowa szansa opadów na śnieżnej nawierzchni, przed dodatkami za miesiąc i kraj. Np. 0,3 oznacza bazowe 30%; dodatki mogą podnieść wynik do 100%.</source>
+            <translation>Základní šance srážek na sněhu před příplatky za měsíc a zemi. Např. 0,3 znamená základních 30 %; příplatky mohou výsledek zvýšit na 100 %.</translation>
+        </message>
+        <message>
+            <source>Dodatek do szansy opadów w zimnym miesiącu na śnieżnej nawierzchni. Np. 0,1 podnosi bazowe 30% do 40% przed dodatkiem za kraj.</source>
+            <translation>Dodatečná šance srážek v chladném měsíci na sněhu. Např. 0,1 zvýší základních 30 % na 40 % před příplatkem za zemi.</translation>
+        </message>
+        <message>
+            <source>Dodatek do szansy opadów na śniegu w Norwegii, Szwecji, Finlandii i Kanadzie. Np. 0,1 zwiększa szansę z 30% do 40% przed dodatkiem za miesiąc.</source>
+            <translation>Dodatečná šance srážek na sněhu v Norsku, Švédsku, Finsku a Kanadě. Např. 0,1 zvýší 30 % na 40 % před příplatkem za měsíc.</translation>
+        </message>
+        <message>
+            <source>Szansa opadów na igelicie; wylosowany opad będzie deszczem. Np. 0,3 daje średnio deszcz w 30% propozycji warunków.</source>
+            <translation>Šance srážek na igelitu; vylosované srážky budou déšť. Např. 0,3 dává déšť v průměru ve 30 % návrhů počasí.</translation>
+        </message>
+        <message>
+            <source>Szansa wiatru pod narty na wskazanym poziomie dodatniego perka kierunku; ujemny perk odwraca kierunek. Np. 0,8 daje 80% pod narty przy dodatnim perku i 80% w plecy przy ujemnym.</source>
+            <translation>Šance předního větru na této kladné úrovni směrového perku; záporný perk směr obrací. Např. 0,8 dává 80 % předního větru při kladném a 80 % zadního při záporném perku.</translation>
+        </message>
+        <message>
+            <source>Waga losowania spokojnej, zmiennej lub loteryjnej pogody w tym zestawie. Np. wagi 2/1/1 dają szanse 50%/25%/25% przed mieszaniem zestawów według perka skoczni.</source>
+            <translation>Váha losování klidného, proměnlivého či loterijního počasí v této sadě. Např. váhy 2/1/1 dávají 50 %/25 %/25 % před smícháním sad podle perku můstku.</translation>
+        </message>
+        <message>
+            <source>Zapasowa waga starszego zestawu, używana tylko bez odpowiedniej wagi characterStable lub characterLottery. Np. gdy characterStable jest ustawione, zmiana stable nie wpływa na losowanie.</source>
+            <translation>Záložní váha starší sady, použitá pouze bez příslušné váhy characterStable či characterLottery. Např. při nastaveném characterStable změna stable losování neovlivní.</translation>
+        </message>
+        <message>
+            <source>Waga wyboru przebiegu opadów, jeśli opady już wylosowano. Np. cztery równe wagi dają każdemu przebiegowi 25%; nie zmienia to szansy samych opadów.</source>
+            <translation>Váha výběru průběhu srážek, pokud už srážky vyšly. Např. čtyři stejné váhy dávají každému průběhu 25 % bez změny šance samotných srážek.</translation>
+        </message>
+        <message>
+            <source>Dolna lub górna granica bazowej siły automatycznie losowanego wiatru, bez podmuchów. Np. minimum 1 i maksimum 2 dają bazę między 1 a 2 m/s.</source>
+            <translation>Dolní či horní hranice základní síly automaticky losovaného větru bez poryvů. Např. minimum 1 a maximum 2 dávají základ mezi 1 a 2 m/s.</translation>
+        </message>
+        <message>
+            <source>Granica początkowego natężenia silnych opadów. Np. zakres 8–10 losuje bazę od 8 do 10; tryb Silne i tak podnosi niższą bazę do 8.</source>
+            <translation>Hranice počáteční intenzity silných srážek. Např. rozsah 8–10 losuje základ od 8 do 10; režim Silné nižší základ stejně zvýší na 8.</translation>
+        </message>
+        <message>
+            <source>Granica siły wahań zmiennych opadów. Np. większy zakres pozwala wylosować większe różnice natężenia między chwilami, bez podnoszenia samej bazy.</source>
+            <translation>Hranice síly kolísání proměnlivých srážek. Např. větší rozsah dovolí větší rozdíly intenzity v čase bez zvýšení samotného základu.</translation>
+        </message>
+        <message>
+            <source>Granica bazowego natężenia zwykłych opadów w skali 0–10. Np. minimum 2 i maksimum 4 losują bazę od 2 do 4; silne opady mają osobny zakres.</source>
+            <translation>Hranice základní intenzity běžných srážek na škále 0–10. Např. minimum 2 a maximum 4 losují základ od 2 do 4; silné srážky mají vlastní rozsah.</translation>
+        </message>
+        <message>
+            <source>Siła wahań w czasie dla wskazanego rodzaju losowanej pogody. Np. większa wartość daje większe różnice między warunkami kolejnych skoczków.</source>
+            <translation>Síla časového kolísání tohoto typu losovaného počasí. Např. vyšší hodnota dává větší rozdíly mezi podmínkami po sobě jdoucích skokanů.</translation>
+        </message>
+        <message>
+            <source>Siła różnic na zeskoku dla wskazanego rodzaju losowanej pogody. Np. większa wartość ułatwia uzyskanie dobrego wiatru przy progu i słabego przy lądowaniu.</source>
+            <translation>Síla rozdílů na doskočišti pro tento typ losovaného počasí. Např. vyšší hodnota usnadní dobrý vítr u odrazu a špatný u dopadu zároveň.</translation>
+        </message>
+        <message>
+            <source>Siła podmuchów dla wskazanego rodzaju losowanej pogody. Np. 1 zamiast 0,5 m/s podwaja ich siłę, bez zwiększania szansy wystąpienia.</source>
+            <translation>Síla poryvů pro tento typ losovaného počasí. Např. 1 místo 0,5 m/s zdvojnásobí sílu bez zvýšení pravděpodobnosti.</translation>
+        </message>
+        <message>
+            <source>Szansa aktywnego podmuchu dla wskazanego rodzaju losowanej pogody. Np. 0,25 daje 25% przy losowaniu w modelu; nie gwarantuje podmuchu u co czwartego skoczka.</source>
+            <translation>Šance aktivního poryvu pro tento typ losovaného počasí. Např. 0,25 znamená 25 % při losování v modelu, nikoli zaručený poryv u každého čtvrtého skokana.</translation>
+        </message>
+        <message>
+            <source>Czas utrzymywania się podobnego wiatru dla wskazanego rodzaju losowanej pogody. Np. 60 s spowalnia wahania w porównaniu z 10 s.</source>
+            <translation>Doba podobného větru pro tento typ losovaného počasí. Např. 60 s zpomalí kolísání oproti 10 s.</translation>
+        </message>
+        <message>
+            <source>Siła zmian głównej tendencji dla wskazanego rodzaju losowanej pogody. Np. większa wartość ułatwia wyraźne przejście z wiatru pod narty na wiatr w plecy.</source>
+            <translation>Síla změn hlavní tendence pro tento typ losovaného počasí. Např. vyšší hodnota usnadní výrazný přechod z předního na zadní vítr.</translation>
+        </message>
+        <message>
+            <source>Czas utrzymywania się podobnej tendencji dla wskazanego rodzaju losowanej pogody. Np. 180 s daje dłuższe okresy niż 30 s.</source>
+            <translation>Doba podobné tendence pro tento typ losovaného počasí. Např. 180 s dává delší období než 30 s.</translation>
+        </message>
+        <message>
+            <source>Czas płynnej zmiany tendencji dla wskazanego rodzaju losowanej pogody. Np. 20 s daje łagodniejsze przejście między kierunkami niż 2 s.</source>
+            <translation>Čas plynulé změny tendence pro tento typ losovaného počasí. Např. 20 s dává mírnější přechod mezi směry než 2 s.</translation>
+        </message>
+        <message>
+            <source>Różnica między spokojnymi i burzliwymi okresami przy wskazanym rodzaju pogody. Np. 0 usuwa ten podział, a większa wartość mocniej rozdziela oba rodzaje okresów.</source>
+            <translation>Rozdíl mezi klidnými a bouřlivými obdobími tohoto typu počasí. Např. 0 rozdělení odstraní; vyšší hodnota oba typy více oddělí.</translation>
+        </message>
+        <message>
+            <source>Rozmiar skoczni w wybranym punkcie krzywej specjalizacji. Np. przesunięcie kotwicy z K110 na K120 przenosi przypisany jej udział wybicia na K120; kolejne K muszą rosnąć.</source>
+            <translation>Velikost můstku ve vybraném bodě křivky specializace. Např. posun z K110 na K120 přesune přidělený podíl odrazu na K120; další hodnoty K musí růst.</translation>
+        </message>
+        <message>
+            <source>Udział wybicia w wybranym punkcie krzywej specjalizacji; resztę stanowi lot. Np. 0,60 daje 60% wybicia i 40% lotu; wraz ze wzrostem K udział wybicia nie może rosnąć.</source>
+            <translation>Podíl odrazu ve vybraném bodě křivky specializace; zbytek tvoří let. Např. 0,60 dává 60 % odrazu a 40 % letu; podíl odrazu nesmí s růstem K růst.</translation>
+        </message>
+        <message>
+            <source>Bazowa nota — %1</source>
+            <translation>Základní známka — %1</translation>
         </message>
     </context>
     <context>

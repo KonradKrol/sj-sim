@@ -2553,8 +2553,10 @@ int main(int argc,char **argv) {
         check(headline,"home headline exists");
         bridge->edit(id(bridge,"comboBox_language"),1);QTest::qWait(150);
         check(headline->property("text").toString()=="Ski jumping simulator","English updates the open Quick scene");
+        for(const auto &row:Playground::parameters())check(row.toObject()["help"].toString().section('\n',0,0).contains("E.g.") && !row.toObject()["help"].toString().contains("Np."),"every laboratory parameter has an English explanation and example");
         bridge->edit(id(bridge,"comboBox_language"),2);QTest::qWait(150);
         check(headline->property("text").toString()==QString::fromUtf8("Simulátor skoků na lyžích"),"Czech updates the open Quick scene");
+        for(const auto &row:Playground::parameters())check(row.toObject()["help"].toString().section('\n',0,0).contains(QString::fromUtf8("Např.")) && !row.toObject()["help"].toString().contains("Np."),"every laboratory parameter has a Czech explanation and example");
         bridge->edit(id(bridge,"comboBox_language"),0);QTest::qWait(150);
         check(headline->property("text").toString()==QString::fromUtf8("Symulator skoków narciarskich"),"Polish restores the open Quick scene");
         qInfo()<<"PASS: live language switching";return 0;

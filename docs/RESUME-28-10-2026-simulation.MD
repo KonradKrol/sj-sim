@@ -541,3 +541,22 @@ gdzie wynik jest nieliniowy: przykłady rozróżniają początkowy zapas i odleg
 Usunięto martwe duplikaty opisów belki, sprzeczność field.perk i zbędne zdania.
 Test --balance-lab-only PASS (/tmp/sj-lab-copy-20261030.log).
 Nadal uzupełnić EN/CS nowych opisów. Następne: layout i subtelne poziomy2/3.
+
+30.10 — EN/CS opisów labu GOTOWE: po191nowych wpisów (190fragmentów pomocy
++etykieta bazowej noty), pokrycie wszystkich617definicji. Skrypt
+check-translations.py sprawdza teraz brakujące klucze źródłowe rejestru, nie
+samą obecność tłumaczeń wpisanych do TS. --translation-only sprawdza na żywo
+wszystkie617opisów i przykładów EN/CS; PASS. PL też PASS w --balance-lab-only.
+
+NOWY PRIORYTET PO UI: zgłoszony segmentation fault po PB212,5 i Enter przy
+nowym skoczku. Dane konkretnego zawodnika już działają, user kazał NIE SPRAWDZAĆ
+ich dalej. Gra użytkownika jest uruchomiona (PID14383 przy sprawdzeniu), nie
+zabijać ani nie modyfikować jej danych. Reprodukcja w prywatnej paczce:
+test --athlete-commit-only, tests/athlete-studio-regressions.h. Pierwszy Enter
+212,5 działa, brak dotąd odtworzenia segfaulta; znaleziono osobny błąd: pusty
+opcjonalny rekord +Enter nie zapisuje0 przez validator. Dokończyć diagnozę,
+sprawdzić resztę pól i trwały zapis. Log /tmp/sj-athlete-pb-crash.log.
+Layout perków: nowe obliczenia mieszczą poziomy w kartach; test szerokości
+640–1500, skaleUI.7/1 i tekst1/1.5 przechodzi. Nadal są Binding loop przy
+zmianie skali tekstu (nie recursive rearrange); nie twierdzić że ich nie ma.
+Próby zmiany root AthletePatches i guttera nie pomogły — cofnięte; badać osobno.

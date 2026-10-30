@@ -782,6 +782,10 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <source>Wybierz jeden perk z każdej pary lub pozostaw ją pustą. Trzy opcje siły są widoczne obok siebie. Kliknij zaznaczoną opcję ponownie, aby usunąć perk. Opis: najedź lub naciśnij F1.</source>
             <translation>Choose one perk from each pair or leave it empty. All three strength options are shown side by side. Click the selected option again to remove the perk. Hover or press F1 for details.</translation>
         </message>
+        <message>
+            <source>Wybierz jeden perk z pary i jeden z czterech poziomów. Kliknij wybrany perk lub poziom ponownie, aby go usunąć. Opis: najedź lub naciśnij F1.</source>
+            <translation>Choose one perk from each pair and one of four strengths. Click the selected perk or strength again to remove it. Description: hover or press F1.</translation>
+        </message>
     </context>
     <context>
         <name>AthletePatchSet</name>
@@ -14038,6 +14042,770 @@ Check that you selected the correct file.</translation>
         <message>
             <source>Nie udało się utworzyć kopii zapasowej paczki.</source>
             <translation>Could not create a backup of the pack.</translation>
+        </message>
+        <message>
+            <source>Udział OVR w bazowej jakości skoku na K odniesienia; resztę stanowi forma. Np. 0,70 przy OVR 80 i formie 60 daje jakość 74 przed perkami i losowością.</source>
+            <translation>OVR&#x27;s share of baseline jump quality on the reference K; form supplies the rest. E.g. 0.70 with OVR 80 and form 60 gives quality 74 before perks and randomness.</translation>
+        </message>
+        <message>
+            <source>Rozmiar skoczni, na którym obowiązuje ustawiony udział OVR i formy. Np. przy K odniesienia 110 forma waży więcej na K140, a mniej na K80.</source>
+            <translation>Hill size at which the configured OVR/form split applies. E.g. with reference K110, form matters more on K140 and less on K80.</translation>
+        </message>
+        <message>
+            <source>Określa, jak szybko udział formy zmienia się wraz z rozmiarem skoczni. Np. skala 100 daje łagodniejszą różnicę między K90 i K120 niż skala 20.</source>
+            <translation>How quickly form&#x27;s share changes with hill size. E.g. a scale of 100 gives a gentler difference between K90 and K120 than a scale of 20.</translation>
+        </message>
+        <message>
+            <source>Maksymalna zmiana udziału formy między skocznią odniesienia a bardzo małą lub dużą. Np. 0,05 pozwala zmienić udział formy o najwyżej 5 punktów procentowych.</source>
+            <translation>Largest change in form&#x27;s share between the reference hill and a very small or large hill. E.g. 0.05 allows a change of at most 5 percentage points.</translation>
+        </message>
+        <message>
+            <source>Rozdziela siłę losowych strat i bonusów, nie szansę ich wystąpienia. Np. 0,65 zmienia wylosowane −10 na −13, a +10 na +7 przed wpływem perków.</source>
+            <translation>Splits the size of random losses and bonuses, not their probability. E.g. 0.65 turns a draw of −10 into −13 and +10 into +7 before perks.</translation>
+        </message>
+        <message>
+            <source>Wzmacnia wpływ charakteru skoczni na Lotnika i Specjalistę małych skoczni. Np. 0 wyłącza dodatkową preferencję skoczni; specjalizacja zależna od K pozostaje.</source>
+            <translation>Strengthens the hill&#x27;s additional preference for Ski flying specialists or Small hill specialists. E.g. 0 removes this extra preference; specialisation based on K remains.</translation>
+        </message>
+        <message>
+            <source>Wybiera rozkład losowej jakości skoków. Np. Laplace’a daje więcej skoków blisko średniej i więcej skrajnych wpadek lub wyskoków niż rozkład normalny.</source>
+            <translation>Selects the distribution of random jump quality. E.g. Laplace gives more jumps near the mean and more extreme mistakes or exceptional jumps than the normal distribution.</translation>
+        </message>
+        <message>
+            <source>Jakość skoku odpowiadająca odległości odniesienia przy bazowej belce i bez opadów. Np. zwiększenie z 70 do 80 sprawia, że jakość 70 zaczyna poniżej tej odległości.</source>
+            <translation>Jump quality corresponding to the reference distance at the base gate without precipitation. E.g. raising 70 to 80 makes quality 70 start below that distance.</translation>
+        </message>
+        <message>
+            <source>Początkowy zapas lotu jako część K, zanim zadziałają wiatr i geometria zeskoku. Np. 1,10 na K120 daje zapas 132 m; końcowa odległość może być inna.</source>
+            <translation>Initial flight reserve as a fraction of K, before wind and hill geometry. E.g. 1.10 on K120 gives 132 m of reserve; the final distance can differ.</translation>
+        </message>
+        <message>
+            <source>Metry początkowego zapasu za punkt jakości powyżej odniesienia na K120. Np. 0,8 i jakość wyższa o 10 dają dodatkowe 8 m zapasu przed wpływem wiatru.</source>
+            <translation>Metres of initial reserve per quality point above reference on K120. E.g. 0.8 and quality 10 points higher give 8 m of extra reserve before wind.</translation>
+        </message>
+        <message>
+            <source>Belka, przy której silnik wyznacza bazowy zapas lotu. Np. odniesienie 10 i start z 12 oznaczają doliczenie wpływu dwóch belek.</source>
+            <translation>Gate used to define the engine&#x27;s base flight reserve. E.g. reference 10 and a start from 12 add the effect of two gates.</translation>
+        </message>
+        <message>
+            <source>Zmiana początkowego zapasu za jedną belkę na K120, bez wiatru w plecy. Np. 2,0 i podniesienie o 3 belki dają dodatkowe 6 m zapasu.</source>
+            <translation>Change in initial reserve per gate on K120 without tailwind. E.g. 2.0 and three gates higher give 6 m of extra reserve.</translation>
+        </message>
+        <message>
+            <source>Wzmacnia wpływ różnicy belek przy wietrze w plecy. Np. 0,1 przy 2 m/s w plecy zwiększa ten wpływ o 20%.</source>
+            <translation>Strengthens the effect of gate differences in tailwind. E.g. 0.1 with 2 m/s tailwind increases that effect by 20%.</translation>
+        </message>
+        <message>
+            <source>Odległość między kolejnymi obliczeniami lotu; mniejsza daje dokładniejszą, ale wolniejszą symulację. Np. krok 0,5 m wymaga około dwa razy więcej obliczeń niż 1 m.</source>
+            <translation>Distance between flight calculations; smaller steps are more precise but slower. E.g. a 0.5 m step needs roughly twice as many calculations as 1 m.</translation>
+        </message>
+        <message>
+            <source>Czas, po którym skoczek dociera do K w modelu pogody. Np. 4 s oznacza napotkanie wiatru przy K cztery sekundy po starcie.</source>
+            <translation>Time at which the jumper reaches K in the weather model. E.g. 4 s means encountering wind at K four seconds after starting.</translation>
+        </message>
+        <message>
+            <source>Siła wpływu wiatru pod narty i w plecy na podtrzymywanie lotu. Np. zwiększenie wartości wzmacnia zarówno pomoc wiatru pod narty, jak straty w wietrze w plecy.</source>
+            <translation>Strength of headwind and tailwind effects on sustaining flight. E.g. increasing it strengthens both headwind assistance and tailwind losses.</translation>
+        </message>
+        <message>
+            <source>Siła strat wywołanych wiatrem bocznym. Np. zwiększenie wartości skróci skoki przy 2 m/s z boku, ale nie zmieni skoków przy samym wietrze pod narty.</source>
+            <translation>Strength of flight losses caused by crosswind. E.g. increasing it shortens jumps in 2 m/s crosswind but leaves pure headwind jumps unchanged.</translation>
+        </message>
+        <message>
+            <source>Dystans, na którym skoczek stopniowo reaguje na zmianę wiatru. Np. 20 m łagodzi wpływ krótkiego podmuchu bardziej niż 2 m.</source>
+            <translation>Distance over which the jumper gradually responds to changing wind. E.g. 20 m softens the effect of a short gust more than 2 m.</translation>
+        </message>
+        <message>
+            <source>Wpływ wiatru na początku lotu względem końca lotu. Np. zwiększenie tej wartości wzmacnia pomoc podmuchu tuż za progiem.</source>
+            <translation>Wind influence early in flight relative to the end of flight. E.g. increasing it strengthens the help from a gust just beyond the take-off.</translation>
+        </message>
+        <message>
+            <source>Wpływ wiatru pod koniec lotu względem początku lotu. Np. zwiększenie tej wartości pozwala późnemu podmuchowi mocniej podtrzymać skok.</source>
+            <translation>Wind influence late in flight relative to the beginning. E.g. increasing it lets a late gust sustain the jump more strongly.</translation>
+        </message>
+        <message>
+            <source>Maksymalne ograniczenie utraty zapasu dzięki korzystnemu wiatrowi. Np. 0,8 pozwala ograniczyć zużycie zapasu do 20% wartości bez tej pomocy.</source>
+            <translation>Maximum reduction in reserve consumption from favourable wind. E.g. 0.8 can reduce consumption to 20% of its value without that assistance.</translation>
+        </message>
+        <message>
+            <source>Siła wiatru, przy której losowe różnice reakcji stają się wyraźne. Np. zwiększenie z 1 do 3 m/s ogranicza różnice reakcji na słabe podmuchy.</source>
+            <translation>Wind strength at which random response differences become pronounced. E.g. raising 1 to 3 m/s reduces response differences in weak gusts.</translation>
+        </message>
+        <message>
+            <source>Rozrzut wykorzystania silnego wiatru pod narty między skokami. Np. większa wartość pozwala jednemu skoczkowi zyskać na tym samym podmuchu więcej niż drugiemu; 0 wyłącza ten rozrzut.</source>
+            <translation>Variation in how jumps benefit from strong headwind. E.g. a higher value lets one jumper gain more from the same gust than another; 0 disables this variation.</translation>
+        </message>
+        <message>
+            <source>Rozrzut strat w silnym wietrze w plecy. Np. większa wartość pozwala dwóm podobnym skokom stracić różnie mimo tych samych warunków; 0 wyłącza ten rozrzut.</source>
+            <translation>Variation in losses under strong tailwind. E.g. a higher value lets similar jumps lose different amounts in the same conditions; 0 disables this variation.</translation>
+        </message>
+        <message>
+            <source>Rozrzut strat w silnym wietrze bocznym. Np. większa wartość daje bardziej zróżnicowane reakcje na ten sam boczny podmuch; 0 wyłącza ten rozrzut.</source>
+            <translation>Variation in losses under strong crosswind. E.g. a higher value produces more varied responses to the same side gust; 0 disables this variation.</translation>
+        </message>
+        <message>
+            <source>Siła wiatru pod narty, od której dalsze wzmacnianie wiatru daje coraz mniej korzyści. Np. niższa wartość sprawia, że wzrost z 3 do 4 m/s pomaga mniej; 0 wyłącza nasycenie.</source>
+            <translation>Headwind strength beyond which extra wind gives diminishing benefits. E.g. a lower value makes an increase from 3 to 4 m/s help less; 0 disables saturation.</translation>
+        </message>
+        <message>
+            <source>Siła wiatru, wokół której narasta ryzyko utraty podtrzymania lotu. Np. większa wartość przesuwa to ryzyko w stronę silniejszych podmuchów; nie tworzy ostrego progu.</source>
+            <translation>Wind strength around which the risk of losing flight support rises. E.g. a higher value shifts that risk towards stronger gusts; it is not a sharp threshold.</translation>
+        </message>
+        <message>
+            <source>Ostrość narastania ryzyka przy sile wiatru ustawionej jako próg złych zdarzeń. Np. większa wartość mocniej rozdziela słabszy, bezpieczniejszy wiatr od silniejszego, bardziej ryzykownego.</source>
+            <translation>How sharply risk rises around the adverse-event wind threshold. E.g. a higher value more clearly separates weaker, safer wind from stronger, riskier wind.</translation>
+        </message>
+        <message>
+            <source>Miejsce rozpoczęcia ograniczania lotu przez wypłaszczenie. Np. 0,9 przy początku wypłaszczenia 140 m uruchamia opór od 126 m.</source>
+            <translation>Point where the flattening landing slope starts restricting flight. E.g. 0.9 with flattening at 140 m starts resistance at 126 m.</translation>
+        </message>
+        <message>
+            <source>Maksymalny zasięg lotu za początkiem wypłaszczenia, jako część K. Np. 0,1 na K120 dodaje do tego miejsca 12 m użytecznego zeskoku.</source>
+            <translation>Maximum flight range beyond the start of flattening as a fraction of K. E.g. 0.1 on K120 adds 12 m of usable landing slope beyond that point.</translation>
+        </message>
+        <message>
+            <source>Siła ograniczania lotu przy wypłaszczeniu zeskoku. Np. większa wartość utrudnia dolecenie daleko za HS mimo dużego zapasu po wybiciu.</source>
+            <translation>Strength of flight restriction near the flattened landing slope. E.g. a higher value makes it harder to fly far beyond HS despite a large initial reserve.</translation>
+        </message>
+        <message>
+            <source>Liczba odcinków w zapisie wiatru napotkanego podczas skoku. Np. 8 daje bardziej szczegółowy podgląd niż 4; nie jest to krok obliczania lotu.</source>
+            <translation>Number of sections recording wind encountered during the jump. E.g. 8 gives a more detailed view than 4; this is not the flight calculation step.</translation>
+        </message>
+        <message>
+            <source>Losowe przesunięcie wszystkich not w tym samym skoku. Np. dodatnie losowanie podniesie wspólnie oceny pięciu sędziów, zanim pojawią się różnice między nimi.</source>
+            <translation>Random shift shared by all judges&#x27; marks in one jump. E.g. a positive draw raises all five marks before individual differences are added.</translation>
+        </message>
+        <message>
+            <source>Rozrzut oceny pojedynczego sędziego wokół wspólnej oceny skoku. Np. większa wartość częściej daje zestawy takie jak 17,5 / 18,0 / 18,5 zamiast pięciu równych not.</source>
+            <translation>Spread of an individual judge&#x27;s mark around the shared jump rating. E.g. a higher value more often gives 17.5 / 18.0 / 18.5 instead of five equal marks.</translation>
+        </message>
+        <message>
+            <source>Maksymalna dodatkowa kara w nocie każdego sędziego za trudne, dalekie lądowanie. Np. zwiększenie z 1 do 2 może mocniej obniżyć noty za skoki przy wypłaszczeniu.</source>
+            <translation>Maximum extra deduction from each judge for a difficult, long landing. E.g. raising 1 to 2 can reduce marks more strongly near the flattened slope.</translation>
+        </message>
+        <message>
+            <source>Bazowy wiatr wzdłuż skoczni, do którego dodają się podmuchy i lokalne różnice. Np. +1 oznacza 1 m/s pod narty, a −1 oznacza 1 m/s w plecy.</source>
+            <translation>Base wind along the hill before gusts and local differences. E.g. +1 means 1 m/s headwind and −1 means 1 m/s tailwind.</translation>
+        </message>
+        <message>
+            <source>Bazowy wiatr boczny; znak wybiera stronę, a wielkość siłę. Np. −2 i +2 oznaczają 2 m/s z przeciwnych stron.</source>
+            <translation>Base crosswind; the sign selects the side and the magnitude its strength. E.g. −2 and +2 mean 2 m/s from opposite sides.</translation>
+        </message>
+        <message>
+            <source>Siła wahań wiatru podczas konkursu, bez zmiany jego bazowego kierunku i siły. Np. większa wartość daje większą różnicę między warunkami dwóch kolejnych skoczków.</source>
+            <translation>Wind fluctuation strength during a contest without changing the base direction or strength. E.g. a higher value gives larger differences between successive jumpers&#x27; conditions.</translation>
+        </message>
+        <message>
+            <source>Siła różnic wiatru między miejscami nad zeskokiem. Np. większa wartość ułatwia uzyskanie dobrych warunków przy progu i słabych przy lądowaniu w tym samym momencie.</source>
+            <translation>Wind differences between locations above the landing slope. E.g. a higher value makes good wind near the take-off and poor wind near landing more likely at the same moment.</translation>
+        </message>
+        <message>
+            <source>Czas utrzymywania się podobnych warunków. Np. 60 s daje wolniejsze zmiany niż 10 s, bez zwiększania samej siły wiatru.</source>
+            <translation>How long similar conditions persist. E.g. 60 s gives slower changes than 10 s without increasing wind strength.</translation>
+        </message>
+        <message>
+            <source>Długość obszaru o podobnym wietrze. Np. 80 m daje rozleglejsze obszary podobnych warunków niż 20 m.</source>
+            <translation>Length of an area with similar wind. E.g. 80 m gives broader areas of similar conditions than 20 m.</translation>
+        </message>
+        <message>
+            <source>Siła dodatkowych, krótkich podmuchów. Np. zwiększenie z 0,5 do 1 m/s wzmacnia podmuchy, bez zwiększania ich częstości.</source>
+            <translation>Strength of extra short gusts. E.g. raising 0.5 to 1 m/s strengthens gusts without increasing their frequency.</translation>
+        </message>
+        <message>
+            <source>Szansa aktywnego podmuchu przy losowaniu w modelu wiatru. Np. 0,20 oznacza 20%, ale nie oznacza, że dokładnie 20% skoczków trafi na podmuch.</source>
+            <translation>Probability of an active gust in the wind model&#x27;s draw. E.g. 0.20 means 20%, not that exactly 20% of jumpers encounter a gust.</translation>
+        </message>
+        <message>
+            <source>Skala czasu podmuchów. Np. większa wartość rozciąga podmuchy w czasie, zamiast zwiększać ich siłę.</source>
+            <translation>Time scale of gusts. E.g. a higher value stretches gusts over time instead of making them stronger.</translation>
+        </message>
+        <message>
+            <source>Długość obszaru objętego jednym podmuchem. Np. 40 m pozwala temu samemu podmuchowi wpływać na dłuższy fragment lotu niż 10 m.</source>
+            <translation>Length of the area covered by one gust. E.g. 40 m lets the same gust affect a longer part of the flight than 10 m.</translation>
+        </message>
+        <message>
+            <source>Górny limit łącznej siły wiatru po zsumowaniu jego składników. Np. limit 3 m/s nie pozwala modelowi wygenerować silniejszego wiatru.</source>
+            <translation>Upper limit on combined wind strength after adding its components. E.g. a 3 m/s limit prevents the model from producing stronger wind.</translation>
+        </message>
+        <message>
+            <source>Siła zmian głównej tendencji wiatru podczas konkursu. Np. większa wartość ułatwia przejście od okresu wiatru pod narty do okresu wiatru w plecy.</source>
+            <translation>Strength of changes in the prevailing wind trend during a contest. E.g. a higher value makes a shift from a headwind period to a tailwind period easier.</translation>
+        </message>
+        <message>
+            <source>Długość okresu podobnej tendencji wiatru. Np. 180 s utrzymuje podobne tło dłużej niż 30 s.</source>
+            <translation>Length of a similar wind trend period. E.g. 180 s maintains similar background wind longer than 30 s.</translation>
+        </message>
+        <message>
+            <source>Czas płynnej zmiany jednej tendencji w drugą. Np. 20 s daje łagodniejsze przejście od wiatru w plecy do wiatru pod narty niż 2 s.</source>
+            <translation>Time for a smooth transition between wind trends. E.g. 20 s gives a gentler headwind/tailwind transition than 2 s.</translation>
+        </message>
+        <message>
+            <source>Różnica między spokojnymi i burzliwymi okresami w tym samym konkursie. Np. 0 wyłącza ten podział, a większa wartość mocniej oddziela oba rodzaje okresów.</source>
+            <translation>Difference between calm and turbulent periods within the same contest. E.g. 0 disables this split; higher values separate the two types more strongly.</translation>
+        </message>
+        <message>
+            <source>Czas utrzymywania się spokojniejszego lub bardziej burzliwego okresu. Np. 120 s daje dłuższe epizody niż 20 s.</source>
+            <translation>Duration of a calmer or more turbulent spell. E.g. 120 s produces longer spells than 20 s.</translation>
+        </message>
+        <message>
+            <source>Czas drobnych, szybkich wahań wiatru. Np. większa wartość spowalnia te wahania bez zwiększania ich siły.</source>
+            <translation>Time scale of small, rapid wind fluctuations. E.g. a higher value slows these fluctuations without strengthening them.</translation>
+        </message>
+        <message>
+            <source>Umiejętności analizowanego skoczka w skali 1–100. Np. podniesienie OVR z 70 do 80 zwykle wydłuży jego skoki przy tej samej formie.</source>
+            <translation>The analysed jumper&#x27;s skill from 1 to 100. E.g. raising OVR from 70 to 80 usually lengthens jumps at the same form.</translation>
+        </message>
+        <message>
+            <source>Bieżąca dyspozycja analizowanego skoczka w skali 1–100. Np. forma 90 zamiast 50 poprawia bazową jakość skoku; siłę wpływu określa udział formy w silniku.</source>
+            <translation>The analysed jumper&#x27;s current form from 1 to 100. E.g. form 90 instead of 50 improves baseline quality; the engine&#x27;s form share controls its influence.</translation>
+        </message>
+        <message>
+            <source>Styl lądowania analizowanego skoczka: 0 Niechlujne, 4 Stylista. Np. zmiana z 1 na 3 poprawia noty, ale nie zmniejsza ryzyka upadku.</source>
+            <translation>Landing style of the analysed jumper: 0 Untidy, 4 Stylist. E.g. changing 1 to 3 improves marks without reducing fall risk.</translation>
+        </message>
+        <message>
+            <source>Odległość początku wypłaszczenia, od którego trudniej kontynuować lot i lądować. Np. przesunięcie ze 140 na 145 m pozwala bezpieczniej osiągać dalsze odległości.</source>
+            <translation>Distance where the landing slope starts flattening, making flight and landing harder. E.g. moving 140 to 145 m makes longer jumps safer.</translation>
+        </message>
+        <message>
+            <source>Rozmiar skoczni według punktu K; w labie zmienia proporcjonalnie także HS i początek wypłaszczenia. Np. K120→K60 zmniejsza te odległości o połowę; współczynniki punktacji ustawiasz osobno.</source>
+            <translation>Hill size by K; changing it in the lab also scales HS and the flattening point proportionally. E.g. K120→K60 halves those distances; scoring factors are set separately.</translation>
+        </message>
+        <message>
+            <source>Belka startowa eksperymentu; wyższa zwykle wydłuża skoki. Np. 12 ustawia konkretną belkę, a 0 dobiera wspólną belkę automatycznie według wariantu Balans z gry.</source>
+            <translation>Starting gate for the experiment; higher usually means longer jumps. E.g. 12 sets a fixed gate, while 0 selects a common gate automatically from Game balance.</translation>
+        </message>
+        <message>
+            <source>Belka odniesienia do rekompensaty, bez zmiany belki startowej. Np. przy odniesieniu 12 i starcie z 10 nalicza się rekompensatę za dwie belki; 0 używa wspólnej bazy.</source>
+            <translation>Reference gate for compensation without changing the starting gate. E.g. reference 12 and a start from 10 award compensation for two gates; 0 uses the common base.</translation>
+        </message>
+        <message>
+            <source>Liczba stopni obniżenia belki przez trenera względem belki jury. Np. 2 przy belce jury 12 daje start z 10; rekompensata zależy m.in. od reguły 95% HS.</source>
+            <translation>Number of gates the coach lowers from the jury gate. E.g. 2 with jury gate 12 means starting from 10; compensation depends on rules including 95% HS.</translation>
+        </message>
+        <message>
+            <source>Określa, czy między skokami upływa czas pogody. Np. Kontrolowane warunki daje wszystkim tę samą chwilę, a Przebieg konkursu pozwala trafić na różne podmuchy.</source>
+            <translation>Whether weather time advances between jumps. E.g. Controlled conditions uses the same moment for everyone, while Contest timeline allows different gusts.</translation>
+        </message>
+        <message>
+            <source>Czas pogody między startami kolejnych skoczków. Np. 30 s daje starty w chwilach 0, 30, 60 s; nie oznacza rzeczywistego oczekiwania przed ekranem.</source>
+            <translation>Weather time between successive starts. E.g. 30 s gives starts at 0, 30 and 60 s; it does not require waiting that long at the screen.</translation>
+        </message>
+        <message>
+            <source>Ryzyko DSQ pojedynczego skoku przy włączonych dyskwalifikacjach. Np. 0,01 oznacza średnio około jednej dyskwalifikacji na 100 prób, nie gwarantowaną liczbę.</source>
+            <translation>Risk of DSQ per jump when disqualifications are enabled. E.g. 0.01 means roughly one disqualification per 100 attempts on average, not a guaranteed count.</translation>
+        </message>
+        <message>
+            <source>Miejsce połowy wzrostu ryzyka danego błędu, jako część odległości początku wypłaszczenia. Np. 1,05 przy wypłaszczeniu od 140 m oznacza środek wzrostu ryzyka przy 147 m.</source>
+            <translation>Midpoint of the increase in this landing error&#x27;s risk, relative to the flattening distance. E.g. 1.05 with flattening at 140 m places that midpoint at 147 m.</translation>
+        </message>
+        <message>
+            <source>Odległość, na której ryzyko błędu przechodzi od niskiego do wysokiego. Np. większa wartość rozciąga ten wzrost na więcej metrów, zamiast po prostu wszędzie obniżać ryzyko.</source>
+            <translation>Distance over which this error&#x27;s risk rises from low to high. E.g. a higher value spreads that increase over more metres rather than lowering risk everywhere.</translation>
+        </message>
+        <message>
+            <source>Ryzyko danego błędu przed doliczeniem wpływu odległości i bocznego wiatru. Np. 0,01 oznacza bazowe 1%; podpórka i dwie nogi są oceniane dopiero po wykluczeniu poważniejszych błędów.</source>
+            <translation>Risk of this error before distance and crosswind effects. E.g. 0.01 means a base 1%; support and two-foot landings are assessed only after more serious errors are excluded.</translation>
+        </message>
+        <message>
+            <source>Maksymalny dodatkowy wzrost ryzyka błędu wraz z odległością. Np. 0,20 może dodać do 20 punktów procentowych przed uwzględnieniem kolejności błędów.</source>
+            <translation>Maximum extra increase in this error&#x27;s risk with distance. E.g. 0.20 can add up to 20 percentage points before accounting for error priority.</translation>
+        </message>
+        <message>
+            <source>Dodatkowe ryzyko tego błędu za 1 m/s wiatru bocznego. Np. 0,01 przy 2 m/s dodaje 2 punkty procentowe przed uwzględnieniem kolejności błędów.</source>
+            <translation>Extra risk of this error per 1 m/s crosswind. E.g. 0.01 at 2 m/s adds 2 percentage points before accounting for error priority.</translation>
+        </message>
+        <message>
+            <source>Początkowa nota jednego sędziego dla tej klasy stylu. Np. 18,5 ustawia bazę 18,5 pkt, od której odejmuje się kary i do której dodaje się losowe wahania.</source>
+            <translation>Initial mark from one judge for this landing style class. E.g. 18.5 sets a base of 18.5 points before deductions and random variations.</translation>
+        </message>
+        <message>
+            <source>Kara w nocie każdego sędziego za wskazany rodzaj lądowania. Np. 3 odejmuje każdemu sędziemu 3 pkt; nie zwiększa szansy tego błędu.</source>
+            <translation>Deduction from each judge&#x27;s mark for this landing type. E.g. 3 deducts 3 points per judge without increasing that error&#x27;s probability.</translation>
+        </message>
+        <message>
+            <source>Maksymalne ryzyko utraty podtrzymania lotu przy bardzo silnym wietrze. Np. 0,20 oznacza limit 20%; przy słabszym wietrze ryzyko jest mniejsze.</source>
+            <translation>Maximum risk of losing flight support in very strong wind. E.g. 0.20 caps it at 20%; weaker wind gives a lower risk.</translation>
+        </message>
+        <message>
+            <source>Siła straty po wylosowaniu utraty podtrzymania lotu. Np. większa wartość mocniej skróci pechowy skok, ale nie zwiększy częstości takich zdarzeń.</source>
+            <translation>Severity of a loss of flight support after it is drawn. E.g. a higher value shortens an unlucky jump more without making such events more frequent.</translation>
+        </message>
+        <message>
+            <source>Część początkowego zapasu lotu tracona za poziom śniegu. Np. 0,008 przy natężeniu 10 odbiera 8% zapasu, niekoniecznie 8% końcowej odległości.</source>
+            <translation>Fraction of initial flight reserve lost per snow level. E.g. 0.008 at intensity 10 removes 8% of reserve, not necessarily 8% of final distance.</translation>
+        </message>
+        <message>
+            <source>Część zapasu lotu tracona za poziom deszczu ponad próg wpływu. Np. 0,003 i natężenie o 4 wyższe od progu dają stratę 1,2%, przed doliczeniem ulewy.</source>
+            <translation>Fraction of flight reserve lost per rain level above the impact threshold. E.g. 0.003 and intensity 4 above threshold give a 1.2% loss before heavy rain.</translation>
+        </message>
+        <message>
+            <source>Natężenie deszczu, do którego nie działa zwykła strata zapasu. Np. próg 3 oznacza, że przy natężeniu 5 nalicza się stratę za 2 poziomy; ulewa ma osobny próg.</source>
+            <translation>Rain intensity up to which the ordinary reserve loss is zero. E.g. threshold 3 and intensity 5 charge for 2 levels; heavy rain has its own threshold.</translation>
+        </message>
+        <message>
+            <source>Natężenie deszczu, powyżej którego narasta dodatkowa strata od ulewy. Np. przy progu 7 ulewa nie dodaje straty przy natężeniu 6, ale dodaje ją przy 9.</source>
+            <translation>Rain intensity above which the extra heavy-rain loss rises. E.g. threshold 7 adds no heavy-rain loss at intensity 6 but does at 9.</translation>
+        </message>
+        <message>
+            <source>Dodatkowa strata zapasu lotu przy deszczu o natężeniu 10. Np. 0,15 odbiera 15% zapasu, oprócz zwykłej straty od deszczu.</source>
+            <translation>Extra flight reserve loss at rain intensity 10. E.g. 0.15 removes 15% of reserve in addition to the ordinary rain loss.</translation>
+        </message>
+        <message>
+            <source>Określa, jak szybko narasta strata między progiem ulewy a natężeniem 10. Np. wykładnik 2 daje w połowie tego zakresu 25% maksymalnej straty, a wykładnik 1 daje 50%.</source>
+            <translation>How quickly loss rises between the heavy-rain threshold and intensity 10. E.g. exponent 2 gives 25% of maximum loss halfway through that range; exponent 1 gives 50%.</translation>
+        </message>
+        <message>
+            <source>Prędkość przesuwania się podmuchu wzdłuż zeskoku. Np. 5 m/s przesuwa jego środek o 10 m w dwie sekundy; 0 zatrzymuje go w miejscu.</source>
+            <translation>Speed at which a gust moves along the landing slope. E.g. 5 m/s moves its centre 10 m in two seconds; 0 keeps it stationary.</translation>
+        </message>
+        <message>
+            <source>Wybiera zachowanie opadów w czasie. Np. Narastające stopniowo zwiększają natężenie, a Zmienne wahają się wokół ustawionej bazy.</source>
+            <translation>Selects how precipitation changes over time. E.g. Increasing gradually raises intensity, while Variable fluctuates around the chosen base.</translation>
+        </message>
+        <message>
+            <source>Wybiera wzór wpływu opadów na skok. Np. śnieg odbiera zapas od pierwszego poziomu, a deszcz może nie powodować straty aż do ustawionego progu.</source>
+            <translation>Selects the formula for precipitation&#x27;s effect on a jump. E.g. snow reduces reserve from the first level, while rain may cause no loss until its threshold.</translation>
+        </message>
+        <message>
+            <source>Początkowe natężenie opadów w skali 0–10; większe mocniej skraca skoki. Np. w trybie Stałe wartość 4 utrzymuje natężenie 4, a w trybie Silne baza wynosi co najmniej 8.</source>
+            <translation>Initial precipitation intensity from 0 to 10; higher values shorten jumps more. E.g. Steady at 4 maintains intensity 4, while Heavy uses a base of at least 8.</translation>
+        </message>
+        <message>
+            <source>Siła losowych zmian natężenia opadów. Np. zwiększenie wartości daje większe różnice między spokojną chwilą a silnym opadem; w trybie Stałe parametr nie działa.</source>
+            <translation>Strength of random intensity changes. E.g. increasing it widens the difference between a calm moment and heavy precipitation; it has no effect in Steady mode.</translation>
+        </message>
+        <message>
+            <source>Czas utrzymywania się podobnego natężenia opadów. Np. 60 s daje wolniejsze zmiany niż 10 s, bez zmiany bazowego natężenia.</source>
+            <translation>How long similar precipitation intensity persists. E.g. 60 s gives slower changes than 10 s without changing the base intensity.</translation>
+        </message>
+        <message>
+            <source>Wzrost natężenia na minutę w trybie Narastające, do limitu 10. Np. 0,5 zwiększa natężenie o 1 w dwie minuty.</source>
+            <translation>Intensity increase per minute in Increasing mode, capped at 10. E.g. 0.5 raises intensity by 1 in two minutes.</translation>
+        </message>
+        <message>
+            <source>Liczba odczytów z każdego czujnika podczas lotu. Np. 5 odczytów lepiej wychwytuje zmianę podmuchu niż 1, ale liczy się dłużej; odczyt przed startem i metoda dotychczasowa używają własnych zasad.</source>
+            <translation>Readings per sensor during flight. E.g. 5 readings capture a changing gust better than 1 but take longer; pre-start readings and the legacy method use their own rules.</translation>
+        </message>
+        <message>
+            <source>Długość obszaru z czujnikami, jako część K. Np. 1,2 na K120 ustawia zasięg 144 m; nie zmienia lotu, metody dotychczasowej ani pomiaru na trasie skoczka.</source>
+            <translation>Length covered by sensors as a fraction of K. E.g. 1.2 on K120 covers 144 m; it does not change flight, the legacy method or the jumper&#x27;s flight-path measurement.</translation>
+        </message>
+        <message>
+            <source>Odstęp czujników wyłącznie w metodzie Gęsta sieć czujników. Np. 5 m daje gęstszą sieć niż 20 m, do limitu 128 czujników.</source>
+            <translation>Sensor spacing used only by Dense sensor network. E.g. 5 m gives a denser network than 20 m, capped at 128 sensors.</translation>
+        </message>
+        <message>
+            <source>Miejsce najmocniej uwzględnianych czujników w metodzie FIS — przybliżenie. Np. 0,5 wyróżnia środek sieci, a 0,75 jej dalszą część.</source>
+            <translation>Location of the most influential sensors in FIS — approximation. E.g. 0.5 emphasises the network centre and 0.75 its later section.</translation>
+        </message>
+        <message>
+            <source>Przewaga ważniejszych czujników nad pozostałymi w metodzie FIS — przybliżenie. Np. 0 daje wszystkim równe wagi; większa wartość wzmacnia wskazany szczyt wag.</source>
+            <translation>How strongly the most important sensors dominate in FIS — approximation. E.g. 0 gives equal weights; higher values strengthen the selected weight peak.</translation>
+        </message>
+        <message>
+            <source>Wybiera perk podejścia i jego poziom; 0 usuwa perk. Np. +2 daje Błyszczy na treningach 2, a −2 daje Oszczędza siły 2; dostępne są poziomy 1–4.</source>
+            <translation>Selects an attitude perk and its strength; 0 removes it. E.g. +2 gives Training star 2, −2 gives Saves energy 2; strengths range from 1 to 4.</translation>
+        </message>
+        <message>
+            <source>Wybiera specjalizację i jej poziom; 0 usuwa perk. Np. +3 daje Lotnika 3, a −3 daje Specjalistę małych skoczni 3; dostępne są poziomy 1–4.</source>
+            <translation>Selects a specialisation and its strength; 0 removes it. E.g. +3 gives Ski flying specialist 3, −3 gives Small hill specialist 3; strengths range from 1 to 4.</translation>
+        </message>
+        <message>
+            <source>Wybiera regularność i poziom perka; 0 usuwa perk. Np. +2 daje Regularnego 2, a −2 Nieprzewidywalnego 2 z większym rozrzutem, zwłaszcza strat; dostępne są poziomy 1–4.</source>
+            <translation>Selects a consistency perk and its strength; 0 removes it. E.g. +2 gives Consistent 2, −2 gives Unpredictable 2 with more variation, especially losses; strengths range from 1 to 4.</translation>
+        </message>
+        <message>
+            <source>Charakter skoczni: dodatnie poziomy premiują wybicie, ujemne lot. Np. +2 wzmacnia specjalistów małych skoczni względem lotników; ręczna preferencja skoczni ma pierwszeństwo.</source>
+            <translation>Hill character: positive strengths favour take-off, negative favour flight. E.g. +2 favours small hill specialists over flying specialists; a manual hill preference takes priority.</translation>
+        </message>
+        <message>
+            <source>Łatwość dalekiego lądowania: dodatnie poziomy odsuwają wypłaszczenie, ujemne je przybliżają. Np. −3 wcześniej utrudnia dalekie skoki; ręczny początek wypłaszczenia ma pierwszeństwo.</source>
+            <translation>Ease of long landings: positive strengths move flattening further away, negative bring it closer. E.g. −3 makes long jumps harder earlier; a manual flattening point takes priority.</translation>
+        </message>
+        <message>
+            <source>Wpływ skoczni na automatycznie losowaną zmienność pogody. Np. +4 częściej daje loterię, a −4 spokojne warunki; ręczne warunki i wybrany preset pozostają bez zmian.</source>
+            <translation>Hill influence on automatically generated weather variability. E.g. +4 more often gives a lottery and −4 calm conditions; manual weather and the chosen preset are unchanged.</translation>
+        </message>
+        <message>
+            <source>Wpływ skoczni na automatycznie losowany kierunek wiatru. Np. +3 sprzyja wiatrowi pod narty, a −3 w plecy; ręczne warunki i wybrany preset pozostają bez zmian.</source>
+            <translation>Hill influence on automatically generated wind direction. E.g. +3 favours headwind and −3 tailwind; manual weather and the chosen preset are unchanged.</translation>
+        </message>
+        <message>
+            <source>Oficjalny rozmiar skoczni, używany m.in. przy rekompensacie za belkę trenera. Np. HS140 oznacza wymagane 133 m dla reguły 95% HS; wypłaszczenie ustawia się osobno.</source>
+            <translation>Official hill size used for rules including coach-gate compensation. E.g. HS140 requires 133 m for the 95% HS rule; flattening is configured separately.</translation>
+        </message>
+        <message>
+            <source>Dodatkowa preferencja wybicia lub lotu przy działaniu specjalizacji. Np. +0,5 przesuwa charakter w stronę wybicia, a −0,5 w stronę lotu; skoczek bez specjalizacji nie zyskuje bonusu.</source>
+            <translation>Additional take-off or flight preference affecting specialisation. E.g. +0.5 shifts towards take-off and −0.5 towards flight; jumpers without specialisation gain no bonus.</translation>
+        </message>
+        <message>
+            <source>Punkty za odległość równą K, przed notami i rekompensatami. Np. wartość 60 daje za skok dokładnie na K bazowe 60 pkt.</source>
+            <translation>Distance points at exactly K, before judges and compensation. E.g. 60 awards 60 base points for a jump precisely to K.</translation>
+        </message>
+        <message>
+            <source>Punkty dodawane za metr ponad K i odejmowane za metr przed K. Np. 1,8 daje za 5 m ponad K dodatkowe 9 pkt.</source>
+            <translation>Points added per metre beyond K and deducted per metre short. E.g. 1.8 awards 9 extra points for 5 m beyond K.</translation>
+        </message>
+        <message>
+            <source>Rekompensata za jedną belkę obniżenia względem odniesienia. Np. 5 pkt za belkę i obniżenie o 2 dają 10 pkt, jeśli zasady pozwalają je przyznać.</source>
+            <translation>Compensation per gate lowered from reference. E.g. 5 points per gate and two gates lower give 10 points if the rules allow them.</translation>
+        </message>
+        <message>
+            <source>Punkty odejmowane za 1 m/s zmierzonego wiatru pod narty. Np. współczynnik 8 i wiatr 1,5 m/s oznaczają odjęcie 12 pkt przy włączonej rekompensacie.</source>
+            <translation>Points deducted per 1 m/s measured headwind. E.g. factor 8 and 1.5 m/s deduct 12 points when compensation is enabled.</translation>
+        </message>
+        <message>
+            <source>Punkty dodawane za 1 m/s zmierzonego wiatru w plecy. Np. współczynnik 12 i wiatr 1,5 m/s oznaczają dodanie 18 pkt przy włączonej rekompensacie.</source>
+            <translation>Points added per 1 m/s measured tailwind. E.g. factor 12 and 1.5 m/s add 18 points when compensation is enabled.</translation>
+        </message>
+        <message>
+            <source>Rodzaj wydarzenia, który określa działanie perków podejścia i rozrzut skoków. Np. Błyszczy na treningach daje w kwalifikacjach połowę bonusu treningowego, a w konkursie karę.</source>
+            <translation>Event type controlling attitude perks and jump variation. E.g. Training star gives half its training bonus in qualification and a penalty in competition.</translation>
+        </message>
+        <message>
+            <source>Miesiąc używany tylko do automatycznego losowania opadów. Np. 1 oznacza styczeń, a 0 pomija porę roku; na półkuli południowej sezony są odwrócone.</source>
+            <translation>Month used only for automatic precipitation proposals. E.g. 1 means January and 0 ignores the season; seasons are reversed in the southern hemisphere.</translation>
+        </message>
+        <message>
+            <source>Nawierzchnia używana przy automatycznym losowaniu opadów. Np. na igelicie wylosowany opad będzie deszczem, a na śniegu możliwy jest także śnieg zależnie od miesiąca.</source>
+            <translation>Surface used for automatic precipitation proposals. E.g. precipitation on matting is rain; on snow it can also be snow depending on the month.</translation>
+        </message>
+        <message>
+            <source>Środkowy OVR generowanej stawki, bez zmiany zawodników z paczki. Np. OVR 70 i rozpiętość 20 dają stawkę od 60 do 80.</source>
+            <translation>Middle OVR of the generated field without changing pack athletes. E.g. OVR 70 and spread 20 give a field from 60 to 80.</translation>
+        </message>
+        <message>
+            <source>Różnica OVR między najlepszym i najsłabszym w generowanej stawce. Np. rozpiętość 30 i środek 70 dają zakres 55–85; wczytana paczka pozostaje bez zmian.</source>
+            <translation>OVR difference between the strongest and weakest generated athletes. E.g. spread 30 around 70 gives 55–85; loaded pack athletes are unchanged.</translation>
+        </message>
+        <message>
+            <source>Wspólna forma pozostałych zawodników po ręcznej zmianie tego pola. Np. 60 ustawia im formę 60, także w paczce; analizowany skoczek i indywidualne poprawki mają osobne wartości.</source>
+            <translation>Shared form for other athletes after manually changing this field. E.g. 60 gives them form 60, including pack athletes; the analysed athlete and individual overrides have separate values.</translation>
+        </message>
+        <message>
+            <source>Wspólny styl lądowania pozostałych zawodników po ręcznej zmianie pola. Np. 4 ustawia Stylistę, także w paczce; indywidualne poprawki mają pierwszeństwo.</source>
+            <translation>Shared landing style for other athletes after manually changing this field. E.g. 4 sets Stylist, including pack athletes; individual overrides take priority.</translation>
+        </message>
+        <message>
+            <source>Włącza losowanie DSQ według ustawionego ryzyka. Np. po wyłączeniu nie będzie dyskwalifikacji nawet przy ryzyku 0,1.</source>
+            <translation>Enables random DSQ at the configured risk. E.g. disabling it removes disqualifications even with risk set to 0.1.</translation>
+        </message>
+        <message>
+            <source>Włącza punkty rekompensaty za zmierzony wiatr. Np. po wyłączeniu wiatr nadal wydłuża lub skraca lot, ale nie dodaje ani nie odejmuje punktów.</source>
+            <translation>Enables point compensation for measured wind. E.g. disabling it leaves wind&#x27;s flight effects active but removes wind points.</translation>
+        </message>
+        <message>
+            <source>Włącza punkty rekompensaty za różnicę belek. Np. po wyłączeniu obniżona belka nadal skraca skok, ale nie daje za to punktów.</source>
+            <translation>Enables point compensation for gate differences. E.g. disabling it leaves a lower gate&#x27;s shorter jump but awards no gate points.</translation>
+        </message>
+        <message>
+            <source>Włącza doliczanie trzech środkowych not sędziowskich. Np. noty 17 / 18 / 18 / 19 / 20 dają 55 pkt; po wyłączeniu dają 0 pkt.</source>
+            <translation>Adds the three middle judges&#x27; marks. E.g. 17 / 18 / 18 / 19 / 20 award 55 points; disabling it awards 0 style points.</translation>
+        </message>
+        <message>
+            <source>Uzależnia rekompensatę za obniżenie belki przez trenera od 95% HS. Np. na HS140 trzeba skoczyć co najmniej 133 m; zmiana belki przez jury nie podlega tej regule.</source>
+            <translation>Requires 95% HS for coach-gate compensation. E.g. HS140 requires at least 133 m; jury gate changes are not subject to this rule.</translation>
+        </message>
+        <message>
+            <source>Wybiera sposób pomiaru średniego wiatru do rekompensaty. Np. odczyt przed startem może dać inną rekompensatę niż pomiar podczas lotu, choć skoczek trafia na ten sam wiatr.</source>
+            <translation>Selects how average wind is measured for compensation. E.g. a pre-start reading can give different points from an in-flight measurement despite the same physical wind.</translation>
+        </message>
+        <message>
+            <source>Długość analizowanego przebiegu wiatru w sekundach. Np. 300 pokazuje pięć minut warunków, bez wydłużania samego konkursu.</source>
+            <translation>Length of the analysed weather timeline in seconds. E.g. 300 shows five minutes of conditions without lengthening the contest.</translation>
+        </message>
+        <message>
+            <source>Chwila pogody, dla której pokazuje się wiatr na całym zeskoku. Np. 60 daje przekrój minutę po początku modelu, bez przesuwania startu zawodników.</source>
+            <translation>Weather time for displaying wind along the whole landing slope. E.g. 60 gives a cross-section one minute into the model without moving athletes&#x27; starts.</translation>
+        </message>
+        <message>
+            <source>Miejsce nad zeskokiem, dla którego pokazuje się zmiany wiatru w czasie. Np. 100 oznacza odczyt 100 m od progu.</source>
+            <translation>Location above the landing slope used to analyse wind over time. E.g. 100 reads wind 100 m from take-off.</translation>
+        </message>
+        <message>
+            <source>Zakres siły wiatru odpowiadający pełnemu nasyceniu kolorów mapy. Np. 2 daje skalę od −2 do +2 m/s; silniejszy wiatr zachowuje kolor skrajny.</source>
+            <translation>Wind strength range corresponding to fully saturated map colours. E.g. 2 sets −2 to +2 m/s; stronger wind keeps the end colour.</translation>
+        </message>
+        <message>
+            <source>Liczba chwil odczytu na wykresie i mapie wiatru. Np. 101 próbek w ciągu 100 s daje odczyt co sekundę; większa liczba liczy się dłużej.</source>
+            <translation>Number of time samples on the wind chart and map. E.g. 101 samples over 100 s give one reading per second; more samples take longer.</translation>
+        </message>
+        <message>
+            <source>Liczba miejsc odczytu wzdłuż zeskoku. Np. większa liczba pokazuje węższe obszary różnego wiatru, ale zwiększa czas obliczeń.</source>
+            <translation>Number of sample locations along the landing slope. E.g. more samples reveal narrower areas of differing wind but increase calculation time.</translation>
+        </message>
+        <message>
+            <source>Liczba skoków używanych do analizy zależności od wiatru. Np. 1000 daje stabilniejsze rozkłady niż 100, ale wymaga więcej obliczeń.</source>
+            <translation>Number of jumps used to analyse wind effects. E.g. 1000 gives more stable distributions than 100 but requires more calculations.</translation>
+        </message>
+        <message>
+            <source>Zachowanie udziału wybicia poza najmniejszym i największym ustawionym K. Np. Stały udział zachowuje proporcję ze skrajnej kotwicy, a Liniowe przedłużenie kontynuuje zmianę, do granic 0–1.</source>
+            <translation>Take-off share outside the smallest and largest configured K. E.g. Constant keeps the endpoint&#x27;s share; Linear extends the trend, bounded to 0–1.</translation>
+        </message>
+        <message>
+            <source>Rozrzut losowej jakości dla wskazanego rodzaju wydarzenia, w punktach jakości. Np. 0 usuwa bazowe wahania jakości, a większa wartość daje większe bonusy i straty.</source>
+            <translation>Spread of random quality for this event type, in quality points. E.g. 0 removes baseline quality fluctuations; higher values give larger bonuses and losses.</translation>
+        </message>
+        <message>
+            <source>Siła specjalizacji na wskazanym poziomie perka. Np. przy 70% lotu współczynnik 10 daje Lotnikowi +4 punkty jakości, a specjaliście małych skoczni −4.</source>
+            <translation>Specialisation strength at this perk level. E.g. with 70% flight, factor 10 gives a flying specialist +4 quality points and a small hill specialist −4.</translation>
+        </message>
+        <message>
+            <source>Bonus jakości za Błyszczy na treningach na wskazanym poziomie. Np. 4 daje +4 w treningu i próbie oraz +2 w kwalifikacjach; kara konkursowa jest osobna.</source>
+            <translation>Quality bonus for Training star at this level. E.g. 4 gives +4 in training and trial rounds and +2 in qualification; competition penalty is separate.</translation>
+        </message>
+        <message>
+            <source>Kara jakości w konkursie za Błyszczy na treningach na wskazanym poziomie. Np. 2 odejmuje 2 punkty jakości, bez zmiany bonusu treningowego.</source>
+            <translation>Competition quality penalty for Training star at this level. E.g. 2 deducts 2 quality points without changing the training bonus.</translation>
+        </message>
+        <message>
+            <source>Kara jakości w treningu i próbie za Oszczędza siły na wskazanym poziomie. Np. 3 odejmuje 3 punkty jakości; w kwalifikacjach i konkursie ta kara nie działa.</source>
+            <translation>Training and trial quality penalty for Saves energy at this level. E.g. 3 deducts 3 quality points; this penalty does not apply in qualification or competition.</translation>
+        </message>
+        <message>
+            <source>Mnożnik rozrzutu jakości w treningu i próbie za Oszczędza siły. Np. 1,5 zwiększa rozrzut o połowę, a 1 pozostawia go bez zmian.</source>
+            <translation>Training and trial quality spread multiplier for Saves energy. E.g. 1.5 increases spread by half, while 1 leaves it unchanged.</translation>
+        </message>
+        <message>
+            <source>Mnożnik wielkości losowych strat za Regularny na wskazanym poziomie. Np. 0,5 zmienia stratę −10 w −5, bez zmiany dodatnich losowań.</source>
+            <translation>Random loss magnitude multiplier for Consistent at this level. E.g. 0.5 turns −10 into −5 without changing positive draws.</translation>
+        </message>
+        <message>
+            <source>Mnożnik wielkości losowych bonusów za Regularny na wskazanym poziomie. Np. 0,5 zmienia bonus +10 w +5, bez zmiany ujemnych losowań.</source>
+            <translation>Random bonus magnitude multiplier for Consistent at this level. E.g. 0.5 turns +10 into +5 without changing negative draws.</translation>
+        </message>
+        <message>
+            <source>Mnożnik wielkości losowych strat za Nieprzewidywalny na wskazanym poziomie. Np. 1,5 zmienia stratę −10 w −15, bez zwiększania szansy ujemnego losowania.</source>
+            <translation>Random loss magnitude multiplier for Unpredictable at this level. E.g. 1.5 turns −10 into −15 without increasing the probability of a negative draw.</translation>
+        </message>
+        <message>
+            <source>Mnożnik wielkości losowych bonusów za Nieprzewidywalny na wskazanym poziomie. Np. 1,2 zmienia bonus +10 w +12, bez zwiększania szansy dodatniego losowania.</source>
+            <translation>Random bonus magnitude multiplier for Unpredictable at this level. E.g. 1.2 turns +10 into +12 without increasing the probability of a positive draw.</translation>
+        </message>
+        <message>
+            <source>Dotyczy pozostałych zawodników, także z paczki; indywidualne poprawki mają pierwszeństwo.</source>
+            <translation>Applies to the other athletes, including pack athletes; individual overrides take priority.</translation>
+        </message>
+        <message>
+            <source>Miejsce lokalnej korekty wiatru jako część K; wiatr między punktami zmienia się płynnie. Np. 0,5 na K120 umieszcza korektę 60 m od progu.</source>
+            <translation>Location of a local wind correction as a fraction of K; wind varies smoothly between points. E.g. 0.5 on K120 places it 60 m from take-off.</translation>
+        </message>
+        <message>
+            <source>Lokalna zmiana bazowego wiatru wzdłuż skoczni, płynnie łączona z sąsiednimi punktami. Np. baza −1 m/s i korekta +2 dają w tym miejscu +1 m/s przed podmuchami.</source>
+            <translation>Local change in base wind along the hill, smoothly joined to adjacent points. E.g. base −1 m/s and correction +2 give +1 m/s here before gusts.</translation>
+        </message>
+        <message>
+            <source>Lokalna zmiana bocznego wiatru, płynnie łączona z sąsiednimi punktami. Np. baza +1 m/s i korekta −2 dają −1 m/s z przeciwnej strony przed podmuchami.</source>
+            <translation>Local crosswind change, smoothly joined to adjacent points. E.g. base +1 m/s and correction −2 give −1 m/s from the opposite side before gusts.</translation>
+        </message>
+        <message>
+            <source>Zakres bazowej siły wiatru przed podmuchami i lokalnymi różnicami.</source>
+            <translation>Range of base wind strength before gusts and local differences.</translation>
+        </message>
+        <message>
+            <source>Zakres siły rzadszego wariantu presetu Cisza, wybieranego w 15% losowań.</source>
+            <translation>Wind strength range for the rarer Calm preset variant, chosen in 15% of draws.</translation>
+        </message>
+        <message>
+            <source>Zakres kierunku: w presetach kierunkowych jest odchyleniem, w Ciszy i Loterii pełnym kątem.</source>
+            <translation>Direction range: an offset in directional presets, a full angle in Calm and Lottery.</translation>
+        </message>
+        <message>
+            <source>Zakres losowych lokalnych korekt wiatru; większe korekty bardziej różnicują miejsca nad zeskokiem.</source>
+            <translation>Range of random local wind corrections; larger corrections increase differences along the landing slope.</translation>
+        </message>
+        <message>
+            <source>Zakres siły przeciwnego wiatru między częściami zeskoku w presecie Różne kierunki na zeskoku.</source>
+            <translation>Range of opposing wind strength between hill sections in Different directions along the slope.</translation>
+        </message>
+        <message>
+            <source>Zakres siły wahań wiatru w czasie; większe wartości mocniej różnicują warunki kolejnych skoczków.</source>
+            <translation>Range of wind fluctuations over time; higher values increase differences between successive jumpers.</translation>
+        </message>
+        <message>
+            <source>Zakres siły różnic wiatru wzdłuż zeskoku; większe wartości dają mniej jednolite warunki lotu.</source>
+            <translation>Range of wind differences along the hill; higher values make flight conditions less uniform.</translation>
+        </message>
+        <message>
+            <source>Zakres siły zmian głównej tendencji wiatru; większe wartości pozwalają na silniejsze zmiany tła.</source>
+            <translation>Range of changes in the prevailing wind trend; higher values allow stronger background changes.</translation>
+        </message>
+        <message>
+            <source>Zakres czasu utrzymywania się podobnej tendencji wiatru; większe wartości wydłużają takie okresy.</source>
+            <translation>Range of time for which a similar wind trend persists; higher values lengthen these periods.</translation>
+        </message>
+        <message>
+            <source>Zakres siły dodatkowych podmuchów, bez zmiany ich częstości.</source>
+            <translation>Range of extra gust strength without changing gust frequency.</translation>
+        </message>
+        <message>
+            <source>Zakres szansy aktywnego podmuchu; wartość 0,2 oznacza 20% przy losowaniu w modelu.</source>
+            <translation>Range of active gust probability; 0.2 means 20% in the model&#x27;s draw.</translation>
+        </message>
+        <message>
+            <source>Zakres czasu podobnych warunków; większe wartości spowalniają wahania wiatru.</source>
+            <translation>Range of time with similar conditions; higher values slow wind fluctuations.</translation>
+        </message>
+        <message>
+            <source>Zakres różnicy między spokojnymi i burzliwymi okresami konkursu; większe wartości mocniej je rozdzielają.</source>
+            <translation>Range of differences between calm and turbulent periods; higher values separate them more strongly.</translation>
+        </message>
+        <message>
+            <source>Zakres długości obszaru o podobnym wietrze, jako część K; wartość 0,5 na K120 oznacza 60 m.</source>
+            <translation>Range of similar-wind area lengths as a fraction of K; 0.5 on K120 means 60 m.</translation>
+        </message>
+        <message>
+            <source>Zakres szerokości podmuchu, jako część K; wartość 0,3 na K120 oznacza 36 m.</source>
+            <translation>Range of gust widths as a fraction of K; 0.3 on K120 means 36 m.</translation>
+        </message>
+        <message>
+            <source>Zakres czasu płynnego przechodzenia między tendencjami; większe wartości łagodzą zmianę wiatru.</source>
+            <translation>Range of smooth transition times between trends; higher values soften the change.</translation>
+        </message>
+        <message>
+            <source>Ustawiasz minimum losowania w tym presecie. Np. minimum 1 i maksimum 2 pozwalają wylosować wartość od 1 do 2 w jednostce pola.</source>
+            <translation>Sets the minimum draw for this preset. E.g. minimum 1 and maximum 2 allow a value from 1 to 2 in the field&#x27;s unit.</translation>
+        </message>
+        <message>
+            <source>Ustawiasz maksimum losowania w tym presecie. Np. minimum 1 i maksimum 2 pozwalają wylosować wartość od 1 do 2 w jednostce pola.</source>
+            <translation>Sets the maximum draw for this preset. E.g. minimum 1 and maximum 2 allow a value from 1 to 2 in the field&#x27;s unit.</translation>
+        </message>
+        <message>
+            <source>Mnożnik bazowej siły automatycznie losowanego wiatru, bez podmuchów i zmienności. Np. 0,5 zmienia propozycję 2 m/s na 1 m/s.</source>
+            <translation>Base strength multiplier for automatically proposed wind, excluding gusts and variability. E.g. 0.5 turns a 2 m/s proposal into 1 m/s.</translation>
+        </message>
+        <message>
+            <source>Wspólny mnożnik wahań w czasie i różnic na zeskoku w losowanych warunkach. Np. 2 podwaja oba składniki, bez podwajania bazowej siły, podmuchów ani tendencji.</source>
+            <translation>Shared multiplier for temporal fluctuations and spatial differences in proposed weather. E.g. 2 doubles both without doubling base wind, gusts or trends.</translation>
+        </message>
+        <message>
+            <source>Mnożnik siły automatycznie losowanych podmuchów. Np. 2 zmienia podmuch 0,5 m/s na 1 m/s, bez zmiany jego szansy wystąpienia.</source>
+            <translation>Strength multiplier for automatically proposed gusts. E.g. 2 turns a 0.5 m/s gust into 1 m/s without changing its probability.</translation>
+        </message>
+        <message>
+            <source>Mnożnik siły zmian głównej tendencji automatycznie losowanego wiatru. Np. 0 wyłącza ten składnik, a 2 podwaja jego siłę bez zmiany czasu zmian.</source>
+            <translation>Multiplier for prevailing trend changes in proposed wind. E.g. 0 disables this component and 2 doubles its strength without changing transition times.</translation>
+        </message>
+        <message>
+            <source>Mnożnik czasu wahań i zmian tendencji w automatycznie losowanych warunkach. Np. 2 zmienia okres tendencji 60 s na 120 s oraz dwukrotnie wydłuża pozostałe objęte nim czasy.</source>
+            <translation>Time multiplier for fluctuations and trend changes in proposed weather. E.g. 2 turns a 60 s trend period into 120 s and doubles the other affected times.</translation>
+        </message>
+        <message>
+            <source>Szansa, że w automatycznie losowanych warunkach będzie dominował wiatr boczny. Np. 0,15 oznacza 15% propozycji, a nie wiatr o sile 0,15 m/s.</source>
+            <translation>Probability that crosswind dominates an automatic weather proposal. E.g. 0.15 means 15% of proposals, not crosswind of 0.15 m/s.</translation>
+        </message>
+        <message>
+            <source>Długość obszaru podobnego wiatru w spokojnych warunkach losowanych automatycznie. Np. 0,5 na K120 oznacza skalę 60 m; większa wartość daje rozleglejsze obszary.</source>
+            <translation>Length of similar-wind areas in automatically proposed calm weather. E.g. 0.5 on K120 means a 60 m scale; higher values give broader areas.</translation>
+        </message>
+        <message>
+            <source>Długość obszaru podobnego wiatru w zmiennych i loteryjnych warunkach losowanych automatycznie. Np. 0,5 na K120 oznacza skalę 60 m; mniejsza wartość daje drobniejsze różnice.</source>
+            <translation>Length of similar-wind areas in proposed variable or lottery weather. E.g. 0.5 on K120 means a 60 m scale; smaller values give finer differences.</translation>
+        </message>
+        <message>
+            <source>Szerokość automatycznie losowanego podmuchu jako część K. Np. 0,35 na K120 daje 42 m.</source>
+            <translation>Width of an automatically proposed gust as a fraction of K. E.g. 0.35 on K120 gives 42 m.</translation>
+        </message>
+        <message>
+            <source>Szansa deszczu zamiast śniegu, jeśli na śnieżnej nawierzchni poza zimnymi miesiącami wylosowano opad. Np. 0,8 daje 80% deszczu; nie zmienia szansy wystąpienia opadów.</source>
+            <translation>Chance of rain rather than snow when precipitation was drawn on snow outside cold months. E.g. 0.8 gives 80% rain without changing the chance of precipitation itself.</translation>
+        </message>
+        <message>
+            <source>Bazowa szansa opadów na śnieżnej nawierzchni, przed dodatkami za miesiąc i kraj. Np. 0,3 oznacza bazowe 30%; dodatki mogą podnieść wynik do 100%.</source>
+            <translation>Base precipitation chance on snow before month and country bonuses. E.g. 0.3 means a base 30%; bonuses can raise the result to 100%.</translation>
+        </message>
+        <message>
+            <source>Dodatek do szansy opadów w zimnym miesiącu na śnieżnej nawierzchni. Np. 0,1 podnosi bazowe 30% do 40% przed dodatkiem za kraj.</source>
+            <translation>Extra precipitation chance in a cold month on snow. E.g. 0.1 raises a base 30% to 40% before the country bonus.</translation>
+        </message>
+        <message>
+            <source>Dodatek do szansy opadów na śniegu w Norwegii, Szwecji, Finlandii i Kanadzie. Np. 0,1 zwiększa szansę z 30% do 40% przed dodatkiem za miesiąc.</source>
+            <translation>Extra precipitation chance on snow in Norway, Sweden, Finland and Canada. E.g. 0.1 raises 30% to 40% before the month bonus.</translation>
+        </message>
+        <message>
+            <source>Szansa opadów na igelicie; wylosowany opad będzie deszczem. Np. 0,3 daje średnio deszcz w 30% propozycji warunków.</source>
+            <translation>Precipitation probability on matting; any precipitation drawn is rain. E.g. 0.3 gives rain in 30% of weather proposals on average.</translation>
+        </message>
+        <message>
+            <source>Szansa wiatru pod narty na wskazanym poziomie dodatniego perka kierunku; ujemny perk odwraca kierunek. Np. 0,8 daje 80% pod narty przy dodatnim perku i 80% w plecy przy ujemnym.</source>
+            <translation>Headwind probability at this positive direction-perk strength; a negative perk reverses the direction. E.g. 0.8 gives 80% headwind for positive and 80% tailwind for negative.</translation>
+        </message>
+        <message>
+            <source>Waga losowania spokojnej, zmiennej lub loteryjnej pogody w tym zestawie. Np. wagi 2/1/1 dają szanse 50%/25%/25% przed mieszaniem zestawów według perka skoczni.</source>
+            <translation>Draw weight for calm, variable or lottery weather in this set. E.g. weights 2/1/1 give 50%/25%/25% before blending sets by the hill perk.</translation>
+        </message>
+        <message>
+            <source>Zapasowa waga starszego zestawu, używana tylko bez odpowiedniej wagi characterStable lub characterLottery. Np. gdy characterStable jest ustawione, zmiana stable nie wpływa na losowanie.</source>
+            <translation>Fallback weight from the older set, used only without the matching characterStable or characterLottery weight. E.g. changing stable has no effect when characterStable is set.</translation>
+        </message>
+        <message>
+            <source>Waga wyboru przebiegu opadów, jeśli opady już wylosowano. Np. cztery równe wagi dają każdemu przebiegowi 25%; nie zmienia to szansy samych opadów.</source>
+            <translation>Weight for choosing a precipitation pattern after precipitation has been drawn. E.g. four equal weights give each pattern 25% without changing overall precipitation probability.</translation>
+        </message>
+        <message>
+            <source>Dolna lub górna granica bazowej siły automatycznie losowanego wiatru, bez podmuchów. Np. minimum 1 i maksimum 2 dają bazę między 1 a 2 m/s.</source>
+            <translation>Lower or upper bound of automatically proposed base wind strength, before gusts. E.g. minimum 1 and maximum 2 give a base between 1 and 2 m/s.</translation>
+        </message>
+        <message>
+            <source>Granica początkowego natężenia silnych opadów. Np. zakres 8–10 losuje bazę od 8 do 10; tryb Silne i tak podnosi niższą bazę do 8.</source>
+            <translation>Bound for the initial intensity of heavy precipitation. E.g. 8–10 draws a base from 8 to 10; Heavy mode raises a lower base to at least 8.</translation>
+        </message>
+        <message>
+            <source>Granica siły wahań zmiennych opadów. Np. większy zakres pozwala wylosować większe różnice natężenia między chwilami, bez podnoszenia samej bazy.</source>
+            <translation>Bound for fluctuation strength in variable precipitation. E.g. a wider range allows larger intensity differences over time without raising the base intensity.</translation>
+        </message>
+        <message>
+            <source>Granica bazowego natężenia zwykłych opadów w skali 0–10. Np. minimum 2 i maksimum 4 losują bazę od 2 do 4; silne opady mają osobny zakres.</source>
+            <translation>Bound for ordinary precipitation base intensity from 0 to 10. E.g. minimum 2 and maximum 4 draw a base from 2 to 4; heavy precipitation has a separate range.</translation>
+        </message>
+        <message>
+            <source>Siła wahań w czasie dla wskazanego rodzaju losowanej pogody. Np. większa wartość daje większe różnice między warunkami kolejnych skoczków.</source>
+            <translation>Temporal fluctuation strength for this kind of proposed weather. E.g. a higher value gives larger differences between successive jumpers&#x27; conditions.</translation>
+        </message>
+        <message>
+            <source>Siła różnic na zeskoku dla wskazanego rodzaju losowanej pogody. Np. większa wartość ułatwia uzyskanie dobrego wiatru przy progu i słabego przy lądowaniu.</source>
+            <translation>Spatial wind differences for this kind of proposed weather. E.g. a higher value makes good wind near take-off and poor wind near landing easier to obtain together.</translation>
+        </message>
+        <message>
+            <source>Siła podmuchów dla wskazanego rodzaju losowanej pogody. Np. 1 zamiast 0,5 m/s podwaja ich siłę, bez zwiększania szansy wystąpienia.</source>
+            <translation>Gust strength for this kind of proposed weather. E.g. 1 instead of 0.5 m/s doubles gust strength without increasing its probability.</translation>
+        </message>
+        <message>
+            <source>Szansa aktywnego podmuchu dla wskazanego rodzaju losowanej pogody. Np. 0,25 daje 25% przy losowaniu w modelu; nie gwarantuje podmuchu u co czwartego skoczka.</source>
+            <translation>Active gust probability for this kind of proposed weather. E.g. 0.25 means 25% per model draw, not a guaranteed gust for every fourth jumper.</translation>
+        </message>
+        <message>
+            <source>Czas utrzymywania się podobnego wiatru dla wskazanego rodzaju losowanej pogody. Np. 60 s spowalnia wahania w porównaniu z 10 s.</source>
+            <translation>How long similar wind persists for this kind of proposed weather. E.g. 60 s slows fluctuations compared with 10 s.</translation>
+        </message>
+        <message>
+            <source>Siła zmian głównej tendencji dla wskazanego rodzaju losowanej pogody. Np. większa wartość ułatwia wyraźne przejście z wiatru pod narty na wiatr w plecy.</source>
+            <translation>Strength of prevailing trend changes for this kind of proposed weather. E.g. a higher value makes a clear shift from headwind to tailwind easier.</translation>
+        </message>
+        <message>
+            <source>Czas utrzymywania się podobnej tendencji dla wskazanego rodzaju losowanej pogody. Np. 180 s daje dłuższe okresy niż 30 s.</source>
+            <translation>Time with a similar prevailing trend for this kind of proposed weather. E.g. 180 s gives longer spells than 30 s.</translation>
+        </message>
+        <message>
+            <source>Czas płynnej zmiany tendencji dla wskazanego rodzaju losowanej pogody. Np. 20 s daje łagodniejsze przejście między kierunkami niż 2 s.</source>
+            <translation>Time for smooth trend transitions in this kind of proposed weather. E.g. 20 s gives a gentler change of direction than 2 s.</translation>
+        </message>
+        <message>
+            <source>Różnica między spokojnymi i burzliwymi okresami przy wskazanym rodzaju pogody. Np. 0 usuwa ten podział, a większa wartość mocniej rozdziela oba rodzaje okresów.</source>
+            <translation>Difference between calm and turbulent spells for this kind of weather. E.g. 0 removes the split; higher values separate the two types more strongly.</translation>
+        </message>
+        <message>
+            <source>Rozmiar skoczni w wybranym punkcie krzywej specjalizacji. Np. przesunięcie kotwicy z K110 na K120 przenosi przypisany jej udział wybicia na K120; kolejne K muszą rosnąć.</source>
+            <translation>Hill size at the selected specialisation-curve anchor. E.g. moving K110 to K120 moves its assigned take-off share to K120; successive K values must increase.</translation>
+        </message>
+        <message>
+            <source>Udział wybicia w wybranym punkcie krzywej specjalizacji; resztę stanowi lot. Np. 0,60 daje 60% wybicia i 40% lotu; wraz ze wzrostem K udział wybicia nie może rosnąć.</source>
+            <translation>Take-off share at this specialisation-curve anchor; flight supplies the rest. E.g. 0.60 means 60% take-off and 40% flight; take-off share cannot rise as K increases.</translation>
+        </message>
+        <message>
+            <source>Bazowa nota — %1</source>
+            <translation>Base mark — %1</translation>
         </message>
     </context>
     <context>
