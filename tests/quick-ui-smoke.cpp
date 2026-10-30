@@ -120,13 +120,13 @@
 static std::atomic<int> recursiveLayoutWarnings{0};
 static QtMessageHandler originalMessageHandler=nullptr;
 static void observeLayoutWarnings(QtMsgType type,const QMessageLogContext &context,const QString &message) {
-    if(message.contains("Detected recursive rearrange")){++recursiveLayoutWarnings;std::fprintf(stderr,"LAYOUT STAGE: %s\n",qPrintable(qApp->property("athleteTestStage").toString()));}
+    if(message.contains("Detected recursive rearrange") || message.contains("Binding loop detected")){++recursiveLayoutWarnings;std::fprintf(stderr,"LAYOUT STAGE: %s\n",qPrintable(qApp->property("athleteTestStage").toString()));}
     if(originalMessageHandler)originalMessageHandler(type,context,message);
     else std::fprintf(stderr,"%s\n",qPrintable(qFormatLogMessage(type,context,message)));
 }
 struct LayoutWarningRegressionGuard {
     LayoutWarningRegressionGuard(){originalMessageHandler=qInstallMessageHandler(observeLayoutWarnings);}
-    ~LayoutWarningRegressionGuard(){qInstallMessageHandler(originalMessageHandler);if(recursiveLayoutWarnings.load()){std::fprintf(stderr,"FAIL: %d recursive Qt Quick Layout warnings\n",recursiveLayoutWarnings.load());std::exit(1);}}
+    ~LayoutWarningRegressionGuard(){qInstallMessageHandler(originalMessageHandler);if(recursiveLayoutWarnings.load()){std::fprintf(stderr,"FAIL: %d Qt Quick layout/binding warnings\n",recursiveLayoutWarnings.load());std::exit(1);}}
 };
 
 static void check(bool ok,const QString &message) { if(!ok) { qCritical().noquote()<<"FAIL:"<<message; std::exit(1); } }

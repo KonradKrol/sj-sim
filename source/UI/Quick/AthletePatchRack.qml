@@ -22,7 +22,7 @@ ColumnLayout {
             id: category
             required property int index
             Layout.fillWidth: true
-            implicitHeight: contentItem.implicitHeight+topPadding+bottomPadding
+            ContentHeight { control: category }
             padding: Theme.dp(6)
             background: Rectangle { color: Theme.surface; border.width: 1; border.color: Theme.divider; radius: Theme.dp(6) }
             contentItem: ColumnLayout {

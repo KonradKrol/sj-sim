@@ -8,7 +8,7 @@ Control {
     property var design
     readonly property var names: [qsTr("Niechlujne"),qsTr("Niestaranne"),qsTr("Poprawne"),qsTr("Eleganckie"),qsTr("Stylista")]
     padding: Theme.dp(8)
-    implicitHeight: contentItem.implicitHeight+topPadding+bottomPadding
+    ContentHeight { control: landing }
     background: Rectangle {
         color: landing.design.surface
         radius: Theme.dp(4)

@@ -1,5 +1,38 @@
 # Wznowienie prac nad nową symulacją — 28.10.2026
 
+## Najnowszy stan — 30.10.2026
+
+Pracuj solo, feature/simulation-v2, commit i push po ukończonej zmianie.
+- Paczki automatycznie konwertowane do4poziomów:1b1d090. User nie chce dalszej
+  pracy nad zgodnością sezonów. Nie wracać do ręcznego wymogu dla paczek.
+- Wszystkie617opisów labu z przykładami PL:870932a. EN/CS i kontrola brakujących
+  źródeł:1c6ac08. Pokrycie tłumaczeń potwierdzone także w działającym rejestrze.
+- Nachodzenie przycisków perków i subtelne poziomy2/3:118907b.
+- Bezpieczna publikacja QML po zatwierdzeniu pól:3e7d0a0. Dane i changed dla
+  logiki są SYNCHRONICZNE, uiChanged odłożone. Nie opóźniać danych silnika!
+- Zakończona stabilizacja wysokości przy skali tekstu:ContentHeight.qml dla
+  naszywek, kategorii i lądowania. Wspólny pomiar jest współbieżnie kolejkowany
+  przez jednorazowy Timer po zmianach layoutu. Nie przywracać bezpośredniego
+  czytania contentItem.implicitHeight z bindingu rodzica ani Binding.delayed:
+  oba warianty nadal dawały binding loops. Test teraz wykrywa oba rodzaje:
+  recursive rearrange i Binding loop detected.
+- PASS: zakres szerokości640–1500 i skalUI.7/1 oraz tekstu1/1.5, pełny
+  athlete-studio, athlete-commit, hill-studio, translation. Ostatnie logi:
+  /tmp/sj-perk-height-20261030.log i /tmp/sj-content-height-*.log, bez błędów
+  layoutu, bindingów i JavaScript. Wcześniej także simulation-v2-season PASS.
+
+Pozostałe uczciwe ograniczenia:
+1. Oryginalnego segfaulta po212,5+Enter nie odtworzono bezpośrednio; wykryto
+   i naprawiono niebezpieczną publikację widoku wewnątrz callbacku pola.
+   Nowa prywatna regresja bada oba studia, oba drafty, trwałość i cykl życia.
+   User powiedział, że Niklas już działa, i zabronił dalszego sprawdzania jego
+   danych. NIE czytać ani zmieniać tych danych w celu kolejnych prób.
+2. Pełny stary smoke zawiera nieaktualne założenia o Qt Widgets tabeli DB.
+   Przy następnym audycie dostosować testy do nowego studia, nie przywracać
+   starego edytora. Nie twierdzić, że cały stary smoke jest zielony.
+Gra użytkownika była otwarta — nie zabijać, nie restartować bez polecenia.
+Starsze sekcje poniżej to historia, nie lista poleceń do powtórzenia.
+
 ## Aktualny punkt kontynuacji — 29.10.2026
 
 Pracuj solo na feature/simulation-v2; commit i push po każdej ukończonej zmianie.
@@ -593,3 +626,9 @@ Nie zamyka to osobnego ostrzeżenia Binding loop przy zmianie skali tekstu.
   na żywo przed puszczeniem. Nie maskować problemów zmianą oczekiwanego wyniku.
 Nadal osobno: Binding loop przy zmianie skali tekstu, testy widzą je, choć nie
 ma nakładania kart. Pełny stary smoke nadal wymaga aktualizacji starej tabeli DB.
+
+30.10 — zamknięcie ostrzeżeń wysokości: samo Binding.delayed redukowało je,
+lecz nadal5ostrzeżeń wracało z getterów layoutu. ContentHeight mierzy je poza
+bindingiem rodzica, po zebraniu zmian. Test przed poprawką FAIL5, po poprawce
+PASS0. Pełny athlete-studio, powtórzony trwały zapis pól, hill-studio i żywe
+PL/EN/CS też PASS. Nie wyciszano logowania — guard jest teraz ostrzejszy.

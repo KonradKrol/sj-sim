@@ -8,7 +8,7 @@ Control {
     property var backend
     AthleteDesign { id: conceptPalette; variant: 1 }
     padding: Theme.dp(10)
-    implicitHeight: contentItem.implicitHeight+topPadding+bottomPadding
+    ContentHeight { control: screen }
     background: Rectangle { color: Theme.background }
     contentItem: ColumnLayout {
         spacing: Theme.dp(9)
