@@ -47,6 +47,7 @@ public:
     bool canUndo()const{return !m_undo.isEmpty();}
     bool canRedo()const{return !m_redo.isEmpty();}
     Q_INVOKABLE void selectPack(int index);
+    Q_INVOKABLE void sortByCountry();
     void invalidateText(){notifyChanged();}
     Q_INVOKABLE void createPack();
     Q_INVOKABLE void renamePack(const QString &name);

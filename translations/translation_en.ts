@@ -22867,4 +22867,31 @@ Technical key: %4</translation>
             <translation>Done</translation>
         </message>
     </context>
+    <context>
+        <name>SortCountryButton</name>
+        <message>
+            <source>Kraj ↑</source>
+            <translation>Country ↑</translation>
+        </message>
+        <message>
+            <source>Sortuj według kraju</source>
+            <translation>Sort by country</translation>
+        </message>
+        <message>
+            <source>Posortować według kraju?</source>
+            <translation>Sort by country?</translation>
+        </message>
+        <message>
+            <source>Kolejność w paczce zostanie zmieniona. W obrębie każdego kraju obecna kolejność zostanie zachowana. Możesz cofnąć sortowanie.</source>
+            <translation>The order in the pack will change. The current order within each country stays the same. You can undo the sort.</translation>
+        </message>
+        <message>
+            <source>Anuluj</source>
+            <translation>Cancel</translation>
+        </message>
+        <message>
+            <source>Sortuj</source>
+            <translation>Sort</translation>
+        </message>
+    </context>
 </TS>

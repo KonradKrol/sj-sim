@@ -136,6 +136,7 @@
 <file>DataTable.qml</file>
 <file>DataPackBar.qml</file>
 <file>StudioPackBar.qml</file>
+<file>SortCountryButton.qml</file>
 <file>AuthorPage.qml</file>
 <file>AuthorProject.qml</file>
 <file>AuthorSocial.qml</file>

@@ -22868,4 +22868,31 @@ Technický klíč: %4</translation>
             <translation>Hotovo</translation>
         </message>
     </context>
+    <context>
+        <name>SortCountryButton</name>
+        <message>
+            <source>Kraj ↑</source>
+            <translation>Země ↑</translation>
+        </message>
+        <message>
+            <source>Sortuj według kraju</source>
+            <translation>Seřadit podle země</translation>
+        </message>
+        <message>
+            <source>Posortować według kraju?</source>
+            <translation>Seřadit podle země?</translation>
+        </message>
+        <message>
+            <source>Kolejność w paczce zostanie zmieniona. W obrębie każdego kraju obecna kolejność zostanie zachowana. Możesz cofnąć sortowanie.</source>
+            <translation>Pořadí v balíčku se změní. Současné pořadí v rámci každé země zůstane zachováno. Řazení lze vrátit zpět.</translation>
+        </message>
+        <message>
+            <source>Anuluj</source>
+            <translation>Zrušit</translation>
+        </message>
+        <message>
+            <source>Sortuj</source>
+            <translation>Seřadit</translation>
+        </message>
+    </context>
 </TS>

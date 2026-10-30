@@ -14,6 +14,7 @@
 #include <QSet>
 #include <QTimer>
 #include <QUrl>
+#include <algorithm>
 
 namespace {
 QString uuid(){return QUuid::createUuid().toString(QUuid::WithoutBraces);}
@@ -55,6 +56,14 @@ void HillStudioController::selectPack(int i){if(i<0 || i>=m_packs.size() || i==m
 void HillStudioController::createPack(){auto pack=emptyPack(tr("Nowa paczka %1").arg(m_packs.size()+1));QString error;if(!persist(pack,error)){status(error);return;}m_packs.append(pack);m_pack=m_packs.size()-1;m_selected=-1;m_undo.clear();m_redo.clear();m_message.clear();notifyChanged();}
 void HillStudioController::renamePack(const QString &name){auto p=currentPack();p["name"]=name.trimmed();commit(p,m_selected);}
 void HillStudioController::select(int i){if(i<0 || i>=currentPack()["profiles"].toArray().size())return;m_selected=i;m_message.clear();notifyChanged();}
+void HillStudioController::sortByCountry(){
+    auto next=currentPack();const auto entries=next["profiles"].toArray();if(entries.size()<2)return;
+    const auto selectedId=m_selected>=0 && m_selected<entries.size()?entries[m_selected].toObject()["id"].toString():QString();
+    QVector<QJsonObject> sorted;sorted.reserve(entries.size());for(const auto &entry:entries)sorted.append(entry.toObject());
+    std::stable_sort(sorted.begin(),sorted.end(),[](const QJsonObject &a,const QJsonObject &b){return a["country"].toString()<b["country"].toString();});
+    QJsonArray result;int selection=-1;for(const auto &entry:sorted){if(!selectedId.isEmpty() && entry["id"].toString()==selectedId)selection=result.size();result.append(entry);}
+    next["profiles"]=result;commit(next,selection);
+}
 void HillStudioController::add(){auto p=currentPack();auto entries=p["profiles"].toArray();entries.append(HillProfile::create().toJson());p["profiles"]=entries;commit(p,entries.size()-1,tr("Dodano skocznię"));}
 void HillStudioController::duplicate(){if(m_selected<0)return;auto p=currentPack();auto entries=p["profiles"].toArray();auto copy=entries[m_selected].toObject();copy["id"]=uuid();copy["name"]=(title(copy).left(85)+tr(" — kopia")).left(100);entries.append(copy);p["profiles"]=entries;commit(p,entries.size()-1);}
 void HillStudioController::remove(){if(m_selected<0)return;auto p=currentPack();auto entries=p["profiles"].toArray();entries.removeAt(m_selected);p["profiles"]=entries;commit(p,qMin(m_selected,entries.size()-1),tr("Usunięto skocznię · możesz cofnąć"));}

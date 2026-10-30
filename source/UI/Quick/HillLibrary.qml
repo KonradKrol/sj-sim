@@ -27,7 +27,11 @@ ColumnLayout {
     function choose(index) {if(index<0 || index>=entries.count)return;backend.select(entries.get(index).profileIndex);rows.positionViewAtIndex(index,ListView.Contain)}
     Connections { target: library.backend; function onUiChanged(){library.sync()} }
     spacing: Theme.dp(6)
-    Label { text: qsTr("Skocznie · %1").arg(library.backend.profiles.length); color: Theme.muted; font.pointSize: Theme.caption }
+    RowLayout {
+        Layout.fillWidth: true
+        Label { text: qsTr("Skocznie · %1").arg(library.backend.profiles.length); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
+        SortCountryButton { enabled: library.backend.profiles.length>1; onConfirmed: library.backend.sortByCountry() }
+    }
     SField { Layout.fillWidth: true; text: library.query; placeholderText: qsTr("Szukaj skoczni lub kraju…"); Accessible.name: placeholderText; onTextEdited: library.query=text }
     ListView {
         id: rows

@@ -54,6 +54,7 @@ public:
     bool canRedo() const{return !m_redo.isEmpty();}
     Q_INVOKABLE void selectPack(int index);
     Q_INVOKABLE void move(int from,int to);
+    Q_INVOKABLE void sortByCountry();
     void invalidateText(){notifyChanged();}
     Q_INVOKABLE void renamePack(const QString &name);
     Q_INVOKABLE void createPack();

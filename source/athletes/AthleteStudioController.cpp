@@ -18,6 +18,7 @@
 #include <QFileDialog>
 #include <QWidget>
 #include <cmath>
+#include <algorithm>
 
 namespace {
 QString uuid(){return QUuid::createUuid().toString(QUuid::WithoutBraces);}
@@ -97,6 +98,14 @@ void AthleteStudioController::move(int from,int to){
     else if(from<selected && selected<=to)--selected;
     else if(to<=selected && selected<from)++selected;
     commit(next,selected);
+}
+void AthleteStudioController::sortByCountry(){
+    auto next=currentPack();const auto entries=next["profiles"].toArray();if(entries.size()<2)return;
+    const auto selectedId=m_selected>=0 && m_selected<entries.size()?entries[m_selected].toObject()["id"].toString():QString();
+    QVector<QJsonObject> sorted;sorted.reserve(entries.size());for(const auto &entry:entries)sorted.append(entry.toObject());
+    std::stable_sort(sorted.begin(),sorted.end(),[](const QJsonObject &a,const QJsonObject &b){return a["country"].toString()<b["country"].toString();});
+    QJsonArray result;int selection=-1;for(const auto &entry:sorted){if(!selectedId.isEmpty() && entry["id"].toString()==selectedId)selection=result.size();result.append(entry);}
+    next["profiles"]=result;commit(next,selection);
 }
 void AthleteStudioController::add(){auto next=currentPack();auto entries=next["profiles"].toArray();entries.append(AthleteProfile::create().toJson());next["profiles"]=entries;commit(next,entries.size()-1,tr("Dodano skoczka"));}
 void AthleteStudioController::duplicate(){if(m_selected<0)return;auto next=currentPack();auto entries=next["profiles"].toArray();auto copy=entries[m_selected].toObject();copy["id"]=uuid();copy["surname"]=(copy["surname"].toString().left(90)+tr(" — kopia")).left(100);entries.append(copy);next["profiles"]=entries;commit(next,entries.size()-1,tr("Utworzono kopię"));}
