@@ -232,6 +232,7 @@ SimulationSave * SimulationSave::getFromJson(QJsonObject obj, IdentifiableObject
 
     save->updateNextCompetitionIndex();
 
+    save->setAutosaveEnabled(obj.value("autosave-enabled").toBool(true));
     save->setShowForm(obj.value("show-form").toBool(true));
     save->setShowInstability(obj.value("show-instability").toBool(true));
     save->setSaveFileSizeReduce(obj.value("save-file-size-reduce").toBool(true));
@@ -282,6 +283,7 @@ QJsonObject SimulationSave::getJsonObject(SimulationSave &save)
     object.insert("actual-season-id", save.getActualSeason()->getIDStr());
     object.insert("next-competition-index", save.getNextCompetitionIndex());
 
+    object.insert("autosave-enabled", save.getAutosaveEnabled());
     object.insert("show-form", save.getShowForm());
     object.insert("show-instability", save.getShowInstability());
     object.insert("save-file-size-reduce", save.getSaveFileSizeReduce());

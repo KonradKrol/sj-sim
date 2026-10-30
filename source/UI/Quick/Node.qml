@@ -33,10 +33,11 @@ FocusScope {
     Loader {
         id: body
         width: parent.width
-        sourceComponent: control.kind === "seasonOverview" ? seasonOverviewBody : control.kind === "classificationEditor" ? classificationBody : control.kind === "empty" ? emptyBody : control.kind === "roster" ? rosterBody : control.kind === "rosterSummary" ? rosterSummary : control.kind === "calendar" ? calendarBody : control.kind === "wind" ? windBody : control.kind === "label" ? labelBody : control.kind === "button" ? buttonBody : control.kind === "check" ? checkBody : control.kind === "number" ? numberBody : control.kind === "text" || control.kind === "date" ? textBody : control.kind === "choice" ? choiceBody : control.kind === "slider" ? sliderBody : control.kind === "richtext" ? richBody : control.kind === "multiline" ? multilineBody : control.kind === "table" ? tableBody : control.kind === "chart" ? chartBody : control.kind === "progress" ? progressBody : groupBody
+        sourceComponent: control.kind === "seasonAutosave" ? seasonAutosaveBody : control.kind === "seasonOverview" ? seasonOverviewBody : control.kind === "classificationEditor" ? classificationBody : control.kind === "empty" ? emptyBody : control.kind === "roster" ? rosterBody : control.kind === "rosterSummary" ? rosterSummary : control.kind === "calendar" ? calendarBody : control.kind === "wind" ? windBody : control.kind === "label" ? labelBody : control.kind === "button" ? buttonBody : control.kind === "check" ? checkBody : control.kind === "number" ? numberBody : control.kind === "text" || control.kind === "date" ? textBody : control.kind === "choice" ? choiceBody : control.kind === "slider" ? sliderBody : control.kind === "richtext" ? richBody : control.kind === "multiline" ? multilineBody : control.kind === "table" ? tableBody : control.kind === "chart" ? chartBody : control.kind === "progress" ? progressBody : groupBody
     }
     }
     Component { id: seasonOverviewBody; SeasonOverview { node: control.node } }
+    Component { id: seasonAutosaveBody; SeasonAutosave { node: control.node } }
     Component { id: classificationBody; ClassificationWorkspace { node: control.node } }
     Component { id: emptyBody; EmptyState { title: control.fields.title || ""; description: control.fields.description || ""; actionText: control.fields.actionText || ""; onTriggered: ui.activate(control.fields.actionId) } }
     Component { id: rosterBody; RosterWorkspace { node: control.node } }

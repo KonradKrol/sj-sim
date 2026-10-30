@@ -30,9 +30,12 @@ public:
     double * getJumperFormInstability(Jumper *j);
     int getEngineVersion() const {return engineVersion;}
     bool setEngineVersion(int value) {if(value!=1 && value!=2)return false;engineVersion=value;return true;}
+    bool getAutosaveEnabled() const { return autosaveEnabled; }
+    void setAutosaveEnabled(bool enabled) { autosaveEnabled = enabled; }
 
 private:
     int engineVersion=1;
+    bool autosaveEnabled=true;
     QString name;
     QVector<Season> seasons;
     Season * actualSeason;

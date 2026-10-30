@@ -32,6 +32,7 @@
 #include <QRandomGenerator>
 #include <QPushButton>
 #include <QSignalBlocker>
+#include <QScopedValueRollback>
 #include <QInputDialog>
 #include <QDesktopServices>
 #include <QTableView>
@@ -137,7 +138,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         editedAthlete=simulationSave->getJumpersReference()[index.row()];
         const bool modern=bool(editedAthlete->getSimulationProfile());
         athleteProfileEditor->setVisible(modern);
-        if(modern){jumperEditor->hide();athleteDraft->load(*editedAthlete,editedAthlete->getSimulationAssetDirectory());return;}
+        if(modern){jumperEditor->hide();QScopedValueRollback<bool> loading(loadingProfileDraft,true);athleteDraft->load(*editedAthlete,editedAthlete->getSimulationAssetDirectory());return;}
         jumperEditor->show();
         jumperEditor->setJumper(editedAthlete);
         if(simulationSave->getShowInstability() == true)
@@ -185,7 +186,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         editedHill=simulationSave->getHillsReference()[index.row()];
         const bool modern=bool(editedHill->getSimulationProfile());
         hillProfileEditor->setVisible(modern);
-        if(modern){hillEditor->hide();hillDraft->load(*editedHill);return;}
+        if(modern){hillEditor->hide();QScopedValueRollback<bool> loading(loadingProfileDraft,true);hillDraft->load(*editedHill);return;}
         hillEditor->show();
         hillEditor->setHill(editedHill);
         hillEditor->fillHillInputs();
@@ -404,6 +405,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
             list->setJumpers(editor->getSelectedJumpers());
             list->setName(editor->getNameFromLineEdit());
             list->setIsDefault(editor->getIsDefaultFromCheckBox());
+            markSeasonChanged();
             jumpersListsListView->setupListModel();
             emit jumpersListsListView->getListModel()->dataChanged(jumpersListsListView->getListModel()->index(0), jumpersListsListView->getListModel()->index(jumpersListsListView->getListModel()->rowCount() - 1));
         }
@@ -505,8 +507,50 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     connectCalendarEditorSignals();
     highlightActualCalendar();
 
+    autosaveTimer=new QTimer(this);
+    autosaveTimer->setObjectName("seasonAutosaveTimer");
+    autosaveTimer->setSingleShot(true);
+    autosaveTimer->setInterval(15000);
+    connect(autosaveTimer,&QTimer::timeout,this,[this]{
+        if(simulationSave->getAutosaveEnabled())simulationSave->saveToFile("simulationSaves/");
+    });
+    connect(calendarEditor,&CalendarEditorWidget::changed,this,&SimulationSaveManagerWindow::markSeasonChanged);
+    connect(athleteDraft,&SimulationProfileDraft::changed,this,[this]{if(!loadingProfileDraft)markSeasonChanged();});
+    connect(hillDraft,&SimulationProfileDraft::changed,this,[this]{if(!loadingProfileDraft)markSeasonChanged();});
+    connect(jumperEditor,&JumperEditorWidget::submitted,this,&SimulationSaveManagerWindow::markSeasonChanged);
+    connect(hillEditor,&HillEditorWidget::submitted,this,&SimulationSaveManagerWindow::markSeasonChanged);
+    connect(rulesEditor,&CompetitionRulesEditorWidget::submitted,this,&SimulationSaveManagerWindow::markSeasonChanged);
+    connect(classificationEditor,&ClassificationEditorWidget::submitted,this,&SimulationSaveManagerWindow::markSeasonChanged);
+    connect(this,&SimulationSaveManagerWindow::actualCalendarChanged,this,&SimulationSaveManagerWindow::markSeasonChanged);
+    for(auto *list:{jumpersListView,hillsListView,rulesListView,classificationsListView,calendarsListView,jumpersListsListView}){
+        connect(list,&DatabaseItemsListView::insert,this,&SimulationSaveManagerWindow::markSeasonChanged);
+        connect(list,&DatabaseItemsListView::remove,this,&SimulationSaveManagerWindow::markSeasonChanged);
+        connect(list,&DatabaseItemsListView::up,this,&SimulationSaveManagerWindow::markSeasonChanged);
+        connect(list,&DatabaseItemsListView::down,this,&SimulationSaveManagerWindow::markSeasonChanged);
+    }
+
     updateResponsiveLayout(width());
     ResponsiveWindowUtils::manageWindowGeometry(this, "SimulationSaveManagerWindow");
+}
+
+bool SimulationSaveManagerWindow::autosaveEnabled() const { return simulationSave->getAutosaveEnabled(); }
+
+void SimulationSaveManagerWindow::setAutosaveEnabled(bool enabled)
+{
+    if(enabled==simulationSave->getAutosaveEnabled())return;
+    const bool previous=simulationSave->getAutosaveEnabled();
+    const bool pending=autosaveTimer && autosaveTimer->isActive();
+    simulationSave->setAutosaveEnabled(enabled);
+    if(!simulationSave->saveToFile("simulationSaves/")){
+        simulationSave->setAutosaveEnabled(previous);
+        if(pending && previous && autosaveTimer)autosaveTimer->start();
+    } else if(autosaveTimer)autosaveTimer->stop();
+    emit autosaveEnabledChanged();
+}
+
+void SimulationSaveManagerWindow::markSeasonChanged()
+{
+    if(autosaveTimer && simulationSave->getAutosaveEnabled())autosaveTimer->start();
 }
 
 void SimulationSaveManagerWindow::updateResponsiveLayout(int windowWidth)
@@ -616,6 +660,10 @@ void SimulationSaveManagerWindow::setCalendarsListView(DatabaseItemsListView *ne
 
 SimulationSaveManagerWindow::~SimulationSaveManagerWindow()
 {
+    if(autosaveTimer && autosaveTimer->isActive() && simulationSave->getAutosaveEnabled()){
+        autosaveTimer->stop();
+        simulationSave->saveToFile("simulationSaves/");
+    }
     delete ui;
 }
 
@@ -850,7 +898,7 @@ void SimulationSaveManagerWindow::configNextSeason()
         simulationSave->setActualSeason(&simulationSave->getSeasonsReference().last());
         simulationSave->getActualSeason()->setActualCalendar(nullptr);
         simulationSave->updateNextCompetitionIndex();
-        simulationSave->saveToFile("simulationSaves/");
+        if(simulationSave->getAutosaveEnabled())simulationSave->saveToFile("simulationSaves/");
 
         updateCompetitionConfigButton();
         ui->label_seasonNumber->setText(QString::number(simulationSave->getActualSeason()->getSeasonNumber()));
@@ -962,6 +1010,11 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
         configNextSeason();
     }
     else if(simulationSave->getNextCompetition() != nullptr){
+        // Do not serialize a partially running competition from an idle timer.
+        if(autosaveTimer && autosaveTimer->isActive() && simulationSave->getAutosaveEnabled()){
+            autosaveTimer->stop();
+            simulationSave->saveToFile("simulationSaves/");
+        }
         auto configWindow=std::make_unique<CompetitionConfigWindow>(CompetitionConfigWindow::SeasonCompetition,this,simulationSave);
         configWindow->setModal(true);
 
@@ -1097,7 +1150,10 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
                 refreshProfileDrafts();
                 fillNextCompetitionInformations();
                 updateArchive();
-                simulationSave->saveToFile("simulationSaves/");
+                if(simulationSave->getAutosaveEnabled()){
+                    if(autosaveTimer)autosaveTimer->stop();
+                    simulationSave->saveToFile("simulationSaves/");
+                }
 
                 competition->saveToCsvFile("results/season-competitions/csv/", simulationSave->getName() + QString(" (%1)" ).arg(simulationSave->getActualSeason()->getActualCalendar()->getName()) + QString::number(simulationSave->getActualSeason()->getSeasonNumber()) + "-" + QString::number(simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference().indexOf(competition)) + " " + competition->getHill()->getHillText() + " (" + competition->getShortSerieTypeText() + ")" + ".csv");
 
@@ -1119,8 +1175,10 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
 
 void SimulationSaveManagerWindow::on_pushButton_saveToFile_clicked()
 {
+    if(autosaveTimer)autosaveTimer->stop();
     if(simulationSave->saveToFile("simulationSaves/"))
         QMessageBox::information(this, tr("Zapis do pliku"), tr("Pomyślnie zapisano aktualny zapis symulacji do pliku"), QMessageBox::Ok);
+    else markSeasonChanged();
 }
 
 void SimulationSaveManagerWindow::on_pushButton_saveAsCopy_clicked()
@@ -1394,11 +1452,13 @@ void SimulationSaveManagerWindow::on_pushButton_formGenerator_clicked()
     if(window.exec() == QDialog::Accepted)
     {
         refreshProfileDrafts();
+        markSeasonChanged();
     }
 }
 
 void SimulationSaveManagerWindow::refreshProfileDrafts()
 {
+    QScopedValueRollback<bool> loading(loadingProfileDraft,true);
     if(simulationSave->getJumpersReference().contains(editedAthlete) && editedAthlete->getSimulationProfile())
         athleteDraft->load(*editedAthlete,editedAthlete->getSimulationAssetDirectory());
     if(simulationSave->getHillsReference().contains(editedHill) && editedHill->getSimulationProfile())
@@ -1424,9 +1484,11 @@ void SimulationSaveManagerWindow::on_checkBox_compactSaveFile_stateChanged(int a
 void SimulationSaveManagerWindow::on_lineEdit_calendarName_editingFinished()
 {
     if(!editingCalendar)return;const auto name=ui->lineEdit_calendarName->text().trimmed();if(name.isEmpty())return;
+    if(name==editingCalendar->getName())return;
     editingCalendar->setName(name);const int row=simulationSave->getActualSeason()->getCalendarsReference().indexOf(editingCalendar);
     emit calendarsListView->getListModel()->dataChanged(calendarsListView->getListModel()->index(row,0),calendarsListView->getListModel()->index(row,0));
     if(editingCalendar==simulationSave->getActualSeason()->getActualCalendar())ui->label_calendarName->setText(name);
+    markSeasonChanged();
 }
 
 void SimulationSaveManagerWindow::on_checkBox_showInstability_stateChanged(int arg1)
@@ -1437,5 +1499,5 @@ void SimulationSaveManagerWindow::on_checkBox_showInstability_stateChanged(int a
 
 void SimulationSaveManagerWindow::saveSimulationSettings()
 {
-    simulationSave->saveToFile("simulationSaves/");
+    markSeasonChanged();
 }

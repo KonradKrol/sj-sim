@@ -22967,4 +22967,27 @@ Technický klíč: %4</translation>
             <translation>Seřadit</translation>
         </message>
     </context>
+    <context>
+        <name>SeasonAutosave</name>
+        <message>
+            <source>Automatyczny zapis</source>
+            <translation>Automatické ukládání</translation>
+        </message>
+        <message>
+            <source>Po konkursie zapis następuje od razu, a po innych zmianach po 15 sekundach. Zmiana tego ustawienia zapisuje obecny stan sezonu.</source>
+            <translation>Po závodu se sezóna uloží ihned, po ostatních změnách za 15 sekund. Změna tohoto nastavení uloží aktuální stav sezóny.</translation>
+        </message>
+        <message>
+            <source>Automatyczny zapis jest wyłączony. Zapisz sezon ręcznie. Zmiana tego ustawienia zapisuje obecny stan sezonu.</source>
+            <translation>Automatické ukládání je vypnuté. Uložte sezónu ručně. Změna tohoto nastavení uloží aktuální stav sezóny.</translation>
+        </message>
+        <message>
+            <source>Włączony</source>
+            <translation>Zapnuto</translation>
+        </message>
+        <message>
+            <source>Wyłączony</source>
+            <translation>Vypnuto</translation>
+        </message>
+    </context>
 </TS>

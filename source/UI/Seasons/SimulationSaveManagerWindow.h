@@ -15,6 +15,7 @@
 
 class QLabel;
 class SimulationProfileDraft;
+class QTimer;
 
 namespace Ui {
 class SimulationSaveManagerWindow;
@@ -23,6 +24,7 @@ class SimulationSaveManagerWindow;
 class SimulationSaveManagerWindow : public QDialog
 {
     Q_OBJECT
+    Q_PROPERTY(bool autosaveEnabled READ autosaveEnabled WRITE setAutosaveEnabled NOTIFY autosaveEnabledChanged)
 
 public:
     explicit SimulationSaveManagerWindow(SimulationSave * save, QWidget *parent = nullptr);
@@ -31,6 +33,9 @@ public:
     void showJumperAndHillsEditingHelp();
     void fillNextCompetitionInformations();
     void focusCalendarTab(bool create=false,bool addCompetition=false);
+    bool autosaveEnabled() const;
+    Q_INVOKABLE void setAutosaveEnabled(bool enabled);
+    void markSeasonChanged();
 
     void setupClassificationsComboBox();
     void connectComboBox();
@@ -50,11 +55,14 @@ signals:
     void actualCalendarChanged();
     void editingCalendarChanged();
     void calendarRequested(bool create,bool addCompetition);
+    void autosaveEnabledChanged();
 
 private:
     Ui::SimulationSaveManagerWindow *ui;
 
     SimulationSave * simulationSave;
+    QTimer *autosaveTimer=nullptr;
+    bool loadingProfileDraft=false;
     SeasonCalendar *editingCalendar=nullptr;
 
     DatabaseItemsListView * jumpersListView;

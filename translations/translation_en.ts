@@ -22966,4 +22966,27 @@ Technical key: %4</translation>
             <translation>Sort</translation>
         </message>
     </context>
+    <context>
+        <name>SeasonAutosave</name>
+        <message>
+            <source>Automatyczny zapis</source>
+            <translation>Automatic saving</translation>
+        </message>
+        <message>
+            <source>Po konkursie zapis następuje od razu, a po innych zmianach po 15 sekundach. Zmiana tego ustawienia zapisuje obecny stan sezonu.</source>
+            <translation>The season is saved immediately after a competition and 15 seconds after other changes. Changing this setting saves the current season.</translation>
+        </message>
+        <message>
+            <source>Automatyczny zapis jest wyłączony. Zapisz sezon ręcznie. Zmiana tego ustawienia zapisuje obecny stan sezonu.</source>
+            <translation>Automatic saving is off. Save the season manually. Changing this setting saves the current season.</translation>
+        </message>
+        <message>
+            <source>Włączony</source>
+            <translation>On</translation>
+        </message>
+        <message>
+            <source>Wyłączony</source>
+            <translation>Off</translation>
+        </message>
+    </context>
 </TS>

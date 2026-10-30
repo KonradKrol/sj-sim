@@ -24,7 +24,8 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
     Jumper source;Hill sourceHill;
     check(source.setSimulationProfile(profile,error) && sourceHill.setSimulationProfile(venue,error),"season editor fixtures validate");
     source.setSimulationPackContext(QUuid::createUuid().toString(QUuid::WithoutBraces),"/test/pack");
-    SimulationSave save;save.setEngineVersion(2);save.setName("Season editor");
+    const QString saveName="Season autosave test "+QUuid::createUuid().toString(QUuid::WithoutBraces);
+    SimulationSave save;save.setEngineVersion(2);save.setName(saveName);
     save.setJumpers({new Jumper(source),new Jumper(source)});save.getJumpersReference()[1]->reassign();
     save.setHills({new Hill(sourceHill)});
     Season season;season.setSeasonNumber(2026);save.setSeasons({season});save.setActualSeason(&save.getSeasonsReference().first());save.updateNextCompetitionIndex();
@@ -37,6 +38,7 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
     }
     check(athlete && hill && jumpers && hills,"season owns separate profile drafts and lists");
     jumpers->listViewDoubleClicked(jumpers->getListModel()->index(0,0));
+    auto *initialTimer=manager.findChild<QTimer *>("seasonAutosaveTimer");check(initialTimer && !initialTimer->isActive(),"viewing a jumper alone does not schedule an automatic save");
     auto *identity=save.getJumpersReference()[0];const auto id=identity->getIDStr();
     athlete->setValue("overall",91);athlete->setPerk(1,1,3,false);athlete->setValue("form",78);
     check(identity==save.getJumpersReference()[0] && identity->getIDStr()==id && identity->getSimulationProfile()->overall==91 && identity->getSimulationProfile()->form==78 && identity->getSimulationProfile()->perks[1]==3,"season edits update the existing owned actor without losing identity or full profile");
@@ -63,6 +65,29 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
     check(QMetaObject::invokeMethod(hills,"onInsertActionTriggered") && save.getHillsReference().last()->getSimulationProfile().has_value(),"new season hills also use v2 profiles");
     std::unique_ptr<SimulationSave> restored(SimulationSave::getFromJson(SimulationSave::getJsonObject(save),nullptr));
     check(bool(restored),"edited and expanded v2 season remains serializable");
+    check(restored->getAutosaveEnabled(),"older and new seasons default to automatic saving");
+    auto oldSave=SimulationSave::getJsonObject(save);oldSave.remove("autosave-enabled");
+    std::unique_ptr<SimulationSave> restoredOld(SimulationSave::getFromJson(oldSave,nullptr));
+    check(restoredOld && restoredOld->getAutosaveEnabled(),"seasons saved before the toggle keep automatic saving enabled");
+    bridge->edit(bridge->root()->values().value("id").toInt(),0);QTest::qWait(150);
+    check(item(scene(&manager)->rootObject(),"seasonAutosave"),"season overview exposes the automatic saving switch");
+    presentation(&manager)->grab().save(output+"/season-autosave.png");
+    clickControl(scene(&manager),"seasonAutosave");check(!manager.autosaveEnabled(),"the visible switch disables automatic saving");
+    clickControl(scene(&manager),"seasonAutosave");check(manager.autosaveEnabled(),"the visible switch enables automatic saving");
+    auto *timer=manager.findChild<QTimer *>("seasonAutosaveTimer");check(timer && timer->interval()==15000,"automatic saving uses a fifteen second idle delay");
+    manager.setAutosaveEnabled(false);check(!manager.autosaveEnabled() && !timer->isActive(),"turning off automatic saving cancels the pending save");
+    SimulationSave anotherSave;check(anotherSave.getAutosaveEnabled(),"automatic saving preference is independent for each season save");
+    QFile saved(QCoreApplication::applicationDirPath()+"/simulationSaves/"+saveName+".json");
+    auto stored=[&](){check(saved.open(QIODevice::ReadOnly),"season autosave file is readable");const auto root=QJsonDocument::fromJson(saved.readAll()).object();saved.close();return root.value("simulation-save").toObject();};
+    check(!stored().value("autosave-enabled").toBool(true),"automatic saving preference is stored in this season");
+    std::unique_ptr<SimulationSave> disabledReload(SimulationSave::getFromJson(stored(),nullptr));
+    check(disabledReload && !disabledReload->getAutosaveEnabled(),"disabled automatic saving survives reloading the season");
+    manager.markSeasonChanged();check(!timer->isActive(),"disabled automatic saving does not start a timer");
+    manager.setAutosaveEnabled(true);timer->setInterval(400);save.setShowForm(false);
+    auto *calendarEditor=manager.findChild<CalendarEditorWidget *>();check(calendarEditor && QMetaObject::invokeMethod(calendarEditor,"changed"),"calendar changes can schedule saving");
+    check(timer->isActive(),"a calendar change schedules automatic saving");
+    QTest::qWait(50);manager.markSeasonChanged();QTest::qWait(50);check(timer->isActive(),"a further change restarts the idle delay");
+    QTest::qWait(550);check(!timer->isActive() && !stored().value("show-form").toBool(true),"the idle timer saves the changed season");
     manager.reject();main.resize(1024,640);
     qInfo()<<"PASS: season v2 profile editors, ownership, reset, validation and insertion";
 }

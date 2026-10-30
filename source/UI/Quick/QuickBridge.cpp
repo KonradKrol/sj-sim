@@ -1069,6 +1069,9 @@ void QuickBridge::compose(QuickNode *base) {
                     overview={QVariant::fromValue(preview)};
                 }
             }
+            auto *autosave=m_groups.value("quickSeasonAutosave");if(!autosave){autosave=new QuickNode(this);m_groups.insert("quickSeasonAutosave",autosave);}
+            autosave->update({{"kind","seasonAutosave"},{"backend",QVariant::fromValue(static_cast<QObject *>(season))}});
+            overview.append(QVariant::fromValue(autosave));
             QVariantList pages{group("season-overview",QString(),{
                 group("season-next",QString(),overview),group("season-standings",tr("Klasyfikacja"),standings)},"sections")};
             QStringList labels{tr("Przegląd")};
