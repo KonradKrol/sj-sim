@@ -8,12 +8,9 @@ ColumnLayout {
     property var backend
     property bool editing: false
     property bool copying: false
-    property bool renaming: false
     readonly property bool parallel: width>=Theme.dp(920)
     spacing: Theme.dp(6)
-    GridLayout {
-        Layout.fillWidth: true; columns: width>Theme.dp(650)?2:1; columnSpacing: Theme.dp(8)
-        SChoice { Layout.fillWidth: true; model: studio.backend.packs.map(function(p){return p.name+" · "+p.count}); currentIndex: studio.backend.packIndex; Accessible.name: qsTr("Paczka skoczni"); onActivated: studio.backend.selectPack(index) }
+    StudioPackBar { Layout.fillWidth: true; backend: studio.backend }
         RowLayout {
             Layout.fillWidth: true; spacing: Theme.dp(4)
             SButton { objectName: "hillAdd"; text: qsTr("+ Skocznia"); primary: true; onClicked: {studio.backend.add();studio.editing=true} }
@@ -22,17 +19,14 @@ ColumnLayout {
             Item { Layout.fillWidth: true }
             SButton {
                 id: toolsButton
-                text: "•••"; Accessible.name: qsTr("Narzędzia paczki i skoczni"); onClicked: tools.open()
+                text: qsTr("Opcje skoczni"); Accessible.name: qsTr("Opcje skoczni"); onClicked: tools.open()
                 ActionMenu {
                     id: tools; y: toolsButton.height
-                    entries: [{key:"copy",text:qsTr("Skopiuj z klasycznego modelu")},{key:"duplicate",text:qsTr("Duplikuj skocznię"),enabled:studio.backend.selectedIndex>=0},{key:"remove",text:qsTr("Usuń skocznię"),enabled:studio.backend.selectedIndex>=0},{key:"new",text:qsTr("Nowa paczka")},{key:"rename",text:qsTr("Zmień nazwę paczki")},{key:"import",text:qsTr("Importuj paczkę")},{key:"export",text:qsTr("Eksportuj paczkę")}]
-                    onSelected: {if(entry.key==="copy")studio.copying=!studio.copying;else if(entry.key==="duplicate")studio.backend.duplicate();else if(entry.key==="remove")studio.backend.remove();else if(entry.key==="new")studio.backend.createPack();else if(entry.key==="rename")studio.renaming=!studio.renaming;else if(entry.key==="import")studio.backend.importPack();else if(entry.key==="export")studio.backend.exportPack()}
+                    entries: [{key:"copy",text:qsTr("Skopiuj z klasycznego modelu")},{key:"duplicate",text:qsTr("Duplikuj skocznię"),enabled:studio.backend.selectedIndex>=0},{key:"remove",text:qsTr("Usuń skocznię"),enabled:studio.backend.selectedIndex>=0}]
+                    onSelected: {if(entry.key==="copy")studio.copying=!studio.copying;else if(entry.key==="duplicate")studio.backend.duplicate();else if(entry.key==="remove")studio.backend.remove()}
                 }
             }
-            HelpDot { explanation: qsTr("Nowy model ma osobny zapis i nie zmienia jeszcze symulacji. Zmiany zapisują się od razu; możesz je cofać.") }
         }
-    }
-    SField { visible: studio.renaming; Layout.fillWidth: true; text: studio.backend.packName; maximumLength: 100; Accessible.name: qsTr("Nazwa paczki"); onEditingFinished: {studio.backend.renamePack(text);studio.renaming=false} }
     RowLayout {
         visible: studio.copying; Layout.fillWidth: true
         SChoice { id: legacy; Layout.fillWidth: true; searchable: true; model: studio.backend.legacyHills.map(function(p){return p.name}); Accessible.name: qsTr("Skocznia do skopiowania") }

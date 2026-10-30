@@ -25,7 +25,9 @@ static void hillStudioRegressions(MainWindow &main){
         HillStudioController largeReopened(nullptr,storage.path()+"/large-library");check(largeReopened.profiles().size()==2,"large pack remains readable after rejected edit");
     }
     DatabaseEditorWindow window;auto *uiBackend=new HillStudioController(&window,storage.path()+"/ui");window.setProperty("hillStudio",QVariant::fromValue(static_cast<QObject *>(uiBackend)));window.findChild<QTabWidget *>()->setCurrentIndex(1);render(&window,"hill-studio-empty",true);QTest::qWait(80);
-    check(item(scene(&window)->rootObject(),"hillStudio"),"modern hill studio opens in hills catalog");clickControl(scene(&window),"hillAdd");QTest::qWait(60);
+    check(item(scene(&window)->rootObject(),"hillStudio"),"modern hill studio opens in hills catalog");
+    clickControl(scene(&window),"manageStudioPack");presentation(&window)->grab().save(output+"/hill-pack-settings.png");auto *packName=item(scene(&window)->quickWindow()->contentItem(),"studioPackName");check(packName,"hill pack settings show the name");packName->setProperty("text","Hill pack renamed");clickControl(scene(&window),"saveStudioPackName");check(uiBackend->packName()=="Hill pack renamed","hill pack settings save the selected pack name");clickControl(scene(&window),"closeStudioPack");QTest::qWait(200);
+    clickControl(scene(&window),"hillAdd");QTest::qWait(60);
     uiBackend->setValue("name","Vikersund");uiBackend->setValue("hs",225);uiBackend->setPerk(1,1,3,false);QTest::qWait(60);
     check(item(scene(&window)->rootObject(),"hillScoring")->isVisible(),"hill scoring is expanded by default");
     uiBackend->setValue("country","NOR");QTest::qWait(20);

@@ -1061,6 +1061,10 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <source>Zmiany paczki zapisują się od razu; możesz je cofać. Istniejące sezony zachowują własną kopię zawodników.</source>
             <translation>Pack changes are saved immediately and can be undone. Existing seasons keep their own athlete snapshots.</translation>
         </message>
+        <message>
+            <source>Opcje skoczka</source>
+            <translation>Jumper options</translation>
+        </message>
     </context>
     <context>
         <name>AthleteStudioController</name>
@@ -5046,6 +5050,10 @@ calculation</translation>
             <source>Gotowe</source>
             <translation>Done</translation>
         </message>
+        <message>
+            <source>Ustawienia paczki</source>
+            <translation>Pack settings</translation>
+        </message>
     </context>
     <context>
         <name>DataTable</name>
@@ -6367,6 +6375,10 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/HillStudio.qml" line="47" />
             <source>Punkt K, HS i perki. Dodaj skocznię lub zaimportuj starsze dane.</source>
             <translation>K-point, HS and perks. Add a hill or import legacy data.</translation>
+        </message>
+        <message>
+            <source>Opcje skoczni</source>
+            <translation>Hill options</translation>
         </message>
     </context>
     <context>
@@ -22794,6 +22806,57 @@ Technical key: %4</translation>
         <message>
             <source>Teraz: %1</source>
             <translation>Next: %1</translation>
+        </message>
+    </context>
+    <context>
+        <name>StudioPackBar</name>
+        <message>
+            <source>Paczka skoczków</source>
+            <translation>Jumpers pack</translation>
+        </message>
+        <message>
+            <source>Paczka skoczni</source>
+            <translation>Hills pack</translation>
+        </message>
+        <message>
+            <source>Ustawienia paczki</source>
+            <translation>Pack settings</translation>
+        </message>
+        <message>
+            <source>Zmiany dotyczą wybranej paczki. Zapisują się od razu; istniejące sezony mają własne dane.</source>
+            <translation>Changes affect the selected pack and are saved immediately. Existing seasons have their own data.</translation>
+        </message>
+        <message>
+            <source>Nazwa paczki</source>
+            <translation>Pack name</translation>
+        </message>
+        <message>
+            <source>Zapisz nazwę</source>
+            <translation>Save name</translation>
+        </message>
+        <message>
+            <source>Zarządzanie paczkami</source>
+            <translation>Manage packs</translation>
+        </message>
+        <message>
+            <source>Nowa paczka</source>
+            <translation>New pack</translation>
+        </message>
+        <message>
+            <source>Importuj paczkę</source>
+            <translation>Import pack</translation>
+        </message>
+        <message>
+            <source>Eksportuj paczkę</source>
+            <translation>Export pack</translation>
+        </message>
+        <message>
+            <source>Otwórz folder paczki</source>
+            <translation>Open pack folder</translation>
+        </message>
+        <message>
+            <source>Gotowe</source>
+            <translation>Done</translation>
         </message>
     </context>
 </TS>

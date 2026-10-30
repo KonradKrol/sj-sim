@@ -12,7 +12,7 @@ RowLayout {
     }
     SButton {
         objectName: "manageDataPack"
-        text: qsTr("Paczka…")
+        text: qsTr("Ustawienia paczki")
         onClicked: settings.open()
     }
     Popup {
@@ -35,6 +35,7 @@ RowLayout {
             Column {
                 width: scroll.availableWidth
                 spacing: 12
+                Label { width: parent.width; text: qsTr("Ustawienia paczki"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; wrapMode: Text.WordWrap }
                 Repeater {
                     model: ["dataPackName", "dataPackAgeFormat", "dataPackReferenceYear", "createDataPack", "importDataPack", "exportDataPack"]
                     Node {

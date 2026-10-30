@@ -1061,6 +1061,10 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <source>Zmiany paczki zapisują się od razu; możesz je cofać. Istniejące sezony zachowują własną kopię zawodników.</source>
             <translation>Změny balíčku se ukládají ihned a lze je vrátit. Existující sezóny si ponechávají vlastní kopie závodníků.</translation>
         </message>
+        <message>
+            <source>Opcje skoczka</source>
+            <translation>Možnosti skokana</translation>
+        </message>
     </context>
     <context>
         <name>AthleteStudioController</name>
@@ -5047,6 +5051,10 @@ průměrného větru</translation>
             <source>Gotowe</source>
             <translation>Hotovo</translation>
         </message>
+        <message>
+            <source>Ustawienia paczki</source>
+            <translation>Nastavení balíčku</translation>
+        </message>
     </context>
     <context>
         <name>DataTable</name>
@@ -6368,6 +6376,10 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/UI/Quick/HillStudio.qml" line="47" />
             <source>Punkt K, HS i perki. Dodaj skocznię lub zaimportuj starsze dane.</source>
             <translation>Bod K, HS a perky. Přidejte můstek nebo importujte starší data.</translation>
+        </message>
+        <message>
+            <source>Opcje skoczni</source>
+            <translation>Možnosti můstku</translation>
         </message>
     </context>
     <context>
@@ -22795,6 +22807,57 @@ Technický klíč: %4</translation>
         <message>
             <source>Teraz: %1</source>
             <translation>Nyní: %1</translation>
+        </message>
+    </context>
+    <context>
+        <name>StudioPackBar</name>
+        <message>
+            <source>Paczka skoczków</source>
+            <translation>Balíček skokanů</translation>
+        </message>
+        <message>
+            <source>Paczka skoczni</source>
+            <translation>Balíček můstků</translation>
+        </message>
+        <message>
+            <source>Ustawienia paczki</source>
+            <translation>Nastavení balíčku</translation>
+        </message>
+        <message>
+            <source>Zmiany dotyczą wybranej paczki. Zapisują się od razu; istniejące sezony mają własne dane.</source>
+            <translation>Změny platí pro vybraný balíček a ukládají se ihned. Stávající sezóny mají vlastní data.</translation>
+        </message>
+        <message>
+            <source>Nazwa paczki</source>
+            <translation>Název balíčku</translation>
+        </message>
+        <message>
+            <source>Zapisz nazwę</source>
+            <translation>Uložit název</translation>
+        </message>
+        <message>
+            <source>Zarządzanie paczkami</source>
+            <translation>Správa balíčků</translation>
+        </message>
+        <message>
+            <source>Nowa paczka</source>
+            <translation>Nový balíček</translation>
+        </message>
+        <message>
+            <source>Importuj paczkę</source>
+            <translation>Importovat balíček</translation>
+        </message>
+        <message>
+            <source>Eksportuj paczkę</source>
+            <translation>Exportovat balíček</translation>
+        </message>
+        <message>
+            <source>Otwórz folder paczki</source>
+            <translation>Otevřít složku balíčku</translation>
+        </message>
+        <message>
+            <source>Gotowe</source>
+            <translation>Hotovo</translation>
         </message>
     </context>
 </TS>

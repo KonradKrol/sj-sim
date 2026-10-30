@@ -7,19 +7,10 @@ ColumnLayout {
     objectName: "athleteStudio"
     property var backend
     property bool copying: false
-    property bool renaming: false
     property bool editing: false
     readonly property bool parallel: width>=Theme.dp(940)
     spacing: Theme.dp(8)
-    GridLayout {
-        Layout.fillWidth: true; columns: width>Theme.dp(780) ? 2 : 1
-        columnSpacing: Theme.dp(8); rowSpacing: Theme.dp(6)
-        SChoice {
-            Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: Theme.dp(220)
-            model: studio.backend.packs.map(function(p){return p.name+" · "+p.count})
-            currentIndex: studio.backend.packIndex; Accessible.name: qsTr("Paczka zawodników")
-            onActivated: studio.backend.selectPack(index)
-        }
+    StudioPackBar { Layout.fillWidth: true; backend: studio.backend; athletes: true }
         RowLayout {
             Layout.fillWidth: true
             spacing: Theme.dp(4)
@@ -30,26 +21,18 @@ ColumnLayout {
             SButton {
                 id: packTools
                 objectName: "athletePackTools"
-                text: "•••"; Accessible.name: qsTr("Narzędzia paczki i skoczka")
+                text: qsTr("Opcje skoczka"); Accessible.name: qsTr("Opcje skoczka")
                 onClicked: tools.open()
                 ActionMenu {
                     id: tools; y: packTools.height
-                    entries: [{key:"copy",text:qsTr("Skopiuj ze starego modelu")},{key:"duplicate",text:qsTr("Duplikuj skoczka"),enabled:studio.backend.selectedIndex>=0},{key:"new",text:qsTr("Nowa paczka")},{key:"rename",text:qsTr("Zmień nazwę paczki")},{key:"folder",text:qsTr("Otwórz folder paczki")},{key:"import",text:qsTr("Importuj paczkę")},{key:"export",text:qsTr("Eksportuj paczkę")}]
+                    entries: [{key:"copy",text:qsTr("Skopiuj ze starego modelu")},{key:"duplicate",text:qsTr("Duplikuj skoczka"),enabled:studio.backend.selectedIndex>=0}]
                     onSelected: {
                         if(entry.key==="copy"){studio.copying=!studio.copying;studio.editing=true}
                         else if(entry.key==="duplicate")studio.backend.duplicate()
-                        else if(entry.key==="new")studio.backend.createPack()
-                        else if(entry.key==="rename")studio.renaming=!studio.renaming
-                        else if(entry.key==="folder")studio.backend.openPackFolder()
-                        else if(entry.key==="import")studio.backend.importPack()
-                        else if(entry.key==="export")studio.backend.exportPack()
                     }
                 }
             }
-            HelpDot { explanation: qsTr("Zmiany paczki zapisują się od razu; możesz je cofać. Istniejące sezony zachowują własną kopię zawodników.") }
         }
-    }
-    SField { visible: studio.renaming; Layout.fillWidth: true; text: studio.backend.packName; maximumLength: 100; Accessible.name: qsTr("Nazwa paczki"); onEditingFinished: {studio.backend.renamePack(text);studio.renaming=false} }
     Label { visible: text.length>0 && text!==qsTr("Zapisano"); text: studio.backend.message; Layout.fillWidth: true; color: Theme.muted; font.pointSize: Theme.caption; maximumLineCount: 2; elide: Text.ElideRight; wrapMode: Text.WordWrap }
     SectionTabs {
         visible: !studio.parallel
