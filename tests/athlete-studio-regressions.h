@@ -89,6 +89,28 @@ static void athleteStudioRegressions(MainWindow &main,bool patchesOnly=false){
         const QStringList descriptions{QStringLiteral("Lepsze treningi i serie próbne. Słabsze konkursy."),QStringLiteral("Mniejszy rozrzut jakości skoków.")};for(auto *label:scene(&window)->rootObject()->findChildren<QQuickItem *>())if(label->isVisible())check(!descriptions.contains(label->property("text").toString()),"perk descriptions stay out of the visible layout");
         backend->setPerk(0,-1,1,true);backend->setValue("overall",100);QTest::qWait(30);check(rating->property("contentWidth").toReal()<=rating->width()+1,QString("three-digit OVR fits in concept %1 (content %2, width %3)").arg(view).arg(rating->property("contentWidth").toReal()).arg(rating->width()));backend->setValue("overall",87);render(&window,QString("athlete-studio-view-%1").arg(view),true);
     }
+    {
+        auto *quick=scene(&window);auto *testEditor=item(quick->rootObject(),"athleteEditor");testEditor->setProperty("viewMode",1);
+        auto *appearance=quick->rootContext()->contextProperty("appearance").value<QuickAppearance *>();
+        const qreal oldText=appearance->textScale(),oldUi=appearance->uiScale();const bool oldMotion=appearance->reducedMotion();appearance->setReducedMotion(true);
+        const QStringList keys{"training","reserve","flight","small","steady","volatile"};
+        for(qreal uiScale:{.7,1.})for(qreal textScale:{1.,1.5}) {
+            appearance->setUiScale(uiScale);appearance->setTextScale(textScale);
+            for(int width=640;width<=1500;width+=20) {
+                main.resize(width,1000);QTest::qWait(8);quick->grabFramebuffer();
+                for(const auto &key:keys) {
+                    auto *pick=item(quick->rootObject(),"athletePerk-"+key);check(pick,"responsive perk card exists");auto *card=pick->parentItem();
+                    for(int level=1;level<=4;++level) {auto *button=item(quick->rootObject(),"athletePerk-"+key+"-"+QString::number(level));if(button && !card->boundingRect().adjusted(-1,-1,1,1).contains(button->mapRectToItem(card,button->boundingRect()))){qWarning()<<"PERK GEOMETRY"<<card->boundingRect()<<button->mapRectToItem(card,button->boundingRect())<<button->parentItem()->boundingRect()<<button->parentItem()->property("columns")<<button->parentItem()->property("buttonWidth");quick->grabFramebuffer().save(output+"/perk-layout-failure.png");}check(button && card->boundingRect().adjusted(-1,-1,1,1).contains(button->mapRectToItem(card,button->boundingRect())),QString("perk strength fits its card at width %1, UI %2, text %3: %4/%5").arg(width).arg(uiScale).arg(textScale).arg(key).arg(level));}
+                }
+            }
+        }
+        appearance->setUiScale(oldUi);appearance->setTextScale(oldText);main.resize(1440,1000);QTest::qWait(40);
+        const int oldPerk=backend->selectedPerks().value(0).toInt();QVector<QColor> fills;
+        for(int level:{2,3,4}) {backend->setPerk(0,1,level,false);QTest::qWait(20);auto *card=item(quick->rootObject(),"athletePerk-training")->parentItem();auto *background=card->childItems().first();fills.append(background->property("color").value<QColor>());presentation(&window)->grab().save(output+QString("/athlete-perk-strength-%1.png").arg(level));}
+        check(fills[0]!=fills[1] && fills[1]!=fills[2],"perk levels two, three and extreme have distinct card fills");
+        backend->setPerk(0,1,4,true);if(oldPerk)backend->setPerk(0,oldPerk>0?1:-1,std::abs(oldPerk),false);
+        appearance->setReducedMotion(oldMotion);
+    }
     auto *editor=item(scene(&window)->rootObject(),"athleteEditor");editor->setProperty("viewMode",patchesOnly?1:2);QTest::qWait(80);main.resize(1440,1000);QTest::qWait(80);auto *scroll=item(scene(&window)->rootObject(),"athleteEditorScroll");check(scroll,"editor has bounded scrolling");auto *flick=scroll->property("contentItem").value<QQuickItem *>();if(flick)flick->setProperty("contentY",0);QTest::qWait(60);auto *ovr=item(scene(&window)->rootObject(),"athleteOverall");check(ovr,"rating input exists");ovr->forceActiveFocus();QTest::keyClick(scene(&window),Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(scene(&window),"96");QTest::keyClick(scene(&window),Qt::Key_Tab);QTest::qWait(80);check(backend->profile()["overall"].toInt()==96,"real OVR text input commits on focus change");
     if(flick){flick->setProperty("contentY",0);QTest::qWait(50);}clickControl(scene(&window),"athletePerk-training");check(backend->profile()["perks"].toList()[0].toInt()==1,"real badge chooses ordinary tier");clickControl(scene(&window),"athletePerk-training-2");check(backend->profile()["perks"].toList()[0].toInt()==2,"real level II button strengthens selected perk");clickControl(scene(&window),"athletePerk-reserve");check(backend->profile()["perks"].toList()[0].toInt()==-1,"real opposite badge replaces advanced perk with ordinary tier");
     const auto originalOverall=backend->profile()["overall"].toInt();clickControl(scene(&window),"athleteOverallIncrease");check(backend->profile()["overall"].toInt()==originalOverall+1,"small plus changes OVR immediately");clickControl(scene(&window),"athleteOverallDecrease");check(backend->profile()["overall"].toInt()==originalOverall,"small minus changes OVR immediately");const int originalForm=backend->profile()["form"].toInt();clickControl(scene(&window),"athleteFormIncrease");check(backend->profile()["form"].toInt()==originalForm+1,"small plus changes form");clickControl(scene(&window),"athleteFormDecrease");check(backend->profile()["form"].toInt()==originalForm,"small minus changes form");

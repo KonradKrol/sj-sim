@@ -36,7 +36,7 @@ ColumnLayout {
                 width: Math.max(1,(set.width>0 ? set.width : Theme.dp(250))-Theme.dp(50)-removeLabel.implicitWidth)
                 text: assigned.labelText; font.family: Theme.bodyFamily; font.pointSize: Theme.body; wrapMode: Text.WordWrap
             }
-            background: Rectangle { color: assigned.empowered ? "#241237" : assigned.enhanced ? "#ffcd57" : assigned.hovered ? Theme.selection : "transparent"; radius: Theme.dp(5); border.width: assigned.enhanced || assigned.activeFocus ? 2 : 0; border.color: assigned.empowered ? "#ffb941" : assigned.enhanced ? "#64400a" : Theme.accent }
+            background: Rectangle { color: assigned.empowered ? "#241237" : assigned.enhanced ? (Math.abs(assigned.value)===3 ? "#efc66b" : "#e4d4ad") : assigned.hovered ? Theme.selection : "transparent"; radius: Theme.dp(5); border.width: assigned.enhanced || assigned.activeFocus ? 2 : 0; border.color: assigned.empowered ? "#ffb941" : assigned.enhanced ? "#64400a" : Theme.accent }
             contentItem: RowLayout {
                 spacing: Theme.dp(6)
                 AthletePerkArt { family: "patch"; perkKey: assigned.perk.key; tier: Math.abs(assigned.value); sourceSize.width: 96; sourceSize.height: 96; Layout.preferredWidth: Theme.dp(30); Layout.preferredHeight: Theme.dp(33); Accessible.ignored: true }

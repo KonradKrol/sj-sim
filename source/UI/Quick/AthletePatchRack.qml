@@ -14,7 +14,7 @@ ColumnLayout {
         Label { text: qsTr("opcjonalne"); color: Theme.muted; font.pointSize: Theme.caption }
         Item { Layout.fillWidth: true }
         Label { text: qsTr("Wybrane: %1").arg((rack.backend.selectedPerks || []).filter(function(v){return v!==0}).length); color: Theme.muted; font.pointSize: Theme.caption }
-        HelpDot { explanation: qsTr("Wybierz jeden perk z każdej pary lub pozostaw ją pustą. Trzy opcje siły są widoczne obok siebie. Kliknij zaznaczoną opcję ponownie, aby usunąć perk. Opis: najedź lub naciśnij F1.") }
+        HelpDot { explanation: qsTr("Wybierz jeden perk z pary i jeden z czterech poziomów. Kliknij wybrany perk lub poziom ponownie, aby go usunąć. Opis: najedź lub naciśnij F1.") }
     }
     Repeater {
         model: 3

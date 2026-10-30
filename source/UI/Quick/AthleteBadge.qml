@@ -36,22 +36,23 @@ Item {
     readonly property real artSize: Theme.dp(ribbon ? 34 : 70)
     readonly property bool inlineLevels: ribbon && width>=strengths.implicitWidth+artSize+Math.max(100,Theme.dp(160))+Theme.dp(32)
     readonly property real headerHeight: ribbon ? Math.max(artSize+Theme.dp(8),name.implicitHeight+Theme.dp(10)) : artSize+name.implicitHeight+Theme.dp(8)
+    readonly property real topHeight: inlineLevels ? Math.max(headerHeight,strengths.implicitHeight) : headerHeight
     implicitWidth: Theme.dp(ribbon ? 250 : 160)
-    implicitHeight: (inlineLevels ? Math.max(headerHeight,strengths.implicitHeight) : headerHeight+strengths.implicitHeight)+Theme.dp(8)
+    implicitHeight: topHeight+(inlineLevels ? 0 : strengths.implicitHeight)+Theme.dp(8)
     Rectangle {
         anchors.fill: parent
-        color: badge.empowered ? "#241237" : badge.ribbon ? (badge.chosen ? (badge.managedLevel ? Theme.stadium : badge.perk.color) : badge.design.surface) : "transparent"
+        color: badge.empowered ? "#241237" : badge.ribbon ? (badge.chosen ? (badge.managedLevel ? (badge.tier===3 ? "#203c50" : Theme.stadium) : badge.perk.color) : badge.design.surface) : "transparent"
         radius: badge.ribbon ? Theme.dp(2) : Theme.dp(10)
         border.width: badge.empowered || badge.enhanced ? 2 : pick.activeFocus ? 2 : badge.ribbon ? 1 : 0
-        border.color: pick.activeFocus ? badge.design.accent : badge.enhanced ? "#ffb941" : badge.chosen ? (badge.managedLevel ? "#96c2ff" : badge.perk.color) : badge.design.line
-        Rectangle { visible: badge.enhanced; anchors.fill: parent; anchors.margins: Theme.dp(4); color: "transparent"; border.width: 1; border.color: "#a98136"; radius: Theme.dp(1) }
+        border.color: pick.activeFocus ? badge.design.accent : badge.empowered ? "#ffb941" : badge.enhanced ? (badge.tier===3 ? "#d8ae54" : "#aa9670") : badge.chosen ? (badge.managedLevel ? "#96c2ff" : badge.perk.color) : badge.design.line
+        Rectangle { visible: badge.enhanced; anchors.fill: parent; anchors.margins: Theme.dp(4); color: "transparent"; border.width: 1; border.color: badge.empowered ? "#a98136" : badge.tier===3 ? "#a78c50" : "#726850"; radius: Theme.dp(1) }
         Rectangle { visible: badge.ribbon && badge.chosen && !badge.managedLevel; anchors.right: parent.right; width: Theme.dp(5); height: parent.height; color: badge.tier===2 ? "#f1cf87" : "#ffffff" }
     }
     AbstractButton {
         id: pick
         objectName: badge.prefix+"-"+badge.perk.key
         width: badge.inlineLevels ? badge.width-strengths.width-Theme.dp(12) : badge.width
-        height: badge.headerHeight
+        height: badge.topHeight
         hoverEnabled: true
         property bool suppressed: false
         property bool helpRequested: false
@@ -75,7 +76,7 @@ Item {
         id: art
         width: badge.artSize; height: width
         x: badge.ribbon ? Theme.dp(4) : (badge.width-width)/2
-        y: badge.ribbon ? Theme.dp(4) : 0
+        y: badge.ribbon ? (badge.topHeight-height)/2 : 0
         family: badge.family; perkKey: badge.perk.key; tier: badge.tier; hill: badge.hill
         sourceSize.width: 192; sourceSize.height: 192
         scale: pick.down ? .9 : badge.chosen ? 1.06 : pick.hovered ? 1.02 : .95
@@ -109,7 +110,7 @@ Item {
     Label {
         id: name
         x: badge.ribbon ? badge.artSize+Theme.dp(10) : Theme.dp(2)
-        y: badge.ribbon ? (badge.headerHeight-height)/2 : badge.artSize+Theme.dp(2)
+        y: badge.ribbon ? (badge.topHeight-height)/2 : badge.artSize+Theme.dp(2)
         width: badge.ribbon ? Math.max(0,badge.width-x-Theme.dp(10)-(badge.inlineLevels ? strengths.implicitWidth+Theme.dp(8) : 0)) : badge.width-Theme.dp(4)
         text: badge.perk.name
         color: badge.empowered ? "#fff1d2" : badge.ribbon && badge.chosen ? "#ffffff" : badge.chosen ? badge.design.ink : badge.design.muted
@@ -122,7 +123,7 @@ Item {
     PerkStrengthSelector {
         id: strengths
         x: badge.inlineLevels ? badge.width-width-Theme.dp(6) : badge.ribbon ? Theme.dp(5) : (badge.width-width)/2
-        y: badge.inlineLevels ? (badge.headerHeight-height)/2 : badge.headerHeight
+        y: badge.inlineLevels ? (badge.topHeight-height)/2 : badge.headerHeight
         availableWidth: badge.width-Theme.dp(12)
         backend: badge.backend; perk: badge.perk; prefix: badge.prefix
         onApplied: function(level){if(level>0)badge.animateSelection()}

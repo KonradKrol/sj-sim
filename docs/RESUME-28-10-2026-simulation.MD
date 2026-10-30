@@ -560,3 +560,11 @@ Layout perków: nowe obliczenia mieszczą poziomy w kartach; test szerokości
 640–1500, skaleUI.7/1 i tekst1/1.5 przechodzi. Nadal są Binding loop przy
 zmianie skali tekstu (nie recursive rearrange); nie twierdzić że ich nie ma.
 Próby zmiany root AthletePatches i guttera nie pomogły — cofnięte; badać osobno.
+
+30.10 — perk UI GOTOWE funkcjonalnie: dobór1/2/4kolumn według faktycznej
+szerokości napisów, jednolity rozmiar przycisków bez późnego przebudowania Grid,
+centrowanie dwurzędowego wyboru względem całego nagłówka karty. Stopnie2/3
+mają delikatnie różne tło i obramowanie, w karcie i przypisanych naszywkach;
+Skrajnie4 zachowuje mocny fiolet/złoto. Testy zakresu szerokości i czterech
+kombinacji skal PASS; --hill-studio-only PASS, obrazy athlete-perk-strength-2/3/4.
+Nie zamyka to osobnego ostrzeżenia Binding loop przy zmianie skali tekstu.
