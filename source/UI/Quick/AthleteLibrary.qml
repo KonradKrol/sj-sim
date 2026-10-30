@@ -49,7 +49,7 @@ Control {
     }
     onQueryChanged: sync(true)
     Component.onCompleted: sync(true)
-    Connections { target: library.backend; function onChanged(){library.sync(false)} }
+    Connections { target: library.backend; function onUiChanged(){library.sync(false)} }
     ListModel { id: entries }
     contentItem: ColumnLayout {
         spacing: 0

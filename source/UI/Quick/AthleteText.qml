@@ -4,6 +4,12 @@ import QtQuick.Controls 2.15
 TextField {
     id: field
     property var design
+    function finishEmptyInput(event) {
+        event.accepted=!inputMethodComposing && text.length===0 && !acceptableInput
+        if(event.accepted)editingFinished()
+    }
+    Keys.onReturnPressed: function(event){finishEmptyInput(event)}
+    Keys.onEnterPressed: function(event){finishEmptyInput(event)}
     selectByMouse: true
     color: design.ink; placeholderTextColor: design.muted
     selectionColor: design.accent; selectedTextColor: design.accentInk

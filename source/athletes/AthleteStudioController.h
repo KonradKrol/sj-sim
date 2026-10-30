@@ -8,16 +8,16 @@
 
 class AthleteStudioController : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QVariantList packs READ packs NOTIFY changed)
-    Q_PROPERTY(QVariantList profiles READ profiles NOTIFY changed)
-    Q_PROPERTY(QVariantMap profile READ profile NOTIFY changed)
+    Q_PROPERTY(QVariantList packs READ packs NOTIFY uiChanged)
+    Q_PROPERTY(QVariantList profiles READ profiles NOTIFY uiChanged)
+    Q_PROPERTY(QVariantMap profile READ profile NOTIFY uiChanged)
     Q_PROPERTY(QVariantList selectedPerks READ selectedPerks NOTIFY perksChanged)
     Q_PROPERTY(QVariantList countries READ countries CONSTANT)
     Q_PROPERTY(QVariantList legacyPacks READ legacyPacks CONSTANT)
-    Q_PROPERTY(QString packName READ packName NOTIFY changed)
-    Q_PROPERTY(QString packDirectory READ packDirectory NOTIFY changed)
-    Q_PROPERTY(int packIndex READ packIndex NOTIFY changed)
-    Q_PROPERTY(int selectedIndex READ selectedIndex NOTIFY changed)
+    Q_PROPERTY(QString packName READ packName NOTIFY uiChanged)
+    Q_PROPERTY(QString packDirectory READ packDirectory NOTIFY uiChanged)
+    Q_PROPERTY(int packIndex READ packIndex NOTIFY uiChanged)
+    Q_PROPERTY(int selectedIndex READ selectedIndex NOTIFY uiChanged)
     Q_PROPERTY(QString message READ message NOTIFY statusChanged)
     Q_PROPERTY(bool canUndo READ canUndo NOTIFY historyChanged)
     Q_PROPERTY(bool canRedo READ canRedo NOTIFY historyChanged)
@@ -26,6 +26,8 @@ class AthleteStudioController : public QObject {
     QVector<QJsonObject> m_packs;
     QVector<QJsonObject> m_undo,m_redo;
     int m_pack=0,m_selected=-1;
+    bool m_changePending=false;
+    void notifyChanged();
     bool commit(const QJsonObject &next,int selection,const QString &message={},bool perksOnly=false);
     bool persist(const QJsonObject &pack,QString &error) const;
     QString directory(const QJsonObject &pack) const;
@@ -51,7 +53,7 @@ public:
     bool canUndo() const{return !m_undo.isEmpty();}
     bool canRedo() const{return !m_redo.isEmpty();}
     Q_INVOKABLE void selectPack(int index);
-    void invalidateText(){emit changed();}
+    void invalidateText(){notifyChanged();}
     Q_INVOKABLE void renamePack(const QString &name);
     Q_INVOKABLE void createPack();
     Q_INVOKABLE void select(int index);
@@ -72,6 +74,7 @@ public:
     bool importFrom(const QString &file);
 signals:
     void changed();
+    void uiChanged();
     void perksChanged();
     void historyChanged();
     void statusChanged();

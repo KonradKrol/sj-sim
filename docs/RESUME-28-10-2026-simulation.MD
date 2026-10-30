@@ -568,3 +568,28 @@ mają delikatnie różne tło i obramowanie, w karcie i przypisanych naszywkach;
 Skrajnie4 zachowuje mocny fiolet/złoto. Testy zakresu szerokości i czterech
 kombinacji skal PASS; --hill-studio-only PASS, obrazy athlete-perk-strength-2/3/4.
 Nie zamyka to osobnego ostrzeżenia Binding loop przy zmianie skali tekstu.
+
+30.10 — ochrona zatwierdzania pól GOTOWA po testach:
+- AthleteStudioController, HillStudioController i SimulationProfileDraft oddzielają
+  sygnał danych changed (NADAL SYNCHRONICZNY, ważne dla sezonów i konfiguracji)
+  od uiChanged (profile/listy QML po zakończeniu obsługi inputa). Nie opóźniać
+  zapisu ani logiki do QTimer! Pliki zapisywane przed publikacją. UI bibliotek
+  nasłuchuje uiChanged, a selectedPerks pozostaje natychmiastowy.
+- AthleteText obsługuje Enter dla pustych opcjonalnych pól, które validator
+  oznacza jako Intermediate; zwykły Enter i kompozycja IME pozostają natywne.
+- Nowy --athlete-commit-only:200profili,6nowych skoczków, PB212,5, Enter przez
+  natywne okno, nazwy/OVR/forma i bezpośredni odczyt pliku. Testuje też cykl życia
+  bindingów dla obu studiów i obu draftów oraz zapis przy natychmiastowym
+  zniszczeniu kontrolera przed uiChanged. PASS /tmp/sj-athlete-commit-final.log.
+- Stary test przed poprawką wykazał publikację widoku W TRAKCIE editingFinished
+  (/tmp/sj-athlete-commit-lifecycle-before.log); nowa próba sprawdza rzeczywisty
+  binding profile, nie konkretną nazwę sygnału. Pierwotnego losowego segfaulta
+  usera nie odtworzono bezpośrednio — nie twierdzić, że znamy jego pełny stack.
+- Pierwsza próba testu czyszczenia nie wysyłała Backspace dla pustego tekstu;
+  poprawiono helper, ostateczna próba faktycznie czyści pole i sprawdza0.
+- PASS: pełny athlete-studio, hill-studio, simulation-v2-season i translation.
+  Logi /tmp/sj-safe-fields-*.log. Programmatyczne przygotowanie wartości suwaka
+  czeka na dotarcie zmiany do UI przed wysłaniem drag, sam drag nadal sprawdzany
+  na żywo przed puszczeniem. Nie maskować problemów zmianą oczekiwanego wyniku.
+Nadal osobno: Binding loop przy zmianie skali tekstu, testy widzą je, choć nie
+ma nakładania kart. Pełny stary smoke nadal wymaga aktualizacji starej tabeli DB.

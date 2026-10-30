@@ -56,17 +56,17 @@ AthleteStudioController::AthleteStudioController(QObject *parent,const QString &
     if(!currentPack()["profiles"].toArray().isEmpty())m_selected=0;
     m_lastPhoto=profile().value("photo").toString();
     auto *photoWatch=new QTimer(this);photoWatch->setInterval(1000);
-    connect(photoWatch,&QTimer::timeout,this,[this]{const auto photo=profile().value("photo").toString();if(photo!=m_lastPhoto){m_lastPhoto=photo;emit changed();}});photoWatch->start();
+    connect(photoWatch,&QTimer::timeout,this,[this]{const auto photo=profile().value("photo").toString();if(photo!=m_lastPhoto){m_lastPhoto=photo;notifyChanged();}});photoWatch->start();
 }
 QString AthleteStudioController::directory(const QJsonObject &pack)const{return m_root+"/"+pack["id"].toString();}
 QJsonObject AthleteStudioController::currentPack()const{return m_packs.value(m_pack);}
 QString AthleteStudioController::packName()const{return currentPack()["name"].toString();}
 QVariantList AthleteStudioController::selectedPerks()const {const auto entries=currentPack()["profiles"].toArray();return m_selected>=0 && m_selected<entries.size()?entries[m_selected].toObject()["perks"].toArray().toVariantList():QVariantList();}
-void AthleteStudioController::status(const QString &message){m_message=message;emit changed();}
+void AthleteStudioController::status(const QString &message){m_message=message;notifyChanged();}
 bool AthleteStudioController::persist(const QJsonObject &pack,QString &error)const{
     return SimulationV2::ProfilePackRepository(SimulationV2::ProfilePackKind::Athletes,m_root).save(pack,error,false);
 }
-bool AthleteStudioController::commit(const QJsonObject &next,int selection,const QString &message,bool perksOnly){if(next==currentPack()){m_selected=selection;return true;}QString error;QSet<QString> ids;const auto profiles=next["profiles"].toArray();if(profiles.size()>10000){status(tr("Paczka może mieć najwyżej 10 000 profili."));return false;}if(!perksOnly)for(const auto &entry:profiles){AthleteProfile checked;if(!AthleteProfile::fromJson(entry.toObject(),checked,error)){status(error);return false;}if(ids.contains(checked.id)){status(tr("Powtórzony identyfikator skoczka."));return false;}ids.insert(checked.id);}if(!persist(next,error)){status(error);return false;}m_undo.append(QJsonObject{{"pack",currentPack()},{"selection",m_selected}});if(m_undo.size()>100)m_undo.removeFirst();m_redo.clear();m_packs[m_pack]=next;m_selected=selection;m_message=message.isEmpty()?tr("Zapisano"):message;if(perksOnly){emit perksChanged();emit historyChanged();emit statusChanged();}else emit changed();return true;}
+bool AthleteStudioController::commit(const QJsonObject &next,int selection,const QString &message,bool perksOnly){if(next==currentPack()){m_selected=selection;return true;}QString error;QSet<QString> ids;const auto profiles=next["profiles"].toArray();if(profiles.size()>10000){status(tr("Paczka może mieć najwyżej 10 000 profili."));return false;}if(!perksOnly)for(const auto &entry:profiles){AthleteProfile checked;if(!AthleteProfile::fromJson(entry.toObject(),checked,error)){status(error);return false;}if(ids.contains(checked.id)){status(tr("Powtórzony identyfikator skoczka."));return false;}ids.insert(checked.id);}if(!persist(next,error)){status(error);return false;}m_undo.append(QJsonObject{{"pack",currentPack()},{"selection",m_selected}});if(m_undo.size()>100)m_undo.removeFirst();m_redo.clear();m_packs[m_pack]=next;m_selected=selection;m_message=message.isEmpty()?tr("Zapisano"):message;if(perksOnly){emit perksChanged();emit historyChanged();emit statusChanged();}else notifyChanged();return true;}
 QVariantList AthleteStudioController::packs()const{QVariantList list;for(const auto &p:m_packs)list.append(QVariantMap{{"name",p["name"].toString()},{"count",p["profiles"].toArray().size()}});return list;}
 QVariantList AthleteStudioController::profiles()const{QVariantList rows;const auto source=currentPack()["profiles"].toArray();for(int i=0;i<source.size();++i){auto p=source[i].toObject().toVariantMap();p["label"]=title(source[i].toObject());p["index"]=i;p["flag"]=QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(p["country"].toString())+".svg")).toString();rows.append(p);}return rows;}
 QString AthleteStudioController::resolvedPhotoPath() const {
@@ -84,10 +84,10 @@ QVariantMap AthleteStudioController::profile()const {
 QVariantList AthleteStudioController::countries()const{if(!m_countryOptions.isEmpty())return m_countryOptions;QVariantList values;QSet<QString> codes;for(const auto &country:GlobalDatabase::get()->getCountries()){const auto code=CountryCodes::toFis(country.getAlpha3());if(code.size()!=3 || codes.contains(code))continue;codes.insert(code);values.append(QVariantMap{{"code",code},{"name",country.getName()+" · "+code},{"flag",QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(code)+".svg")).toString()}});}m_countryOptions=values;return m_countryOptions;}
 QVariantList AthleteStudioController::legacyPacks()const{QVariantList values;for(const auto &p:GlobalDatabase::get()->getPacks())if(p.kind==DataPack::Jumpers)values.append(QVariantMap{{"name",p.name},{"id",p.id},{"count",p.jumpers.size()}});return values;}
 QVariantList AthleteStudioController::legacyAthletes(int pack)const{int index=0;for(const auto &p:GlobalDatabase::get()->getPacks())if(p.kind==DataPack::Jumpers){if(index++!=pack)continue;QVariantList values;for(int i=0;i<p.jumpers.size();++i)values.append(QVariantMap{{"name",p.jumpers[i].getNameAndSurname()},{"index",i}});return values;}return {};}
-void AthleteStudioController::selectPack(int index){if(index<0 || index>=m_packs.size() || index==m_pack)return;m_pack=index;m_selected=currentPack()["profiles"].toArray().isEmpty()?-1:0;m_undo.clear();m_redo.clear();m_message.clear();emit changed();}
+void AthleteStudioController::selectPack(int index){if(index<0 || index>=m_packs.size() || index==m_pack)return;m_pack=index;m_selected=currentPack()["profiles"].toArray().isEmpty()?-1:0;m_undo.clear();m_redo.clear();m_message.clear();notifyChanged();}
 void AthleteStudioController::renamePack(const QString &name){if(name.trimmed().isEmpty() || name.size()>100){status(tr("Nazwa paczki musi mieć od 1 do 100 znaków."));return;}auto next=currentPack();next["name"]=name.trimmed();commit(next,m_selected);}
-void AthleteStudioController::createPack(){auto next=emptyPack(tr("Nowa paczka %1").arg(m_packs.size()+1));QString error;if(!persist(next,error)){status(error);return;}m_packs.append(next);m_pack=m_packs.size()-1;m_selected=-1;m_undo.clear();m_redo.clear();m_message=tr("Utworzono paczkę");emit changed();}
-void AthleteStudioController::select(int index){if(index<0 || index>=currentPack()["profiles"].toArray().size() || index==m_selected)return;m_selected=index;m_message.clear();emit changed();}
+void AthleteStudioController::createPack(){auto next=emptyPack(tr("Nowa paczka %1").arg(m_packs.size()+1));QString error;if(!persist(next,error)){status(error);return;}m_packs.append(next);m_pack=m_packs.size()-1;m_selected=-1;m_undo.clear();m_redo.clear();m_message=tr("Utworzono paczkę");notifyChanged();}
+void AthleteStudioController::select(int index){if(index<0 || index>=currentPack()["profiles"].toArray().size() || index==m_selected)return;m_selected=index;m_message.clear();notifyChanged();}
 void AthleteStudioController::add(){auto next=currentPack();auto entries=next["profiles"].toArray();entries.append(AthleteProfile::create().toJson());next["profiles"]=entries;commit(next,entries.size()-1,tr("Dodano skoczka"));}
 void AthleteStudioController::duplicate(){if(m_selected<0)return;auto next=currentPack();auto entries=next["profiles"].toArray();auto copy=entries[m_selected].toObject();copy["id"]=uuid();copy["surname"]=(copy["surname"].toString().left(90)+tr(" — kopia")).left(100);entries.append(copy);next["profiles"]=entries;commit(next,entries.size()-1,tr("Utworzono kopię"));}
 void AthleteStudioController::remove(){if(m_selected<0)return;auto next=currentPack();auto entries=next["profiles"].toArray();entries.removeAt(m_selected);next["profiles"]=entries;commit(next,entries.isEmpty()?-1:qMin(m_selected,entries.size()-1),tr("Usunięto skoczka · możesz cofnąć"));}
@@ -130,3 +130,13 @@ bool AthleteStudioController::importFrom(const QString &file){
 
 void AthleteStudioController::exportPack(){const auto parent=QFileDialog::getExistingDirectory(qobject_cast<QWidget *>(this->parent()),tr("Folder docelowy paczki"));if(!parent.isEmpty())exportTo(parent+"/sj-athletes-"+uuid().left(8));}
 void AthleteStudioController::importPack(){const auto file=QFileDialog::getOpenFileName(qobject_cast<QWidget *>(parent()),tr("Wczytaj nową paczkę skoczków"),{},tr("Paczka skoczków (pack.json)"));if(!file.isEmpty())importFrom(file);}
+
+void AthleteStudioController::notifyChanged()
+{
+    // Synchronize domain observers now; refresh QML after its input callback.
+    if(!m_changePending) {
+        m_changePending=true;
+        QTimer::singleShot(0,this,[this]{m_changePending=false;emit uiChanged();});
+    }
+    emit changed();
+}

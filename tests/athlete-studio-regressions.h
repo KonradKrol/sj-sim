@@ -1,6 +1,8 @@
 #pragma once
 #include "../source/athletes/AthleteStudioController.h"
 #include "../source/athletes/AthleteProfile.h"
+#include "../source/hills/HillStudioController.h"
+#include "../source/simulation-v2/ProfileDraft.h"
 #include <QStandardPaths>
 
 static void athleteLibraryRegressions(QQuickWidget *view,AthleteStudioController *backend){
@@ -117,7 +119,7 @@ static void athleteStudioRegressions(MainWindow &main,bool patchesOnly=false){
     const auto repeatPoint=controlPoint(scene(&window),"athleteOverallDecrease");QTest::mousePress(scene(&window),Qt::LeftButton,Qt::NoModifier,repeatPoint);QTest::qWait(390);QTest::mouseRelease(scene(&window),Qt::LeftButton,Qt::NoModifier,repeatPoint);check(backend->profile()["overall"].toInt()<originalOverall-1,"holding small minus repeats without click cooldown");backend->setValue("overall",originalOverall);
     for(bool form:{false,true}) {
         const QString field=form?"form":"overall";const int original=backend->profile()[field].toInt();
-        auto *slider=item(scene(&window)->rootObject(),form?"athleteFormSlider":"athleteOverallSlider");auto *number=item(scene(&window)->rootObject(),form?"athleteForm":"athleteOverall");check(slider && number,"rating slider and numeric preview exist");
+        auto *slider=item(scene(&window)->rootObject(),form?"athleteFormSlider":"athleteOverallSlider");auto *number=item(scene(&window)->rootObject(),form?"athleteForm":"athleteOverall");check(slider && number,"rating slider and numeric preview exist");check(QTest::qWaitFor([&]{return qRound(slider->property("value").toDouble())==original && number->property("text").toString().toInt()==original;},1000),"programmatic rating setup has reached the controls before starting the drag");
         const auto begin=slider->mapToScene(QPointF(slider->width()*(original-1)/99.,slider->height()/2)).toPoint();const auto end=slider->mapToScene(QPointF(slider->width()*.35,slider->height()/2)).toPoint();
         QTest::mousePress(scene(&window),Qt::LeftButton,Qt::NoModifier,begin);QMouseEvent move(QEvent::MouseMove,end,scene(&window)->mapToGlobal(end),Qt::NoButton,Qt::LeftButton,Qt::NoModifier);QApplication::sendEvent(scene(&window),&move);QTest::qWait(30);
         const int preview=qRound(slider->property("value").toDouble());check(slider->property("pressed").toBool() && preview!=original && number->property("text").toString().toInt()==preview,"drag previews the changing rating after earlier typing and step-button edits");
@@ -135,4 +137,44 @@ static void athleteStudioRegressions(MainWindow &main,bool patchesOnly=false){
     auto *appearance=scene(&window)->rootContext()->contextProperty("appearance").value<QuickAppearance *>();appearance->setTextScale(1.5);render(&window,"athlete-studio-large-text");appearance->setTextScale(1);
     qApp->setProperty("athleteTestStage","copy screen");auto *studio=item(scene(&window)->rootObject(),"athleteStudio");studio->setProperty("copying",true);main.resize(360,480);QTest::qWait(100);clickControl(scene(&window),"athleteCopyClose");check(!studio->property("copying").toBool(),"copy workflow stays navigable on the smallest screen");
     check(item(scene(&window)->rootObject(),"athleteStudio"),"athlete studio remains the only editor in its database section");window.hide();QDir(isolatedStorage).removeRecursively();QCoreApplication::setApplicationName(previousApp);qInfo()<<"PASS: separate athlete model, safe copies, perk opposites/tiers, undo, persistence, pack-relative photos, legacy photo compatibility and responsive athlete concepts";
+}
+
+
+static void athleteFieldCommitRegressions(MainWindow &main) {
+    QTemporaryDir storage;check(storage.isValid(),"private athlete input persistence fixture");
+    QJsonArray initial;for(int i=0;i<200;++i){auto p=AthleteProfile::create();p.name="Fixture";p.surname=QString::number(i);initial.append(p.toJson());}
+    const QString packId=QUuid::createUuid().toString(QUuid::WithoutBraces);const QString folder=storage.path()+"/athletes/"+packId;check(QDir().mkpath(folder),"large private pack folder");QFile seed(folder+"/pack.json");check(seed.open(QIODevice::WriteOnly),"large private pack fixture");seed.write(QJsonDocument(QJsonObject{{"format","sj-sim-athlete-pack"},{"version",1},{"id",packId},{"name","Input regression"},{"profiles",initial}}).toJson());seed.close();
+    main.findChild<QuickUi *>()->setLanguage(0);main.show();main.resize(1200,900);QTest::qWait(50);
+    DatabaseEditorWindow window(&main);auto *backend=new AthleteStudioController(&window,storage.path()+"/athletes");window.setProperty("athleteStudio",QVariant::fromValue(static_cast<QObject *>(backend)));window.show();QTest::qWait(120);
+    auto *quick=scene(&window);
+    auto enter=[&](const QString &field,const QString &value) {clickControl(quick,field);QTest::keyClick(quick,Qt::Key_A,Qt::ControlModifier);if(value.isEmpty())QTest::keyClick(quick,Qt::Key_Backspace);else QTest::keyClicks(quick,value);QTest::keyClick(quick->window()->windowHandle(),Qt::Key_Return);QTest::qWait(50);};
+    for(int attempt=0;attempt<6;++attempt) {
+        clickControl(quick,"athleteAdd");const auto athleteId=backend->profile()["id"].toString();
+        enter("athletePersonalBest","212,5");check(backend->profile()["personalBest"].toDouble()==212.5,"Enter commits a comma-decimal personal best on a newly created athlete");
+        enter("athleteName","Nowy");enter("athleteSurname","Test");
+        enter("athleteOverall","93");enter("athleteForm","64");
+        QFile manifest(backend->packDirectory()+"/pack.json");check(manifest.open(QIODevice::ReadOnly),"pack is durably present after Enter");const auto profiles=QJsonDocument::fromJson(manifest.readAll()).object()["profiles"].toArray();bool found=false;
+        for(auto profile:profiles)if(profile.toObject()["id"].toString()==athleteId) {const auto p=profile.toObject();found=p["personalBest"].toDouble()==212.5 && p["name"]=="Nowy" && p["surname"]=="Test" && p["overall"]==93 && p["form"]==64;}
+        check(found,"personal best and preceding edits are saved before normal application shutdown");
+    }
+    auto checkFieldLifecycle=[&](QObject *editor,const QString &key,double value) {
+        QQmlContext context(quick->rootContext());context.setContextProperty("commitBackend",editor);context.setContextProperty("commitKey",key);context.setContextProperty("commitNumber",value);
+        QQmlComponent component(quick->engine());component.setData(R"(import QtQuick 2.15
+import QtQuick.Controls 2.15
+TextField { width: 240; height: 40; z: 10000; property bool committing: false; property bool refreshedDuringCommit: false; readonly property var observedProfile: commitBackend.profile; onObservedProfileChanged: if(committing)refreshedDuringCommit=true; text: "213,5"; onEditingFinished: { committing=true; commitBackend.setValue(commitKey,commitNumber); committing=false } })",QUrl("qrc:/ui/FieldCommitLifecycle.qml"));
+        QPointer<QQuickItem> field(qobject_cast<QQuickItem *>(component.create(&context)));check(field,"field lifecycle fixture loads");field->setParentItem(quick->rootObject());field->forceActiveFocus();QTest::qWait(20);
+        QTest::keyClick(quick->window()->windowHandle(),Qt::Key_Return);QTest::qWait(30);
+        check(!field->property("refreshedDuringCommit").toBool(),"profile bindings do not rebuild the editor inside its editingFinished callback");
+        check(field->property("observedProfile").toMap()[key].toDouble()==value,"profile binding publishes the saved value after the input event");delete field.data();
+    };
+    checkFieldLifecycle(backend,"personalBest",213.5);
+    HillStudioController hillEditor(nullptr,storage.path()+"/hill-lifecycle");hillEditor.add();checkFieldLifecycle(&hillEditor,"record",137.5);
+    SimulationProfileDraft athleteDraft(DataPack::Jumpers);Jumper draftJumper;QString draftError;check(draftJumper.setSimulationProfile(AthleteProfile::create(),draftError),"athlete draft lifecycle fixture");athleteDraft.load(draftJumper,{});checkFieldLifecycle(&athleteDraft,"personalBest",213.5);
+    SimulationProfileDraft hillDraft(DataPack::Hills);Hill draftHill;check(draftHill.setSimulationProfile(HillProfile::create(),draftError),"hill draft lifecycle fixture");hillDraft.load(draftHill);checkFieldLifecycle(&hillDraft,"record",137.5);
+    QSignalSpy domainUpdates(&athleteDraft,&SimulationProfileDraft::changed);athleteDraft.setValue("personalBest",214.5);check(domainUpdates.count()==1 && athleteDraft.configuredJumper().getSimulationProfile()->personalBest==214.5,"domain updates remain synchronous while only QML publication is deferred");
+    enter("athletePersonalBest","");check(backend->profile()["personalBest"].toDouble()==0,"clearing personal best commits an absent record");
+    const auto closedRoot=storage.path()+"/closed-immediately";
+    auto *closing=new AthleteStudioController(nullptr,closedRoot);closing->add();closing->setValue("personalBest",212.5);delete closing;
+    QCoreApplication::processEvents();AthleteStudioController reopened(nullptr,closedRoot);check(reopened.profile()["personalBest"].toDouble()==212.5,"deleting the controller before queued view refresh does not lose the already-saved field");
+    qInfo()<<"PASS: repeated athlete creation, comma-decimal personal best, Enter commits and durable field persistence";
 }

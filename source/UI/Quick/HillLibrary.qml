@@ -25,7 +25,7 @@ ColumnLayout {
     onQueryChanged: sync()
     Component.onCompleted: sync()
     function choose(index) {if(index<0 || index>=entries.count)return;backend.select(entries.get(index).profileIndex);rows.positionViewAtIndex(index,ListView.Contain)}
-    Connections { target: library.backend; function onChanged(){library.sync()} }
+    Connections { target: library.backend; function onUiChanged(){library.sync()} }
     spacing: Theme.dp(6)
     Label { text: qsTr("Skocznie · %1").arg(library.backend.profiles.length); color: Theme.muted; font.pointSize: Theme.caption }
     SField { Layout.fillWidth: true; text: library.query; placeholderText: qsTr("Szukaj skoczni lub kraju…"); Accessible.name: placeholderText; onTextEdited: library.query=text }

@@ -7,14 +7,15 @@
 #include <QJsonArray>
 #include <QSet>
 #include <QUrl>
+#include <QTimer>
 
 namespace {
 QString flag(const QString &country) {return QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(country)+".svg")).toString();}
 }
 SimulationProfileDraft::SimulationProfileDraft(DataPack::Kind kind,QObject *parent):QObject(parent),kind(kind) {}
-void SimulationProfileDraft::load(const Jumper &value,const QString &root) {athlete=originalAthlete=value;directory=root;loaded=kind==DataPack::Jumpers && bool(value.getSimulationProfile());error.clear();emit changed();}
-void SimulationProfileDraft::load(const Hill &value) {hill=originalHill=value;loaded=kind==DataPack::Hills && bool(value.getSimulationProfile());error.clear();emit changed();}
-void SimulationProfileDraft::clear() {loaded=false;directory.clear();error.clear();emit changed();}
+void SimulationProfileDraft::load(const Jumper &value,const QString &root) {athlete=originalAthlete=value;directory=root;loaded=kind==DataPack::Jumpers && bool(value.getSimulationProfile());error.clear();notifyChanged();}
+void SimulationProfileDraft::load(const Hill &value) {hill=originalHill=value;loaded=kind==DataPack::Hills && bool(value.getSimulationProfile());error.clear();notifyChanged();}
+void SimulationProfileDraft::clear() {loaded=false;directory.clear();error.clear();notifyChanged();}
 bool SimulationProfileDraft::valid() const {return loaded;}
 double SimulationProfileDraft::realHs() const {return loaded && kind==DataPack::Hills?hill.getSimulationProfile()->realHs():0;}
 QVariantMap SimulationProfileDraft::profile() const {
@@ -40,7 +41,7 @@ bool SimulationProfileDraft::apply(const QJsonObject &json) {
     bool accepted=false;
     if(kind==DataPack::Jumpers) {AthleteProfile checked;accepted=AthleteProfile::fromJson(json,checked,error) && athlete.setSimulationProfile(checked,error);}
     else {HillProfile checked;accepted=HillProfile::fromJson(json,checked,error) && hill.setSimulationProfile(checked,error);}
-    emit changed();return accepted;
+    notifyChanged();return accepted;
 }
 void SimulationProfileDraft::setValue(const QString &key,const QVariant &value) {
     if(!loaded)return;
@@ -49,7 +50,7 @@ void SimulationProfileDraft::setValue(const QString &key,const QVariant &value) 
     if(!(kind==DataPack::Jumpers?athleteKeys:hillKeys).contains(key))return;
     auto json=kind==DataPack::Jumpers?athlete.getSimulationProfile()->toJson():hill.getSimulationProfile()->toJson();
     if(json.value(key)==QJsonValue::fromVariant(value) && (key!="photoPath" || json["portrait"].toString().isEmpty())) {
-        if(!error.isEmpty()){error.clear();emit changed();}
+        if(!error.isEmpty()){error.clear();notifyChanged();}
         return;
     }
     json[key]=QJsonValue::fromVariant(value);if(key=="photoPath")json["portrait"]="";
@@ -60,7 +61,7 @@ void SimulationProfileDraft::setPerk(int pair,int side,int level,bool toggle) {
     auto json=kind==DataPack::Jumpers?athlete.getSimulationProfile()->toJson():hill.getSimulationProfile()->toJson();
     auto values=json["perks"].toArray();values[pair]=toggle && values[pair].toInt()*side>0?0:side*level;json["perks"]=values;apply(json);
 }
-void SimulationProfileDraft::reset() {if(!loaded)return;athlete=originalAthlete;hill=originalHill;error.clear();emit changed();}
+void SimulationProfileDraft::reset() {if(!loaded)return;athlete=originalAthlete;hill=originalHill;error.clear();notifyChanged();}
 void SimulationProfileDraft::choosePhoto() {
     if(!loaded || kind!=DataPack::Jumpers || directory.isEmpty())return;
     const auto path=QFileDialog::getOpenFileName(nullptr,tr("Zdjęcie w folderze paczki"),directory,tr("Obrazy (*.png *.jpg *.jpeg *.webp)"));
@@ -68,3 +69,13 @@ void SimulationProfileDraft::choosePhoto() {
 }
 void SimulationProfileDraft::clearPhoto() {setValue("photoPath",QString());}
 void SimulationProfileDraft::openPackFolder() {if(!directory.isEmpty())QDesktopServices::openUrl(QUrl::fromLocalFile(directory));}
+
+void SimulationProfileDraft::notifyChanged()
+{
+    // Synchronize domain observers now; refresh QML after its input callback.
+    if(!m_changePending) {
+        m_changePending=true;
+        QTimer::singleShot(0,this,[this]{m_changePending=false;emit uiChanged();});
+    }
+    emit changed();
+}

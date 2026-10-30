@@ -9,12 +9,12 @@
 // Never writes the authoring pack or modifies a running session's source catalog.
 class SimulationProfileDraft : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QVariantMap profile READ profile NOTIFY changed)
+    Q_PROPERTY(QVariantMap profile READ profile NOTIFY uiChanged)
     Q_PROPERTY(QVariantList selectedPerks READ selectedPerks NOTIFY changed)
     Q_PROPERTY(QVariantList countries READ countries CONSTANT)
-    Q_PROPERTY(double realHs READ realHs NOTIFY changed)
-    Q_PROPERTY(bool valid READ valid NOTIFY changed)
-    Q_PROPERTY(QString message READ message NOTIFY changed)
+    Q_PROPERTY(double realHs READ realHs NOTIFY uiChanged)
+    Q_PROPERTY(bool valid READ valid NOTIFY uiChanged)
+    Q_PROPERTY(QString message READ message NOTIFY uiChanged)
 public:
     explicit SimulationProfileDraft(DataPack::Kind kind,QObject *parent=nullptr);
     void load(const Jumper &,const QString &directory);
@@ -36,11 +36,14 @@ public:
     Q_INVOKABLE void openPackFolder();
 signals:
     void changed();
+    void uiChanged();
 private:
     DataPack::Kind kind;
     Jumper athlete,originalAthlete;
     Hill hill,originalHill;
     QString directory,error;
     bool loaded=false;
+    bool m_changePending=false;
+    void notifyChanged();
     bool apply(const QJsonObject &);
 };
