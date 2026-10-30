@@ -16978,6 +16978,10 @@ sorting</translation>
             <source>%1 · %2</source>
             <translation>%1 · %2</translation>
         </message>
+        <message>
+            <source>Zapisz sezon</source>
+            <translation>Save season</translation>
+        </message>
     </context>
     <context>
         <name>SeasonFooter</name>

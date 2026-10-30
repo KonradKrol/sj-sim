@@ -16979,6 +16979,10 @@ startovní listiny</translation>
             <source>%1 · %2</source>
             <translation>%1 · %2</translation>
         </message>
+        <message>
+            <source>Zapisz sezon</source>
+            <translation>Uložit sezónu</translation>
+        </message>
     </context>
     <context>
         <name>SeasonFooter</name>
