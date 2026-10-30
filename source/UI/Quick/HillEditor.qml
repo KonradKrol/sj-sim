@@ -49,8 +49,9 @@ ScrollView {
                 HillNumber { backend: editor.backend; fieldKey: "pointsPerMetre"; label: qsTr("Punkty za metr"); maximum: 20; Layout.fillWidth: true }
                 HillNumber { backend: editor.backend; fieldKey: "gatePoints"; label: qsTr("Punkty za belkę"); Layout.fillWidth: true }
                 HillNumber { backend: editor.backend; fieldKey: "headwindPoints"; label: qsTr("Punkty za wiatr przedni"); Layout.fillWidth: true }
-                HillNumber { backend: editor.backend; fieldKey: "tailwindPoints"; label: qsTr("Punkty za wiatr tylni"); Layout.fillWidth: true }
+                HillNumber { backend: editor.backend; fieldKey: "tailwindPoints"; label: qsTr("Punkty za wiatr w plecy (automatycznie)"); readOnly: true; Layout.fillWidth: true }
             }
+            Label { text: qsTr("Punkty za wiatr w plecy to 1,5 × wartość dla wiatru pod narty, maksymalnie 100."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
             RowLayout {
                 Layout.fillWidth: true
                 Label { text: qsTr("Perki"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true }

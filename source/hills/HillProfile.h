@@ -13,6 +13,7 @@ struct HillProfile {
     // Sign chooses a side; magnitude 1..4 selects its strength; zero means neither.
     std::array<int,4> perks{{0,0,0,0}};
     static HillProfile create();
+    static double automaticTailwindPoints(double headwindPoints);
     QJsonObject toJson() const;
     static bool fromJson(const QJsonObject &json,HillProfile &profile,QString &error);
     double realHs() const;

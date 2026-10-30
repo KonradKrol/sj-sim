@@ -6041,6 +6041,14 @@ li.checked::marker { content: "\2612"; }
             <source>Próg trudnego lądowania: %1 m.</source>
             <translation>Hranice obtížného přistání: %1 m.</translation>
         </message>
+        <message>
+            <source>Punkty za wiatr w plecy (automatycznie)</source>
+            <translation>Body za zadní vítr (automaticky)</translation>
+        </message>
+        <message>
+            <source>Punkty za wiatr w plecy to 1,5 × wartość dla wiatru pod narty, maksymalnie 100.</source>
+            <translation>Body za zadní vítr jsou 1,5 × body za protivítr, nejvýše 100.</translation>
+        </message>
     </context>
     <context>
         <name>HillEditorWidget</name>

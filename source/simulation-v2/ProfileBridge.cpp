@@ -15,7 +15,7 @@ Hill hillInput(const HillProfile &profile)
 {
     Hill value;value.k=profile.k;value.hs=profile.hs;value.realHs=profile.realHs();value.takeoffBias=profile.takeoffBias();
     value.pointsAtK=profile.pointsAtK;value.pointsPerMetre=profile.pointsPerMetre;value.gatePoints=profile.gatePoints;
-    value.headwindPoints=profile.headwindPoints;value.tailwindPoints=profile.tailwindPoints;value.validate();return value;
+    value.headwindPoints=profile.headwindPoints;value.tailwindPoints=HillProfile::automaticTailwindPoints(profile.headwindPoints);value.validate();return value;
 }
 
 WeatherProposalContext weatherProposalContext(const HillProfile &profile,Surface surface,int month)

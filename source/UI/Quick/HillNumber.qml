@@ -10,12 +10,14 @@ ColumnLayout {
     property real minimum: 0
     property real maximum: 100
     property real step: 0.1
+    property bool readOnly: false
     spacing: Theme.dp(3)
     Label { text: field.label; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     NumberField {
         objectName: "hill-"+field.fieldKey
         Layout.fillWidth: true
         direct: false; label: field.label
+        enabled: !field.readOnly
         recordKey: field.backend.profile.id || ""
         fields: ({value:Number(field.backend.profile[field.fieldKey] || 0),minimum:field.minimum,maximum:field.maximum,step:field.step,decimals:field.step<1?1:0,name:"hill-"+field.fieldKey})
         onCommitted: function(value){field.backend.setValue(field.fieldKey,value)}

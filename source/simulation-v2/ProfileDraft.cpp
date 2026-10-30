@@ -46,7 +46,7 @@ bool SimulationProfileDraft::apply(const QJsonObject &json) {
 void SimulationProfileDraft::setValue(const QString &key,const QVariant &value) {
     if(!loaded)return;
     const QSet<QString> athleteKeys{"name","surname","country","overall","form","landing","birthYear","personalBest","photoPath"};
-    const QSet<QString> hillKeys{"name","country","k","hs","record","pointsAtK","pointsPerMetre","gatePoints","headwindPoints","tailwindPoints"};
+    const QSet<QString> hillKeys{"name","country","k","hs","record","pointsAtK","pointsPerMetre","gatePoints","headwindPoints"};
     if(!(kind==DataPack::Jumpers?athleteKeys:hillKeys).contains(key))return;
     auto json=kind==DataPack::Jumpers?athlete.getSimulationProfile()->toJson():hill.getSimulationProfile()->toJson();
     if(json.value(key)==QJsonValue::fromVariant(value) && (key!="photoPath" || json["portrait"].toString().isEmpty())) {

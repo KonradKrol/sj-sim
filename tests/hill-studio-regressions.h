@@ -1,10 +1,13 @@
 #pragma once
 #include "../source/hills/HillStudioController.h"
+#include "../source/simulation-v2/ProfileBridge.h"
 
 static void hillStudioRegressions(MainWindow &main){
     QTemporaryDir storage;check(storage.isValid(),"isolated hill library");
     HillProfile hill=HillProfile::create(),decoded;QString error;
     check(HillProfile::fromJson(hill.toJson(),decoded,error),"hill profile round trip");
+    hill.headwindPoints=10;hill.tailwindPoints=2;auto oldWind=hill.toJson();oldWind["tailwindPoints"]=2;check(HillProfile::fromJson(oldWind,decoded,error) && decoded.tailwindPoints==15,"loaded hill derives tailwind points from headwind");check(SimulationV2::hillInput(hill).tailwindPoints==15,"simulation uses the derived tailwind points");hill.headwindPoints=100;check(hill.toJson()["tailwindPoints"].toDouble()==100,"derived compensation respects the supported maximum");hill=HillProfile::create();
+    {Hill value;check(value.setSimulationProfile(hill,error),"hill draft fixture");SimulationProfileDraft draft(DataPack::Hills);draft.load(value);draft.setValue("headwindPoints",13);check(draft.profile()["tailwindPoints"].toDouble()==19.5,"season hill draft derives tailwind points");draft.setValue("tailwindPoints",1);check(draft.profile()["tailwindPoints"].toDouble()==19.5,"season hill draft rejects direct tailwind edits");}
     for(int pair=0;pair<4;++pair)for(int value=-4;value<=4;++value){hill.perks[pair]=value;check(HillProfile::fromJson(hill.toJson(),decoded,error) && decoded.perks[pair]==value,"all hill perk sides and strengths round trip");hill.perks[pair]=0;}
     auto threePairs=hill.toJson();threePairs["perks"]=QJsonArray{2,-1,3};check(HillProfile::fromJson(threePairs,decoded,error) && decoded.id==hill.id && decoded.perks[0]==2 && decoded.perks[1]==-1 && decoded.perks[2]==3 && decoded.perks[3]==0,"old three-pair profile preserves identity and perks with neutral direction");
     check(decoded.toJson()["perks"].toArray().size()==4,"new saves include fourth hill perk");
@@ -29,6 +32,7 @@ static void hillStudioRegressions(MainWindow &main){
     clickControl(scene(&window),"manageStudioPack");presentation(&window)->grab().save(output+"/hill-pack-settings.png");auto *packName=item(scene(&window)->quickWindow()->contentItem(),"studioPackName");check(packName,"hill pack settings show the name");packName->setProperty("text","Hill pack renamed");clickControl(scene(&window),"saveStudioPackName");check(uiBackend->packName()=="Hill pack renamed","hill pack settings save the selected pack name");clickControl(scene(&window),"closeStudioPack");QTest::qWait(200);
     clickControl(scene(&window),"hillAdd");QTest::qWait(60);
     uiBackend->setValue("name","Vikersund");uiBackend->setValue("hs",225);uiBackend->setPerk(1,1,3,false);QTest::qWait(60);
+    uiBackend->setValue("headwindPoints",10);uiBackend->setValue("tailwindPoints",1);QTest::qWait(60);check(uiBackend->profile()["tailwindPoints"].toDouble()==15,"studio derives tailwind points and rejects direct edits");auto *tailwind=item(scene(&window)->rootObject(),"hill-tailwindPoints");check(tailwind && !tailwind->isEnabled(),"derived tailwind points remain visible but cannot be edited");
     main.resize(1440,900);QTest::qWait(100);const auto originalHill=uiBackend->profile()["id"].toString();uiBackend->add();uiBackend->setValue("country","AUT");uiBackend->select(0);QTest::qWait(80);
     clickControl(scene(&window),"sortByCountry");clickControl(scene(&window),"cancelCountrySort");QTest::qWait(200);check(uiBackend->profiles()[0].toMap()["id"]==originalHill,"cancelling country sort keeps hill order");
     clickControl(scene(&window),"sortByCountry");clickControl(scene(&window),"confirmCountrySortAction");QTest::qWait(100);check(uiBackend->profiles()[0].toMap()["country"]=="AUT" && uiBackend->profile()["id"]==originalHill,"confirmed country sort groups hills and preserves selection");

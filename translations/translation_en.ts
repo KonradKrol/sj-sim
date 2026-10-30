@@ -6040,6 +6040,14 @@ li.checked::marker { content: "\2612"; }
             <source>Próg trudnego lądowania: %1 m.</source>
             <translation>Difficult landing threshold: %1 m.</translation>
         </message>
+        <message>
+            <source>Punkty za wiatr w plecy (automatycznie)</source>
+            <translation>Tailwind points (automatic)</translation>
+        </message>
+        <message>
+            <source>Punkty za wiatr w plecy to 1,5 × wartość dla wiatru pod narty, maksymalnie 100.</source>
+            <translation>Tailwind points are 1.5 × headwind points, up to a maximum of 100.</translation>
+        </message>
     </context>
     <context>
         <name>HillEditorWidget</name>
