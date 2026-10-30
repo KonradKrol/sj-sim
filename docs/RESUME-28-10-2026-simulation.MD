@@ -10,8 +10,8 @@ Pracuj solo, feature/simulation-v2, commit i push po ukończonej zmianie.
 - Nachodzenie przycisków perków i subtelne poziomy2/3:118907b.
 - Bezpieczna publikacja QML po zatwierdzeniu pól:3e7d0a0. Dane i changed dla
   logiki są SYNCHRONICZNE, uiChanged odłożone. Nie opóźniać danych silnika!
-- Zakończona stabilizacja wysokości przy skali tekstu:ContentHeight.qml dla
-  naszywek, kategorii i lądowania. Wspólny pomiar jest współbieżnie kolejkowany
+- Zakończona stabilizacja wysokości przy skali tekstu:dd60295, ContentHeight.qml dla
+  naszywek, kategorii i lądowania. Wspólny pomiar jest zbiorczo kolejkowany na wątku UI
   przez jednorazowy Timer po zmianach layoutu. Nie przywracać bezpośredniego
   czytania contentItem.implicitHeight z bindingu rodzica ani Binding.delayed:
   oba warianty nadal dawały binding loops. Test teraz wykrywa oba rodzaje:
