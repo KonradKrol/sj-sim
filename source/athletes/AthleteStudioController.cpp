@@ -88,6 +88,16 @@ void AthleteStudioController::selectPack(int index){if(index<0 || index>=m_packs
 void AthleteStudioController::renamePack(const QString &name){if(name.trimmed().isEmpty() || name.size()>100){status(tr("Nazwa paczki musi mieć od 1 do 100 znaków."));return;}auto next=currentPack();next["name"]=name.trimmed();commit(next,m_selected);}
 void AthleteStudioController::createPack(){auto next=emptyPack(tr("Nowa paczka %1").arg(m_packs.size()+1));QString error;if(!persist(next,error)){status(error);return;}m_packs.append(next);m_pack=m_packs.size()-1;m_selected=-1;m_undo.clear();m_redo.clear();m_message=tr("Utworzono paczkę");notifyChanged();}
 void AthleteStudioController::select(int index){if(index<0 || index>=currentPack()["profiles"].toArray().size() || index==m_selected)return;m_selected=index;m_message.clear();notifyChanged();}
+void AthleteStudioController::move(int from,int to){
+    auto next=currentPack();auto entries=next["profiles"].toArray();
+    if(from<0 || to<0 || from>=entries.size() || to>=entries.size() || from==to)return;
+    const auto moved=entries.takeAt(from);entries.insert(to,moved);next["profiles"]=entries;
+    int selected=m_selected;
+    if(selected==from)selected=to;
+    else if(from<selected && selected<=to)--selected;
+    else if(to<=selected && selected<from)++selected;
+    commit(next,selected);
+}
 void AthleteStudioController::add(){auto next=currentPack();auto entries=next["profiles"].toArray();entries.append(AthleteProfile::create().toJson());next["profiles"]=entries;commit(next,entries.size()-1,tr("Dodano skoczka"));}
 void AthleteStudioController::duplicate(){if(m_selected<0)return;auto next=currentPack();auto entries=next["profiles"].toArray();auto copy=entries[m_selected].toObject();copy["id"]=uuid();copy["surname"]=(copy["surname"].toString().left(90)+tr(" — kopia")).left(100);entries.append(copy);next["profiles"]=entries;commit(next,entries.size()-1,tr("Utworzono kopię"));}
 void AthleteStudioController::remove(){if(m_selected<0)return;auto next=currentPack();auto entries=next["profiles"].toArray();entries.removeAt(m_selected);next["profiles"]=entries;commit(next,entries.isEmpty()?-1:qMin(m_selected,entries.size()-1),tr("Usunięto skoczka · możesz cofnąć"));}

@@ -751,6 +751,14 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <source>Delete · możesz cofnąć usunięcie</source>
             <translation>Delete · odstranění lze vrátit</translation>
         </message>
+        <message>
+            <source>Przeciągnij, aby zmienić kolejność skoczka %1</source>
+            <translation>Přetažením změňte pořadí skokana %1</translation>
+        </message>
+        <message>
+            <source>Przeciągnij uchwyt na liście lub użyj Alt + ↑/↓, aby zmienić kolejność.</source>
+            <translation>Pořadí změňte přetažením úchytu nebo klávesami Alt + ↑/↓.</translation>
+        </message>
     </context>
     <context>
         <name>AthleteMedals</name>

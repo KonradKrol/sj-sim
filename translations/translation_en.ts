@@ -751,6 +751,14 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <source>Delete · możesz cofnąć usunięcie</source>
             <translation>Delete · deletion can be undone</translation>
         </message>
+        <message>
+            <source>Przeciągnij, aby zmienić kolejność skoczka %1</source>
+            <translation>Drag to change the position of jumper %1</translation>
+        </message>
+        <message>
+            <source>Przeciągnij uchwyt na liście lub użyj Alt + ↑/↓, aby zmienić kolejność.</source>
+            <translation>Drag the handle or use Alt + ↑/↓ to change the order.</translation>
+        </message>
     </context>
     <context>
         <name>AthleteMedals</name>

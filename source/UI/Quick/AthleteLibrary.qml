@@ -9,6 +9,8 @@ Control {
     property string query: ""
     property string pack: ""
     property string selectedId: ""
+    property int dropTarget: -1
+    property string draggedId: ""
     signal activated()
     ChangeFeedback { id: packFeedback; target: library; trigger: library.backend.packDirectory; duration: Theme.motion*2 }
     padding: 1
@@ -47,6 +49,15 @@ Control {
         backend.select(target)
         if(openEditor)activated()
     }
+    function moveSelected(step) {
+        var from=backend.selectedIndex, to=from+step
+        if(from>=0 && to>=0 && to<backend.profiles.length)backend.move(from,to)
+    }
+    function dropAt(position) {
+        var p=position.mapToItem(rows.contentItem,position.mouseX,position.mouseY)
+        var y=Math.max(0,Math.min(rows.contentHeight-1,p.y))
+        dropTarget=rows.indexAt(1,y)
+    }
     onQueryChanged: sync(true)
     Component.onCompleted: sync(true)
     Connections { target: library.backend; function onUiChanged(){library.sync(false)} }
@@ -65,6 +76,7 @@ Control {
             onTextEdited: library.query=text
             Keys.onEscapePressed: library.query=""
         }
+        Label { text: qsTr("Przeciągnij uchwyt na liście lub użyj Alt + ↑/↓, aby zmienić kolejność."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; Layout.leftMargin: Theme.dp(8); Layout.rightMargin: Theme.dp(8); Layout.bottomMargin: Theme.dp(6); wrapMode: Text.WordWrap }
         ListView {
             id: rows
             opacity: 0.65+packFeedback.progress*0.35
@@ -75,8 +87,8 @@ Control {
             keyNavigationEnabled: false
             Accessible.role: Accessible.List; Accessible.name: qsTr("Skoczkowie")
             ScrollBar.vertical: ScrollBar {}
-            Keys.onUpPressed: library.choose(currentIndex<0 ? count-1 : Math.max(0,currentIndex-1))
-            Keys.onDownPressed: library.choose(Math.min(count-1,currentIndex+1))
+            Keys.onUpPressed: {if(event.modifiers & Qt.AltModifier)library.moveSelected(-1);else library.choose(currentIndex<0 ? count-1 : Math.max(0,currentIndex-1))}
+            Keys.onDownPressed: {if(event.modifiers & Qt.AltModifier)library.moveSelected(1);else library.choose(Math.min(count-1,currentIndex+1))}
             Keys.onPressed: {
                 if(event.key===Qt.Key_Home)library.choose(0)
                 else if(event.key===Qt.Key_End)library.choose(count-1)
@@ -106,12 +118,45 @@ Control {
                     Behavior on color { ColorAnimation { duration: Theme.motion } }
                     Rectangle { width: 3; height: parent.height; visible: row.checked; color: Theme.accent }
                     Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: Theme.divider }
+                    Rectangle { anchors.top: parent.top; width: parent.width; height: Theme.dp(3); visible: library.dropTarget===row.index; color: Theme.accent; Accessible.ignored: true }
                 }
                 contentItem: RowLayout {
                     spacing: Theme.dp(8)
                     Image { source: row.flag; sourceSize.width: 32; sourceSize.height: 24; Layout.preferredWidth: Theme.dp(26); Layout.preferredHeight: Theme.dp(19); fillMode: Image.PreserveAspectFit; Accessible.ignored: true }
                     Label { text: row.label; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight; color: Theme.ink; font.family: Theme.bodyFamily; font.pointSize: Theme.body }
                     Label { text: row.overall; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption }
+                    Item {
+                        id: handle
+                        objectName: "athleteDragHandle-"+row.profileIndex
+                        Layout.preferredWidth: Theme.dp(28); Layout.fillHeight: true
+                        Accessible.role: Accessible.Button; Accessible.name: qsTr("Przeciągnij, aby zmienić kolejność skoczka %1").arg(row.label)
+                        Label { anchors.centerIn: parent; text: "⋮⋮"; color: Theme.muted; font.pointSize: Theme.body; Accessible.ignored: true }
+                        MouseArea {
+                            id: dragArea
+                            anchors.fill: parent; cursorShape: Qt.SizeVerCursor; preventStealing: true
+                            property real startY: 0
+                            property bool dragging: false
+                            onPressed: {startY=mouse.y;dragging=false;library.draggedId=row.profileId}
+                            onPositionChanged: {if(pressed && (dragging || Math.abs(mouse.y-startY)>8)){dragging=true;library.dropAt(dragArea)}}
+                            onReleased: {
+                                if(dragging && library.dropTarget>=0 && library.dropTarget<entries.count){
+                                    var from=-1,profiles=library.backend.profiles
+                                    for(var i=0;i<profiles.length;++i)if(profiles[i].id===library.draggedId){from=i;break}
+                                    if(from>=0)library.backend.move(from,entries.get(library.dropTarget).profileIndex)
+                                }
+                                dragging=false;library.dropTarget=-1;library.draggedId=""
+                            }
+                            onCanceled: {dragging=false;library.dropTarget=-1;library.draggedId=""}
+                            Timer {
+                                interval: 80; repeat: true; running: dragArea.pressed && dragArea.dragging
+                                onTriggered: {
+                                    var p=dragArea.mapToItem(rows,dragArea.mouseX,dragArea.mouseY),edge=Theme.dp(36)
+                                    var direction=p.y<edge?-1:p.y>rows.height-edge?1:0
+                                    if(direction){rows.contentY=Math.max(0,Math.min(rows.contentHeight-rows.height,rows.contentY+direction*Theme.dp(22)));library.dropAt(dragArea)}
+                                }
+                            }
+                        }
+                    }
                 }
                 onClicked: library.choose(index,true)
             }
