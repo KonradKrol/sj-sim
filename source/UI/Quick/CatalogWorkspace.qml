@@ -14,6 +14,12 @@ ColumnLayout {
     readonly property bool hasHillStudio: !!fields.hillStudio
     readonly property bool hasStudio: !!fields.athleteStudio || hasHillStudio
     readonly property bool studioActive: hasStudio
+    property var athleteBackend: null
+    property var hillBackend: null
+    onFieldsChanged: {
+        if (fields.athleteStudio) athleteBackend = fields.athleteStudio
+        if (fields.hillStudio) hillBackend = fields.hillStudio
+    }
     readonly property int editRequest: fields.editRequest || 0
     onEditRequestChanged: if(editRequest>0)editing=true
     onEditorChanged: if(editor)editing=true
@@ -24,8 +30,8 @@ ColumnLayout {
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; Layout.minimumWidth: 0
         sourceComponent: catalog.hasHillStudio ? hillStudio : athleteStudio
     }
-    Component { id: hillStudio; HillStudio { backend: catalog.fields.hillStudio } }
-    Component { id: athleteStudio; AthleteStudio { backend: catalog.fields.athleteStudio } }
+    Component { id: hillStudio; HillStudio { backend: catalog.hillBackend } }
+    Component { id: athleteStudio; AthleteStudio { backend: catalog.athleteBackend } }
     Loader {
         visible: active
         active: !catalog.studioActive && ui.profile === "DatabaseEditorWindow"
