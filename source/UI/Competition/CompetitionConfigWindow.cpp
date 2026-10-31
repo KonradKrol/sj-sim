@@ -1101,13 +1101,10 @@ bool CompetitionConfigWindow::validateSimulationInputs()
         }
         for(Team &team : competitionTeams)
         {
-            bool validTeam = team.getJumpersReference().count() >= requiredJumpers;
-            for(Jumper *jumper : team.getJumpersReference())
-                validTeam = validTeam && jumper != nullptr && !jumper->getNameAndSurname().trimmed().isEmpty();
-            if(!validTeam)
+            if(!team.hasValidLineup(requiredJumpers))
             {
                 QMessageBox::warning(this, tr("Niekompletna drużyna"),
-                                     tr("Każda drużyna musi mieć co najmniej %1 zawodników.").arg(requiredJumpers), QMessageBox::Ok);
+                                     tr("Każda drużyna musi mieć co najmniej %1 zawodników z imieniem lub nazwiskiem w składzie.").arg(requiredJumpers), QMessageBox::Ok);
                 return false;
             }
         }

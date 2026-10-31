@@ -16,6 +16,10 @@ static void rosterWorkspaceRegressions(MainWindow &main) {
     }
     QVector<Jumper> actors;actors.reserve(600);QVector<Jumper *> pool,selected;
     for(int i=0;i<600;++i){actors.append(Jumper("Roster",QString::number(i),QStringList{"POL","NOR","GER"}[i%3]));pool.append(&actors.last());if(i%2==0)selected.append(&actors.last());}
+    Jumper empty;empty.setName("");empty.setSurname("");Team team("POL");team.setJumpers({pool[0],pool[1],pool[2],pool[3],&empty});
+    check(team.hasValidLineup(4),"an unnamed reserve does not invalidate four valid starters");
+    std::swap(team.getJumpersReference()[0],team.getJumpersReference()[4]);
+    check(!team.hasValidLineup(4) && !team.hasValidLineup(6),"an unnamed starter or too few athletes invalidates the lineup");
     JumpersListEditorWindow editor(&main,"Stress roster");editor.setAllJumpers(pool);editor.setSelectedJumpers(selected);editor.updateUnselectedJumpers();editor.show();QTest::qWait(150);
     auto *bridge=editor.findChild<QuickBridge *>();auto *roster=bridge?bridge->findChild<QuickRoster *>():nullptr;check(roster,"grouping stress backend");
     QAbstractItemModelTester library(roster->library(),QAbstractItemModelTester::FailureReportingMode::Fatal),order(roster->ordered(),QAbstractItemModelTester::FailureReportingMode::Fatal),grouped(roster->groupedRows(),QAbstractItemModelTester::FailureReportingMode::Fatal);

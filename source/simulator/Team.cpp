@@ -12,6 +12,13 @@ Team::Team(const QString &countryCode) : countryCode(CountryCodes::toFis(country
 {
 }
 
+bool Team::hasValidLineup(int count) const
+{
+    if(count<=0 || jumpers.size()<count)return false;
+    for(int i=0;i<count;++i)if(!jumpers[i] || jumpers[i]->getNameAndSurname().trimmed().isEmpty())return false;
+    return true;
+}
+
 void Team::arrangeSquad(int count,double variation,double k)
 {
     if(count<1 || jumpers.isEmpty())return;

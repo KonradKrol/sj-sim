@@ -33,6 +33,7 @@ private:
 public:
     void setJumper(Jumper * jumper, int index);
     void arrangeSquad(int count,double variation=2.,double k=120.);
+    bool hasValidLineup(int count) const;
     QVector<Jumper *> getJumpers() const;
     QVector<Jumper*> & getJumpersReference();
     void setJumpers(const QVector<Jumper *> &newJumpers);
