@@ -145,6 +145,7 @@
 <file>icons/linkedin-light.svg</file>
 <file>icons/linkedin-dark.svg</file>
 <file>Home.qml</file>
+<file>HomeWelcome.qml</file>
 <file>HomeCard.qml</file>
 <file>HomeHero.qml</file>
         <file>HomeTools.qml</file>

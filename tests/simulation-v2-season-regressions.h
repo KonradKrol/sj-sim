@@ -268,7 +268,7 @@ static void exampleSeasonRegressions(MainWindow &main) {
     const auto oldName=QCoreApplication::applicationName();QCoreApplication::setApplicationName("ExampleSeasonTest-"+QUuid::createUuid().toString(QUuid::WithoutBraces));database->getEditableGlobalSimulationSaves().clear();database->setLoadedSimulationSaves(true);const auto privateCatalogRoot=QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     const auto oldRoot=qApp->property("exampleSeasonStorageRoot");qApp->setProperty("exampleSeasonStorageRoot",data.path());QSettings().remove("onboarding/welcomeDismissed");
     QFile occupied(data.path()+"/Przykładowy sezon.json");check(occupied.open(QIODevice::WriteOnly) && occupied.write("existing save")>0,"existing file name fixture");occupied.close();
-    main.show();main.resize(1280,800);auto *bridge=main.findChild<QuickBridge *>();bridge->refresh();QTest::qWait(50);check(bridge->context()["showWelcome"].toBool() && item(scene(&main)->rootObject(),"homeWelcomeExample"),"first launch offers the example directly");
+    main.show();main.resize(1280,800);auto *bridge=main.findChild<QuickBridge *>();bridge->refresh();QTest::qWait(50);check(bridge->context()["showWelcome"].toBool() && item(scene(&main)->quickWindow()->contentItem(),"homeWelcomeExample"),"first launch offers the example directly");
     render(&main,"first-launch-welcome",true);
     QStringList errors;QTimer dismissErrors;QObject::connect(&dismissErrors,&QTimer::timeout,&main,[&]{for(auto *widget:QApplication::allWidgets())if(auto *box=qobject_cast<QMessageBox *>(widget);box && box->isVisible()){errors.append(box->text());box->accept();}});dismissErrors.start(20);
     QString firstName;
