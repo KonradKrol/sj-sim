@@ -167,6 +167,7 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
         check(!first.isEmpty() && !second.isEmpty() && first!=second && save.getJumpersLists().size()==3,"inline roster creation publishes distinct persistent lists");
         QTest::qWait(150);auto *rosterScene=scene(&manager);
         check(item(rosterScene->rootObject(),"seasonRostersWorkspace"),"new roster workspace opens inline");
+        render(&manager,"season-rosters-inline",true);
         presentation(&manager)->grab().save(output+"/season-rosters-inline.png");
         clickControl(rosterScene,"rosterCreate");QTest::qWait(80);const auto fromUi=manager.editingRosterId();
         check(!fromUi.isEmpty() && fromUi!=second && save.getJumpersLists().size()==4,"visible new-roster action creates and selects a list");
@@ -179,6 +180,27 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
         clickControl(rosterScene,candidateName);QTest::qWait(60);
         check(manager.selectRoster(second) && manager.selectRoster(first),"switching inline rosters keeps their identities");QTest::qWait(50);
         check(editor->count()==1,"inline roster members survive selection changes");
+        QSet<QString> created;
+        for(int i=0;i<10;++i) {
+            clickControl(rosterScene,"rosterCreate");const auto id=manager.editingRosterId();
+            check(!id.isEmpty() && id!=first && id!=second && !created.contains(id),"repeated UI creation selects a distinct roster");created.insert(id);
+        }
+        check(save.getJumpersLists().size()==13,"all rosters created through the UI remain in the season");
+        std::unique_ptr<SimulationSave> manyReload(SimulationSave::getFromJson(SimulationSave::getJsonObject(save),nullptr));
+        check(manyReload && manyReload->getJumpersLists().size()==13,"the expanded roster catalog survives season serialization");
+        QSet<QString> persisted;for(const auto &list:manyReload->getJumpersLists())persisted.insert(list.getId());
+        for(const auto &id:created)check(persisted.contains(id),"every UI-created roster retains its identity after reload");
+        bool restoredMembers=false;for(const auto &list:manyReload->getJumpersLists())if(list.getId()==first)restoredMembers=list.getJumpers().size()==1 && list.getJumpers().first()->getIDStr()==save.getJumpersReference().first()->getIDStr();
+        check(restoredMembers,"the selected athlete remains attached to the correct roster after reload");
+        check(manager.selectRoster(first),"original roster can be reopened after bulk creation");QTest::qWait(80);
+        for(int i=0;i<20;++i){editor->setGrouped(i%2==0);QTest::qWait(10);check(editor->count()==1,"inline grouping preserves selected roster members");}
+        for(const auto &id:created)check(manager.removeRoster(id),"each UI-created roster can be deleted independently");
+        check(save.getJumpersLists().size()==3,"bulk deletion leaves the original rosters intact");
+        if(SimulationSave::activeRosterFeatureEnabled()) {
+            check(manager.selectActiveRoster(first),"the edited roster can be made active");
+            check(manager.removeRoster(first) && save.activeJumpersListId().isEmpty(),"deleting the active roster returns to all athletes");
+            check(manager.restoreRoster() && save.activeJumpersListId()==first,"undo restores the previously active roster");QTest::qWait(50);
+        }
         check(manager.removeRoster(first) && manager.restoreRoster(),"deleted inline roster can be restored");QTest::qWait(50);
         check(manager.editingRosterId()==first && editor->count()==1,"restoration preserves roster identity and members");
         check(manager.removeRoster(first) && manager.removeRoster(second) && save.getJumpersLists().size()==1,"repeated inline removal leaves existing lists intact");

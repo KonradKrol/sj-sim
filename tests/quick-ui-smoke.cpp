@@ -163,6 +163,7 @@ static void render(QWidget *window,const QString &name,bool sweep=false) {
             appearance->setDark(dark); QTest::qWait(name=="home-tools"?850:200);
             // A grab flushes pending Quick layout polish in the offscreen widget.
             auto image=presentation(window)->grab().toImage(); if(image.isNull()) qCritical()<<"Geometry"<<window->size()<<view->size(); check(!image.isNull(),"frame "+name);
+            if(name=="season-rosters-inline") {auto *rows=item(view->rootObject(),"savedRosterCandidates");check(rows && rows->isVisible() && rows->height()>=44,"inline roster keeps usable athlete rows in both themes and every tested size");}
             check(item(view->rootObject(),"releaseBadge")==nullptr,"pages and short dialogs do not repeat application chrome");
             auto *footer=applicationWindow->findChild<QQuickWidget *>("quickApplicationFooter");
             check(footer && item(footer->rootObject(),"releaseBadge"),"one shared release badge exists");
