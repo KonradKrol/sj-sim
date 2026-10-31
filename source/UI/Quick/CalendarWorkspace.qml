@@ -16,6 +16,7 @@ Item {
     property bool renaming: backend ? backend.newCalendar : false
     property int section: 0
     property bool addingMany: false
+    property bool showRosterAssignment: false
     property bool monthView: false
     implicitHeight: 640
     RowLayout {
@@ -61,13 +62,13 @@ Item {
                 text: "⋯"; Accessible.name: qsTr("Opcje kalendarza"); quiet: true; implicitHeight: calendar.tight ? 32 : 40; onClicked: catalogMenu.open()
                 ActionMenu {
                     id: catalogMenu
-                    entries: [{id:"active",text:qsTr("Ustaw jako aktywny"),enabled:!calendar.backend.activeCalendar},{id:"classes",text:calendar.section===0?qsTr("Klasyfikacje"):qsTr("Konkursy")},{id:"rename",text:qsTr("Zmień nazwę kalendarza")},{id:"up",text:qsTr("Kalendarz w górę")},{id:"down",text:qsTr("Kalendarz w dół")},{id:"remove",text:qsTr("Usuń kalendarz")},{id:"load",text:qsTr("Wczytaj preset")},{id:"save",text:qsTr("Zapisz jako preset")}]
-                    onSelected: {if(entry.id==="active")calendar.backend.activateCalendar();else if(entry.id==="classes")calendar.section=calendar.section===0?1:0;else if(entry.id==="rename"){calendar.renaming=true;nameInput.forceActiveFocus();nameInput.selectAll()}else if(entry.id==="load"||entry.id==="save")calendar.backend.preset(entry.id==="save");else calendar.backend.catalogAction(entry.id)}
+                    entries: [{id:"roster",text:qsTr("Lista zawodników")},{id:"active",text:qsTr("Ustaw jako aktywny"),enabled:!calendar.backend.activeCalendar},{id:"classes",text:calendar.section===0?qsTr("Klasyfikacje"):qsTr("Konkursy")},{id:"rename",text:qsTr("Zmień nazwę kalendarza")},{id:"up",text:qsTr("Kalendarz w górę")},{id:"down",text:qsTr("Kalendarz w dół")},{id:"remove",text:qsTr("Usuń kalendarz")},{id:"load",text:qsTr("Wczytaj preset")},{id:"save",text:qsTr("Zapisz jako preset")}]
+                    onSelected: {if(entry.id==="roster")calendar.showRosterAssignment=!calendar.showRosterAssignment;else if(entry.id==="active")calendar.backend.activateCalendar();else if(entry.id==="classes")calendar.section=calendar.section===0?1:0;else if(entry.id==="rename"){calendar.renaming=true;nameInput.forceActiveFocus();nameInput.selectAll()}else if(entry.id==="load"||entry.id==="save")calendar.backend.preset(entry.id==="save");else calendar.backend.catalogAction(entry.id)}
                 }
             }
         }
         RowLayout {
-            visible: calendar.backend.calendarIndex>=0
+            visible: calendar.backend.calendarIndex>=0 && (!calendar.tight || calendar.showRosterAssignment)
             Layout.fillWidth: true
             Label { text: qsTr("Lista zawodników"); color: Theme.muted; font.pointSize: Theme.caption }
             SChoice {
