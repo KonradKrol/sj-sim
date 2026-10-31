@@ -19,6 +19,11 @@ Pozostało 19 punktów: listy zawodników 1, 2, 5, 6 i 8; pierwsze uruchomienie 
 
 ## Od czego zacząć: aktywna lista zawodników
 
+Decyzje użytkownika: interfejs list przebudować od podstaw. Pokazywać obok
+siebie wszystkich i wybranych zawodników, z szybkim dodawaniem i przeciąganiem;
+domyślny widok ma grupować zawodników krajami. Ręczny wybór listy przed
+konkursem obowiązuje dla tego konkursu i nie zmienia przypisania kalendarza.
+
 W kodzie jest **niedokończony, celowo wyłączony** szkielet aktywnej listy. `SimulationSave::activeRosterFeatureEnabled()` zwraca `false`: wyboru nie pokazuje się użytkownikowi, starych sejwów nie migruje się i dotychczasowa logika wyboru zawodników nie zmienia się. Nie oznaczać tych punktów jako ukończonych i nie włączać flagi przed połączeniem całej ścieżki.
 
 1. Dokończ i przetestuj `SimulationSave::activeJumpersListId`, `activeJumpers`, zapis identyfikatora oraz migrację starszych sejwów. Istniejący szkic migracji zachowuje poprzedni wynik operacji dołączania/wykluczania i, jeśli potrzeba, tworzy listę „Dotychczasowy skład”. Sprawdź puste listy, usunięcie aktywnej listy, duplikaty identyfikatorów, zapis i ponowne wczytanie. Brak wybranej zapisanej listy ma oznaczać **wszystkich zawodników**, a nie pusty skład.
