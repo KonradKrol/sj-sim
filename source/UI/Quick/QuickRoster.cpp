@@ -53,10 +53,10 @@ void QuickRosterCountryRows::sync(const QVariantList &rows) {
     if(oldCount!=m_rows.size())emit countChanged();
 }
 QString QuickRoster::key(Jumper *jumper) { return QString::number(reinterpret_cast<quintptr>(jumper),16); }
-QuickRoster::QuickRoster(QWidget *source,QObject *parent):QObject(parent),m_source(source),m_library(new QuickRosterRows(this)),m_ordered(new QuickRosterRows(this)),m_groupedRows(new QuickRosterRows(this)),m_limitRows(new QuickRosterCountryRows(this)){m_grouped=savedList();sync();}
+QuickRoster::QuickRoster(QWidget *source,QObject *parent):QObject(parent),m_source(source),m_library(new QuickRosterRows(this)),m_ordered(new QuickRosterRows(this)),m_groupedRows(new QuickRosterRows(this)),m_groupedLibrary(new QuickRosterRows(this)),m_limitRows(new QuickRosterCountryRows(this)){m_grouped=savedList();sync();}
 bool QuickRoster::membership() const { return !qobject_cast<TeamEditorWidget *>(m_source); }
 bool QuickRoster::savedList() const { return qobject_cast<JumpersListEditorWindow *>(m_source); }
-void QuickRoster::setGrouped(bool value) { if(!savedList() || m_grouped==value)return; m_grouped=value;refresh(); }
+void QuickRoster::setGrouped(bool value) { if(!savedList() || m_grouped==value)return; m_grouped=value;emit changed(); }
 void QuickRoster::refreshCountryLimits(bool updateModel) {
     auto *editor=qobject_cast<JumpersListEditorWindow *>(m_source);if(!editor){m_countryLimits.clear();if(updateModel)m_limitRows->sync({});return;}
     const auto limits=editor->getCountryLimits();QStringList codes;
@@ -124,7 +124,6 @@ QVector<Jumper *> QuickRoster::visiblePool() const { QVector<Jumper *> out;for(a
 void QuickRoster::refresh(){
     QSet<QString> existing;for(auto *j:m_current)existing.insert(key(j));m_marked.intersect(existing);
     auto available=visiblePool();
-    if(savedList() && grouped())std::stable_sort(available.begin(),available.end(),[](Jumper *a,Jumper *b){return a->getCountryCode().compare(b->getCountryCode(),Qt::CaseInsensitive)<0;});
     QSet<QString> poolIds;for(auto *j:m_pool)poolIds.insert(key(j));m_candidateMarked.intersect(poolIds);
     for(auto *j:m_current)m_candidateMarked.remove(key(j));
     QVariantList library,ordered;for(auto *j:available)library.append(QVariantMap{{"athleteId",key(j)},{"athleteName",j->getNameAndSurname()},{"countryCode",j->getCountryCode()},{"flagSource",flagSource(j->getCountryCode())},{"included",m_current.contains(j)},{"marked",m_candidateMarked.contains(key(j))}});
@@ -132,7 +131,10 @@ void QuickRoster::refresh(){
     auto grouped=ordered;
     if(savedList())std::stable_sort(grouped.begin(),grouped.end(),[](const QVariant &a,const QVariant &b){return a.toMap().value("countryCode").toString().compare(b.toMap().value("countryCode").toString(),Qt::CaseInsensitive)<0;});
     else grouped.clear();
-    m_library->sync(library);m_ordered->sync(ordered);m_groupedRows->sync(grouped);refreshCountryLimits();emit changed();
+    auto groupedLibrary=library;
+    if(savedList())std::stable_sort(groupedLibrary.begin(),groupedLibrary.end(),[](const QVariant &a,const QVariant &b){return a.toMap().value("countryCode").toString().compare(b.toMap().value("countryCode").toString(),Qt::CaseInsensitive)<0;});
+    else groupedLibrary.clear();
+    m_library->sync(library);m_groupedLibrary->sync(groupedLibrary);m_ordered->sync(ordered);m_groupedRows->sync(grouped);refreshCountryLimits();emit changed();
 }
 void QuickRoster::setQuery(const QString &value){if(m_query==value)return;m_query=value;refresh();}
 void QuickRoster::setOrderQuery(const QString &value){if(m_orderQuery==value)return;m_orderQuery=value;refresh();}

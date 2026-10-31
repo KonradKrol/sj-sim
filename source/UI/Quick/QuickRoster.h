@@ -38,6 +38,7 @@ signals:
 class QuickRoster : public QObject {
     Q_OBJECT
     Q_PROPERTY(QuickRosterRows *library READ library CONSTANT)
+    Q_PROPERTY(QuickRosterRows *groupedLibrary READ groupedLibrary CONSTANT)
     Q_PROPERTY(QuickRosterRows *ordered READ ordered CONSTANT)
     Q_PROPERTY(QuickRosterRows *groupedRows READ groupedRows CONSTANT)
     Q_PROPERTY(QString query READ query WRITE setQuery NOTIFY changed)
@@ -64,6 +65,7 @@ public:
     void invalidateText() { emit changed(); }
     static QString key(Jumper *jumper);
     QuickRosterRows *library() const { return m_library; }
+    QuickRosterRows *groupedLibrary() const { return m_groupedLibrary; }
     QuickRosterRows *ordered() const { return m_ordered; }
     QuickRosterRows *groupedRows() const { return m_groupedRows; }
     QString query() const { return m_query; }
@@ -105,7 +107,7 @@ public:
     Q_INVOKABLE void applyPreset(int index,int operation);
 private:
     QPointer<QWidget> m_source;
-    QuickRosterRows *m_library,*m_ordered,*m_groupedRows;
+    QuickRosterRows *m_library,*m_ordered,*m_groupedRows,*m_groupedLibrary;
     QuickRosterCountryRows *m_limitRows;
     QVector<Jumper *> m_pool,m_current,m_undo;
     QMap<QString,int> m_undoLimits;
