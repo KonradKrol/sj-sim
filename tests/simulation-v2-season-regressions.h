@@ -125,6 +125,11 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
     QTimer::singleShot(100,&manager,[&manager]{auto *editor=manager.findChild<JumpersListEditorWindow *>();check(editor,"saved roster editor opens");editor->setCountryLimits({{"POL",3}});editor->accept();});
     savedLists->listViewDoubleClicked(savedLists->getListModel()->index(0));
     check(save.getJumpersListsReference().first().countryLimit("POL")==3,"accepting a roster editor saves its advisory limits in the season");
+    SaveJumpersList emptyRoster("Empty");
+    save.getJumpersListsReference().append(emptyRoster);
+    check(save.setActiveJumpersListId(emptyRoster.getId()) && save.activeJumpers()==save.getJumpersReference(),"an empty roster includes all athletes");
+    save.setActiveJumpersListId(QString());
+    save.getJumpersListsReference().removeLast();
     if(!SimulationSave::activeRosterFeatureEnabled()) {
         auto safeLegacy=SimulationSave::getJsonObject(save);auto legacyLists=safeLegacy.value("jumpers-lists").toArray();
         auto legacyEntry=legacyLists.at(0).toObject();legacyEntry["is-default"]=true;legacyLists[0]=legacyEntry;safeLegacy["jumpers-lists"]=legacyLists;

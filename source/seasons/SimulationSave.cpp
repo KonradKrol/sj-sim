@@ -548,7 +548,7 @@ QString SimulationSave::activeJumpersListId() const
 
 QVector<Jumper *> SimulationSave::activeJumpers() const
 {
-    const auto *list=activeJumpersList();return list?list->getJumpers():jumpers;
+    const auto *list=activeJumpersList();return list && !list->getJumpers().isEmpty()?list->getJumpers():jumpers;
 }
 
 bool SimulationSave::setActiveJumpersListId(const QString &id)
