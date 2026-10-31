@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QJsonArray>
 #include <QRandomGenerator>
+#include <QSet>
 #include <algorithm>
 #include <cmath>
 #include "../simulation-v2/QualityModel.h"
@@ -15,7 +16,12 @@ Team::Team(const QString &countryCode) : countryCode(CountryCodes::toFis(country
 bool Team::hasValidLineup(int count) const
 {
     if(count<=0 || jumpers.size()<count)return false;
-    for(int i=0;i<count;++i)if(!jumpers[i] || jumpers[i]->getNameAndSurname().trimmed().isEmpty())return false;
+    QSet<Jumper *> used;
+    for(int i=0;i<count;++i) {
+        auto *jumper=jumpers[i];
+        if(!jumper || jumper->getNameAndSurname().trimmed().isEmpty() || used.contains(jumper))return false;
+        used.insert(jumper);
+    }
     return true;
 }
 
@@ -49,9 +55,10 @@ QVector<Team> Team::constructTeamsVectorByJumpersList(const QVector<Jumper> &jum
 
 QVector<Team> Team::constructTeamsVectorByJumpersList(const QVector<Jumper *> &jumpers, int minCount)
 {
-    QVector<Team> teams;QHash<QString,int> indexes;
+    QVector<Team> teams;QHash<QString,int> indexes;QSet<Jumper *> included;
     for(auto *jumper:jumpers){
-        if(!jumper)continue;
+        if(!jumper || jumper->getNameAndSurname().trimmed().isEmpty() || included.contains(jumper))continue;
+        included.insert(jumper);
         const auto country=CountryCodes::toFis(jumper->getCountryCode());
         auto found=indexes.constFind(country);
         int index;

@@ -20,6 +20,10 @@ static void rosterWorkspaceRegressions(MainWindow &main) {
     check(team.hasValidLineup(4),"an unnamed reserve does not invalidate four valid starters");
     std::swap(team.getJumpersReference()[0],team.getJumpersReference()[4]);
     check(!team.hasValidLineup(4) && !team.hasValidLineup(6),"an unnamed starter or too few athletes invalidates the lineup");
+    team.setJumpers({pool[0],pool[3],pool[6],pool[0]});check(!team.hasValidLineup(4),"one athlete cannot fill two starting positions");
+    check(Team::constructTeamsVectorByJumpersList({pool[0],pool[3],pool[6],&empty},4).isEmpty(),"unnamed athletes cannot form an incomplete team");
+    check(Team::constructTeamsVectorByJumpersList({pool[0],pool[3],pool[6],pool[0]},4).isEmpty(),"duplicate athletes cannot form an incomplete team");
+    check(Team::constructTeamsVectorByJumpersList({pool[0],pool[3],pool[6],pool[9],&empty},4).size()==1,"four distinct named athletes produce a valid team");
     JumpersListEditorWindow editor(&main,"Stress roster");editor.setAllJumpers(pool);editor.setSelectedJumpers(selected);editor.updateUnselectedJumpers();editor.show();QTest::qWait(150);
     auto *bridge=editor.findChild<QuickBridge *>();auto *roster=bridge?bridge->findChild<QuickRoster *>():nullptr;check(roster,"grouping stress backend");
     QAbstractItemModelTester library(roster->library(),QAbstractItemModelTester::FailureReportingMode::Fatal),order(roster->ordered(),QAbstractItemModelTester::FailureReportingMode::Fatal),grouped(roster->groupedRows(),QAbstractItemModelTester::FailureReportingMode::Fatal);
