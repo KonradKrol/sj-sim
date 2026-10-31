@@ -60,3 +60,11 @@ W kodzie jest **niedokończony, celowo wyłączony** szkielet aktywnej listy. `S
   `--classifications-only` PASS.
 
 Stan głównych punktów nadal 15/34: nie zaliczać niedokończonej przebudowy list.
+
+## Nowe zgłoszenie: kwalifikacje → Classical KO
+
+Po rozegraniu kwalifikacji z zasadami „Qualifications” konfiguracja konkursu
+z zasadami „Classical KO” pokazuje 0 zawodników zamiast zakwalifikowanego składu
+i gotowych grup KO. Błąd blokujący konkurs. Odtworzyć na prywatnym fixture,
+sprawdzić filtrowanie awansu, tożsamość skoczków, limit kwalifikacji i kolejność
+przygotowania grup. Nie testować na rzeczywistym zapisie użytkownika.
