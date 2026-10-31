@@ -1039,7 +1039,7 @@ void QuickBridge::compose(QuickNode *base) {
         auto *source=m_content->findChild<QTabWidget *>("toolBox");
         if(source) {
             QVariantList tools;
-            for(const auto &name:{"pushButton_formGenerator","pushButton","pushButton_saveAsCopy","pushButton_repairDatabase"})
+            for(const auto &name:{"pushButton","pushButton_saveAsCopy","pushButton_repairDatabase"})
                 if(auto *button=m_content->findChild<QPushButton *>(name))
                     tools.append(QVariantMap{{"id",idFor(button)},{"text",button->text().remove('&')},{"enabled",button->isEnabled()},{"button",true}});
             auto *menuNode=m_groups.value("quickSeasonTools");

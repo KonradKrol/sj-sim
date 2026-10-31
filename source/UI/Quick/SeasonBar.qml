@@ -31,7 +31,6 @@ Pane {
         RowLayout {
             Layout.fillWidth: bar.width < 760
             spacing: Theme.dp(6)
-            Node { visible: bar.width >= 900; node: ui.find("pushButton_formGenerator"); Layout.preferredWidth: Theme.dp(145); Layout.preferredHeight: implicitHeight }
             Node { node: ui.find("quickSeasonTools"); Layout.preferredWidth: Theme.dp(110); Layout.fillWidth: bar.width < 760; Layout.preferredHeight: implicitHeight }
             SButton {
                 objectName: "action-pushButton_saveToFile"

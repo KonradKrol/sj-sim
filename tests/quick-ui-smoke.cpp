@@ -1135,25 +1135,25 @@ static void clickControl(QQuickWidget *view,const QString &name) {
 static void seasonToolRegressions(SimulationSaveManagerWindow &manager) {
     auto *view=scene(&manager);auto *navigation=applicationWindow->findChild<QuickUi *>();
     presentation(&manager)->resize(1200,800);QTest::qWait(80);
-    for(int action=0;action<4;++action){
+    for(int action=0;action<3;++action){
         clickControl(view,"action-quickSeasonTools");QTest::qWait(250);
         bool opened=false;int ticks=0;QTimer watcher;
         QObject::connect(&watcher,&QTimer::timeout,[&]{
             check(++ticks<150,"season tool opens");
             for(auto *widget:QApplication::allWidgets()){
                 auto *dialog=qobject_cast<QDialog *>(widget);if(!dialog || !dialog->isVisible() || dialog==&manager)continue;
-                const bool matches=action==0?qobject_cast<JumpersFormGeneratorConfigWindow *>(dialog)!=nullptr:action==1?qobject_cast<SimulationRatingsWindow *>(dialog)!=nullptr:action==2?qobject_cast<QFileDialog *>(dialog)!=nullptr:qobject_cast<QMessageBox *>(dialog)!=nullptr;
+                const bool matches=action==0?qobject_cast<SimulationRatingsWindow *>(dialog)!=nullptr:action==1?qobject_cast<QFileDialog *>(dialog)!=nullptr:qobject_cast<QMessageBox *>(dialog)!=nullptr;
                 if(!matches)continue;
                 opened=true;watcher.stop();
-                if(action<2){check(navigation->current()==dialog->findChild<QuickBridge *>(),"season tool is current navigation page");clickControl(applicationWindow->findChild<QQuickWidget *>("quickApplicationHeader"),"navigateBack");}
-                else if(action==2)dialog->reject();
+                if(action==0){check(navigation->current()==dialog->findChild<QuickBridge *>(),"season tool is current navigation page");clickControl(applicationWindow->findChild<QQuickWidget *>("quickApplicationHeader"),"navigateBack");}
+                else if(action==1)dialog->reject();
                 else {auto *message=qobject_cast<QMessageBox *>(dialog);auto *button=message->button(QMessageBox::No);check(button,"repair confirmation allows cancellation");auto *bridge=message->findChild<QuickBridge *>();bridge->refresh();QTest::qWait(50);clickControl(scene(message),"action-"+(button->objectName().isEmpty()?button->text().remove('&'):button->objectName()));}
                 break;
             }
         });watcher.start(20);clickControl(view,QString("menu-entry-%1").arg(action));watcher.stop();
         check(opened && navigation->current()==manager.findChild<QuickBridge *>(),QString("season tool %1 returns to manager (opened %2, path %3)").arg(action).arg(opened).arg(navigation->path().join(" / ")));
     }
-    qInfo()<<"PASS: all four season tools open through pointer-driven menus";
+    qInfo()<<"PASS: all season tools open through pointer-driven menus";
 }
 static void nextSeasonTransactionRegression(MainWindow &main) {
     SimulationSave save;save.setName("Next season transaction");
@@ -1277,26 +1277,18 @@ static void seasonWorkflowRegressions(MainWindow &main) {
         preparation.reject();
     }
     SimulationSaveManagerWindow manager(&save);manager.fillNextCompetitionInformations();manager.show();QTest::qWait(200);
-    auto *view=scene(&manager);auto *navigation=main.findChild<QuickUi *>();auto *bridge=manager.findChild<QuickBridge *>();
-    const auto openForm=[&](const QString &control){
-        bool opened=false;int ticks=0;
-        QTimer watcher;QObject::connect(&watcher,&QTimer::timeout,[&]{
-            check(++ticks<100,"form generator opens after pointer click");
-            for(auto *widget:QApplication::allWidgets())if(auto *form=qobject_cast<JumpersFormGeneratorConfigWindow *>(widget);form && form->isVisible()){
-                opened=true;watcher.stop();check(scene(form) && scene(form)->status()==QQuickWidget::Ready,"form generator QML loads");
-                check(navigation->current()==form->findChild<QuickBridge *>() && !QApplication::activeModalWidget(),"form generator opens in normal application navigation");
-                auto *header=main.findChild<QQuickWidget *>("quickApplicationHeader");clickControl(header,"navigateBack");break;
-            }
-        });watcher.start(20);clickControl(view,control);watcher.stop();
-        check(opened && navigation->current()==bridge,QString("closing form generator returns to season (%1, opened %2, path %3)").arg(control).arg(opened).arg(navigation->path().join(" / ")));
-    };
-    openForm("action-pushButton_formGenerator");
-    // The synthetic tools menu must use the same pointer-driven path as native menus.
+    auto *view=scene(&manager);auto *bridge=manager.findChild<QuickBridge *>();
+    // The legacy manual form generator is intentionally absent from season navigation.
+    check(!item(view->rootObject(),"action-pushButton_formGenerator"),"legacy form generator is hidden from the season header");
     auto *tools=qobject_cast<QuickNode *>(bridge->find("quickSeasonTools"));check(tools,"season tools exist");
+    const auto actions=tools->values().value("actions").toList();
+    const auto *generatorNode=qobject_cast<QuickNode *>(bridge->find("pushButton_formGenerator"));check(generatorNode,"legacy form generator remains available internally");
+    const int generatorId=generatorNode->values().value("id").toInt();
+    for(const auto &action:actions)check(action.toMap().value("id").toInt()!=generatorId,"season tools do not expose the legacy form generator");
     const QString toolsName="action-quickSeasonTools";
     clickControl(view,toolsName);auto *toolsButton=item(view->rootObject(),toolsName);
-    auto *popup=toolsButton->findChild<QObject *>("actionMenu");check(popup && popup->property("visible").toBool() && popup->property("count").toInt()==4,"season tools menu opens all actions");
-    QTest::qWait(500);openForm("menu-entry-0");
+    auto *popup=toolsButton->findChild<QObject *>("actionMenu");check(popup && popup->property("visible").toBool() && popup->property("count").toInt()==3,"season tools menu opens the remaining actions");
+    QTest::keyClick(view,Qt::Key_Escape);
     auto *classificationEditor=manager.findChild<ClassificationEditorWidget *>();
     check(classificationEditor && !classificationEditor->getClassification(),"classification editor starts without an invalid source pointer");
     QMetaObject::invokeMethod(classificationEditor,"submitted");
@@ -1438,7 +1430,7 @@ static void seasonWorkflowRegressions(MainWindow &main) {
         CompetitionResults fresh=event->getResultsReference();fresh.addJump(save.getJumpersReference().first(),jump);
         check(fresh.getResultsReference().first().getCompetition()==event && jump.getCompetition()==event,"new jumps after preset import refer to the live event rather than the source preset");
     }
-    manager.reject();qInfo()<<"PASS: real season tools, form navigation, direct calendar edits, multi-selection, history protection and undo";
+    manager.reject();qInfo()<<"PASS: real season tools, direct calendar edits, multi-selection, history protection and undo";
 }
 #include "roster-drag-regressions.h"
 
