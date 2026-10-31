@@ -53,6 +53,14 @@ static void competitionTieRegressions(const std::function<void(bool,const QStrin
     verify(ko.size()==3 && !ko.contains(&a) && ko.count(&b)==1,"KO qualification is bounded by available eligible athletes without duplicates or out-of-range reads");
     target.getRulesPointer()->getRoundsReference()[0].setCount(2);
     verify(IndividualCompetitionManager::getFilteredJumpersAfterQualifications(&target,athletes).size()==2,"KO target keeps an exact seeded field size across a qualifying tie");
+    {
+        Jumper ownedA=a,ownedB=b,ownedC=c;QVector<Jumper *> owned{&ownedA,&ownedB,&ownedC};
+        const auto remapped=IndividualCompetitionManager::getFilteredJumpersAfterQualifications(&target,owned);
+        verify(remapped.size()==2 && remapped.contains(&ownedA) && !remapped.contains(&a),"qualification resolves logical athlete IDs to the current season instances before KO");
+        target.getRulesPointer()->getRoundsReference()[0].setKO(false);
+        verify(IndividualCompetitionManager::getFilteredJumpersAfterQualifications(&target,owned).size()==3,"standard qualification also preserves ties when result instances differ");
+        target.getRulesPointer()->getRoundsReference()[0].setKO(true);
+    }
     target.getRulesPointer()->getRoundsReference()[0].setKO(false);target.getRulesPointer()->getRoundsReference()[0].setCount(3);
     auto *top = standings.getResultOfIndividualJumper(&a);top->getJumpsReference().last().setDSQ(true);
     verify(!IndividualCompetitionManager::getFilteredJumpersAfterQualifications(&target,athletes).contains(&a),"a disqualified final qualification attempt cannot advance");

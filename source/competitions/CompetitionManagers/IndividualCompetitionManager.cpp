@@ -113,7 +113,6 @@ QVector<Jumper *> IndividualCompetitionManager::getFilteredJumpersAfterQualifica
     const int limit = qMax(0,firstRound.getCount());
     if(limit == 0)return qualified;
     CompetitionResults standings = source->getResultsReference();
-    standings.sortInDescendingOrder();
     const auto eligible = [](const CompetitionSingleResult &result) {
         const auto jumps = result.getJumps();
         return jumps.isEmpty() || (!jumps.last().getDNS() && !jumps.last().getDSQ());
@@ -121,17 +120,22 @@ QVector<Jumper *> IndividualCompetitionManager::getFilteredJumpersAfterQualifica
     auto &eligibleResults=standings.getResultsReference();
     for(int i=eligibleResults.size()-1;i>=0;--i)if(!eligible(eligibleResults[i]))eligibleResults.removeAt(i);
     standings.sortInDescendingOrder();
+    QHash<QString,Jumper *> poolById;
+    for(auto *jumper:qAsConst(jumpers))if(jumper && !poolById.contains(jumper->getIDStr()))poolById.insert(jumper->getIDStr(),jumper);
+    QHash<QString,CompetitionSingleResult *> resultsById;
+    for(auto &result:standings.getResultsReference())if(result.getJumper() && !resultsById.contains(result.getJumper()->getIDStr()))resultsById.insert(result.getJumper()->getIDStr(),&result);
     if(firstRound.getKO()) {
         for(const auto &result : qAsConst(standings.getResultsReference())) {
-            auto *jumper = result.getJumper();
-            if(jumper && jumpers.contains(jumper) && eligible(result) && !qualified.contains(jumper))qualified.append(jumper);
+            auto *jumper = result.getJumper()?poolById.value(result.getJumper()->getIDStr(),nullptr):nullptr;
+            if(jumper && eligible(result) && !qualified.contains(jumper))qualified.append(jumper);
             if(qualified.size() >= limit)break;
         }
         std::reverse(qualified.begin(),qualified.end());
         return qualified;
     }
     for(auto *jumper : qAsConst(jumpers)) {
-        auto *result = standings.getResultOfIndividualJumper(jumper);
+        if(!jumper)continue;
+        auto *result = resultsById.value(jumper->getIDStr(),nullptr);
         if(!result || !eligible(*result) || qualified.contains(jumper))continue;
         bool protectedFall = false;
         const auto &attempts = result->getJumpsReference();
