@@ -12,6 +12,9 @@ ColumnLayout {
         Switch {
             objectName: "seasonAutosave"
             text: qsTr("Automatyczny zapis")
+            palette.windowText: Theme.ink
+            palette.text: Theme.ink
+            palette.buttonText: Theme.ink
             checked: autosave.backend ? autosave.backend.autosaveEnabled : false
             onClicked: if (autosave.backend) autosave.backend.setAutosaveEnabled(checked)
         }

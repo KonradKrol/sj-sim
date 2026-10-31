@@ -47,7 +47,6 @@ ColumnLayout {
         Label { text: qsTr("Zasady treningów"); color: Theme.muted; font.pointSize: Theme.caption }
         SChoice { Layout.fillWidth: true; model: editorFields.backend.auxiliaryRules; currentIndex: editorFields.backend.selection.trainingRules || 0; Accessible.name: qsTr("Zasady treningów"); onActivated: currentIndex === 1 ? editorFields.editRules(1) : editorFields.backend.update({trainingRules:currentIndex}) }
     }
-    Label { visible: editorFields.backend.selection.trainings !== 0; text: qsTr("Ważność treningów"); color: Theme.muted; font.pointSize: Theme.caption }
     SCheck { text: qsTr("Seria próbna"); Layout.fillWidth: true; tristate: true; checkState: editorFields.backend.selection.trial === -1 ? Qt.PartiallyChecked : editorFields.backend.selection.trial ? Qt.Checked : Qt.Unchecked; onClicked: editorFields.backend.update({trial:checked}) }
     ColumnLayout {
         visible: editorFields.backend.selection.trial !== 0
@@ -55,8 +54,4 @@ ColumnLayout {
         Label { text: qsTr("Zasady serii próbnej"); color: Theme.muted; font.pointSize: Theme.caption }
         SChoice { Layout.fillWidth: true; model: editorFields.backend.auxiliaryRules; currentIndex: editorFields.backend.selection.trialRules || 0; Accessible.name: qsTr("Zasady serii próbnej"); onActivated: currentIndex === 1 ? editorFields.editRules(2) : editorFields.backend.update({trialRules:currentIndex}) }
     }
-    Label { visible: editorFields.backend.selection.trial !== 0; text: qsTr("Ważność serii próbnej"); color: Theme.muted; font.pointSize: Theme.caption }
-    NumberField { visible: editorFields.backend.selection.trial !== 0; Layout.fillWidth: true; direct: false; label: qsTr("Ważność serii próbnej"); fields: ({value:Math.max(0,editorFields.backend.selection.trialImportance || 0),mixed:editorFields.backend.selection.trialImportance === -1,minimum:0,maximum:1000,step:.1,decimals:2}); onCommitted: editorFields.backend.update({trialImportance:value}) }
-    Label { text: qsTr("Ważność skoków"); color: Theme.muted; font.pointSize: Theme.caption }
-    NumberField { Layout.fillWidth: true; direct: false; label: qsTr("Ważność skoków"); fields: ({value:Math.max(0,editorFields.backend.selection.importance || 0),mixed:editorFields.backend.selection.importance === -1,minimum:0,maximum:1000,step:.1,decimals:2}); onCommitted: editorFields.backend.update({importance:value}) }
 }
