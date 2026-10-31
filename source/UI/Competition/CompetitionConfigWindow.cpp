@@ -142,7 +142,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
 
         int compType = seasonCompetition->getRulesPointer()->getCompetitionType();
         for(auto & classification : Classification::getSpecificTypeClassifications(simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference(), compType))
-            ui->comboBox_classification->addItem(classification->getName());
+            if(classification)ui->comboBox_classification->addItem(classification->getName()+(classification->getRankedResults().isEmpty()?tr(" (brak wyników)"):QString()));
 
         QVector<CompetitionInfo *> competitions = CompetitionInfo::getSpecificTypeMainCompetitions(simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference(), compType);
         for(auto & competition : competitions)
@@ -1488,11 +1488,13 @@ void CompetitionConfigWindow::on_comboBox_competition_activated(int index)
 
 void CompetitionConfigWindow::on_comboBox_classification_activated(int index)
 {
-    if(index > 0)
+    if(index > 0 && seasonCompetition && simulationSave && simulationSave->getActualSeason() && simulationSave->getActualSeason()->getActualCalendar())
     {
-        index--; //Nie liczymy pierwszego item'a - "Według klasyfikacji"
+        index--; // First entry is the placeholder.
         int type = seasonCompetition->getRulesPointer()->getCompetitionType();
-        Classification * classification = Classification::getSpecificTypeClassifications(simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference(), type).at(index);
+        const auto choices=Classification::getSpecificTypeClassifications(simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference(),type);
+        if(index<0 || index>=choices.size() || !choices[index] || choices[index]->getRankedResults().isEmpty())return;
+        Classification *classification=choices[index];
         if(type == CompetitionRules::Individual)
         {
             IndividualCompetitionManager::setStartListOrderByClassification(seasonCompetitionJumpers, classification);

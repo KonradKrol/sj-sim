@@ -275,6 +275,16 @@ static void simulationV2SeasonCreationRegressions(MainWindow &main)
     Season empty;empty.setSeasonNumber(2025);save->getSeasonsReference().append(empty);save->setActualSeason(&save->getSeasonsReference().first());save->updateNextCompetitionIndex();
     {
         SaveJumpersList firstRoster("First"),secondRoster("Calendar roster");firstRoster.setJumpers(save->getJumpersReference().mid(0,4));secondRoster.setJumpers(save->getJumpersReference().mid(4,4));save->setJumpersLists({firstRoster,secondRoster});save->setActiveJumpersListId(firstRoster.getId());calendar->setJumpersListId(secondRoster.getId());
+        {
+            auto *emptyClass=new Classification("Empty ranking");emptyClass->setClassificationType(Classification::Individual);calendar->getClassificationsReference().append(emptyClass);
+            CompetitionConfigWindow setup(CompetitionConfigWindow::SeasonCompetition,&main,save.get());
+            const auto original=setup.getSeasonCompetitionJumpers();
+            check(QMetaObject::invokeMethod(&setup,"on_comboBox_classification_activated",Qt::DirectConnection,Q_ARG(int,1)),"empty classification selection invokes the normal handler");
+            check(setup.getSeasonCompetitionJumpers()==original,"an unplayed classification leaves the start order unchanged");
+            check(QMetaObject::invokeMethod(&setup,"on_comboBox_classification_activated",Qt::DirectConnection,Q_ARG(int,999)),"stale classification index is safely ignored");
+            setup.reject();calendar->getClassificationsReference().removeAll(emptyClass);delete emptyClass;
+        }
+        save->setActiveJumpersListId(firstRoster.getId());
         calendar->setJumpersListId(QUuid::createUuid().toString(QUuid::WithoutBraces));
         {
             CompetitionConfigWindow stale(CompetitionConfigWindow::SeasonCompetition,&main,save.get());
