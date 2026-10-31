@@ -18,15 +18,15 @@ void Team::arrangeSquad(int count,double variation,double k)
     const SimulationV2::QualityModel quality;
     QHash<Jumper *,double> rating;
     for(auto *jumper:jumpers){
-        if(!jumper || !jumper->getSimulationProfile())return;
-        const auto &profile=*jumper->getSimulationProfile();
-        SimulationV2::Athlete athlete;athlete.overall=profile.overall;athlete.form=profile.form;
+        if(!jumper)return;
+        const auto profile=jumper->getSimulationProfile();if(!profile)return;
+        SimulationV2::Athlete athlete;athlete.overall=profile->overall;athlete.form=profile->form;
         rating.insert(jumper,quality.baseline(athlete,std::max(1.,k),0.,SimulationV2::EventKind::Competition).overallAndForm
             +(QRandomGenerator::global()->generateDouble()*2-1)*std::clamp(variation,0.,10.));
     }
     auto ranked=jumpers;
     std::stable_sort(ranked.begin(),ranked.end(),[&](auto *a,auto *b){return rating[a]>rating[b];});
-    const int size=std::min(count,ranked.size());QVector<Jumper *> ordered;
+    const int size=std::min(count,int(ranked.size()));QVector<Jumper *> ordered;
     if(size>2)ordered.append(ranked[size/2]);
     for(int rank=size-1;rank>=0;--rank)if(size<=2 || rank!=size/2)ordered.append(ranked[rank]);
     for(int i=size;i<ranked.size();++i)ordered.append(ranked[i]);
@@ -53,7 +53,7 @@ QVector<Team> Team::constructTeamsVectorByJumpersList(const QVector<Jumper *> &j
         teams[index].getJumpersReference().append(jumper);
     }
     teams.erase(std::remove_if(teams.begin(),teams.end(),[&](const Team &team){return team.getJumpers().size()<minCount;}),teams.end());
-    for(auto &team:teams){auto &members=team.getJumpersReference();std::reverse(members.begin(),members.end());std::reverse(members.begin(),members.begin()+std::clamp(minCount,0,members.size()));}
+    for(auto &team:teams){auto &members=team.getJumpersReference();std::reverse(members.begin(),members.end());std::reverse(members.begin(),members.begin()+std::clamp(minCount,0,int(members.size())));}
     return teams;
 }
 
