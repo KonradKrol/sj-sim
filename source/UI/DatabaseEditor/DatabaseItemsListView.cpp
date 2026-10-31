@@ -378,7 +378,6 @@ void DatabaseItemsListView::onInsertActionTriggered()
             case JumpersListsItems:{
                 JumpersListsListModel * model = dynamic_cast<JumpersListsListModel *>(listModel);
                 model->insertRows(rowToInsert, 1);
-                model->getJumpersLists()->insert(rowToInsert, 1, SaveJumpersList("Jumpers List"));
                 emit model->dataChanged(model->index(rowToInsert), model->index(model->rowCount() - 1));
                 break;
             }
@@ -482,9 +481,8 @@ void DatabaseItemsListView::onRemoveActionTriggered()
                 while(ui->listView->selectionModel()->selectedRows().size() > 0){
                     int rowToRemove = ui->listView->selectionModel()->selectedRows().first().row();
                     model->removeRows(rowToRemove, 1);
-                    model->getJumpersLists()->remove(rowToRemove, 1);
                 }
-                emit model->dataChanged(model->index(firstRow), model->index(model->rowCount() - 1));
+                if(model->rowCount()>0)emit model->dataChanged(model->index(0),model->index(model->rowCount()-1));
                 break;
             }
             case CalendarItems:

@@ -16,12 +16,12 @@ int JumpersListsListModel::rowCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
 
-    return jumpersLists->count();
+    return jumpersLists?jumpersLists->count():0;
 }
 
 QVariant JumpersListsListModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!jumpersLists || !index.isValid() || index.row()<0 || index.row()>=jumpersLists->size())
         return QVariant();
 
     if(role == Qt::DisplayRole){
@@ -54,16 +54,18 @@ QVariant JumpersListsListModel::data(const QModelIndex &index, int role) const
 
 bool JumpersListsListModel::insertRows(int row, int count, const QModelIndex &parent)
 {
+    if(!jumpersLists || parent.isValid() || row<0 || row>jumpersLists->size() || count<1)return false;
     beginInsertRows(parent, row, row + count - 1);
-    // FIXME: Implement me!
+    for(int i=0;i<count;++i)jumpersLists->insert(row+i,SaveJumpersList(tr("Nowa lista")));
     endInsertRows();
     return true;
 }
 
 bool JumpersListsListModel::removeRows(int row, int count, const QModelIndex &parent)
 {
+    if(!jumpersLists || parent.isValid() || row<0 || count<1 || row>jumpersLists->size() || count>jumpersLists->size()-row)return false;
     beginRemoveRows(parent, row, row + count - 1);
-    // FIXME: Implement me!
+    jumpersLists->remove(row,count);
     endRemoveRows();
     return true;
 }
@@ -75,5 +77,6 @@ QVector<SaveJumpersList> *JumpersListsListModel::getJumpersLists() const
 
 void JumpersListsListModel::setJumpersLists(QVector<SaveJumpersList> *newJumpersLists)
 {
-    jumpersLists = newJumpersLists;
+    if(jumpersLists==newJumpersLists)return;
+    beginResetModel();jumpersLists = newJumpersLists;endResetModel();
 }
