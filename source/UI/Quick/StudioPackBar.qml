@@ -25,7 +25,10 @@ ColumnLayout {
         objectName: "studioPackSettings"
         parent: Overlay.overlay; anchors.centerIn: parent
         width: Math.min(Theme.dp(560),parent.width-24)
-        height: Math.min(body.implicitHeight+padding*2,parent.height-24)
+        property real measuredHeight: Theme.dp(300)
+        height: Math.min(measuredHeight,parent.height-24)
+        Timer { id: measurePack; interval: 0; onTriggered: settings.measuredHeight=Math.ceil(body.implicitHeight+settings.padding*2) }
+        Component.onCompleted: measurePack.restart()
         padding: Theme.dp(18); modal: true; focus: true
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
         onOpened: packName.text=bar.backend.packName
@@ -36,6 +39,7 @@ ColumnLayout {
             ColumnLayout {
                 id: body
                 width: content.availableWidth; spacing: Theme.dp(12)
+                onImplicitHeightChanged: measurePack.restart()
                 Label { text: qsTr("Ustawienia paczki"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 Label { text: qsTr("Zmiany dotyczą wybranej paczki. Zapisują się od razu; istniejące sezony mają własne dane."); color: Theme.muted; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 Label { text: qsTr("Nazwa paczki"); color: Theme.ink; font.pointSize: Theme.body; Layout.fillWidth: true }
