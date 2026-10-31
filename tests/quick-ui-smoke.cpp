@@ -930,7 +930,9 @@ static void appearanceRegressions(MainWindow &main) {
 }
 
 static void authorRegressions(MainWindow &main) {
-    main.show();main.resize(1240,900);QTest::qWait(120);clickControl(scene(&main),"openAuthor");QTest::qWait(150);
+    main.show();main.resize(1240,900);QTest::qWait(120);
+    if(auto *bridge=main.findChild<QuickBridge *>()){bridge->launch("dismissWelcome");QTest::qWait(500);}
+    clickControl(scene(&main),"openAuthor");QTest::qWait(150);
     auto *dialog=main.findChild<AuthorWindow *>();auto *navigation=main.findChild<QuickUi *>();
     check(dialog && dialog->isVisible() && dialog->property("sjQuickPage").toBool() && !QApplication::activeModalWidget(),"author opens from home as a regular navigation page");
     auto *bridge=dialog->findChild<QuickBridge *>();check(navigation->current()==bridge,"author page uses shared navigation");
