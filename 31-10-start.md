@@ -68,3 +68,9 @@ z zasadami „Classical KO” pokazuje 0 zawodników zamiast zakwalifikowanego s
 i gotowych grup KO. Błąd blokujący konkurs. Odtworzyć na prywatnym fixture,
 sprawdzić filtrowanie awansu, tożsamość skoczków, limit kwalifikacji i kolejność
 przygotowania grup. Nie testować na rzeczywistym zapisie użytkownika.
+
+- Kolejny drobiazg: w tabeli klasyfikacji z wyłącznie całkowitymi wynikami
+  nie pokazywać części dziesiętnej (10 zamiast 10,0); zachować ułamki, gdy są.
+
+- Usunąć całkowicie ważność skoków z edytora zasad konkursu, wraz z etykietami
+  i powiązanymi kontrolkami/presetami; nie ograniczać do edytora kalendarza.
