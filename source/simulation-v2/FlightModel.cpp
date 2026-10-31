@@ -43,6 +43,7 @@ void FlightParameters::validate() const
     bound(stepMetres,.05,5,"Integration step out of range");
     bound(secondsPerK,.1,30,"Flight time scale out of range");
     bound(windReservePerMetre,0,1,"Wind effect out of range");bound(crosswindDrag,0,1,"Crosswind drag out of range");
+    bound(specialistWindEffectPerTier,0,.25,"Specialist wind effect out of range");
     bound(windVariabilityScale,.1,100,"Wind variability scale out of range");
     for(double v:{windHeadSpread,windTailSpread,windCrossSpread})bound(v,0,1,"Wind spread out of range");
     bound(windHeadSaturation,0,100,"Headwind saturation out of range");
@@ -84,13 +85,14 @@ double FlightModel::reserve(double quality,const Hill &hill,int gate,double prec
     return std::clamp((distance+gateEffect)*(1-loss),0.0,1000000.0);
 }
 
-FlightResult FlightModel::fly(double initialReserve,const Hill &hill,const WeatherField &weather,double startSeconds,bool capture,WindResponseSample reaction) const
+FlightResult FlightModel::fly(double initialReserve,const Hill &hill,const WeatherField &weather,double startSeconds,bool capture,WindResponseSample reaction,int specialist) const
 {
     hill.validate();bound(initialReserve,0,1000000,"Flight reserve out of range");
     bound(startSeconds,0,1e12-100000,"Flight start time out of range");
     bound(reaction.variation,-1,1,"Wind response variation out of range");
     bound(reaction.adverseQuantile,0,1,"Wind response quantile out of range");
     bound(reaction.severity,0,1,"Wind response severity out of range");
+    if(specialist< -4 || specialist>4)throw std::invalid_argument("Specialist perk out of range");
     FlightResult result;result.reserve=initialReserve;result.windResponse=reaction;
     const double limit=landingLimit(hill), geometryStart=hill.realHs*config.geometryStartRealHs;
     const double sectionWidth=hill.k/config.exposureSections;
@@ -136,7 +138,7 @@ FlightResult FlightModel::fly(double initialReserve,const Hill &hill,const Weath
                 ? head/std::hypot(1.0,head/config.windHeadSaturation):head;
             const double spread=head>=0?config.windHeadSpread:config.windTailSpread;
             const double assistance=std::min(config.maximumWindAssistance*terrain,
-                config.windReservePerMetre*effectiveHead*sensitivity*(1+spread*activation(std::abs(head))*reaction.variation));
+                config.windReservePerMetre*(1+specialist*config.specialistWindEffectPerTier)*effectiveHead*sensitivity*(1+spread*activation(std::abs(head))*reaction.variation));
             const auto adverse=[&](double speed,double chance,double loss) {
                 const double r=std::pow(speed/config.windAdverseOnset,config.windAdverseExponent);
                 const double probability=chance*r/(1+r);

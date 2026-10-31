@@ -894,8 +894,8 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
         </message>
         <message>
             <location filename="../source/UI/Quick/AthletePerkCatalog.qml" line="8" />
-            <source>Zyskuje wraz z K skoczni. Traci na mniejszych obiektach.</source>
-            <translation>Zlepšuje se s rostoucím bodem K. Na menších můstcích ztrácí.</translation>
+            <source>Zyskuje na dużych skoczniach. Lepiej wykorzystuje wiatr pod narty, gorzej radzi sobie z wiatrem w plecy.</source>
+            <translation>Na velkých můstcích získává. Lépe využívá protivítr, ale hůře zvládá vítr do zad.</translation>
         </message>
         <message>
             <location filename="../source/UI/Quick/AthletePerkCatalog.qml" line="9" />
@@ -904,8 +904,8 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
         </message>
         <message>
             <location filename="../source/UI/Quick/AthletePerkCatalog.qml" line="9" />
-            <source>Zyskuje na mniejszych K. Traci na większych obiektach.</source>
-            <translation>Daří se mu na můstcích s menším bodem K. Na větších ztrácí.</translation>
+            <source>Zyskuje na małych skoczniach. Lepiej radzi sobie z wiatrem w plecy, słabiej wykorzystuje wiatr pod narty.</source>
+            <translation>Na malých můstcích získává. Lépe zvládá vítr do zad, ale méně využívá protivítr.</translation>
         </message>
         <message>
             <location filename="../source/UI/Quick/AthletePerkCatalog.qml" line="10" />
@@ -9956,6 +9956,8 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
     </context>
     <context>
         <name>QObject</name>
+        <message><source>Wpływ specjalizacji na wiatr</source><translation>Vliv specializace na vítr</translation></message>
+        <message><source>Zmiana wpływu wiatru za każdy poziom specjalizacji. Np. 0,04 oznacza 4% więcej dla lotnika i 4% mniej dla specjalisty małych skoczni.</source><translation>Změna vlivu větru za každou úroveň specializace. Například 0,04 znamená o 4 % více pro letce a o 4 % méně pro specialistu na malé můstky.</translation></message>
         <message>
             <location filename="../source/athletes/AthleteProfile.cpp" line="19" />
             <source>Nieprawidłowy identyfikator skoczka.</source>

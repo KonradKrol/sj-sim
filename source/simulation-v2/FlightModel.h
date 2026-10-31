@@ -28,6 +28,7 @@ struct FlightParameters {
     double stepMetres=1;
     double secondsPerK=4; // time coordinate only; no trajectory/speed simulation
     double windReservePerMetre=.055;
+    double specialistWindEffectPerTier=.04;
     double crosswindDrag=.002;
     double windVariabilityScale=3; // m/s: half activation of random spread
     double windHeadSpread=.6;
@@ -82,7 +83,7 @@ public:
     double reserve(double quality, const Hill &, int gate, double precipitation, double initialHeadwind,
                    PrecipitationKind = PrecipitationKind::Snow) const;
     double landingLimit(const Hill &) const;
-    FlightResult fly(double reserve, const Hill &, const WeatherField &, double startSeconds, bool captureExposure=true, WindResponseSample response={}) const;
+    FlightResult fly(double reserve, const Hill &, const WeatherField &, double startSeconds, bool captureExposure=true, WindResponseSample response={}, int specialist=0) const;
     const FlightParameters &parameters() const { return config; }
 private:
     FlightParameters config;

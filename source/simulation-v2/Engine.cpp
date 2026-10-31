@@ -22,7 +22,7 @@ double precipitation(const JumpRequest &input,const WeatherField &weather)
 
 FlightResult manipulatedFlight(const JumpRequest &input,const FlightModel &model,const WeatherField &weather,double reserve,bool &limited,WindResponseSample response={})
 {
-    auto flight=model.fly(reserve,input.hill,weather,input.startSeconds,input.captureExposure,response);
+    auto flight=model.fly(reserve,input.hill,weather,input.startSeconds,input.captureExposure,response,input.athlete.perks[1]);
     if(!input.manipulation.distance.active())return flight;
     const double desired=input.manipulation.distance.apply(flight.distance);
     // A requested result is realised by adjusting starting reserve and flying
@@ -35,9 +35,9 @@ FlightResult manipulatedFlight(const JumpRequest &input,const FlightModel &model
     double lo=0,hi=1000000;
     for(int i=0;i<36;++i) {
         const double mid=(lo+hi)/2;
-        if(model.fly(mid,input.hill,weather,input.startSeconds,false,response).distance<target)lo=mid;else hi=mid;
+        if(model.fly(mid,input.hill,weather,input.startSeconds,false,response,input.athlete.perks[1]).distance<target)lo=mid;else hi=mid;
     }
-    return model.fly((lo+hi)/2,input.hill,weather,input.startSeconds,input.captureExposure,response);
+    return model.fly((lo+hi)/2,input.hill,weather,input.startSeconds,input.captureExposure,response,input.athlete.perks[1]);
 }
 }
 

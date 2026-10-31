@@ -47,6 +47,19 @@ int main()
         ConstantWeather head,tail,cross;head.value={2,0};tail.value={-2,0};cross.value={0,2};
         check(engine.previewDistance(request,head)>preview && engine.previewDistance(request,tail)<preview,"wind signs affect flight");
         check(engine.previewDistance(request,cross)<=preview,"side wind does not act as headwind");
+        {
+            JumpRequest flier=request,smallHill=request;flier.hill.k=smallHill.hill.k=110;
+            flier.athlete.perks[1]=4;smallHill.athlete.perks[1]=-4;
+            near(engine.previewDistance(flier,calm),engine.previewDistance(smallHill,calm),1e-9,"opposing specialists have identical calm baseline at K110");
+            const auto flierHead=engine.previewDistance(flier,head),smallHead=engine.previewDistance(smallHill,head);
+            const auto flierTail=engine.previewDistance(flier,tail),smallTail=engine.previewDistance(smallHill,tail);
+            check(flierHead>smallHead && flierTail<smallTail,"flier benefits more from headwind and loses more to tailwind");
+            check(flierHead-smallHead<8 && smallTail-flierTail<8,"specialist wind advantage remains modest");
+            EngineParameters disabled;disabled.flight.specialistWindEffectPerTier=0;Engine withoutEffect(disabled);
+            near(withoutEffect.previewDistance(flier,head),withoutEffect.previewDistance(smallHill,head),1e-9,"specialist wind effect can be disabled independently");
+            SeededRandom sameA(987),sameB(987);const auto runA=engine.simulate(flier,sameA,head,measurement),runB=engine.simulate(smallHill,sameB,head,measurement);
+            check(runA.flight.distance>runB.flight.distance,"full simulation uses the same specialist effect as the preview");
+        }
         calm.precip=10;const auto snowy=engine.previewDistance(request,calm);check(snowy<preview,"snow worsens jump");
         calm.kind=PrecipitationKind::Rain;const auto rainy=engine.previewDistance(request,calm);
         check(rainy<snowy && rainy<preview,"maximum rain can be substantially more damaging than snowfall");

@@ -894,8 +894,8 @@ But to keep you from getting too cheerful, your computer has been infected with 
         </message>
         <message>
             <location filename="../source/UI/Quick/AthletePerkCatalog.qml" line="8" />
-            <source>Zyskuje wraz z K skoczni. Traci na mniejszych obiektach.</source>
-            <translation>Improves as hill K-point increases. Loses out on smaller hills.</translation>
+            <source>Zyskuje na dużych skoczniach. Lepiej wykorzystuje wiatr pod narty, gorzej radzi sobie z wiatrem w plecy.</source>
+            <translation>Benefits on larger hills. Makes better use of headwinds but struggles more with tailwinds.</translation>
         </message>
         <message>
             <location filename="../source/UI/Quick/AthletePerkCatalog.qml" line="9" />
@@ -904,8 +904,8 @@ But to keep you from getting too cheerful, your computer has been infected with 
         </message>
         <message>
             <location filename="../source/UI/Quick/AthletePerkCatalog.qml" line="9" />
-            <source>Zyskuje na mniejszych K. Traci na większych obiektach.</source>
-            <translation>Benefits from smaller K-points. Loses out on larger hills.</translation>
+            <source>Zyskuje na małych skoczniach. Lepiej radzi sobie z wiatrem w plecy, słabiej wykorzystuje wiatr pod narty.</source>
+            <translation>Benefits on smaller hills. Handles tailwinds better but makes less use of headwinds.</translation>
         </message>
         <message>
             <location filename="../source/UI/Quick/AthletePerkCatalog.qml" line="10" />
@@ -9955,6 +9955,8 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
     </context>
     <context>
         <name>QObject</name>
+        <message><source>Wpływ specjalizacji na wiatr</source><translation>Wind response by specialization</translation></message>
+        <message><source>Zmiana wpływu wiatru za każdy poziom specjalizacji. Np. 0,04 oznacza 4% więcej dla lotnika i 4% mniej dla specjalisty małych skoczni.</source><translation>Change in wind effect per specialization level. For example, 0.04 means 4% more for a flier and 4% less for a small-hill specialist.</translation></message>
         <message>
             <location filename="../source/simulator/Characteristic.cpp" line="88" />
             <source>Wysoko wychodzi z progu</source>
