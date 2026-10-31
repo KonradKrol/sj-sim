@@ -15,7 +15,7 @@ Pane {
     padding: Theme.dp(compressed ? 5 : 8)
     background: Rectangle { color: Theme.surface; Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: Theme.divider } }
     contentItem: GridLayout {
-        columns: bar.width < 760 ? 1 : 2
+        columns: bar.width < 760 && !bar.compressed ? 1 : 2
         columnSpacing: Theme.dp(16); rowSpacing: Theme.dp(5)
         RowLayout {
             Layout.fillWidth: true

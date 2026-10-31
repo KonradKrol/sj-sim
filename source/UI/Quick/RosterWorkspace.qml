@@ -15,7 +15,7 @@ Item {
     implicitHeight: 580
     ColumnLayout {
         anchors.fill: parent
-        spacing: 10
+        spacing: roster.compact ? Theme.dp(6) : 10
         RowLayout {
             visible: !!roster.fields.nameField
             Layout.fillWidth: true

@@ -31,6 +31,7 @@ ListView {
             anchors.fill: parent; anchors.margins: Theme.dp(6); spacing: Theme.dp(7)
             SavedRosterGrip { backend: list.backend; athlete: row.model; selected: list.selected; Layout.preferredWidth: Theme.dp(24); Layout.preferredHeight: Theme.dp(28) }
             SCheck {
+                objectName: (list.selected ? "rosterSelectedMark-" : "rosterCandidateMark-")+row.model.athleteId
                 text: ""; checked: row.marked
                 enabled: list.selected || !row.chosen
                 Accessible.name: row.model.athleteName
@@ -41,6 +42,7 @@ ListView {
             Label { text: row.model.athleteName; color: !list.selected && row.chosen ? Theme.muted : Theme.ink; font.pointSize: Theme.body; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
             Label { text: row.model.countryCode; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption }
             SButton {
+                objectName: (list.selected ? "rosterRemove-" : "rosterInclude-")+row.model.athleteId
                 text: list.selected ? "−" : row.chosen ? "✓" : "+"
                 enabled: list.selected || !row.chosen; quiet: true
                 Layout.preferredWidth: Math.max(28,Theme.dp(30)); Layout.minimumWidth: 0; Layout.preferredHeight: row.height-Theme.dp(12); Layout.minimumHeight: 0

@@ -10,12 +10,13 @@ Item {
     property var backend: fields.backend
     property bool inlineEditor: false
     readonly property bool narrow: width < Theme.dp(760)
+    readonly property bool dense: inlineEditor && height < Theme.dp(500)
     property bool showLibrary: true
     property bool limitsOpen: false
     implicitHeight: 580
     ColumnLayout {
         anchors.fill: parent
-        spacing: Theme.dp(12)
+        spacing: workspace.dense ? Theme.dp(4) : Theme.dp(12)
         RowLayout {
             visible: !workspace.inlineEditor
             Layout.fillWidth: true
@@ -27,17 +28,19 @@ Item {
             Layout.fillWidth: true
             SectionTabs {
                 Layout.fillWidth: true; Layout.minimumWidth: 0
+                dense: workspace.dense
                 optionNamePrefix: "savedRosterView-"
                 options: [qsTr("Według krajów"), qsTr("Kolejność")]
                 currentIndex: workspace.backend.grouped ? 0 : 1
                 onSelected: workspace.backend.grouped = index === 0
             }
-            SButton { visible: workspace.inlineEditor; text: qsTr("Cofnij"); enabled: workspace.backend.canUndo; quiet: true; onClicked: workspace.backend.undo() }
-            SButton { objectName: "rosterLimitsToggle"; text: qsTr("Limity krajów"); primary: workspace.limitsOpen; onClicked: workspace.limitsOpen = !workspace.limitsOpen }
+            SButton { visible: workspace.inlineEditor && workspace.backend.canUndo; dense: workspace.dense; text: qsTr("Cofnij"); enabled: workspace.backend.canUndo; quiet: true; onClicked: workspace.backend.undo() }
+            SButton { dense: workspace.dense; objectName: "rosterLimitsToggle"; text: qsTr("Limity krajów"); primary: workspace.limitsOpen; onClicked: workspace.limitsOpen = !workspace.limitsOpen }
         }
         RosterLimits { visible: workspace.limitsOpen; backend: workspace.backend; Layout.fillWidth: true; listHeight: Math.min(Theme.dp(150), workspace.height * 0.25) }
         SectionTabs {
             visible: workspace.narrow
+            dense: workspace.dense
             Layout.fillWidth: true
             options: [qsTr("Wszyscy"), qsTr("Wybrani (%1)").arg(workspace.backend.count)]
             currentIndex: workspace.showLibrary ? 0 : 1
@@ -48,12 +51,12 @@ Item {
             spacing: Theme.dp(12)
             SavedRosterPane {
                 visible: !workspace.narrow || workspace.showLibrary
-                backend: workspace.backend
+                backend: workspace.backend; compact: workspace.dense
                 Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; Layout.minimumWidth: 0
             }
             SavedRosterPane {
                 visible: !workspace.narrow || !workspace.showLibrary
-                backend: workspace.backend; selected: true
+                backend: workspace.backend; selected: true; compact: workspace.dense
                 Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; Layout.minimumWidth: 0
             }
         }

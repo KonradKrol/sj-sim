@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 
 Button {
     id: control
+    property bool dense: false
     property bool primary: false
     property bool quiet: false
     property bool inverse: false
@@ -11,9 +12,9 @@ Button {
     property bool helpRequested: false
     readonly property bool hintVisible: hint.length>0 && !down && (helpRequested || hovered && !hintSuppressed)
     property color foreground: primary ? Theme.accentText : inverse ? Theme.snow : Theme.ink
-    implicitHeight: Math.max(primary ? (Theme.compact ? 30 : 48) : (Theme.compact ? 26 : 40), label.implicitHeight + (Theme.compact ? 4 : 16))
+    implicitHeight: dense ? Math.max(28,label.implicitHeight+8) : Math.max(primary ? (Theme.compact ? 30 : 48) : (Theme.compact ? 26 : 40), label.implicitHeight + (Theme.compact ? 4 : 16))
     implicitWidth: Math.max(40, label.implicitWidth + (Theme.compact ? 12 : 28))
-    padding: Theme.compact ? 2 : 6
+    padding: dense ? 3 : Theme.compact ? 2 : 6
     hoverEnabled: true
     font.family: primary ? Theme.displayFamily : Theme.bodyFamily
     font.pointSize: primary ? Theme.section : Theme.body

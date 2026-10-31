@@ -6,18 +6,22 @@ Pane {
     id: pane
     property var backend
     property bool selected: false
+    property bool compact: false
     readonly property var rows: selected ? backend.ordered : backend.library
-    padding: Theme.dp(10)
+    padding: Theme.dp(compact ? 4 : 10)
     background: Rectangle { color: pane.selected ? Theme.surface : Theme.raised; radius: Theme.radius; border.color: pane.selected ? Theme.outline : Theme.divider }
     contentItem: ColumnLayout {
-        spacing: Theme.dp(8)
+        spacing: Theme.dp(pane.compact ? 4 : 8)
         RowLayout {
+            visible: !pane.compact
             Layout.fillWidth: true
             Label { text: pane.selected ? qsTr("Wybrani zawodnicy") : qsTr("Wszyscy zawodnicy"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; elide: Text.ElideRight }
             Label { text: pane.selected ? pane.backend.count : pane.backend.library.count; color: Theme.accent; font.family: Theme.mono; font.pointSize: Theme.section }
         }
         SField {
             Layout.fillWidth: true; Layout.minimumWidth: 0
+            implicitHeight: pane.compact ? Math.max(28,contentHeight+8) : Math.max(Theme.controlHeight,contentHeight+18)
+            topPadding: pane.compact ? 4 : 6; bottomPadding: topPadding
             objectName: pane.selected ? "rosterOrderSearch" : "rosterSearch"
             text: pane.selected ? pane.backend.orderQuery : pane.backend.query
             placeholderText: qsTr("Szukaj nazwiska lub kraju")
@@ -31,18 +35,18 @@ Pane {
             Component { id: orderedList; SavedRosterList { backend: pane.backend; selected: pane.selected; grouped: false } }
         }
         GridLayout {
-            visible: !pane.selected || pane.backend.markedCount>0
+            visible: pane.selected ? pane.backend.markedCount>0 : pane.backend.candidateMarkedCount>0 || !pane.compact
             columns: pane.width>=Theme.dp(420) ? 2 : 1
             Layout.fillWidth: true
             SButton {
                 visible: pane.selected || pane.backend.candidateMarkedCount>0
-                Layout.fillWidth: true
+                Layout.fillWidth: true; dense: pane.compact
                 primary: !pane.selected
                 text: pane.selected ? qsTr("Usuń zaznaczonych (%1)").arg(pane.backend.markedCount) : qsTr("Dodaj zaznaczonych (%1)").arg(pane.backend.candidateMarkedCount)
                 enabled: pane.selected ? pane.backend.markedCount>0 : pane.backend.candidateMarkedCount>0
                 onClicked: if(pane.selected)pane.backend.removeMarked();else pane.backend.addMarkedCandidates()
             }
-            SButton { visible: !pane.selected; text: qsTr("Dodaj widocznych"); enabled: pane.rows.count>0; onClicked: pane.backend.addVisible() }
+            SButton { visible: !pane.selected && !pane.compact; text: qsTr("Dodaj widocznych"); enabled: pane.rows.count>0; onClicked: pane.backend.addVisible() }
         }
     }
 }

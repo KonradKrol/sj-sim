@@ -1,16 +1,18 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import QtQuick.Window 2.15
 
 Pane {
     id: footer
+    readonly property bool shortScreen: Window.window && Window.window.height<600
     readonly property var action: ui.find("pushButton_competitionConfig")
     implicitHeight: content.implicitHeight+topPadding+bottomPadding
     padding: Theme.compact ? 4 : 8
     background: Rectangle { color: Theme.surface; border.color: Theme.divider }
     contentItem: GridLayout {
         id: content
-        columns: footer.width<600 ? 1 : 2; rowSpacing: 4; columnSpacing: 16
+        columns: footer.width<600 && !footer.shortScreen ? 1 : 2; rowSpacing: 4; columnSpacing: 16
         RowLayout {
             Layout.fillWidth: true; spacing: 10
             Image { visible: !!ui.context.nextHill; source: ui.context.nextFlag || ""; sourceSize.width: 64; sourceSize.height: 48; Layout.preferredWidth: 32; Layout.preferredHeight: 24; fillMode: Image.PreserveAspectFit }

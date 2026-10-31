@@ -6,14 +6,14 @@ ColumnLayout {
     id: order
     property var backend
     property bool moving: false
-    readonly property bool cramped: height<260
+    readonly property bool cramped: height<280
     property string title: qsTr("Lista startowa")
     function groupInfo(country) {
         var groups = order.backend.countryLimits
         for (var i=0; i<groups.length; ++i) if (groups[i].country === country.trim().toUpperCase()) return groups[i]
         return {count: 0, limit: -1, over: false}
     }
-    spacing: cramped ? 4 : 8
+    spacing: cramped ? 3 : 8
     RowLayout {
         Layout.fillWidth: true
         Label { text: dragArea.dragging ? dragArea.athleteName : qsTr("%1 · %2").arg(order.title).arg(order.backend.count); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; elide: Text.ElideRight }
@@ -21,7 +21,7 @@ ColumnLayout {
     }
     Label { visible: !order.backend.membership; text: qsTr("Przeciągnij zawodnika na innego, aby zamienić miejsca."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     Label { visible: order.backend.grouped; text: qsTr("Ten widok nie zmienia kolejności. Aby przestawić zawodników, wybierz „Kolejność”."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-    SField { objectName: "rosterOrderSearch"; Layout.fillWidth: true; Layout.minimumWidth: 0; text: order.backend.orderQuery; placeholderText: qsTr("Szukaj na liście"); Accessible.name: placeholderText; onTextEdited: order.backend.orderQuery=text }
+    SField { objectName: "rosterOrderSearch"; implicitHeight: Math.max(order.cramped ? Theme.dp(32) : Theme.controlHeight, contentHeight + topPadding + bottomPadding); Layout.fillWidth: true; Layout.minimumWidth: 0; text: order.backend.orderQuery; placeholderText: qsTr("Szukaj na liście"); Accessible.name: placeholderText; onTextEdited: order.backend.orderQuery=text }
     RowLayout {
         visible: order.backend.membership && !order.backend.grouped && order.moving && order.backend.markedCount > 0
         Layout.fillWidth: true

@@ -87,7 +87,7 @@ ColumnLayout {
         Loader {
             visible: active; active: workspace.catalogPage
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
-            Layout.margins: Theme.compact ? 4 : workspace.width < 700 || workspace.height < 600 ? 12 : 20
+            Layout.margins: Theme.compact || (workspace.contentNode.values.kind === "seasonRosters" && workspace.height < 600) ? 4 : workspace.width < 700 || workspace.height < 600 ? 12 : 20
             sourceComponent: workspace.contentNode.values.kind === "seasonRosters" ? rosterCatalog : normalCatalog
             Component { id: rosterCatalog; SeasonRostersWorkspace { node: workspace.contentNode } }
             Component { id: normalCatalog; CatalogWorkspace { node: workspace.contentNode } }
@@ -122,7 +122,7 @@ ColumnLayout {
         sourceComponent: Component { SetupFooter {} }
     }
     Loader {
-        active: workspace.season && ui.root.values.value > 0 && !(workspace.calendarPage && (workspace.width < 700 || workspace.height < 600))
+        active: workspace.season && ui.root.values.value > 0 && !((workspace.calendarPage || (workspace.catalogPage && workspace.contentNode.values.kind === "seasonRosters")) && (workspace.width < 700 || workspace.height < 600))
         Layout.fillWidth: true
         Layout.preferredHeight: active && item ? item.implicitHeight : 0
         sourceComponent: Component { SeasonFooter {} }

@@ -165,9 +165,18 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
     {
         const QString first=manager.createRoster(),second=manager.createRoster();
         check(!first.isEmpty() && !second.isEmpty() && first!=second && save.getJumpersLists().size()==3,"inline roster creation publishes distinct persistent lists");
+        QTest::qWait(150);auto *rosterScene=scene(&manager);
+        check(item(rosterScene->rootObject(),"seasonRostersWorkspace"),"new roster workspace opens inline");
+        presentation(&manager)->grab().save(output+"/season-rosters-inline.png");
+        clickControl(rosterScene,"rosterCreate");QTest::qWait(80);const auto fromUi=manager.editingRosterId();
+        check(!fromUi.isEmpty() && fromUi!=second && save.getJumpersLists().size()==4,"visible new-roster action creates and selects a list");
+        check(manager.removeRoster(fromUi),"UI-created roster can be removed");QTest::qWait(50);
+
         check(manager.renameRoster(first,"Test roster") && manager.selectRoster(first),"inline roster can be renamed and selected by identity");QTest::qWait(50);
         auto *editor=qobject_cast<QuickRoster *>(manager.rosterEditor());check(editor,"inline roster backend exists");
-        editor->include(QuickRoster::key(save.getJumpersReference().first()));
+        const auto candidateName="rosterInclude-"+QuickRoster::key(save.getJumpersReference().first());
+        auto *candidate=item(rosterScene->rootObject(),candidateName);check(candidate && candidate->isVisible(),"candidate action is visible in the inline workspace");
+        clickControl(rosterScene,candidateName);QTest::qWait(60);
         check(manager.selectRoster(second) && manager.selectRoster(first),"switching inline rosters keeps their identities");QTest::qWait(50);
         check(editor->count()==1,"inline roster members survive selection changes");
         check(manager.removeRoster(first) && manager.restoreRoster(),"deleted inline roster can be restored");QTest::qWait(50);

@@ -24,7 +24,7 @@ ColumnLayout {
             required property var modelData
             width: Theme.dp(170); height: ListView.view.height; condensed: true
             title: modelData.name
-            detail: modelData.id==="-1" || !modelData.count ? qsTr("Wszyscy skoczkowie") : qsTr("Skoczkowie: %1").arg(modelData.count)
+            detail: modelData.id==="-1" ? "" : !modelData.count ? qsTr("Wszyscy skoczkowie") : qsTr("Skoczkowie: %1").arg(modelData.count)
             checked: choice.backend.activeRosterId===modelData.id; activeRoster: checked
             objectName: "activeRosterCard-"+modelData.id
             onClicked: choice.backend.selectActiveRoster(modelData.id)

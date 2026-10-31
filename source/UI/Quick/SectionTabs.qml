@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 
 Item {
     id: tabs
+    property bool dense: false
     property var options: []
     property var optionEnabled: []
     property int currentIndex: 0
@@ -59,11 +60,12 @@ Item {
             onItemRemoved: Qt.callLater(tabs.revealCurrent)
             model: tabs.options
             SButton {
+                dense: tabs.dense
                 objectName: tabs.optionNamePrefix.length ? tabs.optionNamePrefix + index : ""
                 text: modelData
                 quiet: true
                 font.family: Theme.displayFamily
-                font.pointSize: Theme.section
+                font.pointSize: tabs.dense ? Theme.body : Theme.section
                 foreground: tabs.currentIndex === index ? Theme.snow : Theme.muted
                 background: Surface {
                     fillColor: tabs.currentIndex===index ? "transparent" : parent.hovered ? Theme.selection : "transparent"

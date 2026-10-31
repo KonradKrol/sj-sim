@@ -8,6 +8,7 @@ AbstractButton {
     property string detail
     property bool activeRoster: false
     property bool condensed: false
+    property bool hideDetail: false
     padding: Theme.dp(10)
     implicitHeight: Math.max(Theme.dp(condensed ? 52 : 68),contentItem.implicitHeight+topPadding+bottomPadding)
     hoverEnabled: true
@@ -21,7 +22,7 @@ AbstractButton {
             Label { text: card.title; color: card.checked ? Theme.snow : Theme.ink; font.pointSize: Theme.body; font.bold: true; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
             Rectangle { visible: card.activeRoster; color: card.checked ? Theme.signal : Theme.success; implicitWidth: Theme.dp(6); implicitHeight: width; radius: width/2; Accessible.ignored: true }
         }
-        Label { text: card.detail; color: card.checked ? Theme.headerMuted : Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; elide: Text.ElideRight }
+        Label { visible: !card.hideDetail && text.length>0; text: card.detail; color: card.checked ? Theme.headerMuted : Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; elide: Text.ElideRight }
     }
     ToolTip.visible: hovered && !down
     ToolTip.text: title
