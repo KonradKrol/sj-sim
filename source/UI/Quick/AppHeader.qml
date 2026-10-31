@@ -27,7 +27,6 @@ Rectangle {
             Label { text: header.home ? "SJ.SIM" : header.page ? header.page.title : ""; color: Theme.ink; font.family: header.home ? Theme.bodyFamily : Theme.displayFamily; font.weight: Font.DemiBold; font.pointSize: header.home ? Theme.body : Theme.title; Layout.fillWidth: true; elide: Text.ElideRight }
         }
         Loader { active: header.competition; visible: active; sourceComponent: Component { RaceViewControls { backend: header.page; wide: header.width>=1100 } } }
-        SButton { visible: header.home && header.width >= 500; text: qsTr("Pomoc"); quiet: true; onClicked: ui.launch("help") }
         SButton { objectName: "appearanceAction"; text: header.smallRace ? "◐" : qsTr("Wygląd"); Accessible.name: qsTr("Wygląd"); Layout.preferredWidth: header.smallRace ? 32 : implicitWidth; quiet: true; onClicked: navigation.showAppearance() }
     }
 }
