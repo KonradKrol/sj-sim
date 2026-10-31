@@ -13,7 +13,7 @@ ColumnLayout {
     ListModel { id: entries }
     function sync() {
         if(pack!==backend.packIndex){pack=backend.packIndex;query=""}
-        var next=backend.profiles.filter(function(p){return (p.label+" "+p.country).toLocaleLowerCase().indexOf(query.toLocaleLowerCase())>=0})
+        var next=backend.profiles.filter(function(p){return typeof p.hs === "number" && isFinite(p.hs) && (p.label+" "+p.country).toLocaleLowerCase().indexOf(query.toLocaleLowerCase())>=0})
         var prefix=0,suffix=0
         while(prefix<entries.count && prefix<next.length && entries.get(prefix).profileId===next[prefix].id)++prefix
         while(suffix<entries.count-prefix && suffix<next.length-prefix && entries.get(entries.count-1-suffix).profileId===next[next.length-1-suffix].id)++suffix
