@@ -291,6 +291,7 @@ static void raceOptionsRegressions(MainWindow &main,CompetitionManagerWindow *wi
 #include "competition-ties-gate-regressions.h"
 #include "roster-performance-regressions.h"
 #include "choice-popup-regressions.h"
+#include "roster-workspace-regressions.h"
 #include "competition-advancement-regressions.h"
 
 static void advanceColorRegressions(MainWindow &main) {
@@ -2583,6 +2584,7 @@ int main(int argc,char **argv) {
         qInfo()<<"PASS: live language switching";return 0;
     }
     if(app.arguments().contains("--roster-performance-only")){rosterPerformanceRegressions();return 0;}
+    if(app.arguments().contains("--roster-workspace-only")){rosterWorkspaceRegressions(main);return 0;}
     if(app.arguments().contains("--choice-popup-only")){choicePopupRegressions(main);return 0;}
     if(app.arguments().contains("--config-defaults-only")){configDefaultsRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-contest-weather-only")){simulationV2ContestWeatherRegressions(main);return 0;}
