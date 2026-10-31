@@ -128,7 +128,7 @@ QStringList QuickCalendar::calendars() const { QStringList result;if(auto *list=
 int QuickCalendar::calendarIndex() const { auto *list=calendarList();return list?list->getCalendars()->indexOf(m_calendar):-1; }
 QVariantList QuickCalendar::rosterChoices() const {
     QVariantList out{QVariantMap{{"id",QString()},{"label",tr("Bez przypisania — użyj aktywnej listy")}}};
-    if(m_save)for(const auto &list:m_save->getJumpersLists())out.append(QVariantMap{{"id",list.getId()},{"label",list.getName()}});
+    if(m_save)for(const auto &list:m_save->getJumpersLists())out.append(QVariantMap{{"id",list.getId()},{"label",list.getJumpers().isEmpty()?tr("%1 (wszyscy)").arg(list.getName()):list.getName()}});
     return out;
 }
 QString QuickCalendar::rosterId() const { return m_calendar?m_calendar->jumpersListId():QString(); }

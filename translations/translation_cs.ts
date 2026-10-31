@@ -15908,6 +15908,7 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <translation>%1 závodů nemá datum. Termíny můžete nastavit pomocí rychlého plánování.</translation>
         </message>
     <message><source>Bez przypisania — użyj aktywnej listy</source><translation>Nepřiřazeno — použít aktivní seznam</translation></message>
+<message><source>%1 (wszyscy)</source><translation>%1 (všichni)</translation></message>
 </context>
     <context>
         <name>QuickPlot</name>
@@ -18166,6 +18167,7 @@ li.checked::marker { content: "\2612"; }
 <message><source>Wybiera zawodników według OVR i formy, z niewielką losowością. Skład możesz później zmienić ręcznie.</source><translation>Vybírá závodníky podle OVR a formy s malou náhodností. Sestavu můžete poté změnit ručně.</translation></message>
 <message><source>Dobieraj belkę przed konkursem</source><translation>Před závodem vyber nájezdové okno</translation></message>
 <message><source>Ustawia sugerowaną belkę dla skoczni, zawodników i warunków. Możesz ją zmienić ręcznie.</source><translation>Nastaví doporučené nájezdové okno podle můstku, závodníků a podmínek. Můžete jej změnit ručně.</translation></message>
+<message><source>%1 (wszyscy)</source><translation>%1 (všichni)</translation></message>
 </context>
     <context>
         <name>SimulationSavesWindow</name>

@@ -15907,6 +15907,7 @@ Check that you selected the correct file.</translation>
             <translation>%1 competitions have no date. Use quick scheduling to set their dates.</translation>
         </message>
     <message><source>Bez przypisania — użyj aktywnej listy</source><translation>Unassigned — use the active roster</translation></message>
+<message><source>%1 (wszyscy)</source><translation>%1 (all athletes)</translation></message>
 </context>
     <context>
         <name>QuickPlot</name>
@@ -18165,6 +18166,7 @@ li.checked::marker { content: "\2612"; }
 <message><source>Wybiera zawodników według OVR i formy, z niewielką losowością. Skład możesz później zmienić ręcznie.</source><translation>Selects athletes by OVR and form, with slight randomness. You can change the squad manually afterwards.</translation></message>
 <message><source>Dobieraj belkę przed konkursem</source><translation>Choose the gate before competitions</translation></message>
 <message><source>Ustawia sugerowaną belkę dla skoczni, zawodników i warunków. Możesz ją zmienić ręcznie.</source><translation>Sets the suggested gate for the hill, athletes and conditions. You can change it manually.</translation></message>
+<message><source>%1 (wszyscy)</source><translation>%1 (all athletes)</translation></message>
 </context>
     <context>
         <name>SimulationSavesWindow</name>

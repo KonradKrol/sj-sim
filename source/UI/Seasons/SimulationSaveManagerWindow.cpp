@@ -413,6 +413,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
             markSeasonChanged();
             jumpersListsListView->setupListModel();
             emit jumpersListsListView->getListModel()->dataChanged(jumpersListsListView->getListModel()->index(0), jumpersListsListView->getListModel()->index(jumpersListsListView->getListModel()->rowCount() - 1));
+            rosterNoticeText.clear();lastActiveRosterId=activeRosterId();
             emit rosterChoicesChanged();
         }
     });
@@ -586,7 +587,7 @@ QVariantList SimulationSaveManagerWindow::rosterChoices() const
     QVariantList choices;
     choices.append(QVariantMap{{"id",QStringLiteral("-1")},{"label",tr("Wszyscy zawodnicy (%1)").arg(simulationSave->getJumpersReference().size())}});
     for(const auto &list:simulationSave->getJumpersListsReference())
-        choices.append(QVariantMap{{"id",list.getId()},{"label",QStringLiteral("%1 (%2)").arg(list.getName()).arg(list.getJumpers().size())}});
+        choices.append(QVariantMap{{"id",list.getId()},{"label",list.getJumpers().isEmpty()?tr("%1 (wszyscy)").arg(list.getName()):QStringLiteral("%1 (%2)").arg(list.getName()).arg(list.getJumpers().size())}});
     return choices;
 }
 
