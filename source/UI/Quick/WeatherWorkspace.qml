@@ -68,13 +68,15 @@ ScrollView {
                     spacing: Theme.dp(7)
                     WindSlopePreview {
                         id: windGraph
+                        objectName: "weatherSlopePreview"
                         Layout.fillWidth: true
-                        samples: workspace.tuning || selectedStation>=0 ? workspace.backend.basePreview : workspace.backend.preview
+                        // The diagram always shows the editable starting field. Switching to
+                        // an instantaneous gust when leaving the editor made every arrow jump.
+                        samples: workspace.backend.basePreview
                         backend: workspace.backend
-                        heading: workspace.tuning || selectedStation>=0 ? qsTr("Ustawienia wyjściowe") : workspace.scenarioName
+                        heading: workspace.scenarioName
                         onSelectedStationChanged: if(selectedStation>=0)workspace.tuning=false
                     }
-                    Label { visible: workspace.tuning || windGraph.selectedStation>=0; text: qsTr("Podgląd ustawień bez chwilowych podmuchów."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                     Label { text: workspace.variabilityText; color: Theme.muted; font.pointSize: Theme.body; wrapMode: Text.WordWrap; Layout.fillWidth: true }
                     SButton { objectName: "weatherTuningToggle"; text: workspace.tuning ? qsTr("Ukryj dostosowanie") : qsTr("Dostosuj wiatr"); primary: true; enabled: workspace.values.ready; onClicked: {workspace.forceActiveFocus();if(!workspace.tuning)windGraph.selectedStation=-1;workspace.tuning=!workspace.tuning} }
                     Loader {

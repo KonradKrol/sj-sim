@@ -63,7 +63,10 @@ static void simulationV2SetupRegressions(MainWindow &main) {
     clickControl(scene(&window),"weatherPresetsToggle");
     render(&window,"simulation-v2-weather",true);
     check(window.getWeatherSetup()->values()["seed"]==selectedSeed,"screen renders never reroll selected weather");
+    auto *slopePreview=item(scene(&window)->rootObject(),"weatherSlopePreview");check(slopePreview,"the wind diagram exposes its displayed values");
+    const QVariantList beforeEditing=slopePreview->property("samples").toList();
     main.resize(1024,640);QTest::qWait(100);clickControl(scene(&window),"weatherTuningToggle");QTest::qWait(50);
+    check(slopePreview->property("samples").toList()==beforeEditing,"opening wind customization does not change the displayed field");
     check(item(scene(&window)->rootObject(),"weatherDirection"),"customization is optional and reveals the four simple controls");
     window.getWeatherSetup()->setValue("direction",37);auto *direction=item(scene(&window)->rootObject(),"weatherDirection");direction->forceActiveFocus();QTest::keyClick(scene(&window),Qt::Key_Right);
     check(std::abs(window.getWeatherSetup()->values()["direction"].toDouble()-38)<.01,"direction dial supports one-degree keyboard changes rather than four rigid directions");
@@ -97,6 +100,7 @@ static void simulationV2SetupRegressions(MainWindow &main) {
     if(std::abs(window.getWeatherSetup()->values()["direction"].toDouble()-90)>=1){qInfo()<<"DIAL DRAG"<<window.getWeatherSetup()->values()["direction"]<<directionPointer->mapRectToScene(directionPointer->boundingRect())<<scene(&window)->size();main.grab().save("/tmp/sj-wind-drag-failure.png");}
     check(std::abs(window.getWeatherSetup()->values()["direction"].toDouble()-90)<1,"direction dragging keeps its grab after moving outside the dial and never scrolls the page instead");
     clickControl(scene(&window),"windStation-3");QTest::qWait(30);
+    check(slopePreview->property("samples").toList()==window.getWeatherSetup()->basePreview(),"opening one wind station retains the same starting field");
     check(item(scene(&window)->rootObject(),"weather-station-strength") && !item(scene(&window)->rootObject(),"weatherLocalToggle"),"local editing opens directly inside the main slope without a separate point form");
     QMetaObject::invokeMethod(item(scene(&window)->rootObject(),"weather-station-strength"),"committed",Q_ARG(double,2.4));
     check(std::abs(window.getWeatherSetup()->station(3)["strength"].toDouble()-2.4)<1e-8 && window.getWeatherSetup()->references().size()==6,"station UI edits the actual field while keeping exactly six simple controls");
