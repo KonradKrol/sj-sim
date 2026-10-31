@@ -83,7 +83,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         seasonCompetition = simulationSave->getNextCompetition();
     if(type==SeasonCompetition && SimulationSave::activeRosterFeatureEnabled()) {
         const auto id=simulationSave->getActualSeason()->getActualCalendar()->jumpersListId();
-        if(!id.isEmpty() && !simulationSave->setActiveJumpersListId(id))simulationSave->setActiveJumpersListId(QString());
+        if(!id.isEmpty() && !simulationSave->setActiveJumpersListId(id))simulationSave->getActualSeason()->getActualCalendar()->setJumpersListId(QString());
     }
     ui->spinBox_dsqProbability->setValue(GlobalSimulationSettings::get()->getBaseDsqProbability());
     delete ui->page_2;

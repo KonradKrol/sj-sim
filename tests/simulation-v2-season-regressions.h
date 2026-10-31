@@ -252,6 +252,30 @@ static void simulationV2SeasonCreationRegressions(MainWindow &main)
     auto *qualification=new CompetitionInfo(save->getHillsReference()[0]);qualification->setRules(qualificationRules);qualification->setSerieType(CompetitionInfo::Qualifications);qualification->setScheduledDate(QDate(2027,1,6));
     calendar->setCompetitions({individual,team,qualification});save->getActualSeason()->setCalendars({calendar});save->getActualSeason()->setActualCalendar(calendar);save->getActualSeason()->setDatesEnabled(true);
     Season empty;empty.setSeasonNumber(2025);save->getSeasonsReference().append(empty);save->setActualSeason(&save->getSeasonsReference().first());save->updateNextCompetitionIndex();
+    {
+        SaveJumpersList firstRoster("First"),secondRoster("Calendar roster");firstRoster.setJumpers(save->getJumpersReference().mid(0,4));secondRoster.setJumpers(save->getJumpersReference().mid(4,4));save->setJumpersLists({firstRoster,secondRoster});save->setActiveJumpersListId(firstRoster.getId());calendar->setJumpersListId(secondRoster.getId());
+        calendar->setJumpersListId(QUuid::createUuid().toString(QUuid::WithoutBraces));
+        {
+            CompetitionConfigWindow stale(CompetitionConfigWindow::SeasonCompetition,&main,save.get());
+            check(stale.getSeasonCompetitionJumpers()==firstRoster.getJumpers() && calendar->jumpersListId().isEmpty(),"a missing calendar roster falls back to the current active list and clears the stale assignment");stale.reject();
+        }
+        calendar->setJumpersListId(secondRoster.getId());
+        {
+            CompetitionConfigWindow setup(CompetitionConfigWindow::SeasonCompetition,&main,save.get());setup.show();QTest::qWait(100);
+            check(setup.getSeasonCompetitionJumpers()==secondRoster.getJumpers() && save->activeJumpersListId()==secondRoster.getId(),"calendar assignment activates its own exact athlete list");
+            auto *bridge=setup.findChild<QuickBridge *>();auto *picker=bridge?bridge->findChild<QuickRoster *>():nullptr;check(picker,"competition roster bridge");picker->applyPreset(0,0);
+            check(setup.getSeasonCompetitionJumpers().size()==8 && calendar->jumpersListId()==secondRoster.getId() && save->activeJumpersListId()==secondRoster.getId(),"manual preparation can add other athletes without changing the calendar assignment");setup.reject();
+        }
+        save->setNextCompetition(team);save->setNextCompetitionIndex(1);
+        {
+            CompetitionConfigWindow setup(CompetitionConfigWindow::SeasonCompetition,&main,save.get());setup.show();QTest::qWait(100);
+            check(setup.getCompetitionTeams().size()==1 && setup.getCompetitionTeams().first().getCountryCode()=="NOR","team preparation uses the calendar roster instead of all season athletes");
+            auto &members=setup.getCompetitionTeamsReference().first().getJumpersReference();std::swap(members[0],members[1]);const auto manual=members;
+            bool asked=false;QTimer answer;answer.setSingleShot(true);QObject::connect(&answer,&QTimer::timeout,&setup,[&]{for(auto *widget:QApplication::topLevelWidgets())if(auto *box=qobject_cast<QMessageBox *>(widget);box && box->isVisible()){asked=true;box->button(QMessageBox::No)->click();return;}});answer.start(50);setup.autoCompleteTeams();answer.stop();
+            check(asked && members==manual,"automatic completion asks before replacing manual squads and cancellation preserves them");setup.reject();
+        }
+        calendar->setJumpersListId(QString());save->setActiveJumpersListId(QString());save->setJumpersLists({});save->updateNextCompetitionIndex();
+    }
     SimulationSaveManagerWindow manager(save.get(),&main);manager.show();QTest::qWait(100);
     const bool oldLive=GlobalAppSettings::get()->getLiveCompetition();GlobalAppSettings::get()->setLiveCompetition(false);
     QTimer dialogs,runner;bool running=false;int phases=0,ticks=0;QSet<CompetitionConfigWindow *> configured;
