@@ -33,13 +33,20 @@ static void rosterWorkspaceRegressions(MainWindow &main) {
         SimulationSave save;save.setName("Inline roster stress");QVector<Jumper *> owned;
         for(const auto &actor:actors)owned.append(new Jumper(actor));save.setJumpers(owned);
         Season season;season.setSeasonNumber(2026);save.setSeasons({season});save.setActualSeason(&save.getSeasonsReference().first());
-        SimulationSaveManagerWindow manager(&save,&main);manager.show();QTest::qWait(100);
+        SimulationSaveManagerWindow manager(&save,&main);manager.show();presentation(&manager)->resize(1440,900);QTest::qWait(100);
         const auto first=manager.createRoster();QTest::qWait(100);auto *inlineRoster=qobject_cast<QuickRoster *>(manager.rosterEditor());check(inlineRoster,"inline stress roster backend");
         inlineRoster->include(QuickRoster::key(owned[0]));inlineRoster->include(QuickRoster::key(owned[1]));QTest::qWait(50);
         QAbstractItemModelTester inlineLibrary(inlineRoster->library(),QAbstractItemModelTester::FailureReportingMode::Fatal),inlineGrouped(inlineRoster->groupedLibrary(),QAbstractItemModelTester::FailureReportingMode::Fatal);
-        for(int i=0;i<30;++i){clickControl(scene(&manager),i%2?"savedRosterView-0":"savedRosterView-1");check(inlineRoster->count()==2,"inline grouping preserves the selected athletes with a 600-person library");}
+        auto *view=scene(&manager);auto *grip=item(view->rootObject(),"savedRosterCandidateGrip-"+QuickRoster::key(owned[2]));auto *destination=item(view->rootObject(),"savedRosterSelected");
+        check(grip && destination && grip->isVisible() && destination->isVisible(),"inline roster exposes drag source and destination");
+        const auto start=grip->mapToItem(view->rootObject(),grip->boundingRect().center()).toPoint(),finish=destination->mapToItem(view->rootObject(),destination->boundingRect().center()).toPoint();
+        QTest::mousePress(view,Qt::LeftButton,Qt::NoModifier,start);
+        for(int i=1;i<=12;++i){const auto point=start+(finish-start)*i/12;QMouseEvent move(QEvent::MouseMove,point,view->mapToGlobal(point),Qt::NoButton,Qt::LeftButton,Qt::NoModifier);QApplication::sendEvent(view,&move);QTest::qWait(20);}
+        QTest::mouseRelease(view,Qt::LeftButton,Qt::NoModifier,finish);QTest::qWait(100);
+        check(inlineRoster->count()==3,"dragging an athlete between inline panes adds that athlete");
+        for(int i=0;i<30;++i){clickControl(scene(&manager),i%2?"savedRosterView-0":"savedRosterView-1");check(inlineRoster->count()==3,"inline grouping preserves the selected athletes with a 600-person library");}
         const auto second=manager.createRoster();check(manager.selectRoster(first) && manager.selectRoster(second) && manager.selectRoster(first),"rapid roster switches retain identity");QTest::qWait(100);
-        check(inlineRoster->count()==2,"rapid roster switches preserve membership after deferred updates");manager.reject();
+        check(inlineRoster->count()==3,"rapid roster switches preserve membership after deferred updates");manager.reject();
     }
     qInfo()<<"PASS: atomic roster insertion/removal and repeated live grouping transitions";
 }
