@@ -185,11 +185,11 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
             if(comp->getAdvancementCompetition()->getCancelled() == false)
                 seasonCompetitionJumpers = IndividualCompetitionManager::getFilteredJumpersAfterQualifications(comp, simulationSave->getJumpersReference());
             else{
-                for(auto & jp : simulationSave->getJumpersReference())
+                for(auto & jp : simulationSave->activeRosterFeatureEnabled() ? simulationSave->activeJumpers() : simulationSave->getJumpersReference())
                 {
                     seasonCompetitionJumpers.push_back(jp);
                 }
-                for(auto & list : simulationSave->getJumpersListsReference())
+                if(!SimulationSave::activeRosterFeatureEnabled()) for(auto & list : simulationSave->getJumpersListsReference())
                 {
                     if(list.getIsDefault() == false)
                     {
@@ -210,11 +210,11 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         else if(seasonCompetition->getAdvancementClassification() != nullptr && seasonCompetition->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
             seasonCompetitionJumpers = IndividualCompetitionManager::getFilteredJumpersByClassification(comp, comp->getAdvancementClassification(), simulationSave->getJumpersReference());
         else{
-            for(auto & jp : simulationSave->getJumpersReference())
+            for(auto & jp : simulationSave->activeRosterFeatureEnabled() ? simulationSave->activeJumpers() : simulationSave->getJumpersReference())
             {
                 seasonCompetitionJumpers.push_back(jp);
             }
-            for(auto & list : simulationSave->getJumpersListsReference())
+            if(!SimulationSave::activeRosterFeatureEnabled()) for(auto & list : simulationSave->getJumpersListsReference())
             {
                 if(list.getIsDefault() == false)
                 {
