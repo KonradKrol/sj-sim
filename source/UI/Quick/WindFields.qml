@@ -22,16 +22,17 @@ Column {
             model: [{key:"strength",label:qsTr("Siła · m/s")},{key:"direction",label:qsTr("Kierunek · °")},{key:"strengthVariation",label:qsTr("Zmienność · m/s")},{key:"directionVariation",label:qsTr("Zmienność · °")}]
             Column {
                 id: field
-                property string key: modelData.key
+                required property var modelData
+                readonly property string key: field.modelData.key
                 property var values: editor.fields[key]
                 visible: !!values
                 Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: 200
                 spacing: 6
-                Label { text: modelData.label; color: Theme.muted; font.pointSize: Theme.caption }
+                Label { text: field.modelData.label; color: Theme.muted; font.pointSize: Theme.caption }
                 NumberField {
                     width: parent.width
                     fields: field.values || ({value:0,minimum:0,maximum:0,step:1,decimals:1})
-                    label: modelData.label
+                    label: field.modelData.label
                     direct: false
                     onCommitted: { var data={};data[field.key]=value;ui.setWind(editor.editorId,editor.sectorIndex,data,together.checked) }
                 }
