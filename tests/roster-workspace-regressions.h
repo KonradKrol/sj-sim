@@ -28,5 +28,18 @@ static void rosterWorkspaceRegressions(MainWindow &main) {
     auto *bridge=editor.findChild<QuickBridge *>();auto *roster=bridge?bridge->findChild<QuickRoster *>():nullptr;check(roster,"grouping stress backend");
     QAbstractItemModelTester library(roster->library(),QAbstractItemModelTester::FailureReportingMode::Fatal),order(roster->ordered(),QAbstractItemModelTester::FailureReportingMode::Fatal),grouped(roster->groupedRows(),QAbstractItemModelTester::FailureReportingMode::Fatal);
     for(int i=0;i<50;++i){clickControl(scene(&editor),i%2?"savedRosterView-0":"savedRosterView-1");QTest::qWait(25);check(editor.getSelectedJumpers()==selected,"switching group view preserves membership and real order");presentation(&editor)->grab();}
-    editor.reject();qInfo()<<"PASS: atomic roster insertion/removal and repeated live grouping transitions";
+    editor.reject();
+    {
+        SimulationSave save;save.setName("Inline roster stress");QVector<Jumper *> owned;
+        for(const auto &actor:actors)owned.append(new Jumper(actor));save.setJumpers(owned);
+        Season season;season.setSeasonNumber(2026);save.setSeasons({season});save.setActualSeason(&save.getSeasonsReference().first());
+        SimulationSaveManagerWindow manager(&save,&main);manager.show();QTest::qWait(100);
+        const auto first=manager.createRoster();QTest::qWait(100);auto *inlineRoster=qobject_cast<QuickRoster *>(manager.rosterEditor());check(inlineRoster,"inline stress roster backend");
+        inlineRoster->include(QuickRoster::key(owned[0]));inlineRoster->include(QuickRoster::key(owned[1]));QTest::qWait(50);
+        QAbstractItemModelTester inlineLibrary(inlineRoster->library(),QAbstractItemModelTester::FailureReportingMode::Fatal),inlineGrouped(inlineRoster->groupedLibrary(),QAbstractItemModelTester::FailureReportingMode::Fatal);
+        for(int i=0;i<30;++i){clickControl(scene(&manager),i%2?"savedRosterView-0":"savedRosterView-1");check(inlineRoster->count()==2,"inline grouping preserves the selected athletes with a 600-person library");}
+        const auto second=manager.createRoster();check(manager.selectRoster(first) && manager.selectRoster(second) && manager.selectRoster(first),"rapid roster switches retain identity");QTest::qWait(100);
+        check(inlineRoster->count()==2,"rapid roster switches preserve membership after deferred updates");manager.reject();
+    }
+    qInfo()<<"PASS: atomic roster insertion/removal and repeated live grouping transitions";
 }
