@@ -30,9 +30,12 @@ Pane {
             Component { id: groupedList; SavedRosterList { backend: pane.backend; selected: pane.selected; grouped: true } }
             Component { id: orderedList; SavedRosterList { backend: pane.backend; selected: pane.selected; grouped: false } }
         }
-        RowLayout {
+        GridLayout {
+            visible: !pane.selected || pane.backend.markedCount>0
+            columns: pane.width>=Theme.dp(420) ? 2 : 1
             Layout.fillWidth: true
             SButton {
+                visible: pane.selected || pane.backend.candidateMarkedCount>0
                 Layout.fillWidth: true
                 primary: !pane.selected
                 text: pane.selected ? qsTr("Usuń zaznaczonych (%1)").arg(pane.backend.markedCount) : qsTr("Dodaj zaznaczonych (%1)").arg(pane.backend.candidateMarkedCount)

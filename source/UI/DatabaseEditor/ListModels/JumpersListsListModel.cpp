@@ -52,6 +52,12 @@ QVariant JumpersListsListModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+bool JumpersListsListModel::insertList(int row,const SaveJumpersList &list)
+{
+    if(!jumpersLists || row<0 || row>jumpersLists->size())return false;
+    beginInsertRows({},row,row);jumpersLists->insert(row,list);endInsertRows();return true;
+}
+
 bool JumpersListsListModel::insertRows(int row, int count, const QModelIndex &parent)
 {
     if(!jumpersLists || parent.isValid() || row<0 || row>jumpersLists->size() || count<1)return false;

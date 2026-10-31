@@ -1,3 +1,9 @@
+> **AKTUALIZACJA / aktywna praca:** użytkownik ponownie otworzył przebudowę list
+> i zgłosił crash oraz niewidoczne dropdowny. Czytaj najpierw
+> [`HANDOFF-31-10-LISTY.md`](HANDOFF-31-10-LISTY.md). Kod nowego katalogu inline
+> jest WIP; poniższy opis 34/34 jest stanem wcześniejszej kolejki, nie zatwierdzeniem
+> bieżącej przebudowy. Tłumaczenia i pełne testy nowego UI są do dokończenia.
+
 # Sj.Sim — aktualne przekazanie pracy, 31.10.2026
 
 ## Zasady pracy

@@ -7,7 +7,8 @@ Item {
     objectName: "savedRosterWorkspace"
     property var node
     readonly property var fields: node ? node.values : ({})
-    readonly property var backend: fields.backend
+    property var backend: fields.backend
+    property bool inlineEditor: false
     readonly property bool narrow: width < Theme.dp(760)
     property bool showLibrary: true
     property bool limitsOpen: false
@@ -16,11 +17,12 @@ Item {
         anchors.fill: parent
         spacing: Theme.dp(12)
         RowLayout {
+            visible: !workspace.inlineEditor
             Layout.fillWidth: true
             ProjectedControl { node: workspace.fields.nameField || null; Layout.fillWidth: true; Layout.minimumWidth: 0 }
             SButton { text: qsTr("Cofnij"); enabled: workspace.backend.canUndo; onClicked: workspace.backend.undo() }
         }
-        ProjectedControl { node: workspace.fields.defaultField || null; visible: !!workspace.fields.defaultField; Layout.fillWidth: true }
+        ProjectedControl { node: workspace.fields.defaultField || null; visible: !workspace.inlineEditor && !!workspace.fields.defaultField; Layout.fillWidth: true }
         RowLayout {
             Layout.fillWidth: true
             SectionTabs {
@@ -30,6 +32,7 @@ Item {
                 currentIndex: workspace.backend.grouped ? 0 : 1
                 onSelected: workspace.backend.grouped = index === 0
             }
+            SButton { visible: workspace.inlineEditor; text: qsTr("Cofnij"); enabled: workspace.backend.canUndo; quiet: true; onClicked: workspace.backend.undo() }
             SButton { objectName: "rosterLimitsToggle"; text: qsTr("Limity krajów"); primary: workspace.limitsOpen; onClicked: workspace.limitsOpen = !workspace.limitsOpen }
         }
         RosterLimits { visible: workspace.limitsOpen; backend: workspace.backend; Layout.fillWidth: true; listHeight: Math.min(Theme.dp(150), workspace.height * 0.25) }
@@ -54,7 +57,7 @@ Item {
                 Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; Layout.minimumWidth: 0
             }
         }
-        ProjectedControl { node: workspace.fields.submit || null; visible: !!workspace.fields.submit; Layout.fillWidth: true }
+        ProjectedControl { node: workspace.fields.submit || null; visible: !workspace.inlineEditor && !!workspace.fields.submit; Layout.fillWidth: true }
     }
     Shortcut { sequence: "Ctrl+Z"; enabled: workspace.visible && workspace.backend.canUndo && !ui.editingText; onActivated: workspace.backend.undo() }
 }

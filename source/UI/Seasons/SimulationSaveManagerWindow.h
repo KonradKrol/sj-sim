@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QVariant>
+#include <optional>
+#include <QSet>
 #include "../DatabaseEditor/DatabaseItemsListView.h"
 #include "../EditorWidgets/JumperEditorWidget.h"
 #include "../EditorWidgets/HillEditorWidget.h"
@@ -17,6 +19,7 @@
 class QLabel;
 class SimulationProfileDraft;
 class QTimer;
+class QuickRoster;
 
 namespace Ui {
 class SimulationSaveManagerWindow;
@@ -25,6 +28,11 @@ class SimulationSaveManagerWindow;
 class SimulationSaveManagerWindow : public QDialog
 {
     Q_OBJECT
+    Q_PROPERTY(QVariantList rosterEntries READ rosterEntries NOTIFY rosterChoicesChanged)
+    Q_PROPERTY(QString editingRosterId READ editingRosterId NOTIFY rosterChoicesChanged)
+    Q_PROPERTY(QString editingRosterName READ editingRosterName NOTIFY rosterChoicesChanged)
+    Q_PROPERTY(QObject *rosterEditor READ rosterEditor CONSTANT)
+    Q_PROPERTY(bool canRestoreRoster READ canRestoreRoster NOTIFY rosterChoicesChanged)
     Q_PROPERTY(bool autosaveEnabled READ autosaveEnabled WRITE setAutosaveEnabled NOTIFY autosaveEnabledChanged)
     Q_PROPERTY(QVariantList rosterChoices READ rosterChoices NOTIFY rosterChoicesChanged)
     Q_PROPERTY(QString rosterNotice READ rosterNotice NOTIFY rosterChoicesChanged)
@@ -41,6 +49,20 @@ public:
     Q_INVOKABLE void setAutosaveEnabled(bool enabled);
     void markSeasonChanged();
     QVariantList rosterChoices() const;
+    QVariantList rosterEntries() const;
+    QString editingRosterId() const { return editedRosterId; }
+    QString editingRosterName() const;
+    QObject *rosterEditor() const;
+    bool canRestoreRoster() const { return removedRoster.has_value(); }
+    Q_INVOKABLE QString createRoster();
+    Q_INVOKABLE bool selectRoster(const QString &id);
+    Q_INVOKABLE bool renameRoster(const QString &id,const QString &name);
+    Q_INVOKABLE bool removeRoster(const QString &id);
+    Q_INVOKABLE bool restoreRoster();
+    Q_INVOKABLE void openRosterWorkspace(const QString &id=QString());
+    void setRosterMembers(const QString &id,const QVector<Jumper *> &members);
+    void setRosterCountryLimits(const QString &id,const QMap<QString,int> &limits);
+    void publishRosters();
     QString activeRosterId() const;
     QString rosterNotice() const { return rosterNoticeText; }
     Q_INVOKABLE bool selectActiveRoster(const QString &id);
@@ -67,6 +89,13 @@ signals:
     void rosterChoicesChanged();
 
 private:
+    QuickRoster *seasonRosterEditor=nullptr;
+    QString editedRosterId;
+    bool rosterPublishPending=false;
+    std::optional<SaveJumpersList> removedRoster;
+    int removedRosterIndex=0;
+    bool removedRosterWasActive=false;
+    QSet<QString> removedRosterCalendars;
     QString rosterNoticeText;
     QString lastActiveRosterId;
     Ui::SimulationSaveManagerWindow *ui;

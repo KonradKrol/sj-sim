@@ -12,6 +12,8 @@ class JumpersListsListModel : public QAbstractListModel
 public:
     explicit JumpersListsListModel(QVector<SaveJumpersList> * jumpersLists, QObject *parent = nullptr);
 
+    bool insertList(int row,const SaveJumpersList &list);
+
     // Header:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 

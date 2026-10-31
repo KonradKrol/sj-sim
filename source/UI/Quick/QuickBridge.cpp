@@ -869,6 +869,10 @@ void QuickBridge::compose(QuickNode *base) {
     auto catalog=[this](QWidget *page,const QVariant &toolbar=QVariant()) -> QuickNode * {
         auto *container=page->findChild<DatabaseItemsListView *>();
         if(!container)return nullptr;
+        if(auto *season=qobject_cast<SimulationSaveManagerWindow *>(m_window);season && container->getType()==DatabaseItemsListView::JumpersListsItems){
+            auto *entry=m_groups.value("season-rosters");if(!entry){entry=new QuickNode(this);m_groups.insert("season-rosters",entry);}
+            entry->update({{"kind","seasonRosters"},{"backend",QVariant::fromValue(static_cast<QObject *>(season))}});return entry;
+        }
         node(container,true);
         auto *view=container->findChild<QAbstractItemView *>("listView");if(!view)return nullptr;
         const auto key="catalog-"+QString::number(idFor(container));auto *entry=m_groups.value(key);

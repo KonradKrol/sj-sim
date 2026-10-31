@@ -1,5 +1,6 @@
 #include "QuickRoster.h"
 #include "../Competition/CompetitionConfigWindow.h"
+#include "../Seasons/SimulationSaveManagerWindow.h"
 #include "../EditorWidgets/JumpersListEditorWindow.h"
 #include "../EditorWidgets/TeamsEditing/TeamEditorWidget.h"
 #include "../EditorWidgets/CompetitionRulesEditorWidget.h"
@@ -55,11 +56,26 @@ void QuickRosterCountryRows::sync(const QVariantList &rows) {
 QString QuickRoster::key(Jumper *jumper) { return QString::number(reinterpret_cast<quintptr>(jumper),16); }
 QuickRoster::QuickRoster(QWidget *source,QObject *parent):QObject(parent),m_source(source),m_library(new QuickRosterRows(this)),m_ordered(new QuickRosterRows(this)),m_groupedRows(new QuickRosterRows(this)),m_groupedLibrary(new QuickRosterRows(this)),m_limitRows(new QuickRosterCountryRows(this)){m_grouped=savedList();sync();}
 bool QuickRoster::membership() const { return !qobject_cast<TeamEditorWidget *>(m_source); }
-bool QuickRoster::savedList() const { return qobject_cast<JumpersListEditorWindow *>(m_source); }
+bool QuickRoster::savedList() const { return qobject_cast<JumpersListEditorWindow *>(m_source) || qobject_cast<SimulationSaveManagerWindow *>(m_source); }
 void QuickRoster::setGrouped(bool value) { if(!savedList() || m_grouped==value)return; m_grouped=value;emit changed(); }
+void QuickRoster::setSeasonRoster(const QString &id) {
+    if(!qobject_cast<SimulationSaveManagerWindow *>(m_source) || id==m_seasonRosterId)return;
+    m_seasonRosterId=id;m_hasUndo=false;m_undo.clear();m_undoLimits.clear();m_undoLimitChange=false;m_marked.clear();m_candidateMarked.clear();m_query.clear();m_orderQuery.clear();m_country=0;
+    m_current.clear();m_pool.clear();m_countryCodes.clear();
+    QTimer::singleShot(0,this,[this]{sync();});
+}
+QMap<QString,int> QuickRoster::readCountryLimits() const {
+    if(auto *editor=qobject_cast<JumpersListEditorWindow *>(m_source))return editor->getCountryLimits();
+    if(auto *manager=qobject_cast<SimulationSaveManagerWindow *>(m_source))for(const auto &list:manager->getSimulationSave()->getJumpersLists())if(list.getId()==m_seasonRosterId)return list.getCountryLimits();
+    return {};
+}
+void QuickRoster::writeCountryLimits(const QMap<QString,int> &limits) {
+    if(auto *editor=qobject_cast<JumpersListEditorWindow *>(m_source))editor->setCountryLimits(limits);
+    if(auto *manager=qobject_cast<SimulationSaveManagerWindow *>(m_source))manager->setRosterCountryLimits(m_seasonRosterId,limits);
+}
 void QuickRoster::refreshCountryLimits(bool updateModel) {
-    auto *editor=qobject_cast<JumpersListEditorWindow *>(m_source);if(!editor){m_countryLimits.clear();if(updateModel)m_limitRows->sync({});return;}
-    const auto limits=editor->getCountryLimits();QStringList codes;
+    if(!savedList()){m_countryLimits.clear();if(updateModel)m_limitRows->sync({});return;}
+    const auto limits=readCountryLimits();QStringList codes;
     for(const auto &code:m_countryCodes)if(code.size()==3 && std::all_of(code.cbegin(),code.cend(),[](QChar c){return c.unicode()>='A' && c.unicode()<='Z';}))codes.append(code);
     for(auto it=limits.cbegin();it!=limits.cend();++it)if(!codes.contains(it.key()))codes.append(it.key());
     codes.sort();QVariantList rows;QHash<QString,int> counts;
@@ -74,12 +90,13 @@ int QuickRoster::exceededCountries() const {
     int count=0;for(const auto &row:countryLimits())if(row.toMap().value("over").toBool())++count;return count;
 }
 bool QuickRoster::setCountryLimit(const QString &country,int limit) {
-    auto *editor=qobject_cast<JumpersListEditorWindow *>(m_source);if(!editor)return false;
-    SaveJumpersList validated;validated.setCountryLimits(editor->getCountryLimits());
+    if(!savedList())return false;
+    const auto currentLimits=readCountryLimits();
+    SaveJumpersList validated;validated.setCountryLimits(currentLimits);
     if(!validated.setCountryLimit(country,limit))return false;
-    if(editor->getCountryLimits()==validated.getCountryLimits())return true;
-    m_undoLimits=editor->getCountryLimits();m_undoLimitChange=true;m_hasUndo=true;
-    editor->setCountryLimits(validated.getCountryLimits());
+    if(currentLimits==validated.getCountryLimits())return true;
+    m_undoLimits=currentLimits;m_undoLimitChange=true;m_hasUndo=true;
+    writeCountryLimits(validated.getCountryLimits());
     // Keep the focused text field intact until its editingFinished callback returns.
     refreshCountryLimits(false);
     QTimer::singleShot(0,this,[this]{m_limitRows->sync(m_countryLimits);emit changed();});
@@ -91,12 +108,14 @@ bool QuickRoster::active() const {
 }
 int QuickRoster::activeLimit() const { auto *team=qobject_cast<TeamEditorWidget *>(m_source);return team?team->getJumpersCount():0; }
 QVector<Jumper *> QuickRoster::read() const {
+    if(auto *manager=qobject_cast<SimulationSaveManagerWindow *>(m_source)){for(const auto &list:manager->getSimulationSave()->getJumpersLists())if(list.getId()==m_seasonRosterId)return list.getJumpers();return {};}
     if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source))return config->type==CompetitionConfigWindow::SingleCompetition?config->competitionJumpers:config->seasonCompetitionJumpers;
     if(auto *list=qobject_cast<JumpersListEditorWindow *>(m_source))return list->getSelectedJumpers();
     if(auto *team=qobject_cast<TeamEditorWidget *>(m_source))return team->getJumpers();
     return {};
 }
 QVector<Jumper *> QuickRoster::candidates() const {
+    if(auto *manager=qobject_cast<SimulationSaveManagerWindow *>(m_source))return manager->getSimulationSave()->getJumpers();
     if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source)){
         if(config->type==CompetitionConfigWindow::SingleCompetition)return config->availableJumpers();
         if(!config->simulationSave||!config->seasonCompetition)return {};
@@ -141,6 +160,7 @@ void QuickRoster::setOrderQuery(const QString &value){if(m_orderQuery==value)ret
 void QuickRoster::setCountry(int value){if(value<0||value>m_countryCodes.size()||value==m_country)return;m_country=value;refresh();}
 Jumper *QuickRoster::jumper(const QString &id) const { for(auto *j:m_pool)if(key(j)==id)return j;return nullptr; }
 void QuickRoster::write(const QVector<Jumper *> &value){
+    if(auto *manager=qobject_cast<SimulationSaveManagerWindow *>(m_source)){manager->setRosterMembers(m_seasonRosterId,value);return;}
     if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source)){
         if(config->type==CompetitionConfigWindow::SingleCompetition)config->competitionJumpers=value;else config->seasonCompetitionJumpers=value;
         config->jumpersListView->setupListModel();
@@ -185,5 +205,5 @@ void QuickRoster::moveMarked(int position){
 }
 void QuickRoster::step(int direction){sync();if(direction!=-1&&direction!=1)return;auto next=m_current;if(direction<0){for(int i=1;i<next.size();++i)if(m_marked.contains(key(next[i]))&&!m_marked.contains(key(next[i-1])))qSwap(next[i],next[i-1]);}else for(int i=next.size()-2;i>=0;--i)if(m_marked.contains(key(next[i]))&&!m_marked.contains(key(next[i+1])))qSwap(next[i],next[i+1]);apply(next);}
 void QuickRoster::sort(const QString &key){sync();auto next=m_current;if(key=="random"){std::mt19937 engine(std::random_device{}());std::shuffle(next.begin(),next.end(),engine);}else if(key=="overall-asc"||key=="overall-desc")std::stable_sort(next.begin(),next.end(),[&](auto *a,auto *b){const double left=a->getSimulationProfile()?a->getSimulationProfile()->overall:0;const double right=b->getSimulationProfile()?b->getSimulationProfile()->overall:0;return key=="overall-asc"?left<right:left>right;});else if(key=="name"||key=="country")std::stable_sort(next.begin(),next.end(),[&](auto *a,auto *b){return QString::localeAwareCompare(key=="name"?a->getNameAndSurname():a->getCountryCode(),key=="name"?b->getNameAndSurname():b->getCountryCode())<0;});else return;apply(next);}
-void QuickRoster::undo(){sync();if(!m_hasUndo)return;if(m_undoLimitChange){auto *editor=qobject_cast<JumpersListEditorWindow *>(m_source);if(editor)editor->setCountryLimits(m_undoLimits);m_hasUndo=false;m_undoLimitChange=false;m_undoLimits.clear();refreshCountryLimits();emit changed();return;}const auto previous=m_undo;m_hasUndo=false;m_undo.clear();m_current=previous;write(previous);refresh();}
+void QuickRoster::undo(){sync();if(!m_hasUndo)return;if(m_undoLimitChange){writeCountryLimits(m_undoLimits);m_hasUndo=false;m_undoLimitChange=false;m_undoLimits.clear();refreshCountryLimits();emit changed();return;}const auto previous=m_undo;m_hasUndo=false;m_undo.clear();m_current=previous;write(previous);refresh();}
 void QuickRoster::applyPreset(int index,int operation){sync();auto *config=qobject_cast<CompetitionConfigWindow *>(m_source);if(!config||!config->simulationSave||!membership()||index<0||index>=config->simulationSave->getJumpersListsReference().size())return;const auto members=config->simulationSave->getJumpersListsReference()[index].getJumpers();auto next=m_current;if(operation==0){for(auto *j:members)if(m_pool.contains(j)&&!next.contains(j))next.append(j);}else if(operation==1){for(auto *j:members)next.removeAll(j);}else if(operation==2){next.clear();for(auto *j:members)if(m_current.contains(j))next.append(j);for(auto *j:m_current)if(!next.contains(j))next.append(j);}else return;apply(next);}

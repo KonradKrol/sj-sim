@@ -13,7 +13,7 @@ ColumnLayout {
     readonly property bool formPage: contentNode && contentNode.values.kind === "formGenerator"
     readonly property bool koPage: contentNode && contentNode.values.kind === "koGroups"
     readonly property bool rosterPage: contentNode && contentNode.values.kind === "roster"
-    readonly property bool catalogPage: contentNode && contentNode.values.kind === "catalog"
+    readonly property bool catalogPage: contentNode && (contentNode.values.kind === "catalog" || contentNode.values.kind === "seasonRosters")
     readonly property bool calendarPage: contentNode && contentNode.values.kind === "calendar"
     readonly property bool sideTabs: tabbed && width >= 1200 && height >= 550
     spacing: 0
@@ -88,7 +88,9 @@ ColumnLayout {
             visible: active; active: workspace.catalogPage
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
             Layout.margins: Theme.compact ? 4 : workspace.width < 700 || workspace.height < 600 ? 12 : 20
-            sourceComponent: Component { CatalogWorkspace { node: workspace.contentNode } }
+            sourceComponent: workspace.contentNode.values.kind === "seasonRosters" ? rosterCatalog : normalCatalog
+            Component { id: rosterCatalog; SeasonRostersWorkspace { node: workspace.contentNode } }
+            Component { id: normalCatalog; CatalogWorkspace { node: workspace.contentNode } }
         }
         Loader {
             visible: active; active: workspace.formPage

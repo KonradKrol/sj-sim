@@ -61,6 +61,7 @@ class QuickRoster : public QObject {
 public:
     explicit QuickRoster(QWidget *source,QObject *parent);
     void sync();
+    void setSeasonRoster(const QString &id);
     // Translation changes labels, not cached athlete values or their ownership.
     void invalidateText() { emit changed(); }
     static QString key(Jumper *jumper);
@@ -115,7 +116,7 @@ private:
     QSet<QString> m_candidateMarked;
     QStringList m_countryCodes,m_presetNames;
     QVariantList m_countryLimits;
-    QString m_query,m_orderQuery,m_anchor;
+    QString m_query,m_orderQuery,m_anchor,m_seasonRosterId;
     int m_country=0;
     bool m_hasUndo=false;
     bool m_undoLimitChange=false;
@@ -126,6 +127,8 @@ private:
     void apply(QVector<Jumper *> value);
     void refresh();
     void refreshCountryLimits(bool updateModel=true);
+    QMap<QString,int> readCountryLimits() const;
+    void writeCountryLimits(const QMap<QString,int> &limits);
     QVector<Jumper *> visiblePool() const;
     Jumper *jumper(const QString &id) const;
 signals:
