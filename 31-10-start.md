@@ -1,76 +1,76 @@
-# Sj.Sim — wznowienie 31.10.2026
+# Sj.Sim — aktualne przekazanie pracy, 31.10.2026
 
-Pracuj na `feature/simulation-v2`, bez subagentów. Użytkownik chce wykonywać
-kolejno wszystkie punkty z `C:/Users/user/Desktop/praca sj sim.md`, bez
-kończenia pracy po pojedynczym zadaniu. Po każdej ukończonej zmianie zrób
-osobny commit i push. Nie zamykaj działającej gry użytkownika i nie używaj
-jego rzeczywistych zapisów do testów.
+## Zasady pracy
 
-## Stan listy z pulpitu: 15 z 34 głównych punktów
+- Branch `feature/simulation-v2`, nigdy main; bez subagentów.
+- Osobne commity zakończonych zmian i push po każdym.
+- Nie zamykać gry użytkownika, nie używać jego danych do testów.
+- UI: hierarchia, kontrast, jasność, małe obciążenie poznawcze, kompaktowy desktop.
+- Qt5/Qt6: zachować wersjonowane importy dla Linux Qt 5.15.3.
+- Używać lokalnych umiejętności Qt Quick. Nie uruchamiać dwóch buildów naraz.
 
-Ukończone, przetestowane i wypchnięte:
+## Zakres zakończonej kolejki
 
-- **Edytor bazy, 4/4:** ustawienia paczki we wszystkich kategoriach i uporządkowane menu; przeciąganie skoczków z cofnięciem; sortowanie skoczków i skoczni według kraju z potwierdzeniem; automatyczne punkty za wiatr w plecy widoczne bez możliwości edycji. Punkty za wiatr w plecy wynikają z wartości dla wiatru pod narty, z limitem 100.
-- **Kalendarze i daty, 4/4:** hierarchia i zasady UI w `AGENTS.md`; czytelniejsze szybkie planowanie i krótszy wybór niedzielnych kwalifikacji; widoczne, jasne ostrzeżenia; usunięta z edytora nieużywana ważność treningów.
-- **Tryb sezonów, 4/4:** mniejszy pasek sezonu, uporządkowane akcje, wyróżniony przycisk zapisu; automatyczny zapis włączany osobno dla sejwu, po konkursie i po 15 sekundach od zmian, ze świadomym ręcznym zapisem.
-- **Listy zawodników, 3/8:** pomocnicze limity krajów, które nie blokują wyboru; grupowanie krajami obok widoku kolejności, bez zmiany zapisanej kolejności. Limity mają cofanie i zapisują się w sejwie.
+Wdrożono punkty z pierwotnej listy **34 zadań**. Pełna lista, commity i zakres
+sprawdzeń: `docs/WORK_QUEUE_31_10.md`. Wydajność: dwa znalezione i zmierzone
+miejsca zamiast pięciu, zgodnie z wyjątkiem dopuszczonym przez użytkownika.
+Nie utożsamiać tego z przejściem pełnego starego smoke całej aplikacji.
 
-Pozostało 19 punktów: listy zawodników 1, 2, 5, 6 i 8; pierwsze uruchomienie 1; wybór zawodników przed konkursem 1–4; „Inne” 1–6; Pomoc 1; Konkursy 1–2. Niektóre punkty obejmują kilka zmian. Szeroka przebudowa list (1–2) jest rozpoczęta, ale nieukończona.
+Pierwotny plik użytkownika: `/home/konrad/Desktop/pracasjsimwazna.md`.
+Historyczne przekazanie z etapu 15/34: `docs/HANDOFF_31_10_EARLY.md`.
 
-## Od czego zacząć: aktywna lista zawodników
+## Ważne decyzje i zachowania list
 
-Decyzje użytkownika: interfejs list przebudować od podstaw. Pokazywać obok
-siebie wszystkich i wybranych zawodników, z szybkim dodawaniem i przeciąganiem;
-domyślny widok ma grupować zawodników krajami. Ręczny wybór listy przed
-konkursem obowiązuje dla tego konkursu i nie zmienia przypisania kalendarza.
-Zaznaczenie wielu zawodników pozwala dodać lub usunąć ich jednym przyciskiem.
-Na małym ekranie panele przełączają się, z widoczną liczbą wybranych. Usunięcie
-aktywnej listy wybiera wszystkich i informuje użytkownika. Zarówno pusta aktywna
-lista, jak i brak aktywnej listy oznaczają wszystkich zawodników.
+- Zapisane listy mają nowy ekran: dwa panele, domyślnie kraje; mały ekran
+  przełącza „Wszyscy” / „Wybrani”. Własne wiersze, checkboxy, zbiorcze akcje,
+  pojedyncze +/−, przeciąganie między panelami, cofanie.
+- Pusta lista oraz brak aktywnej listy oznaczają wszystkich zawodników.
+- Limity krajów są wyłącznie pomocnicze; nigdy nie blokują wyboru.
+- Kalendarz może przypisać listę; aktywuje ją przygotowanie konkursu.
+  Ręczne zmiany składu tego konkursu nie zmieniają przypisania.
+- Usunięcie aktywnej listy wybiera wszystkich i wyświetla informację.
+- Listy działają w indywidualnych i drużynowych konkursach; kwalifikacje
+  nadal ograniczają pulę dostępnych zawodników.
+- Przy ponownym automatycznym doborze ręcznych składów pytać o potwierdzenie.
+- `activeRosterFeatureEnabled()` jest teraz **true**; dawny opis o wyłączonej
+  funkcji jest historyczny. Zapis listy i powiązania kalendarza działa po ID.
 
-W kodzie jest **niedokończony, celowo wyłączony** szkielet aktywnej listy. `SimulationSave::activeRosterFeatureEnabled()` zwraca `false`: wyboru nie pokazuje się użytkownikowi, starych sejwów nie migruje się i dotychczasowa logika wyboru zawodników nie zmienia się. Nie oznaczać tych punktów jako ukończonych i nie włączać flagi przed połączeniem całej ścieżki.
+## Dodatkowe poprawki zgłoszone w rozmowie
 
-1. Dokończ i przetestuj `SimulationSave::activeJumpersListId`, `activeJumpers`, zapis identyfikatora oraz migrację starszych sejwów. Istniejący szkic migracji zachowuje poprzedni wynik operacji dołączania/wykluczania i, jeśli potrzeba, tworzy listę „Dotychczasowy skład”. Sprawdź puste listy, usunięcie aktywnej listy, duplikaty identyfikatorów, zapis i ponowne wczytanie. Brak wybranej zapisanej listy ma oznaczać **wszystkich zawodników**, a nie pusty skład.
-2. Dokończ przełącznik w `SeasonRosterChoice.qml`, przeglądzie sezonu oraz ekranie list. Przywróć zaplanowaną nazwę pola edytora „Ustaw jako aktywną listę zawodników”; upewnij się, że zmiany, usuwanie i cofanie nie pozostawiają nieaktualnego wyboru.
-3. W `CompetitionConfigWindow` użyj aktywnej listy w indywidualnych i drużynowych konkursach, zachowując zasady kwalifikacji i możliwość ręcznego dodania innych zawodników. Obecny kod nadal używa starego `is-default`; nie włączaj flagi, dopóki obie ścieżki nie są gotowe.
-4. Dodaj opcjonalne przypisanie listy do kalendarza; przed jego konkursem przypisana lista ma stać się aktywna, a użytkownik ma widzieć skąd pochodzi i móc ją zmienić. Przetestuj stare sejwy, usunięcie listy oraz sezony z kilkoma kalendarzami.
-5. Kontynuuj resztę pliku z pulpitu po kolei. Testuj reprezentacje i dowolne drużyny, kolejność oraz automatyczne kompletowanie zgodnie z opisem użytkownika. Limity krajowe są wyłącznie informacyjne i nigdy nie blokują wyboru.
+- Nazwa klasyfikacji na całą szerokość karty (`4f2bad1`).
+- Kontrast napisu automatycznego zapisu i usunięcie pól ważności (`bc06ed7`,
+  `69bfe45`). W edytorze zasad nie było odrębnego parametru; usunięto ostatnie
+  kontrolki/presety z konfiguracji konkursu i projekcji QuickBridge.
+- Nagłówek treningu / próbnej / kwalifikacji zamiast „Konkurs” (`792a044`).
+- Całkowite wyniki klasyfikacji bez części dziesiętnej w całej kolumnie;
+  kolumna z ułamkami zachowuje precyzję (`9e19ed3`).
+- „Próbna przed konkursem” oraz sama data w pasku sezonu (`13a3bf6`).
 
-## Weryfikacja i ważne ograniczenia
+## Pusta lista po Qualifications → Classical KO
 
-- Edytor limitów i grupowanie przeszły trzy równoległe powtórzenia testu, rzeczywiste wpisywanie i kasowanie limitu, cofanie, zachowanie wiersza/modelu, zapis, odczyt oraz test poprzedniego edytora składu. Sporadyczny crash przy przełączeniu grupowania naprawiono przez osobne modele normalnego i grupowanego widoku; ponowne powtórzenia przeszły.
-- Autosejw przeszedł test przełącznika w UI, starego formatu, niezależności sejwów, odczytu ustawienia, opóźnienia i kalendarza. Zmiana przełącznika zapisuje bieżący stan, co wyjaśnia interfejs.
-- Pełna regresja aplikacji **nie jest potwierdzona jako zielona**. `30-10-work.md` zawiera jeszcze pełny smoke oraz dalszą diagnostykę dawnego PB `212,5` + Enter. Ten konkretny pierwotny crash nie został odtworzony ani jednoznacznie zdiagnozowany; nie badaj ponownie prywatnych danych wskazanego zawodnika.
-- Windows: `powershell -ExecutionPolicy Bypass -File build-tools/wind-form-incremental.ps1 -BuildDirectory build-win-smoke`, następnie `python scripts/test-quick-ui-windows.py --log build-tools/<nazwa>.log --timeout 240 -- --simulation-v2-season-only` lub `--roster-only`. Runner tworzy izolowaną kopię danych; `--renders <folder>` zachowuje zrzuty. Zwykły build: ten sam skrypt z `-BuildDirectory build-win`. Nie uruchamiaj dwóch buildów w tym samym katalogu.
-- Po zmianach tekstów uruchom `python -X utf8 scripts/check-translations.py` i uzupełnij PL/EN/CS. Nie przedstawiaj testów ograniczonych do wybranych ścieżek jako pełnej regresji.
+Użytkownik potwierdził: wyniki kwalifikacji istnieją, ale przed KO widział 0.
+Naprawiono przypadek porównywania różnych instancji zawodników o tych samych ID
+(`dc100ea`). Regresja obejmuje kopie zawodników, standardowy i KO awans,
+ex aequo, DSQ/DNS i ochronę upadku. Pełny test sezonu przechodzi rzeczywiste
+„Qualifications” → „Classical KO”, również po zapisie i ponownym wczytaniu.
+Nie twierdzić, że odtworzono dokładnie prywatny zapis użytkownika. Jeśli zgłosi
+powtórkę, trzeba nadal zbadać jego konkretny przypadek; nie dodawać obejścia
+przepuszczającego wszystkich, gdy kwalifikacja jest pusta.
 
-## Postęp Linux 31.10 — kolejne commity
+## Weryfikacja i dalsza diagnostyka
 
-- `341c1d6`: pusta aktywna lista zwraca wszystkich zawodników; regresja sezonu PASS.
-- `de330cb`: konfiguracja konkursu ma przygotowane przełączenie źródła zawodników
-  za wyłączoną flagą. Nie włączać jej przed przypisaniami kalendarzy i pełnym testem.
-- `5b8f938`: osobny `SavedRosterWorkspace.qml`, dwa panele, domyślnie kraje,
-  na małym ekranie przełączanie paneli. Oba panele grupują krajami.
-  To początek przebudowy: nadal trzeba zastąpić stare wiersze/interakcje,
-  dodać zaznaczanie kandydatów i zbiorcze dodawanie oraz przeciąganie między panelami.
-  Domyślne grupowanie ustawia konstruktor QuickRoster, nie callback tworzenia QML:
-  przełączanie w trakcie tworzenia powodowało crash Qt5. Regresja sezonu PASS.
-- `bc06ed7`: usunięte pozostałe pola ważności kalendarza, kolor tekstu autosave.
-- `4f2bad1`: nazwa klasyfikacji na całą szerokość karty, rodzaj poniżej;
-  `--classifications-only` PASS.
+Ukierunkowane testy wymieniono w `docs/WORK_QUEUE_31_10.md`. Stary pełny smoke
+nie jest potwierdzony jako zielony. `30-10-work.md` nadal zawiera pełną regresję
+oraz dawny PB 212,5 + Enter: ochrony i testy były dodane, pierwotnego losowego
+segfaulta nie odtworzono. Nie badać ponownie prywatnych danych wskazanego zawodnika.
 
-Stan głównych punktów nadal 15/34: nie zaliczać niedokończonej przebudowy list.
+Linux: `SJ_BUILD_JOBS=8 scripts/test-quick-ui.sh --simulation-v2-season-only`.
+Kolejne uruchomienia bez przebudowy: w `build-quick-ui` ustawić **absolutne**
+`LD_LIBRARY_PATH` i `QML2_IMPORT_PATH` do `build-qml-preview/qt-runtime/lib`
+i `qml`, następnie `QT_QPA_PLATFORM=offscreen QT_QUICK_BACKEND=software`
+i `./sj-sim-ui-smoke --<flaga>-only`. Test zmienia cwd do prywatnego katalogu,
+więc ścieżki względne do QML są błędne. Nie są to crashe normalnej gry.
 
-## Nowe zgłoszenie: kwalifikacje → Classical KO
-
-Po rozegraniu kwalifikacji z zasadami „Qualifications” konfiguracja konkursu
-z zasadami „Classical KO” pokazuje 0 zawodników zamiast zakwalifikowanego składu
-i gotowych grup KO. Błąd blokujący konkurs. Odtworzyć na prywatnym fixture,
-sprawdzić filtrowanie awansu, tożsamość skoczków, limit kwalifikacji i kolejność
-przygotowania grup. Nie testować na rzeczywistym zapisie użytkownika.
-
-- Kolejny drobiazg: w tabeli klasyfikacji z wyłącznie całkowitymi wynikami
-  nie pokazywać części dziesiętnej (10 zamiast 10,0); zachować ułamki, gdy są.
-
-- Usunąć całkowicie ważność skoków z edytora zasad konkursu, wraz z etykietami
-  i powiązanymi kontrolkami/presetami; nie ograniczać do edytora kalendarza.
+Windows: instrukcja w `docs/RESUME_WINDOWS_2026-10-30.md`; runner
+`scripts/test-quick-ui-windows.py` izoluje dane. Po tłumaczeniach uruchomić
+`python -X utf8 scripts/check-translations.py` i zachować komplet PL/EN/CS.
