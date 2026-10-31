@@ -41,6 +41,8 @@ class QuickCalendar : public QObject {
     Q_PROPERTY(QStringList advancementClassifications READ advancementClassifications NOTIFY changed)
     Q_PROPERTY(QStringList calendars READ calendars NOTIFY changed)
     Q_PROPERTY(int calendarIndex READ calendarIndex NOTIFY changed)
+    Q_PROPERTY(QVariantList rosterChoices READ rosterChoices NOTIFY changed)
+    Q_PROPERTY(QString rosterId READ rosterId NOTIFY changed)
     Q_PROPERTY(QString calendarName READ calendarName NOTIFY changed)
     Q_PROPERTY(bool canUndo READ canUndo NOTIFY changed)
     Q_PROPERTY(bool canRedo READ canRedo NOTIFY changed)
@@ -96,6 +98,9 @@ public:
     QStringList calendars() const;
     int calendarIndex() const;
     QString calendarName() const;
+    QVariantList rosterChoices() const;
+    QString rosterId() const;
+    Q_INVOKABLE void setRosterId(const QString &id);
     bool canUndo() const { return !m_history.undo.isEmpty() && canRestore(m_history.undo.last()); }
     bool canRedo() const { return !m_history.redo.isEmpty() && canRestore(m_history.redo.last()); }
     bool activeCalendar() const;
@@ -133,7 +138,7 @@ private:
         QHash<QString,ClassificationCompetitionSettings> scoring;
         QVector<Classification *> classifications;Classification *classification=nullptr;
     };
-    struct Snapshot { SeasonCalendar *owner=nullptr,*active=nullptr;QVector<SeasonCalendar *> calendars;QVector<CompetitionInfo *> order;QHash<CompetitionInfo *,State> states;QVector<Classification *> classes;QHash<Classification *,Classification> classStates;QString name,classId;QStringList selected;int boundary=0; };
+    struct Snapshot { SeasonCalendar *owner=nullptr,*active=nullptr;QVector<SeasonCalendar *> calendars;QVector<CompetitionInfo *> order;QHash<CompetitionInfo *,State> states;QVector<Classification *> classes;QHash<Classification *,Classification> classStates;QString name,classId,rosterId;QStringList selected;int boundary=0; };
     QPointer<CalendarEditorWidget> m_editor;
     QPointer<CompetitionRulesEditorWidget> m_rulesEditor;
     ClassificationEditorWidget *m_classEditor=nullptr;

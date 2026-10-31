@@ -144,6 +144,12 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
     }
     if(SimulationSave::activeRosterFeatureEnabled()) {
     const auto rosterId=save.getJumpersListsReference().first().getId();
+    SeasonCalendar assigned("Roster calendar");assigned.setJumpersListId(rosterId);
+    auto assignedJson=SeasonCalendar::getJsonObject(assigned);
+    check(assignedJson.value("jumpers-list-id").toString()==rosterId,"calendar roster association is saved by identity");
+    auto assignedReload=SeasonCalendar::getFromJson(assignedJson,nullptr);
+    check(assignedReload.jumpersListId()==rosterId,"calendar roster association survives loading");
+
     check(save.setActiveJumpersListId(rosterId) && save.activeJumpers()==save.getJumpersListsReference().first().getJumpers(),"selecting a roster uses exactly its members");
     check(!save.setActiveJumpersListId(QUuid::createUuid().toString(QUuid::WithoutBraces)) && save.activeJumpersListId()==rosterId,"an unknown roster cannot replace the active one");
     std::unique_ptr<SimulationSave> activeReload(SimulationSave::getFromJson(SimulationSave::getJsonObject(save),nullptr));

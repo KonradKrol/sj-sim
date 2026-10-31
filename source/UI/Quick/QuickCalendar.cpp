@@ -126,6 +126,17 @@ DatabaseItemsListView *QuickCalendar::calendarList() const {
 }
 QStringList QuickCalendar::calendars() const { QStringList result;if(auto *list=calendarList())for(auto *calendar:*list->getCalendars())result.append(calendar->getName());return result; }
 int QuickCalendar::calendarIndex() const { auto *list=calendarList();return list?list->getCalendars()->indexOf(m_calendar):-1; }
+QVariantList QuickCalendar::rosterChoices() const {
+    QVariantList out{QVariantMap{{"id",QString()},{"label",tr("Bez przypisania — użyj aktywnej listy")}}};
+    if(m_save)for(const auto &list:m_save->getJumpersLists())out.append(QVariantMap{{"id",list.getId()},{"label",list.getName()}});
+    return out;
+}
+QString QuickCalendar::rosterId() const { return m_calendar?m_calendar->jumpersListId():QString(); }
+void QuickCalendar::setRosterId(const QString &id) {
+    if(!m_calendar||id==rosterId())return;
+    bool found=id.isEmpty();for(const auto &entry:rosterChoices())if(entry.toMap().value("id").toString()==id)found=true;
+    if(found)mutate([&]{m_calendar->setJumpersListId(id);});
+}
 QString QuickCalendar::calendarName() const { return m_calendar?m_calendar->getName():QString(); }
 void QuickCalendar::collectRetired() {
     QSet<CompetitionInfo *> retained;
@@ -228,7 +239,7 @@ void QuickCalendar::select(const QString &id,int modifiers) {
 void QuickCalendar::clearSelection() {commitPendingRules();sync();m_selected.clear();refresh();}
 void QuickCalendar::selectAll(bool futureOnly) {commitPendingRules(); sync();m_selected.clear();for(auto *event:mains())if(!futureOnly||!locked(event))m_selected.append(event->getIDStr());refresh(); }
 QuickCalendar::Snapshot QuickCalendar::capture() const {
-    Snapshot value;value.owner=m_calendar;if(auto *list=calendarList())value.calendars=*list->getCalendars();for(QWidget *owner=m_editor.data();owner;owner=owner->parentWidget())if(auto *manager=qobject_cast<SimulationSaveManagerWindow *>(owner))value.active=manager->getSimulationSave()->getActualSeason()->getActualCalendar();value.selected=m_selected;value.classId=m_classId;value.boundary=m_editor?m_editor->getModel()->getDontModifyBefore():0;if(!m_calendar)return value;value.order=m_calendar->getCompetitionsReference();value.name=m_calendar->getName();value.classes=m_calendar->getClassificationsReference();for(auto *entry:value.classes)value.classStates.insert(entry,*entry);
+    Snapshot value;value.owner=m_calendar;if(auto *list=calendarList())value.calendars=*list->getCalendars();for(QWidget *owner=m_editor.data();owner;owner=owner->parentWidget())if(auto *manager=qobject_cast<SimulationSaveManagerWindow *>(owner))value.active=manager->getSimulationSave()->getActualSeason()->getActualCalendar();value.selected=m_selected;value.classId=m_classId;value.boundary=m_editor?m_editor->getModel()->getDontModifyBefore():0;if(!m_calendar)return value;value.order=m_calendar->getCompetitionsReference();value.name=m_calendar->getName();value.rosterId=m_calendar->jumpersListId();value.classes=m_calendar->getClassificationsReference();for(auto *entry:value.classes)value.classStates.insert(entry,*entry);
     for(auto *e:value.order){State s;s.date=e->getScheduledDate();s.played=e->getPlayed();s.cancelled=e->getCancelled();s.hill=e->getHill();s.rules=e->getRules();s.type=e->getSerieType();s.importance=e->getJumpsImportance();s.trainings=e->getTrainings();s.trial=e->getTrialRound();s.advancement=e->getAdvancementCompetition();s.pending=e->getPendingAdvancementCompetition();s.classification=e->getAdvancementClassification();s.classifications=e->getClassifications();s.scoring=e->getClassificationScoring();value.states.insert(e,s);}return value;
 }
 void QuickCalendar::mutate(const std::function<void()> &operation) {
@@ -420,7 +431,7 @@ void QuickCalendar::restore(const Snapshot &state) {
     if(m_calendar)for(auto *entry:m_calendar->getClassificationsReference())if(!state.classes.contains(entry))m_retiredClasses.insert(entry);
     if(m_calendar)m_editor->getModel()->applyChange([&]{
         for(auto it=state.states.cbegin();it!=state.states.cend();++it){auto *e=it.key();const auto &v=it.value();e->setScheduledDate(v.date);e->setHill(v.hill);e->setRules(v.rules);e->setSerieType(v.type);e->setJumpsImportance(v.importance);e->setTrainings(v.trainings);e->setTrialRound(v.trial);e->setClassifications(v.classifications);e->setClassificationScoring(v.scoring);e->setAdvancementCompetition(v.advancement);e->setPendingAdvancementCompetition(v.pending);e->setAdvancementClassification(v.classification);}
-        m_calendar->setName(state.name);m_calendar->setClassifications(state.classes);for(auto it=state.classStates.cbegin();it!=state.classStates.cend();++it)*it.key()=it.value();m_classId=state.classId;
+        m_calendar->setName(state.name);m_calendar->setJumpersListId(state.rosterId);m_calendar->setClassifications(state.classes);for(auto it=state.classStates.cbegin();it!=state.classStates.cend();++it)*it.key()=it.value();m_classId=state.classId;
         m_calendar->setCompetitions(state.order);m_calendar->normalizeCompetitionEvents();m_calendar->fixAdvancementCompetitions();m_calendar->updateCompetitionsQualifyingCompetitions();});
     m_selected=state.selected;m_live.clear();if(m_calendar)for(auto *e:m_calendar->getCompetitionsReference())m_live.insert(e);emit m_editor->changed();m_mutating=false;m_dirty=false;refresh();loadClass();collectRetired();
 }

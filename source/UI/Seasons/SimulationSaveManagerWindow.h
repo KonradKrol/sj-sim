@@ -27,6 +27,7 @@ class SimulationSaveManagerWindow : public QDialog
     Q_OBJECT
     Q_PROPERTY(bool autosaveEnabled READ autosaveEnabled WRITE setAutosaveEnabled NOTIFY autosaveEnabledChanged)
     Q_PROPERTY(QVariantList rosterChoices READ rosterChoices NOTIFY rosterChoicesChanged)
+    Q_PROPERTY(QString rosterNotice READ rosterNotice NOTIFY rosterChoicesChanged)
     Q_PROPERTY(QString activeRosterId READ activeRosterId NOTIFY rosterChoicesChanged)
 
 public:
@@ -41,6 +42,7 @@ public:
     void markSeasonChanged();
     QVariantList rosterChoices() const;
     QString activeRosterId() const;
+    QString rosterNotice() const { return rosterNoticeText; }
     Q_INVOKABLE bool selectActiveRoster(const QString &id);
 
     void setupClassificationsComboBox();
@@ -65,6 +67,8 @@ signals:
     void rosterChoicesChanged();
 
 private:
+    QString rosterNoticeText;
+    QString lastActiveRosterId;
     Ui::SimulationSaveManagerWindow *ui;
 
     SimulationSave * simulationSave;

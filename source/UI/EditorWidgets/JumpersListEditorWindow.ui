@@ -122,7 +122,7 @@ border: none;
       <string notr="true">color: rgb(105, 46, 0);</string>
      </property>
      <property name="text">
-      <string>Domyślnie dodawaj tych zawodników do listy startowej</string>
+      <string>Ustaw jako aktywną listę zawodników</string>
      </property>
      <property name="checked">
       <bool>true</bool>

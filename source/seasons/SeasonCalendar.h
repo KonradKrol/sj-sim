@@ -41,6 +41,7 @@ private:
     QVector<CompetitionInfo *> competitions;
     QVector<Classification *> classifications;
     QString name;
+    QString rosterId;
 
 public:
     QVector<CompetitionInfo *> getCompetitions() const;
@@ -50,6 +51,8 @@ public:
     QVector<Classification *> &getClassificationsReference();
     void setClassifications(const QVector<Classification *> &newClassifications);
     QString getName() const;
+    QString jumpersListId() const { return rosterId; }
+    void setJumpersListId(const QString &id) { rosterId=id; }
     void setName(const QString &newName);
 };
 

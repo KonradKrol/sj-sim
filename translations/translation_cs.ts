@@ -2670,7 +2670,10 @@ li.checked::marker { content: "\2612"; }
             <source>Szybkie planowanie</source>
             <translation>Rychlé plánování</translation>
         </message>
-    </context>
+    <message><source>Lista zawodników</source><translation>Seznam závodníků</translation></message>
+<message><source>Lista zawodników kalendarza</source><translation>Seznam závodníků kalendáře</translation></message>
+<message><source>Przed konkursem ta lista stanie się aktywna. Skład możesz zmienić w przygotowaniu.</source><translation>Před závodem se tento seznam aktivuje. Sestavu můžete změnit během přípravy.</translation></message>
+</context>
     <context>
         <name>CalendarsListModel</name>
         <message>
@@ -15529,7 +15532,10 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Data sezonu: %1</source>
             <translation>Datum sezóny: %1</translation>
         </message>
-    </context>
+    <message><source>Trening</source><translation>Trénink</translation></message>
+<message><source>Seria próbna</source><translation>Zkušební kolo</translation></message>
+<message><source>Kwalifikacje</source><translation>Kvalifikace</translation></message>
+</context>
     <context>
         <name>QuickCalendar</name>
         <message>
@@ -15898,7 +15904,8 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>%1 konkursów nie ma daty. Możesz ustalić ich terminy w szybkim planowaniu.</source>
             <translation>%1 závodů nemá datum. Termíny můžete nastavit pomocí rychlého plánování.</translation>
         </message>
-    </context>
+    <message><source>Bez przypisania — użyj aktywnej listy</source><translation>Nepřiřazeno — použít aktivní seznam</translation></message>
+</context>
     <context>
         <name>QuickPlot</name>
         <message>
@@ -18147,7 +18154,8 @@ li.checked::marker { content: "\2612"; }
             <source>Wszyscy zawodnicy (%1)</source>
             <translation>Všichni skokani (%1)</translation>
         </message>
-    </context>
+    <message><source>Usunięto aktywną listę. Wybrano wszystkich zawodników.</source><translation>Aktivní seznam byl odstraněn. Nyní jsou vybráni všichni závodníci.</translation></message>
+</context>
     <context>
         <name>SimulationSavesWindow</name>
         <message>

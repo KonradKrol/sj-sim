@@ -2670,7 +2670,10 @@ li.checked::marker { content: "\2612"; }
             <source>Szybkie planowanie</source>
             <translation>Quick scheduling</translation>
         </message>
-    </context>
+    <message><source>Lista zawodników</source><translation>Athlete roster</translation></message>
+<message><source>Lista zawodników kalendarza</source><translation>Calendar athlete roster</translation></message>
+<message><source>Przed konkursem ta lista stanie się aktywna. Skład możesz zmienić w przygotowaniu.</source><translation>This roster becomes active before the event. You can change the lineup during preparation.</translation></message>
+</context>
     <context>
         <name>CalendarsListModel</name>
         <message>
@@ -15528,7 +15531,10 @@ Check that you selected the correct file.</translation>
             <source>Data sezonu: %1</source>
             <translation>Season date: %1</translation>
         </message>
-    </context>
+    <message><source>Trening</source><translation>Training</translation></message>
+<message><source>Seria próbna</source><translation>Trial round</translation></message>
+<message><source>Kwalifikacje</source><translation>Qualifications</translation></message>
+</context>
     <context>
         <name>QuickCalendar</name>
         <message>
@@ -15897,7 +15903,8 @@ Check that you selected the correct file.</translation>
             <source>%1 konkursów nie ma daty. Możesz ustalić ich terminy w szybkim planowaniu.</source>
             <translation>%1 competitions have no date. Use quick scheduling to set their dates.</translation>
         </message>
-    </context>
+    <message><source>Bez przypisania — użyj aktywnej listy</source><translation>Unassigned — use the active roster</translation></message>
+</context>
     <context>
         <name>QuickPlot</name>
         <message>
@@ -18146,7 +18153,8 @@ li.checked::marker { content: "\2612"; }
             <source>Wszyscy zawodnicy (%1)</source>
             <translation>All jumpers (%1)</translation>
         </message>
-    </context>
+    <message><source>Usunięto aktywną listę. Wybrano wszystkich zawodników.</source><translation>The active roster was deleted. All athletes are now selected.</translation></message>
+</context>
     <context>
         <name>SimulationSavesWindow</name>
         <message>

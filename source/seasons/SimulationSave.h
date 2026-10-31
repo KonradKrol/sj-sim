@@ -34,7 +34,7 @@ public:
     void setAutosaveEnabled(bool enabled) { autosaveEnabled = enabled; }
     // The active-roster workflow is incomplete until competition preparation
     // and calendar assignment use it consistently. Keep it dormant meanwhile.
-    static constexpr bool activeRosterFeatureEnabled() { return false; }
+    static constexpr bool activeRosterFeatureEnabled() { return true; }
     QString activeJumpersListId() const;
     const SaveJumpersList *activeJumpersList() const;
     QVector<Jumper *> activeJumpers() const;

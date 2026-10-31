@@ -66,6 +66,21 @@ Item {
                 }
             }
         }
+        RowLayout {
+            visible: calendar.backend.calendarIndex>=0
+            Layout.fillWidth: true
+            Label { text: qsTr("Lista zawodników"); color: Theme.muted; font.pointSize: Theme.caption }
+            SChoice {
+                objectName: "calendarRosterChoice"
+                Layout.fillWidth: true; Layout.minimumWidth: 0
+                model: calendar.backend.rosterChoices; textRole: "label"
+                currentIndex: {var choices=calendar.backend.rosterChoices;for(var i=0;i<choices.length;++i)if(choices[i].id===calendar.backend.rosterId)return i;return 0}
+                Accessible.name: qsTr("Lista zawodników kalendarza")
+                onActivated: calendar.backend.setRosterId(calendar.backend.rosterChoices[index].id)
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Przed konkursem ta lista stanie się aktywna. Skład możesz zmienić w przygotowaniu.")
+            }
+        }
         SectionTabs { visible: !calendar.tight && !(calendar.compact && calendar.editing); Layout.fillWidth: true; options: [qsTr("Konkursy"),qsTr("Klasyfikacje")]; currentIndex: calendar.section; onSelected: calendar.section=index }
         Loader {
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0

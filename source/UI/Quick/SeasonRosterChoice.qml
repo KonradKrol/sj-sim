@@ -22,4 +22,5 @@ ColumnLayout {
         onActivated: if (choice.backend && index >= 0 && index < choice.entries.length) choice.backend.selectActiveRoster(choice.entries[index].id)
     }
     Label { text: qsTr("Przed konkursem skład zacznie się od tej listy. Możesz go zmienić w przygotowaniu."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+    Label { visible: !!choice.backend && !!choice.backend.rosterNotice; text: choice.backend ? choice.backend.rosterNotice : ""; color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
 }

@@ -225,6 +225,7 @@ SeasonCalendar SeasonCalendar::getFromJson(QJsonObject json, IdentifiableObjects
     SeasonCalendar calendar;
     calendar.setID(sole::rebuild(json.value("id").toString().toStdString()));
     calendar.setName(json.value("name").toString());
+    calendar.setJumpersListId(json.value("jumpers-list-id").toString());
 
     QJsonArray classificationsArray = json.value("classifications").toArray();
     for(auto val : classificationsArray){
@@ -364,6 +365,7 @@ QJsonObject SeasonCalendar::getJsonObject(SeasonCalendar &calendar)
     QJsonObject object;
     object.insert("id", calendar.getIDStr());
     object.insert("name", calendar.getName());
+    if(!calendar.jumpersListId().isEmpty())object.insert("jumpers-list-id",calendar.jumpersListId());
 
     QJsonArray classificationsArray;
     for(auto & cls : qAsConst(calendar.getClassificationsReference()))

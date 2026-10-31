@@ -80,6 +80,10 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
     ui->pushButton_jumpersLists->hide();
     if(simulationSave != nullptr)
         seasonCompetition = simulationSave->getNextCompetition();
+    if(type==SeasonCompetition && SimulationSave::activeRosterFeatureEnabled()) {
+        const auto id=simulationSave->getActualSeason()->getActualCalendar()->jumpersListId();
+        if(!id.isEmpty() && !simulationSave->setActiveJumpersListId(id))simulationSave->setActiveJumpersListId(QString());
+    }
     ui->spinBox_dsqProbability->setValue(GlobalSimulationSettings::get()->getBaseDsqProbability());
     delete ui->page_2;
     ui->toolBox->removeItem(1);
