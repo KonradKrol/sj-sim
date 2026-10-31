@@ -8,6 +8,8 @@ Pane {
     property bool focused: false
     readonly property var fields: node ? node.values : ({})
     readonly property bool panel: fields.kind === "panel"
+    readonly property bool disclosure: fields.kind === "disclosure"
+    property bool expanded: false
     padding: panel ? (Theme.compact ? 6 : 16) : 0
     background: Surface { visible: group.panel; fillColor: Theme.surface; sweep: 28 }
     contentItem: Column {
@@ -28,6 +30,14 @@ Pane {
             checked: !!group.fields.value
             onClicked: ui.edit(group.fields.id, checked)
         }
+        SButton {
+            visible: group.disclosure
+            objectName: "expand-"+(group.fields.name || "section")
+            width: parent.width
+            text: (group.fields.text || "")+(group.expanded ? "  ▴" : "  ▾")
+            quiet: true
+            onClicked: group.expanded=!group.expanded
+        }
         SectionTabs {
             visible: group.fields.kind === "tabs"
             width: parent.width
@@ -38,6 +48,7 @@ Pane {
         }
         GridLayout {
             id: grid
+            visible: !group.disclosure || group.expanded
             width: parent.width
             columnSpacing: Theme.compact ? 8 : 16; rowSpacing: Theme.gap
             readonly property bool parallel: group.fields.kind === "row" || group.fields.kind === "split" || group.fields.kind === "sections" || group.fields.kind === "form"

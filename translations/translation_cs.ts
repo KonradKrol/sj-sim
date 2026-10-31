@@ -14895,6 +14895,7 @@ Ověřte, že jste vybrali správný soubor.</translation>
     </context>
     <context>
         <name>QuickBridge</name>
+        <message><source>Paczki danych</source><translation>Datové balíčky</translation></message>
         <message><source>Grupuj kraje · obecna kolejność</source><translation>Seskupit země · současné pořadí</translation></message>
         <message>
             <location filename="../source/UI/Quick/QuickBridge.cpp" line="90" />

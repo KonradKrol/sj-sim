@@ -1132,9 +1132,13 @@ void QuickBridge::compose(QuickNode *base) {
     if(auto *configuration=qobject_cast<CompetitionConfigWindow *>(m_window)) {
         const bool season=configuration->getType()==CompetitionConfigWindow::SeasonCompetition;
         QVariantList plan;
+        QVariant packs;
         if(configuration->usesCanonicalCatalog()) {
             plan.append(group("competition-catalog-status",QString(),fields({{"label_catalogStatus",""},{"pushButton_catalogDetails",""}})));
-            plan.append(group("competition-packs",tr("Paczki"),fields({{"comboBox_athletePack",tr("Zawodnicy")},{"comboBox_hillPack",tr("Skocznie")},{"comboBox_rulesPack",tr("Zasady")}}),"form"));
+            auto *packNode=m_groups.value("competition-packs");if(!packNode){packNode=new QuickNode(this);m_groups.insert("competition-packs",packNode);}
+            packNode->update({{"kind","disclosure"},{"name","competition-packs"},{"text",tr("Paczki danych")}},
+                {group("competition-pack-fields",QString(),fields({{"comboBox_athletePack",tr("Zawodnicy")},{"comboBox_hillPack",tr("Skocznie")},{"comboBox_rulesPack",tr("Zasady")}}),"form")});
+            packs=QVariant::fromValue(packNode);
         }
         if(season && configuration->getSeasonCompetition()) {
             auto *event=configuration->getSeasonCompetition();auto *hill=event->getHill();
@@ -1240,7 +1244,9 @@ void QuickBridge::compose(QuickNode *base) {
                 page->setProperty("quickExposePage",true);detail.append(QVariant::fromValue(node(page,true)));labels.append(page->inherits("WindsGeneratorSettingsEditorWidget")?tr("Wiatr"):tr("Śnieg"));
             }
         }
-        detail.prepend(group("overview",QString(),top,"sections"));
+        QVariantList overview{group("overview-sections",QString(),top,"sections")};
+        if(packs.isValid())overview.append(packs);
+        detail.prepend(group("overview",QString(),overview,"column"));
         auto *tabs=sectionTabs("competition-pages",labels,detail);
         m_root->update(tabs->values(),tabs->children());return;
     }

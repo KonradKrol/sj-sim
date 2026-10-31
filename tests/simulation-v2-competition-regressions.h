@@ -37,6 +37,9 @@ static void simulationV2CanonicalCompetitionRegressions(MainWindow &main) {
     auto *selector=window.findChild<QComboBox *>("comboBox_athletePack");selector->setCurrentIndex(selector->findData(pack["id"].toString()));
     const auto original=window.getCompetitionJumpers();check(original.size()==6,"canonical athlete pack populates the actual start list");
     window.show();QTest::qWait(150);auto *bridge=window.findChild<QuickBridge *>();auto *roster=bridge->findChild<QuickRoster *>();check(roster,"canonical competition has roster editor");
+    auto *packToggle=item(scene(&window)->rootObject(),"expand-competition-packs");check(packToggle,"data packs have their own secondary disclosure");
+    auto *packChoice=item(scene(&window)->rootObject(),"choice-comboBox_athletePack");check(packChoice && !packChoice->isVisible(),"pack selectors are initially collapsed");
+    clickControl(scene(&window),"expand-competition-packs");QTest::qWait(40);check(packChoice->isVisible(),"pack selectors remain accessible when requested");
     const auto setupTabs=bridge->root()->values()["options"].toStringList();const auto hillTab=setupTabs.indexOf(QString::fromUtf8("Skocznia"));check(hillTab>=0,"hill configuration section exists");
     bridge->edit(bridge->root()->values()["id"].toInt(),hillTab);QTest::qWait(80);
     check(item(scene(&window)->rootObject(),"inlineHillPack") && item(scene(&window)->rootObject(),"inlineHillChoice"),"advanced hill editor exposes the existing pack and hill selectors inline");

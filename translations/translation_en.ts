@@ -14894,6 +14894,7 @@ Check that you selected the correct file.</translation>
     </context>
     <context>
         <name>QuickBridge</name>
+        <message><source>Paczki danych</source><translation>Data packs</translation></message>
         <message><source>Grupuj kraje · obecna kolejność</source><translation>Group countries · current order</translation></message>
         <message>
             <location filename="../source/UI/Quick/QuickBridge.cpp" line="169" />
