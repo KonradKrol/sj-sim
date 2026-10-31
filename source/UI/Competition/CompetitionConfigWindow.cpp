@@ -736,8 +736,7 @@ void CompetitionConfigWindow::updateCanonicalReadiness()
     if(!hillDraft->valid())messages.append(tr("Dodaj skocznię w bazie danych lub wybierz inną paczkę."));
     if(existingCompetitionRulesComboBox->currentIndex()<0)messages.append(tr("Wybierz paczkę z zasadami konkursu."));
     messages.removeDuplicates();
-    if(!snapshot.issues.isEmpty())messages.append(tr("Uwagi przy wczytywaniu paczek: %1.").arg(snapshot.issues.size()));
-    findChild<QPushButton *>("pushButton_catalogDetails")->setVisible(!snapshot.issues.isEmpty());
+    findChild<QPushButton *>("pushButton_catalogDetails")->hide();
     catalogStatus->setText(messages.join('\n'));catalogStatus->setVisible(!messages.isEmpty());
     updateCanonicalGateSuggestion();
 }
