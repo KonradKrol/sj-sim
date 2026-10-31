@@ -21,6 +21,13 @@ ColumnLayout {
         model: library.backend.library
         spacing: 4; clip: true; activeFocusOnTab: true
         ScrollBar.vertical: ScrollBar {}
+        section.property: library.backend.savedList && library.backend.grouped ? "countryCode" : ""
+        section.delegate: Label {
+            required property string section
+            width: candidates.width
+            text: section; color: Theme.ink; font.bold: true; font.pointSize: Theme.body
+            topPadding: Theme.dp(7); bottomPadding: Theme.dp(3)
+        }
         delegate: RosterRow { required property var model; width: candidates.width; backend: library.backend; athleteId: model.athleteId; athleteName: model.athleteName; countryCode: model.countryCode; flagSource: model.flagSource || ""; included: model.included }
         EmptyState { parent: candidates; anchors.fill: parent; compact: parent.height<150; visible: candidates.count===0; title: qsTr("Brak pasujących zawodników"); description: qsTr("Zmień nazwisko lub kraj, aby zobaczyć innych zawodników."); actionText: library.backend.query.length || library.backend.country>0 ? qsTr("Wyczyść filtry") : ""; onTriggered: {library.backend.query="";library.backend.country=0} }
     }

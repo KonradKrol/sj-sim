@@ -215,6 +215,7 @@
 <file>KoMemberSlot.qml</file>
 <file>KoDragArea.qml</file>
 <file>RosterWorkspace.qml</file>
+<file>SavedRosterWorkspace.qml</file>
 <file>RosterLimits.qml</file>
 <file>RosterPresets.qml</file>
 <file>ProjectedControl.qml</file>

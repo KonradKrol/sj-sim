@@ -101,7 +101,9 @@ ColumnLayout {
             Layout.fillWidth: true; Layout.fillHeight: true
             Layout.minimumHeight: 0; Layout.minimumWidth: 0
             Layout.margins: Theme.compact ? 4 : workspace.width < 700 || workspace.height < 600 ? 12 : 20
-            sourceComponent: Component { RosterWorkspace { node: workspace.contentNode } }
+            sourceComponent: workspace.contentNode && workspace.contentNode.values.backend && workspace.contentNode.values.backend.savedList ? savedRoster : competitionRoster
+            Component { id: savedRoster; SavedRosterWorkspace { node: workspace.contentNode } }
+            Component { id: competitionRoster; RosterWorkspace { node: workspace.contentNode } }
         }
         Loader {
             visible: active

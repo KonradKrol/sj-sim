@@ -23086,4 +23086,5 @@ Technical key: %4</translation>
             <translation>Competition preparation starts with this list. You can change the lineup there.</translation>
         </message>
     </context>
+<context><name>SavedRosterWorkspace</name><message><source>Cofnij</source><translation>Undo</translation></message><message><source>Według krajów</source><translation>By country</translation></message><message><source>Kolejność</source><translation>Order</translation></message><message><source>Limity krajów</source><translation>Country limits</translation></message><message><source>Wszyscy</source><translation>All</translation></message><message><source>Wybrani (%1)</source><translation>Selected (%1)</translation></message><message><source>Wybrani zawodnicy</source><translation>Selected athletes</translation></message></context>
 </TS>

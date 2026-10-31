@@ -23087,4 +23087,5 @@ Technický klíč: %4</translation>
             <translation>Příprava závodu začne tímto seznamem. Sestavu tam můžete změnit.</translation>
         </message>
     </context>
+<context><name>SavedRosterWorkspace</name><message><source>Cofnij</source><translation>Zpět</translation></message><message><source>Według krajów</source><translation>Podle zemí</translation></message><message><source>Kolejność</source><translation>Pořadí</translation></message><message><source>Limity krajów</source><translation>Limity zemí</translation></message><message><source>Wszyscy</source><translation>Všichni</translation></message><message><source>Wybrani (%1)</source><translation>Vybraní (%1)</translation></message><message><source>Wybrani zawodnicy</source><translation>Vybraní závodníci</translation></message></context>
 </TS>

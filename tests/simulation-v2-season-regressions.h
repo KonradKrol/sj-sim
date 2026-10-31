@@ -36,7 +36,7 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
         check(ja.setSimulationProfile(a,fixtureError) && jb.setSimulationProfile(b,fixtureError) && jc.setSimulationProfile(c,fixtureError),"roster limit fixtures");
         JumpersListEditorWindow editor;editor.setAllJumpers({&ja,&jb,&jc});editor.setSelectedJumpers({&ja,&jc});editor.updateUnselectedJumpers();editor.show();QTest::qWait(150);
         auto *rosterBridge=editor.findChild<QuickBridge *>();auto *roster=rosterBridge?rosterBridge->findChild<QuickRoster *>():nullptr;
-        check(roster && roster->savedList(),"saved roster editor exposes country controls");
+        check(roster && roster->savedList() && roster->grouped() && item(scene(&editor)->rootObject(),"savedRosterWorkspace"),"new saved roster workspace starts grouped by country");
         QAbstractItemModelTester limitContract(roster->limitRows(),QAbstractItemModelTester::FailureReportingMode::Fatal);
         QSignalSpy limitResets(roster->limitRows(),&QAbstractItemModel::modelReset);
         check(roster->setCountryLimit("POL",1),"country limit is editable");
@@ -48,7 +48,7 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
         check(editor.getSelectedJumpers()==originalOrder && roster->groupedRows()->get(0).value("countryCode").toString()=="NOR","grouped view sorts by country without changing saved order");
         roster->setGrouped(false);check(roster->ordered()->get(0).value("athleteId").toString()==QuickRoster::key(&ja),"returning to the normal view restores the original order");roster->setGrouped(true);
         auto *view=scene(&editor);
-        for(int i=0;i<3;++i){clickControl(view,"rosterView-0");check(!roster->grouped(),"the order tab restores the normal view");clickControl(view,"rosterView-1");check(roster->grouped(),"the country tab opens the grouped view");}
+        for(int i=0;i<3;++i){clickControl(view,"savedRosterView-1");check(!roster->grouped(),"the order tab restores the normal view");clickControl(view,"savedRosterView-0");check(roster->grouped(),"the country tab opens the grouped view");}
         clickControl(view,"rosterLimitsToggle");QTest::qWait(100);
         presentation(&editor)->grab().save(output+"/saved-roster-limits.png");
         QPointer<QQuickItem> limitInput=item(view->rootObject(),"roster-limit-POL");check(limitInput,"country limit field is visible in the list editor");
