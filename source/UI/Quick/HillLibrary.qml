@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.15
 ColumnLayout {
     id: library
     objectName: "hillLibrary"
+    property bool season: false
     property var backend
     property string query: ""
     property int pack: -1
@@ -30,7 +31,7 @@ ColumnLayout {
     RowLayout {
         Layout.fillWidth: true
         Label { text: qsTr("Skocznie · %1").arg(library.backend.profiles.length); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
-        SortCountryButton { enabled: library.backend.profiles.length>1; onConfirmed: library.backend.sortByCountry() }
+        SortCountryButton { visible: !library.season; enabled: library.backend.profiles.length>1; onConfirmed: library.backend.sortByCountry() }
     }
     SField { Layout.fillWidth: true; text: library.query; placeholderText: qsTr("Szukaj skoczni lub kraju…"); Accessible.name: placeholderText; onTextEdited: library.query=text }
     ListView {

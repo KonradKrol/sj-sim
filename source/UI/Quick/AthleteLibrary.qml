@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.15
 Control {
     id: library
     objectName: "athleteLibrary"
+    property bool season: false
     property var backend
     property string query: ""
     property string pack: ""
@@ -50,6 +51,7 @@ Control {
         if(openEditor)activated()
     }
     function moveSelected(step) {
+        if(season)return
         var from=backend.selectedIndex, to=from+step
         if(from>=0 && to>=0 && to<backend.profiles.length)backend.move(from,to)
     }
@@ -67,8 +69,8 @@ Control {
         RowLayout {
             Layout.fillWidth: true; Layout.margins: Theme.dp(8)
             Label { text: qsTr("Skoczkowie · %1").arg(library.backend.profiles.length); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
-            SortCountryButton { enabled: library.backend.profiles.length>1; onConfirmed: library.backend.sortByCountry() }
-            SButton { objectName: "athleteRemove"; text: qsTr("Usuń"); quiet: true; foreground: Theme.danger; enabled: library.backend.selectedIndex>=0; Accessible.name: qsTr("Usuń wybranego skoczka"); hint: qsTr("Delete · możesz cofnąć usunięcie"); onClicked: {rows.forceActiveFocus();library.backend.remove()} }
+            SortCountryButton { visible: !library.season; enabled: library.backend.profiles.length>1; onConfirmed: library.backend.sortByCountry() }
+            SButton { objectName: "athleteRemove"; visible: !library.season; text: qsTr("Usuń"); quiet: true; foreground: Theme.danger; enabled: library.backend.selectedIndex>=0; Accessible.name: qsTr("Usuń wybranego skoczka"); hint: qsTr("Delete · możesz cofnąć usunięcie"); onClicked: {rows.forceActiveFocus();library.backend.remove()} }
         }
         SField {
             objectName: "athleteListSearch"
@@ -77,7 +79,7 @@ Control {
             onTextEdited: library.query=text
             Keys.onEscapePressed: library.query=""
         }
-        Label { text: qsTr("Przeciągnij uchwyt na liście lub użyj Alt + ↑/↓, aby zmienić kolejność."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; Layout.leftMargin: Theme.dp(8); Layout.rightMargin: Theme.dp(8); Layout.bottomMargin: Theme.dp(6); wrapMode: Text.WordWrap }
+        Label { visible: !library.season; text: qsTr("Przeciągnij uchwyt na liście lub użyj Alt + ↑/↓, aby zmienić kolejność."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; Layout.leftMargin: Theme.dp(8); Layout.rightMargin: Theme.dp(8); Layout.bottomMargin: Theme.dp(6); wrapMode: Text.WordWrap }
         ListView {
             id: rows
             opacity: 0.65+packFeedback.progress*0.35
@@ -95,7 +97,7 @@ Control {
                 else if(event.key===Qt.Key_End)library.choose(count-1)
                 else event.accepted=false
             }
-            Keys.onDeletePressed: {if(library.backend.selectedIndex>=0)library.backend.remove();event.accepted=true}
+            Keys.onDeletePressed: {if(!library.season && library.backend.selectedIndex>=0)library.backend.remove();event.accepted=true}
             Keys.onReturnPressed: if(currentIndex>=0)library.activated()
             Keys.onEnterPressed: if(currentIndex>=0)library.activated()
             delegate: AbstractButton {
@@ -128,12 +130,14 @@ Control {
                     Label { text: row.overall; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption }
                     Item {
                         id: handle
+                        visible: !library.season
                         objectName: "athleteDragHandle-"+row.profileIndex
                         Layout.preferredWidth: Theme.dp(28); Layout.fillHeight: true
                         Accessible.role: Accessible.Button; Accessible.name: qsTr("Przeciągnij, aby zmienić kolejność skoczka %1").arg(row.label)
                         Label { anchors.centerIn: parent; text: "⋮⋮"; color: Theme.muted; font.pointSize: Theme.body; Accessible.ignored: true }
                         MouseArea {
                             id: dragArea
+                            enabled: !library.season
                             anchors.fill: parent; cursorShape: Qt.SizeVerCursor; preventStealing: true
                             property real startY: 0
                             property bool dragging: false

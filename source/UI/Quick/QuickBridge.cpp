@@ -884,7 +884,16 @@ void QuickBridge::compose(QuickNode *base) {
         for(auto *button:page->findChildren<QPushButton *>())if(button->isVisibleTo(page)&&!container->isAncestorOf(button)&&(!nativeEditor||!nativeEditor->isAncestorOf(button)))actions.append(QVariant::fromValue(node(button,true)));
         auto *season=qobject_cast<SimulationSaveManagerWindow *>(m_window);
         const QVariant rosterBackend=SimulationSave::activeRosterFeatureEnabled() && season && container->getType()==DatabaseItemsListView::JumpersListsItems ? QVariant::fromValue(static_cast<QObject *>(season)) : QVariant();
-        entry->update({{"kind","catalog"},{"rosterBackend",rosterBackend},{"athleteStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_jumpers"?m_window->property("athleteStudio"):QVariant()},{"hillStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_hills"?m_window->property("hillStudio"):QVariant()},{"singleClickEdit",view->property("quickSingleClickEdit").toBool() || (profile()=="DatabaseEditorWindow" && view->model() && QByteArray(view->model()->metaObject()->className())=="JumpersListModel")},{"actionsRow",actions},{"list",QVariant::fromValue(node(view,true))},{"editor",QVariant::fromValue(editor)},{"toolbar",toolbar},{"editRequest",entry->property("editRequest").toInt()}});
+        QVariantList seasonProfiles;
+        const bool seasonLibrary=season && editor && editor->values().value("kind")=="simulationDraft";
+        if(seasonLibrary) {
+            auto flag=[](const QString &country){return QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(country)+".svg")).toString();};
+            auto *save=season->getSimulationSave();
+            if(container->getType()==DatabaseItemsListView::SeasonJumpersItems){int index=0;for(auto *actor:save->getJumpersReference()){
+                const auto profile=actor->getSimulationProfile();seasonProfiles.append(QVariantMap{{"id",actor->getIDStr()},{"index",index++},{"label",actor->getNameAndSurname()},{"country",actor->getCountryCode()},{"flag",flag(actor->getCountryCode())},{"overall",profile?profile->overall:0}});
+            }}else if(container->getType()==DatabaseItemsListView::SeasonHillsItems){int index=0;for(auto *hill:save->getHillsReference())seasonProfiles.append(QVariantMap{{"id",hill->getIDStr()},{"index",index++},{"label",hill->getName()},{"country",hill->getCountryCode()},{"flag",flag(hill->getCountryCode())},{"hs",hill->getHSPoint()}});}
+        }
+        entry->update({{"kind","catalog"},{"seasonLibrary",seasonLibrary},{"seasonProfiles",seasonProfiles},{"rosterBackend",rosterBackend},{"athleteStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_jumpers"?m_window->property("athleteStudio"):QVariant()},{"hillStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_hills"?m_window->property("hillStudio"):QVariant()},{"singleClickEdit",view->property("quickSingleClickEdit").toBool() || (profile()=="DatabaseEditorWindow" && view->model() && QByteArray(view->model()->metaObject()->className())=="JumpersListModel")},{"actionsRow",actions},{"list",QVariant::fromValue(node(view,true))},{"editor",QVariant::fromValue(editor)},{"toolbar",toolbar},{"editRequest",entry->property("editRequest").toInt()}});
         return entry;
     };
     if(m_window->property("jumpDraft").isValid()) {

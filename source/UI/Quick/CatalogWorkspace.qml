@@ -23,6 +23,21 @@ ColumnLayout {
     readonly property int editRequest: fields.editRequest || 0
     onEditRequestChanged: if(editRequest>0)editing=true
     onEditorChanged: if(editor)editing=true
+    QtObject {
+        id: seasonLibrary
+        readonly property var profiles: catalog.fields.seasonProfiles || []
+        readonly property int selectedIndex: catalog.list.table ? catalog.list.table.currentRow : -1
+        readonly property var profile: catalog.editor && catalog.editor.values.backend ? catalog.editor.values.backend.profile : ({})
+        readonly property string packDirectory: "season"
+        readonly property int packIndex: 0
+        signal uiChanged()
+        function select(index) { if(catalog.list.table)catalog.list.table.select(index,0,0,true) }
+        function remove() {}
+        function move(from,to) {}
+        function sortByCountry() {}
+        onProfilesChanged: Qt.callLater(function(){seasonLibrary.uiChanged()})
+        onSelectedIndexChanged: Qt.callLater(function(){seasonLibrary.uiChanged()})
+    }
     spacing: Theme.compact ? 4 : 8
     Loader {
         visible: active
@@ -59,7 +74,7 @@ ColumnLayout {
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
         spacing: Theme.compact ? 8 : 20
         DataTable {
-            visible: catalog.parallel || !catalog.editing || !catalog.editor
+            visible: !catalog.fields.seasonLibrary && (catalog.parallel || !catalog.editing || !catalog.editor)
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
             Layout.preferredWidth: catalog.editor ? 380 : 1000
             table: catalog.list.table || null; ownerId: catalog.list.id || -1
@@ -67,6 +82,14 @@ ColumnLayout {
             actions: catalog.list.tableActions || []
             expandedActions: !!catalog.fields.singleClickEdit
             singleClickOpen: !!catalog.fields.singleClickEdit
+        }
+        Loader {
+            visible: active
+            active: !!catalog.fields.seasonLibrary && (catalog.parallel || !catalog.editing)
+            Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0; Layout.preferredWidth: 380
+            sourceComponent: catalog.editor && catalog.editor.values.hill ? seasonHills : seasonAthletes
+            Component { id: seasonAthletes; AthleteLibrary { backend: seasonLibrary; season: true; onActivated: catalog.editing=true } }
+            Component { id: seasonHills; HillLibrary { backend: seasonLibrary; season: true; onActivated: catalog.editing=true } }
         }
         ScrollView {
             id: editorScroll
