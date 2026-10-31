@@ -43,3 +43,20 @@ W kodzie jest **niedokończony, celowo wyłączony** szkielet aktywnej listy. `S
 - Pełna regresja aplikacji **nie jest potwierdzona jako zielona**. `30-10-work.md` zawiera jeszcze pełny smoke oraz dalszą diagnostykę dawnego PB `212,5` + Enter. Ten konkretny pierwotny crash nie został odtworzony ani jednoznacznie zdiagnozowany; nie badaj ponownie prywatnych danych wskazanego zawodnika.
 - Windows: `powershell -ExecutionPolicy Bypass -File build-tools/wind-form-incremental.ps1 -BuildDirectory build-win-smoke`, następnie `python scripts/test-quick-ui-windows.py --log build-tools/<nazwa>.log --timeout 240 -- --simulation-v2-season-only` lub `--roster-only`. Runner tworzy izolowaną kopię danych; `--renders <folder>` zachowuje zrzuty. Zwykły build: ten sam skrypt z `-BuildDirectory build-win`. Nie uruchamiaj dwóch buildów w tym samym katalogu.
 - Po zmianach tekstów uruchom `python -X utf8 scripts/check-translations.py` i uzupełnij PL/EN/CS. Nie przedstawiaj testów ograniczonych do wybranych ścieżek jako pełnej regresji.
+
+## Postęp Linux 31.10 — kolejne commity
+
+- `341c1d6`: pusta aktywna lista zwraca wszystkich zawodników; regresja sezonu PASS.
+- `de330cb`: konfiguracja konkursu ma przygotowane przełączenie źródła zawodników
+  za wyłączoną flagą. Nie włączać jej przed przypisaniami kalendarzy i pełnym testem.
+- `5b8f938`: osobny `SavedRosterWorkspace.qml`, dwa panele, domyślnie kraje,
+  na małym ekranie przełączanie paneli. Oba panele grupują krajami.
+  To początek przebudowy: nadal trzeba zastąpić stare wiersze/interakcje,
+  dodać zaznaczanie kandydatów i zbiorcze dodawanie oraz przeciąganie między panelami.
+  Domyślne grupowanie ustawia konstruktor QuickRoster, nie callback tworzenia QML:
+  przełączanie w trakcie tworzenia powodowało crash Qt5. Regresja sezonu PASS.
+- `bc06ed7`: usunięte pozostałe pola ważności kalendarza, kolor tekstu autosave.
+- `4f2bad1`: nazwa klasyfikacji na całą szerokość karty, rodzaj poniżej;
+  `--classifications-only` PASS.
+
+Stan głównych punktów nadal 15/34: nie zaliczać niedokończonej przebudowy list.
