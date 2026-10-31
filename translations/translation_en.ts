@@ -18161,6 +18161,10 @@ li.checked::marker { content: "\2612"; }
         </message>
     <message><source>Usunięto aktywną listę. Wybrano wszystkich zawodników.</source><translation>The active roster was deleted. All athletes are now selected.</translation></message>
 <message><source>Zasady konkursów</source><translation>Competition rules</translation></message>
+<message><source>Kompletuj składy drużyn przed konkursem</source><translation>Complete team squads before competitions</translation></message>
+<message><source>Wybiera zawodników według OVR i formy, z niewielką losowością. Skład możesz później zmienić ręcznie.</source><translation>Selects athletes by OVR and form, with slight randomness. You can change the squad manually afterwards.</translation></message>
+<message><source>Dobieraj belkę przed konkursem</source><translation>Choose the gate before competitions</translation></message>
+<message><source>Ustawia sugerowaną belkę dla skoczni, zawodników i warunków. Możesz ją zmienić ręcznie.</source><translation>Sets the suggested gate for the hill, athletes and conditions. You can change it manually.</translation></message>
 </context>
     <context>
         <name>SimulationSavesWindow</name>

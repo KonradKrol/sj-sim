@@ -42,6 +42,17 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
         roster->addMarkedCandidates();
         check(editor.getSelectedJumpers().contains(&jb) && roster->candidateMarkedCount()==0,"batch adding candidates commits membership and clears added selections");
         roster->undo();check(!editor.getSelectedJumpers().contains(&jb),"batch candidate addition can be undone");
+        {
+            QTest::qWait(80);presentation(&editor)->grab();auto *view=scene(&editor);
+            auto *grip=item(view->rootObject(),"savedRosterCandidateGrip-"+QuickRoster::key(&jb));auto *target=item(view->rootObject(),"savedRosterSelected");
+            check(grip && target,"new roster has direct drag handles and a receiving list");
+            const auto begin=grip->mapToItem(view->rootObject(),grip->boundingRect().center()).toPoint();const auto end=target->mapToItem(view->rootObject(),target->boundingRect().center()).toPoint();
+            QTest::mousePress(view,Qt::LeftButton,Qt::NoModifier,begin);
+            for(int step=1;step<=12;++step){const QPoint at=begin+(end-begin)*step/12;QMouseEvent move(QEvent::MouseMove,at,view->mapToGlobal(at),Qt::NoButton,Qt::LeftButton,Qt::NoModifier);QApplication::sendEvent(view,&move);QTest::qWait(20);}
+            QTest::mouseRelease(view,Qt::LeftButton,Qt::NoModifier,end);QTest::qWait(100);
+            check(editor.getSelectedJumpers().contains(&jb),"dragging from all athletes to selected adds the athlete without a dialog");
+            roster->undo();check(!editor.getSelectedJumpers().contains(&jb),"cross-panel drag can be undone");
+        }
         QAbstractItemModelTester limitContract(roster->limitRows(),QAbstractItemModelTester::FailureReportingMode::Fatal);
         QSignalSpy limitResets(roster->limitRows(),&QAbstractItemModel::modelReset);
         check(roster->setCountryLimit("POL",1),"country limit is editable");
@@ -68,6 +79,15 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
         roster->undo();check(editor.getCountryLimits().value("POL",-1)==4,"undo restores the last edited limit");
         check(limitResets.isEmpty(),"updating limits preserves the list model and its scroll position");
         editor.reject();
+    }
+    {
+        QVector<Jumper> actors;actors.reserve(6);QString squadError;
+        for(int i=0;i<6;++i){auto profile=AthleteProfile::create();profile.overall=99-i*10;Jumper actor;check(actor.setSimulationProfile(profile,squadError),"automatic squad fixture");actors.append(actor);}
+        const QVector<QVector<int>> expected{{0},{1,0},{1,2,0},{2,3,1,0},{2,4,3,1,0}};
+        for(int count=1;count<=5;++count){Team squad("POL");QVector<Jumper *> members;for(auto &actor:actors)members.append(&actor);std::reverse(members.begin(),members.end());squad.setJumpers(members);squad.arrangeSquad(count,0.);
+            check(squad.getJumpers().size()==6,"automatic selection preserves all reserve athletes");
+            for(int i=0;i<count;++i)check(squad.getJumpers()[i]==&actors[expected[count-1][i]],"automatic squad uses prescribed middle/worst/best order");
+        }
     }
     QString error;
     auto profile=AthleteProfile::create();profile.name="Season";profile.surname="Athlete";profile.overall=83;profile.form=61;profile.perks={{1,-2,3}};
@@ -105,6 +125,11 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
     bridge->edit(bridge->root()->values().value("id").toInt(),1);QTest::qWait(80);
     render(&manager,"season-athlete-profile",true);
     check(item(scene(&manager)->rootObject(),"simulationDraftWorkspace"),"season athlete uses bounded new profile workspace");
+    presentation(&manager)->resize(1440,900);QTest::qWait(100);
+    check(item(scene(&manager)->rootObject(),"athleteLibrary"),"season athletes reuse the database library component");
+    clickControl(scene(&manager),"athleteListRow-1");QTest::qWait(80);
+    check(athlete->profile().value("surname").toString()=="Second","shared season athlete library opens a profile with one click");
+    clickControl(scene(&manager),"athleteListRow-0");QTest::qWait(80);
     tabs->setCurrentIndex(1);hills->listViewDoubleClicked(hills->getListModel()->index(0,0));
     hill->setPerk(3,1,3,false);hill->setValue("hs",145);
     check(save.getHillsReference()[0]->getSimulationProfile()->perks[3]==3 && save.getHillsReference()[0]->getHSPoint()==145 && sourceHill.getHSPoint()==venue.hs,"season hill edits update the owned venue and retain perks");
@@ -120,6 +145,13 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
     auto oldSave=SimulationSave::getJsonObject(save);oldSave.remove("autosave-enabled");
     std::unique_ptr<SimulationSave> restoredOld(SimulationSave::getFromJson(oldSave,nullptr));
     check(restoredOld && restoredOld->getAutosaveEnabled(),"seasons saved before the toggle keep automatic saving enabled");
+    auto *autoSquads=manager.findChild<QCheckBox *>("checkBox_autoSquads"),*autoGate=manager.findChild<QCheckBox *>("checkBox_autoGate");
+    check(autoSquads && autoGate && save.getAutoSquadsEnabled() && save.getAutoGateEnabled(),"season preparation defaults enable automatic squads and gates");
+    autoSquads->setChecked(false);autoGate->setChecked(false);
+    std::unique_ptr<SimulationSave> preparationReload(SimulationSave::getFromJson(SimulationSave::getJsonObject(save),nullptr));
+    check(preparationReload && !preparationReload->getAutoSquadsEnabled() && !preparationReload->getAutoGateEnabled(),"preparation preferences survive save and reload independently");
+    autoSquads->setChecked(true);autoGate->setChecked(true);
+
     auto duplicatedIds=SimulationSave::getJsonObject(save);const auto oneList=SaveJumpersList::getJsonObject(limitsFixture);
     duplicatedIds["jumpers-lists"]=QJsonArray{oneList,oneList};
     std::unique_ptr<SimulationSave> normalized(SimulationSave::getFromJson(duplicatedIds,nullptr));
@@ -214,7 +246,11 @@ static void simulationV2SeasonCreationRegressions(MainWindow &main)
     auto *individual=new CompetitionInfo(save->getHillsReference()[0]);individual->setRules(rules);individual->setSerieType(CompetitionInfo::Training);individual->setScheduledDate(QDate(2027,1,4));
     rules.setCompetitionType(CompetitionRules::Team);rules.setJumpersInTeamCount(4);
     auto *team=new CompetitionInfo(save->getHillsReference()[0]);team->setRules(rules);team->setScheduledDate(QDate(2027,1,5));
-    calendar->setCompetitions({individual,team});save->getActualSeason()->setCalendars({calendar});save->getActualSeason()->setActualCalendar(calendar);save->getActualSeason()->setDatesEnabled(true);
+    CompetitionRules qualificationRules;bool foundQualification=false;
+    for(const auto &preset:GlobalDatabase::get()->getEditableCompetitionRules())if(preset.getName()=="Qualifications"){qualificationRules=preset;foundQualification=true;break;}
+    check(foundQualification,"Qualifications preset is available");qualificationRules.setHasDsq(false);
+    auto *qualification=new CompetitionInfo(save->getHillsReference()[0]);qualification->setRules(qualificationRules);qualification->setSerieType(CompetitionInfo::Qualifications);qualification->setScheduledDate(QDate(2027,1,6));
+    calendar->setCompetitions({individual,team,qualification});save->getActualSeason()->setCalendars({calendar});save->getActualSeason()->setActualCalendar(calendar);save->getActualSeason()->setDatesEnabled(true);
     Season empty;empty.setSeasonNumber(2025);save->getSeasonsReference().append(empty);save->setActualSeason(&save->getSeasonsReference().first());save->updateNextCompetitionIndex();
     SimulationSaveManagerWindow manager(save.get(),&main);manager.show();QTest::qWait(100);
     const bool oldLive=GlobalAppSettings::get()->getLiveCompetition();GlobalAppSettings::get()->setLiveCompetition(false);
@@ -233,7 +269,7 @@ static void simulationV2SeasonCreationRegressions(MainWindow &main)
                 running=true;++phases;contest->autoSimulateCompetition();int jumps=0;QSet<int> times;
                 for(const auto &result:contest->getManager()->getResults()->getResultsReference())for(const auto &jump:result.getJumps()) {
                     const auto data=jump.getSimulationV2Data();check(!data.isEmpty() && data["precipitationKind"].toInt()==1,"season jumps consume accepted rain and persist new engine metadata");
-                    check(data["event"].toInt()==(phases==1?int(SimulationV2::EventKind::Training):int(SimulationV2::EventKind::Competition)),"season engine uses actual event importance");
+                    check(data["event"].toInt()==(phases==1?int(SimulationV2::EventKind::Training):phases==3?int(SimulationV2::EventKind::Qualification):int(SimulationV2::EventKind::Competition)),"season engine uses actual event importance");
                     times.insert(data["startSeconds"].toInt());++jumps;
                 }
                 check(jumps==8 && times.size()==8 && contest->getSimulationSeconds()==240,"individual and team seasons advance the shared weather clock exactly once per athlete");
@@ -242,12 +278,31 @@ static void simulationV2SeasonCreationRegressions(MainWindow &main)
         }
     });
     dialogs.start(20);runner.start(30);
-    for(int i=0;i<2;++i){configured.clear();check(QMetaObject::invokeMethod(&manager,"on_pushButton_competitionConfig_clicked",Qt::DirectConnection),"normal season launch slot runs");}
+    for(int i=0;i<3;++i){configured.clear();check(QMetaObject::invokeMethod(&manager,"on_pushButton_competitionConfig_clicked",Qt::DirectConnection),"normal season launch slot runs");}
     runner.stop();dialogs.stop();
-    check(phases==2 && individual->getPlayed() && team->getPlayed(),"normal season workflow finishes both event types");
+    check(phases==3 && individual->getPlayed() && team->getPlayed() && qualification->getPlayed(),"normal season workflow finishes both event types");
     std::unique_ptr<SimulationSave> restored(SimulationSave::getFromJson(SimulationSave::getJsonObject(*save),nullptr));
     check(restored && restored->getEngineVersion()==2 && restored->getActualSeason()->getActualCalendar()->getCompetitionsReference()[0]->getPlayed(),"completed canonical season reloads with played events");
     check(GlobalDatabase::get()->packsSnapshot()==globals,"season creation and competition never mutate global source packs");
+    {
+        CompetitionRules koRules;bool foundKO=false;
+        for(const auto &preset:GlobalDatabase::get()->getEditableCompetitionRules())if(preset.getName()=="Classical KO"){koRules=preset;foundKO=true;break;}
+        check(foundKO,"Classical KO preset is available for qualification transition regression");
+        auto *koEvent=new CompetitionInfo(save->getHillsReference()[0]);koEvent->setRules(koRules);koEvent->setScheduledDate(QDate(2027,1,6));koEvent->setAdvancementCompetition(qualification);
+        calendar->getCompetitionsReference().append(koEvent);save->updateNextCompetitionIndex();
+        CompetitionConfigWindow koSetup(CompetitionConfigWindow::SeasonCompetition,&manager,save.get());koSetup.show();QTest::qWait(120);
+        check(!koSetup.getSeasonCompetitionJumpers().isEmpty(),"played individual qualification feeds a nonempty Classical KO start list");
+        check(KOGroup::getJumpersFromGroups(&koSetup.getSeasonCompetitionGroupsReference()).size()==koSetup.getSeasonCompetitionJumpers().size(),"Classical KO prepares groups for every qualified jumper");
+        koSetup.reject();
+        {
+            std::unique_ptr<SimulationSave> reopened(SimulationSave::getFromJson(SimulationSave::getJsonObject(*save),nullptr));
+            check(reopened && reopened->getNextCompetition(),"qualification transition reload fixture");
+            CompetitionConfigWindow reloadedKO(CompetitionConfigWindow::SeasonCompetition,&main,reopened.get());reloadedKO.show();QTest::qWait(120);
+            check(reloadedKO.getSeasonCompetitionJumpers().size()==koSetup.getSeasonCompetitionJumpers().size(),"qualified identities survive saving and loading before Classical KO");
+            reloadedKO.reject();
+        }
+        calendar->getCompetitionsReference().removeAll(koEvent);delete koEvent;save->updateNextCompetitionIndex();
+    }
     for(int n=0;n<7;++n){
         auto *event=new CompetitionInfo(save->getHillsReference()[0]);event->setRules(rules);event->setScheduledDate(QDate(2027,1,6+n));
         if(n==0){auto *training=new CompetitionInfo(event->getHill());training->setSerieType(CompetitionInfo::Training);training->setRules(rules);training->setScheduledDate(event->getScheduledDate());event->setTrainings({training});auto *trial=new CompetitionInfo(event->getHill());trial->setSerieType(CompetitionInfo::TrialRound);trial->setRules(rules);trial->setScheduledDate(event->getScheduledDate());event->setTrialRound(trial);}

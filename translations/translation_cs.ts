@@ -18162,6 +18162,10 @@ li.checked::marker { content: "\2612"; }
         </message>
     <message><source>Usunięto aktywną listę. Wybrano wszystkich zawodników.</source><translation>Aktivní seznam byl odstraněn. Nyní jsou vybráni všichni závodníci.</translation></message>
 <message><source>Zasady konkursów</source><translation>Pravidla závodu</translation></message>
+<message><source>Kompletuj składy drużyn przed konkursem</source><translation>Před závodem automaticky sestav týmy</translation></message>
+<message><source>Wybiera zawodników według OVR i formy, z niewielką losowością. Skład możesz później zmienić ręcznie.</source><translation>Vybírá závodníky podle OVR a formy s malou náhodností. Sestavu můžete poté změnit ručně.</translation></message>
+<message><source>Dobieraj belkę przed konkursem</source><translation>Před závodem vyber nájezdové okno</translation></message>
+<message><source>Ustawia sugerowaną belkę dla skoczni, zawodników i warunków. Możesz ją zmienić ręcznie.</source><translation>Nastaví doporučené nájezdové okno podle můstku, závodníků a podmínek. Můžete jej změnit ručně.</translation></message>
 </context>
     <context>
         <name>SimulationSavesWindow</name>

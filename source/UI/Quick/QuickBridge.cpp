@@ -1155,6 +1155,7 @@ void QuickBridge::compose(QuickNode *base) {
                 }
             }
             QVariantList content;
+            if(auto *complete=m_content->findChild<QPushButton *>("autoCompleteTeams");complete && !complete->isHidden())content.append(QVariant::fromValue(node(complete,true)));
             for(auto *action:list->findChildren<QAction *>()) {
                 auto *owner=qobject_cast<QWidget *>(action->parent());
                 if(!owner || !owner->isVisibleTo(m_content) || action->shortcut().isEmpty())continue;

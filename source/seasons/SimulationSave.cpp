@@ -255,6 +255,8 @@ SimulationSave * SimulationSave::getFromJson(QJsonObject obj, IdentifiableObject
 
     save->updateNextCompetitionIndex();
 
+    save->setAutoSquadsEnabled(obj.value("auto-squads-enabled").toBool(true));
+    save->setAutoGateEnabled(obj.value("auto-gate-enabled").toBool(true));
     save->setAutosaveEnabled(obj.value("autosave-enabled").toBool(true));
     save->setShowForm(obj.value("show-form").toBool(true));
     save->setShowInstability(obj.value("show-instability").toBool(true));
@@ -310,6 +312,8 @@ QJsonObject SimulationSave::getJsonObject(SimulationSave &save)
     object.insert("actual-season-id", save.getActualSeason()->getIDStr());
     object.insert("next-competition-index", save.getNextCompetitionIndex());
 
+    object.insert("auto-squads-enabled",save.getAutoSquadsEnabled());
+    object.insert("auto-gate-enabled",save.getAutoGateEnabled());
     object.insert("autosave-enabled", save.getAutosaveEnabled());
     object.insert("show-form", save.getShowForm());
     object.insert("show-instability", save.getShowInstability());

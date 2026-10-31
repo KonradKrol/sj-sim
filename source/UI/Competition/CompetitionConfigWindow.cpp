@@ -538,16 +538,34 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         emit ui->comboBox_existingHill->currentIndexChanged(ui->comboBox_existingHill->currentIndex());
         emit existingCompetitionRulesComboBox->currentIndexChanged(existingCompetitionRulesComboBox->currentIndex());
     }
-    on_pushButton_autoGate_clicked();
+    autoCompleteTeams(false);
+    auto *completeTeams=new QPushButton(tr("Uzupełnij drużyny"),this);completeTeams->setObjectName("autoCompleteTeams");
+    ui->verticalLayout_startList->insertWidget(0,completeTeams);
+    auto showCompleter=[this,completeTeams]{completeTeams->setVisible((seasonCompetition?seasonCompetition->getRulesPointer()->getCompetitionType():competitionRulesEditor->getCompetitionTypeFromInput())==CompetitionRules::Team);};
+    showCompleter();connect(competitionRulesEditor,&CompetitionRulesEditorWidget::competitionTypeChanged,this,showCompleter);
+    connect(completeTeams,&QPushButton::clicked,this,[this]{autoCompleteTeams();});
+    if(automaticGateEnabled())on_pushButton_autoGate_clicked();
     connect(ui->comboBox_existingHill, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &CompetitionConfigWindow::on_pushButton_autoGate_clicked);
+            this, [this]{if(automaticGateEnabled())on_pushButton_autoGate_clicked();});
     updateResponsiveLayout(width());
     ResponsiveWindowUtils::manageWindowGeometry(this, "CompetitionConfigWindow");
     if(usesCanonicalCatalog())setupCanonicalCatalog();
     else if(type==SeasonCompetition && simulationSave && simulationSave->getEngineVersion()==2
             && seasonCompetition && seasonCompetition->getHill() && seasonCompetition->getHill()->getSimulationProfile()) {
-        setupWeather();on_pushButton_autoGate_clicked();updateCanonicalGateSuggestion();
+        setupWeather();if(automaticGateEnabled())on_pushButton_autoGate_clicked();updateCanonicalGateSuggestion();
     }
+}
+
+QStringList CompetitionConfigWindow::squadSnapshot() const {
+    QStringList snapshot;for(const auto &team:competitionTeams){snapshot.append(team.getIDStr());for(auto *jumper:team.getJumpers())snapshot.append(jumper?jumper->getIDStr():QString());}return snapshot;
+}
+void CompetitionConfigWindow::autoCompleteTeams(bool ask) {
+    if(!ask && simulationSave && !simulationSave->getAutoSquadsEnabled())return;
+    if(ask && !autoSquadSnapshot.isEmpty() && autoSquadSnapshot!=squadSnapshot()
+        && QMessageBox::question(this,tr("Uzupełnij drużyny"),tr("Zastąpić ręcznie ustawione składy i kolejność zawodników?"),QMessageBox::Yes|QMessageBox::No,QMessageBox::No)!=QMessageBox::Yes)return;
+    const int count=seasonCompetition?seasonCompetition->getRulesPointer()->getJumpersInTeamCount():competitionRulesEditor->getJumpersCountInTeam();
+    for(auto &team:competitionTeams)team.arrangeSquad(count,2.,configuredHill().getKPoint());
+    autoSquadSnapshot=squadSnapshot();if(teamsSquadsModel)teamsSquadsModel->setupTreeItems();
 }
 
 CompetitionConfigWindow::~CompetitionConfigWindow()
@@ -646,7 +664,7 @@ void CompetitionConfigWindow::loadCanonicalCatalog()
         rulesPack->setCurrentIndex(rulesPack->findData(snapshot.active.value(2)));
         filling=false;ready=true;
         selectCanonicalPack(DataPack::Jumpers);selectCanonicalPack(DataPack::Hills);selectCanonicalPack(DataPack::Rules);
-        on_pushButton_autoGate_clicked();updateCanonicalReadiness();
+        if(automaticGateEnabled())on_pushButton_autoGate_clicked();updateCanonicalReadiness();
     });
     watcher->setFuture(QtConcurrent::run([=]{return service.load(packs,maximum,active);}));
 }
@@ -684,7 +702,7 @@ void CompetitionConfigWindow::selectCanonicalHill(int index)
     if(index<0 && ui->comboBox_existingHill->count()){ui->comboBox_existingHill->setCurrentIndex(0);return;}
     if(pack && index>=0 && index<pack->data.hills.size())hillDraft->load(pack->data.hills[index]);
     else hillDraft->clear();
-    on_pushButton_autoGate_clicked();
+    if(automaticGateEnabled())on_pushButton_autoGate_clicked();
 }
 
 void CompetitionConfigWindow::selectCanonicalRules(int index)
@@ -703,6 +721,7 @@ void CompetitionConfigWindow::refreshCanonicalRoster()
     competitionGroups.clear();const QSignalBlocker blocker(comboBox_groupsSelectionType);comboBox_groupsSelectionType->setCurrentIndex(0);
     jumpersListView->setupListModel();KOGroupsList->fillListLayout();
     competitionTeams=Team::constructTeamsVectorByJumpersList(competitionJumpers,competitionRulesEditor->getJumpersCountInTeam());
+    autoCompleteTeams(false);
     teamsSquadsModel->setupTreeItems();
 }
 

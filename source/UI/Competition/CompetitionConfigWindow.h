@@ -68,6 +68,9 @@ signals:
     void submitted();
 
 private:
+    QStringList autoSquadSnapshot;
+    QStringList squadSnapshot() const;
+    bool automaticGateEnabled() const { return !simulationSave || simulationSave->getAutoGateEnabled(); }
     Ui::SingleCompetitionConfigWindow *ui;
     int type;
     HillEditorWidget * hillEditor;
@@ -146,6 +149,7 @@ public:
     QVector<Jumper *> getCompetitionJumpers() const;
     QVector<Jumper *> & getCompetitionJumpersReference();
     QVector<Team> getCompetitionTeams() const;
+    Q_INVOKABLE void autoCompleteTeams(bool ask=true);
     QVector<Team> & getCompetitionTeamsReference();
     void setCompetitionTeams(const QVector<Team> &newCompetitionTeams);
     void setCompetitionJumpers(const QVector<Jumper *> &newCompetitionJumpers);

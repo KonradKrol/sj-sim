@@ -2,10 +2,35 @@
 #include "../global/CountryCodes.h"
 #include <QDebug>
 #include <QJsonArray>
+#include <QRandomGenerator>
+#include <algorithm>
+#include <cmath>
+#include "../simulation-v2/QualityModel.h"
 
 Team::Team(const QString &countryCode) : countryCode(CountryCodes::toFis(countryCode)),
     Identifiable()
 {
+}
+
+void Team::arrangeSquad(int count,double variation,double k)
+{
+    if(count<1 || jumpers.isEmpty())return;
+    const SimulationV2::QualityModel quality;
+    QHash<Jumper *,double> rating;
+    for(auto *jumper:jumpers){
+        if(!jumper || !jumper->getSimulationProfile())return;
+        const auto &profile=*jumper->getSimulationProfile();
+        SimulationV2::Athlete athlete;athlete.overall=profile.overall;athlete.form=profile.form;
+        rating.insert(jumper,quality.baseline(athlete,std::max(1.,k),0.,SimulationV2::EventKind::Competition).overallAndForm
+            +(QRandomGenerator::global()->generateDouble()*2-1)*std::clamp(variation,0.,10.));
+    }
+    auto ranked=jumpers;
+    std::stable_sort(ranked.begin(),ranked.end(),[&](auto *a,auto *b){return rating[a]>rating[b];});
+    const int size=std::min(count,ranked.size());QVector<Jumper *> ordered;
+    if(size>2)ordered.append(ranked[size/2]);
+    for(int rank=size-1;rank>=0;--rank)if(size<=2 || rank!=size/2)ordered.append(ranked[rank]);
+    for(int i=size;i<ranked.size();++i)ordered.append(ranked[i]);
+    jumpers=ordered;
 }
 
 QVector<Team> Team::constructTeamsVectorByJumpersList(const QVector<Jumper> &jumpers, int minCount)

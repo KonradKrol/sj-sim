@@ -30,10 +30,13 @@ public:
     double * getJumperFormInstability(Jumper *j);
     int getEngineVersion() const {return engineVersion;}
     bool setEngineVersion(int value) {if(value!=1 && value!=2)return false;engineVersion=value;return true;}
+    bool getAutoSquadsEnabled() const { return autoSquadsEnabled; }
+    void setAutoSquadsEnabled(bool value) { autoSquadsEnabled=value; }
+    bool getAutoGateEnabled() const { return autoGateEnabled; }
+    void setAutoGateEnabled(bool value) { autoGateEnabled=value; }
     bool getAutosaveEnabled() const { return autosaveEnabled; }
     void setAutosaveEnabled(bool enabled) { autosaveEnabled = enabled; }
-    // The active-roster workflow is incomplete until competition preparation
-    // and calendar assignment use it consistently. Keep it dormant meanwhile.
+    // Shared by the season overview, calendar assignment and contest preparation.
     static constexpr bool activeRosterFeatureEnabled() { return true; }
     QString activeJumpersListId() const;
     const SaveJumpersList *activeJumpersList() const;
@@ -43,6 +46,7 @@ public:
 private:
     int engineVersion=1;
     bool autosaveEnabled=true;
+    bool autoSquadsEnabled=true,autoGateEnabled=true;
     QString activeListId;
     QString name;
     QVector<Season> seasons;

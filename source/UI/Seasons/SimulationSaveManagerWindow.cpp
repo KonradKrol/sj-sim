@@ -431,6 +431,11 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         }
     }
 
+    ui->checkBox_autoSquads->setChecked(simulationSave->getAutoSquadsEnabled());
+    ui->checkBox_autoGate->setChecked(simulationSave->getAutoGateEnabled());
+    connect(ui->checkBox_autoSquads,&QCheckBox::toggled,this,[this](bool value){simulationSave->setAutoSquadsEnabled(value);markSeasonChanged();});
+    connect(ui->checkBox_autoGate,&QCheckBox::toggled,this,[this](bool value){simulationSave->setAutoGateEnabled(value);markSeasonChanged();});
+
     connect(ui->checkBox_calendarDates,&QCheckBox::toggled,this,[this](bool enabled){
         simulationSave->getActualSeason()->setDatesEnabled(enabled);
         fillNextCompetitionInformations();emit calendarEditor->changed();

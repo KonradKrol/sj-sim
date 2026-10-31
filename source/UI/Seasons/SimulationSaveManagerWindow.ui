@@ -790,6 +790,18 @@ li.checked::marker { content: &quot;\2612&quot;; }
               </widget>
              </item>
              <item>
+              <widget class="QCheckBox" name="checkBox_autoSquads">
+               <property name="text"><string>Kompletuj składy drużyn przed konkursem</string></property>
+               <property name="toolTip"><string>Wybiera zawodników według OVR i formy, z niewielką losowością. Skład możesz później zmienić ręcznie.</string></property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="checkBox_autoGate">
+               <property name="text"><string>Dobieraj belkę przed konkursem</string></property>
+               <property name="toolTip"><string>Ustawia sugerowaną belkę dla skoczni, zawodników i warunków. Możesz ją zmienić ręcznie.</string></property>
+              </widget>
+             </item>
+             <item>
               <widget class="QCheckBox" name="checkBox_showForm">
                <property name="text">
                 <string>Pokaż formę zawodników</string>
