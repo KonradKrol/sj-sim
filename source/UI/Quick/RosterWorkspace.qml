@@ -48,7 +48,7 @@ Item {
                 visible: !roster.backend.grouped
                 objectName: "rosterSortChoice"
                 Layout.preferredWidth: Theme.dp(190); Layout.minimumWidth: 0
-                model: [{id:"",text:qsTr("Ustaw kolejność")},{id:"name",text:qsTr("Według nazwiska")},{id:"country",text:qsTr("Według kraju")},{id:"overall-asc",text:qsTr("OVR rosnąco")},{id:"overall-desc",text:qsTr("OVR malejąco")},{id:"random",text:qsTr("Losowo")}].concat(roster.fields.externalActions || [])
+                model: [{id:"",text:qsTr("Ustaw kolejność")},{id:"name",text:qsTr("Według nazwiska")},{id:"country",text:qsTr("Kraje alfabetycznie")},{id:"overall-asc",text:qsTr("OVR rosnąco")},{id:"overall-desc",text:qsTr("OVR malejąco")},{id:"random",text:qsTr("Losowo")}].concat(roster.fields.externalActions || [])
                 textRole: "text"; currentIndex: 0
                 Accessible.name: qsTr("Ustaw kolejność")
                 onActivated: {var entry=model[index];if(entry.button)ui.activate(entry.id);else if(entry.id.length)roster.backend.sort(entry.id)}

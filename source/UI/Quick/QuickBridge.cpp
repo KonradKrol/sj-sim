@@ -1211,7 +1211,7 @@ void QuickBridge::compose(QuickNode *base) {
 
             }
             auto *entry=identity(configuration);auto values=entry->values();QVariantList external;
-            for(const auto &value:advanced)if(auto *entry=value.value<QuickNode *>();entry&&entry->values().value("kind")=="button") {const auto fields=entry->values();external.append(QVariantMap{{"id",fields.value("id")},{"text",fields.value("text")},{"enabled",fields.value("enabled")},{"button",true}});}
+            for(const auto &value:advanced)if(auto *entry=value.value<QuickNode *>();entry&&entry->values().value("kind")=="button") {const auto fields=entry->values();const auto text=fields.value("name")=="pushButton_sortStartListByCountries"?tr("Grupuj kraje · obecna kolejność"):fields.value("text").toString();external.append(QVariantMap{{"id",fields.value("id")},{"text",text},{"enabled",fields.value("enabled")},{"button",true}});}
             values["externalActions"]=external;values["orderChoices"]=QVariantList();entry->update(values);
             QVariantList selectors;
             KOGroupsListView *koList=nullptr;

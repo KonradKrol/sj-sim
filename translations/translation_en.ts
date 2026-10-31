@@ -14892,6 +14892,7 @@ Check that you selected the correct file.</translation>
     </context>
     <context>
         <name>QuickBridge</name>
+        <message><source>Grupuj kraje · obecna kolejność</source><translation>Group countries · current order</translation></message>
         <message>
             <location filename="../source/UI/Quick/QuickBridge.cpp" line="169" />
             <source>Generator formy</source>
@@ -16785,6 +16786,7 @@ Check that you selected the correct file.</translation>
     </context>
     <context>
         <name>RosterWorkspace</name>
+        <message><source>Kraje alfabetycznie</source><translation>Countries alphabetically</translation></message>
         <message>
             <location filename="../source/UI/Quick/RosterWorkspace.qml" line="25" />
             <source>Lista · %1</source>

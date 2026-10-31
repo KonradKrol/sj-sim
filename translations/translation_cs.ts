@@ -14893,6 +14893,7 @@ Ověřte, že jste vybrali správný soubor.</translation>
     </context>
     <context>
         <name>QuickBridge</name>
+        <message><source>Grupuj kraje · obecna kolejność</source><translation>Seskupit země · současné pořadí</translation></message>
         <message>
             <location filename="../source/UI/Quick/QuickBridge.cpp" line="90" />
             <source>OK</source>
@@ -16786,6 +16787,7 @@ Ověřte, že jste vybrali správný soubor.</translation>
     </context>
     <context>
         <name>RosterWorkspace</name>
+        <message><source>Kraje alfabetycznie</source><translation>Země abecedně</translation></message>
         <message>
             <location filename="../source/UI/Quick/RosterWorkspace.qml" line="25" />
             <source>Lista · %1</source>
