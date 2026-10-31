@@ -43,17 +43,15 @@ Item {
         RowLayout {
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
             spacing: Theme.dp(12)
-            Rectangle {
+            SavedRosterPane {
                 visible: !workspace.narrow || workspace.showLibrary
+                backend: workspace.backend
                 Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; Layout.minimumWidth: 0
-                color: Theme.raised; radius: Theme.radius; border.color: Theme.divider
-                RosterLibrary { anchors.fill: parent; anchors.margins: Theme.dp(10); backend: workspace.backend }
             }
-            Rectangle {
+            SavedRosterPane {
                 visible: !workspace.narrow || !workspace.showLibrary
+                backend: workspace.backend; selected: true
                 Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; Layout.minimumWidth: 0
-                color: Theme.surface; radius: Theme.radius; border.color: Theme.outline
-                RosterOrder { anchors.fill: parent; anchors.margins: Theme.dp(10); backend: workspace.backend; title: qsTr("Wybrani zawodnicy") }
             }
         }
         ProjectedControl { node: workspace.fields.submit || null; visible: !!workspace.fields.submit; Layout.fillWidth: true }

@@ -37,6 +37,11 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
         JumpersListEditorWindow editor;editor.setAllJumpers({&ja,&jb,&jc});editor.setSelectedJumpers({&ja,&jc});editor.updateUnselectedJumpers();editor.show();QTest::qWait(150);
         auto *rosterBridge=editor.findChild<QuickBridge *>();auto *roster=rosterBridge?rosterBridge->findChild<QuickRoster *>():nullptr;
         check(roster && roster->savedList() && roster->grouped() && item(scene(&editor)->rootObject(),"savedRosterWorkspace"),"new saved roster workspace starts grouped by country");
+        roster->selectCandidate(QuickRoster::key(&jb));
+        check(roster->candidateMarkedCount()==1 && !editor.getSelectedJumpers().contains(&jb),"candidate selection does not alter membership");
+        roster->addMarkedCandidates();
+        check(editor.getSelectedJumpers().contains(&jb) && roster->candidateMarkedCount()==0,"batch adding candidates commits membership and clears added selections");
+        roster->undo();check(!editor.getSelectedJumpers().contains(&jb),"batch candidate addition can be undone");
         QAbstractItemModelTester limitContract(roster->limitRows(),QAbstractItemModelTester::FailureReportingMode::Fatal);
         QSignalSpy limitResets(roster->limitRows(),&QAbstractItemModel::modelReset);
         check(roster->setCountryLimit("POL",1),"country limit is editable");

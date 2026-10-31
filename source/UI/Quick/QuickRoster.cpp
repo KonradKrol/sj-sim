@@ -125,7 +125,9 @@ void QuickRoster::refresh(){
     QSet<QString> existing;for(auto *j:m_current)existing.insert(key(j));m_marked.intersect(existing);
     auto available=visiblePool();
     if(savedList() && grouped())std::stable_sort(available.begin(),available.end(),[](Jumper *a,Jumper *b){return a->getCountryCode().compare(b->getCountryCode(),Qt::CaseInsensitive)<0;});
-    QVariantList library,ordered;for(auto *j:available)library.append(QVariantMap{{"athleteId",key(j)},{"athleteName",j->getNameAndSurname()},{"countryCode",j->getCountryCode()},{"flagSource",flagSource(j->getCountryCode())},{"included",m_current.contains(j)}});
+    QSet<QString> poolIds;for(auto *j:m_pool)poolIds.insert(key(j));m_candidateMarked.intersect(poolIds);
+    for(auto *j:m_current)m_candidateMarked.remove(key(j));
+    QVariantList library,ordered;for(auto *j:available)library.append(QVariantMap{{"athleteId",key(j)},{"athleteName",j->getNameAndSurname()},{"countryCode",j->getCountryCode()},{"flagSource",flagSource(j->getCountryCode())},{"included",m_current.contains(j)},{"marked",m_candidateMarked.contains(key(j))}});
     for(int i=0;i<m_current.size();++i){auto *j=m_current[i];if(!matches(j,m_orderQuery))continue;ordered.append(QVariantMap{{"athleteId",key(j)},{"athleteName",j->getNameAndSurname()},{"countryCode",j->getCountryCode()},{"flagSource",flagSource(j->getCountryCode())},{"included",true},{"marked",m_marked.contains(key(j))},{"position",i+1},{"activeSlot",!activeLimit()||i<activeLimit()}});}
     auto grouped=ordered;
     if(savedList())std::stable_sort(grouped.begin(),grouped.end(),[](const QVariant &a,const QVariant &b){return a.toMap().value("countryCode").toString().compare(b.toMap().value("countryCode").toString(),Qt::CaseInsensitive)<0;});
@@ -154,6 +156,9 @@ void QuickRoster::write(const QVector<Jumper *> &value){
 void QuickRoster::apply(QVector<Jumper *> value){value=unique(value);if(value==m_current)return;for(auto *j:value)if(!m_pool.contains(j))return;m_undo=m_current;m_undoLimits.clear();m_undoLimitChange=false;m_hasUndo=true;m_current=value;write(value);refresh();}
 void QuickRoster::toggle(const QString &id){sync();if(!membership())return;auto *j=jumper(id);if(!j)return;auto next=m_current;if(next.contains(j))next.removeAll(j);else next.append(j);apply(next);}
 void QuickRoster::addVisible(){sync();if(!membership())return;auto next=m_current;for(auto *j:visiblePool())if(!next.contains(j))next.append(j);apply(next);}
+void QuickRoster::selectCandidate(const QString &id){auto *j=jumper(id);if(!j||m_current.contains(j))return;if(m_candidateMarked.contains(id))m_candidateMarked.remove(id);else m_candidateMarked.insert(id);refresh();}
+void QuickRoster::addMarkedCandidates(){sync();if(!membership())return;auto next=m_current;for(auto *j:m_pool)if(m_candidateMarked.contains(key(j))&&!next.contains(j))next.append(j);apply(next);}
+void QuickRoster::include(const QString &id){sync();if(!membership())return;auto *j=jumper(id);if(!j||m_current.contains(j))return;auto next=m_current;next.append(j);apply(next);}
 void QuickRoster::removeVisible(){sync();if(!membership())return;auto next=m_current;for(auto *j:visiblePool())next.removeAll(j);apply(next);}
 void QuickRoster::mark(const QString &id,int modifiers){
     auto *j=jumper(id);if(!j||!m_current.contains(j))return;

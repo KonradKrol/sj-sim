@@ -46,6 +46,7 @@ class QuickRoster : public QObject {
     Q_PROPERTY(int country READ country WRITE setCountry NOTIFY changed)
     Q_PROPERTY(int count READ count NOTIFY changed)
     Q_PROPERTY(int markedCount READ markedCount NOTIFY changed)
+    Q_PROPERTY(int candidateMarkedCount READ candidateMarkedCount NOTIFY changed)
     Q_PROPERTY(bool membership READ membership CONSTANT)
     Q_PROPERTY(bool active READ active NOTIFY changed)
     Q_PROPERTY(int activeLimit READ activeLimit NOTIFY changed)
@@ -71,6 +72,7 @@ public:
     int country() const { return m_country; }
     int count() const { return m_current.size(); }
     int markedCount() const { return m_marked.size(); }
+    int candidateMarkedCount() const { return m_candidateMarked.size(); }
     bool membership() const;
     bool active() const;
     int activeLimit() const;
@@ -92,6 +94,9 @@ public:
     Q_INVOKABLE void removeMarked();
     Q_INVOKABLE void mark(const QString &id,int modifiers=0);
     Q_INVOKABLE void markAll();
+    Q_INVOKABLE void selectCandidate(const QString &id);
+    Q_INVOKABLE void addMarkedCandidates();
+    Q_INVOKABLE void include(const QString &id);
     Q_INVOKABLE void moveBefore(const QString &id,const QString &target,bool after=false);
     Q_INVOKABLE void moveMarked(int position);
     Q_INVOKABLE void step(int direction);
@@ -105,6 +110,7 @@ private:
     QVector<Jumper *> m_pool,m_current,m_undo;
     QMap<QString,int> m_undoLimits;
     QSet<QString> m_marked;
+    QSet<QString> m_candidateMarked;
     QStringList m_countryCodes,m_presetNames;
     QVariantList m_countryLimits;
     QString m_query,m_orderQuery,m_anchor;
