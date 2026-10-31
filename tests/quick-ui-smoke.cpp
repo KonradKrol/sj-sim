@@ -289,6 +289,7 @@ static void raceOptionsRegressions(MainWindow &main,CompetitionManagerWindow *wi
     qInfo()<<"PASS: Przebieg, Warunki and Skok open visibly and close at desktop and narrow widths";
 }
 #include "competition-ties-gate-regressions.h"
+#include "roster-performance-regressions.h"
 #include "competition-advancement-regressions.h"
 
 static void advanceColorRegressions(MainWindow &main) {
@@ -2580,6 +2581,7 @@ int main(int argc,char **argv) {
         check(headline->property("text").toString()==QString::fromUtf8("Symulator skoków narciarskich"),"Polish restores the open Quick scene");
         qInfo()<<"PASS: live language switching";return 0;
     }
+    if(app.arguments().contains("--roster-performance-only")){rosterPerformanceRegressions();return 0;}
     if(app.arguments().contains("--config-defaults-only")){configDefaultsRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-contest-weather-only")){simulationV2ContestWeatherRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-competition-only")){simulationV2CompetitionRegressions();simulationV2CanonicalCompetitionRegressions(main);return 0;}
