@@ -25,13 +25,12 @@ ColumnLayout {
         contentItem: ColumnLayout {
             spacing: 8
             Label { id: arrivalHeading; text: qsTr("Klasyfikacja"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading }
-            GridLayout {
-                columns: workspace.width<440 ? 1 : 2
-                Layout.fillWidth: true; columnSpacing: 16; rowSpacing: 4
-                Label { text: qsTr("Nazwa"); color: Theme.muted; font.pointSize: Theme.caption; Layout.row: 0; Layout.column: 0 }
-                ClassificationInput { node: workspace.controls.lineEdit_name || null; showLabel: false; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.row: 1; Layout.column: 0 }
-                Label { text: qsTr("Rodzaj klasyfikacji"); color: Theme.muted; font.pointSize: Theme.caption; Layout.row: workspace.width<440 ? 2 : 0; Layout.column: workspace.width<440 ? 0 : 1 }
-                ClassificationInput { node: workspace.controls.comboBox_type || null; showLabel: false; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.row: workspace.width<440 ? 3 : 1; Layout.column: workspace.width<440 ? 0 : 1 }
+            ColumnLayout {
+                Layout.fillWidth: true; spacing: Theme.dp(4)
+                Label { text: qsTr("Nazwa"); color: Theme.muted; font.pointSize: Theme.caption }
+                ClassificationInput { node: workspace.controls.lineEdit_name || null; showLabel: false; Layout.fillWidth: true; Layout.minimumWidth: 0 }
+                Label { text: qsTr("Rodzaj klasyfikacji"); color: Theme.muted; font.pointSize: Theme.caption; Layout.topMargin: Theme.dp(4) }
+                ClassificationInput { node: workspace.controls.comboBox_type || null; showLabel: false; Layout.fillWidth: true; Layout.minimumWidth: 0 }
             }
         }
     }
