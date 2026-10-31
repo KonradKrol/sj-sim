@@ -162,6 +162,18 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
     QTimer::singleShot(100,&manager,[&manager]{auto *editor=manager.findChild<JumpersListEditorWindow *>();check(editor,"saved roster editor opens");editor->setCountryLimits({{"POL",3}});editor->accept();});
     savedLists->listViewDoubleClicked(savedLists->getListModel()->index(0));
     check(save.getJumpersListsReference().first().countryLimit("POL")==3,"accepting a roster editor saves its advisory limits in the season");
+    {
+        const QString first=manager.createRoster(),second=manager.createRoster();
+        check(!first.isEmpty() && !second.isEmpty() && first!=second && save.getJumpersLists().size()==3,"inline roster creation publishes distinct persistent lists");
+        check(manager.renameRoster(first,"Test roster") && manager.selectRoster(first),"inline roster can be renamed and selected by identity");QTest::qWait(50);
+        auto *editor=qobject_cast<QuickRoster *>(manager.rosterEditor());check(editor,"inline roster backend exists");
+        editor->include(QuickRoster::key(save.getJumpersReference().first()));
+        check(manager.selectRoster(second) && manager.selectRoster(first),"switching inline rosters keeps their identities");QTest::qWait(50);
+        check(editor->count()==1,"inline roster members survive selection changes");
+        check(manager.removeRoster(first) && manager.restoreRoster(),"deleted inline roster can be restored");QTest::qWait(50);
+        check(manager.editingRosterId()==first && editor->count()==1,"restoration preserves roster identity and members");
+        check(manager.removeRoster(first) && manager.removeRoster(second) && save.getJumpersLists().size()==1,"repeated inline removal leaves existing lists intact");
+    }
     SaveJumpersList emptyRoster("Empty");
     save.getJumpersListsReference().append(emptyRoster);
     check(save.setActiveJumpersListId(emptyRoster.getId()) && save.activeJumpers()==save.getJumpersReference(),"an empty roster includes all athletes");
