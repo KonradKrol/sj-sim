@@ -12,6 +12,16 @@ static void classificationScoringRegressions()
     qualificationSourceRegressions();
     const auto oldLocale=QLocale();for(const auto &locale:{QLocale(QLocale::Polish,QLocale::Poland),QLocale(QLocale::English,QLocale::UnitedStates)}){QLocale::setDefault(locale);auto text=classificationPointsText(1234.10000000001);text.remove(locale.groupSeparator());check(text=="1234"+QString(locale.decimalPoint())+"1" && classificationPointsText(-.00000001)=="0"+QString(locale.decimalPoint())+"0","classification formatting localizes decimals and removes floating point noise");}QLocale::setDefault(oldLocale);
 
+    {
+        QStandardItemModel scores(2,1);scores.setData(scores.index(0,0),10.);scores.setData(scores.index(1,0),20.);
+        QTableView scoreView;scoreView.setProperty("quickScoreColumn",0);scoreView.setModel(&scores);QuickTableModel projection(&scoreView,nullptr);
+        auto displayed=[&](int row){return projection.data(projection.index(row),Qt::UserRole+1).toList().first().toMap().value("text").toString();};
+        check(displayed(0)=="10" && displayed(1)=="20","whole classification columns omit unnecessary decimal places");
+        scores.setData(scores.index(1,0),20.5);
+        check(displayed(0)==classificationPointsText(10.) && displayed(1)==classificationPointsText(20.5),"fractional classification columns keep consistent decimal formatting");
+        scores.setData(scores.index(1,0),20.);
+        check(displayed(0)=="10","classification precision updates when fractional scores disappear");
+    }
     Jumper a("A","Junior","POL"),b("B","Senior","POL"),c("C","Veteran","POL"),d("D","Unknown","NOR");
     a.setBirthDate(QDate(2008,12,31));b.setBirthYear(2004);c.setBirthYear(1990);
     CompetitionInfo first,second,third;
@@ -152,6 +162,7 @@ static void classificationUiRegressions(MainWindow &main)
     auto *classification=new Classification("Nations");classification->setClassificationType(Classification::Team);classification->setPointsForPlaces({{1,400},{2,350}});classification->setAltPointsForPlaces({{1,100},{2,80}});calendar->setClassifications({classification});event->setClassifications({classification});
     Season season;season.setSeasonNumber(2026);season.setCalendars({calendar});season.setActualCalendar(calendar);save.setSeasons({season});save.setActualSeason(&save.getSeasonsReference().first());save.fixJumpersFormInstabilities();save.updateNextCompetitionIndex();
     SimulationSaveManagerWindow manager(&save,&main);manager.fillNextCompetitionInformations();render(&manager,"classification-manager");
+    presentation(&manager)->resize(1440,1000);QTest::qWait(120);
     auto *bridge=manager.findChild<QuickBridge *>();auto *backend=bridge->findChild<QuickCalendar *>();check(backend,"calendar backend exists");
     bridge->edit(bridge->root()->values().value("id").toInt(),4);QTest::qWait(120);
     auto *workspace=item(scene(&manager)->rootObject(),"calendarWorkspace");check(workspace,"calendar workspace is visible");

@@ -123,6 +123,8 @@ private:
     int m_teamMode=-1;
     int m_anchor = -1;
     bool m_frozen=false;
+    bool m_integralScores=false;
+    void updateScoreFormat();
     QVector<QHash<int,QVariant>> m_snapshot;
     QString m_filter;
 };

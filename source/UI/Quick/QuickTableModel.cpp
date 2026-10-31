@@ -13,6 +13,8 @@
 #include <memory>
 #include "../../seasons/ClassificationScoring.h"
 #include <QSignalBlocker>
+#include <QLocale>
+#include <cmath>
 #include "../Competition/Results/TeamResultsTreeModel.h"
 #include "../Competition/CompetitionManagerWindow.h"
 
@@ -57,7 +59,7 @@ QVariant QuickTableModel::data(const QModelIndex &index, int role) const {
             const auto flags = item.flags();
             QString text=item.data().toString();
             const bool scoreCell=m_view->property("quickScoreColumn").isValid() && c==m_view->property("quickScoreColumn").toInt();
-            if(scoreCell){bool valid=false;double score=item.data(Qt::UserRole).toDouble(&valid);if(!valid)score=item.data().toDouble(&valid);if(valid)text=classificationPointsText(score);}
+            if(scoreCell){bool valid=false;double score=item.data(Qt::UserRole).toDouble(&valid);if(!valid)score=item.data().toDouble(&valid);if(valid)text=m_integralScores?QLocale().toString(score,'f',0):classificationPointsText(score);}
             QStringList members;
             if(teamSetup && c==1){for(int r=0;r<m_source->rowCount(first);++r)members.append(m_source->index(r,1,first).data().toString());text=members.join(" · ");}
             QVariantMap cellData{{"text",text}, {"value",item.data(Qt::EditRole)},
@@ -142,6 +144,7 @@ void QuickTableModel::sync() {
                       << connect(m_source,&QAbstractItemModel::columnsRemoved,this,update)
                       << connect(m_source,&QAbstractItemModel::headerDataChanged,this,[this] { emit structureChanged(); })
                       << connect(m_source,&QAbstractItemModel::dataChanged,this,[this] {
+                          updateScoreFormat();
                           if(!m_rows.isEmpty()) emit dataChanged(index(0),index(m_rows.size()-1));
                       });
         if(m_source->inherits("TeamsSquadsTreeModel")) {
@@ -174,6 +177,17 @@ void QuickTableModel::sync() {
     rebuild();
 }
 void QuickTableModel::setTeamMode(int mode){mode=qBound(0,mode,2);if(mode==m_teamMode)return;m_teamMode=mode;rebuild();}
+void QuickTableModel::updateScoreFormat() {
+    m_integralScores=false;
+    if(!m_source || !m_view || !m_view->property("quickScoreColumn").isValid())return;
+    const int column=m_view->property("quickScoreColumn").toInt();
+    for(int row=0;row<m_source->rowCount();++row){
+        const auto cell=m_source->index(row,column);bool valid=false;
+        double score=cell.data(Qt::UserRole).toDouble(&valid);if(!valid)score=cell.data().toDouble(&valid);
+        if(!valid || !std::isfinite(score) || std::abs(score-std::round(score))>0.0000005)return;
+    }
+    m_integralScores=true;
+}
 void QuickTableModel::rebuild() {
     if(m_frozen)return;
     if(auto *tree=qobject_cast<QTreeView *>(m_view);tree && m_source && m_teamMode>=0) {
@@ -194,6 +208,7 @@ void QuickTableModel::rebuild() {
         }
     };
     if(m_view) append(m_view->rootIndex());
+    updateScoreFormat();
     endResetModel(); emit structureChanged(); emit cursorChanged();
 }
 void QuickTableModel::select(int row,int column,int modifiers,bool open) {
