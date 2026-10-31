@@ -1203,7 +1203,7 @@ void QuickBridge::compose(QuickNode *base) {
             }
             auto *entry=identity(configuration);auto values=entry->values();QVariantList external;
             for(const auto &value:advanced)if(auto *entry=value.value<QuickNode *>();entry&&entry->values().value("kind")=="button") {const auto fields=entry->values();external.append(QVariantMap{{"id",fields.value("id")},{"text",fields.value("text")},{"enabled",fields.value("enabled")},{"button",true}});}
-            values["externalActions"]=external;entry->update(values);
+            values["externalActions"]=external;values["orderChoices"]=QVariantList();entry->update(values);
             QVariantList selectors;
             KOGroupsListView *koList=nullptr;
             if(auto *list=m_content->findChild<QWidget *>("scrollArea_startList"))for(auto *groups:list->findChildren<KOGroupsListView *>())if(!groups->isHidden()){koList=groups;break;}
@@ -1212,7 +1212,7 @@ void QuickBridge::compose(QuickNode *base) {
                 detail.append(QVariant::fromValue(ko));labels.append(tr("Grupy KO"));
             }else{
                 for(const auto &value:advanced)if(auto *entry=value.value<QuickNode *>();entry&&entry->values().value("kind")=="choice")selectors.append(value);
-                if(!selectors.isEmpty()){detail.append(group("start-list-conditions",tr("Kolejność według wyników"),selectors));labels.append(tr("Kolejność według wyników"));}
+                auto updated=identity(configuration)->values();updated["orderChoices"]=selectors;identity(configuration)->update(updated);
             }
         }
         if(configuration->usesCanonicalCatalog()) {

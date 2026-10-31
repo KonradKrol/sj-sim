@@ -44,15 +44,19 @@ Item {
             Label { id: arrivalHeading; visible: !roster.compact; text: roster.backend.membership ? qsTr("Wybór i kolejność") : qsTr("Kolejność skoczków"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; Layout.fillWidth: true }
             SButton { objectName: "rosterOpenPresets"; visible: roster.compact && roster.backend.presets.length>0; text: qsTr("Listy"); Accessible.name: qsTr("Zapisane listy"); hint: qsTr("Zapisane listy"); onClicked: savedLists.open() }
             SButton { objectName: "rosterUndo"; text: qsTr("Cofnij"); enabled: roster.backend.canUndo; quiet: true; onClicked: roster.backend.undo() }
-            SButton {
+            SChoice {
                 visible: !roster.backend.grouped
-                text: "⋯"; quiet: true; Accessible.name: qsTr("Opcje listy"); onClicked: options.open()
-                ActionMenu {
-                    id: options
-                    entries: [{id:"name",text:qsTr("Według nazwiska")},{id:"country",text:qsTr("Według kraju")},{id:"random",text:qsTr("Losowo")}].concat(roster.fields.externalActions || [])
-                    onSelected: {if(entry.button)ui.activate(entry.id);else roster.backend.sort(entry.id)}
-                }
+                objectName: "rosterSortChoice"
+                Layout.preferredWidth: Theme.dp(190); Layout.minimumWidth: 0
+                model: [{id:"",text:qsTr("Ustaw kolejność")},{id:"name",text:qsTr("Według nazwiska")},{id:"country",text:qsTr("Według kraju")},{id:"overall-asc",text:qsTr("OVR rosnąco")},{id:"overall-desc",text:qsTr("OVR malejąco")},{id:"random",text:qsTr("Losowo")}].concat(roster.fields.externalActions || [])
+                textRole: "text"; currentIndex: 0
+                Accessible.name: qsTr("Ustaw kolejność")
+                onActivated: {var entry=model[index];if(entry.button)ui.activate(entry.id);else if(entry.id.length)roster.backend.sort(entry.id)}
             }
+        }
+        Repeater {
+            model: roster.fields.orderChoices || []
+            delegate: ProjectedControl { required property var modelData; node: modelData; Layout.fillWidth: true }
         }
         Loader {
             active: !roster.compact && roster.backend.presets.length>0; visible: active
