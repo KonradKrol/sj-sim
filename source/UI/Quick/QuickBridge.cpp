@@ -1168,7 +1168,11 @@ void QuickBridge::compose(QuickNode *base) {
                 }
             }
             QVariantList content;
-            if(auto *complete=m_content->findChild<QPushButton *>("autoCompleteTeams");complete && !complete->isHidden())content.append(QVariant::fromValue(node(complete,true)));
+            QVariantList toolbar;
+            if(auto *complete=m_content->findChild<QPushButton *>("autoCompleteTeams");complete && !complete->isHidden()) {
+                complete->setProperty("quickMenuOnly",true);
+                toolbar.append(QVariant::fromValue(node(complete,true)));
+            }
             for(auto *action:list->findChildren<QAction *>()) {
                 auto *owner=qobject_cast<QWidget *>(action->parent());
                 if(!owner || !owner->isVisibleTo(m_content) || action->shortcut().isEmpty())continue;
@@ -1185,8 +1189,9 @@ void QuickBridge::compose(QuickNode *base) {
                 auto *entry=m_groups.value("start-list-actions");
                 if(!entry){entry=new QuickNode(this);m_groups.insert("start-list-actions",entry);}
                 entry->update({{"kind","button"},{"text",tr("Opcje listy")},{"actions",actions}});
-                content.append(QVariant::fromValue(entry));
+                toolbar.append(QVariant::fromValue(entry));
             }
+            if(!toolbar.isEmpty())content.append(group("start-list-toolbar",QString(),toolbar,"row"));
             auto *roster=rosterNode(configuration);
             if(!m_rosters.value(configuration)->active()){content.append(QVariant::fromValue(node(list,true)));top.append(group("start-list",tr("Lista startowa"),content));}
             else {

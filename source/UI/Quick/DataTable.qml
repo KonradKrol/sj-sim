@@ -56,7 +56,7 @@ FocusScope {
         for(var c=0;c<visibleColumns;++c)total+=columnWidth(c)
         return total
     }
-    implicitHeight: Math.min(maximumHeight, Math.max(240,(Window.window ? Window.window.height : 960) - 360), Math.max(compact ? 120 : 240, (table ? table.count : 0) * (compact ? 32 : 40) + (columns>1 ? 104 : 66)))
+    implicitHeight: Math.min(teamSetup ? Math.max(240,(Window.window ? Window.window.height : 960)-220) : maximumHeight, Math.max(240,(Window.window ? Window.window.height : 960) - (teamSetup ? 220 : 360)), Math.max(compact ? 120 : 240, (table ? table.count : 0) * (compact ? 32 : 40) + (columns>1 ? 104 : 66)))
     activeFocusOnTab: true
     Accessible.role: Accessible.Table
     Accessible.name: title.length ? title : qsTr("Tabela danych")

@@ -301,6 +301,13 @@ static void simulationV2SeasonCreationRegressions(MainWindow &main)
         {
             CompetitionConfigWindow setup(CompetitionConfigWindow::SeasonCompetition,&main,save.get());setup.show();QTest::qWait(100);
             check(setup.getCompetitionTeams().size()==1 && setup.getCompetitionTeams().first().getCountryCode()=="NOR","team preparation uses the calendar roster instead of all season athletes");
+            auto *teamScene=scene(&setup);check(teamScene && teamScene->rootObject(),"team preparation has a Quick scene");
+            auto *teamScroll=item(teamScene->rootObject(),"workspaceScroll");check(teamScroll,"team preparation exposes its scroll area");
+            if(auto *flick=teamScroll->property("contentItem").value<QQuickItem *>())flick->setProperty("contentY",qMax(0.,flick->property("contentHeight").toDouble()-flick->height()));
+            QTest::qWait(100);
+            std::function<int(QQuickItem *)> countCompletionButtons=[&](QQuickItem *parent){int count=parent->objectName()=="action-autoCompleteTeams" && parent->isVisible();for(auto *child:parent->childItems())count+=countCompletionButtons(child);return count;};
+            const int completionButtons=countCompletionButtons(teamScene->rootObject());
+            check(completionButtons==1,"team preparation exposes the completion action exactly once");
             auto &members=setup.getCompetitionTeamsReference().first().getJumpersReference();std::swap(members[0],members[1]);const auto manual=members;
             bool asked=false;QTimer answer;answer.setSingleShot(true);QObject::connect(&answer,&QTimer::timeout,&setup,[&]{for(auto *widget:QApplication::topLevelWidgets())if(auto *box=qobject_cast<QMessageBox *>(widget);box && box->isVisible()){asked=true;box->button(QMessageBox::No)->click();return;}});answer.start(50);setup.autoCompleteTeams();answer.stop();
             check(asked && members==manual,"automatic completion asks before replacing manual squads and cancellation preserves them");setup.reject();
