@@ -23,6 +23,10 @@ Decyzje użytkownika: interfejs list przebudować od podstaw. Pokazywać obok
 siebie wszystkich i wybranych zawodników, z szybkim dodawaniem i przeciąganiem;
 domyślny widok ma grupować zawodników krajami. Ręczny wybór listy przed
 konkursem obowiązuje dla tego konkursu i nie zmienia przypisania kalendarza.
+Zaznaczenie wielu zawodników pozwala dodać lub usunąć ich jednym przyciskiem.
+Na małym ekranie panele przełączają się, z widoczną liczbą wybranych. Usunięcie
+aktywnej listy wybiera wszystkich i informuje użytkownika. Zarówno pusta aktywna
+lista, jak i brak aktywnej listy oznaczają wszystkich zawodników.
 
 W kodzie jest **niedokończony, celowo wyłączony** szkielet aktywnej listy. `SimulationSave::activeRosterFeatureEnabled()` zwraca `false`: wyboru nie pokazuje się użytkownikowi, starych sejwów nie migruje się i dotychczasowa logika wyboru zawodników nie zmienia się. Nie oznaczać tych punktów jako ukończonych i nie włączać flagi przed połączeniem całej ścieżki.
 
