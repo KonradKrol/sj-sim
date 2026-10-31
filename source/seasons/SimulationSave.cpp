@@ -226,6 +226,25 @@ SimulationSave * SimulationSave::getFromJson(QJsonObject obj, IdentifiableObject
         listIds.insert(list.getId());lists.append(list);
     }
     save->setJumpersLists(lists);
+    if(activeRosterFeatureEnabled() && obj.contains("active-jumpers-list-id")) {
+        if(!save->setActiveJumpersListId(obj.value("active-jumpers-list-id").toString()))save->setActiveJumpersListId(QString());
+    } else if(activeRosterFeatureEnabled()) {
+        // Preserve the previous include/exclude result when upgrading an older save.
+        auto previous=save->getJumpersReference();
+        for(const auto &list:lists)for(auto *jumper:list.getJumpers()) {
+            if(!list.getIsDefault())previous.removeAll(jumper);
+            else if(jumper && !previous.contains(jumper))previous.append(jumper);
+        }
+        QString selected;
+        if(previous!=save->getJumpersReference()) {
+            for(const auto &list:lists)if(list.getJumpers()==previous){selected=list.getId();break;}
+            if(selected.isEmpty()) {
+                SaveJumpersList migrated(QCoreApplication::translate("SimulationSave","Dotychczasowy skład"));
+                migrated.setJumpers(previous);selected=migrated.getId();save->getJumpersListsReference().append(migrated);
+            }
+        }
+        save->setActiveJumpersListId(selected);
+    }
 
     save->setActualSeason(static_cast<Season *>(storage->get(obj.value("actual-season-id").toString())));
     if(save->getActualSeason() == nullptr)
@@ -283,6 +302,10 @@ QJsonObject SimulationSave::getJsonObject(SimulationSave &save)
     for(const auto &list : save.getJumpersListsReference())
         listsArray.append(SaveJumpersList::getJsonObject(list));
     object.insert("jumpers-lists", listsArray);
+    if(activeRosterFeatureEnabled()) {
+        const auto activeList=save.activeJumpersListId();
+        object.insert("active-jumpers-list-id",activeList.isEmpty()?QStringLiteral("-1"):activeList);
+    }
 
     object.insert("actual-season-id", save.getActualSeason()->getIDStr());
     object.insert("next-competition-index", save.getNextCompetitionIndex());
@@ -510,6 +533,34 @@ QVector<SaveJumpersList> &SimulationSave::getJumpersListsReference()
 void SimulationSave::setJumpersLists(const QVector<SaveJumpersList> &newJumpersLists)
 {
     jumpersLists = newJumpersLists;
+}
+
+const SaveJumpersList *SimulationSave::activeJumpersList() const
+{
+    for(const auto &list:jumpersLists)if(list.getId()==activeListId)return &list;
+    return nullptr;
+}
+
+QString SimulationSave::activeJumpersListId() const
+{
+    const auto *list=activeJumpersList();return list?list->getId():QString();
+}
+
+QVector<Jumper *> SimulationSave::activeJumpers() const
+{
+    const auto *list=activeJumpersList();return list?list->getJumpers():jumpers;
+}
+
+bool SimulationSave::setActiveJumpersListId(const QString &id)
+{
+    const QString selected=id==QStringLiteral("-1")?QString():id;
+    if(!selected.isEmpty()){
+        bool found=false;for(const auto &list:jumpersLists)if(list.getId()==selected){found=true;break;}
+        if(!found)return false;
+    }
+    activeListId=selected;
+    for(auto &list:jumpersLists)list.setIsDefault(!selected.isEmpty() && list.getId()==selected);
+    return true;
 }
 
 QHash<Jumper *, double> &SimulationSave::getJumpersFormInstabilitiesReference()

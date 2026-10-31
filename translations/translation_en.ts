@@ -8089,6 +8089,10 @@ li.checked::marker { content: "\2612"; }
             <source>OK</source>
             <translation>OK</translation>
         </message>
+        <message>
+            <source>Ustaw jako aktywną listę zawodników</source>
+            <translation>Set as active jumper list</translation>
+        </message>
     </context>
     <context>
         <name>JumpersListsListItemWidget</name>
@@ -18138,6 +18142,10 @@ li.checked::marker { content: "\2612"; }
             <source>Daty można wyłączyć zawsze. Włączenie jest możliwe tylko przed rozpoczęciem sezonu. Wyłączenie zachowuje zaplanowane terminy.</source>
             <translation>Dates can always be disabled. They can only be enabled before the season starts. Disabling preserves scheduled dates.</translation>
         </message>
+        <message>
+            <source>Wszyscy zawodnicy (%1)</source>
+            <translation>All jumpers (%1)</translation>
+        </message>
     </context>
     <context>
         <name>SimulationSavesWindow</name>
@@ -23058,6 +23066,24 @@ Technical key: %4</translation>
         <message>
             <source>Nie ma jeszcze zawodników, dla których można ustawić limit.</source>
             <translation>There are no jumpers to set a limit for yet.</translation>
+        </message>
+    </context>
+    <context>
+        <name>SimulationSave</name>
+        <message>
+            <source>Dotychczasowy skład</source>
+            <translation>Previous lineup</translation>
+        </message>
+    </context>
+    <context>
+        <name>SeasonRosterChoice</name>
+        <message>
+            <source>Aktywna lista zawodników</source>
+            <translation>Active jumper list</translation>
+        </message>
+        <message>
+            <source>Przed konkursem skład zacznie się od tej listy. Możesz go zmienić w przygotowaniu.</source>
+            <translation>Competition preparation starts with this list. You can change the lineup there.</translation>
         </message>
     </context>
 </TS>

@@ -873,7 +873,9 @@ void QuickBridge::compose(QuickNode *base) {
         for(auto *widget:page->findChildren<QWidget *>())if((widget->property("simulationDraft").isValid() || editorTypes.contains(QString::fromLatin1(widget->metaObject()->className())))&&widget->isVisibleTo(page)){editor=node(widget,true);nativeEditor=widget;break;}
         QVariantList actions;
         for(auto *button:page->findChildren<QPushButton *>())if(button->isVisibleTo(page)&&!container->isAncestorOf(button)&&(!nativeEditor||!nativeEditor->isAncestorOf(button)))actions.append(QVariant::fromValue(node(button,true)));
-        entry->update({{"kind","catalog"},{"athleteStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_jumpers"?m_window->property("athleteStudio"):QVariant()},{"hillStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_hills"?m_window->property("hillStudio"):QVariant()},{"singleClickEdit",view->property("quickSingleClickEdit").toBool() || (profile()=="DatabaseEditorWindow" && view->model() && QByteArray(view->model()->metaObject()->className())=="JumpersListModel")},{"actionsRow",actions},{"list",QVariant::fromValue(node(view,true))},{"editor",QVariant::fromValue(editor)},{"toolbar",toolbar},{"editRequest",entry->property("editRequest").toInt()}});
+        auto *season=qobject_cast<SimulationSaveManagerWindow *>(m_window);
+        const QVariant rosterBackend=SimulationSave::activeRosterFeatureEnabled() && season && container->getType()==DatabaseItemsListView::JumpersListsItems ? QVariant::fromValue(static_cast<QObject *>(season)) : QVariant();
+        entry->update({{"kind","catalog"},{"rosterBackend",rosterBackend},{"athleteStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_jumpers"?m_window->property("athleteStudio"):QVariant()},{"hillStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_hills"?m_window->property("hillStudio"):QVariant()},{"singleClickEdit",view->property("quickSingleClickEdit").toBool() || (profile()=="DatabaseEditorWindow" && view->model() && QByteArray(view->model()->metaObject()->className())=="JumpersListModel")},{"actionsRow",actions},{"list",QVariant::fromValue(node(view,true))},{"editor",QVariant::fromValue(editor)},{"toolbar",toolbar},{"editRequest",entry->property("editRequest").toInt()}});
         return entry;
     };
     if(m_window->property("jumpDraft").isValid()) {
@@ -1071,6 +1073,9 @@ void QuickBridge::compose(QuickNode *base) {
             }
             auto *autosave=m_groups.value("quickSeasonAutosave");if(!autosave){autosave=new QuickNode(this);m_groups.insert("quickSeasonAutosave",autosave);}
             autosave->update({{"kind","seasonAutosave"},{"backend",QVariant::fromValue(static_cast<QObject *>(season))}});
+            auto *rosterChoice=m_groups.value("quickSeasonRosterChoice");if(!rosterChoice){rosterChoice=new QuickNode(this);m_groups.insert("quickSeasonRosterChoice",rosterChoice);}
+            rosterChoice->update({{"kind","seasonRosterChoice"},{"backend",QVariant::fromValue(static_cast<QObject *>(season))}});
+            if(SimulationSave::activeRosterFeatureEnabled())overview.prepend(QVariant::fromValue(rosterChoice));
             overview.append(QVariant::fromValue(autosave));
             QVariantList pages{group("season-overview",QString(),{
                 group("season-next",QString(),overview),group("season-standings",tr("Klasyfikacja"),standings)},"sections")};

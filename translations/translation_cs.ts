@@ -8090,6 +8090,10 @@ li.checked::marker { content: "\2612"; }
             <source>OK</source>
             <translation>OK</translation>
         </message>
+        <message>
+            <source>Ustaw jako aktywną listę zawodników</source>
+            <translation>Nastavit jako aktivní seznam skokanů</translation>
+        </message>
     </context>
     <context>
         <name>JumpersListsListItemWidget</name>
@@ -18139,6 +18143,10 @@ li.checked::marker { content: "\2612"; }
             <source>Pokaż statystyki mimo to</source>
             <translation>Přesto zobrazit statistiky</translation>
         </message>
+        <message>
+            <source>Wszyscy zawodnicy (%1)</source>
+            <translation>Všichni skokani (%1)</translation>
+        </message>
     </context>
     <context>
         <name>SimulationSavesWindow</name>
@@ -23059,6 +23067,24 @@ Technický klíč: %4</translation>
         <message>
             <source>Nie ma jeszcze zawodników, dla których można ustawić limit.</source>
             <translation>Zatím nejsou žádní skokani, pro které lze nastavit limit.</translation>
+        </message>
+    </context>
+    <context>
+        <name>SimulationSave</name>
+        <message>
+            <source>Dotychczasowy skład</source>
+            <translation>Dosavadní sestava</translation>
+        </message>
+    </context>
+    <context>
+        <name>SeasonRosterChoice</name>
+        <message>
+            <source>Aktywna lista zawodników</source>
+            <translation>Aktivní seznam skokanů</translation>
+        </message>
+        <message>
+            <source>Przed konkursem skład zacznie się od tej listy. Możesz go zmienić w przygotowaniu.</source>
+            <translation>Příprava závodu začne tímto seznamem. Sestavu tam můžete změnit.</translation>
         </message>
     </context>
 </TS>

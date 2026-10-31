@@ -125,6 +125,24 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
     QTimer::singleShot(100,&manager,[&manager]{auto *editor=manager.findChild<JumpersListEditorWindow *>();check(editor,"saved roster editor opens");editor->setCountryLimits({{"POL",3}});editor->accept();});
     savedLists->listViewDoubleClicked(savedLists->getListModel()->index(0));
     check(save.getJumpersListsReference().first().countryLimit("POL")==3,"accepting a roster editor saves its advisory limits in the season");
+    if(!SimulationSave::activeRosterFeatureEnabled()) {
+        auto safeLegacy=SimulationSave::getJsonObject(save);auto legacyLists=safeLegacy.value("jumpers-lists").toArray();
+        auto legacyEntry=legacyLists.at(0).toObject();legacyEntry["is-default"]=true;legacyLists[0]=legacyEntry;safeLegacy["jumpers-lists"]=legacyLists;
+        check(!safeLegacy.contains("active-jumpers-list-id"),"disabled active-roster work does not change the save format");
+        std::unique_ptr<SimulationSave> safeReload(SimulationSave::getFromJson(safeLegacy,nullptr));
+        check(safeReload && safeReload->getJumpersLists().size()==1 && safeReload->getJumpersLists().first().getIsDefault(),"disabled active-roster work preserves legacy list behavior");
+    }
+    if(SimulationSave::activeRosterFeatureEnabled()) {
+    const auto rosterId=save.getJumpersListsReference().first().getId();
+    check(save.setActiveJumpersListId(rosterId) && save.activeJumpers()==save.getJumpersListsReference().first().getJumpers(),"selecting a roster uses exactly its members");
+    check(!save.setActiveJumpersListId(QUuid::createUuid().toString(QUuid::WithoutBraces)) && save.activeJumpersListId()==rosterId,"an unknown roster cannot replace the active one");
+    std::unique_ptr<SimulationSave> activeReload(SimulationSave::getFromJson(SimulationSave::getJsonObject(save),nullptr));
+    check(activeReload && activeReload->activeJumpersListId()==rosterId && activeReload->activeJumpers().size()==1,"the active roster survives saving and loading");
+    check(save.setActiveJumpersListId(QString()) && save.activeJumpers()==save.getJumpersReference(),"the all-jumpers choice is available without a saved roster");
+    auto legacyRosterSave=SimulationSave::getJsonObject(save);legacyRosterSave.remove("active-jumpers-list-id");
+    std::unique_ptr<SimulationSave> legacyRosterReload(SimulationSave::getFromJson(legacyRosterSave,nullptr));
+    check(legacyRosterReload && legacyRosterReload->getJumpersLists().size()==2 && legacyRosterReload->activeJumpers().size()==save.getJumpersReference().size()-1,"legacy include/exclude lists migrate without changing their previous selection");
+    }
     bridge->edit(bridge->root()->values().value("id").toInt(),0);QTest::qWait(150);
     check(item(scene(&manager)->rootObject(),"seasonAutosave"),"season overview exposes the automatic saving switch");
     presentation(&manager)->grab().save(output+"/season-autosave.png");

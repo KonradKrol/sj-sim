@@ -32,10 +32,18 @@ public:
     bool setEngineVersion(int value) {if(value!=1 && value!=2)return false;engineVersion=value;return true;}
     bool getAutosaveEnabled() const { return autosaveEnabled; }
     void setAutosaveEnabled(bool enabled) { autosaveEnabled = enabled; }
+    // The active-roster workflow is incomplete until competition preparation
+    // and calendar assignment use it consistently. Keep it dormant meanwhile.
+    static constexpr bool activeRosterFeatureEnabled() { return false; }
+    QString activeJumpersListId() const;
+    const SaveJumpersList *activeJumpersList() const;
+    QVector<Jumper *> activeJumpers() const;
+    bool setActiveJumpersListId(const QString &id);
 
 private:
     int engineVersion=1;
     bool autosaveEnabled=true;
+    QString activeListId;
     QString name;
     QVector<Season> seasons;
     Season * actualSeason;

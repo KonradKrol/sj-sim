@@ -405,11 +405,15 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         {
             list->setJumpers(editor->getSelectedJumpers());
             list->setName(editor->getNameFromLineEdit());
-            list->setIsDefault(editor->getIsDefaultFromCheckBox());
             list->setCountryLimits(editor->getCountryLimits());
+            if(SimulationSave::activeRosterFeatureEnabled()) {
+                if(editor->getIsDefaultFromCheckBox())simulationSave->setActiveJumpersListId(list->getId());
+                else if(simulationSave->activeJumpersListId()==list->getId())simulationSave->setActiveJumpersListId(QString());
+            } else list->setIsDefault(editor->getIsDefaultFromCheckBox());
             markSeasonChanged();
             jumpersListsListView->setupListModel();
             emit jumpersListsListView->getListModel()->dataChanged(jumpersListsListView->getListModel()->index(0), jumpersListsListView->getListModel()->index(jumpersListsListView->getListModel()->rowCount() - 1));
+            emit rosterChoicesChanged();
         }
     });
 
@@ -530,6 +534,14 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         connect(list,&DatabaseItemsListView::up,this,&SimulationSaveManagerWindow::markSeasonChanged);
         connect(list,&DatabaseItemsListView::down,this,&SimulationSaveManagerWindow::markSeasonChanged);
     }
+    auto rosterCatalogChanged=[this]{
+        if(SimulationSave::activeRosterFeatureEnabled() && simulationSave->activeJumpersListId().isEmpty())simulationSave->setActiveJumpersListId(QString());
+        emit rosterChoicesChanged();
+    };
+    connect(jumpersListsListView,&DatabaseItemsListView::insert,this,rosterCatalogChanged);
+    connect(jumpersListsListView,&DatabaseItemsListView::remove,this,rosterCatalogChanged);
+    connect(jumpersListsListView,&DatabaseItemsListView::up,this,rosterCatalogChanged);
+    connect(jumpersListsListView,&DatabaseItemsListView::down,this,rosterCatalogChanged);
 
     updateResponsiveLayout(width());
     ResponsiveWindowUtils::manageWindowGeometry(this, "SimulationSaveManagerWindow");
@@ -553,6 +565,29 @@ void SimulationSaveManagerWindow::setAutosaveEnabled(bool enabled)
 void SimulationSaveManagerWindow::markSeasonChanged()
 {
     if(autosaveTimer && simulationSave->getAutosaveEnabled())autosaveTimer->start();
+}
+
+QVariantList SimulationSaveManagerWindow::rosterChoices() const
+{
+    QVariantList choices;
+    choices.append(QVariantMap{{"id",QStringLiteral("-1")},{"label",tr("Wszyscy zawodnicy (%1)").arg(simulationSave->getJumpersReference().size())}});
+    for(const auto &list:simulationSave->getJumpersListsReference())
+        choices.append(QVariantMap{{"id",list.getId()},{"label",QStringLiteral("%1 (%2)").arg(list.getName()).arg(list.getJumpers().size())}});
+    return choices;
+}
+
+QString SimulationSaveManagerWindow::activeRosterId() const
+{
+    const auto id=simulationSave->activeJumpersListId();return id.isEmpty()?QStringLiteral("-1"):id;
+}
+
+bool SimulationSaveManagerWindow::selectActiveRoster(const QString &id)
+{
+    if(id==activeRosterId())return true;
+    if(!simulationSave->setActiveJumpersListId(id))return false;
+    if(auto *model=jumpersListsListView->getListModel();model && model->rowCount()>0)
+        emit model->dataChanged(model->index(0,0),model->index(model->rowCount()-1,0));
+    markSeasonChanged();emit rosterChoicesChanged();return true;
 }
 
 void SimulationSaveManagerWindow::updateResponsiveLayout(int windowWidth)

@@ -32,6 +32,7 @@ ColumnLayout {
     }
     Component { id: hillStudio; HillStudio { backend: catalog.hillBackend } }
     Component { id: athleteStudio; AthleteStudio { backend: catalog.athleteBackend } }
+    SeasonRosterChoice { visible: !!catalog.fields.rosterBackend; backend: catalog.fields.rosterBackend || null; controlName: "seasonActiveRosterCatalog"; Layout.fillWidth: true; Layout.maximumWidth: Theme.dp(560) }
     Loader {
         visible: active
         active: !catalog.studioActive && ui.profile === "DatabaseEditorWindow"

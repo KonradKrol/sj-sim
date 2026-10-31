@@ -2,6 +2,7 @@
 #define SIMULATIONSAVEMANAGERWINDOW_H
 
 #include <QMainWindow>
+#include <QVariant>
 #include "../DatabaseEditor/DatabaseItemsListView.h"
 #include "../EditorWidgets/JumperEditorWidget.h"
 #include "../EditorWidgets/HillEditorWidget.h"
@@ -25,6 +26,8 @@ class SimulationSaveManagerWindow : public QDialog
 {
     Q_OBJECT
     Q_PROPERTY(bool autosaveEnabled READ autosaveEnabled WRITE setAutosaveEnabled NOTIFY autosaveEnabledChanged)
+    Q_PROPERTY(QVariantList rosterChoices READ rosterChoices NOTIFY rosterChoicesChanged)
+    Q_PROPERTY(QString activeRosterId READ activeRosterId NOTIFY rosterChoicesChanged)
 
 public:
     explicit SimulationSaveManagerWindow(SimulationSave * save, QWidget *parent = nullptr);
@@ -36,6 +39,9 @@ public:
     bool autosaveEnabled() const;
     Q_INVOKABLE void setAutosaveEnabled(bool enabled);
     void markSeasonChanged();
+    QVariantList rosterChoices() const;
+    QString activeRosterId() const;
+    Q_INVOKABLE bool selectActiveRoster(const QString &id);
 
     void setupClassificationsComboBox();
     void connectComboBox();
@@ -56,6 +62,7 @@ signals:
     void editingCalendarChanged();
     void calendarRequested(bool create,bool addCompetition);
     void autosaveEnabledChanged();
+    void rosterChoicesChanged();
 
 private:
     Ui::SimulationSaveManagerWindow *ui;
