@@ -120,8 +120,10 @@ static void athleteStudioRegressions(MainWindow &main,bool patchesOnly=false){
         }
         appearance->setUiScale(oldUi);appearance->setTextScale(oldText);main.resize(1440,1000);QTest::qWait(40);
         const int oldPerk=backend->selectedPerks().value(0).toInt();QVector<QColor> fills;
-        for(int level:{2,3,4}) {backend->setPerk(0,1,level,false);QTest::qWait(20);auto *card=item(quick->rootObject(),"athletePerk-training")->parentItem();auto *background=card->childItems().first();fills.append(background->property("color").value<QColor>());presentation(&window)->grab().save(output+QString("/athlete-perk-strength-%1.png").arg(level));}
-        check(fills[0]!=fills[1] && fills[1]!=fills[2],"perk levels two, three and extreme have distinct card fills");
+        backend->setPerk(0,1,1,false);backend->setPerk(0,1,1,true);QTest::qWait(20);
+        auto *card=item(quick->rootObject(),"athletePerk-training")->parentItem();const auto unselectedFill=card->childItems().first()->property("color").value<QColor>();
+        for(int level:{1,2,3,4}) {backend->setPerk(0,1,level,false);QTest::qWait(20);auto *background=card->childItems().first();fills.append(background->property("color").value<QColor>());presentation(&window)->grab().save(output+QString("/athlete-perk-strength-%1.png").arg(level));}
+        check(fills[0]==unselectedFill && fills[0]!=fills[1] && fills[1]!=fills[2] && fills[2]!=fills[3],"ordinary perks keep the neutral fill and stronger levels are visually distinct");
         backend->setPerk(0,1,4,true);if(oldPerk)backend->setPerk(0,oldPerk>0?1:-1,std::abs(oldPerk),false);
         appearance->setReducedMotion(oldMotion);
     }

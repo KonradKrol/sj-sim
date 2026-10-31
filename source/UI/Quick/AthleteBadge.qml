@@ -41,7 +41,7 @@ Item {
     implicitHeight: topHeight+(inlineLevels ? 0 : strengths.implicitHeight)+Theme.dp(8)
     Rectangle {
         anchors.fill: parent
-        color: badge.empowered ? "#241237" : badge.ribbon ? (badge.chosen ? (badge.managedLevel ? (badge.tier===3 ? "#203c50" : Theme.stadium) : badge.perk.color) : badge.design.surface) : "transparent"
+        color: badge.empowered ? "#241237" : badge.ribbon ? (badge.chosen ? (badge.managedLevel ? (badge.tier===1 ? badge.design.surface : badge.tier===3 ? "#203c50" : Theme.stadium) : badge.perk.color) : badge.design.surface) : "transparent"
         radius: badge.ribbon ? Theme.dp(2) : Theme.dp(10)
         border.width: badge.empowered || badge.enhanced ? 2 : pick.activeFocus ? 2 : badge.ribbon ? 1 : 0
         border.color: pick.activeFocus ? badge.design.accent : badge.empowered ? "#ffb941" : badge.enhanced ? (badge.tier===3 ? "#d8ae54" : "#aa9670") : badge.chosen ? (badge.managedLevel ? "#96c2ff" : badge.perk.color) : badge.design.line
@@ -113,7 +113,7 @@ Item {
         y: badge.ribbon ? (badge.topHeight-height)/2 : badge.artSize+Theme.dp(2)
         width: badge.ribbon ? Math.max(0,badge.width-x-Theme.dp(10)-(badge.inlineLevels ? strengths.implicitWidth+Theme.dp(8) : 0)) : badge.width-Theme.dp(4)
         text: badge.perk.name
-        color: badge.empowered ? "#fff1d2" : badge.ribbon && badge.chosen ? "#ffffff" : badge.chosen ? badge.design.ink : badge.design.muted
+        color: badge.empowered ? "#fff1d2" : badge.ribbon && badge.chosen && (!badge.managedLevel || badge.tier>1) ? "#ffffff" : badge.chosen ? badge.design.ink : badge.design.muted
         font.family: badge.ribbon ? Theme.bodyFamily : Theme.displayFamily
         font.pointSize: badge.ribbon ? Theme.body : Theme.section
         font.weight: badge.chosen ? Font.Bold : Font.Medium
