@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.15
 
 ComboBox {
     id: control
+    readonly property real optionHeight: Math.max(Theme.controlHeight,Theme.bodyMetrics.height+Theme.dp(12))
     property bool searchable: false
     property var optionEnabled: []
     property var optionImages: []
@@ -64,14 +65,17 @@ ComboBox {
     }
     delegate: ItemDelegate {
         id: optionDelegate
-        width: control.popup.width
-        enabled: control.optionEnabled.length<=index || control.optionEnabled[index]
-        text: control.textRole ? model[control.textRole] : modelData
-        highlighted: control.highlightedIndex === index
+        required property int index
+        objectName: "choiceOption-"+index
+        width: control.popup.availableWidth
+        height: control.optionHeight
+        enabled: control.optionEnabled.length<=optionDelegate.index || control.optionEnabled[optionDelegate.index]
+        text: control.textAt(optionDelegate.index)
+        highlighted: control.highlightedIndex === optionDelegate.index
         contentItem: RowLayout {
             spacing: 8
-            Image { visible: source.toString().length>0; source: control.optionImages[index] || ""; sourceSize.width: 48; sourceSize.height: 32; Layout.preferredWidth: 24; Layout.preferredHeight: 16; fillMode: Image.PreserveAspectFit; Accessible.ignored: true }
-            Text { text: optionDelegate.text; font: control.font; color: Theme.ink; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight; verticalAlignment: Text.AlignVCenter }
+            Image { visible: source.toString().length>0; source: control.optionImages[optionDelegate.index] || ""; sourceSize.width: 48; sourceSize.height: 32; Layout.preferredWidth: 24; Layout.preferredHeight: 16; fillMode: Image.PreserveAspectFit; Accessible.ignored: true }
+            Text { objectName: "choiceOptionLabel-"+optionDelegate.index; text: optionDelegate.text; font: control.font; color: Theme.ink; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight; verticalAlignment: Text.AlignVCenter }
         }
         background: Rectangle { color: parent.highlighted ? Theme.selection : Theme.surface }
     }
@@ -79,15 +83,19 @@ ComboBox {
         id: matchedChoice
         ItemDelegate {
             id: matchedDelegate
+            required property int index
+            required property var modelData
+            objectName: "choiceOption-"+index
             width: choices.width
-            text: modelData.label
-            enabled: control.optionEnabled.length<=modelData.sourceIndex || control.optionEnabled[modelData.sourceIndex]
-            highlighted: choices.currentIndex === index
-            onClicked: { choices.currentIndex = index; control.chooseMatch() }
+            height: control.optionHeight
+            text: matchedDelegate.modelData.label
+            enabled: control.optionEnabled.length<=matchedDelegate.modelData.sourceIndex || control.optionEnabled[matchedDelegate.modelData.sourceIndex]
+            highlighted: choices.currentIndex === matchedDelegate.index
+            onClicked: { choices.currentIndex = matchedDelegate.index; control.chooseMatch() }
             contentItem: RowLayout {
                 spacing: 8
-                Image { visible: source.toString().length>0; source: modelData.image || ""; sourceSize.width: 48; sourceSize.height: 32; Layout.preferredWidth: 24; Layout.preferredHeight: 16; fillMode: Image.PreserveAspectFit; Accessible.ignored: true }
-                Text { text: matchedDelegate.text; font: control.font; color: Theme.ink; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight; verticalAlignment: Text.AlignVCenter }
+                Image { visible: source.toString().length>0; source: matchedDelegate.modelData.image || ""; sourceSize.width: 48; sourceSize.height: 32; Layout.preferredWidth: 24; Layout.preferredHeight: 16; fillMode: Image.PreserveAspectFit; Accessible.ignored: true }
+                Text { objectName: "choiceOptionLabel-"+matchedDelegate.index; text: matchedDelegate.text; font: control.font; color: Theme.ink; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight; verticalAlignment: Text.AlignVCenter }
             }
             background: Rectangle { color: parent.highlighted ? Theme.selection : Theme.surface }
         }
@@ -104,7 +112,8 @@ ComboBox {
         objectName: "choicePopup"
         readonly property real above: Math.max(0,control.mapToItem(Overlay.overlay,0,0).y-8)
         readonly property real below: Math.max(0,(control.Window.window ? control.Window.window.height : 600)-control.mapToItem(Overlay.overlay,0,control.height).y-8)
-        readonly property real desired: Math.min(320,choices.contentHeight+(control.searchable ? search.implicitHeight+4+(control.matches.length ? 0 : emptyResult.implicitHeight+4) : 0)+8)
+        readonly property int optionCount: control.searchable ? control.matches.length : control.count
+        readonly property real desired: Math.min(Theme.dp(360),optionCount*control.optionHeight+(control.searchable ? search.implicitHeight+4+(optionCount ? 0 : emptyResult.implicitHeight+4) : 0)+topPadding+bottomPadding)
         y: below >= desired || below >= above ? control.height+4 : -height-4
         margins: 8
         width: control.width
