@@ -3848,7 +3848,9 @@ Check that it exists and has appropriate permissions.</translation>
             <source>Przeprowadź kwalifikacje</source>
             <translation>Run qualifications</translation>
         </message>
-    </context>
+    <message><source>Uzupełnij drużyny</source><translation>Complete teams</translation></message>
+<message><source>Zastąpić ręcznie ustawione składy i kolejność zawodników?</source><translation>Replace manually arranged squads and athlete order?</translation></message>
+</context>
     <context>
         <name>CompetitionInfoEditorWidget</name>
         <message>
@@ -15534,6 +15536,7 @@ Check that you selected the correct file.</translation>
     <message><source>Trening</source><translation>Training</translation></message>
 <message><source>Seria próbna</source><translation>Trial round</translation></message>
 <message><source>Kwalifikacje</source><translation>Qualifications</translation></message>
+<message><source>Dyskwalifikacja: 1 na N skoków</source><translation>Disqualification: 1 in N jumps</translation></message>
 </context>
     <context>
         <name>QuickCalendar</name>
@@ -16880,7 +16883,10 @@ Check that you selected the correct file.</translation>
             <source>Liczba krajów z przekroczonym limitem: %1</source>
             <translation>Countries over their limit: %1</translation>
         </message>
-    </context>
+    <message><source>Ustaw kolejność</source><translation>Set order</translation></message>
+<message><source>OVR rosnąco</source><translation>OVR ascending</translation></message>
+<message><source>OVR malejąco</source><translation>OVR descending</translation></message>
+</context>
     <context>
         <name>RoundInfoEditorWidget</name>
         <message>
@@ -18154,6 +18160,7 @@ li.checked::marker { content: "\2612"; }
             <translation>All jumpers (%1)</translation>
         </message>
     <message><source>Usunięto aktywną listę. Wybrano wszystkich zawodników.</source><translation>The active roster was deleted. All athletes are now selected.</translation></message>
+<message><source>Zasady konkursów</source><translation>Competition rules</translation></message>
 </context>
     <context>
         <name>SimulationSavesWindow</name>
@@ -22943,7 +22950,9 @@ Technical key: %4</translation>
             <source>Teraz: %1</source>
             <translation>Next: %1</translation>
         </message>
-    </context>
+    <message><source>Próbna rozegrana</source><translation>Trial round completed</translation></message>
+<message><source>Próbna przed konkursem</source><translation>Trial round before competition</translation></message>
+</context>
     <context>
         <name>StudioPackBar</name>
         <message>

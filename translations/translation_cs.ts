@@ -3848,7 +3848,9 @@ Ověřte, že existuje a má odpovídající oprávnění.</translation>
             <source>Przeprowadź kwalifikacje</source>
             <translation>Uspořádat kvalifikaci</translation>
         </message>
-    </context>
+    <message><source>Uzupełnij drużyny</source><translation>Doplnit týmy</translation></message>
+<message><source>Zastąpić ręcznie ustawione składy i kolejność zawodników?</source><translation>Nahradit ručně nastavené sestavy a pořadí závodníků?</translation></message>
+</context>
     <context>
         <name>CompetitionInfoEditorWidget</name>
         <message>
@@ -15535,6 +15537,7 @@ Ověřte, že jste vybrali správný soubor.</translation>
     <message><source>Trening</source><translation>Trénink</translation></message>
 <message><source>Seria próbna</source><translation>Zkušební kolo</translation></message>
 <message><source>Kwalifikacje</source><translation>Kvalifikace</translation></message>
+<message><source>Dyskwalifikacja: 1 na N skoków</source><translation>Diskvalifikace: 1 z N skoků</translation></message>
 </context>
     <context>
         <name>QuickCalendar</name>
@@ -16881,7 +16884,10 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Liczba krajów z przekroczonym limitem: %1</source>
             <translation>Počet zemí překračujících limit: %1</translation>
         </message>
-    </context>
+    <message><source>Ustaw kolejność</source><translation>Nastavit pořadí</translation></message>
+<message><source>OVR rosnąco</source><translation>OVR vzestupně</translation></message>
+<message><source>OVR malejąco</source><translation>OVR sestupně</translation></message>
+</context>
     <context>
         <name>RoundInfoEditorWidget</name>
         <message>
@@ -18155,6 +18161,7 @@ li.checked::marker { content: "\2612"; }
             <translation>Všichni skokani (%1)</translation>
         </message>
     <message><source>Usunięto aktywną listę. Wybrano wszystkich zawodników.</source><translation>Aktivní seznam byl odstraněn. Nyní jsou vybráni všichni závodníci.</translation></message>
+<message><source>Zasady konkursów</source><translation>Pravidla závodu</translation></message>
 </context>
     <context>
         <name>SimulationSavesWindow</name>
@@ -22944,7 +22951,9 @@ Technický klíč: %4</translation>
             <source>Teraz: %1</source>
             <translation>Nyní: %1</translation>
         </message>
-    </context>
+    <message><source>Próbna rozegrana</source><translation>Zkušební kolo dokončeno</translation></message>
+<message><source>Próbna przed konkursem</source><translation>Zkušební kolo před závodem</translation></message>
+</context>
     <context>
         <name>StudioPackBar</name>
         <message>

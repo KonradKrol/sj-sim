@@ -42,7 +42,7 @@ ColumnLayout {
                 Flow {
                     Layout.fillWidth: true; spacing: Theme.dp(6)
                     Label { visible: eventCard.modelData.trainingCount>0; text: qsTr("Treningi %1/%2").arg(eventCard.modelData.trainingPlayed).arg(eventCard.modelData.trainingCount); color: eventCard.modelData.trainingPlayed===eventCard.modelData.trainingCount ? (eventCard.next ? Theme.signal : Theme.success) : eventCard.muted; font.pointSize: Theme.caption }
-                    Label { visible: eventCard.modelData.trial; text: eventCard.modelData.trialPlayed ? qsTr("Próba rozegrana") : qsTr("Próba przed konkursem"); color: eventCard.modelData.trialPlayed ? (eventCard.next ? Theme.signal : Theme.success) : eventCard.muted; font.pointSize: Theme.caption }
+                    Label { visible: eventCard.modelData.trial; text: eventCard.modelData.trialPlayed ? qsTr("Próbna rozegrana") : qsTr("Próbna przed konkursem"); color: eventCard.modelData.trialPlayed ? (eventCard.next ? Theme.signal : Theme.success) : eventCard.muted; font.pointSize: Theme.caption }
                 }
                 Label { visible: eventCard.next; text: qsTr("Teraz: %1").arg(overview.fields.nextEvent || ""); color: Theme.snow; font.pointSize: Theme.body; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 SButton {

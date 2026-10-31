@@ -1047,7 +1047,7 @@ void QuickBridge::compose(QuickNode *base) {
             auto *dateNode=m_groups.value("quickSeasonDate");if(!dateNode){dateNode=new QuickNode(this);m_groups.insert("quickSeasonDate",dateNode);}
             auto *nextEvent=season->getSimulationSave()->getNextCompetition();
             const bool showDate=season->getSimulationSave()->getActualSeason()->getDatesEnabled() && nextEvent && nextEvent->getScheduledDate().isValid();
-            dateNode->update({{"kind","label"},{"name","quickSeasonDate"},{"available",showDate},{"text",showDate?tr("Data sezonu: %1").arg(nextEvent->getScheduledDate().toString("dd.MM.yyyy")):QString()}});
+            dateNode->update({{"kind","label"},{"name","quickSeasonDate"},{"available",showDate},{"text",showDate?nextEvent->getScheduledDate().toString("dd.MM.yyyy"):QString()}});
             if(season->getSimulationSave()->getActualSeason()->getCalendarsReference().isEmpty())
                 overview={empty("season-no-calendar",tr("Zacznij od kalendarza"),tr("Utwórz kalendarz, a następnie dodaj konkursy lub wczytaj preset."),m_content->findChild<QPushButton *>("pushButton_competitionConfig"))};
             else if(!season->getSimulationSave()->getActualSeason()->getActualCalendar())
