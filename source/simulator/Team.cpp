@@ -35,93 +35,25 @@ void Team::arrangeSquad(int count,double variation,double k)
 
 QVector<Team> Team::constructTeamsVectorByJumpersList(const QVector<Jumper> &jumpers, int minCount)
 {
-    qDebug()<<"minCount: "<<minCount;
-    QVector<Team> teams;
-    QStringList codes;
-    for(const auto & jumper : jumpers)
-    {
-        if(codes.contains(jumper.getCountryCode().toUpper()) == true){
-            for(auto & team : teams){
-                if(team.getCountryCode() == jumper.getCountryCode())
-                    team.getJumpersReference().push_back(const_cast<Jumper *>(&jumper));
-            }
-        }
-        else{
-            codes.append(jumper.getCountryCode().toUpper());
-            Team team;
-            team.getJumpersReference().push_back(const_cast<Jumper *>(&jumper));
-            team.setCountryCode(jumper.getCountryCode());
-            teams.append(team);
-        }
-    }
-    while(true){
-        bool next = false;
-        int i=0;
-        for(auto & team : teams){
-            if(team.getJumpersReference().count() < minCount){
-                teams.remove(i);
-                next = true;
-                break;
-            }
-            i++;
-        }
-        if(next == false)
-            break;
-    }
-
-    for(auto & team : teams){
-    std::reverse(team.getJumpersReference().begin(), team.getJumpersReference().end());
-    int count = minCount;
-    if(minCount > team.getJumpersReference().count())
-        count = team.getJumpersReference().count();
-    std::reverse(team.getJumpersReference().begin(), team.getJumpersReference().begin() + count);
-    }
-    return teams;
+    QVector<Jumper *> pointers;pointers.reserve(jumpers.size());
+    for(const auto &jumper:jumpers)pointers.append(const_cast<Jumper *>(&jumper));
+    return constructTeamsVectorByJumpersList(pointers,minCount);
 }
 
 QVector<Team> Team::constructTeamsVectorByJumpersList(const QVector<Jumper *> &jumpers, int minCount)
 {
-    qDebug()<<"minCount: "<<minCount;
-    QVector<Team> teams;
-    QStringList codes;
-    for(const auto & jumper : jumpers)
-    {
-        if(codes.contains(jumper->getCountryCode().toUpper()) == true){
-            for(auto & team : teams){
-                if(team.getCountryCode() == jumper->getCountryCode())
-                    team.getJumpersReference().push_back(jumper);
-            }
-        }
-        else{
-            codes.append(jumper->getCountryCode().toUpper());
-            Team team;
-            team.getJumpersReference().push_back(jumper);
-            team.setCountryCode(jumper->getCountryCode());
-            teams.append(team);
-        }
+    QVector<Team> teams;QHash<QString,int> indexes;
+    for(auto *jumper:jumpers){
+        if(!jumper)continue;
+        const auto country=CountryCodes::toFis(jumper->getCountryCode());
+        auto found=indexes.constFind(country);
+        int index;
+        if(found==indexes.cend()){index=teams.size();indexes.insert(country,index);teams.append(Team(country));}
+        else index=found.value();
+        teams[index].getJumpersReference().append(jumper);
     }
-    while(true){
-        bool next = false;
-        int i=0;
-        for(auto & team : teams){
-            if(team.getJumpersReference().count() < minCount){
-                teams.remove(i);
-                next = true;
-                break;
-            }
-            i++;
-        }
-        if(next == false)
-            break;
-    }
-
-    for(auto & team : teams){
-        std::reverse(team.getJumpersReference().begin(), team.getJumpersReference().end());
-        int count = minCount;
-        if(minCount > team.getJumpersReference().count())
-            count = team.getJumpersReference().count();
-        std::reverse(team.getJumpersReference().begin(), team.getJumpersReference().begin() + count);
-    }
+    teams.erase(std::remove_if(teams.begin(),teams.end(),[&](const Team &team){return team.getJumpers().size()<minCount;}),teams.end());
+    for(auto &team:teams){auto &members=team.getJumpersReference();std::reverse(members.begin(),members.end());std::reverse(members.begin(),members.begin()+std::clamp(minCount,0,members.size()));}
     return teams;
 }
 
