@@ -79,13 +79,14 @@ Pane {
                     var source=drop.source
                     if(!source || source.backend!==pane.backend)return
                     var id=source.athlete.athleteId
-                    if(pane.selected){
-                        if(!source.selected)pane.backend.include(id)
-                        else if(!pane.backend.grouped){
-                            var at=list.indexAt(drop.x,drop.y+list.contentY)
-                            if(at>=0){var target=pane.rows.get(at);pane.backend.moveBefore(id,target.athleteId)}
-                        }
-                    }else if(source.selected)pane.backend.toggle(id)
+                    var backend=pane.backend, receiving=pane.selected, sending=source.selected
+                    var targetId="", at=list.indexAt(drop.x,drop.y+list.contentY)
+                    if(receiving && sending && !backend.grouped && at>=0)targetId=pane.rows.get(at).athleteId
+                    Qt.callLater(function(){
+                        if(!backend)return
+                        if(receiving){if(!sending)backend.include(id);else if(targetId.length)backend.moveBefore(id,targetId)}
+                        else if(sending)backend.toggle(id)
+                    })
                     drop.acceptProposedAction()
                 }
             }

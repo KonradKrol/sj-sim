@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 
 MouseArea {
     id: grip
+    objectName: (selected ? "savedRosterSelectedGrip-" : "savedRosterCandidateGrip-") + (athlete.athleteId || "")
     property var backend
     property var athlete
     property bool selected: false
