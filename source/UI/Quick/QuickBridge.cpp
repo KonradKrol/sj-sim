@@ -167,6 +167,15 @@ QuickBridge::~QuickBridge() {
 }
 QString QuickBridge::title() const {
     if(!m_window)return {};
+    const CompetitionInfo *event=nullptr;
+    if(auto *race=qobject_cast<CompetitionManagerWindow *>(m_window))if(race->getManager())event=race->getManager()->getCompetitionInfo();
+    if(auto *configuration=qobject_cast<CompetitionConfigWindow *>(m_window))event=configuration->getSeasonCompetition();
+    if(event)switch(event->getSerieType()) {
+    case CompetitionInfo::Training:return tr("Trening");
+    case CompetitionInfo::TrialRound:return tr("Seria próbna");
+    case CompetitionInfo::Qualifications:return tr("Kwalifikacje");
+    default:break;
+    }
     const QHash<QString,QString> titles{{"JumpersFormGeneratorConfigWindow",tr("Generator formy")},{"JumpersListEditorWindow",tr("Lista zawodników")},{"CompetitionConfigWindow",tr("Konkurs")},{"CompetitionManagerWindow",tr("Konkurs")},{"SingleJumpsConfigWindow",tr("Pojedyncze skoki")},{"AppSettingsWindow",tr("Ustawienia")},{"DatabaseEditorWindow",tr("Baza danych")},{"SimulationSavesWindow",tr("Zapisy")},{"SimulationSaveManagerWindow",tr("Sezon")},{"NewSimulationSaveConfigurationWindow",tr("Nowy zapis")}};
     if(profile()=="AuthorWindow")return AuthorWindow::tr("O autorze");
     if(profile()=="KOGroupEditorWidget")return tr("Grupa KO");
