@@ -58,6 +58,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
     simulationSave(save),source(source),catalogPaths(paths),catalog(paths)
 {
     ui->setupUi(this);
+    for(auto *widget:QList<QWidget *>{ui->label_jumpsImportance,ui->doubleSpinBox_jumpsImportance,ui->comboBox_jumpsImportancePreset})widget->hide();
     setMinimumSize(640, 480);
     ui->splitter_configuration->setStretchFactor(0, 2);
     ui->splitter_configuration->setStretchFactor(1, 5);

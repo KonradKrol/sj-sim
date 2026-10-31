@@ -1006,7 +1006,7 @@ void QuickBridge::compose(QuickNode *base) {
         QVariantList sections;
         sections.append(group("simulation",tr("Silnik symulacji"),{group("simulation-settings-fields",QString(),fields({
             {"openBalanceLab",""},{"openSimulationPlayground",""},{"comboBox_language",tr("Język interfejsu")},{"spinBox_skillsRange",tr("Zakres umiejętności")},
-            {"spinBox_dsqProbability",tr("Bazowe prawdopodobieństwo dyskwalifikacji")},
+            {"spinBox_dsqProbability",tr("Dyskwalifikacja: 1 na N skoków")},
             {"doubleSpinBox_randomMultiplier",tr("Mnożnik losowości")},{"doubleSpinBox",tr("Wpływ parametrów skoczni")},
             {"doubleSpinBox_takeoffFormEffect",tr("Wpływ formy na wybicie")},{"doubleSpinBox_flightFormEffect",tr("Wpływ formy na lot")},
             {"doubleSpinBox_liveCompSpeed",tr("Tempo konkursu na żywo")},
@@ -1143,9 +1143,8 @@ void QuickBridge::compose(QuickNode *base) {
             for(auto *check:options->findChildren<QCheckBox *>())if(auto *entry=node(check))plan.append(QVariant::fromValue(entry));
         }
         const auto parameters=fields({{"spinBox_startGate",tr("Belka startowa")},{"pushButton_autoGate",""},
-            {"spinBox_dsqProbability",tr("Prawdopodobieństwo dyskwalifikacji")},{"doubleSpinBox_jumpsImportance",tr("Ważność skoków")},
-            {"comboBox_jumpsImportancePreset",tr("Preset ważności")}});
-        plan.append(group("competition-parameters",QString(),parameters.mid(0,2),"form"));
+            {"spinBox_dsqProbability",tr("Dyskwalifikacja: 1 na N skoków")}});
+        plan.append(group("competition-parameters",QString(),parameters,"form"));
         QVariantList top{group("plan",tr("Plan symulacji"),plan)};
         if(auto *list=m_content->findChild<QWidget *>("scrollArea_startList")) {
             QVariantList actions;
@@ -1183,7 +1182,7 @@ void QuickBridge::compose(QuickNode *base) {
             }
         }
         QVariantList detail;
-        QStringList labels{season?tr("Przygotowanie"):tr("Konfiguracja")};
+        QStringList labels{tr("Przygotowanie")};
         if(m_rosters.value(configuration) && m_rosters.value(configuration)->active()) {
             detail.append(QVariant::fromValue(rosterNode(configuration)));labels.append(tr("Lista startowa"));
             QVariantList advanced;
@@ -1222,7 +1221,6 @@ void QuickBridge::compose(QuickNode *base) {
                 page->setProperty("quickExposePage",true);detail.append(QVariant::fromValue(node(page,true)));labels.append(page->inherits("WindsGeneratorSettingsEditorWidget")?tr("Wiatr"):tr("Śnieg"));
             }
         }
-        detail.append(group("competition-options",tr("Opcje"),{group("competition-option-fields",QString(),season?parameters.mid(2,1):parameters.mid(2),"form")}));labels.append(tr("Opcje"));
         detail.prepend(group("overview",QString(),top,"sections"));
         auto *tabs=sectionTabs("competition-pages",labels,detail);
         m_root->update(tabs->values(),tabs->children());return;
@@ -1250,7 +1248,7 @@ void QuickBridge::compose(QuickNode *base) {
         weather->update({{"kind","weatherSetup"},{"backend",m_window->property("weatherSetup")}});
         pages.append(QVariant::fromValue(weather));labels.append(tr("Warunki"));
         pages.append(group("jump-options",tr("Opcje"),{group("jump-option-fields",QString(),fields({
-            {"spinBox_dsqProbability",tr("Prawdopodobieństwo dyskwalifikacji")},
+            {"spinBox_dsqProbability",tr("Dyskwalifikacja: 1 na N skoków")},
             {"checkBox_hasJudges",""},{"checkBox_hasWindCompensation",""},
             {"comboBox_windMeasurementType",tr("Pomiar wiatru")},
             {"comboBox_windAverageCalculatingType",tr("Obliczanie średniego wiatru")},
