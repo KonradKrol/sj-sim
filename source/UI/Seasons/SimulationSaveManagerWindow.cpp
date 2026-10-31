@@ -422,6 +422,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         QSignalBlocker showFormBlocker(ui->checkBox_showForm);
         QSignalBlocker showInstabilityBlocker(ui->checkBox_showInstability);
         ui->checkBox_compactSaveFile->setChecked(simulationSave->getSaveFileSizeReduce());
+        ui->checkBox_compactSaveFile->hide();
         ui->checkBox_showForm->setChecked(simulationSave->getShowForm());
         ui->checkBox_showInstability->setChecked(simulationSave->getShowInstability());
         if(simulationSave->getEngineVersion()==2) {

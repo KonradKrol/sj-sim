@@ -445,7 +445,7 @@ background-color: rgb(255, 223, 189);
            </rect>
           </property>
           <attribute name="title">
-           <string>Zasady konkursów (presety)</string>
+           <string>Zasady konkursów</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
