@@ -45,6 +45,10 @@ static void rosterWorkspaceRegressions(MainWindow &main) {
         QTest::mouseRelease(view,Qt::LeftButton,Qt::NoModifier,finish);QTest::qWait(100);
         check(inlineRoster->count()==3,"dragging an athlete between inline panes adds that athlete");
         for(int i=0;i<30;++i){clickControl(scene(&manager),i%2?"savedRosterView-0":"savedRosterView-1");check(inlineRoster->count()==3,"inline grouping preserves the selected athletes with a 600-person library");}
+        const auto filteredId=QuickRoster::key(owned[11]);inlineRoster->setQuery("Roster 11");inlineRoster->selectCandidate(filteredId);QTest::qWait(50);
+        check(inlineRoster->candidateMarkedCount()==1 && inlineRoster->groupedLibrary()->rowCount()>0,"filtered inline library can mark an athlete");
+        for(int i=0;i<6;++i){inlineRoster->setGrouped(i%2==0);presentation(&manager)->resize(i%2?1024:1440,i%2?640:900);QTest::qWait(30);check(inlineRoster->candidateMarkedCount()==1 && inlineRoster->count()==3,"filtering, resizing and regrouping preserve selection");}
+        inlineRoster->selectCandidate(filteredId);inlineRoster->setQuery("");presentation(&manager)->resize(1440,900);QTest::qWait(80);
         const auto second=manager.createRoster();check(manager.selectRoster(first) && manager.selectRoster(second) && manager.selectRoster(first),"rapid roster switches retain identity");QTest::qWait(100);
         check(inlineRoster->count()==3,"rapid roster switches preserve membership after deferred updates");
         auto *name=item(view->rootObject(),"rosterName");check(name,"inline roster name field exists");name->forceActiveFocus();QTest::keyClick(view,Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(view,"Edited first");
