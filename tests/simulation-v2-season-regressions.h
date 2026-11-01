@@ -204,6 +204,13 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
             check(manager.selectActiveRoster(first),"the edited roster can be made active");
             check(manager.removeRoster(first) && save.activeJumpersListId().isEmpty(),"deleting the active roster returns to all athletes");
             check(manager.restoreRoster() && save.activeJumpersListId()==first,"undo restores the previously active roster");QTest::qWait(50);
+            auto *unchanged=new SeasonCalendar("Restore original association"),*reassigned=new SeasonCalendar("Keep new association");
+            unchanged->setJumpersListId(first);reassigned->setJumpersListId(first);
+            auto &calendars=save.getActualSeason()->getCalendarsReference();calendars.append(unchanged);calendars.append(reassigned);
+            check(manager.removeRoster(first) && unchanged->jumpersListId().isEmpty() && reassigned->jumpersListId().isEmpty(),"deleting a roster clears its calendar associations");
+            reassigned->setJumpersListId(second);check(manager.selectActiveRoster(second),"another roster can be activated before undo");
+            check(manager.restoreRoster() && unchanged->jumpersListId()==first && reassigned->jumpersListId()==second && save.activeJumpersListId()==second,"undo restores unchanged associations without overwriting newer choices");
+            calendars.removeAll(unchanged);calendars.removeAll(reassigned);delete unchanged;delete reassigned;save.setActiveJumpersListId(QString());QTest::qWait(50);
         }
         check(manager.removeRoster(first) && manager.restoreRoster(),"deleted inline roster can be restored");QTest::qWait(50);
         check(manager.editingRosterId()==first && editor->count()==1,"restoration preserves roster identity and members");
