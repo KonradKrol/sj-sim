@@ -1,3 +1,37 @@
+## Stan pracy — 1.11 (Codex)
+
+Pracuj sam na `feature/simulation-v2`; każdy ukończony zakres commituj i wypychaj.
+Zachowuj hierarchię, kontrast, jasność i brak wizualnego szumu.
+
+- **-3 Listy:** nowy edytor inline ma test 10 list tworzonych przez UI,
+  zapisu i odczytu, składu, aktywnej listy oraz cofania po zmianie przypisania
+  kalendarza. Sprawdzono 600 zawodników, przeciąganie między panelami, szybkie
+  przełączanie list, zmianę nazwy, filtrowanie, zaznaczenie, grupowanie i zmianę
+  rozmiaru. Obejrzano oba motywy, 1440×900, 1024×640, 520×600, 360×480 oraz
+  większą skalę interfejsu. Naprawiono pętle układu. Szczegóły starszych zadań
+  pozostają w `HANDOFF-31-10-LISTY.md`.
+- **-2, -1, 0:** walidacja poprawnych, różnych zawodników w składzie; domyślne
+  nazwy w języku interfejsu; pojedyncze uzupełnianie i większa tabela drużyn.
+- **1:** dodano ochronę pustej i nieaktualnej klasyfikacji oraz test. Oryginalny
+  losowy crash użytkownika nie był odtworzony na jego prywatnym zapisie.
+- **2, 3, 4, 6:** neutralne tło słabego perka, ukryty ręczny generator formy,
+  brak uwag o migracji przed konkursem, paczki w osobnej zwijanej sekcji.
+- **7, 8:** wykres edycji stale pokazuje pole wyjściowe; losowanie ustawia nowe
+  ziarno, więc te same cztery parametry mogą dać inny układ. Samo wejście w
+  edycję nie losuje wiatru. Wyjaśniono to użytkownikowi.
+- **9, 10:** rozróżnione sortowanie i grupowanie krajów; specjaliści różnie
+  wykorzystują wiatr, a siłę zależności można stroić w labie.
+- Wyjaśniono użytkownikowi wykresy wiatru. Niezależny test „O autorze” naprawiono:
+  test musi poczekać na zakończenie animacji zamykania powitania.
+
+Testy uruchomione w izolowanych danych: `--simulation-v2-season-only`,
+`--simulation-v2-competition-only`, `--roster-workspace-only`, `--roster-only`,
+`--choice-popup-only`, `--workflow-only`, `--athlete-studio-only`, `--author-only`,
+`--balance-lab-core-only`, `scripts/test-simulation-v2-core.sh` i kontrola tłumaczeń.
+Nie oznacza to, że pełny historyczny smoke całej aplikacji został sprawdzony.
+
+---
+
 Zaczynam punktację od minusowych liczb, bo zacząłem dorabiać punkty doraźnie, nie zwracaj na to uwagi.
 
 -3. Ukończ całą zaległą pracę z pliku HANDOFF-31-30-LISTY.md - zadawaj pytania jeśli czegoś nie wiesz.
