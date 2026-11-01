@@ -46,7 +46,11 @@ static void rosterWorkspaceRegressions(MainWindow &main) {
         check(inlineRoster->count()==3,"dragging an athlete between inline panes adds that athlete");
         for(int i=0;i<30;++i){clickControl(scene(&manager),i%2?"savedRosterView-0":"savedRosterView-1");check(inlineRoster->count()==3,"inline grouping preserves the selected athletes with a 600-person library");}
         const auto second=manager.createRoster();check(manager.selectRoster(first) && manager.selectRoster(second) && manager.selectRoster(first),"rapid roster switches retain identity");QTest::qWait(100);
-        check(inlineRoster->count()==3,"rapid roster switches preserve membership after deferred updates");manager.reject();
+        check(inlineRoster->count()==3,"rapid roster switches preserve membership after deferred updates");
+        auto *name=item(view->rootObject(),"rosterName");check(name,"inline roster name field exists");name->forceActiveFocus();QTest::keyClick(view,Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(view,"Edited first");
+        clickControl(view,"rosterCard-"+second);QTest::qWait(80);
+        bool firstRenamed=false,secondUntouched=false;for(const auto &list:save.getJumpersLists()){if(list.getId()==first)firstRenamed=list.getName()=="Edited first";if(list.getId()==second)secondUntouched=list.getName()!="Edited first";}
+        check(firstRenamed && secondUntouched,"changing rosters commits a pending name to the original roster only");manager.reject();
     }
     qInfo()<<"PASS: atomic roster insertion/removal and repeated live grouping transitions";
 }
