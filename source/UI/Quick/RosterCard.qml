@@ -10,7 +10,11 @@ AbstractButton {
     property bool condensed: false
     property bool hideDetail: false
     padding: Theme.dp(10)
-    implicitHeight: Math.max(Theme.dp(condensed ? 52 : 68),contentItem.implicitHeight+topPadding+bottomPadding)
+    property real measuredContentHeight: 0
+    implicitHeight: Math.max(Theme.dp(condensed ? 52 : 68),measuredContentHeight+topPadding+bottomPadding)
+    Timer { id: measure; interval: 0; onTriggered: card.measuredContentHeight=card.contentItem.implicitHeight }
+    Connections { target: card.contentItem; function onImplicitHeightChanged(){measure.restart()} }
+    Component.onCompleted: measure.restart()
     hoverEnabled: true
     Accessible.name: title+", "+detail
     Accessible.selected: checked

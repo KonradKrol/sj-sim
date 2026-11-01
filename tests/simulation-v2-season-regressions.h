@@ -168,6 +168,10 @@ static void simulationV2SeasonEditorRegressions(MainWindow &main)
         QTest::qWait(150);auto *rosterScene=scene(&manager);
         check(item(rosterScene->rootObject(),"seasonRostersWorkspace"),"new roster workspace opens inline");
         render(&manager,"season-rosters-inline",true);
+        auto *appearance=rosterScene->rootContext()->contextProperty("appearance").value<QuickAppearance *>();
+        const double previousScale=appearance->uiScale();appearance->setUiScale(1);presentation(&manager)->resize(1024,640);QTest::qWait(150);
+        auto *accessibleRows=item(rosterScene->rootObject(),"savedRosterCandidates");check(accessibleRows && accessibleRows->isVisible() && accessibleRows->height()>=60,"inline roster retains usable rows at the larger interface scale");
+        presentation(&manager)->grab().save(output+"/season-rosters-inline-large-scale.png");appearance->setUiScale(previousScale);presentation(&manager)->resize(360,480);QTest::qWait(100);
         presentation(&manager)->grab().save(output+"/season-rosters-inline.png");
         clickControl(rosterScene,"rosterCreate");QTest::qWait(80);const auto fromUi=manager.editingRosterId();
         check(!fromUi.isEmpty() && fromUi!=second && save.getJumpersLists().size()==4,"visible new-roster action creates and selects a list");

@@ -6,6 +6,11 @@ Pane {
     id: limits
     property var backend
     property real listHeight: Theme.dp(150)
+    property real measuredContentHeight: 0
+    implicitHeight: measuredContentHeight > 0 ? measuredContentHeight+topPadding+bottomPadding : Theme.dp(160)
+    Timer { id: measure; interval: 0; onTriggered: limits.measuredContentHeight=limits.contentItem.implicitHeight }
+    Connections { target: limits.contentItem; function onImplicitHeightChanged(){measure.restart()} }
+    Component.onCompleted: measure.restart()
     padding: Theme.dp(10)
     background: Rectangle { color: Theme.raised; radius: Theme.dp(8) }
     contentItem: ColumnLayout {
