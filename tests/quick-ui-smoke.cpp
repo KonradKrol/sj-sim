@@ -2015,6 +2015,11 @@ static void characteristicLookupRegression() {
     check(skills.getLevelOfCharacteristic("flight-height")==7.5 && copy.getLevelOfCharacteristic("flight-height")==2.5,"lookup sees current edits while copied athlete skills remain independent");
     QSet<Characteristic> shared=skills.getCharacteristics();skills.setCharacteristics({Characteristic(1,"replacement")});
     check(skills.getLevelOfCharacteristic("flight-height")==0 && shared.contains(Characteristic("flight-height")),"replacing characteristics does not retain stale values or alter shared snapshots");
+    CharacteristicInputDialog picker(CharacteristicInputDialog::Add,Characteristic::Jumper);picker.fillComboBox();
+    const auto available=picker.getDirtyCharacteristicNames();check(!available.isEmpty(),"characteristic picker starts with available choices");
+    picker.fillComboBox();check(picker.getDirtyCharacteristicNames()==available && picker.getCharacteristicType()==available.first(),"rebuilding characteristic choices preserves their index mapping");
+    QSet<Characteristic> used;for(const auto &name:available)used.insert(Characteristic(name));picker.setExistingCharacteristics(used);picker.fillComboBox();
+    check(picker.getDirtyCharacteristicNames().isEmpty() && picker.getCharacteristicType().isEmpty(),"a full characteristic set has no invalid current selection");
     qInfo()<<"PASS: characteristic lookups preserve current values and shared-copy isolation";
 }
 

@@ -43,22 +43,15 @@ void CharacteristicsEditor::setCharacteristics(const QSet<Characteristic> &newCh
 
 void CharacteristicsEditor::on_pushButton_add_clicked()
 {
-    qInfo()<<"void CharacteristicsEditor::on_pushButton_add_clicked():";
     //qInstallMessageHandler(MyFunctions::fileMessageHandler);
-    qInfo("installMessageHandler");
     CharacteristicInputDialog dialog(CharacteristicInputDialog::Add);
-    qInfo("CharacteristicInputDialog constructor");
     dialog.setParentType(parentType);
-    qInfo("CharacteristicInputDialog setParentType");
     dialog.setModal(true);
-    qInfo("CharacteristicInputDialog setModal");
     dialog.setExistingCharacteristics(characteristics);
-    qInfo("CharacteristicInputDialog setExistingCharacteristics");
     dialog.fillComboBox();
-    qInfo("CharacteristicInputDialog fillComboBox");
     if(dialog.exec() == QDialog::Accepted)
     {
-        if(dialog.getCharacteristicLevel() != 0){
+        if(dialog.getCharacteristicLevel() != 0 && !dialog.getCharacteristicType().isEmpty()){
             characteristics.insert(dialog.getCharacteristic());
             emit characteristicsChanged();
         }
@@ -111,7 +104,7 @@ void CharacteristicsEditor::on_pushButton_edit_clicked()
 
         if(dialog.exec() == QDialog::Accepted)
         {
-            if(dialog.getCharacteristicLevel() != 0){
+            if(dialog.getCharacteristicLevel() != 0 && !dialog.getCharacteristicType().isEmpty()){
                 characteristics.remove(Characteristic(dirtyStrings.at(index)));
                 characteristics.insert(dialog.getCharacteristic());
                 emit characteristicsChanged();

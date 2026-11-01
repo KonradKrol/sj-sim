@@ -34,7 +34,7 @@ CharacteristicInputDialog::~CharacteristicInputDialog()
 
 QString CharacteristicInputDialog::getCharacteristicType() const
 {
-    return dirtyCharacteristicNames.at(ui->comboBox_type->currentIndex());
+    return dirtyCharacteristicNames.value(ui->comboBox_type->currentIndex());
 }
 
 double CharacteristicInputDialog::getCharacteristicLevel() const
@@ -99,22 +99,14 @@ void CharacteristicInputDialog::setExistingCharacteristics(const QSet<Characteri
 
 void CharacteristicInputDialog::fillComboBox()
 {
-    qInfo()<<"\nvoid CharacteristicInputDialog::fillComboBox()";
     ui->comboBox_type->clear();
-    QStringListModel * model = new QStringListModel;
+    dirtyCharacteristicNames.clear();
+    QStringListModel * model = new QStringListModel(ui->comboBox_type);
 
     QStringList characteristics = Characteristic::characteristicTypesForSpecificParent(parentType, false);
     QStringList editableCharacteristics = characteristics;
-    qInfo()<<"editableCharacteristics size: "<<editableCharacteristics.size();
-    int i = 0;
     for(auto & characteristic : characteristics)
     {
-        qInfo()<<"\ncharacteristics at "<<i<<" i:";
-        for(auto & ch : editableCharacteristics){
-            qInfo()<<"ch: "<<ch;
-        }
-        qInfo()<<"characteristic: "<<characteristic;
-        qInfo()<<"contains: "<<existingCharacteristics.contains(Characteristic(characteristic));
         if(existingCharacteristics.contains(Characteristic(characteristic)))
         {
             int index = 0;
@@ -124,12 +116,9 @@ void CharacteristicInputDialog::fillComboBox()
                 if(editableCharacteristics.at(it) == characteristic)
                     index = it;
             }
-            qInfo()<<"characteristics size: "<<characteristics.size()<<", index to remove: "<<index;
             editableCharacteristics.removeAt(index);
         }
-        i++;
     }
-    qInfo()<<"After for loop";
     for(auto & characteristic : editableCharacteristics){
         dirtyCharacteristicNames.push_back(characteristic);
         characteristic = Characteristic::getTypeToDisplay(Characteristic(characteristic));
