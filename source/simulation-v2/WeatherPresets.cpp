@@ -99,7 +99,8 @@ WeatherProposal sampleWeatherPreset(WeatherPreset preset,double k,RandomSource &
     const double strengthScale=parameters.get("generator.global.strengthScale",.8);
     const double variationScale=parameters.get("generator.global.variationScale",.75);
     const double gustScale=parameters.get("generator.global.gustScale",.75);
-    for(auto &r:w.references){r.value.head*=strengthScale;r.value.cross*=strengthScale;}
+    Wind average;for(const auto &r:w.references){average.head+=r.value.head/w.references.size();average.cross+=r.value.cross/w.references.size();}
+    for(auto &r:w.references){r.value.head=(average.head+(r.value.head-average.head)*variationScale)*strengthScale;r.value.cross=(average.cross+(r.value.cross-average.cross)*variationScale)*strengthScale;}
     w.temporalAmplitude*=variationScale;w.spatialAmplitude*=variationScale;w.trendAmplitude*=variationScale;w.gustAmplitude*=gustScale;
     w.validate();return result;
 }

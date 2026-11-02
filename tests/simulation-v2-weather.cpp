@@ -113,7 +113,9 @@ int main()
         WeatherGeneratorParameters unscaled;unscaled.values["generator.global.strengthScale"]=1;unscaled.values["generator.global.variationScale"]=1;unscaled.values["generator.global.gustScale"]=1;
         SeededRandom scaledRng(111),unscaledRng(111);
         const auto scaled=sampleWeatherPreset(WeatherPreset::StableTailwind,120,scaledRng),original=sampleWeatherPreset(WeatherPreset::StableTailwind,120,unscaledRng,unscaled);
-        near(scaled.wind.references[0].value.head,original.wind.references[0].value.head*.8,1e-9,"preset global strength scale moderates generated wind");
+        double scaledMean=0,originalMean=0;for(const auto &r:scaled.wind.references)scaledMean+=r.value.head/scaled.wind.references.size();for(const auto &r:original.wind.references)originalMean+=r.value.head/original.wind.references.size();
+        near(scaledMean,originalMean*.8,1e-9,"preset global strength scale moderates generated wind");
+        near(scaled.wind.references[0].value.head-scaledMean,(original.wind.references[0].value.head-originalMean)*.8*.75,1e-9,"preset global variation scale moderates spatial differences");
         near(scaled.wind.gustAmplitude,original.wind.gustAmplitude*.75,1e-9,"preset global gust scale moderates gusts");
         SeededRandom presetRng(111);double previousStrength=-1;bool variants=false;int lightCalm=0;
         for(int index=0;index<weatherPresetCount;++index)for(int draw=0;draw<500;++draw) {
