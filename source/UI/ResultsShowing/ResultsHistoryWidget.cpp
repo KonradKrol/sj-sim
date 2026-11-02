@@ -4,6 +4,7 @@
 #include "../../competitions/CompetitionAdvancement.h"
 #include "../../global/CountryFlagsManager.h"
 #include <QComboBox>
+#include <QLabel>
 #include <QDir>
 #include "../../global/CountryCodes.h"
 #include <QTreeView>
@@ -56,7 +57,8 @@ ResultsHistoryWidget::ResultsHistoryWidget(CompetitionInfo *competition,bool liv
     auto *layout=new QVBoxLayout(this);layout->setContentsMargins(0,0,0,0);
     auto *controls=new QHBoxLayout;layout->addLayout(controls);
     rounds=new QComboBox(this);rounds->setObjectName("comboBox_resultHistoryRound");rounds->setAccessibleName(tr("Wyniki po serii"));controls->addWidget(rounds);
-    mode=new QComboBox(this);mode->setObjectName("comboBox_resultHistoryMode");mode->addItems({tr("Wyniki drużynowe"),tr("Wyniki indywidualne")});mode->setVisible(competition->getRules().getCompetitionType()==CompetitionRules::Team);controls->addWidget(mode);
+    mode=new QComboBox(this);mode->setObjectName("comboBox_resultHistoryMode");mode->addItems({tr("Wyniki drużynowe"),tr("Wyniki indywidualne")});mode->setVisible(competition->getRules().getCompetitionType()==CompetitionRules::Team || teamTrial());if(teamTrial())mode->setCurrentIndex(1);controls->addWidget(mode);
+    if(teamTrial() && competition->teamPreviewOwner->getTeams().isEmpty()){auto *note=new QLabel(tr("Podgląd krajów: najlepsi %1 skoczkowie każdego kraju w tej próbnej. Skład drużyn konkursu może być inny.").arg(qMax(1,competition->teamPreviewOwner->getRules().getJumpersInTeamCount())),this);note->setWordWrap(true);note->setVisible(mode->currentIndex()==0);connect(mode,qOverload<int>(&QComboBox::currentIndexChanged),note,[note](int index){note->setVisible(index==0);});layout->addWidget(note);}
     model=new QStandardItemModel(this);table=new QTreeView(this);table->setObjectName("historyResultsView");table->setModel(model);table->setSelectionMode(QAbstractItemView::SingleSelection);table->setSelectionBehavior(QAbstractItemView::SelectRows);layout->addWidget(table,1);
     preview=new JumperCompetitionResultsWidget(this);preview->hide();layout->addWidget(preview);
     connect(table,&QTreeView::clicked,this,&ResultsHistoryWidget::showJump);
@@ -65,9 +67,10 @@ ResultsHistoryWidget::ResultsHistoryWidget(CompetitionInfo *competition,bool liv
     connect(rounds,qOverload<int>(&QComboBox::currentIndexChanged),this,update);connect(mode,qOverload<int>(&QComboBox::currentIndexChanged),this,update);
     refresh();
 }
+bool ResultsHistoryWidget::teamTrial() const {return competition->getSerieType()==CompetitionInfo::TrialRound && competition->getRules().getCompetitionType()==CompetitionRules::Individual && competition->teamPreviewOwner && competition->teamPreviewOwner->getRules().getCompetitionType()==CompetitionRules::Team;}
 bool ResultsHistoryWidget::individualRanking() const {return mode->isVisibleTo(const_cast<ResultsHistoryWidget *>(this)) && mode->currentIndex()==1;}
-bool ResultsHistoryWidget::paused() const {return live && (rounds->currentData().toInt()>0 || individualRanking());}
-bool ResultsHistoryWidget::active() const {return !live || paused() || individualRanking();}
+bool ResultsHistoryWidget::paused() const {return live && (rounds->currentData().toInt()>0 || (teamTrial()?mode->currentIndex()==0:individualRanking()));}
+bool ResultsHistoryWidget::active() const {return !live || paused() || (teamTrial()?mode->currentIndex()==0:individualRanking());}
 void ResultsHistoryWidget::refresh(int completedRounds) {
     completedLimit=completedRounds;
     int count=0;const int size=competition->getRules().getCompetitionType()==CompetitionRules::Team?qMax(1,competition->getRules().getJumpersInTeamCount()):1;
@@ -84,16 +87,31 @@ void ResultsHistoryWidget::refresh(int completedRounds) {
 void ResultsHistoryWidget::rebuild() {
     preview->hide();preview->setJumperResult(nullptr);
     snapshot=afterRound(competition->getResultsReference(),rounds->currentData().toInt(),individualRanking(),competition);
+    if(teamTrial() && !individualRanking()){
+        auto individuals=snapshot.getResults();std::stable_sort(individuals.begin(),individuals.end(),[](const auto &a,const auto &b){return a.getPointsSum()>b.getPointsSum();});auto *main=competition->teamPreviewOwner;
+        previewTeams=main->getTeams();
+        if(previewTeams.isEmpty()){QVector<Jumper *> jumpers;for(const auto &result:individuals)if(result.getJumper())jumpers.append(result.getJumper());previewTeams=Team::constructTeamsVectorByJumpersList(jumpers,qMax(1,main->getRules().getJumpersInTeamCount()));for(auto &team:previewTeams)Team::cutTeamJumpers(&team,qMax(1,main->getRules().getJumpersInTeamCount()));}
+        snapshot.getResultsReference().clear();
+        for(auto &team:previewTeams){CompetitionSingleResult total(competition,&team,CompetitionSingleResult::TeamResult);double points=0;
+            for(auto *jumper:team.getJumpers())for(const auto &individual:individuals)if(individual.getJumper()==jumper){total.getTeamJumpersResultsReference().append(individual);points+=individual.getPointsSum();break;}
+            int rounds=0;for(const auto &member:total.getTeamJumpersResultsReference())rounds=qMax(rounds,int(member.getJumps().size()));
+            total.getJumpsReference().clear();for(int r=0;r<rounds;++r)for(const auto &member:total.getTeamJumpersResultsReference())if(r<member.getJumps().size())total.getJumpsReference().append(member.getJumps()[r]);
+            if(!total.getJumps().isEmpty()){total.setPointsSum(points);snapshot.getResultsReference().append(total);}
+        }
+        snapshot.sortInDescendingOrder();
+        for(auto &result:snapshot.getResultsReference()){for(auto &jump:result.getJumpsReference())jump.setSingleResult(&result);for(auto &member:result.getTeamJumpersResultsReference())for(auto &jump:member.getJumpsReference())jump.setSingleResult(&member);}
+    }
     auto *previousModel=model;
     auto *nextModel=new QStandardItemModel(this);
-    const bool team=competition->getRules().getCompetitionType()==CompetitionRules::Team && !individualRanking();
+    const bool team=(competition->getRules().getCompetitionType()==CompetitionRules::Team || teamTrial()) && !individualRanking();
+    const int teamSize=qMax(1,(teamTrial()?competition->teamPreviewOwner:competition)->getRules().getJumpersInTeamCount());
     table->setProperty("historyTeam",team);
-    int n=rounds->currentData().toInt();if(n==0){n=1;for(const auto &result:snapshot.getResultsReference()){const int size=result.getType()==CompetitionSingleResult::TeamResult?qMax(1,competition->getRules().getJumpersInTeamCount()):1;n=qMax(n,int((result.getJumps().size()+size-1)/size));}}
+    int n=rounds->currentData().toInt();if(n==0){n=1;for(const auto &result:snapshot.getResultsReference()){const int size=result.getType()==CompetitionSingleResult::TeamResult?teamSize:1;n=qMax(n,int((result.getJumps().size()+size-1)/size));}}
     QStringList headers=team?QStringList{tr("Poz."),tr("Drużyna"),tr("Zawodnik"),tr("Suma"),QString()}:QStringList{tr("Poz."),tr("Zawodnik"),tr("Suma")};
     for(int r=1;r<=n;++r){if(!team)headers.append(tr("%1 · m").arg(r));headers.append(tr("%1 · pkt").arg(r));}nextModel->setHorizontalHeaderLabels(headers);
     const auto row=[&](CompetitionSingleResult &result,int resultIndex,bool child){
         QStringList values=team?QStringList{child?QString():result.isTeamDisqualified()?QStringLiteral("DSQ"):QString::number(result.getPosition()),child?QString():result.getTeam()->getCountryCode(),child?result.getJumper()->getNameAndSurname():QString(),result.isTeamDisqualified()?QString::fromUtf8("—"):QString::number(result.getPointsSum(),'f',1),QString()}:QStringList{QString::number(result.getPosition()),result.getJumper()->getNameAndSurname(),QString::number(result.getPointsSum(),'f',1)};
-        const int perRound=team&&!child?qMax(1,competition->getRules().getJumpersInTeamCount()):1;
+        const int perRound=team&&!child?teamSize:1;
         const auto &jumps=result.getJumpsReference();for(int r=0;r<n;++r){double points=0;bool has=false;for(int i=r*perRound;i<qMin((r+1)*perRound,int(jumps.size()));++i){points+=jumps[i].getPoints();has=true;}if(!team)values.append(has?(jumps[r].getDNS()?QStringLiteral("DNS"):jumps[r].getDSQ()?QStringLiteral("DSQ"):QString::number(jumps[r].getDistance(),'f',1)):QString());values.append(has?(team && child && jumps[r].getDNS()?QStringLiteral("DNS"):team && child && jumps[r].getDSQ()?QStringLiteral("DSQ"):QString::number(points,'f',1)):QString());}
         QList<QStandardItem *> items;for(const auto &value:values){auto *item=new QStandardItem(value);item->setFlags(Qt::ItemIsEnabled|Qt::ItemIsSelectable);items.append(item);}items[0]->setData(resultIndex,Qt::UserRole);items[0]->setData(snapshot.containsLatestJump(result),CompetitionAdvancement::LatestJumpRole);const int column=team&&child?2:1;const auto country=team&&!child?result.getTeam()->getCountryCode():result.getJumper()->getCountryCode();items[column]->setIcon(QIcon(QDir::current().absoluteFilePath("flags/"+CountryCodes::toIso(country)+".svg")));return items;
     };

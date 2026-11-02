@@ -24,6 +24,8 @@ public:
 signals:
     void changed();
 private:
+    QVector<Team> previewTeams;
+    bool teamTrial() const;
     CompetitionInfo *competition;
     bool live;
     QPointer<QWidget> owner;
