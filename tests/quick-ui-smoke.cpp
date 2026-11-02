@@ -937,7 +937,7 @@ static void authorRegressions(MainWindow &main) {
     check(dialog && dialog->isVisible() && dialog->property("sjQuickPage").toBool() && !QApplication::activeModalWidget(),"author opens from home as a regular navigation page");
     auto *bridge=dialog->findChild<QuickBridge *>();check(navigation->current()==bridge,"author page uses shared navigation");
     const auto projects=bridge->context().value("projects").toList();check(projects.size()==2 && projects.first().toMap().value("name")=="Sj.Sim Predazzo Edition" && projects.last().toMap().value("name")=="Ski Jump Draft" && projects.last().toMap().value("description").toString().contains("2025"),"author projects include Ski Jump Draft and its 2025 beta");
-    check(!bridge->context().value("work").toString().contains("SJ Manager") && !bridge->context().value("work").toString().contains("SJ Draft") && bridge->context().value("availability").toString().contains(QString::fromUtf8("płatnym zadaniu")),"author retains the work invitation and removes the extra project sentence");
+    check(!bridge->context().value("work").toString().contains("SJ Manager") && !bridge->context().value("work").toString().contains("SJ Draft") && bridge->context().value("availability").toString()==AuthorWindow::tr("Chętnie porozmawiam o pracy lub płatnym zadaniu."),"author retains the work invitation and removes the extra project sentence");
     render(dialog,"author",true);
     auto *view=scene(dialog);main.resize(1240,900);QTest::qWait(180);view->grabFramebuffer();
     auto *photo=item(view->rootObject(),"authorPortrait");check(photo && photo->property("status").toInt()==1,"packaged author portrait loads without external files");
