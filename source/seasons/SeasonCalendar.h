@@ -51,6 +51,7 @@ public:
     QVector<Classification *> &getClassificationsReference();
     void setClassifications(const QVector<Classification *> &newClassifications);
     QString getName() const;
+    QJsonObject defaultRules;
     QString jumpersListId() const { return rosterId; }
     void setJumpersListId(const QString &id) { rosterId=id; }
     void setName(const QString &newName);

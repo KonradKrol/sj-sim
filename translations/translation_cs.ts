@@ -1843,7 +1843,13 @@ Sdílejte celou složku. K importu vyberte soubor pack.json.</translation></mess
             <source>Pokaż pozostałe ostrzeżenia (%1)</source>
             <translation>Zobrazit zbývající upozornění (%1)</translation>
         </message>
-    </context>
+    <message><source>Domyślne zasady</source><translation>Výchozí pravidla</translation></message>
+<message><source>Zmiany dotyczą nowych wydarzeń w tym kalendarzu.</source><translation>Změny platí pro nové události v tomto kalendáři.</translation></message>
+<message><source>Kwalifikacje do zaznaczonych konkursów</source><translation>Kvalifikace k vybraným závodům</translation></message>
+<message><source>Dodaj kwalifikacje</source><translation>Přidat kvalifikace</translation></message>
+<message><source>Doda osobne kwalifikacje i automatycznie połączy awans. Konkursy z kwalifikacjami zostaną pominięte.</source><translation>Přidá kvalifikaci před každý závod a automaticky propoji postup. Závody s existující kvalifikací budou vynechány.</translation></message>
+<message><source>Doda kwalifikacje do zaznaczonych konkursów indywidualnych bez kwalifikacji i automatycznie połączy awans.</source><translation>Přidá kvalifikaci k vybraným individuálním závodům bez kvalifikace a automaticky propoji postup.</translation></message>
+</context>
     <context>
         <name>CalendarEditorTableModel</name>
         <message>
@@ -5136,7 +5142,10 @@ průměrného větru</translation>
             <source>Ustawienia paczki</source>
             <translation>Nastavení balíčku</translation>
         </message>
-    </context>
+    <message><source>Domyślne zasady</source><translation>Výchozí pravidla</translation></message>
+<message><source>Importuj</source><translation>Importovat</translation></message>
+<message><source>Eksportuj</source><translation>Exportovat</translation></message>
+</context>
     <context>
         <name>DataTable</name>
         <message>
@@ -5428,7 +5437,14 @@ průměrného větru</translation>
             <source>Posortować paczkę według krajów? Zmieni to obecną kolejność elementów.</source>
             <translation>Seřadit balíček podle zemí? Změní se současné pořadí položek.</translation>
         </message>
-    </context>
+    <message><source>Konkurs</source><translation>Závod</translation></message>
+<message><source>Kwalifikacje</source><translation>Kvalifikace</translation></message>
+<message><source>Seria próbna</source><translation>Zkušební kolo</translation></message>
+<message><source>Trening</source><translation>Trénink</translation></message>
+<message><source>Konkurs drużynowy</source><translation>Závod družstev</translation></message>
+<message><source>Próbna drużynowa</source><translation>Zkušební kolo družstev</translation></message>
+<message><source>Brak zasad tego typu</source><translation>Nejsou pravidla tohoto typu</translation></message>
+</context>
     <context>
         <name>DatabaseItemsListView</name>
         <message>
@@ -15982,6 +15998,16 @@ Ověřte, že jste vybrali správný soubor.</translation>
         </message>
     <message><source>Bez przypisania — użyj aktywnej listy</source><translation>Nepřiřazeno — použít aktivní seznam</translation></message>
 <message><source>%1 (wszyscy)</source><translation>%1 (všichni)</translation></message>
+<message><source>Seria próbna</source><translation>Zkušební kolo</translation></message>
+<message><source>Trening</source><translation>Trénink</translation></message>
+<message><source>Konkurs drużynowy</source><translation>Závod družstev</translation></message>
+<message><source>Próbna drużynowa</source><translation>Zkušební kolo družstev</translation></message>
+<message><source>Z paczki</source><translation>Z balíčku</translation></message>
+<message><source>Podstawowe zasady</source><translation>Základní pravidla</translation></message>
+<message><source>Data kwalifikacji wykracza poza zakres.</source><translation>Datum kvalifikace je mimo podporovaný rozsah.</translation></message>
+<message><source>Najpierw ustaw daty zaznaczonych konkursów.</source><translation>Nejprve nastavte data vybraných závodů.</translation></message>
+<message><source>Zaznacz konkursy indywidualne bez kwalifikacji.</source><translation>Vyberte individuální závody bez kvalifikace.</translation></message>
+<message><source>Dodano kwalifikacje i powiązania. Możesz cofnąć zmianę.</source><translation>Kvalifikace a postupové vazby byly přidány. Změnu lze vrátit.</translation></message>
 </context>
     <context>
         <name>QuickPlot</name>
@@ -16595,7 +16621,8 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>%1 · pkt</source>
             <translation>%1 · b</translation>
         </message>
-    </context>
+    <message><source>Podgląd krajów: najlepsi %1 skoczkowie każdego kraju w tej próbnej. Skład drużyn konkursu może być inny.</source><translation>Náhled zemí: nejlepších %1 skokanů každé země v tomto zkušebním kole. Sestavy v závodu se mohou lišit.</translation></message>
+</context>
     <context>
         <name>ResultsTableModel</name>
         <message>
@@ -23110,6 +23137,8 @@ Technický klíč: %4</translation>
         </message>
     <message><source>Eksport tworzy folder ze skoczkami i zdjęciami. Udostępnij cały folder; przy imporcie wybierz plik pack.json w jego wnętrzu.</source><translation>Export vytvoří složku se skokany a fotografiemi. Sdílejte celou složku; při importu vyberte soubor pack.json uvnitř.</translation></message>
 <message><source>Eksport tworzy jeden plik paczki skoczni. Aby go wczytać, wybierz ten plik przy imporcie.</source><translation>Export vytvoří jeden soubor můstků. Při importu vyberte tento soubor.</translation></message>
+<message><source>Importuj</source><translation>Importovat</translation></message>
+<message><source>Eksportuj</source><translation>Exportovat</translation></message>
 </context>
     <context>
         <name>SortCountryButton</name>

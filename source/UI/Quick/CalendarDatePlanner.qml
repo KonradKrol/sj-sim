@@ -18,6 +18,23 @@ Pane {
     contentItem: ColumnLayout {
         spacing: 12
         Label { id: arrivalHeading; text: qsTr("Szybkie planowanie"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.title; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        SButton { text: qsTr("Domyślne zasady"); quiet: true; onClicked: defaults.visible=!defaults.visible }
+        ColumnLayout {
+            id: defaults; visible: false; Layout.fillWidth: true; spacing: Theme.dp(8)
+            Label { text: qsTr("Zmiany dotyczą nowych wydarzeń w tym kalendarzu."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+            Repeater { model: planner.backend.ruleDefaults; ColumnLayout { required property var modelData; Layout.fillWidth: true; Label { text: parent.modelData.title; color: Theme.muted; font.pointSize: Theme.caption } SChoice { Layout.fillWidth: true; model: parent.modelData.options; currentIndex: parent.modelData.current; onActivated: function(index){planner.backend.setDefaultRule(parent.modelData.role,index)} } } }
+        }
+        Pane {
+            Layout.fillWidth: true; padding: Theme.dp(12)
+            background: Rectangle { color: Theme.raised; radius: Theme.dp(6) }
+            contentItem: ColumnLayout {
+                spacing: Theme.dp(8)
+                Label { text: qsTr("Kwalifikacje do zaznaczonych konkursów"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                Label { text: qsTr("Doda kwalifikacje do zaznaczonych konkursów indywidualnych bez kwalifikacji i automatycznie połączy awans."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                SChoice { id: qualificationDay; Layout.fillWidth: true; model: [qsTr("W dniu konkursu"),qsTr("Dzień przed konkursem")] }
+                SButton { text: qsTr("Dodaj kwalifikacje"); enabled: planner.backend.selection.count>0 && !planner.backend.selection.locked; primary: true; Layout.fillWidth: true; onClicked: planner.backend.addQualifications(qualificationDay.currentIndex) }
+            }
+        }
         Repeater {
             model: planner.allWarnings ? planner.backend.dateWarnings : planner.backend.dateWarnings.slice(0, 3)
             Pane {

@@ -102,6 +102,7 @@ public:
     void setExceptionalRoundsCount(int newExceptionalRoundsCount);
     bool getCancelled() const;
     void setCancelled(bool newCancelled);
+    CompetitionInfo *teamPreviewOwner=nullptr;
     CompetitionInfo *getTrialRound() const;
     void setTrialRound(CompetitionInfo *newTrialRound);
     QVector<CompetitionInfo *> getTrainings() const;

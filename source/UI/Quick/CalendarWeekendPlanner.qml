@@ -43,7 +43,7 @@ ColumnLayout {
         HelpDot { explanation: qsTr("Oba konkursy otrzymają te zasady. Kwalifikacje i serie pomocnicze mają jedną serię. Klasyfikacje przypiszesz potem w Powiązaniach.") }
         Item { Layout.fillWidth: true }
     }
-    SChoice { id: rules; objectName: "weekend-rules"; Layout.fillWidth: true; model: JSON.parse(weekend.rulesKey).slice(1); Accessible.name: qsTr("Zasady konkursów weekendu"); onActivated: weekend.invalidate() }
+    SChoice { id: rules; currentIndex: weekend.backend.ruleDefaults.length ? weekend.backend.ruleDefaults[0].presetIndex : 0; objectName: "weekend-rules"; Layout.fillWidth: true; model: JSON.parse(weekend.rulesKey).slice(1); Accessible.name: qsTr("Zasady konkursów weekendu"); onActivated: weekend.invalidate() }
     Label { text: qsTr("Pierwsze kwalifikacje"); color: Theme.muted; font.pointSize: Theme.caption }
     SChoice { id: first; objectName: "weekend-first-qualification"; Layout.fillWidth: true; model: [qsTr("Piątek · dwa treningi przed kwalifikacjami"),qsTr("Sobota · przed pierwszym konkursem")]; Accessible.name: qsTr("Dzień pierwszych kwalifikacji"); onActivated: weekend.invalidate() }
     Label { text: qsTr("Niedziela"); color: Theme.muted; font.pointSize: Theme.caption }

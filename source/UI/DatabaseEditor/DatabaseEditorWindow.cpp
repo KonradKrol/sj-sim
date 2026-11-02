@@ -430,6 +430,11 @@ void DatabaseEditorWindow::setupPackControls()
     packName = new QLineEdit(panel); packName->setObjectName("dataPackName");
     form->addRow(tr("Aktywna paczka"), packChoice);
     form->addRow(tr("Nazwa paczki"), packName);
+    const QStringList titles{tr("Konkurs"),tr("Kwalifikacje"),tr("Seria próbna"),tr("Trening"),tr("Konkurs drużynowy"),tr("Próbna drużynowa")};
+    const auto roles=DataPack::ruleRoles();
+    for(int i=0;i<roles.size();++i){auto *choice=new QComboBox(panel);choice->setObjectName("packDefault-"+roles[i]);choice->setAccessibleName(titles[i]);auto *label=new QLabel(titles[i],panel);label->setObjectName(choice->objectName()+"Label");form->addRow(label,choice);
+        connect(choice,qOverload<int>(&QComboBox::currentIndexChanged),this,[this,choice,role=roles[i]](int index){if(index>=0)GlobalDatabase::get()->activePack(DataPack::Rules)->defaultRules[role]=choice->itemData(index).toString();});
+    }
     layout->addLayout(form);
     ageSettings = new QWidget(panel);
     auto *ageLayout = new QFormLayout(ageSettings);
@@ -521,13 +526,21 @@ void DatabaseEditorWindow::setupPackControls()
 void DatabaseEditorWindow::refreshPackControls()
 {
     if (!packChoice) return;
-    auto *db = GlobalDatabase::get();
+    auto *db = GlobalDatabase::get();db->syncActivePacks();
     const auto kind = DataPack::Kind(packKind());
     const QSignalBlocker choiceBlock(packChoice), nameBlock(packName), formatBlock(ageFormat), yearBlock(referenceYear);
     packChoice->clear();
     for (const auto &p : db->getPacks()) if (p.kind == kind) packChoice->addItem(p.name, p.id);
     packChoice->setCurrentIndex(packChoice->findData(db->activePackId(kind)));
     auto *p = db->activePack(kind);
+    for(const auto &role:DataPack::ruleRoles())if(auto *choice=findChild<QComboBox *>("packDefault-"+role)){
+        QSignalBlocker block(choice);choice->clear();const auto *pack=db->activePack(DataPack::Rules);const int type=role.startsWith("team")?CompetitionRules::Team:CompetitionRules::Individual;
+        for(const auto &rule:pack->rules)if(rule.getCompetitionType()==type)choice->addItem(rule.getName(),rule.getIDStr());
+        choice->setEnabled(choice->count()>0);if(choice->count()==0)choice->addItem(tr("Brak zasad tego typu"));
+        const int selected=pack->defaultRule(role);if(selected>=0)choice->setCurrentIndex(choice->findData(pack->rules[selected].getIDStr()));
+        choice->setVisible(kind==DataPack::Rules);if(auto *label=findChild<QLabel *>(choice->objectName()+"Label"))label->setVisible(kind==DataPack::Rules);
+    }
+
     packName->setText(p->name);
     ageSettings->setVisible(kind == DataPack::Jumpers);
     if (kind == DataPack::Jumpers) {

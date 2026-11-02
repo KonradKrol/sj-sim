@@ -662,7 +662,9 @@ CompetitionInfo *CompetitionInfo::getTrialRound() const
 
 void CompetitionInfo::setTrialRound(CompetitionInfo *newTrialRound)
 {
+    if(trialRound && trialRound->teamPreviewOwner==this)trialRound->teamPreviewOwner=nullptr;
     trialRound = newTrialRound;
+    if(trialRound)trialRound->teamPreviewOwner=this;
 }
 
 bool CompetitionInfo::getCancelled() const

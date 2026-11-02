@@ -18,6 +18,7 @@ class SimulationSave;
 class QuickCalendarEvents;
 class QuickCalendar : public QObject {
     Q_OBJECT
+    Q_PROPERTY(QVariantList ruleDefaults READ ruleDefaults NOTIFY changed)
     Q_PROPERTY(bool newCalendar READ newCalendar NOTIFY changed)
     Q_PROPERTY(bool datesEnabled READ datesEnabled NOTIFY changed)
     Q_PROPERTY(bool canEnableDates READ canEnableDates NOTIFY changed)
@@ -124,6 +125,10 @@ public:
     Q_INVOKABLE void applyCustomRules();
     Q_INVOKABLE void resetCustomRules();
     Q_INVOKABLE void selectCalendar(int index);
+    QVariantList ruleDefaults() const;
+    Q_INVOKABLE void setDefaultRule(const QString &role,int index);
+    Q_INVOKABLE void addQualifications(int daysBefore);
+    CompetitionRules defaultRule(const QString &role) const;
     bool newCalendar() const;
     Q_INVOKABLE void renameCalendar(const QString &name);
     Q_INVOKABLE void catalogAction(const QString &action);
@@ -138,7 +143,7 @@ private:
         QHash<QString,ClassificationCompetitionSettings> scoring;
         QVector<Classification *> classifications;Classification *classification=nullptr;
     };
-    struct Snapshot { SeasonCalendar *owner=nullptr,*active=nullptr;QVector<SeasonCalendar *> calendars;QVector<CompetitionInfo *> order;QHash<CompetitionInfo *,State> states;QVector<Classification *> classes;QHash<Classification *,Classification> classStates;QString name,classId,rosterId;QStringList selected;int boundary=0; };
+    struct Snapshot { SeasonCalendar *owner=nullptr,*active=nullptr;QVector<SeasonCalendar *> calendars;QVector<CompetitionInfo *> order;QHash<CompetitionInfo *,State> states;QVector<Classification *> classes;QHash<Classification *,Classification> classStates;QString name,classId,rosterId;QJsonObject defaults;QStringList selected;int boundary=0; };
     QPointer<CalendarEditorWidget> m_editor;
     QPointer<CompetitionRulesEditorWidget> m_rulesEditor;
     ClassificationEditorWidget *m_classEditor=nullptr;

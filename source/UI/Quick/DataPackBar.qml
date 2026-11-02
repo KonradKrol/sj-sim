@@ -2,14 +2,18 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
-RowLayout {
+GridLayout {
     id: bar
-    spacing: 12
+    columns: width>Theme.dp(700)?4:3
+    columnSpacing: 8; rowSpacing: 6
     Node {
+        Layout.columnSpan: bar.width>Theme.dp(700)?1:3
         node: ui.find("dataPackChoice")
         Layout.fillWidth: true
         Layout.minimumWidth: 0
     }
+    SButton { text: qsTr("Importuj"); primary: true; onClicked: {var n=ui.find("importDataPack");if(n)ui.activate(n.values.id)} }
+    SButton { text: qsTr("Eksportuj"); foreground: Theme.accent; onClicked: {var n=ui.find("exportDataPack");if(n)ui.activate(n.values.id)} }
     SButton {
         objectName: "manageDataPack"
         text: qsTr("Ustawienia paczki")
@@ -37,13 +41,18 @@ RowLayout {
                 spacing: 12
                 Label { width: parent.width; text: qsTr("Ustawienia paczki"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; wrapMode: Text.WordWrap }
                 Repeater {
-                    model: ["dataPackName", "dataPackAgeFormat", "dataPackReferenceYear", "createDataPack", "importDataPack", "exportDataPack"]
+                    model: ["dataPackName", "dataPackAgeFormat", "dataPackReferenceYear", "createDataPack"]
                     Node {
                         width: parent.width
                         node: ui.find(modelData)
                         visible: !!node && node.values.available !== false
                             && (ui.root.values.value === 0 || (modelData !== "dataPackAgeFormat" && modelData !== "dataPackReferenceYear"))
                     }
+                }
+                Column {
+                    width: parent.width; spacing: Theme.dp(8); visible: ui.root.values.value===2
+                    Label { text: qsTr("Domyślne zasady"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.bold: true }
+                    Repeater { model: ["competition","qualifications","trial","training","teamCompetition","teamTrial"]; Node { required property string modelData; width: parent.width; node: ui.find("packDefault-"+modelData) } }
                 }
                 Label {
                     width: parent.width

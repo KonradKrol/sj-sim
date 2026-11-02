@@ -1444,6 +1444,7 @@ return;
             for(int i=0;i<missing.size();++i){const int choice=choices[i]->currentData().toInt();if(choice<0 || choice>=availableHills.size() || !availableHills[choice])return;for(int event:missing[i].events)selectedHills[event]=availableHills[choice];}
         }
         calendarModel->applyChange([&]{
+        calendar->defaultRules=preset->getCalendarReference().defaultRules;
         if(!property("quickRetainPresetEvents").toBool())qDeleteAll(calendar->getCompetitionsReference());
         calendar->getCompetitionsReference().clear();
         QHash<CompetitionInfo *, CompetitionInfo *> competitions; //1. Konkurs z presetu, 2. Nowy konkurs z kalendarza

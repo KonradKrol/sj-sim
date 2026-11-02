@@ -686,7 +686,7 @@ void CompetitionConfigWindow::selectCanonicalPack(DataPack::Kind kind)
         auto *items=kind==DataPack::Hills?ui->comboBox_existingHill:existingCompetitionRulesComboBox;items->clear();
         if(selected) {
             if(kind==DataPack::Hills)for(const auto &hill:selected->data.hills)items->addItem(QIcon(CountryFlagsManager::getFlagPixmap(hill.getCountryCode().toLower())),hill.getName()+" HS"+QString::number(hill.getHSPoint()));
-            else for(const auto &rules:selected->data.rules)items->addItem(rules.getName());
+            else {for(const auto &rules:selected->data.rules)items->addItem(rules.getName());items->setCurrentIndex(qMax(0,selected->data.defaultRule("competition")));}
         }
     }
     filling=false;

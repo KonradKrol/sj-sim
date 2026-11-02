@@ -3,6 +3,7 @@
 #include "../Seasons/SimulationSaveManagerWindow.h"
 #include <QLocale>
 #include <algorithm>
+#include <vector>
 
 bool QuickCalendar::datesEnabled() const
 {
@@ -228,8 +229,8 @@ bool QuickCalendar::applyWeekend(){
     m_message=tr("Dodano weekend. Dwa konkursy są zaznaczone; możesz przypisać im klasyfikacje.");
     mutate([&]{
         auto order=mains();int at=order.size();if(!chosen.isEmpty() && !locked(chosen.last()))at=order.indexOf(chosen.last())+1;
-        CompetitionRules session=plan.definition;session.setRounds({RoundInfo(qMax(1,m_save?int(m_save->getJumpersReference().size()):plan.definition.getRounds().first().getCount()),true)});
-        const auto event=[&](int kind,const QDate &date,const CompetitionRules &rules){auto *entry=new CompetitionInfo(hill);entry->setSerieType(kind);entry->setScheduledDate(date);entry->setRules(rules);return entry;};
+        const CompetitionRules session=defaultRule("qualifications");
+        const auto event=[&](int kind,const QDate &date,const CompetitionRules &rules){auto *entry=new CompetitionInfo(hill);entry->setSerieType(kind);entry->setScheduledDate(date);entry->setRules(kind==CompetitionInfo::Qualifications?defaultRule("qualifications"):kind==CompetitionInfo::Training?defaultRule("training"):kind==CompetitionInfo::TrialRound?defaultRule(rules.getCompetitionType()==CompetitionRules::Team?"teamTrial":"trial"):rules);return entry;};
         auto *firstQualification=event(CompetitionInfo::Qualifications,plan.friday.addDays(plan.saturdayQualification?1:0),session);
         if(!plan.saturdayQualification){QVector<CompetitionInfo *> trainings;for(int i=0;i<2;++i)trainings.append(event(CompetitionInfo::Training,plan.friday,session));firstQualification->setTrainings(trainings);}
         auto *saturday=event(CompetitionInfo::Competition,plan.friday.addDays(1),plan.definition);saturday->setAdvancementCompetition(firstQualification);if(!plan.saturdayQualification)saturday->setTrialRound(event(CompetitionInfo::TrialRound,plan.friday.addDays(1),session));
@@ -239,4 +240,20 @@ bool QuickCalendar::applyWeekend(){
         m_selected=QStringList{saturday->getIDStr(),sunday->getIDStr()};setOrder(order);
     });
     return true;
+}
+
+void QuickCalendar::addQualifications(int daysBefore){
+    commitPendingRules();sync();if(!m_calendar || !editable() || daysBefore<0 || daysBefore>1)return;
+    const auto chosen=selected();QVector<CompetitionInfo *> targets;
+    for(auto *event:chosen){if(event->getSerieType()!=CompetitionInfo::Competition || locked(event) || event->getRules().getCompetitionType()!=CompetitionRules::Individual)continue;
+        if(event->getAdvancementCompetition() || event->getPendingAdvancementCompetition() || event->getAdvancementClassification())continue;
+        if(datesEnabled() && !event->getScheduledDate().isValid()){fail(tr("Najpierw ustaw daty zaznaczonych konkursów."));return;}targets.append(event);
+    }
+    if(targets.isEmpty()){fail(tr("Zaznacz konkursy indywidualne bez kwalifikacji."));return;}
+    auto order=mains();std::vector<std::unique_ptr<CompetitionInfo>> drafts;
+    // Validate dates before changing any event or advancement link.
+    for(auto *event:targets){auto *q=new CompetitionInfo(event->getHill());q->setScheduledDate(event->getScheduledDate().addDays(-daysBefore));drafts.push_back(std::unique_ptr<CompetitionInfo>(q));order.insert(order.indexOf(event),q);if(datesEnabled() && (!q->getScheduledDate().isValid() || q->getScheduledDate().year()<1)){fail(tr("Data kwalifikacji wykracza poza zakres."));return;}}
+    if(datesEnabled() && !validateDateOrder(order))return;
+    m_message=tr("Dodano kwalifikacje i powiązania. Możesz cofnąć zmianę.");
+    mutate([&]{auto actual=mains();for(int i=0;i<targets.size();++i){auto *q=drafts[i].release();q->setSerieType(CompetitionInfo::Qualifications);q->setRules(defaultRule("qualifications"));targets[i]->setAdvancementCompetition(q);actual.insert(actual.indexOf(targets[i]),q);}setOrder(actual);m_calendar->updateCompetitionsQualifyingCompetitions();});
 }

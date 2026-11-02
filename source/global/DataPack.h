@@ -21,6 +21,9 @@ struct DataPack {
     QVector<Hill> hills;
     QVector<CompetitionRules> rules;
     QVector<PointsForPlacesPreset> points;
+    QJsonObject defaultRules;
+    int defaultRule(const QString &role) const;
+    static QStringList ruleRoles() {return {"competition","qualifications","trial","training","teamCompetition","teamTrial"};}
     QJsonObject toJson() const;
     static bool fromJson(const QJsonObject &object, DataPack &pack, QString &error);
 };

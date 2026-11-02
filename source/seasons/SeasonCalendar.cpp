@@ -179,12 +179,14 @@ void SeasonCalendar::normalizeCompetitionEvents()
         attachedEvents.insert(event);
     }
 
+    for(auto *event:original)if(event)event->teamPreviewOwner=nullptr;
     QVector<CompetitionInfo *> normalized;
     normalized.reserve(original.count());
     for(auto *mainCompetition : original) {
         if(!isMainCompetition(mainCompetition))
             continue;
         normalized += mainCompetition->getTrainingsReference();
+        if(mainCompetition->getTrialRound())mainCompetition->getTrialRound()->teamPreviewOwner=mainCompetition;
         if(mainCompetition->getTrialRound() != nullptr)
             normalized.push_back(mainCompetition->getTrialRound());
         normalized.push_back(mainCompetition);
@@ -225,6 +227,7 @@ SeasonCalendar SeasonCalendar::getFromJson(QJsonObject json, IdentifiableObjects
     SeasonCalendar calendar;
     calendar.setID(sole::rebuild(json.value("id").toString().toStdString()));
     calendar.setName(json.value("name").toString());
+    calendar.defaultRules=json["default-rules"].toObject();
     calendar.setJumpersListId(json.value("jumpers-list-id").toString());
 
     QJsonArray classificationsArray = json.value("classifications").toArray();
@@ -365,6 +368,7 @@ QJsonObject SeasonCalendar::getJsonObject(SeasonCalendar &calendar)
     QJsonObject object;
     object.insert("id", calendar.getIDStr());
     object.insert("name", calendar.getName());
+    object.insert("default-rules",calendar.defaultRules);
     if(!calendar.jumpersListId().isEmpty())object.insert("jumpers-list-id",calendar.jumpersListId());
 
     QJsonArray classificationsArray;

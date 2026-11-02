@@ -2,6 +2,11 @@
 #include <QJsonArray>
 #include <QSet>
 
+int DataPack::defaultRule(const QString &role) const {
+    const int type=role.startsWith("team")?CompetitionRules::Team:CompetitionRules::Individual;
+    int first=-1;for(int i=0;i<rules.size();++i)if(rules[i].getCompetitionType()==type){if(first<0)first=i;if(rules[i].getIDStr()==defaultRules[role].toString())return i;}return first;
+}
+
 QJsonObject DataPack::toJson() const
 {
     QJsonObject o{{"format", "sj-sim-pack"}, {"version", engineVersion==2?2:1}, {"id", id}, {"name", name},
@@ -23,6 +28,7 @@ QJsonObject DataPack::toJson() const
     } else {
         for (const auto &r : rules) entries.append(CompetitionRules::getJsonObject(r));
         o.insert("competitionsRules", entries);
+        QJsonObject defaults;for(const auto &role:ruleRoles()){int i=defaultRule(role);if(i>=0)defaults[role]=rules[i].getIDStr();}o.insert("default-rules",defaults);
         QJsonArray presets;
         for (auto p : points) presets.append(PointsForPlacesPreset::getJsonObject(p));
         o.insert("pointsForPlacesPresets", presets);
@@ -124,6 +130,7 @@ bool DataPack::fromJson(const QJsonObject &o, DataPack &result, QString &error)
         }
     }
     if (p.kind == Rules) {
+        p.defaultRules=o["default-rules"].toObject();
         if (!o.value("pointsForPlacesPresets").isArray()) return fail(QObject::tr("Brak listy presetów punktów."));
         for (const auto &v : o.value("pointsForPlacesPresets").toArray()) {
             if (!v.isObject()) return fail(QObject::tr("Nieprawidłowy preset punktów."));

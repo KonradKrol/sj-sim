@@ -11,6 +11,7 @@ SeasonCalendarPreset::SeasonCalendarPreset(SeasonCalendar *seasonCalendar)
     if(seasonCalendar != nullptr)
     {
         SeasonCalendar * presetCalendar = &this->calendar;
+        presetCalendar->defaultRules=seasonCalendar->defaultRules;
         QHash<CompetitionInfo *, CompetitionInfo *> competitions; //1. Konkurs z kalendarza, 2. Konkurs z presetu
         for(auto & comp : seasonCalendar->getCompetitionsReference())
         {

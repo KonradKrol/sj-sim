@@ -1843,7 +1843,13 @@ Share the entire folder. To import the pack, select its pack.json file.</transla
             <source>Pokaż pozostałe ostrzeżenia (%1)</source>
             <translation>Show remaining warnings (%1)</translation>
         </message>
-    </context>
+    <message><source>Domyślne zasady</source><translation>Default rules</translation></message>
+<message><source>Zmiany dotyczą nowych wydarzeń w tym kalendarzu.</source><translation>Changes apply to new events in this calendar.</translation></message>
+<message><source>Kwalifikacje do zaznaczonych konkursów</source><translation>Qualifications for selected competitions</translation></message>
+<message><source>Dodaj kwalifikacje</source><translation>Add qualifications</translation></message>
+<message><source>Doda osobne kwalifikacje i automatycznie połączy awans. Konkursy z kwalifikacjami zostaną pominięte.</source><translation>Adds a qualification before each competition and links advancement automatically. Competitions with existing qualifications are skipped.</translation></message>
+<message><source>Doda kwalifikacje do zaznaczonych konkursów indywidualnych bez kwalifikacji i automatycznie połączy awans.</source><translation>Adds qualifications to selected individual competitions without qualifications and links advancement automatically.</translation></message>
+</context>
     <context>
         <name>CalendarEditorTableModel</name>
         <message>
@@ -5135,7 +5141,10 @@ calculation</translation>
             <source>Ustawienia paczki</source>
             <translation>Pack settings</translation>
         </message>
-    </context>
+    <message><source>Domyślne zasady</source><translation>Default rules</translation></message>
+<message><source>Importuj</source><translation>Import</translation></message>
+<message><source>Eksportuj</source><translation>Export</translation></message>
+</context>
     <context>
         <name>DataTable</name>
         <message>
@@ -5427,7 +5436,14 @@ calculation</translation>
             <source>Posortować paczkę według krajów? Zmieni to obecną kolejność elementów.</source>
             <translation>Sort the pack by country? This will change the current order.</translation>
         </message>
-    </context>
+    <message><source>Konkurs</source><translation>Competition</translation></message>
+<message><source>Kwalifikacje</source><translation>Qualifications</translation></message>
+<message><source>Seria próbna</source><translation>Trial round</translation></message>
+<message><source>Trening</source><translation>Training</translation></message>
+<message><source>Konkurs drużynowy</source><translation>Team competition</translation></message>
+<message><source>Próbna drużynowa</source><translation>Team trial round</translation></message>
+<message><source>Brak zasad tego typu</source><translation>No rules of this type</translation></message>
+</context>
     <context>
         <name>DatabaseItemsListView</name>
         <message>
@@ -15981,6 +15997,16 @@ Check that you selected the correct file.</translation>
         </message>
     <message><source>Bez przypisania — użyj aktywnej listy</source><translation>Unassigned — use the active roster</translation></message>
 <message><source>%1 (wszyscy)</source><translation>%1 (all athletes)</translation></message>
+<message><source>Seria próbna</source><translation>Trial round</translation></message>
+<message><source>Trening</source><translation>Training</translation></message>
+<message><source>Konkurs drużynowy</source><translation>Team competition</translation></message>
+<message><source>Próbna drużynowa</source><translation>Team trial round</translation></message>
+<message><source>Z paczki</source><translation>From pack</translation></message>
+<message><source>Podstawowe zasady</source><translation>Basic rules</translation></message>
+<message><source>Data kwalifikacji wykracza poza zakres.</source><translation>Qualification date is outside the supported range.</translation></message>
+<message><source>Najpierw ustaw daty zaznaczonych konkursów.</source><translation>Set dates for the selected competitions first.</translation></message>
+<message><source>Zaznacz konkursy indywidualne bez kwalifikacji.</source><translation>Select individual competitions without qualifications.</translation></message>
+<message><source>Dodano kwalifikacje i powiązania. Możesz cofnąć zmianę.</source><translation>Qualifications and advancement links added. You can undo this change.</translation></message>
 </context>
     <context>
         <name>QuickPlot</name>
@@ -16594,7 +16620,8 @@ Check that you selected the correct file.</translation>
             <source>%1 · pkt</source>
             <translation>%1 · pts</translation>
         </message>
-    </context>
+    <message><source>Podgląd krajów: najlepsi %1 skoczkowie każdego kraju w tej próbnej. Skład drużyn konkursu może być inny.</source><translation>Country preview: the best %1 jumpers per country in this trial round. Competition squads may differ.</translation></message>
+</context>
     <context>
         <name>ResultsTableModel</name>
         <message>
@@ -23109,6 +23136,8 @@ Technical key: %4</translation>
         </message>
     <message><source>Eksport tworzy folder ze skoczkami i zdjęciami. Udostępnij cały folder; przy imporcie wybierz plik pack.json w jego wnętrzu.</source><translation>Export creates a folder with jumpers and photos. Share the entire folder; to import it, select the pack.json file inside.</translation></message>
 <message><source>Eksport tworzy jeden plik paczki skoczni. Aby go wczytać, wybierz ten plik przy imporcie.</source><translation>Export creates one hill pack file. Select it when importing.</translation></message>
+<message><source>Importuj</source><translation>Import</translation></message>
+<message><source>Eksportuj</source><translation>Export</translation></message>
 </context>
     <context>
         <name>SortCountryButton</name>
