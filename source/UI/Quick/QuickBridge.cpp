@@ -1018,16 +1018,12 @@ void QuickBridge::compose(QuickNode *base) {
     if(profile()=="AppSettingsWindow") {
         QVariantList sections;
         sections.append(group("simulation",tr("Silnik symulacji"),{group("simulation-settings-fields",QString(),fields({
-            {"openBalanceLab",""},{"openSimulationPlayground",""},{"comboBox_language",tr("Język interfejsu")},{"spinBox_skillsRange",tr("Zakres umiejętności")},
+            {"openBalanceLab",""},{"openSimulationPlayground",""},{"comboBox_language",tr("Język interfejsu")},
             {"spinBox_dsqProbability",tr("Częstość dyskwalifikacji")},
-            {"doubleSpinBox_randomMultiplier",tr("Mnożnik losowości")},{"doubleSpinBox",tr("Wpływ parametrów skoczni")},
-            {"doubleSpinBox_takeoffFormEffect",tr("Wpływ formy na wybicie")},{"doubleSpinBox_flightFormEffect",tr("Wpływ formy na lot")},
             {"doubleSpinBox_liveCompSpeed",tr("Tempo konkursu na żywo")},
-            {"checkBox_autoAdjustHillEffects",""},{"checkBox_globalDatabaseRecords",""},{"checkBox_liveCompetition",""}}),"form")}));
+            {"checkBox_globalDatabaseRecords",""},{"checkBox_liveCompetition",""}}),"form")}));
         sections.append(group("tools",tr("Baza danych i narzędzia"),{group("database-settings-fields",QString(),fields({
-            {"pushButton_countriesEditor",""},{"pushButton_jumpInfoChoice",""},{"pushButton_addJumpsImportancePreset",""},
-            {"pushButton_autoImages",""},{"pushButton_cutSurnames",""},{"pushButton_loadJumpersWithCSV",""},
-            {"pushButton_loadPresetsBefore120",""},{"pushButton_repairDatabase",""},{"pushButton_repairDatabase_2",""},
+            {"pushButton_countriesEditor",""},{"pushButton_jumpInfoChoice",""},
             {"pushButton_defaultSettings",""}}),"form")}));
         sections.append(group("webhooks",tr("Udostępnianie wyników"),fields({
             {"lineEdit_jumpInfoWh",tr("Webhook: pojedynczy skok")},{"lineEdit_singleResultWh",tr("Webhook: wynik zawodnika")},
