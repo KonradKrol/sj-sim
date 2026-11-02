@@ -9955,6 +9955,14 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
     </context>
     <context>
         <name>QObject</name>
+<message><source>Poszerzaj różnice od K</source><translation>Widen differences above K</translation></message>
+<message><source>Siła poszerzania różnic na dużych skoczniach</source><translation>Large-hill spread strength</translation></message>
+<message><source>Tempo narastania poszerzenia względem K</source><translation>Spread growth exponent by K</translation></message>
+<message><source>Jakość odniesienia poszerzenia</source><translation>Spread reference quality</translation></message>
+<message><source>Do tego K zachowaj zwykłe różnice odległości. Powyżej zwiększaj je płynnie. Np. 140 chroni dotychczasowy balans K95 i K130, a obejmuje K160.</source><translation>Keep normal distance differences up to this K, then increase them smoothly. For example, 140 preserves K95 and K130 while including K160.</translation></message>
+<message><source>Dodatkowe wzmocnienie różnic jakości po wzroście K o 100 ponad próg. Np. 1,5 daje wtedy 2,5 razy większe różnice zapasu lotu. 0 wyłącza poszerzanie. Odległości nadal ogranicza zeskok.</source><translation>Additional amplification of quality differences at K 100 above the threshold. For example, 1.5 then gives 2.5 times the flight-reserve differences. 0 disables widening. Landing geometry still limits distances.</translation></message>
+<message><source>Kształt narastania efektu powyżej progu K. Np. 1 oznacza wzrost liniowy; 1,5 łagodniejszy początek na obiektach hybrydowych i mocniejszy wzrost dalej.</source><translation>Shape of the increase above the K threshold. For example, 1 gives linear growth; 1.5 gives a gentler start on hybrid hills and stronger growth further on.</translation></message>
+<message><source>Jakość skoku, którego poszerzanie nie przesuwa. Np. przy 80 słabsze skoki są krótsze, a lepsze dłuższe. To jakość całego skoku, nie samo OVR.</source><translation>Jump quality left unchanged by widening. For example, at 80 weaker jumps become shorter and stronger jumps longer. This is total jump quality, not OVR alone.</translation></message>
         <message><source>Wpływ specjalizacji na wiatr</source><translation>Wind response by specialization</translation></message>
         <message><source>Zmiana wpływu wiatru za każdy poziom specjalizacji. Np. 0,04 oznacza 4% więcej dla lotnika i 4% mniej dla specjalisty małych skoczni.</source><translation>Change in wind effect per specialization level. For example, 0.04 means 4% more for a flier and 4% less for a small-hill specialist.</translation></message>
         <message>

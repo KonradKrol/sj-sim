@@ -33,6 +33,10 @@ template<class F> void visitEngine(SimulationV2::EngineParameters &m,F f) {
     f("flight.referenceQuality",QObject::tr("Jakość odniesienia"),"flight",m.flight.referenceQuality,1,100,1,"1");
     f("flight.referenceDistanceAtK",QObject::tr("Odległość odniesienia / K"),"flight",m.flight.referenceDistanceAtK,0,2,0.01,"1");
     f("flight.qualityMetresAtK120",QObject::tr("Metry za punkt jakości na K120"),"flight",m.flight.qualityMetresAtK120,0,10,0.01,"m");
+    f("flight.largeHillSpreadStartK",QObject::tr("Poszerzaj różnice od K"),"flight",m.flight.largeHillSpreadStartK,50,250,1,"m");
+    f("flight.largeHillSpreadGain",QObject::tr("Siła poszerzania różnic na dużych skoczniach"),"flight",m.flight.largeHillSpreadGain,0,5,.05,"1");
+    f("flight.largeHillSpreadExponent",QObject::tr("Tempo narastania poszerzenia względem K"),"flight",m.flight.largeHillSpreadExponent,1,4,.05,"1");
+    f("flight.largeHillSpreadPivot",QObject::tr("Jakość odniesienia poszerzenia"),"flight",m.flight.largeHillSpreadPivot,1,100,1,"1");
     f("flight.referenceGate",QObject::tr("Belka odniesienia"),"flight",m.flight.referenceGate,0,200,1,"1");
     f("flight.gateMetresAtK120",QObject::tr("Metry za belkę na K120"),"flight",m.flight.gateMetresAtK120,0,20,0.1,"m");
     f("flight.gateTailwindInteraction",QObject::tr("Dodatkowy wpływ belki w plecy"),"flight",m.flight.gateTailwindInteraction,0,1,0.01,"1");
@@ -148,6 +152,10 @@ QString effectDescription(const QString &key,const QString &group) {
     if(key=="flight.referenceQuality")return QObject::tr("Jakość skoku odpowiadająca odległości odniesienia przy bazowej belce i bez opadów. Np. zwiększenie z 70 do 80 sprawia, że jakość 70 zaczyna poniżej tej odległości.");
     if(key=="flight.referenceDistanceAtK")return QObject::tr("Początkowy zapas lotu jako część K, zanim zadziałają wiatr i geometria zeskoku. Np. 1,10 na K120 daje zapas 132 m; końcowa odległość może być inna.");
     if(key=="flight.qualityMetresAtK120")return QObject::tr("Metry początkowego zapasu za punkt jakości powyżej odniesienia na K120. Np. 0,8 i jakość wyższa o 10 dają dodatkowe 8 m zapasu przed wpływem wiatru.");
+    if(key=="flight.largeHillSpreadStartK")return QObject::tr("Do tego K zachowaj zwykłe różnice odległości. Powyżej zwiększaj je płynnie. Np. 140 chroni dotychczasowy balans K95 i K130, a obejmuje K160.");
+    if(key=="flight.largeHillSpreadGain")return QObject::tr("Dodatkowe wzmocnienie różnic jakości po wzroście K o 100 ponad próg. Np. 1,5 daje wtedy 2,5 razy większe różnice zapasu lotu. 0 wyłącza poszerzanie. Odległości nadal ogranicza zeskok.");
+    if(key=="flight.largeHillSpreadExponent")return QObject::tr("Kształt narastania efektu powyżej progu K. Np. 1 oznacza wzrost liniowy; 1,5 łagodniejszy początek na obiektach hybrydowych i mocniejszy wzrost dalej.");
+    if(key=="flight.largeHillSpreadPivot")return QObject::tr("Jakość skoku, którego poszerzanie nie przesuwa. Np. przy 80 słabsze skoki są krótsze, a lepsze dłuższe. To jakość całego skoku, nie samo OVR.");
     if(key=="flight.referenceGate")return QObject::tr("Belka, przy której silnik wyznacza bazowy zapas lotu. Np. odniesienie 10 i start z 12 oznaczają doliczenie wpływu dwóch belek.");
     if(key=="flight.gateMetresAtK120")return QObject::tr("Zmiana początkowego zapasu za jedną belkę na K120, bez wiatru w plecy. Np. 2,0 i podniesienie o 3 belki dają dodatkowe 6 m zapasu.");
     if(key=="flight.gateTailwindInteraction")return QObject::tr("Wzmacnia wpływ różnicy belek przy wietrze w plecy. Np. 0,1 przy 2 m/s w plecy zwiększa ten wpływ o 20%.");

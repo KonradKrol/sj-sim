@@ -9956,6 +9956,14 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
     </context>
     <context>
         <name>QObject</name>
+<message><source>Poszerzaj różnice od K</source><translation>Rozšiřovat rozdíly od K</translation></message>
+<message><source>Siła poszerzania różnic na dużych skoczniach</source><translation>Síla rozšíření rozdílů na velkých můstcích</translation></message>
+<message><source>Tempo narastania poszerzenia względem K</source><translation>Tempo růstu rozšíření podle K</translation></message>
+<message><source>Jakość odniesienia poszerzenia</source><translation>Referenční kvalita rozšíření</translation></message>
+<message><source>Do tego K zachowaj zwykłe różnice odległości. Powyżej zwiększaj je płynnie. Np. 140 chroni dotychczasowy balans K95 i K130, a obejmuje K160.</source><translation>Do tohoto K zachovat běžné rozdíly délek, potom je plynule zvětšovat. Například 140 zachová K95 a K130 a zahrne K160.</translation></message>
+<message><source>Dodatkowe wzmocnienie różnic jakości po wzroście K o 100 ponad próg. Np. 1,5 daje wtedy 2,5 razy większe różnice zapasu lotu. 0 wyłącza poszerzanie. Odległości nadal ogranicza zeskok.</source><translation>Dodatečné zesílení rozdílů kvality při K o 100 nad prahem. Například 1,5 pak znamená 2,5krát větší rozdíly rezervy letu. 0 rozšíření vypne. Délku stále omezuje doskočiště.</translation></message>
+<message><source>Kształt narastania efektu powyżej progu K. Np. 1 oznacza wzrost liniowy; 1,5 łagodniejszy początek na obiektach hybrydowych i mocniejszy wzrost dalej.</source><translation>Tvar růstu nad prahem K. Například 1 znamená lineární růst; 1,5 mírnější začátek na hybridních můstcích a silnější růst dále.</translation></message>
+<message><source>Jakość skoku, którego poszerzanie nie przesuwa. Np. przy 80 słabsze skoki są krótsze, a lepsze dłuższe. To jakość całego skoku, nie samo OVR.</source><translation>Kvalita skoku, kterou rozšíření neposune. Například při 80 jsou slabší skoky kratší a lepší delší. Jde o celkovou kvalitu skoku, ne pouze OVR.</translation></message>
         <message><source>Wpływ specjalizacji na wiatr</source><translation>Vliv specializace na vítr</translation></message>
         <message><source>Zmiana wpływu wiatru za każdy poziom specjalizacji. Np. 0,04 oznacza 4% więcej dla lotnika i 4% mniej dla specjalisty małych skoczni.</source><translation>Změna vlivu větru za každou úroveň specializace. Například 0,04 znamená o 4 % více pro letce a o 4 % méně pro specialistu na malé můstky.</translation></message>
         <message>

@@ -31,6 +31,10 @@ void FlightParameters::validate() const
     bound(referenceQuality,1,100,"Reference quality out of range");
     bound(referenceDistanceAtK,0,2,"Reference distance out of range");
     bound(qualityMetresAtK120,0,10,"Quality distance coefficient out of range");
+    bound(largeHillSpreadStartK,50,250,"Large hill spread onset out of range");
+    bound(largeHillSpreadGain,0,5,"Large hill spread gain out of range");
+    bound(largeHillSpreadExponent,1,4,"Large hill spread exponent out of range");
+    bound(largeHillSpreadPivot,1,100,"Large hill spread pivot out of range");
     if(referenceGate<0 || referenceGate>200)throw std::invalid_argument("Reference gate out of range");
     bound(gateMetresAtK120,0,20,"Gate distance coefficient out of range");
     bound(gateTailwindInteraction,0,1,"Gate/wind interaction out of range");
@@ -73,7 +77,11 @@ double FlightModel::reserve(double quality,const Hill &hill,int gate,double prec
     if(gate<0 || gate>200)throw std::invalid_argument("Starting gate out of range");
     bound(precipitation,0,10,"Precipitation out of range");bound(initialHeadwind,-100,100,"Initial wind out of range");
     if(kind!=PrecipitationKind::Snow && kind!=PrecipitationKind::Rain)throw std::invalid_argument("Unknown precipitation kind");
-    const double distance=hill.k*config.referenceDistanceAtK+(quality-config.referenceQuality)*config.qualityMetresAtK120*hill.k/120;
+    // Stretch existing quality differences smoothly on larger hills. The pivot
+    // keeps a reference jump fixed; no extra random draw or distance override.
+    const double growth=config.largeHillSpreadGain*std::pow(std::max(0.0,(hill.k-config.largeHillSpreadStartK)/100),config.largeHillSpreadExponent);
+    const double effectiveQuality=quality+(quality-config.largeHillSpreadPivot)*growth;
+    const double distance=hill.k*config.referenceDistanceAtK+(effectiveQuality-config.referenceQuality)*config.qualityMetresAtK120*hill.k/120;
     const double gateEffect=(gate-config.referenceGate)*config.gateMetresAtK120*hill.k/120
         *(1+config.gateTailwindInteraction*std::max(0.0,-initialHeadwind));
     // Tunable net precipitation effect, not a physical wet-suit/track simulation.

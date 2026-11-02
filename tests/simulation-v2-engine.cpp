@@ -1,5 +1,6 @@
 #include "../source/simulation-v2/Engine.h"
 
+#include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <future>
@@ -70,6 +71,32 @@ int main()
         request.scoring.juryGate=9;check(engine.previewDistance(request,calm)<preview,"lower gate shortens jump");request.scoring.juryGate=10;
 
         FlightModel flight;Hill hill;RescueWeather rescue;ConstantWeather adverse;adverse.value={-2.5,0};
+        {
+            EngineParameters previous;previous.flight.largeHillSpreadGain=0;Engine unchanged(previous);
+            double hybridWidth=0,largeWidth=0;
+            for(double k:{95.,130.,140.,160.,170.,200.,210.,225.}) {
+                JumpRequest sample;sample.hill.k=k;sample.hill.hs=sample.hill.realHs=k*1.12;sample.captureExposure=false;
+                std::vector<double> oldDistances,newDistances;
+                for(int i=0;i<2000;++i){sample.athlete.overall=60+i%36;sample.athlete.form=75;SeededRandom oldRng(i),newRng(i);
+                    const auto before=unchanged.simulate(sample,oldRng,calm,measurement),after=engine.simulate(sample,newRng,calm,measurement);
+                    oldDistances.push_back(before.flight.distance);newDistances.push_back(after.flight.distance);
+                    if(k<=140)check(before.flight.distance==after.flight.distance,"small-hill flight remains exactly unchanged");
+                    check(after.flight.distance<=engine.flight().landingLimit(sample.hill),"larger spread preserves safe landing geometry");}
+                std::sort(oldDistances.begin(),oldDistances.end());std::sort(newDistances.begin(),newDistances.end());
+                const double oldWidth=oldDistances[1800]-oldDistances[200],newWidth=newDistances[1800]-newDistances[200];
+                std::cout<<"SPREAD K"<<k<<" P10-P90 "<<oldWidth<<" -> "<<newWidth<<" m; median "<<oldDistances[1000]<<" -> "<<newDistances[1000]<<'\n';
+                if(k==160)hybridWidth=newWidth/oldWidth;
+                if(k==210){largeWidth=newWidth/oldWidth;check(largeWidth>1.3,"flying hills have substantially wider actual distances");}
+            }
+            check(hybridWidth>1 && hybridWidth<largeWidth,"hybrid hills receive an intermediate increase");
+            Hill probe;probe.k=210;probe.hs=probe.realHs=235;
+            FlightModel oldFlight(previous.flight);
+            near(flight.reserve(80,probe,10,0,0),oldFlight.reserve(80,probe,10,0,0),1e-12,"pivot quality preserves its reference reserve");
+            probe.k=140;const double boundary=flight.reserve(70,probe,10,0,0);probe.k+=1e-6;
+            near(flight.reserve(70,probe,10,0,0),boundary,1e-4,"spread starts continuously at the K threshold");
+            rejects([]{FlightParameters p;p.largeHillSpreadGain=-1;FlightModel invalid(p);});
+            rejects([]{FlightParameters p;p.largeHillSpreadExponent=0;FlightModel invalid(p);});
+        }
         const auto lost=flight.fly(95,hill,adverse,0,false);
         const auto saved=flight.fly(95,hill,rescue,0,false);
         check(saved.distance>lost.distance+1,"late favourable patch rescues part of weak jump");

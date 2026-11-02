@@ -286,3 +286,35 @@ Lot można przetwarzać w małych krokach, np. co kilka metrów, albo użyć ró
 Playground powinien umożliwiać porównywanie tych samych skoków i seedów przy różnych warunkach oraz współczynnikach: odległości bez wiatru i z wiatrem, wpływu fragmentów lotu, zmierzonego wiatru, rekompensaty, punktów i miejsc. Sprawdzić korelację między skokami i sąsiednimi miejscami, podmuchy, kierunki bliskie bocznemu, bardzo krótkie i dalekie skoki, skrajne wartości oraz koszt obliczeń.
 
 ## Losowy wiatr na konkurs, konfiguracja wiatru
+
+
+### Rozpiętość odległości na dużych skoczniach — 2.11.2026
+
+Wdrożono płynne poszerzanie różnic jakości przy przeliczaniu jej na początkowy
+zapas lotu. Bez nowych losowań, zmiany rozkładu jakości i końcowego nadpisywania
+odległości. Nadal obowiązuje dotychczasowa geometria zeskoku i limit lądowania.
+
+`growth = gain * max(0, (K - startK) / 100)^exponent`
+
+`effectiveQuality = quality + (quality - pivot) * growth`
+
+Dalej obowiązuje standardowe przeliczenie względem `referenceQuality` i `K/120`.
+Domyślnie `startK=140`, `gain=1.5`, `exponent=1.5`, `pivot=80`.
+K95/K130/K140 zachowują dokładnie stare wyniki; K160/K170 otrzymują efekt
+pośredni, a mamuty znacznie większy. Nie ma skoku wartości na K200.
+
+W labie parametry mają klucze `flight.largeHillSpreadStartK`,
+`flight.largeHillSpreadGain`, `flight.largeHillSpreadExponent`,
+`flight.largeHillSpreadPivot`. Wartość gain=0 wyłącza mechanizm. Są częścią
+profilu balansu, zapisu/aktywacji oraz CLI tak jak pozostałe parametry `flight.*`.
+Pivot jest jakością całego skoku, nie OVR zawodnika. Nie gwarantuje zachowania
+średniej populacji: skoki poniżej pivotu są krótsze, powyżej dłuższe, a opór
+zeskoku ogranicza górny koniec. Belkę i średnie odległości kalibrować osobno.
+
+Regresja: 2000 sparowanych skoków na każdym K, OVR 60–95, forma 75, bez wiatru,
+HS i real HS = 1.12K. Szerokość przedziału P10–P90 przed → po: K95 18.66→18.66 m,
+K130 25.13→25.13, K160 30.50→34.44, K170 32.29→39.90,
+K200 37.64→62.20, K210 39.42→71.54, K225 42.10→87.36.
+To syntetyczna próba działania, nie kalibracja do rzeczywistych konkursów ani
+obietnica konkretnego zakresu dla aktualnej paczki. Testy obejmują też ciągłość
+progu, niezmienność pivotu, poprawność profili i zachowanie ograniczeń zeskoku.

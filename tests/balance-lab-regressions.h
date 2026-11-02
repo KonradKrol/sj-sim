@@ -19,6 +19,11 @@ static void balanceLabBackendRegressions(){
         if(d["key"].toString().startsWith("field.perk."))check(help.contains(QString::fromUtf8("pozostałych zawodników")) && !help.contains(QString::fromUtf8("tylko analizowanego")),"field perk help describes the other athletes rather than contradicting its scope");
     }
     QString error;check(BalanceRuntime::reset(error),"isolated default balance");auto c=smallBalanceConfig();check(Playground::validate(c,error),qPrintable(error));
+    const QJsonObject spread{{"flight.largeHillSpreadStartK",155},{"flight.largeHillSpreadGain",.8},{"flight.largeHillSpreadExponent",2},{"flight.largeHillSpreadPivot",75}};
+    check(BalanceLab::validateProfile(spread,error),"large-hill spread controls form a valid game balance profile");
+    const auto spreadFlight=Playground::engineParameters(spread).flight;
+    check(spreadFlight.largeHillSpreadStartK==155 && spreadFlight.largeHillSpreadGain==.8 && spreadFlight.largeHillSpreadExponent==2 && spreadFlight.largeHillSpreadPivot==75,"lab profile values reach all large-hill flight controls");
+    auto badSpread=spread;badSpread["flight.largeHillSpreadGain"]=-1;check(!BalanceLab::validateProfile(badSpread,error),"invalid large-hill spread cannot be activated");
     QJsonObject options{{"view","curve"},{"axisX","athlete.overall"},{"fromX",50},{"toX",90},{"axisY","athlete.form"},{"fromY",40},{"toY",80},{"resolution",3},{"matrix",true},{"started",true}};
     auto single=c;single["threads"]=1;const auto duplicated=Playground::run(single,{});auto forced=single;auto distinct=forced["variants"].toArray();for(int i=0;i<distinct.size();++i){auto v=distinct[i].toObject();v["testDistinctTrial"]=i;distinct[i]=v;}forced["variants"]=distinct;const auto independent=Playground::run(forced,{});
     check(duplicated["variants"]==independent["variants"],"reusing identical seeded trials preserves complete reports and paired statistics");
