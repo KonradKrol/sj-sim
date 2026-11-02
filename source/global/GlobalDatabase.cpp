@@ -358,7 +358,21 @@ bool GlobalDatabase::loadFromJson()
 
 bool GlobalDatabase::writeToJson()
 {
-    return (writePacks() && writeJumpers() && writeHills() && writeCompetitionsRules() && writeSimulationSaves() && writePointsForPlacesPresets() && writeCalendarPresets() && writeFormGeneratorPresets() && writeJumpsImportancePresets() && writeCountries());
+    writeFailures.clear();
+    const auto record=[this](const QString &name,bool ok){if(!ok)writeFailures.append(name);};
+    record("packs.json",writePacks());
+    record("globalJumpers.json",writeJumpers());
+    record("globalHills.json",writeHills());
+    record("globalCompetitionsRules.json",writeCompetitionsRules());
+    record("simulationSaves/",writeSimulationSaves());
+    record("pointsForPlacesPresets/",writePointsForPlacesPresets());
+    record("calendarPresets/",writeCalendarPresets());
+    record("formGeneratorPresets/",writeFormGeneratorPresets());
+    record("jumpsImportancePresets/",writeJumpsImportancePresets());
+    record("globalCountries.json",writeCountries());
+    if(!writeFailures.isEmpty())QMessageBox::critical(nullptr,QObject::tr("Błąd zapisu danych"),
+        QObject::tr("Nie zapisano części danych:\n%1").arg(writeFailures.join('\n')));
+    return writeFailures.isEmpty();
 }
 
 bool GlobalDatabase::loadJumpers()

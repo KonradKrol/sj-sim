@@ -10008,7 +10008,10 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
     </context>
     <context>
         <name>QObject</name>
-        <message><source>B??d zapisu danych</source><translation>Data se nepoda?ilo ulo?it</translation></message>
+        <message><source>Nie zapisano części danych:
+%1</source><translation>Některá data se nepodařilo uložit:
+%1</translation></message>
+        <message><source>Błąd zapisu danych</source><translation>Data se nepodařilo uložit</translation></message>
 <message><source>Poszerzaj różnice od K</source><translation>Rozšiřovat rozdíly od K</translation></message>
 <message><source>Siła poszerzania różnic na dużych skoczniach</source><translation>Síla rozšíření rozdílů na velkých můstcích</translation></message>
 <message><source>Tempo narastania poszerzenia względem K</source><translation>Tempo růstu rozšíření podle K</translation></message>

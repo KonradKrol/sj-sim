@@ -39,6 +39,7 @@ private:
     QVector<Country> countries;
 
     bool loadedSimulationSaves;
+    QStringList writeFailures;
 
 public:
     GlobalDatabase(GlobalDatabase &) = delete;
@@ -62,6 +63,7 @@ public:
 
     bool loadFromJson();
     bool writeToJson();
+    QStringList lastWriteFailures() const {return writeFailures;}
 
     bool loadJumpers();
     bool loadHills();

@@ -18,6 +18,10 @@ static void productionPersistenceRegressions() {
     check(AtomicJsonFile::write("atomic.json",original,false) && AtomicJsonFile::write("atomic.json",replacement,false),"atomic JSON can create and replace a document");
     {QFile stored("atomic.json");check(stored.open(QIODevice::ReadOnly) && QJsonDocument::fromJson(stored.readAll()).object().value("value").toInt()==2,"committed JSON contains the complete replacement");}
     QDir().mkdir("blocked.json");check(!AtomicJsonFile::write("blocked.json",original,false) && QFileInfo("blocked.json").isDir(),"atomic write failure is reported without replacing the destination");
+    QDir().mkpath("userData/GlobalDatabase");dismiss.start(10);
+    auto *database=GlobalDatabase::get();check(!database->writeToJson(),"save-all reports a protected pack catalog failure");dismiss.stop();
+    check(database->lastWriteFailures()==QStringList{"packs.json"} && QFile::exists("userData/GlobalDatabase/globalCountries.json")
+        && QFile::exists("userData/GlobalDatabase/globalJumpers.json"),"a pack catalog failure does not skip independent database writes");
     QDir::setCurrent(previousDirectory);
 
     SimulationSave source;source.setEngineVersion(1);
