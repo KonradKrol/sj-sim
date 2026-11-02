@@ -23,11 +23,16 @@ ColumnLayout {
     readonly property string questionGroups: String(question.groups || "")
     function normalized(text) { return String(text).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ł/g, "l") }
     readonly property string query: normalized(search.text.trim())
-    readonly property var matchingDefinitions: definitions.filter(function(d) {
-        if (!query.length) return relevant(d)
-        var haystack=normalized(d.label + " " + d.key + " " + d.help)
-        return query.split(/\s+/).every(function(word) { return haystack.indexOf(word)>=0 })
-    })
+    readonly property var matchingDefinitions: {
+        var matches=definitions.filter(function(d) {
+            if (!query.length) return relevant(d)
+            var haystack=normalized(d.label + " " + d.key + " " + d.help)
+            return query.split(/\s+/).every(function(word) { return haystack.indexOf(word)>=0 })
+        })
+        if(questionId==="generator" && !query.length && !fullRegistry)
+            matches.sort(function(a,b){return (a.preset===-2?0:1)-(b.preset===-2?0:1)})
+        return matches
+    }
     function relevant(d){
         if(fullRegistry)return true
         var q=questionId
@@ -150,6 +155,7 @@ ColumnLayout {
                 SField { id: search; objectName: "balanceParameterSearch"; Layout.fillWidth: true; placeholderText: qsTr("Szukaj, np. upadek, forma, podmuch…"); Accessible.name: qsTr("Szukaj parametru") }
                 Label { visible: controls.query.length>0; text: qsTr("W całej symulacji: %1 wyników").arg(controls.matchingDefinitions.length); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 Label { visible: controls.matchingDefinitions.length===0; text: qsTr("Nie znaleziono parametrów. Spróbuj krótszej nazwy lub opisu działania."); color: Theme.ink; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                Label { visible: controls.question.id==="generator" && !controls.query.length; text: qsTr("Wszystkie losowane warunki"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 Label { visible: controls.question.id==="generator" && !controls.query.length; text: qsTr("Trzy ustawienia poniżej działają na wszystkie losowane warunki. Zmniejsz je, aby osłabić wiatr, wahania lub podmuchy."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 SCheck { visible: controls.question.id==="generator" && !controls.query.length; text: qsTr("Dostosuj także wybrany preset"); checked: controls.generatorDetails; onClicked: controls.generatorDetails=!controls.generatorDetails }
                 SChoice { visible: controls.question.id==="generator" && controls.generatorDetails && !controls.query.length; Layout.fillWidth: true; model: [qsTr("Automatyczna propozycja"),qsTr("Stały wiatr w plecy"),qsTr("Silny wiatr pod narty"),qsTr("Loteryjny"),qsTr("Zmienny boczny"),qsTr("Cisza"),qsTr("Stały pod narty"),qsTr("Silny w plecy"),qsTr("Stały boczny"),qsTr("Zmienny pod narty"),qsTr("Zmienny w plecy"),qsTr("Różne kierunki na zeskoku")]; Accessible.name: qsTr("Badany preset pogody"); onActivated: controls.generatorPreset=currentIndex-1 }
@@ -159,7 +165,19 @@ ColumnLayout {
                     sourceComponent: Component {
                         ColumnLayout {
                             spacing: Theme.dp(10)
-                            Repeater { model: controls.matchingDefinitions; BalanceLabParameter { required property var modelData; backend: controls.backend; definition: modelData } }
+                            Repeater {
+                                model: controls.matchingDefinitions
+                                ColumnLayout {
+                                    required property int index
+                                    required property var modelData
+                                    Layout.fillWidth: true; spacing: Theme.dp(8)
+                                    Label {
+                                        visible: controls.questionId==="generator" && !controls.query.length && !controls.fullRegistry && modelData.preset!==-2 && (index===0 || controls.matchingDefinitions[index-1].preset===-2)
+                                        text: qsTr("Szczegóły wybranego scenariusza"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap
+                                    }
+                                    BalanceLabParameter { backend: controls.backend; definition: parent.modelData }
+                                }
+                            }
                         }
                     }
                 }

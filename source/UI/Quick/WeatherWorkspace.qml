@@ -78,7 +78,7 @@ ScrollView {
                         onSelectedStationChanged: if(selectedStation>=0)workspace.tuning=false
                     }
                     Label { text: workspace.variabilityText; color: Theme.muted; font.pointSize: Theme.body; wrapMode: Text.WordWrap; Layout.fillWidth: true }
-                    SButton { objectName: "weatherTuningToggle"; text: workspace.tuning ? qsTr("Ukryj dostosowanie") : qsTr("Dostosuj wiatr"); primary: true; enabled: workspace.values.ready; onClicked: {workspace.forceActiveFocus();if(!workspace.tuning)windGraph.selectedStation=-1;workspace.tuning=!workspace.tuning} }
+                    SButton { objectName: "weatherTuningToggle"; text: workspace.tuning ? qsTr("Ukryj dostosowanie") : qsTr("Dostosuj wiatr"); enabled: workspace.values.ready; onClicked: {workspace.forceActiveFocus();if(!workspace.tuning)windGraph.selectedStation=-1;workspace.tuning=!workspace.tuning} }
                     Loader {
                         active: workspace.tuning; visible: active
                         Layout.fillWidth: true

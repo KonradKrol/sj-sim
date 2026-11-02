@@ -18,11 +18,18 @@ Control {
             Label { text: qsTr("Cała skocznia"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
             HelpDot { explanation: qsTr("Kierunek i siła dotyczą całej skoczni. Różnice na zeskoku losują nowy układ miejsc. Zmienność określa późniejsze zmiany w czasie.") }
         }
+        Label { text: qsTr("Kierunek i siła"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.bold: true }
         GridLayout {
-            Layout.fillWidth: true; columns: tuning.viewportWidth>Theme.fontSize(600)?2:1
+            Layout.fillWidth: true; columns: tuning.width>Theme.dp(520)?2:1
             columnSpacing: Theme.dp(18); rowSpacing: Theme.dp(10)
             WindDirectionDial { degrees: tuning.values.direction; Layout.fillWidth: true; Layout.minimumWidth: 0; onEdited: function(value){tuning.backend.setValue("direction",value)} }
             WeatherNumber { backend: tuning.backend; fieldKey: "strength"; label: qsTr("Siła wyjściowa · m/s"); maximum: 10; step: .5; quantum: .5; Layout.fillWidth: true; explanation: qsTr("Mocny wiatr może być stabilny, a słaby — zmienny.") }
+        }
+        Rectangle { Layout.fillWidth: true; implicitHeight: 1; color: Theme.divider }
+        Label { text: qsTr("Zmienność wiatru"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.bold: true }
+        GridLayout {
+            Layout.fillWidth: true; columns: tuning.width>Theme.dp(520)?2:1
+            columnSpacing: Theme.dp(18); rowSpacing: Theme.dp(10)
             Repeater {
                 model: [
                     {key: "variability", title: qsTr("Zmiany w czasie"), help: qsTr("Jak bardzo wiatr zmienia się w trakcie konkursu.")},

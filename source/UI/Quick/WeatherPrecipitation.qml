@@ -15,7 +15,7 @@ Control {
         spacing: Theme.dp(8)
         Label { text: qsTr("Opady"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true }
         GridLayout {
-            Layout.fillWidth: true; columns: width>Theme.dp(520)?3:width>Theme.dp(320)?2:1
+            Layout.fillWidth: true; columns: width>Theme.dp(680)?3:width>Theme.dp(440)?2:1
             columnSpacing: Theme.dp(10); rowSpacing: Theme.dp(6)
             SChoice {
                 objectName: "weatherPrecipitationKind"
