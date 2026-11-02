@@ -11548,33 +11548,33 @@ Ověřte, že jste vybrali správný soubor.</translation>
         </message>
         <message>
             <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="13" />
-            <source>Ważony pomiar z nieruchomych czujników przez czas lotu. Wagi i rozmieszczenie są przybliżone; nie jest to dokładna oficjalna receptura FIS. Pomiar może rozmijać się z warunkami zawodnika.</source>
-            <translation>Vážené údaje z pevných čidel během letu. Váhy a rozmístění jsou přibližné, nejde o přesnou oficiální metodu FIS. Měření se může lišit od podmínek závodníka.</translation>
+            <source>Przybliżony pomiar FIS: czujniki mają różne wagi, także za miejscem lądowania. Średnia obejmuje czas lotu.</source>
+            <translation>Přibližné měření FIS: senzory mají různé váhy, i za místem dopadu. Průměr za dobu letu.</translation>
         </message>
         <message>
             <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="15" />
-            <source>Równe wagi czujników przez cały lot. Krótki podmuch może umknąć pomiarowi lub wpływać na wynik już po minięciu czujnika.</source>
-            <translation>Stejné váhy čidel po celý let. Krátký poryv může měření uniknout nebo jej ovlivnit až po průletu závodníka kolem čidla.</translation>
+            <source>Wszystkie czujniki mają równą wagę, także za miejscem lądowania. Średnia obejmuje czas lotu.</source>
+            <translation>Všechny senzory mají stejnou váhu, i za místem dopadu. Průměr za dobu letu.</translation>
         </message>
         <message>
             <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="17" />
-            <source>Pomiar co około 5 m przez czas lotu. Lepiej wykrywa lokalne podmuchy, ale nadal nie odtwarza warunków zawodnika co do chwili.</source>
-            <translation>Měření přibližně každých 5 m během letu. Lépe zachytí místní poryvy, ale stále nesleduje podmínky závodníka v každém okamžiku.</translation>
+            <source>Gęstsza sieć czujników, także za miejscem lądowania. Średnia obejmuje czas lotu.</source>
+            <translation>Hustší síť senzorů, i za místem dopadu. Průměr za dobu letu.</translation>
         </message>
         <message>
             <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="19" />
-            <source>Jednorazowy odczyt czujników przy wybiciu. Zmiany w trakcie lotu nie wpływają na pomiar do punktacji.</source>
-            <translation>Jediný odečet čidel při odrazu. Změny během letu neovlivňují měření pro bodování.</translation>
+            <source>Jednorazowy odczyt wszystkich czujników przy wybiciu. Późniejsze zmiany wiatru nie są uwzględniane.</source>
+            <translation>Jednorázový odečet všech senzorů při odrazu. Pozdější změny větru se nezapočítávají.</translation>
         </message>
         <message>
             <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="21" />
-            <source>Średnia wiatru rzeczywiście napotkanego podczas lotu. Punkt odniesienia do symulacji, bez idealnego wyrównania wpływu na odległość.</source>
-            <translation>Průměr větru skutečně zaznamenaného za letu. Referenční model simulace, bez dokonalého vyrovnání vlivu na délku.</translation>
+            <source>Średnia wiatru napotkanego przez skoczka podczas lotu, tylko na przebytej trasie.</source>
+            <translation>Průměr větru, který skokan zažil během letu, pouze na proletěné trase.</translation>
         </message>
         <message>
             <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="23" />
-            <source>Zachowuje wcześniejsze ustawienia sposobu kierunków i wpływu odległości na pomiar. Nie oznacza zgodności z FIS.</source>
-            <translation>Zachovává původní nastavení směru a vlivu délky na měření. Neznamená to shodu s pravidly FIS.</translation>
+            <source>Dawny pomiar Sj.Sima. Kierunki i wpływ odległości ustawisz osobno.</source>
+            <translation>Původní měření Sj.Simu. Směry a vliv vzdálenosti nastavíte zvlášť.</translation>
         </message>
         <message>
             <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="34" />

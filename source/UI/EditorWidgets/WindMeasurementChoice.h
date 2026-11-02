@@ -10,17 +10,17 @@ inline QComboBox *createWindMeasurementChoice(QWidget *parent)
         choice->addItem(name,mode);choice->setItemData(choice->count()-1,help,Qt::ToolTipRole);
     };
     add(QObject::tr("FIS — przybliżenie"),CompetitionRules::FisApproximationWindMeasurement,
-        QObject::tr("Ważony pomiar z nieruchomych czujników przez czas lotu. Wagi i rozmieszczenie są przybliżone; nie jest to dokładna oficjalna receptura FIS. Pomiar może rozmijać się z warunkami zawodnika."));
+        QObject::tr("Przybliżony pomiar FIS: czujniki mają różne wagi, także za miejscem lądowania. Średnia obejmuje czas lotu."));
     add(QObject::tr("Pomiar przez czas lotu"),CompetitionRules::SensorWindMeasurement,
-        QObject::tr("Równe wagi czujników przez cały lot. Krótki podmuch może umknąć pomiarowi lub wpływać na wynik już po minięciu czujnika."));
+        QObject::tr("Wszystkie czujniki mają równą wagę, także za miejscem lądowania. Średnia obejmuje czas lotu."));
     add(QObject::tr("Gęsta sieć czujników"),CompetitionRules::DenseWindMeasurement,
-        QObject::tr("Pomiar co około 5 m przez czas lotu. Lepiej wykrywa lokalne podmuchy, ale nadal nie odtwarza warunków zawodnika co do chwili."));
+        QObject::tr("Gęstsza sieć czujników, także za miejscem lądowania. Średnia obejmuje czas lotu."));
     add(QObject::tr("Odczyt przed skokiem"),CompetitionRules::InstantWindMeasurement,
-        QObject::tr("Jednorazowy odczyt czujników przy wybiciu. Zmiany w trakcie lotu nie wpływają na pomiar do punktacji."));
+        QObject::tr("Jednorazowy odczyt wszystkich czujników przy wybiciu. Późniejsze zmiany wiatru nie są uwzględniane."));
     add(QObject::tr("Wiatr na trasie lotu"),CompetitionRules::FlightWindMeasurement,
-        QObject::tr("Średnia wiatru rzeczywiście napotkanego podczas lotu. Punkt odniesienia do symulacji, bez idealnego wyrównania wpływu na odległość."));
+        QObject::tr("Średnia wiatru napotkanego przez skoczka podczas lotu, tylko na przebytej trasie."));
     add(QObject::tr("Dotychczasowy Sj.Sim"),CompetitionRules::LegacyWindMeasurement,
-        QObject::tr("Zachowuje wcześniejsze ustawienia sposobu kierunków i wpływu odległości na pomiar. Nie oznacza zgodności z FIS."));
+        QObject::tr("Dawny pomiar Sj.Sima. Kierunki i wpływ odległości ustawisz osobno."));
     const auto update=[choice]{choice->setToolTip(choice->currentData(Qt::ToolTipRole).toString());};
     QObject::connect(choice,QOverload<int>::of(&QComboBox::currentIndexChanged),choice,[update]{update();});update();
     choice->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);

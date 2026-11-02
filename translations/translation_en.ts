@@ -11547,33 +11547,33 @@ Check that you selected the correct file.</translation>
         </message>
         <message>
             <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="13" />
-            <source>Ważony pomiar z nieruchomych czujników przez czas lotu. Wagi i rozmieszczenie są przybliżone; nie jest to dokładna oficjalna receptura FIS. Pomiar może rozmijać się z warunkami zawodnika.</source>
-            <translation>Weighted readings from fixed sensors over the flight. Sensor weights and positions are approximate, not the exact official FIS method. The measurement may differ from the athlete’s conditions.</translation>
+            <source>Przybliżony pomiar FIS: czujniki mają różne wagi, także za miejscem lądowania. Średnia obejmuje czas lotu.</source>
+            <translation>Approximate FIS measurement: sensors have different weights, including those beyond the landing point. Averaged over the flight.</translation>
         </message>
         <message>
             <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="15" />
-            <source>Równe wagi czujników przez cały lot. Krótki podmuch może umknąć pomiarowi lub wpływać na wynik już po minięciu czujnika.</source>
-            <translation>Equal sensor weights over the flight. A brief gust may be missed or affect the measurement after the athlete has passed the sensor.</translation>
+            <source>Wszystkie czujniki mają równą wagę, także za miejscem lądowania. Średnia obejmuje czas lotu.</source>
+            <translation>All sensors have equal weight, including those beyond the landing point. Averaged over the flight.</translation>
         </message>
         <message>
             <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="17" />
-            <source>Pomiar co około 5 m przez czas lotu. Lepiej wykrywa lokalne podmuchy, ale nadal nie odtwarza warunków zawodnika co do chwili.</source>
-            <translation>Readings roughly every 5 m over the flight. Detects local gusts better, but still does not follow the athlete’s conditions moment by moment.</translation>
+            <source>Gęstsza sieć czujników, także za miejscem lądowania. Średnia obejmuje czas lotu.</source>
+            <translation>A denser sensor network, including beyond the landing point. Averaged over the flight.</translation>
         </message>
         <message>
             <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="19" />
-            <source>Jednorazowy odczyt czujników przy wybiciu. Zmiany w trakcie lotu nie wpływają na pomiar do punktacji.</source>
-            <translation>One sensor reading at takeoff. Changes during the flight do not affect the measurement used for scoring.</translation>
+            <source>Jednorazowy odczyt wszystkich czujników przy wybiciu. Późniejsze zmiany wiatru nie są uwzględniane.</source>
+            <translation>One reading from all sensors at takeoff. Later wind changes are ignored.</translation>
         </message>
         <message>
             <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="21" />
-            <source>Średnia wiatru rzeczywiście napotkanego podczas lotu. Punkt odniesienia do symulacji, bez idealnego wyrównania wpływu na odległość.</source>
-            <translation>Average wind actually encountered in flight. A simulation reference, without perfectly cancelling the effect on distance.</translation>
+            <source>Średnia wiatru napotkanego przez skoczka podczas lotu, tylko na przebytej trasie.</source>
+            <translation>Average wind encountered by the jumper during the flight, only along the flown path.</translation>
         </message>
         <message>
             <location filename="../source/UI/EditorWidgets/WindMeasurementChoice.h" line="23" />
-            <source>Zachowuje wcześniejsze ustawienia sposobu kierunków i wpływu odległości na pomiar. Nie oznacza zgodności z FIS.</source>
-            <translation>Keeps the previous direction and distance measurement settings. This does not imply FIS compliance.</translation>
+            <source>Dawny pomiar Sj.Sima. Kierunki i wpływ odległości ustawisz osobno.</source>
+            <translation>Legacy Sj.Sim measurement. Set directions and distance influence separately.</translation>
         </message>
         <message>
             <location filename="../source/UI/EditorWidgets/SimulationProfileEditor.cpp" line="34" />
