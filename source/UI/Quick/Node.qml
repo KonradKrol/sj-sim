@@ -100,7 +100,28 @@ FocusScope {
     }
     Component {
         id: numberBody
-        NumberField { fields: control.fields }
+        Column {
+            id: dsqControl
+            width: control.width; spacing: Theme.dp(5)
+            readonly property bool dsq: control.fields.name === "spinBox_dsqProbability"
+            readonly property var levels: [0,400,190,130,60]
+            readonly property var names: [qsTr("Wyłączone"),qsTr("Bardzo rzadkie"),qsTr("Rzadkie"),qsTr("Częste"),qsTr("Bardzo częste")]
+            readonly property int current: Number(control.fields.value) <= 0 ? 0 : levels.indexOf(Number(control.fields.value))
+            NumberField { visible: !parent.dsq; width: parent.width; fields: control.fields }
+            SChoice {
+                objectName: "dsqLevelChoice"
+                visible: dsqControl.dsq; width: parent.width
+                model: dsqControl.current<0 ? dsqControl.names.concat([qsTr("Własna częstość")]) : dsqControl.names
+                currentIndex: dsqControl.current<0 ? 5 : dsqControl.current
+                Accessible.name: qsTr("Częstość dyskwalifikacji")
+                onActivated: function(index) { if(index<dsqControl.levels.length)ui.edit(control.fields.id,dsqControl.levels[index]) }
+            }
+            Label {
+                visible: parent.dsq; width: parent.width; wrapMode: Text.WordWrap
+                color: Theme.muted; font.pointSize: Theme.caption
+                text: Number(control.fields.value)<=0 ? qsTr("Dyskwalifikacje są wyłączone.") : parent.current<0 ? qsTr("Własne ustawienie: średnio 1 dyskwalifikacja na %1 skoków.").arg(control.fields.value) : qsTr("Średnio 1 dyskwalifikacja na %1 skoków.").arg(control.fields.value)
+            }
+        }
     }
     Component {
         id: textBody

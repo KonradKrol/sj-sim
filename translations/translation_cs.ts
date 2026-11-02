@@ -957,7 +957,11 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <source>Zmniejsz OVR</source>
             <translation>Snížit OVR</translation>
         </message>
-    </context>
+    <message><source>Pomoc: forma</source><translation>Nápověda: forma</translation></message>
+<message><source>Pomoc: OVR</source><translation>Nápověda: OVR</translation></message>
+<message><source>Aktualna dyspozycja skoczka. Wpływa na jakość skoków i może zmieniać się w sezonie.</source><translation>Aktuální forma skokana. Ovlivňuje kvalitu skoků a během sezony se může měnit.</translation></message>
+<message><source>Ogólny poziom umiejętności skoczka. Wyższy OVR zwykle pomaga skakać dalej.</source><translation>Celková úroveň schopností skokana. Vyšší OVR obvykle pomáhá k delším skokům.</translation></message>
+</context>
     <context>
         <name>AthleteStudio</name>
         <message>
@@ -8990,6 +8994,8 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
 <message><source>Dyskwalifikacje są wyłączone.</source><translation>Diskvalifikace jsou vypnuty.</translation></message>
 <message><source>Własne ustawienie: średnio 1 dyskwalifikacja na %1 skoków.</source><translation>Vlastni nastaveni: prumerne 1 diskvalifikace na %1 skoku.</translation></message>
 <message><source>Średnio 1 dyskwalifikacja na %1 skoków.</source><translation>Prumerne 1 diskvalifikace na %1 skoku.</translation></message>
+<message><source>Własna częstość</source><translation>Vlastní četnost</translation></message>
+<message><source>Częstość dyskwalifikacji</source><translation>Četnost diskvalifikací</translation></message>
 </context>
     <context>
         <name>NodeGroup</name>

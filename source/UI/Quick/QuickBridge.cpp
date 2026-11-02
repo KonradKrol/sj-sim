@@ -1019,7 +1019,7 @@ void QuickBridge::compose(QuickNode *base) {
         QVariantList sections;
         sections.append(group("simulation",tr("Silnik symulacji"),{group("simulation-settings-fields",QString(),fields({
             {"openBalanceLab",""},{"openSimulationPlayground",""},{"comboBox_language",tr("Język interfejsu")},{"spinBox_skillsRange",tr("Zakres umiejętności")},
-            {"spinBox_dsqProbability",tr("Dyskwalifikacja: 1 na N skoków")},
+            {"spinBox_dsqProbability",tr("Częstość dyskwalifikacji")},
             {"doubleSpinBox_randomMultiplier",tr("Mnożnik losowości")},{"doubleSpinBox",tr("Wpływ parametrów skoczni")},
             {"doubleSpinBox_takeoffFormEffect",tr("Wpływ formy na wybicie")},{"doubleSpinBox_flightFormEffect",tr("Wpływ formy na lot")},
             {"doubleSpinBox_liveCompSpeed",tr("Tempo konkursu na żywo")},
@@ -1160,7 +1160,7 @@ void QuickBridge::compose(QuickNode *base) {
             for(auto *check:options->findChildren<QCheckBox *>())if(auto *entry=node(check))plan.append(QVariant::fromValue(entry));
         }
         const auto parameters=fields({{"spinBox_startGate",tr("Belka startowa")},{"pushButton_autoGate",""},
-            {"spinBox_dsqProbability",tr("Dyskwalifikacja: 1 na N skoków")}});
+            {"spinBox_dsqProbability",tr("Częstość dyskwalifikacji")}});
         plan.append(group("competition-parameters",QString(),parameters,"form"));
         QVariantList top{group("plan",tr("Plan symulacji"),plan)};
         if(auto *list=m_content->findChild<QWidget *>("scrollArea_startList")) {
@@ -1273,7 +1273,7 @@ void QuickBridge::compose(QuickNode *base) {
         weather->update({{"kind","weatherSetup"},{"backend",m_window->property("weatherSetup")}});
         pages.append(QVariant::fromValue(weather));labels.append(tr("Warunki"));
         pages.append(group("jump-options",tr("Opcje"),{group("jump-option-fields",QString(),fields({
-            {"spinBox_dsqProbability",tr("Dyskwalifikacja: 1 na N skoków")},
+            {"spinBox_dsqProbability",tr("Częstość dyskwalifikacji")},
             {"checkBox_hasJudges",""},{"checkBox_hasWindCompensation",""},
             {"comboBox_windMeasurementType",tr("Pomiar wiatru")},
             {"comboBox_windAverageCalculatingType",tr("Obliczanie średniego wiatru")},

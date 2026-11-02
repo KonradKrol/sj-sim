@@ -957,7 +957,11 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <source>Zmniejsz OVR</source>
             <translation>Decrease OVR</translation>
         </message>
-    </context>
+    <message><source>Pomoc: forma</source><translation>Help: form</translation></message>
+<message><source>Pomoc: OVR</source><translation>Help: OVR</translation></message>
+<message><source>Aktualna dyspozycja skoczka. Wpływa na jakość skoków i może zmieniać się w sezonie.</source><translation>The jumper’s current form. It affects jump quality and can change during the season.</translation></message>
+<message><source>Ogólny poziom umiejętności skoczka. Wyższy OVR zwykle pomaga skakać dalej.</source><translation>The jumper’s overall skill level. A higher OVR generally helps them jump farther.</translation></message>
+</context>
     <context>
         <name>AthleteStudio</name>
         <message>
@@ -8989,6 +8993,8 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
 <message><source>Dyskwalifikacje są wyłączone.</source><translation>Disqualifications are disabled.</translation></message>
 <message><source>Własne ustawienie: średnio 1 dyskwalifikacja na %1 skoków.</source><translation>Custom setting: about 1 disqualification per %1 jumps.</translation></message>
 <message><source>Średnio 1 dyskwalifikacja na %1 skoków.</source><translation>About 1 disqualification per %1 jumps.</translation></message>
+<message><source>Własna częstość</source><translation>Custom frequency</translation></message>
+<message><source>Częstość dyskwalifikacji</source><translation>Disqualification frequency</translation></message>
 </context>
     <context>
         <name>NodeGroup</name>
