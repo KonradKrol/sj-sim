@@ -40,10 +40,11 @@ FocusScope {
     readonly property int columns: Math.max(1, headers.length)
     readonly property var displayColumns: {
         var out=[]
-        if(teamResults && columns>=5) {out=[0,1];if(columns>5)out.push(5);out.push(3);for(var t=6;t<columns;++t)out.push(t);return out}
-        if(raceResults && !jumpColumns && columns>4) {
-            out=[0,1,3,2]
-            for(var c=5;c<columns;c+=2)out.push(c)
+        if(teamResults && columns>=5) {out=[0,1];for(var t=5;t<columns;++t)out.push(t);out.push(3);return out}
+        if(raceResults && columns>4) {
+            out=[0,1]
+            for(var c=3;c<columns;c+=2){out.push(c);if(jumpColumns && c+1<columns)out.push(c+1)}
+            out.push(2)
         } else for(var i=0;i<(compact && columns>4 && !jumpColumns ? 3 : columns);++i)out.push(i)
         return out
     }
@@ -126,7 +127,7 @@ FocusScope {
             SButton {
                 implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : (tableRoot.compact || tableRoot.teamSetup) ? 28 : 40; visible: tableRoot.searchEnabled && (!tableRoot.searchOpen || tableRoot.teamSetup || tableRoot.ranking); text: tableRoot.compact || tableRoot.teamSetup ? "⌕" : qsTr("Szukaj"); quiet: true; Accessible.name: qsTr("Szukaj"); hint: qsTr("Szukaj"); checkable: true; checked: tableRoot.searchOpen; onClicked: {tableRoot.searchOpen = checked;if(!checked && tableRoot.table)tableRoot.table.filter=""} }
             SButton {
-                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : (tableRoot.compact || tableRoot.teamSetup) ? 28 : 40; visible: tableRoot.compact && tableRoot.columns>4 && !tableRoot.teamResults; text: tableRoot.raceResults ? qsTr("Punkty serii") : qsTr("Skoki"); quiet: true; font.pointSize: Theme.caption; checkable: true; onClicked: tableRoot.jumpColumns=checked }
+                implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : (tableRoot.compact || tableRoot.teamSetup) ? 28 : 40; visible: (tableRoot.compact || tableRoot.raceResults) && tableRoot.columns>4 && !tableRoot.teamResults; text: tableRoot.raceResults ? qsTr("Punkty serii") : qsTr("Skoki"); quiet: true; font.pointSize: Theme.caption; checkable: true; checked: tableRoot.jumpColumns; onClicked: tableRoot.jumpColumns=checked }
             SButton {
                 implicitHeight: Theme.compact ? Math.max(26,Theme.bodyMetrics.height+4) : (tableRoot.compact || tableRoot.teamSetup) ? 28 : 40; visible: !tableRoot.ranking && (!tableRoot.compact || tableRoot.teamSetup) && !tableRoot.expandedActions; text: tableRoot.teamSetup ? qsTr("Skład") : tableRoot.width < 380 ? "↗" : qsTr("Otwórz"); quiet: true; Accessible.name: tableRoot.teamSetup ? qsTr("Edytuj skład") : qsTr("Otwórz"); hint: tableRoot.teamSetup ? qsTr("Edytuj skład wybranej drużyny") : qsTr("Otwórz"); enabled: !!tableRoot.table && (!tableRoot.teamSetup || tableRoot.table.currentRow>=0); onClicked: if (tableRoot.table) tableRoot.table.openCurrent() }
             Repeater {
