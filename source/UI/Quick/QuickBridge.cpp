@@ -1025,10 +1025,7 @@ void QuickBridge::compose(QuickNode *base) {
         sections.append(group("tools",tr("Baza danych i narzędzia"),{group("database-settings-fields",QString(),fields({
             {"pushButton_countriesEditor",""},{"pushButton_jumpInfoChoice",""},
             {"pushButton_defaultSettings",""}}),"form")}));
-        sections.append(group("webhooks",tr("Udostępnianie wyników"),fields({
-            {"lineEdit_jumpInfoWh",tr("Webhook: pojedynczy skok")},{"lineEdit_singleResultWh",tr("Webhook: wynik zawodnika")},
-            {"lineEdit_compResultsWh",tr("Webhook: wyniki konkursu")},{"lineEdit_clsResultsWh",tr("Webhook: klasyfikacja")}})));
-        auto *tabs=sectionTabs("settings-pages",{tr("Symulacja"),tr("Baza danych i narzędzia"),tr("Udostępnianie wyników")},sections);
+        auto *tabs=sectionTabs("settings-pages",{tr("Symulacja"),tr("Baza danych i narzędzia")},sections);
         m_root->update(tabs->values(),tabs->children());return;
     }
     if(profile()=="SimulationSaveManagerWindow") {
