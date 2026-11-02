@@ -846,15 +846,15 @@ static void seasons() {
         auto *bridge=manager.findChild<QuickBridge *>();auto *tabs=manager.findChild<QTabWidget *>("toolBox");
         check(bridge->root()->values().value("kind")=="tabs" && bridge->root()->values().value("options").toStringList().size()==tabs->count(),"season overview and every workspace remain available with classifications inside calendars");
         auto *tools=qobject_cast<QuickNode *>(bridge->find("quickSeasonTools"));
-        check(tools && tools->values().value("actions").toList().size()==4,"season tools preserve form, statistics, save-copy and repair actions");
+        check(tools && tools->values().value("actions").toList().size()==3,"season tools preserve statistics, save-copy and repair actions");
         for(int i=0;i<tabs->count();++i) {
             if(i==4)continue;
             bridge->edit(bridge->root()->values().value("id").toInt(),i<4?i+1:i);QTest::qWait(100);
             check(tabs->currentIndex()==i,"season task navigation updates original controller state");
             render(&manager,QString("season-page-%1").arg(i));
             auto *action=item(scene(&manager)->rootObject(),"seasonNextAction");
-            if(i==3 && scene(&manager)->height()<600) {
-                check(!action || !action->isVisible(),"short calendar workspace reserves space for editing");continue;
+            if((i==3 || item(scene(&manager)->rootObject(),"seasonRostersWorkspace")) && scene(&manager)->height()<600) {
+                check(!action || !action->isVisible(),"short editing workspace reserves space for its content");continue;
             }
             check(action && action->isVisible(),"next competition remains available outside the overview");
             const auto pos=action->mapToItem(scene(&manager)->rootObject(),QPointF());
@@ -1139,7 +1139,11 @@ static void seasonToolRegressions(SimulationSaveManagerWindow &manager) {
     auto *view=scene(&manager);auto *navigation=applicationWindow->findChild<QuickUi *>();
     presentation(&manager)->resize(1200,800);QTest::qWait(80);
     for(int action=0;action<3;++action){
+        QTimer deadline;deadline.setSingleShot(true);
+        QObject::connect(&deadline,&QTimer::timeout,[&]{check(false,QString("season tool %1 did not return: %2").arg(action).arg(navigation->path().join(" / ")));});
+        deadline.start(15000);
         clickControl(view,"action-quickSeasonTools");QTest::qWait(250);
+        auto *menu=item(view->rootObject(),"action-quickSeasonTools")->findChild<QObject *>("actionMenu");
         bool opened=false;int ticks=0;QTimer watcher;
         QObject::connect(&watcher,&QTimer::timeout,[&]{
             check(++ticks<150,"season tool opens");
@@ -1155,6 +1159,9 @@ static void seasonToolRegressions(SimulationSaveManagerWindow &manager) {
             }
         });watcher.start(20);clickControl(view,QString("menu-entry-%1").arg(action));watcher.stop();
         check(opened && navigation->current()==manager.findChild<QuickBridge *>(),QString("season tool %1 returns to manager (opened %2, path %3)").arg(action).arg(opened).arg(navigation->path().join(" / ")));
+        QElapsedTimer closing;closing.start();while(menu->property("visible").toBool() && closing.elapsed()<1000)QTest::qWait(20);
+        check(!menu->property("visible").toBool(),"season tools menu finishes closing before the next interaction");
+        deadline.stop();
     }
     qInfo()<<"PASS: all season tools open through pointer-driven menus";
 }
@@ -2655,6 +2662,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--classifications-only")){classificationUiRegressions(main);return 0;}
     if(app.arguments().contains("--dates-only")){calendarDateRegressions();calendarDateUiRegressions(main);return 0;}
     if(app.arguments().contains("--backend-only"))return 0;
+    if(app.arguments().contains("--season-tools-only")){main.show();runCompetition(main,0);seasons();return 0;}
     if(app.arguments().contains("--bulk-only")) {main.show();for(int scenario=0;scenario<3;++scenario)runCompetition(main,scenario,true);runCompetition(main,0,true,1);runCompetition(main,0,true,2);runCompetition(main,2,true,3);return 0;}
     if(app.arguments().contains("--competitions-only")) {
         main.show();QTest::qWait(100);GlobalAppSettings::get()->setLiveCompetition(false);
