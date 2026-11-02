@@ -28,6 +28,7 @@ if [[ ! -x "${executable}" ]]; then
 fi
 cp "${executable}" "${output_path}/usr/bin/sj-sim"
 cp -R "${repo_root}/flags" "${repo_root}/userData" "${output_path}/usr/bin/"
+cp "${repo_root}/data/beta/packs.json" "${output_path}/usr/bin/userData/GlobalDatabase/packs.json"
 for language in en cs; do
     lrelease -nounfinished "${repo_root}/translations/translation_${language}.ts" \
         -qm "${output_path}/usr/bin/translations/translation_${language}.qm"
