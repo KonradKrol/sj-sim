@@ -14,7 +14,13 @@ namespace {
 QMutex lock;
 QJsonObject cached;
 QString loadedPath;
-QString path(){const auto root=QCoreApplication::instance()->property("balanceLabStorageRoot").toString();return (root.isEmpty()?QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/balance-lab":root)+"/active.json";}
+QString path(){
+    const auto root=QCoreApplication::instance()->property("balanceLabStorageRoot").toString();
+    if(!root.isEmpty())return root+"/active.json";
+    const auto portable=QCoreApplication::applicationDirPath()+"/userData/BalanceLab";
+    if(QDir(portable).exists())return portable+"/active.json";
+    return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/balance-lab/active.json";
+}
 void load(){const auto filePath=path();if(loadedPath==filePath)return;loadedPath=filePath;cached={};QFile f(filePath);if(!f.open(QIODevice::ReadOnly))return;auto o=QJsonDocument::fromJson(f.readAll()).object();QString error;if(o["perkLevels"].toDouble()==4 && o["schema"].toInt()==1 && o["values"].isObject() && BalanceLab::validateProfile(o["values"].toObject(),error))cached=o;}
 }
 namespace BalanceRuntime {
