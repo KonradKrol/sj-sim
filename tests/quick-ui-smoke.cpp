@@ -2545,6 +2545,7 @@ static void interactionRegressions(MainWindow &main) {
 #include "simulation-v2-catalog-regressions.h"
 #include "simulation-v2-season-regressions.h"
 #include "simulation-v2-measurement-regressions.h"
+#include "production-persistence-regressions.h"
 #include "simulation-v2-manipulation-regressions.h"
 
 int main(int argc,char **argv) {
@@ -2575,6 +2576,7 @@ int main(int argc,char **argv) {
     }
     QDir::setCurrent(data.path());
     QSettings::setDefaultFormat(QSettings::IniFormat);QSettings::setPath(QSettings::IniFormat,QSettings::UserScope,data.path()+"/settings");
+    if(app.arguments().contains("--production-persistence-only")){productionPersistenceRegressions();return 0;}
     MainWindow main; applicationWindow=&main; main.setParentApplication(&app); new QuickUi(&main);
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="2.0.0-beta","one release version is shared with the interface");

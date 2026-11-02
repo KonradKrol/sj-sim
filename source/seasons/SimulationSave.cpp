@@ -11,6 +11,7 @@
 #include <QSet>
 #include <QSysInfo>
 #include "../global/Uuid.h"
+#include "../global/JsonGraphValidation.h"
 #include "../simulation-v2/SimulationCatalog.h"
 
 extern Uuid globalIDGenerator;
@@ -155,6 +156,11 @@ SimulationSave * SimulationSave::getFromJson(QJsonObject obj, IdentifiableObject
 {
     if(!hasRequiredSaveStructure(obj))
         return nullptr;
+    QString identityError;
+    if(!JsonGraphValidation::validateSave(obj,identityError)) {
+        qWarning().noquote() << "Invalid simulation save:" << identityError;
+        return nullptr;
+    }
 
     SimulationSave * save = new SimulationSave();
     save->setEngineVersion(obj["engine-version"].toInt(1));
