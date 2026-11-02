@@ -24,7 +24,8 @@ QString path(){
 void load(){const auto filePath=path();if(loadedPath==filePath)return;loadedPath=filePath;cached={};QFile f(filePath);if(!f.open(QIODevice::ReadOnly))return;auto o=QJsonDocument::fromJson(f.readAll()).object();QString error;if(o["perkLevels"].toDouble()==4 && o["schema"].toInt()==1 && o["values"].isObject() && BalanceLab::validateProfile(o["values"].toObject(),error))cached=o;}
 }
 namespace BalanceRuntime {
-QJsonObject capture(){QMutexLocker guard(&lock);load();return cached["values"].toObject();}
+QJsonObject defaults(){static const QJsonObject values=[] {QFile f(":/data/beta/default-balance.json");return f.open(QIODevice::ReadOnly)?QJsonDocument::fromJson(f.readAll()).object():QJsonObject();}();return values;}
+QJsonObject capture(){QMutexLocker guard(&lock);load();auto values=defaults();const auto overrides=cached["values"].toObject();for(auto i=overrides.begin();i!=overrides.end();++i)values[i.key()]=i.value();return values;}
 QString activeName(){QMutexLocker guard(&lock);load();return cached["name"].toString();}
 bool activate(const QJsonObject &values,const QString &name,QString &error){
     if(!BalanceLab::validateProfile(values,error))return false;

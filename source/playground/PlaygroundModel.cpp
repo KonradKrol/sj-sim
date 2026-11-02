@@ -1,3 +1,4 @@
+#include "../balance/BalanceRuntime.h"
 #include "PlaygroundModel.h"
 #include "../simulation-v2/WeatherCalibration.h"
 #include <QObject>
@@ -488,7 +489,8 @@ QJsonArray parameters() {
     const QStringList landingStyles{QObject::tr("Niechlujne"),QObject::tr("Niestaranne"),QObject::tr("Poprawne"),QObject::tr("Eleganckie"),QObject::tr("Stylista")};
     const QStringList landings{QObject::tr("telemark"),QObject::tr("dwie nogi"),QObject::tr("podpórka"),QObject::tr("upadek")};
     const QStringList presets{QObject::tr("Stały wiatr w plecy"),QObject::tr("Silny wiatr pod narty"),QObject::tr("Loteryjny"),QObject::tr("Zmienny boczny"),QObject::tr("Cisza"),QObject::tr("Stały pod narty"),QObject::tr("Silny w plecy"),QObject::tr("Stały boczny"),QObject::tr("Zmienny pod narty"),QObject::tr("Zmienny w plecy"),QObject::tr("Różne kierunki na zeskoku")};
-    for(int i=0;i<rows.size();++i){auto d=rows[i].toObject();const auto key=d["key"].toString();auto label=d["label"].toString();int n=key.section('.',-1).toInt();
+    const auto standardBalance=BalanceRuntime::defaults();
+    for(int i=0;i<rows.size();++i){auto d=rows[i].toObject();const auto key=d["key"].toString();if(standardBalance.contains(key)){d["default"]=standardBalance[key];d["help"]=effectDescription(key,d["group"].toString())+"\n"+QObject::tr("%1 · jednostka: %2 · domyślnie: %3").arg(key,d["unit"].toString()).arg(standardBalance[key].toDouble(),0,'g',9);}auto label=d["label"].toString();int n=key.section('.',-1).toInt();
         if(key.startsWith("quality.eventDeviation."))label=QObject::tr("Losowość jakości — %1").arg(events.value(n));
         else if(key.startsWith("landing.landingPenalty."))label=QObject::tr("Kara w notach — %1").arg(landings.value(n));
         else if(key.startsWith("landing.styleMean."))label=QObject::tr("Bazowa nota — %1").arg(landingStyles.value(n));
