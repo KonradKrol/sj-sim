@@ -1,4 +1,4 @@
-## Stan pracy — 1.11 (Codex)
+## Stan pracy — 2.11 (Codex)
 
 Pracuj sam na `feature/simulation-v2`; każdy ukończony zakres commituj i wypychaj.
 Zachowuj hierarchię, kontrast, jasność i brak wizualnego szumu.
@@ -28,7 +28,23 @@ Testy uruchomione w izolowanych danych: `--simulation-v2-season-only`,
 `--simulation-v2-competition-only`, `--roster-workspace-only`, `--roster-only`,
 `--choice-popup-only`, `--workflow-only`, `--athlete-studio-only`, `--author-only`,
 `--balance-lab-core-only`, `scripts/test-simulation-v2-core.sh` i kontrola tłumaczeń.
-Nie oznacza to, że pełny historyczny smoke całej aplikacji został sprawdzony.
+Pełny `sj-sim-ui-smoke` przeszedł 2.11: „PASS: fresh Qt Quick screens, bridge
+validation and 422 responsive renders”. W jego logu nie było błędów QML,
+`Binding loop`, `recursive rearrange`, `ReferenceError`, `TypeError` ani
+`Unable to assign`. Test używa izolowanych danych i renderowania offscreen.
+
+Zatrzymanie pełnego testu wyjaśniono debuggerem: oczekiwał w statystykach sezonu,
+a nie w silniku konkursu. Pomocnik klikał kolejne narzędzie podczas trwającego
+zamykania menu po anulowaniu natywnego dialogu zapisu kopii. Test czeka teraz na
+rzeczywiste zamknięcie menu, ma limit czasu oraz osobny tryb `--season-tools-only`.
+Zaktualizowano też oczekiwania liczby narzędzi, dolnego paska na małym ekranie
+list i tłumaczenia zaproszenia do kontaktu na stronie autora. Nie wprowadzono
+spekulatywnych zmian do produkcyjnego menu ani logiki gry.
+
+Dodatkowo `8b65a94` zabezpiecza pusty wybór starej cechy i wielokrotne budowanie
+jej listy oraz usuwa zbędne logowanie. `--interaction-only` przeszedł.
+Oryginalne losowe crashe z prywatnych zapisów, których nie odtworzono, nadal
+nie są dowodem pełnej odporności na każdy możliwy zapis.
 
 ---
 
