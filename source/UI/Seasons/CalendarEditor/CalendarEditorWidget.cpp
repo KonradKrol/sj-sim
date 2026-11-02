@@ -10,6 +10,10 @@
 #include "MultipleTrialRoundsEditDialog.h"
 #include <QDialog>
 #include <QDialogButtonBox>
+#include <QFormLayout>
+#include <QVBoxLayout>
+#include <QScrollArea>
+#include <QPushButton>
 #include <QComboBox>
 #include <QLabel>
 #include <QMessageBox>
@@ -1380,7 +1384,9 @@ void CalendarEditorWidget::on_pushButton_saveCalendarPreset_clicked()
 
 void CalendarEditorWidget::on_pushButton_loadFromPreset_clicked()
 {
-    if(!save || !calendar || save->getHillsReference().isEmpty() || GlobalDatabase::get()->getEditableGlobalCalendarPresets().isEmpty())return;
+    if(!save || !calendar)return;
+    if(save->getHillsReference().isEmpty()){QMessageBox::information(this,tr("Preset kalendarza"),tr("W sezonie nie ma skoczni. Dodaj przynajmniej jedną skocznię, aby wybrać zamienniki."));return;}
+    if(GlobalDatabase::get()->getEditableGlobalCalendarPresets().isEmpty()){QMessageBox::information(this,tr("Preset kalendarza"),tr("Nie ma zapisanych presetów kalendarza."));return;}
     const auto events=calendar->getCompetitions();
     const bool hasHistory=std::any_of(events.cbegin(),events.cend(),[](auto *event){return event->getPlayed() || event->getCancelled();});
     if(hasHistory)
@@ -1399,6 +1405,44 @@ return;
     if(ok && presetsNames.contains(itemText))
     {
         SeasonCalendarPreset * preset = &GlobalDatabase::get()->getEditableGlobalCalendarPresets()[presetsNames.indexOf(itemText)];
+        const auto &presetEvents=preset->getCalendarReference().getCompetitionsReference();
+        const auto &availableHills=save->getHillsReference();
+        QVector<Hill *> selectedHills(presetEvents.size(),nullptr);
+        struct MissingHill { QString name; double hs; QVector<int> events; };
+        QVector<MissingHill> missing;
+        QHash<QString,int> missingByKey;
+        for(int i=0;i<presetEvents.size();++i) {
+            const auto source=i<preset->getHillsReference().size()?preset->getHillsReference()[i]:qMakePair(QString(),0.0);
+            if(!source.first.isEmpty())for(auto *hill:availableHills)
+                if(hill && hill->getName()==source.first && hill->getHSPoint()==source.second){selectedHills[i]=hill;break;}
+            if(selectedHills[i])continue;
+            const QString key=source.first+QChar(0x1f)+QString::number(source.second,'g',17);
+            if(!missingByKey.contains(key)){missingByKey.insert(key,missing.size());missing.append({source.first,source.second,{}});}
+            missing[missingByKey.value(key)].events.append(i);
+        }
+        if(!missing.isEmpty()) {
+            QDialog dialog(this);dialog.setObjectName("calendarMissingHillsDialog");dialog.setWindowTitle(tr("Wybierz zamienniki skoczni"));
+            auto *layout=new QVBoxLayout(&dialog);
+            auto *intro=new QLabel(tr("Nie znaleziono tych skoczni w bieżącym sezonie. Wybierz zamiennik dla każdej z nich, aby wczytać preset."),&dialog);intro->setWordWrap(true);layout->addWidget(intro);
+            auto *scroll=new QScrollArea(&dialog);scroll->setWidgetResizable(true);auto *body=new QWidget(scroll);auto *form=new QFormLayout(body);form->setRowWrapPolicy(QFormLayout::WrapLongRows);
+            QVector<QComboBox *> choices;
+            for(int i=0;i<missing.size();++i) {
+                const auto &entry=missing[i];auto *choice=new QComboBox(body);choice->setObjectName(QStringLiteral("calendarReplacement-%1").arg(i));
+                choice->addItem(tr("Wybierz skocznię…"),-1);
+                for(int j=0;j<availableHills.size();++j)if(auto *hill=availableHills[j])choice->addItem(tr("%1 · HS %2").arg(hill->getName()).arg(hill->getHSPoint()),j);
+                const QString label=entry.name.isEmpty()?tr("Nieznana skocznia"):tr("%1 · HS %2").arg(entry.name).arg(entry.hs);
+                auto *caption=new QLabel(label,body);caption->setWordWrap(true);form->addRow(caption,choice);choices.append(choice);
+            }
+            scroll->setWidget(body);layout->addWidget(scroll);
+            auto *buttons=new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel,&dialog);auto *confirm=buttons->button(QDialogButtonBox::Ok);
+            confirm->setObjectName("confirmCalendarReplacements");confirm->setText(tr("Wczytaj preset"));confirm->setEnabled(false);layout->addWidget(buttons);
+            const auto update=[&]{bool complete=true;for(auto *choice:choices)complete=complete && choice->currentData().toInt()>=0;confirm->setEnabled(complete);};
+            for(auto *choice:choices)connect(choice,QOverload<int>::of(&QComboBox::currentIndexChanged),&dialog,[&](int){update();});
+            connect(buttons,&QDialogButtonBox::accepted,&dialog,&QDialog::accept);connect(buttons,&QDialogButtonBox::rejected,&dialog,&QDialog::reject);
+            dialog.resize(540,qMin(540,170+missing.size()*55));
+            if(dialog.exec()!=QDialog::Accepted)return;
+            for(int i=0;i<missing.size();++i){const int choice=choices[i]->currentData().toInt();if(choice<0 || choice>=availableHills.size() || !availableHills[choice])return;for(int event:missing[i].events)selectedHills[event]=availableHills[choice];}
+        }
         calendarModel->applyChange([&]{
         if(!property("quickRetainPresetEvents").toBool())qDeleteAll(calendar->getCompetitionsReference());
         calendar->getCompetitionsReference().clear();
@@ -1466,13 +1510,7 @@ return;
             }
         }
         for(int i=0;i<calendar->getCompetitionsReference().size();++i) {
-            Hill *hillToSet=save->getHillsReference().first();
-            if(i<preset->getHillsReference().size()) {
-                const auto &presetHill=preset->getHillsReference()[i];
-                for(auto *hill:save->getHillsReference())
-                    if(hill->getName()==presetHill.first && hill->getHSPoint()==presetHill.second){hillToSet=hill;break;}
-            }
-            calendar->getCompetitionsReference()[i]->setHill(hillToSet);
+            calendar->getCompetitionsReference()[i]->setHill(selectedHills[i]);
         }
         calendar->updateCompetitionsQualifyingCompetitions();
         calendar->normalizeCompetitionEvents();

@@ -221,6 +221,25 @@ static void classificationUiRegressions(MainWindow &main)
     QTimer::singleShot(200,[]{for(auto *w:QApplication::topLevelWidgets())if(auto *input=qobject_cast<QInputDialog *>(w);input && input->isVisible()){auto *combo=input->findChild<QComboBox *>();check(combo,"preset choice");combo->setCurrentIndex(combo->count()-1);input->accept();return;}check(false,"preset selection prompt");});
     backend->preset(false);QTest::qWait(150);
     auto *lc=calendar->getClassificationsReference().first();auto *le=calendar->getCompetitionsReference().first();check(lc->getOptions().toJson()==options.toJson() && le->getClassificationsReference().contains(lc) && le->scoringFor(lc).methodId==options.methods.first().id && le->scoringFor(lc).parameters.value("multiplier").toDouble()==0.5,"UI calendar preset loading restores classification options and context after reassigning IDs");
+    check(!preset.getHillsReference().isEmpty(),"preset contains a hill reference");
+    preset.getHillsReference()[0].first=QStringLiteral("Missing hill for replacement test");
+    const auto oldEvents=calendar->getCompetitionsReference();
+    const auto exerciseReplacement=[&](bool accept){
+        bool prompted=false,shown=false;QTimer picker;
+        QObject::connect(&picker,&QTimer::timeout,[&]{
+            for(auto *widget:QApplication::topLevelWidgets()) {
+                if(auto *input=qobject_cast<QInputDialog *>(widget);input && input->isVisible()) {auto *combo=input->findChild<QComboBox *>();check(combo,"preset selection exists");combo->setCurrentIndex(combo->count()-1);prompted=true;input->accept();return;}
+                auto *dialog=qobject_cast<QDialog *>(widget);if(!dialog || dialog->objectName()!="calendarMissingHillsDialog" || !dialog->isVisible())continue;
+                auto *choice=dialog->findChild<QComboBox *>("calendarReplacement-0");auto *confirm=dialog->findChild<QPushButton *>("confirmCalendarReplacements");
+                check(choice && confirm && !confirm->isEnabled(),"missing hill requires a deliberate replacement");shown=true;
+                if(accept){choice->setCurrentIndex(1);check(confirm->isEnabled(),"choosing a replacement enables loading");dialog->accept();}else dialog->reject();
+                picker.stop();return;
+            }
+        });
+        picker.start(20);backend->preset(false);picker.stop();check(prompted && shown,"missing hills open the replacement step");
+    };
+    exerciseReplacement(false);check(calendar->getCompetitionsReference()==oldEvents,"canceling replacement leaves the calendar intact");
+    exerciseReplacement(true);check(!calendar->getCompetitionsReference().isEmpty() && calendar->getCompetitionsReference().first()->getHill()==save.getHillsReference().first(),"confirmed replacement is used in the loaded calendar");
     GlobalDatabase::get()->setGlobalCalendarPresets(oldPresets);manager.hide();main.resize(1024,640);
     classificationContributionUiRegressions(main);
     qInfo()<<"PASS: classification editor, dynamic alternative labels, per-event methods, parameter undo and real calendar preset save/load";

@@ -2051,7 +2051,14 @@ li.checked::marker { content: "\2612"; }
             <source>Wybierz z listy preset kalendarza który chcesz wczytać</source>
             <translation>Select the calendar preset to load from the list</translation>
         </message>
-    </context>
+    <message><source>W sezonie nie ma skoczni. Dodaj przynajmniej jedną skocznię, aby wybrać zamienniki.</source><translation>There are no hills in this season. Add at least one hill to choose replacements.</translation></message>
+<message><source>Nie ma zapisanych presetów kalendarza.</source><translation>There are no saved calendar presets.</translation></message>
+<message><source>Wybierz zamienniki skoczni</source><translation>Choose replacement hills</translation></message>
+<message><source>Nie znaleziono tych skoczni w bieżącym sezonie. Wybierz zamiennik dla każdej z nich, aby wczytać preset.</source><translation>These hills were not found in the current season. Choose a replacement for each to load the preset.</translation></message>
+<message><source>Wybierz skocznię…</source><translation>Choose a hill…</translation></message>
+<message><source>Nieznana skocznia</source><translation>Unknown hill</translation></message>
+<message><source>%1 · HS %2</source><translation>%1 · HS %2</translation></message>
+</context>
     <context>
         <name>CalendarEventRow</name>
         <message>

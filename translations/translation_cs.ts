@@ -1217,19 +1217,19 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
         </message>
     <message><source>Nowy</source><translation>Nový</translation></message>
 <message><source>zawodnik</source><translation>závodník</translation></message>
-<message><source>Wyeksportowano paczkę do %1. Brakuje zdjęć: %2.</source><translation>Balicek byl exportovan do %1. Chybejici fotografie: %2.</translation></message>
-<message><source>Wyeksportowano paczkę do %1.</source><translation>Balicek byl exportovan do %1.</translation></message>
-<message><source>Wczytano kopię paczki. Brakuje zdjęć: %1; skoczkowie pozostają dostępni.</source><translation>Kopie byla nactena. Chybejici fotografie: %1; skokani zustavaji dostupni.</translation></message>
-<message><source>Wczytano kopię paczki wraz ze zdjęciami.</source><translation>Kopie balicku byla nactena s fotografiemi.</translation></message>
-<message><source>Nie udało się utworzyć nowego folderu eksportu.</source><translation>Nelze vytvorit novou slozku pro export.</translation></message>
-<message><source>Wybierz, gdzie zapisać folder paczki</source><translation>Vyberte umisteni slozky balicku</translation></message>
-<message><source>Paczka - %1</source><translation>Balicek - %1</translation></message>
-<message><source>Paczka gotowa</source><translation>Balicek je pripraven</translation></message>
+<message><source>Wyeksportowano paczkę do %1. Brakuje zdjęć: %2.</source><translation>Balíček byl exportován do %1. Chybějící fotografie: %2.</translation></message>
+<message><source>Wyeksportowano paczkę do %1.</source><translation>Balíček byl exportován do %1.</translation></message>
+<message><source>Wczytano kopię paczki. Brakuje zdjęć: %1; skoczkowie pozostają dostępni.</source><translation>Kopie byla načtena. Chybějící fotografie: %1; skokani zůstávají dostupní.</translation></message>
+<message><source>Wczytano kopię paczki wraz ze zdjęciami.</source><translation>Kopie balíčku byla načtena s fotografiemi.</translation></message>
+<message><source>Nie udało się utworzyć nowego folderu eksportu.</source><translation>Nelze vytvořit novou složku pro export.</translation></message>
+<message><source>Wybierz, gdzie zapisać folder paczki</source><translation>Vyberte umístění složky balíčku</translation></message>
+<message><source>Paczka - %1</source><translation>Balíček - %1</translation></message>
+<message><source>Paczka gotowa</source><translation>Balíček je připraven</translation></message>
 <message><source>%1
 
 Udostępnij cały folder. Aby wczytać paczkę, wybierz w nim plik pack.json.</source><translation>%1
 
-Sdilejte celou slozku. K importu vyberte soubor pack.json.</translation></message>
+Sdílejte celou složku. K importu vyberte soubor pack.json.</translation></message>
 </context>
     <context>
         <name>AthleteTokens</name>
@@ -2051,7 +2051,14 @@ li.checked::marker { content: "\2612"; }
             <source>Wybierz z listy preset kalendarza który chcesz wczytać</source>
             <translation>Vyberte ze seznamu předvolbu kalendáře, kterou chcete načíst</translation>
         </message>
-    </context>
+    <message><source>W sezonie nie ma skoczni. Dodaj przynajmniej jedną skocznię, aby wybrać zamienniki.</source><translation>V sezoně nejsou žádné můstky. Pro výběr náhrad přidejte alespoň jeden můstek.</translation></message>
+<message><source>Nie ma zapisanych presetów kalendarza.</source><translation>Nejsou uloženy žádné předvolby kalendáře.</translation></message>
+<message><source>Wybierz zamienniki skoczni</source><translation>Vyberte náhradní můstky</translation></message>
+<message><source>Nie znaleziono tych skoczni w bieżącym sezonie. Wybierz zamiennik dla każdej z nich, aby wczytać preset.</source><translation>Tyto můstky nebyly v aktuální sezoně nalezeny. Pro načtení předvolby vyberte náhradu za každý z nich.</translation></message>
+<message><source>Wybierz skocznię…</source><translation>Vyberte můstek…</translation></message>
+<message><source>Nieznana skocznia</source><translation>Neznámý můstek</translation></message>
+<message><source>%1 · HS %2</source><translation>%1 · HS %2</translation></message>
+</context>
     <context>
         <name>CalendarEventRow</name>
         <message>
@@ -6547,7 +6554,7 @@ li.checked::marker { content: "\2612"; }
             <source>Importuj paczkę</source>
             <translation>Importovat balíček</translation>
         </message>
-    <message><source>Wyeksportowano paczkę do %1.</source><translation>Balicek byl exportovan do %1.</translation></message>
+    <message><source>Wyeksportowano paczkę do %1.</source><translation>Balíček byl exportován do %1.</translation></message>
 </context>
     <context>
         <name>HillTypesCheckBoxesWidget</name>
@@ -8992,8 +8999,8 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
 <message><source>Częste</source><translation>Časté</translation></message>
 <message><source>Bardzo częste</source><translation>Velmi časté</translation></message>
 <message><source>Dyskwalifikacje są wyłączone.</source><translation>Diskvalifikace jsou vypnuty.</translation></message>
-<message><source>Własne ustawienie: średnio 1 dyskwalifikacja na %1 skoków.</source><translation>Vlastni nastaveni: prumerne 1 diskvalifikace na %1 skoku.</translation></message>
-<message><source>Średnio 1 dyskwalifikacja na %1 skoków.</source><translation>Prumerne 1 diskvalifikace na %1 skoku.</translation></message>
+<message><source>Własne ustawienie: średnio 1 dyskwalifikacja na %1 skoków.</source><translation>Vlastní nastavení: průměrně 1 diskvalifikace na %1 skoků.</translation></message>
+<message><source>Średnio 1 dyskwalifikacja na %1 skoków.</source><translation>Průměrně 1 diskvalifikace na %1 skoků.</translation></message>
 <message><source>Własna częstość</source><translation>Vlastní četnost</translation></message>
 <message><source>Częstość dyskwalifikacji</source><translation>Četnost diskvalifikací</translation></message>
 </context>
@@ -21573,11 +21580,11 @@ li.checked::marker { content: "\2612"; }
 <message><source>Przód / tył</source><translation>Přední / zadní</translation></message>
 <message><source>Miejsce</source><translation>Místo</translation></message>
 <message><source>Bok</source><translation>Boční vítr</translation></message>
-<message><source>Wiatr pod narty / w plecy</source><translation>Predni / zadni vitr</translation></message>
+<message><source>Wiatr pod narty / w plecy</source><translation>Přední / zadní vítr</translation></message>
 <message><source>Wiatr boczny</source><translation>Boční vítr</translation></message>
 <message><source>Dostosuj także wybrany preset</source><translation>Upravit také vybranou předvolbu</translation></message>
-<message><source>Trzy ustawienia poniżej działają na wszystkie losowane warunki. Zmniejsz je, aby osłabić wiatr, wahania lub podmuchy.</source><translation>Tri nastaveni nize plati pro vsechny generovane podminky. Snizenim hodnot oslabite vitr, zmeny nebo narazy.</translation></message>
-<message><source>Wpisz wiatr w m/s. Przód / tył: plus oznacza wiatr pod narty, minus — w plecy. Bok: znak oznacza stronę. Pomiędzy punktami wiatr zmienia się płynnie.</source><translation>Zadejte vitr v m/s. Predni / zadni: plus znamena protivitr, minus zadni vitr. Znamenko bocniho vetru urcuje stranu. Mezi body se vitr plynule meni.</translation></message>
+<message><source>Trzy ustawienia poniżej działają na wszystkie losowane warunki. Zmniejsz je, aby osłabić wiatr, wahania lub podmuchy.</source><translation>Tři nastavení níže platí pro všechny generované podmínky. Snížením hodnot oslabíte vítr, změny nebo nárazy.</translation></message>
+<message><source>Wpisz wiatr w m/s. Przód / tył: plus oznacza wiatr pod narty, minus — w plecy. Bok: znak oznacza stronę. Pomiędzy punktami wiatr zmienia się płynnie.</source><translation>Zadejte vítr v m/s. Přední / zadní: plus znamená protivítr, minus zadní vítr. Znaménko bočního větru určuje stranu. Mezi body se vítr plynule mění.</translation></message>
 </context>
     <context>
         <name>BalanceLabGenerator</name>
@@ -23096,8 +23103,8 @@ Technický klíč: %4</translation>
             <source>Gotowe</source>
             <translation>Hotovo</translation>
         </message>
-    <message><source>Eksport tworzy folder ze skoczkami i zdjęciami. Udostępnij cały folder; przy imporcie wybierz plik pack.json w jego wnętrzu.</source><translation>Export vytvori slozku se skokany a fotografiemi. Sdilejte celou slozku; pri importu vyberte soubor pack.json uvnitr.</translation></message>
-<message><source>Eksport tworzy jeden plik paczki skoczni. Aby go wczytać, wybierz ten plik przy imporcie.</source><translation>Export vytvori jeden soubor mustku. Pri importu vyberte tento soubor.</translation></message>
+    <message><source>Eksport tworzy folder ze skoczkami i zdjęciami. Udostępnij cały folder; przy imporcie wybierz plik pack.json w jego wnętrzu.</source><translation>Export vytvoří složku se skokany a fotografiemi. Sdílejte celou složku; při importu vyberte soubor pack.json uvnitř.</translation></message>
+<message><source>Eksport tworzy jeden plik paczki skoczni. Aby go wczytać, wybierz ten plik przy imporcie.</source><translation>Export vytvoří jeden soubor můstků. Při importu vyberte tento soubor.</translation></message>
 </context>
     <context>
         <name>SortCountryButton</name>
