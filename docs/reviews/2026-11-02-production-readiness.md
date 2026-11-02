@@ -2,6 +2,21 @@
 
 Data: 2026-11-02. Zakres: zapis/odczyt danych, identyfikatory, profile silnika, uruchomienie i praca na dużych archiwach. Audyt statyczny z analizą przepływu danych i lintem Qt/C++ oraz QML; nie wykonywano destrukcyjnych prób na danych użytkownika. Poniższe problemy są potwierdzonymi brakami w kodzie; opisany skutek zależy od podanego warunku. Nie są to twierdzenia o odtworzeniu każdego crasha. P0: blokada wydania; P1: wysoki priorytet przed stabilnym wydaniem. Zmiany funkcjonalne z tego zadania były sprawdzane osobno.
 
+
+## Stan napraw: 2026-11-02
+
+Zaimplementowano punkty **1, 2, 4, 5 i 7**:
+
+- **1:** jawne wartości domyślne wszystkich pól ustawień aplikacji i widoczności szczegółów skoku; obsługa nieudanego odczytu przy starcie.
+- **2:** kontrola tożsamości przed tworzeniem grafu oraz przed nadpisaniem zapisu; wykrywanie duplikatów, kolizji między typami i referencji wskazujących istniejący obiekt niewłaściwego typu. Osadzone kopie zasad i składów w różnych wydarzeniach pozostają obsługiwane.
+- **4:** QSaveFile bez awaryjnego zapisu bezpośredniego, kontrola liczby zapisanych bajtów i commit dla ustawień oraz pozostałych zapisów JSON bazy i presetów.
+- **5:** każda część bazy jest zapisywana niezależnie; lista nieudanych operacji jest dostępna w diagnostyce i komunikacie.
+- **7:** sprawdzanie struktury, wersji, identyfikatorów i powiązań presetów przed dodaniem do biblioteki lub importem. Stare pliki bez wersji nadal są obsługiwane; zerowe identyfikatory osadzonych zasad i pustych wyników otrzymują nowe tożsamości przy odczycie, bez zmieniania pliku. Uszkodzone pliki są pomijane i chronione przed nadpisaniem w zapisie całej bazy.
+
+Test regresji: `powershell -NoProfile -ExecutionPolicy Bypass -File build-tools/dev.ps1 -Action Test -TestArguments '--production-persistence-only'` — zakończony powodzeniem. Test pracuje na katalogu tymczasowym; nie modyfikuje danych gracza. Build Release zakończył się powodzeniem. Istniejący test zgodności starych formatów zapisów (`--save-storage-only`) oraz walidacja czterech dostarczanych presetów również przeszły.
+
+Punkty **3, 6, 8, 9 i 10** pozostają otwarte. Pierwotna lista poniżej opisuje stan sprzed napraw.
+
 1. **P0: niezainicjalizowane ustawienia po błędzie odczytu.** `source/global/GlobalAppSettings.h:20` i `:29`, pusty konstruktor `GlobalAppSettings.cpp:15`, zignorowany wynik `source/main.cpp:32`. Brak/uszkodzenie appSettings.json zostawia m.in. liveCompetition oraz jego tempo z nieokreśloną wartością, a uruchomienie trwa dalej. Odczyt niezainicjalizowanych pól jest niezdefiniowanym zachowaniem C++. **Propozycja naprawy:** jawne wartości domyślne wszystkich pól i obsłużony wynik wczytania. **Test:** brak pliku, ucięty JSON oraz niedostępny katalog; uruchomienie z bezpiecznymi ustawieniami i komunikatem.
 
 2. **P0: kolizje UUID mogą zmienić typ wskazywanego obiektu.** `source/global/IdentifiableObjectsStorage.cpp:5` nadpisuje wpis bez kontroli; `source/seasons/SimulationSave.cpp:62` sprawdza składnię UUID, nie unikalność grafu. Odczyt odwołania używa static_cast do oczekiwanego typu, np. w CompetitionInfo::getFromJson. UUID skoczka powtórzony jako UUID skoczni może zostawić wskaźnik na inny typ i prowadzić do UB. **Propozycja naprawy:** odrzucenie duplikatów przed tworzeniem grafu, typowane lookupy i diagnostyka kolizji. **Test:** duplikaty wewnątrz kolekcji i pomiędzy typami, bez uruchamiania konkursu.
@@ -24,4 +39,4 @@ Data: 2026-11-02. Zakres: zapis/odczyt danych, identyfikatory, profile silnika, 
 
 ## Kolejność proponowanych napraw
 
-Najpierw 1-2, następnie 4-6 i 8; potem 3 i 7, a przed deklaracją pełnej zgodności wydan 9. Punkt 10 zweryfikować na słabym laptopie przed szerszą betą. Nie wprowadzano automatycznie tych napraw w ramach audytu.
+Najpierw 1-2, następnie 4-6 i 8; potem 3 i 7, a przed deklaracją pełnej zgodności wydań 9. Punkt 10 zweryfikować na słabym laptopie przed szerszą betą. Naprawy wykonane po audycie wymieniono w sekcji stanu napraw powyżej.

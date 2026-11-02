@@ -10008,6 +10008,12 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
     </context>
     <context>
         <name>QObject</name>
+        <message><source>Pominięto nieprawidłowe presety kalendarza. Pliki pozostały bez zmian:
+%1</source><translation>Neplatné předvolby kalendáře byly přeskočeny. Soubory zůstaly beze změny:
+%1</translation></message>
+        <message><source>Nie udało się wczytać presetów kalendarza. Dane są nieprawidłowe:
+%1</source><translation>Předvolby kalendáře se nepodařilo načíst. Data jsou neplatná:
+%1</translation></message>
         <message><source>Nie zapisano części danych:
 %1</source><translation>Některá data se nepodařilo uložit:
 %1</translation></message>

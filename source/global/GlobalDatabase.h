@@ -17,6 +17,7 @@
 #include <QPair>
 #include <QString>
 #include <QStringList>
+#include <QSet>
 #include <QtConcurrent>
 
 class GlobalDatabase : public IdentifiableObjectsStorage
@@ -40,6 +41,7 @@ private:
 
     bool loadedSimulationSaves;
     QStringList writeFailures;
+    QSet<QString> invalidCalendarPresetPaths;
 
 public:
     GlobalDatabase(GlobalDatabase &) = delete;

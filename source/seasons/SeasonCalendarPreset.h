@@ -16,6 +16,7 @@ public:
     ~SeasonCalendarPreset();
 
     static QJsonObject getJsonObject(SeasonCalendarPreset preset);
+    static bool validateJson(const QJsonObject &json,QString &error,bool legacyIds=false);
     static SeasonCalendarPreset getFromJson(QJsonObject json, IdentifiableObjectsStorage *storage, QMap<ulong, Identifiable *> * before120Map = nullptr);
     static QVector<SeasonCalendarPreset> getVectorFromJson(QByteArray json);
 

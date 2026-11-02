@@ -25,9 +25,9 @@ static void productionPersistenceRegressions() {
     QDir::setCurrent(previousDirectory);
 
     SimulationSave source;source.setEngineVersion(1);
-    auto *hill=new Hill;auto *jumper=new Jumper("Test","Jumper","POL");source.setHills({hill});source.setJumpers({jumper});
+    auto *hill=new Hill;hill->setName("Test Hill");hill->setKPoint(120);hill->setHSPoint(134);auto *jumper=new Jumper("Test","Jumper","POL");source.setHills({hill});source.setJumpers({jumper});
     auto *calendar=new SeasonCalendar("Test");auto *first=new CompetitionInfo(hill),*second=new CompetitionInfo(hill);
-    second->setRules(first->getRules());calendar->setCompetitions({first,second});
+    first->getRulesPointer()->setRounds({RoundInfo(10,true)});second->setRules(first->getRules());calendar->setCompetitions({first,second});
     Season season;season.setCalendars({calendar});season.setActualCalendar(calendar);source.setSeasons({season});source.setActualSeason(&source.getSeasonsReference().first());
     const auto valid=SimulationSave::getJsonObject(source);QString error;
     check(JsonGraphValidation::validateSave(valid,error),"shared inline rules remain compatible with saved calendars");
@@ -38,5 +38,36 @@ static void productionPersistenceRegressions() {
     check(!SimulationSave::getFromJson(duplicate,nullptr),"cross-type UUID collisions are rejected before creating objects");
     duplicate=valid;auto seasons=valid.value("seasons").toArray();auto badSeason=seasons.first().toObject();badSeason["actual-calendar-id"]=hill->getIDStr();seasons[0]=badSeason;duplicate["seasons"]=seasons;
     check(!SimulationSave::getFromJson(duplicate,nullptr),"references to an existing object of the wrong type are rejected");
+    duplicate=valid;duplicate["jumpers-lists"]=QJsonArray{QJsonObject{{"jumpers-ids",QJsonArray{hill->getIDStr()}}}};
+    check(!SimulationSave::getFromJson(duplicate,nullptr),"participant lists cannot cast a hill UUID to a jumper");
+    check(source.saveToFile(disk.path(),"identity"),"write a valid isolated simulation save");
+    QByteArray savedBytes;{QFile file(disk.filePath("identity.json"));check(file.open(QIODevice::ReadOnly),"read original save fixture");savedBytes=file.readAll();}
+    const auto hillId=hill->getID();hill->setID(jumper->getID());dismiss.start(10);
+    check(!source.saveToFile(disk.path(),"identity"),"invalid in-memory identities cannot overwrite an existing save");dismiss.stop();hill->setID(hillId);
+    {QFile file(disk.filePath("identity.json"));check(file.open(QIODevice::ReadOnly) && file.readAll()==savedBytes,"identity validation preserves the previous valid save byte for byte");}
+    SeasonCalendarPreset preset(calendar);preset.setName("Valid");preset.setHills({{hill->getName(),134},{hill->getName(),134}});
+    const auto presetJson=SeasonCalendarPreset::getJsonObject(preset);
+    check(SeasonCalendarPreset::validateJson(presetJson,error),"complete calendar preset is accepted");
+    auto oldPreset=presetJson;oldPreset.remove("schema-version");check(SeasonCalendarPreset::validateJson(oldPreset,error),"unversioned legacy presets remain supported");
+    auto oldCalendar=oldPreset.value("calendar").toObject();auto oldEvents=oldCalendar.value("competitions").toArray();
+    for(int i=0;i<oldEvents.size();++i){auto event=oldEvents[i].toObject();for(const auto &key:{"rules","results"}){auto snapshot=event.value(key).toObject();snapshot["id"]="00000000-0000-0000-0000-000000000000";event[key]=snapshot;}oldEvents[i]=event;}
+    oldCalendar["competitions"]=oldEvents;oldPreset["calendar"]=oldCalendar;
+    check(SeasonCalendarPreset::validateJson(oldPreset,error),"legacy zero identities in empty preset snapshots are migrated safely");
+    for(const auto &fileName:QDir(previousDirectory+"/userData/GlobalDatabase/calendarPresets").entryList({"*.json"},QDir::Files)) {
+        QFile file(previousDirectory+"/userData/GlobalDatabase/calendarPresets/"+fileName);check(file.open(QIODevice::ReadOnly),"read shipped preset fixture");
+        check(SeasonCalendarPreset::validateJson(QJsonDocument::fromJson(file.readAll()).object().value("calendar-preset").toObject(),error),"shipped preset remains compatible: "+fileName+": "+error);
+    }
+    auto invalidPreset=presetJson;invalidPreset["schema-version"]=2;check(!SeasonCalendarPreset::validateJson(invalidPreset,error),"unsupported preset versions are rejected");
+    invalidPreset=presetJson;auto invalidCalendar=invalidPreset.value("calendar").toObject();invalidCalendar.remove("competitions");invalidPreset["calendar"]=invalidCalendar;
+    check(!SeasonCalendarPreset::validateJson(invalidPreset,error),"missing event collections cannot become empty presets");
+    invalidPreset=presetJson;invalidCalendar=presetJson.value("calendar").toObject();auto events=invalidCalendar.value("competitions").toArray();auto invalidEvent=events.first().toObject();invalidEvent["trial-round-id"]=source.getIDStr();events[0]=invalidEvent;invalidCalendar["competitions"]=events;invalidPreset["calendar"]=invalidCalendar;
+    check(!SeasonCalendarPreset::validateJson(invalidPreset,error),"unresolved preset event links are rejected");
+    QDir::setCurrent(disk.path());QDir().mkpath("userData/GlobalDatabase/calendarPresets");
+    check(AtomicJsonFile::write("userData/GlobalDatabase/calendarPresets/Good.json",QJsonDocument(QJsonObject{{"calendar-preset",presetJson}}),false),"write isolated valid preset fixture");
+    {QFile broken("userData/GlobalDatabase/calendarPresets/Valid.json");check(broken.open(QIODevice::WriteOnly),"create malformed preset fixture");broken.write("{");}
+    dismiss.start(10);check(!database->loadCalendarPresets() && database->getGlobalCalendarPresets().size()==1,"preset library skips malformed JSON while loading valid files");dismiss.stop();
+    check(!database->writeCalendarPresets(),"save-all cannot overwrite a skipped corrupt preset with another preset of the same name");
+    {QFile broken("userData/GlobalDatabase/calendarPresets/Valid.json");check(broken.open(QIODevice::ReadOnly) && broken.readAll()=="{","malformed preset file remains untouched");}
+    QDir::setCurrent(previousDirectory);
     qInfo()<<"PASS: production persistence defaults and UUID validation";
 }

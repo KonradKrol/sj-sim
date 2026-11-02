@@ -503,37 +503,46 @@ bool GlobalDatabase::loadPointsForPlacesPresets()
 
 bool GlobalDatabase::loadCalendarPresets(bool before1_2_0)
 {
-    QDir dir(QCoreApplication::applicationDirPath());
-    if(dir.exists("userData") == false && QSysInfo::productType() == "windows")
-        dir.cdUp();
-    dir.setPath(dir.path() + "/userData/GlobalDatabase/calendarPresets");
+    QDir dir("userData/GlobalDatabase/calendarPresets");
     dir.setNameFilters(QStringList() << "*.json");
 
     QStringList fileNames = dir.entryList();
 
     bool ok = true;
+    QStringList failures;
     for(auto & fileName : fileNames){
-        QFile file("userData/GlobalDatabase/calendarPresets/" + fileName);
+        QFile file(dir.absoluteFilePath(fileName));
+        QString error;
         if(!file.open(QFile::ReadOnly | QFile::Text))
         {
-            QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z zapisem symulacji"), QObject::tr("Nie udało się otworzyć pliku simulationSaves/") + fileName +QObject::tr("\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
-            message.setModal(true);
-            message.exec();
             ok = false;
+            failures.append(fileName+": "+file.errorString());
+            invalidCalendarPresetPaths.insert(file.fileName().toCaseFolded());
+            continue;
         }
-        QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+        QJsonParseError parse;
+        QJsonDocument doc = QJsonDocument::fromJson(file.readAll(),&parse);
         QJsonObject object = doc.object().value("calendar-preset").toObject();
+        if(parse.error!=QJsonParseError::NoError || !doc.isObject() || !SeasonCalendarPreset::validateJson(object,error,before1_2_0)) {
+            ok=false;failures.append(fileName+": "+(parse.error!=QJsonParseError::NoError?parse.errorString():error));
+            invalidCalendarPresetPaths.insert(file.fileName().toCaseFolded());
+            continue;
+        }
+        invalidCalendarPresetPaths.remove(file.fileName().toCaseFolded());
 
         QMap<ulong, Identifiable*> objects;
         auto o = &objects;
         if(!before1_2_0) o = nullptr;
-        IdentifiableObjectsStorage * storage = this;
+        IdentifiableObjectsStorage localStorage;
+        IdentifiableObjectsStorage * storage = &localStorage;
         if(before1_2_0)
             storage = nullptr;
         SeasonCalendarPreset p = SeasonCalendarPreset::getFromJson(object, storage, o);
         globalCalendarPresets.push_back(p);
         file.close();
     }
+    if(!failures.isEmpty())QMessageBox::warning(nullptr,QObject::tr("Preset kalendarza"),
+        QObject::tr("Pominięto nieprawidłowe presety kalendarza. Pliki pozostały bez zmian:\n%1").arg(failures.join('\n')));
     return ok;
 }
 
@@ -687,6 +696,8 @@ bool GlobalDatabase::writeCalendarPresets()
     bool ok = true;
     for(auto & preset : globalCalendarPresets)
     {
+        const auto destination=QFileInfo("userData/GlobalDatabase/calendarPresets/"+preset.getName()+".json").absoluteFilePath().toCaseFolded();
+        if(invalidCalendarPresetPaths.contains(destination)){ok=false;continue;}
         if(preset.saveToFile("userData/GlobalDatabase/calendarPresets/") == false)
             ok = false;
     }

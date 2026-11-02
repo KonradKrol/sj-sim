@@ -19,12 +19,15 @@ public:
     enum Kind { Save, Jumper, Hill, Rules, Season, Calendar, Classification, ClassificationResult, Competition, Results, SingleResult, Jump, Team, Group };
     QHash<QString,Kind> types;
     QString error;
+    bool legacyIds=false;
+    QString key(const QString &id) const {return legacyIds && !id.contains('-')?QStringLiteral("legacy:")+id:canonicalId(id);}
+    bool accepts(const QString &id) const {bool numeric=false;if(legacyIds && !id.isEmpty())id.toULongLong(&numeric);return numeric || validId(id);}
     bool add(const QJsonObject &object,Kind kind,bool shared=false) {
         const auto id=object.value("id").toString();
-        if(!validId(id)){error="Invalid or missing object UUID";return false;}
-        const auto key=canonicalId(id);
-        if(types.contains(key) && (!shared || types.value(key)!=kind)){error="Duplicate object UUID: "+id;return false;}
-        types.insert(key,kind);return true;
+        if(!accepts(id)){error="Invalid or missing object UUID";return false;}
+        const auto identity=key(id);
+        if(types.contains(identity) && (!shared || types.value(identity)!=kind)){error="Duplicate object UUID: "+id;return false;}
+        types.insert(identity,kind);return true;
     }
     bool array(const QJsonValue &value,Kind kind,bool shared=false) {
         QSet<QString> local;
@@ -32,9 +35,9 @@ public:
             const auto object=item.toObject();
             const auto id=object.value("id").toString();
             if(!add(object,kind,shared))return false;
-            const auto key=canonicalId(id);
-            if(local.contains(key)){error="Duplicate UUID in collection: "+id;return false;}
-            local.insert(key);
+            const auto identity=key(id);
+            if(local.contains(identity)){error="Duplicate UUID in collection: "+id;return false;}
+            local.insert(identity);
         }
         return true;
     }
@@ -61,14 +64,24 @@ public:
         if(value.isArray()){for(const auto &item:value.toArray())if(!references(item))return false;return true;}
         if(!value.isObject())return true;
         static const QHash<QString,Kind> targets={{"jumper-id",Jumper},{"hill-id",Hill},{"team-id",Team},{"classification-id",Classification},{"actual-season-id",Season},{"actual-calendar-id",Calendar}};
+        static const QHash<QString,Kind> lists={{"jumpers-ids",Jumper},{"start-list",Jumper}};
         const auto object=value.toObject();
         for(auto it=object.begin();it!=object.end();++it){
             if(targets.contains(it.key()) && it.value().isString()) {
                 const auto id=it.value().toString();
                 if(id!="-1" && !id.isEmpty()) {
-                    if(!validId(id)){error="Invalid reference UUID: "+id;return false;}
-                    const auto key=canonicalId(id);
-                    if(types.contains(key) && types.value(key)!=targets.value(it.key())){error="Reference has the wrong object type: "+it.key();return false;}
+                    if(!accepts(id)){error="Invalid reference UUID: "+id;return false;}
+                    const auto identity=key(id);
+                    if(types.contains(identity) && types.value(identity)!=targets.value(it.key())){error="Reference has the wrong object type: "+it.key();return false;}
+                }
+            }
+            if(lists.contains(it.key())) {
+                if(!it.value().isArray()){error="Invalid participant list: "+it.key();return false;}
+                for(const auto &item:it.value().toArray()) {
+                    const auto id=item.toString();
+                    if(!item.isString() || !accepts(id)){error="Invalid participant UUID";return false;}
+                    const auto identity=key(id);
+                    if(types.contains(identity) && types.value(identity)!=lists.value(it.key())){error="Participant reference has the wrong object type";return false;}
                 }
             }
             if(!references(it.value()))return false;

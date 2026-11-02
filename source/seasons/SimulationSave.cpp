@@ -357,7 +357,15 @@ bool SimulationSave::saveToFile(QString dir, QString fileName)
 
     QJsonDocument document;
     QJsonObject mainObject;
-    mainObject.insert("simulation-save", SimulationSave::getJsonObject(*this));
+    const auto saveObject=SimulationSave::getJsonObject(*this);
+    QString identityError;
+    if(!JsonGraphValidation::validateSave(saveObject,identityError)) {
+        qWarning().noquote()<<"Refusing to overwrite a save with invalid identities:"<<identityError;
+        QMessageBox::critical(nullptr,QObject::tr("Błąd zapisu danych"),
+            QObject::tr("Nie udało się bezpiecznie zapisać pliku %1. Poprzedni plik pozostał bez zmian.").arg(filePath));
+        return false;
+    }
+    mainObject.insert("simulation-save",saveObject);
     document.setObject(mainObject);
 
     QSaveFile file(filePath);

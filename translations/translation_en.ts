@@ -10007,6 +10007,12 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
     </context>
     <context>
         <name>QObject</name>
+        <message><source>Pominięto nieprawidłowe presety kalendarza. Pliki pozostały bez zmian:
+%1</source><translation>Invalid calendar presets were skipped. The files were left unchanged:
+%1</translation></message>
+        <message><source>Nie udało się wczytać presetów kalendarza. Dane są nieprawidłowe:
+%1</source><translation>Could not load calendar presets. The data is invalid:
+%1</translation></message>
         <message><source>Nie zapisano części danych:
 %1</source><translation>Some data could not be saved:
 %1</translation></message>
