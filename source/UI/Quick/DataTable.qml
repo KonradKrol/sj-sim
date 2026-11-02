@@ -40,17 +40,19 @@ FocusScope {
     readonly property int columns: Math.max(1, headers.length)
     readonly property var displayColumns: {
         var out=[]
-        if(teamResults && columns>=5) {out=[0,1];for(var t=5;t<columns;++t)out.push(t);out.push(3);return out}
+        if(teamResults && columns>=5) {out=[0,1,3];for(var t=5;t<columns;++t)out.push(t);return out}
         if(raceResults && !jumpColumns && columns>4) {
-            out=[0,1]
+            out=[0,1,2]
             for(var c=3;c<columns;c+=2)out.push(c)
-            out.push(2)
         } else for(var i=0;i<(compact && columns>4 && !jumpColumns ? 3 : columns);++i)out.push(i)
         return out
     }
     readonly property int visibleColumns: displayColumns.length
     readonly property bool ranked: headers.length > 1 && /^(poz|miejsce|rank|place|lp|nr|#)/i.test(headers[0])
     readonly property int nameColumn: ranked && columns === 4 ? 2 : 1
+    readonly property real resultNumberWidth: Math.max(76,Theme.bodyMetrics.advanceWidth("999,9 m")+22)
+    readonly property real resultRankWidth: Math.max(48,Theme.bodyMetrics.advanceWidth("999.")+22)
+    readonly property real teamScoreWidth: Math.max(84,Theme.bodyMetrics.advanceWidth("9999,9")+22)
     readonly property real totalWidth: {
         var total=0
         for(var c=0;c<visibleColumns;++c)total+=columnWidth(c)
@@ -65,14 +67,22 @@ FocusScope {
         if(columnWidths.length>column)return columnWidths[column]
         if(teamSetup)return column===0?Math.min(190,Math.max(110,width*.36)):Math.max(150,width-Math.min(190,Math.max(110,width*.36)))
         if(teamResults) {
-            if(column===0)return 52
-            if(column===1)return Math.max(140,width-52-84-(visibleColumns-3)*76)
-            return displayColumns[column]===3 ? 84 : 76
+            if(column===0)return resultRankWidth
+            if(column===1) {
+                var allTeam=width-resultRankWidth-teamScoreWidth-(visibleColumns-3)*resultNumberWidth
+                var priorityTeam=width-resultRankWidth-teamScoreWidth-(visibleColumns>3?resultNumberWidth:0)
+                return Math.max(72,allTeam>=110?allTeam:Math.min(110,priorityTeam))
+            }
+            return displayColumns[column]===3 ? teamScoreWidth : resultNumberWidth
         }
         if(raceResults) {
-            if(column===0)return 44
-            if(column===1)return Math.max(140,width-44-(visibleColumns-2)*76)
-            return 76
+            if(column===0)return resultRankWidth
+            if(column===1) {
+                var allResults=width-resultRankWidth-(visibleColumns-2)*resultNumberWidth
+                var priorityResults=width-resultRankWidth-Math.min(2,visibleColumns-2)*resultNumberWidth
+                return Math.max(72,allResults>=110?allResults:Math.min(110,priorityResults))
+            }
+            return resultNumberWidth
         }
         if (ranked) {
             if (column === 0) return 56

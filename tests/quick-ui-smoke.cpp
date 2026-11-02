@@ -370,6 +370,11 @@ static void jumpHistoryRegressions(MainWindow &main,CompetitionManagerWindow *wi
     if(scenario==2)check(!table->property("displayColumns").value<QJSValue>().toVariant().toList().contains(4),"team results omit the combined distance column");
     check(row>=0,"selected jumper is present in its individual or team results row");auto *rows=item(view->rootObject(),"tableRows-"+QString::number(table->property("ownerId").toInt()));QMetaObject::invokeMethod(rows,"positionViewAtIndex",Q_ARG(int,row),Q_ARG(int,3));QTest::qWait(80);
     const int column=scenario==2?6:5;const auto columns=table->property("displayColumns").value<QJSValue>().toVariant().toList();qreal x=0;
+    check(columns.size()>=4 && columns[0].toInt()==0 && columns[1].toInt()==1 && columns[2].toInt()==(scenario==2?3:2),"competition results prioritize position, jumper and total points");
+    main.resize(360,800);QTest::qWait(150);view->grabFramebuffer();qreal priorityWidth=0;
+    for(int visual=0;visual<4;++visual){QVariant width;check(QMetaObject::invokeMethod(table,"columnWidth",Q_RETURN_ARG(QVariant,width),Q_ARG(QVariant,visual)),"result column width is available");priorityWidth+=width.toReal();}
+    check(priorityWidth<=table->width()+1,"position, name, points and first result remain visible on a narrow screen");
+    main.resize(1440,900);QTest::qWait(150);view->grabFramebuffer();
     for(const auto &entry:columns){QVariant width;QMetaObject::invokeMethod(table,"columnWidth",Q_RETURN_ARG(QVariant,width),Q_ARG(QVariant,columns.indexOf(entry)));if(entry.toInt()==column){x+=width.toReal()/2;break;}x+=width.toReal();}
     auto *marker=item(view->rootObject(),"latestJumpIndicator-"+QString::number(row));check(marker,"target row is materialized");auto *rowItem=marker->parentItem();const auto at=rowItem->mapToItem(view->rootObject(),QPointF(x,rowItem->height()/2)).toPoint();
     QTest::mouseClick(view,Qt::LeftButton,Qt::ShiftModifier,at);QTest::qWait(100);check(preview->selectedRound()==1 && preview->roundsCount()==3,"real Shift-click on the second-series column opens series two while retaining all series choices");
