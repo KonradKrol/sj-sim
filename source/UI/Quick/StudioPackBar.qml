@@ -8,9 +8,10 @@ ColumnLayout {
     property bool athletes: false
     spacing: Theme.dp(4)
     Label { text: bar.athletes ? qsTr("Paczka skoczków") : qsTr("Paczka skoczni"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
-    RowLayout {
-        Layout.fillWidth: true; spacing: Theme.dp(8)
+    GridLayout {
+        Layout.fillWidth: true; columns: width>Theme.dp(700)?4:3; columnSpacing: Theme.dp(8); rowSpacing: Theme.dp(6)
         SChoice {
+            Layout.columnSpan: bar.width>Theme.dp(700)?1:3
             objectName: "studioPackChoice"
             Layout.fillWidth: true; Layout.minimumWidth: 0
             model: bar.backend.packs.map(function(p){return p.name+" · "+p.count})
@@ -18,7 +19,9 @@ ColumnLayout {
             Accessible.name: bar.athletes ? qsTr("Paczka skoczków") : qsTr("Paczka skoczni")
             onActivated: bar.backend.selectPack(index)
         }
-        SButton { objectName: "manageStudioPack"; text: qsTr("Ustawienia paczki"); onClicked: settings.open() }
+        SButton { objectName: "importStudioPack"; text: qsTr("Importuj"); primary: true; onClicked: bar.backend.importPack() }
+        SButton { objectName: "exportStudioPack"; text: qsTr("Eksportuj"); foreground: Theme.accent; onClicked: bar.backend.exportPack() }
+        SButton { objectName: "manageStudioPack"; text: qsTr("Ustawienia paczki"); quiet: true; onClicked: settings.open() }
     }
     Popup {
         id: settings
@@ -56,8 +59,6 @@ ColumnLayout {
                 Flow {
                     Layout.fillWidth: true; spacing: Theme.dp(6)
                     SButton { text: qsTr("Nowa paczka"); onClicked: {bar.backend.createPack();settings.close()} }
-                    SButton { text: qsTr("Importuj paczkę"); onClicked: {settings.close();bar.backend.importPack()} }
-                    SButton { text: qsTr("Eksportuj paczkę"); onClicked: {settings.close();bar.backend.exportPack()} }
                     SButton { visible: bar.athletes; text: qsTr("Otwórz folder paczki"); onClicked: {settings.close();bar.backend.openPackFolder()} }
                 }
                 SButton { objectName: "closeStudioPack"; text: qsTr("Gotowe"); primary: true; Layout.fillWidth: true; onClicked: settings.close() }
