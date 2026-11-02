@@ -17,8 +17,8 @@ public:
 
 private:
     short languageID = 0;
-    bool showCalendarEditorHelp;
-    bool showSeasonJumpersAndHillsHelp;
+    bool showCalendarEditorHelp = true;
+    bool showSeasonJumpersAndHillsHelp = true;
     JumpDataInfoChoice jumpDataInfoChoice;
 
     QString jumpInfoWebhook;
@@ -26,8 +26,8 @@ private:
     QString competitionResultsWebhook;
     QString classificationResultsWebhook;
 
-    bool liveCompetition;
-    double liveCompetitionSpeedMulti;
+    bool liveCompetition = true;
+    double liveCompetitionSpeedMulti = 1;
 
 public:
     short getLanguageID() const;

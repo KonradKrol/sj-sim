@@ -10,6 +10,7 @@
 #include <QIcon>
 #include <QTranslator>
 #include <QTimer>
+#include <QDebug>
 #include "global/GlobalTranslators.h"
 #include "global/GlobalAppSettings.h"
 
@@ -29,7 +30,8 @@ int main(int argc, char *argv[])
     // on the shell/shortcut choosing that directory as its working directory.
     QDir::setCurrent(QCoreApplication::applicationDirPath());
 
-    GlobalAppSettings::get()->loadFromJson();
+    if(!GlobalAppSettings::get()->loadFromJson())
+        qWarning() << "Application settings could not be loaded; keeping safe defaults.";
 
     if (!GlobalTranslators::get()->setLanguage(&a, GlobalAppSettings::get()->getLanguageID())) {
         GlobalAppSettings::get()->setLanguageID(GlobalAppSettings::Polish);
