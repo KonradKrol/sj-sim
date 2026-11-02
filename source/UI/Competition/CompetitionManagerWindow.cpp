@@ -2197,6 +2197,8 @@ void CompetitionManagerWindow::on_pushButton_manipulateJump_clicked()
             setActualWinds(manipulator.getExactWinds());      
         updateAvgWindLabel();
         updateActualInrunSnowLevelLabel();
+        updateToBeatDistanceLabel();
+        updateToAdvanceDistanceLabel();
     }
 }
 

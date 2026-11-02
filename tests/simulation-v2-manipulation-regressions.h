@@ -62,7 +62,7 @@ static void simulationV2ManipulationRegressions(MainWindow &main)
     changes.dsqProbability=1;manipulation.setSimulationInput(changes);check(simulate().getDSQ(),"direct 100 percent DSQ is effective when enabled in rules");rules.setHasDsq(false);check(!simulate().getDSQ(),"disabled DSQ wins over an explicit override");
     qApp->setProperty("athleteTestStage","manipulation contest workflow");
     const bool wasLive=GlobalAppSettings::get()->getLiveCompetition();GlobalAppSettings::get()->setLiveCompetition(false);
-    CompetitionInfo info(&hill);rules.setRounds({RoundInfo(3,true)});rules.setHasDsq(false);info.setRules(rules);
+    CompetitionInfo info(&hill);rules.setRounds({RoundInfo(3,true),RoundInfo(1,true)});rules.setHasDsq(false);info.setRules(rules);
     Jumper second=athlete,third=athlete;second.reassign();third.reassign();
     IndividualCompetitionManager manager;manager.setCompetitionInfo(&info);manager.setCompetitionRules(info.getRulesPointer());manager.setResults(&info.getResultsReference());
     manager.setActualRound(1);manager.setActualGate(10);manager.getRoundsStartingGatesReference().append(10);
@@ -98,6 +98,23 @@ static void simulationV2ManipulationRegressions(MainWindow &main)
     check(firstJump.getSimulationV2Data()["quality"].toObject()["manipulation"].toDouble()==8 && firstJump.getSimulationV2Data()["precipitation"].toDouble()==6,"only the accepted correction reaches the next real competition jump");
     check(nextJump.getSimulationV2Data()["quality"].toObject()["manipulation"].toDouble()==0 && nextJump.getSimulationV2Data()["precipitation"].toDouble()==2 && nextJump.getAveragedWind()==0,"the following jumper restores normal quality, rain and shared wind");
     check(contestWeather.field()==originalField && contest.getSimulationSeconds()==60,"local edits and cancellation leave the shared weather unchanged while jumps advance the clock");
+    manager.updateToBeatLineDistance();manager.updateToAdvanceLineDistance();
+    const double beforeLeader=manager.getToBeatLineDistance(),beforeAdvance=manager.getToAdvanceLineDistance();
+    check(beforeLeader>=0 && beforeAdvance>=0,"line regression has both leader and advancement targets");
+    QTimer editWind;
+    QObject::connect(&editWind,&QTimer::timeout,&contest,[&]{
+        for(auto *widget:QApplication::allWidgets())if(auto *dialog=qobject_cast<JumpManipulatorConfigWindow *>(widget);dialog && dialog->isVisible()){
+            auto *pending=dialog->findChild<SimulationJumpDraft *>("jumpAdjustmentDraft");check(pending,"wind adjustment draft exists");
+            pending->setValue("windActive",true);auto *local=qobject_cast<SimulationWeatherSetup *>(pending->wind());check(local,"wind adjustment editor exists");
+            for(int i=0;i<6;++i){local->setStation(i,"direction",180);local->setStation(i,"strength",2);}
+            editWind.stop();QMetaObject::invokeMethod(dialog,"on_pushButton_submit_2_clicked",Qt::DirectConnection);return;
+        }
+    });
+    editWind.start(20);QMetaObject::invokeMethod(&contest,"on_pushButton_manipulateJump_clicked",Qt::DirectConnection);editWind.stop();
+    const double updatedLeader=manager.getToBeatLineDistance(),updatedAdvance=manager.getToAdvanceLineDistance();
+    check(updatedLeader>=0 && updatedAdvance>=0 && updatedLeader!=beforeLeader && updatedAdvance!=beforeAdvance,"accepting changed wind immediately refreshes both target lines");
+    manager.updateToBeatLineDistance();manager.updateToAdvanceLineDistance();
+    check(updatedLeader==manager.getToBeatLineDistance() && updatedAdvance==manager.getToAdvanceLineDistance(),"displayed targets match fresh calculations after adjustment");
     contest.reject();GlobalAppSettings::get()->setLiveCompetition(wasLive);
     const auto widgetMode=qgetenv("SJ_WIDGETS_UI");qputenv("SJ_WIDGETS_UI","1");
     {
