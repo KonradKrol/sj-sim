@@ -638,6 +638,7 @@ void QuickBridge::refresh() {
             }
             for(auto *info:selected->findChildren<JumpDataDetailedInfoWindow *>())if(info->isVisibleTo(m_content) && info->getJumpData()) {
                 auto *jump=info->getJumpData();
+                if(summary.contains("landing"))summary["landingType"]=jump->getLanding().getType();
                 if((stage==0 || stage>=5) && !jump->getDNS() && !jump->getDSQ()) {
                     const auto profile=QuickWindProfile::fromMetadata(jump->getSimulationV2Data());
                     if(!profile.isEmpty()) {
