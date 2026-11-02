@@ -1,5 +1,6 @@
 #include "../source/simulation-v2/Weather.h"
 #include "../source/simulation-v2/WeatherPresets.h"
+#include "../source/simulation-v2/WeatherCalibration.h"
 
 #include <cmath>
 #include <future>
@@ -109,9 +110,14 @@ int main()
         }
         check(heads>9000 && tails<1000,"direction traits strongly bias automatic proposals");
         check(stable>8000 && lottery<1200,"lottery traits strongly bias automatic proposals");
+        WeatherGeneratorParameters unscaled;unscaled.values["generator.global.strengthScale"]=1;unscaled.values["generator.global.variationScale"]=1;unscaled.values["generator.global.gustScale"]=1;
+        SeededRandom scaledRng(111),unscaledRng(111);
+        const auto scaled=sampleWeatherPreset(WeatherPreset::StableTailwind,120,scaledRng),original=sampleWeatherPreset(WeatherPreset::StableTailwind,120,unscaledRng,unscaled);
+        near(scaled.wind.references[0].value.head,original.wind.references[0].value.head*.8,1e-9,"preset global strength scale moderates generated wind");
+        near(scaled.wind.gustAmplitude,original.wind.gustAmplitude*.75,1e-9,"preset global gust scale moderates gusts");
         SeededRandom presetRng(111);double previousStrength=-1;bool variants=false;int lightCalm=0;
         for(int index=0;index<weatherPresetCount;++index)for(int draw=0;draw<500;++draw) {
-            auto proposal=sampleWeatherPreset(static_cast<WeatherPreset>(index),120,presetRng);proposal.wind.validate();
+            auto proposal=sampleWeatherPreset(static_cast<WeatherPreset>(index),120,presetRng,unscaled);proposal.wind.validate();
             Wind average;for(const auto &point:proposal.wind.references){average.head+=point.value.head/6;average.cross+=point.value.cross/6;}
             if(index==0){check(average.head<0 && average.strength()>=.6 && average.strength()<=2.3,"stable-tail scenario stays inside its base range");if(previousStrength>=0 && previousStrength!=average.strength())variants=true;previousStrength=average.strength();}
             if(index==1)check(average.head>0 && average.strength()>=2 && average.strength()<=4,"strong headwind has a bounded base and independent variation");

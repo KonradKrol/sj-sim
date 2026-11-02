@@ -9,6 +9,7 @@ ColumnLayout {
     property var question: ({})
     property int panel: 0
     property int generatorPreset: -1
+    property bool generatorDetails: false
     property bool sourceNotesOpen: false
     property bool fullRegistry: false
     property var selected: []
@@ -30,7 +31,7 @@ ColumnLayout {
     function relevant(d){
         if(fullRegistry)return true
         var q=questionId
-        if(d.group==="generator")return q==="generator" && d.preset===generatorPreset
+        if(d.group==="generator")return q==="generator" && (d.preset===-2 || (generatorDetails && d.preset===generatorPreset))
         if(q==="landing" || q==="marks")return d.group==="landing" || d.key==="hill.realHs" || d.key==="wind.cross" || d.key.indexOf("flight.geometry")===0 || d.key==="flight.usableLandingBeyondRealHsAtK"
         if(d.group==="hill")return (q==="scoring" || q==="gate") && ["hill.pointsAtK","hill.pointsPerMetre","hill.gatePoints","hill.headwindPoints","hill.tailwindPoints"].indexOf(d.key)>=0 || q==="geometry" && d.key==="hill.takeoffBias"
         return questionGroups.split(",").indexOf(d.group)>=0 && ["athlete","field","hill","rules","clock","analysis"].indexOf(d.group)<0
@@ -125,13 +126,33 @@ ColumnLayout {
             }
             ColumnLayout {
                 visible: controls.panel===2; Layout.fillWidth: true; spacing: Theme.dp(10)
+                ColumnLayout {
+                    visible: controls.backend.config.weatherSource===0 && ["wind","field","scoring"].indexOf(controls.questionId)>=0
+                    Layout.fillWidth: true; spacing: Theme.dp(6)
+                    Label { text: qsTr("Wiatr w sześciu miejscach na skoczni"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                    Label { text: qsTr("Wpisz wiatr w m/s. Przód / tył: plus oznacza wiatr pod narty, minus — w plecy. Bok: znak oznacza stronę. Pomiędzy punktami wiatr zmienia się płynnie."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                    RowLayout { Layout.fillWidth: true; Label { text: qsTr("Miejsce"); color: Theme.muted; Layout.preferredWidth: Theme.dp(60) } Label { text: qsTr("Przód / tył"); color: Theme.muted; Layout.fillWidth: true } Label { text: qsTr("Bok"); color: Theme.muted; Layout.fillWidth: true } }
+                    Repeater {
+                        model: 6
+                        RowLayout {
+                            required property int index
+                            readonly property string key: "wind.reference."+index+"."
+                            Layout.fillWidth: true
+                            Label { text: qsTr("%1 m").arg(Math.round((controls.backend.values[key+"positionK"] || 0)*(controls.backend.values["hill.k"] || 120))); color: Theme.ink; Layout.preferredWidth: Theme.dp(60) }
+                            NumberField { Layout.fillWidth: true; Layout.minimumWidth: 0; direct: false; label: qsTr("Wiatr pod narty / w plecy"); fields: ({value:Number(controls.backend.values["wind.mean"] || 0)+Number(controls.backend.values[key+"head"] || 0),minimum:-20,maximum:20,step:.1,decimals:1}); onCommitted: function(value){controls.backend.setParameter(key+"head",value-Number(controls.backend.values["wind.mean"] || 0))} }
+                            NumberField { Layout.fillWidth: true; Layout.minimumWidth: 0; direct: false; label: qsTr("Wiatr boczny"); fields: ({value:Number(controls.backend.values["wind.cross"] || 0)+Number(controls.backend.values[key+"cross"] || 0),minimum:-20,maximum:20,step:.1,decimals:1}); onCommitted: function(value){controls.backend.setParameter(key+"cross",value-Number(controls.backend.values["wind.cross"] || 0))} }
+                        }
+                    }
+                }
                 Label { text: qsTr("Parametry istotne dla tego tematu"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 Label { text: qsTr("Zmieniaj jeden parametr i obserwuj podgląd. Opis pod polem wyjaśnia jego działanie. Pełna próba pozwala sprawdzić, czy mała różnica jest powtarzalna."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 SCheck { text: qsTr("Pokaż wszystkie parametry symulacji"); checked: controls.fullRegistry; onClicked: controls.fullRegistry=!controls.fullRegistry }
                 SField { id: search; objectName: "balanceParameterSearch"; Layout.fillWidth: true; placeholderText: qsTr("Szukaj, np. upadek, forma, podmuch…"); Accessible.name: qsTr("Szukaj parametru") }
                 Label { visible: controls.query.length>0; text: qsTr("W całej symulacji: %1 wyników").arg(controls.matchingDefinitions.length); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 Label { visible: controls.matchingDefinitions.length===0; text: qsTr("Nie znaleziono parametrów. Spróbuj krótszej nazwy lub opisu działania."); color: Theme.ink; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-                SChoice { visible: controls.question.id==="generator" && !controls.query.length; Layout.fillWidth: true; model: [qsTr("Automatyczna propozycja"),qsTr("Stały wiatr w plecy"),qsTr("Silny wiatr pod narty"),qsTr("Loteryjny"),qsTr("Zmienny boczny"),qsTr("Cisza"),qsTr("Stały pod narty"),qsTr("Silny w plecy"),qsTr("Stały boczny"),qsTr("Zmienny pod narty"),qsTr("Zmienny w plecy"),qsTr("Różne kierunki na zeskoku")]; Accessible.name: qsTr("Badany preset pogody"); onActivated: controls.generatorPreset=currentIndex-1 }
+                Label { visible: controls.question.id==="generator" && !controls.query.length; text: qsTr("Trzy ustawienia poniżej działają na wszystkie losowane warunki. Zmniejsz je, aby osłabić wiatr, wahania lub podmuchy."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                SCheck { visible: controls.question.id==="generator" && !controls.query.length; text: qsTr("Dostosuj także wybrany preset"); checked: controls.generatorDetails; onClicked: controls.generatorDetails=!controls.generatorDetails }
+                SChoice { visible: controls.question.id==="generator" && controls.generatorDetails && !controls.query.length; Layout.fillWidth: true; model: [qsTr("Automatyczna propozycja"),qsTr("Stały wiatr w plecy"),qsTr("Silny wiatr pod narty"),qsTr("Loteryjny"),qsTr("Zmienny boczny"),qsTr("Cisza"),qsTr("Stały pod narty"),qsTr("Silny w plecy"),qsTr("Stały boczny"),qsTr("Zmienny pod narty"),qsTr("Zmienny w plecy"),qsTr("Różne kierunki na zeskoku")]; Accessible.name: qsTr("Badany preset pogody"); onActivated: controls.generatorPreset=currentIndex-1 }
                 Loader {
                     active: controls.panel===2
                     Layout.fillWidth: true

@@ -38,8 +38,8 @@ template<class F> void visitEngine(SimulationV2::EngineParameters &m,F f) {
     f("flight.largeHillSpreadExponent",QObject::tr("Tempo narastania poszerzenia względem K"),"flight",m.flight.largeHillSpreadExponent,1,4,.05,"1");
     f("flight.largeHillSpreadPivot",QObject::tr("Jakość odniesienia poszerzenia"),"flight",m.flight.largeHillSpreadPivot,1,100,1,"1");
     f("flight.referenceGate",QObject::tr("Belka odniesienia"),"flight",m.flight.referenceGate,0,200,1,"1");
-    f("flight.gateMetresAtK120",QObject::tr("Metry za belkę na K120"),"flight",m.flight.gateMetresAtK120,0,20,0.1,"m");
-    f("flight.gateTailwindInteraction",QObject::tr("Dodatkowy wpływ belki w plecy"),"flight",m.flight.gateTailwindInteraction,0,1,0.01,"1");
+    f("flight.gateMetresAtK120",QObject::tr("Dawny parametr belki (nieaktywny)"),"flight",m.flight.gateMetresAtK120,0,20,0.1,"m");
+    f("flight.gateTailwindInteraction",QObject::tr("Dawny wpływ wiatru na belkę (nieaktywny)"),"flight",m.flight.gateTailwindInteraction,0,1,0.01,"1");
     f("flight.precipitationLossPerLevel",QObject::tr("Strata zapasu za poziom śniegu"),"flight",m.flight.precipitationLossPerLevel,0,0.1,0.001,"1");
     f("flight.rainLossPerLevel",QObject::tr("Strata zapasu za poziom deszczu"),"flight",m.flight.rainLossPerLevel,0,0.1,0.001,"1");
     f("flight.rainLossThreshold",QObject::tr("Próg wpływu deszczu"),"flight",m.flight.rainLossThreshold,0,10,0.1,"1");
@@ -48,6 +48,8 @@ template<class F> void visitEngine(SimulationV2::EngineParameters &m,F f) {
     f("flight.rainHeavyExponent",QObject::tr("Wykładnik wpływu ulewy"),"flight",m.flight.rainHeavyExponent,1,6,0.1,"1");
     f("flight.stepMetres",QObject::tr("Krok całkowania"),"flight",m.flight.stepMetres,0.05,5,0.05,"m");
     f("flight.secondsPerK",QObject::tr("Czas lotu do K"),"flight",m.flight.secondsPerK,0.1,30,0.1,"s");
+    f("flight.tailwindMultiplier",QObject::tr("Podstawowa siła wiatru w plecy"),"flight",m.flight.tailwindMultiplier,0,10,.05,"1");
+    f("flight.tailwindStrongExtra",QObject::tr("Dodatkowa strata przy silnym wietrze w plecy"),"flight",m.flight.tailwindStrongExtra,0,10,.05,"1");
     f("flight.windReservePerMetre",QObject::tr("Wpływ wiatru na zapas lotu"),"flight",m.flight.windReservePerMetre,0,1,0.001,"1");
     f("flight.specialistWindEffectPerTier",QObject::tr("Wpływ specjalizacji na wiatr"),"flight",m.flight.specialistWindEffectPerTier,0,.25,.005,"1");
     f("flight.crosswindDrag",QObject::tr("Opór wiatru bocznego"),"flight",m.flight.crosswindDrag,0,1,0.001,"1");
@@ -89,6 +91,12 @@ template<class F> void visitEngine(SimulationV2::EngineParameters &m,F f) {
     f("landing.crosswindTwoFeetPerMetrePerSecond",QObject::tr("Wiatr boczny: wzrost ryzyka dwóch nóg"),"landing",m.landing.crosswindTwoFeetPerMetrePerSecond,0,1,0.001,"1");
     f("landing.sharedStyleDeviation",QObject::tr("Wspólne odchylenie not"),"landing",m.landing.sharedStyleDeviation,0,10,0.05,"1");
     f("landing.judgeDeviation",QObject::tr("Odchylenie pojedynczego sędziego"),"landing",m.landing.judgeDeviation,0,10,0.05,"1");
+    f("landing.imperfectStyleBase",QObject::tr("Szansa słabszego lądowania"),"landing",m.landing.imperfectStyleBase,0,1,.01,"1");
+    f("landing.imperfectStyleIncrease",QObject::tr("Dodatkowa szansa słabszego lądowania przy dużej odległości"),"landing",m.landing.imperfectStyleIncrease,0,1,.01,"1");
+    f("landing.imperfectStylePenalty",QObject::tr("Kara w notach za słabsze lądowanie"),"landing",m.landing.imperfectStylePenalty,0,10,.05,"pkt");
+    f("landing.distanceStyleOffset",QObject::tr("Korekta noty przy K"),"landing",m.landing.distanceStyleOffset,-10,10,.05,"pkt");
+    f("landing.distanceStyleBelowK",QObject::tr("Wpływ odległości poniżej K"),"landing",m.landing.distanceStyleBelowK,0,50,.1,"pkt");
+    f("landing.distanceStyleAboveK",QObject::tr("Wpływ odległości powyżej K"),"landing",m.landing.distanceStyleAboveK,0,50,.1,"pkt");
     f("landing.difficultLandingStylePenalty",QObject::tr("Kara za trudne lądowanie"),"landing",m.landing.difficultLandingStylePenalty,0,20,0.1,"1");
     for(std::size_t i=0;i<m.quality.eventDeviation.size();++i) f(QString("quality.eventDeviation.%1").arg(i),QObject::tr("Odchylenie serii")+QString(" [%1]").arg(i),"quality",m.quality.eventDeviation[i],0,100,.01,"1");
     for(std::size_t i=0;i<m.quality.specialistBias.size();++i) f(QString("quality.specialistBias.%1").arg(i),QObject::tr("Siła specjalizacji")+QString(" [%1]").arg(i),"quality",m.quality.specialistBias[i],0,100,.01,"1");
@@ -157,8 +165,8 @@ QString effectDescription(const QString &key,const QString &group) {
     if(key=="flight.largeHillSpreadExponent")return QObject::tr("Kształt narastania efektu powyżej progu K. Np. 1 oznacza wzrost liniowy; 1,5 łagodniejszy początek na obiektach hybrydowych i mocniejszy wzrost dalej.");
     if(key=="flight.largeHillSpreadPivot")return QObject::tr("Jakość skoku, którego poszerzanie nie przesuwa. Np. przy 80 słabsze skoki są krótsze, a lepsze dłuższe. To jakość całego skoku, nie samo OVR.");
     if(key=="flight.referenceGate")return QObject::tr("Belka, przy której silnik wyznacza bazowy zapas lotu. Np. odniesienie 10 i start z 12 oznaczają doliczenie wpływu dwóch belek.");
-    if(key=="flight.gateMetresAtK120")return QObject::tr("Zmiana początkowego zapasu za jedną belkę na K120, bez wiatru w plecy. Np. 2,0 i podniesienie o 3 belki dają dodatkowe 6 m zapasu.");
-    if(key=="flight.gateTailwindInteraction")return QObject::tr("Wzmacnia wpływ różnicy belek przy wietrze w plecy. Np. 0,1 przy 2 m/s w plecy zwiększa ten wpływ o 20%.");
+    if(key=="flight.gateMetresAtK120")return QObject::tr("Parametr zachowany dla starych profili. Efekt belki wynika teraz z punktów za belkę i za metr.");
+    if(key=="flight.gateTailwindInteraction")return QObject::tr("Parametr zachowany dla starych profili. Wiatr nie zmienia podstawowej siły belki.");
     if(key=="flight.stepMetres")return QObject::tr("Odległość między kolejnymi obliczeniami lotu; mniejsza daje dokładniejszą, ale wolniejszą symulację. Np. krok 0,5 m wymaga około dwa razy więcej obliczeń niż 1 m.");
     if(key=="flight.secondsPerK")return QObject::tr("Czas, po którym skoczek dociera do K w modelu pogody. Np. 4 s oznacza napotkanie wiatru przy K cztery sekundy po starcie.");
     if(key=="flight.windReservePerMetre")return QObject::tr("Siła wpływu wiatru pod narty i w plecy na podtrzymywanie lotu. Np. zwiększenie wartości wzmacnia zarówno pomoc wiatru pod narty, jak straty w wietrze w plecy.");
@@ -309,6 +317,9 @@ QString effectDescription(const QString &key,const QString &group) {
         else if(field=="transitionSeconds")help=QObject::tr("Zakres czasu płynnego przechodzenia między tendencjami; większe wartości łagodzą zmianę wiatru.");
         return help+" "+(key.endsWith(".min")?QObject::tr("Ustawiasz minimum losowania w tym presecie. Np. minimum 1 i maksimum 2 pozwalają wylosować wartość od 1 do 2 w jednostce pola."):QObject::tr("Ustawiasz maksimum losowania w tym presecie. Np. minimum 1 i maksimum 2 pozwalają wylosować wartość od 1 do 2 w jednostce pola."));
     }
+    if(key=="generator.global.strengthScale")return QObject::tr("Zmienia podstawową siłę wiatru we wszystkich presetach i automatycznych propozycjach. 1 zachowuje pierwotną siłę, 0,8 zmniejsza ją o 20%.");
+    if(key=="generator.global.variationScale")return QObject::tr("Zmienia siłę wahań w czasie, różnic na zeskoku i tendencji we wszystkich losowanych warunkach.");
+    if(key=="generator.global.gustScale")return QObject::tr("Zmienia siłę podmuchów we wszystkich losowanych warunkach, bez zmiany ich częstości.");
     if(key.startsWith("generator.auto.")) {
         const auto field=key.mid(15);
         if(field=="strengthScale")return QObject::tr("Mnożnik bazowej siły automatycznie losowanego wiatru, bez podmuchów i zmienności. Np. 0,5 zmienia propozycję 2 m/s na 1 m/s.");
@@ -375,6 +386,9 @@ QJsonArray parameters() {
         const QString unit=angle?QStringLiteral("°"):time?QStringLiteral("s"):prob || scale?QStringLiteral("1"):QStringLiteral("m/s");
         const double lo=angle?-360:time?.1:scale?.01:0,hi=angle?360:prob?1:time?100000:scale?10:100;
         for(int end=0;end<2;++end){auto d=definition(key+(end?".max":".min"),QObject::tr("Preset %1 · %2 · %3").arg(r.preset+1).arg(generatorLabels.value(field,field),end?QObject::tr("maksimum"):QObject::tr("minimum")),"generator",end?r.high:r.low,lo,hi,prob?.01:.05,unit,false);d["preset"]=r.preset;rows.append(d);}
+    }
+    for(const auto &entry:QVector<QPair<QString,QString>>{{"strengthScale",QObject::tr("Wszystkie losowane warunki: siła wiatru")},{"variationScale",QObject::tr("Wszystkie losowane warunki: zmienność")},{"gustScale",QObject::tr("Wszystkie losowane warunki: siła podmuchów")}}) {
+        auto d=definition("generator.global."+entry.first,entry.second,"generator",entry.first=="strengthScale"?.8:.75,0,3,.05,"1",false);d["preset"]=-2;rows.append(d);
     }
     for(const auto &entry:QVector<QPair<QString,QString>>{{"strengthScale",QObject::tr("Automatyczna pogoda: skala siły")},{"variationScale",QObject::tr("Automatyczna pogoda: skala wahań")},{"gustScale",QObject::tr("Automatyczna pogoda: skala podmuchów")},{"trendScale",QObject::tr("Automatyczna pogoda: skala tendencji")},{"timeScale",QObject::tr("Automatyczna pogoda: skala czasu")}}) {
         auto d=definition("generator.auto."+entry.first,entry.second,"generator",1,entry.first=="timeScale"?.1:0,3,.05,"1",false);d["preset"]=-1;rows.append(d);

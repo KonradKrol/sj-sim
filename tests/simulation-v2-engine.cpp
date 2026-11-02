@@ -72,6 +72,14 @@ int main()
 
         FlightModel flight;Hill hill;RescueWeather rescue;ConstantWeather adverse;adverse.value={-2.5,0};
         {
+            const double reference=flight.reserve(70,hill,10,0,0);
+            near(flight.reserve(70,hill,11,0,0)-reference,hill.gatePoints/hill.pointsPerMetre,1e-9,"gate metres follow hill compensation ratio");
+            near(flight.reserve(70,hill,11,0,-4),flight.reserve(70,hill,11,0,4),1e-9,"wind does not change basic gate strength");
+            hill.pointsPerMetre=0;
+            near(flight.reserve(70,hill,11,0,0),flight.reserve(70,hill,10,0,0),1e-9,"zero metre points do not divide by zero");
+            hill.pointsPerMetre=1.8;
+        }
+        {
             EngineParameters previous;previous.flight.largeHillSpreadGain=0;Engine unchanged(previous);
             double hybridWidth=0,largeWidth=0;
             for(double k:{95.,130.,140.,160.,170.,200.,210.,225.}) {
@@ -146,8 +154,13 @@ int main()
             check(p.values[3]>=previousFall,"smooth rising fall risk");previousFall=p.values[3];
         }
         SeededRandom styleRng(8);int highMarks=0;
-        for(int i=0;i<10000;++i)for(double v:landing.judges(4,LandingKind::Telemark,120,134,styleRng))highMarks+=v>=19.5;
+        for(int i=0;i<10000;++i)for(double v:landing.judges(4,LandingKind::Telemark,140,120,145,styleRng))highMarks+=v>=19.5;
         check(highMarks>20000,"stylists can regularly receive 19.5 or 20 for a good landing");
+        for(const auto &target:std::array<std::array<double,3>,5>{{{{100.5,15.0,15.6}},{{110,15.4,16.1}},{{125,17.0,17.7}},{{135,18.0,18.8}},{{145,18.5,19.25}}}}) {
+            double sum=0;SeededRandom marksRng(42);
+            for(int i=0;i<2000;++i)for(double mark:landing.judges(2,LandingKind::Telemark,target[0],125,140,marksRng))sum+=mark/10000;
+            check(sum>=target[1] && sum<=target[2],"distance influences average telemark marks on K125 within calibration targets");
+        }
         request.athlete.landing=0;SeededRandom uglySeed(91);auto ugly=engine.simulate(request,uglySeed,varying,measurement);
         request.athlete.landing=4;SeededRandom elegantSeed(91);auto elegant=engine.simulate(request,elegantSeed,varying,measurement);
         near(ugly.flight.distance,elegant.flight.distance,1e-12,"landing class changes no distance");

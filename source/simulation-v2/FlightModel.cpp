@@ -46,6 +46,7 @@ void FlightParameters::validate() const
     bound(rainHeavyExponent,1,6,"Heavy rain exponent out of range");
     bound(stepMetres,.05,5,"Integration step out of range");
     bound(secondsPerK,.1,30,"Flight time scale out of range");
+    bound(tailwindMultiplier,0,10,"Tailwind multiplier out of range");bound(tailwindStrongExtra,0,10,"Strong tailwind effect out of range");
     bound(windReservePerMetre,0,1,"Wind effect out of range");bound(crosswindDrag,0,1,"Crosswind drag out of range");
     bound(specialistWindEffectPerTier,0,.25,"Specialist wind effect out of range");
     bound(windVariabilityScale,.1,100,"Wind variability scale out of range");
@@ -82,8 +83,9 @@ double FlightModel::reserve(double quality,const Hill &hill,int gate,double prec
     const double growth=config.largeHillSpreadGain*std::pow(std::max(0.0,(hill.k-config.largeHillSpreadStartK)/100),config.largeHillSpreadExponent);
     const double effectiveQuality=quality+(quality-config.largeHillSpreadPivot)*growth;
     const double distance=hill.k*config.referenceDistanceAtK+(effectiveQuality-config.referenceQuality)*config.qualityMetresAtK120*hill.k/120;
-    const double gateEffect=(gate-config.referenceGate)*config.gateMetresAtK120*hill.k/120
-        *(1+config.gateTailwindInteraction*std::max(0.0,-initialHeadwind));
+    // Gate compensation defines the base gain per gate. A zero metre value
+    // makes this ratio undefined; in that case the hill provides no gate gain.
+    const double gateEffect=(gate-config.referenceGate)*(hill.pointsPerMetre>0 ? hill.gatePoints/hill.pointsPerMetre : 0);
     // Tunable net precipitation effect, not a physical wet-suit/track simulation.
     // Light water is normal on prepared tracks; heavy rain has an additional cost.
     const double heavy=std::max(0.0,(precipitation-config.rainHeavyThreshold)/(10-config.rainHeavyThreshold));
@@ -143,7 +145,8 @@ FlightResult FlightModel::fly(double initialReserve,const Hill &hill,const Weath
             const double head=filtered(length), side=std::abs(wind.cross);
             const auto activation=[&](double speed) {const double r=speed/config.windVariabilityScale;return r*r/(1+r*r);};
             const double effectiveHead=head>0 && config.windHeadSaturation>0
-                ? head/std::hypot(1.0,head/config.windHeadSaturation):head;
+                ? head/std::hypot(1.0,head/config.windHeadSaturation)
+                : head<0 ? head*(config.tailwindMultiplier+config.tailwindStrongExtra*activation(-head)) : head;
             const double spread=head>=0?config.windHeadSpread:config.windTailSpread;
             const double assistance=std::min(config.maximumWindAssistance*terrain,
                 config.windReservePerMetre*(1+specialist*config.specialistWindEffectPerTier)*effectiveHead*sensitivity*(1+spread*activation(std::abs(head))*reaction.variation));

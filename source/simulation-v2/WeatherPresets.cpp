@@ -96,6 +96,11 @@ WeatherProposal sampleWeatherPreset(WeatherPreset preset,double k,RandomSource &
     }
     w.trendTransitionSeconds=std::min(w.trendPeriodSeconds*.2,draw("transitionSeconds",4,18));
     w.correlationMetres=k*draw("correlationK",.3,.9);w.gustWidthMetres=k*draw("gustWidthK",.2,.5);
+    const double strengthScale=parameters.get("generator.global.strengthScale",.8);
+    const double variationScale=parameters.get("generator.global.variationScale",.75);
+    const double gustScale=parameters.get("generator.global.gustScale",.75);
+    for(auto &r:w.references){r.value.head*=strengthScale;r.value.cross*=strengthScale;}
+    w.temporalAmplitude*=variationScale;w.spatialAmplitude*=variationScale;w.trendAmplitude*=variationScale;w.gustAmplitude*=gustScale;
     w.validate();return result;
 }
 }

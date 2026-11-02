@@ -222,6 +222,9 @@ WeatherProposal proposeWeather(const WeatherProposalContext &context,RandomSourc
     for(auto &r:result.wind.references){r.value.head*=strength;r.value.cross*=strength;}
     result.wind.temporalAmplitude*=variation;result.wind.spatialAmplitude*=variation;result.wind.gustAmplitude*=gust;result.wind.trendAmplitude*=trend;
     result.wind.correlationSeconds*=time;result.wind.trendPeriodSeconds*=time;result.wind.trendTransitionSeconds*=time;
+    const double globalStrength=p.get("generator.global.strengthScale",.8),globalVariation=p.get("generator.global.variationScale",.75),globalGust=p.get("generator.global.gustScale",.75);
+    for(auto &r:result.wind.references){r.value.head*=globalStrength;r.value.cross*=globalStrength;}
+    result.wind.temporalAmplitude*=globalVariation;result.wind.spatialAmplitude*=globalVariation;result.wind.trendAmplitude*=globalVariation;result.wind.gustAmplitude*=globalGust;
     result.wind.validate();result.precipitation.validate();
     return result;
 }

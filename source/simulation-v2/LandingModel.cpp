@@ -27,6 +27,9 @@ void LandingParameters::validate() const
     for(double v:landingPenalty)bound(v,0,20,"Landing style penalty out of range");
     bound(sharedStyleDeviation,0,10,"Shared style deviation out of range");bound(judgeDeviation,0,10,"Judge deviation out of range");
     bound(difficultLandingStylePenalty,0,20,"Difficult landing penalty out of range");
+    bound(imperfectStyleBase,0,1,"Imperfect landing chance out of range");bound(imperfectStyleIncrease,0,1,"Imperfect landing increase out of range");bound(imperfectStylePenalty,0,10,"Imperfect landing penalty out of range");
+    bound(distanceStyleOffset,-10,10,"Distance style offset out of range");
+    bound(distanceStyleBelowK,0,50,"Short jump style slope out of range");bound(distanceStyleAboveK,0,50,"Long jump style slope out of range");
 }
 
 LandingModel::LandingModel(LandingParameters parameters):config(parameters) { config.validate(); }
@@ -52,12 +55,15 @@ LandingKind LandingModel::sample(double distance,double realHs,double crosswind,
     return LandingKind::Fall;
 }
 
-std::array<double,5> LandingModel::judges(int landingClass,LandingKind landing,double distance,double realHs,RandomSource &rng) const
+std::array<double,5> LandingModel::judges(int landingClass,LandingKind landing,double distance,double k,double realHs,RandomSource &rng) const
 {
-    validateDistance(distance,realHs);
+    validateDistance(distance,realHs);bound(k,1,400,"Hill K out of range");
     if(landingClass<0 || landingClass>4 || int(landing)<0 || int(landing)>3)throw std::invalid_argument("Unknown landing class/kind");
     const double difficult=logistic((distance/realHs-config.twoFeetCentre)/config.twoFeetWidth);
-    const double mean=config.styleMean[std::size_t(landingClass)]-config.landingPenalty[std::size_t(landing)]
+    const double relative=(distance-k)/k;
+    const double distanceEffect=config.distanceStyleOffset+relative*(relative<0?config.distanceStyleBelowK:config.distanceStyleAboveK);
+    const double imperfect=rng.event(std::clamp(config.imperfectStyleBase+config.imperfectStyleIncrease*difficult,0.0,1.0)) ? config.imperfectStylePenalty : 0;
+    const double mean=config.styleMean[std::size_t(landingClass)]+distanceEffect-imperfect-config.landingPenalty[std::size_t(landing)]
         -config.difficultLandingStylePenalty*difficult+rng.normal(0,config.sharedStyleDeviation);
     std::array<double,5> marks;
     for(double &mark:marks)mark=std::clamp(std::round((mean+rng.normal(0,config.judgeDeviation))*2)/2,0.0,20.0);

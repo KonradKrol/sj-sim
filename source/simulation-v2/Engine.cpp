@@ -70,7 +70,7 @@ JumpResult Engine::simulate(const JumpRequest &input,RandomSource &rng,const Wea
     result.landingProbabilities=landingModel.probabilities(result.flight.distance,input.hill.realHs,result.flight.meanAbsoluteCrosswind);
     result.landing=landingModel.sample(result.flight.distance,input.hill.realHs,result.flight.meanAbsoluteCrosswind,rng);
     if(input.manipulation.landing)result.landing=*input.manipulation.landing;
-    result.judges=landingModel.judges(input.athlete.landing,result.landing,result.flight.distance,input.hill.realHs,rng);
+    result.judges=landingModel.judges(input.athlete.landing,result.landing,result.flight.distance,input.hill.k,input.hill.realHs,rng);
     for(std::size_t i=0;i<result.judges.size();++i)if(input.manipulation.judges[i])result.judges[i]=*input.manipulation.judges[i];
     const double measuredWind=measurement.measure(weather,result.flight,input.startSeconds);
     if(!std::isfinite(measuredWind) || std::abs(measuredWind)>100)throw std::invalid_argument("Invalid measured wind");

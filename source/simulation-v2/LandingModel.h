@@ -18,7 +18,9 @@ struct LandingParameters {
     std::array<double,5> styleMean{{16.5,17.25,18,18.75,19.5}};
     std::array<double,4> landingPenalty{{0,2.5,5,7.5}};
     double sharedStyleDeviation=.35, judgeDeviation=.25;
-    double difficultLandingStylePenalty=1.2;
+    double difficultLandingStylePenalty=.25;
+    double distanceStyleOffset=-.7, distanceStyleBelowK=10.5, distanceStyleAboveK=11;
+    double imperfectStyleBase=.06, imperfectStyleIncrease=.15, imperfectStylePenalty=.65;
     void validate() const;
 };
 
@@ -31,7 +33,7 @@ public:
     explicit LandingModel(LandingParameters = {});
     LandingProbabilities probabilities(double distance, double realHs, double crosswind) const;
     LandingKind sample(double distance, double realHs, double crosswind, RandomSource &) const;
-    std::array<double,5> judges(int landingClass, LandingKind, double distance, double realHs, RandomSource &) const;
+    std::array<double,5> judges(int landingClass, LandingKind, double distance, double k, double realHs, RandomSource &) const;
     const LandingParameters &parameters() const { return config; }
 private:
     LandingParameters config;
