@@ -9002,6 +9002,7 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
 <message><source>Średnio 1 dyskwalifikacja na %1 skoków.</source><translation>About 1 disqualification per %1 jumps.</translation></message>
 <message><source>Własna częstość</source><translation>Custom frequency</translation></message>
 <message><source>Częstość dyskwalifikacji</source><translation>Disqualification frequency</translation></message>
+<message><source>Zachowano wcześniejsze ustawienie. Wybierz poziom, aby je zmienić.</source><translation>The previous setting is preserved. Choose a level to change it.</translation></message>
 </context>
     <context>
         <name>NodeGroup</name>
@@ -19931,6 +19932,8 @@ li.checked::marker { content: "\2612"; }
 <message><source>Średnie</source><translation>Medium</translation></message>
 <message><source>Wysokie</source><translation>High</translation></message>
 <message><source>Bardzo wysokie</source><translation>Very high</translation></message>
+<message><source>Kierunek i siła</source><translation>Direction and strength</translation></message>
+<message><source>Zmienność wiatru</source><translation>Wind variability</translation></message>
 </context>
     <context>
         <name>WindStationEditor</name>
@@ -21584,6 +21587,8 @@ li.checked::marker { content: "\2612"; }
 <message><source>Dostosuj także wybrany preset</source><translation>Also adjust the selected preset</translation></message>
 <message><source>Trzy ustawienia poniżej działają na wszystkie losowane warunki. Zmniejsz je, aby osłabić wiatr, wahania lub podmuchy.</source><translation>The three settings below apply to all generated conditions. Lower them to reduce wind, variation or gusts.</translation></message>
 <message><source>Wpisz wiatr w m/s. Przód / tył: plus oznacza wiatr pod narty, minus — w plecy. Bok: znak oznacza stronę. Pomiędzy punktami wiatr zmienia się płynnie.</source><translation>Enter wind in m/s. Head / tail: positive means headwind, negative means tailwind. The crosswind sign indicates its side. Wind changes smoothly between points.</translation></message>
+<message><source>Wszystkie losowane warunki</source><translation>All generated conditions</translation></message>
+<message><source>Szczegóły wybranego scenariusza</source><translation>Selected scenario details</translation></message>
 </context>
     <context>
         <name>BalanceLabGenerator</name>

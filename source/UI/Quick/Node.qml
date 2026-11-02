@@ -109,17 +109,56 @@ FocusScope {
             readonly property int current: Number(control.fields.value) <= 0 ? 0 : levels.indexOf(Number(control.fields.value))
             NumberField { visible: !parent.dsq; width: parent.width; fields: control.fields }
             SChoice {
+                id: dsqChoice
                 objectName: "dsqLevelChoice"
                 visible: dsqControl.dsq; width: parent.width
+                implicitHeight: Math.max(Theme.dp(50),Theme.bodyMetrics.height+Theme.dp(18))
+                leftPadding: Theme.dp(8); rightPadding: Theme.dp(32)
                 model: dsqControl.current<0 ? dsqControl.names.concat([qsTr("Własna częstość")]) : dsqControl.names
                 currentIndex: dsqControl.current<0 ? 5 : dsqControl.current
                 Accessible.name: qsTr("Częstość dyskwalifikacji")
                 onActivated: function(index) { if(index<dsqControl.levels.length)ui.edit(control.fields.id,dsqControl.levels[index]) }
+                contentItem: RowLayout {
+                    spacing: Theme.dp(9)
+                    Rectangle {
+                        Layout.preferredWidth: Theme.dp(32); Layout.preferredHeight: Theme.dp(32)
+                        radius: Theme.dp(7); color: Theme.selection
+                        Row {
+                            anchors.centerIn: parent; spacing: Theme.dp(2); visible: dsqControl.current>0
+                            Repeater { model: 4; Rectangle { required property int index; width: Theme.dp(3); height: Theme.dp(5+index*3); anchors.bottom: parent.bottom; radius: Theme.dp(1); color: index<dsqControl.current ? Theme.accent : Theme.outline; opacity: index<dsqControl.current ? 1 : .35 } }
+                        }
+                        Text { anchors.centerIn: parent; visible: dsqControl.current<=0; text: dsqControl.current<0 ? "?" : "—"; color: Theme.accent; font.bold: true; font.pointSize: Theme.body }
+                    }
+                    Text { text: dsqChoice.displayText; color: Theme.ink; font.family: dsqChoice.font.family; font.pointSize: dsqChoice.font.pointSize; font.weight: Font.DemiBold; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight; verticalAlignment: Text.AlignVCenter }
+                }
+                background: Rectangle { color: dsqChoice.hovered ? Theme.selection : Theme.raised; radius: Theme.dp(8); border.width: dsqChoice.activeFocus ? 2 : 1; border.color: dsqChoice.activeFocus ? Theme.accent : Theme.outline }
+                delegate: ItemDelegate {
+                    id: dsqOption
+                    required property int index
+                    objectName: "dsqOption-"+index
+                    width: dsqChoice.popup.availableWidth; height: Math.max(Theme.dp(42),Theme.bodyMetrics.height+Theme.dp(14))
+                    text: dsqChoice.textAt(index); highlighted: dsqChoice.highlightedIndex===index
+                    contentItem: RowLayout {
+                        spacing: Theme.dp(9)
+                        Rectangle {
+                            Layout.preferredWidth: Theme.dp(28); Layout.preferredHeight: Theme.dp(28); radius: Theme.dp(6)
+                            color: dsqOption.index===dsqChoice.currentIndex ? Theme.selection : Theme.raised
+                            Row {
+                                anchors.centerIn: parent; spacing: Theme.dp(2); visible: dsqOption.index>0 && dsqOption.index<5
+                                Repeater { model: 4; Rectangle { required property int index; width: Theme.dp(3); height: Theme.dp(4+index*3); anchors.bottom: parent.bottom; radius: Theme.dp(1); color: index<dsqOption.index ? Theme.accent : Theme.outline; opacity: index<dsqOption.index ? 1 : .35 } }
+                            }
+                            Text { anchors.centerIn: parent; visible: dsqOption.index===0 || dsqOption.index===5; text: dsqOption.index===0 ? "—" : "?"; color: Theme.accent; font.bold: true; font.pointSize: Theme.caption }
+                        }
+                        Text { text: dsqOption.text; color: Theme.ink; font.family: dsqChoice.font.family; font.pointSize: dsqChoice.font.pointSize; font.weight: dsqOption.index===dsqChoice.currentIndex ? Font.DemiBold : Font.Normal; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
+                        Text { visible: dsqOption.index===dsqChoice.currentIndex; text: "✓"; color: Theme.accent; font.bold: true; font.pointSize: Theme.body; Accessible.ignored: true }
+                    }
+                    background: Rectangle { color: dsqOption.highlighted ? Theme.selection : Theme.surface; radius: Theme.dp(5) }
+                }
             }
             Label {
-                visible: parent.dsq; width: parent.width; wrapMode: Text.WordWrap
+                visible: parent.dsq && parent.current<0; width: parent.width; wrapMode: Text.WordWrap
                 color: Theme.muted; font.pointSize: Theme.caption
-                text: Number(control.fields.value)<=0 ? qsTr("Dyskwalifikacje są wyłączone.") : parent.current<0 ? qsTr("Własne ustawienie: średnio 1 dyskwalifikacja na %1 skoków.").arg(control.fields.value) : qsTr("Średnio 1 dyskwalifikacja na %1 skoków.").arg(control.fields.value)
+                text: qsTr("Zachowano wcześniejsze ustawienie. Wybierz poziom, aby je zmienić.")
             }
         }
     }

@@ -9003,6 +9003,7 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
 <message><source>Średnio 1 dyskwalifikacja na %1 skoków.</source><translation>Průměrně 1 diskvalifikace na %1 skoků.</translation></message>
 <message><source>Własna częstość</source><translation>Vlastní četnost</translation></message>
 <message><source>Częstość dyskwalifikacji</source><translation>Četnost diskvalifikací</translation></message>
+<message><source>Zachowano wcześniejsze ustawienie. Wybierz poziom, aby je zmienić.</source><translation>Předchozí nastavení je zachováno. Chcete-li je změnit, vyberte úroveň.</translation></message>
 </context>
     <context>
         <name>NodeGroup</name>
@@ -19932,6 +19933,8 @@ li.checked::marker { content: "\2612"; }
 <message><source>Średnie</source><translation>Střední</translation></message>
 <message><source>Wysokie</source><translation>Vysoké</translation></message>
 <message><source>Bardzo wysokie</source><translation>Velmi vysoké</translation></message>
+<message><source>Kierunek i siła</source><translation>Směr a síla</translation></message>
+<message><source>Zmienność wiatru</source><translation>Proměnlivost větru</translation></message>
 </context>
     <context>
         <name>WindStationEditor</name>
@@ -21585,6 +21588,8 @@ li.checked::marker { content: "\2612"; }
 <message><source>Dostosuj także wybrany preset</source><translation>Upravit také vybranou předvolbu</translation></message>
 <message><source>Trzy ustawienia poniżej działają na wszystkie losowane warunki. Zmniejsz je, aby osłabić wiatr, wahania lub podmuchy.</source><translation>Tři nastavení níže platí pro všechny generované podmínky. Snížením hodnot oslabíte vítr, změny nebo nárazy.</translation></message>
 <message><source>Wpisz wiatr w m/s. Przód / tył: plus oznacza wiatr pod narty, minus — w plecy. Bok: znak oznacza stronę. Pomiędzy punktami wiatr zmienia się płynnie.</source><translation>Zadejte vítr v m/s. Přední / zadní: plus znamená protivítr, minus zadní vítr. Znaménko bočního větru určuje stranu. Mezi body se vítr plynule mění.</translation></message>
+<message><source>Wszystkie losowane warunki</source><translation>Všechny generované podmínky</translation></message>
+<message><source>Szczegóły wybranego scenariusza</source><translation>Podrobnosti vybraného scénáře</translation></message>
 </context>
     <context>
         <name>BalanceLabGenerator</name>
