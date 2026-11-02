@@ -16,6 +16,11 @@ ColumnLayout {
     RowLayout {
         Layout.fillWidth: true; spacing: Theme.dp(10)
         Label { text: rating.form ? qsTr("Forma") : "OVR"; color: rating.design.muted; font.family: rating.design.detailFont; font.pointSize: Theme.body }
+        HelpDot {
+            objectName: rating.form ? "athleteFormHelp" : "athleteOverallHelp"
+            Accessible.name: rating.form ? qsTr("Pomoc: forma") : qsTr("Pomoc: OVR")
+            explanation: rating.form ? qsTr("Aktualna dyspozycja skoczka. Wpływa na jakość skoków i może zmieniać się w sezonie.") : qsTr("Ogólny poziom umiejętności skoczka. Wyższy OVR zwykle pomaga skakać dalej.")
+        }
         Item { Layout.fillWidth: true }
         Label { visible: !rating.compact; text: "/ 100"; color: rating.design.muted; font.family: Theme.mono; font.pointSize: Theme.caption }
     }
