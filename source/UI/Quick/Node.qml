@@ -131,7 +131,17 @@ FocusScope {
                     }
                     Text { text: dsqChoice.displayText; color: Theme.ink; font.family: dsqChoice.font.family; font.pointSize: dsqChoice.font.pointSize; font.weight: Font.DemiBold; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight; verticalAlignment: Text.AlignVCenter }
                 }
-                background: Rectangle { color: dsqChoice.hovered ? Theme.selection : Theme.raised; radius: Theme.dp(8); border.width: dsqChoice.activeFocus ? 2 : 1; border.color: dsqChoice.activeFocus ? Theme.accent : Theme.outline }
+                background: Rectangle {
+                    color: dsqChoice.hovered ? Theme.selection : Theme.raised; radius: Theme.dp(8)
+                    border.width: dsqChoice.activeFocus ? 2 : 1; border.color: dsqChoice.activeFocus ? Theme.accent : Theme.outline
+                    Row {
+                        id: dsqScale
+                        anchors.left: parent.left; anchors.right: parent.right; anchors.bottom: parent.bottom
+                        anchors.leftMargin: Theme.dp(8); anchors.rightMargin: Theme.dp(8); anchors.bottomMargin: Theme.dp(3)
+                        spacing: Theme.dp(3); height: Theme.dp(2); Accessible.ignored: true
+                        Repeater { model: 5; Rectangle { required property int index; width: Math.max(0,(dsqScale.width-dsqScale.spacing*4)/5); height: dsqScale.height; radius: Theme.dp(1); color: index===dsqControl.current ? Theme.accent : Theme.outline; opacity: index===dsqControl.current ? 1 : .2 } }
+                    }
+                }
                 delegate: ItemDelegate {
                     id: dsqOption
                     required property int index
