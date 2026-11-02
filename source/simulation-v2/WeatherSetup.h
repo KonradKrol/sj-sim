@@ -41,6 +41,7 @@ public:
     Q_INVOKABLE void suggest();
     Q_INVOKABLE void reroll();
     Q_INVOKABLE void setValue(const QString &key,double value);
+    Q_INVOKABLE void setLevel(const QString &key,int level);
     Q_INVOKABLE void setReference(int index,const QString &key,double value);
     Q_INVOKABLE QVariantMap referenceAt(double distance) const;
     Q_INVOKABLE void putReference(double distance,double strength,double direction);

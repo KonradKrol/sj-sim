@@ -31,8 +31,16 @@ QWidget *createWeatherSetupEditor(SimulationWeatherSetup *backend,QWidget *paren
     };
     number("direction",QObject::tr("Kierunek · 0° pod narty, 180° w plecy"),360);
     number("strength",QObject::tr("Siła wyjściowa · m/s"),10);
-    number("variability",QObject::tr("Zmienność w czasie · 0–10"),10,.1);
-    number("differences",QObject::tr("Różnice na zeskoku · 0–10"),10,.1);
+    const auto windLevel=[&](const QString &key,const QString &label) {
+        auto *input=new QComboBox(panel);
+        input->addItems({QObject::tr("Bardzo niskie"),QObject::tr("Niskie"),QObject::tr("Średnie"),QObject::tr("Wysokie"),QObject::tr("Bardzo wysokie")});
+        numbers->addRow(label,input);
+        QObject::connect(input,QOverload<int>::of(&QComboBox::activated),backend,[=](int level){backend->setLevel(key,level);});
+        const auto update=[=]{const QSignalBlocker block(input);input->setCurrentIndex(backend->values().value(key+"Level").toInt());};
+        QObject::connect(backend,&SimulationWeatherSetup::changed,input,update);update();
+    };
+    windLevel("variability",QObject::tr("Zmiany w czasie"));
+    windLevel("differences",QObject::tr("Różnice na zeskoku"));
     const auto choice=[&](const QString &key,const QString &label,const QStringList &options,int offset=0) {
         auto *input=new QComboBox(panel);input->addItems(options);form->addRow(label,input);
         QObject::connect(input,QOverload<int>::of(&QComboBox::activated),backend,[=](int index){backend->setValue(key,index+offset);});

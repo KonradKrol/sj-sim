@@ -14899,7 +14899,15 @@ Check that you selected the correct file.</translation>
             <source>Bazowa nota — %1</source>
             <translation>Base mark — %1</translation>
         </message>
-    </context>
+    <message><source>Zmiany w czasie</source><translation>Changes over time</translation></message>
+<message><source>Jak bardzo wiatr zmienia się w trakcie konkursu.</source><translation>How much the wind changes during the competition.</translation></message>
+<message><source>Jak bardzo wiatr różni się między miejscami na skoczni.</source><translation>How much the wind differs between parts of the hill.</translation></message>
+<message><source>Bardzo niskie</source><translation>Very low</translation></message>
+<message><source>Niskie</source><translation>Low</translation></message>
+<message><source>Średnie</source><translation>Medium</translation></message>
+<message><source>Wysokie</source><translation>High</translation></message>
+<message><source>Bardzo wysokie</source><translation>Very high</translation></message>
+</context>
     <context>
         <name>QuickBridge</name>
         <message><source>Paczki danych</source><translation>Data packs</translation></message>
@@ -19867,7 +19875,16 @@ li.checked::marker { content: "\2612"; }
             <source>Wyższa wartość: większe różnice wzdłuż skoczni.</source>
             <translation>Higher values mean greater differences along the hill.</translation>
         </message>
-    </context>
+    <message><source>Zmiany w czasie</source><translation>Changes over time</translation></message>
+<message><source>Różnice na zeskoku</source><translation>Differences along the hill</translation></message>
+<message><source>Jak bardzo wiatr zmienia się w trakcie konkursu.</source><translation>How much the wind changes during the competition.</translation></message>
+<message><source>Jak bardzo wiatr różni się między miejscami na skoczni.</source><translation>How much the wind differs between parts of the hill.</translation></message>
+<message><source>Bardzo niskie</source><translation>Very low</translation></message>
+<message><source>Niskie</source><translation>Low</translation></message>
+<message><source>Średnie</source><translation>Medium</translation></message>
+<message><source>Wysokie</source><translation>High</translation></message>
+<message><source>Bardzo wysokie</source><translation>Very high</translation></message>
+</context>
     <context>
         <name>WindStationEditor</name>
         <message>

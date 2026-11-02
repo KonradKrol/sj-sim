@@ -14900,7 +14900,15 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Bazowa nota — %1</source>
             <translation>Základní známka — %1</translation>
         </message>
-    </context>
+    <message><source>Zmiany w czasie</source><translation>Změny v čase</translation></message>
+<message><source>Jak bardzo wiatr zmienia się w trakcie konkursu.</source><translation>Jak moc se vítr mění během závodu.</translation></message>
+<message><source>Jak bardzo wiatr różni się między miejscami na skoczni.</source><translation>Jak moc se vítr liší mezi místy na doskočišti.</translation></message>
+<message><source>Bardzo niskie</source><translation>Velmi nízké</translation></message>
+<message><source>Niskie</source><translation>Nízké</translation></message>
+<message><source>Średnie</source><translation>Střední</translation></message>
+<message><source>Wysokie</source><translation>Vysoké</translation></message>
+<message><source>Bardzo wysokie</source><translation>Velmi vysoké</translation></message>
+</context>
     <context>
         <name>QuickBridge</name>
         <message><source>Paczki danych</source><translation>Datové balíčky</translation></message>
@@ -19868,7 +19876,16 @@ li.checked::marker { content: "\2612"; }
             <source>Wyższa wartość: większe różnice wzdłuż skoczni.</source>
             <translation>Vyšší hodnota znamená větší rozdíly podél můstku.</translation>
         </message>
-    </context>
+    <message><source>Zmiany w czasie</source><translation>Změny v čase</translation></message>
+<message><source>Różnice na zeskoku</source><translation>Rozdíly na doskočišti</translation></message>
+<message><source>Jak bardzo wiatr zmienia się w trakcie konkursu.</source><translation>Jak moc se vítr mění během závodu.</translation></message>
+<message><source>Jak bardzo wiatr różni się między miejscami na skoczni.</source><translation>Jak moc se vítr liší mezi místy na doskočišti.</translation></message>
+<message><source>Bardzo niskie</source><translation>Velmi nízké</translation></message>
+<message><source>Niskie</source><translation>Nízké</translation></message>
+<message><source>Średnie</source><translation>Střední</translation></message>
+<message><source>Wysokie</source><translation>Vysoké</translation></message>
+<message><source>Bardzo wysokie</source><translation>Velmi vysoké</translation></message>
+</context>
     <context>
         <name>WindStationEditor</name>
         <message>

@@ -5,6 +5,12 @@
 static void simulationV2WeatherSetupRegressions() {
     SimulationWeatherSetup setup;auto hill=HillProfile::create();hill.name="Weather test";hill.perks[2]=3;setup.setHill(hill);
     check(setup.values()["ready"].toBool() && setup.field(),"hill selection automatically proposes ready wind and precipitation");
+    setup.setValue("variability",0);
+    setup.setLevel("variability",2);
+    const auto chosen=setup.values();
+    check(chosen["variabilityLevel"].toInt()==2 && chosen["variability"].toDouble()>=40 && chosen["variability"].toDouble()<59,"medium weather level selects its intended range");
+    setup.setLevel("variability",2);
+    check(setup.values()["variability"]==chosen["variability"] && setup.values()["seed"]==chosen["seed"],"reselecting the same weather level never rerolls");
     setup.applyPreset(0);const auto quiet=setup.windParameters();
     setup.setValue("strength",3.8);const auto strong=setup.windParameters();
     check(quiet.temporalAmplitude==strong.temporalAmplitude && quiet.trendAmplitude==strong.trendAmplitude && quiet.gustAmplitude==strong.gustAmplitude && quiet.gustProbability==strong.gustProbability,"strength changes never increase wind lottery or gust frequency");

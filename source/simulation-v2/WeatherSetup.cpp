@@ -19,6 +19,7 @@ SimulationV2::Wind mean(const SimulationV2::WindParameters &wind) {
 }
 double angle(SimulationV2::Wind value) {return std::fmod(std::atan2(value.cross,value.head)*180/pi+360,360);}
 SimulationV2::Wind polar(double strength,double degrees) {return {strength*std::cos(degrees*pi/180),strength*std::sin(degrees*pi/180)};}
+int windLevel(double value) { return value<12?0:value<40?1:value<59?2:value<83?3:4; }
 bool bounded(double v,double lo,double hi) {return std::isfinite(v) && v>=lo && v<=hi;}
 void sampleReferences(SimulationV2::WindParameters &wind,double k,double differences,SimulationV2::Wind centre,SimulationV2::Seed seed) {
     SimulationV2::SeededRandom rng(SimulationV2::deriveSeed(seed,99));wind.references.clear();SimulationV2::Wind average;
@@ -76,6 +77,7 @@ void SimulationWeatherSetup::reroll() {
 QVariantMap SimulationWeatherSetup::values() const {
     QVariantMap result{{"ready",hasHill},{"preset",preset},{"modified",modified},{"seed",QString::number(seed)},
         {"strength",requestedStrength},{"direction",requestedDirection},{"variability",variability},{"differences",differences},
+        {"variabilityLevel",windLevel(variability)},{"differencesLevel",windLevel(differences)},
         {"surface",int(surface)},{"precipitationScenario",int(precipitation.scenario)},{"precipitationIntensity",precipitation.intensity},
         {"precipitationKind",int(precipitation.kind)},{"precipitationType",precipitation.scenario==SimulationV2::PrecipitationScenario::None || precipitation.intensity==0 ? 0 : int(precipitation.kind)+1},
         {"precipitationLevel",precipitation.scenario==SimulationV2::PrecipitationScenario::None ? 0 : precipitation.intensity<=3 ? 1 : precipitation.intensity<=6.5 ? 2 : 3},
@@ -121,6 +123,13 @@ QVariantList SimulationWeatherSetup::basePreview() const {
 }
 void SimulationWeatherSetup::setPreviewOrigin(double value) {if(!bounded(value,0,1e12-100000) || origin==value)return;origin=value;emit previewChanged();}
 void SimulationWeatherSetup::setPreviewSeconds(double value) {if(!bounded(value,0,3600) || previewTime==value)return;previewTime=value;emit previewChanged();}
+void SimulationWeatherSetup::setLevel(const QString &key,int level) {
+    if (!hasHill || level<0 || level>4 || (key!="variability" && key!="differences")) return;
+    const double current=key=="variability"?variability:differences;
+    if (windLevel(current)==level) return;
+    static const double low[]{0,18,40,65,86}, high[]{3,30,59,80,100};
+    setValue(key, low[level]+QRandomGenerator::global()->generateDouble()*(high[level]-low[level]));
+}
 void SimulationWeatherSetup::setValue(const QString &key,double value) {
     if(!hasHill || !std::isfinite(value))return;
     auto next=wind;auto nextPrecipitation=precipitation;

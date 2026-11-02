@@ -23,8 +23,28 @@ Control {
             columnSpacing: Theme.dp(18); rowSpacing: Theme.dp(10)
             WindDirectionDial { degrees: tuning.values.direction; Layout.fillWidth: true; Layout.minimumWidth: 0; onEdited: function(value){tuning.backend.setValue("direction",value)} }
             WeatherNumber { backend: tuning.backend; fieldKey: "strength"; label: qsTr("Siła wyjściowa · m/s"); maximum: 10; step: .5; quantum: .5; Layout.fillWidth: true; explanation: qsTr("Mocny wiatr może być stabilny, a słaby — zmienny.") }
-            WeatherNumber { backend: tuning.backend; fieldKey: "variability"; factor: .1; label: qsTr("Zmienność w czasie · 0–10"); maximum: 10; step: .5; quantum: .5; Layout.fillWidth: true; explanation: qsTr("0: bez zmian. Wyżej: silniejsze podmuchy i szybsze zmiany.") }
-            WeatherNumber { backend: tuning.backend; fieldKey: "differences"; factor: .1; label: qsTr("Różnice na zeskoku · 0–10"); maximum: 10; step: .5; quantum: .5; Layout.fillWidth: true; explanation: qsTr("Wyższa wartość: większe różnice wzdłuż skoczni.") }
+            Repeater {
+                model: [
+                    {key: "variability", title: qsTr("Zmiany w czasie"), help: qsTr("Jak bardzo wiatr zmienia się w trakcie konkursu.")},
+                    {key: "differences", title: qsTr("Różnice na zeskoku"), help: qsTr("Jak bardzo wiatr różni się między miejscami na skoczni.")}
+                ]
+                delegate: ColumnLayout {
+                    required property var modelData
+                    Layout.fillWidth: true; spacing: Theme.dp(3)
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Label { text: modelData.title; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
+                        HelpDot { explanation: modelData.help }
+                    }
+                    SChoice {
+                        objectName: "weather-"+modelData.key+"-level"
+                        Layout.fillWidth: true
+                        model: [qsTr("Bardzo niskie"), qsTr("Niskie"), qsTr("Średnie"), qsTr("Wysokie"), qsTr("Bardzo wysokie")]
+                        currentIndex: Number(tuning.values[modelData.key+"Level"])
+                        onActivated: function(index) { tuning.backend.setLevel(modelData.key,index) }
+                    }
+                }
+            }
         }
     }
 }
