@@ -14907,6 +14907,17 @@ Check that you selected the correct file.</translation>
 <message><source>Średnie</source><translation>Medium</translation></message>
 <message><source>Wysokie</source><translation>High</translation></message>
 <message><source>Bardzo wysokie</source><translation>Very high</translation></message>
+<message><source>Podstawowa siła wiatru w plecy</source><translation>Base tailwind effect</translation></message>
+<message><source>Dodatkowa strata przy silnym wietrze w plecy</source><translation>Additional loss in strong tailwind</translation></message>
+<message><source>Szansa słabszego lądowania</source><translation>Chance of an imperfect landing</translation></message>
+<message><source>Dodatkowa szansa słabszego lądowania przy dużej odległości</source><translation>Additional imperfect landing chance at long distances</translation></message>
+<message><source>Kara w notach za słabsze lądowanie</source><translation>Judges penalty for an imperfect landing</translation></message>
+<message><source>Korekta noty przy K</source><translation>Mark adjustment at K</translation></message>
+<message><source>Wpływ odległości poniżej K</source><translation>Distance effect below K</translation></message>
+<message><source>Wpływ odległości powyżej K</source><translation>Distance effect above K</translation></message>
+<message><source>Wszystkie losowane warunki: siła wiatru</source><translation>All generated conditions: wind strength</translation></message>
+<message><source>Wszystkie losowane warunki: zmienność</source><translation>All generated conditions: variation</translation></message>
+<message><source>Wszystkie losowane warunki: siła podmuchów</source><translation>All generated conditions: gust strength</translation></message>
 </context>
     <context>
         <name>QuickBridge</name>
@@ -21528,7 +21539,16 @@ li.checked::marker { content: "\2612"; }
             <source>Nie znaleziono parametrów. Spróbuj krótszej nazwy lub opisu działania.</source>
             <translation>No parameters found. Try a shorter name or describe the effect.</translation>
         </message>
-    </context>
+    <message><source>Wiatr w sześciu miejscach na skoczni</source><translation>Wind at six points on the hill</translation></message>
+<message><source>Przód / tył</source><translation>Head / tail</translation></message>
+<message><source>Miejsce</source><translation>Position</translation></message>
+<message><source>Bok</source><translation>Crosswind</translation></message>
+<message><source>Wiatr pod narty / w plecy</source><translation>Headwind / tailwind</translation></message>
+<message><source>Wiatr boczny</source><translation>Crosswind</translation></message>
+<message><source>Dostosuj także wybrany preset</source><translation>Also adjust the selected preset</translation></message>
+<message><source>Trzy ustawienia poniżej działają na wszystkie losowane warunki. Zmniejsz je, aby osłabić wiatr, wahania lub podmuchy.</source><translation>The three settings below apply to all generated conditions. Lower them to reduce wind, variation or gusts.</translation></message>
+<message><source>Wpisz wiatr w m/s. Przód / tył: plus oznacza wiatr pod narty, minus — w plecy. Bok: znak oznacza stronę. Pomiędzy punktami wiatr zmienia się płynnie.</source><translation>Enter wind in m/s. Head / tail: positive means headwind, negative means tailwind. The crosswind sign indicates its side. Wind changes smoothly between points.</translation></message>
+</context>
     <context>
         <name>BalanceLabGenerator</name>
         <message>

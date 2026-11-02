@@ -14908,6 +14908,17 @@ Ověřte, že jste vybrali správný soubor.</translation>
 <message><source>Średnie</source><translation>Střední</translation></message>
 <message><source>Wysokie</source><translation>Vysoké</translation></message>
 <message><source>Bardzo wysokie</source><translation>Velmi vysoké</translation></message>
+<message><source>Podstawowa siła wiatru w plecy</source><translation>Základní vliv zadního větru</translation></message>
+<message><source>Dodatkowa strata przy silnym wietrze w plecy</source><translation>Další ztráta při silném zadním větru</translation></message>
+<message><source>Szansa słabszego lądowania</source><translation>Šance na horší dopad</translation></message>
+<message><source>Dodatkowa szansa słabszego lądowania przy dużej odległości</source><translation>Vyšší šance na horší dopad při dlouhém skoku</translation></message>
+<message><source>Kara w notach za słabsze lądowanie</source><translation>Srážka za horší dopad</translation></message>
+<message><source>Korekta noty przy K</source><translation>Úprava známky na K</translation></message>
+<message><source>Wpływ odległości poniżej K</source><translation>Vliv vzdálenosti pod K</translation></message>
+<message><source>Wpływ odległości powyżej K</source><translation>Vliv vzdálenosti nad K</translation></message>
+<message><source>Wszystkie losowane warunki: siła wiatru</source><translation>Všechny generované podmínky: síla větru</translation></message>
+<message><source>Wszystkie losowane warunki: zmienność</source><translation>Všechny generované podmínky: proměnlivost</translation></message>
+<message><source>Wszystkie losowane warunki: siła podmuchów</source><translation>Všechny generované podmínky: síla nárazů</translation></message>
 </context>
     <context>
         <name>QuickBridge</name>
@@ -21529,7 +21540,16 @@ li.checked::marker { content: "\2612"; }
             <source>Nie znaleziono parametrów. Spróbuj krótszej nazwy lub opisu działania.</source>
             <translation>Nebyly nalezeny žádné parametry. Zkuste kratší název nebo popis účinku.</translation>
         </message>
-    </context>
+    <message><source>Wiatr w sześciu miejscach na skoczni</source><translation>Vítr v šesti místech můstku</translation></message>
+<message><source>Przód / tył</source><translation>Přední / zadní</translation></message>
+<message><source>Miejsce</source><translation>Místo</translation></message>
+<message><source>Bok</source><translation>Boční vítr</translation></message>
+<message><source>Wiatr pod narty / w plecy</source><translation>Predni / zadni vitr</translation></message>
+<message><source>Wiatr boczny</source><translation>Boční vítr</translation></message>
+<message><source>Dostosuj także wybrany preset</source><translation>Upravit také vybranou předvolbu</translation></message>
+<message><source>Trzy ustawienia poniżej działają na wszystkie losowane warunki. Zmniejsz je, aby osłabić wiatr, wahania lub podmuchy.</source><translation>Tri nastaveni nize plati pro vsechny generovane podminky. Snizenim hodnot oslabite vitr, zmeny nebo narazy.</translation></message>
+<message><source>Wpisz wiatr w m/s. Przód / tył: plus oznacza wiatr pod narty, minus — w plecy. Bok: znak oznacza stronę. Pomiędzy punktami wiatr zmienia się płynnie.</source><translation>Zadejte vitr v m/s. Predni / zadni: plus znamena protivitr, minus zadni vitr. Znamenko bocniho vetru urcuje stranu. Mezi body se vitr plynule meni.</translation></message>
+</context>
     <context>
         <name>BalanceLabGenerator</name>
         <message>
