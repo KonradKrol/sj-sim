@@ -1213,6 +1213,19 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
         </message>
     <message><source>Nowy</source><translation>Nový</translation></message>
 <message><source>zawodnik</source><translation>závodník</translation></message>
+<message><source>Wyeksportowano paczkę do %1. Brakuje zdjęć: %2.</source><translation>Balicek byl exportovan do %1. Chybejici fotografie: %2.</translation></message>
+<message><source>Wyeksportowano paczkę do %1.</source><translation>Balicek byl exportovan do %1.</translation></message>
+<message><source>Wczytano kopię paczki. Brakuje zdjęć: %1; skoczkowie pozostają dostępni.</source><translation>Kopie byla nactena. Chybejici fotografie: %1; skokani zustavaji dostupni.</translation></message>
+<message><source>Wczytano kopię paczki wraz ze zdjęciami.</source><translation>Kopie balicku byla nactena s fotografiemi.</translation></message>
+<message><source>Nie udało się utworzyć nowego folderu eksportu.</source><translation>Nelze vytvorit novou slozku pro export.</translation></message>
+<message><source>Wybierz, gdzie zapisać folder paczki</source><translation>Vyberte umisteni slozky balicku</translation></message>
+<message><source>Paczka - %1</source><translation>Balicek - %1</translation></message>
+<message><source>Paczka gotowa</source><translation>Balicek je pripraven</translation></message>
+<message><source>%1
+
+Udostępnij cały folder. Aby wczytać paczkę, wybierz w nim plik pack.json.</source><translation>%1
+
+Sdilejte celou slozku. K importu vyberte soubor pack.json.</translation></message>
 </context>
     <context>
         <name>AthleteTokens</name>
@@ -6530,7 +6543,8 @@ li.checked::marker { content: "\2612"; }
             <source>Importuj paczkę</source>
             <translation>Importovat balíček</translation>
         </message>
-    </context>
+    <message><source>Wyeksportowano paczkę do %1.</source><translation>Balicek byl exportovan do %1.</translation></message>
+</context>
     <context>
         <name>HillTypesCheckBoxesWidget</name>
         <message>
@@ -8968,7 +8982,15 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
             <source>Własna wartość</source>
             <translation>Vlastní hodnota</translation>
         </message>
-    </context>
+    <message><source>Wyłączone</source><translation>Vypnuto</translation></message>
+<message><source>Bardzo rzadkie</source><translation>Velmi vzácné</translation></message>
+<message><source>Rzadkie</source><translation>Vzácné</translation></message>
+<message><source>Częste</source><translation>Časté</translation></message>
+<message><source>Bardzo częste</source><translation>Velmi časté</translation></message>
+<message><source>Dyskwalifikacje są wyłączone.</source><translation>Diskvalifikace jsou vypnuty.</translation></message>
+<message><source>Własne ustawienie: średnio 1 dyskwalifikacja na %1 skoków.</source><translation>Vlastni nastaveni: prumerne 1 diskvalifikace na %1 skoku.</translation></message>
+<message><source>Średnio 1 dyskwalifikacja na %1 skoków.</source><translation>Prumerne 1 diskvalifikace na %1 skoku.</translation></message>
+</context>
     <context>
         <name>NodeGroup</name>
         <message>
@@ -15574,6 +15596,7 @@ Ověřte, že jste vybrali správný soubor.</translation>
 <message><source>Seria próbna</source><translation>Zkušební kolo</translation></message>
 <message><source>Kwalifikacje</source><translation>Kvalifikace</translation></message>
 <message><source>Dyskwalifikacja: 1 na N skoków</source><translation>Diskvalifikace: 1 z N skoků</translation></message>
+<message><source>Częstość dyskwalifikacji</source><translation>Četnost diskvalifikací</translation></message>
 </context>
     <context>
         <name>QuickCalendar</name>
@@ -23067,7 +23090,9 @@ Technický klíč: %4</translation>
             <source>Gotowe</source>
             <translation>Hotovo</translation>
         </message>
-    </context>
+    <message><source>Eksport tworzy folder ze skoczkami i zdjęciami. Udostępnij cały folder; przy imporcie wybierz plik pack.json w jego wnętrzu.</source><translation>Export vytvori slozku se skokany a fotografiemi. Sdilejte celou slozku; pri importu vyberte soubor pack.json uvnitr.</translation></message>
+<message><source>Eksport tworzy jeden plik paczki skoczni. Aby go wczytać, wybierz ten plik przy imporcie.</source><translation>Export vytvori jeden soubor mustku. Pri importu vyberte tento soubor.</translation></message>
+</context>
     <context>
         <name>SortCountryButton</name>
         <message>

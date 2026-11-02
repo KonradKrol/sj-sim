@@ -1213,6 +1213,19 @@ But to keep you from getting too cheerful, your computer has been infected with 
         </message>
     <message><source>Nowy</source><translation>New</translation></message>
 <message><source>zawodnik</source><translation>athlete</translation></message>
+<message><source>Wyeksportowano paczkę do %1. Brakuje zdjęć: %2.</source><translation>Exported pack to %1. Missing photos: %2.</translation></message>
+<message><source>Wyeksportowano paczkę do %1.</source><translation>Exported pack to %1.</translation></message>
+<message><source>Wczytano kopię paczki. Brakuje zdjęć: %1; skoczkowie pozostają dostępni.</source><translation>Imported a copy. Missing photos: %1; the jumpers are still available.</translation></message>
+<message><source>Wczytano kopię paczki wraz ze zdjęciami.</source><translation>Imported a copy of the pack with its photos.</translation></message>
+<message><source>Nie udało się utworzyć nowego folderu eksportu.</source><translation>Could not create a new export folder.</translation></message>
+<message><source>Wybierz, gdzie zapisać folder paczki</source><translation>Choose where to save the pack folder</translation></message>
+<message><source>Paczka - %1</source><translation>Pack - %1</translation></message>
+<message><source>Paczka gotowa</source><translation>Pack ready</translation></message>
+<message><source>%1
+
+Udostępnij cały folder. Aby wczytać paczkę, wybierz w nim plik pack.json.</source><translation>%1
+
+Share the entire folder. To import the pack, select its pack.json file.</translation></message>
 </context>
     <context>
         <name>AthleteTokens</name>
@@ -6529,7 +6542,8 @@ li.checked::marker { content: "\2612"; }
             <source>Importuj paczkę</source>
             <translation>Import pack</translation>
         </message>
-    </context>
+    <message><source>Wyeksportowano paczkę do %1.</source><translation>Exported pack to %1.</translation></message>
+</context>
     <context>
         <name>HillTypesCheckBoxesWidget</name>
         <message>
@@ -8967,7 +8981,15 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
             <source>Własna wartość</source>
             <translation>Custom value</translation>
         </message>
-    </context>
+    <message><source>Wyłączone</source><translation>Off</translation></message>
+<message><source>Bardzo rzadkie</source><translation>Very rare</translation></message>
+<message><source>Rzadkie</source><translation>Rare</translation></message>
+<message><source>Częste</source><translation>Frequent</translation></message>
+<message><source>Bardzo częste</source><translation>Very frequent</translation></message>
+<message><source>Dyskwalifikacje są wyłączone.</source><translation>Disqualifications are disabled.</translation></message>
+<message><source>Własne ustawienie: średnio 1 dyskwalifikacja na %1 skoków.</source><translation>Custom setting: about 1 disqualification per %1 jumps.</translation></message>
+<message><source>Średnio 1 dyskwalifikacja na %1 skoków.</source><translation>About 1 disqualification per %1 jumps.</translation></message>
+</context>
     <context>
         <name>NodeGroup</name>
         <message>
@@ -15573,6 +15595,7 @@ Check that you selected the correct file.</translation>
 <message><source>Seria próbna</source><translation>Trial round</translation></message>
 <message><source>Kwalifikacje</source><translation>Qualifications</translation></message>
 <message><source>Dyskwalifikacja: 1 na N skoków</source><translation>Disqualification: 1 in N jumps</translation></message>
+<message><source>Częstość dyskwalifikacji</source><translation>Disqualification frequency</translation></message>
 </context>
     <context>
         <name>QuickCalendar</name>
@@ -23066,7 +23089,9 @@ Technical key: %4</translation>
             <source>Gotowe</source>
             <translation>Done</translation>
         </message>
-    </context>
+    <message><source>Eksport tworzy folder ze skoczkami i zdjęciami. Udostępnij cały folder; przy imporcie wybierz plik pack.json w jego wnętrzu.</source><translation>Export creates a folder with jumpers and photos. Share the entire folder; to import it, select the pack.json file inside.</translation></message>
+<message><source>Eksport tworzy jeden plik paczki skoczni. Aby go wczytać, wybierz ten plik przy imporcie.</source><translation>Export creates one hill pack file. Select it when importing.</translation></message>
+</context>
     <context>
         <name>SortCountryButton</name>
         <message>

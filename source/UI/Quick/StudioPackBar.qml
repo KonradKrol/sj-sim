@@ -49,6 +49,10 @@ ColumnLayout {
                     SButton { objectName: "saveStudioPackName"; text: qsTr("Zapisz nazwę"); enabled: packName.text.trim().length>0 && packName.text.trim()!==bar.backend.packName; onClicked: bar.backend.renamePack(packName.text) }
                 }
                 Label { text: qsTr("Zarządzanie paczkami"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true }
+                Label {
+                    text: bar.athletes ? qsTr("Eksport tworzy folder ze skoczkami i zdjęciami. Udostępnij cały folder; przy imporcie wybierz plik pack.json w jego wnętrzu.") : qsTr("Eksport tworzy jeden plik paczki skoczni. Aby go wczytać, wybierz ten plik przy imporcie.")
+                    color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap
+                }
                 Flow {
                     Layout.fillWidth: true; spacing: Theme.dp(6)
                     SButton { text: qsTr("Nowa paczka"); onClicked: {bar.backend.createPack();settings.close()} }

@@ -16,6 +16,8 @@
 #include <QTimer>
 #include <QDesktopServices>
 #include <QFileDialog>
+#include <QMessageBox>
+#include <QRegularExpression>
 #include <QWidget>
 #include <cmath>
 #include <algorithm>
@@ -34,6 +36,14 @@ bool insidePack(const QString &file,const QString &folder){
 #endif
 }
 QString photoReference(const QJsonObject &profile){const auto path=profile["photoPath"].toString();return path.isEmpty()?profile["portrait"].toString():path;}
+int missingPhotos(const QJsonObject &pack,const QString &folder) {
+    QSet<QString> missing;
+    for(const auto &entry:pack["profiles"].toArray()) {
+        const auto path=photoReference(entry.toObject());
+        if(!path.isEmpty() && !QFileInfo::exists(QDir(folder).filePath(path)))missing.insert(path);
+    }
+    return missing.size();
+}
 bool copyReferencedPhotos(const QJsonObject &pack,const QString &source,const QString &target,QString &error){
     QSet<QString> copied;
     for(const auto &entry:pack["profiles"].toArray()){
@@ -135,19 +145,31 @@ bool AthleteStudioController::readPack(const QString &file,QJsonObject &pack,QSt
 }
 bool AthleteStudioController::exportTo(const QString &destination){
     if(QFileInfo::exists(destination)){status(tr("Wybierz nowy folder. Istniejące pliki nie zostaną nadpisane."));return false;}
-    if(!QDir().mkpath(destination)){status(tr("Nie udało się utworzyć folderu eksportu."));return false;}
+    if(!QDir().mkdir(destination)){status(tr("Nie udało się utworzyć nowego folderu eksportu."));return false;}
     QString error;const bool images=copyReferencedPhotos(currentPack(),packDirectory(),destination,error);
     if(!images || !writeJson(destination+"/pack.json",currentPack())){QDir(destination).removeRecursively();status(error.isEmpty()?tr("Nie udało się wyeksportować paczki."):error);return false;}
-    status(tr("Wyeksportowano paczkę"));return true;
+    const int missing=missingPhotos(currentPack(),packDirectory());
+    status(missing ? tr("Wyeksportowano paczkę do %1. Brakuje zdjęć: %2.").arg(QDir::toNativeSeparators(destination)).arg(missing) : tr("Wyeksportowano paczkę do %1.").arg(QDir::toNativeSeparators(destination)));return true;
 }
 bool AthleteStudioController::importFrom(const QString &file){
     QJsonObject pack;QString error;if(!readPack(file,pack,error)){status(error);return false;}pack["id"]=uuid();const auto target=directory(pack);
     if(!QDir().mkpath(target)){status(tr("Nie udało się utworzyć folderu paczki."));return false;}
     if(!copyReferencedPhotos(pack,QFileInfo(file).absolutePath(),target,error) || !persist(pack,error)){QDir(target).removeRecursively();status(error);return false;}
-    m_packs.append(pack);m_pack=m_packs.size()-1;m_selected=pack["profiles"].toArray().isEmpty()?-1:0;m_undo.clear();m_redo.clear();status(tr("Wczytano kopię paczki"));return true;
+    m_packs.append(pack);m_pack=m_packs.size()-1;m_selected=pack["profiles"].toArray().isEmpty()?-1:0;m_undo.clear();m_redo.clear();
+    const int missing=missingPhotos(pack,QFileInfo(file).absolutePath());
+    status(missing ? tr("Wczytano kopię paczki. Brakuje zdjęć: %1; skoczkowie pozostają dostępni.").arg(missing) : tr("Wczytano kopię paczki wraz ze zdjęciami."));return true;
 }
 
-void AthleteStudioController::exportPack(){const auto parent=QFileDialog::getExistingDirectory(qobject_cast<QWidget *>(this->parent()),tr("Folder docelowy paczki"));if(!parent.isEmpty())exportTo(parent+"/sj-athletes-"+uuid().left(8));}
+void AthleteStudioController::exportPack(){
+    auto *owner=qobject_cast<QWidget *>(parent());
+    const auto folder=QFileDialog::getExistingDirectory(owner,tr("Wybierz, gdzie zapisać folder paczki"));if(folder.isEmpty())return;
+    QString name=packName().trimmed();name.replace(QRegularExpression(QStringLiteral("[\\\\/:*?\"<>|]")),"_");
+    name=name.left(80);while(name.endsWith('.') || name.endsWith(' '))name.chop(1);
+    if(name.isEmpty())name=QStringLiteral("SjSim");
+    const auto base=tr("Paczka - %1").arg(name);QString destination=QDir(folder).filePath(base);
+    for(int n=2;QFileInfo::exists(destination);++n)destination=QDir(folder).filePath(base+QStringLiteral(" (%1)").arg(n));
+    if(exportTo(destination))QMessageBox::information(owner,tr("Paczka gotowa"),tr("%1\n\nUdostępnij cały folder. Aby wczytać paczkę, wybierz w nim plik pack.json.").arg(m_message));
+}
 void AthleteStudioController::importPack(){const auto file=QFileDialog::getOpenFileName(qobject_cast<QWidget *>(parent()),tr("Wczytaj nową paczkę skoczków"),{},tr("Paczka skoczków (pack.json)"));if(!file.isEmpty())importFrom(file);}
 
 void AthleteStudioController::notifyChanged()
