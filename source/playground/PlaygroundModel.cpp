@@ -157,6 +157,14 @@ QString effectDescription(const QString &key,const QString &group) {
     if(key=="quality.negativeInfluence")return QObject::tr("Rozdziela siłę losowych strat i bonusów, nie szansę ich wystąpienia. Np. 0,65 zmienia wylosowane −10 na −13, a +10 na +7 przed wpływem perków.");
     if(key=="quality.hillPreferenceStrength")return QObject::tr("Wzmacnia wpływ charakteru skoczni na Lotnika i Specjalistę małych skoczni. Np. 0 wyłącza dodatkową preferencję skoczni; specjalizacja zależna od K pozostaje.");
     if(key=="quality.noise")return QObject::tr("Wybiera rozkład losowej jakości skoków. Np. Laplace’a daje więcej skoków blisko średniej i więcej skrajnych wpadek lub wyskoków niż rozkład normalny.");
+    if(key=="flight.tailwindMultiplier")return QObject::tr("Wzmacnia lub osłabia podstawowy wpływ wiatru w plecy. Np. 1,2 daje o 20% silniejszą stratę niż 1,0, przed wpływem podmuchów.");
+    if(key=="flight.tailwindStrongExtra")return QObject::tr("Dodaje stopniowo stratę wraz ze wzrostem siły tylnego wiatru. Np. 0 wyłącza ten dodatkowy efekt.");
+    if(key=="landing.imperfectStyleBase")return QObject::tr("Bazowa szansa słabszego lądowania, także przy telemarku. Np. 0,06 oznacza 6% przed dodatkiem za odległość.");
+    if(key=="landing.imperfectStyleIncrease")return QObject::tr("Dodatkowa szansa słabszego lądowania narastająca przy trudnym zeskoku. Np. 0 wyłącza wzrost tej szansy.");
+    if(key=="landing.imperfectStylePenalty")return QObject::tr("Kara w nocie każdego sędziego po wylosowaniu słabszego lądowania. Np. 0,5 odejmuje pół punktu.");
+    if(key=="landing.distanceStyleOffset")return QObject::tr("Korekta bazowej noty względem klasy stylu, przy odległości K. Np. -0,7 zmniejsza ją o 0,7 punktu.");
+    if(key=="landing.distanceStyleBelowK")return QObject::tr("Siła obniżenia not za skoki poniżej K, zależna od proporcji odległości do K. Np. 10 i skok 10% poniżej K oznaczają około punkt straty.");
+    if(key=="landing.distanceStyleAboveK")return QObject::tr("Siła wzrostu not za skoki powyżej K, zależna od proporcji odległości do K. Np. 10 i skok 10% za K oznaczają około punkt premii przed karami.");
     if(key=="flight.referenceQuality")return QObject::tr("Jakość skoku odpowiadająca odległości odniesienia przy bazowej belce i bez opadów. Np. zwiększenie z 70 do 80 sprawia, że jakość 70 zaczyna poniżej tej odległości.");
     if(key=="flight.referenceDistanceAtK")return QObject::tr("Początkowy zapas lotu jako część K, zanim zadziałają wiatr i geometria zeskoku. Np. 1,10 na K120 daje zapas 132 m; końcowa odległość może być inna.");
     if(key=="flight.qualityMetresAtK120")return QObject::tr("Metry początkowego zapasu za punkt jakości powyżej odniesienia na K120. Np. 0,8 i jakość wyższa o 10 dają dodatkowe 8 m zapasu przed wpływem wiatru.");
@@ -165,8 +173,8 @@ QString effectDescription(const QString &key,const QString &group) {
     if(key=="flight.largeHillSpreadExponent")return QObject::tr("Kształt narastania efektu powyżej progu K. Np. 1 oznacza wzrost liniowy; 1,5 łagodniejszy początek na obiektach hybrydowych i mocniejszy wzrost dalej.");
     if(key=="flight.largeHillSpreadPivot")return QObject::tr("Jakość skoku, którego poszerzanie nie przesuwa. Np. przy 80 słabsze skoki są krótsze, a lepsze dłuższe. To jakość całego skoku, nie samo OVR.");
     if(key=="flight.referenceGate")return QObject::tr("Belka, przy której silnik wyznacza bazowy zapas lotu. Np. odniesienie 10 i start z 12 oznaczają doliczenie wpływu dwóch belek.");
-    if(key=="flight.gateMetresAtK120")return QObject::tr("Parametr zachowany dla starych profili. Efekt belki wynika teraz z punktów za belkę i za metr.");
-    if(key=="flight.gateTailwindInteraction")return QObject::tr("Parametr zachowany dla starych profili. Wiatr nie zmienia podstawowej siły belki.");
+    if(key=="flight.gateMetresAtK120")return QObject::tr("Parametr zachowany dla starych profili. Efekt belki wynika teraz z punktów za belkę i za metr. Np. zmiana tej dawnej wartości nie wpływa już na skok.");
+    if(key=="flight.gateTailwindInteraction")return QObject::tr("Parametr zachowany dla starych profili. Wiatr nie zmienia podstawowej siły belki. Np. zmiana tej dawnej wartości nie wpływa już na skok.");
     if(key=="flight.stepMetres")return QObject::tr("Odległość między kolejnymi obliczeniami lotu; mniejsza daje dokładniejszą, ale wolniejszą symulację. Np. krok 0,5 m wymaga około dwa razy więcej obliczeń niż 1 m.");
     if(key=="flight.secondsPerK")return QObject::tr("Czas, po którym skoczek dociera do K w modelu pogody. Np. 4 s oznacza napotkanie wiatru przy K cztery sekundy po starcie.");
     if(key=="flight.windReservePerMetre")return QObject::tr("Siła wpływu wiatru pod narty i w plecy na podtrzymywanie lotu. Np. zwiększenie wartości wzmacnia zarówno pomoc wiatru pod narty, jak straty w wietrze w plecy.");
@@ -317,9 +325,9 @@ QString effectDescription(const QString &key,const QString &group) {
         else if(field=="transitionSeconds")help=QObject::tr("Zakres czasu płynnego przechodzenia między tendencjami; większe wartości łagodzą zmianę wiatru.");
         return help+" "+(key.endsWith(".min")?QObject::tr("Ustawiasz minimum losowania w tym presecie. Np. minimum 1 i maksimum 2 pozwalają wylosować wartość od 1 do 2 w jednostce pola."):QObject::tr("Ustawiasz maksimum losowania w tym presecie. Np. minimum 1 i maksimum 2 pozwalają wylosować wartość od 1 do 2 w jednostce pola."));
     }
-    if(key=="generator.global.strengthScale")return QObject::tr("Zmienia podstawową siłę wiatru we wszystkich presetach i automatycznych propozycjach. 1 zachowuje pierwotną siłę, 0,8 zmniejsza ją o 20%.");
-    if(key=="generator.global.variationScale")return QObject::tr("Zmienia siłę wahań w czasie, różnic na zeskoku i tendencji we wszystkich losowanych warunkach.");
-    if(key=="generator.global.gustScale")return QObject::tr("Zmienia siłę podmuchów we wszystkich losowanych warunkach, bez zmiany ich częstości.");
+    if(key=="generator.global.strengthScale")return QObject::tr("Zmienia podstawową siłę wiatru we wszystkich presetach i automatycznych propozycjach. Np. 1 zachowuje pierwotną siłę, a 0,8 zmniejsza ją o 20%.");
+    if(key=="generator.global.variationScale")return QObject::tr("Zmienia siłę wahań w czasie, różnic na zeskoku i tendencji we wszystkich losowanych warunkach. Np. 0,5 zmniejsza te różnice o połowę.");
+    if(key=="generator.global.gustScale")return QObject::tr("Zmienia siłę podmuchów we wszystkich losowanych warunkach, bez zmiany ich częstości. Np. 0,5 zmniejsza siłę podmuchów o połowę.");
     if(key.startsWith("generator.auto.")) {
         const auto field=key.mid(15);
         if(field=="strengthScale")return QObject::tr("Mnożnik bazowej siły automatycznie losowanego wiatru, bez podmuchów i zmienności. Np. 0,5 zmienia propozycję 2 m/s na 1 m/s.");
