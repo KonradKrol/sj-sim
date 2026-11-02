@@ -1,3 +1,4 @@
+#include "AtomicJsonFile.h"
 #include <QObject>
 #include "GlobalAppSettings.h"
 
@@ -173,14 +174,6 @@ bool GlobalAppSettings::loadFromJson()
 
 bool GlobalAppSettings::writeToJson()
 {
-    QFile file("userData/Settings/appSettings.json");
-    if(!file.open(QFile::WriteOnly | QFile::Text))
-    {
-        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z ustawieniami aplikacji"), QObject::tr("Nie udało się otworzyć pliku userData/Settings/appSettings.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
-        message.setModal(true);
-        message.exec();
-        return false;
-    }
     QJsonDocument document;
     QJsonObject mainObject;
     QJsonObject settingsObject;
@@ -198,9 +191,5 @@ bool GlobalAppSettings::writeToJson()
     mainObject.insert("settings", settingsObject);
     document.setObject(mainObject);
 
-    file.resize(0);
-    file.write(document.toJson(QJsonDocument::Indented));
-    file.close();
-
-    return true;
+    return AtomicJsonFile::write("userData/Settings/appSettings.json",document);
 }

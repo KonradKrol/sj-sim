@@ -1,3 +1,4 @@
+#include "AtomicJsonFile.h"
 #include "JumpsImportancePreset.h"
 
 #include <QJsonArray>
@@ -55,12 +56,7 @@ bool JumpsImportancePreset::saveToFile(QString dir)
 {
     QJsonDocument document;
     document.setObject(JumpsImportancePreset::getJsonObject(*this));
-    QFile file(dir + getName() + ".json");
-    file.open(QFile::WriteOnly | QFile::Text);
-    file.resize(0);
-    file.write(document.toJson(QJsonDocument::Indented));
-    file.close();
-    return true;
+    return AtomicJsonFile::write(dir + getName() + ".json",document);
 }
 
 JumpsImportancePreset JumpsImportancePreset::loadFromJson(QString fileName)

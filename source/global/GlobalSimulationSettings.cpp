@@ -1,3 +1,4 @@
+#include "AtomicJsonFile.h"
 #include <QObject>
 #include "GlobalSimulationSettings.h"
 
@@ -153,14 +154,6 @@ bool GlobalSimulationSettings::loadFromFile()
 
 bool GlobalSimulationSettings::writeToFile()
 {
-    QFile file("userData/Settings/globalSimulationSettings.json");
-    if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z ustawieniami symulacji"), QObject::tr("Nie udało się otworzyć pliku userData/Settings/globalSimulationSettings.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
-        message.setModal(true);
-        message.exec();
-        return false;
-    }
     QJsonDocument document;
     QJsonObject mainObject;
     QJsonObject settingsObject;
@@ -174,10 +167,7 @@ bool GlobalSimulationSettings::writeToFile()
     settingsObject.insert("flight-form-effect", getFlightFormEffect());
     mainObject.insert("settings", settingsObject);
     document.setObject(mainObject);
-    file.resize(0);
-    file.write(document.toJson(QJsonDocument::Indented));
-    file.close();
-    return true;
+    return AtomicJsonFile::write("userData/Settings/globalSimulationSettings.json",document);
 }
 
 GlobalSimulationSettings::Snapshot GlobalSimulationSettings::snapshot() {

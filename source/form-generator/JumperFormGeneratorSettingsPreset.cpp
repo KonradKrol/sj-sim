@@ -1,3 +1,4 @@
+#include "../global/AtomicJsonFile.h"
 #include <QObject>
 #include "JumperFormGeneratorSettingsPreset.h"
 #include <QJsonValue>
@@ -75,18 +76,7 @@ bool JumperFormGeneratorSettingsPreset::saveToFile(QString dir)
     QJsonObject mainObject;
     mainObject.insert("jumper-form-generator-settings-preset", JumperFormGeneratorSettingsPreset::getJsonObject(*this));
     document.setObject(mainObject);
-    QFile file(dir + getName() + ".json");
-    if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z presetem generatora formy ") + getName(), QObject::tr("Nie udało się otworzyć pliku ") + dir + getName() + ".json" + QObject::tr("\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
-        message.setModal(true);
-        message.exec();
-        return false;
-    }
-    file.resize(0);
-    file.write(document.toJson(QJsonDocument::Indented));
-    file.close();
-    return true;
+    return AtomicJsonFile::write(dir + getName() + ".json",document);
 }
 
 QString JumperFormGeneratorSettingsPreset::getName() const

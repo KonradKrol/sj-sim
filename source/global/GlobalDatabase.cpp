@@ -1,3 +1,4 @@
+#include "AtomicJsonFile.h"
 #include <QObject>
 #include "GlobalDatabase.h"
 #include "CountryCodes.h"
@@ -605,19 +606,7 @@ bool GlobalDatabase::writeJumpers()
     mainObject.insert("jumpers", QJsonValue(array));
     document.setObject(mainObject);
 
-    QFile file("userData/GlobalDatabase/globalJumpers.json");
-    if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z zawodnikami"), QObject::tr("Nie udało się otworzyć pliku userData/GlobalDatabase/globalJumpers.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
-        message.setModal(true);
-        message.exec();
-        return false;
-    }
-    file.resize(0);
-    file.write(document.toJson(QJsonDocument::Indented));
-
-    file.close();
-    return true;
+    return AtomicJsonFile::write("userData/GlobalDatabase/globalJumpers.json",document);
 }
 
 bool GlobalDatabase::writeHills()
@@ -632,18 +621,7 @@ bool GlobalDatabase::writeHills()
     mainObject.insert("hills", array);
     document.setObject(mainObject);
 
-    QFile file("userData/GlobalDatabase/globalHills.json");
-    if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku ze skoczniami"), QObject::tr("Nie udało się otworzyć pliku userData/GlobalDatabase/globalHills.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
-        message.setModal(true);
-        message.exec();
-        return false;
-    }
-    file.resize(0);
-    file.write(document.toJson(QJsonDocument::Indented));
-    file.close();
-    return true;
+    return AtomicJsonFile::write("userData/GlobalDatabase/globalHills.json",document);
 }
 
 bool GlobalDatabase::writeCompetitionsRules()
@@ -659,18 +637,7 @@ bool GlobalDatabase::writeCompetitionsRules()
     mainObject.insert("competitionsRules", array);
     document.setObject(mainObject);
 
-    QFile file("userData/GlobalDatabase/globalCompetitionsRules.json");
-    if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z zasadami konkursów"), QObject::tr("Nie udało się otworzyć pliku userData/GlobalDatabase/globalCompetitionsRules.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
-        message.setModal(true);
-        message.exec();
-        return false;
-    }
-    file.resize(0);
-    file.write(document.toJson(QJsonDocument::Indented));
-    file.close();
-    return true;
+    return AtomicJsonFile::write("userData/GlobalDatabase/globalCompetitionsRules.json",document);
 }
 
 bool GlobalDatabase::writeSimulationSaves()
@@ -749,12 +716,7 @@ bool GlobalDatabase::writeCountries()
     }
     mainObject.insert("countries", array);
     document.setObject(mainObject);
-    QFile file("userData/GlobalDatabase/globalCountries.json");
-    file.open(QFile::WriteOnly | QFile::Text);
-    file.resize(0);
-    file.write(document.toJson(QJsonDocument::Indented));
-    file.close();
-    return true;
+    return AtomicJsonFile::write("userData/GlobalDatabase/globalCountries.json",document);
 }
 
 

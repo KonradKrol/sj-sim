@@ -1,3 +1,4 @@
+#include "AtomicJsonFile.h"
 #include <QObject>
 #include "PointsForPlacesPreset.h"
 #include <QJsonArray>
@@ -92,12 +93,7 @@ bool PointsForPlacesPreset::saveToFile(QString dir)
     QJsonObject mainObject;
     mainObject.insert("points-for-places-preset", PointsForPlacesPreset::getJsonObject(*this));
     document.setObject(mainObject);
-    QFile file(dir + getName() + ".json");
-    file.open(QFile::WriteOnly | QFile::Text);
-    file.resize(0);
-    file.write(document.toJson(QJsonDocument::Indented));
-    file.close();
-    return true;
+    return AtomicJsonFile::write(dir + getName() + ".json",document);
 }
 
 PointsForPlacesPreset PointsForPlacesPreset::loadFromJson(QString fileName)
