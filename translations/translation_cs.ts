@@ -23415,4 +23415,7 @@ Zavřete předchozí okno nebo spusťte samostatnou kopii hry s vlastní složko
 <message><source>Zmienia siłę wahań w czasie, różnic na zeskoku i tendencji we wszystkich losowanych warunkach. Np. 0,5 zmniejsza te różnice o połowę.</source><translation>Mění sílu časových výkyvů, rozdílů podél doskočiště a trendů ve všech generovaných podmínkách. Např. 0,5 sníží tyto rozdíly na polovinu.</translation></message>
 </context>
 <context><name>QObject</name><message><source>Paczka zawiera powtórzony identyfikator. Wyeksportuj ją ponownie ze źródłowej bazy.</source><translation>Balíček obsahuje duplicitní identifikátor. Exportujte jej znovu z původní databáze.</translation></message></context>
+<context><name>QObject</name><message><source>Dane gry lub paczki edytorów są używane przez inną instancję Sj.Sim albo nie można ich zapisać.
+Zamknij poprzednie okno Sj.Sim i spróbuj ponownie.</source><translation>Herní data nebo balíčky editorů používá jiná instance Sj.Sim nebo do nich nelze zapisovat.
+Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></context>
 </TS>

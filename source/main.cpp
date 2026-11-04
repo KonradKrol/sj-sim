@@ -56,13 +56,16 @@ int main(int argc, char *argv[])
     // on the shell/shortcut choosing that directory as its working directory.
     QDir::setCurrent(QCoreApplication::applicationDirPath());
 
-    // All GUI persistence is portable and relative to this directory.
-    // Keep the lock alive until every window and writer has shut down.
+    // Portable files and shared authoring profiles have separate roots.
+    // Keep both locks alive until every window and writer has shut down.
     QDir().mkpath("userData");
     QLockFile dataLock(QDir("userData").absoluteFilePath(".sj-sim.lock"));
-    if(!dataLock.tryLock(0)) {
+    const auto authoringRoot=QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir().mkpath(authoringRoot);
+    QLockFile authoringLock(authoringRoot+"/.sj-sim.lock");
+    if(!dataLock.tryLock(0) || !authoringLock.tryLock(0)) {
         QMessageBox::warning(nullptr, QObject::tr("Sj.Sim jest już uruchomiony"),
-            QObject::tr("Ten folder danych jest używany przez inną instancję Sj.Sim albo nie można go zapisać.\nZamknij poprzednie okno lub uruchom osobną kopię gry z innym folderem userData."));
+            QObject::tr("Dane gry lub paczki edytorów są używane przez inną instancję Sj.Sim albo nie można ich zapisać.\nZamknij poprzednie okno Sj.Sim i spróbuj ponownie."));
         return 1;
     }
     deploymentTrace("Data lock acquired");

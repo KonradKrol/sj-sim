@@ -23414,4 +23414,7 @@ Close the previous window or run a separate copy of the game with its own userDa
 <message><source>Zmienia siłę wahań w czasie, różnic na zeskoku i tendencji we wszystkich losowanych warunkach. Np. 0,5 zmniejsza te różnice o połowę.</source><translation>Scales fluctuations over time, differences along the slope and trends in all generated conditions. E.g. 0.5 halves these differences.</translation></message>
 </context>
 <context><name>QObject</name><message><source>Paczka zawiera powtórzony identyfikator. Wyeksportuj ją ponownie ze źródłowej bazy.</source><translation>The pack contains a duplicate identifier. Export it again from the original database.</translation></message></context>
+<context><name>QObject</name><message><source>Dane gry lub paczki edytorów są używane przez inną instancję Sj.Sim albo nie można ich zapisać.
+Zamknij poprzednie okno Sj.Sim i spróbuj ponownie.</source><translation>Game data or editor packs are used by another Sj.Sim instance or are not writable.
+Close the previous Sj.Sim window and try again.</translation></message></context>
 </TS>
