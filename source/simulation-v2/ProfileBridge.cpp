@@ -14,7 +14,7 @@ Athlete athleteInput(const AthleteProfile &profile)
 Hill hillInput(const HillProfile &profile)
 {
     Hill value;value.k=profile.k;value.hs=profile.hs;value.realHs=profile.realHs();value.takeoffBias=profile.takeoffBias();
-    value.pointsAtK=profile.pointsAtK;value.pointsPerMetre=profile.pointsPerMetre;value.gatePoints=profile.gatePoints;
+    value.pointsAtK=HillProfile::automaticPointsAtK(profile.k);value.pointsPerMetre=HillProfile::automaticPointsPerMetre(profile.k);value.gatePoints=profile.gatePoints;
     value.headwindPoints=profile.headwindPoints;value.tailwindPoints=HillProfile::automaticTailwindPoints(profile.headwindPoints);value.validate();return value;
 }
 

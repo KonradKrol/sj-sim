@@ -14,6 +14,8 @@ struct HillProfile {
     std::array<int,4> perks{{0,0,0,0}};
     static HillProfile create();
     static double automaticTailwindPoints(double headwindPoints);
+    static double automaticPointsAtK(double k);
+    static double automaticPointsPerMetre(double k);
     QJsonObject toJson() const;
     static bool fromJson(const QJsonObject &json,HillProfile &profile,QString &error);
     double realHs() const;

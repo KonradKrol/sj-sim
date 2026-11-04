@@ -45,11 +45,9 @@ ScrollView {
             GridLayout {
                 objectName: "hillScoring"
                 Layout.fillWidth: true; columns: width>Theme.dp(520)?3:2; columnSpacing: Theme.dp(10); rowSpacing: Theme.dp(6)
-                HillNumber { backend: editor.backend; fieldKey: "pointsAtK"; label: qsTr("Punkty za punkt K"); maximum: 200; Layout.fillWidth: true }
-                HillNumber { backend: editor.backend; fieldKey: "pointsPerMetre"; label: qsTr("Punkty za metr"); maximum: 20; Layout.fillWidth: true }
                 HillNumber { backend: editor.backend; fieldKey: "gatePoints"; label: qsTr("Punkty za belkę"); Layout.fillWidth: true }
                 HillNumber { backend: editor.backend; fieldKey: "headwindPoints"; label: qsTr("Punkty za wiatr przedni"); Layout.fillWidth: true }
-                HillNumber { backend: editor.backend; fieldKey: "tailwindPoints"; label: qsTr("Punkty za wiatr w plecy (automatycznie)"); readOnly: true; Layout.fillWidth: true }
+                HillNumber { backend: editor.backend; fieldKey: "tailwindPoints"; label: qsTr("Punkty za wiatr w plecy"); readOnly: true; Layout.fillWidth: true }
             }
             Label { text: qsTr("Punkty za wiatr w plecy to 1,5 × wartość dla wiatru pod narty, maksymalnie 100."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
             RowLayout {

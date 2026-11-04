@@ -11,6 +11,7 @@ ColumnLayout {
     property real maximum: 100
     property real step: 0.1
     property bool readOnly: false
+    opacity: readOnly ? 0.55 : 1
     spacing: Theme.dp(3)
     Label { text: field.label; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     NumberField {

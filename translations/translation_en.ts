@@ -6198,7 +6198,7 @@ li.checked::marker { content: "\2612"; }
             <translation>Difficult landing threshold: %1 m.</translation>
         </message>
         <message>
-            <source>Punkty za wiatr w plecy (automatycznie)</source>
+            <source>Punkty za wiatr w plecy</source>
             <translation>Tailwind points (automatic)</translation>
         </message>
         <message>
@@ -6553,7 +6553,9 @@ li.checked::marker { content: "\2612"; }
             <source>Opcje skoczni</source>
             <translation>Hill options</translation>
         </message>
-    </context>
+        <message><source>Duplikuj</source><translation>Duplicate</translation></message>
+    <message><source>Usuń</source><translation>Delete</translation></message>
+</context>
     <context>
         <name>HillStudioController</name>
         <message>

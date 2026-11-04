@@ -6199,7 +6199,7 @@ li.checked::marker { content: "\2612"; }
             <translation>Hranice obtížného přistání: %1 m.</translation>
         </message>
         <message>
-            <source>Punkty za wiatr w plecy (automatycznie)</source>
+            <source>Punkty za wiatr w plecy</source>
             <translation>Body za zadní vítr (automaticky)</translation>
         </message>
         <message>
@@ -6554,7 +6554,9 @@ li.checked::marker { content: "\2612"; }
             <source>Opcje skoczni</source>
             <translation>Možnosti můstku</translation>
         </message>
-    </context>
+        <message><source>Duplikuj</source><translation>Duplikovat</translation></message>
+    <message><source>Usuń</source><translation>Odstranit</translation></message>
+</context>
     <context>
         <name>HillStudioController</name>
         <message>

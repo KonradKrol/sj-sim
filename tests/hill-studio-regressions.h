@@ -6,6 +6,12 @@ static void hillStudioRegressions(MainWindow &main){
     QTemporaryDir storage;check(storage.isValid(),"isolated hill library");
     HillProfile hill=HillProfile::create(),decoded;QString error;
     check(HillProfile::fromJson(hill.toJson(),decoded,error),"hill profile round trip");
+    for(double k:{95.,130.,169.,170.,225.}) {
+        auto points=hill.toJson();points["k"]=k;points["hs"]=k+20;points["pointsAtK"]=1;points["pointsPerMetre"]=9;
+        check(HillProfile::fromJson(points,decoded,error) && decoded.pointsAtK==(k<170?60:120) && decoded.pointsPerMetre==(k<100?2:k<170?1.8:1.2),"hill scoring derives from K instead of stale authored values");
+        const auto input=SimulationV2::hillInput(decoded);check(input.pointsAtK==decoded.pointsAtK && input.pointsPerMetre==decoded.pointsPerMetre,"simulation uses derived hill scoring");
+        points.remove("pointsAtK");points.remove("pointsPerMetre");check(HillProfile::fromJson(points,decoded,error),"hill profiles do not require authored automatic scoring");
+    }
     hill.headwindPoints=10;hill.tailwindPoints=2;auto oldWind=hill.toJson();oldWind["tailwindPoints"]=2;check(HillProfile::fromJson(oldWind,decoded,error) && decoded.tailwindPoints==15,"loaded hill derives tailwind points from headwind");check(SimulationV2::hillInput(hill).tailwindPoints==15,"simulation uses the derived tailwind points");hill.headwindPoints=100;check(hill.toJson()["tailwindPoints"].toDouble()==100,"derived compensation respects the supported maximum");hill=HillProfile::create();
     {Hill value;check(value.setSimulationProfile(hill,error),"hill draft fixture");SimulationProfileDraft draft(DataPack::Hills);draft.load(value);draft.setValue("headwindPoints",13);check(draft.profile()["tailwindPoints"].toDouble()==19.5,"season hill draft derives tailwind points");draft.setValue("tailwindPoints",1);check(draft.profile()["tailwindPoints"].toDouble()==19.5,"season hill draft rejects direct tailwind edits");}
     for(int pair=0;pair<4;++pair)for(int value=-4;value<=4;++value){hill.perks[pair]=value;check(HillProfile::fromJson(hill.toJson(),decoded,error) && decoded.perks[pair]==value,"all hill perk sides and strengths round trip");hill.perks[pair]=0;}
@@ -31,6 +37,8 @@ static void hillStudioRegressions(MainWindow &main){
     check(item(scene(&window)->rootObject(),"hillStudio"),"modern hill studio opens in hills catalog");
     clickControl(scene(&window),"manageStudioPack");presentation(&window)->grab().save(output+"/hill-pack-settings.png");auto *packName=item(scene(&window)->quickWindow()->contentItem(),"studioPackName");check(packName,"hill pack settings show the name");packName->setProperty("text","Hill pack renamed");clickControl(scene(&window),"saveStudioPackName");check(uiBackend->packName()=="Hill pack renamed","hill pack settings save the selected pack name");clickControl(scene(&window),"closeStudioPack");QTest::qWait(200);
     clickControl(scene(&window),"hillAdd");QTest::qWait(60);
+    check(!item(scene(&window)->rootObject(),"hill-pointsAtK") && !item(scene(&window)->rootObject(),"hill-pointsPerMetre"),"automatic hill scoring is not exposed as editable attributes");
+    check(item(scene(&window)->rootObject(),"hillDuplicate")->property("text").toString().size()>1 && item(scene(&window)->rootObject(),"hillRemove")->property("text").toString().size()>1,"hill duplicate and delete actions have visible text labels");
     uiBackend->setValue("name","Vikersund");uiBackend->setValue("hs",225);uiBackend->setPerk(1,1,3,false);QTest::qWait(60);
     uiBackend->setValue("headwindPoints",10);uiBackend->setValue("tailwindPoints",1);QTest::qWait(60);check(uiBackend->profile()["tailwindPoints"].toDouble()==15,"studio derives tailwind points and rejects direct edits");auto *tailwind=item(scene(&window)->rootObject(),"hill-tailwindPoints");check(tailwind && !tailwind->isEnabled(),"derived tailwind points remain visible but cannot be edited");
     main.resize(1440,900);QTest::qWait(100);const auto originalHill=uiBackend->profile()["id"].toString();uiBackend->add();uiBackend->setValue("country","AUT");uiBackend->select(0);QTest::qWait(80);
