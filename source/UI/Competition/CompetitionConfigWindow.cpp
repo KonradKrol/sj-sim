@@ -1729,7 +1729,7 @@ int CompetitionConfigWindow::suggestedGate() {
     while(low<high) {
         const int middle=(low+high+1)/2;simulator.setGate(middle);simulator.setCompetitionStartGate(middle);
         const double distance=simulator.previewDistance();if(!std::isfinite(distance))return -1;
-        if(distance<=hill.getHSPoint()*.97)low=middle;else high=middle-1;
+        if(distance<=hill.getRealHS()*.97)low=middle;else high=middle-1;
     }
     return low;
 }

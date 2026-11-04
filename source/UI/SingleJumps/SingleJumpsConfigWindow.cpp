@@ -397,7 +397,7 @@ int SingleJumpsConfigWindow::suggestedGate()
         simulator.setGate(middle);simulator.setCompetitionStartGate(middle);
         const double distance = simulator.previewDistance();
         if(!std::isfinite(distance))return -1;
-        if(distance <= hill.getHSPoint() * .97)low = middle;
+        if(distance <= hill.getRealHS() * .97)low = middle;
         else high = middle - 1;
     }
     return low;

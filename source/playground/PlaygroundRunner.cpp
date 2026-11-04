@@ -90,7 +90,7 @@ int autoGate(const QJsonObject &config){
     double best=-1e99;SimulationV2::Engine engine(engineParameters(p));
     for(const auto &athlete:athletes){auto a=SimulationV2::athleteInput(*athlete.getSimulationProfile());double q=engine.quality().baseline(a,r.hill.k,r.hill.takeoffBias,r.event).value();if(q>best){best=q;r.athlete=a;}}
     const auto proposed=weatherInput(config,p,mix(config["seed"].toString().toULongLong()));SimulationV2::ContinuousWeather weather(mix(config["seed"].toString().toULongLong()),proposed.wind,proposed.precipitation);
-    int lo=p["gate.coachReduction"].toInt(),hi=200;while(lo<hi){int mid=(lo+hi+1)/2;r.scoring.juryGate=r.scoring.referenceGate=mid;if(engine.previewDistance(r,weather)<=r.hill.hs)lo=mid;else hi=mid-1;}return lo;
+    int lo=p["gate.coachReduction"].toInt(),hi=200;while(lo<hi){int mid=(lo+hi+1)/2;r.scoring.juryGate=r.scoring.referenceGate=mid;if(engine.previewDistance(r,weather)<=r.hill.realHs)lo=mid;else hi=mid-1;}return lo;
 }
 Trial simulate(const QJsonObject &config,int variant,int index,int commonGate,const std::shared_ptr<Control> &control) {
     const auto p=valuesFor(config,variant);const quint64 root=config["seed"].toString().toULongLong(),contestSeed=mix(root^mix(quint64(index)));MyRandom::ScopedSeed contestRandom(contestSeed);
