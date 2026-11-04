@@ -39,7 +39,7 @@ for language in ("en", "cs"):
     failed |= bool(missing or mismatched)
 # This registry shares descriptions across all generated parameter rows. Checking
 # TS entries alone cannot catch new source strings that were never extracted.
-registry = (root / "source/playground/PlaygroundModel.cpp").read_text()
+registry = (root / "source/playground/PlaygroundModel.cpp").read_text(encoding="utf-8")
 registry_keys = {("QObject", json.loads('"' + value + '"'), "")
                  for value in re.findall(r'QObject::tr\("((?:[^"\\]|\\.)*)"\)', registry)}
 for language in ("en", "cs"):

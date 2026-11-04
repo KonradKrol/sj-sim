@@ -4,8 +4,9 @@ set -euo pipefail
 build_dir="${1:-build-linux}"
 output_dir="${2:-dist/sj-sim-linux-x64}"
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-build_path="${repo_root}/${build_dir}"
-output_path="${repo_root}/${output_dir}"
+build_path="$(realpath -m -- "${repo_root}/${build_dir}")"
+output_path="$(realpath -m -- "${repo_root}/${output_dir}")"
+dist_path="$(realpath -m -- "${repo_root}/dist")"
 output_archive="${repo_root}/dist/sj-sim-linux-x64.tar.gz"
 
 if [[ ! -x "${build_path}/sj-sim" && ! -x "${build_path}/release/sj-sim" ]]; then
@@ -13,10 +14,18 @@ if [[ ! -x "${build_path}/sj-sim" && ! -x "${build_path}/release/sj-sim" ]]; the
     exit 1
 fi
 
-if [[ "${output_path}" != "${repo_root}/dist/"* ]]; then
+if [[ "${dist_path}" != "${repo_root}/dist" || "${output_path}" != "${dist_path}/"* ]]; then
     echo "Output directory must be inside ${repo_root}/dist" >&2
     exit 1
 fi
+
+# Validate prerequisites before replacing a previously working package.
+for tool in lrelease qmake convert tar; do
+    command -v "$tool" >/dev/null 2>&1 || { echo "Required tool is missing: $tool" >&2; exit 1; }
+done
+for tool in linuxdeploy-x86_64.AppImage linuxdeploy-plugin-qt-x86_64.AppImage; do
+    [[ -x "${repo_root}/${tool}" ]] || { echo "Required tool is missing: $tool" >&2; exit 1; }
+done
 
 rm -rf "${output_path}"
 rm -f "${output_archive}"

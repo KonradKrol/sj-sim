@@ -26,7 +26,7 @@ if (Test-Path -LiteralPath $outputPath) {
 New-Item -ItemType Directory -Force -Path $outputPath | Out-Null
 Copy-Item -LiteralPath $executable -Destination (Join-Path $outputPath "sj-sim.exe") -Force
 
-& windeployqt --release --compiler-runtime --no-translations --qmldir (Join-Path $repoRoot "source/UI/Quick") --dir $outputPath (Join-Path $outputPath "sj-sim.exe")
+& windeployqt --release --compiler-runtime --no-translations --include-plugins qoffscreen --qmldir (Join-Path $repoRoot "source/UI/Quick") --dir $outputPath (Join-Path $outputPath "sj-sim.exe")
 if ($LASTEXITCODE -ne 0) { throw "windeployqt failed with exit code $LASTEXITCODE" }
 
 foreach ($folder in @("flags", "userData")) {
