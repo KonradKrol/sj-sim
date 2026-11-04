@@ -55,6 +55,7 @@ public:
     Q_INVOKABLE void add();
     Q_INVOKABLE void duplicate();
     Q_INVOKABLE void remove();
+    Q_INVOKABLE void move(int from,int to);
     Q_INVOKABLE void setValue(const QString &key,const QVariant &value);
     Q_INVOKABLE void setPerk(int pair,int side,int level,bool toggle=true);
     Q_INVOKABLE void copyLegacy(int index);

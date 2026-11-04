@@ -21,6 +21,13 @@ static void hillStudioRegressions(MainWindow &main){
     hill.hs=225;hill.perks[1]=4;check(qAbs(hill.realHs()-247.5)<.01,"forgiving flying hill extends landing threshold independently of HS");hill.hs=140;hill.perks[1]=-1;check(qAbs(hill.realHs()-138.425)<.01,"demanding hill can become difficult before HS");
     hill.perks[0]=4;check(hill.takeoffBias()>.5,"fourth-tier takeoff preference is pronounced");hill.perks[0]=-4;check(hill.takeoffBias()<-.5,"opposite hill preference rewards flight");hill.perks[2]=4;check(hill.windVariability()>2,"lottery extreme tier IV has a pronounced domain effect");hill.perks[2]=-4;check(hill.windVariability()<.5,"stability extreme tier IV suppresses variation");
     auto invalid=HillProfile::create().toJson();invalid["hs"]=10;check(!HillProfile::fromJson(invalid,decoded,error),"HS below K rejected");invalid=HillProfile::create().toJson();invalid["perks"]=QJsonArray{0,0,5,0};check(!HillProfile::fromJson(invalid,decoded,error),"hill tier V rejected");
+    {
+        HillStudioController order(nullptr,storage.path()+"/order");order.add();order.setValue("name","First");order.add();order.setValue("name","Second");order.add();order.setValue("name","Third");order.select(1);
+        const auto selected=order.profile()["id"];order.move(0,2);
+        check(order.profile()["id"]==selected && order.selectedIndex()==0 && order.profiles()[2].toMap()["label"]=="First","hill reorder preserves edited identity");
+        HillStudioController restored(nullptr,storage.path()+"/order");check(restored.profiles()[2].toMap()["label"]=="First","hill reordered positions persist");
+        order.undo();check(order.selectedIndex()==1 && order.profiles()[0].toMap()["label"]=="First","hill reorder can be undone");order.redo();check(order.profiles()[2].toMap()["label"]=="First","hill reorder can be redone");
+    }
     HillStudioController backend(nullptr,storage.path()+"/library");const auto legacy=GlobalDatabase::get()->packsSnapshot();
     backend.add();QSignalSpy broadHillUpdates(&backend,&HillStudioController::changed),hillPerkUpdates(&backend,&HillStudioController::perksChanged);
     backend.setPerk(1,1,3,false);check(broadHillUpdates.isEmpty() && hillPerkUpdates.count()==1 && backend.realHs()>134,"hill perk refreshes its derived threshold without rebuilding the library");backend.remove();
@@ -80,6 +87,14 @@ SChoice { property int selected: 0; currentIndex: selected; width: 300; searchab
         number->setProperty("draft","999");auto *input=item(number,"input-hill-k");check(input,"hill numeric draft input exists");input->setProperty("dirty",true);
         uiBackend->add();uiBackend->setValue("k",90);QTest::qWait(10);check(number->property("draft").toString()!=QString("999") && !input->property("dirty").toBool(),"changing hill discards the previous numeric draft");
         auto *library=item(view->rootObject(),"hillLibrary");check(library,"hill library fixture");library->setProperty("query","Vikersund");QTest::qWait(10);auto *list=item(library,"hillList");check(list && list->property("count").toInt()==1 && list->property("currentIndex").toInt()==-1,"filtered-out selection leaves no stale keyboard row");library->setProperty("query","");
+    }
+    {
+        QTest::qWait(80);const auto movedId=uiBackend->profiles()[0].toMap()["id"];
+        const auto from=controlPoint(view,"hillDragHandle-0"),to=controlPoint(view,"hillDragHandle-1");
+        QTest::mousePress(view,Qt::LeftButton,Qt::NoModifier,from);
+        QMouseEvent move(QEvent::MouseMove,QPointF(to),QPointF(view->mapToGlobal(to)),Qt::NoButton,Qt::LeftButton,Qt::NoModifier);QApplication::sendEvent(view,&move);
+        QTest::mouseRelease(view,Qt::LeftButton,Qt::NoModifier,to);QTest::qWait(80);
+        check(uiBackend->profiles()[1].toMap()["id"]==movedId,"hill drag handle moves the intended hill with real pointer input");
     }
     uiBackend->setPerk(0,1,1,false);uiBackend->setPerk(1,1,2,false);uiBackend->setPerk(2,1,3,false);
     main.resize(1366,768);render(&window,"hill-studio-1366",true);main.resize(360,480);render(&window,"hill-studio-small",true);check(item(scene(&window)->rootObject(),"hillEditorScroll"),"small hill editor remains scrollable");window.hide();

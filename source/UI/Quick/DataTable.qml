@@ -17,7 +17,8 @@ FocusScope {
     property bool compact: false
     property bool teamSetup: false
     property bool ranking: false
-    readonly property bool sortable: !plain && !teamSetup && !ranking
+    readonly property bool reorderable: !!table && table.reorderable
+    readonly property bool sortable: !plain && !teamSetup && !ranking && !reorderable
     property bool plain: false
     property bool expandedActions: false
     property bool singleClickOpen: false
@@ -90,7 +91,7 @@ FocusScope {
             if (column === nameColumn) return Math.max(170,width - 58 - (visibleColumns-2)*96)
             return 96
         }
-        return Math.max(column === 1 ? 190 : 130,width / columns)
+        return Math.max(column === 1 ? 190 : 130,(width-(reorderable?Theme.dp(48):0)) / columns)
     }
     function columnAt(x) {
         var offset = 0
@@ -228,6 +229,7 @@ FocusScope {
                 }
                 ListView {
                     id: rows
+                    property int reorderTarget: -1
                     objectName: "tableRows-" + tableRoot.ownerId
                     width: parent.width
                     height: Math.max(0,parent.height - header.height - (horizontal.contentWidth>horizontal.width+1 ? 14 : 0))
@@ -236,6 +238,7 @@ FocusScope {
                     boundsBehavior: Flickable.StopAtBounds
                     ScrollBar.vertical: ScrollBar { parent: horizontal; anchors.top: parent.top; anchors.bottom: parent.bottom; anchors.right: parent.right }
                     delegate: TableRow {
+                        id: catalogRow
                         width: rows.width
                         tableView: tableRoot
                         rowIndex: index
@@ -252,6 +255,14 @@ FocusScope {
                         latestJump: !!model.latestJump
                         statusText: model.statusText || ""
                         tint: model.tint || ""
+                        ReorderHandle {
+                            visible: tableRoot.reorderable
+                            objectName: "catalogDragHandle-"+catalogRow.rowIndex
+                            anchors.right: parent.right; anchors.rightMargin: Theme.dp(16); anchors.verticalCenter: parent.verticalCenter
+                            view: rows; rowIndex: catalogRow.rowIndex
+                            onMoved: function(from,to){tableRoot.table.reorder(from,to)}
+                        }
+                        Rectangle { anchors.left: parent.left; anchors.right: parent.right; anchors.bottom: parent.bottom; height: 2; color: Theme.accent; visible: tableRoot.reorderable && rows.reorderTarget===catalogRow.rowIndex }
                     }
                     EmptyState {
                         parent: rows

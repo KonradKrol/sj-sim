@@ -167,7 +167,7 @@ DatabaseEditorWindow::DatabaseEditorWindow(QWidget *parent) :
             list->getListView()->setCurrentIndex(list->getListModel()->index(row));
             if(list==competitionRulesListView)onCompetitionRulesListViewDoubleClicked(list->getListModel()->index(row));else onPointsForPlacesPresetsListViewDoubleClicked(list->getListModel()->index(row));
         };
-        connect(list,&DatabaseItemsListView::remove,this,after);connect(list,&DatabaseItemsListView::insert,this,after);connect(list,&DatabaseItemsListView::up,this,after);connect(list,&DatabaseItemsListView::down,this,after);
+        connect(list,&DatabaseItemsListView::reordered,this,after);connect(list,&DatabaseItemsListView::remove,this,after);connect(list,&DatabaseItemsListView::insert,this,after);connect(list,&DatabaseItemsListView::up,this,after);connect(list,&DatabaseItemsListView::down,this,after);
     }
     competitionRulesEditor->removeSubmitButton();
     connect(competitionRulesListView,&DatabaseItemsListView::listViewClicked,this,[this](const QModelIndex &index){if(!property("changingRuleCatalog").toBool() && index.isValid() && (competitionRulesEditor->isHidden() || competitionRulesEditor->property("packRow").toInt()!=index.row()))onCompetitionRulesListViewDoubleClicked(index);});

@@ -36,6 +36,7 @@ ColumnLayout {
     SField { Layout.fillWidth: true; text: library.query; placeholderText: qsTr("Szukaj skoczni lub kraju…"); Accessible.name: placeholderText; onTextEdited: library.query=text }
     ListView {
         id: rows
+        property int reorderTarget: -1
         objectName: "hillList"
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
         clip: true; boundsBehavior: Flickable.StopAtBounds; activeFocusOnTab: true
@@ -57,7 +58,7 @@ ColumnLayout {
             required property real hs
             required property int index
             objectName: "hillListRow-"+profileIndex
-            width: rows.width; implicitHeight: Math.max(Theme.dp(42),contentItem.implicitHeight+Theme.dp(14)); padding: Theme.dp(7)
+            width: rows.width; implicitHeight: Math.max(Theme.dp(42),contentItem.implicitHeight+Theme.dp(14)); padding: Theme.dp(7); rightPadding: library.season?Theme.dp(7):Theme.dp(50)
             checked: library.backend.selectedIndex===profileIndex; hoverEnabled: true
             Accessible.role: Accessible.ListItem; Accessible.selected: checked; Accessible.name: label+", "+country+", HS"+hs
             background: Rectangle { color: row.checked?Theme.selection:row.hovered?Theme.raised:Theme.surface; radius: Theme.dp(5); border.width: row.activeFocus?2:0; border.color: Theme.accent; Behavior on color { ColorAnimation { duration: Theme.motion } } }
@@ -67,6 +68,14 @@ ColumnLayout {
                 Label { text: row.label; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight; color: Theme.ink; font.pointSize: Theme.body }
                 Label { objectName: "hillListHs-"+row.profileIndex; text: "HS"+row.hs; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption }
             }
+            ReorderHandle {
+                visible: !library.season
+                objectName: "hillDragHandle-"+row.profileIndex
+                anchors.right: parent.right; anchors.rightMargin: Theme.dp(16); anchors.verticalCenter: parent.verticalCenter
+                view: rows; rowIndex: row.index
+                onMoved: function(from,to){library.backend.move(entries.get(from).profileIndex,entries.get(to).profileIndex)}
+            }
+            Rectangle { anchors.left: parent.left; anchors.right: parent.right; anchors.bottom: parent.bottom; height: 2; color: Theme.accent; visible: rows.reorderTarget===row.index }
             onClicked: {library.backend.select(profileIndex);library.activated()}
         }
         EmptyState { anchors.fill: parent; visible: rows.count===0; compact: true; title: library.query.length?qsTr("Brak wyników"):qsTr("Brak skoczni"); description: library.query.length?qsTr("Zmień nazwę lub kraj."):qsTr("Dodaj skocznię lub skopiuj ją z klasycznego modelu.") }

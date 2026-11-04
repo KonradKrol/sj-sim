@@ -23419,4 +23419,5 @@ Close the previous window or run a separate copy of the game with its own userDa
 <context><name>QObject</name><message><source>Dane gry lub paczki edytorów są używane przez inną instancję Sj.Sim albo nie można ich zapisać.
 Zamknij poprzednie okno Sj.Sim i spróbuj ponownie.</source><translation>Game data or editor packs are used by another Sj.Sim instance or are not writable.
 Close the previous Sj.Sim window and try again.</translation></message></context>
+<context><name>ReorderHandle</name><message><source>Zmień kolejność</source><translation>Reorder</translation></message></context>
 </TS>

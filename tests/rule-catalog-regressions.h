@@ -35,6 +35,12 @@ static void ruleCatalogEditorRegressions(MainWindow &main) {
     check(db->getEditableCompetitionRules()[row].getID()==id && db->getEditableCompetitionRules()[row].getName()=="Edited catalog fixture","live rule editing preserves identity and updates the selected entry");
     QMetaObject::invokeMethod(rulesList,"onUpActionTriggered");QTest::qWait(40);
     check(ruleEditor->property("packRow").toInt()==row-1 && db->getEditableCompetitionRules()[row-1].getID()==id && name->text()=="Edited catalog fixture","moving an edited rule keeps the editor bound to the moved entry");
+    {
+        QuickTableModel drag(rulesList->getListView(),&window);check(drag.reorderable(),"rules catalog exposes reorder support");
+        const int from=ruleEditor->property("packRow").toInt();check(drag.reorder(from,0),"rules catalog accepts drag move");QTest::qWait(50);
+        check(db->getEditableCompetitionRules()[0].getID()==id && ruleEditor->property("packRow").toInt()==0 && name->text()=="Edited catalog fixture","drag keeps edited rule identity and values");
+        check(!drag.reorder(-1,0) && !drag.reorder(0,drag.count()),"drag rejects invalid destinations");
+    }
     tabs->setCurrentIndex(3);const int pointsRow=db->getEditableGlobalPointsForPlacesPresets().size()-1;pointsList->getListView()->setCurrentIndex(pointsList->getListModel()->index(pointsRow));QTest::qWait(40);
     auto *pointsEditor=window.findChild<PointsForPlacesPresetEditorWidget *>();auto *table=pointsEditor->findChild<QTableView *>("tableView_pointsForPlaces");
     check(table->model()->setData(table->model()->index(0,1),42.5,Qt::EditRole),"points remain directly editable");QTest::qWait(40);
@@ -43,6 +49,11 @@ static void ruleCatalogEditorRegressions(MainWindow &main) {
     check(db->getEditableGlobalPointsForPlacesPresets()[pointsRow].getPointsForPlaces().size()==3,"adding a place does not lose edited point values");
     QTest::qWait(80);auto *grid=item(scene(&window)->rootObject(),"classificationPointsRows");
     check(grid && grid->isVisible() && grid->width()>0 && grid->property("count").toInt()==3,"the real Quick points editor renders its editable rows");
+    {
+        const auto selectedName=db->getEditableGlobalPointsForPlacesPresets()[pointsRow].getName();
+        QuickTableModel drag(pointsList->getListView(),&window);check(drag.reorderable() && drag.reorder(pointsRow,0),"points catalog accepts drag move");QTest::qWait(50);
+        check(db->getEditableGlobalPointsForPlacesPresets()[0].getName()==selectedName && db->getEditableGlobalPointsForPlacesPresets()[0].getPointsForPlaces().value(1)==42.5 && pointsEditor->property("packRow").toInt()==0,"drag retains edited points and editor binding");
+    }
     render(&window,"rule-points-catalog",true);window.hide();
     qInfo()<<"PASS: live catalog editors, stable rule IDs, selection and points UI";
 }

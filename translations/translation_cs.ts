@@ -23420,4 +23420,5 @@ Zavřete předchozí okno nebo spusťte samostatnou kopii hry s vlastní složko
 <context><name>QObject</name><message><source>Dane gry lub paczki edytorów są używane przez inną instancję Sj.Sim albo nie można ich zapisać.
 Zamknij poprzednie okno Sj.Sim i spróbuj ponownie.</source><translation>Herní data nebo balíčky editorů používá jiná instance Sj.Sim nebo do nich nelze zapisovat.
 Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></context>
+<context><name>ReorderHandle</name><message><source>Zmień kolejność</source><translation>Změnit pořadí</translation></message></context>
 </TS>

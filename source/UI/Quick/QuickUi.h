@@ -79,6 +79,7 @@ class QuickTableModel : public QAbstractListModel {
     Q_PROPERTY(QString filter READ filter WRITE setFilter NOTIFY structureChanged)
     Q_PROPERTY(int currentRow READ currentRow NOTIFY cursorChanged)
     Q_PROPERTY(int currentColumn READ currentColumn NOTIFY cursorChanged)
+    Q_PROPERTY(bool reorderable READ reorderable NOTIFY structureChanged)
     Q_PROPERTY(bool frozen READ frozen NOTIFY frozenChanged)
 public:
     explicit QuickTableModel(QAbstractItemView *view, QObject *parent);
@@ -100,6 +101,8 @@ public:
     Q_INVOKABLE void select(int row, int column, int modifiers, bool open = false);
     Q_INVOKABLE void edit(int row, int column, const QVariant &value);
     Q_INVOKABLE void toggle(int row);
+    bool reorderable() const;
+    Q_INVOKABLE bool reorder(int from,int to);
     Q_INVOKABLE void setTeamMode(int mode);
     Q_INVOKABLE void sort(int column, bool descending);
     Q_INVOKABLE void moveCurrent(int delta, int modifiers);

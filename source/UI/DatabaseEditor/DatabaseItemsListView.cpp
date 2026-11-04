@@ -110,6 +110,18 @@ void DatabaseItemsListView::setupListModel()
     connect(ui->listView->selectionModel(), &QItemSelectionModel::currentChanged,this,[this](const QModelIndex &index){if(type==CompetitionRulesItems || type==PointsForPlacesPresetsItems)emit listViewClicked(index);});
 }
 
+bool DatabaseItemsListView::moveItem(int from,int to)
+{
+    if(!allowMoving || !listModel || (type!=CompetitionRulesItems && type!=PointsForPlacesPresetsItems)
+        || from<0 || to<0 || from>=listModel->rowCount() || to>=listModel->rowCount() || from==to)return false;
+    QPersistentModelIndex current(ui->listView->currentIndex());
+    emit aboutToChange();
+    const bool moved=listModel->moveRow({},from,{},to>from?to+1:to);
+    if(current.isValid())ui->listView->setCurrentIndex(current);
+    emit reordered();
+    return moved;
+}
+
 void DatabaseItemsListView::selectOnlyFirstRow()
 {
     if(listModel->rowCount() > 0)

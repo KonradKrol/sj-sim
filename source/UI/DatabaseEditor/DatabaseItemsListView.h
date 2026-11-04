@@ -47,6 +47,7 @@ public:
     };
 
     void setupListModel();
+    bool moveItem(int from,int to);
     void selectOnlyFirstRow();
 
     void hideInstructions();
@@ -61,6 +62,7 @@ signals:
     void aboutToChange();
     void listViewDoubleClicked(const QModelIndex &index);
     void listViewClicked(const QModelIndex &index);
+    void reordered();
     void up();
     void down();
     void insert(QVector<int> insertedRows);

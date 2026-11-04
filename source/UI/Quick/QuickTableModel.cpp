@@ -1,4 +1,5 @@
 #include "QuickUi.h"
+#include "../DatabaseEditor/DatabaseItemsListView.h"
 #include "../../competitions/CompetitionAdvancement.h"
 #include <QAbstractItemView>
 #include <QTreeView>
@@ -175,6 +176,23 @@ void QuickTableModel::sync() {
                       << connect(tree,&QTreeView::collapsed,this,[this]{ rebuild(); });
     }
     rebuild();
+}
+namespace {
+DatabaseItemsListView *reorderCatalog(QAbstractItemView *view) {
+    for(auto *widget=view?view->parentWidget():nullptr;widget;widget=widget->parentWidget())
+        if(auto *list=qobject_cast<DatabaseItemsListView *>(widget))return list;
+    return nullptr;
+}
+}
+bool QuickTableModel::reorderable() const {
+    auto *list=reorderCatalog(m_view);
+    return list && list->getAllowMoving() && (list->getType()==DatabaseItemsListView::CompetitionRulesItems || list->getType()==DatabaseItemsListView::PointsForPlacesPresetsItems);
+}
+bool QuickTableModel::reorder(int from,int to) {
+    if(m_frozen || !reorderable())return false;
+    const auto first=cell(from,0),target=cell(to,0);
+    if(!first.isValid() || !target.isValid() || first.parent().isValid() || target.parent().isValid())return false;
+    return reorderCatalog(m_view)->moveItem(first.row(),target.row());
 }
 void QuickTableModel::setTeamMode(int mode){mode=qBound(0,mode,2);if(mode==m_teamMode)return;m_teamMode=mode;rebuild();}
 void QuickTableModel::updateScoreFormat() {

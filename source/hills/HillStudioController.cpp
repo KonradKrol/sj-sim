@@ -66,6 +66,16 @@ void HillStudioController::sortByCountry(){
 }
 void HillStudioController::add(){auto p=currentPack();auto entries=p["profiles"].toArray();entries.append(HillProfile::create().toJson());p["profiles"]=entries;commit(p,entries.size()-1,tr("Dodano skocznię"));}
 void HillStudioController::duplicate(){if(m_selected<0)return;auto p=currentPack();auto entries=p["profiles"].toArray();auto copy=entries[m_selected].toObject();copy["id"]=uuid();copy["name"]=(title(copy).left(85)+tr(" — kopia")).left(100);entries.append(copy);p["profiles"]=entries;commit(p,entries.size()-1);}
+void HillStudioController::move(int from,int to){
+    auto next=currentPack();auto entries=next["profiles"].toArray();
+    if(from<0 || to<0 || from>=entries.size() || to>=entries.size() || from==to)return;
+    const auto moved=entries.takeAt(from);entries.insert(to,moved);next["profiles"]=entries;
+    int selected=m_selected;
+    if(selected==from)selected=to;
+    else if(from<selected && selected<=to)--selected;
+    else if(to<=selected && selected<from)++selected;
+    commit(next,selected);
+}
 void HillStudioController::remove(){if(m_selected<0)return;auto p=currentPack();auto entries=p["profiles"].toArray();entries.removeAt(m_selected);p["profiles"]=entries;commit(p,qMin(m_selected,entries.size()-1),tr("Usunięto skocznię · możesz cofnąć"));}
 void HillStudioController::setValue(const QString &key,const QVariant &value){if(m_selected<0)return;const QSet<QString> keys{"name","country","k","hs","record","gatePoints","headwindPoints"};if(!keys.contains(key))return;auto p=currentPack();auto entries=p["profiles"].toArray();auto next=entries[m_selected].toObject();next[key]=QJsonValue::fromVariant(value);if(key=="headwindPoints")next["tailwindPoints"]=HillProfile::automaticTailwindPoints(value.toDouble());entries[m_selected]=next;p["profiles"]=entries;commit(p,m_selected);}
 void HillStudioController::setPerk(int pair,int side,int level,bool toggle){if(m_selected<0 || pair<0 || pair>=4 || (side!=1 && side!=-1) || level<1 || level>4)return;auto p=currentPack();auto entries=p["profiles"].toArray();auto next=entries[m_selected].toObject();auto values=next["perks"].toArray();while(values.size()<4)values.append(0);values[pair]=toggle && values[pair].toInt()*side>0?0:side*level;next["perks"]=values;entries[m_selected]=next;p["profiles"]=entries;commit(p,m_selected,{},true);}
