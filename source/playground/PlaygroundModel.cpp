@@ -55,7 +55,7 @@ template<class F> void visitEngine(SimulationV2::EngineParameters &m,F f) {
     f("flight.windScaleK130",QObject::tr("Wpływ wiatru na K130"),"flight",m.flight.windScaleK130,0,5,.01,"1");
     f("flight.windScaleK200",QObject::tr("Wpływ wiatru na K200"),"flight",m.flight.windScaleK200,0,5,.01,"1");
     f("flight.windReservePerMetre",QObject::tr("Wpływ wiatru na zapas lotu"),"flight",m.flight.windReservePerMetre,0,1,0.001,"1");
-    f("flight.specialistWindEffectPerTier",QObject::tr("Wpływ specjalizacji na wiatr"),"flight",m.flight.specialistWindEffectPerTier,0,.25,.005,"1");
+    f("flight.specialistWindEffectPerTier",QObject::tr("Wpływ specjalizacji na wiatr"),"flight",m.flight.specialistWindEffectPerTier,0,.5,.005,"1");
     f("flight.crosswindDrag",QObject::tr("Opór wiatru bocznego"),"flight",m.flight.crosswindDrag,0,1,0.001,"1");
     f("flight.windResponseMetres",QObject::tr("Dystans narastania reakcji na wiatr"),"flight",m.flight.windResponseMetres,0,100,0.5,"m");
     f("flight.earlyWindSensitivity",QObject::tr("Wrażliwość na wiatr na początku"),"flight",m.flight.earlyWindSensitivity,0,10,0.05,"1");

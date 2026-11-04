@@ -49,7 +49,7 @@ void FlightParameters::validate() const
     bound(windScaleK95,0,5,"Wind K95 scale out of range");bound(windScaleK130,0,5,"Wind K130 scale out of range");bound(windScaleK200,0,5,"Wind K200 scale out of range");
     bound(tailwindMultiplier,0,10,"Tailwind multiplier out of range");bound(tailwindStrongExtra,0,10,"Strong tailwind effect out of range");
     bound(windReservePerMetre,0,1,"Wind effect out of range");bound(crosswindDrag,0,1,"Crosswind drag out of range");
-    bound(specialistWindEffectPerTier,0,.25,"Specialist wind effect out of range");
+    bound(specialistWindEffectPerTier,0,.5,"Specialist wind effect out of range");
     bound(windVariabilityScale,.1,100,"Wind variability scale out of range");
     for(double v:{windHeadSpread,windTailSpread,windCrossSpread})bound(v,0,1,"Wind spread out of range");
     bound(windHeadSaturation,0,100,"Headwind saturation out of range");
@@ -153,7 +153,7 @@ FlightResult FlightModel::fly(double initialReserve,const Hill &hill,const Weath
                 ? config.windScaleK95+(config.windScaleK130-config.windScaleK95)*std::clamp((hill.k-95)/35,0.0,1.0)
                 : config.windScaleK130+(config.windScaleK200-config.windScaleK130)*std::clamp((hill.k-130)/70,0.0,1.0);
             const double assistance=std::min(config.maximumWindAssistance*terrain,
-                config.windReservePerMetre*(1+specialist*config.specialistWindEffectPerTier)*effectiveHead*headScale*sensitivity*(1+spread*activation(std::abs(head))*reaction.variation));
+                config.windReservePerMetre*std::max(0.0,1+specialist*config.specialistWindEffectPerTier)*effectiveHead*headScale*sensitivity*(1+spread*activation(std::abs(head))*reaction.variation));
             const auto adverse=[&](double speed,double chance,double loss) {
                 const double r=std::pow(speed/config.windAdverseOnset,config.windAdverseExponent);
                 const double probability=chance*r/(1+r);

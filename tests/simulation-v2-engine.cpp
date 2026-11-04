@@ -58,6 +58,9 @@ int main()
             check(flierHead-smallHead<8 && smallTail-flierTail<8,"specialist wind advantage remains modest");
             EngineParameters disabled;disabled.flight.specialistWindEffectPerTier=0;Engine withoutEffect(disabled);
             near(withoutEffect.previewDistance(flier,head),withoutEffect.previewDistance(smallHill,head),1e-9,"specialist wind effect can be disabled independently");
+            EngineParameters extreme;extreme.flight.specialistWindEffectPerTier=.275;Engine safelyClamped(extreme);
+            near(safelyClamped.previewDistance(smallHill,head),safelyClamped.previewDistance(smallHill,calm),1e-9,"extreme small-hill specialist never reverses the headwind effect");
+            near(safelyClamped.previewDistance(smallHill,tail),safelyClamped.previewDistance(smallHill,calm),1e-9,"extreme small-hill specialist never reverses the tailwind effect");
             SeededRandom sameA(987),sameB(987);const auto runA=engine.simulate(flier,sameA,head,measurement),runB=engine.simulate(smallHill,sameB,head,measurement);
             check(runA.flight.distance>runB.flight.distance,"full simulation uses the same specialist effect as the preview");
         }
