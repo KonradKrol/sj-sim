@@ -339,3 +339,28 @@ Aktywny własny profil oraz rozpoczęty konkurs ze swoim snapshotem mogą
 nadal używać poprzednich wartości. Przywrócenie standardowego balansu
 w labie wybiera nową kalibrację dla następnych konkursów/sesji.
 Drag and drop skoczni, zasad i presetów odłożono na wyraźną prośbę użytkownika.
+
+### Geometria i kalibracja przedniego wiatru — 4.11.2026
+
+Wbudowany balans: `flight.geometryResistance` 1,8 → 1,1 oraz
+`flight.usableLandingBeyondRealHsAtK` 0,12 → 0,16. Początek oporu nadal
+0,94 × real HS. Na K120/real HS134 granica wynosi teraz 153,2 m; opór
+narasta przed nią, a osiągnięcie granicy wymaga coraz większego zapasu.
+Bez wiatru zapasy 140/150/160/170 dają w kontrolnej próbie około
+138,5/144,0/147,2/149,2 m. Nie zmieniono modelu prawdopodobieństw lądowania.
+
+Wspólna krzywa wpływu przedniego i tylnego wiatru: `flight.windScaleK95`=0,90,
+`flight.windScaleK130`=1,05, `flight.windScaleK200`=1,29.
+Interpolacja liniowa względem K, poza zakresem stała wartość końcowa.
+Nie zmienia bezpośrednio bocznego wiatru. Tylny wiatr ma dodatkowo mnożnik 1,55 oraz narastający dodatek 0,3. Ogólna siła pozostaje 0,06.
+Cel uzgodniony z właścicielem: około rekompensata / pkt za metr dla 1 m/s,
+a na mamutach około 5% więcej. Kalibracja dotyczy neutralnej specjalizacji,
+stałego przedniego wiatru i skoku bazowego przy K, bez losowych reakcji.
+Przy silnym wietrze nasycenie i geometria nadal ograniczają korzyść;
+to przybliżenie balansu, nie ścisłe wyrównanie każdego skoku.
+W labie wszystkie trzy mnożniki są dostępne do dalszej kalibracji.
+
+Auto gate w konfiguracji konkursu i pojedynczych skoków dobiera belkę do
+97% real HS; w batchach labu do real HS (dotychczasowe marginesy zachowane).
+Własne aktywne profile i snapshots rozpoczętych konkursów mogą zachować
+poprzednie ustawienia geometrii. Zapisane profile użytkownika nie są nadpisywane.

@@ -10084,6 +10084,11 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
     </context>
     <context>
         <name>QObject</name>
+<message><source>Wpływ wiatru na K95</source><translation>Vliv větru na K95</translation></message>
+<message><source>Wpływ wiatru na K130</source><translation>Vliv větru na K130</translation></message>
+<message><source>Wpływ wiatru na K200</source><translation>Vliv větru na K200</translation></message>
+<message><source>Mnożnik wpływu wiatru przedniego i tylnego przy wskazanym K; między K95, K130 i K200 zmienia się płynnie. Np. 1,1 wzmacnia oba wpływy o 10%; tylny wiatr ma dodatkowo własny mnożnik.</source><translation>Násobitel vlivu protivětru a zadního větru, interpolovaný mezi K95, K130 a K200. Např. 1,1 zesílí oba vlivy o 10 %; zadní vítr má navíc vlastní násobitel.</translation></message>
+
         <message><source>Pominięto nieprawidłowe presety kalendarza. Pliki pozostały bez zmian:
 %1</source><translation>Neplatné předvolby kalendáře byly přeskočeny. Soubory zůstaly beze změny:
 %1</translation></message>

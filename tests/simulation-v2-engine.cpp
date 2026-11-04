@@ -61,6 +61,15 @@ int main()
             SeededRandom sameA(987),sameB(987);const auto runA=engine.simulate(flier,sameA,head,measurement),runB=engine.simulate(smallHill,sameB,head,measurement);
             check(runA.flight.distance>runB.flight.distance,"full simulation uses the same specialist effect as the preview");
         }
+        {
+            auto tuned=engine.flight().parameters();tuned.windScaleK95=.9;tuned.windScaleK130=1.05;tuned.windScaleK200=1.29;
+            FlightModel curve(tuned);const double reserve=130;
+            check(curve.fly(reserve,request.hill,tail,0,false).distance<engine.flight().fly(reserve,request.hill,tail,0,false).distance,"wind curve also scales tailwind before its extra multiplier");
+            auto left=request.hill,right=request.hill;left.k=130-1e-6;right.k=130+1e-6;
+            near(curve.fly(reserve,left,head,0,false).distance,curve.fly(reserve,right,head,0,false).distance,1e-5,"headwind curve is continuous at large hill anchor");
+            tuned.geometryResistance=1.1;tuned.usableLandingBeyondRealHsAtK=.16;FlightModel geometry(tuned);
+            check(geometry.fly(160,request.hill,calm,0,false).distance>145,"gentler geometry permits jumps beyond 145 on HS134");
+        }
         calm.precip=10;const auto snowy=engine.previewDistance(request,calm);check(snowy<preview,"snow worsens jump");
         calm.kind=PrecipitationKind::Rain;const auto rainy=engine.previewDistance(request,calm);
         check(rainy<snowy && rainy<preview,"maximum rain can be substantially more damaging than snowfall");

@@ -46,6 +46,7 @@ void FlightParameters::validate() const
     bound(rainHeavyExponent,1,6,"Heavy rain exponent out of range");
     bound(stepMetres,.05,5,"Integration step out of range");
     bound(secondsPerK,.1,30,"Flight time scale out of range");
+    bound(windScaleK95,0,5,"Wind K95 scale out of range");bound(windScaleK130,0,5,"Wind K130 scale out of range");bound(windScaleK200,0,5,"Wind K200 scale out of range");
     bound(tailwindMultiplier,0,10,"Tailwind multiplier out of range");bound(tailwindStrongExtra,0,10,"Strong tailwind effect out of range");
     bound(windReservePerMetre,0,1,"Wind effect out of range");bound(crosswindDrag,0,1,"Crosswind drag out of range");
     bound(specialistWindEffectPerTier,0,.25,"Specialist wind effect out of range");
@@ -148,8 +149,11 @@ FlightResult FlightModel::fly(double initialReserve,const Hill &hill,const Weath
                 ? head/std::hypot(1.0,head/config.windHeadSaturation)
                 : head<0 ? head*(config.tailwindMultiplier+config.tailwindStrongExtra*activation(-head)) : head;
             const double spread=head>=0?config.windHeadSpread:config.windTailSpread;
+            const double headScale=hill.k<=130
+                ? config.windScaleK95+(config.windScaleK130-config.windScaleK95)*std::clamp((hill.k-95)/35,0.0,1.0)
+                : config.windScaleK130+(config.windScaleK200-config.windScaleK130)*std::clamp((hill.k-130)/70,0.0,1.0);
             const double assistance=std::min(config.maximumWindAssistance*terrain,
-                config.windReservePerMetre*(1+specialist*config.specialistWindEffectPerTier)*effectiveHead*sensitivity*(1+spread*activation(std::abs(head))*reaction.variation));
+                config.windReservePerMetre*(1+specialist*config.specialistWindEffectPerTier)*effectiveHead*headScale*sensitivity*(1+spread*activation(std::abs(head))*reaction.variation));
             const auto adverse=[&](double speed,double chance,double loss) {
                 const double r=std::pow(speed/config.windAdverseOnset,config.windAdverseExponent);
                 const double probability=chance*r/(1+r);

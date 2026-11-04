@@ -32,6 +32,9 @@ struct FlightParameters {
     double stepMetres=1;
     double secondsPerK=4; // time coordinate only; no trajectory/speed simulation
     double windReservePerMetre=.055;
+    double windScaleK95=1;
+    double windScaleK130=1;
+    double windScaleK200=1;
     double tailwindMultiplier=1.2;
     double tailwindStrongExtra=.2;
     double specialistWindEffectPerTier=.04;

@@ -51,6 +51,9 @@ template<class F> void visitEngine(SimulationV2::EngineParameters &m,F f) {
     f("flight.secondsPerK",QObject::tr("Czas lotu do K"),"flight",m.flight.secondsPerK,0.1,30,0.1,"s");
     f("flight.tailwindMultiplier",QObject::tr("Podstawowa siła wiatru w plecy"),"flight",m.flight.tailwindMultiplier,0,10,.05,"1");
     f("flight.tailwindStrongExtra",QObject::tr("Dodatkowa strata przy silnym wietrze w plecy"),"flight",m.flight.tailwindStrongExtra,0,10,.05,"1");
+    f("flight.windScaleK95",QObject::tr("Wpływ wiatru na K95"),"flight",m.flight.windScaleK95,0,5,.01,"1");
+    f("flight.windScaleK130",QObject::tr("Wpływ wiatru na K130"),"flight",m.flight.windScaleK130,0,5,.01,"1");
+    f("flight.windScaleK200",QObject::tr("Wpływ wiatru na K200"),"flight",m.flight.windScaleK200,0,5,.01,"1");
     f("flight.windReservePerMetre",QObject::tr("Wpływ wiatru na zapas lotu"),"flight",m.flight.windReservePerMetre,0,1,0.001,"1");
     f("flight.specialistWindEffectPerTier",QObject::tr("Wpływ specjalizacji na wiatr"),"flight",m.flight.specialistWindEffectPerTier,0,.25,.005,"1");
     f("flight.crosswindDrag",QObject::tr("Opór wiatru bocznego"),"flight",m.flight.crosswindDrag,0,1,0.001,"1");
@@ -178,6 +181,7 @@ QString effectDescription(const QString &key,const QString &group) {
     if(key=="flight.gateTailwindInteraction")return QObject::tr("Parametr zachowany dla starych profili. Wiatr nie zmienia podstawowej siły belki. Np. zmiana tej dawnej wartości nie wpływa już na skok.");
     if(key=="flight.stepMetres")return QObject::tr("Odległość między kolejnymi obliczeniami lotu; mniejsza daje dokładniejszą, ale wolniejszą symulację. Np. krok 0,5 m wymaga około dwa razy więcej obliczeń niż 1 m.");
     if(key=="flight.secondsPerK")return QObject::tr("Czas, po którym skoczek dociera do K w modelu pogody. Np. 4 s oznacza napotkanie wiatru przy K cztery sekundy po starcie.");
+    if(key.startsWith("flight.windScaleK"))return QObject::tr("Mnożnik wpływu wiatru przedniego i tylnego przy wskazanym K; między K95, K130 i K200 zmienia się płynnie. Np. 1,1 wzmacnia oba wpływy o 10%; tylny wiatr ma dodatkowo własny mnożnik.");
     if(key=="flight.windReservePerMetre")return QObject::tr("Siła wpływu wiatru pod narty i w plecy na podtrzymywanie lotu. Np. zwiększenie wartości wzmacnia zarówno pomoc wiatru pod narty, jak straty w wietrze w plecy.");
     if(key=="flight.specialistWindEffectPerTier")return QObject::tr("Zmiana wpływu wiatru za każdy poziom specjalizacji. Np. 0,04 oznacza 4% więcej dla lotnika i 4% mniej dla specjalisty małych skoczni.");
     if(key=="flight.crosswindDrag")return QObject::tr("Siła strat wywołanych wiatrem bocznym. Np. zwiększenie wartości skróci skoki przy 2 m/s z boku, ale nie zmieni skoków przy samym wietrze pod narty.");

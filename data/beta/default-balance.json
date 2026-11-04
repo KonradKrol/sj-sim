@@ -21,7 +21,7 @@
   "flight.exposureSections": 6,
   "flight.gateMetresAtK120": 2.5,
   "flight.gateTailwindInteraction": 0.04,
-  "flight.geometryResistance": 1.8,
+  "flight.geometryResistance": 1.1,
   "flight.geometryStartRealHs": 0.94,
   "flight.largeHillSpreadExponent": 1.5,
   "flight.largeHillSpreadGain": 0.3,
@@ -42,9 +42,9 @@
   "flight.secondsPerK": 4.5,
   "flight.specialistWindEffectPerTier": 0.03,
   "flight.stepMetres": 0.5,
-  "flight.tailwindMultiplier": 1.6,
+  "flight.tailwindMultiplier": 1.55,
   "flight.tailwindStrongExtra": 0.3,
-  "flight.usableLandingBeyondRealHsAtK": 0.12,
+  "flight.usableLandingBeyondRealHsAtK": 0.16,
   "flight.windAdverseExponent": 4,
   "flight.windAdverseOnset": 4,
   "flight.windCrossAdverseChance": 0.6,
@@ -541,5 +541,8 @@
   "quality.unpredictablePositive.1": 1.0525,
   "quality.unpredictablePositive.2": 1.11,
   "quality.unpredictablePositive.3": 1.175,
-  "quality.unpredictablePositive.4": 1.25
+  "quality.unpredictablePositive.4": 1.25,
+  "flight.windScaleK95": 0.9,
+  "flight.windScaleK130": 1.05,
+  "flight.windScaleK200": 1.29
 }
