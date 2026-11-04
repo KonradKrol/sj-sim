@@ -13,6 +13,7 @@
 #include "../global/Uuid.h"
 #include "../global/JsonGraphValidation.h"
 #include "../simulation-v2/SimulationCatalog.h"
+#include "../balance/BalanceLabModel.h"
 
 extern Uuid globalIDGenerator;
 
@@ -41,6 +42,11 @@ bool hasValidUuidFields(const QJsonValue &value)
         return true;
 
     const QJsonObject object = value.toObject();
+    if(object.contains("simulation-balance")) {
+        QString error;
+        if(!object.value("simulation-balance").isObject()
+            || !BalanceLab::validateProfile(object.value("simulation-balance").toObject(),error))return false;
+    }
     if(!CompetitionRules::validateWindMeasurementJson(object))return false;
     for(auto it = object.constBegin(); it != object.constEnd(); ++it)
     {
@@ -170,7 +176,7 @@ SimulationSave * SimulationSave::getFromJson(QJsonObject obj, IdentifiableObject
     }
     save->setID(sole::rebuild(obj.value("id").toString().toStdString()));
 
-    qDebug()<<"id: "<<save->getID();
+    qDebug()<<"id: "<<save->getIDStr();
 
     QJsonArray array = obj.value("jumpers").toArray();
     QVector<Jumper *> jumpers;

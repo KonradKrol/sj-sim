@@ -20,13 +20,14 @@ public:
     QHash<QString,Kind> types;
     QString error;
     bool legacyIds=false;
+    bool requireExisting=false;
     QString key(const QString &id) const {return legacyIds && !id.contains('-')?QStringLiteral("legacy:")+id:canonicalId(id);}
     bool accepts(const QString &id) const {bool numeric=false;if(legacyIds && !id.isEmpty())id.toULongLong(&numeric);return numeric || validId(id);}
     bool add(const QJsonObject &object,Kind kind,bool shared=false) {
         const auto id=object.value("id").toString();
         if(!accepts(id)){error="Invalid or missing object UUID";return false;}
         const auto identity=key(id);
-        if(types.contains(identity) && (!shared || types.value(identity)!=kind)){error="Duplicate object UUID: "+id;return false;}
+        if(types.contains(identity) && (!shared || types.value(identity)!=kind)){error=QString("Duplicate object UUID: %1 (types %2, %3)").arg(id).arg(types.value(identity)).arg(kind);return false;}
         types.insert(identity,kind);return true;
     }
     bool array(const QJsonValue &value,Kind kind,bool shared=false) {
@@ -63,8 +64,8 @@ public:
     bool references(const QJsonValue &value) {
         if(value.isArray()){for(const auto &item:value.toArray())if(!references(item))return false;return true;}
         if(!value.isObject())return true;
-        static const QHash<QString,Kind> targets={{"jumper-id",Jumper},{"hill-id",Hill},{"team-id",Team},{"classification-id",Classification},{"actual-season-id",Season},{"actual-calendar-id",Calendar}};
-        static const QHash<QString,Kind> lists={{"jumpers-ids",Jumper},{"start-list",Jumper}};
+        static const QHash<QString,Kind> targets={{"jumper-id",Jumper},{"hill-id",Hill},{"team-id",Team},{"classification-id",Classification},{"actual-season-id",Season},{"actual-calendar-id",Calendar},{"trial-round-id",Competition},{"advancement-competition-id",Competition},{"pending-advancement-competition-id",Competition},{"advancement-classification-id",Classification}};
+        static const QHash<QString,Kind> lists={{"jumpers-ids",Jumper},{"start-list",Jumper},{"training-ids",Competition},{"classifications-ids",Classification}};
         const auto object=value.toObject();
         for(auto it=object.begin();it!=object.end();++it){
             if(targets.contains(it.key()) && it.value().isString()) {
@@ -72,6 +73,7 @@ public:
                 if(id!="-1" && !id.isEmpty()) {
                     if(!accepts(id)){error="Invalid reference UUID: "+id;return false;}
                     const auto identity=key(id);
+                    if(requireExisting && !types.contains(identity)){error="Missing referenced object: "+it.key()+" = "+id;return false;}
                     if(types.contains(identity) && types.value(identity)!=targets.value(it.key())){error="Reference has the wrong object type: "+it.key();return false;}
                 }
             }
@@ -81,6 +83,7 @@ public:
                     const auto id=item.toString();
                     if(!item.isString() || !accepts(id)){error="Invalid participant UUID";return false;}
                     const auto identity=key(id);
+                    if(requireExisting && !types.contains(identity)){error="Missing participant: "+id;return false;}
                     if(types.contains(identity) && types.value(identity)!=lists.value(it.key())){error="Participant reference has the wrong object type";return false;}
                 }
             }
@@ -92,6 +95,7 @@ public:
 
 inline bool validateSave(const QJsonObject &object,QString &error) {
     Registry registry;
+    registry.requireExisting=true;
     bool ok=registry.add(object,Registry::Save) && registry.array(object.value("jumpers"),Registry::Jumper)
         && registry.array(object.value("hills"),Registry::Hill) && registry.array(object.value("rules"),Registry::Rules);
     for(const auto &value:object.value("seasons").toArray()) {

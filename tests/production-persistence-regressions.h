@@ -1,6 +1,8 @@
 #pragma once
 #include "../source/global/JsonGraphValidation.h"
 #include "../source/global/AtomicJsonFile.h"
+#include "../source/global/JsonImportError.h"
+#include <QLockFile>
 
 static void productionPersistenceRegressions() {
     auto *settings=GlobalAppSettings::get();
@@ -32,6 +34,34 @@ static void productionPersistenceRegressions() {
     const auto valid=SimulationSave::getJsonObject(source);QString error;
     check(JsonGraphValidation::validateSave(valid,error),"shared inline rules remain compatible with saved calendars");
     std::unique_ptr<SimulationSave> loaded(SimulationSave::getFromJson(valid,nullptr));check(bool(loaded),"valid save still deserializes");
+    auto missing=valid;missing["actual-season-id"]=QString::fromStdString(Uuid::v4().str());
+    check(!SimulationSave::getFromJson(missing,nullptr),"missing active season cannot silently become an empty save");
+    missing=valid;missing["jumpers-lists"]=QJsonArray{QJsonObject{{"jumpers-ids",QJsonArray{QString::fromStdString(Uuid::v4().str())}}}};
+    check(!SimulationSave::getFromJson(missing,nullptr),"missing roster participants are rejected before deserialization");
+    auto balance=valid;auto balanceSeasons=balance["seasons"].toArray();auto balanceSeason=balanceSeasons[0].toObject();auto balanceCalendars=balanceSeason["calendars"].toArray();auto balanceCalendar=balanceCalendars[0].toObject();auto balanceEvents=balanceCalendar["competitions"].toArray();auto balanceEvent=balanceEvents[0].toObject();balanceEvent["simulation-balance"]="broken";balanceEvents[0]=balanceEvent;balanceCalendar["competitions"]=balanceEvents;balanceCalendars[0]=balanceCalendar;balanceSeason["calendars"]=balanceCalendars;balanceSeasons[0]=balanceSeason;balance["seasons"]=balanceSeasons;
+    check(!SimulationSave::getFromJson(balance,nullptr),"invalid saved balance cannot silently change an ongoing competition");
+    {
+        QLockFile owner(disk.filePath("instance.lock")),other(disk.filePath("instance.lock"));
+        check(owner.tryLock(0) && !other.tryLock(0),"only one writer can own a portable data directory");
+        owner.unlock();check(other.tryLock(0),"closing the owner releases its data directory");
+    }
+    QJsonParseError parse;const QByteArray badJson="{\n  x}";QJsonDocument::fromJson(badJson,&parse);
+    const auto importError=JsonImportError::file("/packs/broken.json",JsonImportError::syntax(badJson,parse));
+    check(importError.contains("broken.json") && importError.contains("2"),"import errors identify the file and JSON line");
+    {
+        Team squad("POL");squad.setJumpers({jumper});
+        for(auto *event:{first,second}) {
+            event->getRulesPointer()->setCompetitionType(CompetitionRules::Team);event->getRulesPointer()->setJumpersInTeamCount(1);
+            event->setTeams({squad});event->setPlayed(true);
+            CompetitionSingleResult result(event,&event->getTeamsReference().first());
+            event->getResultsReference().setResults({result});
+        }
+        std::unique_ptr<SimulationSave> teamSave(SimulationSave::getFromJson(SimulationSave::getJsonObject(source),nullptr));
+        check(bool(teamSave),"team event snapshots roundtrip");
+        for(auto *event:teamSave->getActualSeason()->getActualCalendar()->getCompetitions())
+            check(event->getResultsReference().getResultsReference().first().getTeam()==&event->getTeamsReference().first(),"each team result belongs to its own event snapshot, even with repeated team IDs");
+        for(auto *event:{first,second}) {event->setPlayed(false);event->getResultsReference().getResultsReference().clear();event->getTeamsReference().clear();event->getRulesPointer()->setCompetitionType(CompetitionRules::Individual);}
+    }
     auto duplicate=valid;auto jumpers=valid.value("jumpers").toArray();jumpers.append(jumpers.first());duplicate["jumpers"]=jumpers;
     check(!SimulationSave::getFromJson(duplicate,nullptr),"duplicate jumper identities are rejected before creating objects");
     duplicate=valid;auto hills=valid.value("hills").toArray();auto badHill=hills.first().toObject();badHill["id"]=jumper->getIDStr();hills[0]=badHill;duplicate["hills"]=hills;
