@@ -114,9 +114,18 @@ int main()
         SeededRandom scaledRng(111),unscaledRng(111);
         const auto scaled=sampleWeatherPreset(WeatherPreset::StableTailwind,120,scaledRng),original=sampleWeatherPreset(WeatherPreset::StableTailwind,120,unscaledRng,unscaled);
         double scaledMean=0,originalMean=0;for(const auto &r:scaled.wind.references)scaledMean+=r.value.head/scaled.wind.references.size();for(const auto &r:original.wind.references)originalMean+=r.value.head/original.wind.references.size();
-        near(scaledMean,originalMean*.8,1e-9,"preset global strength scale moderates generated wind");
-        near(scaled.wind.references[0].value.head-scaledMean,(original.wind.references[0].value.head-originalMean)*.8*.75,1e-9,"preset global variation scale moderates spatial differences");
-        near(scaled.wind.gustAmplitude,original.wind.gustAmplitude*.75,1e-9,"preset global gust scale moderates gusts");
+        near(scaledMean,originalMean*.48,1e-9,"preset global strength scale moderates generated wind");
+        near(scaled.wind.references[0].value.head-scaledMean,(original.wind.references[0].value.head-originalMean)*.48*.45,1e-9,"preset global variation scale moderates spatial differences");
+        near(scaled.wind.gustAmplitude,original.wind.gustAmplitude*.45,1e-9,"preset global gust scale moderates gusts");
+        WeatherGeneratorParameters previous;previous.values["generator.global.strengthScale"]=.8;previous.values["generator.global.variationScale"]=.75;previous.values["generator.global.gustScale"]=.75;
+        WeatherProposalContext autoContext;SeededRandom oldAutoRng(222),newAutoRng(222);
+        const auto oldAuto=proposeWeather(autoContext,oldAutoRng,previous),newAuto=proposeWeather(autoContext,newAutoRng);
+        {
+            Wind oldMean,newMean;for(const auto &r:oldAuto.wind.references){oldMean.head+=r.value.head/oldAuto.wind.references.size();oldMean.cross+=r.value.cross/oldAuto.wind.references.size();}for(const auto &r:newAuto.wind.references){newMean.head+=r.value.head/newAuto.wind.references.size();newMean.cross+=r.value.cross/newAuto.wind.references.size();}
+            near(newMean.head,oldMean.head*.6,1e-9,"automatic proposal reference mean softens 40 percent");near(newMean.cross,oldMean.cross*.6,1e-9,"automatic proposal side mean softens 40 percent");
+        }
+        near(newAuto.wind.temporalAmplitude,oldAuto.wind.temporalAmplitude*.6,1e-9,"automatic temporal variation softens 40 percent");
+        near(newAuto.wind.gustAmplitude,oldAuto.wind.gustAmplitude*.6,1e-9,"automatic gust intensity softens 40 percent");
         SeededRandom presetRng(111);double previousStrength=-1;bool variants=false;int lightCalm=0;
         for(int index=0;index<weatherPresetCount;++index)for(int draw=0;draw<500;++draw) {
             auto proposal=sampleWeatherPreset(static_cast<WeatherPreset>(index),120,presetRng,unscaled);proposal.wind.validate();
