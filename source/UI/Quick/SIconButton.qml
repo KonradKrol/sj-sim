@@ -18,4 +18,15 @@ SButton {
         Rectangle { x: 5; y: 4; width: 11; height: 12; radius: 1; color: "transparent"; border.color: control.foreground }
         Rectangle { x: 1; y: 0; width: 11; height: 12; radius: 1; color: Theme.surface; border.color: control.foreground }
     }
+    Item {
+        anchors.centerIn: parent
+        width: 17; height: 17
+        visible: control.iconName === "delete"
+        opacity: control.enabled ? 1 : 0.45
+        Rectangle { x: 5; y: 1; width: 7; height: 3; radius: 1; color: "transparent"; border.color: control.foreground }
+        Rectangle { x: 2; y: 4; width: 13; height: 1; color: control.foreground }
+        Rectangle { x: 4; y: 5; width: 9; height: 11; radius: 1; color: "transparent"; border.color: control.foreground }
+        Rectangle { x: 7; y: 7; width: 1; height: 6; color: control.foreground }
+        Rectangle { x: 10; y: 7; width: 1; height: 6; color: control.foreground }
+    }
 }

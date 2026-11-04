@@ -13,8 +13,8 @@ ColumnLayout {
         RowLayout {
             Layout.fillWidth: true; spacing: Theme.dp(4)
             SButton { objectName: "hillAdd"; text: qsTr("+ Skocznia"); primary: true; onClicked: {studio.backend.add();studio.editing=true} }
-            SButton { objectName: "hillDuplicate"; text: qsTr("Duplikuj"); Accessible.name: qsTr("Duplikuj skocznię"); enabled: studio.backend.selectedIndex>=0; onClicked: {studio.backend.duplicate();studio.editing=true} }
-            SButton { objectName: "hillRemove"; text: qsTr("Usuń"); Accessible.name: qsTr("Usuń skocznię"); foreground: Theme.danger; enabled: studio.backend.selectedIndex>=0; onClicked: studio.backend.remove() }
+            SIconButton { objectName: "hillDuplicate"; text: ""; iconName: "copy"; quiet: false; actionName: qsTr("Duplikuj skocznię"); enabled: studio.backend.selectedIndex>=0; onClicked: {studio.backend.duplicate();studio.editing=true} }
+            SIconButton { objectName: "hillRemove"; text: ""; iconName: "delete"; quiet: false; actionName: qsTr("Usuń skocznię"); foreground: Theme.danger; enabled: studio.backend.selectedIndex>=0; onClicked: studio.backend.remove() }
             Item { Layout.fillWidth: true }
             SButton { text: "↶"; Accessible.name: qsTr("Cofnij"); hint: Accessible.name; quiet: true; enabled: studio.backend.canUndo; onClicked: studio.backend.undo() }
             SButton { text: "↷"; Accessible.name: qsTr("Ponów"); hint: Accessible.name; quiet: true; enabled: studio.backend.canRedo; onClicked: studio.backend.redo() }
