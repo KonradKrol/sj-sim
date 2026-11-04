@@ -318,3 +318,24 @@ K200 37.64→62.20, K210 39.42→71.54, K225 42.10→87.36.
 To syntetyczna próba działania, nie kalibracja do rzeczywistych konkursów ani
 obietnica konkretnego zakresu dla aktualnej paczki. Testy obejmują też ciągłość
 progu, niezmienność pivotu, poprawność profili i zachowanie ograniczeń zeskoku.
+
+### Mocniejszy wiatr tylny i niekorzystne reakcje — 4.11.2026
+
+Na prośbę właściciela zmieniono wbudowany profil `data/beta/default-balance.json`:
+- `flight.tailwindMultiplier`: 1,2 → 1,6;
+- `flight.tailwindStrongExtra`: 0,2 → 0,3;
+- `flight.windHeadAdverseLoss`: 0,5 → 0,7;
+- `flight.windTailAdverseLoss`: 0,7 → 1,0;
+- `flight.windCrossAdverseLoss`: 0,65 → 0,9.
+
+Częstości i płynny próg aktywacji niekorzystnych reakcji pozostają takie same.
+To kalibracja straty zapasu lotu, nie bezpośrednie odejmowanie procentu metrów.
+Kontrolna próba: K120/HS134, stały początkowy zapas 130, 10 000 wspólnych
+losowań reakcji, stały wiatr, bez opadów. Średnie odległości przed → po:
+0 m/s: 129,915 → 129,915 m; 1 m/s w plecy: 123,096 → 121,001 m;
+2 m/s w plecy: 116,572 → 112,809 m; 4 m/s w plecy: 103,045 → 96,630 m.
+To próba samego modelu lotu, nie pełnych konkursów z paczką zawodników.
+Aktywny własny profil oraz rozpoczęty konkurs ze swoim snapshotem mogą
+nadal używać poprzednich wartości. Przywrócenie standardowego balansu
+w labie wybiera nową kalibrację dla następnych konkursów/sesji.
+Drag and drop skoczni, zasad i presetów odłożono na wyraźną prośbę użytkownika.
