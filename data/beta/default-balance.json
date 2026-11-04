@@ -40,7 +40,7 @@
   "flight.referenceGate": 10,
   "flight.referenceQuality": 70,
   "flight.secondsPerK": 4.5,
-  "flight.specialistWindEffectPerTier": 0.275,
+  "flight.specialistWindEffectPerTier": 0.0275,
   "flight.stepMetres": 0.5,
   "flight.tailwindMultiplier": 1.55,
   "flight.tailwindStrongExtra": 0.3,
