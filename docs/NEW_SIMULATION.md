@@ -364,3 +364,17 @@ Auto gate w konfiguracji konkursu i pojedynczych skoków dobiera belkę do
 97% real HS; w batchach labu do real HS (dotychczasowe marginesy zachowane).
 Własne aktywne profile i snapshots rozpoczętych konkursów mogą zachować
 poprzednie ustawienia geometrii. Zapisane profile użytkownika nie są nadpisywane.
+
+### Noty i rozrzut — 4.11.2026
+
+Wbudowany balans: `flight.largeHillSpreadGain` = 1,2 oraz
+`flight.qualityMetresAtK120` = 0,8. Drugi parametr zmienia przełożenie
+jakości na zapas lotu dla wszystkich K; poszerzanie na dużych K działa nadal
+oddzielnie i narasta płynnie.
+
+Przy skoku 130 m na K120 / real HS134, telemarku i przed losowymi składnikami
+bazowe noty wynoszą odpowiednio 16,7 / 17,7 / 18,05 / 18,75 / 19,1.
+Same wartości `landing.styleMean` uwzględniają istniejącą korektę odległości
+oraz trudności lądowania w tym punkcie. Losowanie słabszego lądowania, szum,
+rodzaj lądowania, zaokrąglenie i limit ocen działają dalej.
+Aktywny własny profil może nadpisać wartości wbudowane.
