@@ -26,6 +26,9 @@ public:
     void normalizeCompetitionEvents();
     CompetitionInfo *getMainCompetitionForEvent(CompetitionInfo *event) const;
     int getTrainingNumber(CompetitionInfo *training) const;
+    QVector<CompetitionInfo *> teamEventFamily(CompetitionInfo *event) const;
+    CompetitionInfo *teamSquadLock(CompetitionInfo *event) const;
+    CompetitionInfo *previousTeamTraining(CompetitionInfo *event) const;
 
     static SeasonCalendar getFromJson(QJsonObject json, IdentifiableObjectsStorage *storage, QMap<ulong, Identifiable *> *before120Map = nullptr, int seasonYear = 0);
     static QJsonObject getJsonObject(SeasonCalendar & calendar);

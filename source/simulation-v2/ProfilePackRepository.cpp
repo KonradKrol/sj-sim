@@ -6,6 +6,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonParseError>
+#include "../global/JsonImportError.h"
 #include <QLockFile>
 #include <QSaveFile>
 #include <QTemporaryDir>
@@ -106,18 +107,24 @@ bool ProfilePackRepository::read(const QString &path,QJsonObject &result,QString
     bool converted=false;
     const auto readFile=[&] {
         QFile file(path);
-        if(!file.open(QIODevice::ReadOnly) || file.size()>maximumBytes) {
-            error=QObject::tr("Nie można odczytać paczki (limit 20 MB).");return false;
+        if(!file.open(QIODevice::ReadOnly)) {
+            error=JsonImportError::file(path,QObject::tr("Nie można otworzyć pliku: %1").arg(file.errorString()));return false;
+        }
+        if(file.size()>maximumBytes) {
+            error=JsonImportError::file(path,QObject::tr("Paczka przekracza dopuszczalny rozmiar 20 MB."));return false;
         }
         original=file.readAll();
         QJsonParseError parse;const auto document=QJsonDocument::fromJson(original,&parse);
         if(parse.error!=QJsonParseError::NoError || !document.isObject()) {
-            error=parse.error!=QJsonParseError::NoError?QObject::tr("Nieprawidłowy JSON paczki: %1").arg(parse.errorString())
-                :QObject::tr("Plik paczki musi zawierać obiekt JSON.");return false;
+            error=JsonImportError::file(path,parse.error!=QJsonParseError::NoError?JsonImportError::syntax(original,parse)
+                :QObject::tr("Plik paczki musi zawierać obiekt JSON."));return false;
         }
         pack=document.object();return convertPerkLevels(pack,converted,error);
     };
-    if(!readFile())return false;
+    if(!readFile()) {
+        if(!error.contains(QFileInfo(path).fileName()))error=JsonImportError::file(path,error);
+        return false;
+    }
     // Imported files are converted in memory; only canonical authoring files are rewritten.
     if(converted && inside(path,root) && QFileInfo(path)==QFileInfo(filePath(pack))) {
         QLockFile lock(path+".perk-levels.lock");

@@ -1849,6 +1849,14 @@ Sdílejte celou složku. K importu vyberte soubor pack.json.</translation></mess
 <message><source>Dodaj kwalifikacje</source><translation>Přidat kvalifikace</translation></message>
 <message><source>Doda osobne kwalifikacje i automatycznie połączy awans. Konkursy z kwalifikacjami zostaną pominięte.</source><translation>Přidá kvalifikaci před každý závod a automaticky propoji postup. Závody s existující kvalifikací budou vynechány.</translation></message>
 <message><source>Doda kwalifikacje do zaznaczonych konkursów indywidualnych bez kwalifikacji i automatycznie połączy awans.</source><translation>Přidá kvalifikaci k vybraným individuálním závodům bez kvalifikace a automaticky propoji postup.</translation></message>
+
+        <message><source>Dodaj pakiet konkursów</source><translation>Přidat blok závodů</translation></message>
+
+        <message><source>Dodaj po jednych kwalifikacjach przed każdym zaznaczonym konkursem. Awans i zgodne zasady zostaną powiązane automatycznie.</source><translation>Přidejte kvalifikaci před každý vybraný závod. Postup a odpovídající pravidla se propojí automaticky.</translation></message>
+
+        <message><source>Dzień wcześniej</source><translation>Den předem</translation></message>
+
+        <message><source>Wróć do listy i zaznacz konkursy, do których chcesz dodać kwalifikacje.</source><translation>Vraťte se do seznamu a vyberte závody, ke kterým chcete přidat kvalifikaci.</translation></message>
 </context>
     <context>
         <name>CalendarEditorTableModel</name>
@@ -2450,7 +2458,31 @@ li.checked::marker { content: "\2612"; }
             <source>Oba konkursy korzystają z tych samych kwalifikacji. W niedzielę odbędzie się seria próbna.</source>
             <translation>Oba závody používají stejnou kvalifikaci. V neděli se uskuteční zkušební kolo.</translation>
         </message>
-    </context>
+
+        <message><source>Przygotowanie</source><translation>Příprava</translation></message>
+
+        <message><source>Pierwszy konkurs</source><translation>První závod</translation></message>
+
+        <message><source>Drugi konkurs</source><translation>Druhý závod</translation></message>
+
+        <message><source>Dodaj dwa konkursy z kwalifikacjami. Ich kolejność ustalisz w kalendarzu.</source><translation>Přidejte dva závody s kvalifikacemi. Jejich pořadí upravíte v kalendáři.</translation></message>
+
+        <message><source>Przygotowanie pierwszego konkursu</source><translation>Příprava prvního závodu</translation></message>
+
+        <message><source>Dwa treningi i próbna</source><translation>Dva tréninky a zkušební kolo</translation></message>
+
+        <message><source>Same kwalifikacje</source><translation>Pouze kvalifikace</translation></message>
+
+        <message><source>Wspólne kwalifikacje</source><translation>Společná kvalifikace</translation></message>
+
+        <message><source>Kwalifikacje do drugiego konkursu</source><translation>Kvalifikace do druhého závodu</translation></message>
+
+        <message><source>Oba konkursy korzystają z tych samych kwalifikacji. Przed drugim odbędzie się seria próbna.</source><translation>Oba závody používají stejnou kvalifikaci. Před druhým proběhne zkušební kolo.</translation></message>
+
+        <message><source>Plan pakietu</source><translation>Plán bloku závodů</translation></message>
+
+        <message><source>Dodaj pakiet do kalendarza</source><translation>Přidat blok do kalendáře</translation></message>
+</context>
     <context>
         <name>CalendarWorkspace</name>
         <message>
@@ -2705,6 +2737,30 @@ li.checked::marker { content: "\2612"; }
     <message><source>Lista zawodników</source><translation>Seznam závodníků</translation></message>
 <message><source>Lista zawodników kalendarza</source><translation>Seznam závodníků kalendáře</translation></message>
 <message><source>Przed konkursem ta lista stanie się aktywna. Skład możesz zmienić w przygotowaniu.</source><translation>Před závodem se tento seznam aktivuje. Sestavu můžete změnit během přípravy.</translation></message>
+
+        <message><source>Ustawienia kalendarza</source><translation>Nastavení kalendáře</translation></message>
+
+        <message><source>Domyślne zasady</source><translation>Výchozí pravidla</translation></message>
+
+        <message><source>Domyślne zasady kalendarza</source><translation>Výchozí pravidla kalendáře</translation></message>
+
+        <message><source>Dotyczą nowo dodawanych wydarzeń. Możesz wskazać inne zasady niż domyślne z paczki.</source><translation>Platí pro nově přidané události. Můžete vybrat jiná pravidla než výchozí pravidla balíčku.</translation></message>
+
+        <message><source>Konkurs</source><translation>Závod</translation></message>
+
+        <message><source>Kopiuj konkursy</source><translation>Kopírovat závody</translation></message>
+
+        <message><source>Usuń konkursy</source><translation>Smazat závody</translation></message>
+
+        <message><source>Kolejność i zaznaczanie</source><translation>Pořadí a výběr</translation></message>
+
+        <message><source>Dodaj wiele konkursów</source><translation>Přidat více závodů</translation></message>
+
+        <message><source>Przesuń konkursy w górę</source><translation>Posunout závody nahoru</translation></message>
+
+        <message><source>Przesuń konkursy w dół</source><translation>Posunout závody dolů</translation></message>
+
+        <message><source>Utwórz kalendarz z konkursem</source><translation>Vytvořit kalendář se závodem</translation></message>
 </context>
     <context>
         <name>CalendarsListModel</name>
@@ -3884,6 +3940,18 @@ Ověřte, že existuje a má odpovídající oprávnění.</translation>
 <message><source>Zastąpić ręcznie ustawione składy i kolejność zawodników?</source><translation>Nahradit ručně nastavené sestavy a pořadí závodníků?</translation></message>
 <message><source>Każda drużyna musi mieć co najmniej %1 zawodników z imieniem lub nazwiskiem w składzie.</source><translation>Každý tým musí mít alespoň %1 závodníků se jménem nebo příjmením v sestavě.</translation></message>
 <message><source> (brak wyników)</source><translation> (bez výsledků)</translation></message>
+
+        <message><source>Składy i kolejność ustalone w kwalifikacjach lub próbnej. Obowiązują do końca tego konkursu.</source><translation>Soupisky a pořadí byly určeny v kvalifikaci nebo zkušebním kole. Platí do konce tohoto závodu.</translation></message>
+
+        <message><source>Podpowiedziano składy z ostatniego treningu drużynowego. Możesz je jeszcze zmienić.</source><translation>Navrženy soupisky z posledního týmového tréninku. Stále je můžete změnit.</translation></message>
+
+        <message><source>Składy treningowe są robocze. Nie blokują składów na kwalifikacje ani konkurs.</source><translation>Tréninkové soupisky jsou předběžné. Neuzamykají soupisky pro kvalifikaci ani závod.</translation></message>
+
+        <message><source>Po rozpoczęciu kwalifikacji lub próbnej zawodnicy i ich kolejność zostaną ustaleni do końca konkursu.</source><translation>Zahájení kvalifikace nebo zkušebního kola určí skokany a jejich pořadí až do konce závodu.</translation></message>
+
+        <message><source>Składy są już ustalone</source><translation>Soupisky jsou již určeny</translation></message>
+
+        <message><source>Zawodnicy i kolejność muszą pozostać takie jak w rozegranych kwalifikacjach lub próbnej.</source><translation>Skokani a jejich pořadí musí odpovídat odehrané kvalifikaci nebo zkušebnímu kolu.</translation></message>
 </context>
     <context>
         <name>CompetitionInfoEditorWidget</name>
@@ -9992,7 +10060,13 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
             <source>OK</source>
             <translation>OK</translation>
         </message>
-    </context>
+
+        <message><source>Dodaj miejsce</source><translation>Přidat umístění</translation></message>
+
+        <message><source>Usuń ostatnie miejsce</source><translation>Odebrat poslední umístění</translation></message>
+
+        <message><source>Wyczyść</source><translation>Vymazat</translation></message>
+</context>
     <context>
         <name>PointsForPlacesTableModel</name>
         <message>
@@ -16018,6 +16092,14 @@ Ověřte, že jste vybrali správný soubor.</translation>
 <message><source>Najpierw ustaw daty zaznaczonych konkursów.</source><translation>Nejprve nastavte data vybraných závodů.</translation></message>
 <message><source>Zaznacz konkursy indywidualne bez kwalifikacji.</source><translation>Vyberte individuální závody bez kvalifikace.</translation></message>
 <message><source>Dodano kwalifikacje i powiązania. Możesz cofnąć zmianę.</source><translation>Kvalifikace a postupové vazby byly přidány. Změnu lze vrátit.</translation></message>
+
+        <message><source>Składy są już ustalone. Nie można zmienić rodzaju konkursu ani liczby zawodników w drużynie.</source><translation>Soupisky jsou již určeny. Nelze změnit typ závodu ani počet skokanů v týmu.</translation></message>
+
+        <message><source>Przed drużynówką wybierz drużynowe zasady próbnej. Trening może być indywidualny.</source><translation>Před týmovým závodem vyberte týmová pravidla zkušebního kola. Trénink může být individuální.</translation></message>
+
+        <message><source>Próbna drużynowa musi mieć taką samą liczbę zawodników w drużynie jak konkurs główny.</source><translation>Týmové zkušební kolo musí mít stejný počet skokanů v týmu jako hlavní závod.</translation></message>
+
+        <message><source>%1 (z paczki)</source><translation>%1 (z balíčku)</translation></message>
 </context>
     <context>
         <name>QuickPlot</name>
@@ -18281,6 +18363,20 @@ li.checked::marker { content: "\2612"; }
 <message><source>%1 (wszyscy)</source><translation>%1 (všichni)</translation></message>
 <message><source>Nowa lista</source><translation>Nový seznam</translation></message>
 <message><source>Nowa lista %1</source><translation>Nový seznam %1</translation></message>
+
+        <message><source>Składy są już ustalone</source><translation>Soupisky jsou již určeny</translation></message>
+
+        <message><source>Przywróć liczbę zawodników w drużynie używaną w rozegranych kwalifikacjach lub próbnej.</source><translation>Obnovte počet skokanů v týmu použitý v odehrané kvalifikaci nebo zkušebním kole.</translation></message>
+
+        <message><source>Próbna przed konkursem drużynowym</source><translation>Zkušební kolo před týmovým závodem</translation></message>
+
+        <message><source>Próbna musi mieć drużynowe zasady i taką samą liczbę zawodników w drużynie jak konkurs główny. Trening może pozostać indywidualny.</source><translation>Zkušební kolo musí mít týmová pravidla a stejný počet skokanů v týmu jako hlavní závod. Trénink může zůstat individuální.</translation></message>
+
+        <message><source>Dopasuj próbną do konkursu</source><translation>Přizpůsobit zkušební kolo závodu</translation></message>
+
+        <message><source>Sprawdź kwalifikacje</source><translation>Zkontrolujte kvalifikaci</translation></message>
+
+        <message><source>Kwalifikacje i konkurs główny muszą mieć ten sam rodzaj oraz zgodną liczbę zawodników w drużynie.</source><translation>Kvalifikace a hlavní závod musí mít stejný typ a odpovídající počet skokanů v týmu.</translation></message>
 </context>
     <context>
         <name>SimulationSavesWindow</name>
@@ -23253,6 +23349,8 @@ Technický klíč: %4</translation>
 <message><source>Wszyscy skoczkowie</source><translation>Všichni závodníci</translation></message>
 <message><source>Wszyscy</source><translation>Všichni</translation></message>
 <message><source>Zarządzaj</source><translation>Spravovat</translation></message>
+
+        <message><source>Listy zawodników</source><translation>Seznamy skokanů</translation></message>
 </context>
 <context><name>SavedRosterWorkspace</name><message><source>Cofnij</source><translation>Zpět</translation></message><message><source>Według krajów</source><translation>Podle zemí</translation></message><message><source>Kolejność</source><translation>Pořadí</translation></message><message><source>Limity krajów</source><translation>Limity zemí</translation></message><message><source>Wszyscy</source><translation>Všichni</translation></message><message><source>Wybrani (%1)</source><translation>Vybraní (%1)</translation></message><message><source>Wybrani zawodnicy</source><translation>Vybraní závodníci</translation></message></context>
 <context><name>SavedRosterPane</name><message><source>Wybrani zawodnicy</source><translation>Vybraní závodníci</translation></message><message><source>Wszyscy zawodnicy</source><translation>Všichni závodníci</translation></message><message><source>Szukaj nazwiska lub kraju</source><translation>Hledat jméno nebo zemi</translation></message><message><source>Usuń %1 z listy</source><translation>Odstranit %1 ze seznamu</translation></message><message><source>Dodaj %1 do listy</source><translation>Přidat %1 do seznamu</translation></message><message><source>Lista jest pusta</source><translation>Seznam je prázdný</translation></message><message><source>Brak pasujących zawodników</source><translation>Žádní odpovídající závodníci</translation></message><message><source>Pusta lista oznacza wszystkich zawodników. Dodaj wybranych, aby ograniczyć skład.</source><translation>Prázdný seznam zahrnuje všechny závodníky. Přidáním závodníků omezíte sestavu.</translation></message><message><source>Zmień nazwisko lub kraj, aby zobaczyć innych zawodników.</source><translation>Změňte jméno nebo zemi pro zobrazení dalších závodníků.</translation></message><message><source>Usuń zaznaczonych (%1)</source><translation>Odstranit vybrané (%1)</translation></message><message><source>Dodaj zaznaczonych (%1)</source><translation>Přidat vybrané (%1)</translation></message><message><source>Dodaj widocznych</source><translation>Přidat zobrazené</translation></message></context>
@@ -23263,5 +23361,58 @@ Technický klíč: %4</translation>
 <message><source>Aktywna</source><translation>Aktivní</translation></message>
 <message><source>Aktywuj</source><translation>Aktivovat</translation></message>
 <message><source>Usuń</source><translation>Smazat</translation></message>
+
+        <message><source>Lista do edycji</source><translation>Seznam k úpravě</translation></message>
 </context>
+    <context><name>CompetitionRulesListModel</name>
+        <message><source>Nowe zasady</source><translation>Nová pravidla</translation></message>
+    </context>
+    <context><name>PointsForPlacesPresetsListModel</name>
+        <message><source>Nowa punktacja</source><translation>Nové bodování</translation></message>
+    </context>
+    <context><name>QuickCalendarDates</name>
+        <message><source>Awans z pierwszych kwalifikacji</source><translation>Postup z první kvalifikace</translation></message>
+
+        <message><source>Zaznacz konkursy bez kwalifikacji.</source><translation>Vyberte závody bez kvalifikace.</translation></message>
+</context>
+    <context><name>PointsPresetEditor</name>
+        <message><source>Punktacja za miejsca</source><translation>Body za umístění</translation></message>
+
+        <message><source>Ustal, ile punktów w klasyfikacji daje każde miejsce. Zmiany zapisują się w tej paczce na bieżąco.</source><translation>Nastavte, kolik bodů do klasifikace přináší každé umístění. Změny se do tohoto balíčku ukládají průběžně.</translation></message>
+</context>
+<context><name>QObject</name><message><source>Nie można wczytać pliku „%1”.
+%2
+Wybierz poprawną paczkę wyeksportowaną z Sj.Sim.</source><translation>Nelze načíst soubor „%1“.
+%2
+Vyberte platný balíček exportovaný ze Sj.Sim.</translation></message></context>
+<context><name>QObject</name><message><source>Nieprawidłowy JSON: wiersz %1, kolumna %2.
+%3</source><translation>Neplatný JSON: řádek %1, sloupec %2.
+%3</translation></message></context>
+<context><name>QObject</name><message><source>Nie można otworzyć pliku: %1</source><translation>Soubor nelze otevřít: %1</translation></message></context>
+<context><name>DatabaseEditorWindow</name><message><source>Nie można otworzyć pliku: %1</source><translation>Soubor nelze otevřít: %1</translation></message></context>
+<context><name>DatabaseEditorWindow</name><message><source>Plik nie zawiera paczki Sj.Sim.</source><translation>Soubor neobsahuje balíček Sj.Sim.</translation></message></context>
+<context><name>QObject</name><message><source>Paczka przekracza dopuszczalny rozmiar 20 MB.</source><translation>Balíček překračuje limit velikosti 20 MB.</translation></message></context>
+<context><name>QObject</name><message><source>Sj.Sim jest już uruchomiony</source><translation>Sj.Sim je již spuštěn</translation></message></context>
+<context><name>QObject</name><message><source>Ten folder danych jest używany przez inną instancję Sj.Sim albo nie można go zapisać.
+Zamknij poprzednie okno lub uruchom osobną kopię gry z innym folderem userData.</source><translation>Tuto datovou složku používá jiná instance Sj.Sim nebo do ní nelze zapisovat.
+Zavřete předchozí okno nebo spusťte samostatnou kopii hry s vlastní složkou userData.</translation></message></context>
+<context><name>HillStudio</name><message><source>Punkt K, HS i perki. Dodaj skocznię lub zaimportuj paczkę.</source><translation>Bod K, HS a perky. Přidejte můstek nebo importujte balíček.</translation></message></context>
+<context><name>QObject</name>
+<message><source>Bazowa szansa słabszego lądowania, także przy telemarku. Np. 0,06 oznacza 6% przed dodatkiem za odległość.</source><translation>Základní pravděpodobnost slabšího přistání, i s telemarkem. Např. 0,06 znamená 6 % před úpravou podle vzdálenosti.</translation></message>
+<message><source>Dawny parametr belki (nieaktywny)</source><translation>Původní parametr nájezdového okna (neaktivní)</translation></message>
+<message><source>Dawny wpływ wiatru na belkę (nieaktywny)</source><translation>Původní vliv větru na nájezdové okno (neaktivní)</translation></message>
+<message><source>Dodaje stopniowo stratę wraz ze wzrostem siły tylnego wiatru. Np. 0 wyłącza ten dodatkowy efekt.</source><translation>Postupně přidává ztrátu vzdálenosti se sílícím zadním větrem. Např. 0 vypne tento dodatečný účinek.</translation></message>
+<message><source>Dodatkowa szansa słabszego lądowania narastająca przy trudnym zeskoku. Np. 0 wyłącza wzrost tej szansy.</source><translation>Dodatečná pravděpodobnost slabšího přistání rostoucí s obtížností doskočiště. Např. 0 vypne tento nárůst.</translation></message>
+<message><source>Kara w nocie każdego sędziego po wylosowaniu słabszego lądowania. Np. 0,5 odejmuje pół punktu.</source><translation>Srážka ze známky každého rozhodčího při vylosování slabšího přistání. Např. 0,5 odečte půl bodu.</translation></message>
+<message><source>Korekta bazowej noty względem klasy stylu, przy odległości K. Np. -0,7 zmniejsza ją o 0,7 punktu.</source><translation>Úprava základní známky vůči třídě stylu na bodu K. Např. -0,7 ji sníží o 0,7 bodu.</translation></message>
+<message><source>Parametr zachowany dla starych profili. Efekt belki wynika teraz z punktów za belkę i za metr. Np. zmiana tej dawnej wartości nie wpływa już na skok.</source><translation>Zachováno pro starší profily. Účinek okna nyní vychází z bodů za okno a za metr. Např. změna této původní hodnoty již skok neovlivní.</translation></message>
+<message><source>Parametr zachowany dla starych profili. Wiatr nie zmienia podstawowej siły belki. Np. zmiana tej dawnej wartości nie wpływa już na skok.</source><translation>Zachováno pro starší profily. Vítr nemění základní účinek okna. Např. změna této původní hodnoty již skok neovlivní.</translation></message>
+<message><source>Siła obniżenia not za skoki poniżej K, zależna od proporcji odległości do K. Np. 10 i skok 10% poniżej K oznaczają około punkt straty.</source><translation>Síla snížení známek pod K podle poměru vzdálenosti k bodu K. Např. 10 a skok 10 % pod K znamenají ztrátu přibližně jednoho bodu.</translation></message>
+<message><source>Siła wzrostu not za skoki powyżej K, zależna od proporcji odległości do K. Np. 10 i skok 10% za K oznaczają około punkt premii przed karami.</source><translation>Síla zvýšení známek za K podle poměru vzdálenosti k bodu K. Např. 10 a skok 10 % za K znamenají přibližně jeden bod navíc před srážkami.</translation></message>
+<message><source>Wzmacnia lub osłabia podstawowy wpływ wiatru w plecy. Np. 1,2 daje o 20% silniejszą stratę niż 1,0, przed wpływem podmuchów.</source><translation>Zesiluje nebo zeslabuje základní účinek zadního větru. Např. 1,2 způsobí o 20 % větší ztrátu než 1,0 před účinkem poryvů.</translation></message>
+<message><source>Zmienia podstawową siłę wiatru we wszystkich presetach i automatycznych propozycjach. Np. 1 zachowuje pierwotną siłę, a 0,8 zmniejsza ją o 20%.</source><translation>Mění základní sílu větru ve všech předvolbách a automatických návrzích. Např. 1 zachová původní sílu a 0,8 ji sníží o 20 %.</translation></message>
+<message><source>Zmienia siłę podmuchów we wszystkich losowanych warunkach, bez zmiany ich częstości. Np. 0,5 zmniejsza siłę podmuchów o połowę.</source><translation>Mění sílu poryvů ve všech generovaných podmínkách beze změny jejich četnosti. Např. 0,5 sníží sílu poryvů na polovinu.</translation></message>
+<message><source>Zmienia siłę wahań w czasie, różnic na zeskoku i tendencji we wszystkich losowanych warunkach. Np. 0,5 zmniejsza te różnice o połowę.</source><translation>Mění sílu časových výkyvů, rozdílů podél doskočiště a trendů ve všech generovaných podmínkách. Např. 0,5 sníží tyto rozdíly na polovinu.</translation></message>
+</context>
+<context><name>QObject</name><message><source>Paczka zawiera powtórzony identyfikator. Wyeksportuj ją ponownie ze źródłowej bazy.</source><translation>Balíček obsahuje duplicitní identifikátor. Exportujte jej znovu z původní databáze.</translation></message></context>
 </TS>

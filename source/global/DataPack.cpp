@@ -88,15 +88,20 @@ bool DataPack::fromJson(const QJsonObject &o, DataPack &result, QString &error)
         p.referenceYear = o.value("reference-year").toInt(p.ageMode ? 0 : QDate::currentDate().year());
         if (p.referenceYear < 1 || p.referenceYear > 9999) return fail(QObject::tr("Podaj rok odniesienia od 1 do 9999."));
     }
+    QSet<QString> identities;
     for (const auto &value : o.value(key).toArray()) {
         if (!value.isObject()) return fail(QObject::tr("Nieprawidłowy wpis w paczce."));
         auto entry = value.toObject();
         if (entry.value("id").toString().isEmpty())
             entry.insert("id", QUuid::createUuid().toString(QUuid::WithoutBraces));
+        if(p.engineVersion==1 && entry.value("id").toString()=="00000000-0000-0000-0000-000000000000")
+            entry.insert("id", QUuid::createUuid().toString(QUuid::WithoutBraces));
         const auto entityId = entry.value("id").toString();
         // Legacy databases also contain the all-zero UUID; its syntax is valid.
         if (QUuid(entityId).toString(QUuid::WithoutBraces).compare(entityId, Qt::CaseInsensitive) != 0)
             return fail(QObject::tr("Nieprawidłowy identyfikator wpisu w paczce."));
+        if(identities.contains(entityId.toLower()))return fail(QObject::tr("Paczka zawiera powtórzony identyfikator. Wyeksportuj ją ponownie ze źródłowej bazy."));
+        identities.insert(entityId.toLower());
         if (p.kind == Jumpers) {
             if(!Jumper::validateSimulationProfileJson(entry,error))return false;
             if(p.engineVersion==2 && !entry.contains("simulation-v2"))return fail(QObject::tr("Brak nowego profilu skoczka w paczce v2."));

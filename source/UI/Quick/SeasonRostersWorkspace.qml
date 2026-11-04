@@ -16,7 +16,7 @@ Item {
             Layout.fillWidth: true
             Label { text: qsTr("Listy zawodników"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
             SButton { visible: workspace.backend.canRestoreRoster; text: qsTr("Cofnij usunięcie"); quiet: true; onClicked: workspace.backend.restoreRoster() }
-            SButton { objectName: workspace.narrow ? "" : "rosterCreate"; text: qsTr("Nowa lista"); primary: true; onClicked: {workspace.forceActiveFocus();workspace.backend.createRoster()} }
+            SButton { objectName: workspace.narrow ? "" : "rosterCreate"; text: qsTr("Nowa lista"); primary: !workspace.hasSelection; onClicked: {workspace.forceActiveFocus();workspace.backend.createRoster()} }
         }
         RowLayout {
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
@@ -44,8 +44,16 @@ Item {
                 Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0; spacing: Theme.dp(workspace.height < 500 ? 4 : 10)
                 RowLayout {
                     visible: workspace.narrow
-                    Layout.fillWidth: true; Layout.preferredHeight: Math.max(32,Theme.dp(48)); spacing: Theme.dp(6)
+                    Layout.fillWidth: true; Layout.preferredHeight: Theme.dp(workspace.height<520 ? 34 : 66); spacing: Theme.dp(6)
+                    SChoice {
+                        objectName: "rosterCompactChoice"; visible: workspace.height<520; Layout.fillWidth: true; Layout.minimumWidth: 0
+                        model: workspace.backend.rosterEntries; textRole: "name"
+                        currentIndex: {var entries=workspace.backend.rosterEntries;for(var i=0;i<entries.length;++i)if(entries[i].id===workspace.backend.editingRosterId)return i;return -1}
+                        Accessible.name: qsTr("Lista do edycji")
+                        onActivated: function(index){workspace.backend.selectRoster(workspace.backend.rosterEntries[index].id)}
+                    }
                     ListView {
+                    visible: workspace.height>=520;
                     Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
                     model: workspace.backend.rosterEntries; orientation: ListView.Horizontal; spacing: Theme.dp(7); clip: true
                     ScrollBar.horizontal: ScrollBar {}
@@ -58,7 +66,7 @@ Item {
                         onClicked: {workspace.forceActiveFocus();workspace.backend.selectRoster(modelData.id)}
                     }
                 }
-                    SButton { objectName: "rosterCreate"; text: "+"; primary: true; dense: true; Layout.preferredWidth: 36; Layout.fillHeight: true; Accessible.name: qsTr("Nowa lista"); onClicked: {workspace.forceActiveFocus();workspace.backend.createRoster()} }
+                    SButton { objectName: "rosterCreate"; text: "+"; primary: !workspace.hasSelection; dense: true; Layout.preferredWidth: 36; Layout.fillHeight: true; Accessible.name: qsTr("Nowa lista"); onClicked: {workspace.forceActiveFocus();workspace.backend.createRoster()} }
                     SButton { visible: workspace.backend.canRestoreRoster; text: "↶"; dense: true; quiet: true; Layout.preferredWidth: 36; Layout.fillHeight: true; Accessible.name: qsTr("Cofnij usunięcie"); onClicked: workspace.backend.restoreRoster() }
                 }
                 GridLayout {
@@ -79,7 +87,7 @@ Item {
                         text: workspace.backend.activeRosterId===workspace.backend.editingRosterId ? (workspace.narrow ? qsTr("Aktywna") : qsTr("Aktywna lista")) : (workspace.narrow ? qsTr("Aktywuj") : qsTr("Użyj w konkursach"))
                         Accessible.name: workspace.backend.activeRosterId===workspace.backend.editingRosterId ? qsTr("Aktywna lista") : qsTr("Użyj w konkursach")
                         dense: workspace.narrow
-                        primary: workspace.backend.activeRosterId!==workspace.backend.editingRosterId
+                        quiet: true; foreground: workspace.backend.activeRosterId!==workspace.backend.editingRosterId ? Theme.accent : Theme.muted
                         enabled: workspace.backend.activeRosterId!==workspace.backend.editingRosterId
                         Layout.fillWidth: false
                         onClicked: {workspace.forceActiveFocus();workspace.backend.selectActiveRoster(workspace.backend.editingRosterId)}

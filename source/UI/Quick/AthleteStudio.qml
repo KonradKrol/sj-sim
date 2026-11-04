@@ -6,7 +6,6 @@ ColumnLayout {
     id: studio
     objectName: "athleteStudio"
     property var backend
-    property bool copying: false
     property bool editing: false
     readonly property bool parallel: width>=Theme.dp(940)
     spacing: Theme.dp(8)
@@ -18,20 +17,7 @@ ColumnLayout {
             SButton { objectName: "athleteUndo"; text: "↶"; Accessible.name: qsTr("Cofnij"); hint: qsTr("Cofnij"); quiet: true; enabled: studio.backend.canUndo; onClicked: studio.backend.undo() }
             SButton { objectName: "athleteRedo"; text: "↷"; Accessible.name: qsTr("Ponów"); hint: qsTr("Ponów"); quiet: true; enabled: studio.backend.canRedo; onClicked: studio.backend.redo() }
             Item { Layout.fillWidth: true }
-            SButton {
-                id: packTools
-                objectName: "athletePackTools"
-                text: qsTr("Opcje skoczka"); Accessible.name: qsTr("Opcje skoczka")
-                onClicked: tools.open()
-                ActionMenu {
-                    id: tools; y: packTools.height
-                    entries: [{key:"copy",text:qsTr("Skopiuj ze starego modelu")},{key:"duplicate",text:qsTr("Duplikuj skoczka"),enabled:studio.backend.selectedIndex>=0}]
-                    onSelected: {
-                        if(entry.key==="copy"){studio.copying=!studio.copying;studio.editing=true}
-                        else if(entry.key==="duplicate")studio.backend.duplicate()
-                    }
-                }
-            }
+            SIconButton { objectName: "athleteDuplicate"; text: ""; iconName: "copy"; actionName: qsTr("Duplikuj skoczka"); enabled: studio.backend.selectedIndex>=0; onClicked: {studio.backend.duplicate();studio.editing=true} }
         }
     Label { visible: text.length>0 && text!==qsTr("Zapisano"); text: studio.backend.message; Layout.fillWidth: true; color: Theme.muted; font.pointSize: Theme.caption; maximumLineCount: 2; elide: Text.ElideRight; wrapMode: Text.WordWrap }
     SectionTabs {
@@ -54,19 +40,15 @@ ColumnLayout {
         ColumnLayout {
             visible: studio.parallel || studio.editing
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0; Layout.preferredWidth: Theme.dp(1000)
-            Loader {
-                Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
-                active: studio.copying; visible: active
-                sourceComponent: Component { ScrollView { id: copyScroll; contentWidth: availableWidth; clip: true; AthleteCopy { width: copyScroll.availableWidth; backend: studio.backend; onFinished: studio.copying=false } } }
-            }
+
             Loader {
                 active: studio.backend.selectedIndex>=0
-                visible: active && !studio.copying
+                visible: active
                 Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
                 sourceComponent: Component { AthleteEditor { objectName: "athleteEditor"; backend: studio.backend } }
             }
             EmptyState {
-                visible: studio.backend.selectedIndex<0 && !studio.copying
+                visible: studio.backend.selectedIndex<0
                 Layout.fillWidth: true; Layout.fillHeight: true
                 title: qsTr("Stwórz pierwszego skoczka")
                 description: qsTr("OVR, forma, lądowanie i trzy pary perków. Zdjęcie jest opcjonalne.")

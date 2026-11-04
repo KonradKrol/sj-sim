@@ -54,9 +54,9 @@ ColumnLayout {
         Layout.fillWidth: true
         sourceComponent: Component { DataPackBar {} }
     }
-    Node { visible: !catalog.studioActive; node: catalog.fields.toolbar || null; Layout.alignment: Qt.AlignRight; Layout.maximumWidth: catalog.editor || ui.profile!=="SimulationSavesWindow" ? 280 : 600; Layout.fillWidth: true }
+    Node { visible: !catalog.studioActive && !catalog.fields.singleClickEdit; node: catalog.fields.toolbar || null; Layout.alignment: Qt.AlignRight; Layout.maximumWidth: catalog.editor || ui.profile!=="SimulationSavesWindow" ? 280 : 600; Layout.fillWidth: true }
     RowLayout {
-        visible: !catalog.studioActive && !!catalog.fields.actionsRow && catalog.fields.actionsRow.length>0
+        visible: !catalog.studioActive && !catalog.fields.singleClickEdit && !!catalog.fields.actionsRow && catalog.fields.actionsRow.length>0
         Layout.fillWidth: true
         Layout.maximumWidth: 600
         Layout.alignment: Qt.AlignRight

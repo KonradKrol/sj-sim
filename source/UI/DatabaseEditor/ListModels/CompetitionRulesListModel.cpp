@@ -33,12 +33,12 @@ int CompetitionRulesListModel::rowCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
 
-    return competitonRulesVectorPointer->count();
+    return competitonRulesVectorPointer?competitonRulesVectorPointer->count():0;
 }
 
 QVariant CompetitionRulesListModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!index.isValid() || index.row()<0 || index.row()>=rowCount())
         return QVariant();
 
     if(role == Qt::DisplayRole){
@@ -73,26 +73,26 @@ bool CompetitionRulesListModel::setData(const QModelIndex &index, const QVariant
 
 Qt::ItemFlags CompetitionRulesListModel::flags(const QModelIndex &index) const
 {
-    if (!index.isValid())
+    if (!index.isValid() || index.row()<0 || index.row()>=rowCount())
         return Qt::NoItemFlags;
 
     return QAbstractItemModel::flags(index); // FIXME: Implement me!
 }
 
-bool CompetitionRulesListModel::insertRows(int row, int count, const QModelIndex &parent)
+bool CompetitionRulesListModel::insertRows(int row,int count,const QModelIndex &parent)
 {
-    beginInsertRows(parent, row, row + count - 1);
-    // FIXME: Implement me!
-    endInsertRows();
-    return true;
+    if(parent.isValid() || !competitonRulesVectorPointer || row<0 || count<=0 || row>rowCount())return false;
+    beginInsertRows({},row,row+count-1);
+    for(int i=0;i<count;++i){CompetitionRules rules(tr("Nowe zasady"));rules.setRounds({RoundInfo(50,true)});competitonRulesVectorPointer->insert(row+i,rules);}
+    endInsertRows();return true;
 }
 
-bool CompetitionRulesListModel::removeRows(int row, int count, const QModelIndex &parent)
+bool CompetitionRulesListModel::removeRows(int row,int count,const QModelIndex &parent)
 {
-    beginRemoveRows(parent, row, row + count - 1);
-    // FIXME: Implement me!
-    endRemoveRows();
-    return true;
+    if(parent.isValid() || !competitonRulesVectorPointer || row<0 || count<=0 || row+count>rowCount())return false;
+    beginRemoveRows({},row,row+count-1);
+    competitonRulesVectorPointer->remove(row,count);
+    endRemoveRows();return true;
 }
 
 QVector<CompetitionRules> *CompetitionRulesListModel::getCompetitonRulesVectorPointer() const
@@ -103,4 +103,10 @@ QVector<CompetitionRules> *CompetitionRulesListModel::getCompetitonRulesVectorPo
 void CompetitionRulesListModel::setCompetitonRulesVectorPointer(QVector<CompetitionRules> *newCompetitonRulesVectorPointer)
 {
     competitonRulesVectorPointer = newCompetitonRulesVectorPointer;
+}
+
+bool CompetitionRulesListModel::moveRows(const QModelIndex &source,int row,int count,const QModelIndex &destination,int target) {
+    if(source.isValid() || destination.isValid() || !competitonRulesVectorPointer || count!=1 || row<0 || row>=rowCount() || target<0 || target>rowCount() || target==row || target==row+1)return false;
+    if(!beginMoveRows({},row,row,{},target))return false;
+    competitonRulesVectorPointer->move(row,target>row?target-1:target);endMoveRows();return true;
 }

@@ -118,6 +118,7 @@
 <file>ClassificationInput.qml</file>
 <file>ClassificationMethods.qml</file>
 <file>ClassificationPoints.qml</file>
+        <file>PointsPresetEditor.qml</file>
 <file>ClassificationSources.qml</file>
 <file>ClassificationContributionPage.qml</file>
 <file>ClassificationFilters.qml</file>
@@ -181,6 +182,7 @@
 <file>RaceSimulation.qml</file>
 <file>RaceStatus.qml</file>
 <file>SButton.qml</file>
+        <file>SIconButton.qml</file>
 <file>SCheck.qml</file>
 <file>SChoice.qml</file>
 <file>SField.qml</file>

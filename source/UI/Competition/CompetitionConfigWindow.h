@@ -50,6 +50,7 @@ public:
     SimulationProfileDraft *getHillDraft() const {return hillDraft;}
     Hill configuredHill() const;
     QVector<Jumper *> availableJumpers() const;
+    bool teamSquadsLocked() const {return squadsLocked;}
 
     enum Type{
         SingleCompetition,
@@ -69,6 +70,9 @@ signals:
 
 private:
     QStringList autoSquadSnapshot;
+    bool squadsLocked=false;
+    QStringList lockedSquadSnapshot;
+    void configureSeasonSquads();
     QStringList squadSnapshot() const;
     bool automaticGateEnabled() const { return !simulationSave || simulationSave->getAutoGateEnabled(); }
     Ui::SingleCompetitionConfigWindow *ui;

@@ -299,11 +299,6 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
                 if(seasonCompetition->getAdvancementClassification() != nullptr && seasonCompetition->getRulesPointer()->getCompetitionType() == CompetitionRules::Team)
                     competitionTeams = TeamCompetitionManager::getFilteredTeamsByClassification(seasonCompetition, seasonCompetition->getAdvancementClassification(), competitionTeams);
             }
-            if(seasonCompetition->getTrialRound() != nullptr && seasonCompetition->getTrialRound()->getCancelled() == false)
-            {
-                competitionTeams = seasonCompetition->getTrialRound()->getTeamsReference();
-            }
-
             teamsSquadsModel->setupTreeItems();
             teamsTreeView->setModel(teamsSquadsModel);
             //teamsTreeView->getTreeView()->expandToDepth(0);
@@ -367,6 +362,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
 
 
     connect(teamsTreeView, &TeamsSquadsTreeView::treeViewDoubleClicked, this, [this](const QModelIndex & index){
+        if(squadsLocked)return;
         if(getType() == SeasonCompetition)
             if(seasonCompetition->getAdvancementCompetition() != nullptr || seasonCompetition->getAdvancementClassification() != nullptr)
                 return;
@@ -538,10 +534,11 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         emit ui->comboBox_existingHill->currentIndexChanged(ui->comboBox_existingHill->currentIndex());
         emit existingCompetitionRulesComboBox->currentIndexChanged(existingCompetitionRulesComboBox->currentIndex());
     }
+    configureSeasonSquads();
     autoCompleteTeams(false);
     auto *completeTeams=new QPushButton(tr("Uzupełnij drużyny"),this);completeTeams->setObjectName("autoCompleteTeams");
     ui->verticalLayout_startList->insertWidget(0,completeTeams);
-    auto showCompleter=[this,completeTeams]{completeTeams->setVisible((seasonCompetition?seasonCompetition->getRulesPointer()->getCompetitionType():competitionRulesEditor->getCompetitionTypeFromInput())==CompetitionRules::Team);};
+    auto showCompleter=[this,completeTeams]{completeTeams->setVisible(!squadsLocked && (seasonCompetition?seasonCompetition->getRulesPointer()->getCompetitionType():competitionRulesEditor->getCompetitionTypeFromInput())==CompetitionRules::Team);};
     showCompleter();connect(competitionRulesEditor,&CompetitionRulesEditorWidget::competitionTypeChanged,this,showCompleter);
     connect(completeTeams,&QPushButton::clicked,this,[this]{autoCompleteTeams();});
     if(automaticGateEnabled())on_pushButton_autoGate_clicked();
@@ -560,12 +557,38 @@ QStringList CompetitionConfigWindow::squadSnapshot() const {
     QStringList snapshot;for(const auto &team:competitionTeams){snapshot.append(team.getIDStr());for(auto *jumper:team.getJumpers())snapshot.append(jumper?jumper->getIDStr():QString());}return snapshot;
 }
 void CompetitionConfigWindow::autoCompleteTeams(bool ask) {
+    if(squadsLocked || (!ask && property("trainingSquadSuggestion").toBool()))return;
     if(!ask && simulationSave && !simulationSave->getAutoSquadsEnabled())return;
     if(ask && !autoSquadSnapshot.isEmpty() && autoSquadSnapshot!=squadSnapshot()
         && QMessageBox::question(this,tr("Uzupełnij drużyny"),tr("Zastąpić ręcznie ustawione składy i kolejność zawodników?"),QMessageBox::Yes|QMessageBox::No,QMessageBox::No)!=QMessageBox::Yes)return;
     const int count=seasonCompetition?seasonCompetition->getRulesPointer()->getJumpersInTeamCount():competitionRulesEditor->getJumpersCountInTeam();
     for(auto &team:competitionTeams)team.arrangeSquad(count,2.,configuredHill().getKPoint());
     autoSquadSnapshot=squadSnapshot();if(teamsSquadsModel)teamsSquadsModel->setupTreeItems();
+}
+
+void CompetitionConfigWindow::configureSeasonSquads() {
+    if(!simulationSave || !seasonCompetition || seasonCompetition->getRules().getCompetitionType()!=CompetitionRules::Team)return;
+    auto *calendar=simulationSave->getActualSeason()->getActualCalendar();
+    auto *locked=calendar->teamSquadLock(seasonCompetition);
+    auto *source=locked?locked:calendar->previousTeamTraining(seasonCompetition);
+    if(source){
+        const auto available=seasonCompetitionJumpers;
+        for(auto &team:competitionTeams)for(const auto &suggested:source->getTeams())if(team.getCountryCode()==suggested.getCountryCode()){
+            auto members=suggested.getJumpers();
+            if(!locked)for(int i=members.size()-1;i>=0;--i)if(!available.contains(members[i]))members.removeAt(i);
+            if(members.size()>=seasonCompetition->getRules().getJumpersInTeamCount())team.setJumpers(members);
+        }
+        setProperty("trainingSquadSuggestion",!locked);
+    }
+    squadsLocked=locked;
+    teamsSquadsModel->setupTreeItems();
+    auto *note=new QLabel(locked?tr("Składy i kolejność ustalone w kwalifikacjach lub próbnej. Obowiązują do końca tego konkursu.")
+        :source?tr("Podpowiedziano składy z ostatniego treningu drużynowego. Możesz je jeszcze zmienić.")
+        :seasonCompetition->getSerieType()==CompetitionInfo::Training?tr("Składy treningowe są robocze. Nie blokują składów na kwalifikacje ani konkurs.")
+        :tr("Po rozpoczęciu kwalifikacji lub próbnej zawodnicy i ich kolejność zostaną ustaleni do końca konkursu."),this);
+    note->setObjectName("teamSquadPolicy");note->setWordWrap(true);ui->verticalLayout_startList->insertWidget(0,note);
+    lockedSquadSnapshot=squadSnapshot();
+    if(locked){teamsTreeView->setEnabled(false);jumpersListView->setEnabled(false);}
 }
 
 CompetitionConfigWindow::~CompetitionConfigWindow()
@@ -1020,6 +1043,7 @@ void CompetitionConfigWindow::setType(short newType)
 
 bool CompetitionConfigWindow::validateSimulationInputs()
 {
+    if(squadsLocked && squadSnapshot()!=lockedSquadSnapshot){QMessageBox::warning(this,tr("Składy są już ustalone"),tr("Zawodnicy i kolejność muszą pozostać takie jak w rozegranych kwalifikacjach lub próbnej."));return false;}
     if(usesCanonicalCatalog() && (!ready || !hillDraft->valid() || existingCompetitionRulesComboBox->currentIndex()<0)) {
         QMessageBox::warning(this,tr("Niepełna konfiguracja"),tr("Poczekaj na paczki i wybierz skocznię oraz zasady konkursu."),QMessageBox::Ok);return false;
     }

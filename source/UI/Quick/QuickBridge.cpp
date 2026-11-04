@@ -19,6 +19,7 @@
 #include "../EditorWidgets/HillEditorWidget.h"
 #include "../EditorWidgets/CompetitionRulesEditorWidget.h"
 #include "../EditorWidgets/ClassificationEditorWidget.h"
+#include "../EditorWidgets/PointsForPlacesPresetEditorWidget.h"
 #include "../EditorWidgets/WindsGeneratorSettingsEditorWidget.h"
 #include "../EditorWidgets/WindsGeneratorSettingsWidgetInputItem.h"
 #include "../DatabaseEditor/DatabaseItemsListView.h"
@@ -307,6 +308,11 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
         entry->update({{"kind","resultHistory"},{"active",history->active()},{"paused",history->paused()},{"individual",history->individualRanking()},{"team",history->modeChoice()->isVisibleTo(history) && !history->individualRanking()},
             {"roundField",QVariant::fromValue(node(history->roundChoice(),true))},{"modeField",QVariant::fromValue(node(history->modeChoice()))},{"tableField",QVariant::fromValue(node(history->tableView(),true))}});
         return entry;
+    }
+    if(auto *editor=qobject_cast<PointsForPlacesPresetEditorWidget *>(widget)) {
+        QVariantMap controls;
+        for(const auto &name:{"lineEdit_name","tableView_pointsForPlaces","classificationAddPlace","classificationRemovePlace","classificationClearPlaces"})controls[name]=QVariant::fromValue(node(editor->findChild<QWidget *>(name),true));
+        auto *entry=identity(editor);entry->update({{"kind","pointsPresetEditor"},{"controls",controls},{"available",!editor->isHidden()}});return entry;
     }
     if(auto *editor=qobject_cast<ClassificationEditorWidget *>(widget)) {
         QVariantMap controls;
@@ -898,7 +904,7 @@ void QuickBridge::compose(QuickNode *base) {
                 const auto profile=actor->getSimulationProfile();seasonProfiles.append(QVariantMap{{"id",actor->getIDStr()},{"index",index++},{"label",actor->getNameAndSurname()},{"country",actor->getCountryCode()},{"flag",flag(actor->getCountryCode())},{"overall",profile?profile->overall:0}});
             }}else if(container->getType()==DatabaseItemsListView::SeasonHillsItems){int index=0;for(auto *hill:save->getHillsReference())seasonProfiles.append(QVariantMap{{"id",hill->getIDStr()},{"index",index++},{"label",hill->getName()},{"country",hill->getCountryCode()},{"flag",flag(hill->getCountryCode())},{"hs",hill->getHSPoint()}});}
         }
-        entry->update({{"kind","catalog"},{"seasonLibrary",seasonLibrary},{"seasonProfiles",seasonProfiles},{"rosterBackend",rosterBackend},{"athleteStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_jumpers"?m_window->property("athleteStudio"):QVariant()},{"hillStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_hills"?m_window->property("hillStudio"):QVariant()},{"singleClickEdit",view->property("quickSingleClickEdit").toBool() || (profile()=="DatabaseEditorWindow" && view->model() && QByteArray(view->model()->metaObject()->className())=="JumpersListModel")},{"actionsRow",actions},{"list",QVariant::fromValue(node(view,true))},{"editor",QVariant::fromValue(editor)},{"toolbar",toolbar},{"editRequest",entry->property("editRequest").toInt()}});
+        entry->update({{"kind","catalog"},{"seasonLibrary",seasonLibrary},{"seasonProfiles",seasonProfiles},{"rosterBackend",rosterBackend},{"athleteStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_jumpers"?m_window->property("athleteStudio"):QVariant()},{"hillStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_hills"?m_window->property("hillStudio"):QVariant()},{"singleClickEdit",view->property("quickSingleClickEdit").toBool() || (profile()=="DatabaseEditorWindow" && view->model() && QList<QByteArray>{"JumpersListModel","CompetitionRulesListModel","PointsForPlacesPresetsListModel"}.contains(view->model()->metaObject()->className()))},{"actionsRow",actions},{"list",QVariant::fromValue(node(view,true))},{"editor",QVariant::fromValue(editor)},{"toolbar",toolbar},{"editRequest",entry->property("editRequest").toInt()}});
         return entry;
     };
     if(m_window->property("jumpDraft").isValid()) {
@@ -1090,7 +1096,7 @@ void QuickBridge::compose(QuickNode *base) {
             auto *autosave=m_groups.value("quickSeasonAutosave");if(!autosave){autosave=new QuickNode(this);m_groups.insert("quickSeasonAutosave",autosave);}
             autosave->update({{"kind","seasonAutosave"},{"backend",QVariant::fromValue(static_cast<QObject *>(season))}});
             auto *rosterChoice=m_groups.value("quickSeasonRosterChoice");if(!rosterChoice){rosterChoice=new QuickNode(this);m_groups.insert("quickSeasonRosterChoice",rosterChoice);}
-            rosterChoice->update({{"kind","seasonRosterChoice"},{"backend",QVariant::fromValue(static_cast<QObject *>(season))}});
+            rosterChoice->update({{"kind","seasonRosterChoice"},{"backend",QVariant::fromValue(static_cast<QObject *>(season))},{"navigateOnSelection",true}});
             if(SimulationSave::activeRosterFeatureEnabled())overview.prepend(QVariant::fromValue(rosterChoice));
             overview.append(QVariant::fromValue(autosave));
             QVariantList pages{group("season-overview",QString(),{
@@ -1108,6 +1114,7 @@ void QuickBridge::compose(QuickNode *base) {
             auto *tabs=sectionTabs("season-pages",labels,pages);tabs->setProperty("quickSourceIndexes",sourceIndexes);
             if(!source->property("quickSeasonConnected").toBool()) {
                 source->setProperty("quickSeasonConnected",true);
+                connect(season,&SimulationSaveManagerWindow::rosterWorkspaceRequested,this,[this,tabs](int index){tabs->setProperty("quickTabIndex",tabs->property("quickSourceIndexes").toList().indexOf(index));deferRefresh();});
                 connect(qobject_cast<SimulationSaveManagerWindow *>(m_window),&SimulationSaveManagerWindow::calendarRequested,this,[this,tabs](bool create,bool addCompetition){
                     tabs->setProperty("quickTabIndex",tabs->property("quickSourceIndexes").toList().indexOf(3));
                     if(create)for(auto *backend:m_calendars) {backend->catalogAction("add");break;}
@@ -1190,6 +1197,7 @@ void QuickBridge::compose(QuickNode *base) {
                 toolbar.append(QVariant::fromValue(entry));
             }
             if(!toolbar.isEmpty())content.append(group("start-list-toolbar",QString(),toolbar,"row"));
+            if(auto *note=m_content->findChild<QLabel *>("teamSquadPolicy"))content.prepend(QVariant::fromValue(node(note,true)));
             auto *roster=rosterNode(configuration);
             if(!m_rosters.value(configuration)->active()){content.append(QVariant::fromValue(node(list,true)));top.append(group("start-list",tr("Lista startowa"),content));}
             else {

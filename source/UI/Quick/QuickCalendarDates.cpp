@@ -99,7 +99,8 @@ void QuickCalendar::discardDatePlan()
 }
 void QuickCalendar::planDates(const QString &start,const QString &pattern,int interval,bool future,int trainingDays,bool onlyMissing)
 {
-    commitPendingRules();sync();discardDatePlan();discardWeekend();if(!datesEnabled())return;
+    m_error.clear();
+    m_error.clear();commitPendingRules();sync();discardDatePlan();discardWeekend();if(!datesEnabled())return;
     QDate date=QDate::fromString(normalizeDate(start),Qt::ISODate);
     if(!date.isValid() || interval<1 || interval>366 || trainingDays<0 || trainingDays>14 || !QStringList{"interval","weekends","fri-sun","weekly","same","preserve"}.contains(pattern)){
         fail(tr("Wybierz poprawną datę i odstęp od 1 do 366 dni."));return;
@@ -208,17 +209,17 @@ void QuickCalendar::sortDates()
 
 void QuickCalendar::discardWeekend(){if(m_weekendPreview.isEmpty() && m_weekendPlan.calendar.isEmpty())return;m_weekendPreview.clear();m_weekendPlan=WeekendPlan{};emit changed();}
 void QuickCalendar::previewWeekend(const QString &start,int hillIndex,int rulesIndex,bool saturdayQualification,bool sharedSunday){
-    commitPendingRules();sync();discardDatePlan();discardWeekend();if(!datesEnabled() || !m_calendar || !m_editor)return;
-    auto date=QDate::fromString(normalizeDate(start),Qt::ISODate);const auto *hills=m_editor->getModel()->getHillsList();const auto *rules=m_editor->getModel()->getRulesList();
+    m_error.clear();commitPendingRules();sync();discardDatePlan();discardWeekend();if(!m_calendar || !m_editor)return;
+    auto date=datesEnabled()?QDate::fromString(normalizeDate(start),Qt::ISODate):QDate(2000,1,7);const auto *hills=m_editor->getModel()->getHillsList();const auto *rules=m_editor->getModel()->getRulesList();
     if(!date.isValid() || hillIndex<0 || hillIndex>=hills->size() || rulesIndex<0 || rulesIndex>=rules->size() || rules->at(rulesIndex).getRounds().isEmpty()){fail(tr("Wybierz datę, skocznię i zasady z co najmniej jedną serią."));return;}
     date=date.addDays((5-date.dayOfWeek()+7)%7);if(!date.isValid() || !date.addDays(2).isValid() || date.addDays(2).year()>9999){fail(tr("Weekend wykracza poza obsługiwany zakres dat."));return;}
     m_weekendPlan.calendar=m_calendar->getIDStr();m_weekendPlan.friday=date;m_weekendPlan.hill=hills->at(hillIndex)->getIDStr();m_weekendPlan.rules=rules->at(rulesIndex).getIDStr();m_weekendPlan.definition=rules->at(rulesIndex);m_weekendPlan.saturdayQualification=saturdayQualification;m_weekendPlan.sharedSunday=sharedSunday;
     const QStringList descriptions{saturdayQualification?tr("Bez wydarzeń"):tr("2 treningi · kwalifikacje"),saturdayQualification?tr("Kwalifikacje · konkurs"):tr("Seria próbna · konkurs"),sharedSunday?tr("Seria próbna · konkurs"):tr("Kwalifikacje · konkurs")};
-    for(int day=0;day<3;++day)m_weekendPreview.append(QVariantMap{{"day",day},{"date",dateText(date.addDays(day).toString(Qt::ISODate))},{"events",descriptions[day]},{"qualification",day==2 && sharedSunday?tr("Awans z pierwszych kwalifikacji"):QString()}});
+    for(int day=0;day<3;++day)m_weekendPreview.append(QVariantMap{{"day",day},{"date",datesEnabled()?dateText(date.addDays(day).toString(Qt::ISODate)):QString()},{"events",descriptions[day]},{"qualification",day==2 && sharedSunday?tr("Awans z pierwszych kwalifikacji"):QString()}});
     m_message=tr("Podgląd nowego weekendu: dwa konkursy i kwalifikacje.");emit changed();
 }
 bool QuickCalendar::applyWeekend(){
-    commitPendingRules();sync();if(!datesEnabled() || !m_calendar || m_weekendPlan.calendar!=m_calendar->getIDStr() || m_weekendPreview.isEmpty())return false;
+    commitPendingRules();sync();if(!m_calendar || m_weekendPlan.calendar!=m_calendar->getIDStr() || m_weekendPreview.isEmpty())return false;
     const auto plan=m_weekendPlan;Hill *hill=nullptr;for(auto *candidate:*m_editor->getModel()->getHillsList())if(candidate->getIDStr()==plan.hill){hill=candidate;break;}
     bool validRules=false;for(const auto &candidate:*m_editor->getModel()->getRulesList())if(candidate.getIDStr()==plan.rules && CompetitionRules::getJsonObject(candidate)==CompetitionRules::getJsonObject(plan.definition)){validRules=true;break;}
     if(!hill || !validRules){discardWeekend();fail(tr("Skocznia lub zasady zmieniły się. Przygotuj podgląd ponownie."));return false;}
@@ -229,8 +230,8 @@ bool QuickCalendar::applyWeekend(){
     m_message=tr("Dodano weekend. Dwa konkursy są zaznaczone; możesz przypisać im klasyfikacje.");
     mutate([&]{
         auto order=mains();int at=order.size();if(!chosen.isEmpty() && !locked(chosen.last()))at=order.indexOf(chosen.last())+1;
-        const CompetitionRules session=defaultRule("qualifications");
-        const auto event=[&](int kind,const QDate &date,const CompetitionRules &rules){auto *entry=new CompetitionInfo(hill);entry->setSerieType(kind);entry->setScheduledDate(date);entry->setRules(kind==CompetitionInfo::Qualifications?defaultRule("qualifications"):kind==CompetitionInfo::Training?defaultRule("training"):kind==CompetitionInfo::TrialRound?defaultRule(rules.getCompetitionType()==CompetitionRules::Team?"teamTrial":"trial"):rules);return entry;};
+        CompetitionRules session=defaultRule(plan.definition.getCompetitionType()==CompetitionRules::Team?"teamCompetition":"qualifications");if(plan.definition.getCompetitionType()==CompetitionRules::Team){session.setJumpersInTeamCount(plan.definition.getJumpersInTeamCount());if(!session.getRounds().isEmpty())session.setRounds({session.getRounds().first()});}
+        const auto event=[&](int kind,const QDate &date,const CompetitionRules &rules){auto *entry=new CompetitionInfo(hill);entry->setSerieType(kind);entry->setScheduledDate(datesEnabled()?date:QDate());entry->setRules(kind==CompetitionInfo::Qualifications?session:kind==CompetitionInfo::Training?defaultRule("training"):kind==CompetitionInfo::TrialRound?defaultRule(rules.getCompetitionType()==CompetitionRules::Team?"teamTrial":"trial"):rules);if(kind==CompetitionInfo::TrialRound && plan.definition.getCompetitionType()==CompetitionRules::Team){auto trialRules=entry->getRules();trialRules.setCompetitionType(CompetitionRules::Team);trialRules.setJumpersInTeamCount(plan.definition.getJumpersInTeamCount());entry->setRules(trialRules);}return entry;};
         auto *firstQualification=event(CompetitionInfo::Qualifications,plan.friday.addDays(plan.saturdayQualification?1:0),session);
         if(!plan.saturdayQualification){QVector<CompetitionInfo *> trainings;for(int i=0;i<2;++i)trainings.append(event(CompetitionInfo::Training,plan.friday,session));firstQualification->setTrainings(trainings);}
         auto *saturday=event(CompetitionInfo::Competition,plan.friday.addDays(1),plan.definition);saturday->setAdvancementCompetition(firstQualification);if(!plan.saturdayQualification)saturday->setTrialRound(event(CompetitionInfo::TrialRound,plan.friday.addDays(1),session));
@@ -245,15 +246,15 @@ bool QuickCalendar::applyWeekend(){
 void QuickCalendar::addQualifications(int daysBefore){
     commitPendingRules();sync();if(!m_calendar || !editable() || daysBefore<0 || daysBefore>1)return;
     const auto chosen=selected();QVector<CompetitionInfo *> targets;
-    for(auto *event:chosen){if(event->getSerieType()!=CompetitionInfo::Competition || locked(event) || event->getRules().getCompetitionType()!=CompetitionRules::Individual)continue;
+    for(auto *event:chosen){if(event->getSerieType()!=CompetitionInfo::Competition || locked(event))continue;
         if(event->getAdvancementCompetition() || event->getPendingAdvancementCompetition() || event->getAdvancementClassification())continue;
         if(datesEnabled() && !event->getScheduledDate().isValid()){fail(tr("Najpierw ustaw daty zaznaczonych konkursów."));return;}targets.append(event);
     }
-    if(targets.isEmpty()){fail(tr("Zaznacz konkursy indywidualne bez kwalifikacji."));return;}
+    if(targets.isEmpty()){fail(tr("Zaznacz konkursy bez kwalifikacji."));return;}
     auto order=mains();std::vector<std::unique_ptr<CompetitionInfo>> drafts;
     // Validate dates before changing any event or advancement link.
     for(auto *event:targets){auto *q=new CompetitionInfo(event->getHill());q->setScheduledDate(event->getScheduledDate().addDays(-daysBefore));drafts.push_back(std::unique_ptr<CompetitionInfo>(q));order.insert(order.indexOf(event),q);if(datesEnabled() && (!q->getScheduledDate().isValid() || q->getScheduledDate().year()<1)){fail(tr("Data kwalifikacji wykracza poza zakres."));return;}}
     if(datesEnabled() && !validateDateOrder(order))return;
     m_message=tr("Dodano kwalifikacje i powiązania. Możesz cofnąć zmianę.");
-    mutate([&]{auto actual=mains();for(int i=0;i<targets.size();++i){auto *q=drafts[i].release();q->setSerieType(CompetitionInfo::Qualifications);q->setRules(defaultRule("qualifications"));targets[i]->setAdvancementCompetition(q);actual.insert(actual.indexOf(targets[i]),q);}setOrder(actual);m_calendar->updateCompetitionsQualifyingCompetitions();});
+    mutate([&]{auto actual=mains();for(int i=0;i<targets.size();++i){auto *q=drafts[i].release();q->setSerieType(CompetitionInfo::Qualifications);auto rules=defaultRule(targets[i]->getRules().getCompetitionType()==CompetitionRules::Team?"teamCompetition":"qualifications");if(targets[i]->getRules().getCompetitionType()==CompetitionRules::Team){rules.setJumpersInTeamCount(targets[i]->getRules().getJumpersInTeamCount());if(!rules.getRounds().isEmpty())rules.setRounds({rules.getRounds().first()});}q->setRules(rules);targets[i]->setAdvancementCompetition(q);actual.insert(actual.indexOf(targets[i]),q);}setOrder(actual);m_calendar->updateCompetitionsQualifyingCompetitions();});
 }

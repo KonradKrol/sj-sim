@@ -215,7 +215,7 @@ void CalendarEditorWidget::debugCalendar()
         default: break;
         }
 
-        qDebug()<<string<<" ("<<comp<<") (ID: "<<comp->getID()<<")";
+        qDebug()<<string<<" ("<<comp<<") (ID: "<<comp->getIDStr()<<")";
         i++;
     }
 }

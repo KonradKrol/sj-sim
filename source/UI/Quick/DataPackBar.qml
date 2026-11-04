@@ -17,6 +17,7 @@ GridLayout {
     SButton {
         objectName: "manageDataPack"
         text: qsTr("Ustawienia paczki")
+        quiet: true
         onClicked: settings.open()
     }
     Popup {

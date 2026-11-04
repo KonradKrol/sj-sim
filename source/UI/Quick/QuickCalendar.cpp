@@ -165,7 +165,7 @@ void QuickCalendar::sync() {
     if(m_season && m_season!=season)clearUndo();m_season=season;
     auto *calendar=m_editor->getModel()->getCalendar();
     if(calendar==m_calendar && !m_dirty && m_language==tr("Konkurs"))return;
-    if(m_calendar==calendar && m_dirty && !m_mutating)clearUndo();if(m_calendar!=calendar){m_selected.clear();m_selection.clear();m_message.clear();m_classId.clear();}m_calendar=calendar;m_dirty=false;m_language=tr("Konkurs");
+    if(m_calendar==calendar && m_dirty && !m_mutating)clearUndo();if(m_calendar!=calendar){m_selected.clear();m_selection.clear();m_message.clear();m_error.clear();m_classId.clear();}m_calendar=calendar;m_dirty=false;m_language=tr("Konkurs");
     m_live.clear();if(m_calendar)for(auto *event:m_calendar->getCompetitionsReference())m_live.insert(event);
     refresh();loadClass();
 }
@@ -234,7 +234,7 @@ void QuickCalendar::select(const QString &id,int modifiers) {
         m_selected.clear();for(int i=qMin(anchor,row);i<=qMax(anchor,row);++i)m_selected.append(all[i]->getIDStr());
     }else if(modifiers & Qt::ControlModifier){if(m_selected.contains(id))m_selected.removeAll(id);else m_selected.append(id);}else m_selected=QStringList{id};
     if(m_editor->getTableView()->selectionModel())m_editor->getTableView()->selectionModel()->setCurrentIndex(m_editor->getModel()->index(row,0),QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
-    m_message.clear();refresh();
+    m_message.clear();m_error.clear();refresh();
 }
 void QuickCalendar::clearSelection() {commitPendingRules();sync();m_selected.clear();refresh();}
 void QuickCalendar::selectAll(bool futureOnly) {commitPendingRules(); sync();m_selected.clear();for(auto *event:mains())if(!futureOnly||!locked(event))m_selected.append(event->getIDStr());refresh(); }
@@ -244,12 +244,13 @@ QuickCalendar::Snapshot QuickCalendar::capture() const {
 }
 void QuickCalendar::mutate(const std::function<void()> &operation) {
     if(!m_editor||!m_calendar)return;
+    m_error.clear();
     auto &history=m_history;history.undo.append(capture());history.redo.clear();m_mutating=true;
     m_editor->getModel()->applyChange([&]{operation();for(auto *event:mains()){for(auto *training:event->getTrainings())if(!training->getScheduledDate().isValid())training->setScheduledDate(event->getScheduledDate());if(event->getTrialRound()&&!event->getTrialRound()->getScheduledDate().isValid())event->getTrialRound()->setScheduledDate(event->getScheduledDate());}m_calendar->normalizeCompetitionEvents();m_calendar->fixAdvancementCompetitions();m_calendar->fixAdvancementClassifications();m_calendar->updateCompetitionsQualifyingCompetitions();});
     const QSet<CompetitionInfo *> before=m_live;m_live.clear();for(auto *event:m_calendar->getCompetitionsReference())m_live.insert(event);for(auto *event:before)if(!m_live.contains(event))m_retired.insert(event);
     emit m_editor->changed();m_mutating=false;m_dirty=false;refresh();collectRetired();
 }
-void QuickCalendar::fail(const QString &message){m_message=message;emit changed();}
+void QuickCalendar::fail(const QString &message){m_message=message;m_error=message;emit changed();}
 void QuickCalendar::update(const QVariantMap &fields) {
     commitPendingRules();
     sync();if(!editable()){fail(tr("Rozegrane wydarzenia są zablokowane."));return;}
@@ -276,6 +277,9 @@ void QuickCalendar::update(const QVariantMap &fields) {
     if(fields.contains("kind"))for(auto *event:items)if(referencedByHistory(event)&&fields.value("kind").toInt()!=event->getRules().getCompetitionType()){fail(tr("Konkurs jest powiązany z rozegranymi kwalifikacjami."));return;}
     if(fields.contains("rules") && fields.value("rules").toInt()>0)for(auto *event:items)if(referencedByHistory(event)&&rules->at(fields.value("rules").toInt()-1).getCompetitionType()!=event->getRules().getCompetitionType()){fail(tr("Konkurs jest powiązany z rozegranymi kwalifikacjami."));return;}
     for(auto *event:items){int kind=event->getRules().getCompetitionType();if(fields.contains("rules") && fields.value("rules").toInt()>0)kind=rules->at(fields.value("rules").toInt()-1).getCompetitionType();if(fields.contains("kind"))kind=fields.value("kind").toInt();
+        auto candidate=event->getRules();if(fields.value("rules").toInt()>0)candidate=rules->at(fields.value("rules").toInt()-1);if(fields.contains("kind"))candidate=defaultRule(kind==CompetitionRules::Team?"teamCompetition":"competition");
+        if(auto *source=m_calendar->teamSquadLock(event);source && (candidate.getCompetitionType()!=CompetitionRules::Team || candidate.getJumpersInTeamCount()!=source->getRules().getJumpersInTeamCount())){fail(tr("Składy są już ustalone. Nie można zmienić rodzaju konkursu ani liczby zawodników w drużynie."));return;}
+        if(kind==CompetitionRules::Team && fields.contains("trialRules") && fields.value("trialRules").toInt()>1 && rules->at(fields.value("trialRules").toInt()-2).getCompetitionType()!=CompetitionRules::Team){fail(tr("Przed drużynówką wybierz drużynowe zasady próbnej. Trening może być indywidualny."));return;}
         if(fields.contains("advancementClass")){auto *source=m_advancementClasses.value(fields.value("advancementClass").toInt());if(source && source->getClassificationType()!=kind){fail(tr("Źródło awansu musi mieć ten sam rodzaj konkursu."));return;}}
         if(fields.contains("advancement")){auto *source=m_advancementOptions.value(fields.value("advancement").toInt());if(source && (source->getRules().getCompetitionType()!=kind || mains().indexOf(source)>=mains().indexOf(event))){fail(tr("Kwalifikacje muszą być wcześniejszym konkursem tego samego rodzaju."));return;}}
     }
@@ -301,6 +305,7 @@ void QuickCalendar::update(const QVariantMap &fields) {
         if(fields.contains("trialRules")&&e->getTrialRound()){const int n=fields.value("trialRules").toInt();if(n!=1)e->getTrialRound()->setRules(n?rules->at(n-2):e->getRules());}
         if(fields.contains("trainingImportance"))for(auto *t:e->getTrainings())t->setJumpsImportance(fields.value("trainingImportance").toDouble());
         if(fields.contains("trialImportance")&&e->getTrialRound())e->getTrialRound()->setJumpsImportance(fields.value("trialImportance").toDouble());
+        if(e->getRules().getCompetitionType()==CompetitionRules::Team && e->getTrialRound() && (fields.contains("rules") || fields.contains("kind") || fields.contains("trialRules") || fields.contains("trial"))){auto trialRules=e->getTrialRound()->getRules();trialRules.setCompetitionType(CompetitionRules::Team);trialRules.setJumpersInTeamCount(e->getRules().getJumpersInTeamCount());e->getTrialRound()->setRules(trialRules);}
         if(fields.contains("advancement")){e->setAdvancementCompetition(advancement[fields.value("advancement").toInt()]);if(e->getAdvancementCompetition())e->setAdvancementClassification(nullptr);}
         if(fields.contains("advancementClass")){const int n=fields.value("advancementClass").toInt();e->setAdvancementClassification(advancementClasses[n]);if(n)e->setAdvancementCompetition(nullptr);}
     }});
@@ -470,6 +475,8 @@ void QuickCalendar::applyCustomRules(){
     if(value.getRounds().isEmpty()){fail(tr("Dodaj co najmniej jedną serię."));return;}
     const auto items=selected();
     for(auto *e:items){
+        if(m_rulesTarget==2 && e->getRules().getCompetitionType()==CompetitionRules::Team && (value.getCompetitionType()!=CompetitionRules::Team || value.getJumpersInTeamCount()!=e->getRules().getJumpersInTeamCount())){fail(tr("Próbna drużynowa musi mieć taką samą liczbę zawodników w drużynie jak konkurs główny."));return;}
+        if(m_rulesTarget==0)if(auto *source=m_calendar->teamSquadLock(e);source && (value.getCompetitionType()!=CompetitionRules::Team || value.getJumpersInTeamCount()!=source->getRules().getJumpersInTeamCount())){fail(tr("Składy są już ustalone. Nie można zmienić rodzaju konkursu ani liczby zawodników w drużynie."));return;}
         if(m_rulesTarget==1&&e->getTrainings().isEmpty()){fail(tr("Najpierw dodaj treningi."));return;}
         if(m_rulesTarget==2&&!e->getTrialRound()){fail(tr("Najpierw dodaj serię próbną."));return;}
         if(m_rulesTarget==0&&referencedByHistory(e)&&e->getRules().getCompetitionType()!=value.getCompetitionType()){fail(tr("Konkurs jest powiązany z rozegranymi kwalifikacjami."));return;}
@@ -480,7 +487,7 @@ void QuickCalendar::applyCustomRules(){
     mutate([&]{for(auto *e:items){
         if(m_rulesTarget==1)for(auto *training:e->getTrainings())training->setRules(value);
         else if(m_rulesTarget==2)e->getTrialRound()->setRules(value);
-        else e->setRules(value);
+        else {e->setRules(value);if(e->getTrialRound() && value.getCompetitionType()==CompetitionRules::Team){auto trialRules=e->getTrialRound()->getRules();trialRules.setCompetitionType(CompetitionRules::Team);trialRules.setJumpersInTeamCount(value.getJumpersInTeamCount());e->getTrialRound()->setRules(trialRules);}}
     }});
 }
 void QuickCalendar::selectCalendar(int index) {
@@ -564,9 +571,9 @@ void QuickCalendar::classAction(const QString &action) {
         else {auto *next=action=="copy"?new Classification(*entry):new Classification(tr("Nowa klasyfikacja"));next->reassign();next->setResults({});if(action=="copy")next->setName(entry->getName()+tr(" — kopia"));m_calendar->getClassificationsReference().append(next);m_classId=next->getIDStr();}});loadClass();
 }
 
-CompetitionRules QuickCalendar::defaultRule(const QString &role) const {
+CompetitionRules QuickCalendar::defaultRule(const QString &role,bool packOnly) const {
     const auto *list=m_editor->getModel()->getRulesList();const int type=role.startsWith("team")?CompetitionRules::Team:CompetitionRules::Individual;
-    const auto id=m_calendar?m_calendar->defaultRules[role].toString():QString();
+    const auto id=!packOnly && m_calendar?m_calendar->defaultRules[role].toString():QString();
     for(const auto &r:*list)if(r.getIDStr()==id && r.getCompetitionType()==type)return r;
     const auto *pack=GlobalDatabase::get()->activePack(DataPack::Rules);int index=pack->defaultRule(role);
     if(index>=0){for(const auto &r:*list)if(r.getCompetitionType()==type && r.getIDStr()==pack->rules[index].getIDStr())return r;for(const auto &r:*list)if(r.getCompetitionType()==type && r.getName()==pack->rules[index].getName())return r;}
@@ -575,7 +582,7 @@ CompetitionRules QuickCalendar::defaultRule(const QString &role) const {
 }
 QVariantList QuickCalendar::ruleDefaults() const {
     QVariantList out;const QStringList titles{tr("Konkurs"),tr("Kwalifikacje"),tr("Seria próbna"),tr("Trening"),tr("Konkurs drużynowy"),tr("Próbna drużynowa")};const auto roles=DataPack::ruleRoles();
-    for(int i=0;i<roles.size();++i){const auto role=roles[i];QStringList options{tr("Z paczki")};int current=0;const int type=role.startsWith("team")?CompetitionRules::Team:CompetitionRules::Individual;
+    for(int i=0;i<roles.size();++i){const auto role=roles[i];QStringList options{tr("%1 (z paczki)").arg(defaultRule(role,true).getName())};int current=0;const int type=role.startsWith("team")?CompetitionRules::Team:CompetitionRules::Individual;
         for(const auto &r:*m_editor->getModel()->getRulesList())if(r.getCompetitionType()==type){options.append(r.getName());if(m_calendar && m_calendar->defaultRules[role].toString()==r.getIDStr())current=options.size()-1;}
         int presetIndex=0;const auto resolved=defaultRule(role);const auto *list=m_editor->getModel()->getRulesList();for(int j=0;j<list->size();++j)if(list->at(j).getIDStr()==resolved.getIDStr()){presetIndex=j;break;}
         out.append(QVariantMap{{"role",role},{"title",titles[i]},{"options",options},{"current",current},{"presetIndex",presetIndex}});

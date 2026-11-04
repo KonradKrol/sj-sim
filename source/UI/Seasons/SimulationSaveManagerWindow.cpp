@@ -647,7 +647,7 @@ bool SimulationSaveManagerWindow::restoreRoster() {
 }
 void SimulationSaveManagerWindow::openRosterWorkspace(const QString &id) {
     if(!id.isEmpty())selectRoster(id);
-    for(int i=0;i<ui->toolBox->count();++i)if(ui->toolBox->widget(i)->isAncestorOf(jumpersListsListView)){ui->toolBox->setCurrentIndex(i);break;}
+    for(int i=0;i<ui->toolBox->count();++i)if(ui->toolBox->widget(i)->isAncestorOf(jumpersListsListView)){ui->toolBox->setCurrentIndex(i);emit rosterWorkspaceRequested(i);break;}
 }
 void SimulationSaveManagerWindow::setRosterMembers(const QString &id,const QVector<Jumper *> &members) {
     QSet<Jumper *> allowed;for(auto *actor:simulationSave->getJumpers())allowed.insert(actor);for(auto *actor:members)if(!allowed.contains(actor))return;
@@ -1127,7 +1127,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
 
     if(simulationSave->getActualSeason()->getActualCalendar() == nullptr)
     {
-        focusCalendarTab(simulationSave->getActualSeason()->getCalendarsReference().isEmpty());
+        const bool create=simulationSave->getActualSeason()->getCalendarsReference().isEmpty();focusCalendarTab(create,create);
         return;
     }
 
@@ -1138,6 +1138,22 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
         configNextSeason();
     }
     else if(simulationSave->getNextCompetition() != nullptr){
+        auto *next=simulationSave->getNextCompetition();
+        auto *calendar=simulationSave->getActualSeason()->getActualCalendar();
+        auto *owner=calendar->getMainCompetitionForEvent(next);
+        if(auto *source=calendar->teamSquadLock(next);source && (next->getRules().getCompetitionType()!=CompetitionRules::Team || next->getRules().getJumpersInTeamCount()!=source->getRules().getJumpersInTeamCount())){
+            QMessageBox::warning(this,tr("Składy są już ustalone"),tr("Przywróć liczbę zawodników w drużynie używaną w rozegranych kwalifikacjach lub próbnej."));focusCalendarTab(false,true);return;
+        }
+        if(next->getSerieType()==CompetitionInfo::TrialRound && owner && owner->getRules().getCompetitionType()==CompetitionRules::Team
+            && (next->getRules().getCompetitionType()!=CompetitionRules::Team || next->getRules().getJumpersInTeamCount()!=owner->getRules().getJumpersInTeamCount()) && !next->getPlayed()) {
+            QMessageBox repair(QMessageBox::Question,tr("Próbna przed konkursem drużynowym"),tr("Próbna musi mieć drużynowe zasady i taką samą liczbę zawodników w drużynie jak konkurs główny. Trening może pozostać indywidualny."),QMessageBox::Cancel,this);
+            auto *convert=repair.addButton(tr("Dopasuj próbną do konkursu"),QMessageBox::AcceptRole);repair.exec();
+            if(repair.clickedButton()!=convert)return;
+            auto rules=next->getRules();rules.setCompetitionType(CompetitionRules::Team);rules.setJumpersInTeamCount(owner->getRules().getJumpersInTeamCount());next->setRules(rules);markSeasonChanged();
+        }
+        for(auto *target:calendar->getCompetitionsReference())if(target->getAdvancementCompetition()==next && (target->getRules().getCompetitionType()!=next->getRules().getCompetitionType() || target->getRules().getCompetitionType()==CompetitionRules::Team && target->getRules().getJumpersInTeamCount()!=next->getRules().getJumpersInTeamCount())){
+            QMessageBox::warning(this,tr("Sprawdź kwalifikacje"),tr("Kwalifikacje i konkurs główny muszą mieć ten sam rodzaj oraz zgodną liczbę zawodników w drużynie."));focusCalendarTab(false,true);return;
+        }
         // Do not serialize a partially running competition from an idle timer.
         if(autosaveTimer && autosaveTimer->isActive() && simulationSave->getAutosaveEnabled()){
             autosaveTimer->stop();

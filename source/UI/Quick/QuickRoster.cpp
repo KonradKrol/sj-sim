@@ -160,6 +160,7 @@ void QuickRoster::setOrderQuery(const QString &value){if(m_orderQuery==value)ret
 void QuickRoster::setCountry(int value){if(value<0||value>m_countryCodes.size()||value==m_country)return;m_country=value;refresh();}
 Jumper *QuickRoster::jumper(const QString &id) const { for(auto *j:m_pool)if(key(j)==id)return j;return nullptr; }
 void QuickRoster::write(const QVector<Jumper *> &value){
+    if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source);config && config->teamSquadsLocked())return;
     if(auto *manager=qobject_cast<SimulationSaveManagerWindow *>(m_source)){manager->setRosterMembers(m_seasonRosterId,value);return;}
     if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source)){
         if(config->type==CompetitionConfigWindow::SingleCompetition)config->competitionJumpers=value;else config->seasonCompetitionJumpers=value;

@@ -85,6 +85,7 @@ signals:
     void actualCalendarChanged();
     void editingCalendarChanged();
     void calendarRequested(bool create,bool addCompetition);
+    void rosterWorkspaceRequested(int nativeIndex);
     void autosaveEnabledChanged();
     void rosterChoicesChanged();
 

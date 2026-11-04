@@ -149,7 +149,10 @@ static void athleteStudioRegressions(MainWindow &main,bool patchesOnly=false){
     for(int view=0;view<5;++view){if(patchesOnly && view!=1)continue;qApp->setProperty("athleteTestStage",QString("photo %1").arg(view));editor->setProperty("viewMode",view);QTest::qWait(50);render(&window,QString("athlete-concept-photo-%1").arg(view));}backend->clearPhoto();
     qApp->setProperty("athleteTestStage","large text");editor->setProperty("viewMode",patchesOnly?1:2);QTest::qWait(50);
     auto *appearance=scene(&window)->rootContext()->contextProperty("appearance").value<QuickAppearance *>();appearance->setTextScale(1.5);render(&window,"athlete-studio-large-text");appearance->setTextScale(1);
-    qApp->setProperty("athleteTestStage","copy screen");auto *studio=item(scene(&window)->rootObject(),"athleteStudio");studio->setProperty("copying",true);main.resize(360,480);QTest::qWait(100);clickControl(scene(&window),"athleteCopyClose");check(!studio->property("copying").toBool(),"copy workflow stays navigable on the smallest screen");
+    qApp->setProperty("athleteTestStage","direct studio actions");main.resize(360,480);QTest::qWait(100);
+    auto *duplicate=item(scene(&window)->rootObject(),"athleteDuplicate");
+    check(duplicate && duplicate->isVisible() && duplicate->isEnabled(),"duplicate action is directly visible on a small screen");
+    check(!item(scene(&window)->rootObject(),"athleteCopyClose"),"removed legacy-copy screen is not instantiated");
     check(item(scene(&window)->rootObject(),"athleteStudio"),"athlete studio remains the only editor in its database section");window.hide();QDir(isolatedStorage).removeRecursively();QCoreApplication::setApplicationName(previousApp);qInfo()<<"PASS: separate athlete model, safe copies, perk opposites/tiers, undo, persistence, pack-relative photos, legacy photo compatibility and responsive athlete concepts";
 }
 

@@ -35,7 +35,7 @@ Item {
                 onSelected: workspace.backend.grouped = index === 0
             }
             SButton { visible: workspace.inlineEditor && workspace.backend.canUndo; dense: workspace.dense; text: qsTr("Cofnij"); enabled: workspace.backend.canUndo; quiet: true; onClicked: workspace.backend.undo() }
-            SButton { dense: workspace.dense; objectName: "rosterLimitsToggle"; text: qsTr("Limity krajów"); primary: workspace.limitsOpen; onClicked: workspace.limitsOpen = !workspace.limitsOpen }
+            SButton { dense: workspace.dense; objectName: "rosterLimitsToggle"; text: qsTr("Limity krajów"); quiet: true; foreground: workspace.limitsOpen ? Theme.accent : Theme.ink; onClicked: workspace.limitsOpen = !workspace.limitsOpen }
         }
         RosterLimits { visible: workspace.limitsOpen; backend: workspace.backend; Layout.fillWidth: true; listHeight: Math.min(Theme.dp(150), workspace.height * 0.25) }
         SectionTabs {

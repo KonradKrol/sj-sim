@@ -611,7 +611,11 @@ CompetitionInfo CompetitionInfo::getFromJson(const QJsonObject &json, Identifiab
     }
     if(!before120Map)
         comp.setHill(static_cast<Hill *>(storage->get(json.value("hill-id").toString())));
-    comp.setResults(CompetitionResults::getFromJson(json.value("results").toObject(), storage));
+    // A squad ID may be reused in several events. Resolve results against
+    // this event's snapshot, never a squad registered by an earlier event.
+    IdentifiableObjectsStorage resultStorage = *storage;
+    resultStorage.add(comp.getTeamsReference());
+    comp.setResults(CompetitionResults::getFromJson(json.value("results").toObject(), &resultStorage));
     comp.setRules(CompetitionRules::getFromJson(json.value("rules").toObject()));
     comp.scheduledDate=QDate::fromString(json.value("scheduled-date").toString(),Qt::ISODate);
     const auto scoring=json.value("classification-scoring").toObject();

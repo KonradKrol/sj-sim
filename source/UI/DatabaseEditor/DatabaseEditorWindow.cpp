@@ -1,3 +1,4 @@
+#include <QTimer>
 #include "DatabaseEditorWindow.h"
 #include "../../athletes/AthleteStudioController.h"
 #include "../../hills/HillStudioController.h"
@@ -29,6 +30,7 @@
 #include <QSaveFile>
 #include <QJsonDocument>
 #include <QJsonParseError>
+#include "../../global/JsonImportError.h"
 #include <QSignalBlocker>
 #include <QFormLayout>
 
@@ -155,11 +157,24 @@ DatabaseEditorWindow::DatabaseEditorWindow(QWidget *parent) :
     });
     setupPackControls();
     for (auto *list : {jumpersListView, hillsListView, competitionRulesListView, pointsForPlacesPresetsListView}) {
-        connect(list, &DatabaseItemsListView::remove, this, [this] { resetPackEditors(); });
-        connect(list, &DatabaseItemsListView::insert, this, [this] { resetPackEditors(); });
-        connect(list, &DatabaseItemsListView::up, this, [this] { resetPackEditors(); });
-        connect(list, &DatabaseItemsListView::down, this, [this] { resetPackEditors(); });
+        const bool live=list==competitionRulesListView || list==pointsForPlacesPresetsListView;
+        if(live)connect(list,&DatabaseItemsListView::aboutToChange,this,[this,list]{saveOpenEditors();setProperty("changingRuleCatalog",true);list->setProperty("previousRow",list->getListView()->currentIndex().row());resetPackEditors();});
+        const auto after=[this,list,live]{
+            if(!live){resetPackEditors();return;}
+            setProperty("changingRuleCatalog",false);
+            const int count=list->getListModel()->rowCount();if(!count)return;
+            const int row=qBound(0,list->getListView()->currentIndex().isValid()?list->getListView()->currentIndex().row():list->property("previousRow").toInt(),count-1);
+            list->getListView()->setCurrentIndex(list->getListModel()->index(row));
+            if(list==competitionRulesListView)onCompetitionRulesListViewDoubleClicked(list->getListModel()->index(row));else onPointsForPlacesPresetsListViewDoubleClicked(list->getListModel()->index(row));
+        };
+        connect(list,&DatabaseItemsListView::remove,this,after);connect(list,&DatabaseItemsListView::insert,this,after);connect(list,&DatabaseItemsListView::up,this,after);connect(list,&DatabaseItemsListView::down,this,after);
     }
+    competitionRulesEditor->removeSubmitButton();
+    connect(competitionRulesListView,&DatabaseItemsListView::listViewClicked,this,[this](const QModelIndex &index){if(!property("changingRuleCatalog").toBool() && index.isValid() && (competitionRulesEditor->isHidden() || competitionRulesEditor->property("packRow").toInt()!=index.row()))onCompetitionRulesListViewDoubleClicked(index);});
+    connect(pointsForPlacesPresetsListView,&DatabaseItemsListView::listViewClicked,this,[this](const QModelIndex &index){if(!property("changingRuleCatalog").toBool() && index.isValid() && (pointsForPlacesPresetEditor->isHidden() || pointsForPlacesPresetEditor->property("packRow").toInt()!=index.row()))onPointsForPlacesPresetsListViewDoubleClicked(index);});
+    const auto autosave=[this](bool points){if(property("loadingPackEditor").toBool() || property("changingRuleCatalog").toBool())return;QTimer::singleShot(0,this,[this,points]{if(property("loadingPackEditor").toBool() || property("changingRuleCatalog").toBool())return;if(points && !pointsForPlacesPresetEditor->isHidden())replacePointsForPlacesPresetByEditorObject();if(!points && !competitionRulesEditor->isHidden())replaceCompetitionRuleByCompetitionRulesEditor();});};
+    connect(competitionRulesEditor,&CompetitionRulesEditorWidget::configurationChanged,this,[autosave]{autosave(false);});
+    connect(pointsForPlacesPresetEditor,&PointsForPlacesPresetEditorWidget::configurationChanged,this,[autosave]{autosave(true);});
     ResponsiveWindowUtils::relaxTextConstraints(this);
 }
 
@@ -197,7 +212,8 @@ void DatabaseEditorWindow::replaceCompetitionRuleByCompetitionRulesEditor()
     const int actualElementIndex = competitionRulesEditor->property("packRow").toInt();
     if (actualElementIndex < 0) return;
     if(actualElementIndex < GlobalDatabase::get()->getEditableCompetitionRules().count()){
-        GlobalDatabase::get()->getEditableCompetitionRules().replace(actualElementIndex, competitionRulesEditor->getCompetitionRulesFromWidgetInputs());
+        auto value=competitionRulesEditor->getCompetitionRulesFromWidgetInputs();value.setID(GlobalDatabase::get()->getEditableCompetitionRules()[actualElementIndex].getID());
+        GlobalDatabase::get()->getEditableCompetitionRules().replace(actualElementIndex,value);
         competitionRulesEditor->setCompetitionRules(&GlobalDatabase::get()->getEditableCompetitionRules()[actualElementIndex]);
         CompetitionRulesListModel * competitionRulesListModel = dynamic_cast<CompetitionRulesListModel *>(competitionRulesListView->getListModel());
         emit competitionRulesListModel->dataChanged(competitionRulesListModel->index(actualElementIndex), competitionRulesListModel->index(actualElementIndex));
@@ -280,6 +296,9 @@ void DatabaseEditorWindow::onHillsListViewDoubleClicked(const QModelIndex &index
 
 void DatabaseEditorWindow::onCompetitionRulesListViewDoubleClicked(const QModelIndex &index)
 {
+    if(!index.isValid() || index.row()<0 || index.row()>=GlobalDatabase::get()->getEditableCompetitionRules().size())return;
+    if(!property("loadingPackEditor").toBool())saveOpenEditors();
+    setProperty("loadingPackEditor",true);
     int row = index.row();
     actualElementIndex = row;
     competitionRulesEditor->setProperty("packRow", row);
@@ -288,10 +307,14 @@ void DatabaseEditorWindow::onCompetitionRulesListViewDoubleClicked(const QModelI
     }
     competitionRulesEditor->setCompetitionRules(const_cast<CompetitionRules *>(&GlobalDatabase::get()->getEditableCompetitionRules().at(row)));
     competitionRulesEditor->fillCompetitionRulesInputs();
+    setProperty("loadingPackEditor",false);
 }
 
 void DatabaseEditorWindow::onPointsForPlacesPresetsListViewDoubleClicked(const QModelIndex &index)
 {
+    if(!index.isValid() || index.row()<0 || index.row()>=GlobalDatabase::get()->getEditableGlobalPointsForPlacesPresets().size())return;
+    if(!property("loadingPackEditor").toBool())saveOpenEditors();
+    setProperty("loadingPackEditor",true);
     int row = index.row();
     actualElementIndex = row;
     pointsForPlacesPresetEditor->setProperty("packRow", row);
@@ -301,6 +324,7 @@ void DatabaseEditorWindow::onPointsForPlacesPresetsListViewDoubleClicked(const Q
     pointsForPlacesPresetEditor->reset();
     pointsForPlacesPresetEditor->setPreset(const_cast<PointsForPlacesPreset *>(&GlobalDatabase::get()->getEditableGlobalPointsForPlacesPresets().at(row)));
     pointsForPlacesPresetEditor->fill();
+    setProperty("loadingPackEditor",false);
 }
 
 short DatabaseEditorWindow::getActualElementType() const
@@ -499,9 +523,13 @@ void DatabaseEditorWindow::setupPackControls()
         if (path.isEmpty()) return;
         QFile file(path); QJsonParseError parse; QString error; DataPack p;
         const bool opened = file.open(QIODevice::ReadOnly);
-        const auto doc = opened ? QJsonDocument::fromJson(file.readAll(), &parse) : QJsonDocument();
+        const auto bytes = opened ? file.readAll() : QByteArray();
+        const auto doc = opened ? QJsonDocument::fromJson(bytes, &parse) : QJsonDocument();
         if (!opened || parse.error != QJsonParseError::NoError || !DataPack::fromJson(doc.object(), p, error)) {
-            QMessageBox::warning(this, tr("Import paczki"), error.isEmpty() ? tr("Nie udało się odczytać pliku JSON.") : error); return;
+            const auto reason = !opened ? tr("Nie można otworzyć pliku: %1").arg(file.errorString())
+                : parse.error != QJsonParseError::NoError ? JsonImportError::syntax(bytes, parse)
+                : error.isEmpty() ? tr("Plik nie zawiera paczki Sj.Sim.") : error;
+            QMessageBox::warning(this, tr("Import paczki"), JsonImportError::file(path, reason)); return;
         }
         resetPackEditors();
         GlobalDatabase::get()->addPack(p);

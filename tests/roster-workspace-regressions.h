@@ -54,7 +54,14 @@ static void rosterWorkspaceRegressions(MainWindow &main) {
         auto *name=item(view->rootObject(),"rosterName");check(name,"inline roster name field exists");name->forceActiveFocus();QTest::keyClick(view,Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(view,"Edited first");
         clickControl(view,"rosterCard-"+second);QTest::qWait(80);
         bool firstRenamed=false,secondUntouched=false;for(const auto &list:save.getJumpersLists()){if(list.getId()==first)firstRenamed=list.getName()=="Edited first";if(list.getId()==second)secondUntouched=list.getName()!="Edited first";}
-        check(firstRenamed && secondUntouched,"changing rosters commits a pending name to the original roster only");manager.reject();
+        check(firstRenamed && secondUntouched,"changing rosters commits a pending name to the original roster only");
+        auto *managerBridge=manager.findChild<QuickBridge *>();const auto active=manager.activeRosterId();
+        managerBridge->edit(managerBridge->root()->values().value("id").toInt(),0);QTest::qWait(100);
+        clickControl(view,"activeRosterCard-"+first);QTest::qWait(100);
+        check(manager.editingRosterId()==first && manager.activeRosterId()==active && managerBridge->root()->values().value("value").toInt()>0,"overview roster cards open the chosen editor without changing the active roster");
+        managerBridge->edit(managerBridge->root()->values().value("id").toInt(),0);QTest::qWait(100);manager.openRosterWorkspace(first);QTest::qWait(100);
+        check(managerBridge->root()->values().value("value").toInt()>0,"Manage navigates even when the underlying native roster tab was already selected");
+        manager.reject();
     }
     qInfo()<<"PASS: atomic roster insertion/removal and repeated live grouping transitions";
 }

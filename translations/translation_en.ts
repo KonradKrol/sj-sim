@@ -1849,6 +1849,14 @@ Share the entire folder. To import the pack, select its pack.json file.</transla
 <message><source>Dodaj kwalifikacje</source><translation>Add qualifications</translation></message>
 <message><source>Doda osobne kwalifikacje i automatycznie połączy awans. Konkursy z kwalifikacjami zostaną pominięte.</source><translation>Adds a qualification before each competition and links advancement automatically. Competitions with existing qualifications are skipped.</translation></message>
 <message><source>Doda kwalifikacje do zaznaczonych konkursów indywidualnych bez kwalifikacji i automatycznie połączy awans.</source><translation>Adds qualifications to selected individual competitions without qualifications and links advancement automatically.</translation></message>
+
+        <message><source>Dodaj pakiet konkursów</source><translation>Add a competition block</translation></message>
+
+        <message><source>Dodaj po jednych kwalifikacjach przed każdym zaznaczonym konkursem. Awans i zgodne zasady zostaną powiązane automatycznie.</source><translation>Add one qualification competition before each selected competition. Advancement and compatible rules will be linked automatically.</translation></message>
+
+        <message><source>Dzień wcześniej</source><translation>The day before</translation></message>
+
+        <message><source>Wróć do listy i zaznacz konkursy, do których chcesz dodać kwalifikacje.</source><translation>Return to the list and select competitions to add qualifications to.</translation></message>
 </context>
     <context>
         <name>CalendarEditorTableModel</name>
@@ -2450,7 +2458,31 @@ li.checked::marker { content: "\2612"; }
             <source>Oba konkursy korzystają z tych samych kwalifikacji. W niedzielę odbędzie się seria próbna.</source>
             <translation>Both competitions use the same qualification. A trial round takes place on Sunday.</translation>
         </message>
-    </context>
+
+        <message><source>Przygotowanie</source><translation>Preparation</translation></message>
+
+        <message><source>Pierwszy konkurs</source><translation>First competition</translation></message>
+
+        <message><source>Drugi konkurs</source><translation>Second competition</translation></message>
+
+        <message><source>Dodaj dwa konkursy z kwalifikacjami. Ich kolejność ustalisz w kalendarzu.</source><translation>Add two competitions with qualifications. Arrange their order in the calendar.</translation></message>
+
+        <message><source>Przygotowanie pierwszego konkursu</source><translation>Preparation for the first competition</translation></message>
+
+        <message><source>Dwa treningi i próbna</source><translation>Two trainings and a trial round</translation></message>
+
+        <message><source>Same kwalifikacje</source><translation>Qualification only</translation></message>
+
+        <message><source>Wspólne kwalifikacje</source><translation>Shared qualification</translation></message>
+
+        <message><source>Kwalifikacje do drugiego konkursu</source><translation>Qualification for the second competition</translation></message>
+
+        <message><source>Oba konkursy korzystają z tych samych kwalifikacji. Przed drugim odbędzie się seria próbna.</source><translation>Both competitions use the same qualification. A trial round takes place before the second competition.</translation></message>
+
+        <message><source>Plan pakietu</source><translation>Competition block plan</translation></message>
+
+        <message><source>Dodaj pakiet do kalendarza</source><translation>Add the block to the calendar</translation></message>
+</context>
     <context>
         <name>CalendarWorkspace</name>
         <message>
@@ -2705,6 +2737,30 @@ li.checked::marker { content: "\2612"; }
     <message><source>Lista zawodników</source><translation>Athlete roster</translation></message>
 <message><source>Lista zawodników kalendarza</source><translation>Calendar athlete roster</translation></message>
 <message><source>Przed konkursem ta lista stanie się aktywna. Skład możesz zmienić w przygotowaniu.</source><translation>This roster becomes active before the event. You can change the lineup during preparation.</translation></message>
+
+        <message><source>Ustawienia kalendarza</source><translation>Calendar settings</translation></message>
+
+        <message><source>Domyślne zasady</source><translation>Default rules</translation></message>
+
+        <message><source>Domyślne zasady kalendarza</source><translation>Calendar default rules</translation></message>
+
+        <message><source>Dotyczą nowo dodawanych wydarzeń. Możesz wskazać inne zasady niż domyślne z paczki.</source><translation>Applies to newly added events. You can choose rules other than the pack defaults.</translation></message>
+
+        <message><source>Konkurs</source><translation>Competition</translation></message>
+
+        <message><source>Kopiuj konkursy</source><translation>Copy competitions</translation></message>
+
+        <message><source>Usuń konkursy</source><translation>Delete competitions</translation></message>
+
+        <message><source>Kolejność i zaznaczanie</source><translation>Order and selection</translation></message>
+
+        <message><source>Dodaj wiele konkursów</source><translation>Add multiple competitions</translation></message>
+
+        <message><source>Przesuń konkursy w górę</source><translation>Move competitions up</translation></message>
+
+        <message><source>Przesuń konkursy w dół</source><translation>Move competitions down</translation></message>
+
+        <message><source>Utwórz kalendarz z konkursem</source><translation>Create a calendar with a competition</translation></message>
 </context>
     <context>
         <name>CalendarsListModel</name>
@@ -3884,6 +3940,18 @@ Check that it exists and has appropriate permissions.</translation>
 <message><source>Zastąpić ręcznie ustawione składy i kolejność zawodników?</source><translation>Replace manually arranged squads and athlete order?</translation></message>
 <message><source>Każda drużyna musi mieć co najmniej %1 zawodników z imieniem lub nazwiskiem w składzie.</source><translation>Each team needs at least %1 starters with a first or last name.</translation></message>
 <message><source> (brak wyników)</source><translation> (no results)</translation></message>
+
+        <message><source>Składy i kolejność ustalone w kwalifikacjach lub próbnej. Obowiązują do końca tego konkursu.</source><translation>Squads and order were fixed in qualification or the trial round. They apply until the end of this competition.</translation></message>
+
+        <message><source>Podpowiedziano składy z ostatniego treningu drużynowego. Możesz je jeszcze zmienić.</source><translation>Suggested squads from the latest team training. You can still change them.</translation></message>
+
+        <message><source>Składy treningowe są robocze. Nie blokują składów na kwalifikacje ani konkurs.</source><translation>Training squads are provisional. They do not lock qualification or competition squads.</translation></message>
+
+        <message><source>Po rozpoczęciu kwalifikacji lub próbnej zawodnicy i ich kolejność zostaną ustaleni do końca konkursu.</source><translation>Starting qualification or the trial round fixes jumpers and their order until the end of the competition.</translation></message>
+
+        <message><source>Składy są już ustalone</source><translation>Squads are already fixed</translation></message>
+
+        <message><source>Zawodnicy i kolejność muszą pozostać takie jak w rozegranych kwalifikacjach lub próbnej.</source><translation>Jumpers and their order must match the completed qualification or trial round.</translation></message>
 </context>
     <context>
         <name>CompetitionInfoEditorWidget</name>
@@ -9991,7 +10059,13 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
             <source>OK</source>
             <translation>OK</translation>
         </message>
-    </context>
+
+        <message><source>Dodaj miejsce</source><translation>Add a place</translation></message>
+
+        <message><source>Usuń ostatnie miejsce</source><translation>Remove the last place</translation></message>
+
+        <message><source>Wyczyść</source><translation>Clear</translation></message>
+</context>
     <context>
         <name>PointsForPlacesTableModel</name>
         <message>
@@ -16017,6 +16091,14 @@ Check that you selected the correct file.</translation>
 <message><source>Najpierw ustaw daty zaznaczonych konkursów.</source><translation>Set dates for the selected competitions first.</translation></message>
 <message><source>Zaznacz konkursy indywidualne bez kwalifikacji.</source><translation>Select individual competitions without qualifications.</translation></message>
 <message><source>Dodano kwalifikacje i powiązania. Możesz cofnąć zmianę.</source><translation>Qualifications and advancement links added. You can undo this change.</translation></message>
+
+        <message><source>Składy są już ustalone. Nie można zmienić rodzaju konkursu ani liczby zawodników w drużynie.</source><translation>Squads are already fixed. Competition type and team size cannot change.</translation></message>
+
+        <message><source>Przed drużynówką wybierz drużynowe zasady próbnej. Trening może być indywidualny.</source><translation>Choose team rules for the trial round before a team competition. Training may be individual.</translation></message>
+
+        <message><source>Próbna drużynowa musi mieć taką samą liczbę zawodników w drużynie jak konkurs główny.</source><translation>The team trial round must use the same team size as the main competition.</translation></message>
+
+        <message><source>%1 (z paczki)</source><translation>%1 (from pack)</translation></message>
 </context>
     <context>
         <name>QuickPlot</name>
@@ -18280,6 +18362,20 @@ li.checked::marker { content: "\2612"; }
 <message><source>%1 (wszyscy)</source><translation>%1 (all athletes)</translation></message>
 <message><source>Nowa lista</source><translation>New roster</translation></message>
 <message><source>Nowa lista %1</source><translation>New roster %1</translation></message>
+
+        <message><source>Składy są już ustalone</source><translation>Squads are already fixed</translation></message>
+
+        <message><source>Przywróć liczbę zawodników w drużynie używaną w rozegranych kwalifikacjach lub próbnej.</source><translation>Restore the team size used in the completed qualification or trial round.</translation></message>
+
+        <message><source>Próbna przed konkursem drużynowym</source><translation>Trial round before a team competition</translation></message>
+
+        <message><source>Próbna musi mieć drużynowe zasady i taką samą liczbę zawodników w drużynie jak konkurs główny. Trening może pozostać indywidualny.</source><translation>The trial round needs team rules and the same team size as the main competition. Training may remain individual.</translation></message>
+
+        <message><source>Dopasuj próbną do konkursu</source><translation>Match the trial round to the competition</translation></message>
+
+        <message><source>Sprawdź kwalifikacje</source><translation>Check qualifications</translation></message>
+
+        <message><source>Kwalifikacje i konkurs główny muszą mieć ten sam rodzaj oraz zgodną liczbę zawodników w drużynie.</source><translation>Qualification and the main competition must use the same competition type and compatible team sizes.</translation></message>
 </context>
     <context>
         <name>SimulationSavesWindow</name>
@@ -23252,6 +23348,8 @@ Technical key: %4</translation>
 <message><source>Wszyscy skoczkowie</source><translation>All athletes</translation></message>
 <message><source>Wszyscy</source><translation>All</translation></message>
 <message><source>Zarządzaj</source><translation>Manage</translation></message>
+
+        <message><source>Listy zawodników</source><translation>Jumper lists</translation></message>
 </context>
 <context><name>SavedRosterWorkspace</name><message><source>Cofnij</source><translation>Undo</translation></message><message><source>Według krajów</source><translation>By country</translation></message><message><source>Kolejność</source><translation>Order</translation></message><message><source>Limity krajów</source><translation>Country limits</translation></message><message><source>Wszyscy</source><translation>All</translation></message><message><source>Wybrani (%1)</source><translation>Selected (%1)</translation></message><message><source>Wybrani zawodnicy</source><translation>Selected athletes</translation></message></context>
 <context><name>SavedRosterPane</name><message><source>Wybrani zawodnicy</source><translation>Selected athletes</translation></message><message><source>Wszyscy zawodnicy</source><translation>All athletes</translation></message><message><source>Szukaj nazwiska lub kraju</source><translation>Search by name or country</translation></message><message><source>Usuń %1 z listy</source><translation>Remove %1 from the list</translation></message><message><source>Dodaj %1 do listy</source><translation>Add %1 to the list</translation></message><message><source>Lista jest pusta</source><translation>The list is empty</translation></message><message><source>Brak pasujących zawodników</source><translation>No matching athletes</translation></message><message><source>Pusta lista oznacza wszystkich zawodników. Dodaj wybranych, aby ograniczyć skład.</source><translation>An empty list includes all athletes. Add athletes to restrict the roster.</translation></message><message><source>Zmień nazwisko lub kraj, aby zobaczyć innych zawodników.</source><translation>Change the name or country to see other athletes.</translation></message><message><source>Usuń zaznaczonych (%1)</source><translation>Remove selected (%1)</translation></message><message><source>Dodaj zaznaczonych (%1)</source><translation>Add selected (%1)</translation></message><message><source>Dodaj widocznych</source><translation>Add visible</translation></message></context>
@@ -23262,5 +23360,58 @@ Technical key: %4</translation>
 <message><source>Aktywna</source><translation>Active</translation></message>
 <message><source>Aktywuj</source><translation>Activate</translation></message>
 <message><source>Usuń</source><translation>Delete</translation></message>
+
+        <message><source>Lista do edycji</source><translation>List to edit</translation></message>
 </context>
+    <context><name>CompetitionRulesListModel</name>
+        <message><source>Nowe zasady</source><translation>New rules</translation></message>
+    </context>
+    <context><name>PointsForPlacesPresetsListModel</name>
+        <message><source>Nowa punktacja</source><translation>New scoring</translation></message>
+    </context>
+    <context><name>QuickCalendarDates</name>
+        <message><source>Awans z pierwszych kwalifikacji</source><translation>Advance from the first qualification competition</translation></message>
+
+        <message><source>Zaznacz konkursy bez kwalifikacji.</source><translation>Select competitions without qualifications.</translation></message>
+</context>
+    <context><name>PointsPresetEditor</name>
+        <message><source>Punktacja za miejsca</source><translation>Points for places</translation></message>
+
+        <message><source>Ustal, ile punktów w klasyfikacji daje każde miejsce. Zmiany zapisują się w tej paczce na bieżąco.</source><translation>Set how many classification points each place awards. Changes are saved to this pack automatically.</translation></message>
+</context>
+<context><name>QObject</name><message><source>Nie można wczytać pliku „%1”.
+%2
+Wybierz poprawną paczkę wyeksportowaną z Sj.Sim.</source><translation>Cannot import “%1”.
+%2
+Choose a valid pack exported from Sj.Sim.</translation></message></context>
+<context><name>QObject</name><message><source>Nieprawidłowy JSON: wiersz %1, kolumna %2.
+%3</source><translation>Invalid JSON: line %1, column %2.
+%3</translation></message></context>
+<context><name>QObject</name><message><source>Nie można otworzyć pliku: %1</source><translation>Cannot open the file: %1</translation></message></context>
+<context><name>DatabaseEditorWindow</name><message><source>Nie można otworzyć pliku: %1</source><translation>Cannot open the file: %1</translation></message></context>
+<context><name>DatabaseEditorWindow</name><message><source>Plik nie zawiera paczki Sj.Sim.</source><translation>The file does not contain a Sj.Sim pack.</translation></message></context>
+<context><name>QObject</name><message><source>Paczka przekracza dopuszczalny rozmiar 20 MB.</source><translation>The pack exceeds the 20 MB size limit.</translation></message></context>
+<context><name>QObject</name><message><source>Sj.Sim jest już uruchomiony</source><translation>Sj.Sim is already running</translation></message></context>
+<context><name>QObject</name><message><source>Ten folder danych jest używany przez inną instancję Sj.Sim albo nie można go zapisać.
+Zamknij poprzednie okno lub uruchom osobną kopię gry z innym folderem userData.</source><translation>This data folder is used by another Sj.Sim instance or is not writable.
+Close the previous window or run a separate copy of the game with its own userData folder.</translation></message></context>
+<context><name>HillStudio</name><message><source>Punkt K, HS i perki. Dodaj skocznię lub zaimportuj paczkę.</source><translation>K point, HS and perks. Add a hill or import a pack.</translation></message></context>
+<context><name>QObject</name>
+<message><source>Bazowa szansa słabszego lądowania, także przy telemarku. Np. 0,06 oznacza 6% przed dodatkiem za odległość.</source><translation>Base chance of a weaker landing, including a telemark. E.g. 0.06 means 6% before the distance adjustment.</translation></message>
+<message><source>Dawny parametr belki (nieaktywny)</source><translation>Legacy gate parameter (inactive)</translation></message>
+<message><source>Dawny wpływ wiatru na belkę (nieaktywny)</source><translation>Legacy wind effect on the gate (inactive)</translation></message>
+<message><source>Dodaje stopniowo stratę wraz ze wzrostem siły tylnego wiatru. Np. 0 wyłącza ten dodatkowy efekt.</source><translation>Gradually adds distance loss as tailwind increases. E.g. 0 disables this extra effect.</translation></message>
+<message><source>Dodatkowa szansa słabszego lądowania narastająca przy trudnym zeskoku. Np. 0 wyłącza wzrost tej szansy.</source><translation>Additional chance of a weaker landing as the landing slope becomes harder. E.g. 0 disables this increase.</translation></message>
+<message><source>Kara w nocie każdego sędziego po wylosowaniu słabszego lądowania. Np. 0,5 odejmuje pół punktu.</source><translation>Deduction from each judge's mark when a weaker landing is drawn. E.g. 0.5 deducts half a point.</translation></message>
+<message><source>Korekta bazowej noty względem klasy stylu, przy odległości K. Np. -0,7 zmniejsza ją o 0,7 punktu.</source><translation>Base mark adjustment relative to style class at the K point. E.g. -0.7 reduces it by 0.7 points.</translation></message>
+<message><source>Parametr zachowany dla starych profili. Efekt belki wynika teraz z punktów za belkę i za metr. Np. zmiana tej dawnej wartości nie wpływa już na skok.</source><translation>Kept for older profiles. Gate effect now follows gate points and points per metre. E.g. changing this legacy value no longer affects a jump.</translation></message>
+<message><source>Parametr zachowany dla starych profili. Wiatr nie zmienia podstawowej siły belki. Np. zmiana tej dawnej wartości nie wpływa już na skok.</source><translation>Kept for older profiles. Wind does not change the basic gate effect. E.g. changing this legacy value no longer affects a jump.</translation></message>
+<message><source>Siła obniżenia not za skoki poniżej K, zależna od proporcji odległości do K. Np. 10 i skok 10% poniżej K oznaczają około punkt straty.</source><translation>Strength of mark reductions below K, based on distance relative to K. E.g. 10 and a jump 10% short of K mean about one point lost.</translation></message>
+<message><source>Siła wzrostu not za skoki powyżej K, zależna od proporcji odległości do K. Np. 10 i skok 10% za K oznaczają około punkt premii przed karami.</source><translation>Strength of mark increases beyond K, based on distance relative to K. E.g. 10 and a jump 10% beyond K mean about one bonus point before deductions.</translation></message>
+<message><source>Wzmacnia lub osłabia podstawowy wpływ wiatru w plecy. Np. 1,2 daje o 20% silniejszą stratę niż 1,0, przed wpływem podmuchów.</source><translation>Scales the basic tailwind effect. E.g. 1.2 causes 20% more loss than 1.0, before gust effects.</translation></message>
+<message><source>Zmienia podstawową siłę wiatru we wszystkich presetach i automatycznych propozycjach. Np. 1 zachowuje pierwotną siłę, a 0,8 zmniejsza ją o 20%.</source><translation>Scales base wind strength in all presets and automatic suggestions. E.g. 1 keeps the original strength; 0.8 reduces it by 20%.</translation></message>
+<message><source>Zmienia siłę podmuchów we wszystkich losowanych warunkach, bez zmiany ich częstości. Np. 0,5 zmniejsza siłę podmuchów o połowę.</source><translation>Scales gust strength in all generated conditions without changing gust frequency. E.g. 0.5 halves gust strength.</translation></message>
+<message><source>Zmienia siłę wahań w czasie, różnic na zeskoku i tendencji we wszystkich losowanych warunkach. Np. 0,5 zmniejsza te różnice o połowę.</source><translation>Scales fluctuations over time, differences along the slope and trends in all generated conditions. E.g. 0.5 halves these differences.</translation></message>
+</context>
+<context><name>QObject</name><message><source>Paczka zawiera powtórzony identyfikator. Wyeksportuj ją ponownie ze źródłowej bazy.</source><translation>The pack contains a duplicate identifier. Export it again from the original database.</translation></message></context>
 </TS>

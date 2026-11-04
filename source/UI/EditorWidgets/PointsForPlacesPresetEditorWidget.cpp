@@ -1,5 +1,7 @@
 #include "PointsForPlacesPresetEditorWidget.h"
 #include "ui_PointsForPlacesPresetEditorWidget.h"
+#include <QPushButton>
+#include <QHBoxLayout>
 
 PointsForPlacesPresetEditorWidget::PointsForPlacesPresetEditorWidget(QWidget *parent) :
     QWidget(parent),
@@ -11,6 +13,16 @@ PointsForPlacesPresetEditorWidget::PointsForPlacesPresetEditorWidget(QWidget *pa
     model->setPointsForPlaces(&pointsForPlaces);
     ui->tableView_pointsForPlaces->setModel(model);
     ui->tableView_pointsForPlaces->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->pushButton_submit->hide();
+    auto *actions=new QHBoxLayout;
+    const QStringList names{"classificationAddPlace","classificationRemovePlace","classificationClearPlaces"};
+    const QStringList labels{tr("Dodaj miejsce"),tr("Usuń ostatnie miejsce"),tr("Wyczyść")};
+    for(int i=0;i<3;++i){auto *button=new QPushButton(labels[i],this);button->setObjectName(names[i]);actions->addWidget(button);connect(button,&QPushButton::clicked,this,[this,i]{if(i==0)addActionTriggered();else if(i==1)removeActionTriggered();else model->removeRows(0,model->rowCount());});}
+    ui->verticalLayout_2->insertLayout(1,actions);
+    connect(model,&QAbstractItemModel::dataChanged,this,&PointsForPlacesPresetEditorWidget::configurationChanged);
+    connect(model,&QAbstractItemModel::rowsInserted,this,&PointsForPlacesPresetEditorWidget::configurationChanged);
+    connect(model,&QAbstractItemModel::rowsRemoved,this,&PointsForPlacesPresetEditorWidget::configurationChanged);
+    connect(ui->lineEdit_name,&QLineEdit::editingFinished,this,&PointsForPlacesPresetEditorWidget::configurationChanged);
 
     action_add = new QAction(this);
     action_add->setShortcut(Qt::CTRL | Qt::SHIFT | Qt::Key_A);
@@ -46,7 +58,6 @@ void PointsForPlacesPresetEditorWidget::fill()
 {
     ui->lineEdit_name->setText(preset->getName());
     model->replacePoints(pointsForPlaces);
-    emit model->dataChanged(model->index(0, 0), model->index(model->rowCount() - 1, model->columnCount() - 1));
 }
 
 void PointsForPlacesPresetEditorWidget::reset()

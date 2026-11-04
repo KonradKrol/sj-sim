@@ -252,7 +252,13 @@ QVector<Jumper> Jumper::getVectorFromJson(const QByteArray &bytes)
         if(!validateSimulationProfileJson(val.toObject(),profileError)) {
             QMessageBox::critical(nullptr,QObject::tr("Skoczkowie"),profileError);return {};
         }
-        jumpers.push_back(Jumper::getFromJson(val.toObject()));
+        auto jumper=Jumper::getFromJson(val.toObject());
+        // Historical standalone libraries used a zero UUID for every entry.
+        // They have no external graph references yet, so assign identities here.
+        bool duplicate=jumper.getIDStr()=="00000000-0000-0000-0000-000000000000";
+        for(const auto &existing:jumpers)if(existing.getID()==jumper.getID())duplicate=true;
+        if(duplicate && !jumper.getSimulationProfile())jumper.reassign();
+        jumpers.push_back(jumper);
     }
 
     return jumpers;

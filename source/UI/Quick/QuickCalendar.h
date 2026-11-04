@@ -50,6 +50,7 @@ class QuickCalendar : public QObject {
     Q_PROPERTY(bool activeCalendar READ activeCalendar NOTIFY changed)
     Q_PROPERTY(QVariantList calendarEntries READ calendarEntries NOTIFY changed)
     Q_PROPERTY(QString message READ message NOTIFY changed)
+    Q_PROPERTY(QString error READ error NOTIFY changed)
 public:
     explicit QuickCalendar(CalendarEditorWidget *editor,QObject *parent);
     ~QuickCalendar() override;
@@ -107,6 +108,7 @@ public:
     bool activeCalendar() const;
     QVariantList calendarEntries() const;
     QString message() const { return m_message; }
+    QString error() const { return m_error; }
     Q_INVOKABLE void select(const QString &id,int modifiers=0);
     Q_INVOKABLE void selectAll(bool futureOnly=false);
     Q_INVOKABLE void clearSelection();
@@ -128,7 +130,7 @@ public:
     QVariantList ruleDefaults() const;
     Q_INVOKABLE void setDefaultRule(const QString &role,int index);
     Q_INVOKABLE void addQualifications(int daysBefore);
-    CompetitionRules defaultRule(const QString &role) const;
+    CompetitionRules defaultRule(const QString &role,bool packOnly=false) const;
     bool newCalendar() const;
     Q_INVOKABLE void renameCalendar(const QString &name);
     Q_INVOKABLE void catalogAction(const QString &action);
@@ -174,7 +176,7 @@ private:
     void applyDates(const QHash<CompetitionInfo *,QDate> &dates);
     bool validateDateOrder(const QVector<CompetitionInfo *> &,const QHash<CompetitionInfo *,QDate> & = {});
     QVariantMap m_selection;
-    QString m_message,m_language;
+    QString m_message,m_language,m_error;
     QString m_newCalendarId;
     bool m_dirty=true,m_mutating=false;
     int m_rulesTarget=0;

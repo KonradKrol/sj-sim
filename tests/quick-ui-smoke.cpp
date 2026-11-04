@@ -2546,6 +2546,8 @@ static void interactionRegressions(MainWindow &main) {
 #include "simulation-v2-season-regressions.h"
 #include "simulation-v2-measurement-regressions.h"
 #include "production-persistence-regressions.h"
+#include "team-weekend-regressions.h"
+#include "rule-catalog-regressions.h"
 #include "simulation-v2-manipulation-regressions.h"
 
 int main(int argc,char **argv) {
@@ -2577,9 +2579,25 @@ int main(int argc,char **argv) {
     QDir::setCurrent(data.path());
     QSettings::setDefaultFormat(QSettings::IniFormat);QSettings::setPath(QSettings::IniFormat,QSettings::UserScope,data.path()+"/settings");
     if(app.arguments().contains("--production-persistence-only")){productionPersistenceRegressions();return 0;}
+    if(app.arguments().contains("--team-weekend-only")){teamWeekendRegressions();return 0;}
+    if(app.arguments().contains("--rule-catalog-models-only")){ruleCatalogModelRegressions();return 0;}
     MainWindow main; applicationWindow=&main; main.setParentApplication(&app); new QuickUi(&main);
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
     check(main.findChild<QuickBridge *>()->version()=="2.0.0-beta","one release version is shared with the interface");
+    if(app.arguments().contains("--readme-screenshots")) {
+        scene(&main)->rootContext()->contextProperty("appearance").value<QuickAppearance *>()->setReducedMotion(true);
+        main.findChild<QuickBridge *>()->launch("dismissWelcome");QTest::qWait(600);
+        render(&main,"readme-home",true);
+        DatabaseEditorWindow editor(&main);
+        auto *studio=new AthleteStudioController(&editor,data.path()+"/readme-athletes");
+        editor.setProperty("athleteStudio",QVariant::fromValue(static_cast<QObject *>(studio)));
+        const auto athletes=studio->legacyAthletes(0);
+        for(int i=0;i<qMin(12,athletes.size());++i){studio->copyLegacy(0,i);studio->setPhoto("");}
+        studio->renamePack(QString::fromUtf8("Przykładowa paczka"));studio->select(0);
+        render(&editor,"readme-database",true);
+        editor.hide();return 0;
+    }
+    if(app.arguments().contains("--rule-catalog-ui-only")){ruleCatalogEditorRegressions(main);return 0;}
     if(app.arguments().contains("--translation-only")) {
         check(QDir(data.path()+"/translations").removeRecursively(),"remove working-directory catalogs to verify executable-relative loading");
         main.show();

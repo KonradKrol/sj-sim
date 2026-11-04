@@ -58,6 +58,7 @@ public:
     void setDownKeySequence(QKeySequence sequence);
 
 signals:
+    void aboutToChange();
     void listViewDoubleClicked(const QModelIndex &index);
     void listViewClicked(const QModelIndex &index);
     void up();

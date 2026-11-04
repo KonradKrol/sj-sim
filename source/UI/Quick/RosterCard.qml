@@ -9,7 +9,7 @@ AbstractButton {
     property bool activeRoster: false
     property bool condensed: false
     property bool hideDetail: false
-    padding: Theme.dp(10)
+    padding: Theme.dp(condensed ? 12 : 15)
     property real measuredContentHeight: 0
     implicitHeight: Math.max(Theme.dp(condensed ? 52 : 68),measuredContentHeight+topPadding+bottomPadding)
     Timer { id: measure; interval: 0; onTriggered: card.measuredContentHeight=card.contentItem.implicitHeight }

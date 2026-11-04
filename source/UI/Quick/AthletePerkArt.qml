@@ -11,11 +11,11 @@ Image {
     sourceSize.height: 192
     Accessible.ignored: true
     Rectangle {
-        visible: art.tier===4 || art.hill
+        visible: art.tier>=3 || art.hill
         anchors.fill: parent; anchors.margins: art.width*.03
-        color: art.tier===4 ? "#241237" : art.tier===2 ? "#6c4b1b" : "#224c40"; radius: art.width*.18
-        border.width: Math.max(2,art.width*.035); border.color: art.tier>=2 ? "#ffb941" : "#91b6a6"
-        Rectangle { anchors.fill: parent; anchors.margins: art.width*.08; color: "transparent"; radius: art.width*.12; border.width: 1; border.color: "#ffdf9d" }
+        color: art.tier===4 ? "#241237" : art.tier===3 ? "#61401a" : art.tier===2 ? "#34483e" : "#224c40"; radius: art.width*.18
+        border.width: Math.max(1,art.width*(art.tier>=3?.04:.02)); border.color: art.tier>=3 ? "#ffb941" : art.tier===2 ? "#a9b899" : "#91b6a6"
+        Rectangle { visible: art.tier>=3; anchors.fill: parent; anchors.margins: art.width*.08; color: "transparent"; radius: art.width*.12; border.width: 1; border.color: "#ffdf9d" }
     }
     Image {
         anchors.centerIn: parent

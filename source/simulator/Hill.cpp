@@ -248,7 +248,11 @@ QVector<Hill> Hill::getVectorFromJson(const QByteArray &bytes)
         if(!validateSimulationProfileJson(val.toObject(),profileError)) {
             QMessageBox::critical(nullptr,QObject::tr("Skocznie"),profileError);return {};
         }
-        hills.push_back(Hill::getFromJson(val.toObject()));
+        auto hill=Hill::getFromJson(val.toObject());
+        bool duplicate=hill.getIDStr()=="00000000-0000-0000-0000-000000000000";
+        for(const auto &existing:hills)if(existing.getID()==hill.getID())duplicate=true;
+        if(duplicate && !hill.getSimulationProfile())hill.reassign();
+        hills.push_back(hill);
     }
 
     return hills;

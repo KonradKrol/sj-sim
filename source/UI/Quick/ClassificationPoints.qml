@@ -6,16 +6,18 @@ ColumnLayout {
     id: points
     ViewArrival { target: points; expressive: false }
     property var workspace
+    property bool standalone: false
     readonly property bool alternative: workspace.pointsSource===1
     readonly property var tableNode: alternative ? workspace.controls.tableView_altPointsForPlaces : workspace.controls.tableView_pointsForPlaces
     readonly property var table: tableNode ? tableNode.values.table : null
     readonly property string prefix: alternative ? "classificationAlt" : "classification"
     spacing: 8
-    ClassificationSources { Layout.fillWidth: true; workspace: points.workspace }
+    ClassificationSources { visible: !points.standalone; Layout.fillWidth: true; workspace: points.workspace }
     Flow {
         Layout.fillWidth: true; spacing: 6
         SChoice {
             id: preset
+            visible: !points.standalone
             objectName: "classificationPointsPreset"
             readonly property var field: points.workspace.value(points.alternative ? "comboBox_altPreset" : "comboBox_presets")
             width: Math.min(220,points.width)
@@ -29,7 +31,7 @@ ColumnLayout {
         }
         SButton { objectName: "classificationPointAdd"; text: "+"; padding: 4; implicitHeight: 28; Accessible.name: qsTr("Dodaj punktowane miejsce"); enabled: points.workspace.value(points.prefix+"AddPlace").enabled!==false; onClicked: {points.rememberScroll();ui.activate(points.workspace.value(points.prefix+"AddPlace").id)} }
         SButton { objectName: "classificationPointRemove"; text: "−"; padding: 4; implicitHeight: 28; Accessible.name: qsTr("Usuń ostatnie miejsce"); enabled: points.table && points.table.count>0 && points.workspace.value(points.prefix+"RemovePlace").enabled!==false; onClicked: {points.rememberScroll();ui.activate(points.workspace.value(points.prefix+"RemovePlace").id)} }
-        SButton { objectName: "classificationPointClear"; text: qsTr("Wyczyść"); quiet: true; padding: 4; implicitHeight: 28; font.pointSize: Theme.caption; enabled: points.table && points.table.count>0 && preset.field.enabled!==false; onClicked: {points.rememberScroll();ui.edit(preset.field.id,0)} }
+        SButton { objectName: "classificationPointClear"; text: qsTr("Wyczyść"); quiet: true; padding: 4; implicitHeight: 28; font.pointSize: Theme.caption; enabled: points.table && points.table.count>0 && preset.field.enabled!==false; onClicked: {points.rememberScroll();if(points.standalone)ui.activate(points.workspace.value("classificationClearPlaces").id);else ui.edit(preset.field.id,0)} }
     }
     RowLayout {
         Layout.fillWidth: true

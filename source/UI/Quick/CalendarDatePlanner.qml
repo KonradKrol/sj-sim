@@ -1,83 +1,51 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 Pane {
     id: planner
-    ViewArrival { target: planner; expressive: true; emphasis: arrivalHeading }
     objectName: "calendarDatePlanner"
     property var backend
     property string startDate: backend.suggestedDate
     property bool future: false
-    property bool weekendMode: false
+    property int mode: 0
+    property int qualificationDays: 0
     property bool requested: false
     property bool allWarnings: false
     function invalidate(){requested=false;backend.discardDatePlan()}
-    padding: 12
+    padding: Theme.dp(12)
     background: Surface { fillColor: Theme.surface; sweep: 20 }
     contentItem: ColumnLayout {
-        spacing: 12
-        Label { id: arrivalHeading; text: qsTr("Szybkie planowanie"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.title; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-        SButton { text: qsTr("Domyślne zasady"); quiet: true; onClicked: defaults.visible=!defaults.visible }
-        ColumnLayout {
-            id: defaults; visible: false; Layout.fillWidth: true; spacing: Theme.dp(8)
-            Label { text: qsTr("Zmiany dotyczą nowych wydarzeń w tym kalendarzu."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-            Repeater { model: planner.backend.ruleDefaults; ColumnLayout { required property var modelData; Layout.fillWidth: true; Label { text: parent.modelData.title; color: Theme.muted; font.pointSize: Theme.caption } SChoice { Layout.fillWidth: true; model: parent.modelData.options; currentIndex: parent.modelData.current; onActivated: function(index){planner.backend.setDefaultRule(parent.modelData.role,index)} } } }
-        }
-        Pane {
-            Layout.fillWidth: true; padding: Theme.dp(12)
-            background: Rectangle { color: Theme.raised; radius: Theme.dp(6) }
-            contentItem: ColumnLayout {
-                spacing: Theme.dp(8)
-                Label { text: qsTr("Kwalifikacje do zaznaczonych konkursów"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-                Label { text: qsTr("Doda kwalifikacje do zaznaczonych konkursów indywidualnych bez kwalifikacji i automatycznie połączy awans."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-                SChoice { id: qualificationDay; Layout.fillWidth: true; model: [qsTr("W dniu konkursu"),qsTr("Dzień przed konkursem")] }
-                SButton { text: qsTr("Dodaj kwalifikacje"); enabled: planner.backend.selection.count>0 && !planner.backend.selection.locked; primary: true; Layout.fillWidth: true; onClicked: planner.backend.addQualifications(qualificationDay.currentIndex) }
-            }
-        }
-        Repeater {
-            model: planner.allWarnings ? planner.backend.dateWarnings : planner.backend.dateWarnings.slice(0, 3)
-            Pane {
-                id: warningCard
-                required property string modelData
-                Layout.fillWidth: true
-                padding: Theme.dp(10)
-                background: Rectangle { color: Qt.rgba(Theme.warning.r, Theme.warning.g, Theme.warning.b, 0.12); radius: Theme.dp(6); border.color: Theme.warning }
-                contentItem: Label { text: warningCard.modelData; color: Theme.warning; font.pointSize: Theme.body; wrapMode: Text.WordWrap }
-            }
-        }
-        SButton {
-            visible: planner.backend.dateWarnings.length > 3
-            text: planner.allWarnings ? qsTr("Pokaż mniej ostrzeżeń") : qsTr("Pokaż pozostałe ostrzeżenia (%1)").arg(planner.backend.dateWarnings.length - 3)
-            onClicked: planner.allWarnings = !planner.allWarnings
-        }
+        spacing: Theme.dp(12)
+        Label { text: qsTr("Szybkie planowanie"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; Layout.fillWidth: true }
         GridLayout {
-            Layout.fillWidth: true; columns: planner.width>Theme.dp(450)?2:1
-            columnSpacing: Theme.dp(8); rowSpacing: Theme.dp(8)
+            Layout.fillWidth: true; columns: planner.width>Theme.dp(620) ? 3 : 1; columnSpacing: Theme.dp(6); rowSpacing: Theme.dp(6)
             Repeater {
-                model: [{title:qsTr("Ustal wiele terminów"),detail:qsTr("Zmień daty konkursów w kalendarzu.")},{title:qsTr("Dodaj weekend"),detail:qsTr("Utwórz konkursy i kwalifikacje.")}]
+                model: [{key:0,icon:"↗",title:qsTr("Dodaj kwalifikacje")},{key:1,icon:"▦",title:planner.backend.datesEnabled ? qsTr("Dodaj weekend") : qsTr("Dodaj pakiet konkursów")}].concat(planner.backend.datesEnabled ? [{key:2,icon:"◷",title:qsTr("Ustal wiele terminów")}] : [])
                 ItemDelegate {
-                    required property int index
                     required property var modelData
-                    readonly property bool chosen: planner.weekendMode===(index===1)
-                    objectName: index===0 ? "date-plan-existing" : "date-open-weekend"
-                    Layout.fillWidth: true; Layout.fillHeight: true; Layout.preferredWidth: 0; Layout.minimumWidth: 0
-                    padding: Theme.dp(12)
-                    implicitHeight: contentItem.implicitHeight+topPadding+bottomPadding
-                    background: Rectangle { color: parent.chosen ? Theme.stadium : parent.hovered ? Theme.selection : Theme.raised; radius: Theme.dp(6); border.width: parent.visualFocus ? 2 : 1; border.color: parent.chosen ? Theme.accent : Theme.outline }
-                    contentItem: ColumnLayout {
-                        spacing: Theme.dp(4)
-                        Label { text: modelData.title; color: parent.parent.chosen ? Theme.snow : Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-                        Label { text: modelData.detail; color: parent.parent.chosen ? Theme.headerMuted : Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-                    }
-                    Accessible.name: modelData.title
-                    onClicked: {planner.forceActiveFocus();planner.invalidate();planner.backend.discardWeekend();planner.weekendMode=index===1}
+                    objectName: modelData.key===0 ? "date-open-qualifications" : modelData.key===1 ? "date-open-weekend" : "date-plan-existing"
+                    Layout.fillWidth: true; Layout.preferredWidth: 0
+                    implicitHeight: Math.max(40,contentItem.implicitHeight+16)
+                    highlighted: planner.mode===modelData.key
+                    contentItem: Label { text: parent.modelData.icon+"  "+parent.modelData.title; color: parent.highlighted ? Theme.accent : Theme.ink; font.pointSize: Theme.body; wrapMode: Text.WordWrap }
+                    background: Rectangle { radius: Theme.dp(5); color: parent.highlighted ? Theme.selection : parent.hovered ? Theme.raised : Theme.surface; border.color: parent.highlighted ? Theme.accent : Theme.outline }
+                    onClicked: {planner.forceActiveFocus();planner.invalidate();planner.backend.discardWeekend();planner.mode=modelData.key}
                 }
             }
         }
-        CalendarWeekendPlanner { visible: planner.weekendMode; Layout.fillWidth: true; backend: planner.backend }
         ColumnLayout {
-            visible: !planner.weekendMode
+            visible: planner.mode===0; Layout.fillWidth: true; spacing: Theme.dp(8)
+            Label { text: qsTr("Kwalifikacje do zaznaczonych konkursów"); color: Theme.ink; font.pointSize: Theme.section; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+            Label { text: qsTr("Dodaj po jednych kwalifikacjach przed każdym zaznaczonym konkursem. Awans i zgodne zasady zostaną powiązane automatycznie."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+            SectionTabs { visible: planner.backend.datesEnabled; Layout.fillWidth: true; Layout.maximumWidth: Theme.dp(440); options: [qsTr("W dniu konkursu"),qsTr("Dzień wcześniej")]; currentIndex: planner.qualificationDays; onSelected: planner.qualificationDays=index }
+            SButton { text: qsTr("Dodaj kwalifikacje"); primary: true; enabled: planner.backend.selection.count>0 && !planner.backend.selection.locked; onClicked: planner.backend.addQualifications(planner.backend.datesEnabled ? planner.qualificationDays : 0) }
+            Label { visible: planner.backend.selection.count===0; text: qsTr("Wróć do listy i zaznacz konkursy, do których chcesz dodać kwalifikacje."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        }
+        CalendarWeekendPlanner { visible: planner.mode===1; Layout.fillWidth: true; backend: planner.backend }
+        Repeater { model: planner.backend.datesEnabled ? planner.backend.dateWarnings : []; Label { required property string modelData; text: modelData; color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap } }
+        ColumnLayout {
+            visible: planner.mode===2 && planner.backend.datesEnabled
             Layout.fillWidth: true; spacing: Theme.dp(12)
             Label { text: qsTr("Konkursy do zaplanowania"); color: Theme.muted; font.pointSize: Theme.caption }
             SChoice { objectName: "date-plan-future"; Layout.fillWidth: true; model: [qsTr("Zaznaczone (%1)").arg(planner.backend.selection.count),qsTr("Wszystkie nierozegrane")]; currentIndex: planner.future?1:0; Accessible.name: qsTr("Konkursy do zaplanowania"); onActivated: {planner.future=currentIndex===1;planner.invalidate()} }

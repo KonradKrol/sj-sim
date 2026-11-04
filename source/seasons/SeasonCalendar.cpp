@@ -222,6 +222,44 @@ int SeasonCalendar::getTrainingNumber(CompetitionInfo *training) const
     return mainCompetition->getTrainingsReference().indexOf(training) + 1;
 }
 
+QVector<CompetitionInfo *> SeasonCalendar::teamEventFamily(CompetitionInfo *event) const
+{
+    auto *owner=getMainCompetitionForEvent(event);
+    if(!owner)owner=event;
+    if(!owner || owner->getRules().getCompetitionType()!=CompetitionRules::Team)return {};
+    QVector<CompetitionInfo *> family{owner};
+    for(int i=0;i<family.size();++i)for(auto *candidate:competitions)
+        if(candidate && candidate->getRules().getCompetitionType()==CompetitionRules::Team
+            && (candidate->getAdvancementCompetition()==family[i] || family[i]->getAdvancementCompetition()==candidate)
+            && !family.contains(candidate))family.append(candidate);
+    return family;
+}
+
+CompetitionInfo *SeasonCalendar::teamSquadLock(CompetitionInfo *event) const
+{
+    if(!event || event->getSerieType()==CompetitionInfo::Training)return nullptr;
+    const auto family=teamEventFamily(event);
+    for(auto *entry:competitions)if(entry && !entry->getCancelled() && entry->getSerieType()!=CompetitionInfo::Training
+        && entry->getRules().getCompetitionType()==CompetitionRules::Team && !entry->getTeams().isEmpty()
+        && (entry->getPlayed() || !entry->getResultsReference().getResultsReference().isEmpty())) {
+        auto *owner=getMainCompetitionForEvent(entry);
+        if(family.contains(owner?owner:entry))return entry;
+    }
+    return nullptr;
+}
+
+CompetitionInfo *SeasonCalendar::previousTeamTraining(CompetitionInfo *event) const
+{
+    CompetitionInfo *suggestion=nullptr;
+    for(auto *entry:competitions){if(entry==event)break;
+        if(entry && entry->getSerieType()==CompetitionInfo::Training && entry->getPlayed() && !entry->getCancelled()
+            && entry->getRules().getCompetitionType()==CompetitionRules::Team
+            && entry->getRules().getJumpersInTeamCount()==event->getRules().getJumpersInTeamCount()
+            && !entry->getTeams().isEmpty())suggestion=entry;
+    }
+    return suggestion;
+}
+
 SeasonCalendar SeasonCalendar::getFromJson(QJsonObject json, IdentifiableObjectsStorage * storage, QMap<ulong, Identifiable*> * before120Map, int seasonYear)
 {
     SeasonCalendar calendar;
@@ -319,7 +357,13 @@ SeasonCalendar SeasonCalendar::getFromJson(QJsonObject json, IdentifiableObjects
 
         CompetitionResults &results = competition->getResultsReference();
         results.setCompetition(competition);
+        const auto savedResults=competitionJson.value("results").toObject().value("results").toArray();
+        int resultIndex=0;
         for(auto &singleResult : results.getResultsReference()) {
+            const auto teamId=savedResults.at(resultIndex++).toObject().value("team-id").toString();
+            Team *ownTeam=nullptr;
+            for(auto &team:competition->getTeamsReference())if(team.getIDStr()==teamId){ownTeam=&team;break;}
+            singleResult.setTeam(ownTeam);
             singleResult.setCompetition(competition);
             for(auto &jump : singleResult.getJumpsReference()) {
                 jump.setCompetition(competition);

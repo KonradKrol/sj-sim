@@ -31,7 +31,7 @@ Item {
                 text: roster.backend.exceededCountries ? qsTr("Limity (%1)").arg(roster.backend.exceededCountries) : roster.width<500 ? qsTr("Limity") : qsTr("Limity krajów")
                 Accessible.name: qsTr("Limity krajów")
                 hint: roster.backend.exceededCountries ? qsTr("Liczba krajów z przekroczonym limitem: %1").arg(roster.backend.exceededCountries) : ""
-                primary: roster.limitsOpen
+                quiet: true
                 foreground: primary ? Theme.accentText : roster.backend.exceededCountries ? Theme.danger : Theme.ink
                 implicitHeight: Theme.dp(40); font.pointSize: Theme.body
                 onClicked: roster.limitsOpen=!roster.limitsOpen

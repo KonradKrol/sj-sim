@@ -28,6 +28,7 @@ public:
 
 signals:
     void submitted();
+    void configurationChanged();
 
 private:
     Ui::PointsForPlacesPresetEditorWidget *ui;
@@ -35,7 +36,7 @@ private:
     PointsForPlacesTableModel * model;
     QAction * action_add;
     QAction * action_remove;
-    PointsForPlacesPreset * preset;
+    PointsForPlacesPreset * preset=nullptr;
 
 public:
     QMap<int, double> getPointsForPlaces() const;

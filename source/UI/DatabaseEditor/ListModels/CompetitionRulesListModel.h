@@ -25,6 +25,8 @@ public:
     bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
+    bool moveRows(const QModelIndex &source,int row,int count,const QModelIndex &destination,int target) override;
+
 private:
     QVector<CompetitionRules> * competitonRulesVectorPointer;
 public:

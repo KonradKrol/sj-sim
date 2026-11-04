@@ -134,7 +134,10 @@ Control {
                         objectName: "athleteDragHandle-"+row.profileIndex
                         Layout.preferredWidth: Theme.dp(28); Layout.fillHeight: true
                         Accessible.role: Accessible.Button; Accessible.name: qsTr("Przeciągnij, aby zmienić kolejność skoczka %1").arg(row.label)
-                        Label { anchors.centerIn: parent; text: "⋮⋮"; color: Theme.muted; font.pointSize: Theme.body; Accessible.ignored: true }
+                        Item {
+                            anchors.centerIn: parent; width: 8; height: 13; Accessible.ignored: true
+                            Repeater { model: 6; Rectangle { required property int index; x: (index%2)*5; y: Math.floor(index/2)*5; width: 2; height: 2; radius: 1; color: Theme.muted } }
+                        }
                         MouseArea {
                             id: dragArea
                             enabled: !library.season

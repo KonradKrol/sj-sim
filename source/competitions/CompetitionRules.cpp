@@ -141,7 +141,11 @@ QVector<CompetitionRules> CompetitionRules::getCompetitionRulesVectorFromJson(co
     QJsonArray array = value.toArray();
     for(const auto & val : array)
     {
-        rulesVector.push_back(CompetitionRules::getFromJson(val.toObject()));
+        auto rules=CompetitionRules::getFromJson(val.toObject());
+        bool duplicate=rules.getIDStr()=="00000000-0000-0000-0000-000000000000";
+        for(const auto &existing:rulesVector)if(existing.getID()==rules.getID())duplicate=true;
+        if(duplicate)rules.reassign();
+        rulesVector.push_back(rules);
     }
     return rulesVector;
 }
