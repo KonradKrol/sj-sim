@@ -40,6 +40,7 @@ ColumnLayout {
         SButton { text: qsTr("Zapamiętaj do porównania"); hint: qsTr("Kopiuje Twoje zmiany do serii „Zapamiętane ustawienia”. Potem możesz dalej stroić i porównywać oba pomysły. Zastępuje poprzednio zapamiętany wariant; nie zapisuje wyniku próby."); quiet: true; enabled: !lab.backend.busy; onClicked: lab.backend.freeze() }
         SButton { text: qsTr("Cofnij zmianę"); quiet: true; enabled: !lab.backend.busy; onClicked: lab.backend.undo() }
     }
+    Label { visible: !lab.choosing; text: qsTr("Balans gry: %1 · różnice Twoich zmian: %2").arg(lab.backend.activeProfile).arg(lab.backend.diff.count || 0); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     SCheck { objectName: "balancePreviewToggle"; visible: !lab.choosing; text: qsTr("Pokazuj szybki podgląd · 7 konkursów na wariant"); checked: lab.backend.previewEnabled; onClicked: lab.backend.setPreviewEnabled(checked) }
     Loader {
         visible: lab.choosing; active: visible

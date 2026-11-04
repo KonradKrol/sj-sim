@@ -22006,7 +22006,9 @@ Technický klíč: %4</translation>
             <source>Otwórz eksperyment z pliku</source>
             <translation>Otevřít experiment ze souboru</translation>
         </message>
-    </context>
+    <message><source>Kopiuj balans gry do zmian</source><translation>Zkopírovat herní vyvážení do změn</translation></message>
+<message><source>Balans z gry używa aktywnego profilu. Twoje zmiany są osobnym wariantem i trafiają do gry dopiero po zastosowaniu.</source><translation>Herní vyvážení používá aktivní profil. Vaše změny jsou samostatnou variantou a projeví se ve hře až po použití.</translation></message>
+</context>
     <context>
         <name>BalanceLabReplay</name>
         <message>
@@ -22767,7 +22769,8 @@ Technický klíč: %4</translation>
             <source>Szacowanie pozostałego czasu…</source>
             <translation>Odhaduje se zbývající čas…</translation>
         </message>
-    </context>
+    <message><source>Balans gry: %1 · różnice Twoich zmian: %2</source><translation>Herní vyvážení: %1 · rozdíly vašich změn: %2</translation></message>
+</context>
     <context>
         <name>BalanceLabTargets</name>
         <message>

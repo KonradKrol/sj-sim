@@ -22005,7 +22005,9 @@ Technical key: %4</translation>
             <source>Otwórz eksperyment z pliku</source>
             <translation>Open experiment from file</translation>
         </message>
-    </context>
+    <message><source>Kopiuj balans gry do zmian</source><translation>Copy game balance to your changes</translation></message>
+<message><source>Balans z gry używa aktywnego profilu. Twoje zmiany są osobnym wariantem i trafiają do gry dopiero po zastosowaniu.</source><translation>Game balance uses the active profile. Your changes are a separate variant and affect the game only after applying them.</translation></message>
+</context>
     <context>
         <name>BalanceLabReplay</name>
         <message>
@@ -22766,7 +22768,8 @@ Technical key: %4</translation>
             <source>Szacowanie pozostałego czasu…</source>
             <translation>Estimating remaining time…</translation>
         </message>
-    </context>
+    <message><source>Balans gry: %1 · różnice Twoich zmian: %2</source><translation>Game balance: %1 · differences in your changes: %2</translation></message>
+</context>
     <context>
         <name>BalanceLabTargets</name>
         <message>
