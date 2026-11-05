@@ -79,3 +79,11 @@ Zapis ręczny i zapis po konkursie korzystają ze wspólnej ścieżki.
 Regresja wymuszonego błędu grafu + nieaktywny timer: dirty zachowany,
 timer ponowiony. PASS --production-persistence-only
 (/tmp/sj-autosave-revision-test.log).
+
+Punkt 5 raportu naprawiony: BalanceRuntime rozróżnia brak profilu od błędu
+odczytu/formatu. Udostępnia lastError, zgłasza użycie standardowego balansu
+jednym komunikatem na wersję uszkodzonego pliku oraz stałym ostrzeżeniem
+w labie z przywróceniem standardu. Nie zmienia pliku przy odczycie.
+Cache odświeża się po zmianie metadanych pliku. Test złego aktywnego profilu,
+zachowania jego bajtów i jawnego resetu PASS
+(--balance-lab-core-only, /tmp/sj-active-balance-test.log).

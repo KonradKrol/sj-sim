@@ -23,6 +23,15 @@ static void balanceLabBackendRegressions(){
         {QFile file(root+"/"+backups.first());check(file.open(QIODevice::ReadOnly) && file.readAll()==broken,"recovery copy preserves the exact unreadable bytes");}
         QFile::remove(workspace);QFile::remove(root+"/"+backups.first());
     }
+    {
+        const auto filePath=storage.path()+"/balance-lab/active.json";const QByteArray broken="{broken active balance";
+        {QFile file(filePath);check(file.open(QIODevice::WriteOnly) && file.write(broken)==broken.size(),"create corrupt active balance");}
+        check(!BalanceRuntime::lastError().isEmpty() && !BalanceRuntime::activeName().isEmpty(),"corrupt active balance is distinguishable from an absent profile");
+        QTimer dismiss;QObject::connect(&dismiss,&QTimer::timeout,[]{for(auto *widget:QApplication::allWidgets())if(auto *message=qobject_cast<QMessageBox *>(widget))message->accept();});dismiss.start(5);
+        check(BalanceRuntime::capture()==BalanceRuntime::defaults(),"explicitly reported corrupt profile uses safe defaults");QTest::qWait(20);dismiss.stop();
+        {QFile file(filePath);check(file.open(QIODevice::ReadOnly) && file.readAll()==broken,"reading a corrupt active balance preserves its bytes");}
+        QString error;check(BalanceRuntime::reset(error) && BalanceRuntime::lastError().isEmpty(),"explicit standard profile restores a valid runtime state");
+    }
     const auto oldName=QCoreApplication::applicationName();QCoreApplication::setApplicationName("BalanceLabRegression-"+QUuid::createUuid().toString(QUuid::WithoutBraces));
     for(auto row:Playground::parameters()) {
         const auto d=row.toObject();const auto help=d["help"].toString().section('\n',0,0).trimmed();

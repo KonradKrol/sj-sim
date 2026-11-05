@@ -173,3 +173,5 @@ void BalanceLabController::replayContest(int contest,int v){
 }
 BalanceLabWindow::BalanceLabWindow(QWidget *parent):QDialog(parent){setObjectName("balanceLab");setWindowTitle(tr("Laboratorium balansu"));setMinimumSize(420,420);resize(1360,880);auto *c=new BalanceLabController(this);setProperty("balanceLabController",QVariant::fromValue(static_cast<QObject *>(c)));auto *layout=new QVBoxLayout(this);auto *label=new QLabel(tr("Laboratorium balansu — otwórz interfejs Qt Quick, aby korzystać z wykresów."),this);label->setWordWrap(true);layout->addWidget(label);}
 void BalanceLabWindow::reject(){if(auto *c=findChild<BalanceLabController *>())c->cancel();QDialog::reject();}
+
+QString BalanceLabController::runtimeError() const { return BalanceRuntime::lastError(); }

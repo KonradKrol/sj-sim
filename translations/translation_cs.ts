@@ -15090,6 +15090,26 @@ Ověřte, že jste vybrali správný soubor.</translation>
 <message><source>Wszystkie losowane warunki: siła wiatru</source><translation>Všechny generované podmínky: síla větru</translation></message>
 <message><source>Wszystkie losowane warunki: zmienność</source><translation>Všechny generované podmínky: proměnlivost</translation></message>
 <message><source>Wszystkie losowane warunki: siła podmuchów</source><translation>Všechny generované podmínky: síla nárazů</translation></message>
+    <message>
+        <source>Aktywny profil balansu jest uszkodzony: %1</source>
+        <translation>Aktivní profil vyvážení je poškozený: %1</translation>
+    </message>
+    <message>
+        <source>Błąd aktywnego profilu</source>
+        <translation>Chyba aktivního profilu</translation>
+    </message>
+    <message>
+        <source>Błąd profilu balansu</source>
+        <translation>Chyba profilu vyvážení</translation>
+    </message>
+    <message>
+        <source>Nie można odczytać aktywnego profilu balansu: %1</source>
+        <translation>Aktivní profil vyvážení nelze načíst: %1</translation>
+    </message>
+    <message>
+        <source>Używany jest standardowy balans. Plik pozostał bez zmian. W laboratorium możesz przywrócić standardowy profil lub wczytać własny.</source>
+        <translation>Používá se standardní vyvážení. Soubor zůstal beze změn. V laboratoři obnovte standardní profil nebo načtěte vlastní.</translation>
+    </message>
 </context>
     <context>
         <name>QuickBridge</name>
@@ -22856,6 +22876,10 @@ Technický klíč: %4</translation>
     <message>
         <source>Zapisz nowy obszar</source>
         <translation>Uložit novou oblast práce</translation>
+    </message>
+    <message>
+        <source>Przywróć standardowy balans</source>
+        <translation>Obnovit standardní vyvážení</translation>
     </message>
 </context>
     <context>

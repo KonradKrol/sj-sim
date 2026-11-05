@@ -24,6 +24,7 @@ class BalanceLabController final:public QObject {
     Q_PROPERTY(QVariantList history READ history NOTIFY changed)
     Q_PROPERTY(QVariantMap diff READ diff NOTIFY changed)
     Q_PROPERTY(QString activeProfile READ activeProfile NOTIFY changed)
+    Q_PROPERTY(QString runtimeError READ runtimeError NOTIFY changed)
     Q_PROPERTY(bool workspaceRecoveryRequired READ workspaceRecoveryRequired NOTIFY changed)
     Q_PROPERTY(QString message READ message NOTIFY changed)
     Q_PROPERTY(bool busy READ busy NOTIFY progressChanged)
@@ -52,6 +53,7 @@ public:
     QVariantList history()const{return m_history;}
     QVariantMap diff()const;
     QString activeProfile()const;
+    QString runtimeError() const;
     bool workspaceRecoveryRequired() const { return m_workspaceProtected; }
     Q_INVOKABLE void recoverWorkspace();
     QString message()const{return m_message;}

@@ -16,6 +16,12 @@ ColumnLayout {
     property bool settingsOpen: false
     property bool profilesOpen: false
     RowLayout {
+        visible: lab.backend.runtimeError.length>0
+        Layout.fillWidth: true
+        Label { text: lab.backend.runtimeError; color: Theme.warning; Layout.fillWidth: true; wrapMode: Text.WordWrap; font.pointSize: Theme.body }
+        SButton { text: qsTr("Przywróć standardowy balans"); onClicked: lab.backend.standardProfile() }
+    }
+    RowLayout {
         visible: lab.backend.workspaceRecoveryRequired
         Layout.fillWidth: true
         Label { text: qsTr("Nie udało się odczytać obszaru pracy. Automatyczny zapis jest wstrzymany."); color: Theme.warning; Layout.fillWidth: true; wrapMode: Text.WordWrap; font.pointSize: Theme.body }

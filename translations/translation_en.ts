@@ -15089,6 +15089,26 @@ Check that you selected the correct file.</translation>
 <message><source>Wszystkie losowane warunki: siła wiatru</source><translation>All generated conditions: wind strength</translation></message>
 <message><source>Wszystkie losowane warunki: zmienność</source><translation>All generated conditions: variation</translation></message>
 <message><source>Wszystkie losowane warunki: siła podmuchów</source><translation>All generated conditions: gust strength</translation></message>
+    <message>
+        <source>Aktywny profil balansu jest uszkodzony: %1</source>
+        <translation>The active balance profile is damaged: %1</translation>
+    </message>
+    <message>
+        <source>Błąd aktywnego profilu</source>
+        <translation>Active profile error</translation>
+    </message>
+    <message>
+        <source>Błąd profilu balansu</source>
+        <translation>Balance profile error</translation>
+    </message>
+    <message>
+        <source>Nie można odczytać aktywnego profilu balansu: %1</source>
+        <translation>Cannot read the active balance profile: %1</translation>
+    </message>
+    <message>
+        <source>Używany jest standardowy balans. Plik pozostał bez zmian. W laboratorium możesz przywrócić standardowy profil lub wczytać własny.</source>
+        <translation>Standard balance is being used. The file is unchanged. Restore the standard profile or load your own in the laboratory.</translation>
+    </message>
 </context>
     <context>
         <name>QuickBridge</name>
@@ -22855,6 +22875,10 @@ Technical key: %4</translation>
     <message>
         <source>Zapisz nowy obszar</source>
         <translation>Save new workspace</translation>
+    </message>
+    <message>
+        <source>Przywróć standardowy balans</source>
+        <translation>Restore standard balance</translation>
     </message>
 </context>
     <context>
