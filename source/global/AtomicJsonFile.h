@@ -7,10 +7,14 @@
 #include <QRegularExpression>
 
 namespace AtomicJsonFile {
-inline QString namedPath(const QString &directory,const QString &name) {
-    if(name.trimmed().isEmpty() || name=="." || name==".." || name.contains(QRegularExpression("[\\\\/:*?\"<>|\\x00-\\x1f]")))return {};
+inline QString namedPath(const QString &directory,const QString &name,bool notify=false) {
+    const auto reject=[&] {
+        if(notify)QMessageBox::warning(nullptr,QObject::tr("Nieprawidłowa nazwa presetu"),QObject::tr("Nazwa presetu zawiera niedozwolone znaki lub wskazuje skrót do innego pliku. Wybierz inną nazwę."));
+        return QString();
+    };
+    if(name.trimmed().isEmpty() || name=="." || name==".." || name.contains(QRegularExpression("[\\\\/:*?\"<>|\\x00-\\x1f]")))return reject();
     const QFileInfo target(QDir(directory).absoluteFilePath(name+".json"));
-    return target.isSymLink()?QString():target.absoluteFilePath();
+    return target.isSymLink()?reject():target.absoluteFilePath();
 }
 
 inline bool write(const QString &path,const QJsonDocument &document,bool notify=true) {

@@ -15109,6 +15109,14 @@ Check that you selected the correct file.</translation>
         <source>Używany jest standardowy balans. Plik pozostał bez zmian. W laboratorium możesz przywrócić standardowy profil lub wczytać własny.</source>
         <translation>Standard balance is being used. The file is unchanged. Restore the standard profile or load your own in the laboratory.</translation>
     </message>
+    <message>
+        <source>Nazwa presetu zawiera niedozwolone znaki lub wskazuje skrót do innego pliku. Wybierz inną nazwę.</source>
+        <translation>The preset name contains invalid characters or points to another file through a shortcut. Choose another name.</translation>
+    </message>
+    <message>
+        <source>Nieprawidłowa nazwa presetu</source>
+        <translation>Invalid preset name</translation>
+    </message>
 </context>
     <context>
         <name>QuickBridge</name>

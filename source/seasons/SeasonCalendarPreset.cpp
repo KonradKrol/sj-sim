@@ -236,7 +236,7 @@ bool SeasonCalendarPreset::saveToFile(QString dir)
     QJsonObject mainObject;
     mainObject.insert("calendar-preset", SeasonCalendarPreset::getJsonObject(*this));
     document.setObject(mainObject);
-    const auto path=AtomicJsonFile::namedPath(dir,getName());
+    const auto path=AtomicJsonFile::namedPath(dir,getName(),true);
     if(path.isEmpty())return false;
     return AtomicJsonFile::write(path,document);
 }

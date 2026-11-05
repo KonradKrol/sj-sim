@@ -15110,6 +15110,14 @@ Ověřte, že jste vybrali správný soubor.</translation>
         <source>Używany jest standardowy balans. Plik pozostał bez zmian. W laboratorium możesz przywrócić standardowy profil lub wczytać własny.</source>
         <translation>Používá se standardní vyvážení. Soubor zůstal beze změn. V laboratoři obnovte standardní profil nebo načtěte vlastní.</translation>
     </message>
+    <message>
+        <source>Nazwa presetu zawiera niedozwolone znaki lub wskazuje skrót do innego pliku. Wybierz inną nazwę.</source>
+        <translation>Název předvolby obsahuje nepovolené znaky nebo odkazuje na jiný soubor. Zvolte jiný název.</translation>
+    </message>
+    <message>
+        <source>Nieprawidłowa nazwa presetu</source>
+        <translation>Neplatný název předvolby</translation>
+    </message>
 </context>
     <context>
         <name>QuickBridge</name>

@@ -87,3 +87,9 @@ w labie z przywróceniem standardu. Nie zmienia pliku przy odczycie.
 Cache odświeża się po zmianie metadanych pliku. Test złego aktywnego profilu,
 zachowania jego bajtów i jawnego resetu PASS
 (--balance-lab-core-only, /tmp/sj-active-balance-test.log).
+
+Punkt 1 raportu domknięty: trzy typy presetów odrzucają niebezpieczne nazwy
+z czytelnym komunikatem. Trwała regresja sprawdza slash/backslash, ścieżkę
+absolutną, pustą nazwę, znaki niedozwolone, poprawną polską nazwę i symlink.
+PASS --production-persistence-only (/tmp/sj-preset-security-test.log).
+Stan raportu: 1–7 naprawione i testowane, 8–10 jeszcze do realizacji.

@@ -32,6 +32,12 @@ static void productionPersistenceRegressions() {
     const QJsonDocument original(QJsonObject{{"value",1}}),replacement(QJsonObject{{"value",2}});
     check(AtomicJsonFile::write("atomic.json",original,false) && AtomicJsonFile::write("atomic.json",replacement,false),"atomic JSON can create and replace a document");
     {QFile stored("atomic.json");check(stored.open(QIODevice::ReadOnly) && QJsonDocument::fromJson(stored.readAll()).object().value("value").toInt()==2,"committed JSON contains the complete replacement");}
+    for(const auto &name:QStringList{"../outside","..\\outside","/tmp/outside","",":bad","a/b","a\\b"})
+        check(AtomicJsonFile::namedPath(disk.path(),name).isEmpty(),"preset names cannot escape their destination directory");
+    check(AtomicJsonFile::namedPath(disk.path(),QString::fromUtf8("Puchar Świata"))==disk.filePath(QString::fromUtf8("Puchar Świata.json")),"safe localized preset names are preserved");
+    {QFile victim(disk.filePath("victim.json"));check(victim.open(QIODevice::WriteOnly),"create symlink target fixture");victim.write("preserved");}
+    if(QFile::link(disk.filePath("victim.json"),disk.filePath("alias.json")))
+        check(AtomicJsonFile::namedPath(disk.path(),"alias").isEmpty(),"preset writes cannot replace a symlink target");
     QDir().mkdir("blocked.json");check(!AtomicJsonFile::write("blocked.json",original,false) && QFileInfo("blocked.json").isDir(),"atomic write failure is reported without replacing the destination");
     QDir().mkpath("userData/GlobalDatabase");dismiss.start(10);
     auto *database=GlobalDatabase::get();check(!database->writeToJson(),"save-all reports a protected pack catalog failure");dismiss.stop();
