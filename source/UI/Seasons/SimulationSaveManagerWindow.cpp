@@ -530,7 +530,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     autosaveTimer->setSingleShot(true);
     autosaveTimer->setInterval(15000);
     connect(autosaveTimer,&QTimer::timeout,this,[this]{
-        if(simulationSave->getAutosaveEnabled())simulationSave->saveToFile("simulationSaves/");
+        if(simulationSave->getAutosaveEnabled() && hasUnsavedSeasonChanges())saveSeasonChanges();
     });
     connect(calendarEditor,&CalendarEditorWidget::changed,this,&SimulationSaveManagerWindow::markSeasonChanged);
     connect(athleteDraft,&SimulationProfileDraft::changed,this,[this]{if(!loadingProfileDraft)markSeasonChanged();});
@@ -587,6 +587,7 @@ void SimulationSaveManagerWindow::setAutosaveEnabled(bool enabled)
 
 void SimulationSaveManagerWindow::markSeasonChanged()
 {
+    ++seasonRevision;
     if(autosaveTimer && simulationSave->getAutosaveEnabled())autosaveTimer->start();
 }
 
@@ -791,9 +792,9 @@ void SimulationSaveManagerWindow::setCalendarsListView(DatabaseItemsListView *ne
 
 SimulationSaveManagerWindow::~SimulationSaveManagerWindow()
 {
-    if(autosaveTimer && autosaveTimer->isActive() && simulationSave->getAutosaveEnabled()){
+    if(autosaveTimer && hasUnsavedSeasonChanges() && simulationSave->getAutosaveEnabled()){
         autosaveTimer->stop();
-        simulationSave->saveToFile("simulationSaves/");
+        saveSeasonChanges();
     }
     delete ui;
 }
@@ -1029,7 +1030,7 @@ void SimulationSaveManagerWindow::configNextSeason()
         simulationSave->setActualSeason(&simulationSave->getSeasonsReference().last());
         simulationSave->getActualSeason()->setActualCalendar(nullptr);
         simulationSave->updateNextCompetitionIndex();
-        if(simulationSave->getAutosaveEnabled())simulationSave->saveToFile("simulationSaves/");
+        if(simulationSave->getAutosaveEnabled()){markSeasonChanged();saveSeasonChanges();}
 
         updateCompetitionConfigButton();
         ui->label_seasonNumber->setText(QString::number(simulationSave->getActualSeason()->getSeasonNumber()));
@@ -1158,9 +1159,9 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
             QMessageBox::warning(this,tr("Sprawdź kwalifikacje"),tr("Kwalifikacje i konkurs główny muszą mieć ten sam rodzaj oraz zgodną liczbę zawodników w drużynie."));focusCalendarTab(false,true);return;
         }
         // Do not serialize a partially running competition from an idle timer.
-        if(autosaveTimer && autosaveTimer->isActive() && simulationSave->getAutosaveEnabled()){
+        if(autosaveTimer && hasUnsavedSeasonChanges() && simulationSave->getAutosaveEnabled()){
             autosaveTimer->stop();
-            simulationSave->saveToFile("simulationSaves/");
+            if(!saveSeasonChanges())return;
         }
         auto configWindow=std::make_unique<CompetitionConfigWindow>(CompetitionConfigWindow::SeasonCompetition,this,simulationSave);
         configWindow->setModal(true);
@@ -1299,7 +1300,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
                 updateArchive();
                 if(simulationSave->getAutosaveEnabled()){
                     if(autosaveTimer)autosaveTimer->stop();
-                    simulationSave->saveToFile("simulationSaves/");
+                    markSeasonChanged();saveSeasonChanges();
                 }
 
                 competition->saveToCsvFile("results/season-competitions/csv/", simulationSave->getName() + QString(" (%1)" ).arg(simulationSave->getActualSeason()->getActualCalendar()->getName()) + QString::number(simulationSave->getActualSeason()->getSeasonNumber()) + "-" + QString::number(simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference().indexOf(competition)) + " " + competition->getHill()->getHillText() + " (" + competition->getShortSerieTypeText() + ")" + ".csv");
@@ -1323,7 +1324,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
 void SimulationSaveManagerWindow::on_pushButton_saveToFile_clicked()
 {
     if(autosaveTimer)autosaveTimer->stop();
-    if(simulationSave->saveToFile("simulationSaves/"))
+    if(saveSeasonChanges())
         QMessageBox::information(this, tr("Zapis do pliku"), tr("Pomyślnie zapisano aktualny zapis symulacji do pliku"), QMessageBox::Ok);
     else markSeasonChanged();
 }
@@ -1392,7 +1393,7 @@ void SimulationSaveManagerWindow::on_pushButton_repairDatabase_clicked()
     simulationSave->repairDatabase();
     dialog.setValue(dialog.value() + 1);
     QCoreApplication::processEvents();
-    const bool saved = simulationSave->saveToFile("simulationSaves/");
+    const bool saved = saveSeasonChanges();
     dialog.setValue(dialog.value() + 1);
     QCoreApplication::processEvents();
 
@@ -1743,6 +1744,7 @@ void SimulationSaveManagerWindow::reject()
         question.setDefaultButton(cancel); question.exec();
         if (question.clickedButton() != discard) return;
     }
+    if(simulationSave->getAutosaveEnabled() && hasUnsavedSeasonChanges() && !saveSeasonChanges())return;
     QDialog::reject();
 }
 
@@ -1752,4 +1754,16 @@ void SimulationSaveManagerWindow::setRosterBoardOpen(bool open)
     boardIsOpen = open;
     emit rosterBoardOpenChanged();
     if (open) openRosterWorkspace();
+}
+
+bool SimulationSaveManagerWindow::saveSeasonChanges()
+{
+    const auto revision=seasonRevision;
+    if(!simulationSave->saveToFile("simulationSaves/")){
+        if(autosaveTimer && simulationSave->getAutosaveEnabled())autosaveTimer->start();
+        return false;
+    }
+    savedSeasonRevision=revision;
+    if(autosaveTimer){autosaveTimer->stop();if(hasUnsavedSeasonChanges() && simulationSave->getAutosaveEnabled())autosaveTimer->start();}
+    return true;
 }

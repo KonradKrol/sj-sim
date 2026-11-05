@@ -71,6 +71,14 @@ static void productionPersistenceRegressions() {
         check(!JsonGraphValidation::validateSave(cross,error),"qualification sources must belong to the event calendar");
     }
     std::unique_ptr<SimulationSave> loaded(SimulationSave::getFromJson(valid,nullptr));check(bool(loaded),"valid save still deserializes");
+    {
+        SimulationSaveManagerWindow manager(&source);
+        source.setAutosaveEnabled(true);manager.markSeasonChanged();
+        auto *timer=manager.findChild<QTimer *>("seasonAutosaveTimer");check(timer,"season autosave timer exists");timer->stop();
+        const auto originalId=hill->getID();hill->setID(jumper->getID());dismiss.start(10);
+        check(!manager.saveSeasonChanges() && manager.hasUnsavedSeasonChanges() && timer->isActive(),"failed autosave retains dirty revision and schedules another attempt");
+        hill->setID(originalId);source.setAutosaveEnabled(false);timer->stop();dismiss.stop();
+    }
     auto missing=valid;missing["actual-season-id"]=QString::fromStdString(Uuid::v4().str());
     check(!SimulationSave::getFromJson(missing,nullptr),"missing active season cannot silently become an empty save");
     missing=valid;missing["jumpers-lists"]=QJsonArray{QJsonObject{{"jumpers-ids",QJsonArray{QString::fromStdString(Uuid::v4().str())}}}};

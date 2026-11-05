@@ -71,3 +71,11 @@ oryginału; test jawnego odzyskania sprawdza niezależną kopię. Core laborator
 PASS (/tmp/sj-lab-recovery-test.log). EN/CS uzupełnione.
 Punkt 7 w trakcie: niezależne rewizje sezonu i ponawianie zapisu po błędzie;
 sprawdzić nową regresję przed commitem.
+
+Punkt 7 raportu naprawiony: sezon ma rewizję zmian niezależną od timera;
+nieudany zapis zachowuje dirty i planuje ponowną próbę. Przed rozpoczęciem
+konkursu i zamknięciem sezonu błąd zapisu pozostawia sezon otwarty.
+Zapis ręczny i zapis po konkursie korzystają ze wspólnej ścieżki.
+Regresja wymuszonego błędu grafu + nieaktywny timer: dirty zachowany,
+timer ponowiony. PASS --production-persistence-only
+(/tmp/sj-autosave-revision-test.log).

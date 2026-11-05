@@ -52,6 +52,8 @@ public:
     bool autosaveEnabled() const;
     Q_INVOKABLE void setAutosaveEnabled(bool enabled);
     void markSeasonChanged();
+    bool hasUnsavedSeasonChanges() const { return seasonRevision != savedSeasonRevision; }
+    bool saveSeasonChanges();
     QVariantList rosterChoices() const;
     QVariantList rosterEntries() const;
     bool rosterBoardOpen() const { return boardIsOpen; }
@@ -119,6 +121,7 @@ private:
 
     SimulationSave * simulationSave;
     QTimer *autosaveTimer=nullptr;
+    quint64 seasonRevision=0, savedSeasonRevision=0;
     bool loadingProfileDraft=false;
     SeasonCalendar *editingCalendar=nullptr;
 
