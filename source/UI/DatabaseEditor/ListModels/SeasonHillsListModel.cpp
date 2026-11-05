@@ -22,12 +22,12 @@ int SeasonHillsListModel::rowCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
 
-    return seasonHills->count();
+    return seasonHills ? seasonHills->count() : 0;
 }
 
 QVariant SeasonHillsListModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!seasonHills || !index.isValid() || index.row()<0 || index.row()>=seasonHills->size() || !seasonHills->at(index.row()))
         return QVariant();
 
     if(role == Qt::DisplayRole){
@@ -50,18 +50,17 @@ QVariant SeasonHillsListModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-bool SeasonHillsListModel::insertRows(int row, int count, const QModelIndex &parent)
+bool SeasonHillsListModel::insertRows(int, int, const QModelIndex &)
 {
-    beginInsertRows(parent, row, row + count - 1);
-    // FIXME: Implement me!
-    endInsertRows();
-    return true;
+    // Insertion requires an owned season object; use insertItem().
+    return false;
 }
 
 bool SeasonHillsListModel::removeRows(int row, int count, const QModelIndex &parent)
 {
+    if (!seasonHills || parent.isValid() || row<0 || count<=0 || row>seasonHills->size() || count>seasonHills->size()-row) return false;
     beginRemoveRows(parent, row, row + count - 1);
-    // FIXME: Implement me!
+    seasonHills->remove(row,count);
     endRemoveRows();
     return true;
 }
@@ -73,12 +72,14 @@ QVector<Hill *> *SeasonHillsListModel::getSeasonHills() const
 
 void SeasonHillsListModel::setSeasonHills(QVector<Hill *> *newSeasonHills)
 {
+    beginResetModel();
     seasonHills = newSeasonHills;
+    endResetModel();
 }
 
 bool SeasonHillsListModel::insertItem(int row, Hill *value)
 {
-    if(!value || row<0 || row>seasonHills->size())return false;
+    if(!seasonHills || !value || row<0 || row>seasonHills->size())return false;
     beginInsertRows(QModelIndex(),row,row);
     seasonHills->insert(row,value);
     endInsertRows();

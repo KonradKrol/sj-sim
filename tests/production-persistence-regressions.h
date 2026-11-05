@@ -3,8 +3,21 @@
 #include "../source/global/AtomicJsonFile.h"
 #include "../source/global/JsonImportError.h"
 #include <QLockFile>
+#include "../source/UI/DatabaseEditor/ListModels/SeasonJumpersListModel.h"
+#include "../source/UI/DatabaseEditor/ListModels/SeasonHillsListModel.h"
 
 static void productionPersistenceRegressions() {
+    {
+        Jumper a("Model","Athlete","POL"),b("Other","Athlete","NOR");Hill hill;
+        QVector<Jumper *> actors{&a,&b};QVector<Hill *> hills{&hill};
+        SeasonJumpersListModel actorModel(&actors);SeasonHillsListModel hillModel(&hills);
+        QAbstractItemModelTester actorContract(&actorModel,QAbstractItemModelTester::FailureReportingMode::Fatal),hillContract(&hillModel,QAbstractItemModelTester::FailureReportingMode::Fatal);
+        check(!actorModel.insertRows(0,1) && !hillModel.insertRows(0,1),"season models require complete objects for insertion");
+        check(actorModel.removeRows(0,2) && actors.isEmpty() && hillModel.removeRows(0,1) && hills.isEmpty(),"season model removals update containers before publishing row removal");
+        check(!actorModel.removeRows(0,1) && !hillModel.removeRows(-1,1),"invalid season row removals are rejected");
+        check(actorModel.insertItem(0,&a) && hillModel.insertItem(0,&hill),"season models publish complete inserted objects");
+        check(!actorModel.data(actorModel.index(5)).isValid(),"out-of-range data requests are safe");
+    }
     auto *settings=GlobalAppSettings::get();
     check(settings->getLiveCompetition() && settings->getLiveCompetitionSpeedMulti()==1
         && settings->getShowCalendarEditorHelp() && settings->getShowSeasonJumpersAndHillsHelp(),"application settings have deterministic safe defaults before loading");

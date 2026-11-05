@@ -23,12 +23,12 @@ int SeasonJumpersListModel::rowCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
 
-    return seasonJumpers->count();
+    return seasonJumpers ? seasonJumpers->count() : 0;
 }
 
 QVariant SeasonJumpersListModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!seasonJumpers || !index.isValid() || index.row()<0 || index.row()>=seasonJumpers->size() || !seasonJumpers->at(index.row()))
         return QVariant();
 
 
@@ -56,18 +56,17 @@ QVariant SeasonJumpersListModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-bool SeasonJumpersListModel::insertRows(int row, int count, const QModelIndex &parent)
+bool SeasonJumpersListModel::insertRows(int, int, const QModelIndex &)
 {
-    beginInsertRows(parent, row, row + count - 1);
-    // FIXME: Implement me!
-    endInsertRows();
-    return true;
+    // Insertion requires an owned season object; use insertItem().
+    return false;
 }
 
 bool SeasonJumpersListModel::removeRows(int row, int count, const QModelIndex &parent)
 {
+    if (!seasonJumpers || parent.isValid() || row<0 || count<=0 || row>seasonJumpers->size() || count>seasonJumpers->size()-row) return false;
     beginRemoveRows(parent, row, row + count - 1);
-    // FIXME: Implement me!
+    seasonJumpers->remove(row,count);
     endRemoveRows();
     return true;
 }
@@ -89,12 +88,14 @@ QVector<Jumper *> *SeasonJumpersListModel::getSeasonJumpers() const
 
 void SeasonJumpersListModel::setSeasonJumpers(QVector<Jumper *> *newSeasonJumpers)
 {
+    beginResetModel();
     seasonJumpers = newSeasonJumpers;
+    endResetModel();
 }
 
 bool SeasonJumpersListModel::insertItem(int row, Jumper *value)
 {
-    if(!value || row<0 || row>seasonJumpers->size())return false;
+    if(!seasonJumpers || !value || row<0 || row>seasonJumpers->size())return false;
     beginInsertRows(QModelIndex(),row,row);
     seasonJumpers->insert(row,value);
     endInsertRows();

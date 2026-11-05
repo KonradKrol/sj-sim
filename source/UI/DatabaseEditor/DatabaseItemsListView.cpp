@@ -426,9 +426,8 @@ void DatabaseItemsListView::onRemoveActionTriggered()
                 while(ui->listView->selectionModel()->selectedRows().size() > 0){
                     int rowToRemove = ui->listView->selectionModel()->selectedRows().first().row();
                     jumpersListModel->removeRows(rowToRemove, 1);
-                    jumpersListModel->getSeasonJumpers()->remove(rowToRemove, 1);
                 }
-                emit jumpersListModel->dataChanged(jumpersListModel->index(firstRow), jumpersListModel->index(jumpersListModel->rowCount() - 1));
+                if(firstRow<jumpersListModel->rowCount())emit jumpersListModel->dataChanged(jumpersListModel->index(firstRow), jumpersListModel->index(jumpersListModel->rowCount() - 1));
                 break;
             }
             case SeasonHillsItems:{
@@ -436,9 +435,8 @@ void DatabaseItemsListView::onRemoveActionTriggered()
                 while(ui->listView->selectionModel()->selectedRows().size() > 0){
                     int rowToRemove = ui->listView->selectionModel()->selectedRows().first().row();
                     hillsListModel->removeRows(rowToRemove, 1);
-                    hillsListModel->getSeasonHills()->remove(rowToRemove, 1);
                 }
-                emit hillsListModel->dataChanged(hillsListModel->index(firstRow), hillsListModel->index(hillsListModel->rowCount() - 1));
+                if(firstRow<hillsListModel->rowCount())emit hillsListModel->dataChanged(hillsListModel->index(firstRow), hillsListModel->index(hillsListModel->rowCount() - 1));
                 break;
             }
             case JumperItems:{

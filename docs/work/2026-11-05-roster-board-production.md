@@ -49,3 +49,10 @@ kalendarza, grup KO i wyników są walidowane przed deserializacją. Nie-array,
 brak pola i niewłaściwe elementy są odrzucane; referencje muszą być tekstem.
 Regresje skalarnych/null/brakujących kolekcji i poprawnego roundtrip PASS
 (--production-persistence-only, /tmp/sj-production-validation.log).
+
+Punkt 4 raportu naprawiony: SeasonJumpersListModel i SeasonHillsListModel
+mutują kontener między begin/endRemoveRows, odrzucają puste insertRows
+(wymagane insertItem), resetują model przy podmianie kontenera i bronią
+odczytu poza zakresem. Usunięto podwójne kasowanie z DatabaseItemsListView.
+Test QAbstractItemModelTester obu modeli + insert/remove/invalid PASS
+(--production-persistence-only, /tmp/sj-production-models.log).
