@@ -57,6 +57,19 @@ static void productionPersistenceRegressions() {
         calendarObject[key]=123;calendars[0]=calendarObject;entry["calendars"]=calendars;seasons[0]=entry;malformed["seasons"]=seasons;
         check(!JsonGraphValidation::validateSave(malformed,error),"malformed calendar collections are rejected before allocation");
     }
+    {
+        auto cross=valid;auto seasons=cross["seasons"].toArray();auto firstSeason=seasons[0].toObject();auto calendars=firstSeason["calendars"].toArray();auto firstCalendar=calendars[0].toObject();
+        const auto calendarId=QString::fromStdString(Uuid::v4().str());
+        QJsonObject otherCalendar{{"id",calendarId},{"competitions",QJsonArray()},{"classifications",QJsonArray()}};
+        QJsonObject otherSeason{{"id",QString::fromStdString(Uuid::v4().str())},{"actual-calendar-id",calendarId},{"calendars",QJsonArray{otherCalendar}}};
+        firstSeason["actual-calendar-id"]=calendarId;seasons[0]=firstSeason;seasons.append(otherSeason);cross["seasons"]=seasons;
+        check(!JsonGraphValidation::validateSave(cross,error),"a season cannot use another season's calendar");
+        firstSeason["actual-calendar-id"]=firstCalendar["id"];
+        auto events=firstCalendar["competitions"].toArray();auto dependent=events[0].toObject();dependent["advancement-competition-id"]=events[1].toObject()["id"];
+        otherCalendar["competitions"]=QJsonArray{events[1]};firstCalendar["competitions"]=QJsonArray{dependent};
+        firstSeason["calendars"]=QJsonArray{firstCalendar};otherSeason["calendars"]=QJsonArray{otherCalendar};cross["seasons"]=QJsonArray{firstSeason,otherSeason};
+        check(!JsonGraphValidation::validateSave(cross,error),"qualification sources must belong to the event calendar");
+    }
     std::unique_ptr<SimulationSave> loaded(SimulationSave::getFromJson(valid,nullptr));check(bool(loaded),"valid save still deserializes");
     auto missing=valid;missing["actual-season-id"]=QString::fromStdString(Uuid::v4().str());
     check(!SimulationSave::getFromJson(missing,nullptr),"missing active season cannot silently become an empty save");

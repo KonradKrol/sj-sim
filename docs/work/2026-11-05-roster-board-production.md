@@ -56,3 +56,9 @@ mutują kontener między begin/endRemoveRows, odrzucają puste insertRows
 odczytu poza zakresem. Usunięto podwójne kasowanie z DatabaseItemsListView.
 Test QAbstractItemModelTester obu modeli + insert/remove/invalid PASS
 (--production-persistence-only, /tmp/sj-production-models.log).
+
+Punkt 3 raportu naprawiony: aktywny kalendarz musi należeć do własnego
+sezonu. Źródła awansu, serie próbne, treningi i przypisania klasyfikacji
+muszą należeć do kalendarza wydarzenia. Kontrola przed utworzeniem grafu.
+Regresje kalendarza z obcego sezonu i źródła awansu z obcego kalendarza
+PASS (--production-persistence-only, /tmp/sj-production-ownership.log).

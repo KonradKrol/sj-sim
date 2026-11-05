@@ -70,6 +70,23 @@ public:
         }
         return true;
     }
+    bool localReferences(const QJsonValue &value,const QSet<QString> &events,const QSet<QString> &classifications) {
+        if(value.isArray()){for(const auto &entry:value.toArray())if(!localReferences(entry,events,classifications))return false;return true;}
+        if(!value.isObject())return true;
+        const auto object=value.toObject();
+        const QSet<QString> eventFields{"trial-round-id","advancement-competition-id","pending-advancement-competition-id"};
+        const QSet<QString> classificationFields{"classification-id","advancement-classification-id"};
+        for(auto it=object.begin();it!=object.end();++it){
+            if(eventFields.contains(it.key()) || classificationFields.contains(it.key())) {
+                const auto id=it.value().toString();
+                if(!id.isEmpty() && id!="-1" && !(eventFields.contains(it.key())?events:classifications).contains(key(id))){error="Reference belongs to another calendar: "+it.key();return false;}
+            }
+            if(it.key()=="training-ids" || it.key()=="classifications-ids")for(const auto &entry:it.value().toArray())
+                if(!(it.key()=="training-ids"?events:classifications).contains(key(entry.toString()))){error="List reference belongs to another calendar: "+it.key();return false;}
+            if(!localReferences(it.value(),events,classifications))return false;
+        }
+        return true;
+    }
     bool references(const QJsonValue &value) {
         if(value.isArray()){for(const auto &item:value.toArray())if(!references(item))return false;return true;}
         if(!value.isObject())return true;
@@ -114,6 +131,19 @@ inline bool validateSave(const QJsonObject &object,QString &error) {
         for(const auto &calendar:season.value("calendars").toArray())if(ok)ok=registry.calendar(calendar.toObject());
     }
     if(ok)ok=registry.references(object);
+    if(ok)for(const auto &value:object.value("seasons").toArray()) {
+        const auto season=value.toObject();QSet<QString> calendars;
+        for(const auto &entry:season.value("calendars").toArray()) {
+            const auto calendar=entry.toObject();calendars.insert(registry.key(calendar.value("id").toString()));
+            QSet<QString> events,classifications;
+            for(const auto &event:calendar.value("competitions").toArray())events.insert(registry.key(event.toObject().value("id").toString()));
+            for(const auto &classification:calendar.value("classifications").toArray())classifications.insert(registry.key(classification.toObject().value("id").toString()));
+            if(!registry.localReferences(calendar,events,classifications)){ok=false;break;}
+        }
+        if(!ok)break;
+        const auto active=season.value("actual-calendar-id").toString();
+        if(!active.isEmpty() && active!="-1" && !calendars.contains(registry.key(active))){registry.error="Active calendar belongs to another season";ok=false;break;}
+    }
     error=registry.error;return ok;
 }
 }
