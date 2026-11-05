@@ -43,3 +43,9 @@ Nie deklarować jeszcze zakończenia 10 punktów raportu.
 Punkty 2 i 4 są rozpoczęte w drzewie roboczym; wymagają własnych testów
 oraz osobnych commitów. Pozostałe 3 i 5–10 nadal do wykonania.
 Pracować bez subagentów, poza main; osobne commity i push po każdym.
+
+2026-11-05: punkt 2 raportu naprawiony: wymagane kolekcje zapisu, sezonu,
+kalendarza, grup KO i wyników są walidowane przed deserializacją. Nie-array,
+brak pola i niewłaściwe elementy są odrzucane; referencje muszą być tekstem.
+Regresje skalarnych/null/brakujących kolekcji i poprawnego roundtrip PASS
+(--production-persistence-only, /tmp/sj-production-validation.log).

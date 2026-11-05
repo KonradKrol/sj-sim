@@ -33,6 +33,17 @@ static void productionPersistenceRegressions() {
     Season season;season.setCalendars({calendar});season.setActualCalendar(calendar);source.setSeasons({season});source.setActualSeason(&source.getSeasonsReference().first());
     const auto valid=SimulationSave::getJsonObject(source);QString error;
     check(JsonGraphValidation::validateSave(valid,error),"shared inline rules remain compatible with saved calendars");
+    for(const auto &key:QStringList{"jumpers","hills","rules","seasons"}) {
+        for(const auto &wrong:QList<QJsonValue>{QJsonValue(123),QJsonValue("broken"),QJsonValue(QJsonValue::Null),QJsonValue(QJsonValue::Undefined)}) {
+            auto malformed=valid;malformed.insert(key,wrong);
+            check(!JsonGraphValidation::validateSave(malformed,error),"malformed required save collections cannot silently become empty");
+        }
+    }
+    for(const auto &key:QStringList{"competitions","classifications"}) {
+        auto malformed=valid;auto seasons=malformed["seasons"].toArray();auto entry=seasons[0].toObject();auto calendars=entry["calendars"].toArray();auto calendarObject=calendars[0].toObject();
+        calendarObject[key]=123;calendars[0]=calendarObject;entry["calendars"]=calendars;seasons[0]=entry;malformed["seasons"]=seasons;
+        check(!JsonGraphValidation::validateSave(malformed,error),"malformed calendar collections are rejected before allocation");
+    }
     std::unique_ptr<SimulationSave> loaded(SimulationSave::getFromJson(valid,nullptr));check(bool(loaded),"valid save still deserializes");
     auto missing=valid;missing["actual-season-id"]=QString::fromStdString(Uuid::v4().str());
     check(!SimulationSave::getFromJson(missing,nullptr),"missing active season cannot silently become an empty save");

@@ -30,9 +30,16 @@ public:
         if(types.contains(identity) && (!shared || types.value(identity)!=kind)){error=QString("Duplicate object UUID: %1 (types %2, %3)").arg(id).arg(types.value(identity)).arg(kind);return false;}
         types.insert(identity,kind);return true;
     }
+    bool collection(const QJsonObject &object,const QString &name) {
+        if (object.value(name).isArray()) return true;
+        error="Invalid or missing array: "+name;
+        return false;
+    }
     bool array(const QJsonValue &value,Kind kind,bool shared=false) {
+        if (!value.isArray()) { error="Invalid or missing object collection"; return false; }
         QSet<QString> local;
         for(const auto &item:value.toArray()) {
+            if (!item.isObject()) { error="Collection entry must be an object"; return false; }
             const auto object=item.toObject();
             const auto id=object.value("id").toString();
             if(!add(object,kind,shared))return false;
@@ -43,6 +50,7 @@ public:
         return true;
     }
     bool calendar(const QJsonObject &object) {
+        if(!collection(object,"competitions") || !collection(object,"classifications")) return false;
         if(!add(object,Calendar) || !array(object.value("classifications"),Classification))return false;
         for(const auto &value:object.value("classifications").toArray())
             if(!array(value.toObject().value("results"),ClassificationResult))return false;
@@ -52,6 +60,7 @@ public:
             // several events, but cannot be reused for another object type.
             if(!add(competition,Competition) || !add(competition.value("rules").toObject(),Rules,true)
                 || !array(competition.value("teams"),Team,true))return false;
+            if(!collection(competition,"rounds-ko-groups")) return false;
             for(const auto &round:competition.value("rounds-ko-groups").toArray())
                 if(!array(round,Group))return false;
             const auto results=competition.value("results").toObject();
@@ -68,7 +77,8 @@ public:
         static const QHash<QString,Kind> lists={{"jumpers-ids",Jumper},{"start-list",Jumper},{"training-ids",Competition},{"classifications-ids",Classification}};
         const auto object=value.toObject();
         for(auto it=object.begin();it!=object.end();++it){
-            if(targets.contains(it.key()) && it.value().isString()) {
+            if(targets.contains(it.key())) {
+                if(!it.value().isString()){error="Reference must be a string: "+it.key();return false;}
                 const auto id=it.value().toString();
                 if(id!="-1" && !id.isEmpty()) {
                     if(!accepts(id)){error="Invalid reference UUID: "+id;return false;}
@@ -96,11 +106,11 @@ public:
 inline bool validateSave(const QJsonObject &object,QString &error) {
     Registry registry;
     registry.requireExisting=true;
-    bool ok=registry.add(object,Registry::Save) && registry.array(object.value("jumpers"),Registry::Jumper)
+    bool ok=registry.collection(object,"seasons") && registry.add(object,Registry::Save) && registry.array(object.value("jumpers"),Registry::Jumper)
         && registry.array(object.value("hills"),Registry::Hill) && registry.array(object.value("rules"),Registry::Rules);
     for(const auto &value:object.value("seasons").toArray()) {
         if(!ok)break;
-        const auto season=value.toObject();ok=registry.add(season,Registry::Season);
+        const auto season=value.toObject();ok=registry.collection(season,"calendars") && registry.add(season,Registry::Season);
         for(const auto &calendar:season.value("calendars").toArray())if(ok)ok=registry.calendar(calendar.toObject());
     }
     if(ok)ok=registry.references(object);
