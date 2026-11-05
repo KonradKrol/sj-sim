@@ -24,7 +24,7 @@
   "flight.geometryResistance": 1.1,
   "flight.geometryStartRealHs": 0.94,
   "flight.largeHillSpreadExponent": 1.5,
-  "flight.largeHillSpreadGain": 1.2,
+  "flight.largeHillSpreadGain": 0.84,
   "flight.largeHillSpreadPivot": 80,
   "flight.largeHillSpreadStartK": 140,
   "flight.lateWindSensitivity": 1.1,

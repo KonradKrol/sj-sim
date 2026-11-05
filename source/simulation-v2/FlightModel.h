@@ -17,7 +17,7 @@ struct FlightParameters {
     double referenceDistanceAtK=.95;
     double qualityMetresAtK120=1.1071428571428572;
     double largeHillSpreadStartK=140;
-    double largeHillSpreadGain=1.5;
+    double largeHillSpreadGain=0.84;
     double largeHillSpreadExponent=1.5;
     double largeHillSpreadPivot=80;
     int referenceGate=10;
