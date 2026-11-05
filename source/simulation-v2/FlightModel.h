@@ -40,7 +40,7 @@ struct FlightParameters {
     double specialistWindEffectPerTier=.04;
     double crosswindDrag=.002;
     double windVariabilityScale=3; // m/s: half activation of random spread
-    double windHeadSpread=.6;
+    double windHeadSpread=.65;
     double windTailSpread=.5;
     double windCrossSpread=.7;
     double windHeadSaturation=5; // m/s; zero disables saturation
