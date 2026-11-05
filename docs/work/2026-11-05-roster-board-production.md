@@ -3,7 +3,13 @@
 - Wspólny edytor list: wdrożony, przetestowany, na remote.
 - Dziesięć punktów raportu produkcyjnego: wdrożone osobnymi commitami.
   Szczegóły: [raport poprawek](../reviews/2026-11-05-production-fixes.md).
-- Dodatkowe uwagi kalendarza: sam „+”, wtórne akcje i stałe zakładki wdrożone.
+- Kalendarz: większy obrysowany „+”, planowanie w prawym inspektorze
+  z widoczną listą, domyślne zasady w menu ustawień, empty state inspektora.
+- Każda zmiana rodzaju dobiera domyślne zasady; nowe treningi i próbne
+  korzystają z własnych ustawień domyślnych.
+- Pojedyncza lista: klik wiersza/checkboxa bezpośrednio przełącza członkostwo,
+  bez „Dodaj zaznaczonych”; wysokość listy wypełnia panel.
+- Tekst pustego dnia jest rzeczowy: „Brak wydarzeń.”.
 - Zmiana domyślnych zasad kwalifikacji: odroczona bezpieczna aktualizacja,
   osłony pustej paczki/indeksu; wielokrotne wybieranie przechodzi test UI.
 - Końcowe testy produkcyjne, list, laboratorium i dat przechodzą.
@@ -203,3 +209,12 @@ PASS --dates-only (/tmp/sj-final-calendar-check.log), light/dark i małe okna.
 
 Usunięto dopisek „Dzień bez zawodów — czas na odpoczynek lub podróż.”
 z widoku kalendarza. Zastąpiono rzeczowym „Brak wydarzeń.”, EN/CS aktualne.
+
+Dolny pasek sezonu: jeden rząd, mniejsza flaga i padding, przycisk ograniczony
+rozmiarem i wyrównany do prawej. Wysokość liczona z rzeczywistej treści;
+wyeliminowano rezerwację dwóch rzędów przez GridLayout i nadmiar dołu.
+Loader nie rozciąga paska w pionie. Na badanym widoku 1440 szerokości pasek
+zmalał z 88,4 do około 45,6 px. Regresja wymaga wysokości nie większej niż
+przycisk +12 px. Końcowy --dates-only PASS, także backend i planowanie,
+bez ostrzeżeń układu (/tmp/sj-footer-final-test.log). Sprawdzone wyrównanie
+przycisku po prawej na screenshotcie. EN/CS i diff-check PASS.

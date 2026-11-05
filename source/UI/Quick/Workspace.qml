@@ -125,6 +125,7 @@ ColumnLayout {
         active: workspace.season && ui.root.values.value > 0 && !((workspace.calendarPage || (workspace.catalogPage && workspace.contentNode.values.kind === "seasonRosters")) && (workspace.width < 700 || workspace.height < 600))
         Layout.fillWidth: true
         Layout.preferredHeight: active && item ? item.implicitHeight : 0
+        Layout.maximumHeight: active && item ? item.implicitHeight : 0
         sourceComponent: Component { SeasonFooter {} }
     }
     ActionBar { visible: ui.actions.length > 0 && !workspace.jumpPage && !workspace.formPage && !workspace.simulationDraftPage && !workspace.weatherPage && !workspace.rosterPage && !workspace.koPage; Layout.fillWidth: true }
