@@ -26,6 +26,10 @@ void SimulationSaveInfoWidget::resetInputs()
 
 void SimulationSaveInfoWidget::fillInputs()
 {
+    if(simulationSave && !simulationSave->isLoaded()){
+        resetInputs();ui->label_name->setText(simulationSave->getName());
+        ui->label_actualCalendar->setText(tr("Szczegóły po otwarciu zapisu"));return;
+    }
     if(simulationSave == nullptr || simulationSave->getActualSeason() == nullptr)
     {
         resetInputs();

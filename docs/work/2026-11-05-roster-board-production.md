@@ -93,3 +93,21 @@ z czytelnym komunikatem. Trwała regresja sprawdza slash/backslash, ścieżkę
 absolutną, pustą nazwę, znaki niedozwolone, poprawną polską nazwę i symlink.
 PASS --production-persistence-only (/tmp/sj-preset-security-test.log).
 Stan raportu: 1–7 naprawione i testowane, 8–10 jeszcze do realizacji.
+
+Nowa uwaga właściciela (po bieżących poprawkach): edytor kalendarza —
+przycisk „+ KONKURS” ma mieć sam „+”, wciąż dobrze widoczny z dostępną nazwą.
+Zmniejszyć liczbę jednocześnie niebieskich głównych przycisków w całym
+edytorze (obecnie około 4); ustalić jeden wyraźny priorytet bez wizualnego szumu.
+Nowa uwaga właściciela, na koniec: przejścia do szybkiego planowania i
+ustawień domyślnych zasad mają nie udawać tabów działających inaczej;
+uprościć nawigację, usunąć zaskakujące przesuwanie układu. Zachować kierunek,
+ale zastosować klasyczny przewidywalny wzorzec.
+
+Punkt 9 raportu naprawiony: katalog zapisów indeksuje nazwy/ścieżki plików,
+nie deserializuje wszystkich sezonów ani nie blokuje na mapped/wait.
+Pełny graf powstaje po otwarciu konkretnego zapisu; nieudany odczyt zostawia
+wpis i plik. Niewczytane wpisy nie mogą zapisać pustego grafu; zapis zbiorczy
+je pomija. Szczegóły przed otwarciem jasno oznaczone. Odczyt ograniczony do
+256 MiB, także przy wzroście pliku podczas odczytu. Regresje indeksu,
+niezapisywalnego placeholdera, poprawnego otwarcia i zbyt dużego sparse file
+PASS --production-persistence-only (/tmp/sj-lazy-saves-test.log).

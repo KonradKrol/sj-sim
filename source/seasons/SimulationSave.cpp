@@ -336,6 +336,7 @@ QJsonObject SimulationSave::getJsonObject(SimulationSave &save)
 
 bool SimulationSave::saveToFile(QString dir, QString fileName)
 {
+    if(!isLoaded())return false;
     if(!hasSerializableGraph(*this))
     {
         QMessageBox::critical(nullptr, QObject::tr("Nie moĹĽna zapisaÄ‡ zapisu symulacji"),
@@ -409,11 +410,13 @@ bool SimulationSave::saveToFile(QString dir, QString fileName)
 SimulationSave *SimulationSave::loadFromFile(QString filePath)
 {
     QFile file(filePath);
-    if(!file.open(QFile::ReadOnly | QFile::Text))
+    if(!file.open(QFile::ReadOnly | QFile::Text) || file.size()>maximumFileBytes)
         return nullptr;
 
     QJsonParseError parseError;
-    const QJsonDocument document = QJsonDocument::fromJson(file.readAll(), &parseError);
+    const auto bytes=file.read(maximumFileBytes+1);
+    if(bytes.size()>maximumFileBytes || file.error()!=QFile::NoError)return nullptr;
+    const QJsonDocument document = QJsonDocument::fromJson(bytes, &parseError);
     file.close();
     if(parseError.error != QJsonParseError::NoError || !document.isObject())
         return nullptr;
@@ -705,4 +708,14 @@ QString SimulationSave::getName() const
 void SimulationSave::setName(const QString &newName)
 {
     name = newName;
+}
+
+SimulationSave *SimulationSave::loadIndexEntry(const QString &filePath)
+{
+    const QFileInfo info(filePath);
+    if(!info.isFile())return nullptr;
+    auto *entry=new SimulationSave;
+    entry->setName(info.completeBaseName());
+    entry->lazyFilePath=info.absoluteFilePath();
+    return entry;
 }

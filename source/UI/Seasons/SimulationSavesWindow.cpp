@@ -152,6 +152,14 @@ void SimulationSavesWindow::openSelectedSave(bool focusCalendar)
     const int row = selectedSaveRow();
     if(row >= 0){
         auto *save=GlobalDatabase::get()->getEditableGlobalSimulationSaves().at(row);
+        if(!save->isLoaded()){
+            QApplication::setOverrideCursor(Qt::WaitCursor);
+            std::unique_ptr<SimulationSave> loaded(SimulationSave::loadFromFile(save->unloadedFilePath()));
+            QApplication::restoreOverrideCursor();
+            if(!loaded){QMessageBox::critical(this,tr("Nie można otworzyć zapisu"),tr("Plik jest uszkodzony, niedostępny albo przekracza limit 256 MB. Oryginał pozostał bez zmian."));return;}
+            auto *old=save;save=loaded.release();GlobalDatabase::get()->getEditableGlobalSimulationSaves()[row]=save;delete old;
+            emit listModel->dataChanged(listModel->index(row),listModel->index(row));
+        }
         if(save->getEngineVersion()!=2) {
             QMessageBox::information(this,tr("Zapis starszej wersji"),tr("Ten zapis korzysta ze starszego modelu symulacji. Utwórz nową symulację, aby używać nowych zawodników i skoczni."),QMessageBox::Ok);return;
         }

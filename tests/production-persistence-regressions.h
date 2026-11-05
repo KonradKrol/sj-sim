@@ -85,6 +85,16 @@ static void productionPersistenceRegressions() {
         check(!manager.saveSeasonChanges() && manager.hasUnsavedSeasonChanges() && timer->isActive(),"failed autosave retains dirty revision and schedules another attempt");
         hill->setID(originalId);source.setAutosaveEnabled(false);timer->stop();dismiss.stop();
     }
+    {
+        const auto path=disk.filePath("indexed-season.json");
+        check(AtomicJsonFile::write(path,QJsonDocument(QJsonObject{{"simulation-save",valid}}),false),"create indexed save fixture");
+        std::unique_ptr<SimulationSave> entry(SimulationSave::loadIndexEntry(path));
+        check(entry && !entry->isLoaded() && entry->getName()=="indexed-season" && entry->getJumpers().isEmpty() && !entry->getActualSeason(),"save catalog entry does not deserialize the season graph");
+        check(!entry->saveToFile(disk.path(),"indexed-season"),"unloaded catalog entries cannot overwrite full saves");
+        std::unique_ptr<SimulationSave> opened(SimulationSave::loadFromFile(entry->unloadedFilePath()));check(opened && opened->isLoaded() && !opened->getJumpers().isEmpty(),"opening a selected catalog entry loads the real graph");
+        const auto huge=disk.filePath("oversized.json");{QFile file(huge);check(file.open(QIODevice::WriteOnly) && file.resize(SimulationSave::maximumFileBytes+1),"create sparse oversized save fixture");}
+        check(!SimulationSave::loadFromFile(huge),"oversized saves are rejected before reading their contents");QFile::remove(huge);
+    }
     auto missing=valid;missing["actual-season-id"]=QString::fromStdString(Uuid::v4().str());
     check(!SimulationSave::getFromJson(missing,nullptr),"missing active season cannot silently become an empty save");
     missing=valid;missing["jumpers-lists"]=QJsonArray{QJsonObject{{"jumpers-ids",QJsonArray{QString::fromStdString(Uuid::v4().str())}}}};

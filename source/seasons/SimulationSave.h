@@ -25,6 +25,10 @@ public:
     bool saveToFile(QString dir = "", QString fileName = "!default");
     static SimulationSave *loadFromFile(QString filePath);
     void updateNextCompetitionIndex();
+    static constexpr qint64 maximumFileBytes=256LL*1024*1024;
+    static SimulationSave *loadIndexEntry(const QString &filePath);
+    QString unloadedFilePath() const { return lazyFilePath; }
+    bool isLoaded() const { return lazyFilePath.isEmpty(); }
     void repairDatabase();
     void fixJumpersFormInstabilities();
     double * getJumperFormInstability(Jumper *j);
@@ -49,6 +53,7 @@ private:
     bool autoSquadsEnabled=true,autoGateEnabled=true;
     QString activeListId;
     QString name;
+    QString lazyFilePath;
     QVector<Season> seasons;
     Season * actualSeason;
     QVector<Jumper *> jumpers;

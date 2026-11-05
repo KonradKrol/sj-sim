@@ -17978,7 +17978,11 @@ in team standings</translation>
             <source>BRAK</source>
             <translation>NONE</translation>
         </message>
-    </context>
+        <message>
+        <source>Szczegóły po otwarciu zapisu</source>
+        <translation>Details available after opening</translation>
+    </message>
+</context>
     <context>
         <name>SimulationSaveManagerWindow</name>
         <message>
@@ -18567,7 +18571,15 @@ li.checked::marker { content: "\2612"; }
             <source>Ten zapis korzysta ze starszego modelu symulacji. Utwórz nową symulację, aby używać nowych zawodników i skoczni.</source>
             <translation>This save uses the older simulation model. Create a new simulation to use the new athletes and hills.</translation>
         </message>
-    </context>
+        <message>
+        <source>Nie można otworzyć zapisu</source>
+        <translation>Cannot open save</translation>
+    </message>
+    <message>
+        <source>Plik jest uszkodzony, niedostępny albo przekracza limit 256 MB. Oryginał pozostał bez zmian.</source>
+        <translation>The file is damaged, unavailable, or exceeds the 256 MB limit. The original is unchanged.</translation>
+    </message>
+</context>
     <context>
         <name>SingleCompetitionConfigWindow</name>
         <message>

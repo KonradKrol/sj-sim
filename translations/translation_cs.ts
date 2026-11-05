@@ -17979,7 +17979,11 @@ do pořadí družstev</translation>
             <source>BRAK</source>
             <translation>ŽÁDNÝ</translation>
         </message>
-    </context>
+        <message>
+        <source>Szczegóły po otwarciu zapisu</source>
+        <translation>Podrobnosti po otevření záznamu</translation>
+    </message>
+</context>
     <context>
         <name>SimulationSaveManagerWindow</name>
         <message>
@@ -18568,7 +18572,15 @@ li.checked::marker { content: "\2612"; }
             <source>Ten zapis korzysta ze starszego modelu symulacji. Utwórz nową symulację, aby używać nowych zawodników i skoczni.</source>
             <translation>Tato uložená hra používá starší model simulace. Pro nové závodníky a můstky vytvořte novou simulaci.</translation>
         </message>
-    </context>
+        <message>
+        <source>Nie można otworzyć zapisu</source>
+        <translation>Záznam nelze otevřít</translation>
+    </message>
+    <message>
+        <source>Plik jest uszkodzony, niedostępny albo przekracza limit 256 MB. Oryginał pozostał bez zmian.</source>
+        <translation>Soubor je poškozený, nedostupný nebo přesahuje limit 256 MB. Originál zůstal beze změn.</translation>
+    </message>
+</context>
     <context>
         <name>SingleCompetitionConfigWindow</name>
         <message>

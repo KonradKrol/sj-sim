@@ -439,32 +439,10 @@ bool GlobalDatabase::loadSimulationSaves(bool progressDialog)
     for(const QString &fileName : fileNames)
         filePaths.append(dir.absoluteFilePath(fileName));
 
-    QProgressDialog dialog;
-    dialog.setStyleSheet("QProgressDialog{background-color: white; color: black;}");
-    dialog.setMinimum(0);
-    dialog.setMaximum(fileNames.count() * 5);
-    dialog.setMinimumDuration(0);
-    dialog.setValue(0);
-    dialog.setWindowTitle(QObject::tr("Wczytywanie zapisów symulacji"));
-    //dialog.setLabelText(QString(QObject::tr("Postęp wczytywania zapisów symulacji: %1 z %2")).arg(QString::number(dialog.value())).arg(QString::number(dialog.maximum())));
-    dialog.setModal(true);
-    dialog.setWindowModality(Qt::WindowModal);
-
-    bool ok = true;
-
-    qDebug()<<fileNames<<" (names)";
-    QFuture<SimulationSave *> future = QtConcurrent::mapped(filePaths, SimulationSave::loadFromFile);
-
-    // Czekamy na zakończenie zadania i pobieramy wyniki do listy persons
-    future.waitForFinished();
-    const QVector<SimulationSave *> loadedSaves = future.results().toVector();
-    int failedSaves = 0;
-    for(SimulationSave *save : loadedSaves)
-    {
-        if(save != nullptr)
-            globalSimulationSaves.append(save);
-        else
-            ++failedSaves;
+    bool ok=true;int failedSaves=0;
+    for(const auto &path:filePaths){
+        if(auto *entry=SimulationSave::loadIndexEntry(path))globalSimulationSaves.append(entry);
+        else ++failedSaves;
     }
 
     SimulationSaveListOrder::restore(globalSimulationSaves);
@@ -674,7 +652,7 @@ bool GlobalDatabase::writeSimulationSaves()
     qDebug()<<"saves";
     for(auto & save : globalSimulationSaves)
     {
-        if(save->saveToFile("simulationSaves/") == false)
+        if(save->isLoaded() && save->saveToFile("simulationSaves/") == false)
             ok = false;
     }
     return ok;
