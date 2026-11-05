@@ -401,7 +401,7 @@ QJsonArray parameters() {
         for(int end=0;end<2;++end){auto d=definition(key+(end?".max":".min"),QObject::tr("Preset %1 · %2 · %3").arg(r.preset+1).arg(generatorLabels.value(field,field),end?QObject::tr("maksimum"):QObject::tr("minimum")),"generator",end?r.high:r.low,lo,hi,prob?.01:.05,unit,false);d["preset"]=r.preset;rows.append(d);}
     }
     for(const auto &entry:QVector<QPair<QString,QString>>{{"strengthScale",QObject::tr("Wszystkie losowane warunki: siła wiatru")},{"variationScale",QObject::tr("Wszystkie losowane warunki: zmienność")},{"gustScale",QObject::tr("Wszystkie losowane warunki: siła podmuchów")}}) {
-        auto d=definition("generator.global."+entry.first,entry.second,"generator",entry.first=="strengthScale"?.48:.45,0,3,.05,"1",false);d["preset"]=-2;rows.append(d);
+        auto d=definition("generator.global."+entry.first,entry.second,"generator",entry.first=="strengthScale"?.64:.6,0,3,.05,"1",false);d["preset"]=-2;rows.append(d);
     }
     for(const auto &entry:QVector<QPair<QString,QString>>{{"strengthScale",QObject::tr("Automatyczna pogoda: skala siły")},{"variationScale",QObject::tr("Automatyczna pogoda: skala wahań")},{"gustScale",QObject::tr("Automatyczna pogoda: skala podmuchów")},{"trendScale",QObject::tr("Automatyczna pogoda: skala tendencji")},{"timeScale",QObject::tr("Automatyczna pogoda: skala czasu")}}) {
         auto d=definition("generator.auto."+entry.first,entry.second,"generator",1,entry.first=="timeScale"?.1:0,3,.05,"1",false);d["preset"]=-1;rows.append(d);

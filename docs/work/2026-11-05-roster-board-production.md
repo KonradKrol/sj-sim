@@ -227,3 +227,13 @@ Nagłówek planowania jest mierzony po ułożeniu, bez pętli implicitHeight w Q
 Regresja sprawdza wyrównanie akcji i zakładek oraz cały przepływ planowania.
 Końcowy build i --dates-only PASS bez ostrzeżeń układu
 (/tmp/sj-planning-row-verified.log), również cały przepływ podglądu i zapisu dat.
+
+Na końcu, według nowej prośby: osłabienie presetów i automatycznych propozycji
+wiatru zmienione z 40% na 20% względem bazy sprzed c0e96b1.
+strengthScale 0,8 ×0,8 =0,64; variationScale/gustScale 0,75 ×0,8 =0,60.
+Zgodne JSON wbudowany, fallback generatorów i definicje laboratorium.
+Ręczne pole oraz częstość podmuchów nie są zmieniane. Regresja tych samych
+seedów potwierdza 80% siły/wahań/podmuchów starej bazy i 64% przestrzennych
+różnic (iloczyn dwóch skal). Test simulation-v2-weather PASS (10 tys.
+propozycji), build aplikacji PASS. Aktywny lokalny profil nie ma override'ów
+trzech globalnych skal. Szczegóły w docs/NEW_SIMULATION.md.

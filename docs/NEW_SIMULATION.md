@@ -379,12 +379,16 @@ oraz trudności lądowania w tym punkcie. Losowanie słabszego lądowania, szum,
 rodzaj lądowania, zaokrąglenie i limit ocen działają dalej.
 Aktywny własny profil może nadpisać wartości wbudowane.
 
-### Siła losowanych warunków — 4.11.2026
+### Siła losowanych warunków — korekta 5.11.2026
 
 Wspólne skale generatora presetów i automatycznych propozycji: siła
-0,8 → 0,48; zmienność i podmuchy 0,75 → 0,45. Średnia siła początkowa,
-wahania w czasie, amplituda tendencji i podmuchy są o 40% mniejsze przy
+0,8 → 0,64; zmienność i podmuchy 0,75 → 0,60. Średnia siła początkowa,
+wahania w czasie, amplituda tendencji i podmuchy są o 20% mniejsze przy
 tych samych losowaniach. Różnice między punktami referencyjnymi zmniejszają
-się mocniej (do 36% poprzednich), ponieważ działają na nie obie skale.
+się mocniej (do 64% poprzednich), ponieważ działają na nie obie skale.
 Częstość podmuchów i ręczne pole wiatru pozostają bez zmian. Aktywny własny
 profil może nadpisać standardowe skale.
+
+Korekta 05.11.2026: powyższe osłabienie 20% zastępuje wcześniejsze 40%.
+Dotyczy wartości domyślnych generatora; własne aktywne profile balansu nadal
+mają pierwszeństwo, a ręczny wiatr pozostaje bez zmian.
