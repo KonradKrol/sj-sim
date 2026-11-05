@@ -21155,7 +21155,19 @@ li.checked::marker { content: "\2612"; }
             <source>Zapisywanie wyników</source>
             <translation>Ukládání výsledků</translation>
         </message>
-    </context>
+        <message>
+        <source>Nie można odczytać obszaru pracy. Plik pozostaje bez zmian; automatyczny zapis jest wstrzymany.</source>
+        <translation>Oblast práce nelze načíst. Soubor zůstává beze změn; automatické ukládání je pozastaveno.</translation>
+    </message>
+    <message>
+        <source>Nie udało się zachować kopii uszkodzonego pliku. Zapis pozostaje wstrzymany.</source>
+        <translation>Kopii poškozeného souboru se nepodařilo zachovat. Ukládání zůstává pozastaveno.</translation>
+    </message>
+    <message>
+        <source>Nie udało się zapisać obszaru pracy laboratorium. Poprzedni plik pozostał bez zmian.</source>
+        <translation>Oblast práce laboratoře nelze uložit. Předchozí soubor zůstal beze změn.</translation>
+    </message>
+</context>
     <context>
         <name>BalanceLabControls</name>
         <message>
@@ -22833,6 +22845,18 @@ Technický klíč: %4</translation>
             <translation>Odhaduje se zbývající čas…</translation>
         </message>
     <message><source>Balans gry: %1 · różnice Twoich zmian: %2</source><translation>Herní vyvážení: %1 · rozdíly vašich změn: %2</translation></message>
+    <message>
+        <source>Najpierw zachowuje kopię uszkodzonego pliku, następnie zapisuje bieżące ustawienia.</source>
+        <translation>Zachová kopii poškozeného souboru a poté uloží aktuální nastavení.</translation>
+    </message>
+    <message>
+        <source>Nie udało się odczytać obszaru pracy. Automatyczny zapis jest wstrzymany.</source>
+        <translation>Oblast práce nelze načíst. Automatické ukládání je pozastaveno.</translation>
+    </message>
+    <message>
+        <source>Zapisz nowy obszar</source>
+        <translation>Uložit novou oblast práce</translation>
+    </message>
 </context>
     <context>
         <name>BalanceLabTargets</name>

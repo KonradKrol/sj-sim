@@ -51,7 +51,10 @@ BalanceLabController::BalanceLabController(QObject *parent):QObject(parent),m_so
         emit resultChanged();emit changed();emit progressChanged();if(!queuedReplay.isEmpty())replayContest(queuedReplay["competition"].toInt(),queuedReplay["variant"].toInt());else if(queued)launch(true);else if(m_pending)m_debounce.start(0);
     });
     const auto workspace=read(directory()+"/workspace.json");QString error;
-    if(workspace["schema"].toInt()==1 && Playground::validate(workspace["config"].toObject(),error) && workspace["config"].toObject()["variants"].toArray().size()==3){m_config=workspace["config"].toObject();m_options=workspace["options"].toObject();m_question=qBound(0,workspace["question"].toInt(),BalanceLab::questions().size()-1);}
+    const bool validWorkspace=workspace["schema"].toInt()==1 && workspace["config"].isObject() && workspace["options"].isObject() && Playground::validate(workspace["config"].toObject(),error) && workspace["config"].toObject()["variants"].toArray().size()==3;
+    m_workspaceProtected=QFileInfo::exists(directory()+"/workspace.json") && !validWorkspace;
+    if(m_workspaceProtected)m_message=tr("Nie można odczytać obszaru pracy. Plik pozostaje bez zmian; automatyczny zapis jest wstrzymany.");
+    if(validWorkspace){m_config=workspace["config"].toObject();m_options=workspace["options"].toObject();m_question=qBound(0,workspace["question"].toInt(),BalanceLab::questions().size()-1);}
     syncGameBalance(m_config);
     refreshFiles();m_sources->configure(m_config.toVariantMap());schedule();
 }
@@ -138,7 +141,19 @@ void BalanceLabController::start(bool matrix){if(busy())return;m_options["matrix
 void BalanceLabController::cancel(){setProperty("balanceReplayQueued",QVariantMap());setProperty("balanceFullQueued",false);if(!m_watcher.property("balanceFullJob").toBool())m_fullPending=false;m_pending=false;m_debounce.stop();if(m_control)m_control->canceled.store(true);emit progressChanged();}
 void BalanceLabController::showFullResult(){setPreviewEnabled(false);if(m_full.isEmpty())return;m_result=m_full;emit resultChanged();}
 void BalanceLabController::selectCell(double x,double y){setParameter(m_options["axisX"].toString(),x);if(m_options["matrix"].toBool())setParameter(m_options["axisY"].toString(),y);}
-void BalanceLabController::saveWorkspace(){write(directory()+"/workspace.json",{{"schema",1},{"question",m_question},{"config",m_config},{"options",m_options}});}
+void BalanceLabController::saveWorkspace(){
+    if(m_workspaceProtected)return;
+    if(!write(directory()+"/workspace.json",{{"schema",1},{"question",m_question},{"config",m_config},{"options",m_options}})){
+        m_message=tr("Nie udało się zapisać obszaru pracy laboratorium. Poprzedni plik pozostał bez zmian.");emit changed();
+    }
+}
+void BalanceLabController::recoverWorkspace(){
+    if(!m_workspaceProtected || busy())return;
+    const auto path=directory()+"/workspace.json";
+    const auto backup=directory()+"/workspace-corrupt-"+uniqueName()+".json";
+    if(!QFile::copy(path,backup)){m_message=tr("Nie udało się zachować kopii uszkodzonego pliku. Zapis pozostaje wstrzymany.");emit changed();return;}
+    m_workspaceProtected=false;saveWorkspace();emit changed();
+}
 void BalanceLabController::refreshFiles(){
     m_profiles.clear();m_history.clear();for(auto kind:{QStringLiteral("profiles"),QStringLiteral("runs")}){QDir d(directory()+"/"+kind);for(auto f:d.entryList({"*.json"},QDir::Files,QDir::Name|QDir::Reversed)){auto object=read(d.filePath(f));auto c=kind=="profiles"?object["config"].toObject():object["config"].toObject();QVariantMap row{{"path",d.filePath(f)},{"name",object["name"].toString(c["name"].toString(f))},{"time",QFileInfo(d.filePath(f)).lastModified().toString(Qt::ISODate)}};if(kind=="profiles")m_profiles.append(row);else m_history.append(row);if((kind=="profiles"?m_profiles.size():m_history.size())>=100)break;}}emit changed();
 }

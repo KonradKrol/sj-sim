@@ -11,6 +11,18 @@ static QJsonObject smallBalanceConfig(){auto c=BalanceLab::initialConfig();c["co
 static void balanceLabBackendRegressions(){
 
     QTemporaryDir storage;check(storage.isValid(),"private balance storage");const auto previousRoot=qApp->property("balanceLabStorageRoot");qApp->setProperty("balanceLabStorageRoot",storage.path()+"/balance-lab");
+    {
+        const auto root=storage.path()+"/balance-lab";QDir().mkpath(root);
+        const auto workspace=root+"/workspace.json";const QByteArray broken="{broken workspace";
+        {QFile file(workspace);check(file.open(QIODevice::WriteOnly) && file.write(broken)==broken.size(),"create corrupt workspace fixture");}
+        {BalanceLabController controller;check(controller.workspaceRecoveryRequired(),"corrupt workspace has an explicit protected state");controller.setParameter("athlete.overall",72);}
+        {QFile file(workspace);check(file.open(QIODevice::ReadOnly) && file.readAll()==broken,"opening and closing the lab preserves the original corrupt file");}
+        {BalanceLabController controller;controller.recoverWorkspace();check(!controller.workspaceRecoveryRequired(),"explicit workspace recovery resumes persistence");}
+        const auto backups=QDir(root).entryList({"workspace-corrupt-*.json"},QDir::Files);
+        check(backups.size()==1,"workspace recovery preserves one independent original copy");
+        {QFile file(root+"/"+backups.first());check(file.open(QIODevice::ReadOnly) && file.readAll()==broken,"recovery copy preserves the exact unreadable bytes");}
+        QFile::remove(workspace);QFile::remove(root+"/"+backups.first());
+    }
     const auto oldName=QCoreApplication::applicationName();QCoreApplication::setApplicationName("BalanceLabRegression-"+QUuid::createUuid().toString(QUuid::WithoutBraces));
     for(auto row:Playground::parameters()) {
         const auto d=row.toObject();const auto help=d["help"].toString().section('\n',0,0).trimmed();

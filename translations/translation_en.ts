@@ -21154,7 +21154,19 @@ li.checked::marker { content: "\2612"; }
             <source>Zapisywanie wyników</source>
             <translation>Saving results</translation>
         </message>
-    </context>
+        <message>
+        <source>Nie można odczytać obszaru pracy. Plik pozostaje bez zmian; automatyczny zapis jest wstrzymany.</source>
+        <translation>Cannot read the workspace. The file is unchanged; autosave is paused.</translation>
+    </message>
+    <message>
+        <source>Nie udało się zachować kopii uszkodzonego pliku. Zapis pozostaje wstrzymany.</source>
+        <translation>Could not preserve a copy of the damaged file. Saving remains paused.</translation>
+    </message>
+    <message>
+        <source>Nie udało się zapisać obszaru pracy laboratorium. Poprzedni plik pozostał bez zmian.</source>
+        <translation>Could not save the lab workspace. The previous file is unchanged.</translation>
+    </message>
+</context>
     <context>
         <name>BalanceLabControls</name>
         <message>
@@ -22832,6 +22844,18 @@ Technical key: %4</translation>
             <translation>Estimating remaining time…</translation>
         </message>
     <message><source>Balans gry: %1 · różnice Twoich zmian: %2</source><translation>Game balance: %1 · differences in your changes: %2</translation></message>
+    <message>
+        <source>Najpierw zachowuje kopię uszkodzonego pliku, następnie zapisuje bieżące ustawienia.</source>
+        <translation>Preserves a copy of the damaged file, then saves the current settings.</translation>
+    </message>
+    <message>
+        <source>Nie udało się odczytać obszaru pracy. Automatyczny zapis jest wstrzymany.</source>
+        <translation>Could not read the workspace. Autosave is paused.</translation>
+    </message>
+    <message>
+        <source>Zapisz nowy obszar</source>
+        <translation>Save new workspace</translation>
+    </message>
 </context>
     <context>
         <name>BalanceLabTargets</name>

@@ -24,6 +24,7 @@ class BalanceLabController final:public QObject {
     Q_PROPERTY(QVariantList history READ history NOTIFY changed)
     Q_PROPERTY(QVariantMap diff READ diff NOTIFY changed)
     Q_PROPERTY(QString activeProfile READ activeProfile NOTIFY changed)
+    Q_PROPERTY(bool workspaceRecoveryRequired READ workspaceRecoveryRequired NOTIFY changed)
     Q_PROPERTY(QString message READ message NOTIFY changed)
     Q_PROPERTY(bool busy READ busy NOTIFY progressChanged)
     Q_PROPERTY(bool previewBusy READ previewBusy NOTIFY progressChanged)
@@ -51,6 +52,8 @@ public:
     QVariantList history()const{return m_history;}
     QVariantMap diff()const;
     QString activeProfile()const;
+    bool workspaceRecoveryRequired() const { return m_workspaceProtected; }
+    Q_INVOKABLE void recoverWorkspace();
     QString message()const{return m_message;}
     bool busy()const{return m_fullPending;}
     bool previewBusy()const{return m_pending || (property("balanceJobPending").toBool() && !m_fullPending);}
@@ -109,6 +112,7 @@ private:
     quint64 m_revision=0;
     int m_question=0;
     bool m_pending=false,m_fullPending=false,m_restoring=false;
+    bool m_workspaceProtected=false;
     QString m_message;
     bool commit(QJsonObject,bool undo=true);
     void schedule();

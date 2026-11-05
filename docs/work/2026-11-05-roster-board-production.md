@@ -62,3 +62,12 @@ sezonu. Źródła awansu, serie próbne, treningi i przypisania klasyfikacji
 muszą należeć do kalendarza wydarzenia. Kontrola przed utworzeniem grafu.
 Regresje kalendarza z obcego sezonu i źródła awansu z obcego kalendarza
 PASS (--production-persistence-only, /tmp/sj-production-ownership.log).
+
+Punkt 6 raportu naprawiony: błędny workspace laboratorium jest chroniony
+przed autosave i destruktorem. Widoczny stan odzyskiwania, jawny zapis nowego
+obszaru najpierw zachowuje dokładną kopię uszkodzonego pliku. Błędy zapisu
+są publikowane w komunikacie. Test otwarcia/edycji/zamknięcia zachowuje bajty
+oryginału; test jawnego odzyskania sprawdza niezależną kopię. Core laboratorium
+PASS (/tmp/sj-lab-recovery-test.log). EN/CS uzupełnione.
+Punkt 7 w trakcie: niezależne rewizje sezonu i ponawianie zapisu po błędzie;
+sprawdzić nową regresję przed commitem.

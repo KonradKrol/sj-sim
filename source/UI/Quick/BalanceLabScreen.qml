@@ -15,6 +15,12 @@ ColumnLayout {
     readonly property bool choosing: backend.options.started !== true
     property bool settingsOpen: false
     property bool profilesOpen: false
+    RowLayout {
+        visible: lab.backend.workspaceRecoveryRequired
+        Layout.fillWidth: true
+        Label { text: qsTr("Nie udało się odczytać obszaru pracy. Automatyczny zapis jest wstrzymany."); color: Theme.warning; Layout.fillWidth: true; wrapMode: Text.WordWrap; font.pointSize: Theme.body }
+        SButton { text: qsTr("Zapisz nowy obszar"); hint: qsTr("Najpierw zachowuje kopię uszkodzonego pliku, następnie zapisuje bieżące ustawienia."); onClicked: lab.backend.recoverWorkspace() }
+    }
     GridLayout {
         columns: lab.width < 780 ? 2 : 5
         Layout.fillWidth: true
