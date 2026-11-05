@@ -120,7 +120,9 @@ static void calendarDateUiRegressions(MainWindow &main)
     clickControl(scene(&manager),"calendarSettings");clickControl(scene(&manager),"menu-entry-0");QTest::qWait(60);
     for(int i=0;i<8;++i){clickControl(scene(&manager),"calendarDefaultRule-qualifications");QTest::keyClick(scene(&manager),i%2?Qt::Key_Home:Qt::Key_End);QTest::keyClick(scene(&manager),Qt::Key_Return);QTest::qWait(30);check(backend->ruleDefaults().size()==6,"changing qualification defaults recreates controls safely after closing the popup");}
     scene(&manager)->grabFramebuffer().save("/tmp/sj-calendar-defaults.png");
-    workspace->setProperty("panel","events");QTest::qWait(40);clickControl(scene(&manager),"calendarPlanDates");QTest::qWait(100);
+    workspace->setProperty("panel","events");QTest::qWait(40);
+    {auto *tabs=item(scene(&manager)->rootObject(),"calendarEventTabs");auto *plan=item(scene(&manager)->rootObject(),"calendarPlanDates");check(tabs && plan && std::abs(tabs->mapToScene(tabs->boundingRect().center()).y()-plan->mapToScene(plan->boundingRect().center()).y())<2,"calendar-wide planning sits beside event tabs on the same row");}
+    clickControl(scene(&manager),"calendarPlanDates");QTest::qWait(100);
     check(item(scene(&manager)->rootObject(),"calendarEvents")->isVisible(),"event list remains visible during quick planning");
     check(item(scene(&manager)->rootObject(),"calendarDatePlanner"),"planner opens directly from calendar toolbar");
     clickControl(scene(&manager),"date-plan-existing");QTest::qWait(80);

@@ -2347,6 +2347,14 @@ li.checked::marker { content: "\2612"; }
     <message><source>Uczestników wyłoni wskazany wcześniejszy konkurs lub kwalifikacje.</source><translation>Účastníky určí vybraný předchozí závod nebo kvalifikace.</translation></message>
 
     <message><source>Uczestników wyłoni aktualna kolejność we wskazanej klasyfikacji.</source><translation>Účastníky určí aktuální pořadí ve vybrané klasifikaci.</translation></message>
+    <message>
+        <source>Cały kalendarz</source>
+        <translation>Celý kalendář</translation>
+    </message>
+    <message>
+        <source>Szybkie planowanie</source>
+        <translation>Rychlé plánování</translation>
+    </message>
 </context>
     <context>
         <name>CalendarVenueButton</name>

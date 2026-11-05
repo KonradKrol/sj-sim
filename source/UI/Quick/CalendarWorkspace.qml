@@ -184,12 +184,17 @@ Item {
                 visible: !calendar.compact || calendar.editing || calendar.backend.events.length===0
                 Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
                 Layout.preferredWidth: 500; spacing: Theme.dp(6)
-                RowLayout {
-                    Layout.fillWidth: true
-                    SButton { objectName: "calendarPlanDates"; visible: calendar.panel!=="planning"; text: qsTr("Szybkie planowanie"); dense: true; onClicked: calendar.openPlanning() }
-                    SButton { visible: calendar.panel==="planning"; text: "← "+qsTr("Edycja konkursu"); quiet: true; dense: true; onClicked: calendar.panel="events" }
-                    Label { visible: calendar.panel==="planning"; text: qsTr("Cały kalendarz"); color: Theme.muted; font.pointSize: Theme.caption }
-                    Item { Layout.fillWidth: true }
+                CalendarInspector {
+                    id: eventInspector
+                    visible: calendar.panel==="planning" || calendar.backend.selection.count>0
+                    Layout.fillWidth: true; Layout.fillHeight: calendar.panel!=="planning";
+                    Layout.preferredHeight: implicitHeight; Layout.maximumHeight: calendar.panel==="planning" ? implicitHeight : Infinity; Layout.minimumWidth: 0; Layout.minimumHeight: 0
+                    compact: calendar.compact
+                    planningOpen: calendar.panel==="planning"
+                    onPlanningRequested: calendar.openPlanning()
+                    onEditRequested: {calendar.editing=true;calendar.panel="events"}
+                    backend: calendar.backend
+                    rulesNode: calendar.node.values.rulesEditor
                 }
                 ScrollView {
                     id: inspectorPlanning
@@ -197,15 +202,6 @@ Item {
                     Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
                     contentWidth: availableWidth; clip: true
                     CalendarDatePlanner { width: inspectorPlanning.availableWidth; backend: calendar.backend }
-                }
-                CalendarInspector {
-                    id: eventInspector
-                    visible: calendar.panel!=="planning" && calendar.backend.selection.count>0
-                    Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
-                    compact: calendar.compact
-                    onEditRequested: calendar.editing=true
-                    backend: calendar.backend
-                    rulesNode: calendar.node.values.rulesEditor
                 }
                 EmptyState {
                     objectName: "calendarInspectorEmpty"

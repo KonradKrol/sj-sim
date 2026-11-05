@@ -218,3 +218,12 @@ zmalał z 88,4 do około 45,6 px. Regresja wymaga wysokości nie większej niż
 przycisk +12 px. Końcowy --dates-only PASS, także backend i planowanie,
 bez ostrzeżeń układu (/tmp/sj-footer-final-test.log). Sprawdzone wyrównanie
 przycisku po prawej na screenshotcie. EN/CS i diff-check PASS.
+
+Korekta położenia szybkiego planowania: akcja jest na wysokości zakładek
+Konkurs / Zasady / Powiązania, oddzielona odstępem i pionowym separatorem.
+Nie zajmuje osobnego rzędu nad inspektorem. Pozostaje akcją całego kalendarza;
+lista wydarzeń jest widoczna, a kliknięcie zakładki wraca do edycji wydarzenia.
+Nagłówek planowania jest mierzony po ułożeniu, bez pętli implicitHeight w Qt.
+Regresja sprawdza wyrównanie akcji i zakładek oraz cały przepływ planowania.
+Końcowy build i --dates-only PASS bez ostrzeżeń układu
+(/tmp/sj-planning-row-verified.log), również cały przepływ podglądu i zapisu dat.
