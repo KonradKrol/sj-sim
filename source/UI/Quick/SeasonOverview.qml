@@ -7,6 +7,7 @@ ColumnLayout {
     objectName: "seasonOverview"
     property var node
     readonly property var fields: node ? node.values : ({})
+    readonly property var latest: fields.latest || ({})
     spacing: Theme.dp(8)
     RowLayout {
         Layout.fillWidth: true
@@ -14,37 +15,75 @@ ColumnLayout {
         Label { text: qsTr("Pozostałe kraje: %1").arg(overview.fields.countries || 0); color: Theme.muted; font.pointSize: Theme.caption }
     }
     ProgressBar { Layout.fillWidth: true; value: overview.fields.total ? overview.fields.played / overview.fields.total : 0; Accessible.name: qsTr("Postęp sezonu") }
+    Component {
+        id: latestComponent
+    Pane {
+        objectName: "seasonLatestResults"
+        visible: !!overview.latest.hill || !!overview.latest.type
+        Layout.fillWidth: true; Layout.minimumWidth: 0; padding: Theme.dp(10)
+        background: Surface { fillColor: Theme.surface; edgeColor: Theme.divider; strokeWidth: 1; sweep: 12 }
+        contentItem: ColumnLayout {
+            spacing: Theme.dp(5)
+            RowLayout {
+                Layout.fillWidth: true
+                Label { text: qsTr("Ostatnie zawody"); color: Theme.ink; font.family: Theme.displayFamily; font.bold: true; font.pointSize: Theme.section; Layout.fillWidth: true }
+                Label { text: overview.latest.date || ""; color: Theme.muted; font.pointSize: Theme.caption }
+            }
+            Label { text: (overview.latest.type || "") + " · " + (overview.latest.hill || "") + (overview.latest.hs ? " · HS"+overview.latest.hs : ""); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+            Label { visible: !(overview.latest.results || []).length; text: qsTr("Brak sklasyfikowanych wyników"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
+            Repeater {
+                model: overview.latest.results || []
+                RowLayout {
+                    required property var modelData
+                    Layout.fillWidth: true; spacing: Theme.dp(7)
+                    Label { text: modelData.position+"."; color: modelData.position===1?Theme.accent:Theme.muted; font.family: Theme.mono; font.bold: true; font.pointSize: Theme.body; Layout.preferredWidth: Theme.dp(24) }
+                    Image { source: modelData.photo || ""; visible: !!source && status===Image.Ready; Layout.preferredWidth: Theme.dp(26); Layout.preferredHeight: Theme.dp(26); sourceSize.width: 52; sourceSize.height: 52; fillMode: Image.PreserveAspectCrop; clip: true; Accessible.ignored: true }
+                    Image { source: modelData.flag; visible: !!source && status!==Image.Error; Layout.preferredWidth: Theme.dp(22); Layout.preferredHeight: Theme.dp(15); sourceSize.width: 44; sourceSize.height: 30; fillMode: Image.PreserveAspectFit; Accessible.name: modelData.country }
+                    Label { text: modelData.name; color: Theme.ink; font.bold: modelData.position===1; font.pointSize: Theme.body; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
+                    Label { text: qsTr("%1 pkt").arg(modelData.points); color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption }
+                }
+            }
+        }
+    }
+    }
     Repeater {
         model: overview.fields.events || []
-        Pane {
-            id: eventCard
+        ColumnLayout {
+            id: eventWrapper
             required property var modelData
             required property int index
+            Layout.fillWidth: true; Layout.minimumWidth: 0; spacing: Theme.dp(8)
+            Pane {
+            id: eventCard
+            readonly property var modelData: eventWrapper.modelData
+            readonly property int index: eventWrapper.index
             readonly property bool next: index===0
             readonly property color ink: next ? Theme.snow : Theme.ink
             readonly property color muted: next ? Theme.headerMuted : Theme.muted
             MenuEntrance { id: entrance; target: eventCard; delay: eventCard.index*35 }
             opacity: entrance.progress
             transform: Translate { y: Theme.dp(12)*(1-entrance.progress) }
-            Layout.fillWidth: true; Layout.minimumWidth: 0
-            padding: Theme.dp(next ? 14 : 10)
+            Layout.fillWidth: true; Layout.minimumWidth: 0; padding: Theme.dp(next ? 12 : 9)
             background: Surface { fillColor: eventCard.next ? Theme.stadium : Theme.raised; edgeColor: eventCard.next ? Theme.accent : Theme.divider; strokeWidth: eventCard.next ? 2 : 1; sweep: eventCard.next ? 36 : 12 }
             contentItem: ColumnLayout {
-                spacing: Theme.dp(6)
+                spacing: Theme.dp(5)
                 RowLayout {
                     Layout.fillWidth: true; spacing: Theme.dp(8)
-                    Image { source: eventCard.modelData.flag; visible: !!source && status!==Image.Error; Layout.preferredWidth: Theme.dp(eventCard.next ? 36 : 26); Layout.preferredHeight: Theme.dp(eventCard.next ? 24 : 18); sourceSize.width: 72; sourceSize.height: 48; fillMode: Image.PreserveAspectFit; Accessible.name: eventCard.modelData.country }
-                    Label { text: eventCard.modelData.hill; color: eventCard.ink; font.family: Theme.displayFamily; font.pointSize: eventCard.next ? Theme.heading : Theme.section; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-                    Label { visible: eventCard.modelData.qualification; text: "Q"; color: eventCard.ink; font.family: Theme.mono; font.bold: true; font.pointSize: Theme.section; Accessible.name: qsTr("Kwalifikacje") }
-                    Label { text: eventCard.modelData.hs ? "HS"+eventCard.modelData.hs : ""; color: eventCard.muted; font.family: Theme.mono; font.pointSize: Theme.body }
+                    Image { source: eventCard.modelData.flag; visible: !!source && status!==Image.Error; Layout.preferredWidth: Theme.dp(25); Layout.preferredHeight: Theme.dp(17); sourceSize.width: 50; sourceSize.height: 34; fillMode: Image.PreserveAspectFit; Accessible.name: eventCard.modelData.country }
+                    Label { text: eventCard.modelData.hill; color: eventCard.ink; font.family: Theme.displayFamily; font.pointSize: eventCard.next ? Theme.heading : Theme.section; font.bold: true; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
+                    Label { text: eventCard.modelData.hs ? "HS"+eventCard.modelData.hs : ""; color: eventCard.muted; font.family: Theme.mono; font.pointSize: Theme.caption }
                 }
-                Label { text: eventCard.modelData.date ? qsTr("%1 · %2").arg(eventCard.modelData.date).arg(eventCard.modelData.type) : eventCard.modelData.type; color: eventCard.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-                Flow {
-                    Layout.fillWidth: true; spacing: Theme.dp(6)
-                    Label { visible: eventCard.modelData.trainingCount>0; text: qsTr("Treningi %1/%2").arg(eventCard.modelData.trainingPlayed).arg(eventCard.modelData.trainingCount); color: eventCard.modelData.trainingPlayed===eventCard.modelData.trainingCount ? (eventCard.next ? Theme.signal : Theme.success) : eventCard.muted; font.pointSize: Theme.caption }
-                    Label { visible: eventCard.modelData.trial; text: eventCard.modelData.trialPlayed ? qsTr("Próbna rozegrana") : qsTr("Próbna przed konkursem"); color: eventCard.modelData.trialPlayed ? (eventCard.next ? Theme.signal : Theme.success) : eventCard.muted; font.pointSize: Theme.caption }
+                Label { text: (eventCard.modelData.qualification ? qsTr("Kwalifikacje") : qsTr("Konkurs")) + " · " + eventCard.modelData.type + (eventCard.modelData.date ? " · "+eventCard.modelData.date : ""); color: eventCard.ink; font.bold: true; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                Repeater {
+                    model: eventCard.modelData.preparations || []
+                    RowLayout {
+                        required property var modelData
+                        Layout.fillWidth: true; spacing: Theme.dp(5)
+                        Label { text: modelData.current ? qsTr("TERAZ") : modelData.played ? "✓" : "•"; color: modelData.current ? Theme.snow : modelData.played ? (eventCard.next ? Theme.signal : Theme.success) : eventCard.muted; font.bold: modelData.current; font.pointSize: modelData.current ? Theme.body : Theme.caption }
+                        Label { text: (modelData.training ? (modelData.total>1 ? qsTr("Trening %1 z %2").arg(modelData.number).arg(modelData.total) : qsTr("Trening")) : qsTr("Seria próbna")) + (eventCard.modelData.qualification ? qsTr(" przed kwalifikacjami") : qsTr(" przed konkursem")) + (modelData.played ? (modelData.training ? qsTr(" · rozegrany") : qsTr(" · rozegrana")) : modelData.current ? "" : (modelData.training ? qsTr(" · zaplanowany") : qsTr(" · zaplanowana"))) + (modelData.date ? " · "+modelData.date : ""); color: modelData.current ? eventCard.ink : eventCard.muted; font.bold: modelData.current; font.pointSize: modelData.current ? Theme.body : Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                    }
                 }
-                Label { visible: eventCard.next; text: qsTr("Teraz: %1").arg(overview.fields.nextEvent || ""); color: Theme.snow; font.pointSize: Theme.body; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                Label { visible: eventCard.next && eventCard.modelData.current; text: qsTr("TERAZ · %1").arg(eventCard.modelData.qualification ? qsTr("Kwalifikacje") : qsTr("Konkurs")); color: Theme.snow; font.pointSize: Theme.body; font.bold: true; Layout.fillWidth: true }
                 SButton {
                     visible: eventCard.next; Layout.fillWidth: true; primary: true
                     readonly property var projectedAction: overview.fields.action ? overview.fields.action.values : ({})
@@ -52,6 +91,9 @@ ColumnLayout {
                     onClicked: ui.activate(projectedAction.id)
                 }
             }
+            }
+            Loader { active: eventWrapper.index===0 && (!!overview.latest.hill || !!overview.latest.type); Layout.fillWidth: true; Layout.minimumWidth: 0; sourceComponent: latestComponent }
         }
     }
+    Loader { active: !(overview.fields.events || []).length && (!!overview.latest.hill || !!overview.latest.type); Layout.fillWidth: true; Layout.minimumWidth: 0; sourceComponent: latestComponent }
 }

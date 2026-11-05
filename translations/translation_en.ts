@@ -15717,6 +15717,12 @@ Check that you selected the correct file.</translation>
 <message><source>Kwalifikacje</source><translation>Qualifications</translation></message>
 <message><source>Dyskwalifikacja: 1 na N skoków</source><translation>Disqualification: 1 in N jumps</translation></message>
 <message><source>Częstość dyskwalifikacji</source><translation>Disqualification frequency</translation></message>
+
+    <message><source>Wybierz skocznię</source><translation>Choose a hill</translation></message>
+
+    <message><source>Drużynowy</source><translation>Team</translation></message>
+
+    <message><source>Indywidualny</source><translation>Individual</translation></message>
 </context>
     <context>
         <name>QuickCalendar</name>
@@ -23199,6 +23205,36 @@ Technical key: %4</translation>
         </message>
     <message><source>Próbna rozegrana</source><translation>Trial round completed</translation></message>
 <message><source>Próbna przed konkursem</source><translation>Trial round before competition</translation></message>
+
+    <message><source>Ostatnie zawody</source><translation>Latest event</translation></message>
+
+    <message><source>Brak sklasyfikowanych wyników</source><translation>No classified results</translation></message>
+
+    <message><source>%1 pkt</source><translation>%1 pts</translation></message>
+
+    <message><source>Konkurs</source><translation>Competition</translation></message>
+
+    <message><source>TERAZ</source><translation>NOW</translation></message>
+
+    <message><source>Trening %1 z %2</source><translation>Training %1 of %2</translation></message>
+
+    <message><source>Trening</source><translation>Training</translation></message>
+
+    <message><source>Seria próbna</source><translation>Trial round</translation></message>
+
+    <message><source> przed kwalifikacjami</source><translation> before qualification</translation></message>
+
+    <message><source> przed konkursem</source><translation> before the competition</translation></message>
+
+    <message><source> · rozegrany</source><translation> · completed</translation></message>
+
+    <message><source> · rozegrana</source><translation> · completed</translation></message>
+
+    <message><source> · zaplanowany</source><translation> · scheduled</translation></message>
+
+    <message><source> · zaplanowana</source><translation> · scheduled</translation></message>
+
+    <message><source>TERAZ · %1</source><translation>NOW · %1</translation></message>
 </context>
     <context>
         <name>StudioPackBar</name>

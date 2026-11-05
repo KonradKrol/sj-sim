@@ -30,6 +30,8 @@
 #include "../../global/CountryFlagsManager.h"
 #include "../../global/CountryCodes.h"
 #include <QDir>
+#include <QFileInfo>
+#include <QLocale>
 #include <QFile>
 #include <QUrl>
 #include <QApplication>
@@ -1070,25 +1072,41 @@ void QuickBridge::compose(QuickNode *base) {
             auto *activeCalendar=season->getSimulationSave()->getActualSeason()->getActualCalendar();
             if(standings.isEmpty() || !activeCalendar || activeCalendar->getClassificationsReference().isEmpty())standings={empty("season-no-standings",tr("Brak wyników klasyfikacji"),tr("Dodaj klasyfikację w kalendarzu i przypisz do niej konkursy. Wyniki pojawią się po ich rozegraniu."))};
             if(activeCalendar) {
-                QVariantList upcoming;int total=0,played=0;QSet<QString> countries;
+                QVariantList upcoming;int total=0,played=0;QSet<QString> countries;CompetitionInfo *lastPlayed=nullptr;const bool datesEnabled=season->getSimulationSave()->getActualSeason()->getDatesEnabled();
                 for(auto *event:activeCalendar->getCompetitionsReference()) {
                     if(!event || event->getSerieType()==CompetitionInfo::Training || event->getSerieType()==CompetitionInfo::TrialRound)continue;
-                    ++total;if(event->getPlayed()){++played;continue;}
+                    ++total;if(event->getPlayed()){++played;lastPlayed=event;continue;}
                     auto *hill=event->getHill();if(hill)countries.insert(hill->getCountryCode());
                     if(upcoming.size()>=5)continue;
                     const auto trainings=event->getTrainings();int completedTrainings=0;for(auto *training:trainings)if(training && training->getPlayed())++completedTrainings;
                     auto *trial=event->getTrialRound();
-                    const auto date=event->getScheduledDate();
+                    const auto date=event->getScheduledDate();QVariantList preparations;int trainingNumber=0;
+                    for(auto *training:trainings)if(training){++trainingNumber;const auto when=training->getScheduledDate();preparations.append(QVariantMap{{"training",true},{"number",trainingNumber},{"total",trainings.size()},{"played",training->getPlayed()},{"current",training==nextEvent},{"date",datesEnabled && when.isValid()?when.toString("dd.MM.yyyy"):QString()}});}
+                    if(trial){const auto when=trial->getScheduledDate();preparations.append(QVariantMap{{"training",false},{"played",trial->getPlayed()},{"current",trial==nextEvent},{"date",datesEnabled && when.isValid()?when.toString("dd.MM.yyyy"):QString()}});}
                     upcoming.append(QVariantMap{{"hill",hill?hill->getName():tr("Wybierz skocznię")},{"hs",hill?QString::number(hill->getHSPoint(),'f',0):QString()},
                         {"country",hill?hill->getCountryCode():QString()},{"flag",hill?QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(hill->getCountryCode())+".svg")).toString():QString()},
-                        {"date",showDate && date.isValid()?date.toString("dd.MM.yyyy"):QString()},
+                        {"date",datesEnabled && date.isValid()?date.toString("dd.MM.yyyy"):QString()},
                         {"type",event->getRules().getCompetitionType()==CompetitionRules::Team?tr("Drużynowy"):tr("Indywidualny")},
                         {"qualification",event->getSerieType()==CompetitionInfo::Qualifications},{"trainingCount",trainings.size()},{"trainingPlayed",completedTrainings},
-                        {"trial",bool(trial)},{"trialPlayed",trial && trial->getPlayed()}});
+                        {"trial",bool(trial)},{"trialPlayed",trial && trial->getPlayed()},{"preparations",preparations},{"current",event==nextEvent}});
                 }
-                if(!upcoming.isEmpty()) {
+                QVariantMap latest;
+                if(lastPlayed) {
+                    auto *hill=lastPlayed->getHill();QVariantList podium;
+                    const auto &results=lastPlayed->getResultsReference().getResultsReference();
+                    for(const auto &result:results){
+                        const int position=result.getPosition();if(position<1 || position>3)continue;
+                        const auto *jumper=result.getJumper();const auto *team=result.getTeam();if(!jumper && !team)continue;
+                        const auto country=jumper?jumper->getCountryCode():team->getCountryCode();
+                        const auto photo=jumper?jumper->getImageFilePath():QString();
+                        podium.append(QVariantMap{{"position",position},{"name",jumper?jumper->getNameAndSurname():country},{"country",country},{"flag",QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(country)+".svg")).toString()},{"photo",!photo.isEmpty() && QFileInfo::exists(photo)?QUrl::fromLocalFile(QFileInfo(photo).absoluteFilePath()).toString():QString()},{"points",QLocale().toString(result.getPointsSum(),'f',1)}});
+                    }
+                    std::stable_sort(podium.begin(),podium.end(),[](const QVariant &a,const QVariant &b){return a.toMap().value("position").toInt()<b.toMap().value("position").toInt();});
+                    latest={{"hill",hill?hill->getName():QString()},{"hs",hill?QString::number(hill->getHSPoint(),'f',0):QString()},{"type",lastPlayed->getLongSerieTypeText()},{"date",datesEnabled && lastPlayed->getScheduledDate().isValid()?lastPlayed->getScheduledDate().toString("dd.MM.yyyy"):QString()},{"results",podium}};
+                }
+                if(!upcoming.isEmpty() || !latest.isEmpty()) {
                     auto *preview=m_groups.value("quickSeasonOverview");if(!preview){preview=new QuickNode(this);m_groups.insert("quickSeasonOverview",preview);}
-                    preview->update({{"kind","seasonOverview"},{"events",upcoming},{"total",total},{"played",played},{"countries",countries.size()},
+                    preview->update({{"kind","seasonOverview"},{"events",upcoming},{"latest",latest},{"total",total},{"played",played},{"countries",countries.size()},
                         {"nextEvent",nextEvent?nextEvent->getLongSerieTypeText():QString()},{"action",QVariant::fromValue(node(m_content->findChild<QPushButton *>("pushButton_competitionConfig")))}});
                     overview={QVariant::fromValue(preview)};
                 }

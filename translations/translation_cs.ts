@@ -15718,6 +15718,12 @@ Ověřte, že jste vybrali správný soubor.</translation>
 <message><source>Kwalifikacje</source><translation>Kvalifikace</translation></message>
 <message><source>Dyskwalifikacja: 1 na N skoków</source><translation>Diskvalifikace: 1 z N skoků</translation></message>
 <message><source>Częstość dyskwalifikacji</source><translation>Četnost diskvalifikací</translation></message>
+
+    <message><source>Wybierz skocznię</source><translation>Vyberte můstek</translation></message>
+
+    <message><source>Drużynowy</source><translation>Týmový</translation></message>
+
+    <message><source>Indywidualny</source><translation>Individuální</translation></message>
 </context>
     <context>
         <name>QuickCalendar</name>
@@ -23200,6 +23206,36 @@ Technický klíč: %4</translation>
         </message>
     <message><source>Próbna rozegrana</source><translation>Zkušební kolo dokončeno</translation></message>
 <message><source>Próbna przed konkursem</source><translation>Zkušební kolo před závodem</translation></message>
+
+    <message><source>Ostatnie zawody</source><translation>Poslední závod</translation></message>
+
+    <message><source>Brak sklasyfikowanych wyników</source><translation>Žádné klasifikované výsledky</translation></message>
+
+    <message><source>%1 pkt</source><translation>%1 b.</translation></message>
+
+    <message><source>Konkurs</source><translation>Závod</translation></message>
+
+    <message><source>TERAZ</source><translation>NYNÍ</translation></message>
+
+    <message><source>Trening %1 z %2</source><translation>Trénink %1 z %2</translation></message>
+
+    <message><source>Trening</source><translation>Trénink</translation></message>
+
+    <message><source>Seria próbna</source><translation>Zkušební kolo</translation></message>
+
+    <message><source> przed kwalifikacjami</source><translation> před kvalifikací</translation></message>
+
+    <message><source> przed konkursem</source><translation> před závodem</translation></message>
+
+    <message><source> · rozegrany</source><translation> · dokončen</translation></message>
+
+    <message><source> · rozegrana</source><translation> · dokončena</translation></message>
+
+    <message><source> · zaplanowany</source><translation> · naplánován</translation></message>
+
+    <message><source> · zaplanowana</source><translation> · naplánována</translation></message>
+
+    <message><source>TERAZ · %1</source><translation>NYNÍ · %1</translation></message>
 </context>
     <context>
         <name>StudioPackBar</name>
