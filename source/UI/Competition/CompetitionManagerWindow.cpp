@@ -377,7 +377,6 @@ CompetitionManagerWindow::~CompetitionManagerWindow()
     delete ui;
     for(auto & virtualClassification : virtualClassifications)
     {
-        qDeleteAll(virtualClassification->getResultsReference());
         delete virtualClassification;
     }
 }
@@ -2253,7 +2252,7 @@ void CompetitionManagerWindow::on_comboBox_virtualClassification_currentIndexCha
         index--;
         Classification * classification = new Classification(*manager->getCompetitionInfo()->getClassificationsReference()[index]);
         for(auto &result:classification->getResultsReference()){
-            result=new ClassificationSingleResult(*result);result->setClassification(classification);
+            result=classification->ownResult(std::make_unique<ClassificationSingleResult>(*result));result->setClassification(classification);
         }
         for(auto & singleRes : classification->getResultsReference())
         {

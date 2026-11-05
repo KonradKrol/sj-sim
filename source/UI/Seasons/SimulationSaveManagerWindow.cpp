@@ -1252,7 +1252,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
 
                                 ClassificationSingleResult * classificationResult = classification->getResultOfIndividualJumper(jumper);
                                 if(classificationResult == nullptr){
-                                    classification->getResultsReference().push_back(new ClassificationSingleResult(classification, jumper));
+                                    classification->getResultsReference().push_back(classification->ownResult(std::make_unique<ClassificationSingleResult>(classification, jumper)));
                                     classificationResult = classification->getResultOfIndividualJumper(jumper);
                                 }
                                 if(MyFunctions::vectorContains(classificationResult->getCompetitionsResultsReference(), &competition->getResultsReference()) == false){
@@ -1272,7 +1272,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
 
                             ClassificationSingleResult * classificationResult = classification->getResultOfTeam(countryCode);
                             if(classificationResult == nullptr){
-                                classification->getResultsReference().push_back(new ClassificationSingleResult(classification, countryCode));
+                                classification->getResultsReference().push_back(classification->ownResult(std::make_unique<ClassificationSingleResult>(classification, countryCode)));
                                 classificationResult = classification->getResultOfTeam(countryCode);
                             }
                             if(MyFunctions::vectorContains(classificationResult->getCompetitionsResultsReference(), &competition->getResultsReference()) == false){

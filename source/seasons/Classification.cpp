@@ -216,7 +216,7 @@ Classification * Classification::getFromJson(QJsonObject obj, IdentifiableObject
     QJsonArray resultsArray = obj.value("results").toArray();
     QVector<ClassificationSingleResult *> results;
     for(const auto &value : resultsArray)
-        results.append(new ClassificationSingleResult(ClassificationSingleResult::getFromJson(value.toObject(), storage)));
+        results.append(classification->ownResult(std::make_unique<ClassificationSingleResult>(ClassificationSingleResult::getFromJson(value.toObject(), storage))));
     classification->setResults(results);
     for(auto & res : classification->getResultsReference())
         res->setClassification(classification);
@@ -398,6 +398,7 @@ QVector<ClassificationSingleResult *> &Classification::getResultsReference()
 
 void Classification::setResults(const QVector<ClassificationSingleResult *> &newResults)
 {
+    ownedResults.erase(std::remove_if(ownedResults.begin(),ownedResults.end(),[&](const auto &row){return !newResults.contains(row.get());}),ownedResults.end());
     results = newResults;
 }
 
@@ -444,4 +445,9 @@ short Classification::getClassificationType() const
 void Classification::setClassificationType(short newClassificationType)
 {
     classificationType = newClassificationType;
+}
+
+ClassificationSingleResult *Classification::ownResult(std::unique_ptr<ClassificationSingleResult> result)
+{
+    auto *pointer=result.get();ownedResults.emplace_back(std::move(result));return pointer;
 }

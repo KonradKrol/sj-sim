@@ -127,3 +127,16 @@ Punkt 8 w trakcie: jawni współdzieleni właściciele heapowych wyników
 klasyfikacji (bez przejmowania pożyczonych rekordów), zwalnianie kalendarzy
 z grafu sezonu i wycofanych kalendarzy po wygaśnięciu undo/redo. Wymaga
 regresji historii klasyfikacji, cofania kalendarza i ponownego buildu.
+
+Punkt 8 domknięty: ownResult jawnie przejmuje heapowe wyniki klasyfikacji;
+kopie historii współdzielą ich czas życia. Pożyczone rekordy (np. tymczasowy
+ranking) nie są usuwane. Deserializacja, naliczanie sezonu i wirtualny ranking
+korzystają z ownResult; usunięto ręczne kasowanie tych samych rekordów.
+SimulationSave zwalnia jednoznacznie posiadany graf kalendarzy i jego obiekty
+raz, a QuickCalendar zwalnia usunięte kalendarze dopiero po wygaśnięciu undo.
+Regresje zachowania wyników przy kopiowaniu/odtwarzaniu oraz pożyczonych
+rekordów PASS (--production-persistence-only, /tmp/sj-graph-ownership-test.log).
+Pełne backendRegressions i --dates-only PASS (/tmp/sj-calendar-final-test.log),
+w tym klasyfikacje, kalendarze, cofanie, presety i scenariusze dat.
+Raport: wszystkie 10 punktów mają implementacje i regresje. Nie oznacza to
+braku innych błędów produkcyjnych ani wykonania ręcznego sezonu 20 konkursów.

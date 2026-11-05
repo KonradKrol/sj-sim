@@ -147,16 +147,14 @@ SimulationSave::~SimulationSave()
         delete hill;
     for(auto & jumper : jumpers)
         delete jumper;
-    for(auto & season : seasons)
-    {
-        for(auto & cal : season.getCalendarsReference())
-        {
-            for(auto & competition : cal->getCompetitionsReference())
-                delete competition;
-            for(auto & classification : cal->getClassificationsReference())
-                delete classification;
-        }
+    QSet<SeasonCalendar *> calendars;QSet<CompetitionInfo *> events;QSet<Classification *> classifications;
+    for(const auto &season:seasons)for(auto *calendar:season.getCalendars())if(calendar){
+        calendars.insert(calendar);
+        for(auto *event:calendar->getCompetitions())if(event)events.insert(event);
+        for(auto *classification:calendar->getClassifications())if(classification)classifications.insert(classification);
     }
+    qDeleteAll(events);qDeleteAll(classifications);qDeleteAll(calendars);
+
 }
 
 SimulationSave * SimulationSave::getFromJson(QJsonObject obj, IdentifiableObjectsStorage * storage)

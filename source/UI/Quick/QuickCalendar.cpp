@@ -139,6 +139,9 @@ void QuickCalendar::setRosterId(const QString &id) {
 }
 QString QuickCalendar::calendarName() const { return m_calendar?m_calendar->getName():QString(); }
 void QuickCalendar::collectRetired() {
+    QSet<SeasonCalendar *> retainedCalendars;
+    if(m_save)for(const auto &season:m_save->getSeasonsReference())for(auto *calendar:season.getCalendars())retainedCalendars.insert(calendar);
+    for(const auto &stack:{m_history.undo,m_history.redo})for(const auto &state:stack)for(auto *calendar:state.calendars)retainedCalendars.insert(calendar);
     QSet<CompetitionInfo *> retained;
     QSet<Classification *> classes;
     if(m_save)for(const auto &season:m_save->getSeasonsReference())for(auto *calendar:season.getCalendars()){for(auto *event:calendar->getCompetitionsReference())retained.insert(event);for(auto *entry:calendar->getClassificationsReference())classes.insert(entry);}
@@ -146,6 +149,8 @@ void QuickCalendar::collectRetired() {
     retained.unite(m_live);
     for(const auto &stack:{m_history.undo,m_history.redo})for(const auto &state:stack){for(auto *event:state.order)retained.insert(event);for(auto *entry:state.classes)classes.insert(entry);for(auto *calendar:state.calendars){for(auto *event:calendar->getCompetitionsReference())retained.insert(event);for(auto *entry:calendar->getClassificationsReference())classes.insert(entry);}}
     for(auto *event:m_retired)if(!retained.contains(event))delete event;
+    for(auto *calendar:m_retiredCalendars)if(!retainedCalendars.contains(calendar))delete calendar;
+    m_retiredCalendars.intersect(retainedCalendars);
     m_retired.intersect(retained);for(auto *entry:m_retiredClasses)if(!classes.contains(entry))delete entry;m_retiredClasses.intersect(classes);
 }
 void QuickCalendar::clearUndo() {m_history=History{};collectRetired();}
@@ -512,7 +517,7 @@ void QuickCalendar::catalogAction(const QString &operation) {
     m_history.undo.append(capture());m_history.redo.clear();m_mutating=true;
     for(auto *action:list->findChildren<QAction *>(QString(),Qt::FindDirectChildrenOnly))if(action->shortcut().toString(QKeySequence::PortableText).endsWith(suffix)){action->trigger();break;}
     if(operation=="add")for(auto *calendar:*list->getCalendars())if(!old.contains(calendar)){m_newCalendarId=calendar->getIDStr();calendar->setName(tr("Nowy kalendarz %1").arg(list->getCalendars()->size()));selectCalendar(list->getCalendars()->indexOf(calendar));m_message=tr("Utworzono kalendarz. Dodaj konkursy lub wczytaj preset.");break;}
-    for(auto *calendar:old)if(!list->getCalendars()->contains(calendar)){for(auto *event:calendar->getCompetitionsReference())m_retired.insert(event);for(auto *entry:calendar->getClassificationsReference())m_retiredClasses.insert(entry);}
+    for(auto *calendar:old)if(!list->getCalendars()->contains(calendar)){m_retiredCalendars.insert(calendar);for(auto *event:calendar->getCompetitionsReference())m_retired.insert(event);for(auto *entry:calendar->getClassificationsReference())m_retiredClasses.insert(entry);}
     m_dirty=true;sync();m_mutating=false;
 }
 void QuickCalendar::preset(bool save) {

@@ -163,6 +163,7 @@ private:
     History m_history;
     QSet<CompetitionInfo *> m_retired,m_live;
     QSet<Classification *> m_retiredClasses,m_liveClasses;
+    QSet<SeasonCalendar *> m_retiredCalendars;
     const void *m_season=nullptr;
     QStringList m_selected,m_advancementLabels,m_advancementClassLabels;
     QVector<Classification *> m_advancementClasses;

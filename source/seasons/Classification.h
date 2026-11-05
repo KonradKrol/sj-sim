@@ -9,6 +9,8 @@
 #include "ClassificationSingleResult.h"
 #include "../seasons/SeasonCalendar.h"
 #include <dpp/dpp.h>
+#include <memory>
+#include <vector>
 
 class Season;
 class SimulationSave;
@@ -64,6 +66,7 @@ private:
     QMap<int, double> altPointsForPlaces;
 
     QVector<ClassificationSingleResult *> results;
+    std::vector<std::shared_ptr<ClassificationSingleResult>> ownedResults;
 
 public:
     short getClassificationType() const;
@@ -77,7 +80,9 @@ public:
     void setPunctationType(short newPunctationType);
     QVector<ClassificationSingleResult *> getResults() const;
     QVector<ClassificationSingleResult *> & getResultsReference();
+    // setResults/getResultsReference may borrow rows; heap rows use ownResult.
     void setResults(const QVector<ClassificationSingleResult *> &newResults);
+    ClassificationSingleResult *ownResult(std::unique_ptr<ClassificationSingleResult> result);
     QMap<int, double> getAltPointsForPlaces() const;
     QMap<int, double> & getAltPointsForPlacesReference();
     void setAltPointsForPlaces(const QMap<int, double> &newAltPointsForPlaces);

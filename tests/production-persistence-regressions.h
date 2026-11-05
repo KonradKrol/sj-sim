@@ -18,6 +18,15 @@ static void productionPersistenceRegressions() {
         check(actorModel.insertItem(0,&a) && hillModel.insertItem(0,&hill),"season models publish complete inserted objects");
         check(!actorModel.data(actorModel.index(5)).isValid(),"out-of-range data requests are safe");
     }
+    {
+        Jumper athlete("Owned","Row","POL");Classification ranking;
+        auto *row=ranking.ownResult(std::make_unique<ClassificationSingleResult>(&ranking,&athlete));row->setPointsSum(123.5);ranking.getResultsReference().append(row);
+        Classification snapshot=ranking;ranking.setResults({});
+        check(snapshot.getResults().size()==1 && snapshot.getResults().first()->getPointsSum()==123.5,"classification snapshots retain owned result rows after live membership changes");
+        ranking=snapshot;snapshot.setResults({});check(ranking.getResults().first()->getPointsSum()==123.5,"restoring a snapshot retains ownership independently of history");
+        ClassificationSingleResult borrowed(&ranking,&athlete);ranking.setResults({&borrowed});ranking.setResults({});borrowed.setPointsSum(7);
+        check(borrowed.getPointsSum()==7,"borrowed stack rows are never adopted or deleted");
+    }
     auto *settings=GlobalAppSettings::get();
     check(settings->getLiveCompetition() && settings->getLiveCompetitionSpeedMulti()==1
         && settings->getShowCalendarEditorHelp() && settings->getShowSeasonJumpersAndHillsHelp(),"application settings have deterministic safe defaults before loading");
