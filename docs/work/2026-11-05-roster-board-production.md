@@ -25,6 +25,21 @@ QTemporaryDir potwierdziła odrzucanie wyjścia poza katalog i symlinków.
 Pozostaje trwały test regresji i jasna informacja o odrzuconej nazwie w UI.
 Nie uznawać całego punktu 1 za skończony.
 
-Nowy ekran list NIE JEST jeszcze zaimplementowany. Punkty 2–10 raportu
-NIE SĄ jeszcze naprawione. Nie deklarować zakończenia tych prac.
+Wspólny ekran list jest zaimplementowany: RosterBoard.qml,
+RosterBoardLane.qml, RosterBoardAthlete.qml; wersja robocza i transakcja
+w SimulationSaveManagerWindow. Wejścia „Rozdziel” w przeglądzie i
+„Rozdziel zawodników” w sekcji list. Dwa układy, chipy, przenoszenie
+wyłącznie między wybranymi listami, przeciąganie, przewijanie krawędziowe,
+alternatywa wybór + przycisk, jawne Zastosuj, odrzucanie i ostrzeżenie
+przy zamykaniu sezonu. Wersja robocza przetrwa przełączanie sekcji sezonu.
+Konflikt z zewnętrzną edycją lub usuniętym skoczkiem blokuje całą transakcję.
+Limity krajów i aktywna lista pozostają zachowane.
+
+Build i --roster-workspace-only PASS (600 zawodników, prawdziwe zdarzenia
+myszy, zmiana układu, konflikt transakcji, ukryta lista, odrzucanie).
+Sprawdzone zrzuty /tmp/sj-roster-board.png i /tmp/sj-roster-board-lists.png.
+EN/CS uzupełnione, check-translations.py i git diff --check PASS.
+Nie deklarować jeszcze zakończenia 10 punktów raportu.
+Punkty 2 i 4 są rozpoczęte w drzewie roboczym; wymagają własnych testów
+oraz osobnych commitów. Pozostałe 3 i 5–10 nadal do wykonania.
 Pracować bez subagentów, poza main; osobne commity i push po każdym.

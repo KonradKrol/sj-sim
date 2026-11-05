@@ -7,14 +7,21 @@ Item {
     objectName: "seasonRostersWorkspace"
     property var node
     readonly property var backend: node ? node.values.backend : null
+    readonly property bool boardOpen: backend && backend.rosterBoardOpen
     readonly property bool narrow: width < Theme.dp(1050)
     readonly property bool hasSelection: !!backend && backend.editingRosterId.length>0
+    Loader {
+        anchors.fill: parent; active: workspace.boardOpen
+        sourceComponent: Component { RosterBoard { backend: workspace.backend; onFinished: workspace.backend.setRosterBoardOpen(false) } }
+    }
     ColumnLayout {
+        visible: !workspace.boardOpen
         anchors.fill: parent; spacing: Theme.dp(workspace.height < 500 ? 4 : 12)
         RowLayout {
-            visible: !workspace.narrow
+            visible: true
             Layout.fillWidth: true
             Label { text: qsTr("Listy zawodników"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
+            SButton { text: qsTr("Rozdziel zawodników"); primary: true; enabled: workspace.backend.rosterEntries.length>0; onClicked: workspace.backend.setRosterBoardOpen(true) }
             SButton { visible: workspace.backend.canRestoreRoster; text: qsTr("Cofnij usunięcie"); quiet: true; onClicked: workspace.backend.restoreRoster() }
             SButton { objectName: workspace.narrow ? "" : "rosterCreate"; text: qsTr("Nowa lista"); primary: !workspace.hasSelection; onClicked: {workspace.forceActiveFocus();workspace.backend.createRoster()} }
         }

@@ -6,6 +6,9 @@
 #include "ui_SimulationSaveManagerWindow.h"
 #include "../../global/GlobalAppSettings.h"
 #include "../../global/CountryFlagsManager.h"
+#include "../../global/CountryCodes.h"
+#include <QDir>
+#include <QUrl>
 #include "../../global/GlobalDatabase.h"
 #include "../../utilities/functions.h"
 #include "../../competitions/CompetitionManagers/IndividualCompetitionManager.h"
@@ -1644,4 +1647,109 @@ void SimulationSaveManagerWindow::on_checkBox_showInstability_stateChanged(int a
 void SimulationSaveManagerWindow::saveSimulationSettings()
 {
     markSeasonChanged();
+}
+
+
+QVariantMap SimulationSaveManagerWindow::rosterBoard() const
+{
+    QVariantList athletes;
+    for (auto *athlete : simulationSave->getJumpers()) if (athlete)
+        athletes.append(QVariantMap{{"athleteId", athlete->getIDStr()}, {"athleteName", athlete->getNameAndSurname()}, {"countryCode", athlete->getCountryCode()}, {"flagSource", QUrl::fromLocalFile(QDir::current().absoluteFilePath("flags/"+CountryCodes::toIso(athlete->getCountryCode())+".svg")).toString()}});
+    return {{"athletes", athletes}, {"members", boardDraft}};
+}
+
+void SimulationSaveManagerWindow::beginRosterBoard()
+{
+    if (rosterBoardDirty()) return;
+    boardBaseline.clear();
+    for (const auto &list : simulationSave->getJumpersLists()) {
+        QStringList ids;
+        for (auto *athlete : list.getJumpers()) if (athlete) ids.append(athlete->getIDStr());
+        boardBaseline.insert(list.getId(), ids);
+    }
+    boardDraft = boardBaseline;
+    emit rosterBoardChanged();
+}
+
+bool SimulationSaveManagerWindow::editRosterBoard(const QString &athleteId, const QString &destination, const QStringList &selected, bool exclusive)
+{
+    bool exists = false;
+    for (auto *athlete : simulationSave->getJumpers()) if (athlete && athlete->getIDStr() == athleteId) exists = true;
+    if (!exists || (!destination.isEmpty() && (!selected.contains(destination) || !boardDraft.contains(destination)))) return false;
+    for (const auto &id : selected) {
+        if (!boardDraft.contains(id)) continue;
+        auto members = boardDraft.value(id).toStringList();
+        if (id == destination) {
+            if (!members.contains(athleteId)) members.append(athleteId);
+        } else if (exclusive || destination.isEmpty()) members.removeAll(athleteId);
+        boardDraft.insert(id, members);
+    }
+    emit rosterBoardChanged();
+    return true;
+}
+
+bool SimulationSaveManagerWindow::applyRosterBoard()
+{
+    QHash<QString, Jumper *> athletes;
+    for (auto *athlete : simulationSave->getJumpers()) if (athlete) athletes.insert(athlete->getIDStr(), athlete);
+    QMap<QString, QVector<Jumper *>> replacements;
+    const auto lists = simulationSave->getJumpersLists();
+    for (auto it = boardDraft.cbegin(); it != boardDraft.cend(); ++it) {
+        if (it.value() == boardBaseline.value(it.key())) continue;
+        const SaveJumpersList *current = nullptr;
+        for (const auto &list : lists) if (list.getId() == it.key()) current = &list;
+        QStringList currentIds;
+        if (current) for (auto *athlete : current->getJumpers()) if (athlete) currentIds.append(athlete->getIDStr());
+        if (!current || currentIds != boardBaseline.value(it.key()).toStringList()) {
+            rosterNoticeText = tr("Lista zmieniła się poza edytorem. Odrzuć wersję roboczą i otwórz ją ponownie.");
+            emit rosterChoicesChanged(); return false;
+        }
+        QVector<Jumper *> members;
+        for (const auto &id : it.value().toStringList()) {
+            if (!athletes.contains(id)) {
+                rosterNoticeText = tr("Jeden ze skoczków został usunięty. Odrzuć wersję roboczą i otwórz ją ponownie.");
+                emit rosterChoicesChanged(); return false;
+            }
+            if (!members.contains(athletes.value(id))) members.append(athletes.value(id));
+        }
+        replacements.insert(it.key(), members);
+    }
+    for (auto &list : simulationSave->getJumpersListsReference()) if (replacements.contains(list.getId())) list.setJumpers(replacements.value(list.getId()));
+    if (!replacements.isEmpty()) {
+        if (seasonRosterEditor) { seasonRosterEditor->setSeasonRoster(QString()); seasonRosterEditor->setSeasonRoster(editedRosterId); }
+        markSeasonChanged(); publishRosters();
+    }
+    boardBaseline = boardDraft;
+    rosterNoticeText.clear();
+    emit rosterBoardChanged();
+    return true;
+}
+
+void SimulationSaveManagerWindow::discardRosterBoard()
+{
+    boardDraft = boardBaseline;
+    rosterNoticeText.clear();
+    emit rosterChoicesChanged();
+    beginRosterBoard();
+}
+
+void SimulationSaveManagerWindow::reject()
+{
+    if (rosterBoardDirty()) {
+        QMessageBox question(QMessageBox::Question, tr("Niezastosowane zmiany"),
+            tr("Opuścić sezon i odrzucić zmiany we wspólnym edytorze list?"), QMessageBox::NoButton, this);
+        auto *discard = question.addButton(tr("Odrzuć zmiany"), QMessageBox::DestructiveRole);
+        auto *cancel = question.addButton(tr("Wróć do edycji"), QMessageBox::RejectRole);
+        question.setDefaultButton(cancel); question.exec();
+        if (question.clickedButton() != discard) return;
+    }
+    QDialog::reject();
+}
+
+void SimulationSaveManagerWindow::setRosterBoardOpen(bool open)
+{
+    if (boardIsOpen == open) return;
+    boardIsOpen = open;
+    emit rosterBoardOpenChanged();
+    if (open) openRosterWorkspace();
 }

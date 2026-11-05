@@ -18417,6 +18417,30 @@ li.checked::marker { content: "\2612"; }
         <message><source>Sprawdź kwalifikacje</source><translation>Check qualifications</translation></message>
 
         <message><source>Kwalifikacje i konkurs główny muszą mieć ten sam rodzaj oraz zgodną liczbę zawodników w drużynie.</source><translation>Qualification and the main competition must use the same competition type and compatible team sizes.</translation></message>
+    <message>
+        <source>Jeden ze skoczków został usunięty. Odrzuć wersję roboczą i otwórz ją ponownie.</source>
+        <translation>An athlete was deleted. Discard the draft and reopen it.</translation>
+    </message>
+    <message>
+        <source>Lista zmieniła się poza edytorem. Odrzuć wersję roboczą i otwórz ją ponownie.</source>
+        <translation>The list changed outside this editor. Discard the draft and reopen it.</translation>
+    </message>
+    <message>
+        <source>Niezastosowane zmiany</source>
+        <translation>Unapplied changes</translation>
+    </message>
+    <message>
+        <source>Odrzuć zmiany</source>
+        <translation>Discard changes</translation>
+    </message>
+    <message>
+        <source>Opuścić sezon i odrzucić zmiany we wspólnym edytorze list?</source>
+        <translation>Leave the season and discard changes in the shared roster editor?</translation>
+    </message>
+    <message>
+        <source>Wróć do edycji</source>
+        <translation>Keep editing</translation>
+    </message>
 </context>
     <context>
         <name>SimulationSavesWindow</name>
@@ -23424,6 +23448,14 @@ Technical key: %4</translation>
 <message><source>Zarządzaj</source><translation>Manage</translation></message>
 
         <message><source>Listy zawodników</source><translation>Jumper lists</translation></message>
+    <message>
+        <source>Rozdziel</source>
+        <translation>Assign</translation>
+    </message>
+    <message>
+        <source>Wspólny edytor ma niezastosowane zmiany.</source>
+        <translation>The shared editor has unapplied changes.</translation>
+    </message>
 </context>
 <context><name>SavedRosterWorkspace</name><message><source>Cofnij</source><translation>Undo</translation></message><message><source>Według krajów</source><translation>By country</translation></message><message><source>Kolejność</source><translation>Order</translation></message><message><source>Limity krajów</source><translation>Country limits</translation></message><message><source>Wszyscy</source><translation>All</translation></message><message><source>Wybrani (%1)</source><translation>Selected (%1)</translation></message><message><source>Wybrani zawodnicy</source><translation>Selected athletes</translation></message></context>
 <context><name>SavedRosterPane</name><message><source>Wybrani zawodnicy</source><translation>Selected athletes</translation></message><message><source>Wszyscy zawodnicy</source><translation>All athletes</translation></message><message><source>Szukaj nazwiska lub kraju</source><translation>Search by name or country</translation></message><message><source>Usuń %1 z listy</source><translation>Remove %1 from the list</translation></message><message><source>Dodaj %1 do listy</source><translation>Add %1 to the list</translation></message><message><source>Lista jest pusta</source><translation>The list is empty</translation></message><message><source>Brak pasujących zawodników</source><translation>No matching athletes</translation></message><message><source>Pusta lista oznacza wszystkich zawodników. Dodaj wybranych, aby ograniczyć skład.</source><translation>An empty list includes all athletes. Add athletes to restrict the roster.</translation></message><message><source>Zmień nazwisko lub kraj, aby zobaczyć innych zawodników.</source><translation>Change the name or country to see other athletes.</translation></message><message><source>Usuń zaznaczonych (%1)</source><translation>Remove selected (%1)</translation></message><message><source>Dodaj zaznaczonych (%1)</source><translation>Add selected (%1)</translation></message><message><source>Dodaj widocznych</source><translation>Add visible</translation></message></context>
@@ -23436,6 +23468,10 @@ Technical key: %4</translation>
 <message><source>Usuń</source><translation>Delete</translation></message>
 
         <message><source>Lista do edycji</source><translation>List to edit</translation></message>
+    <message>
+        <source>Rozdziel zawodników</source>
+        <translation>Assign athletes</translation>
+    </message>
 </context>
     <context><name>CompetitionRulesListModel</name>
         <message><source>Nowe zasady</source><translation>New rules</translation></message>
@@ -23504,5 +23540,86 @@ Close the previous Sj.Sim window and try again.</translation></message></context
     <message><source>Punkty odejmowane za 1 m/s wiatru pod narty, gdy włączono rekompensatę.</source><translation>Points deducted for 1 m/s headwind when compensation is enabled.</translation></message>
 
     <message><source>Wartość wynosi 1,5 razy punkty za wiatr pod narty, maksymalnie 100.</source><translation>This is 1.5 times the headwind points, capped at 100.</translation></message>
+</context>
+<context>
+    <name>RosterBoard</name>
+    <message>
+        <source>Jeden skoczek na jednej wybranej liście</source>
+        <translation>One athlete per selected list</translation>
+    </message>
+    <message>
+        <source>Kraje → listy</source>
+        <translation>Countries → lists</translation>
+    </message>
+    <message>
+        <source>Listy → kraje</source>
+        <translation>Lists → countries</translation>
+    </message>
+    <message>
+        <source>Nazwisko lub kraj</source>
+        <translation>Name or country</translation>
+    </message>
+    <message>
+        <source>Niezastosowane zmiany</source>
+        <translation>Unapplied changes</translation>
+    </message>
+    <message>
+        <source>Odrzucić zmiany we wspólnym edytorze list?</source>
+        <translation>Discard changes in the shared roster editor?</translation>
+    </message>
+    <message>
+        <source>Odrzuć zmiany</source>
+        <translation>Discard changes</translation>
+    </message>
+    <message>
+        <source>Przeciągnij na listę lub wybierz skoczka i kliknij + na liście.</source>
+        <translation>Drag onto a list, or select an athlete and click + on the list.</translation>
+    </message>
+    <message>
+        <source>Pusta lista oznacza wszystkich skoczków. Zmiany dotyczą wyłącznie wybranych list.</source>
+        <translation>An empty list includes all athletes. Changes affect selected lists only.</translation>
+    </message>
+    <message>
+        <source>Rozdziel zawodników</source>
+        <translation>Assign athletes</translation>
+    </message>
+    <message>
+        <source>Wróć</source>
+        <translation>Back</translation>
+    </message>
+    <message>
+        <source>Wróć do edycji</source>
+        <translation>Keep editing</translation>
+    </message>
+    <message>
+        <source>Wszyscy skoczkowie</source>
+        <translation>All athletes</translation>
+    </message>
+    <message>
+        <source>Wybierz listy u góry. Ukryte listy pozostaną bez zmian.</source>
+        <translation>Select lists above. Hidden lists remain unchanged.</translation>
+    </message>
+    <message>
+        <source>Zastosuj</source>
+        <translation>Apply</translation>
+    </message>
+</context>
+<context>
+    <name>RosterBoardAthlete</name>
+    <message>
+        <source>Usuń z listy</source>
+        <translation>Remove from list</translation>
+    </message>
+</context>
+<context>
+    <name>RosterBoardLane</name>
+    <message>
+        <source>Dodaj wybranego skoczka</source>
+        <translation>Add selected athlete</translation>
+    </message>
+    <message>
+        <source>Przeciągnij tutaj skoczków</source>
+        <translation>Drop athletes here</translation>
+    </message>
 </context>
 </TS>

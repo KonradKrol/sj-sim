@@ -18418,6 +18418,30 @@ li.checked::marker { content: "\2612"; }
         <message><source>Sprawdź kwalifikacje</source><translation>Zkontrolujte kvalifikaci</translation></message>
 
         <message><source>Kwalifikacje i konkurs główny muszą mieć ten sam rodzaj oraz zgodną liczbę zawodników w drużynie.</source><translation>Kvalifikace a hlavní závod musí mít stejný typ a odpovídající počet skokanů v týmu.</translation></message>
+    <message>
+        <source>Jeden ze skoczków został usunięty. Odrzuć wersję roboczą i otwórz ją ponownie.</source>
+        <translation>Jeden ze závodníků byl odstraněn. Zahoďte koncept a znovu jej otevřete.</translation>
+    </message>
+    <message>
+        <source>Lista zmieniła się poza edytorem. Odrzuć wersję roboczą i otwórz ją ponownie.</source>
+        <translation>Seznam byl změněn mimo editor. Zahoďte koncept a znovu jej otevřete.</translation>
+    </message>
+    <message>
+        <source>Niezastosowane zmiany</source>
+        <translation>Nepoužité změny</translation>
+    </message>
+    <message>
+        <source>Odrzuć zmiany</source>
+        <translation>Zahodit změny</translation>
+    </message>
+    <message>
+        <source>Opuścić sezon i odrzucić zmiany we wspólnym edytorze list?</source>
+        <translation>Opustit sezónu a zahodit změny ve společném editoru seznamů?</translation>
+    </message>
+    <message>
+        <source>Wróć do edycji</source>
+        <translation>Pokračovat v úpravách</translation>
+    </message>
 </context>
     <context>
         <name>SimulationSavesWindow</name>
@@ -23425,6 +23449,14 @@ Technický klíč: %4</translation>
 <message><source>Zarządzaj</source><translation>Spravovat</translation></message>
 
         <message><source>Listy zawodników</source><translation>Seznamy skokanů</translation></message>
+    <message>
+        <source>Rozdziel</source>
+        <translation>Rozdělit</translation>
+    </message>
+    <message>
+        <source>Wspólny edytor ma niezastosowane zmiany.</source>
+        <translation>Společný editor obsahuje nepoužité změny.</translation>
+    </message>
 </context>
 <context><name>SavedRosterWorkspace</name><message><source>Cofnij</source><translation>Zpět</translation></message><message><source>Według krajów</source><translation>Podle zemí</translation></message><message><source>Kolejność</source><translation>Pořadí</translation></message><message><source>Limity krajów</source><translation>Limity zemí</translation></message><message><source>Wszyscy</source><translation>Všichni</translation></message><message><source>Wybrani (%1)</source><translation>Vybraní (%1)</translation></message><message><source>Wybrani zawodnicy</source><translation>Vybraní závodníci</translation></message></context>
 <context><name>SavedRosterPane</name><message><source>Wybrani zawodnicy</source><translation>Vybraní závodníci</translation></message><message><source>Wszyscy zawodnicy</source><translation>Všichni závodníci</translation></message><message><source>Szukaj nazwiska lub kraju</source><translation>Hledat jméno nebo zemi</translation></message><message><source>Usuń %1 z listy</source><translation>Odstranit %1 ze seznamu</translation></message><message><source>Dodaj %1 do listy</source><translation>Přidat %1 do seznamu</translation></message><message><source>Lista jest pusta</source><translation>Seznam je prázdný</translation></message><message><source>Brak pasujących zawodników</source><translation>Žádní odpovídající závodníci</translation></message><message><source>Pusta lista oznacza wszystkich zawodników. Dodaj wybranych, aby ograniczyć skład.</source><translation>Prázdný seznam zahrnuje všechny závodníky. Přidáním závodníků omezíte sestavu.</translation></message><message><source>Zmień nazwisko lub kraj, aby zobaczyć innych zawodników.</source><translation>Změňte jméno nebo zemi pro zobrazení dalších závodníků.</translation></message><message><source>Usuń zaznaczonych (%1)</source><translation>Odstranit vybrané (%1)</translation></message><message><source>Dodaj zaznaczonych (%1)</source><translation>Přidat vybrané (%1)</translation></message><message><source>Dodaj widocznych</source><translation>Přidat zobrazené</translation></message></context>
@@ -23437,6 +23469,10 @@ Technický klíč: %4</translation>
 <message><source>Usuń</source><translation>Smazat</translation></message>
 
         <message><source>Lista do edycji</source><translation>Seznam k úpravě</translation></message>
+    <message>
+        <source>Rozdziel zawodników</source>
+        <translation>Rozdělit závodníky</translation>
+    </message>
 </context>
     <context><name>CompetitionRulesListModel</name>
         <message><source>Nowe zasady</source><translation>Nová pravidla</translation></message>
@@ -23505,5 +23541,86 @@ Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></con
     <message><source>Punkty odejmowane za 1 m/s wiatru pod narty, gdy włączono rekompensatę.</source><translation>Body odečtené za 1 m/s protivětru při zapnuté kompenzaci.</translation></message>
 
     <message><source>Wartość wynosi 1,5 razy punkty za wiatr pod narty, maksymalnie 100.</source><translation>Hodnota je 1,5násobkem bodů za protivítr, nejvýše 100.</translation></message>
+</context>
+<context>
+    <name>RosterBoard</name>
+    <message>
+        <source>Jeden skoczek na jednej wybranej liście</source>
+        <translation>Jeden závodník na jednom vybraném seznamu</translation>
+    </message>
+    <message>
+        <source>Kraje → listy</source>
+        <translation>Země → seznamy</translation>
+    </message>
+    <message>
+        <source>Listy → kraje</source>
+        <translation>Seznamy → země</translation>
+    </message>
+    <message>
+        <source>Nazwisko lub kraj</source>
+        <translation>Jméno nebo země</translation>
+    </message>
+    <message>
+        <source>Niezastosowane zmiany</source>
+        <translation>Nepoužité změny</translation>
+    </message>
+    <message>
+        <source>Odrzucić zmiany we wspólnym edytorze list?</source>
+        <translation>Zahodit změny ve společném editoru seznamů?</translation>
+    </message>
+    <message>
+        <source>Odrzuć zmiany</source>
+        <translation>Zahodit změny</translation>
+    </message>
+    <message>
+        <source>Przeciągnij na listę lub wybierz skoczka i kliknij + na liście.</source>
+        <translation>Přetáhněte na seznam, nebo vyberte závodníka a klikněte na + u seznamu.</translation>
+    </message>
+    <message>
+        <source>Pusta lista oznacza wszystkich skoczków. Zmiany dotyczą wyłącznie wybranych list.</source>
+        <translation>Prázdný seznam zahrnuje všechny závodníky. Změny se týkají pouze vybraných seznamů.</translation>
+    </message>
+    <message>
+        <source>Rozdziel zawodników</source>
+        <translation>Rozdělit závodníky</translation>
+    </message>
+    <message>
+        <source>Wróć</source>
+        <translation>Zpět</translation>
+    </message>
+    <message>
+        <source>Wróć do edycji</source>
+        <translation>Pokračovat v úpravách</translation>
+    </message>
+    <message>
+        <source>Wszyscy skoczkowie</source>
+        <translation>Všichni závodníci</translation>
+    </message>
+    <message>
+        <source>Wybierz listy u góry. Ukryte listy pozostaną bez zmian.</source>
+        <translation>Vyberte seznamy nahoře. Skryté seznamy zůstanou beze změn.</translation>
+    </message>
+    <message>
+        <source>Zastosuj</source>
+        <translation>Použít</translation>
+    </message>
+</context>
+<context>
+    <name>RosterBoardAthlete</name>
+    <message>
+        <source>Usuń z listy</source>
+        <translation>Odebrat ze seznamu</translation>
+    </message>
+</context>
+<context>
+    <name>RosterBoardLane</name>
+    <message>
+        <source>Dodaj wybranego skoczka</source>
+        <translation>Přidat vybraného závodníka</translation>
+    </message>
+    <message>
+        <source>Przeciągnij tutaj skoczków</source>
+        <translation>Přetáhněte závodníky sem</translation>
+    </message>
 </context>
 </TS>

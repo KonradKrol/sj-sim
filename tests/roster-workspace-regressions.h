@@ -61,6 +61,35 @@ static void rosterWorkspaceRegressions(MainWindow &main) {
         check(manager.editingRosterId()==first && manager.activeRosterId()==active && managerBridge->root()->values().value("value").toInt()>0,"overview roster cards open the chosen editor without changing the active roster");
         managerBridge->edit(managerBridge->root()->values().value("id").toInt(),0);QTest::qWait(100);manager.openRosterWorkspace(first);QTest::qWait(100);
         check(managerBridge->root()->values().value("value").toInt()>0,"Manage navigates even when the underlying native roster tab was already selected");
+        const auto third=manager.createRoster();
+        manager.setRosterMembers(first,{owned[0],owned[1]});
+        manager.setRosterMembers(second,{owned[2]});manager.setRosterMembers(third,{owned[0]});
+        manager.beginRosterBoard();
+        check(manager.editRosterBoard(owned[0]->getIDStr(),second,{first,second},true),"board moves athlete between selected lists");
+        check(manager.rosterBoardDirty() && save.getJumpersLists()[0].getJumpers().contains(owned[0]),"draft does not mutate live roster");
+        check(manager.applyRosterBoard() && !manager.rosterBoardDirty(),"board applies the complete transaction");
+        check(!save.getJumpersLists()[0].getJumpers().contains(owned[0]) && save.getJumpersLists()[1].getJumpers().contains(owned[0]) && save.getJumpersLists()[2].getJumpers().contains(owned[0]),"exclusive movement preserves hidden rosters");
+        manager.beginRosterBoard();manager.editRosterBoard(owned[1]->getIDStr(),second,{first,second},false);
+        manager.setRosterMembers(second,{owned[4]});
+        check(!manager.applyRosterBoard() && !save.getJumpersLists()[1].getJumpers().contains(owned[1]),"conflicting external edits reject the complete draft");
+        manager.discardRosterBoard();check(!manager.rosterBoardDirty(),"discard restores current live membership");
+        auto *workspace=item(view->rootObject(),"seasonRostersWorkspace");check(workspace,"roster workspace remains available");
+        manager.setRosterBoardOpen(true);QTest::qWait(100);
+        check(item(view->rootObject(),"rosterBoardApply"),"combined roster board loads in the workspace");
+        auto *board=item(view->rootObject(),"rosterBoard");
+        auto *boardGrip=item(view->rootObject(),"rosterBoardGrip-"+owned[5]->getIDStr());
+        auto *lane=item(view->rootObject(),"rosterBoardLane-"+first+"-GER");
+        check(boardGrip && lane,"combined board exposes drag source and country/list target");
+        const auto boardStart=boardGrip->mapToItem(view->rootObject(),boardGrip->boundingRect().center()).toPoint(),boardEnd=lane->mapToItem(view->rootObject(),lane->boundingRect().center()).toPoint();
+        QTest::mousePress(view,Qt::LeftButton,Qt::NoModifier,boardStart);
+        for(int i=1;i<=12;++i){const auto point=boardStart+(boardEnd-boardStart)*i/12;QMouseEvent move(QEvent::MouseMove,point,view->mapToGlobal(point),Qt::NoButton,Qt::LeftButton,Qt::NoModifier);QApplication::sendEvent(view,&move);QTest::qWait(20);}
+        QTest::mouseRelease(view,Qt::LeftButton,Qt::NoModifier,boardEnd);QTest::qWait(80);
+        check(manager.rosterBoardDirty() && manager.rosterBoard().value("members").toMap().value(first).toStringList().contains(owned[5]->getIDStr()),"actual board drag changes the draft");
+        view->grabFramebuffer().save("/tmp/sj-roster-board.png");
+        board->setProperty("byCountry",false);presentation(&manager)->resize(1024,640);QTest::qWait(80);
+        view->grabFramebuffer().save("/tmp/sj-roster-board-lists.png");
+        manager.discardRosterBoard();
+        manager.setRosterBoardOpen(false);
         manager.reject();
     }
     qInfo()<<"PASS: atomic roster insertion/removal and repeated live grouping transitions";

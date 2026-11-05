@@ -12,6 +12,7 @@ ColumnLayout {
     RowLayout {
         Layout.fillWidth: true
         Label { text: choice.navigateOnSelection ? qsTr("Listy zawodników") : qsTr("Aktywna lista zawodników"); color: Theme.ink; font.pointSize: Theme.body; font.bold: true; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
+        SButton { text: qsTr("Rozdziel"); visible: !!choice.backend && choice.backend.rosterEntries.length>0; quiet: true; onClicked: choice.backend.setRosterBoardOpen(true) }
         SButton { text: qsTr("Zarządzaj"); quiet: true; implicitHeight: Theme.dp(28); font.pointSize: Theme.caption; padding: 2; onClicked: choice.backend.openRosterWorkspace() }
         SButton { objectName: "activeRosterCreate"; text: "+"; implicitHeight: Theme.dp(28); implicitWidth: Theme.dp(28); Accessible.name: qsTr("Nowa lista"); padding: 2; onClicked: choice.backend.createRoster() }
     }
@@ -31,5 +32,6 @@ ColumnLayout {
             onClicked: {if(choice.navigateOnSelection && modelData.id!=="-1")choice.backend.openRosterWorkspace(modelData.id);else choice.backend.selectActiveRoster(modelData.id)}
         }
     }
+    Label { visible: !!choice.backend && choice.backend.rosterBoardDirty; text: qsTr("Wspólny edytor ma niezastosowane zmiany."); color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     Label { visible: !!choice.backend && !!choice.backend.rosterNotice; text: choice.backend ? choice.backend.rosterNotice : ""; color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
 }

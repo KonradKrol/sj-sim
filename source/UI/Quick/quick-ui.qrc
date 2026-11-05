@@ -198,6 +198,9 @@
 <file>SeasonAutosave.qml</file>
 <file>SeasonRosterChoice.qml</file>
 <file>SeasonRostersWorkspace.qml</file>
+        <file>RosterBoard.qml</file>
+        <file>RosterBoardAthlete.qml</file>
+        <file>RosterBoardLane.qml</file>
 <file>RosterCard.qml</file>
 <file>SeasonFooter.qml</file>
 <file>SetupFooter.qml</file>

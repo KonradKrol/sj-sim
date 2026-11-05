@@ -28,6 +28,9 @@ class SimulationSaveManagerWindow;
 class SimulationSaveManagerWindow : public QDialog
 {
     Q_OBJECT
+    Q_PROPERTY(bool rosterBoardOpen READ rosterBoardOpen WRITE setRosterBoardOpen NOTIFY rosterBoardOpenChanged)
+    Q_PROPERTY(QVariantMap rosterBoard READ rosterBoard NOTIFY rosterBoardChanged)
+    Q_PROPERTY(bool rosterBoardDirty READ rosterBoardDirty NOTIFY rosterBoardChanged)
     Q_PROPERTY(QVariantList rosterEntries READ rosterEntries NOTIFY rosterChoicesChanged)
     Q_PROPERTY(QString editingRosterId READ editingRosterId NOTIFY rosterChoicesChanged)
     Q_PROPERTY(QString editingRosterName READ editingRosterName NOTIFY rosterChoicesChanged)
@@ -41,6 +44,7 @@ class SimulationSaveManagerWindow : public QDialog
 public:
     explicit SimulationSaveManagerWindow(SimulationSave * save, QWidget *parent = nullptr);
     ~SimulationSaveManagerWindow();
+    void reject() override;
 
     void showJumperAndHillsEditingHelp();
     void fillNextCompetitionInformations();
@@ -50,6 +54,14 @@ public:
     void markSeasonChanged();
     QVariantList rosterChoices() const;
     QVariantList rosterEntries() const;
+    bool rosterBoardOpen() const { return boardIsOpen; }
+    Q_INVOKABLE void setRosterBoardOpen(bool open);
+    QVariantMap rosterBoard() const;
+    bool rosterBoardDirty() const { return boardDraft != boardBaseline; }
+    Q_INVOKABLE void beginRosterBoard();
+    Q_INVOKABLE bool editRosterBoard(const QString &athleteId, const QString &destination, const QStringList &selected, bool exclusive);
+    Q_INVOKABLE bool applyRosterBoard();
+    Q_INVOKABLE void discardRosterBoard();
     QString editingRosterId() const { return editedRosterId; }
     QString editingRosterName() const;
     QObject *rosterEditor() const;
@@ -88,8 +100,12 @@ signals:
     void rosterWorkspaceRequested(int nativeIndex);
     void autosaveEnabledChanged();
     void rosterChoicesChanged();
+    void rosterBoardChanged();
+    void rosterBoardOpenChanged();
 
 private:
+    bool boardIsOpen=false;
+    QVariantMap boardDraft, boardBaseline;
     QuickRoster *seasonRosterEditor=nullptr;
     QString editedRosterId;
     bool rosterPublishPending=false;
