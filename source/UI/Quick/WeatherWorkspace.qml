@@ -23,7 +23,11 @@ ScrollView {
         width: workspace.availableWidth
         padding: Theme.dp(10)
         background: Item {}
-        contentItem: ColumnLayout {
+        contentItem: Item {
+            implicitHeight: weatherContent.implicitHeight
+            ColumnLayout {
+            id: weatherContent
+            width: parent.width
             spacing: Theme.dp(12)
             RowLayout {
                 Layout.fillWidth: true
@@ -103,6 +107,7 @@ ScrollView {
             }
             Label { visible: !!text; text: workspace.backend.message; color: Theme.danger; font.pointSize: Theme.body; wrapMode: Text.WordWrap; Layout.fillWidth: true }
         }
+    }
     }
     EmptyState {
         visible: !workspace.values.ready

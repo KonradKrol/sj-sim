@@ -31,6 +31,7 @@ GridLayout {
     RowLayout {
         Layout.columnSpan: controls.width<800 ? 2 : 1
         Layout.fillWidth: true; spacing: Theme.dp(4)
+        SButton { text: qsTr("Odczekaj 30 s"); dense: true; font.pointSize: Theme.caption; readonly property var waitControl: ui.find("pushButton_generateNewWinds"); visible: !ui.context.complete; enabled: !!waitControl && waitControl.values.enabled; onClicked: if(waitControl)ui.activate(waitControl.values.id) }
         Label { text: qsTr("Opcje"); color: Theme.muted; font.pointSize: Theme.caption }
         Repeater {
             model: [qsTr("Przebieg"),qsTr("Warunki"),qsTr("Skok")]
