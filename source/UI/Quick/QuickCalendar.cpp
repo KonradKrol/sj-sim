@@ -281,8 +281,21 @@ void QuickCalendar::update(const QVariantMap &fields) {
     }
     if(fields.contains("kind"))for(auto *event:items)if(referencedByHistory(event)&&fields.value("kind").toInt()!=event->getRules().getCompetitionType()){fail(tr("Konkurs jest powiązany z rozegranymi kwalifikacjami."));return;}
     if(fields.contains("rules") && fields.value("rules").toInt()>0)for(auto *event:items)if(referencedByHistory(event)&&rules->at(fields.value("rules").toInt()-1).getCompetitionType()!=event->getRules().getCompetitionType()){fail(tr("Konkurs jest powiązany z rozegranymi kwalifikacjami."));return;}
+    const auto proposedRules=[&](CompetitionInfo *event){
+        auto candidate=event->getRules();
+        if(fields.value("rules").toInt()>0)candidate=rules->at(fields.value("rules").toInt()-1);
+        if(fields.contains("kind") || (fields.contains("type") && fields.value("rules").toInt()<=0)){
+            const int kind=fields.contains("kind")?fields.value("kind").toInt():candidate.getCompetitionType();
+            const int type=fields.contains("type")?fields.value("type").toInt():event->getSerieType();
+            const auto role=type==CompetitionInfo::Qualifications?"qualifications":type==CompetitionInfo::Training?"training":type==CompetitionInfo::TrialRound?(kind==CompetitionRules::Team?"teamTrial":"trial"):(kind==CompetitionRules::Team?"teamCompetition":"competition");
+            const auto defaults=defaultRule(role);
+            if(defaults.getCompetitionType()==kind)candidate=defaults;
+            else if(fields.contains("kind"))candidate=defaultRule(kind==CompetitionRules::Team?"teamCompetition":"competition");
+        }
+        return candidate;
+    };
     for(auto *event:items){int kind=event->getRules().getCompetitionType();if(fields.contains("rules") && fields.value("rules").toInt()>0)kind=rules->at(fields.value("rules").toInt()-1).getCompetitionType();if(fields.contains("kind"))kind=fields.value("kind").toInt();
-        auto candidate=event->getRules();if(fields.value("rules").toInt()>0)candidate=rules->at(fields.value("rules").toInt()-1);if(fields.contains("kind"))candidate=defaultRule(kind==CompetitionRules::Team?"teamCompetition":"competition");
+        const auto candidate=proposedRules(event);
         if(auto *source=m_calendar->teamSquadLock(event);source && (candidate.getCompetitionType()!=CompetitionRules::Team || candidate.getJumpersInTeamCount()!=source->getRules().getJumpersInTeamCount())){fail(tr("Składy są już ustalone. Nie można zmienić rodzaju konkursu ani liczby zawodników w drużynie."));return;}
         if(kind==CompetitionRules::Team && fields.contains("trialRules") && fields.value("trialRules").toInt()>1 && rules->at(fields.value("trialRules").toInt()-2).getCompetitionType()!=CompetitionRules::Team){fail(tr("Przed drużynówką wybierz drużynowe zasady próbnej. Trening może być indywidualny."));return;}
         if(fields.contains("advancementClass")){auto *source=m_advancementClasses.value(fields.value("advancementClass").toInt());if(source && source->getClassificationType()!=kind){fail(tr("Źródło awansu musi mieć ten sam rodzaj konkursu."));return;}}
@@ -292,8 +305,7 @@ void QuickCalendar::update(const QVariantMap &fields) {
     m_message=tr("Zmiany zapisane w kalendarzu");
     mutate([&]{for(auto *e:items){
         if(fields.contains("hill")){e->setHill(hills->at(fields.value("hill").toInt()));for(auto *t:e->getTrainings())t->setHill(e->getHill());if(e->getTrialRound())e->getTrialRound()->setHill(e->getHill());}
-        if(fields.contains("rules")&&fields.value("rules").toInt()>0)e->setRules(rules->at(fields.value("rules").toInt()-1));
-        if(fields.contains("kind"))e->setRules(defaultRule(fields.value("kind").toInt()==CompetitionRules::Team?"teamCompetition":"competition"));
+        if(fields.contains("rules") || fields.contains("kind") || fields.contains("type"))e->setRules(proposedRules(e));
         if(fields.contains("type"))e->setSerieType(fields.value("type").toInt());
         if(fields.contains("importance"))e->setJumpsImportance(fields.value("importance").toDouble());
         if(fields.contains("trainings")){

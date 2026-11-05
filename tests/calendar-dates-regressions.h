@@ -13,6 +13,17 @@ static void calendarDateRegressions()
         auto *cal=new SeasonCalendar("Qualification planning");auto *event=new CompetitionInfo(fixture.getHillsReference().first());event->setRules(firstRules);event->setScheduledDate(QDate(2026,12,10));cal->setCompetitions({event});
         Season season;season.setSeasonNumber(2026);season.setCalendars({cal});season.setActualCalendar(cal);fixture.setSeasons({season});fixture.setActualSeason(&fixture.getSeasonsReference().first());
         CalendarEditorTableModel model(cal,&fixture.getHillsReference(),&fixture.getCompetitionRulesReference());CalendarEditorWidget editor(&model,&cal->getClassificationsReference());editor.setSave(&fixture);QuickCalendar planner(&editor,&editor);
+        planner.select(event->getIDStr());planner.setDefaultRule("qualifications",2);
+        planner.update({{"type",CompetitionInfo::Qualifications}});
+        check(event->getRules().getIDStr()==qualifying.getIDStr(),"conversion to qualifications applies the calendar qualification default");
+        planner.undo();check(event->getSerieType()==CompetitionInfo::Competition,"undo restores event type and rules together");
+        planner.redo();planner.update({{"rules",1}});planner.update({{"type",CompetitionInfo::Competition}});planner.update({{"type",CompetitionInfo::Qualifications}});
+        check(event->getRules().getIDStr()==qualifying.getIDStr(),"every conversion to qualifications reapplies the calendar default");
+        planner.update({{"type",CompetitionInfo::Competition}});
+        planner.setDefaultRule("training",2);planner.setDefaultRule("trial",2);
+        planner.update({{"trainings",1},{"trial",true}});
+        check(event->getTrainings().first()->getRules().getIDStr()==qualifying.getIDStr() && event->getTrialRound()->getRules().getIDStr()==qualifying.getIDStr(),"new trainings and trial rounds use their own calendar defaults");
+        planner.undo();
         planner.setDatesEnabled(true);planner.setDefaultRule("qualifications",2);planner.select(event->getIDStr());planner.addQualifications(1);
         check(cal->getCompetitions().size()==2 && event->getAdvancementCompetition() && event->getAdvancementCompetition()->getScheduledDate()==QDate(2026,12,9) && event->getAdvancementCompetition()->getRules().getName()==qualifying.getName(),"bulk qualifications use calendar default, previous day and actual advancement link");
         planner.addQualifications(1);check(cal->getCompetitions().size()==2,"repeated qualification action never duplicates existing links");planner.undo();check(cal->getCompetitions().size()==1 && !event->getAdvancementCompetition(),"qualification planning can be undone as one operation");

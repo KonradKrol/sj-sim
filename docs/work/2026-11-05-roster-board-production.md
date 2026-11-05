@@ -172,3 +172,11 @@ Końcowa spójność edytora list: przycisk „+” w sekcji kraju przyjmuje tyl
 skoczka z tego kraju, tak jak przeciąganie. Zapobiega dodaniu do niewidocznej
 sekcji innego kraju. Ponowny build i --roster-workspace-only PASS
 (/tmp/sj-roster-final-test.log). Aktualna kolejka tego zakresu jest pusta.
+
+Nowe poprawki po zamknięciu raportu: każda zmiana rodzaju wydarzenia na
+kwalifikacje wybiera jego domyślne zasady kalendarza, także przy ponownym
+przełączeniu. Konkurs wraca do domyślnych zasad konkursu. Nowe treningi
+oraz próbne używają swoich osobnych domyślnych zasad. Jawne wskazanie zasad
+w tym samym poleceniu ma pierwszeństwo. Zachowana zgodność rodzaju drużynowego.
+Regresje zmiany, ponownego przełączenia, undo i domyślnych zasad treningów/
+próbnej PASS --dates-only (/tmp/sj-calendar-planning-sidebar-test.log).
