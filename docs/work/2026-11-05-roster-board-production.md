@@ -1,3 +1,17 @@
+# Aktualny stan — 05.11.2026
+
+- Wspólny edytor list: wdrożony, przetestowany, na remote.
+- Dziesięć punktów raportu produkcyjnego: wdrożone osobnymi commitami.
+  Szczegóły: [raport poprawek](../reviews/2026-11-05-production-fixes.md).
+- Dodatkowe uwagi kalendarza: sam „+”, wtórne akcje i stałe zakładki wdrożone.
+- Zmiana domyślnych zasad kwalifikacji: odroczona bezpieczna aktualizacja,
+  osłony pustej paczki/indeksu; wielokrotne wybieranie przechodzi test UI.
+- Końcowe testy produkcyjne, list, laboratorium i dat przechodzą.
+- Gałąź feature/simulation-v2, bez zmian main i bez subagentów.
+
+Poniżej dziennik chronologiczny; wcześniejsze wpisy „w trakcie” opisują
+stan w chwili ich sporządzenia, nie aktualną kolejkę.
+
 # Wspólny edytor list i raport produkcyjny — praca w toku
 
 Uzgodnienia właściciela:
@@ -153,3 +167,8 @@ Dodatkowe uwagi kalendarza zrealizowane:
 Test UI wielokrotnie przełącza zasady kwalifikacji z klawiatury, następnie
 korzysta z planowania i pełnego przepływu dat. PASS --dates-only, bez ostrzeżeń
 QML; sprawdzono /tmp/sj-calendar-defaults.png. EN/CS aktualne.
+
+Końcowa spójność edytora list: przycisk „+” w sekcji kraju przyjmuje tylko
+skoczka z tego kraju, tak jak przeciąganie. Zapobiega dodaniu do niewidocznej
+sekcji innego kraju. Ponowny build i --roster-workspace-only PASS
+(/tmp/sj-roster-final-test.log). Aktualna kolejka tego zakresu jest pusta.

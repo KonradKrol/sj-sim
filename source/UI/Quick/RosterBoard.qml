@@ -22,6 +22,10 @@ Item {
             if (result.indexOf(athletes[i].countryCode)<0) result.push(athletes[i].countryCode)
         return result.sort()
     }
+    readonly property string pickedCountry: {
+        for(var i=0;i<athletes.length;++i)if(athletes[i].athleteId===picked)return athletes[i].countryCode
+        return ""
+    }
     readonly property var sections: {
         var result=[]
         if (byCountry) for (var c=0;c<countries.length;++c) result.push({title:countries[c],country:countries[c],lists:selectedLists})
@@ -129,7 +133,7 @@ Item {
                                     title: board.byCountry ? board.listName(modelData) : ""
                                     athletes: board.rows(modelData,section.modelData.country)
                                     grouped: !board.byCountry
-                                    canAdd: board.picked.length>0
+                                    canAdd: board.picked.length>0 && (!section.modelData.country || section.modelData.country===board.pickedCountry)
                                     onDragPosition: function(y) {
                                         var point=mapToItem(destinations.contentItem,0,y)
                                         board.edgeScroll=point.y<Theme.dp(45) ? -Theme.dp(18) : point.y>destinations.height-Theme.dp(45) ? Theme.dp(18) : 0
