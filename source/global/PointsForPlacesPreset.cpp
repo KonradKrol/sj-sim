@@ -93,7 +93,9 @@ bool PointsForPlacesPreset::saveToFile(QString dir)
     QJsonObject mainObject;
     mainObject.insert("points-for-places-preset", PointsForPlacesPreset::getJsonObject(*this));
     document.setObject(mainObject);
-    return AtomicJsonFile::write(dir + getName() + ".json",document);
+    const auto path=AtomicJsonFile::namedPath(dir,getName());
+    if(path.isEmpty())return false;
+    return AtomicJsonFile::write(path,document);
 }
 
 PointsForPlacesPreset PointsForPlacesPreset::loadFromJson(QString fileName)

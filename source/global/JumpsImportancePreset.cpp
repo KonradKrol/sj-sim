@@ -56,7 +56,9 @@ bool JumpsImportancePreset::saveToFile(QString dir)
 {
     QJsonDocument document;
     document.setObject(JumpsImportancePreset::getJsonObject(*this));
-    return AtomicJsonFile::write(dir + getName() + ".json",document);
+    const auto path=AtomicJsonFile::namedPath(dir,getName());
+    if(path.isEmpty())return false;
+    return AtomicJsonFile::write(path,document);
 }
 
 JumpsImportancePreset JumpsImportancePreset::loadFromJson(QString fileName)
