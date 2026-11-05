@@ -140,3 +140,16 @@ Pełne backendRegressions i --dates-only PASS (/tmp/sj-calendar-final-test.log),
 w tym klasyfikacje, kalendarze, cofanie, presety i scenariusze dat.
 Raport: wszystkie 10 punktów mają implementacje i regresje. Nie oznacza to
 braku innych błędów produkcyjnych ani wykonania ręcznego sezonu 20 konkursów.
+
+Dodatkowe uwagi kalendarza zrealizowane:
+- sam „+” dodaje konkurs, ma widoczne tło, nazwę dostępności i tooltip;
+- Nowy kalendarz, aktywacja i powrót do edycji mają wtórny akcent;
+- stałe zakładki Kalendarz / Szybkie planowanie / Domyślne zasady,
+  bez przycisku powrotu zmieniającego wysokość i bez toggle po drugim kliknięciu;
+- szybkie planowanie z widoku miesięcznego prowadzi do tego samego panelu;
+- wybór zasad kwalifikacji jest odłożony do zamknięcia popupu, żeby zmiana
+  modelu nie usuwała dropdowna w trakcie obsługi jego sygnału;
+- zabezpieczono brak paczki i indeks reguły poza jej zakresem.
+Test UI wielokrotnie przełącza zasady kwalifikacji z klawiatury, następnie
+korzysta z planowania i pełnego przepływu dat. PASS --dates-only, bez ostrzeżeń
+QML; sprawdzono /tmp/sj-calendar-defaults.png. EN/CS aktualne.

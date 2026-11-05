@@ -2789,6 +2789,10 @@ li.checked::marker { content: "\2612"; }
         <message><source>Przesuń konkursy w dół</source><translation>Move competitions down</translation></message>
 
         <message><source>Utwórz kalendarz z konkursem</source><translation>Create a calendar with a competition</translation></message>
+    <message>
+        <source>Kalendarz</source>
+        <translation>Calendar</translation>
+    </message>
 </context>
     <context>
         <name>CalendarsListModel</name>

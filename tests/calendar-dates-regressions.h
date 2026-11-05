@@ -98,7 +98,10 @@ static void calendarDateUiRegressions(MainWindow &main)
     main.resize(1440,1000);QTest::qWait(120);
     calendarWorkspaceUxRegressions(backend,scene(&manager),calendar->getCompetitionsReference()[0],calendar->getCompetitionsReference()[1]);
     backend->selectAll();
-    clickControl(scene(&manager),"calendarPlanDates");QTest::qWait(100);
+    clickControl(scene(&manager),"calendarPanel-2");QTest::qWait(60);
+    for(int i=0;i<8;++i){clickControl(scene(&manager),"calendarDefaultRule-qualifications");QTest::keyClick(scene(&manager),i%2?Qt::Key_Home:Qt::Key_End);QTest::keyClick(scene(&manager),Qt::Key_Return);QTest::qWait(30);check(backend->ruleDefaults().size()==6,"changing qualification defaults recreates controls safely after closing the popup");}
+    scene(&manager)->grabFramebuffer().save("/tmp/sj-calendar-defaults.png");
+    clickControl(scene(&manager),"calendarPanel-1");QTest::qWait(100);
     check(item(scene(&manager)->rootObject(),"calendarDatePlanner"),"planner opens directly from calendar toolbar");
     clickControl(scene(&manager),"date-plan-existing");QTest::qWait(80);
     auto *input=item(scene(&manager)->rootObject(),"date-input-plan-start");check(input,"planner date input exists");

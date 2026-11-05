@@ -580,8 +580,8 @@ CompetitionRules QuickCalendar::defaultRule(const QString &role,bool packOnly) c
     const auto *list=m_editor->getModel()->getRulesList();const int type=role.startsWith("team")?CompetitionRules::Team:CompetitionRules::Individual;
     const auto id=!packOnly && m_calendar?m_calendar->defaultRules[role].toString():QString();
     for(const auto &r:*list)if(r.getIDStr()==id && r.getCompetitionType()==type)return r;
-    const auto *pack=GlobalDatabase::get()->activePack(DataPack::Rules);int index=pack->defaultRule(role);
-    if(index>=0){for(const auto &r:*list)if(r.getCompetitionType()==type && r.getIDStr()==pack->rules[index].getIDStr())return r;for(const auto &r:*list)if(r.getCompetitionType()==type && r.getName()==pack->rules[index].getName())return r;}
+    const auto *pack=GlobalDatabase::get()->activePack(DataPack::Rules);int index=pack?pack->defaultRule(role):-1;
+    if(pack && index>=0 && index<pack->rules.size()){for(const auto &r:*list)if(r.getCompetitionType()==type && r.getIDStr()==pack->rules[index].getIDStr())return r;for(const auto &r:*list)if(r.getCompetitionType()==type && r.getName()==pack->rules[index].getName())return r;}
     for(const auto &r:*list)if(r.getCompetitionType()==type)return r;
     CompetitionRules fallback(tr("Podstawowe zasady"));fallback.setCompetitionType(type);fallback.setJumpersInTeamCount(type==CompetitionRules::Team?4:0);fallback.setRounds({RoundInfo(type==CompetitionRules::Team?10:50,true)});return fallback;
 }
