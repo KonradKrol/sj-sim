@@ -222,7 +222,7 @@ WeatherProposal proposeWeather(const WeatherProposalContext &context,RandomSourc
     for(auto &r:result.wind.references){r.value.head*=strength;r.value.cross*=strength;}
     result.wind.temporalAmplitude*=variation;result.wind.spatialAmplitude*=variation;result.wind.gustAmplitude*=gust;result.wind.trendAmplitude*=trend;
     result.wind.correlationSeconds*=time;result.wind.trendPeriodSeconds*=time;result.wind.trendTransitionSeconds*=time;
-    const double globalStrength=p.get("generator.global.strengthScale",.64),globalVariation=p.get("generator.global.variationScale",.6),globalGust=p.get("generator.global.gustScale",.6);
+    const double globalStrength=p.get("generator.global.strengthScale",.84),globalVariation=p.get("generator.global.variationScale",.6),globalGust=p.get("generator.global.gustScale",.6);
     Wind average;for(const auto &r:result.wind.references){average.head+=r.value.head/result.wind.references.size();average.cross+=r.value.cross/result.wind.references.size();}
     for(auto &r:result.wind.references){r.value.head=(average.head+(r.value.head-average.head)*globalVariation)*globalStrength;r.value.cross=(average.cross+(r.value.cross-average.cross)*globalVariation)*globalStrength;}
     result.wind.temporalAmplitude*=globalVariation;result.wind.spatialAmplitude*=globalVariation;result.wind.trendAmplitude*=globalVariation;result.wind.gustAmplitude*=globalGust;

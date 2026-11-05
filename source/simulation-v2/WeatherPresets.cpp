@@ -96,7 +96,7 @@ WeatherProposal sampleWeatherPreset(WeatherPreset preset,double k,RandomSource &
     }
     w.trendTransitionSeconds=std::min(w.trendPeriodSeconds*.2,draw("transitionSeconds",4,18));
     w.correlationMetres=k*draw("correlationK",.3,.9);w.gustWidthMetres=k*draw("gustWidthK",.2,.5);
-    const double strengthScale=parameters.get("generator.global.strengthScale",.64);
+    const double strengthScale=parameters.get("generator.global.strengthScale",.84);
     const double variationScale=parameters.get("generator.global.variationScale",.6);
     const double gustScale=parameters.get("generator.global.gustScale",.6);
     Wind average;for(const auto &r:w.references){average.head+=r.value.head/w.references.size();average.cross+=r.value.cross/w.references.size();}
