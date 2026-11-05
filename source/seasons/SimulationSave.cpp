@@ -71,6 +71,7 @@ bool hasRequiredSaveStructure(const QJsonObject &object)
     if(object.contains("engine-version") && (!object["engine-version"].isDouble()
         || (object["engine-version"].toDouble()!=1 && object["engine-version"].toDouble()!=2)))return false;
     const bool v2=object["engine-version"].toInt(1)==2;
+    if(!SimulationV2::canResumeSave(object))return false;
     QString profileError;
     for(const auto &value:object["jumpers"].toArray())if((v2 && !value.toObject().contains("simulation-v2")) || !Jumper::validateSimulationProfileJson(value.toObject(),profileError))return false;
     for(const auto &value:object["hills"].toArray())if((v2 && !value.toObject().contains("simulation-v2")) || !Hill::validateSimulationProfileJson(value.toObject(),profileError))return false;

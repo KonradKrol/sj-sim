@@ -7,6 +7,7 @@ class AbstractCompetitionManager;
 class Season;
 class Classification;
 #include "../seasons/ClassificationScoring.h"
+#include "../simulation-v2/ModelRevision.h"
 #include <QDate>
 #include <optional>
 #include <QJsonObject>
@@ -24,6 +25,7 @@ class CompetitionInfo : public Identifiable
 {
 public:
     std::optional<QJsonObject> simulationBalance;
+    int simulationModelRevision=SimulationV2::modelRevision;
     CompetitionInfo(Hill * hill = nullptr);
     ~CompetitionInfo();
 

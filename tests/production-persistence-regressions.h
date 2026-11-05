@@ -95,6 +95,13 @@ static void productionPersistenceRegressions() {
         const auto huge=disk.filePath("oversized.json");{QFile file(huge);check(file.open(QIODevice::WriteOnly) && file.resize(SimulationSave::maximumFileBytes+1),"create sparse oversized save fixture");}
         check(!SimulationSave::loadFromFile(huge),"oversized saves are rejected before reading their contents");QFile::remove(huge);
     }
+    {
+        auto incompatible=valid;incompatible["engine-version"]=2;auto seasons=incompatible["seasons"].toArray();auto season=seasons[0].toObject();auto calendars=season["calendars"].toArray();auto calendar=calendars[0].toObject();auto events=calendar["competitions"].toArray();auto event=events[0].toObject();
+        auto results=event["results"].toObject();results["results"]=QJsonArray{QJsonObject{{"id",QString::fromStdString(Uuid::v4().str())}}};event["results"]=results;event["simulation-model-revision"]=SimulationV2::modelRevision+1;events[0]=event;calendar["competitions"]=events;calendars[0]=calendar;season["calendars"]=calendars;seasons[0]=season;incompatible["seasons"]=seasons;
+        check(!SimulationV2::canResumeSave(incompatible),"ongoing contests cannot resume under a different algorithm revision");
+        event["played"]=true;events[0]=event;calendar["competitions"]=events;calendars[0]=calendar;season["calendars"]=calendars;seasons[0]=season;incompatible["seasons"]=seasons;
+        check(SimulationV2::canResumeSave(incompatible),"archived completed contests remain readable across algorithm revisions");
+    }
     auto missing=valid;missing["actual-season-id"]=QString::fromStdString(Uuid::v4().str());
     check(!SimulationSave::getFromJson(missing,nullptr),"missing active season cannot silently become an empty save");
     missing=valid;missing["jumpers-lists"]=QJsonArray{QJsonObject{{"jumpers-ids",QJsonArray{QString::fromStdString(Uuid::v4().str())}}}};

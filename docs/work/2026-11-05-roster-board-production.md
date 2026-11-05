@@ -111,3 +111,19 @@ je pomija. Szczegóły przed otwarciem jasno oznaczone. Odczyt ograniczony do
 256 MiB, także przy wzroście pliku podczas odczytu. Regresje indeksu,
 niezapisywalnego placeholdera, poprawnego otwarcia i zbyt dużego sparse file
 PASS --production-persistence-only (/tmp/sj-lazy-saves-test.log).
+Na koniec również crash: w sezonie zmiana domyślnych zasad kwalifikacji
+z dropdowna natychmiast zamknęła grę. Sprawdzić przy poprawianiu nawigacji
+panelu domyślnych zasad, ze szczególnym uwzględnieniem reentrancy/model reset.
+
+Punkt 10 raportu naprawiony: ModelRevision.h definiuje niezależną rewizję
+algorytmów (obecnie 1). CompetitionInfo zapisuje rewizję; ukończone archiwa
+są czytelne, ale rozpoczęty konkurs z wynikami i inną/brakującą rewizją
+blokuje wczytanie sezonu przed deserializacją. Brak automatycznego przeliczania
+częściowo rozegranych zawodów. Puste przyszłe konkursy przy starcie otrzymują
+bieżącą rewizję. Przy zmianie algorytmów należy podnieść modelRevision.
+Test niezgodnego trwającego konkursu i zakończonego archiwum PASS
+(--production-persistence-only, /tmp/sj-model-revision-test.log).
+Punkt 8 w trakcie: jawni współdzieleni właściciele heapowych wyników
+klasyfikacji (bez przejmowania pożyczonych rekordów), zwalnianie kalendarzy
+z grafu sezonu i wycofanych kalendarzy po wygaśnięciu undo/redo. Wymaga
+regresji historii klasyfikacji, cofania kalendarza i ponownego buildu.
