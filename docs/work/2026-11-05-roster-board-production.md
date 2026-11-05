@@ -180,3 +180,13 @@ oraz próbne używają swoich osobnych domyślnych zasad. Jawne wskazanie zasad
 w tym samym poleceniu ma pierwszeństwo. Zachowana zgodność rodzaju drużynowego.
 Regresje zmiany, ponownego przełączenia, undo i domyślnych zasad treningów/
 próbnej PASS --dates-only (/tmp/sj-calendar-planning-sidebar-test.log).
+
+Edytor pojedynczej listy: klik całego wiersza, checkboxa lub przycisku +/-
+od razu przełącza przynależność; bez kroku „Dodaj zaznaczonych”. Działa też
+Spacja i akcja dostępności. Lista jest bezpośrednim dzieckiem layoutu zamiast
+przeładowywanego Loadera, aby zajmowała pełną wysokość. „Dodaj widocznych”
+pozostaje akcją masową obejmującą aktualne wyszukiwanie/kraj, z tooltipem
+wyjaśniającym, że dotyczy także wierszy poza viewportem.
+Test zdarzeń myszy: wiersz dodaje, wybrany wiersz usuwa, checkbox działa
+natychmiast; lista wybranych zajmuje >65% wysokości workspace. PASS
+--roster-workspace-only (/tmp/sj-roster-click-transfer-test.log).

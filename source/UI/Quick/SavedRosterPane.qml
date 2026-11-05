@@ -28,25 +28,16 @@ Pane {
             Accessible.name: placeholderText
             onTextEdited: if(pane.selected)pane.backend.orderQuery=text;else pane.backend.query=text
         }
-        Loader {
+        SavedRosterList {
+            backend: pane.backend; selected: pane.selected; grouped: pane.backend.grouped
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
-            sourceComponent: pane.backend.grouped ? groupedList : orderedList
-            Component { id: groupedList; SavedRosterList { backend: pane.backend; selected: pane.selected; grouped: true } }
-            Component { id: orderedList; SavedRosterList { backend: pane.backend; selected: pane.selected; grouped: false } }
         }
-        GridLayout {
-            visible: pane.selected ? pane.backend.markedCount>0 : pane.backend.candidateMarkedCount>0 || !pane.compact
-            columns: pane.width>=Theme.dp(420) ? 2 : 1
-            Layout.fillWidth: true
-            SButton {
-                visible: pane.selected || pane.backend.candidateMarkedCount>0
-                Layout.fillWidth: true; dense: pane.compact
-                primary: !pane.selected
-                text: pane.selected ? qsTr("Usuń zaznaczonych (%1)").arg(pane.backend.markedCount) : qsTr("Dodaj zaznaczonych (%1)").arg(pane.backend.candidateMarkedCount)
-                enabled: pane.selected ? pane.backend.markedCount>0 : pane.backend.candidateMarkedCount>0
-                onClicked: if(pane.selected)pane.backend.removeMarked();else pane.backend.addMarkedCandidates()
-            }
-            SButton { visible: !pane.selected && !pane.compact; text: qsTr("Dodaj widocznych"); enabled: pane.rows.count>0; onClicked: pane.backend.addVisible() }
+        SButton {
+            visible: !pane.selected && !pane.compact
+            text: qsTr("Dodaj widocznych")
+            hint: qsTr("Dodaje wszystkich skoczków pasujących do wyszukiwania i kraju, także spoza widocznego fragmentu listy.")
+            enabled: pane.rows.count>0; Layout.fillWidth: true
+            onClicked: pane.backend.addVisible()
         }
     }
 }

@@ -2793,6 +2793,22 @@ li.checked::marker { content: "\2612"; }
         <source>Kalendarz</source>
         <translation>Kalendář</translation>
     </message>
+    <message>
+        <source>Cały kalendarz</source>
+        <translation>Celý kalendář</translation>
+    </message>
+    <message>
+        <source>Edycja konkursu</source>
+        <translation>Úprava závodu</translation>
+    </message>
+    <message>
+        <source>Wybierz konkurs</source>
+        <translation>Vyberte závod</translation>
+    </message>
+    <message>
+        <source>Zaznacz konkurs na liście, aby zmienić jego ustawienia.</source>
+        <translation>Vyberte závod v seznamu a upravte jeho nastavení.</translation>
+    </message>
 </context>
     <context>
         <name>CalendarsListModel</name>
@@ -23531,7 +23547,11 @@ Technický klíč: %4</translation>
     </message>
 </context>
 <context><name>SavedRosterWorkspace</name><message><source>Cofnij</source><translation>Zpět</translation></message><message><source>Według krajów</source><translation>Podle zemí</translation></message><message><source>Kolejność</source><translation>Pořadí</translation></message><message><source>Limity krajów</source><translation>Limity zemí</translation></message><message><source>Wszyscy</source><translation>Všichni</translation></message><message><source>Wybrani (%1)</source><translation>Vybraní (%1)</translation></message><message><source>Wybrani zawodnicy</source><translation>Vybraní závodníci</translation></message></context>
-<context><name>SavedRosterPane</name><message><source>Wybrani zawodnicy</source><translation>Vybraní závodníci</translation></message><message><source>Wszyscy zawodnicy</source><translation>Všichni závodníci</translation></message><message><source>Szukaj nazwiska lub kraju</source><translation>Hledat jméno nebo zemi</translation></message><message><source>Usuń %1 z listy</source><translation>Odstranit %1 ze seznamu</translation></message><message><source>Dodaj %1 do listy</source><translation>Přidat %1 do seznamu</translation></message><message><source>Lista jest pusta</source><translation>Seznam je prázdný</translation></message><message><source>Brak pasujących zawodników</source><translation>Žádní odpovídající závodníci</translation></message><message><source>Pusta lista oznacza wszystkich zawodników. Dodaj wybranych, aby ograniczyć skład.</source><translation>Prázdný seznam zahrnuje všechny závodníky. Přidáním závodníků omezíte sestavu.</translation></message><message><source>Zmień nazwisko lub kraj, aby zobaczyć innych zawodników.</source><translation>Změňte jméno nebo zemi pro zobrazení dalších závodníků.</translation></message><message><source>Usuń zaznaczonych (%1)</source><translation>Odstranit vybrané (%1)</translation></message><message><source>Dodaj zaznaczonych (%1)</source><translation>Přidat vybrané (%1)</translation></message><message><source>Dodaj widocznych</source><translation>Přidat zobrazené</translation></message></context>
+<context><name>SavedRosterPane</name><message><source>Wybrani zawodnicy</source><translation>Vybraní závodníci</translation></message><message><source>Wszyscy zawodnicy</source><translation>Všichni závodníci</translation></message><message><source>Szukaj nazwiska lub kraju</source><translation>Hledat jméno nebo zemi</translation></message><message><source>Usuń %1 z listy</source><translation>Odstranit %1 ze seznamu</translation></message><message><source>Dodaj %1 do listy</source><translation>Přidat %1 do seznamu</translation></message><message><source>Lista jest pusta</source><translation>Seznam je prázdný</translation></message><message><source>Brak pasujących zawodników</source><translation>Žádní odpovídající závodníci</translation></message><message><source>Pusta lista oznacza wszystkich zawodników. Dodaj wybranych, aby ograniczyć skład.</source><translation>Prázdný seznam zahrnuje všechny závodníky. Přidáním závodníků omezíte sestavu.</translation></message><message><source>Zmień nazwisko lub kraj, aby zobaczyć innych zawodników.</source><translation>Změňte jméno nebo zemi pro zobrazení dalších závodníků.</translation></message><message><source>Usuń zaznaczonych (%1)</source><translation>Odstranit vybrané (%1)</translation></message><message><source>Dodaj zaznaczonych (%1)</source><translation>Přidat vybrané (%1)</translation></message><message><source>Dodaj widocznych</source><translation>Přidat zobrazené</translation></message>    <message>
+        <source>Dodaje wszystkich skoczków pasujących do wyszukiwania i kraju, także spoza widocznego fragmentu listy.</source>
+        <translation>Přidá všechny závodníky odpovídající hledání a zemi, včetně řádků mimo viditelnou část seznamu.</translation>
+    </message>
+</context>
 <context><name>SavedRosterGrip</name><message><source>Przeciągnij %1</source><translation>Přetáhnout %1</translation></message></context>
 <context><name>HomeWelcome</name><message><source>Witaj w Sj.Sim</source><translation>Vítejte v Sj.Sim</translation></message><message><source>Rozegraj sezon ze znanymi skoczkami, skoczniami i zimowym kalendarzem najważniejszych zawodów. Wszystko jest przygotowane — później możesz to zmienić.</source><translation>Odehrajte sezónu se známými skokany, můstky a zimním kalendářem nejvýznamnějších závodů. Vše je připraveno — později to můžete změnit.</translation></message><message><source>Przygotowywanie…</source><translation>Příprava…</translation></message><message><source>Rozpocznij przykładowy sezon</source><translation>Spustit ukázkovou sezónu</translation></message><message><source>Przejdź do menu</source><translation>Přejít do menu</translation></message></context>
 <context><name>SavedRosterList</name><message><source>Wybrani zawodnicy</source><translation>Vybraní závodníci</translation></message><message><source>Wszyscy zawodnicy</source><translation>Všichni závodníci</translation></message><message><source>Szukaj nazwiska lub kraju</source><translation>Hledat jméno nebo zemi</translation></message><message><source>Usuń %1 z listy</source><translation>Odstranit %1 ze seznamu</translation></message><message><source>Dodaj %1 do listy</source><translation>Přidat %1 do seznamu</translation></message><message><source>Lista jest pusta</source><translation>Seznam je prázdný</translation></message><message><source>Brak pasujących zawodników</source><translation>Žádní odpovídající závodníci</translation></message><message><source>Pusta lista oznacza wszystkich zawodników. Dodaj wybranych, aby ograniczyć skład.</source><translation>Prázdný seznam zahrnuje všechny závodníky. Přidáním závodníků omezíte sestavu.</translation></message><message><source>Zmień nazwisko lub kraj, aby zobaczyć innych zawodników.</source><translation>Změňte jméno nebo zemi pro zobrazení dalších závodníků.</translation></message><message><source>Usuń zaznaczonych (%1)</source><translation>Odstranit vybrané (%1)</translation></message><message><source>Dodaj zaznaczonych (%1)</source><translation>Přidat vybrané (%1)</translation></message><message><source>Dodaj widocznych</source><translation>Přidat zobrazené</translation></message></context>

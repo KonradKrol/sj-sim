@@ -45,7 +45,15 @@ static void rosterWorkspaceRegressions(MainWindow &main) {
         QTest::mouseRelease(view,Qt::LeftButton,Qt::NoModifier,finish);QTest::qWait(100);
         check(inlineRoster->count()==3,"dragging an athlete between inline panes adds that athlete");
         for(int i=0;i<30;++i){clickControl(scene(&manager),i%2?"savedRosterView-0":"savedRosterView-1");check(inlineRoster->count()==3,"inline grouping preserves the selected athletes with a 600-person library");}
-        const auto filteredId=QuickRoster::key(owned[11]);inlineRoster->setQuery("Roster 11");inlineRoster->selectCandidate(filteredId);QTest::qWait(50);
+        const auto filteredId=QuickRoster::key(owned[11]);inlineRoster->setQuery("Roster 11");QTest::qWait(50);
+        clickControl(view,"rosterCandidateTile-"+filteredId);QTest::qWait(50);
+        check(inlineRoster->count()==4 && inlineRoster->candidateMarkedCount()==0,"clicking the entire athlete tile immediately adds membership");
+        clickControl(view,"rosterSelectedTile-"+filteredId);QTest::qWait(50);check(inlineRoster->count()==3,"clicking a selected athlete tile immediately removes membership");
+        clickControl(view,"rosterCandidateMark-"+filteredId);QTest::qWait(50);check(inlineRoster->count()==4,"checkbox changes membership without an extra Add action");
+        clickControl(view,"rosterCandidateMark-"+filteredId);QTest::qWait(50);check(inlineRoster->count()==3,"checkbox can immediately undo membership");
+        auto *selectedViewport=item(view->rootObject(),"savedRosterSelected");auto *rosterWorkspace=item(view->rootObject(),"savedRosterWorkspace");
+        check(selectedViewport && rosterWorkspace && selectedViewport->height()>.65*rosterWorkspace->height(),"selected athlete list uses the available vertical workspace");
+        inlineRoster->selectCandidate(filteredId);QTest::qWait(50);
         check(inlineRoster->candidateMarkedCount()==1 && inlineRoster->groupedLibrary()->rowCount()>0,"filtered inline library can mark an athlete");
         for(int i=0;i<6;++i){inlineRoster->setGrouped(i%2==0);presentation(&manager)->resize(i%2?1024:1440,i%2?640:900);QTest::qWait(30);check(inlineRoster->candidateMarkedCount()==1 && inlineRoster->count()==3,"filtering, resizing and regrouping preserve selection");}
         inlineRoster->selectCandidate(filteredId);inlineRoster->setQuery("");presentation(&manager)->resize(1440,900);QTest::qWait(80);
