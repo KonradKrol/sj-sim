@@ -18,6 +18,7 @@ Item {
     property bool addingMany: false
     property bool showRosterAssignment: false
     property bool monthView: false
+    function openPlanning(){panel="planning";monthView=false;section=0;editing=true}
     property string panel: "events"
     onPanelChanged: if(planningScroll.contentItem)planningScroll.contentItem.contentY=0
     implicitHeight: 640
@@ -61,29 +62,21 @@ Item {
             SButton { visible: calendar.width<1180 && !(calendar.compact && calendar.editing); objectName: "calendarCreate"; text: calendar.compact ? qsTr("+ Kalendarz") : qsTr("Nowy kalendarz"); primary: false; Accessible.name: qsTr("Nowy kalendarz"); onClicked: {calendar.backend.catalogAction("add");calendar.renaming=true;calendar.editing=false;nameInput.forceActiveFocus();nameInput.selectAll()} }
             SButton { objectName: "calendarActivate"; visible: calendar.backend.calendarIndex>=0 && (calendar.backend.events.length>0 || !calendar.backend.activeCalendar) && !calendar.tight && !(calendar.compact && calendar.editing); Layout.columnSpan: calendar.compact ? 2 : 1; Layout.fillWidth: calendar.compact; text: calendar.backend.activeCalendar ? qsTr("Aktywny kalendarz") : qsTr("Ustaw jako aktywny"); primary: false; foreground: calendar.backend.activeCalendar ? Theme.muted : Theme.accent; enabled: !calendar.backend.activeCalendar; onClicked: calendar.backend.activateCalendar() }
             SButton {
-                text: "⚙"; Accessible.name: qsTr("Ustawienia kalendarza"); hint: Accessible.name; quiet: true; implicitHeight: calendar.tight ? 32 : 40; onClicked: catalogMenu.open()
+                objectName: "calendarSettings"; text: "⚙"; Accessible.name: qsTr("Ustawienia kalendarza"); hint: Accessible.name; quiet: true; implicitHeight: calendar.tight ? 32 : 40; onClicked: catalogMenu.open()
                 ActionMenu {
                     id: catalogMenu
-                    entries: [{id:"roster",text:qsTr("Lista zawodników")},{id:"active",text:qsTr("Ustaw jako aktywny"),enabled:!calendar.backend.activeCalendar},{id:"classes",text:calendar.section===0?qsTr("Klasyfikacje"):qsTr("Konkursy")},{id:"rename",text:qsTr("Zmień nazwę kalendarza")},{id:"up",text:qsTr("Kalendarz w górę")},{id:"down",text:qsTr("Kalendarz w dół")},{id:"remove",text:qsTr("Usuń kalendarz")},{id:"load",text:qsTr("Wczytaj preset")},{id:"save",text:qsTr("Zapisz jako preset")}]
-                    onSelected: {if(entry.id==="roster")calendar.showRosterAssignment=!calendar.showRosterAssignment;else if(entry.id==="active")calendar.backend.activateCalendar();else if(entry.id==="classes")calendar.section=calendar.section===0?1:0;else if(entry.id==="rename"){calendar.renaming=true;nameInput.forceActiveFocus();nameInput.selectAll()}else if(entry.id==="load"||entry.id==="save")calendar.backend.preset(entry.id==="save");else calendar.backend.catalogAction(entry.id)}
+                    entries: [{id:"defaults",text:qsTr("Domyślne zasady")},{id:"roster",text:qsTr("Lista zawodników")},{id:"active",text:qsTr("Ustaw jako aktywny"),enabled:!calendar.backend.activeCalendar},{id:"classes",text:calendar.section===0?qsTr("Klasyfikacje"):qsTr("Konkursy")},{id:"rename",text:qsTr("Zmień nazwę kalendarza")},{id:"up",text:qsTr("Kalendarz w górę")},{id:"down",text:qsTr("Kalendarz w dół")},{id:"remove",text:qsTr("Usuń kalendarz")},{id:"load",text:qsTr("Wczytaj preset")},{id:"save",text:qsTr("Zapisz jako preset")}]
+                    onSelected: {if(entry.id==="defaults")calendar.panel="defaults";else if(entry.id==="roster")calendar.showRosterAssignment=!calendar.showRosterAssignment;else if(entry.id==="active")calendar.backend.activateCalendar();else if(entry.id==="classes")calendar.section=calendar.section===0?1:0;else if(entry.id==="rename"){calendar.renaming=true;nameInput.forceActiveFocus();nameInput.selectAll()}else if(entry.id==="load"||entry.id==="save")calendar.backend.preset(entry.id==="save");else calendar.backend.catalogAction(entry.id)}
                 }
             }
         }
-        SectionTabs {
-            visible: calendar.backend.calendarIndex>=0
-            Layout.fillWidth: true; dense: true
-            optionNamePrefix: "calendarPanel-"
-            options: [qsTr("Kalendarz"),qsTr("Szybkie planowanie"),qsTr("Domyślne zasady")]
-            currentIndex: calendar.panel==="planning" ? 1 : calendar.panel==="defaults" ? 2 : 0
-            onSelected: calendar.panel=["events","planning","defaults"][index]
-        }
+        SButton { visible: calendar.panel==="defaults"; text: "← "+qsTr("Kalendarz"); quiet: true; dense: true; onClicked: calendar.panel="events" }
         Label { text: calendar.backend.error; visible: text.length>0; color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         ScrollView {
             id: planningScroll
-            visible: calendar.panel!=="events"; Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; contentWidth: availableWidth; clip: true
+            visible: calendar.panel==="defaults"; Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; contentWidth: availableWidth; clip: true
             ColumnLayout {
                 width: planningScroll.availableWidth; spacing: Theme.dp(12)
-                CalendarDatePlanner { visible: calendar.panel==="planning"; backend: calendar.backend; Layout.fillWidth: true }
                 ColumnLayout {
                     visible: calendar.panel==="defaults"; Layout.fillWidth: true; spacing: Theme.dp(10)
                     Label { text: qsTr("Domyślne zasady kalendarza"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; wrapMode: Text.WordWrap; Layout.fillWidth: true }
@@ -116,29 +109,29 @@ Item {
                 RowLayout {
                     Layout.fillWidth: true
                     SButton { text: qsTr("Lista i edycja"); primary: false; onClicked: calendar.monthView=false }
-                    SButton { text: qsTr("Szybkie planowanie"); onClicked: calendar.panel="planning" }
+                    SButton { text: qsTr("Szybkie planowanie"); onClicked: calendar.openPlanning() }
                 }
                 CalendarDateOverview { Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; backend: calendar.backend; onEditEvent: function(eventId){if(eventId.length)calendar.backend.select(eventId);calendar.monthView=false;calendar.editing=true;eventInspector.section=0} }
             }
         }
         CalendarClassifications { visible: calendar.panel==="events" && calendar.section===1; Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; backend: calendar.backend; editorNode: calendar.node.values.classificationEditor }
         ColumnLayout {
-        visible: calendar.panel==="events" && calendar.section===0 && !(calendar.monthView && calendar.backend.datesEnabled)
+        visible: calendar.panel!=="defaults" && calendar.section===0 && !(calendar.monthView && calendar.backend.datesEnabled)
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
         SectionTabs { visible: false; Layout.fillWidth: true; options: [qsTr("Konkursy"),qsTr("Edycja")]; currentIndex: calendar.editing ? 1 : 0; onSelected: calendar.editing=index === 1 }
         RowLayout {
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
             spacing: Theme.compact ? 6 : 16
             ColumnLayout {
-                visible: !calendar.compact || !calendar.editing
+                visible: !calendar.compact || !calendar.editing || calendar.panel==="planning"
                 Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
                 Layout.preferredWidth: 320
                 spacing: calendar.tight ? 4 : 8
 
                 RowLayout {
-                    visible: calendar.backend.events.length>0 && (!calendar.compact || !calendar.editing)
+                    visible: calendar.backend.events.length>0 && (!calendar.compact || !calendar.editing || calendar.panel==="planning")
                     Layout.fillWidth: true; spacing: Theme.dp(3)
-                    SButton { objectName: "calendarAdd"; text: "+"; Accessible.name: qsTr("Dodaj konkurs"); hint: Accessible.name; primary: false; foreground: Theme.accent; implicitWidth: Theme.controlHeight; dense: true; onClicked: {calendar.backend.add();calendar.editing=true} }
+                    SButton { id: addCompetition; objectName: "calendarAdd"; text: "+"; Accessible.name: qsTr("Dodaj konkurs"); hint: Accessible.name; primary: false; foreground: Theme.accent; implicitWidth: Theme.dp(56); implicitHeight: Math.max(Theme.dp(44),Theme.controlHeight); font.pointSize: Theme.heading; font.weight: Font.Medium; background: Surface { fillColor: addCompetition.down ? Theme.selection : Theme.surface; edgeColor: Theme.accent; strokeWidth: addCompetition.activeFocus ? 2 : 1; sweep: 12 } dense: true; onClicked: {calendar.backend.add();calendar.editing=true} }
                     SIconButton { objectName: "calendarCopy"; text: ""; iconName: "copy"; actionName: qsTr("Kopiuj konkursy"); enabled: calendar.backend.selection.count>0; onClicked: calendar.backend.duplicate() }
                     SIconButton { objectName: "calendarRemove"; text: "×"; actionName: qsTr("Usuń konkursy"); foreground: Theme.danger; enabled: calendar.backend.selection.count>0 && !calendar.backend.selection.locked; onClicked: calendar.backend.remove() }
                     SIconButton { text: "↶"; actionName: qsTr("Cofnij"); visible: calendar.backend.canUndo; onClicked: calendar.backend.undo() }
@@ -156,13 +149,13 @@ Item {
                     NumberField { id: batchCount; direct: false; fields: ({id:"calendarBatchCount",name:"calendarBatchCount",value:5,minimum:1,maximum:100,step:1,decimals:0}); Layout.preferredWidth: 110 }
                     SButton { text: qsTr("Dodaj"); primary: true; onClicked: {calendar.backend.addMany(batchCount.currentValue);calendar.addingMany=false;calendar.editing=true} }
                 }
-                Label { visible: !!calendar.backend.message; text: calendar.backend.message; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                Label { visible: !!calendar.backend.message && calendar.panel!=="planning"; text: calendar.backend.message; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 RowLayout {
                     visible: calendar.backend.events.length>0
                     Layout.fillWidth: true
                     Label { text: calendar.backend.selection.count ? qsTr("Zaznaczono: %1").arg(calendar.backend.selection.count) : qsTr("Konkursy: %1").arg(calendar.backend.events.length); font.pointSize: Theme.caption; color: Theme.muted; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
                     SButton { objectName: "calendarClearSelection"; implicitHeight: calendar.tight?24:40; visible: calendar.backend.selection.count>0; text: "×"; quiet: true; Accessible.name: qsTr("Wyczyść zaznaczenie"); onClicked: calendar.backend.clearSelection() }
-                    SButton { objectName: "calendarEditSelection"; implicitHeight: calendar.tight?28:40; visible: calendar.compact; enabled: calendar.backend.selection.count>0; text: qsTr("Edytuj"); onClicked: calendar.editing=true }
+                    SButton { objectName: "calendarEditSelection"; implicitHeight: calendar.tight?28:40; visible: calendar.compact; enabled: calendar.backend.selection.count>0; text: qsTr("Edytuj"); onClicked: {calendar.editing=true;calendar.panel="events"} }
                     SButton { visible: !calendar.compact; text: qsTr("Przyszłe"); implicitHeight: calendar.tight ? 32 : 40; font.pointSize: calendar.tight ? Theme.caption : Theme.body; quiet: true; hint: qsTr("Zaznacz przyszłe konkursy"); onClicked: calendar.backend.selectAll(true) }
                 }
                 ListView {
@@ -187,15 +180,44 @@ Item {
                     }
                 }
             }
-            CalendarInspector {
-                id: eventInspector
-                visible: calendar.backend.events.length>0 && (!calendar.compact || calendar.editing)
+            ColumnLayout {
+                visible: !calendar.compact || calendar.editing || calendar.backend.events.length===0
                 Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
-                Layout.preferredWidth: 500
-                compact: calendar.compact
-                onEditRequested: calendar.editing=true
-                backend: calendar.backend
-                rulesNode: calendar.node.values.rulesEditor
+                Layout.preferredWidth: 500; spacing: Theme.dp(6)
+                RowLayout {
+                    Layout.fillWidth: true
+                    SButton { objectName: "calendarPlanDates"; visible: calendar.panel!=="planning"; text: qsTr("Szybkie planowanie"); dense: true; onClicked: calendar.openPlanning() }
+                    SButton { visible: calendar.panel==="planning"; text: "← "+qsTr("Edycja konkursu"); quiet: true; dense: true; onClicked: calendar.panel="events" }
+                    Label { visible: calendar.panel==="planning"; text: qsTr("Cały kalendarz"); color: Theme.muted; font.pointSize: Theme.caption }
+                    Item { Layout.fillWidth: true }
+                }
+                ScrollView {
+                    id: inspectorPlanning
+                    visible: calendar.panel==="planning"
+                    Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
+                    contentWidth: availableWidth; clip: true
+                    CalendarDatePlanner { width: inspectorPlanning.availableWidth; backend: calendar.backend }
+                }
+                CalendarInspector {
+                    id: eventInspector
+                    visible: calendar.panel!=="planning" && calendar.backend.selection.count>0
+                    Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
+                    compact: calendar.compact
+                    onEditRequested: calendar.editing=true
+                    backend: calendar.backend
+                    rulesNode: calendar.node.values.rulesEditor
+                }
+                EmptyState {
+                    objectName: "calendarInspectorEmpty"
+                    primaryAction: false
+                    visible: calendar.panel!=="planning" && !calendar.backend.selection.count
+                    Layout.fillWidth: true; Layout.fillHeight: true
+                    title: qsTr("Wybierz konkurs")
+                    description: qsTr("Zaznacz konkurs na liście, aby zmienić jego ustawienia.")
+                    actionText: calendar.backend.calendarIndex>=0 ? qsTr("Szybkie planowanie") : ""
+                    actionObjectName: "calendarEmptyPlanning"
+                    onTriggered: calendar.openPlanning()
+                }
             }
         }
     }

@@ -190,3 +190,13 @@ wyjaśniającym, że dotyczy także wierszy poza viewportem.
 Test zdarzeń myszy: wiersz dodaje, wybrany wiersz usuwa, checkbox działa
 natychmiast; lista wybranych zajmuje >65% wysokości workspace. PASS
 --roster-workspace-only (/tmp/sj-roster-click-transfer-test.log).
+
+Najnowsza nawigacja kalendarza zastępuje poprzednie zakładki: szybkie
+planowanie zajmuje prawy inspektor obok stale widocznej listy konkursów;
+ma osobny powrót do edycji, poza trzema zakładkami konkretnego wydarzenia.
+Pusty inspektor wyjaśnia zaznaczenie konkursu i daje wtórną akcję planowania.
+Domyślne zasady są pierwszą pozycją menu ustawień kalendarza, bez kolejnego
+rzędu zakładek. Powiększony „+” ma kontrastowy obrys, bez dominującego fill.
+Komunikaty podglądu planowania nie pojawiają się nad właściwą listą wydarzeń.
+Test wejścia z empty state, widoczności listy, menu zasad i pełnego planowania
+PASS --dates-only (/tmp/sj-final-calendar-check.log), light/dark i małe okna.

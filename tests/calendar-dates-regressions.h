@@ -108,11 +108,20 @@ static void calendarDateUiRegressions(MainWindow &main)
     auto *workspace=item(scene(&manager)->rootObject(),"calendarWorkspace");check(workspace,"calendar workspace exists");
     main.resize(1440,1000);QTest::qWait(120);
     calendarWorkspaceUxRegressions(backend,scene(&manager),calendar->getCompetitionsReference()[0],calendar->getCompetitionsReference()[1]);
+    if(auto *footer=item(scene(&manager)->rootObject(),"seasonFooter")) {
+        auto *action=item(scene(&manager)->rootObject(),"seasonNextAction");
+        check(footer->height()<=action->height()+12,"season footer height follows its content without unused bottom space");
+    }
+    backend->clearSelection();QTest::qWait(50);
+    check(item(scene(&manager)->rootObject(),"calendarInspectorEmpty")->isVisible(),"empty inspector explains selecting an event");
+    clickControl(scene(&manager),"calendarEmptyPlanning");QTest::qWait(50);
+    check(item(scene(&manager)->rootObject(),"calendarEvents")->isVisible() && item(scene(&manager)->rootObject(),"calendarDatePlanner")->isVisible(),"inspector empty state opens calendar-wide planning beside the list");
     backend->selectAll();
-    clickControl(scene(&manager),"calendarPanel-2");QTest::qWait(60);
+    clickControl(scene(&manager),"calendarSettings");clickControl(scene(&manager),"menu-entry-0");QTest::qWait(60);
     for(int i=0;i<8;++i){clickControl(scene(&manager),"calendarDefaultRule-qualifications");QTest::keyClick(scene(&manager),i%2?Qt::Key_Home:Qt::Key_End);QTest::keyClick(scene(&manager),Qt::Key_Return);QTest::qWait(30);check(backend->ruleDefaults().size()==6,"changing qualification defaults recreates controls safely after closing the popup");}
     scene(&manager)->grabFramebuffer().save("/tmp/sj-calendar-defaults.png");
-    clickControl(scene(&manager),"calendarPanel-1");QTest::qWait(100);
+    workspace->setProperty("panel","events");QTest::qWait(40);clickControl(scene(&manager),"calendarPlanDates");QTest::qWait(100);
+    check(item(scene(&manager)->rootObject(),"calendarEvents")->isVisible(),"event list remains visible during quick planning");
     check(item(scene(&manager)->rootObject(),"calendarDatePlanner"),"planner opens directly from calendar toolbar");
     clickControl(scene(&manager),"date-plan-existing");QTest::qWait(80);
     auto *input=item(scene(&manager)->rootObject(),"date-input-plan-start");check(input,"planner date input exists");

@@ -7,6 +7,7 @@ Item {
     property string title
     property string description
     property string actionObjectName
+    property bool primaryAction: true
     property string actionText
     signal triggered()
     Accessible.role: Accessible.StaticText
@@ -19,6 +20,6 @@ Item {
         Rectangle { visible: !state.compact; width: 32; height: 4; radius: 2; color: Theme.accent }
         Label { visible: !state.compact || !state.actionText.length; text: state.title; color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: state.compact ? Theme.body : Theme.section; width: parent.width; wrapMode: Text.WordWrap }
         Label { visible: text.length>0 && !state.compact; text: state.description; color: Theme.muted; font.pointSize: Theme.caption; width: parent.width; wrapMode: Text.WordWrap }
-        SButton { objectName: state.actionObjectName; visible: state.actionText.length>0; text: state.actionText; primary: true; width: Math.min(parent.width,implicitWidth); onClicked: state.triggered() }
+        SButton { objectName: state.actionObjectName; visible: state.actionText.length>0; text: state.actionText; primary: state.primaryAction; width: Math.min(parent.width,implicitWidth); onClicked: state.triggered() }
     }
 }
