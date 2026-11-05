@@ -645,7 +645,11 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <source>Nie znaleziono pliku</source>
             <translation>File not found</translation>
         </message>
-    </context>
+
+    <message><source>Opcjonalny. Wiek w sezonie jest liczony według roku jego rozpoczęcia.</source><translation>Optional. Age for the season is based on its starting year.</translation></message>
+
+    <message><source>Podaj ścieżkę względem folderu paczki. Zdjęcie jest opcjonalne; udostępniając paczkę, dołącz plik.</source><translation>Enter a path relative to the pack folder. The photo is optional; include the file when sharing the pack.</translation></message>
+</context>
     <context>
         <name>AthleteInsignia</name>
         <message>
@@ -2238,7 +2242,21 @@ li.checked::marker { content: "\2612"; }
             <source>Data zawodów (także dla treningów i serii próbnej)</source>
             <translation>Event date (also for training and trial round)</translation>
         </message>
-    </context>
+
+    <message><source>Ta skocznia obowiązuje także w treningach i serii próbnej przed zawodami.</source><translation>The same hill is used for training and the trial round before this event.</translation></message>
+
+    <message><source>Kwalifikacje mogą wyłonić uczestników późniejszego konkursu. Powiąż je w zakładce Powiązania.</source><translation>Qualification can select entrants for a later competition. Link them under Connections.</translation></message>
+
+    <message><source>W konkursie indywidualnym startują skoczkowie, a w drużynowym — zespoły.</source><translation>Individual competitions rank athletes; team competitions rank teams.</translation></message>
+
+    <message><source>Zasady określają m.in. liczbę serii, awans i punktację. Możesz wybrać gotowe lub edytować je dla tych zawodów.</source><translation>Rules determine rounds, advancement and scoring. Choose a preset or edit them for this event.</translation></message>
+
+    <message><source>Treningi odbywają się przed tym wydarzeniem i nie zastępują kwalifikacji ani serii próbnej.</source><translation>Training takes place before this event and does not replace qualification or the trial round.</translation></message>
+
+    <message><source>Wybierz wspólne zasady dla treningów przed tym wydarzeniem lub ustaw własne.</source><translation>Choose shared rules for training before this event or set your own.</translation></message>
+
+    <message><source>Seria próbna poprzedza zawody. Jej wyniki nie są wynikiem konkursu.</source><translation>The trial round precedes the event. Its results are separate from the competition.</translation></message>
+</context>
     <context>
         <name>CalendarInspector</name>
         <message>
@@ -2319,7 +2337,13 @@ li.checked::marker { content: "\2612"; }
             <source>Terminy</source>
             <translation>Dates</translation>
         </message>
-    </context>
+
+    <message><source>Zaznacz klasyfikacje, do których te zawody mają dodawać punkty.</source><translation>Select the standings to which this event awards points.</translation></message>
+
+    <message><source>Uczestników wyłoni wskazany wcześniejszy konkurs lub kwalifikacje.</source><translation>Entrants are selected from the specified earlier competition or qualification.</translation></message>
+
+    <message><source>Uczestników wyłoni aktualna kolejność we wskazanej klasyfikacji.</source><translation>Entrants are selected using the current order in the chosen standings.</translation></message>
+</context>
     <context>
         <name>CalendarVenueButton</name>
         <message>
@@ -2482,6 +2506,10 @@ li.checked::marker { content: "\2612"; }
         <message><source>Plan pakietu</source><translation>Competition block plan</translation></message>
 
         <message><source>Dodaj pakiet do kalendarza</source><translation>Add the block to the calendar</translation></message>
+
+    <message><source>Wybierz, jak przygotować pierwszy konkurs. Podgląd poniżej pokaże treningi i kwalifikacje.</source><translation>Choose preparation for the first competition. The preview shows training and qualification.</translation></message>
+
+    <message><source>Drugi konkurs może mieć własne kwalifikacje albo korzystać z wcześniejszych.</source><translation>The second competition can use separate or earlier qualification.</translation></message>
 </context>
     <context>
         <name>CalendarWorkspace</name>
@@ -23464,4 +23492,17 @@ Close the previous window or run a separate copy of the game with its own userDa
 Zamknij poprzednie okno Sj.Sim i spróbuj ponownie.</source><translation>Game data or editor packs are used by another Sj.Sim instance or are not writable.
 Close the previous Sj.Sim window and try again.</translation></message></context>
 <context><name>ReorderHandle</name><message><source>Zmień kolejność</source><translation>Reorder</translation></message></context>
+<context><name>HillNumber</name>
+    <message><source>Odległość punktu konstrukcyjnego. Od niej zależą punkty za odległość.</source><translation>The construction point determines distance scoring.</translation></message>
+
+    <message><source>Rozmiar skoczni. Wpływa na ocenę trudności dalekiego lądowania.</source><translation>Hill size affects the difficulty of landing long jumps.</translation></message>
+
+    <message><source>Najdłuższy zapisany skok na tej skoczni; pozostaw 0, jeśli rekord nie jest znany.</source><translation>The longest recorded jump on this hill; leave 0 if unknown.</translation></message>
+
+    <message><source>Liczba punktów rekompensaty za zmianę belki o jeden stopień.</source><translation>Compensation points for changing the gate by one step.</translation></message>
+
+    <message><source>Punkty odejmowane za 1 m/s wiatru pod narty, gdy włączono rekompensatę.</source><translation>Points deducted for 1 m/s headwind when compensation is enabled.</translation></message>
+
+    <message><source>Wartość wynosi 1,5 razy punkty za wiatr pod narty, maksymalnie 100.</source><translation>This is 1.5 times the headwind points, capped at 100.</translation></message>
+</context>
 </TS>

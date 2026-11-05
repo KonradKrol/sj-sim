@@ -17,15 +17,15 @@ ColumnLayout {
     }
     Repeater {
         model: [
-            {key:"hill",label:qsTr("Skocznia")},
-            {key:"type",label:qsTr("Wydarzenie")},
-            {key:"kind",label:qsTr("Rodzaj konkursu")},
-            {key:"rules",label:qsTr("Zasady konkursu")}
+            {key:"hill",label:qsTr("Skocznia"),help:qsTr("Ta skocznia obowiązuje także w treningach i serii próbnej przed zawodami.")},
+            {key:"type",label:qsTr("Wydarzenie"),help:qsTr("Kwalifikacje mogą wyłonić uczestników późniejszego konkursu. Powiąż je w zakładce Powiązania.")},
+            {key:"kind",label:qsTr("Rodzaj konkursu"),help:qsTr("W konkursie indywidualnym startują skoczkowie, a w drużynowym — zespoły.")},
+            {key:"rules",label:qsTr("Zasady konkursu"),help:qsTr("Zasady określają m.in. liczbę serii, awans i punktację. Możesz wybrać gotowe lub edytować je dla tych zawodów.")}
         ]
         ColumnLayout {
             property var field: modelData
             Layout.fillWidth: true; spacing: 4
-            Label { text: parent.field.label; color: Theme.muted; font.pointSize: Theme.caption }
+            RowLayout { Layout.fillWidth: true; Label { text: field.label; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true } HelpDot { explanation: field.help } }
             SChoice {
                 objectName: "calendar-field-" + parent.field.key
                 Layout.fillWidth: true
@@ -39,19 +39,19 @@ ColumnLayout {
             }
         }
     }
-    Label { text: qsTr("Treningi"); color: Theme.muted; font.pointSize: Theme.caption }
+    RowLayout { Layout.fillWidth: true; Label { text: qsTr("Treningi"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true } HelpDot { explanation: qsTr("Treningi odbywają się przed tym wydarzeniem i nie zastępują kwalifikacji ani serii próbnej.") } }
     NumberField { Layout.fillWidth: true; direct: false; label: qsTr("Liczba treningów"); fields: ({value:Math.max(0,editorFields.backend.selection.trainings || 0),mixed:editorFields.backend.selection.trainings === -1,minimum:0,maximum:30,step:1,decimals:0}); onCommitted: editorFields.backend.update({trainings:value}) }
     ColumnLayout {
         visible: editorFields.backend.selection.trainings !== 0
         Layout.fillWidth: true; spacing: 4
-        Label { text: qsTr("Zasady treningów"); color: Theme.muted; font.pointSize: Theme.caption }
+        RowLayout { Layout.fillWidth: true; Label { text: qsTr("Zasady treningów"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true } HelpDot { explanation: qsTr("Wybierz wspólne zasady dla treningów przed tym wydarzeniem lub ustaw własne.") } }
         SChoice { Layout.fillWidth: true; model: editorFields.backend.auxiliaryRules; currentIndex: editorFields.backend.selection.trainingRules || 0; Accessible.name: qsTr("Zasady treningów"); onActivated: currentIndex === 1 ? editorFields.editRules(1) : editorFields.backend.update({trainingRules:currentIndex}) }
     }
     SCheck { text: qsTr("Seria próbna"); Layout.fillWidth: true; tristate: true; checkState: editorFields.backend.selection.trial === -1 ? Qt.PartiallyChecked : editorFields.backend.selection.trial ? Qt.Checked : Qt.Unchecked; onClicked: editorFields.backend.update({trial:checked}) }
     ColumnLayout {
         visible: editorFields.backend.selection.trial !== 0
         Layout.fillWidth: true; spacing: 4
-        Label { text: qsTr("Zasady serii próbnej"); color: Theme.muted; font.pointSize: Theme.caption }
+        RowLayout { Layout.fillWidth: true; Label { text: qsTr("Zasady serii próbnej"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true } HelpDot { explanation: qsTr("Seria próbna poprzedza zawody. Jej wyniki nie są wynikiem konkursu.") } }
         SChoice { Layout.fillWidth: true; model: editorFields.backend.auxiliaryRules; currentIndex: editorFields.backend.selection.trialRules || 0; Accessible.name: qsTr("Zasady serii próbnej"); onActivated: currentIndex === 1 ? editorFields.editRules(2) : editorFields.backend.update({trialRules:currentIndex}) }
     }
 }

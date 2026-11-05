@@ -54,7 +54,7 @@ GridLayout {
         }
         ColumnLayout {
             Layout.fillWidth: true; spacing: Theme.dp(3)
-            Label { text: qsTr("Rok urodzenia"); color: identity.design.muted; font.family: identity.design.detailFont; font.pointSize: Theme.caption }
+            RowLayout { Layout.fillWidth: true; Label { text: qsTr("Rok urodzenia"); color: identity.design.muted; font.family: identity.design.detailFont; font.pointSize: Theme.caption; Layout.fillWidth: true } HelpDot { explanation: qsTr("Opcjonalny. Wiek w sezonie jest liczony według roku jego rozpoczęcia.") } }
             AthleteText {
                 design: identity.design; Layout.fillWidth: true; text: identity.profile.birthYear>0 ? String(identity.profile.birthYear) : ""; placeholderText: "—"
                 Accessible.name: qsTr("Rok urodzenia"); validator: IntValidator { bottom: 1; top: 9999 }
@@ -66,7 +66,7 @@ GridLayout {
     ColumnLayout {
         Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.columnSpan: identity.columns===3 ? 2 : 1
         spacing: Theme.dp(3)
-        Label { text: qsTr("Zdjęcie · plik w paczce"); color: identity.design.muted; font.family: identity.design.detailFont; font.pointSize: Theme.caption }
+        RowLayout { Layout.fillWidth: true; Label { text: qsTr("Zdjęcie · plik w paczce"); color: identity.design.muted; font.family: identity.design.detailFont; font.pointSize: Theme.caption; Layout.fillWidth: true } HelpDot { explanation: qsTr("Podaj ścieżkę względem folderu paczki. Zdjęcie jest opcjonalne; udostępniając paczkę, dołącz plik.") } }
         GridLayout {
             Layout.fillWidth: true; columns: width<Theme.dp(420) ? 1 : 2; columnSpacing: Theme.dp(5); rowSpacing: Theme.dp(3)
             AthleteText {

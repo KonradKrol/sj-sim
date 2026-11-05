@@ -645,7 +645,11 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <source>Nie znaleziono pliku</source>
             <translation>Soubor nenalezen</translation>
         </message>
-    </context>
+
+    <message><source>Opcjonalny. Wiek w sezonie jest liczony według roku jego rozpoczęcia.</source><translation>Nepovinné. Věk pro sezonu se počítá podle roku jejího začátku.</translation></message>
+
+    <message><source>Podaj ścieżkę względem folderu paczki. Zdjęcie jest opcjonalne; udostępniając paczkę, dołącz plik.</source><translation>Zadejte cestu vzhledem ke složce balíčku. Fotografie je nepovinná; při sdílení přiložte soubor.</translation></message>
+</context>
     <context>
         <name>AthleteInsignia</name>
         <message>
@@ -2238,7 +2242,21 @@ li.checked::marker { content: "\2612"; }
             <source>Ważność skoków</source>
             <translation>Důležitost skoků</translation>
         </message>
-    </context>
+
+    <message><source>Ta skocznia obowiązuje także w treningach i serii próbnej przed zawodami.</source><translation>Stejný můstek se používá při trénincích i zkušebním kole před závodem.</translation></message>
+
+    <message><source>Kwalifikacje mogą wyłonić uczestników późniejszego konkursu. Powiąż je w zakładce Powiązania.</source><translation>Kvalifikace může určit účastníky pozdějšího závodu. Propojte je v části Propojení.</translation></message>
+
+    <message><source>W konkursie indywidualnym startują skoczkowie, a w drużynowym — zespoły.</source><translation>V individuálním závodě startují skokani, v týmovém družstva.</translation></message>
+
+    <message><source>Zasady określają m.in. liczbę serii, awans i punktację. Możesz wybrać gotowe lub edytować je dla tych zawodów.</source><translation>Pravidla určují kola, postup a bodování. Vyberte předvolbu nebo je upravte pro tento závod.</translation></message>
+
+    <message><source>Treningi odbywają się przed tym wydarzeniem i nie zastępują kwalifikacji ani serii próbnej.</source><translation>Tréninky probíhají před závodem a nenahrazují kvalifikaci ani zkušební kolo.</translation></message>
+
+    <message><source>Wybierz wspólne zasady dla treningów przed tym wydarzeniem lub ustaw własne.</source><translation>Vyberte společná pravidla tréninků před tímto závodem nebo nastavte vlastní.</translation></message>
+
+    <message><source>Seria próbna poprzedza zawody. Jej wyniki nie są wynikiem konkursu.</source><translation>Zkušební kolo předchází závodu. Jeho výsledky nejsou výsledkem závodu.</translation></message>
+</context>
     <context>
         <name>CalendarInspector</name>
         <message>
@@ -2319,7 +2337,13 @@ li.checked::marker { content: "\2612"; }
             <source>Kwalifikacja według klasyfikacji</source>
             <translation>Kvalifikace podle pořadí</translation>
         </message>
-    </context>
+
+    <message><source>Zaznacz klasyfikacje, do których te zawody mają dodawać punkty.</source><translation>Vyberte klasifikace, do nichž tento závod přidá body.</translation></message>
+
+    <message><source>Uczestników wyłoni wskazany wcześniejszy konkurs lub kwalifikacje.</source><translation>Účastníky určí vybraný předchozí závod nebo kvalifikace.</translation></message>
+
+    <message><source>Uczestników wyłoni aktualna kolejność we wskazanej klasyfikacji.</source><translation>Účastníky určí aktuální pořadí ve vybrané klasifikaci.</translation></message>
+</context>
     <context>
         <name>CalendarVenueButton</name>
         <message>
@@ -2482,6 +2506,10 @@ li.checked::marker { content: "\2612"; }
         <message><source>Plan pakietu</source><translation>Plán bloku závodů</translation></message>
 
         <message><source>Dodaj pakiet do kalendarza</source><translation>Přidat blok do kalendáře</translation></message>
+
+    <message><source>Wybierz, jak przygotować pierwszy konkurs. Podgląd poniżej pokaże treningi i kwalifikacje.</source><translation>Vyberte přípravu prvního závodu. Náhled zobrazí tréninky a kvalifikaci.</translation></message>
+
+    <message><source>Drugi konkurs może mieć własne kwalifikacje albo korzystać z wcześniejszych.</source><translation>Druhý závod může mít vlastní kvalifikaci nebo použít předchozí.</translation></message>
 </context>
     <context>
         <name>CalendarWorkspace</name>
@@ -23465,4 +23493,17 @@ Zavřete předchozí okno nebo spusťte samostatnou kopii hry s vlastní složko
 Zamknij poprzednie okno Sj.Sim i spróbuj ponownie.</source><translation>Herní data nebo balíčky editorů používá jiná instance Sj.Sim nebo do nich nelze zapisovat.
 Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></context>
 <context><name>ReorderHandle</name><message><source>Zmień kolejność</source><translation>Změnit pořadí</translation></message></context>
+<context><name>HillNumber</name>
+    <message><source>Odległość punktu konstrukcyjnego. Od niej zależą punkty za odległość.</source><translation>Konstrukční bod určuje bodování vzdálenosti.</translation></message>
+
+    <message><source>Rozmiar skoczni. Wpływa na ocenę trudności dalekiego lądowania.</source><translation>Velikost můstku ovlivňuje obtížnost přistání dlouhých skoků.</translation></message>
+
+    <message><source>Najdłuższy zapisany skok na tej skoczni; pozostaw 0, jeśli rekord nie jest znany.</source><translation>Nejdelší zaznamenaný skok na můstku; pokud není znám, ponechte 0.</translation></message>
+
+    <message><source>Liczba punktów rekompensaty za zmianę belki o jeden stopień.</source><translation>Kompenzační body za změnu nájezdu o jeden stupeň.</translation></message>
+
+    <message><source>Punkty odejmowane za 1 m/s wiatru pod narty, gdy włączono rekompensatę.</source><translation>Body odečtené za 1 m/s protivětru při zapnuté kompenzaci.</translation></message>
+
+    <message><source>Wartość wynosi 1,5 razy punkty za wiatr pod narty, maksymalnie 100.</source><translation>Hodnota je 1,5násobkem bodů za protivítr, nejvýše 100.</translation></message>
+</context>
 </TS>

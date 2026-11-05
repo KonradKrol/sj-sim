@@ -56,15 +56,15 @@ Pane {
                 ColumnLayout {
                     visible: inspector.section === 2
                     Layout.fillWidth: true; spacing: 12
-                    Label { text: qsTr("Klasyfikacje"); color: Theme.ink; font.pointSize: Theme.body; font.weight: Font.DemiBold }
+                    RowLayout { Layout.fillWidth: true; Label { text: qsTr("Klasyfikacje"); color: Theme.ink; font.pointSize: Theme.body; font.weight: Font.DemiBold; Layout.fillWidth: true } HelpDot { explanation: qsTr("Zaznacz klasyfikacje, do których te zawody mają dodawać punkty.") } }
                     Label { visible: inspector.backend.classifications.length === 0; text: qsTr("Brak klasyfikacji w kalendarzu"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                     Repeater {
                         model: inspector.backend.classifications
                         CalendarClassificationScoring { Layout.fillWidth: true; backend: inspector.backend; entry: modelData }
                     }
-                    Label { text: qsTr("Kwalifikacja na podstawie konkursu"); color: Theme.muted; font.pointSize: Theme.caption }
+                    RowLayout { Layout.fillWidth: true; Label { text: qsTr("Kwalifikacja na podstawie konkursu"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap } HelpDot { explanation: qsTr("Uczestników wyłoni wskazany wcześniejszy konkurs lub kwalifikacje.") } }
                     SChoice { Layout.fillWidth: true; model: inspector.backend.advancementCompetitions; currentIndex: inspector.backend.selection.advancement === undefined ? -1 : inspector.backend.selection.advancement; Accessible.name: qsTr("Kwalifikacja na podstawie konkursu"); onActivated: inspector.backend.update({advancement:currentIndex}) }
-                    Label { text: qsTr("Kwalifikacja według klasyfikacji"); color: Theme.muted; font.pointSize: Theme.caption }
+                    RowLayout { Layout.fillWidth: true; Label { text: qsTr("Kwalifikacja według klasyfikacji"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap } HelpDot { explanation: qsTr("Uczestników wyłoni aktualna kolejność we wskazanej klasyfikacji.") } }
                     SChoice { Layout.fillWidth: true; model: inspector.backend.advancementClassifications; currentIndex: inspector.backend.selection.advancementClass === undefined ? -1 : inspector.backend.selection.advancementClass; Accessible.name: qsTr("Kwalifikacja według klasyfikacji"); onActivated: inspector.backend.update({advancementClass:currentIndex}) }
                 }
             }
