@@ -12,7 +12,9 @@ inline QString namedPath(const QString &directory,const QString &name,bool notif
         if(notify)QMessageBox::warning(nullptr,QObject::tr("Nieprawidłowa nazwa presetu"),QObject::tr("Nazwa presetu zawiera niedozwolone znaki lub wskazuje skrót do innego pliku. Wybierz inną nazwę."));
         return QString();
     };
-    if(name.trimmed().isEmpty() || name=="." || name==".." || name.contains(QRegularExpression("[\\\\/:*?\"<>|\\x00-\\x1f]")))return reject();
+    if(name.trimmed().isEmpty() || name=="." || name=="..")return reject();
+    for(const auto character:name)
+        if(character.unicode()<32 || QStringLiteral("\\/:*?\"<>|").contains(character))return reject();
     const QFileInfo target(QDir(directory).absoluteFilePath(name+".json"));
     return target.isSymLink()?reject():target.absoluteFilePath();
 }
