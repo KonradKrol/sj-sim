@@ -98,10 +98,11 @@ WeatherProposal sampleWeatherPreset(WeatherPreset preset,double k,RandomSource &
     w.correlationMetres=k*draw("correlationK",.3,.9);w.gustWidthMetres=k*draw("gustWidthK",.2,.5);
     const double strengthScale=parameters.get("generator.global.strengthScale",.84);
     const double variationScale=parameters.get("generator.global.variationScale",.6);
+    const double spatialScale=parameters.get("generator.global.spatialScale",.95);
     const double gustScale=parameters.get("generator.global.gustScale",.6);
     Wind average;for(const auto &r:w.references){average.head+=r.value.head/w.references.size();average.cross+=r.value.cross/w.references.size();}
-    for(auto &r:w.references){r.value.head=(average.head+(r.value.head-average.head)*variationScale)*strengthScale;r.value.cross=(average.cross+(r.value.cross-average.cross)*variationScale)*strengthScale;}
-    w.temporalAmplitude*=variationScale;w.spatialAmplitude*=variationScale;w.trendAmplitude*=variationScale;w.gustAmplitude*=gustScale;
+    for(auto &r:w.references){r.value.head=average.head*strengthScale+(r.value.head-average.head)*(.8*.75)*spatialScale;r.value.cross=average.cross*strengthScale+(r.value.cross-average.cross)*(.8*.75)*spatialScale;}
+    w.temporalAmplitude*=variationScale;w.spatialAmplitude*=.75*spatialScale;w.trendAmplitude*=variationScale;w.gustAmplitude*=gustScale;
     w.validate();return result;
 }
 }

@@ -136,6 +136,7 @@
   "generator.global.gustScale": 0.6,
   "generator.global.strengthScale": 0.84,
   "generator.global.variationScale": 0.6,
+  "generator.global.spatialScale": 0.95,
   "generator.preset.0.activityVariation.max": 0.15,
   "generator.preset.0.activityVariation.min": 0,
   "generator.preset.0.angle.max": 5,
