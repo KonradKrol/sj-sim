@@ -111,7 +111,7 @@ ScrollView {
             background: Surface { fillColor: Theme.surface; sweep: 20 }
             contentItem: ColumnLayout {
                 Label { text: overview.backend.dateText(overview.selectedDay); color: Theme.ink; font.pointSize: Theme.section; font.family: Theme.displayFamily }
-                Label { visible: overview.dayEvents.length===0; text: qsTr("Dzień bez zawodów — czas na odpoczynek lub podróż."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                Label { visible: overview.dayEvents.length===0; text: qsTr("Brak wydarzeń."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 Repeater { model: overview.dayEvents; CalendarVenueButton { required property var modelData; event: modelData; Layout.fillWidth: true; hint: modelData.played?qsTr("Rozegrany"):modelData.cancelled?qsTr("Odwołany"):qsTr("Zaplanowany"); onClicked: overview.editEvent(modelData.id) } }
                 SButton { objectName: "date-assign-day"; Layout.fillWidth: true; text: qsTr("Przypisz zaznaczone konkursy do tego dnia"); enabled: overview.backend.selection.count>0 && !overview.backend.selection.locked; onClicked: overview.backend.assignDate(overview.selectedDay) }
             }

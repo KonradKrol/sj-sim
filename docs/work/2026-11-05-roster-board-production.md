@@ -200,3 +200,6 @@ rzędu zakładek. Powiększony „+” ma kontrastowy obrys, bez dominującego f
 Komunikaty podglądu planowania nie pojawiają się nad właściwą listą wydarzeń.
 Test wejścia z empty state, widoczności listy, menu zasad i pełnego planowania
 PASS --dates-only (/tmp/sj-final-calendar-check.log), light/dark i małe okna.
+
+Usunięto dopisek „Dzień bez zawodów — czas na odpoczynek lub podróż.”
+z widoku kalendarza. Zastąpiono rzeczowym „Brak wydarzeń.”, EN/CS aktualne.

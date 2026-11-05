@@ -1577,7 +1577,11 @@ Sdílejte celou složku. K importu vyberte soubor pack.json.</translation></mess
             <source>Pokaż pozostałe ostrzeżenia (%1)</source>
             <translation>Zobrazit zbývající upozornění (%1)</translation>
         </message>
-    </context>
+        <message>
+        <source>Brak wydarzeń.</source>
+        <translation>Žádné události.</translation>
+    </message>
+</context>
     <context>
         <name>CalendarDatePlanner</name>
         <message>

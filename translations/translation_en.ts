@@ -1577,7 +1577,11 @@ Share the entire folder. To import the pack, select its pack.json file.</transla
             <source>Pokaż pozostałe ostrzeżenia (%1)</source>
             <translation>Show remaining warnings (%1)</translation>
         </message>
-    </context>
+        <message>
+        <source>Brak wydarzeń.</source>
+        <translation>No events.</translation>
+    </message>
+</context>
     <context>
         <name>CalendarDatePlanner</name>
         <message>
