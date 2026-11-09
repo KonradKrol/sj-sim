@@ -10144,8 +10144,8 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
     <context>
         <name>QObject</name>
     <message>
-        <source>Średnia kara jakości za Oszczędza siły w treningu i próbie. Część jest stała, a część losowa. W kwalifikacjach wpływ wynosi 20%, w konkursie nie działa.</source>
-        <translation>Average quality penalty for conserving energy in training and trial rounds. Part is fixed and part random. Qualifications apply 20%; competitions are unaffected.</translation>
+        <source>Średnia kara jakości za Oszczędza siły w treningu i próbie. Kara jest losowa: małe straty są częstsze niż duże. W kwalifikacjach wpływ wynosi 20%, w konkursie nie działa.</source>
+        <translation>Average quality penalty for conserving energy in training and trial rounds. The penalty is random: small losses are more common than large ones. Qualifications apply 20%; competitions are unaffected.</translation>
     </message>
 <message><source>Wpływ wiatru na K95</source><translation>Wind influence at K95</translation></message>
 <message><source>Wpływ wiatru na K130</source><translation>Wind influence at K130</translation></message>

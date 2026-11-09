@@ -61,7 +61,7 @@ JumpQuality QualityModel::baseline(const Athlete &athlete, double k, double hill
             : config.trainingBonus[attitude]*(event==EventKind::Qualification?.5:1);
     } else if (attitude<0 && event!=EventKind::Competition) {
         const double factor=event==EventKind::Qualification ? .2 : 1.0;
-        quality.eventEffect=-factor*config.conservedEffortPenalty[-attitude]/3.4;
+        quality.eventEffect=-factor*config.conservedEffortPenalty[-attitude];
     }
     return quality;
 }
@@ -74,12 +74,9 @@ JumpQuality QualityModel::sample(const Athlete &athlete, double k, double bias, 
     if (attitude<0 && (event==EventKind::Training || event==EventKind::Trial))
         deviation*=config.conservedEffortDeviation[-attitude];
     if (attitude<0 && event!=EventKind::Competition) {
-        // Preserve the old mean penalty while making most of it intermittent.
-        constexpr double chance=.65;
+        // Exponential penalty: mostly small losses, with occasional larger ones.
         const double factor=event==EventKind::Qualification ? .2 : 1.0;
-        if(rng.event(chance))
-            quality.eventEffect-=factor*config.conservedEffortPenalty[-attitude]
-                *(1.0-1.0/3.4)*rng.uniform(0.0,2.0/chance);
+        quality.eventEffect=factor*config.conservedEffortPenalty[-attitude]*std::log1p(-rng.unit());
     }
     double noise=config.noise==NoiseShape::Normal ? rng.normal(0,deviation) : rng.laplace(0,deviation/std::sqrt(2.0));
     const bool negative=noise<0;
