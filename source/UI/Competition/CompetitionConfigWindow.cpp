@@ -46,6 +46,7 @@
 #include <QtConcurrent/QtConcurrentRun>
 #include <QSignalBlocker>
 #include <QTimer>
+#include <QStandardItemModel>
 #include <QDir>
 #include <QJsonArray>
 #include <QRandomGenerator>
@@ -142,7 +143,12 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
 
         int compType = seasonCompetition->getRulesPointer()->getCompetitionType();
         for(auto & classification : Classification::getSpecificTypeClassifications(simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference(), compType))
-            if(classification)ui->comboBox_classification->addItem(classification->getName()+(classification->getRankedResults().isEmpty()?tr(" (brak wyników)"):QString()));
+            if(classification){
+                const bool empty=classification->getRankedResults().isEmpty();
+                ui->comboBox_classification->addItem(classification->getName()+(empty?tr(" (brak wyników)"):QString()));
+                if(auto *model=qobject_cast<QStandardItemModel *>(ui->comboBox_classification->model()))
+                    if(auto *item=model->item(ui->comboBox_classification->count()-1))item->setEnabled(!empty);
+            }
 
         QVector<CompetitionInfo *> competitions = CompetitionInfo::getSpecificTypeMainCompetitions(simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference(), compType);
         for(auto & competition : competitions)
@@ -391,6 +397,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         connect(editor, &TeamEditorWidget::submitted, &dialog, &QDialog::accept);
         if(dialog.exec() == QDialog::Accepted){
             competitionTeams[teamIndex] = editor->constructTeamFromWidgetInput();
+            teamsTreeView->setModel(nullptr);
             delete teamsSquadsModel;
             teamsSquadsModel = new TeamsSquadsTreeModel(&competitionTeams);
             if(getType() == SingleCompetition)
@@ -1466,6 +1473,7 @@ void CompetitionConfigWindow::on_pushButton_loadJumpers_clicked()
             jumpersListView->setupListModel();
 
             competitionTeams = Team::constructTeamsVectorByJumpersList(competitionJumpers, competitionRulesEditor->getJumpersCountInTeam());
+            teamsTreeView->setModel(nullptr);
             delete teamsSquadsModel;
             teamsSquadsModel = new TeamsSquadsTreeModel(&competitionTeams, competitionRulesEditor->getJumpersCountInTeam());
             teamsSquadsModel->setupTreeItems();
@@ -1499,6 +1507,7 @@ void CompetitionConfigWindow::on_comboBox_competition_activated(int index)
         }
         else{
             TeamCompetitionManager::setStartListOrderByCompetitionResults(competitionTeams, competition);
+            teamsTreeView->setModel(nullptr);
             delete teamsSquadsModel;
             teamsSquadsModel = new TeamsSquadsTreeModel(&competitionTeams, seasonCompetition->getRulesPointer()->getJumpersInTeamCount());
             teamsSquadsModel->setupTreeItems();
@@ -1515,7 +1524,10 @@ void CompetitionConfigWindow::on_comboBox_classification_activated(int index)
         index--; // First entry is the placeholder.
         int type = seasonCompetition->getRulesPointer()->getCompetitionType();
         const auto choices=Classification::getSpecificTypeClassifications(simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference(),type);
-        if(index<0 || index>=choices.size() || !choices[index] || choices[index]->getRankedResults().isEmpty())return;
+        if(index<0 || index>=choices.size() || !choices[index])return;
+        if(choices[index]->getRankedResults().isEmpty()){
+            QMessageBox::information(this,tr("Lista startowa"),tr("Ta klasyfikacja nie ma wyników. Kolejność listy startowej nie została zmieniona."));return;
+        }
         Classification *classification=choices[index];
         if(type == CompetitionRules::Individual)
         {
@@ -1530,6 +1542,7 @@ void CompetitionConfigWindow::on_comboBox_classification_activated(int index)
         }
         else{
             TeamCompetitionManager::setStartListOrderByClassification(competitionTeams, classification);
+            teamsTreeView->setModel(nullptr);
             delete teamsSquadsModel;
             teamsSquadsModel = new TeamsSquadsTreeModel(&competitionTeams, seasonCompetition->getRulesPointer()->getJumpersInTeamCount());
             teamsSquadsModel->setupTreeItems();
@@ -1788,6 +1801,7 @@ void CompetitionConfigWindow::on_pushButton_byOtherComp_clicked()
                 t.setCountryCode(team.getCountryCode());
                 seasonCompetition->getTeamsReference().push_back(t);
             }
+            teamsTreeView->setModel(nullptr);
             delete teamsSquadsModel;
             teamsSquadsModel = new TeamsSquadsTreeModel(&competitionTeams, seasonCompetition->getRulesPointer()->getJumpersInTeamCount());
             teamsSquadsModel->setupTreeItems();
@@ -1804,6 +1818,7 @@ void CompetitionConfigWindow::on_pushButton_byOtherComp_clicked()
                 if(Team::containsTeamByCode(temp, t.getCountryCode()))
                     competitionTeams.push_back(Team::getTeamObjectByCountryCode(&temp, t.getCountryCode()));
             }
+            teamsTreeView->setModel(nullptr);
             delete teamsSquadsModel;
             teamsSquadsModel = new TeamsSquadsTreeModel(&competitionTeams, seasonCompetition->getRulesPointer()->getJumpersInTeamCount());
             teamsSquadsModel->setupTreeItems();

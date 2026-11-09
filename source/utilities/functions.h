@@ -45,6 +45,7 @@ public:
     template<typename T>
     static bool vectorContainsByID(const QVector<T> & vector, T * item)
     {
+        if(!item)return false;
         for(auto & it : vector){
             if(it.getID() == item->getID())
                 return true;
@@ -54,8 +55,9 @@ public:
     template<typename T>
     static bool vectorContainsByID(const QVector<T *> & vector, T * item)
     {
+        if(!item)return false;
         for(auto & it : vector){
-            if(it->getID() == item->getID())
+            if(it && it->getID() == item->getID())
                 return true;
         }
         return false;

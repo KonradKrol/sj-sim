@@ -105,6 +105,7 @@ void Team::cutTeamJumpers(Team *team, int jumpersCount)
 
 Team *Team::getTeamByCountryCode(QVector<Team> *teams, QString countryCode)
 {
+    if(!teams)return nullptr;
     countryCode = CountryCodes::toFis(countryCode);
     for(auto & team : *teams)
     {

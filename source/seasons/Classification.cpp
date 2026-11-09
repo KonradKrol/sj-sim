@@ -167,7 +167,7 @@ QVector<Classification *> Classification::getSpecificTypeClassifications(QVector
     QVector<Classification *> toReturn;
     for(auto & classification : classifications)
     {
-        if(classification->getClassificationType() == type)
+        if(classification && classification->getClassificationType() == type)
             toReturn.push_back(classification);
     }
     return toReturn;

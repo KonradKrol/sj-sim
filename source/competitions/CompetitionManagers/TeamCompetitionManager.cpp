@@ -172,12 +172,12 @@ QVector<Team> TeamCompetitionManager::getFilteredTeamsByClassification(Competiti
 
 void TeamCompetitionManager::setStartListOrderByClassification(QVector<Team> & teams, Classification *classification)
 {
-    if(classification->getClassificationType() == Classification::Team)
+    if(classification && !classification->getRankedResults().isEmpty() && classification->getClassificationType() == Classification::Team)
     {
         QVector<Team> tempTeams;
         for(auto & result : classification->getRankedResults())
         {
-            if(MyFunctions::vectorContains(teams, Team::getTeamByCountryCode(&teams, result->getTeamCode())) && result->getPointsSum() != 0)
+            if(result && MyFunctions::vectorContains(teams, Team::getTeamByCountryCode(&teams, result->getTeamCode())) && result->getPointsSum() != 0)
                 tempTeams.push_back(*Team::getTeamByCountryCode(&teams, result->getTeamCode()));
         }
 
@@ -202,12 +202,12 @@ void TeamCompetitionManager::setStartListOrderByClassification(QVector<Team> & t
 
 void TeamCompetitionManager::setStartListOrderByCompetitionResults(QVector<Team> &teams, CompetitionInfo *competition)
 {
-    if(competition->getRulesPointer()->getCompetitionType() == CompetitionRules::Team)
+    if(competition && !competition->getResultsReference().getResultsReference().isEmpty() && competition->getRulesPointer()->getCompetitionType() == CompetitionRules::Team)
     {
         QVector<Team> tempTeams;
         for(auto & result : competition->getResultsReference().getResultsReference())
         {
-            if(MyFunctions::vectorContains(teams, Team::getTeamByCountryCode(&teams, result.getTeam()->getCountryCode())) && result.getPointsSum() != 0)
+            if(result.getTeam() && MyFunctions::vectorContains(teams, Team::getTeamByCountryCode(&teams, result.getTeam()->getCountryCode())) && result.getPointsSum() != 0)
             {
                 tempTeams.push_back(*Team::getTeamByCountryCode(&teams, result.getTeam()->getCountryCode()));
             }

@@ -177,12 +177,12 @@ QVector<Jumper *> IndividualCompetitionManager::getFilteredJumpersByClassificati
 
 void IndividualCompetitionManager::setStartListOrderByClassification(QVector<Jumper *> & jumpers, Classification *classification)
 {
-    if(classification->getClassificationType() == Classification::Individual)
+    if(classification && !classification->getRankedResults().isEmpty() && classification->getClassificationType() == Classification::Individual)
     {
         QVector<Jumper *> tempJumpers;
         for(auto & result : classification->getRankedResults())
         {
-            if(jumpers.contains(result->getJumper()) && result->getPointsSum() != 0)
+            if(result && result->getJumper() && jumpers.contains(result->getJumper()) && result->getPointsSum() != 0)
                 tempJumpers.push_back(result->getJumper());
         }
 
@@ -207,7 +207,7 @@ void IndividualCompetitionManager::setStartListOrderByClassification(QVector<Jum
 
 void IndividualCompetitionManager::setStartListOrderByCompetitionResults(QVector<Jumper *> & jumpers, CompetitionInfo *competition)
 {
-    if(competition->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
+    if(competition && !competition->getResultsReference().getResultsReference().isEmpty() && competition->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
     {
         QVector<Jumper *> tempJumpers;
         for(auto & result : competition->getResultsReference().getResultsReference())
