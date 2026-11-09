@@ -15,7 +15,7 @@ Menu {
     width: Math.min(Math.max(120,hostWidth-16),Math.max(220,Math.min(420,parent ? parent.width : 320)))
     height: Math.min(implicitHeight,Math.max(80,hostHeight-16))
     margins: 8
-    background: Rectangle { color: Theme.surface; border.color: Theme.outline; radius: Theme.radius }
+    background: Rectangle { color: Theme.surface; border.color: Theme.outline; border.width: Math.max(1,Theme.controlBorder); radius: Theme.radius }
     Instantiator {
         model: menu.entries
         delegate: MenuItem {

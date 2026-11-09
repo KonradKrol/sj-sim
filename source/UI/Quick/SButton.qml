@@ -18,7 +18,10 @@ Button {
     hoverEnabled: true
     font.family: primary ? Theme.displayFamily : Theme.bodyFamily
     font.pointSize: primary ? Theme.section : Theme.body
-    font.weight: primary ? Font.ExtraBold : Font.DemiBold
+    font.weight: primary ? Theme.displayWeight : Theme.actionWeight
+    font.letterSpacing: Theme.actionTracking
+    scale: down && enabled ? Theme.pressScale : 1
+    Behavior on scale { NumberAnimation { duration: Theme.motion; easing.type: Theme.feedbackEasing } }
     Accessible.name: text
     Accessible.description: hint
     onHoveredChanged: if(!hovered){hintSuppressed=false;helpRequested=false}
@@ -49,8 +52,8 @@ Button {
         sweep: control.primary ? 20 : 12
         corner: control.quiet ? 8 : 6
         fillColor: control.inverse ? (control.hovered || control.down ? Theme.track : "transparent") : control.primary ? (control.down ? Qt.darker(Theme.accent,1.15) : Theme.accent) : control.down ? Theme.selection : control.hovered ? Theme.raised : control.quiet ? "transparent" : Theme.raised
-        strokeWidth: control.activeFocus ? 2 : 0
-        edgeColor: control.inverse ? Theme.signal : Theme.accent
-        Rectangle { visible: control.activeFocus && control.primary; anchors.fill: parent; anchors.margins: 6; color: "transparent"; radius: 6; border.color: Theme.accentText }
+        strokeWidth: control.activeFocus ? Theme.focusBorder : !control.quiet && !control.primary && !control.inverse ? Theme.controlBorder : 0
+        edgeColor: control.inverse ? Theme.signal : control.activeFocus || control.hovered ? Theme.accent : Theme.outline
+        Rectangle { visible: control.activeFocus && control.primary; anchors.fill: parent; anchors.margins: 6; color: "transparent"; radius: Theme.controlRadius; border.color: Theme.accentText }
     }
 }

@@ -21,7 +21,7 @@ QtObject {
     function fontSize(value) { return value * scale }
     readonly property real controlHeight: dp(compact ? 26 : 42)
     readonly property real scale: uiScale * (appearance ? appearance.textScale : 1)
-    readonly property int motion: appearance && appearance.reducedMotion ? 0 : 160
+    readonly property int motion: appearance && appearance.reducedMotion ? 0 : treatment.motion
     readonly property color background: palette.background
     readonly property color surface: palette.surface
     readonly property color raised: palette.raised
@@ -60,6 +60,29 @@ QtObject {
     readonly property FontMetrics captionMetrics: FontMetrics { font.family: Theme.bodyFamily; font.pointSize: Theme.caption }
     readonly property real headerHeight: titleMetrics.height + captionMetrics.height + dp(24)
     readonly property real gap: dp(compact ? 4 : 12)
-    readonly property real radius: dp(colorTheme===2 ? 6 : colorTheme===1 ? 12 : 10)
-    readonly property real surfaceSweep: colorTheme===2 ? 10 : colorTheme===1 ? 28 : 24
+    readonly property real radius: dp(treatment.panelRadius)
+    readonly property real surfaceSweep: treatment.sweep
+    readonly property var treatments: [
+        {roundness:-1,asymmetry:0,cornerLimit:24,controlRadius:6,controlBorder:0,focusBorder:2,pressScale:1,checkRadius:4,tabRadius:10,panelRadius:10,sweep:24,motion:160,tracking:0},
+        {roundness:.65,asymmetry:1,cornerLimit:24,controlRadius:14,controlBorder:1.5,focusBorder:3,pressScale:.96,checkRadius:10,tabRadius:20,panelRadius:12,sweep:28,motion:190,tracking:.3},
+        {roundness:.18,asymmetry:0,cornerLimit:4,controlRadius:3,controlBorder:1,focusBorder:2,pressScale:1,checkRadius:2,tabRadius:3,panelRadius:6,sweep:10,motion:120,tracking:0}
+    ]
+    readonly property var treatment: treatments[colorTheme]
+    readonly property bool expressive: colorTheme===1
+    readonly property bool minimal: colorTheme===2
+    readonly property real surfaceRoundness: treatment.roundness
+    readonly property real surfaceAsymmetry: treatment.asymmetry
+    readonly property real surfaceCornerLimit: dp(treatment.cornerLimit)
+    readonly property real controlRadius: dp(treatment.controlRadius)
+    readonly property real controlBorder: treatment.controlBorder
+    readonly property real focusBorder: treatment.focusBorder
+    readonly property real pressScale: treatment.pressScale
+    readonly property int feedbackEasing: expressive ? Easing.OutBack : Easing.OutCubic
+    readonly property int actionWeight: expressive ? Font.Bold : Font.DemiBold
+    readonly property int displayWeight: expressive ? Font.Black : Font.ExtraBold
+    readonly property real actionTracking: treatment.tracking
+    readonly property real checkRadius: treatment.checkRadius
+    readonly property color tabFill: expressive ? accent : stadium
+    readonly property color tabInk: expressive ? accentText : snow
+    readonly property real tabRadius: dp(treatment.tabRadius)
 }

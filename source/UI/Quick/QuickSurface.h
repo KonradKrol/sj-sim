@@ -9,6 +9,9 @@ class QuickSurface : public QQuickPaintedItem {
     Q_PROPERTY(qreal strokeWidth MEMBER m_stroke NOTIFY changed)
     Q_PROPERTY(qreal corner MEMBER m_corner NOTIFY changed)
     Q_PROPERTY(qreal sweep MEMBER m_sweep NOTIFY changed)
+    Q_PROPERTY(qreal themeRoundness MEMBER m_themeRoundness NOTIFY changed)
+    Q_PROPERTY(qreal themeAsymmetry MEMBER m_themeAsymmetry NOTIFY changed)
+    Q_PROPERTY(qreal themeCornerLimit MEMBER m_themeCornerLimit NOTIFY changed)
 public:
     explicit QuickSurface(QQuickItem *parent=nullptr);
     void paint(QPainter *painter) override;
@@ -17,4 +20,5 @@ signals:
 private:
     QColor m_fill=Qt::white,m_edge=Qt::transparent;
     qreal m_stroke=0,m_corner=6,m_sweep=24;
+    qreal m_themeRoundness=-1,m_themeAsymmetry=0,m_themeCornerLimit=24;
 };

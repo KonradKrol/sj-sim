@@ -17,7 +17,7 @@ TextField {
     background: Surface {
         fillColor: Theme.raised
         corner: 6; sweep: 12
-        strokeWidth: field.activeFocus ? 2 : 0
-        edgeColor: Theme.accent
+        strokeWidth: field.activeFocus ? Theme.focusBorder : Theme.controlBorder
+        edgeColor: field.activeFocus || field.hovered ? Theme.accent : Theme.outline
     }
 }

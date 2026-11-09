@@ -9,11 +9,11 @@ Control {
     readonly property var names: [qsTr("Niechlujne"),qsTr("Niestaranne"),qsTr("Poprawne"),qsTr("Eleganckie"),qsTr("Stylista")]
     padding: Theme.dp(8)
     ContentHeight { control: landing }
-    background: Rectangle {
-        color: landing.design.surface
-        radius: Theme.dp(4)
-        border.width: 1
-        border.color: landing.design.line
+    background: Surface {
+        fillColor: landing.design.surface
+        corner: Theme.dp(4); sweep: corner
+        strokeWidth: 1
+        edgeColor: landing.design.line
     }
     contentItem: ColumnLayout {
         spacing: Theme.dp(6)

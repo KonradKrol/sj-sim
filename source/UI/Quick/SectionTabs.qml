@@ -47,9 +47,9 @@ Item {
         x: selectedButton ? selectedButton.x : 0
         width: selectedButton ? selectedButton.width : 0
         height: selectedButton ? selectedButton.height : 0
-        color: Theme.stadium; radius: Theme.radius
-        Behavior on x { NumberAnimation { duration: Theme.motion; easing.type: Easing.OutCubic } }
-        Behavior on width { NumberAnimation { duration: Theme.motion; easing.type: Easing.OutCubic } }
+        color: Theme.tabFill; radius: Theme.tabRadius
+        Behavior on x { NumberAnimation { duration: Theme.motion; easing.type: Theme.feedbackEasing } }
+        Behavior on width { NumberAnimation { duration: Theme.motion; easing.type: Theme.feedbackEasing } }
     }
     Row {
         id: row
@@ -66,10 +66,10 @@ Item {
                 quiet: true
                 font.family: Theme.displayFamily
                 font.pointSize: tabs.dense ? Theme.body : Theme.section
-                foreground: tabs.currentIndex === index ? Theme.snow : Theme.muted
+                foreground: tabs.currentIndex === index ? Theme.tabInk : Theme.muted
                 background: Surface {
                     fillColor: tabs.currentIndex===index ? "transparent" : parent.hovered ? Theme.selection : "transparent"
-                    edgeColor: Theme.accent; strokeWidth: parent.activeFocus ? 2 : 0; sweep: 18
+                    edgeColor: Theme.accent; strokeWidth: parent.activeFocus ? Theme.focusBorder : 0; sweep: 18
                 }
                 enabled: tabs.optionEnabled.length <= index || tabs.optionEnabled[index]
                 checkable: true

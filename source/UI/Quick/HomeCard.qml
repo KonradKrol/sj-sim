@@ -30,7 +30,7 @@ AbstractButton {
         Label {
             text: card.title; color: card.featured ? Theme.snow : Theme.ink
             font.family: Theme.displayFamily; font.pointSize: card.expansive ? Theme.display*1.5 : card.featured && !card.compact ? Theme.display : Theme.heading
-            font.weight: Font.ExtraBold; font.capitalization: Font.AllUppercase
+            font.weight: Theme.displayWeight; font.capitalization: Font.AllUppercase
             width: parent.width; wrapMode: Text.WordWrap
         }
         Label { text: card.description; color: card.featured ? Theme.headerMuted : Theme.muted; font.pointSize: Theme.body; lineHeight: 1.2; width: parent.width; wrapMode: Text.WordWrap }
@@ -45,8 +45,8 @@ AbstractButton {
         corner: 8
         fillColor: card.featured ? Theme.stadium : card.hovered ? Theme.raised : Theme.surface
         edgeColor: card.activeFocus ? Theme.accent : card.featured ? Theme.signal : Theme.accent
-        strokeWidth: card.activeFocus || card.hovered ? 2 : 0
+        strokeWidth: card.activeFocus ? Theme.focusBorder : card.hovered || Theme.expressive ? 2 : Theme.minimal ? 1 : 0
     }
-    scale: card.down ? 0.985 : 1
-    Behavior on scale { NumberAnimation { duration: Theme.motion; easing.type: Easing.OutCubic } }
+    scale: card.down ? (Theme.expressive ? Theme.pressScale : 0.985) : 1
+    Behavior on scale { NumberAnimation { duration: Theme.motion; easing.type: Theme.feedbackEasing } }
 }

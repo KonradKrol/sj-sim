@@ -20,9 +20,9 @@ SButton {
         Item { Layout.fillWidth: true }
     }
     background: Rectangle {
-        radius: Theme.dp(5)
+        radius: Theme.expressive || Theme.minimal ? Theme.controlRadius : Theme.dp(5)
         color: tool.checked ? Theme.stadium : tool.down ? Theme.selection : tool.hovered ? Theme.selection : Theme.raised
-        border.width: tool.visualFocus ? 2 : 1
+        border.width: tool.visualFocus ? Theme.focusBorder : Math.max(1,Theme.controlBorder)
         border.color: tool.visualFocus ? Theme.accent : tool.checked ? Theme.stadium : Theme.outline
     }
 }

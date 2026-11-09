@@ -59,8 +59,8 @@ ComboBox {
     }
     background: Surface {
         fillColor: control.hovered ? Theme.selection : Theme.raised
-        edgeColor: Theme.accent
-        strokeWidth: control.activeFocus ? 2 : 0
+        edgeColor: control.activeFocus || control.hovered ? Theme.accent : Theme.outline
+        strokeWidth: control.activeFocus ? Theme.focusBorder : Theme.controlBorder
         sweep: 12
     }
     delegate: ItemDelegate {
@@ -170,6 +170,6 @@ ComboBox {
                 padding: 8
             }
         }
-        background: Rectangle { color: Theme.surface; border.color: Theme.outline; radius: Theme.radius }
+        background: Rectangle { color: Theme.surface; border.color: Theme.outline; border.width: Math.max(1,Theme.controlBorder); radius: Theme.radius }
     }
 }

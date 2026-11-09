@@ -65,7 +65,7 @@ ScrollView {
                     required property int index
                     Layout.fillWidth: true
                     padding: Theme.dp(6)
-                    background: Rectangle { color: Theme.surface; radius: Theme.dp(6); border.width: 1; border.color: Theme.divider }
+                    background: Surface { fillColor: Theme.surface; strokeWidth: Math.max(1,Theme.controlBorder); edgeColor: Theme.divider; corner: Theme.dp(6); sweep: corner }
                     contentItem: ColumnLayout {
                         spacing: Theme.dp(5)
                         RowLayout {
