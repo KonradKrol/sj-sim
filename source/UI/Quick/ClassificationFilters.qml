@@ -47,7 +47,7 @@ Pane {
                     }
                 }
             }
-            SCheck { visible: !!filters.age.value; readonly property var field: filters.workspace.value("classificationUnknownAge"); text: qsTr("Uwzględniaj nieznany wiek"); checked: !!field.value; enabled: field.enabled!==false; Layout.fillWidth: true; onClicked: ui.activate(field.id) }
+            CheckHelp { visible: !!filters.age.value; readonly property var field: filters.workspace.value("classificationUnknownAge"); controlName: "classificationUnknownAgeHelp"; text: qsTr("Uwzględniaj nieznany wiek"); checked: !!field.value; editable: field.enabled!==false; Layout.fillWidth: true; explanation: qsTr("Po włączeniu zawodnicy bez roku urodzenia mogą zdobywać punkty mimo filtra wieku. Po wyłączeniu filtr ich pomija."); onClicked: ui.activate(field.id) }
             Rectangle { Layout.fillWidth: true; implicitHeight: 1; color: Theme.outline }
             CheckHelp {
                 Layout.fillWidth: true

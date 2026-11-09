@@ -12,6 +12,7 @@ ColumnLayout {
     RowLayout {
         Layout.fillWidth: true
         Label { text: qsTr("Zmiany tylko dla tej symulacji"); color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap; Layout.fillWidth: true }
+        HelpDot { explanation: qsTr("Edytujesz kopię danych dla tej rozgrywki. Oryginalna paczka w bazie danych pozostaje bez zmian.") }
         SButton { text: workspace.node.values.season ? qsTr("Cofnij edycję") : qsTr("Przywróć z paczki"); enabled: workspace.backend.valid; onClicked: {workspace.forceActiveFocus(); workspace.backend.reset()} }
     }
     ColumnLayout {

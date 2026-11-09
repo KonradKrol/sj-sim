@@ -332,6 +332,39 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
     auto *entry=identity(widget);
     QVariantMap data{{"id",idFor(widget)}, {"name",widget->objectName()}, {"kind","column"},
                      {"enabled",widget->isEnabled()}, {"available",!widget->isHidden() || widget->property("quickExposePage").toBool()}, {"tip",widget->toolTip()}, {"label",m_captions.value(widget,widget->accessibleName())}};
+    if(!profile().startsWith("SingleJumps")) {
+        const QString help = [&]() -> QString {
+            const QString name = widget->objectName();
+            if(name == "comboBox_competitionType") return tr("W konkursie indywidualnym punktuje skoczek, a w drużynowym — cały zespół.");
+            if(name == "checkBox_windCompensation") return tr("Dodawaj punkty za wiatr w plecy i odejmuj za wiatr pod narty. Przeliczniki ustala skocznia.");
+            if(name == "checkBox_gateCompensation") return tr("Wyrównuj punktami zmianę belki względem belki odniesienia. Niższa belka daje dodatkowe punkty.");
+            if(name == "checkBox_judgesPoints") return tr("Doliczaj noty za styl do wyniku skoku. Po wyłączeniu liczą się odległość i włączone rekompensaty.");
+            if(name == "checkBox_95HsRule") return tr("Po obniżeniu belki przez trenera przyznaj punkty za tę zmianę tylko za skok na co najmniej 95% HS.");
+            if(name == "checkBox_dsq") return tr("Dopuszczaj losowe dyskwalifikacje. Częstość ustawisz przed konkursem.");
+            if(name == "checkBox_hillRecordBreaking") return tr("Pozwól aktualizować rekord skoczni skokami z tego wydarzenia.");
+            if(name == "spinBox_jumpersInTeamCount") return tr("Tyle osób skacze w jednym zespole. Na przykład 2 oznacza duety, a 4 — czteroosobowe drużyny.");
+            if(name == "spinBox_roundsCount") return tr("Liczba serii w konkursie. Uczestników i sposób awansu ustawisz osobno dla każdej serii.");
+            if(name == "doubleSpinBox_formVariability") return tr("Większa zmienność pozwala wylosować większe zmiany formy. Nie zmienia OVR zawodników.");
+            bool roundEditor = false;
+            for(auto *parent = widget->parentWidget(); parent; parent = parent->parentWidget())
+                if(parent->inherits("RoundInfoEditorWidget")) { roundEditor = true; break; }
+            if(name == "spinBox_count" && roundEditor) return tr("Limit uczestników tej serii. Na przykład 30 w drugiej serii oznacza awans do finałowej trzydziestki; remisy mogą zwiększyć liczbę startujących.");
+            if(name == "checkBox_sortStartList") return tr("Ustawiaj kolejność startową według dotychczasowych wyników. Wyłącz, aby zachować wcześniejszą kolejność.");
+            if(name == "comboBox_sortingAfterGroups") return tr("W drużynówce wybierz, po której grupie zawodników przeliczyć kolejność startową zespołów.");
+            if(name == "checkBox_KORound") return tr("Podziel zawodników na grupy KO. O awansie decydują wyniki w grupach i dostępne miejsca dla lucky loserów.");
+            if(name == "spinBox_KOGroupCount") return tr("Liczba zawodników w jednej grupie KO. Wartość 2 oznacza pojedynki w parach.");
+            if(name == "spinBox_AdvancingFromKOGroup") return tr("Tylu najlepszych zawodników każdej grupy uzyskuje bezpośredni awans. Pozostałe miejsca mogą przypaść lucky loserom.");
+            if(name == "comboBox_KOGroupsSelectionType") return tr("Wybierz sposób tworzenia grup. Losowanie z koszyków rozdziela zawodników według ich pozycji na liście.");
+            if(name == "spinBox_startGate") return tr("Wyższa belka zwykle wydłuża skoki. Automatyczny dobór jest punktem wyjścia; możesz zmienić numer ręcznie.");
+            if(name == "spinBox_dsqProbability") return tr("Określa szansę dyskwalifikacji przy skoku. „Bardzo rzadkie” to średnio 1 na 400 skoków, „Bardzo częste” — 1 na 60. Wyłączone oznacza brak losowych DSQ.");
+            if(name == "comboBox_classification") return tr("Wybierz klasyfikację, której kolejność ma posłużyć do ustawienia listy startowej.");
+            if(name == "comboBox_competition") return tr("Wybierz wcześniejsze zawody, których wyniki mają posłużyć do przygotowania listy startowej.");
+            if(name == "dataPackReferenceYear") return tr("Rok używany do przeliczenia wieku z paczki na rok urodzenia. Przykład: 20 lat w 2026 oznacza rocznik 2006.");
+            if(name == "openBalanceLab") return tr("Rozbudowane laboratorium stworzone z pomocą AI, głównie dla autora do dostrajania silnika Sj.Sima. Pozwala porównywać warianty symulacji i analizować duże serie wyników. Jest skomplikowane, ale możesz korzystać z niego z ciekawości. Do zwykłej gry nie jest potrzebne.");
+            return {};
+        }();
+        if(!help.isEmpty()) data["help"] = help;
+    }
     QVariantList shortcuts;
     for(auto *action:widget->findChildren<QAction *>(QString(),Qt::FindDirectChildrenOnly)) {
         const QString sequence=action->shortcut().toString(QKeySequence::PortableText);

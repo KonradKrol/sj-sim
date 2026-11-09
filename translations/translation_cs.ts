@@ -781,6 +781,10 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
     <message><source>Opcjonalny. Wiek w sezonie jest liczony według roku jego rozpoczęcia.</source><translation>Nepovinné. Věk pro sezonu se počítá podle roku jejího začátku.</translation></message>
 
     <message><source>Podaj ścieżkę względem folderu paczki. Zdjęcie jest opcjonalne; udostępniając paczkę, dołącz plik.</source><translation>Zadejte cestu vzhledem ke složce balíčku. Fotografie je nepovinná; při sdílení přiložte soubor.</translation></message>
+    <message>
+        <source>Rekord życiowy jest informacją o zawodniku, nie zwiększa jego umiejętności. Zostaw puste pole, jeśli go nie znasz.</source>
+        <translation>Osobní rekord je údaj o skokanovi, nezvyšuje jeho schopnosti. Pokud ho neznáš, nech pole prázdné.</translation>
+    </message>
 </context>
     <context>
         <name>AthleteInsignia</name>
@@ -827,7 +831,11 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <source>%1 · poziom %2 z 5</source>
             <translation>%1 · úroveň %2 z 5</translation>
         </message>
-    </context>
+        <message>
+        <source>Klasa lądowania wpływa na noty za styl. Poziomy od lewej do prawej oznaczają coraz staranniejsze lądowanie; nie gwarantują telemarku.</source>
+        <translation>Třída doskoku ovlivňuje známky za styl. Úrovně zleva doprava znamenají stále pečlivější doskok; telemark nezaručují.</translation>
+    </message>
+</context>
     <context>
         <name>AthleteLibrary</name>
         <message>
@@ -1615,7 +1623,11 @@ Sdílejte celou složku. K importu vyberte soubor pack.json.</translation></mess
             <source>Następny miesiąc</source>
             <translation>Další měsíc</translation>
         </message>
-    </context>
+        <message>
+        <source>Wpisz datę w formacie DD.MM.RRRR lub wybierz ją z kalendarza. Kilka wydarzeń może odbyć się tego samego dnia; ich kolejność ustala lista.</source>
+        <translation>Zadej datum ve formátu DD.MM.RRRR nebo ho vyber z kalendáře. Více událostí může proběhnout ve stejný den; jejich pořadí určuje seznam.</translation>
+    </message>
+</context>
     <context>
         <name>CalendarDateOverview</name>
         <message>
@@ -3420,7 +3432,11 @@ li.checked::marker { content: "\2612"; }
             <source>W powiązaniach konkursu ustawisz osobny mnożnik punktów. Na przykład 0,5 daje połowę punktów, a 2 podwaja punkty. Bez zmiany obowiązuje mnożnik 1.</source>
             <translation>V propojeních závodu nastavíte samostatný násobitel bodů. Například 0,5 dává polovinu bodů a 2 body zdvojnásobí. Výchozí násobitel je 1.</translation>
         </message>
-    </context>
+        <message>
+        <source>Po włączeniu zawodnicy bez roku urodzenia mogą zdobywać punkty mimo filtra wieku. Po wyłączeniu filtr ich pomija.</source>
+        <translation>Po zapnutí mohou skokani bez roku narození bodovat i s věkovým filtrem. Po vypnutí je filtr vynechá.</translation>
+    </message>
+</context>
     <context>
         <name>ClassificationInput</name>
         <message>
@@ -3672,7 +3688,11 @@ li.checked::marker { content: "\2612"; }
             <source>Dodaje notę z konkursu (np. 276,4 pkt), zamiast punktów za miejsce — jak w Turnieju Złotego Bażanta czy Turnieju Nordyckim.</source>
             <translation>Přidává body ze závodu (např. 276,4 b) místo bodů za umístění — jako v Turné zlatého bažanta či Severském turné.</translation>
         </message>
-    </context>
+        <message>
+        <source>Klasyfikacja indywidualna gromadzi punkty skoczków, a drużynowa — krajów. W punktacji wybierzesz, za jakie wyniki je przyznawać.</source>
+        <translation>Individuální žebříček sbírá body skokanů, týmový body zemí. V bodování zvolíš, za které výsledky je přidělovat.</translation>
+    </message>
+</context>
     <context>
         <name>ClassificationsCheckBoxesWidget</name>
         <message>
@@ -16101,6 +16121,98 @@ Ověřte, že jste vybrali správný soubor.</translation>
         <source>Nowa symulacja</source>
         <translation>Nová simulace</translation>
     </message>
+    <message>
+        <source>W konkursie indywidualnym punktuje skoczek, a w drużynowym — cały zespół.</source>
+        <translation>V individuálním závodě boduje skokan, v týmovém celý tým.</translation>
+    </message>
+    <message>
+        <source>Dodawaj punkty za wiatr w plecy i odejmuj za wiatr pod narty. Przeliczniki ustala skocznia.</source>
+        <translation>Přičítej body za zadní vítr a odečítej za protivítr. Koeficienty určuje můstek.</translation>
+    </message>
+    <message>
+        <source>Wyrównuj punktami zmianę belki względem belki odniesienia. Niższa belka daje dodatkowe punkty.</source>
+        <translation>Vyrovnávej změny nájezdu vůči referenčnímu oknu pomocí bodů. Nižší okno přidává body.</translation>
+    </message>
+    <message>
+        <source>Doliczaj noty za styl do wyniku skoku. Po wyłączeniu liczą się odległość i włączone rekompensaty.</source>
+        <translation>Započítej známky za styl do výsledku skoku. Po vypnutí se počítá vzdálenost a zapnuté kompenzace.</translation>
+    </message>
+    <message>
+        <source>Po obniżeniu belki przez trenera przyznaj punkty za tę zmianę tylko za skok na co najmniej 95% HS.</source>
+        <translation>Po snížení okna trenérem přiznej kompenzaci za tuto změnu pouze za skok alespoň na 95 % HS.</translation>
+    </message>
+    <message>
+        <source>Dopuszczaj losowe dyskwalifikacje. Częstość ustawisz przed konkursem.</source>
+        <translation>Povol náhodné diskvalifikace. Jejich četnost nastavíš před závodem.</translation>
+    </message>
+    <message>
+        <source>Pozwól aktualizować rekord skoczni skokami z tego wydarzenia.</source>
+        <translation>Povol aktualizovat rekord můstku skoky z této události.</translation>
+    </message>
+    <message>
+        <source>Tyle osób skacze w jednym zespole. Na przykład 2 oznacza duety, a 4 — czteroosobowe drużyny.</source>
+        <translation>Počet skokanů v jednom týmu. Například 2 znamená dvojice a 4 čtyřčlenné týmy.</translation>
+    </message>
+    <message>
+        <source>Liczba serii w konkursie. Uczestników i sposób awansu ustawisz osobno dla każdej serii.</source>
+        <translation>Počet kol závodu. Účastníky a postup nastavíš pro každé kolo zvlášť.</translation>
+    </message>
+    <message>
+        <source>Większa zmienność pozwala wylosować większe zmiany formy. Nie zmienia OVR zawodników.</source>
+        <translation>Vyšší proměnlivost umožňuje větší náhodné změny formy. OVR závodníků nemění.</translation>
+    </message>
+    <message>
+        <source>Limit uczestników tej serii. Na przykład 30 w drugiej serii oznacza awans do finałowej trzydziestki; remisy mogą zwiększyć liczbę startujących.</source>
+        <translation>Limit účastníků tohoto kola. Například 30 ve druhém kole znamená finálovou třicítku; shody mohou počet startujících zvýšit.</translation>
+    </message>
+    <message>
+        <source>Ustawiaj kolejność startową według dotychczasowych wyników. Wyłącz, aby zachować wcześniejszą kolejność.</source>
+        <translation>Určuj startovní pořadí podle dosavadních výsledků. Vypni pro zachování předchozího pořadí.</translation>
+    </message>
+    <message>
+        <source>W drużynówce wybierz, po której grupie zawodników przeliczyć kolejność startową zespołów.</source>
+        <translation>V týmovém závodě vyber, po které skupině skokanů přepočítat startovní pořadí týmů.</translation>
+    </message>
+    <message>
+        <source>Podziel zawodników na grupy KO. O awansie decydują wyniki w grupach i dostępne miejsca dla lucky loserów.</source>
+        <translation>Rozděl skokany do KO skupin. O postupu rozhodují výsledky skupin a volná místa pro lucky losery.</translation>
+    </message>
+    <message>
+        <source>Liczba zawodników w jednej grupie KO. Wartość 2 oznacza pojedynki w parach.</source>
+        <translation>Počet skokanů v jedné KO skupině. Hodnota 2 znamená souboje ve dvojicích.</translation>
+    </message>
+    <message>
+        <source>Tylu najlepszych zawodników każdej grupy uzyskuje bezpośredni awans. Pozostałe miejsca mogą przypaść lucky loserom.</source>
+        <translation>Tolik nejlepších skokanů z každé skupiny postoupí přímo. Zbylá místa mohou získat lucky loseři.</translation>
+    </message>
+    <message>
+        <source>Wybierz sposób tworzenia grup. Losowanie z koszyków rozdziela zawodników według ich pozycji na liście.</source>
+        <translation>Vyber způsob tvorby skupin. Losování z košů rozděluje skokany podle jejich pozice na seznamu.</translation>
+    </message>
+    <message>
+        <source>Wyższa belka zwykle wydłuża skoki. Automatyczny dobór jest punktem wyjścia; możesz zmienić numer ręcznie.</source>
+        <translation>Vyšší okno obvykle prodlužuje skoky. Automatická volba je výchozí návrh; číslo můžeš změnit ručně.</translation>
+    </message>
+    <message>
+        <source>Określa szansę dyskwalifikacji przy skoku. „Bardzo rzadkie” to średnio 1 na 400 skoków, „Bardzo częste” — 1 na 60. Wyłączone oznacza brak losowych DSQ.</source>
+        <translation>Určuje šanci na diskvalifikaci při skoku. „Velmi vzácné“ znamená průměrně 1 ze 400 skoků, „Velmi časté“ 1 ze 60. Vypnuto znamená žádné náhodné DSQ.</translation>
+    </message>
+    <message>
+        <source>Wybierz klasyfikację, której kolejność ma posłużyć do ustawienia listy startowej.</source>
+        <translation>Vyber žebříček, jehož pořadí určí startovní listinu.</translation>
+    </message>
+    <message>
+        <source>Wybierz wcześniejsze zawody, których wyniki mają posłużyć do przygotowania listy startowej.</source>
+        <translation>Vyber dřívější závod, jehož výsledky poslouží k přípravě startovní listiny.</translation>
+    </message>
+    <message>
+        <source>Rok używany do przeliczenia wieku z paczki na rok urodzenia. Przykład: 20 lat w 2026 oznacza rocznik 2006.</source>
+        <translation>Rok pro přepočet věku v balíčku na rok narození. Příklad: 20 let v roce 2026 znamená ročník 2006.</translation>
+    </message>
+    <message>
+        <source>Rozbudowane laboratorium stworzone z pomocą AI, głównie dla autora do dostrajania silnika Sj.Sima. Pozwala porównywać warianty symulacji i analizować duże serie wyników. Jest skomplikowane, ale możesz korzystać z niego z ciekawości. Do zwykłej gry nie jest potrzebne.</source>
+        <translation>Rozsáhlá laboratoř vytvořená s pomocí AI, především pro autora k ladění enginu Sj.Simu. Umožňuje porovnávat varianty simulace a analyzovat velké série výsledků. Je složitá, ale můžeš ji prozkoumat ze zvědavosti. Pro běžné hraní není potřeba.</translation>
+    </message>
 </context>
     <context>
         <name>QuickCalendar</name>
@@ -20210,7 +20322,11 @@ li.checked::marker { content: "\2612"; }
             <source>Zaawansowana edycja skoczni</source>
             <translation>Pokročilá úprava můstku</translation>
         </message>
-    </context>
+        <message>
+        <source>Edytujesz kopię danych dla tej rozgrywki. Oryginalna paczka w bazie danych pozostaje bez zmian.</source>
+        <translation>Upravuješ kopii pro tuto hru. Původní balíček v databázi zůstává beze změny.</translation>
+    </message>
+</context>
     <context>
         <name>JumpManipulationWorkspace</name>
         <message>
@@ -23991,6 +24107,10 @@ Technický klíč: %4</translation>
         <source>Wspólny edytor ma niezastosowane zmiany.</source>
         <translation>Společný editor obsahuje nepoužité změny.</translation>
     </message>
+    <message>
+        <source>Aktywna lista wyznacza dostępnych zawodników w kalendarzu. Brak aktywnej listy lub pusta lista oznacza wszystkich skoczków.</source>
+        <translation>Aktivní seznam určuje dostupné skokany v kalendáři. Žádný aktivní nebo prázdný seznam znamená všechny skokany.</translation>
+    </message>
 </context>
 <context><name>SavedRosterWorkspace</name><message><source>Cofnij</source><translation>Zpět</translation></message><message><source>Według krajów</source><translation>Podle zemí</translation></message><message><source>Kolejność</source><translation>Pořadí</translation></message><message><source>Limity krajów</source><translation>Limity zemí</translation></message><message><source>Wszyscy</source><translation>Všichni</translation></message><message><source>Wybrani (%1)</source><translation>Vybraní (%1)</translation></message><message><source>Wybrani zawodnicy</source><translation>Vybraní závodníci</translation></message></context>
 <context><name>SavedRosterPane</name><message><source>Wybrani zawodnicy</source><translation>Vybraní závodníci</translation></message><message><source>Wszyscy zawodnicy</source><translation>Všichni závodníci</translation></message><message><source>Szukaj nazwiska lub kraju</source><translation>Hledat jméno nebo zemi</translation></message><message><source>Usuń %1 z listy</source><translation>Odstranit %1 ze seznamu</translation></message><message><source>Dodaj %1 do listy</source><translation>Přidat %1 do seznamu</translation></message><message><source>Lista jest pusta</source><translation>Seznam je prázdný</translation></message><message><source>Brak pasujących zawodników</source><translation>Žádní odpovídající závodníci</translation></message><message><source>Pusta lista oznacza wszystkich zawodników. Dodaj wybranych, aby ograniczyć skład.</source><translation>Prázdný seznam zahrnuje všechny závodníky. Přidáním závodníků omezíte sestavu.</translation></message><message><source>Zmień nazwisko lub kraj, aby zobaczyć innych zawodników.</source><translation>Změňte jméno nebo zemi pro zobrazení dalších závodníků.</translation></message><message><source>Usuń zaznaczonych (%1)</source><translation>Odstranit vybrané (%1)</translation></message><message><source>Dodaj zaznaczonych (%1)</source><translation>Přidat vybrané (%1)</translation></message><message><source>Dodaj widocznych</source><translation>Přidat zobrazené</translation></message>    <message>
@@ -24141,6 +24261,10 @@ Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></con
     <message>
         <source>Zastosuj</source>
         <translation>Použít</translation>
+    </message>
+    <message>
+        <source>Przeniesienie skoczka usuwa go z innych list wybranych u góry. Ukryte listy pozostają bez zmian. Dopiero Zastosuj zapisuje cały podział.</source>
+        <translation>Přesun skokana ho odebere z ostatních seznamů vybraných nahoře. Skryté seznamy zůstanou beze změny. Celé rozdělení uloží až Použít.</translation>
     </message>
 </context>
 <context>

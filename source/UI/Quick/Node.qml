@@ -33,8 +33,8 @@ FocusScope {
             wrapMode: Text.WordWrap
         }
         HelpDot {
-            visible: control.fields.name==="comboBox_windMeasurementType"
-            explanation: control.fields.tip || ""
+            visible: control.kind!=="check" && control.kind!=="button" && (!!control.fields.help || control.fields.name==="comboBox_windMeasurementType")
+            explanation: control.fields.help || control.fields.tip || ""
         }
     }
     Loader {
@@ -87,7 +87,10 @@ FocusScope {
     }
     Component {
         id: buttonBody
+        RowLayout {
+            spacing: Theme.dp(8)
         SButton {
+            Layout.fillWidth: true; Layout.minimumWidth: 0
             objectName: "action-" + (control.fields.name || control.fields.text || control.fields.id)
             text: control.fields.text || ""
             primary: !!control.fields.primary
@@ -102,10 +105,20 @@ FocusScope {
                 onSelected: entry.button ? ui.activate(entry.id) : ui.triggerAction(entry.id)
             }
         }
+            HelpDot {
+                visible: control.fields.name==="openBalanceLab"
+                prominent: true
+                explanation: control.fields.help || ""
+            }
+        }
     }
+
     Component {
         id: checkBody
-        SCheck { objectName: "check-" + (control.fields.name || control.fields.id); text: control.fields.text || ""; checked: !!control.fields.value; onClicked: ui.activate(control.fields.id) }
+        RowLayout {
+            SCheck { objectName: "check-" + (control.fields.name || control.fields.id); Layout.fillWidth: true; Layout.minimumWidth: 0; text: control.fields.text || ""; checked: !!control.fields.value; onClicked: ui.activate(control.fields.id) }
+            HelpDot { visible: !!control.fields.help; explanation: control.fields.help || "" }
+        }
     }
     Component {
         id: numberBody

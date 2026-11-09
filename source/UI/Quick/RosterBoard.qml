@@ -85,7 +85,7 @@ Item {
         RowLayout {
             Layout.fillWidth: true
             SChoice { model: [qsTr("Kraje → listy"),qsTr("Listy → kraje")]; currentIndex: board.byCountry ? 0 : 1; onActivated: board.byCountry=index===0; Layout.preferredWidth: Theme.dp(190) }
-            SCheck { text: qsTr("Jeden skoczek na jednej wybranej liście"); checked: board.exclusive; onClicked: board.exclusive=checked; Layout.fillWidth: true }
+            CheckHelp { controlName: "rosterBoardExclusive"; text: qsTr("Jeden skoczek na jednej wybranej liście"); checked: board.exclusive; onClicked: board.exclusive=value; Layout.fillWidth: true; explanation: qsTr("Przeniesienie skoczka usuwa go z innych list wybranych u góry. Ukryte listy pozostają bez zmian. Dopiero Zastosuj zapisuje cały podział.") }
         }
         RowLayout {
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; spacing: Theme.dp(12)

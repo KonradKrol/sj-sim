@@ -44,7 +44,7 @@ GridLayout {
         Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: Theme.dp(260); spacing: Theme.dp(10)
         ColumnLayout {
             Layout.fillWidth: true; spacing: Theme.dp(3)
-            Label { text: qsTr("Rekord · m"); color: identity.design.muted; font.family: identity.design.detailFont; font.pointSize: Theme.caption }
+            RowLayout { Layout.fillWidth: true; Label { text: qsTr("Rekord · m"); color: identity.design.muted; font.family: identity.design.detailFont; font.pointSize: Theme.caption; Layout.fillWidth: true; Layout.minimumWidth: 0 } HelpDot { explanation: qsTr("Rekord życiowy jest informacją o zawodniku, nie zwiększa jego umiejętności. Zostaw puste pole, jeśli go nie znasz.") } }
             AthleteText {
                 objectName: "athletePersonalBest"; design: identity.design; Layout.fillWidth: true
                 text: identity.profile.personalBest>0 ? Number(identity.profile.personalBest).toLocaleString(Qt.locale(Theme.localeName),'f',1) : ""; placeholderText: "—"

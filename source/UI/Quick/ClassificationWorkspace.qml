@@ -29,7 +29,7 @@ ColumnLayout {
                 Layout.fillWidth: true; spacing: Theme.dp(4)
                 Label { text: qsTr("Nazwa"); color: Theme.muted; font.pointSize: Theme.caption }
                 ClassificationInput { node: workspace.controls.lineEdit_name || null; showLabel: false; Layout.fillWidth: true; Layout.minimumWidth: 0 }
-                Label { text: qsTr("Rodzaj klasyfikacji"); color: Theme.muted; font.pointSize: Theme.caption; Layout.topMargin: Theme.dp(4) }
+                RowLayout { Layout.fillWidth: true; Label { text: qsTr("Rodzaj klasyfikacji"); color: Theme.muted; font.pointSize: Theme.caption; Layout.topMargin: Theme.dp(4); Layout.fillWidth: true; Layout.minimumWidth: 0 } HelpDot { explanation: qsTr("Klasyfikacja indywidualna gromadzi punkty skoczków, a drużynowa — krajów. W punktacji wybierzesz, za jakie wyniki je przyznawać.") } }
                 ClassificationInput { node: workspace.controls.comboBox_type || null; showLabel: false; Layout.fillWidth: true; Layout.minimumWidth: 0 }
             }
         }

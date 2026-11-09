@@ -13,7 +13,7 @@ ColumnLayout {
     property string error: ""
     signal committed(string iso)
     spacing: 4
-    Label { text: field.label; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+    RowLayout { Layout.fillWidth: true; Label { text: field.label; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap } HelpDot { explanation: qsTr("Wpisz datę w formacie DD.MM.RRRR lub wybierz ją z kalendarza. Kilka wydarzeń może odbyć się tego samego dnia; ich kolejność ustala lista.") } }
     RowLayout {
         Layout.fillWidth: true
         SField {

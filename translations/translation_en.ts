@@ -781,6 +781,10 @@ But to keep you from getting too cheerful, your computer has been infected with 
     <message><source>Opcjonalny. Wiek w sezonie jest liczony według roku jego rozpoczęcia.</source><translation>Optional. Age for the season is based on its starting year.</translation></message>
 
     <message><source>Podaj ścieżkę względem folderu paczki. Zdjęcie jest opcjonalne; udostępniając paczkę, dołącz plik.</source><translation>Enter a path relative to the pack folder. The photo is optional; include the file when sharing the pack.</translation></message>
+    <message>
+        <source>Rekord życiowy jest informacją o zawodniku, nie zwiększa jego umiejętności. Zostaw puste pole, jeśli go nie znasz.</source>
+        <translation>A personal best describes the athlete; it does not increase their skill. Leave it blank if unknown.</translation>
+    </message>
 </context>
     <context>
         <name>AthleteInsignia</name>
@@ -827,7 +831,11 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <source>%1 · poziom %2 z 5</source>
             <translation>%1 · level %2 of 5</translation>
         </message>
-    </context>
+        <message>
+        <source>Klasa lądowania wpływa na noty za styl. Poziomy od lewej do prawej oznaczają coraz staranniejsze lądowanie; nie gwarantują telemarku.</source>
+        <translation>Landing class affects style marks. Levels from left to right mean increasingly polished landings; they do not guarantee a telemark.</translation>
+    </message>
+</context>
     <context>
         <name>AthleteLibrary</name>
         <message>
@@ -1615,7 +1623,11 @@ Share the entire folder. To import the pack, select its pack.json file.</transla
             <source>Różne daty</source>
             <translation>Multiple dates</translation>
         </message>
-    </context>
+        <message>
+        <source>Wpisz datę w formacie DD.MM.RRRR lub wybierz ją z kalendarza. Kilka wydarzeń może odbyć się tego samego dnia; ich kolejność ustala lista.</source>
+        <translation>Enter a date as DD.MM.YYYY or use the calendar. Multiple events can take place on one day; the list defines their order.</translation>
+    </message>
+</context>
     <context>
         <name>CalendarDateOverview</name>
         <message>
@@ -3420,7 +3432,11 @@ li.checked::marker { content: "\2612"; }
             <source>W powiązaniach konkursu ustawisz osobny mnożnik punktów. Na przykład 0,5 daje połowę punktów, a 2 podwaja punkty. Bez zmiany obowiązuje mnożnik 1.</source>
             <translation>Set a separate points multiplier in competition links. For example, 0.5 halves points and 2 doubles them. The default is 1.</translation>
         </message>
-    </context>
+        <message>
+        <source>Po włączeniu zawodnicy bez roku urodzenia mogą zdobywać punkty mimo filtra wieku. Po wyłączeniu filtr ich pomija.</source>
+        <translation>When enabled, athletes without a birth year can score despite the age filter. When disabled, the filter excludes them.</translation>
+    </message>
+</context>
     <context>
         <name>ClassificationInput</name>
         <message>
@@ -3672,7 +3688,11 @@ li.checked::marker { content: "\2612"; }
             <source>Dodaje notę z konkursu (np. 276,4 pkt), zamiast punktów za miejsce — jak w Turnieju Złotego Bażanta czy Turnieju Nordyckim.</source>
             <translation>Adds the competition score (e.g. 276.4 pts) instead of points by position, as in the Golden Pheasant or Nordic tournaments.</translation>
         </message>
-    </context>
+        <message>
+        <source>Klasyfikacja indywidualna gromadzi punkty skoczków, a drużynowa — krajów. W punktacji wybierzesz, za jakie wyniki je przyznawać.</source>
+        <translation>An individual ranking collects athlete points; a team ranking collects country points. Choose which results earn points in scoring settings.</translation>
+    </message>
+</context>
     <context>
         <name>ClassificationsCheckBoxesWidget</name>
         <message>
@@ -16100,6 +16120,98 @@ Check that you selected the correct file.</translation>
         <source>Nowa symulacja</source>
         <translation>New simulation</translation>
     </message>
+    <message>
+        <source>W konkursie indywidualnym punktuje skoczek, a w drużynowym — cały zespół.</source>
+        <translation>An individual competition scores each jumper; a team competition scores the whole team.</translation>
+    </message>
+    <message>
+        <source>Dodawaj punkty za wiatr w plecy i odejmuj za wiatr pod narty. Przeliczniki ustala skocznia.</source>
+        <translation>Add points for tailwind and subtract them for headwind. The hill defines the factors.</translation>
+    </message>
+    <message>
+        <source>Wyrównuj punktami zmianę belki względem belki odniesienia. Niższa belka daje dodatkowe punkty.</source>
+        <translation>Compensate for gate changes relative to the reference gate. A lower gate adds points.</translation>
+    </message>
+    <message>
+        <source>Doliczaj noty za styl do wyniku skoku. Po wyłączeniu liczą się odległość i włączone rekompensaty.</source>
+        <translation>Include style marks in the jump score. When disabled, only distance and enabled compensation count.</translation>
+    </message>
+    <message>
+        <source>Po obniżeniu belki przez trenera przyznaj punkty za tę zmianę tylko za skok na co najmniej 95% HS.</source>
+        <translation>After a coach lowers the gate, award compensation for that change only for a jump reaching at least 95% of HS.</translation>
+    </message>
+    <message>
+        <source>Dopuszczaj losowe dyskwalifikacje. Częstość ustawisz przed konkursem.</source>
+        <translation>Allow random disqualifications. Set their frequency before the competition.</translation>
+    </message>
+    <message>
+        <source>Pozwól aktualizować rekord skoczni skokami z tego wydarzenia.</source>
+        <translation>Allow jumps in this event to update the hill record.</translation>
+    </message>
+    <message>
+        <source>Tyle osób skacze w jednym zespole. Na przykład 2 oznacza duety, a 4 — czteroosobowe drużyny.</source>
+        <translation>The number of jumpers competing for each team. For example, 2 means duets and 4 means four-person teams.</translation>
+    </message>
+    <message>
+        <source>Liczba serii w konkursie. Uczestników i sposób awansu ustawisz osobno dla każdej serii.</source>
+        <translation>The number of rounds in the competition. Set participants and advancement separately for each round.</translation>
+    </message>
+    <message>
+        <source>Większa zmienność pozwala wylosować większe zmiany formy. Nie zmienia OVR zawodników.</source>
+        <translation>Greater variability allows larger random changes in form. It does not change athlete OVR.</translation>
+    </message>
+    <message>
+        <source>Limit uczestników tej serii. Na przykład 30 w drugiej serii oznacza awans do finałowej trzydziestki; remisy mogą zwiększyć liczbę startujących.</source>
+        <translation>The participant limit for this round. For example, 30 in round two means a top-30 final; ties may increase the number of starters.</translation>
+    </message>
+    <message>
+        <source>Ustawiaj kolejność startową według dotychczasowych wyników. Wyłącz, aby zachować wcześniejszą kolejność.</source>
+        <translation>Set the start order using results so far. Disable to keep the previous order.</translation>
+    </message>
+    <message>
+        <source>W drużynówce wybierz, po której grupie zawodników przeliczyć kolejność startową zespołów.</source>
+        <translation>In team competitions, choose after which athlete group to recalculate the team start order.</translation>
+    </message>
+    <message>
+        <source>Podziel zawodników na grupy KO. O awansie decydują wyniki w grupach i dostępne miejsca dla lucky loserów.</source>
+        <translation>Divide athletes into KO groups. Group results and available lucky loser places determine advancement.</translation>
+    </message>
+    <message>
+        <source>Liczba zawodników w jednej grupie KO. Wartość 2 oznacza pojedynki w parach.</source>
+        <translation>The number of athletes in each KO group. A value of 2 means head-to-head pairs.</translation>
+    </message>
+    <message>
+        <source>Tylu najlepszych zawodników każdej grupy uzyskuje bezpośredni awans. Pozostałe miejsca mogą przypaść lucky loserom.</source>
+        <translation>This many top athletes from each group advance directly. Remaining places may go to lucky losers.</translation>
+    </message>
+    <message>
+        <source>Wybierz sposób tworzenia grup. Losowanie z koszyków rozdziela zawodników według ich pozycji na liście.</source>
+        <translation>Choose how groups are formed. Pot draws distribute athletes according to their position on the list.</translation>
+    </message>
+    <message>
+        <source>Wyższa belka zwykle wydłuża skoki. Automatyczny dobór jest punktem wyjścia; możesz zmienić numer ręcznie.</source>
+        <translation>A higher gate usually makes jumps longer. Automatic selection is a starting point; you can change the gate manually.</translation>
+    </message>
+    <message>
+        <source>Określa szansę dyskwalifikacji przy skoku. „Bardzo rzadkie” to średnio 1 na 400 skoków, „Bardzo częste” — 1 na 60. Wyłączone oznacza brak losowych DSQ.</source>
+        <translation>Sets the disqualification chance per jump. “Very rare” means about 1 in 400 jumps; “Very frequent” means 1 in 60. Disabled means no random DSQ.</translation>
+    </message>
+    <message>
+        <source>Wybierz klasyfikację, której kolejność ma posłużyć do ustawienia listy startowej.</source>
+        <translation>Choose the ranking whose order will be used to arrange the start list.</translation>
+    </message>
+    <message>
+        <source>Wybierz wcześniejsze zawody, których wyniki mają posłużyć do przygotowania listy startowej.</source>
+        <translation>Choose an earlier event whose results will be used to prepare the start list.</translation>
+    </message>
+    <message>
+        <source>Rok używany do przeliczenia wieku z paczki na rok urodzenia. Przykład: 20 lat w 2026 oznacza rocznik 2006.</source>
+        <translation>The year used to convert ages in the pack into birth years. Example: age 20 in 2026 means born in 2006.</translation>
+    </message>
+    <message>
+        <source>Rozbudowane laboratorium stworzone z pomocą AI, głównie dla autora do dostrajania silnika Sj.Sima. Pozwala porównywać warianty symulacji i analizować duże serie wyników. Jest skomplikowane, ale możesz korzystać z niego z ciekawości. Do zwykłej gry nie jest potrzebne.</source>
+        <translation>A comprehensive laboratory created with AI assistance, mainly for the author to tune the Sj.Sim engine. It compares simulation variants and analyses large result sets. It is complex, but you can explore it out of curiosity. It is not needed for normal play.</translation>
+    </message>
 </context>
     <context>
         <name>QuickCalendar</name>
@@ -20209,7 +20321,11 @@ li.checked::marker { content: "\2612"; }
             <source>Zaawansowana edycja skoczni</source>
             <translation>Advanced hill editing</translation>
         </message>
-    </context>
+        <message>
+        <source>Edytujesz kopię danych dla tej rozgrywki. Oryginalna paczka w bazie danych pozostaje bez zmian.</source>
+        <translation>You are editing a copy for this game. The original database pack remains unchanged.</translation>
+    </message>
+</context>
     <context>
         <name>JumpManipulationWorkspace</name>
         <message>
@@ -23990,6 +24106,10 @@ Technical key: %4</translation>
         <source>Wspólny edytor ma niezastosowane zmiany.</source>
         <translation>The shared editor has unapplied changes.</translation>
     </message>
+    <message>
+        <source>Aktywna lista wyznacza dostępnych zawodników w kalendarzu. Brak aktywnej listy lub pusta lista oznacza wszystkich skoczków.</source>
+        <translation>The active list defines available athletes in the calendar. No active list or an empty list means all jumpers.</translation>
+    </message>
 </context>
 <context><name>SavedRosterWorkspace</name><message><source>Cofnij</source><translation>Undo</translation></message><message><source>Według krajów</source><translation>By country</translation></message><message><source>Kolejność</source><translation>Order</translation></message><message><source>Limity krajów</source><translation>Country limits</translation></message><message><source>Wszyscy</source><translation>All</translation></message><message><source>Wybrani (%1)</source><translation>Selected (%1)</translation></message><message><source>Wybrani zawodnicy</source><translation>Selected athletes</translation></message></context>
 <context><name>SavedRosterPane</name><message><source>Wybrani zawodnicy</source><translation>Selected athletes</translation></message><message><source>Wszyscy zawodnicy</source><translation>All athletes</translation></message><message><source>Szukaj nazwiska lub kraju</source><translation>Search by name or country</translation></message><message><source>Usuń %1 z listy</source><translation>Remove %1 from the list</translation></message><message><source>Dodaj %1 do listy</source><translation>Add %1 to the list</translation></message><message><source>Lista jest pusta</source><translation>The list is empty</translation></message><message><source>Brak pasujących zawodników</source><translation>No matching athletes</translation></message><message><source>Pusta lista oznacza wszystkich zawodników. Dodaj wybranych, aby ograniczyć skład.</source><translation>An empty list includes all athletes. Add athletes to restrict the roster.</translation></message><message><source>Zmień nazwisko lub kraj, aby zobaczyć innych zawodników.</source><translation>Change the name or country to see other athletes.</translation></message><message><source>Usuń zaznaczonych (%1)</source><translation>Remove selected (%1)</translation></message><message><source>Dodaj zaznaczonych (%1)</source><translation>Add selected (%1)</translation></message><message><source>Dodaj widocznych</source><translation>Add visible</translation></message>    <message>
@@ -24140,6 +24260,10 @@ Close the previous Sj.Sim window and try again.</translation></message></context
     <message>
         <source>Zastosuj</source>
         <translation>Apply</translation>
+    </message>
+    <message>
+        <source>Przeniesienie skoczka usuwa go z innych list wybranych u góry. Ukryte listy pozostają bez zmian. Dopiero Zastosuj zapisuje cały podział.</source>
+        <translation>Moving an athlete removes them from other lists selected above. Hidden lists remain unchanged. Apply saves the entire allocation.</translation>
     </message>
 </context>
 <context>
