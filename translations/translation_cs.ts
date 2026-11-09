@@ -4028,6 +4028,14 @@ Ověřte, že existuje a má odpovídající oprávnění.</translation>
         <message><source>Składy są już ustalone</source><translation>Soupisky jsou již určeny</translation></message>
 
         <message><source>Zawodnicy i kolejność muszą pozostać takie jak w rozegranych kwalifikacjach lub próbnej.</source><translation>Skokani a jejich pořadí musí odpovídat odehrané kvalifikaci nebo zkušebnímu kolu.</translation></message>
+    <message>
+        <source>Lista startowa</source>
+        <translation>Startovní listina</translation>
+    </message>
+    <message>
+        <source>Ta klasyfikacja nie ma wyników. Kolejność listy startowej nie została zmieniona.</source>
+        <translation>Tato klasifikace nemá výsledky. Pořadí startovní listiny nebylo změněno.</translation>
+    </message>
 </context>
     <context>
         <name>CompetitionInfoEditorWidget</name>
@@ -15925,6 +15933,14 @@ Ověřte, že jste vybrali správný soubor.</translation>
     <message><source>Drużynowy</source><translation>Týmový</translation></message>
 
     <message><source>Indywidualny</source><translation>Individuální</translation></message>
+    <message>
+        <source>Belka</source>
+        <translation>Nájezdové okno</translation>
+    </message>
+    <message>
+        <source>Nie udało się dobrać belki: %1</source>
+        <translation>Nepodařilo se navrhnout nájezdové okno: %1</translation>
+    </message>
 </context>
     <context>
         <name>QuickCalendar</name>
@@ -16532,6 +16548,22 @@ Ověřte, že jste vybrali správný soubor.</translation>
         <message>
         <source>Odczekaj 30 s</source>
         <translation>Počkat 30 s</translation>
+    </message>
+    <message>
+        <source>Sugeruj</source>
+        <translation>Navrhnout</translation>
+    </message>
+    <message>
+        <source>Dobierz belkę do aktualnych warunków i pozostałych zawodników.</source>
+        <translation>Navrhne nájezdové okno podle aktuálních podmínek a zbývajících skokanů.</translation>
+    </message>
+    <message>
+        <source>Bez zmian</source>
+        <translation>Beze změny</translation>
+    </message>
+    <message>
+        <source>Cofnij</source>
+        <translation>Zpět</translation>
     </message>
 </context>
     <context>

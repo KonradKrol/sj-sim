@@ -17,9 +17,12 @@ GridLayout {
         SButton { objectName: "editNextKoGroups"; visible: !!ui.context.nextKoEditable; text: qsTr("Grupy KO…"); quiet: true; onClicked: ui.editNextKoGroups() }
     }
     RowLayout {
-        Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.maximumWidth: controls.width >= 700 ? 220 : 9999
+        Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.maximumWidth: controls.width >= 700 ? 340 : 9999
         Label { text: qsTr("Belka"); color: Theme.muted; font.pointSize: Theme.caption }
-        Node { Layout.fillWidth: true; Layout.minimumWidth: 90; node: ui.find("spinBox_actualGate") }
+        Node { Layout.fillWidth: true; Layout.minimumWidth: 70; node: ui.find("spinBox_actualGate") }
+        SButton { text: qsTr("Sugeruj"); quiet: true; dense: true; visible: !ui.context.complete; enabled: !ui.context.roundComplete && !ui.context.liveStage; hint: qsTr("Dobierz belkę do aktualnych warunków i pozostałych zawodników."); onClicked: ui.suggestRaceGate(false) }
+        Label { visible: ui.context.gateSuggestionDelta!==undefined && ui.context.gateSuggestionDelta!==null; text: Number(ui.context.gateSuggestionDelta)===0 ? qsTr("Bez zmian") : (Number(ui.context.gateSuggestionDelta)>0 ? "+" : "")+ui.context.gateSuggestionDelta; color: Theme.muted; font.pointSize: Theme.caption }
+        SButton { text: qsTr("Cofnij"); quiet: true; dense: true; visible: !!ui.context.gateUndoAvailable; onClicked: ui.suggestRaceGate(true) }
     }
     SCheck {
         objectName: "raceLiveToggle"; text: qsTr("Na żywo")

@@ -28,3 +28,14 @@ Ręczne ustawienie zmian w czasie używa odcinkowej krzywej zamiast kwadratu: dl
 ## Trzy metody pomiaru wiatru
 
 Wybór zasad i lab mają tylko Domyślny (ID 3), Ulepszony (ID 4), Idealny (ID 5). Domyślny zachowuje dawną ważoną metodę „FIS — przybliżenie”. Ulepszony używa tej samej sieci, wag i okna czasu, ale odrzuca czujniki za lądowaniem. Idealny to dokładna średnia z faktycznej trasy, z normalnymi przelicznikami — właściciel jawnie wybrał to zamiast kompensacji porównującej lot z wiatrem i bez niego. Dawne ID 0/1/2 przy odczycie zasad przechodzą na Domyślny; ID 4 oznacza teraz Ulepszony. Dodano pomoc przy polu w zasadach, pojedynczych skokach i labie. Nie obiecywać stuprocentowego wyrównania wpływu wiatru przez Idealny: to dokładny pomiar, a nie idealna rekompensata punktowa.
+
+## Zabezpieczenia sortowania, belka i wybór presetu
+
+- Wyłączono wybór pustych klasyfikacji do kolejności startowej, zachowano blokadę po stronie handlera. Funkcje sortowania indywidualnego/drużynowego obsługują brak źródła i wyników. Dodatkowe zabezpieczenia: brak drużyny w wyniku, null w katalogu klasyfikacji, nieprawidłowy indeks podglądu klasyfikacji i wyszukiwanie identyfikatora null.
+- Most Qt Quick respektuje teraz wyłączone pozycje comboboxów; wcześniej pozwalał wybierać je mimo blokady w modelu Widgets.
+- W nowym silniku obniżenie przez trenera już wpływało na fizyczną belkę. Poprawiono zapis numeru belki w karcie skoku na rzeczywiście użyty, zgodnie ze starszym silnikiem.
+- Okna wyboru z dropdownem rezerwują większą wysokość, aby lista presetów i inne wybory miały miejsce.
+- Przycisk Sugeruj przy belce dobiera ją do aktualnych warunków i najmocniejszego z pozostałych zawodników, celując w real HS. Pokazuje zmianę i Cofnij; cofnięcie wygasa po skoku lub ręcznej zmianie. Uwzględnia i przywraca wcześniejsze ustawienie trenera.
+- Bazowy mnożnik tylnego wiatru: 1,55 -> 1,705 (+10%).
+
+Dodatkowy nerf ręcznej zmienności: amplitudy dla 0/25/50/75/100 wynoszą teraz 0/0,06175/0,225/0,332/0,4125 skali bazowej, z interpolacją między punktami. Daje to kolejne -25% na maksimum i łagodniejsze redukcje niżej.

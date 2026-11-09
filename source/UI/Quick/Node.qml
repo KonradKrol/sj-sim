@@ -202,6 +202,7 @@ FocusScope {
                 width: parent.width
                 searchable: !!control.fields.searchable
                 optionImages: control.fields.optionImages || []
+                optionEnabled: control.fields.optionEnabled || []
                 objectName: "choice-" + (control.fields.name || control.fields.id)
                 model: control.fields.options || []
                 currentIndex: control.fields.value

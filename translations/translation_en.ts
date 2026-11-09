@@ -4028,6 +4028,14 @@ Check that it exists and has appropriate permissions.</translation>
         <message><source>Składy są już ustalone</source><translation>Squads are already fixed</translation></message>
 
         <message><source>Zawodnicy i kolejność muszą pozostać takie jak w rozegranych kwalifikacjach lub próbnej.</source><translation>Jumpers and their order must match the completed qualification or trial round.</translation></message>
+    <message>
+        <source>Lista startowa</source>
+        <translation>Start list</translation>
+    </message>
+    <message>
+        <source>Ta klasyfikacja nie ma wyników. Kolejność listy startowej nie została zmieniona.</source>
+        <translation>This classification has no results. The start list order was not changed.</translation>
+    </message>
 </context>
     <context>
         <name>CompetitionInfoEditorWidget</name>
@@ -15924,6 +15932,14 @@ Check that you selected the correct file.</translation>
     <message><source>Drużynowy</source><translation>Team</translation></message>
 
     <message><source>Indywidualny</source><translation>Individual</translation></message>
+    <message>
+        <source>Belka</source>
+        <translation>Gate</translation>
+    </message>
+    <message>
+        <source>Nie udało się dobrać belki: %1</source>
+        <translation>Could not suggest a gate: %1</translation>
+    </message>
 </context>
     <context>
         <name>QuickCalendar</name>
@@ -16531,6 +16547,22 @@ Check that you selected the correct file.</translation>
         <message>
         <source>Odczekaj 30 s</source>
         <translation>Wait 30 s</translation>
+    </message>
+    <message>
+        <source>Sugeruj</source>
+        <translation>Suggest</translation>
+    </message>
+    <message>
+        <source>Dobierz belkę do aktualnych warunków i pozostałych zawodników.</source>
+        <translation>Suggest a gate for current conditions and the remaining athletes.</translation>
+    </message>
+    <message>
+        <source>Bez zmian</source>
+        <translation>Unchanged</translation>
+    </message>
+    <message>
+        <source>Cofnij</source>
+        <translation>Undo</translation>
     </message>
 </context>
     <context>

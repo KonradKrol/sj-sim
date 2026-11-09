@@ -289,6 +289,7 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     jumperResultsWidget->hide();
 
     connect(ui->spinBox_actualGate, qOverload<int>(&QSpinBox::valueChanged), this, [this, manager](int gate){
+        if(!property("applyingGateSuggestion").toBool()){setProperty("gateUndoAvailable",false);setProperty("gateSuggestionDelta",QVariant());}
         manager->setCoachGateForNextJumper(false);
         manager->setActualCoachGate(0);
         const int perRound = type == CompetitionRules::Team ? qMax(1,manager->getCompetitionRules()->getJumpersInTeamCount()) : 1;
@@ -1851,6 +1852,7 @@ void CompetitionManagerWindow::setupSimulator()
         simulator.setSimulationTime(simulationSeconds);
         simulator.setSimulationSeed(SimulationV2::deriveSeed(simulationQualitySeed,static_cast<SimulationV2::Seed>(std::floor(simulationSeconds/30))));
     }
+    setProperty("gateUndoAvailable",false);setProperty("gateSuggestionDelta",QVariant());
     simulator.setGate(manager->getActualGate());
     simulator.setHasCoachGate(manager->getCoachGateForNextJumper());
     simulator.setCoachGate(manager->getActualCoachGate());
@@ -2193,6 +2195,7 @@ void CompetitionManagerWindow::on_pushButton_coachGate_clicked()
     const int previousReduction = manager->getCoachGateForNextJumper() ? juryGate-manager->getActualCoachGate() : 1;
     const int reduction = QInputDialog::getInt(this, tr("Obniżenie belki na życzenie trenera"), tr("O ile stopni obniżyć belkę?\nAby uzyskać dodatkową rekompensatę, zawodnik musi osiągnąć 95% punktu HS (%1 m)").arg(QString::number((std::ceil(manager->getCompetitionInfo()->getHill()->getHSPoint() * 0.95 * 2) / 2))), qBound(0,previousReduction,maxReduction), 0, maxReduction, 1, &ok);
     if(!ok)return;
+    setProperty("gateUndoAvailable",false);setProperty("gateSuggestionDelta",QVariant());
     manager->setCoachGateForNextJumper(reduction > 0);
     manager->setActualCoachGate(reduction > 0 ? juryGate-reduction : 0);
     {
@@ -2226,7 +2229,10 @@ void CompetitionManagerWindow::on_comboBox_virtualClassification_currentIndexCha
     if(index > 0 && singleCompetition == false)
     {
         index--;
-        Classification * classification = new Classification(*manager->getCompetitionInfo()->getClassificationsReference()[index]);
+        const auto &choices=manager->getCompetitionInfo()->getClassificationsReference();
+        if(index<0 || index>=choices.size() || !choices[index])return;
+        Classification * classification = new Classification(*choices[index]);
+        classification->getResultsReference().erase(std::remove(classification->getResultsReference().begin(),classification->getResultsReference().end(),nullptr),classification->getResultsReference().end());
         for(auto &result:classification->getResultsReference()){
             result=classification->ownResult(std::make_unique<ClassificationSingleResult>(*result));result->setClassification(classification);
         }
@@ -2313,4 +2319,62 @@ void CompetitionManagerWindow::advanceRoundWeather()
     if(simulationWeather && round>windRound)simulationSeconds+=900.*(round-windRound);
     windRound=round;
     refreshWindSnapshot();updateActualInrunSnow();
+}
+
+void CompetitionManagerWindow::suggestCurrentGate(bool undo)
+{
+    if(!manager || jumpInProgress || manager->checkCompetitionEnd() || manager->checkRoundEnd() || property("resultHistoryPaused").toBool())return;
+    const int previous=manager->getActualGate();
+    const bool previousCoach=manager->getCoachGateForNextJumper();
+    const int previousEffective=previousCoach?manager->getActualCoachGate():previous;
+    int target=previous;
+    if(undo) {
+        if(!property("gateUndoAvailable").toBool())return;
+        target=property("gatePreviousValue").toInt();
+    } else {
+        auto *hill=manager->getCompetitionInfo()->getHill();
+        if(!hill || !hill->getSimulationProfile() || hill->getPointsForGate()<=0 || hill->getPointsForMeter()<=0)return;
+        JumpSimulator preview;JumpManipulator neutral;
+        preview.setHill(hill);preview.setCompetitionRules(manager->getCompetitionRules());preview.setManipulator(&neutral);
+        preview.setWinds(actualWinds);preview.setInrunSnow(actualInrunSnow);preview.setSimulationTime(simulationSeconds);
+        if(simulationWeather)preview.setSimulationWeather(simulationWeather,simulationMeasurement);
+        switch(manager->getCompetitionInfo()->getSerieType()) {
+        case CompetitionInfo::Training:preview.setSimulationEvent(SimulationV2::EventKind::Training);break;
+        case CompetitionInfo::TrialRound:preview.setSimulationEvent(SimulationV2::EventKind::Trial);break;
+        case CompetitionInfo::Qualifications:preview.setSimulationEvent(SimulationV2::EventKind::Qualification);break;
+        default:preview.setSimulationEvent(SimulationV2::EventKind::Competition);break;
+        }
+        Jumper *best=nullptr;double longest=-1;
+        preview.setGate(previous);
+        for(const auto &status:manager->getStartListStatusesReference()) {
+            auto *jumper=status.getJumper();
+            if(status.getJumpStatus()!=StartListCompetitorStatus::Unfinished || !jumper || !jumper->getSimulationProfile())continue;
+            preview.setJumper(jumper);const double distance=preview.previewDistance();
+            if(distance>longest){longest=distance;best=jumper;}
+        }
+        if(!best)return;
+        preview.setJumper(best);
+        int low=ui->spinBox_actualGate->minimum(),high=ui->spinBox_actualGate->maximum();
+        while(low<high){const int middle=(low+high+1)/2;preview.setGate(middle);if(preview.previewDistance()<=hill->getSimulationProfile()->realHs())low=middle;else high=middle-1;}
+        target=low;
+        setProperty("gatePreviousValue",previous);
+        setProperty("gatePreviousCoach",manager->getCoachGateForNextJumper());
+        setProperty("gatePreviousCoachValue",manager->getActualCoachGate());
+    }
+    setProperty("applyingGateSuggestion",true);
+    const bool unchangedDisplay=ui->spinBox_actualGate->value()==target;
+    ui->spinBox_actualGate->setValue(target);
+    if(unchangedDisplay && (previous!=target || previousCoach))emit ui->spinBox_actualGate->valueChanged(target);
+    // A coach gate can make the displayed value equal the suggestion while the jury gate differs.
+    if(manager->getActualGate()!=target || manager->getCoachGateForNextJumper()) {
+        manager->setActualGate(target);manager->setCoachGateForNextJumper(false);manager->setActualCoachGate(0);
+    }
+    if(undo && property("gatePreviousCoach").toBool()) {
+        manager->setCoachGateForNextJumper(true);manager->setActualCoachGate(property("gatePreviousCoachValue").toInt());
+        const QSignalBlocker blocker(ui->spinBox_actualGate);ui->spinBox_actualGate->setValue(manager->getActualCoachGate());
+    }
+    setProperty("applyingGateSuggestion",false);
+    setProperty("gateUndoAvailable",!undo && (target!=previous || previousCoach));
+    setProperty("gateSuggestionDelta",undo?QVariant():QVariant(target-previousEffective));
+    updateToAdvanceDistanceLabel();updateToBeatDistanceLabel();
 }

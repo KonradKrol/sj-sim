@@ -120,7 +120,7 @@ void JumpSimulator::simulateV2()
         simulationMeasurement && !exactWindOverride?*simulationMeasurement:competitionRules->getWindMeasurementType()==CompetitionRules::LegacyWindMeasurement
             ?static_cast<const SimulationV2::WindMeasurement &>(measurement):static_cast<const SimulationV2::WindMeasurement &>(configuredMeasurement));
     jumpData=JumpData(jumper,hill);jumpData.setSimulator(this);simulationData=&jumpData.getSimulationDataReference();
-    jumpData.setGate(gate);jumpData.setHasCoachGate(hasCoachGate);jumpData.setCoachGate(coachGate);
+    jumpData.setGate(hasCoachGate?coachGate:gate);jumpData.setHasCoachGate(hasCoachGate);jumpData.setCoachGate(coachGate);
     jumpData.setJumperForm(input.athlete.form);jumpData.setDSQ(result.status==SimulationV2::JumpStatus::Disqualified);
     jumpData.setDNS(result.status==SimulationV2::JumpStatus::DidNotStart);
     jumpData.setDistance(result.measuredDistance);jumpData.setPoints(result.score.total);

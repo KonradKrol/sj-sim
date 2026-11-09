@@ -307,7 +307,10 @@ void QuickUi::fitTransient(QWidget *dialog) {
     const QSize minimum(qMin(qCeil(320*m_appearance->uiScale()),limit.width()),qMin(180,limit.height()));
     if(dialog->minimumSize()!=minimum)dialog->setMinimumSize(minimum);
     if(dialog->maximumSize()!=limit)dialog->setMaximumSize(limit);
-    const QSize desired(qMin(qCeil(600*m_appearance->uiScale()),limit.width()),qBound(qMin(qCeil(220*m_appearance->uiScale()),limit.height()),qCeil(bridge->view()->rootObject()->implicitHeight()),limit.height()));
+    const bool choiceDialog=qobject_cast<QInputDialog *>(dialog) && dialog->findChild<QComboBox *>();
+    const int contentHeight=qCeil(bridge->view()->rootObject()->implicitHeight());
+    const int desiredHeight=choiceDialog?qMax(contentHeight,qCeil(380*m_appearance->uiScale())):contentHeight;
+    const QSize desired(qMin(qCeil(600*m_appearance->uiScale()),limit.width()),qBound(qMin(qCeil(220*m_appearance->uiScale()),limit.height()),desiredHeight,limit.height()));
     if(dialog->size()!=desired)dialog->resize(desired);
     const auto center=m_main->frameGeometry().center();QPoint position=center-QPoint(desired.width()/2,desired.height()/2);
     position.setX(qBound(area.left(),position.x(),area.right()-desired.width()+1));position.setY(qBound(area.top(),position.y(),area.bottom()-desired.height()+1));if(dialog->pos()!=position)dialog->move(position);

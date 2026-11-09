@@ -438,7 +438,8 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
     } else if(auto *spin=qobject_cast<QDoubleSpinBox *>(widget)) {
         data["kind"]="number"; data["value"]=spin->value(); data["minimum"]=spin->minimum(); data["maximum"]=spin->maximum(); data["step"]=spin->singleStep(); data["decimals"]=spin->decimals(); data["suffix"]=spin->suffix(); data["prefix"]=spin->prefix(); data["enabled"]=spin->isEnabled()&&!spin->isReadOnly();
     } else if(auto *combo=qobject_cast<QComboBox *>(widget)) {
-        QStringList options,images; for(int i=0;i<combo->count();++i) { options<<combo->itemText(i);images<<quickDecoration(QVariant::fromValue(combo->itemIcon(i))); }
+        QStringList options,images;QVariantList enabled; for(int i=0;i<combo->count();++i) { options<<combo->itemText(i);images<<quickDecoration(QVariant::fromValue(combo->itemIcon(i)));enabled.append(bool(combo->model()->flags(combo->model()->index(i,combo->modelColumn(),combo->rootModelIndex()))&Qt::ItemIsEnabled)); }
+        data["optionEnabled"]=enabled;
         data["optionImages"]=images;
         data["searchable"]=widget->property("quickSearchableChoice").toBool();
         data["kind"]="choice"; data["options"]=options; data["value"]=combo->currentIndex(); data["editable"]=combo->isEditable(); data["text"]=combo->currentText();
@@ -570,6 +571,8 @@ void QuickBridge::refresh() {
         QVariantMap context{{"complete",manager->checkCompetitionEnd()},{"roundComplete",manager->checkRoundEnd()},{"liveStage",window->getLiveStage()},{"round",manager->getActualRound()},{"roundCount",manager->effectiveRoundsCount()},{"qualifications",manager->getCompetitionInfo()->getSerieType()==CompetitionInfo::Qualifications},
                             {"athlete",qMin(manager->getActualStartListIndex()+1,manager->getStartListStatusesReference().size())},{"athleteCount",manager->getStartListStatusesReference().size()}};
         if(auto *team=dynamic_cast<TeamCompetitionManager *>(manager))context["group"]=team->getActualGroup();
+        context["gateUndoAvailable"]=window->property("gateUndoAvailable");
+        context["gateSuggestionDelta"]=window->property("gateSuggestionDelta");
         context["windPreview"]=window->property("simulationWindPreview");
         context["windPreviewTime"]=window->property("simulationWindPreviewTime");
         context["nextKoEditable"]=dynamic_cast<IndividualCompetitionManager *>(manager) && manager->checkRoundEnd() && !manager->checkCompetitionEnd() && manager->getActualRound()<manager->effectiveRoundsCount() && manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()].getKO();
@@ -698,7 +701,7 @@ void QuickBridge::edit(int id,const QVariant &value) {
     else if(auto *spin=qobject_cast<QDoubleSpinBox *>(widget)) { spin->setValue(value.toDouble()); QMetaObject::invokeMethod(spin,"editingFinished"); }
     else if(auto *combo=qobject_cast<QComboBox *>(widget)) {
         if(value.type()==QVariant::String && combo->isEditable()) combo->setEditText(value.toString());
-        else { combo->setCurrentIndex(value.toInt()); QMetaObject::invokeMethod(combo,"activated",Q_ARG(int,value.toInt())); }
+        else { const int index=value.toInt();if(index<0 || index>=combo->count() || !(combo->model()->flags(combo->model()->index(index,combo->modelColumn(),combo->rootModelIndex()))&Qt::ItemIsEnabled))return;combo->setCurrentIndex(index); QMetaObject::invokeMethod(combo,"activated",Q_ARG(int,index)); }
     } else if(auto *tabs=qobject_cast<QTabWidget *>(widget)) {
         tabs->setCurrentIndex(value.toInt());
         if(profile()=="SimulationSaveManagerWindow" && tabs->objectName()=="toolBox")
@@ -1391,3 +1394,5 @@ void QuickBridge::selectWindSector(int editorId,int sector) {
 void QuickAppearance::setWindSectors(bool value){if(value==m_windSectors)return;m_windSectors=value;QSettings().setValue("quickUi/windSectors",value);emit changed();}
 void QuickAppearance::setWindDiagnostics(bool value){if(value==m_windDiagnostics)return;m_windDiagnostics=value;QSettings().setValue("quickUi/windDiagnostics",value);emit changed();}
 void QuickBridge::revealDeveloperControls(){if(profile()!="AppSettingsWindow")return;if(auto *box=m_window->findChild<QCheckBox *>("checkBox_windDiagnostics")){box->show();refresh();}}
+
+void QuickBridge::suggestRaceGate(bool undo){if(auto *window=qobject_cast<CompetitionManagerWindow *>(m_window.data())){try{window->suggestCurrentGate(undo);}catch(const std::exception &error){QMessageBox::warning(m_window,tr("Belka"),tr("Nie udało się dobrać belki: %1").arg(QString::fromUtf8(error.what())));}refresh();}}
