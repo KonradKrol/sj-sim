@@ -16569,6 +16569,10 @@ Ověřte, že jste vybrali správný soubor.</translation>
         <source>Cofnij</source>
         <translation>Zpět</translation>
     </message>
+    <message>
+        <source>Ustawienia wiatru i opadów</source>
+        <translation>Nastavení větru a srážek</translation>
+    </message>
 </context>
     <context>
         <name>RaceLastJump</name>

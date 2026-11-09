@@ -4,12 +4,22 @@ SButton {
     id: control
     property string actionName
     property string iconName
+    property url iconSource
     Accessible.name: actionName
     hint: actionName
     quiet: true
     implicitWidth: Theme.dp(34)
     implicitHeight: Theme.dp(34)
     font.pointSize: Theme.section
+    Image {
+        anchors.centerIn: parent
+        width: Theme.dp(22); height: width
+        source: control.iconSource
+        visible: source.toString().length>0
+        sourceSize.width: 48; sourceSize.height: 48
+        fillMode: Image.PreserveAspectFit
+        opacity: control.enabled ? 1 : .45
+    }
     Item {
         anchors.centerIn: parent
         width: Theme.dp(22); height: width

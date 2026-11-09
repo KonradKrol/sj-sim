@@ -16568,6 +16568,10 @@ Check that you selected the correct file.</translation>
         <source>Cofnij</source>
         <translation>Undo</translation>
     </message>
+    <message>
+        <source>Ustawienia wiatru i opadów</source>
+        <translation>Wind and precipitation settings</translation>
+    </message>
 </context>
     <context>
         <name>RaceLastJump</name>

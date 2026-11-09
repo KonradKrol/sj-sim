@@ -35,10 +35,18 @@ GridLayout {
         Layout.columnSpan: controls.width<1180 ? 2 : 1
         Layout.fillWidth: true; spacing: Theme.dp(4)
         SButton { text: qsTr("Odczekaj 30 s"); dense: true; font.pointSize: Theme.caption; readonly property var waitControl: ui.find("pushButton_generateNewWinds"); visible: !ui.context.complete; enabled: !!waitControl && waitControl.values.enabled; onClicked: if(waitControl)ui.activate(waitControl.values.id) }
+        SIconButton {
+            objectName: "raceConditionsOptions"
+            text: ""; iconSource: "qrc:/ui/icons/weather/rain.svg"; quiet: false
+            actionName: qsTr("Ustawienia wiatru i opadów")
+            readonly property var settingsControl: ui.find("pushButton_windsGeneratorSettings")
+            enabled: !!settingsControl && settingsControl.values.enabled
+            onClicked: if(settingsControl)ui.activate(settingsControl.values.id)
+        }
         Repeater {
-            model: [qsTr("Warunki"),qsTr("Skok")]
+            model: [qsTr("Skok")]
             SButton {
-                objectName: index===0 ? "raceConditionsOptions" : "raceJumpOptions"
+                objectName: "raceJumpOptions"
                 id: optionButton
                 text: modelData; padding: Theme.dp(6); font.pointSize: Theme.caption
                 hint: qsTr("Ustawienia: %1").arg(modelData)
@@ -50,7 +58,7 @@ GridLayout {
                 }
                 background: Rectangle { color: optionButton.hovered || optionButton.down ? Theme.selection : Theme.raised; radius: Theme.dp(4); border.width: optionButton.visualFocus ? 2 : 1; border.color: optionButton.hovered || optionButton.visualFocus ? Theme.accent : Theme.outline }
                 Layout.minimumWidth: implicitWidth
-                onClicked: controls.optionsRequested(index+1)
+                onClicked: controls.optionsRequested(2)
             }
         }
         Item { Layout.fillWidth: true }
