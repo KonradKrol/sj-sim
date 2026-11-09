@@ -10184,6 +10184,26 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
     <context>
         <name>QObject</name>
     <message>
+        <source>Szansa skrajnej oceny sędziego</source>
+        <translation>Chance of an outlying judge mark</translation>
+    </message>
+    <message>
+        <source>Łatwość uzyskania najwyższych not</source>
+        <translation>Ease of receiving the highest marks</translation>
+    </message>
+    <message>
+        <source>Szansa dodatkowego odchylenia jednej noty o -3 do +2 pkt. Np. 0,002 oznacza około jedną na 500 not.</source>
+        <translation>Chance of an extra deviation of -3 to +2 points in one mark. For example, 0.002 means about one in 500 marks.</translation>
+    </message>
+    <message>
+        <source>Spłaszcza oceny powyżej 19,25 przed zaokrągleniem. Niższa wartość utrudnia otrzymanie 20; 1 wyłącza ograniczenie.</source>
+        <translation>Compresses marks above 19.25 before rounding. A lower value makes a 20 harder to receive; 1 disables compression.</translation>
+    </message>
+    <message>
+        <source>Średnia kara w nocie sędziego za rodzaj lądowania. Konkretna kara jest losowa; większa wartość pogarsza noty, bez zmiany ryzyka błędu.</source>
+        <translation>Average deduction from a judge mark for the landing type. The actual deduction is random; a larger value lowers marks without changing the risk of a landing error.</translation>
+    </message>
+    <message>
         <source>Średni losowy bonus jakości w treningu i próbie. W kwalifikacjach wynosi 40%, a w konkursie nie działa.</source>
         <translation>Average random quality bonus in training and trial rounds. Qualifications apply 40%; competitions are unaffected.</translation>
     </message>

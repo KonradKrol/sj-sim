@@ -10185,6 +10185,26 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
     <context>
         <name>QObject</name>
     <message>
+        <source>Szansa skrajnej oceny sędziego</source>
+        <translation>Pravděpodobnost krajní známky rozhodčího</translation>
+    </message>
+    <message>
+        <source>Łatwość uzyskania najwyższych not</source>
+        <translation>Snadnost získání nejvyšších známek</translation>
+    </message>
+    <message>
+        <source>Szansa dodatkowego odchylenia jednej noty o -3 do +2 pkt. Np. 0,002 oznacza około jedną na 500 not.</source>
+        <translation>Pravděpodobnost dodatečné odchylky jedné známky o -3 až +2 body. Například 0,002 znamená přibližně jednu z 500 známek.</translation>
+    </message>
+    <message>
+        <source>Spłaszcza oceny powyżej 19,25 przed zaokrągleniem. Niższa wartość utrudnia otrzymanie 20; 1 wyłącza ograniczenie.</source>
+        <translation>Před zaokrouhlením stlačuje známky nad 19,25. Nižší hodnota ztěžuje získání dvacítky; 1 omezení vypíná.</translation>
+    </message>
+    <message>
+        <source>Średnia kara w nocie sędziego za rodzaj lądowania. Konkretna kara jest losowa; większa wartość pogarsza noty, bez zmiany ryzyka błędu.</source>
+        <translation>Průměrná srážka ze známky za typ dopadu. Konkrétní srážka je náhodná; vyšší hodnota zhoršuje známky, aniž mění riziko chyby.</translation>
+    </message>
+    <message>
         <source>Średni losowy bonus jakości w treningu i próbie. W kwalifikacjach wynosi 40%, a w konkursie nie działa.</source>
         <translation>Průměrný náhodný bonus kvality v tréninku a zkušebním kole. V kvalifikaci působí ze 40 %, v závodě nepůsobí.</translation>
     </message>

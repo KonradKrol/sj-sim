@@ -26,6 +26,8 @@ void LandingParameters::validate() const
     for(double v:styleMean)bound(v,0,20,"Style mean out of range");
     for(double v:landingPenalty)bound(v,0,20,"Landing style penalty out of range");
     bound(sharedStyleDeviation,0,10,"Shared style deviation out of range");bound(judgeDeviation,0,10,"Judge deviation out of range");
+    bound(judgeOutlierChance,0,1,"Judge outlier chance out of range");
+    bound(highMarkCompression,.01,1,"High mark compression out of range");
     bound(difficultLandingStylePenalty,0,20,"Difficult landing penalty out of range");
     bound(imperfectStyleBase,0,1,"Imperfect landing chance out of range");bound(imperfectStyleIncrease,0,1,"Imperfect landing increase out of range");bound(imperfectStylePenalty,0,10,"Imperfect landing penalty out of range");
     bound(distanceStyleOffset,-10,10,"Distance style offset out of range");
@@ -63,10 +65,27 @@ std::array<double,5> LandingModel::judges(int landingClass,LandingKind landing,d
     const double relative=(distance-k)/k;
     const double distanceEffect=config.distanceStyleOffset+relative*(relative<0?config.distanceStyleBelowK:config.distanceStyleAboveK);
     const double imperfect=rng.event(std::clamp(config.imperfectStyleBase+config.imperfectStyleIncrease*difficult,0.0,1.0)) ? config.imperfectStylePenalty : 0;
-    const double mean=config.styleMean[std::size_t(landingClass)]+distanceEffect-imperfect-config.landingPenalty[std::size_t(landing)]
+    double penalty=config.landingPenalty[std::size_t(landing)];
+    if(landing==LandingKind::TwoFeet) {
+        // A bounded beta(1, 7/3) draw: 2..4, mean 2.6 at the default scale.
+        penalty*= (2+2*(1-std::pow(1-rng.unit(),3.0/7)))/2.6;
+    } else if(landing==LandingKind::Support || landing==LandingKind::Fall) {
+        // Symmetric triangular draws concentrate around the requested mean.
+        const double width=landing==LandingKind::Support?1.6:1.0;
+        const double reference=landing==LandingKind::Support?5.6:8.0;
+        penalty*=1+width/reference*(rng.unit()+rng.unit()-1);
+    }
+    const double mean=config.styleMean[std::size_t(landingClass)]+distanceEffect-imperfect-penalty
         -config.difficultLandingStylePenalty*difficult+rng.normal(0,config.sharedStyleDeviation);
     std::array<double,5> marks;
-    for(double &mark:marks)mark=std::clamp(std::round((mean+rng.normal(0,config.judgeDeviation))*2)/2,0.0,20.0);
+    const double disagreement[]{1,1.3,1.65,1.5};
+    for(double &mark:marks) {
+        double value=mean+rng.normal(0,config.judgeDeviation*disagreement[int(landing)]);
+        if(rng.event(config.judgeOutlierChance))value+=rng.uniform(-3,2);
+        // Compress only the upper tail; a perfect mark remains attainable.
+        if(value>19.25)value=19.25+(value-19.25)*config.highMarkCompression;
+        mark=std::clamp(std::round(value*2)/2,0.0,20.0);
+    }
     return marks;
 }
 

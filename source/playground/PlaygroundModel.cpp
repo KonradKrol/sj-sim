@@ -95,6 +95,8 @@ template<class F> void visitEngine(SimulationV2::EngineParameters &m,F f) {
     f("landing.crosswindTwoFeetPerMetrePerSecond",QObject::tr("Wiatr boczny: wzrost ryzyka dwóch nóg"),"landing",m.landing.crosswindTwoFeetPerMetrePerSecond,0,1,0.001,"1");
     f("landing.sharedStyleDeviation",QObject::tr("Wspólne odchylenie not"),"landing",m.landing.sharedStyleDeviation,0,10,0.05,"1");
     f("landing.judgeDeviation",QObject::tr("Odchylenie pojedynczego sędziego"),"landing",m.landing.judgeDeviation,0,10,0.05,"1");
+    f("landing.judgeOutlierChance",QObject::tr("Szansa skrajnej oceny sędziego"),"landing",m.landing.judgeOutlierChance,0,1,.001,"1");
+    f("landing.highMarkCompression",QObject::tr("Łatwość uzyskania najwyższych not"),"landing",m.landing.highMarkCompression,.01,1,.01,"1");
     f("landing.imperfectStyleBase",QObject::tr("Szansa słabszego lądowania"),"landing",m.landing.imperfectStyleBase,0,1,.01,"1");
     f("landing.imperfectStyleIncrease",QObject::tr("Dodatkowa szansa słabszego lądowania przy dużej odległości"),"landing",m.landing.imperfectStyleIncrease,0,1,.01,"1");
     f("landing.imperfectStylePenalty",QObject::tr("Kara w notach za słabsze lądowanie"),"landing",m.landing.imperfectStylePenalty,0,10,.05,"pkt");
@@ -200,6 +202,8 @@ QString effectDescription(const QString &key,const QString &group) {
     if(key=="flight.geometryResistance")return QObject::tr("Siła ograniczania lotu przy wypłaszczeniu zeskoku. Np. większa wartość utrudnia dolecenie daleko za HS mimo dużego zapasu po wybiciu.");
     if(key=="flight.exposureSections")return QObject::tr("Liczba odcinków w zapisie wiatru napotkanego podczas skoku. Np. 8 daje bardziej szczegółowy podgląd niż 4; nie jest to krok obliczania lotu.");
     if(key=="landing.sharedStyleDeviation")return QObject::tr("Losowe przesunięcie wszystkich not w tym samym skoku. Np. dodatnie losowanie podniesie wspólnie oceny pięciu sędziów, zanim pojawią się różnice między nimi.");
+    if(key=="landing.judgeOutlierChance")return QObject::tr("Szansa dodatkowego odchylenia jednej noty o -3 do +2 pkt. Np. 0,002 oznacza około jedną na 500 not.");
+    if(key=="landing.highMarkCompression")return QObject::tr("Spłaszcza oceny powyżej 19,25 przed zaokrągleniem. Niższa wartość utrudnia otrzymanie 20; 1 wyłącza ograniczenie.");
     if(key=="landing.judgeDeviation")return QObject::tr("Rozrzut oceny pojedynczego sędziego wokół wspólnej oceny skoku. Np. większa wartość częściej daje zestawy takie jak 17,5 / 18,0 / 18,5 zamiast pięciu równych not.");
     if(key=="landing.difficultLandingStylePenalty")return QObject::tr("Maksymalna dodatkowa kara w nocie każdego sędziego za trudne, dalekie lądowanie. Np. zwiększenie z 1 do 2 może mocniej obniżyć noty za skoki przy wypłaszczeniu.");
     if(key=="wind.mean")return QObject::tr("Bazowy wiatr wzdłuż skoczni, do którego dodają się podmuchy i lokalne różnice. Np. +1 oznacza 1 m/s pod narty, a −1 oznacza 1 m/s w plecy.");
@@ -236,7 +240,7 @@ QString effectDescription(const QString &key,const QString &group) {
     if(group=="landing" && key.endsWith("Increase"))return QObject::tr("Maksymalny dodatkowy wzrost ryzyka błędu wraz z odległością. Np. 0,20 może dodać do 20 punktów procentowych przed uwzględnieniem kolejności błędów.");
     if(group=="landing" && key.startsWith("landing.crosswind"))return QObject::tr("Dodatkowe ryzyko tego błędu za 1 m/s wiatru bocznego. Np. 0,01 przy 2 m/s dodaje 2 punkty procentowe przed uwzględnieniem kolejności błędów.");
     if(key.startsWith("landing.styleMean."))return QObject::tr("Początkowa nota jednego sędziego dla tej klasy stylu. Np. 18,5 ustawia bazę 18,5 pkt, od której odejmuje się kary i do której dodaje się losowe wahania.");
-    if(key.startsWith("landing.landingPenalty."))return QObject::tr("Kara w nocie każdego sędziego za wskazany rodzaj lądowania. Np. 3 odejmuje każdemu sędziemu 3 pkt; nie zwiększa szansy tego błędu.");
+    if(key.startsWith("landing.landingPenalty."))return QObject::tr("Średnia kara w nocie sędziego za rodzaj lądowania. Konkretna kara jest losowa; większa wartość pogarsza noty, bez zmiany ryzyka błędu.");
     if(key.startsWith("flight.wind") && key.endsWith("AdverseChance"))return QObject::tr("Maksymalne ryzyko utraty podtrzymania lotu przy bardzo silnym wietrze. Np. 0,20 oznacza limit 20%; przy słabszym wietrze ryzyko jest mniejsze.");
     if(key.startsWith("flight.wind") && key.endsWith("AdverseLoss"))return QObject::tr("Siła straty po wylosowaniu utraty podtrzymania lotu. Np. większa wartość mocniej skróci pechowy skok, ale nie zwiększy częstości takich zdarzeń.");
     if(key=="flight.precipitationLossPerLevel")return QObject::tr("Część początkowego zapasu lotu tracona za poziom śniegu. Np. 0,008 przy natężeniu 10 odbiera 8% zapasu, niekoniecznie 8% końcowej odległości.");

@@ -12,3 +12,11 @@ Przy dalszej pracy warto ręcznie sprawdzić szczególnie wyjście i odwołanie 
 ## Dodatkowa poprawka — odrzucanie zmian bazy danych
 
 „Nie zapisuj” przywraca teraz także pliki paczek skoczków/skoczni i katalogu bazy danych z początku sesji. Nowo utworzone pliki JSON są usuwane, a Escape korzysta z tego samego potwierdzenia. Dotychczasowe zapisy na bieżąco pozostają zabezpieczeniem przed awarią; jawne odrzucenie zmian cofa je. Build i kontrola tłumaczeń przeszły, bez uruchamiania testów.
+
+## Kalibracja not sędziowskich
+
+- Zwykłe odchylenie pojedynczego sędziego: 0,28 zamiast 0,25.
+- Szansa rzadkiej dodatkowej odchyłki -3..+2: 0,002 na notę; regulacja `landing.judgeOutlierChance`.
+- Oceny powyżej 19,25 są łagodnie ściskane współczynnikiem 0,75 przed zaokrągleniem (`landing.highMarkCompression`).
+- Dwie nogi: losowa kara 2..4, średnia 2,6 (rozkład beta); podpórka: 4..7,2, średnia 5,6 (trójkątny); upadek: 7..9, średnia 8 (trójkątny). Losowanie kary jest wspólne dla skoku, a rozrzut sędziów zwiększony odpowiednio o 30%, 65%, 50%. Parametry `landing.landingPenalty.N` sterują średnią i proporcjonalnie skalują rozkład.
+- Różnice bazowych not klas lądowania zmniejszone o 20% wokół klasy „Poprawne”.
