@@ -491,7 +491,23 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <source>Gotowe</source>
             <translation>Done</translation>
         </message>
-    </context>
+        <message>
+        <source>Motyw kolorystyczny</source>
+        <translation>Colour theme</translation>
+    </message>
+    <message>
+        <source>Aktualny</source>
+        <translation>Current</translation>
+    </message>
+    <message>
+        <source>Różowy</source>
+        <translation>Pink</translation>
+    </message>
+    <message>
+        <source>Czysty</source>
+        <translation>Clean</translation>
+    </message>
+</context>
     <context>
         <name>ApperanceInClassificationWindow</name>
         <message>

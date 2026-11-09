@@ -25,6 +25,7 @@ class QuickAppearance : public QObject {
     Q_PROPERTY(bool windSectors READ windSectors WRITE setWindSectors NOTIFY changed)
     Q_PROPERTY(bool windDiagnostics READ windDiagnostics WRITE setWindDiagnostics NOTIFY changed)
     Q_PROPERTY(bool dark READ dark WRITE setDark NOTIFY changed)
+    Q_PROPERTY(int colorTheme READ colorTheme WRITE setColorTheme NOTIFY changed)
     Q_PROPERTY(bool compactUi READ compactUi WRITE setCompactUi NOTIFY changed)
     Q_PROPERTY(bool reducedMotion READ reducedMotion WRITE setReducedMotion NOTIFY changed)
     Q_PROPERTY(int teamResultsMode READ teamResultsMode WRITE setTeamResultsMode NOTIFY changed)
@@ -38,6 +39,8 @@ public:
     void setWindSectors(bool value);
     void setWindDiagnostics(bool value);
     bool dark() const { return m_dark; }
+    int colorTheme() const { return m_colorTheme; }
+    void setColorTheme(int value);
     bool compactUi() const { return m_compactUi; }
     bool reducedMotion() const { return m_reducedMotion; }
     int teamResultsMode() const { return m_teamResultsMode; }
@@ -56,6 +59,7 @@ private:
     bool m_dark, m_reducedMotion, m_compactUi;
     qreal m_textScale,m_uiScale;
     int m_teamResultsMode=0;
+    int m_colorTheme=0;
 };
 
 // Each projected control keeps its identity when values or the layout change.

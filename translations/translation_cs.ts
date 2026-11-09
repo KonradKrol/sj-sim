@@ -491,7 +491,23 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <source>Gotowe</source>
             <translation>Hotovo</translation>
         </message>
-    </context>
+        <message>
+        <source>Motyw kolorystyczny</source>
+        <translation>Barevný motiv</translation>
+    </message>
+    <message>
+        <source>Aktualny</source>
+        <translation>Současný</translation>
+    </message>
+    <message>
+        <source>Różowy</source>
+        <translation>Růžový</translation>
+    </message>
+    <message>
+        <source>Czysty</source>
+        <translation>Čistý</translation>
+    </message>
+</context>
     <context>
         <name>ApperanceInClassificationWindow</name>
         <message>

@@ -129,12 +129,14 @@ QuickAppearance::QuickAppearance(QObject *parent) : QObject(parent) {
     m_windDiagnostics=settings.value("quickUi/windDiagnostics",false).toBool();
     m_teamResultsMode=qBound(0,settings.value("quickUi/teamResultsMode",0).toInt(),2);
     m_dark=settings.value("quickUi/dark",false).toBool();
+    m_colorTheme=qBound(0,settings.value("quickUi/colorTheme",0).toInt(),2);
     m_compactUi=false; // The previous density preset is superseded by the continuous UI scale.
     m_uiScale=qBound(.5,settings.value("quickUi/uiScale",DefaultUiScale).toDouble(),1.5);
     m_reducedMotion=settings.value("quickUi/reducedMotion",false).toBool();
     m_textScale=qBound(.75,settings.value("quickUi/textScale",1.).toDouble(),2.);
 }
 void QuickAppearance::setTeamResultsMode(int mode){mode=qBound(0,mode,2);if(mode==m_teamResultsMode)return;m_teamResultsMode=mode;QSettings().setValue("quickUi/teamResultsMode",mode);emit changed();}
+void QuickAppearance::setColorTheme(int value) { value=qBound(0,value,2);if(value==m_colorTheme)return;m_colorTheme=value;QSettings().setValue("quickUi/colorTheme",value);emit changed(); }
 void QuickAppearance::setDark(bool value) { if(value==m_dark) return; m_dark=value; QSettings().setValue("quickUi/dark",value); emit changed(); }
 void QuickAppearance::setCompactUi(bool value) { if(value==m_compactUi)return; m_compactUi=value;QSettings().setValue("quickUi/compactUi",value);emit changed(); }
 void QuickAppearance::setReducedMotion(bool value) { if(value==m_reducedMotion) return; m_reducedMotion=value; QSettings().setValue("quickUi/reducedMotion",value); emit changed(); }
