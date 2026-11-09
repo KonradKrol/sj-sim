@@ -942,9 +942,9 @@ void QuickBridge::compose(QuickNode *base) {
     if(profile()=="SimulationSavesWindow") {
         if(auto *view=m_content->findChild<QAbstractItemView *>("listView_simulationSaves")){
             QVariantList actions;
-            for(const auto &item:QList<QPair<QString,QString>>{{"pushButton_add",tr("Nowy zapis")},{"pushButton_OK",tr("Wczytaj")},{"pushButton_remove",tr("Usuń")}})if(auto *button=m_content->findChild<QPushButton *>(item.first)){
+            for(const auto &item:QList<QPair<QString,QString>>{{"pushButton_add",tr("Nowa symulacja")},{"pushButton_OK",tr("Otwórz")},{"pushButton_remove",tr("Usuń")}})if(auto *button=m_content->findChild<QPushButton *>(item.first)){
                 auto *entry=m_groups.value(item.first);if(!entry){entry=new QuickNode(this);m_groups.insert(item.first,entry);}
-                entry->update({{"kind","button"},{"name",item.first},{"id",idFor(button)},{"text",item.second},{"enabled",button->isEnabled()},{"primary",item.first=="pushButton_OK"}});actions.append(QVariant::fromValue(entry));
+                entry->update({{"kind","button"},{"name",item.first},{"id",idFor(button)},{"text",item.first=="pushButton_remove" ? button->text() : item.second},{"enabled",button->isEnabled()},{"primary",item.first=="pushButton_OK"}});actions.append(QVariant::fromValue(entry));
             }
             m_root->update({{"kind","catalog"},{"list",QVariant::fromValue(node(view,true))},{"actionsRow",actions}});return;
         }

@@ -2982,7 +2982,11 @@ li.checked::marker { content: "\2612"; }
             <source>Edycja</source>
             <translation>Úpravy</translation>
         </message>
-    </context>
+        <message>
+        <source>Ctrl+klik zaznacza kilka zapisów, Shift+klik zaznacza zakres. Przycisk Usuń usuwa wszystkie zaznaczone zapisy po potwierdzeniu.</source>
+        <translation>Ctrl+klik vybere více uložených her, Shift+klik vybere rozsah. Tlačítko Smazat po potvrzení smaže všechny vybrané hry.</translation>
+    </message>
+</context>
     <context>
         <name>CharacteristicInputDialog</name>
         <message>
@@ -16093,6 +16097,10 @@ Ověřte, že jste vybrali správný soubor.</translation>
         <source>Znaczenie formy</source>
         <translation>Význam formy</translation>
     </message>
+    <message>
+        <source>Nowa symulacja</source>
+        <translation>Nová simulace</translation>
+    </message>
 </context>
     <context>
         <name>QuickCalendar</name>
@@ -18987,6 +18995,36 @@ li.checked::marker { content: "\2612"; }
     <message>
         <source>Plik jest uszkodzony, niedostępny albo przekracza limit 256 MB. Oryginał pozostał bez zmian.</source>
         <translation>Soubor je poškozený, nedostupný nebo přesahuje limit 256 MB. Originál zůstal beze změn.</translation>
+    </message>
+    <message>
+        <source>Usuń zaznaczone zapisy (Delete)</source>
+        <translation>Smazat vybrané uložené hry (Delete)</translation>
+    </message>
+    <message>
+        <source>Enter otwiera zapis. Ctrl+klik zaznacza kilka zapisów, Shift+klik zaznacza zakres. Delete usuwa zaznaczone.</source>
+        <translation>Enter otevře uloženou hru. Ctrl+klik vybere více her, Shift+klik vybere rozsah. Delete smaže vybrané hry.</translation>
+    </message>
+    <message>
+        <source>Usunąć zaznaczone zapisy (%1)? Tej operacji nie można cofnąć.</source>
+        <translation>Smazat vybrané uložené hry (%1)? Tuto akci nelze vrátit zpět.</translation>
+    </message>
+    <message>
+        <source>Usunięcie zapisów symulacji</source>
+        <translation>Smazání uložených simulací</translation>
+    </message>
+    <message>
+        <source>Nie usunięto wszystkich zapisów</source>
+        <translation>Některé uložené hry se nepodařilo smazat</translation>
+    </message>
+    <message>
+        <source>Nie można usunąć tych zapisów. Sprawdź uprawnienia do plików:
+%1</source>
+        <translation>Tyto uložené hry nelze smazat. Zkontrolujte oprávnění k souborům:
+%1</translation>
+    </message>
+    <message>
+        <source>Usuń (%1)</source>
+        <translation>Smazat (%1)</translation>
     </message>
 </context>
     <context>

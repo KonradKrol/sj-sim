@@ -15,6 +15,8 @@
 #include <QItemSelectionModel>
 #include <QMessageBox>
 #include <QShortcut>
+#include <QSignalBlocker>
+#include <algorithm>
 #include <QSysInfo>
 #include <QTimer>
 #include <exception>
@@ -42,7 +44,7 @@ SimulationSavesWindow::SimulationSavesWindow(QWidget *parent) :
     setWindowFlags(Qt::Window);
     listModel = new SimulationSavesListModel(&GlobalDatabase::get()->getEditableGlobalSimulationSaves(), this);
     ui->listView_simulationSaves->setModel(listModel);
-    ui->listView_simulationSaves->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->listView_simulationSaves->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     saveInfoWidget = new SimulationSaveInfoWidget(this);
     saveInfoWidget->hide();
@@ -50,13 +52,16 @@ SimulationSavesWindow::SimulationSavesWindow(QWidget *parent) :
 
     ui->pushButton_add->setToolTip(tr("Utwórz nowy zapis symulacji"));
     ui->pushButton_OK->setToolTip(tr("Otwórz zaznaczony zapis (Enter)"));
-    ui->pushButton_remove->setToolTip(tr("Usuń zaznaczony zapis (Delete)"));
-    ui->listView_simulationSaves->setToolTip(tr("Kliknij zapis, aby zobaczyć szczegóły. Enter otwiera, Delete usuwa."));
+    ui->pushButton_remove->setToolTip(tr("Usuń zaznaczone zapisy (Delete)"));
+    ui->listView_simulationSaves->setToolTip(tr("Enter otwiera zapis. Ctrl+klik zaznacza kilka zapisów, Shift+klik zaznacza zakres. Delete usuwa zaznaczone."));
 
     connect(ui->listView_simulationSaves->selectionModel(), &QItemSelectionModel::currentChanged,
             this, [this](){
         updateSelectionState();
     });
+
+    connect(ui->listView_simulationSaves->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, [this](){ updateSelectionState(); });
 
     QShortcut *openShortcut = new QShortcut(QKeySequence(Qt::Key_Return), ui->listView_simulationSaves);
     connect(openShortcut, &QShortcut::activated, this, [this](){ openSelectedSave(); });
@@ -150,6 +155,8 @@ void SimulationSavesWindow::on_pushButton_OK_clicked()
 void SimulationSavesWindow::openSelectedSave(bool focusCalendar)
 {
     const int row = selectedSaveRow();
+    if(ui->listView_simulationSaves->selectionModel()->selectedRows().size() != 1)
+        return;
     if(row >= 0){
         auto *save=GlobalDatabase::get()->getEditableGlobalSimulationSaves().at(row);
         if(!save->isLoaded()){
@@ -179,28 +186,59 @@ void SimulationSavesWindow::openSelectedSave(bool focusCalendar)
 
 void SimulationSavesWindow::on_pushButton_remove_clicked()
 {
-    const int row = selectedSaveRow();
-    if(row >= 0){
-        SimulationSave *save = GlobalDatabase::get()->getEditableGlobalSimulationSaves().at(row);
-        auto button = QMessageBox::question(this, tr("Usunięcie zapisu symulacji"),
-                                            tr("Czy na pewno chcesz usunąć zapis „%1”? Tej operacji nie można cofnąć.").arg(save->getName()),
- QMessageBox::No | QMessageBox::Yes, QMessageBox::No);
-        if(button == QMessageBox::Yes)
-        {
-            const QString filePath = simulationSavesDirectory().absoluteFilePath(save->getName() + ".json");
-            if(QFile::exists(filePath) && !QFile::remove(filePath))
-            {
-                QMessageBox::critical(this, tr("Nie udało się usunąć zapisu"),
-                                      tr("Plik zapisu nie został usunięty. Sprawdź uprawnienia do pliku i spróbuj ponownie."));
-                return;
-            }
-            delete listModel->takeSave(row);
+    auto *selection = ui->listView_simulationSaves->selectionModel();
+    const auto selected = selection->selectedRows();
+    if(selected.isEmpty())
+        return;
 
-            if(listModel->rowCount() > 0)
-                ui->listView_simulationSaves->setCurrentIndex(listModel->index(qMin(row, listModel->rowCount() - 1), 0));
-            updateSelectionState();
+    QVector<int> rows;
+    QStringList names;
+    const auto &saves = GlobalDatabase::get()->getEditableGlobalSimulationSaves();
+    for(const auto &index : selected) {
+        if(index.isValid() && index.row() >= 0 && index.row() < saves.size()) {
+            rows.append(index.row());
+            names.append(saves.at(index.row())->getName());
         }
     }
+    if(rows.isEmpty())
+        return;
+    std::sort(rows.begin(), rows.end(), std::greater<int>());
+    const QString question = rows.size() == 1
+        ? tr("Czy na pewno chcesz usunąć zapis „%1”? Tej operacji nie można cofnąć.").arg(names.first())
+        : tr("Usunąć zaznaczone zapisy (%1)? Tej operacji nie można cofnąć.").arg(rows.size());
+    QMessageBox confirmation(QMessageBox::Question, tr("Usunięcie zapisów symulacji"), question,
+                             QMessageBox::No | QMessageBox::Yes, this);
+    confirmation.setDefaultButton(QMessageBox::No);
+    confirmation.setDetailedText(names.join(QLatin1Char('\n')));
+    if(confirmation.exec() != QMessageBox::Yes)
+        return;
+
+    QStringList failed;
+    saveInfoWidget->setSimulationSave(nullptr);
+    saveInfoWidget->resetInputs();
+    saveInfoWidget->hide();
+    {
+        const QSignalBlocker blocker(selection);
+        for(int row : rows) {
+            auto *save = saves.at(row);
+            const QString path = save->unloadedFilePath().isEmpty()
+                ? simulationSavesDirectory().absoluteFilePath(save->getName() + ".json")
+                : save->unloadedFilePath();
+            if(QFileInfo::exists(path) && !QFile::remove(path)) {
+                failed.append(save->getName());
+                continue;
+            }
+            delete listModel->takeSave(row);
+        }
+        selection->clear();
+        if(listModel->rowCount() > 0)
+            selection->setCurrentIndex(listModel->index(qMin(rows.last(), listModel->rowCount()-1), 0),
+                                       QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+    }
+    updateSelectionState();
+    if(!failed.isEmpty())
+        QMessageBox::warning(this, tr("Nie usunięto wszystkich zapisów"),
+                             tr("Nie można usunąć tych zapisów. Sprawdź uprawnienia do plików:\n%1").arg(failed.join(QLatin1Char('\n'))));
 }
 
 int SimulationSavesWindow::selectedSaveRow() const
@@ -214,9 +252,11 @@ int SimulationSavesWindow::selectedSaveRow() const
 void SimulationSavesWindow::updateSelectionState()
 {
     const int row = selectedSaveRow();
-    const bool hasSelection = row >= 0;
+    const int count = ui->listView_simulationSaves->selectionModel()->selectedRows().size();
+    const bool hasSelection = row >= 0 && count == 1;
     ui->pushButton_OK->setEnabled(hasSelection);
-    ui->pushButton_remove->setEnabled(hasSelection);
+    ui->pushButton_remove->setEnabled(count > 0);
+    ui->pushButton_remove->setText(count > 1 ? tr("Usuń (%1)").arg(count) : tr("Usuń"));
 
     if(hasSelection)
     {

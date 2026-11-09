@@ -2982,7 +2982,11 @@ li.checked::marker { content: "\2612"; }
             <source>Edycja</source>
             <translation>Edit</translation>
         </message>
-    </context>
+        <message>
+        <source>Ctrl+klik zaznacza kilka zapisów, Shift+klik zaznacza zakres. Przycisk Usuń usuwa wszystkie zaznaczone zapisy po potwierdzeniu.</source>
+        <translation>Ctrl+click selects several saves, Shift+click selects a range. Delete removes all selected saves after confirmation.</translation>
+    </message>
+</context>
     <context>
         <name>CharacteristicInputDialog</name>
         <message>
@@ -16092,6 +16096,10 @@ Check that you selected the correct file.</translation>
         <source>Znaczenie formy</source>
         <translation>Importance of form</translation>
     </message>
+    <message>
+        <source>Nowa symulacja</source>
+        <translation>New simulation</translation>
+    </message>
 </context>
     <context>
         <name>QuickCalendar</name>
@@ -18986,6 +18994,36 @@ li.checked::marker { content: "\2612"; }
     <message>
         <source>Plik jest uszkodzony, niedostępny albo przekracza limit 256 MB. Oryginał pozostał bez zmian.</source>
         <translation>The file is damaged, unavailable, or exceeds the 256 MB limit. The original is unchanged.</translation>
+    </message>
+    <message>
+        <source>Usuń zaznaczone zapisy (Delete)</source>
+        <translation>Delete selected saves (Delete)</translation>
+    </message>
+    <message>
+        <source>Enter otwiera zapis. Ctrl+klik zaznacza kilka zapisów, Shift+klik zaznacza zakres. Delete usuwa zaznaczone.</source>
+        <translation>Enter opens a save. Ctrl+click selects several saves, Shift+click selects a range. Delete removes selected saves.</translation>
+    </message>
+    <message>
+        <source>Usunąć zaznaczone zapisy (%1)? Tej operacji nie można cofnąć.</source>
+        <translation>Delete selected saves (%1)? This cannot be undone.</translation>
+    </message>
+    <message>
+        <source>Usunięcie zapisów symulacji</source>
+        <translation>Delete simulation saves</translation>
+    </message>
+    <message>
+        <source>Nie usunięto wszystkich zapisów</source>
+        <translation>Some saves could not be deleted</translation>
+    </message>
+    <message>
+        <source>Nie można usunąć tych zapisów. Sprawdź uprawnienia do plików:
+%1</source>
+        <translation>These saves could not be deleted. Check file permissions:
+%1</translation>
+    </message>
+    <message>
+        <source>Usuń (%1)</source>
+        <translation>Delete (%1)</translation>
     </message>
 </context>
     <context>

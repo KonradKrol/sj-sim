@@ -9,6 +9,7 @@ ColumnLayout {
     readonly property var editor: fields.editor || null
     readonly property bool draftEditor: !!editor && editor.values.kind === "simulationDraft"
     readonly property var list: fields.list ? fields.list.values : ({})
+    readonly property bool savesCatalog: ui.profile === "SimulationSavesWindow"
     readonly property bool parallel: width>=850
     property bool editing: false
     readonly property bool hasHillStudio: !!fields.hillStudio
@@ -60,6 +61,10 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.maximumWidth: 600
         Layout.alignment: Qt.AlignRight
+        HelpDot {
+            visible: catalog.savesCatalog
+            explanation: qsTr("Ctrl+klik zaznacza kilka zapisów, Shift+klik zaznacza zakres. Przycisk Usuń usuwa wszystkie zaznaczone zapisy po potwierdzeniu.")
+        }
         Repeater { model: catalog.fields.actionsRow || []; Node { node: modelData; Layout.fillWidth: true; Layout.minimumWidth: 0 } }
     }
     SectionTabs {
@@ -78,6 +83,8 @@ ColumnLayout {
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
             Layout.preferredWidth: catalog.editor ? 380 : 1000
             table: catalog.list.table || null; ownerId: catalog.list.id || -1
+            ranking: catalog.savesCatalog
+            searchOpen: !catalog.savesCatalog && searchEnabled && width >= 320 && height >= 240
             searchEnabled: true
             actions: catalog.list.tableActions || []
             expandedActions: !!catalog.fields.singleClickEdit
