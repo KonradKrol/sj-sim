@@ -36,6 +36,6 @@ Wybór zasad i lab mają tylko Domyślny (ID 3), Ulepszony (ID 4), Idealny (ID 5
 - W nowym silniku obniżenie przez trenera już wpływało na fizyczną belkę. Poprawiono zapis numeru belki w karcie skoku na rzeczywiście użyty, zgodnie ze starszym silnikiem.
 - Okna wyboru z dropdownem rezerwują większą wysokość, aby lista presetów i inne wybory miały miejsce.
 - Przycisk Sugeruj przy belce dobiera ją do aktualnych warunków i najmocniejszego z pozostałych zawodników, celując w real HS. Pokazuje zmianę i Cofnij; cofnięcie wygasa po skoku lub ręcznej zmianie. Uwzględnia i przywraca wcześniejsze ustawienie trenera.
-- Bazowy mnożnik tylnego wiatru: 1,55 -> 1,705 (+10%).
+- Bazowy mnożnik tylnego wiatru: 1,55 -> 1,6275 (+5%; skorygowane z początkowych +10%).
 
 Dodatkowy nerf ręcznej zmienności: amplitudy dla 0/25/50/75/100 wynoszą teraz 0/0,06175/0,225/0,332/0,4125 skali bazowej, z interpolacją między punktami. Daje to kolejne -25% na maksimum i łagodniejsze redukcje niżej.
