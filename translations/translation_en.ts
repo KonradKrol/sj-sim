@@ -24000,6 +24000,18 @@ Close the previous Sj.Sim window and try again.</translation></message></context
         <source>− w plecy</source>
         <translation>− tailwind</translation>
     </message>
+    <message>
+        <source>Wiatr przed skokiem</source>
+        <translation>Wind before the jump</translation>
+    </message>
+    <message>
+        <source>Wiatr po skoku</source>
+        <translation>Wind after the jump</translation>
+    </message>
+    <message>
+        <source>Przesuń podgląd wiatru</source>
+        <translation>Move wind preview</translation>
+    </message>
 </context>
 <context>
     <name>StudioEditActions</name>

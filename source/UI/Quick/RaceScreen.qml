@@ -18,18 +18,15 @@ ScrollView {
     readonly property bool previewPaused: !!history && !!history.values.paused
     property real previewOpacity: previewPaused ? 0.45 : 1
     Behavior on previewOpacity { NumberAnimation { duration: Theme.motion } }
-    property bool windDockClosed: false
-    readonly property string windRecordKey: ui.jumpSummary.windProfileKey || ""
-    onWindRecordKeyChanged: windDockClosed=false
     property bool allowWindSectors: true
     readonly property bool showWindSectors: appearance.windSectors && allowWindSectors
+    property point windForecastPosition: Qt.point(-1,-1)
     property bool windForecastOpen: false
     Loader {
         active: race.windForecastOpen
         onLoaded: if(item)item.open()
-        sourceComponent: Component { JumpWindProfile { forecast: true; recorded: ui.jumpSummary.windProfile || ({}); onClosed: race.windForecastOpen=false } }
+        sourceComponent: Component { JumpWindProfile { forecast: true; panelPosition: race.windForecastPosition; onMoved: function(x,y){race.windForecastPosition=Qt.point(x,y)}; onClosed: race.windForecastOpen=false } }
     }
-    readonly property bool dockWind: race.availableWidth>=1380 && !windDockClosed && showWindSectors && (!!ui.jumpSummary.windProfile || (ui.context.windPreview || []).length>0)
     property real heroReserve: 0
     onPreviewPausedChanged: {if(previewPaused)heroReserve=hero.height;else{heroReserve=0;if(viewOptions)viewOptions.close()}}
     readonly property bool historical: !!history && !!history.values.active
@@ -48,18 +45,12 @@ ScrollView {
         GridLayout {
             id: hero
             objectName: "raceHeaderCards"
-            columns: race.narrow ? 1 : race.dockWind ? 3 : 2
-            width: Math.min(parent.width,race.dockWind ? 1484 : 1052); height: race.previewPaused ? Math.max(implicitHeight,race.heroReserve) : implicitHeight
+            columns: race.narrow ? 1 : 2
+            width: Math.min(parent.width,1052); height: race.previewPaused ? Math.max(implicitHeight,race.heroReserve) : implicitHeight
             columnSpacing: 12; rowSpacing: 8
-            RaceAthlete { enabled: !race.previewPaused; opacity: race.previewOpacity; Layout.alignment: Qt.AlignTop; Layout.maximumHeight: implicitHeight; dense: race.height < 600; Layout.row: race.narrow ? 1 : 0; Layout.column: 0; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: race.narrow ? 0 : 280; Layout.maximumWidth: race.narrow ? Infinity : 320 }
+            RaceAthlete { onWindRequested: race.windForecastOpen=true; enabled: !race.previewPaused; opacity: race.previewOpacity; Layout.alignment: Qt.AlignTop; Layout.maximumHeight: implicitHeight; dense: race.height < 600; Layout.row: race.narrow ? 1 : 0; Layout.column: 0; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: race.narrow ? 0 : 280; Layout.maximumWidth: race.narrow ? Infinity : 320 }
             RaceLastJump { windSectorsEnabled: race.showWindSectors; Layout.alignment: Qt.AlignTop; Layout.maximumHeight: implicitHeight; dense: race.height < 600; Layout.row: 0; Layout.column: race.narrow ? 0 : 1; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: race.narrow ? 0 : 680; Layout.maximumWidth: race.narrow ? Infinity : 720 }
-            Loader {
-                active: race.dockWind; visible: active
-                Layout.row: 0; Layout.column: 2; Layout.alignment: Qt.AlignTop
-                Layout.fillWidth: true; Layout.preferredWidth: 360; Layout.maximumWidth: 420
-                Layout.maximumHeight: item ? item.implicitHeight : 0
-                sourceComponent: Component { WindSectorsCompact { recordedKey: ui.jumpSummary.windProfileKey || ""; forecastWind: Number(ui.context.windValue || 0); forecastSamples: ui.context.windPreview || []; recorded: ui.jumpSummary.windProfile || ({}); onDismissed: race.windDockClosed=true } }
-            }
+
         }
         RaceControls { opacity: race.previewOpacity; width: Math.min(parent.width,1052); height: implicitHeight; onOptionsRequested: race.openOptions(section) }
         }

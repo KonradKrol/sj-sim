@@ -53,3 +53,7 @@ NumberField przechowuje wpis w lokalnym tekście, bez wiązania nadpisującego g
 ## Wspólny pasek akcji edytorów
 
 Skoczkowie i skocznie używają StudioEditActions: duży kontrastowy przycisk z samym plusem, wspólne położenie Cofnij/Ponów/Duplikuj/Usuń, separator grup oraz czerwona ikona usuwania. Usunięto osobny przycisk Usuń z listy skoczków; skrót Delete pozostaje.
+
+## Pływający podgląd przed skokiem
+
+Nowsza decyzja właściciela: zlikwidowano automatyczny kafelek sektorów i przełącznik Przed/Po. Prognoza to niemodalny, przeciągany za nagłówek panel, pozostający otwarty przy klikaniu konkursu, z pozycją pamiętaną w ramach okna konkursu. Panel jest ograniczony do obszaru aplikacji i dostępny też z klawiatury. Zapis po skoku otwiera się wyłącznie z karty skoku. Oba widoki zachowują wykres ze zeskokiem z konfiguracji.

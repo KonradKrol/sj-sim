@@ -24001,6 +24001,18 @@ Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></con
         <source>− w plecy</source>
         <translation>− zadní vítr</translation>
     </message>
+    <message>
+        <source>Wiatr przed skokiem</source>
+        <translation>Vítr před skokem</translation>
+    </message>
+    <message>
+        <source>Wiatr po skoku</source>
+        <translation>Vítr po skoku</translation>
+    </message>
+    <message>
+        <source>Przesuń podgląd wiatru</source>
+        <translation>Přesunout přehled větru</translation>
+    </message>
 </context>
 <context>
     <name>StudioEditActions</name>

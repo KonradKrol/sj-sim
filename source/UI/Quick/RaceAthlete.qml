@@ -13,15 +13,7 @@ Pane {
     implicitHeight: details.implicitHeight+topPadding+bottomPadding
     readonly property bool activeAthlete: !ui.context.complete && !ui.context.roundComplete
     property bool dense: false
-    property bool windOpen: false
-    readonly property real windTime: Number(ui.context.windPreviewTime || 0)
-    onWindTimeChanged: windOpen=false
-    Loader {
-        objectName: "nextJumpWindLoader"
-        active: athlete.windOpen
-        onLoaded: if(status===Loader.Ready && item)item.open()
-        sourceComponent: Component { JumpWindProfile { forecast: true; athlete: athlete.nameNode ? athlete.nameNode.values.text : ""; recorded: ui.jumpSummary.windProfile || ({}); onClosed: athlete.windOpen=false } }
-    }
+    signal windRequested()
     ChangeFeedback { id: athleteArrival; target: athlete; trigger: athlete.nameNode ? athlete.nameNode.values.text : ""; duration: Theme.motion*2 }
     padding: dense ? 8 : 12
     background: Surface { fillColor: Theme.stadium; sweep: 28 }
@@ -39,7 +31,7 @@ Pane {
                 text: qsTr("Wiatr ↗"); quiet: true; inverse: true; font.pointSize: Theme.caption; padding: 0
                 implicitHeight: Theme.captionMetrics.height+2
                 Accessible.name: qsTr("Podgląd wiatru przed skokiem")
-                onClicked: athlete.windOpen=true
+                onClicked: athlete.windRequested()
             }
         }
         RowLayout {
