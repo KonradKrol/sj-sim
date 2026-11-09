@@ -6,7 +6,6 @@ GridLayout {
     id: controls
     readonly property var history: ui.find("resultsHistory")
     enabled: !history || !history.values.paused
-    signal optionsRequested(int section)
     readonly property var liveControl: ui.find("checkBox_liveCompetition")
     columns: width>=1180 ? 5 : width>=800 ? 3 : 2
     columnSpacing: 8; rowSpacing: 6
@@ -20,9 +19,9 @@ GridLayout {
         Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.maximumWidth: controls.width >= 700 ? 340 : 9999
         Label { text: qsTr("Belka"); color: Theme.muted; font.pointSize: Theme.caption }
         Node { Layout.fillWidth: true; Layout.minimumWidth: 70; node: ui.find("spinBox_actualGate") }
-        SButton { text: qsTr("Sugeruj"); quiet: true; dense: true; visible: !ui.context.complete; enabled: !ui.context.roundComplete && !ui.context.liveStage; hint: qsTr("Dobierz belkę do aktualnych warunków i pozostałych zawodników."); onClicked: ui.suggestRaceGate(false) }
+        SToolButton { text: ""; iconSource: "qrc:/ui/icons/tools/auto.svg"; Accessible.name: qsTr("Dobierz belkę"); visible: !ui.context.complete; enabled: !ui.context.roundComplete && (!ui.context.liveStage || ui.context.liveStage>=5); hint: qsTr("Dobierz belkę do aktualnych warunków i pozostałych zawodników."); onClicked: ui.suggestRaceGate(false) }
         Label { visible: ui.context.gateSuggestionDelta!==undefined && ui.context.gateSuggestionDelta!==null; text: Number(ui.context.gateSuggestionDelta)===0 ? qsTr("Bez zmian") : (Number(ui.context.gateSuggestionDelta)>0 ? "+" : "")+ui.context.gateSuggestionDelta; color: Theme.muted; font.pointSize: Theme.caption }
-        SButton { text: qsTr("Cofnij"); quiet: true; dense: true; visible: !!ui.context.gateUndoAvailable; onClicked: ui.suggestRaceGate(true) }
+        SToolButton { text: "↶"; hint: qsTr("Cofnij zmianę belki"); Accessible.name: hint; visible: !!ui.context.gateUndoAvailable; onClicked: ui.suggestRaceGate(true) }
     }
     SCheck {
         objectName: "raceLiveToggle"; text: qsTr("Na żywo")
@@ -34,32 +33,37 @@ GridLayout {
     RowLayout {
         Layout.columnSpan: controls.width<1180 ? 2 : 1
         Layout.fillWidth: true; spacing: Theme.dp(4)
-        SButton { text: qsTr("Odczekaj 30 s"); dense: true; font.pointSize: Theme.caption; readonly property var waitControl: ui.find("pushButton_generateNewWinds"); visible: !ui.context.complete; enabled: !!waitControl && waitControl.values.enabled; onClicked: if(waitControl)ui.activate(waitControl.values.id) }
-        SIconButton {
+        SToolButton { text: qsTr("Odczekaj 30 s"); readonly property var waitControl: ui.find("pushButton_generateNewWinds"); visible: !ui.context.complete; enabled: !!waitControl && waitControl.values.enabled; onClicked: if(waitControl)ui.activate(waitControl.values.id) }
+        SToolButton {
             objectName: "raceConditionsOptions"
-            text: ""; iconSource: "qrc:/ui/icons/weather/rain.svg"; quiet: false
-            actionName: qsTr("Ustawienia wiatru i opadów")
+            text: ""; iconSource: "qrc:/ui/icons/weather/rain.svg"
+            hint: qsTr("Ustawienia wiatru i opadów"); Accessible.name: hint
             readonly property var settingsControl: ui.find("pushButton_windsGeneratorSettings")
             enabled: !!settingsControl && settingsControl.values.enabled
             onClicked: if(settingsControl)ui.activate(settingsControl.values.id)
         }
-        Repeater {
-            model: [qsTr("Skok")]
-            SButton {
-                objectName: "raceJumpOptions"
-                id: optionButton
-                text: modelData; padding: Theme.dp(6); font.pointSize: Theme.caption
-                hint: qsTr("Ustawienia: %1").arg(modelData)
-                implicitWidth: contentItem.implicitWidth+Theme.dp(12)
-                contentItem: RowLayout {
-                    spacing: Theme.dp(4)
-                    Label { text: optionButton.text; color: Theme.ink; font: optionButton.font; Layout.fillWidth: true; elide: Text.ElideRight }
-                    DropdownIndicator { tint: Theme.accent; Layout.preferredWidth: Theme.dp(10); Layout.preferredHeight: Theme.dp(7) }
-                }
-                background: Rectangle { color: optionButton.hovered || optionButton.down ? Theme.selection : Theme.raised; radius: Theme.dp(4); border.width: optionButton.visualFocus ? 2 : 1; border.color: optionButton.hovered || optionButton.visualFocus ? Theme.accent : Theme.outline }
-                Layout.minimumWidth: implicitWidth
-                onClicked: controls.optionsRequested(2)
-            }
+        Rectangle { Layout.preferredWidth: 1; Layout.preferredHeight: Theme.dp(20); color: Theme.outline }
+        SToolButton {
+            objectName: "skipCurrentJump"; text: "DNS"
+            hint: qsTr("Pomiń skok aktualnego zawodnika"); Accessible.name: hint
+            enabled: !ui.context.complete && !ui.context.roundComplete && (!ui.context.liveStage || ui.context.liveStage>=5)
+            onClicked: ui.skipCurrentJump()
+        }
+        SToolButton {
+            objectName: "raceCoachGate"; text: "−1"; iconSource: "qrc:/ui/icons/tools/coach.svg"
+            hint: qsTr("Obniż belkę o 1 na życzenie trenera"); Accessible.name: hint
+            checked: Number(ui.context.coachReduction)>0
+            readonly property var coachControl: ui.find("pushButton_coachGate")
+            enabled: !!coachControl && coachControl.values.enabled && !!ui.context.canLowerCoachGate && !ui.context.complete && !ui.context.roundComplete && (!ui.context.liveStage || ui.context.liveStage>=5)
+            onClicked: ui.lowerCoachGate()
+        }
+        SToolButton {
+            objectName: "raceManipulateJump"; text: ""; iconSource: "qrc:/ui/icons/tools/adjust.svg"
+            hint: manipulationControl ? manipulationControl.values.tip || qsTr("Manipulacja skoku") : qsTr("Manipulacja skoku"); Accessible.name: qsTr("Manipulacja skoku")
+            checked: !!ui.context.manipulationPending
+            readonly property var manipulationControl: ui.find("pushButton_manipulateJump")
+            enabled: !!manipulationControl && manipulationControl.values.enabled && !ui.context.complete && !ui.context.roundComplete
+            onClicked: if(manipulationControl)ui.activate(manipulationControl.values.id)
         }
         Item { Layout.fillWidth: true }
     }

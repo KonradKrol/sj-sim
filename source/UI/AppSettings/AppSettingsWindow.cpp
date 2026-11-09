@@ -1,5 +1,4 @@
 #include "AppSettingsWindow.h"
-#include "../Quick/QuickUi.h"
 #include "ui_AppSettingsWindow.h"
 #include "../../playground/PlaygroundController.h"
 #include "../../balance/BalanceLabController.h"
@@ -30,14 +29,6 @@ AppSettingsWindow::AppSettingsWindow(QWidget *parent) :
     ui(new Ui::AppSettingsWindow)
 {
     ui->setupUi(this);
-    if(auto *appearance=qApp->findChild<QuickAppearance *>()){
-        auto *sectors=new QCheckBox(tr("Pokazuj sektory wiatru po skoku"),this);sectors->setObjectName("checkBox_windSectors");sectors->setChecked(appearance->windSectors());ui->verticalLayout_6->insertWidget(0,sectors);
-        auto *diagnostics=new QCheckBox(tr("Porównuj pomiar wiatru z przebytym odcinkiem"),this);diagnostics->setObjectName("checkBox_windDiagnostics");diagnostics->setChecked(appearance->windDiagnostics());ui->verticalLayout_6->insertWidget(1,diagnostics);diagnostics->setVisible(appearance->windDiagnostics());
-        connect(sectors,&QCheckBox::toggled,appearance,&QuickAppearance::setWindSectors);
-        connect(diagnostics,&QCheckBox::toggled,appearance,&QuickAppearance::setWindDiagnostics);
-        connect(appearance,&QuickAppearance::changed,this,[appearance,sectors,diagnostics]{const QSignalBlocker a(sectors),b(diagnostics);sectors->setChecked(appearance->windSectors());diagnostics->setChecked(appearance->windDiagnostics());});
-    }
-
     auto *lab=new QPushButton(tr("Laboratorium balansu"),this);lab->setObjectName("openBalanceLab");ui->verticalLayout_6->insertWidget(0,lab);
     connect(lab,&QPushButton::clicked,this,[this]{auto *window=new BalanceLabWindow(this);window->setAttribute(Qt::WA_DeleteOnClose);window->show();});
     auto *playground=new QPushButton(tr("Playground symulacji"),this);playground->setObjectName("openSimulationPlayground");playground->setToolTip(tr("Wielowątkowe eksperymenty, porównania parametrów i analiza wyników."));ui->verticalLayout_6->insertWidget(0,playground);

@@ -9,7 +9,6 @@ ScrollView {
     contentHeight: raceContent.height
     clip: true
     padding: width < 700 || height < 600 ? 8 : 12
-    function openOptions(section) {optionContent.section=section;options.open()}
     readonly property bool narrow: width < 700
     readonly property var individual: ui.find("tableView_results")
     readonly property var team: ui.find("quickTeamResults")
@@ -39,7 +38,7 @@ ScrollView {
         id: header
         width: parent.width
         spacing: race.height < 600 ? 4 : 8
-        RaceStatus { enabled: !race.previewPaused; opacity: race.previewOpacity; width: parent.width; height: implicitHeight; onConditionsRequested: race.openOptions(1); onWindPreviewRequested: race.windForecastOpen=true }
+        RaceStatus { enabled: !race.previewPaused; opacity: race.previewOpacity; width: parent.width; height: implicitHeight; onConditionsRequested: {var field=ui.find("pushButton_windsGeneratorSettings");if(field)ui.activate(field.values.id)}; onWindPreviewRequested: race.windForecastOpen=true }
         GridLayout {
             id: hero
             objectName: "raceHeaderCards"
@@ -50,7 +49,7 @@ ScrollView {
             RaceLastJump { Layout.alignment: Qt.AlignTop; Layout.maximumHeight: implicitHeight; dense: race.height < 600; Layout.row: 0; Layout.column: race.narrow ? 0 : 1; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: race.narrow ? 0 : 680; Layout.maximumWidth: race.narrow ? Infinity : 720 }
 
         }
-        RaceControls { opacity: race.previewOpacity; width: parent.width; height: implicitHeight; onOptionsRequested: race.openOptions(section) }
+        RaceControls { opacity: race.previewOpacity; width: parent.width; height: implicitHeight }
         }
         Item {
             id: tables
@@ -167,22 +166,5 @@ ScrollView {
             }
         }
         background: Rectangle { color: Theme.surface; border.color: Theme.outline; radius: Theme.radius }
-    }
-    Popup {
-        enter: PopupFade {}
-        exit: PopupFade { leaving: true }
-        id: options
-        objectName: "raceOptionsPanel"
-        parent: Overlay.overlay
-        x: Math.max(8,parent.width-width-8); y: 8
-        width: Math.min(440,parent.width-16); height: Math.max(100,parent.height-16)
-        modal: true; focus: true; padding: 12
-        onOpened: optionContent.focusClose()
-        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-        background: Rectangle { color: Theme.surface; border.color: Theme.outline; radius: Theme.radius }
-        contentItem: RaceOptions {
-            id: optionContent
-            onCloseRequested: options.close()
-        }
     }
 }

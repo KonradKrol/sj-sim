@@ -166,8 +166,8 @@ public:
     Q_INVOKABLE void finishText(int id);
     Q_INVOKABLE void selectPreviewRound(int round);
     Q_INVOKABLE void editNextKoGroups();
-    Q_INVOKABLE void revealDeveloperControls();
     Q_INVOKABLE void suggestRaceGate(bool undo=false);
+    Q_INVOKABLE void lowerCoachGate();
     Q_INVOKABLE void skipCurrentJump();
     Q_INVOKABLE void openResultViewOptions(int field=-1,qreal x=-1,qreal y=-1,qreal width=0) {emit resultViewOptionsRequested(field,x,y,width);}
     Q_INVOKABLE void assignKoMember(int editorId,const QString &groupId,int slot,const QString &athleteId);

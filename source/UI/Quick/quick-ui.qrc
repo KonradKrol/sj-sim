@@ -166,6 +166,10 @@
 <file>PlotPanel.qml</file>
 <file>RaceAthlete.qml</file>
 <file>RaceControls.qml</file>
+<file>SToolButton.qml</file>
+<file>icons/tools/coach.svg</file>
+<file>icons/tools/adjust.svg</file>
+<file>icons/tools/auto.svg</file>
 <file>RaceContestMenu.qml</file>
 <file>RaceLastJump.qml</file>
 <file>JumpManipulationWorkspace.qml</file>
@@ -183,8 +187,6 @@
 <file>RaceViewSelector.qml</file>
 <file>RaceViewControls.qml</file>
 <file>ResultsHistoryPage.qml</file>
-<file>RaceOptions.qml</file>
-<file>RaceSimulation.qml</file>
 <file>RaceStatus.qml</file>
 <file>SButton.qml</file>
         <file>SIconButton.qml</file>

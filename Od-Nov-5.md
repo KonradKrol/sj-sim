@@ -61,3 +61,7 @@ Nowsza decyzja właściciela: zlikwidowano automatyczny kafelek sektorów i prze
 ## Korekta prognozy i opcji konkursu
 
 Nowsze wymagania: pasek konkursu pokazuje Prognoza wiatru, karta następnego zawodnika ma Podgląd wiatru. Przeciągana prognoza ma jeden nagłówek z kolorową średnią oraz zmniejszony widok zeskoku, bez dodatkowych opisów. Całkowicie usunięto otwieranie zapisu wiatru z karty skoku. Nowe menu Opcje konkursu na górze zawiera symulację konkursu/grupy/serii/N skoków oraz czerwone odwołanie rundy i konkursu; dostępność grupy/serii zależy od zasad. Warunki i Skok pozostają pełnymi przyciskami, bez ściskania do starego limitu szerokości.
+
+## Pasek narzędzi konkursu
+
+Skok jako panel opcji został usunięty. Nowe akcje mają wspólny styl SToolButton: DNS, trener -1 (natychmiastowe obniżenie tylko dla następnego zawodnika, wielokrotne kliknięcia kumulują obniżenie) i manipulacja. Manipulacja oraz belka trenera mają zaznaczony aktywny stan. Dobór belki jest ikoną przy inpucie, cofnięcie również jest małe. Usunięto tooltip największego awansu oraz pozostały panel opcji (webhooki, szczegóły skoków i przełącznik sektorów). Nieaktualne globalne przełączniki sektorów/diagnostyki usunięto z ustawień.

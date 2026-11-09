@@ -403,6 +403,7 @@ void CompetitionManagerWindow::focusCurrentJumper()
 void CompetitionManagerWindow::updateManipulationIndicator(bool pending)
 {
     manipulationPending = pending;
+    setProperty("jumpManipulationPending",pending);
     ui->pushButton_manipulateJump->setText(pending ? tr("Manipulacja ustawiona") : tr("Manipuluj"));
     ui->pushButton_manipulateJump->setToolTip(
         pending
@@ -2377,4 +2378,15 @@ void CompetitionManagerWindow::suggestCurrentGate(bool undo)
     setProperty("gateUndoAvailable",!undo && (target!=previous || previousCoach));
     setProperty("gateSuggestionDelta",undo?QVariant():QVariant(target-previousEffective));
     updateToAdvanceDistanceLabel();updateToBeatDistanceLabel();
+}
+
+void CompetitionManagerWindow::lowerCoachGateOne()
+{
+    if(!manager || jumpInProgress || manager->checkRoundEnd() || manager->checkCompetitionEnd() || property("resultHistoryPaused").toBool())return;
+    const int current=manager->getCoachGateForNextJumper()?manager->getActualCoachGate():manager->getActualGate();
+    if(current<=ui->spinBox_actualGate->minimum())return;
+    setProperty("gateUndoAvailable",false);setProperty("gateSuggestionDelta",QVariant());
+    manager->setCoachGateForNextJumper(true);manager->setActualCoachGate(current-1);
+    {const QSignalBlocker blocker(ui->spinBox_actualGate);ui->spinBox_actualGate->setValue(current-1);}
+    manager->updateLast10Judges();updateToAdvanceDistanceLabel();updateToBeatDistanceLabel();
 }

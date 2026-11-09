@@ -37,6 +37,7 @@ public:
     void bindWeatherSetup(SimulationWeatherSetup *,SimulationV2::Seed qualitySeed,double startSeconds=0);
     void advanceRoundWeather();
     void suggestCurrentGate(bool undo=false);
+    void lowerCoachGateOne();
     int windRound=1;
     double getSimulationSeconds() const {return simulationSeconds;}
 

@@ -16572,6 +16572,26 @@ Check that you selected the correct file.</translation>
         <source>Ustawienia wiatru i opadów</source>
         <translation>Wind and precipitation settings</translation>
     </message>
+    <message>
+        <source>Dobierz belkę</source>
+        <translation>Suggest a gate</translation>
+    </message>
+    <message>
+        <source>Cofnij zmianę belki</source>
+        <translation>Undo gate change</translation>
+    </message>
+    <message>
+        <source>Pomiń skok aktualnego zawodnika</source>
+        <translation>Skip the current athlete’s jump</translation>
+    </message>
+    <message>
+        <source>Obniż belkę o 1 na życzenie trenera</source>
+        <translation>Lower the gate by 1 at the coach’s request</translation>
+    </message>
+    <message>
+        <source>Manipulacja skoku</source>
+        <translation>Jump manipulation</translation>
+    </message>
 </context>
     <context>
         <name>RaceLastJump</name>

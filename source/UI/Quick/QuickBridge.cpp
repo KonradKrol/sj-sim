@@ -571,6 +571,9 @@ void QuickBridge::refresh() {
         QVariantMap context{{"complete",manager->checkCompetitionEnd()},{"roundComplete",manager->checkRoundEnd()},{"liveStage",window->getLiveStage()},{"round",manager->getActualRound()},{"roundCount",manager->effectiveRoundsCount()},{"qualifications",manager->getCompetitionInfo()->getSerieType()==CompetitionInfo::Qualifications},
                             {"athlete",qMin(manager->getActualStartListIndex()+1,manager->getStartListStatusesReference().size())},{"athleteCount",manager->getStartListStatusesReference().size()}};
         if(auto *team=dynamic_cast<TeamCompetitionManager *>(manager))context["group"]=team->getActualGroup();
+        context["manipulationPending"]=window->property("jumpManipulationPending");
+        context["coachReduction"]=manager->getCoachGateForNextJumper()?manager->getActualGate()-manager->getActualCoachGate():0;
+        if(auto *gate=m_content->findChild<QSpinBox *>("spinBox_actualGate"))context["canLowerCoachGate"]=gate->value()>gate->minimum();
         context["gateUndoAvailable"]=window->property("gateUndoAvailable");
         context["gateSuggestionDelta"]=window->property("gateSuggestionDelta");
         context["windPreview"]=window->property("simulationWindPreview");
@@ -1036,7 +1039,7 @@ void QuickBridge::compose(QuickNode *base) {
             {"openBalanceLab",""},{"openSimulationPlayground",""},{"comboBox_language",tr("Język interfejsu")},
             {"spinBox_dsqProbability",tr("Częstość dyskwalifikacji")},
             {"doubleSpinBox_liveCompSpeed",tr("Tempo konkursu na żywo")},
-            {"checkBox_globalDatabaseRecords",""},{"checkBox_liveCompetition",""},{"checkBox_windSectors",""},{"checkBox_windDiagnostics",""}}),"form")}));
+            {"checkBox_globalDatabaseRecords",""},{"checkBox_liveCompetition",""}}),"form")}));
         sections.append(group("tools",tr("Baza danych i narzędzia"),{group("database-settings-fields",QString(),fields({
             {"pushButton_countriesEditor",""},{"pushButton_jumpInfoChoice",""},
             {"pushButton_defaultSettings",""}}),"form")}));
@@ -1393,6 +1396,7 @@ void QuickBridge::selectWindSector(int editorId,int sector) {
 
 void QuickAppearance::setWindSectors(bool value){if(value==m_windSectors)return;m_windSectors=value;QSettings().setValue("quickUi/windSectors",value);emit changed();}
 void QuickAppearance::setWindDiagnostics(bool value){if(value==m_windDiagnostics)return;m_windDiagnostics=value;QSettings().setValue("quickUi/windDiagnostics",value);emit changed();}
-void QuickBridge::revealDeveloperControls(){if(profile()!="AppSettingsWindow")return;if(auto *box=m_window->findChild<QCheckBox *>("checkBox_windDiagnostics")){box->show();refresh();}}
 
 void QuickBridge::suggestRaceGate(bool undo){if(auto *window=qobject_cast<CompetitionManagerWindow *>(m_window.data())){try{window->suggestCurrentGate(undo);}catch(const std::exception &error){QMessageBox::warning(m_window,tr("Belka"),tr("Nie udało się dobrać belki: %1").arg(QString::fromUtf8(error.what())));}refresh();}}
+
+void QuickBridge::lowerCoachGate(){if(auto *window=qobject_cast<CompetitionManagerWindow *>(m_window.data())){window->lowerCoachGateOne();refresh();}}

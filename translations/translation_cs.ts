@@ -16573,6 +16573,26 @@ Ověřte, že jste vybrali správný soubor.</translation>
         <source>Ustawienia wiatru i opadów</source>
         <translation>Nastavení větru a srážek</translation>
     </message>
+    <message>
+        <source>Dobierz belkę</source>
+        <translation>Navrhnout nájezdové okno</translation>
+    </message>
+    <message>
+        <source>Cofnij zmianę belki</source>
+        <translation>Vrátit změnu nájezdového okna</translation>
+    </message>
+    <message>
+        <source>Pomiń skok aktualnego zawodnika</source>
+        <translation>Přeskočit skok aktuálního skokana</translation>
+    </message>
+    <message>
+        <source>Obniż belkę o 1 na życzenie trenera</source>
+        <translation>Snížit nájezd o 1 okno na žádost trenéra</translation>
+    </message>
+    <message>
+        <source>Manipulacja skoku</source>
+        <translation>Úprava skoku</translation>
+    </message>
 </context>
     <context>
         <name>RaceLastJump</name>

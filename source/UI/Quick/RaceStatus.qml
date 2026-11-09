@@ -33,10 +33,7 @@ Pane {
                     +(status.advancingEntries.length>1 ? " (+"+(status.advancingEntries.length-1)+")" : "") : "")
             font.pointSize: Theme.caption; color: Theme.muted
             Layout.fillWidth: true; wrapMode: Text.WordWrap
-            MouseArea { id: advancementHover; anchors.fill: parent; hoverEnabled: true; acceptedButtons: Qt.NoButton }
-            ToolTip.visible: advancementHover.containsMouse && status.advancement.places>0
-            ToolTip.text: qsTr("Względem poprzedniej serii, po odjęciu zawodników oczekujących na skok.")
-                          +"\n"+status.advancingEntries.map(function(entry){return entry.name+" · "+entry.from+" → "+entry.to}).join("\n")
+
         }
 
         SButton { objectName: "raceWindConditions"; foreground: ui.context.windValue>0 ? Theme.success : ui.context.windValue<0 ? Theme.danger : Theme.ink; implicitHeight: 24; padding: 0; quiet: true; onClicked: (ui.context.windPreview || []).length ? status.windPreviewRequested() : status.conditionsRequested(); text: qsTr("Prognoza wiatru: %1").arg(status.wind ? status.wind.values.text : "—"); font.pointSize: Theme.caption; Layout.fillWidth: true }
