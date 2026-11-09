@@ -5,18 +5,25 @@ import QtQuick.Window 2.15
 
 Pane {
     id: bar
-    readonly property bool compressed: Window.window && Window.window.height < 500
+    objectName: "seasonBar"
+    readonly property bool compressed: Window.window && Window.window.height < 650
+    readonly property bool stacked: width < actions.implicitWidth+Theme.dp(160)
+    readonly property var toolsNode: ui.find("quickSeasonTools")
     readonly property var dateNode: ui.find("quickSeasonDate")
     readonly property var nameNode: ui.find("label_saveName")
     readonly property var yearNode: ui.find("label_seasonNumber")
     readonly property var calendarNode: ui.find("label_calendarName")
     readonly property var saveNode: ui.find("pushButton_saveToFile")
     implicitWidth: 0
-    padding: Theme.dp(compressed ? 5 : 8)
+    implicitHeight: contents.implicitHeight+topPadding+bottomPadding
+    padding: Theme.dp(compressed ? 3 : 5)
     background: Rectangle { color: Theme.surface; Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: Theme.divider } }
-    contentItem: GridLayout {
-        columns: bar.width < 760 && !bar.compressed ? 1 : 2
-        columnSpacing: Theme.dp(16); rowSpacing: Theme.dp(5)
+    contentItem: Item {
+    GridLayout {
+        id: contents
+        width: parent.width
+        columns: bar.stacked ? 1 : 2
+        columnSpacing: Theme.dp(12); rowSpacing: Theme.dp(4)
         RowLayout {
             Layout.fillWidth: true
             Layout.minimumWidth: 0
@@ -25,19 +32,28 @@ Pane {
             ColumnLayout {
                 Layout.fillWidth: true; Layout.minimumWidth: 0; spacing: 0
                 Label { text: bar.nameNode ? bar.nameNode.values.text : ""; color: Theme.ink; font.weight: Font.DemiBold; font.pointSize: Theme.body; Layout.fillWidth: true; elide: Text.ElideRight }
-                Label { visible: bar.width>=760; text: qsTr("%1 · %2").arg(bar.yearNode ? bar.yearNode.values.text : "").arg(bar.calendarNode ? bar.calendarNode.values.text : ""); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; elide: Text.ElideRight }
+                Label { text: qsTr("%1 · %2").arg(bar.yearNode ? bar.yearNode.values.text : "").arg(bar.calendarNode ? bar.calendarNode.values.text : ""); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; elide: Text.ElideRight }
             }
         }
         RowLayout {
-            Layout.fillWidth: bar.width < 760
+            id: actions
+            Layout.fillWidth: bar.stacked
             spacing: Theme.dp(6)
-            Node { node: ui.find("quickSeasonTools"); Layout.preferredWidth: Theme.dp(110); Layout.fillWidth: bar.width < 760; Layout.preferredHeight: implicitHeight }
+            SToolButton {
+                objectName: "action-quickSeasonTools"
+                text: bar.toolsNode ? bar.toolsNode.values.text : ""
+                font.pointSize: Theme.body
+                enabled: !!bar.toolsNode
+                onClicked: toolsMenu.open()
+                ActionMenu { id: toolsMenu; entries: bar.toolsNode ? bar.toolsNode.values.actions || [] : []; onSelected: function(entry){if(entry.button)ui.activate(entry.id);else ui.triggerAction(entry.id)} }
+            }
             SButton {
                 objectName: "action-pushButton_saveToFile"
                 visible: !!bar.saveNode && bar.saveNode.values.available !== false
                 enabled: !!bar.saveNode && bar.saveNode.values.enabled !== false
-                Layout.fillWidth: bar.width < 760
-                implicitHeight: Math.max(Theme.controlHeight, Theme.dp(40))
+                Layout.fillWidth: bar.stacked
+                dense: true
+                implicitHeight: Math.max(Theme.dp(32),contentItem.implicitHeight+Theme.dp(8))
                 text: qsTr("Zapisz sezon")
                 primary: true
                 font.pointSize: Theme.body
@@ -45,4 +61,5 @@ Pane {
             }
         }
     }
+}
 }

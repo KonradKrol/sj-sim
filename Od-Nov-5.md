@@ -65,3 +65,7 @@ Nowsze wymagania: pasek konkursu pokazuje Prognoza wiatru, karta następnego zaw
 ## Pasek narzędzi konkursu
 
 Skok jako panel opcji został usunięty. Nowe akcje mają wspólny styl SToolButton: DNS, trener -1 (natychmiastowe obniżenie tylko dla następnego zawodnika, wielokrotne kliknięcia kumulują obniżenie) i manipulacja. Manipulacja oraz belka trenera mają zaznaczony aktywny stan. Dobór belki jest ikoną przy inpucie, cofnięcie również jest małe. Usunięto tooltip największego awansu oraz pozostały panel opcji (webhooki, szczegóły skoków i przełącznik sektorów). Nieaktualne globalne przełączniki sektorów/diagnostyki usunięto z ustawień.
+
+## Wysokość górnego paska sezonu
+
+SeasonBar ma wysokość wyliczaną wyłącznie z zawartości; Loader nie pozwala jej rozciągać. Zmniejszono padding i wysokość akcji, Narzędzia używają kompaktowego przycisku. Dwa rzędy pojawiają się dopiero przy faktycznym braku szerokości na tekst i akcje; data, nazwa sezonu i kalendarz pozostają widoczne.

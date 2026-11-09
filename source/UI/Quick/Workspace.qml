@@ -21,6 +21,9 @@ ColumnLayout {
         active: workspace.season
         Layout.fillWidth: true
         Layout.preferredHeight: active && item ? item.implicitHeight : 0
+        Layout.minimumHeight: active && item ? item.implicitHeight : 0
+        Layout.maximumHeight: active && item ? item.implicitHeight : 0
+        Layout.fillHeight: false
         sourceComponent: Component { SeasonBar {} }
     }
     SectionTabs {
