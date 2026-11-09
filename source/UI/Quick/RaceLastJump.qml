@@ -6,18 +6,8 @@ Pane {
     id: jump
     objectName: "raceLastJump"
     property bool dense: false
-    property bool windSectorsEnabled: true
     readonly property var summary: ui.jumpSummary
     readonly property bool narrow: width<480
-    property bool windOpen: false
-    readonly property string windKey: summary.windProfileKey || ""
-    onWindKeyChanged: windOpen=false
-    Loader {
-        objectName: "jumpWindLoader"
-        active: jump.windSectorsEnabled && jump.windOpen && !!jump.summary.windProfile
-        onLoaded: if(status===Loader.Ready && item)item.open()
-        sourceComponent: Component { JumpWindProfile { recorded: jump.summary.windProfile || ({}); athlete: jump.summary.name || ""; onClosed: jump.windOpen=false } }
-    }
     ChangeFeedback { id: resultArrival; target: jump; trigger: [jump.summary.name,jump.summary.distance,jump.summary.points,jump.summary.selectedRound].join("|"); duration: Theme.motion*2 }
     implicitHeight: content.implicitHeight + topPadding + bottomPadding
     padding: dense ? 4 : 8
@@ -85,7 +75,7 @@ Pane {
         GridLayout {
             width: parent.width
             columns: jump.narrow ? 3 : 4; columnSpacing: 8; rowSpacing: 2
-            JumpMetric { inlineValue: !jump.narrow; caption: jump.windSectorsEnabled && jump.summary.windProfile ? qsTr("Wiatr ↗") : qsTr("Wiatr"); value: jump.signedText(jump.summary.wind,jump.summary.windValue); valueColor: jump.signedColor(jump.summary.windValue); interactive: jump.windSectorsEnabled && !!jump.summary.windProfile; onClicked: jump.windOpen=true; objectName: "lastJumpWind"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
+            JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Wiatr"); value: jump.signedText(jump.summary.wind,jump.summary.windValue); valueColor: jump.signedColor(jump.summary.windValue); interactive: false; objectName: "lastJumpWind"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
             JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Belka"); value: jump.summary.gate || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
             JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Ląd."); value: jump.summary.landing || "—"; valueColor: jump.summary.landingType === 0 ? (Theme.dark ? "#a9c4df" : "#466781") : jump.summary.landingType === 1 ? (Theme.dark ? "#f1d478" : "#795900") : jump.summary.landingType === 2 ? (Theme.dark ? "#ffba78" : "#994700") : jump.summary.landingType === 3 ? Theme.danger : Theme.ink; Layout.fillWidth: true; Layout.minimumWidth: 0 }
             JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Rekomp."); value: jump.signedText(jump.summary.compensation,jump.summary.compensationValue); valueColor: jump.signedColor(jump.summary.compensationValue); objectName: "lastJumpCompensation"; Layout.fillWidth: true; Layout.minimumWidth: 0 }

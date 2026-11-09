@@ -23,7 +23,7 @@ Menu {
             text: modelData.text || ""
             enabled: modelData.enabled !== false && !modelData.separator
             implicitHeight: modelData.separator ? 9 : Math.max(40,contentItem.implicitHeight + topPadding + bottomPadding)
-            contentItem: Text { text: parent.text; color: Theme.ink; font.pointSize: Theme.body; elide: Text.ElideRight; verticalAlignment: Text.AlignVCenter }
+            contentItem: Text { text: parent.text; color: modelData.danger ? Theme.danger : Theme.ink; font.pointSize: Theme.body; elide: Text.ElideRight; verticalAlignment: Text.AlignVCenter }
             background: Rectangle { color: modelData.separator ? Theme.divider : parent.highlighted ? Theme.selection : Theme.surface }
             onTriggered: menu.selected(modelData)
         }

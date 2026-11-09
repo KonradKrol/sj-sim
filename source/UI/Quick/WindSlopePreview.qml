@@ -8,9 +8,10 @@ Control {
     property string heading
     property var backend
     property bool interactive: true
+    property bool compact: false
     readonly property int stationCount: Math.max(1,samples.length)
     property int selectedStation: -1
-    padding: Theme.dp(14)
+    padding: Theme.dp(compact ? 6 : 14)
     implicitHeight: contentItem.implicitHeight+topPadding+bottomPadding
     background: Surface { fillColor: Theme.stadium; sweep: Theme.dp(24) }
     contentItem: ColumnLayout {
@@ -18,7 +19,7 @@ Control {
         Label { visible: !!preview.heading; text: preview.heading; color: Theme.snow; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true; elide: Text.ElideRight; Layout.fillWidth: true }
         Item {
             id: slope
-            Layout.fillWidth: true; Layout.preferredHeight: Math.max(Theme.dp(140),Theme.bodyMetrics.height*3+Theme.dp(30))
+            Layout.fillWidth: true; Layout.preferredHeight: Math.max(Theme.dp(preview.compact ? 96 : 140),Theme.bodyMetrics.height*3+Theme.dp(preview.compact ? 12 : 30))
             Image { anchors.fill: parent; source: "qrc:/ui/icons/weather/slope.svg"; sourceSize.width: 1600; sourceSize.height: 320; fillMode: Image.Stretch; Accessible.ignored: true }
             Repeater {
                 model: preview.samples
@@ -30,7 +31,7 @@ Control {
                     objectName: "windStation-"+index
                     x: (index+.5)*slope.width/preview.stationCount-width/2
                     y: slope.height*(.02+.35*Math.pow((index+.5)/preview.stationCount,1.4))
-                    width: slope.width/preview.stationCount-Theme.dp(2); height: Math.max(Theme.dp(74),contentItem.implicitHeight+Theme.dp(6))
+                    width: slope.width/preview.stationCount-Theme.dp(2); height: Math.max(Theme.dp(preview.compact ? 58 : 74),contentItem.implicitHeight+Theme.dp(6))
                     hoverEnabled: true
                     focusPolicy: preview.interactive ? Qt.StrongFocus : Qt.NoFocus
                     onPressed: if(preview.interactive)forceActiveFocus()
@@ -40,7 +41,7 @@ Control {
                     background: Rectangle { color: station.checked?Theme.track:station.hovered && preview.interactive?"#244157":"transparent"; radius: Theme.dp(4); border.width: station.checked || (station.hovered && preview.interactive) || station.visualFocus ? 1 : 0; border.color: station.checked?Theme.signal:station.visualFocus?Theme.accent:Theme.track }
                     contentItem: Column {
                         spacing: Theme.dp(2)
-                        Label { anchors.horizontalCenter: parent.horizontalCenter; text: !station.available || station.modelData.strength<.01 ? "—" : "↑"; rotation: !station.available || station.modelData.strength<.01 ? 0 : station.modelData.direction-65; color: !station.available ? Theme.headerMuted : station.modelData.head>station.modelData.strength*.35 ? Theme.signal : station.modelData.head< -station.modelData.strength*.35 ? Theme.stadiumDanger : Theme.headerMuted; font.pixelSize: Theme.dp(36); font.bold: true; Accessible.ignored: true }
+                        Label { anchors.horizontalCenter: parent.horizontalCenter; text: !station.available || station.modelData.strength<.01 ? "—" : "↑"; rotation: !station.available || station.modelData.strength<.01 ? 0 : station.modelData.direction-65; color: !station.available ? Theme.headerMuted : station.modelData.head>station.modelData.strength*.35 ? Theme.signal : station.modelData.head< -station.modelData.strength*.35 ? Theme.stadiumDanger : Theme.headerMuted; font.pixelSize: Theme.dp(preview.compact ? 28 : 36); font.bold: true; Accessible.ignored: true }
                         Label { anchors.horizontalCenter: parent.horizontalCenter; text: station.available ? Number(station.modelData.strength).toLocaleString(Qt.locale(Theme.localeName),'f',1) : "—"; color: Theme.snow; font.family: Theme.mono; font.pointSize: Theme.body; Accessible.ignored: true }
                         Label { anchors.horizontalCenter: parent.horizontalCenter; text: qsTr("%1 m").arg(Math.round(station.modelData.distance)); color: Theme.headerMuted; font.pointSize: Theme.caption; Accessible.ignored: true }
                     }

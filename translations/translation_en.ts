@@ -16503,7 +16503,11 @@ Check that you selected the correct file.</translation>
             <source>Traci %1 pkt do lidera grupy</source>
             <translation>%1 pts behind the group leader</translation>
         </message>
-    </context>
+        <message>
+        <source>Podgląd wiatru</source>
+        <translation>Wind preview</translation>
+    </message>
+</context>
     <context>
         <name>RaceControls</name>
         <message>
@@ -16703,6 +16707,10 @@ Check that you selected the correct file.</translation>
         <source>Porównuj pomiar wiatru z przebytym odcinkiem</source>
         <translation>Compare measured wind with the travelled section</translation>
     </message>
+    <message>
+        <source>Klasyfikacja</source>
+        <translation>Standings</translation>
+    </message>
 </context>
     <context>
         <name>RaceScreen</name>
@@ -16824,7 +16832,11 @@ Check that you selected the correct file.</translation>
             <source>Kwalifikacje</source>
             <translation>Qualification</translation>
         </message>
-    </context>
+        <message>
+        <source>Prognoza wiatru: %1</source>
+        <translation>Wind forecast: %1</translation>
+    </message>
+</context>
     <context>
         <name>RaceViewChoices</name>
         <message>
@@ -24012,6 +24024,10 @@ Close the previous Sj.Sim window and try again.</translation></message></context
         <source>Przesuń podgląd wiatru</source>
         <translation>Move wind preview</translation>
     </message>
+    <message>
+        <source>Prognoza wiatru</source>
+        <translation>Wind forecast</translation>
+    </message>
 </context>
 <context>
     <name>StudioEditActions</name>
@@ -24046,6 +24062,37 @@ Close the previous Sj.Sim window and try again.</translation></message></context
     <message>
         <source>Usuń skocznię</source>
         <translation>Remove hill</translation>
+    </message>
+</context>
+<context>
+    <name>RaceContestMenu</name>
+    <message>
+        <source>Opcje konkursu</source>
+        <translation>Competition options</translation>
+    </message>
+    <message>
+        <source>Symuluj konkurs</source>
+        <translation>Simulate competition</translation>
+    </message>
+    <message>
+        <source>Symuluj grupę</source>
+        <translation>Simulate group</translation>
+    </message>
+    <message>
+        <source>Symuluj serię</source>
+        <translation>Simulate round</translation>
+    </message>
+    <message>
+        <source>Symuluj N skoków</source>
+        <translation>Simulate N jumps</translation>
+    </message>
+    <message>
+        <source>Odwołaj rundę</source>
+        <translation>Cancel round</translation>
+    </message>
+    <message>
+        <source>Odwołaj konkurs</source>
+        <translation>Cancel competition</translation>
     </message>
 </context>
 </TS>

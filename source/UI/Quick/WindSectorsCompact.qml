@@ -33,7 +33,7 @@ Pane {
                     anchors.fill: parent
                     spacing: Theme.dp(7)
                     Label { visible: wind.draggable; text: "⠿"; color: Theme.muted; font.pixelSize: Theme.dp(17); Accessible.ignored: true }
-                    Label { text: wind.forecast ? qsTr("Wiatr przed skokiem") : qsTr("Wiatr po skoku"); font.pointSize: Theme.body; font.bold: true; color: Theme.ink; Layout.fillWidth: true }
+                    Label { text: qsTr("Prognoza wiatru"); font.pointSize: Theme.body; font.bold: true; color: Theme.ink; Layout.fillWidth: true }
                 }
                 MouseArea {
                     id: dragHandle
@@ -58,16 +58,13 @@ Pane {
                     Accessible.name: qsTr("Przesuń podgląd wiatru")
                 }
             }
+            Label { text: wind.number(wind.forecastWind)+" m/s"; color: wind.forecastWind>0 ? Theme.success : wind.forecastWind<0 ? Theme.danger : Theme.muted; font.family: Theme.mono; font.pointSize: Theme.body; font.bold: true }
             SButton { text: "×"; dense: true; quiet: true; Accessible.name: qsTr("Zamknij podgląd wiatru"); onClicked: wind.dismissed() }
-        }
-        RowLayout {
-            Layout.fillWidth: true
-            Label { text: wind.forecast ? qsTr("Przed następnym skokiem") : qsTr("Zapis skoku"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
-            Label { text: wind.forecast ? wind.number(wind.forecastWind)+" m/s" : wind.recorded.measuredWind!==undefined ? wind.number(wind.recorded.measuredWind)+" m/s" : ""; color: Theme.ink; font.family: Theme.mono; font.pointSize: Theme.body; font.bold: true }
         }
         WindSlopePreview {
             Layout.fillWidth: true
             heading: ""
+            compact: true
             interactive: false
             samples: wind.samples
         }

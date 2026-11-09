@@ -16504,7 +16504,11 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Traci %1 pkt do lidera grupy</source>
             <translation>Ztrácí %1 b. na vedoucího skupiny</translation>
         </message>
-    </context>
+        <message>
+        <source>Podgląd wiatru</source>
+        <translation>Přehled větru</translation>
+    </message>
+</context>
     <context>
         <name>RaceControls</name>
         <message>
@@ -16704,6 +16708,10 @@ Ověřte, že jste vybrali správný soubor.</translation>
         <source>Porównuj pomiar wiatru z przebytym odcinkiem</source>
         <translation>Porovnávat měřený vítr s prolétnutým úsekem</translation>
     </message>
+    <message>
+        <source>Klasyfikacja</source>
+        <translation>Pořadí</translation>
+    </message>
 </context>
     <context>
         <name>RaceScreen</name>
@@ -16825,7 +16833,11 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Śnieg: %1</source>
             <translation>Sníh: %1</translation>
         </message>
-    </context>
+        <message>
+        <source>Prognoza wiatru: %1</source>
+        <translation>Předpověď větru: %1</translation>
+    </message>
+</context>
     <context>
         <name>RaceViewChoices</name>
         <message>
@@ -24013,6 +24025,10 @@ Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></con
         <source>Przesuń podgląd wiatru</source>
         <translation>Přesunout přehled větru</translation>
     </message>
+    <message>
+        <source>Prognoza wiatru</source>
+        <translation>Předpověď větru</translation>
+    </message>
 </context>
 <context>
     <name>StudioEditActions</name>
@@ -24047,6 +24063,37 @@ Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></con
     <message>
         <source>Usuń skocznię</source>
         <translation>Odebrat můstek</translation>
+    </message>
+</context>
+<context>
+    <name>RaceContestMenu</name>
+    <message>
+        <source>Opcje konkursu</source>
+        <translation>Možnosti závodu</translation>
+    </message>
+    <message>
+        <source>Symuluj konkurs</source>
+        <translation>Simulovat závod</translation>
+    </message>
+    <message>
+        <source>Symuluj grupę</source>
+        <translation>Simulovat skupinu</translation>
+    </message>
+    <message>
+        <source>Symuluj serię</source>
+        <translation>Simulovat kolo</translation>
+    </message>
+    <message>
+        <source>Symuluj N skoków</source>
+        <translation>Simulovat N skoků</translation>
+    </message>
+    <message>
+        <source>Odwołaj rundę</source>
+        <translation>Zrušit kolo</translation>
+    </message>
+    <message>
+        <source>Odwołaj konkurs</source>
+        <translation>Zrušit závod</translation>
     </message>
 </context>
 </TS>

@@ -27,8 +27,8 @@ Pane {
             Label { text: ui.context.complete ? qsTr("Zakończono") : ui.context.roundComplete ? qsTr("Koniec serii") : qsTr("NA BELCE"); color: Theme.signal; font.pointSize: Theme.caption; font.family: Theme.mono; Layout.fillWidth: true }
             SButton {
                 objectName: "nextJumpWind"
-                visible: (ui.context.windPreview || []).length>0 && !ui.context.complete && !ui.context.roundComplete && !ui.context.liveStage
-                text: qsTr("Wiatr ↗"); quiet: true; inverse: true; font.pointSize: Theme.caption; padding: 0
+                visible: (ui.context.windPreview || []).length>0 && !ui.context.complete && !ui.context.roundComplete && (!ui.context.liveStage || ui.context.liveStage>=5)
+                text: qsTr("Podgląd wiatru"); quiet: true; inverse: true; font.pointSize: Theme.caption; padding: 0
                 implicitHeight: Theme.captionMetrics.height+2
                 Accessible.name: qsTr("Podgląd wiatru przed skokiem")
                 onClicked: athlete.windRequested()

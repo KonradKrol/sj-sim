@@ -166,6 +166,7 @@
 <file>PlotPanel.qml</file>
 <file>RaceAthlete.qml</file>
 <file>RaceControls.qml</file>
+<file>RaceContestMenu.qml</file>
 <file>RaceLastJump.qml</file>
 <file>JumpManipulationWorkspace.qml</file>
 <file>JumpAdjustmentFields.qml</file>

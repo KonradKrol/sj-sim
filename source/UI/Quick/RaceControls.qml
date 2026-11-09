@@ -8,7 +8,7 @@ GridLayout {
     enabled: !history || !history.values.paused
     signal optionsRequested(int section)
     readonly property var liveControl: ui.find("checkBox_liveCompetition")
-    columns: width >= 800 ? 5 : 2
+    columns: width>=1180 ? 5 : width>=800 ? 3 : 2
     columnSpacing: 8; rowSpacing: 6
     Node { visible: !ui.context.complete && !ui.context.roundComplete; Layout.fillWidth: true; Layout.minimumWidth: 0; node: ui.find("pushButton_jump") }
     RowLayout {
@@ -32,14 +32,13 @@ GridLayout {
         onClicked: ui.activate(controls.liveControl.values.id)
     }
     RowLayout {
-        Layout.columnSpan: controls.width<800 ? 2 : 1
+        Layout.columnSpan: controls.width<1180 ? 2 : 1
         Layout.fillWidth: true; spacing: Theme.dp(4)
         SButton { text: qsTr("Odczekaj 30 s"); dense: true; font.pointSize: Theme.caption; readonly property var waitControl: ui.find("pushButton_generateNewWinds"); visible: !ui.context.complete; enabled: !!waitControl && waitControl.values.enabled; onClicked: if(waitControl)ui.activate(waitControl.values.id) }
-        Label { text: qsTr("Opcje"); color: Theme.muted; font.pointSize: Theme.caption }
         Repeater {
-            model: [qsTr("Przebieg"),qsTr("Warunki"),qsTr("Skok")]
+            model: [qsTr("Warunki"),qsTr("Skok")]
             SButton {
-                objectName: index===0 ? "raceOptions" : index===1 ? "raceConditionsOptions" : "raceJumpOptions"
+                objectName: index===0 ? "raceConditionsOptions" : "raceJumpOptions"
                 id: optionButton
                 text: modelData; padding: Theme.dp(6); font.pointSize: Theme.caption
                 hint: qsTr("Ustawienia: %1").arg(modelData)
@@ -50,9 +49,10 @@ GridLayout {
                     DropdownIndicator { tint: Theme.accent; Layout.preferredWidth: Theme.dp(10); Layout.preferredHeight: Theme.dp(7) }
                 }
                 background: Rectangle { color: optionButton.hovered || optionButton.down ? Theme.selection : Theme.raised; radius: Theme.dp(4); border.width: optionButton.visualFocus ? 2 : 1; border.color: optionButton.hovered || optionButton.visualFocus ? Theme.accent : Theme.outline }
-                Layout.fillWidth: true; Layout.minimumWidth: 0
-                onClicked: controls.optionsRequested(index)
+                Layout.minimumWidth: implicitWidth
+                onClicked: controls.optionsRequested(index+1)
             }
         }
+        Item { Layout.fillWidth: true }
     }
 }

@@ -27,7 +27,7 @@ Popup {
     height: Math.min(contentItem.implicitHeight+topPadding+bottomPadding,parent.height-24)
     x: panelPosition.x>=0 ? Math.max(0,Math.min(parent.width-width,panelPosition.x)) : (parent.width-width)/2
     y: panelPosition.y>=0 ? Math.max(0,Math.min(parent.height-height,panelPosition.y)) : (parent.height-height)/2
-    modal: false; dim: false; focus: !forecast; padding: Theme.dp(12)
+    modal: false; dim: false; focus: !forecast; padding: Theme.dp(7)
     closePolicy: forecast ? Popup.CloseOnEscape : Popup.CloseOnEscape | Popup.CloseOnPressOutside
     background: Rectangle { color: Theme.surface; border.color: Theme.outline; radius: Theme.radius }
     contentItem: WindSectorsCompact {

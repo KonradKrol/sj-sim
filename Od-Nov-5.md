@@ -57,3 +57,7 @@ Skoczkowie i skocznie używają StudioEditActions: duży kontrastowy przycisk z 
 ## Pływający podgląd przed skokiem
 
 Nowsza decyzja właściciela: zlikwidowano automatyczny kafelek sektorów i przełącznik Przed/Po. Prognoza to niemodalny, przeciągany za nagłówek panel, pozostający otwarty przy klikaniu konkursu, z pozycją pamiętaną w ramach okna konkursu. Panel jest ograniczony do obszaru aplikacji i dostępny też z klawiatury. Zapis po skoku otwiera się wyłącznie z karty skoku. Oba widoki zachowują wykres ze zeskokiem z konfiguracji.
+
+## Korekta prognozy i opcji konkursu
+
+Nowsze wymagania: pasek konkursu pokazuje Prognoza wiatru, karta następnego zawodnika ma Podgląd wiatru. Przeciągana prognoza ma jeden nagłówek z kolorową średnią oraz zmniejszony widok zeskoku, bez dodatkowych opisów. Całkowicie usunięto otwieranie zapisu wiatru z karty skoku. Nowe menu Opcje konkursu na górze zawiera symulację konkursu/grupy/serii/N skoków oraz czerwone odwołanie rundy i konkursu; dostępność grupy/serii zależy od zasad. Warunki i Skok pozostają pełnymi przyciskami, bez ściskania do starego limitu szerokości.

@@ -15,7 +15,7 @@ Pane {
     padding: 6
     background: Rectangle { color: Theme.surface; radius: Theme.radius; border.color: Theme.outline }
     contentItem: GridLayout {
-        columns: status.width >= 850 ? 4 : 2
+        columns: status.width >= 1000 ? 5 : 2
         columnSpacing: 20; rowSpacing: 8
         RowLayout {
             Layout.fillWidth: true; spacing: 6
@@ -39,7 +39,8 @@ Pane {
                           +"\n"+status.advancingEntries.map(function(entry){return entry.name+" · "+entry.from+" → "+entry.to}).join("\n")
         }
 
-        SButton { objectName: "raceWindConditions"; foreground: ui.context.windValue>0 ? Theme.success : ui.context.windValue<0 ? Theme.danger : Theme.ink; implicitHeight: 24; padding: 0; quiet: true; onClicked: (ui.context.windPreview || []).length ? status.windPreviewRequested() : status.conditionsRequested(); text: qsTr("Wiatr: %1").arg(status.wind ? status.wind.values.text : "—"); font.pointSize: Theme.caption; Layout.fillWidth: true }
+        SButton { objectName: "raceWindConditions"; foreground: ui.context.windValue>0 ? Theme.success : ui.context.windValue<0 ? Theme.danger : Theme.ink; implicitHeight: 24; padding: 0; quiet: true; onClicked: (ui.context.windPreview || []).length ? status.windPreviewRequested() : status.conditionsRequested(); text: qsTr("Prognoza wiatru: %1").arg(status.wind ? status.wind.values.text : "—"); font.pointSize: Theme.caption; Layout.fillWidth: true }
         SButton { objectName: "raceSnowConditions"; implicitHeight: 24; padding: 0; quiet: true; onClicked: status.conditionsRequested(); text: qsTr("Śnieg: %1").arg(status.snow ? status.snow.values.text : "—"); font.pointSize: Theme.caption; Layout.fillWidth: true }
+        RaceContestMenu { Layout.alignment: Qt.AlignRight; Layout.minimumWidth: implicitWidth; enabled: !ui.context.liveStage || ui.context.liveStage>=5 }
     }
 }
