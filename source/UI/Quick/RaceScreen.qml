@@ -20,7 +20,13 @@ ScrollView {
     Behavior on previewOpacity { NumberAnimation { duration: Theme.motion } }
     property bool allowWindSectors: true
     readonly property bool showWindSectors: appearance.windSectors && allowWindSectors
-    readonly property bool dockWind: race.availableWidth>=1380 && showWindSectors && !!ui.jumpSummary.windProfile
+    property bool windForecastOpen: false
+    Loader {
+        active: race.windForecastOpen
+        onLoaded: if(item)item.open()
+        sourceComponent: Component { JumpWindProfile { forecast: true; recorded: ({before: ui.context.windPreview || []}); onClosed: race.windForecastOpen=false } }
+    }
+    readonly property bool dockWind: race.availableWidth>=1380 && showWindSectors && (!!ui.jumpSummary.windProfile || (ui.context.windPreview || []).length>0)
     property real heroReserve: 0
     onPreviewPausedChanged: {if(previewPaused)heroReserve=hero.height;else{heroReserve=0;if(viewOptions)viewOptions.close()}}
     readonly property bool historical: !!history && !!history.values.active
@@ -35,7 +41,7 @@ ScrollView {
         id: header
         width: parent.width
         spacing: race.height < 600 ? 4 : 8
-        RaceStatus { enabled: !race.previewPaused; opacity: race.previewOpacity; width: parent.width; height: implicitHeight; onConditionsRequested: race.openOptions(1) }
+        RaceStatus { enabled: !race.previewPaused; opacity: race.previewOpacity; width: parent.width; height: implicitHeight; onConditionsRequested: race.openOptions(1); onWindPreviewRequested: race.windForecastOpen=true }
         GridLayout {
             id: hero
             objectName: "raceHeaderCards"
@@ -49,7 +55,7 @@ ScrollView {
                 Layout.row: 0; Layout.column: 2; Layout.alignment: Qt.AlignTop
                 Layout.fillWidth: true; Layout.preferredWidth: 360; Layout.maximumWidth: 420
                 Layout.maximumHeight: item ? item.implicitHeight : 0
-                sourceComponent: Component { WindSectorsCompact { recorded: ui.jumpSummary.windProfile || ({}); onDismissed: race.allowWindSectors=false } }
+                sourceComponent: Component { WindSectorsCompact { forecastSamples: ui.context.windPreview || []; recorded: ui.jumpSummary.windProfile || ({}); onDismissed: race.allowWindSectors=false } }
             }
         }
         RaceControls { opacity: race.previewOpacity; width: Math.min(parent.width,1052); height: implicitHeight; onOptionsRequested: race.openOptions(section) }

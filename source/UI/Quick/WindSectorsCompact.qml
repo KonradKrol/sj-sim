@@ -5,7 +5,9 @@ import QtQuick.Layouts 1.15
 Pane {
     id: sectors
     property var recorded: ({})
-    readonly property var samples: recorded.during || []
+    property var forecastSamples: []
+    property bool forecast: true
+    readonly property var samples: forecast ? forecastSamples : recorded.during || []
     signal dismissed()
     implicitWidth: 0
     padding: Theme.dp(9)
@@ -18,6 +20,13 @@ Pane {
             Label { text: qsTr("Wiatr na zeskoku"); color: Theme.ink; font.bold: true; font.pointSize: Theme.body; Layout.fillWidth: true }
             Label { text: "m/s"; color: Theme.muted; font.pointSize: Theme.caption }
             SButton { text: "×"; quiet: true; dense: true; implicitWidth: Theme.dp(24); Accessible.name: qsTr("Ukryj sektory wiatru"); onClicked: sectors.dismissed() }
+        }
+        SChoice {
+            Layout.fillWidth: true
+            model: [qsTr("Przed skokiem"),qsTr("Po skoku")]
+            enabled: (sectors.recorded.during || []).length>0
+            currentIndex: sectors.forecast ? 0 : 1
+            onActivated: function(index){sectors.forecast=index===0}
         }
         RowLayout {
             Layout.fillWidth: true; spacing: Theme.dp(3)
@@ -32,6 +41,6 @@ Pane {
                 }
             }
         }
-        WindMeasurementComparison { recorded: sectors.recorded; Layout.fillWidth: true }
+        WindMeasurementComparison { recorded: sectors.forecast ? ({}) : sectors.recorded; Layout.fillWidth: true }
     }
 }

@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.15
 Pane {
     id: status
     signal conditionsRequested()
+    signal windPreviewRequested()
     readonly property var hill: ui.find("label_hillNameAndHSPoint")
     readonly property var wind: ui.find("label_actualAvgWind")
     readonly property var snow: ui.find("label_snowLevel")
@@ -38,7 +39,7 @@ Pane {
                           +"\n"+status.advancingEntries.map(function(entry){return entry.name+" · "+entry.from+" → "+entry.to}).join("\n")
         }
 
-        SButton { objectName: "raceWindConditions"; foreground: ui.context.windValue>0 ? Theme.success : ui.context.windValue<0 ? Theme.danger : Theme.ink; implicitHeight: 24; padding: 0; quiet: true; onClicked: status.conditionsRequested(); text: qsTr("Wiatr: %1").arg(status.wind ? status.wind.values.text : "—"); font.pointSize: Theme.caption; Layout.fillWidth: true }
+        SButton { objectName: "raceWindConditions"; foreground: ui.context.windValue>0 ? Theme.success : ui.context.windValue<0 ? Theme.danger : Theme.ink; implicitHeight: 24; padding: 0; quiet: true; onClicked: (ui.context.windPreview || []).length ? status.windPreviewRequested() : status.conditionsRequested(); text: qsTr("Wiatr: %1").arg(status.wind ? status.wind.values.text : "—"); font.pointSize: Theme.caption; Layout.fillWidth: true }
         SButton { objectName: "raceSnowConditions"; implicitHeight: 24; padding: 0; quiet: true; onClicked: status.conditionsRequested(); text: qsTr("Śnieg: %1").arg(status.snow ? status.snow.values.text : "—"); font.pointSize: Theme.caption; Layout.fillWidth: true }
     }
 }

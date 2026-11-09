@@ -20,3 +20,7 @@ Przy dalszej pracy warto ręcznie sprawdzić szczególnie wyjście i odwołanie 
 - Oceny powyżej 19,25 są łagodnie ściskane współczynnikiem 0,75 przed zaokrągleniem (`landing.highMarkCompression`).
 - Dwie nogi: losowa kara 2..4, średnia 2,6 (rozkład beta); podpórka: 4..7,2, średnia 5,6 (trójkątny); upadek: 7..9, średnia 8 (trójkątny). Losowanie kary jest wspólne dla skoku, a rozrzut sędziów zwiększony odpowiednio o 30%, 65%, 50%. Parametry `landing.landingPenalty.N` sterują średnią i proporcjonalnie skalują rozkład.
 - Różnice bazowych not klas lądowania zmniejszone o 20% wokół klasy „Poprawne”.
+
+## Łagodniejsza zmienność i podgląd prognozy
+
+Ręczne ustawienie zmian w czasie używa odcinkowej krzywej zamiast kwadratu: dla poziomów 0/25/50/75/100 amplituda skali wynosi 0/0,065/0,25/0,40/0,55. Na górnym końcu ograniczono także częstość podmuchów i szybkość zmian. Presety i bazowe różnice przestrzenne nie zostały zmienione. Panel sektorów pozwala przełączać prognozę przed skokiem i zapis po skoku; kliknięcie wiatru w górnym pasku otwiera prognozę.

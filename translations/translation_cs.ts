@@ -23869,6 +23869,14 @@ Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></con
 <context>
     <name>WindSectorsCompact</name>
     <message>
+        <source>Przed skokiem</source>
+        <translation>Před skokem</translation>
+    </message>
+    <message>
+        <source>Po skoku</source>
+        <translation>Po skoku</translation>
+    </message>
+    <message>
         <source>Ukryj sektory wiatru</source>
         <translation>Skrýt větrné úseky</translation>
     </message>

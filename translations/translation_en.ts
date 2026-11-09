@@ -23868,6 +23868,14 @@ Close the previous Sj.Sim window and try again.</translation></message></context
 <context>
     <name>WindSectorsCompact</name>
     <message>
+        <source>Przed skokiem</source>
+        <translation>Before the jump</translation>
+    </message>
+    <message>
+        <source>Po skoku</source>
+        <translation>After the jump</translation>
+    </message>
+    <message>
         <source>Ukryj sektory wiatru</source>
         <translation>Hide wind sectors</translation>
     </message>
