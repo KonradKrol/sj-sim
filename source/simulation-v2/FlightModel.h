@@ -35,7 +35,7 @@ struct FlightParameters {
     double windScaleK95=1;
     double windScaleK130=1;
     double windScaleK200=1;
-    double tailwindMultiplier=1.2;
+    double tailwindMultiplier=1.705;
     double tailwindStrongExtra=.2;
     double specialistWindEffectPerTier=.04;
     double crosswindDrag=.002;

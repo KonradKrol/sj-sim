@@ -42,7 +42,7 @@
   "flight.secondsPerK": 4.5,
   "flight.specialistWindEffectPerTier": 0.0275,
   "flight.stepMetres": 0.5,
-  "flight.tailwindMultiplier": 1.55,
+  "flight.tailwindMultiplier": 1.705,
   "flight.tailwindStrongExtra": 0.3,
   "flight.usableLandingBeyondRealHsAtK": 0.16,
   "flight.windAdverseExponent": 4,
