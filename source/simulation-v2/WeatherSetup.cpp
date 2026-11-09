@@ -21,11 +21,11 @@ double angle(SimulationV2::Wind value) {return std::fmod(std::atan2(value.cross,
 SimulationV2::Wind polar(double strength,double degrees) {return {strength*std::cos(degrees*pi/180),strength*std::sin(degrees*pi/180)};}
 // Piecewise linear response: retain medium settings, soften the upper tail.
 double temporalResponse(double v) {
-    const double y[]{0,.065,.25,.40,.55};
+    const double y[]{0,.06175,.225,.332,.4125};
     const int i=std::min(3,int(v*4));return y[i]+(y[i+1]-y[i])*(v*4-i);
 }
 double temporalLevel(double amplitude) {
-    const double y[]{0,.065,.25,.40,.55};
+    const double y[]{0,.06175,.225,.332,.4125};
     for(int i=0;i<4;++i)if(amplitude<=y[i+1])return (i+(amplitude-y[i])/(y[i+1]-y[i]))*25;
     return 100;
 }
