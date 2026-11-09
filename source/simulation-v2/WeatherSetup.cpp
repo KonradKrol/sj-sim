@@ -19,6 +19,16 @@ SimulationV2::Wind mean(const SimulationV2::WindParameters &wind) {
 }
 double angle(SimulationV2::Wind value) {return std::fmod(std::atan2(value.cross,value.head)*180/pi+360,360);}
 SimulationV2::Wind polar(double strength,double degrees) {return {strength*std::cos(degrees*pi/180),strength*std::sin(degrees*pi/180)};}
+// Piecewise linear response: retain medium settings, soften the upper tail.
+double temporalResponse(double v) {
+    const double y[]{0,.065,.25,.40,.55};
+    const int i=std::min(3,int(v*4));return y[i]+(y[i+1]-y[i])*(v*4-i);
+}
+double temporalLevel(double amplitude) {
+    const double y[]{0,.065,.25,.40,.55};
+    for(int i=0;i<4;++i)if(amplitude<=y[i+1])return (i+(amplitude-y[i])/(y[i+1]-y[i]))*25;
+    return 100;
+}
 int windLevel(double value) { return value<12?0:value<40?1:value<59?2:value<83?3:4; }
 bool bounded(double v,double lo,double hi) {return std::isfinite(v) && v>=lo && v<=hi;}
 void sampleReferences(SimulationV2::WindParameters &wind,double k,double differences,SimulationV2::Wind centre,SimulationV2::Seed seed) {
@@ -44,7 +54,7 @@ void SimulationWeatherSetup::setHill(const HillProfile &profile) {
 }
 void SimulationWeatherSetup::clearHill() {if(!hasHill)return;hasHill=false;error.clear();emit changed();emit previewChanged();}
 void SimulationWeatherSetup::inferControls() {
-    variability=std::clamp(std::sqrt(std::max({wind.temporalAmplitude/2.2,wind.gustAmplitude/4.8,wind.trendAmplitude/3.7}))*100,0.0,100.0);
+    variability=std::clamp(temporalLevel(std::max({wind.temporalAmplitude/2.2,wind.gustAmplitude/4.8,wind.trendAmplitude/3.7})),0.0,100.0);
     const auto average=mean(wind);requestedStrength=average.strength();if(requestedStrength>1e-9)requestedDirection=angle(average);double spread=0;
     for(const auto &point:wind.references)spread+=std::hypot(point.value.head-average.head,point.value.cross-average.cross)/wind.references.size();
     differences=std::clamp(std::max(wind.spatialAmplitude/1.5,spread/1.5)*100,0.0,100.0);
@@ -148,11 +158,12 @@ void SimulationWeatherSetup::setValue(const QString &key,double value) {
         if(!bounded(value,0,100))return;
         nextVariability=value;const double v=value/100;
         // Absolute amplitudes: stronger baseline wind never implies higher lottery.
-        next.temporalAmplitude=2.2*v*v;next.trendAmplitude=3.7*v*v;next.activityVariation=v;
-        next.correlationSeconds=180-165*v;next.trendPeriodSeconds=300-240*v;
-        next.trendTransitionSeconds=std::min(next.trendPeriodSeconds*.3,20-17*v);
-        next.gustAmplitude=4.8*v*v;next.gustProbability=.8*v;next.gustPeriodSeconds=25-15*v;
-        next.fastCorrelationSeconds=12-8*v;next.spatialAmplitude=1.5*differences/100*v;
+        const double response=temporalResponse(v);
+        next.temporalAmplitude=2.2*response;next.trendAmplitude=3.7*response;next.activityVariation=.75*v;
+        next.correlationSeconds=180-150*v;next.trendPeriodSeconds=300-210*v;
+        next.trendTransitionSeconds=std::min(next.trendPeriodSeconds*.3,20-14*v);
+        next.gustAmplitude=4.8*response;next.gustProbability=.6*v;next.gustPeriodSeconds=25-10*v;
+        next.fastCorrelationSeconds=12-6*v;next.spatialAmplitude=1.5*differences/100*v;
     } else if(key=="differences") {
         if(!bounded(value,0,100))return;
         nextDifferences=value;sampleReferences(next,hill.k,value,polar(requestedStrength,requestedDirection),seed);
