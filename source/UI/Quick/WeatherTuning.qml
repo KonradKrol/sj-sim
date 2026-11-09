@@ -23,7 +23,7 @@ Control {
             Layout.fillWidth: true; columns: tuning.width>Theme.dp(520)?2:1
             columnSpacing: Theme.dp(18); rowSpacing: Theme.dp(10)
             WindDirectionDial { degrees: tuning.values.direction; Layout.fillWidth: true; Layout.minimumWidth: 0; onEdited: function(value){tuning.backend.setValue("direction",value)} }
-            WeatherNumber { backend: tuning.backend; fieldKey: "strength"; label: qsTr("Siła wyjściowa · m/s"); maximum: 10; step: .5; quantum: .5; Layout.fillWidth: true; explanation: qsTr("Mocny wiatr może być stabilny, a słaby — zmienny.") }
+            WeatherNumber { backend: tuning.backend; fieldKey: "strength"; label: qsTr("Siła wyjściowa · m/s"); maximum: 10; step: .5; decimals: 2; Layout.fillWidth: true; explanation: qsTr("Mocny wiatr może być stabilny, a słaby — zmienny.") }
         }
         Rectangle { Layout.fillWidth: true; implicitHeight: 1; color: Theme.divider }
         Label { text: qsTr("Zmienność wiatru"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.bold: true }
