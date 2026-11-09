@@ -15,7 +15,7 @@ Control {
     background: Surface { fillColor: Theme.stadium; sweep: Theme.dp(24) }
     contentItem: ColumnLayout {
         spacing: Theme.dp(6)
-        Label { text: preview.heading; color: Theme.snow; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true; elide: Text.ElideRight; Layout.fillWidth: true }
+        Label { visible: !!preview.heading; text: preview.heading; color: Theme.snow; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true; elide: Text.ElideRight; Layout.fillWidth: true }
         Item {
             id: slope
             Layout.fillWidth: true; Layout.preferredHeight: Math.max(Theme.dp(140),Theme.bodyMetrics.height*3+Theme.dp(30))

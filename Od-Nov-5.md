@@ -45,3 +45,7 @@ Dodatkowy nerf ręcznej zmienności: amplitudy dla 0/25/50/75/100 wynoszą teraz
 Podgląd sektorów i popup używają teraz wspólnego kompaktowego wykresu z linią zera, podpisanymi wartościami i przyciskami Przed/Po zamiast dropdowna. Wspólna skala obejmuje oba zestawy. Boczny wiatr jest w tooltipie sektora. Po nowym skoku panel przechodzi na zapis skoku; zamknięcie panelu nie wyłącza globalnej opcji, a kolejny skok przywraca panel. Prognoza dotyczy następnego skoku, co jest jawnie podpisane. Popup nie ma pustej przestrzeni o stałej wysokości ani zagnieżdżonego scrolla.
 
 Automatyczny generator: wpływ perków kierunku i loteryjności osłabiony o 30% względem neutralnej skoczni. Nie zmienia ręcznej konfiguracji, stałych presetów ani innych efektów perków.
+
+## Wspólne pola liczbowe i ponowna korekta podglądu
+
+NumberField przechowuje wpis w lokalnym tekście, bez wiązania nadpisującego go przy odświeżeniach. Aktualizacje źródła są ignorowane podczas edycji; dane nowego rekordu nadal resetują pole. Walidacja następuje po zatwierdzeniu, a nie blokuje etapów wpisywania, takich jak pusty tekst, minus lub separator. Obsługiwane są kropka i przecinek, a zatwierdzane wartości respektują precyzję pola i zakres. Podgląd wiatru używa teraz dokładnie WindSlopePreview z konfiguracji przed konkursem, z prostym przełączaniem Przed/Po.
