@@ -57,8 +57,8 @@ JumpQuality QualityModel::baseline(const Athlete &athlete, double k, double hill
     quality.hillEffect=specialist==0?0:(specialist>0?1:-1)*config.specialistBias[std::abs(specialist)]*(1-2*quality.takeoffWeight);
     const int attitude=athlete.perks[0];
     if (attitude>0) {
-        quality.eventEffect=event==EventKind::Competition ? -config.competitionPenalty[attitude]
-            : config.trainingBonus[attitude]*(event==EventKind::Qualification?.5:1);
+        quality.eventEffect=event==EventKind::Competition ? 0
+            : config.trainingBonus[attitude]*(event==EventKind::Qualification?.4:1);
     } else if (attitude<0 && event!=EventKind::Competition) {
         const double factor=event==EventKind::Qualification ? .2 : 1.0;
         quality.eventEffect=-factor*config.conservedEffortPenalty[-attitude];
@@ -71,6 +71,10 @@ JumpQuality QualityModel::sample(const Athlete &athlete, double k, double bias, 
     auto quality=baseline(athlete,k,bias,event);
     double deviation=config.eventDeviation[std::size_t(event)];
     const int attitude=athlete.perks[0];
+    if (attitude>0 && event!=EventKind::Competition) {
+        const double factor=event==EventKind::Qualification ? .4 : 1.0;
+        quality.eventEffect=-factor*config.trainingBonus[attitude]*std::log1p(-rng.unit());
+    }
     if (attitude<0 && (event==EventKind::Training || event==EventKind::Trial))
         deviation*=config.conservedEffortDeviation[-attitude];
     if (attitude<0 && event!=EventKind::Competition) {
