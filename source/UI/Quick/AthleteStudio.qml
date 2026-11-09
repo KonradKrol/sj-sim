@@ -10,15 +10,13 @@ ColumnLayout {
     readonly property bool parallel: width>=Theme.dp(940)
     spacing: Theme.dp(8)
     StudioPackBar { Layout.fillWidth: true; backend: studio.backend; athletes: true }
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: Theme.dp(4)
-            SButton { objectName: "athleteAdd"; text: qsTr("+ Skoczek"); primary: true; onClicked: {studio.backend.add();studio.editing=true} }
-            SButton { objectName: "athleteUndo"; text: "↶"; Accessible.name: qsTr("Cofnij"); hint: qsTr("Cofnij"); quiet: true; enabled: studio.backend.canUndo; onClicked: studio.backend.undo() }
-            SButton { objectName: "athleteRedo"; text: "↷"; Accessible.name: qsTr("Ponów"); hint: qsTr("Ponów"); quiet: true; enabled: studio.backend.canRedo; onClicked: studio.backend.redo() }
-            Item { Layout.fillWidth: true }
-            SIconButton { objectName: "athleteDuplicate"; text: ""; iconName: "copy"; actionName: qsTr("Duplikuj skoczka"); enabled: studio.backend.selectedIndex>=0; onClicked: {studio.backend.duplicate();studio.editing=true} }
-        }
+    StudioEditActions {
+        Layout.fillWidth: true
+        backend: studio.backend
+        athletes: true
+        onAdded: studio.editing=true
+        onDuplicated: studio.editing=true
+    }
     Label { visible: text.length>0 && text!==qsTr("Zapisano"); text: studio.backend.message; Layout.fillWidth: true; color: Theme.muted; font.pointSize: Theme.caption; maximumLineCount: 2; elide: Text.ElideRight; wrapMode: Text.WordWrap }
     SectionTabs {
         visible: !studio.parallel

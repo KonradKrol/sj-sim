@@ -70,7 +70,6 @@ Control {
             Layout.fillWidth: true; Layout.margins: Theme.dp(8)
             Label { text: qsTr("Skoczkowie · %1").arg(library.backend.profiles.length); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
             SortCountryButton { visible: !library.season; enabled: library.backend.profiles.length>1; onConfirmed: library.backend.sortByCountry() }
-            SButton { objectName: "athleteRemove"; visible: !library.season; text: qsTr("Usuń"); quiet: true; foreground: Theme.danger; enabled: library.backend.selectedIndex>=0; Accessible.name: qsTr("Usuń wybranego skoczka"); hint: qsTr("Delete · możesz cofnąć usunięcie"); onClicked: {rows.forceActiveFocus();library.backend.remove()} }
         }
         SField {
             objectName: "athleteListSearch"

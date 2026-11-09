@@ -24002,4 +24002,39 @@ Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></con
         <translation>− zadní vítr</translation>
     </message>
 </context>
+<context>
+    <name>StudioEditActions</name>
+    <message>
+        <source>Dodaj skoczka</source>
+        <translation>Přidat skokana</translation>
+    </message>
+    <message>
+        <source>Dodaj skocznię</source>
+        <translation>Přidat můstek</translation>
+    </message>
+    <message>
+        <source>Cofnij</source>
+        <translation>Zpět</translation>
+    </message>
+    <message>
+        <source>Ponów</source>
+        <translation>Znovu</translation>
+    </message>
+    <message>
+        <source>Duplikuj skoczka</source>
+        <translation>Duplikovat skokana</translation>
+    </message>
+    <message>
+        <source>Duplikuj skocznię</source>
+        <translation>Duplikovat můstek</translation>
+    </message>
+    <message>
+        <source>Usuń wybranego skoczka</source>
+        <translation>Odstranit vybraného závodníka</translation>
+    </message>
+    <message>
+        <source>Usuń skocznię</source>
+        <translation>Odebrat můstek</translation>
+    </message>
+</context>
 </TS>

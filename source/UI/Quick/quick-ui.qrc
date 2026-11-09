@@ -19,6 +19,7 @@
 <file>AthletePerkCatalog.qml</file>
 <file>AthleteRating.qml</file>
 <file>AthleteStudio.qml</file>
+<file>StudioEditActions.qml</file>
 <file>HillStudio.qml</file>
 <file>DropdownIndicator.qml</file>
 <file>HillEditor.qml</file>

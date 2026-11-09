@@ -10,16 +10,13 @@ ColumnLayout {
     readonly property bool parallel: width>=Theme.dp(920)
     spacing: Theme.dp(6)
     StudioPackBar { Layout.fillWidth: true; backend: studio.backend }
-        RowLayout {
-            Layout.fillWidth: true; spacing: Theme.dp(4)
-            SButton { objectName: "hillAdd"; text: qsTr("+ Skocznia"); primary: true; onClicked: {studio.backend.add();studio.editing=true} }
-            SIconButton { objectName: "hillDuplicate"; text: ""; iconName: "copy"; quiet: false; actionName: qsTr("Duplikuj skocznię"); enabled: studio.backend.selectedIndex>=0; onClicked: {studio.backend.duplicate();studio.editing=true} }
-            SIconButton { objectName: "hillRemove"; text: ""; iconName: "delete"; quiet: false; actionName: qsTr("Usuń skocznię"); foreground: Theme.danger; enabled: studio.backend.selectedIndex>=0; onClicked: studio.backend.remove() }
-            Item { Layout.fillWidth: true }
-            SButton { text: "↶"; Accessible.name: qsTr("Cofnij"); hint: Accessible.name; quiet: true; enabled: studio.backend.canUndo; onClicked: studio.backend.undo() }
-            SButton { text: "↷"; Accessible.name: qsTr("Ponów"); hint: Accessible.name; quiet: true; enabled: studio.backend.canRedo; onClicked: studio.backend.redo() }
-        }
-
+    StudioEditActions {
+        Layout.fillWidth: true
+        backend: studio.backend
+        athletes: false
+        onAdded: studio.editing=true
+        onDuplicated: studio.editing=true
+    }
     Label { visible: text.length>0 && text!==qsTr("Zapisano"); text: studio.backend.message; color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap; Layout.fillWidth: true }
     SectionTabs { visible: !studio.parallel; options: [qsTr("Lista"),qsTr("Edycja")]; currentIndex: studio.editing?1:0; onSelected: studio.editing=index===1; Layout.fillWidth: true }
     RowLayout {

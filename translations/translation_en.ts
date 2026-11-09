@@ -24001,4 +24001,39 @@ Close the previous Sj.Sim window and try again.</translation></message></context
         <translation>− tailwind</translation>
     </message>
 </context>
+<context>
+    <name>StudioEditActions</name>
+    <message>
+        <source>Dodaj skoczka</source>
+        <translation>Add jumper</translation>
+    </message>
+    <message>
+        <source>Dodaj skocznię</source>
+        <translation>Add hill</translation>
+    </message>
+    <message>
+        <source>Cofnij</source>
+        <translation>Undo</translation>
+    </message>
+    <message>
+        <source>Ponów</source>
+        <translation>Redo</translation>
+    </message>
+    <message>
+        <source>Duplikuj skoczka</source>
+        <translation>Duplicate jumper</translation>
+    </message>
+    <message>
+        <source>Duplikuj skocznię</source>
+        <translation>Duplicate hill</translation>
+    </message>
+    <message>
+        <source>Usuń wybranego skoczka</source>
+        <translation>Delete selected athlete</translation>
+    </message>
+    <message>
+        <source>Usuń skocznię</source>
+        <translation>Remove hill</translation>
+    </message>
+</context>
 </TS>

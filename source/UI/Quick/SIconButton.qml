@@ -12,6 +12,14 @@ SButton {
     font.pointSize: Theme.section
     Item {
         anchors.centerIn: parent
+        width: Theme.dp(22); height: width
+        visible: control.iconName === "add"
+        opacity: control.enabled ? 1 : 0.45
+        Rectangle { anchors.centerIn: parent; width: parent.width; height: Theme.dp(2); radius: height/2; color: control.foreground }
+        Rectangle { anchors.centerIn: parent; height: parent.height; width: Theme.dp(2); radius: width/2; color: control.foreground }
+    }
+    Item {
+        anchors.centerIn: parent
         width: 17; height: 17
         visible: control.iconName === "copy"
         opacity: control.enabled ? 1 : 0.45

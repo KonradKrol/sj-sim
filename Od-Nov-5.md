@@ -49,3 +49,7 @@ Automatyczny generator: wpływ perków kierunku i loteryjności osłabiony o 30%
 ## Wspólne pola liczbowe i ponowna korekta podglądu
 
 NumberField przechowuje wpis w lokalnym tekście, bez wiązania nadpisującego go przy odświeżeniach. Aktualizacje źródła są ignorowane podczas edycji; dane nowego rekordu nadal resetują pole. Walidacja następuje po zatwierdzeniu, a nie blokuje etapów wpisywania, takich jak pusty tekst, minus lub separator. Obsługiwane są kropka i przecinek, a zatwierdzane wartości respektują precyzję pola i zakres. Podgląd wiatru używa teraz dokładnie WindSlopePreview z konfiguracji przed konkursem, z prostym przełączaniem Przed/Po.
+
+## Wspólny pasek akcji edytorów
+
+Skoczkowie i skocznie używają StudioEditActions: duży kontrastowy przycisk z samym plusem, wspólne położenie Cofnij/Ponów/Duplikuj/Usuń, separator grup oraz czerwona ikona usuwania. Usunięto osobny przycisk Usuń z listy skoczków; skrót Delete pozostaje.
