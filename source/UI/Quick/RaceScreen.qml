@@ -38,7 +38,8 @@ ScrollView {
         id: header
         width: parent.width
         spacing: race.height < 600 ? 4 : 8
-        RaceStatus { enabled: !race.previewPaused; opacity: race.previewOpacity; width: parent.width; height: implicitHeight; onConditionsRequested: {var field=ui.find("pushButton_windsGeneratorSettings");if(field)ui.activate(field.values.id)}; onWindPreviewRequested: race.windForecastOpen=true }
+        RaceStatus { enabled: !race.previewPaused; opacity: race.previewOpacity; width: parent.width; height: implicitHeight; onConditionsRequested: {var field=ui.find("pushButton_windsGeneratorSettings");if(field)ui.activate(field.values.id)}
+            onWindPreviewRequested: race.windForecastOpen=true }
         GridLayout {
             id: hero
             objectName: "raceHeaderCards"

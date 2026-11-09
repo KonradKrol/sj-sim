@@ -65,6 +65,12 @@ void refreshAutomaticJumpPreview(JumperCompetitionResultsWidget *preview,Competi
 }
 
 
+namespace {
+QPixmap scaledIfPresent(const QPixmap &image,const QSize &size) {
+    return image.isNull()?QPixmap():image.scaled(size);
+}
+}
+
 CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *manager, QWidget *parent, bool singleCompetition) :
     QDialog(parent),
     ui(new Ui::CompetitionManagerWindow),
@@ -165,8 +171,8 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
 
 
     ui->label_nameAndSurname->setText(this->manager->getActualJumper()->getNameAndSurname());
-    ui->label_flag->setPixmap(CountryFlagsManager::getFlagPixmap(this->manager->getActualJumper()->getCountryCode().toLower()).scaled(ui->label_flag->size()));
-    ui->label_nextJumperIMG->setPixmap(this->manager->getActualJumper()->getImagePixmap().scaled(ui->label_nextJumperIMG->size()));
+    ui->label_flag->setPixmap(scaledIfPresent(CountryFlagsManager::getFlagPixmap(this->manager->getActualJumper()->getCountryCode().toLower()),ui->label_flag->size()));
+    ui->label_nextJumperIMG->setPixmap(scaledIfPresent(this->manager->getActualJumper()->getImagePixmap(),ui->label_nextJumperIMG->size()));
 
     ui->label_personalBest->setText(QString::number(manager->getActualJumper()->getPersonalBest(), 'f', 1));
 
@@ -186,8 +192,8 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
         if(bulkSimulationInProgress)return;
         if(this->manager->getActualStartListIndex() < this->manager->getStartListStatusesReference().count()){
             ui->label_nameAndSurname->setText(this->manager->getActualJumper()->getNameAndSurname());
-            ui->label_flag->setPixmap(CountryFlagsManager::getFlagPixmap(this->manager->getActualJumper()->getCountryCode().toLower()).scaled(ui->label_flag->size()));
-            ui->label_nextJumperIMG->setPixmap(this->manager->getActualJumper()->getImagePixmap().scaled(ui->label_nextJumperIMG->size()));
+            ui->label_flag->setPixmap(scaledIfPresent(CountryFlagsManager::getFlagPixmap(this->manager->getActualJumper()->getCountryCode().toLower()),ui->label_flag->size()));
+            ui->label_nextJumperIMG->setPixmap(scaledIfPresent(this->manager->getActualJumper()->getImagePixmap(),ui->label_nextJumperIMG->size()));
             ui->label_personalBest->setText(QString::number(this->manager->getActualJumper()->getPersonalBest(), 'f', 1));
 
             if(type == CompetitionRules::Individual && this->manager->getActualRound() > 1){
@@ -284,7 +290,7 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     Hill * hill = manager->getCompetitionInfo()->getHill();
 
     ui->label_hillNameAndHSPoint->setText(hill->getName() + " HS" + QString::number(hill->getHSPoint()));
-    ui->label_hillFlag->setPixmap(CountryFlagsManager::getFlagPixmap(hill->getCountryCode().toLower()).scaled(ui->label_hillFlag->size()));
+    ui->label_hillFlag->setPixmap(scaledIfPresent(CountryFlagsManager::getFlagPixmap(hill->getCountryCode().toLower()),ui->label_hillFlag->size()));
 
     jumperResultsWidget->hide();
 

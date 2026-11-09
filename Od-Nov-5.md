@@ -69,3 +69,7 @@ Skok jako panel opcji został usunięty. Nowe akcje mają wspólny styl SToolBut
 ## Wysokość górnego paska sezonu
 
 SeasonBar ma wysokość wyliczaną wyłącznie z zawartości; Loader nie pozwala jej rozciągać. Zmniejszono padding i wysokość akcji, Narzędzia używają kompaktowego przycisku. Dwa rzędy pojawiają się dopiero przy faktycznym braku szerokości na tekst i akcje; data, nazwa sezonu i kalendarz pozostają widoczne.
+
+## Hotfix składni i układu pogody
+
+Usunięto nieprawidłowy średnik po blokowym handlerze w RaceScreen, który uniemożliwiał załadowanie ekranu konkursu. WeatherWorkspace używa teraz zwykłego Item z wysokością zawartości zamiast Control/contentItem, eliminując cykl negocjacji implicitHeight. Brakujące zdjęcia i flagi w CompetitionManagerWindow nie są skalowane jako pusty QPixmap.

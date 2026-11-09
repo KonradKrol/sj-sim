@@ -16,18 +16,19 @@ ScrollView {
     contentWidth: availableWidth
     contentHeight: values.ready ? editor.implicitHeight : availableHeight
     clip: true
-    Control {
+    Item {
         id: editor
         visible: workspace.values.ready
+        implicitWidth: 0
+        implicitHeight: weatherContent.implicitHeight+2*padding
         height: visible ? implicitHeight : 0
         width: workspace.availableWidth
-        padding: Theme.dp(10)
-        background: Item {}
-        contentItem: Item {
-            implicitHeight: weatherContent.implicitHeight
-            ColumnLayout {
+        property real padding: Theme.dp(10)
+        ColumnLayout {
             id: weatherContent
-            width: parent.width
+            x: editor.padding; y: editor.padding
+            width: Math.max(0,editor.width-2*editor.padding)
+            height: implicitHeight
             spacing: Theme.dp(12)
             RowLayout {
                 Layout.fillWidth: true
@@ -107,7 +108,6 @@ ScrollView {
             }
             Label { visible: !!text; text: workspace.backend.message; color: Theme.danger; font.pointSize: Theme.body; wrapMode: Text.WordWrap; Layout.fillWidth: true }
         }
-    }
     }
     EmptyState {
         visible: !workspace.values.ready
