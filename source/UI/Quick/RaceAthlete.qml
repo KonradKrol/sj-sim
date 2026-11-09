@@ -9,6 +9,9 @@ Pane {
     readonly property var flagNode: ui.find("label_flag")
     readonly property var beatNode: ui.find("label_toBeatDistance")
     readonly property var advanceNode: ui.find("label_toAdvancementDistance")
+    implicitWidth: 0
+    implicitHeight: details.implicitHeight+topPadding+bottomPadding
+    readonly property bool activeAthlete: !ui.context.complete && !ui.context.roundComplete
     property bool dense: false
     property bool windOpen: false
     readonly property real windTime: Number(ui.context.windPreviewTime || 0)
@@ -22,7 +25,10 @@ Pane {
     ChangeFeedback { id: athleteArrival; target: athlete; trigger: athlete.nameNode ? athlete.nameNode.values.text : ""; duration: Theme.motion*2 }
     padding: dense ? 8 : 12
     background: Surface { fillColor: Theme.stadium; sweep: 28 }
-    contentItem: ColumnLayout {
+    contentItem: Item {
+    ColumnLayout {
+        id: details
+        anchors.top: parent.top; anchors.left: parent.left; anchors.right: parent.right
         spacing: 4
         RowLayout {
             Layout.fillWidth: true
@@ -37,6 +43,7 @@ Pane {
             }
         }
         RowLayout {
+            visible: athlete.activeAthlete
             Layout.fillWidth: true
             opacity: 0.65+athleteArrival.progress*0.35
             transform: Translate { x: (1-athleteArrival.progress)*Theme.dp(12) }
@@ -51,7 +58,7 @@ Pane {
         }
         Label {
             objectName: "athleteCurrentGap"
-            visible: ui.context.currentGap !== undefined
+            visible: athlete.activeAthlete && ui.context.currentGap !== undefined
             readonly property real gap: Number(ui.context.currentGap || 0)
             text: gap<0 ? qsTr("Ma przewagę %1 pkt").arg(Math.abs(gap).toLocaleString(Qt.locale(Theme.localeName),'f',1)) : (ui.context.currentGapGroup ? qsTr("Traci %1 pkt do lidera grupy") : qsTr("Traci %1 pkt do lidera")).arg(gap.toLocaleString(Qt.locale(Theme.localeName),'f',1))
             color: gap<0 ? Theme.signal : gap>0 ? Theme.headerMuted : Theme.snow
@@ -62,6 +69,7 @@ Pane {
             MouseArea { id: gapHover; anchors.fill: parent; hoverEnabled: true; acceptedButtons: Qt.NoButton }
         }
         RowLayout {
+            visible: athlete.activeAthlete
             Layout.fillWidth: true; spacing: 16
             ColumnLayout {
                 Layout.fillWidth: true; spacing: 0
@@ -75,4 +83,5 @@ Pane {
             }
         }
     }
+}
 }
