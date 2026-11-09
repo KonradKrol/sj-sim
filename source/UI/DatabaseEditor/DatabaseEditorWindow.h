@@ -6,6 +6,8 @@
 #include <QEvent>
 #include <QScrollArea>
 #include <QJsonObject>
+#include <QMap>
+#include <QStringList>
 class QComboBox;
 class QLineEdit;
 class QSpinBox;
@@ -39,6 +41,7 @@ class DatabaseEditorWindow : public QDialog
 public:
     explicit DatabaseEditorWindow(QWidget *parent = nullptr);
     ~DatabaseEditorWindow();
+    void reject() override;
 
     void replaceJumperByJumperEditor();
     void replaceHillByHillEditor();
@@ -65,6 +68,11 @@ private slots:
 
 private:
     QJsonObject originalPacks;
+    QMap<QString,QByteArray> originalPackFiles;
+    bool packFilesCaptured=false;
+    QStringList packFiles() const;
+    bool capturePackFiles();
+    bool restorePackFiles();
     QComboBox *packChoice;
     QLineEdit *packName;
     QWidget *ageSettings;

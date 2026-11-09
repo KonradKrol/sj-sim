@@ -33,6 +33,8 @@
 #include "../../global/JsonImportError.h"
 #include <QSignalBlocker>
 #include <QFormLayout>
+#include <QStandardPaths>
+#include <QDirIterator>
 
 namespace
 {
@@ -59,6 +61,7 @@ DatabaseEditorWindow::DatabaseEditorWindow(QWidget *parent) :
     setProperty("athleteStudio",QVariant::fromValue(static_cast<QObject *>(new AthleteStudioController(this))));
     setProperty("hillStudio",QVariant::fromValue(static_cast<QObject *>(new HillStudioController(this))));
     originalPacks = GlobalDatabase::get()->packsSnapshot();
+    packFilesCaptured=capturePackFiles();
     tempGlobalJumpers = GlobalDatabase::get()->getGlobalJumpers();
     tempGlobalHills = GlobalDatabase::get()->getGlobalHills();
     tempGlobalCompetitionRules = GlobalDatabase::get()->getGlobalCompetitionsRules();
@@ -257,9 +260,17 @@ void DatabaseEditorWindow::closeEvent(QCloseEvent *event)
     }
     else if(button == QMessageBox::No)
     {
+        if(!packFilesCaptured || !restorePackFiles()) {
+            QMessageBox::critical(this,tr("Paczki"),tr("Nie udało się przywrócić plików paczek. Edytor pozostanie otwarty."));
+            event->ignore();return;
+        }
+        setProperty("loadingPackEditor",true);
         resetPackEditors();
         QString error;
-        GlobalDatabase::get()->restorePacks(originalPacks, error);
+        if(!GlobalDatabase::get()->restorePacks(originalPacks, error)) {
+            setProperty("loadingPackEditor",false);
+            QMessageBox::critical(this,tr("Paczki"),error);event->ignore();return;
+        }
         GlobalDatabase::get()->setGlobalJumpers(tempGlobalJumpers);
         GlobalDatabase::get()->setGlobalHills(tempGlobalHills);
         GlobalDatabase::get()->setGlobalCompetitionsRules(tempGlobalCompetitionRules);
@@ -268,6 +279,44 @@ void DatabaseEditorWindow::closeEvent(QCloseEvent *event)
     }
     else
         qDebug()<<"invalid button in database editor close event";
+}
+
+void DatabaseEditorWindow::reject(){close();}
+
+QStringList DatabaseEditorWindow::packFiles() const
+{
+    QStringList paths;
+    const auto root=QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    for(const auto &folder:{root+"/athlete-studio",root+"/hill-studio",QDir("userData/GlobalDatabase/pointsForPlacesPresets").absolutePath()}) {
+        QDirIterator files(folder,{"*.json"},QDir::Files|QDir::NoSymLinks,QDirIterator::Subdirectories);
+        while(files.hasNext())paths.append(files.next());
+    }
+    for(const auto &name:{"packs.json","globalJumpers.json","globalHills.json","globalCompetitionsRules.json"}) {
+        const auto path=QDir("userData/GlobalDatabase").absoluteFilePath(name);
+        if(QFileInfo::exists(path))paths.append(path);
+    }
+    return paths;
+}
+
+bool DatabaseEditorWindow::capturePackFiles()
+{
+    for(const auto &path:packFiles()) {
+        QFile file(path);if(!file.open(QIODevice::ReadOnly))return false;
+        const auto data=file.readAll();if(file.error()!=QFile::NoError)return false;
+        originalPackFiles.insert(path,data);
+    }
+    return true;
+}
+
+bool DatabaseEditorWindow::restorePackFiles()
+{
+    for(auto it=originalPackFiles.cbegin();it!=originalPackFiles.cend();++it) {
+        if(!QDir().mkpath(QFileInfo(it.key()).absolutePath()))return false;
+        QSaveFile file(it.key());
+        if(!file.open(QIODevice::WriteOnly) || file.write(it.value())!=it.value().size() || !file.commit())return false;
+    }
+    for(const auto &path:packFiles())if(!originalPackFiles.contains(path) && !QFile::remove(path))return false;
+    return true;
 }
 
 void DatabaseEditorWindow::onJumpersListViewDoubleClicked(const QModelIndex &index)

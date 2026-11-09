@@ -5454,6 +5454,10 @@ průměrného větru</translation>
     </context>
     <context>
         <name>DatabaseEditorWindow</name>
+    <message>
+        <source>Nie udało się przywrócić plików paczek. Edytor pozostanie otwarty.</source>
+        <translation>Nepodařilo se obnovit soubory balíčků. Editor zůstane otevřený.</translation>
+    </message>
         <message>
             <location filename="../source/UI/DatabaseEditor/DatabaseEditorWindow.ui" line="20" />
             <location filename="../source/UI/DatabaseEditor/DatabaseEditorWindow.ui" line="62" />

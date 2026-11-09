@@ -5453,6 +5453,10 @@ calculation</translation>
     </context>
     <context>
         <name>DatabaseEditorWindow</name>
+    <message>
+        <source>Nie udało się przywrócić plików paczek. Edytor pozostanie otwarty.</source>
+        <translation>Could not restore the pack files. The editor will remain open.</translation>
+    </message>
         <message>
             <location filename="../source/UI/DatabaseEditor/DatabaseEditorWindow.ui" line="20" />
             <location filename="../source/UI/DatabaseEditor/DatabaseEditorWindow.ui" line="62" />

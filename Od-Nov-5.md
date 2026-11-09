@@ -8,3 +8,7 @@ Gałąź `feature/simulation-v2`. Zmiany odwoływania, pogody i interfejsu zosta
 - Karta następnego zawodnika dostosowuje wysokość do zawartości również między seriami.
 
 Przy dalszej pracy warto ręcznie sprawdzić szczególnie wyjście i odwołanie w indywidualnym, drużynowym i KO oraz wygląd sektorów na małym laptopie. Automatyczne testy nie były uruchamiane.
+
+## Dodatkowa poprawka — odrzucanie zmian bazy danych
+
+„Nie zapisuj” przywraca teraz także pliki paczek skoczków/skoczni i katalogu bazy danych z początku sesji. Nowo utworzone pliki JSON są usuwane, a Escape korzysta z tego samego potwierdzenia. Dotychczasowe zapisy na bieżąco pozostają zabezpieczeniem przed awarią; jawne odrzucenie zmian cofa je. Build i kontrola tłumaczeń przeszły, bez uruchamiania testów.
