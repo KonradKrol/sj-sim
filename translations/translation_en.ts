@@ -324,6 +324,130 @@ But to keep you from getting too cheerful, your computer has been infected with 
         <source>Porównuj pomiar wiatru z przebytym odcinkiem</source>
         <translation>Compare measured wind with the travelled section</translation>
     </message>
+    <message>
+        <source>Bardzo duża</source>
+        <translation>Very high</translation>
+    </message>
+    <message>
+        <source>Bardzo duże</source>
+        <translation>Very large</translation>
+    </message>
+    <message>
+        <source>Bardzo duży</source>
+        <translation>Very large</translation>
+    </message>
+    <message>
+        <source>Bardzo małe</source>
+        <translation>Very small</translation>
+    </message>
+    <message>
+        <source>Bardzo mały</source>
+        <translation>Very small</translation>
+    </message>
+    <message>
+        <source>Bardzo wymagająca</source>
+        <translation>Very demanding</translation>
+    </message>
+    <message>
+        <source>Bardzo łagodna</source>
+        <translation>Very forgiving</translation>
+    </message>
+    <message>
+        <source>Duża</source>
+        <translation>High</translation>
+    </message>
+    <message>
+        <source>Duże</source>
+        <translation>Large</translation>
+    </message>
+    <message>
+        <source>Duży</source>
+        <translation>Large</translation>
+    </message>
+    <message>
+        <source>Jak bardzo różnią się kolejne skoki tego samego zawodnika. Nie zmienia różnic OVR.</source>
+        <translation>How much successive jumps by the same athlete vary. Does not change OVR differences.</translation>
+    </message>
+    <message>
+        <source>Jak duże różnice wyników tworzy różnica OVR. Nie zwiększa losowości skoków.</source>
+        <translation>How large a result difference an OVR difference creates. Does not increase jump randomness.</translation>
+    </message>
+    <message>
+        <source>Jak mocno aktualna forma wpływa na wynik względem stałego OVR.</source>
+        <translation>How strongly current form affects results relative to stable OVR.</translation>
+    </message>
+    <message>
+        <source>Jak mocno działają specjalizacje, regularność i podejście do treningów.</source>
+        <translation>How strongly specializations, consistency and training attitudes affect jumps.</translation>
+    </message>
+    <message>
+        <source>Jak wcześnie dalekie skoki stają się trudne do ustania. Nie zmienia kar w notach.</source>
+        <translation>How early long jumps become difficult to land. Does not change judge deductions.</translation>
+    </message>
+    <message>
+        <source>Małe</source>
+        <translation>Small</translation>
+    </message>
+    <message>
+        <source>Mały</source>
+        <translation>Small</translation>
+    </message>
+    <message>
+        <source>Minimalne</source>
+        <translation>Minimal</translation>
+    </message>
+    <message>
+        <source>Niewielka</source>
+        <translation>Low</translation>
+    </message>
+    <message>
+        <source>Rozrzut wyników</source>
+        <translation>Result variability</translation>
+    </message>
+    <message>
+        <source>Różnice między zawodnikami</source>
+        <translation>Differences between athletes</translation>
+    </message>
+    <message>
+        <source>Siła perków zawodników</source>
+        <translation>Athlete perk strength</translation>
+    </message>
+    <message>
+        <source>Standardowa</source>
+        <translation>Standard</translation>
+    </message>
+    <message>
+        <source>Standardowe</source>
+        <translation>Standard</translation>
+    </message>
+    <message>
+        <source>Standardowy</source>
+        <translation>Standard</translation>
+    </message>
+    <message>
+        <source>Subtelna</source>
+        <translation>Subtle</translation>
+    </message>
+    <message>
+        <source>Symulacja</source>
+        <translation>Simulation</translation>
+    </message>
+    <message>
+        <source>Trudność lądowania</source>
+        <translation>Landing difficulty</translation>
+    </message>
+    <message>
+        <source>Wymagająca</source>
+        <translation>Demanding</translation>
+    </message>
+    <message>
+        <source>Znaczenie formy</source>
+        <translation>Importance of form</translation>
+    </message>
+    <message>
+        <source>Łagodna</source>
+        <translation>Forgiving</translation>
+    </message>
 </context>
     <context>
         <name>AppearanceMenu</name>
@@ -15270,6 +15394,14 @@ Check that you selected the correct file.</translation>
         <source>Przewaga ważniejszych czujników nad pozostałymi w metodach Domyślny i Ulepszony. Np. 0 daje wszystkim równe wagi; większa wartość wzmacnia wskazany szczyt wag.</source>
         <translation>Extra weight of the more important sensors in Default and Improved. For example, 0 gives all sensors equal weight; a larger value strengthens the weight peak.</translation>
     </message>
+    <message>
+        <source>Różnice OVR między zawodnikami</source>
+        <translation>OVR differences between athletes</translation>
+    </message>
+    <message>
+        <source>Wzmacnia różnice OVR względem 70, bez zwiększania losowości. 1 zachowuje zwykły wpływ; 1,5 zwiększa różnice o połowę.</source>
+        <translation>Scales OVR differences relative to 70 without increasing randomness. 1 keeps the usual effect; 1.5 increases differences by half.</translation>
+    </message>
 </context>
     <context>
         <name>QuickBridge</name>
@@ -15939,6 +16071,26 @@ Check that you selected the correct file.</translation>
     <message>
         <source>Nie udało się dobrać belki: %1</source>
         <translation>Could not suggest a gate: %1</translation>
+    </message>
+    <message>
+        <source>Rozrzut wyników</source>
+        <translation>Result variability</translation>
+    </message>
+    <message>
+        <source>Różnice między zawodnikami</source>
+        <translation>Differences between athletes</translation>
+    </message>
+    <message>
+        <source>Siła perków zawodników</source>
+        <translation>Athlete perk strength</translation>
+    </message>
+    <message>
+        <source>Trudność lądowania</source>
+        <translation>Landing difficulty</translation>
+    </message>
+    <message>
+        <source>Znaczenie formy</source>
+        <translation>Importance of form</translation>
     </message>
 </context>
     <context>
@@ -24120,6 +24272,21 @@ Close the previous Sj.Sim window and try again.</translation></message></context
     <message>
         <source>Odwołaj konkurs</source>
         <translation>Cancel competition</translation>
+    </message>
+</context>
+<context>
+    <name>SimulationPreferences</name>
+    <message>
+        <source>Przywróć standardowe ustawienia symulacji</source>
+        <translation>Restore standard simulation settings</translation>
+    </message>
+    <message>
+        <source>Symulacja</source>
+        <translation>Simulation</translation>
+    </message>
+    <message>
+        <source>Zmiany dotyczą kolejnych konkursów.</source>
+        <translation>Changes apply to future competitions.</translation>
     </message>
 </context>
 </TS>

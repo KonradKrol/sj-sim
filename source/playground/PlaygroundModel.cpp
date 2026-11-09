@@ -24,6 +24,7 @@ SimulationV2::WeatherProposal weatherInput(const QJsonObject &config,const QJson
 }
 namespace {
 template<class F> void visitEngine(SimulationV2::EngineParameters &m,F f) {
+    f("quality.overallSpread",QObject::tr("Różnice OVR między zawodnikami"),"quality",m.quality.overallSpread,0,5,.05,"1");
     f("quality.overallWeight",QObject::tr("Udział OVR"),"quality",m.quality.overallWeight,0,1,0.01,"1");
     f("quality.formReferenceK",QObject::tr("K odniesienia udziału formy"),"quality",m.quality.formReferenceK,1,400,1,"m");
     f("quality.formKScale",QObject::tr("Skala zmiany udziału formy względem K"),"quality",m.quality.formKScale,1,1000,1,"m");
@@ -155,6 +156,7 @@ template<class F> void visitMeasurement(SimulationV2::FieldWindMeasurementParame
     f("measurement.weightStrength",QObject::tr("Siła ważenia pomiaru"),"measurement",m.weightStrength,0,10,0.1,"1");
 }
 QString effectDescription(const QString &key,const QString &group) {
+    if(key=="quality.overallSpread")return QObject::tr("Wzmacnia różnice OVR względem 70, bez zwiększania losowości. 1 zachowuje zwykły wpływ; 1,5 zwiększa różnice o połowę.");
     if(key=="quality.overallWeight")return QObject::tr("Udział OVR w bazowej jakości skoku na K odniesienia; resztę stanowi forma. Np. 0,70 przy OVR 80 i formie 60 daje jakość 74 przed perkami i losowością.");
     if(key=="quality.formReferenceK")return QObject::tr("Rozmiar skoczni, na którym obowiązuje ustawiony udział OVR i formy. Np. przy K odniesienia 110 forma waży więcej na K140, a mniej na K80.");
     if(key=="quality.formKScale")return QObject::tr("Określa, jak szybko udział formy zmienia się wraz z rozmiarem skoczni. Np. skala 100 daje łagodniejszą różnicę między K90 i K120 niż skala 20.");

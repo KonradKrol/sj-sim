@@ -18,6 +18,7 @@ struct Athlete {
 
 struct QualityParameters {
     double overallWeight=.77175;
+    double overallSpread=1;
     double formReferenceK=120;
     double formKScale=100;
     double formHillAmplitude=.04; // maximum change of form share, in either direction

@@ -1,3 +1,5 @@
+#include "../../balance/BalanceRuntime.h"
+#include "../../playground/PlaygroundModel.h"
 #include <QObject>
 #include "CompetitionConfigWindow.h"
 #include "ui_CompetitionConfigWindow.h"
@@ -1719,7 +1721,8 @@ int CompetitionConfigWindow::suggestedGate() {
     case CompetitionInfo::Qualifications:event=SimulationV2::EventKind::Qualification;break;
     default:break;
     }
-    const SimulationV2::QualityModel quality;
+    const auto balance=Playground::engineParameters(BalanceRuntime::gameCapture());
+    const SimulationV2::QualityModel quality(balance.quality,SimulationV2::HillSkillCurve(balance.skillAnchors,balance.curveExtension));
     Jumper *best=nullptr;double strength=-std::numeric_limits<double>::infinity();
     for(auto *jumper:jumpers)if(jumper) {
         const auto profile=jumper->getSimulationProfile();

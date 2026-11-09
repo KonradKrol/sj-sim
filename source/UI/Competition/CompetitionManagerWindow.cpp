@@ -88,7 +88,7 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     personalBestNotificationsSuppressed(false)
 {
     ui->setupUi(this);
-    if(manager && manager->getCompetitionInfo()){auto *info=manager->getCompetitionInfo();if(info->getResultsReference().getResultsReference().isEmpty())info->simulationModelRevision=SimulationV2::modelRevision;if(!info->simulationBalance)info->simulationBalance=BalanceRuntime::capture();simulator.setSimulationBalanceProfile(*info->simulationBalance);}
+    if(manager && manager->getCompetitionInfo()){auto *info=manager->getCompetitionInfo();if(info->getResultsReference().getResultsReference().isEmpty())info->simulationModelRevision=SimulationV2::modelRevision;if(!info->simulationBalance)info->simulationBalance=BalanceRuntime::gameCapture();simulator.setSimulationBalanceProfile(*info->simulationBalance);}
     if(manager && manager->getCompetitionInfo() && manager->getCompetitionInfo()->getHill() && manager->getCompetitionInfo()->getHill()->getSimulationProfile())
         ui->spinBox_actualGate->setRange(0,200);
 

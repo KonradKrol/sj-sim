@@ -1035,6 +1035,7 @@ void QuickBridge::compose(QuickNode *base) {
     }
     if(profile()=="AppSettingsWindow") {
         QVariantList sections;
+        sections.append(group("simple-simulation",QString(),fields({{"simpleSimulation_spread",tr("Rozrzut wyników")},{"simpleSimulation_form",tr("Znaczenie formy")},{"simpleSimulation_landing",tr("Trudność lądowania")},{"simpleSimulation_perks",tr("Siła perków zawodników")},{"simpleSimulation_differences",tr("Różnice między zawodnikami")}}),"simulationPreferences"));
         sections.append(group("simulation",tr("Silnik symulacji"),{group("simulation-settings-fields",QString(),fields({
             {"openBalanceLab",""},{"openSimulationPlayground",""},{"comboBox_language",tr("Język interfejsu")},
             {"spinBox_dsqProbability",tr("Częstość dyskwalifikacji")},

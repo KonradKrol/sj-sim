@@ -17,7 +17,7 @@ JumpSimulator::JumpSimulator(Jumper *jumper, const QVector<Wind> &winds, Hill *h
     : winds(winds)
     , hill(hill)
 {
-    setSimulationBalanceProfile(BalanceRuntime::capture());
+    setSimulationBalanceProfile(BalanceRuntime::gameCapture());
     this->jumper = jumper;
     jumperSkills=nullptr;competitionRules=nullptr;gate=competitionStartGate=0;DSQBaseProbability=0;jumpsImportance=5;
     simulationData = &jumpData.simulationData;

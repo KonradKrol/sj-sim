@@ -81,3 +81,7 @@ Automatyczny dobór belki tylko zmienia numer — bez etykiety różnicy i cofan
 ## Hotfix Flow i czytelne przyciski
 
 Usunięto przypisanie do tylko do odczytu implicitHeight w Flow (blokowało RaceControls). WeatherWorkspace używa teraz bezpośredniego Flickable, bez automatycznego negocjowania rozmiaru przez ScrollView. Sprawdzono kompilację RaceScreen i WeatherWorkspace przez QQmlComponent z zasobami aktualnego buildu. Przycisk trenera ma napis TRENER. Każda akcja narzędziowa ma własne tło i obrys; usunięto dekoracyjne tła grup. Stan Na żywo jest kontrastowy.
+
+## Pięć prostych ustawień symulacji
+
+Nowa sekcja w ustawieniach gry: rozrzut wyników, znaczenie formy, trudność lądowania, siła perków i różnice między zawodnikami. Pięć poziomów, standard na środku, wspólne przywracanie standardu. Zapis w QSettings simulation/simple/*. BalanceRuntime::gameCapture nakłada wybory na aktywną kalibrację przy rozpoczynaniu rozgrywki; capture pozostaje surowym profilem laboratorium, więc jego zapis nie kumuluje mnożników. Rozpoczęte konkursy zachowują zapisany snapshot. Rozrzut skaluje odchylenia jakości; forma zmienia udział formy; lądowanie przesuwa krzywe ryzyka; perki skalują efekty i odchylenia względem neutralnych; różnice zawodników zmieniają tylko wpływ różnic OVR względem 70 (quality.overallSpread), nie losowość. Ekstremalne profile z laboratorium są ograniczane do poprawnych zakresów silnika.

@@ -22,6 +22,11 @@
 #include "CountriesEditorWindow.h"
 #include "../ResponsiveWindowUtils.h"
 
+#include <QSettings>
+#include <QGroupBox>
+#include <QFormLayout>
+#include <QComboBox>
+
 extern Uuid globalIDGenerator;
 
 AppSettingsWindow::AppSettingsWindow(QWidget *parent) :
@@ -29,6 +34,19 @@ AppSettingsWindow::AppSettingsWindow(QWidget *parent) :
     ui(new Ui::AppSettingsWindow)
 {
     ui->setupUi(this);
+    auto *simulation=new QGroupBox(tr("Symulacja"),this);
+    auto *form=new QFormLayout(simulation);
+    const auto add=[&](const QString &key,const QString &title,const QString &help,const QStringList &options){
+        auto *choice=new QComboBox(simulation);choice->setObjectName("simpleSimulation_"+key);choice->setAccessibleName(title);choice->setToolTip(help);choice->addItems(options);
+        choice->setCurrentIndex(qBound(0,QSettings().value("simulation/simple/"+key,2).toInt(),4));
+        connect(choice,qOverload<int>(&QComboBox::currentIndexChanged),this,[key](int index){QSettings().setValue("simulation/simple/"+key,index);});form->addRow(title,choice);
+    };
+    add("spread",tr("Rozrzut wyników"),tr("Jak bardzo różnią się kolejne skoki tego samego zawodnika. Nie zmienia różnic OVR."),{tr("Bardzo mały"),tr("Mały"),tr("Standardowy"),tr("Duży"),tr("Bardzo duży")});
+    add("form",tr("Znaczenie formy"),tr("Jak mocno aktualna forma wpływa na wynik względem stałego OVR."),{tr("Minimalne"),tr("Małe"),tr("Standardowe"),tr("Duże"),tr("Bardzo duże")});
+    add("landing",tr("Trudność lądowania"),tr("Jak wcześnie dalekie skoki stają się trudne do ustania. Nie zmienia kar w notach."),{tr("Bardzo łagodna"),tr("Łagodna"),tr("Standardowa"),tr("Wymagająca"),tr("Bardzo wymagająca")});
+    add("perks",tr("Siła perków zawodników"),tr("Jak mocno działają specjalizacje, regularność i podejście do treningów."),{tr("Subtelna"),tr("Niewielka"),tr("Standardowa"),tr("Duża"),tr("Bardzo duża")});
+    add("differences",tr("Różnice między zawodnikami"),tr("Jak duże różnice wyników tworzy różnica OVR. Nie zwiększa losowości skoków."),{tr("Bardzo małe"),tr("Małe"),tr("Standardowe"),tr("Duże"),tr("Bardzo duże")});
+    ui->verticalLayout_6->insertWidget(0,simulation);
     auto *lab=new QPushButton(tr("Laboratorium balansu"),this);lab->setObjectName("openBalanceLab");ui->verticalLayout_6->insertWidget(0,lab);
     connect(lab,&QPushButton::clicked,this,[this]{auto *window=new BalanceLabWindow(this);window->setAttribute(Qt::WA_DeleteOnClose);window->show();});
     auto *playground=new QPushButton(tr("Playground symulacji"),this);playground->setObjectName("openSimulationPlayground");playground->setToolTip(tr("Wielowątkowe eksperymenty, porównania parametrów i analiza wyników."));ui->verticalLayout_6->insertWidget(0,playground);
@@ -71,6 +89,7 @@ void AppSettingsWindow::setupLanguagesComboBox()
 
 void AppSettingsWindow::on_pushButton_defaultSettings_clicked()
 {
+    for(auto *choice:findChildren<QComboBox *>())if(choice->objectName().startsWith("simpleSimulation_"))choice->setCurrentIndex(2);
     ui->comboBox_language->setCurrentIndex(0);
     ui->spinBox_dsqProbability->setValue(150);
     ui->spinBox_skillsRange->setValue(100);

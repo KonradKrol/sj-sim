@@ -38,7 +38,7 @@ void sampleReferences(SimulationV2::WindParameters &wind,double k,double differe
 }
 }
 SimulationWeatherSetup::SimulationWeatherSetup(QObject *parent):QObject(parent) {
-    setProperty("balanceProfile",BalanceRuntime::capture().toVariantMap());seed=QRandomGenerator::global()->generate64();rebuild();
+    setProperty("balanceProfile",BalanceRuntime::gameCapture().toVariantMap());seed=QRandomGenerator::global()->generate64();rebuild();
 }
 void SimulationWeatherSetup::setHill(const HillProfile &profile) {
     HillProfile checked;QString validationError;

@@ -324,6 +324,130 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
         <source>Porównuj pomiar wiatru z przebytym odcinkiem</source>
         <translation>Porovnávat měřený vítr s prolétnutým úsekem</translation>
     </message>
+    <message>
+        <source>Bardzo duża</source>
+        <translation>Velmi vysoká</translation>
+    </message>
+    <message>
+        <source>Bardzo duże</source>
+        <translation>Velmi velké</translation>
+    </message>
+    <message>
+        <source>Bardzo duży</source>
+        <translation>Velmi velký</translation>
+    </message>
+    <message>
+        <source>Bardzo małe</source>
+        <translation>Velmi malé</translation>
+    </message>
+    <message>
+        <source>Bardzo mały</source>
+        <translation>Velmi malý</translation>
+    </message>
+    <message>
+        <source>Bardzo wymagająca</source>
+        <translation>Velmi náročná</translation>
+    </message>
+    <message>
+        <source>Bardzo łagodna</source>
+        <translation>Velmi mírná</translation>
+    </message>
+    <message>
+        <source>Duża</source>
+        <translation>Vysoká</translation>
+    </message>
+    <message>
+        <source>Duże</source>
+        <translation>Velké</translation>
+    </message>
+    <message>
+        <source>Duży</source>
+        <translation>Velký</translation>
+    </message>
+    <message>
+        <source>Jak bardzo różnią się kolejne skoki tego samego zawodnika. Nie zmienia różnic OVR.</source>
+        <translation>Jak moc se liší jednotlivé skoky stejného skokana. Nemění rozdíly OVR.</translation>
+    </message>
+    <message>
+        <source>Jak duże różnice wyników tworzy różnica OVR. Nie zwiększa losowości skoków.</source>
+        <translation>Jak velké rozdíly výsledků vytváří rozdíl OVR. Nezvyšuje náhodnost skoků.</translation>
+    </message>
+    <message>
+        <source>Jak mocno aktualna forma wpływa na wynik względem stałego OVR.</source>
+        <translation>Jak silně aktuální forma ovlivňuje výsledek oproti stálému OVR.</translation>
+    </message>
+    <message>
+        <source>Jak mocno działają specjalizacje, regularność i podejście do treningów.</source>
+        <translation>Jak silně působí specializace, vyrovnanost a přístup k tréninkům.</translation>
+    </message>
+    <message>
+        <source>Jak wcześnie dalekie skoki stają się trudne do ustania. Nie zmienia kar w notach.</source>
+        <translation>Jak brzy se dlouhé skoky stávají obtížnými na dopad. Nemění srážky v hodnocení.</translation>
+    </message>
+    <message>
+        <source>Małe</source>
+        <translation>Malé</translation>
+    </message>
+    <message>
+        <source>Mały</source>
+        <translation>Malý</translation>
+    </message>
+    <message>
+        <source>Minimalne</source>
+        <translation>Minimální</translation>
+    </message>
+    <message>
+        <source>Niewielka</source>
+        <translation>Nízká</translation>
+    </message>
+    <message>
+        <source>Rozrzut wyników</source>
+        <translation>Rozptyl výsledků</translation>
+    </message>
+    <message>
+        <source>Różnice między zawodnikami</source>
+        <translation>Rozdíly mezi skokany</translation>
+    </message>
+    <message>
+        <source>Siła perków zawodników</source>
+        <translation>Síla perků skokanů</translation>
+    </message>
+    <message>
+        <source>Standardowa</source>
+        <translation>Standardní</translation>
+    </message>
+    <message>
+        <source>Standardowe</source>
+        <translation>Standardní</translation>
+    </message>
+    <message>
+        <source>Standardowy</source>
+        <translation>Standardní</translation>
+    </message>
+    <message>
+        <source>Subtelna</source>
+        <translation>Jemná</translation>
+    </message>
+    <message>
+        <source>Symulacja</source>
+        <translation>Simulace</translation>
+    </message>
+    <message>
+        <source>Trudność lądowania</source>
+        <translation>Obtížnost dopadu</translation>
+    </message>
+    <message>
+        <source>Wymagająca</source>
+        <translation>Náročná</translation>
+    </message>
+    <message>
+        <source>Znaczenie formy</source>
+        <translation>Význam formy</translation>
+    </message>
+    <message>
+        <source>Łagodna</source>
+        <translation>Mírná</translation>
+    </message>
 </context>
     <context>
         <name>AppearanceMenu</name>
@@ -15271,6 +15395,14 @@ Ověřte, že jste vybrali správný soubor.</translation>
         <source>Przewaga ważniejszych czujników nad pozostałymi w metodach Domyślny i Ulepszony. Np. 0 daje wszystkim równe wagi; większa wartość wzmacnia wskazany szczyt wag.</source>
         <translation>Zvýhodnění důležitějších čidel v metodách Výchozí a Vylepšený. Například 0 dává všem stejné váhy; vyšší hodnota zesiluje vrchol vah.</translation>
     </message>
+    <message>
+        <source>Różnice OVR między zawodnikami</source>
+        <translation>Rozdíly OVR mezi skokany</translation>
+    </message>
+    <message>
+        <source>Wzmacnia różnice OVR względem 70, bez zwiększania losowości. 1 zachowuje zwykły wpływ; 1,5 zwiększa różnice o połowę.</source>
+        <translation>Zesiluje rozdíly OVR oproti 70 bez zvýšení náhodnosti. 1 zachová běžný vliv; 1,5 zvýší rozdíly o polovinu.</translation>
+    </message>
 </context>
     <context>
         <name>QuickBridge</name>
@@ -15940,6 +16072,26 @@ Ověřte, že jste vybrali správný soubor.</translation>
     <message>
         <source>Nie udało się dobrać belki: %1</source>
         <translation>Nepodařilo se navrhnout nájezdové okno: %1</translation>
+    </message>
+    <message>
+        <source>Rozrzut wyników</source>
+        <translation>Rozptyl výsledků</translation>
+    </message>
+    <message>
+        <source>Różnice między zawodnikami</source>
+        <translation>Rozdíly mezi skokany</translation>
+    </message>
+    <message>
+        <source>Siła perków zawodników</source>
+        <translation>Síla perků skokanů</translation>
+    </message>
+    <message>
+        <source>Trudność lądowania</source>
+        <translation>Obtížnost dopadu</translation>
+    </message>
+    <message>
+        <source>Znaczenie formy</source>
+        <translation>Význam formy</translation>
     </message>
 </context>
     <context>
@@ -24121,6 +24273,21 @@ Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></con
     <message>
         <source>Odwołaj konkurs</source>
         <translation>Zrušit závod</translation>
+    </message>
+</context>
+<context>
+    <name>SimulationPreferences</name>
+    <message>
+        <source>Przywróć standardowe ustawienia symulacji</source>
+        <translation>Obnovit standardní nastavení simulace</translation>
+    </message>
+    <message>
+        <source>Symulacja</source>
+        <translation>Simulace</translation>
+    </message>
+    <message>
+        <source>Zmiany dotyczą kolejnych konkursów.</source>
+        <translation>Změny platí pro následující závody.</translation>
     </message>
 </context>
 </TS>
