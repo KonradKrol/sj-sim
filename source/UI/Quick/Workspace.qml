@@ -16,6 +16,9 @@ ColumnLayout {
     readonly property bool catalogPage: contentNode && (contentNode.values.kind === "catalog" || contentNode.values.kind === "seasonRosters")
     readonly property bool calendarPage: contentNode && contentNode.values.kind === "calendar"
     readonly property bool sideTabs: tabbed && width >= 1200 && height >= 550
+    property bool rebuildingOverview: false
+    readonly property string seasonScaleKey: appearance.uiScale+":"+appearance.textScale
+    onSeasonScaleKeyChanged: if(season){rebuildingOverview=true;Qt.callLater(function(){workspace.rebuildingOverview=false})}
     spacing: 0
     Loader {
         active: workspace.season
@@ -60,7 +63,7 @@ ColumnLayout {
             width: scroll.availableWidth
             padding: Theme.compact ? 4 : workspace.width < 700 ? 12 : 24
             background: Item {}
-            contentItem: Node { node: workspace.jumpPage || workspace.koPage || workspace.catalogPage || workspace.calendarPage || workspace.rosterPage || workspace.formPage || workspace.simulationDraftPage || workspace.weatherPage ? null : workspace.contentNode }
+            contentItem: Loader { active: !workspace.rebuildingOverview; sourceComponent: Component { Node { node: workspace.contentNode } } }
         }
     }
         Loader {

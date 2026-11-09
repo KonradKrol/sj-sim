@@ -16592,6 +16592,8 @@ Check that you selected the correct file.</translation>
         <source>Manipulacja skoku</source>
         <translation>Jump manipulation</translation>
     </message>
+    <message><source>Czekaj 30s</source><translation>Wait 30s</translation></message>
+    <message><source>Jednorazowo manipuluj skokiem</source><translation>Manipulate one jump</translation></message>
 </context>
     <context>
         <name>RaceLastJump</name>
