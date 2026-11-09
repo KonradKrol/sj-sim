@@ -39,3 +39,9 @@ Wybór zasad i lab mają tylko Domyślny (ID 3), Ulepszony (ID 4), Idealny (ID 5
 - Bazowy mnożnik tylnego wiatru: 1,55 -> 1,6275 (+5%; skorygowane z początkowych +10%).
 
 Dodatkowy nerf ręcznej zmienności: amplitudy dla 0/25/50/75/100 wynoszą teraz 0/0,06175/0,225/0,332/0,4125 skali bazowej, z interpolacją między punktami. Daje to kolejne -25% na maksimum i łagodniejsze redukcje niżej.
+
+## Czytelniejszy podgląd wiatru i mniejszy wpływ perków
+
+Podgląd sektorów i popup używają teraz wspólnego kompaktowego wykresu z linią zera, podpisanymi wartościami i przyciskami Przed/Po zamiast dropdowna. Wspólna skala obejmuje oba zestawy. Boczny wiatr jest w tooltipie sektora. Po nowym skoku panel przechodzi na zapis skoku; zamknięcie panelu nie wyłącza globalnej opcji, a kolejny skok przywraca panel. Prognoza dotyczy następnego skoku, co jest jawnie podpisane. Popup nie ma pustej przestrzeni o stałej wysokości ani zagnieżdżonego scrolla.
+
+Automatyczny generator: wpływ perków kierunku i loteryjności osłabiony o 30% względem neutralnej skoczni. Nie zmienia ręcznej konfiguracji, stałych presetów ani innych efektów perków.

@@ -23961,5 +23961,45 @@ Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></con
         <source>Wiatr na zeskoku</source>
         <translation>Vítr na doskočišti</translation>
     </message>
+    <message>
+        <source>Wiatr</source>
+        <translation>Vítr</translation>
+    </message>
+    <message>
+        <source>Przed</source>
+        <translation>Před</translation>
+    </message>
+    <message>
+        <source>Po</source>
+        <translation>Po</translation>
+    </message>
+    <message>
+        <source>Zamknij podgląd wiatru</source>
+        <translation>Zavřít přehled větru</translation>
+    </message>
+    <message>
+        <source>Przed następnym skokiem</source>
+        <translation>Před dalším skokem</translation>
+    </message>
+    <message>
+        <source>Zapis skoku</source>
+        <translation>Záznam skoku</translation>
+    </message>
+    <message>
+        <source>Wiatr boczny: %1 m/s</source>
+        <translation>Boční vítr: %1 m/s</translation>
+    </message>
+    <message>
+        <source>Poza skokiem</source>
+        <translation>Za místem dopadu</translation>
+    </message>
+    <message>
+        <source>+ pod narty</source>
+        <translation>+ protivítr</translation>
+    </message>
+    <message>
+        <source>− w plecy</source>
+        <translation>− zadní vítr</translation>
+    </message>
 </context>
 </TS>

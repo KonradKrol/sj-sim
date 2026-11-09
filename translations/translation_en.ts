@@ -23960,5 +23960,45 @@ Close the previous Sj.Sim window and try again.</translation></message></context
         <source>Wiatr na zeskoku</source>
         <translation>Wind along the landing slope</translation>
     </message>
+    <message>
+        <source>Wiatr</source>
+        <translation>Wind</translation>
+    </message>
+    <message>
+        <source>Przed</source>
+        <translation>Before</translation>
+    </message>
+    <message>
+        <source>Po</source>
+        <translation>After</translation>
+    </message>
+    <message>
+        <source>Zamknij podgląd wiatru</source>
+        <translation>Close wind view</translation>
+    </message>
+    <message>
+        <source>Przed następnym skokiem</source>
+        <translation>Before the next jump</translation>
+    </message>
+    <message>
+        <source>Zapis skoku</source>
+        <translation>Recorded jump</translation>
+    </message>
+    <message>
+        <source>Wiatr boczny: %1 m/s</source>
+        <translation>Crosswind: %1 m/s</translation>
+    </message>
+    <message>
+        <source>Poza skokiem</source>
+        <translation>Beyond the jump</translation>
+    </message>
+    <message>
+        <source>+ pod narty</source>
+        <translation>+ headwind</translation>
+    </message>
+    <message>
+        <source>− w plecy</source>
+        <translation>− tailwind</translation>
+    </message>
 </context>
 </TS>

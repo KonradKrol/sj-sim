@@ -20,7 +20,7 @@ Pane {
         objectName: "nextJumpWindLoader"
         active: athlete.windOpen
         onLoaded: if(status===Loader.Ready && item)item.open()
-        sourceComponent: Component { JumpWindProfile { forecast: true; athlete: athlete.nameNode ? athlete.nameNode.values.text : ""; recorded: ({before: ui.context.windPreview || []}); onClosed: athlete.windOpen=false } }
+        sourceComponent: Component { JumpWindProfile { forecast: true; athlete: athlete.nameNode ? athlete.nameNode.values.text : ""; recorded: ui.jumpSummary.windProfile || ({}); onClosed: athlete.windOpen=false } }
     }
     ChangeFeedback { id: athleteArrival; target: athlete; trigger: athlete.nameNode ? athlete.nameNode.values.text : ""; duration: Theme.motion*2 }
     padding: dense ? 8 : 12
