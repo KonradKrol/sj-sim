@@ -17,11 +17,12 @@ ColumnLayout {
         Layout.fillWidth: true; Layout.minimumWidth: 0
         name: "balance-" + parameter.definition.key
         caption: parameter.unit ? qsTr("%1 (%2)").arg(parameter.definition.label || "").arg(parameter.unit) : parameter.definition.label || ""
-        value: parameter.backend.values[parameter.definition.key] || 0
+        value: parameter.definition.key==="rules.measurement" ? Math.max(3,Number(parameter.backend.values[parameter.definition.key] || 3)) : parameter.backend.values[parameter.definition.key] || 0
         minimum: parameter.definition.minimum === undefined ? 0 : parameter.definition.minimum
         maximum: parameter.definition.maximum === undefined ? 100 : parameter.definition.maximum
         step: parameter.definition.step || 1
         decimals: parameter.definition.type === "integer" ? 0 : 3
+        help: parameter.definition.key==="rules.measurement" ? parameter.definition.help || "" : ""
         options: parameter.definition.options || []
         optionOffset: parameter.definition.optionOffset || 0
         toggle: parameter.binary

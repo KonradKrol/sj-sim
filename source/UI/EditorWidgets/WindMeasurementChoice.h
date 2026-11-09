@@ -5,22 +5,16 @@
 
 inline QComboBox *createWindMeasurementChoice(QWidget *parent)
 {
-    auto *choice=new QComboBox(parent);choice->setObjectName("comboBox_windMeasurementType");
+    auto *choice=new QComboBox(parent);choice->setObjectName("comboBox_windMeasurementType");choice->setAccessibleName(QObject::tr("Pomiar wiatru"));
     const auto add=[&](const QString &name,int mode,const QString &help) {
         choice->addItem(name,mode);choice->setItemData(choice->count()-1,help,Qt::ToolTipRole);
     };
-    add(QObject::tr("FIS — przybliżenie"),CompetitionRules::FisApproximationWindMeasurement,
-        QObject::tr("Przybliżony pomiar FIS: czujniki mają różne wagi, także za miejscem lądowania. Średnia obejmuje czas lotu."));
-    add(QObject::tr("Pomiar przez czas lotu"),CompetitionRules::SensorWindMeasurement,
-        QObject::tr("Wszystkie czujniki mają równą wagę, także za miejscem lądowania. Średnia obejmuje czas lotu."));
-    add(QObject::tr("Gęsta sieć czujników"),CompetitionRules::DenseWindMeasurement,
-        QObject::tr("Gęstsza sieć czujników, także za miejscem lądowania. Średnia obejmuje czas lotu."));
-    add(QObject::tr("Odczyt przed skokiem"),CompetitionRules::InstantWindMeasurement,
-        QObject::tr("Jednorazowy odczyt wszystkich czujników przy wybiciu. Późniejsze zmiany wiatru nie są uwzględniane."));
-    add(QObject::tr("Wiatr na trasie lotu"),CompetitionRules::FlightWindMeasurement,
-        QObject::tr("Średnia wiatru napotkanego przez skoczka podczas lotu, tylko na przebytej trasie."));
-    add(QObject::tr("Dotychczasowy Sj.Sim"),CompetitionRules::LegacyWindMeasurement,
-        QObject::tr("Dawny pomiar Sj.Sima. Kierunki i wpływ odległości ustawisz osobno."));
+    add(QObject::tr("Domyślny"),CompetitionRules::FisApproximationWindMeasurement,
+        QObject::tr("Ważona średnia z czujników przez czas lotu, również zza miejsca lądowania. Pomiar może różnić się od warunków na trasie skoczka."));
+    add(QObject::tr("Ulepszony"),CompetitionRules::ImprovedWindMeasurement,
+        QObject::tr("Jak Domyślny, ale pomija czujniki za miejscem lądowania. Nadal uśrednia pomiary przez cały czas lotu."));
+    add(QObject::tr("Idealny"),CompetitionRules::FlightWindMeasurement,
+        QObject::tr("Dokładna średnia wiatru na rzeczywistej trasie lotu. Stosuje zwykłe przeliczniki punktowe, więc nie gwarantuje pełnego wyrównania wpływu wiatru na wynik."));
     const auto update=[choice]{choice->setToolTip(choice->currentData(Qt::ToolTipRole).toString());};
     QObject::connect(choice,QOverload<int>::of(&QComboBox::currentIndexChanged),choice,[update]{update();});update();
     choice->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);

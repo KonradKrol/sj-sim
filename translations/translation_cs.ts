@@ -15218,6 +15218,51 @@ Ověřte, že jste vybrali správný soubor.</translation>
         <source>Nieprawidłowa nazwa presetu</source>
         <translation>Neplatný název předvolby</translation>
     </message>
+
+    <message>
+        <source>Domyślny</source>
+        <translation>Výchozí</translation>
+    </message>
+    <message>
+        <source>Ulepszony</source>
+        <translation>Vylepšený</translation>
+    </message>
+    <message>
+        <source>Idealny</source>
+        <translation>Ideální</translation>
+    </message>
+    <message>
+        <source>Pomiar wiatru</source>
+        <translation>Měření větru</translation>
+    </message>
+    <message>
+        <source>Metoda pomiaru wiatru</source>
+        <translation>Metoda měření větru</translation>
+    </message>
+    <message>
+        <source>Ważona średnia z czujników przez czas lotu, również zza miejsca lądowania. Pomiar może różnić się od warunków na trasie skoczka.</source>
+        <translation>Vážený průměr čidel za dobu letu, včetně čidel za místem dopadu. Měření se může lišit od podmínek na dráze skokana.</translation>
+    </message>
+    <message>
+        <source>Jak Domyślny, ale pomija czujniki za miejscem lądowania. Nadal uśrednia pomiary przez cały czas lotu.</source>
+        <translation>Jako Výchozí, ale vynechává čidla za místem dopadu. Stále průměruje měření za celou dobu letu.</translation>
+    </message>
+    <message>
+        <source>Dokładna średnia wiatru na rzeczywistej trasie lotu. Stosuje zwykłe przeliczniki punktowe, więc nie gwarantuje pełnego wyrównania wpływu wiatru na wynik.</source>
+        <translation>Přesný průměr větru na skutečné dráze letu. Používá běžné bodové koeficienty, takže nezaručuje úplné vyrovnání vlivu větru na výsledek.</translation>
+    </message>
+    <message>
+        <source>Domyślny: ważone czujniki przez czas lotu. Ulepszony: pomija czujniki za lądowaniem. Idealny: średnia z rzeczywistej trasy; nadal stosuje zwykłe przeliczniki punktowe.</source>
+        <translation>Výchozí: vážená čidla za dobu letu. Vylepšený: vynechává čidla za dopadem. Ideální: průměr ze skutečné dráhy; stále používá běžné bodové koeficienty.</translation>
+    </message>
+    <message>
+        <source>Miejsce najmocniej uwzględnianych czujników w metodach Domyślny i Ulepszony. Np. 0,5 wyróżnia środek sieci, a 0,75 jej dalszą część.</source>
+        <translation>Poloha čidel s nejvyšší vahou v metodách Výchozí a Vylepšený. Například 0,5 zdůrazňuje střed sítě a 0,75 její vzdálenější část.</translation>
+    </message>
+    <message>
+        <source>Przewaga ważniejszych czujników nad pozostałymi w metodach Domyślny i Ulepszony. Np. 0 daje wszystkim równe wagi; większa wartość wzmacnia wskazany szczyt wag.</source>
+        <translation>Zvýhodnění důležitějších čidel v metodách Výchozí a Vylepšený. Například 0 dává všem stejné váhy; vyšší hodnota zesiluje vrchol vah.</translation>
+    </message>
 </context>
     <context>
         <name>QuickBridge</name>

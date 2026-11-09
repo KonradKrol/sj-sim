@@ -22,13 +22,20 @@ FocusScope {
     id: contents
     width: parent.width
     spacing: Theme.compact ? 3 : 6
-    Label {
-        visible: control.showLabel && !!control.fields.label
-        text: control.fields.label || ""
+    RowLayout {
         width: parent.width
-        color: Theme.muted
-        font.pointSize: Theme.caption
-        wrapMode: Text.WordWrap
+        visible: control.showLabel && !!control.fields.label
+        Label {
+            text: control.fields.label || ""
+            Layout.fillWidth: true
+            color: Theme.muted
+            font.pointSize: Theme.caption
+            wrapMode: Text.WordWrap
+        }
+        HelpDot {
+            visible: control.fields.name==="comboBox_windMeasurementType"
+            explanation: control.fields.tip || ""
+        }
     }
     Loader {
         id: body

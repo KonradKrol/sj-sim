@@ -15217,6 +15217,51 @@ Check that you selected the correct file.</translation>
         <source>Nieprawidłowa nazwa presetu</source>
         <translation>Invalid preset name</translation>
     </message>
+
+    <message>
+        <source>Domyślny</source>
+        <translation>Default</translation>
+    </message>
+    <message>
+        <source>Ulepszony</source>
+        <translation>Improved</translation>
+    </message>
+    <message>
+        <source>Idealny</source>
+        <translation>Ideal</translation>
+    </message>
+    <message>
+        <source>Pomiar wiatru</source>
+        <translation>Wind measurement</translation>
+    </message>
+    <message>
+        <source>Metoda pomiaru wiatru</source>
+        <translation>Wind measurement method</translation>
+    </message>
+    <message>
+        <source>Ważona średnia z czujników przez czas lotu, również zza miejsca lądowania. Pomiar może różnić się od warunków na trasie skoczka.</source>
+        <translation>Weighted sensor average over the flight duration, including sensors beyond the landing point. The measurement may differ from conditions along the flight path.</translation>
+    </message>
+    <message>
+        <source>Jak Domyślny, ale pomija czujniki za miejscem lądowania. Nadal uśrednia pomiary przez cały czas lotu.</source>
+        <translation>Like Default, but excludes sensors beyond the landing point. Readings are still averaged over the entire flight duration.</translation>
+    </message>
+    <message>
+        <source>Dokładna średnia wiatru na rzeczywistej trasie lotu. Stosuje zwykłe przeliczniki punktowe, więc nie gwarantuje pełnego wyrównania wpływu wiatru na wynik.</source>
+        <translation>Exact average wind along the actual flight path. Uses the usual point factors, so it does not guarantee full compensation for the effect of wind on the result.</translation>
+    </message>
+    <message>
+        <source>Domyślny: ważone czujniki przez czas lotu. Ulepszony: pomija czujniki za lądowaniem. Idealny: średnia z rzeczywistej trasy; nadal stosuje zwykłe przeliczniki punktowe.</source>
+        <translation>Default: weighted sensors over the flight duration. Improved: excludes sensors beyond landing. Ideal: average along the actual path, still using the usual point factors.</translation>
+    </message>
+    <message>
+        <source>Miejsce najmocniej uwzględnianych czujników w metodach Domyślny i Ulepszony. Np. 0,5 wyróżnia środek sieci, a 0,75 jej dalszą część.</source>
+        <translation>Position of the most heavily weighted sensors in Default and Improved. For example, 0.5 emphasizes the middle of the network and 0.75 its farther section.</translation>
+    </message>
+    <message>
+        <source>Przewaga ważniejszych czujników nad pozostałymi w metodach Domyślny i Ulepszony. Np. 0 daje wszystkim równe wagi; większa wartość wzmacnia wskazany szczyt wag.</source>
+        <translation>Extra weight of the more important sensors in Default and Improved. For example, 0 gives all sensors equal weight; a larger value strengthens the weight peak.</translation>
+    </message>
 </context>
     <context>
         <name>QuickBridge</name>

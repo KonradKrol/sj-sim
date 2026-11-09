@@ -37,16 +37,15 @@ double FieldWindMeasurement::measure(const WeatherField &weather,const FlightRes
         double measured;
         if(mode==CompetitionRules::FlightWindMeasurement)measured=flight.experiencedWind.head;
         else {
-            const int count=mode==CompetitionRules::DenseWindMeasurement
-                ?std::clamp(int(std::ceil(k*parameters.extentK/parameters.denseSpacingMetres)),2,128):k<100?5:k<170?7:10;
+            const int count=k<100?5:k<170?7:10;
             std::vector<WindSensor> sensors;sensors.reserve(std::size_t(count));
             for(int i=0;i<count;++i) {
                 const double position=(i+.5)/count;
                 const double relative=position<=parameters.weightPeak?position/parameters.weightPeak:(1-position)/(1-parameters.weightPeak);
-                const double weight=mode==CompetitionRules::WeightedWindMeasurement?1+parameters.weightStrength*relative:1;
+                const double weight=(mode==CompetitionRules::WeightedWindMeasurement || mode==CompetitionRules::ImprovedWindMeasurement)?1+parameters.weightStrength*relative:1;
                 sensors.push_back({position*k*parameters.extentK,weight});
             }
-            const SensorWindMeasurement network(std::move(sensors),mode==CompetitionRules::InstantWindMeasurement?1:parameters.temporalSamples);
+            const SensorWindMeasurement network(std::move(sensors),mode==CompetitionRules::InstantWindMeasurement?1:parameters.temporalSamples,0,0,mode==CompetitionRules::ImprovedWindMeasurement);
             if(mode==CompetitionRules::InstantWindMeasurement) {auto snapshot=flight;snapshot.duration=0;measured=network.measure(weather,snapshot,seconds);}
             else measured=network.measure(weather,flight,seconds);
         }

@@ -31,11 +31,13 @@ public:
         WeightedWindMeasurement,
         FisApproximationWindMeasurement=WeightedWindMeasurement,
         DenseWindMeasurement,
+        ImprovedWindMeasurement=DenseWindMeasurement,
         FlightWindMeasurement
     };
     int getWindMeasurementType() const { return windMeasurementType; }
     bool setWindMeasurementType(int value) {
         if(value<LegacyWindMeasurement || value>FlightWindMeasurement)return false;
+        if(value==LegacyWindMeasurement || value==InstantWindMeasurement || value==SensorWindMeasurement)value=FisApproximationWindMeasurement;
         windMeasurementType=static_cast<WindMeasurementType>(value);return true;
     }
     static bool validateWindMeasurementJson(const QJsonObject &object);
@@ -55,7 +57,7 @@ private:
 
     short windAverageCalculatingType;
     short windCompensationDistanceEffect;
-    WindMeasurementType windMeasurementType=LegacyWindMeasurement;
+    WindMeasurementType windMeasurementType=FisApproximationWindMeasurement;
 
     bool hillRecordBreaking;
 

@@ -259,8 +259,8 @@ QString effectDescription(const QString &key,const QString &group) {
     if(key=="measurement.temporalSamples")return QObject::tr("Liczba odczytów z każdego czujnika podczas lotu. Np. 5 odczytów lepiej wychwytuje zmianę podmuchu niż 1, ale liczy się dłużej; odczyt przed startem i metoda dotychczasowa używają własnych zasad.");
     if(key=="measurement.extentK")return QObject::tr("Długość obszaru z czujnikami, jako część K. Np. 1,2 na K120 ustawia zasięg 144 m; nie zmienia lotu, metody dotychczasowej ani pomiaru na trasie skoczka.");
     if(key=="measurement.denseSpacingMetres")return QObject::tr("Odstęp czujników wyłącznie w metodzie Gęsta sieć czujników. Np. 5 m daje gęstszą sieć niż 20 m, do limitu 128 czujników.");
-    if(key=="measurement.weightPeak")return QObject::tr("Miejsce najmocniej uwzględnianych czujników w metodzie FIS — przybliżenie. Np. 0,5 wyróżnia środek sieci, a 0,75 jej dalszą część.");
-    if(key=="measurement.weightStrength")return QObject::tr("Przewaga ważniejszych czujników nad pozostałymi w metodzie FIS — przybliżenie. Np. 0 daje wszystkim równe wagi; większa wartość wzmacnia wskazany szczyt wag.");
+    if(key=="measurement.weightPeak")return QObject::tr("Miejsce najmocniej uwzględnianych czujników w metodach Domyślny i Ulepszony. Np. 0,5 wyróżnia środek sieci, a 0,75 jej dalszą część.");
+    if(key=="measurement.weightStrength")return QObject::tr("Przewaga ważniejszych czujników nad pozostałymi w metodach Domyślny i Ulepszony. Np. 0 daje wszystkim równe wagi; większa wartość wzmacnia wskazany szczyt wag.");
     if(key=="athlete.perk.0")return QObject::tr("Wybiera perk podejścia i jego poziom; 0 usuwa perk. Np. +2 daje Błyszczy na treningach 2, a −2 daje Oszczędza siły 2; dostępne są poziomy 1–4.");
     if(key=="athlete.perk.1")return QObject::tr("Wybiera specjalizację i jej poziom; 0 usuwa perk. Np. +3 daje Lotnika 3, a −3 daje Specjalistę małych skoczni 3; dostępne są poziomy 1–4.");
     if(key=="athlete.perk.2")return QObject::tr("Wybiera regularność i poziom perka; 0 usuwa perk. Np. +2 daje Regularnego 2, a −2 Nieprzewidywalnego 2 z większym rozrzutem, zwłaszcza strat; dostępne są poziomy 1–4.");
@@ -287,7 +287,7 @@ QString effectDescription(const QString &key,const QString &group) {
     if(key=="rules.gateCompensation")return QObject::tr("Włącza punkty rekompensaty za różnicę belek. Np. po wyłączeniu obniżona belka nadal skraca skok, ale nie daje za to punktów.");
     if(key=="rules.judges")return QObject::tr("Włącza doliczanie trzech środkowych not sędziowskich. Np. noty 17 / 18 / 18 / 19 / 20 dają 55 pkt; po wyłączeniu dają 0 pkt.");
     if(key=="rules.95hs")return QObject::tr("Uzależnia rekompensatę za obniżenie belki przez trenera od 95% HS. Np. na HS140 trzeba skoczyć co najmniej 133 m; zmiana belki przez jury nie podlega tej regule.");
-    if(key=="rules.measurement")return QObject::tr("Wybiera sposób pomiaru średniego wiatru do rekompensaty. Np. odczyt przed startem może dać inną rekompensatę niż pomiar podczas lotu, choć skoczek trafia na ten sam wiatr.");
+    if(key=="rules.measurement")return QObject::tr("Domyślny: ważone czujniki przez czas lotu. Ulepszony: pomija czujniki za lądowaniem. Idealny: średnia z rzeczywistej trasy; nadal stosuje zwykłe przeliczniki punktowe.");
     if(key=="analysis.duration")return QObject::tr("Długość analizowanego przebiegu wiatru w sekundach. Np. 300 pokazuje pięć minut warunków, bez wydłużania samego konkursu.");
     if(key=="analysis.time")return QObject::tr("Chwila pogody, dla której pokazuje się wiatr na całym zeskoku. Np. 60 daje przekrój minutę po początku modelu, bez przesuwania startu zawodników.");
     if(key=="analysis.distance")return QObject::tr("Miejsce nad zeskokiem, dla którego pokazuje się zmiany wiatru w czasie. Np. 100 oznacza odczyt 100 m od progu.");
@@ -458,7 +458,7 @@ QJsonArray parameters() {
     input("hill.tailwindPoints",QObject::tr("Rekompensata w plecy"),"hill",12,0,100,0.1,"pkt/(m/s)");
     input("wind.mean",QObject::tr("Wiatr przedni (+) / tylny (−)"),"wind",0,-100,100,0.1,"m/s");
     input("wind.cross",QObject::tr("Wiatr boczny"),"wind",0,-100,100,0.1,"m/s");
-    input("rules.measurement",QObject::tr("Metoda pomiaru wiatru (0–5)"),"measurement",3,0,5,1,"1");
+    input("rules.measurement",QObject::tr("Metoda pomiaru wiatru"),"measurement",3,0,5,1,"1");
     input("rules.windCompensation",QObject::tr("Rekompensata za wiatr"),"rules",1,0,1,1,"1");
     input("rules.gateCompensation",QObject::tr("Rekompensata za belkę"),"rules",1,0,1,1,"1");
     input("rules.judges",QObject::tr("Noty za styl"),"rules",1,0,1,1,"1");
@@ -488,7 +488,7 @@ QJsonArray parameters() {
     input("analysis.scale",QObject::tr("Skala mapy wiatru ±"),"analysis",3,.1,100,.1,"m/s");
     input("analysis.timeSamples",QObject::tr("Próbki czasu analizy"),"analysis",241,2,2001,1,"1");
     input("analysis.spaceSamples",QObject::tr("Próbki odległości analizy"),"analysis",49,2,201,1,"1");
-    for(int i=0;i<rows.size();++i){auto d=rows[i].toObject();auto k=d["key"].toString();if(k=="clock.mode")d["options"]=QJsonArray{QObject::tr("Kontrolowane warunki"),QObject::tr("Przebieg konkursu")};if(k=="event")d["options"]=QJsonArray{QObject::tr("Trening"),QObject::tr("Seria próbna"),QObject::tr("Kwalifikacje"),QObject::tr("Konkurs")};if(k=="quality.noise")d["options"]=QJsonArray{QObject::tr("Normalny"),QObject::tr("Laplace’a")};if(k=="rules.measurement")d["options"]=QJsonArray{QObject::tr("Dotychczasowy Sj.Sim"),QObject::tr("Odczyt przed skokiem"),QObject::tr("Pomiar przez czas lotu"),QObject::tr("FIS — przybliżenie"),QObject::tr("Gęsta sieć czujników"),QObject::tr("Wiatr na trasie lotu")};if(k=="precipitation.kind")d["options"]=QJsonArray{QObject::tr("Śnieg"),QObject::tr("Deszcz")};if(k=="precipitation.scenario")d["options"]=QJsonArray{QObject::tr("Bez opadów"),QObject::tr("Stałe"),QObject::tr("Zmienne"),QObject::tr("Silne"),QObject::tr("Narastające")};rows[i]=d;}
+    for(int i=0;i<rows.size();++i){auto d=rows[i].toObject();auto k=d["key"].toString();if(k=="clock.mode")d["options"]=QJsonArray{QObject::tr("Kontrolowane warunki"),QObject::tr("Przebieg konkursu")};if(k=="event")d["options"]=QJsonArray{QObject::tr("Trening"),QObject::tr("Seria próbna"),QObject::tr("Kwalifikacje"),QObject::tr("Konkurs")};if(k=="quality.noise")d["options"]=QJsonArray{QObject::tr("Normalny"),QObject::tr("Laplace’a")};if(k=="rules.measurement"){d["options"]=QJsonArray{QObject::tr("Domyślny"),QObject::tr("Ulepszony"),QObject::tr("Idealny")};d["optionOffset"]=3;}if(k=="precipitation.kind")d["options"]=QJsonArray{QObject::tr("Śnieg"),QObject::tr("Deszcz")};if(k=="precipitation.scenario")d["options"]=QJsonArray{QObject::tr("Bez opadów"),QObject::tr("Stałe"),QObject::tr("Zmienne"),QObject::tr("Silne"),QObject::tr("Narastające")};rows[i]=d;}
     input("analysis.jumpSamples",QObject::tr("Skoki w próbie analizy wiatru"),"analysis",512,16,10000,1,"1");
     input("rules.dsq",QObject::tr("Dyskwalifikacje"),"rules",1,0,1,1,"1");
     const QStringList events{QObject::tr("trening"),QObject::tr("seria próbna"),QObject::tr("kwalifikacje"),QObject::tr("konkurs")};

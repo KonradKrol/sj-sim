@@ -164,7 +164,7 @@ CompetitionRules CompetitionRules::getFromJson(const QJsonObject &obj)
     rules.setCompetitionType(obj.value("competition-type").toInt());
     rules.setWindCompensationDistanceEffect(obj.value("wind-compensation-distance-effect").toInt());
     rules.setWindAverageCalculatingType(obj.value("wind-average-calculating-type").toInt());
-    rules.setWindMeasurementType(obj.value("wind-measurement-type").toInt(LegacyWindMeasurement));
+    rules.setWindMeasurementType(obj.value("wind-measurement-type").toInt(FisApproximationWindMeasurement));
     rules.setHillRecordBreaking(obj.value("hill-record-breaking").toBool(true));
 
     QJsonArray roundsArray = obj.value("rounds").toArray();

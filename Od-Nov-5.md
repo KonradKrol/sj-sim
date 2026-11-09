@@ -24,3 +24,7 @@ Przy dalszej pracy warto ręcznie sprawdzić szczególnie wyjście i odwołanie 
 ## Łagodniejsza zmienność i podgląd prognozy
 
 Ręczne ustawienie zmian w czasie używa odcinkowej krzywej zamiast kwadratu: dla poziomów 0/25/50/75/100 amplituda skali wynosi 0/0,065/0,25/0,40/0,55. Na górnym końcu ograniczono także częstość podmuchów i szybkość zmian. Presety i bazowe różnice przestrzenne nie zostały zmienione. Panel sektorów pozwala przełączać prognozę przed skokiem i zapis po skoku; kliknięcie wiatru w górnym pasku otwiera prognozę.
+
+## Trzy metody pomiaru wiatru
+
+Wybór zasad i lab mają tylko Domyślny (ID 3), Ulepszony (ID 4), Idealny (ID 5). Domyślny zachowuje dawną ważoną metodę „FIS — przybliżenie”. Ulepszony używa tej samej sieci, wag i okna czasu, ale odrzuca czujniki za lądowaniem. Idealny to dokładna średnia z faktycznej trasy, z normalnymi przelicznikami — właściciel jawnie wybrał to zamiast kompensacji porównującej lot z wiatrem i bez niego. Dawne ID 0/1/2 przy odczycie zasad przechodzą na Domyślny; ID 4 oznacza teraz Ulepszony. Dodano pomoc przy polu w zasadach, pojedynczych skokach i labie. Nie obiecywać stuprocentowego wyrównania wpływu wiatru przez Idealny: to dokładny pomiar, a nie idealna rekompensata punktowa.
