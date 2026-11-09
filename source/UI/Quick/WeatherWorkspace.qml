@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
-ScrollView {
+Flickable {
     id: workspace
     ViewArrival { target: workspace; expressive: true; emphasis: arrivalHeading }
     objectName: "weatherWorkspace"
@@ -13,16 +13,19 @@ ScrollView {
     property bool presetsExpanded: false
     readonly property string scenarioName: values.modified ? qsTr("Własne warunki") : values.preset>=0 ? backend.presets[values.preset] : qsTr("Wiatr na zeskoku")
     readonly property string variabilityText: values.staticWind ? qsTr("Wiatr nie zmienia się w czasie.") : values.variability<20 ? qsTr("Niewielkie wahania; kierunek zwykle pozostaje podobny.") : values.variability<60 ? qsTr("Warunki wyraźnie się zmieniają, czasem przez kilka kolejnych skoków.") : qsTr("Duże, szybkie zmiany; możliwe silne podmuchy i odwrócenia kierunku.")
-    contentWidth: availableWidth
-    contentHeight: values.ready ? editor.implicitHeight : availableHeight
+    contentWidth: width
+    contentHeight: values.ready ? weatherContent.implicitHeight+2*editor.padding : height
+    boundsBehavior: Flickable.StopAtBounds
+    flickableDirection: Flickable.VerticalFlick
+    interactive: contentHeight>height
+    ScrollBar.vertical: ScrollBar { policy: workspace.contentHeight>workspace.height ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff }
     clip: true
     Item {
         id: editor
         visible: workspace.values.ready
         implicitWidth: 0
-        implicitHeight: weatherContent.implicitHeight+2*padding
-        height: visible ? implicitHeight : 0
-        width: workspace.availableWidth
+        height: visible ? workspace.contentHeight : 0
+        width: workspace.width
         property real padding: Theme.dp(10)
         ColumnLayout {
             id: weatherContent
@@ -34,7 +37,7 @@ ScrollView {
                 Layout.fillWidth: true
                 Label { id: arrivalHeading; text: qsTr("Warunki"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.title; font.bold: true; Layout.fillWidth: true }
                 Image { source: workspace.values.flag || ""; sourceSize.width: 60; sourceSize.height: 40; fillMode: Image.PreserveAspectFit; Layout.preferredWidth: Theme.dp(28); Layout.preferredHeight: Theme.dp(18); Accessible.ignored: true }
-                Label { visible: workspace.availableWidth>Theme.dp(480); text: qsTr("%1 · HS%2").arg(workspace.values.hillName).arg(workspace.values.hs); color: Theme.muted; font.pointSize: Theme.caption; elide: Text.ElideRight; Layout.maximumWidth: Theme.dp(260) }
+                Label { visible: workspace.width>Theme.dp(480); text: qsTr("%1 · HS%2").arg(workspace.values.hillName).arg(workspace.values.hs); color: Theme.muted; font.pointSize: Theme.caption; elide: Text.ElideRight; Layout.maximumWidth: Theme.dp(260) }
             }
             RowLayout {
                 Layout.fillWidth: true; spacing: Theme.dp(10)
@@ -88,7 +91,7 @@ ScrollView {
                         active: workspace.tuning; visible: active
                         Layout.fillWidth: true
                         Layout.preferredHeight: status===Loader.Ready && item ? item.implicitHeight : 0
-                        sourceComponent: Component { WeatherTuning { backend: workspace.backend; viewportWidth: workspace.availableWidth } }
+                        sourceComponent: Component { WeatherTuning { backend: workspace.backend; viewportWidth: workspace.width } }
                     }
                 }
                 WeatherPrecipitation { backend: workspace.backend; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: Theme.dp(290); Layout.alignment: Qt.AlignTop }
@@ -111,7 +114,7 @@ ScrollView {
     }
     EmptyState {
         visible: !workspace.values.ready
-        width: workspace.availableWidth; height: visible ? workspace.availableHeight : 0
+        width: workspace.width; height: visible ? workspace.height : 0
         title: qsTr("Nie wybrano skoczni")
         description: qsTr("Wybierz paczkę i skocznię w konfiguracji symulacji.")
         actionText: qsTr("Konfiguracja")

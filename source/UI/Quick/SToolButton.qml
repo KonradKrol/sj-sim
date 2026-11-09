@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.15
 SButton {
     id: tool
     property url iconSource
+    foreground: checked ? Theme.snow : Theme.ink
     dense: true
     quiet: true
     font.pointSize: Theme.caption
@@ -18,5 +19,10 @@ SButton {
         Label { visible: tool.text.length>0; text: tool.text; font: tool.font; color: tool.foreground; opacity: tool.enabled ? 1 : .45 }
         Item { Layout.fillWidth: true }
     }
-    background: Rectangle { radius: Theme.dp(4); color: tool.checked || tool.down ? Theme.selection : tool.hovered ? Theme.raised : "transparent"; border.width: tool.visualFocus ? 2 : tool.checked ? 1 : 0; border.color: tool.visualFocus ? Theme.accent : tool.checked ? Theme.outline : Theme.divider }
+    background: Rectangle {
+        radius: Theme.dp(5)
+        color: tool.checked ? Theme.stadium : tool.down ? Theme.selection : tool.hovered ? Theme.selection : Theme.raised
+        border.width: tool.visualFocus ? 2 : 1
+        border.color: tool.visualFocus ? Theme.accent : tool.checked ? Theme.stadium : Theme.outline
+    }
 }

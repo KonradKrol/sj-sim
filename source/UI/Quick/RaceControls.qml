@@ -11,7 +11,6 @@ Flow {
     readonly property real toolHeight: Math.max(Theme.dp(38),Theme.bodyMetrics.height+Theme.dp(12))
     enabled: !history || !history.values.paused
     spacing: Theme.dp(8)
-    implicitHeight: childrenRect.height
     RaceToolGroup {
         width: implicitWidth
         SButton {
@@ -44,7 +43,7 @@ Flow {
         }
         SToolButton { text: ""; iconSource: "qrc:/ui/icons/tools/auto.svg"; Accessible.name: qsTr("Dobierz belkę"); enabled: !ui.context.complete && !ui.context.roundComplete && (!ui.context.liveStage || ui.context.liveStage>=5); hint: qsTr("Dobierz belkę do aktualnych warunków i pozostałych zawodników."); onClicked: ui.suggestRaceGate(false) }
         SToolButton {
-            objectName: "raceCoachGate"; text: "−1"
+            objectName: "raceCoachGate"; text: qsTr("TRENER")
             hint: qsTr("Obniż belkę o 1 na życzenie trenera"); Accessible.name: hint
             checked: Number(ui.context.coachReduction)>0
             readonly property var coachControl: ui.find("pushButton_coachGate")

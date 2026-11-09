@@ -16594,6 +16594,7 @@ Check that you selected the correct file.</translation>
     </message>
     <message><source>Czekaj 30s</source><translation>Wait 30s</translation></message>
     <message><source>Jednorazowo manipuluj skokiem</source><translation>Manipulate one jump</translation></message>
+    <message><source>TRENER</source><translation>COACH</translation></message>
 </context>
     <context>
         <name>RaceLastJump</name>

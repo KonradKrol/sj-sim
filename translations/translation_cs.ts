@@ -16595,6 +16595,7 @@ Ověřte, že jste vybrali správný soubor.</translation>
     </message>
     <message><source>Czekaj 30s</source><translation>Čekat 30 s</translation></message>
     <message><source>Jednorazowo manipuluj skokiem</source><translation>Jednorázově upravit skok</translation></message>
+    <message><source>TRENER</source><translation>TRENÉR</translation></message>
 </context>
     <context>
         <name>RaceLastJump</name>

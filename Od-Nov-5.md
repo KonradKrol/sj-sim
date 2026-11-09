@@ -77,3 +77,7 @@ Usunięto nieprawidłowy średnik po blokowym handlerze w RaceScreen, który uni
 ## Stabilniejszy pasek konkursu
 
 Automatyczny dobór belki tylko zmienia numer — bez etykiety różnicy i cofania w UI. Pasek ma cztery grupy o naturalnej szerokości i wspólne delikatne obramowania zamiast osobnych ramek każdego przycisku. Jedno stałe miejsce na główną akcję (skok/przejście dalej), pozostałe akcje są wyszarzane zamiast znikać.
+
+## Hotfix Flow i czytelne przyciski
+
+Usunięto przypisanie do tylko do odczytu implicitHeight w Flow (blokowało RaceControls). WeatherWorkspace używa teraz bezpośredniego Flickable, bez automatycznego negocjowania rozmiaru przez ScrollView. Sprawdzono kompilację RaceScreen i WeatherWorkspace przez QQmlComponent z zasobami aktualnego buildu. Przycisk trenera ma napis TRENER. Każda akcja narzędziowa ma własne tło i obrys; usunięto dekoracyjne tła grup. Stan Na żywo jest kontrastowy.
