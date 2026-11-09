@@ -73,3 +73,7 @@ SeasonBar ma wysokość wyliczaną wyłącznie z zawartości; Loader nie pozwala
 ## Hotfix składni i układu pogody
 
 Usunięto nieprawidłowy średnik po blokowym handlerze w RaceScreen, który uniemożliwiał załadowanie ekranu konkursu. WeatherWorkspace używa teraz zwykłego Item z wysokością zawartości zamiast Control/contentItem, eliminując cykl negocjacji implicitHeight. Brakujące zdjęcia i flagi w CompetitionManagerWindow nie są skalowane jako pusty QPixmap.
+
+## Stabilniejszy pasek konkursu
+
+Automatyczny dobór belki tylko zmienia numer — bez etykiety różnicy i cofania w UI. Pasek ma cztery grupy o naturalnej szerokości i wspólne delikatne obramowania zamiast osobnych ramek każdego przycisku. Jedno stałe miejsce na główną akcję (skok/przejście dalej), pozostałe akcje są wyszarzane zamiast znikać.
