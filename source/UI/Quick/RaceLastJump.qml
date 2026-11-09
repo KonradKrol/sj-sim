@@ -96,6 +96,6 @@ Pane {
             JumpMetric { inlineValue: true; visible: !!jump.summary.snow; caption: qsTr("Śnieg"); value: jump.summary.snow || "" }
         }
         JumpWeights { width: parent.width; summary: jump.summary }
-        Label { width: parent.width; visible: !!jump.summary.dsq || !!jump.summary.hs95; text: [jump.summary.dsq,jump.summary.hs95].filter(function(value){return !!value}).join(" · "); color: jump.summary.dsq && !jump.summary.dns ? Theme.danger : Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap }
+        Label { width: parent.width; visible: (!!jump.summary.dsq && !jump.summary.dns) || !!jump.summary.hs95; text: [jump.summary.dns ? "" : jump.summary.dsq,jump.summary.hs95].filter(function(value){return !!value}).join(" · "); color: jump.summary.dsq && !jump.summary.dns ? Theme.danger : Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap }
     }
 }
