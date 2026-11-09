@@ -49,6 +49,7 @@ Popup {
                     interactive: false; heading: profile.forecast ? qsTr("Teraz") : qsTr("Zapisany wiatr")
                     samples: profile.recorded[profile.forecast ? "before" : profile.phaseKeys[profile.phase]] || []
                 }
+                WindMeasurementComparison { visible: !profile.forecast && appearance.windDiagnostics; recorded: profile.recorded; Layout.fillWidth: true }
                 Label {
                     text: profile.forecast ? qsTr("Przybliżony układ wiatru. Warunki mogą zmienić się w trakcie skoku.") : profile.phase===1 ? qsTr("Średnia na przebytym odcinku. — oznacza odcinek poza skokiem.") : profile.phase===0 ? qsTr("Pole wiatru tuż przed wybiciem.") : qsTr("Pole wiatru w chwili zakończenia skoku.")
                     color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap; Layout.fillWidth: true

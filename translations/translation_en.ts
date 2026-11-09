@@ -316,7 +316,15 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <source>Rozgrywaj konkurs na żywo</source>
             <translation>Run competitions live</translation>
         </message>
-    </context>
+        <message>
+        <source>Pokazuj sektory wiatru po skoku</source>
+        <translation>Show wind sectors after a jump</translation>
+    </message>
+    <message>
+        <source>Porównuj pomiar wiatru z przebytym odcinkiem</source>
+        <translation>Compare measured wind with the travelled section</translation>
+    </message>
+</context>
     <context>
         <name>AppearanceMenu</name>
         <message>
@@ -2355,6 +2363,10 @@ li.checked::marker { content: "\2612"; }
         <source>Szybkie planowanie</source>
         <translation>Quick planning</translation>
     </message>
+    <message>
+        <source>Rozegrane przygotowania są zablokowane.</source>
+        <translation>Completed preparation events are locked.</translation>
+    </message>
 </context>
     <context>
         <name>CalendarVenueButton</name>
@@ -2820,6 +2832,10 @@ li.checked::marker { content: "\2612"; }
     <message>
         <source>Zaznacz konkurs na liście, aby zmienić jego ustawienia.</source>
         <translation>Select a competition in the list to change its settings.</translation>
+    </message>
+    <message>
+        <source>Odwołaj konkursy</source>
+        <translation>Cancel competitions</translation>
     </message>
 </context>
     <context>
@@ -4879,7 +4895,27 @@ For additional compensation, the jumper must reach 95% of HS (%1 m).</translatio
             <source>Rozgrywaj konkurs na żywo</source>
             <translation>Run competitions live</translation>
         </message>
-    </context>
+        <message>
+        <source>Odwołaj wydarzenie</source>
+        <translation>Cancel event</translation>
+    </message>
+    <message>
+        <source>Odwołać to wydarzenie? Wyniki zostaną usunięte. Po odwołanych kwalifikacjach awansują wszyscy zawodnicy.</source>
+        <translation>Cancel this event? Its results will be removed. All athletes advance after cancelled qualifications.</translation>
+    </message>
+    <message>
+        <source>Wróć</source>
+        <translation>Back</translation>
+    </message>
+    <message>
+        <source>Wyjdź bez zapisywania</source>
+        <translation>Leave without saving</translation>
+    </message>
+    <message>
+        <source>Wyjść bez zakończenia wydarzenia? Oddane skoki zostaną usunięte. Wydarzenie będzie można rozpocząć ponownie.</source>
+        <translation>Leave before completing the event? Completed jumps will be removed. You can start the event again.</translation>
+    </message>
+</context>
     <context>
         <name>CompetitionQuickBridge</name>
         <message>
@@ -16423,7 +16459,11 @@ Check that you selected the correct file.</translation>
             <source>Ustawienia: %1</source>
             <translation>Settings: %1</translation>
         </message>
-    </context>
+        <message>
+        <source>Odczekaj 30 s</source>
+        <translation>Wait 30 s</translation>
+    </message>
+</context>
     <context>
         <name>RaceLastJump</name>
         <message>
@@ -16554,7 +16594,15 @@ Check that you selected the correct file.</translation>
             <source>Pomiń skok · DNS</source>
             <translation>Skip jump · DNS</translation>
         </message>
-    </context>
+        <message>
+        <source>Pokazuj sektory wiatru po skoku</source>
+        <translation>Show wind sectors after a jump</translation>
+    </message>
+    <message>
+        <source>Porównuj pomiar wiatru z przebytym odcinkiem</source>
+        <translation>Compare measured wind with the travelled section</translation>
+    </message>
+</context>
     <context>
         <name>RaceScreen</name>
         <message>
@@ -17360,7 +17408,15 @@ sorting</translation>
             <source>Indywidualny</source>
             <translation>Individual</translation>
         </message>
-    </context>
+        <message>
+        <source>Odwołaj wydarzenie</source>
+        <translation>Cancel event</translation>
+    </message>
+    <message>
+        <source>Opcje wydarzenia</source>
+        <translation>Event options</translation>
+    </message>
+</context>
     <context>
         <name>SectionTabs</name>
         <message>
@@ -18512,6 +18568,26 @@ li.checked::marker { content: "\2612"; }
     <message>
         <source>Wróć do edycji</source>
         <translation>Keep editing</translation>
+    </message>
+    <message>
+        <source>Odwołaj najbliższe wydarzenie</source>
+        <translation>Cancel next event</translation>
+    </message>
+    <message>
+        <source>Odwołaj wydarzenia</source>
+        <translation>Cancel events</translation>
+    </message>
+    <message>
+        <source>Odwołanie wydarzenia</source>
+        <translation>Cancel event</translation>
+    </message>
+    <message>
+        <source>Odwołać wybrane wydarzenia (%1)? Ich nierozegrane treningi i serie próbne także zostaną odwołane. Po odwołanych kwalifikacjach awansują wszyscy zawodnicy.</source>
+        <translation>Cancel the selected events (%1)? Their unplayed training and trial rounds will also be cancelled. All athletes advance after cancelled qualifications.</translation>
+    </message>
+    <message>
+        <source>Wróć</source>
+        <translation>Back</translation>
     </message>
 </context>
     <context>
@@ -23395,6 +23471,26 @@ Technical key: %4</translation>
     <message><source> · zaplanowana</source><translation> · scheduled</translation></message>
 
     <message><source>TERAZ · %1</source><translation>NOW · %1</translation></message>
+    <message>
+        <source> · odwołana</source>
+        <translation> · cancelled</translation>
+    </message>
+    <message>
+        <source> · odwołany</source>
+        <translation> · cancelled</translation>
+    </message>
+    <message>
+        <source>Odwołaj wydarzenie</source>
+        <translation>Cancel event</translation>
+    </message>
+    <message>
+        <source>Opcje wydarzenia</source>
+        <translation>Event options</translation>
+    </message>
+    <message>
+        <source>Wydarzenie odwołane</source>
+        <translation>Event cancelled</translation>
+    </message>
 </context>
     <context>
         <name>StudioPackBar</name>
@@ -23732,6 +23828,28 @@ Close the previous Sj.Sim window and try again.</translation></message></context
     <message>
         <source>Przeciągnij tutaj skoczków</source>
         <translation>Drop athletes here</translation>
+    </message>
+</context>
+<context>
+    <name>WindMeasurementComparison</name>
+    <message>
+        <source>Pomiar: %1 m/s · różnica: %2 m/s</source>
+        <translation>Measured: %1 m/s · difference: %2 m/s</translation>
+    </message>
+    <message>
+        <source>Przebyty odcinek: %1 m/s</source>
+        <translation>Travelled section: %1 m/s</translation>
+    </message>
+</context>
+<context>
+    <name>WindSectorsCompact</name>
+    <message>
+        <source>Ukryj sektory wiatru</source>
+        <translation>Hide wind sectors</translation>
+    </message>
+    <message>
+        <source>Wiatr na zeskoku</source>
+        <translation>Wind along the landing slope</translation>
     </message>
 </context>
 </TS>

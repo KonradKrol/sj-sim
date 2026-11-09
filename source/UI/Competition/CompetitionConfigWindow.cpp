@@ -289,7 +289,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
                 comp = simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference()[simulationSave->getNextCompetitionIndex() + 1];
             else
                 comp = seasonCompetition;
-            if(comp->getAdvancementCompetition() != nullptr)
+            if(comp->getAdvancementCompetition() != nullptr && !comp->getAdvancementCompetition()->getCancelled())
             {
                 competitionTeams = TeamCompetitionManager::getFilteredTeamsAfterQualifications(comp);
             }
@@ -1163,6 +1163,9 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
     switch(getType())
     {
     case SingleCompetition:{
+        const auto beforeTeams=competitionTeams;
+        QHash<Jumper *,double> beforePersonalBests;for(auto *jumper:competitionJumpers)if(jumper)beforePersonalBests.insert(jumper,jumper->getPersonalBest());
+        const auto restorePreparation=[&]{competitionTeams=beforeTeams;for(auto it=beforePersonalBests.cbegin();it!=beforePersonalBests.cend();++it)it.key()->setPersonalBest(it.value());};
         double simulationSeconds=0;
         const auto qualitySeed=QRandomGenerator::global()->generate64();
         CompetitionInfo qualsInfo;
@@ -1242,9 +1245,7 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
             connect(qualsWindow.getManager(), &AbstractCompetitionManager::competitionEnd, &qualsWindow, [&qualsWindow](){
                 qualsWindow.showMessageBoxForQualificationsEnd();
             });
-            if(qualsWindow.exec() == QDialog::Accepted)
-            {
-            }
+            if(qualsWindow.exec() != QDialog::Accepted){restorePreparation();return;}
             simulationSeconds=qualsWindow.getSimulationSeconds();
         }
 
@@ -1269,8 +1270,6 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
         competitionManager->setBaseDSQProbability(ui->spinBox_dsqProbability->value());
         competitionManager->setWindGenerationSettings(windsGeneratorSettingsEditor->getWindsGenerationSettingsFromInputs());
 
-        if(qualsInfo.getCancelled() == true)
-            return;
         if(qualsInfo.getResultsReference().getResultsReference().count() > 0 && qualsInfo.getCancelled() == false){
             if(type == CompetitionRules::Individual){
                 if (competitionRulesEditor->getRoundsFromInput().at(0).getKO() == true) {
@@ -1345,8 +1344,8 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
             CompetitionManagerWindow window(competitionManager, this, true);
             window.setInrunSnowGenerator(InrunSnowGenerator(inrunSnowGeneratorSettingsEditor->getBase(), inrunSnowGeneratorSettingsEditor->getDeviation()));
             if(weatherSetup)window.bindWeatherSetup(weatherSetup,qualitySeed,simulationSeconds);
-            if(window.exec() == QDialog::Accepted)
-                this->setModal(true);
+            if(window.exec() != QDialog::Accepted){restorePreparation();return;}
+            this->setModal(true);
         }
         competitionTeams = Team::constructTeamsVectorByJumpersList(competitionJumpers, competitionRulesEditor->getJumpersCountInTeam());
 

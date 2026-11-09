@@ -728,6 +728,7 @@ void CompetitionManagerWindow::setupGoToNextButtonForNextRound()
             dynamic_cast<IndividualCompetitionManager *>(manager)->setupNextRound();
         else
             manager->setupNextRound();
+        advanceRoundWeather();
 
         IndividualCompetitionManager * indManager = dynamic_cast<IndividualCompetitionManager *>(manager);
         if(indManager != nullptr)
@@ -1095,7 +1096,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
         if(manager->checkRoundEnd() && (manager->getActualRound() != manager->getCompetitionRules()->getRounds().count() && manager->getActualRound() != manager->getCompetitionInfo()->getExceptionalRoundsCount())){
             if(type == CompetitionRules::Individual)
             {
-                indManager->setupNextRound();
+                indManager->setupNextRound();advanceRoundWeather();
                 IndividualCompetitionManager * indManager = dynamic_cast<IndividualCompetitionManager *>(manager);
                 if(indManager != nullptr)
                 {
@@ -1128,7 +1129,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
                 }
             }
             else if(type == CompetitionRules::Team){
-                tmManager->setupNextRound();
+                tmManager->setupNextRound();advanceRoundWeather();
                 teamResultsTreeModel->setTeams(&dynamic_cast<TeamCompetitionManager *>(manager)->getRoundsTeamsReference()[0]);
             }
         }
@@ -1356,7 +1357,7 @@ void CompetitionManagerWindow::autoSimulateJumps()
                 {
                     if(getType() == CompetitionRules::Individual)
                         resultsTableModel->setLastJumper(nullptr);
-                    indManager->setupNextRound();
+                    indManager->setupNextRound();advanceRoundWeather();
                     IndividualCompetitionManager * indManager = dynamic_cast<IndividualCompetitionManager *>(manager);
                     if(indManager != nullptr)
                     {
@@ -1390,7 +1391,7 @@ void CompetitionManagerWindow::autoSimulateJumps()
                 }
                 else if(type == CompetitionRules::Team){
                     teamResultsTreeModel->setLastTeam(nullptr);
-                    tmManager->setupNextRound();
+                    tmManager->setupNextRound();advanceRoundWeather();
                     teamResultsTreeModel->setTeams(&dynamic_cast<TeamCompetitionManager *>(manager)->getRoundsTeamsReference()[0]);
                 }
             }
@@ -1465,6 +1466,8 @@ void CompetitionManagerWindow::showPersonalBestNotification(const QString &title
 void CompetitionManagerWindow::checkRecords(JumpData &jump, bool multipleRecords)
 {
     if(jump.getDNS())return;
+    if(jump.getJumper() && !originalPersonalBests.contains(jump.getJumper()))originalPersonalBests.insert(jump.getJumper(),jump.getJumper()->getPersonalBest());
+    if(jump.getHill() && !originalHillRecords.contains(jump.getHill()))originalHillRecords.insert(jump.getHill(),jump.getHill()->getRecord());
     if(jump.getCompetition()->getRulesPointer()->getHillRecordBreaking() == true && (jump.getLanding().getType() == Landing::TelemarkLanding || jump.getLanding().getType() == Landing::BothLegsLanding) && (singleCompetition == false || GlobalSimulationSettings::get()->getUpdateGlobalDatabaseRecords() == true)){
         if(roundDoubleToHalf(jump.getDistance()) == roundDoubleToHalf(jump.getHill()->getRecord()) && multipleRecords == false)
         {
@@ -1688,43 +1691,16 @@ void CompetitionManagerWindow::setInrunSnowGenerator(const InrunSnowGenerator &n
 
 void CompetitionManagerWindow::cancelCompetition()
 {
-    if(property("resultHistoryPaused").toBool())return;
-    if(QMessageBox::question(this, tr("Odwołanie konkursu"),
-                             tr("Odwołać cały konkurs? Wszystkie uzyskane w nim wyniki zostaną usunięte."),
-                             QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Yes)
-        return;
-
-    manager->getResults()->getResultsReference().clear();
+    if(property("resultHistoryPaused").toBool() || jumpInProgress)return;
+    QMessageBox question(QMessageBox::Question,tr("Odwołanie konkursu"),
+        tr("Odwołać to wydarzenie? Wyniki zostaną usunięte. Po odwołanych kwalifikacjach awansują wszyscy zawodnicy."),QMessageBox::NoButton,this);
+    auto *cancel=question.addButton(tr("Odwołaj wydarzenie"),QMessageBox::DestructiveRole);
+    question.addButton(tr("Wróć"),QMessageBox::RejectRole);question.exec();
+    if(question.clickedButton()!=cancel)return;
+    restoreAbandonedRecords();
     manager->getCompetitionInfo()->setCancelled(true);
-
-    startListModel->refresh();
-    focusCurrentJumper();
-    if(getType() == CompetitionRules::Individual){
-        ui->tableView_results->setModel(nullptr);
-        ui->tableView_results->setModel(resultsTableModel);
-        ResponsiveWindowUtils::configureTableColumns(ui->tableView_results);
-        if(KOManager != nullptr)
-        {
-            KOManager->updateActualGroup(manager->getActualJumper());
-            KOManager->updateJumpersSortedByResults();
-            KOManager->updateStatuses();
-            KOGroupsResultsModel->setGroup(KOManager->getActualGroup());
-            manager->updateLastQualifiedResult();
-            updateToAdvanceDistanceLabel();
-            ui->tableView_KOGroupResults->setModel(nullptr);
-            ui->tableView_KOGroupResults->setModel(KOGroupsResultsModel);
-            ResponsiveWindowUtils::configureTableColumns(ui->tableView_KOGroupResults);
-        }
-    }
-    else if(getType() == CompetitionRules::Team){
-        teamResultsTreeView->setModel(nullptr);
-        teamResultsTreeView->setModel(teamResultsTreeModel);
-        ResponsiveWindowUtils::configureTreeColumns(teamResultsTreeView);
-        teamResultsTreeView->expandToDepth(0);
-    }
-
-    setupGoToNextButtonForCompetitionEnd();
-    showMessageBoxForCompetitionEnd();
+    manager->getResults()->getResultsReference().clear();
+    accept();
 }
 
 void CompetitionManagerWindow::cancelActualRound()
@@ -1796,7 +1772,7 @@ void CompetitionManagerWindow::setSimulationWeather(std::shared_ptr<const Simula
     if(!field || !manager || !manager->getCompetitionInfo() || !manager->getCompetitionInfo()->getHill()
         || !manager->getCompetitionInfo()->getHill()->getSimulationProfile() || !std::isfinite(seconds) || seconds<0 || seconds>1e12-100000)
         throw std::invalid_argument("Continuous contest weather requires a new hill and a valid logical clock");
-    simulationWeather=std::move(field);simulationQualitySeed=qualitySeed;simulationSeconds=seconds;
+    simulationWeather=std::move(field);simulationQualitySeed=qualitySeed;simulationSeconds=seconds;windRound=manager?manager->getActualRound():1;
     simulationMeasurement=std::make_shared<SimulationV2::FieldWindMeasurement>(manager->getCompetitionInfo()->getHill()->getKPoint(),*manager->getCompetitionRules(),Playground::measurementParameters(simulator.simulationBalanceProfile()));
     ui->pushButton_generateNewWinds->setText(tr("Odczekaj 30 s"));
     ui->pushButton_generateNewWinds->setToolTip(tr("Przesuń czas konkursu o 30 sekund. Pogoda zmienia się zgodnie z wybranym scenariuszem."));
@@ -2311,15 +2287,30 @@ void CompetitionManagerWindow::closeEvent(QCloseEvent *event)
         return;
     }
 
-    QMessageBox::StandardButton resBtn = QMessageBox::question( this, tr("Wyjście z konkursu"),
-                                                               tr("Na pewno chcesz wyjść z tego okna? Spowoduje to odwołanie aktualnie rozgrywanego konkursu i usunięcie jego wyników."),
-                                                               QMessageBox::Cancel | QMessageBox::Yes, QMessageBox::Cancel);
-    if (resBtn != QMessageBox::Yes) {
-        event->ignore();
-    } else {
-        manager->getCompetitionInfo()->setCancelled(true);
-        manager->getResults()->getResultsReference().clear();
-        accept();
-        event->accept();
-    }
+    QMessageBox question(QMessageBox::Question,tr("Wyjście z konkursu"),
+        tr("Wyjść bez zakończenia wydarzenia? Oddane skoki zostaną usunięte. Wydarzenie będzie można rozpocząć ponownie."),QMessageBox::NoButton,this);
+    auto *leave=question.addButton(tr("Wyjdź bez zapisywania"),QMessageBox::DestructiveRole);
+    question.addButton(tr("Wróć"),QMessageBox::RejectRole);question.exec();
+    if(question.clickedButton()!=leave){event->ignore();return;}
+    restoreAbandonedRecords();
+    done(QDialog::Rejected);
+    event->accept();
+}
+
+void CompetitionManagerWindow::restoreAbandonedRecords()
+{
+    for(auto it=originalPersonalBests.cbegin();it!=originalPersonalBests.cend();++it)it.key()->setPersonalBest(it.value());
+    for(auto it=originalHillRecords.cbegin();it!=originalHillRecords.cend();++it)it.key()->setRecord(it.value());
+    originalPersonalBests.clear();originalHillRecords.clear();
+}
+
+void CompetitionManagerWindow::reject(){close();}
+
+void CompetitionManagerWindow::advanceRoundWeather()
+{
+    if(!manager)return;
+    const int round=manager->getActualRound();
+    if(simulationWeather && round>windRound)simulationSeconds+=900.*(round-windRound);
+    windRound=round;
+    refreshWindSnapshot();updateActualInrunSnow();
 }

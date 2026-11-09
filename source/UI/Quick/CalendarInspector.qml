@@ -34,7 +34,7 @@ Pane {
                 Label { text: inspector.planningOpen ? qsTr("Cały kalendarz") : inspector.backend.selection.title || qsTr("Wybierz konkurs"); color: Theme.ink; font.family: inspector.compact ? Theme.bodyFamily : Theme.displayFamily; font.pointSize: inspector.compact ? Theme.body : Theme.heading; Layout.fillWidth: true; Layout.minimumWidth: 0; wrapMode: inspector.compact ? Text.NoWrap : Text.WordWrap; elide: Text.ElideRight }
             }
             Label { visible: !inspector.planningOpen && inspector.backend.selection.count > 1; text: qsTr("Zmiany dotyczą %1 konkursów").arg(inspector.backend.selection.count); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-            Label { visible: !inspector.planningOpen && inspector.backend.selection.count > 0 && inspector.backend.selection.locked; text: qsTr("Rozegrane wydarzenia są zablokowane."); color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+            Label { visible: !inspector.planningOpen && inspector.backend.selection.count > 0 && inspector.backend.selection.locked; text: inspector.backend.selection.rulesEditable ? qsTr("Rozegrane przygotowania są zablokowane.") : qsTr("Rozegrane wydarzenia są zablokowane."); color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
             Label { visible: !inspector.planningOpen && inspector.backend.selection.pendingSource>0; text: qsTr("Zachowano kwalifikację z konkursu %1. Sprawdź kolejność i rodzaj konkursów, aby przywrócić powiązanie.").arg(inspector.backend.selection.pendingSource); color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
             RowLayout {
                 Layout.fillWidth: true; spacing: Theme.dp(10)
@@ -65,7 +65,7 @@ Pane {
             contentWidth: availableWidth; clip: true
             ColumnLayout {
                 width: fieldsScroll.availableWidth
-                enabled: inspector.backend.selection.count > 0 && !inspector.backend.selection.locked
+                enabled: inspector.backend.selection.count > 0 && (!inspector.backend.selection.locked || inspector.section>0 && inspector.backend.selection.rulesEditable)
                 CalendarFields { visible: inspector.section === 0; backend: inspector.backend; Layout.fillWidth: true; onEditRules: {inspector.backend.rulesTarget=target;inspector.section=1;inspector.editRequested()} }
                 ColumnLayout {
                     visible: inspector.section === 1
@@ -73,6 +73,7 @@ Pane {
                     SChoice { Layout.fillWidth: true; model: [qsTr("Konkurs"),qsTr("Treningi"),qsTr("Seria próbna")]; currentIndex: inspector.backend.rulesTarget; Accessible.name: qsTr("Zasady wydarzenia"); onActivated: inspector.backend.rulesTarget=currentIndex }
                     Loader {
                         Layout.fillWidth: true; Layout.preferredHeight: item ? item.implicitHeight : 0
+                        enabled: !inspector.backend.selection.locked || inspector.backend.rulesTarget===0
                         active: inspector.section === 1
                         source: Qt.resolvedUrl("Node.qml")
                         onLoaded: item.node = Qt.binding(function(){return inspector.rulesNode})
@@ -85,7 +86,7 @@ Pane {
                     Label { visible: inspector.backend.classifications.length === 0; text: qsTr("Brak klasyfikacji w kalendarzu"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                     Repeater {
                         model: inspector.backend.classifications
-                        CalendarClassificationScoring { Layout.fillWidth: true; backend: inspector.backend; entry: modelData }
+                        CalendarClassificationScoring { enabled: !inspector.backend.selection.locked; Layout.fillWidth: true; backend: inspector.backend; entry: modelData }
                     }
                     RowLayout { Layout.fillWidth: true; Label { text: qsTr("Kwalifikacja na podstawie konkursu"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap } HelpDot { explanation: qsTr("Uczestników wyłoni wskazany wcześniejszy konkurs lub kwalifikacje.") } }
                     SChoice { Layout.fillWidth: true; model: inspector.backend.advancementCompetitions; currentIndex: inspector.backend.selection.advancement === undefined ? -1 : inspector.backend.selection.advancement; Accessible.name: qsTr("Kwalifikacja na podstawie konkursu"); onActivated: inspector.backend.update({advancement:currentIndex}) }

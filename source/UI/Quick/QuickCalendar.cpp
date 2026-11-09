@@ -192,6 +192,7 @@ void QuickCalendar::refresh() {
     }
     m_eventModel->sync(m_events);
     m_selection={{"id",chosen.size()==1?chosen.first()->getIDStr():QString()},{"flag",chosen.size()==1?hillFlag(chosen.first()->getHill()):QString()},{"count",chosen.size()},{"locked",!editable()},{"title",chosen.size()==1?m_events.value(all.indexOf(chosen.first())).toMap().value("title"):tr("%1 konkursów").arg(chosen.size())}};
+    m_selection["rulesEditable"]=futureEventSettingsEditable();
     auto common=[&](const QString &key,const std::function<QVariant(CompetitionInfo *)> &read){
         if(chosen.isEmpty())return;QVariant value=read(chosen.first());for(auto *event:chosen)if(read(event)!=value){value=-1;break;}m_selection[key]=value;
     };
@@ -258,7 +259,9 @@ void QuickCalendar::mutate(const std::function<void()> &operation) {
 void QuickCalendar::fail(const QString &message){m_message=message;m_error=message;emit changed();}
 void QuickCalendar::update(const QVariantMap &fields) {
     commitPendingRules();
-    sync();if(!editable()){fail(tr("Rozegrane wydarzenia są zablokowane."));return;}
+    sync();bool futureSettingsOnly=!fields.isEmpty();
+    for(auto it=fields.cbegin();it!=fields.cend();++it)if(it.key()!="rules" && it.key()!="advancement" && it.key()!="advancementClass")futureSettingsOnly=false;
+    if(!editable() && !(futureSettingsOnly && futureEventSettingsEditable())){fail(tr("Rozegrane wydarzenia są zablokowane."));return;}
     bool differs=false;
     const QStringList keys{"hill","rules","kind","type","trainings","trial","trainingRules","trialRules","importance","trainingImportance","trialImportance","advancement","advancementClass"};
     for(auto it=fields.cbegin();it!=fields.cend();++it) {
@@ -487,7 +490,7 @@ void QuickCalendar::resetCustomRules(){
 void QuickCalendar::commitPendingRules(){if(m_rulesPending){m_rulesPending=false;applyCustomRules();}}
 void QuickCalendar::applyCustomRules(){
     ++m_rulesRevision;m_rulesPending=false;
-    sync();if(!editable()||!m_rulesEditor)return;
+    sync();if((!editable() && !(m_rulesTarget==0 && futureEventSettingsEditable()))||!m_rulesEditor)return;
     const auto value=m_rulesEditor->getCompetitionRulesFromWidgetInputs();
     if(value.getRounds().isEmpty()){fail(tr("Dodaj co najmniej jedną serię."));return;}
     const auto items=selected();
@@ -504,7 +507,7 @@ void QuickCalendar::applyCustomRules(){
     mutate([&]{for(auto *e:items){
         if(m_rulesTarget==1)for(auto *training:e->getTrainings())training->setRules(value);
         else if(m_rulesTarget==2)e->getTrialRound()->setRules(value);
-        else {e->setRules(value);if(e->getTrialRound() && value.getCompetitionType()==CompetitionRules::Team){auto trialRules=e->getTrialRound()->getRules();trialRules.setCompetitionType(CompetitionRules::Team);trialRules.setJumpersInTeamCount(value.getJumpersInTeamCount());e->getTrialRound()->setRules(trialRules);}}
+        else {e->setRules(value);if(e->getTrialRound() && !e->getTrialRound()->getPlayed() && !e->getTrialRound()->getCancelled() && value.getCompetitionType()==CompetitionRules::Team){auto trialRules=e->getTrialRound()->getRules();trialRules.setCompetitionType(CompetitionRules::Team);trialRules.setJumpersInTeamCount(value.getJumpersInTeamCount());e->getTrialRound()->setRules(trialRules);}}
     }});
 }
 void QuickCalendar::selectCalendar(int index) {
@@ -609,4 +612,23 @@ void QuickCalendar::setDefaultRule(const QString &role,int index){
     if(!m_calendar || !DataPack::ruleRoles().contains(role) || index<0)return;
     QString id;if(index>0){int n=0;for(const auto &r:*m_editor->getModel()->getRulesList())if(r.getCompetitionType()==(role.startsWith("team")?CompetitionRules::Team:CompetitionRules::Individual) && ++n==index){id=r.getIDStr();break;}if(id.isEmpty())return;}
     mutate([&]{if(id.isEmpty())m_calendar->defaultRules.remove(role);else m_calendar->defaultRules[role]=id;});
+}
+
+void QuickCalendar::cancelSelected()
+{
+    sync();QStringList ids;
+    for(auto *event:selected())if(!event->getPlayed() && !event->getCancelled())ids.append(event->getIDStr());
+    if(ids.isEmpty())return;
+    for(QWidget *owner=m_editor.data();owner;owner=owner->parentWidget())if(auto *manager=qobject_cast<SimulationSaveManagerWindow *>(owner)){
+        if(manager->cancelSeasonEvents(ids)){clearUndo();m_dirty=true;sync();}return;
+    }
+}
+
+bool QuickCalendar::futureEventSettingsEditable() const
+{
+    const auto items=selected();
+    if(items.isEmpty() || !m_editor || !m_calendar)return false;
+    for(auto *event:items)if(event->getPlayed() || event->getCancelled() || !event->getResultsReference().getResultsReference().isEmpty()
+        || m_calendar->getCompetitionsReference().indexOf(event)<m_editor->getModel()->getDontModifyBefore())return false;
+    return true;
 }

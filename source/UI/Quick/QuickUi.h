@@ -22,6 +22,8 @@ class QuickBridge;
 
 class QuickAppearance : public QObject {
     Q_OBJECT
+    Q_PROPERTY(bool windSectors READ windSectors WRITE setWindSectors NOTIFY changed)
+    Q_PROPERTY(bool windDiagnostics READ windDiagnostics WRITE setWindDiagnostics NOTIFY changed)
     Q_PROPERTY(bool dark READ dark WRITE setDark NOTIFY changed)
     Q_PROPERTY(bool compactUi READ compactUi WRITE setCompactUi NOTIFY changed)
     Q_PROPERTY(bool reducedMotion READ reducedMotion WRITE setReducedMotion NOTIFY changed)
@@ -31,6 +33,10 @@ class QuickAppearance : public QObject {
 public:
     static constexpr qreal DefaultUiScale = .70;
     explicit QuickAppearance(QObject *parent = nullptr);
+    bool windSectors() const { return m_windSectors; }
+    bool windDiagnostics() const { return m_windDiagnostics; }
+    void setWindSectors(bool value);
+    void setWindDiagnostics(bool value);
     bool dark() const { return m_dark; }
     bool compactUi() const { return m_compactUi; }
     bool reducedMotion() const { return m_reducedMotion; }
@@ -46,6 +52,7 @@ public:
 signals:
     void changed();
 private:
+    bool m_windSectors=true,m_windDiagnostics=false;
     bool m_dark, m_reducedMotion, m_compactUi;
     qreal m_textScale,m_uiScale;
     int m_teamResultsMode=0;
@@ -159,6 +166,7 @@ public:
     Q_INVOKABLE void finishText(int id);
     Q_INVOKABLE void selectPreviewRound(int round);
     Q_INVOKABLE void editNextKoGroups();
+    Q_INVOKABLE void revealDeveloperControls();
     Q_INVOKABLE void skipCurrentJump();
     Q_INVOKABLE void openResultViewOptions(int field=-1,qreal x=-1,qreal y=-1,qreal width=0) {emit resultViewOptionsRequested(field,x,y,width);}
     Q_INVOKABLE void assignKoMember(int editorId,const QString &groupId,int slot,const QString &athleteId);

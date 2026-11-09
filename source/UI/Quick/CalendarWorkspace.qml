@@ -140,7 +140,7 @@ Item {
                     SIconButton { objectName: "calendarMonthToggle"; text: "▦"; actionName: qsTr("Widok kalendarza"); visible: calendar.backend.datesEnabled; onClicked: calendar.monthView=!calendar.monthView }
                     SIconButton {
                         text: "↕"; actionName: qsTr("Kolejność i zaznaczanie"); onClicked: eventMenu.open()
-                        ActionMenu { id: eventMenu; entries: [{id:"many",text:qsTr("Dodaj wiele konkursów")},{id:"future",text:qsTr("Zaznacz przyszłe konkursy")},{id:"up",text:qsTr("Przesuń konkursy w górę"),enabled:!calendar.backend.selection.locked},{id:"down",text:qsTr("Przesuń konkursy w dół"),enabled:!calendar.backend.selection.locked}]; onSelected: {if(entry.id==="many")calendar.addingMany=!calendar.addingMany;else if(entry.id==="future")calendar.backend.selectAll(true);else calendar.backend.move(entry.id==="up"?-1:1)} }
+                        ActionMenu { id: eventMenu; entries: [{id:"many",text:qsTr("Dodaj wiele konkursów")},{id:"future",text:qsTr("Zaznacz przyszłe konkursy")},{id:"cancel",text:qsTr("Odwołaj konkursy"),enabled:calendar.backend.selection.count>0 && !calendar.backend.selection.locked},{id:"up",text:qsTr("Przesuń konkursy w górę"),enabled:!calendar.backend.selection.locked},{id:"down",text:qsTr("Przesuń konkursy w dół"),enabled:!calendar.backend.selection.locked}]; onSelected: {if(entry.id==="many")calendar.addingMany=!calendar.addingMany;else if(entry.id==="future")calendar.backend.selectAll(true);else if(entry.id==="cancel")calendar.backend.cancelSelected();else calendar.backend.move(entry.id==="up"?-1:1)} }
                     }
                 }
                 RowLayout {

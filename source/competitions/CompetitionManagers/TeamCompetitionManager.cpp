@@ -138,6 +138,7 @@ QVector<Team> TeamCompetitionManager::getFilteredTeamsAfterQualifications(Compet
 {
     QVector<Team> qualified;
     if(!competition || !competition->getAdvancementCompetition() || competition->getRulesPointer()->getRoundsReference().isEmpty())return qualified;
+    if(competition->getAdvancementCompetition()->getCancelled())return competition->getAdvancementCompetition()->getTeams();
     const int limit = qMax(0,competition->getRulesPointer()->getRoundsReference().first().getCount());
     if(limit == 0)return qualified;
     CompetitionResults standings = competition->getAdvancementCompetition()->getResultsReference();

@@ -55,6 +55,9 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     simulationSave(save)
 {
     ui->setupUi(this);
+    auto *cancelNext=new QPushButton(tr("Odwołaj najbliższe wydarzenie"),this);
+    cancelNext->setObjectName("pushButton_cancelNextCompetition");cancelNext->hide();
+    connect(cancelNext,&QPushButton::clicked,this,&SimulationSaveManagerWindow::cancelNextEvent);
     setWindowFlags(Qt::Window);
     setMinimumSize(640, 480);
     ui->splitter_manager->setStretchFactor(0, 4);
@@ -868,6 +871,10 @@ void SimulationSaveManagerWindow::showJumperAndHillsEditingHelp()
 
 void SimulationSaveManagerWindow::fillNextCompetitionInformations()
 {
+    if(auto *cancel=findChild<QPushButton *>("pushButton_cancelNextCompetition")){
+        auto *next=simulationSave->getNextCompetition();cancel->setEnabled(next && !next->getPlayed() && !next->getCancelled());
+    }
+
     {QSignalBlocker guard(ui->checkBox_calendarDates);auto *season=simulationSave->getActualSeason();ui->checkBox_calendarDates->setChecked(season->getDatesEnabled());ui->checkBox_calendarDates->setEnabled(season->getDatesEnabled() || !season->hasStarted());}
     if(simulationSave->getActualSeason() != nullptr
         && simulationSave->getActualSeason()->getActualCalendar() != nullptr)
@@ -1163,6 +1170,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
             autosaveTimer->stop();
             if(!saveSeasonChanges())return;
         }
+        const CompetitionInfo beforeStart=*next;
         auto configWindow=std::make_unique<CompetitionConfigWindow>(CompetitionConfigWindow::SeasonCompetition,this,simulationSave);
         configWindow->setModal(true);
 
@@ -1230,8 +1238,14 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
             managerWindow->setInrunSnowGenerator(InrunSnowGenerator(configWindow->getInrunSnowGeneratorSettingsWidget()->getBase(), configWindow->getInrunSnowGeneratorSettingsWidget()->getDeviation()));
             if(configWindow->getWeatherSetup())
                 managerWindow->bindWeatherSetup(configWindow->getWeatherSetup(),QRandomGenerator::global()->generate64());
+            if(managerWindow->exec() != QDialog::Accepted){
+                managerWindow.reset();managerOwner.reset();
+                *competition=beforeStart;
+                competition->getResultsReference().fixSingleResultsJumps();
+                simulationSave->updateNextCompetitionIndex();fillNextCompetitionInformations();
+                markSeasonChanged();return;
+            }
             simulationSave->getActualSeason()->markStarted();
-            if(managerWindow->exec() == QDialog::Accepted)
             {
                 competition->setPlayed(true);
                 for(auto & classification : competition->getClassificationsReference())
@@ -1313,7 +1327,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
                 else if(simulationSave->getNextCompetition() == nullptr)
                     QMessageBox::information(this, tr("Koniec kalendarza"), tr("Nie ma więcej zaplanowanych konkursów w tym kalendarzu. Czas na rozegranie konkursów z innych kalendarzy!"), QMessageBox::Ok);
             }
-        }
+        } else {*next=beforeStart;simulationSave->updateNextCompetitionIndex();fillNextCompetitionInformations();}
     }
     else
     {
@@ -1765,5 +1779,36 @@ bool SimulationSaveManagerWindow::saveSeasonChanges()
     }
     savedSeasonRevision=revision;
     if(autosaveTimer){autosaveTimer->stop();if(hasUnsavedSeasonChanges() && simulationSave->getAutosaveEnabled())autosaveTimer->start();}
+    return true;
+}
+
+void SimulationSaveManagerWindow::cancelNextEvent()
+{
+    auto *next=simulationSave->getNextCompetition();
+    if(next)cancelSeasonEvents({next->getIDStr()});
+}
+
+bool SimulationSaveManagerWindow::cancelSeasonEvents(const QStringList &ids)
+{
+    QVector<CompetitionInfo *> targets;
+    for(auto &season:simulationSave->getSeasonsReference())for(auto *calendar:season.getCalendars())for(auto *event:calendar->getCompetitions())
+        if(event && ids.contains(event->getIDStr()) && !targets.contains(event)){
+            if(event->getPlayed() || event->getCancelled() || !event->getResultsReference().getResultsReference().isEmpty())return false;
+            targets.append(event);
+        }
+    if(targets.isEmpty() || targets.size()!=QSet<QString>(ids.begin(),ids.end()).size())return false;
+    QMessageBox question(QMessageBox::Question,tr("Odwołanie wydarzenia"),
+        tr("Odwołać wybrane wydarzenia (%1)? Ich nierozegrane treningi i serie próbne także zostaną odwołane. Po odwołanych kwalifikacjach awansują wszyscy zawodnicy.").arg(targets.size()),QMessageBox::NoButton,this);
+    auto *cancel=question.addButton(tr("Odwołaj wydarzenia"),QMessageBox::DestructiveRole);
+    question.addButton(tr("Wróć"),QMessageBox::RejectRole);question.exec();
+    if(question.clickedButton()!=cancel)return false;
+    for(auto *event:targets){
+        auto block=event->getTrainings();if(event->getTrialRound())block.append(event->getTrialRound());block.append(event);
+        for(auto *part:block)if(part && !part->getPlayed()){
+            part->setCancelled(true);part->setPlayed(true);part->getResultsReference().getResultsReference().clear();
+        }
+    }
+    simulationSave->updateNextCompetitionIndex();refreshCalendarState();fillNextCompetitionInformations();updateArchive();
+    markSeasonChanged();if(simulationSave->getAutosaveEnabled())saveSeasonChanges();
     return true;
 }

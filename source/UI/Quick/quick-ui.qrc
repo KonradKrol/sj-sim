@@ -170,6 +170,8 @@
 <file>JumpAdjustmentFields.qml</file>
 <file>JumpJudgesEditor.qml</file>
 <file>JumpWindProfile.qml</file>
+        <file>WindSectorsCompact.qml</file>
+        <file>WindMeasurementComparison.qml</file>
 <file>JumpWeights.qml</file>
     <file>JumpMetric.qml</file>
     <file>JudgeMarks.qml</file>

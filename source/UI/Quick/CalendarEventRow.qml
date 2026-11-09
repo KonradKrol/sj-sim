@@ -26,7 +26,7 @@ Item {
         if(event.team)parts.push(qsTr("Drużynowy"))
         if(event.trainings)parts.push(qsTr("Treningi: %1").arg(event.trainings))
         if(event.trial)parts.push(qsTr("Próbna"))
-        if(event.locked)parts.push(event.played ? qsTr("Rozegrany") : event.cancelled ? qsTr("Odwołany") : qsTr("W trakcie"))
+        if(event.locked)parts.push(event.cancelled ? qsTr("Odwołany") : event.played ? qsTr("Rozegrany") : qsTr("W trakcie"))
         return parts.join(" · ")
     }
     implicitHeight: Math.max(Theme.compact ? 32 : 48,rowContent.implicitHeight+(Theme.compact ? 6 : 8))

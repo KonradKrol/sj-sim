@@ -119,6 +119,7 @@ public:
     Q_INVOKABLE void addMany(int count);
     Q_INVOKABLE void duplicate();
     Q_INVOKABLE void remove();
+    Q_INVOKABLE void cancelSelected();
     Q_INVOKABLE void move(int direction);
     Q_INVOKABLE void undo();
     Q_INVOKABLE void redo();
@@ -185,6 +186,7 @@ private:
     QVector<CompetitionInfo *> selected() const;
     bool locked(CompetitionInfo *event) const;
     bool editable() const;
+    bool futureEventSettingsEditable() const;
     bool referencedByHistory(CompetitionInfo *event) const;
     Snapshot capture() const;
     void mutate(const std::function<void()> &operation);

@@ -12,7 +12,7 @@ namespace QuickWindProfile {
 
 // Read recorded exposure only. A newer engine or current weather must never
 // change the wind shown for an archived jump. Grouping is length-weighted.
-inline QVariantMap fromMetadata(const QJsonObject &metadata)
+inline QVariantMap fromMetadata(const QJsonObject &metadata,double k=0)
 {
     const auto sections=metadata["exposures"].toArray();
     if(metadata["engineVersion"].toInt()!=2 || sections.isEmpty() || sections.size()>32)return {};
@@ -31,9 +31,9 @@ inline QVariantMap fromMetadata(const QJsonObject &metadata)
         }
     }
     QVariantList samples[3];
-    const int groupSize=(sections.size()+5)/6;
-    for(int first=0;first<sections.size();first+=groupSize) {
-        const int last=std::min(first+groupSize,int(sections.size()));
+    const int count=std::min(int(sections.size()),k>0?(k<80?3:k<110?4:k<155?5:k<195?6:7):6);
+    for(int group=0;group<count;++group) {
+        const int first=group*sections.size()/count,last=(group+1)*sections.size()/count;
         const double begin=sections[first].toObject()["begin"].toDouble(),end=sections[last-1].toObject()["end"].toDouble();
         for(int phase=0;phase<3;++phase) {
             double head=0,cross=0,length=0;
@@ -51,7 +51,9 @@ inline QVariantMap fromMetadata(const QJsonObject &metadata)
                 {"head",head},{"cross",cross},{"strength",strength},{"direction",direction},{"available",length>0}});
         }
     }
-    return {{"before",samples[0]},{"during",samples[1]},{"after",samples[2]}};
+    double head=0,length=0;
+    for(const auto &value:sections){const auto part=value.toObject();const double travelled=part["traversed"].toDouble();head+=part["experienced"].toArray()[0].toDouble()*travelled;length+=travelled;}
+    return {{"before",samples[0]},{"during",samples[1]},{"after",samples[2]},{"actualWind",length>0?head/length:0}};
 }
 
 }

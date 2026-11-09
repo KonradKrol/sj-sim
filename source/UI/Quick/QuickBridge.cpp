@@ -125,6 +125,8 @@ void QuickNode::update(const QVariantMap &values,const QVariantList &children) {
 }
 QuickAppearance::QuickAppearance(QObject *parent) : QObject(parent) {
     QSettings settings;
+    m_windSectors=settings.value("quickUi/windSectors",true).toBool();
+    m_windDiagnostics=settings.value("quickUi/windDiagnostics",false).toBool();
     m_teamResultsMode=qBound(0,settings.value("quickUi/teamResultsMode",0).toInt(),2);
     m_dark=settings.value("quickUi/dark",false).toBool();
     m_compactUi=false; // The previous density preset is superseded by the continuous UI scale.
@@ -648,9 +650,10 @@ void QuickBridge::refresh() {
                 auto *jump=info->getJumpData();
                 if(summary.contains("landing"))summary["landingType"]=jump->getLanding().getType();
                 if((stage==0 || stage>=5) && !jump->getDNS() && !jump->getDSQ()) {
-                    const auto profile=QuickWindProfile::fromMetadata(jump->getSimulationV2Data());
+                    const auto profile=QuickWindProfile::fromMetadata(jump->getSimulationV2Data(),jump->getHill()?jump->getHill()->getKPoint():0);
                     if(!profile.isEmpty()) {
-                        summary["windProfile"]=profile;
+                        auto recorded=profile;recorded["measuredWind"]=jump->getAveragedWind();
+                        summary["windProfile"]=recorded;
                         summary["windProfileKey"]=jump->getSimulationV2Data()["seed"].toString()+":"+QString::number(jump->getSimulationV2Data()["startSeconds"].toDouble());
                     }
                 }
@@ -1030,7 +1033,7 @@ void QuickBridge::compose(QuickNode *base) {
             {"openBalanceLab",""},{"openSimulationPlayground",""},{"comboBox_language",tr("Język interfejsu")},
             {"spinBox_dsqProbability",tr("Częstość dyskwalifikacji")},
             {"doubleSpinBox_liveCompSpeed",tr("Tempo konkursu na żywo")},
-            {"checkBox_globalDatabaseRecords",""},{"checkBox_liveCompetition",""}}),"form")}));
+            {"checkBox_globalDatabaseRecords",""},{"checkBox_liveCompetition",""},{"checkBox_windSectors",""},{"checkBox_windDiagnostics",""}}),"form")}));
         sections.append(group("tools",tr("Baza danych i narzędzia"),{group("database-settings-fields",QString(),fields({
             {"pushButton_countriesEditor",""},{"pushButton_jumpInfoChoice",""},
             {"pushButton_defaultSettings",""}}),"form")}));
@@ -1041,7 +1044,7 @@ void QuickBridge::compose(QuickNode *base) {
         auto *source=m_content->findChild<QTabWidget *>("toolBox");
         if(source) {
             QVariantList tools;
-            for(const auto &name:{"pushButton","pushButton_saveAsCopy","pushButton_repairDatabase"})
+            for(const auto &name:{"pushButton","pushButton_saveAsCopy","pushButton_repairDatabase","pushButton_cancelNextCompetition"})
                 if(auto *button=m_content->findChild<QPushButton *>(name))
                     tools.append(QVariantMap{{"id",idFor(button)},{"text",button->text().remove('&')},{"enabled",button->isEnabled()},{"button",true}});
             auto *menuNode=m_groups.value("quickSeasonTools");
@@ -1081,8 +1084,8 @@ void QuickBridge::compose(QuickNode *base) {
                     const auto trainings=event->getTrainings();int completedTrainings=0;for(auto *training:trainings)if(training && training->getPlayed())++completedTrainings;
                     auto *trial=event->getTrialRound();
                     const auto date=event->getScheduledDate();QVariantList preparations;int trainingNumber=0;
-                    for(auto *training:trainings)if(training){++trainingNumber;const auto when=training->getScheduledDate();preparations.append(QVariantMap{{"training",true},{"number",trainingNumber},{"total",trainings.size()},{"played",training->getPlayed()},{"current",training==nextEvent},{"date",datesEnabled && when.isValid()?when.toString("dd.MM.yyyy"):QString()}});}
-                    if(trial){const auto when=trial->getScheduledDate();preparations.append(QVariantMap{{"training",false},{"played",trial->getPlayed()},{"current",trial==nextEvent},{"date",datesEnabled && when.isValid()?when.toString("dd.MM.yyyy"):QString()}});}
+                    for(auto *training:trainings)if(training){++trainingNumber;const auto when=training->getScheduledDate();preparations.append(QVariantMap{{"training",true},{"number",trainingNumber},{"total",trainings.size()},{"played",training->getPlayed()},{"cancelled",training->getCancelled()},{"current",training==nextEvent},{"date",datesEnabled && when.isValid()?when.toString("dd.MM.yyyy"):QString()}});}
+                    if(trial){const auto when=trial->getScheduledDate();preparations.append(QVariantMap{{"training",false},{"played",trial->getPlayed()},{"cancelled",trial->getCancelled()},{"current",trial==nextEvent},{"date",datesEnabled && when.isValid()?when.toString("dd.MM.yyyy"):QString()}});}
                     upcoming.append(QVariantMap{{"hill",hill?hill->getName():tr("Wybierz skocznię")},{"hs",hill?QString::number(hill->getHSPoint(),'f',0):QString()},
                         {"country",hill?hill->getCountryCode():QString()},{"flag",hill?QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(hill->getCountryCode())+".svg")).toString():QString()},
                         {"date",datesEnabled && date.isValid()?date.toString("dd.MM.yyyy"):QString()},
@@ -1102,7 +1105,7 @@ void QuickBridge::compose(QuickNode *base) {
                         podium.append(QVariantMap{{"position",position},{"name",jumper?jumper->getNameAndSurname():country},{"country",country},{"flag",QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(country)+".svg")).toString()},{"photo",!photo.isEmpty() && QFileInfo::exists(photo)?QUrl::fromLocalFile(QFileInfo(photo).absoluteFilePath()).toString():QString()},{"points",QLocale().toString(result.getPointsSum(),'f',1)}});
                     }
                     std::stable_sort(podium.begin(),podium.end(),[](const QVariant &a,const QVariant &b){return a.toMap().value("position").toInt()<b.toMap().value("position").toInt();});
-                    latest={{"hill",hill?hill->getName():QString()},{"hs",hill?QString::number(hill->getHSPoint(),'f',0):QString()},{"type",lastPlayed->getLongSerieTypeText()},{"date",datesEnabled && lastPlayed->getScheduledDate().isValid()?lastPlayed->getScheduledDate().toString("dd.MM.yyyy"):QString()},{"results",podium}};
+                    latest={{"hill",hill?hill->getName():QString()},{"hs",hill?QString::number(hill->getHSPoint(),'f',0):QString()},{"type",lastPlayed->getLongSerieTypeText()},{"cancelled",lastPlayed->getCancelled()},{"date",datesEnabled && lastPlayed->getScheduledDate().isValid()?lastPlayed->getScheduledDate().toString("dd.MM.yyyy"):QString()},{"results",podium}};
                 }
                 if(!upcoming.isEmpty() || !latest.isEmpty()) {
                     auto *preview=m_groups.value("quickSeasonOverview");if(!preview){preview=new QuickNode(this);m_groups.insert("quickSeasonOverview",preview);}
@@ -1384,3 +1387,7 @@ void QuickBridge::selectWindSector(int editorId,int sector) {
     auto *box=editor?editor->findChild<QToolBox *>("toolBox"):nullptr;
     if(box && sector>=0 && sector<box->count()) { editor->setProperty("quickWindSector",sector);deferRefresh(); }
 }
+
+void QuickAppearance::setWindSectors(bool value){if(value==m_windSectors)return;m_windSectors=value;QSettings().setValue("quickUi/windSectors",value);emit changed();}
+void QuickAppearance::setWindDiagnostics(bool value){if(value==m_windDiagnostics)return;m_windDiagnostics=value;QSettings().setValue("quickUi/windDiagnostics",value);emit changed();}
+void QuickBridge::revealDeveloperControls(){if(profile()!="AppSettingsWindow")return;if(auto *box=m_window->findChild<QCheckBox *>("checkBox_windDiagnostics")){box->show();refresh();}}

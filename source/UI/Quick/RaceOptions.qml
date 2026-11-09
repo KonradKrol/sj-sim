@@ -6,6 +6,8 @@ ColumnLayout {
     id: workspace
     objectName: "raceOptionsWorkspace"
     property int section: 0
+    property bool windSectorsEnabled: true
+    signal windVisibilityChanged(bool enabled)
     onSectionChanged: { scroll.cancelFlick(); scroll.contentY = 0 }
     signal closeRequested()
     spacing: 12
@@ -36,9 +38,11 @@ ColumnLayout {
                 id: optionsContent
                 width: parent.width; spacing: 12
                 SButton { objectName: "skipCurrentJump"; visible: workspace.section===2; text: qsTr("Pomiń skok · DNS"); enabled: !ui.context.complete && !ui.context.roundComplete; onClicked: {ui.skipCurrentJump();workspace.closeRequested()} }
+                SCheck { visible: workspace.section===1; text: qsTr("Pokazuj sektory wiatru po skoku"); checked: workspace.windSectorsEnabled; enabled: appearance.windSectors; onClicked: workspace.windVisibilityChanged(checked) }
+                SCheck { visible: workspace.section===1 && appearance.windDiagnostics; text: qsTr("Porównuj pomiar wiatru z przebytym odcinkiem"); checked: appearance.windDiagnostics; onClicked: appearance.windDiagnostics=checked }
                 RaceSimulation { visible: workspace.section===0; width: parent.width; onStarted: workspace.closeRequested() }
                 Repeater {
-                    model: workspace.section===0 ? ["toolButton_cancelActions","pushButton_sendResultsWebhook"] : workspace.section===1 ? ["pushButton_generateNewWinds","pushButton_windsGeneratorSettings","pushButton_inrunSnowGeneratorSettings"] : ["pushButton_coachGate","pushButton_manipulateJump","label_record","label_pointsBehindLeader","label_lastRoundPosition","label_personalBest"]
+                    model: workspace.section===0 ? ["toolButton_cancelActions","pushButton_sendResultsWebhook"] : workspace.section===1 ? ["pushButton_windsGeneratorSettings","pushButton_inrunSnowGeneratorSettings"] : ["pushButton_coachGate","pushButton_manipulateJump","label_record","label_pointsBehindLeader","label_lastRoundPosition","label_personalBest"]
                     Node { width: parent.width; height: implicitHeight; node: ui.find(modelData) }
                 }
                 Loader {

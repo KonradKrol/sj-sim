@@ -109,6 +109,7 @@ QVector<Jumper *> IndividualCompetitionManager::getFilteredJumpersAfterQualifica
     QVector<Jumper *> qualified;
     if(!competition || !competition->getAdvancementCompetition() || competition->getRulesPointer()->getRoundsReference().isEmpty())return qualified;
     auto *source = competition->getAdvancementCompetition();
+    if(source->getCancelled()){for(auto *jumper:jumpers)if(jumper && !qualified.contains(jumper))qualified.append(jumper);return qualified;}
     const auto &firstRound = competition->getRulesPointer()->getRoundsReference().first();
     const int limit = qMax(0,firstRound.getCount());
     if(limit == 0)return qualified;

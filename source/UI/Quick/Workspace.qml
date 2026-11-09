@@ -16,6 +16,7 @@ ColumnLayout {
     readonly property bool catalogPage: contentNode && (contentNode.values.kind === "catalog" || contentNode.values.kind === "seasonRosters")
     readonly property bool calendarPage: contentNode && contentNode.values.kind === "calendar"
     readonly property bool sideTabs: tabbed && width >= 1200 && height >= 550
+    Shortcut { sequence: "Ctrl+Shift+D"; enabled: ui.profile==="AppSettingsWindow"; onActivated: ui.revealDeveloperControls() }
     spacing: 0
     Loader {
         active: workspace.season

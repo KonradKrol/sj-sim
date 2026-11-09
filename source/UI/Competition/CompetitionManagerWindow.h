@@ -32,8 +32,11 @@ class CompetitionManagerWindow : public QDialog
 public:
     explicit CompetitionManagerWindow(AbstractCompetitionManager * manager = nullptr,  QWidget *parent = nullptr, bool singleCompetition = false);
     ~CompetitionManagerWindow();
+    void reject() override;
     void setSimulationWeather(std::shared_ptr<const SimulationV2::WeatherField>,SimulationV2::Seed qualitySeed,double startSeconds=0);
     void bindWeatherSetup(SimulationWeatherSetup *,SimulationV2::Seed qualitySeed,double startSeconds=0);
+    void advanceRoundWeather();
+    int windRound=1;
     double getSimulationSeconds() const {return simulationSeconds;}
 
 protected:
@@ -75,6 +78,9 @@ public:
     void autoSimulateJumps();
 
     void checkRecords(JumpData &jump, bool multipleRecords = false);
+    void restoreAbandonedRecords();
+    QHash<Jumper *,double> originalPersonalBests;
+    QHash<Hill *,double> originalHillRecords;
     void checkRecordsByResults(CompetitionResults * results);
 
     dpp::embed getEmbedForResults();

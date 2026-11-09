@@ -30,7 +30,7 @@ ColumnLayout {
                 Label { text: overview.latest.date || ""; color: Theme.muted; font.pointSize: Theme.caption }
             }
             Label { text: (overview.latest.type || "") + " · " + (overview.latest.hill || "") + (overview.latest.hs ? " · HS"+overview.latest.hs : ""); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-            Label { visible: !(overview.latest.results || []).length; text: qsTr("Brak sklasyfikowanych wyników"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
+            Label { visible: !(overview.latest.results || []).length; text: overview.latest.cancelled ? qsTr("Wydarzenie odwołane") : qsTr("Brak sklasyfikowanych wyników"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
             Repeater {
                 model: overview.latest.results || []
                 RowLayout {
@@ -79,16 +79,26 @@ ColumnLayout {
                     RowLayout {
                         required property var modelData
                         Layout.fillWidth: true; spacing: Theme.dp(5)
-                        Label { text: modelData.current ? qsTr("TERAZ") : modelData.played ? "✓" : "•"; color: modelData.current ? Theme.snow : modelData.played ? (eventCard.next ? Theme.signal : Theme.success) : eventCard.muted; font.bold: modelData.current; font.pointSize: modelData.current ? Theme.body : Theme.caption }
-                        Label { text: (modelData.training ? (modelData.total>1 ? qsTr("Trening %1 z %2").arg(modelData.number).arg(modelData.total) : qsTr("Trening")) : qsTr("Seria próbna")) + (eventCard.modelData.qualification ? qsTr(" przed kwalifikacjami") : qsTr(" przed konkursem")) + (modelData.played ? (modelData.training ? qsTr(" · rozegrany") : qsTr(" · rozegrana")) : modelData.current ? "" : (modelData.training ? qsTr(" · zaplanowany") : qsTr(" · zaplanowana"))) + (modelData.date ? " · "+modelData.date : ""); color: modelData.current ? eventCard.ink : eventCard.muted; font.bold: modelData.current; font.pointSize: modelData.current ? Theme.body : Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                        Label { text: modelData.current ? qsTr("TERAZ") : modelData.cancelled ? "—" : modelData.played ? "✓" : "•"; color: modelData.current ? Theme.snow : modelData.played ? (eventCard.next ? Theme.signal : Theme.success) : eventCard.muted; font.bold: modelData.current; font.pointSize: modelData.current ? Theme.body : Theme.caption }
+                        Label { text: (modelData.training ? (modelData.total>1 ? qsTr("Trening %1 z %2").arg(modelData.number).arg(modelData.total) : qsTr("Trening")) : qsTr("Seria próbna")) + (eventCard.modelData.qualification ? qsTr(" przed kwalifikacjami") : qsTr(" przed konkursem")) + (modelData.cancelled ? (modelData.training ? qsTr(" · odwołany") : qsTr(" · odwołana")) : modelData.played ? (modelData.training ? qsTr(" · rozegrany") : qsTr(" · rozegrana")) : modelData.current ? "" : (modelData.training ? qsTr(" · zaplanowany") : qsTr(" · zaplanowana"))) + (modelData.date ? " · "+modelData.date : ""); color: modelData.current ? eventCard.ink : eventCard.muted; font.bold: modelData.current; font.pointSize: modelData.current ? Theme.body : Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                     }
                 }
                 Label { visible: eventCard.next && eventCard.modelData.current; text: qsTr("TERAZ · %1").arg(eventCard.modelData.qualification ? qsTr("Kwalifikacje") : qsTr("Konkurs")); color: Theme.snow; font.pointSize: Theme.body; font.bold: true; Layout.fillWidth: true }
-                SButton {
-                    visible: eventCard.next; Layout.fillWidth: true; primary: true
-                    readonly property var projectedAction: overview.fields.action ? overview.fields.action.values : ({})
-                    text: projectedAction.text || ""; enabled: projectedAction.enabled!==false
-                    onClicked: ui.activate(projectedAction.id)
+                RowLayout {
+                    visible: eventCard.next; Layout.fillWidth: true
+                    SButton {
+                        Layout.fillWidth: true; primary: true
+                        readonly property var projectedAction: overview.fields.action ? overview.fields.action.values : ({})
+                        text: projectedAction.text || ""; enabled: projectedAction.enabled!==false
+                        onClicked: ui.activate(projectedAction.id)
+                    }
+                    SButton {
+                        text: "⋯"; quiet: true; Accessible.name: qsTr("Opcje wydarzenia")
+                        readonly property var cancellation: ui.find("pushButton_cancelNextCompetition")
+                        enabled: !!cancellation && cancellation.values.enabled
+                        onClicked: upcomingMenu.open()
+                        ActionMenu { id: upcomingMenu; entries: [{text:qsTr("Odwołaj wydarzenie")}]; onSelected: if(cancellation)ui.activate(cancellation.values.id) }
+                    }
                 }
             }
             }

@@ -316,7 +316,15 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <source>Rozgrywaj konkurs na żywo</source>
             <translation>Simulovat závody živě</translation>
         </message>
-    </context>
+        <message>
+        <source>Pokazuj sektory wiatru po skoku</source>
+        <translation>Zobrazovat větrné úseky po skoku</translation>
+    </message>
+    <message>
+        <source>Porównuj pomiar wiatru z przebytym odcinkiem</source>
+        <translation>Porovnávat měřený vítr s prolétnutým úsekem</translation>
+    </message>
+</context>
     <context>
         <name>AppearanceMenu</name>
         <message>
@@ -2355,6 +2363,10 @@ li.checked::marker { content: "\2612"; }
         <source>Szybkie planowanie</source>
         <translation>Rychlé plánování</translation>
     </message>
+    <message>
+        <source>Rozegrane przygotowania są zablokowane.</source>
+        <translation>Dokončené přípravné události jsou uzamčené.</translation>
+    </message>
 </context>
     <context>
         <name>CalendarVenueButton</name>
@@ -2820,6 +2832,10 @@ li.checked::marker { content: "\2612"; }
     <message>
         <source>Zaznacz konkurs na liście, aby zmienić jego ustawienia.</source>
         <translation>Vyberte závod v seznamu a upravte jeho nastavení.</translation>
+    </message>
+    <message>
+        <source>Odwołaj konkursy</source>
+        <translation>Zrušit závody</translation>
     </message>
 </context>
     <context>
@@ -4880,7 +4896,27 @@ Pro dodatečnou kompenzaci musí skokan dosáhnout 95 % bodu HS (%1 m).</transla
             <source>Rozgrywaj konkurs na żywo</source>
             <translation>Simulovat závody živě</translation>
         </message>
-    </context>
+        <message>
+        <source>Odwołaj wydarzenie</source>
+        <translation>Zrušit událost</translation>
+    </message>
+    <message>
+        <source>Odwołać to wydarzenie? Wyniki zostaną usunięte. Po odwołanych kwalifikacjach awansują wszyscy zawodnicy.</source>
+        <translation>Zrušit tuto událost? Její výsledky budou odstraněny. Po zrušené kvalifikaci postupují všichni závodníci.</translation>
+    </message>
+    <message>
+        <source>Wróć</source>
+        <translation>Zpět</translation>
+    </message>
+    <message>
+        <source>Wyjdź bez zapisywania</source>
+        <translation>Odejít bez uložení</translation>
+    </message>
+    <message>
+        <source>Wyjść bez zakończenia wydarzenia? Oddane skoki zostaną usunięte. Wydarzenie będzie można rozpocząć ponownie.</source>
+        <translation>Odejít před dokončením události? Dosavadní skoky budou odstraněny. Událost bude možné spustit znovu.</translation>
+    </message>
+</context>
     <context>
         <name>CompetitionQuickBridge</name>
         <message>
@@ -16424,7 +16460,11 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Ustawienia: %1</source>
             <translation>Nastavení: %1</translation>
         </message>
-    </context>
+        <message>
+        <source>Odczekaj 30 s</source>
+        <translation>Počkat 30 s</translation>
+    </message>
+</context>
     <context>
         <name>RaceLastJump</name>
         <message>
@@ -16555,7 +16595,15 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Pomiń skok · DNS</source>
             <translation>Přeskočit skok · DNS</translation>
         </message>
-    </context>
+        <message>
+        <source>Pokazuj sektory wiatru po skoku</source>
+        <translation>Zobrazovat větrné úseky po skoku</translation>
+    </message>
+    <message>
+        <source>Porównuj pomiar wiatru z przebytym odcinkiem</source>
+        <translation>Porovnávat měřený vítr s prolétnutým úsekem</translation>
+    </message>
+</context>
     <context>
         <name>RaceScreen</name>
         <message>
@@ -17361,7 +17409,15 @@ startovní listiny</translation>
             <source>Indywidualny</source>
             <translation>Individuální</translation>
         </message>
-    </context>
+        <message>
+        <source>Odwołaj wydarzenie</source>
+        <translation>Zrušit událost</translation>
+    </message>
+    <message>
+        <source>Opcje wydarzenia</source>
+        <translation>Možnosti události</translation>
+    </message>
+</context>
     <context>
         <name>SectionTabs</name>
         <message>
@@ -18513,6 +18569,26 @@ li.checked::marker { content: "\2612"; }
     <message>
         <source>Wróć do edycji</source>
         <translation>Pokračovat v úpravách</translation>
+    </message>
+    <message>
+        <source>Odwołaj najbliższe wydarzenie</source>
+        <translation>Zrušit příští událost</translation>
+    </message>
+    <message>
+        <source>Odwołaj wydarzenia</source>
+        <translation>Zrušit události</translation>
+    </message>
+    <message>
+        <source>Odwołanie wydarzenia</source>
+        <translation>Zrušení události</translation>
+    </message>
+    <message>
+        <source>Odwołać wybrane wydarzenia (%1)? Ich nierozegrane treningi i serie próbne także zostaną odwołane. Po odwołanych kwalifikacjach awansują wszyscy zawodnicy.</source>
+        <translation>Zrušit vybrané události (%1)? Budou zrušeny také jejich dosud neodehrané tréninky a zkušební kola. Po zrušené kvalifikaci postupují všichni závodníci.</translation>
+    </message>
+    <message>
+        <source>Wróć</source>
+        <translation>Zpět</translation>
     </message>
 </context>
     <context>
@@ -23396,6 +23472,26 @@ Technický klíč: %4</translation>
     <message><source> · zaplanowana</source><translation> · naplánována</translation></message>
 
     <message><source>TERAZ · %1</source><translation>NYNÍ · %1</translation></message>
+    <message>
+        <source> · odwołana</source>
+        <translation> · zrušeno</translation>
+    </message>
+    <message>
+        <source> · odwołany</source>
+        <translation> · zrušeno</translation>
+    </message>
+    <message>
+        <source>Odwołaj wydarzenie</source>
+        <translation>Zrušit událost</translation>
+    </message>
+    <message>
+        <source>Opcje wydarzenia</source>
+        <translation>Možnosti události</translation>
+    </message>
+    <message>
+        <source>Wydarzenie odwołane</source>
+        <translation>Událost zrušena</translation>
+    </message>
 </context>
     <context>
         <name>StudioPackBar</name>
@@ -23733,6 +23829,28 @@ Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></con
     <message>
         <source>Przeciągnij tutaj skoczków</source>
         <translation>Přetáhněte závodníky sem</translation>
+    </message>
+</context>
+<context>
+    <name>WindMeasurementComparison</name>
+    <message>
+        <source>Pomiar: %1 m/s · różnica: %2 m/s</source>
+        <translation>Naměřeno: %1 m/s · rozdíl: %2 m/s</translation>
+    </message>
+    <message>
+        <source>Przebyty odcinek: %1 m/s</source>
+        <translation>Prolétnutý úsek: %1 m/s</translation>
+    </message>
+</context>
+<context>
+    <name>WindSectorsCompact</name>
+    <message>
+        <source>Ukryj sektory wiatru</source>
+        <translation>Skrýt větrné úseky</translation>
+    </message>
+    <message>
+        <source>Wiatr na zeskoku</source>
+        <translation>Vítr na doskočišti</translation>
     </message>
 </context>
 </TS>

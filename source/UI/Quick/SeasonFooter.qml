@@ -9,6 +9,7 @@ Pane {
     implicitWidth: 0
     width: parent ? parent.width : 0
     readonly property bool shortScreen: Window.window && Window.window.height<600
+    readonly property var cancellation: ui.find("pushButton_cancelNextCompetition")
     readonly property var action: ui.find("pushButton_competitionConfig")
     implicitHeight: Math.max(details.implicitHeight,nextAction.implicitHeight)+topPadding+bottomPadding
     padding: Theme.dp(4)
@@ -30,6 +31,16 @@ Pane {
             }
         }
         SButton { id: nextAction; objectName: "seasonNextAction"; text: footer.action ? footer.action.values.text : ""; enabled: !!footer.action && footer.action.values.enabled; hint: footer.action ? footer.action.values.tip || "" : ""; primary: true; font.pointSize: Theme.body; implicitHeight: Math.max(Theme.compact ? 28 : 40,contentItem.implicitHeight+(Theme.compact ? 4 : 12)); Layout.fillWidth: footer.width<Theme.dp(440); Layout.minimumWidth: 0; Layout.maximumWidth: footer.width<Theme.dp(440) ? Infinity : Theme.dp(260); onClicked: if(footer.action)ui.activate(footer.action.values.id) }
+        SButton {
+            text: "⋯"; quiet: true; hint: qsTr("Opcje wydarzenia"); Accessible.name: hint
+            visible: !!footer.cancellation && footer.cancellation.values.enabled
+            onClicked: eventMenu.open()
+            ActionMenu {
+                id: eventMenu
+                entries: [{text:qsTr("Odwołaj wydarzenie")}]
+                onSelected: ui.activate(footer.cancellation.values.id)
+            }
+        }
     }
 }
 }

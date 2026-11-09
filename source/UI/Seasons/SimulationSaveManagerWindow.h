@@ -48,6 +48,8 @@ public:
 
     void showJumperAndHillsEditingHelp();
     void fillNextCompetitionInformations();
+    Q_INVOKABLE void cancelNextEvent();
+    bool cancelSeasonEvents(const QStringList &ids);
     void focusCalendarTab(bool create=false,bool addCompetition=false);
     bool autosaveEnabled() const;
     Q_INVOKABLE void setAutosaveEnabled(bool enabled);
