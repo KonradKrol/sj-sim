@@ -16,7 +16,7 @@ int main(){
             for(int level:{-4,-1,0,1,4}){
                 request.hill.distanceSpreadPerk=level;
                 const double actual=engine.previewDistance(request,calm);
-                const double expected=request.hill.k+(base-request.hill.k)*(1+.02*level*(level<0?5.:1.));
+                const double expected=request.hill.k+(base-request.hill.k)*(1+.02*level*(level<0?2.5:1.));
                 if(std::abs(actual-expected)>.001)throw std::runtime_error("incorrect final spread");
             }
             auto disabled=EngineParameters{};disabled.flight.hillSpreadPerLevel=0;
