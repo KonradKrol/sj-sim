@@ -131,9 +131,14 @@ struct LayoutWarningRegressionGuard {
 
 static void check(bool ok,const QString &message) { if(!ok) { qCritical().noquote()<<"FAIL:"<<message; std::exit(1); } }
 static QQuickItem *item(QQuickItem *root,const QString &name) {
-    if(root->objectName()==name) return root;
-    for(auto *child:root->childItems()) if(auto *result=item(child,name)) return result;
-    return nullptr;
+    // Responsive workspaces can keep both wide and narrow inspectors alive.
+    QQuickItem *fallback=root->objectName()==name?root:nullptr;
+    if(fallback && fallback->isVisible())return fallback;
+    for(auto *child:root->childItems())if(auto *result=item(child,name)) {
+        if(result->isVisible())return result;
+        if(!fallback)fallback=result;
+    }
+    return fallback;
 }
 static MainWindow *applicationWindow=nullptr;
 static QQuickWidget *scene(QWidget *window) {

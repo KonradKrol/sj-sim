@@ -142,3 +142,11 @@ Najważniejsze pliki do dalszej kontroli:
 - UI webhooków: przyciski i etykiety ukryte w formularzach Widgets oraz odfiltrowane w QuickBridge, usunięty przycisk archiwum, usunięte wzmianki z pomocy/podziękowań. Wewnętrzne dawne metody i pola zapisu pozostają; nie są wystawione w UI.
 
 Przy wznowieniu: przede wszystkim ręcznie sprawdzić nową sekwencję relacji w konkursie (także bez sędziów, DSQ i automat), działanie Rozegraj/Odwołaj oraz wygląd przeglądu i kalendarza na rzeczywistym zapisie i przy zmianie skali. Właściciel zatrzymał pracę z powodu limitu tokenów — nie rozpoczynać teraz kolejnych zmian.
+
+## Wznowienie — 10 listopada: stabilne wymiary paska sezonu
+
+Kontrola rzeczywistych okien przez QTest, na odizolowanych danych, ujawniła pętlę `SeasonBar.implicitHeight` po zmianie rozmiaru tekstu. Pasek otrzymał niezależne od przydzielonej wysokości wymiary grupy informacji i akcji. Przełącza je w jeden/dwa wiersze bez negocjowania wysokości przez nadrzędny GridLayout. W SToolButton zastąpiono układ z rozciąganymi pustymi elementami naturalnie wymiarowanym, wyśrodkowanym rzędem ikony i tekstu; usunięto kolejne sprzężenie szerokości przy zmianie skali.
+
+Istniejący test workflow wybiera teraz widoczną kontrolkę, jeśli responsywny ekran ma jednocześnie ukrytą i widoczną kopię inspektora. Zachowano możliwość znalezienia ukrytej kontrolki, gdy nie ma widocznej kopii.
+
+Sprawdzone: pełny `--workflow-only` (edycja kalendarza, narzędzia sezonu, zaznaczanie, cofanie, ochrona historii, rozmiary okna i duży tekst) bez ostrzeżeń o pętlach layoutu. Dodatkowy przebieg rzeczywistego przeglądu sezonu: 1440×900, 1024×640, 800×600, skala UI 50/70/100%, tekst do 140%, naturalne wysokości kart. Nie jest to ręczny sezon obejmujący rozegranie wszystkich zawodów.
