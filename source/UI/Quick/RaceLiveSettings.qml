@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 Popup {
     id: popup
+    objectName: "raceLiveSettings"
     parent: Overlay.overlay
     modal: true; focus: true
     width: Math.min(Theme.dp(420),parent ? parent.width-24 : 340)
@@ -18,7 +19,7 @@ Popup {
     readonly property bool progressive: !!liveControl && !!liveControl.values.value
     readonly property var waits: [1,3,5,10,15,30]
     readonly property var flights: [3,5,7,10]
-    onOpened: ui.setLiveConfigurationOpen(true)
+    onAboutToShow: ui.setLiveConfigurationOpen(true)
     onClosed: ui.setLiveConfigurationOpen(false)
     background: Surface { fillColor: Theme.surface; edgeColor: Theme.outline; strokeWidth: 1 }
     contentItem: ScrollView {

@@ -156,3 +156,9 @@ Sprawdzone: pełny `--workflow-only` (edycja kalendarza, narzędzia sezonu, zazn
 Przycisk Odwołaj był widoczny, ale nieaktywny: QuickBridge szukał dynamicznej akcji w przeniesionym kontenerze formularza, mimo że przycisk należał bezpośrednio do okna sezonu. Wyszukiwanie odbywa się teraz w oknie właściciela. Dopisano `tests/season-presentation-regressions.h`, uruchamiany przez `scripts/test-quick-ui.sh --season-presentation-only`.
 
 Test używa nowego modelu sezonu, czterech zawodników i ośmiu konkursów. Przez rzeczywiste kontrolki QML sprawdza: siedem pozycji przeglądu, dziewięć kombinacji rozmiaru/skali, otwarcie właściwych przygotowań przez Rozegraj, zachowanie nierozpoczętego wydarzenia po wyjściu, anulowanie potwierdzenia odwołania oraz zatwierdzenie odwołania z przejściem do następnego wydarzenia. Przebieg przeszedł bez ostrzeżeń layoutu i bez używania danych właściciela.
+
+### Automat zatrzymuje się już przy otwieraniu konfiguracji
+
+Znaleziono i odtworzono wyścig czasowy: `RaceLiveSettings.onOpened` blokował automat dopiero po animacji wejścia, więc skok mógł wystartować w trakcie otwierania modala. Blokada jest teraz ustawiana w `onAboutToShow`; zwalniana po zamknięciu, z nowym pełnym odstępem do kolejnego skoku.
+
+`tests/live-presentation-regressions.h` / `scripts/test-quick-ui.sh --live-presentation-only` sprawdza rzeczywistą symulację i mostek QML: czasy relacji 10 i 3 s, pośredni wiatr, wspólne ujawnienie odległości i lądowania, pięć stałych miejsc not z pojedynczym losowym ujawnianiem, jednoczesne odrzucenie dwóch ocen, końcowy pomiar oraz stałą ostatnią sekundę. Dodatkowo: krótszy przebieg bez sędziów, niewidoczne wyłączone rekompensaty, natychmiastowe DSQ/DNS, modal otwierany tuż przed terminem automatycznego skoku, wznowienie po zamknięciu i zatrzymanie na końcu serii. Test przed poprawką odtwarzał błąd blokady; po poprawce cały przebieg przeszedł bez pętli layoutu.
