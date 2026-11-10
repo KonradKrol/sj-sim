@@ -74,7 +74,7 @@ Dalsze uwagi właściciela — ukończone:
 - Odwołane wydarzenia przeliczają formę do swoich dat; anulowana konfiguracja nadal odtwarza cały stan.
 - Krótsze tooltipy i usunięte pętle układu w panelu diagnostyki oraz wiązania sweep/corner.
 - Sprawdzenie: build oraz izolowane --form-engine-only i --race-auto-gate-only zakończone sukcesem, bez ostrzeżeń o pętlach układu.
-- Diminishing returns formy względem wysokiego OVR nie wdrażano: właściciel pytał o obecny stan, nie zlecił zmiany modelu jakości.
+- Diminishing returns wdrożone po kolejnym zleceniu: dodatnia forma ponad 50 ma osłabienie płynnie od OVR 75 do 100, parametr quality.formDiminishingStrength=0.35. Wpływ formy nadal wyznacza istniejący formShare, bez dodatkowego formImpact. Baza jest teraz OVR + (F−50)×formShare×multiplier; niezależny istniejący modyfikator rozpiętości OVR pozostaje. Nie zmieniono losowania, perków ani geometrii.
 
 ## Ważne uwagi matematyczne
 
@@ -84,3 +84,12 @@ Dalsze uwagi właściciela — ukończone:
 - Własny strumień RNG na zawodnika; nie korzystać z globalnego losowania skoków. Kolejność zawodników i częstotliwość zapisu nie mogą zmieniać historii.
 - Surowy stan F zachowuje ułamki; profil gry dostaje wartość całkowitą 1–100. Nie kumulować błędu zaokrąglania w procesie.
 - Cele 90+ zależą od rozkładu F₀ i perków. Raportować próbę i wiele seedów, nie wymuszać limitu 3–6 osób.
+
+
+## Kalibracja właściciela — 10.11.2026
+Wartości z lokalnego pliku SJ-Sim/SJ-Sim/form-engine/default.json zostały wpisane do AutoForm::Config jako domyślne w kodzie. Pełna kopia: docs/calibration/form-defaults-2026-11-10.json. Test porównuje cały JSON Config() z tą kopią.
+Zmiany obejmują m.in. 160 dni każdego okresu, połowiczny powrót F 13 dni, rozrzut bazy 10, początkowy rozrzut 5 / rzadki 15, wagi przejść oraz mnożniki stabilnej formy. Lokalne profile nadal mogą nadpisywać domyślne; istniejące sezony zachowują zapisany snapshot.
+
+Testy jakości (w tym neutralna F50, OVR75/100, F1/100, brak osłabienia kar, siła 0/1, brak limitu 100, niezmieniony RNG) i testy generatora formy przechodzą. Szerszy scripts/test-simulation-v2-core.sh zatrzymuje się dalej na teście pogody „direction traits strongly bias automatic proposals”; kod pogody nie był w tym zadaniu zmieniany.
+
+Build Qt Quick po zmianach zakończony sukcesem. Nowy parametr jest w rejestrze labu i profilu domyślnym gry; brak dodatkowego współczynnika wpływu formy.

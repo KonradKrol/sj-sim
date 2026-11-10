@@ -1,6 +1,7 @@
 #include "../source/simulation-v2/QualityModel.h"
 
 #include <cmath>
+#include <algorithm>
 #include <iostream>
 #include <limits>
 #include <stdexcept>
@@ -44,13 +45,14 @@ int main()
         rejects([]{HillSkillCurve({{50,.5},{50.000000001,.4}});});
         rejects([&]{curve.takeoffWeight(std::numeric_limits<double>::quiet_NaN());});
 
-        QualityModel model;
+        QualityParameters working;working.overallWeight=.7;
+        QualityModel model(working);
         Athlete athlete;athlete.overall=90;athlete.form=30;
         auto q=model.baseline(athlete,120,0,EventKind::Competition);
-        near(q.overallAndForm,72,1e-12,"OVR and independent form use 70/30");
+        near(q.overallAndForm,84,1e-12,"form deviation from 50 uses the existing 30 percent share");
         check(model.baseline(athlete,70,0,EventKind::Competition).overallAndForm>q.overallAndForm,"weak form matters less on small hills");
         check(model.baseline(athlete,220,0,EventKind::Competition).overallAndForm<q.overallAndForm,"weak form matters more on flying hills");
-        QualityParameters flatForm;flatForm.formHillAmplitude=0;
+        QualityParameters flatForm=working;flatForm.formHillAmplitude=0;
         near(QualityModel(flatForm).baseline(athlete,220,0,EventKind::Competition).overallAndForm,q.overallAndForm,1e-12,"form hill effect can be disabled");
         rejects([]{auto p=QualityParameters();p.formKScale=0;QualityModel invalid(p);});
         near(model.baseline(athlete,120,.55,EventKind::Competition).value(),q.value(),1e-12,"neutral athlete unaffected by hill preference");
@@ -62,8 +64,8 @@ int main()
         near(model.baseline(athlete,110,0,EventKind::Competition).hillEffect,0,1e-12,"K110 is balanced");
         check(model.baseline(athlete,120,.55,EventKind::Competition).hillEffect<model.baseline(athlete,120,-.55,EventKind::Competition).hillEffect,"hill takeoff preference interacts with flier");
         athlete.perks={{4,0,0}};
-        near(model.baseline(athlete,120,0,EventKind::Qualification).eventEffect,2.5,1e-12,"qualification gets half training bonus");
-        check(model.baseline(athlete,120,0,EventKind::Competition).eventEffect<0,"training perk weakens competition");
+        near(model.baseline(athlete,120,0,EventKind::Qualification).eventEffect,2,1e-12,"qualification gets forty percent of training bonus");
+        check(model.baseline(athlete,120,0,EventKind::Competition).eventEffect==0,"training perk has no competition penalty");
         athlete.perks[0]=-4;
         near(model.baseline(athlete,120,0,EventKind::Competition).eventEffect,0,1e-12,"conserving effort gives no competition bonus");
         check(model.baseline(athlete,120,0,EventKind::Trial).eventEffect<0,"conserving effort weakens trial");
@@ -86,9 +88,34 @@ int main()
         auto before=model.baseline(athlete,120,0,EventKind::Competition);
         athlete.landing=4;auto after=model.baseline(athlete,120,0,EventKind::Competition);
         near(before.value(),after.value(),1e-12,"landing skill cannot change jump quality");
+        QualityParameters diminishing;
+        QualityModel reduced(diminishing);
+        auto disabled=diminishing;disabled.formDiminishingStrength=0;
+        QualityModel unreduced(disabled);
+        for(int ovr=1;ovr<=100;++ovr)for(double k:{50.,95.,120.,200.,250.}){
+            Athlete person;person.overall=ovr;person.form=50;
+            const auto strength=[&](const QualityModel &m){return m.baseline(person,k,0,EventKind::Competition).overallAndForm;};
+            near(strength(reduced),ovr,1e-12,"neutral form equals OVR at every hill size");
+            for(int form:{1,19,49,50,51,90,100}){
+                person.form=form;
+                const double share=std::clamp(1-diminishing.overallWeight+diminishing.formHillAmplitude*std::tanh((k-diminishing.formReferenceK)/diminishing.formKScale),0.,1.);
+                const double factor=form>50?1-.35*std::clamp((ovr-75.)/25.,0.,1.):1.;
+                near(strength(reduced),ovr+(form-50.)*share*factor,1e-11,"neutral, extreme and threshold inputs follow the requested formula");
+                if(form<=50 || ovr<=75)near(strength(reduced),strength(unreduced),1e-12,"low form and OVR at most 75 are never reduced");
+            }
+        }
+        Athlete peak;peak.overall=100;peak.form=100;
+        near(reduced.baseline(peak,120,0,EventKind::Competition).overallAndForm,100+50*(1-diminishing.overallWeight)*.65,1e-12,"OVR 100 retains 65 percent of positive form");
+        check(reduced.baseline(peak,120,0,EventKind::Competition).overallAndForm>100,"effective strength is not capped at 100");
+        auto full=diminishing;full.formDiminishingStrength=1;
+        near(QualityModel(full).baseline(peak,120,0,EventKind::Competition).overallAndForm,100,1e-12,"strength one removes the whole positive bonus at OVR 100");
+        for(double invalid:{-.01,1.01,std::numeric_limits<double>::infinity(),std::numeric_limits<double>::quiet_NaN()})
+            rejects([&]{auto p=diminishing;p.formDiminishingStrength=invalid;QualityModel invalidModel(p);});
+        SeededRandom sameA(42),sameB(42);
+        near(reduced.sample(peak,120,0,EventKind::Competition,sameA).randomEffect,unreduced.sample(peak,120,0,EventKind::Competition,sameB).randomEffect,1e-12,"diminishing returns consume no random draws");
         QualityParameters params;params.overallWeight=0;
         params.specialistBias[0]=20;
-        near(QualityModel(params).baseline(athlete,120,0,EventKind::Competition).value(),athlete.form,1e-12,"OVR/form weights editable");
+        near(QualityModel(params).baseline(athlete,120,0,EventKind::Competition).value(),athlete.overall+athlete.form-50,1e-12,"form share remains editable");
         params.noise=NoiseShape::Laplace;QualityModel laplace(params);SeededRandom laplaceRng(5);
         double negative=0,positive=0;
         for(int i=0;i<n;++i){const auto v=laplace.sample(athlete,120,0,EventKind::Competition,laplaceRng).randomEffect;if(v<0)negative-=v;else positive+=v;}

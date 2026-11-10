@@ -508,6 +508,7 @@
   "quality.eventDeviation.1": 6.2,
   "quality.eventDeviation.2": 4.5,
   "quality.eventDeviation.3": 4,
+  "quality.formDiminishingStrength": 0.35,
   "quality.formHillAmplitude": 0,
   "quality.formKScale": 100,
   "quality.formReferenceK": 120,

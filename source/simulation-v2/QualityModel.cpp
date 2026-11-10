@@ -18,6 +18,7 @@ void Athlete::validate() const
 void QualityParameters::validate() const
 {
     if (!std::isfinite(overallWeight) || overallWeight<0 || overallWeight>1
+        || !std::isfinite(formDiminishingStrength) || formDiminishingStrength<0 || formDiminishingStrength>1
         || !std::isfinite(overallSpread) || overallSpread<0 || overallSpread>5
         || !std::isfinite(formReferenceK) || formReferenceK<1 || formReferenceK>400
         || !std::isfinite(formKScale) || formKScale<1 || formKScale>1000
@@ -49,7 +50,10 @@ JumpQuality QualityModel::baseline(const Athlete &athlete, double k, double hill
     JumpQuality quality;
     const double formShare=std::clamp(1-config.overallWeight
         +config.formHillAmplitude*std::tanh((k-config.formReferenceK)/config.formKScale),0.0,1.0);
-    quality.overallAndForm=(1-formShare)*athlete.overall+formShare*athlete.form
+    const double multiplier=athlete.form>50
+        ? 1-config.formDiminishingStrength*std::clamp((athlete.overall-75.)/25.,0.,1.)
+        : 1.;
+    quality.overallAndForm=athlete.overall+(athlete.form-50.)*formShare*multiplier
         +(1-formShare)*(athlete.overall-70)*(config.overallSpread-1);
     const double weight=curve.takeoffWeight(k);
     quality.takeoffWeight=std::clamp(weight+hillTakeoffBias*config.hillPreferenceStrength*std::min(weight,1-weight),0.0,1.0);
