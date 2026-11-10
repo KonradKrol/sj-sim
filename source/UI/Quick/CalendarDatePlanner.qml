@@ -22,15 +22,14 @@ Pane {
             Layout.fillWidth: true; columns: planner.width>Theme.dp(620) ? 3 : 1; columnSpacing: Theme.dp(6); rowSpacing: Theme.dp(6)
             Repeater {
                 model: [{key:0,icon:"↗",title:qsTr("Dodaj kwalifikacje")},{key:1,icon:"▦",title:planner.backend.datesEnabled ? qsTr("Dodaj weekend") : qsTr("Dodaj pakiet konkursów")}].concat(planner.backend.datesEnabled ? [{key:2,icon:"◷",title:qsTr("Ustal wiele terminów")}] : [])
-                SButton {
-                    dense: true;
+                ItemDelegate {
                     required property var modelData
                     objectName: modelData.key===0 ? "date-open-qualifications" : modelData.key===1 ? "date-open-weekend" : "date-plan-existing"
                     Layout.fillWidth: true; Layout.preferredWidth: 0
-                    implicitHeight: Math.max(Theme.dp(28),contentItem.implicitHeight+Theme.dp(8))
-                    checkable: true; checked: planner.mode===modelData.key
-                    contentItem: Label { text: parent.modelData.icon+"  "+parent.modelData.title; color: parent.checked ? Theme.accent : Theme.ink; font.pointSize: Theme.body; wrapMode: Text.WordWrap }
-                    background: Rectangle { radius: Theme.dp(5); color: parent.checked ? Theme.selection : parent.hovered ? Theme.raised : Theme.surface; border.color: parent.checked ? Theme.accent : Theme.outline }
+                    implicitHeight: Math.max(40,contentItem.implicitHeight+16)
+                    highlighted: planner.mode===modelData.key
+                    contentItem: Label { text: parent.modelData.icon+"  "+parent.modelData.title; color: parent.highlighted ? Theme.accent : Theme.ink; font.pointSize: Theme.body; wrapMode: Text.WordWrap }
+                    background: Rectangle { radius: Theme.dp(5); color: parent.highlighted ? Theme.selection : parent.hovered ? Theme.raised : Theme.surface; border.color: parent.highlighted ? Theme.accent : Theme.outline }
                     onClicked: {planner.forceActiveFocus();planner.invalidate();planner.backend.discardWeekend();planner.mode=modelData.key}
                 }
             }
@@ -39,7 +38,34 @@ Pane {
             visible: planner.mode===0; Layout.fillWidth: true; spacing: Theme.dp(8)
             Label { text: qsTr("Kwalifikacje do zaznaczonych konkursów"); color: Theme.ink; font.pointSize: Theme.section; Layout.fillWidth: true; wrapMode: Text.WordWrap }
             Label { text: qsTr("Dodaj po jednych kwalifikacjach przed każdym zaznaczonym konkursem. Awans i zgodne zasady zostaną powiązane automatycznie."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-            SectionTabs { dense: true; visible: planner.backend.datesEnabled; Layout.fillWidth: true; Layout.maximumWidth: Theme.dp(360); options: [qsTr("W dniu konkursu"),qsTr("Dzień wcześniej")]; currentIndex: planner.qualificationDays; onSelected: planner.qualificationDays=index }
+            ButtonGroup { id: qualificationDayGroup }
+            Flow {
+                visible: planner.backend.datesEnabled
+                Layout.fillWidth: true; spacing: Theme.dp(12)
+                Repeater {
+                    model: [qsTr("W dniu konkursu"),qsTr("Dzień wcześniej")]
+                    RadioButton {
+                        id: dayChoice
+                        required property int index
+                        required property string modelData
+                        text: modelData
+                        ButtonGroup.group: qualificationDayGroup
+                        checked: planner.qualificationDays===index
+                        font.pointSize: Theme.caption
+                        implicitHeight: Math.max(Theme.dp(24),contentItem.implicitHeight+Theme.dp(6))
+                        padding: Theme.dp(2)
+                        onClicked: planner.qualificationDays=index
+                        indicator: Rectangle {
+                            width: Theme.dp(12); height: width; radius: width/2
+                            x: dayChoice.leftPadding; y: (dayChoice.height-height)/2
+                            color: "transparent"; border.width: dayChoice.visualFocus ? 2 : 1
+                            border.color: dayChoice.checked || dayChoice.visualFocus ? Theme.accent : Theme.outline
+                            Rectangle { anchors.centerIn: parent; width: Theme.dp(6); height: width; radius: width/2; color: Theme.accent; visible: dayChoice.checked }
+                        }
+                        contentItem: Text { text: dayChoice.text; font: dayChoice.font; color: Theme.ink; leftPadding: Theme.dp(18); verticalAlignment: Text.AlignVCenter }
+                    }
+                }
+            }
             SButton { text: qsTr("Dodaj kwalifikacje"); primary: true; enabled: planner.backend.selection.count>0 && !planner.backend.selection.locked; onClicked: planner.backend.addQualifications(planner.backend.datesEnabled ? planner.qualificationDays : 0) }
             Label { visible: planner.backend.selection.count===0; text: qsTr("Wróć do listy i zaznacz konkursy, do których chcesz dodać kwalifikacje."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         }

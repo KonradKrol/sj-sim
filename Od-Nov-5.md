@@ -117,3 +117,7 @@ Pasek konkursu: Relacja ▾ (Automat ▾ podczas automatycznych skoków) otwiera
 Relacja: odległość, po 300 ms lądowanie, po kolejnych 400 ms wiatr, po kolejnych 400 ms rekompensaty. Następnie pięć not ujawnia się na stałych pięciu miejscach, w losowej kolejności i z nierównymi odstępami w oknie 4–7 sekund. Losowanie prezentacji nie zmienia samych not. Po ostatniej nocie 250 ms pauzy, po czym jednocześnie animowane przekreślenie dwóch odrzuconych not i końcowy wynik. DSQ (oraz pomijany DNS) bez stopniowej prezentacji. JudgeMarks używa stabilnego modelu i rezerwuje szerokość, zamiast dopisywać kolejne pola.
 
 Dodatkowe uwagi właściciela: usunięto widoczne Teraz z przeglądu (pozostaje w opisie dostępności); duży Konfiguruj konkurs zastąpiono klikalnym nagłówkiem kafla i dyskretnym Przygotuj start ↗. Menu odwołania jest osobną kontrolką. Build, kompilacja QML, EN/CS i krótki przebieg kontrolny komponentów UI (losowe pozycje not, stała szerokość, przekreślenia, otwarcie/zamknięcie konfiguracji) przeszły. Nie jest to pełny test sezonu od początku do końca.
+
+## Korekta zakresu szybkiego planowania
+
+Na prośbę właściciela przywrócono dotychczasowy wygląd głównych wyborów szybkiego planowania (Dodaj kwalifikacje / Dodaj weekend / Ustal wiele terminów). Uspokojenie dotyczy wyłącznie dwóch opcji dnia w Dodaj kwalifikacje: małe klasyczne przyciski radiowe zamiast dużych kontrastowych zakładek. Wyszukiwanie skoczni i pozostałe niezależne poprawki zachowane. Build i kompilacja QML przeszły.
