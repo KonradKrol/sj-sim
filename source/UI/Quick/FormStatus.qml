@@ -7,7 +7,7 @@ Control {
     objectName: "athleteFormStatus"
     property int value: 50
     readonly property int band: value<20 ? 0 : value<35 ? 1 : value<45 ? 2 : value<56 ? 3 : value<70 ? 4 : value<85 ? 5 : value<95 ? 6 : 7
-    readonly property var labels: [qsTr("Głęboki kryzys"),qsTr("Bardzo słaba"),qsTr("Obniżona"),qsTr("Typowa"),qsTr("Podwyższona"),qsTr("Bardzo wysoka"),qsTr("Forma życia"),qsTr("Absolutny szczyt")]
+    readonly property var labels: [qsTr("Głęboki kryzys"),qsTr("Słaba"),qsTr("Obniżona"),qsTr("Typowa"),qsTr("Podwyższona"),qsTr("Wysoka"),qsTr("Forma życia"),qsTr("Absolutny szczyt")]
     readonly property color tint: [Theme.danger,Theme.danger,Theme.warning,Theme.muted,Theme.accent,Theme.success,Theme.accent,Theme.signal][band]
     implicitWidth: 0
     implicitHeight: Math.max(Theme.dp(32),Theme.bodyMetrics.height+Theme.dp(8))
