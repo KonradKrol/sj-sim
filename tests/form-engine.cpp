@@ -4,6 +4,8 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QTemporaryDir>
+#include <QFile>
+#include <QFileInfo>
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
@@ -12,6 +14,9 @@ void check(bool ok,const char *message){if(!ok){std::cerr<<"FAIL: "<<message<<'\
 int main(int argc,char **argv){
     QCoreApplication app(argc,argv);QTemporaryDir temporary;app.setProperty("formEngineStorageRoot",temporary.path());
     AutoForm::Config c,copy;QString error;check(c.validate(error),"defaults validate");check(AutoForm::Config::fromJson(c.toJson(),copy,error) && copy.toJson()==c.toJson(),"config roundtrip");
+    QFile calibrationFile(QFileInfo(QString::fromUtf8(__FILE__)).absolutePath()+"/../docs/calibration/form-defaults-2026-11-10.json");
+    check(calibrationFile.open(QIODevice::ReadOnly),"recorded local form calibration exists");
+    check(c.toJson()==QJsonDocument::fromJson(calibrationFile.readAll()).object(),"hardcoded form defaults exactly match the owner's local profile");
     auto broken=c.toJson();auto values=broken["values"].toObject();values["days.0"]=0;broken["values"]=values;check(!AutoForm::Config::fromJson(broken,copy,error),"reject zero holding time");
     check(AutoForm::saveDefaultConfig(c,error) && AutoForm::defaultConfig().toJson()==c.toJson(),"default config atomic roundtrip");
     const QDate start(2026,11,1);
