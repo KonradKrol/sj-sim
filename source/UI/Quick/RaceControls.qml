@@ -10,6 +10,7 @@ Flow {
     readonly property var nextControl: ui.find("pushButton_goToNext")
     readonly property real toolHeight: Math.max(Theme.dp(38),Theme.bodyMetrics.height+Theme.dp(12))
     enabled: !history || !history.values.paused
+    RaceLiveSettings { id: liveSettings }
     spacing: Theme.dp(8)
     RaceToolGroup {
         width: implicitWidth
@@ -24,10 +25,11 @@ Flow {
             onClicked: ui.activate(sourceControl.values.id)
         }
         SToolButton {
-            objectName: "raceLiveToggle"; text: qsTr("Na żywo")
-            checked: !!controls.liveControl && !!controls.liveControl.values.value
-            enabled: !!controls.liveControl && controls.liveControl.values.enabled
-            onClicked: ui.activate(controls.liveControl.values.id)
+            objectName: "raceLiveToggle"; text: ui.context.automaticPlayback ? qsTr("Automat ▾") : qsTr("Relacja ▾")
+            hint: qsTr("Relacja skoku i automatyczne skoki")
+            checked: !!ui.context.automaticPlayback || (!!controls.liveControl && !!controls.liveControl.values.value)
+            enabled: !!controls.liveControl
+            onClicked: liveSettings.open()
         }
         SToolButton { objectName: "editNextKoGroups"; visible: !!ui.context.nextKoEditable; text: qsTr("Grupy KO…"); onClicked: ui.editNextKoGroups() }
     }

@@ -173,6 +173,9 @@ public:
     Q_INVOKABLE void suggestRaceGate(bool undo=false);
     Q_INVOKABLE void lowerCoachGate();
     Q_INVOKABLE void skipCurrentJump();
+    Q_INVOKABLE void setLivePreference(const QString &name,int value);
+    Q_INVOKABLE void setAutomaticPlayback(bool enabled);
+    Q_INVOKABLE void setLiveConfigurationOpen(bool open);
     Q_INVOKABLE void openResultViewOptions(int field=-1,qreal x=-1,qreal y=-1,qreal width=0) {emit resultViewOptionsRequested(field,x,y,width);}
     Q_INVOKABLE void assignKoMember(int editorId,const QString &groupId,int slot,const QString &athleteId);
     Q_INVOKABLE void setWind(int editorId,int sector,const QVariantMap &values,bool all);

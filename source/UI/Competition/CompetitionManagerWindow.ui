@@ -77,7 +77,7 @@
         <string notr="true">color: black;</string>
        </property>
        <property name="text">
-        <string>Rozgrywaj konkurs na żywo</string>
+        <string>Pokazuj skoki stopniowo</string>
        </property>
       </widget>
      </item>

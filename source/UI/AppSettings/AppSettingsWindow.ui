@@ -461,7 +461,7 @@ globalnej bazy danych</string>
         <string notr="true">color: black;</string>
        </property>
        <property name="text">
-        <string>Rozgrywaj konkurs na żywo</string>
+        <string>Pokazuj skoki stopniowo</string>
        </property>
       </widget>
      </item>
@@ -819,8 +819,7 @@ skoków</string>
 }</string>
            </property>
            <property name="text">
-            <string>Wybór informacji o skoku
-do pokazania</string>
+            <string>Informacje o skoku</string>
            </property>
           </widget>
          </item>

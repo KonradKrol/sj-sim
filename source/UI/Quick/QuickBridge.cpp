@@ -27,6 +27,7 @@
 #include "../../competitions/CompetitionManagers/IndividualCompetitionManager.h"
 #include "../../competitions/CompetitionManagers/KORoundManager.h"
 #include "../../global/GlobalDatabase.h"
+#include "../../global/GlobalAppSettings.h"
 #include "../../global/CountryFlagsManager.h"
 #include "../../global/CountryCodes.h"
 #include <QDir>
@@ -607,6 +608,9 @@ void QuickBridge::refresh() {
         QVariantMap context{{"complete",manager->checkCompetitionEnd()},{"roundComplete",manager->checkRoundEnd()},{"liveStage",window->getLiveStage()},{"round",manager->getActualRound()},{"roundCount",manager->effectiveRoundsCount()},{"qualifications",manager->getCompetitionInfo()->getSerieType()==CompetitionInfo::Qualifications},
                             {"athlete",qMin(manager->getActualStartListIndex()+1,manager->getStartListStatusesReference().size())},{"athleteCount",manager->getStartListStatusesReference().size()}};
         if(auto *team=dynamic_cast<TeamCompetitionManager *>(manager))context["group"]=team->getActualGroup();
+        context["automaticPlayback"]=window->automaticPlayback();
+        context["liveWaitSeconds"]=QSettings().value("quickUi/liveWaitSeconds",5);
+        context["liveFlightSeconds"]=QSettings().value("quickUi/liveFlightSeconds",7);
         context["manipulationPending"]=window->property("jumpManipulationPending");
         context["coachReduction"]=manager->getCoachGateForNextJumper()?manager->getActualGate()-manager->getActualCoachGate():0;
         if(auto *gate=m_content->findChild<QSpinBox *>("spinBox_actualGate"))context["canLowerCoachGate"]=gate->value()>gate->minimum();
@@ -651,6 +655,7 @@ void QuickBridge::refresh() {
         const int stage=window?window->getLiveStage():0;
         auto *history=m_content->findChild<ResultsHistoryWidget *>();
         QVariantMap summary;
+        const JumpData *displayedJump=nullptr;
         QWidget *selected=nullptr;
         for(auto *child:m_content->findChildren<QWidget *>())if(child->inherits("JumperCompetitionResultsWidget")) { selected=child;break; }
         if(history && history->active() && (stage==0 || stage>=5))selected=history->previewWidget();
@@ -690,6 +695,7 @@ void QuickBridge::refresh() {
             }
             for(auto *info:selected->findChildren<JumpDataDetailedInfoWindow *>())if(info->isVisibleTo(m_content) && info->getJumpData()) {
                 auto *jump=info->getJumpData();
+                displayedJump=jump;
                 if(summary.contains("landing"))summary["landingType"]=jump->getLanding().getType();
                 if((stage==0 || stage>=5) && !jump->getDNS() && !jump->getDSQ()) {
                     const auto profile=QuickWindProfile::fromMetadata(jump->getSimulationV2Data(),jump->getHill()?jump->getHill()->getKPoint():0);
@@ -710,15 +716,88 @@ void QuickBridge::refresh() {
                     summary["windPoints"]=QString::number(jump->getWindCompensation(),'f',1)+tr(" pkt");
                     summary["gatePoints"]=QString::number(jump->getGateCompensation(),'f',1)+tr(" pkt");
                 }
-                if(summary.contains("judgesText")) {
-                    const auto marks=jump->getJudges();int lowest=-1,highest=-1;
-                    if(marks.size()>=3){lowest=std::min_element(marks.begin(),marks.end())-marks.begin();for(int index=0;index<marks.size();++index)if(index!=lowest&&(highest<0||marks[index]>marks[highest]))highest=index;}
-                    QVariantList judges;for(int index=0;index<marks.size();++index)judges.append(QVariantMap{{"text",QString::number(marks[index],'f',1)},{"discarded",index==lowest||index==highest}});
-                    summary["judges"]=judges;
-                    summary["judgesPoints"]=QString::number(jump->getJudgesPoints(),'f',1)+tr(" pkt");
-                }
+
                 break;
             }
+        }
+        if(displayedJump) {
+            const auto &choice=GlobalAppSettings::get()->getJumpDataInfoChoiceReference();
+            auto *competition=displayedJump->getCompetition();
+            const auto *rules=competition?competition->getRulesPointer():nullptr;
+            const bool judges=(!rules || rules->getHasJudgesPoints()) && !displayedJump->getDNS() && !displayedJump->getDSQ();
+            const bool windComp=(!rules || rules->getHasWindCompensations()) && !displayedJump->getDSQ() && !displayedJump->getDNS();
+            const bool gateComp=(!rules || rules->getHasGateCompensations()) && !displayedJump->getDSQ() && !displayedJump->getDNS();
+            const QSettings settings;
+            QVariantMap visibility{
+                {"distance",choice.getDistance() || displayedJump->getDNS() || displayedJump->getDSQ()},
+                {"points",choice.getPoints()},{"position",choice.getPositionAfterJump()},
+                {"roundPosition",choice.getJumpPositionInRound()},{"groupPosition",choice.getJumpPositionInRound()},
+                {"competitionPosition",choice.getJumpPositionInRound()},{"wind",choice.getAveragedWind() && !displayedJump->getDSQ() && !displayedJump->getDNS()},
+                {"gate",choice.getGate()},{"landing",choice.getLandingType() && !displayedJump->getDSQ() && !displayedJump->getDNS()},
+                {"judges",judges && choice.getJudges()},{"judgesPoints",judges && choice.getJudgesPoints()},
+                {"windPoints",windComp && choice.getWindCompensation()},
+                {"gatePoints",gateComp && choice.getGateCompensation()},
+                {"compensation",(windComp || gateComp) && choice.getTotalCompensation()}
+            };
+            for(const auto *key:{"totalPoints","leaderGap","weights","quality","precipitation"})
+                visibility[key]=settings.value(QString("quickUi/jumpDetails/%1").arg(key),QString(key)!="quality" && QString(key)!="precipitation").toBool();
+            visibility["leaderGap"]=visibility.value("leaderGap").toBool() && choice.getPositionAfterJump();
+            const auto format=[](double value,int decimals){return QLocale().toString(value,'f',decimals);};
+            const bool final=stage==0 || stage>=5;
+            if(stage==0 || stage>=2)summary["distance"]=displayedJump->getDNS()?QString("DNS"):displayedJump->getDSQ()?QString("DSQ"):format(displayedJump->getDistance(),1)+" m";
+            else summary.remove("distance");
+            summary["gate"]=QString::number(displayedJump->getGate());
+            if(stage==0 || stage>=3) {
+                summary["wind"]=format(displayedJump->getAveragedWind(),2)+" m/s";
+                summary["windValue"]=qRound64(displayedJump->getAveragedWind()*100)/100.;
+                summary["landing"]=displayedJump->getLanding().getTextLandingType();
+                summary["landingType"]=displayedJump->getLanding().getType();
+                summary["windPoints"]=format(displayedJump->getWindCompensation(),1)+tr(" pkt");
+                summary["gatePoints"]=format(displayedJump->getGateCompensation(),1)+tr(" pkt");
+                summary["compensation"]=format(displayedJump->getTotalCompensation(),1)+tr(" pkt");
+                summary["compensationValue"]=qRound64(displayedJump->getTotalCompensation()*10)/10.;
+            } else summary.remove("landing");
+            if(final) {
+                summary["points"]=format(displayedJump->getPoints(),1)+tr(" pkt");
+                summary["judgesPoints"]=format(displayedJump->getJudgesPoints(),1)+tr(" pkt");
+                if(!(history && history->active())) {
+                    const auto rank=selected->property("quickRankSummary").toMap();
+                    summary["positionNumber"]=rank.value("positionNumber");
+                    if(rank.contains("leaderGap"))summary["leaderGap"]=rank.value("leaderGap");
+                }
+            } else {summary.remove("points");summary.remove("judgesPoints");}
+            if(judges) {
+                const auto values=displayedJump->getJudges().mid(0,5);
+                const int mask=final?((1<<values.size())-1):stage>=4 && window?window->property("liveJudgeMask").toInt():0;
+                const bool allRevealed=mask==((1<<values.size())-1);
+                int lowest=-1,highest=-1;
+                for(int i=0;i<values.size();++i)if(lowest<0 || values[i]<values[lowest])lowest=i;
+                for(int i=0;i<values.size();++i)if(i!=lowest && (highest<0 || values[i]>values[highest]))highest=i;
+                QVariantList marks;for(int i=0;i<values.size();++i)marks.append(QVariantMap{{"text",(mask & (1<<i))?format(values[i],1):QString::fromUtf8("—")},{"revealed",bool(mask & (1<<i))},{"discarded",final && allRevealed && (i==lowest || i==highest)}});
+                summary["judges"]=marks;
+            }
+            summary["visibility"]=visibility;
+            for(auto it=visibility.cbegin();it!=visibility.cend();++it)if(!it.value().toBool())summary.remove(it.key());
+            if(!visibility.value("position").toBool())summary.remove("positionNumber");
+            if(!visibility.value("roundPosition").toBool())summary.remove("roundPositionNumber");
+            if(stage>0 && stage<3)for(const auto *key:{"wind","windValue","windPoints","gatePoints","compensation","compensationValue"})summary.remove(key);
+            const int details=window?window->property("liveDetailsStep").toInt():3;
+            if(stage==3 && details<2)for(const auto *key:{"wind","windValue"})summary.remove(key);
+            if(stage==3 && details<3)for(const auto *key:{"windPoints","gatePoints","compensation","compensationValue"})summary.remove(key);
+            if(stage>0 && stage<5)for(const auto *key:{"totalPoints","leaderGap"})summary.remove(key);
+            const auto metadata=displayedJump->getSimulationV2Data();
+            summary["jumpKey"]=metadata.value("seed").toString()+":"+QString::number(metadata.value("startSeconds").toDouble())+":"+summary.value("name").toString();
+            if((stage==0 || stage>=5) && !displayedJump->getDNS() && !displayedJump->getDSQ()) {
+                const auto quality=metadata.value("quality").toObject();
+                if(visibility.value("quality").toBool() && !quality.isEmpty()) {
+                    double value=0;for(const auto *key:{"overallAndForm","hill","event","random","manipulation"})value+=quality.value(key).toDouble();
+                    summary["quality"]=QLocale().toString(value,'f',1);
+                }
+                if(visibility.value("precipitation").toBool() && metadata.contains("precipitation"))
+                    summary["precipitation"]=(metadata.value("precipitationKind").toInt()==1?tr("Deszcz"):tr("Śnieg"))+" "+QLocale().toString(metadata.value("precipitation").toDouble(),'f',1)+" / 10";
+            }
+            for(const auto *key:{"takeoff","flight","random","snow"})summary.remove(key);
+            if(rules && !rules->getHas95HSRule())summary.remove("hs95");
         }
         if(summary!=m_jumpSummary) { m_jumpSummary=summary;emit changed(); }
     }
@@ -1075,7 +1154,7 @@ void QuickBridge::compose(QuickNode *base) {
         sections.append(group("simulation",tr("Silnik symulacji"),{group("simulation-settings-fields",QString(),fields({
             {"openBalanceLab",""},{"openSimulationPlayground",""},{"comboBox_language",tr("Język interfejsu")},
             {"spinBox_dsqProbability",tr("Częstość dyskwalifikacji")},
-            {"doubleSpinBox_liveCompSpeed",tr("Tempo konkursu na żywo")},
+
             {"checkBox_globalDatabaseRecords",""},{"checkBox_liveCompetition",""}}),"form")}));
         sections.append(group("tools",tr("Baza danych i narzędzia"),{group("database-settings-fields",QString(),fields({
             {"pushButton_countriesEditor",""},{"pushButton_jumpInfoChoice",""},
@@ -1437,3 +1516,20 @@ void QuickAppearance::setWindDiagnostics(bool value){if(value==m_windDiagnostics
 void QuickBridge::suggestRaceGate(bool undo){if(auto *window=qobject_cast<CompetitionManagerWindow *>(m_window.data())){try{window->suggestCurrentGate(undo);}catch(const std::exception &error){QMessageBox::warning(m_window,tr("Belka"),tr("Nie udało się dobrać belki: %1").arg(QString::fromUtf8(error.what())));}refresh();}}
 
 void QuickBridge::lowerCoachGate(){if(auto *window=qobject_cast<CompetitionManagerWindow *>(m_window.data())){window->lowerCoachGateOne();refresh();}}
+
+void QuickBridge::setLivePreference(const QString &name,int value) {
+    if(name=="waitSeconds")QSettings().setValue("quickUi/liveWaitSeconds",qBound(1,value,60));
+    else if(name=="flightSeconds")QSettings().setValue("quickUi/liveFlightSeconds",qBound(1,value,20));
+    else return;
+    if(auto *window=qobject_cast<CompetitionManagerWindow *>(m_window))window->scheduleAutomaticJump();
+    deferRefresh();
+}
+void QuickBridge::setAutomaticPlayback(bool enabled) {
+    if(auto *window=qobject_cast<CompetitionManagerWindow *>(m_window))window->setAutomaticPlayback(enabled);
+    deferRefresh();
+}
+
+void QuickBridge::setLiveConfigurationOpen(bool open) {
+    if(m_window)m_window->setProperty("liveConfigurationOpen",open);
+    if(!open)if(auto *window=qobject_cast<CompetitionManagerWindow *>(m_window))window->scheduleAutomaticJump();
+}

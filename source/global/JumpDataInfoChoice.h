@@ -12,23 +12,23 @@ public:
     static JumpDataInfoChoice getFromJson(QJsonObject obj);
 
 private:
-    bool distance = false;
-    bool points = false;
-    bool gate = false;
-    bool gateCompensation = false;
-    bool windCompensation = false;
-    bool totalCompensation = false;
-    bool judges = false;
-    bool judgesPoints = false;
-    bool averagedWind = false;
+    bool distance = true;
+    bool points = true;
+    bool gate = true;
+    bool gateCompensation = true;
+    bool windCompensation = true;
+    bool totalCompensation = true;
+    bool judges = true;
+    bool judgesPoints = true;
+    bool averagedWind = true;
     bool specificWind = false;
-    bool jumpPositionInRound = false;
+    bool jumpPositionInRound = true;
     bool takeoffRating = false;
     bool flightRating = false;
     bool distanceRandom = false;
     bool inrunSnow = false;
-    bool landingType = false;
-    bool positionAfterJump = false;
+    bool landingType = true;
+    bool positionAfterJump = true;
 public:
     bool getDistance() const;
     void setDistance(bool newDistance);

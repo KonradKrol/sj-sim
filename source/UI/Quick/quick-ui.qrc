@@ -166,6 +166,7 @@
 <file>PlotPanel.qml</file>
 <file>RaceAthlete.qml</file>
 <file>RaceControls.qml</file>
+<file>RaceLiveSettings.qml</file>
 <file>RaceToolGroup.qml</file>
 <file>SToolButton.qml</file>
 <file>SimulationPreferences.qml</file>

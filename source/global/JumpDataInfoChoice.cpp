@@ -31,18 +31,18 @@ QJsonObject JumpDataInfoChoice::getJsonObject(const JumpDataInfoChoice &choice)
 JumpDataInfoChoice JumpDataInfoChoice::getFromJson(QJsonObject obj)
 {
     JumpDataInfoChoice choice;
-    choice.setGateCompensation(obj.value("gate-compensation").toBool(false));
-    choice.setDistance(obj.value("distance").toBool(false));
-    choice.setPoints(obj.value("points").toBool(false));
-    choice.setGate(obj.value("gate").toBool(false));
-    choice.setAveragedWind(obj.value("averaged-wind").toBool(false));
-    choice.setWindCompensation(obj.value("wind-compensation").toBool(false));
-    choice.setTotalCompensation(obj.value("total-compensation").toBool(false));
-    choice.setJudges(obj.value("judges").toBool(false));
-    choice.setJudgesPoints(obj.value("judges-points").toBool(false));
-    choice.setLandingType(obj.value("landing-type").toBool(false));
-    choice.setPositionAfterJump(obj.value("position-after-jump").toBool(false));
-    choice.setJumpPositionInRound(obj.value("jump-position-in-round").toBool(false));
+    choice.setGateCompensation(obj.value("gate-compensation").toBool(true));
+    choice.setDistance(obj.value("distance").toBool(true));
+    choice.setPoints(obj.value("points").toBool(true));
+    choice.setGate(obj.value("gate").toBool(true));
+    choice.setAveragedWind(obj.value("averaged-wind").toBool(true));
+    choice.setWindCompensation(obj.value("wind-compensation").toBool(true));
+    choice.setTotalCompensation(obj.value("total-compensation").toBool(true));
+    choice.setJudges(obj.value("judges").toBool(true));
+    choice.setJudgesPoints(obj.value("judges-points").toBool(true));
+    choice.setLandingType(obj.value("landing-type").toBool(true));
+    choice.setPositionAfterJump(obj.value("position-after-jump").toBool(true));
+    choice.setJumpPositionInRound(obj.value("jump-position-in-round").toBool(true));
     choice.setSpecificWind(obj.value("specific-wind").toBool(false));
     choice.setTakeoffRating(obj.value("takeoff-rating").toBool(false));
     choice.setFlightRating(obj.value("flight-rating").toBool(false));

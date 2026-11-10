@@ -448,6 +448,14 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
         <source>Łagodna</source>
         <translation>Mírná</translation>
     </message>
+    <message>
+        <source>Informacje o skoku</source>
+        <translation>Informace o skoku</translation>
+    </message>
+    <message>
+        <source>Pokazuj skoki stopniowo</source>
+        <translation>Odhaluj skoky postupně</translation>
+    </message>
 </context>
     <context>
         <name>AppearanceMenu</name>
@@ -5096,6 +5104,10 @@ Pro dodatečnou kompenzaci musí skokan dosáhnout 95 % bodu HS (%1 m).</transla
         <source>Wyjść bez zakończenia wydarzenia? Oddane skoki zostaną usunięte. Wydarzenie będzie można rozpocząć ponownie.</source>
         <translation>Odejít před dokončením události? Dosavadní skoky budou odstraněny. Událost bude možné spustit znovu.</translation>
     </message>
+    <message>
+        <source>Pokazuj skoki stopniowo</source>
+        <translation>Odhaluj skoky postupně</translation>
+    </message>
 </context>
     <context>
         <name>CompetitionQuickBridge</name>
@@ -7142,7 +7154,11 @@ li.checked::marker { content: "\2612"; }
             <source> · nota odrzucona</source>
             <translation> · škrtnutá známka</translation>
         </message>
-    </context>
+        <message>
+        <source>Oczekiwanie na notę</source>
+        <translation>Čekání na známku</translation>
+    </message>
+</context>
     <context>
         <name>JumpDataDetailedInfoWindow</name>
         <message>
@@ -7591,7 +7607,71 @@ li.checked::marker { content: "\2612"; }
             <source>Pokaż opady przy skoku</source>
             <translation>Zobrazit: Sníh/déšť při skoku</translation>
         </message>
-    </context>
+        <message>
+        <source>Informacje o skoku</source>
+        <translation>Informace o skoku</translation>
+    </message>
+    <message>
+        <source>Zapisz</source>
+        <translation>Uložit</translation>
+    </message>
+    <message>
+        <source>Wybierz informacje widoczne w karcie skoku. Dane wyłączone zasadami konkursu pozostaną ukryte.</source>
+        <translation>Vyber informace v kartě skoku. Údaje vypnuté pravidly závodu zůstanou skryté.</translation>
+    </message>
+    <message>
+        <source>Wynik i przebieg</source>
+        <translation>Výsledek a průběh</translation>
+    </message>
+    <message>
+        <source>Pokaż punkty skoku</source>
+        <translation>Zobraz body za skok</translation>
+    </message>
+    <message>
+        <source>Pokaż miejsce w konkursie</source>
+        <translation>Zobraz pořadí v závodě</translation>
+    </message>
+    <message>
+        <source>Pokaż miejsce w serii i grupie</source>
+        <translation>Zobraz pořadí v kole a skupině</translation>
+    </message>
+    <message>
+        <source>Pokaż noty sędziów</source>
+        <translation>Zobraz známky rozhodčích</translation>
+    </message>
+    <message>
+        <source>Pokaż sumę not</source>
+        <translation>Zobraz součet známek</translation>
+    </message>
+    <message>
+        <source>Warunki i rekompensaty</source>
+        <translation>Podmínky a kompenzace</translation>
+    </message>
+    <message>
+        <source>Dodatkowe informacje</source>
+        <translation>Další informace</translation>
+    </message>
+    <message>
+        <source>Pokaż sumę punktów zawodnika</source>
+        <translation>Zobraz celkové body skokana</translation>
+    </message>
+    <message>
+        <source>Pokaż stratę do lidera</source>
+        <translation>Zobraz ztrátu na vedoucího</translation>
+    </message>
+    <message>
+        <source>Pokaż obliczenia wag i reset punktów</source>
+        <translation>Zobraz vážení a vynulování bodů</translation>
+    </message>
+    <message>
+        <source>Pokaż jakość skoku</source>
+        <translation>Zobraz kvalitu skoku</translation>
+    </message>
+    <message>
+        <source>Pokaż natężenie opadów</source>
+        <translation>Zobraz intenzitu srážek</translation>
+    </message>
+</context>
     <context>
         <name>JumpManipulatorConfigWindow</name>
         <message>
@@ -16237,6 +16317,10 @@ Ověřte, že jste vybrali správný soubor.</translation>
         <source>Rozbudowane laboratorium stworzone z pomocą AI, głównie dla autora do dostrajania silnika Sj.Sima. Pozwala porównywać warianty symulacji i analizować duże serie wyników. Jest skomplikowane, ale możesz korzystać z niego z ciekawości. Do zwykłej gry nie jest potrzebne.</source>
         <translation>Rozsáhlá laboratoř vytvořená s pomocí AI, především pro autora k ladění enginu Sj.Simu. Umožňuje porovnávat varianty simulace a analyzovat velké série výsledků. Je složitá, ale můžeš ji prozkoumat ze zvědavosti. Pro běžné hraní není potřeba.</translation>
     </message>
+    <message>
+        <source>Deszcz</source>
+        <translation>Déšť</translation>
+    </message>
 </context>
     <context>
         <name>QuickCalendar</name>
@@ -16892,6 +16976,18 @@ Ověřte, že jste vybrali správný soubor.</translation>
     <message><source>Czekaj 30s</source><translation>Čekat 30 s</translation></message>
     <message><source>Jednorazowo manipuluj skokiem</source><translation>Jednorázově upravit skok</translation></message>
     <message><source>TRENER</source><translation>TRENÉR</translation></message>
+    <message>
+        <source>Automat ▾</source>
+        <translation>Automat ▾</translation>
+    </message>
+    <message>
+        <source>Relacja ▾</source>
+        <translation>Průběh ▾</translation>
+    </message>
+    <message>
+        <source>Relacja skoku i automatyczne skoki</source>
+        <translation>Průběh skoku a automatické skákání</translation>
+    </message>
 </context>
     <context>
         <name>RaceLastJump</name>
@@ -16990,7 +17086,15 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Wiatr ↗</source>
             <translation>Vítr ↗</translation>
         </message>
-    </context>
+        <message>
+        <source>Jakość</source>
+        <translation>Kvalita</translation>
+    </message>
+    <message>
+        <source>Opady</source>
+        <translation>Srážky</translation>
+    </message>
+</context>
     <context>
         <name>RaceOptions</name>
         <message>
@@ -24521,6 +24625,57 @@ Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></con
     <message>
         <source>Trening %1</source>
         <translation>Trénink %1</translation>
+    </message>
+    <message>
+        <source>Przygotuj start: %1</source>
+        <translation>Připravit start: %1</translation>
+    </message>
+    <message>
+        <source>Przygotuj start ↗</source>
+        <translation>Připravit start ↗</translation>
+    </message>
+</context>
+<context>
+    <name>RaceLiveSettings</name>
+    <message>
+        <source>Gotowe</source>
+        <translation>Hotovo</translation>
+    </message>
+    <message>
+        <source>Relacja i automatyczne skoki</source>
+        <translation>Průběh skoku a automatické skákání</translation>
+    </message>
+    <message>
+        <source>Pokazuj skok stopniowo</source>
+        <translation>Odhaluj skok postupně</translation>
+    </message>
+    <message>
+        <source>Najpierw odległość, potem wiatr i lądowanie, a na końcu kolejne noty sędziów. Nie uruchamia następnego skoku.</source>
+        <translation>Nejprve vzdálenost, pak vítr a doskok a nakonec jednotlivé známky rozhodčích. Nespustí další skok.</translation>
+    </message>
+    <message>
+        <source>Czas skoku</source>
+        <translation>Doba skoku</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 s</translation>
+    </message>
+    <message>
+        <source>Czas do pokazania odległości</source>
+        <translation>Doba do zobrazení vzdálenosti</translation>
+    </message>
+    <message>
+        <source>Oddawaj skoki automatycznie</source>
+        <translation>Spouštěj skoky automaticky</translation>
+    </message>
+    <message>
+        <source>Kolejni zawodnicy skaczą bez klikania. Automat zatrzymuje się na końcu grupy lub serii; przechodzisz dalej ręcznie.</source>
+        <translation>Skokani skáčou bez klikání. Automat se zastaví na konci skupiny nebo kola; dál přejdeš ručně.</translation>
+    </message>
+    <message>
+        <source>Przerwa przed następnym skokiem</source>
+        <translation>Čekání před dalším skokem</translation>
     </message>
 </context>
 </TS>

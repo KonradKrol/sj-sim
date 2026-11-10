@@ -3,6 +3,9 @@
 #include <QObject>
 #include <QEvent>
 #include <cmath>
+#include <QTimer>
+#include <QSettings>
+#include <QRandomGenerator>
 #include <algorithm>
 #include "CompetitionManagerWindow.h"
 #include "../../simulation-v2/FieldWindMeasurement.h"
@@ -88,6 +91,16 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     personalBestNotificationsSuppressed(false)
 {
     ui->setupUi(this);
+    automaticJumpTimer=new QTimer(this);
+    automaticJumpTimer->setSingleShot(true);
+    connect(automaticJumpTimer,&QTimer::timeout,this,[this]{
+        if(!autoPlayback || !isVisible())return;
+        if(jumpInProgress || bulkSimulationInProgress || property("liveConfigurationOpen").toBool() || property("resultHistoryPaused").toBool() || (QApplication::activeModalWidget() && QApplication::activeModalWidget()!=this)) {
+            automaticJumpTimer->start(250);return;
+        }
+        if(!ui->pushButton_jump->isEnabled()){setAutomaticPlayback(false);return;}
+        on_pushButton_jump_clicked();
+    });
     if(manager && manager->getCompetitionInfo()){auto *info=manager->getCompetitionInfo();if(info->getResultsReference().getResultsReference().isEmpty())info->simulationModelRevision=SimulationV2::modelRevision;if(!info->simulationBalance)info->simulationBalance=BalanceRuntime::gameCapture();simulator.setSimulationBalanceProfile(*info->simulationBalance);}
     if(manager && manager->getCompetitionInfo() && manager->getCompetitionInfo()->getHill() && manager->getCompetitionInfo()->getHill()->getSimulationProfile())
         ui->spinBox_actualGate->setRange(0,200);
@@ -908,6 +921,7 @@ void CompetitionManagerWindow::changeEvent(QEvent *event)
 
 void CompetitionManagerWindow::autoSimulateRound()
 {
+    if(jumpInProgress || bulkSimulationInProgress)return;
     if(property("resultHistoryPaused").toBool())return;
     if(manager->checkCompetitionEnd())
         return;
@@ -916,6 +930,7 @@ void CompetitionManagerWindow::autoSimulateRound()
                              QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Yes)
         return;
 
+    setAutomaticPlayback(false);
     QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);
     jumperResultsWidget->hide();
     Jumper *lastSimulatedJumper = nullptr;
@@ -1035,6 +1050,7 @@ void CompetitionManagerWindow::autoSimulateRound()
 
 void CompetitionManagerWindow::autoSimulateCompetition()
 {
+    if(jumpInProgress || bulkSimulationInProgress)return;
     if(property("resultHistoryPaused").toBool())return;
     if(manager->checkCompetitionEnd())
         return;
@@ -1043,6 +1059,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
                              QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Yes)
         return;
 
+    setAutomaticPlayback(false);
     QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);
     jumperResultsWidget->hide();
     Jumper *lastSimulatedJumper = nullptr;
@@ -1196,6 +1213,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
 
 void CompetitionManagerWindow::autoSimulateGroup()
 {
+    if(jumpInProgress || bulkSimulationInProgress)return;
     if(property("resultHistoryPaused").toBool())return;
     if(manager->checkCompetitionEnd())
         return;
@@ -1204,6 +1222,7 @@ void CompetitionManagerWindow::autoSimulateGroup()
                              QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Yes)
         return;
 
+    setAutomaticPlayback(false);
     QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);
     jumperResultsWidget->hide();
     Jumper *lastSimulatedJumper = nullptr;
@@ -1287,6 +1306,7 @@ void CompetitionManagerWindow::autoSimulateGroup()
 
 void CompetitionManagerWindow::autoSimulateJumps()
 {
+    if(jumpInProgress || bulkSimulationInProgress)return;
     if(property("resultHistoryPaused").toBool())return;
     if(manager->checkCompetitionEnd())
         return;
@@ -1296,7 +1316,8 @@ void CompetitionManagerWindow::autoSimulateJumps()
                                                 tr("Liczba kolejnych skoków (maksymalnie 10 000)"),
                                                 5, 1, 10000, 1, &ok);
     if(ok == true){
-        QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);
+        setAutomaticPlayback(false);
+    QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);
         jumperResultsWidget->hide();
         Jumper *lastSimulatedJumper = nullptr;
         for(int i = 0; i < jumpsCount; i++){
@@ -1547,85 +1568,90 @@ void CompetitionManagerWindow::setLiveStage(int stage)
     liveStage=stage;emit liveStageChanged(stage);
 }
 
+void CompetitionManagerWindow::setAutomaticPlayback(bool enabled)
+{
+    autoPlayback=enabled;
+    if(enabled)scheduleAutomaticJump();
+    else automaticJumpTimer->stop();
+}
+
+void CompetitionManagerWindow::scheduleAutomaticJump()
+{
+    if(!autoPlayback)return;
+    if(!manager || manager->checkCompetitionEnd() || manager->checkRoundEnd()
+       || (dynamic_cast<TeamCompetitionManager *>(manager) && static_cast<TeamCompetitionManager *>(manager)->checkGroupEnd())) {
+        setAutomaticPlayback(false);return;
+    }
+    if(!jumpInProgress)automaticJumpTimer->start(qBound(1,QSettings().value("quickUi/liveWaitSeconds",5).toInt(),60)*1000);
+}
+
 void CompetitionManagerWindow::executeLiveCompetitionEffects()
 {
     disableCompetitionManagementButtons();
+    auto *tabs=jumperResultsWidget->getUi()->tabWidget_jumps;
+    auto *info=tabs->count()?qobject_cast<JumpDataDetailedInfoWindow *>(tabs->widget(tabs->count()-1)):nullptr;
+    if(!info || !info->getJumpData())return;
+    info->show();
+    auto *c=&GlobalAppSettings::get()->getJumpDataInfoChoiceReference();
+    const auto *rules=manager->getCompetitionRules();
+    const bool judges=rules->getHasJudgesPoints() && !info->getJumpData()->getDSQ() && !info->getJumpData()->getDNS();
+    const auto wait=[this](int milliseconds){
+        QEventLoop loop;QTimer timer;timer.setSingleShot(true);
+        connect(&timer,&QTimer::timeout,&loop,&QEventLoop::quit);
+        connect(this,&QDialog::finished,&loop,&QEventLoop::quit);
+        timer.start(milliseconds);loop.exec();return isVisible();
+    };
     jumperResultsWidget->getUi()->label_actualPosition->hide();
     jumperResultsWidget->getUi()->label_pointsSum->hide();
-
-    qDebug()<<"sh ; .bc "<<jumperResultsWidget->getUi()->tabWidget_jumps->count();
-    qDebug()<<jumperResultsWidget->getUi()->tabWidget_jumps->widget(jumperResultsWidget->getUi()->tabWidget_jumps->count() - 1);
-
-    JumpDataDetailedInfoWindow * info = static_cast<JumpDataDetailedInfoWindow*>(jumperResultsWidget->getUi()->tabWidget_jumps->widget(jumperResultsWidget->getUi()->tabWidget_jumps->count() - 1));
-    if(info->isHidden())
-        info->show();
-    info->getUi()->label_distance->hide();
-    info->getUi()->label_judges->hide();
-    info->getUi()->label_judgesPoints->hide();
-    info->getUi()->label_points->hide();
-    info->getUi()->label_landingType->hide();
-    info->getUi()->label_takeoffRating->hide();
-    info->getUi()->label_flightRating->hide();
-    info->getUi()->label_random->hide();
-    info->getUi()->label_snowRain->hide();
-    info->getUi()->label_positionInRound->hide();
-
-    JumpDataInfoChoice * c = &GlobalAppSettings::get()->getJumpDataInfoChoiceReference();
-
-    QEventLoop loop;
-    connect(this,&QDialog::finished,&loop,&QEventLoop::quit);
-    QTimer::singleShot(5000 * (manager->getCompetitionInfo()->getHill()->getKPoint() / double(130)) * GlobalAppSettings::get()->getLiveCompetitionSpeedMulti(), &loop, SLOT(quit()));
-    loop.exec();
-    if(!isVisible())return;
+    for(const auto *name:{"label_distance","label_judges","label_judgesPoints","label_points","label_landingType","label_averageWind","label_windPoints","label_gatePoints","label_totalCompensation","label_takeoffRating","label_flightRating","label_random","label_snowRain","label_positionInRound","label_positionInGroup","label_positionInCompetition"})
+        if(auto *label=info->findChild<QLabel *>(name))label->hide();
+    setProperty("liveJudgeCount",0);
+    setProperty("liveJudgeMask",0);
+    setProperty("liveDetailsStep",0);
+    const int flightSeconds=qBound(1,QSettings().value("quickUi/liveFlightSeconds",7).toInt(),20);
+    if(!wait(flightSeconds*1000))return;
+    if(c->getDistance())info->getUi()->label_distance->show();
     setLiveStage(2);
-    if(c->getDistance())
-        info->getUi()->label_distance->show();
-
-    QTimer::singleShot(1000 * GlobalAppSettings::get()->getLiveCompetitionSpeedMulti(), &loop, SLOT(quit()));
-    loop.exec();
-    if(!isVisible())return;
-    setLiveStage(3);
-    if(c->getLandingType())
-        info->getUi()->label_landingType->show();
-
-    QTimer::singleShot(3500 * GlobalAppSettings::get()->getLiveCompetitionSpeedMulti(), &loop, SLOT(quit()));
-    loop.exec();
-    if(!isVisible())return;
-    setLiveStage(4);
-    if(c->getJudges())
-        info->getUi()->label_judges->show();
-    if(c->getJudgesPoints())
-        info->getUi()->label_judgesPoints->show();
-
-    QTimer::singleShot(2500 * GlobalAppSettings::get()->getLiveCompetitionSpeedMulti(), &loop, SLOT(quit()));
-    loop.exec();
-    if(!isVisible())return;
-    setLiveStage(5);
+    if(!wait(300))return;
+    info->getUi()->label_landingType->setVisible(c->getLandingType());
+    setProperty("liveDetailsStep",1);setLiveStage(3);
+    if(!wait(400))return;
+    info->getUi()->label_averageWind->setVisible(c->getAveragedWind());
+    setProperty("liveDetailsStep",2);emit liveStageChanged(3);
+    if(!wait(400))return;
+    info->getUi()->label_windPoints->setVisible(c->getWindCompensation() && rules->getHasWindCompensations());
+    info->getUi()->label_gatePoints->setVisible(c->getGateCompensation() && rules->getHasGateCompensations());
+    info->getUi()->label_totalCompensation->setVisible(c->getTotalCompensation() && (rules->getHasWindCompensations() || rules->getHasGateCompensations()));
+    setProperty("liveDetailsStep",3);emit liveStageChanged(3);
+    if(judges && (c->getJudges() || c->getJudgesPoints())) {
+        if(!wait(300))return;
+        info->getUi()->label_judges->setVisible(c->getJudges());
+        setLiveStage(4);
+        const int count=qMin(5,info->getJumpData()->getJudges().size());
+        QVector<double> intervals;double sum=0;
+        for(int i=0;i<count;++i){const double value=.35+QRandomGenerator::global()->generateDouble()*1.3;intervals.append(value);sum+=value;}
+        const int windowMs=4000+QRandomGenerator::global()->bounded(3001);
+        const auto updateMarks=[info,count](int mask){QStringList texts;for(int i=0;i<count;++i)texts.append(mask & (1<<i)?QString::number(info->getJumpData()->getJudges()[i],'f',1):QString::fromUtf8("—"));info->getUi()->label_judges->setText(texts.join(" | "));};
+        updateMarks(0);
+        QVector<int> order;for(int i=0;i<count;++i)order.append(i);
+        for(int i=count-1;i>0;--i)order.swapItemsAt(i,QRandomGenerator::global()->bounded(i+1));
+        int elapsed=0,mask=0;
+        for(int i=0;i<count;++i) {
+            const int delay=i==count-1?windowMs-elapsed:qRound(windowMs*intervals[i]/sum);
+            if(!wait(qMax(1,delay)))return;
+            elapsed+=delay;mask|=(1<<order[i]);setProperty("liveJudgeMask",mask);updateMarks(mask);setProperty("liveJudgeCount",i+1);emit liveStageChanged(4);
+        }
+        if(!wait(250))return;
+    }
+    info->getUi()->label_judgesPoints->setVisible(judges && c->getJudgesPoints());
+    info->getUi()->label_points->setVisible(c->getPoints());
+    info->getUi()->label_positionInRound->setVisible(c->getJumpPositionInRound());
     jumperResultsWidget->getUi()->label_actualPosition->setVisible(c->getPositionAfterJump());
     jumperResultsWidget->getUi()->label_pointsSum->show();
-    if(c->getPoints())
-        info->getUi()->label_points->show();
-    if(c->getJumpPositionInRound())
-        info->getUi()->label_positionInRound->show();
-    if(c->getTakeoffRating())
-        info->getUi()->label_takeoffRating->show();
-    if(c->getFlightRating())
-        info->getUi()->label_flightRating->show();
-    if(c->getDistanceRandom())
-        info->getUi()->label_random->show();
-    if(c->getInrunSnow())
-        info->getUi()->label_snowRain->show();
-
-    if(manager->getCompetitionInfo()->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual){
-        ui->tableView_results->setUpdatesEnabled(true);
-        if(KOManager != nullptr)
-            ui->tableView_KOGroupResults->setUpdatesEnabled(true);
-    }
-    if(teamResultsTreeView != nullptr)
-        teamResultsTreeView->setUpdatesEnabled(true);
-    else
-        ui->tableView_results->show();
-
+    setLiveStage(5);
+    ui->tableView_results->setUpdatesEnabled(true);
+    if(KOManager)ui->tableView_KOGroupResults->setUpdatesEnabled(true);
+    if(teamResultsTreeView)teamResultsTreeView->setUpdatesEnabled(true);
 }
 
 void CompetitionManagerWindow::checkForEasterEggs()
@@ -1705,6 +1731,7 @@ void CompetitionManagerWindow::cancelCompetition()
     auto *cancel=question.addButton(tr("Odwołaj wydarzenie"),QMessageBox::DestructiveRole);
     question.addButton(tr("Wróć"),QMessageBox::RejectRole);question.exec();
     if(question.clickedButton()!=cancel)return;
+    setAutomaticPlayback(false);
     restoreAbandonedRecords();
     manager->getCompetitionInfo()->setCancelled(true);
     manager->getResults()->getResultsReference().clear();
@@ -1713,12 +1740,14 @@ void CompetitionManagerWindow::cancelCompetition()
 
 void CompetitionManagerWindow::cancelActualRound()
 {
+    if(jumpInProgress || bulkSimulationInProgress)return;
     if(property("resultHistoryPaused").toBool())return;
     if(QMessageBox::question(this, tr("Odwołanie aktualnej serii"),
                              tr("Odwołać aktualną serię? Wszystkie skoki oddane w tej serii zostaną usunięte."),
                              QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Yes)
         return;
 
+    setAutomaticPlayback(false);
     Jumper *previewJumper=!jumperResultsWidget->isHidden() && jumperResultsWidget->getJumperResult() ? jumperResultsWidget->getJumperResult()->getJumper() : nullptr;
     jumperResultsWidget->hide();
 
@@ -1884,7 +1913,7 @@ void CompetitionManagerWindow::setupSimulator()
 
 void CompetitionManagerWindow::skipCurrentJump()
 {
-    if(property("resultHistoryPaused").toBool() || jumpInProgress || !ui->pushButton_jump->isEnabled())return;
+    if(property("resultHistoryPaused").toBool() || property("liveConfigurationOpen").toBool() || jumpInProgress || !ui->pushButton_jump->isEnabled())return;
     const bool live=GlobalAppSettings::get()->getLiveCompetition();GlobalAppSettings::get()->setLiveCompetition(false);
     skipRequested=true;on_pushButton_jump_clicked();skipRequested=false;
     GlobalAppSettings::get()->setLiveCompetition(live);
@@ -1892,14 +1921,19 @@ void CompetitionManagerWindow::skipCurrentJump()
 
 void CompetitionManagerWindow::on_pushButton_jump_clicked()
 {
-    if(property("resultHistoryPaused").toBool() || jumpInProgress || !ui->pushButton_jump->isEnabled())
+    if(property("resultHistoryPaused").toBool() || property("liveConfigurationOpen").toBool() || jumpInProgress || !ui->pushButton_jump->isEnabled())
         return;
 
     jumpInProgress = true;
-    if(GlobalAppSettings::get()->getLiveCompetition())setLiveStage(1);
+    automaticJumpTimer->stop();
+    const bool progressive=GlobalAppSettings::get()->getLiveCompetition();
+    setProperty("liveJudgeCount",0);
+    setProperty("liveJudgeMask",0);
+    setProperty("liveDetailsStep",0);
+    if(progressive)setLiveStage(1);
     disableCompetitionManagementButtons();
 
-    if(GlobalAppSettings::get()->getLiveCompetition()){
+    if(progressive){
         if(manager->getCompetitionInfo()->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual){
             ui->tableView_results->setUpdatesEnabled(false);
             if(KOManager != nullptr)
@@ -1968,8 +2002,15 @@ void CompetitionManagerWindow::on_pushButton_jump_clicked()
     }
     else
         jumperResultsWidget->hide();
-    if(GlobalAppSettings::get()->getLiveCompetition())
+    if(progressive && !jump.getDSQ() && !jump.getDNS())
         executeLiveCompetitionEffects();
+    else if(progressive) {
+        setLiveStage(5);
+        ui->tableView_results->setUpdatesEnabled(true);
+        if(KOManager)ui->tableView_KOGroupResults->setUpdatesEnabled(true);
+        if(teamResultsTreeView)teamResultsTreeView->setUpdatesEnabled(true);
+    }
+    if(!isVisible()){jumpInProgress=false;setLiveStage(0);setAutomaticPlayback(false);return;}
     if(isVisible())checkForEasterEggs();
 
     startListModel->refresh();
@@ -2061,6 +2102,7 @@ void CompetitionManagerWindow::on_pushButton_jump_clicked()
         ui->pushButton_jump->setFocus();
     }
     setLiveStage(0);
+    scheduleAutomaticJump();
 }
 
 void CompetitionManagerWindow::showResultJump(const QModelIndex &index,int round)
@@ -2288,6 +2330,7 @@ void CompetitionManagerWindow::closeEvent(QCloseEvent *event)
         return;
     }
 
+    if(automaticJumpTimer)setAutomaticPlayback(false);
     if(manager == nullptr)
     {
         event->accept();

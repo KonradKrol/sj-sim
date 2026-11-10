@@ -7,8 +7,10 @@ Pane {
     objectName: "raceLastJump"
     property bool dense: false
     readonly property var summary: ui.jumpSummary
+    readonly property var visibility: summary.visibility || ({})
+    function shows(key){return visibility[key]!==false}
     readonly property bool narrow: width<480
-    ChangeFeedback { id: resultArrival; target: jump; trigger: [jump.summary.name,jump.summary.distance,jump.summary.points,jump.summary.selectedRound].join("|"); duration: Theme.motion*2 }
+    ChangeFeedback { id: resultArrival; target: jump; trigger: [jump.summary.jumpKey,jump.summary.name,jump.summary.selectedRound].join("|"); duration: Theme.motion*2 }
     implicitHeight: content.implicitHeight + topPadding + bottomPadding
     padding: dense ? 4 : 8
     function signedColor(value){return value>0 ? Theme.success : value<0 ? Theme.danger : Theme.ink}
@@ -34,7 +36,7 @@ Pane {
                 }
                 Label {
                     objectName: "lastJumpLeaderGap"
-                    visible: jump.summary.leaderGap !== undefined
+                    visible: jump.shows("leaderGap") && jump.summary.leaderGap !== undefined
                     text: jump.summary.leaderGap>0 ? qsTr("Do lidera: %1 pkt").arg(Number(jump.summary.leaderGap).toLocaleString(Qt.locale(Theme.localeName),'f',1)) : qsTr("Lider")
                     color: Theme.muted; font.pointSize: Theme.caption
                 }
@@ -48,6 +50,7 @@ Pane {
                 onActivated: function(index){ui.selectPreviewRound(index)}
             }
             Rectangle {
+                visible: jump.shows("position")
                 color: Theme.selection; radius: 6
                 implicitWidth: rank.implicitWidth+16; implicitHeight: rank.implicitHeight+6
                 Row {
@@ -63,39 +66,37 @@ Pane {
             columns: jump.narrow ? 1 : 2; columnSpacing: 10; rowSpacing: 2
             RowLayout {
                 Layout.fillWidth: true; spacing: 10
-                Label { objectName: "lastJumpDistance"; text: jump.summary.distance || "—"; color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.weight: Font.ExtraBold }
-                Label { objectName: "lastJumpPoints"; text: jump.summary.points || "—"; color: Theme.accent; font.family: Theme.mono; font.pointSize: Theme.body; Layout.fillWidth: true }
+                Label { objectName: "lastJumpDistance"; visible: jump.shows("distance"); text: jump.summary.distance || "—"; color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.weight: Font.ExtraBold }
+                Label { objectName: "lastJumpPoints"; visible: jump.shows("points"); text: jump.summary.points || "—"; color: Theme.accent; font.family: Theme.mono; font.pointSize: Theme.body; Layout.fillWidth: true }
             }
             RowLayout {
+                visible: jump.shows("judges") || jump.shows("judgesPoints")
                 Layout.fillWidth: true; spacing: 6
-                JudgeMarks { objectName: "lastJumpJudges"; judges: jump.summary.judges || [] }
-                Label { text: jump.summary.judgesPoints || "—"; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption; Layout.fillWidth: true; horizontalAlignment: Text.AlignRight }
+                JudgeMarks { visible: jump.shows("judges"); objectName: "lastJumpJudges"; judges: jump.summary.judges || [] }
+                Label { visible: jump.shows("judgesPoints"); text: jump.summary.judgesPoints || "—"; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption; Layout.fillWidth: true; horizontalAlignment: Text.AlignRight }
             }
         }
         GridLayout {
             width: parent.width
             columns: jump.narrow ? 3 : 4; columnSpacing: 8; rowSpacing: 2
-            JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Wiatr"); value: jump.signedText(jump.summary.wind,jump.summary.windValue); valueColor: jump.signedColor(jump.summary.windValue); interactive: false; objectName: "lastJumpWind"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
-            JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Belka"); value: jump.summary.gate || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
-            JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Ląd."); value: jump.summary.landing || "—"; valueColor: jump.summary.landingType === 0 ? (Theme.dark ? "#a9c4df" : "#466781") : jump.summary.landingType === 1 ? (Theme.dark ? "#f1d478" : "#795900") : jump.summary.landingType === 2 ? (Theme.dark ? "#ffba78" : "#994700") : jump.summary.landingType === 3 ? Theme.danger : Theme.ink; Layout.fillWidth: true; Layout.minimumWidth: 0 }
-            JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Rekomp."); value: jump.signedText(jump.summary.compensation,jump.summary.compensationValue); valueColor: jump.signedColor(jump.summary.compensationValue); objectName: "lastJumpCompensation"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
-            JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Za wiatr"); value: jump.summary.windPoints || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
-            JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Za belkę"); value: jump.summary.gatePoints || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
-            JumpMetric { inlineValue: !jump.narrow; objectName: "lastJumpRoundPosition"; caption: qsTr("W serii"); value: jump.summary.roundPositionNumber>0 ? jump.summary.roundPositionNumber+"." : "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
-            JumpMetric { inlineValue: !jump.narrow; visible: !!jump.summary.groupPosition; caption: qsTr("Grupa"); value: jump.summary.groupPosition || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
-            JumpMetric { inlineValue: !jump.narrow; visible: !!jump.summary.competitionPosition; caption: qsTr("Konkurs"); value: jump.summary.competitionPosition || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
-            JumpMetric { inlineValue: !jump.narrow; caption: qsTr("Suma"); value: jump.summary.totalPoints || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
+            JumpMetric { inlineValue: !jump.narrow; visible: jump.shows("wind"); caption: qsTr("Wiatr"); value: jump.signedText(jump.summary.wind,jump.summary.windValue); valueColor: jump.signedColor(jump.summary.windValue); interactive: false; objectName: "lastJumpWind"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
+            JumpMetric { inlineValue: !jump.narrow; visible: jump.shows("gate"); caption: qsTr("Belka"); value: jump.summary.gate || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
+            JumpMetric { inlineValue: !jump.narrow; visible: jump.shows("landing"); caption: qsTr("Ląd."); value: jump.summary.landing || "—"; valueColor: jump.summary.landingType === 0 ? (Theme.dark ? "#a9c4df" : "#466781") : jump.summary.landingType === 1 ? (Theme.dark ? "#f1d478" : "#795900") : jump.summary.landingType === 2 ? (Theme.dark ? "#ffba78" : "#994700") : jump.summary.landingType === 3 ? Theme.danger : Theme.ink; Layout.fillWidth: true; Layout.minimumWidth: 0 }
+            JumpMetric { inlineValue: !jump.narrow; visible: jump.shows("compensation"); caption: qsTr("Rekomp."); value: jump.signedText(jump.summary.compensation,jump.summary.compensationValue); valueColor: jump.signedColor(jump.summary.compensationValue); objectName: "lastJumpCompensation"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
+            JumpMetric { inlineValue: !jump.narrow; visible: jump.shows("windPoints"); caption: qsTr("Za wiatr"); value: jump.summary.windPoints || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
+            JumpMetric { inlineValue: !jump.narrow; visible: jump.shows("gatePoints"); caption: qsTr("Za belkę"); value: jump.summary.gatePoints || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
+            JumpMetric { inlineValue: !jump.narrow; objectName: "lastJumpRoundPosition"; visible: jump.shows("roundPosition"); caption: qsTr("W serii"); value: jump.summary.roundPositionNumber>0 ? jump.summary.roundPositionNumber+"." : "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
+            JumpMetric { inlineValue: !jump.narrow; visible: jump.shows("groupPosition") && !!jump.summary.groupPosition; caption: qsTr("Grupa"); value: jump.summary.groupPosition || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
+            JumpMetric { inlineValue: !jump.narrow; visible: jump.shows("competitionPosition") && !!jump.summary.competitionPosition; caption: qsTr("Konkurs"); value: jump.summary.competitionPosition || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
+            JumpMetric { inlineValue: !jump.narrow; visible: jump.shows("totalPoints"); caption: qsTr("Suma"); value: jump.summary.totalPoints || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
         }
         Flow {
-            visible: !!jump.summary.takeoff || !!jump.summary.flight || !!jump.summary.random || !!jump.summary.snow
-            width: parent.width
-            spacing: 8
-            JumpMetric { inlineValue: true; visible: !!jump.summary.takeoff; caption: qsTr("Wybicie"); value: jump.summary.takeoff || "" }
-            JumpMetric { inlineValue: true; visible: !!jump.summary.flight; caption: qsTr("Lot"); value: jump.summary.flight || "" }
-            JumpMetric { inlineValue: true; visible: !!jump.summary.random; caption: qsTr("Los."); value: jump.summary.random || "" }
-            JumpMetric { inlineValue: true; visible: !!jump.summary.snow; caption: qsTr("Śnieg"); value: jump.summary.snow || "" }
+            visible: !!jump.summary.quality || !!jump.summary.precipitation
+            width: parent.width; spacing: Theme.dp(8)
+            JumpMetric { inlineValue: true; visible: !!jump.summary.quality; caption: qsTr("Jakość"); value: jump.summary.quality || "" }
+            JumpMetric { inlineValue: true; visible: !!jump.summary.precipitation; caption: qsTr("Opady"); value: jump.summary.precipitation || "" }
         }
-        JumpWeights { width: parent.width; summary: jump.summary }
+        JumpWeights { visible: jump.shows("weights") && (!!jump.summary.weighted || !!jump.summary.resetPoints); width: parent.width; summary: jump.summary }
         Label { width: parent.width; visible: (!!jump.summary.dsq && !jump.summary.dns) || !!jump.summary.hs95; text: [jump.summary.dns ? "" : jump.summary.dsq,jump.summary.hs95].filter(function(value){return !!value}).join(" · "); color: jump.summary.dsq && !jump.summary.dns ? Theme.danger : Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap }
     }
 }

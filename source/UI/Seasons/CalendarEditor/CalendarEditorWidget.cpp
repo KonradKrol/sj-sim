@@ -1427,7 +1427,7 @@ return;
             auto *scroll=new QScrollArea(&dialog);scroll->setWidgetResizable(true);auto *body=new QWidget(scroll);auto *form=new QFormLayout(body);form->setRowWrapPolicy(QFormLayout::WrapLongRows);
             QVector<QComboBox *> choices;
             for(int i=0;i<missing.size();++i) {
-                const auto &entry=missing[i];auto *choice=new QComboBox(body);choice->setObjectName(QStringLiteral("calendarReplacement-%1").arg(i));
+                const auto &entry=missing[i];auto *choice=new QComboBox(body);choice->setObjectName(QStringLiteral("calendarReplacement-%1").arg(i));choice->setProperty("quickSearchableChoice",true);
                 choice->addItem(tr("Wybierz skocznię…"),-1);
                 for(int j=0;j<availableHills.size();++j)if(auto *hill=availableHills[j])choice->addItem(tr("%1 · HS %2").arg(hill->getName()).arg(hill->getHSPoint()),j);
                 const QString label=entry.name.isEmpty()?tr("Nieznana skocznia"):tr("%1 · HS %2").arg(entry.name).arg(entry.hs);

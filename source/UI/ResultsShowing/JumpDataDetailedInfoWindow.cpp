@@ -172,6 +172,16 @@ void JumpDataDetailedInfoWindow::showOrHideByAppSettings()
     ui->label_positionInGroup->setHidden(!c->getJumpPositionInRound());
     ui->label_positionInCompetitionTitle->setHidden(!c->getJumpPositionInRound());
     ui->label_positionInCompetition->setHidden(!c->getJumpPositionInRound());
+    if(auto *competition=jumpData->getCompetition()) {
+        const auto &rules=competition->getRules();
+        const auto hidePair=[this](bool allowed,QLabel *title,QLabel *value){if(!allowed){title->hide();value->hide();}};
+        hidePair(rules.getHasJudgesPoints(),ui->label_judgesTItle,ui->label_judges);
+        hidePair(rules.getHasJudgesPoints(),ui->label_judgesPointsTitle,ui->label_judgesPoints);
+        hidePair(rules.getHasWindCompensations(),ui->label_windCompensationTitle,ui->label_windPoints);
+        hidePair(rules.getHasGateCompensations(),ui->label_gatePointsTitle,ui->label_gatePoints);
+        hidePair(rules.getHasWindCompensations() || rules.getHasGateCompensations(),ui->label_totalCompensationTitle,ui->label_totalCompensation);
+        if(!rules.getHas95HSRule())ui->label_beats95HSPercents->hide();
+    }
 }
 
 void JumpDataDetailedInfoWindow::removeJumperInfoTitle()

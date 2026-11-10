@@ -34,6 +34,8 @@ AppSettingsWindow::AppSettingsWindow(QWidget *parent) :
     ui(new Ui::AppSettingsWindow)
 {
     ui->setupUi(this);
+    ui->doubleSpinBox_liveCompSpeed->hide();
+    ui->label_6->hide();
     auto *simulation=new QGroupBox(tr("Symulacja"),this);
     auto *form=new QFormLayout(simulation);
     const auto add=[&](const QString &key,const QString &title,const QString &help,const QStringList &options){
@@ -89,6 +91,10 @@ void AppSettingsWindow::setupLanguagesComboBox()
 
 void AppSettingsWindow::on_pushButton_defaultSettings_clicked()
 {
+    QSettings().remove("quickUi/jumpDetails");
+    QSettings().setValue("quickUi/liveWaitSeconds",5);
+    QSettings().setValue("quickUi/liveFlightSeconds",7);
+    GlobalAppSettings::get()->setJumpDataInfoChoice(JumpDataInfoChoice());
     for(auto *choice:findChildren<QComboBox *>())if(choice->objectName().startsWith("simpleSimulation_"))choice->setCurrentIndex(2);
     ui->comboBox_language->setCurrentIndex(0);
     ui->spinBox_dsqProbability->setValue(150);

@@ -448,6 +448,14 @@ But to keep you from getting too cheerful, your computer has been infected with 
         <source>Łagodna</source>
         <translation>Forgiving</translation>
     </message>
+    <message>
+        <source>Informacje o skoku</source>
+        <translation>Jump details</translation>
+    </message>
+    <message>
+        <source>Pokazuj skoki stopniowo</source>
+        <translation>Reveal jumps gradually</translation>
+    </message>
 </context>
     <context>
         <name>AppearanceMenu</name>
@@ -5095,6 +5103,10 @@ For additional compensation, the jumper must reach 95% of HS (%1 m).</translatio
         <source>Wyjść bez zakończenia wydarzenia? Oddane skoki zostaną usunięte. Wydarzenie będzie można rozpocząć ponownie.</source>
         <translation>Leave before completing the event? Completed jumps will be removed. You can start the event again.</translation>
     </message>
+    <message>
+        <source>Pokazuj skoki stopniowo</source>
+        <translation>Reveal jumps gradually</translation>
+    </message>
 </context>
     <context>
         <name>CompetitionQuickBridge</name>
@@ -7141,7 +7153,11 @@ li.checked::marker { content: "\2612"; }
             <source> · nota odrzucona</source>
             <translation> · discarded mark</translation>
         </message>
-    </context>
+        <message>
+        <source>Oczekiwanie na notę</source>
+        <translation>Waiting for a mark</translation>
+    </message>
+</context>
     <context>
         <name>JumpDataDetailedInfoWindow</name>
         <message>
@@ -7590,7 +7606,71 @@ li.checked::marker { content: "\2612"; }
             <source>Pokaż opady przy skoku</source>
             <translation>Show snow/rain during jump</translation>
         </message>
-    </context>
+        <message>
+        <source>Informacje o skoku</source>
+        <translation>Jump details</translation>
+    </message>
+    <message>
+        <source>Zapisz</source>
+        <translation>Save</translation>
+    </message>
+    <message>
+        <source>Wybierz informacje widoczne w karcie skoku. Dane wyłączone zasadami konkursu pozostaną ukryte.</source>
+        <translation>Choose what to show in the jump card. Information disabled by competition rules stays hidden.</translation>
+    </message>
+    <message>
+        <source>Wynik i przebieg</source>
+        <translation>Result and progress</translation>
+    </message>
+    <message>
+        <source>Pokaż punkty skoku</source>
+        <translation>Show jump points</translation>
+    </message>
+    <message>
+        <source>Pokaż miejsce w konkursie</source>
+        <translation>Show competition position</translation>
+    </message>
+    <message>
+        <source>Pokaż miejsce w serii i grupie</source>
+        <translation>Show round and group positions</translation>
+    </message>
+    <message>
+        <source>Pokaż noty sędziów</source>
+        <translation>Show judges’ marks</translation>
+    </message>
+    <message>
+        <source>Pokaż sumę not</source>
+        <translation>Show total style points</translation>
+    </message>
+    <message>
+        <source>Warunki i rekompensaty</source>
+        <translation>Conditions and compensation</translation>
+    </message>
+    <message>
+        <source>Dodatkowe informacje</source>
+        <translation>Additional information</translation>
+    </message>
+    <message>
+        <source>Pokaż sumę punktów zawodnika</source>
+        <translation>Show athlete total points</translation>
+    </message>
+    <message>
+        <source>Pokaż stratę do lidera</source>
+        <translation>Show gap to the leader</translation>
+    </message>
+    <message>
+        <source>Pokaż obliczenia wag i reset punktów</source>
+        <translation>Show weighting and points reset</translation>
+    </message>
+    <message>
+        <source>Pokaż jakość skoku</source>
+        <translation>Show jump quality</translation>
+    </message>
+    <message>
+        <source>Pokaż natężenie opadów</source>
+        <translation>Show precipitation intensity</translation>
+    </message>
+</context>
     <context>
         <name>JumpManipulatorConfigWindow</name>
         <message>
@@ -16236,6 +16316,10 @@ Check that you selected the correct file.</translation>
         <source>Rozbudowane laboratorium stworzone z pomocą AI, głównie dla autora do dostrajania silnika Sj.Sima. Pozwala porównywać warianty symulacji i analizować duże serie wyników. Jest skomplikowane, ale możesz korzystać z niego z ciekawości. Do zwykłej gry nie jest potrzebne.</source>
         <translation>A comprehensive laboratory created with AI assistance, mainly for the author to tune the Sj.Sim engine. It compares simulation variants and analyses large result sets. It is complex, but you can explore it out of curiosity. It is not needed for normal play.</translation>
     </message>
+    <message>
+        <source>Deszcz</source>
+        <translation>Rain</translation>
+    </message>
 </context>
     <context>
         <name>QuickCalendar</name>
@@ -16891,6 +16975,18 @@ Check that you selected the correct file.</translation>
     <message><source>Czekaj 30s</source><translation>Wait 30s</translation></message>
     <message><source>Jednorazowo manipuluj skokiem</source><translation>Manipulate one jump</translation></message>
     <message><source>TRENER</source><translation>COACH</translation></message>
+    <message>
+        <source>Automat ▾</source>
+        <translation>Autoplay ▾</translation>
+    </message>
+    <message>
+        <source>Relacja ▾</source>
+        <translation>Presentation ▾</translation>
+    </message>
+    <message>
+        <source>Relacja skoku i automatyczne skoki</source>
+        <translation>Jump presentation and autoplay</translation>
+    </message>
 </context>
     <context>
         <name>RaceLastJump</name>
@@ -16989,7 +17085,15 @@ Check that you selected the correct file.</translation>
             <source>Wiatr ↗</source>
             <translation>Wind ↗</translation>
         </message>
-    </context>
+        <message>
+        <source>Jakość</source>
+        <translation>Quality</translation>
+    </message>
+    <message>
+        <source>Opady</source>
+        <translation>Precipitation</translation>
+    </message>
+</context>
     <context>
         <name>RaceOptions</name>
         <message>
@@ -24520,6 +24624,57 @@ Close the previous Sj.Sim window and try again.</translation></message></context
     <message>
         <source>Trening %1</source>
         <translation>Training %1</translation>
+    </message>
+    <message>
+        <source>Przygotuj start: %1</source>
+        <translation>Prepare start: %1</translation>
+    </message>
+    <message>
+        <source>Przygotuj start ↗</source>
+        <translation>Prepare start ↗</translation>
+    </message>
+</context>
+<context>
+    <name>RaceLiveSettings</name>
+    <message>
+        <source>Gotowe</source>
+        <translation>Done</translation>
+    </message>
+    <message>
+        <source>Relacja i automatyczne skoki</source>
+        <translation>Jump presentation and autoplay</translation>
+    </message>
+    <message>
+        <source>Pokazuj skok stopniowo</source>
+        <translation>Reveal the jump gradually</translation>
+    </message>
+    <message>
+        <source>Najpierw odległość, potem wiatr i lądowanie, a na końcu kolejne noty sędziów. Nie uruchamia następnego skoku.</source>
+        <translation>Reveal distance first, then wind and landing, and finally each judge’s mark. Does not start the next jump.</translation>
+    </message>
+    <message>
+        <source>Czas skoku</source>
+        <translation>Jump duration</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 s</translation>
+    </message>
+    <message>
+        <source>Czas do pokazania odległości</source>
+        <translation>Time until distance is revealed</translation>
+    </message>
+    <message>
+        <source>Oddawaj skoki automatycznie</source>
+        <translation>Start jumps automatically</translation>
+    </message>
+    <message>
+        <source>Kolejni zawodnicy skaczą bez klikania. Automat zatrzymuje się na końcu grupy lub serii; przechodzisz dalej ręcznie.</source>
+        <translation>Athletes jump without clicking. Autoplay stops at the end of each group or round; you advance manually.</translation>
+    </message>
+    <message>
+        <source>Przerwa przed następnym skokiem</source>
+        <translation>Wait before the next jump</translation>
     </message>
 </context>
 </TS>

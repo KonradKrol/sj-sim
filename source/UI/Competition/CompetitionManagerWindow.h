@@ -20,6 +20,7 @@
 #include <memory>
 #include <QPointer>
 class SimulationWeatherSetup;
+class QTimer;
 
 namespace Ui {
 class CompetitionManagerWindow;
@@ -91,6 +92,9 @@ public:
 
     void executeLiveCompetitionEffects();
     int getLiveStage() const { return liveStage; }
+    bool automaticPlayback() const { return autoPlayback; }
+    void setAutomaticPlayback(bool enabled);
+    void scheduleAutomaticJump();
 
     void checkForEasterEggs();
 
@@ -121,6 +125,8 @@ private:
     double actualInrunSnow;
     bool jumpInProgress;
     int liveStage=0;
+    bool autoPlayback=false;
+    QTimer *automaticJumpTimer=nullptr;
     void setLiveStage(int stage);
     bool manipulationPending;
     bool personalBestNotificationsSuppressed;
