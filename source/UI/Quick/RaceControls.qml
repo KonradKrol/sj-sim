@@ -43,7 +43,15 @@ Flow {
             Label { text: parent.gate ? parent.gate.values.value : "—"; font.family: Theme.mono; font.bold: true; font.pointSize: Theme.section; color: Theme.ink; horizontalAlignment: Text.AlignHCenter; Layout.minimumWidth: Theme.dp(32) }
             SToolButton { text: "+"; autoRepeat: true; autoRepeatDelay: 250; autoRepeatInterval: 60; enabled: !!parent.gate && parent.gate.values.enabled && !ui.context.complete && !ui.context.roundComplete && parent.gate.values.value<parent.gate.values.maximum; onClicked: ui.edit(parent.gate.values.id,parent.gate.values.value+1) }
         }
-        SToolButton { text: ""; iconSource: "qrc:/ui/icons/tools/auto.svg"; Accessible.name: qsTr("Dobierz belkę"); enabled: !ui.context.complete && !ui.context.roundComplete && (!ui.context.liveStage || ui.context.liveStage>=5); hint: qsTr("Dobierz belkę do aktualnych warunków i pozostałych zawodników."); onClicked: ui.suggestRaceGate(false) }
+        SToolButton { text: ""; iconSource: "qrc:/ui/icons/tools/auto.svg"; Accessible.name: qsTr("Dobierz belkę"); enabled: !ui.context.complete && !ui.context.roundComplete && (!ui.context.liveStage || ui.context.liveStage>=5); hint: qsTr("Dobierz belkę do warunków."); onClicked: ui.suggestRaceGate(false) }
+        SToolButton {
+            objectName: "raceAutomaticGate"; text: qsTr("Auto")
+            readonly property var setting: ui.find("checkBox_automaticRaceGate")
+            checked: !!setting && !!setting.values.value
+            Accessible.name: qsTr("Automatyczna belka")
+            hint: qsTr("Automatycznie zmienia belkę.")
+            onClicked: if(setting)ui.activate(setting.values.id)
+        }
         SToolButton {
             objectName: "raceCoachGate"; text: qsTr("TRENER")
             hint: qsTr("Obniż belkę o 1 na życzenie trenera"); Accessible.name: hint

@@ -51,6 +51,14 @@
 extern const QString appVersion;
 
 namespace {
+void applyAutomaticGate(CompetitionManagerWindow *window)
+{
+    if(!QSettings().value("quickUi/raceAutomaticGate",false).toBool())return;
+    window->setProperty("applyingAutomaticGate",true);
+    try{window->suggestCurrentGate(false);window->setProperty("automaticGateError",QVariant());}
+    catch(const std::exception &e){window->setProperty("automaticGateError",QString::fromUtf8(e.what()));}
+    window->setProperty("applyingAutomaticGate",false);
+}
 // Rebind after result mutations; team member buffers may have been replaced.
 void refreshAutomaticJumpPreview(JumperCompetitionResultsWidget *preview,CompetitionResults *results,Jumper *jumper)
 {
@@ -91,6 +99,10 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     personalBestNotificationsSuppressed(false)
 {
     ui->setupUi(this);
+    auto *automaticGate=new QCheckBox(tr("Auto-belka"),this);
+    automaticGate->setObjectName("checkBox_automaticRaceGate");automaticGate->hide();
+    automaticGate->setChecked(QSettings().value("quickUi/raceAutomaticGate",false).toBool());
+    connect(automaticGate,&QCheckBox::toggled,this,[](bool enabled){QSettings().setValue("quickUi/raceAutomaticGate",enabled);});
     automaticJumpTimer=new QTimer(this);
     automaticJumpTimer->setSingleShot(true);
     connect(automaticJumpTimer,&QTimer::timeout,this,[this]{
@@ -364,6 +376,7 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     updateToAdvanceDistanceLabel();
     updateResponsiveLayout(width());
     ResponsiveWindowUtils::manageWindowGeometry(this, "CompetitionManagerWindow");
+    QTimer::singleShot(0,this,[this]{applyAutomaticGate(this);});
 #ifdef SJ_COMPETITION_QUICK
     if (!qEnvironmentVariableIsSet("SJ_COMPETITION_WIDGETS") && !QCoreApplication::arguments().contains("--widgets-competition"))
         CompetitionLiveBridge::install(this);
@@ -1897,6 +1910,7 @@ void CompetitionManagerWindow::refreshWindSnapshot(bool includeManipulation)
 
 JumpData CompetitionManagerWindow::simulateCurrentJump(bool skip)
 {
+    if(!skip)applyAutomaticGate(this);
     if(skip && !simulationWeather) {
         JumpData jump(manager->getActualJumper(),manager->getCompetitionInfo()->getHill());
         jump.setDNS(true);jump.setGate(manager->getActualGate());return jump;
@@ -2395,14 +2409,17 @@ void CompetitionManagerWindow::advanceRoundWeather()
     if(simulationWeather && round>windRound)simulationSeconds+=900.*(round-windRound);
     windRound=round;
     refreshWindSnapshot();updateActualInrunSnow();updateAvgWindLabel();
+    applyAutomaticGate(this);
 }
 
 void CompetitionManagerWindow::suggestCurrentGate(bool undo)
 {
-    if(!manager || jumpInProgress || manager->checkCompetitionEnd() || manager->checkRoundEnd() || property("resultHistoryPaused").toBool())return;
+    const bool automatic=property("applyingAutomaticGate").toBool();
+    if(!manager || (jumpInProgress && !automatic) || manager->checkCompetitionEnd() || manager->checkRoundEnd() || property("resultHistoryPaused").toBool())return;
     const int previous=manager->getActualGate();
     const bool previousCoach=manager->getCoachGateForNextJumper();
     const int previousEffective=previousCoach?manager->getActualCoachGate():previous;
+    const int coachReduction=previousCoach?qMax(0,previous-manager->getActualCoachGate()):0;
     int target=previous;
     if(undo) {
         if(!property("gateUndoAvailable").toBool())return;
@@ -2411,6 +2428,8 @@ void CompetitionManagerWindow::suggestCurrentGate(bool undo)
         auto *hill=manager->getCompetitionInfo()->getHill();
         if(!hill || !hill->getSimulationProfile() || hill->getPointsForGate()<=0 || hill->getPointsForMeter()<=0)return;
         JumpSimulator preview;JumpManipulator neutral;
+        neutral.setExactSimulationWind(currentInputJumpManipulator.getExactSimulationWind());
+        neutral.setExactWinds(currentInputJumpManipulator.getExactWinds());
         preview.setHill(hill);preview.setCompetitionRules(manager->getCompetitionRules());preview.setManipulator(&neutral);
         preview.setWinds(actualWinds);preview.setInrunSnow(actualInrunSnow);preview.setSimulationTime(simulationSeconds);
         if(simulationWeather)preview.setSimulationWeather(simulationWeather,simulationMeasurement);
@@ -2422,9 +2441,15 @@ void CompetitionManagerWindow::suggestCurrentGate(bool undo)
         }
         Jumper *best=nullptr;double longest=-1;
         preview.setGate(previous);
-        for(const auto &status:manager->getStartListStatusesReference()) {
-            auto *jumper=status.getJumper();
-            if(status.getJumpStatus()!=StartListCompetitorStatus::Unfinished || !jumper || !jumper->getSimulationProfile())continue;
+        QVector<Jumper *> candidates;
+        if(auto *individual=dynamic_cast<IndividualCompetitionManager *>(manager);individual && !individual->getRoundsJumpersReference().isEmpty())
+            candidates=individual->getRoundsJumpersReference().first();
+        else if(auto *teams=dynamic_cast<TeamCompetitionManager *>(manager);teams && !teams->getRoundsTeamsReference().isEmpty()){
+            for(auto *team:teams->getRoundsTeamsReference().first())if(team)
+                for(auto *jumper:team->getJumpers())if(jumper && !candidates.contains(jumper))candidates.append(jumper);
+        }else for(const auto &status:manager->getStartListStatusesReference())if(status.getJumper())candidates.append(status.getJumper());
+        for(auto *jumper:candidates) {
+            if(!jumper || !jumper->getSimulationProfile())continue;
             preview.setJumper(jumper);const double distance=preview.previewDistance();
             if(distance>longest){longest=distance;best=jumper;}
         }
@@ -2433,6 +2458,7 @@ void CompetitionManagerWindow::suggestCurrentGate(bool undo)
         int low=ui->spinBox_actualGate->minimum(),high=ui->spinBox_actualGate->maximum();
         while(low<high){const int middle=(low+high+1)/2;preview.setGate(middle);if(preview.previewDistance()<=hill->getSimulationProfile()->realHs())low=middle;else high=middle-1;}
         target=low;
+        if(automatic && std::abs(target-previous)<=1)return;
         setProperty("gatePreviousValue",previous);
         setProperty("gatePreviousCoach",manager->getCoachGateForNextJumper());
         setProperty("gatePreviousCoachValue",manager->getActualCoachGate());
@@ -2449,8 +2475,13 @@ void CompetitionManagerWindow::suggestCurrentGate(bool undo)
         manager->setCoachGateForNextJumper(true);manager->setActualCoachGate(property("gatePreviousCoachValue").toInt());
         const QSignalBlocker blocker(ui->spinBox_actualGate);ui->spinBox_actualGate->setValue(manager->getActualCoachGate());
     }
+    if(automatic && coachReduction>0){
+        const int coach=qMax(ui->spinBox_actualGate->minimum(),target-coachReduction);
+        manager->setCoachGateForNextJumper(coach<target);manager->setActualCoachGate(coach<target?coach:0);
+        const QSignalBlocker blocker(ui->spinBox_actualGate);ui->spinBox_actualGate->setValue(coach<target?coach:target);
+    }
     setProperty("applyingGateSuggestion",false);
-    setProperty("gateUndoAvailable",!undo && (target!=previous || previousCoach));
+    setProperty("gateUndoAvailable",!automatic && !undo && (target!=previous || previousCoach));
     setProperty("gateSuggestionDelta",undo?QVariant():QVariant(target-previousEffective));
     updateToAdvanceDistanceLabel();updateToBeatDistanceLabel();
 }
