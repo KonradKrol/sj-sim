@@ -19,6 +19,7 @@ Zmiana kalendarza nigdy nie cofa już przetworzonej historii formy. Wydarzenie z
 Otwórz **Ustawienia → Symulacja → Laboratorium formy**.
 
 1. Ustaw liczbę osób, formę początkową, perk, dni i seed albo wybierz paczkę. Paczka zachowuje indywidualne formy i perki.
+   W zakładce **Zawodnicy** wybierzesz konkretne osoby, wyszukasz je po nazwisku/kraju i zmienisz startową formę oraz perk formy każdej osoby. Zmiany dotyczą tylko laba; przycisk ↶ przywraca dane z paczki. Próba wykorzystuje wyłącznie zaznaczonych zawodników. Pusta lista blokuje uruchomienie. Wybory i edycje pozostają po przełączeniu paczek w tym samym oknie.
 2. Ustaw liczbę powtórzeń. Jedno to pojedyncza historia populacji; batch korzysta z niezależnych, deterministycznie wyprowadzonych seedów.
 3. Uruchom. Wykresy pokazują trzy pierwsze osoby i średnią populacji z pierwszego powtórzenia. Statystyki i rozkład formy obejmują cały batch. ± przy wynikach oznacza przybliżony 95% przedział średniej z powtórzeń, z poprawką Studenta przy małych próbach.
 4. W **Parametrach** dostroisz cały model. Wyszukiwanie obejmuje wszystkie grupy. Pomoc przy polu wyjaśnia działanie i jednostki. Pola akceptują przecinek i kropkę dziesiętną; zmiany zatwierdzasz Enterem lub opuszczeniem pola.

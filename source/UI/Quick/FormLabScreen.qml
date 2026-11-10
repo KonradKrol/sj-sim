@@ -12,13 +12,13 @@ Item {
     readonly property var report: backend.result
     readonly property var view: (report.views || [])[viewVariant] || ({})
     readonly property var groups: [qsTr("Okresy formy"),qsTr("Przejścia"),qsTr("Zmiany formy"),qsTr("Początek"),qsTr("Perk formy")]
-    onNarrowChanged: if(!narrow && page>1)page=0
+    onNarrowChanged: if(!narrow && page>2)page=0
     ColumnLayout {
     anchors.fill: parent; anchors.margins: Theme.dp(12)
     spacing: Theme.dp(8)
     Flow {
         Layout.fillWidth: true; spacing: Theme.dp(6)
-        SButton { objectName: "formLabRun"; text: lab.backend.busy ? qsTr("Przerwij") : qsTr("Uruchom"); primary: true; onClicked: lab.backend.busy ? lab.backend.cancel() : lab.backend.start() }
+        SButton { objectName: "formLabRun"; text: lab.backend.busy ? qsTr("Przerwij") : qsTr("Uruchom"); primary: true; onClicked: {if(lab.backend.busy)lab.backend.cancel();else {if(lab.page===1)lab.backend.setOption("usePack",true);lab.backend.start()}} }
         SButton { text: qsTr("Zachowaj A"); enabled: !lab.backend.busy; onClicked: lab.backend.freezeReference() }
         SButton { text: qsTr("Wczytaj"); enabled: !lab.backend.busy; onClicked: lab.backend.loadConfig() }
         SButton { text: qsTr("Zapisz profil"); enabled: !lab.backend.busy; onClicked: lab.backend.saveConfig() }
@@ -28,20 +28,21 @@ Item {
     ProgressBar { visible: lab.backend.busy; Layout.fillWidth: true; value: lab.backend.progress }
     Label { visible: lab.backend.busy; text: lab.backend.progressText; color: Theme.muted; font.pointSize: Theme.caption }
     Label { visible: !!text; text: lab.backend.message; color: Theme.ink; font.pointSize: Theme.caption; wrapMode: Text.WordWrap; Layout.fillWidth: true }
-    SectionTabs { Layout.fillWidth: true; options: lab.narrow ? [qsTr("Próba"),qsTr("Parametry"),qsTr("Wyniki")] : [qsTr("Próba"),qsTr("Parametry")]; currentIndex: lab.page; onSelected: lab.page=index }
+    SectionTabs { Layout.fillWidth: true; options: lab.narrow ? [qsTr("Próba"),qsTr("Zawodnicy"),qsTr("Parametry"),qsTr("Wyniki")] : [qsTr("Próba"),qsTr("Zawodnicy"),qsTr("Parametry")]; currentIndex: lab.page; onSelected: {lab.page=index;if(index===1)lab.backend.setOption("usePack",true)} }
     RowLayout {
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; spacing: Theme.dp(16)
         ScrollView {
             id: setupScroll
-            visible: lab.page<2 || !lab.narrow
+            visible: lab.page===0 || lab.page===2
             Layout.preferredWidth: Theme.dp(355); Layout.fillWidth: lab.narrow; Layout.fillHeight: true; Layout.minimumHeight: 0; Layout.minimumWidth: 0
             contentWidth: availableWidth; clip: true
             ColumnLayout {
                 width: setupScroll.availableWidth; spacing: Theme.dp(10)
                 ColumnLayout {
-                    visible: lab.page!==1; Layout.fillWidth: true; spacing: Theme.dp(10)
+                    visible: lab.page===0; Layout.fillWidth: true; spacing: Theme.dp(10)
                     SCheck { text: qsTr("Użyj zawodników z paczki"); checked: lab.backend.options.usePack; enabled: !lab.backend.busy; onClicked: lab.backend.setOption("usePack",checked); Layout.fillWidth: true }
                     SChoice { visible: lab.backend.options.usePack; model: lab.backend.packs; currentIndex: lab.backend.options.pack; searchable: true; Layout.fillWidth: true; enabled: !lab.backend.busy; onActivated: lab.backend.setOption("pack",index) }
+                    SButton { visible: lab.backend.options.usePack; text: qsTr("Zawodnicy: %1 · wybierz i edytuj").arg(lab.backend.selectedAthletes); Layout.fillWidth: true; onClicked: lab.page=1 }
                     Repeater {
                         model: [
                             {key:"count",label:qsTr("Zawodnicy"),minimum:1,maximum:10000},
@@ -57,7 +58,7 @@ Item {
                     Label { text: qsTr("Bez paczki wszyscy zaczynają od podanej formy i perka. Paczka zachowuje wartości każdego zawodnika. OVR nie wpływa na generator formy."); color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap; Layout.fillWidth: true }
                 }
                 ColumnLayout {
-                    visible: lab.page===1; Layout.fillWidth: true; spacing: Theme.dp(8)
+                    visible: lab.page===2; Layout.fillWidth: true; spacing: Theme.dp(8)
                     SField { id: search; Layout.fillWidth: true; placeholderText: qsTr("Szukaj parametru") }
                     SChoice { id: groupChoice; objectName: "formLabGroup"; Layout.fillWidth: true; model: lab.groups }
                     Repeater {
@@ -72,9 +73,14 @@ Item {
                 }
             }
         }
+        FormLabRoster {
+            visible: lab.page===1
+            backend: lab.backend
+            Layout.preferredWidth: Theme.dp(355); Layout.fillWidth: lab.narrow; Layout.fillHeight: true; Layout.minimumHeight: 0; Layout.minimumWidth: 0
+        }
         ScrollView {
             id: resultsScroll
-            visible: !lab.narrow || lab.page===2
+            visible: !lab.narrow || lab.page===3
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0
             contentWidth: availableWidth; clip: true
             ColumnLayout {

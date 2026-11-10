@@ -59,6 +59,12 @@ Przeszły także `--simulation-v2-only` (mostek, repozytorium profili, migracja,
 
 Instrukcja użytkowania: [FORM_ENGINE.md](FORM_ENGINE.md). Nowe teksty są po polsku; EN/CS wymagają osobnego uzupełnienia katalogów. Nie wykonano pełnego ręcznego sezonu obejmującego wiele konkursów, ani kalibracji według odłożonych celów.
 
+## Rozszerzenia po MVP
+
+Lab: zakładka Zawodnicy, stabilny model wierszy/proxy wyszukiwania, wybór osób, tymczasowe indywidualne F₀ i perk −4…+4, przywrócenie z paczki. Edycje nie resetują modelu/scrolla i nie zapisują paczki. Zaznaczenia są niezależne od filtra; brak zaznaczonych blokuje próbę. Stan edycji zachowywany osobno dla każdej paczki w czasie działania okna. Odwołany pomysł tabelarycznej macierzy — nie implementować.
+
+Bieżące dalsze uwagi: przenieść autoformę obok autozapisu i skrócić teksty; sprawdzić manipulację wiatrem (potwierdzone: najbliższy skok, reset manipulatora po nim, osobne ustawienia warunków zmieniają pole konkursu); dodać prostą, globalnie zapamiętaną auto-belkę reagującą na różnicę >1 przed każdym skokiem; osiem opisów aktualnej F (1–19 kryzys, 20–34 bardzo słaba, 35–44 obniżona, 45–55 typowa, 56–69 podwyższona, 70–84 bardzo wysoka, 85–94 forma życia, 95–100 absolutny szczyt). Pod suwakiem tylko opis F, diagnostyka do pomocy, przy autoformie wyszarzyć sterowanie. Odwołanie wydarzeń także musi przeliczać formę do ich dat.
+
 ## Ważne uwagi matematyczne
 
 - Laplace(scale=1) ma wariancję 2. Do równania ze specyfikacji potrzebny jest scale=1/√2.

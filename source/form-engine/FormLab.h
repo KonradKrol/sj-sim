@@ -3,6 +3,8 @@
 #include <QDialog>
 #include <QFutureWatcher>
 #include <QTimer>
+class QStandardItemModel;
+class QSortFilterProxyModel;
 
 class FormLabController final:public QObject {
     Q_OBJECT
@@ -10,6 +12,9 @@ class FormLabController final:public QObject {
     Q_PROPERTY(QVariantMap options READ options NOTIFY changed)
     Q_PROPERTY(QVariantList definitions READ definitions CONSTANT)
     Q_PROPERTY(QStringList packs READ packs CONSTANT)
+    Q_PROPERTY(QObject* athleteRows READ athleteRows CONSTANT)
+    Q_PROPERTY(int selectedAthletes READ selectedAthletes NOTIFY selectionChanged)
+    Q_PROPERTY(int athleteCount READ athleteCount NOTIFY selectionChanged)
     Q_PROPERTY(QVariantMap result READ result NOTIFY resultChanged)
     Q_PROPERTY(QString message READ message NOTIFY changed)
     Q_PROPERTY(bool busy READ busy NOTIFY progressChanged)
@@ -23,6 +28,13 @@ public:
     QVariantMap options()const{return m_options;}
     QVariantList definitions()const{return AutoForm::Config::definitions();}
     QStringList packs()const;
+    QObject *athleteRows()const;
+    int selectedAthletes()const{return m_selectedAthletes;}
+    int athleteCount()const;
+    Q_INVOKABLE void setAthlete(const QString &id,const QString &key,const QVariant &);
+    Q_INVOKABLE void selectAthletes(bool selected);
+    Q_INVOKABLE void resetAthlete(const QString &id);
+    Q_INVOKABLE void filterAthletes(const QString &text);
     QVariantMap result()const{return m_result.toVariantMap();}
     QString message()const{return m_message;}
     bool busy()const{return m_busy;}
@@ -40,11 +52,16 @@ public:
     Q_INVOKABLE void useForNewGames();
     Q_INVOKABLE void exportResult();
 signals:
-    void changed();void resultChanged();void progressChanged();
+    void changed();void resultChanged();void progressChanged();void selectionChanged();
 private:
     AutoForm::Config m_config,m_reference;
     QVariantMap m_options;
     QVector<QJsonObject> m_packs;
+    QStandardItemModel *m_athletes;
+    QSortFilterProxyModel *m_filteredAthletes;
+    QHash<QString,int> m_athleteRows;
+    QHash<QString,QVariantMap> m_athleteOverrides;
+    int m_selectedAthletes=0;
     QJsonObject m_result;
     QFutureWatcher<QJsonObject> m_watcher;
     QTimer m_progressTimer;
@@ -53,6 +70,8 @@ private:
     qint64 m_total=0;
     bool m_busy=false,m_stale=false;
     void edited();
+    void rebuildAthletes();
+    QString athleteKey(const QString &)const;
 };
 class FormLabWindow final:public QDialog {
     Q_OBJECT

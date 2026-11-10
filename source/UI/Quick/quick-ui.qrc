@@ -288,6 +288,7 @@
 <file>BalanceLabPlot.qml</file>
 <file>FormLabScreen.qml</file>
 <file>FormLabParameter.qml</file>
+<file>FormLabRoster.qml</file>
 <file>icons/athlete/formStable.svg</file>
 <file>icons/athlete/formVolatile.svg</file>
 <file>BalanceLabWind.qml</file>
