@@ -150,3 +150,9 @@ Kontrola rzeczywistych okien przez QTest, na odizolowanych danych, ujawniła pę
 Istniejący test workflow wybiera teraz widoczną kontrolkę, jeśli responsywny ekran ma jednocześnie ukrytą i widoczną kopię inspektora. Zachowano możliwość znalezienia ukrytej kontrolki, gdy nie ma widocznej kopii.
 
 Sprawdzone: pełny `--workflow-only` (edycja kalendarza, narzędzia sezonu, zaznaczanie, cofanie, ochrona historii, rozmiary okna i duży tekst) bez ostrzeżeń o pętlach layoutu. Dodatkowy przebieg rzeczywistego przeglądu sezonu: 1440×900, 1024×640, 800×600, skala UI 50/70/100%, tekst do 140%, naturalne wysokości kart. Nie jest to ręczny sezon obejmujący rozegranie wszystkich zawodów.
+
+### Działające odwołanie z przeglądu
+
+Przycisk Odwołaj był widoczny, ale nieaktywny: QuickBridge szukał dynamicznej akcji w przeniesionym kontenerze formularza, mimo że przycisk należał bezpośrednio do okna sezonu. Wyszukiwanie odbywa się teraz w oknie właściciela. Dopisano `tests/season-presentation-regressions.h`, uruchamiany przez `scripts/test-quick-ui.sh --season-presentation-only`.
+
+Test używa nowego modelu sezonu, czterech zawodników i ośmiu konkursów. Przez rzeczywiste kontrolki QML sprawdza: siedem pozycji przeglądu, dziewięć kombinacji rozmiaru/skali, otwarcie właściwych przygotowań przez Rozegraj, zachowanie nierozpoczętego wydarzenia po wyjściu, anulowanie potwierdzenia odwołania oraz zatwierdzenie odwołania z przejściem do następnego wydarzenia. Przebieg przeszedł bez ostrzeżeń layoutu i bez używania danych właściciela.

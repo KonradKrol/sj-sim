@@ -2540,6 +2540,7 @@ static void interactionRegressions(MainWindow &main) {
 #include "athlete-studio-regressions.h"
 #include "hill-studio-regressions.h"
 #include "simulation-v2-contest-weather-regressions.h"
+#include "season-presentation-regressions.h"
 #include "simulation-v2-competition-regressions.h"
 #include "simulation-v2-weather-setup-regressions.h"
 #include "simulation-v2-setup-regressions.h"
@@ -2625,6 +2626,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--roster-workspace-only")){rosterWorkspaceRegressions(main);return 0;}
     if(app.arguments().contains("--choice-popup-only")){choicePopupRegressions(main);return 0;}
     if(app.arguments().contains("--config-defaults-only")){configDefaultsRegressions(main);return 0;}
+    if(app.arguments().contains("--season-presentation-only")){seasonPresentationRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-contest-weather-only")){simulationV2ContestWeatherRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-competition-only")){simulationV2CompetitionRegressions();simulationV2CanonicalCompetitionRegressions(main);return 0;}
     if(app.arguments().contains("--simulation-v2-setup-only")){simulationV2WeatherSetupRegressions();simulationV2SetupRegressions(main);return 0;}

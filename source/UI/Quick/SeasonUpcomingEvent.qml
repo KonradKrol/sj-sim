@@ -54,8 +54,8 @@ Pane {
         RowLayout {
             visible: card.next
             width: parent.width; height: implicitHeight; spacing: Theme.dp(10)
-            SButton { text: qsTr("Rozegraj"); primary: true; dense: true; Layout.fillWidth: true; enabled: card.action.id!==undefined && card.action.enabled!==false; onClicked: ui.activate(card.action.id) }
-            SButton { text: qsTr("Odwołaj"); quiet: true; dense: true; foreground: Theme.danger; enabled: card.cancellation.id!==undefined && card.cancellation.enabled!==false; onClicked: ui.activate(card.cancellation.id) }
+            SButton { objectName: "playUpcomingEvent"; text: qsTr("Rozegraj"); primary: true; dense: true; Layout.fillWidth: true; enabled: card.action.id!==undefined && card.action.enabled!==false; onClicked: ui.activate(card.action.id) }
+            SButton { objectName: "cancelUpcomingEvent"; text: qsTr("Odwołaj"); quiet: true; dense: true; foreground: Theme.danger; enabled: card.cancellation.id!==undefined && card.cancellation.enabled!==false; onClicked: ui.activate(card.cancellation.id) }
         }
 
     }
