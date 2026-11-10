@@ -35,5 +35,6 @@ Control {
             }
             AthletePatchRack { backend: screen.backend; design: conceptPalette; Layout.fillWidth: true; Layout.preferredWidth: Theme.dp(680); Layout.minimumWidth: 0; Layout.alignment: Qt.AlignTop }
         }
+        FormDiagnostics { backend: screen.backend; Layout.fillWidth: true }
     }
 }

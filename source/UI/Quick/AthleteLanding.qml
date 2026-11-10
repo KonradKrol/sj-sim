@@ -11,7 +11,7 @@ Control {
     ContentHeight { control: landing }
     background: Surface {
         fillColor: landing.design.surface
-        corner: Theme.dp(4); sweep: corner
+        corner: Theme.dp(4); sweep: Theme.dp(4)
         strokeWidth: 1
         edgeColor: landing.design.line
     }

@@ -55,6 +55,7 @@ static void formEngineUiRegressions(MainWindow &main){
     SimulationSaveManagerWindow window(&save,&main);window.fillNextCompetitionInformations();window.show();QTest::qWait(150);
     auto *bridge=window.findChild<QuickBridge *>();check(bridge,"automatic form season bridge exists");
     clickControl(scene(&window),"seasonAutomaticForm");check(save.formEngine().enabled,"visible season switch enables automatic form");
+    scene(&window)->grabFramebuffer();presentation(&window)->grab().save(output+"/season-automation.png");
     check(save.formEngine().update(QDate(2026,11,1),save.getJumpersReference(),true,error),"initialize all season athletes");
     for(int i=0;i<8;++i)check(save.getJumpersReference()[i]->getSimulationProfile()->form==50+i,"initialization preserves each original form");
     first->setPlayed(true);save.updateNextCompetitionIndex();window.fillNextCompetitionInformations();bridge->refresh();QTest::qWait(60);
@@ -67,16 +68,27 @@ static void formEngineUiRegressions(MainWindow &main){
     });responder.start(20);clickControl(scene(&window),"playUpcomingEvent");QTest::qWait(100);responder.stop();
     check(sawConfig && save.formEngine().toJson()==before,"cancelled preparation rolls back latent state and RNG");
     for(int i=0;i<8;++i)check(save.getJumpersReference()[i]->getSimulationProfile()->form==50+i,"cancelled preparation rolls back visible forms");
-    check(save.formEngine().update(QDate(2026,11,15),save.getJumpersReference(),true,error),"advance after rollback");
+    AutoForm::Checkpoint prediction(save.formEngine(),save.getJumpersReference());
+    check(save.formEngine().update(QDate(2026,11,15),save.getJumpersReference(),true,error),"predict cancellation time progression");const auto expectedCancellation=save.formEngine().toJson();prediction.restore();
+    QObject::disconnect(&responder,nullptr,&window,nullptr);QObject::connect(&responder,&QTimer::timeout,&window,[]{for(auto *widget:QApplication::topLevelWidgets())if(auto *box=qobject_cast<QMessageBox *>(widget);box && box->isVisible())for(auto *button:box->buttons())if(box->buttonRole(button)==QMessageBox::DestructiveRole){button->click();break;}});
+    responder.start(20);check(window.cancelSeasonEvents({second->getIDStr()}),"confirmed event cancellation");responder.stop();
+    check(second->getCancelled() && save.formEngine().toJson()==expectedCancellation,"cancelled event advances forms to its date exactly once");
     const auto after=save.formEngine().toJson();check(save.formEngine().update(QDate(2026,11,15),save.getJumpersReference(),true,error) && save.formEngine().toJson()==after,"same-day events do not double count time");
     check(save.formEngine().setEnabled(false,true,error),"disable auto form");const auto paused=save.formEngine().toJson();
     check(save.formEngine().update(QDate(2027,1,1),save.getJumpersReference(),true,error) && save.formEngine().toJson()==paused,"disabled generator does not advance");
     check(save.formEngine().setEnabled(true,true,error) && save.formEngine().update(QDate(2027,1,1),save.getJumpersReference(),true,error),"resume at current date");
     for(auto it=save.formEngine().states.cbegin();it!=save.formEngine().states.cend();++it){const auto old=after["states"].toObject()[it.key()].toObject();check(it.value().form==old["form"].toDouble() && it.value().base==old["base"].toDouble() && it.value().remainingDays==old["remainingDays"].toDouble(),"resume preserves F, base and waiting time without catch-up");}
     DatabaseItemsListView *athleteList=nullptr;for(auto *list:window.findChildren<DatabaseItemsListView *>())if(list->getType()==DatabaseItemsListView::SeasonJumpersItems)athleteList=list;
+    bridge->edit(bridge->root()->values().value("id").toInt(),1);QTest::qWait(60);
     check(athleteList,"season athlete list exists");athleteList->listViewDoubleClicked(athleteList->getListModel()->index(0,0));
     auto *draft=window.findChild<SimulationProfileDraft *>("seasonAthleteDraft");const auto form=save.getJumpersReference()[0]->getSimulationProfile()->form;
     check(draft && draft->profile().value("formLocked").toBool() && draft->profile().value("formDiagnostic").toMap().contains("base"),"season editor has a locked form and diagnostic state");
+    check(draft->profile().value("formDiagnostic").toMap().value("rows").toList().size()>=25,"season diagnostics expose detailed state, dynamics and transition probabilities");
+    QTest::qWait(60);auto *formInput=item(scene(&window)->rootObject(),"athleteForm");check(formInput && formInput->property("readOnly").toBool(),"automatic form is read-only in the visible editor");
+    clickControl(scene(&window),"formDiagnosticsToggle");scene(&window)->grabFramebuffer();presentation(&window)->grab().save(output+"/form-diagnostics.png");
+    QQmlComponent statusComponent(scene(&window)->engine(),QUrl("qrc:/ui/FormStatus.qml"));std::unique_ptr<QObject> status(statusComponent.create(scene(&window)->rootContext()));check(bool(status),"form status component loads");
+    const auto statusHeight=status->property("implicitHeight").toDouble();
+    for(const auto &range:QVector<QPair<int,int>>{{1,0},{19,0},{20,1},{34,1},{35,2},{44,2},{45,3},{55,3},{56,4},{69,4},{70,5},{84,5},{85,6},{94,6},{95,7},{100,7}}){status->setProperty("value",range.first);check(qAbs(status->property("implicitHeight").toDouble()-statusHeight)<.01,"form status height remains constant");check(status->property("band").toInt()==range.second,"all form description boundaries match their specified intervals");}
     draft->setValue("form",form==100?1:100);check(save.getJumpersReference()[0]->getSimulationProfile()->form==form && !draft->message().isEmpty(),"backend rejects manual form changes");
     draft->setValue("overall",85);check(save.getJumpersReference()[0]->getSimulationProfile()->overall==85,"automatic form never blocks manual OVR changes");
     const auto serialized=SimulationSave::getJsonObject(save);std::unique_ptr<SimulationSave> loaded(SimulationSave::getFromJson(serialized,nullptr));

@@ -62,10 +62,15 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     automaticForm->setObjectName("automaticFormEnabled");automaticForm->hide();
     automaticForm->setToolTip(tr("Forma zmienia się wraz z datami wydarzeń. Wymaga włączonych dat; przy aktywnej funkcji nie można zmieniać formy ręcznie."));
     connect(automaticForm,&QCheckBox::toggled,this,[this,automaticForm](bool enabled){
+        AutoForm::Checkpoint checkpoint(simulationSave->formEngine(),simulationSave->getJumpersReference());
         QString error;const auto *season=simulationSave->getActualSeason();
-        if(!simulationSave->formEngine().setEnabled(enabled,season && season->getDatesEnabled() && simulationSave->getEngineVersion()==2,error)){
-            QSignalBlocker blocker(automaticForm);automaticForm->setChecked(simulationSave->formEngine().enabled);return;
+        bool accepted=simulationSave->formEngine().setEnabled(enabled,season && season->getDatesEnabled() && simulationSave->getEngineVersion()==2,error);
+        if(accepted && enabled)if(auto *next=simulationSave->getNextCompetition();next && next->getScheduledDate().isValid())accepted=simulationSave->formEngine().update(next->getScheduledDate(),simulationSave->getJumpersReference(),true,error);
+        if(!accepted){
+            checkpoint.restore();QSignalBlocker blocker(automaticForm);automaticForm->setChecked(simulationSave->formEngine().enabled);
+            QMessageBox::warning(this,tr("Automatyczna forma"),error);return;
         }
+        checkpoint.commit();
         refreshProfileDrafts();markSeasonChanged();
     });
     setWindowFlags(Qt::Window);
@@ -153,6 +158,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
             auto profile=*configured.getSimulationProfile();profile.form=editedAthlete->getSimulationProfile()->form;QString error;if(!configured.setSimulationProfile(profile,error))return;
         }
         *editedAthlete=configured;
+        auto diagnostic=simulationSave->formEngine().diagnostic(*editedAthlete);diagnostic["automatic"]=simulationSave->formEngine().enabled && simulationSave->getActualSeason()->getDatesEnabled();athleteDraft->setFormDiagnostic(diagnostic);
         emit jumpersListView->getListModel()->dataChanged(jumpersListView->getListModel()->index(row),jumpersListView->getListModel()->index(row));
     });
     connect(jumpersListView, &DatabaseItemsListView::listViewDoubleClicked, this, [this](const QModelIndex & index){
@@ -1836,12 +1842,21 @@ bool SimulationSaveManagerWindow::cancelSeasonEvents(const QStringList &ids)
     auto *cancel=question.addButton(tr("Odwołaj wydarzenia"),QMessageBox::DestructiveRole);
     question.addButton(tr("Wróć"),QMessageBox::RejectRole);question.exec();
     if(question.clickedButton()!=cancel)return false;
+    QVector<CompetitionInfo *> affected;
     for(auto *event:targets){
         auto block=event->getTrainings();if(event->getTrialRound())block.append(event->getTrialRound());block.append(event);
-        for(auto *part:block)if(part && !part->getPlayed()){
-            part->setCancelled(true);part->setPlayed(true);part->getResultsReference().getResultsReference().clear();
-        }
+        for(auto *part:block)if(part && !part->getPlayed() && !affected.contains(part))affected.append(part);
     }
+    std::stable_sort(affected.begin(),affected.end(),[](const CompetitionInfo *a,const CompetitionInfo *b){return a->getScheduledDate()<b->getScheduledDate();});
+    AutoForm::Checkpoint checkpoint(simulationSave->formEngine(),simulationSave->getJumpersReference());
+    QString error;
+    for(auto *part:affected)if(part->getScheduledDate().isValid() && !simulationSave->formEngine().update(part->getScheduledDate(),simulationSave->getJumpersReference(),simulationSave->getActualSeason()->getDatesEnabled(),error)){
+        QMessageBox::warning(this,tr("Automatyczna forma"),error);return false;
+    }
+    for(auto *part:affected){
+        part->setCancelled(true);part->setPlayed(true);part->getResultsReference().getResultsReference().clear();
+    }
+    checkpoint.commit();refreshProfileDrafts();
     simulationSave->updateNextCompetitionIndex();refreshCalendarState();fillNextCompetitionInformations();updateArchive();
     markSeasonChanged();if(simulationSave->getAutosaveEnabled())saveSeasonChanges();
     return true;

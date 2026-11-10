@@ -65,7 +65,16 @@ Lab: zakładka Zawodnicy, stabilny model wierszy/proxy wyszukiwania, wybór osó
 
 Autoforma i Autozapis: wspólny komponent SeasonAutomationToggle w przeglądzie, wyraźny stan i animowany suwak, krótkie podpisy oraz pomoc po najechaniu. Usunięto checkbox autoformy z górnego paska i długie opisy pod autozapisem. Kontrole działania oraz skal 50/70/100% przeszły bez pętli layoutu.
 
-Bieżące dalsze uwagi: sprawdzić manipulację wiatrem (potwierdzone: najbliższy skok, reset manipulatora po nim, osobne ustawienia warunków zmieniają pole konkursu); dodać prostą, globalnie zapamiętaną auto-belkę reagującą na różnicę >1 przed każdym skokiem; osiem opisów aktualnej F (1–19 kryzys, 20–34 bardzo słaba, 35–44 obniżona, 45–55 typowa, 56–69 podwyższona, 70–84 bardzo wysoka, 85–94 forma życia, 95–100 absolutny szczyt). Pod suwakiem tylko opis F; diagnostyka w osobnym miejscu, znacznie więcej odczytów, przy autoformie wyszarzyć sterowanie. Odwołanie wydarzeń także musi przeliczać formę do ich dat.
+Dalsze uwagi właściciela — ukończone:
+- Lab: dowolni zawodnicy z ukończonej próby, maksymalnie 10 na wykresie jednocześnie. Wybór bez ponownego batcha; ślady pierwszego powtórzenia są próbkowane i ograniczone pamięciowo. Osobnych testów tego wyboru nie dodawano zgodnie z prośbą.
+- Auto-belka: globalnie zapamiętany przycisk w konkursie, zmiana przy różnicy >1, przed każdym skokiem i na początku serii. Dobór uwzględnia wszystkich uczestników, także tych, którzy już skakali; zachowuje redukcję trenera.
+- Manipulacja wiatrem dotyczy pojedynczego skoku i nie zmienia pola pogodowego konkursu. Auto-belka uwzględnia tę jednorazową zmianę.
+- Osiem etykiet formy według ustalonych progów; stała wysokość także w kryzysie i na szczycie. Przy autoformie sterowanie jest wygaszone.
+- Diagnostyka pod edytorem zawodnika, zwijana, ponad 25 odczytów: F, μ, okres, daty, dynamika, prawdopodobieństwa przejść i RNG.
+- Odwołane wydarzenia przeliczają formę do swoich dat; anulowana konfiguracja nadal odtwarza cały stan.
+- Krótsze tooltipy i usunięte pętle układu w panelu diagnostyki oraz wiązania sweep/corner.
+- Sprawdzenie: build oraz izolowane --form-engine-only i --race-auto-gate-only zakończone sukcesem, bez ostrzeżeń o pętlach układu.
+- Diminishing returns formy względem wysokiego OVR nie wdrażano: właściciel pytał o obecny stan, nie zlecił zmiany modelu jakości.
 
 ## Ważne uwagi matematyczne
 

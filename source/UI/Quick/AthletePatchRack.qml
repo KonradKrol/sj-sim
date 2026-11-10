@@ -24,7 +24,7 @@ ColumnLayout {
             Layout.fillWidth: true
             ContentHeight { control: category }
             padding: Theme.dp(6)
-            background: Surface { fillColor: Theme.surface; strokeWidth: Math.max(1,Theme.controlBorder); edgeColor: Theme.divider; corner: Theme.dp(6); sweep: corner }
+            background: Surface { fillColor: Theme.surface; strokeWidth: Math.max(1,Theme.controlBorder); edgeColor: Theme.divider; corner: Theme.dp(6); sweep: Theme.dp(6) }
             contentItem: ColumnLayout {
                 spacing: Theme.dp(5)
                 RowLayout {

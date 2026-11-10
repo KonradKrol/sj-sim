@@ -20,7 +20,7 @@ ColumnLayout {
         HelpDot {
             objectName: rating.form ? "athleteFormHelp" : "athleteOverallHelp"
             Accessible.name: rating.form ? qsTr("Pomoc: forma") : qsTr("Pomoc: OVR")
-            explanation: rating.form ? qsTr("Aktualna dyspozycja skoczka. Wpływa na jakość skoków i może zmieniać się w sezonie.") : qsTr("Ogólny poziom umiejętności skoczka. Wyższy OVR zwykle pomaga skakać dalej.")
+            explanation: rating.form ? qsTr("Aktualna dyspozycja skoczka.") : qsTr("Ogólny poziom umiejętności skoczka.")
         }
         Item { Layout.fillWidth: true }
         Label { visible: !rating.compact; text: "/ 100"; color: rating.design.muted; font.family: Theme.mono; font.pointSize: Theme.caption }
@@ -41,7 +41,7 @@ ColumnLayout {
         implicitHeight: contentHeight+Theme.dp(2)
         topPadding: 0; bottomPadding: 0; leftPadding: 0; rightPadding: 0
         text: String(rating.displayedValue)
-        color: rating.form ? rating.design.ink : rating.design.accent
+        color: rating.locked ? Theme.muted : rating.form ? rating.design.ink : rating.design.accent
         font.family: rating.design.variant===2 ? Theme.mono : Theme.displayFamily
         font.pointSize: rating.numberSize; font.weight: Font.Black
         hoverEnabled: true
@@ -84,6 +84,7 @@ ColumnLayout {
     Slider {
         id: slider
         enabled: !rating.locked
+        opacity: rating.locked ? .45 : 1
         objectName: rating.form ? "athleteFormSlider" : "athleteOverallSlider"
         Layout.fillWidth: true; implicitHeight: Theme.dp(27)
         from: 1; to: 100; stepSize: 1; value: rating.value
@@ -97,10 +98,5 @@ ColumnLayout {
         }
         handle: Rectangle { x: slider.leftPadding+slider.visualPosition*(slider.availableWidth-width); y: slider.topPadding+slider.availableHeight/2-height/2; width: Theme.dp(15); height: width; radius: rating.design.variant===2 || rating.design.variant===4 ? width/2 : 2; color: rating.design.accent; border.width: slider.activeFocus ? 3 : 1; border.color: slider.activeFocus ? rating.design.ink : rating.design.paper }
     }
-    Label {
-        visible: rating.form && !!rating.backend.profile.formDiagnostic && (!!rating.backend.profile.formLocked || !rating.backend.profile.formDiagnostic.pending)
-        readonly property var diagnostic: rating.backend.profile.formDiagnostic || ({})
-        Layout.fillWidth: true; wrapMode: Text.WordWrap; color: Theme.muted; font.pointSize: Theme.caption
-        text: diagnostic.pending ? qsTr("Automatyczna forma · oczekuje na wydarzenie z datą") : "F "+Number(diagnostic.form).toLocaleString(Qt.locale(Theme.localeName),'f',2)+" · μ "+Number(diagnostic.base).toLocaleString(Qt.locale(Theme.localeName),'f',2)+" · "+diagnostic.regime+" · "+diagnostic.date
-    }
+    FormStatus { visible: rating.form; Layout.fillWidth: true; value: slider.pressed ? Math.round(slider.value) : rating.effectiveValue }
 }

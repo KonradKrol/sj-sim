@@ -39,3 +39,8 @@ Parametry domyślne są **robocze**. Nie wdrożono automatycznej oceny celu „3
 Nie ma generatora dla sezonów bez dat, masowych ręcznych zmian, zmęczenia, rozwoju OVR ani resetowania formy na początek sezonu. Nowe etykiety mają mechanizmy tłumaczeń, ale katalogi EN/CS nie zostały rozszerzone w ramach tego MVP.
 
 Pełna specyfikacja: [FORM_SYSTEM.md](FORM_SYSTEM.md). Mapa implementacji i kontrole: [FORM_ENGINE_WORK.md](FORM_ENGINE_WORK.md).
+
+
+Na wykresach pierwszego powtórzenia przycisk „Na wykresie” pozwala wybrać dowolnych zawodników z próby, do 10 jednocześnie. Wyszukiwanie ułatwia wybór; zmiana nie uruchamia symulacji ponownie.
+
+W sezonowym edytorze pod suwakiem jest tylko opis dyspozycji. Szczegóły procesu można rozwinąć w „Diagnostyce formy”. Odwołanie datowanego wydarzenia również przesuwa proces formy do jego daty.
