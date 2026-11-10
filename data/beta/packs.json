@@ -13,7 +13,7 @@
           "id": "6bf89dc7-b8cc-5012-ae9d-697be87a88b4",
           "landing": 2,
           "name": "Clemens",
-          "overall": 79,
+          "overall": 77,
           "perkLevels": 4,
           "perks": [
             1,
@@ -30,7 +30,7 @@
         {
           "birthYear": 2006,
           "country": "AUT",
-          "form": 38,
+          "form": 46,
           "id": "424cd815-c88f-59e1-8752-fcabda943add",
           "landing": 3,
           "name": "Stephan",
@@ -39,6 +39,7 @@
           "perks": [
             -1,
             -1,
+            0,
             0
           ],
           "personalBest": 240.5,
@@ -50,7 +51,7 @@
         {
           "birthYear": 1998,
           "country": "AUT",
-          "form": 50,
+          "form": 49,
           "id": "81b5e64c-e6c7-5cd8-801a-768b9e240695",
           "landing": 2,
           "name": "Jan",
@@ -71,7 +72,7 @@
         {
           "birthYear": 1993,
           "country": "AUT",
-          "form": 30,
+          "form": 35,
           "id": "3b14f2cb-7ea1-5d17-8745-41393e866ecb",
           "landing": 4,
           "name": "Stefan",
@@ -112,7 +113,7 @@
         {
           "birthYear": 2002,
           "country": "AUT",
-          "form": 28,
+          "form": 30,
           "id": "52802b42-744a-5235-91ba-7514660b5d34",
           "landing": 2,
           "name": "Markus",
@@ -121,7 +122,8 @@
           "perks": [
             0,
             -2,
-            -1
+            -1,
+            0
           ],
           "personalBest": 232.5,
           "photoPath": "AUT_MarkusMueller.png",

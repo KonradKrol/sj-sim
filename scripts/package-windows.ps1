@@ -36,6 +36,9 @@ foreach ($folder in @("flags", "userData")) {
 }
 
 Copy-Item -LiteralPath (Join-Path $repoRoot "data/beta/packs.json") -Destination (Join-Path $outputPath "userData/GlobalDatabase/packs.json") -Force
+$packDestination = Join-Path $outputPath "userData/Packs"
+if (Test-Path -LiteralPath $packDestination) { Remove-Item -Recurse -Force -LiteralPath $packDestination }
+Copy-Item -Recurse -Force -LiteralPath (Join-Path $repoRoot "data/beta/Packs") -Destination $packDestination
 
 New-Item -ItemType Directory -Force -Path (Join-Path $outputPath "userData/BalanceLab") | Out-Null
 

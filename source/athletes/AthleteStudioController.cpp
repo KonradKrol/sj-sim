@@ -1,5 +1,6 @@
 #include "AthleteStudioController.h"
 #include "../simulation-v2/ProfilePackRepository.h"
+#include "../simulation-v2/SimulationCatalog.h"
 #include "../global/GlobalDatabase.h"
 #include "../global/GlobalSimulationSettings.h"
 #include "../global/CountryCodes.h"
@@ -57,7 +58,7 @@ bool copyReferencedPhotos(const QJsonObject &pack,const QString &source,const QS
 }
 
 }
-AthleteStudioController::AthleteStudioController(QObject *parent,const QString &root):QObject(parent),m_root(root.isEmpty()?QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/athlete-studio":root){
+AthleteStudioController::AthleteStudioController(QObject *parent,const QString &root):QObject(parent),m_root(root.isEmpty()?SimulationV2::CatalogPaths::defaults().athletes:root){
     connect(this,&AthleteStudioController::changed,this,&AthleteStudioController::perksChanged);
     connect(this,&AthleteStudioController::changed,this,&AthleteStudioController::historyChanged);
     connect(this,&AthleteStudioController::changed,this,&AthleteStudioController::statusChanged);

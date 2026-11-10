@@ -56,14 +56,10 @@ int main(int argc, char *argv[])
     // on the shell/shortcut choosing that directory as its working directory.
     QDir::setCurrent(QCoreApplication::applicationDirPath());
 
-    // Portable files and shared authoring profiles have separate roots.
-    // Keep both locks alive until every window and writer has shut down.
+    // All portable data and pack editors share one lock for this installation.
     QDir().mkpath("userData");
     QLockFile dataLock(QDir("userData").absoluteFilePath(".sj-sim.lock"));
-    const auto authoringRoot=QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    QDir().mkpath(authoringRoot);
-    QLockFile authoringLock(authoringRoot+"/.sj-sim.lock");
-    if(!dataLock.tryLock(0) || !authoringLock.tryLock(0)) {
+    if(!dataLock.tryLock(0)) {
         QMessageBox::warning(nullptr, QObject::tr("Sj.Sim jest już uruchomiony"),
             QObject::tr("Dane gry lub paczki edytorów są używane przez inną instancję Sj.Sim albo nie można ich zapisać.\nZamknij poprzednie okno Sj.Sim i spróbuj ponownie."));
         return 1;

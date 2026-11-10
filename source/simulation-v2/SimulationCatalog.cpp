@@ -8,7 +8,7 @@
 #include <QJsonParseError>
 #include <QSaveFile>
 #include <QSet>
-#include <QStandardPaths>
+#include <QCoreApplication>
 #include <algorithm>
 #include <utility>
 
@@ -37,8 +37,9 @@ const CatalogPack *CatalogSnapshot::find(DataPack::Kind kind,const QString &id) 
 
 CatalogPaths CatalogPaths::defaults()
 {
-    const QString root=QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    return {root+"/athlete-studio",root+"/hill-studio",root+"/simulation-v2/catalog.json",QDir("jumpersImages").absolutePath()};
+    const QString override=QCoreApplication::instance()?QCoreApplication::instance()->property("portablePacksRoot").toString():QString();
+    const QString root=override.isEmpty()?QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("userData/Packs"):QDir(override).absolutePath();
+    return {root+"/Athletes",root+"/Hills",root+"/catalog.json",QDir("jumpersImages").absolutePath()};
 }
 
 SimulationCatalog::SimulationCatalog(CatalogPaths locations):paths(std::move(locations)) {}

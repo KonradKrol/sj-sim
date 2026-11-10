@@ -1,5 +1,6 @@
 #include "HillStudioController.h"
 #include "../simulation-v2/ProfilePackRepository.h"
+#include "../simulation-v2/SimulationCatalog.h"
 #include "../global/GlobalDatabase.h"
 #include "../global/CountryCodes.h"
 #include <QStandardPaths>
@@ -22,7 +23,7 @@ QJsonObject emptyPack(const QString &name){return {{"format","sj-sim-hill-pack"}
 bool writeJson(const QString &file,const QJsonObject &pack){QSaveFile out(file);const auto bytes=QJsonDocument(pack).toJson(QJsonDocument::Indented);return bytes.size()<=20*1024*1024 && out.open(QIODevice::WriteOnly) && out.write(bytes)==bytes.size() && out.commit();}
 QString title(const QJsonObject &p){return p["name"].toString().trimmed().isEmpty()?QObject::tr("Nowa skocznia"):p["name"].toString();}
 }
-HillStudioController::HillStudioController(QObject *parent,const QString &root):QObject(parent),m_root(root.isEmpty()?QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/hill-studio":root){
+HillStudioController::HillStudioController(QObject *parent,const QString &root):QObject(parent),m_root(root.isEmpty()?SimulationV2::CatalogPaths::defaults().hills:root){
     connect(this,&HillStudioController::changed,this,&HillStudioController::perksChanged);
     connect(this,&HillStudioController::changed,this,&HillStudioController::historyChanged);
     connect(this,&HillStudioController::changed,this,&HillStudioController::statusChanged);

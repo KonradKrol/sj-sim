@@ -4,6 +4,47 @@
 
 static void simulationV2CatalogRegressions()
 {
+    // Load the exact files used by both release packagers, away from user data.
+    const QString betaRoot=QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("../data/beta");
+    QFile betaFile(betaRoot+"/packs.json");
+    check(betaFile.open(QIODevice::ReadOnly),"beta pack catalog fixture exists");
+    const auto beta=QJsonDocument::fromJson(betaFile.readAll()).object();
+    QVector<DataPack> betaSources;QString betaError;
+    for(const auto &entry:beta["packs"].toArray()){
+        DataPack pack;check(DataPack::fromJson(entry.toObject(),pack,betaError),qPrintable(betaError));betaSources.append(pack);
+    }
+    check(betaSources.size()==3 && betaSources[0].jumpers.size()==83 && betaSources[1].hills.size()==128
+          && betaSources[2].rules.size()==13 && betaSources[2].points.size()==4,"beta contains exactly the selected three packs and current data");
+    QTemporaryDir betaStorage;check(betaStorage.isValid(),"isolated packaged beta");
+    const auto defaults=SimulationV2::CatalogPaths::defaults();
+    check(defaults.athletes.startsWith(qApp->property("portablePacksRoot").toString()),"catalog uses portable installation root");
+    const QString seededRoot=betaRoot+"/Packs";
+    for(int kind=0;kind<2;++kind){
+        const auto expected=beta["packs"].toArray()[kind].toObject();
+        const QString file=kind==0?seededRoot+"/Athletes/"+expected["id"].toString()+"/pack.json":seededRoot+"/Hills/"+expected["id"].toString()+".json";
+        QFile seed(file);check(seed.open(QIODevice::ReadOnly) && QJsonDocument::fromJson(seed.readAll()).object()==expected,"portable packaged profiles exactly match beta defaults");
+    }
+    QDirIterator files(seededRoot,QDir::Files,QDirIterator::Subdirectories);
+    while(files.hasNext()){
+        const QString file=files.next(),relative=QDir(seededRoot).relativeFilePath(file),destination=betaStorage.path()+"/"+relative;
+        check(QDir().mkpath(QFileInfo(destination).absolutePath()) && QFile::copy(file,destination),"copy packaged files to isolated fixture");
+    }
+    SimulationV2::CatalogPaths betaPaths{betaStorage.path()+"/Athletes",betaStorage.path()+"/Hills",betaStorage.path()+"/catalog.json",{}};
+    SimulationV2::SimulationCatalog betaCatalog(betaPaths);
+    const auto loadedBeta=betaCatalog.load(betaSources,100);
+    check(loadedBeta.packs.size()==3 && loadedBeta.selected(DataPack::Jumpers) && loadedBeta.selected(DataPack::Hills) && loadedBeta.selected(DataPack::Rules),"portable beta starts with exactly three selected packs");
+    check(loadedBeta.selected(DataPack::Jumpers)->data.jumpers.size()==83 && loadedBeta.selected(DataPack::Hills)->data.hills.size()==128,"portable beta selects current athlete and hill packs");
+    check(loadedBeta.active==QStringList({betaSources[0].id,betaSources[1].id,betaSources[2].id}),"portable selection wins without consulting AppData");
+    const QString photo=loadedBeta.selected(DataPack::Jumpers)->directory+"/POL_DawidKubacki.png";
+    check(QFileInfo::exists(photo),"pack-owned beta photo is bundled beside its pack");
+    SimulationV2::ProfilePackRepository portableAthletes(SimulationV2::ProfilePackKind::Athletes,betaPaths.athletes);
+    auto edited=portableAthletes.load().packs.first();
+    auto betaProfiles=edited["profiles"].toArray();auto first=betaProfiles[0].toObject();
+    const int modified=first["overall"].toInt()==99?98:99;first["overall"]=modified;betaProfiles[0]=first;edited["profiles"]=betaProfiles;
+    check(portableAthletes.save(edited,betaError),qPrintable(betaError));
+    const auto betaReloaded=betaCatalog.load(betaSources,100);
+    check(betaReloaded.selected(DataPack::Jumpers)->data.jumpers.first().getSimulationProfile()->overall==modified,"reloading does not overwrite player edits with bundled defaults");
+
     QTemporaryDir storage;check(storage.isValid(),"isolated simulation catalog");
     SimulationV2::CatalogPaths paths{storage.path()+"/athletes",storage.path()+"/hills",storage.path()+"/state/catalog.json",storage.path()+"/old-photos"};
     SimulationV2::ProfilePackRepository athleteStore(SimulationV2::ProfilePackKind::Athletes,paths.athletes);

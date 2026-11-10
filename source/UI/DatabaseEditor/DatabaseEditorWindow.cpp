@@ -2,6 +2,7 @@
 #include "DatabaseEditorWindow.h"
 #include "../../athletes/AthleteStudioController.h"
 #include "../../hills/HillStudioController.h"
+#include "../../simulation-v2/SimulationCatalog.h"
 #include "ui_DatabaseEditorWindow.h"
 
 #include "../../global/GlobalDatabase.h"
@@ -286,11 +287,12 @@ void DatabaseEditorWindow::reject(){close();}
 QStringList DatabaseEditorWindow::packFiles() const
 {
     QStringList paths;
-    const auto root=QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    for(const auto &folder:{root+"/athlete-studio",root+"/hill-studio",QDir("userData/GlobalDatabase/pointsForPlacesPresets").absolutePath()}) {
+    const auto pathsForPacks=SimulationV2::CatalogPaths::defaults();
+    for(const auto &folder:{pathsForPacks.athletes,pathsForPacks.hills,QDir("userData/GlobalDatabase/pointsForPlacesPresets").absolutePath()}) {
         QDirIterator files(folder,{"*.json"},QDir::Files|QDir::NoSymLinks,QDirIterator::Subdirectories);
         while(files.hasNext())paths.append(files.next());
     }
+    if(QFileInfo::exists(pathsForPacks.selection))paths.append(pathsForPacks.selection);
     for(const auto &name:{"packs.json","globalJumpers.json","globalHills.json","globalCompetitionsRules.json"}) {
         const auto path=QDir("userData/GlobalDatabase").absoluteFilePath(name);
         if(QFileInfo::exists(path))paths.append(path);

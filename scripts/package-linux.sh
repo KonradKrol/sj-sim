@@ -38,6 +38,8 @@ fi
 cp "${executable}" "${output_path}/usr/bin/sj-sim"
 cp -R "${repo_root}/flags" "${repo_root}/userData" "${output_path}/usr/bin/"
 cp "${repo_root}/data/beta/packs.json" "${output_path}/usr/bin/userData/GlobalDatabase/packs.json"
+rm -rf "${output_path}/usr/bin/userData/Packs"
+cp -R "${repo_root}/data/beta/Packs" "${output_path}/usr/bin/userData/"
 mkdir -p "${output_path}/usr/bin/userData/BalanceLab"
 for language in en cs; do
     lrelease -nounfinished "${repo_root}/translations/translation_${language}.ts" \
@@ -89,6 +91,7 @@ Run the application by double-clicking "Sj.Sim" or from a terminal:
     ./Sj.Sim
 
 Keep the extracted folder together; it contains the runtime and application data.
+Packs are stored in usr/bin/userData/Packs alongside this installation.
 README
 
 tar -C "${repo_root}/dist" -czf "${output_archive}" \

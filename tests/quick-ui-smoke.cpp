@@ -2586,6 +2586,7 @@ int main(int argc,char **argv) {
         }
     }
     QDir::setCurrent(data.path());
+    app.setProperty("portablePacksRoot",data.path()+"/userData/Packs");
     QSettings::setDefaultFormat(QSettings::IniFormat);QSettings::setPath(QSettings::IniFormat,QSettings::UserScope,data.path()+"/settings");
     app.setProperty("formEngineStorageRoot",data.path()+"/form-engine");
     if(app.arguments().contains("--production-persistence-only")){productionPersistenceRegressions();return 0;}
