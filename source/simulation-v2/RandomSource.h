@@ -27,6 +27,7 @@ class SeededRandom final : public RandomSource {
 public:
     explicit SeededRandom(Seed seed) : state(seed) {}
     std::uint64_t next() override;
+    Seed snapshot() const { return state; }
 private:
     Seed state;
 };

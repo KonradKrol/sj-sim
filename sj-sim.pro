@@ -42,6 +42,7 @@ SOURCES += \
     source/athletes/AthleteStudioController.cpp \
     source/simulator/ExperimentalSimulation.cpp \
     source/balance/BalanceLabModel.cpp \
+    source/form-engine/FormEngine.cpp \
     source/balance/BalanceLabController.cpp \
     source/balance/BalanceRuntime.cpp \
     source/simulation-v2/WeatherCalibration.cpp \
@@ -224,6 +225,7 @@ HEADERS += \
     source/athletes/AthleteStudioController.h \
     source/simulator/ExperimentalSimulation.h \
     source/balance/BalanceLabModel.h \
+    source/form-engine/FormEngine.h \
     source/balance/BalanceLabController.h \
     source/balance/BalanceRuntime.h \
     source/simulation-v2/WeatherCalibration.h \

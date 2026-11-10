@@ -1,0 +1,39 @@
+#include "../source/form-engine/FormEngine.h"
+#include <QCoreApplication>
+#include <QJsonDocument>
+#include <QTemporaryDir>
+#include <cmath>
+#include <cstdlib>
+#include <iostream>
+
+void check(bool ok,const char *message){if(!ok){std::cerr<<"FAIL: "<<message<<'\n';std::exit(1);}}
+int main(int argc,char **argv){
+    QCoreApplication app(argc,argv);QTemporaryDir temporary;app.setProperty("formEngineStorageRoot",temporary.path());
+    AutoForm::Config c,copy;QString error;check(c.validate(error),"defaults validate");check(AutoForm::Config::fromJson(c.toJson(),copy,error) && copy.toJson()==c.toJson(),"config roundtrip");
+    auto broken=c.toJson();auto values=broken["values"].toObject();values["days.0"]=0;broken["values"]=values;check(!AutoForm::Config::fromJson(broken,copy,error),"reject zero holding time");
+    check(AutoForm::saveDefaultConfig(c,error) && AutoForm::defaultConfig().toJson()==c.toJson(),"default config atomic roundtrip");
+    const QDate start(2026,11,1);
+    for(int f:{1,20,50,90,100})for(int seed=0;seed<100;++seed){auto s=AutoForm::initialize(f,start,seed,c);check(s.form==f,"preserve F0 exactly");}
+    for(int perk=-4;perk<=4;++perk){
+        auto a=AutoForm::initialize(70,start,SimulationV2::Seed(100+perk),c),b=a;
+        AutoForm::advance(a,start.addDays(150),perk,c);
+        for(int day=1;day<=150;++day)AutoForm::advance(b,start.addDays(day),perk,c);
+        check(a.toJson()==b.toJson(),"chunk-independent updates including CTMC");
+        auto saved=QJsonDocument::fromJson(QJsonDocument(b.toJson()).toJson()).object();AutoForm::State restored;
+        check(AutoForm::State::fromJson(saved,restored,error),"state load");
+        AutoForm::advance(a,start.addDays(1000),perk,c);AutoForm::advance(restored,start.addDays(1000),perk,c);
+        check(a.toJson()==restored.toJson(),"exact RNG and latent state continuation after save");
+        const auto unchanged=a.toJson();AutoForm::advance(a,a.date,perk,c);check(a.toJson()==unchanged,"same-day update consumes no RNG");
+        bool rejected=false;try{AutoForm::advance(a,start,perk,c);}catch(const std::invalid_argument &){rejected=true;}check(rejected,"reject backwards time");
+        auto probabilities=AutoForm::transitionProbabilities(2,perk,c);double sum=0;for(double p:probabilities){check(std::isfinite(p) && p>=0,"finite transition probability");sum+=p;}check(std::abs(sum-1)<1e-12 && probabilities[2]==0,"normalized CTMC row");
+    }
+    const auto stable=AutoForm::transitionProbabilities(2,-4,c),neutral=AutoForm::transitionProbabilities(2,0,c),volatileForm=AutoForm::transitionProbabilities(2,4,c);
+    check(stable[0]<neutral[0] && neutral[0]<volatileForm[0],"form perk changes crisis risk in correct direction");
+    check(stable[4]<neutral[4] && neutral[4]<volatileForm[4],"form perk changes peak chance in correct direction");
+    // Independent daily draws, away from boundaries; test the variance-normalized Laplace noise.
+    c.baseDeviation=0;double sum=0,squares=0;
+    for(int i=0;i<100000;++i){AutoForm::State s;s.date=start;s.remainingDays=1e8;s.randomState=SimulationV2::deriveSeed(77,i);AutoForm::advance(s,start.addDays(1),0,c);const double x=s.form-50;sum+=x;squares+=x*x;}
+    const double variance=squares/100000-std::pow(sum/100000,2),expected=c.formDeviation*c.formDeviation*(1-std::exp2(-2/c.formHalfLife));
+    check(std::abs(sum/100000)<.05 && std::abs(variance/expected-1)<.035,"daily noise has specified variance, not twice that variance");
+    std::cout<<"PASS: form initialization, CTMC normalization, daily invariance, persistence, RNG and Laplace variance\n";
+}
