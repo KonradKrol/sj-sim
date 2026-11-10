@@ -175,7 +175,7 @@ QString effectDescription(const QString &key,const QString &group) {
     if(key=="landing.distanceStyleOffset")return QObject::tr("Korekta bazowej noty względem klasy stylu, przy odległości K. Np. -0,7 zmniejsza ją o 0,7 punktu.");
     if(key=="landing.distanceStyleBelowK")return QObject::tr("Siła obniżenia not za skoki poniżej K, zależna od proporcji odległości do K. Np. 10 i skok 10% poniżej K oznaczają około punkt straty.");
     if(key=="landing.distanceStyleAboveK")return QObject::tr("Siła wzrostu not za skoki powyżej K, zależna od proporcji odległości do K. Np. 10 i skok 10% za K oznaczają około punkt premii przed karami.");
-    if(key=="flight.hillSpreadPerLevel")return QObject::tr("Zmiana różnic odległości względem K na poziom perka. Np. 0,02 daje na poziomie IV do 8% większe różnice dla rozległej i do 26% mniejsze dla kompaktowej skoczni.");
+    if(key=="flight.hillSpreadPerLevel")return QObject::tr("Zmiana różnic odległości względem K na poziom perka. Np. 0,02 daje na poziomie IV do 8% większe różnice dla rozległej i do 18% mniejsze dla kompaktowej skoczni.");
     if(key=="flight.referenceQuality")return QObject::tr("Jakość skoku odpowiadająca odległości odniesienia przy bazowej belce i bez opadów. Np. zwiększenie z 70 do 80 sprawia, że jakość 70 zaczyna poniżej tej odległości.");
     if(key=="flight.referenceDistanceAtK")return QObject::tr("Początkowy zapas lotu jako część K, zanim zadziałają wiatr i geometria zeskoku. Np. 1,10 na K120 daje zapas 132 m; końcowa odległość może być inna.");
     if(key=="flight.qualityMetresAtK120")return QObject::tr("Metry początkowego zapasu za punkt jakości powyżej odniesienia na K120. Np. 0,8 i jakość wyższa o 10 dają dodatkowe 8 m zapasu przed wpływem wiatru.");
