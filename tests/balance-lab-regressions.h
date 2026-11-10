@@ -8,6 +8,16 @@
 #include <QUuid>
 
 static QJsonObject smallBalanceConfig(){auto c=BalanceLab::initialConfig();c["competitions"]=8;c["athletes"]=8;c["focus"]=0;c["rounds"]=QJsonArray{8};c["sampleLimit"]=2;c["threads"]=2;return c;}
+static void balanceProfileCompatibilityRegressions(){
+    QString error;
+    check(BalanceLab::validateProfile(BalanceRuntime::defaults(),error),qPrintable(error));
+    check(BalanceLab::validateProfile({{"generator.global.spatialScale",.95}},error),qPrintable(error));
+    for(int i=0;i<5;++i)check(BalanceLab::validateProfile({{QString("quality.competitionPenalty.%1").arg(i),2.5}},error),"retired perk coefficients remain readable");
+    for(const auto &bad:QVector<QJsonObject>{{{"generator.global.spatialScale",-.01}},{{"generator.global.spatialScale",3.01}},{{"quality.competitionPenalty.0",-1}},{{"quality.competitionPenalty.5",1}},{{"quality.unknown",1}}})
+        check(!BalanceLab::validateProfile(bad,error),"invalid and unknown coefficients are still rejected");
+    qInfo()<<"PASS: saved balance compatibility, default registry coverage and strict invalid-value rejection";
+}
+
 static void balanceLabBackendRegressions(){
 
     QTemporaryDir storage;check(storage.isValid(),"private balance storage");const auto previousRoot=qApp->property("balanceLabStorageRoot");qApp->setProperty("balanceLabStorageRoot",storage.path()+"/balance-lab");
@@ -56,6 +66,9 @@ static void balanceLabBackendRegressions(){
     c["labTargets"]=QJsonArray{QJsonObject{{"name","landing"},{"variant",2},{"metric","fallProbability"},{"distance",134},{"minimum",0},{"maximum",100}}};options["view"]="landing";auto landing=BalanceLab::evaluate(c,options,false,{});check(landing["analyses"].toArray().size()==3,"landing compares three parameter sets");check(landing["analyses"].toArray()[2].toObject()["landing"].toArray().size()==81,"exact landing curves available");check(landing["targets"].toArray()[0].toObject()["result"].toObject()["exact"].toBool(),"landing goal uses exact probability");check(landing["targets"].toArray()[0].toObject()["state"]=="pass","exact target passes without pretending Monte Carlo uncertainty");
     auto frozen=c;frozen.remove("labTargets");frozen.remove("labScenarios");auto goals=c["labTargets"].toArray();auto goal=goals[0].toObject();goal["scenarioId"]="frozen";goals[0]=goal;c["labTargets"]=goals;c["labScenarios"]=QJsonObject{{"frozen",frozen}};auto p=c["parameters"].toObject();p["hill.realHs"]=160;p["landing.fallBase"]=.1;c["parameters"]=p;auto target=BalanceLab::evaluateTargets(c,landing)[0].toObject();auto expectedLanding=Playground::engineParameters(Playground::valuesFor(c,2)).landing;expectedLanding.fallBase=.1;const double expected=100*SimulationV2::LandingModel(expectedLanding).probabilities(134,134,0).values[3];check(std::abs(target["result"].toObject()["mean"].toDouble()-expected)<1e-10,"saved calibration scenario freezes inputs while following current engine coefficients");
     options["view"]="generator";auto generator=BalanceLab::evaluate(c,options,false,{});check(generator["generators"].toArray().size()==3 && generator["generators"].toArray()[2].toArray().size()==12,"all named weather scenarios plus automatic proposals");
+    check(BalanceLab::validateProfile({{"generator.global.spatialScale",.95}},error),"stored spatial wind scale remains a valid balance parameter");
+    check(BalanceLab::validateProfile(BalanceRuntime::defaults(),error),"every bundled default balance parameter is registered and valid");
+    for(double invalid:{-.01,3.01})check(!BalanceLab::validateProfile({{"generator.global.spatialScale",invalid}},error),"invalid spatial scale is rejected");
     const auto ranges=SimulationV2::weatherGeneratorRanges();check(!ranges.empty(),"generator ranges are discoverable");const auto key=QString::fromStdString(ranges.front().key);check(!BalanceLab::validateProfile({{key+".min",50},{key+".max",1}},error),"reversed preset intervals rejected");
     JumpSimulator oldSimulator;check(BalanceRuntime::activate({{"quality.overallWeight",.25}},"test",error),qPrintable(error));JumpSimulator newSimulator;check(oldSimulator.simulationBalanceProfile()==BalanceRuntime::defaults() && newSimulator.simulationBalanceProfile()["quality.overallWeight"].toDouble()==.25,"applying balance affects new sessions while preserving existing snapshots");
     CompetitionInfo competition;competition.simulationBalance=BalanceRuntime::capture();check(CompetitionInfo::getJsonObject(competition)["simulation-balance"].toObject()["quality.overallWeight"].toDouble()==.25,"contest snapshot is persisted in save data");

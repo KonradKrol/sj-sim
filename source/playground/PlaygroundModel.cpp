@@ -338,6 +338,7 @@ QString effectDescription(const QString &key,const QString &group) {
     }
     if(key=="generator.global.strengthScale")return QObject::tr("Zmienia podstawową siłę wiatru we wszystkich presetach i automatycznych propozycjach. Np. 1 zachowuje pierwotną siłę, a 0,8 zmniejsza ją o 20%.");
     if(key=="generator.global.variationScale")return QObject::tr("Zmienia siłę wahań w czasie, różnic na zeskoku i tendencji we wszystkich losowanych warunkach. Np. 0,5 zmniejsza te różnice o połowę.");
+    if(key=="generator.global.spatialScale")return QObject::tr("Skaluje różnice wiatru wzdłuż zeskoku. Np. 0,95 zachowuje 95% ich bazowej wielkości, bez zmiany siły wyjściowej.");
     if(key=="generator.global.gustScale")return QObject::tr("Zmienia siłę podmuchów we wszystkich losowanych warunkach, bez zmiany ich częstości. Np. 0,5 zmniejsza siłę podmuchów o połowę.");
     if(key.startsWith("generator.auto.")) {
         const auto field=key.mid(15);
@@ -406,8 +407,8 @@ QJsonArray parameters() {
         const double lo=angle?-360:time?.1:scale?.01:0,hi=angle?360:prob?1:time?100000:scale?10:100;
         for(int end=0;end<2;++end){auto d=definition(key+(end?".max":".min"),QObject::tr("Preset %1 · %2 · %3").arg(r.preset+1).arg(generatorLabels.value(field,field),end?QObject::tr("maksimum"):QObject::tr("minimum")),"generator",end?r.high:r.low,lo,hi,prob?.01:.05,unit,false);d["preset"]=r.preset;rows.append(d);}
     }
-    for(const auto &entry:QVector<QPair<QString,QString>>{{"strengthScale",QObject::tr("Wszystkie losowane warunki: siła wiatru")},{"variationScale",QObject::tr("Wszystkie losowane warunki: zmienność")},{"gustScale",QObject::tr("Wszystkie losowane warunki: siła podmuchów")}}) {
-        auto d=definition("generator.global."+entry.first,entry.second,"generator",entry.first=="strengthScale"?.84:.6,0,3,.05,"1",false);d["preset"]=-2;rows.append(d);
+    for(const auto &entry:QVector<QPair<QString,QString>>{{"strengthScale",QObject::tr("Wszystkie losowane warunki: siła wiatru")},{"variationScale",QObject::tr("Wszystkie losowane warunki: zmienność")},{"gustScale",QObject::tr("Wszystkie losowane warunki: siła podmuchów")},{"spatialScale",QObject::tr("Wszystkie losowane warunki: różnice na zeskoku")}}) {
+        auto d=definition("generator.global."+entry.first,entry.second,"generator",entry.first=="strengthScale"?.84:entry.first=="spatialScale"?.95:.6,0,3,.05,"1",false);d["preset"]=-2;rows.append(d);
     }
     for(const auto &entry:QVector<QPair<QString,QString>>{{"strengthScale",QObject::tr("Automatyczna pogoda: skala siły")},{"variationScale",QObject::tr("Automatyczna pogoda: skala wahań")},{"gustScale",QObject::tr("Automatyczna pogoda: skala podmuchów")},{"trendScale",QObject::tr("Automatyczna pogoda: skala tendencji")},{"timeScale",QObject::tr("Automatyczna pogoda: skala czasu")}}) {
         auto d=definition("generator.auto."+entry.first,entry.second,"generator",1,entry.first=="timeScale"?.1:0,3,.05,"1",false);d["preset"]=-1;rows.append(d);

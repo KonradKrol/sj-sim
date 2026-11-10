@@ -2647,6 +2647,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--hill-studio-only")){hillStudioRegressions(main);return 0;}
     if(app.arguments().contains("--athlete-commit-only")){athleteFieldCommitRegressions(main);return 0;}
     if(app.arguments().contains("--athlete-studio-only") || app.arguments().contains("--athlete-patches-only")){athleteStudioRegressions(main,app.arguments().contains("--athlete-patches-only"));return 0;}
+    if(app.arguments().contains("--balance-profile-validation-only")){balanceProfileCompatibilityRegressions();return 0;}
     if(app.arguments().contains("--balance-lab-only")){balanceLabBackendRegressions();balanceLabUiRegressions(main);return 0;}
     if(app.arguments().contains("--balance-lab-core-only")){balanceLabBackendRegressions();return 0;}
     if(app.arguments().contains("--playground-only")){playgroundRandomRegressions();playgroundBackendRegressions();playgroundUiRegressions(main);return 0;}
