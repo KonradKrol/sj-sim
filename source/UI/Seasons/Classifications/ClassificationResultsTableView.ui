@@ -34,6 +34,7 @@
    </item>
    <item>
     <widget class="QPushButton" name="pushButton_webhook">
+           <property name="visible"><bool>false</bool></property>
      <property name="text">
       <string>Wyślij webhooka</string>
      </property>

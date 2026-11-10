@@ -1607,30 +1607,49 @@ void CompetitionManagerWindow::executeLiveCompetitionEffects()
         if(auto *label=info->findChild<QLabel *>(name))label->hide();
     setProperty("liveJudgeCount",0);
     setProperty("liveJudgeMask",0);
-    setProperty("liveDetailsStep",0);
-    const int flightSeconds=qBound(1,QSettings().value("quickUi/liveFlightSeconds",7).toInt(),20);
-    if(!wait(flightSeconds*1000))return;
-    if(c->getDistance())info->getUi()->label_distance->show();
-    setLiveStage(2);
-    if(!wait(300))return;
+    setProperty("liveWindVisible",false);
+    setProperty("liveWindFinal",false);
+    auto *jump=info->getJumpData();
+    const auto forecast=manager->property("predictedMeasuredWind");
+    const double forecastWind=forecast.isValid()?forecast.toDouble():WindsCalculator::getAveragedWind(actualWinds,rules->getWindAverageCalculatingType()).getStrengthToAveragedWind();
+    double intermediateWind=(forecastWind+jump->getAveragedWind())*.5;
+    const auto exactField=currentInputJumpManipulator.getExactSimulationWind();
+    const auto field=exactField?exactField:simulationWeather;
+    if(field && simulationMeasurement && (exactField || currentInputJumpManipulator.getExactWinds().isEmpty())) {
+        const auto metadata=jump->getSimulationV2Data();
+        const double k=jump->getHill()->getKPoint();
+        const double secondsPerK=Playground::engineParameters(simulator.simulationBalanceProfile()).flight.secondsPerK;
+        SimulationV2::FlightResult partial;
+        partial.distance=metadata.value("rawDistance").toDouble(jump->getDistance())*.5;
+        partial.duration=partial.distance/k*secondsPerK;
+        const double start=metadata.value("startSeconds").toDouble();
+        for(double x=0;x<partial.distance;x+=1) {
+            const double length=qMin(1.,partial.distance-x);
+            const auto wind=field->wind(x,start+x/k*secondsPerK);
+            partial.experiencedWind.head+=wind.head*length;
+            partial.experiencedWind.cross+=wind.cross*length;
+        }
+        if(partial.distance>0){partial.experiencedWind.head/=partial.distance;partial.experiencedWind.cross/=partial.distance;}
+        intermediateWind=simulationMeasurement->measure(*field,partial,start);
+    }
+    setProperty("liveIntermediateWind",intermediateWind);
+    const int durationMs=qBound(3,QSettings().value("quickUi/liveFlightSeconds",7).toInt(),60)*1000;
+    const int scalableMs=durationMs-1000;
+    const int firstWindMs=qRound(scalableMs*2.5/9.);
+    const int landingMs=qRound(scalableMs*5./9.);
+    if(!wait(firstWindMs))return;
+    setProperty("liveWindVisible",true);emit liveStageChanged(1);
+    if(!wait(landingMs-firstWindMs))return;
+    info->getUi()->label_distance->setVisible(c->getDistance());
     info->getUi()->label_landingType->setVisible(c->getLandingType());
-    setProperty("liveDetailsStep",1);setLiveStage(3);
-    if(!wait(400))return;
-    info->getUi()->label_averageWind->setVisible(c->getAveragedWind());
-    setProperty("liveDetailsStep",2);emit liveStageChanged(3);
-    if(!wait(400))return;
-    info->getUi()->label_windPoints->setVisible(c->getWindCompensation() && rules->getHasWindCompensations());
-    info->getUi()->label_gatePoints->setVisible(c->getGateCompensation() && rules->getHasGateCompensations());
-    info->getUi()->label_totalCompensation->setVisible(c->getTotalCompensation() && (rules->getHasWindCompensations() || rules->getHasGateCompensations()));
-    setProperty("liveDetailsStep",3);emit liveStageChanged(3);
-    if(judges && (c->getJudges() || c->getJudgesPoints())) {
-        if(!wait(300))return;
+    setLiveStage(2);
+    if(judges) {
         info->getUi()->label_judges->setVisible(c->getJudges());
         setLiveStage(4);
-        const int count=qMin(5,info->getJumpData()->getJudges().size());
+        const int count=qMin(5,jump->getJudges().size());
         QVector<double> intervals;double sum=0;
         for(int i=0;i<count;++i){const double value=.35+QRandomGenerator::global()->generateDouble()*1.3;intervals.append(value);sum+=value;}
-        const int windowMs=4000+QRandomGenerator::global()->bounded(3001);
+        const int windowMs=scalableMs-landingMs;
         const auto updateMarks=[info,count](int mask){QStringList texts;for(int i=0;i<count;++i)texts.append(mask & (1<<i)?QString::number(info->getJumpData()->getJudges()[i],'f',1):QString::fromUtf8("—"));info->getUi()->label_judges->setText(texts.join(" | "));};
         updateMarks(0);
         QVector<int> order;for(int i=0;i<count;++i)order.append(i);
@@ -1641,8 +1660,14 @@ void CompetitionManagerWindow::executeLiveCompetitionEffects()
             if(!wait(qMax(1,delay)))return;
             elapsed+=delay;mask|=(1<<order[i]);setProperty("liveJudgeMask",mask);updateMarks(mask);setProperty("liveJudgeCount",i+1);emit liveStageChanged(4);
         }
-        if(!wait(250))return;
     }
+    setProperty("liveWindFinal",true);
+    info->getUi()->label_averageWind->setVisible(c->getAveragedWind());
+    info->getUi()->label_windPoints->setVisible(c->getWindCompensation() && rules->getHasWindCompensations());
+    info->getUi()->label_gatePoints->setVisible(c->getGateCompensation() && rules->getHasGateCompensations());
+    info->getUi()->label_totalCompensation->setVisible(c->getTotalCompensation() && (rules->getHasWindCompensations() || rules->getHasGateCompensations()));
+    emit liveStageChanged(getLiveStage());
+    if(!wait(1000))return;
     info->getUi()->label_judgesPoints->setVisible(judges && c->getJudgesPoints());
     info->getUi()->label_points->setVisible(c->getPoints());
     info->getUi()->label_positionInRound->setVisible(c->getJumpPositionInRound());
@@ -1929,7 +1954,8 @@ void CompetitionManagerWindow::on_pushButton_jump_clicked()
     const bool progressive=GlobalAppSettings::get()->getLiveCompetition();
     setProperty("liveJudgeCount",0);
     setProperty("liveJudgeMask",0);
-    setProperty("liveDetailsStep",0);
+    setProperty("liveWindVisible",false);
+    setProperty("liveWindFinal",false);
     if(progressive)setLiveStage(1);
     disableCompetitionManagementButtons();
 

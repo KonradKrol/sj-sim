@@ -20,6 +20,7 @@ FocusScope {
     readonly property bool reorderable: !!table && table.reorderable
     readonly property bool sortable: !plain && !teamSetup && !ranking && !reorderable
     property bool plain: false
+    property bool showHeaders: true
     property bool expandedActions: false
     property bool singleClickOpen: false
     property bool preserveScroll: plain && !followCurrent
@@ -60,7 +61,7 @@ FocusScope {
         for(var c=0;c<visibleColumns;++c)total+=columnWidth(c)
         return total
     }
-    implicitHeight: Math.min(teamSetup ? Math.max(240,(Window.window ? Window.window.height : 960)-220) : maximumHeight, Math.max(240,(Window.window ? Window.window.height : 960) - (teamSetup ? 220 : 360)), Math.max(compact ? 120 : 240, (table ? table.count : 0) * (compact ? 32 : 40) + (columns>1 ? 104 : 66)))
+    implicitHeight: Math.min(teamSetup ? Math.max(240,(Window.window ? Window.window.height : 960)-220) : maximumHeight, Math.max(240,(Window.window ? Window.window.height : 960) - (teamSetup ? 220 : 360)), Math.max(compact ? 120 : 240, (table ? table.count : 0) * (compact ? 32 : 40) + (showHeaders && columns>1 ? 104 : 66)))
     activeFocusOnTab: true
     Accessible.role: Accessible.Table
     Accessible.name: title.length ? title : qsTr("Tabela danych")
@@ -204,7 +205,7 @@ FocusScope {
                 height: horizontal.height
                 Row {
                     id: header
-                    visible: tableRoot.columns > 1
+                    visible: tableRoot.showHeaders && tableRoot.columns > 1
                     height: visible ? (Theme.compact ? Math.max(24,Theme.captionMetrics.height+4) : (tableRoot.compact || tableRoot.teamSetup) ? 28 : 38) : 0
                     Repeater {
                         model: tableRoot.displayColumns

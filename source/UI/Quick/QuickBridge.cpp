@@ -84,6 +84,13 @@ QT_CHARTS_USE_NAMESPACE
 QString quickPicture(const QPixmap &pixmap);
 QString quickDecoration(const QVariant &value);
 namespace {
+bool webhookControl(const QObject *object) {
+    if(!object)return false;
+    if(object->objectName().contains("webhook",Qt::CaseInsensitive))return true;
+    if(auto *button=qobject_cast<const QAbstractButton *>(object))return button->text().contains("webhook",Qt::CaseInsensitive);
+    if(auto *action=qobject_cast<const QAction *>(object))return action->text().contains("webhook",Qt::CaseInsensitive);
+    return false;
+}
 QString flagSource(const QString &country) {
     const auto path=QDir::current().absoluteFilePath("flags/"+CountryCodes::toIso(country)+".svg");
     static QHash<QString,QString> cache;
@@ -296,6 +303,7 @@ QVariantList QuickBridge::widgetChildren(QWidget *widget) {
     return children;
 }
 QuickNode *QuickBridge::node(QWidget *widget,bool force) {
+    if(webhookControl(widget))return nullptr;
     if(!widget || (widget->isHidden() && !force) || qobject_cast<QQuickWidget *>(widget)) return nullptr;
     if(!force && widget->property("quickMenuOnly").toBool()) return nullptr;
     if(widget->property("simulationDraft").isValid()) {
@@ -436,6 +444,7 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
         const auto sourceName=view->model()?QByteArray(view->model()->metaObject()->className()):QByteArray();
         const bool classificationTable=view->property("quickClassificationRanking").toBool();
         data["classificationRanking"]=classificationTable;
+        data["showHeaders"]=!(classificationTable && profile()=="SimulationSaveManagerWindow");
         data["searchable"]=classificationTable || sourceName=="JumpersListModel" || sourceName=="HillsListModel" || sourceName=="SeasonJumpersListModel" || sourceName=="SeasonHillsListModel" || sourceName=="CompetitionsArchiveListModel" || sourceName=="SimulationSavesListModel";
 
         data["plainTable"]=view->property("quickPlainTable").toBool();
@@ -466,7 +475,7 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
         data["primary"]=data.value("primary").toBool() || name.contains("submit") || name=="pushbutton_generate" || name=="pushbutton_jump" || name=="pushbutton_gotonext" || name=="pushbutton_ok" || name=="pushbutton_competitionconfig";
         if(menu) {
             QVariantList actions;
-            for(auto *action:menu->actions()) actions.append(QVariantMap{{"id",idFor(action)},{"text",action->text().remove('&')},{"enabled",action->isEnabled()},{"separator",action->isSeparator()}});
+            for(auto *action:menu->actions())if(!webhookControl(action)) actions.append(QVariantMap{{"id",idFor(action)},{"text",action->text().remove('&')},{"enabled",action->isEnabled()},{"separator",action->isSeparator()}});
             data["actions"]=actions;
         }
     } else if(auto *spin=qobject_cast<QSpinBox *>(widget)) {
@@ -747,7 +756,7 @@ void QuickBridge::refresh() {
             if(stage==0 || stage>=2)summary["distance"]=displayedJump->getDNS()?QString("DNS"):displayedJump->getDSQ()?QString("DSQ"):format(displayedJump->getDistance(),1)+" m";
             else summary.remove("distance");
             summary["gate"]=QString::number(displayedJump->getGate());
-            if(stage==0 || stage>=3) {
+            if(stage==0 || stage>=2) {
                 summary["wind"]=format(displayedJump->getAveragedWind(),2)+" m/s";
                 summary["windValue"]=qRound64(displayedJump->getAveragedWind()*100)/100.;
                 summary["landing"]=displayedJump->getLanding().getTextLandingType();
@@ -773,17 +782,23 @@ void QuickBridge::refresh() {
                 int lowest=-1,highest=-1;
                 for(int i=0;i<values.size();++i)if(lowest<0 || values[i]<values[lowest])lowest=i;
                 for(int i=0;i<values.size();++i)if(i!=lowest && (highest<0 || values[i]>values[highest]))highest=i;
-                QVariantList marks;for(int i=0;i<values.size();++i)marks.append(QVariantMap{{"text",(mask & (1<<i))?format(values[i],1):QString::fromUtf8("—")},{"revealed",bool(mask & (1<<i))},{"discarded",final && allRevealed && (i==lowest || i==highest)}});
+                QVariantList marks;for(int i=0;i<values.size();++i)marks.append(QVariantMap{{"text",(mask & (1<<i))?format(values[i],1):QString::fromUtf8("—")},{"revealed",bool(mask & (1<<i))},{"discarded",(final || (window && window->property("liveWindFinal").toBool())) && allRevealed && (i==lowest || i==highest)}});
                 summary["judges"]=marks;
             }
             summary["visibility"]=visibility;
             for(auto it=visibility.cbegin();it!=visibility.cend();++it)if(!it.value().toBool())summary.remove(it.key());
             if(!visibility.value("position").toBool())summary.remove("positionNumber");
             if(!visibility.value("roundPosition").toBool())summary.remove("roundPositionNumber");
-            if(stage>0 && stage<3)for(const auto *key:{"wind","windValue","windPoints","gatePoints","compensation","compensationValue"})summary.remove(key);
-            const int details=window?window->property("liveDetailsStep").toInt():3;
-            if(stage==3 && details<2)for(const auto *key:{"wind","windValue"})summary.remove(key);
-            if(stage==3 && details<3)for(const auto *key:{"windPoints","gatePoints","compensation","compensationValue"})summary.remove(key);
+            if(!final && window) {
+                const bool windVisible=window->property("liveWindVisible").toBool();
+                const bool windFinal=window->property("liveWindFinal").toBool();
+                if(windVisible && visibility.value("wind").toBool()) {
+                    const double value=windFinal?displayedJump->getAveragedWind():window->property("liveIntermediateWind").toDouble();
+                    summary["wind"]=format(value,2)+" m/s";summary["windValue"]=qRound64(value*100)/100.;
+                } else {summary.remove("wind");summary.remove("windValue");}
+                if(!windFinal)for(const auto *key:{"windPoints","gatePoints","compensation","compensationValue"})summary.remove(key);
+                else if(visibility.value("judgesPoints").toBool())summary["judgesPoints"]=format(displayedJump->getJudgesPoints(),1)+tr(" pkt");
+            }
             if(stage>0 && stage<5)for(const auto *key:{"totalPoints","leaderGap"})summary.remove(key);
             const auto metadata=displayedJump->getSimulationV2Data();
             summary["jumpKey"]=metadata.value("seed").toString()+":"+QString::number(metadata.value("startSeconds").toDouble())+":"+summary.value("name").toString();
@@ -1045,7 +1060,7 @@ void QuickBridge::compose(QuickNode *base) {
         m_root->update({{"kind","classificationContributions"},{"country",m_window->property("contributionCountry")},{"name",m_window->property("contributionName")},{"total",classificationPointsText(m_window->property("contributionTotal").toDouble())},{"flag",QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(m_window->property("contributionCountry").toString())+".svg")).toString()},{"tableField",QVariant::fromValue(node(table,true))}});return;
     }
     if(m_window->objectName()=="competitionResultsArchive")if(auto *history=m_content->findChild<ResultsHistoryWidget *>()) {
-        auto *entry=node(history,true);auto values=entry->values();if(auto *button=m_content->findChild<QPushButton *>("archiveResultsWebhook"))values["actionsField"]=QVariant::fromValue(node(button,true));m_root->update(values);return;
+        auto *entry=node(history,true);m_root->update(entry->values());return;
     }
     if(m_window->objectName()=="manualKoGroupsDialog") {
         if(auto *list=m_content->findChild<KOGroupsListView *>()) {
@@ -1150,14 +1165,17 @@ void QuickBridge::compose(QuickNode *base) {
     }
     if(profile()=="AppSettingsWindow") {
         QVariantList sections;
-        sections.append(group("simple-simulation",QString(),fields({{"simpleSimulation_spread",tr("Rozrzut wyników")},{"simpleSimulation_form",tr("Znaczenie formy")},{"simpleSimulation_landing",tr("Trudność lądowania")},{"simpleSimulation_perks",tr("Siła perków zawodników")},{"simpleSimulation_differences",tr("Różnice między zawodnikami")}}),"simulationPreferences"));
-        sections.append(group("simulation",tr("Silnik symulacji"),{group("simulation-settings-fields",QString(),fields({
-            {"openBalanceLab",""},{"openSimulationPlayground",""},{"comboBox_language",tr("Język interfejsu")},
-            {"spinBox_dsqProbability",tr("Częstość dyskwalifikacji")},
-
-            {"checkBox_globalDatabaseRecords",""},{"checkBox_liveCompetition",""}}),"form")}));
+        const auto preferences=group("simple-simulation",QString(),fields({{"simpleSimulation_spread",tr("Rozrzut wyników")},{"simpleSimulation_form",tr("Znaczenie formy")},{"simpleSimulation_landing",tr("Trudność lądowania")},{"simpleSimulation_perks",tr("Siła perków zawodników")},{"simpleSimulation_differences",tr("Różnice między zawodnikami")}}),"simulationPreferences");
+        sections.append(group("simulation-page",QString(),{
+            preferences,
+            group("simulation",tr("Silnik symulacji"),{group("simulation-settings-fields",QString(),fields({
+                {"pushButton_jumpInfoChoice",""},{"checkBox_liveCompetition",""},
+                {"openBalanceLab",""},{"openSimulationPlayground",""},{"comboBox_language",tr("Język interfejsu")},
+                {"spinBox_dsqProbability",tr("Częstość dyskwalifikacji")},{"checkBox_globalDatabaseRecords",""}
+            }),"form")})
+        }));
         sections.append(group("tools",tr("Baza danych i narzędzia"),{group("database-settings-fields",QString(),fields({
-            {"pushButton_countriesEditor",""},{"pushButton_jumpInfoChoice",""},
+            {"pushButton_countriesEditor",""},
             {"pushButton_defaultSettings",""}}),"form")}));
         auto *tabs=sectionTabs("settings-pages",{tr("Symulacja"),tr("Baza danych i narzędzia")},sections);
         m_root->update(tabs->values(),tabs->children());return;
@@ -1197,12 +1215,14 @@ void QuickBridge::compose(QuickNode *base) {
             auto *activeCalendar=season->getSimulationSave()->getActualSeason()->getActualCalendar();
             if(standings.isEmpty() || !activeCalendar || activeCalendar->getClassificationsReference().isEmpty())standings={empty("season-no-standings",tr("Brak wyników klasyfikacji"),tr("Dodaj klasyfikację w kalendarzu i przypisz do niej konkursy. Wyniki pojawią się po ich rozegraniu."))};
             if(activeCalendar) {
-                QVariantList upcoming;int total=0,played=0;QSet<QString> countries;CompetitionInfo *lastPlayed=nullptr;const bool datesEnabled=season->getSimulationSave()->getActualSeason()->getDatesEnabled();
+                QVariantList upcoming;int total=0,played=0,remainingCompetitions=0;CompetitionInfo *lastPlayed=nullptr;const bool datesEnabled=season->getSimulationSave()->getActualSeason()->getDatesEnabled();
                 for(auto *event:activeCalendar->getCompetitionsReference()) {
                     if(!event || event->getSerieType()==CompetitionInfo::Training || event->getSerieType()==CompetitionInfo::TrialRound)continue;
                     ++total;if(event->getPlayed()){++played;lastPlayed=event;continue;}
-                    auto *hill=event->getHill();if(hill)countries.insert(hill->getCountryCode());
-                    if(upcoming.size()>=5)continue;
+                    if(event->getCancelled())continue;
+                    if(event->getSerieType()!=CompetitionInfo::Qualifications)++remainingCompetitions;
+                    auto *hill=event->getHill();
+                    if(upcoming.size()>=7)continue;
                     const auto trainings=event->getTrainings();int completedTrainings=0;for(auto *training:trainings)if(training && training->getPlayed())++completedTrainings;
                     auto *trial=event->getTrialRound();
                     const auto date=event->getScheduledDate();QVariantList preparations;int trainingNumber=0;
@@ -1231,8 +1251,8 @@ void QuickBridge::compose(QuickNode *base) {
                 }
                 if(!upcoming.isEmpty() || !latest.isEmpty()) {
                     auto *preview=m_groups.value("quickSeasonOverview");if(!preview){preview=new QuickNode(this);m_groups.insert("quickSeasonOverview",preview);}
-                    preview->update({{"kind","seasonOverview"},{"events",upcoming},{"latest",latest},{"total",total},{"played",played},{"countries",countries.size()},
-                        {"nextEvent",nextEvent?nextEvent->getLongSerieTypeText():QString()},{"action",QVariant::fromValue(node(m_content->findChild<QPushButton *>("pushButton_competitionConfig")))}});
+                    preview->update({{"kind","seasonOverview"},{"events",upcoming},{"latest",latest},{"total",total},{"played",played},{"remainingCompetitions",remainingCompetitions},
+                        {"cancelAction",QVariant::fromValue(node(m_content->findChild<QPushButton *>("pushButton_cancelNextCompetition"),true))},{"nextEvent",nextEvent?nextEvent->getLongSerieTypeText():QString()},{"action",QVariant::fromValue(node(m_content->findChild<QPushButton *>("pushButton_competitionConfig")))}});
                     overview={QVariant::fromValue(preview)};
                 }
             }

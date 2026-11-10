@@ -180,15 +180,34 @@ void QuickCalendar::refresh() {
     const auto all=mains();QStringList existing;for(auto *event:all)existing.append(event->getIDStr());
     for(int i=m_selected.size()-1;i>=0;--i)if(!existing.contains(m_selected[i]))m_selected.removeAt(i);
     if(m_selected.isEmpty() && !all.isEmpty() && m_selection.isEmpty()){auto *first=all.first();for(auto *event:all)if(!locked(event)){first=event;break;}m_selected.append(first->getIDStr());}
+    CompetitionInfo *next=nullptr;
+    for(QWidget *owner=m_editor.data();owner;owner=owner->parentWidget())if(auto *manager=qobject_cast<SimulationSaveManagerWindow *>(owner)) {
+        if(manager->getSimulationSave()->getActualSeason()->getActualCalendar()==m_calendar)next=manager->getSimulationSave()->getNextCompetition();
+        break;
+    }
     const auto chosen=selected();m_events.clear();
     for(int i=0;i<all.size();++i){auto *event=all[i];const auto hill=event->getHill();
         QStringList dependencies;for(auto *other:all)if(other->getPendingAdvancementCompetition()==event)dependencies.append(QString::number(all.indexOf(other)+1));
         auto *pending=event->getPendingAdvancementCompetition();
+        int prepared=0;bool currentPreparation=false;QString phase;
+        const auto trainings=event->getTrainings();
+        for(int n=0;n<trainings.size();++n)if(auto *training=trainings[n]) {
+            if(training->getPlayed() || training->getCancelled())++prepared;
+            if(training==next){currentPreparation=true;phase=tr("Trening %1/%2").arg(n+1).arg(trainings.size());}
+        }
+        if(auto *trial=event->getTrialRound()) {
+            if(trial->getPlayed() || trial->getCancelled())++prepared;
+            if(trial==next){currentPreparation=true;phase=tr("Seria próbna");}
+        }
+        const int preparationCount=trainings.size()+(event->getTrialRound()?1:0);
+        const bool preparing=!event->getPlayed() && !event->getCancelled() && (prepared>0 || currentPreparation);
+        if(preparing && phase.isEmpty())phase=prepared==preparationCount?tr("Gotowy do startu"):tr("Przygotowania %1/%2").arg(prepared).arg(preparationCount);
+
         m_events.append(QVariantMap{{"pending",pending!=nullptr},{"pendingSource",pending?all.indexOf(pending)+1:0},{"dependents",dependencies.join(", ")},{"id",event->getIDStr()},{"number",i+1},{"title",hill?hill->getName()+" HS"+QString::number(hill->getHSPoint()):tr("Brak skoczni")},
             {"flag",hillFlag(hill)},{"qualification",event->getSerieType()==CompetitionInfo::Qualifications},{"weekday",event->getScheduledDate().isValid()?QLocale().standaloneDayName(event->getScheduledDate().dayOfWeek(),QLocale::ShortFormat):QString()},
             {"date",event->getScheduledDate().toString(Qt::ISODate)},{"dateText",datesEnabled()?(event->getScheduledDate().isValid()?dateText(event->getScheduledDate().toString(Qt::ISODate)):tr("Bez daty")):QString()},
             {"type",event->getSerieType()==CompetitionInfo::Qualifications?tr("Kwalifikacje"):tr("Konkurs")},{"team",event->getRules().getCompetitionType()==CompetitionRules::Team},
-            {"trainings",event->getTrainingsReference().size()},{"trial",event->getTrialRound()!=nullptr},{"locked",locked(event)},{"played",event->getPlayed()},{"cancelled",event->getCancelled()},{"selected",m_selected.contains(event->getIDStr())}});
+            {"preparing",preparing},{"preparationPhase",phase},{"preparationDone",prepared},{"preparationCount",preparationCount},{"trainings",event->getTrainingsReference().size()},{"trial",event->getTrialRound()!=nullptr},{"locked",locked(event)},{"played",event->getPlayed()},{"cancelled",event->getCancelled()},{"selected",m_selected.contains(event->getIDStr())}});
     }
     m_eventModel->sync(m_events);
     m_selection={{"id",chosen.size()==1?chosen.first()->getIDStr():QString()},{"flag",chosen.size()==1?hillFlag(chosen.first()->getHill()):QString()},{"count",chosen.size()},{"locked",!editable()},{"title",chosen.size()==1?m_events.value(all.indexOf(chosen.first())).toMap().value("title"):tr("%1 konkursów").arg(chosen.size())}};

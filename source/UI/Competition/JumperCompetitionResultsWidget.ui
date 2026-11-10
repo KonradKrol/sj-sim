@@ -251,6 +251,7 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_sendWebhook">
+           <property name="visible"><bool>false</bool></property>
        <property name="minimumSize">
         <size>
          <width>120</width>

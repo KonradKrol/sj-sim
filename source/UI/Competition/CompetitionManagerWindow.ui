@@ -63,6 +63,7 @@
      </item>
      <item row="0" column="2">
       <widget class="QPushButton" name="pushButton_sendResultsWebhook">
+           <property name="visible"><bool>false</bool></property>
        <property name="styleSheet">
         <string notr="true">color: rgb(70, 78,95)</string>
        </property>

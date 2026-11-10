@@ -10,6 +10,11 @@ Item {
     property bool compact: false
     property var viewport
     readonly property string eventId: event.id
+    readonly property bool finished: !!event.played && !event.cancelled
+    readonly property bool preparing: !!event.preparing
+    readonly property bool statusIcon: !!event.locked && (finished || preparing || !!event.cancelled)
+    readonly property color statusColor: finished ? Theme.success : preparing ? Theme.accent : Theme.muted
+    readonly property string statusText: event.cancelled ? qsTr("Odwołany") : finished ? qsTr("Rozegrany") : event.preparationPhase || ""
     objectName: "calendar-row-"+event.id
     signal activated(string eventId)
     activeFocusOnTab: true
@@ -26,14 +31,15 @@ Item {
         if(event.team)parts.push(qsTr("Drużynowy"))
         if(event.trainings)parts.push(qsTr("Treningi: %1").arg(event.trainings))
         if(event.trial)parts.push(qsTr("Próbna"))
-        if(event.locked)parts.push(event.cancelled ? qsTr("Odwołany") : event.played ? qsTr("Rozegrany") : qsTr("W trakcie"))
         return parts.join(" · ")
     }
     implicitHeight: Math.max(Theme.compact ? 32 : 48,rowContent.implicitHeight+(Theme.compact ? 6 : 8))
     Accessible.role: Accessible.ListItem
-    Accessible.name: event.title + ", " + event.type
+    Accessible.name: event.title + ", " + event.type + (statusText.length ? ", "+statusText : "")
     Accessible.selected: !!event.selected
-    Surface { anchors.fill: parent; fillColor: row.event.selected ? Theme.selection : Theme.surface; strokeWidth: row.event.selected ? 2 : 0; edgeColor: Theme.accent; sweep: 16 }
+    Surface { anchors.fill: parent; fillColor: row.finished ? Theme.advancementSurface : row.preparing ? Theme.selection : row.event.selected ? Theme.raised : Theme.surface; strokeWidth: row.event.selected ? 2 : row.finished || row.preparing ? 1 : 0; edgeColor: row.event.selected ? Theme.accent : row.statusColor; sweep: 16 }
+    Rectangle { visible: row.finished || row.preparing; anchors.left: parent.left; anchors.top: parent.top; anchors.bottom: parent.bottom; anchors.margins: Theme.dp(6); width: Theme.dp(3); radius: width/2; color: row.statusColor; Accessible.ignored: true }
+
     MouseArea {
         objectName: "calendar-select-"+row.event.id
         anchors.fill: parent
@@ -42,10 +48,11 @@ Item {
     }
     RowLayout {
         id: rowContent
-        anchors.fill: parent; anchors.margins: Theme.compact ? 3 : 4
+        anchors.fill: parent; anchors.margins: Theme.compact ? 3 : 4; anchors.leftMargin: row.finished || row.preparing ? Theme.dp(13) : (Theme.compact ? 3 : 4)
         spacing: Theme.compact ? 4 : 6
         SButton {
             id: grip
+            visible: !row.statusIcon
             objectName: "calendar-grip-"+row.event.id
             text: "⠿"; quiet: true; enabled: !row.event.locked
             Layout.preferredWidth: Theme.compact ? 24 : 28; Layout.minimumWidth: 24; Layout.maximumWidth: 28; Layout.preferredHeight: Theme.compact ? 24 : 28
@@ -61,6 +68,13 @@ Item {
                 onClicked: row.select(0)
             }
         }
+        Rectangle {
+            visible: row.statusIcon
+            Layout.preferredWidth: Theme.dp(24); Layout.preferredHeight: Theme.dp(24)
+            radius: width/2; color: row.finished ? Theme.success : row.preparing ? Theme.accent : Theme.muted
+            Label { anchors.centerIn: parent; text: row.finished ? "✓" : row.preparing ? "◐" : "×"; color: row.finished ? Theme.surface : row.preparing ? Theme.accentText : Theme.surface; font.bold: true; font.pointSize: Theme.body }
+            Accessible.ignored: true
+        }
         SCheck { Layout.preferredWidth: 24; Layout.minimumWidth: 24; Layout.maximumWidth: 24; text: ""; checked: !!row.event.selected; Accessible.name: qsTr("Zaznacz %1").arg(row.event.title); onClicked: row.backend.select(row.event.id,Qt.ControlModifier) }
         Image {
             objectName: "calendar-flag-"+row.event.id
@@ -74,6 +88,17 @@ Item {
             Label { text: row.event.number + ". " + row.event.title; font.pointSize: Theme.compact ? Theme.caption : Theme.body; font.weight: Font.DemiBold; color: Theme.ink; Layout.fillWidth: true; elide: Text.ElideRight }
             Label { objectName: "calendar-details-"+row.event.id; visible: text.length>0; text: row.details; color: row.backend.datesEnabled && !row.event.date ? Theme.warning : Theme.muted; font.pointSize: Theme.compact ? Theme.caption-1 : Theme.caption; Layout.fillWidth: true; elide: Text.ElideRight }
             Label { visible: !!row.event.pending || !!row.event.dependents; text: row.event.pending ? qsTr("Kwalifikacja z konkursu %1 — popraw kolejność").arg(row.event.pendingSource) : qsTr("Źródło kwalifikacji dla: %1 — popraw kolejność").arg(row.event.dependents); color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+        }
+        Control {
+            visible: row.statusText.length>0
+            Layout.fillHeight: false; Layout.alignment: Qt.AlignVCenter
+            Layout.maximumWidth: Math.max(Theme.dp(75),row.width*.28)
+            padding: Theme.dp(5)
+            background: Rectangle { color: row.finished ? Theme.success : row.preparing ? Theme.accent : Theme.raised; radius: Theme.dp(5) }
+            contentItem: Label { text: row.statusText; color: row.finished ? Theme.surface : row.preparing ? Theme.accentText : Theme.muted; font.pointSize: Theme.caption; font.bold: true; elide: Text.ElideRight }
+            ToolTip.visible: hover.hovered
+            ToolTip.text: row.statusText
+            HoverHandler { id: hover }
         }
         Label {
             objectName: "calendar-qualification-"+row.event.id

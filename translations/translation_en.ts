@@ -6231,13 +6231,13 @@ li.checked::marker { content: "\2612"; }
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Filtrowanie statystyk zawodnika i statystyk zapisu (9 różnych filtrów pozwalających pokazać statystyki tylko z niektórych konkursów)&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Listy zawodników (bardzo ułatwiają tworzenie list startowych)&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Generator formy zawodników (Bardzo przydatne narzędzie zwiększające realizm symulacji. Na podstawie czterech parametrów (jednego wymaganego) zmieniana jest forma zawodników. Głównym użyciem jest zmiana formy zawodników między weekendami zawodów)&lt;/li&gt;
-&lt;li style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wysyłanie webhooków ze stanu klasyfikacji&lt;/li&gt;&lt;/ul&gt;
+&lt;/ul&gt;
 &lt;h2 style=" margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;a name="ustawienia-zapisu-symulacji"&gt;&lt;/a&gt;&lt;span style=" font-size:x-large; font-weight:700;"&gt;U&lt;/span&gt;&lt;span style=" font-size:x-large; font-weight:700;"&gt;stawienia zapisu symulacji&lt;/span&gt;&lt;/h2&gt;
 &lt;ul style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;
 &lt;li style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Pokaż formę zawodników (dla większego realizmu zalecane wyłączenie tej opcji)&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Pokaż niestabilność formy zawodników&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Zmniejsz rozmiar pliku kosztem jego czytelności (usuwa wszystkie zbędne entery i spacje z pliku z zapisem drastycznie zmniejszając jego rozmiar) &lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
-            <translation>&lt;h1&gt;Season simulation&lt;/h1&gt;&lt;h2&gt;Features&lt;/h2&gt;&lt;ul&gt;&lt;li&gt;Multiple calendars in one season, each with separate competitions and standings, for example summer and winter or first and second divisions.&lt;/li&gt;&lt;li&gt;Edit jumpers, hills, rules, calendars and standings during the season.&lt;/li&gt;&lt;li&gt;Browse archived competition results and standings.&lt;/li&gt;&lt;li&gt;Arrange the season in the calendar editor.&lt;/li&gt;&lt;li&gt;Jumper statistics: competition results, judges’ points, form, take-off and flight charts, plus average, best and worst positions and standard deviation.&lt;/li&gt;&lt;li&gt;Standings history charts and position statistics for a jumper or team.&lt;/li&gt;&lt;li&gt;Save statistics with rankings, records, facts, custom overall standings and CSV export.&lt;/li&gt;&lt;li&gt;Nine filters for jumper and save statistics.&lt;/li&gt;&lt;li&gt;Jumper lists to help build start lists.&lt;/li&gt;&lt;li&gt;Form generator with four parameters, one required, for changing form between event weekends.&lt;/li&gt;&lt;li&gt;Send standings via webhook.&lt;/li&gt;&lt;/ul&gt;&lt;h2&gt;Save settings&lt;/h2&gt;&lt;p&gt;Show jumper form (disable for greater realism), show form instability, and reduce file size by removing whitespace at the expense of readability.&lt;/p&gt;</translation>
+            <translation>&lt;h1&gt;Season simulation&lt;/h1&gt;&lt;h2&gt;Features&lt;/h2&gt;&lt;ul&gt;&lt;li&gt;Multiple calendars in one season, each with separate competitions and standings, for example summer and winter or first and second divisions.&lt;/li&gt;&lt;li&gt;Edit jumpers, hills, rules, calendars and standings during the season.&lt;/li&gt;&lt;li&gt;Browse archived competition results and standings.&lt;/li&gt;&lt;li&gt;Arrange the season in the calendar editor.&lt;/li&gt;&lt;li&gt;Jumper statistics: competition results, judges’ points, form, take-off and flight charts, plus average, best and worst positions and standard deviation.&lt;/li&gt;&lt;li&gt;Standings history charts and position statistics for a jumper or team.&lt;/li&gt;&lt;li&gt;Save statistics with rankings, records, facts, custom overall standings and CSV export.&lt;/li&gt;&lt;li&gt;Nine filters for jumper and save statistics.&lt;/li&gt;&lt;li&gt;Jumper lists to help build start lists.&lt;/li&gt;&lt;li&gt;Form generator with four parameters, one required, for changing form between event weekends.&lt;/li&gt;&lt;/ul&gt;&lt;h2&gt;Save settings&lt;/h2&gt;&lt;p&gt;Show jumper form (disable for greater realism), show form instability, and reduce file size by removing whitespace at the expense of readability.&lt;/p&gt;</translation>
         </message>
         <message>
             <location filename="../source/UI/HelpWindow.ui" line="408" />
@@ -6251,7 +6251,7 @@ li.checked::marker { content: "\2612"; }
 &lt;h1 style=" margin-top:18px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;a name="rozgrywanie-konkursu"&gt;&lt;/a&gt;&lt;span style=" font-size:13pt; font-weight:700;"&gt;R&lt;/span&gt;&lt;span style=" font-size:13pt; font-weight:700;"&gt;ozgrywanie konkursu&lt;/span&gt;&lt;/h1&gt;
 &lt;h2 style=" margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;a name="najważniejsze-funkcje-przed-rozgrywaniem-konkursu"&gt;&lt;/a&gt;&lt;span style=" font-size:13pt; font-weight:700;"&gt;N&lt;/span&gt;&lt;span style=" font-size:13pt; font-weight:700;"&gt;ajważniejsze funkcje przed rozgrywaniem konkursu&lt;/span&gt;&lt;/h2&gt;
 &lt;ul style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;
-&lt;li style=" font-size:13pt;" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Ustalanie kolejności listy startowej (większość tylko dla trybu sezonów)&#32;
+&lt;li style=" font-size:13pt;" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Ustalanie kolejności listy startowej (większość tylko dla trybu sezonów)
 &lt;ul style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;"&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Na podstawie listy zawodników w zapisie&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Na podstawie losowości&lt;/li&gt;
@@ -6274,14 +6274,14 @@ li.checked::marker { content: "\2612"; }
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Podgląd listy startowej&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Odwołanie serii lub całego konkursu&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Automatyczna symulacja konkursu, serii, grupy lub wybranej ilości skoków&lt;/li&gt;
-&lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wysłanie webhooka z aktualnymi wynikami konkursu&lt;/li&gt;
+
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Informacje o: rekordzie życiowym zawodnika (przy konkursie lotów), linii “to beat”, linii “to advance”, aktualnym wietrze i aktualnym poziomie śniegu/deszczu&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Manipulacja skokiem&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wykonanie skoku&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wygenerowanie nowego wiatru&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Zmiana ustawień generatora wiatru lub śniegu/deszczu&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Zmiana belki lub jej obniżenie na życzenie trenera &lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
-            <translation>&lt;h1&gt;Running a competition&lt;/h1&gt;&lt;h2&gt;Before the competition&lt;/h2&gt;&lt;p&gt;Set the start order using the saved jumper list, random order, a competition result, standings, another start list, countries or jumper lists; most methods are available in season mode. Remove unwanted jumpers manually. Select a hill, competition rules (single competitions), wind and inrun snow generator settings, start gate, disqualification chance and jump importance (single competitions).&lt;/p&gt;&lt;h2&gt;During the competition&lt;/h2&gt;&lt;p&gt;View live standings in season mode and the start list; cancel a round or competition; simulate the competition, round, group or a chosen number of jumps; send current results by webhook; and inspect personal bests in flying competitions, lines to beat and qualify, wind and snow or rain. You can adjust the next jump, perform it, generate wind, change wind or precipitation settings, and change or lower the gate at a coach’s request.&lt;/p&gt;</translation>
+            <translation>&lt;h1&gt;Running a competition&lt;/h1&gt;&lt;h2&gt;Before the competition&lt;/h2&gt;&lt;p&gt;Set the start order using the saved jumper list, random order, a competition result, standings, another start list, countries or jumper lists; most methods are available in season mode. Remove unwanted jumpers manually. Select a hill, competition rules (single competitions), wind and inrun snow generator settings, start gate, disqualification chance and jump importance (single competitions).&lt;/p&gt;&lt;h2&gt;During the competition&lt;/h2&gt;</translation>
         </message>
         <message>
             <location filename="../source/UI/HelpWindow.ui" line="467" />
@@ -16709,6 +16709,14 @@ Check that you selected the correct file.</translation>
         <message><source>Próbna drużynowa musi mieć taką samą liczbę zawodników w drużynie jak konkurs główny.</source><translation>The team trial round must use the same team size as the main competition.</translation></message>
 
         <message><source>%1 (z paczki)</source><translation>%1 (from pack)</translation></message>
+    <message>
+        <source>Trening %1/%2</source>
+        <translation>Training %1/%2</translation>
+    </message>
+    <message>
+        <source>Gotowy do startu</source>
+        <translation>Ready to start</translation>
+    </message>
 </context>
     <context>
         <name>QuickPlot</name>
@@ -20082,8 +20090,8 @@ li.checked::marker { content: "\2612"; }
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;- Dominik Boss (paczka zawodników w jednej z wcześniejszych wersji)&lt;/p&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;- Autor paczki z flagami (https://github.com/lipis/flag-icons)&lt;/p&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;- Autorzy ikon ze strony flaticon.com (zapisani są w pliku flaticon_authors.txt)&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;- Użytkownicy serwera discord biblioteki dpp (bezcenna pomoc w dodaniu funkcji webhooków)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-            <translation>&lt;p&gt;Thanks to the people who contributed to Sj.Sim:&lt;/p&gt;&lt;p&gt;Jonek — information on wind compensation&lt;br&gt;Panker95 — hill records&lt;br&gt;Jagoda — countries&lt;br&gt;kxmil — ideas for features&lt;br&gt;Dominik Boss — jumper pack in an earlier version&lt;br&gt;Flag pack author: https://github.com/lipis/flag-icons&lt;br&gt;Flaticon icon authors: listed in flaticon_authors.txt&lt;br&gt;DPP Discord users — invaluable help with webhooks&lt;/p&gt;</translation>
+&lt;/body&gt;&lt;/html&gt;</source>
+            <translation>&lt;p&gt;Thanks to the people who contributed to Sj.Sim:&lt;/p&gt;</translation>
         </message>
     </context>
     <context>
@@ -24065,6 +24073,10 @@ Technical key: %4</translation>
         <source>Wydarzenie odwołane</source>
         <translation>Event cancelled</translation>
     </message>
+    <message>
+        <source>Konkursy do rozegrania: %1 (bez kwalifikacji)</source>
+        <translation>Competitions remaining: %1 (excluding qualifications)</translation>
+    </message>
 </context>
     <context>
         <name>StudioPackBar</name>
@@ -24633,6 +24645,14 @@ Close the previous Sj.Sim window and try again.</translation></message></context
         <source>Przygotuj start ↗</source>
         <translation>Prepare start ↗</translation>
     </message>
+    <message>
+        <source>Rozegraj</source>
+        <translation>Play</translation>
+    </message>
+    <message>
+        <source>Odwołaj</source>
+        <translation>Cancel event</translation>
+    </message>
 </context>
 <context>
     <name>RaceLiveSettings</name>
@@ -24675,6 +24695,18 @@ Close the previous Sj.Sim window and try again.</translation></message></context
     <message>
         <source>Przerwa przed następnym skokiem</source>
         <translation>Wait before the next jump</translation>
+    </message>
+    <message>
+        <source>Wstępny wiatr, odległość i lądowanie, noty, a potem końcowy wiatr i wynik. Ostatnia sekunda jest stała. Bez not relacja jest krótsza.</source>
+        <translation>Interim wind, distance and landing, judges’ marks, then final wind and the result. The last second is fixed. Without style marks, the presentation is shorter.</translation>
+    </message>
+    <message>
+        <source>Czas relacji</source>
+        <translation>Presentation duration</translation>
+    </message>
+    <message>
+        <source>Czas całej relacji</source>
+        <translation>Total presentation duration</translation>
     </message>
 </context>
 </TS>

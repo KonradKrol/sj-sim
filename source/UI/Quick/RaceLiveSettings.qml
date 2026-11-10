@@ -34,17 +34,17 @@ Popup {
                 text: qsTr("Pokazuj skok stopniowo")
                 checked: popup.progressive
                 editable: !!popup.liveControl && popup.liveControl.values.enabled
-                explanation: qsTr("Najpierw odległość, potem wiatr i lądowanie, a na końcu kolejne noty sędziów. Nie uruchamia następnego skoku.")
+                explanation: qsTr("Wstępny wiatr, odległość i lądowanie, noty, a potem końcowy wiatr i wynik. Ostatnia sekunda jest stała. Bez not relacja jest krótsza.")
                 onClicked: ui.activate(popup.liveControl.values.id)
             }
-            Label { text: qsTr("Czas skoku"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
+            Label { text: qsTr("Czas relacji"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
             SChoice {
                 objectName: "raceFlightDuration"; Layout.fillWidth: true
                 enabled: popup.progressive
                 model: popup.flights.map(function(value){return qsTr("%1 s").arg(value)})
                 displayText: qsTr("%1 s").arg(ui.context.liveFlightSeconds || 7)
                 currentIndex: popup.flights.indexOf(Number(ui.context.liveFlightSeconds || 7))
-                Accessible.name: qsTr("Czas do pokazania odległości")
+                Accessible.name: qsTr("Czas całej relacji")
                 onActivated: ui.setLivePreference("flightSeconds",popup.flights[index])
             }
             Rectangle { Layout.fillWidth: true; implicitHeight: 1; color: Theme.divider }

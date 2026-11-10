@@ -45,12 +45,9 @@ Row {
                 x: (parent.width-number.implicitWidth)/2-Theme.dp(2)
                 y: parent.height/2
                 width: parent.discarded ? number.implicitWidth+Theme.dp(4) : 0
-                height: Math.max(1,Theme.dp(1.5))
+                height: 1
                 color: Theme.muted
-                rotation: -12; transformOrigin: Item.Left
-                opacity: parent.discarded ? .9 : 0
-                Behavior on width { NumberAnimation { duration: Theme.motion*1.3; easing.type: Easing.OutCubic } }
-                Behavior on opacity { NumberAnimation { duration: Theme.motion } }
+                Behavior on width { NumberAnimation { duration: Theme.motion; easing.type: Easing.OutCubic } }
                 Accessible.ignored: true
             }
         }

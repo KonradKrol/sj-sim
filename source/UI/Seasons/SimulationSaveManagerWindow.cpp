@@ -1471,7 +1471,6 @@ void SimulationSaveManagerWindow::on_listView_competitionsArchive_doubleClicked(
     auto *competition=competitionsArchiveModel->competitionAt(index.row());if(!index.isValid() || !competition)return;
     auto *dialog=new QDialog(this);dialog->setAttribute(Qt::WA_DeleteOnClose);dialog->setObjectName("competitionResultsArchive");dialog->setWindowTitle(tr("Wyniki konkursu"));
     auto *layout=new QVBoxLayout(dialog);layout->addWidget(new ResultsHistoryWidget(competition,false,dialog));
-    auto *webhook=new QPushButton(tr("Wyślij webhooka"),dialog);webhook->setObjectName("archiveResultsWebhook");layout->addWidget(webhook);connect(webhook,&QPushButton::clicked,dialog,[competition]{competition->sendResultsWebhook(nullptr);});
     ResponsiveWindowUtils::fitToAvailableScreen(dialog,QSize(1200,720));dialog->show();
 }
 

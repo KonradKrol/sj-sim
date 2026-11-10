@@ -6237,13 +6237,13 @@ li.checked::marker { content: "\2612"; }
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Filtrowanie statystyk zawodnika i statystyk zapisu (9 różnych filtrów pozwalających pokazać statystyki tylko z niektórych konkursów)&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Listy zawodników (bardzo ułatwiają tworzenie list startowych)&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Generator formy zawodników (Bardzo przydatne narzędzie zwiększające realizm symulacji. Na podstawie czterech parametrów (jednego wymaganego) zmieniana jest forma zawodników. Głównym użyciem jest zmiana formy zawodników między weekendami zawodów)&lt;/li&gt;
-&lt;li style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wysyłanie webhooków ze stanu klasyfikacji&lt;/li&gt;&lt;/ul&gt;
+&lt;/ul&gt;
 &lt;h2 style=" margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;a name="ustawienia-zapisu-symulacji"&gt;&lt;/a&gt;&lt;span style=" font-size:x-large; font-weight:700;"&gt;U&lt;/span&gt;&lt;span style=" font-size:x-large; font-weight:700;"&gt;stawienia zapisu symulacji&lt;/span&gt;&lt;/h2&gt;
 &lt;ul style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;
 &lt;li style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Pokaż formę zawodników (dla większego realizmu zalecane wyłączenie tej opcji)&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Pokaż niestabilność formy zawodników&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Zmniejsz rozmiar pliku kosztem jego czytelności (usuwa wszystkie zbędne entery i spacje z pliku z zapisem drastycznie zmniejszając jego rozmiar) &lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
-            <translation>&lt;h1&gt;Simulace sezón&lt;/h1&gt;&lt;h2&gt;Funkce&lt;/h2&gt;&lt;ul&gt;&lt;li&gt;Více kalendářů v jedné sezóně, každý s vlastními závody a pořadím, například léto a zima nebo první a druhá liga.&lt;/li&gt;&lt;li&gt;Během sezóny lze upravovat skokany, můstky, pravidla, kalendáře a pořadí.&lt;/li&gt;&lt;li&gt;Archiv výsledků závodů a pořadí.&lt;/li&gt;&lt;li&gt;Editor kalendáře pro sestavení sezóny.&lt;/li&gt;&lt;li&gt;Statistiky skokana: grafy výsledků, bodů rozhodčích, formy, odrazu a letu, průměrné, nejlepší a nejhorší umístění a směrodatná odchylka.&lt;/li&gt;&lt;li&gt;Graf historie pořadí a statistiky umístění skokana či družstva.&lt;/li&gt;&lt;li&gt;Statistiky uložené simulace s žebříčky, rekordy, fakty, vlastním celkovým pořadím a exportem CSV.&lt;/li&gt;&lt;li&gt;Devět filtrů statistik skokana a simulace.&lt;/li&gt;&lt;li&gt;Seznamy skokanů usnadňující sestavení startovní listiny.&lt;/li&gt;&lt;li&gt;Generátor formy se čtyřmi parametry, z nichž jeden je povinný, pro změnu formy mezi závodními víkendy.&lt;/li&gt;&lt;li&gt;Odeslání pořadí pomocí webhooku.&lt;/li&gt;&lt;/ul&gt;&lt;h2&gt;Nastavení simulace&lt;/h2&gt;&lt;p&gt;Zobrazit formu skokanů (pro větší realismus vypněte), zobrazit nestabilitu formy a zmenšit soubor odstraněním mezer na úkor čitelnosti.&lt;/p&gt;</translation>
+            <translation>&lt;h1&gt;Simulace sezón&lt;/h1&gt;&lt;h2&gt;Funkce&lt;/h2&gt;&lt;ul&gt;&lt;li&gt;Více kalendářů v jedné sezóně, každý s vlastními závody a pořadím, například léto a zima nebo první a druhá liga.&lt;/li&gt;&lt;li&gt;Během sezóny lze upravovat skokany, můstky, pravidla, kalendáře a pořadí.&lt;/li&gt;&lt;li&gt;Archiv výsledků závodů a pořadí.&lt;/li&gt;&lt;li&gt;Editor kalendáře pro sestavení sezóny.&lt;/li&gt;&lt;li&gt;Statistiky skokana: grafy výsledků, bodů rozhodčích, formy, odrazu a letu, průměrné, nejlepší a nejhorší umístění a směrodatná odchylka.&lt;/li&gt;&lt;li&gt;Graf historie pořadí a statistiky umístění skokana či družstva.&lt;/li&gt;&lt;li&gt;Statistiky uložené simulace s žebříčky, rekordy, fakty, vlastním celkovým pořadím a exportem CSV.&lt;/li&gt;&lt;li&gt;Devět filtrů statistik skokana a simulace.&lt;/li&gt;&lt;li&gt;Seznamy skokanů usnadňující sestavení startovní listiny.&lt;/li&gt;&lt;li&gt;Generátor formy se čtyřmi parametry, z nichž jeden je povinný, pro změnu formy mezi závodními víkendy.&lt;/li&gt;&lt;/ul&gt;&lt;h2&gt;Nastavení simulace&lt;/h2&gt;&lt;p&gt;Zobrazit formu skokanů (pro větší realismus vypněte), zobrazit nestabilitu formy a zmenšit soubor odstraněním mezer na úkor čitelnosti.&lt;/p&gt;</translation>
         </message>
         <message>
             <location filename="../source/UI/HelpWindow.ui" line="396" />
@@ -6262,7 +6262,7 @@ li.checked::marker { content: "\2612"; }
 &lt;h1 style=" margin-top:18px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;a name="rozgrywanie-konkursu"&gt;&lt;/a&gt;&lt;span style=" font-size:13pt; font-weight:700;"&gt;R&lt;/span&gt;&lt;span style=" font-size:13pt; font-weight:700;"&gt;ozgrywanie konkursu&lt;/span&gt;&lt;/h1&gt;
 &lt;h2 style=" margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;a name="najważniejsze-funkcje-przed-rozgrywaniem-konkursu"&gt;&lt;/a&gt;&lt;span style=" font-size:13pt; font-weight:700;"&gt;N&lt;/span&gt;&lt;span style=" font-size:13pt; font-weight:700;"&gt;ajważniejsze funkcje przed rozgrywaniem konkursu&lt;/span&gt;&lt;/h2&gt;
 &lt;ul style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;
-&lt;li style=" font-size:13pt;" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Ustalanie kolejności listy startowej (większość tylko dla trybu sezonów)&#32;
+&lt;li style=" font-size:13pt;" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Ustalanie kolejności listy startowej (większość tylko dla trybu sezonów)
 &lt;ul style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 2;"&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Na podstawie listy zawodników w zapisie&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Na podstawie losowości&lt;/li&gt;
@@ -6285,14 +6285,14 @@ li.checked::marker { content: "\2612"; }
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Podgląd listy startowej&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Odwołanie serii lub całego konkursu&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Automatyczna symulacja konkursu, serii, grupy lub wybranej ilości skoków&lt;/li&gt;
-&lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wysłanie webhooka z aktualnymi wynikami konkursu&lt;/li&gt;
+
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Informacje o: rekordzie życiowym zawodnika (przy konkursie lotów), linii “to beat”, linii “to advance”, aktualnym wietrze i aktualnym poziomie śniegu/deszczu&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Manipulacja skokiem&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wykonanie skoku&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wygenerowanie nowego wiatru&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Zmiana ustawień generatora wiatru lub śniegu/deszczu&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Zmiana belki lub jej obniżenie na życzenie trenera &lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
-            <translation>&lt;h1&gt;Průběh závodu&lt;/h1&gt;&lt;h2&gt;Před závodem&lt;/h2&gt;&lt;p&gt;Startovní pořadí nastavte podle seznamu skokanů v uložené simulaci, náhodně, podle výsledku závodu, pořadí, jiné startovní listiny, zemí nebo seznamů skokanů; většina možností je dostupná v režimu sezóny. Nepotřebné skokany lze odebrat ručně. Vyberte můstek, pravidla závodu (u samostatného závodu), nastavení generátorů větru a sněhu na nájezdu, nájezdové okno, pravděpodobnost diskvalifikace a důležitost skoků (u samostatného závodu).&lt;/p&gt;&lt;h2&gt;Během závodu&lt;/h2&gt;&lt;p&gt;Zobrazte průběžné pořadí v režimu sezóny a startovní listinu; zrušte kolo nebo závod; simulujte závod, kolo, skupinu či vybraný počet skoků; odešlete výsledky webhookem; sledujte osobní rekordy v letech, čáry pro vedení a postup, vítr a sníh či déšť. Můžete upravit další skok, provést jej, vygenerovat vítr, změnit nastavení větru či srážek a změnit nebo na žádost trenéra snížit nájezdové okno.&lt;/p&gt;</translation>
+            <translation>&lt;h1&gt;Průběh závodu&lt;/h1&gt;&lt;h2&gt;Před závodem&lt;/h2&gt;&lt;p&gt;Startovní pořadí nastavte podle seznamu skokanů v uložené simulaci, náhodně, podle výsledku závodu, pořadí, jiné startovní listiny, zemí nebo seznamů skokanů; většina možností je dostupná v režimu sezóny. Nepotřebné skokany lze odebrat ručně. Vyberte můstek, pravidla závodu (u samostatného závodu), nastavení generátorů větru a sněhu na nájezdu, nájezdové okno, pravděpodobnost diskvalifikace a důležitost skoků (u samostatného závodu).&lt;/p&gt;&lt;h2&gt;Během závodu&lt;/h2&gt;</translation>
         </message>
         <message>
             <location filename="../source/UI/HelpWindow.ui" line="455" />
@@ -16710,6 +16710,14 @@ Ověřte, že jste vybrali správný soubor.</translation>
         <message><source>Próbna drużynowa musi mieć taką samą liczbę zawodników w drużynie jak konkurs główny.</source><translation>Týmové zkušební kolo musí mít stejný počet skokanů v týmu jako hlavní závod.</translation></message>
 
         <message><source>%1 (z paczki)</source><translation>%1 (z balíčku)</translation></message>
+    <message>
+        <source>Trening %1/%2</source>
+        <translation>Trénink %1/%2</translation>
+    </message>
+    <message>
+        <source>Gotowy do startu</source>
+        <translation>Připraveno ke startu</translation>
+    </message>
 </context>
     <context>
         <name>QuickPlot</name>
@@ -20083,8 +20091,8 @@ li.checked::marker { content: "\2612"; }
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;- Dominik Boss (paczka zawodników w jednej z wcześniejszych wersji)&lt;/p&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;- Autor paczki z flagami (https://github.com/lipis/flag-icons)&lt;/p&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;- Autorzy ikon ze strony flaticon.com (zapisani są w pliku flaticon_authors.txt)&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;- Użytkownicy serwera discord biblioteki dpp (bezcenna pomoc w dodaniu funkcji webhooków)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-            <translation>&lt;p&gt;Poděkování lidem, kteří přispěli k vývoji Sj.Sim:&lt;/p&gt;&lt;p&gt;Jonek — informace o kompenzaci za vítr&lt;br&gt;Panker95 — rekordy můstků&lt;br&gt;Jagoda — země&lt;br&gt;kxmil — návrhy funkcí&lt;br&gt;Dominik Boss — balíček skokanů ve starší verzi&lt;br&gt;Autor balíčku vlajek: https://github.com/lipis/flag-icons&lt;br&gt;Autoři ikon Flaticon: uvedeni v souboru flaticon_authors.txt&lt;br&gt;Uživatelé Discordu DPP — neocenitelná pomoc s webhooky&lt;/p&gt;</translation>
+&lt;/body&gt;&lt;/html&gt;</source>
+            <translation>&lt;p&gt;Poděkování lidem, kteří přispěli k vývoji Sj.Sim:&lt;/p&gt;</translation>
         </message>
     </context>
     <context>
@@ -24066,6 +24074,10 @@ Technický klíč: %4</translation>
         <source>Wydarzenie odwołane</source>
         <translation>Událost zrušena</translation>
     </message>
+    <message>
+        <source>Konkursy do rozegrania: %1 (bez kwalifikacji)</source>
+        <translation>Zbývající závody: %1 (bez kvalifikací)</translation>
+    </message>
 </context>
     <context>
         <name>StudioPackBar</name>
@@ -24634,6 +24646,14 @@ Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></con
         <source>Przygotuj start ↗</source>
         <translation>Připravit start ↗</translation>
     </message>
+    <message>
+        <source>Rozegraj</source>
+        <translation>Odehrát</translation>
+    </message>
+    <message>
+        <source>Odwołaj</source>
+        <translation>Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>RaceLiveSettings</name>
@@ -24676,6 +24696,18 @@ Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></con
     <message>
         <source>Przerwa przed następnym skokiem</source>
         <translation>Čekání před dalším skokem</translation>
+    </message>
+    <message>
+        <source>Wstępny wiatr, odległość i lądowanie, noty, a potem końcowy wiatr i wynik. Ostatnia sekunda jest stała. Bez not relacja jest krótsza.</source>
+        <translation>Průběžný vítr, vzdálenost a doskok, známky, pak konečný vítr a výsledek. Poslední sekunda je pevná. Bez známek je průběh kratší.</translation>
+    </message>
+    <message>
+        <source>Czas relacji</source>
+        <translation>Doba průběhu</translation>
+    </message>
+    <message>
+        <source>Czas całej relacji</source>
+        <translation>Celková doba průběhu</translation>
     </message>
 </context>
 </TS>

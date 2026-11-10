@@ -846,6 +846,7 @@ skoków</string>
         <layout class="QFormLayout" name="formLayout_5">
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
+           <property name="visible"><bool>false</bool></property>
        <property name="font">
         <font>
          <family>Quicksand Medium</family>
@@ -862,6 +863,7 @@ skoków</string>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_3">
+           <property name="visible"><bool>false</bool></property>
        <property name="font">
         <font>
          <family>Quicksand Medium</family>
@@ -878,6 +880,7 @@ skoków</string>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_4">
+           <property name="visible"><bool>false</bool></property>
        <property name="font">
         <font>
          <family>Quicksand Medium</family>
@@ -933,6 +936,7 @@ color: rgb(0, 0, 0);</string>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_5">
+           <property name="visible"><bool>false</bool></property>
        <property name="font">
         <font>
          <family>Quicksand Medium</family>

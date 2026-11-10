@@ -36,6 +36,8 @@ AppSettingsWindow::AppSettingsWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->doubleSpinBox_liveCompSpeed->hide();
     ui->label_6->hide();
+    for(const auto *name:{"lineEdit_jumpInfoWh","lineEdit_singleResultWh","lineEdit_compResultsWh","lineEdit_clsResultsWh"})
+        if(auto *field=findChild<QWidget *>(name))field->hide();
     auto *simulation=new QGroupBox(tr("Symulacja"),this);
     auto *form=new QFormLayout(simulation);
     const auto add=[&](const QString &key,const QString &title,const QString &help,const QStringList &options){

@@ -121,3 +121,24 @@ Dodatkowe uwagi właściciela: usunięto widoczne Teraz z przeglądu (pozostaje 
 ## Korekta zakresu szybkiego planowania
 
 Na prośbę właściciela przywrócono dotychczasowy wygląd głównych wyborów szybkiego planowania (Dodaj kwalifikacje / Dodaj weekend / Ustal wiele terminów). Uspokojenie dotyczy wyłącznie dwóch opcji dnia w Dodaj kwalifikacje: małe klasyczne przyciski radiowe zamiast dużych kontrastowych zakładek. Wyszukiwanie skoczni i pozostałe niezależne poprawki zachowane. Build i kompilacja QML przeszły.
+
+## Bieżące korekty właściciela po e3a91df — do realizacji
+
+1. Zwykłe poziome przekreślenie not, prosta animacja. Nowa relacja: dla 10 s pomiar pośredni wiatru w 2,5 s, odległość i lądowanie w 5 s, 4 s not, finalny pomiar wiatru, na końcu stała nieskalowana 1 s na domknięcie wyniku i tabeli. Pozostałe etapy proporcjonalnie skalowane. DSQ nadal od razu. Uwidocznić Informacje o skoku w ustawieniach aplikacji.
+2. Kalendarz: mocne, estetyczne rozróżnienie rozegranych, oczekujących oraz rozpoczętych przygotowań (trening/próbna). Nie tylko etykieta.
+3. Przegląd sezonu: przywrócić ważną akcję jako przycisk Rozegraj, poprawić layout/puste wysokości po wejściu i zmianie skali, balans/kontrast/hierarchię bez dokładania opisów. Zastąpić wadliwe/brzydkie trzy kropki inną działającą akcją. Usunąć Pozostałe kraje; pokazać liczbę pozostałych konkursów bez kwalifikacji obok Rozegrano X/Y.
+4. Usunąć wszystkie pozostałe przyciski/akcje webhooków z UI całej aplikacji.
+5. Ukryć nagłówki tabeli klasyfikacji (poz./zawodnik/punkty) w przeglądzie sezonu.
+
+## STOP na prośbę właściciela — 10 listopada
+
+Powyższe korekty po e3a91df są zaimplementowane w bieżącym kodzie. Zatrzymanie nastąpiło po poprawnym buildzie, sprawdzeniu tłumaczeń EN/CS, kompilacji komponentów QML i krótkim przebiegu komponentów UI (stałe miejsca not, modal konfiguracji, kalendarz oraz brak rozciągania kart po zmianie skali). Nie wykonywano pełnego sezonu ani pełnego ręcznego przejścia konkursu.
+
+Najważniejsze pliki do dalszej kontroli:
+- CompetitionManagerWindow.cpp / QuickBridge.cpp / JudgeMarks.qml / RaceLiveSettings.qml: nowa relacja. Czas T obejmuje całość; etapy przed zamknięciem skalowane przez (T−1)/9, ostatnia sekunda stała. Dla 10 s: pośredni pomiar wiatru 2,5 s, odległość i lądowanie 5 s, noty do 9 s, finalny wiatr i rekompensaty, wynik/miejsce/tabela w 10 s. Pośredni pomiar pochodzi z pierwszej połowy fizycznego lotu i bieżącej metody pomiaru; przy braku pola pogodowego używa średniej prognozy i finalnego wiatru. DSQ nadal od razu. Przekreślenia poziome, pojedyncza animacja szerokości.
+- QuickBridge.cpp: naprawiona liczba stron ustawień (wcześniej trzy sekcje przy dwóch zakładkach); Informacje o skoku dostępne w Symulacja. Ukryte nagłówki klasyfikacji w przeglądzie sezonu.
+- SeasonOverview.qml / SeasonUpcomingEvent.qml: naturalne wysokości na Column zamiast rozciągających ColumnLayout, przycisk Rozegraj i bezpośrednie Odwołaj z istniejącym potwierdzeniem. Bez Pozostałe kraje; liczba pozostałych konkursów bez kwalifikacji. Siedem kolejnych wydarzeń. Skasowane odwołane wydarzenia nie wracają do kolejki.
+- QuickCalendar.cpp / CalendarEventRow.qml: ukończone zawody — zielone tło, ✓ i status; przygotowania — osobny akcent z konkretnym etapem treningu/próbnej.
+- UI webhooków: przyciski i etykiety ukryte w formularzach Widgets oraz odfiltrowane w QuickBridge, usunięty przycisk archiwum, usunięte wzmianki z pomocy/podziękowań. Wewnętrzne dawne metody i pola zapisu pozostają; nie są wystawione w UI.
+
+Przy wznowieniu: przede wszystkim ręcznie sprawdzić nową sekwencję relacji w konkursie (także bez sędziów, DSQ i automat), działanie Rozegraj/Odwołaj oraz wygląd przeglądu i kalendarza na rzeczywistym zapisie i przy zmianie skali. Właściciel zatrzymał pracę z powodu limitu tokenów — nie rozpoczynać teraz kolejnych zmian.
