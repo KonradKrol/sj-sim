@@ -63,7 +63,9 @@ Instrukcja użytkowania: [FORM_ENGINE.md](FORM_ENGINE.md). Nowe teksty są po po
 
 Lab: zakładka Zawodnicy, stabilny model wierszy/proxy wyszukiwania, wybór osób, tymczasowe indywidualne F₀ i perk −4…+4, przywrócenie z paczki. Edycje nie resetują modelu/scrolla i nie zapisują paczki. Zaznaczenia są niezależne od filtra; brak zaznaczonych blokuje próbę. Stan edycji zachowywany osobno dla każdej paczki w czasie działania okna. Odwołany pomysł tabelarycznej macierzy — nie implementować.
 
-Bieżące dalsze uwagi: przenieść autoformę obok autozapisu i skrócić teksty; sprawdzić manipulację wiatrem (potwierdzone: najbliższy skok, reset manipulatora po nim, osobne ustawienia warunków zmieniają pole konkursu); dodać prostą, globalnie zapamiętaną auto-belkę reagującą na różnicę >1 przed każdym skokiem; osiem opisów aktualnej F (1–19 kryzys, 20–34 bardzo słaba, 35–44 obniżona, 45–55 typowa, 56–69 podwyższona, 70–84 bardzo wysoka, 85–94 forma życia, 95–100 absolutny szczyt). Pod suwakiem tylko opis F, diagnostyka do pomocy, przy autoformie wyszarzyć sterowanie. Odwołanie wydarzeń także musi przeliczać formę do ich dat.
+Autoforma i Autozapis: wspólny komponent SeasonAutomationToggle w przeglądzie, wyraźny stan i animowany suwak, krótkie podpisy oraz pomoc po najechaniu. Usunięto checkbox autoformy z górnego paska i długie opisy pod autozapisem. Kontrole działania oraz skal 50/70/100% przeszły bez pętli layoutu.
+
+Bieżące dalsze uwagi: sprawdzić manipulację wiatrem (potwierdzone: najbliższy skok, reset manipulatora po nim, osobne ustawienia warunków zmieniają pole konkursu); dodać prostą, globalnie zapamiętaną auto-belkę reagującą na różnicę >1 przed każdym skokiem; osiem opisów aktualnej F (1–19 kryzys, 20–34 bardzo słaba, 35–44 obniżona, 45–55 typowa, 56–69 podwyższona, 70–84 bardzo wysoka, 85–94 forma życia, 95–100 absolutny szczyt). Pod suwakiem tylko opis F; diagnostyka w osobnym miejscu, znacznie więcej odczytów, przy autoformie wyszarzyć sterowanie. Odwołanie wydarzeń także musi przeliczać formę do ich dat.
 
 ## Ważne uwagi matematyczne
 

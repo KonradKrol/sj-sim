@@ -14,7 +14,6 @@ Pane {
     readonly property var yearNode: ui.find("label_seasonNumber")
     readonly property var calendarNode: ui.find("label_calendarName")
     readonly property var saveNode: ui.find("pushButton_saveToFile")
-    readonly property var formNode: ui.find("automaticFormEnabled")
     implicitWidth: 0
     implicitHeight: contentItem.implicitHeight+topPadding+bottomPadding
     padding: Theme.dp(compressed ? 3 : 5)
@@ -29,23 +28,12 @@ Pane {
             readonly property real textX: dateLabel.visible ? dateLabel.width+Theme.dp(10) : 0
             Label { id: dateLabel; visible: !!bar.dateNode && bar.dateNode.values.available===true; text: bar.dateNode ? bar.dateNode.values.text : ""; width: Math.min(implicitWidth,identity.width*.38); height: implicitHeight; color: Theme.accent; font.pointSize: Theme.body; font.bold: true; elide: Text.ElideRight }
             Label { id: nameLabel; x: identity.textX; width: Math.max(0,identity.width-x); height: implicitHeight; text: bar.nameNode ? bar.nameNode.values.text : ""; color: Theme.ink; font.weight: Font.DemiBold; font.pointSize: Theme.body; elide: Text.ElideRight }
-                RowLayout {
-                    id: details
-                    x: identity.textX; y: nameLabel.height; width: Math.max(0,identity.width-x)
-                    height: Math.max(Theme.captionMetrics.height,formCheck.implicitHeight,formHelp.implicitHeight)
-                    spacing: Theme.dp(8)
-                    Label { text: qsTr("%1 · %2").arg(bar.yearNode ? bar.yearNode.values.text : "").arg(bar.calendarNode ? bar.calendarNode.values.text : ""); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
-                    SCheck {
-                        id: formCheck
-                        objectName: "seasonAutomaticForm"
-                        text: qsTr("Automatyczna forma"); checked: !!bar.formNode && !!bar.formNode.values.value
-                        enabled: !!bar.formNode && bar.formNode.values.enabled!==false
-                        implicitHeight: Math.max(Theme.dp(24),Theme.captionMetrics.height+Theme.dp(4)); padding: Theme.dp(2)
-                        font.pointSize: Theme.caption
-                        onClicked: ui.activate(bar.formNode.values.id)
-                    }
-                    HelpDot { id: formHelp; explanation: qsTr("Forma zmienia się z datami wydarzeń. Włącz daty, aby korzystać z tej opcji. Wyłączenie zachowuje obecną formę; ponowne włączenie nie nadrabia przerwy.") }
-                }
+            Label {
+                id: details
+                x: identity.textX; y: nameLabel.height; width: Math.max(0,identity.width-x); height: implicitHeight
+                text: qsTr("%1 · %2").arg(bar.yearNode ? bar.yearNode.values.text : "").arg(bar.calendarNode ? bar.calendarNode.values.text : "")
+                color: Theme.muted; font.pointSize: Theme.caption; elide: Text.ElideRight
+            }
         }
         Item {
             id: actions

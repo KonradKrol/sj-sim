@@ -2,7 +2,7 @@
 
 ## W sezonie
 
-Włącz daty wydarzeń, nadaj wydarzeniom daty i zaznacz **Automatyczna forma** na górnym pasku sezonu. Funkcja jest domyślnie wyłączona, również w dotychczasowych zapisach.
+Włącz daty wydarzeń, nadaj wydarzeniom daty i włącz **Autoformę** w przeglądzie sezonu, obok **Autozapisu**. Funkcja jest domyślnie wyłączona, również w dotychczasowych zapisach.
 
 Pierwsze rozpoczęcie przygotowań zachowuje formę z bazy. Przy kolejnych datach silnik przelicza wszystkie dni przerwy dla wszystkich zawodników. Kilka wydarzeń tego samego dnia nie nalicza czasu ponownie. OVR nie zmienia się automatycznie.
 
