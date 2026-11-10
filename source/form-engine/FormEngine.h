@@ -4,6 +4,7 @@
 #include <QJsonObject>
 #include <QVariantList>
 #include <array>
+#include <functional>
 
 namespace AutoForm {
 constexpr int version=1;
@@ -34,7 +35,7 @@ struct State {
 };
 QString regimeName(int);
 State initialize(double form,QDate,SimulationV2::Seed,const Config &);
-void advance(State &,QDate,int perk,const Config &);
+void advance(State &,QDate,int perk,const Config &,const std::function<void(const State &)> &observer={});
 std::array<double,5> transitionProbabilities(int regime,int perk,const Config &);
 // Shared default for newly created saves. Existing saves keep their own snapshot.
 Config defaultConfig(QString *error=nullptr);

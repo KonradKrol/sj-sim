@@ -1,6 +1,8 @@
 #include "../source/form-engine/FormEngine.h"
+#include "../source/form-engine/FormSimulation.h"
 #include <QCoreApplication>
 #include <QJsonDocument>
+#include <QJsonArray>
 #include <QTemporaryDir>
 #include <cmath>
 #include <cstdlib>
@@ -35,5 +37,25 @@ int main(int argc,char **argv){
     for(int i=0;i<100000;++i){AutoForm::State s;s.date=start;s.remainingDays=1e8;s.randomState=SimulationV2::deriveSeed(77,i);AutoForm::advance(s,start.addDays(1),0,c);const double x=s.form-50;sum+=x;squares+=x*x;}
     const double variance=squares/100000-std::pow(sum/100000,2),expected=c.formDeviation*c.formDeviation*(1-std::exp2(-2/c.formHalfLife));
     check(std::abs(sum/100000)<.05 && std::abs(variance/expected-1)<.035,"daily noise has specified variance, not twice that variance");
+    AutoForm::Experiment experiment;experiment.repeats=8;experiment.days=150;experiment.threads=1;
+    for(int i=0;i<40;++i)experiment.athletes.append({QString::number(i),50.,i%9-4});
+    auto control=std::make_shared<AutoForm::Control>();const auto serial=AutoForm::simulate(experiment,control);
+    check(control->completed.load()==qint64(8)*150*40,"batch progress reaches exact total");
+    experiment.threads=4;const auto threaded=AutoForm::simulate(experiment,std::make_shared<AutoForm::Control>());
+    check(serial==threaded,"batch is deterministic across thread counts");
+    experiment.compare=true;experiment.reference=experiment.config;
+    const auto comparison=AutoForm::simulate(experiment,std::make_shared<AutoForm::Control>());
+    const auto metrics=comparison["metrics"].toArray();check(metrics.size()==2 && metrics[0]==metrics[1],"identical A/B configs share identical samples");
+    control=std::make_shared<AutoForm::Control>();control->cancelled=true;check(AutoForm::simulate(experiment,control)["cancelled"].toBool(),"batch cancellation");
+    experiment.days=3650;experiment.repeats=10000;check(!experiment.validate(error),"batch bounds prevent unbounded work");
+    AutoForm::Experiment calibration;calibration.days=150;calibration.repeats=30;calibration.threads=4;
+    double stableMean=0,volatileMean=0;
+    for(int perk:{-4,0,4}){
+        calibration.athletes.clear();for(int i=0;i<100;++i)calibration.athletes.append({QString::number(i),50.,perk});
+        const auto result=AutoForm::simulate(calibration,std::make_shared<AutoForm::Control>());const auto stats=result["metrics"].toArray()[0].toArray();
+        const auto mean=stats[0].toObject()["mean"].toDouble();if(perk==-4)stableMean=mean;if(perk==4)volatileMean=mean;
+        std::cout<<"perk="<<perk<<" mean F="<<mean<<" visited regimes="<<stats[3].toObject()["mean"].toDouble()<<'\n';
+    }
+    check(stableMean>volatileMean,"working calibration gives stable form an average advantage over volatile form");
     std::cout<<"PASS: form initialization, CTMC normalization, daily invariance, persistence, RNG and Laplace variance\n";
 }

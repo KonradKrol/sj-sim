@@ -17,7 +17,7 @@ ColumnLayout {
         HelpDot { explanation: qsTr("Wybierz jeden perk z pary i jeden z czterech poziomów. Kliknij wybrany perk lub poziom ponownie, aby go usunąć. Opis: najedź lub naciśnij F1.") }
     }
     Repeater {
-        model: 3
+        model: catalog.pairs.length
         Control {
             id: category
             required property int index

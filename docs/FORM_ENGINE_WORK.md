@@ -37,7 +37,27 @@ Specyfikacja właściciela: [FORM_SYSTEM.md](FORM_SYSTEM.md), skopiowana z pulpi
 
 `source/form-engine/FormEngine.{h,cpp}`: konfiguracja i opisy parametrów, inicjalizacja bez zmiany F₀, CTMC z zachowanym czasem oczekiwania, dryf μ, dobowe innowacje Laplace’a, konfigurowalne dziewięć wariantów perka, serializacja stanu i domyślnego profilu. Korzysta z istniejącego SeededRandom, który otrzymał odczyt stanu bez zmiany algorytmu. F i μ są ograniczane po aktualizacji do 1–100; to ograniczony, dyskretny model, nie dokładny nieograniczony proces OU.
 
-`scripts/test-form-engine.sh` przeszedł: F₀, konfiguracja, inicjalizacja, normalizacja przejść, kierunek działania perka, 150 pojedynczych dni kontra jeden przeskok, wznowienie po JSON do 1000. dnia, identyczny dzień bez zużycia RNG, odrzucenie cofnięcia czasu. Próba 100 000 niezależnych jednodniowych aktualizacji potwierdza wariancję Laplace’a wynikającą z równania. Do zrobienia: runner/lab, integracja sezonu, czwarta para i blokada edycji, testy integracji.
+`scripts/test-form-engine.sh` przeszedł: F₀, konfiguracja, inicjalizacja, normalizacja przejść, kierunek działania perka, 150 pojedynczych dni kontra jeden przeskok, wznowienie po JSON do 1000. dnia, identyczny dzień bez zużycia RNG, odrzucenie cofnięcia czasu. Próba 100 000 niezależnych jednodniowych aktualizacji potwierdza wariancję Laplace’a wynikającą z równania.
+
+### Implementacja MVP
+
+- `FormSimulation.{h,cpp}`: deterministyczny, wielowątkowy runner; pojedyncza próba/batch/A-B, anulowanie, postęp osobodni, trzy historie F/μ/reżimu, średnia populacji, rozkład wszystkich obserwacji, statystyki i przybliżone przedziały średnich z poprawką Studenta. Eksport zawiera wejściową populację, obie konfiguracje i seed. Limit 50 mln osobodni, maksymalnie 32 wątki. Liczba wątków nie zmienia wyników.
+- `FormLab.{h,cpp}`, `FormLabScreen.qml`, `FormLabParameter.qml`: proste wejście w ustawieniach, konfiguracja w jednym miejscu, wyszukiwanie i pomoc parametrów, wykresy z istniejącego BalanceLabPlot, zapis/wczytanie JSON, eksport wyniku, domyślny profil nowych zapisów. Bez automatycznych ocen celu kalibracyjnego.
+- `FormSession.{h,cpp}`: stan po trwałym ID skoczka, osobny RNG na osobę, obsługa pauzy i wznowienia, brak cofania czasu, diagnostyka i transakcyjny Checkpoint.
+- `SimulationSave.{h,cpp}`: opcjonalny obiekt `automatic-form`, snapshot konfiguracji, walidacja i pełne odtworzenie; stare zapisy bez obiektu pozostają z wyłączoną funkcją. Usunięte osoby nie trafiają do serializowanego stanu.
+- `SimulationSaveManagerWindow.cpp`, `SeasonBar.qml`: widoczny przełącznik zależny od dat. Przeliczenie przed przygotowaniami; rollback po rezygnacji z przygotowań lub konkursu. Zatwierdzenie po rozstrzygnięciu wydarzenia. Bez automatycznego nadrabiania wyłączonego czasu i bez resetu kolejnego formalnego sezonu.
+- `AthleteProfile`, `ProfileDraft`, `AthleteStudioController`, katalog i widoki perków: czwarta para, stara tablica trzech par odczytywana z nową neutralną. Pierwsze trzy perki przekazywane do silnika skoków bez zmian; czwarty używany wyłącznie przez generator formy. Ręczne F zablokowane w backendzie i UI przy aktywnych datach/auto-formie; podgląd F/μ/reżimu/daty.
+- Na dodatkową prośbę właściciela usunięto z ustawień ogólnych język, relację stopniową i częstość DSQ. Te funkcje pozostają w swoich właściwych miejscach.
+
+### Kontrole
+
+`scripts/test-form-engine.sh`: dodatkowo identyczny batch na 1 i 4 wątkach, identyczne konfiguracje A/B, anulowanie, limit pracy. Robocza próba 30 seedów × 100 osób × 150 dni, F₀=50: średnia F dla perka −4 = 51,2527; neutralnego = 51,1048; +4 = 50,3305. Nie są to finalne wartości kalibracji ani gwarancja dla innej populacji.
+
+`scripts/test-quick-ui.sh --form-engine-only`: rzeczywiste okna i izolowane dane. Lab, batch, A/B, powtarzalność, ustawienie domyślnej konfiguracji nowych zapisów, włączenie przy aktywnych datach, zachowanie F₀, aktualizacja przed przygotowaniami, dokładny rollback F/μ/reżimu/RNG po rezygnacji, pojedyncze przeliczenie daty, pauza bez nadrabiania, blokada ręcznej formy przy zachowanej edycji OVR, JSON i rzeczywisty plik zapisu, wznowienie tych samych trajektorii, stare zapisy bez metadanych, wejście do laba z ustawień. Końcowa kontrola obejmuje też wpisywanie przecinka dziesiętnego i ujemnego perka.
+
+Przeszły także `--simulation-v2-only` (mostek, repozytorium profili, migracja, katalog) i `--season-presentation-only` (różne skale UI/tekstu i rozmiary okna, akcje przeglądu). Pasek sezonu ma jawnie wyznaczone wymiary, żeby nowy przełącznik nie powodował pętli layoutu.
+
+Instrukcja użytkowania: [FORM_ENGINE.md](FORM_ENGINE.md). Nowe teksty są po polsku; EN/CS wymagają osobnego uzupełnienia katalogów. Nie wykonano pełnego ręcznego sezonu obejmującego wiele konkursów, ani kalibracji według odłożonych celów.
 
 ## Ważne uwagi matematyczne
 

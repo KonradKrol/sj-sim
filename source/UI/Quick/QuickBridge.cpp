@@ -1,4 +1,5 @@
 #include "../../balance/BalanceLabController.h"
+#include "../../form-engine/FormLab.h"
 #include "QuickUi.h"
 #include "QuickWindProfile.h"
 #include "QuickView.h"
@@ -915,6 +916,7 @@ void QuickBridge::close() { QTimer::singleShot(0,this,[this] { if(m_window) m_wi
 QObject *QuickBridge::find(const QString &name) {
     if(m_groups.contains(name))return m_groups.value(name);
     QWidget *widget=nullptr;
+    if(name=="automaticFormEnabled" && m_window)widget=m_window->findChild<QWidget *>(name);
     if(name=="quickSelectedName" && m_content) {
         for(auto *child:m_content->findChildren<QWidget *>())if(child->inherits("JumperCompetitionResultsWidget")) {
             widget=child->findChild<QWidget *>("label_nameAndSurname");break;
@@ -1053,6 +1055,7 @@ void QuickBridge::compose(QuickNode *base) {
             {"athlete",m_window->property("manipulationAthlete")},{"flag",quickPicture(CountryFlagsManager::getFlagPixmap(m_window->property("manipulationCountry").toString().toLower()))},
             {"submitId",idFor(m_content->findChild<QPushButton *>("pushButton_submit_2"))}});return;
     }
+    if(m_window->property("formLabController").isValid()){m_root->update({{"kind","formLab"},{"backend",m_window->property("formLabController")}});return;}
     if(m_window->property("balanceLabController").isValid()){m_root->update({{"kind","balanceLab"},{"backend",m_window->property("balanceLabController")}});return;}
     if(m_window->property("playgroundController").isValid()){m_root->update({{"kind","playground"},{"backend",m_window->property("playgroundController")}});return;}
     if(m_window->objectName()=="classificationContributionDetails"){
@@ -1170,7 +1173,7 @@ void QuickBridge::compose(QuickNode *base) {
             preferences,
             group("simulation",tr("Silnik symulacji"),{group("simulation-settings-fields",QString(),fields({
                 {"pushButton_jumpInfoChoice",""},
-                {"openBalanceLab",""},{"openSimulationPlayground",""},
+                {"openFormEngineLab",""},{"openBalanceLab",""},{"openSimulationPlayground",""},
                 {"checkBox_globalDatabaseRecords",""}
             }),"form")})
         }));
@@ -1190,6 +1193,7 @@ void QuickBridge::compose(QuickNode *base) {
             auto *menuNode=m_groups.value("quickSeasonTools");
             if(!menuNode){menuNode=new QuickNode(this);m_groups.insert("quickSeasonTools",menuNode);}
             menuNode->update({{"kind","button"},{"name","quickSeasonTools"},{"text",tr("Narzędzia")},{"actions",tools}});
+            if(auto *automaticForm=m_window->findChild<QCheckBox *>("automaticFormEnabled"))node(automaticForm,true);
             QVariantList overview=fields({{"label_nextCompetitionIndexAndHill",""}});
             if(auto *flag=m_content->findChild<QLabel *>("label_hillFlag");flag && !flag->pixmap(Qt::ReturnByValue).isNull())
                 overview.append(QVariant::fromValue(node(flag)));

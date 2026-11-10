@@ -6,7 +6,8 @@ Image {
     property string perkKey
     property int tier: 0
     property bool hill: false
-    source: hill ? "" : "icons/athlete/"+family+"-"+perkKey+"-"+Math.min(2,tier)+".svg"
+    readonly property bool formPerk: perkKey==="formStable" || perkKey==="formVolatile"
+    source: hill ? "" : "icons/athlete/"+family+"-"+(perkKey==="formStable"?"steady":perkKey==="formVolatile"?"volatile":perkKey)+"-"+Math.min(2,tier)+".svg"
     sourceSize.width: 192
     sourceSize.height: 192
     Accessible.ignored: true
@@ -22,7 +23,7 @@ Image {
         anchors.verticalCenterOffset: -art.height*.06
         width: art.width*.72
         height: width
-        source: art.hill ? "icons/hill/"+art.perkKey+".svg" : "image://perkIcons/"+art.perkKey
+        source: art.hill ? "icons/hill/"+art.perkKey+".svg" : art.formPerk ? "icons/athlete/"+art.perkKey+".svg" : "image://perkIcons/"+art.perkKey
         sourceSize.width: 256
         sourceSize.height: 256
         asynchronous: true

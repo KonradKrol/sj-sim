@@ -40,7 +40,7 @@ static void simulationV2BridgeRegressions()
     check(SimulationV2::approximateLegacyPack(legacy,100,migrated,error) && legacy.toJson()==sourceJson,"migration creates a separate pack and leaves the source untouched");
     const auto converted=migrated.pack.jumpers.first().getSimulationProfile();
     check(converted && converted->id!=legacy.jumpers.first().getIDStr() && converted->sourceId==legacy.jumpers.first().getIDStr()
-        && converted->perks==std::array<int,3>{{0,0,0}} && migrated.pack.id!=legacy.id,"approximation creates fresh identities, keeps provenance and resets perks");
+        && converted->perks==std::array<int,4>{{0,0,0,0}} && migrated.pack.id!=legacy.id,"approximation creates fresh identities, keeps provenance and resets perks");
     check(migrated.warning.contains(QString::fromUtf8("niedokładna, przybliżona")) && !migrated.pack.approximateMigrationSource.isEmpty(),"approximate migration remains clearly identified");
     check(DataPack::fromJson(migrated.pack.toJson(),decoded,error) && decoded.approximateMigrationSource==legacy.id,"migration provenance persists");
     check(!SimulationV2::approximateLegacyPack(athletePack,100,migrated,error),"ready new profiles are never approximated again");

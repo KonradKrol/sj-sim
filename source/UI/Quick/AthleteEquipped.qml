@@ -13,7 +13,7 @@ GridLayout {
     columns: vertical || width<Theme.dp(510) ? 1 : 3
     columnSpacing: Theme.dp(12); rowSpacing: Theme.dp(5)
     Repeater {
-        model: 3
+        model: catalog.pairs.length
         AbstractButton {
             id: slot
             required property int index

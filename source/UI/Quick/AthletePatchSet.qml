@@ -11,7 +11,7 @@ ColumnLayout {
     Label { text: qsTr("Przypisane perki"); color: Theme.muted; font.pointSize: Theme.caption }
     Label { visible: (set.backend.selectedPerks || []).every(function(v){return v===0}); text: qsTr("Brak"); color: Theme.muted; font.pointSize: Theme.body }
     Repeater {
-        model: 3
+        model: catalog.pairs.length
         AbstractButton {
             id: assigned
             required property int index

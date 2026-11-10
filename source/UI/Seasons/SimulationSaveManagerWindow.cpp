@@ -58,6 +58,16 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     auto *cancelNext=new QPushButton(tr("Odwołaj najbliższe wydarzenie"),this);
     cancelNext->setObjectName("pushButton_cancelNextCompetition");cancelNext->hide();
     connect(cancelNext,&QPushButton::clicked,this,&SimulationSaveManagerWindow::cancelNextEvent);
+    auto *automaticForm=new QCheckBox(tr("Automatyczna forma zawodników"),this);
+    automaticForm->setObjectName("automaticFormEnabled");automaticForm->hide();
+    automaticForm->setToolTip(tr("Forma zmienia się wraz z datami wydarzeń. Wymaga włączonych dat; przy aktywnej funkcji nie można zmieniać formy ręcznie."));
+    connect(automaticForm,&QCheckBox::toggled,this,[this,automaticForm](bool enabled){
+        QString error;const auto *season=simulationSave->getActualSeason();
+        if(!simulationSave->formEngine().setEnabled(enabled,season && season->getDatesEnabled() && simulationSave->getEngineVersion()==2,error)){
+            QSignalBlocker blocker(automaticForm);automaticForm->setChecked(simulationSave->formEngine().enabled);return;
+        }
+        refreshProfileDrafts();markSeasonChanged();
+    });
     setWindowFlags(Qt::Window);
     setMinimumSize(640, 480);
     ui->splitter_manager->setStretchFactor(0, 4);
@@ -138,7 +148,11 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     connect(athleteDraft,&SimulationProfileDraft::changed,this,[this]{
         const int row=simulationSave->getJumpersReference().indexOf(editedAthlete);
         if(row<0 || !athleteDraft->valid() || !athleteDraft->message().isEmpty())return;
-        *editedAthlete=athleteDraft->configuredJumper();
+        auto configured=athleteDraft->configuredJumper();
+        if(simulationSave->formEngine().enabled && simulationSave->getActualSeason()->getDatesEnabled()){
+            auto profile=*configured.getSimulationProfile();profile.form=editedAthlete->getSimulationProfile()->form;QString error;if(!configured.setSimulationProfile(profile,error))return;
+        }
+        *editedAthlete=configured;
         emit jumpersListView->getListModel()->dataChanged(jumpersListView->getListModel()->index(row),jumpersListView->getListModel()->index(row));
     });
     connect(jumpersListView, &DatabaseItemsListView::listViewDoubleClicked, this, [this](const QModelIndex & index){
@@ -146,7 +160,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         editedAthlete=simulationSave->getJumpersReference()[index.row()];
         const bool modern=bool(editedAthlete->getSimulationProfile());
         athleteProfileEditor->setVisible(modern);
-        if(modern){jumperEditor->hide();QScopedValueRollback<bool> loading(loadingProfileDraft,true);athleteDraft->load(*editedAthlete,editedAthlete->getSimulationAssetDirectory());return;}
+        if(modern){jumperEditor->hide();refreshProfileDrafts();return;}
         jumperEditor->show();
         jumperEditor->setJumper(editedAthlete);
         if(simulationSave->getShowInstability() == true)
@@ -447,6 +461,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
 
     connect(ui->checkBox_calendarDates,&QCheckBox::toggled,this,[this](bool enabled){
         simulationSave->getActualSeason()->setDatesEnabled(enabled);
+        if(!enabled){QString error;simulationSave->formEngine().setEnabled(false,false,error);refreshProfileDrafts();}
         fillNextCompetitionInformations();emit calendarEditor->changed();
     });
 
@@ -871,6 +886,13 @@ void SimulationSaveManagerWindow::showJumperAndHillsEditingHelp()
 
 void SimulationSaveManagerWindow::fillNextCompetitionInformations()
 {
+    if(auto *automaticForm=findChild<QCheckBox *>("automaticFormEnabled")){
+        if(simulationSave->formEngine().enabled && (!simulationSave->getActualSeason() || !simulationSave->getActualSeason()->getDatesEnabled() || simulationSave->getEngineVersion()!=2)){
+            QString error;simulationSave->formEngine().setEnabled(false,false,error);
+        }
+        QSignalBlocker blocker(automaticForm);automaticForm->setChecked(simulationSave->formEngine().enabled);
+        automaticForm->setEnabled(simulationSave->getEngineVersion()==2 && simulationSave->getActualSeason() && simulationSave->getActualSeason()->getDatesEnabled());
+    }
     if(auto *cancel=findChild<QPushButton *>("pushButton_cancelNextCompetition")){
         auto *next=simulationSave->getNextCompetition();cancel->setEnabled(next && !next->getPlayed() && !next->getCancelled());
     }
@@ -1171,6 +1193,12 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
             if(!saveSeasonChanges())return;
         }
         const CompetitionInfo beforeStart=*next;
+        AutoForm::Checkpoint formCheckpoint(simulationSave->formEngine(),simulationSave->getJumpersReference());
+        QString formError;
+        if(!simulationSave->formEngine().update(next->getScheduledDate(),simulationSave->getJumpersReference(),simulationSave->getActualSeason()->getDatesEnabled(),formError)){
+            QMessageBox::warning(this,tr("Automatyczna forma"),formError);return;
+        }
+        refreshProfileDrafts();
         auto configWindow=std::make_unique<CompetitionConfigWindow>(CompetitionConfigWindow::SeasonCompetition,this,simulationSave);
         configWindow->setModal(true);
 
@@ -1239,6 +1267,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
             if(configWindow->getWeatherSetup())
                 managerWindow->bindWeatherSetup(configWindow->getWeatherSetup(),QRandomGenerator::global()->generate64());
             if(managerWindow->exec() != QDialog::Accepted){
+                formCheckpoint.restore();refreshProfileDrafts();
                 managerWindow.reset();managerOwner.reset();
                 *competition=beforeStart;
                 competition->getResultsReference().fixSingleResultsJumps();
@@ -1246,6 +1275,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
                 markSeasonChanged();return;
             }
             simulationSave->getActualSeason()->markStarted();
+            formCheckpoint.commit();refreshProfileDrafts();
             {
                 competition->setPlayed(true);
                 for(auto & classification : competition->getClassificationsReference())
@@ -1327,7 +1357,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
                 else if(simulationSave->getNextCompetition() == nullptr)
                     QMessageBox::information(this, tr("Koniec kalendarza"), tr("Nie ma więcej zaplanowanych konkursów w tym kalendarzu. Czas na rozegranie konkursów z innych kalendarzy!"), QMessageBox::Ok);
             }
-        } else {*next=beforeStart;simulationSave->updateNextCompetitionIndex();fillNextCompetitionInformations();}
+        } else {formCheckpoint.restore();refreshProfileDrafts();*next=beforeStart;simulationSave->updateNextCompetitionIndex();fillNextCompetitionInformations();}
     }
     else
     {
@@ -1603,6 +1633,7 @@ void SimulationSaveManagerWindow::on_pushButton_clicked()
 
 void SimulationSaveManagerWindow::on_pushButton_formGenerator_clicked()
 {
+    if(simulationSave->formEngine().enabled && simulationSave->getActualSeason()->getDatesEnabled())return;
     JumpersFormGeneratorConfigWindow window(this);
     window.getTableModel()->setGeneratorsSettings(JumperFormGeneratorSettings::constructJumperFormGeneratorsSettingsVector(simulationSave->getJumpersReference()));
     window.setSave(simulationSave);
@@ -1620,8 +1651,12 @@ void SimulationSaveManagerWindow::on_pushButton_formGenerator_clicked()
 void SimulationSaveManagerWindow::refreshProfileDrafts()
 {
     QScopedValueRollback<bool> loading(loadingProfileDraft,true);
-    if(simulationSave->getJumpersReference().contains(editedAthlete) && editedAthlete->getSimulationProfile())
+    if(simulationSave->getJumpersReference().contains(editedAthlete) && editedAthlete->getSimulationProfile()){
         athleteDraft->load(*editedAthlete,editedAthlete->getSimulationAssetDirectory());
+        auto diagnostic=simulationSave->formEngine().diagnostic(*editedAthlete);
+        diagnostic["automatic"]=simulationSave->formEngine().enabled && simulationSave->getActualSeason()->getDatesEnabled();
+        athleteDraft->setFormDiagnostic(diagnostic);
+    }
     if(simulationSave->getHillsReference().contains(editedHill) && editedHill->getSimulationProfile())
         hillDraft->load(*editedHill);
 }

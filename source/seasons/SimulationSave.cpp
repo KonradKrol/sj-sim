@@ -72,6 +72,7 @@ bool hasRequiredSaveStructure(const QJsonObject &object)
         || (object["engine-version"].toDouble()!=1 && object["engine-version"].toDouble()!=2)))return false;
     const bool v2=object["engine-version"].toInt(1)==2;
     if(!SimulationV2::canResumeSave(object))return false;
+    if(object.contains("automatic-form")){AutoForm::Session checked;QString error;if(!object["automatic-form"].isObject() || !AutoForm::Session::fromJson(object["automatic-form"].toObject(),checked,error))return false;}
     QString profileError;
     for(const auto &value:object["jumpers"].toArray())if((v2 && !value.toObject().contains("simulation-v2")) || !Jumper::validateSimulationProfileJson(value.toObject(),profileError))return false;
     for(const auto &value:object["hills"].toArray())if((v2 && !value.toObject().contains("simulation-v2")) || !Hill::validateSimulationProfileJson(value.toObject(),profileError))return false;
@@ -89,6 +90,8 @@ bool hasRequiredSaveStructure(const QJsonObject &object)
 // cheaper than JSON serialization, while keeping the QSaveFile write atomic.
 bool hasSerializableGraph(SimulationSave &save)
 {
+    AutoForm::Session checkedForm;QString formError;
+    if(!AutoForm::Session::fromJson(save.formEngine().toJson(),checkedForm,formError))return false;
     if(save.getActualSeason() == nullptr)
         return false;
 
@@ -169,6 +172,7 @@ SimulationSave * SimulationSave::getFromJson(QJsonObject obj, IdentifiableObject
 
     SimulationSave * save = new SimulationSave();
     save->setEngineVersion(obj["engine-version"].toInt(1));
+    if(obj.contains("automatic-form")){QString error;if(!AutoForm::Session::fromJson(obj["automatic-form"].toObject(),save->formEngine(),error)){delete save;return nullptr;}}
     if(storage == nullptr)
     {
         storage = save;
@@ -270,6 +274,11 @@ SimulationSave * SimulationSave::getFromJson(QJsonObject obj, IdentifiableObject
     save->setAutoGateEnabled(obj.value("auto-gate-enabled").toBool(true));
     save->setAutosaveEnabled(obj.value("autosave-enabled").toBool(true));
     save->setShowForm(obj.value("show-form").toBool(true));
+    QHash<QString,Jumper *> formAthletes;for(auto *athlete:save->getJumpersReference())formAthletes.insert(athlete->getIDStr(),athlete);
+    for(auto it=save->formEngine().states.cbegin();it!=save->formEngine().states.cend();++it){
+        auto *athlete=formAthletes.value(it.key());
+        if(!athlete || !athlete->getSimulationProfile() || (save->formEngine().enabled && save->getActualSeason()->getDatesEnabled() && !save->formEngine().anchorPending && athlete->getSimulationProfile()->form!=it.value().displayed())){delete save;return nullptr;}
+    }
     save->setShowInstability(obj.value("show-instability").toBool(true));
     save->setSaveFileSizeReduce(obj.value("save-file-size-reduce").toBool(true));
 
@@ -280,6 +289,9 @@ QJsonObject SimulationSave::getJsonObject(SimulationSave &save)
 {
     QJsonObject object;
     object.insert("engine-version",save.getEngineVersion());
+    auto form=save.formEngine();QSet<QString> athleteIds;for(auto *athlete:save.getJumpersReference())athleteIds.insert(athlete->getIDStr());
+    for(auto it=form.states.begin();it!=form.states.end();)if(!athleteIds.contains(it.key()))it=form.states.erase(it);else ++it;
+    object.insert("automatic-form",form.toJson());
     object.insert("id", save.getIDStr());
 
     QJsonArray jumpersArray;

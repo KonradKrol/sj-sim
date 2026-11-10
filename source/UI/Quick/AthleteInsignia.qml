@@ -9,7 +9,7 @@ Flow {
     AthletePerkCatalog { id: catalog }
     spacing: Theme.dp(3)
     Repeater {
-        model: 3
+        model: catalog.pairs.length
         AbstractButton {
             id: mark
             required property int index

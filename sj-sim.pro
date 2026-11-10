@@ -43,6 +43,9 @@ SOURCES += \
     source/simulator/ExperimentalSimulation.cpp \
     source/balance/BalanceLabModel.cpp \
     source/form-engine/FormEngine.cpp \
+    source/form-engine/FormSimulation.cpp \
+    source/form-engine/FormLab.cpp \
+    source/form-engine/FormSession.cpp \
     source/balance/BalanceLabController.cpp \
     source/balance/BalanceRuntime.cpp \
     source/simulation-v2/WeatherCalibration.cpp \
@@ -226,6 +229,9 @@ HEADERS += \
     source/simulator/ExperimentalSimulation.h \
     source/balance/BalanceLabModel.h \
     source/form-engine/FormEngine.h \
+    source/form-engine/FormSimulation.h \
+    source/form-engine/FormLab.h \
+    source/form-engine/FormSession.h \
     source/balance/BalanceLabController.h \
     source/balance/BalanceRuntime.h \
     source/simulation-v2/WeatherCalibration.h \

@@ -70,7 +70,7 @@ QVector<Jumper> makeAthletes(const QJsonObject &config,const QJsonObject &p,int 
         if(roster.isEmpty() || explicitValue("field.form"))profile.form=p["field.form"].toInt();
         if(roster.isEmpty() || explicitValue("field.landing"))profile.landing=p["field.landing"].toInt();
         for(int j=0;j<3;++j){auto key=QString("field.perk.%1").arg(j);if(roster.isEmpty() || explicitValue(key))profile.perks[j]=p[key].toInt();}
-        if(i==focus){auto input=athleteInput(p,"athlete");profile.overall=input.overall;profile.form=input.form;profile.landing=input.landing;profile.perks=input.perks;}
+        if(i==focus){auto input=athleteInput(p,"athlete");profile.overall=input.overall;profile.form=input.form;profile.landing=input.landing;std::copy(input.perks.begin(),input.perks.end(),profile.perks.begin());}
         const auto patch=edits.value(i);if(patch.contains("overall"))profile.overall=patch["overall"].toInt();if(patch.contains("form"))profile.form=patch["form"].toInt();if(patch.contains("landing"))profile.landing=patch["landing"].toInt();for(int j=0;j<3;++j){const auto k=QString("perk%1").arg(j);if(patch.contains(k))profile.perks[j]=patch[k].toInt();}
         const auto teams=config["teamAssignments"].toArray();if(!teams.isEmpty()){const int id=teams[i].toInt();profile.country=QString(QChar('A'+(id+1)/26))+QChar('A'+(id+1)%26)+"Z";}
         Jumper athlete;QString error;if(!athlete.setSimulationProfile(profile,error))throw std::invalid_argument(error.toStdString());result.append(athlete);

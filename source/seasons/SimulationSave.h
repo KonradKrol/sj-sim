@@ -12,11 +12,14 @@
 #include "../global/IdentifiableObjectsStorage.h"
 #include "../form-generator/JumperFormTendence.h"
 #include "../seasons/SaveJumpersList.h"
+#include "../form-engine/FormSession.h"
 
 class SimulationSave : public Identifiable, public IdentifiableObjectsStorage
 {
 public:
     SimulationSave();
+    AutoForm::Session &formEngine() { return automaticForm; }
+    const AutoForm::Session &formEngine() const { return automaticForm; }
     ~SimulationSave();
 
     static SimulationSave *getFromJson(QJsonObject obj, IdentifiableObjectsStorage *storage);
@@ -48,6 +51,7 @@ public:
     bool setActiveJumpersListId(const QString &id);
 
 private:
+    AutoForm::Session automaticForm;
     int engineVersion=1;
     bool autosaveEnabled=true;
     bool autoSquadsEnabled=true,autoGateEnabled=true;

@@ -23,6 +23,7 @@ QVariantMap SimulationProfileDraft::profile() const {
     auto values=kind==DataPack::Jumpers?athlete.getSimulationProfile()->toJson().toVariantMap():hill.getSimulationProfile()->toJson().toVariantMap();
     values["flag"]=flag(values["country"].toString());
     if(kind==DataPack::Jumpers) {
+        values["formLocked"]=formDiagnostic.value("automatic",false);values["formDiagnostic"]=formDiagnostic;
         const auto path=athlete.getImageFilePath();values["photo"]=path.isEmpty()?QString():QUrl::fromLocalFile(path).toString();values["photoAvailable"]=!path.isEmpty();
         if(values["photoPath"].toString().isEmpty())values["photoPath"]=values["portrait"];
     }
@@ -38,6 +39,7 @@ QVariantList SimulationProfileDraft::countries() const {
     return values;
 }
 bool SimulationProfileDraft::apply(const QJsonObject &json) {
+    if(kind==DataPack::Jumpers && formDiagnostic.value("automatic").toBool() && json["form"].toInt()!=athlete.getSimulationProfile()->form){error=tr("Wyłącz automatyczną formę, aby zmienić ją ręcznie.");notifyChanged();return false;}
     bool accepted=false;
     if(kind==DataPack::Jumpers) {AthleteProfile checked;accepted=AthleteProfile::fromJson(json,checked,error) && athlete.setSimulationProfile(checked,error);}
     else {HillProfile checked;accepted=HillProfile::fromJson(json,checked,error) && hill.setSimulationProfile(checked,error);}
@@ -57,11 +59,11 @@ void SimulationProfileDraft::setValue(const QString &key,const QVariant &value) 
     apply(json);
 }
 void SimulationProfileDraft::setPerk(int pair,int side,int level,bool toggle) {
-    if(!loaded || pair<0 || pair>=(kind==DataPack::Jumpers?3:4) || (side!=1 && side!=-1) || level<1 || level>4)return;
+    if(!loaded || pair<0 || pair>=4 || (side!=1 && side!=-1) || level<1 || level>4)return;
     auto json=kind==DataPack::Jumpers?athlete.getSimulationProfile()->toJson():hill.getSimulationProfile()->toJson();
     auto values=json["perks"].toArray();values[pair]=toggle && values[pair].toInt()*side>0?0:side*level;json["perks"]=values;apply(json);
 }
-void SimulationProfileDraft::reset() {if(!loaded)return;athlete=originalAthlete;hill=originalHill;error.clear();notifyChanged();}
+void SimulationProfileDraft::reset() {if(!loaded)return;const auto current=athlete.getSimulationProfile();athlete=originalAthlete;hill=originalHill;if(kind==DataPack::Jumpers && current && formDiagnostic.value("automatic").toBool()){auto profile=*athlete.getSimulationProfile();profile.form=current->form;QString ignored;athlete.setSimulationProfile(profile,ignored);}error.clear();notifyChanged();}
 void SimulationProfileDraft::choosePhoto() {
     if(!loaded || kind!=DataPack::Jumpers || directory.isEmpty())return;
     const auto path=QFileDialog::getOpenFileName(nullptr,tr("Zdjęcie w folderze paczki"),directory,tr("Obrazy (*.png *.jpg *.jpeg *.webp)"));

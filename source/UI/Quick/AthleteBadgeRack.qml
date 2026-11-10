@@ -23,7 +23,7 @@ ColumnLayout {
         columns: rack.vertical || rack.width<Theme.dp(rack.ribbons ? 900 : 690) ? 1 : 3
         columnSpacing: Theme.dp(22); rowSpacing: Theme.dp(12)
         Repeater {
-            model: 3
+            model: catalog.pairs.length
             ColumnLayout {
                 id: pair
                 required property int index

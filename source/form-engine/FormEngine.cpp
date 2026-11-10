@@ -90,7 +90,7 @@ State initialize(double form,QDate date,SimulationV2::Seed seed,const Config &c)
     s.regime=0;for(int r=1;r<5;++r)if(std::abs(s.base-c.centers[r])<std::abs(s.base-c.centers[s.regime]))s.regime=r;
     s.visited=1<<s.regime;s.remainingDays=waiting(s.regime,rng,c);s.randomState=rng.snapshot();return s;
 }
-void advance(State &s,QDate target,int perk,const Config &c){
+void advance(State &s,QDate target,int perk,const Config &c,const std::function<void(const State &)> &observer){
     const qint64 days=s.date.daysTo(target);if(!target.isValid() || days<0 || days>36525)throw std::invalid_argument("Invalid form time interval");
     SimulationV2::SeededRandom rng(s.randomState);
     const double a=std::exp2(-1/c.formHalfLife),deviation=c.formDeviation*c.noise[std::clamp(perk,-4,4)+4]*std::sqrt(-std::expm1(-2*std::log(2.)/c.formHalfLife));
@@ -104,6 +104,7 @@ void advance(State &s,QDate target,int perk,const Config &c){
         }
         drift(s,left,rng,c);s.remainingDays-=left;
         s.form=bounded(s.base+a*(s.form-s.base)+laplace(rng,deviation));s.date=s.date.addDays(1);
+        if(observer)observer(s);
     }
     s.randomState=rng.snapshot();
 }

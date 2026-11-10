@@ -2,6 +2,7 @@
 #include "ui_AppSettingsWindow.h"
 #include "../../playground/PlaygroundController.h"
 #include "../../balance/BalanceLabController.h"
+#include "../../form-engine/FormLab.h"
 
 #include <QTranslator>
 #include <QCloseEvent>
@@ -57,6 +58,8 @@ AppSettingsWindow::AppSettingsWindow(QWidget *parent) :
     add("differences",tr("Różnice między zawodnikami"),tr("Jak duże różnice wyników tworzy różnica OVR. Nie zwiększa losowości skoków."),{tr("Bardzo małe"),tr("Małe"),tr("Standardowe"),tr("Duże"),tr("Bardzo duże")});
     ui->verticalLayout_6->insertWidget(0,simulation);
     auto *lab=new QPushButton(tr("Laboratorium balansu"),this);lab->setObjectName("openBalanceLab");ui->verticalLayout_6->insertWidget(0,lab);
+    auto *formLab=new QPushButton(tr("Laboratorium formy"),this);formLab->setObjectName("openFormEngineLab");ui->verticalLayout_6->insertWidget(0,formLab);
+    connect(formLab,&QPushButton::clicked,this,[this]{auto *window=new FormLabWindow(this);window->setAttribute(Qt::WA_DeleteOnClose);window->show();});
     connect(lab,&QPushButton::clicked,this,[this]{auto *window=new BalanceLabWindow(this);window->setAttribute(Qt::WA_DeleteOnClose);window->show();});
     auto *playground=new QPushButton(tr("Playground symulacji"),this);playground->setObjectName("openSimulationPlayground");playground->setToolTip(tr("Wielowątkowe eksperymenty, porównania parametrów i analiza wyników."));ui->verticalLayout_6->insertWidget(0,playground);
     connect(playground,&QPushButton::clicked,this,[this]{auto *window=new PlaygroundWindow(this);window->setAttribute(Qt::WA_DeleteOnClose);window->show();});

@@ -8,6 +8,7 @@ ColumnLayout {
     property var design
     property bool form: false
     property bool compact: false
+    readonly property bool locked: form && !!backend.profile.formLocked
     readonly property int value: Number(backend.profile[form ? "form" : "overall"] || 70)
     readonly property real numberSize: Theme.fontSize(form ? (compact ? 34 : 44) : (compact ? (design.variant===2 ? 42 : design.variant===3 ? 50 : 60) : design.variant===0 ? 100 : design.variant===2 ? 72 : 84))
     readonly property TextMetrics numberMetrics: TextMetrics { font: number.font; text: "100" }
@@ -34,6 +35,7 @@ ColumnLayout {
         Layout.fillWidth: true; spacing: Theme.dp(3)
         TextField {
         id: number
+        readOnly: rating.locked
         objectName: rating.form ? "athleteForm" : "athleteOverall"
         Layout.fillWidth: false; Layout.preferredWidth: Math.ceil(Math.max(rating.numberMetrics.advanceWidth,rating.numberMetrics.width))+Theme.dp(8); Layout.minimumWidth: Layout.preferredWidth
         implicitHeight: contentHeight+Theme.dp(2)
@@ -60,7 +62,7 @@ ColumnLayout {
                 width: Theme.dp(24); height: Math.max(Theme.dp(22),Theme.captionMetrics.height+2)
                 text: "+"; quiet: true; padding: 0; foreground: rating.design.muted; font.pointSize: Theme.caption
                 autoRepeat: true; autoRepeatDelay: 250; autoRepeatInterval: 45
-                enabled: rating.effectiveValue<100
+                enabled: !rating.locked && rating.effectiveValue<100
                 Accessible.name: rating.form ? qsTr("Zwiększ formę") : qsTr("Zwiększ OVR")
                 hint: Accessible.name
                 onPressed: rating.step(1)
@@ -70,7 +72,7 @@ ColumnLayout {
                 width: Theme.dp(24); height: Math.max(Theme.dp(22),Theme.captionMetrics.height+2)
                 text: "−"; quiet: true; padding: 0; foreground: rating.design.muted; font.pointSize: Theme.caption
                 autoRepeat: true; autoRepeatDelay: 250; autoRepeatInterval: 45
-                enabled: rating.effectiveValue>1
+                enabled: !rating.locked && rating.effectiveValue>1
                 Accessible.name: rating.form ? qsTr("Zmniejsz formę") : qsTr("Zmniejsz OVR")
                 hint: Accessible.name
                 onPressed: rating.step(-1)
@@ -81,6 +83,7 @@ ColumnLayout {
 
     Slider {
         id: slider
+        enabled: !rating.locked
         objectName: rating.form ? "athleteFormSlider" : "athleteOverallSlider"
         Layout.fillWidth: true; implicitHeight: Theme.dp(27)
         from: 1; to: 100; stepSize: 1; value: rating.value
@@ -93,5 +96,11 @@ ColumnLayout {
             Rectangle { width: slider.visualPosition*parent.width; height: parent.height; radius: parent.radius; color: rating.design.accent }
         }
         handle: Rectangle { x: slider.leftPadding+slider.visualPosition*(slider.availableWidth-width); y: slider.topPadding+slider.availableHeight/2-height/2; width: Theme.dp(15); height: width; radius: rating.design.variant===2 || rating.design.variant===4 ? width/2 : 2; color: rating.design.accent; border.width: slider.activeFocus ? 3 : 1; border.color: slider.activeFocus ? rating.design.ink : rating.design.paper }
+    }
+    Label {
+        visible: rating.form && !!rating.backend.profile.formDiagnostic && (!!rating.backend.profile.formLocked || !rating.backend.profile.formDiagnostic.pending)
+        readonly property var diagnostic: rating.backend.profile.formDiagnostic || ({})
+        Layout.fillWidth: true; wrapMode: Text.WordWrap; color: Theme.muted; font.pointSize: Theme.caption
+        text: diagnostic.pending ? qsTr("Automatyczna forma · oczekuje na wydarzenie z datą") : "F "+Number(diagnostic.form).toLocaleString(Qt.locale(Theme.localeName),'f',2)+" · μ "+Number(diagnostic.base).toLocaleString(Qt.locale(Theme.localeName),'f',2)+" · "+diagnostic.regime+" · "+diagnostic.date
     }
 }

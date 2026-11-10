@@ -14,23 +14,38 @@ Pane {
     readonly property var yearNode: ui.find("label_seasonNumber")
     readonly property var calendarNode: ui.find("label_calendarName")
     readonly property var saveNode: ui.find("pushButton_saveToFile")
+    readonly property var formNode: ui.find("automaticFormEnabled")
     implicitWidth: 0
     implicitHeight: contentItem.implicitHeight+topPadding+bottomPadding
     padding: Theme.dp(compressed ? 3 : 5)
     background: Rectangle { color: Theme.surface; Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: Theme.divider } }
     contentItem: Item {
         implicitHeight: bar.stacked ? identity.implicitHeight+Theme.dp(4)+actions.implicitHeight : Math.max(identity.implicitHeight,actions.implicitHeight)
-        RowLayout {
+        Item {
             id: identity
             width: bar.stacked ? parent.width : Math.max(0,parent.width-actions.implicitWidth-Theme.dp(12))
+            implicitHeight: nameLabel.implicitHeight+details.height
             height: implicitHeight
-            spacing: Theme.dp(10)
-            Label { visible: !!bar.dateNode && bar.dateNode.values.available===true; text: bar.dateNode ? bar.dateNode.values.text : ""; color: Theme.accent; font.pointSize: Theme.body; font.bold: true; elide: Text.ElideRight; Layout.maximumWidth: bar.width * 0.38 }
-            ColumnLayout {
-                Layout.fillWidth: true; Layout.minimumWidth: 0; spacing: 0
-                Label { text: bar.nameNode ? bar.nameNode.values.text : ""; color: Theme.ink; font.weight: Font.DemiBold; font.pointSize: Theme.body; Layout.fillWidth: true; elide: Text.ElideRight }
-                Label { text: qsTr("%1 · %2").arg(bar.yearNode ? bar.yearNode.values.text : "").arg(bar.calendarNode ? bar.calendarNode.values.text : ""); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; elide: Text.ElideRight }
-            }
+            readonly property real textX: dateLabel.visible ? dateLabel.width+Theme.dp(10) : 0
+            Label { id: dateLabel; visible: !!bar.dateNode && bar.dateNode.values.available===true; text: bar.dateNode ? bar.dateNode.values.text : ""; width: Math.min(implicitWidth,identity.width*.38); height: implicitHeight; color: Theme.accent; font.pointSize: Theme.body; font.bold: true; elide: Text.ElideRight }
+            Label { id: nameLabel; x: identity.textX; width: Math.max(0,identity.width-x); height: implicitHeight; text: bar.nameNode ? bar.nameNode.values.text : ""; color: Theme.ink; font.weight: Font.DemiBold; font.pointSize: Theme.body; elide: Text.ElideRight }
+                RowLayout {
+                    id: details
+                    x: identity.textX; y: nameLabel.height; width: Math.max(0,identity.width-x)
+                    height: Math.max(Theme.captionMetrics.height,formCheck.implicitHeight,formHelp.implicitHeight)
+                    spacing: Theme.dp(8)
+                    Label { text: qsTr("%1 · %2").arg(bar.yearNode ? bar.yearNode.values.text : "").arg(bar.calendarNode ? bar.calendarNode.values.text : ""); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
+                    SCheck {
+                        id: formCheck
+                        objectName: "seasonAutomaticForm"
+                        text: qsTr("Automatyczna forma"); checked: !!bar.formNode && !!bar.formNode.values.value
+                        enabled: !!bar.formNode && bar.formNode.values.enabled!==false
+                        implicitHeight: Math.max(Theme.dp(24),Theme.captionMetrics.height+Theme.dp(4)); padding: Theme.dp(2)
+                        font.pointSize: Theme.caption
+                        onClicked: ui.activate(bar.formNode.values.id)
+                    }
+                    HelpDot { id: formHelp; explanation: qsTr("Forma zmienia się z datami wydarzeń. Włącz daty, aby korzystać z tej opcji. Wyłączenie zachowuje obecną formę; ponowne włączenie nie nadrabia przerwy.") }
+                }
         }
         Item {
             id: actions

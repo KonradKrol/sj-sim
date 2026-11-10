@@ -2,12 +2,14 @@
 #include "../global/CountryCodes.h"
 
 #include <stdexcept>
+#include <algorithm>
 
 namespace SimulationV2 {
 
 Athlete athleteInput(const AthleteProfile &profile)
 {
-    Athlete value;value.overall=profile.overall;value.form=profile.form;value.landing=profile.landing;value.perks=profile.perks;
+    Athlete value;value.overall=profile.overall;value.form=profile.form;value.landing=profile.landing;
+    std::copy_n(profile.perks.begin(),value.perks.size(),value.perks.begin());
     value.validate();return value;
 }
 

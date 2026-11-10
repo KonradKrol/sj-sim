@@ -81,7 +81,7 @@ bool ProfilePackRepository::convertPerkLevels(QJsonObject &pack,bool &changed,QS
         }
         if(!profile["perks"].isArray()) {error=QObject::tr("Nieprawidłowy zestaw perków.");return false;}
         auto perks=profile["perks"].toArray();
-        if(perks.size()!=3 && !(kind==ProfilePackKind::Hills && perks.size()==4)) {
+        if(perks.size()!=3 && perks.size()!=4) {
             error=QObject::tr("Nieprawidłowy zestaw perków.");return false;
         }
         for(int level=0;level<perks.size();++level) {

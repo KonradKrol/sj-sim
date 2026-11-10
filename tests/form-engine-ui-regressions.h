@@ -1,0 +1,76 @@
+#pragma once
+#include "../source/form-engine/FormLab.h"
+
+static void formEngineUiRegressions(MainWindow &main){
+    FormLabWindow lab(&main);lab.show();QTest::qWait(150);
+    auto *view=scene(&lab);check(view && view->status()==QQuickWidget::Ready && item(view->rootObject(),"formEngineLabScreen"),"form lab QML loads");
+    auto *controller=lab.findChild<FormLabController *>();check(controller,"form lab controller exists");
+    controller->setOption("count",12);controller->setOption("days",30);controller->setOption("repeats",2);controller->setOption("threads",2);
+    clickControl(view,"formParameter-perk");QTest::keyClick(view,Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(view,"-3");QTest::keyClick(view,Qt::Key_Return);QTest::qWait(30);
+    check(controller->options().value("perk").toInt()==-3,"negative form perk can be typed without reverting the draft");
+    clickControl(view,"formLabRun");for(int i=0;i<500 && controller->busy();++i)QTest::qWait(20);
+    check(!controller->busy() && controller->result().contains("views") && controller->progress()==1,"asynchronous lab finishes with complete progress and results");
+    const auto result=controller->result();controller->start();for(int i=0;i<500 && controller->busy();++i)QTest::qWait(20);
+    check(controller->result()==result,"identical lab seed and inputs reproduce the same result");
+    controller->freezeReference();controller->setParameter("formDeviation",4);controller->setOption("compare",true);controller->start();for(int i=0;i<500 && controller->busy();++i)QTest::qWait(20);
+    check(controller->result().value("metrics").toList().size()==2,"A/B form lab produces both parameter sets");
+    auto *screen=item(view->rootObject(),"formEngineLabScreen");screen->setProperty("page",1);QTest::qWait(40);
+    auto *group=item(view->rootObject(),"formLabGroup");group->setProperty("currentIndex",2);QTest::qWait(40);
+    clickControl(view,"formParameter-formHalfLife");QTest::keyClick(view,Qt::Key_A,Qt::ControlModifier);QTest::keyClicks(view,"7,5");QTest::keyClick(view,Qt::Key_Return);QTest::qWait(40);
+    check(controller->config().value("values").toMap().value("formHalfLife").toDouble()==7.5,"localized decimal parameter commits without reverting the input");screen->setProperty("page",0);
+    main.resize(1024,640);QTest::qWait(100);view->grabFramebuffer();presentation(&lab)->grab().save(output+"/form-lab.png");
+    controller->useForNewGames();SimulationSave newSave;check(newSave.formEngine().config.formDeviation==4,"lab profile becomes the default for newly created saves");
+    lab.reject();
+
+    SimulationSave save;save.setEngineVersion(2);save.setName("Automatic form integration");save.setAutosaveEnabled(false);
+    for(int i=0;i<8;++i){auto p=AthleteProfile::create();p.name="Form";p.surname=QString::number(i);p.form=50+i;p.perks[3]=i%9-4;auto *athlete=new Jumper;QString error;check(athlete->setSimulationProfile(p,error),"form season athlete");save.getJumpersReference().append(athlete);}
+    auto venue=HillProfile::create();venue.name="Form hill";auto *hill=new Hill;QString error;check(hill->setSimulationProfile(venue,error),"form season hill");save.setHills({hill});
+    CompetitionRules rules;rules.setName("Form rules");rules.setRounds({RoundInfo(8,true)});rules.setHasDsq(false);save.setCompetitionRules({rules});
+    auto *calendar=new SeasonCalendar("Form calendar");auto *first=new CompetitionInfo(hill);first->setRules(rules);first->setScheduledDate(QDate(2026,11,1));auto *second=new CompetitionInfo(hill);second->setRules(rules);second->setScheduledDate(QDate(2026,11,15));calendar->setCompetitions({first,second});
+    Season season;season.setSeasonNumber(2026);season.setCalendars({calendar});season.setActualCalendar(calendar);check(season.setDatesEnabled(true),"dated form season");save.setSeasons({season});save.setActualSeason(&save.getSeasonsReference().first());save.updateNextCompetitionIndex();save.fixJumpersFormInstabilities();
+    save.formEngine().seed=123;const auto originalConfig=save.formEngine().config.toJson();
+    controller->setParameter("formDeviation",8);controller->useForNewGames();
+    check(!save.formEngine().setEnabled(true,false,error),"cannot enable automatic form without dates");
+    SimulationSaveManagerWindow window(&save,&main);window.fillNextCompetitionInformations();window.show();QTest::qWait(150);
+    auto *bridge=window.findChild<QuickBridge *>();check(bridge,"automatic form season bridge exists");
+    clickControl(scene(&window),"seasonAutomaticForm");check(save.formEngine().enabled,"visible season switch enables automatic form");
+    check(save.formEngine().update(QDate(2026,11,1),save.getJumpersReference(),true,error),"initialize all season athletes");
+    for(int i=0;i<8;++i)check(save.getJumpersReference()[i]->getSimulationProfile()->form==50+i,"initialization preserves each original form");
+    first->setPlayed(true);save.updateNextCompetitionIndex();window.fillNextCompetitionInformations();bridge->refresh();QTest::qWait(60);
+    const auto before=save.formEngine().toJson();bool sawConfig=false;int attempts=0;
+    QTimer responder;QObject::connect(&responder,&QTimer::timeout,&window,[&]{
+        check(++attempts<250,"form preparation cannot hang");
+        for(auto *widget:QApplication::allWidgets())if(auto *config=qobject_cast<CompetitionConfigWindow *>(widget);config && config->isVisible()){
+            sawConfig=true;for(const auto &state:save.formEngine().states)check(state.date==QDate(2026,11,15),"form advances before preparation opens");config->reject();
+        }
+    });responder.start(20);clickControl(scene(&window),"playUpcomingEvent");QTest::qWait(100);responder.stop();
+    check(sawConfig && save.formEngine().toJson()==before,"cancelled preparation rolls back latent state and RNG");
+    for(int i=0;i<8;++i)check(save.getJumpersReference()[i]->getSimulationProfile()->form==50+i,"cancelled preparation rolls back visible forms");
+    check(save.formEngine().update(QDate(2026,11,15),save.getJumpersReference(),true,error),"advance after rollback");
+    const auto after=save.formEngine().toJson();check(save.formEngine().update(QDate(2026,11,15),save.getJumpersReference(),true,error) && save.formEngine().toJson()==after,"same-day events do not double count time");
+    check(save.formEngine().setEnabled(false,true,error),"disable auto form");const auto paused=save.formEngine().toJson();
+    check(save.formEngine().update(QDate(2027,1,1),save.getJumpersReference(),true,error) && save.formEngine().toJson()==paused,"disabled generator does not advance");
+    check(save.formEngine().setEnabled(true,true,error) && save.formEngine().update(QDate(2027,1,1),save.getJumpersReference(),true,error),"resume at current date");
+    for(auto it=save.formEngine().states.cbegin();it!=save.formEngine().states.cend();++it){const auto old=after["states"].toObject()[it.key()].toObject();check(it.value().form==old["form"].toDouble() && it.value().base==old["base"].toDouble() && it.value().remainingDays==old["remainingDays"].toDouble(),"resume preserves F, base and waiting time without catch-up");}
+    DatabaseItemsListView *athleteList=nullptr;for(auto *list:window.findChildren<DatabaseItemsListView *>())if(list->getType()==DatabaseItemsListView::SeasonJumpersItems)athleteList=list;
+    check(athleteList,"season athlete list exists");athleteList->listViewDoubleClicked(athleteList->getListModel()->index(0,0));
+    auto *draft=window.findChild<SimulationProfileDraft *>("seasonAthleteDraft");const auto form=save.getJumpersReference()[0]->getSimulationProfile()->form;
+    check(draft && draft->profile().value("formLocked").toBool() && draft->profile().value("formDiagnostic").toMap().contains("base"),"season editor has a locked form and diagnostic state");
+    draft->setValue("form",form==100?1:100);check(save.getJumpersReference()[0]->getSimulationProfile()->form==form && !draft->message().isEmpty(),"backend rejects manual form changes");
+    draft->setValue("overall",85);check(save.getJumpersReference()[0]->getSimulationProfile()->overall==85,"automatic form never blocks manual OVR changes");
+    const auto serialized=SimulationSave::getJsonObject(save);std::unique_ptr<SimulationSave> loaded(SimulationSave::getFromJson(serialized,nullptr));
+    check(loaded && loaded->formEngine().toJson()==save.formEngine().toJson(),"full season JSON preserves automatic form state");
+    auto older=serialized;older.remove("automatic-form");std::unique_ptr<SimulationSave> oldSave(SimulationSave::getFromJson(older,nullptr));
+    check(oldSave && !oldSave->formEngine().enabled && oldSave->formEngine().states.isEmpty(),"existing saves without automatic-form metadata load with the feature off");
+    QTemporaryDir saveDirectory;check(save.saveToFile(saveDirectory.path(),"automatic-form"),"automatic form saves atomically to a real file");
+    std::unique_ptr<SimulationSave> fromFile(SimulationSave::loadFromFile(saveDirectory.filePath("automatic-form.json")));
+    check(fromFile && fromFile->formEngine().toJson()==save.formEngine().toJson(),"real save file restores the full automatic form state");
+    check(save.formEngine().update(QDate(2027,2,1),save.getJumpersReference(),true,error) && loaded->formEngine().update(QDate(2027,2,1),loaded->getJumpersReference(),true,error) && loaded->formEngine().toJson()==save.formEngine().toJson(),"loaded season continues the exact same trajectories");
+    controller=nullptr;check(save.formEngine().config.toJson()==originalConfig,"existing save keeps its configuration snapshot");
+    window.hide();
+    AppSettingsWindow settings(&main);settings.show();QTest::qWait(100);
+    for(const auto *name:{"comboBox_language","checkBox_liveCompetition","spinBox_dsqProbability"})check(settings.findChild<QWidget *>(name)->isHidden(),"duplicated preference is hidden in general settings");
+    clickControl(scene(&settings),"action-openFormEngineLab");QTest::qWait(100);
+    auto *opened=settings.findChild<FormLabWindow *>();check(opened && opened->isVisible() && scene(opened)->status()==QQuickWidget::Ready,"form lab opens from application settings");opened->reject();settings.reject();
+    qInfo()<<"PASS: form lab batching, A/B, default profile, date integration, rollback, manual lock and save continuation";
+}

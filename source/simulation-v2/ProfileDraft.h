@@ -20,6 +20,7 @@ public:
     void load(const Jumper &,const QString &directory);
     void load(const Hill &);
     void clear();
+    void setFormDiagnostic(const QVariantMap &value) {formDiagnostic=value;emit uiChanged();}
     Jumper configuredJumper() const {return athlete;}
     Hill configuredHill() const {return hill;}
     bool valid() const;
@@ -43,6 +44,7 @@ private:
     Hill hill,originalHill;
     QString directory,error;
     bool loaded=false;
+    QVariantMap formDiagnostic;
     bool m_changePending=false;
     void notifyChanged();
     bool apply(const QJsonObject &);
