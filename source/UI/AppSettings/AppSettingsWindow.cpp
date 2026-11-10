@@ -34,6 +34,11 @@ AppSettingsWindow::AppSettingsWindow(QWidget *parent) :
     ui(new Ui::AppSettingsWindow)
 {
     ui->setupUi(this);
+    ui->comboBox_language->hide();
+    ui->checkBox_liveCompetition->hide();
+    ui->spinBox_dsqProbability->hide();
+    for(const auto *name:{"label_language","label_language_4"})if(auto *label=findChild<QWidget *>(name))label->hide();
+    for(auto *layout:findChildren<QFormLayout *>())if(auto *label=layout->labelForField(ui->comboBox_language))label->hide();
     ui->doubleSpinBox_liveCompSpeed->hide();
     ui->label_6->hide();
     for(const auto *name:{"lineEdit_jumpInfoWh","lineEdit_singleResultWh","lineEdit_compResultsWh","lineEdit_clsResultsWh"})

@@ -1169,9 +1169,9 @@ void QuickBridge::compose(QuickNode *base) {
         sections.append(group("simulation-page",QString(),{
             preferences,
             group("simulation",tr("Silnik symulacji"),{group("simulation-settings-fields",QString(),fields({
-                {"pushButton_jumpInfoChoice",""},{"checkBox_liveCompetition",""},
-                {"openBalanceLab",""},{"openSimulationPlayground",""},{"comboBox_language",tr("Język interfejsu")},
-                {"spinBox_dsqProbability",tr("Częstość dyskwalifikacji")},{"checkBox_globalDatabaseRecords",""}
+                {"pushButton_jumpInfoChoice",""},
+                {"openBalanceLab",""},{"openSimulationPlayground",""},
+                {"checkBox_globalDatabaseRecords",""}
             }),"form")})
         }));
         sections.append(group("tools",tr("Baza danych i narzędzia"),{group("database-settings-fields",QString(),fields({
