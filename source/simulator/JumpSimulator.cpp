@@ -531,7 +531,7 @@ void JumpSimulator::calculateCompensations()
             WindsCalculator::getGateCompensation(competitionStartGate, gate, hill));
         double coachGateCompensation = 0;
         if (hasCoachGate == true) {
-            if (coachGate>=gate || jumpData.getBeats95HSPercents()) {
+            if (coachGate>=gate || !competitionRules->getHas95HSRule() || jumpData.getBeats95HSPercents()) {
                 coachGateCompensation = WindsCalculator::getGateCompensation(gate, coachGate, hill);
             }
         }

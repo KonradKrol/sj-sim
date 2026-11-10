@@ -184,7 +184,7 @@ double distanceForPoints(AbstractCompetitionManager *manager,double target,bool 
         }
         if(rules->getHasGateCompensations()) {
             double gates=WindsCalculator::getGateCompensation(manager->getRoundsStartingGatesReference()[manager->getActualRound()-1],manager->getActualGate(),hill);
-            if(manager->getCoachGateForNextJumper() && JumpSimulator::isJumperBeat95HSPercents(distance,hill->getHSPoint()))
+            if(manager->getCoachGateForNextJumper() && (!rules->getHas95HSRule() || JumpSimulator::isJumperBeat95HSPercents(distance,hill->getHSPoint())))
                 gates+=WindsCalculator::getGateCompensation(manager->getActualGate(),manager->getActualCoachGate(),hill);
             points+=roundDoubleToOnePlace(gates);
         }
