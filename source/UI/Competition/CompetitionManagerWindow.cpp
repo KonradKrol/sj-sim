@@ -2394,7 +2394,7 @@ void CompetitionManagerWindow::advanceRoundWeather()
     const int round=manager->getActualRound();
     if(simulationWeather && round>windRound)simulationSeconds+=900.*(round-windRound);
     windRound=round;
-    refreshWindSnapshot();updateActualInrunSnow();
+    refreshWindSnapshot();updateActualInrunSnow();updateAvgWindLabel();
 }
 
 void CompetitionManagerWindow::suggestCurrentGate(bool undo)
