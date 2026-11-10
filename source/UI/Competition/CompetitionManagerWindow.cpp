@@ -446,13 +446,13 @@ void CompetitionManagerWindow::updateManipulationIndicator(bool pending)
 void CompetitionManagerWindow::updateToBeatDistanceLabel()
 {
     manager->updateToBeatLineDistance();
-    ui->label_toBeatDistance->setText(manager->getToBeatLineDistance()<0 || manager->getToBeatLineDistance()>manager->getCompetitionInfo()->getHill()->getKPoint()*1.3 ? QString::fromUtf8("—") : QString::number(manager->getToBeatLineDistance(), 'f', 1) + " m");
+    ui->label_toBeatDistance->setText(manager->getToBeatLineDistance()<manager->getCompetitionInfo()->getHill()->getKPoint()*.7 || manager->getToBeatLineDistance()>manager->getCompetitionInfo()->getHill()->getKPoint()*1.3 ? QString::fromUtf8("—") : QString::number(manager->getToBeatLineDistance(), 'f', 1) + " m");
 }
 
 void CompetitionManagerWindow::updateToAdvanceDistanceLabel()
 {
     manager->updateToAdvanceLineDistance();
-    if(manager->getToAdvanceLineDistance()<0 || manager->getToAdvanceLineDistance()>manager->getCompetitionInfo()->getHill()->getKPoint()*1.3)
+    if(manager->getToAdvanceLineDistance()<manager->getCompetitionInfo()->getHill()->getKPoint()*.7 || manager->getToAdvanceLineDistance()>manager->getCompetitionInfo()->getHill()->getKPoint()*1.3)
         ui->label_toAdvancementDistance->setText("-");
     else ui->label_toAdvancementDistance->setText(QString::number(manager->getToAdvanceLineDistance(), 'f', 1) + " m");
 }
