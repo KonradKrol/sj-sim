@@ -93,22 +93,23 @@
         {
           "birthYear": 2002,
           "country": "AUT",
-          "form": 52,
+          "form": 92,
           "id": "35056074-2ae7-5a0e-aa89-39497a3ef810",
-          "landing": 3,
-          "name": "Hannes",
-          "overall": 72,
+          "landing": 2,
+          "name": "Rafael",
+          "overall": 73,
           "perkLevels": 4,
           "perks": [
+            1,
             0,
-            -1,
-            1
+            0,
+            0
           ],
           "personalBest": 198,
           "photoPath": "AUT_HannesLanderer.png",
           "portrait": "",
           "sourceId": "fis:189069",
-          "surname": "Landerer"
+          "surname": "Zimmermann"
         },
         {
           "birthYear": 2002,
@@ -178,12 +179,13 @@
           "id": "b9acf367-eb00-51e8-b5cf-b48db755a8bb",
           "landing": 2,
           "name": "Jonas",
-          "overall": 82,
+          "overall": 81,
           "perkLevels": 4,
           "perks": [
             0,
             -2,
-            3
+            3,
+            0
           ],
           "personalBest": 237,
           "photoPath": "AUT_JonasSchuster.png",
@@ -315,7 +317,7 @@
         {
           "birthYear": 1995,
           "country": "FIN",
-          "form": 25,
+          "form": 35,
           "id": "61e84dd5-965e-54fa-b71f-d9955c6baa2b",
           "landing": 2,
           "name": "Antti",
@@ -336,7 +338,7 @@
         {
           "birthYear": 1999,
           "country": "FIN",
-          "form": 42,
+          "form": 40,
           "id": "d3d51699-2819-5cc5-9dc5-027d029761f1",
           "landing": 1,
           "name": "Niko",
@@ -345,7 +347,8 @@
           "perks": [
             -1,
             2,
-            -3
+            -3,
+            0
           ],
           "personalBest": 233,
           "photoPath": "FIN_NikoKytosaho.png",
@@ -465,7 +468,8 @@
           "perks": [
             -1,
             -2,
-            2
+            2,
+            0
           ],
           "personalBest": 239,
           "photoPath": "FRA_ValentinFoubert.png",
@@ -516,7 +520,7 @@
         {
           "birthYear": 1993,
           "country": "GER",
-          "form": 36,
+          "form": 38,
           "id": "27215738-92a8-5fb9-9a44-2408dd3d370f",
           "landing": 2,
           "name": "Karl",
@@ -525,7 +529,8 @@
           "perks": [
             -2,
             -2,
-            2
+            2,
+            0
           ],
           "personalBest": 243.5,
           "photoPath": "GER_KarlGeiger.png",
@@ -536,7 +541,7 @@
         {
           "birthYear": 1997,
           "country": "GER",
-          "form": 28,
+          "form": 36,
           "id": "dc66e3be-bcc4-5e06-9308-6fdb4a47a717",
           "landing": 3,
           "name": "Felix",
@@ -545,7 +550,8 @@
           "perks": [
             3,
             -2,
-            2
+            2,
+            0
           ],
           "personalBest": 235,
           "photoPath": "GER_FelixHoffmann.png",
@@ -577,7 +583,7 @@
         {
           "birthYear": 2000,
           "country": "GER",
-          "form": 54,
+          "form": 53,
           "id": "4e77b9db-4023-5b45-bdfc-04bd334154b4",
           "landing": 3,
           "name": "Philipp",
@@ -586,7 +592,8 @@
           "perks": [
             1,
             -3,
-            2
+            2,
+            0
           ],
           "personalBest": 225.5,
           "photoPath": "GER_PhilippRaimund.png",
@@ -617,7 +624,7 @@
         {
           "birthYear": 1995,
           "country": "GER",
-          "form": 45,
+          "form": 46,
           "id": "5e98e870-4fb4-5ca1-9a0a-223088ed1d35",
           "landing": 3,
           "name": "Andreas",
@@ -626,7 +633,8 @@
           "perks": [
             1,
             0,
-            2
+            2,
+            0
           ],
           "personalBest": 245,
           "photoPath": "GER_AndreasWellinger.png",
@@ -758,7 +766,7 @@
         {
           "birthYear": 1993,
           "country": "JPN",
-          "form": 20,
+          "form": 23,
           "id": "ca0e636d-d273-5174-8a74-45950ad6278d",
           "landing": 1,
           "name": "Tomofumi",
@@ -767,7 +775,8 @@
           "perks": [
             -1,
             2,
-            1
+            1,
+            0
           ],
           "personalBest": 242.5,
           "photoPath": "JPN_TomofumiNaito.png",
@@ -778,7 +787,7 @@
         {
           "birthYear": 1996,
           "country": "JPN",
-          "form": 49,
+          "form": 54,
           "id": "6ae0bcd6-0545-594c-b1fa-7c23e63bfdde",
           "landing": 3,
           "name": "Naoki",
@@ -819,7 +828,7 @@
         {
           "birthYear": 2001,
           "country": "JPN",
-          "form": 80,
+          "form": 75,
           "id": "13b399b3-b649-5218-bf7f-732896670ca2",
           "landing": 4,
           "name": "Ren",
@@ -828,7 +837,8 @@
           "perks": [
             -1,
             0,
-            2
+            2,
+            0
           ],
           "personalBest": 237.5,
           "photoPath": "JPN_RenNikaido.png",
@@ -960,7 +970,7 @@
         {
           "birthYear": 1996,
           "country": "NOR",
-          "form": 55,
+          "form": 50,
           "id": "2f0d9493-200f-5ca5-8139-d4fa46dca997",
           "landing": 3,
           "name": "Halvor Egner",
@@ -1001,7 +1011,7 @@
         {
           "birthYear": 1998,
           "country": "NOR",
-          "form": 85,
+          "form": 80,
           "id": "21562e33-2f9c-531b-81f8-2db67995cc1c",
           "landing": 3,
           "name": "Marius",
@@ -1062,7 +1072,7 @@
         {
           "birthYear": 2001,
           "country": "NOR",
-          "form": 70,
+          "form": 69,
           "id": "530cda9c-cee7-50ba-8e43-977a169bf942",
           "landing": 3,
           "name": "Kristoffer Eriksen",
@@ -1124,7 +1134,7 @@
         {
           "birthYear": 1990,
           "country": "POL",
-          "form": 25,
+          "form": 30,
           "id": "ebd67ed3-1d10-538b-b672-c98a37c5bba1",
           "landing": 3,
           "name": "Dawid",
@@ -1145,7 +1155,7 @@
         {
           "birthYear": 2007,
           "country": "POL",
-          "form": 80,
+          "form": 82,
           "id": "1e6bd96f-530f-5af3-8d1a-1a36bbb19631",
           "landing": 3,
           "name": "Kacper",
@@ -1186,7 +1196,7 @@
         {
           "birthYear": 1995,
           "country": "POL",
-          "form": 77,
+          "form": 78,
           "id": "39cd8941-c37c-5c4a-83c9-c6339aac8a93",
           "landing": 2,
           "name": "Jakub",
@@ -1228,7 +1238,7 @@
         {
           "birthYear": 1987,
           "country": "POL",
-          "form": 10,
+          "form": 19,
           "id": "cb0b6cc7-0ce0-5d0d-a84d-feac3eaf2e06",
           "landing": 2,
           "name": "Piotr",
@@ -1329,13 +1339,14 @@
         {
           "birthYear": 0,
           "country": "SLO",
-          "form": 70,
+          "form": 65,
           "id": "43c85c22-1f95-54a2-a54c-e416e45a4921",
           "landing": 2,
           "name": "Rok",
           "overall": 75,
           "perkLevels": 4,
           "perks": [
+            0,
             0,
             0,
             0
@@ -1349,11 +1360,11 @@
         {
           "birthYear": 1999,
           "country": "SLO",
-          "form": 27,
+          "form": 40,
           "id": "e65217a3-4d0b-5c86-98e4-e565858c0dd9",
           "landing": 3,
           "name": "Domen",
-          "overall": 94,
+          "overall": 92,
           "perkLevels": 4,
           "perks": [
             -3,
@@ -1370,7 +1381,7 @@
         {
           "birthYear": 0,
           "country": "SLO",
-          "form": 60,
+          "form": 59,
           "id": "8d721879-97d1-5c3c-b403-34ac8826b98b",
           "landing": 3,
           "name": "Timi",
@@ -1391,7 +1402,7 @@
         {
           "birthYear": 1981,
           "country": "SUI",
-          "form": 46,
+          "form": 42,
           "id": "9867c62d-5454-5068-b7c5-254f03cc1404",
           "landing": 0,
           "name": "Simon",
@@ -1400,7 +1411,8 @@
           "perks": [
             -3,
             2,
-            -1
+            -1,
+            0
           ],
           "personalBest": 239.5,
           "photoPath": "SUI_SimonAmmann.png",
@@ -1411,7 +1423,7 @@
         {
           "birthYear": 1991,
           "country": "SUI",
-          "form": 58,
+          "form": 59,
           "id": "34a0a3ab-cf93-5a3c-bd25-25e7c010322e",
           "landing": 2,
           "name": "Gregor",
@@ -1432,7 +1444,7 @@
         {
           "birthYear": 2000,
           "country": "SUI",
-          "form": 38,
+          "form": 39,
           "id": "aa5c79a7-a586-5b13-bcff-4b26b21d4353",
           "landing": 2,
           "name": "Sandro",
@@ -1441,7 +1453,8 @@
           "perks": [
             2,
             1,
-            -1
+            -1,
+            0
           ],
           "personalBest": 237,
           "photoPath": "SUI_SandroHauswirth.png",
@@ -1472,7 +1485,7 @@
         {
           "birthYear": 0,
           "country": "SUI",
-          "form": 75,
+          "form": 71,
           "id": "6733b82b-64f5-58cc-b735-f8206bc1f841",
           "landing": 1,
           "name": "Juri",
@@ -1481,7 +1494,8 @@
           "perks": [
             0,
             -2,
-            -1
+            -1,
+            0
           ],
           "personalBest": 191,
           "photoPath": "SUI_JuriKesseli.png",
@@ -1492,7 +1506,7 @@
         {
           "birthYear": 1995,
           "country": "SUI",
-          "form": 78,
+          "form": 70,
           "id": "8b3d05b6-76cf-5596-bcdb-1e2a2f202b76",
           "landing": 2,
           "name": "Killian",
@@ -1501,7 +1515,8 @@
           "perks": [
             0,
             -3,
-            1
+            1,
+            0
           ],
           "personalBest": 209.5,
           "photoPath": "SUI_KillianPeier.png",
@@ -1572,7 +1587,7 @@
         {
           "birthYear": 0,
           "country": "UKR",
-          "form": 60,
+          "form": 55,
           "id": "8e998cc8-f7fc-5cca-b69a-2574a2896803",
           "landing": 1,
           "name": "Vitaliy",
@@ -1581,7 +1596,8 @@
           "perks": [
             0,
             -1,
-            1
+            1,
+            0
           ],
           "personalBest": 195.5,
           "photoPath": "UKR_VitaliyKalinichenko.png",
@@ -1592,7 +1608,7 @@
         {
           "birthYear": 0,
           "country": "UKR",
-          "form": 20,
+          "form": 21,
           "id": "9345c886-8797-591d-878a-1cb754981d76",
           "landing": 1,
           "name": "Yevhen",
@@ -1601,7 +1617,8 @@
           "perks": [
             0,
             3,
-            -3
+            -3,
+            0
           ],
           "personalBest": 228.5,
           "photoPath": "UKR_YevhenMarusiak.png",
