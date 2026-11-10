@@ -13,7 +13,7 @@ ColumnLayout {
     property int forcedPoint: -1
     readonly property int displayedPoint: forcedPoint>=0 ? forcedPoint : selectedPoint
     signal pointSelected(real x)
-    readonly property var colors: [Theme.muted,Theme.warning,Theme.accent]
+    property var colors: [Theme.muted,Theme.warning,Theme.accent]
     readonly property var all: series.reduce(function(out,s){return out.concat(s.points || [])},[])
     readonly property real minX: all.reduce(function(v,p){return Math.min(v,p.x)},all.length?all[0].x:0)
     readonly property real maxX: all.reduce(function(v,p){return Math.max(v,p.x)},all.length?all[0].x:1)

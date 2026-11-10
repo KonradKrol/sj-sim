@@ -7,6 +7,7 @@ Item {
     objectName: "formEngineLabScreen"
     readonly property var backend: ui.root.values.backend
     readonly property bool narrow: width<Theme.dp(850)
+    readonly property var plotColors: [Theme.accent,Theme.warning,Theme.success,Theme.danger,"#9c71e8","#27a9bd","#cf7e38","#b65f91","#759849","#7b879d"]
     property int page: 0
     property int viewVariant: 0
     readonly property var report: backend.result
@@ -93,9 +94,10 @@ Item {
                     RowLayout { required property var modelData; Layout.fillWidth: true; Label { text: modelData.label; color: Theme.ink; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap } Label { text: Number(modelData.mean).toLocaleString(Qt.locale(Theme.localeName),'f',2)+(modelData.ci95!==undefined?" ± "+Number(modelData.ci95).toLocaleString(Qt.locale(Theme.localeName),'f',2):""); color: Theme.ink; font.family: Theme.mono; font.pointSize: Theme.body } }
                 }
                 Label { visible: !!lab.report.views; text: qsTr("± oznacza przybliżony 95% przedział dla średniej z niezależnych powtórzeń; pojawia się od dwóch powtórzeń."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-                BalanceLabPlot { visible: !!lab.report.views; Layout.fillWidth: true; caption: qsTr("Forma — pierwsze trzy osoby"); xLabel: qsTr("Dzień"); yLabel: "F"; series: lab.view.forms || [] }
-                BalanceLabPlot { visible: !!lab.report.views; Layout.fillWidth: true; caption: qsTr("Baza formy"); xLabel: qsTr("Dzień"); yLabel: "μ"; series: lab.view.bases || [] }
-                BalanceLabPlot { visible: !!lab.report.views; Layout.fillWidth: true; caption: qsTr("Okres dyspozycji"); xLabel: qsTr("Dzień"); yLabel: qsTr("0 kryzys · 1 słaby · 2 typowy · 3 dobry · 4 szczytowy"); series: lab.view.regimes || [] }
+                FormPlotChooser { visible: !!lab.report.views; backend: lab.backend; Layout.fillWidth: true }
+                BalanceLabPlot { visible: !!lab.report.views; Layout.fillWidth: true; colors: lab.plotColors; caption: qsTr("Forma"); xLabel: qsTr("Dzień"); yLabel: "F"; series: lab.view.forms || [] }
+                BalanceLabPlot { visible: !!lab.report.views; Layout.fillWidth: true; colors: lab.plotColors; caption: qsTr("Baza formy"); xLabel: qsTr("Dzień"); yLabel: "μ"; series: lab.view.bases || [] }
+                BalanceLabPlot { visible: !!lab.report.views; Layout.fillWidth: true; colors: lab.plotColors; caption: qsTr("Okres dyspozycji"); xLabel: qsTr("Dzień"); yLabel: qsTr("0 kryzys · 1 słaby · 2 typowy · 3 dobry · 4 szczytowy"); series: lab.view.regimes || [] }
                 BalanceLabPlot { visible: !!lab.report.views; Layout.fillWidth: true; caption: qsTr("Średnia populacji — pierwsze powtórzenie"); xLabel: qsTr("Dzień"); yLabel: "F"; series: (lab.report.views || []).reduce(function(out,v){return out.concat(v.population)},[]) }
                 BalanceLabPlot { visible: !!lab.report.views; Layout.fillWidth: true; caption: qsTr("Rozkład formy — cały batch"); xLabel: "F"; yLabel: qsTr("Obserwacje (%)"); series: lab.report.histograms || [] }
             }

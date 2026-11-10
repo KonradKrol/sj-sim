@@ -16,5 +16,6 @@ struct Experiment {
     bool validate(QString &) const;
 };
 struct Control {std::atomic<bool> cancelled{false};std::atomic<qint64> completed{0};};
+QJsonObject plotTraces(const QJsonArray &,const QVector<int> &);
 QJsonObject simulate(const Experiment &,const std::shared_ptr<Control> &);
 }

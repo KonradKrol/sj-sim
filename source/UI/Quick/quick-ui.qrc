@@ -287,6 +287,7 @@
 <file>BalanceLabResults.qml</file>
 <file>BalanceLabPlot.qml</file>
 <file>FormLabScreen.qml</file>
+        <file>FormPlotChooser.qml</file>
 <file>FormLabParameter.qml</file>
 <file>FormLabRoster.qml</file>
 <file>SeasonAutomationToggle.qml</file>

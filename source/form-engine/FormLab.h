@@ -1,6 +1,7 @@
 #pragma once
 #include "FormSimulation.h"
 #include <QDialog>
+#include <QJsonArray>
 #include <QFutureWatcher>
 #include <QTimer>
 class QStandardItemModel;
@@ -15,6 +16,8 @@ class FormLabController final:public QObject {
     Q_PROPERTY(QObject* athleteRows READ athleteRows CONSTANT)
     Q_PROPERTY(int selectedAthletes READ selectedAthletes NOTIFY selectionChanged)
     Q_PROPERTY(int athleteCount READ athleteCount NOTIFY selectionChanged)
+    Q_PROPERTY(QStringList plotNames READ plotNames NOTIFY plotNamesChanged)
+    Q_PROPERTY(QVariantList plottedIndexes READ plottedIndexes NOTIFY plotsChanged)
     Q_PROPERTY(QVariantMap result READ result NOTIFY resultChanged)
     Q_PROPERTY(QString message READ message NOTIFY changed)
     Q_PROPERTY(bool busy READ busy NOTIFY progressChanged)
@@ -35,6 +38,9 @@ public:
     Q_INVOKABLE void selectAthletes(bool selected);
     Q_INVOKABLE void resetAthlete(const QString &id);
     Q_INVOKABLE void filterAthletes(const QString &text);
+    QStringList plotNames()const{return m_plotNames;}
+    QVariantList plottedIndexes()const{return m_plottedIndexes;}
+    Q_INVOKABLE void setPlottedAthletes(const QVariantList &);
     QVariantMap result()const{return m_result.toVariantMap();}
     QString message()const{return m_message;}
     bool busy()const{return m_busy;}
@@ -52,6 +58,7 @@ public:
     Q_INVOKABLE void useForNewGames();
     Q_INVOKABLE void exportResult();
 signals:
+    void plotNamesChanged();void plotsChanged();
     void changed();void resultChanged();void progressChanged();void selectionChanged();
 private:
     AutoForm::Config m_config,m_reference;
@@ -63,6 +70,7 @@ private:
     QHash<QString,QVariantMap> m_athleteOverrides;
     int m_selectedAthletes=0;
     QJsonObject m_result;
+    QJsonArray m_traces;QStringList m_plotNames;QVariantList m_plottedIndexes;
     QFutureWatcher<QJsonObject> m_watcher;
     QTimer m_progressTimer;
     std::shared_ptr<AutoForm::Control> m_control;

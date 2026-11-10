@@ -28,12 +28,31 @@ FormLabController::FormLabController(QObject *parent):QObject(parent){
     m_filteredAthletes->setFilterRole(Search);m_filteredAthletes->setFilterCaseSensitivity(Qt::CaseInsensitive);rebuildAthletes();
     m_progressTimer.setInterval(100);connect(&m_progressTimer,&QTimer::timeout,this,&FormLabController::progressChanged);
     connect(&m_watcher,&QFutureWatcher<QJsonObject>::finished,this,[this]{
-        m_progressTimer.stop();m_busy=false;const auto result=m_watcher.result();
+        m_progressTimer.stop();m_busy=false;auto result=m_watcher.result();
         if(result.contains("error"))m_message=result["error"].toString();
         else if(result["cancelled"].toBool())m_message=tr("Przerwano próbę. Poprzednie wyniki zachowano.");
-        else {m_result=result;m_stale=false;m_message=tr("Próba zakończona. Wykresy pokazują pierwsze powtórzenie; statystyki obejmują cały batch.");emit resultChanged();}
+        else {
+            m_traces=result.take("traces").toArray();m_plotNames.clear();m_plottedIndexes.clear();
+            for(const auto &trace:(m_traces.isEmpty()?QJsonArray():m_traces.at(0).toArray()))m_plotNames.append(trace.toObject()["name"].toString());
+            for(int i=0;i<qMin(10,m_plotNames.size());++i)m_plottedIndexes.append(i);
+            m_result=result;emit plotNamesChanged();emit plotsChanged();m_stale=false;m_message=tr("Próba zakończona. Wykresy pokazują pierwsze powtórzenie; statystyki obejmują cały batch.");emit resultChanged();}
         emit progressChanged();emit changed();
     });
+}
+void FormLabController::setPlottedAthletes(const QVariantList &values){
+    if(m_busy)return;
+    QVector<int> selected;QVariantList valid;
+    for(const auto &value:values){bool ok=false;const int index=value.toInt(&ok);
+        if(ok && index>=0 && index<m_plotNames.size() && !selected.contains(index) && selected.size()<10){selected.append(index);valid.append(index);}}
+    if(valid==m_plottedIndexes)return;
+    auto views=m_result["views"].toArray();
+    for(int v=0;v<views.size() && v<m_traces.size();++v){
+        auto view=views[v].toObject();const auto plots=AutoForm::plotTraces(m_traces[v].toArray(),selected);
+        for(auto it=plots.begin();it!=plots.end();++it)view[it.key()]=it.value();
+        views[v]=view;
+    }
+    m_plottedIndexes=valid;m_result["views"]=views;m_result["plottedAthletes"]=QJsonArray::fromVariantList(valid);
+    emit plotsChanged();emit resultChanged();
 }
 FormLabController::~FormLabController(){disconnect(&m_watcher,nullptr,this,nullptr);cancel();m_watcher.waitForFinished();}
 QStringList FormLabController::packs()const{QStringList result;for(const auto &p:m_packs)result.append(p["name"].toString());return result;}
