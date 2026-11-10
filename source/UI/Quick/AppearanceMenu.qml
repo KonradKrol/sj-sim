@@ -49,7 +49,7 @@ Popup {
                 readonly property var preview: Theme.colorsFor(index,Theme.dark)
                 Layout.fillWidth: true
                 objectName: "appearanceColorTheme-"+index
-                implicitHeight: Math.max(Theme.dp(36),contentItem.implicitHeight+Theme.dp(12))
+                implicitHeight: Math.max(Theme.dp(36),Theme.bodyMetrics.height+topPadding+bottomPadding)
                 padding: Theme.dp(8)
                 highlighted: Theme.colorTheme===index
                 Accessible.name: modelData

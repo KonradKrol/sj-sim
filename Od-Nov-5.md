@@ -162,3 +162,13 @@ Test używa nowego modelu sezonu, czterech zawodników i ośmiu konkursów. Prze
 Znaleziono i odtworzono wyścig czasowy: `RaceLiveSettings.onOpened` blokował automat dopiero po animacji wejścia, więc skok mógł wystartować w trakcie otwierania modala. Blokada jest teraz ustawiana w `onAboutToShow`; zwalniana po zamknięciu, z nowym pełnym odstępem do kolejnego skoku.
 
 `tests/live-presentation-regressions.h` / `scripts/test-quick-ui.sh --live-presentation-only` sprawdza rzeczywistą symulację i mostek QML: czasy relacji 10 i 3 s, pośredni wiatr, wspólne ujawnienie odległości i lądowania, pięć stałych miejsc not z pojedynczym losowym ujawnianiem, jednoczesne odrzucenie dwóch ocen, końcowy pomiar oraz stałą ostatnią sekundę. Dodatkowo: krótszy przebieg bez sędziów, niewidoczne wyłączone rekompensaty, natychmiastowe DSQ/DNS, modal otwierany tuż przed terminem automatycznego skoku, wznowienie po zamknięciu i zatrzymanie na końcu serii. Test przed poprawką odtwarzał błąd blokady; po poprawce cały przebieg przeszedł bez pętli layoutu.
+
+### Wygląd: wysokość wyboru motywu
+
+Przy dużym tekście selektor motywów w AppearanceMenu również zapętlał `implicitHeight`, wyliczaną z wewnętrznego layoutu. Wysokość wynika teraz z metryk tekstu i paddingu, niezależnie od przydzielonego miejsca. `--appearance-only` przeszedł: małe/duże okna, jasny/ciemny wariant, duży tekst, kolejne edycje procentów klawiaturą, zmiana języka, zapis skali i dopasowanie okna ustawień. Bez ostrzeżeń o pętlach.
+
+### Stan po kontroli integracyjnej — 10 listopada
+
+Korekty właściciela z sekcji „Bieżące korekty ... po e3a91df” są zaimplementowane, zbudowane i sprawdzone w zakresie opisanym powyżej. Przeszły `--workflow-only`, `--season-presentation-only`, `--live-presentation-only`, `--appearance-only`, kompletność tłumaczeń EN/CS oraz `git diff --check`. Build aplikacji wykonany przez `scripts/test-quick-ui.sh` (najpierw uruchamia `scripts/build-quick-ui.sh`). Wszystkie przebiegi korzystają z izolowanej kopii danych. Pozostają zwykłe uwagi platformy offscreen i ostrzeżenia o brakujących zdjęciach; nie stwierdzono pętli bindingów ani rekursywnych przeliczeń layoutu w końcowych przebiegach.
+
+Nie ma dalszego rozpoczętego punktu z tej kolejki. Nie wykonywano ręcznego sezonu 20 konkursów ani sprawdzenia wszystkich ekranów i kombinacji zasad. Dalszy zakres dobierać do nowych uwag właściciela; nie uznawać tych testów za dowód braku wszystkich błędów w grze.
