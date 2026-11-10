@@ -18,7 +18,8 @@
           "perks": [
             1,
             -3,
-            3
+            3,
+            -2
           ],
           "personalBest": 216.5,
           "photoPath": "AUT_ClemensAigner.png",
@@ -58,7 +59,8 @@
           "perks": [
             1,
             -3,
-            1
+            1,
+            -1
           ],
           "personalBest": 242.5,
           "photoPath": "AUT_JanHoerl.png",
@@ -73,11 +75,12 @@
           "id": "3b14f2cb-7ea1-5d17-8745-41393e866ecb",
           "landing": 4,
           "name": "Stefan",
-          "overall": 88,
+          "overall": 87,
           "perkLevels": 4,
           "perks": [
             0,
             2,
+            -1,
             -1
           ],
           "personalBest": 253.5,
@@ -113,7 +116,7 @@
           "id": "52802b42-744a-5235-91ba-7514660b5d34",
           "landing": 2,
           "name": "Markus",
-          "overall": 80,
+          "overall": 79,
           "perkLevels": 4,
           "perks": [
             0,
@@ -173,7 +176,7 @@
           "id": "b9acf367-eb00-51e8-b5cf-b48db755a8bb",
           "landing": 2,
           "name": "Jonas",
-          "overall": 81,
+          "overall": 82,
           "perkLevels": 4,
           "perks": [
             0,
@@ -193,12 +196,13 @@
           "id": "6af0867c-3879-5308-a6e5-d5465db6cfe6",
           "landing": 2,
           "name": "Daniel",
-          "overall": 89,
+          "overall": 88,
           "perkLevels": 4,
           "perks": [
             -1,
             0,
-            -1
+            -1,
+            1
           ],
           "personalBest": 239,
           "photoPath": "AUT_DanielTschofenig.png",
@@ -273,7 +277,7 @@
           "id": "8f2a05be-5aa9-569b-80e2-680217ddd76a",
           "landing": 2,
           "name": "Artti",
-          "overall": 82,
+          "overall": 81,
           "perkLevels": 4,
           "perks": [
             0,
@@ -318,7 +322,8 @@
           "perks": [
             -2,
             1,
-            3
+            3,
+            -1
           ],
           "personalBest": 235.5,
           "photoPath": "FIN_AnttiAalto.png",
@@ -509,7 +514,7 @@
         {
           "birthYear": 1993,
           "country": "GER",
-          "form": 35,
+          "form": 36,
           "id": "27215738-92a8-5fb9-9a44-2408dd3d370f",
           "landing": 2,
           "name": "Karl",
@@ -558,6 +563,7 @@
           "perks": [
             1,
             0,
+            3,
             3
           ],
           "personalBest": 237,
@@ -718,6 +724,7 @@
           "perks": [
             -3,
             0,
+            1,
             1
           ],
           "personalBest": 252,
@@ -778,6 +785,7 @@
           "perks": [
             0,
             1,
+            1,
             1
           ],
           "personalBest": 237.5,
@@ -813,7 +821,7 @@
           "id": "13b399b3-b649-5218-bf7f-732896670ca2",
           "landing": 4,
           "name": "Ren",
-          "overall": 88,
+          "overall": 89,
           "perkLevels": 4,
           "perks": [
             -1,
@@ -933,12 +941,13 @@
           "id": "af4f353c-ec95-5459-97d0-bbe1b34394bb",
           "landing": 2,
           "name": "Johann Andre",
-          "overall": 85,
+          "overall": 84,
           "perkLevels": 4,
           "perks": [
             2,
             2,
-            -1
+            -1,
+            2
           ],
           "personalBest": 246,
           "photoPath": "NOR_JohannAndreForfang.png",
@@ -953,12 +962,13 @@
           "id": "2f0d9493-200f-5ca5-8139-d4fa46dca997",
           "landing": 3,
           "name": "Halvor Egner",
-          "overall": 79,
+          "overall": 80,
           "perkLevels": 4,
           "perks": [
             1,
             0,
-            0
+            0,
+            2
           ],
           "personalBest": 244.5,
           "photoPath": "NOR_HalvorEgnerGranerud.png",
@@ -989,16 +999,17 @@
         {
           "birthYear": 1998,
           "country": "NOR",
-          "form": 90,
+          "form": 85,
           "id": "21562e33-2f9c-531b-81f8-2db67995cc1c",
           "landing": 3,
           "name": "Marius",
-          "overall": 86,
+          "overall": 84,
           "perkLevels": 4,
           "perks": [
             -1,
             2,
-            -1
+            -1,
+            2
           ],
           "personalBest": 245.5,
           "photoPath": "NOR_MariusLindvik.png",
@@ -1049,7 +1060,7 @@
         {
           "birthYear": 2001,
           "country": "NOR",
-          "form": 71,
+          "form": 70,
           "id": "530cda9c-cee7-50ba-8e43-977a169bf942",
           "landing": 3,
           "name": "Kristoffer Eriksen",
@@ -1058,7 +1069,8 @@
           "perks": [
             2,
             0,
-            3
+            3,
+            -1
           ],
           "personalBest": 230.5,
           "photoPath": "NOR_KristofferEriksenSundal.png",
@@ -1069,7 +1081,7 @@
         {
           "birthYear": 2005,
           "country": "POL",
-          "form": 90,
+          "form": 83,
           "id": "1656b2c1-8f61-53b8-809f-2dae46cc22e2",
           "landing": 2,
           "name": "Klemens",
@@ -1098,7 +1110,8 @@
           "perks": [
             1,
             -2,
-            2
+            2,
+            0
           ],
           "personalBest": 244.5,
           "photoPath": "POL_MaciejKot.png",
@@ -1113,12 +1126,13 @@
           "id": "ebd67ed3-1d10-538b-b672-c98a37c5bba1",
           "landing": 3,
           "name": "Dawid",
-          "overall": 78,
+          "overall": 77,
           "perkLevels": 4,
           "perks": [
             -2,
             -3,
-            2
+            2,
+            -1
           ],
           "personalBest": 236.5,
           "photoPath": "POL_DawidKubacki.png",
@@ -1138,7 +1152,8 @@
           "perks": [
             -3,
             -3,
-            3
+            3,
+            -1
           ],
           "personalBest": 186.5,
           "photoPath": "POL_KacperTomasiak.png",
@@ -1153,7 +1168,7 @@
           "id": "5f01d1c1-8a69-5f74-8d5d-b3dd99092d7e",
           "landing": 2,
           "name": "Pawel",
-          "overall": 79,
+          "overall": 80,
           "perkLevels": 4,
           "perks": [
             -1,
@@ -1178,7 +1193,8 @@
           "perks": [
             0,
             2,
-            -1
+            -1,
+            1
           ],
           "personalBest": 237.5,
           "photoPath": "POL_JakubWolny.png",
@@ -1198,7 +1214,8 @@
           "perks": [
             2,
             2,
-            -2
+            -2,
+            1
           ],
           "personalBest": 243,
           "photoPath": "POL_AleksanderZniszczol.png",
@@ -1213,12 +1230,13 @@
           "id": "cb0b6cc7-0ce0-5d0d-a84d-feac3eaf2e06",
           "landing": 2,
           "name": "Piotr",
-          "overall": 78,
+          "overall": 79,
           "perkLevels": 4,
           "perks": [
             -3,
             2,
-            -3
+            -3,
+            2
           ],
           "personalBest": 248,
           "photoPath": "POL_PiotrZyla.png",
@@ -1273,7 +1291,7 @@
           "id": "6d269942-ad3c-5c43-b1e3-432ac3516bad",
           "landing": 3,
           "name": "Anze",
-          "overall": 88,
+          "overall": 87,
           "perkLevels": 4,
           "perks": [
             1,
@@ -1333,12 +1351,13 @@
           "id": "e65217a3-4d0b-5c86-98e4-e565858c0dd9",
           "landing": 3,
           "name": "Domen",
-          "overall": 92,
+          "overall": 94,
           "perkLevels": 4,
           "perks": [
             -3,
             4,
-            -1
+            -1,
+            2
           ],
           "personalBest": 254.5,
           "photoPath": "SLO_DomenPrevc.png",
@@ -1358,7 +1377,8 @@
           "perks": [
             2,
             3,
-            -3
+            -3,
+            2
           ],
           "personalBest": 245,
           "photoPath": "SLO_TimiZajc.png",
@@ -1398,7 +1418,8 @@
           "perks": [
             1,
             -1,
-            3
+            3,
+            -3
           ],
           "personalBest": 235.5,
           "photoPath": "SUI_GregorDeschwanden.png",
@@ -1665,26 +1686,6 @@
           "portrait": "",
           "sourceId": "fis:280175",
           "surname": "Loher"
-        },
-        {
-          "birthYear": 0,
-          "country": "USA",
-          "form": 50,
-          "id": "61fe4951-a186-5db5-844f-816d25536c48",
-          "landing": 1,
-          "name": "Andrew",
-          "overall": 67,
-          "perkLevels": 4,
-          "perks": [
-            2,
-            -3,
-            -3
-          ],
-          "personalBest": 189,
-          "photoPath": "USA_AndrewUrlaub.png",
-          "portrait": "",
-          "sourceId": "fis:202354",
-          "surname": "Urlaub"
         }
       ],
       "version": 1
@@ -1692,7 +1693,7 @@
     {
       "format": "sj-sim-hill-pack",
       "id": "d1759190-45e8-415f-9b48-053256fee702",
-      "name": "Domyślna",
+      "name": "Skocznie 2026/2027",
       "profiles": [
         {
           "country": "POL",
@@ -1704,7 +1705,7 @@
           "name": "Wisła",
           "perkLevels": 4,
           "perks": [
-            0,
+            -2,
             0,
             0,
             0
@@ -1809,7 +1810,7 @@
           "name": "Zakopane",
           "perkLevels": 4,
           "perks": [
-            0,
+            -2,
             0,
             0,
             0
@@ -2020,8 +2021,8 @@
           "perkLevels": 4,
           "perks": [
             0,
-            0,
-            0,
+            -1,
+            -3,
             0
           ],
           "pointsAtK": 60,
@@ -2104,7 +2105,7 @@
           "perkLevels": 4,
           "perks": [
             0,
-            0,
+            -1,
             0,
             0
           ],
@@ -2148,7 +2149,7 @@
             -1,
             0,
             1,
-            0
+            1
           ],
           "pointsAtK": 60,
           "pointsPerMetre": 1.8,
@@ -2166,8 +2167,8 @@
           "name": "Willingen",
           "perkLevels": 4,
           "perks": [
-            0,
-            0,
+            -1,
+            1,
             0,
             0
           ],
@@ -2292,9 +2293,9 @@
           "name": "Innsbruck",
           "perkLevels": 4,
           "perks": [
-            0,
-            0,
-            0,
+            1,
+            2,
+            3,
             0
           ],
           "pointsAtK": 60,
@@ -2314,7 +2315,7 @@
           "perkLevels": 4,
           "perks": [
             0,
-            0,
+            2,
             0,
             0
           ],
@@ -2418,9 +2419,9 @@
           "name": "Bischofshofen",
           "perkLevels": 4,
           "perks": [
-            0,
-            0,
-            0,
+            -1,
+            -1,
+            -1,
             0
           ],
           "pointsAtK": 60,
@@ -2439,7 +2440,7 @@
           "name": "Kulm",
           "perkLevels": 4,
           "perks": [
-            0,
+            -1,
             0,
             0,
             0
@@ -2588,7 +2589,7 @@
           "perks": [
             0,
             0,
-            0,
+            2,
             0
           ],
           "pointsAtK": 60,
@@ -2643,7 +2644,7 @@
           "country": "NOR",
           "gatePoints": 7.45,
           "headwindPoints": 10.8,
-          "hs": 140,
+          "hs": 138,
           "id": "6f35fcf0-dbbc-4675-a821-aab5776809db",
           "k": 123,
           "name": "Trondheim",
@@ -2691,8 +2692,8 @@
           "name": "Vikersund",
           "perkLevels": 4,
           "perks": [
-            0,
-            0,
+            -3,
+            -1,
             0,
             0
           ],
@@ -2709,11 +2710,11 @@
           "hs": 225,
           "id": "300e42c9-b54d-4ed4-b703-af02c47ab412",
           "k": 200,
-          "name": "Vikersund",
+          "name": "Vikersund (F)",
           "perkLevels": 4,
           "perks": [
-            0,
-            0,
+            -4,
+            3,
             0,
             0
           ],
@@ -2880,7 +2881,7 @@
           "name": "Planica",
           "perkLevels": 4,
           "perks": [
-            0,
+            1,
             0,
             0,
             0
@@ -3009,7 +3010,7 @@
             0,
             0,
             0,
-            0
+            -2
           ],
           "pointsAtK": 60,
           "pointsPerMetre": 2,
@@ -3027,10 +3028,10 @@
           "name": "Kuopio",
           "perkLevels": 4,
           "perks": [
+            1,
+            1,
             0,
-            0,
-            0,
-            0
+            -2
           ],
           "pointsAtK": 60,
           "pointsPerMetre": 1.8,
@@ -3048,10 +3049,10 @@
           "name": "Kuusamo",
           "perkLevels": 4,
           "perks": [
+            -3,
             0,
-            0,
-            0,
-            0
+            3,
+            1
           ],
           "pointsAtK": 60,
           "pointsPerMetre": 1.8,
@@ -3197,8 +3198,8 @@
           "perks": [
             0,
             0,
-            0,
-            0
+            -2,
+            -3
           ],
           "pointsAtK": 60,
           "pointsPerMetre": 1.8,
@@ -3210,16 +3211,16 @@
           "country": "ITA",
           "gatePoints": 7,
           "headwindPoints": 7.3,
-          "hs": 109,
+          "hs": 107,
           "id": "f31731ec-ad6e-4b69-a267-3a9e8b7651e7",
           "k": 98,
-          "name": "Predazzo (F)",
+          "name": "Predazzo",
           "perkLevels": 4,
           "perks": [
             0,
             0,
-            0,
-            0
+            -2,
+            -2
           ],
           "pointsAtK": 60,
           "pointsPerMetre": 2,
@@ -3231,16 +3232,16 @@
           "country": "ITA",
           "gatePoints": 7.7,
           "headwindPoints": 11.2,
-          "hs": 143,
+          "hs": 141,
           "id": "e391524f-cf0d-4c8a-b81c-52c699fd3326",
           "k": 128,
-          "name": "Predazzo (F)",
+          "name": "Predazzo",
           "perkLevels": 4,
           "perks": [
             0,
             0,
-            0,
-            0
+            -2,
+            -2
           ],
           "pointsAtK": 60,
           "pointsPerMetre": 1.8,
@@ -3255,13 +3256,13 @@
           "hs": 104,
           "id": "1163f365-2a54-4eee-8ea0-6cd361bec58a",
           "k": 95,
-          "name": "Predazzo",
+          "name": "Predazzo (OLD)",
           "perkLevels": 4,
           "perks": [
             0,
             0,
-            0,
-            0
+            -2,
+            -3
           ],
           "pointsAtK": 60,
           "pointsPerMetre": 2,
@@ -3276,13 +3277,13 @@
           "hs": 135,
           "id": "7b4d4294-f7c4-4b19-b648-aecbc0a36a9e",
           "k": 120,
-          "name": "Predazzo",
+          "name": "Predazzo (OLD)",
           "perkLevels": 4,
           "perks": [
+            1,
             0,
-            0,
-            0,
-            0
+            -2,
+            -3
           ],
           "pointsAtK": 60,
           "pointsPerMetre": 1.8,
@@ -3405,8 +3406,8 @@
           "name": "Courchevel",
           "perkLevels": 4,
           "perks": [
-            0,
-            0,
+            1,
+            1,
             0,
             0
           ],
@@ -3428,8 +3429,8 @@
           "perks": [
             0,
             0,
-            0,
-            0
+            3,
+            2
           ],
           "pointsAtK": 60,
           "pointsPerMetre": 1.8,
@@ -3952,7 +3953,7 @@
           "perkLevels": 4,
           "perks": [
             0,
-            0,
+            1,
             0,
             0
           ],
@@ -3993,9 +3994,9 @@
           "name": "Sapporo",
           "perkLevels": 4,
           "perks": [
+            -1,
             0,
-            0,
-            0,
+            1,
             0
           ],
           "pointsAtK": 60,
@@ -4121,7 +4122,7 @@
           "perks": [
             0,
             0,
-            0,
+            2,
             0
           ],
           "pointsAtK": 60,
@@ -4224,8 +4225,8 @@
           "name": "Park City",
           "perkLevels": 4,
           "perks": [
-            0,
-            0,
+            2,
+            -1,
             0,
             0
           ],
@@ -4267,7 +4268,7 @@
           "perkLevels": 4,
           "perks": [
             0,
-            0,
+            -1,
             0,
             0
           ],
@@ -4339,16 +4340,53 @@
           "record": 142,
           "sourceId": "807203f3-048e-42dc-8d7c-1c4896db47cf",
           "tailwindPoints": 16.200000000000003
+        },
+        {
+          "country": "SLO",
+          "gatePoints": 8.6,
+          "headwindPoints": 17,
+          "hs": 270,
+          "id": "cd502509-2225-46f4-b1fd-b0a9900df1ae",
+          "k": 120,
+          "name": "Planica (F)",
+          "perkLevels": 4,
+          "perks": [
+            0,
+            -1,
+            0,
+            0
+          ],
+          "pointsAtK": 60,
+          "pointsPerMetre": 1.8,
+          "record": 0,
+          "sourceId": "",
+          "tailwindPoints": 25.5
+        },
+        {
+          "country": "ISL",
+          "gatePoints": 4,
+          "headwindPoints": 20,
+          "hs": 300,
+          "id": "f5052c64-ea68-4149-ae9e-d6fdb0a5119a",
+          "k": 120,
+          "name": "Akureyri",
+          "perkLevels": 4,
+          "perks": [
+            0,
+            -2,
+            0,
+            0
+          ],
+          "pointsAtK": 60,
+          "pointsPerMetre": 1.8,
+          "record": 0,
+          "sourceId": "",
+          "tailwindPoints": 30
         }
       ],
       "version": 1
     },
     {
-      "format": "sj-sim-pack",
-      "version": 1,
-      "id": "6df37d6a-19f6-49ed-a6d0-682c13cce728",
-      "name": "Domyślne",
-      "kind": "rules",
       "competitionsRules": [
         {
           "95-hs-rule": true,
@@ -4356,17 +4394,19 @@
           "dsq": true,
           "gate-compensations": true,
           "hill-record-breaking": true,
-          "id": "00000000-0000-0000-0000-000000000000",
+          "id": "715d564d-4dc3-45d4-8b63-5ebd32d8a300",
           "judges-points": true,
-          "jumpers-in-team-count": 0,
+          "jumpers-in-team-count": 4,
           "name": "WC",
           "rounds": [
             {
               "count": 50,
               "ko": false,
               "ko-group-advancing": 0,
-              "ko-group-count": 0,
+              "ko-group-count": 1,
               "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 3,
               "sort-start-list": false
             },
@@ -4374,15 +4414,18 @@
               "count": 30,
               "ko": false,
               "ko-group-advancing": 0,
-              "ko-group-count": 0,
+              "ko-group-count": 1,
               "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 0,
               "sort-start-list": true
             }
           ],
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
-          "wind-compensations": true
+          "wind-compensations": true,
+          "wind-measurement-type": 3
         },
         {
           "95-hs-rule": true,
@@ -4390,24 +4433,66 @@
           "dsq": true,
           "gate-compensations": true,
           "hill-record-breaking": true,
-          "id": "00000000-0000-0000-0000-000000000000",
+          "id": "37facbd1-92b3-4b02-92cb-6aab46a810fe",
           "judges-points": true,
-          "jumpers-in-team-count": 0,
+          "jumpers-in-team-count": 2,
+          "name": "High Five",
+          "rounds": [
+            {
+              "count": 50,
+              "ko": true,
+              "ko-group-advancing": 2,
+              "ko-group-count": 5,
+              "ko-groups-selection-type": 1,
+              "previous-rounds-weights": [],
+              "reset-points": false,
+              "sort-after-groups": 3,
+              "sort-start-list": true
+            },
+            {
+              "count": 25,
+              "ko": false,
+              "ko-group-advancing": 0,
+              "ko-group-count": 1,
+              "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": true,
+              "sort-after-groups": 3,
+              "sort-start-list": true
+            }
+          ],
+          "wind-average-calculating-type": 0,
+          "wind-compensation-distance-effect": 1,
+          "wind-compensations": true,
+          "wind-measurement-type": 3
+        },
+        {
+          "95-hs-rule": true,
+          "competition-type": 0,
+          "dsq": true,
+          "gate-compensations": true,
+          "hill-record-breaking": true,
+          "id": "57c0119e-4a8d-429b-bdcd-815064cc2a0a",
+          "judges-points": true,
+          "jumpers-in-team-count": 4,
           "name": "Qualifications",
           "rounds": [
             {
               "count": 100,
               "ko": false,
               "ko-group-advancing": 0,
-              "ko-group-count": 0,
+              "ko-group-count": 1,
               "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 0,
               "sort-start-list": false
             }
           ],
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
-          "wind-compensations": true
+          "wind-compensations": true,
+          "wind-measurement-type": 3
         },
         {
           "95-hs-rule": true,
@@ -4415,17 +4500,19 @@
           "dsq": true,
           "gate-compensations": true,
           "hill-record-breaking": true,
-          "id": "00000000-0000-0000-0000-000000000000",
+          "id": "6f44e529-0cd2-4047-a7ca-dd7185cc7900",
           "judges-points": true,
-          "jumpers-in-team-count": 0,
+          "jumpers-in-team-count": 4,
           "name": "Flying WC",
           "rounds": [
             {
               "count": 40,
               "ko": false,
               "ko-group-advancing": 0,
-              "ko-group-count": 0,
+              "ko-group-count": 1,
               "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 0,
               "sort-start-list": false
             },
@@ -4433,15 +4520,18 @@
               "count": 30,
               "ko": false,
               "ko-group-advancing": 0,
-              "ko-group-count": 0,
+              "ko-group-count": 1,
               "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 0,
               "sort-start-list": true
             }
           ],
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
-          "wind-compensations": true
+          "wind-compensations": true,
+          "wind-measurement-type": 3
         },
         {
           "95-hs-rule": false,
@@ -4449,49 +4539,27 @@
           "dsq": true,
           "gate-compensations": true,
           "hill-record-breaking": false,
-          "id": "00000000-0000-0000-0000-000000000000",
+          "id": "71fbddf9-5503-473d-9707-def729f67ca6",
           "judges-points": false,
-          "jumpers-in-team-count": 0,
+          "jumpers-in-team-count": 4,
           "name": "Training/Trial",
           "rounds": [
             {
               "count": 50,
               "ko": false,
               "ko-group-advancing": 0,
-              "ko-group-count": 0,
+              "ko-group-count": 1,
               "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 0,
               "sort-start-list": false
             }
           ],
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
-          "wind-compensations": true
-        },
-        {
-          "95-hs-rule": false,
-          "competition-type": 1,
-          "dsq": true,
-          "gate-compensations": true,
-          "hill-record-breaking": false,
-          "id": "00000000-0000-0000-0000-000000000000",
-          "judges-points": false,
-          "jumpers-in-team-count": 4,
-          "name": "Team Training/Trial",
-          "rounds": [
-            {
-              "count": 15,
-              "ko": false,
-              "ko-group-advancing": 0,
-              "ko-group-count": 0,
-              "ko-groups-selection-type": 0,
-              "sort-after-groups": 3,
-              "sort-start-list": false
-            }
-          ],
-          "wind-average-calculating-type": 2,
-          "wind-compensation-distance-effect": 1,
-          "wind-compensations": true
+          "wind-compensations": true,
+          "wind-measurement-type": 3
         },
         {
           "95-hs-rule": true,
@@ -4499,42 +4567,19 @@
           "dsq": true,
           "gate-compensations": true,
           "hill-record-breaking": true,
-          "id": "00000000-0000-0000-0000-000000000000",
+          "id": "765fc9c3-cbf4-44e1-a8aa-d2bc9c762c53",
           "judges-points": true,
           "jumpers-in-team-count": 4,
-          "name": "Team WC Qualifications",
+          "name": "Team Competition",
           "rounds": [
             {
               "count": 15,
               "ko": false,
               "ko-group-advancing": 0,
-              "ko-group-count": 0,
+              "ko-group-count": 1,
               "ko-groups-selection-type": 0,
-              "sort-after-groups": 3,
-              "sort-start-list": false
-            }
-          ],
-          "wind-average-calculating-type": 2,
-          "wind-compensation-distance-effect": 1,
-          "wind-compensations": true
-        },
-        {
-          "95-hs-rule": true,
-          "competition-type": 1,
-          "dsq": true,
-          "gate-compensations": true,
-          "hill-record-breaking": true,
-          "id": "00000000-0000-0000-0000-000000000000",
-          "judges-points": true,
-          "jumpers-in-team-count": 4,
-          "name": "Team WC",
-          "rounds": [
-            {
-              "count": 15,
-              "ko": false,
-              "ko-group-advancing": 0,
-              "ko-group-count": 0,
-              "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 3,
               "sort-start-list": false
             },
@@ -4542,67 +4587,18 @@
               "count": 8,
               "ko": false,
               "ko-group-advancing": 0,
-              "ko-group-count": 0,
+              "ko-group-count": 1,
               "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 1,
               "sort-start-list": true
             }
           ],
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
-          "wind-compensations": true
-        },
-        {
-          "95-hs-rule": true,
-          "competition-type": 0,
-          "dsq": true,
-          "gate-compensations": true,
-          "hill-record-breaking": true,
-          "id": "00000000-0000-0000-0000-000000000000",
-          "judges-points": true,
-          "jumpers-in-team-count": 4,
-          "name": "SFWC",
-          "rounds": [
-            {
-              "count": 40,
-              "ko": false,
-              "ko-group-advancing": 0,
-              "ko-group-count": 0,
-              "ko-groups-selection-type": 0,
-              "sort-after-groups": 0,
-              "sort-start-list": false
-            },
-            {
-              "count": 30,
-              "ko": false,
-              "ko-group-advancing": 0,
-              "ko-group-count": 0,
-              "ko-groups-selection-type": 0,
-              "sort-after-groups": 0,
-              "sort-start-list": true
-            },
-            {
-              "count": 30,
-              "ko": false,
-              "ko-group-advancing": 0,
-              "ko-group-count": 0,
-              "ko-groups-selection-type": 0,
-              "sort-after-groups": 0,
-              "sort-start-list": true
-            },
-            {
-              "count": 30,
-              "ko": false,
-              "ko-group-advancing": 0,
-              "ko-group-count": 0,
-              "ko-groups-selection-type": 0,
-              "sort-after-groups": 0,
-              "sort-start-list": true
-            }
-          ],
-          "wind-average-calculating-type": 2,
-          "wind-compensation-distance-effect": 1,
-          "wind-compensations": true
+          "wind-compensations": true,
+          "wind-measurement-type": 3
         },
         {
           "95-hs-rule": false,
@@ -4610,7 +4606,7 @@
           "dsq": true,
           "gate-compensations": true,
           "hill-record-breaking": true,
-          "id": "00000000-0000-0000-0000-000000000000",
+          "id": "ca643bbd-7407-4ade-b54e-a23b880a482d",
           "judges-points": true,
           "jumpers-in-team-count": 2,
           "name": "Super Team",
@@ -4619,8 +4615,10 @@
               "count": 20,
               "ko": false,
               "ko-group-advancing": 0,
-              "ko-group-count": 0,
+              "ko-group-count": 1,
               "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 3,
               "sort-start-list": false
             },
@@ -4628,8 +4626,10 @@
               "count": 12,
               "ko": false,
               "ko-group-advancing": 0,
-              "ko-group-count": 0,
+              "ko-group-count": 1,
               "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 1,
               "sort-start-list": true
             },
@@ -4637,15 +4637,18 @@
               "count": 8,
               "ko": false,
               "ko-group-advancing": 0,
-              "ko-group-count": 0,
+              "ko-group-count": 1,
               "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 1,
               "sort-start-list": true
             }
           ],
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
-          "wind-compensations": true
+          "wind-compensations": true,
+          "wind-measurement-type": 3
         },
         {
           "95-hs-rule": true,
@@ -4653,7 +4656,124 @@
           "dsq": true,
           "gate-compensations": true,
           "hill-record-breaking": true,
-          "id": "00000000-0000-0000-0000-000000000000",
+          "id": "46da7eeb-783e-40cb-a19a-d6c1c0e2bf6a",
+          "judges-points": true,
+          "jumpers-in-team-count": 2,
+          "name": "Flying Championship",
+          "rounds": [
+            {
+              "count": 40,
+              "ko": false,
+              "ko-group-advancing": 0,
+              "ko-group-count": 1,
+              "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
+              "sort-after-groups": 0,
+              "sort-start-list": false
+            },
+            {
+              "count": 30,
+              "ko": false,
+              "ko-group-advancing": 0,
+              "ko-group-count": 1,
+              "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
+              "sort-after-groups": 0,
+              "sort-start-list": true
+            },
+            {
+              "count": 30,
+              "ko": false,
+              "ko-group-advancing": 0,
+              "ko-group-count": 1,
+              "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
+              "sort-after-groups": 0,
+              "sort-start-list": true
+            },
+            {
+              "count": 30,
+              "ko": false,
+              "ko-group-advancing": 0,
+              "ko-group-count": 1,
+              "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
+              "sort-after-groups": 0,
+              "sort-start-list": true
+            }
+          ],
+          "wind-average-calculating-type": 2,
+          "wind-compensation-distance-effect": 1,
+          "wind-compensations": true,
+          "wind-measurement-type": 3
+        },
+        {
+          "95-hs-rule": false,
+          "competition-type": 1,
+          "dsq": true,
+          "gate-compensations": true,
+          "hill-record-breaking": false,
+          "id": "588a5777-1d1c-4495-b003-2fbc318e9822",
+          "judges-points": false,
+          "jumpers-in-team-count": 4,
+          "name": "Team Training/Trial",
+          "rounds": [
+            {
+              "count": 15,
+              "ko": false,
+              "ko-group-advancing": 0,
+              "ko-group-count": 1,
+              "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
+              "sort-after-groups": 3,
+              "sort-start-list": false
+            }
+          ],
+          "wind-average-calculating-type": 2,
+          "wind-compensation-distance-effect": 1,
+          "wind-compensations": true,
+          "wind-measurement-type": 3
+        },
+        {
+          "95-hs-rule": true,
+          "competition-type": 1,
+          "dsq": true,
+          "gate-compensations": true,
+          "hill-record-breaking": true,
+          "id": "70a022e6-e8d5-41e1-bc34-f904ebec0703",
+          "judges-points": true,
+          "jumpers-in-team-count": 4,
+          "name": "Team WC Qualifications",
+          "rounds": [
+            {
+              "count": 15,
+              "ko": false,
+              "ko-group-advancing": 0,
+              "ko-group-count": 1,
+              "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
+              "sort-after-groups": 3,
+              "sort-start-list": false
+            }
+          ],
+          "wind-average-calculating-type": 2,
+          "wind-compensation-distance-effect": 1,
+          "wind-compensations": true,
+          "wind-measurement-type": 3
+        },
+        {
+          "95-hs-rule": true,
+          "competition-type": 0,
+          "dsq": true,
+          "gate-compensations": true,
+          "hill-record-breaking": true,
+          "id": "1909b001-0736-4512-bb23-9accaffbf1f1",
           "judges-points": true,
           "jumpers-in-team-count": 2,
           "name": "Classical KO",
@@ -4664,6 +4784,8 @@
               "ko-group-advancing": 1,
               "ko-group-count": 2,
               "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 0,
               "sort-start-list": true
             },
@@ -4671,15 +4793,18 @@
               "count": 30,
               "ko": false,
               "ko-group-advancing": 0,
-              "ko-group-count": 0,
+              "ko-group-count": 1,
               "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 0,
               "sort-start-list": true
             }
           ],
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
-          "wind-compensations": true
+          "wind-compensations": true,
+          "wind-measurement-type": 3
         },
         {
           "95-hs-rule": true,
@@ -4687,7 +4812,7 @@
           "dsq": true,
           "gate-compensations": true,
           "hill-record-breaking": true,
-          "id": "00000000-0000-0000-0000-000000000000",
+          "id": "3f0cceec-d4d6-4661-a9c7-45c42a484045",
           "judges-points": true,
           "jumpers-in-team-count": 2,
           "name": "SuperKO by fortonse",
@@ -4698,6 +4823,8 @@
               "ko-group-advancing": 1,
               "ko-group-count": 2,
               "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 0,
               "sort-start-list": true
             },
@@ -4707,6 +4834,8 @@
               "ko-group-advancing": 1,
               "ko-group-count": 2,
               "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 0,
               "sort-start-list": true
             },
@@ -4716,6 +4845,8 @@
               "ko-group-advancing": 1,
               "ko-group-count": 2,
               "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 0,
               "sort-start-list": true
             },
@@ -4723,15 +4854,18 @@
               "count": 3,
               "ko": false,
               "ko-group-advancing": 0,
-              "ko-group-count": 0,
+              "ko-group-count": 1,
               "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 0,
               "sort-start-list": true
             }
           ],
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
-          "wind-compensations": true
+          "wind-compensations": true,
+          "wind-measurement-type": 3
         },
         {
           "95-hs-rule": false,
@@ -4739,7 +4873,7 @@
           "dsq": false,
           "gate-compensations": true,
           "hill-record-breaking": true,
-          "id": "00000000-0000-0000-0000-000000000000",
+          "id": "e9788250-b4b4-4248-8de1-76f10b1f3e60",
           "judges-points": true,
           "jumpers-in-team-count": 2,
           "name": "Future Cup",
@@ -4748,8 +4882,10 @@
               "count": 35,
               "ko": false,
               "ko-group-advancing": 0,
-              "ko-group-count": 0,
+              "ko-group-count": 1,
               "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 0,
               "sort-start-list": true
             },
@@ -4757,17 +4893,32 @@
               "count": 20,
               "ko": false,
               "ko-group-advancing": 0,
-              "ko-group-count": 0,
+              "ko-group-count": 1,
               "ko-groups-selection-type": 0,
+              "previous-rounds-weights": [],
+              "reset-points": false,
               "sort-after-groups": 0,
               "sort-start-list": true
             }
           ],
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 2,
-          "wind-compensations": true
+          "wind-compensations": true,
+          "wind-measurement-type": 3
         }
       ],
+      "default-rules": {
+        "competition": "715d564d-4dc3-45d4-8b63-5ebd32d8a300",
+        "qualifications": "715d564d-4dc3-45d4-8b63-5ebd32d8a300",
+        "teamCompetition": "588a5777-1d1c-4495-b003-2fbc318e9822",
+        "teamTrial": "588a5777-1d1c-4495-b003-2fbc318e9822",
+        "training": "715d564d-4dc3-45d4-8b63-5ebd32d8a300",
+        "trial": "715d564d-4dc3-45d4-8b63-5ebd32d8a300"
+      },
+      "format": "sj-sim-pack",
+      "id": "947c7732-beeb-4dca-b836-91b3b8e0caa6",
+      "kind": "rules",
+      "name": "Domyślna",
       "pointsForPlacesPresets": [
         {
           "name": "Mini World Cup",
@@ -4785,7 +4936,20 @@
           ]
         },
         {
-          "name": "Team World Cup",
+          "name": "Puchar Narodów za Duety",
+          "pointsForPlaces": [
+            200,
+            175,
+            150,
+            125,
+            100,
+            75,
+            50,
+            25
+          ]
+        },
+        {
+          "name": "Puchar Narodów",
           "pointsForPlaces": [
             400,
             350,
@@ -4832,12 +4996,13 @@
             1
           ]
         }
-      ]
+      ],
+      "version": 1
     }
   ],
   "active": [
     "31c2add1-69e3-4b68-8262-81747d86ddd6",
     "d1759190-45e8-415f-9b48-053256fee702",
-    "6df37d6a-19f6-49ed-a6d0-682c13cce728"
+    "947c7732-beeb-4dca-b836-91b3b8e0caa6"
   ]
 }
