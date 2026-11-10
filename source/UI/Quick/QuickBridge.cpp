@@ -476,7 +476,8 @@ QuickNode *QuickBridge::node(QWidget *widget,bool force) {
         QStringList options,images;QVariantList enabled; for(int i=0;i<combo->count();++i) { options<<combo->itemText(i);images<<quickDecoration(QVariant::fromValue(combo->itemIcon(i)));enabled.append(bool(combo->model()->flags(combo->model()->index(i,combo->modelColumn(),combo->rootModelIndex()))&Qt::ItemIsEnabled)); }
         data["optionEnabled"]=enabled;
         data["optionImages"]=images;
-        data["searchable"]=widget->property("quickSearchableChoice").toBool();
+        const bool athleteOrHill = QStringList{"comboBox_existingHill","comboBox_existingJumper","comboBox_hill","comboBox_hillFilter"}.contains(widget->objectName());
+        data["searchable"]=athleteOrHill || widget->property("quickSearchableChoice").toBool();
         data["kind"]="choice"; data["options"]=options; data["value"]=combo->currentIndex(); data["editable"]=combo->isEditable(); data["text"]=combo->currentText();
     } else if(auto *slider=qobject_cast<QSlider *>(widget)) {
         data["kind"]="slider"; data["value"]=slider->value(); data["minimum"]=slider->minimum(); data["maximum"]=slider->maximum(); data["step"]=slider->singleStep();

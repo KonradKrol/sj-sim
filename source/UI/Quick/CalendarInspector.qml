@@ -89,9 +89,27 @@ Pane {
                         CalendarClassificationScoring { enabled: !inspector.backend.selection.locked; Layout.fillWidth: true; backend: inspector.backend; entry: modelData }
                     }
                     RowLayout { Layout.fillWidth: true; Label { text: qsTr("Kwalifikacja na podstawie konkursu"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap } HelpDot { explanation: qsTr("Uczestników wyłoni wskazany wcześniejszy konkurs lub kwalifikacje.") } }
-                    SChoice { Layout.fillWidth: true; model: inspector.backend.advancementCompetitions; currentIndex: inspector.backend.selection.advancement === undefined ? -1 : inspector.backend.selection.advancement; Accessible.name: qsTr("Kwalifikacja na podstawie konkursu"); onActivated: inspector.backend.update({advancement:currentIndex}) }
+                    RowLayout {
+                        Layout.fillWidth: true; spacing: Theme.dp(5)
+                        SChoice { Layout.minimumWidth: 0; Layout.fillWidth: true; model: inspector.backend.advancementCompetitions; currentIndex: inspector.backend.selection.advancement === undefined ? -1 : inspector.backend.selection.advancement; Accessible.name: qsTr("Kwalifikacja na podstawie konkursu"); onActivated: inspector.backend.update({advancement:currentIndex}) }
+                        SToolButton {
+                            text: "×"; Accessible.name: qsTr("Usuń źródło kwalifikacji")
+                            hint: qsTr("Ustaw brak źródła kwalifikacji")
+                            enabled: inspector.backend.selection.advancement !== 0 || inspector.backend.selection.pendingSource>0
+                            onClicked: inspector.backend.update({advancement:0})
+                        }
+                    }
                     RowLayout { Layout.fillWidth: true; Label { text: qsTr("Kwalifikacja według klasyfikacji"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap } HelpDot { explanation: qsTr("Uczestników wyłoni aktualna kolejność we wskazanej klasyfikacji.") } }
-                    SChoice { Layout.fillWidth: true; model: inspector.backend.advancementClassifications; currentIndex: inspector.backend.selection.advancementClass === undefined ? -1 : inspector.backend.selection.advancementClass; Accessible.name: qsTr("Kwalifikacja według klasyfikacji"); onActivated: inspector.backend.update({advancementClass:currentIndex}) }
+                    RowLayout {
+                        Layout.fillWidth: true; spacing: Theme.dp(5)
+                        SChoice { Layout.minimumWidth: 0; Layout.fillWidth: true; model: inspector.backend.advancementClassifications; currentIndex: inspector.backend.selection.advancementClass === undefined ? -1 : inspector.backend.selection.advancementClass; Accessible.name: qsTr("Kwalifikacja według klasyfikacji"); onActivated: inspector.backend.update({advancementClass:currentIndex}) }
+                        SToolButton {
+                            text: "×"; Accessible.name: qsTr("Usuń źródło kwalifikacji")
+                            hint: qsTr("Ustaw brak źródła kwalifikacji")
+                            enabled: inspector.backend.selection.advancementClass !== 0
+                            onClicked: inspector.backend.update({advancementClass:0})
+                        }
+                    }
                 }
             }
         }

@@ -2519,6 +2519,14 @@ li.checked::marker { content: "\2612"; }
         <source>Rozegrane przygotowania są zablokowane.</source>
         <translation>Completed preparation events are locked.</translation>
     </message>
+    <message>
+        <source>Usuń źródło kwalifikacji</source>
+        <translation>Clear qualification source</translation>
+    </message>
+    <message>
+        <source>Ustaw brak źródła kwalifikacji</source>
+        <translation>Set qualification source to none</translation>
+    </message>
 </context>
     <context>
         <name>CalendarVenueButton</name>
@@ -24465,6 +24473,53 @@ Close the previous Sj.Sim window and try again.</translation></message></context
     <message>
         <source>Zmiany dotyczą kolejnych konkursów.</source>
         <translation>Changes apply to future competitions.</translation>
+    </message>
+</context>
+<context>
+    <name>SeasonUpcomingEvent</name>
+    <message>
+        <source>Kwalifikacje</source>
+        <translation>Qualifications</translation>
+    </message>
+    <message>
+        <source>Konkurs</source>
+        <translation>Competition</translation>
+    </message>
+    <message>
+        <source>Trening</source>
+        <translation>Training</translation>
+    </message>
+    <message>
+        <source>Próbna</source>
+        <translation>Trial round</translation>
+    </message>
+    <message>
+        <source>Odwołano</source>
+        <translation>Cancelled</translation>
+    </message>
+    <message>
+        <source>Rozegrano</source>
+        <translation>Completed</translation>
+    </message>
+    <message>
+        <source>Teraz</source>
+        <translation>Now</translation>
+    </message>
+    <message>
+        <source>Zaplanowano</source>
+        <translation>Scheduled</translation>
+    </message>
+    <message>
+        <source>Opcje wydarzenia</source>
+        <translation>Event options</translation>
+    </message>
+    <message>
+        <source>Odwołaj wydarzenie</source>
+        <translation>Cancel event</translation>
+    </message>
+    <message>
+        <source>Trening %1</source>
+        <translation>Training %1</translation>
     </message>
 </context>
 </TS>

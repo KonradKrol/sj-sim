@@ -47,7 +47,7 @@ ScrollView {
                     Label { text: qsTr("Stawka"); color: Theme.muted; font.pointSize: Theme.caption }
                     SChoice { objectName: "playgroundRoster"; Layout.fillWidth: true; model: setup.backend.athletePacks; displayText: setup.config.roster ? setup.config.rosterName || qsTr("Stawka z konfiguracji") : qsTr("Stawka syntetyczna"); onActivated: setup.backend.useAthletePack(currentIndex) }
                     Label { text: qsTr("Skocznia"); color: Theme.muted; font.pointSize: Theme.caption }
-                    SChoice { objectName: "playgroundHill"; Layout.fillWidth: true; model: setup.backend.hillNames; displayText: setup.config.hill.name+" · HS"+setup.config.hill.hs; onActivated: setup.backend.useHill(currentIndex) }
+                    SChoice { objectName: "playgroundHill"; searchable: true; Layout.fillWidth: true; model: setup.backend.hillNames; displayText: setup.config.hill.name+" · HS"+setup.config.hill.hs; onActivated: setup.backend.useHill(currentIndex) }
                     RowLayout {
                         visible: !setup.config.hill.source; Layout.fillWidth: true
                         PlaygroundNumber { Layout.fillWidth: true; name: "playground-k"; caption: qsTr("K"); value: setup.config.hill.k; minimum: 10; maximum: 300; onCommitted: {var hill=Object.assign({},setup.config.hill);hill.k=value;hill.hs=Math.max(value,hill.hs);setup.backend.setValue("hill",hill)} }

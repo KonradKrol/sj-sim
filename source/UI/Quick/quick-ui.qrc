@@ -203,6 +203,7 @@
 <file>SectionRail.qml</file>
 <file>SeasonBar.qml</file>
 <file>SeasonOverview.qml</file>
+<file>SeasonUpcomingEvent.qml</file>
 <file>SeasonAutosave.qml</file>
 <file>SeasonRosterChoice.qml</file>
 <file>SeasonRostersWorkspace.qml</file>

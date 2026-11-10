@@ -36,7 +36,7 @@ ColumnLayout {
     Label { text: weekend.backend.datesEnabled ? qsTr("Dodaj kwalifikacje i dwa nowe konkursy — sobotni i niedzielny.") : qsTr("Dodaj dwa konkursy z kwalifikacjami. Ich kolejność ustalisz w kalendarzu."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     CalendarDateField { visible: weekend.backend.datesEnabled; id: date; name: "weekend-start"; label: qsTr("Weekend od"); backend: weekend.backend; value: weekend.start; Layout.fillWidth: true; onCommitted: function(iso){weekend.start=iso;weekend.invalidate()}; onErrorChanged: weekend.invalidate() }
     Label { text: qsTr("Skocznia"); color: Theme.muted; font.pointSize: Theme.caption }
-    SChoice { id: hill; objectName: "weekend-hill"; Layout.fillWidth: true; model: weekend.backend.hills; optionImages: weekend.backend.hillFlags; Accessible.name: qsTr("Skocznia"); onActivated: weekend.invalidate() }
+    SChoice { id: hill; objectName: "weekend-hill"; searchable: true; Layout.fillWidth: true; model: weekend.backend.hills; optionImages: weekend.backend.hillFlags; Accessible.name: qsTr("Skocznia"); onActivated: weekend.invalidate() }
     RowLayout {
         Layout.fillWidth: true
         Label { text: qsTr("Zasady konkursów"); color: Theme.muted; font.pointSize: Theme.caption }
