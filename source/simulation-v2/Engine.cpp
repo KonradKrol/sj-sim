@@ -23,8 +23,10 @@ double precipitation(const JumpRequest &input,const WeatherField &weather)
 FlightResult manipulatedFlight(const JumpRequest &input,const FlightModel &model,const WeatherField &weather,double reserve,bool &limited,WindResponseSample response={})
 {
     auto flight=model.fly(reserve,input.hill,weather,input.startSeconds,input.captureExposure,response,input.athlete.perks[1]);
-    if(!input.manipulation.distance.active())return flight;
-    const double desired=input.manipulation.distance.apply(flight.distance);
+    const double spread=1+input.hill.distanceSpreadPerk*model.parameters().hillSpreadPerLevel;
+    if(!input.manipulation.distance.active() && spread==1)return flight;
+    const double natural=std::max(0.,input.hill.k+(flight.distance-input.hill.k)*spread);
+    const double desired=input.manipulation.distance.apply(natural);
     // A requested result is realised by adjusting starting reserve and flying
     // again, including all newly reached wind. Never attach a false wind trace
     // to a distance simply overwritten after the natural flight calculation.

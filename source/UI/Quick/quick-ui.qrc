@@ -29,6 +29,8 @@
 <file>HillNumber.qml</file>
 <file>HillPerkCatalog.qml</file>
 <file>icons/hill/takeoff.svg</file>
+        <file>icons/hill/compact.svg</file>
+        <file>icons/hill/spacious.svg</file>
 <file>icons/hill/flying.svg</file>
 <file>icons/hill/forgiving.svg</file>
 <file>icons/hill/demanding.svg</file>

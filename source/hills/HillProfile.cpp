@@ -30,7 +30,7 @@ bool HillProfile::fromJson(const QJsonObject &json,HillProfile &profile,QString 
     p.tailwindPoints=automaticTailwindPoints(p.headwindPoints);
     if(!json["perks"].isArray())return fail(QObject::tr("Nieprawidłowy zestaw perków skoczni."));
     const auto values=json["perks"].toArray();
-    if(values.size()!=3 && values.size()!=4)return fail(QObject::tr("Nieprawidłowy zestaw perków skoczni."));
+    if(values.size()!=3 && values.size()!=4 && values.size()!=5)return fail(QObject::tr("Nieprawidłowy zestaw perków skoczni."));
     for(int i=0;i<values.size();++i){double value=values[i].toDouble(99);if(!values[i].isDouble() || !std::isfinite(value) || value!=std::floor(value) || value< -4 || value>4)return fail(QObject::tr("Nieprawidłowy poziom perka."));p.perks[std::size_t(i)]=int(value);}
     profile=p;error.clear();return true;
 }

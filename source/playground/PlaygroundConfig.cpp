@@ -42,7 +42,7 @@ QJsonObject valuesFor(const QJsonObject &config,int variant) {
         auto input=SimulationV2::hillInput(*source);
         p["hill.k"]=input.k;p["hill.hs"]=input.hs;p["hill.realHs"]=input.realHs;p["hill.takeoffBias"]=input.takeoffBias;
         p["hill.pointsAtK"]=input.pointsAtK;p["hill.pointsPerMetre"]=input.pointsPerMetre;p["hill.gatePoints"]=input.gatePoints;p["hill.headwindPoints"]=input.headwindPoints;p["hill.tailwindPoints"]=input.tailwindPoints;
-        for(int i=0;i<4;++i)p[QString("hill.perk.%1").arg(i)]=source->perks[i];
+        for(int i=0;i<5;++i)p[QString("hill.perk.%1").arg(i)]=source->perks[i];
     }
     if(config["rulesData"].isObject()) {
         auto rules=CompetitionRules::getFromJson(config["rulesData"].toObject());

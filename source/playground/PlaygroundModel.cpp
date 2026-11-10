@@ -33,6 +33,7 @@ template<class F> void visitEngine(SimulationV2::EngineParameters &m,F f) {
     f("quality.negativeInfluence",QObject::tr("Udział ujemnego wpływu losowości"),"quality",m.quality.negativeInfluence,0,1,0.01,"1");
     f("quality.noise",QObject::tr("Rozkład: 0 normalny, 1 Laplace’a"),"quality",m.quality.noise,0,1,1,"1");
     f("quality.hillPreferenceStrength",QObject::tr("Wpływ preferencji skoczni"),"quality",m.quality.hillPreferenceStrength,0,10,0.05,"1");
+    f("flight.hillSpreadPerLevel",QObject::tr("Rozrzut odległości: wpływ poziomu perka"),"flight",m.flight.hillSpreadPerLevel,0,.1,.005,"1");
     f("flight.referenceQuality",QObject::tr("Jakość odniesienia"),"flight",m.flight.referenceQuality,1,100,1,"1");
     f("flight.referenceDistanceAtK",QObject::tr("Odległość odniesienia / K"),"flight",m.flight.referenceDistanceAtK,0,2,0.01,"1");
     f("flight.qualityMetresAtK120",QObject::tr("Metry za punkt jakości na K120"),"flight",m.flight.qualityMetresAtK120,0,10,0.01,"m");
@@ -174,6 +175,7 @@ QString effectDescription(const QString &key,const QString &group) {
     if(key=="landing.distanceStyleOffset")return QObject::tr("Korekta bazowej noty względem klasy stylu, przy odległości K. Np. -0,7 zmniejsza ją o 0,7 punktu.");
     if(key=="landing.distanceStyleBelowK")return QObject::tr("Siła obniżenia not za skoki poniżej K, zależna od proporcji odległości do K. Np. 10 i skok 10% poniżej K oznaczają około punkt straty.");
     if(key=="landing.distanceStyleAboveK")return QObject::tr("Siła wzrostu not za skoki powyżej K, zależna od proporcji odległości do K. Np. 10 i skok 10% za K oznaczają około punkt premii przed karami.");
+    if(key=="flight.hillSpreadPerLevel")return QObject::tr("Zmiana różnic odległości względem K na poziom perka. Np. 0,02 daje do 8% większe lub mniejsze różnice na poziomie IV.");
     if(key=="flight.referenceQuality")return QObject::tr("Jakość skoku odpowiadająca odległości odniesienia przy bazowej belce i bez opadów. Np. zwiększenie z 70 do 80 sprawia, że jakość 70 zaczyna poniżej tej odległości.");
     if(key=="flight.referenceDistanceAtK")return QObject::tr("Początkowy zapas lotu jako część K, zanim zadziałają wiatr i geometria zeskoku. Np. 1,10 na K120 daje zapas 132 m; końcowa odległość może być inna.");
     if(key=="flight.qualityMetresAtK120")return QObject::tr("Metry początkowego zapasu za punkt jakości powyżej odniesienia na K120. Np. 0,8 i jakość wyższa o 10 dają dodatkowe 8 m zapasu przed wpływem wiatru.");
@@ -453,6 +455,7 @@ QJsonArray parameters() {
     input("hill.perk.0",QObject::tr("Perk skoczni: lotność / wybicie"),"hill",0,-4,4,1,"1");
     input("hill.perk.1",QObject::tr("Perk skoczni: trudne / przyjazne lądowanie"),"hill",0,-4,4,1,"1");
     input("hill.perk.2",QObject::tr("Perk skoczni: stabilny / loteryjny wiatr"),"hill",0,-4,4,1,"1");
+    input("hill.perk.4",QObject::tr("Perk skoczni: kompaktowa / rozległa"),"hill",0,-4,4,1,"1");
     input("hill.perk.3",QObject::tr("Perk skoczni: kierunek wiatru"),"hill",0,-4,4,1,"1");
     input("weather.month",QObject::tr("Miesiąc propozycji pogody (0: nieznany)"),"weatherContext",0,0,12,1,"1");
     input("weather.surface",QObject::tr("Nawierzchnia: 0 śnieg, 1 igelit"),"weatherContext",0,0,1,1,"1");
@@ -546,7 +549,7 @@ SimulationV2::FieldWindMeasurementParameters measurementParameters(const QJsonOb
     return result;
 }
 SimulationV2::Hill hillInput(const QJsonObject &p) {
-    SimulationV2::Hill h;
+    SimulationV2::Hill h;h.distanceSpreadPerk=p["hill.perk.4"].toInt();
     h.k=p["hill.k"].toDouble();
     h.hs=p["hill.hs"].toDouble();
     h.realHs=p["hill.realHs"].toDouble();

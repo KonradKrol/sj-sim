@@ -20,6 +20,7 @@ void checkWind(Wind wind)
 
 void Hill::validate() const
 {
+    bound(distanceSpreadPerk,-4,4,"Hill spread perk out of range");
     bound(k,1,400,"Hill K out of range");bound(hs,k,500,"Hill HS out of range");
     bound(realHs,.5*k,600,"Hill real HS out of range");bound(takeoffBias,-1,1,"Hill preference out of range");
     bound(pointsAtK,0,200,"Hill points at K out of range");bound(pointsPerMetre,0,20,"Hill metre value out of range");
@@ -30,6 +31,7 @@ void FlightParameters::validate() const
 {
     bound(referenceQuality,1,100,"Reference quality out of range");
     bound(referenceDistanceAtK,0,2,"Reference distance out of range");
+    bound(hillSpreadPerLevel,0,.1,"Hill spread coefficient out of range");
     bound(qualityMetresAtK120,0,10,"Quality distance coefficient out of range");
     bound(largeHillSpreadStartK,50,250,"Large hill spread onset out of range");
     bound(largeHillSpreadGain,0,5,"Large hill spread gain out of range");

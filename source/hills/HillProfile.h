@@ -11,7 +11,7 @@ struct HillProfile {
     // Take-off/flight, forgiving/demanding landing, variable/stable wind,
     // prevailing headwind/tailwind (weather traits affect automatic proposals).
     // Sign chooses a side; magnitude 1..4 selects its strength; zero means neither.
-    std::array<int,4> perks{{0,0,0,0}};
+    std::array<int,5> perks{{0,0,0,0,0}};
     static HillProfile create();
     static double automaticTailwindPoints(double headwindPoints);
     static double automaticPointsAtK(double k);

@@ -9,10 +9,12 @@ struct Hill {
     double k=120, hs=134, realHs=134, takeoffBias=0;
     double pointsAtK=60, pointsPerMetre=1.8, gatePoints=5;
     double headwindPoints=8, tailwindPoints=12;
+    int distanceSpreadPerk=0;
     void validate() const;
 };
 
 struct FlightParameters {
+    double hillSpreadPerLevel=.02;
     double referenceQuality=70;
     double referenceDistanceAtK=.95;
     double qualityMetresAtK120=1.1071428571428572;
