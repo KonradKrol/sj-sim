@@ -17,12 +17,12 @@ using Field=std::function<void(const QString &,double &,double,double,double,con
 QString tr(const char *text){return QCoreApplication::translate("FormEngine",text);}
 void fields(Config &c,const Field &f) {
     const auto item=[&](const QString &key,double &value,double lo,double hi,double step,const QString &group,const QString &name,const QString &help){f(key,value,lo,hi,step,group,name,help);};
-    for(int r=0;r<5;++r) {
+    for(int r=0;r<regimeCount;++r) {
         const auto name=regimeName(r);
         item(QString("center.%1").arg(r),c.centers[r],1,100,1,tr("Okresy formy"),tr("Centrum bazy: %1").arg(name),tr("Baza powoli dąży do tej wartości w tym okresie. Nie ustawia bezpośrednio aktualnej formy."));
         item(QString("days.%1").arg(r),c.meanDays[r],.25,10000,5,tr("Okresy formy"),tr("Średni czas: %1").arg(name),tr("Dni. To średnia, nie termin: okres może trwać znacznie dłużej."));
         item(QString("entry.%1").arg(r),c.entryDeviation[r],0,50,.5,tr("Okresy formy"),tr("Rozrzut nowej bazy: %1").arg(name),tr("Odchylenie przy wejściu w okres. Większa wartość zwiększa różnice baz między zawodnikami."));
-        for(int to=0;to<5;++to)if(to!=r)item(QString("transition.%1.%2").arg(r).arg(to),c.weights[r][to],.0001,10000,1,tr("Przejścia"),name+" → "+regimeName(to),tr("Waga względem innych przejść z tego samego okresu, nie procent. Np. 2 i 1 oznaczają dwa razy większą szansę pierwszego przejścia."));
+        for(int to=0;to<regimeCount;++to)if(to!=r)item(QString("transition.%1.%2").arg(r).arg(to),c.weights[r][to],.0001,10000,1,tr("Przejścia"),name+" → "+regimeName(to),tr("Waga względem innych przejść z tego samego okresu, nie procent. Np. 2 i 1 oznaczają dwa razy większą szansę pierwszego przejścia."));
     }
     item("formHalfLife",c.formHalfLife,.25,1000,.5,tr("Zmiany formy"),tr("Powrót formy do bazy — dni"),tr("Po tylu dniach pozostaje połowa początkowej różnicy względem stałej bazy, pomijając losowość."));
     item("formDeviation",c.formDeviation,0,50,.5,tr("Zmiany formy"),tr("Zmienność formy"),tr("Docelowe odchylenie przy nieruchomej bazie, bez ograniczeń 1–100. Np. 6 daje typowe różnice kilku punktów; rzadziej większe."));
@@ -63,12 +63,12 @@ Config Config::withVariability(int level) const {
     result.entryInertia=std::clamp(1-(1-entryInertia)*std::pow(scale,.2),0.,1.);
     return result;
 }
-QString regimeName(int r){static const char *names[]{"Głęboki kryzys","Słaby okres","Typowy okres","Dobry okres","Szczytowy okres"};return tr(names[std::clamp(r,0,4)]);}
+QString regimeName(int r){static const char *names[]{"Głęboki kryzys","Słaby okres","Lekko słaby okres","Typowy okres","Lekko dobry okres","Dobry okres","Szczytowy okres"};return tr(names[std::clamp(r,0,regimeCount-1)]);}
 bool Config::validate(QString &error) const {
     auto copy=*this;bool ok=true;
     fields(copy,[&](const QString &key,double &v,double lo,double hi,double,const QString &,const QString &,const QString &){if(!std::isfinite(v) || v<lo || v>hi){error=tr("Parametr poza zakresem: %1").arg(key);ok=false;}});
-    for(int i=1;i<5;++i)if(centers[i]<=centers[i-1]){error=tr("Centra kolejnych okresów muszą rosnąć.");ok=false;}
-    for(int i=0;i<5;++i)if(weights[i][i]!=0){error=tr("Waga pozostania w tym samym okresie musi wynosić zero.");ok=false;}
+    for(int i=1;i<regimeCount;++i)if(centers[i]<=centers[i-1]){error=tr("Centra kolejnych okresów muszą rosnąć.");ok=false;}
+    for(int i=0;i<regimeCount;++i)if(weights[i][i]!=0){error=tr("Waga pozostania w tym samym okresie musi wynosić zero.");ok=false;}
     if(noise[4]!=1 || crisis[4]!=1 || peak[4]!=1){error=tr("Neutralny perk musi mieć mnożniki równe 1.");ok=false;}
     if(ok)error.clear();return ok;
 }
@@ -77,7 +77,24 @@ QJsonObject Config::toJson() const {
 }
 bool Config::fromJson(const QJsonObject &json,Config &out,QString &error) {
     if(json["version"].toDouble()!=version || !json["values"].isObject()){error=tr("Nieobsługiwana konfiguracja silnika formy.");return false;}
-    const auto values=json["values"].toObject();Config candidate;int count=0;bool ok=true;
+    auto values=json["values"].toObject();
+    if(!values.contains("center.6") && values.contains("center.4")) {
+        const auto old=values;
+        const double positions[]{0,.6666666667,1.3333333333,2,2.6666666667,3.3333333333,4};
+        const auto interpolate=[&](const QString &prefix,double position) {
+            const int lo=int(std::floor(position)),hi=qMin(4,lo+1);
+            return old.value(prefix+QString::number(lo)).toDouble()*(1-(position-lo))+old.value(prefix+QString::number(hi)).toDouble()*(position-lo);
+        };
+        Config defaults;
+        for(auto it=values.begin();it!=values.end();)if(it.key().startsWith("center.")||it.key().startsWith("days.")||it.key().startsWith("entry.")||it.key().startsWith("transition."))it=values.erase(it);else ++it;
+        for(int i=0;i<regimeCount;++i) {
+            values[QString("center.%1").arg(i)]=interpolate("center.",positions[i]);
+            values[QString("days.%1").arg(i)]=interpolate("days.",positions[i])*.65;
+            values[QString("entry.%1").arg(i)]=interpolate("entry.",positions[i]);
+            for(int j=0;j<regimeCount;++j)if(i!=j)values[QString("transition.%1.%2").arg(i).arg(j)]=defaults.weights[i][j];
+        }
+    }
+    Config candidate;int count=0;bool ok=true;
     fields(candidate,[&](const QString &key,double &v,double,double,double,const QString &,const QString &,const QString &){++count;if(!values[key].isDouble()){error=tr("Brak parametru: %1").arg(key);ok=false;}else v=values[key].toDouble();});
     if(values.size()!=count){error=tr("Nieznane parametry silnika formy.");return false;}
     if(!ok || !candidate.validate(error))return false;out=candidate;return true;
@@ -86,22 +103,28 @@ QVariantList Config::definitions(){
     Config c;QVariantList result;fields(c,[&](const QString &key,double &v,double lo,double hi,double step,const QString &group,const QString &label,const QString &help){result.append(QVariantMap{{"key",key},{"value",v},{"minimum",lo},{"maximum",hi},{"step",step},{"group",group},{"label",label},{"help",help},{"editable",key!="noise.4" && key!="crisis.4" && key!="peak.4"}});});return result;
 }
 int State::displayed() const{return int(std::round(bounded(form)));}
-QJsonObject State::toJson() const{return {{"form",form},{"base",base},{"regime",regime},{"remainingDays",remainingDays},{"visited",visited},{"transitions",transitions},{"random",QString::number(randomState)},{"date",date.toString(Qt::ISODate)}};}
+QJsonObject State::toJson() const{return {{"regimeCount",regimeCount},{"form",form},{"base",base},{"regime",regime},{"remainingDays",remainingDays},{"visited",visited},{"transitions",transitions},{"random",QString::number(randomState)},{"date",date.toString(Qt::ISODate)}};}
 bool State::fromJson(const QJsonObject &j,State &out,QString &error){
     State s;bool randomOk=false;s.randomState=j["random"].toString().toULongLong(&randomOk);s.date=QDate::fromString(j["date"].toString(),Qt::ISODate);
     const auto number=[&](const char *key,double lo,double hi,double &v){v=j[key].toDouble();return j[key].isDouble() && std::isfinite(v) && v>=lo && v<=hi;};
     double r=0,mask=0,transitions=0;
-    if(!randomOk || !s.date.isValid() || !number("form",1,100,s.form) || !number("base",1,100,s.base) || !number("remainingDays",0,1e12,s.remainingDays) || s.remainingDays<=0 || !number("regime",0,4,r) || std::floor(r)!=r || !number("visited",1,31,mask) || std::floor(mask)!=mask || !(int(mask)&(1<<int(r))) || !number("transitions",0,1e8,transitions) || std::floor(transitions)!=transitions){error=tr("Nieprawidłowy stan automatycznej formy.");return false;}
+    if(!randomOk || !s.date.isValid() || !number("form",1,100,s.form) || !number("base",1,100,s.base) || !number("remainingDays",0,1e12,s.remainingDays) || s.remainingDays<=0 || !number("regime",0,regimeCount-1,r) || std::floor(r)!=r || !number("visited",1,(1<<regimeCount)-1,mask) || std::floor(mask)!=mask || !(int(mask)&(1<<int(r))) || !number("transitions",0,1e8,transitions) || std::floor(transitions)!=transitions){error=tr("Nieprawidłowy stan automatycznej formy.");return false;}
+    if(!j.contains("regimeCount")) {
+        if(r>4 || mask>31){error=tr("Nieprawidłowy stary stan formy.");return false;}
+        const int mapping[]{0,1,3,5,6};int mapped=0;
+        for(int i=0;i<5;++i)if(int(mask)&(1<<i))mapped|=1<<mapping[i];
+        r=mapping[int(r)];mask=mapped;s.remainingDays*=.65;
+    }
     s.regime=int(r);s.visited=int(mask);s.transitions=int(transitions);out=s;error.clear();return true;
 }
-std::array<double,5> transitionProbabilities(int r,int perk,const Config &c){
-    auto weights=c.weights.at(r);const int p=std::clamp(perk,-4,4)+4;weights[0]*=c.crisis[p];weights[4]*=c.peak[p];double total=0;for(double v:weights)total+=v;for(auto &v:weights)v/=total;return weights;
+std::array<double,regimeCount> transitionProbabilities(int r,int perk,const Config &c){
+    auto weights=c.weights.at(r);const int p=std::clamp(perk,-4,4)+4;weights[0]*=c.crisis[p];weights[regimeCount-1]*=c.peak[p];double total=0;for(double v:weights)total+=v;for(auto &v:weights)v/=total;return weights;
 }
 State initialize(double form,QDate date,SimulationV2::Seed seed,const Config &c){
     if(!date.isValid() || !std::isfinite(form) || form<1 || form>100)throw std::invalid_argument("Invalid initial form/date");
     SimulationV2::SeededRandom rng(seed);State s;s.form=form;s.date=date;
     s.base=bounded(form+laplace(rng,rng.event(c.initialOutlierChance)?c.initialOutlierDeviation:c.initialDeviation));
-    s.regime=0;for(int r=1;r<5;++r)if(std::abs(s.base-c.centers[r])<std::abs(s.base-c.centers[s.regime]))s.regime=r;
+    s.regime=0;for(int r=1;r<regimeCount;++r)if(std::abs(s.base-c.centers[r])<std::abs(s.base-c.centers[s.regime]))s.regime=r;
     s.visited=1<<s.regime;s.remainingDays=waiting(s.regime,rng,c);s.randomState=rng.snapshot();return s;
 }
 void advance(State &s,QDate target,int perk,const Config &c,const std::function<void(const State &)> &observer){

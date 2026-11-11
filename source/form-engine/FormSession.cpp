@@ -85,13 +85,13 @@ QVariantMap Session::diagnostic(const Jumper &athlete) const {
     add(status,QObject::tr("Do zmiany okresu"),number(state.remainingDays)+QObject::tr(" dni"),QObject::tr("Pozostały wylosowany czas do następnej zmiany okresu. Sama forma nie przeskakuje wtedy do jego centrum."));
     add(status,QObject::tr("Średni czas okresu"),number(config.meanDays[state.regime])+QObject::tr(" dni"));
     add(status,QObject::tr("Zmiany okresu"),QString::number(state.transitions));
-    QStringList visited;for(int r=0;r<5;++r)if(state.visited&(1<<r))visited.append(regimeName(r));
+    QStringList visited;for(int r=0;r<regimeCount;++r)if(state.visited&(1<<r))visited.append(regimeName(r));
     add(status,QObject::tr("Odwiedzone okresy"),QString::number(visited.size()),visited.join(", "));
     add(model,QObject::tr("Powrót F / dzień"),number((state.base-state.form)*(1-a)),QObject::tr("Przewidywany składnik powrotu do bazy w jednym dniu, przy niezmienionej bazie i bez losowości."));
     add(model,QObject::tr("Powrót μ / dzień"),number((config.centers[state.regime]-state.base)*(1-baseA)));
     add(model,QObject::tr("Rozrzut nowej bazy"),number(config.entryDeviation[state.regime]));
     const auto probabilities=transitionProbabilities(state.regime,perk,config);
-    for(int r=0;r<5;++r)if(r!=state.regime)add(QObject::tr("Następna zmiana okresu"),regimeName(r),number(probabilities[r]*100,2)+" %",QObject::tr("Szansa przy najbliższej zmianie okresu, nie w każdym dniu."));
+    for(int r=0;r<regimeCount;++r)if(r!=state.regime)add(QObject::tr("Następna zmiana okresu"),regimeName(r),number(probabilities[r]*100,2)+" %",QObject::tr("Szansa przy najbliższej zmianie okresu, nie w każdym dniu."));
     add(random,QObject::tr("Stan RNG"),QString::number(state.randomState));
     return {{"automatic",enabled},{"pending",false},{"form",state.form},{"base",state.base},{"regime",regimeName(state.regime)},{"date",state.date.toString("dd.MM.yyyy")},{"transitions",state.transitions},{"rows",rows}};
 }

@@ -97,7 +97,7 @@ Item {
                 FormPlotChooser { visible: !!lab.report.views; backend: lab.backend; Layout.fillWidth: true }
                 BalanceLabPlot { visible: !!lab.report.views; Layout.fillWidth: true; colors: lab.plotColors; caption: qsTr("Forma"); xLabel: qsTr("Dzień"); yLabel: "F"; series: lab.view.forms || [] }
                 BalanceLabPlot { visible: !!lab.report.views; Layout.fillWidth: true; colors: lab.plotColors; caption: qsTr("Baza formy"); xLabel: qsTr("Dzień"); yLabel: "μ"; series: lab.view.bases || [] }
-                BalanceLabPlot { visible: !!lab.report.views; Layout.fillWidth: true; colors: lab.plotColors; caption: qsTr("Okres dyspozycji"); xLabel: qsTr("Dzień"); yLabel: qsTr("0 kryzys · 1 słaby · 2 typowy · 3 dobry · 4 szczytowy"); series: lab.view.regimes || [] }
+                BalanceLabPlot { visible: !!lab.report.views; Layout.fillWidth: true; colors: lab.plotColors; caption: qsTr("Okres dyspozycji"); xLabel: qsTr("Dzień"); yLabel: qsTr("0 kryzys · 1 słaby · 2 lekko słaby · 3 typowy · 4 lekko dobry · 5 dobry · 6 szczytowy"); series: lab.view.regimes || [] }
                 BalanceLabPlot { visible: !!lab.report.views; Layout.fillWidth: true; caption: qsTr("Średnia populacji — pierwsze powtórzenie"); xLabel: qsTr("Dzień"); yLabel: "F"; series: (lab.report.views || []).reduce(function(out,v){return out.concat(v.population)},[]) }
                 BalanceLabPlot { visible: !!lab.report.views; Layout.fillWidth: true; caption: qsTr("Rozkład formy — cały batch"); xLabel: "F"; yLabel: qsTr("Obserwacje (%)"); series: lab.report.histograms || [] }
             }

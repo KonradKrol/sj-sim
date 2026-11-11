@@ -8,12 +8,20 @@
 
 namespace AutoForm {
 constexpr int version=1;
-constexpr int regimeCount=5;
+constexpr int regimeCount=7;
 struct Config {
-    std::array<double,5> centers{{20,37,50,70,89}};
-    std::array<double,5> meanDays{{160,160,160,160,160}};
-    std::array<double,5> entryDeviation{{4,4,5,5,4}};
-    std::array<std::array<double,5>,5> weights{{{{0,35,10,1.5,0.2}},{{5,0,30,4,0.5}},{{1,18,0,20,1.5}},{{0.5,3,22,0,2}},{{0.5,2,15,36,0}}}};
+    std::array<double,regimeCount> centers{{20,30,40,50,63,76,89}};
+    std::array<double,regimeCount> meanDays{{104,104,104,104,104,104,104}};
+    std::array<double,regimeCount> entryDeviation{{4,4,4.5,5,5,4.5,4}};
+    std::array<std::array<double,regimeCount>,regimeCount> weights=[] {
+        std::array<std::array<double,regimeCount>,regimeCount> result{};
+        for(int i=0;i<regimeCount;++i)for(int j=0;j<regimeCount;++j)if(i!=j) {
+            const int distance=i>j?i-j:j-i;
+            double weight=1;for(int d=1;d<distance;++d)weight*=.25;
+            result[i][j]=weight*(j==0 || j==regimeCount-1?.15:1.);
+        }
+        return result;
+    }();
     double formHalfLife=13,formDeviation=8,baseHalfLife=180,baseDeviation=15,entryInertia=0.12;
     double initialDeviation=5,initialOutlierChance=0.05,initialOutlierDeviation=15;
     std::array<double,9> noise{{0.55,0.65,0.78,0.9,1,1.15,1.36,1.52,1.75}};
@@ -27,7 +35,7 @@ struct Config {
 };
 struct State {
     double form=50,base=50,remainingDays=1;
-    int regime=2,visited=4,transitions=0;
+    int regime=3,visited=8,transitions=0;
     SimulationV2::Seed randomState=0;
     QDate date;
     int displayed() const;
@@ -37,7 +45,7 @@ struct State {
 QString regimeName(int);
 State initialize(double form,QDate,SimulationV2::Seed,const Config &);
 void advance(State &,QDate,int perk,const Config &,const std::function<void(const State &)> &observer={});
-std::array<double,5> transitionProbabilities(int regime,int perk,const Config &);
+std::array<double,regimeCount> transitionProbabilities(int regime,int perk,const Config &);
 // Shared default for newly created saves. Existing saves keep their own snapshot.
 Config defaultConfig(QString *error=nullptr);
 bool saveDefaultConfig(const Config &,QString &);

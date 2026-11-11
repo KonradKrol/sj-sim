@@ -14,10 +14,18 @@
 void check(bool ok,const char *message){if(!ok){std::cerr<<"FAIL: "<<message<<'\n';std::exit(1);}}
 int main(int argc,char **argv){
     QCoreApplication app(argc,argv);QTemporaryDir temporary;app.setProperty("formEngineStorageRoot",temporary.path());
-    AutoForm::Config c,copy;QString error;check(c.validate(error),"defaults validate");check(AutoForm::Config::fromJson(c.toJson(),copy,error) && copy.toJson()==c.toJson(),"config roundtrip");
+    AutoForm::Config c,copy;QString error;
+    check(AutoForm::regimeCount==7 && c.centers[0]==20 && c.centers[3]==50 && c.centers[6]==89,"seven regimes preserve extremes and neutral center");
+    for(double days:c.meanDays)check(std::abs(days-160*.65)<1e-9,"holding time shortened by 35 percent");
+    for(int r=0;r<AutoForm::regimeCount;++r){
+        const auto probabilities=AutoForm::transitionProbabilities(r,0,c);double total=0;
+        for(double v:probabilities){check(std::isfinite(v)&&v>=0,"valid transition probability");total+=v;}
+        check(std::abs(total-1)<1e-12 && probabilities[r]==0,"normalized transitions exclude same regime");
+    }
+check(c.validate(error),"defaults validate");check(AutoForm::Config::fromJson(c.toJson(),copy,error) && copy.toJson()==c.toJson(),"config roundtrip");
     QFile calibrationFile(QFileInfo(QString::fromUtf8(__FILE__)).absolutePath()+"/../docs/calibration/form-defaults-2026-11-10.json");
     check(calibrationFile.open(QIODevice::ReadOnly),"recorded local form calibration exists");
-    check(c.toJson()==QJsonDocument::fromJson(calibrationFile.readAll()).object(),"hardcoded form defaults exactly match the owner's local profile");
+    check(AutoForm::Config::fromJson(QJsonDocument::fromJson(calibrationFile.readAll()).object(),copy,error) && copy.centers.front()==20 && copy.centers[3]==50 && copy.centers.back()==89 && copy.meanDays[3]==104,"legacy calibration migrates to seven regimes and shorter periods");
     check(c.withVariability(2).toJson()==c.toJson(),"standard seasonal variability preserves calibration");
     for(int level=0;level<5;++level)check(c.withVariability(level).validate(error),"all seasonal variability levels remain valid");
     check(c.withVariability(0).meanDays[2]>c.meanDays[2] && c.withVariability(4).meanDays[2]<c.meanDays[2],"variability controls regime duration");
@@ -46,7 +54,7 @@ int main(int argc,char **argv){
     }
     const auto stable=AutoForm::transitionProbabilities(2,-4,c),neutral=AutoForm::transitionProbabilities(2,0,c),volatileForm=AutoForm::transitionProbabilities(2,4,c);
     check(stable[0]<neutral[0] && neutral[0]<volatileForm[0],"form perk changes crisis risk in correct direction");
-    check(stable[4]<neutral[4] && neutral[4]<volatileForm[4],"form perk changes peak chance in correct direction");
+    check(stable[6]<neutral[6] && neutral[6]<volatileForm[6],"form perk changes peak chance in correct direction");
     // Independent daily draws, away from boundaries; test the variance-normalized Laplace noise.
     c.baseDeviation=0;double sum=0,squares=0;
     for(int i=0;i<100000;++i){AutoForm::State s;s.date=start;s.remainingDays=1e8;s.randomState=SimulationV2::deriveSeed(77,i);AutoForm::advance(s,start.addDays(1),0,c);const double x=s.form-50;sum+=x;squares+=x*x;}
