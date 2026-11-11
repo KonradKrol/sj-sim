@@ -310,7 +310,8 @@ QVector<StartListCompetitorStatus> IndividualCompetitionManager::getStartListSta
 
 bool IndividualCompetitionManager::isLuckyLoser(Jumper *jumper) const {
     const bool currentKO=competitionRules && actualRound>0 && actualRound<=effectiveRoundsCount() && competitionRules->getRoundsReference()[actualRound-1].getKO();
-    return currentKO ? KOManager && KOManager->getLuckyLosers().contains(jumper) : previousLuckyLosers.contains(jumper);
+    return currentKO && KOManager && KOManager->getRoundInfo()==&competitionRules->getRoundsReference()[actualRound-1]
+        && KOManager->getLuckyLosers().contains(jumper);
 }
 
 void IndividualCompetitionManager::setupNextRound(QVector<KOGroup> manualGroups)

@@ -59,6 +59,13 @@ static void competitionAdvancementRegressions() {
     finish(&a,100);finish(&b,90);
     check(ko.advancementStatus(&a)==yes && ko.advancementStatus(&b)==wait,"a completed duel winner is safe while its loser still has a lucky-loser chance");
     check(manager.isLuckyLoser(&b),"current LL is marked before its advancement becomes certain");
+    manager.setActualRound(2);
+    source.getRulesPointer()->getRoundsReference()[1].setKO(true);
+    check(!manager.isLuckyLoser(&b),"LL from previous KO round does not leak into following KO round");
+    source.getRulesPointer()->getRoundsReference()[1].setKO(false);
+    check(!manager.isLuckyLoser(&b),"LL badge is absent outside its KO round");
+    manager.setActualRound(1);
+
     source.setExceptionalRoundsCount(1);ko.updateStatuses();
     check(ko.getLuckyLosersCount()==0 && ko.getLuckyLosers().isEmpty() && !manager.isLuckyLoser(&b),"single-round KO with a longer rules preset has no phantom lucky losers");
     for(int row=0;row<model.rowCount();++row)check(!model.index(row,0).data(LuckyLoserRole).toBool(),"effective final-round results never show LL from an unused preset round");
@@ -79,11 +86,11 @@ static void competitionAdvancementRegressions() {
     check(manager.getFilteredJumpersForNextRound().size()==4,"KO selects the three winners and one lucky loser");
     check(manager.isLuckyLoser(&e) && !manager.isLuckyLoser(&f) && !manager.isLuckyLoser(&b),"LL marks only confirmed lucky losers, not winners or eliminated losers");
     manager.setupNextRound();manager.setKOManager(nullptr);
-    check(manager.isLuckyLoser(&e) && !manager.isLuckyLoser(&f),"LL survives the transition into the next series after the KO manager is retired");
+    check(!manager.isLuckyLoser(&e) && !manager.isLuckyLoser(&f),"LL disappears after leaving its KO round");
     source.getRulesPointer()->getRoundsReference()[1].setKO(true);
     check(!manager.isLuckyLoser(&e),"a fresh KO round must not reuse lucky-loser badges earned in the previous round");
     source.getRulesPointer()->getRoundsReference()[1].setKO(false);
-    check(manager.isLuckyLoser(&e),"ordinary next round retains the genuine entry-via-LL badge");
+    check(!manager.isLuckyLoser(&e),"ordinary next round does not retain LL from the previous round");
     // Team certainty starts only after the team's last member has attempted the round.
     QVector<Jumper> members;members.reserve(8);QVector<Team> squads;squads.reserve(4);
     const QStringList countries{"POL","GER","SUI","AUT"};
