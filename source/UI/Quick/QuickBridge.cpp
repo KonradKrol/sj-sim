@@ -660,6 +660,19 @@ void QuickBridge::refresh() {
                 if(gap.contains("gap"))context["currentGap"]=gap.value("gap");
             }
         }
+        if(auto *team=dynamic_cast<TeamCompetitionManager *>(manager);team && !manager->checkRoundEnd() && !manager->checkCompetitionEnd()) {
+            context.remove("currentGap");
+            const int count=(manager->getActualRound()-1)*manager->getCompetitionRules()->getJumpersInTeamCount()+qMax(0,team->getActualGroup()-1);
+            auto *own=manager->getResults()->getResultOfTeam(team->getActualTeam());
+            if(own && count>0 && own->getJumps().size()>=count && !own->isTeamDisqualified()) {
+                const CompetitionSingleResult *leader=own;
+                for(const auto &entry:manager->getResults()->getResultsReference())
+                    if(!entry.isTeamDisqualified() && entry.getJumps().size()>=count && entry>*leader)leader=&entry;
+                const auto gap=qRound64(leader->pointsForJumps(count,manager->getActualRound())*10.)
+                    -qRound64(own->pointsForJumps(count,manager->getActualRound())*10.);
+                if(gap!=0)context["currentGap"]=gap/10.;
+            }
+        }
         if(window->getLiveStage()>0 && window->getLiveStage()<5)
             for(const auto &key:{"currentGap","currentGapGroup"}) {if(m_context.contains(key))context[key]=m_context.value(key);else context.remove(key);}
         if(context!=m_context) { m_context=context;emit changed(); }
