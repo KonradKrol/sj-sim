@@ -26,7 +26,7 @@ ColumnLayout {
         visible: stats.filtersOpen
         Layout.fillWidth: true; Layout.preferredHeight: Math.min(Theme.dp(240),stats.height*.35)
         contentWidth: availableWidth; clip: true
-        Node { width: parent.width; node: stats.node.values.filters }
+        Loader { width: parent.width; source: Qt.resolvedUrl("Node.qml"); onLoaded: item.node=Qt.binding(function(){return stats.node.values.filters}) }
     }
     GridLayout {
         Layout.fillWidth: true; columns: width>Theme.dp(500)?4:2
