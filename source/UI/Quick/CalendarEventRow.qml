@@ -12,9 +12,9 @@ Item {
     readonly property string eventId: event.id
     readonly property bool finished: !!event.played && !event.cancelled
     readonly property bool preparing: !!event.preparing
-    readonly property bool statusIcon: !!event.locked && (finished || preparing || !!event.cancelled)
+    readonly property bool statusIcon: !!event.locked && (preparing || !!event.cancelled)
     readonly property color statusColor: finished ? Theme.success : preparing ? Theme.accent : Theme.muted
-    readonly property string statusText: event.cancelled ? qsTr("Odwołany") : finished ? qsTr("Rozegrany") : event.preparationPhase || ""
+    readonly property string statusText: event.cancelled ? qsTr("Odwołany") : finished ? "" : event.preparationPhase || ""
     objectName: "calendar-row-"+event.id
     signal activated(string eventId)
     activeFocusOnTab: true
@@ -37,8 +37,8 @@ Item {
     Accessible.role: Accessible.ListItem
     Accessible.name: event.title + ", " + event.type + (statusText.length ? ", "+statusText : "")
     Accessible.selected: !!event.selected
-    Surface { anchors.fill: parent; fillColor: row.finished ? Theme.advancementSurface : row.preparing ? Theme.selection : row.event.selected ? Theme.raised : Theme.surface; strokeWidth: row.event.selected ? 2 : row.finished || row.preparing ? 1 : 0; edgeColor: row.event.selected ? Theme.accent : row.statusColor; sweep: 16 }
-    Rectangle { visible: row.finished || row.preparing; anchors.left: parent.left; anchors.top: parent.top; anchors.bottom: parent.bottom; anchors.margins: Theme.dp(6); width: Theme.dp(3); radius: width/2; color: row.statusColor; Accessible.ignored: true }
+    Surface { anchors.fill: parent; fillColor: row.finished ? Theme.advancementSurface : row.preparing ? Theme.selection : row.event.selected ? Theme.raised : Theme.surface; strokeWidth: row.event.selected ? 2 : row.preparing ? 1 : 0; edgeColor: row.event.selected ? Theme.accent : row.statusColor; sweep: 16 }
+    Rectangle { visible: row.preparing; anchors.left: parent.left; anchors.top: parent.top; anchors.bottom: parent.bottom; anchors.margins: Theme.dp(6); width: Theme.dp(3); radius: width/2; color: row.statusColor; Accessible.ignored: true }
 
     MouseArea {
         objectName: "calendar-select-"+row.event.id
@@ -48,11 +48,11 @@ Item {
     }
     RowLayout {
         id: rowContent
-        anchors.fill: parent; anchors.margins: Theme.compact ? 3 : 4; anchors.leftMargin: row.finished || row.preparing ? Theme.dp(13) : (Theme.compact ? 3 : 4)
+        anchors.fill: parent; anchors.margins: Theme.compact ? 3 : 4; anchors.leftMargin: row.preparing ? Theme.dp(13) : (Theme.compact ? 3 : 4)
         spacing: Theme.compact ? 4 : 6
         SButton {
             id: grip
-            visible: !row.statusIcon
+            visible: !row.event.locked && !row.statusIcon
             objectName: "calendar-grip-"+row.event.id
             text: "⠿"; quiet: true; enabled: !row.event.locked
             Layout.preferredWidth: Theme.compact ? 24 : 28; Layout.minimumWidth: 24; Layout.maximumWidth: 28; Layout.preferredHeight: Theme.compact ? 24 : 28
