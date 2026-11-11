@@ -73,21 +73,40 @@ Item {
         }
         SButton { visible: calendar.panel==="defaults"; text: "← "+qsTr("Kalendarz"); quiet: true; dense: true; onClicked: calendar.panel="events" }
         Pane {
-            visible: calendar.backend.dateWarnings.length>0
+            visible: calendar.backend.dateWarnings.length>0 || calendar.backend.error.length>0
             Layout.fillWidth: true
             padding: Theme.dp(12)
-            background: Rectangle { color: Theme.surface; border.color: Theme.warning; border.width: 2; radius: Theme.dp(6) }
+            background: Rectangle {
+                color: Theme.surface; border.color: Theme.warning; border.width: 2; radius: Theme.dp(6)
+                Rectangle { anchors.fill: parent; anchors.margins: 2; radius: parent.radius; color: Qt.rgba(Theme.warning.r,Theme.warning.g,Theme.warning.b,.12) }
+            }
             contentItem: ColumnLayout {
-                spacing: Theme.dp(6)
-                Label { text: qsTr("Popraw daty przed zatwierdzeniem"); color: Theme.warning; font.bold: true; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-                Label { visible: calendar.backend.dateWarnings.length>3; text: qsTr("Liczba problemów: %1").arg(calendar.backend.dateWarnings.length); color: Theme.warning; font.pointSize: Theme.caption }
-                Repeater {
-                    model: calendar.backend.dateWarnings.slice(0,3)
-                    Label { required property string modelData; text: "• "+modelData; color: Theme.ink; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                spacing: Theme.dp(8)
+                RowLayout {
+                    Layout.fillWidth: true; spacing: Theme.dp(9)
+                    Rectangle {
+                        implicitWidth: Theme.dp(28); implicitHeight: Theme.dp(28); radius: width/2; color: Theme.warning
+                        Label { anchors.centerIn: parent; text: "!"; font.bold: true; font.pointSize: Theme.section; color: Theme.surface }
+                    }
+                    Label { text: qsTr("Popraw kalendarz"); color: Theme.ink; font.bold: true; font.pointSize: Theme.body; Layout.fillWidth: true }
+                }
+                Label { visible: calendar.backend.dateWarnings.length>0; text: qsTr("Rozpoczęcie konkursu i zatwierdzenie są zablokowane."); color: Theme.ink; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                ScrollView {
+                    id: issuesScroll
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: Math.min(Theme.dp(150),issuesContent.implicitHeight)
+                    contentWidth: availableWidth; clip: true
+                    Column {
+                        id: issuesContent; width: issuesScroll.availableWidth; spacing: Theme.dp(5)
+                        Repeater {
+                            model: calendar.backend.dateWarnings
+                            Label { required property string modelData; text: "• "+modelData; color: Theme.ink; font.pointSize: Theme.caption; width: issuesContent.width; wrapMode: Text.WordWrap }
+                        }
+                        Label { visible: calendar.backend.error.length>0; text: calendar.backend.error; color: Theme.ink; font.pointSize: Theme.caption; width: issuesContent.width; wrapMode: Text.WordWrap }
+                    }
                 }
             }
         }
-        Label { text: calendar.backend.error; visible: text.length>0; color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         ScrollView {
             id: planningScroll
             visible: calendar.panel==="defaults"; Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; contentWidth: availableWidth; clip: true
