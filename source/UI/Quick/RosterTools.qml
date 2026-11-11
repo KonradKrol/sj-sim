@@ -29,11 +29,13 @@ Flow {
             Rectangle { visible: index===4 || index===8 && !tools.backend.teams; width: 1; height: Theme.dp(24); anchors.verticalCenter: parent.verticalCenter; color: Theme.outline }
             SToolButton {
                 text: modelData.icon; hint: modelData.tip; Accessible.name: hint
-                readonly property color tone: modelData.group===0 ? Theme.accent : modelData.group===1 ? Theme.signal : Theme.warning
-                foreground: tone
+                readonly property color tone: Theme.accent
+                foreground: hovered || down ? tone : Theme.ink
+                font.pointSize: modelData.op==="ovr" || modelData.op==="name" ? Theme.caption*1.15 : Theme.caption*1.4
+                font.weight: Font.DemiBold
                 implicitWidth: Math.max(Theme.dp(41.4),contentItem.implicitWidth+Theme.dp(18))
                 implicitHeight: Theme.dp(41.4)
-                background: Rectangle { radius: Theme.controlRadius; color: parent.down ? Theme.selection : parent.hovered ? Theme.selection : Theme.raised; border.color: parent.tone; border.width: parent.visualFocus ? 2 : 1 }
+                background: Rectangle { radius: Theme.controlRadius; color: parent.down ? Theme.selection : parent.hovered ? Theme.selection : Theme.raised; border.color: parent.hovered || parent.visualFocus ? parent.tone : Theme.outline; border.width: parent.visualFocus ? 2 : 1 }
                 onClicked: if(modelData.group===0)sourceDialog.openAt(modelData.op,this);else if(modelData.op==="countries-manual")countryDialog.open();else tools.backend.tool(modelData.op)
             }
         }
