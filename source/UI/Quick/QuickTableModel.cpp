@@ -46,6 +46,7 @@ double tableScore(const QModelIndex &cell, bool *valid) {
 }
 int QuickTableModel::gapColumn() const {
     if(!m_source)return -1;
+    if(m_view && m_view->property("quickGapColumn").isValid())return m_view->property("quickGapColumn").toInt();
     if(m_source->inherits("TeamResultsTreeModel"))return 3;
     if(m_source->inherits("ResultsTableModel") || m_source->inherits("KOGroupResultsTableModel") || m_source->inherits("ClassificationResultsTableModel"))return 2;
     return -1;

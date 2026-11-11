@@ -106,6 +106,7 @@ void ResultsHistoryWidget::rebuild() {
     const bool team=(competition->getRules().getCompetitionType()==CompetitionRules::Team || teamTrial()) && !individualRanking();
     const int teamSize=qMax(1,(teamTrial()?competition->teamPreviewOwner:competition)->getRules().getJumpersInTeamCount());
     table->setProperty("historyTeam",team);
+    table->setProperty("quickGapColumn",team?3:2);
     int n=rounds->currentData().toInt();if(n==0){n=1;for(const auto &result:snapshot.getResultsReference()){const int size=result.getType()==CompetitionSingleResult::TeamResult?teamSize:1;n=qMax(n,int((result.getJumps().size()+size-1)/size));}}
     QStringList headers=team?QStringList{tr("Poz."),tr("Drużyna"),tr("Zawodnik"),tr("Suma"),QString()}:QStringList{tr("Poz."),tr("Zawodnik"),tr("Suma")};
     for(int r=1;r<=n;++r){if(!team)headers.append(tr("%1 · m").arg(r));headers.append(tr("%1 · pkt").arg(r));}nextModel->setHorizontalHeaderLabels(headers);

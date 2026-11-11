@@ -21,7 +21,7 @@ ClassificationResultsTableView::ClassificationResultsTableView(bool allowShowDet
     classification(classification)
 {
     ui->setupUi(this);
-    ui->tableView->setSelectionMode(QAbstractItemView::NoSelection);ui->tableView->setProperty("quickClassificationRanking",true);ui->tableView->setProperty("quickScoreColumn",2);
+    ui->tableView->setSelectionMode(QAbstractItemView::NoSelection);ui->tableView->setProperty("quickClassificationRanking",true);ui->tableView->setProperty("quickScoreColumn",2);ui->tableView->setProperty("quickGapColumn",2);
     save=nullptr;historyChoice=new QComboBox(this);historyChoice->setObjectName("comboBox_classificationHistory");historyChoice->setAccessibleName(tr("Stan klasyfikacji po konkursie"));historyChoice->hide();ui->verticalLayout->insertWidget(0,historyChoice);
     historyModel=new QStandardItemModel(this);connect(historyChoice,qOverload<int>(&QComboBox::currentIndexChanged),this,[this]{showHistory();});
 
