@@ -1350,6 +1350,9 @@ void QuickBridge::compose(QuickNode *base) {
         plan.append(group("competition-parameters",QString(),parameters,"form"));
         QVariantList top{group("plan",tr("Plan symulacji"),plan)};
         if(auto *list=m_content->findChild<QWidget *>("scrollArea_startList")) {
+            for(auto *combo:list->findChildren<QComboBox *>())combo->setProperty("quickMenuOnly",true);
+            for(auto *label:list->findChildren<QLabel *>())if(label->objectName()=="label_3" || label->objectName().contains("classification",Qt::CaseInsensitive))label->hide();
+            if(auto *load=list->findChild<QPushButton *>("pushButton_loadJumpers"))load->hide();
             QVariantList actions;
             for(const auto &name:{"pushButton_defaultStartListOrder","pushButton_sortStartListRandomly","pushButton_sortStartListByCountries","pushButton_orderByJumpersList","pushButton_jumpersLists","pushButton_byOtherComp","pushButton_loadJumpers"}) {
                 if(auto *button=list->findChild<QPushButton *>(name)) {
@@ -1375,12 +1378,11 @@ void QuickBridge::compose(QuickNode *base) {
                     actions.append(QVariantMap{{"id",idFor(action)},{"text",shortcut.value("text").toString()+"  ("+shortcut.value("sequence").toString()+")"},{"enabled",action->isEnabled()}});
                 }
             }
-            if(!actions.isEmpty()) {
-                auto *entry=m_groups.value("start-list-actions");
-                if(!entry){entry=new QuickNode(this);m_groups.insert("start-list-actions",entry);}
-                entry->update({{"kind","button"},{"text",tr("Opcje listy")},{"actions",actions}});
-                toolbar.append(QVariant::fromValue(entry));
-            }
+            auto *tools=m_groups.value("start-list-actions");
+            if(!tools){tools=new QuickNode(this);m_groups.insert("start-list-actions",tools);}
+            auto *toolsRoster=rosterNode(configuration);
+            tools->update({{"kind","rosterTools"},{"backend",toolsRoster->values().value("backend")}});
+            if(m_rosters.value(configuration)->teams())toolbar.append(QVariant::fromValue(tools));
             if(!toolbar.isEmpty())content.append(group("start-list-toolbar",QString(),toolbar,"row"));
             if(auto *note=m_content->findChild<QLabel *>("teamSquadPolicy"))content.prepend(QVariant::fromValue(node(note,true)));
             auto *roster=rosterNode(configuration);

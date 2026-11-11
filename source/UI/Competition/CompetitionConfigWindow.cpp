@@ -613,7 +613,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
     }
     configureSeasonSquads();
     autoCompleteTeams(false);
-    auto *completeTeams=new QPushButton(tr("Uzupełnij drużyny"),this);completeTeams->setObjectName("autoCompleteTeams");
+    auto *completeTeams=new QPushButton(tr("Dobierz automatycznie"),this);completeTeams->setObjectName("autoCompleteTeams");
     ui->verticalLayout_startList->insertWidget(0,completeTeams);
     auto showCompleter=[this,completeTeams]{completeTeams->setVisible(!squadsLocked && (seasonCompetition?seasonCompetition->getRulesPointer()->getCompetitionType():competitionRulesEditor->getCompetitionTypeFromInput())==CompetitionRules::Team);};
     showCompleter();connect(competitionRulesEditor,&CompetitionRulesEditorWidget::competitionTypeChanged,this,showCompleter);
@@ -637,7 +637,7 @@ void CompetitionConfigWindow::autoCompleteTeams(bool ask) {
     if(squadsLocked || (!ask && property("trainingSquadSuggestion").toBool()))return;
     if(!ask && simulationSave && !simulationSave->getAutoSquadsEnabled())return;
     if(ask && !autoSquadSnapshot.isEmpty() && autoSquadSnapshot!=squadSnapshot()
-        && QMessageBox::question(this,tr("Uzupełnij drużyny"),tr("Zastąpić ręcznie ustawione składy i kolejność zawodników?"),QMessageBox::Yes|QMessageBox::No,QMessageBox::No)!=QMessageBox::Yes)return;
+        && QMessageBox::question(this,tr("Dobierz automatycznie"),tr("Zastąpić ręcznie ustawione składy i kolejność zawodników?"),QMessageBox::Yes|QMessageBox::No,QMessageBox::No)!=QMessageBox::Yes)return;
     const int count=seasonCompetition?seasonCompetition->getRulesPointer()->getJumpersInTeamCount():competitionRulesEditor->getJumpersCountInTeam();
     for(auto &team:competitionTeams)team.arrangeSquad(count,2.,configuredHill().getKPoint());
     autoSquadSnapshot=squadSnapshot();if(teamsSquadsModel)teamsSquadsModel->setupTreeItems();
@@ -663,6 +663,7 @@ void CompetitionConfigWindow::configureSeasonSquads() {
         :source?tr("Podpowiedziano składy z ostatniego treningu drużynowego. Możesz je jeszcze zmienić.")
         :seasonCompetition->getSerieType()==CompetitionInfo::Training?tr("Składy treningowe są robocze. Nie blokują składów na kwalifikacje ani konkurs.")
         :tr("Po rozpoczęciu kwalifikacji lub próbnej zawodnicy i ich kolejność zostaną ustaleni do końca konkursu."),this);
+    note->setVisible(locked || source || seasonCompetition->getSerieType()==CompetitionInfo::Training || seasonCompetition->getTrialRound() || !seasonCompetition->getQualifyingCompetitions().isEmpty());
     note->setObjectName("teamSquadPolicy");note->setWordWrap(true);ui->verticalLayout_startList->insertWidget(0,note);
     lockedSquadSnapshot=squadSnapshot();
     if(locked){teamsTreeView->setEnabled(false);jumpersListView->setEnabled(false);}
@@ -1236,7 +1237,7 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
 
     if(getType()==SingleCompetition){
         auto *daily=findChild<QCheckBox *>("checkBox_dailyForm");
-        setProperty("dayFormSeed",daily && daily->isChecked()?QVariant::fromValue<qulonglong>(QRandomGenerator::system()->generate64()):QVariant());
+        setProperty("dayFormSeed",daily && daily->isChecked()?(property("dayFormSeed").isValid()?property("dayFormSeed"):QVariant::fromValue<qulonglong>(QRandomGenerator::system()->generate64())):QVariant());
     }
     emit submitted();
     if(getType() == SeasonCompetition)

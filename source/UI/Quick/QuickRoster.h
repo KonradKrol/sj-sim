@@ -50,6 +50,8 @@ class QuickRoster : public QObject {
     Q_PROPERTY(int candidateMarkedCount READ candidateMarkedCount NOTIFY changed)
     Q_PROPERTY(bool membership READ membership CONSTANT)
     Q_PROPERTY(bool active READ active NOTIFY changed)
+    Q_PROPERTY(bool knockout READ knockout NOTIFY changed)
+    Q_PROPERTY(bool teams READ teams NOTIFY changed)
     Q_PROPERTY(int activeLimit READ activeLimit NOTIFY changed)
     Q_PROPERTY(bool canUndo READ canUndo NOTIFY changed)
     Q_PROPERTY(QStringList presets READ presets NOTIFY changed)
@@ -78,6 +80,9 @@ public:
     int candidateMarkedCount() const { return m_candidateMarked.size(); }
     bool membership() const;
     bool active() const;
+    bool knockout() const;
+    bool teams() const;
+    Q_INVOKABLE void tool(const QString &operation);
     int activeLimit() const;
     bool canUndo() const { return m_hasUndo; }
     QStringList presets() const;

@@ -40,35 +40,24 @@ Item {
         RosterLimits { visible: roster.backend.savedList && roster.limitsOpen; backend: roster.backend; Layout.fillWidth: true; listHeight: Math.min(Theme.dp(150),Math.max(Theme.dp(65),roster.height*0.25)) }
         RowLayout {
             Layout.fillWidth: true
-            SButton { objectName: "rosterChoose"; visible: roster.backend.membership && roster.compact; text: roster.choosing ? qsTr("Lista · %1").arg(roster.backend.count) : (roster.backend.presets.length>0 ? qsTr("Dodaj") : qsTr("Dodaj zawodników")); primary: !roster.choosing; Layout.fillWidth: true; onClicked: roster.choosing=!roster.choosing }
+            SButton { objectName: "rosterChoose"; visible: roster.backend.membership && roster.compact; text: roster.choosing ? qsTr("Wybrani · %1").arg(roster.backend.count) : qsTr("Wybierz uczestników"); primary: !roster.choosing; Layout.fillWidth: true; onClicked: roster.choosing=!roster.choosing }
             Label { id: arrivalHeading; visible: !roster.compact; text: roster.backend.membership ? qsTr("Wybór i kolejność") : qsTr("Kolejność skoczków"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; Layout.fillWidth: true }
-            SButton { objectName: "rosterOpenPresets"; visible: roster.compact && roster.backend.presets.length>0; text: qsTr("Listy"); Accessible.name: qsTr("Zapisane listy"); hint: qsTr("Zapisane listy"); onClicked: savedLists.open() }
+            SButton { objectName: "rosterOpenPresets"; visible: false; text: qsTr("Listy"); Accessible.name: qsTr("Zapisane listy"); hint: qsTr("Zapisane listy"); onClicked: savedLists.open() }
             SButton { objectName: "rosterUndo"; text: qsTr("Cofnij"); enabled: roster.backend.canUndo; quiet: true; onClicked: roster.backend.undo() }
-            SChoice {
-                visible: !roster.backend.grouped
-                objectName: "rosterSortChoice"
-                Layout.preferredWidth: Theme.dp(190); Layout.minimumWidth: 0
-                model: [{id:"",text:qsTr("Ustaw kolejność")},{id:"name",text:qsTr("Według nazwiska")},{id:"country",text:qsTr("Kraje alfabetycznie")},{id:"overall-asc",text:qsTr("OVR rosnąco")},{id:"overall-desc",text:qsTr("OVR malejąco")},{id:"random",text:qsTr("Losowo")}].concat(roster.fields.externalActions || [])
-                textRole: "text"; currentIndex: 0
-                Accessible.name: qsTr("Ustaw kolejność")
-                onActivated: {var entry=model[index];if(entry.button)ui.activate(entry.id);else if(entry.id.length)roster.backend.sort(entry.id)}
-            }
+
         }
+        RosterTools { visible: !roster.backend.knockout && !roster.backend.savedList && roster.backend.membership; backend: roster.backend; Layout.fillWidth: true; implicitHeight: childrenRect.height }
         Repeater {
-            model: roster.fields.orderChoices || []
+            model: []
             delegate: ProjectedControl { required property var modelData; node: modelData; Layout.fillWidth: true }
         }
-        Loader {
-            active: !roster.compact && roster.backend.presets.length>0; visible: active
-            Layout.fillWidth: true; Layout.preferredHeight: item ? item.implicitHeight : 0
-            sourceComponent: Component { RosterPresets { backend: roster.backend; onApplied: roster.choosing=false } }
-        }
+
         RowLayout {
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
             spacing: 20
-            RosterLibrary { visible: roster.backend.membership && (!roster.compact || roster.choosing); backend: roster.backend; Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0; Layout.preferredWidth: 380 }
-            Rectangle { visible: roster.backend.membership && !roster.compact; Layout.fillHeight: true; Layout.preferredWidth: 1; color: Theme.divider }
-            RosterOrder { visible: !roster.compact || !roster.choosing || !roster.backend.membership; backend: roster.backend; title: roster.backend.savedList ? qsTr("Wybrani zawodnicy") : roster.backend.membership ? qsTr("Lista startowa") : qsTr("Drużyna"); Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0; Layout.preferredWidth: 500 }
+            RosterLibrary { visible: roster.backend.membership && (roster.backend.knockout || !roster.compact || roster.choosing); backend: roster.backend; Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0; Layout.preferredWidth: 380 }
+            Rectangle { visible: roster.backend.membership && !roster.backend.knockout && !roster.compact; Layout.fillHeight: true; Layout.preferredWidth: 1; color: Theme.divider }
+            RosterOrder { visible: !roster.backend.knockout && (!roster.compact || !roster.choosing || !roster.backend.membership); backend: roster.backend; title: roster.backend.savedList ? qsTr("Wybrani zawodnicy") : roster.backend.membership ? qsTr("Lista startowa") : qsTr("Drużyna"); Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0; Layout.preferredWidth: 500 }
         }
         ProjectedControl { visible: !!roster.fields.submit; node: roster.fields.submit || null; Layout.fillWidth: true; Layout.preferredHeight: visible ? implicitHeight : 0 }
     }

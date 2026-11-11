@@ -17,7 +17,7 @@ ColumnLayout {
     RowLayout {
         Layout.fillWidth: true
         Label { text: dragArea.dragging ? dragArea.athleteName : qsTr("%1 · %2").arg(order.title).arg(order.backend.count); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; elide: Text.ElideRight }
-        SButton { visible: order.backend.membership && !order.backend.grouped; objectName: "rosterMove"; text: qsTr("Przenieś"); implicitHeight: order.cramped ? 32 : 40; padding: order.cramped ? 4 : 6; quiet: true; enabled: order.backend.markedCount > 0; onClicked: order.moving=!order.moving }
+        SButton { visible: order.backend.membership && !order.backend.grouped; objectName: "rosterMove"; text: qsTr("↥ Przenieś"); implicitHeight: order.cramped ? 32 : 40; padding: order.cramped ? 4 : 6; quiet: true; enabled: order.backend.markedCount > 0; onClicked: order.moving=!order.moving }
     }
     Label { visible: !order.backend.membership; text: qsTr("Przeciągnij zawodnika na innego, aby zamienić miejsca."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     Label { visible: order.backend.grouped; text: qsTr("Ten widok nie zmienia kolejności. Aby przestawić zawodników, wybierz „Kolejność”."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
@@ -26,8 +26,8 @@ ColumnLayout {
         visible: order.backend.membership && !order.backend.grouped && order.moving && order.backend.markedCount > 0
         Layout.fillWidth: true
         Label { text: qsTr("Pozycja"); color: Theme.muted; font.pointSize: Theme.caption }
-        SField { id: target; objectName: "rosterTargetPosition"; Layout.fillWidth: true; Layout.minimumWidth: 40; text: "1"; validator: IntValidator { bottom: 1; top: Math.max(1,order.backend.count+1) } Accessible.name: qsTr("Pozycja docelowa"); onAccepted: if(acceptableInput){order.backend.moveMarked(Number(text));order.moving=false} }
-        SButton { objectName: "rosterMoveConfirm"; text: qsTr("Przenieś"); enabled: target.acceptableInput; onClicked: {order.backend.moveMarked(Number(target.text));order.moving=false} }
+        SField { id: target; objectName: "rosterTargetPosition"; Layout.preferredWidth: Theme.dp(65); Layout.minimumWidth: 40; text: "1"; validator: IntValidator { bottom: 1; top: Math.max(1,order.backend.count+1) } Accessible.name: qsTr("Pozycja docelowa"); onAccepted: if(acceptableInput){order.backend.moveMarked(Number(text));order.moving=false} }
+        SButton { objectName: "rosterMoveConfirm"; text: qsTr("Ok"); enabled: target.acceptableInput; onClicked: {order.backend.moveMarked(Number(target.text));order.moving=false} }
         SButton { text: "×"; quiet: true; Accessible.name: qsTr("Zamknij"); onClicked: order.moving=false }
     }
     Item {
