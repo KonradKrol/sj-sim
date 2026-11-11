@@ -27,6 +27,8 @@ Popup {
     background: Surface { fillColor: Theme.surface; edgeColor: Theme.accent; strokeWidth: 1 }
     contentItem: ColumnLayout {
         spacing: Theme.dp(10)
+        RowLayout {
+            Layout.fillWidth: true
         Label {
             text: popup.operation==="copy-order" ? qsTr("Kolejność z konkursu") : popup.operation==="copy-exact" ? qsTr("Lista z konkursu") : popup.operation==="classification" ? qsTr("Sortuj klasyfikacją") : qsTr("Sortuj wynikami konkursu")
             color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.bold: true
@@ -34,11 +36,13 @@ Popup {
         }
         SChoice {
             visible: popup.sources.seasons.length>1
-            Layout.fillWidth: true; Layout.minimumWidth: 0
+            Layout.preferredWidth: Theme.dp(145); Layout.maximumWidth: Theme.dp(170); Layout.minimumWidth: 0
+            font.pointSize: Theme.caption
             model: popup.sources.seasons
             currentIndex: popup.sources.seasonIndex
             Accessible.name: qsTr("Sezon")
             onActivated: {popup.sources=popup.backend.toolSources(popup.operation,currentIndex);popup.sourceIndex=0}
+        }
         }
         SChoice {
             visible: popup.sources.entries.length>0
