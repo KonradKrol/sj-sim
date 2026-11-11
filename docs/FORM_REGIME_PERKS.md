@@ -50,3 +50,13 @@ tests/form-engine.cpp checks normalization, exact detailed balance, symmetry,
 aggregate transition intensity, long-run occupancy using 200,000 sampled
 holding times per tested perk, RNG persistence and batch determinism.
 Run scripts/test-form-engine.sh.
+
+## Developer shortcut
+
+In the season workspace, Ctrl+Shift+F opens a day-count dialog. Confirmation
+advances all athletes' latent form states and displayed forms by that many
+days, using their seasonal form perks. Calendar dates and each form state's
+date anchor stay unchanged: this is a diagnostic acceleration, not a season
+time jump. RNG state, base and residual holding time advance normally.
+The action is atomic through AutoForm::Checkpoint and marks the save dirty.
+It is also available when ordinary automatic form is disabled.

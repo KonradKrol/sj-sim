@@ -4,6 +4,12 @@ import QtQuick.Layouts 1.15
 
 ColumnLayout {
     id: workspace
+    Shortcut {
+        sequence: "Ctrl+Shift+F"
+        enabled: workspace.visible && ui.profile==="SimulationSaveManagerWindow"
+        onActivated: {var action=ui.find("developerAdvanceForm");if(action)ui.activate(action.values.id)}
+    }
+
     readonly property bool tabbed: ui.root.values.kind === "tabs"
     readonly property bool season: ui.profile === "SimulationSaveManagerWindow"
     readonly property var contentNode: tabbed && ui.root.children.length ? ui.root.children[0] : ui.root

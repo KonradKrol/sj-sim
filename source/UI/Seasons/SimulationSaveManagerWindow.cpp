@@ -1,3 +1,5 @@
+#include <stdexcept>
+#include <QCryptographicHash>
 #include "../../seasons/CalendarDateValidation.h"
 #include "../Quick/QuickRoster.h"
 #include "../DatabaseEditor/ListModels/JumpersListsListModel.h"
@@ -63,6 +65,40 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     auto *cancelNext=new QPushButton(tr("Odwołaj najbliższe wydarzenie"),this);
     cancelNext->setObjectName("pushButton_cancelNextCompetition");cancelNext->hide();
     connect(cancelNext,&QPushButton::clicked,this,&SimulationSaveManagerWindow::cancelNextEvent);
+    auto *advanceForm=new QPushButton(tr("Przesymuluj formę"),this);
+    advanceForm->setObjectName("developerAdvanceForm");advanceForm->hide();
+    connect(advanceForm,&QPushButton::clicked,this,[this] {
+        bool accepted=false;
+        const int days=QInputDialog::getInt(this,tr("Przesymuluj formę"),
+            tr("Liczba dni dla wszystkich skoczków (bez zmiany dat kalendarza):"),30,1,36525,1,&accepted);
+        if(!accepted)return;
+        auto &engine=simulationSave->formEngine();
+        AutoForm::Checkpoint checkpoint(engine,simulationSave->getJumpersReference());
+        QDate anchor=QDate::currentDate();
+        if(auto *next=simulationSave->getNextCompetition();next && next->getScheduledDate().isValid())anchor=next->getScheduledDate();
+        QString error;
+        try {
+            for(auto *athlete:simulationSave->getJumpersReference()) {
+                if(!athlete || !athlete->getSimulationProfile())continue;
+                auto profile=*athlete->getSimulationProfile();const auto key=athlete->getIDStr();
+                if(!engine.states.contains(key)) {
+                    const auto hash=QCryptographicHash::hash(key.toUtf8(),QCryptographicHash::Sha256);quint64 stream=0;
+                    for(int i=0;i<8;++i)stream=(stream<<8)|quint8(hash[i]);
+                    engine.states.insert(key,AutoForm::initialize(profile.form,anchor,SimulationV2::deriveSeed(engine.seed,stream),engine.config,profile.perks[3]));
+                }
+                auto &state=engine.states[key];const auto date=state.date;
+                AutoForm::advance(state,date.addDays(days),profile.perks[3],engine.config);
+                state.date=date;profile.form=state.displayed();
+                if(!athlete->setSimulationProfile(profile,error))throw std::runtime_error(error.toStdString());
+            }
+        } catch(const std::exception &exception) {
+            checkpoint.restore();QMessageBox::warning(this,tr("Nie zmieniono formy"),QString::fromUtf8(exception.what()));return;
+        }
+        checkpoint.commit();refreshProfileDrafts();
+        auto *model=jumpersListView->getListModel();
+        if(model->rowCount()>0)emit model->dataChanged(model->index(0),model->index(model->rowCount()-1));
+        markSeasonChanged();fillNextCompetitionInformations();
+    });
     auto *automaticForm=new QCheckBox(tr("Automatyczna forma zawodników"),this);
     automaticForm->setObjectName("automaticFormEnabled");automaticForm->hide();
     automaticForm->setToolTip(tr("Forma zmienia się wraz z datami wydarzeń. Wymaga włączonych dat; przy aktywnej funkcji nie można zmieniać formy ręcznie."));
