@@ -239,10 +239,23 @@ void QuickCalendar::refresh() {
             {"contextAllowed",options.contextParameters},{"parameters",parameters},{"mixedParameters",mixedParameters},
             {"defaults",QVariantMap{{"multiplier",1.},{"points-limit",0},{"minimum-age",options.minimumAge},{"maximum-age",options.maximumAge},{"country-count",options.countryCount}}}});
     }
+    const auto eventLabel=[&](CompetitionInfo *event) {
+        auto *hill=event->getHill();
+        QString label=hill?hill->getName()+" HS"+QString::number(hill->getHSPoint(),'g',6):tr("Brak skoczni");
+        if(event->getSerieType()==CompetitionInfo::Qualifications)label+=" Q";
+        else if(event->getSerieType()==CompetitionInfo::Training)label+=" · "+tr("Trening");
+        else if(event->getSerieType()==CompetitionInfo::TrialRound)label+=" · "+tr("Próbna");
+        if(datesEnabled() && event->getScheduledDate().isValid())label+=" ("+QLocale().standaloneDayName(event->getScheduledDate().dayOfWeek(),QLocale::ShortFormat)+")";
+        if(event->getRules().getCompetitionType()==CompetitionRules::Team)label+=" TEAM";
+        return label;
+    };
     m_advancementOptions={nullptr};m_advancementLabels=QStringList{tr("Brak")};
-    for(auto *target:all){bool allowed=!chosen.isEmpty();for(auto *event:chosen)if(all.indexOf(target)>=all.indexOf(event)||target->getRules().getCompetitionType()!=event->getRules().getCompetitionType())allowed=false;
-        if(allowed){m_advancementOptions.append(target);m_advancementLabels.append(QString::number(all.indexOf(target)+1)+". "+(target->getHill()?target->getHill()->getName():tr("Brak skoczni")));}}
-    if(chosen.size()==1)if(auto *source=chosen.first()->getPendingAdvancementCompetition();source && all.contains(source) && source->getRules().getCompetitionType()==chosen.first()->getRules().getCompetitionType() && !m_advancementOptions.contains(source)) {m_advancementOptions.append(source);m_advancementLabels.append(tr("%1. %2 — oczekuje").arg(all.indexOf(source)+1).arg(source->getHill()?source->getHill()->getName():tr("Brak skoczni")));}
+    auto newestFirst=all;std::reverse(newestFirst.begin(),newestFirst.end());
+    for(auto *target:newestFirst){bool allowed=!chosen.isEmpty();for(auto *event:chosen)if(all.indexOf(target)>=all.indexOf(event)||target->getRules().getCompetitionType()!=event->getRules().getCompetitionType())allowed=false;
+        if(allowed){m_advancementOptions.append(target);m_advancementLabels.append(eventLabel(target));}}
+    if(chosen.size()==1)if(auto *source=chosen.first()->getPendingAdvancementCompetition();source && all.contains(source) && source->getRules().getCompetitionType()==chosen.first()->getRules().getCompetitionType() && !m_advancementOptions.contains(source)) {m_advancementOptions.append(source);m_advancementLabels.append(eventLabel(source)+" — "+tr("oczekuje"));}
+    QStringList qualificationFlags;for(auto *event:m_advancementOptions)qualificationFlags.append(event?hillFlag(event->getHill()):QString());
+    m_selection["qualificationFlags"]=qualificationFlags;
     m_selection["pendingSource"]=chosen.size()==1 && chosen.first()->getPendingAdvancementCompetition()?all.indexOf(chosen.first()->getPendingAdvancementCompetition())+1:0;
     m_selection["hasQualificationSource"]=std::any_of(chosen.cbegin(),chosen.cend(),[](auto *event){return event->getAdvancementCompetition() || event->getAdvancementClassification() || event->getPendingAdvancementCompetition();});
     common("advancement",[&](auto *e){return m_advancementOptions.indexOf(e->getAdvancementCompetition()?e->getAdvancementCompetition():e->getPendingAdvancementCompetition());});
@@ -252,9 +265,10 @@ void QuickCalendar::refresh() {
     common("sortMode", [&](auto *e){return e->startListSortMode;});
     common("sortCompetition", [&](auto *e){return e->startListSortCompetitionId;});
     common("sortClassification", [&](auto *e){return e->startListSortClassificationId;});
-    QStringList sortNames,sortIds,classNames,classIds;
-    for(int i=all.size()-1;i>=0;--i){auto *source=all[i];bool allowed=!chosen.isEmpty();for(auto *event:chosen)if(i>=all.indexOf(event)||source->getRules().getCompetitionType()!=event->getRules().getCompetitionType())allowed=false;if(allowed){sortNames.append(QString::number(i+1)+". "+(source->getHill()?source->getHill()->getName():tr("Brak skoczni")));sortIds.append(source->getIDStr());}}
+    QStringList sortNames,sortIds,sortFlags,classNames,classIds;
+    for(int i=all.size()-1;i>=0;--i){auto *source=all[i];bool allowed=!chosen.isEmpty();for(auto *event:chosen)if(i>=all.indexOf(event)||source->getRules().getCompetitionType()!=event->getRules().getCompetitionType())allowed=false;if(allowed){sortNames.append(eventLabel(source));sortIds.append(source->getIDStr());sortFlags.append(hillFlag(source->getHill()));}}
     for(int i=1;i<m_advancementClasses.size();++i){classNames.append(m_advancementClassLabels[i]);classIds.append(m_advancementClasses[i]->getIDStr());}
+    m_selection["sortCompetitionFlags"]=sortFlags;
     m_selection["sortCompetitionNames"]=sortNames;m_selection["sortCompetitionIds"]=sortIds;
     m_selection["sortClassNames"]=classNames;m_selection["sortClassIds"]=classIds;
     resetCustomRules();

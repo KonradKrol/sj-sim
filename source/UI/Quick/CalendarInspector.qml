@@ -92,7 +92,7 @@ Pane {
                     RowLayout { Layout.fillWidth: true; Label { text: qsTr("Kwalifikacja na podstawie konkursu"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap } HelpDot { explanation: qsTr("Uczestników wyłoni wskazany wcześniejszy konkurs lub kwalifikacje.") } }
                     RowLayout {
                         Layout.fillWidth: true; spacing: Theme.dp(5)
-                        SChoice { Layout.minimumWidth: 0; Layout.fillWidth: true; model: inspector.backend.advancementCompetitions; currentIndex: inspector.backend.selection.advancement === undefined ? -1 : inspector.backend.selection.advancement; Accessible.name: qsTr("Kwalifikacja na podstawie konkursu"); onActivated: inspector.backend.update({advancement:currentIndex}) }
+                        SChoice { Layout.minimumWidth: 0; Layout.fillWidth: true; model: inspector.backend.advancementCompetitions; optionImages: inspector.backend.selection.qualificationFlags || []; searchable: true; popup.width: Math.min(Theme.dp(480), inspector.Window.window ? inspector.Window.window.width-24 : width); currentIndex: inspector.backend.selection.advancement === undefined ? -1 : inspector.backend.selection.advancement; Accessible.name: qsTr("Kwalifikacja na podstawie konkursu"); onActivated: inspector.backend.update({advancement:currentIndex}) }
                         SToolButton {
                             text: "×"; Accessible.name: qsTr("Usuń źródło kwalifikacji")
                             hint: qsTr("Ustaw brak źródła kwalifikacji")
@@ -132,6 +132,7 @@ Pane {
                         popup.width: Math.min(Theme.dp(480), inspector.Window.window ? inspector.Window.window.width-24 : width)
                         popup.height: Math.min(Theme.dp(360), Math.max(popup.above,popup.below))
                         displayText: currentIndex < 0 ? qsTr("Różne konkursy") : textAt(currentIndex)
+                        optionImages: inspector.backend.selection.sortCompetitionFlags || []
                         model: inspector.backend.selection.sortCompetitionNames || []
                         currentIndex: (inspector.backend.selection.sortCompetitionIds || []).indexOf(inspector.backend.selection.sortCompetition)
                         onActivated: inspector.backend.update({sortCompetition:inspector.backend.selection.sortCompetitionIds[currentIndex]})
