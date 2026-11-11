@@ -15,7 +15,8 @@ Flow {
     RaceToolGroup {
         width: implicitWidth
         SButton {
-            readonly property bool jumping: !ui.context.complete && !ui.context.roundComplete
+            objectName: "racePrimaryAction"
+            readonly property bool jumping: !ui.context.complete && !ui.context.roundComplete && !(controls.nextControl && controls.nextControl.values.available===true)
             readonly property var sourceControl: jumping ? controls.jumpControl : controls.nextControl
             text: sourceControl ? sourceControl.values.text : ""
             enabled: !!sourceControl && sourceControl.values.enabled
