@@ -276,6 +276,8 @@ static const std::vector<GeneratorScalar> result{
 {"generator.auto.precipitationPattern.0","precipitationPattern",0,0.45,0,1},
 {"generator.auto.precipitationPattern.1","precipitationPattern",1,0.25,0,1},
 {"generator.auto.precipitationPattern.2","precipitationPattern",2,0.08,0,1},
+// Retained for reading frozen balance snapshots; no longer used by generation.
+{"generator.auto.precipitationPattern.3","precipitationPattern",3,0.22,0,1},
 {"generator.auto.stable.0","stable",0,.85,0,1},
 {"generator.auto.stable.1","stable",1,.14,0,1},
 {"generator.auto.stable.2","stable",2,.01,0,1},
