@@ -1,3 +1,4 @@
+#include "../../seasons/SeasonChronology.h"
 #include <stdexcept>
 #include <QCryptographicHash>
 #include "../../seasons/CalendarDateValidation.h"
@@ -110,7 +111,12 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         AutoForm::Checkpoint checkpoint(simulationSave->formEngine(),simulationSave->getJumpersReference());
         QString error;const auto *season=simulationSave->getActualSeason();
         bool accepted=simulationSave->formEngine().setEnabled(enabled,season && season->getDatesEnabled() && simulationSave->getEngineVersion()==2,error);
-        if(accepted && enabled)if(auto *next=simulationSave->getNextCompetition();next && next->getScheduledDate().isValid())accepted=simulationSave->formEngine().update(next->getScheduledDate(),simulationSave->getJumpersReference(),true,error);
+        if(accepted && enabled) {
+            const auto block=SeasonChronology::inspect(season,simulationSave->getNextCompetition());
+            auto *next=block.blocked()?block.event:simulationSave->getNextCompetition();
+            if(!block.stale && !block.invalidDate && !block.invalidOrder && next && next->getScheduledDate().isValid())
+                accepted=simulationSave->formEngine().update(next->getScheduledDate(),simulationSave->getJumpersReference(),true,error);
+        }
         if(!accepted){
             checkpoint.restore();QSignalBlocker blocker(automaticForm);automaticForm->setChecked(simulationSave->formEngine().enabled);
             QMessageBox::warning(this,tr("Automatyczna forma"),error);return;
@@ -948,6 +954,7 @@ void SimulationSaveManagerWindow::showJumperAndHillsEditingHelp()
 
 void SimulationSaveManagerWindow::fillNextCompetitionInformations()
 {
+    emit chronologyChanged();
     if(auto *automaticForm=findChild<QCheckBox *>("automaticFormEnabled")){
         if(simulationSave->formEngine().enabled && (!simulationSave->getActualSeason() || !simulationSave->getActualSeason()->getDatesEnabled() || simulationSave->getEngineVersion()!=2)){
             QString error;simulationSave->formEngine().setEnabled(false,false,error);
@@ -1043,6 +1050,11 @@ void SimulationSaveManagerWindow::updateCompetitionConfigButton()
         ui->pushButton_competitionConfig->setToolTip(tr("Dodaj konkurs w aktualnym kalendarzu"));
         ui->pushButton_competitionConfig->setEnabled(true);
     }
+    else if(SeasonChronology::inspect(simulationSave->getActualSeason(),simulationSave->getNextCompetition()).blocked()) {
+        ui->pushButton_competitionConfig->setText(tr("Zablokowane — kolejność wydarzeń"));
+        ui->pushButton_competitionConfig->setToolTip(chronology().value("message").toString());
+        ui->pushButton_competitionConfig->setEnabled(false);
+    }
     else if(!CalendarDateValidation::issues(calendar,simulationSave->getActualSeason()->getDatesEnabled()).isEmpty()) {
         ui->pushButton_competitionConfig->setText(tr("Popraw daty w kalendarzu"));
         ui->pushButton_competitionConfig->setToolTip(tr("Popraw błędy dat przed rozpoczęciem konkursu."));
@@ -1067,6 +1079,10 @@ void SimulationSaveManagerWindow::updateCompetitionConfigButton()
         ui->pushButton_competitionConfig->setToolTip(tr("Wybierz kalendarz zawierający nierozgrany konkurs"));
         ui->pushButton_competitionConfig->setEnabled(false);
     }
+    if(auto *quick=findChild<QPushButton *>("quickSimulateNextCompetition"))
+        quick->setEnabled(simulationSave->getNextCompetition() && !SeasonChronology::inspect(simulationSave->getActualSeason(),simulationSave->getNextCompetition()).blocked()
+            && CalendarDateValidation::issues(calendar,simulationSave->getActualSeason()->getDatesEnabled()).isEmpty());
+
 }
 
 void SimulationSaveManagerWindow::configNextSeason()
@@ -1223,6 +1239,13 @@ SimulationSave *SimulationSaveManagerWindow::getSimulationSave() const
 
 void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
 {
+    const auto chronologyBlock=SeasonChronology::inspect(simulationSave->getActualSeason(),simulationSave->getNextCompetition());
+    if(chronologyBlock.blocked()) {
+        QMessageBox box(QMessageBox::Warning,tr("Zachowaj kolejność wydarzeń"),SeasonChronology::description(chronologyBlock),QMessageBox::NoButton,this);
+        auto *go=box.addButton(tr("Przejdź do wydarzenia"),QMessageBox::AcceptRole);box.addButton(tr("Wróć"),QMessageBox::RejectRole);box.exec();
+        if(box.clickedButton()==go)goToChronologyBlocker();return;
+    }
+
     const auto dateIssues=CalendarDateValidation::issues(simulationSave->getActualSeason()->getActualCalendar(),simulationSave->getActualSeason()->getDatesEnabled());
     if(!dateIssues.isEmpty()){QMessageBox::warning(this,tr("Popraw daty w kalendarzu"),dateIssues.join("\n"));focusCalendarTab(false,true);return;}
 
@@ -1445,6 +1468,11 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
 
 void SimulationSaveManagerWindow::on_pushButton_saveToFile_clicked()
 {
+    const auto block=SeasonChronology::inspect(simulationSave->getActualSeason(),simulationSave->getNextCompetition());
+    if(block.stale || block.invalidDate || block.invalidOrder) {
+        QMessageBox::warning(this,tr("Popraw kalendarz"),SeasonChronology::description(block));goToChronologyBlocker();return;
+    }
+
     const auto dateIssues=CalendarDateValidation::issues(simulationSave->getActualSeason()->getActualCalendar(),simulationSave->getActualSeason()->getDatesEnabled());
     if(!dateIssues.isEmpty()){QMessageBox::warning(this,tr("Popraw daty w kalendarzu"),dateIssues.join("\n"));focusCalendarTab(false,true);return;}
 
@@ -1912,6 +1940,30 @@ bool SimulationSaveManagerWindow::cancelSeasonEvents(const QStringList &ids)
             targets.append(event);
         }
     if(targets.isEmpty() || targets.size()!=QSet<QString>(ids.begin(),ids.end()).size())return false;
+    if(simulationSave->getActualSeason()->getDatesEnabled()) {
+        QSet<CompetitionInfo *> selected;
+        QDate latest;
+        for(auto *event:targets) {
+            selected.insert(event);for(auto *training:event->getTrainings())selected.insert(training);
+            if(event->getTrialRound())selected.insert(event->getTrialRound());
+        }
+        for(auto *event:selected)if(SeasonChronology::pending(event) && event->getScheduledDate().isValid())latest=qMax(latest,event->getScheduledDate());
+        SeasonChronology::Block blocked;
+        for(auto *calendar:simulationSave->getActualSeason()->getCalendars()) {
+            bool preceding=false;CompetitionInfo *first=nullptr;
+            for(auto *event:calendar->getCompetitions())if(SeasonChronology::pending(event)) {
+                if(!selected.contains(event)) {
+                    if(!first)first=event;
+                    if(!event->getScheduledDate().isValid() || (latest.isValid() && event->getScheduledDate()<latest)){
+                        if(!blocked.event || event->getScheduledDate()<blocked.event->getScheduledDate()){blocked.event=event;blocked.calendar=calendar;blocked.invalidDate=!event->getScheduledDate().isValid();}
+                    }
+                } else if(first && !preceding) {blocked.event=first;blocked.calendar=calendar;preceding=true;}
+            }
+        }
+        if(blocked.blocked()) {
+            QMessageBox::warning(this,tr("Zachowaj kolejność wydarzeń"),SeasonChronology::description(blocked));return false;
+        }
+    }
     QMessageBox question(QMessageBox::Question,tr("Odwołanie wydarzenia"),
         tr("Odwołać wybrane wydarzenia (%1)? Ich nierozegrane treningi i serie próbne także zostaną odwołane. Po odwołanych kwalifikacjach awansują wszyscy zawodnicy.").arg(targets.size()),QMessageBox::NoButton,this);
     auto *cancel=question.addButton(tr("Odwołaj wydarzenia"),QMessageBox::DestructiveRole);
@@ -1935,4 +1987,29 @@ bool SimulationSaveManagerWindow::cancelSeasonEvents(const QStringList &ids)
     simulationSave->updateNextCompetitionIndex();refreshCalendarState();fillNextCompetitionInformations();updateArchive();
     markSeasonChanged();if(simulationSave->getAutosaveEnabled())saveSeasonChanges();
     return true;
+}
+
+QVariantMap SimulationSaveManagerWindow::chronology() const {
+    const auto block=SeasonChronology::inspect(simulationSave->getActualSeason(),simulationSave->getNextCompetition());
+    QDate earliest;
+    for(auto *calendar:simulationSave->getActualSeason()->getCalendars())if(calendar)for(auto *event:calendar->getCompetitions())
+        if(SeasonChronology::pending(event) && event->getScheduledDate().isValid() && (!earliest.isValid() || event->getScheduledDate()<earliest))earliest=event->getScheduledDate();
+    const auto date=block.stale || !earliest.isValid()?block.lastDate:earliest;
+    return {{"blocked",block.blocked()},{"stale",block.stale},{"date",date.toString(Qt::ISODate)},{"message",SeasonChronology::description(block)}};
+}
+void SimulationSaveManagerWindow::goToChronologyBlocker() {
+    const auto block=SeasonChronology::inspect(simulationSave->getActualSeason(),simulationSave->getNextCompetition());
+    if(!block.blocked() || !block.calendar)return;
+    if(simulationSave->getActualSeason()->getActualCalendar()!=block.calendar) {
+        simulationSave->getActualSeason()->setActualCalendar(block.calendar);
+        simulationSave->updateNextCompetitionIndex();emit actualCalendarChanged();markSeasonChanged();
+    }
+    setEditingCalendar(block.calendar);
+    if(auto *selection=calendarsListView->getListView()->selectionModel()){
+        const int row=simulationSave->getActualSeason()->getCalendarsReference().indexOf(block.calendar);
+        if(row>=0)selection->setCurrentIndex(calendarsListView->getListModel()->index(row),QItemSelectionModel::ClearAndSelect);
+    }
+    fillNextCompetitionInformations();updateCompetitionConfigButton();emit chronologyChanged();
+    if(block.stale || block.invalidDate || block.invalidOrder)focusCalendarTab(false,false);
+    else ui->toolBox->setCurrentIndex(0);
 }

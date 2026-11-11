@@ -1,3 +1,4 @@
+#include "../../seasons/SeasonChronology.h"
 #include <QMessageBox>
 #include "../../seasons/CalendarDateValidation.h"
 #include "QuickCalendar.h"
@@ -83,6 +84,11 @@ QVariantList QuickCalendar::dateWarnings() const
 {
     QVariantList warnings;
     for(const auto &issue:CalendarDateValidation::issues(m_calendar,datesEnabled()))warnings.append(issue);
+    if(m_save && m_save->getActualSeason()) {
+        const auto block=SeasonChronology::inspect(m_save->getActualSeason(),m_save->getNextCompetition());
+        if(block.calendar==m_calendar && (block.stale || block.invalidDate || block.invalidOrder))
+            warnings.prepend(SeasonChronology::description(block));
+    }
     return warnings;
 }
 void QuickCalendar::discardDatePlan()

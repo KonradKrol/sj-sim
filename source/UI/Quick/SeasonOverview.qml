@@ -8,7 +8,21 @@ Column {
     property var node
     readonly property var fields: node ? node.values : ({})
     readonly property var latest: fields.latest || ({})
+    readonly property var chronologyBackend: fields.chronologyBackend || null
+    readonly property var chronology: chronologyBackend ? chronologyBackend.chronology : ({blocked:false})
     spacing: Theme.dp(8)
+    Pane {
+        width: parent.width; visible: overview.chronology.blocked===true
+        padding: Theme.dp(12)
+        background: Rectangle { color: Theme.surface; border.color: Theme.danger; border.width: 2; radius: Theme.controlRadius }
+        contentItem: ColumnLayout {
+            spacing: Theme.dp(8)
+            Label { text: qsTr("Zablokowane — kolejność wydarzeń"); color: Theme.danger; font.bold: true; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+            Label { text: overview.chronology.message || ""; color: Theme.ink; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+            SButton { text: qsTr("Przejdź do wydarzenia"); primary: true; onClicked: overview.chronologyBackend.goToChronologyBlocker() }
+        }
+    }
+
     RowLayout {
         width: parent.width; height: implicitHeight
         Label { text: qsTr("Rozegrano %1 / %2").arg(overview.fields.played || 0).arg(overview.fields.total || 0); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }

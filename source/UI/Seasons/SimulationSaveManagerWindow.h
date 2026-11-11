@@ -28,6 +28,7 @@ class SimulationSaveManagerWindow;
 class SimulationSaveManagerWindow : public QDialog
 {
     Q_OBJECT
+    Q_PROPERTY(QVariantMap chronology READ chronology NOTIFY chronologyChanged)
     Q_PROPERTY(bool rosterBoardOpen READ rosterBoardOpen WRITE setRosterBoardOpen NOTIFY rosterBoardOpenChanged)
     Q_PROPERTY(QVariantMap rosterBoard READ rosterBoard NOTIFY rosterBoardChanged)
     Q_PROPERTY(bool rosterBoardDirty READ rosterBoardDirty NOTIFY rosterBoardChanged)
@@ -48,6 +49,8 @@ public:
 
     void showJumperAndHillsEditingHelp();
     void fillNextCompetitionInformations();
+    QVariantMap chronology() const;
+    Q_INVOKABLE void goToChronologyBlocker();
     Q_INVOKABLE void cancelNextEvent();
     bool cancelSeasonEvents(const QStringList &ids);
     void focusCalendarTab(bool create=false,bool addCompetition=false);
@@ -98,6 +101,7 @@ public:
     void syncArchiveCalendars();
 
 signals:
+    void chronologyChanged();
     void actualCalendarChanged();
     void editingCalendarChanged();
     void calendarRequested(bool create,bool addCompetition);

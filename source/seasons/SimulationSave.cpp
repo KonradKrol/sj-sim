@@ -451,7 +451,7 @@ void SimulationSave::updateNextCompetitionIndex()
 
     for(auto & comp : actualSeason->getActualCalendar()->getCompetitionsReference())
     {
-        if(comp->getPlayed() == false)
+        if(comp && !comp->getPlayed() && !comp->getCancelled())
             break;
         nextCompetitionIndex++;
     }

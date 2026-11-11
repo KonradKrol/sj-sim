@@ -1226,8 +1226,9 @@ void QuickBridge::compose(QuickNode *base) {
             auto *season=qobject_cast<SimulationSaveManagerWindow *>(m_window);
             auto *dateNode=m_groups.value("quickSeasonDate");if(!dateNode){dateNode=new QuickNode(this);m_groups.insert("quickSeasonDate",dateNode);}
             auto *nextEvent=season->getSimulationSave()->getNextCompetition();
-            const bool showDate=season->getSimulationSave()->getActualSeason()->getDatesEnabled() && nextEvent && nextEvent->getScheduledDate().isValid();
-            dateNode->update({{"kind","label"},{"name","quickSeasonDate"},{"available",showDate},{"text",showDate?nextEvent->getScheduledDate().toString("dd.MM.yyyy"):QString()}});
+            const QDate chronologicalDate=QDate::fromString(season->chronology().value("date").toString(),Qt::ISODate);
+            const bool showDate=season->getSimulationSave()->getActualSeason()->getDatesEnabled() && chronologicalDate.isValid();
+            dateNode->update({{"kind","label"},{"name","quickSeasonDate"},{"available",showDate},{"text",showDate?chronologicalDate.toString("dd.MM.yyyy"):QString()}});
             if(season->getSimulationSave()->getActualSeason()->getCalendarsReference().isEmpty())
                 overview={empty("season-no-calendar",tr("Zacznij od kalendarza"),tr("Utwórz kalendarz, a następnie dodaj konkursy lub wczytaj preset."),m_content->findChild<QPushButton *>("pushButton_competitionConfig"))};
             else if(!season->getSimulationSave()->getActualSeason()->getActualCalendar())
@@ -1271,9 +1272,9 @@ void QuickBridge::compose(QuickNode *base) {
                     std::stable_sort(podium.begin(),podium.end(),[](const QVariant &a,const QVariant &b){return a.toMap().value("position").toInt()<b.toMap().value("position").toInt();});
                     latest={{"hill",hill?hill->getName():QString()},{"hs",hill?QString::number(hill->getHSPoint(),'f',0):QString()},{"type",lastPlayed->getLongSerieTypeText()},{"cancelled",lastPlayed->getCancelled()},{"date",datesEnabled && lastPlayed->getScheduledDate().isValid()?lastPlayed->getScheduledDate().toString("dd.MM.yyyy"):QString()},{"results",podium}};
                 }
-                if(!upcoming.isEmpty() || !latest.isEmpty()) {
+                if(!upcoming.isEmpty() || !latest.isEmpty() || m_window->property("chronology").toMap().value("blocked").toBool()) {
                     auto *preview=m_groups.value("quickSeasonOverview");if(!preview){preview=new QuickNode(this);m_groups.insert("quickSeasonOverview",preview);}
-                    preview->update({{"kind","seasonOverview"},{"events",upcoming},{"latest",latest},{"total",total},{"played",played},{"remainingCompetitions",remainingCompetitions},
+                    preview->update({{"kind","seasonOverview"},{"chronologyBackend",QVariant::fromValue<QObject *>(m_window)},{"events",upcoming},{"latest",latest},{"total",total},{"played",played},{"remainingCompetitions",remainingCompetitions},
                         {"quickAction",QVariant::fromValue(node(m_window->findChild<QPushButton *>("quickSimulateNextCompetition"),true))},{"cancelAction",QVariant::fromValue(node(m_window->findChild<QPushButton *>("pushButton_cancelNextCompetition"),true))},{"nextEvent",nextEvent?nextEvent->getLongSerieTypeText():QString()},{"action",QVariant::fromValue(node(m_content->findChild<QPushButton *>("pushButton_competitionConfig")))}});
                     overview={QVariant::fromValue(preview)};
                 }

@@ -14,6 +14,7 @@ inline QStringList issues(const SeasonCalendar *calendar,bool enabled) {
     for(auto *event:calendar->getCompetitions()) {
         if(!event || auxiliary.contains(event))continue;
         ++number;
+        if(event->getCancelled())continue;
         if(event->getPendingAdvancementCompetition())result.append(tr("Konkurs %1: źródło kwalifikacji musi być wcześniej w kalendarzu.").arg(number));
         if(!enabled)continue;
         const auto date=event->getScheduledDate();
