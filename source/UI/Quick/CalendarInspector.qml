@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Window 2.15
 import QtQuick.Layouts 1.15
 
 Pane {
@@ -99,34 +100,6 @@ Pane {
                             onClicked: inspector.backend.update({advancement:0})
                         }
                     }
-                    RowLayout {
-                        Layout.fillWidth: true
-                        Label { text: qsTr("Sortowanie listy startowej"); color: Theme.muted; Layout.fillWidth: true }
-                        HelpDot { explanation: qsTr("Ustawia początkową kolejność od najsłabszego do najlepszego. Domyślnie korzysta z pierwszej pasującej klasyfikacji. Przed startem możesz ręcznie zmienić kolejność.") }
-                    }
-                    SChoice {
-                        Layout.fillWidth: true
-                        model: [qsTr("Domyślnie"),qsTr("Wybrane źródło kwalifikacji"),qsTr("Konkretny konkurs"),qsTr("Konkretna klasyfikacja")]
-                        optionEnabled: [true, inspector.backend.selection.advancement > 0 || inspector.backend.selection.advancementClass > 0, true, true]
-                        currentIndex: inspector.backend.selection.sortMode === undefined ? 0 : inspector.backend.selection.sortMode
-                        onActivated: inspector.backend.update({sortMode:currentIndex})
-                    }
-                    SChoice {
-                        visible: inspector.backend.selection.sortMode === 2
-                        Layout.fillWidth: true
-                        displayText: currentIndex < 0 ? qsTr("Wybierz konkurs") : textAt(currentIndex)
-                        model: inspector.backend.selection.sortCompetitionNames || []
-                        currentIndex: (inspector.backend.selection.sortCompetitionIds || []).indexOf(inspector.backend.selection.sortCompetition)
-                        onActivated: inspector.backend.update({sortCompetition:inspector.backend.selection.sortCompetitionIds[currentIndex]})
-                    }
-                    SChoice {
-                        visible: inspector.backend.selection.sortMode === 3
-                        Layout.fillWidth: true
-                        displayText: currentIndex < 0 ? qsTr("Wybierz klasyfikację") : textAt(currentIndex)
-                        model: inspector.backend.selection.sortClassNames || []
-                        currentIndex: (inspector.backend.selection.sortClassIds || []).indexOf(inspector.backend.selection.sortClassification)
-                        onActivated: inspector.backend.update({sortClassification:inspector.backend.selection.sortClassIds[currentIndex]})
-                    }
                     RowLayout { Layout.fillWidth: true; Label { text: qsTr("Kwalifikacja według klasyfikacji"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap } HelpDot { explanation: qsTr("Uczestników wyłoni aktualna kolejność we wskazanej klasyfikacji.") } }
                     RowLayout {
                         Layout.fillWidth: true; spacing: Theme.dp(5)
@@ -137,6 +110,43 @@ Pane {
                             enabled: inspector.backend.selection.advancementClass !== 0
                             onClicked: inspector.backend.update({advancementClass:0})
                         }
+                    }
+                    Rectangle { Layout.fillWidth: true; implicitHeight: 1; color: Theme.outline; Layout.topMargin: Theme.dp(8); Layout.bottomMargin: Theme.dp(8) }
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Label { text: qsTr("Sortowanie listy startowej"); color: Theme.ink; font.weight: Font.DemiBold; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                        HelpDot { explanation: qsTr("Ustawia początkową kolejność od najsłabszego do najlepszego. Domyślnie korzysta z pierwszej pasującej klasyfikacji. Przed startem możesz ręcznie zmienić kolejność.") }
+                    }
+                    SChoice {
+                        Layout.fillWidth: true; Layout.minimumWidth: 0
+                        popup.width: Math.min(Theme.dp(420), inspector.Window.window ? inspector.Window.window.width-24 : width)
+                        model: [qsTr("Domyślnie — pierwsza pasująca klasyfikacja"),qsTr("Według wybranego źródła kwalifikacji"),qsTr("Konkretny konkurs"),qsTr("Konkretna klasyfikacja")]
+                        optionEnabled: [true, inspector.backend.selection.advancement > 0 || inspector.backend.selection.advancementClass > 0, true, true]
+                        currentIndex: inspector.backend.selection.sortMode === undefined ? 0 : inspector.backend.selection.sortMode
+                        onActivated: inspector.backend.update({sortMode:currentIndex})
+                    }
+                    SChoice {
+                        visible: inspector.backend.selection.sortMode === 2
+                        Layout.fillWidth: true; Layout.minimumWidth: 0
+                        searchable: true
+                        displayText: currentIndex < 0 ? qsTr("Wybierz konkurs") : textAt(currentIndex)
+                        model: inspector.backend.selection.sortCompetitionNames || []
+                        currentIndex: (inspector.backend.selection.sortCompetitionIds || []).indexOf(inspector.backend.selection.sortCompetition)
+                        onActivated: inspector.backend.update({sortCompetition:inspector.backend.selection.sortCompetitionIds[currentIndex]})
+                    }
+                    SChoice {
+                        visible: inspector.backend.selection.sortMode === 3
+                        Layout.fillWidth: true; Layout.minimumWidth: 0
+                        searchable: true
+                        displayText: currentIndex < 0 ? qsTr("Wybierz klasyfikację") : textAt(currentIndex)
+                        model: inspector.backend.selection.sortClassNames || []
+                        currentIndex: (inspector.backend.selection.sortClassIds || []).indexOf(inspector.backend.selection.sortClassification)
+                        onActivated: inspector.backend.update({sortClassification:inspector.backend.selection.sortClassIds[currentIndex]})
+                    }
+                    Label {
+                        Layout.fillWidth: true
+                        text: qsTr("Od najsłabszego do najlepszego. Kolejność możesz zmienić przed startem.")
+                        color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap
                     }
                 }
             }
