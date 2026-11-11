@@ -30,7 +30,7 @@
   "flight.lateWindSensitivity": 1.1,
   "flight.maximumWindAssistance": 0.65,
   "flight.precipitationLossPerLevel": 0.008,
-  "flight.qualityMetresAtK120": 0.56,
+  "flight.qualityMetresAtK120": 0.532,
   "flight.rainHeavyExponent": 2,
   "flight.rainHeavyLossAtMaximum": 0.15,
   "flight.rainHeavyThreshold": 5,
