@@ -1,3 +1,4 @@
+#include "../../simulation-v2/JumperPotential.h"
 #include <QSettings>
 #include <QRandomGenerator>
 #include "../../balance/BalanceRuntime.h"
@@ -286,7 +287,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         if(comp!=seasonCompetition && !comp->getRulesPointer()->getRoundsReference().isEmpty()) {
             auto &round=comp->getRulesPointer()->getRoundsReference().first();
             if(round.getKO() && round.getKoGroupsSelectionType()!=CompetitionRules::Manual) {
-                auto groups=KOGroup::constructKOGroups(&round,&seasonCompetitionJumpers,round.getKoGroupsSelectionType(),comp);
+                auto groups=KOGroup::constructKOGroups(&round,&seasonCompetitionJumpers,round.getKoGroupsSelectionType(),comp, [this](Jumper *j){return currentPotential(j);});
                 const auto ordered=KOGroup::getJumpersFromGroups(&groups);
                 if(ordered.size()==seasonCompetitionJumpers.size())seasonCompetitionJumpers=ordered;
             }
@@ -502,6 +503,8 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
     comboBox_groupsSelectionType->addItem(tr("Losowo"));
     comboBox_groupsSelectionType->addItem(tr("Ręcznie"));
     comboBox_groupsSelectionType->addItem(tr("Na zakładkę (1, 20, 21…)"));
+    comboBox_groupsSelectionType->addItem(tr("Losowo koszykami bez rodaków"));
+    comboBox_groupsSelectionType->addItem(tr("Wyrównany potencjał grup"));
     ui->verticalLayout_startList->addWidget(comboBox_groupsSelectionType);
     comboBox_groupsSelectionType->hide();
     ui->verticalLayout_startList->addWidget(KOGroupsList);
@@ -547,7 +550,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
                 KOGroupsList->show();
                 comboBox_groupsSelectionType->show();
 
-                seasonCompetitionGroups = KOGroup::constructKOGroups(&seasonCompetition->getRulesPointer()->getRoundsReference()[0], &seasonCompetitionJumpers, seasonCompetition->getRulesPointer()->getRoundsReference()[0].getKoGroupsSelectionType(), seasonCompetition);
+                seasonCompetitionGroups = KOGroup::constructKOGroups(&seasonCompetition->getRulesPointer()->getRoundsReference()[0], &seasonCompetitionJumpers, seasonCompetition->getRulesPointer()->getRoundsReference()[0].getKoGroupsSelectionType(), seasonCompetition, [this](Jumper *j){return currentPotential(j);});
                 KOGroupsList->fillListLayout();
             }
             else{
@@ -599,12 +602,12 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
             const auto rounds=competitionRulesEditor->getRoundsFromInput();
             if(rounds.isEmpty() || !rounds.first().getKO())return;
             auto round=rounds.first();
-            competitionGroups=KOGroup::constructKOGroups(&round,&competitionJumpers,index-1,nullptr);
+            competitionGroups=KOGroup::constructKOGroups(&round,&competitionJumpers,index-1,nullptr, [this](Jumper *j){return currentPotential(j);});
         }else{
             if(!seasonCompetition || seasonCompetition->getRulesPointer()->getRoundsReference().isEmpty())return;
             auto &round=seasonCompetition->getRulesPointer()->getRoundsReference().first();
             if(!round.getKO())return;
-            seasonCompetitionGroups=KOGroup::constructKOGroups(&round,&seasonCompetitionJumpers,index-1,seasonCompetition);
+            seasonCompetitionGroups=KOGroup::constructKOGroups(&round,&seasonCompetitionJumpers,index-1,seasonCompetition, [this](Jumper *j){return currentPotential(j);});
         }
         KOGroupsList->fillListLayout();
     });
@@ -1368,7 +1371,7 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
                     qualificationsManager->getCompetitionRules()->getRoundsReference()[1].setSortStartList(sortStartList);
                     static_cast<IndividualCompetitionManager *>(competitionManager)->getRoundsJumpersReference().push_back(jumpers);
 
-                    info.getRoundsKOGroupsReference().push_back(KOGroup::constructKOGroups(&rinf, &static_cast<IndividualCompetitionManager *>(competitionManager)->getRoundsJumpersReference().last(), rinf.getKoGroupsSelectionType(), competitionManager->getCompetitionInfo()));
+                    info.getRoundsKOGroupsReference().push_back(KOGroup::constructKOGroups(&rinf, &static_cast<IndividualCompetitionManager *>(competitionManager)->getRoundsJumpersReference().last(), rinf.getKoGroupsSelectionType(), competitionManager->getCompetitionInfo(), [this](Jumper *j){return currentPotential(j);}));
                     static_cast<IndividualCompetitionManager *>(competitionManager)->getRoundsJumpersReference().last() = KOGroup::getJumpersFromGroups(&info.getRoundsKOGroupsReference().last());
                     static_cast<IndividualCompetitionManager *>(competitionManager)->getRoundsKOGroupsReference().push_back(&info.getRoundsKOGroupsReference().last());
                 }
@@ -1576,7 +1579,7 @@ void CompetitionConfigWindow::on_comboBox_competition_activated(int index)
             IndividualCompetitionManager::setStartListOrderByCompetitionResults(seasonCompetitionJumpers, competition);
             if(seasonCompetition->getRulesPointer()->getRoundsReference().isEmpty() == false && seasonCompetition->getRulesPointer()->getRoundsReference()[0].getKO() == true)
                 if(comboBox_groupsSelectionType->currentIndex() > 0){
-                    seasonCompetitionGroups = KOGroup::constructKOGroups(&seasonCompetition->getRulesPointer()->getRoundsReference()[0], &seasonCompetitionJumpers, comboBox_groupsSelectionType->currentIndex() - 1, seasonCompetition);
+                    seasonCompetitionGroups = KOGroup::constructKOGroups(&seasonCompetition->getRulesPointer()->getRoundsReference()[0], &seasonCompetitionJumpers, comboBox_groupsSelectionType->currentIndex() - 1, seasonCompetition, [this](Jumper *j){return currentPotential(j);});
                     KOGroupsList->setKOGroups(&seasonCompetitionGroups);
                     KOGroupsList->fillListLayout();
                 }
@@ -1611,7 +1614,7 @@ void CompetitionConfigWindow::on_comboBox_classification_activated(int index)
             IndividualCompetitionManager::setStartListOrderByClassification(seasonCompetitionJumpers, classification);
             if(seasonCompetition->getRulesPointer()->getRoundsReference().isEmpty() == false && seasonCompetition->getRulesPointer()->getRoundsReference()[0].getKO() == true)
                 if(comboBox_groupsSelectionType->currentIndex() > 0){
-                    seasonCompetitionGroups = KOGroup::constructKOGroups(&seasonCompetition->getRulesPointer()->getRoundsReference()[0], &seasonCompetitionJumpers, comboBox_groupsSelectionType->currentIndex() - 1, seasonCompetition);
+                    seasonCompetitionGroups = KOGroup::constructKOGroups(&seasonCompetition->getRulesPointer()->getRoundsReference()[0], &seasonCompetitionJumpers, comboBox_groupsSelectionType->currentIndex() - 1, seasonCompetition, [this](Jumper *j){return currentPotential(j);});
                     KOGroupsList->setKOGroups(&seasonCompetitionGroups);
                     KOGroupsList->fillListLayout();
                 }
@@ -1676,7 +1679,7 @@ void CompetitionConfigWindow::on_pushButton_sortStartListByCountries_clicked()
 
             IndividualCompetitionManager::setStartListOrderByCountries(countries, seasonCompetitionJumpers);
             if(seasonCompetition->getRulesPointer()->getRoundsReference().isEmpty() == false && seasonCompetition->getRulesPointer()->getRoundsReference()[0].getKO() == true){
-                seasonCompetitionGroups = KOGroup::constructKOGroups(&seasonCompetition->getRulesPointer()->getRoundsReference()[0], &seasonCompetitionJumpers, comboBox_groupsSelectionType->currentIndex() - 1, seasonCompetition);
+                seasonCompetitionGroups = KOGroup::constructKOGroups(&seasonCompetition->getRulesPointer()->getRoundsReference()[0], &seasonCompetitionJumpers, comboBox_groupsSelectionType->currentIndex() - 1, seasonCompetition, [this](Jumper *j){return currentPotential(j);});
                 KOGroupsList->setKOGroups(&seasonCompetitionGroups);
                 KOGroupsList->fillListLayout();
             }
@@ -1691,7 +1694,7 @@ void CompetitionConfigWindow::on_pushButton_sortStartListByCountries_clicked()
             if(competitionRulesEditor->getRoundsFromInput().count() > 0){
             RoundInfo ri = competitionRulesEditor->getRoundsFromInput().at(0);
             if(ri.getKO() == true){
-                competitionGroups = KOGroup::constructKOGroups(&ri, &competitionJumpers, comboBox_groupsSelectionType->currentIndex() - 1, nullptr);
+                competitionGroups = KOGroup::constructKOGroups(&ri, &competitionJumpers, comboBox_groupsSelectionType->currentIndex() - 1, nullptr, [this](Jumper *j){return currentPotential(j);});
                 KOGroupsList->setKOGroups(&competitionGroups);
                 KOGroupsList->fillListLayout();
             }
@@ -1719,7 +1722,7 @@ void CompetitionConfigWindow::on_pushButton_defaultStartListOrder_clicked()
     {
         IndividualCompetitionManager::setStartListOrderByDefault(&simulationSave->getJumpersReference(), seasonCompetitionJumpers);
         if(seasonCompetition->getRulesPointer()->getRoundsReference().isEmpty() == false && seasonCompetition->getRulesPointer()->getRoundsReference()[0].getKO() == true){
-                seasonCompetitionGroups = KOGroup::constructKOGroups(&seasonCompetition->getRulesPointer()->getRoundsReference()[0], &seasonCompetitionJumpers, comboBox_groupsSelectionType->currentIndex() - 1, seasonCompetition);
+                seasonCompetitionGroups = KOGroup::constructKOGroups(&seasonCompetition->getRulesPointer()->getRoundsReference()[0], &seasonCompetitionJumpers, comboBox_groupsSelectionType->currentIndex() - 1, seasonCompetition, [this](Jumper *j){return currentPotential(j);});
                 KOGroupsList->setKOGroups(&seasonCompetitionGroups);
                 KOGroupsList->fillListLayout();
             }
@@ -1904,5 +1907,24 @@ void CompetitionConfigWindow::on_pushButton_byOtherComp_clicked()
             teamsTreeView->getTreeView()->expandToDepth(0);
         }
         }
+    }
+}
+
+double CompetitionConfigWindow::currentPotential(Jumper *jumper) {
+    if(!jumper)return 0;
+    try {
+    std::optional<SimulationV2::Seed> day;
+    if(simulationSave && simulationSave->getActualSeason()->getDatesEnabled() && seasonCompetition && seasonCompetition->getScheduledDate().isValid())
+        day=SimulationV2::deriveSeed(simulationSave->formEngine().seed,quint64(seasonCompetition->getScheduledDate().toJulianDay()));
+    else if(auto *enabled=findChild<QCheckBox *>("checkBox_dailyForm");enabled && enabled->isChecked()) {
+        if(!property("dayFormSeed").isValid())setProperty("dayFormSeed",QVariant::fromValue<qulonglong>(QRandomGenerator::global()->generate64()));
+        day=property("dayFormSeed").toULongLong();
+    }
+    const auto type=seasonCompetition?seasonCompetition->getSerieType():CompetitionInfo::Competition;
+    const auto event=type==CompetitionInfo::Training?SimulationV2::EventKind::Training:type==CompetitionInfo::TrialRound?SimulationV2::EventKind::Trial:type==CompetitionInfo::Qualifications?SimulationV2::EventKind::Qualification:SimulationV2::EventKind::Competition;
+    return SimulationV2::jumperPotential(*jumper,configuredHill(),Playground::engineParameters(BalanceRuntime::gameCapture()),
+        weatherSetup?weatherSetup->field().get():nullptr,ui->spinBox_startGate->value(),event,day);
+    } catch(const std::exception &) {
+        const auto profile=jumper->getSimulationProfile();return profile?profile->overall+(profile->form-50)*.3:0;
     }
 }

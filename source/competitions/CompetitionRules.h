@@ -23,7 +23,9 @@ public:
         BasketsDraw,
         Random,
         Manual,
-        Interleaved=5
+        Interleaved=5,
+        BasketsNoCompatriots=6,
+        BalancedPotential=7
     };
     enum WindMeasurementType {
         LegacyWindMeasurement=0,

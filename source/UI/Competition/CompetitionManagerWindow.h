@@ -40,6 +40,7 @@ public:
     void suggestCurrentGate(bool undo=false);
     void lowerCoachGateOne();
     int windRound=1;
+    double currentPotential(Jumper *jumper) const;
     double getSimulationSeconds() const {return simulationSeconds;}
 
 protected:

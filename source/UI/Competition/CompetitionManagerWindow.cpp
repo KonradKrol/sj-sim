@@ -1,3 +1,6 @@
+#include "../../simulation-v2/JumperPotential.h"
+#include "../../playground/PlaygroundModel.h"
+#include "../../balance/BalanceRuntime.h"
 #include "../../balance/BalanceRuntime.h"
 #include "../Seasons/SimulationSaveManagerWindow.h"
 #include "../../playground/PlaygroundModel.h"
@@ -683,10 +686,10 @@ QVector<KOGroup> CompetitionManagerWindow::getManualKOGroupsFromDialogInputs()
     QVBoxLayout mainLayout(&dialog);
     QComboBox selectionComboBox(&dialog);
     selectionComboBox.setObjectName("comboBox_groupsSelectionType");
-    selectionComboBox.setModel(new QStringListModel({tr("Dobór grup"), tr("Klasyczne"), tr("Równomiernie (1, 11, 21…)"), tr("Losowe (Z podziałem na koszyki)"), tr("Losowe"),tr("Ręcznie"),tr("Na zakładkę (1, 20, 21…)")}, &selectionComboBox));
+    selectionComboBox.setModel(new QStringListModel({tr("Dobór grup"), tr("Klasyczne"), tr("Równomiernie (1, 11, 21…)"), tr("Losowe (Z podziałem na koszyki)"), tr("Losowe"),tr("Ręcznie"),tr("Na zakładkę (1, 20, 21…)"),tr("Losowo koszykami bez rodaków"),tr("Wyrównany potencjał grup")}, &selectionComboBox));
 
     QVector<Jumper *> jumpers = indManager->getFilteredJumpersForNextRound();
-    QVector<KOGroup> groups = KOGroup::constructKOGroups(&manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()], &jumpers, KOGroup::Random, manager->getCompetitionInfo());
+    QVector<KOGroup> groups = KOGroup::constructKOGroups(&manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()], &jumpers, KOGroup::Random, manager->getCompetitionInfo(), [this](Jumper *j){return currentPotential(j);});
     KOGroupsListView groupsListView(&dialog);
     groupsListView.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     groupsListView.setKOGroups(&groups);
@@ -701,7 +704,7 @@ QVector<KOGroup> CompetitionManagerWindow::getManualKOGroupsFromDialogInputs()
         auto *round=&manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()];
         int method=index-1;
         if(method==KOGroup::Classic && round->getCountInKOGroup()!=2){method=KOGroup::ForLargerGroups;selectionComboBox.setCurrentIndex(method+1);}
-        groups=KOGroup::constructKOGroups(round,&jumpers,method,manager->getCompetitionInfo());
+        groups=KOGroup::constructKOGroups(round,&jumpers,method,manager->getCompetitionInfo(), [this](Jumper *j){return currentPotential(j);});
         groupsListView.fillListLayout();
     });
 
@@ -2513,4 +2516,15 @@ void CompetitionManagerWindow::lowerCoachGateOne()
     manager->setCoachGateForNextJumper(true);manager->setActualCoachGate(current-1);
     {const QSignalBlocker blocker(ui->spinBox_actualGate);ui->spinBox_actualGate->setValue(current-1);}
     manager->updateLast10Judges();updateToAdvanceDistanceLabel();updateToBeatDistanceLabel();
+}
+
+double CompetitionManagerWindow::currentPotential(Jumper *jumper) const {
+    if(!jumper || !manager || !manager->getCompetitionInfo()->getHill())return 0;
+    const auto *event=manager->getCompetitionInfo();std::optional<SimulationV2::Seed> day;
+    if(property("dayFormSeed").isValid())day=property("dayFormSeed").toULongLong();
+    try {
+        return SimulationV2::jumperPotential(*jumper,*event->getHill(),
+            Playground::engineParameters(event->simulationBalance?*event->simulationBalance:BalanceRuntime::gameCapture()),
+            simulationWeather.get(),manager->getActualGate(),SimulationV2::EventKind::Competition,day,simulationSeconds);
+    } catch(const std::exception &) {const auto profile=jumper->getSimulationProfile();return profile?profile->overall+(profile->form-50)*.3:0;}
 }

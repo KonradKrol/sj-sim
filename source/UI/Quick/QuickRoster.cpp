@@ -189,7 +189,7 @@ void QuickRoster::write(const QVector<Jumper *> &value){
         if(config->KOGroupsList&&!config->comboBox_groupsSelectionType->isHidden()&&config->comboBox_groupsSelectionType->currentIndex()>0){
             auto &groups=config->type==CompetitionConfigWindow::SingleCompetition?config->competitionGroups:config->seasonCompetitionGroups;
             const auto rules=config->seasonCompetition?config->seasonCompetition->getRules():config->competitionRulesEditor->getCompetitionRulesFromWidgetInputs();
-            if(!rules.getRounds().isEmpty()){auto round=rules.getRounds().first();auto jumpers=value;groups=KOGroup::constructKOGroups(&round,&jumpers,config->comboBox_groupsSelectionType->currentIndex()-1,config->seasonCompetition);config->KOGroupsList->setKOGroups(&groups);config->KOGroupsList->fillListLayout();}
+            if(!rules.getRounds().isEmpty()){auto round=rules.getRounds().first();auto jumpers=value;groups=KOGroup::constructKOGroups(&round,&jumpers,config->comboBox_groupsSelectionType->currentIndex()-1,config->seasonCompetition,[config](Jumper *j){return config->currentPotential(j);});config->KOGroupsList->setKOGroups(&groups);config->KOGroupsList->fillListLayout();}
         }
     }else if(auto *list=qobject_cast<JumpersListEditorWindow *>(m_source)){
         list->setSelectedJumpers(value);list->updateUnselectedJumpers();list->getSelectedJumpersListView()->setupListModel();list->getUnselectedJumpersListView()->setupListModel();
@@ -226,7 +226,7 @@ void QuickRoster::moveMarked(int position){
 void QuickRoster::step(int direction){sync();if(direction!=-1&&direction!=1)return;auto next=m_current;if(direction<0){for(int i=1;i<next.size();++i)if(m_marked.contains(key(next[i]))&&!m_marked.contains(key(next[i-1])))qSwap(next[i],next[i-1]);}else for(int i=next.size()-2;i>=0;--i)if(m_marked.contains(key(next[i]))&&!m_marked.contains(key(next[i+1])))qSwap(next[i],next[i+1]);apply(next);}
 void QuickRoster::sort(const QString &key){sync();auto next=m_current;if(key=="random"){std::mt19937 engine(std::random_device{}());std::shuffle(next.begin(),next.end(),engine);}else if(key=="overall-asc"||key=="overall-desc")std::stable_sort(next.begin(),next.end(),[&](auto *a,auto *b){const double left=a->getSimulationProfile()?a->getSimulationProfile()->overall:0;const double right=b->getSimulationProfile()?b->getSimulationProfile()->overall:0;return key=="overall-asc"?left<right:left>right;});else if(key=="name"||key=="country")std::stable_sort(next.begin(),next.end(),[&](auto *a,auto *b){return QString::localeAwareCompare(key=="name"?a->getNameAndSurname():a->getCountryCode(),key=="name"?b->getNameAndSurname():b->getCountryCode())<0;});else return;apply(next);}
 void QuickRoster::undo(){sync();if(!m_hasUndo)return;if(m_undoLimitChange){writeCountryLimits(m_undoLimits);m_hasUndo=false;m_undoLimitChange=false;m_undoLimits.clear();refreshCountryLimits();emit changed();return;}const auto previous=m_undo;m_hasUndo=false;m_undo.clear();m_current=previous;write(previous);refresh();}
-void QuickRoster::applyPreset(int index,int operation){if(operation==3){sync();if(index<0){apply(m_pool);return;}auto *config=qobject_cast<CompetitionConfigWindow *>(m_source);if(config && config->simulationSave && index<config->simulationSave->getJumpersListsReference().size()){QVector<Jumper *> next;for(auto *j:config->simulationSave->getJumpersListsReference()[index].getJumpers())if(m_pool.contains(j))next.append(j);apply(next);}return;}sync();auto *config=qobject_cast<CompetitionConfigWindow *>(m_source);if(!config||!config->simulationSave||!membership()||index<0||index>=config->simulationSave->getJumpersListsReference().size())return;const auto members=config->simulationSave->getJumpersListsReference()[index].getJumpers();auto next=m_current;if(operation==0){for(auto *j:members)if(m_pool.contains(j)&&!next.contains(j))next.append(j);}else if(operation==1){for(auto *j:members)next.removeAll(j);}else if(operation==2){next.clear();for(auto *j:members)if(m_current.contains(j))next.append(j);for(auto *j:m_current)if(!next.contains(j))next.append(j);}else return;apply(next);}
+void QuickRoster::applyPreset(int index,int operation){if(operation==3){sync();if(index<0){apply(m_pool);return;}auto *config=qobject_cast<CompetitionConfigWindow *>(m_source);if(config && config->simulationSave && index<config->simulationSave->getJumpersListsReference().size()){QVector<Jumper *> next;for(auto *j:config->simulationSave->getJumpersListsReference()[index].getJumpers())if(m_pool.contains(j))next.append(j);if(config->simulationSave->getJumpersListsReference()[index].getJumpers().isEmpty())next=m_pool;apply(next);}return;}sync();auto *config=qobject_cast<CompetitionConfigWindow *>(m_source);if(!config||!config->simulationSave||!membership()||index<0||index>=config->simulationSave->getJumpersListsReference().size())return;const auto members=config->simulationSave->getJumpersListsReference()[index].getJumpers();auto next=m_current;if(operation==0){for(auto *j:members)if(m_pool.contains(j)&&!next.contains(j))next.append(j);}else if(operation==1){for(auto *j:members)next.removeAll(j);}else if(operation==2){next.clear();for(auto *j:members)if(m_current.contains(j))next.append(j);for(auto *j:m_current)if(!next.contains(j))next.append(j);}else return;apply(next);}
 
 bool QuickRoster::teams() const {
     auto *c=qobject_cast<CompetitionConfigWindow *>(m_source);if(!c)return false;
@@ -272,17 +272,21 @@ void QuickRoster::tool(const QString &operation) {
                     const auto all=calendar->getCompetitions();
                     for(int i=all.size()-1;i>=0;--i){auto *event=all[i];if(!event->getPlayed() || event->getRules().getCompetitionType()!=(team?CompetitionRules::Team:CompetitionRules::Individual))continue;
                         events.append(event);auto *hill=event->getHill();QString name=hill?hill->getName()+" HS"+QString::number(hill->getHSPoint()):tr("Brak skoczni");
-                        if(event->getSerieType()==CompetitionInfo::Qualifications)name+=" Q";
-                        if(event->getScheduledDate().isValid())name+=" ("+QLocale().dayName(event->getScheduledDate().dayOfWeek(),QLocale::ShortFormat)+")";
-                        if(team)name+=" TEAM";source->addItem(hill?QIcon(CountryFlagsManager::getFlagPixmap(hill->getCountryCode().toLower())):QIcon(),name);
+                        QStringList details;
+                        if(event->getScheduledDate().isValid())details.append(QLocale().dayName(event->getScheduledDate().dayOfWeek(),QLocale::ShortFormat));
+                        if(team)details.append("TEAM");
+                        if(event->getSerieType()==CompetitionInfo::Qualifications)details.append("Q");
+                        if(!details.isEmpty())name+=" ("+details.join(" ")+")";
+                        source->addItem(hill?QIcon(CountryFlagsManager::getFlagPixmap(hill->getCountryCode().toLower())):QIcon(),name);
                     }
                 }
             }
         };
-        connect(season,QOverload<int>::of(&QComboBox::currentIndexChanged),&dialog,[&]{fill();});season->setCurrentIndex(current);fill();
+        connect(season,QOverload<int>::of(&QComboBox::currentIndexChanged),&dialog,[&]{fill();});season->setCurrentIndex(property("toolSourceProvided").toBool()?property("toolSourceSeason").toInt():current);fill();
+        if(property("toolSourceProvided").toBool())source->setCurrentIndex(property("toolSourceIndex").toInt());
         auto *buttons=new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel,&dialog);layout->addWidget(buttons);
         connect(buttons,&QDialogButtonBox::accepted,&dialog,&QDialog::accept);connect(buttons,&QDialogButtonBox::rejected,&dialog,&QDialog::reject);
-        dialog.resize(440,160);if(dialog.exec()!=QDialog::Accepted || source->currentIndex()<0)return;
+        dialog.resize(440,160);if((!property("toolSourceProvided").toBool() && dialog.exec()!=QDialog::Accepted) || source->currentIndex()<0)return;
         if(operation=="classification") {
             for(auto *result:classes[source->currentIndex()]->getRankedResults())scores[team?result->getTeamCode():id(result->getJumper())]=result->getPointsSum();
         } else {
@@ -294,7 +298,7 @@ void QuickRoster::tool(const QString &operation) {
                 if(team){for(const auto &t:event->getTeams())order.append(teamKey(t));}
                 else for(auto *j:event->getStartList())order.append(id(j));
                 if(operation=="copy-exact") {
-                    if(QMessageBox::question(c,tr("Zastąp listę startową"),tr("Zastąpić uczestników i kolejność listy startowej?"),QMessageBox::Yes|QMessageBox::No,QMessageBox::No)!=QMessageBox::Yes)return;
+                    if(!property("toolSourceProvided").toBool() && QMessageBox::question(c,tr("Zastąp listę startową"),tr("Zastąpić uczestników i kolejność listy startowej?"),QMessageBox::Yes|QMessageBox::No,QMessageBox::No)!=QMessageBox::Yes)return;
                     if(team){
                         if(!c->teamSquadsLocked()){
                             const auto rules=c->seasonCompetition?c->seasonCompetition->getRules():c->competitionRulesEditor->getCompetitionRulesFromWidgetInputs();
@@ -311,31 +315,9 @@ void QuickRoster::tool(const QString &operation) {
             }
         }
     } else if(operation=="ovr" || operation=="strength") {
-        const auto parameters=Playground::engineParameters(BalanceRuntime::gameCapture());
-        const auto hill=c->configuredHill();
-        const SimulationV2::QualityModel quality(parameters.quality,SimulationV2::HillSkillCurve(parameters.skillAnchors,parameters.curveExtension));
         const auto strength=[&](Jumper *j) {
-            const auto profile=j->getSimulationProfile();if(!profile)return 0.;
-            if(operation=="ovr")return double(profile->overall);
-            auto actor=SimulationV2::athleteInput(*profile);
-            if(c->simulationSave && c->simulationSave->getActualSeason()->getDatesEnabled() && c->seasonCompetition && c->seasonCompetition->getScheduledDate().isValid())
-                actor.form=AutoForm::dailyForm(actor.form,SimulationV2::deriveSeed(c->simulationSave->formEngine().seed,quint64(c->seasonCompetition->getScheduledDate().toJulianDay())),profile->id);
-            else if(auto *enabled=c->findChild<QCheckBox *>("checkBox_dailyForm");enabled && enabled->isChecked()) {
-                if(!c->property("dayFormSeed").isValid())c->setProperty("dayFormSeed",QVariant::fromValue<qulonglong>(QRandomGenerator::global()->generate64()));
-                actor.form=AutoForm::dailyForm(actor.form,c->property("dayFormSeed").toULongLong(),profile->id);
-            }
-            const auto venue=hill.getSimulationProfile();if(!venue)return double(actor.overall);
-            const auto input=SimulationV2::hillInput(*venue);
-            const auto type=c->seasonCompetition?c->seasonCompetition->getSerieType():CompetitionInfo::Competition;
-            const auto event=type==CompetitionInfo::Training?SimulationV2::EventKind::Training:type==CompetitionInfo::TrialRound?SimulationV2::EventKind::Trial:type==CompetitionInfo::Qualifications?SimulationV2::EventKind::Qualification:SimulationV2::EventKind::Competition;
-            double value=quality.baseline(actor,input.k,input.takeoffBias,event).value();
-            if(auto *weather=c->getWeatherSetup();weather && weather->field()) {
-                const SimulationV2::FlightModel flight(parameters.flight);
-                const int gate=c->findChild<QSpinBox *>("spinBox_startGate")?c->findChild<QSpinBox *>("spinBox_startGate")->value():0;
-                const double reserve=flight.reserve(value,input,gate,0,weather->field()->wind(0,0).head);
-                return flight.fly(reserve,input,*weather->field(),0,false,{},actor.perks[1]).distance;
-            }
-            return value;
+            const auto profile=j->getSimulationProfile();
+            return operation=="ovr"?(profile?double(profile->overall):0.):c->currentPotential(j);
         };
         if(team)for(const auto &t:teamList){double value=0;for(auto *j:t.getJumpers())value+=strength(j);scores[teamKey(t)]=t.getJumpers().isEmpty()?0:value/t.getJumpers().size();}
         else for(auto *j:next)scores[id(j)]=strength(j);
@@ -357,4 +339,63 @@ void QuickRoster::tool(const QString &operation) {
     } catch(const std::exception &) {
         QMessageBox::warning(c,tr("Nie można ustalić kolejności"),tr("Sprawdź skocznię i ustawienia konkursu."));
     }
+}
+
+int QuickRoster::participantList() const {
+    auto *c=qobject_cast<CompetitionConfigWindow *>(m_source);if(!c || !c->simulationSave)return 0;
+    const auto &lists=c->simulationSave->getJumpersListsReference();
+    const auto matches=[&](const SaveJumpersList &list){QSet<Jumper *> members;for(auto *j:list.getJumpers())if(m_pool.contains(j))members.insert(j);if(list.getJumpers().isEmpty())for(auto *j:m_pool)members.insert(j);QSet<Jumper *> selected;for(auto *j:m_current)selected.insert(j);return members==selected;};
+    for(int i=0;i<lists.size();++i)if(lists[i].getId()==c->simulationSave->activeJumpersListId() && matches(lists[i]))return i+1;
+    if(m_current.size()==m_pool.size())return 0;
+    for(int i=0;i<lists.size();++i)if(matches(lists[i]))return i+1;
+    return -1;
+}
+void QuickRoster::orderCountries(const QStringList &countries) {
+    sync();auto next=m_current;
+    std::stable_sort(next.begin(),next.end(),[&](Jumper *a,Jumper *b){return countries.indexOf(a->getCountryCode())<countries.indexOf(b->getCountryCode());});
+    apply(next);
+}
+
+
+void QuickRoster::sourceTool(const QString &operation,int season,int source) {
+    if(operation!="copy-order" && operation!="copy-exact" && operation!="results" && operation!="classification")return;
+    setProperty("toolSourceProvided",true);setProperty("toolSourceSeason",season);setProperty("toolSourceIndex",source);
+    tool(operation);
+    setProperty("toolSourceProvided",false);
+}
+QVariantMap QuickRoster::toolSources(const QString &operation,int chosen) const {
+    auto *c=qobject_cast<CompetitionConfigWindow *>(m_source);
+    QVariantList entries;QStringList names;
+    if(!c || !c->simulationSave)return {{"seasons",names},{"seasonIndex",-1},{"entries",entries}};
+    const auto &seasons=c->simulationSave->getSeasonsReference();int current=0;
+    for(int i=0;i<seasons.size();++i){names.append(tr("Sezon %1").arg(seasons[i].getSeasonNumber()));if(&seasons[i]==c->simulationSave->getActualSeason())current=i;}
+    if(chosen<0)chosen=current;
+    if(chosen>=seasons.size())return {};
+    for(auto *calendar:seasons[chosen].getCalendars()) {
+        if(operation=="classification") {
+            for(auto *entry:calendar->getClassifications())if(entry->getClassificationType()==(teams()?CompetitionRules::Team:CompetitionRules::Individual))
+                entries.append(QVariantMap{{"label",entry->getName()},{"flag",QString()}});
+        } else {
+            const auto all=calendar->getCompetitions();
+            for(int i=all.size()-1;i>=0;--i) {
+                auto *event=all[i];if(!event->getPlayed() || event->getRules().getCompetitionType()!=(teams()?CompetitionRules::Team:CompetitionRules::Individual))continue;
+                auto *hill=event->getHill();QString name=hill?hill->getName()+" HS"+QString::number(hill->getHSPoint()):tr("Brak skoczni");
+                QStringList details;
+                if(event->getScheduledDate().isValid())details.append(QLocale().dayName(event->getScheduledDate().dayOfWeek(),QLocale::ShortFormat));
+                if(teams())details.append("TEAM");if(event->getSerieType()==CompetitionInfo::Qualifications)details.append("Q");
+                if(!details.isEmpty())name+=" ("+details.join(" ")+")";
+                entries.append(QVariantMap{{"label",name},{"flag",hill?flagSource(hill->getCountryCode()):QString()}});
+            }
+        }
+    }
+    return {{"seasons",names},{"seasonIndex",chosen},{"entries",entries}};
+}
+
+QVariantList QuickRoster::orderingCountries() const {
+    QVariantList rows;QSet<QString> seen;
+    for(auto *jumper:m_current)if(jumper && !seen.contains(jumper->getCountryCode())) {
+        const auto code=jumper->getCountryCode();seen.insert(code);
+        rows.append(QVariantMap{{"code",code},{"flag",flagSource(code)}});
+    }
+    return rows;
 }

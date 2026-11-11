@@ -49,6 +49,7 @@ public:
     SimulationWeatherSetup *getWeatherSetup() const {return weatherSetup;}
     SimulationProfileDraft *getHillDraft() const {return hillDraft;}
     Hill configuredHill() const;
+    double currentPotential(Jumper *jumper);
     QVector<Jumper *> availableJumpers() const;
     bool teamSquadsLocked() const {return squadsLocked;}
 

@@ -270,6 +270,8 @@
           </property>
          </item>
           <item><property name="text"><string>Na zakładkę (1, 20, 21…)</string></property></item>
+<item><property name="text"><string>Losowo koszykami bez rodaków</string></property></item>
+<item><property name="text"><string>Wyrównany potencjał grup</string></property></item>
         </widget>
        </item>
        <item>

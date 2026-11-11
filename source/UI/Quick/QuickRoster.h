@@ -55,6 +55,7 @@ class QuickRoster : public QObject {
     Q_PROPERTY(int activeLimit READ activeLimit NOTIFY changed)
     Q_PROPERTY(bool canUndo READ canUndo NOTIFY changed)
     Q_PROPERTY(QStringList presets READ presets NOTIFY changed)
+    Q_PROPERTY(int participantList READ participantList NOTIFY changed)
     Q_PROPERTY(bool savedList READ savedList CONSTANT)
     Q_PROPERTY(bool grouped READ grouped WRITE setGrouped NOTIFY changed)
     Q_PROPERTY(QVariantList countryLimits READ countryLimits NOTIFY changed)
@@ -86,6 +87,11 @@ public:
     int activeLimit() const;
     bool canUndo() const { return m_hasUndo; }
     QStringList presets() const;
+    int participantList() const;
+    Q_INVOKABLE void orderCountries(const QStringList &countries);
+    Q_INVOKABLE QVariantList orderingCountries() const;
+    Q_INVOKABLE QVariantMap toolSources(const QString &operation,int season=-1) const;
+    Q_INVOKABLE void sourceTool(const QString &operation,int season,int source);
     bool savedList() const;
     bool grouped() const { return m_grouped; }
     void setGrouped(bool value);

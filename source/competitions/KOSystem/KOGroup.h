@@ -2,6 +2,7 @@
 #define KOGROUP_H
 
 #include <QVector>
+#include <functional>
 #include <QJsonObject>
 #include "../../simulator/Jumper.h"
 #include "../../simulator/Team.h"
@@ -21,13 +22,15 @@ public:
         ForLargerGroups, //1, 11, 21, 31, 41
         BasketsDraw,
         Random,
-        Interleaved=5
+        Interleaved=5,
+        BasketsNoCompatriots=6,
+        BalancedPotential=7
     };
 
     static QJsonObject getJsonObject(KOGroup &group);
     static KOGroup getFromJson(const QJsonObject & json, IdentifiableObjectsStorage *storage);
 
-    static QVector<KOGroup> constructKOGroups(RoundInfo * roundInfo, QVector<Jumper *> * jumpers, int selectionType, CompetitionInfo *competition);
+    static QVector<KOGroup> constructKOGroups(RoundInfo * roundInfo, QVector<Jumper *> * jumpers, int selectionType, CompetitionInfo *competition, std::function<double(Jumper *)> potential={});
     static QVector<Jumper *> getJumpersFromGroups(QVector<KOGroup> * groups);
 
 private:

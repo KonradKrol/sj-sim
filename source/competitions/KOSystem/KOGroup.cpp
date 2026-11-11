@@ -1,3 +1,12 @@
+#include <climits>
+#include <QSet>
+#include "../../simulation-v2/JumperPotential.h"
+#include "../../playground/PlaygroundModel.h"
+#include "../../balance/BalanceRuntime.h"
+#include <algorithm>
+#include <numeric>
+#include <random>
+#include <cmath>
 #include "KOGroup.h"
 #include "../CompetitionInfo.h"
 #include "../RoundInfo.h"
@@ -35,7 +44,7 @@ KOGroup KOGroup::getFromJson(const QJsonObject &json, IdentifiableObjectsStorage
     return group;
 }
 
-QVector<KOGroup> KOGroup::constructKOGroups(RoundInfo *roundInfo, QVector<Jumper *> *jumpers, int selectionType, CompetitionInfo * competition)
+QVector<KOGroup> KOGroup::constructKOGroups(RoundInfo *roundInfo, QVector<Jumper *> *jumpers, int selectionType, CompetitionInfo * competition, std::function<double(Jumper *)> potential)
 {
     QVector<KOGroup> groups;
     if(roundInfo == nullptr || jumpers == nullptr || jumpers->isEmpty()
@@ -94,6 +103,93 @@ QVector<KOGroup> KOGroup::constructKOGroups(RoundInfo *roundInfo, QVector<Jumper
         }
         std::reverse(groups.begin(),groups.end());
         for(int i=0;i<groups.size();++i)groups[i].setNumber(i+1);
+        break;
+    }
+    case KOGroup::BalancedPotential:
+    {
+        const int size=roundInfo->getCountInKOGroup(), count=(jumpers->size()+size-1)/size;
+        groups.resize(count);QVector<double> sum(count),squares(count);QVector<int> capacity(count,jumpers->size()/count);
+        for(int i=0;i<jumpers->size()%count;++i)++capacity[i];
+        QHash<Jumper *,double> values;
+        const auto parameters=Playground::engineParameters(competition && competition->simulationBalance?*competition->simulationBalance:BalanceRuntime::gameCapture());
+        for(auto *j:*jumpers) {
+            double value=0;
+            if(potential)value=potential(j);
+            else if(competition && competition->getHill())value=SimulationV2::jumperPotential(*j,*competition->getHill(),parameters,nullptr,0,SimulationV2::EventKind::Competition);
+            else if(auto profile=j->getSimulationProfile())value=profile->overall+(profile->form-50)*.3;
+            values[j]=std::isfinite(value)?value:0;
+        }
+        auto ordered=*jumpers;std::stable_sort(ordered.begin(),ordered.end(),[&](auto *a,auto *b){return values[a]>values[b];});
+        double total=0,totalSquares=0;
+        for(auto *j:ordered) {
+            int best=-1;
+            for(int i=0;i<count;++i)if(groups[i].getJumpersReference().size()<capacity[i] && (best<0 || sum[i]/capacity[i]<sum[best]/capacity[best]))best=i;
+            const double value=values[j];groups[best].getJumpersReference().append(j);sum[best]+=value;squares[best]+=value*value;total+=value;totalSquares+=value*value;
+        }
+        const double mean=total/jumpers->size(),deviation=std::sqrt(std::max(0.,totalSquares/jumpers->size()-mean*mean));
+        const auto cost=[&](int group,double s,double sq) {
+            const double avg=s/capacity[group],spread=std::sqrt(std::max(0.,sq/capacity[group]-avg*avg));
+            return 25*(avg-mean)*(avg-mean)+(spread-deviation)*(spread-deviation);
+        };
+        for(int pass=0;pass<30;++pass) {
+            double bestGain=1e-9;int ga=-1,gb=-1,ia=-1,ib=-1;
+            for(int a=0;a<count;++a)for(int b=a+1;b<count;++b) {
+                const auto &left=groups[a].getJumpersReference(),&right=groups[b].getJumpersReference();
+                const double before=cost(a,sum[a],squares[a])+cost(b,sum[b],squares[b]);
+                for(int i=0;i<left.size();++i)for(int j=0;j<right.size();++j) {
+                    const double x=values[left[i]],y=values[right[j]],delta=y-x,squareDelta=y*y-x*x;
+                    const double gain=before-cost(a,sum[a]+delta,squares[a]+squareDelta)-cost(b,sum[b]-delta,squares[b]-squareDelta);
+                    if(gain>bestGain){bestGain=gain;ga=a;gb=b;ia=i;ib=j;}
+                }
+            }
+            if(ga<0)break;
+            auto &a=groups[ga].getJumpersReference(),&b=groups[gb].getJumpersReference();
+            const double x=values[a[ia]],y=values[b[ib]];
+            sum[ga]+=y-x;sum[gb]+=x-y;squares[ga]+=y*y-x*x;squares[gb]+=x*x-y*y;std::swap(a[ia],b[ib]);
+        }
+        for(int i=0;i<count;++i){groups[i].setNumber(i+1);auto &members=groups[i].getJumpersReference();std::stable_sort(members.begin(),members.end(),[&](auto *a,auto *b){return values[a]<values[b];});}
+        break;
+    }
+    case KOGroup::BasketsNoCompatriots:
+    {
+        const int size=roundInfo->getCountInKOGroup(),count=(jumpers->size()+size-1)/size;
+        groups.resize(count);for(int i=0;i<count;++i)groups[i].setNumber(i+1);
+        // Edge-color baskets and countries: a color is a group. Alternating
+        // paths preserve one athlete per basket and country whenever feasible.
+        struct Edge {Jumper *jumper;int basket,country,color=-1;};
+        QVector<Edge> edges;QHash<QString,int> occurrences,countryNodes;
+        QVector<QVector<int>> basketColor(size,QVector<int>(count,-1)),countryColor;
+        for(int i=0;i<jumpers->size();++i) {
+            auto *j=jumpers->at(i);const auto code=j->getCountryCode();
+            // Split only countries whose quota makes duplicates unavoidable.
+            const auto node=code+"/"+QString::number(occurrences[code]++/count);
+            if(!countryNodes.contains(node)){countryNodes[node]=countryColor.size();countryColor.append(QVector<int>(count,-1));}
+            edges.append({j,i/count,countryNodes[node],-1});
+        }
+        std::mt19937 random(std::random_device{}());
+        QVector<int> processing(edges.size());std::iota(processing.begin(),processing.end(),0);std::shuffle(processing.begin(),processing.end(),random);
+        for(int index:processing) {
+            auto &edge=edges[index];QVector<int> colors(count);std::iota(colors.begin(),colors.end(),0);std::shuffle(colors.begin(),colors.end(),random);
+            int a=-1,b=-1,common=-1;
+            for(int color:colors) {
+                if(basketColor[edge.basket][color]<0){a=color;if(countryColor[edge.country][color]<0){common=color;break;}}
+                if(countryColor[edge.country][color]<0)b=color;
+            }
+            if(common>=0)a=common;
+            else {
+                QVector<int> path;bool atCountry=true;int vertex=edge.country,color=a;
+                while(true) {
+                    const int old=atCountry?countryColor[vertex][color]:basketColor[vertex][color];
+                    if(old<0)break;
+                    path.append(old);const auto &item=edges[old];
+                    vertex=atCountry?item.basket:item.country;atCountry=!atCountry;color=color==a?b:a;
+                }
+                for(int old:path){const auto &item=edges[old];basketColor[item.basket][item.color]=-1;countryColor[item.country][item.color]=-1;}
+                for(int old:path){auto &item=edges[old];item.color=item.color==a?b:a;basketColor[item.basket][item.color]=old;countryColor[item.country][item.color]=old;}
+            }
+            edge.color=a;basketColor[edge.basket][a]=index;countryColor[edge.country][a]=index;
+        }
+        for(const auto &edge:edges)groups[edge.color].getJumpersReference().append(edge.jumper);
         break;
     }
     case KOGroup::BasketsDraw:
