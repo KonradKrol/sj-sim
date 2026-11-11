@@ -1212,7 +1212,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
         auto configWindow=std::make_unique<CompetitionConfigWindow>(CompetitionConfigWindow::SeasonCompetition,this,simulationSave);
         configWindow->setModal(true);
 
-        if(next->startListSortMode==0 && Classification::getSpecificTypeClassifications(simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference(), simulationSave->getNextCompetition()->getRulesPointer()->getCompetitionType()).count() > 0)
+        if(next->getRules().getCompetitionType()==CompetitionRules::Team && next->startListSortMode==0 && Classification::getSpecificTypeClassifications(simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference(), simulationSave->getNextCompetition()->getRulesPointer()->getCompetitionType()).count() > 0)
             configWindow->setClassificationsComboBoxIndex(1);
 
         if(quickSimulation)QMetaObject::invokeMethod(configWindow.get(),"on_pushButton_submit_clicked",Qt::DirectConnection);

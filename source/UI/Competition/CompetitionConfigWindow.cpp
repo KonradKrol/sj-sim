@@ -201,6 +201,8 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
             comp = simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference()[simulationSave->getNextCompetitionIndex() + 1];
         else
             comp = seasonCompetition;
+        for(auto *parent:simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference())
+            if(parent && parent->getTrialRound()==seasonCompetition && parent->getRules().getCompetitionType()==CompetitionRules::Individual){comp=parent;break;}
         //Czy seria próbna następnego konkursu po aktualnym równa się aktualnemu konkursowi
 
                 //Jeżeli tak, przefiltruj na podstawie następnego po aktualnym
@@ -256,6 +258,10 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         }
         if(seasonCompetition->getRules().getCompetitionType()==CompetitionRules::Individual) {
 
+        if(comp->startListSortMode==0) {
+            const auto classes=Classification::getSpecificTypeClassifications(simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference(),CompetitionRules::Individual);
+            if(!classes.isEmpty())IndividualCompetitionManager::setStartListOrderByClassification(seasonCompetitionJumpers,classes.first());
+        }
         if(comp->startListSortMode != 0) {
             CompetitionInfo *sortCompetition=nullptr;
             Classification *sortClass=nullptr;
@@ -276,6 +282,14 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
             if(sortCompetition)IndividualCompetitionManager::setStartListOrderByCompetitionResults(seasonCompetitionJumpers,sortCompetition);
             else if(sortClass)IndividualCompetitionManager::setStartListOrderByClassification(seasonCompetitionJumpers,sortClass);
         }
+        }
+        if(comp!=seasonCompetition && !comp->getRulesPointer()->getRoundsReference().isEmpty()) {
+            auto &round=comp->getRulesPointer()->getRoundsReference().first();
+            if(round.getKO() && round.getKoGroupsSelectionType()!=CompetitionRules::Manual) {
+                auto groups=KOGroup::constructKOGroups(&round,&seasonCompetitionJumpers,round.getKoGroupsSelectionType(),comp);
+                const auto ordered=KOGroup::getJumpersFromGroups(&groups);
+                if(ordered.size()==seasonCompetitionJumpers.size())seasonCompetitionJumpers=ordered;
+            }
         }
         jumpersListView->setSeasonJumpers(&seasonCompetitionJumpers);
     }
