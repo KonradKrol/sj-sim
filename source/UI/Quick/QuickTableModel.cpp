@@ -36,6 +36,21 @@ QString quickDecoration(const QVariant &value) {
     return {};
 }
 
+namespace {
+double tableScore(const QModelIndex &cell, bool *valid) {
+    const QString text=cell.data().toString().section(QStringLiteral(" · "),0,0);
+    double value=text.toDouble(valid);
+    if(!*valid)value=QLocale().toDouble(text,valid);
+    return value;
+}
+}
+int QuickTableModel::gapColumn() const {
+    if(!m_source)return -1;
+    if(m_source->inherits("TeamResultsTreeModel"))return 3;
+    if(m_source->inherits("ResultsTableModel") || m_source->inherits("KOGroupResultsTableModel") || m_source->inherits("ClassificationResultsTableModel"))return 2;
+    return -1;
+}
+
 QuickTableModel::QuickTableModel(QAbstractItemView *view, QObject *parent)
     : QAbstractListModel(parent), m_view(view) { sync(); }
 int QuickTableModel::rowCount(const QModelIndex &parent) const { return parent.isValid() ? 0 : m_rows.size(); }
@@ -68,6 +83,12 @@ QVariant QuickTableModel::data(const QModelIndex &index, int role) const {
                 {"editable",bool(flags & Qt::ItemIsEditable)}, {"enabled",bool(flags & Qt::ItemIsEnabled)},
                 {"checkable",bool(flags & Qt::ItemIsUserCheckable) && item.data(Qt::CheckStateRole).isValid()}, {"checked",item.data(Qt::CheckStateRole).toInt() == Qt::Checked}};
             if(scoreCell)cellData["numeric"]=true;
+            if(c==gapColumn()) {
+                bool valid=false;const double score=tableScore(item,&valid);
+                const double gap=m_leaderScore-score;
+                cellData["gap"]=valid && m_hasLeaderScore && !first.parent().isValid() && gap>=0.05
+                    ? QStringLiteral("−")+QLocale().toString(gap,'f',1) : QString();
+            }
             if(teamSetup && c==1)cellData["members"]=members;
             cells.append(cellData);
         }
@@ -196,6 +217,12 @@ bool QuickTableModel::reorder(int from,int to) {
 }
 void QuickTableModel::setTeamMode(int mode){mode=qBound(0,mode,2);if(mode==m_teamMode)return;m_teamMode=mode;rebuild();}
 void QuickTableModel::updateScoreFormat() {
+    m_hasLeaderScore=false;
+    const int gap=gapColumn();
+    if(gap>=0)for(int row=0;row<m_source->rowCount();++row){
+        bool valid=false;const double score=tableScore(m_source->index(row,gap),&valid);
+        if(valid && std::isfinite(score) && (!m_hasLeaderScore || score>m_leaderScore)){m_leaderScore=score;m_hasLeaderScore=true;}
+    }
     m_integralScores=false;
     if(!m_source || !m_view || !m_view->property("quickScoreColumn").isValid())return;
     const int column=m_view->property("quickScoreColumn").toInt();

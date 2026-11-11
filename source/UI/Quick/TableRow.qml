@@ -67,7 +67,13 @@ Rectangle {
                     anchors.rightMargin: Theme.compact ? 4 : 10
                     spacing: Theme.compact ? 4 : 8
                     Image { visible: !!cell.fields.icon; source: cell.fields.icon || ""; sourceSize.width: 32; sourceSize.height: 24; width: visible ? 30 : 0; height: 24; anchors.verticalCenter: parent.verticalCenter; fillMode: Image.PreserveAspectFit }
-                    Text { visible: !cell.fields.checkable && !(row.tableView.teamSetup && cell.columnIndex===1 && (cell.fields.members || []).length); text: row.tableView.teamSetup && cell.columnIndex===1 && !cell.fields.text ? qsTr("Brak zawodników") : cell.fields.text || ""; color: row.eliminated ? Theme.muted : Theme.ink; font.pointSize: row.teamMember ? Theme.caption : Theme.body; font.weight: row.teamHeader ? Font.DemiBold : Font.Normal; font.family: cell.fields.numeric || /^[-+−]?\d+([.,]\d+)?\s*(m|pkt|%|m\/s)?$/.test(text) ? Theme.mono : Theme.bodyFamily; width: parent.width - (cell.fields.icon ? 38 : 0) - (cell.qualificationBadge ? 46 : 0); height: parent.height; horizontalAlignment: cell.columnIndex > 0 && font.family === Theme.mono ? Text.AlignRight : Text.AlignLeft; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight }
+                    Text { visible: !cell.fields.checkable && !(row.tableView.teamSetup && cell.columnIndex===1 && (cell.fields.members || []).length); text: row.tableView.teamSetup && cell.columnIndex===1 && !cell.fields.text ? qsTr("Brak zawodników") : cell.fields.text || ""; color: row.eliminated ? Theme.muted : Theme.ink; font.pointSize: row.teamMember ? Theme.caption : Theme.body; font.weight: row.teamHeader ? Font.DemiBold : Font.Normal; font.family: cell.fields.numeric || /^[-+−]?\d+([.,]\d+)?\s*(m|pkt|%|m\/s)?$/.test(text) ? Theme.mono : Theme.bodyFamily; width: parent.width - (cell.fields.icon ? 38 : 0) - (cell.qualificationBadge ? 46 : 0) - (cell.columnIndex===row.tableView.gapColumn ? row.tableView.gapWidth : 0); height: parent.height; horizontalAlignment: cell.columnIndex > 0 && font.family === Theme.mono ? Text.AlignRight : Text.AlignLeft; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight }
+                    Text {
+                        visible: cell.columnIndex===row.tableView.gapColumn
+                        width: row.tableView.gapWidth-(Theme.compact ? 4 : 8); height: parent.height
+                        text: cell.fields.gap || ""; color: Theme.muted; font.pointSize: Theme.caption; font.family: Theme.mono
+                        horizontalAlignment: Text.AlignRight; verticalAlignment: Text.AlignVCenter
+                    }
                     Grid {
                         id: squad
                         visible: row.tableView.teamSetup && cell.columnIndex===1

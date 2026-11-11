@@ -14,6 +14,7 @@ FocusScope {
     property string title: ""
     property bool followCurrent: false
     property real maximumHeight: 540
+    property bool fillAvailableHeight: false
     property bool compact: false
     property bool teamSetup: false
     property bool ranking: false
@@ -50,6 +51,8 @@ FocusScope {
         } else for(var i=0;i<(compact && columns>4 && !jumpColumns ? 3 : columns);++i)out.push(i)
         return out
     }
+    readonly property int gapColumn: table && table.gapColumn !== undefined ? table.gapColumn : -1
+    readonly property real gapWidth: gapColumn>=0 ? Math.max(Theme.dp(52),Theme.bodyMetrics.advanceWidth("−9999,9")+Theme.dp(12)) : 0
     readonly property int visibleColumns: displayColumns.length
     readonly property bool ranked: headers.length > 1 && /^(poz|miejsce|rank|place|lp|nr|#)/i.test(headers[0])
     readonly property int nameColumn: ranked && columns === 4 ? 2 : 1
@@ -61,19 +64,22 @@ FocusScope {
         for(var c=0;c<visibleColumns;++c)total+=columnWidth(c)
         return total
     }
-    implicitHeight: Math.min(teamSetup ? Math.max(240,(Window.window ? Window.window.height : 960)-220) : maximumHeight, Math.max(240,(Window.window ? Window.window.height : 960) - (teamSetup ? 220 : 360)), Math.max(compact ? 120 : 240, (table ? table.count : 0) * (compact ? 32 : 40) + (showHeaders && columns>1 ? 104 : 66)))
+    implicitHeight: fillAvailableHeight ? maximumHeight : Math.min(teamSetup ? Math.max(240,(Window.window ? Window.window.height : 960)-220) : maximumHeight, Math.max(240,(Window.window ? Window.window.height : 960) - (teamSetup ? 220 : 360)), Math.max(compact ? 120 : 240, (table ? table.count : 0) * (compact ? 32 : 40) + (showHeaders && columns>1 ? 104 : 66)))
     activeFocusOnTab: true
     Accessible.role: Accessible.Table
     Accessible.name: title.length ? title : qsTr("Tabela danych")
     function columnWidth(column) {
+        return baseColumnWidth(column)+(displayColumns[column]===gapColumn ? gapWidth : 0)
+    }
+    function baseColumnWidth(column) {
         if(column>=visibleColumns)return 0
         if(columnWidths.length>column)return columnWidths[column]
         if(teamSetup)return column===0?Math.min(190,Math.max(110,width*.36)):Math.max(150,width-Math.min(190,Math.max(110,width*.36)))
         if(teamResults) {
             if(column===0)return resultRankWidth
             if(column===1) {
-                var allTeam=width-resultRankWidth-teamScoreWidth-(visibleColumns-3)*resultNumberWidth
-                var priorityTeam=width-resultRankWidth-teamScoreWidth-(visibleColumns>3?resultNumberWidth:0)
+                var allTeam=width-gapWidth-resultRankWidth-teamScoreWidth-(visibleColumns-3)*resultNumberWidth
+                var priorityTeam=width-gapWidth-resultRankWidth-teamScoreWidth-(visibleColumns>3?resultNumberWidth:0)
                 return Math.max(72,allTeam>=110?allTeam:Math.min(110,priorityTeam))
             }
             return displayColumns[column]===3 ? teamScoreWidth : resultNumberWidth
@@ -81,15 +87,15 @@ FocusScope {
         if(raceResults) {
             if(column===0)return resultRankWidth
             if(column===1) {
-                var allResults=width-resultRankWidth-(visibleColumns-2)*resultNumberWidth
-                var priorityResults=width-resultRankWidth-Math.min(2,visibleColumns-2)*resultNumberWidth
+                var allResults=width-gapWidth-resultRankWidth-(visibleColumns-2)*resultNumberWidth
+                var priorityResults=width-gapWidth-resultRankWidth-Math.min(2,visibleColumns-2)*resultNumberWidth
                 return Math.max(72,allResults>=110?allResults:Math.min(110,priorityResults))
             }
             return resultNumberWidth
         }
         if (ranked) {
             if (column === 0) return 56
-            if (column === nameColumn) return Math.max(170,width - 58 - (visibleColumns-2)*96)
+            if (column === nameColumn) return Math.max(100,width - gapWidth - 58 - (visibleColumns-2)*96)
             return 96
         }
         return Math.max(column === 1 ? 190 : 130,(width-(reorderable?Theme.dp(48):0)) / columns)

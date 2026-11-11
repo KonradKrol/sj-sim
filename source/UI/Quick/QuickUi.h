@@ -84,6 +84,7 @@ private:
 class QuickTableModel : public QAbstractListModel {
     Q_OBJECT
     Q_PROPERTY(QStringList headers READ headers NOTIFY structureChanged)
+    Q_PROPERTY(int gapColumn READ gapColumn NOTIFY structureChanged)
     Q_PROPERTY(int count READ count NOTIFY structureChanged)
     Q_PROPERTY(bool multiple READ multiple NOTIFY structureChanged)
     Q_PROPERTY(int selectedCount READ selectedCount NOTIFY cursorChanged)
@@ -98,6 +99,7 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
     QHash<int,QByteArray> roleNames() const override;
     QStringList headers() const;
+    int gapColumn() const;
     int count() const { return m_rows.size(); }
     bool multiple() const;
     int selectedCount() const;
@@ -138,6 +140,8 @@ private:
     int m_anchor = -1;
     bool m_frozen=false;
     bool m_integralScores=false;
+    double m_leaderScore=0;
+    bool m_hasLeaderScore=false;
     void updateScoreFormat();
     QVector<QHash<int,QVariant>> m_snapshot;
     QString m_filter;
