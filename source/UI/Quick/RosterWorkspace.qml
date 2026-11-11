@@ -46,7 +46,7 @@ Item {
             SButton { objectName: "rosterUndo"; text: qsTr("Cofnij"); enabled: roster.backend.canUndo; quiet: true; onClicked: roster.backend.undo() }
 
         }
-        RosterTools { visible: !roster.backend.knockout && !roster.backend.savedList && roster.backend.membership; backend: roster.backend; Layout.fillWidth: true; implicitHeight: childrenRect.height }
+        RosterTools { visible: !roster.backend.knockout && !roster.backend.savedList && roster.backend.membership; backend: roster.backend; Layout.fillWidth: true }
         Repeater {
             model: []
             delegate: ProjectedControl { required property var modelData; node: modelData; Layout.fillWidth: true }
