@@ -99,7 +99,34 @@ Pane {
                             onClicked: inspector.backend.update({advancement:0})
                         }
                     }
-                        CheckBox { text: qsTr("Sortuj listę startową na podstawie źródła kwalifikacji"); checked: inspector.backend.selection.sortSource !== false; onClicked: inspector.backend.update({sortSource:checked}); Layout.fillWidth: true }
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Label { text: qsTr("Sortowanie listy startowej"); color: Theme.muted; Layout.fillWidth: true }
+                        HelpDot { explanation: qsTr("Ustawia początkową kolejność od najsłabszego do najlepszego. Domyślnie korzysta z pierwszej pasującej klasyfikacji. Przed startem możesz ręcznie zmienić kolejność.") }
+                    }
+                    SChoice {
+                        Layout.fillWidth: true
+                        model: [qsTr("Domyślnie"),qsTr("Wybrane źródło kwalifikacji"),qsTr("Konkretny konkurs"),qsTr("Konkretna klasyfikacja")]
+                        optionEnabled: [true, inspector.backend.selection.advancement > 0 || inspector.backend.selection.advancementClass > 0, true, true]
+                        currentIndex: inspector.backend.selection.sortMode === undefined ? 0 : inspector.backend.selection.sortMode
+                        onActivated: inspector.backend.update({sortMode:currentIndex})
+                    }
+                    SChoice {
+                        visible: inspector.backend.selection.sortMode === 2
+                        Layout.fillWidth: true
+                        displayText: currentIndex < 0 ? qsTr("Wybierz konkurs") : textAt(currentIndex)
+                        model: inspector.backend.selection.sortCompetitionNames || []
+                        currentIndex: (inspector.backend.selection.sortCompetitionIds || []).indexOf(inspector.backend.selection.sortCompetition)
+                        onActivated: inspector.backend.update({sortCompetition:inspector.backend.selection.sortCompetitionIds[currentIndex]})
+                    }
+                    SChoice {
+                        visible: inspector.backend.selection.sortMode === 3
+                        Layout.fillWidth: true
+                        displayText: currentIndex < 0 ? qsTr("Wybierz klasyfikację") : textAt(currentIndex)
+                        model: inspector.backend.selection.sortClassNames || []
+                        currentIndex: (inspector.backend.selection.sortClassIds || []).indexOf(inspector.backend.selection.sortClassification)
+                        onActivated: inspector.backend.update({sortClassification:inspector.backend.selection.sortClassIds[currentIndex]})
+                    }
                     RowLayout { Layout.fillWidth: true; Label { text: qsTr("Kwalifikacja według klasyfikacji"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap } HelpDot { explanation: qsTr("Uczestników wyłoni aktualna kolejność we wskazanej klasyfikacji.") } }
                     RowLayout {
                         Layout.fillWidth: true; spacing: Theme.dp(5)

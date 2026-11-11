@@ -73,7 +73,8 @@ private:
     Classification * advancementClassification;
     CompetitionInfo * pendingAdvancementCompetition=nullptr;
 public:
-    bool sortByQualificationSource = true;
+    int startListSortMode = 0;
+    QString startListSortCompetitionId, startListSortClassificationId;
 private:
     CompetitionInfo * advancementCompetition; //Tylko jedno z tych 2 może być "aktywne"
     QVector<CompetitionInfo *> qualifyingCompetitions; //Konkursy dla których ten konkurs jest kwalifikacjami
