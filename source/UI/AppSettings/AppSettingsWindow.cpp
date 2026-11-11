@@ -51,7 +51,8 @@ AppSettingsWindow::AppSettingsWindow(QWidget *parent) :
         choice->setCurrentIndex(qBound(0,QSettings().value("simulation/simple/"+key,2).toInt(),4));
         connect(choice,qOverload<int>(&QComboBox::currentIndexChanged),this,[key](int index){QSettings().setValue("simulation/simple/"+key,index);});form->addRow(title,choice);
     };
-    add("spread",tr("Rozrzut wyników"),tr("Jak bardzo różnią się kolejne skoki tego samego zawodnika. Nie zmienia różnic OVR."),{tr("Bardzo mały"),tr("Mały"),tr("Standardowy"),tr("Duży"),tr("Bardzo duży")});
+    add("spread",tr("Losowość skoków"),tr("Jak bardzo różnią się kolejne skoki tego samego zawodnika. Nie zmienia różnic OVR."),{tr("Bardzo mała"),tr("Mała"),tr("Standardowa"),tr("Duża"),tr("Bardzo duża")});
+    add("distanceSpread",tr("Różnice w odległościach"),tr("Jak mocno różnice jakości skoków przekładają się na metry. Nie zmienia samej siły wiatru."),{tr("Bardzo małe"),tr("Małe"),tr("Standardowe"),tr("Duże"),tr("Bardzo duże")});
     add("form",tr("Znaczenie formy"),tr("Jak mocno aktualna forma wpływa na wynik względem stałego OVR."),{tr("Minimalne"),tr("Małe"),tr("Standardowe"),tr("Duże"),tr("Bardzo duże")});
     add("landing",tr("Trudność lądowania"),tr("Jak wcześnie dalekie skoki stają się trudne do ustania. Nie zmienia kar w notach."),{tr("Bardzo łagodna"),tr("Łagodna"),tr("Standardowa"),tr("Wymagająca"),tr("Bardzo wymagająca")});
     add("perks",tr("Siła perków zawodników"),tr("Jak mocno działają specjalizacje, regularność i podejście do treningów."),{tr("Subtelna"),tr("Niewielka"),tr("Standardowa"),tr("Duża"),tr("Bardzo duża")});

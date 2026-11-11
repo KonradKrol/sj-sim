@@ -56,6 +56,8 @@ QJsonObject gameCapture(){
     const auto multiply=[&](const QString &key,double factor,double fallback=0){values[key]=std::clamp(values.value(key).toDouble(fallback)*factor,0.0,100.0);};
     const double spread=scales[level("spread")];
     for(int i=0;i<4;++i)multiply(QString("quality.eventDeviation.%1").arg(i),spread);
+    const double distanceScales[]{.6,.8,1,1.2,1.4};
+    multiply("flight.qualityMetresAtK120",distanceScales[level("distanceSpread")],.56);
     const double forms[]{.35,.65,1,1.4,1.9};const double form=forms[level("form")];
     if(form!=1){values["quality.overallWeight"]=1-std::clamp((1-values["quality.overallWeight"].toDouble(.77175))*form,.02,.8);multiply("quality.formHillAmplitude",form);values["quality.formHillAmplitude"]=std::min(1.0,values["quality.formHillAmplitude"].toDouble());}
     const int landing=level("landing");
