@@ -108,6 +108,7 @@ signals:
     void rosterBoardOpenChanged();
 
 private:
+    bool quickSimulation=false;
     bool boardIsOpen=false;
     QVariantMap boardDraft, boardBaseline;
     QuickRoster *seasonRosterEditor=nullptr;

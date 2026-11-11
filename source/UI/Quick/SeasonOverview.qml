@@ -63,6 +63,7 @@ Column {
             width: overview.width; spacing: Theme.dp(8)
             SeasonUpcomingEvent {
                 width: parent.width
+                quickAction: overview.fields.quickAction ? overview.fields.quickAction.values : ({})
                 cancellation: overview.fields.cancelAction ? overview.fields.cancelAction.values : ({})
                 event: eventWrapper.modelData
                 next: eventWrapper.index===0

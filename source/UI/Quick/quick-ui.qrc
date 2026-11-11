@@ -175,6 +175,7 @@
 <file>icons/tools/coach.svg</file>
 <file>icons/tools/adjust.svg</file>
 <file>icons/tools/auto.svg</file>
+        <file>icons/tools/quick-simulate.svg</file>
 <file>RaceContestMenu.qml</file>
 <file>RaceLastJump.qml</file>
 <file>JumpManipulationWorkspace.qml</file>

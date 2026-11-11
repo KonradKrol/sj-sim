@@ -2544,6 +2544,7 @@ static void interactionRegressions(MainWindow &main) {
 #include "season-presentation-regressions.h"
 #include "form-engine-ui-regressions.h"
 #include "classification-popup-regressions.h"
+#include "quick-season-regressions.h"
 #include "race-auto-gate-regressions.h"
 #include "simulation-v2-competition-regressions.h"
 #include "simulation-v2-weather-setup-regressions.h"
@@ -2632,6 +2633,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--roster-workspace-only")){rosterWorkspaceRegressions(main);return 0;}
     if(app.arguments().contains("--choice-popup-only")){choicePopupRegressions(main);return 0;}
     if(app.arguments().contains("--config-defaults-only")){configDefaultsRegressions(main);return 0;}
+    if(app.arguments().contains("--quick-season-only")){quickSeasonRegressions(main);return 0;}
     if(app.arguments().contains("--classification-popup-only")){classificationPopupRegressions(main);return 0;}
     if(app.arguments().contains("--form-engine-only")){formEngineUiRegressions(main);return 0;}
     if(app.arguments().contains("--race-auto-gate-only")){raceAutoGateRegressions(main);return 0;}

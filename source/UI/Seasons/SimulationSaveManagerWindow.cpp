@@ -55,6 +55,10 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     simulationSave(save)
 {
     ui->setupUi(this);
+    auto *quickSimulate=new QPushButton(tr("Szybko przesymuluj"),this);
+    quickSimulate->setObjectName("quickSimulateNextCompetition");quickSimulate->hide();
+    connect(quickSimulate,&QPushButton::clicked,this,[this]{if(quickSimulation)return;QScopedValueRollback<bool> quick(quickSimulation,true);on_pushButton_competitionConfig_clicked();});
+
     auto *cancelNext=new QPushButton(tr("Odwołaj najbliższe wydarzenie"),this);
     cancelNext->setObjectName("pushButton_cancelNextCompetition");cancelNext->hide();
     connect(cancelNext,&QPushButton::clicked,this,&SimulationSaveManagerWindow::cancelNextEvent);
@@ -1211,7 +1215,8 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
         if(Classification::getSpecificTypeClassifications(simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference(), simulationSave->getNextCompetition()->getRulesPointer()->getCompetitionType()).count() > 0)
             configWindow->setClassificationsComboBoxIndex(1);
 
-        if(configWindow->exec() == QDialog::Accepted)
+        if(quickSimulation)QMetaObject::invokeMethod(configWindow.get(),"on_pushButton_submit_clicked",Qt::DirectConnection);
+        if((quickSimulation?configWindow->result():configWindow->exec()) == QDialog::Accepted)
         {
             CompetitionInfo * competition = simulationSave->getNextCompetition();
             int type = competition->getRulesPointer()->getCompetitionType();
@@ -1272,7 +1277,13 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
             managerWindow->setInrunSnowGenerator(InrunSnowGenerator(configWindow->getInrunSnowGeneratorSettingsWidget()->getBase(), configWindow->getInrunSnowGeneratorSettingsWidget()->getDeviation()));
             if(configWindow->getWeatherSetup())
                 managerWindow->bindWeatherSetup(configWindow->getWeatherSetup(),QRandomGenerator::global()->generate64());
-            if(managerWindow->exec() != QDialog::Accepted){
+            if(quickSimulation){
+                managerWindow->setProperty("quickSeasonSimulation",true);
+                managerWindow->setProperty("forceAutomaticGate",true);
+                managerWindow->autoSimulateCompetition();
+                managerWindow->done(competitionManager->checkCompetitionEnd()?QDialog::Accepted:QDialog::Rejected);
+            }
+            if((quickSimulation?managerWindow->result():managerWindow->exec()) != QDialog::Accepted){
                 formCheckpoint.restore();refreshProfileDrafts();
                 managerWindow.reset();managerOwner.reset();
                 *competition=beforeStart;
@@ -1348,19 +1359,20 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
                 refreshProfileDrafts();
                 fillNextCompetitionInformations();
                 updateArchive();
+                markSeasonChanged();
                 if(simulationSave->getAutosaveEnabled()){
                     if(autosaveTimer)autosaveTimer->stop();
-                    markSeasonChanged();saveSeasonChanges();
+                    saveSeasonChanges();
                 }
 
                 competition->saveToCsvFile("results/season-competitions/csv/", simulationSave->getName() + QString(" (%1)" ).arg(simulationSave->getActualSeason()->getActualCalendar()->getName()) + QString::number(simulationSave->getActualSeason()->getSeasonNumber()) + "-" + QString::number(simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference().indexOf(competition)) + " " + competition->getHill()->getHillText() + " (" + competition->getShortSerieTypeText() + ")" + ".csv");
 
                 if(checkSeasonEnd())
                 {
-                    QMessageBox::information(this, tr("Koniec sezonu"), tr("Sezon dobiegł końca! Aby skonfigurować kolejny sezon, wciśnij odpowiedni przycisk w oknie."), QMessageBox::Ok);
+                    if(!quickSimulation)QMessageBox::information(this, tr("Koniec sezonu"), tr("Sezon dobiegł końca! Aby skonfigurować kolejny sezon, wciśnij odpowiedni przycisk w oknie."), QMessageBox::Ok);
                     setupNextSeasonConfigButton();
                 }
-                else if(simulationSave->getNextCompetition() == nullptr)
+                else if(!quickSimulation && simulationSave->getNextCompetition() == nullptr)
                     QMessageBox::information(this, tr("Koniec kalendarza"), tr("Nie ma więcej zaplanowanych konkursów w tym kalendarzu. Czas na rozegranie konkursów z innych kalendarzy!"), QMessageBox::Ok);
             }
         } else {formCheckpoint.restore();refreshProfileDrafts();*next=beforeStart;simulationSave->updateNextCompetitionIndex();fillNextCompetitionInformations();}

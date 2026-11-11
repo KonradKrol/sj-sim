@@ -8,6 +8,7 @@ Pane {
     property var event: ({})
     property bool next: false
     property var action: ({})
+    property var quickAction: ({})
     property var cancellation: ({})
     implicitHeight: contentItem.implicitHeight+topPadding+bottomPadding
     padding: Theme.dp(next ? 12 : 8)
@@ -55,6 +56,13 @@ Pane {
             visible: card.next
             width: parent.width; height: implicitHeight; spacing: Theme.dp(10)
             SButton { objectName: "playUpcomingEvent"; text: qsTr("Rozegraj"); primary: true; dense: true; Layout.fillWidth: true; enabled: card.action.id!==undefined && card.action.enabled!==false; onClicked: ui.activate(card.action.id) }
+            SToolButton {
+                objectName: "quickSimulateUpcomingEvent"
+                text: ""; iconSource: "qrc:/ui/icons/tools/quick-simulate.svg"
+                hint: qsTr("Szybko przesymuluj"); Accessible.name: hint
+                enabled: card.action.enabled!==false && card.quickAction.id!==undefined
+                onClicked: ui.activate(card.quickAction.id)
+            }
             SButton { objectName: "cancelUpcomingEvent"; text: qsTr("Odwołaj"); quiet: true; dense: true; foreground: Theme.danger; enabled: card.cancellation.id!==undefined && card.cancellation.enabled!==false; onClicked: ui.activate(card.cancellation.id) }
         }
 

@@ -1260,7 +1260,7 @@ void QuickBridge::compose(QuickNode *base) {
                 if(!upcoming.isEmpty() || !latest.isEmpty()) {
                     auto *preview=m_groups.value("quickSeasonOverview");if(!preview){preview=new QuickNode(this);m_groups.insert("quickSeasonOverview",preview);}
                     preview->update({{"kind","seasonOverview"},{"events",upcoming},{"latest",latest},{"total",total},{"played",played},{"remainingCompetitions",remainingCompetitions},
-                        {"cancelAction",QVariant::fromValue(node(m_window->findChild<QPushButton *>("pushButton_cancelNextCompetition"),true))},{"nextEvent",nextEvent?nextEvent->getLongSerieTypeText():QString()},{"action",QVariant::fromValue(node(m_content->findChild<QPushButton *>("pushButton_competitionConfig")))}});
+                        {"quickAction",QVariant::fromValue(node(m_window->findChild<QPushButton *>("quickSimulateNextCompetition"),true))},{"cancelAction",QVariant::fromValue(node(m_window->findChild<QPushButton *>("pushButton_cancelNextCompetition"),true))},{"nextEvent",nextEvent?nextEvent->getLongSerieTypeText():QString()},{"action",QVariant::fromValue(node(m_content->findChild<QPushButton *>("pushButton_competitionConfig")))}});
                     overview={QVariant::fromValue(preview)};
                 }
             }

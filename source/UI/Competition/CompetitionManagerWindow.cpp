@@ -54,7 +54,7 @@ extern const QString appVersion;
 namespace {
 void applyAutomaticGate(CompetitionManagerWindow *window)
 {
-    if(!QSettings().value("quickUi/raceAutomaticGate",false).toBool())return;
+    if(!window->property("forceAutomaticGate").toBool() && !QSettings().value("quickUi/raceAutomaticGate",false).toBool())return;
     window->setProperty("applyingAutomaticGate",true);
     try{window->suggestCurrentGate(false);window->setProperty("automaticGateError",QVariant());}
     catch(const std::exception &e){window->setProperty("automaticGateError",QString::fromUtf8(e.what()));}
@@ -1074,12 +1074,13 @@ void CompetitionManagerWindow::autoSimulateCompetition()
     if(property("resultHistoryPaused").toBool())return;
     if(manager->checkCompetitionEnd())
         return;
-    if(QMessageBox::question(this, tr("Automatyczna symulacja konkursu"),
+    if(!property("quickSeasonSimulation").toBool() && QMessageBox::question(this, tr("Automatyczna symulacja konkursu"),
                              tr("Rozegrać automatycznie cały pozostały konkurs? Tej operacji nie można cofnąć."),
                              QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Yes)
         return;
 
     setAutomaticPlayback(false);
+    QScopedValueRollback<bool> quietRecords(personalBestNotificationsSuppressed,personalBestNotificationsSuppressed || property("quickSeasonSimulation").toBool());
     QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);
     jumperResultsWidget->hide();
     Jumper *lastSimulatedJumper = nullptr;
@@ -1141,7 +1142,11 @@ void CompetitionManagerWindow::autoSimulateCompetition()
         if(manager->checkRoundEnd() && (manager->getActualRound() != manager->getCompetitionRules()->getRounds().count() && manager->getActualRound() != manager->getCompetitionInfo()->getExceptionalRoundsCount())){
             if(type == CompetitionRules::Individual)
             {
-                indManager->setupNextRound();advanceRoundWeather();
+                auto &nextRound=manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()];
+                const int groupMethod=nextRound.getKoGroupsSelectionType();
+                if(property("quickSeasonSimulation").toBool() && groupMethod==CompetitionRules::Manual)nextRound.setKoGroupsSelectionType(CompetitionRules::Random);
+                indManager->setupNextRound();
+                nextRound.setKoGroupsSelectionType(groupMethod);advanceRoundWeather();
                 IndividualCompetitionManager * indManager = dynamic_cast<IndividualCompetitionManager *>(manager);
                 if(indManager != nullptr)
                 {
@@ -1520,11 +1525,11 @@ void CompetitionManagerWindow::checkRecords(JumpData &jump, bool multipleRecords
     if(jump.getCompetition()->getRulesPointer()->getHillRecordBreaking() == true && (jump.getLanding().getType() == Landing::TelemarkLanding || jump.getLanding().getType() == Landing::BothLegsLanding) && (singleCompetition == false || GlobalSimulationSettings::get()->getUpdateGlobalDatabaseRecords() == true)){
         if(roundDoubleToHalf(jump.getDistance()) == roundDoubleToHalf(jump.getHill()->getRecord()) && multipleRecords == false)
         {
-            QMessageBox::information(this, QObject::tr("Wyrównanie rekordu skoczni"), tr("%1 wyrównał rekord skoczni %2, wynoszący %3m").arg(jump.getJumper()->getTextInfo()).arg(jump.getHill()->getHillText()).arg(QString::number(jump.getHill()->getRecord(), 'f', 1)), QMessageBox::Ok);
+            if(!property("quickSeasonSimulation").toBool())QMessageBox::information(this, QObject::tr("Wyrównanie rekordu skoczni"), tr("%1 wyrównał rekord skoczni %2, wynoszący %3m").arg(jump.getJumper()->getTextInfo()).arg(jump.getHill()->getHillText()).arg(QString::number(jump.getHill()->getRecord(), 'f', 1)), QMessageBox::Ok);
         }
         else if(roundDoubleToHalf(jump.getDistance()) > roundDoubleToHalf(jump.getHill()->getRecord()))
         {
-            QMessageBox::information(this, QObject::tr("Nowy rekord skoczni"), tr("Po skoku na odległość %1m, %2 ustanowił nowy rekord skoczni %3 (wcześniej %4m).").arg(QString::number(jump.getDistance(), 'f', 1)).arg(jump.getJumper()->getTextInfo()).arg(jump.getHill()->getHillText()).arg(QString::number(jump.getHill()->getRecord(), 'f', 1)), QMessageBox::Ok);
+            if(!property("quickSeasonSimulation").toBool())QMessageBox::information(this, QObject::tr("Nowy rekord skoczni"), tr("Po skoku na odległość %1m, %2 ustanowił nowy rekord skoczni %3 (wcześniej %4m).").arg(QString::number(jump.getDistance(), 'f', 1)).arg(jump.getJumper()->getTextInfo()).arg(jump.getHill()->getHillText()).arg(QString::number(jump.getHill()->getRecord(), 'f', 1)), QMessageBox::Ok);
 
             if(singleCompetition){
                 if(GlobalSimulationSettings::get()->getUpdateGlobalDatabaseRecords() == true)
@@ -1844,7 +1849,7 @@ void CompetitionManagerWindow::cancelActualRound()
 
 void CompetitionManagerWindow::notifyTeamDisqualification(const JumpData &jump)
 {
-    if(type!=CompetitionRules::Team || !jump.getDSQ())return;
+    if(property("quickSeasonSimulation").toBool() || type!=CompetitionRules::Team || !jump.getDSQ())return;
     auto *team=static_cast<TeamCompetitionManager *>(manager)->getActualTeam();
     QMessageBox::information(this,tr("Dyskwalifikacja drużyny"),tr("%1: dyskwalifikacja zawodnika %2 oznacza dyskwalifikację całej drużyny. Pozostali zawodnicy tej drużyny nie oddadzą kolejnych skoków w tym konkursie.").arg(team?team->getCountryCode():QString(),jump.getJumper()?jump.getJumper()->getNameAndSurname():QString()),QMessageBox::Ok);
 }
