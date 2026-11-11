@@ -42,8 +42,9 @@ LandingProbabilities LandingModel::probabilities(double distance,double realHs,d
     const double ratio=distance/realHs;
     const double fall=std::clamp(config.fallBase+config.fallIncrease*logistic((ratio-config.fallCentre)/config.fallWidth)
         +crosswind*config.crosswindFallPerMetrePerSecond,0.0,1.0);
-    const double support=(1-fall)*std::clamp(config.supportBase+config.supportIncrease*logistic((ratio-config.supportCentre)/config.supportWidth)
-        +crosswind*config.crosswindSupportPerMetrePerSecond,0.0,1.0);
+    const double support=(1-fall)*std::clamp(config.supportBase+(ratio>1.0
+        ? config.supportIncrease*logistic((ratio-config.supportCentre)/config.supportWidth)
+          +crosswind*config.crosswindSupportPerMetrePerSecond : 0.0),0.0,1.0);
     const double twoFeet=(1-fall-support)*std::clamp(config.twoFeetBase+config.twoFeetIncrease*logistic((ratio-config.twoFeetCentre)/config.twoFeetWidth)
         +crosswind*config.crosswindTwoFeetPerMetrePerSecond,0.0,1.0);
     return {{{std::max(0.0,1-fall-support-twoFeet),twoFeet,support,fall}}};

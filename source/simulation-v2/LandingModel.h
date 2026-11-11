@@ -10,7 +10,7 @@ enum class LandingKind { Telemark, TwoFeet, Support, Fall };
 
 struct LandingParameters {
     double fallBase=.001, fallIncrease=.30, fallCentre=1.035, fallWidth=.025;
-    double supportBase=.003, supportIncrease=.18, supportCentre=1.01, supportWidth=.035;
+    double supportBase=0, supportIncrease=.18, supportCentre=1.01, supportWidth=.035;
     double twoFeetBase=.035, twoFeetIncrease=.70, twoFeetCentre=.995, twoFeetWidth=.035;
     double crosswindFallPerMetrePerSecond=.003;
     double crosswindSupportPerMetrePerSecond=.008;
