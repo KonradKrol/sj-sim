@@ -16,7 +16,7 @@ CompetitionRulesEditorWidget::CompetitionRulesEditorWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     windMeasurementChoice=createWindMeasurementChoice(this);
-    ui->formLayout->insertRow(11,tr("Pomiar wiatru"),windMeasurementChoice);
+    windMeasurementChoice->hide();
     bindLegacyWindInputs(windMeasurementChoice,{ui->comboBox_windAverageCalculatingType,ui->comboBox_windCompensationDistanceEffect,ui->label_2,ui->label_3});
     competitionRules = nullptr;
 
@@ -73,7 +73,7 @@ void CompetitionRulesEditorWidget::resetInputs()
     ui->spinBox_jumpersInTeamCount->setValue(0);
     ui->comboBox_competitionType->setCurrentIndex(CompetitionRules::Individual);
     ui->comboBox_windAverageCalculatingType->setCurrentIndex(2);
-    windMeasurementChoice->setCurrentIndex(windMeasurementChoice->findData(CompetitionRules::FisApproximationWindMeasurement));
+    windMeasurementChoice->setCurrentIndex(windMeasurementChoice->findData(CompetitionRules::ImprovedWindMeasurement));
     ui->comboBox_windCompensationDistanceEffect->setCurrentIndex(1);
     ui->checkBox_hillRecordBreaking->setChecked(true);
 }

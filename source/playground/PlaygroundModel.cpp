@@ -465,7 +465,6 @@ QJsonArray parameters() {
     input("hill.tailwindPoints",QObject::tr("Rekompensata w plecy"),"hill",12,0,100,0.1,"pkt/(m/s)");
     input("wind.mean",QObject::tr("Wiatr przedni (+) / tylny (−)"),"wind",0,-100,100,0.1,"m/s");
     input("wind.cross",QObject::tr("Wiatr boczny"),"wind",0,-100,100,0.1,"m/s");
-    input("rules.measurement",QObject::tr("Metoda pomiaru wiatru"),"measurement",3,0,5,1,"1");
     input("rules.windCompensation",QObject::tr("Rekompensata za wiatr"),"rules",1,0,1,1,"1");
     input("rules.gateCompensation",QObject::tr("Rekompensata za belkę"),"rules",1,0,1,1,"1");
     input("rules.judges",QObject::tr("Noty za styl"),"rules",1,0,1,1,"1");

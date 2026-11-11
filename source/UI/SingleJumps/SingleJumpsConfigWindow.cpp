@@ -40,8 +40,8 @@ SingleJumpsConfigWindow::SingleJumpsConfigWindow(QWidget *parent,const Simulatio
 {
     ui->setupUi(this);
     windMeasurementChoice=createWindMeasurementChoice(this);
-    ui->verticalLayout_singleJumpsSettings->addWidget(new QLabel(tr("Pomiar wiatru"),this));
-    ui->verticalLayout_singleJumpsSettings->addWidget(windMeasurementChoice);
+
+    windMeasurementChoice->hide();
     bindLegacyWindInputs(windMeasurementChoice,{ui->comboBox_windAverageCalculatingType,ui->comboBox_windCompensationDistanceEffect,ui->label_2,ui->label_3});
     ui->comboBox_windAverageCalculatingType->setItemText(WindsCalculator::Simple,tr("Uproszczone"));
     ui->comboBox_windAverageCalculatingType->setItemText(WindsCalculator::SimpleImproved,tr("Uproszczone z korektą kierunku"));

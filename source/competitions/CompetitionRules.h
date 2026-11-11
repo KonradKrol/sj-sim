@@ -34,7 +34,7 @@ public:
         ImprovedWindMeasurement=DenseWindMeasurement,
         FlightWindMeasurement
     };
-    int getWindMeasurementType() const { return windMeasurementType; }
+    int getWindMeasurementType() const { return ImprovedWindMeasurement; }
     bool setWindMeasurementType(int value) {
         if(value<LegacyWindMeasurement || value>FlightWindMeasurement)return false;
         if(value==LegacyWindMeasurement || value==InstantWindMeasurement || value==SensorWindMeasurement)value=FisApproximationWindMeasurement;
@@ -57,7 +57,7 @@ private:
 
     short windAverageCalculatingType;
     short windCompensationDistanceEffect;
-    WindMeasurementType windMeasurementType=FisApproximationWindMeasurement;
+    WindMeasurementType windMeasurementType=ImprovedWindMeasurement;
 
     bool hillRecordBreaking;
 
