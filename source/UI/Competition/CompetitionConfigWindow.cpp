@@ -1542,7 +1542,7 @@ void CompetitionConfigWindow::on_comboBox_classification_activated(int index)
         const auto choices=Classification::getSpecificTypeClassifications(simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference(),type);
         if(index<0 || index>=choices.size() || !choices[index])return;
         if(choices[index]->getRankedResults().isEmpty()){
-            QMessageBox::information(this,tr("Lista startowa"),tr("Ta klasyfikacja nie ma wyników. Kolejność listy startowej nie została zmieniona."));return;
+            return;
         }
         Classification *classification=choices[index];
         if(type == CompetitionRules::Individual)
