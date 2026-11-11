@@ -1034,7 +1034,7 @@ void QuickBridge::compose(QuickNode *base) {
     auto group=[this](const QString &key,const QString &title,const QVariantList &children,const QString &kind=QString("panel")) {
         auto *entry=m_groups.value(key,nullptr);
         if(!entry) { entry=new QuickNode(this);m_groups.insert(key,entry); }
-        entry->update({{"kind",kind},{"text",title}},children);
+        entry->update({{"kind",kind},{"text",title},{"fillTableHeight",key=="season-standings"}},children);
         return QVariant::fromValue(entry);
     };
     auto field=[this](const QString &name,const QString &label=QString()) -> QVariant {

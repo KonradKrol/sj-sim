@@ -6,6 +6,8 @@ Pane {
     id: group
     property var node
     property bool focused: false
+    property real tableHeightLimit: 540
+    property bool fillTableHeight: false
     readonly property var fields: node ? node.values : ({})
     readonly property bool panel: fields.kind === "panel"
     readonly property bool disclosure: fields.kind === "disclosure"
@@ -65,7 +67,11 @@ Pane {
                     Layout.preferredWidth: group.fields.weights && group.fields.weights.length > index ? group.fields.weights[index] : 240
                     Layout.preferredHeight: item ? item.implicitHeight : 0
                     source: Qt.resolvedUrl("Node.qml")
-                    onLoaded: item.node = Qt.binding(function() { return childLoader.projectedNode })
+                    onLoaded: {
+                        item.node=Qt.binding(function(){return childLoader.projectedNode})
+                        item.tableHeightLimit=Qt.binding(function(){return group.tableHeightLimit})
+                        item.fillTableHeight=Qt.binding(function(){return group.fillTableHeight || (!!childLoader.projectedNode && !!childLoader.projectedNode.values.fillTableHeight)})
+                    }
                 }
             }
         }

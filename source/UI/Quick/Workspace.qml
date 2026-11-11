@@ -69,7 +69,7 @@ ColumnLayout {
             width: scroll.availableWidth
             padding: Theme.compact ? 4 : workspace.width < 700 ? 12 : 24
             background: Item {}
-            contentItem: Loader { active: !workspace.rebuildingOverview; sourceComponent: Component { Node { node: workspace.contentNode } } }
+            contentItem: Loader { active: !workspace.rebuildingOverview; sourceComponent: Component { Node { node: workspace.contentNode; tableHeightLimit: workspace.season ? Math.max(180,scroll.availableHeight-(Theme.compact ? 8 : workspace.width<700 ? 24 : 48)-Theme.dp(100)) : 540 } } }
         }
     }
         Loader {

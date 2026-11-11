@@ -7,6 +7,7 @@ FocusScope {
     property bool showLabel: true
     property var node
     property real tableHeightLimit: 540
+    property bool fillTableHeight: !!fields.fillTableHeight
     property bool compactTable: false
     property bool tableSearchEnabled: false
     property bool plainTable: false
@@ -59,7 +60,7 @@ FocusScope {
     Component { id: calendarBody; CalendarWorkspace { node: control.node } }
     Component {
         id: groupBody
-        NodeGroup { node: control.node; focused: control.activeFocus }
+        NodeGroup { node: control.node; focused: control.activeFocus; tableHeightLimit: control.tableHeightLimit; fillTableHeight: control.fillTableHeight }
     }
     Component {
         id: labelBody
@@ -286,7 +287,7 @@ FocusScope {
             }
         }
     }
-    Component { id: tableBody; DataTable { showHeaders: control.fields.showHeaders!==false; ranking: !!control.fields.classificationRanking; teamSetup: !!control.fields.teamSetup; table: control.fields.table; ownerId: control.fields.id; actions: control.fields.tableActions || []; followCurrent: !!control.fields.follow; title: control.fields.label || ""; maximumHeight: control.tableHeightLimit; compact: control.compactTable; plain: control.plainTable || !!control.fields.plainTable; searchEnabled: control.tableSearchEnabled || !!control.fields.searchable; raceResults: control.raceResults } }
+    Component { id: tableBody; DataTable { showHeaders: control.fields.showHeaders!==false; ranking: !!control.fields.classificationRanking; teamSetup: !!control.fields.teamSetup; table: control.fields.table; ownerId: control.fields.id; actions: control.fields.tableActions || []; followCurrent: !!control.fields.follow; title: control.fields.label || ""; maximumHeight: control.tableHeightLimit; fillAvailableHeight: control.fillTableHeight; compact: control.compactTable; plain: control.plainTable || !!control.fields.plainTable; searchEnabled: control.tableSearchEnabled || !!control.fields.searchable; raceResults: control.raceResults } }
     Component { id: chartBody; PlotPanel { chart: control.fields.chart } }
     Component {
         id: progressBody
