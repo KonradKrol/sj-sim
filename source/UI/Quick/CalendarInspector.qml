@@ -121,7 +121,7 @@ Pane {
                         Layout.fillWidth: true; Layout.minimumWidth: 0
                         popup.width: Math.min(Theme.dp(420), inspector.Window.window ? inspector.Window.window.width-24 : width)
                         model: [qsTr("Domyślnie — pierwsza pasująca klasyfikacja"),qsTr("Według wybranego źródła kwalifikacji"),qsTr("Konkretny konkurs"),qsTr("Konkretna klasyfikacja")]
-                        optionEnabled: [true, inspector.backend.selection.advancement > 0 || inspector.backend.selection.advancementClass > 0, true, true]
+                        optionEnabled: [true, !!inspector.backend.selection.hasQualificationSource, true, true]
                         currentIndex: inspector.backend.selection.sortMode === undefined ? 0 : inspector.backend.selection.sortMode
                         onActivated: inspector.backend.update({sortMode:currentIndex})
                     }
