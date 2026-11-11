@@ -208,6 +208,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     hillProfileEditor->hide();
     ui->verticalLayout_hillEditor->addWidget(hillProfileEditor);
     connect(hillDraft,&SimulationProfileDraft::changed,this,[this]{
+        if(loadingProfileDraft)return;
         const int row=simulationSave->getHillsReference().indexOf(editedHill);
         if(row<0 || !hillDraft->valid() || !hillDraft->message().isEmpty())return;
         *editedHill=hillDraft->configuredHill();
@@ -222,6 +223,11 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         hillEditor->show();
         hillEditor->setHill(editedHill);
         hillEditor->fillHillInputs();
+    });
+    connect(hillsListView->getListView()->selectionModel(), &QItemSelectionModel::currentChanged,
+            this, [this](const QModelIndex &index, const QModelIndex &previous) {
+        if(index.isValid() && index.row()!=previous.row())
+            emit hillsListView->listViewDoubleClicked(index);
     });
     connect(hillEditor, &HillEditorWidget::submitted, this, [this](){
         const int idx=simulationSave->getHillsReference().indexOf(hillEditor->getHill());
