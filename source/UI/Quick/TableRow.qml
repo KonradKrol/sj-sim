@@ -71,6 +71,7 @@ Rectangle {
                     Text {
                         visible: cell.columnIndex===row.tableView.gapColumn
                         width: row.tableView.gapWidth-(Theme.compact ? 4 : 8); height: parent.height
+                        leftPadding: Theme.dp(16)
                         text: cell.fields.gap || ""; color: Theme.muted; font.pointSize: Theme.caption; font.family: Theme.mono
                         horizontalAlignment: Text.AlignRight; verticalAlignment: Text.AlignVCenter
                     }

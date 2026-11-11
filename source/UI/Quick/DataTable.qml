@@ -52,7 +52,7 @@ FocusScope {
         return out
     }
     readonly property int gapColumn: table && table.gapColumn !== undefined ? table.gapColumn : -1
-    readonly property real gapWidth: gapColumn>=0 ? Math.max(Theme.dp(52),Theme.bodyMetrics.advanceWidth("−9999,9")+Theme.dp(12)) : 0
+    readonly property real gapWidth: gapColumn>=0 ? Math.max(Theme.dp(52),Theme.bodyMetrics.advanceWidth("−9999,9")+Theme.dp(28)) : 0
     readonly property int visibleColumns: displayColumns.length
     readonly property bool ranked: headers.length > 1 && /^(poz|miejsce|rank|place|lp|nr|#)/i.test(headers[0])
     readonly property int nameColumn: ranked && columns === 4 ? 2 : 1
