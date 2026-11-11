@@ -1,3 +1,7 @@
+#include <QBuffer>
+#include <QSaveFile>
+#include <QFileDialog>
+#include <QMessageBox>
 #include "JumperStatsWindow.h"
 #include "ui_JumperStatsWindow.h"
 #include "../../../global/CountryFlagsManager.h"
@@ -153,10 +157,12 @@ void JumperStatsWindow::setupComboBox()
 
 void JumperStatsWindow::fillWindow()
 {
+    if(!jumper || !save)return;
     ui->label_jumperNameAndSurname->setText(jumper->getNameAndSurname());
     ui->label_jumperNameAndSurname->setToolTip(jumper->getNameAndSurname());
     ui->label_jumperFlag->setPixmap(CountryFlagsManager::getFlagPixmap(jumper->getCountryCode().toLower()).scaled(ui->label_jumperFlag->size()));
-    ui->label_img->setPixmap(jumper->getImagePixmap().scaled(ui->label_img->size()));
+    const auto photo=jumper->getImagePixmap();
+    if(photo.isNull())ui->label_img->clear();else ui->label_img->setPixmap(photo.scaled(ui->label_img->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation));
 
     Hill * specificHill = nullptr;
     if(ui->comboBox_hillFilter->currentIndex() > 0)
@@ -172,6 +178,7 @@ void JumperStatsWindow::fillWindow()
     fillJumperFormChart();
     fillTakeoffRatingChart();
     fillFlightRatingChart();
+    emit reportChanged();
 }
 
 void JumperStatsWindow::fillJumperApperancesChart()
@@ -659,6 +666,7 @@ void JumperStatsWindow::on_horizontalScrollBar_jumperStatsChartScrollBar_valueCh
 
 void JumperStatsWindow::on_checkBox_stateChanged(int arg1)
 {
+    emit reportChanged();
     if(arg1 == Qt::Unchecked)
     {
         jumperFormChartView->hide();
@@ -675,61 +683,25 @@ void JumperStatsWindow::on_checkBox_stateChanged(int arg1)
 
 void JumperStatsWindow::saveJumperChartCsv(QString fileName, short chartType)
 {
-    QFile file(fileName);
-    file.open(QFile::WriteOnly | QFile::Text);
-    file.resize(0);
-    QTextStream stream(&file);
-    stream << tr("Numer") << ";" << tr("Pozycja") << ";" << tr("Konkurs") << ";" << "\n";
-    QLineSeries * series = nullptr;
-    switch(chartType)
-    {
-    case Positions:
-        series = jumperApperancesLineSeries;
-        break;
-    case JudgesPoints:
-        series = judgesPointsLineSeries;
-        break;
-    case Form:
-        series = jumperFormLineSeries;
-        break;
-    case TakeoffRating:
-        series = takeoffRatingLineSeries;
-        break;
-    case FlightRating:
-        series = flightRatingLineSeries;
-        break;
+    const auto plots=report().value("plots").toList();if(chartType<0 || chartType>=plots.size())return;
+    const auto quote=[](QString value){value.replace("\"","\"\"");return "\""+value+"\"";};
+    QByteArray bytes=QString(tr("Numer")+";"+tr("Wartość")+";"+tr("Konkurs")+"\n").toUtf8();
+    for(const auto &entry:plots[chartType].toMap().value("points").toList()) {
+        const auto point=entry.toMap();
+        bytes+=(QString::number(point.value("x").toInt())+";"+QString::number(point.value("y").toDouble(),'f',3)+";"+quote(point.value("label").toString())+"\n").toUtf8();
     }
-    if(chartType == Positions){
-        for(auto & point : series->points())
-        {
-
-        }
-    }
-    else
-    {
-        for(auto & point : series->points())
-        {
-
-        }
-    }
+    QSaveFile file(fileName);
+    if(!file.open(QIODevice::WriteOnly) || file.write(bytes)!=bytes.size() || !file.commit())
+        QMessageBox::warning(this,tr("Eksport statystyk"),tr("Nie udało się zapisać pliku %1.").arg(fileName));
 }
-
 void JumperStatsWindow::on_pushButton_csvExport_clicked()
 {
-    bool ok;
-    QString folderName = QInputDialog::getText(this, tr("Nazwa folderu"), tr("Podaj nazwę jaką ma mieć folder z zapisanymi statystykami skoczka"), QLineEdit::Normal, "", &ok);
-    if(ok == true)
-    {
-        QDir d("stats/jumpers-stats/" + folderName + "/charts");
-        if(!d.exists())
-            d.mkpath(".");
-        QString text = "stats/jumpers-stats/" + folderName + "/charts/";
-        saveJumperChartCsv(text + "apperances.csv", Positions);
-        saveJumperChartCsv(text + "judges.csv", JudgesPoints);
-        saveJumperChartCsv(text + "form.csv", Form);
-        saveJumperChartCsv(text + "takeoff-rating.csv", TakeoffRating);
-        saveJumperChartCsv(text + "flight-rating.csv", FlightRating);
-    }
+    const auto directory=QFileDialog::getExistingDirectory(this,tr("Eksport statystyk zawodnika"));
+    if(directory.isEmpty())return;
+    const QStringList files{"positions.csv","judges.csv","form.csv","quality-or-takeoff.csv","distance-or-flight.csv"};
+    bool exists=false;for(const auto &name:files)if(QFile::exists(QDir(directory).filePath(name)))exists=true;
+    if(exists && QMessageBox::question(this,tr("Eksport statystyk"),tr("Zastąpić istniejące pliki statystyk w tym folderze?"),QMessageBox::Yes|QMessageBox::No,QMessageBox::No)!=QMessageBox::Yes)return;
+    for(int i=0;i<files.size();++i)saveJumperChartCsv(QDir(directory).filePath(files[i]),i);
 }
 
 void JumperStatsWindow::on_checkBox_mergeCalendars_stateChanged(int arg1)
@@ -743,4 +715,70 @@ void JumperStatsWindow::on_checkBox_mergeCalendars_stateChanged(int arg1)
 void JumperStatsWindow::on_checkBox_withDSQ_stateChanged(int arg1)
 {
     fillWindow();
+}
+
+
+QVariantMap JumperStatsWindow::report() const {
+    QVariantList plots;bool modern=false;
+    for(auto *result:singleResults)for(const auto &jump:result->getJumpsReference())if(!jump.getSimulationV2Data().isEmpty())modern=true;
+    const auto context=[](CompetitionSingleResult *result) {
+        auto *event=result->getCompetition();if(!event)return QString();
+        auto *hill=event->getHill();
+        return (hill?hill->getName()+" HS"+QString::number(hill->getHSPoint()):QString())+" · "+event->getScheduledDate().toString("dd.MM.yyyy");
+    };
+    const QList<QPair<QString,QLineSeries *>> series{
+        {tr("Miejsca"),jumperApperancesLineSeries},{tr("Suma not sędziowskich"),judgesPointsLineSeries},
+        {tr("Forma"),jumperFormLineSeries},{modern?tr("Jakość skoku"):tr("Ocena wybicia"),takeoffRatingLineSeries},
+        {modern?tr("Odległość"):tr("Ocena lotu"),flightRatingLineSeries}};
+    for(int metric=0;metric<series.size();++metric) {
+        const auto &entry=series[metric];QVariantList points;
+        if(modern && metric>=3) {
+            for(auto *result:singleResults) {
+                int round=0;
+                for(const auto &jump:result->getJumpsReference()) {
+                    ++round;if(jump.getDSQ() || jump.getDNS())continue;
+                    double value=jump.getDistance();
+                    if(metric==3) {
+                        const auto quality=jump.getSimulationV2Data().value("quality").toObject();if(quality.isEmpty())continue;
+                        value=quality.value("overallAndForm").toDouble()+quality.value("hill").toDouble()+quality.value("event").toDouble()+quality.value("random").toDouble()+quality.value("manipulation").toDouble();
+                    }
+                    points.append(QVariantMap{{"x",points.size()+1},{"y",value},{"label",context(result)+" · "+tr("Skok %1").arg(round)}});
+                }
+            }
+        } else if(entry.second) {
+            QStringList labels;
+            for(auto *result:singleResults) {
+                const auto &jumps=result->getJumpsReference();if(jumps.isEmpty())continue;
+                if(metric==0){if(!jumps.first().getDSQ() || ui->checkBox_withDSQ->isChecked())labels.append(context(result));}
+                else if(metric==2)labels.append(context(result));
+                else {int round=0;for(const auto &jump:jumps){++round;if(!jump.getDSQ())labels.append(context(result)+" · "+tr("Skok %1").arg(round));}}
+            }
+            int i=0;for(const auto &point:entry.second->pointsVector())
+                points.append(QVariantMap{{"x",point.x()},{"y",point.y()},{"label",labels.value(i++)}});
+        }
+        if(metric==2 && !ui->checkBox->isChecked())points.clear();
+        plots.append(QVariantMap{{"name",entry.first},{"unit",metric==0?tr("Miejsce"):metric==1?tr("pkt"):metric==2?tr("Forma"):metric==4 && modern?tr("m"):tr("Ocena")},{"points",points}});
+    }
+    const auto picture=[](QPixmap pixmap) {
+        if(pixmap.isNull())return QString();
+        pixmap=pixmap.scaled(96,96,Qt::KeepAspectRatio,Qt::SmoothTransformation);
+        QByteArray bytes;QBuffer buffer(&bytes);buffer.open(QIODevice::WriteOnly);pixmap.save(&buffer,"PNG");
+        return "data:image/png;base64,"+QString::fromLatin1(bytes.toBase64());
+    };
+    return {{"photo",jumper?picture(jumper->getImagePixmap()):QString()},{"flag",jumper?picture(CountryFlagsManager::getFlagPixmap(jumper->getCountryCode().toLower())):QString()},{"name",jumper?jumper->getNameAndSurname():QString()},{"country",jumper?jumper->getCountryCode():QString()},
+        {"best",ui->label_bestPos->text()},{"worst",ui->label_worstPos->text()},{"mean",ui->label_averagePos->text()},
+        {"deviation",ui->label_standardDeviation->text()},{"plots",plots}};
+}
+
+QString JumperStatsWindow::pointDescription() const {return ui->label_chartCompetition->text()+" · "+ui->label_chartStat->text();}
+void JumperStatsWindow::previewPoint(int metric,int index) {
+    const QList<QLineSeries *> plots{jumperApperancesLineSeries,judgesPointsLineSeries,jumperFormLineSeries,takeoffRatingLineSeries,flightRatingLineSeries};
+    if(metric<0 || metric>=plots.size() || !plots[metric] || index<0 || index>=plots[metric]->count())return;
+    const auto point=plots[metric]->at(index);
+    if(metric==Positions)updateChartCompetitionByJumpDataForJumperApperances(point,true);
+    else if(metric==JudgesPoints)updateChartCompetitionByJumpDataForJudges(point,true);
+    else if(metric==Form)updateChartCompetitionByJumpDataForForm(point,true);
+    else if(metric==TakeoffRating)updateChartCompetitionByJumpDataForTakeoffRating(point,true);
+    else updateChartCompetitionByJumpDataForFlightRating(point,true);
+    emit pointChanged();
 }

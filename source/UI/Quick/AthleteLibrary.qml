@@ -69,6 +69,7 @@ Control {
         RowLayout {
             Layout.fillWidth: true; Layout.margins: Theme.dp(8)
             Label { text: qsTr("Skoczkowie · %1").arg(library.backend.profiles.length); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
+            SToolButton { visible: library.season; text: qsTr("▥ Statystyki"); foreground: Theme.accent; hint: qsTr("Statystyki zawodnika"); enabled: library.backend.selectedIndex>=0; onClicked: library.backend.showStatistics() }
             SortCountryButton { visible: !library.season; enabled: library.backend.profiles.length>1; onConfirmed: library.backend.sortByCountry() }
         }
         SField {

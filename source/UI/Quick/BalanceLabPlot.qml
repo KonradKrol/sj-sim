@@ -5,6 +5,9 @@ import QtQuick.Shapes 1.15
 
 ColumnLayout {
     id: plot
+    property bool invertY: false
+    property int precision: 2
+    property real yPadding: NaN
     property string caption
     property string xLabel
     property string yLabel
@@ -19,12 +22,12 @@ ColumnLayout {
     readonly property real maxX: all.reduce(function(v,p){return Math.max(v,p.x)},all.length?all[0].x:1)
     readonly property real minY: all.reduce(function(v,p){return Math.min(v,p.lo!==undefined?p.lo:p.y)},all.length?all[0].y:0)
     readonly property real maxY: all.reduce(function(v,p){return Math.max(v,p.hi!==undefined?p.hi:p.y)},all.length?all[0].y:1)
-    readonly property real pad: Math.max(.01,(maxY-minY)*.06)
+    readonly property real pad: isNaN(yPadding) ? Math.max(.01,(maxY-minY)*.06) : yPadding
     function px(x){return (x-minX)/Math.max(.000001,maxX-minX)*graph.width}
-    function py(y){return graph.height-(y-minY+pad)/Math.max(.000001,maxY-minY+2*pad)*graph.height}
+    function py(y){var position=(y-minY+pad)/Math.max(.000001,maxY-minY+2*pad)*graph.height;return invertY ? position : graph.height-position}
     function line(points){return points.map(function(p){return Qt.point(px(p.x),py(p.y))})}
     function band(points){return points.map(function(p){return Qt.point(px(p.x),py(p.hi!==undefined?p.hi:p.y))}).concat(points.slice().reverse().map(function(p){return Qt.point(px(p.x),py(p.lo!==undefined?p.lo:p.y))}))}
-    function format(v){return Number(v).toLocaleString(Qt.locale(Theme.localeName),'f',2)}
+    function format(v){return Number(v).toLocaleString(Qt.locale(Theme.localeName),'f',precision)}
     spacing: 5
     Label { text: plot.caption; color: Theme.ink; font.pointSize: Theme.section; font.family: Theme.displayFamily; Layout.fillWidth: true; wrapMode: Text.WordWrap }
     Label { text: plot.yLabel; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
@@ -64,7 +67,7 @@ ColumnLayout {
             model: 5
             Label {
                 required property int index
-                text: plot.format(plot.maxY+plot.pad-index*(plot.maxY-plot.minY+2*plot.pad)/4)
+                text: plot.format(plot.invertY ? plot.minY-plot.pad+index*(plot.maxY-plot.minY+2*plot.pad)/4 : plot.maxY+plot.pad-index*(plot.maxY-plot.minY+2*plot.pad)/4)
                 x: Theme.dp(4); y: graph.y+index*graph.height/4-height/2; width: graph.x-Theme.dp(10)
                 horizontalAlignment: Text.AlignRight; color: Theme.muted; font.pointSize: Theme.caption
             }

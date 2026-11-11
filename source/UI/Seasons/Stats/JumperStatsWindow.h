@@ -26,6 +26,8 @@ class JumperStatsWindow;
 class JumperStatsWindow : public QDialog
 {
     Q_OBJECT
+    Q_PROPERTY(QVariantMap report READ report NOTIFY reportChanged)
+    Q_PROPERTY(QString pointDescription READ pointDescription NOTIFY pointChanged)
 
 public:
     explicit JumperStatsWindow(QWidget *parent = nullptr);
@@ -39,6 +41,13 @@ public:
         FlightRating
     };
 
+    QVariantMap report() const;
+    QString pointDescription() const;
+    Q_INVOKABLE void previewPoint(int metric,int point);
+signals:
+    void reportChanged();
+    void pointChanged();
+public:
     void setupConnections();
     void setupComboBox();
     void fillWindow();
@@ -70,9 +79,9 @@ private:
     ClassificationsCheckBoxesWidget * classificationsCheckBoxes;
     HillTypesCheckBoxesWidget * hillTypesCheckBoxes;
 
-    Jumper * jumper;
+    Jumper * jumper=nullptr;
     QVector<CompetitionSingleResult *> singleResults;
-    SimulationSave * save;
+    SimulationSave * save=nullptr;
 
     //Jumper apperances
     QChart * jumperApperancesChart;

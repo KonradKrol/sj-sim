@@ -33,6 +33,7 @@ ColumnLayout {
         readonly property int packIndex: 0
         signal uiChanged()
         function select(index) { if(catalog.list.table)catalog.list.table.select(index,0,0,true) }
+        function showStatistics(){var button=ui.find("pushButton_jumperStats");if(button)ui.activate(button.values.id)}
         function remove() {}
         function move(from,to) {}
         function sortByCountry() {}

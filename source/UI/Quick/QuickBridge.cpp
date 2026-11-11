@@ -1,3 +1,4 @@
+#include "../Seasons/Stats/JumperStatsWindow.h"
 #include "../../balance/BalanceLabController.h"
 #include "../../form-engine/FormLab.h"
 #include "QuickUi.h"
@@ -582,6 +583,20 @@ void QuickBridge::refresh() {
     if(!m_home) {
         auto *root=layoutNode(m_content->layout());
         compose(root);
+        if(auto *stats=qobject_cast<JumperStatsWindow *>(m_window.data())) {
+            for(auto *chart:m_content->findChildren<QChartView *>())chart->setProperty("quickMenuOnly",true);
+            QVariantList controls;
+            for(const auto &name:{"comboBox_calendar","comboBox_hillFilter","checkBox_mergeCalendars","checkBox_withDSQ","checkBox","pushButton_csvExport"})
+                if(auto *widget=stats->findChild<QWidget *>(name))controls.append(QVariant::fromValue(node(widget,true)));
+            for(auto *widget:QList<QWidget *>{stats->getRangeComboBoxes(),stats->getClassificationsCheckBoxes(),stats->getHillTypesCheckBoxes()})
+                if(widget)controls.append(QVariant::fromValue(node(widget,true)));
+            if(auto *widget=stats->findChild<SerieTypesComboBoxesWidget *>())controls.append(QVariant::fromValue(node(widget,true)));
+            auto *filters=m_groups.value("athlete-stat-filters");
+            if(!filters){filters=new QuickNode(this);m_groups.insert("athlete-stat-filters",filters);}
+            filters->update({{"kind","column"}},controls);
+            m_root->update({{"kind","athleteStats"},{"backend",QVariant::fromValue<QObject *>(stats)},{"filters",QVariant::fromValue(filters)}});
+        }
+
     }
     for(auto named=m_named.cbegin();named!=m_named.cend();++named) if(named.value()) node(named.value(),true);
     QVariantList actions;

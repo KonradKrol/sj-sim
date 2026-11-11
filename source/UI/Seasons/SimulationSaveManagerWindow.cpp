@@ -1624,66 +1624,24 @@ void SimulationSaveManagerWindow::on_listView_classificationsArchive_doubleClick
 
 void SimulationSaveManagerWindow::on_pushButton_jumperStats_clicked()
 {
-    bool condition = false;
-    for(auto & cal : simulationSave->getSeasonsReference().first().getCalendarsReference())
-    {
-        for(auto & comp : cal->getCompetitionsReference())
-            if(comp->getPlayed()){
-                condition = true;
-                break;
-            }
-    }
-    if(simulationSave->getActualSeason()->getActualCalendar() != nullptr && condition)
-    {
-    if(jumpersListView->getListView()->selectionModel()->selectedRows().count() == 0)
-    {
-        QMessageBox::warning(this, tr("Statystyki skoczka"), tr("Najpierw zaznacz jakiegoś zawodnika!"), QMessageBox::Ok);
-    }
-    else
-    {
-        int index = jumpersListView->getListView()->selectionModel()->selectedRows().first().row();
-        Jumper * jumper = simulationSave->getJumpersReference()[index];
-        JumperStatsWindow statsWindow;
-        statsWindow.setSave(simulationSave);
-        statsWindow.setupComboBox();
-        statsWindow.setJumper(jumper);
-        statsWindow.getRangeComboBoxes()->setSeasonsList(&simulationSave->getSeasonsReference());
-        statsWindow.getRangeComboBoxes()->setMergeCalendars(statsWindow.getMergeCalendarsCheckBox()->isChecked());
-        statsWindow.getRangeComboBoxes()->setupComboBoxes();
-        statsWindow.getRangeComboBoxes()->setupConnections();
-        statsWindow.getClassificationsCheckBoxes()->setClassificationsList(&simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference());
-        statsWindow.getClassificationsCheckBoxes()->setupCheckBoxes();
-        statsWindow.setupConnections();
-        statsWindow.getShowFormCheckBox()->setChecked(simulationSave->getShowForm());
-        if(statsWindow.getCalendarComboBox()->count() > 0){
-            statsWindow.getCalendarComboBox()->setCurrentIndex(simulationSave->getActualSeason()->getCalendarsReference().indexOf(simulationSave->getActualSeason()->getActualCalendar()));
-            emit statsWindow.getCalendarComboBox()->currentIndexChanged(statsWindow.getCalendarComboBox()->currentIndex());
-        }
-        else
-            statsWindow.fillWindow();
-        if(statsWindow.exec() == QDialog::Accepted)
-        {
-
-        }
-    }
-    }
-    else
-    {
-    QMessageBox * msgBox = new QMessageBox(this);
-    msgBox->setText(tr("Statystyki zawodnika"));
-    msgBox->setText(tr("Tępy kretynie! Jakim cudem chcesz zobaczyć statystyki, jeśli nie rozegrałeś jeszcze żadnego konkursu?"));
-    QPushButton *sorryButton = msgBox->addButton(tr("Przepraszam, to się więcej nie powtórzy"), QMessageBox::RejectRole);
-    QPushButton *showButton = msgBox->addButton(tr("Pokaż statystyki mimo to"), QMessageBox::AcceptRole);
-    msgBox->show();
-
-    connect(msgBox, &QMessageBox::buttonClicked, this, [sorryButton, showButton, msgBox](QAbstractButton * btn){
-        if(btn == showButton)
-        {
-            QDesktopServices::openUrl(QUrl("https://pl.wikipedia.org/wiki/Jaynagar_Majilpur"));
-        }
-        msgBox->accept();
-    });
-    }
+    const auto selected=jumpersListView->getListView()->selectionModel()->selectedRows();
+    if(selected.isEmpty()){QMessageBox::information(this,tr("Statystyki zawodnika"),tr("Wybierz zawodnika na liście."));return;}
+    const int index=selected.first().row();
+    if(index<0 || index>=simulationSave->getJumpersReference().size())return;
+    auto *jumper=simulationSave->getJumpersReference()[index];
+    JumperStatsWindow statsWindow(this);statsWindow.setSave(simulationSave);statsWindow.setJumper(jumper);
+    statsWindow.getRangeComboBoxes()->setSeasonsList(&simulationSave->getSeasonsReference());
+    statsWindow.getRangeComboBoxes()->setMergeCalendars(statsWindow.getMergeCalendarsCheckBox()->isChecked());
+    QVector<Classification *> empty;
+    auto *calendar=simulationSave->getActualSeason()->getActualCalendar();
+    statsWindow.getClassificationsCheckBoxes()->setClassificationsList(calendar?&calendar->getClassificationsReference():&empty);
+    statsWindow.setupComboBox();
+    statsWindow.getRangeComboBoxes()->setupComboBoxes();statsWindow.getRangeComboBoxes()->setupConnections();
+    statsWindow.getClassificationsCheckBoxes()->setupCheckBoxes();statsWindow.setupConnections();
+    statsWindow.getShowFormCheckBox()->setChecked(simulationSave->getShowForm());
+    if(calendar && statsWindow.getCalendarComboBox()->count()>0)
+        statsWindow.getCalendarComboBox()->setCurrentIndex(simulationSave->getActualSeason()->getCalendarsReference().indexOf(calendar));
+    statsWindow.fillWindow();statsWindow.exec();
 }
 
 void SimulationSaveManagerWindow::on_pushButton_clicked()
