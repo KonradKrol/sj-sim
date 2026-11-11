@@ -1,3 +1,5 @@
+#include <QMessageBox>
+#include "../../seasons/CalendarDateValidation.h"
 #include "QuickCalendar.h"
 #include "../Seasons/CalendarEditor/CalendarEditorWidget.h"
 #include "../Seasons/SimulationSaveManagerWindow.h"
@@ -17,9 +19,13 @@ void QuickCalendar::setDatesEnabled(bool enabled)
 {
     sync();
     if(!m_save || !m_save->getActualSeason())return;
+    if(m_save->getActualSeason()->hasStarted()){fail(tr("Dat nie można zmieniać po rozpoczęciu sezonu."));return;}
+    if(!enabled && m_save->getActualSeason()->getDatesEnabled() &&
+       QMessageBox::question(m_editor,tr("Wyłącz daty zawodów"),tr("Wyłączyć daty zawodów? Autoforma i forma dnia przestaną działać."),QMessageBox::Yes|QMessageBox::No,QMessageBox::No)!=QMessageBox::Yes)return;
     if(!m_save->getActualSeason()->setDatesEnabled(enabled)){
         fail(tr("Daty można włączyć tylko przed rozpoczęciem sezonu."));return;
     }
+    if(!enabled){QString error;m_save->formEngine().setEnabled(false,false,error);}
     clearUndo();
     for(QWidget *owner=m_editor.data();owner;owner=owner->parentWidget())
         if(auto *manager=qobject_cast<SimulationSaveManagerWindow *>(owner))manager->fillNextCompetitionInformations();
@@ -75,21 +81,8 @@ QVariantMap QuickCalendar::monthData(const QString &iso) const
 }
 QVariantList QuickCalendar::dateWarnings() const
 {
-    QVariantList warnings;if(!datesEnabled())return warnings;
-    QDate previous;int missing=0;QHash<QDate,QString> venues;
-    for(auto *event:mains()){
-        const auto date=event->getScheduledDate();if(!date.isValid()){++missing;continue;}
-        const int number=mains().indexOf(event)+1;
-        if(previous.isValid() && date<previous)warnings.append(tr("Konkurs %1 ma datę wcześniejszą niż poprzedni konkurs. Zmień daty lub kolejność — konkursy odbywają się w kolejności listy.").arg(number));
-        previous=date;
-        const auto venue=event->getHill()?event->getHill()->getName():QString();
-        if(venues.contains(date) && venues.value(date)!=venue)warnings.append(tr("%1: konkursy odbywają się w różnych miejscowościach tego samego dnia. Sprawdź, czy taki plan jest zamierzony.").arg(dateText(date.toString(Qt::ISODate))));
-        venues.insert(date,venue);
-        auto *source=event->getAdvancementCompetition();
-        if(source && source->getScheduledDate().isValid() && source->getScheduledDate()>date)warnings.append(tr("Kwalifikacje do konkursu %1 zaplanowano po konkursie. Zmień ich datę.").arg(number));
-        for(auto *training:event->getTrainings())if(training->getScheduledDate().isValid() && training->getScheduledDate()>date){warnings.append(tr("Trening do konkursu %1 zaplanowano po konkursie. Zmień jego datę.").arg(number));break;}
-    }
-    if(missing)warnings.prepend(tr("%1 konkursów nie ma daty. Możesz ustalić ich terminy w szybkim planowaniu.").arg(missing));
+    QVariantList warnings;
+    for(const auto &issue:CalendarDateValidation::issues(m_calendar,datesEnabled()))warnings.append(issue);
     return warnings;
 }
 void QuickCalendar::discardDatePlan()
@@ -130,7 +123,7 @@ void QuickCalendar::planDates(const QString &start,const QString &pattern,int in
         date=date.addDays(pattern=="weekends"?(date.dayOfWeek()==6?1:6):pattern=="fri-sun"?(date.dayOfWeek()<7?1:5):pattern=="weekly"?7:pattern=="same"?0:interval);
     }
     for(const auto &value:m_plannedDates)if(!value.isValid() || value.year()<1 || value.year()>9999){discardDatePlan();fail(tr("Plan wykracza poza obsługiwany zakres dat."));return;}
-    if(!validateDateOrder(mains(),m_plannedDates)){discardDatePlan();return;}
+
     m_message=tr("Podgląd: %1 konkursów. Terminy zmienią się po zastosowaniu.").arg(targets.size());emit changed();
 }
 bool QuickCalendar::validateDateOrder(const QVector<CompetitionInfo *> &order,const QHash<CompetitionInfo *,QDate> &dates)
@@ -157,7 +150,6 @@ bool QuickCalendar::validateDateOrder(const QVector<CompetitionInfo *> &order,co
 }
 void QuickCalendar::applyDates(const QHash<CompetitionInfo *,QDate> &dates)
 {
-    if(!validateDateOrder(mains(),dates))return;
     mutate([&]{for(auto it=dates.begin();it!=dates.end();++it)it.key()->setScheduledDate(it.value());});
 }
 void QuickCalendar::applyDatePlan()

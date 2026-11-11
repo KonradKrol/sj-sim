@@ -1,8 +1,10 @@
 #pragma once
+#include "calendar-date-validation.h"
 #include "../source/UI/Seasons/CalendarEditor/CalendarEditorTableModel.h"
 
 static void calendarDateRegressions()
 {
+    calendarDateValidationRegressions();
     {
         DataPack pack;pack.kind=DataPack::Rules;pack.name="Defaults";
         CompetitionRules firstRules("First"),qualifying("Qualifying"),teamRules("Team");firstRules.setRounds({RoundInfo(50,true)});qualifying.setRounds({RoundInfo(60,true)});teamRules.setCompetitionType(CompetitionRules::Team);teamRules.setJumpersInTeamCount(2);teamRules.setRounds({RoundInfo(10,true)});

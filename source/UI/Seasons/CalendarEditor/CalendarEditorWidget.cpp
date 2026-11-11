@@ -1,3 +1,4 @@
+#include "../../../seasons/CalendarDateValidation.h"
 #include <QObject>
 #include "CalendarEditorWidget.h"
 #include "ui_CalendarEditorWidget.h"
@@ -1331,6 +1332,9 @@ void CalendarEditorWidget::execMultipleHillEditDialog(QVector<int> *rows, int co
 void CalendarEditorWidget::on_pushButton_saveCalendarPreset_clicked()
 {
     if(calendar == nullptr)return;
+    const auto dateIssues=CalendarDateValidation::issues(calendar,save && save->getActualSeason() && save->getActualSeason()->getDatesEnabled());
+    if(!dateIssues.isEmpty()){QMessageBox::warning(this,tr("Popraw daty w kalendarzu"),dateIssues.join("\n"));return;}
+
     bool ok = false;
     QString text = QInputDialog::getText(this, tr("Nazwa presetu"), tr("Podaj nazwę jaką ma mieć ten preset kalendarza. Jeżeli istnieje już preset o takiej nazwie, zostanie on nadpisany."), QLineEdit::Normal, "", &ok);
     text = text.trimmed();

@@ -71,6 +71,21 @@ Item {
             }
         }
         SButton { visible: calendar.panel==="defaults"; text: "← "+qsTr("Kalendarz"); quiet: true; dense: true; onClicked: calendar.panel="events" }
+        Pane {
+            visible: calendar.backend.dateWarnings.length>0
+            Layout.fillWidth: true
+            padding: Theme.dp(12)
+            background: Rectangle { color: Theme.surface; border.color: Theme.warning; border.width: 2; radius: Theme.dp(6) }
+            contentItem: ColumnLayout {
+                spacing: Theme.dp(6)
+                Label { text: qsTr("Popraw daty przed zatwierdzeniem"); color: Theme.warning; font.bold: true; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                Label { visible: calendar.backend.dateWarnings.length>3; text: qsTr("Liczba problemów: %1").arg(calendar.backend.dateWarnings.length); color: Theme.warning; font.pointSize: Theme.caption }
+                Repeater {
+                    model: calendar.backend.dateWarnings.slice(0,3)
+                    Label { required property string modelData; text: "• "+modelData; color: Theme.ink; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                }
+            }
+        }
         Label { text: calendar.backend.error; visible: text.length>0; color: Theme.warning; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
         ScrollView {
             id: planningScroll

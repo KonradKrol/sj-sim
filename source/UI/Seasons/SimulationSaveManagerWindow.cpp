@@ -1,3 +1,4 @@
+#include "../../seasons/CalendarDateValidation.h"
 #include "../Quick/QuickRoster.h"
 #include "../DatabaseEditor/ListModels/JumpersListsListModel.h"
 #include <QObject>
@@ -1006,6 +1007,11 @@ void SimulationSaveManagerWindow::updateCompetitionConfigButton()
         ui->pushButton_competitionConfig->setToolTip(tr("Dodaj konkurs w aktualnym kalendarzu"));
         ui->pushButton_competitionConfig->setEnabled(true);
     }
+    else if(!CalendarDateValidation::issues(calendar,simulationSave->getActualSeason()->getDatesEnabled()).isEmpty()) {
+        ui->pushButton_competitionConfig->setText(tr("Popraw daty w kalendarzu"));
+        ui->pushButton_competitionConfig->setToolTip(tr("Popraw błędy dat przed rozpoczęciem konkursu."));
+        ui->pushButton_competitionConfig->setEnabled(false);
+    }
     else if(auto *next=simulationSave->getNextCompetition(); next && calendar->getMainCompetitionForEvent(next) && calendar->getMainCompetitionForEvent(next)->getPendingAdvancementCompetition()) {
         ui->pushButton_competitionConfig->setText(tr("Popraw kolejność kwalifikacji"));ui->pushButton_competitionConfig->setToolTip(tr("Źródło kwalifikacji musi poprzedzać konkurs. Powiązanie zostało zachowane."));ui->pushButton_competitionConfig->setEnabled(false);
     }
@@ -1181,6 +1187,9 @@ SimulationSave *SimulationSaveManagerWindow::getSimulationSave() const
 
 void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
 {
+    const auto dateIssues=CalendarDateValidation::issues(simulationSave->getActualSeason()->getActualCalendar(),simulationSave->getActualSeason()->getDatesEnabled());
+    if(!dateIssues.isEmpty()){QMessageBox::warning(this,tr("Popraw daty w kalendarzu"),dateIssues.join("\n"));focusCalendarTab(false,true);return;}
+
     if(auto *active=simulationSave->getActualSeason()->getActualCalendar())if(auto *next=simulationSave->getNextCompetition())if(auto *main=active->getMainCompetitionForEvent(next);main && main->getPendingAdvancementCompetition())return;
 
     if(simulationSave->getActualSeason()->getActualCalendar() == nullptr)
@@ -1400,6 +1409,9 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
 
 void SimulationSaveManagerWindow::on_pushButton_saveToFile_clicked()
 {
+    const auto dateIssues=CalendarDateValidation::issues(simulationSave->getActualSeason()->getActualCalendar(),simulationSave->getActualSeason()->getDatesEnabled());
+    if(!dateIssues.isEmpty()){QMessageBox::warning(this,tr("Popraw daty w kalendarzu"),dateIssues.join("\n"));focusCalendarTab(false,true);return;}
+
     if(autosaveTimer)autosaveTimer->stop();
     if(saveSeasonChanges())
         QMessageBox::information(this, tr("Zapis do pliku"), tr("Pomyślnie zapisano aktualny zapis symulacji do pliku"), QMessageBox::Ok);
