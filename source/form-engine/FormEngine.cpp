@@ -49,6 +49,20 @@ void drift(State &s,double days,SimulationV2::RandomSource &rng,const Config &c)
 }
 QString configPath(){const auto override=QCoreApplication::instance()?QCoreApplication::instance()->property("formEngineStorageRoot").toString():QString();return (override.isEmpty()?QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/form-engine":override)+"/default.json";}
 }
+Config Config::withVariability(int level) const {
+    Config result=*this;
+    const double scales[]{.6,.8,1,1.3,1.7};
+    const double scale=scales[std::clamp(level,0,4)],gentle=std::sqrt(scale);
+    if(scale==1)return result;
+    for(auto &days:result.meanDays)days=std::clamp(days/scale,.25,10000.);
+    result.formHalfLife=std::clamp(formHalfLife/gentle,.25,1000.);
+    result.baseHalfLife=std::clamp(baseHalfLife/gentle,1.,10000.);
+    result.formDeviation=std::clamp(formDeviation*gentle,0.,50.);
+    result.baseDeviation=std::clamp(baseDeviation*gentle,0.,50.);
+    for(auto &value:result.entryDeviation)value=std::clamp(value*gentle,0.,50.);
+    result.entryInertia=std::clamp(1-(1-entryInertia)*std::pow(scale,.2),0.,1.);
+    return result;
+}
 QString regimeName(int r){static const char *names[]{"Głęboki kryzys","Słaby okres","Typowy okres","Dobry okres","Szczytowy okres"};return tr(names[std::clamp(r,0,4)]);}
 bool Config::validate(QString &error) const {
     auto copy=*this;bool ok=true;

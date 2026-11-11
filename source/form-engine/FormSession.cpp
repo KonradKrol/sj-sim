@@ -9,9 +9,10 @@
 #include <cmath>
 #include <algorithm>
 #include <QStringList>
+#include <QSettings>
 
 namespace AutoForm {
-Session::Session():seed(QRandomGenerator::system()->generate64()),config(defaultConfig()){}
+Session::Session():seed(QRandomGenerator::system()->generate64()),config(defaultConfig().withVariability(QSettings().value("simulation/simple/seasonFormVariability",2).toInt())){}
 QJsonObject Session::toJson() const {
     QJsonObject stored;for(auto it=states.cbegin();it!=states.cend();++it)stored[it.key()]=it.value().toJson();
     return {{"version",version},{"enabled",enabled},{"anchorPending",anchorPending},{"seed",QString::number(seed)},{"config",config.toJson()},{"states",stored}};

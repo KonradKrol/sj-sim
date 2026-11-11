@@ -1171,7 +1171,7 @@ void QuickBridge::compose(QuickNode *base) {
     }
     if(profile()=="AppSettingsWindow") {
         QVariantList sections;
-        const auto preferences=group("simple-simulation",QString(),fields({{"simpleSimulation_spread",tr("Losowość skoków")},{"simpleSimulation_distanceSpread",tr("Różnice w odległościach")},{"simpleSimulation_form",tr("Znaczenie formy")},{"simpleSimulation_landing",tr("Trudność lądowania")},{"simpleSimulation_perks",tr("Siła perków zawodników")},{"simpleSimulation_differences",tr("Różnice między zawodnikami")}}),"simulationPreferences");
+        const auto preferences=group("simple-simulation",QString(),fields({{"simpleSimulation_spread",tr("Losowość skoków")},{"simpleSimulation_distanceSpread",tr("Różnice w odległościach")},{"simpleSimulation_form",tr("Znaczenie formy")},{"simpleSimulation_seasonFormVariability",tr("Zmienność formy w sezonach")},{"simpleSimulation_landing",tr("Trudność lądowania")},{"simpleSimulation_perks",tr("Siła perków zawodników")},{"simpleSimulation_differences",tr("Różnice między zawodnikami")}}),"simulationPreferences");
         sections.append(group("simulation-page",QString(),{
             preferences,
             group("simulation",tr("Silnik symulacji"),{group("simulation-settings-fields",QString(),fields({

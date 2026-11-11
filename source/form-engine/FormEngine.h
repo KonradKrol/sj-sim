@@ -23,6 +23,7 @@ struct Config {
     static bool fromJson(const QJsonObject &,Config &,QString &);
     static QVariantList definitions();
     bool validate(QString &) const;
+    Config withVariability(int level) const;
 };
 struct State {
     double form=50,base=50,remainingDays=1;

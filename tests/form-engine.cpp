@@ -17,6 +17,10 @@ int main(int argc,char **argv){
     QFile calibrationFile(QFileInfo(QString::fromUtf8(__FILE__)).absolutePath()+"/../docs/calibration/form-defaults-2026-11-10.json");
     check(calibrationFile.open(QIODevice::ReadOnly),"recorded local form calibration exists");
     check(c.toJson()==QJsonDocument::fromJson(calibrationFile.readAll()).object(),"hardcoded form defaults exactly match the owner's local profile");
+    check(c.withVariability(2).toJson()==c.toJson(),"standard seasonal variability preserves calibration");
+    for(int level=0;level<5;++level)check(c.withVariability(level).validate(error),"all seasonal variability levels remain valid");
+    check(c.withVariability(0).meanDays[2]>c.meanDays[2] && c.withVariability(4).meanDays[2]<c.meanDays[2],"variability controls regime duration");
+    check(c.withVariability(0).formDeviation<c.formDeviation && c.withVariability(4).formDeviation>c.formDeviation,"variability controls fluctuation strength");
     auto broken=c.toJson();auto values=broken["values"].toObject();values["days.0"]=0;broken["values"]=values;check(!AutoForm::Config::fromJson(broken,copy,error),"reject zero holding time");
     check(AutoForm::saveDefaultConfig(c,error) && AutoForm::defaultConfig().toJson()==c.toJson(),"default config atomic roundtrip");
     const QDate start(2026,11,1);
