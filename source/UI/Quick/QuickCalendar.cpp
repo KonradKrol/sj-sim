@@ -299,6 +299,7 @@ void QuickCalendar::update(const QVariantMap &fields) {
         if(m_selection.value(it.key())!=it.value())differs=true;
     }
     if(!differs)return;
+    if(fields.contains("sortCompetition") && !m_selection.value("sortCompetitionIds").toStringList().contains(fields.value("sortCompetition").toString()))return;
     const auto items=selected();const auto *hills=m_editor->getModel()->getHillsList();const auto *rules=m_editor->getModel()->getRulesList();
     for(auto it=fields.cbegin();it!=fields.cend();++it){int value=it.value().toInt();
         if(it.key()=="hill"&&(value<0||value>=hills->size()))return;
@@ -355,6 +356,12 @@ void QuickCalendar::update(const QVariantMap &fields) {
         if(fields.contains("trialImportance")&&e->getTrialRound())e->getTrialRound()->setJumpsImportance(fields.value("trialImportance").toDouble());
         if(e->getRules().getCompetitionType()==CompetitionRules::Team && e->getTrialRound() && (fields.contains("rules") || fields.contains("kind") || fields.contains("trialRules") || fields.contains("trial"))){auto trialRules=e->getTrialRound()->getRules();trialRules.setCompetitionType(CompetitionRules::Team);trialRules.setJumpersInTeamCount(e->getRules().getJumpersInTeamCount());e->getTrialRound()->setRules(trialRules);}
         if(fields.contains("sortMode"))e->startListSortMode=qBound(0,fields.value("sortMode").toInt(),3);
+        if(e->startListSortMode==2 && fields.contains("sortMode")) {
+            const auto all=mains();CompetitionInfo *previous=nullptr;
+            for(auto *candidate:all){if(candidate==e)break;if(candidate->getRules().getCompetitionType()==e->getRules().getCompetitionType())previous=candidate;}
+            e->startListSortCompetitionId=previous?previous->getIDStr():QString();
+            if(!previous)e->startListSortMode=0;
+        }
         if(fields.contains("sortCompetition"))e->startListSortCompetitionId=fields.value("sortCompetition").toString();
         if(fields.contains("sortClassification"))e->startListSortClassificationId=fields.value("sortClassification").toString();
         if(fields.contains("advancement")){e->setAdvancementCompetition(advancement[fields.value("advancement").toInt()]);if(e->getAdvancementCompetition())e->setAdvancementClassification(nullptr);}

@@ -121,7 +121,7 @@ Pane {
                         Layout.fillWidth: true; Layout.minimumWidth: 0
                         popup.width: Math.min(Theme.dp(420), inspector.Window.window ? inspector.Window.window.width-24 : width)
                         model: [qsTr("Domyślnie — pierwsza pasująca klasyfikacja"),qsTr("Według wybranego źródła kwalifikacji"),qsTr("Konkretny konkurs"),qsTr("Konkretna klasyfikacja")]
-                        optionEnabled: [true, !!inspector.backend.selection.hasQualificationSource, true, true]
+                        optionEnabled: [true, !!inspector.backend.selection.hasQualificationSource, (inspector.backend.selection.sortCompetitionIds || []).length>0, true]
                         currentIndex: inspector.backend.selection.sortMode === undefined ? 0 : inspector.backend.selection.sortMode
                         onActivated: inspector.backend.update({sortMode:currentIndex})
                     }
@@ -129,7 +129,9 @@ Pane {
                         visible: inspector.backend.selection.sortMode === 2
                         Layout.fillWidth: true; Layout.minimumWidth: 0
                         searchable: true
-                        displayText: currentIndex < 0 ? qsTr("Wybierz konkurs") : textAt(currentIndex)
+                        popup.width: Math.min(Theme.dp(480), inspector.Window.window ? inspector.Window.window.width-24 : width)
+                        popup.height: Math.min(Theme.dp(360), Math.max(popup.above,popup.below))
+                        displayText: currentIndex < 0 ? qsTr("Różne konkursy") : textAt(currentIndex)
                         model: inspector.backend.selection.sortCompetitionNames || []
                         currentIndex: (inspector.backend.selection.sortCompetitionIds || []).indexOf(inspector.backend.selection.sortCompetition)
                         onActivated: inspector.backend.update({sortCompetition:inspector.backend.selection.sortCompetitionIds[currentIndex]})

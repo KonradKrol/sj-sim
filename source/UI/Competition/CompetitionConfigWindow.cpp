@@ -273,7 +273,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
             } else if(comp->startListSortMode==2) {
                 for(auto *event:simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference()) {
                     if(event==comp)break;
-                    if(event->getIDStr()==comp->startListSortCompetitionId && event->getRules().getCompetitionType()==kind)sortCompetition=event;
+                    if((comp->startListSortCompetitionId.isEmpty() || event->getIDStr()==comp->startListSortCompetitionId) && event->getRules().getCompetitionType()==kind)sortCompetition=event;
                 }
             } else if(comp->startListSortMode==3) {
                 for(auto *classification:simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference())
@@ -366,7 +366,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
             } else if(comp->startListSortMode==2) {
                 for(auto *event:simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference()) {
                     if(event==comp)break;
-                    if(event->getIDStr()==comp->startListSortCompetitionId && event->getRules().getCompetitionType()==kind)sortCompetition=event;
+                    if((comp->startListSortCompetitionId.isEmpty() || event->getIDStr()==comp->startListSortCompetitionId) && event->getRules().getCompetitionType()==kind)sortCompetition=event;
                 }
             } else if(comp->startListSortMode==3) {
                 for(auto *classification:simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference())
