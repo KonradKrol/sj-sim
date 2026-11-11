@@ -15,7 +15,7 @@ struct LandingParameters {
     double crosswindFallPerMetrePerSecond=.003;
     double crosswindSupportPerMetrePerSecond=.008;
     double crosswindTwoFeetPerMetrePerSecond=.015;
-    std::array<double,5> styleMean{{16.7556743,17.5556743,17.8356743,18.1716743,18.339674300000002}};
+    std::array<double,5> styleMean{{16.7556743,17.5556743,17.8356743,18.0036743,18.087674300000003}};
     std::array<double,4> landingPenalty{{0,2.6,5.6,8}};
     double sharedStyleDeviation=.35, judgeDeviation=.28;
     double judgeOutlierChance=.002;
