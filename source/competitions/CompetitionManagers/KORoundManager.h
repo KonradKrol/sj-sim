@@ -29,6 +29,7 @@ public:
 
 private:
     IndividualCompetitionManager * indManager;
+    int roundNumber=0;
     QVector<KOGroup> * groups;
     KOGroup * actualGroup;
 
@@ -52,6 +53,7 @@ public:
     CompetitionResults *getResults() const;
     void setResults(CompetitionResults *newResults);
     RoundInfo *getRoundInfo() const;
+    int getRoundNumber() const {return roundNumber;}
     void setRoundInfo(RoundInfo *newRoundInfo);
     QVector<KOGroup> *getGroups() const;
     void setGroups(QVector<KOGroup> *newGroups);

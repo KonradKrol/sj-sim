@@ -6,7 +6,7 @@
 KORoundManager::KORoundManager(QVector<KOGroup> *groups, CompetitionResults *results, RoundInfo *roundInfo, IndividualCompetitionManager *indManager)
     : indManager(indManager), groups(groups), actualGroup(nullptr), luckyLosersCount(0), results(results), roundInfo(roundInfo)
 {
-
+    roundNumber=indManager?indManager->getActualRound():0;
 }
 
 namespace {
