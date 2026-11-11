@@ -23,7 +23,7 @@ double precipitation(const JumpRequest &input,const WeatherField &weather)
 FlightResult manipulatedFlight(const JumpRequest &input,const FlightModel &model,const WeatherField &weather,double reserve,bool &limited,WindResponseSample response={})
 {
     auto flight=model.fly(reserve,input.hill,weather,input.startSeconds,input.captureExposure,response,input.athlete.perks[1]);
-    const double spread=1+input.hill.distanceSpreadPerk*model.parameters().hillSpreadPerLevel*(input.hill.distanceSpreadPerk<0?4.:1.);
+    const double spread=std::max(0.,1+input.hill.distanceSpreadPerk*model.parameters().hillSpreadPerLevel*6.5);
     if(!input.manipulation.distance.active() && spread==1)return flight;
     const double natural=std::max(0.,input.hill.k+(flight.distance-input.hill.k)*spread);
     const double desired=input.manipulation.distance.apply(natural);
@@ -72,7 +72,7 @@ JumpResult Engine::simulate(const JumpRequest &input,RandomSource &rng,const Wea
     result.landingProbabilities=landingModel.probabilities(result.flight.distance,input.hill.realHs,result.flight.meanAbsoluteCrosswind);
     result.landing=landingModel.sample(result.flight.distance,input.hill.realHs,result.flight.meanAbsoluteCrosswind,rng);
     if(input.manipulation.landing)result.landing=*input.manipulation.landing;
-    result.judges=landingModel.judges(input.athlete.landing,result.landing,result.flight.distance,input.hill.k,input.hill.realHs,rng);
+    result.judges=landingModel.judges(input.athlete.landing,result.landing,result.flight.distance,input.hill.k,input.hill.realHs,rng,input.hill.hs);
     for(std::size_t i=0;i<result.judges.size();++i)if(input.manipulation.judges[i])result.judges[i]=*input.manipulation.judges[i];
     const double measuredWind=measurement.measure(weather,result.flight,input.startSeconds);
     if(!std::isfinite(measuredWind) || std::abs(measuredWind)>100)throw std::invalid_argument("Invalid measured wind");

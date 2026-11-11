@@ -57,12 +57,12 @@ LandingKind LandingModel::sample(double distance,double realHs,double crosswind,
     return LandingKind::Fall;
 }
 
-std::array<double,5> LandingModel::judges(int landingClass,LandingKind landing,double distance,double k,double realHs,RandomSource &rng) const
+std::array<double,5> LandingModel::judges(int landingClass,LandingKind landing,double distance,double k,double realHs,RandomSource &rng,double nominalHs) const
 {
     validateDistance(distance,realHs);bound(k,1,400,"Hill K out of range");
     if(landingClass<0 || landingClass>4 || int(landing)<0 || int(landing)>3)throw std::invalid_argument("Unknown landing class/kind");
     const double difficult=logistic((distance/realHs-config.twoFeetCentre)/config.twoFeetWidth);
-    const double relative=(distance-k)/k;
+    const double relative=(std::min(distance,1.02*(nominalHs>0?nominalHs:realHs))-k)/k;
     const double distanceEffect=config.distanceStyleOffset+relative*(relative<0?config.distanceStyleBelowK:config.distanceStyleAboveK);
     const double imperfect=rng.event(std::clamp(config.imperfectStyleBase+config.imperfectStyleIncrease*difficult,0.0,1.0)) ? config.imperfectStylePenalty : 0;
     double penalty=config.landingPenalty[std::size_t(landing)];
