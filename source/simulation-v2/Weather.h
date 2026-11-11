@@ -56,7 +56,7 @@ struct PrecipitationParameters {
     PrecipitationScenario scenario=PrecipitationScenario::None;
     double intensity=0; // 0..10; independent of precipitation kind
     double variation=2;
-    double correlationSeconds=120;
+    double correlationSeconds=420;
     double increasePerMinute=.12;
     PrecipitationKind kind=PrecipitationKind::Snow;
     void validate() const;

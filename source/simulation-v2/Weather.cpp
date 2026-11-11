@@ -154,7 +154,9 @@ Wind ContinuousWeather::wind(double distance,double seconds) const
 double ContinuousWeather::precipitation(double seconds) const
 {
     positionAndTime(0,seconds);
-    const double variation=noise(deriveSeed(seed,6),0,seconds/precip.correlationSeconds)*precip.variation;
+    const double correlation=precip.scenario==PrecipitationScenario::Blizzard
+        ? precip.correlationSeconds/3.5 : precip.correlationSeconds;
+    const double variation=noise(deriveSeed(seed,6),0,seconds/correlation)*precip.variation;
     switch(precip.scenario) {
     case PrecipitationScenario::None:return 0;
     case PrecipitationScenario::Stable:return precip.intensity;
