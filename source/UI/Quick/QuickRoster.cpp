@@ -240,6 +240,7 @@ bool QuickRoster::knockout() const {
 void QuickRoster::tool(const QString &operation) {
     sync();auto *c=qobject_cast<CompetitionConfigWindow *>(m_source);
     if(!c || knockout())return;
+    try {
     const bool team=teams();auto next=m_current;auto teamList=c->competitionTeams;
     QHash<QString,double> scores;QHash<QString,int> countries;
     const auto id=[](Jumper *j){return j?j->getIDStr():QString();};
@@ -353,4 +354,7 @@ void QuickRoster::tool(const QString &operation) {
     else if(operation=="name")std::stable_sort(next.begin(),next.end(),[](Jumper *a,Jumper *b){return QString::localeAwareCompare(a->getSurname()+" "+a->getName(),b->getSurname()+" "+b->getName())<0;});
     else if(operation=="country" || operation=="countries-manual")std::stable_sort(next.begin(),next.end(),[&](Jumper *a,Jumper *b){return operation=="country"?QString::localeAwareCompare(a->getCountryCode(),b->getCountryCode())<0:countries.value(a->getCountryCode())<countries.value(b->getCountryCode());});
     apply(next);
+    } catch(const std::exception &) {
+        QMessageBox::warning(c,tr("Nie można ustalić kolejności"),tr("Sprawdź skocznię i ustawienia konkursu."));
+    }
 }
