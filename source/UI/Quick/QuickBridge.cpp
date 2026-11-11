@@ -585,16 +585,7 @@ void QuickBridge::refresh() {
         compose(root);
         if(auto *stats=qobject_cast<JumperStatsWindow *>(m_window.data())) {
             for(auto *chart:m_content->findChildren<QChartView *>())chart->setProperty("quickMenuOnly",true);
-            QVariantList controls;
-            for(const auto &name:{"comboBox_calendar","comboBox_hillFilter","checkBox_mergeCalendars","checkBox_withDSQ","checkBox","pushButton_csvExport"})
-                if(auto *widget=stats->findChild<QWidget *>(name))controls.append(QVariant::fromValue(node(widget,true)));
-            for(auto *widget:QList<QWidget *>{stats->getRangeComboBoxes(),stats->getClassificationsCheckBoxes(),stats->getHillTypesCheckBoxes()})
-                if(widget)controls.append(QVariant::fromValue(node(widget,true)));
-            if(auto *widget=stats->findChild<SerieTypesComboBoxesWidget *>())controls.append(QVariant::fromValue(node(widget,true)));
-            auto *filters=m_groups.value("athlete-stat-filters");
-            if(!filters){filters=new QuickNode(this);m_groups.insert("athlete-stat-filters",filters);}
-            filters->update({{"kind","column"}},controls);
-            m_root->update({{"kind","athleteStats"},{"backend",QVariant::fromValue<QObject *>(stats)},{"filters",QVariant::fromValue(filters)}});
+            m_root->update({{"kind","athleteStats"},{"backend",QVariant::fromValue<QObject *>(stats)}});
         }
 
     }

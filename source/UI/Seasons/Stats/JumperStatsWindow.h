@@ -44,6 +44,7 @@ public:
     QVariantMap report() const;
     QString pointDescription() const;
     Q_INVOKABLE void previewPoint(int metric,int point);
+    Q_INVOKABLE void setEventFilter(int type,bool enabled);
 signals:
     void reportChanged();
     void pointChanged();

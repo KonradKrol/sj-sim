@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include "JumperStatsWindow.h"
+#include <QLocale>
 #include "ui_JumperStatsWindow.h"
 #include "../../../global/CountryFlagsManager.h"
 #include "../../../utilities/functions.h"
@@ -759,6 +760,19 @@ QVariantMap JumperStatsWindow::report() const {
         if(metric==2 && !ui->checkBox->isChecked())points.clear();
         plots.append(QVariantMap{{"name",entry.first},{"unit",metric==0?tr("Miejsce"):metric==1?tr("pkt"):metric==2?tr("Forma"):metric==4 && modern?tr("m"):tr("Ocena")},{"points",points}});
     }
+    QVariantList positions, eventFilters;
+    for(auto *result:singleResults) {
+        if(result->getJumpsReference().isEmpty() || result->getPosition()<1)continue;
+        if(result->getJumpsReference().first().getDSQ() && !ui->checkBox_withDSQ->isChecked())continue;
+        auto *event=result->getCompetition();if(!event)continue;
+        auto *hill=event->getHill();
+        positions.append(QVariantMap{{"position",result->getPosition()},{"event",hill?hill->getName()+" HS"+QString::number(hill->getHSPoint()):QString()},
+            {"date",event->getScheduledDate().toString("dd.MM.yyyy")},{"kind",event->getLongSerieTypeText()},
+            {"points",QLocale().toString(result->getPointsSum(),'f',1)}});
+    }
+    const auto types=serieTypesCheckBoxes->getSerieTypes();
+    for(int type:{CompetitionInfo::Training,CompetitionInfo::TrialRound,CompetitionInfo::Qualifications,CompetitionInfo::Competition})
+        eventFilters.append(types.contains(type));
     const auto picture=[](QPixmap pixmap) {
         if(pixmap.isNull())return QString();
         pixmap=pixmap.scaled(96,96,Qt::KeepAspectRatio,Qt::SmoothTransformation);
@@ -767,7 +781,7 @@ QVariantMap JumperStatsWindow::report() const {
     };
     return {{"photo",jumper?picture(jumper->getImagePixmap()):QString()},{"flag",jumper?picture(CountryFlagsManager::getFlagPixmap(jumper->getCountryCode().toLower())):QString()},{"name",jumper?jumper->getNameAndSurname():QString()},{"country",jumper?jumper->getCountryCode():QString()},
         {"best",ui->label_bestPos->text()},{"worst",ui->label_worstPos->text()},{"mean",ui->label_averagePos->text()},
-        {"deviation",ui->label_standardDeviation->text()},{"plots",plots}};
+        {"deviation",ui->label_standardDeviation->text()},{"plots",plots},{"positions",positions},{"eventFilters",eventFilters}};
 }
 
 QString JumperStatsWindow::pointDescription() const {return ui->label_chartCompetition->text()+" · "+ui->label_chartStat->text();}
@@ -781,4 +795,9 @@ void JumperStatsWindow::previewPoint(int metric,int index) {
     else if(metric==TakeoffRating)updateChartCompetitionByJumpDataForTakeoffRating(point,true);
     else updateChartCompetitionByJumpDataForFlightRating(point,true);
     emit pointChanged();
+}
+
+void JumperStatsWindow::setEventFilter(int type,bool enabled) {
+    const char *name=type==CompetitionInfo::Training?"checkBox_trainings":type==CompetitionInfo::TrialRound?"checkBox_trialRounds":type==CompetitionInfo::Qualifications?"checkBox_qualifications":type==CompetitionInfo::Competition?"checkBox_competitions":nullptr;
+    if(name)if(auto *box=serieTypesCheckBoxes->findChild<QCheckBox *>(name))box->setChecked(enabled);
 }
