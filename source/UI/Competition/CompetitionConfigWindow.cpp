@@ -497,9 +497,11 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
     comboBox_groupsSelectionType->setObjectName("comboBox_groupsSelectionType");
     comboBox_groupsSelectionType->addItem(tr("Dobierz grupy"));
     comboBox_groupsSelectionType->addItem(tr("Klasycznie"));
-    comboBox_groupsSelectionType->addItem(tr("Klasycznie (Dla dużych grup)"));
+    comboBox_groupsSelectionType->addItem(tr("Równomiernie (1, 11, 21…)"));
     comboBox_groupsSelectionType->addItem(tr("Losowo (Z podziałem na koszyki)"));
     comboBox_groupsSelectionType->addItem(tr("Losowo"));
+    comboBox_groupsSelectionType->addItem(tr("Ręcznie"));
+    comboBox_groupsSelectionType->addItem(tr("Na zakładkę (1, 20, 21…)"));
     ui->verticalLayout_startList->addWidget(comboBox_groupsSelectionType);
     comboBox_groupsSelectionType->hide();
     ui->verticalLayout_startList->addWidget(KOGroupsList);

@@ -20,7 +20,8 @@ public:
         Classic, //50-1, 49-2, 30-21
         ForLargerGroups, //1, 11, 21, 31, 41
         BasketsDraw,
-        Random
+        Random,
+        Interleaved=5
     };
 
     static QJsonObject getJsonObject(KOGroup &group);

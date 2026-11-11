@@ -683,7 +683,7 @@ QVector<KOGroup> CompetitionManagerWindow::getManualKOGroupsFromDialogInputs()
     QVBoxLayout mainLayout(&dialog);
     QComboBox selectionComboBox(&dialog);
     selectionComboBox.setObjectName("comboBox_groupsSelectionType");
-    selectionComboBox.setModel(new QStringListModel({tr("Dobór grup"), tr("Klasyczne"), tr("Dla dużych grup"), tr("Losowe (Z podziałem na koszyki)"), tr("Losowe")}, &selectionComboBox));
+    selectionComboBox.setModel(new QStringListModel({tr("Dobór grup"), tr("Klasyczne"), tr("Równomiernie (1, 11, 21…)"), tr("Losowe (Z podziałem na koszyki)"), tr("Losowe"),tr("Ręcznie"),tr("Na zakładkę (1, 20, 21…)")}, &selectionComboBox));
 
     QVector<Jumper *> jumpers = indManager->getFilteredJumpersForNextRound();
     QVector<KOGroup> groups = KOGroup::constructKOGroups(&manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()], &jumpers, KOGroup::Random, manager->getCompetitionInfo());

@@ -82,40 +82,18 @@ QVector<KOGroup> KOGroup::constructKOGroups(RoundInfo *roundInfo, QVector<Jumper
         break;
     }
     case KOGroup::ForLargerGroups:
+    case KOGroup::Interleaved:
     {
-        int gap = jumpers->count() / roundInfo->getCountInKOGroup();
-        int groupsCount = jumpers->count() / roundInfo->getCountInKOGroup(); //bez reszty. Ilość pełnych grup.
-        int additionalGroupJumpersCount = jumpers->count() % roundInfo->getCountInKOGroup(); //Np 4 dla 49 % 5, czyli jedna grupa ma czterech zamiast pięciu
-        for(int i=0; i<groupsCount; i++)
-        {
-            KOGroup group;
-            group.setNumber(i+1);
-
-            int jumperIndex = i;
-            for(int ii=0; ii<roundInfo->getCountInKOGroup(); ii++)
-            {
-                Jumper * jumper = jumpers->at(jumperIndex);
-                group.getJumpersReference().push_back(jumper);
-                jumperIndex += gap; //Zwiększa się o odstęp np. 3, 13, 23, 33, 43
-            }
-
-            groups.push_back(group);
+        const int size=roundInfo->getCountInKOGroup();
+        const int count=(jumpers->size()+size-1)/size;
+        groups.resize(count);
+        for(int rank=0;rank<jumpers->size();++rank) {
+            const int band=rank/count, offset=rank%count;
+            const int group=selectionType==KOGroup::Interleaved && band%2?count-1-offset:offset;
+            groups[group].getJumpersReference().prepend(jumpers->at(jumpers->size()-1-rank));
         }
-        if(additionalGroupJumpersCount > 0) //jest konieczność zrobienia dodatkowej grupy bo nie starcza zawodniów
-        {
-            KOGroup additionalGroup;
-            if(groups.count() > 0)
-                additionalGroup.setNumber(groups.last().getNumber() + 1);
-            else
-                additionalGroup.setNumber(1);
-
-            for(int jumperIndex=jumpers->count() - 1; jumperIndex>jumpers->count() - 1 - additionalGroupJumpersCount; jumperIndex--)
-            {
-                Jumper * jumper = jumpers->at(jumperIndex);
-                additionalGroup.getJumpersReference().push_back(jumper);
-            }
-            groups.push_back(additionalGroup);
-        }
+        std::reverse(groups.begin(),groups.end());
+        for(int i=0;i<groups.size();++i)groups[i].setNumber(i+1);
         break;
     }
     case KOGroup::BasketsDraw:

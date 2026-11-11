@@ -22,7 +22,8 @@ public:
         ForLargerGroups,
         BasketsDraw,
         Random,
-        Manual
+        Manual,
+        Interleaved=5
     };
     enum WindMeasurementType {
         LegacyWindMeasurement=0,
