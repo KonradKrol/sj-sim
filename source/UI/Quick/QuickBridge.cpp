@@ -967,6 +967,7 @@ QuickNode *QuickBridge::rosterNode(QWidget *source) {
     auto *entry=identity(source);
     QVariantMap values{{"kind","roster"},{"available",true},{"enabled",true},{"backend",QVariant::fromValue(static_cast<QObject *>(backend))}};
     if(entry->values().contains("externalActions"))values["externalActions"]=entry->values().value("externalActions");
+    if(entry->values().contains("orderChoices"))values["orderChoices"]=entry->values().value("orderChoices");
     if(qobject_cast<JumpersListEditorWindow *>(source)) {
         values["nameField"]=QVariant::fromValue(node(source->findChild<QLineEdit *>("lineEdit"),true));
         values["defaultField"]=QVariant::fromValue(node(source->findChild<QCheckBox *>("checkBox_default"),true));
@@ -1388,11 +1389,12 @@ void QuickBridge::compose(QuickNode *base) {
             }
             auto *entry=identity(configuration);auto values=entry->values();QVariantList external;
             for(const auto &value:advanced)if(auto *entry=value.value<QuickNode *>();entry&&entry->values().value("kind")=="button") {const auto fields=entry->values();const auto text=fields.value("name")=="pushButton_sortStartListByCountries"?tr("Grupuj kraje · obecna kolejność"):fields.value("text").toString();external.append(QVariantMap{{"id",fields.value("id")},{"text",text},{"enabled",fields.value("enabled")},{"button",true}});}
-            values["externalActions"]=external;values["orderChoices"]=QVariantList();entry->update(values);
+            values["externalActions"]=external;entry->update(values);
             QVariantList selectors;
             KOGroupsListView *koList=nullptr;
             if(auto *list=m_content->findChild<QWidget *>("scrollArea_startList"))for(auto *groups:list->findChildren<KOGroupsListView *>())if(!groups->isHidden()){koList=groups;break;}
             if(koList){
+                auto updated=identity(configuration)->values();updated["orderChoices"]=QVariantList();identity(configuration)->update(updated);
                 auto *ko=koGroupsNode(koList);
                 detail.append(QVariant::fromValue(ko));labels.append(tr("Grupy KO"));
             }else{
