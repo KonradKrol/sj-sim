@@ -26,8 +26,28 @@ check(c.validate(error),"defaults validate");check(AutoForm::Config::fromJson(c.
     QFile calibrationFile(QFileInfo(QString::fromUtf8(__FILE__)).absolutePath()+"/../docs/calibration/form-defaults-2026-11-10.json");
     check(calibrationFile.open(QIODevice::ReadOnly),"recorded local form calibration exists");
     check(AutoForm::Config::fromJson(QJsonDocument::fromJson(calibrationFile.readAll()).object(),copy,error) && copy.centers.front()==20 && copy.centers[3]==50 && copy.centers.back()==89 && copy.meanDays[3]==104,"legacy calibration migrates to seven regimes and shorter periods");
-    QFile currentCalibration(QFileInfo(QString::fromUtf8(__FILE__)).absolutePath()+"/../docs/calibration/form-defaults-2026-11-11.json");
+    QFile currentCalibration(QFileInfo(QString::fromUtf8(__FILE__)).absolutePath()+"/../docs/calibration/form-defaults-2026-11-11-seven-regimes-perks.json");
     check(currentCalibration.open(QIODevice::ReadOnly) && QJsonDocument::fromJson(currentCalibration.readAll()).object()==c.toJson(),"hardcoded defaults exactly match current owner calibration");
+    const std::array<double,7> expectedShares{{.02,.10,.23,.30,.23,.10,.02}};
+    for(int perk=-4;perk<=4;++perk) {
+        const auto shares=AutoForm::regimeTimeShares(perk,c);
+        std::array<std::array<double,7>,7> rows{};
+        std::array<double,7> days{};double intensity=0;
+        for(int r=0;r<7;++r){rows[r]=AutoForm::transitionProbabilities(r,perk,c);days[r]=AutoForm::meanRegimeDays(r,perk,c);intensity+=shares[r]/days[r];
+            if(perk==0)check(std::abs(shares[r]-expectedShares[r])<1e-12,"neutral stationary time shares match requested percentages");
+        }
+        check(std::abs(1/intensity-104*c.duration[perk+4])<1e-8,"aggregate mean holding time follows perk duration exactly");
+        for(int r=0;r<7;++r)for(int j=0;j<7;++j)check(std::abs(shares[r]*rows[r][j]/days[r]-shares[j]*rows[j][r]/days[j])<1e-12,"detailed balance gives exact target occupancy");
+        for(int r=0;r<7;++r)check(std::abs(shares[r]-shares[6-r])<1e-12,"perk distribution remains symmetric");
+        if(perk==-4 || perk==0 || perk==4) {
+            SimulationV2::SeededRandom random(910+perk);int state=3;std::array<double,7> occupancy{};double total=0;
+            for(int n=0;n<200000;++n){double held=-std::log(random.unit())*days[state];occupancy[state]+=held;total+=held;state=int(random.weightedIndex(std::vector<double>(rows[state].begin(),rows[state].end())));}
+            for(int r=0;r<7;++r)check(std::abs(occupancy[r]/total-shares[r])<.012,"long run CTMC occupancy agrees with target");
+        }
+    }
+    const auto stableShares=AutoForm::regimeTimeShares(-4,c),volatileShares=AutoForm::regimeTimeShares(4,c);
+    check(stableShares[3]>.30 && volatileShares[3]<.30,"stable favors center and volatile avoids center");
+    check(stableShares[2]+stableShares[3]+stableShares[4]>.76 && volatileShares[2]+volatileShares[3]+volatileShares[4]<.76,"perks move occupancy in all three central regimes");
     check(c.withVariability(2).toJson()==c.toJson(),"standard seasonal variability preserves calibration");
     for(int level=0;level<5;++level)check(c.withVariability(level).validate(error),"all seasonal variability levels remain valid");
     check(c.withVariability(0).meanDays[2]>c.meanDays[2] && c.withVariability(4).meanDays[2]<c.meanDays[2],"variability controls regime duration");
@@ -81,6 +101,6 @@ check(c.validate(error),"defaults validate");check(AutoForm::Config::fromJson(c.
         const auto mean=stats[0].toObject()["mean"].toDouble();if(perk==-4)stableMean=mean;if(perk==4)volatileMean=mean;
         std::cout<<"perk="<<perk<<" mean F="<<mean<<" visited regimes="<<stats[3].toObject()["mean"].toDouble()<<'\n';
     }
-    check(stableMean>volatileMean,"working calibration gives stable form an average advantage over volatile form");
+    check(std::abs(stableMean-volatileMean)<3,"symmetric perks alter variability without imposing an average form advantage");
     std::cout<<"PASS: form initialization, CTMC normalization, daily invariance, persistence, RNG and Laplace variance\n";
 }

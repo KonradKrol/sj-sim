@@ -37,7 +37,7 @@ Run run(const Experiment &e,int repeat,int variant,const Config &config,const st
     const int stride=qMax(1,qMax((e.days+499)/500,int((qint64(e.days)*e.athletes.size()+99999)/100000)));
     for(int i=0;i<e.athletes.size();++i){
         if(control->cancelled.load())throw Cancelled();
-        const auto &athlete=e.athletes[i];auto s=initialize(athlete.form,e.start,SimulationV2::deriveSeed(root,i),config);bool reached=s.form>=90;double previous=s.form;
+        const auto &athlete=e.athletes[i];auto s=initialize(athlete.form,e.start,SimulationV2::deriveSeed(root,i),config,athlete.perk);bool reached=s.form>=90;double previous=s.form;
         samples=QJsonArray();
         const auto collect=[&](const State &state){
             if(control->cancelled.load())throw Cancelled();

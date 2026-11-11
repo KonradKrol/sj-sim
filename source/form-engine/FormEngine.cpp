@@ -19,10 +19,11 @@ void fields(Config &c,const Field &f) {
     const auto item=[&](const QString &key,double &value,double lo,double hi,double step,const QString &group,const QString &name,const QString &help){f(key,value,lo,hi,step,group,name,help);};
     for(int r=0;r<regimeCount;++r) {
         const auto name=regimeName(r);
+        item(QString("share.%1").arg(r),c.shares[r],.000001,100,0.01,tr("Okresy formy"),tr("Udział czasu: %1").arg(name),tr("Względny udział czasu bez perka. Wartości są normalizowane; 0,30 oznacza 30%, jeśli suma wynosi 1."));
         item(QString("center.%1").arg(r),c.centers[r],1,100,1,tr("Okresy formy"),tr("Centrum bazy: %1").arg(name),tr("Baza powoli dąży do tej wartości w tym okresie. Nie ustawia bezpośrednio aktualnej formy."));
-        item(QString("days.%1").arg(r),c.meanDays[r],.25,10000,5,tr("Okresy formy"),tr("Średni czas: %1").arg(name),tr("Dni. To średnia, nie termin: okres może trwać znacznie dłużej."));
+        item(QString("days.%1").arg(r),c.meanDays[r],.25,10000,5,tr("Okresy formy"),tr("Bazowy czas: %1").arg(name),tr("Współtworzy średni czas między zmianami. Czas konkretnego okresu zależy też od jego docelowego udziału. Okres może trwać znacznie dłużej od średniej."));
         item(QString("entry.%1").arg(r),c.entryDeviation[r],0,50,.5,tr("Okresy formy"),tr("Rozrzut nowej bazy: %1").arg(name),tr("Odchylenie przy wejściu w okres. Większa wartość zwiększa różnice baz między zawodnikami."));
-        for(int to=0;to<regimeCount;++to)if(to!=r)item(QString("transition.%1.%2").arg(r).arg(to),c.weights[r][to],.0001,10000,1,tr("Przejścia"),name+" → "+regimeName(to),tr("Waga względem innych przejść z tego samego okresu, nie procent. Np. 2 i 1 oznaczają dwa razy większą szansę pierwszego przejścia."));
+        for(int to=0;to<regimeCount;++to)if(to!=r)item(QString("transition.%1.%2").arg(r).arg(to),c.weights[r][to],.0001,10000,1,tr("Przejścia"),name+" → "+regimeName(to),tr("Większa wartość ułatwia przejścia między tymi okresami. Docelowy udział czasu pozostaje zachowany. Uwzględniana jest również waga przejścia powrotnego."));
     }
     item("formHalfLife",c.formHalfLife,.25,1000,.5,tr("Zmiany formy"),tr("Powrót formy do bazy — dni"),tr("Po tylu dniach pozostaje połowa początkowej różnicy względem stałej bazy, pomijając losowość."));
     item("formDeviation",c.formDeviation,0,50,.5,tr("Zmiany formy"),tr("Zmienność formy"),tr("Docelowe odchylenie przy nieruchomej bazie, bez ograniczeń 1–100. Np. 6 daje typowe różnice kilku punktów; rzadziej większe."));
@@ -35,13 +36,13 @@ void fields(Config &c,const Field &f) {
     for(int p=-4;p<=4;++p) {
         const auto suffix=p==0?tr("Neutralny"):p<0?tr("Równa %1").arg(-p):tr("Chwiejna %1").arg(p);
         item(QString("noise.%1").arg(p+4),c.noise[p+4],.01,5,.05,tr("Perk formy"),tr("Wahania: %1").arg(suffix),tr("Mnożnik losowych zmian aktualnej formy. 0,7 zmniejsza odchylenie o 30%; 1,5 zwiększa o 50%."));
-        item(QString("crisis.%1").arg(p+4),c.crisis[p+4],.001,20,.1,tr("Perk formy"),tr("Kryzys: %1").arg(suffix),tr("Mnożnik wagi wejścia w głęboki kryzys. Pozostałe szanse są następnie normalizowane; czas trwania okresów nie zmienia się."));
-        item(QString("peak.%1").arg(p+4),c.peak[p+4],.001,20,.1,tr("Perk formy"),tr("Szczyt: %1").arg(suffix),tr("Mnożnik wagi wejścia w szczytowy okres. 0,8 zmniejsza tę wagę o 20%, przed normalizacją."));
+        item(QString("concentration.%1").arg(p+4),c.concentration[p+4],-10,10,.1,tr("Perk formy"),tr("Przesunięcie ku skrajnościom: %1").arg(suffix),tr("0 zachowuje rozkład. Wartość ujemna skupia czas wokół środka, dodatnia zwiększa udział obu skrajności."));
+        item(QString("duration.%1").arg(p+4),c.duration[p+4],.05,10,.05,tr("Perk formy"),tr("Czas okresów: %1").arg(suffix),tr("Mnożnik średniej długości okresów. 0,6 oznacza okresy krótsze średnio o 40%."));
     }
 }
 double bounded(double x){return std::clamp(x,1.,100.);}
 double laplace(SimulationV2::RandomSource &rng,double deviation){return rng.laplace(0,deviation/std::sqrt(2.));}
-double waiting(int r,SimulationV2::RandomSource &rng,const Config &c){return -std::log(rng.unit())*c.meanDays[r];}
+double waiting(double mean,SimulationV2::RandomSource &rng){return -std::log(rng.unit())*mean;}
 void drift(State &s,double days,SimulationV2::RandomSource &rng,const Config &c){
     if(days<=0)return;
     const double a=std::exp2(-days/c.baseHalfLife);
@@ -69,7 +70,7 @@ bool Config::validate(QString &error) const {
     fields(copy,[&](const QString &key,double &v,double lo,double hi,double,const QString &,const QString &,const QString &){if(!std::isfinite(v) || v<lo || v>hi){error=tr("Parametr poza zakresem: %1").arg(key);ok=false;}});
     for(int i=1;i<regimeCount;++i)if(centers[i]<=centers[i-1]){error=tr("Centra kolejnych okresów muszą rosnąć.");ok=false;}
     for(int i=0;i<regimeCount;++i)if(weights[i][i]!=0){error=tr("Waga pozostania w tym samym okresie musi wynosić zero.");ok=false;}
-    if(noise[4]!=1 || crisis[4]!=1 || peak[4]!=1){error=tr("Neutralny perk musi mieć mnożniki równe 1.");ok=false;}
+    if(noise[4]!=1 || concentration[4]!=0 || duration[4]!=1){error=tr("Neutralny perk musi mieć mnożniki równe 1.");ok=false;}
     if(ok)error.clear();return ok;
 }
 QJsonObject Config::toJson() const {
@@ -94,13 +95,23 @@ bool Config::fromJson(const QJsonObject &json,Config &out,QString &error) {
             for(int j=0;j<regimeCount;++j)if(i!=j)values[QString("transition.%1.%2").arg(i).arg(j)]=defaults.weights[i][j];
         }
     }
+    if(!values.contains("share.0")) {
+        Config defaults;
+        for(int i=0;i<regimeCount;++i)values[QString("share.%1").arg(i)]=defaults.shares[i];
+        for(int p=0;p<9;++p) {
+            values.remove(QString("crisis.%1").arg(p));values.remove(QString("peak.%1").arg(p));
+            values[QString("noise.%1").arg(p)]=defaults.noise[p];
+            values[QString("concentration.%1").arg(p)]=defaults.concentration[p];
+            values[QString("duration.%1").arg(p)]=defaults.duration[p];
+        }
+    }
     Config candidate;int count=0;bool ok=true;
     fields(candidate,[&](const QString &key,double &v,double,double,double,const QString &,const QString &,const QString &){++count;if(!values[key].isDouble()){error=tr("Brak parametru: %1").arg(key);ok=false;}else v=values[key].toDouble();});
     if(values.size()!=count){error=tr("Nieznane parametry silnika formy.");return false;}
     if(!ok || !candidate.validate(error))return false;out=candidate;return true;
 }
 QVariantList Config::definitions(){
-    Config c;QVariantList result;fields(c,[&](const QString &key,double &v,double lo,double hi,double step,const QString &group,const QString &label,const QString &help){result.append(QVariantMap{{"key",key},{"value",v},{"minimum",lo},{"maximum",hi},{"step",step},{"group",group},{"label",label},{"help",help},{"editable",key!="noise.4" && key!="crisis.4" && key!="peak.4"}});});return result;
+    Config c;QVariantList result;fields(c,[&](const QString &key,double &v,double lo,double hi,double step,const QString &group,const QString &label,const QString &help){result.append(QVariantMap{{"key",key},{"value",v},{"minimum",lo},{"maximum",hi},{"step",step},{"group",group},{"label",label},{"help",help},{"editable",key!="noise.4" && key!="concentration.4" && key!="duration.4"}});});return result;
 }
 int State::displayed() const{return int(std::round(bounded(form)));}
 QJsonObject State::toJson() const{return {{"regimeCount",regimeCount},{"form",form},{"base",base},{"regime",regime},{"remainingDays",remainingDays},{"visited",visited},{"transitions",transitions},{"random",QString::number(randomState)},{"date",date.toString(Qt::ISODate)}};}
@@ -117,27 +128,61 @@ bool State::fromJson(const QJsonObject &j,State &out,QString &error){
     }
     s.regime=int(r);s.visited=int(mask);s.transitions=int(transitions);out=s;error.clear();return true;
 }
-std::array<double,regimeCount> transitionProbabilities(int r,int perk,const Config &c){
-    auto weights=c.weights.at(r);const int p=std::clamp(perk,-4,4)+4;weights[0]*=c.crisis[p];weights[regimeCount-1]*=c.peak[p];double total=0;for(double v:weights)total+=v;for(auto &v:weights)v/=total;return weights;
+std::array<double,regimeCount> regimeTimeShares(int perk,const Config &c) {
+    std::array<double,regimeCount> shares{};double sum=0;
+    const double tilt=c.concentration[std::clamp(perk,-4,4)+4];
+    for(int i=0;i<regimeCount;++i){const double distance=(i-3)/3.;shares[i]=c.shares[i]*std::exp(tilt*distance*distance);sum+=shares[i];}
+    for(auto &value:shares)value/=sum;
+    return shares;
 }
-State initialize(double form,QDate date,SimulationV2::Seed seed,const Config &c){
+namespace {
+struct TransitionPlan {
+    std::array<std::array<double,regimeCount>,regimeCount> probabilities{};
+    std::array<double,regimeCount> days{};
+};
+TransitionPlan transitionPlan(int perk,const Config &c) {
+    TransitionPlan plan;const auto shares=regimeTimeShares(perk,c);
+    double intensity=0,baselineDays=0;
+    for(int i=0;i<regimeCount;++i) {
+        baselineDays+=shares[i]*c.meanDays[i];
+        double rate=0;
+        for(int j=0;j<regimeCount;++j)if(i!=j) {
+            // Symmetric conductance gives detailed balance with the target time shares.
+            const double conductance=std::sqrt(c.weights[i][j]*c.weights[j][i]/c.meanDays[i]/c.meanDays[j]);
+            plan.probabilities[i][j]=conductance*std::sqrt(shares[j]/shares[i]);
+            rate+=plan.probabilities[i][j];
+        }
+        plan.days[i]=1/rate;intensity+=shares[i]*rate;
+        for(auto &value:plan.probabilities[i])value/=rate;
+    }
+    // Keep the aggregate mean period at the configured baseline times the perk factor.
+    const double scale=intensity*baselineDays*c.duration[std::clamp(perk,-4,4)+4];
+    for(auto &days:plan.days)days*=scale;
+    return plan;
+}
+}
+double meanRegimeDays(int regime,int perk,const Config &c){return transitionPlan(perk,c).days.at(regime);}
+std::array<double,regimeCount> transitionProbabilities(int r,int perk,const Config &c){return transitionPlan(perk,c).probabilities.at(r);}
+
+State initialize(double form,QDate date,SimulationV2::Seed seed,const Config &c,int perk){
     if(!date.isValid() || !std::isfinite(form) || form<1 || form>100)throw std::invalid_argument("Invalid initial form/date");
     SimulationV2::SeededRandom rng(seed);State s;s.form=form;s.date=date;
     s.base=bounded(form+laplace(rng,rng.event(c.initialOutlierChance)?c.initialOutlierDeviation:c.initialDeviation));
     s.regime=0;for(int r=1;r<regimeCount;++r)if(std::abs(s.base-c.centers[r])<std::abs(s.base-c.centers[s.regime]))s.regime=r;
-    s.visited=1<<s.regime;s.remainingDays=waiting(s.regime,rng,c);s.randomState=rng.snapshot();return s;
+    s.visited=1<<s.regime;s.remainingDays=waiting(meanRegimeDays(s.regime,perk,c),rng);s.randomState=rng.snapshot();return s;
 }
 void advance(State &s,QDate target,int perk,const Config &c,const std::function<void(const State &)> &observer){
     const qint64 days=s.date.daysTo(target);if(!target.isValid() || days<0 || days>36525)throw std::invalid_argument("Invalid form time interval");
     SimulationV2::SeededRandom rng(s.randomState);
+    const auto plan=transitionPlan(perk,c);
     const double a=std::exp2(-1/c.formHalfLife),deviation=c.formDeviation*c.noise[std::clamp(perk,-4,4)+4]*std::sqrt(-std::expm1(-2*std::log(2.)/c.formHalfLife));
     for(qint64 day=0;day<days;++day){
         double left=1;
         while(s.remainingDays<=left){
             drift(s,s.remainingDays,rng,c);left-=s.remainingDays;
-            const auto probabilities=transitionProbabilities(s.regime,perk,c);s.regime=int(rng.weightedIndex(std::vector<double>(probabilities.begin(),probabilities.end())));
+            const auto &probabilities=plan.probabilities[s.regime];s.regime=int(rng.weightedIndex(std::vector<double>(probabilities.begin(),probabilities.end())));
             s.base=bounded(c.entryInertia*s.base+(1-c.entryInertia)*c.centers[s.regime]+laplace(rng,c.entryDeviation[s.regime]));
-            s.visited|=1<<s.regime;++s.transitions;s.remainingDays=waiting(s.regime,rng,c);
+            s.visited|=1<<s.regime;++s.transitions;s.remainingDays=waiting(plan.days[s.regime],rng);
         }
         drift(s,left,rng,c);s.remainingDays-=left;
         s.form=bounded(s.base+a*(s.form-s.base)+laplace(rng,deviation));s.date=s.date.addDays(1);

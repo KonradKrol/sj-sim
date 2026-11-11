@@ -16,9 +16,10 @@ struct Config {
     std::array<std::array<double,regimeCount>,regimeCount> weights{{{{0,1,0.25,0.0625,0.015625,0.00390625,0.000146484375}},{{0.15,0,1,0.25,0.0625,0.015625,0.0005859375}},{{0.0375,1,0,1,0.25,0.0625,0.00234375}},{{0.009375,0.25,1,0,1,0.25,0.009375}},{{0.00234375,0.0625,0.25,1,0,1,0.0375}},{{0.0005859375,0.015625,0.0625,0.25,1,0,0.15}},{{0.000146484375,0.00390625,0.015625,0.0625,0.25,1,0}}}};
     double formHalfLife=13,formDeviation=13,baseHalfLife=180,baseDeviation=25,entryInertia=0.12;
     double initialDeviation=5,initialOutlierChance=0.05,initialOutlierDeviation=15;
-    std::array<double,9> noise{{0.55,0.65,0.78,0.9,1,1.15,1.36,1.52,1.75}};
-    std::array<double,9> crisis{{0.4,0.6,0.75,0.875,1,1.16,2,1.7,2.55}};
-    std::array<double,9> peak{{0.8,0.85,0.9,0.95,1,1.1,1.2,1.35,1.55}};
+    std::array<double,9> noise{{.45,.60,.75,.90,1,1.10,1.25,1.40,1.55}};
+    std::array<double,regimeCount> shares{{.02,.10,.23,.30,.23,.10,.02}};
+    std::array<double,9> concentration{{-2.5,-1.75,-1.05,-.45,0,.45,1.05,1.75,2.5}};
+    std::array<double,9> duration{{1.4,1.3,1.2,1.1,1,.9,.8,.7,.6}};
     QJsonObject toJson() const;
     static bool fromJson(const QJsonObject &,Config &,QString &);
     static QVariantList definitions();
@@ -35,8 +36,10 @@ struct State {
     static bool fromJson(const QJsonObject &,State &,QString &);
 };
 QString regimeName(int);
-State initialize(double form,QDate,SimulationV2::Seed,const Config &);
+State initialize(double form,QDate,SimulationV2::Seed,const Config &,int perk=0);
 void advance(State &,QDate,int perk,const Config &,const std::function<void(const State &)> &observer={});
+std::array<double,regimeCount> regimeTimeShares(int perk,const Config &);
+double meanRegimeDays(int regime,int perk,const Config &);
 std::array<double,regimeCount> transitionProbabilities(int regime,int perk,const Config &);
 // Shared default for newly created saves. Existing saves keep their own snapshot.
 Config defaultConfig(QString *error=nullptr);

@@ -41,7 +41,7 @@ bool Session::update(QDate date,const QVector<Jumper *> &athletes,bool dates,QSt
             const auto profile=athlete->getSimulationProfile();const auto key=athlete->getIDStr();active.insert(key);
             if(!candidate.contains(key)){
                 const auto bytes=QCryptographicHash::hash(key.toUtf8(),QCryptographicHash::Sha256);quint64 stream=0;for(int i=0;i<8;++i)stream=(stream<<8)|quint8(bytes[i]);
-                candidate.insert(key,initialize(profile->form,date,SimulationV2::deriveSeed(seed,stream),config));
+                candidate.insert(key,initialize(profile->form,date,SimulationV2::deriveSeed(seed,stream),config,profile->perks[3]));
             }
             auto &state=candidate[key];
             if(anchorPending){state.date=date;if(state.displayed()!=profile->form)state.form=profile->form;}
@@ -70,8 +70,8 @@ QVariantMap Session::diagnostic(const Jumper &athlete) const {
     add(model,QObject::tr("Losowość F / dzień"),number(config.formDeviation*config.noise[p]*std::sqrt(1-a*a)),QObject::tr("Odchylenie losowego składnika zmiany formy w jednym dniu, przed ograniczeniem zakresu."));
     add(model,QObject::tr("Losowość μ / dzień"),number(config.baseDeviation*std::sqrt(1-baseA*baseA)));
     add(model,QObject::tr("Mnożnik wahań"),number(config.noise[p])+"×");
-    add(model,QObject::tr("Waga wejścia w kryzys"),number(config.crisis[p])+"×",QObject::tr("Mnożnik wagi przed normalizacją szans przejścia."));
-    add(model,QObject::tr("Waga wejścia na szczyt"),number(config.peak[p])+"×",QObject::tr("Mnożnik wagi przed normalizacją szans przejścia."));
+    add(model,QObject::tr("Przesunięcie ku skrajnościom"),number(config.concentration[p]),QObject::tr("Wartość ujemna skupia czas w środku, dodatnia zwiększa udział skrajności."));
+    add(model,QObject::tr("Długość okresów"),number(config.duration[p])+"×",QObject::tr("Mnożnik średniego czasu między zmianami okresu."));
     add(model,QObject::tr("Zachowanie starej bazy"),number(config.entryInertia*100,1)+" %");
     add(random,QObject::tr("Seed rozgrywki"),QString::number(seed));
     if(it==states.cend())return {{"automatic",enabled},{"pending",true},{"rows",rows}};
@@ -83,7 +83,7 @@ QVariantMap Session::diagnostic(const Jumper &athlete) const {
     add(status,QObject::tr("Centrum okresu"),number(config.centers[state.regime]));
     add(status,QObject::tr("Ostatnie przeliczenie"),state.date.toString("dd.MM.yyyy"));
     add(status,QObject::tr("Do zmiany okresu"),number(state.remainingDays)+QObject::tr(" dni"),QObject::tr("Pozostały wylosowany czas do następnej zmiany okresu. Sama forma nie przeskakuje wtedy do jego centrum."));
-    add(status,QObject::tr("Średni czas okresu"),number(config.meanDays[state.regime])+QObject::tr(" dni"));
+    add(status,QObject::tr("Średni czas okresu"),number(meanRegimeDays(state.regime,perk,config))+QObject::tr(" dni"));
     add(status,QObject::tr("Zmiany okresu"),QString::number(state.transitions));
     QStringList visited;for(int r=0;r<regimeCount;++r)if(state.visited&(1<<r))visited.append(regimeName(r));
     add(status,QObject::tr("Odwiedzone okresy"),QString::number(visited.size()),visited.join(", "));
