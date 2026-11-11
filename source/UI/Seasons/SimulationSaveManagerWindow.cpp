@@ -66,6 +66,10 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     automaticForm->setObjectName("automaticFormEnabled");automaticForm->hide();
     automaticForm->setToolTip(tr("Forma zmienia się wraz z datami wydarzeń. Wymaga włączonych dat; przy aktywnej funkcji nie można zmieniać formy ręcznie."));
     connect(automaticForm,&QCheckBox::toggled,this,[this,automaticForm](bool enabled){
+        if(!enabled && simulationSave->formEngine().enabled &&
+           QMessageBox::question(this,tr("Wyłącz autoformę"),tr("Wyłączyć automatyczną zmianę formy zawodników?"),QMessageBox::Yes|QMessageBox::No,QMessageBox::No)!=QMessageBox::Yes) {
+            QSignalBlocker guard(automaticForm);automaticForm->setChecked(true);return;
+        }
         AutoForm::Checkpoint checkpoint(simulationSave->formEngine(),simulationSave->getJumpersReference());
         QString error;const auto *season=simulationSave->getActualSeason();
         bool accepted=simulationSave->formEngine().setEnabled(enabled,season && season->getDatesEnabled() && simulationSave->getEngineVersion()==2,error);
@@ -476,7 +480,12 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     connect(ui->checkBox_autoGate,&QCheckBox::toggled,this,[this](bool value){simulationSave->setAutoGateEnabled(value);markSeasonChanged();});
 
     connect(ui->checkBox_calendarDates,&QCheckBox::toggled,this,[this](bool enabled){
-        simulationSave->getActualSeason()->setDatesEnabled(enabled);
+        auto *season=simulationSave->getActualSeason();
+        if(season->hasStarted() || (!enabled && season->getDatesEnabled() &&
+           QMessageBox::question(this,tr("Wyłącz daty zawodów"),tr("Wyłączyć daty zawodów? Autoforma i forma dnia przestaną działać."),QMessageBox::Yes|QMessageBox::No,QMessageBox::No)!=QMessageBox::Yes)) {
+            QSignalBlocker guard(ui->checkBox_calendarDates);ui->checkBox_calendarDates->setChecked(season->getDatesEnabled());return;
+        }
+        season->setDatesEnabled(enabled);
         if(!enabled){QString error;simulationSave->formEngine().setEnabled(false,false,error);refreshProfileDrafts();}
         fillNextCompetitionInformations();emit calendarEditor->changed();
     });
@@ -913,7 +922,7 @@ void SimulationSaveManagerWindow::fillNextCompetitionInformations()
         auto *next=simulationSave->getNextCompetition();cancel->setEnabled(next && !next->getPlayed() && !next->getCancelled());
     }
 
-    {QSignalBlocker guard(ui->checkBox_calendarDates);auto *season=simulationSave->getActualSeason();ui->checkBox_calendarDates->setChecked(season->getDatesEnabled());ui->checkBox_calendarDates->setEnabled(season->getDatesEnabled() || !season->hasStarted());}
+    {QSignalBlocker guard(ui->checkBox_calendarDates);auto *season=simulationSave->getActualSeason();ui->checkBox_calendarDates->setChecked(season->getDatesEnabled());ui->checkBox_calendarDates->setEnabled(!season->hasStarted());}
     if(simulationSave->getActualSeason() != nullptr
         && simulationSave->getActualSeason()->getActualCalendar() != nullptr)
         simulationSave->getActualSeason()->getActualCalendar()->normalizeCompetitionEvents();

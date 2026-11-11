@@ -8,6 +8,7 @@ Switch {
     implicitWidth: 0
     implicitHeight: Math.max(Theme.dp(64),contentItem.implicitHeight+topPadding+bottomPadding)
     padding: Theme.dp(10); leftPadding: Theme.dp(12); rightPadding: Theme.dp(60)
+    opacity: enabled ? 1 : .45
     hoverEnabled: true
     Accessible.description: detail
     contentItem: Column {
