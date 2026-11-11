@@ -35,10 +35,11 @@ ColumnLayout {
             SButton {
                 required property var modelData
                 required property int index
-                text: modelData.label; checkable: true; dense: true; primary: checked
+                objectName: "athleteEventFilter-"+modelData.type
+                readonly property bool included: !!(stats.report.eventFilters || [])[index]
+                text: modelData.label; dense: true; primary: included
                 font.family: Theme.bodyFamily; font.pointSize: Theme.body
-                checked: !!(stats.report.eventFilters || [])[index]
-                onClicked: stats.backend.setEventFilter(modelData.type,checked)
+                onClicked: stats.backend.setEventFilter(modelData.type,!included)
             }
         }
     }
