@@ -15,6 +15,7 @@ void validate(const JumpRequest &input)
 }
 double precipitation(const JumpRequest &input,const WeatherField &weather)
 {
+    if(!precipitationEnabled)return 0;
     const double value=weather.precipitation(input.startSeconds);
     if(!std::isfinite(value) || value<0 || value>10)throw std::invalid_argument("Invalid precipitation supplied by weather field");
     return std::clamp(input.manipulation.precipitation.apply(value),0.0,10.0);

@@ -153,6 +153,7 @@ Wind ContinuousWeather::wind(double distance,double seconds) const
 
 double ContinuousWeather::precipitation(double seconds) const
 {
+    if(!precipitationEnabled)return 0;
     positionAndTime(0,seconds);
     const double correlation=precip.scenario==PrecipitationScenario::Blizzard
         ? precip.correlationSeconds/3.5 : precip.correlationSeconds;

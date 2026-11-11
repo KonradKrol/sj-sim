@@ -94,7 +94,6 @@ Flickable {
                         sourceComponent: Component { WeatherTuning { backend: workspace.backend; viewportWidth: workspace.width } }
                     }
                 }
-                WeatherPrecipitation { backend: workspace.backend; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: Theme.dp(290); Layout.alignment: Qt.AlignTop }
             }
             RowLayout {
                 Layout.fillWidth: true

@@ -826,7 +826,7 @@ void QuickBridge::refresh() {
                     double value=0;for(const auto *key:{"overallAndForm","hill","event","random","manipulation"})value+=quality.value(key).toDouble();
                     summary["quality"]=QLocale().toString(value,'f',1);
                 }
-                if(visibility.value("precipitation").toBool() && metadata.contains("precipitation"))
+                if(SimulationV2::precipitationEnabled && visibility.value("precipitation").toBool() && metadata.contains("precipitation"))
                     summary["precipitation"]=(metadata.value("precipitationKind").toInt()==1?tr("Deszcz"):tr("Śnieg"))+" "+QLocale().toString(metadata.value("precipitation").toDouble(),'f',1)+" / 10";
             }
             for(const auto *key:{"takeoff","flight","random","snow"})summary.remove(key);

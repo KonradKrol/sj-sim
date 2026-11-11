@@ -74,7 +74,6 @@ ColumnLayout {
                     Layout.preferredHeight: status===Loader.Ready && item ? item.implicitHeight : 0
                     sourceComponent: Component { WindSlopePreview { heading: qsTr("Wiatr tego skoku"); backend: workspace.backend.wind; samples: workspace.backend.wind.preview } }
                 }
-                JumpAdjustmentFields { Layout.fillWidth: true; backend: workspace.backend; fieldKey: "precipitation"; title: qsTr("Natężenie opadów"); unit: qsTr("poziom 0–10"); upper: 10; help: qsTr("Zmienia natężenie opadów tylko podczas tego skoku. Rodzaj opadów pozostaje zgodny z warunkami konkursu.") }
                 JumpAdjustmentFields { Layout.fillWidth: true; backend: workspace.backend; fieldKey: "measuredWind"; title: qsTr("Pomiar do punktacji"); unit: "m/s"; lower: -100; upper: 100; help: qsTr("Zmienia pomiar do rekompensaty, nie fizyczny wiatr. Kierunek dodatni: pod narty; ujemny: w plecy.") }
             }
         }

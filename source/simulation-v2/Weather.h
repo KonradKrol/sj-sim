@@ -5,6 +5,7 @@
 #include <vector>
 
 namespace SimulationV2 {
+inline constexpr bool precipitationEnabled=false;
 
 struct Wind {
     double head=0, cross=0; // m/s; positive head is favourable

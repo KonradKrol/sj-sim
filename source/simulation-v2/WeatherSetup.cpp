@@ -60,6 +60,7 @@ void SimulationWeatherSetup::inferControls() {
     differences=std::clamp(std::max(wind.spatialAmplitude/1.5,spread/1.5)*100,0.0,100.0);
 }
 void SimulationWeatherSetup::rebuild() {
+    precipitation.scenario=SimulationV2::PrecipitationScenario::None;precipitation.intensity=0;
     weather=std::make_shared<SimulationV2::ContinuousWeather>(seed,wind,precipitation);
     error.clear();emit changed();emit previewChanged();
 }
