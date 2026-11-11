@@ -75,22 +75,22 @@ Item {
         Pane {
             visible: calendar.backend.dateWarnings.length>0 || calendar.backend.error.length>0
             Layout.fillWidth: true
-            padding: Theme.dp(12)
+            padding: Theme.dp(16)
             background: Rectangle {
-                color: Theme.surface; border.color: Theme.warning; border.width: 2; radius: Theme.dp(6)
-                Rectangle { anchors.fill: parent; anchors.margins: 2; radius: parent.radius; color: Qt.rgba(Theme.warning.r,Theme.warning.g,Theme.warning.b,.12) }
+                color: Theme.surface; border.color: Theme.danger; border.width: 3; radius: Theme.dp(6)
+                Rectangle { anchors.fill: parent; anchors.margins: 2; radius: parent.radius; color: Qt.rgba(Theme.danger.r,Theme.danger.g,Theme.danger.b,.18) }
             }
             contentItem: ColumnLayout {
                 spacing: Theme.dp(8)
                 RowLayout {
                     Layout.fillWidth: true; spacing: Theme.dp(9)
                     Rectangle {
-                        implicitWidth: Theme.dp(28); implicitHeight: Theme.dp(28); radius: width/2; color: Theme.warning
+                        implicitWidth: Theme.dp(34); implicitHeight: Theme.dp(34); radius: width/2; color: Theme.danger
                         Label { anchors.centerIn: parent; text: "!"; font.bold: true; font.pointSize: Theme.section; color: Theme.surface }
                     }
-                    Label { text: qsTr("Popraw kalendarz"); color: Theme.ink; font.bold: true; font.pointSize: Theme.body; Layout.fillWidth: true }
+                    Label { text: qsTr("Kalendarz zawiera błędy"); color: Theme.danger; font.bold: true; font.pointSize: Theme.section; Layout.fillWidth: true }
                 }
-                Label { visible: calendar.backend.dateWarnings.length>0; text: qsTr("Rozpoczęcie konkursu i zatwierdzenie są zablokowane."); color: Theme.ink; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                Label { visible: calendar.backend.dateWarnings.length>0; text: qsTr("ZABLOKOWANE — popraw błędy przed zatwierdzeniem lub rozpoczęciem konkursu."); color: Theme.ink; font.weight: Font.DemiBold; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 ScrollView {
                     id: issuesScroll
                     Layout.fillWidth: true
