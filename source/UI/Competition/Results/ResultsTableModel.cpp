@@ -1,3 +1,4 @@
+#include "../../../competitions/CompetitionManagers/KORoundManager.h"
 #include "ResultsTableModel.h"
 #include "../../../competitions/CompetitionAdvancement.h"
 
@@ -31,8 +32,12 @@ QVariant ResultsTableModel::data(const QModelIndex &index, int role) const
     if(role==CompetitionAdvancement::LatestJumpRole)return results->containsLatestJump(results->getResultsReference().at(index.row()));
     auto *jumper=results->getResultsReference().at(index.row()).getJumper();
     const auto *status=startListStatuses?StartListCompetitorStatus::getStatusOfJumper(jumper,*startListStatuses):nullptr;
-    const int roundStatus=manager && !status && results->getResultsReference().at(index.row()).getScoringRound()<manager->getActualRound()?StartListCompetitorStatus::SureDroppedOut
+    int roundStatus=manager && !status && results->getResultsReference().at(index.row()).getScoringRound()<manager->getActualRound()?StartListCompetitorStatus::SureDroppedOut
         :manager && manager->getActualRound()<manager->effectiveRoundsCount() && status?status->getAdvanceStatus():-1;
+    if(auto *individual=dynamic_cast<IndividualCompetitionManager *>(manager);individual && status && manager->getActualRound()>0 && manager->getActualRound()<=manager->getCompetitionRules()->getRoundsReference().size() && manager->getActualRound()<manager->effectiveRoundsCount() && manager->getCompetitionRules()->getRoundsReference()[manager->getActualRound()-1].getKO()) {
+        auto *ko=individual->getKOManager();
+        roundStatus=ko && ko->getRoundNumber()==manager->getActualRound()?ko->advancementStatus(jumper):StartListCompetitorStatus::Waiting;
+    }
     const int qualificationStatus=manager?manager->qualificationStatus(jumper):-1;
     if(role==CompetitionAdvancement::LuckyLoserRole){auto *individual=dynamic_cast<IndividualCompetitionManager *>(manager);return individual && individual->isLuckyLoser(jumper);}
     if(role==CompetitionAdvancement::RoundStatusRole)return roundStatus;

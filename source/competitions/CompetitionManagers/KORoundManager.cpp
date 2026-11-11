@@ -16,8 +16,8 @@ CompetitionAdvancement::Entry koEntry(Jumper *jumper,IndividualCompetitionManage
     const auto *status=StartListCompetitorStatus::getStatusOfJumper(jumper,manager->getStartListStatusesReference());
     auto *result=results->getResultOfIndividualJumper(jumper);
     if(result)entry.points=result->getRankingPoints();
-    entry.pending=status?status->getJumpStatus()==StartListCompetitorStatus::Unfinished:!result || result->getJumpsReference().size()<manager->getActualRound();
-    entry.excluded=status && (status->getJumpStatus()==StartListCompetitorStatus::Dsq || status->getJumpStatus()==StartListCompetitorStatus::Dns);
+    entry.pending=!result || result->getJumpsReference().size()<manager->getActualRound() || (status && status->getJumpStatus()==StartListCompetitorStatus::Unfinished);
+    entry.excluded=!entry.pending && status && (status->getJumpStatus()==StartListCompetitorStatus::Dsq || status->getJumpStatus()==StartListCompetitorStatus::Dns);
     if(result && !entry.pending && !result->getJumpsReference().isEmpty())entry.excluded=entry.excluded || result->getJumpsReference().last().getDSQ() || result->getJumpsReference().last().getDNS();
     return entry;
 }
@@ -26,27 +26,37 @@ CompetitionAdvancement::Entry koEntry(Jumper *jumper,IndividualCompetitionManage
 void KORoundManager::updateStatuses()
 {
     statuses.clear();
-    if(!groups || !results || !roundInfo || !indManager)return;
+    if(!groups || !results || !getRoundInfo() || !indManager || roundNumber!=indManager->getActualRound()){luckyLosers.clear();return;}
     for(const auto &group:*groups) {
         QVector<CompetitionAdvancement::Entry> entries;
         for(auto *jumper:group.getJumpers())if(jumper)entries.append(koEntry(jumper,indManager,results));
         for(const auto &entry:entries) {
-            const int state=CompetitionAdvancement::status(entry,entries,qMax(0,roundInfo->getAdvancingFromKOGroup()));
+            const int state=CompetitionAdvancement::status(entry,entries,qMax(0,getRoundInfo()->getAdvancingFromKOGroup()));
             statuses.insert(static_cast<Jumper *>(const_cast<void *>(entry.competitor)),state==StartListCompetitorStatus::SureAdvanced?Winner:state==StartListCompetitorStatus::SureDroppedOut?Loser:Waiting);
         }
     }
     updateLuckyLosers();
 }
 
+int KORoundManager::groupAdvancementStatus(Jumper *jumper) const {
+    if(!jumper || !groups || !results || !indManager || !getRoundInfo() || roundNumber!=indManager->getActualRound())return StartListCompetitorStatus::Waiting;
+    for(const auto &group:*groups)if(group.getJumpers().contains(jumper)) {
+        QVector<CompetitionAdvancement::Entry> entries;
+        for(auto *member:group.getJumpers())if(member)entries.append(koEntry(member,indManager,results));
+        return CompetitionAdvancement::status(koEntry(jumper,indManager,results),entries,qMax(0,getRoundInfo()->getAdvancingFromKOGroup()));
+    }
+    return StartListCompetitorStatus::Waiting;
+}
+
 int KORoundManager::advancementStatus(Jumper *jumper) const
 {
-    if(!jumper || !groups || !results || !roundInfo || !indManager)return StartListCompetitorStatus::Waiting;
+    if(!jumper || !groups || !results || !getRoundInfo() || !indManager || roundNumber!=indManager->getActualRound())return StartListCompetitorStatus::Waiting;
     const auto candidate=koEntry(jumper,indManager,results);
     if(candidate.excluded)return StartListCompetitorStatus::SureDroppedOut;
     if(candidate.pending)return StartListCompetitorStatus::Waiting;
-    const int groupStatus=statuses.value(jumper,Waiting);
-    if(groupStatus==Winner)return StartListCompetitorStatus::SureAdvanced;
-    if(groupStatus==Waiting)return StartListCompetitorStatus::Waiting;
+    const int groupStatus=groupAdvancementStatus(jumper);
+    if(groupStatus==StartListCompetitorStatus::SureAdvanced)return StartListCompetitorStatus::SureAdvanced;
+    if(groupStatus==StartListCompetitorStatus::Waiting)return StartListCompetitorStatus::Waiting;
     if(getLuckyLosersCount()<=0)return StartListCompetitorStatus::SureDroppedOut;
     int bestHigher=0,worstHigher=0;
     for(const auto &group:*groups) {
@@ -57,9 +67,9 @@ int KORoundManager::advancementStatus(Jumper *jumper) const
             if(entry.excluded)continue;
             const bool higher=entry.points>candidate.points;
             if(entry.pending || higher)++potentialHigher;
-            if(!entry.pending && higher && statuses.value(other,Waiting)==Loser)++bestHigher;
+            if(!entry.pending && higher && groupAdvancementStatus(other)==StartListCompetitorStatus::SureDroppedOut)++bestHigher;
         }
-        worstHigher+=qMax(0,potentialHigher-qMax(0,roundInfo->getAdvancingFromKOGroup()));
+        worstHigher+=qMax(0,potentialHigher-qMax(0,getRoundInfo()->getAdvancingFromKOGroup()));
     }
     if(bestHigher>=getLuckyLosersCount())return StartListCompetitorStatus::SureDroppedOut;
     if(worstHigher<getLuckyLosersCount())return StartListCompetitorStatus::SureAdvanced;
@@ -68,11 +78,11 @@ int KORoundManager::advancementStatus(Jumper *jumper) const
 
 bool KORoundManager::wouldSurelyAdvance(Jumper *jumper,qint64 points) const
 {
-    if(!jumper || !groups || !results || !roundInfo || !indManager)return false;
+    if(!jumper || !groups || !results || !getRoundInfo() || !indManager)return false;
     QMap<Jumper *,CompetitionAdvancement::Entry> entries;
     QMap<Jumper *,int> groupStates;
     bool found=false;
-    const int quota=qMax(0,roundInfo->getAdvancingFromKOGroup());
+    const int quota=qMax(0,getRoundInfo()->getAdvancingFromKOGroup());
     for(const auto &group:*groups){
         QVector<CompetitionAdvancement::Entry> field;
         for(auto *member:group.getJumpers())if(member){
@@ -173,7 +183,7 @@ void KORoundManager::setActualGroup(KOGroup *newActualGroup)
 
 int KORoundManager::getLuckyLosersCount() const
 {
-    if(!roundInfo || !roundInfo->getKO() || !indManager || indManager->getActualRound()>=indManager->effectiveRoundsCount())return 0;
+    if(!getRoundInfo() || !getRoundInfo()->getKO() || !indManager || roundNumber!=indManager->getActualRound() || indManager->getActualRound()>=indManager->effectiveRoundsCount())return 0;
     return qMax(0,luckyLosersCount);
 }
 
@@ -195,6 +205,10 @@ void KORoundManager::setGroups(QVector<KOGroup> *newGroups)
 
 RoundInfo *KORoundManager::getRoundInfo() const
 {
+    if(indManager && indManager->getCompetitionRules()) {
+        auto &rounds=indManager->getCompetitionRules()->getRoundsReference();
+        return roundNumber>0 && roundNumber<=rounds.size()?&rounds[roundNumber-1]:nullptr;
+    }
     return roundInfo;
 }
 

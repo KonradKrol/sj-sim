@@ -1,9 +1,11 @@
 #pragma once
+#include "ko-round-limits-regressions.h"
 #include "../source/competitions/CompetitionAdvancement.h"
 #include "../source/UI/Competition/Results/ResultsTableModel.h"
 #include "../source/UI/Competition/Results/KOGroupResultsTableModel.h"
 
 static void competitionAdvancementRegressions() {
+    koRoundLimitsRegressions();
     using namespace CompetitionAdvancement;
     constexpr int yes=StartListCompetitorStatus::SureAdvanced,no=StartListCompetitorStatus::SureDroppedOut,wait=StartListCompetitorStatus::Waiting;
     int keys[5];

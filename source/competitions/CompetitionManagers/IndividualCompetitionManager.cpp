@@ -24,7 +24,8 @@ void IndividualCompetitionManager::updateCompetitorsAdvanceStatuses()
     const int limit=advancementLimit();
     const bool hasNextRound=actualRound<effectiveRoundsCount();
     const bool includeTies=hasNextRound?!competitionRules->getRoundsReference()[actualRound].getKO():qualificationIncludesTies();
-    const bool knockOut=KOManager && hasNextRound && competitionRules->getRoundsReference()[actualRound-1].getKO();
+    const bool isKORound=hasNextRound && competitionRules->getRoundsReference()[actualRound-1].getKO();
+    const bool knockOut=isKORound && KOManager && KOManager->getRoundNumber()==actualRound;
     if(knockOut)KOManager->updateStatuses();
     QVector<CompetitionAdvancement::Entry> entries;
     for(const auto &status:startListStatuses) {
@@ -41,7 +42,7 @@ void IndividualCompetitionManager::updateCompetitorsAdvanceStatuses()
     }
     for(int i=0;i<startListStatuses.size();++i) {
         const int state=knockOut?KOManager->advancementStatus(startListStatuses[i].getJumper())
-            :CompetitionAdvancement::status(entries[i],entries,limit,includeTies);
+            :isKORound?StartListCompetitorStatus::Waiting:CompetitionAdvancement::status(entries[i],entries,limit,includeTies);
         startListStatuses[i].setAdvanceStatus(state);
     }
     updateQualificationStatuses();
