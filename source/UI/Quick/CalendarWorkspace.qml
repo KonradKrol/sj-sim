@@ -88,7 +88,7 @@ Item {
                         implicitWidth: Theme.dp(34); implicitHeight: Theme.dp(34); radius: width/2; color: Theme.danger
                         Label { anchors.centerIn: parent; text: "!"; font.bold: true; font.pointSize: Theme.section; color: Theme.surface }
                     }
-                    Label { text: qsTr("Kalendarz zawiera błędy"); color: Theme.danger; font.bold: true; font.pointSize: Theme.section; Layout.fillWidth: true }
+                    Label { text: calendar.backend.dateWarnings.length>0 ? qsTr("Popraw daty w kalendarzu") : qsTr("Nie można wykonać tej czynności"); color: Theme.danger; font.bold: true; font.pointSize: Theme.section; Layout.fillWidth: true }
                 }
                 Label { visible: calendar.backend.dateWarnings.length>0; text: qsTr("ZABLOKOWANE — popraw błędy przed zatwierdzeniem lub rozpoczęciem konkursu."); color: Theme.ink; font.weight: Font.DemiBold; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
                 ScrollView {
