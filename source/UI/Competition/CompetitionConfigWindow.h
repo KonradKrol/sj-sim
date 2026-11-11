@@ -75,6 +75,7 @@ private:
     QStringList lockedSquadSnapshot;
     void configureSeasonSquads();
     QStringList squadSnapshot() const;
+    QStringList squadMembershipSnapshot() const;
     bool automaticGateEnabled() const { return !simulationSave || simulationSave->getAutoGateEnabled(); }
     Ui::SingleCompetitionConfigWindow *ui;
     int type;

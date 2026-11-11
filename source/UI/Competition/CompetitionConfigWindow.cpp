@@ -638,6 +638,15 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
 QStringList CompetitionConfigWindow::squadSnapshot() const {
     QStringList snapshot;for(const auto &team:competitionTeams){snapshot.append(team.getIDStr());for(auto *jumper:team.getJumpers())snapshot.append(jumper?jumper->getIDStr():QString());}return snapshot;
 }
+QStringList CompetitionConfigWindow::squadMembershipSnapshot() const {
+    // Starting order and transient team IDs do not change a country's squad.
+    QStringList snapshot;
+    for(const auto &team:competitionTeams) {
+        QStringList members;for(auto *jumper:team.getJumpers())members.append(jumper?jumper->getIDStr():QString());
+        snapshot.append(team.getCountryCode()+":"+members.join(","));
+    }
+    snapshot.sort();return snapshot;
+}
 void CompetitionConfigWindow::autoCompleteTeams(bool ask) {
     if(squadsLocked || (!ask && property("trainingSquadSuggestion").toBool()))return;
     if(!ask && simulationSave && !simulationSave->getAutoSquadsEnabled())return;
@@ -670,7 +679,7 @@ void CompetitionConfigWindow::configureSeasonSquads() {
         :tr("Po rozpoczęciu kwalifikacji lub próbnej zawodnicy i ich kolejność zostaną ustaleni do końca konkursu."),this);
     note->setVisible(locked || source || seasonCompetition->getSerieType()==CompetitionInfo::Training || seasonCompetition->getTrialRound() || !seasonCompetition->getQualifyingCompetitions().isEmpty());
     note->setObjectName("teamSquadPolicy");note->setWordWrap(true);ui->verticalLayout_startList->insertWidget(0,note);
-    lockedSquadSnapshot=squadSnapshot();
+    lockedSquadSnapshot=squadMembershipSnapshot();
     if(locked){teamsTreeView->setEnabled(false);jumpersListView->setEnabled(false);}
 }
 
@@ -1126,7 +1135,7 @@ void CompetitionConfigWindow::setType(short newType)
 
 bool CompetitionConfigWindow::validateSimulationInputs()
 {
-    if(squadsLocked && squadSnapshot()!=lockedSquadSnapshot){QMessageBox::warning(this,tr("Składy są już ustalone"),tr("Zawodnicy i kolejność muszą pozostać takie jak w rozegranych kwalifikacjach lub próbnej."));return false;}
+    if(squadsLocked && squadMembershipSnapshot()!=lockedSquadSnapshot){QMessageBox::warning(this,tr("Składy są już ustalone"),tr("Zawodnicy i kolejność muszą pozostać takie jak w rozegranych kwalifikacjach lub próbnej."));return false;}
     if(usesCanonicalCatalog() && (!ready || !hillDraft->valid() || existingCompetitionRulesComboBox->currentIndex()<0)) {
         QMessageBox::warning(this,tr("Niepełna konfiguracja"),tr("Poczekaj na paczki i wybierz skocznię oraz zasady konkursu."),QMessageBox::Ok);return false;
     }
