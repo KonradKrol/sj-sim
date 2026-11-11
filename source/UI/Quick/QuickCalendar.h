@@ -141,7 +141,7 @@ signals:
 private:
     struct State {
         QDate date;
-        bool played=false,cancelled=false;Hill *hill=nullptr;CompetitionRules rules;short type=0;double importance=5;
+        bool played=false,cancelled=false,sortSource=true;Hill *hill=nullptr;CompetitionRules rules;short type=0;double importance=5;
         QVector<CompetitionInfo *> trainings;CompetitionInfo *trial=nullptr,*advancement=nullptr,*pending=nullptr;
         QHash<QString,ClassificationCompetitionSettings> scoring;
         QVector<Classification *> classifications;Classification *classification=nullptr;

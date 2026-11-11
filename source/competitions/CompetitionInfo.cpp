@@ -529,6 +529,7 @@ QJsonObject CompetitionInfo::getJsonObject(CompetitionInfo &competition)
     object.insert("exceptional-rounds-count", competition.getExceptionalRoundsCount());
     object.insert("cancelled", competition.getCancelled());
     object.insert("played", competition.getPlayed());
+    object.insert("sort-by-qualification-source", competition.sortByQualificationSource);
     object.insert("jumps-importance", competition.getJumpsImportance());
 
     if(competition.getTrialRound() != nullptr)
@@ -626,6 +627,7 @@ CompetitionInfo CompetitionInfo::getFromJson(const QJsonObject &json, Identifiab
     comp.setExceptionalRoundsCount(json.value("exceptional-rounds-count").toInt());
     comp.setCancelled(json.value("cancelled").toBool());
     comp.setPlayed(json.value("played").toBool());
+    comp.sortByQualificationSource = json.value("sort-by-qualification-source").toBool(true);
     comp.setJumpsImportance(json.value("jumps-importance").toDouble(5));
 
     return comp;

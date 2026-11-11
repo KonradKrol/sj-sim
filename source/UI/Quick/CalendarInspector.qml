@@ -99,6 +99,7 @@ Pane {
                             onClicked: inspector.backend.update({advancement:0})
                         }
                     }
+                        CheckBox { text: qsTr("Sortuj listę startową na podstawie źródła kwalifikacji"); checked: inspector.backend.selection.sortSource !== false; onClicked: inspector.backend.update({sortSource:checked}); Layout.fillWidth: true }
                     RowLayout { Layout.fillWidth: true; Label { text: qsTr("Kwalifikacja według klasyfikacji"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap } HelpDot { explanation: qsTr("Uczestników wyłoni aktualna kolejność we wskazanej klasyfikacji.") } }
                     RowLayout {
                         Layout.fillWidth: true; spacing: Theme.dp(5)

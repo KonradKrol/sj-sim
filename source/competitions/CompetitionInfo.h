@@ -72,6 +72,9 @@ private:
 
     Classification * advancementClassification;
     CompetitionInfo * pendingAdvancementCompetition=nullptr;
+public:
+    bool sortByQualificationSource = true;
+private:
     CompetitionInfo * advancementCompetition; //Tylko jedno z tych 2 może być "aktywne"
     QVector<CompetitionInfo *> qualifyingCompetitions; //Konkursy dla których ten konkurs jest kwalifikacjami
 

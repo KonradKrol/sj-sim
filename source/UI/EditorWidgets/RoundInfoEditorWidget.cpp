@@ -116,6 +116,7 @@ void RoundInfoEditorWidget::resetRoundInfoInput()
 }
 
 void RoundInfoEditorWidget::setRoundIndex(int index) {
+    ui->checkBox_sortStartList->setVisible(index>0);
     resetPoints->setVisible(index>0);customWeights->setVisible(index>0);
     while(weightInputs.size()>index) {auto *input=weightInputs.takeLast();weightsLayout->removeRow(input);}
     while(weightInputs.size()<index) {
