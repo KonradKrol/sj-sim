@@ -2506,6 +2506,10 @@ void CompetitionManagerWindow::lowerCoachGateOne()
     const int current=manager->getCoachGateForNextJumper()?manager->getActualCoachGate():manager->getActualGate();
     if(current<=ui->spinBox_actualGate->minimum())return;
     setProperty("gateUndoAvailable",false);setProperty("gateSuggestionDelta",QVariant());
+    const double threshold=std::ceil(manager->getCompetitionInfo()->getHill()->getHSPoint()*.95*2)/2;
+    if(QMessageBox::question(this,tr("Obniżenie belki"),
+        tr("Obniżyć belkę o 1 na życzenie trenera? Aby otrzymać dodatkową rekompensatę, trzeba skoczyć co najmniej 95% HS (%1 m).")
+            .arg(QLocale().toString(threshold,'f',1)),QMessageBox::Yes|QMessageBox::No,QMessageBox::No)!=QMessageBox::Yes)return;
     manager->setCoachGateForNextJumper(true);manager->setActualCoachGate(current-1);
     {const QSignalBlocker blocker(ui->spinBox_actualGate);ui->spinBox_actualGate->setValue(current-1);}
     manager->updateLast10Judges();updateToAdvanceDistanceLabel();updateToBeatDistanceLabel();
