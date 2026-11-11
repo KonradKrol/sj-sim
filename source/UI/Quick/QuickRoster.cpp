@@ -339,7 +339,7 @@ void QuickRoster::tool(const QString &operation) {
         if(team)for(const auto &t:teamList){double value=0;for(auto *j:t.getJumpers())value+=strength(j);scores[teamKey(t)]=t.getJumpers().isEmpty()?0:value/t.getJumpers().size();}
         else for(auto *j:next)scores[id(j)]=strength(j);
     }
-    const bool ranked=!scores.isEmpty();
+    const bool ranked=!scores.isEmpty() || operation=="results" || operation=="classification" || operation=="copy-order";
     if(team) {
         if(operation=="reverse")std::reverse(teamList.begin(),teamList.end());
         else if(operation=="random")std::shuffle(teamList.begin(),teamList.end(),random);
