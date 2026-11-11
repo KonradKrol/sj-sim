@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../source/simulation-v2/ProfileBridge.h"
+#include "../source/form-engine/DailyForm.h"
 #include "../source/simulation-v2/ProfileMigration.h"
 
 static void simulationV2BridgeRegressions()
@@ -52,6 +53,15 @@ static void simulationV2BridgeRegressions()
     check(jump.getJumper()==&jumper && jump.getHill()==&hill && jump.getSimulator()==&simulator,"new engine result keeps competition object identity");
     check(jump.getSimulationV2Data()["engineVersion"]==2 && jump.getSimulationV2Data()["event"]==int(SimulationV2::EventKind::Qualification),"new profiles route through v2 engine with event category");
     check(jump.getSimulationV2Data()["exposures"].toArray().size()==6 && jump.getDistance()>0,"game result carries compact actual weather history");
+    {
+        const int base=jumper.getSimulationProfile()->form;
+        simulator.setDayFormSeed(42);simulator.simulateJump();
+        const auto firstDay=simulator.getJumpData().getSimulationV2Data()["dailyForm"];
+        simulator.simulateJump();
+        check(firstDay==simulator.getJumpData().getSimulationV2Data()["dailyForm"],"all rounds share the same daily form");
+        check(firstDay.toInt()==AutoForm::dailyForm(base,42,jumper.getIDStr()) && jumper.getSimulationProfile()->form==base,"daily form is applied without altering the source profile");
+        simulator.setDayFormSeed(std::nullopt);
+    }
     IdentifiableObjectsStorage objects;objects.add(&jumper);objects.add(&hill);
     const auto restored=JumpData::getFromJson(JumpData::getJsonObject(jump),&objects);
     check(restored.getSimulationV2Data()==jump.getSimulationV2Data() && restored.getJumper()==&jumper,"weather history persists with result, independently of seed replay");

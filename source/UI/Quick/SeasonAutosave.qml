@@ -7,8 +7,19 @@ GridLayout {
     property var node
     readonly property var backend: node ? node.values.backend : null
     readonly property var formNode: ui.find("automaticFormEnabled")
-    columns: width>=Theme.dp(520) ? 2 : 1
+    readonly property var datesNode: ui.find("checkBox_calendarDates")
+    columns: width>=Theme.dp(780) ? 3 : width>=Theme.dp(520) ? 2 : 1
     columnSpacing: Theme.dp(8); rowSpacing: Theme.dp(8)
+        SeasonAutomationToggle {
+            objectName: "seasonDates"
+            Layout.fillWidth: true; Layout.minimumWidth: 0
+            text: qsTr("Daty zawodów")
+            checked: !!autosave.datesNode && !!autosave.datesNode.values.value
+            enabled: !!autosave.datesNode && autosave.datesNode.values.enabled!==false
+            detail: qsTr("Umożliwiają formę dnia i autoformę.")
+            explanation: qsTr("Używaj dat wydarzeń w sezonie.")
+            onClicked: if(autosave.datesNode)ui.activate(autosave.datesNode.values.id)
+        }
         SeasonAutomationToggle {
             objectName: "seasonAutosave"
             Layout.fillWidth: true; Layout.minimumWidth: 0

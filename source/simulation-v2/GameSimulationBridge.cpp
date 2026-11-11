@@ -1,6 +1,7 @@
 #include "../simulator/JumpSimulator.h"
 #include "../playground/PlaygroundModel.h"
 #include "ProfileBridge.h"
+#include "../form-engine/DailyForm.h"
 #include "FieldWindMeasurement.h"
 #include "../global/MyRandom.h"
 #include "../simulator/wind-generation/WindsGenerator.h"
@@ -105,6 +106,7 @@ void JumpSimulator::simulateV2()
     const LegacyMeasurement measurement(activeWinds,hill->getKPoint(),*competitionRules);
     const SimulationV2::FieldWindMeasurement configuredMeasurement(hill->getKPoint(),*competitionRules,Playground::measurementParameters(balanceSnapshot));
     auto input=requestFor(*jumper,*hill,*competitionRules,gate,competitionStartGate,hasCoachGate,coachGate,DSQBaseProbability,simulationEvent,simulationTime,manipulator);
+    if(dayFormSeed)input.athlete.form=AutoForm::dailyForm(input.athlete.form,*dayFormSeed,jumper->getIDStr());
     input.skip=simulationSkip;
     // Sequence the draws explicitly: operand evaluation order must not change
     // the seed between compilers/platforms.
@@ -136,6 +138,7 @@ void JumpSimulator::simulateV2()
         && !dynamic_cast<const SimulationV2::FieldWindMeasurement *>(simulationMeasurement.get());
     data["windMeasurementType"]=customMeasurement?-1:competitionRules->getWindMeasurementType();data["windMeasurementVersion"]=1;
     if(exactWindOverride){data["exactWindOverride"]=true;data["manipulated"]=true;}
+    data["dailyForm"]=dayFormSeed ? QJsonValue(input.athlete.form) : QJsonValue();
     jumpData.setSimulationV2Data(data);
     simulationTime+=30;
 }
@@ -148,7 +151,8 @@ double JumpSimulator::previewV2() const
     const auto activeWinds=exactWindOverride?manipulator->getExactWinds():winds;
     std::optional<SimulationV2::ContinuousWeather> fallbackWeather;
     if(!simulationWeather || exactWindOverride)fallbackWeather.emplace(referenceWeather(activeWinds,hill->getKPoint(),simulationWeather?simulationWeather->precipitation(simulationTime):inrunSnow,simulationWeather?simulationWeather->precipitationKind():SimulationV2::PrecipitationKind::Snow));
-    const auto input=requestFor(*jumper,*hill,*competitionRules,gate,competitionStartGate,hasCoachGate,coachGate,DSQBaseProbability,simulationEvent,simulationTime,manipulator);
+    auto input=requestFor(*jumper,*hill,*competitionRules,gate,competitionStartGate,hasCoachGate,coachGate,DSQBaseProbability,simulationEvent,simulationTime,manipulator);
+    if(dayFormSeed)input.athlete.form=AutoForm::dailyForm(input.athlete.form,*dayFormSeed,jumper->getIDStr());
     std::optional<WindOverrideWeather> windOverride;
     if(exactField)windOverride.emplace(exactField,simulationWeather,inrunSnow);
     const SimulationV2::WeatherField &activeWeather=windOverride?static_cast<const SimulationV2::WeatherField &>(*windOverride)

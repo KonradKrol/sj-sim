@@ -1,4 +1,5 @@
 #include "../../balance/BalanceRuntime.h"
+#include "../Seasons/SimulationSaveManagerWindow.h"
 #include "../../playground/PlaygroundModel.h"
 #include <QObject>
 #include <QEvent>
@@ -99,6 +100,12 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     personalBestNotificationsSuppressed(false)
 {
     ui->setupUi(this);
+    if(auto *seasonWindow=qobject_cast<SimulationSaveManagerWindow *>(parent)){
+        auto *save=seasonWindow->getSimulationSave();const auto date=manager->getCompetitionInfo()->getScheduledDate();
+        if(save && save->getActualSeason()->getDatesEnabled() && date.isValid())
+            setProperty("dayFormSeed",QVariant::fromValue<qulonglong>(SimulationV2::deriveSeed(save->formEngine().seed,quint64(date.toJulianDay()))));
+    }else if(parent && parent->property("dayFormSeed").isValid())setProperty("dayFormSeed",parent->property("dayFormSeed"));
+
     auto *automaticGate=new QCheckBox(tr("Auto-belka"),this);
     automaticGate->setObjectName("checkBox_automaticRaceGate");automaticGate->hide();
     automaticGate->setChecked(QSettings().value("quickUi/raceAutomaticGate",false).toBool());
@@ -1922,6 +1929,7 @@ JumpData CompetitionManagerWindow::simulateCurrentJump(bool skip)
 
 void CompetitionManagerWindow::setupSimulator()
 {
+    simulator.setDayFormSeed(property("dayFormSeed").isValid()?std::optional<SimulationV2::Seed>(property("dayFormSeed").toULongLong()):std::nullopt);
     if(simulationWeather) {
         simulator.setSimulationWeather(simulationWeather,simulationMeasurement);
         simulator.setSimulationTime(simulationSeconds);
@@ -2428,6 +2436,7 @@ void CompetitionManagerWindow::suggestCurrentGate(bool undo)
         auto *hill=manager->getCompetitionInfo()->getHill();
         if(!hill || !hill->getSimulationProfile() || hill->getPointsForGate()<=0 || hill->getPointsForMeter()<=0)return;
         JumpSimulator preview;JumpManipulator neutral;
+        preview.setDayFormSeed(property("dayFormSeed").isValid()?std::optional<SimulationV2::Seed>(property("dayFormSeed").toULongLong()):std::nullopt);
         neutral.setExactSimulationWind(currentInputJumpManipulator.getExactSimulationWind());
         neutral.setExactWinds(currentInputJumpManipulator.getExactWinds());
         preview.setHill(hill);preview.setCompetitionRules(manager->getCompetitionRules());preview.setManipulator(&neutral);

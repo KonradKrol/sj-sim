@@ -1331,7 +1331,7 @@ void QuickBridge::compose(QuickNode *base) {
         if(auto *options=m_content->findChild<QWidget *>("panel_competitionOptions");options && !season) {
             for(auto *check:options->findChildren<QCheckBox *>())if(auto *entry=node(check))plan.append(QVariant::fromValue(entry));
         }
-        const auto parameters=fields({{"spinBox_startGate",tr("Belka startowa")},{"pushButton_autoGate",""},
+        const auto parameters=fields({{"checkBox_dailyForm",""},{"spinBox_startGate",tr("Belka startowa")},{"pushButton_autoGate",""},
             {"spinBox_dsqProbability",tr("Częstość dyskwalifikacji")}});
         plan.append(group("competition-parameters",QString(),parameters,"form"));
         QVariantList top{group("plan",tr("Plan symulacji"),plan)};

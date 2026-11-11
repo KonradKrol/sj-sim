@@ -1,3 +1,5 @@
+#include <QSettings>
+#include <QRandomGenerator>
 #include "../../balance/BalanceRuntime.h"
 #include "../../playground/PlaygroundModel.h"
 #include <QObject>
@@ -61,6 +63,14 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
     simulationSave(save),source(source),catalogPaths(paths),catalog(paths)
 {
     ui->setupUi(this);
+    if(type==SingleCompetition){
+        auto *daily=new QCheckBox(tr("Wylosuj formę dnia"),this);daily->setObjectName("checkBox_dailyForm");
+        daily->setChecked(QSettings().value("competition/dailyForm",true).toBool());
+        daily->setToolTip(tr("Jedna dyspozycja zawodnika na kwalifikacje i wszystkie serie konkursu."));
+        connect(daily,&QCheckBox::toggled,this,[](bool value){QSettings().setValue("competition/dailyForm",value);});
+        ui->verticalLayout->addWidget(daily);
+    }
+
     for(auto *widget:QList<QWidget *>{ui->label_jumpsImportance,ui->doubleSpinBox_jumpsImportance,ui->comboBox_jumpsImportancePreset})widget->hide();
     setMinimumSize(640, 480);
     ui->splitter_configuration->setStretchFactor(0, 2);
@@ -1166,6 +1176,10 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
     if(!validateSimulationInputs())
         return;
 
+    if(getType()==SingleCompetition){
+        auto *daily=findChild<QCheckBox *>("checkBox_dailyForm");
+        setProperty("dayFormSeed",daily && daily->isChecked()?QVariant::fromValue<qulonglong>(QRandomGenerator::system()->generate64()):QVariant());
+    }
     emit submitted();
     if(getType() == SeasonCompetition)
         accept();

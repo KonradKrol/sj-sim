@@ -41,6 +41,7 @@ private:
     SimulationV2::EventKind simulationEvent=SimulationV2::EventKind::Competition;
     double simulationTime=0;
     bool simulationSkip=false;
+    std::optional<SimulationV2::Seed> dayFormSeed;
     std::optional<SimulationV2::Seed> simulationSeed;
     std::shared_ptr<const SimulationV2::WeatherField> simulationWeather;
     std::shared_ptr<const SimulationV2::WindMeasurement> simulationMeasurement;
@@ -53,6 +54,7 @@ public:
     //skok
     void simulateJump();
     double previewDistance();
+    void setDayFormSeed(std::optional<SimulationV2::Seed> seed) {dayFormSeed=seed;}
     void setSimulationEvent(SimulationV2::EventKind event) { simulationEvent=event; }
     void setSimulationSeed(SimulationV2::Seed seed) {simulationSeed=seed;}
     void setSimulationSkip(bool skip) {simulationSkip=skip;}

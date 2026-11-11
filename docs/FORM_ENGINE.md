@@ -44,3 +44,5 @@ Pełna specyfikacja: [FORM_SYSTEM.md](FORM_SYSTEM.md). Mapa implementacji i kont
 Na wykresach pierwszego powtórzenia przycisk „Na wykresie” pozwala wybrać dowolnych zawodników z próby, do 10 jednocześnie. Wyszukiwanie ułatwia wybór; zmiana nie uruchamia symulacji ponownie.
 
 W sezonowym edytorze pod suwakiem jest tylko opis dyspozycji. Szczegóły procesu można rozwinąć w „Diagnostyce formy”. Odwołanie datowanego wydarzenia również przesuwa proces formy do jego daty.
+
+Forma dnia: przy włączonych datach każdy zawodnik dostaje niezależny bonus z rozkładu Laplace'a (skala 2,5 pkt, odchylenie około 3,54). Bonus jest stały w tej samej dacie i zapisanym sezonie, bez zużywania strumienia losowania skoków. Efektywna forma jest zaokrąglana do 1–100; profil i proces autoformy pozostają bez zmian. W pojedynczym konkursie kwalifikacje i wszystkie serie dzielą jedno losowanie; przełącznik „Wylosuj formę dnia” jest zapamiętywany dla aplikacji. Daty można przełączać również w przeglądzie sezonu.

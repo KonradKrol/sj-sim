@@ -1,4 +1,5 @@
 #include "../source/form-engine/FormEngine.h"
+#include "../source/form-engine/DailyForm.h"
 #include "../source/form-engine/FormSimulation.h"
 #include <QCoreApplication>
 #include <QJsonDocument>
@@ -21,6 +22,11 @@ int main(int argc,char **argv){
     for(int level=0;level<5;++level)check(c.withVariability(level).validate(error),"all seasonal variability levels remain valid");
     check(c.withVariability(0).meanDays[2]>c.meanDays[2] && c.withVariability(4).meanDays[2]<c.meanDays[2],"variability controls regime duration");
     check(c.withVariability(0).formDeviation<c.formDeviation && c.withVariability(4).formDeviation>c.formDeviation,"variability controls fluctuation strength");
+    check(AutoForm::dailyBonus(5,"athlete")==AutoForm::dailyBonus(5,"athlete"),"daily form is stable throughout the same day");
+    check(AutoForm::dailyBonus(5,"athlete")!=AutoForm::dailyBonus(6,"athlete") && AutoForm::dailyBonus(5,"athlete")!=AutoForm::dailyBonus(5,"other"),"daily form has independent days and athletes");
+    double dailySum=0,dailySquares=0;
+    for(int i=0;i<100000;++i){const double bonus=AutoForm::dailyBonus(i,"athlete");dailySum+=bonus;dailySquares+=bonus*bonus;check(AutoForm::dailyForm(1,i,"athlete")>=1 && AutoForm::dailyForm(100,i,"athlete")<=100,"daily form remains bounded");}
+    check(std::abs(dailySum/100000)<.04 && std::abs(dailySquares/100000-12.5)<.4,"daily Laplace scale 2.5 has zero mean and variance 12.5");
     auto broken=c.toJson();auto values=broken["values"].toObject();values["days.0"]=0;broken["values"]=values;check(!AutoForm::Config::fromJson(broken,copy,error),"reject zero holding time");
     check(AutoForm::saveDefaultConfig(c,error) && AutoForm::defaultConfig().toJson()==c.toJson(),"default config atomic roundtrip");
     const QDate start(2026,11,1);

@@ -25,6 +25,8 @@ NewSimulationSaveConfigurationWindow::NewSimulationSaveConfigurationWindow(QStri
     ui->setupUi(this);
     auto *dates=new QCheckBox(tr("Używaj dat zawodów"),this);dates->setObjectName("newSeasonDates");
     dates->setToolTip(tr("Opcjonalny kalendarz z datami. Możesz włączyć go później, przed rozpoczęciem sezonu."));ui->formLayout->addRow(dates);
+    auto *dateHelp=new QLabel(tr("Daty umożliwiają automatyczną zmianę formy i formę dnia zawodników."),this);
+    dateHelp->setObjectName("newSeasonDatesHelp");dateHelp->setWordWrap(true);ui->formLayout->addRow(dateHelp);
     catalogStatus=new QLabel(tr("Wczytywanie paczek…"),this);catalogStatus->setObjectName("simulationCatalogStatus");
     catalogStatus->setWordWrap(true);ui->formLayout->addRow(catalogStatus);
     auto *details=new QPushButton(tr("Szczegóły wczytywania"),this);details->setObjectName("simulationCatalogDetails");details->hide();ui->formLayout->addRow(details);
