@@ -73,7 +73,15 @@ void QuickRosterCountryRows::sync(const QVariantList &rows) {
     if(oldCount!=m_rows.size())emit countChanged();
 }
 QString QuickRoster::key(Jumper *jumper) { return QString::number(reinterpret_cast<quintptr>(jumper),16); }
-QuickRoster::QuickRoster(QWidget *source,QObject *parent):QObject(parent),m_source(source),m_library(new QuickRosterRows(this)),m_ordered(new QuickRosterRows(this)),m_groupedRows(new QuickRosterRows(this)),m_groupedLibrary(new QuickRosterRows(this)),m_limitRows(new QuickRosterCountryRows(this)){m_grouped=savedList();sync();}
+QuickRoster::QuickRoster(QWidget *source,QObject *parent):QObject(parent),m_source(source),m_library(new QuickRosterRows(this)),m_ordered(new QuickRosterRows(this)),m_groupedRows(new QuickRosterRows(this)),m_groupedLibrary(new QuickRosterRows(this)),m_limitRows(new QuickRosterCountryRows(this)){
+    m_grouped=savedList();sync();
+    if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source);config && config->simulationSave && !teams()) {
+        if(const auto *list=config->simulationSave->activeJumpersList();list && !list->getJumpers().isEmpty()) {
+            QVector<Jumper *> selected;for(auto *jumper:m_current)if(list->getJumpers().contains(jumper))selected.append(jumper);
+            if(selected!=m_current)apply(selected);
+        }
+    }
+}
 bool QuickRoster::membership() const { return !qobject_cast<TeamEditorWidget *>(m_source); }
 bool QuickRoster::savedList() const { return qobject_cast<JumpersListEditorWindow *>(m_source) || qobject_cast<SimulationSaveManagerWindow *>(m_source); }
 void QuickRoster::setGrouped(bool value) { if(!savedList() || m_grouped==value)return; m_grouped=value;emit changed(); }
