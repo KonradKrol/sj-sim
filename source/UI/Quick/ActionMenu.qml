@@ -23,7 +23,11 @@ Menu {
             text: modelData.text || ""
             enabled: modelData.enabled !== false && !modelData.separator
             implicitHeight: modelData.separator ? 9 : Math.max(40,contentItem.implicitHeight + topPadding + bottomPadding)
-            contentItem: Text { text: parent.text; color: modelData.danger ? Theme.danger : Theme.ink; font.pointSize: Theme.body; elide: Text.ElideRight; verticalAlignment: Text.AlignVCenter }
+            contentItem: Row {
+                spacing: Theme.dp(9)
+                Text { visible: !!modelData.icon; width: visible ? Theme.dp(18) : 0; text: modelData.icon || ""; color: modelData.danger ? Theme.danger : Theme.muted; font.pointSize: Theme.body; verticalAlignment: Text.AlignVCenter }
+                Text { text: modelData.text || ""; width: Math.max(0,parent.width-(modelData.icon ? Theme.dp(27) : 0)); color: modelData.danger ? Theme.danger : Theme.ink; font.pointSize: Theme.body; elide: Text.ElideRight; verticalAlignment: Text.AlignVCenter }
+            }
             background: Rectangle { color: modelData.separator ? Theme.divider : parent.highlighted ? Theme.selection : Theme.surface }
             onTriggered: menu.selected(modelData)
         }

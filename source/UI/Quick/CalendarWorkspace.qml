@@ -18,6 +18,7 @@ Item {
     property bool addingMany: false
     property bool showRosterAssignment: false
     property bool monthView: false
+    function loadPreset(){if(backend.calendarIndex<0)backend.catalogAction("add");backend.preset(false)}
     function openPlanning(){panel="planning";monthView=false;section=0;editing=true}
     property string panel: "events"
     onPanelChanged: if(planningScroll.contentItem)planningScroll.contentItem.contentY=0
@@ -65,7 +66,7 @@ Item {
                 objectName: "calendarSettings"; text: "⚙"; Accessible.name: qsTr("Ustawienia kalendarza"); hint: Accessible.name; quiet: true; implicitHeight: calendar.tight ? 32 : 40; onClicked: catalogMenu.open()
                 ActionMenu {
                     id: catalogMenu
-                    entries: [{id:"defaults",text:qsTr("Domyślne zasady")},{id:"roster",text:qsTr("Lista zawodników")},{id:"active",text:qsTr("Ustaw jako aktywny"),enabled:!calendar.backend.activeCalendar},{id:"classes",text:calendar.section===0?qsTr("Klasyfikacje"):qsTr("Konkursy")},{id:"rename",text:qsTr("Zmień nazwę kalendarza")},{id:"up",text:qsTr("Kalendarz w górę")},{id:"down",text:qsTr("Kalendarz w dół")},{id:"remove",text:qsTr("Usuń kalendarz")},{id:"load",text:qsTr("Wczytaj preset")},{id:"save",text:qsTr("Zapisz jako preset")}]
+                    entries: [{id:"defaults",icon:"⚙",text:qsTr("Domyślne zasady")},{id:"active",icon:"✓",text:qsTr("Ustaw jako aktywny"),enabled:!calendar.backend.activeCalendar},{id:"load",icon:"↥",text:qsTr("Wczytaj preset")},{id:"save",icon:"↧",text:qsTr("Zapisz jako preset")},{id:"remove",icon:"×",text:qsTr("Usuń kalendarz"),danger:true}]
                     onSelected: {if(entry.id==="defaults")calendar.panel="defaults";else if(entry.id==="roster")calendar.showRosterAssignment=!calendar.showRosterAssignment;else if(entry.id==="active")calendar.backend.activateCalendar();else if(entry.id==="classes")calendar.section=calendar.section===0?1:0;else if(entry.id==="rename"){calendar.renaming=true;nameInput.forceActiveFocus();nameInput.selectAll()}else if(entry.id==="load"||entry.id==="save")calendar.backend.preset(entry.id==="save");else calendar.backend.catalogAction(entry.id)}
                 }
             }
@@ -101,11 +102,12 @@ Item {
             }
         }
         RowLayout {
-            visible: calendar.panel==="events" && calendar.showRosterAssignment && calendar.backend.calendarIndex>=0
+            visible: calendar.backend.calendarIndex>=0
             Layout.fillWidth: true
-            Label { text: qsTr("Lista zawodników"); color: Theme.muted; font.pointSize: Theme.caption }
+            Label { text: qsTr("Zawodnicy"); color: Theme.muted; font.pointSize: Theme.caption }
             SChoice {
                 objectName: "calendarRosterChoice"
+                Layout.maximumWidth: Theme.dp(320)
                 Layout.fillWidth: true; Layout.minimumWidth: 0
                 model: calendar.backend.rosterChoices; textRole: "label"
                 currentIndex: {var choices=calendar.backend.rosterChoices;for(var i=0;i<choices.length;++i)if(choices[i].id===calendar.backend.rosterId)return i;return 0}
@@ -189,6 +191,8 @@ Item {
                         anchors.fill: parent; compact: parent.height<150; visible: rows.count===0
                         title: calendar.backend.calendarIndex>=0 ? qsTr("Kalendarz jest pusty") : qsTr("Utwórz pierwszy kalendarz")
                         description: calendar.backend.calendarIndex>=0 ? qsTr("Dodaj konkursy lub wczytaj preset. Potem ustalisz skocznie i zasady.") : qsTr("Kalendarz określa konkursy i ich kolejność w sezonie.")
+                        secondaryActionText: qsTr("Wczytaj preset")
+                        onSecondaryTriggered: calendar.loadPreset()
                         actionObjectName: "calendarEmptyAction"
                         actionText: calendar.backend.calendarIndex>=0 ? qsTr("Dodaj konkurs") : qsTr("Utwórz kalendarz z konkursem")
                         onTriggered: {if(calendar.backend.calendarIndex>=0){calendar.backend.add();calendar.editing=true}else{calendar.backend.catalogAction("add");calendar.backend.add();calendar.editing=true;calendar.renaming=true;nameInput.forceActiveFocus();nameInput.selectAll()}}
@@ -226,6 +230,8 @@ Item {
                     title: qsTr("Wybierz konkurs")
                     description: qsTr("Zaznacz konkurs na liście, aby zmienić jego ustawienia.")
                     actionText: calendar.backend.calendarIndex>=0 ? qsTr("Szybkie planowanie") : ""
+                    secondaryActionText: calendar.backend.events.length===0 ? qsTr("Wczytaj preset") : ""
+                    onSecondaryTriggered: calendar.loadPreset()
                     actionObjectName: "calendarEmptyPlanning"
                     onTriggered: calendar.openPlanning()
                 }
