@@ -14,6 +14,7 @@ ColumnLayout {
         return {count: 0, limit: -1, over: false}
     }
     spacing: cramped ? 3 : 8
+    RosterTools { visible: !order.backend.savedList && order.backend.membership && !order.backend.knockout; backend: order.backend; Layout.fillWidth: true }
     RowLayout {
         Layout.fillWidth: true
         Label { text: dragArea.dragging ? dragArea.athleteName : qsTr("%1 · %2").arg(order.title).arg(order.backend.count); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; elide: Text.ElideRight }

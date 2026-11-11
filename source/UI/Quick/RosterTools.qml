@@ -4,7 +4,9 @@ import QtQuick.Layouts 1.15
 Flow {
     id: tools
     property var backend
-    spacing: Theme.dp(6)
+    spacing: Theme.dp(10)
+    RosterSourceDialog { id: sourceDialog; backend: tools.backend }
+    CountryOrderDialog { id: countryDialog; backend: tools.backend }
     Repeater {
         model: [
             {op:"copy-order",icon:"⇥",tip:qsTr("Kolejność startowa z konkursu"),group:0},
@@ -23,9 +25,17 @@ Flow {
             required property var modelData
             required property int index
             visible: !tools.backend.teams || modelData.op!=="country" && modelData.op!=="countries-manual"
-            spacing: Theme.dp(6)
+            spacing: Theme.dp(12)
             Rectangle { visible: index===4 || index===8 && !tools.backend.teams; width: 1; height: Theme.dp(24); anchors.verticalCenter: parent.verticalCenter; color: Theme.outline }
-            SToolButton { text: modelData.icon; hint: modelData.tip; Accessible.name: hint; onClicked: tools.backend.tool(modelData.op) }
+            SToolButton {
+                text: modelData.icon; hint: modelData.tip; Accessible.name: hint
+                readonly property color tone: modelData.group===0 ? Theme.accent : modelData.group===1 ? Theme.signal : Theme.warning
+                foreground: tone
+                implicitWidth: Math.max(Theme.dp(41.4),contentItem.implicitWidth+Theme.dp(18))
+                implicitHeight: Theme.dp(41.4)
+                background: Rectangle { radius: Theme.controlRadius; color: parent.down ? Theme.selection : parent.hovered ? Theme.selection : Theme.raised; border.color: parent.tone; border.width: parent.visualFocus ? 2 : 1 }
+                onClicked: if(modelData.group===0)sourceDialog.openAt(modelData.op,this);else if(modelData.op==="countries-manual")countryDialog.open();else tools.backend.tool(modelData.op)
+            }
         }
     }
 }

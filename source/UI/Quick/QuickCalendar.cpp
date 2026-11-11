@@ -242,11 +242,13 @@ void QuickCalendar::refresh() {
     const auto eventLabel=[&](CompetitionInfo *event) {
         auto *hill=event->getHill();
         QString label=hill?hill->getName()+" HS"+QString::number(hill->getHSPoint(),'g',6):tr("Brak skoczni");
-        if(event->getSerieType()==CompetitionInfo::Qualifications)label+=" Q";
-        else if(event->getSerieType()==CompetitionInfo::Training)label+=" · "+tr("Trening");
-        else if(event->getSerieType()==CompetitionInfo::TrialRound)label+=" · "+tr("Próbna");
-        if(datesEnabled() && event->getScheduledDate().isValid())label+=" ("+QLocale().standaloneDayName(event->getScheduledDate().dayOfWeek(),QLocale::ShortFormat)+")";
-        if(event->getRules().getCompetitionType()==CompetitionRules::Team)label+=" TEAM";
+        QStringList details;
+        if(datesEnabled() && event->getScheduledDate().isValid())details.append(QLocale().standaloneDayName(event->getScheduledDate().dayOfWeek(),QLocale::ShortFormat));
+        if(event->getRules().getCompetitionType()==CompetitionRules::Team)details.append("TEAM");
+        if(event->getSerieType()==CompetitionInfo::Qualifications)details.append("Q");
+        else if(event->getSerieType()==CompetitionInfo::Training)details.append(tr("Trening"));
+        else if(event->getSerieType()==CompetitionInfo::TrialRound)details.append(tr("Próbna"));
+        if(!details.isEmpty())label+=" ("+details.join(" ")+")";
         return label;
     };
     m_advancementOptions={nullptr};m_advancementLabels=QStringList{tr("Brak")};
