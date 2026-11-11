@@ -9,7 +9,7 @@
         {
           "birthYear": 1993,
           "country": "AUT",
-          "form": 90,
+          "form": 86,
           "id": "6bf89dc7-b8cc-5012-ae9d-697be87a88b4",
           "landing": 2,
           "name": "Clemens",
@@ -30,7 +30,7 @@
         {
           "birthYear": 2006,
           "country": "AUT",
-          "form": 46,
+          "form": 45,
           "id": "424cd815-c88f-59e1-8752-fcabda943add",
           "landing": 3,
           "name": "Stephan",
@@ -93,7 +93,7 @@
         {
           "birthYear": 2002,
           "country": "AUT",
-          "form": 92,
+          "form": 90,
           "id": "35056074-2ae7-5a0e-aa89-39497a3ef810",
           "landing": 2,
           "name": "Rafael",
@@ -725,7 +725,7 @@
         {
           "birthYear": 1996,
           "country": "JPN",
-          "form": 32,
+          "form": 37,
           "id": "2a7059b2-9eb4-5bbc-a7ba-b63816b93afe",
           "landing": 3,
           "name": "Ryoyu",
@@ -766,7 +766,7 @@
         {
           "birthYear": 1993,
           "country": "JPN",
-          "form": 23,
+          "form": 30,
           "id": "ca0e636d-d273-5174-8a74-45950ad6278d",
           "landing": 1,
           "name": "Tomofumi",
@@ -787,7 +787,7 @@
         {
           "birthYear": 1996,
           "country": "JPN",
-          "form": 54,
+          "form": 60,
           "id": "6ae0bcd6-0545-594c-b1fa-7c23e63bfdde",
           "landing": 3,
           "name": "Naoki",
@@ -889,7 +889,7 @@
         {
           "birthYear": 0,
           "country": "KAZ",
-          "form": 30,
+          "form": 40,
           "id": "299b5b98-306e-51a1-8a83-e0d5f9b1eca9",
           "landing": 3,
           "name": "Ilya",
@@ -898,7 +898,8 @@
           "perks": [
             0,
             -2,
-            1
+            1,
+            0
           ],
           "personalBest": 219,
           "photoPath": "KAZ_IlyaMizernykh.png",
@@ -929,7 +930,7 @@
         {
           "birthYear": 0,
           "country": "KAZ",
-          "form": 36,
+          "form": 48,
           "id": "97842c9d-a3f9-50f2-8231-22e868f2e13d",
           "landing": 2,
           "name": "Danil",
@@ -938,7 +939,8 @@
           "perks": [
             0,
             -1,
-            -1
+            -1,
+            0
           ],
           "personalBest": 194.5,
           "photoPath": "KAZ_DanilVassilyev.png",
@@ -949,7 +951,7 @@
         {
           "birthYear": 1995,
           "country": "NOR",
-          "form": 35,
+          "form": 40,
           "id": "af4f353c-ec95-5459-97d0-bbe1b34394bb",
           "landing": 2,
           "name": "Johann Andre",
@@ -970,7 +972,7 @@
         {
           "birthYear": 1996,
           "country": "NOR",
-          "form": 50,
+          "form": 52,
           "id": "2f0d9493-200f-5ca5-8139-d4fa46dca997",
           "landing": 3,
           "name": "Halvor Egner",
@@ -1072,7 +1074,7 @@
         {
           "birthYear": 2001,
           "country": "NOR",
-          "form": 69,
+          "form": 68,
           "id": "530cda9c-cee7-50ba-8e43-977a169bf942",
           "landing": 3,
           "name": "Kristoffer Eriksen",
@@ -1082,7 +1084,7 @@
             2,
             0,
             3,
-            -1
+            -2
           ],
           "personalBest": 230.5,
           "photoPath": "NOR_KristofferEriksenSundal.png",
@@ -1113,7 +1115,7 @@
         {
           "birthYear": 1991,
           "country": "POL",
-          "form": 52,
+          "form": 57,
           "id": "8a1cda16-3f16-5033-af0e-365e1fa969af",
           "landing": 2,
           "name": "Maciej",
@@ -1134,7 +1136,7 @@
         {
           "birthYear": 1990,
           "country": "POL",
-          "form": 30,
+          "form": 32,
           "id": "ebd67ed3-1d10-538b-b672-c98a37c5bba1",
           "landing": 3,
           "name": "Dawid",
@@ -1217,7 +1219,7 @@
         {
           "birthYear": 1994,
           "country": "POL",
-          "form": 30,
+          "form": 32,
           "id": "2d308a81-2333-5fc7-b2ff-23bc9ee2865d",
           "landing": 2,
           "name": "Aleksander",
@@ -1238,7 +1240,7 @@
         {
           "birthYear": 1987,
           "country": "POL",
-          "form": 19,
+          "form": 18,
           "id": "cb0b6cc7-0ce0-5d0d-a84d-feac3eaf2e06",
           "landing": 2,
           "name": "Piotr",
@@ -1360,7 +1362,7 @@
         {
           "birthYear": 1999,
           "country": "SLO",
-          "form": 40,
+          "form": 42,
           "id": "e65217a3-4d0b-5c86-98e4-e565858c0dd9",
           "landing": 3,
           "name": "Domen",
@@ -2186,9 +2188,10 @@
           "name": "Willingen",
           "perkLevels": 4,
           "perks": [
-            -1,
-            1,
+            -2,
             0,
+            3,
+            2,
             0
           ],
           "pointsAtK": 60,
@@ -3104,13 +3107,14 @@
           "country": "SWE",
           "gatePoints": 7.24,
           "headwindPoints": 9.9,
-          "hs": 134,
+          "hs": 132,
           "id": "9830caf6-731a-4c93-9ebf-f474518d0390",
           "k": 120,
           "name": "Falun",
           "perkLevels": 4,
           "perks": [
             0,
+            1,
             0,
             0,
             0
@@ -3125,13 +3129,14 @@
           "country": "SWE",
           "gatePoints": 7,
           "headwindPoints": 8,
-          "hs": 100,
+          "hs": 95,
           "id": "812b0f7d-1939-4723-98ee-f8f194ec8c87",
           "k": 90,
           "name": "Falun",
           "perkLevels": 4,
           "perks": [
             0,
+            2,
             0,
             0,
             0
@@ -4444,7 +4449,7 @@
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
           "wind-compensations": true,
-          "wind-measurement-type": 3
+          "wind-measurement-type": 4
         },
         {
           "95-hs-rule": true,
@@ -4483,7 +4488,7 @@
           "wind-average-calculating-type": 0,
           "wind-compensation-distance-effect": 1,
           "wind-compensations": true,
-          "wind-measurement-type": 3
+          "wind-measurement-type": 4
         },
         {
           "95-hs-rule": true,
@@ -4511,7 +4516,7 @@
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
           "wind-compensations": true,
-          "wind-measurement-type": 3
+          "wind-measurement-type": 4
         },
         {
           "95-hs-rule": true,
@@ -4550,7 +4555,7 @@
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
           "wind-compensations": true,
-          "wind-measurement-type": 3
+          "wind-measurement-type": 4
         },
         {
           "95-hs-rule": false,
@@ -4578,7 +4583,7 @@
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
           "wind-compensations": true,
-          "wind-measurement-type": 3
+          "wind-measurement-type": 4
         },
         {
           "95-hs-rule": true,
@@ -4617,7 +4622,7 @@
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
           "wind-compensations": true,
-          "wind-measurement-type": 3
+          "wind-measurement-type": 4
         },
         {
           "95-hs-rule": false,
@@ -4667,7 +4672,7 @@
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
           "wind-compensations": true,
-          "wind-measurement-type": 3
+          "wind-measurement-type": 4
         },
         {
           "95-hs-rule": true,
@@ -4728,7 +4733,7 @@
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
           "wind-compensations": true,
-          "wind-measurement-type": 3
+          "wind-measurement-type": 4
         },
         {
           "95-hs-rule": false,
@@ -4756,7 +4761,7 @@
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
           "wind-compensations": true,
-          "wind-measurement-type": 3
+          "wind-measurement-type": 4
         },
         {
           "95-hs-rule": true,
@@ -4784,7 +4789,7 @@
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
           "wind-compensations": true,
-          "wind-measurement-type": 3
+          "wind-measurement-type": 4
         },
         {
           "95-hs-rule": true,
@@ -4823,7 +4828,7 @@
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
           "wind-compensations": true,
-          "wind-measurement-type": 3
+          "wind-measurement-type": 4
         },
         {
           "95-hs-rule": true,
@@ -4884,7 +4889,7 @@
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 1,
           "wind-compensations": true,
-          "wind-measurement-type": 3
+          "wind-measurement-type": 4
         },
         {
           "95-hs-rule": false,
@@ -4923,7 +4928,7 @@
           "wind-average-calculating-type": 2,
           "wind-compensation-distance-effect": 2,
           "wind-compensations": true,
-          "wind-measurement-type": 3
+          "wind-measurement-type": 4
         }
       ],
       "default-rules": {

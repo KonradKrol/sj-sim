@@ -5,3 +5,5 @@ Przygotowana wersja Windows i Linux zawiera jeden zestaw: 83 skoczków, 128 skoc
 Po uruchomieniu aplikacja korzysta z userData/Packs/Athletes/, userData/Packs/Hills/ oraz userData/Packs/catalog.json w folderze aplikacji. Zdjęcia należą do folderu konkretnej paczki skoczków; informacje o ich źródłach znajdują się w nim razem ze zdjęciami.
 
 Paczki w AppData nie są automatycznie wczytywane ani usuwane. Można je wczytać przez edytor paczek. Ponowne uruchomienie nie zastępuje edycji gracza plikami bety. Stare pliki userData/GlobalDatabase są zachowywane dla zgodności z funkcjami korzystającymi ze starszej struktury.
+
+Kalendarze startowe: Official-WC, Official-LGP, LGP2023, LGP2024, PŚ2023-24 i PŚ2024-25. Paczki skoczków i skoczni zaktualizowano z aktywnej instalacji deweloperskiej 11.11.2026.

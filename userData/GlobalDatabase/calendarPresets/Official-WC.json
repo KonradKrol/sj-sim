@@ -5,7 +5,7 @@
         {
           "alt-points-for-places": [],
           "classification-type": 0,
-          "id": "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
+          "id": "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
           "name": "PŚ",
           "points-for-places": [
             100,
@@ -88,7 +88,7 @@
             1
           ],
           "classification-type": 1,
-          "id": "98c465f2-0cd0-4a4a-abbe-4863594cc8fd",
+          "id": "a94e0ad7-2161-425d-ab14-e67047594f4c",
           "name": "PN",
           "points-for-places": [
             400,
@@ -118,7 +118,7 @@
         {
           "alt-points-for-places": [],
           "classification-type": 0,
-          "id": "2803e2a0-9f11-4bef-9222-efb1a8448f22",
+          "id": "ab118ae9-b875-465c-884d-9ebcefd123a0",
           "name": "PŚwL",
           "points-for-places": [
             100,
@@ -170,7 +170,7 @@
         {
           "alt-points-for-places": [],
           "classification-type": 0,
-          "id": "d7719af5-2ee2-4445-bc3c-f990f3bd31bf",
+          "id": "91c80bdf-135a-4f15-b5ba-bbfefd58c53e",
           "name": "Złoty Orzeł",
           "points-for-places": [],
           "punctation-type": 1,
@@ -191,8 +191,29 @@
         {
           "alt-points-for-places": [],
           "classification-type": 0,
-          "id": "9612d5ac-ebf6-4fc7-b67c-84d7556cecf0",
+          "id": "9e761e30-d50b-4afc-8e3e-9057567cb374",
           "name": "P7",
+          "points-for-places": [],
+          "punctation-type": 1,
+          "results": [],
+          "scoring-options": {
+            "age-filter": false,
+            "context-parameters": false,
+            "country-count": 1,
+            "country-exclude": false,
+            "country-selection": 0,
+            "include-unknown-age": false,
+            "maximum-age": 100,
+            "methods": [],
+            "minimum-age": 1,
+            "reference-year": 2026
+          }
+        },
+        {
+          "alt-points-for-places": [],
+          "classification-type": 0,
+          "id": "4eb5006d-9955-4b3b-94f0-308a3f8901d3",
+          "name": "Finnish Cup",
           "points-for-places": [],
           "punctation-type": 1,
           "results": [],
@@ -216,11 +237,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "c26ff2a4-5619-44cb-85d5-221455ad8dc1",
+          "id": "5875408f-b78d-4d82-871f-597df62ff790",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "0785c968-4e81-4359-a0d1-be7062d9d6d7",
+            "id": "e95e61dc-71be-4e29-84c7-07e778d37eb5",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -256,6 +277,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -264,11 +288,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "c361bb87-aba5-4f4d-b79b-8bb1533c8b6b",
+          "id": "ffb74919-ae37-4da8-ba40-42c7eaefdf16",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "66b2d323-64b2-4ee8-b581-66f388d3d5db",
+            "id": "be301bbc-fd0e-4ad5-94c6-ae5505551069",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -302,8 +326,11 @@
           },
           "scheduled-date": "2026-11-20",
           "serie-type": 3,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -312,11 +339,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "595f59e8-0185-4f5e-9a00-22b88a1a7cb1",
+          "id": "bff59358-2db4-4d12-8714-4b61fa7e04c1",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "02f6e4aa-a26d-40ee-b80d-201c01c1b7ed",
+            "id": "c5c0a9c4-3ada-40fc-9065-4c70a987c59d",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -350,12 +377,15 @@
           },
           "scheduled-date": "2026-11-20",
           "serie-type": 1,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "c26ff2a4-5619-44cb-85d5-221455ad8dc1",
-            "c361bb87-aba5-4f4d-b79b-8bb1533c8b6b"
+            "5875408f-b78d-4d82-871f-597df62ff790",
+            "ffb74919-ae37-4da8-ba40-42c7eaefdf16"
           ]
         },
         {
@@ -363,11 +393,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "556ccbb0-1f99-4949-9492-3a7ac1655b00",
+          "id": "4d816169-b06d-40ea-8e84-8c8bab336099",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "3d3f0a7e-312d-4bbf-8d5e-4e5eefdd06ed",
+            "id": "2d6c5629-9727-4d18-992e-450799052e37",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -403,23 +433,27 @@
           "serie-type": 2,
           "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "595f59e8-0185-4f5e-9a00-22b88a1a7cb1",
+          "advancement-competition-id": "bff59358-2db4-4d12-8714-4b61fa7e04c1",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c",
+            "4eb5006d-9955-4b3b-94f0-308a3f8901d3"
           ],
           "exceptional-rounds-count": 0,
-          "id": "620860bb-6999-4e4f-a223-84954aa55d9b",
+          "id": "209758da-b80f-40c8-95a4-9c55df9889ce",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "13c5b43e-c958-4d99-8f52-edffe4ed8616",
+            "id": "d539960d-d334-422e-8e9a-c7843d3b6a8d",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -464,22 +498,25 @@
           },
           "scheduled-date": "2026-11-21",
           "serie-type": 0,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [],
-          "trial-round-id": "556ccbb0-1f99-4949-9492-3a7ac1655b00"
+          "trial-round-id": "4d816169-b06d-40ea-8e84-8c8bab336099"
         },
         {
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "12c30844-442b-4d27-a338-dac9ebe68bc5",
+          "id": "92d27c26-abc2-405f-b15b-80ba32bd5ff3",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "b4237b4b-4b7c-4fcb-9f51-3f4bd40bb867",
+            "id": "03cee329-a992-4996-b429-573eee6ad6ef",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -513,25 +550,29 @@
           },
           "scheduled-date": "2026-11-22",
           "serie-type": 1,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "12c30844-442b-4d27-a338-dac9ebe68bc5",
+          "advancement-competition-id": "92d27c26-abc2-405f-b15b-80ba32bd5ff3",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c",
+            "4eb5006d-9955-4b3b-94f0-308a3f8901d3"
           ],
           "exceptional-rounds-count": 0,
-          "id": "6f44a206-6c4d-47e6-a10b-588848b0143c",
+          "id": "4d444bd7-d340-4283-b2b8-eb369c04d6d2",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "ba7498ba-e0d3-4a56-bcfb-25d3c82cd471",
+            "id": "22ec3c63-8609-4044-8291-c5896a45523c",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -576,8 +617,11 @@
           },
           "scheduled-date": "2026-11-22",
           "serie-type": 0,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -586,11 +630,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "d90e883d-c7b9-47ee-8fe9-9779f7e1955d",
+          "id": "c88d62b1-302d-4640-ab2d-21e504fc0e73",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "1458e5dd-9faa-42fa-af1f-41fbc54316fa",
+            "id": "8120ad4a-ffeb-4a40-b03f-903f2da0b7d9",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -624,8 +668,11 @@
           },
           "scheduled-date": "2026-11-27",
           "serie-type": 3,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -634,11 +681,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "32fdbfb4-1aa5-4909-aa9c-0b6ee40827bc",
+          "id": "cfbbfd33-0510-4a93-9be7-a8438d4f8bad",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "ba0c0f4c-b873-45df-b904-1c3ad8e07bea",
+            "id": "9dce634a-e003-41dc-ae55-c6b3c7ee4cbf",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -672,8 +719,11 @@
           },
           "scheduled-date": "2026-11-27",
           "serie-type": 3,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -682,11 +732,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "17dbe312-ec08-42b1-8839-90b428d3d1ad",
+          "id": "ed5cabd6-2ec6-4e83-871d-56bda90e4c59",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "fbfe44e7-5d58-4866-a88c-d2e1fe236181",
+            "id": "d48c1278-43f8-41b6-b18f-be9a07b623cf",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -720,12 +770,15 @@
           },
           "scheduled-date": "2026-11-27",
           "serie-type": 1,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "d90e883d-c7b9-47ee-8fe9-9779f7e1955d",
-            "32fdbfb4-1aa5-4909-aa9c-0b6ee40827bc"
+            "c88d62b1-302d-4640-ab2d-21e504fc0e73",
+            "cfbbfd33-0510-4a93-9be7-a8438d4f8bad"
           ]
         },
         {
@@ -733,11 +786,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "a1534f73-4af1-44ee-b443-04552ab60ac6",
+          "id": "5399def0-5b95-4499-b136-743c60ceff92",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "484f3d7a-bb87-413d-a65a-b539a438b562",
+            "id": "1dd852c4-f451-483b-85b0-377f09a29e86",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -771,25 +824,29 @@
           },
           "scheduled-date": "2026-11-28",
           "serie-type": 2,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "17dbe312-ec08-42b1-8839-90b428d3d1ad",
+          "advancement-competition-id": "ed5cabd6-2ec6-4e83-871d-56bda90e4c59",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c",
+            "4eb5006d-9955-4b3b-94f0-308a3f8901d3"
           ],
           "exceptional-rounds-count": 0,
-          "id": "8f1ab2c7-1676-48a8-8e10-c91a802f0cf8",
+          "id": "b6f41867-87d5-4195-ab59-06c33b39e281",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "8b793d0e-ed91-43e9-8f9d-39d8abbcd39d",
+            "id": "bbb62549-a205-4c7e-a135-16c838e99c08",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -834,22 +891,25 @@
           },
           "scheduled-date": "2026-11-28",
           "serie-type": 0,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [],
-          "trial-round-id": "a1534f73-4af1-44ee-b443-04552ab60ac6"
+          "trial-round-id": "5399def0-5b95-4499-b136-743c60ceff92"
         },
         {
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "61a27183-6625-4a95-8cc8-1af36a4375a0",
+          "id": "165e3f29-f865-44cb-9b76-82eb4ba49b48",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "5fdbbbb7-f501-4810-a94e-27beb1a9cc5c",
+            "id": "5366f185-8e43-4562-a65b-d23f6f1c4bf3",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -883,25 +943,29 @@
           },
           "scheduled-date": "2026-11-29",
           "serie-type": 1,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "61a27183-6625-4a95-8cc8-1af36a4375a0",
+          "advancement-competition-id": "165e3f29-f865-44cb-9b76-82eb4ba49b48",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c",
+            "4eb5006d-9955-4b3b-94f0-308a3f8901d3"
           ],
           "exceptional-rounds-count": 0,
-          "id": "ca83c0bf-0148-4cd6-89eb-23d29e95d299",
+          "id": "3fb56b2b-53e1-4689-872d-81d96d5b39d6",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "1ca8fcdb-9bae-43f4-8103-db38734c7e79",
+            "id": "419536cf-861e-4488-aed7-c8afd8afe8fe",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -946,8 +1010,11 @@
           },
           "scheduled-date": "2026-11-29",
           "serie-type": 0,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -956,11 +1023,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "0600d0c0-7b81-49a8-b5f3-bd804624b179",
+          "id": "02ead007-f480-410b-b925-9925df6ff1b8",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "40adfb47-95de-4463-9229-486c43710138",
+            "id": "93d4f4b1-72a0-410d-a849-46c947002da7",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -994,8 +1061,11 @@
           },
           "scheduled-date": "2026-12-04",
           "serie-type": 3,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -1004,11 +1074,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "be57b479-64af-4ff8-acd6-c2771fca5539",
+          "id": "f34e5551-11a4-4261-b058-dd444b30abe9",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "7b18c10b-b691-4b4a-8220-3bb36bb85944",
+            "id": "e5894990-7430-4115-821f-453636c96164",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1042,8 +1112,11 @@
           },
           "scheduled-date": "2026-12-04",
           "serie-type": 3,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -1052,11 +1125,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "9db5d3cc-7adf-49e6-b9fd-44dd47ce936b",
+          "id": "fa6b4caa-0b11-4d2b-83f4-c4f1e1ced667",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "fffe2c51-05f7-4f3f-ba83-1af06fe52d03",
+            "id": "bcbaaa93-ceec-47b5-bee3-0b8b05c9c4f3",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1090,12 +1163,15 @@
           },
           "scheduled-date": "2026-12-04",
           "serie-type": 1,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "0600d0c0-7b81-49a8-b5f3-bd804624b179",
-            "be57b479-64af-4ff8-acd6-c2771fca5539"
+            "02ead007-f480-410b-b925-9925df6ff1b8",
+            "f34e5551-11a4-4261-b058-dd444b30abe9"
           ]
         },
         {
@@ -1103,11 +1179,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "5df1dd0c-b7ff-4843-ba71-a180d9b7f392",
+          "id": "26dfce34-1c5d-4866-82ec-179b3f90a2e7",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "4436eb15-4c50-44bf-bcfa-1bc0a75f0c59",
+            "id": "36dac6ab-cc92-4664-a24a-3391f2df9b94",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1141,25 +1217,28 @@
           },
           "scheduled-date": "2026-12-05",
           "serie-type": 2,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "9db5d3cc-7adf-49e6-b9fd-44dd47ce936b",
+          "advancement-competition-id": "fa6b4caa-0b11-4d2b-83f4-c4f1e1ced667",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "53002319-c134-4e96-86bc-815a43c3441a",
+          "id": "bce7669e-4a32-4866-9a55-fbf489dc4efa",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "d4329a9d-aaa2-460c-ac40-d090fea8422b",
+            "id": "89780714-64f6-4e0a-8a88-93b85a8eef98",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1169,7 +1248,7 @@
             "dsq": true,
             "gate-compensations": true,
             "hill-record-breaking": true,
-            "id": "d4a0019b-acac-4506-87cf-1022ee46d153",
+            "id": "0b48f631-ad22-4896-b254-75787f7f3cf6",
             "judges-points": true,
             "jumpers-in-team-count": 0,
             "name": "WC",
@@ -1178,18 +1257,18 @@
                 "count": 50,
                 "ko": false,
                 "ko-group-advancing": 0,
-                "ko-group-count": 0,
+                "ko-group-count": 1,
                 "ko-groups-selection-type": 0,
                 "previous-rounds-weights": [],
                 "reset-points": false,
                 "sort-after-groups": 3,
-                "sort-start-list": false
+                "sort-start-list": true
               },
               {
                 "count": 30,
                 "ko": false,
                 "ko-group-advancing": 0,
-                "ko-group-count": 0,
+                "ko-group-count": 1,
                 "ko-groups-selection-type": 0,
                 "previous-rounds-weights": [],
                 "reset-points": false,
@@ -1204,25 +1283,29 @@
           },
           "scheduled-date": "2026-12-05",
           "serie-type": 0,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [],
-          "trial-round-id": "5df1dd0c-b7ff-4843-ba71-a180d9b7f392"
+          "trial-round-id": "26dfce34-1c5d-4866-82ec-179b3f90a2e7"
         },
         {
+          "advancement-competition-id": "fa6b4caa-0b11-4d2b-83f4-c4f1e1ced667",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "dbee84a9-95fd-4608-9cc7-519c049d4589",
+          "id": "2ea1ff58-4e24-4fb0-925b-4a32488164e1",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "b319bc46-cfa2-4ab2-b2a9-923e3f7f86d6",
+            "id": "24e51d35-19a5-4579-8a9c-ead38f6abb61",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1232,9 +1315,9 @@
             "dsq": true,
             "gate-compensations": true,
             "hill-record-breaking": true,
-            "id": "715d564d-4dc3-45d4-8b63-5ebd32d8a300",
+            "id": "34dd70f1-49e5-4865-9132-e049130dc034",
             "judges-points": true,
-            "jumpers-in-team-count": 4,
+            "jumpers-in-team-count": 0,
             "name": "WC",
             "rounds": [
               {
@@ -1246,7 +1329,7 @@
                 "previous-rounds-weights": [],
                 "reset-points": false,
                 "sort-after-groups": 3,
-                "sort-start-list": false
+                "sort-start-list": true
               },
               {
                 "count": 30,
@@ -1267,8 +1350,11 @@
           },
           "scheduled-date": "2026-12-06",
           "serie-type": 0,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -1277,11 +1363,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "b303f7b3-1637-4163-aedb-5de40add0cca",
+          "id": "80217baa-e513-4c0c-8348-465d54fce63c",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "aac9b24d-e015-4401-a1e7-f61a5a16b46c",
+            "id": "24e8dffc-d4cc-4a46-9393-b8a0ce57dda6",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1315,8 +1401,11 @@
           },
           "scheduled-date": "2026-12-11",
           "serie-type": 3,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -1325,11 +1414,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "feacbc10-c264-4dbf-8b63-e958ac35c9d1",
+          "id": "2e9090f5-41ee-4cb8-b021-beabd972ab35",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "15dc8e09-7994-44a9-95c9-74334be7ee7f",
+            "id": "e0a893b8-eaba-4013-a367-692e864401f0",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1363,28 +1452,31 @@
           },
           "scheduled-date": "2026-12-11",
           "serie-type": 3,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
           "cancelled": false,
           "classification-scoring": {
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd": {
+            "a94e0ad7-2161-425d-ab14-e67047594f4c": {
               "method": "",
               "parameters": {}
             }
           },
           "classifications-ids": [
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "7ad436a3-8704-4a5f-9944-aa1782b3b4bd",
+          "id": "7129f99a-1bc5-4c87-996a-f66494bce0be",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "91d708b8-e35a-4836-b568-c5934606affb",
+            "id": "b62b5305-e77b-48d4-9f11-9da0528ea68c",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1429,12 +1521,15 @@
           },
           "scheduled-date": "2026-12-11",
           "serie-type": 0,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "b303f7b3-1637-4163-aedb-5de40add0cca",
-            "feacbc10-c264-4dbf-8b63-e958ac35c9d1"
+            "80217baa-e513-4c0c-8348-465d54fce63c",
+            "2e9090f5-41ee-4cb8-b021-beabd972ab35"
           ]
         },
         {
@@ -1442,11 +1537,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "34ad87f5-d766-4b7d-8959-04030343d85d",
+          "id": "59c91c04-ec08-4915-81e1-c990fb77e00b",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "abc0c0de-0b2f-456e-b80c-04c35d6ae730",
+            "id": "175e1b9d-4668-44d5-8a1c-e6d81f0622e7",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1480,25 +1575,28 @@
           },
           "scheduled-date": "2026-12-12",
           "serie-type": 1,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "34ad87f5-d766-4b7d-8959-04030343d85d",
+          "advancement-competition-id": "59c91c04-ec08-4915-81e1-c990fb77e00b",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "211cb605-ecc8-498a-860d-21af67aeea68",
+          "id": "d342b317-2bf8-4192-917e-972a7a93604b",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "8071040e-4333-4cc0-b24b-ed154e4843b2",
+            "id": "e7765c17-b51b-4b70-b881-6ecf78bf57bc",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1543,25 +1641,28 @@
           },
           "scheduled-date": "2026-12-12",
           "serie-type": 0,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 1,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "34ad87f5-d766-4b7d-8959-04030343d85d",
+          "advancement-competition-id": "59c91c04-ec08-4915-81e1-c990fb77e00b",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "1642497c-cb72-43d8-8621-9b80ed546188",
+          "id": "8d9fc1cc-575f-44f8-83d1-59b37b79d933",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "51000d89-1cac-4a96-80ec-176d557cd54f",
+            "id": "8bb870ee-7ed0-4e5d-bc3c-8895cf8e57d6",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1606,8 +1707,11 @@
           },
           "scheduled-date": "2026-12-13",
           "serie-type": 0,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "5fa2b6c8-ca36-45df-8529-373ace8f2dfa",
+          "start-list-sort-mode": 2,
           "teams": [],
           "training-ids": []
         },
@@ -1616,11 +1720,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "73a010c6-027e-4ae4-8821-89b1f0fb917d",
+          "id": "f1483b1c-82b2-405d-9f08-237423845391",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "f491a437-362c-41e9-b0b9-a9caa8b58a1e",
+            "id": "48cfe35b-d7d8-4181-bbe7-941fec7b90c1",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1654,8 +1758,11 @@
           },
           "scheduled-date": "2026-12-18",
           "serie-type": 3,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -1664,11 +1771,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "5cf03e18-b37f-4368-a9e0-bb2f262dfa08",
+          "id": "6105468f-cbb0-4dcd-9f9d-fe41841cf299",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "efdfae9f-7813-476c-b59c-b100ab404dff",
+            "id": "37d729e4-a325-478a-a6e2-96070d627739",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1702,8 +1809,11 @@
           },
           "scheduled-date": "2026-12-18",
           "serie-type": 3,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -1712,11 +1822,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "390bd4a8-2bba-4ba3-adab-1d33671b233f",
+          "id": "43b10231-e287-4f0d-9c3a-dcda6185261e",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "299b5967-524a-4782-9528-e79befccafc7",
+            "id": "766b0084-e649-405a-add6-674358567342",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1750,28 +1860,31 @@
           },
           "scheduled-date": "2026-12-18",
           "serie-type": 1,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "73a010c6-027e-4ae4-8821-89b1f0fb917d",
-            "5cf03e18-b37f-4368-a9e0-bb2f262dfa08"
+            "f1483b1c-82b2-405d-9f08-237423845391",
+            "6105468f-cbb0-4dcd-9f9d-fe41841cf299"
           ]
         },
         {
-          "advancement-competition-id": "390bd4a8-2bba-4ba3-adab-1d33671b233f",
+          "advancement-competition-id": "43b10231-e287-4f0d-9c3a-dcda6185261e",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "862ae2b1-f52b-4d4f-931b-4a828a34e21f",
+          "id": "7d3a1aeb-e38d-4381-afae-3d49d47f1fd3",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "74053fdf-2b3f-4cd4-a6c1-18793521623c",
+            "id": "e97250b8-6d1c-49e6-afb1-dc71b20b1df2",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1816,25 +1929,28 @@
           },
           "scheduled-date": "2026-12-19",
           "serie-type": 0,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "390bd4a8-2bba-4ba3-adab-1d33671b233f",
+          "advancement-competition-id": "43b10231-e287-4f0d-9c3a-dcda6185261e",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "9de5d2ad-e651-4a50-8d87-c0cefd9de629",
+          "id": "8851c6f7-3f86-49ba-950a-8342a014ed1f",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "2142be11-c927-49c1-b950-cef37f4f4339",
+            "id": "e6057793-cdde-4f6b-b961-9e3c1c8e3a69",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1879,8 +1995,11 @@
           },
           "scheduled-date": "2026-12-20",
           "serie-type": 0,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "53e15d54-1c68-4522-b1dc-72299c42a0ba",
+          "start-list-sort-mode": 2,
           "teams": [],
           "training-ids": []
         },
@@ -1889,11 +2008,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "4a055399-003e-4520-b10d-fda937a0d1b9",
+          "id": "107e740d-2cff-4213-9260-f96e3f58ce1a",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "25faf6f8-8e69-4234-88f2-5f5859ae13d5",
+            "id": "4c591662-d65c-4039-897b-93e12af10cf6",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1929,6 +2048,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -1937,11 +2059,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "1dba0558-35fe-4e2d-a2e3-d2ee1e71d2dc",
+          "id": "c62a54f5-6b6d-4dfc-80b3-53ab67a94199",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "9436678e-a6fa-4f10-9337-c9c3b2a5cebe",
+            "id": "0978938c-442d-4530-8073-0cde75b2fda8",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1975,8 +2097,11 @@
           },
           "scheduled-date": "2026-12-28",
           "serie-type": 3,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -1985,11 +2110,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "d7aa1eb3-d694-43b7-9334-ba44f9378fd2",
+          "id": "d9e84456-e4e1-43f8-a772-de9d111d52c7",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "514b5fc6-b952-41ed-b55e-3c18d8c2e685",
+            "id": "27d554d4-04de-4e15-aefe-e5ffaeb9b75d",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2023,12 +2148,15 @@
           },
           "scheduled-date": "2026-12-28",
           "serie-type": 1,
-          "simulation-model-revision": 0,
+          "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "4a055399-003e-4520-b10d-fda937a0d1b9",
-            "1dba0558-35fe-4e2d-a2e3-d2ee1e71d2dc"
+            "107e740d-2cff-4213-9260-f96e3f58ce1a",
+            "c62a54f5-6b6d-4dfc-80b3-53ab67a94199"
           ]
         },
         {
@@ -2036,11 +2164,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "cc904c68-7ae0-4a53-ae67-ab2a9ca0ede2",
+          "id": "8a232fcc-ac72-417c-8032-33ff6ad1d37e",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "8db283c9-1f4b-402a-8836-aa4d5b1ba047",
+            "id": "530c1461-8663-4618-95f1-49c4d8709276",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2076,24 +2204,27 @@
           "serie-type": 2,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "d7aa1eb3-d694-43b7-9334-ba44f9378fd2",
+          "advancement-competition-id": "d9e84456-e4e1-43f8-a772-de9d111d52c7",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "d7719af5-2ee2-4445-bc3c-f990f3bd31bf",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "91c80bdf-135a-4f15-b5ba-bbfefd58c53e",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "b8109b39-6bd7-4fb8-abf4-92d59b55573a",
+          "id": "5424dc19-114c-4edf-98d6-927fd483843d",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "72049a64-0fb7-4dde-bdc9-db525eeaa14a",
+            "id": "c8a5a8a8-2630-40e3-a364-7a580c452d14",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2140,20 +2271,23 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [],
-          "trial-round-id": "cc904c68-7ae0-4a53-ae67-ab2a9ca0ede2"
+          "trial-round-id": "8a232fcc-ac72-417c-8032-33ff6ad1d37e"
         },
         {
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "6d045498-6456-410a-9d17-c56b336cab99",
+          "id": "7e8a87eb-ea71-440c-815a-fb6815e0d875",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "3c83f910-2e72-4aa7-bff6-6cb5781aab29",
+            "id": "644ec7d3-afd7-42d8-a59c-4898d1165315",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2189,6 +2323,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -2197,11 +2334,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "557a5307-4bdf-4cbe-a733-6ef53a65e0dd",
+          "id": "48d72cdb-dd8b-4725-b2ff-d5a2ebfe0067",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "bd8a05e1-96d6-40cb-befd-ba3f780ee429",
+            "id": "81d4832c-3ef3-40fc-aef3-7e55d0cfd372",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2237,6 +2374,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -2245,11 +2385,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "6bbe6c5e-3099-4aab-b6c6-2d913f858b5e",
+          "id": "526b4e29-648d-4c20-b4a0-0766206d6cd7",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "090359a9-453c-439a-bf60-7cd5dd25a6a6",
+            "id": "9d9870a7-36b1-45d1-97f9-cf59ec4419d7",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2285,10 +2425,13 @@
           "serie-type": 1,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "6d045498-6456-410a-9d17-c56b336cab99",
-            "557a5307-4bdf-4cbe-a733-6ef53a65e0dd"
+            "7e8a87eb-ea71-440c-815a-fb6815e0d875",
+            "48d72cdb-dd8b-4725-b2ff-d5a2ebfe0067"
           ]
         },
         {
@@ -2296,11 +2439,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "ded10ce2-e5fd-409e-a427-2a962a510b54",
+          "id": "b4dd14df-acdd-414a-852d-59cfcf63714d",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "ab56db78-894f-44d9-b377-b9a0100633fa",
+            "id": "d93d5675-36f9-466d-8603-67795fc6b0e2",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2336,24 +2479,27 @@
           "serie-type": 2,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "6bbe6c5e-3099-4aab-b6c6-2d913f858b5e",
+          "advancement-competition-id": "526b4e29-648d-4c20-b4a0-0766206d6cd7",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "d7719af5-2ee2-4445-bc3c-f990f3bd31bf",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "91c80bdf-135a-4f15-b5ba-bbfefd58c53e",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "2ad4ae4c-3164-4538-bd9f-ecdce244357a",
+          "id": "86966918-6651-4b14-ae7b-71e03433b37b",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "016f43c8-299e-41fa-b171-c1dc020221ca",
+            "id": "87e1c9b1-3b49-4f8b-b278-b1441d1ed8b0",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2400,20 +2546,23 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 1,
           "teams": [],
           "training-ids": [],
-          "trial-round-id": "ded10ce2-e5fd-409e-a427-2a962a510b54"
+          "trial-round-id": "b4dd14df-acdd-414a-852d-59cfcf63714d"
         },
         {
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "7e3f92f0-9eb5-489e-b696-29c58543bd62",
+          "id": "ac596b23-c1bd-441b-a7b3-340aa071b74e",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "8acc970b-f801-42a6-8e3d-78e685a5c868",
+            "id": "0c5e9ec5-8635-4105-b712-ad33f58a38c3",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2449,6 +2598,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -2457,11 +2609,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "51d765fd-d442-43a1-871c-c5a8998991ed",
+          "id": "9f87bb73-5be9-44da-a29f-08c1628a07f5",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "e8993165-401a-4575-a612-201fc7a63842",
+            "id": "b7b0f04e-bce0-4dd9-b134-c578994759dd",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2497,6 +2649,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -2505,11 +2660,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "377721e6-e15b-45ee-a296-af8baa9ef502",
+          "id": "86beb525-410e-4f0f-beca-fdfab215dc3c",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "d193f34d-19ce-4ae1-85df-723b9fe02ac0",
+            "id": "4b41543c-37cb-4f96-8277-86df631d9583",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2545,10 +2700,13 @@
           "serie-type": 1,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "7e3f92f0-9eb5-489e-b696-29c58543bd62",
-            "51d765fd-d442-43a1-871c-c5a8998991ed"
+            "ac596b23-c1bd-441b-a7b3-340aa071b74e",
+            "9f87bb73-5be9-44da-a29f-08c1628a07f5"
           ]
         },
         {
@@ -2556,11 +2714,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "c26a845e-c18d-4018-a125-da4f718e200c",
+          "id": "af71964a-4809-45ba-a6d4-61ccdf876913",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "f7e0a408-55ce-45e0-adcf-e50d69ced770",
+            "id": "949d367e-7e41-46ad-ba79-ead4b907dc08",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2596,24 +2754,27 @@
           "serie-type": 2,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "377721e6-e15b-45ee-a296-af8baa9ef502",
+          "advancement-competition-id": "86beb525-410e-4f0f-beca-fdfab215dc3c",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "d7719af5-2ee2-4445-bc3c-f990f3bd31bf",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "91c80bdf-135a-4f15-b5ba-bbfefd58c53e",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "e1ed0c04-55a5-42a2-b149-4782f2351447",
+          "id": "bc2a65de-043d-486c-943b-e72e7b740f71",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "2820789a-bf10-48d2-bf9b-d2966d861db8",
+            "id": "f3c93a7d-8f35-4829-b8bb-21318b69aa1e",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2660,20 +2821,23 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 1,
           "teams": [],
           "training-ids": [],
-          "trial-round-id": "c26a845e-c18d-4018-a125-da4f718e200c"
+          "trial-round-id": "af71964a-4809-45ba-a6d4-61ccdf876913"
         },
         {
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "15c427b5-385e-4a76-b34a-a1e058b7f3de",
+          "id": "8bcbaeb4-df9d-456b-b37f-a12c534cb8f7",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "50c089e1-9625-450d-917c-6b9ba8092d0d",
+            "id": "ebdce5e9-75a7-4b1c-83d0-67d1e0ffee02",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2709,6 +2873,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -2717,11 +2884,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "11fe3235-9da0-42a9-9798-5e5fbbbecef4",
+          "id": "faacc2e8-d832-4405-9b93-58699005b274",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "b0458f1e-51ba-4eab-9e04-60d3cd12e369",
+            "id": "bd94c980-2b37-49b5-809a-61b5daeda34a",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2757,6 +2924,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -2765,11 +2935,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "3cf17685-3aa3-41e7-8587-91703c1447c6",
+          "id": "da32abad-dd14-4dea-94ea-ea8ff1099732",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "9e6f43a2-6aa1-4a68-bbb8-9d150af7bdeb",
+            "id": "9dc81000-20c8-427e-8ffa-d3510cd1e2d4",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2805,10 +2975,13 @@
           "serie-type": 1,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "15c427b5-385e-4a76-b34a-a1e058b7f3de",
-            "11fe3235-9da0-42a9-9798-5e5fbbbecef4"
+            "8bcbaeb4-df9d-456b-b37f-a12c534cb8f7",
+            "faacc2e8-d832-4405-9b93-58699005b274"
           ]
         },
         {
@@ -2816,11 +2989,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "90148c1a-cdce-4917-8cb4-c88d826c0da9",
+          "id": "94ccc2b0-a26d-43e5-a15f-73e2258d3d0e",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "cdecd854-e77f-46b4-8969-b494019195a3",
+            "id": "4a33b069-91bd-45c2-b8c3-5e8633863029",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2856,24 +3029,27 @@
           "serie-type": 2,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "3cf17685-3aa3-41e7-8587-91703c1447c6",
+          "advancement-competition-id": "da32abad-dd14-4dea-94ea-ea8ff1099732",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "d7719af5-2ee2-4445-bc3c-f990f3bd31bf",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "91c80bdf-135a-4f15-b5ba-bbfefd58c53e",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "302b5c80-9334-410e-975d-892a9307d3a8",
+          "id": "633638fb-032b-4924-af15-f3f34e11e443",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "63356678-0162-4bba-8497-dda71e357194",
+            "id": "e5ce7ef9-dfaa-489e-8312-9e22366354da",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2920,20 +3096,23 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 1,
           "teams": [],
           "training-ids": [],
-          "trial-round-id": "90148c1a-cdce-4917-8cb4-c88d826c0da9"
+          "trial-round-id": "94ccc2b0-a26d-43e5-a15f-73e2258d3d0e"
         },
         {
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "977f3d31-5ee3-4925-abd7-f7a52a869dca",
+          "id": "1d735941-e1f3-479c-8364-8a3e7fc1d4d3",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "28d9ad80-56bd-417d-8deb-63760c83bb8b",
+            "id": "4e48bccf-8ad6-47cc-86e5-8dfddcb6b306",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -2969,6 +3148,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -2977,11 +3159,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "cd3050d1-2650-4837-b612-b6462f027389",
+          "id": "86002319-0003-4d7f-9de6-112f659e4cc1",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "a3205896-da50-48ca-a33a-8154c2cc24e4",
+            "id": "97090e57-97b1-4719-bdd0-05b7311aefca",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3017,6 +3199,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -3025,11 +3210,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "3c7b1d5e-d26a-4bdc-8a4e-87804c939ba4",
+          "id": "e585b8e8-6839-4501-bd45-acaf290a1420",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "a6869fdf-10b4-47a6-aa1f-949b4c35f1db",
+            "id": "fe853313-dc7a-43c2-91ce-281122689078",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3065,10 +3250,13 @@
           "serie-type": 1,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "977f3d31-5ee3-4925-abd7-f7a52a869dca",
-            "cd3050d1-2650-4837-b612-b6462f027389"
+            "1d735941-e1f3-479c-8364-8a3e7fc1d4d3",
+            "86002319-0003-4d7f-9de6-112f659e4cc1"
           ]
         },
         {
@@ -3076,11 +3264,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "5eff49ed-6fe4-4774-8edf-c6a32edd79e0",
+          "id": "af23c8c0-27b2-4e30-b461-18f12dc24413",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "fac970cd-5aa2-4ea2-b539-140b11229e50",
+            "id": "3dba6f61-1959-43f2-9fa9-c87c19a857bc",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3116,6 +3304,9 @@
           "serie-type": 2,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -3123,14 +3314,14 @@
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "4a37ec5f-ee4d-4f20-8b6c-33a80422a7df",
+          "id": "071c1560-2a3d-45d7-a4b3-27af9585ddf6",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "0e9db146-8169-436a-bbcd-028bf14f82f9",
+            "id": "92650e0a-8f8b-426b-ab20-d4be363f80a9",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3177,20 +3368,23 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [],
-          "trial-round-id": "5eff49ed-6fe4-4774-8edf-c6a32edd79e0"
+          "trial-round-id": "af23c8c0-27b2-4e30-b461-18f12dc24413"
         },
         {
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "f3270e1f-3113-48df-8758-5ff9796ff207",
+          "id": "2940290f-25b6-487e-9fd8-cc9e33bae2d8",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "d33fa649-3498-4f18-8e46-819126307eae",
+            "id": "4db68eee-83d2-44ee-ab39-e87bd25afb15",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3226,23 +3420,26 @@
           "serie-type": 2,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "3c7b1d5e-d26a-4bdc-8a4e-87804c939ba4",
+          "advancement-competition-id": "e585b8e8-6839-4501-bd45-acaf290a1420",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "1628a417-4252-49bf-927b-3e9f7027096d",
+          "id": "672c2b99-7714-40cb-afa0-cb2404012e0b",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "1d65548d-783d-45e6-a1c0-94d796ed2d7c",
+            "id": "a72faac2-21b0-4c64-886d-30b6485f2ad4",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3289,20 +3486,23 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 1,
           "teams": [],
           "training-ids": [],
-          "trial-round-id": "f3270e1f-3113-48df-8758-5ff9796ff207"
+          "trial-round-id": "2940290f-25b6-487e-9fd8-cc9e33bae2d8"
         },
         {
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "1c958e07-ec39-4a15-951a-97a9d48660ef",
+          "id": "73a20771-ec6e-4000-b357-58a6097c73be",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "d3d4c8bd-7f04-45f1-8d80-6f6fd18db440",
+            "id": "f2117164-9669-4da6-9c00-a65a905bafc9",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3338,6 +3538,9 @@
           "serie-type": 3,
           "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -3346,11 +3549,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "b762677d-80e3-4af8-bc22-57700d1e2bc7",
+          "id": "148bc55e-74aa-4557-bae7-ae7e98472d12",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "7dde438f-17c0-41ed-afbb-f6ac31549129",
+            "id": "0ce3648d-1c50-434b-8ca0-65d260ac12a5",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3386,6 +3589,9 @@
           "serie-type": 3,
           "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -3394,11 +3600,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "640edb57-caf9-4e0f-bba9-8b3d50e28afc",
+          "id": "73065a47-c4bd-4d6b-8585-7df5dff2ec84",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "7410efa4-eb6c-4ebd-bcff-9dfb9ee8179b",
+            "id": "00bab2b3-9078-4bf2-b8d8-e67603ef5165",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3434,26 +3640,29 @@
           "serie-type": 1,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "1c958e07-ec39-4a15-951a-97a9d48660ef",
-            "b762677d-80e3-4af8-bc22-57700d1e2bc7"
+            "73a20771-ec6e-4000-b357-58a6097c73be",
+            "148bc55e-74aa-4557-bae7-ae7e98472d12"
           ]
         },
         {
-          "advancement-competition-id": "640edb57-caf9-4e0f-bba9-8b3d50e28afc",
+          "advancement-competition-id": "73065a47-c4bd-4d6b-8585-7df5dff2ec84",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "a57b00ce-7569-4681-9631-ea9f773e47ef",
+          "id": "d91fdfc9-631d-4d00-a52e-f6c7dd69d5cf",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "6369c23d-3af9-4a44-8d88-1c765b05381e",
+            "id": "5b85b635-03f1-4bce-be8a-963c03bf79ae",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3500,6 +3709,9 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 1,
           "teams": [],
           "training-ids": []
         },
@@ -3508,11 +3720,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "a1711054-5eda-4ca5-9325-2a54a5412de0",
+          "id": "38f2bfac-e0ff-4a1a-95b6-46a1b3f61b09",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "4b496b3f-dfa3-4ff7-805d-e1a7c52e3322",
+            "id": "8fc6fb12-3db1-424d-838e-5e70c1e6f662",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3548,23 +3760,26 @@
           "serie-type": 1,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "a1711054-5eda-4ca5-9325-2a54a5412de0",
+          "advancement-competition-id": "38f2bfac-e0ff-4a1a-95b6-46a1b3f61b09",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "5bccda1d-40f7-4ea5-af3d-6f0bd93c1ea9",
+          "id": "45ad5b45-b32a-4c1c-9822-42db5a3d8cac",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "2656901c-75c4-480a-8afb-1b71b702b6db",
+            "id": "6db50970-3c13-4667-896d-487416f59264",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3611,6 +3826,9 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 1,
           "teams": [],
           "training-ids": []
         },
@@ -3619,11 +3837,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "2f044358-2531-4f81-aa35-5d7f57445333",
+          "id": "ea7d6faf-d0ef-4a94-af88-3343fb30d80b",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "2c94c4a2-57ae-46b7-a688-6a8b247647ba",
+            "id": "f8bdc40b-636a-4b07-ba0c-311b988fcd03",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3659,6 +3877,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -3667,11 +3888,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "05034b15-7ba4-4e7b-a11f-22f46852b057",
+          "id": "9e3585b7-cb1b-4a36-adbb-205495fe444c",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "4e8fafb1-6a94-4808-a27c-8a201bf81c16",
+            "id": "1f47edcf-dde7-43ff-8187-346a55371ac5",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3707,6 +3928,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -3715,11 +3939,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "acc16c33-9480-492c-a76d-5632c78d5f3b",
+          "id": "5af95d04-27d2-419d-b026-3ba8653fb8dc",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "da1fa7d7-9ebd-4ed8-ae52-f319655ff791",
+            "id": "91435789-0abc-4cfe-b381-c770a4e6efb6",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3755,26 +3979,29 @@
           "serie-type": 1,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "2f044358-2531-4f81-aa35-5d7f57445333",
-            "05034b15-7ba4-4e7b-a11f-22f46852b057"
+            "ea7d6faf-d0ef-4a94-af88-3343fb30d80b",
+            "9e3585b7-cb1b-4a36-adbb-205495fe444c"
           ]
         },
         {
-          "advancement-competition-id": "acc16c33-9480-492c-a76d-5632c78d5f3b",
+          "advancement-competition-id": "5af95d04-27d2-419d-b026-3ba8653fb8dc",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "27f829bb-22a4-4bb4-977f-591a5cad8b24",
+          "id": "090398ef-2c53-4a64-a5ef-2f4955b6f1e2",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "4e702dab-ff05-4476-aeae-9b6eebc9579d",
+            "id": "e64aa671-0b80-4111-aba4-792a04f0f1ba",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3821,6 +4048,9 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 1,
           "teams": [],
           "training-ids": []
         },
@@ -3829,11 +4059,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "b0004c25-276e-46da-bedc-8350c7d3c2fb",
+          "id": "ad982bac-fb06-4877-a801-2ce39a9ecea9",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "791d742d-6a3d-479e-8be0-d115a38e4390",
+            "id": "1ff25fa7-f26f-43ec-919e-c1dd9546fb13",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3869,23 +4099,27 @@
           "serie-type": 2,
           "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "acc16c33-9480-492c-a76d-5632c78d5f3b",
+          "advancement-competition-id": "5af95d04-27d2-419d-b026-3ba8653fb8dc",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c",
+            "9e761e30-d50b-4afc-8e3e-9057567cb374"
           ],
           "exceptional-rounds-count": 0,
-          "id": "16456628-a32d-46fc-ab2f-38bbaf1043b6",
+          "id": "ad5a7830-7b13-4bef-9c2b-a2d9bf064e0e",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "fc6b254f-5952-4a92-a58e-0d7676c9e12d",
+            "id": "f12e01d6-95fc-4d6b-aa9c-9774c1aa7651",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3932,20 +4166,23 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "113144e1-3045-40ae-bb45-60fdd0eadd1b",
+          "start-list-sort-mode": 2,
           "teams": [],
           "training-ids": [],
-          "trial-round-id": "b0004c25-276e-46da-bedc-8350c7d3c2fb"
+          "trial-round-id": "ad982bac-fb06-4877-a801-2ce39a9ecea9"
         },
         {
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "2bbd287a-aa24-4dce-8e26-5028e061e4b1",
+          "id": "b022702c-035c-41ff-b411-54aaa4b99889",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "5bd746bb-544f-40f4-9491-71d484b5ff9c",
+            "id": "6153ed21-3b1a-4438-ab3c-9a75447dd5bd",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -3981,23 +4218,26 @@
           "serie-type": 1,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "2bbd287a-aa24-4dce-8e26-5028e061e4b1",
+          "advancement-competition-id": "b022702c-035c-41ff-b411-54aaa4b99889",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "aee66f2c-e579-4602-a187-b8209d5c141e",
+          "id": "a9b327a5-67fe-4851-ad71-184dc81d067d",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "c2174e69-1ea9-4e7c-bd02-17d3c4689f9b",
+            "id": "0f677757-8f69-40d2-afb3-a2a689230b38",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -4044,13 +4284,16 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 1,
           "teams": [],
           "training-ids": []
         },
         {
           "cancelled": false,
           "classification-scoring": {
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd": {
+            "a94e0ad7-2161-425d-ab14-e67047594f4c": {
               "method": "",
               "parameters": {
                 "multiplier": 0.5
@@ -4058,14 +4301,14 @@
             }
           },
           "classifications-ids": [
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "1e474788-7414-4fd6-9219-13a4a882935e",
+          "id": "be35efda-6fe1-4710-b881-c8308b369745",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "aafcbbaa-2d64-47d2-bd9b-1a1825c133ad",
+            "id": "de6fa0c7-3500-4ffb-94b5-36863b038d3f",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -4123,6 +4366,9 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -4131,11 +4377,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "1c90ce50-fe76-4143-8236-1d4da03eae04",
+          "id": "eea2ed96-2c97-4be8-ae04-b35e156773c5",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "3fa0c01d-b6ac-4693-a099-a3b79a5c8c8e",
+            "id": "ddf7714e-8229-481a-897a-3dfd8b08f166",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -4171,6 +4417,9 @@
           "serie-type": 3,
           "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -4179,11 +4428,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "3d62b1af-fd87-4d02-aab2-7641d4d179f7",
+          "id": "b130ed1e-a3de-45f8-a979-ea046aaeb4ba",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "f93f656f-1373-45bc-ac9d-be72dfce1b96",
+            "id": "0b847f3e-fdaa-4c21-a2f5-9b7ea7234362",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -4219,6 +4468,9 @@
           "serie-type": 3,
           "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -4226,14 +4478,14 @@
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "fbb1d563-d71b-4a7d-b210-51412150c6a2",
+          "id": "f8d47910-fc68-42a4-b6f3-96fd20d87b82",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "9163807d-3646-47b4-bb06-2eb6fc34dbd4",
+            "id": "7248f624-5f16-4fc0-9d2e-139f7ac395e6",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -4280,10 +4532,13 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "1c90ce50-fe76-4143-8236-1d4da03eae04",
-            "3d62b1af-fd87-4d02-aab2-7641d4d179f7"
+            "eea2ed96-2c97-4be8-ae04-b35e156773c5",
+            "b130ed1e-a3de-45f8-a979-ea046aaeb4ba"
           ]
         },
         {
@@ -4291,11 +4546,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "2f52130b-93ca-4efb-bcd5-779ebeb39806",
+          "id": "657708a3-9ff0-43d8-831b-0dcb12b80bc7",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "2d9fea85-af5d-4532-8ebc-4eec10606bac",
+            "id": "1bea3211-0c4a-4d64-8a29-7786d9d2b112",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -4331,23 +4586,26 @@
           "serie-type": 1,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "2f52130b-93ca-4efb-bcd5-779ebeb39806",
+          "advancement-competition-id": "657708a3-9ff0-43d8-831b-0dcb12b80bc7",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "e8506da1-1cdd-4e07-ae04-77c0273af86e",
+          "id": "f2230a1b-501f-40ac-9720-86f252cc7a72",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "4dbf0b5d-c1cb-48a9-961e-16d9d36f1a00",
+            "id": "65a4ce9c-f82b-4863-8fb6-9367467e1b63",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -4394,6 +4652,9 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 1,
           "teams": [],
           "training-ids": []
         },
@@ -4402,11 +4663,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "a9c2aee8-1212-4891-b02d-662845f4c7ae",
+          "id": "c914336b-0587-408b-a0ec-558ae356385a",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "329f1dd3-3e9e-4990-82e4-330535b691cf",
+            "id": "40bfea02-dedf-4208-93eb-6a1a31e5df76",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -4442,6 +4703,9 @@
           "serie-type": 3,
           "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -4450,11 +4714,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "047a2f5e-7ebc-477a-8870-2c8fbe99efa4",
+          "id": "5f0fa9f7-e6dc-47d6-b6f1-26f8c0a33382",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "ccdcf05d-2c29-4a3e-ba81-1430f6b392a5",
+            "id": "177f38d8-f8ef-4272-8615-1c1452aa5e23",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -4490,6 +4754,9 @@
           "serie-type": 3,
           "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -4498,11 +4765,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "bfe60cda-a83d-4ddd-9894-e215dd1592e8",
+          "id": "1d8866d1-5f05-4c33-b81a-3b428600d82a",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "8a231e91-8598-43e4-a642-51a32cb2226f",
+            "id": "888dd455-9641-4731-9c37-da83ce58fec7",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -4538,10 +4805,13 @@
           "serie-type": 1,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "028ab43e-e3f4-4473-82e9-92f816ceafe2",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "a9c2aee8-1212-4891-b02d-662845f4c7ae",
-            "047a2f5e-7ebc-477a-8870-2c8fbe99efa4"
+            "c914336b-0587-408b-a0ec-558ae356385a",
+            "5f0fa9f7-e6dc-47d6-b6f1-26f8c0a33382"
           ]
         },
         {
@@ -4549,11 +4819,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "71d63dc4-dec1-4c15-a5cc-2b4449c92199",
+          "id": "1f82b1d6-cdad-46c6-914d-cfc00730257c",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "59c567dc-48f9-4576-b18d-ad6a87726d49",
+            "id": "38b9b920-543f-4358-8ef9-837063928bf7",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -4589,24 +4859,27 @@
           "serie-type": 2,
           "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "bfe60cda-a83d-4ddd-9894-e215dd1592e8",
+          "advancement-competition-id": "1d8866d1-5f05-4c33-b81a-3b428600d82a",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "2803e2a0-9f11-4bef-9222-efb1a8448f22",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "ab118ae9-b875-465c-884d-9ebcefd123a0",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "ba7e17a6-7f76-495a-8323-b3ffa87d56da",
+          "id": "5a95ebc4-29e6-44db-8eef-bf022918d1ab",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "d400343b-1ee9-4cd5-8d16-e442c10c0388",
+            "id": "ebc067bc-50b8-4a44-b78d-91cd3f907b4c",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -4653,20 +4926,23 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "1e57a9cf-b429-4d54-9eee-7c70abd52548",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 1,
           "teams": [],
           "training-ids": [],
-          "trial-round-id": "71d63dc4-dec1-4c15-a5cc-2b4449c92199"
+          "trial-round-id": "1f82b1d6-cdad-46c6-914d-cfc00730257c"
         },
         {
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "5e077bd8-747a-41f6-89f5-d8c527bba51a",
+          "id": "34fd5b9a-4185-4a96-bc90-b0dd85d76ca8",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "607049cd-12e3-46a1-bf86-812f8f3e5e11",
+            "id": "63ca87fb-97e6-423b-8c61-0b758a51a63e",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -4702,24 +4978,27 @@
           "serie-type": 1,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "1e57a9cf-b429-4d54-9eee-7c70abd52548",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 3,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "5e077bd8-747a-41f6-89f5-d8c527bba51a",
+          "advancement-competition-id": "34fd5b9a-4185-4a96-bc90-b0dd85d76ca8",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "2803e2a0-9f11-4bef-9222-efb1a8448f22",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "ab118ae9-b875-465c-884d-9ebcefd123a0",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "3958316c-032d-4227-a4ac-447e50e74eaf",
+          "id": "a43d86a6-12f7-402b-b896-65987ba6c3dd",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "20e62a4d-cf8f-4d87-8ac7-5ffbca15b12c",
+            "id": "cc8351b1-9fa5-49fe-89a5-db4ca7004aa5",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -4766,6 +5045,9 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 1,
           "teams": [],
           "training-ids": []
         },
@@ -4774,11 +5056,458 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "2e51abbb-df11-4484-91ce-34d624d1a201",
+          "id": "42c59600-edc7-4be0-9df4-b87e8ff07547",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "97327aeb-1b67-4579-af37-c1366d726ecf",
+            "id": "806f087f-50ed-43d3-a7ca-0c43650f09ef",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": false,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": false,
+            "id": "71fbddf9-5503-473d-9707-def729f67ca6",
+            "judges-points": false,
+            "jumpers-in-team-count": 4,
+            "name": "Training/Trial",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": false
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2027-02-28",
+          "serie-type": 3,
+          "simulation-model-revision": 1,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "5fcd38f4-f109-418e-89be-2be24f2630a8",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "91d2fb01-f6bc-4969-88fa-97a191ced833",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": false,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": false,
+            "id": "71fbddf9-5503-473d-9707-def729f67ca6",
+            "judges-points": false,
+            "jumpers-in-team-count": 4,
+            "name": "Training/Trial",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": false
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2027-02-28",
+          "serie-type": 3,
+          "simulation-model-revision": 1,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "14f1a242-9bb0-461b-a0c8-c26478740443",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "b146a6e8-dea8-48c3-9052-dee3252ab445",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": false,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": false,
+            "id": "71fbddf9-5503-473d-9707-def729f67ca6",
+            "judges-points": false,
+            "jumpers-in-team-count": 4,
+            "name": "Training/Trial",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": false
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2027-02-28",
+          "serie-type": 3,
+          "simulation-model-revision": 1,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "c3236b00-97a5-47f3-afb8-3c101f0c13b3",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "f5a5b035-013a-4e26-861b-00903a798516",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": true,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": true,
+            "id": "57c0119e-4a8d-429b-bdcd-815064cc2a0a",
+            "judges-points": true,
+            "jumpers-in-team-count": 4,
+            "name": "Qualifications",
+            "rounds": [
+              {
+                "count": 100,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": false
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2027-02-28",
+          "serie-type": 1,
+          "simulation-model-revision": 1,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": [
+            "42c59600-edc7-4be0-9df4-b87e8ff07547",
+            "5fcd38f4-f109-418e-89be-2be24f2630a8",
+            "14f1a242-9bb0-461b-a0c8-c26478740443"
+          ]
+        },
+        {
+          "advancement-competition-id": "c3236b00-97a5-47f3-afb8-3c101f0c13b3",
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "ce7b752b-d172-4b31-a305-8973daa3e40f",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "4eaec8e5-3696-4126-bdb5-e0d578c3ee23",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": true,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": true,
+            "id": "715d564d-4dc3-45d4-8b63-5ebd32d8a300",
+            "judges-points": true,
+            "jumpers-in-team-count": 4,
+            "name": "WC",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 3,
+                "sort-start-list": false
+              },
+              {
+                "count": 30,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": true
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2027-02-28",
+          "serie-type": 0,
+          "simulation-model-revision": 1,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 1,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "632459ab-bf82-432e-adcf-ec9324b3b3a5",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "a6fe9e46-3b27-46e6-b9c6-c88955090803",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": true,
+            "competition-type": 1,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": true,
+            "id": "765fc9c3-cbf4-44e1-a8aa-d2bc9c762c53",
+            "judges-points": true,
+            "jumpers-in-team-count": 4,
+            "name": "Team Competition",
+            "rounds": [
+              {
+                "count": 15,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 3,
+                "sort-start-list": false
+              },
+              {
+                "count": 8,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 1,
+                "sort-start-list": true
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2027-03-04",
+          "serie-type": 0,
+          "simulation-model-revision": 1,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "3620a24b-7ffc-4b4e-9834-2402b424b4e6",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "a1dd561c-61ca-4fce-a3f6-dce69865ca7f",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": true,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": true,
+            "id": "57c0119e-4a8d-429b-bdcd-815064cc2a0a",
+            "judges-points": true,
+            "jumpers-in-team-count": 4,
+            "name": "Qualifications",
+            "rounds": [
+              {
+                "count": 100,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": false
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2027-03-06",
+          "serie-type": 1,
+          "simulation-model-revision": 1,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "advancement-competition-id": "3620a24b-7ffc-4b4e-9834-2402b424b4e6",
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "e88155b8-1c03-4758-9f83-57322e8ea030",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "3c507771-cd58-4a8b-bb46-ca4107db1d63",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": true,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": true,
+            "id": "715d564d-4dc3-45d4-8b63-5ebd32d8a300",
+            "judges-points": true,
+            "jumpers-in-team-count": 4,
+            "name": "WC",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 3,
+                "sort-start-list": false
+              },
+              {
+                "count": 30,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": true
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2027-03-06",
+          "serie-type": 0,
+          "simulation-model-revision": 1,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 1,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "a1223fd9-6836-4a63-80ee-7fb149c4dd2e",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "aa8d496f-7f00-4ade-8532-0feb2c673a7c",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -4814,6 +5543,9 @@
           "serie-type": 3,
           "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -4822,11 +5554,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "56f0cc94-ac07-41d2-ab6d-db9c70cafc76",
+          "id": "37ce337a-6e4b-4120-9ce2-256478b48d55",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "2eaa867a-f0eb-4f05-b85a-d190f3717f81",
+            "id": "90d8850c-6ed0-4a47-8716-4cdb5cb58b69",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -4862,6 +5594,9 @@
           "serie-type": 3,
           "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -4870,11 +5605,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "1428b5be-209b-4dde-be8b-6311fd9d1a42",
+          "id": "64cbf974-8198-486e-9eda-7355037762b3",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "566521f2-5f6f-42cc-a23b-f7c7b545ce86",
+            "id": "744e9685-4164-4c65-a58c-be5f6f6103d6",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -4910,10 +5645,13 @@
           "serie-type": 1,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "2e51abbb-df11-4484-91ce-34d624d1a201",
-            "56f0cc94-ac07-41d2-ab6d-db9c70cafc76"
+            "a1223fd9-6836-4a63-80ee-7fb149c4dd2e",
+            "37ce337a-6e4b-4120-9ce2-256478b48d55"
           ]
         },
         {
@@ -4921,11 +5659,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "4f1b96ef-7904-4372-8624-065cd7efee50",
+          "id": "3dc98f49-664a-4d50-b7fe-3261304fb647",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "fb1a5b17-8f1e-41ee-88c9-1c66f8ab767d",
+            "id": "0c6a43e7-6447-4035-8a56-d5500706faf6",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -4961,23 +5699,26 @@
           "serie-type": 2,
           "simulation-model-revision": 1,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "1428b5be-209b-4dde-be8b-6311fd9d1a42",
+          "advancement-competition-id": "64cbf974-8198-486e-9eda-7355037762b3",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "c416402f-48d5-4490-b7d3-88c2644332c7",
+          "id": "da54c2f0-234a-468f-86f6-b35f53313840",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "843371d7-73a0-42ee-a1ca-400733768159",
+            "id": "eafc037b-84df-43ec-85f7-b0c05cc8cb3d",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -5024,24 +5765,27 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 1,
           "teams": [],
           "training-ids": [],
-          "trial-round-id": "4f1b96ef-7904-4372-8624-065cd7efee50"
+          "trial-round-id": "3dc98f49-664a-4d50-b7fe-3261304fb647"
         },
         {
-          "advancement-competition-id": "1428b5be-209b-4dde-be8b-6311fd9d1a42",
+          "advancement-competition-id": "64cbf974-8198-486e-9eda-7355037762b3",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c"
           ],
           "exceptional-rounds-count": 0,
-          "id": "93459871-39dd-4573-bcf7-7cc787b81577",
+          "id": "9be8de6a-432a-45c1-97ac-7b847e747a02",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "d087fbd1-a673-4f6d-bcff-b794cd42595c",
+            "id": "72dd60bb-30c2-41aa-9551-299c008d3af1",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -5088,6 +5832,9 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 1,
           "teams": [],
           "training-ids": []
         },
@@ -5096,11 +5843,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "83f6b37c-81bf-4702-a0f0-0ea842af158f",
+          "id": "34aac330-e3da-444f-8ee2-2b4c088fff28",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "1bf8aba8-06ad-4e88-94b7-14736437819e",
+            "id": "65e6a54d-8f24-47f8-ad57-44715b6b1c29",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -5136,6 +5883,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -5144,11 +5894,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "ab0e84e5-a362-4594-8355-d1931f968da1",
+          "id": "74b85773-5d6f-41e0-8f63-4541dfdfd708",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "679ba258-95dd-4341-b29b-8e923fbfcf0a",
+            "id": "840cc992-86fd-49f1-9e6a-d0c05b07478d",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -5184,6 +5934,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -5191,14 +5944,14 @@
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "9612d5ac-ebf6-4fc7-b67c-84d7556cecf0"
+            "9e761e30-d50b-4afc-8e3e-9057567cb374"
           ],
           "exceptional-rounds-count": 0,
-          "id": "0131d20c-8036-465c-85b1-b4360936c951",
+          "id": "46cc1e2c-bd01-4b48-93b1-d60d43e1446a",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "7306c1f9-06c0-4bdb-90fe-74a8befd6a7d",
+            "id": "f7898f7e-acb3-4e47-b0f1-5eca1f3c2003",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -5234,10 +5987,13 @@
           "serie-type": 1,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "1e57a9cf-b429-4d54-9eee-7c70abd52548",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 3,
           "teams": [],
           "training-ids": [
-            "83f6b37c-81bf-4702-a0f0-0ea842af158f",
-            "ab0e84e5-a362-4594-8355-d1931f968da1"
+            "34aac330-e3da-444f-8ee2-2b4c088fff28",
+            "74b85773-5d6f-41e0-8f63-4541dfdfd708"
           ]
         },
         {
@@ -5245,11 +6001,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "9607fe42-b04d-46cb-a048-449c7202e4ee",
+          "id": "5fc4bfa9-d997-43b3-bc7d-4a8025df0295",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "d88aeb23-1bd2-430a-9624-329e406b8605",
+            "id": "fbc91bc4-48ca-40b9-801e-98ce1da37d8f",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -5285,25 +6041,28 @@
           "serie-type": 2,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-competition-id": "0131d20c-8036-465c-85b1-b4360936c951",
+          "advancement-competition-id": "46cc1e2c-bd01-4b48-93b1-d60d43e1446a",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "2803e2a0-9f11-4bef-9222-efb1a8448f22",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd",
-            "9612d5ac-ebf6-4fc7-b67c-84d7556cecf0"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "ab118ae9-b875-465c-884d-9ebcefd123a0",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c",
+            "9e761e30-d50b-4afc-8e3e-9057567cb374"
           ],
           "exceptional-rounds-count": 0,
-          "id": "cefef53f-0669-47e9-bb11-8e84190345b0",
+          "id": "60eb64a0-43ba-4df5-9305-8efd7accaf35",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "aa5aff95-8dc1-481d-b987-e3c41f16213c",
+            "id": "5eae81a8-9e0d-4039-8721-2f6b5f6f83b2",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -5350,20 +6109,23 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 1,
           "teams": [],
           "training-ids": [],
-          "trial-round-id": "9607fe42-b04d-46cb-a048-449c7202e4ee"
+          "trial-round-id": "5fc4bfa9-d997-43b3-bc7d-4a8025df0295"
         },
         {
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "88b676c4-089a-4a03-af81-9157eeedb6c8",
+          "id": "84971d86-3604-4627-bd4c-ee79efd20515",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "4b2dad1d-3a94-4363-bc93-d1a46e8b1214",
+            "id": "f010a578-8c90-46f3-bd87-ad1e4f0921af",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -5399,6 +6161,9 @@
           "serie-type": 2,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -5406,15 +6171,15 @@
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd",
-            "9612d5ac-ebf6-4fc7-b67c-84d7556cecf0"
+            "a94e0ad7-2161-425d-ab14-e67047594f4c",
+            "9e761e30-d50b-4afc-8e3e-9057567cb374"
           ],
           "exceptional-rounds-count": 0,
-          "id": "32227dfd-32d0-49c2-bf42-319e235a6560",
+          "id": "eab12f11-4623-40ae-b751-842b9ab0fe7f",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "8ba658b0-221b-4a6b-95d6-5b0109d4a500",
+            "id": "4865343e-abd4-4bfc-ae26-a5000d2fa0b9",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -5461,20 +6226,23 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [],
-          "trial-round-id": "88b676c4-089a-4a03-af81-9157eeedb6c8"
+          "trial-round-id": "84971d86-3604-4627-bd4c-ee79efd20515"
         },
         {
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "fa07cab3-e3ef-4f99-8d69-fa83214b8802",
+          "id": "b2beea51-aea9-44e8-bc5b-261d3991238c",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "96fb2159-c3fa-46ae-b4c1-8d192fedf995",
+            "id": "0aa2d1f2-b90e-46fe-b207-bd37588159c4",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -5510,25 +6278,28 @@
           "serie-type": 2,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
         {
-          "advancement-classification-id": "2803e2a0-9f11-4bef-9222-efb1a8448f22",
+          "advancement-classification-id": "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "f233de2f-9707-4d83-8f5f-1e5f9400b3e4",
-            "2803e2a0-9f11-4bef-9222-efb1a8448f22",
-            "98c465f2-0cd0-4a4a-abbe-4863594cc8fd",
-            "9612d5ac-ebf6-4fc7-b67c-84d7556cecf0"
+            "c4f340a0-cdcc-4290-a8a2-f3024db1da9b",
+            "ab118ae9-b875-465c-884d-9ebcefd123a0",
+            "a94e0ad7-2161-425d-ab14-e67047594f4c",
+            "9e761e30-d50b-4afc-8e3e-9057567cb374"
           ],
           "exceptional-rounds-count": 0,
-          "id": "825282f3-1e1d-455c-8700-35ab0c6b0c32",
+          "id": "16ebae61-3d65-414d-ab39-49cffab36622",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "eaf70732-5ca6-40d1-9739-00885fb23b27",
+            "id": "94854045-40b7-4fbd-9aaa-dc47e410420a",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -5575,9 +6346,12 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "028ab43e-e3f4-4473-82e9-92f816ceafe2",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 3,
           "teams": [],
           "training-ids": [],
-          "trial-round-id": "fa07cab3-e3ef-4f99-8d69-fa83214b8802"
+          "trial-round-id": "b2beea51-aea9-44e8-bc5b-261d3991238c"
         }
       ],
       "default-rules": {
@@ -5588,37 +6362,37 @@
         "training": null,
         "trial": null
       },
-      "id": "86c1fe03-bf7c-4a8f-8539-ba3defe2d5af",
+      "id": "aba2e455-c089-436d-b44b-29dd2a8788af",
       "name": ""
     },
     "hills": [
       {
-        "hs-point": 140,
-        "name": "Lillehammer"
+        "hs-point": 127,
+        "name": "Kuopio"
       },
       {
-        "hs-point": 140,
-        "name": "Lillehammer"
+        "hs-point": 127,
+        "name": "Kuopio"
       },
       {
-        "hs-point": 140,
-        "name": "Lillehammer"
+        "hs-point": 127,
+        "name": "Kuopio"
       },
       {
-        "hs-point": 140,
-        "name": "Lillehammer"
+        "hs-point": 127,
+        "name": "Kuopio"
       },
       {
-        "hs-point": 140,
-        "name": "Lillehammer"
+        "hs-point": 127,
+        "name": "Kuopio"
       },
       {
-        "hs-point": 140,
-        "name": "Lillehammer"
+        "hs-point": 127,
+        "name": "Kuopio"
       },
       {
-        "hs-point": 140,
-        "name": "Lillehammer"
+        "hs-point": 127,
+        "name": "Kuopio"
       },
       {
         "hs-point": 142,
@@ -5931,6 +6705,38 @@
       {
         "hs-point": 240,
         "name": "Vikersund"
+      },
+      {
+        "hs-point": 100,
+        "name": "Falun"
+      },
+      {
+        "hs-point": 100,
+        "name": "Falun"
+      },
+      {
+        "hs-point": 100,
+        "name": "Falun"
+      },
+      {
+        "hs-point": 100,
+        "name": "Falun"
+      },
+      {
+        "hs-point": 100,
+        "name": "Falun"
+      },
+      {
+        "hs-point": 132,
+        "name": "Falun"
+      },
+      {
+        "hs-point": 132,
+        "name": "Falun"
+      },
+      {
+        "hs-point": 132,
+        "name": "Falun"
       },
       {
         "hs-point": 134,
@@ -5993,7 +6799,7 @@
         "name": "Planica"
       }
     ],
-    "name": "Puchar Swiata 2026-2027",
+    "name": "Official-WC",
     "schema-version": 1
   }
 }

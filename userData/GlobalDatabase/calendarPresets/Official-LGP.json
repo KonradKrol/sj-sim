@@ -162,6 +162,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -210,6 +213,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -272,6 +278,9 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
             "f6fbf032-c8c5-432c-86fc-dbae7f761606",
@@ -323,6 +332,9 @@
           "serie-type": 1,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -386,6 +398,9 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -434,6 +449,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -482,6 +500,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -544,6 +565,9 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
             "47ab5cf6-2e0f-4586-9aaa-a11af6f91c76",
@@ -595,6 +619,9 @@
           "serie-type": 1,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -658,6 +685,9 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -706,6 +736,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -754,6 +787,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -816,6 +852,9 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
             "a9b0d1bd-4d62-47f2-85b8-6d3560fcc4dc",
@@ -867,6 +906,9 @@
           "serie-type": 2,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -929,6 +971,9 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [],
           "trial-round-id": "662774a3-2e1f-4f24-b9b5-76216a6d20a6"
@@ -978,6 +1023,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -1026,6 +1074,9 @@
           "serie-type": 3,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         },
@@ -1074,6 +1125,9 @@
           "serie-type": 1,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
             "e2875c75-1e50-4c45-acaf-1a80ada2ace3",
@@ -1140,6 +1194,9 @@
           "serie-type": 0,
           "simulation-model-revision": 0,
           "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": []
         }
@@ -1233,7 +1290,7 @@
         "name": "Klingenthal"
       }
     ],
-    "name": "Letnie Grand Prix 2026",
+    "name": "Official-LGP",
     "schema-version": 1
   }
 }
