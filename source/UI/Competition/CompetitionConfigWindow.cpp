@@ -256,8 +256,9 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         }
         // Set the initial order once; subsequent changes belong to the user.
         if(seasonCompetition->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual
-           && !comp->getRulesPointer()->getRoundsReference().isEmpty()
-           && !comp->getRulesPointer()->getRoundsReference().first().getKO()) {
+           && !seasonCompetition->getRulesPointer()->getRoundsReference().isEmpty()
+           && seasonCompetition->getRulesPointer()->getRoundsReference().first().getSortStartList()
+           && !seasonCompetition->getRulesPointer()->getRoundsReference().first().getKO()) {
             if(comp->getAdvancementCompetition() && !comp->getAdvancementCompetition()->getCancelled())
                 IndividualCompetitionManager::setStartListOrderByCompetitionResults(seasonCompetitionJumpers, comp->getAdvancementCompetition());
             else if(comp->getAdvancementClassification())

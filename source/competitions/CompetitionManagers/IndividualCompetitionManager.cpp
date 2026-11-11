@@ -209,21 +209,18 @@ void IndividualCompetitionManager::setStartListOrderByCompetitionResults(QVector
 {
     if(competition && !competition->getResultsReference().getResultsReference().isEmpty() && competition->getRulesPointer()->getCompetitionType() == CompetitionRules::Individual)
     {
-        QVector<Jumper *> tempJumpers;
-        for(auto & result : competition->getResultsReference().getResultsReference())
-        {
-            if(jumpers.contains(result.getJumper()))
-                tempJumpers.push_back(result.getJumper());
-        }
-        std::reverse(jumpers.begin(), jumpers.end());
-        for(auto & jumper : jumpers)
-        {
-            if(tempJumpers.contains(jumper) == false)
-                tempJumpers.push_back(jumper);
-        }
-
-        std::reverse(tempJumpers.begin(), tempJumpers.end());
-        jumpers = tempJumpers;
+        CompetitionResults standings = competition->getResultsReference();
+        standings.sortInDescendingOrder();
+        QHash<QString, int> ranks;
+        int rank = 0;
+        for(const auto &result : standings.getResultsReference())
+            if(result.getJumper() && !ranks.contains(result.getJumper()->getIDStr()))
+                ranks.insert(result.getJumper()->getIDStr(), rank++);
+        std::stable_sort(jumpers.begin(), jumpers.end(), [&ranks](Jumper *a, Jumper *b) {
+            const int ar = a ? ranks.value(a->getIDStr(), ranks.size()) : ranks.size();
+            const int br = b ? ranks.value(b->getIDStr(), ranks.size()) : ranks.size();
+            return ar > br;
+        });
     }
 }
 
