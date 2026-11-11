@@ -214,7 +214,7 @@ WeatherProposal proposeWeather(const WeatherProposalContext &context,RandomSourc
     result.precipitation.kind=context.surface==Surface::Mat || (month && !cold && rng.event(get("rainProbability",.7))) ? PrecipitationKind::Rain : PrecipitationKind::Snow;
     const double wetChance=context.surface==Surface::Snow ? get("wetSnow",.25)+(cold?get("wetColdBonus",.25):0)+(northern?get("wetNorthBonus",.1):0) : get("wetMat",.30);
     if(rng.event(std::clamp(wetChance,0.0,1.0))) {
-        const auto choice=rng.weightedIndex({get("precipitationPattern.0",.45),get("precipitationPattern.1",.25),get("precipitationPattern.2",.08),get("precipitationPattern.3",.22)});
+        const auto choice=rng.weightedIndex({get("precipitationPattern.0",.45),get("precipitationPattern.1",.25),get("precipitationPattern.2",.08)});
         result.precipitation.scenario=static_cast<PrecipitationScenario>(choice+1);
         result.precipitation.intensity=choice==2?rng.uniform(get("heavyPrecipitation.min",8),get("heavyPrecipitation.max",10)):rng.uniform(get("precipitation.min",1),get("precipitation.max",5));
         result.precipitation.variation=choice==1?rng.uniform(get("precipitationVariation.min",2),get("precipitationVariation.max",5)):1;
@@ -276,7 +276,6 @@ static const std::vector<GeneratorScalar> result{
 {"generator.auto.precipitationPattern.0","precipitationPattern",0,0.45,0,1},
 {"generator.auto.precipitationPattern.1","precipitationPattern",1,0.25,0,1},
 {"generator.auto.precipitationPattern.2","precipitationPattern",2,0.08,0,1},
-{"generator.auto.precipitationPattern.3","precipitationPattern",3,0.22,0,1},
 {"generator.auto.stable.0","stable",0,.85,0,1},
 {"generator.auto.stable.1","stable",1,.14,0,1},
 {"generator.auto.stable.2","stable",2,.01,0,1},

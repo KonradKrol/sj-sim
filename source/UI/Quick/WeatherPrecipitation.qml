@@ -40,8 +40,8 @@ Control {
                 objectName: "weatherPrecipitationPattern"
                 visible: precipitation.values.precipitationLevel>0
                 Layout.fillWidth: true; Layout.minimumWidth: 0
-                model: [qsTr("Stałe natężenie"),qsTr("Zmienne natężenie"),qsTr("Coraz silniejsze")]
-                optionImages: ["qrc:/ui/icons/weather/pattern-steady.svg","qrc:/ui/icons/weather/pattern-variable.svg","qrc:/ui/icons/weather/pattern-increasing.svg"]
+                model: [qsTr("Stałe natężenie"),qsTr("Zmienne natężenie")]
+                optionImages: ["qrc:/ui/icons/weather/pattern-steady.svg","qrc:/ui/icons/weather/pattern-variable.svg"]
                 currentIndex: precipitation.values.precipitationPattern
                 Accessible.name: qsTr("Przebieg opadów")
                 onActivated: precipitation.backend.setValue("precipitationPattern",index)

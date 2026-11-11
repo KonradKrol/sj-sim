@@ -91,7 +91,7 @@ QVariantMap SimulationWeatherSetup::values() const {
         {"surface",int(surface)},{"precipitationScenario",int(precipitation.scenario)},{"precipitationIntensity",precipitation.intensity},
         {"precipitationKind",int(precipitation.kind)},{"precipitationType",precipitation.scenario==SimulationV2::PrecipitationScenario::None || precipitation.intensity==0 ? 0 : int(precipitation.kind)+1},
         {"precipitationLevel",precipitation.scenario==SimulationV2::PrecipitationScenario::None ? 0 : precipitation.intensity<=3 ? 1 : precipitation.intensity<=6.5 ? 2 : 3},
-        {"precipitationPattern",precipitation.scenario==SimulationV2::PrecipitationScenario::Variable ? 1 : precipitation.scenario==SimulationV2::PrecipitationScenario::Increasing ? 2 : 0},
+        {"precipitationPattern",precipitation.scenario==SimulationV2::PrecipitationScenario::Variable || precipitation.scenario==SimulationV2::PrecipitationScenario::Increasing ? 1 : 0},
         {"precipitationVariation",precipitation.variation},{"precipitationIncrease",precipitation.increasePerMinute},
         {"hillName",hill.name},{"hs",hill.hs},{"flag",QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(hill.country)+".svg")).toString()},{"k",hill.k}};
     result["staticWind"]=wind.temporalAmplitude==0 && wind.spatialAmplitude==0 && (wind.gustAmplitude==0 || wind.gustProbability==0) && wind.trendAmplitude==0;
@@ -191,8 +191,8 @@ void SimulationWeatherSetup::setValue(const QString &key,double value) {
                 nextPrecipitation.scenario=SimulationV2::PrecipitationScenario::Stable;
         }
         else if(key=="precipitationPattern") {
-            if(value!=std::floor(value) || !bounded(value,0,2))return;
-            static const SimulationV2::PrecipitationScenario scenarios[]{SimulationV2::PrecipitationScenario::Stable,SimulationV2::PrecipitationScenario::Variable,SimulationV2::PrecipitationScenario::Increasing};
+            if(value!=std::floor(value) || !bounded(value,0,1))return;
+            static const SimulationV2::PrecipitationScenario scenarios[]{SimulationV2::PrecipitationScenario::Stable,SimulationV2::PrecipitationScenario::Variable};
             nextPrecipitation.scenario=scenarios[int(value)];
             if(nextPrecipitation.intensity==0)nextPrecipitation.intensity=2;
         }

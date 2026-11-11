@@ -147,7 +147,6 @@ template<class F> void visitPrecipitation(SimulationV2::PrecipitationParameters 
     f("precipitation.intensity",QObject::tr("Natężenie opadów"),"precipitation",m.intensity,0,10,0.1,"1");
     f("precipitation.variation",QObject::tr("Zmienność opadów"),"precipitation",m.variation,0,10,0.1,"1");
     f("precipitation.correlationSeconds",QObject::tr("Skala korelacji w czasie"),"precipitation",m.correlationSeconds,0.1,100000,1,"s");
-    f("precipitation.increasePerMinute",QObject::tr("Przyrost opadów na minutę"),"precipitation",m.increasePerMinute,0,10,0.01,"1");
     f("precipitation.kind",QObject::tr("Rodzaj: 0 śnieg, 1 deszcz"),"precipitation",m.kind,0,1,1,"1");
 }
 template<class F> void visitMeasurement(SimulationV2::FieldWindMeasurementParameters &m,F f) {
@@ -256,7 +255,7 @@ QString effectDescription(const QString &key,const QString &group) {
     if(key=="flight.rainHeavyLossAtMaximum")return QObject::tr("Dodatkowa strata zapasu lotu przy deszczu o natężeniu 10. Np. 0,15 odbiera 15% zapasu, oprócz zwykłej straty od deszczu.");
     if(key=="flight.rainHeavyExponent")return QObject::tr("Określa, jak szybko narasta strata między progiem ulewy a natężeniem 10. Np. wykładnik 2 daje w połowie tego zakresu 25% maksymalnej straty, a wykładnik 1 daje 50%.");
     if(key=="wind.gustTravelMetresPerSecond")return QObject::tr("Prędkość przesuwania się podmuchu wzdłuż zeskoku. Np. 5 m/s przesuwa jego środek o 10 m w dwie sekundy; 0 zatrzymuje go w miejscu.");
-    if(key=="precipitation.scenario")return QObject::tr("Wybiera zachowanie opadów w czasie. Np. Narastające stopniowo zwiększają natężenie, a Zmienne wahają się wokół ustawionej bazy.");
+    if(key=="precipitation.scenario")return QObject::tr("Wybiera zachowanie opadów w czasie. Zmienne wahają się wokół ustawionego natężenia.");
     if(key=="precipitation.kind")return QObject::tr("Wybiera wzór wpływu opadów na skok. Np. śnieg odbiera zapas od pierwszego poziomu, a deszcz może nie powodować straty aż do ustawionego progu.");
     if(key=="precipitation.intensity")return QObject::tr("Początkowe natężenie opadów w skali 0–10; większe mocniej skraca skoki. Np. w trybie Stałe wartość 4 utrzymuje natężenie 4, a w trybie Silne baza wynosi co najmniej 8.");
     if(key=="precipitation.variation")return QObject::tr("Siła losowych zmian natężenia opadów. Np. zwiększenie wartości daje większe różnice między spokojną chwilą a silnym opadem; w trybie Stałe parametr nie działa.");
@@ -496,7 +495,7 @@ QJsonArray parameters() {
     input("analysis.scale",QObject::tr("Skala mapy wiatru ±"),"analysis",3,.1,100,.1,"m/s");
     input("analysis.timeSamples",QObject::tr("Próbki czasu analizy"),"analysis",241,2,2001,1,"1");
     input("analysis.spaceSamples",QObject::tr("Próbki odległości analizy"),"analysis",49,2,201,1,"1");
-    for(int i=0;i<rows.size();++i){auto d=rows[i].toObject();auto k=d["key"].toString();if(k=="clock.mode")d["options"]=QJsonArray{QObject::tr("Kontrolowane warunki"),QObject::tr("Przebieg konkursu")};if(k=="event")d["options"]=QJsonArray{QObject::tr("Trening"),QObject::tr("Seria próbna"),QObject::tr("Kwalifikacje"),QObject::tr("Konkurs")};if(k=="quality.noise")d["options"]=QJsonArray{QObject::tr("Normalny"),QObject::tr("Laplace’a")};if(k=="rules.measurement"){d["options"]=QJsonArray{QObject::tr("Domyślny"),QObject::tr("Ulepszony"),QObject::tr("Idealny")};d["optionOffset"]=3;}if(k=="precipitation.kind")d["options"]=QJsonArray{QObject::tr("Śnieg"),QObject::tr("Deszcz")};if(k=="precipitation.scenario")d["options"]=QJsonArray{QObject::tr("Bez opadów"),QObject::tr("Stałe"),QObject::tr("Zmienne"),QObject::tr("Silne"),QObject::tr("Narastające")};rows[i]=d;}
+    for(int i=0;i<rows.size();++i){auto d=rows[i].toObject();auto k=d["key"].toString();if(k=="clock.mode")d["options"]=QJsonArray{QObject::tr("Kontrolowane warunki"),QObject::tr("Przebieg konkursu")};if(k=="event")d["options"]=QJsonArray{QObject::tr("Trening"),QObject::tr("Seria próbna"),QObject::tr("Kwalifikacje"),QObject::tr("Konkurs")};if(k=="quality.noise")d["options"]=QJsonArray{QObject::tr("Normalny"),QObject::tr("Laplace’a")};if(k=="rules.measurement"){d["options"]=QJsonArray{QObject::tr("Domyślny"),QObject::tr("Ulepszony"),QObject::tr("Idealny")};d["optionOffset"]=3;}if(k=="precipitation.kind")d["options"]=QJsonArray{QObject::tr("Śnieg"),QObject::tr("Deszcz")};if(k=="precipitation.scenario")d["options"]=QJsonArray{QObject::tr("Bez opadów"),QObject::tr("Stałe"),QObject::tr("Zmienne"),QObject::tr("Silne")};rows[i]=d;}
     input("analysis.jumpSamples",QObject::tr("Skoki w próbie analizy wiatru"),"analysis",512,16,10000,1,"1");
     input("rules.dsq",QObject::tr("Dyskwalifikacje"),"rules",1,0,1,1,"1");
     const QStringList events{QObject::tr("trening"),QObject::tr("seria próbna"),QObject::tr("kwalifikacje"),QObject::tr("konkurs")};
