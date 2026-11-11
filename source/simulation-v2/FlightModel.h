@@ -17,7 +17,7 @@ struct FlightParameters {
     double hillSpreadPerLevel=.02;
     double referenceQuality=70;
     double referenceDistanceAtK=.95;
-    double qualityMetresAtK120=0.5599999999999999;
+    double qualityMetresAtK120=0.448;
     double largeHillSpreadStartK=140;
     double largeHillSpreadGain=0.84;
     double largeHillSpreadExponent=1.5;
@@ -39,7 +39,7 @@ struct FlightParameters {
     double windScaleK200=1;
     double tailwindMultiplier=1.6275;
     double tailwindStrongExtra=.2;
-    double specialistWindEffectPerTier=.04;
+    double specialistWindEffectPerTier=0.0055;
     double crosswindDrag=.002;
     double windVariabilityScale=3; // m/s: half activation of random spread
     double windHeadSpread=.65;

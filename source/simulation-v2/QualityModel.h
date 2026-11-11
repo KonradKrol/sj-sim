@@ -26,7 +26,7 @@ struct QualityParameters {
     double negativeInfluence=.65;
     NoiseShape noise=NoiseShape::Normal;
     std::array<double,4> eventDeviation{{7,5.8,4.2,3.5}};
-    std::array<double,5> specialistBias{{0,3.75,7,10.25,14}};
+    std::array<double,5> specialistBias{{0.0,1.75,3.5,5.6,7.7}};
     std::array<double,5> trainingBonus{{0,1.125,2.25,3.5,5}};
     std::array<double,5> competitionPenalty{{0,0.5625,1.125,1.75,2.5}};
     std::array<double,5> conservedEffortPenalty{{0,2.25,4.25,6.125,8}};
