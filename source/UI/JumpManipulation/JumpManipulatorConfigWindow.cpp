@@ -73,7 +73,7 @@ QWidget *nativeJumpEditor(SimulationJumpDraft *draft,JumpManipulatorConfigWindow
         }
     }
     const auto refreshStations=[draft,stations]{stations->setEnabled(draft->values()["windActive"].toBool());};QObject::connect(draft,&SimulationJumpDraft::changed,stations,refreshStations);refreshStations();
-    adjustment(conditions,QObject::tr("Natężenie opadów"),"precipitation",0,10);adjustment(conditions,QObject::tr("Pomiar do punktacji"),"measuredWind",-100,100);
+    adjustment(conditions,QObject::tr("Pomiar do punktacji"),"measuredWind",-100,100);
     auto *error=new QLabel(host);error->setWordWrap(true);layout->addWidget(error);auto *actions=new QHBoxLayout;layout->addLayout(actions);auto *reset=new QPushButton(QObject::tr("Wyczyść"),host);auto *apply=new QPushButton(QObject::tr("Zastosuj"),host);apply->setObjectName("nativeJumpApply");actions->addWidget(reset);actions->addStretch();actions->addWidget(apply);
     QObject::connect(reset,&QPushButton::clicked,draft,&SimulationJumpDraft::reset);QObject::connect(apply,&QPushButton::clicked,dialog,[dialog,draft]{if(draft->canApply())dialog->submitted();});
     const auto refreshError=[draft,error,apply]{error->setText(draft->message());apply->setEnabled(draft->canApply());};QObject::connect(draft,&SimulationJumpDraft::changed,error,refreshError);refreshError();

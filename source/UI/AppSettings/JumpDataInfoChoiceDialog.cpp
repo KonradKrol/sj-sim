@@ -55,7 +55,7 @@ void JumpDataInfoChoiceDialog::fillInputs()
     ui->checkBox_weights->setChecked(QSettings().value("quickUi/jumpDetails/weights",true).toBool());
     ui->checkBox_quality->setChecked(QSettings().value("quickUi/jumpDetails/quality",false).toBool());
     findChild<QCheckBox *>("checkBox_dailyFormBonus")->setChecked(QSettings().value("quickUi/jumpDetails/dailyFormBonus",false).toBool());
-    ui->checkBox_precipitation->setChecked(QSettings().value("quickUi/jumpDetails/precipitation",false).toBool());
+    ui->checkBox_precipitation->setChecked(false);ui->checkBox_precipitation->hide();
 
 }
 

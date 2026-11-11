@@ -10,7 +10,7 @@ ScrollView {
     property int selectedGroup: 0
     property string parameterSearch: ""
     onSelectedVariantChanged: backend.setAnalysisVariant(selectedVariant)
-    readonly property var groups: ["conditions","athlete","field","hill","quality","flight","landing","wind","precipitation","measurement","rules","analysis"]
+    readonly property var groups: ["conditions","athlete","field","hill","quality","flight","landing","wind","measurement","rules","analysis"]
     readonly property var definitions: backend.definitions.filter(function(p){return p.group===setup.groups[setup.selectedGroup] && (!setup.parameterSearch.length || (p.label+" "+p.key).toLowerCase().indexOf(setup.parameterSearch.toLowerCase())>=0)})
     readonly property string focusNamesKey: {var names=[];for(var i=0;i<config.athletes;i++)names.push(config.roster ? config.roster[i].name+" "+config.roster[i].surname : qsTr("Zawodnik %1").arg(i+1));return JSON.stringify(names)}
     property int sweepKey: 0
