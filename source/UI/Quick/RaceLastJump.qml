@@ -88,6 +88,7 @@ Pane {
             JumpMetric { inlineValue: !jump.narrow; objectName: "lastJumpRoundPosition"; visible: jump.shows("roundPosition"); caption: qsTr("W serii"); value: jump.summary.roundPositionNumber>0 ? jump.summary.roundPositionNumber+"." : "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
             JumpMetric { inlineValue: !jump.narrow; visible: jump.shows("groupPosition") && !!jump.summary.groupPosition; caption: qsTr("Grupa"); value: jump.summary.groupPosition || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
             JumpMetric { inlineValue: !jump.narrow; visible: jump.shows("competitionPosition") && !!jump.summary.competitionPosition; caption: qsTr("Konkurs"); value: jump.summary.competitionPosition || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
+            JumpMetric { inlineValue: !jump.narrow; visible: jump.shows("dailyFormBonus") && jump.summary.dailyFormBonus!==undefined; caption: qsTr("Forma dnia"); value: (jump.summary.dailyFormBonus>0 ? "+" : "")+Number(jump.summary.dailyFormBonus || 0).toLocaleString(Qt.locale(Theme.localeName),'f',0); valueColor: jump.signedColor(jump.summary.dailyFormBonus || 0); Layout.fillWidth: true; Layout.minimumWidth: 0 }
             JumpMetric { inlineValue: !jump.narrow; visible: jump.shows("totalPoints"); caption: qsTr("Suma"); value: jump.summary.totalPoints || "—"; Layout.fillWidth: true; Layout.minimumWidth: 0 }
         }
         Flow {

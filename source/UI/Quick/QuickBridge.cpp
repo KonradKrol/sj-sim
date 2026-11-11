@@ -752,8 +752,8 @@ void QuickBridge::refresh() {
                 {"gatePoints",gateComp && choice.getGateCompensation()},
                 {"compensation",(windComp || gateComp) && choice.getTotalCompensation()}
             };
-            for(const auto *key:{"totalPoints","leaderGap","weights","quality","precipitation"})
-                visibility[key]=settings.value(QString("quickUi/jumpDetails/%1").arg(key),QString(key)!="quality" && QString(key)!="precipitation").toBool();
+            for(const auto *key:{"totalPoints","leaderGap","weights","quality","precipitation","dailyFormBonus"})
+                visibility[key]=settings.value(QString("quickUi/jumpDetails/%1").arg(key),QString(key)!="quality" && QString(key)!="precipitation" && QString(key)!="dailyFormBonus").toBool();
             visibility["leaderGap"]=visibility.value("leaderGap").toBool() && choice.getPositionAfterJump();
             const auto format=[](double value,int decimals){return QLocale().toString(value,'f',decimals);};
             const bool final=stage==0 || stage>=5;
@@ -807,6 +807,7 @@ void QuickBridge::refresh() {
             const auto metadata=displayedJump->getSimulationV2Data();
             summary["jumpKey"]=metadata.value("seed").toString()+":"+QString::number(metadata.value("startSeconds").toDouble())+":"+summary.value("name").toString();
             if((stage==0 || stage>=5) && !displayedJump->getDNS() && !displayedJump->getDSQ()) {
+                if(visibility.value("dailyFormBonus").toBool() && metadata.value("dailyFormBonus").isDouble())summary["dailyFormBonus"]=metadata.value("dailyFormBonus").toDouble();
                 const auto quality=metadata.value("quality").toObject();
                 if(visibility.value("quality").toBool() && !quality.isEmpty()) {
                     double value=0;for(const auto *key:{"overallAndForm","hill","event","random","manipulation"})value+=quality.value(key).toDouble();

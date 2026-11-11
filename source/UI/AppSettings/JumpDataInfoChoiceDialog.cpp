@@ -7,6 +7,9 @@ JumpDataInfoChoiceDialog::JumpDataInfoChoiceDialog(QWidget *parent) :
     ui(new Ui::JumpDataInfoChoiceDialog)
 {
     ui->setupUi(this);
+    auto *daily=new QCheckBox(tr("Forma dnia (+/−)"),this);daily->setObjectName("checkBox_dailyFormBonus");
+    daily->setChecked(QSettings().value("quickUi/jumpDetails/dailyFormBonus",false).toBool());
+    ui->layout_details->addWidget(daily,ui->layout_details->rowCount(),0,1,2);
 }
 
 JumpDataInfoChoiceDialog::~JumpDataInfoChoiceDialog()
@@ -51,6 +54,7 @@ void JumpDataInfoChoiceDialog::fillInputs()
     ui->checkBox_leaderGap->setChecked(QSettings().value("quickUi/jumpDetails/leaderGap",true).toBool());
     ui->checkBox_weights->setChecked(QSettings().value("quickUi/jumpDetails/weights",true).toBool());
     ui->checkBox_quality->setChecked(QSettings().value("quickUi/jumpDetails/quality",false).toBool());
+    findChild<QCheckBox *>("checkBox_dailyFormBonus")->setChecked(QSettings().value("quickUi/jumpDetails/dailyFormBonus",false).toBool());
     ui->checkBox_precipitation->setChecked(QSettings().value("quickUi/jumpDetails/precipitation",false).toBool());
 
 }
@@ -62,6 +66,7 @@ void JumpDataInfoChoiceDialog::on_pushButton_submit_clicked()
     QSettings().setValue("quickUi/jumpDetails/weights",ui->checkBox_weights->isChecked());
     QSettings().setValue("quickUi/jumpDetails/quality",ui->checkBox_quality->isChecked());
     QSettings().setValue("quickUi/jumpDetails/precipitation",ui->checkBox_precipitation->isChecked());
+    QSettings().setValue("quickUi/jumpDetails/dailyFormBonus",findChild<QCheckBox *>("checkBox_dailyFormBonus")->isChecked());
     accept();
 }
 

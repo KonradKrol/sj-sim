@@ -139,6 +139,7 @@ void JumpSimulator::simulateV2()
     data["windMeasurementType"]=customMeasurement?-1:competitionRules->getWindMeasurementType();data["windMeasurementVersion"]=1;
     if(exactWindOverride){data["exactWindOverride"]=true;data["manipulated"]=true;}
     data["dailyForm"]=dayFormSeed ? QJsonValue(input.athlete.form) : QJsonValue();
+    if(dayFormSeed)data["dailyFormBonus"]=input.athlete.form-jumper->getSimulationProfile()->form;
     jumpData.setSimulationV2Data(data);
     simulationTime+=30;
 }
