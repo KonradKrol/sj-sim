@@ -107,3 +107,12 @@ scripts/build-quick-ui.sh
 python3 scripts/test-resource-library.py
 QT_QPA_PLATFORM=offscreen QT_QUICK_BACKEND=software build-quick-ui/sj-sim --deployment-smoke
 ```
+
+Weryfikacja 12.11.2026 (Linux, Qt 5): build zakończony poprawnie; izolowany
+roundtrip paczki i przykładowej symulacji z dwoma kalendarzami przeszedł.
+Sprawdzono także odrzucenie uszkodzonych zdjęć, ścieżek wychodzących poza paczkę
+oraz duplikatów, zachowanie istniejących plików, kopiowanie ostatnich zmian
+przy przenoszeniu folderu i faktyczne otwarcie ekranu Biblioteki w Quick UI.
+Test startu pustej instalacji `--deployment-smoke`: PASS.
+Windows: skrypt pakujący został dostosowany; build Windows wymaga sprawdzenia
+na Windows.
