@@ -315,7 +315,10 @@ void AbstractCompetitionManager::updateLast10Judges()
             }
             if(jumperResult != nullptr && !jumperResult->getJumpsReference().isEmpty())
             {
-                last10Judges += jumperResult->getJumpsReference().last().getJudgesPoints();
+                const auto &jump=jumperResult->getJumpsReference().last();
+                if(jump.getLanding().getType()==Landing::Fall || jump.getLanding().getType()==Landing::SupportLanding
+                    || jump.getDSQ() || jump.getDNS())continue;
+                last10Judges += jump.getJudgesPoints();
                 howMany++;
             }
         }
