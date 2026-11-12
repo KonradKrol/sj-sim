@@ -160,3 +160,11 @@ double JumpSimulator::previewV2() const
         :simulationWeather && !exactWindOverride?*simulationWeather:*fallbackWeather;
     return simulationEngine.previewDistance(input,activeWeather);
 }
+
+double JumpSimulator::previewQuality() const
+{
+    if(!jumper || !hill || !competitionRules)return 0;
+    auto input=requestFor(*jumper,*hill,*competitionRules,gate,competitionStartGate,hasCoachGate,coachGate,DSQBaseProbability,simulationEvent,simulationTime,manipulator);
+    if(dayFormSeed)input.athlete.form=AutoForm::dailyForm(input.athlete.form,*dayFormSeed,jumper->getIDStr());
+    return input.manipulation.quality.apply(simulationEngine.quality().baseline(input.athlete,input.hill.k,input.hill.takeoffBias,input.event).value());
+}

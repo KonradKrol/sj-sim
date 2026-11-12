@@ -455,12 +455,14 @@ void CompetitionManagerWindow::updateManipulationIndicator(bool pending)
 
 void CompetitionManagerWindow::updateToBeatDistanceLabel()
 {
+    if(bulkSimulationInProgress)return;
     manager->updateToBeatLineDistance();
     ui->label_toBeatDistance->setText(manager->getToBeatLineDistance()<manager->getCompetitionInfo()->getHill()->getKPoint()*.7 || manager->getToBeatLineDistance()>manager->getCompetitionInfo()->getHill()->getKPoint()*1.3 ? QString::fromUtf8("—") : QString::number(manager->getToBeatLineDistance(), 'f', 1) + " m");
 }
 
 void CompetitionManagerWindow::updateToAdvanceDistanceLabel()
 {
+    if(bulkSimulationInProgress)return;
     manager->updateToAdvanceLineDistance();
     if(manager->getToAdvanceLineDistance()<manager->getCompetitionInfo()->getHill()->getKPoint()*.7 || manager->getToAdvanceLineDistance()>manager->getCompetitionInfo()->getHill()->getKPoint()*1.3)
         ui->label_toAdvancementDistance->setText("-");
@@ -997,8 +999,7 @@ void CompetitionManagerWindow::autoSimulateRound()
         manager->updateLastQualifiedResult();
         manager->updateLeaderResult();
         manager->updateLast10Judges();
-        manager->updateToAdvanceLineDistance();
-        manager->updateToBeatLineDistance();
+
         if(KOManager != nullptr)
         {
             KOManager->updateActualGroup(manager->getActualJumper());
@@ -1127,8 +1128,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
         manager->updateLastQualifiedResult();
         manager->updateLeaderResult();
         manager->updateLast10Judges();
-        manager->updateToAdvanceLineDistance();
-        manager->updateToBeatLineDistance();
+
         if(KOManager != nullptr)
         {
             KOManager->updateActualGroup(manager->getActualJumper());
@@ -1286,8 +1286,7 @@ void CompetitionManagerWindow::autoSimulateGroup()
             manager->updateLastQualifiedResult();
             manager->updateLeaderResult();
             manager->updateLast10Judges();
-            manager->updateToAdvanceLineDistance();
-            manager->updateToBeatLineDistance();
+
             manager->updateCompetitorsAdvanceStatuses();
 
             refreshWindSnapshot();
@@ -1386,8 +1385,7 @@ void CompetitionManagerWindow::autoSimulateJumps()
             manager->updateLastQualifiedResult();
             manager->updateLeaderResult();
             manager->updateLast10Judges();
-           // manager->updateToAdvanceLineDistance();
-            manager->updateToBeatLineDistance();
+
             if(KOManager != nullptr)
             {
                 KOManager->updateActualGroup(manager->getActualJumper());
@@ -1402,7 +1400,6 @@ void CompetitionManagerWindow::autoSimulateJumps()
                 resultsTableModel->setLastJumper(manager->getActualJumper());
             else
                 teamResultsTreeModel->setLastTeam(static_cast<TeamCompetitionManager*>(manager)->getActualTeam());
-
 
             if(manager->isAllJumpsAreFinished() == false)
                 manager->setActualJumperToNextUnfinished();
@@ -2465,10 +2462,18 @@ void CompetitionManagerWindow::suggestCurrentGate(bool undo)
             for(auto *team:teams->getRoundsTeamsReference().first())if(team)
                 for(auto *jumper:team->getJumpers())if(jumper && !candidates.contains(jumper))candidates.append(jumper);
         }else for(const auto &status:manager->getStartListStatusesReference())if(status.getJumper())candidates.append(status.getJumper());
+        QMap<int,QPair<Jumper *,double>> strongest;
         for(auto *jumper:candidates) {
             if(!jumper || !jumper->getSimulationProfile())continue;
-            preview.setJumper(jumper);const double distance=preview.previewDistance();
-            if(distance>longest){longest=distance;best=jumper;}
+            preview.setJumper(jumper);const double quality=preview.previewQuality();
+            const int specialist=jumper->getSimulationProfile()->perks[1];
+            if(!strongest.contains(specialist) || quality>strongest[specialist].second)strongest[specialist]={jumper,quality};
+        }
+        // For the same specialization the flight is monotone in starting quality.
+        // Only its strongest athlete can determine the safe gate.
+        for(const auto &candidate:strongest) {
+            preview.setJumper(candidate.first);const double distance=preview.previewDistance();
+            if(distance>longest){longest=distance;best=candidate.first;}
         }
         if(!best)return;
         preview.setJumper(best);

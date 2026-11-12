@@ -54,6 +54,7 @@ public:
     //skok
     void simulateJump();
     double previewDistance();
+    double previewQuality() const;
     void setDayFormSeed(std::optional<SimulationV2::Seed> seed) {dayFormSeed=seed;}
     void setSimulationEvent(SimulationV2::EventKind event) { simulationEvent=event; }
     void setSimulationSeed(SimulationV2::Seed seed) {simulationSeed=seed;}
