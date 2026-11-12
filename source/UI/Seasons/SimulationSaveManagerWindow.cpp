@@ -173,15 +173,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         ui->label_calendarName->setText(tr("BRAK"));
     ui->comboBox_archiveSeason->setCurrentIndex(0);
 
-    connect(ui->toolBox, &QTabWidget::currentChanged, this, [this](){
-        if(ui->toolBox->currentIndex() == 0 || ui->toolBox->currentIndex() == 1)
-        {
-            QTimer::singleShot(200, this, [this](){
-                showJumperAndHillsEditingHelp();
-            });
-        }
-    });
-    emit ui->toolBox->currentChanged(0);
+    // Temporarily hide the athlete/hill removal warning when opening editors.
 
     //-----//
 
