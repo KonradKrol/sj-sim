@@ -44,7 +44,7 @@ Popup {
                 Layout.fillWidth: body.columns===1; Layout.alignment: Qt.AlignVCenter; Layout.minimumWidth: 0
                 Layout.preferredWidth: Theme.dp(351); Layout.preferredHeight: body.columns===1?Theme.dp(100):Math.min(Theme.dp(200),body.height)
                 color: Theme.raised; radius: Theme.radius; clip: true; border.color: Theme.divider
-                Image { objectName: "welcomeImage"; anchors.fill: parent; anchors.margins: Theme.dp(5); source: "assets/welcome/"+welcome.pages[welcome.step].image+".png"; fillMode: Image.PreserveAspectCrop; sourceSize.width: 1400; sourceSize.height: 1000; asynchronous: true; Accessible.name: welcome.pages[welcome.step].title }
+                Image { objectName: "welcomeImage"; anchors.fill: parent; anchors.margins: Theme.dp(5); source: "assets/welcome/"+welcome.pages[welcome.step].image+".png"; fillMode: Image.PreserveAspectCrop; smooth: true; mipmap: true; asynchronous: true; Accessible.name: welcome.pages[welcome.step].title }
             }
             ScrollView {
                 id: description

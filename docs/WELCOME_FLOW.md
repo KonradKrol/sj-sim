@@ -7,10 +7,12 @@ Next/back preserve navigation, while Go to menu dismisses the flow.
 
 Screenshots are bundled as optimized lossless PNGs in
 `source/UI/Quick/assets/welcome/`. The temporary third/fourth filenames were swapped
-as requested: fourth → competition, third → calendar. Images preserve their whole
-frame at desktop and laptop sizes. Text scrolls independently when necessary.
+as requested: fourth → competition, third → calendar. Images fill a compact frame with cropping and load at native resolution without
+forced intermediate resizing. Text scrolls independently when necessary. The
+dialog is capped at 752 × 384 scaled UI units; the image frame is 351 units wide.
 
-The final action creates a uniquely named, translated Example simulation with
+On the final step, **Ok** returns to the menu. The secondary action
+**Rozpocznij przykładowy sezon** creates a uniquely named, translated Example simulation with
 Summer (LGP26 / Official-LGP) and Winter (WC26-27 / Official-WC) calendars, using
 active packs. Summer is active initially. Hills are matched to the selected pack
 by name and HS, with nearest-HS fallback. The existing date-disabled example
