@@ -259,6 +259,7 @@
     <file>RosterTools.qml</file>
     <file>AthleteStatistics.qml</file>
         <file>AthletePositionPlot.qml</file>
+        <file>AthleteResultsTable.qml</file>
     <file>CountryOrderDialog.qml</file>
     <file>RosterSourceDialog.qml</file>
 <file>RosterDragArea.qml</file>

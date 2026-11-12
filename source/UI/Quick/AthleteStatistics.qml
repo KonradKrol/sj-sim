@@ -43,6 +43,10 @@ ColumnLayout {
             }
         }
     }
+    AthleteResultsTable {
+        Layout.fillWidth: true
+        tables: stats.report.calendarTables || []
+    }
     AthletePositionPlot {
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: Theme.dp(200)
         Layout.preferredHeight: Math.max(Theme.dp(260),Math.min(Theme.dp(520),stats.Window.window ? stats.Window.window.height-Theme.dp(300) : Theme.dp(400)))

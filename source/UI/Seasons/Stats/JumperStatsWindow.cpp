@@ -6,6 +6,7 @@
 #include <QLocale>
 #include "ui_JumperStatsWindow.h"
 #include "../../../global/CountryFlagsManager.h"
+#include "../../../global/CountryCodes.h"
 #include "../../../utilities/functions.h"
 #include "../../ResponsiveWindowUtils.h"
 #include <QInputDialog>
@@ -13,6 +14,7 @@
 #include <QFile>
 #include <QGridLayout>
 #include <QScrollArea>
+#include <QUrl>
 
 JumperStatsWindow::JumperStatsWindow(QWidget *parent) :
     QDialog(parent),
@@ -773,6 +775,101 @@ QVariantMap JumperStatsWindow::report() const {
     const auto types=serieTypesCheckBoxes->getSerieTypes();
     for(int type:{CompetitionInfo::Training,CompetitionInfo::TrialRound,CompetitionInfo::Qualifications,CompetitionInfo::Competition})
         eventFilters.append(types.contains(type));
+
+    QVariantList calendarTables;
+    if(jumper && save) {
+        const auto flag=[](const QString &country) {
+            if(country.isEmpty())return QString();
+            return QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(country)+".svg")).toString();
+        };
+        const auto numberText=[](double value) {
+            return QLocale().toString(value,'f',value==qRound64(value) ? 0 : 1);
+        };
+        const QLocale polish(QLocale::Polish,QLocale::Poland);
+        auto &seasons=save->getSeasonsReference();
+        for(int seasonIndex=seasons.size()-1;seasonIndex>=0;--seasonIndex) {
+            auto &season=seasons[seasonIndex];
+            const int seasonNumber=season.getSeasonNumber();
+            const QString seasonText=seasonNumber>=1000
+                ? tr("Sezon %1/%2").arg(seasonNumber).arg(seasonNumber+1)
+                : seasonNumber>0 ? tr("Sezon %1").arg(seasonNumber) : tr("Sezon");
+            for(auto *calendar:season.getCalendarsReference()) {
+                if(!calendar)continue;
+                Classification *pointsClassification=nullptr;
+                for(auto *classification:calendar->getClassificationsReference())
+                    if(classification && classification->getClassificationType()==Classification::Individual) {
+                        pointsClassification=classification;
+                        break;
+                    }
+                QVariantList competitions;
+                bool hasJumperResult=false;
+                double totalPoints=0;
+                for(auto *competition:calendar->getCompetitionsReference()) {
+                    if(!competition || competition->getSerieType()!=CompetitionInfo::Competition || competition->getCancelled())continue;
+                    auto &results=competition->getResultsReference().getResultsReference();
+                    if(!competition->getPlayed() && results.isEmpty())continue;
+                    CompetitionSingleResult *result=nullptr;
+                    const bool teamEvent=competition->getRulesPointer()->getCompetitionType()==CompetitionRules::Team;
+                    if(teamEvent) {
+                        auto *team=Team::getTeamByCountryCode(&competition->getTeamsReference(),jumper->getCountryCode());
+                        if(team)result=competition->getResultsReference().getResultOfTeam(team);
+                    } else result=competition->getResultsReference().getResultOfIndividualJumper(jumper);
+                    bool disqualified=false, didNotStart=false;
+                    if(result) {
+                        if(teamEvent) disqualified=result->isTeamDisqualified();
+                        else for(const auto &jump:result->getJumpsReference()) {
+                            if(jump.getDSQ()){disqualified=true;break;}
+                            if(jump.getDNS())didNotStart=true;
+                        }
+                    }
+                    const bool hasResult=result && result->getPosition()>0 && !disqualified && !didNotStart;
+                    if(hasResult || disqualified)hasJumperResult=true;
+                    QString status, positionText=QString::fromUtf8("–");
+                    if(disqualified) {positionText=QStringLiteral("DSQ");status=tr("Dyskwalifikacja");}
+                    else if(didNotStart) {positionText=QStringLiteral("DNS");status=tr("Nie wystartował");}
+                    else if(hasResult) positionText=QString::number(result->getPosition());
+                    double points=0;
+                    if(hasResult && pointsClassification) {
+                        for(const auto &contribution:pointsClassification->contributions(competition))
+                            if(contribution.jumper==jumper){points+=contribution.points;break;}
+                        totalPoints+=points;
+                    }
+                    auto *hill=competition->getHill();
+                    const QDate date=competition->getScheduledDate();
+                    competitions.append(QVariantMap{
+                        {"number",competitions.size()+1},
+                        {"position",hasResult && status.isEmpty() ? result->getPosition() : 0},
+                        {"positionText",positionText},
+                        {"status",status},
+                        {"points",points},
+                        {"pointsText",points>0 ? numberText(points) : QString()},
+                        {"hill",hill ? hill->getName() : QString()},
+                        {"hs",hill ? hill->getHSPoint() : 0},
+                        {"country",hill ? hill->getCountryCode() : QString()},
+                        {"flag",hill ? flag(hill->getCountryCode()) : QString()},
+                        {"date",date.isValid() ? date.toString("dd.MM.yyyy") : QString()},
+                        {"weekday",date.isValid() ? polish.toString(date,"dddd") : QString()},
+                        {"kind",teamEvent ? tr("Konkurs drużynowy") : tr("Konkurs indywidualny")},
+                        {"team",teamEvent},
+                    });
+                }
+                if(!hasJumperResult || competitions.isEmpty())continue;
+                const QString calendarName=calendar->getName();
+                calendarTables.append(QVariantMap{
+                    {"key",season.getIDStr()+"|"+calendar->getIDStr()},
+                    {"label",calendarName.isEmpty() ? seasonText : seasonText+" · "+calendarName},
+                    {"season",seasonText},
+                    {"calendar",calendarName},
+                    {"classification",pointsClassification ? pointsClassification->getName() : QString()},
+                    {"totalPoints",totalPoints},
+                    {"totalText",pointsClassification ? numberText(totalPoints) : QString()},
+                    {"competitions",competitions},
+                    {"count",competitions.size()},
+                });
+            }
+        }
+    }
+
     const auto picture=[](QPixmap pixmap) {
         if(pixmap.isNull())return QString();
         pixmap=pixmap.scaled(96,96,Qt::KeepAspectRatio,Qt::SmoothTransformation);
@@ -781,7 +878,8 @@ QVariantMap JumperStatsWindow::report() const {
     };
     return {{"photo",jumper?picture(jumper->getImagePixmap()):QString()},{"flag",jumper?picture(CountryFlagsManager::getFlagPixmap(jumper->getCountryCode().toLower())):QString()},{"name",jumper?jumper->getNameAndSurname():QString()},{"country",jumper?jumper->getCountryCode():QString()},
         {"best",ui->label_bestPos->text()},{"worst",ui->label_worstPos->text()},{"mean",ui->label_averagePos->text()},
-        {"deviation",ui->label_standardDeviation->text()},{"plots",plots},{"positions",positions},{"eventFilters",eventFilters}};
+        {"deviation",ui->label_standardDeviation->text()},{"plots",plots},{"positions",positions},{"eventFilters",eventFilters},
+        {"calendarTables",calendarTables}};
 }
 
 QString JumperStatsWindow::pointDescription() const {return ui->label_chartCompetition->text()+" · "+ui->label_chartStat->text();}
