@@ -189,27 +189,36 @@ std::unique_ptr<SimulationSave> NewSimulationSaveConfigurationWindow::createExam
             if(fallback<0)fallback=i;
             if(pack.id==original || pack.approximateMigrationSource==original){preferred=i;break;}
         }
-        packChoices[kind]->setCurrentIndex(preferred>=0?preferred:fallback);
+        const int active=packChoices[kind]->findData(snapshot.active.value(kind));
+        packChoices[kind]->setCurrentIndex(active>=0?active:preferred>=0?preferred:fallback);
     }
-    auto &presets=GlobalDatabase::get()->getEditableGlobalCalendarPresets();SeasonCalendarPreset *selected=nullptr;
-    for(auto &preset:presets)if(!preset.getCalendarReference().getCompetitionsReference().isEmpty() && (preset.getName().contains(QString::fromUtf8("PŚ")) || preset.getName().contains("World Cup",Qt::CaseInsensitive))) {
-        if(!selected || preset.getName().contains("2024-25"))selected=&preset;
+    auto &presets=GlobalDatabase::get()->getEditableGlobalCalendarPresets();
+    SeasonCalendarPreset *summer=nullptr,*winter=nullptr;
+    for(auto &preset:presets) {
+        const auto name=preset.getName();
+        if(name=="LGP26" || name=="LGP2026" || name=="Official-LGP" || name==QString::fromUtf8("Oficjalne LGP"))summer=&preset;
+        if(name=="WC26-27" || name=="Official-WC" || name=="World_Cup_2026_2027")winter=&preset;
     }
-    if(!selected)return {};
-    const QString base=tr("Przykładowy sezon");QString name=base;for(int n=2;otherNames.contains(name,Qt::CaseInsensitive);++n)name=base+" "+QString::number(n);
+    if(!summer || !winter)return {};
+    const QString base=tr("Przykładowa symulacja");QString name=base;for(int n=2;otherNames.contains(name,Qt::CaseInsensitive);++n)name=base+" "+QString::number(n);
     ui->lineEdit_name->setText(name);findChild<QCheckBox *>("newSeasonDates")->setChecked(false);
     auto save=createSave();if(!save)return {};
-    SeasonCalendarPreset copy(&selected->getCalendarReference());auto calendar=std::make_unique<SeasonCalendar>(copy.getCalendarReference());calendar->setName(tr("Puchar Świata"));
-    const auto &venues=selected->getHillsReference();auto &events=calendar->getCompetitionsReference();
-    for(int i=0;i<events.size();++i) {
-        auto *best=save->getHillsReference().first();double score=std::numeric_limits<double>::max();
-        if(i<venues.size())for(auto *hill:save->getHillsReference()) {
-            const double distance=std::abs(hill->getHSPoint()-venues[i].second)+(hill->getName()==venues[i].first?0:1000);
-            if(distance<score){score=distance;best=hill;}
+    for(auto *selected:{summer,winter}) {
+        SeasonCalendarPreset copy(&selected->getCalendarReference());
+        auto calendar=std::make_unique<SeasonCalendar>(copy.getCalendarReference());calendar->setName(selected==summer?tr("Lato"):tr("Zima"));
+        const auto &venues=selected->getHillsReference();auto &events=calendar->getCompetitionsReference();
+        for(int i=0;i<events.size();++i) {
+            auto *best=save->getHillsReference().first();double score=std::numeric_limits<double>::max();
+            if(i<venues.size())for(auto *hill:save->getHillsReference()) {
+                const double distance=std::abs(hill->getHSPoint()-venues[i].second)+(hill->getName()==venues[i].first?0:1000);
+                if(distance<score){score=distance;best=hill;}
+            }
+            events[i]->setHill(best);events[i]->setScheduledDate({});
         }
-        events[i]->setHill(best);events[i]->setScheduledDate({});
+        calendar->normalizeCompetitionEvents();save->getActualSeason()->getCalendarsReference().append(calendar.get());
+        if(selected==summer)save->getActualSeason()->setActualCalendar(calendar.get());
+        calendar.release();
     }
-    calendar->normalizeCompetitionEvents();save->getActualSeason()->getCalendarsReference().append(calendar.get());save->getActualSeason()->setActualCalendar(calendar.release());
     save->updateNextCompetitionIndex();save->repairDatabase();return save;
 }
 

@@ -200,6 +200,11 @@ void MainWindow::on_pushButton_reportIssue_clicked()
     QDesktopServices::openUrl(QUrl("https://github.com/SiekamCebule/sj-sim/issues/new"));
 }
 
+void MainWindow::showWelcome()
+{
+    QSettings().setValue("onboarding/welcomeDismissed",false);
+}
+
 void MainWindow::startExampleSeason()
 {
     if(property("exampleSeasonPreparing").toBool())return;
@@ -218,7 +223,7 @@ void MainWindow::startExampleSeason()
         bool stored=false;
         try {
             auto save=setup->createExampleSave();
-            if(!save){setup->deleteLater();QMessageBox::information(this,tr("Przykładowy sezon"),tr("Nie udało się przygotować przykładu. Potrzebne są kompletne paczki skoczków, skoczni i zasad oraz zimowy preset kalendarza."));return;}
+            if(!save){setup->deleteLater();QMessageBox::information(this,tr("Przykładowy sezon"),tr("Nie udało się przygotować przykładu. Potrzebne są kompletne paczki skoczków, skoczni i zasad oraz letni i zimowy preset kalendarza."));return;}
             const QString base=save->getName();for(int n=2;QFileInfo::exists(directory+save->getName()+".json");++n)save->setName(base+" "+QString::number(n));
             auto &saves=GlobalDatabase::get()->getEditableGlobalSimulationSaves();saves.reserve(saves.size()+1);
             if(!save->saveToFile(directory)){setup->deleteLater();return;}

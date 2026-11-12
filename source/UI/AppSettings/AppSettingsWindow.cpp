@@ -35,6 +35,9 @@ AppSettingsWindow::AppSettingsWindow(QWidget *parent) :
     ui(new Ui::AppSettingsWindow)
 {
     ui->setupUi(this);
+    auto *welcome=new QPushButton(tr("Pokaż powitanie"),this);welcome->setObjectName("showWelcomeAgain");ui->verticalLayout_6->insertWidget(0,welcome);
+    connect(welcome,&QPushButton::clicked,this,[this]{if(mainWindowParent){QMetaObject::invokeMethod(mainWindowParent,"showWelcome");close();}});
+
     ui->comboBox_language->hide();
     ui->checkBox_liveCompetition->hide();
     ui->spinBox_dsqProbability->hide();

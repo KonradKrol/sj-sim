@@ -79,7 +79,7 @@ private slots:
 private:
     Ui::AppSettingsWindow *ui;
 
-    MainWindow * mainWindowParent;
+    MainWindow * mainWindowParent=nullptr;
 };
 
 

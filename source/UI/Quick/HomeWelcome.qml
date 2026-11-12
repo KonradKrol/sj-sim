@@ -5,21 +5,63 @@ import QtQuick.Layouts 1.15
 Popup {
     id: welcome
     objectName: "homeWelcome"
+    property int step: 0
+    readonly property var pages: [
+        {title:qsTr("Witaj w Sj.Simie!"),image:"overview",text:qsTr("Korzystasz właśnie z symulatora stworzonego dla pasjonatów skoków narciarskich. Pozwoli Ci on przeprowadzać własne symulacje światów na swoich warunkach. Zacznij od aktualnego sezonu, przypomnij sobie czasy Małyszomanii albo zaprojektuj fikcyjne uniwersum!")},
+        {title:qsTr("Twórz własny świat"),image:"athletes",text:qsTr("Możesz stworzyć własne zasoby lub skorzystać z istniejących. Na <a href=\"https://discord.gg/NrusAMJgSw\">serwerze Discord</a> znajdują się paczki stworzone przez społeczność.")+"<br><br>"+qsTr("Śmiało eksperymentuj z atrybutami skoczków i skoczni. Niektórzy zawodnicy świetnie radzą sobie na treningach, ale „spalają się” w konkursie. Inni są urodzonymi specjalistami od skoczni mniejszych. Za to skocznie takie jak Willingen są dość „wietrzne” i zarazem sprzyjają lotnikom. Sj.Sim to wszystko wspiera!")},
+        {title:qsTr("Kieruj konkursami"),image:"competition",text:qsTr("Podczas zawodów masz wpływ niemal na wszystko, począwszy od zasad i kolejności startowej, a kończąc na warunkach wietrznych i belce. Jeśli chcesz, możesz z góry przesądzić o wyniku wybranych zawodników ;)")+"<br><br>"+qsTr("Dostępne są zarówno konkursy indywidualne, jak i drużynówki czy popularny format KO. Możesz tworzyć złożone kombinacje konkursów wieloseryjnych, z wyzerowaniem not punktowych czy podziałem na grupy według różnych kryteriów.")},
+        {title:qsTr("Rozgrywaj pełne sezony"),image:"calendar",text:qsTr("Układaj kalendarze, ustalaj zasady kwalifikacji i prowadź własne klasyfikacje. Łącz letnie i zimowe zawody, planuj weekendy i wybieraj zawodników na kolejne konkursy.")+"<br><br>"+qsTr("Śledź wyniki w archiwum i obserwuj zmiany formy w sezonach z datami zawodów. Na początek przygotowaliśmy przykładową symulację z Letnim Grand Prix 2026 i Pucharem Świata 2026/2027.")}
+    ]
     parent: Overlay.overlay
     visible: ui.context.showWelcome===true
-    modal: true; focus: true
-    closePolicy: Popup.NoAutoClose
-    width: Math.min(Theme.dp(560),parent.width-Theme.dp(24))
-    x: (parent.width-width)/2; y: Math.max(Theme.dp(12),(parent.height-height)/2)
-    padding: Theme.dp(20)
+    onOpened: step=0
+    modal: true; focus: true; closePolicy: Popup.NoAutoClose
+    width: Math.min(Theme.dp(1080),parent.width-Theme.dp(24))
+    height: Math.min(Theme.dp(760),parent.height-Theme.dp(24))
+    x: (parent.width-width)/2; y: (parent.height-height)/2
+    padding: Theme.dp(24)
     enter: PopupFade {}
     exit: PopupFade { leaving: true }
-    background: Surface { fillColor: Theme.stadium; edgeColor: Theme.signal; strokeWidth: 2; sweep: 42 }
+    background: Surface { fillColor: Theme.surface; edgeColor: Theme.divider; strokeWidth: 1; sweep: 28 }
     contentItem: ColumnLayout {
-        spacing: Theme.dp(12)
-        Label { text: qsTr("Witaj w Sj.Sim"); color: Theme.snow; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-        Label { text: qsTr("Rozegraj sezon ze znanymi skoczkami, skoczniami i zimowym kalendarzem najważniejszych zawodów. Wszystko jest przygotowane — później możesz to zmienić."); color: Theme.headerMuted; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-        SButton { objectName: "homeWelcomeExample"; Layout.fillWidth: true; text: ui.context.exampleBusy ? qsTr("Przygotowywanie…") : qsTr("Rozpocznij przykładowy sezon"); primary: true; enabled: !ui.context.exampleBusy; onClicked: ui.launch("example") }
-        SButton { Layout.fillWidth: true; text: qsTr("Przejdź do menu"); foreground: Theme.snow; quiet: true; enabled: !ui.context.exampleBusy; onClicked: ui.launch("dismissWelcome") }
+        spacing: Theme.dp(16)
+        RowLayout {
+            Layout.fillWidth: true
+            Repeater {
+                model: 4
+                Rectangle { required property int index; Layout.preferredWidth: Theme.dp(index===welcome.step?36:12); Layout.preferredHeight: Theme.dp(5); radius: height/2; color: index===welcome.step?Theme.accent:Theme.divider }
+            }
+            Item { Layout.fillWidth: true }
+            Label { text: (welcome.step+1)+" / 4"; color: Theme.muted; font.family: Theme.mono; font.pointSize: Theme.caption }
+        }
+        GridLayout {
+            id: body
+            Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
+            columns: welcome.width>=Theme.dp(800)?2:1
+            columnSpacing: Theme.dp(28); rowSpacing: Theme.dp(16)
+            Rectangle {
+                Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: Theme.dp(100)
+                Layout.preferredWidth: Theme.dp(560); Layout.preferredHeight: body.columns===1?welcome.height*.30:Theme.dp(420)
+                color: Theme.raised; radius: Theme.radius
+                Image { anchors.fill: parent; anchors.margins: Theme.dp(10); source: "assets/welcome/"+welcome.pages[welcome.step].image+".png"; fillMode: Image.PreserveAspectFit; sourceSize.width: 1400; sourceSize.height: 1000; asynchronous: true; Accessible.name: welcome.pages[welcome.step].title }
+            }
+            ScrollView {
+                id: description
+                Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: Theme.dp(100); Layout.preferredWidth: Theme.dp(380)
+                contentWidth: availableWidth; clip: true
+                Column {
+                    width: description.availableWidth; spacing: Theme.dp(18)
+                    Label { text: welcome.pages[welcome.step].title; width: parent.width; wrapMode: Text.WordWrap; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true; color: Theme.ink }
+                    Label { text: welcome.pages[welcome.step].text; width: parent.width; wrapMode: Text.WordWrap; textFormat: Text.RichText; font.pointSize: Theme.body; lineHeight: 1.2; color: Theme.ink; linkColor: Theme.accent; onLinkActivated: Qt.openUrlExternally(link) }
+                }
+            }
+        }
+        Flow {
+            Layout.fillWidth: true; spacing: Theme.dp(8)
+            SButton { visible: welcome.step>0; text: qsTr("Wstecz"); quiet: true; onClicked: {welcome.step--;description.contentItem.contentY=0} }
+            SButton { objectName: "homeWelcomeExample"; text: welcome.step===3?(ui.context.exampleBusy?qsTr("Przygotowywanie…"):qsTr("Rozpocznij przykładowy sezon")):qsTr("Dalej"); primary: true; enabled: !ui.context.exampleBusy; onClicked: {if(welcome.step===3)ui.launch("example");else{welcome.step++;description.contentItem.contentY=0}} }
+            SButton { visible: welcome.step===0; text: qsTr("O autorze"); quiet: true; onClicked: ui.launch("author") }
+            SButton { text: qsTr("Przejdź do menu"); quiet: true; enabled: !ui.context.exampleBusy; onClicked: ui.launch("dismissWelcome") }
+        }
     }
 }

@@ -1,4 +1,9 @@
 <RCC><qresource prefix="/ui">
+<file>assets/welcome/overview.png</file>
+<file>assets/welcome/athletes.png</file>
+<file>assets/welcome/competition.png</file>
+<file>assets/welcome/calendar.png</file>
+
 <file>AthleteBadge.qml</file>
 <file>AthleteBadgeRack.qml</file>
 <file>AthleteCharacter.qml</file>

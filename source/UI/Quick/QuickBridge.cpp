@@ -1202,7 +1202,7 @@ void QuickBridge::compose(QuickNode *base) {
             }),"form")})
         }));
         sections.append(group("tools",tr("Baza danych i narzędzia"),{group("database-settings-fields",QString(),fields({
-            {"pushButton_countriesEditor",""},
+            {"showWelcomeAgain",""},{"pushButton_countriesEditor",""},
             {"pushButton_defaultSettings",""}}),"form")}));
         auto *tabs=sectionTabs("settings-pages",{tr("Symulacja"),tr("Baza danych i narzędzia")},sections);
         m_root->update(tabs->values(),tabs->children());return;
