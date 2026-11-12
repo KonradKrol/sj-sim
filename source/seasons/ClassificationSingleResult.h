@@ -11,6 +11,7 @@ class Classification;
 
 class ClassificationSingleResult : public Identifiable
 {
+    friend class Classification;
 public:
     ClassificationSingleResult(Classification * classification, Jumper * jumper = nullptr);
     ClassificationSingleResult(Classification *classification, QString teamCode);

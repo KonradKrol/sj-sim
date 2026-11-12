@@ -397,8 +397,9 @@ SeasonCalendar SeasonCalendar::getFromJson(QJsonObject json, IdentifiableObjects
                     }
                 }
                 singleResult->updateSingleResults();
-                singleResult->updatePointsSum();
+
             }
+            classification->updatePointsSums();
             classification->sortInDescendingOrder();
         }
     }

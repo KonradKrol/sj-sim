@@ -57,6 +57,27 @@ QVector<ClassificationSingleResult *> Classification::getRankedResults() const
     return visible;
 }
 
+void Classification::updatePointsSums()
+{
+    // The cache lives only for this recalculation; edits cannot leave stale scores.
+    QHash<CompetitionInfo *,QVector<Contribution>> cache;
+    for(auto *row:results) {
+        if(!row)continue;
+        row->pointsSum=0;row->eligibleParticipation=false;
+        QVector<CompetitionInfo *> events;
+        const auto append=[&](CompetitionInfo *event){if(event && !events.contains(event))events.append(event);};
+        for(auto *result:row->competitionsResults)if(result)append(result->getCompetition());
+        for(auto *result:row->singleResults)if(result)append(result->getCompetition());
+        for(auto *event:events) {
+            if(!cache.contains(event))cache.insert(event,contributions(event));
+            for(const auto &c:cache[event]) {
+                const bool matches=classificationType==Individual?c.jumper==row->jumper:c.country==row->teamCode;
+                if(matches){row->pointsSum+=c.points;row->eligibleParticipation=true;}
+            }
+        }
+    }
+}
+
 QVector<Classification::Contribution> Classification::contributions(CompetitionInfo *competition) const
 {
     QVector<Contribution> out;

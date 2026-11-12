@@ -1402,7 +1402,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
                                 if(MyFunctions::vectorContains(classificationResult->getCompetitionsResultsReference(), &competition->getResultsReference()) == false){
                                     classificationResult->getCompetitionsResultsReference().push_back(&competition->getResultsReference());
                                     classificationResult->updateSingleResults();
-                                    classificationResult->updatePointsSum();
+
                                 }
                             }
                         }
@@ -1422,10 +1422,11 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
                             if(MyFunctions::vectorContains(classificationResult->getCompetitionsResultsReference(), &competition->getResultsReference()) == false){
                                 classificationResult->getCompetitionsResultsReference().push_back(&competition->getResultsReference());
                                 classificationResult->updateSingleResults();
-                                classificationResult->updatePointsSum();
+
                             }
                         }
                     }
+                    classification->updatePointsSums();
                     classification->sortInDescendingOrder();
                 }
                 if(ui->comboBox_classifications->count() > 0)

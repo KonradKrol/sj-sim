@@ -38,6 +38,7 @@ public:
     void setOptions(const ClassificationOptions &value) { options=value; }
     void copyConfiguration(const Classification &source);
     void updatePositions();
+    void updatePointsSums();
     void sortInDescendingOrder();
     void sortInAscendingOrder();
 
