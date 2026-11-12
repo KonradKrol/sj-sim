@@ -6,6 +6,7 @@ ColumnLayout {
     id: preferences
     property var node
     spacing: Theme.dp(12)
+    Layout.alignment: Qt.AlignTop
     RowLayout {
         Layout.fillWidth: true
         ColumnLayout {
@@ -23,10 +24,8 @@ ColumnLayout {
         padding: Theme.dp(12)
         implicitHeight: rows.implicitHeight+topPadding+bottomPadding
         background: Rectangle { color: Theme.surface; radius: Theme.radius; border.color: Theme.outline }
-        contentItem: Item {
-        ColumnLayout {
+        contentItem: ColumnLayout {
             id: rows
-            width: parent.width
             spacing: Theme.dp(12)
             Repeater {
                 model: preferences.node.children
@@ -36,6 +35,7 @@ ColumnLayout {
                     required property int index
                     readonly property var field: modelData.values
                     Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignTop
                     spacing: Theme.dp(10)
                     GridLayout {
                         Layout.fillWidth: true
@@ -58,7 +58,7 @@ ColumnLayout {
                                         required property string modelData
                                         readonly property bool selected: index===row.field.value
                                         text: modelData; dense: true; font.pointSize: Theme.caption
-                                        Layout.fillWidth: true; Layout.preferredWidth: 0; Layout.fillHeight: true
+                                        Layout.fillWidth: true; Layout.preferredWidth: 0
                                         foreground: selected ? Theme.snow : Theme.ink
                                         Accessible.name: row.field.label+": "+modelData
                                         background: Rectangle { color: parent.selected ? Theme.stadium : parent.hovered ? Theme.selection : Theme.raised; radius: Theme.dp(4); border.color: parent.selected ? Theme.stadium : Theme.divider }
@@ -72,7 +72,6 @@ ColumnLayout {
                     Rectangle { visible: row.index<4; Layout.fillWidth: true; implicitHeight: 1; color: Theme.divider }
                 }
             }
-        }
         }
     }
 }
