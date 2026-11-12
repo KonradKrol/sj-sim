@@ -39,14 +39,23 @@ SimulationV2::WeatherGeneratorParameters generatorValues(const QJsonObject &valu
     return out;
 }
 bool validateProfile(const QJsonObject &values,QString &error) {
+    // Frozen competitions commonly share the exact same immutable coefficients.
+    // Cache only successful validations, bounded and local to the calling thread.
+    thread_local QVector<QJsonObject> validated;
+    if(validated.contains(values)){error.clear();return true;}
+    static const QHash<QString,QJsonObject> defs=[] {
     QHash<QString,QJsonObject> defs;
     for(auto row:Playground::parameters()){auto d=row.toObject();defs[d["key"].toString()]=d;}
     // Retired training-perk penalties remain valid in frozen save snapshots.
     // They no longer affect the engine and must not reappear as lab controls.
     for(int i=0;i<5;++i)defs[QString("quality.competitionPenalty.%1").arg(i)]=QJsonObject{{"minimum",0},{"maximum",100}};
+    return defs;
+    }();
     for(auto it=values.begin();it!=values.end();++it){const auto d=defs.value(it.key());const double v=it.value().toDouble();if(d.isEmpty() || !engineValues(QJsonObject{{it.key(),it.value()}}).contains(it.key()) || !it.value().isDouble() || !std::isfinite(v) || v<d["minimum"].toDouble() || v>d["maximum"].toDouble() || (d["type"]=="integer" && v!=std::floor(v))){error=QObject::tr("Nieprawidłowy współczynnik profilu: %1").arg(it.key());return false;}}
     try {Playground::engineParameters(values);Playground::measurementParameters(values);Playground::validateGenerator(values);const auto g=generatorValues(values);for(int i=0;i<SimulationV2::weatherPresetCount;++i){SimulationV2::SeededRandom rng(123);SimulationV2::sampleWeatherPreset(SimulationV2::WeatherPreset(i),120,rng,g);}for(int level:{-4,0,4}){SimulationV2::SeededRandom rng(123);SimulationV2::WeatherProposalContext context;context.variabilityPerk=level;SimulationV2::proposeWeather(context,rng,g);}}
-    catch(const std::exception &e){error=QString::fromUtf8(e.what());return false;}return true;
+    catch(const std::exception &e){error=QString::fromUtf8(e.what());return false;}
+    if(validated.size()>=32)validated.removeFirst();
+    validated.append(values);error.clear();return true;
 }
 QJsonObject initialConfig() {
     auto c=Playground::example();c["name"]=QObject::tr("Mój eksperyment balansu");c["competitions"]=500;c["targets"]=QJsonArray();
