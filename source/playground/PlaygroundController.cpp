@@ -1,3 +1,4 @@
+#include "../global/UserDataPaths.h"
 #include <algorithm>
 #include "PlaygroundController.h"
 #include "PlaygroundModel.h"
@@ -22,7 +23,7 @@
 #include <QCloseEvent>
 
 namespace {
-QString runsDirectory(){return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/playground-v2/runs";}
+QString runsDirectory(){return UserDataPaths::path("Tools/Playground/runs");}
 QString newRunPath(const QString &root){return QDir(root).filePath(QDateTime::currentDateTimeUtc().toString("yyyyMMdd-HHmmss-zzz"));}
 QJsonObject readObject(const QString &path,QString &error){QFile file(path);if(!file.open(QIODevice::ReadOnly)){error=QObject::tr("Nie można odczytać pliku.");return {};}QJsonParseError parse;const auto doc=QJsonDocument::fromJson(file.readAll(),&parse);if(parse.error!=QJsonParseError::NoError || !doc.isObject()){error=QObject::tr("Nieprawidłowy plik JSON.");return {};}error.clear();return doc.object();}
 }

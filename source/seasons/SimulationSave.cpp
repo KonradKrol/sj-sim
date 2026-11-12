@@ -1,3 +1,4 @@
+#include "../global/UserDataPaths.h"
 #include <QObject>
 #include "SimulationSave.h"
 #include <QCoreApplication>
@@ -357,12 +358,11 @@ bool SimulationSave::saveToFile(QString dir, QString fileName)
     if(fileName == "!default")
         fileName = getName();
 
+    if(dir.isEmpty())dir=UserDataPaths::saves();
     QDir targetDirectory(dir);
     if(QDir::isRelativePath(dir))
     {
         QDir applicationDirectory(QCoreApplication::applicationDirPath());
-        if(!applicationDirectory.exists("userData") && QSysInfo::productType() == "windows")
-            applicationDirectory.cdUp();
         targetDirectory = QDir(applicationDirectory.absoluteFilePath(dir));
     }
     if(!targetDirectory.mkpath("."))

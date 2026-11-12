@@ -29,18 +29,8 @@ Copy-Item -LiteralPath $executable -Destination (Join-Path $outputPath "sj-sim.e
 & windeployqt --release --compiler-runtime --no-translations --include-plugins qoffscreen --qmldir (Join-Path $repoRoot "source/UI/Quick") --dir $outputPath (Join-Path $outputPath "sj-sim.exe")
 if ($LASTEXITCODE -ne 0) { throw "windeployqt failed with exit code $LASTEXITCODE" }
 
-foreach ($folder in @("flags", "userData")) {
-    $source = Join-Path $repoRoot $folder
-    if (-not (Test-Path -LiteralPath $source)) { throw "Required release folder is missing: $source" }
-    Copy-Item -Recurse -Force -LiteralPath $source -Destination (Join-Path $outputPath $folder)
-}
-
-Copy-Item -LiteralPath (Join-Path $repoRoot "data/beta/packs.json") -Destination (Join-Path $outputPath "userData/GlobalDatabase/packs.json") -Force
-$packDestination = Join-Path $outputPath "userData/Packs"
-if (Test-Path -LiteralPath $packDestination) { Remove-Item -Recurse -Force -LiteralPath $packDestination }
-Copy-Item -Recurse -Force -LiteralPath (Join-Path $repoRoot "data/beta/Packs") -Destination $packDestination
-
-New-Item -ItemType Directory -Force -Path (Join-Path $outputPath "userData/BalanceLab") | Out-Null
+Copy-Item -Recurse -Force -LiteralPath (Join-Path $repoRoot "flags") -Destination (Join-Path $outputPath "flags")
+Copy-Item -Recurse -Force -LiteralPath (Join-Path $repoRoot "data/defaults") -Destination (Join-Path $outputPath "Defaults")
 
 $translationDir = Join-Path $outputPath "translations"
 New-Item -ItemType Directory -Force -Path $translationDir | Out-Null

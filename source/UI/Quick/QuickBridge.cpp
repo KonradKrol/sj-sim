@@ -1,3 +1,4 @@
+#include "../Library/ResourceLibraryWindow.h"
 #include "../Seasons/Stats/JumperStatsWindow.h"
 #include "../../balance/BalanceLabController.h"
 #include "../../form-engine/FormLab.h"
@@ -922,11 +923,13 @@ bool QuickBridge::shortcut(int owner,const QString &sequence) {
         if(action->shortcut()==key && action->isEnabled()) { triggerAction(idFor(action)); return true; }
     return false;
 }
+void QuickBridge::openResourceLibrary(){importResourcePackage({});}
+void QuickBridge::importResourcePackage(const QString &path){auto *library=new ResourceLibraryWindow(m_window);library->setAttribute(Qt::WA_DeleteOnClose);library->show();QTimer::singleShot(0,library,[library,path]{if(!path.isEmpty())library->importFile(path);});}
 void QuickBridge::launch(const QString &destination) {
     if(m_home && destination=="dismissWelcome"){QSettings().setValue("onboarding/welcomeDismissed",true);refresh();return;}
     if(m_home && destination=="balanceLab"){QTimer::singleShot(0,this,[this]{if(m_window){auto *window=new BalanceLabWindow(m_window);window->setAttribute(Qt::WA_DeleteOnClose);window->show();}});return;}
     static const QHash<QString,const char *> destinations{{"competition","on_pushButton_singleCompetition_clicked"},{"jumps","on_pushButton_singleJumps_clicked"},
-        {"example","startExampleSeason"},{"seasons","on_pushButton_season_clicked"},{"database","on_pushButton_databaseEdit_clicked"},{"settings","on_pushButton_settings_clicked"},
+        {"library","showResourceLibrary"},{"example","startExampleSeason"},{"seasons","on_pushButton_season_clicked"},{"database","on_pushButton_databaseEdit_clicked"},{"settings","on_pushButton_settings_clicked"},
         {"author","showAuthor"},{"help","on_pushButton_help_clicked"},{"credits","on_pushButton_thanks_clicked"},{"issue","on_pushButton_reportIssue_clicked"}};
     const auto slot=destinations.value(destination,nullptr);
     if(!m_home || !slot) return;
@@ -1086,6 +1089,7 @@ void QuickBridge::compose(QuickNode *base) {
         auto *table=m_content->findChild<QTableView *>("classificationContributionTable");
         m_root->update({{"kind","classificationContributions"},{"country",m_window->property("contributionCountry")},{"name",m_window->property("contributionName")},{"total",classificationPointsText(m_window->property("contributionTotal").toDouble())},{"flag",QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(m_window->property("contributionCountry").toString())+".svg")).toString()},{"tableField",QVariant::fromValue(node(table,true))}});return;
     }
+    if(auto *library=qobject_cast<ResourceLibraryWindow *>(m_window.data())){m_root->update({{"kind","resourceLibrary"},{"backend",QVariant::fromValue<QObject *>(library)}});return;}
     if(m_window->objectName()=="competitionResultsArchive")if(auto *history=m_content->findChild<ResultsHistoryWidget *>()) {
         auto *entry=node(history,true);m_root->update(entry->values());return;
     }
@@ -1202,7 +1206,7 @@ void QuickBridge::compose(QuickNode *base) {
             }),"form")})
         }));
         sections.append(group("tools",tr("Baza danych i narzędzia"),{group("database-settings-fields",QString(),fields({
-            {"showWelcomeAgain",""},{"pushButton_countriesEditor",""},
+            {"openResourceLibrary",""},{"showWelcomeAgain",""},{"pushButton_countriesEditor",""},
             {"pushButton_defaultSettings",""}}),"form")}));
         auto *tabs=sectionTabs("settings-pages",{tr("Symulacja"),tr("Baza danych i narzędzia")},sections);
         m_root->update(tabs->values(),tabs->children());return;

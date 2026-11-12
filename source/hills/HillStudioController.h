@@ -63,6 +63,7 @@ public:
     Q_INVOKABLE void redo();
     Q_INVOKABLE void exportPack();
     Q_INVOKABLE void importPack();
+    Q_INVOKABLE void reloadPacks();
     bool exportTo(const QString &file);
     bool importFrom(const QString &file);
 signals:

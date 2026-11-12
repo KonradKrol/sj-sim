@@ -1,3 +1,5 @@
+#include "../simulation-v2/SimulationCatalog.h"
+#include "UserDataPaths.h"
 #include "AtomicJsonFile.h"
 #include <QObject>
 #include "GlobalDatabase.h"
@@ -170,7 +172,7 @@ void GlobalDatabase::repairSimulationSaves()
         save->repairDatabase();
         dialog.setValue(dialog.value() + 5);
         QCoreApplication::processEvents();
-        if(!save->saveToFile("simulationSaves/"))
+        if(!save->saveToFile(UserDataPaths::path("Saves/")))
             failedSaves++;
         dialog.setValue(dialog.value() + 2);
         QCoreApplication::processEvents();
@@ -341,16 +343,7 @@ bool GlobalDatabase::loadFromJson()
     packsWritable=false;
     bool ok=true;
     const auto record=[&](bool loaded){ok=loaded && ok;};
-    const bool hasCatalog=QFile::exists("userData/GlobalDatabase/packs.json");
-    bool loadedCatalog=false;
-    if(hasCatalog)record(loadedCatalog=loadPacks());
-    // A valid catalog owns these four collections. Legacy exports are only
-    // migration input or a read-only fallback when the catalog is damaged.
-    if(!loadedCatalog){
-        record(loadJumpers());record(loadHills());
-        record(loadCompetitionsRules());record(loadPointsForPlacesPresets());
-        if(!hasCatalog)record(loadPacks());
-    }
+    record(loadPacks());record(loadPointsForPlacesPresets());
     record(loadCalendarPresets());record(loadFormGeneratorPresets());
     record(loadJumpsImportancePresets());record(loadCountries());
     return ok;
@@ -360,13 +353,10 @@ bool GlobalDatabase::writeToJson()
 {
     writeFailures.clear();
     const auto record=[this](const QString &name,bool ok){if(!ok)writeFailures.append(name);};
-    record("packs.json",writePacks());
-    record("globalJumpers.json",writeJumpers());
-    record("globalHills.json",writeHills());
-    record("globalCompetitionsRules.json",writeCompetitionsRules());
-    record("simulationSaves/",writeSimulationSaves());
-    record("pointsForPlacesPresets/",writePointsForPlacesPresets());
-    record("calendarPresets/",writeCalendarPresets());
+    record("Packs/Rules",writePacks());
+    record(UserDataPaths::path("Saves/"),writeSimulationSaves());
+    record("Packs/Points",writePointsForPlacesPresets());
+    record("Calendars",writeCalendarPresets());
     record("formGeneratorPresets/",writeFormGeneratorPresets());
     record("jumpsImportancePresets/",writeJumpsImportancePresets());
     record("globalCountries.json",writeCountries());
@@ -377,60 +367,25 @@ bool GlobalDatabase::writeToJson()
 
 bool GlobalDatabase::loadJumpers()
 {
-    QFile file("userData/GlobalDatabase/globalJumpers.json");
-    if(!file.open(QFile::ReadOnly | QFile::Text))
-    {
-        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z zawodnikami"), QObject::tr("Nie udało się otworzyć pliku userData/GlobalDatabase/globalJumpers.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
-        message.setModal(true);
-        message.exec();
-        return false;
-    }
-    /*QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
-    QJsonObject obj = doc.object();
-    QJsonArray jumpersArray = obj.value("jumpers");*/
-    globalJumpers = Jumper::getVectorFromJson(file.readAll());
-    file.close();
-    return true;
+    return loadPacks();
 }
 
 bool GlobalDatabase::loadHills()
 {
-    QFile file("userData/GlobalDatabase/globalHills.json");
-    if(!file.open(QFile::ReadOnly | QFile::Text))
-    {
-        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku ze skoczniami"), QObject::tr("Nie udało się otworzyć pliku userData/GlobalDatabase/globalHills.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
-        message.setModal(true);
-        message.exec();
-        return false;
-    }
-    globalHills = Hill::getVectorFromJson(file.readAll());
-    file.close();
-    return true;
+    return loadPacks();
 }
 
 bool GlobalDatabase::loadCompetitionsRules()
 {
-    QFile file("userData/GlobalDatabase/globalCompetitionsRules.json");
-    if(!file.open(QFile::ReadOnly | QFile::Text))
-    {
-        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z zasadami konkursów"), QObject::tr("Nie udało się otworzyć pliku userData/GlobalDatabase/globalCompetitionsRules.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
-        message.setModal(true);
-        message.exec();
-        return false;
-    }
-    globalCompetitionsRules = CompetitionRules::getCompetitionRulesVectorFromJson(file.readAll());
-    file.close();
-    return true;
+    return loadPacks();
 }
 
 bool GlobalDatabase::loadSimulationSaves(bool progressDialog)
 {
     globalSimulationSaves.clear();
 
-    QDir dir(QCoreApplication::applicationDirPath());
-    if(dir.exists("userData") == false && QSysInfo::productType() == "windows")
-        dir.cdUp();
-    dir.setPath(dir.path() + "/simulationSaves");
+    QDir dir;
+    dir.setPath(UserDataPaths::path("Saves"));
     dir.setNameFilters(QStringList() << "*.json");
 
     const QStringList fileNames = dir.entryList();
@@ -463,10 +418,8 @@ bool GlobalDatabase::loadPointsForPlacesPresets()
 {
     globalPointsForPlacesPresets.clear();
 
-    QDir dir(QCoreApplication::applicationDirPath());
-    if(dir.exists("userData") == false && QSysInfo::productType() == "windows")
-        dir.cdUp();
-    dir.setPath(dir.path() + "/userData/GlobalDatabase/pointsForPlacesPresets");
+    QDir dir;
+    dir.setPath(UserDataPaths::path("Packs/Points"));
     dir.setNameFilters(QStringList() << "*.json");
     QStringList fileNames = dir.entryList();
 
@@ -481,7 +434,8 @@ bool GlobalDatabase::loadPointsForPlacesPresets()
 
 bool GlobalDatabase::loadCalendarPresets(bool before1_2_0)
 {
-    QDir dir("userData/GlobalDatabase/calendarPresets");
+    globalCalendarPresets.clear();
+    QDir dir(UserDataPaths::path("Calendars"));
     dir.setNameFilters(QStringList() << "*.json");
 
     QStringList fileNames = dir.entryList();
@@ -526,20 +480,19 @@ bool GlobalDatabase::loadCalendarPresets(bool before1_2_0)
 
 bool GlobalDatabase::loadFormGeneratorPresets()
 {
-    QDir dir(QCoreApplication::applicationDirPath());
-    if(dir.exists("userData") == false && QSysInfo::productType() == "windows")
-        dir.cdUp();
-    dir.setPath(dir.path() + "/userData/GlobalDatabase/formGeneratorPresets");
+    formGeneratorPresets.clear();
+    QDir dir;
+    dir.setPath(UserDataPaths::path("Tools/FormPresets"));
     dir.setNameFilters(QStringList() << "*.json");
 
     QStringList fileNames = dir.entryList();
 
     bool ok = true;
     for(auto & fileName : fileNames){
-        QFile file("userData/GlobalDatabase/formGeneratorPresets/" + fileName);
+        QFile file(UserDataPaths::path("Tools/FormPresets/") + fileName);
         if(!file.open(QFile::ReadOnly | QFile::Text))
         {
-            QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z presetem generatora formy"), QObject::tr("Nie udało się otworzyć pliku userData/GlobalDatabase/formGeneratorPresets/") + fileName +QObject::tr("\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
+            QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z presetem generatora formy"), QObject::tr("Nie udało się otworzyć presetu generatora formy: ") + fileName +QObject::tr("\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
             message.setModal(true);
             message.exec();
             ok = false;
@@ -555,17 +508,16 @@ bool GlobalDatabase::loadFormGeneratorPresets()
 
 bool GlobalDatabase::loadJumpsImportancePresets()
 {
-    QDir dir(QCoreApplication::applicationDirPath());
-    if(dir.exists("userData") == false && QSysInfo::productType() == "windows")
-        dir.cdUp();
-    dir.setPath(dir.path() + "/userData/GlobalDatabase/jumpsImportancePresets");
+    jumpsImportancePresets.clear();
+    QDir dir;
+    dir.setPath(UserDataPaths::path("Tools/ImportancePresets"));
     dir.setNameFilters(QStringList() << "*.json");
 
     QStringList fileNames = dir.entryList();
 
     bool ok = true;
     for(auto & fileName : fileNames){
-        QFile file("userData/GlobalDatabase/jumpsImportancePresets/" + fileName);
+        QFile file(UserDataPaths::path("Tools/ImportancePresets/") + fileName);
         file.open(QFile::ReadOnly | QFile::Text);
         QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
         QJsonObject object = doc.object();
@@ -578,7 +530,8 @@ bool GlobalDatabase::loadJumpsImportancePresets()
 
 bool GlobalDatabase::loadCountries()
 {
-    QFile file("userData/GlobalDatabase/globalCountries.json");
+    countries.clear();
+    QFile file(UserDataPaths::path("Settings/countries.json"));
     file.open(QFile::ReadOnly | QFile::Text);
     QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
     QJsonObject object = doc.object();
@@ -597,62 +550,31 @@ bool GlobalDatabase::loadCountries()
 
 bool GlobalDatabase::writeJumpers()
 {
-    QJsonDocument document;
-    QJsonObject mainObject;
-    QJsonArray array;
-    for(auto & jumper : getGlobalJumpers())
-    {
-        array.push_back(QJsonValue(Jumper::getJsonObject(jumper)));
-    }
-    mainObject.insert("jumpers", QJsonValue(array));
-    document.setObject(mainObject);
-
-    return AtomicJsonFile::write("userData/GlobalDatabase/globalJumpers.json",document);
+    return writePacks();
 }
 
 bool GlobalDatabase::writeHills()
 {
-    QJsonDocument document;
-    QJsonObject mainObject;
-    QJsonArray array;
-    for(auto & hill : getGlobalHills())
-    {
-        array.push_back(QJsonValue(Hill::getJsonObject(hill)));
-    }
-    mainObject.insert("hills", array);
-    document.setObject(mainObject);
-
-    return AtomicJsonFile::write("userData/GlobalDatabase/globalHills.json",document);
+    return writePacks();
 }
 
 bool GlobalDatabase::writeCompetitionsRules()
 {
-    QJsonDocument document;
-    QJsonObject mainObject;
-    QJsonArray array;
-
-    for(auto & rules : getGlobalCompetitionsRules())
-    {
-        array.push_back(QJsonValue(CompetitionRules::getJsonObject(rules)));
-    }
-    mainObject.insert("competitionsRules", array);
-    document.setObject(mainObject);
-
-    return AtomicJsonFile::write("userData/GlobalDatabase/globalCompetitionsRules.json",document);
+    return writePacks();
 }
 
 bool GlobalDatabase::writeSimulationSaves()
 {
     bool ok = true;
     /*QtConcurrent::map(globalSimulationSaves, [](SimulationSave * save){
-        save->saveToFile("simulationSaves/");
+        save->saveToFile(UserDataPaths::path("Saves/"));
     });*/
  //&SimulationSave::saveToFile);
 
     qDebug()<<"saves";
     for(auto & save : globalSimulationSaves)
     {
-        if(save->isLoaded() && save->saveToFile("simulationSaves/") == false)
+        if(save->isLoaded() && save->saveToFile(UserDataPaths::path("Saves/")) == false)
             ok = false;
     }
     return ok;
@@ -663,7 +585,7 @@ bool GlobalDatabase::writePointsForPlacesPresets()
     bool ok = true;
     for(auto & preset : globalPointsForPlacesPresets)
     {
-        if(preset.saveToFile("userData/GlobalDatabase/pointsForPlacesPresets/") == false)
+        if(preset.saveToFile(UserDataPaths::path("Packs/Points/")) == false)
             ok = false;
     }
     return ok;
@@ -674,9 +596,9 @@ bool GlobalDatabase::writeCalendarPresets()
     bool ok = true;
     for(auto & preset : globalCalendarPresets)
     {
-        const auto destination=QFileInfo("userData/GlobalDatabase/calendarPresets/"+preset.getName()+".json").absoluteFilePath().toCaseFolded();
+        const auto destination=QFileInfo(UserDataPaths::path("Calendars/")+preset.getName()+".json").absoluteFilePath().toCaseFolded();
         if(invalidCalendarPresetPaths.contains(destination)){ok=false;continue;}
-        if(preset.saveToFile("userData/GlobalDatabase/calendarPresets/") == false)
+        if(preset.saveToFile(UserDataPaths::path("Calendars/")) == false)
             ok = false;
     }
     return ok;
@@ -687,7 +609,7 @@ bool GlobalDatabase::writeFormGeneratorPresets()
     bool ok = true;
     for(auto & preset : formGeneratorPresets)
     {
-        if(preset.saveToFile("userData/GlobalDatabase/formGeneratorPresets/") == false)
+        if(preset.saveToFile(UserDataPaths::path("Tools/FormPresets/")) == false)
             ok = false;
     }
     return ok;
@@ -698,7 +620,7 @@ bool GlobalDatabase::writeJumpsImportancePresets()
     bool ok = true;
     for(auto & preset : jumpsImportancePresets)
     {
-        if(preset.saveToFile("userData/GlobalDatabase/jumpsImportancePresets/") == false)
+        if(preset.saveToFile(UserDataPaths::path("Tools/ImportancePresets/")) == false)
             ok = false;
     }
     return ok;
@@ -719,7 +641,7 @@ bool GlobalDatabase::writeCountries()
     }
     mainObject.insert("countries", array);
     document.setObject(mainObject);
-    return AtomicJsonFile::write("userData/GlobalDatabase/globalCountries.json",document);
+    return AtomicJsonFile::write(UserDataPaths::path("Settings/countries.json"),document);
 }
 
 
@@ -777,11 +699,16 @@ void GlobalDatabase::syncActivePacks()
 bool GlobalDatabase::selectPack(const QString &id)
 {
     syncActivePacks();
-    for (const auto &p : packs) if (p.id == id) {
-        activePackIds[int(p.kind)] = id;
-        if (p.kind == DataPack::Jumpers) globalJumpers = p.jumpers;
-        else if (p.kind == DataPack::Hills) globalHills = p.hills;
-        else { globalCompetitionsRules = p.rules; globalPointsForPlacesPresets = p.points; }
+    for(const auto &pack:packs)if(pack.id==id) {
+        if(pack.kind==DataPack::Rules) {
+            if(!writePacks())return false;
+            SimulationV2::SimulationCatalog catalog;auto snapshot=catalog.load({},100,{});QString error;
+            if(!catalog.select(snapshot,pack.kind,id,error))return false;
+        }
+        activePackIds[int(pack.kind)]=id;
+        if(pack.kind==DataPack::Jumpers)globalJumpers=pack.jumpers;
+        else if(pack.kind==DataPack::Hills)globalHills=pack.hills;
+        else globalCompetitionsRules=pack.rules;
         return true;
     }
     return false;
@@ -833,7 +760,7 @@ bool GlobalDatabase::restorePacks(const QJsonObject &o, QString &error)
     for (const auto &p : packs) if (p.id == activePackIds[int(p.kind)]) {
         if (p.kind == DataPack::Jumpers) globalJumpers = p.jumpers;
         else if (p.kind == DataPack::Hills) globalHills = p.hills;
-        else { globalCompetitionsRules = p.rules; globalPointsForPlacesPresets = p.points; }
+        else { globalCompetitionsRules = p.rules; }
     }
     error.clear();
     return true;
@@ -841,22 +768,23 @@ bool GlobalDatabase::restorePacks(const QJsonObject &o, QString &error)
 
 bool GlobalDatabase::loadPacks()
 {
-    QFile file("userData/GlobalDatabase/packs.json");
-    if (!file.exists()) { packs.clear(); ensurePacks(); packsWritable=true; return true; }
-    QJsonParseError parse;
-    QString error;
-    bool ok = file.open(QIODevice::ReadOnly);
-    const auto doc = ok ? QJsonDocument::fromJson(file.readAll(), &parse) : QJsonDocument();
-    ok = ok && parse.error == QJsonParseError::NoError && restorePacks(doc.object(), error);
-    packsWritable = ok;
-    if (!ok) QMessageBox::critical(nullptr, QObject::tr("Paczki"), QObject::tr("Nie udało się wczytać katalogu paczek. Plik nie zostanie nadpisany.\n%1").arg(error));
+    const auto snapshot=SimulationV2::SimulationCatalog().load({},100,{});
+    QJsonArray entries,active;
+    for(const auto &entry:snapshot.packs)entries.append(entry.data.toJson());
+    for(const auto &id:snapshot.active)active.append(id);
+    QString error;const bool ok=restorePacks({{"version",1},{"packs",entries},{"active",active}},error);
+    packsWritable=ok;
+    if(!ok)QMessageBox::critical(nullptr,QObject::tr("Biblioteka"),QObject::tr("Nie udało się wczytać paczek z folderu danych.\n%1").arg(error));
     return ok;
 }
 
 bool GlobalDatabase::writePacks()
 {
-    if (!packsWritable) return false;
-    QSaveFile file("userData/GlobalDatabase/packs.json");
-    const auto bytes = QJsonDocument(packsSnapshot()).toJson(QJsonDocument::Indented);
-    return file.open(QIODevice::WriteOnly) && file.write(bytes) == bytes.size() && file.commit();
+    if(!packsWritable)return false;
+    syncActivePacks();
+    for(const auto &pack:packs)if(pack.kind==DataPack::Rules) {
+        auto object=pack.toJson();object["pointsForPlacesPresets"]=QJsonArray();
+        if(!AtomicJsonFile::write(UserDataPaths::path("Packs/Rules/"+pack.id+".json"),QJsonDocument(object)))return false;
+    }
+    return true;
 }

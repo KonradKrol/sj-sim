@@ -11,7 +11,7 @@ Instrukcja dla osoby pobierającej projekt oraz dla Codexa przygotowującego śr
 - Widoki Quick nadal korzystają z kontrolerów Widgets. Potrzebne są oba zestawy bibliotek. `--widgets` przełącza UI podczas uruchamiania; `CONFIG+=widgets_only` tworzy osobny build bez Quick.
 - W Qt 6 aplikacja wybiera styl Quick Controls `Basic` przed załadowaniem QML. Własne tła i zawartość kontrolek wymagają stylu obsługującego modyfikacje; domyślny natywny styl Windows nie jest odpowiedni dla tego interfejsu.
 - Najpierw wykryj istniejące narzędzia, potem doinstaluj brakujące. Zachowaj jeden zgodny zestaw Qt, kompilatora, bibliotek i narzędzi x64.
-- Dane muszą być **obok uruchamianego `.exe`**, zwykle w podkatalogu `release`, nie tylko obok Makefile. Nie nadpisuj istniejącego `userData` przy kolejnych buildach.
+- Folder **Defaults** z `data/defaults` oraz `flags` muszą być obok `.exe`, zwykle w podkatalogu `release`. Edytowalne dane trafiają do Dokumenty/SjSimData; nie nadpisuj biblioteki przy buildzie. Zobacz [RESOURCE_LIBRARY.md](RESOURCE_LIBRARY.md).
 - Skrypty `scripts/*.sh` są dla Linuxa. Na Windowsie użyj poleceń PowerShell poniżej; nie kopiuj linuxowych bibliotek z `build-qml-preview`.
 - Buduj poza źródłami, np. w `build-win`, `build-win-smoke`, `build-win-widgets`. Katalogi `build-*` oraz `dist` są ignorowane przez Git.
 - Pracuj na gałęzi roboczej, zachowaj obecny numer wersji i rób commity. Nie resetuj zmian użytkownika i nie wypychaj na `main`.
@@ -157,12 +157,15 @@ function Find-SjExecutable([string]$BuildDirectory, [string]$Target = "sj-sim") 
 
 function Initialize-SjRuntime([string]$Executable) {
     $runtimeDir = Split-Path -Parent $Executable
-    foreach ($folder in @("userData", "flags")) {
+    foreach ($folder in @("flags")) {
         $destination = Join-Path $runtimeDir $folder
         if (-not (Test-Path -LiteralPath $destination)) {
             Copy-Item -Recurse -LiteralPath (Join-Path $repoRoot $folder) -Destination $destination
         }
     }
+    $defaults = Join-Path $runtimeDir "Defaults"
+    if (Test-Path -LiteralPath $defaults) { Remove-Item -Recurse -Force -LiteralPath $defaults }
+    Copy-Item -Recurse -LiteralPath (Join-Path $repoRoot "data/defaults") -Destination $defaults
     $translationDir = Join-Path $runtimeDir "translations"
     New-Item -ItemType Directory -Force $translationDir | Out-Null
     foreach ($language in @('en', 'cs')) {
@@ -179,7 +182,7 @@ Initialize-SjRuntime $appExe
 Start-Process -FilePath $appExe -WorkingDirectory (Split-Path $appExe)
 ```
 
-Obok `.exe` mają być: `userData\GlobalDatabase`, `userData\Settings`, `flags` oraz folder `translations` z `translation_en.qm`, `translation_cs.qm`, `qtbase_pl.qm` i `qtbase_cs.qm`. Program ustawia katalog roboczy na katalog wykonywalny w `source/main.cpp`; sama zmiana katalogu roboczego w IDE nie zastąpi tych plików.
+Obok `.exe` mają być: `Defaults` (z `data/defaults`), `flags` oraz folder `translations` z `translation_en.qm`, `translation_cs.qm`, `qtbase_pl.qm` i `qtbase_cs.qm`. Program ustawia katalog roboczy na katalog wykonywalny w `source/main.cpp`; sama zmiana katalogu roboczego w IDE nie zastąpi tych plików.
 
 Uruchomienie starego UI w tym samym buildzie:
 
@@ -262,7 +265,7 @@ Do testu zgodności Widgets utwórz **osobny** katalog, np. `build-win-widgets`,
 | Brak Qt DLL lub błąd `0xc000007b` | Zweryfikuj PATH i zgodność x64/MSVC; nie mieszaj Qt 5/6, MinGW/MSVC ani Debug/Release. |
 | Brak pluginu `windows` lub błędy pluginów | Użyj `QT_DEBUG_PLUGINS=1` w bieżącej sesji; sprawdź `platforms\qwindows.dll` w paczce i obce `QT_PLUGIN_PATH`. |
 | Nie widać flag, SVG lub zdjęcia | Sprawdź `flags`, `Qt6Svg.dll`, pluginy SVG/JPEG i wynik `windeployqt`. Fonty i zdjęcie są zasobami repozytorium; nie instaluj fontów ręcznie. |
-| Puste bazy / błędy odczytu JSON | Dane skopiowano obok Makefile zamiast do katalogu `.exe`, albo brakuje części `userData`. |
+| Puste bazy / błędy odczytu JSON | Dane skopiowano obok Makefile zamiast do katalogu `.exe`, albo brakuje `Defaults` albo wskazany folder Dokumenty/SjSimData jest niedostępny. |
 | Brak angielskiego lub czeskiego tłumaczenia | Wykonaj `Initialize-SjRuntime`; `.ts` nie zastępuje uruchomieniowego `.qm`. |
 | Pusta scena / problem sterownika | Próbnie uruchom z `QT_QUICK_BACKEND=software`, potem usuń tę zmienną i sprawdź właściwy renderer. |
 | LNK1104 przy kolejnym buildzie | Zamknij uruchomiony proces gry/testów. |
@@ -284,11 +287,11 @@ if ($LASTEXITCODE -ne 0) { throw "Pakowanie zależności Qt Quick nie powiodło 
 
 **Drugi krok jest istotny:** obecny `package-windows.ps1` wywołuje `windeployqt` bez `--qmldir`. Dla domyślnego interfejsu Quick wskaż źródła QML, aby narzędzie przeanalizowało importy i dołączyło ich moduły/pluginy. Opis tego mechanizmu: [Qt — wdrażanie na Windows](https://doc.qt.io/qt-6.8/windows-deployment.html).
 
-Sprawdź zawartość paczki: `.exe`, biblioteki Qt, plugin `platforms\qwindows.dll`, zależności QML, obsługa SVG/JPEG, `flags`, `userData` i skompilowane tłumaczenie. Przetestuj ją również z terminala bez deweloperskiego PATH; inaczej brakujące pliki mogą być nieświadomie pobierane z instalacji Qt. Na komputerze docelowym może być wymagany oficjalny Microsoft Visual C++ Redistributable x64; nie kopiuj losowych bibliotek systemowych z internetu.
+Sprawdź zawartość paczki: `.exe`, biblioteki Qt, plugin `platforms\qwindows.dll`, zależności QML, obsługa SVG/JPEG, `flags`, `Defaults` i skompilowane tłumaczenie. Przetestuj ją również z terminala bez deweloperskiego PATH; inaczej brakujące pliki mogą być nieświadomie pobierane z instalacji Qt. Na komputerze docelowym może być wymagany oficjalny Microsoft Visual C++ Redistributable x64; nie kopiuj losowych bibliotek systemowych z internetu.
 
 ## 8. Gotowe polecenie dla Codexa
 
-> Przeczytaj WINDOWS_SETUP.MD i sj-sim.pro. Przygotuj środowisko Windows x64 do rozwoju aktualnej gałęzi feature/qml-competition-config. Wykryj istniejące MSVC/SDK/Qt, doinstaluj brakujące zależności zgodnie z instrukcją, zbuduj domyślny interfejs Quick w osobnym buildzie, przygotuj dane obok właściwego .exe i uruchom aplikację oraz odpowiednie testy. Nie pracuj na main, nie nadpisuj istniejącego userData i nie używaj starego eksperymentu competition_quick. Podaj wersje narzędzi, ścieżkę do .exe, wynik testów i ewentualny konkretny błąd wymagający dalszej poprawki.
+> Przeczytaj WINDOWS_SETUP.MD i sj-sim.pro. Przygotuj środowisko Windows x64 do rozwoju aktualnej gałęzi feature/qml-competition-config. Wykryj istniejące MSVC/SDK/Qt, doinstaluj brakujące zależności zgodnie z instrukcją, zbuduj domyślny interfejs Quick w osobnym buildzie, przygotuj dane obok właściwego .exe i uruchom aplikację oraz odpowiednie testy. Nie pracuj na main, nie nadpisuj biblioteki Dokumenty/SjSimData i nie używaj starego eksperymentu competition_quick. Podaj wersje narzędzi, ścieżkę do .exe, wynik testów i ewentualny konkretny błąd wymagający dalszej poprawki.
 
 Dalszy kontekst: [architektura Qt Quick](QUICK_UI_MIGRATION.md), [pełny wykaz zmian](RELEASE_NOTES_VS_MAIN.md), [ostatni stan prac](RESUME_2026-10-22.md). Instrukcje Qt z `.agents/skills` są dołączone do repozytorium i mogą być używane przez Codexa także na Windowsie.
 

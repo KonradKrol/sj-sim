@@ -13,6 +13,7 @@ ColumnLayout {
     readonly property bool tabbed: ui.root.values.kind === "tabs"
     readonly property bool season: ui.profile === "SimulationSaveManagerWindow"
     readonly property var contentNode: tabbed && ui.root.children.length ? ui.root.children[0] : ui.root
+    readonly property bool libraryPage: contentNode && contentNode.values.kind === "resourceLibrary"
     readonly property bool jumpPage: contentNode && contentNode.values.kind === "jumpManipulation"
     readonly property bool weatherPage: contentNode && contentNode.values.kind === "weatherSetup"
     readonly property bool simulationDraftPage: contentNode && contentNode.values.kind === "simulationDraft"
@@ -58,7 +59,7 @@ ColumnLayout {
         }
         ScrollView {
         id: scroll
-        visible: !workspace.jumpPage && !workspace.koPage && !workspace.catalogPage && !workspace.calendarPage && !workspace.rosterPage && !workspace.formPage && !workspace.simulationDraftPage && !workspace.weatherPage
+        visible: !workspace.libraryPage && !workspace.jumpPage && !workspace.koPage && !workspace.catalogPage && !workspace.calendarPage && !workspace.rosterPage && !workspace.formPage && !workspace.simulationDraftPage && !workspace.weatherPage
         objectName: "workspaceScroll"
         Layout.fillWidth: true; Layout.fillHeight: true
         Layout.minimumWidth: 0; Layout.minimumHeight: 0
@@ -72,6 +73,11 @@ ColumnLayout {
             contentItem: Loader { active: !workspace.rebuildingOverview; sourceComponent: Component { Node { node: workspace.contentNode; tableHeightLimit: workspace.season ? Math.max(180,scroll.availableHeight-(Theme.compact ? 8 : workspace.width<700 ? 24 : 48)-Theme.dp(100)) : 540 } } }
         }
     }
+        Loader {
+            visible: active; active: workspace.libraryPage
+            Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0; Layout.margins: Theme.dp(16)
+            sourceComponent: Component { ResourceLibrary { node: workspace.contentNode } }
+        }
         Loader {
             visible: active; active: workspace.jumpPage
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0

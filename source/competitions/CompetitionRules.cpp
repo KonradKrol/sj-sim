@@ -124,7 +124,7 @@ QVector<CompetitionRules> CompetitionRules::getCompetitionRulesVectorFromJson(co
     QJsonDocument document = QJsonDocument::fromJson(bytes, &error);
     if(error.error != QJsonParseError::NoError)
     {
-        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu zasad konkursów"), QObject::tr("Nie udało się wczytać zawodników z pliku userData/GlobalDatabase/globalCompetitionsRules.json\nTreść błędu: ") + error.errorString(), QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu zasad konkursów"), QObject::tr("Nie udało się wczytać zasad konkursu\nTreść błędu: ") + error.errorString(), QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return rulesVector;

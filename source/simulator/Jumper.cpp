@@ -230,7 +230,7 @@ QVector<Jumper> Jumper::getVectorFromJson(const QByteArray &bytes)
     QJsonDocument document = QJsonDocument::fromJson(bytes, &error);
     if(error.error != QJsonParseError::NoError)
     {
-        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu zawodników"), QObject::tr("Nie udało się wczytać zawodników z pliku userData/GlobalDatabase/globalJumpers.json\nTreść błędu: ") + error.errorString(), QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu zawodników"), QObject::tr("Nie udało się wczytać zawodników\nTreść błędu: ") + error.errorString(), QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return jumpers;

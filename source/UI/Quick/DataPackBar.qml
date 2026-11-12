@@ -57,10 +57,11 @@ GridLayout {
                 }
                 Label {
                     width: parent.width
-                    text: qsTr("Wybrana paczka jest używana w grze. Eksport zapisuje plik JSON do udostępnienia.")
+                    text: qsTr("Udostępnij plik .sjsim-pack. W Bibliotece możesz połączyć różne zasoby w jednym pliku.")
                     color: Theme.muted
                     wrapMode: Text.WordWrap
                 }
+                SButton { text: qsTr("Biblioteka"); onClicked: {settings.close();ui.openResourceLibrary()} }
                 SButton { objectName: "closeDataPackSettings"; width: parent.width; text: qsTr("Gotowe"); onClicked: settings.close() }
             }
         }

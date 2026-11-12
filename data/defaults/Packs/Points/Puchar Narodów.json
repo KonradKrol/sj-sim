@@ -1,0 +1,15 @@
+{
+    "points-for-places-preset": {
+        "name": "Puchar Narodów",
+        "pointsForPlaces": [
+            400,
+            350,
+            300,
+            250,
+            200,
+            150,
+            100,
+            50
+        ]
+    }
+}

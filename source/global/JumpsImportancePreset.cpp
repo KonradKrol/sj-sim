@@ -1,3 +1,4 @@
+#include "UserDataPaths.h"
 #include "AtomicJsonFile.h"
 #include "JumpsImportancePreset.h"
 
@@ -63,7 +64,7 @@ bool JumpsImportancePreset::saveToFile(QString dir)
 
 JumpsImportancePreset JumpsImportancePreset::loadFromJson(QString fileName)
 {
-    QFile file("userData/GlobalDatabase/jumpsImportancePresets/" + fileName);
+    QFile file(UserDataPaths::path("Tools/ImportancePresets/") + fileName);
     file.open(QFile::ReadOnly | QFile::Text);
     QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
     file.close();

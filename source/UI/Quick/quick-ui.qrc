@@ -1,4 +1,5 @@
 <RCC><qresource prefix="/ui">
+<file>ResourceLibrary.qml</file>
 <file>assets/welcome/overview.png</file>
 <file>assets/welcome/athletes.png</file>
 <file>assets/welcome/competition.png</file>

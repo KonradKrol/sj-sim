@@ -1,0 +1,536 @@
+{
+  "competitionsRules": [
+    {
+      "95-hs-rule": true,
+      "competition-type": 0,
+      "dsq": true,
+      "gate-compensations": true,
+      "hill-record-breaking": true,
+      "id": "715d564d-4dc3-45d4-8b63-5ebd32d8a300",
+      "judges-points": true,
+      "jumpers-in-team-count": 4,
+      "name": "WC",
+      "rounds": [
+        {
+          "count": 50,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 3,
+          "sort-start-list": false
+        },
+        {
+          "count": 30,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 0,
+          "sort-start-list": true
+        }
+      ],
+      "wind-average-calculating-type": 2,
+      "wind-compensation-distance-effect": 1,
+      "wind-compensations": true,
+      "wind-measurement-type": 4
+    },
+    {
+      "95-hs-rule": true,
+      "competition-type": 0,
+      "dsq": true,
+      "gate-compensations": true,
+      "hill-record-breaking": true,
+      "id": "37facbd1-92b3-4b02-92cb-6aab46a810fe",
+      "judges-points": true,
+      "jumpers-in-team-count": 2,
+      "name": "High Five",
+      "rounds": [
+        {
+          "count": 50,
+          "ko": true,
+          "ko-group-advancing": 2,
+          "ko-group-count": 5,
+          "ko-groups-selection-type": 1,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 3,
+          "sort-start-list": true
+        },
+        {
+          "count": 25,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": true,
+          "sort-after-groups": 3,
+          "sort-start-list": true
+        }
+      ],
+      "wind-average-calculating-type": 0,
+      "wind-compensation-distance-effect": 1,
+      "wind-compensations": true,
+      "wind-measurement-type": 4
+    },
+    {
+      "95-hs-rule": true,
+      "competition-type": 0,
+      "dsq": true,
+      "gate-compensations": true,
+      "hill-record-breaking": true,
+      "id": "57c0119e-4a8d-429b-bdcd-815064cc2a0a",
+      "judges-points": true,
+      "jumpers-in-team-count": 4,
+      "name": "Qualifications",
+      "rounds": [
+        {
+          "count": 100,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 0,
+          "sort-start-list": false
+        }
+      ],
+      "wind-average-calculating-type": 2,
+      "wind-compensation-distance-effect": 1,
+      "wind-compensations": true,
+      "wind-measurement-type": 4
+    },
+    {
+      "95-hs-rule": true,
+      "competition-type": 0,
+      "dsq": true,
+      "gate-compensations": true,
+      "hill-record-breaking": true,
+      "id": "6f44e529-0cd2-4047-a7ca-dd7185cc7900",
+      "judges-points": true,
+      "jumpers-in-team-count": 4,
+      "name": "Flying WC",
+      "rounds": [
+        {
+          "count": 40,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 0,
+          "sort-start-list": false
+        },
+        {
+          "count": 30,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 0,
+          "sort-start-list": true
+        }
+      ],
+      "wind-average-calculating-type": 2,
+      "wind-compensation-distance-effect": 1,
+      "wind-compensations": true,
+      "wind-measurement-type": 4
+    },
+    {
+      "95-hs-rule": false,
+      "competition-type": 0,
+      "dsq": true,
+      "gate-compensations": true,
+      "hill-record-breaking": false,
+      "id": "71fbddf9-5503-473d-9707-def729f67ca6",
+      "judges-points": false,
+      "jumpers-in-team-count": 4,
+      "name": "Training/Trial",
+      "rounds": [
+        {
+          "count": 50,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 0,
+          "sort-start-list": false
+        }
+      ],
+      "wind-average-calculating-type": 2,
+      "wind-compensation-distance-effect": 1,
+      "wind-compensations": true,
+      "wind-measurement-type": 4
+    },
+    {
+      "95-hs-rule": true,
+      "competition-type": 1,
+      "dsq": true,
+      "gate-compensations": true,
+      "hill-record-breaking": true,
+      "id": "765fc9c3-cbf4-44e1-a8aa-d2bc9c762c53",
+      "judges-points": true,
+      "jumpers-in-team-count": 4,
+      "name": "Team Competition",
+      "rounds": [
+        {
+          "count": 15,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 3,
+          "sort-start-list": false
+        },
+        {
+          "count": 8,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 1,
+          "sort-start-list": true
+        }
+      ],
+      "wind-average-calculating-type": 2,
+      "wind-compensation-distance-effect": 1,
+      "wind-compensations": true,
+      "wind-measurement-type": 4
+    },
+    {
+      "95-hs-rule": false,
+      "competition-type": 1,
+      "dsq": true,
+      "gate-compensations": true,
+      "hill-record-breaking": true,
+      "id": "ca643bbd-7407-4ade-b54e-a23b880a482d",
+      "judges-points": true,
+      "jumpers-in-team-count": 2,
+      "name": "Super Team",
+      "rounds": [
+        {
+          "count": 20,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 3,
+          "sort-start-list": false
+        },
+        {
+          "count": 12,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 1,
+          "sort-start-list": true
+        },
+        {
+          "count": 8,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 1,
+          "sort-start-list": true
+        }
+      ],
+      "wind-average-calculating-type": 2,
+      "wind-compensation-distance-effect": 1,
+      "wind-compensations": true,
+      "wind-measurement-type": 4
+    },
+    {
+      "95-hs-rule": true,
+      "competition-type": 0,
+      "dsq": true,
+      "gate-compensations": true,
+      "hill-record-breaking": true,
+      "id": "46da7eeb-783e-40cb-a19a-d6c1c0e2bf6a",
+      "judges-points": true,
+      "jumpers-in-team-count": 2,
+      "name": "Flying Championship",
+      "rounds": [
+        {
+          "count": 40,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 0,
+          "sort-start-list": false
+        },
+        {
+          "count": 30,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 0,
+          "sort-start-list": true
+        },
+        {
+          "count": 30,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 0,
+          "sort-start-list": true
+        },
+        {
+          "count": 30,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 0,
+          "sort-start-list": true
+        }
+      ],
+      "wind-average-calculating-type": 2,
+      "wind-compensation-distance-effect": 1,
+      "wind-compensations": true,
+      "wind-measurement-type": 4
+    },
+    {
+      "95-hs-rule": false,
+      "competition-type": 1,
+      "dsq": true,
+      "gate-compensations": true,
+      "hill-record-breaking": false,
+      "id": "588a5777-1d1c-4495-b003-2fbc318e9822",
+      "judges-points": false,
+      "jumpers-in-team-count": 4,
+      "name": "Team Training/Trial",
+      "rounds": [
+        {
+          "count": 15,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 3,
+          "sort-start-list": false
+        }
+      ],
+      "wind-average-calculating-type": 2,
+      "wind-compensation-distance-effect": 1,
+      "wind-compensations": true,
+      "wind-measurement-type": 4
+    },
+    {
+      "95-hs-rule": true,
+      "competition-type": 1,
+      "dsq": true,
+      "gate-compensations": true,
+      "hill-record-breaking": true,
+      "id": "70a022e6-e8d5-41e1-bc34-f904ebec0703",
+      "judges-points": true,
+      "jumpers-in-team-count": 4,
+      "name": "Team WC Qualifications",
+      "rounds": [
+        {
+          "count": 15,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 3,
+          "sort-start-list": false
+        }
+      ],
+      "wind-average-calculating-type": 2,
+      "wind-compensation-distance-effect": 1,
+      "wind-compensations": true,
+      "wind-measurement-type": 4
+    },
+    {
+      "95-hs-rule": true,
+      "competition-type": 0,
+      "dsq": true,
+      "gate-compensations": true,
+      "hill-record-breaking": true,
+      "id": "1909b001-0736-4512-bb23-9accaffbf1f1",
+      "judges-points": true,
+      "jumpers-in-team-count": 2,
+      "name": "Classical KO",
+      "rounds": [
+        {
+          "count": 50,
+          "ko": true,
+          "ko-group-advancing": 1,
+          "ko-group-count": 2,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 0,
+          "sort-start-list": true
+        },
+        {
+          "count": 30,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 0,
+          "sort-start-list": true
+        }
+      ],
+      "wind-average-calculating-type": 2,
+      "wind-compensation-distance-effect": 1,
+      "wind-compensations": true,
+      "wind-measurement-type": 4
+    },
+    {
+      "95-hs-rule": true,
+      "competition-type": 0,
+      "dsq": true,
+      "gate-compensations": true,
+      "hill-record-breaking": true,
+      "id": "3f0cceec-d4d6-4661-a9c7-45c42a484045",
+      "judges-points": true,
+      "jumpers-in-team-count": 2,
+      "name": "SuperKO by fortonse",
+      "rounds": [
+        {
+          "count": 20,
+          "ko": true,
+          "ko-group-advancing": 1,
+          "ko-group-count": 2,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 0,
+          "sort-start-list": true
+        },
+        {
+          "count": 12,
+          "ko": true,
+          "ko-group-advancing": 1,
+          "ko-group-count": 2,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 0,
+          "sort-start-list": true
+        },
+        {
+          "count": 6,
+          "ko": true,
+          "ko-group-advancing": 1,
+          "ko-group-count": 2,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 0,
+          "sort-start-list": true
+        },
+        {
+          "count": 3,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 0,
+          "sort-start-list": true
+        }
+      ],
+      "wind-average-calculating-type": 2,
+      "wind-compensation-distance-effect": 1,
+      "wind-compensations": true,
+      "wind-measurement-type": 4
+    },
+    {
+      "95-hs-rule": false,
+      "competition-type": 0,
+      "dsq": false,
+      "gate-compensations": true,
+      "hill-record-breaking": true,
+      "id": "e9788250-b4b4-4248-8de1-76f10b1f3e60",
+      "judges-points": true,
+      "jumpers-in-team-count": 2,
+      "name": "Future Cup",
+      "rounds": [
+        {
+          "count": 35,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 0,
+          "sort-start-list": true
+        },
+        {
+          "count": 20,
+          "ko": false,
+          "ko-group-advancing": 0,
+          "ko-group-count": 1,
+          "ko-groups-selection-type": 0,
+          "previous-rounds-weights": [],
+          "reset-points": false,
+          "sort-after-groups": 0,
+          "sort-start-list": true
+        }
+      ],
+      "wind-average-calculating-type": 2,
+      "wind-compensation-distance-effect": 2,
+      "wind-compensations": true,
+      "wind-measurement-type": 4
+    }
+  ],
+  "default-rules": {
+    "competition": "715d564d-4dc3-45d4-8b63-5ebd32d8a300",
+    "qualifications": "715d564d-4dc3-45d4-8b63-5ebd32d8a300",
+    "teamCompetition": "588a5777-1d1c-4495-b003-2fbc318e9822",
+    "teamTrial": "588a5777-1d1c-4495-b003-2fbc318e9822",
+    "training": "715d564d-4dc3-45d4-8b63-5ebd32d8a300",
+    "trial": "715d564d-4dc3-45d4-8b63-5ebd32d8a300"
+  },
+  "format": "sj-sim-pack",
+  "id": "947c7732-beeb-4dca-b836-91b3b8e0caa6",
+  "kind": "rules",
+  "name": "Domyślna",
+  "pointsForPlacesPresets": [],
+  "version": 1
+}

@@ -1,3 +1,5 @@
+#include "../global/ResourceBundle.h"
+#include "../UI/Library/ResourceLibraryWindow.h"
 #include "AthleteStudioController.h"
 #include "../simulation-v2/ProfilePackRepository.h"
 #include "../simulation-v2/SimulationCatalog.h"
@@ -161,17 +163,8 @@ bool AthleteStudioController::importFrom(const QString &file){
     status(missing ? tr("Wczytano kopię paczki. Brakuje zdjęć: %1; skoczkowie pozostają dostępni.").arg(missing) : tr("Wczytano kopię paczki wraz ze zdjęciami."));return true;
 }
 
-void AthleteStudioController::exportPack(){
-    auto *owner=qobject_cast<QWidget *>(parent());
-    const auto folder=QFileDialog::getExistingDirectory(owner,tr("Wybierz, gdzie zapisać folder paczki"));if(folder.isEmpty())return;
-    QString name=packName().trimmed();name.replace(QRegularExpression(QStringLiteral("[\\\\/:*?\"<>|]")),"_");
-    name=name.left(80);while(name.endsWith('.') || name.endsWith(' '))name.chop(1);
-    if(name.isEmpty())name=QStringLiteral("SjSim");
-    const auto base=tr("Paczka - %1").arg(name);QString destination=QDir(folder).filePath(base);
-    for(int n=2;QFileInfo::exists(destination);++n)destination=QDir(folder).filePath(base+QStringLiteral(" (%1)").arg(n));
-    if(exportTo(destination))QMessageBox::information(owner,tr("Paczka gotowa"),tr("%1\n\nUdostępnij cały folder. Aby wczytać paczkę, wybierz w nim plik pack.json.").arg(m_message));
-}
-void AthleteStudioController::importPack(){const auto file=QFileDialog::getOpenFileName(qobject_cast<QWidget *>(parent()),tr("Wczytaj nową paczkę skoczków"),{},tr("Paczka skoczków (pack.json)"));if(!file.isEmpty())importFrom(file);}
+void AthleteStudioController::exportPack(){const auto file=QFileDialog::getSaveFileName(qobject_cast<QWidget *>(parent()),tr("Udostępnij paczkę"),packName()+".sjsim-pack",tr("Paczka Sj.Sim (*.sjsim-pack)"));if(file.isEmpty())return;QString error;status(ResourceBundle::exportPack(file,currentPack(),packDirectory(),error)?tr("Zapisano paczkę do udostępnienia."):error);}
+void AthleteStudioController::importPack(){const auto file=QFileDialog::getOpenFileName(qobject_cast<QWidget *>(parent()),tr("Wczytaj paczkę"),{},tr("Paczka Sj.Sim (*.sjsim-pack)"));if(file.isEmpty())return;QStringList installed;QString error;if(!ResourceLibraryWindow::installPackage(qobject_cast<QWidget *>(parent()),file,installed,error)){status(error);return;}reloadPacks();for(const auto &key:installed)if(key.startsWith("Athletes/")){const auto id=QFileInfo(key.section('/',1)).completeBaseName();for(int i=0;i<m_packs.size();++i)if(m_packs[i]["id"]==id){selectPack(i);break;}break;}status(tr("Wczytano paczkę."));}
 
 void AthleteStudioController::notifyChanged()
 {
@@ -182,3 +175,5 @@ void AthleteStudioController::notifyChanged()
     }
     emit changed();
 }
+
+void AthleteStudioController::reloadPacks(){const auto id=currentPack()["id"].toString();const auto loaded=SimulationV2::ProfilePackRepository(SimulationV2::ProfilePackKind::Athletes,m_root).load();m_packs=loaded.packs;if(m_packs.isEmpty())m_packs.append(emptyPack(tr("Nowa paczka")));m_pack=0;for(int i=0;i<m_packs.size();++i)if(m_packs[i]["id"]==id)m_pack=i;m_selected=currentPack()["profiles"].toArray().isEmpty()?-1:0;m_undo.clear();m_redo.clear();notifyChanged();}

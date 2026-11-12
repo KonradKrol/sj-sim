@@ -72,6 +72,7 @@ public:
     Q_INVOKABLE void clearPhoto();
     Q_INVOKABLE void exportPack();
     Q_INVOKABLE void importPack();
+    Q_INVOKABLE void reloadPacks();
     bool exportTo(const QString &newDirectory);
     bool importFrom(const QString &file);
 signals:

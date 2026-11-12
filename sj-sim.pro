@@ -528,3 +528,12 @@ contains(CONFIG, quick_ui_smoke) {
     SOURCES -= source/main.cpp
     SOURCES += tests/quick-ui-smoke.cpp
 }
+
+SOURCES += source/global/UserDataPaths.cpp
+HEADERS += source/global/UserDataPaths.h
+
+SOURCES += source/global/ResourceBundle.cpp
+HEADERS += source/global/ResourceBundle.h
+
+SOURCES += source/UI/Library/ResourceLibraryWindow.cpp
+HEADERS += source/UI/Library/ResourceLibraryWindow.h

@@ -1,3 +1,6 @@
+#include "../../global/ResourceBundle.h"
+#include "../Library/ResourceLibraryWindow.h"
+#include "../../global/UserDataPaths.h"
 #include <QTimer>
 #include "DatabaseEditorWindow.h"
 #include "../../athletes/AthleteStudioController.h"
@@ -288,15 +291,12 @@ QStringList DatabaseEditorWindow::packFiles() const
 {
     QStringList paths;
     const auto pathsForPacks=SimulationV2::CatalogPaths::defaults();
-    for(const auto &folder:{pathsForPacks.athletes,pathsForPacks.hills,QDir("userData/GlobalDatabase/pointsForPlacesPresets").absolutePath()}) {
+    for(const auto &folder:{pathsForPacks.athletes,pathsForPacks.hills,UserDataPaths::path("Packs/Rules"),QDir(UserDataPaths::path("Packs/Points")).absolutePath()}) {
         QDirIterator files(folder,{"*.json"},QDir::Files|QDir::NoSymLinks,QDirIterator::Subdirectories);
         while(files.hasNext())paths.append(files.next());
     }
     if(QFileInfo::exists(pathsForPacks.selection))paths.append(pathsForPacks.selection);
-    for(const auto &name:{"packs.json","globalJumpers.json","globalHills.json","globalCompetitionsRules.json"}) {
-        const auto path=QDir("userData/GlobalDatabase").absoluteFilePath(name);
-        if(QFileInfo::exists(path))paths.append(path);
-    }
+
     return paths;
 }
 
@@ -568,35 +568,14 @@ void DatabaseEditorWindow::setupPackControls()
         for (auto *list : {jumpersListView, hillsListView, competitionRulesListView, pointsForPlacesPresetsListView}) list->setupListModel();
         refreshPackControls();
     });
-    connect(import, &QPushButton::clicked, this, [this] {
-        if (!saveOpenEditors()) return;
-        const auto path = QFileDialog::getOpenFileName(this, tr("Importuj paczkę"), {}, tr("Paczki Sj.Sim (*.json)"));
-        if (path.isEmpty()) return;
-        QFile file(path); QJsonParseError parse; QString error; DataPack p;
-        const bool opened = file.open(QIODevice::ReadOnly);
-        const auto bytes = opened ? file.readAll() : QByteArray();
-        const auto doc = opened ? QJsonDocument::fromJson(bytes, &parse) : QJsonDocument();
-        if (!opened || parse.error != QJsonParseError::NoError || !DataPack::fromJson(doc.object(), p, error)) {
-            const auto reason = !opened ? tr("Nie można otworzyć pliku: %1").arg(file.errorString())
-                : parse.error != QJsonParseError::NoError ? JsonImportError::syntax(bytes, parse)
-                : error.isEmpty() ? tr("Plik nie zawiera paczki Sj.Sim.") : error;
-            QMessageBox::warning(this, tr("Import paczki"), JsonImportError::file(path, reason)); return;
-        }
-        resetPackEditors();
-        GlobalDatabase::get()->addPack(p);
-        ui->tabWidget_main->setCurrentIndex(int(p.kind));
-        for (auto *list : {jumpersListView, hillsListView, competitionRulesListView, pointsForPlacesPresetsListView}) list->setupListModel();
-        refreshPackControls();
-    });
+    connect(import,&QPushButton::clicked,this,[this]{const auto file=QFileDialog::getOpenFileName(this,tr("Wczytaj paczkę"),{},tr("Paczka Sj.Sim (*.sjsim-pack)"));if(file.isEmpty())return;QStringList installed;QString error;if(!ResourceLibraryWindow::installPackage(this,file,installed,error))QMessageBox::warning(this,tr("Paczka"),error);});
     connect(exportPack, &QPushButton::clicked, this, [this] {
         if (!saveOpenEditors()) return;
         auto *db = GlobalDatabase::get(); db->syncActivePacks();
         const auto object = db->activePack(DataPack::Kind(packKind()))->toJson();
-        const auto path = QFileDialog::getSaveFileName(this, tr("Eksportuj / udostępnij paczkę"), "paczka.json", tr("Paczki Sj.Sim (*.json)"));
-        if (path.isEmpty()) return;
-        QSaveFile file(path); const auto bytes = QJsonDocument(object).toJson(QJsonDocument::Indented);
-        if (!file.open(QIODevice::WriteOnly) || file.write(bytes) != bytes.size() || !file.commit())
-            QMessageBox::critical(this, tr("Eksport paczki"), tr("Nie udało się zapisać pliku paczki."));
+        const auto path=QFileDialog::getSaveFileName(this,tr("Udostępnij paczkę"),"SjSim.sjsim-pack",tr("Paczka Sj.Sim (*.sjsim-pack)"));
+        if(path.isEmpty())return;QString error;
+        if(!ResourceBundle::exportPack(path,object,{},error))QMessageBox::warning(this,tr("Eksport paczki"),error);
     });
     resetPackEditors();
     refreshPackControls();
@@ -649,4 +628,24 @@ bool DatabaseEditorWindow::saveOpenEditors()
     if (!competitionRulesEditor->isHidden()) replaceCompetitionRuleByCompetitionRulesEditor();
     if (!pointsForPlacesPresetEditor->isHidden()) replacePointsForPlacesPresetByEditorObject();
     return true;
+}
+
+bool DatabaseEditorWindow::prepareResourceImport(){if(!saveOpenEditors())return false;resetPackEditors();return GlobalDatabase::get()->writePacks()&&GlobalDatabase::get()->writePointsForPlacesPresets();}
+void DatabaseEditorWindow::finishResourceImport(const QStringList &installed){
+    auto *db=GlobalDatabase::get();db->loadPacks();db->loadPointsForPlacesPresets();
+    db->getEditableGlobalCalendarPresets().clear();db->loadCalendarPresets();db->setLoadedSimulationSaves(false);
+    // Imports are explicit library actions. Discarding subsequent editor changes
+    // must not delete the freshly installed resources.
+    QSet<QString> newIds;
+    for(const auto &key:installed){const auto kind=key.section('/',0,0);const auto file=key.section('/',1);
+        if(kind=="Athletes")newIds.insert(file);else if(kind=="Hills"||kind=="Rules")newIds.insert(QFileInfo(file).completeBaseName());
+        const auto relative=(kind=="Calendars"||kind=="Saves"?kind+"/":"Packs/"+kind+"/")+file;
+        QStringList paths;const auto full=UserDataPaths::path(relative);
+        if(kind=="Athletes")paths.append(full+"/pack.json");else paths.append(full);
+        for(const auto &path:paths)if(!originalPackFiles.contains(path)){QFile input(path);if(input.open(QIODevice::ReadOnly))originalPackFiles.insert(path,input.readAll());}
+        if(kind=="Points")for(const auto &preset:db->getGlobalPointsForPlacesPresets())if(preset.getName()==QFileInfo(file).completeBaseName())tempGlobalPointsForPlacesPresets.append(preset);
+    }
+    auto originals=originalPacks["packs"].toArray();for(const auto &pack:db->getPacks())if(newIds.contains(pack.id))originals.append(pack.toJson());originalPacks["packs"]=originals;
+    for(auto *list:{jumpersListView,hillsListView,competitionRulesListView,pointsForPlacesPresetsListView})list->setupListModel();refreshPackControls();
+    for(const auto *name:{"athleteStudio","hillStudio"})if(auto *studio=property(name).value<QObject *>())QMetaObject::invokeMethod(studio,"reloadPacks");
 }

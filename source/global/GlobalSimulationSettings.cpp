@@ -1,3 +1,4 @@
+#include "UserDataPaths.h"
 #include "AtomicJsonFile.h"
 #include <QObject>
 #include "GlobalSimulationSettings.h"
@@ -18,8 +19,7 @@ GlobalSimulationSettings::~GlobalSimulationSettings() = default;
 
 GlobalSimulationSettings::GlobalSimulationSettings()
 {
-    baseDsqProbability = 0;
-    simulationRandomMultiplier = 0;
+
 }
 
 double GlobalSimulationSettings::getTakeoffFormEffect() const
@@ -113,10 +113,11 @@ GlobalSimulationSettings *GlobalSimulationSettings::get()
 
 bool GlobalSimulationSettings::loadFromFile()
 {
-    QFile file("userData/Settings/globalSimulationSettings.json");
+    QFile file(UserDataPaths::path("Settings/simulation.json"));
+    if(!file.exists())return true;
     if(!file.open(QFile::ReadOnly | QFile::Text))
     {
-        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z ustawieniami symulacji"), QObject::tr("Nie udało się otworzyć pliku userData/Settings/globalSimulationSettings.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z ustawieniami symulacji"), QObject::tr("Nie udało się otworzyć pliku ustawień symulacji\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return false;
@@ -126,7 +127,7 @@ bool GlobalSimulationSettings::loadFromFile()
     QJsonDocument document = QJsonDocument::fromJson(bytes, &error);
     if(error.error != QJsonParseError::NoError)
     {
-        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu ustawień symulacji"), QObject::tr("Nie udało się wczytać ustawień symulacji z pliku userData/Settings/globalSimulationSettings.json\nTreść błędu: ") + error.errorString(), QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu ustawień symulacji"), QObject::tr("Nie udało się wczytać ustawień symulacji z pliku ustawień symulacji\nTreść błędu: ") + error.errorString(), QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return false;
@@ -167,7 +168,7 @@ bool GlobalSimulationSettings::writeToFile()
     settingsObject.insert("flight-form-effect", getFlightFormEffect());
     mainObject.insert("settings", settingsObject);
     document.setObject(mainObject);
-    return AtomicJsonFile::write("userData/Settings/globalSimulationSettings.json",document);
+    return AtomicJsonFile::write(UserDataPaths::path("Settings/simulation.json"),document);
 }
 
 GlobalSimulationSettings::Snapshot GlobalSimulationSettings::snapshot() {

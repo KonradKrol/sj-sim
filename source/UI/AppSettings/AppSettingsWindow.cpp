@@ -1,3 +1,4 @@
+#include "../Library/ResourceLibraryWindow.h"
 #include "AppSettingsWindow.h"
 #include "ui_AppSettingsWindow.h"
 #include "../../playground/PlaygroundController.h"
@@ -35,6 +36,8 @@ AppSettingsWindow::AppSettingsWindow(QWidget *parent) :
     ui(new Ui::AppSettingsWindow)
 {
     ui->setupUi(this);
+    auto *library=new QPushButton(tr("Biblioteka i folder danych"),this);library->setObjectName("openResourceLibrary");ui->verticalLayout_6->insertWidget(0,library);
+    connect(library,&QPushButton::clicked,this,[this]{auto *window=new ResourceLibraryWindow(this);window->setAttribute(Qt::WA_DeleteOnClose);window->show();});
     auto *welcome=new QPushButton(tr("Pokaż powitanie"),this);welcome->setObjectName("showWelcomeAgain");ui->verticalLayout_6->insertWidget(0,welcome);
     connect(welcome,&QPushButton::clicked,this,[this]{if(mainWindowParent){QMetaObject::invokeMethod(mainWindowParent,"showWelcome");close();}});
 

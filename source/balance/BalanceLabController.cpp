@@ -1,3 +1,4 @@
+#include "../global/UserDataPaths.h"
 #include "BalanceLabController.h"
 #include "BalanceRuntime.h"
 #include "../simulator/Jumper.h"
@@ -18,7 +19,7 @@
 #include <cmath>
 
 namespace {
-QString directory(){const auto root=QCoreApplication::instance()->property("balanceLabStorageRoot").toString();return root.isEmpty()?QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/balance-lab":root;}
+QString directory(){const auto root=QCoreApplication::instance()->property("balanceLabStorageRoot").toString();return root.isEmpty()?UserDataPaths::path("Tools/BalanceLab"):root;}
 QJsonObject read(const QString &path){QFile f(path);return f.open(QIODevice::ReadOnly)?QJsonDocument::fromJson(f.readAll()).object():QJsonObject();}
 bool write(const QString &path,const QJsonObject &object){QDir().mkpath(QFileInfo(path).absolutePath());QSaveFile f(path);const auto data=QJsonDocument(object).toJson(QJsonDocument::Compact);return f.open(QIODevice::WriteOnly) && f.write(data)==data.size() && f.commit();}
 QJsonObject variant(const QJsonObject &c,int index){return c["variants"].toArray().at(index).toObject();}

@@ -1,3 +1,4 @@
+#include "../../global/UserDataPaths.h"
 #include "SimulationSavesWindow.h"
 #include "ui_SimulationSavesWindow.h"
 
@@ -28,11 +29,8 @@ namespace
 {
 QDir simulationSavesDirectory()
 {
-    QDir directory(QCoreApplication::applicationDirPath());
-    if(!directory.exists("userData") && QSysInfo::productType() == "windows")
-        directory.cdUp();
-    directory.mkpath("simulationSaves");
-    return QDir(directory.absoluteFilePath("simulationSaves"));
+    QDir().mkpath(UserDataPaths::saves());
+    return QDir(UserDataPaths::saves());
 }
 }
 

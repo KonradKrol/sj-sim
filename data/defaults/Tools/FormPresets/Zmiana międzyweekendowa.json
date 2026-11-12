@@ -1,0 +1,11 @@
+{
+    "jumper-form-generator-settings-preset": {
+        "name": "Zmiana międzyweekendowa",
+        "settings": {
+            "form-bonus": 0,
+            "form-variability": 1,
+            "max-form": 100,
+            "min-form": 0
+        }
+    }
+}

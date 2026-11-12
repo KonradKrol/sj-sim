@@ -1,3 +1,4 @@
+#include "UserDataPaths.h"
 #include "AtomicJsonFile.h"
 #include <QObject>
 #include "GlobalAppSettings.h"
@@ -131,10 +132,11 @@ void GlobalAppSettings::setLanguageID(const short &newLanguageID)
 
 bool GlobalAppSettings::loadFromJson()
 {
-    QFile file("userData/Settings/appSettings.json");
+    QFile file(UserDataPaths::path("Settings/app.json"));
+    if(!file.exists())return true;
     if(!file.open(QFile::ReadOnly | QFile::Text))
     {
-        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z ustawieniami aplikacji"), QObject::tr("Nie udało się otworzyć pliku userData/Settings/appSettings.json\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Nie można otworzyć pliku z ustawieniami aplikacji"), QObject::tr("Nie udało się otworzyć pliku ustawień aplikacji\nUpewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia"),  QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return false;
@@ -143,7 +145,7 @@ bool GlobalAppSettings::loadFromJson()
     QJsonDocument document = QJsonDocument::fromJson(file.readAll(), &error);
     if(error.error != QJsonParseError::NoError)
     {
-        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu ustawień aplikacji"), QObject::tr("Nie udało się wczytać ustawień aplikacji z pliku userData/Settings/appSettings.json\nTreść błędu: ") + error.errorString(), QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu ustawień aplikacji"), QObject::tr("Nie udało się wczytać ustawień aplikacji z pliku ustawień aplikacji\nTreść błędu: ") + error.errorString(), QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return false;
@@ -191,5 +193,5 @@ bool GlobalAppSettings::writeToJson()
     mainObject.insert("settings", settingsObject);
     document.setObject(mainObject);
 
-    return AtomicJsonFile::write("userData/Settings/appSettings.json",document);
+    return AtomicJsonFile::write(UserDataPaths::path("Settings/app.json"),document);
 }

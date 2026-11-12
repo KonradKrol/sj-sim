@@ -226,7 +226,7 @@ QVector<Hill> Hill::getVectorFromJson(const QByteArray &bytes)
     QJsonDocument document = QJsonDocument::fromJson(bytes, &error);
     if(error.error != QJsonParseError::NoError)
     {
-        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu skoczni"), QObject::tr("Nie udało się wczytać skoczni z pliku userData/GlobalDatabase/globalHills.json\nTreść błędu: ") + error.errorString(), QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu skoczni"), QObject::tr("Nie udało się wczytać skoczni\nTreść błędu: ") + error.errorString(), QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return hills;

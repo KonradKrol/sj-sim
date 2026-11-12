@@ -39,6 +39,9 @@ class DatabaseEditorWindow : public QDialog
     Q_OBJECT
 
 public:
+    Q_INVOKABLE bool prepareResourceImport();
+    Q_INVOKABLE void finishResourceImport(const QStringList &installed);
+
     explicit DatabaseEditorWindow(QWidget *parent = nullptr);
     ~DatabaseEditorWindow();
     void reject() override;

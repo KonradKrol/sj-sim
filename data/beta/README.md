@@ -1,9 +1,9 @@
-# Paczki startowe bety
+# Dawne zasoby bety
 
-Przygotowana wersja Windows i Linux zawiera jeden zestaw: 83 skoczków, 128 skoczni oraz paczkę zasad z punktacjami. Źródłem dla userData/GlobalDatabase/packs.json jest packs.json; kopie do edycji i bieżący wybór są w Packs/. Zawartość profili w obu miejscach musi być identyczna.
+Źródłem paczek i presetów dla nowych buildów jest teraz **`data/defaults/`**.
+Ten folder zachowuje kalibrację `default-balance.json` używaną przez silnik oraz
+starsze dane jako fixture istniejących testów. Paczki z tego folderu nie są
+kopiowane do dystrybucji.
 
-Po uruchomieniu aplikacja korzysta z userData/Packs/Athletes/, userData/Packs/Hills/ oraz userData/Packs/catalog.json w folderze aplikacji. Zdjęcia należą do folderu konkretnej paczki skoczków; informacje o ich źródłach znajdują się w nim razem ze zdjęciami.
-
-Paczki w AppData nie są automatycznie wczytywane ani usuwane. Można je wczytać przez edytor paczek. Ponowne uruchomienie nie zastępuje edycji gracza plikami bety. Stare pliki userData/GlobalDatabase są zachowywane dla zgodności z funkcjami korzystającymi ze starszej struktury.
-
-Kalendarze startowe: Official-WC, Official-LGP, LGP2023, LGP2024, PŚ2023-24 i PŚ2024-25. Paczki skoczków i skoczni zaktualizowano z aktywnej instalacji deweloperskiej 11.11.2026.
+Opis nowej biblioteki, zasobów pustej instalacji i udostępniania:
+[docs/RESOURCE_LIBRARY.md](../../docs/RESOURCE_LIBRARY.md).

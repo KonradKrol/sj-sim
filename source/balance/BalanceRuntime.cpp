@@ -1,3 +1,4 @@
+#include "../global/UserDataPaths.h"
 #include "BalanceRuntime.h"
 #include "BalanceLabModel.h"
 #include <QStandardPaths>
@@ -21,9 +22,7 @@ QString loadedPath,loadError,notifiedError;
 QString path(){
     const auto root=QCoreApplication::instance()->property("balanceLabStorageRoot").toString();
     if(!root.isEmpty())return root+"/active.json";
-    const auto portable=QCoreApplication::applicationDirPath()+"/userData/BalanceLab";
-    if(QDir(portable).exists())return portable+"/active.json";
-    return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/balance-lab/active.json";
+    return UserDataPaths::path("Tools/BalanceLab/active.json");
 }
 void load(){
     const auto filePath=path();const QFileInfo info(filePath);

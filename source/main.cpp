@@ -1,3 +1,7 @@
+#include "UI/Library/ResourceLibraryWindow.h"
+#include "global/UserDataPaths.h"
+#include <QTemporaryDir>
+#include <memory>
 #include "UI/mainwindow.h"
 #include "playground/PlaygroundExperiment.h"
 #include <cstring>
@@ -52,19 +56,25 @@ int main(int argc, char *argv[])
     }
     QApplication::setWindowIcon(QIcon(":/sj-sim.png"));
 
-    // Data files are deliberately shipped beside the executable. Do not rely
-    // on the shell/shortcut choosing that directory as its working directory.
+    // Defaults and runtime assets are shipped beside the executable; editable
+    // resources live in the chosen library, independently of the working directory.
+    QString packageToOpen;
+    for(const auto &argument:a.arguments().mid(1))if(argument.endsWith(".sjsim-pack",Qt::CaseInsensitive)){packageToOpen=QFileInfo(argument).absoluteFilePath();break;}
     QDir::setCurrent(QCoreApplication::applicationDirPath());
 
-    // All portable data and pack editors share one lock for this installation.
-    QDir().mkpath("userData");
-    QLockFile dataLock(QDir("userData").absoluteFilePath(".sj-sim.lock"));
+    std::unique_ptr<QTemporaryDir> smokeData;
+    if(deploymentSmoke){smokeData=std::make_unique<QTemporaryDir>();a.setProperty("sjSimDataRoot",smokeData->path());}
+    QDir().mkpath(UserDataPaths::root());
+    QLockFile dataLock(UserDataPaths::path(".sj-sim.lock"));
     if(!dataLock.tryLock(0)) {
         QMessageBox::warning(nullptr, QObject::tr("Sj.Sim jest już uruchomiony"),
             QObject::tr("Dane gry lub paczki edytorów są używane przez inną instancję Sj.Sim albo nie można ich zapisać.\nZamknij poprzednie okno Sj.Sim i spróbuj ponownie."));
         return 1;
     }
     deploymentTrace("Data lock acquired");
+    QString libraryError;
+    if(!UserDataPaths::initialize(libraryError)){QMessageBox::critical(nullptr,QObject::tr("Folder danych"),libraryError);return 2;}
+
 
     if(!GlobalAppSettings::get()->loadFromJson())
         qWarning() << "Application settings could not be loaded; keeping safe defaults.";
@@ -84,6 +94,7 @@ int main(int argc, char *argv[])
     deploymentTrace("Quick UI created");
 #endif
     w.show();
+    if(!packageToOpen.isEmpty())QTimer::singleShot(0,&w,[&w,packageToOpen]{auto *library=new ResourceLibraryWindow(&w);library->setAttribute(Qt::WA_DeleteOnClose);library->show();library->importFile(packageToOpen);});
     if(a.arguments().contains("--deployment-smoke")) {
         QTimer::singleShot(1500,&a,[&] {
 #ifdef SJ_QUICK_UI
@@ -102,5 +113,7 @@ int main(int argc, char *argv[])
         QTimer::singleShot(0, &w, [&w] {
             QMetaObject::invokeMethod(&w, "on_pushButton_singleCompetition_clicked");
         });
-    return a.exec();
+    const int result=a.exec();
+    QString relocationError;if(!UserDataPaths::finishRelocation(relocationError))QMessageBox::warning(nullptr,QObject::tr("Folder danych"),relocationError);
+    return result;
 }

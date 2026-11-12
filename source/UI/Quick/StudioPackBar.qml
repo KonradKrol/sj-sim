@@ -7,7 +7,11 @@ ColumnLayout {
     property var backend
     property bool athletes: false
     spacing: Theme.dp(4)
-    Label { text: bar.athletes ? qsTr("Paczka skoczków") : qsTr("Paczka skoczni"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
+    RowLayout {
+        Layout.fillWidth: true
+        Label { text: bar.athletes ? qsTr("Paczka skoczków") : qsTr("Paczka skoczni"); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
+        SButton { text: qsTr("Biblioteka"); quiet: true; dense: true; onClicked: ui.openResourceLibrary() }
+    }
     GridLayout {
         Layout.fillWidth: true; columns: width>Theme.dp(700)?4:3; columnSpacing: Theme.dp(8); rowSpacing: Theme.dp(6)
         SChoice {
@@ -53,7 +57,7 @@ ColumnLayout {
                 }
                 Label { text: qsTr("Zarządzanie paczkami"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true }
                 Label {
-                    text: bar.athletes ? qsTr("Eksport tworzy folder ze skoczkami i zdjęciami. Udostępnij cały folder; przy imporcie wybierz plik pack.json w jego wnętrzu.") : qsTr("Eksport tworzy jeden plik paczki skoczni. Aby go wczytać, wybierz ten plik przy imporcie.")
+                    text: qsTr("Udostępnij plik .sjsim-pack. Zdjęcia są dołączane do paczki. W Bibliotece możesz połączyć różne zasoby w jednym pliku.")
                     color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; wrapMode: Text.WordWrap
                 }
                 Flow {

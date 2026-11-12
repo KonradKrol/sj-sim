@@ -24,8 +24,8 @@ struct CatalogPaths {
     static CatalogPaths defaults();
 };
 
-// Profile files are authoritative. The selection file stores only order/IDs;
-// rule packs are read from the compatible legacy rules source supplied by caller.
+// Separate profile and rule files are authoritative. The selection file stores
+// only order/IDs. No installation or legacy database files are imported.
 class SimulationCatalog {
 public:
     explicit SimulationCatalog(CatalogPaths = CatalogPaths::defaults());

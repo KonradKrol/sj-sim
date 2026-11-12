@@ -6,6 +6,7 @@ Rectangle {
     id: home
     readonly property bool editorial: !Theme.compact && width >= 1100 && height >= 900
     color: Theme.background
+    DropArea { anchors.fill: parent; onEntered: if(!drag.hasUrls || drag.urls.length!==1 || !String(drag.urls[0]).toLowerCase().endsWith(".sjsim-pack"))drag.accepted=false; onDropped: ui.importResourcePackage(String(drop.urls[0])) }
     HomeWelcome {}
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true

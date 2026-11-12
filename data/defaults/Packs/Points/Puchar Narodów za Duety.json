@@ -1,0 +1,15 @@
+{
+    "points-for-places-preset": {
+        "name": "Puchar Narodów za Duety",
+        "pointsForPlaces": [
+            200,
+            175,
+            150,
+            125,
+            100,
+            75,
+            50,
+            25
+        ]
+    }
+}

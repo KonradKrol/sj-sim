@@ -1,3 +1,5 @@
+#include "Library/ResourceLibraryWindow.h"
+#include "../global/UserDataPaths.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -200,6 +202,8 @@ void MainWindow::on_pushButton_reportIssue_clicked()
     QDesktopServices::openUrl(QUrl("https://github.com/SiekamCebule/sj-sim/issues/new"));
 }
 
+void MainWindow::showResourceLibrary(){auto *library=new ResourceLibraryWindow(this);library->setAttribute(Qt::WA_DeleteOnClose);library->show();}
+
 void MainWindow::showWelcome()
 {
     QSettings().setValue("onboarding/welcomeDismissed",false);
@@ -210,9 +214,8 @@ void MainWindow::startExampleSeason()
     if(property("exampleSeasonPreparing").toBool())return;
     auto *database=GlobalDatabase::get();
     if(!database->getLoadedSimulationSaves()){database->loadSimulationSaves(true);database->setLoadedSimulationSaves(true);}
-    QDir root(QCoreApplication::applicationDirPath());if(!root.exists("userData") && QSysInfo::productType()=="windows")root.cdUp();
     const QString testRoot=qApp->property("exampleSeasonStorageRoot").toString();
-    const QString directory=(testRoot.isEmpty()?root.absoluteFilePath("simulationSaves"):testRoot)+"/";QStringList names;
+    const QString directory=(testRoot.isEmpty()?UserDataPaths::saves():testRoot)+"/";QStringList names;
     for(auto *save:database->getEditableGlobalSimulationSaves())if(save)names.append(save->getName());
     for(const auto &file:QDir(directory).entryInfoList({"*.json"},QDir::Files))names.append(file.completeBaseName());
     auto *setup=new NewSimulationSaveConfigurationWindow(names,this);auto *poll=new QTimer(setup);poll->setInterval(40);

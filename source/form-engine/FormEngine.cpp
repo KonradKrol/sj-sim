@@ -1,3 +1,4 @@
+#include "../global/UserDataPaths.h"
 #include "FormEngine.h"
 #include <QCoreApplication>
 #include <QFile>
@@ -48,7 +49,7 @@ void drift(State &s,double days,SimulationV2::RandomSource &rng,const Config &c)
     const double a=std::exp2(-days/c.baseHalfLife);
     s.base=bounded(c.centers[s.regime]+a*(s.base-c.centers[s.regime])+rng.normal(0,c.baseDeviation*std::sqrt(-std::expm1(-2*std::log(2.)*days/c.baseHalfLife))));
 }
-QString configPath(){const auto override=QCoreApplication::instance()?QCoreApplication::instance()->property("formEngineStorageRoot").toString():QString();return (override.isEmpty()?QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/form-engine":override)+"/default.json";}
+QString configPath(){const auto override=QCoreApplication::instance()?QCoreApplication::instance()->property("formEngineStorageRoot").toString():QString();return (override.isEmpty()?UserDataPaths::path("Tools/FormEngine"):override)+"/default.json";}
 }
 Config Config::withVariability(int level) const {
     Config result=*this;

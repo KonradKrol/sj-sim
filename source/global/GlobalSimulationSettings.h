@@ -11,14 +11,14 @@ private:
     static thread_local GlobalSimulationSettings *threadSettings;
 
 private:
-    int maxSkills;
-    double simulationRandomMultiplier;
-    double hillsEffectsMultiplier;
-    bool autoAdjustHillEffects;
-    bool updateGlobalDatabaseRecords;
-    int baseDsqProbability;
-    double takeoffFormEffect;
-    double flightFormEffect;
+    int maxSkills=100;
+    double simulationRandomMultiplier=.79;
+    double hillsEffectsMultiplier=1.42;
+    bool autoAdjustHillEffects=false;
+    bool updateGlobalDatabaseRecords=false;
+    int baseDsqProbability=135;
+    double takeoffFormEffect=.18;
+    double flightFormEffect=.18;
 
 public:
     struct Snapshot {

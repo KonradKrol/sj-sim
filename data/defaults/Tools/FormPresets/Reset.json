@@ -1,0 +1,11 @@
+{
+    "jumper-form-generator-settings-preset": {
+        "name": "Reset",
+        "settings": {
+            "form-bonus": 0,
+            "form-variability": 0,
+            "max-form": 50,
+            "min-form": 50
+        }
+    }
+}

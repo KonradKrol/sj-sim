@@ -1,3 +1,4 @@
+#include "UserDataPaths.h"
 #include "AtomicJsonFile.h"
 #include <QObject>
 #include "PointsForPlacesPreset.h"
@@ -53,7 +54,7 @@ QVector<PointsForPlacesPreset> PointsForPlacesPreset::getPointsForPlacesPresetsV
     QJsonDocument document = QJsonDocument::fromJson(bytes, &error);
     if(error.error != QJsonParseError::NoError)
     {
-        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu presetów punktów za miejsca"), QObject::tr("Nie udało się wczytać presetów z pliku userData/GlobalDatabase/globalPointsForPlacesPresets.json\nTreść błędu: ") + error.errorString(),  QMessageBox::StandardButton::Ok);
+        QMessageBox message(QMessageBox::Icon::Critical, QObject::tr("Błąd przy wczytytywaniu presetów punktów za miejsca"), QObject::tr("Nie udało się wczytać punktacji\nTreść błędu: ") + error.errorString(),  QMessageBox::StandardButton::Ok);
         message.setModal(true);
         message.exec();
         return presets;
@@ -100,7 +101,7 @@ bool PointsForPlacesPreset::saveToFile(QString dir)
 
 PointsForPlacesPreset PointsForPlacesPreset::loadFromJson(QString fileName)
 {
-    QFile file("userData/GlobalDatabase/pointsForPlacesPresets/" + fileName);
+    QFile file(UserDataPaths::path("Packs/Points/") + fileName);
     file.open(QFile::ReadOnly | QFile::Text);
     QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
     file.close();

@@ -1,0 +1,14 @@
+{
+  "format": "sj-sim-simulation-v2-catalog",
+  "version": 1,
+  "active": [
+    "31c2add1-69e3-4b68-8262-81747d86ddd6",
+    "d1759190-45e8-415f-9b48-053256fee702",
+    "947c7732-beeb-4dca-b836-91b3b8e0caa6"
+  ],
+  "order": [
+    "0/31c2add1-69e3-4b68-8262-81747d86ddd6",
+    "1/d1759190-45e8-415f-9b48-053256fee702",
+    "2/947c7732-beeb-4dca-b836-91b3b8e0caa6"
+  ]
+}

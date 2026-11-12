@@ -1,0 +1,1296 @@
+{
+  "calendar-preset": {
+    "calendar": {
+      "classifications": [
+        {
+          "alt-points-for-places": [],
+          "classification-type": 0,
+          "id": "4a772bf1-1e15-4353-b9c6-0f3672ff2090",
+          "name": "Letnie Grand Prix",
+          "points-for-places": [
+            100,
+            80,
+            60,
+            50,
+            45,
+            40,
+            36,
+            32,
+            29,
+            26,
+            24,
+            22,
+            20,
+            18,
+            16,
+            15,
+            14,
+            13,
+            12,
+            11,
+            10,
+            9,
+            8,
+            7,
+            6,
+            5,
+            4,
+            3,
+            2,
+            1
+          ],
+          "punctation-type": 0,
+          "results": [],
+          "scoring-options": {
+            "age-filter": false,
+            "context-parameters": false,
+            "country-count": 1,
+            "country-exclude": false,
+            "country-selection": 0,
+            "include-unknown-age": false,
+            "maximum-age": 100,
+            "methods": [],
+            "minimum-age": 1,
+            "reference-year": 2026
+          }
+        },
+        {
+          "alt-points-for-places": [
+            100,
+            80,
+            60,
+            50,
+            45,
+            40,
+            36,
+            32,
+            29,
+            26,
+            24,
+            22,
+            20,
+            18,
+            16,
+            15,
+            14,
+            13,
+            12,
+            11,
+            10,
+            9,
+            8,
+            7,
+            6,
+            5,
+            4,
+            3,
+            2,
+            1
+          ],
+          "classification-type": 1,
+          "id": "5d1027c7-b244-4a96-86a3-a2aecbe52b6b",
+          "name": "Puchar Narodów LGP",
+          "points-for-places": [
+            400,
+            350,
+            300,
+            250,
+            200,
+            150,
+            100,
+            50
+          ],
+          "punctation-type": 0,
+          "results": [],
+          "scoring-options": {
+            "age-filter": false,
+            "context-parameters": true,
+            "country-count": 1,
+            "country-exclude": false,
+            "country-selection": 0,
+            "include-unknown-age": false,
+            "maximum-age": 100,
+            "methods": [],
+            "minimum-age": 1,
+            "reference-year": 2026
+          }
+        }
+      ],
+      "competitions": [
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "f6fbf032-c8c5-432c-86fc-dbae7f761606",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "d8e0467f-592b-4239-9caa-450e462ff468",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": false,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": false,
+            "id": "f8abb3e3-17f3-4f67-b220-177bff1beece",
+            "judges-points": false,
+            "jumpers-in-team-count": 0,
+            "name": "Training/Trial",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": false
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-08-01",
+          "serie-type": 3,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "ce8e764e-edba-4ea9-847f-61d3b89d678f",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "de9b91ba-9031-4b42-921a-c5291e2c3452",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": false,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": false,
+            "id": "a0215783-163e-4ed1-a782-0c6d33b15db1",
+            "judges-points": false,
+            "jumpers-in-team-count": 0,
+            "name": "Training/Trial",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": false
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-08-01",
+          "serie-type": 3,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [
+            "4a772bf1-1e15-4353-b9c6-0f3672ff2090",
+            "5d1027c7-b244-4a96-86a3-a2aecbe52b6b"
+          ],
+          "exceptional-rounds-count": 0,
+          "id": "d5f92297-6d51-49d2-aaeb-850ef42ee4e1",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "609c2b0e-2862-4202-a8e5-1c73afb22470",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": true,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": true,
+            "id": "14aeb754-7375-43c9-97e1-c94bdaf7fc85",
+            "judges-points": true,
+            "jumpers-in-team-count": 0,
+            "name": "WC",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 3,
+                "sort-start-list": false
+              },
+              {
+                "count": 30,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": true
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-08-01",
+          "serie-type": 0,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": [
+            "f6fbf032-c8c5-432c-86fc-dbae7f761606",
+            "ce8e764e-edba-4ea9-847f-61d3b89d678f"
+          ]
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "747ec3e8-f2a9-4177-8335-8d1ad6c7427d",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "a004795f-1ecf-412c-b80e-eb4cf88c0499",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": true,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": true,
+            "id": "fd040b8c-bc17-4595-bbe5-494483d91022",
+            "judges-points": true,
+            "jumpers-in-team-count": 0,
+            "name": "Qualifications",
+            "rounds": [
+              {
+                "count": 100,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": false
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-08-02",
+          "serie-type": 1,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "advancement-competition-id": "747ec3e8-f2a9-4177-8335-8d1ad6c7427d",
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [
+            "4a772bf1-1e15-4353-b9c6-0f3672ff2090",
+            "5d1027c7-b244-4a96-86a3-a2aecbe52b6b"
+          ],
+          "exceptional-rounds-count": 0,
+          "id": "9368adfb-f44e-4002-9794-a53ea8e8c39e",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "8da7f09d-a173-447e-9245-705e104dc677",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": true,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": true,
+            "id": "8dfe90af-717f-49cf-a29e-239ed36fe2c4",
+            "judges-points": true,
+            "jumpers-in-team-count": 0,
+            "name": "WC",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 3,
+                "sort-start-list": false
+              },
+              {
+                "count": 30,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": true
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-08-02",
+          "serie-type": 0,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "47ab5cf6-2e0f-4586-9aaa-a11af6f91c76",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "4822bbb0-ea5e-4033-96a5-80f35c24818e",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": false,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": false,
+            "id": "63b5b0e2-20ba-4e70-94c7-648e15136ec2",
+            "judges-points": false,
+            "jumpers-in-team-count": 0,
+            "name": "Training/Trial",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": false
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-08-08",
+          "serie-type": 3,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "3df251c6-c406-4651-a4a9-a6e3e849a3ad",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "3fbadb48-afdf-456b-8913-06097d185c13",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": false,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": false,
+            "id": "7f57a90e-be5b-4b58-bd11-a9d889bc2600",
+            "judges-points": false,
+            "jumpers-in-team-count": 0,
+            "name": "Training/Trial",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": false
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-08-08",
+          "serie-type": 3,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [
+            "4a772bf1-1e15-4353-b9c6-0f3672ff2090",
+            "5d1027c7-b244-4a96-86a3-a2aecbe52b6b"
+          ],
+          "exceptional-rounds-count": 0,
+          "id": "3994d430-6672-45d6-ac0f-715606834b14",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "e1d86d8c-c3b0-4a50-95fe-fb440effeb36",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": true,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": true,
+            "id": "5ce0a104-669b-4d48-b94f-4222d83a0307",
+            "judges-points": true,
+            "jumpers-in-team-count": 0,
+            "name": "WC",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 3,
+                "sort-start-list": false
+              },
+              {
+                "count": 30,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": true
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-08-08",
+          "serie-type": 0,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": [
+            "47ab5cf6-2e0f-4586-9aaa-a11af6f91c76",
+            "3df251c6-c406-4651-a4a9-a6e3e849a3ad"
+          ]
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "2f5409ba-6cd1-457a-8b0f-8644b99e0ca6",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "8a1f5b11-8870-410d-8bfa-0817af0ef65d",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": true,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": true,
+            "id": "41cbedcb-1f95-491d-a006-26207943a04f",
+            "judges-points": true,
+            "jumpers-in-team-count": 0,
+            "name": "Qualifications",
+            "rounds": [
+              {
+                "count": 100,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": false
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-08-09",
+          "serie-type": 1,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "advancement-competition-id": "2f5409ba-6cd1-457a-8b0f-8644b99e0ca6",
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [
+            "4a772bf1-1e15-4353-b9c6-0f3672ff2090",
+            "5d1027c7-b244-4a96-86a3-a2aecbe52b6b"
+          ],
+          "exceptional-rounds-count": 0,
+          "id": "37015011-4993-4614-ad71-db0f3e161393",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "c5e6684f-55dc-40e5-acbb-9f003e1ffacf",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": true,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": true,
+            "id": "b15a77d5-e2ab-433e-b17f-03611cc671e7",
+            "judges-points": true,
+            "jumpers-in-team-count": 0,
+            "name": "WC",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 3,
+                "sort-start-list": false
+              },
+              {
+                "count": 30,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": true
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-08-09",
+          "serie-type": 0,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "a9b0d1bd-4d62-47f2-85b8-6d3560fcc4dc",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "f725923f-6e4e-477d-8cdb-ba55def1509a",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": false,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": false,
+            "id": "fb8b1ada-6016-4117-9b96-a28b6f3640ff",
+            "judges-points": false,
+            "jumpers-in-team-count": 0,
+            "name": "Training/Trial",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": false
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-09-19",
+          "serie-type": 3,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "90e9b96f-0ef2-4d40-9194-dc1607472793",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "f99d1244-91e2-4260-bead-20eb79be2989",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": false,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": false,
+            "id": "e053217e-7baf-446d-992c-968ae91af084",
+            "judges-points": false,
+            "jumpers-in-team-count": 0,
+            "name": "Training/Trial",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": false
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-09-19",
+          "serie-type": 3,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [
+            "4a772bf1-1e15-4353-b9c6-0f3672ff2090",
+            "5d1027c7-b244-4a96-86a3-a2aecbe52b6b"
+          ],
+          "exceptional-rounds-count": 0,
+          "id": "4028aa0f-ade7-4a6f-a062-21c0d94dc7e6",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "8fd0d91c-6d3d-402c-97a1-8b371a42d870",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": true,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": true,
+            "id": "7db731c6-00ee-4181-830a-eb5946582fd1",
+            "judges-points": true,
+            "jumpers-in-team-count": 0,
+            "name": "WC",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 3,
+                "sort-start-list": false
+              },
+              {
+                "count": 30,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": true
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-09-19",
+          "serie-type": 0,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": [
+            "a9b0d1bd-4d62-47f2-85b8-6d3560fcc4dc",
+            "90e9b96f-0ef2-4d40-9194-dc1607472793"
+          ]
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "662774a3-2e1f-4f24-b9b5-76216a6d20a6",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "ddd927af-a47c-4b6f-b2c8-7fea6ac09ee0",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": false,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": false,
+            "id": "5a30ff9b-602b-4ddc-83ca-ab233bc95ff7",
+            "judges-points": false,
+            "jumpers-in-team-count": 0,
+            "name": "Training/Trial",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": false
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-09-20",
+          "serie-type": 2,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [
+            "4a772bf1-1e15-4353-b9c6-0f3672ff2090",
+            "5d1027c7-b244-4a96-86a3-a2aecbe52b6b"
+          ],
+          "exceptional-rounds-count": 0,
+          "id": "c68118ca-e6d5-4bc7-b67a-046ba4c5d8e7",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "cb567319-13df-4f23-9279-8494552147f2",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": true,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": true,
+            "id": "aaddbb62-2f30-4362-a4e3-7df27304cabd",
+            "judges-points": true,
+            "jumpers-in-team-count": 0,
+            "name": "WC",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 3,
+                "sort-start-list": false
+              },
+              {
+                "count": 30,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": true
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-09-20",
+          "serie-type": 0,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": [],
+          "trial-round-id": "662774a3-2e1f-4f24-b9b5-76216a6d20a6"
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "e2875c75-1e50-4c45-acaf-1a80ada2ace3",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "ceb42998-962f-49fa-a6e7-3a53bc88ed18",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": false,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": false,
+            "id": "2659cca0-72c0-45a9-90ce-08de06798671",
+            "judges-points": false,
+            "jumpers-in-team-count": 0,
+            "name": "Training/Trial",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": false
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-10-23",
+          "serie-type": 3,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "66415dc9-5323-4229-b99e-06bdc03bb517",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "bae12903-674c-424e-91fb-3328fd5dddb9",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": false,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": false,
+            "id": "daa965d9-487c-4237-8615-37e78344782b",
+            "judges-points": false,
+            "jumpers-in-team-count": 0,
+            "name": "Training/Trial",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": false
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-10-23",
+          "serie-type": 3,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        },
+        {
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [],
+          "exceptional-rounds-count": 0,
+          "id": "ed1948b9-f99a-4495-9057-4cd161550f21",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "460c3b54-c77d-46a0-b1c3-5fbac436854e",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": true,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": true,
+            "id": "0b1ac935-9fc2-4c7e-9a76-4e95f1351cc3",
+            "judges-points": true,
+            "jumpers-in-team-count": 0,
+            "name": "Qualifications",
+            "rounds": [
+              {
+                "count": 100,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": false
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-10-23",
+          "serie-type": 1,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": [
+            "e2875c75-1e50-4c45-acaf-1a80ada2ace3",
+            "66415dc9-5323-4229-b99e-06bdc03bb517"
+          ]
+        },
+        {
+          "advancement-competition-id": "ed1948b9-f99a-4495-9057-4cd161550f21",
+          "cancelled": false,
+          "classification-scoring": {},
+          "classifications-ids": [
+            "4a772bf1-1e15-4353-b9c6-0f3672ff2090",
+            "5d1027c7-b244-4a96-86a3-a2aecbe52b6b"
+          ],
+          "exceptional-rounds-count": 0,
+          "id": "313841f3-4ae3-4b8c-8d2f-c088f24dfa3d",
+          "jumps-importance": 5,
+          "played": false,
+          "results": {
+            "id": "6ef83df6-c776-4852-addf-3961c7bda8b3",
+            "results": []
+          },
+          "rounds-ko-groups": [],
+          "rules": {
+            "95-hs-rule": true,
+            "competition-type": 0,
+            "dsq": true,
+            "gate-compensations": true,
+            "hill-record-breaking": true,
+            "id": "5364803e-2947-4cd5-b1d5-46e37c564b21",
+            "judges-points": true,
+            "jumpers-in-team-count": 0,
+            "name": "WC",
+            "rounds": [
+              {
+                "count": 50,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 3,
+                "sort-start-list": false
+              },
+              {
+                "count": 30,
+                "ko": false,
+                "ko-group-advancing": 0,
+                "ko-group-count": 1,
+                "ko-groups-selection-type": 0,
+                "previous-rounds-weights": [],
+                "reset-points": false,
+                "sort-after-groups": 0,
+                "sort-start-list": true
+              }
+            ],
+            "wind-average-calculating-type": 2,
+            "wind-compensation-distance-effect": 1,
+            "wind-compensations": true,
+            "wind-measurement-type": 3
+          },
+          "scheduled-date": "2026-10-24",
+          "serie-type": 0,
+          "simulation-model-revision": 0,
+          "start-list": [],
+          "start-list-sort-classification": "",
+          "start-list-sort-competition": "",
+          "start-list-sort-mode": 0,
+          "teams": [],
+          "training-ids": []
+        }
+      ],
+      "default-rules": {
+        "competition": null,
+        "qualifications": null,
+        "teamCompetition": null,
+        "teamTrial": null,
+        "training": null,
+        "trial": null
+      },
+      "id": "4b863729-1ccd-4232-83ce-9912c8e705f9",
+      "name": ""
+    },
+    "hills": [
+      {
+        "hs-point": 134,
+        "name": "Wisła"
+      },
+      {
+        "hs-point": 134,
+        "name": "Wisła"
+      },
+      {
+        "hs-point": 134,
+        "name": "Wisła"
+      },
+      {
+        "hs-point": 134,
+        "name": "Wisła"
+      },
+      {
+        "hs-point": 134,
+        "name": "Wisła"
+      },
+      {
+        "hs-point": 132,
+        "name": "Courchevel"
+      },
+      {
+        "hs-point": 132,
+        "name": "Courchevel"
+      },
+      {
+        "hs-point": 132,
+        "name": "Courchevel"
+      },
+      {
+        "hs-point": 132,
+        "name": "Courchevel"
+      },
+      {
+        "hs-point": 132,
+        "name": "Courchevel"
+      },
+      {
+        "hs-point": 97,
+        "name": "Rasnov"
+      },
+      {
+        "hs-point": 97,
+        "name": "Rasnov"
+      },
+      {
+        "hs-point": 97,
+        "name": "Rasnov"
+      },
+      {
+        "hs-point": 97,
+        "name": "Rasnov"
+      },
+      {
+        "hs-point": 97,
+        "name": "Rasnov"
+      },
+      {
+        "hs-point": 140,
+        "name": "Klingenthal"
+      },
+      {
+        "hs-point": 140,
+        "name": "Klingenthal"
+      },
+      {
+        "hs-point": 140,
+        "name": "Klingenthal"
+      },
+      {
+        "hs-point": 140,
+        "name": "Klingenthal"
+      }
+    ],
+    "name": "Official-LGP",
+    "schema-version": 1
+  }
+}

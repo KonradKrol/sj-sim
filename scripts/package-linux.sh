@@ -36,11 +36,8 @@ if [[ ! -x "${executable}" ]]; then
     executable="${build_path}/release/sj-sim"
 fi
 cp "${executable}" "${output_path}/usr/bin/sj-sim"
-cp -R "${repo_root}/flags" "${repo_root}/userData" "${output_path}/usr/bin/"
-cp "${repo_root}/data/beta/packs.json" "${output_path}/usr/bin/userData/GlobalDatabase/packs.json"
-rm -rf "${output_path}/usr/bin/userData/Packs"
-cp -R "${repo_root}/data/beta/Packs" "${output_path}/usr/bin/userData/"
-mkdir -p "${output_path}/usr/bin/userData/BalanceLab"
+cp -R "${repo_root}/flags" "${output_path}/usr/bin/"
+cp -R "${repo_root}/data/defaults" "${output_path}/usr/bin/Defaults"
 for language in en cs; do
     lrelease -nounfinished "${repo_root}/translations/translation_${language}.ts" \
         -qm "${output_path}/usr/bin/translations/translation_${language}.qm"
@@ -91,7 +88,10 @@ Run the application by double-clicking "Sj.Sim" or from a terminal:
     ./Sj.Sim
 
 Keep the extracted folder together; it contains the runtime and application data.
-Packs are stored in usr/bin/userData/Packs alongside this installation.
+Editable packs, calendars and saves are stored in Documents/SjSimData.
+Open or change this folder from Settings > Library.
+For portable storage, create portable.txt beside usr/bin/sj-sim before starting.
+The application then uses usr/bin/SjSimData.
 README
 
 tar -C "${repo_root}/dist" -czf "${output_archive}" \

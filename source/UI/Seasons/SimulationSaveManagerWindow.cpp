@@ -1,3 +1,4 @@
+#include "../../global/UserDataPaths.h"
 #include "../../seasons/SeasonChronology.h"
 #include <stdexcept>
 #include <QCryptographicHash>
@@ -664,7 +665,7 @@ void SimulationSaveManagerWindow::setAutosaveEnabled(bool enabled)
     const bool previous=simulationSave->getAutosaveEnabled();
     const bool pending=autosaveTimer && autosaveTimer->isActive();
     simulationSave->setAutosaveEnabled(enabled);
-    if(!simulationSave->saveToFile("simulationSaves/")){
+    if(!simulationSave->saveToFile(UserDataPaths::path("Saves/"))){
         simulationSave->setAutosaveEnabled(previous);
         if(pending && previous && autosaveTimer)autosaveTimer->start();
     } else if(autosaveTimer)autosaveTimer->stop();
@@ -1875,7 +1876,7 @@ void SimulationSaveManagerWindow::setRosterBoardOpen(bool open)
 bool SimulationSaveManagerWindow::saveSeasonChanges()
 {
     const auto revision=seasonRevision;
-    if(!simulationSave->saveToFile("simulationSaves/")){
+    if(!simulationSave->saveToFile(UserDataPaths::path("Saves/"))){
         if(autosaveTimer && simulationSave->getAutosaveEnabled())autosaveTimer->start();
         return false;
     }

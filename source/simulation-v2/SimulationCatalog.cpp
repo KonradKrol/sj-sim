@@ -1,3 +1,4 @@
+#include "../global/UserDataPaths.h"
 #include "SimulationCatalog.h"
 
 #include <QDir>
@@ -17,16 +18,7 @@ namespace {
 QString key(DataPack::Kind kind,const QString &id) {return QString::number(int(kind))+"/"+id;}
 QString key(const CatalogPack &pack) {return key(pack.data.kind,pack.data.id);}
 int count(const DataPack &pack) {return pack.kind==DataPack::Jumpers?pack.jumpers.size():pack.kind==DataPack::Hills?pack.hills.size():pack.rules.size();}
-QJsonObject authoring(const DataPack &pack)
-{
-    QJsonArray profiles;
-    for(const auto &athlete:pack.jumpers) {const auto profile=athlete.getSimulationProfile();if(!profile)return {};profiles.append(profile->toJson());}
-    for(const auto &hill:pack.hills) {const auto profile=hill.getSimulationProfile();if(!profile)return {};profiles.append(profile->toJson());}
-    QJsonObject result{{"format",pack.kind==DataPack::Jumpers?"sj-sim-athlete-pack":"sj-sim-hill-pack"},
-        {"version",1},{"id",pack.id},{"name",pack.name},{"profiles",profiles}};
-    if(!pack.approximateMigrationSource.isEmpty())result["approximate-migration-source"]=pack.approximateMigrationSource;
-    return result;
-}
+
 }
 
 const CatalogPack *CatalogSnapshot::find(DataPack::Kind kind,const QString &id) const
@@ -38,7 +30,7 @@ const CatalogPack *CatalogSnapshot::find(DataPack::Kind kind,const QString &id) 
 CatalogPaths CatalogPaths::defaults()
 {
     const QString override=QCoreApplication::instance()?QCoreApplication::instance()->property("portablePacksRoot").toString():QString();
-    const QString root=override.isEmpty()?QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("userData/Packs"):QDir(override).absolutePath();
+    const QString root=override.isEmpty()?UserDataPaths::packs():QDir(override).absolutePath();
     return {root+"/Athletes",root+"/Hills",root+"/catalog.json",QDir("jumpersImages").absolutePath()};
 }
 
@@ -60,41 +52,10 @@ bool SimulationCatalog::saveSelection(const CatalogSnapshot &snapshot,QString &e
 
 CatalogSnapshot SimulationCatalog::load(const QVector<DataPack> &legacy,double maximumSkills,const QStringList &legacyActive) const
 {
+    Q_UNUSED(legacy);Q_UNUSED(maximumSkills);Q_UNUSED(legacyActive);
     CatalogSnapshot snapshot;
     const ProfilePackRepository athleteStore(ProfilePackKind::Athletes,paths.athletes),hillStore(ProfilePackKind::Hills,paths.hills);
     auto athletes=athleteStore.load(),hills=hillStore.load();snapshot.issues=athletes.issues+hills.issues;
-    QSet<QString> migratedSources;
-    for(const auto &pack:athletes.packs)if(!pack["approximate-migration-source"].toString().isEmpty())migratedSources.insert(key(DataPack::Jumpers,pack["approximate-migration-source"].toString()));
-    for(const auto &pack:hills.packs)if(!pack["approximate-migration-source"].toString().isEmpty())migratedSources.insert(key(DataPack::Hills,pack["approximate-migration-source"].toString()));
-    for(const auto &source:legacy) {
-        if(source.kind==DataPack::Rules)continue;
-        const auto &store=source.kind==DataPack::Jumpers?athleteStore:hillStore;
-        auto &listing=source.kind==DataPack::Jumpers?athletes:hills;
-        QString error;
-        if(source.engineVersion==1 && !migratedSources.contains(key(source.kind,source.id))) {
-            QJsonObject migrated;QStringList warnings;
-            if(store.migrate(source,maximumSkills,paths.legacyPhotos,migrated,warnings,error)) {
-                listing.packs.append(migrated);snapshot.issues+=warnings;migratedSources.insert(key(source.kind,source.id));
-            } else snapshot.issues.append(source.name+": "+error);
-        } else if(source.engineVersion==2) {
-            // Preserve ready profiles from an older global-catalog import, too.
-            bool found=false;for(const auto &pack:listing.packs)if(pack["id"].toString()==source.id) {found=true;break;}
-            if(found)continue; // canonical authoring edits always take precedence
-            const auto ready=authoring(source);
-            if(ready.isEmpty())error=QObject::tr("Paczka nie zawiera kompletnych nowych profili.");
-            bool valid=!ready.isEmpty() && store.validate(ready,error);
-            if(valid && QFileInfo::exists(store.filePath(ready))) {
-                error=QObject::tr("Plik docelowy już istnieje i nie zostanie nadpisany.");valid=false;
-            }
-            if(valid)valid=store.save(ready,error,false);
-            if(!valid) {
-                snapshot.issues.append(QObject::tr("Nie przeniesiono paczki %1 do nowego katalogu: %2. Źródło pozostaje bez zmian.").arg(source.name,error));continue;
-            }
-            listing.packs.append(ready);
-            if(source.kind==DataPack::Jumpers)for(const auto &athlete:source.jumpers)
-                if(!athlete.getImageName().isEmpty()) {snapshot.issues.append(QObject::tr("Sprawdź pliki zdjęć w przeniesionej paczce %1.").arg(source.name));break;}
-        }
-    }
     const auto append=[&](const ProfilePackListing &listing,const ProfilePackRepository &store) {
         for(const auto &object:listing.packs) {
             DataPack pack;QString error;
@@ -112,7 +73,13 @@ CatalogSnapshot SimulationCatalog::load(const QVector<DataPack> &legacy,double m
         }
     };
     append(athletes,athleteStore);append(hills,hillStore);
-    for(const auto &source:legacy)if(source.kind==DataPack::Rules)snapshot.packs.append({source,{}, {}});
+    QDir rulesDirectory(QFileInfo(paths.selection).absolutePath()+"/Rules");
+    for(const auto &file:rulesDirectory.entryInfoList({"*.json"},QDir::Files)) {
+        QFile input(file.filePath());QString error;DataPack pack;
+        if(input.open(QIODevice::ReadOnly) && DataPack::fromJson(QJsonDocument::fromJson(input.readAll()).object(),pack,error) && pack.kind==DataPack::Rules)
+            snapshot.packs.append({pack,rulesDirectory.absolutePath(),{}});
+        else snapshot.issues.append(file.fileName()+": "+error);
+    }
     QJsonObject selection;QFile file(paths.selection);
     if(file.exists()) {
         QJsonParseError parse{};
@@ -141,8 +108,6 @@ CatalogSnapshot SimulationCatalog::load(const QVector<DataPack> &legacy,double m
         if(!saved.isEmpty())chosen=snapshot.find(kind,saved);
         if(!chosen && kind!=DataPack::Rules)
             for(const auto &pack:snapshot.packs)if(pack.data.kind==kind && count(pack.data)>0 && pack.data.approximateMigrationSource.isEmpty()) {chosen=&pack;break;}
-        if(!chosen && !legacyActive.value(value).isEmpty())
-            for(const auto &pack:snapshot.packs)if(pack.data.kind==kind && (pack.data.id==legacyActive[value] || pack.data.approximateMigrationSource==legacyActive[value])) {chosen=&pack;break;}
         if(!chosen)for(const auto &pack:snapshot.packs)if(pack.data.kind==kind && count(pack.data)>0) {chosen=&pack;break;}
         if(!chosen)for(const auto &pack:snapshot.packs)if(pack.data.kind==kind) {chosen=&pack;break;}
         if(chosen)snapshot.active[value]=chosen->data.id;

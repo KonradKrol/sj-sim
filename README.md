@@ -14,10 +14,12 @@ Symulator skoków narciarskich. Układasz sezon, wybierasz skoczków i skocznie,
 
 ## Uruchomienie
 
-Rozpakuj całą paczkę. Na Windows uruchom `sj-sim.exe`, na Linuksie `Sj.Sim`. Zachowaj pozostałe pliki obok programu, w tym folder `userData`. To wersja beta 2.0.0 — przed aktualizacją zrób kopię swoich danych i zapisów.
+Rozpakuj całą paczkę. Na Windows uruchom `sj-sim.exe`, na Linuksie `Sj.Sim`. Zachowaj pozostałe pliki obok programu, w tym folder `Defaults`. Paczki, kalendarze i zapisy są w `Dokumenty/SjSimData`; ustawienia → Biblioteka pozwalają otworzyć lub zmienić ten folder. To wersja beta 2.0.0 — przed aktualizacją zrób kopię swoich danych i zapisów.
 
 ## Development
 
 C++17, Qt 6 i QML; build przez qmake. [Przygotowanie Windows](docs/WINDOWS_SETUP.MD), [laboratorium](docs/BALANCE_LAB.md), [playground i CLI](docs/PLAYGROUND_V2.md).
 
 GitHub Actions buduje przenośne paczki Windows i Linux po pushu. Są dostępne w artefaktach workflow; tag `v…` dodatkowo tworzy wydanie. [Lokalna weryfikacja deployu](docs/development/DEPLOY.md).
+
+Paczkę ze zdjęciami i zależnościami udostępnisz jako jeden plik `.sjsim-pack`. [Foldery danych, import i tryb przenośny](docs/RESOURCE_LIBRARY.md).

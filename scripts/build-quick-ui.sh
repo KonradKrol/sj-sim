@@ -9,16 +9,9 @@ if [[ -d "${repo_root}/build-qml-preview/qt-dev/root/usr/lib/x86_64-linux-gnu/qt
 fi
 qmake "${repo_root}/sj-sim.pro" "$@"
 make -j"${SJ_BUILD_JOBS:-4}"
-for directory in userData flags; do
-    if [[ ! -d "${build_dir}/${directory}" ]]; then cp -a "${repo_root}/${directory}" "${build_dir}/"; fi
-done
-# Seed a fresh development installation without overwriting anyone's packs.
-if [[ ! -e "${build_dir}/userData/GlobalDatabase/packs.json" ]]; then
-    cp "${repo_root}/data/beta/packs.json" "${build_dir}/userData/GlobalDatabase/packs.json"
-fi
-if [[ ! -e "${build_dir}/userData/Packs" ]]; then
-    cp -R "${repo_root}/data/beta/Packs" "${build_dir}/userData/Packs"
-fi
+if [[ ! -d flags ]]; then cp -a "${repo_root}/flags" .; fi
+rm -rf Defaults
+cp -R "${repo_root}/data/defaults" Defaults
 mkdir -p translations
 for language in en cs; do
     lrelease -nounfinished "${repo_root}/translations/translation_${language}.ts" -qm "translations/translation_${language}.qm"

@@ -1,3 +1,5 @@
+#include "../global/ResourceBundle.h"
+#include "../UI/Library/ResourceLibraryWindow.h"
 #include "HillStudioController.h"
 #include "../simulation-v2/ProfilePackRepository.h"
 #include "../simulation-v2/SimulationCatalog.h"
@@ -85,8 +87,8 @@ void HillStudioController::undo(){if(m_undo.isEmpty())return;const auto state=m_
 void HillStudioController::redo(){if(m_redo.isEmpty())return;const auto state=m_redo.last();QString error;if(!persist(state["pack"].toObject(),error)){status(error);return;}m_undo.append(QJsonObject{{"pack",currentPack()},{"selection",m_selected}});m_packs[m_pack]=state["pack"].toObject();m_selected=state["selection"].toInt();m_redo.removeLast();m_message=tr("Ponowiono");notifyChanged();}
 bool HillStudioController::exportTo(const QString &file){QString error;if(!validatePack(currentPack(),error) || !writeJson(file,currentPack())){status(tr("Nie udało się wyeksportować paczki."));return false;}status(tr("Wyeksportowano paczkę do %1.").arg(QDir::toNativeSeparators(file)));return true;}
 bool HillStudioController::importFrom(const QString &file){QString error;QJsonObject pack;if(!SimulationV2::ProfilePackRepository(SimulationV2::ProfilePackKind::Hills,m_root).read(file,pack,error)){status(error);return false;}pack["id"]=uuid();auto entries=pack["profiles"].toArray();for(int i=0;i<entries.size();++i){auto p=entries[i].toObject();p["id"]=uuid();entries[i]=p;}pack["profiles"]=entries;if(!persist(pack,error)){status(error);return false;}m_packs.append(pack);m_pack=m_packs.size()-1;m_selected=entries.isEmpty()?-1:0;m_undo.clear();m_redo.clear();m_message=tr("Wczytano kopię paczki");notifyChanged();return true;}
-void HillStudioController::exportPack(){const auto file=QFileDialog::getSaveFileName(qobject_cast<QWidget *>(parent()),tr("Eksportuj paczkę"),{},tr("Paczka skoczni (*.json)"));if(!file.isEmpty())exportTo(file);}
-void HillStudioController::importPack(){const auto file=QFileDialog::getOpenFileName(qobject_cast<QWidget *>(parent()),tr("Importuj paczkę"),{},tr("Paczka skoczni (*.json)"));if(!file.isEmpty())importFrom(file);}
+void HillStudioController::exportPack(){const auto file=QFileDialog::getSaveFileName(qobject_cast<QWidget *>(parent()),tr("Udostępnij paczkę"),packName()+".sjsim-pack",tr("Paczka Sj.Sim (*.sjsim-pack)"));if(file.isEmpty())return;QString error;status(ResourceBundle::exportPack(file,currentPack(),{},error)?tr("Zapisano paczkę do udostępnienia."):error);}
+void HillStudioController::importPack(){const auto file=QFileDialog::getOpenFileName(qobject_cast<QWidget *>(parent()),tr("Wczytaj paczkę"),{},tr("Paczka Sj.Sim (*.sjsim-pack)"));if(file.isEmpty())return;QStringList installed;QString error;if(!ResourceLibraryWindow::installPackage(qobject_cast<QWidget *>(parent()),file,installed,error)){status(error);return;}reloadPacks();for(const auto &key:installed)if(key.startsWith("Hills/")){const auto id=QFileInfo(key.section('/',1)).completeBaseName();for(int i=0;i<m_packs.size();++i)if(m_packs[i]["id"]==id){selectPack(i);break;}break;}status(tr("Wczytano paczkę."));}
 
 void HillStudioController::notifyChanged()
 {
@@ -97,3 +99,5 @@ void HillStudioController::notifyChanged()
     }
     emit changed();
 }
+
+void HillStudioController::reloadPacks(){const auto id=currentPack()["id"].toString();const auto loaded=SimulationV2::ProfilePackRepository(SimulationV2::ProfilePackKind::Hills,m_root).load();m_packs=loaded.packs;if(m_packs.isEmpty())m_packs.append(emptyPack(tr("Nowa paczka")));m_pack=0;for(int i=0;i<m_packs.size();++i)if(m_packs[i]["id"]==id)m_pack=i;m_selected=currentPack()["profiles"].toArray().isEmpty()?-1:0;m_undo.clear();m_redo.clear();notifyChanged();}
