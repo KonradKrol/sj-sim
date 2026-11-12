@@ -806,21 +806,14 @@ QVariantMap JumperStatsWindow::report() const {
                 double totalPoints=0;
                 for(auto *competition:calendar->getCompetitionsReference()) {
                     if(!competition || competition->getSerieType()!=CompetitionInfo::Competition || competition->getCancelled())continue;
+                    if(competition->getRulesPointer()->getCompetitionType()==CompetitionRules::Team)continue;
                     auto &results=competition->getResultsReference().getResultsReference();
                     if(!competition->getPlayed() && results.isEmpty())continue;
-                    CompetitionSingleResult *result=nullptr;
-                    const bool teamEvent=competition->getRulesPointer()->getCompetitionType()==CompetitionRules::Team;
-                    if(teamEvent) {
-                        auto *team=Team::getTeamByCountryCode(&competition->getTeamsReference(),jumper->getCountryCode());
-                        if(team)result=competition->getResultsReference().getResultOfTeam(team);
-                    } else result=competition->getResultsReference().getResultOfIndividualJumper(jumper);
+                    CompetitionSingleResult *result=competition->getResultsReference().getResultOfIndividualJumper(jumper);
                     bool disqualified=false, didNotStart=false;
-                    if(result) {
-                        if(teamEvent) disqualified=result->isTeamDisqualified();
-                        else for(const auto &jump:result->getJumpsReference()) {
-                            if(jump.getDSQ()){disqualified=true;break;}
-                            if(jump.getDNS())didNotStart=true;
-                        }
+                    if(result) for(const auto &jump:result->getJumpsReference()) {
+                        if(jump.getDSQ()){disqualified=true;break;}
+                        if(jump.getDNS())didNotStart=true;
                     }
                     const bool hasResult=result && result->getPosition()>0 && !disqualified && !didNotStart;
                     if(hasResult || disqualified)hasJumperResult=true;
@@ -849,8 +842,6 @@ QVariantMap JumperStatsWindow::report() const {
                         {"flag",hill ? flag(hill->getCountryCode()) : QString()},
                         {"date",date.isValid() ? date.toString("dd.MM.yyyy") : QString()},
                         {"weekday",date.isValid() ? polish.toString(date,"dddd") : QString()},
-                        {"kind",teamEvent ? tr("Konkurs drużynowy") : tr("Konkurs indywidualny")},
-                        {"team",teamEvent},
                     });
                 }
                 if(!hasJumperResult || competitions.isEmpty())continue;

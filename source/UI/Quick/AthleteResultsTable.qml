@@ -202,7 +202,7 @@ Pane {
                 Layout.fillWidth: true
                 Layout.minimumWidth: 0
                 spacing: Theme.dp(1)
-                Label { Layout.fillWidth: true; text: root.hoveredCompetition ? qsTr("Konkurs %1 z %2 · %3").arg(root.hoveredCompetition.number).arg(root.active.count).arg(root.hoveredCompetition.kind) : ""; color: Theme.ink; font.pointSize: Theme.caption; font.bold: true; wrapMode: Text.WordWrap }
+                Label { Layout.fillWidth: true; text: root.hoveredCompetition ? qsTr("Konkurs %1 z %2").arg(root.hoveredCompetition.number).arg(root.active.count) : ""; color: Theme.ink; font.pointSize: Theme.caption; font.bold: true; wrapMode: Text.WordWrap }
                 Label { Layout.fillWidth: true; text: root.hoveredCompetition ? [root.hoveredCompetition.hill,"HS"+root.hoveredCompetition.hs].filter(function(v){return v}).join(" ") : ""; color: Theme.ink; font.pointSize: Theme.caption; wrapMode: Text.WordWrap }
                 Label { Layout.fillWidth: true; text: root.hoveredCompetition ? [root.hoveredCompetition.weekday,root.hoveredCompetition.date].filter(function(v){return v}).join(", ") : ""; color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap }
                 Label { Layout.fillWidth: true; text: root.resultLine; color: root.hoveredCompetition && root.hoveredCompetition.position>0 ? Theme.ink : Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap }
