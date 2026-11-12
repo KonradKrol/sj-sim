@@ -816,10 +816,25 @@ QVariantMap JumperStatsWindow::report() const {
                     }
                     const bool hasResult=result && result->getPosition()>0 && !disqualified && !didNotStart;
                     if(hasResult || disqualified)hasJumperResult=true;
-                    QString status, positionText=QString::fromUtf8("–");
+                    QString status, positionText=QString::fromUtf8("–"), background;
                     if(disqualified) {positionText=QStringLiteral("DSQ");status=tr("Dyskwalifikacja");}
                     else if(didNotStart) {positionText=QStringLiteral("DNS");status=tr("Nie wystartował");}
                     else if(hasResult) positionText=QString::number(result->getPosition());
+                    else if(!result && competition->getPlayed()) {
+                        CompetitionInfo *qualification=competition->getAdvancementCompetition();
+                        if(qualification && qualification->getSerieType()==CompetitionInfo::Qualifications) {
+                            CompetitionSingleResult *qualificationResult=qualification->getResultsReference().getResultOfIndividualJumper(jumper);
+                            bool qualificationDisqualified=false, qualificationDidNotStart=false;
+                            if(qualificationResult) for(const auto &jump:qualificationResult->getJumpsReference()) {
+                                if(jump.getDSQ()){qualificationDisqualified=true;break;}
+                                if(jump.getDNS())qualificationDidNotStart=true;
+                            }
+                            if(qualificationResult && !qualificationResult->getJumpsReference().isEmpty()) {
+                                if(qualificationDisqualified) {positionText=QStringLiteral("q");status=tr("Dyskwalifikacja w kwalifikacjach");background=QStringLiteral("#FFCFCF");}
+                                else if(!qualificationDidNotStart) {positionText=QStringLiteral("q");status=tr("Nie zakwalifikował się");background=QStringLiteral("#BFBFBF");}
+                            }
+                        }
+                    }
                     double points=0;
                     if(hasResult && pointsClassification) {
                         for(const auto &contribution:pointsClassification->contributions(competition))
@@ -831,6 +846,7 @@ QVariantMap JumperStatsWindow::report() const {
                         {"number",competitions.size()+1},
                         {"position",hasResult && status.isEmpty() ? result->getPosition() : 0},
                         {"positionText",positionText},
+                        {"background",background},
                         {"status",status},
                         {"points",points},
                         {"pointsText",points>0 ? numberText(points) : QString()},

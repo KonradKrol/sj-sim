@@ -154,7 +154,7 @@ Pane {
                             required property var modelData
                             required property int index
                             width: root.cellWidth; height: root.resultHeight
-                            color: root.cellColor(modelData.position)
+                            color: modelData.background ? modelData.background : root.cellColor(modelData.position)
                             border.color: root.hoverIndex===index ? Theme.accent : root.tableBorder
                             border.width: root.hoverIndex===index ? 1.5 : 1
                             Label {
