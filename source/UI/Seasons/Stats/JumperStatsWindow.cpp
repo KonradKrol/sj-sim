@@ -803,7 +803,6 @@ QVariantMap JumperStatsWindow::report() const {
                     }
                 QVariantList competitions;
                 bool hasJumperResult=false;
-                double totalPoints=0;
                 for(auto *competition:calendar->getCompetitionsReference()) {
                     if(!competition || competition->getSerieType()!=CompetitionInfo::Competition || competition->getCancelled())continue;
                     if(competition->getRulesPointer()->getCompetitionType()==CompetitionRules::Team)continue;
@@ -825,7 +824,6 @@ QVariantMap JumperStatsWindow::report() const {
                     if(hasResult && pointsClassification) {
                         for(const auto &contribution:pointsClassification->contributions(competition))
                             if(contribution.jumper==jumper){points+=contribution.points;break;}
-                        totalPoints+=points;
                     }
                     auto *hill=competition->getHill();
                     const QDate date=competition->getScheduledDate();
@@ -846,6 +844,8 @@ QVariantMap JumperStatsWindow::report() const {
                 }
                 if(!hasJumperResult || competitions.isEmpty())continue;
                 const QString calendarName=calendar->getName();
+                const auto *classificationResult=pointsClassification ? pointsClassification->getResultOfIndividualJumper(jumper) : nullptr;
+                const double totalPoints=classificationResult ? classificationResult->getPointsSum() : 0;
                 calendarTables.append(QVariantMap{
                     {"key",season.getIDStr()+"|"+calendar->getIDStr()},
                     {"label",calendarName.isEmpty() ? seasonText : seasonText+" · "+calendarName},
