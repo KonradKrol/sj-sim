@@ -24,7 +24,7 @@ Rectangle {
             Layout.fillWidth: true
             spacing: 2
             Label { visible: !header.home && !header.compactHeight && !Theme.compact && header.width >= 600; text: navigation ? navigation.path.slice(0,-1).join(" / ") : ""; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; elide: Text.ElideRight }
-            Label { text: header.home ? "SJ.SIM" : header.page ? header.page.title : ""; color: Theme.ink; font.family: header.home ? Theme.bodyFamily : Theme.displayFamily; font.weight: Font.DemiBold; font.pointSize: header.home ? Theme.body : Theme.title; Layout.fillWidth: true; elide: Text.ElideRight }
+            Label { text: header.home ? "Sj.Sim" : header.page ? header.page.title : ""; color: Theme.ink; font.family: header.home ? Theme.bodyFamily : Theme.displayFamily; font.weight: Font.DemiBold; font.pointSize: header.home ? Theme.body : Theme.title; Layout.fillWidth: true; elide: Text.ElideRight }
         }
         Loader { active: header.competition; visible: active; sourceComponent: Component { RaceViewControls { backend: header.page; wide: header.width>=1100 } } }
         SButton { objectName: "appearanceAction"; text: header.smallRace ? "◐" : qsTr("Wygląd"); Accessible.name: qsTr("Wygląd"); Layout.preferredWidth: header.smallRace ? 32 : implicitWidth; quiet: true; onClicked: navigation.showAppearance() }

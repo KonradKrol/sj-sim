@@ -2596,7 +2596,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--rule-catalog-models-only")){ruleCatalogModelRegressions();return 0;}
     MainWindow main; applicationWindow=&main; main.setParentApplication(&app); new QuickUi(&main);
     check(QApplication::font().family()=="Barlow","bundled interface font is active");
-    check(main.findChild<QuickBridge *>()->version()=="2.0.0-beta","one release version is shared with the interface");
+    check(main.findChild<QuickBridge *>()->version()=="2.0.0","one release version is shared with the interface");
     if(app.arguments().contains("--readme-screenshots")) {
         scene(&main)->rootContext()->contextProperty("appearance").value<QuickAppearance *>()->setReducedMotion(true);
         main.findChild<QuickBridge *>()->launch("dismissWelcome");QTest::qWait(600);
