@@ -459,7 +459,7 @@
   "landing.distanceStyleAboveK": 11,
   "landing.distanceStyleBelowK": 10.5,
   "landing.distanceStyleOffset": -0.7,
-  "landing.fallBase": 0.001,
+  "landing.fallBase": 0.0003,
   "landing.fallCentre": 1.093,
   "landing.fallIncrease": 1,
   "landing.fallWidth": 0.012,
