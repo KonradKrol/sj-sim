@@ -107,7 +107,11 @@ void DatabaseItemsListView::setupListModel()
     }
     listModel->setParent(this);
     ui->listView->setModel(listModel);
-    connect(ui->listView->selectionModel(), &QItemSelectionModel::currentChanged,this,[this](const QModelIndex &index){if(type==CompetitionRulesItems || type==PointsForPlacesPresetsItems)emit listViewClicked(index);});
+    connect(ui->listView->selectionModel(), &QItemSelectionModel::currentChanged,this,[this](const QModelIndex &index){
+        if(!index.isValid())return;
+        if(type==CompetitionRulesItems || type==PointsForPlacesPresetsItems)emit listViewClicked(index);
+        if(ui->listView->property("quickSingleClickEdit").toBool() && (type==SeasonJumpersItems || type==SeasonHillsItems))emit listViewDoubleClicked(index);
+    });
 }
 
 bool DatabaseItemsListView::moveItem(int from,int to)
