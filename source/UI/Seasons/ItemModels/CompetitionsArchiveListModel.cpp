@@ -6,6 +6,7 @@
 CompetitionsArchiveListModel::CompetitionsArchiveListModel(QVector<CompetitionInfo *> *seasonCompetitions, QObject *parent)
     : QAbstractListModel(parent), seasonCompetitions(seasonCompetitions)
 {
+    rebuildPlayed();
 }
 
 QVariant CompetitionsArchiveListModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -20,16 +21,7 @@ int CompetitionsArchiveListModel::rowCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
 
-    int count = 0;
-    if(seasonCompetitions != nullptr){
-    for(auto & competition : *seasonCompetitions)
-    {
-        if(competition && competition->getPlayed() == true)
-            count++;
-
-    }
-    }
-    return count;
+    return playedCompetitions.size();
 }
 
 QVariant CompetitionsArchiveListModel::data(const QModelIndex &index, int role) const
@@ -37,31 +29,9 @@ QVariant CompetitionsArchiveListModel::data(const QModelIndex &index, int role) 
     if (!index.isValid() || index.row()<0 || index.row()>=rowCount())
         return QVariant();
 
-    if(role == Qt::DisplayRole)
-    {
-        CompetitionInfo * competition = competitionAt(index.row());
-        if(competition->getPlayed() == true){
-            QString string = QString::number(index.row() + 1) + ". " + competition->getHill()->getName() + " HS" + QString::number(competition->getHill()->getHSPoint()) + " (";
-            switch(competition->getSerieType())
-            {
-            case CompetitionInfo::Competition:
-                string += tr("Konkurs");
-                break;
-            case CompetitionInfo::Qualifications:
-                string += tr("Kwalifikacje");
-                break;
-            case CompetitionInfo::TrialRound:
-                string += tr("Seria próbna");
-                    break;
-            case CompetitionInfo::Training:
-                string += tr("Trening");
-                break;
-            }
-            string += ")";
-            /*if(competition->getRulesPointer()->getCompetitionType() == CompetitionRules::Team)
-                string += tr(" --> (Konkurs drużynowy)");*/
-            return string;
-        }
+    if(role == Qt::DisplayRole) {
+        if(labelLanguage!=tr("Konkurs"))rebuildLabels();
+        return displayLabels.value(index.row());
     }
     else if(role == Qt::DecorationRole)
     {
@@ -132,11 +102,40 @@ void CompetitionsArchiveListModel::setSeasonCompetitions(QVector<CompetitionInfo
 {
     beginResetModel();
     seasonCompetitions = newSeasonCompetitions;
+    rebuildPlayed();
     endResetModel();
 }
 
+void CompetitionsArchiveListModel::rebuildPlayed() {
+    playedCompetitions.clear();
+    if(seasonCompetitions)for(auto *event:*seasonCompetitions)if(event && event->getPlayed())playedCompetitions.append(event);
+    rebuildLabels();
+}
+void CompetitionsArchiveListModel::rebuildLabels() const {
+    labelLanguage=tr("Konkurs");
+    displayLabels.clear();
+    for(int row=0;row<playedCompetitions.size();++row) {
+        auto *competition=playedCompetitions[row];
+        QString string = QString::number(row + 1) + ". " + (competition->getHill()?competition->getHill()->getName():tr("Brak skoczni")) + " HS" + QString::number(competition->getHill()?competition->getHill()->getHSPoint():0) + " (";
+        switch(competition->getSerieType())
+        {
+        case CompetitionInfo::Competition:
+            string += tr("Konkurs");
+            break;
+        case CompetitionInfo::Qualifications:
+            string += tr("Kwalifikacje");
+            break;
+        case CompetitionInfo::TrialRound:
+            string += tr("Seria próbna");
+                break;
+        case CompetitionInfo::Training:
+            string += tr("Trening");
+            break;
+        }
+        string += ")";
+        displayLabels.append(string);
+    }
+}
 CompetitionInfo *CompetitionsArchiveListModel::competitionAt(int row) const {
-    if(!seasonCompetitions || row<0)return nullptr;
-    for(auto *event:*seasonCompetitions)if(event && event->getPlayed()){if(row--==0)return event;}
-    return nullptr;
+    return playedCompetitions.value(row,nullptr);
 }

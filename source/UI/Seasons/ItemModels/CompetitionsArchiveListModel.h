@@ -28,6 +28,11 @@ public:
 
 private:
     QVector<CompetitionInfo *> * seasonCompetitions;
+    QVector<CompetitionInfo *> playedCompetitions;
+    mutable QStringList displayLabels;
+    mutable QString labelLanguage;
+    void rebuildLabels() const;
+    void rebuildPlayed();
 public:
     CompetitionInfo *competitionAt(int row) const;
     QVector<CompetitionInfo *> *getSeasonCompetitions() const;
