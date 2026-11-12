@@ -173,7 +173,9 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         ui->label_calendarName->setText(tr("BRAK"));
     ui->comboBox_archiveSeason->setCurrentIndex(0);
 
-    // Temporarily hide the athlete/hill removal warning when opening editors.
+    // Track the active library; the former removal warning remains hidden.
+    profileLibraryPage=ui->toolBox->currentIndex();
+    connect(ui->toolBox,&QTabWidget::currentChanged,this,[this](int index){profileLibraryPage=index;});
 
     //-----//
 
@@ -1703,6 +1705,31 @@ void SimulationSaveManagerWindow::on_pushButton_formGenerator_clicked()
         refreshProfileDrafts();
         markSeasonChanged();
     }
+}
+
+void SimulationSaveManagerWindow::selectSeasonProfile(const QString &id,bool hill)
+{
+    auto *list=hill?hillsListView:jumpersListView;if(!list || !list->getListModel())return;
+    int row=-1;
+    if(hill){const auto &values=simulationSave->getHillsReference();for(int i=0;i<values.size();++i)if(values[i] && values[i]->getIDStr()==id){row=i;break;}}
+    else {const auto &values=simulationSave->getJumpersReference();for(int i=0;i<values.size();++i)if(values[i] && values[i]->getIDStr()==id){row=i;break;}}
+    if(row<0)return;
+    const auto index=list->getListModel()->index(row,0);auto *selection=list->getListView()->selectionModel();
+    if(!selection)return;const bool unchanged=selection->currentIndex()==index;
+    selection->setCurrentIndex(index,QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
+    if(unchanged)emit list->listViewDoubleClicked(index);
+    emit seasonProfileSelectionChanged();
+}
+QString SimulationSaveManagerWindow::selectedSeasonProfileId(bool hill) const
+{
+    if(hill)return editedHill && simulationSave->getHillsReference().contains(editedHill)?editedHill->getIDStr():QString();
+    return editedAthlete && simulationSave->getJumpersReference().contains(editedAthlete)?editedAthlete->getIDStr():QString();
+}
+QVariantMap SimulationSaveManagerWindow::seasonLibraryState(bool hill) const {return hill?hillLibraryState:athleteLibraryState;}
+void SimulationSaveManagerWindow::rememberSeasonLibraryState(bool hill,const QVariantMap &state)
+{
+    if(profileLibraryPage!=(hill?1:0))return;
+    (hill?hillLibraryState:athleteLibraryState)=state;
 }
 
 void SimulationSaveManagerWindow::refreshProfileDrafts()

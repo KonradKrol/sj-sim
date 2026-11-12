@@ -48,6 +48,10 @@ public:
     void reject() override;
 
     void showJumperAndHillsEditingHelp();
+    Q_INVOKABLE void selectSeasonProfile(const QString &id,bool hill);
+    QString selectedSeasonProfileId(bool hill) const;
+    Q_INVOKABLE QVariantMap seasonLibraryState(bool hill) const;
+    Q_INVOKABLE void rememberSeasonLibraryState(bool hill,const QVariantMap &state);
     void fillNextCompetitionInformations();
     QVariantMap chronology() const;
     Q_INVOKABLE void goToChronologyBlocker();
@@ -101,6 +105,7 @@ public:
     void syncArchiveCalendars();
 
 signals:
+    void seasonProfileSelectionChanged();
     void chronologyChanged();
     void actualCalendarChanged();
     void editingCalendarChanged();
@@ -130,6 +135,8 @@ private:
     QTimer *autosaveTimer=nullptr;
     quint64 seasonRevision=0, savedSeasonRevision=0;
     bool loadingProfileDraft=false;
+    QVariantMap athleteLibraryState,hillLibraryState;
+    int profileLibraryPage=-1;
     SeasonCalendar *editingCalendar=nullptr;
 
     DatabaseItemsListView * jumpersListView;

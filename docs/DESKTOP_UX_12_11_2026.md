@@ -42,3 +42,26 @@ zamianę przez przeciąganie, dokładne cofnięcie składu, wybór profilu po
 przebudowie listy, obecność zakładki, cztery kroki powitania i końcowe akcje.
 Widoki sprawdzono także przy małym rozmiarze okna. W tych testach nie wystąpiły
 ostrzeżenia o zapętlonych bindingach ani rekurencyjnym przeliczaniu layoutów.
+
+## Dalsza naprawa list skoczków i skoczni w sezonie
+
+Wybór z nowej listy trafia bezpośrednio do obiektu o wskazanym identyfikatorze,
+a nie do wiersza pomocniczej tabeli, który mógł oznaczać inny obiekt po filtrowaniu.
+Zmiana wyboru odświeża ekran od razu, bez oczekiwania na okresowe odpytywanie.
+Nowa lista jest dostępna już przed pierwszym wyborem; nie zastępuje starej listy
+w połowie interakcji. W małym układzie pozostaje załadowana podczas edycji.
+
+Zaznaczenie jest niezależne od przewinięcia. Edycja danych nie przewija listy do
+zaznaczonej osoby. Filtr i pozycja są przechowywane osobno dla skoczków i skoczni,
+w ramach otwartego sezonu. Przy powrocie pozycja odtwarza się po ustaleniu wymiarów
+listy. Ukrywany lub usuwany widok nie może nadpisać zapamiętanej pozycji zerem.
+Usunięto też zapętlony binding dekoracji kart perków skoczni.
+
+```sh
+python3 scripts/test-resource-library.py season-library-sync.cpp
+```
+
+Test korzysta z rzeczywistego Qt Quick: wybiera skocznie mimo przefiltrowanej
+pomocniczej tabeli, edytuje nazwę, przełącza skocznię, wybiera i edytuje zawodnika
+oraz sprawdza przewinięcie po edycji i po zmianie zakładek. Dane są izolowane od
+biblioteki gracza. Build i test zakończone poprawnie.

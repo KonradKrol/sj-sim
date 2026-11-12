@@ -1,11 +1,28 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import QtQuick.Window 2.15
 
 Control {
     id: library
     objectName: "athleteLibrary"
     property bool season: false
+    property var loadViewState: null
+    property var saveViewState: null
+    property bool stateReady: false
+    property bool viewportRestorePending: false
+    property real viewportRestoreY: 0
+    function restoreViewport() {
+        if(!viewportRestorePending || rows.width<=0 || rows.height<=0 || (entries.count>0 && rows.contentHeight<=0))return
+        rows.forceLayout()
+        var target=Math.max(rows.originY,Math.min(rows.originY+Math.max(0,rows.contentHeight-rows.height),viewportRestoreY))
+        viewportRestorePending=false
+        rows.contentY=target
+    }
+    function saveState() {
+        if(!Window.window || !library.visible || rows.width<=0 || rows.height<=0 || !saveViewState || !stateReady || viewportRestorePending || (season && (!backend.available || backend.hill!==false)))return
+        saveViewState({query:query,contentY:rows.contentY})
+    }
     property var backend
     property string query: ""
     property string pack: ""
@@ -17,6 +34,8 @@ Control {
     padding: 1
     background: Rectangle { color: Theme.surface; radius: Theme.radius; border.color: rows.activeFocus ? Theme.accent : Theme.divider }
     function sync(reset) {
+        var previousY=rows.contentY
+        if(season && (!backend.available || backend.hill))return;
         var newPack=backend.packDirectory
         if(pack!==newPack){pack=newPack;query="";reset=true}
         var source=backend.profiles, next=[], needle=query.trim().toLocaleLowerCase()
@@ -38,16 +57,19 @@ Control {
             if(value.profileIndex===backend.selectedIndex)current=r
         }
         rows.currentIndex=current
-        var id=backend.profile.id || "", reveal=selectedId!==id
+        var id=current>=0 ? next[current].profileId : "", reveal=selectedId!==id
         selectedId=id
+        if(!reset && !reveal && !removeCount && next.length===entries.count){rows.forceLayout();rows.contentY=Math.max(rows.originY,Math.min(rows.originY+Math.max(0,rows.contentHeight-rows.height),previousY))}
         if(reset)rows.positionViewAtBeginning()
-        else if(reveal && current>=0)Qt.callLater(function(){if(rows.currentIndex>=0)rows.positionViewAtIndex(rows.currentIndex,ListView.Contain)})
+        else if(!season && reveal && current>=0)Qt.callLater(function(){if(rows.currentIndex>=0)rows.positionViewAtIndex(rows.currentIndex,ListView.Contain)})
     }
     function choose(index,openEditor) {
         if(index<0 || index>=entries.count)return
         var target=entries.get(index).profileIndex
         rows.forceActiveFocus()
         backend.select(target)
+        rows.forceActiveFocus()
+        rows.positionViewAtIndex(index,ListView.Contain)
         if(openEditor)activated()
     }
     function moveSelected(step) {
@@ -60,8 +82,16 @@ Control {
         var y=Math.max(0,Math.min(rows.contentHeight-1,p.y))
         dropTarget=rows.indexAt(1,y)
     }
-    onQueryChanged: sync(true)
-    Component.onCompleted: sync(true)
+    onQueryChanged: {sync(true);saveState()}
+    Component.onCompleted: Qt.callLater(initializeState)
+    function initializeState() {
+        var state=loadViewState ? loadViewState() : ({})
+        sync()
+        if(state.query!==undefined)query=state.query
+        stateReady=true
+        if(state.contentY!==undefined){viewportRestoreY=state.contentY;viewportRestorePending=true;Qt.callLater(restoreViewport)}
+    }
+
     Connections { target: library.backend; function onUiChanged(){library.sync(false)} }
     ListModel { id: entries }
     contentItem: ColumnLayout {
@@ -82,6 +112,11 @@ Control {
         Label { visible: !library.season; text: qsTr("Przeciągnij uchwyt na liście lub użyj Alt + ↑/↓, aby zmienić kolejność."); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true; Layout.leftMargin: Theme.dp(8); Layout.rightMargin: Theme.dp(8); Layout.bottomMargin: Theme.dp(6); wrapMode: Text.WordWrap }
         ListView {
             id: rows
+        onContentYChanged: library.saveState()
+        onHeightChanged: Qt.callLater(library.restoreViewport)
+        onWidthChanged: Qt.callLater(library.restoreViewport)
+        onContentHeightChanged: Qt.callLater(library.restoreViewport)
+        onDraggingChanged: if(dragging)library.viewportRestorePending=false
             opacity: 0.65+packFeedback.progress*0.35
             objectName: "athleteList"
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0

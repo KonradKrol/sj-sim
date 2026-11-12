@@ -1,17 +1,35 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import QtQuick.Window 2.15
 
 ColumnLayout {
     id: library
     objectName: "hillLibrary"
     property bool season: false
+    property var loadViewState: null
+    property var saveViewState: null
+    property bool stateReady: false
+    property bool viewportRestorePending: false
+    property real viewportRestoreY: 0
+    function restoreViewport() {
+        if(!viewportRestorePending || rows.width<=0 || rows.height<=0 || (entries.count>0 && rows.contentHeight<=0))return
+        rows.forceLayout()
+        var target=Math.max(rows.originY,Math.min(rows.originY+Math.max(0,rows.contentHeight-rows.height),viewportRestoreY))
+        viewportRestorePending=false
+        rows.contentY=target
+    }
+    function saveState() {
+        if(!Window.window || !library.visible || rows.width<=0 || rows.height<=0 || !saveViewState || !stateReady || viewportRestorePending || (season && (!backend.available || backend.hill!==true)))return
+        saveViewState({query:query,contentY:rows.contentY})
+    }
     property var backend
     property string query: ""
     property int pack: -1
     signal activated()
     ListModel { id: entries }
     function sync() {
+        if(season && (!backend.available || !backend.hill))return;
         if(pack!==backend.packIndex){pack=backend.packIndex;query=""}
         var next=backend.profiles.filter(function(p){return typeof p.hs === "number" && isFinite(p.hs) && (p.label+" "+p.country).toLocaleLowerCase().indexOf(query.toLocaleLowerCase())>=0})
         var prefix=0,suffix=0
@@ -20,12 +38,20 @@ ColumnLayout {
         if(entries.count-prefix-suffix)entries.remove(prefix,entries.count-prefix-suffix)
         for(var i=prefix;i<next.length-suffix;++i)entries.insert(i,{profileId:next[i].id,profileIndex:next[i].index,label:next[i].label,country:next[i].country,flag:next[i].flag,hs:next[i].hs})
         var selectedRow=-1
-        for(var r=0;r<next.length;++r){entries.set(r,{profileId:next[r].id,profileIndex:next[r].index,label:next[r].label,country:next[r].country,flag:next[r].flag,hs:next[r].hs});if(next[r].index===backend.selectedIndex)selectedRow=r}
+        for(var r=0;r<next.length;++r){var old=entries.get(r), value=next[r];if(old.profileIndex!==value.index || old.label!==value.label || old.country!==value.country || old.flag!==value.flag || old.hs!==value.hs)entries.set(r,{profileId:value.id,profileIndex:value.index,label:value.label,country:value.country,flag:value.flag,hs:value.hs});if(next[r].index===backend.selectedIndex)selectedRow=r}
         rows.currentIndex=selectedRow
     }
-    onQueryChanged: sync()
-    Component.onCompleted: sync()
-    function choose(index) {if(index<0 || index>=entries.count)return;backend.select(entries.get(index).profileIndex);rows.positionViewAtIndex(index,ListView.Contain)}
+    onQueryChanged: {sync();saveState()}
+    Component.onCompleted: Qt.callLater(initializeState)
+    function initializeState() {
+        var state=loadViewState ? loadViewState() : ({})
+        sync()
+        if(state.query!==undefined)query=state.query
+        stateReady=true
+        if(state.contentY!==undefined){viewportRestoreY=state.contentY;viewportRestorePending=true;Qt.callLater(restoreViewport)}
+    }
+
+    function choose(index) {if(index<0 || index>=entries.count)return;backend.select(entries.get(index).profileIndex);rows.forceActiveFocus();rows.positionViewAtIndex(index,ListView.Contain)}
     Connections { target: library.backend; function onUiChanged(){library.sync()} }
     spacing: Theme.dp(6)
     RowLayout {
@@ -36,6 +62,11 @@ ColumnLayout {
     SField { Layout.fillWidth: true; text: library.query; placeholderText: qsTr("Szukaj skoczni lub kraju…"); Accessible.name: placeholderText; onTextEdited: library.query=text }
     ListView {
         id: rows
+        onContentYChanged: library.saveState()
+        onHeightChanged: Qt.callLater(library.restoreViewport)
+        onWidthChanged: Qt.callLater(library.restoreViewport)
+        onContentHeightChanged: Qt.callLater(library.restoreViewport)
+        onDraggingChanged: if(dragging)library.viewportRestorePending=false
         property int reorderTarget: -1
         objectName: "hillList"
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
@@ -76,7 +107,7 @@ ColumnLayout {
                 onMoved: function(from,to){library.backend.move(entries.get(from).profileIndex,entries.get(to).profileIndex)}
             }
             Rectangle { anchors.left: parent.left; anchors.right: parent.right; anchors.bottom: parent.bottom; height: 2; color: Theme.accent; visible: rows.reorderTarget===row.index }
-            onClicked: {library.backend.select(profileIndex);library.activated()}
+            onClicked: {library.backend.select(profileIndex);rows.forceActiveFocus();library.activated()}
         }
         EmptyState { anchors.fill: parent; visible: rows.count===0; compact: true; title: library.query.length?qsTr("Brak wyników"):qsTr("Brak skoczni"); description: library.query.length?qsTr("Zmień nazwę lub kraj."):qsTr("Dodaj skocznię lub skopiuj ją z klasycznego modelu.") }
     }

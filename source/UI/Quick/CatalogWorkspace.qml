@@ -10,13 +10,14 @@ ColumnLayout {
     readonly property bool draftEditor: !!editor && editor.values.kind === "simulationDraft"
     readonly property var list: fields.list ? fields.list.values : ({})
     readonly property bool savesCatalog: ui.profile === "SimulationSavesWindow"
-    readonly property bool parallel: width>=850
+    readonly property bool parallel: width>=Theme.dp(900)
     property bool editing: false
     readonly property bool hasHillStudio: !!fields.hillStudio
     readonly property bool hasStudio: !!fields.athleteStudio || hasHillStudio
     readonly property bool studioActive: hasStudio
     property var athleteBackend: null
     property var hillBackend: null
+    readonly property var seasonBackend: fields.seasonBackend || null
     onFieldsChanged: {
         if (fields.athleteStudio) athleteBackend = fields.athleteStudio
         if (fields.hillStudio) hillBackend = fields.hillStudio
@@ -26,13 +27,25 @@ ColumnLayout {
     onEditorChanged: if(editor)editing=true
     QtObject {
         id: seasonLibrary
+        readonly property bool available: !!catalog.fields.seasonLibrary
+        readonly property bool hill: !!catalog.fields.seasonHill
         readonly property var profiles: catalog.fields.seasonProfiles || []
-        readonly property int selectedIndex: catalog.list.table ? catalog.list.table.currentRow : -1
+        readonly property int selectedIndex: {
+            var selected=catalog.fields.seasonSelectedId || ""
+            for(var i=0;i<profiles.length;++i)if(profiles[i].id===selected)return profiles[i].index
+            return -1
+        }
         readonly property var profile: catalog.editor && catalog.editor.values.backend ? catalog.editor.values.backend.profile : ({})
         readonly property string packDirectory: "season"
         readonly property int packIndex: 0
         signal uiChanged()
-        function select(index) { if(catalog.list.table)catalog.list.table.select(index,0,0,true) }
+        function select(index) {
+            catalog.forceActiveFocus()
+            for(var i=0;i<profiles.length;++i)if(profiles[i].index===index){
+                if(catalog.seasonBackend)catalog.seasonBackend.selectSeasonProfile(profiles[i].id,!!catalog.fields.seasonHill)
+                return
+            }
+        }
         function showStatistics(){var button=ui.find("pushButton_jumperStats");if(button)ui.activate(button.values.id)}
         function remove() {}
         function move(from,to) {}
@@ -92,12 +105,12 @@ ColumnLayout {
             singleClickOpen: !!catalog.fields.singleClickEdit
         }
         Loader {
-            visible: active
-            active: !!catalog.fields.seasonLibrary && (catalog.parallel || !catalog.editing)
+            visible: active && (catalog.parallel || !catalog.editing)
+            active: !!catalog.fields.seasonLibrary
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0; Layout.preferredWidth: 380
-            sourceComponent: catalog.editor && catalog.editor.values.hill ? seasonHills : seasonAthletes
-            Component { id: seasonAthletes; AthleteLibrary { backend: seasonLibrary; season: true; onActivated: catalog.editing=true } }
-            Component { id: seasonHills; HillLibrary { backend: seasonLibrary; season: true; onActivated: catalog.editing=true } }
+            sourceComponent: catalog.fields.seasonHill ? seasonHills : seasonAthletes
+            Component { id: seasonAthletes; AthleteLibrary { backend: seasonLibrary; season: true; loadViewState: function(){var owner=catalog.fields.seasonBackend;return owner ? owner.seasonLibraryState(false) : ({})}; saveViewState: function(state){if(catalog.seasonBackend)catalog.seasonBackend.rememberSeasonLibraryState(false,state)}; onActivated: catalog.editing=true } }
+            Component { id: seasonHills; HillLibrary { backend: seasonLibrary; season: true; loadViewState: function(){var owner=catalog.fields.seasonBackend;return owner ? owner.seasonLibraryState(true) : ({})}; saveViewState: function(state){if(catalog.seasonBackend)catalog.seasonBackend.rememberSeasonLibraryState(true,state)}; onActivated: catalog.editing=true } }
         }
         ScrollView {
             id: editorScroll

@@ -156,6 +156,7 @@ void QuickAppearance::setTextScale(qreal value) { value=qBound(.75,value,2.); if
 
 QuickBridge::QuickBridge(QWidget *window,QWidget *content,QuickAppearance *appearance,bool home)
     : QObject(window), m_window(window), m_content(content), m_appearance(appearance), m_root(new QuickNode(this)), m_home(home) {
+    if(auto *season=qobject_cast<SimulationSaveManagerWindow *>(window))connect(season,&SimulationSaveManagerWindow::seasonProfileSelectionChanged,this,&QuickBridge::deferRefresh);
     auto *timer=new QTimer(this); timer->setInterval(120);
     connect(timer,&QTimer::timeout,this,[this] { if(m_view && m_view->isVisible()) refresh(); });
     connect(window,&QWidget::windowTitleChanged,this,&QuickBridge::changed);
@@ -1066,7 +1067,7 @@ void QuickBridge::compose(QuickNode *base) {
         auto *season=qobject_cast<SimulationSaveManagerWindow *>(m_window);
         const QVariant rosterBackend=SimulationSave::activeRosterFeatureEnabled() && season && container->getType()==DatabaseItemsListView::JumpersListsItems ? QVariant::fromValue(static_cast<QObject *>(season)) : QVariant();
         QVariantList seasonProfiles;
-        const bool seasonLibrary=season && editor && editor->values().value("kind")=="simulationDraft";
+        const bool seasonLibrary=season && (container->getType()==DatabaseItemsListView::SeasonJumpersItems || container->getType()==DatabaseItemsListView::SeasonHillsItems);
         if(seasonLibrary) {
             auto flag=[](const QString &country){return QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(country)+".svg")).toString();};
             auto *save=season->getSimulationSave();
@@ -1074,7 +1075,7 @@ void QuickBridge::compose(QuickNode *base) {
                 const auto profile=actor->getSimulationProfile();seasonProfiles.append(QVariantMap{{"id",actor->getIDStr()},{"index",index++},{"label",actor->getNameAndSurname()},{"country",actor->getCountryCode()},{"flag",flag(actor->getCountryCode())},{"overall",profile?profile->overall:0}});
             }}else if(container->getType()==DatabaseItemsListView::SeasonHillsItems){int index=0;for(auto *hill:save->getHillsReference())seasonProfiles.append(QVariantMap{{"id",hill->getIDStr()},{"index",index++},{"label",hill->getName()},{"country",hill->getCountryCode()},{"flag",flag(hill->getCountryCode())},{"hs",hill->getHSPoint()}});}
         }
-        entry->update({{"kind","catalog"},{"seasonLibrary",seasonLibrary},{"seasonProfiles",seasonProfiles},{"rosterBackend",rosterBackend},{"athleteStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_jumpers"?m_window->property("athleteStudio"):QVariant()},{"hillStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_hills"?m_window->property("hillStudio"):QVariant()},{"singleClickEdit",view->property("quickSingleClickEdit").toBool() || (profile()=="DatabaseEditorWindow" && view->model() && QList<QByteArray>{"JumpersListModel","CompetitionRulesListModel","PointsForPlacesPresetsListModel"}.contains(view->model()->metaObject()->className()))},{"actionsRow",actions},{"list",QVariant::fromValue(node(view,true))},{"editor",QVariant::fromValue(editor)},{"toolbar",toolbar},{"editRequest",entry->property("editRequest").toInt()}});
+        entry->update({{"kind","catalog"},{"seasonLibrary",seasonLibrary},{"seasonHill",container->getType()==DatabaseItemsListView::SeasonHillsItems},{"seasonBackend",QVariant::fromValue<QObject *>(season)},{"seasonSelectedId",seasonLibrary?season->selectedSeasonProfileId(container->getType()==DatabaseItemsListView::SeasonHillsItems):QString()},{"seasonProfiles",seasonProfiles},{"rosterBackend",rosterBackend},{"athleteStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_jumpers"?m_window->property("athleteStudio"):QVariant()},{"hillStudio",profile()=="DatabaseEditorWindow" && page->objectName()=="tab_hills"?m_window->property("hillStudio"):QVariant()},{"singleClickEdit",view->property("quickSingleClickEdit").toBool() || (profile()=="DatabaseEditorWindow" && view->model() && QList<QByteArray>{"JumpersListModel","CompetitionRulesListModel","PointsForPlacesPresetsListModel"}.contains(view->model()->metaObject()->className()))},{"actionsRow",actions},{"list",QVariant::fromValue(node(view,true))},{"editor",QVariant::fromValue(editor)},{"toolbar",toolbar},{"editRequest",entry->property("editRequest").toInt()}});
         return entry;
     };
     if(m_window->property("jumpDraft").isValid()) {
