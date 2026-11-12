@@ -5,6 +5,7 @@
 #include <QSet>
 #include <QVariantMap>
 #include "../../simulator/Jumper.h"
+#include "../../simulator/Team.h"
 class QWidget;
 class QuickRosterRows : public QAbstractListModel {
     Q_OBJECT
@@ -119,6 +120,8 @@ public:
     Q_INVOKABLE void applyPreset(int index,int operation);
 private:
     QPointer<QWidget> m_source;
+    QVector<Team> m_undoTeams;
+    bool m_undoEligibility=false;
     QuickRosterRows *m_library,*m_ordered,*m_groupedRows,*m_groupedLibrary;
     QuickRosterCountryRows *m_limitRows;
     QVector<Jumper *> m_pool,m_current,m_undo;

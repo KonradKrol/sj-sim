@@ -156,7 +156,7 @@ QJsonObject Team::getJsonObject(Team &team)
     QJsonArray jumpersArray;
     for(auto & jumper : team.getJumpersReference())
     {
-        jumpersArray.push_back(jumper->getIDStr());
+        if(jumper)jumpersArray.push_back(jumper->getIDStr());
     }
     object.insert("jumpers-ids", jumpersArray);
 

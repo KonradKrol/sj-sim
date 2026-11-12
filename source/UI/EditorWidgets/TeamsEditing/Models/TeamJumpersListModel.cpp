@@ -28,14 +28,14 @@ int TeamJumpersListModel::rowCount(const QModelIndex &parent) const
 
 QVariant TeamJumpersListModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!index.isValid() || index.row()<0 || index.row()>=jumpers->size())
         return QVariant();
 
     switch(role){
     case Qt::DisplayRole:
-        return jumpers->at(index.row())->getNameAndSurname();
+        return jumpers->at(index.row())?jumpers->at(index.row())->getNameAndSurname():tr("Wolne miejsce");
     case Qt::DecorationRole:
-        return CountryFlagsManager::getFlagPixmap(jumpers->at(index.row())->getCountryCode().toLower()).scaled(38, 22);
+        return jumpers->at(index.row())?QVariant(CountryFlagsManager::getFlagPixmap(jumpers->at(index.row())->getCountryCode().toLower()).scaled(38, 22)):QVariant();
     case Qt::FontRole:
     {
         QFont font("Quicksand Medium", 13);

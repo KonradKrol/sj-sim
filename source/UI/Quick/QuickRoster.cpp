@@ -46,7 +46,7 @@ QString flagSource(const QString &country) {
     return cache.value(file);
 }
 
-bool matches(Jumper *jumper,const QString &query) { const auto words=query.simplified().split(' ',Qt::SkipEmptyParts);const auto text=jumper->getNameAndSurname()+" "+jumper->getCountryCode();for(const auto &word:words)if(!text.contains(word,Qt::CaseInsensitive))return false;return true; }
+bool matches(Jumper *jumper,const QString &query) { const auto words=query.simplified().split(' ',Qt::SkipEmptyParts);if(!jumper)return query.trimmed().isEmpty();const auto text=jumper->getNameAndSurname()+" "+jumper->getCountryCode();for(const auto &word:words)if(!text.contains(word,Qt::CaseInsensitive))return false;return true; }
 }
 QHash<int,QByteArray> QuickRosterRows::roleNames() const { QHash<int,QByteArray> out;for(int i=0;i<roles.size();++i)out[Qt::UserRole+1+i]=roles[i];return out; }
 QVariant QuickRosterRows::data(const QModelIndex &index,int role) const { if(!index.isValid()||index.row()<0||index.row()>=m_rows.size())return {};const int column=role-Qt::UserRole-1;return column>=0&&column<roles.size()?m_rows[index.row()].toMap().value(roles[column]):QVariant(); }
@@ -136,7 +136,10 @@ bool QuickRoster::active() const {
 int QuickRoster::activeLimit() const { auto *team=qobject_cast<TeamEditorWidget *>(m_source);return team?team->getJumpersCount():0; }
 QVector<Jumper *> QuickRoster::read() const {
     if(auto *manager=qobject_cast<SimulationSaveManagerWindow *>(m_source)){for(const auto &list:manager->getSimulationSave()->getJumpersLists())if(list.getId()==m_seasonRosterId)return list.getJumpers();return {};}
-    if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source))return config->type==CompetitionConfigWindow::SingleCompetition?config->competitionJumpers:config->seasonCompetitionJumpers;
+    if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source)){
+        if(teams() && config->teamSquadsLocked()){QVector<Jumper *> fixed;for(const auto &team:config->competitionTeams)for(auto *j:team.getJumpers())if(j && !fixed.contains(j))fixed.append(j);return fixed;}
+        return config->type==CompetitionConfigWindow::SingleCompetition?config->competitionJumpers:config->seasonCompetitionJumpers;
+    }
     if(auto *list=qobject_cast<JumpersListEditorWindow *>(m_source))return list->getSelectedJumpers();
     if(auto *team=qobject_cast<TeamEditorWidget *>(m_source))return team->getJumpers();
     return {};
@@ -144,6 +147,7 @@ QVector<Jumper *> QuickRoster::read() const {
 QVector<Jumper *> QuickRoster::candidates() const {
     if(auto *manager=qobject_cast<SimulationSaveManagerWindow *>(m_source))return manager->getSimulationSave()->getJumpers();
     if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source)){
+        if(teams())return config->teamEligibilityPool();
         if(config->type==CompetitionConfigWindow::SingleCompetition)return config->availableJumpers();
         if(!config->simulationSave||!config->seasonCompetition)return {};
         auto pool=config->simulationSave->getJumpers();auto *event=config->seasonCompetition;
@@ -156,7 +160,7 @@ QVector<Jumper *> QuickRoster::candidates() const {
     return read();
 }
 void QuickRoster::sync(){
-    const auto current=unique(read());auto pool=unique(candidates());
+    const auto current=qobject_cast<TeamEditorWidget *>(m_source)?read():unique(read());auto pool=unique(candidates());
     if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source);config&&config->type==CompetitionConfigWindow::SingleCompetition && !config->usesCanonicalCatalog())pool=unique(pool+m_pool+current);
     else pool=unique(pool+current);
     if(current==m_current&&pool==m_pool&&!m_countryCodes.isEmpty()&&m_presetNames==presets())return;
@@ -173,7 +177,9 @@ void QuickRoster::refresh(){
     QSet<QString> poolIds;for(auto *j:m_pool)poolIds.insert(key(j));m_candidateMarked.intersect(poolIds);
     for(auto *j:m_current)m_candidateMarked.remove(key(j));
     QVariantList library,ordered;for(auto *j:available)library.append(QVariantMap{{"athleteId",key(j)},{"athleteName",j->getNameAndSurname()},{"countryCode",j->getCountryCode()},{"flagSource",flagSource(j->getCountryCode())},{"included",m_current.contains(j)},{"marked",m_candidateMarked.contains(key(j))}});
-    for(int i=0;i<m_current.size();++i){auto *j=m_current[i];if(!matches(j,m_orderQuery))continue;ordered.append(QVariantMap{{"athleteId",key(j)},{"athleteName",j->getNameAndSurname()},{"countryCode",j->getCountryCode()},{"flagSource",flagSource(j->getCountryCode())},{"included",true},{"marked",m_marked.contains(key(j))},{"position",i+1},{"activeSlot",!activeLimit()||i<activeLimit()}});}
+    for(int i=0;i<m_current.size();++i){auto *j=m_current[i];if(!matches(j,m_orderQuery))continue;
+        if(!j){ordered.append(QVariantMap{{"athleteId",QString("vacant:%1").arg(i)},{"athleteName",tr("Wolne miejsce")},{"countryCode",QString()},{"flagSource",QString()},{"included",true},{"marked",false},{"position",i+1},{"activeSlot",i<activeLimit()}});continue;}
+        ordered.append(QVariantMap{{"athleteId",key(j)},{"athleteName",j->getNameAndSurname()},{"countryCode",j->getCountryCode()},{"flagSource",flagSource(j->getCountryCode())},{"included",true},{"marked",m_marked.contains(key(j))},{"position",i+1},{"activeSlot",!activeLimit()||i<activeLimit()}});}
     auto grouped=ordered;
     if(savedList())std::stable_sort(grouped.begin(),grouped.end(),[](const QVariant &a,const QVariant &b){return a.toMap().value("countryCode").toString().compare(b.toMap().value("countryCode").toString(),Qt::CaseInsensitive)<0;});
     else grouped.clear();
@@ -190,6 +196,7 @@ void QuickRoster::write(const QVector<Jumper *> &value){
     if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source);config && config->teamSquadsLocked())return;
     if(auto *manager=qobject_cast<SimulationSaveManagerWindow *>(m_source)){manager->setRosterMembers(m_seasonRosterId,value);return;}
     if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source)){
+        if(teams()){config->setTeamEligibility(value);return;}
         if(config->type==CompetitionConfigWindow::SingleCompetition)config->competitionJumpers=value;else config->seasonCompetitionJumpers=value;
         config->jumpersListView->setupListModel();
         if(config->usesCanonicalCatalog())config->updateCanonicalReadiness();
@@ -203,7 +210,12 @@ void QuickRoster::write(const QVector<Jumper *> &value){
         list->setSelectedJumpers(value);list->updateUnselectedJumpers();list->getSelectedJumpersListView()->setupListModel();list->getUnselectedJumpersListView()->setupListModel();
     }else if(auto *team=qobject_cast<TeamEditorWidget *>(m_source))team->setJumpers(value);
 }
-void QuickRoster::apply(QVector<Jumper *> value){value=unique(value);if(value==m_current)return;for(auto *j:value)if(!m_pool.contains(j))return;m_undo=m_current;m_undoLimits.clear();m_undoLimitChange=false;m_hasUndo=true;m_current=value;write(value);refresh();}
+void QuickRoster::apply(QVector<Jumper *> value){
+    if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source);config && config->teamSquadsLocked())return;
+    const bool lineup=qobject_cast<TeamEditorWidget *>(m_source);if(lineup){for(int i=value.size()-1;i>=activeLimit();--i)if(!value[i])value.removeAt(i);}else value=unique(value);if(value==m_current)return;
+    for(auto *j:value)if((j || !lineup) && !m_pool.contains(j))return;
+    if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source);config && teams()){m_undoTeams=config->competitionTeams;m_undoEligibility=true;}
+    m_undo=m_current;m_undoLimits.clear();m_undoLimitChange=false;m_hasUndo=true;m_current=value;write(value);refresh();}
 void QuickRoster::toggle(const QString &id){sync();if(!membership())return;auto *j=jumper(id);if(!j)return;auto next=m_current;if(next.contains(j))next.removeAll(j);else next.append(j);apply(next);}
 void QuickRoster::addVisible(){sync();if(!membership())return;auto next=m_current;for(auto *j:visiblePool())if(!next.contains(j))next.append(j);apply(next);}
 void QuickRoster::selectCandidate(const QString &id){auto *j=jumper(id);if(!j||m_current.contains(j))return;if(m_candidateMarked.contains(id))m_candidateMarked.remove(id);else m_candidateMarked.insert(id);refresh();}
@@ -220,6 +232,9 @@ void QuickRoster::markAll(){m_marked.clear();for(const auto &row:m_current)if(ma
 void QuickRoster::removeMarked(){sync();if(!membership())return;auto next=m_current;for(int i=next.size()-1;i>=0;--i)if(m_marked.contains(key(next[i])))next.removeAt(i);apply(next);}
 void QuickRoster::moveBefore(const QString &id,const QString &target,bool after){
     sync();auto *source=jumper(id),*destination=jumper(target);
+    if(source && target.startsWith("vacant:") && qobject_cast<TeamEditorWidget *>(m_source)){
+        bool ok=false;const int slot=target.mid(7).toInt(&ok);if(ok && slot>=0 && slot<m_current.size() && !m_current[slot] && m_current.contains(source)){auto next=m_current;qSwap(next[next.indexOf(source)],next[slot]);apply(next);}return;
+    }
     if(!source||!destination||!m_current.contains(source)||!m_current.contains(destination)||source==destination)return;
     if(qobject_cast<TeamEditorWidget *>(m_source)){auto next=m_current;qSwap(next[next.indexOf(source)],next[next.indexOf(destination)]);m_marked={id};apply(next);return;}
     if(!m_marked.contains(id))m_marked={id};if(m_marked.contains(target))return;
@@ -233,7 +248,9 @@ void QuickRoster::moveMarked(int position){
 }
 void QuickRoster::step(int direction){sync();if(direction!=-1&&direction!=1)return;auto next=m_current;if(direction<0){for(int i=1;i<next.size();++i)if(m_marked.contains(key(next[i]))&&!m_marked.contains(key(next[i-1])))qSwap(next[i],next[i-1]);}else for(int i=next.size()-2;i>=0;--i)if(m_marked.contains(key(next[i]))&&!m_marked.contains(key(next[i+1])))qSwap(next[i],next[i+1]);apply(next);}
 void QuickRoster::sort(const QString &key){sync();auto next=m_current;if(key=="random"){std::mt19937 engine(std::random_device{}());std::shuffle(next.begin(),next.end(),engine);}else if(key=="overall-asc"||key=="overall-desc")std::stable_sort(next.begin(),next.end(),[&](auto *a,auto *b){const double left=a->getSimulationProfile()?a->getSimulationProfile()->overall:0;const double right=b->getSimulationProfile()?b->getSimulationProfile()->overall:0;return key=="overall-asc"?left<right:left>right;});else if(key=="name"||key=="country")std::stable_sort(next.begin(),next.end(),[&](auto *a,auto *b){return QString::localeAwareCompare(key=="name"?a->getNameAndSurname():a->getCountryCode(),key=="name"?b->getNameAndSurname():b->getCountryCode())<0;});else return;apply(next);}
-void QuickRoster::undo(){sync();if(!m_hasUndo)return;if(m_undoLimitChange){writeCountryLimits(m_undoLimits);m_hasUndo=false;m_undoLimitChange=false;m_undoLimits.clear();refreshCountryLimits();emit changed();return;}const auto previous=m_undo;m_hasUndo=false;m_undo.clear();m_current=previous;write(previous);refresh();}
+void QuickRoster::undo(){sync();if(!m_hasUndo)return;if(m_undoLimitChange){writeCountryLimits(m_undoLimits);m_hasUndo=false;m_undoLimitChange=false;m_undoLimits.clear();refreshCountryLimits();emit changed();return;}const auto previous=m_undo;m_hasUndo=false;m_undo.clear();m_current=previous;write(previous);
+    if(m_undoEligibility){if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source)){config->competitionTeams=m_undoTeams;if(config->teamsSquadsModel)config->teamsSquadsModel->setupTreeItems();}m_undoTeams.clear();m_undoEligibility=false;}
+    refresh();}
 void QuickRoster::applyPreset(int index,int operation){if(operation==3){sync();if(index<0){apply(m_pool);return;}auto *config=qobject_cast<CompetitionConfigWindow *>(m_source);if(config && config->simulationSave && index<config->simulationSave->getJumpersListsReference().size()){QVector<Jumper *> next;for(auto *j:config->simulationSave->getJumpersListsReference()[index].getJumpers())if(m_pool.contains(j))next.append(j);if(config->simulationSave->getJumpersListsReference()[index].getJumpers().isEmpty())next=m_pool;apply(next);}return;}sync();auto *config=qobject_cast<CompetitionConfigWindow *>(m_source);if(!config||!config->simulationSave||!membership()||index<0||index>=config->simulationSave->getJumpersListsReference().size())return;const auto members=config->simulationSave->getJumpersListsReference()[index].getJumpers();auto next=m_current;if(operation==0){for(auto *j:members)if(m_pool.contains(j)&&!next.contains(j))next.append(j);}else if(operation==1){for(auto *j:members)next.removeAll(j);}else if(operation==2){next.clear();for(auto *j:members)if(m_current.contains(j))next.append(j);for(auto *j:m_current)if(!next.contains(j))next.append(j);}else return;apply(next);}
 
 bool QuickRoster::teams() const {
@@ -324,6 +341,7 @@ void QuickRoster::tool(const QString &operation) {
         }
     } else if(operation=="ovr" || operation=="strength") {
         const auto strength=[&](Jumper *j) {
+            if(!j)return 0.;
             const auto profile=j->getSimulationProfile();
             return operation=="ovr"?(profile?double(profile->overall):0.):c->currentPotential(j);
         };
@@ -336,7 +354,7 @@ void QuickRoster::tool(const QString &operation) {
         else if(operation=="random")std::shuffle(teamList.begin(),teamList.end(),random);
         else if(ranked){std::shuffle(teamList.begin(),teamList.end(),random);std::stable_sort(teamList.begin(),teamList.end(),[&](const Team &a,const Team &b){return scores.value(teamKey(a),-1e100)<scores.value(teamKey(b),-1e100);});}
         else if(operation=="name")std::stable_sort(teamList.begin(),teamList.end(),[&](const Team &a,const Team &b){return QString::localeAwareCompare(teamKey(a),teamKey(b))<0;});
-        c->competitionTeams=teamList;c->teamsSquadsModel->setupTreeItems();emit changed();return;
+        c->competitionTeams=teamList;c->setTeamEligibility(m_current);emit changed();return;
     }
     if(operation=="reverse")std::reverse(next.begin(),next.end());
     else if(operation=="random")std::shuffle(next.begin(),next.end(),random);

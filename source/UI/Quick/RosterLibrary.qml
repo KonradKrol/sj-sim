@@ -5,11 +5,12 @@ import QtQuick.Layouts 1.15
 ColumnLayout {
     id: library
     property var backend
+    property string heading: qsTr("Zawodnicy")
     RosterPresets { visible: !library.backend.savedList; backend: library.backend; stacked: true; Layout.fillWidth: true }
 
     readonly property bool cramped: height<280
     spacing: cramped ? 4 : 8
-    Label { visible: !library.cramped; text: qsTr("Zawodnicy"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section }
+    Label { visible: !library.cramped; text: library.heading; color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section }
     GridLayout {
         columns: library.width >= 400 || library.cramped ? 2 : 1
         Layout.fillWidth: true; columnSpacing: 8; rowSpacing: 8

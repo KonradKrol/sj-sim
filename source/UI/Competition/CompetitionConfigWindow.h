@@ -52,6 +52,8 @@ public:
     double currentPotential(Jumper *jumper);
     QVector<Jumper *> availableJumpers() const;
     bool teamSquadsLocked() const {return squadsLocked;}
+    QVector<Jumper *> teamEligibilityPool() const;
+    void setTeamEligibility(const QVector<Jumper *> &selected);
 
     enum Type{
         SingleCompetition,
@@ -72,6 +74,8 @@ signals:
 private:
     QStringList autoSquadSnapshot;
     bool squadsLocked=false;
+    mutable bool eligibilityCountriesReady=false;
+    mutable QSet<QString> eligibilityCountries;
     QStringList lockedSquadSnapshot;
     void configureSeasonSquads();
     QStringList squadSnapshot() const;

@@ -243,6 +243,7 @@
 <file>KoMemberSlot.qml</file>
 <file>KoDragArea.qml</file>
 <file>RosterWorkspace.qml</file>
+        <file>TeamRosterWorkspace.qml</file>
 <file>SavedRosterWorkspace.qml</file>
 <file>SavedRosterPane.qml</file>
 <file>SavedRosterList.qml</file>

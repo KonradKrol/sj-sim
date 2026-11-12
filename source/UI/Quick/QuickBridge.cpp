@@ -1360,6 +1360,7 @@ void QuickBridge::compose(QuickNode *base) {
             {"spinBox_dsqProbability",tr("Częstość dyskwalifikacji")}});
         plan.append(group("competition-parameters",QString(),parameters,"form"));
         QVariantList top{group("plan",tr("Plan symulacji"),plan)};
+        QVariant teamCard;
         if(auto *list=m_content->findChild<QWidget *>("scrollArea_startList")) {
             for(auto *combo:list->findChildren<QComboBox *>())combo->setProperty("quickMenuOnly",true);
             for(auto *label:list->findChildren<QLabel *>())if(label->objectName()=="label_3" || label->objectName().contains("classification",Qt::CaseInsensitive))label->hide();
@@ -1395,9 +1396,9 @@ void QuickBridge::compose(QuickNode *base) {
             tools->update({{"kind","rosterTools"},{"backend",toolsRoster->values().value("backend")}});
             if(m_rosters.value(configuration)->teams())toolbar.append(QVariant::fromValue(tools));
             if(!toolbar.isEmpty())content.append(group("start-list-toolbar",QString(),toolbar,"row"));
-            if(auto *note=m_content->findChild<QLabel *>("teamSquadPolicy"))content.prepend(QVariant::fromValue(node(note,true)));
+            if(auto *note=m_content->findChild<QLabel *>("teamSquadPolicy");note && !note->isHidden())content.prepend(QVariant::fromValue(node(note,true)));
             auto *roster=rosterNode(configuration);
-            if(!m_rosters.value(configuration)->active()){content.append(QVariant::fromValue(node(list,true)));top.append(group("start-list",tr("Lista startowa"),content));}
+            if(!m_rosters.value(configuration)->active()){content.append(QVariant::fromValue(node(list,true)));teamCard=group("start-list",tr("Lista startowa"),content);top.append(teamCard);}
             else {
                 auto *summary=m_groups.value("roster-summary");if(!summary){summary=new QuickNode(this);m_groups.insert("roster-summary",summary);}
                 summary->update({{"kind","rosterSummary"},{"backend",roster->values().value("backend")}});
@@ -1406,6 +1407,11 @@ void QuickBridge::compose(QuickNode *base) {
         }
         QVariantList detail;
         QStringList labels{tr("Przygotowanie")};
+        if(m_rosters.value(configuration) && m_rosters.value(configuration)->teams() && teamCard.isValid()) {
+            auto *page=m_groups.value("team-roster-workspace");if(!page){page=new QuickNode(this);m_groups.insert("team-roster-workspace",page);}
+            page->update({{"kind","teamRoster"},{"backend",rosterNode(configuration)->values().value("backend")},{"card",teamCard},{"locked",configuration->teamSquadsLocked()}});
+            detail.append(QVariant::fromValue(page));labels.append(tr("Składy"));
+        }
         if(m_rosters.value(configuration) && m_rosters.value(configuration)->active()) {
             detail.append(QVariant::fromValue(rosterNode(configuration)));labels.append(tr("Lista startowa"));
             QVariantList advanced;

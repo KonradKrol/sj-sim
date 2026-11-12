@@ -161,11 +161,11 @@ void TeamsSquadsTreeModel::setupTreeItems()
     TreeItem::deleteAllTreeItemsRecursively(rootItem);
     rootItem = new TreeItem({QObject::tr("Drużyna"), QObject::tr("Zawodnik")});
     for(auto & team : *teams){
-        TreeItem * teamItem = new TreeItem({GlobalDatabase::get()->getCountryByAlpha3(team.getCountryCode())->getName(), ""}, rootItem);
+        TreeItem * teamItem = new TreeItem({(GlobalDatabase::get()->getCountryByAlpha3(team.getCountryCode())?GlobalDatabase::get()->getCountryByAlpha3(team.getCountryCode())->getName():team.getCountryCode()), ""}, rootItem);
         int i=0;
         for(auto & jumper : team.getJumpersReference()){
             if(i == jumpersInTeam) break;
-            new TreeItem({"", jumper->getNameAndSurname()}, teamItem);
+            new TreeItem({"", (jumper?jumper->getNameAndSurname():tr("Wolne miejsce"))}, teamItem);
             i++;
         }
     }

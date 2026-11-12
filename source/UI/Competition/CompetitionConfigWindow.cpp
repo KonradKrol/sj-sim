@@ -617,6 +617,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         emit existingCompetitionRulesComboBox->currentIndexChanged(existingCompetitionRulesComboBox->currentIndex());
     }
     configureSeasonSquads();
+    if(type==SeasonCompetition && !squadsLocked && seasonCompetition->getRulesPointer()->getCompetitionType()==CompetitionRules::Team)setTeamEligibility(seasonCompetitionJumpers);
     autoCompleteTeams(false);
     auto *completeTeams=new QPushButton(tr("Dobierz automatycznie"),this);completeTeams->setObjectName("autoCompleteTeams");
     ui->verticalLayout_startList->insertWidget(0,completeTeams);
@@ -653,6 +654,15 @@ void CompetitionConfigWindow::autoCompleteTeams(bool ask) {
     if(ask && !autoSquadSnapshot.isEmpty() && autoSquadSnapshot!=squadSnapshot()
         && QMessageBox::question(this,tr("Dobierz automatycznie"),tr("Zastąpić ręcznie ustawione składy i kolejność zawodników?"),QMessageBox::Yes|QMessageBox::No,QMessageBox::No)!=QMessageBox::Yes)return;
     const int count=seasonCompetition?seasonCompetition->getRulesPointer()->getJumpersInTeamCount():competitionRulesEditor->getJumpersCountInTeam();
+    const auto selected=type==SingleCompetition?competitionJumpers:seasonCompetitionJumpers;
+    const auto pool=teamEligibilityPool();QVector<Jumper *> eligible;
+    for(auto *j:selected)if(pool.contains(j))eligible.append(j);
+    auto rebuilt=Team::constructTeamsVectorByJumpersList(eligible,count);
+    QVector<Team> ordered;
+    for(const auto &existing:competitionTeams)for(int i=0;i<rebuilt.size();++i)if(rebuilt[i].getCountryCode()==existing.getCountryCode()){
+        auto team=rebuilt.takeAt(i);team.setID(existing.getID());ordered.append(team);break;
+    }
+    competitionTeams=ordered+rebuilt;
     for(auto &team:competitionTeams)team.arrangeSquad(count,2.,configuredHill().getKPoint());
     autoSquadSnapshot=squadSnapshot();if(teamsSquadsModel)teamsSquadsModel->setupTreeItems();
 }
@@ -699,6 +709,41 @@ QVector<Jumper *> CompetitionConfigWindow::availableJumpers() const
     if(usesCanonicalCatalog())return sourceJumpers+importedJumpers;
     if(getType()==SeasonCompetition)return simulationSave?simulationSave->getJumpers():QVector<Jumper *>();
     QVector<Jumper *> values;for(auto &athlete:GlobalDatabase::get()->getEditableGlobalJumpers())values.append(&athlete);return values;
+}
+
+QVector<Jumper *> CompetitionConfigWindow::teamEligibilityPool() const
+{
+    auto pool=availableJumpers();
+    if(seasonCompetition && (seasonCompetition->getAdvancementCompetition() || seasonCompetition->getAdvancementClassification())) {
+        if(!eligibilityCountriesReady){for(const auto &team:competitionTeams)eligibilityCountries.insert(team.getCountryCode());eligibilityCountriesReady=true;}
+        pool.erase(std::remove_if(pool.begin(),pool.end(),[&](Jumper *j){return !j || !eligibilityCountries.contains(j->getCountryCode());}),pool.end());
+    }
+    return pool;
+}
+void CompetitionConfigWindow::setTeamEligibility(const QVector<Jumper *> &selected)
+{
+    if(squadsLocked)return;
+    const auto pool=teamEligibilityPool();QVector<Jumper *> eligible;QSet<Jumper *> chosen;
+    for(auto *j:selected)if(j && pool.contains(j) && !chosen.contains(j)){chosen.insert(j);eligible.append(j);}
+    if(type==SingleCompetition)competitionJumpers=eligible;else seasonCompetitionJumpers=eligible;
+    const int count=seasonCompetition?seasonCompetition->getRulesPointer()->getJumpersInTeamCount():competitionRulesEditor->getJumpersCountInTeam();QSet<QString> countries;
+    for(auto &team:competitionTeams) {
+        countries.insert(team.getCountryCode());auto lineup=team.getJumpers();
+        while(lineup.size()<count)lineup.append(nullptr);
+        for(int i=0;i<lineup.size();++i)if((lineup[i] && !chosen.contains(lineup[i])) || (!lineup[i] && i>=count)) {
+            if(i<count)lineup[i]=nullptr;else {lineup.removeAt(i);--i;}
+        }
+        for(auto *j:eligible)if(j->getCountryCode()==team.getCountryCode() && !lineup.contains(j))lineup.append(j);
+        team.setJumpers(lineup);
+    }
+    for(auto *j:eligible)if(!countries.contains(j->getCountryCode())){
+        countries.insert(j->getCountryCode());Team team;team.setCountryCode(j->getCountryCode());
+        QVector<Jumper *> lineup(count,nullptr);for(auto *candidate:eligible)if(candidate->getCountryCode()==j->getCountryCode())lineup.append(candidate);
+        team.setJumpers(lineup);competitionTeams.append(team);
+    }
+    if(teamsSquadsModel)teamsSquadsModel->setupTreeItems();
+    jumpersListView->setupListModel();
+    if(usesCanonicalCatalog())updateCanonicalReadiness();
 }
 
 void CompetitionConfigWindow::setupCanonicalCatalog()

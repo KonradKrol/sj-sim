@@ -19,6 +19,7 @@ ColumnLayout {
     readonly property bool simulationDraftPage: contentNode && contentNode.values.kind === "simulationDraft"
     readonly property bool formPage: contentNode && contentNode.values.kind === "formGenerator"
     readonly property bool koPage: contentNode && contentNode.values.kind === "koGroups"
+    readonly property bool teamRosterPage: contentNode && contentNode.values.kind === "teamRoster"
     readonly property bool rosterPage: contentNode && contentNode.values.kind === "roster"
     readonly property bool catalogPage: contentNode && (contentNode.values.kind === "catalog" || contentNode.values.kind === "seasonRosters")
     readonly property bool calendarPage: contentNode && contentNode.values.kind === "calendar"
@@ -59,7 +60,7 @@ ColumnLayout {
         }
         ScrollView {
         id: scroll
-        visible: !workspace.libraryPage && !workspace.jumpPage && !workspace.koPage && !workspace.catalogPage && !workspace.calendarPage && !workspace.rosterPage && !workspace.formPage && !workspace.simulationDraftPage && !workspace.weatherPage
+        visible: !workspace.teamRosterPage && !workspace.libraryPage && !workspace.jumpPage && !workspace.koPage && !workspace.catalogPage && !workspace.calendarPage && !workspace.rosterPage && !workspace.formPage && !workspace.simulationDraftPage && !workspace.weatherPage
         objectName: "workspaceScroll"
         Layout.fillWidth: true; Layout.fillHeight: true
         Layout.minimumWidth: 0; Layout.minimumHeight: 0
@@ -73,6 +74,11 @@ ColumnLayout {
             contentItem: Loader { active: !workspace.rebuildingOverview; sourceComponent: Component { Node { node: workspace.contentNode; tableHeightLimit: workspace.season ? Math.max(180,scroll.availableHeight-(Theme.compact ? 8 : workspace.width<700 ? 24 : 48)-Theme.dp(100)) : 540 } } }
         }
     }
+        Loader {
+            visible: active; active: workspace.teamRosterPage
+            Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0; Layout.margins: Theme.dp(12)
+            sourceComponent: Component { TeamRosterWorkspace { node: workspace.contentNode } }
+        }
         Loader {
             visible: active; active: workspace.libraryPage
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumWidth: 0; Layout.minimumHeight: 0; Layout.margins: Theme.dp(16)
