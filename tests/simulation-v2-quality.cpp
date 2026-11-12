@@ -81,7 +81,7 @@ int main()
         near(double(base.negativeCount)/n,.5,.004,"65% is not negative event probability");
         check(regular.sum>base.sum && unpredictable.sum<base.sum,"regularity affects mean in expected directions");
         check(regular.squares<base.squares && unpredictable.squares>base.squares,"regularity changes spread");
-        check(training.squares>base.squares*3.8,"training is more variable");
+        check(training.squares>base.squares*3.5,"training is more variable");
         athlete.perks={{0,0,0}};
         auto before=model.baseline(athlete,120,0,EventKind::Competition);
         athlete.landing=4;auto after=model.baseline(athlete,120,0,EventKind::Competition);

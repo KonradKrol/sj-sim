@@ -25,7 +25,7 @@ struct QualityParameters {
     double formHillAmplitude=.04; // maximum change of form share, in either direction
     double negativeInfluence=.65;
     NoiseShape noise=NoiseShape::Normal;
-    std::array<double,4> eventDeviation{{7,5.8,4.2,3.5}};
+    std::array<double,4> eventDeviation{{6.644,5.828,4.2,3.5}};
     std::array<double,5> specialistBias{{0.0,3.0625,6.125,9.8,13.475}};
     std::array<double,5> trainingBonus{{0,1.125,2.25,3.5,5}};
     std::array<double,5> competitionPenalty{{0,0.5625,1.125,1.75,2.5}};
