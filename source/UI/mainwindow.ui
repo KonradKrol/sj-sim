@@ -539,7 +539,7 @@ color: rgb(35, 123, 255);
 }</string>
             </property>
             <property name="text">
-             <string>Poj. konkurs</string>
+             <string>Szybki konkurs</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>

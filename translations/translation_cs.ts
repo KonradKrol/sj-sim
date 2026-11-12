@@ -3762,8 +3762,8 @@ li.checked::marker { content: "\2612"; }
         </message>
         <message>
             <location filename="../source/UI/Competition/Quick/CompetitionConfig.qml" line="47" />
-            <source>Pojedynczy konkurs</source>
-            <translation>Samostatný závod</translation>
+            <source>Szybki konkurs</source>
+            <translation>Rychlý závod</translation>
         </message>
         <message>
             <location filename="../source/UI/Competition/Quick/CompetitionConfig.qml" line="48" />
@@ -5207,8 +5207,8 @@ Pro dodatečnou kompenzaci musí skokan dosáhnout 95 % bodu HS (%1 m).</transla
         <name>CompetitionQuickWindow</name>
         <message>
             <location filename="../source/UI/Competition/Quick/CompetitionQuickBridge.cpp" line="271" />
-            <source>Sj.Sim · Pojedynczy konkurs · Qt Quick</source>
-            <translation>Sj.Sim · Samostatný závod · Qt Quick</translation>
+            <source>Sj.Sim · Szybki konkurs · Qt Quick</source>
+            <translation>Sj.Sim · Rychlý závod · Qt Quick</translation>
         </message>
         <message>
             <location filename="../source/UI/Competition/Quick/CompetitionQuickBridge.cpp" line="284" />
@@ -6273,12 +6273,12 @@ li.checked::marker { content: "\2612"; }
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Na podstawie list zawodników&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Ręczne usuwanie “niepotrzebnych” zawodników&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wybór skoczni (ważne!!!)&lt;/li&gt;
-&lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wybór zasad konkursu (ważne!!!) (tylko dla pojedynczych konkursów)&lt;/li&gt;
+&lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wybór zasad konkursu (ważne!!!) (tylko dla szybkich konkursów)&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wybór ustawień generatora wiatru lub automatyczne ustawienie&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wybór ustawień generatora śniegu na najeździe&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wybór belki&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wybór szansy na dyskwalifikację&lt;/li&gt;
-&lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wybór ważności skoków (tylko dla pojedynczych konkursów)&lt;/li&gt;&lt;/ul&gt;
+&lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wybór ważności skoków (tylko dla szybkich konkursów)&lt;/li&gt;&lt;/ul&gt;
 &lt;h2 style=" margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;a name="najważniejsze-funkcje-przy-rozgrywaniu-konkursu"&gt;&lt;/a&gt;&lt;span style=" font-size:13pt; font-weight:700;"&gt;N&lt;/span&gt;&lt;span style=" font-size:13pt; font-weight:700;"&gt;ajważniejsze funkcje przy rozgrywaniu konkursu&lt;/span&gt;&lt;/h2&gt;
 &lt;ul style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wirtualna klasyfikacja (tylko dla sezonów)&lt;/li&gt;
@@ -6292,7 +6292,7 @@ li.checked::marker { content: "\2612"; }
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wygenerowanie nowego wiatru&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Zmiana ustawień generatora wiatru lub śniegu/deszczu&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Zmiana belki lub jej obniżenie na życzenie trenera &lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
-            <translation>&lt;h1&gt;Průběh závodu&lt;/h1&gt;&lt;h2&gt;Před závodem&lt;/h2&gt;&lt;p&gt;Startovní pořadí nastavte podle seznamu skokanů v uložené simulaci, náhodně, podle výsledku závodu, pořadí, jiné startovní listiny, zemí nebo seznamů skokanů; většina možností je dostupná v režimu sezóny. Nepotřebné skokany lze odebrat ručně. Vyberte můstek, pravidla závodu (u samostatného závodu), nastavení generátorů větru a sněhu na nájezdu, nájezdové okno, pravděpodobnost diskvalifikace a důležitost skoků (u samostatného závodu).&lt;/p&gt;&lt;h2&gt;Během závodu&lt;/h2&gt;</translation>
+            <translation>&lt;h1&gt;Průběh závodu&lt;/h1&gt;&lt;h2&gt;Před závodem&lt;/h2&gt;&lt;p&gt;Startovní pořadí nastavte podle seznamu skokanů v uložené simulaci, náhodně, podle výsledku závodu, pořadí, jiné startovní listiny, zemí nebo seznamů skokanů; většina možností je dostupná v režimu sezóny. Nepotřebné skokany lze odebrat ručně. Vyberte můstek, pravidla závodu (u rychlého závodu), nastavení generátorů větru a sněhu na nájezdu, nájezdové okno, pravděpodobnost diskvalifikace a důležitost skoků (u rychlého závodu).&lt;/p&gt;&lt;h2&gt;Během závodu&lt;/h2&gt;</translation>
         </message>
         <message>
             <location filename="../source/UI/HelpWindow.ui" line="455" />
@@ -6365,7 +6365,7 @@ li.checked::marker { content: "\2612"; }
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Mnożnik wpływów skoczni (Przed każdym skokiem wpływ wybicia i lotu skoczni jest mnożony przez tą wartość. Głównym zastosowaniem tego jest zwiększenie różnic między zawodniakami)&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wpływ formy na wybicie (Od 0 do 1. Np. 0.2 oznacza że forma ma 20% wpływu a umiejętności 80% wpływu na ocenę wybicia)&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wpływ formy na lot (Od 0 do 1. --||–)&lt;/li&gt;
-&lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Aktualizuj rekordy z globalnej bazy danych (Jeżeli włączone, to przy rozgrywaniu pojedynczych konkursów ewentualne rekordy zostaną na stałe zapisane w globalnej bazie danych)&lt;/li&gt;
+&lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Aktualizuj rekordy z globalnej bazy danych (Jeżeli włączone, to przy rozgrywaniu szybkich konkursów ewentualne rekordy zostaną na stałe zapisane w globalnej bazie danych)&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Rozgrywanie konkursu “na żywo” (Jeżeli włączone, to skok zawodnika jest pokazywany stopniowo, zaczynając od odległości i tak dalej.)&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Mnożnik szybkości rozgrywania konkursu “na żywo” (Jeżeli np. 1.35, konkurs na żywo jest rozgrywany o 35% szybciej)&lt;/li&gt;&lt;/ul&gt;
 &lt;h2 style=" margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;a name="pozostałe-funkcje"&gt;&lt;/a&gt;&lt;span style=" font-size:x-large; font-weight:700;"&gt;P&lt;/span&gt;&lt;span style=" font-size:x-large; font-weight:700;"&gt;ozostałe funkcje&lt;/span&gt;&lt;/h2&gt;
@@ -6379,7 +6379,7 @@ li.checked::marker { content: "\2612"; }
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Edytor krajów (Można według uznania zmieniać kraje dodane do symulatora)&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wczytaj zawodników przez CSV&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;“Przywróć domyślne” (Przywraca wszystkie ustawienia do stanu początkowego) &lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
-            <translation>&lt;h1&gt;Nastavení simulátoru&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;Jazyk: polština, angličtina nebo čeština.&lt;/li&gt;&lt;li&gt;Základní pravděpodobnost diskvalifikace: výchozí hodnota pro závody a jednotlivé skoky.&lt;/li&gt;&lt;li&gt;Rozsah dovedností: například 0–50 místo 0–100. Náhoda a další faktory simulace se přizpůsobí tomuto rozsahu.&lt;/li&gt;&lt;li&gt;Násobitel náhody: při 0,5 se náhodná ztráta čtyř metrů změní na dva metry.&lt;/li&gt;&lt;li&gt;Automatické přizpůsobení vlivu můstku rozsahu dovedností: zdvojnásobení rozsahu na 200 změní vliv odrazu a letu při simulaci, aniž by upravilo uložené hodnoty můstku.&lt;/li&gt;&lt;li&gt;Násobitel vlivu můstku: před každým skokem násobí vliv odrazu a letu, především pro zvýraznění rozdílů mezi skokany.&lt;/li&gt;&lt;li&gt;Vliv formy na odraz a let: hodnoty od 0 do 1. Při 0,2 tvoří forma 20 % a dovednost 80 % hodnocení.&lt;/li&gt;&lt;li&gt;Aktualizovat rekordy globální databáze: rekordy ze samostatných závodů se trvale uloží.&lt;/li&gt;&lt;li&gt;Živý závod: podrobnosti skoku se odhalují postupně, počínaje vzdáleností.&lt;/li&gt;&lt;li&gt;Rychlost živého závodu: 1,35 zrychlí zobrazení o 35 %.&lt;/li&gt;&lt;/ul&gt;&lt;h2&gt;Další nástroje&lt;/h2&gt;&lt;p&gt;Opravit uložené simulace či globální databázi; zkrátit všechna příjmení na iniciálu (např. Adam Nowak → Adam N.; nevratné); automaticky přiřadit fotografie skokanům; přidat předvolby důležitosti skoků (úprava a odstranění v souborech simulátoru); vybrat zobrazované informace o skoku; upravit země; načíst skokany z CSV; nebo obnovit všechna výchozí nastavení.&lt;/p&gt;</translation>
+            <translation>&lt;h1&gt;Nastavení simulátoru&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;Jazyk: polština, angličtina nebo čeština.&lt;/li&gt;&lt;li&gt;Základní pravděpodobnost diskvalifikace: výchozí hodnota pro závody a jednotlivé skoky.&lt;/li&gt;&lt;li&gt;Rozsah dovedností: například 0–50 místo 0–100. Náhoda a další faktory simulace se přizpůsobí tomuto rozsahu.&lt;/li&gt;&lt;li&gt;Násobitel náhody: při 0,5 se náhodná ztráta čtyř metrů změní na dva metry.&lt;/li&gt;&lt;li&gt;Automatické přizpůsobení vlivu můstku rozsahu dovedností: zdvojnásobení rozsahu na 200 změní vliv odrazu a letu při simulaci, aniž by upravilo uložené hodnoty můstku.&lt;/li&gt;&lt;li&gt;Násobitel vlivu můstku: před každým skokem násobí vliv odrazu a letu, především pro zvýraznění rozdílů mezi skokany.&lt;/li&gt;&lt;li&gt;Vliv formy na odraz a let: hodnoty od 0 do 1. Při 0,2 tvoří forma 20 % a dovednost 80 % hodnocení.&lt;/li&gt;&lt;li&gt;Aktualizovat rekordy globální databáze: rekordy ze rychlých závodů se trvale uloží.&lt;/li&gt;&lt;li&gt;Živý závod: podrobnosti skoku se odhalují postupně, počínaje vzdáleností.&lt;/li&gt;&lt;li&gt;Rychlost živého závodu: 1,35 zrychlí zobrazení o 35 %.&lt;/li&gt;&lt;/ul&gt;&lt;h2&gt;Další nástroje&lt;/h2&gt;&lt;p&gt;Opravit uložené simulace či globální databázi; zkrátit všechna příjmení na iniciálu (např. Adam Nowak → Adam N.; nevratné); automaticky přiřadit fotografie skokanům; přidat předvolby důležitosti skoků (úprava a odstranění v souborech simulátoru); vybrat zobrazované informace o skoku; upravit země; načíst skokany z CSV; nebo obnovit všechna výchozí nastavení.&lt;/p&gt;</translation>
         </message>
         <message>
             <location filename="../source/UI/HelpWindow.ui" line="562" />
@@ -7004,8 +7004,8 @@ li.checked::marker { content: "\2612"; }
         </message>
         <message>
             <location filename="../source/UI/Quick/Home.qml" line="36" />
-            <source>Pojedynczy konkurs</source>
-            <translation>Samostatný závod</translation>
+            <source>Szybki konkurs</source>
+            <translation>Rychlý závod</translation>
         </message>
         <message>
             <location filename="../source/UI/Quick/Home.qml" line="36" />
@@ -9019,8 +9019,8 @@ li.checked::marker { content: "\2612"; }
         </message>
         <message>
             <location filename="../source/UI/mainwindow.ui" line="542" />
-            <source>Poj. konkurs</source>
-            <translation>Samostatný závod</translation>
+            <source>Szybki konkurs</source>
+            <translation>Rychlý závod</translation>
         </message>
         <message>
             <location filename="../source/UI/mainwindow.ui" line="661" />
@@ -11948,8 +11948,8 @@ Ověřte, že jste vybrali správný soubor.</translation>
         </message>
         <message>
             <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="320" />
-            <source>Konfiguracja pojedynczego konkursu</source>
-            <translation>Nastavení samostatného závodu</translation>
+            <source>Konfiguracja szybkiego konkursu</source>
+            <translation>Nastavení rychlého závodu</translation>
         </message>
         <message>
             <location filename="../source/UI/DatabaseEditor/DatabaseItemsListView.cpp" line="374" />
@@ -19279,8 +19279,8 @@ li.checked::marker { content: "\2612"; }
         <name>SingleCompetitionConfigWindow</name>
         <message>
             <location filename="../source/UI/Competition/CompetitionConfigWindow.ui" line="14" />
-            <source>Konfiguracja pojedynczego konkursu</source>
-            <translation>Nastavení samostatného závodu</translation>
+            <source>Konfiguracja szybkiego konkursu</source>
+            <translation>Nastavení rychlého závodu</translation>
         </message>
         <message>
             <location filename="../source/UI/Competition/CompetitionConfigWindow.ui" line="82" />

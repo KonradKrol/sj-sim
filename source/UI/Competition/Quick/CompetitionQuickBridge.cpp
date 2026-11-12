@@ -268,7 +268,7 @@ void CompetitionQuickBridge::action(const QString &name, const QVariantList &sel
 
 CompetitionQuickWindow::CompetitionQuickWindow(QWidget *parent) : QDialog(parent)
 {
-    setWindowTitle(tr("Sj.Sim · Pojedynczy konkurs · Qt Quick"));
+    setWindowTitle(tr("Sj.Sim · Szybki konkurs · Qt Quick"));
     setWindowFlags(Qt::Window);
     setMinimumSize(480, 480);
     auto *configuration = new CompetitionConfigWindow(CompetitionConfigWindow::SingleCompetition, this);

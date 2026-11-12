@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Konfiguracja pojedynczego konkursu</string>
+   <string>Konfiguracja szybkiego konkursu</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(236, 236, 236);</string>

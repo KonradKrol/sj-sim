@@ -3762,8 +3762,8 @@ li.checked::marker { content: "\2612"; }
         </message>
         <message>
             <location filename="../source/UI/Competition/Quick/CompetitionConfig.qml" line="47" />
-            <source>Pojedynczy konkurs</source>
-            <translation>Single competition</translation>
+            <source>Szybki konkurs</source>
+            <translation>Quick competition</translation>
         </message>
         <message>
             <location filename="../source/UI/Competition/Quick/CompetitionConfig.qml" line="48" />
@@ -5206,8 +5206,8 @@ For additional compensation, the jumper must reach 95% of HS (%1 m).</translatio
         <name>CompetitionQuickWindow</name>
         <message>
             <location filename="../source/UI/Competition/Quick/CompetitionQuickBridge.cpp" line="271" />
-            <source>Sj.Sim · Pojedynczy konkurs · Qt Quick</source>
-            <translation>Sj.Sim · Single competition · Qt Quick</translation>
+            <source>Sj.Sim · Szybki konkurs · Qt Quick</source>
+            <translation>Sj.Sim · Quick competition · Qt Quick</translation>
         </message>
         <message>
             <location filename="../source/UI/Competition/Quick/CompetitionQuickBridge.cpp" line="284" />
@@ -6262,12 +6262,12 @@ li.checked::marker { content: "\2612"; }
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Na podstawie list zawodników&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Ręczne usuwanie “niepotrzebnych” zawodników&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wybór skoczni (ważne!!!)&lt;/li&gt;
-&lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wybór zasad konkursu (ważne!!!) (tylko dla pojedynczych konkursów)&lt;/li&gt;
+&lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wybór zasad konkursu (ważne!!!) (tylko dla szybkich konkursów)&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wybór ustawień generatora wiatru lub automatyczne ustawienie&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wybór ustawień generatora śniegu na najeździe&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wybór belki&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wybór szansy na dyskwalifikację&lt;/li&gt;
-&lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wybór ważności skoków (tylko dla pojedynczych konkursów)&lt;/li&gt;&lt;/ul&gt;
+&lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wybór ważności skoków (tylko dla szybkich konkursów)&lt;/li&gt;&lt;/ul&gt;
 &lt;h2 style=" margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;a name="najważniejsze-funkcje-przy-rozgrywaniu-konkursu"&gt;&lt;/a&gt;&lt;span style=" font-size:13pt; font-weight:700;"&gt;N&lt;/span&gt;&lt;span style=" font-size:13pt; font-weight:700;"&gt;ajważniejsze funkcje przy rozgrywaniu konkursu&lt;/span&gt;&lt;/h2&gt;
 &lt;ul style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wirtualna klasyfikacja (tylko dla sezonów)&lt;/li&gt;
@@ -6281,7 +6281,7 @@ li.checked::marker { content: "\2612"; }
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wygenerowanie nowego wiatru&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Zmiana ustawień generatora wiatru lub śniegu/deszczu&lt;/li&gt;
 &lt;li style=" font-size:13pt;" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Zmiana belki lub jej obniżenie na życzenie trenera &lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
-            <translation>&lt;h1&gt;Running a competition&lt;/h1&gt;&lt;h2&gt;Before the competition&lt;/h2&gt;&lt;p&gt;Set the start order using the saved jumper list, random order, a competition result, standings, another start list, countries or jumper lists; most methods are available in season mode. Remove unwanted jumpers manually. Select a hill, competition rules (single competitions), wind and inrun snow generator settings, start gate, disqualification chance and jump importance (single competitions).&lt;/p&gt;&lt;h2&gt;During the competition&lt;/h2&gt;</translation>
+            <translation>&lt;h1&gt;Running a competition&lt;/h1&gt;&lt;h2&gt;Before the competition&lt;/h2&gt;&lt;p&gt;Set the start order using the saved jumper list, random order, a competition result, standings, another start list, countries or jumper lists; most methods are available in season mode. Remove unwanted jumpers manually. Select a hill, competition rules (quick competitions), wind and inrun snow generator settings, start gate, disqualification chance and jump importance (quick competitions).&lt;/p&gt;&lt;h2&gt;During the competition&lt;/h2&gt;</translation>
         </message>
         <message>
             <location filename="../source/UI/HelpWindow.ui" line="467" />
@@ -6368,7 +6368,7 @@ li.checked::marker { content: "\2612"; }
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Mnożnik wpływów skoczni (Przed każdym skokiem wpływ wybicia i lotu skoczni jest mnożony przez tą wartość. Głównym zastosowaniem tego jest zwiększenie różnic między zawodniakami)&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wpływ formy na wybicie (Od 0 do 1. Np. 0.2 oznacza że forma ma 20% wpływu a umiejętności 80% wpływu na ocenę wybicia)&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wpływ formy na lot (Od 0 do 1. --||–)&lt;/li&gt;
-&lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Aktualizuj rekordy z globalnej bazy danych (Jeżeli włączone, to przy rozgrywaniu pojedynczych konkursów ewentualne rekordy zostaną na stałe zapisane w globalnej bazie danych)&lt;/li&gt;
+&lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Aktualizuj rekordy z globalnej bazy danych (Jeżeli włączone, to przy rozgrywaniu szybkich konkursów ewentualne rekordy zostaną na stałe zapisane w globalnej bazie danych)&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Rozgrywanie konkursu “na żywo” (Jeżeli włączone, to skok zawodnika jest pokazywany stopniowo, zaczynając od odległości i tak dalej.)&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Mnożnik szybkości rozgrywania konkursu “na żywo” (Jeżeli np. 1.35, konkurs na żywo jest rozgrywany o 35% szybciej)&lt;/li&gt;&lt;/ul&gt;
 &lt;h2 style=" margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;a name="pozostałe-funkcje"&gt;&lt;/a&gt;&lt;span style=" font-size:x-large; font-weight:700;"&gt;P&lt;/span&gt;&lt;span style=" font-size:x-large; font-weight:700;"&gt;ozostałe funkcje&lt;/span&gt;&lt;/h2&gt;
@@ -6382,7 +6382,7 @@ li.checked::marker { content: "\2612"; }
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Edytor krajów (Można według uznania zmieniać kraje dodane do symulatora)&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Wczytaj zawodników przez CSV&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;“Przywróć domyślne” (Przywraca wszystkie ustawienia do stanu początkowego) &lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
-            <translation>&lt;h1&gt;Simulator settings&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;Language: Polish, English or Czech.&lt;/li&gt;&lt;li&gt;Base disqualification probability: the default used for competitions and single jumps.&lt;/li&gt;&lt;li&gt;Skill range: for example, 0–50 instead of 0–100. Randomness and other simulation factors scale to match it.&lt;/li&gt;&lt;li&gt;Randomness multiplier: at 0.5, a random loss of four metres becomes two metres.&lt;/li&gt;&lt;li&gt;Automatically adjust hill effects to the skill range: doubling the range to 200 scales hill take-off and flight effects during simulation without editing their stored values.&lt;/li&gt;&lt;li&gt;Hill effects multiplier: multiplies take-off and flight hill effects before every jump, chiefly to increase differences between jumpers.&lt;/li&gt;&lt;li&gt;Effect of form on take-off and flight: values from 0 to 1. At 0.2, form contributes 20% and skill 80% of the rating.&lt;/li&gt;&lt;li&gt;Update global database records: records set in single competitions are saved permanently.&lt;/li&gt;&lt;li&gt;Live competition: jump details are revealed gradually, starting with distance.&lt;/li&gt;&lt;li&gt;Live competition speed: 1.35 makes live presentation 35% faster.&lt;/li&gt;&lt;/ul&gt;&lt;h2&gt;Other tools&lt;/h2&gt;&lt;p&gt;Repair simulation saves or the global database; shorten all surnames to an initial (e.g. Adam Nowak → Adam N.; irreversible); assign jumper photos automatically; add jump importance presets (edit and remove them in the simulator files); choose which jump details appear; edit countries; import jumpers from CSV; or restore all settings to defaults.&lt;/p&gt;</translation>
+            <translation>&lt;h1&gt;Simulator settings&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;Language: Polish, English or Czech.&lt;/li&gt;&lt;li&gt;Base disqualification probability: the default used for competitions and single jumps.&lt;/li&gt;&lt;li&gt;Skill range: for example, 0–50 instead of 0–100. Randomness and other simulation factors scale to match it.&lt;/li&gt;&lt;li&gt;Randomness multiplier: at 0.5, a random loss of four metres becomes two metres.&lt;/li&gt;&lt;li&gt;Automatically adjust hill effects to the skill range: doubling the range to 200 scales hill take-off and flight effects during simulation without editing their stored values.&lt;/li&gt;&lt;li&gt;Hill effects multiplier: multiplies take-off and flight hill effects before every jump, chiefly to increase differences between jumpers.&lt;/li&gt;&lt;li&gt;Effect of form on take-off and flight: values from 0 to 1. At 0.2, form contributes 20% and skill 80% of the rating.&lt;/li&gt;&lt;li&gt;Update global database records: records set in quick competitions are saved permanently.&lt;/li&gt;&lt;li&gt;Live competition: jump details are revealed gradually, starting with distance.&lt;/li&gt;&lt;li&gt;Live competition speed: 1.35 makes live presentation 35% faster.&lt;/li&gt;&lt;/ul&gt;&lt;h2&gt;Other tools&lt;/h2&gt;&lt;p&gt;Repair simulation saves or the global database; shorten all surnames to an initial (e.g. Adam Nowak → Adam N.; irreversible); assign jumper photos automatically; add jump importance presets (edit and remove them in the simulator files); choose which jump details appear; edit countries; import jumpers from CSV; or restore all settings to defaults.&lt;/p&gt;</translation>
         </message>
         <message>
             <location filename="../source/UI/HelpWindow.ui" line="297" />
@@ -7003,8 +7003,8 @@ li.checked::marker { content: "\2612"; }
         </message>
         <message>
             <location filename="../source/UI/Quick/Home.qml" line="36" />
-            <source>Pojedynczy konkurs</source>
-            <translation>Single competition</translation>
+            <source>Szybki konkurs</source>
+            <translation>Quick competition</translation>
         </message>
         <message>
             <location filename="../source/UI/Quick/Home.qml" line="36" />
@@ -9013,8 +9013,8 @@ li.checked::marker { content: "\2612"; }
         </message>
         <message>
             <location filename="../source/UI/mainwindow.ui" line="542" />
-            <source>Poj. konkurs</source>
-            <translation>Single competition</translation>
+            <source>Szybki konkurs</source>
+            <translation>Quick competition</translation>
         </message>
         <message>
             <location filename="../source/UI/mainwindow.ui" line="661" />
@@ -11947,8 +11947,8 @@ Check that you selected the correct file.</translation>
         </message>
         <message>
             <location filename="../source/UI/Competition/CompetitionConfigWindow.cpp" line="320" />
-            <source>Konfiguracja pojedynczego konkursu</source>
-            <translation>Single competition setup</translation>
+            <source>Konfiguracja szybkiego konkursu</source>
+            <translation>Quick competition setup</translation>
         </message>
         <message>
             <location filename="../source/UI/DatabaseEditor/DatabaseItemsListView.cpp" line="374" />
@@ -19278,8 +19278,8 @@ li.checked::marker { content: "\2612"; }
         <name>SingleCompetitionConfigWindow</name>
         <message>
             <location filename="../source/UI/Competition/CompetitionConfigWindow.ui" line="14" />
-            <source>Konfiguracja pojedynczego konkursu</source>
-            <translation>Single competition setup</translation>
+            <source>Konfiguracja szybkiego konkursu</source>
+            <translation>Quick competition setup</translation>
         </message>
         <message>
             <location filename="../source/UI/Competition/CompetitionConfigWindow.ui" line="82" />

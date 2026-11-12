@@ -394,7 +394,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         checkBox_singleCompetitionQualifications->setFont(QFont("Quicksand Medium", 12, 650));
         ui->verticalLayout_competitionOptions->insertWidget(0, checkBox_singleCompetitionQualifications);
 
-        setWindowTitle(QObject::tr("Konfiguracja pojedynczego konkursu"));
+        setWindowTitle(QObject::tr("Konfiguracja szybkiego konkursu"));
     }
     connect(competitionRulesEditor, &CompetitionRulesEditorWidget::jumpersCountInTeamChanged, this, [this](){
         competitionTeams = Team::constructTeamsVectorByJumpersList(competitionJumpers, competitionRulesEditor->getJumpersCountInTeam());

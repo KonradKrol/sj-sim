@@ -44,7 +44,7 @@ Pane {
                 spacing: 16
                 Label { text: "Sj.Sim"; color: "#2e55c5"; font.pixelSize: 19; font.bold: true; visible: root.width >= 700 }
                 Rectangle { width: 1; height: 22; color: "#daded5"; visible: root.width >= 700 }
-                Label { text: qsTr("Pojedynczy konkurs"); font.pixelSize: 21; color: "#262d25"; Layout.fillWidth: true }
+                Label { text: qsTr("Szybki konkurs"); font.pixelSize: 21; color: "#262d25"; Layout.fillWidth: true }
                 ActionButton { text: qsTr("Widok klasyczny"); onClicked: root.run("widgets"); ToolTip.visible: hovered; ToolTip.text: qsTr("Otwórz te same ustawienia w Qt Widgets") }
             }
         }
