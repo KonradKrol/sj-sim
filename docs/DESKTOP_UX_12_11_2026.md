@@ -23,7 +23,7 @@ rozciąga przycisków w pionie. W interfejsie widnieje **Sj.Sim 2.0.0**, bez bet
 
 ## Powitanie
 
-Mniejszy dialog (maksymalnie 940 × 480 jednostek skali interfejsu), mniejszy
+Mniejszy dialog (maksymalnie 752 × 384 jednostek skali interfejsu), mniejszy
 kadr zdjęcia i więcej szerokości na tekst. Zdjęcia wypełniają kadr z przycięciem.
 Główne akcje są po prawej, „O autorze” po lewej. Na końcu główną akcją jest
 „Ok”, a drugą „Rozpocznij przykładowy sezon”. Link Discord zmienia kursor.

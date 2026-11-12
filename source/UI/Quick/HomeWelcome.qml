@@ -16,8 +16,8 @@ Popup {
     visible: ui.context.showWelcome===true
     onOpened: step=0
     modal: true; focus: true; closePolicy: Popup.NoAutoClose
-    width: Math.min(Theme.dp(940),parent.width-Theme.dp(24))
-    height: Math.min(Theme.dp(480),parent.height-Theme.dp(24))
+    width: Math.min(Theme.dp(752),parent.width-Theme.dp(24))
+    height: Math.min(Theme.dp(384),parent.height-Theme.dp(24))
     x: (parent.width-width)/2; y: (parent.height-height)/2
     padding: Theme.dp(20)
     enter: PopupFade {}
@@ -37,12 +37,12 @@ Popup {
         GridLayout {
             id: body
             Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
-            columns: welcome.width>=Theme.dp(800)?2:1
+            columns: welcome.width>=Theme.dp(700)?2:1
             columnSpacing: Theme.dp(20); rowSpacing: Theme.dp(12)
             Rectangle {
                 objectName: "welcomeImageFrame"
-                Layout.fillWidth: true; Layout.alignment: Qt.AlignVCenter; Layout.minimumWidth: 0
-                Layout.preferredWidth: Theme.dp(270); Layout.preferredHeight: body.columns===1?Theme.dp(100):Math.min(Theme.dp(200),body.height)
+                Layout.fillWidth: body.columns===1; Layout.alignment: Qt.AlignVCenter; Layout.minimumWidth: 0
+                Layout.preferredWidth: Theme.dp(351); Layout.preferredHeight: body.columns===1?Theme.dp(100):Math.min(Theme.dp(200),body.height)
                 color: Theme.raised; radius: Theme.radius; clip: true; border.color: Theme.divider
                 Image { objectName: "welcomeImage"; anchors.fill: parent; anchors.margins: Theme.dp(5); source: "assets/welcome/"+welcome.pages[welcome.step].image+".png"; fillMode: Image.PreserveAspectCrop; sourceSize.width: 1400; sourceSize.height: 1000; asynchronous: true; Accessible.name: welcome.pages[welcome.step].title }
             }
