@@ -112,6 +112,10 @@ template<class F> void visitEngine(SimulationV2::EngineParameters &m,F f) {
     for(std::size_t i=0;i<m.quality.trainingBonus.size();++i) f(QString("quality.trainingBonus.%1").arg(i),QObject::tr("Bonus treningowy")+QString(" [%1]").arg(i),"quality",m.quality.trainingBonus[i],0,100,.01,"1");
     for(std::size_t i=0;i<m.quality.conservedEffortPenalty.size();++i) f(QString("quality.conservedEffortPenalty.%1").arg(i),QObject::tr("Oszczędzanie: kara")+QString(" [%1]").arg(i),"quality",m.quality.conservedEffortPenalty[i],0,100,.01,"1");
     for(std::size_t i=0;i<m.quality.conservedEffortDeviation.size();++i) f(QString("quality.conservedEffortDeviation.%1").arg(i),QObject::tr("Oszczędzanie: odchylenie")+QString(" [%1]").arg(i),"quality",m.quality.conservedEffortDeviation[i],0,100,.01,"1");
+    for(std::size_t i=0;i<5;++i) {
+        f(QString("quality.regularNegativePower.%1").arg(i),QObject::tr("Regularny: kształt strat")+QString(" [%1]").arg(i),"quality",m.quality.regularNegativePower[i],.05,10,.01,"1");
+        f(QString("quality.unpredictableNegativePower.%1").arg(i),QObject::tr("Nierówny: kształt strat")+QString(" [%1]").arg(i),"quality",m.quality.unpredictableNegativePower[i],.05,10,.01,"1");
+    }
     for(std::size_t i=0;i<m.quality.regularNegative.size();++i) f(QString("quality.regularNegative.%1").arg(i),QObject::tr("Regularny: straty")+QString(" [%1]").arg(i),"quality",m.quality.regularNegative[i],0,100,.01,"1");
     for(std::size_t i=0;i<m.quality.regularPositive.size();++i) f(QString("quality.regularPositive.%1").arg(i),QObject::tr("Regularny: bonusy")+QString(" [%1]").arg(i),"quality",m.quality.regularPositive[i],0,100,.01,"1");
     for(std::size_t i=0;i<m.quality.unpredictableNegative.size();++i) f(QString("quality.unpredictableNegative.%1").arg(i),QObject::tr("Nieprzewidywalny: straty")+QString(" [%1]").arg(i),"quality",m.quality.unpredictableNegative[i],0,100,.01,"1");
@@ -306,6 +310,7 @@ QString effectDescription(const QString &key,const QString &group) {
     if(key.startsWith("quality.trainingBonus."))return QObject::tr("Średni losowy bonus jakości w treningu i próbie. W kwalifikacjach wynosi 40%, a w konkursie nie działa.");
     if(key.startsWith("quality.conservedEffortPenalty."))return QObject::tr("Średnia kara jakości za Oszczędza siły w treningu i próbie. Kara jest losowa: małe straty są częstsze niż duże. W kwalifikacjach wpływ wynosi 20%, w konkursie nie działa.");
     if(key.startsWith("quality.conservedEffortDeviation."))return QObject::tr("Mnożnik rozrzutu jakości w treningu i próbie za Oszczędza siły. Np. 1,5 zwiększa rozrzut o połowę, a 1 pozostawia go bez zmian.");
+    if(key.startsWith("quality.regularNegativePower.") || key.startsWith("quality.unpredictableNegativePower."))return QObject::tr("Kształt ujemnych losowań: 1 zachowuje rozkład. Powyżej 1 mocniej oddziela drobne straty od dużych wpadek. Dodatnich losowań nie zmienia.");
     if(key.startsWith("quality.regularNegative."))return QObject::tr("Mnożnik wielkości losowych strat za Regularny na wskazanym poziomie. Np. 0,5 zmienia stratę −10 w −5, bez zmiany dodatnich losowań.");
     if(key.startsWith("quality.regularPositive."))return QObject::tr("Mnożnik wielkości losowych bonusów za Regularny na wskazanym poziomie. Np. 0,5 zmienia bonus +10 w +5, bez zmiany ujemnych losowań.");
     if(key.startsWith("quality.unpredictableNegative."))return QObject::tr("Mnożnik wielkości losowych strat za Nieprzewidywalny na wskazanym poziomie. Np. 1,5 zmienia stratę −10 w −15, bez zwiększania szansy ujemnego losowania.");

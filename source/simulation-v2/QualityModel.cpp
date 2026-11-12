@@ -29,9 +29,12 @@ void QualityParameters::validate() const
         throw std::invalid_argument("Invalid quality parameters");
     const auto validateCoefficient=[](double value){if(!std::isfinite(value) || value<0 || value>100)throw std::invalid_argument("Quality coefficients must be finite and in [0,100]");};
     for(double value:eventDeviation)validateCoefficient(value);
+    for(const auto *values:{&regularNegativePower,&unpredictableNegativePower})
+        for(double value:*values)if(!std::isfinite(value) || value<.05 || value>10)
+            throw std::invalid_argument("Negative noise power must be in [0.05,10]");
     for (const auto *values:{&specialistBias,&trainingBonus,&competitionPenalty,
              &conservedEffortPenalty,&conservedEffortDeviation,&regularNegative,&regularPositive,
-             &unpredictableNegative,&unpredictablePositive})
+             &unpredictableNegative,&unpredictablePositive,&regularNegativePower,&unpredictableNegativePower})
         for (double value:*values)
             validateCoefficient(value);
 }
@@ -90,10 +93,14 @@ JumpQuality QualityModel::sample(const Athlete &athlete, double k, double bias, 
     }
     double noise=config.noise==NoiseShape::Normal ? rng.normal(0,deviation) : rng.laplace(0,deviation/std::sqrt(2.0));
     const bool negative=noise<0;
+    const int regularity=athlete.perks[2];
+    if(negative && regularity!=0 && deviation>0) {
+        const double power=regularity>0?config.regularNegativePower[regularity]:config.unpredictableNegativePower[-regularity];
+        noise=-deviation*std::pow(-noise/deviation,power);
+    }
     // Symmetric draws, asymmetric magnitudes: 65% means expected aggregate
     // negative influence, not a 65% probability of drawing a negative sample.
     noise*=negative?2*config.negativeInfluence:2*(1-config.negativeInfluence);
-    const int regularity=athlete.perks[2];
     if (regularity>0) noise*=negative?config.regularNegative[regularity]:config.regularPositive[regularity];
     if (regularity<0) noise*=negative?config.unpredictableNegative[-regularity]:config.unpredictablePositive[-regularity];
     quality.randomEffect=noise;

@@ -71,7 +71,7 @@ QJsonObject gameCapture(){
     const double perks=scales[level("perks")];
     if(perks!=1)for(int i=1;i<=4;++i){
         for(const auto &key:{"specialistBias","trainingBonus","conservedEffortPenalty"})multiply(QString("quality.%1.%2").arg(key).arg(i),perks);
-        for(const auto &key:{"regularNegative","regularPositive","unpredictableNegative","unpredictablePositive","conservedEffortDeviation"}) {
+        for(const auto &key:{"regularNegative","regularPositive","unpredictableNegative","unpredictablePositive","regularNegativePower","unpredictableNegativePower","conservedEffortDeviation"}) {
             const QString name=QString("quality.%1.%2").arg(key).arg(i);values[name]=std::clamp(1+(values[name].toDouble(1)-1)*perks,.05,100.0);
         }
     }

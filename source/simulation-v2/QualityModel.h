@@ -31,10 +31,12 @@ struct QualityParameters {
     std::array<double,5> competitionPenalty{{0,0.5625,1.125,1.75,2.5}};
     std::array<double,5> conservedEffortPenalty{{0,2.25,4.25,6.125,8}};
     std::array<double,5> conservedEffortDeviation{{1,1.1125,1.25,1.4125,1.6}};
-    std::array<double,5> regularNegative{{1,0.85,0.7,0.55,0.4}};
-    std::array<double,5> regularPositive{{1,0.94,0.88,0.82,0.76}};
-    std::array<double,5> unpredictableNegative{{1,1.15,1.325,1.525,1.75}};
-    std::array<double,5> unpredictablePositive{{1,1.0525,1.11,1.175,1.25}};
+    std::array<double,5> regularNegative{{1,0.9055938917890852,0.7985049434675381,0.6241878293225928,0.3721457308704977}};
+    std::array<double,5> regularPositive{{1,0.9641149466451203,0.9189868091677912,0.8781394599754577,0.8228755374243409}};
+    std::array<double,5> unpredictableNegative{{1,1.133895578636703,1.27671470233168,1.432959307039079,1.660091091005461}};
+    std::array<double,5> unpredictablePositive{{1,1.026746022811274,1.053271615795478,1.092023691355192,1.142328091885014}};
+    std::array<double,5> regularNegativePower{{1,1.061037419630057,1.152157826965091,1.417739808817038,1.907457789176938}};
+    std::array<double,5> unpredictableNegativePower{{1,0.9212056408552631,0.8842218368290771,0.8650246804035179,0.9119236838821024}};
     double hillPreferenceStrength=1;
     void validate() const;
 };

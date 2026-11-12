@@ -56,8 +56,6 @@ int main()
         near(QualityModel(flatForm).baseline(athlete,220,0,EventKind::Competition).overallAndForm,q.overallAndForm,1e-12,"form hill effect can be disabled");
         rejects([]{auto p=QualityParameters();p.formKScale=0;QualityModel invalid(p);});
         near(model.baseline(athlete,120,.55,EventKind::Competition).value(),q.value(),1e-12,"neutral athlete unaffected by hill preference");
-        near(model.parameters().regularNegative[2],.7,1e-12,"level two is rescaled to the new four-level range");
-        near(model.parameters().regularNegative[4],.4,1e-12,"new extreme preserves the former maximum effect");
         athlete.perks[1]=4;
         check(model.baseline(athlete,200,0,EventKind::Competition).hillEffect>0,"flier benefits on big hills");
         check(model.baseline(athlete,80,0,EventKind::Competition).hillEffect<0,"flier loses on small hills");
@@ -88,6 +86,29 @@ int main()
         auto before=model.baseline(athlete,120,0,EventKind::Competition);
         athlete.landing=4;auto after=model.baseline(athlete,120,0,EventKind::Competition);
         near(before.value(),after.value(),1e-12,"landing skill cannot change jump quality");
+        {
+            QualityParameters calibration;calibration.eventDeviation[3]=4;
+            const double weak[]{.145,.12,.0875,.05,.168136,.20154,.234016,.264217,.291443};
+            const double severe[]{.021,.016,.0135,.009,.027236,.038,.056,.08,.12};
+            const double great[]{.032,.026,.021,.015,.037073,.041,.045,.051,.059};
+            const int tiers[]{1,2,3,4,0,-1,-2,-3,-4};
+            QualityModel calibrated(calibration);
+            for(int row=0;row<9;++row) {
+                Athlete person;person.perks[2]=tiers[row];SeededRandom rng(123456);
+                int bad=0,veryBad=0,excellent=0;double sum=0;
+                constexpr int count=1000000;
+                for(int i=0;i<count;++i){const double v=calibrated.sample(person,120,0,EventKind::Competition,rng).randomEffect;bad+=v<=-5;veryBad+=v<=-10;excellent+=v>=5;sum+=v;}
+                // Uneven weak-tail targets preserve the previous multipliers exactly.
+                const double oldNegative[]{1.15,1.325,1.525,1.75};
+                const double target=row>4?.5*std::erfc(5/(5.2*oldNegative[row-5]*std::sqrt(2.))):weak[row];
+                near(double(bad)/count,target,.002,"calibrated weak jump rate");
+                near(double(veryBad)/count,severe[row],.002,"calibrated severe mistake rate");
+                near(double(excellent)/count,great[row],.002,"calibrated excellent jump rate");
+                std::cout<<"tier "<<tiers[row]<<": "<<100.*bad/count<<"% / "<<100.*veryBad/count<<"% / "<<100.*excellent/count<<"%, mean "<<sum/count<<'\n';
+            }
+            rejects([]{auto p=QualityParameters();p.regularNegativePower[1]=0;QualityModel invalid(p);});
+            rejects([]{auto p=QualityParameters();p.unpredictableNegativePower[4]=std::numeric_limits<double>::infinity();QualityModel invalid(p);});
+        }
         QualityParameters diminishing;
         QualityModel reduced(diminishing);
         auto disabled=diminishing;disabled.formDiminishingStrength=0;
