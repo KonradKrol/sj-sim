@@ -91,7 +91,7 @@ begin
   Result := '';
   if not NeedsVCRuntime then Exit;
   ExtractTemporaryFile('vc_redist.x64.exe');
-  if not Exec(ExpandConstant('{tmp}\vc_redist.x64.exe'), '/install /quiet /norestart', '', SW_HIDE, ewWaitUntilTerminated, ExitCode) then
+  if not ShellExec('runas', ExpandConstant('{tmp}\vc_redist.x64.exe'), '/install /quiet /norestart', '', SW_HIDE, ewWaitUntilTerminated, ExitCode) then
     Result := 'Nie udało się uruchomić instalatora Microsoft Visual C++ Runtime.'
   else if ExitCode = 3010 then NeedsRestart := True
   else if (ExitCode <> 0) and (ExitCode <> 1638) then
