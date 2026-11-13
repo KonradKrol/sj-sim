@@ -7,6 +7,7 @@
 #include "../DatabaseEditor/ListModels/JumpersListsListModel.h"
 #include <QObject>
 #include "SimulationSaveManagerWindow.h"
+#include <QSettings>
 #include "../ResultsShowing/ResultsHistoryWidget.h"
 #include "ui_SimulationSaveManagerWindow.h"
 #include "../../global/GlobalAppSettings.h"
@@ -102,10 +103,10 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         markSeasonChanged();fillNextCompetitionInformations();
     });
     auto *automaticForm=new QCheckBox(tr("Automatyczna forma zawodników"),this);
-    automaticForm->setObjectName("automaticFormEnabled");automaticForm->hide();
+    automaticForm->setObjectName("automaticFormEnabled");automaticForm->setChecked(simulationSave->formEngine().enabled);automaticForm->hide();
     automaticForm->setToolTip(tr("Forma zmienia się wraz z datami wydarzeń. Wymaga włączonych dat; przy aktywnej funkcji nie można zmieniać formy ręcznie."));
     connect(automaticForm,&QCheckBox::toggled,this,[this,automaticForm](bool enabled){
-        if(!enabled && simulationSave->formEngine().enabled &&
+        if(!enabled && !property("disableAutoFormFromNotice").toBool() && simulationSave->formEngine().enabled &&
            QMessageBox::question(this,tr("Wyłącz autoformę"),tr("Wyłączyć automatyczną zmianę formy zawodników?"),QMessageBox::Yes|QMessageBox::No,QMessageBox::No)!=QMessageBox::Yes) {
             QSignalBlocker guard(automaticForm);automaticForm->setChecked(true);return;
         }
@@ -123,7 +124,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
             QMessageBox::warning(this,tr("Automatyczna forma"),error);return;
         }
         checkpoint.commit();
-        refreshProfileDrafts();markSeasonChanged();
+        refreshProfileDrafts();markSeasonChanged();emit autoFormNoticeChanged();
     });
     setWindowFlags(Qt::Window);
     setMinimumSize(640, 480);
@@ -520,7 +521,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
             QSignalBlocker guard(ui->checkBox_calendarDates);ui->checkBox_calendarDates->setChecked(season->getDatesEnabled());return;
         }
         season->setDatesEnabled(enabled);
-        if(!enabled){QString error;simulationSave->formEngine().setEnabled(false,false,error);refreshProfileDrafts();}
+        if(!enabled){QString error;simulationSave->formEngine().setEnabled(false,false,error);refreshProfileDrafts();emit autoFormNoticeChanged();}
         fillNextCompetitionInformations();emit calendarEditor->changed();
     });
 
@@ -645,6 +646,22 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
 
     updateResponsiveLayout(width());
     ResponsiveWindowUtils::manageWindowGeometry(this, "SimulationSaveManagerWindow");
+}
+
+bool SimulationSaveManagerWindow::autoFormNoticeVisible() const
+{
+    return simulationSave->formEngine().enabled && !QSettings().value("onboarding/autoFormNoticeDismissed",false).toBool();
+}
+void SimulationSaveManagerWindow::dismissAutoFormNotice(bool disable)
+{
+    if(disable) {
+        setProperty("disableAutoFormFromNotice",true);
+        if(auto *toggle=findChild<QCheckBox *>("automaticFormEnabled"))toggle->setChecked(false);
+        setProperty("disableAutoFormFromNotice",false);
+        if(simulationSave->formEngine().enabled)return;
+    }
+    QSettings().setValue("onboarding/autoFormNoticeDismissed",true);
+    emit autoFormNoticeChanged();
 }
 
 bool SimulationSaveManagerWindow::autosaveEnabled() const { return simulationSave->getAutosaveEnabled(); }

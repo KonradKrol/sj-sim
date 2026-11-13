@@ -37,7 +37,8 @@ int main(int argc,char **argv){
     check(!db->getGlobalPointsForPlacesPresets().isEmpty(),"independent point presets");
     NewSimulationSaveConfigurationWindow setup({},nullptr);QEventLoop wait;QTimer poll;
     QObject::connect(&poll,&QTimer::timeout,[&]{if(setup.catalogReady())wait.quit();});poll.start(20);QTimer::singleShot(15000,&wait,&QEventLoop::quit);wait.exec();
-    check(setup.catalogReady(),"example season catalog ready");auto save=setup.createExampleSave();check(bool(save),"example season created");check(save->saveToFile(UserDataPaths::saves()+"/"),"save uses new library folder");
+    check(setup.catalogReady(),"example season catalog ready");auto save=setup.createExampleSave();check(bool(save),"example season created");check(save->getActualSeason()->getDatesEnabled() && save->formEngine().enabled && save->getAutosaveEnabled(),"example enables dates, automatic form and autosave");
+    for(auto *calendar:save->getActualSeason()->getCalendarsReference())for(auto *event:calendar->getCompetitionsReference())check(event->getScheduledDate().isValid(),"example preserves preset dates");check(save->saveToFile(UserDataPaths::saves()+"/"),"save uses new library folder");
     const auto saveFile=QDir(UserDataPaths::saves()).entryList({"*.json"},QDir::Files).value(0);check(!saveFile.isEmpty(),"save visible");
     const auto saveBundle=test.path()+"/season.sjsim-pack";check(ResourceBundle::exportSelection(saveBundle,{"Saves/"+saveFile},error),error);
     const auto all=ResourceBundle::entries();QStringList keys;QString athleteKey;int calendars=0;

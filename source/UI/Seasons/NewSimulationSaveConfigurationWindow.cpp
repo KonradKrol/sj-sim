@@ -23,7 +23,7 @@ NewSimulationSaveConfigurationWindow::NewSimulationSaveConfigurationWindow(QStri
     otherNames(otherNames),source(source),catalog(paths)
 {
     ui->setupUi(this);
-    auto *dates=new QCheckBox(tr("Używaj dat zawodów"),this);dates->setObjectName("newSeasonDates");
+    auto *dates=new QCheckBox(tr("Używaj dat zawodów"),this);dates->setObjectName("newSeasonDates");dates->setChecked(true);
     dates->setToolTip(tr("Opcjonalny kalendarz z datami. Możesz włączyć go później, przed rozpoczęciem sezonu."));ui->formLayout->addRow(dates);
     auto *dateHelp=new QLabel(tr("Daty umożliwiają automatyczną zmianę formy i formę dnia zawodników."),this);
     dateHelp->setObjectName("newSeasonDatesHelp");dateHelp->setWordWrap(true);ui->formLayout->addRow(dateHelp);
@@ -172,6 +172,7 @@ std::unique_ptr<SimulationSave> NewSimulationSaveConfigurationWindow::createSave
     save->setCompetitionRules(rules.rules);
     Season season;season.setSeasonNumber(getSeasonNumberFromInput());season.setDatesEnabled(getDatesEnabledFromInput());season.setActualCalendar(nullptr);
     save->getSeasonsReference().append(season);save->setActualSeason(&save->getSeasonsReference().last());
+    QString formError;save->formEngine().setEnabled(season.getDatesEnabled() && engineVersion()==2,season.getDatesEnabled(),formError);
     save->fixJumpersFormInstabilities();save->updateNextCompetitionIndex();save->repairDatabase();
     return save;
 }
@@ -201,7 +202,7 @@ std::unique_ptr<SimulationSave> NewSimulationSaveConfigurationWindow::createExam
     }
     if(!summer || !winter)return {};
     const QString base=tr("Przykładowa symulacja");QString name=base;for(int n=2;otherNames.contains(name,Qt::CaseInsensitive);++n)name=base+" "+QString::number(n);
-    ui->lineEdit_name->setText(name);findChild<QCheckBox *>("newSeasonDates")->setChecked(false);
+    ui->lineEdit_name->setText(name);findChild<QCheckBox *>("newSeasonDates")->setChecked(true);
     auto save=createSave();if(!save)return {};
     for(auto *selected:{summer,winter}) {
         SeasonCalendarPreset copy(&selected->getCalendarReference());
@@ -213,7 +214,7 @@ std::unique_ptr<SimulationSave> NewSimulationSaveConfigurationWindow::createExam
                 const double distance=std::abs(hill->getHSPoint()-venues[i].second)+(hill->getName()==venues[i].first?0:1000);
                 if(distance<score){score=distance;best=hill;}
             }
-            events[i]->setHill(best);events[i]->setScheduledDate({});
+            events[i]->setHill(best);
         }
         calendar->normalizeCompetitionEvents();save->getActualSeason()->getCalendarsReference().append(calendar.get());
         if(selected==summer)save->getActualSeason()->setActualCalendar(calendar.get());

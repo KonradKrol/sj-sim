@@ -12,6 +12,23 @@ Column {
     readonly property var chronology: chronologyBackend ? chronologyBackend.chronology : ({blocked:false})
     spacing: Theme.dp(8)
     Pane {
+        objectName: "autoFormNotice"
+        width: parent.width
+        visible: overview.chronologyBackend && overview.chronologyBackend.autoFormNoticeVisible
+        padding: Theme.dp(12)
+        background: Rectangle { color: Theme.surface; radius: Theme.controlRadius; border.color: Theme.accent }
+        contentItem: ColumnLayout {
+            spacing: Theme.dp(4)
+            RowLayout {
+                Layout.fillWidth: true
+                Label { text: qsTr("Autoforma jest włączona"); color: Theme.ink; font.bold: true; font.pointSize: Theme.body; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+                SButton { text: "×"; quiet: true; Accessible.name: qsTr("Zamknij informację"); onClicked: overview.chronologyBackend.dismissAutoFormNotice(false) }
+            }
+            Label { text: qsTr("Forma zmienia się w sezonie, przynosząc zwroty akcji i realistyczne przetasowania. Możesz ją wyłączyć przełącznikiem Autoforma."); color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap; Layout.fillWidth: true }
+            SButton { text: qsTr("Wyłącz autoformę"); quiet: true; onClicked: overview.chronologyBackend.dismissAutoFormNotice(true) }
+        }
+    }
+    Pane {
         width: parent.width; visible: overview.chronology.blocked===true
         padding: Theme.dp(12)
         background: Rectangle { color: Theme.surface; border.color: Theme.danger; border.width: 2; radius: Theme.controlRadius }

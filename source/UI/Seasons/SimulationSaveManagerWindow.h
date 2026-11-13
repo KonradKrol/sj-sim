@@ -38,6 +38,7 @@ class SimulationSaveManagerWindow : public QDialog
     Q_PROPERTY(QObject *rosterEditor READ rosterEditor CONSTANT)
     Q_PROPERTY(bool canRestoreRoster READ canRestoreRoster NOTIFY rosterChoicesChanged)
     Q_PROPERTY(bool autosaveEnabled READ autosaveEnabled WRITE setAutosaveEnabled NOTIFY autosaveEnabledChanged)
+    Q_PROPERTY(bool autoFormNoticeVisible READ autoFormNoticeVisible NOTIFY autoFormNoticeChanged)
     Q_PROPERTY(QVariantList rosterChoices READ rosterChoices NOTIFY rosterChoicesChanged)
     Q_PROPERTY(QString rosterNotice READ rosterNotice NOTIFY rosterChoicesChanged)
     Q_PROPERTY(QString activeRosterId READ activeRosterId NOTIFY rosterChoicesChanged)
@@ -58,6 +59,8 @@ public:
     Q_INVOKABLE void cancelNextEvent();
     bool cancelSeasonEvents(const QStringList &ids);
     void focusCalendarTab(bool create=false,bool addCompetition=false);
+    bool autoFormNoticeVisible() const;
+    Q_INVOKABLE void dismissAutoFormNotice(bool disable=false);
     bool autosaveEnabled() const;
     Q_INVOKABLE void setAutosaveEnabled(bool enabled);
     void markSeasonChanged();
@@ -112,6 +115,7 @@ signals:
     void calendarRequested(bool create,bool addCompetition);
     void rosterWorkspaceRequested(int nativeIndex);
     void autosaveEnabledChanged();
+    void autoFormNoticeChanged();
     void rosterChoicesChanged();
     void rosterBoardChanged();
     void rosterBoardOpenChanged();
