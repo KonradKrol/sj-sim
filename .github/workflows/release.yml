@@ -1,11 +1,9 @@
-name: Build portable Windows and Linux packages
+name: Build Windows installer and Linux AppImage
 
 on:
   push:
-    branches:
-      - "**"
-    tags:
-      - "v*"
+    branches: ["**"]
+    tags: ["v*"]
   workflow_dispatch:
 
 permissions:
@@ -31,35 +29,31 @@ jobs:
           arch: win64_msvc2022_64
           modules: qtcharts
           cache: true
+      - name: Install installer compiler
+        shell: pwsh
+        run: choco install innosetup --yes --no-progress
       - name: Build
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force build/windows | Out-Null
           Push-Location build/windows
-          qmake ../..\sj-sim.pro CONFIG+=release
+          qmake ../../sj-sim.pro CONFIG+=release
           nmake
           Pop-Location
-      - name: Package
+      - name: Create installer
+        shell: pwsh
+        run: ./scripts/package-windows.ps1 -BuildDir build/windows
+      - name: Test installation, Qt startup, upgrade and uninstall
         shell: pwsh
         run: |
-          ./scripts/package-windows.ps1 -BuildDir build/windows -OutputDir dist/sj-sim-windows-x64
-          $env:QT_QPA_PLATFORM = "offscreen"
-          $env:QT_QUICK_BACKEND = "software"
-          $env:QT_FORCE_STDERR_LOGGING = "1"
-          $process = [System.Diagnostics.Process]::new()
-          $process.StartInfo.FileName = "$PWD/dist/sj-sim-windows-x64/sj-sim.exe"
-          $process.StartInfo.Arguments = '--deployment-smoke'
-          $process.StartInfo.WorkingDirectory = "$PWD/dist/sj-sim-windows-x64"
-          $process.StartInfo.UseShellExecute = $false
-          [void]$process.Start()
-          if (-not $process.WaitForExit(30000)) { Stop-Process -Id $process.Id -Force; throw "Packaged UI did not become ready" }
-          if ($process.ExitCode -ne 0) { throw "Packaged UI failed: $($process.ExitCode)" }
-          Remove-Item -LiteralPath dist/sj-sim-windows-x64/deployment-smoke.log -ErrorAction SilentlyContinue
-          Compress-Archive -Path dist/sj-sim-windows-x64 -DestinationPath dist/sj-sim-windows-x64.zip
+          $installer = Get-ChildItem dist/SjSim-*-windows-x64-Setup.exe | Select-Object -First 1
+          ./scripts/test-windows-installer.ps1 -Installer $installer.FullName
       - uses: actions/upload-artifact@v6
         with:
           name: windows-release
-          path: dist/sj-sim-windows-x64.zip
+          path: |
+            dist/SjSim-*-windows-x64-Setup.exe
+            dist/SjSim-*-windows-x64-Setup.exe.sha256
           if-no-files-found: error
           retention-days: 14
 
@@ -68,8 +62,8 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v6
-      - name: Install Linux packaging tools
-        run: sudo apt-get update && sudo apt-get install -y build-essential imagemagick libgl1-mesa-dev libfuse2 libxcb-cursor0 libxkbcommon-x11-0 xauth xvfb
+      - name: Install Linux build dependencies
+        run: sudo apt-get update && sudo apt-get install -y build-essential python3 libgl1-mesa-dev libfuse2 libxcb-cursor0 libxkbcommon-x11-0 xauth xvfb
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -83,24 +77,22 @@ jobs:
           cd build/linux
           qmake ../../sj-sim.pro CONFIG+=release
           make -j"$(nproc)"
-      - name: Package portable application
-        env:
-          APPIMAGE_EXTRACT_AND_RUN: "1"
-          QML_SOURCES_PATHS: ${{ github.workspace }}/source/UI/Quick
-          EXTRA_PLATFORM_PLUGINS: libqoffscreen.so
-          QT_QUICK_BACKEND: software
+      - name: Create AppImage
+        run: bash scripts/package-linux.sh build/linux
+      - name: Test the actual AppImage with a fresh data directory
         run: |
-          curl --fail --location --retry 3 -o linuxdeploy-x86_64.AppImage https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
-          curl --fail --location --retry 3 -o linuxdeploy-plugin-qt-x86_64.AppImage https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
-          chmod +x linuxdeploy-x86_64.AppImage linuxdeploy-plugin-qt-x86_64.AppImage
-          bash scripts/package-linux.sh build/linux dist/sj-sim-linux-x64
-      - name: Smoke-test packaged launcher
-        run: |
-          QT_QUICK_BACKEND=software xvfb-run -a timeout 30s ./dist/sj-sim-linux-x64/Sj.Sim --deployment-smoke
+          artifact=$(find dist -maxdepth 1 -name 'SjSim-*-linux-x86_64.AppImage' -print -quit)
+          env -u LD_LIBRARY_PATH -u QML2_IMPORT_PATH -u QML_IMPORT_PATH -u QT_PLUGIN_PATH \
+            APPIMAGE_EXTRACT_AND_RUN=1 QT_QUICK_BACKEND=software \
+            xvfb-run -a timeout 45s "$artifact" --deployment-smoke
+          cd dist
+          sha256sum -c ./*.sha256
       - uses: actions/upload-artifact@v6
         with:
           name: linux-release
-          path: dist/sj-sim-linux-x64.tar.gz
+          path: |
+            dist/SjSim-*-linux-x86_64.AppImage
+            dist/SjSim-*-linux-x86_64.AppImage.sha256
           if-no-files-found: error
           retention-days: 14
 
@@ -121,7 +113,7 @@ jobs:
           tag_name: ${{ github.ref_name }}
           target_commitish: ${{ github.sha }}
           name: Sj.Sim ${{ github.ref_name }}
-          body: Automated Windows and Linux build for commit ${{ github.sha }}.
+          body: Windows — pobierz Setup.exe i zainstaluj. Linux — pobierz AppImage i nadaj prawo uruchamiania. Paczki i zapisy pozostają w Dokumenty/SjSimData.
           prerelease: ${{ contains(github.ref_name, '-') }}
           make_latest: false
           files: release-assets/*

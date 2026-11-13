@@ -272,22 +272,26 @@ Do testu zgodności Widgets utwórz **osobny** katalog, np. `build-win-widgets`,
 
 Do debugowania utwórz inny build z `CONFIG+=debug CONFIG-=release`. W Release projekt definiuje `QT_NO_DEBUG_OUTPUT`, dlatego brak `qDebug` jest zamierzony; ostrzeżenia i błędy pozostają dostępne.
 
-## 7. Paczka Windows do uruchomienia bez Qt w PATH
+## 7. Instalator Windows
 
-Najpierw zbuduj wersję Release. Skrypt pakowania odtwarza wskazany katalog w `dist`; używaj go do tworzenia paczki, a nie jako katalogu codziennej rozgrywki z ważnymi zapisami.
+Po zbudowaniu Release użyj terminala z Qt/MSVC i zainstalowanym Inno Setup 6.3+:
 
 ```powershell
 Set-Location $repoRoot
-& .\scripts\package-windows.ps1 -BuildDir build-win -OutputDir dist\sj-sim-windows-x64
-
-$packageDir = Join-Path $repoRoot "dist\sj-sim-windows-x64"
-& (Join-Path $qtBin "windeployqt.exe") --release --compiler-runtime --no-translations --qmldir (Join-Path $repoRoot "source\UI\Quick") --dir $packageDir (Join-Path $packageDir "sj-sim.exe")
-if ($LASTEXITCODE -ne 0) { throw "Pakowanie zależności Qt Quick nie powiodło się" }
+.\scripts\package-windows.ps1 -BuildDir build-win
+.\scripts\test-windows-installer.ps1 -Installer .\dist\SjSim-2.0.0-windows-x64-Setup.exe
 ```
 
-**Drugi krok jest istotny:** obecny `package-windows.ps1` wywołuje `windeployqt` bez `--qmldir`. Dla domyślnego interfejsu Quick wskaż źródła QML, aby narzędzie przeanalizowało importy i dołączyło ich moduły/pluginy. Opis tego mechanizmu: [Qt — wdrażanie na Windows](https://doc.qt.io/qt-6.8/windows-deployment.html).
+Wynikiem jest pojedynczy instalator `Setup.exe` w `dist`. Skrypt sam uruchamia
+`windeployqt --qmldir`, dodaje Defaults, tłumaczenia i flagi, a następnie kompiluje
+instalator. Gracz nie potrzebuje SDK Qt. Aktualizacja i odinstalowanie zachowują
+zewnętrzną bibliotekę Dokumenty/SjSimData.
 
-Sprawdź zawartość paczki: `.exe`, biblioteki Qt, plugin `platforms\qwindows.dll`, zależności QML, obsługa SVG/JPEG, `flags`, `Defaults` i skompilowane tłumaczenie. Przetestuj ją również z terminala bez deweloperskiego PATH; inaczej brakujące pliki mogą być nieświadomie pobierane z instalacji Qt. Na komputerze docelowym może być wymagany oficjalny Microsoft Visual C++ Redistributable x64; nie kopiuj losowych bibliotek systemowych z internetu.
+`-KeepBundle` zachowuje folder `dist/windows-bundle` do diagnostyki;
+`-BundleOnly` pomija kompilowanie instalatora. Test instalacji wykonuj na świeżym
+koncie/maszynie — tak jak CI — ponieważ korzysta ze stałego identyfikatora Sj.Sima.
+
+Szczegóły, wymagania narzędzi i obie platformy: [DISTRIBUTION.md](DISTRIBUTION.md).
 
 ## 8. Gotowe polecenie dla Codexa
 
