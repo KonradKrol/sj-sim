@@ -417,7 +417,7 @@ QJsonArray parameters() {
         auto d=definition("generator.global."+entry.first,entry.second,"generator",entry.first=="strengthScale"?.84:entry.first=="spatialScale"?.95:.6,0,3,.05,"1",false);d["preset"]=-2;rows.append(d);
     }
     for(const auto &entry:QVector<QPair<QString,QString>>{{"strengthScale",QObject::tr("Automatyczna pogoda: skala siły")},{"variationScale",QObject::tr("Automatyczna pogoda: skala wahań")},{"gustScale",QObject::tr("Automatyczna pogoda: skala podmuchów")},{"trendScale",QObject::tr("Automatyczna pogoda: skala tendencji")},{"timeScale",QObject::tr("Automatyczna pogoda: skala czasu")}}) {
-        auto d=definition("generator.auto."+entry.first,entry.second,"generator",1,entry.first=="timeScale"?.1:0,3,.05,"1",false);d["preset"]=-1;rows.append(d);
+        auto d=definition("generator.auto."+entry.first,entry.second,"generator",entry.first=="timeScale"?1:.7,entry.first=="timeScale"?.1:0,3,.05,"1",false);d["preset"]=-1;rows.append(d);
     }
     const QHash<QString,QString> automaticLabels{
         {"headProbability",QObject::tr("Szansa kierunku preferowanego przez skocznię")},{"characterNeutral",QObject::tr("Wagi charakteru pogody: neutralna skocznia")},{"characterStable",QObject::tr("Wagi charakteru pogody: spokojna skocznia")},{"characterLottery",QObject::tr("Wagi charakteru pogody: wietrzna skocznia")},

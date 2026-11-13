@@ -57,16 +57,18 @@ int main()
         for(auto &task:tasks)check(task.get(),"thread-safe/order-independent field queries");
         auto extreme=constant();extreme.references={{0,{100,-100}}};extreme.maximumStrength=12;
         near(ContinuousWeather(1,extreme).wind(100,1e12).strength(),12,1e-12,"extreme wind bounded, time range finite");
-        PrecipitationParameters rain;rain.scenario=PrecipitationScenario::Stable;rain.intensity=4;
-        near(ContinuousWeather(1,p,rain).precipitation(0),4,1e-12,"stable precipitation");
-        rain.kind=PrecipitationKind::Rain;check(ContinuousWeather(1,p,rain).precipitationKind()==PrecipitationKind::Rain,"precipitation kind survives the field snapshot");
-        rain.scenario=PrecipitationScenario::Increasing;rain.variation=0;
-        auto trend=ContinuousWeather(1,p,rain);check(trend.precipitation(600)>trend.precipitation(0),"increasing precipitation");
-        near(trend.precipitation(1e12),10,1e-12,"precipitation capped at 10");
-        for(int scenario=0;scenario<=4;++scenario) {
-            rain.scenario=static_cast<PrecipitationScenario>(scenario);rain.variation=10;
-            auto field=ContinuousWeather(1,p,rain);
-            for(int i=0;i<1000;++i){const auto v=field.precipitation(i*3);check(v>=0 && v<=10,"all precipitation scenarios bounded");}
+        if constexpr (precipitationEnabled) {
+            PrecipitationParameters rain;rain.scenario=PrecipitationScenario::Stable;rain.intensity=4;
+            near(ContinuousWeather(1,p,rain).precipitation(0),4,1e-12,"stable precipitation");
+            rain.kind=PrecipitationKind::Rain;check(ContinuousWeather(1,p,rain).precipitationKind()==PrecipitationKind::Rain,"precipitation kind survives the field snapshot");
+            rain.scenario=PrecipitationScenario::Increasing;rain.variation=0;
+            auto trend=ContinuousWeather(1,p,rain);check(trend.precipitation(600)>trend.precipitation(0),"increasing precipitation");
+            near(trend.precipitation(1e12),10,1e-12,"precipitation capped at 10");
+            for(int scenario=0;scenario<=4;++scenario) {
+                rain.scenario=static_cast<PrecipitationScenario>(scenario);rain.variation=10;
+                auto field=ContinuousWeather(1,p,rain);
+                for(int i=0;i<1000;++i){const auto v=field.precipitation(i*3);check(v>=0 && v<=10,"all precipitation scenarios bounded");}
+            }
         }
         // A prevailing tendency can last several jumps, then change sign.
         auto regimes=constant();regimes.references={{0,{1.8,0}},{150,{-.4,.6}}};
@@ -108,24 +110,39 @@ int main()
             context.variabilityPerk=4;auto d=proposeWeather(context,lotteryRng);
             stable+=c.wind.temporalAmplitude<.2;lottery+=d.wind.temporalAmplitude<.2;
         }
-        check(heads>9000 && tails<1000,"direction traits strongly bias automatic proposals");
-        check(stable>8000 && lottery<1200,"lottery traits strongly bias automatic proposals");
-        WeatherGeneratorParameters unscaled;unscaled.values["generator.global.strengthScale"]=1;unscaled.values["generator.global.variationScale"]=1;unscaled.values["generator.global.gustScale"]=1;
+        check(heads>7000 && tails<3000,"direction traits strongly bias automatic proposals");
+        check(stable>6000 && lottery<3200 && stable>lottery*2,"lottery traits strongly bias automatic proposals");
+        WeatherGeneratorParameters unscaled;unscaled.values["generator.global.strengthScale"]=1;unscaled.values["generator.global.variationScale"]=1;unscaled.values["generator.global.spatialScale"]=1;unscaled.values["generator.global.gustScale"]=1;
         SeededRandom scaledRng(111),unscaledRng(111);
         const auto scaled=sampleWeatherPreset(WeatherPreset::StableTailwind,120,scaledRng),original=sampleWeatherPreset(WeatherPreset::StableTailwind,120,unscaledRng,unscaled);
         double scaledMean=0,originalMean=0;for(const auto &r:scaled.wind.references)scaledMean+=r.value.head/scaled.wind.references.size();for(const auto &r:original.wind.references)originalMean+=r.value.head/original.wind.references.size();
-        near(scaledMean,originalMean*.64,1e-9,"preset global strength scale moderates generated wind");
-        near(scaled.wind.references[0].value.head-scaledMean,(original.wind.references[0].value.head-originalMean)*.64*.6,1e-9,"preset global variation scale moderates spatial differences");
+        near(scaledMean,originalMean*.84,1e-9,"preset global strength scale moderates generated wind");
+        near(scaled.wind.references[0].value.head-scaledMean,(original.wind.references[0].value.head-originalMean)*.95,1e-9,"preset global spatial scale moderates local differences");
         near(scaled.wind.gustAmplitude,original.wind.gustAmplitude*.6,1e-9,"preset global gust scale moderates gusts");
         WeatherGeneratorParameters previous;previous.values["generator.global.strengthScale"]=.8;previous.values["generator.global.variationScale"]=.75;previous.values["generator.global.gustScale"]=.75;
         WeatherProposalContext autoContext;SeededRandom oldAutoRng(222),newAutoRng(222);
         const auto oldAuto=proposeWeather(autoContext,oldAutoRng,previous),newAuto=proposeWeather(autoContext,newAutoRng);
         {
             Wind oldMean,newMean;for(const auto &r:oldAuto.wind.references){oldMean.head+=r.value.head/oldAuto.wind.references.size();oldMean.cross+=r.value.cross/oldAuto.wind.references.size();}for(const auto &r:newAuto.wind.references){newMean.head+=r.value.head/newAuto.wind.references.size();newMean.cross+=r.value.cross/newAuto.wind.references.size();}
-            near(newMean.head,oldMean.head*.8,1e-9,"automatic proposal reference mean softens 20 percent");near(newMean.cross,oldMean.cross*.8,1e-9,"automatic proposal side mean softens 20 percent");
+            near(newMean.head,oldMean.head*(.84/.8),1e-9,"automatic proposal reference mean uses the current global strength scale");near(newMean.cross,oldMean.cross*(.84/.8),1e-9,"automatic proposal side mean uses the current global strength scale");
         }
-        near(newAuto.wind.temporalAmplitude,oldAuto.wind.temporalAmplitude*.8,1e-9,"automatic temporal variation softens 20 percent");
-        near(newAuto.wind.gustAmplitude,oldAuto.wind.gustAmplitude*.8,1e-9,"automatic gust intensity softens 20 percent");
+        near(newAuto.wind.temporalAmplitude,oldAuto.wind.temporalAmplitude*(.6/.75),1e-9,"automatic temporal variation uses the current global variation scale");
+        near(newAuto.wind.gustAmplitude,oldAuto.wind.gustAmplitude*(.6/.75),1e-9,"automatic gust intensity uses the current global gust scale");
+        WeatherGeneratorParameters beforeAutoReduction;
+        for(const auto *field:{"strengthScale","variationScale","gustScale","trendScale"})beforeAutoReduction.values[std::string("generator.auto.")+field]=1;
+        SeededRandom beforeAuto(555),afterAuto(555);
+        const auto originalAuto=proposeWeather(autoContext,beforeAuto,beforeAutoReduction),reducedAuto=proposeWeather(autoContext,afterAuto);
+        near(reducedAuto.wind.references[0].value.head,originalAuto.wind.references[0].value.head*.7,1e-9,"only automatic proposals are thirty percent milder");
+        near(reducedAuto.wind.temporalAmplitude,originalAuto.wind.temporalAmplitude*.7,1e-9,"automatic temporal amplitude is thirty percent milder");
+        for(int perk:{-4,0,4}) {
+            WeatherGeneratorParameters oldCharacters;
+            for(const auto &distribution:std::vector<std::pair<std::string,std::vector<double>>>{{"characterNeutral",{.45,.4,.15}},{"characterStable",{.85,.14,.01}},{"characterLottery",{.08,.42,.5}}})
+                for(int i=0;i<3;++i)oldCharacters.values["generator.auto."+distribution.first+"."+std::to_string(i)]=distribution.second[i];
+            WeatherProposalContext context;context.variabilityPerk=perk;
+            SeededRandom oldRng(123),newRng(123);int oldExtreme=0,newExtreme=0;
+            for(int i=0;i<20000;++i){oldExtreme+=proposeWeather(context,oldRng,oldCharacters).wind.correlationSeconds==18;newExtreme+=proposeWeather(context,newRng).wind.correlationSeconds==18;}
+            check(newExtreme>oldExtreme*.10 && newExtreme<oldExtreme*.20,"extreme automatic lotteries occur about eighty-five percent less often for every hill character");
+        }
         SeededRandom presetRng(111);double previousStrength=-1;bool variants=false;int lightCalm=0;
         for(int index=0;index<weatherPresetCount;++index)for(int draw=0;draw<500;++draw) {
             auto proposal=sampleWeatherPreset(static_cast<WeatherPreset>(index),120,presetRng,unscaled);proposal.wind.validate();

@@ -191,7 +191,7 @@ WeatherProposal proposeWeather(const WeatherProposalContext &context,RandomSourc
     Wind base{(head?1:-1)*magnitude*(cross?.15:1),cross?(rng.event(.5)?1:-1)*magnitude:0};
     // Three broad weather characters, substantially biased by hill lottery.
     const double lottery=.56*context.variabilityPerk/4.0;
-    std::vector<double> weights;for(int i=0;i<3;++i){const double neutral[]{.45,.40,.15},stable[]{get("stable.0",.85),get("stable.1",.14),get("stable.2",.01)},unstable[]{get("unstable.0",.08),get("unstable.1",.42),get("unstable.2",.50)};double a=get("characterNeutral."+std::to_string(i),neutral[i]),b=get((lottery<0?"characterStable.":"characterLottery.")+std::to_string(i),lottery<0?stable[i]:unstable[i]);weights.push_back(a+(b-a)*std::abs(lottery));}const std::size_t character=rng.weightedIndex(weights);
+    std::vector<double> weights;for(int i=0;i<3;++i){const double neutral[]{.45,.5275,.0225},stable[]{get("stable.0",.85),get("stable.1",.1485),get("stable.2",.0015)},unstable[]{get("unstable.0",.08),get("unstable.1",.845),get("unstable.2",.075)};double a=get("characterNeutral."+std::to_string(i),neutral[i]),b=get((lottery<0?"characterStable.":"characterLottery.")+std::to_string(i),lottery<0?stable[i]:unstable[i]);weights.push_back(a+(b-a)*std::abs(lottery));}const std::size_t character=rng.weightedIndex(weights);
     const double temporal[]{get("temporal.0",.15),get("temporal.1",.7),get("temporal.2",1.8)},spatial[]{get("spatial.0",.08),get("spatial.1",.55),get("spatial.2",1.4)},gusts[]{get("gusts.0",.3),get("gusts.1",1.8),get("gusts.2",4)};
     const double chance[]{get("chance.0",.03),get("chance.1",.25),get("chance.2",.65)},times[]{get("times.0",100),get("times.1",45),get("times.2",18)};
     WeatherProposal result;
@@ -219,7 +219,7 @@ WeatherProposal proposeWeather(const WeatherProposalContext &context,RandomSourc
         result.precipitation.intensity=choice==2?rng.uniform(get("heavyPrecipitation.min",8),get("heavyPrecipitation.max",10)):rng.uniform(get("precipitation.min",1),get("precipitation.max",5));
         result.precipitation.variation=choice==1?rng.uniform(get("precipitationVariation.min",2),get("precipitationVariation.max",5)):1;
     }
-    const double strength=get("strengthScale",1),variation=get("variationScale",1),gust=get("gustScale",1),trend=get("trendScale",1),time=get("timeScale",1);
+    const double strength=get("strengthScale",.7),variation=get("variationScale",.7),gust=get("gustScale",.7),trend=get("trendScale",.7),time=get("timeScale",1);
     for(auto &r:result.wind.references){r.value.head*=strength;r.value.cross*=strength;}
     result.wind.temporalAmplitude*=variation;result.wind.spatialAmplitude*=variation;result.wind.gustAmplitude*=gust;result.wind.trendAmplitude*=trend;
     result.wind.correlationSeconds*=time;result.wind.trendPeriodSeconds*=time;result.wind.trendTransitionSeconds*=time;
@@ -265,25 +265,25 @@ static const std::vector<GeneratorScalar> result{
 {"generator.auto.precipitationVariation.min","precipitationVariation.min",-1,2,0,10},
 {"generator.auto.precipitationVariation.max","precipitationVariation.max",-1,5,0,10},
 {"generator.auto.characterNeutral.0","characterNeutral",0,0.45,0,1},
-{"generator.auto.characterNeutral.1","characterNeutral",1,0.4,0,1},
-{"generator.auto.characterNeutral.2","characterNeutral",2,0.15,0,1},
+{"generator.auto.characterNeutral.1","characterNeutral",1,0.5275,0,1},
+{"generator.auto.characterNeutral.2","characterNeutral",2,0.0225,0,1},
 {"generator.auto.characterStable.0","characterStable",0,0.85,0,1},
-{"generator.auto.characterStable.1","characterStable",1,0.14,0,1},
-{"generator.auto.characterStable.2","characterStable",2,0.01,0,1},
+{"generator.auto.characterStable.1","characterStable",1,0.1485,0,1},
+{"generator.auto.characterStable.2","characterStable",2,0.0015,0,1},
 {"generator.auto.characterLottery.0","characterLottery",0,0.08,0,1},
-{"generator.auto.characterLottery.1","characterLottery",1,0.42,0,1},
-{"generator.auto.characterLottery.2","characterLottery",2,0.5,0,1},
+{"generator.auto.characterLottery.1","characterLottery",1,0.845,0,1},
+{"generator.auto.characterLottery.2","characterLottery",2,0.075,0,1},
 {"generator.auto.precipitationPattern.0","precipitationPattern",0,0.45,0,1},
 {"generator.auto.precipitationPattern.1","precipitationPattern",1,0.25,0,1},
 {"generator.auto.precipitationPattern.2","precipitationPattern",2,0.08,0,1},
 // Retained for reading frozen balance snapshots; no longer used by generation.
 {"generator.auto.precipitationPattern.3","precipitationPattern",3,0.22,0,1},
 {"generator.auto.stable.0","stable",0,.85,0,1},
-{"generator.auto.stable.1","stable",1,.14,0,1},
-{"generator.auto.stable.2","stable",2,.01,0,1},
+{"generator.auto.stable.1","stable",1,.1485,0,1},
+{"generator.auto.stable.2","stable",2,.0015,0,1},
 {"generator.auto.unstable.0","unstable",0,.08,0,1},
-{"generator.auto.unstable.1","unstable",1,.42,0,1},
-{"generator.auto.unstable.2","unstable",2,.50,0,1},
+{"generator.auto.unstable.1","unstable",1,.845,0,1},
+{"generator.auto.unstable.2","unstable",2,.075,0,1},
 {"generator.auto.spatial.0","spatial",0,.08,0,100},
 {"generator.auto.spatial.1","spatial",1,.55,0,100},
 {"generator.auto.spatial.2","spatial",2,1.4,0,100},
