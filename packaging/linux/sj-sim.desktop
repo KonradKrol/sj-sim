@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Sj.Sim
+Comment=Ski jumping simulator
+Comment[pl]=Symulator skoków narciarskich
+Exec=sj-sim %f
+Icon=sj-sim
+Terminal=false
+Categories=Game;Simulation;
+MimeType=application/x-sjsim-pack;
