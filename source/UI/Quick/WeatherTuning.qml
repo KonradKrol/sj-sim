@@ -36,7 +36,9 @@ Control {
                     {key: "differences", title: qsTr("Różnice na zeskoku"), help: qsTr("Jak bardzo wiatr różni się między miejscami na skoczni.")}
                 ]
                 delegate: ColumnLayout {
+                    id: levelControl
                     required property var modelData
+                    readonly property bool custom: !!tuning.values[modelData.key+"Custom"]
                     Layout.fillWidth: true; spacing: Theme.dp(3)
                     RowLayout {
                         Layout.fillWidth: true
@@ -46,9 +48,21 @@ Control {
                     SChoice {
                         objectName: "weather-"+modelData.key+"-level"
                         Layout.fillWidth: true
-                        model: [qsTr("Bardzo niskie"), qsTr("Niskie"), qsTr("Średnie"), qsTr("Wysokie"), qsTr("Bardzo wysokie")]
-                        currentIndex: Number(tuning.values[modelData.key+"Level"])
-                        onActivated: function(index) { tuning.backend.setLevel(modelData.key,index) }
+                        model: [qsTr("Bardzo niskie"), qsTr("Niskie"), qsTr("Średnie"), qsTr("Wysokie"), qsTr("Bardzo wysokie"), qsTr("Własna wartość…")]
+                        currentIndex: levelControl.custom ? 5 : Number(tuning.values[modelData.key+"Level"])
+                        onActivated: function(index) {
+                            if (index === 5) tuning.backend.setCustom(modelData.key)
+                            else tuning.backend.setLevel(modelData.key,index)
+                        }
+                    }
+                    WeatherNumber {
+                        visible: levelControl.custom
+                        Layout.fillWidth: true
+                        backend: tuning.backend
+                        fieldKey: modelData.key
+                        label: qsTr("Dokładna wartość · 0–100")
+                        minimum: 0; maximum: 100; step: 1; decimals: 0
+                        explanation: qsTr("Wpisz dokładną wartość od 0 do 100. Pozostałe opcje losują wartość z wybranego przedziału.")
                     }
                 }
             }

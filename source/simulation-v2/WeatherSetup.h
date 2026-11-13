@@ -42,6 +42,7 @@ public:
     Q_INVOKABLE void reroll();
     Q_INVOKABLE void setValue(const QString &key,double value);
     Q_INVOKABLE void setLevel(const QString &key,int level);
+    Q_INVOKABLE void setCustom(const QString &key);
     Q_INVOKABLE void setReference(int index,const QString &key,double value);
     Q_INVOKABLE QVariantMap referenceAt(double distance) const;
     Q_INVOKABLE void putReference(double distance,double strength,double direction);
@@ -55,6 +56,7 @@ signals:
 private:
     HillProfile hill;
     bool hasHill=false,modified=false,precipitationEdited=false;
+    bool variabilityCustom=false,differencesCustom=false;
     int preset=-1;
     double variability=0,differences=0,previewTime=0,requestedDirection=0,requestedStrength=0,origin=0;
     SimulationV2::Surface surface=SimulationV2::Surface::Snow;
@@ -67,5 +69,6 @@ private:
     QString error;
     void rebuild();
     void inferControls();
+    void applyValue(const QString &key,double value,bool customEdit);
     void regenerate(bool includePrecipitation);
 };

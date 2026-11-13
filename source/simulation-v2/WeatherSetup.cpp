@@ -70,7 +70,7 @@ void SimulationWeatherSetup::regenerate(bool includePrecipitation) {
     const auto proposed=SimulationV2::proposeWeather(SimulationV2::weatherProposalContext(hill,surface,eventDate.month()),rng,BalanceLab::generatorValues(QJsonObject::fromVariantMap(property("balanceProfile").toMap())));
     wind=proposed.wind;
     if(includePrecipitation)precipitation=proposed.precipitation;
-    preset=-1;modified=false;inferControls();rebuild();
+    preset=-1;modified=false;variabilityCustom=differencesCustom=false;inferControls();rebuild();
 }
 void SimulationWeatherSetup::suggest() {if(!hasHill)return;precipitationEdited=false;regenerate(true);}
 void SimulationWeatherSetup::applyPreset(int index) {
@@ -78,7 +78,7 @@ void SimulationWeatherSetup::applyPreset(int index) {
     stationZeroDirections.fill(0);
     seed=QRandomGenerator::global()->generate64();SimulationV2::SeededRandom rng(SimulationV2::deriveSeed(seed,0));
     wind=SimulationV2::sampleWeatherPreset(static_cast<SimulationV2::WeatherPreset>(index),hill.k,rng,BalanceLab::generatorValues(QJsonObject::fromVariantMap(property("balanceProfile").toMap()))).wind;
-    preset=index;modified=false;inferControls();rebuild();
+    preset=index;modified=false;variabilityCustom=differencesCustom=false;inferControls();rebuild();
 }
 void SimulationWeatherSetup::reroll() {
     if(preset>=0 && !modified){applyPreset(preset);return;}
@@ -89,6 +89,7 @@ QVariantMap SimulationWeatherSetup::values() const {
     QVariantMap result{{"ready",hasHill},{"preset",preset},{"modified",modified},{"seed",QString::number(seed)},
         {"strength",requestedStrength},{"direction",requestedDirection},{"variability",variability},{"differences",differences},
         {"variabilityLevel",windLevel(variability)},{"differencesLevel",windLevel(differences)},
+        {"variabilityCustom",variabilityCustom},{"differencesCustom",differencesCustom},
         {"surface",int(surface)},{"precipitationScenario",int(precipitation.scenario)},{"precipitationIntensity",precipitation.intensity},
         {"precipitationKind",int(precipitation.kind)},{"precipitationType",precipitation.scenario==SimulationV2::PrecipitationScenario::None || precipitation.intensity==0 ? 0 : int(precipitation.kind)+1},
         {"precipitationLevel",precipitation.scenario==SimulationV2::PrecipitationScenario::None ? 0 : precipitation.intensity<=3 ? 1 : precipitation.intensity<=6.5 ? 2 : 3},
@@ -137,11 +138,23 @@ void SimulationWeatherSetup::setPreviewSeconds(double value) {if(!bounded(value,
 void SimulationWeatherSetup::setLevel(const QString &key,int level) {
     if (!hasHill || level<0 || level>4 || (key!="variability" && key!="differences")) return;
     const double current=key=="variability"?variability:differences;
-    if (windLevel(current)==level) return;
+    bool &custom=key=="variability"?variabilityCustom:differencesCustom;
+    if (windLevel(current)==level) {
+        if(custom){custom=false;emit changed();}
+        return;
+    }
     static const double low[]{0,18,40,65,86}, high[]{3,30,59,80,100};
-    setValue(key, low[level]+QRandomGenerator::global()->generateDouble()*(high[level]-low[level]));
+    applyValue(key, low[level]+QRandomGenerator::global()->generateDouble()*(high[level]-low[level]),false);
 }
-void SimulationWeatherSetup::setValue(const QString &key,double value) {
+void SimulationWeatherSetup::setCustom(const QString &key) {
+    if(!hasHill)return;
+    if(key=="variability") {if(variabilityCustom)return;variabilityCustom=true;}
+    else if(key=="differences") {if(differencesCustom)return;differencesCustom=true;}
+    else return;
+    emit changed();
+}
+void SimulationWeatherSetup::setValue(const QString &key,double value) {applyValue(key,value,true);}
+void SimulationWeatherSetup::applyValue(const QString &key,double value,bool customEdit) {
     if(!hasHill || !std::isfinite(value))return;
     auto next=wind;auto nextPrecipitation=precipitation;
     double nextVariability=variability,nextDifferences=differences;
@@ -223,8 +236,8 @@ void SimulationWeatherSetup::setValue(const QString &key,double value) {
         modified=true;
         if(key=="strength")requestedStrength=value;
         else if(key=="direction")requestedDirection=std::fmod(value,360);
-        else if(key=="variability")variability=nextVariability;
-        else if(key=="differences")differences=nextDifferences;
+        else if(key=="variability"){variability=nextVariability;variabilityCustom=customEdit;}
+        else if(key=="differences"){differences=nextDifferences;differencesCustom=customEdit;}
         else inferControls();
     }
     else precipitationEdited=true;
