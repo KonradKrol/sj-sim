@@ -57,6 +57,13 @@ int main(int argc,char **argv){
     roster.undo();teams=config.getCompetitionTeams();check(roster.count()==total&&country(teams,code)->getJumpers().first()==leader,"undo restores eligibility and exact squad");
     roster.toggle(QuickRoster::key(leader));config.autoCompleteTeams(false);teams=config.getCompetitionTeams();
     for(const auto &t:teams){check(!t.getJumpers().contains(leader),"automatic selection never reintroduces excluded athlete");check(t.hasValidLineup(count),"automatic selection creates complete squads");}
+    QVector<Jumper *> shortPool;
+    for(auto *jumper:config.teamEligibilityPool())if(jumper->getCountryCode()==code && shortPool.size()<count-1)shortPool.append(jumper);
+    config.setTeamEligibility(shortPool);check(config.getCompetitionTeams().isEmpty(),"incomplete country immediately disappears without automatic completion");
+    config.setTeamEligibility({});check(config.getCompetitionTeams().isEmpty(),"empty eligibility immediately hides all teams");
+    auto enough=shortPool;for(auto *j:config.teamEligibilityPool())if(j->getCountryCode()==code && !enough.contains(j)){enough.append(j);break;}if(enough.size()==count && QSet<Jumper *>(enough.begin(),enough.end()).size()==count) {
+        config.setTeamEligibility(enough);check(config.getCompetitionTeams().size()==1,"country returns only when enough unique athletes are eligible");
+    }
     config.setTeamEligibility({});config.autoCompleteTeams(false);check(config.getCompetitionTeams().isEmpty(),"no eligible athletes means no automatic teams");
     roster.sync();roster.applyPreset(-1,3);config.autoCompleteTeams(false);check(!config.getCompetitionTeams().isEmpty(),"all athletes can be selected again");
     config.show();tick(250);auto *bridge=config.findChild<QuickBridge*>();check(bridge,"configuration bridge");

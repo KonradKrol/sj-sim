@@ -727,6 +727,11 @@ void CompetitionConfigWindow::setTeamEligibility(const QVector<Jumper *> &select
     for(auto *j:selected)if(j && pool.contains(j) && !chosen.contains(j)){chosen.insert(j);eligible.append(j);}
     if(type==SingleCompetition)competitionJumpers=eligible;else seasonCompetitionJumpers=eligible;
     const int count=seasonCompetition?seasonCompetition->getRulesPointer()->getJumpersInTeamCount():competitionRulesEditor->getJumpersCountInTeam();QSet<QString> countries;
+    QHash<QString,int> eligibleCounts;
+    for(auto *jumper:eligible)++eligibleCounts[jumper->getCountryCode()];
+    competitionTeams.erase(std::remove_if(competitionTeams.begin(),competitionTeams.end(),[&](const Team &team){
+        return eligibleCounts.value(team.getCountryCode())<count;
+    }),competitionTeams.end());
     for(auto &team:competitionTeams) {
         countries.insert(team.getCountryCode());auto lineup=team.getJumpers();
         while(lineup.size()<count)lineup.append(nullptr);
@@ -736,7 +741,7 @@ void CompetitionConfigWindow::setTeamEligibility(const QVector<Jumper *> &select
         for(auto *j:eligible)if(j->getCountryCode()==team.getCountryCode() && !lineup.contains(j))lineup.append(j);
         team.setJumpers(lineup);
     }
-    for(auto *j:eligible)if(!countries.contains(j->getCountryCode())){
+    for(auto *j:eligible)if(eligibleCounts.value(j->getCountryCode())>=count && !countries.contains(j->getCountryCode())){
         countries.insert(j->getCountryCode());Team team;team.setCountryCode(j->getCountryCode());
         QVector<Jumper *> lineup(count,nullptr);for(auto *candidate:eligible)if(candidate->getCountryCode()==j->getCountryCode())lineup.append(candidate);
         team.setJumpers(lineup);competitionTeams.append(team);
