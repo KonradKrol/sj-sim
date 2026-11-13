@@ -46,12 +46,16 @@ void ResourceLibraryWindow::removeSelected(){
         if(m_selected.contains("Saves/"+season->getSimulationSave()->getName()+".json")){
             m_message=tr("Zamknij otwartą symulację przed jej usunięciem.");emit changed();return;
         }
-    for(auto *widget:QApplication::allWidgets())if(widget->inherits("DatabaseEditorWindow")){
-        m_message=tr("Zamknij edytor bazy danych przed usunięciem zasobów z biblioteki.");emit changed();return;
-    }
     if(QMessageBox::question(this,tr("Usuń z biblioteki"),tr("Przenieść zaznaczone zasoby do kosza (%1)?").arg(m_selected.size()),QMessageBox::Yes|QMessageBox::No,QMessageBox::No)!=QMessageBox::Yes)return;
+    QList<QWidget *> editors;
+    for(auto *widget:QApplication::allWidgets())if(widget->inherits("DatabaseEditorWindow")){
+        bool ready=false;QMetaObject::invokeMethod(widget,"prepareResourceImport",Qt::DirectConnection,Q_RETURN_ARG(bool,ready));
+        if(!ready){m_message=tr("Popraw nieprawidłowe dane w edytorze przed usunięciem zasobów.");emit changed();return;}
+        editors.append(widget);
+    }
     QStringList removed;QString error;const bool success=ResourceBundle::removeSelection(m_selected.values(),removed,error);
-    if(!removed.isEmpty()){auto *db=GlobalDatabase::get();db->loadPacks();db->loadPointsForPlacesPresets();db->getEditableGlobalCalendarPresets().clear();db->loadCalendarPresets();db->setLoadedSimulationSaves(false);}
+    if(!editors.isEmpty()){for(auto *editor:editors)QMetaObject::invokeMethod(editor,"finishResourceRemoval",Qt::DirectConnection,Q_ARG(QStringList,removed));}
+    else if(!removed.isEmpty()){auto *db=GlobalDatabase::get();db->loadPacks();db->loadPointsForPlacesPresets();db->getEditableGlobalCalendarPresets().clear();db->loadCalendarPresets();db->setLoadedSimulationSaves(false);}
     m_message=success?tr("Przeniesiono do kosza: %1.").arg(removed.size()):error;
     refresh();if(!removed.isEmpty())emit libraryChanged();
 }

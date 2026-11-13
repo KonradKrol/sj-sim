@@ -668,7 +668,7 @@ Country * GlobalDatabase::getCountryByAlpha3(QString alpha3)
 
 void GlobalDatabase::ensurePacks()
 {
-    if (!packs.isEmpty()) return;
+    if (!packs.isEmpty() || packsWritable) return;
     for (int i = 0; i < 3; ++i) {
         DataPack pack;
         pack.kind = DataPack::Kind(i);
@@ -752,9 +752,11 @@ bool GlobalDatabase::restorePacks(const QJsonObject &o, QString &error)
     for (int kind = 0; kind < 3; ++kind) {
         bool found = false;
         for (const auto &p : loaded) if (p.kind == kind && p.id == active[kind].toString()) found = true;
-        if (!found) { error = QObject::tr("Brak aktywnej paczki."); return false; }
+        bool hasKind=false;for(const auto &pack:loaded)if(int(pack.kind)==kind)hasKind=true;
+        if (!found && (hasKind || !active[kind].toString().isEmpty())) { error = QObject::tr("Brak aktywnej paczki."); return false; }
     }
     packs = loaded;
+    globalJumpers.clear();globalHills.clear();globalCompetitionsRules.clear();
     // Assign directly: switching here would copy the old working vectors over loaded packs.
     for (int i = 0; i < 3; ++i) activePackIds[i] = active[i].toString();
     for (const auto &p : packs) if (p.id == activePackIds[int(p.kind)]) {

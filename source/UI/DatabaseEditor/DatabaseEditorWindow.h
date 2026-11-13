@@ -41,6 +41,7 @@ class DatabaseEditorWindow : public QDialog
 public:
     Q_INVOKABLE bool prepareResourceImport();
     Q_INVOKABLE void finishResourceImport(const QStringList &installed);
+    Q_INVOKABLE void finishResourceRemoval(const QStringList &removed);
 
     explicit DatabaseEditorWindow(QWidget *parent = nullptr);
     ~DatabaseEditorWindow();

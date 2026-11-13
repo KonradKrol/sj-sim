@@ -508,7 +508,7 @@ void DatabaseEditorWindow::setupPackControls()
     const QStringList titles{tr("Konkurs"),tr("Kwalifikacje"),tr("Seria próbna"),tr("Trening"),tr("Konkurs drużynowy"),tr("Próbna drużynowa")};
     const auto roles=DataPack::ruleRoles();
     for(int i=0;i<roles.size();++i){auto *choice=new QComboBox(panel);choice->setObjectName("packDefault-"+roles[i]);choice->setAccessibleName(titles[i]);auto *label=new QLabel(titles[i],panel);label->setObjectName(choice->objectName()+"Label");form->addRow(label,choice);
-        connect(choice,qOverload<int>(&QComboBox::currentIndexChanged),this,[this,choice,role=roles[i]](int index){if(index>=0)GlobalDatabase::get()->activePack(DataPack::Rules)->defaultRules[role]=choice->itemData(index).toString();});
+        connect(choice,qOverload<int>(&QComboBox::currentIndexChanged),this,[this,choice,role=roles[i]](int index){if(index>=0)if(auto *pack=GlobalDatabase::get()->activePack(DataPack::Rules))pack->defaultRules[role]=choice->itemData(index).toString();});
     }
     layout->addLayout(form);
     ageSettings = new QWidget(panel);
@@ -539,13 +539,14 @@ void DatabaseEditorWindow::setupPackControls()
     connect(packName, &QLineEdit::textChanged, this, [this](const QString &text) {
         if (text.trimmed().isEmpty()) return;
         auto *p = GlobalDatabase::get()->activePack(DataPack::Kind(packKind()));
+        if(!p)return;
         p->name = text.trimmed();
         packChoice->setItemText(packChoice->currentIndex(), p->name);
     });
     connect(packName, &QLineEdit::editingFinished, this, [this] {
         if (packName->text().trimmed().isEmpty()) {
             const QSignalBlocker block(packName);
-            packName->setText(GlobalDatabase::get()->activePack(DataPack::Kind(packKind()))->name);
+            if(auto *pack=GlobalDatabase::get()->activePack(DataPack::Kind(packKind())))packName->setText(pack->name);
         }
     });
     auto formatChanged = [this] {
@@ -572,7 +573,8 @@ void DatabaseEditorWindow::setupPackControls()
     connect(exportPack, &QPushButton::clicked, this, [this] {
         if (!saveOpenEditors()) return;
         auto *db = GlobalDatabase::get(); db->syncActivePacks();
-        const auto object = db->activePack(DataPack::Kind(packKind()))->toJson();
+        const auto *pack=db->activePack(DataPack::Kind(packKind()));if(!pack)return;
+        const auto object = pack->toJson();
         const auto path=QFileDialog::getSaveFileName(this,tr("Udostępnij paczkę"),"SjSim.sjsim-pack",tr("Paczka Sj.Sim (*.sjsim-pack)"));
         if(path.isEmpty())return;QString error;
         if(!ResourceBundle::exportPack(path,object,{},error))QMessageBox::warning(this,tr("Eksport paczki"),error);
@@ -593,15 +595,15 @@ void DatabaseEditorWindow::refreshPackControls()
     auto *p = db->activePack(kind);
     for(const auto &role:DataPack::ruleRoles())if(auto *choice=findChild<QComboBox *>("packDefault-"+role)){
         QSignalBlocker block(choice);choice->clear();const auto *pack=db->activePack(DataPack::Rules);const int type=role.startsWith("team")?CompetitionRules::Team:CompetitionRules::Individual;
-        for(const auto &rule:pack->rules)if(rule.getCompetitionType()==type)choice->addItem(rule.getName(),rule.getIDStr());
+        if(pack)for(const auto &rule:pack->rules)if(rule.getCompetitionType()==type)choice->addItem(rule.getName(),rule.getIDStr());
         choice->setEnabled(choice->count()>0);if(choice->count()==0)choice->addItem(tr("Brak zasad tego typu"));
-        const int selected=pack->defaultRule(role);if(selected>=0)choice->setCurrentIndex(choice->findData(pack->rules[selected].getIDStr()));
+        const int selected=pack?pack->defaultRule(role):-1;if(selected>=0)choice->setCurrentIndex(choice->findData(pack->rules[selected].getIDStr()));
         choice->setVisible(kind==DataPack::Rules);if(auto *label=findChild<QLabel *>(choice->objectName()+"Label"))label->setVisible(kind==DataPack::Rules);
     }
 
-    packName->setText(p->name);
-    ageSettings->setVisible(kind == DataPack::Jumpers);
-    if (kind == DataPack::Jumpers) {
+    packName->setEnabled(p!=nullptr);packName->setText(p?p->name:QString());
+    ageSettings->setVisible(p && kind == DataPack::Jumpers);
+    if (p && kind == DataPack::Jumpers) {
         ageFormat->setCurrentIndex(p->ageMode ? 1 : 0);
         referenceYear->setValue(p->referenceYear);
         jumperEditor->setAgeFormat(p->ageMode, p->referenceYear);
@@ -631,6 +633,39 @@ bool DatabaseEditorWindow::saveOpenEditors()
 }
 
 bool DatabaseEditorWindow::prepareResourceImport(){if(!saveOpenEditors())return false;resetPackEditors();return GlobalDatabase::get()->writePacks()&&GlobalDatabase::get()->writePointsForPlacesPresets();}
+void DatabaseEditorWindow::finishResourceRemoval(const QStringList &removed){
+    QSet<QString> deletedIds,deletedPoints;
+    for(const auto &key:removed){
+        const auto kind=key.section('/',0,0),file=key.section('/',1);
+        if(kind=="Athletes" || kind=="Hills" || kind=="Rules")deletedIds.insert(kind=="Athletes"?file:QFileInfo(file).completeBaseName());
+        const auto relative=(kind=="Calendars" || kind=="Saves"?kind+"/":"Packs/"+kind+"/")+file;
+        const auto full=QDir::cleanPath(UserDataPaths::path(relative));
+        if(kind=="Points")deletedPoints.insert(QJsonDocument::fromJson(originalPackFiles.value(full)).object()["points-for-places-preset"].toObject()["name"].toString());
+        for(auto it=originalPackFiles.begin();it!=originalPackFiles.end();){
+            if(it.key()==full || (kind=="Athletes" && it.key().startsWith(full+"/")))it=originalPackFiles.erase(it);else ++it;
+        }
+    }
+    QJsonArray retained;for(const auto &entry:originalPacks["packs"].toArray())if(!deletedIds.contains(entry.toObject()["id"].toString()))retained.append(entry);
+    auto active=originalPacks["active"].toArray();
+    for(int kind=0;kind<3;++kind)if(deletedIds.contains(active[kind].toString())){
+        DataPack replacement;replacement.kind=DataPack::Kind(kind);replacement.id.clear();
+        for(const auto &entry:retained){DataPack candidate;QString error;if(DataPack::fromJson(entry.toObject(),candidate,error) && int(candidate.kind)==kind){replacement=candidate;break;}}
+        active[kind]=replacement.id;
+        if(kind==0)tempGlobalJumpers=replacement.jumpers;
+        else if(kind==1)tempGlobalHills=replacement.hills;
+        else tempGlobalCompetitionRules=replacement.rules;
+    }
+    originalPacks["packs"]=retained;originalPacks["active"]=active;
+    tempGlobalPointsForPlacesPresets.erase(std::remove_if(tempGlobalPointsForPlacesPresets.begin(),tempGlobalPointsForPlacesPresets.end(),[&](const PointsForPlacesPreset &preset){return deletedPoints.contains(preset.getName());}),tempGlobalPointsForPlacesPresets.end());
+    const auto selection=SimulationV2::CatalogPaths::defaults().selection;
+    if(originalPackFiles.contains(selection)){
+        auto catalog=QJsonDocument::fromJson(originalPackFiles.value(selection)).object();QJsonArray order;
+        for(const auto &entry:catalog["order"].toArray())if(!deletedIds.contains(entry.toString().section('/',1)))order.append(entry);
+        catalog["order"]=order;catalog["active"]=active;originalPackFiles[selection]=QJsonDocument(catalog).toJson();
+    }
+    finishResourceImport({});
+}
+
 void DatabaseEditorWindow::finishResourceImport(const QStringList &installed){
     auto *db=GlobalDatabase::get();db->loadPacks();db->loadPointsForPlacesPresets();
     db->getEditableGlobalCalendarPresets().clear();db->loadCalendarPresets();db->setLoadedSimulationSaves(false);
@@ -645,7 +680,17 @@ void DatabaseEditorWindow::finishResourceImport(const QStringList &installed){
         for(const auto &path:paths)if(!originalPackFiles.contains(path)){QFile input(path);if(input.open(QIODevice::ReadOnly))originalPackFiles.insert(path,input.readAll());}
         if(kind=="Points")for(const auto &preset:db->getGlobalPointsForPlacesPresets())if(preset.getName()==QFileInfo(file).completeBaseName())tempGlobalPointsForPlacesPresets.append(preset);
     }
-    auto originals=originalPacks["packs"].toArray();for(const auto &pack:db->getPacks())if(newIds.contains(pack.id))originals.append(pack.toJson());originalPacks["packs"]=originals;
+    auto originals=originalPacks["packs"].toArray();auto active=originalPacks["active"].toArray();
+    for(const auto &pack:db->getPacks())if(newIds.contains(pack.id)){
+        originals.append(pack.toJson());
+        if(active[int(pack.kind)].toString().isEmpty()){
+            active[int(pack.kind)]=pack.id;
+            if(pack.kind==DataPack::Jumpers)tempGlobalJumpers=pack.jumpers;
+            else if(pack.kind==DataPack::Hills)tempGlobalHills=pack.hills;
+            else tempGlobalCompetitionRules=pack.rules;
+        }
+    }
+    originalPacks["packs"]=originals;originalPacks["active"]=active;
     for(auto *list:{jumpersListView,hillsListView,competitionRulesListView,pointsForPlacesPresetsListView})list->setupListModel();refreshPackControls();
     for(const auto *name:{"athleteStudio","hillStudio"})if(auto *studio=property(name).value<QObject *>())QMetaObject::invokeMethod(studio,"reloadPacks");
 }
