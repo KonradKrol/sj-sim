@@ -14,9 +14,10 @@ ColumnLayout {
         Layout.fillWidth: true; spacing: Theme.dp(8)
         SButton { text: qsTr("Wczytaj paczkę"); primary: true; onClicked: library.backend.importArchive() }
         SButton { text: qsTr("Eksportuj (%1)").arg(library.backend ? library.backend.selectedCount : 0); enabled: library.backend && library.backend.selectedCount>0; onClicked: library.backend.exportSelected() }
+        SButton { text: qsTr("Usuń"); foreground: Theme.danger; enabled: library.backend && library.backend.selectedCount>0; onClicked: library.backend.removeSelected() }
         SButton { text: qsTr("Wyczyść wybór"); visible: library.backend && library.backend.selectedCount>0; quiet: true; onClicked: library.backend.clearSelection() }
     }
-    Label { Layout.fillWidth: true; text: qsTr("Zaznacz zasoby, które chcesz udostępnić. Zdjęcia i zależności kalendarzy zostaną dołączone."); color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap }
+    Label { Layout.fillWidth: true; text: qsTr("Zaznacz zasoby do eksportu lub usunięcia. Eksport zawiera zdjęcia i zależności kalendarzy."); color: Theme.muted; font.pointSize: Theme.caption; wrapMode: Text.WordWrap }
     Flow {
         Layout.fillWidth: true; spacing: Theme.dp(5)
         Repeater {

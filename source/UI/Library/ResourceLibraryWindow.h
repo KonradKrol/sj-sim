@@ -19,6 +19,7 @@ public:
     Q_INVOKABLE void toggle(const QString &key);
     Q_INVOKABLE void clearSelection();
     Q_INVOKABLE void exportSelected();
+    Q_INVOKABLE void removeSelected();
     Q_INVOKABLE void importArchive();
     Q_INVOKABLE bool importFile(const QString &path);
     Q_INVOKABLE void openFolder();

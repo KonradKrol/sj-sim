@@ -73,6 +73,28 @@ QJsonValue remap(const QJsonValue &value,const QHash<QString,QString> &ids){
     return value;
 }
 }
+bool ResourceBundle::removeSelection(const QStringList &keys,QStringList &removed,QString &error){
+    removed.clear();error.clear();
+    if(keys.isEmpty()){error=QObject::tr("Zaznacz zasoby do usunięcia.");return false;}
+    QSet<QString> known;for(const auto &row:entries())known.insert(row.toMap()["key"].toString());
+    QStringList paths,unique;
+    const auto root=QFileInfo(UserDataPaths::root()).canonicalFilePath();
+    for(const auto &key:keys){
+        if(unique.contains(key))continue;
+        if(!known.contains(key)){error=QObject::tr("Zasób nie istnieje już w bibliotece.");return false;}
+        const int split=key.indexOf('/');const auto kind=key.left(split),name=key.mid(split+1);
+        const auto path=QDir(directory(kind)).filePath(name);const QFileInfo info(path);
+        if(info.isSymLink() || root.isEmpty() || !info.canonicalFilePath().startsWith(root+"/")){
+            error=QObject::tr("Nie można usunąć pliku spoza folderu biblioteki.");return false;
+        }
+        unique.append(key);paths.append(path);
+    }
+    for(int i=0;i<paths.size();++i){
+        if(!QFile::moveToTrash(paths[i])){error=QObject::tr("Nie udało się przenieść zasobu do kosza. Usunięto: %1.").arg(removed.size());return false;}
+        removed.append(unique[i]);
+    }
+    return true;
+}
 QVariantList ResourceBundle::entries(){
     QVariantList out;
     for(const auto &kind:kinds){QDir dir(directory(kind));

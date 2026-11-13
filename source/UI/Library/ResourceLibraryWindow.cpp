@@ -16,6 +16,8 @@
 #include <QLabel>
 #include <QSignalBlocker>
 #include <QTimer>
+#include <QApplication>
+#include "../Seasons/SimulationSaveManagerWindow.h"
 
 ResourceLibraryWindow::ResourceLibraryWindow(QWidget *parent):QDialog(parent){
     setWindowTitle(tr("Biblioteka"));setObjectName("resourceLibrary");resize(940,680);
@@ -23,14 +25,14 @@ ResourceLibraryWindow::ResourceLibraryWindow(QWidget *parent):QDialog(parent){
     auto *layout=new QVBoxLayout(this);auto *actions=new QHBoxLayout;
     auto *importButton=new QPushButton(tr("Wczytaj paczkę"),this);auto *exportButton=new QPushButton(tr("Eksportuj"),this);
     auto *folderButton=new QPushButton(tr("Otwórz folder"),this);auto *changeButton=new QPushButton(tr("Zmień folder"),this);
-    actions->addWidget(importButton);actions->addWidget(exportButton);actions->addStretch();actions->addWidget(folderButton);actions->addWidget(changeButton);layout->addLayout(actions);
+    auto *removeButton=new QPushButton(tr("Usuń"),this);actions->addWidget(importButton);actions->addWidget(exportButton);actions->addWidget(removeButton);connect(removeButton,&QPushButton::clicked,this,&ResourceLibraryWindow::removeSelected);actions->addStretch();actions->addWidget(folderButton);actions->addWidget(changeButton);layout->addLayout(actions);
     auto *list=new QListWidget(this);layout->addWidget(list,1);auto *message=new QLabel(this);message->setWordWrap(true);layout->addWidget(message);
     connect(importButton,&QPushButton::clicked,this,&ResourceLibraryWindow::importArchive);connect(exportButton,&QPushButton::clicked,this,&ResourceLibraryWindow::exportSelected);
     connect(folderButton,&QPushButton::clicked,this,&ResourceLibraryWindow::openFolder);connect(changeButton,&QPushButton::clicked,this,&ResourceLibraryWindow::chooseFolder);
     connect(list,&QListWidget::itemChanged,this,[this](QListWidgetItem *item){const auto key=item->data(Qt::UserRole).toString();QTimer::singleShot(0,this,[this,key]{toggle(key);});});
-    connect(this,&ResourceLibraryWindow::changed,this,[this,list,message,exportButton]{
+    connect(this,&ResourceLibraryWindow::changed,this,[this,list,message,exportButton,removeButton]{
         const QSignalBlocker blocker(list);list->clear();for(const auto &entry:resources()){const auto row=entry.toMap();auto *item=new QListWidgetItem(row["name"].toString()+" — "+row["category"].toString(),list);item->setData(Qt::UserRole,row["key"]);item->setCheckState(row["selected"].toBool()?Qt::Checked:Qt::Unchecked);}
-        exportButton->setEnabled(!m_selected.isEmpty());message->setText(m_message.isEmpty()?dataPath():m_message);
+        exportButton->setEnabled(!m_selected.isEmpty());removeButton->setEnabled(!m_selected.isEmpty());message->setText(m_message.isEmpty()?dataPath():m_message);
     });refresh();
 }
 QString ResourceLibraryWindow::dataPath()const{return QDir::toNativeSeparators(UserDataPaths::root());}
@@ -38,6 +40,21 @@ QVariantList ResourceLibraryWindow::resources()const{auto rows=m_resources;for(a
 void ResourceLibraryWindow::refresh(){m_resources=ResourceBundle::entries();QSet<QString> known;for(const auto &row:m_resources)known.insert(row.toMap()["key"].toString());m_selected.intersect(known);emit changed();}
 void ResourceLibraryWindow::toggle(const QString &key){if(m_selected.contains(key))m_selected.remove(key);else for(const auto &row:m_resources)if(row.toMap()["key"]==key){m_selected.insert(key);break;}emit changed();}
 void ResourceLibraryWindow::clearSelection(){m_selected.clear();emit changed();}
+void ResourceLibraryWindow::removeSelected(){
+    if(m_selected.isEmpty())return;
+    for(auto *widget:QApplication::allWidgets())if(auto *season=qobject_cast<SimulationSaveManagerWindow *>(widget))
+        if(m_selected.contains("Saves/"+season->getSimulationSave()->getName()+".json")){
+            m_message=tr("Zamknij otwartą symulację przed jej usunięciem.");emit changed();return;
+        }
+    for(auto *widget:QApplication::allWidgets())if(widget->inherits("DatabaseEditorWindow")){
+        m_message=tr("Zamknij edytor bazy danych przed usunięciem zasobów z biblioteki.");emit changed();return;
+    }
+    if(QMessageBox::question(this,tr("Usuń z biblioteki"),tr("Przenieść zaznaczone zasoby do kosza (%1)?").arg(m_selected.size()),QMessageBox::Yes|QMessageBox::No,QMessageBox::No)!=QMessageBox::Yes)return;
+    QStringList removed;QString error;const bool success=ResourceBundle::removeSelection(m_selected.values(),removed,error);
+    if(!removed.isEmpty()){auto *db=GlobalDatabase::get();db->loadPacks();db->loadPointsForPlacesPresets();db->getEditableGlobalCalendarPresets().clear();db->loadCalendarPresets();db->setLoadedSimulationSaves(false);}
+    m_message=success?tr("Przeniesiono do kosza: %1.").arg(removed.size()):error;
+    refresh();if(!removed.isEmpty())emit libraryChanged();
+}
 void ResourceLibraryWindow::exportSelected(){
     const auto file=QFileDialog::getSaveFileName(this,tr("Udostępnij zasoby"),"SjSim.sjsim-pack",tr("Paczka Sj.Sim (*.sjsim-pack)"));if(file.isEmpty())return;
     QString error;if(ResourceBundle::exportSelection(file,m_selected.values(),error))m_message=tr("Zapisano paczkę ze zdjęciami i zależnościami kalendarzy.");else m_message=error;emit changed();
