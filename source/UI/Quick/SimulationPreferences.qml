@@ -2,13 +2,12 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
-ColumnLayout {
+Column {
     id: preferences
     property var node
     spacing: Theme.dp(12)
-    Layout.alignment: Qt.AlignTop
     RowLayout {
-        Layout.fillWidth: true
+        width: parent.width
         ColumnLayout {
             Layout.fillWidth: true; spacing: Theme.dp(3)
             Label { text: qsTr("Symulacja"); font.family: Theme.displayFamily; font.pointSize: Theme.section; font.bold: true; color: Theme.ink }
@@ -20,7 +19,8 @@ ColumnLayout {
         }
     }
     Pane {
-        Layout.fillWidth: true
+        width: parent.width
+        height: implicitHeight
         padding: Theme.dp(12)
         implicitHeight: rows.implicitHeight+topPadding+bottomPadding
         background: Rectangle { color: Theme.surface; radius: Theme.radius; border.color: Theme.outline }
