@@ -157,7 +157,7 @@ void QuickAppearance::setTextScale(qreal value) { value=qBound(.75,value,2.); if
 QuickBridge::QuickBridge(QWidget *window,QWidget *content,QuickAppearance *appearance,bool home)
     : QObject(window), m_window(window), m_content(content), m_appearance(appearance), m_root(new QuickNode(this)), m_home(home) {
     if(auto *season=qobject_cast<SimulationSaveManagerWindow *>(window))connect(season,&SimulationSaveManagerWindow::seasonProfileSelectionChanged,this,&QuickBridge::deferRefresh);
-    auto *timer=new QTimer(this); timer->setInterval(120);
+    auto *timer=new QTimer(this); timer->setInterval(qobject_cast<SimulationSaveManagerWindow *>(window)?750:120);
     connect(timer,&QTimer::timeout,this,[this] { if(m_view && m_view->isVisible()) refresh(); });
     connect(window,&QWidget::windowTitleChanged,this,&QuickBridge::changed);
     if(auto *competition=qobject_cast<CompetitionManagerWindow *>(window))
@@ -583,7 +583,7 @@ void QuickBridge::refresh() {
         if(context!=m_context){m_context=context;emit changed();}
     }
     if(!m_home) {
-        auto *root=layoutNode(m_content->layout());
+        auto *root=qobject_cast<SimulationSaveManagerWindow *>(m_window.data())?nullptr:layoutNode(m_content->layout());
         compose(root);
         if(auto *stats=qobject_cast<JumperStatsWindow *>(m_window.data())) {
             for(auto *chart:m_content->findChildren<QChartView *>())chart->setProperty("quickMenuOnly",true);

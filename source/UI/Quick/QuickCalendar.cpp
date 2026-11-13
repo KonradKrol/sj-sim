@@ -185,9 +185,11 @@ void QuickCalendar::refresh() {
         if(manager->getSimulationSave()->getActualSeason()->getActualCalendar()==m_calendar)next=manager->getSimulationSave()->getNextCompetition();
         break;
     }
+    QHash<CompetitionInfo *,QStringList> dependants;
+    for(int i=0;i<all.size();++i)if(auto *source=all[i]->getPendingAdvancementCompetition())dependants[source].append(QString::number(i+1));
     const auto chosen=selected();m_events.clear();
     for(int i=0;i<all.size();++i){auto *event=all[i];const auto hill=event->getHill();
-        QStringList dependencies;for(auto *other:all)if(other->getPendingAdvancementCompetition()==event)dependencies.append(QString::number(all.indexOf(other)+1));
+        const auto dependencies=dependants.value(event);
         auto *pending=event->getPendingAdvancementCompetition();
         int prepared=0;bool currentPreparation=false;QString phase;
         const auto trainings=event->getTrainings();
