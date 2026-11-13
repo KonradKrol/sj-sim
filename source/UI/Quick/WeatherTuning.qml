@@ -60,9 +60,9 @@ Control {
                         Layout.fillWidth: true
                         backend: tuning.backend
                         fieldKey: modelData.key
-                        label: qsTr("Dokładna wartość · 0–100")
-                        minimum: 0; maximum: 100; step: 1; decimals: 0
-                        explanation: qsTr("Wpisz dokładną wartość od 0 do 100. Pozostałe opcje losują wartość z wybranego przedziału.")
+                        label: qsTr("Dokładna wartość · 0–10")
+                        minimum: 0; maximum: 10; step: 0.5; decimals: 1; factor: 0.1
+                        explanation: qsTr("Wpisz dokładną wartość od 0 do 10. Pozostałe opcje losują wartość z wybranego przedziału.")
                     }
                 }
             }
