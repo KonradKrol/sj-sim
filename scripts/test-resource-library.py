@@ -17,8 +17,4 @@ with tempfile.TemporaryDirectory(prefix='sjsim-library-check-') as temporary:
     executable = str(Path(temporary) / 'library-check')
     subprocess.run(['g++', '-O2', '-fPIC', '-std=c++17', *flags('INCPATH'), str(root / 'tests' / (sys.argv[1] if len(sys.argv)>1 else 'resource-library.cpp')), *objects, *[f for f in flags('LIBS') if '$' not in f], '-o', executable], cwd=build, check=True)
     env = dict(os.environ, QT_QPA_PLATFORM='offscreen', QT_QUICK_BACKEND='software')
-    runtime = root / 'build-qml-preview/qt-runtime'
-    if runtime.exists():
-        env['LD_LIBRARY_PATH'] = str(runtime / 'lib') + ':' + env.get('LD_LIBRARY_PATH', '')
-        env['QML2_IMPORT_PATH'] = str(runtime / 'qml')
-    subprocess.run([executable, str(root)], cwd=build, env=env, check=True)
+    subprocess.run([str(root / 'scripts/with-qt-runtime.sh'), executable, str(root)], cwd=build, env=env, check=True)

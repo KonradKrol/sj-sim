@@ -8,10 +8,6 @@ if [[ -d "${repo_root}/build-qml-preview/qt-dev/root/usr/lib/x86_64-linux-gnu/qt
 fi
 qmake "${repo_root}/sj-sim.pro" CONFIG+=quick_ui_smoke -o Makefile.smoke
 make -f Makefile.smoke -j"${SJ_BUILD_JOBS:-4}"
-if [[ -d "${repo_root}/build-qml-preview/qt-runtime" ]]; then
-    export LD_LIBRARY_PATH="${repo_root}/build-qml-preview/qt-runtime/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
-    export QML2_IMPORT_PATH="${repo_root}/build-qml-preview/qt-runtime/qml${QML2_IMPORT_PATH:+:${QML2_IMPORT_PATH}}"
-fi
 export QT_QPA_PLATFORM="${QT_QPA_PLATFORM:-offscreen}"
 export QT_QUICK_BACKEND="${QT_QUICK_BACKEND:-software}"
-exec ./sj-sim-ui-smoke "$@"
+exec "${repo_root}/scripts/with-qt-runtime.sh" ./sj-sim-ui-smoke "$@"
