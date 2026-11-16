@@ -54,7 +54,7 @@ if [[ "$($QMAKE -query QT_VERSION)" == 5.* && ! -x "$($QMAKE -query QT_HOST_BINS
     export QMAKE="${repo_root}/packaging/linux/qmake-runtime-wrapper.py"
 fi
 # Check the complete UI before deployment and prepare any matching local supplement.
-QT_QPA_PLATFORM=offscreen QT_QUICK_BACKEND=software "${repo_root}/scripts/with-qt-runtime.sh" "${executable}" --deployment-smoke
+QT_QPA_PLATFORM=offscreen QT_QUICK_BACKEND=software "${repo_root}/scripts/with-qt-runtime.sh" "${appdir}/usr/bin/sj-sim" --deployment-smoke
 extra_libraries=()
 supplement="${repo_root}/build-qt-supplement"
 if [[ -f "$supplement/qt-version" && "$(cat "$supplement/qt-version")" == "$($QMAKE -query QT_VERSION)" && ! -f "$($QMAKE -query QT_INSTALL_QML)/QtQuick/Shapes/qmldir" ]]; then
