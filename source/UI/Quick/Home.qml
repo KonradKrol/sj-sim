@@ -43,6 +43,7 @@ Rectangle {
                     HomeTools { Layout.fillWidth: true; compact: home.width < 700 }
                     RowLayout {
                         Layout.fillWidth: true
+                        SButton { objectName: "homeDiscord"; text: qsTr("Dołącz do Discorda"); onClicked: Qt.openUrlExternally("https://discord.gg/NrusAMJgSw") }
                         Item { Layout.fillWidth: true }
                         SButton { objectName: "openAuthor"; text: qsTr("O autorze"); quiet: true; onClicked: ui.launch("author") }
                         SButton { text: qsTr("Zgłoś problem"); quiet: true; onClicked: ui.launch("issue") }
