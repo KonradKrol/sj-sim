@@ -129,7 +129,7 @@ Sj.Sim otrzymał nowy interfejs Qt Quick: menu, przygotowanie zawodów, ekran ko
 - Perki treningowe korzystają z rozkładów losowych zamiast wyłącznie stałych przesunięć. „Błyszczy na treningach” daje premię na treningach/próbnych i część premii w kwalifikacjach, bez dawnego stałego minusa w konkursie.
 - Skocznia przechowuje K, HS i geometrię/real HS używaną przez silnik. Punktacja K/metr jest wyprowadzana automatycznie.
 - Perki skoczni obejmują charakter lotny, ryzyko lądowania, charakterystykę losowanych warunków, preferowany kierunek i rozpiętość odległości.
-- Końcowy zakres perka kompaktowa/rozległa wynosi obecnie maksymalnie ±39% względem odpowiedniej odchyłki od K. To nie mnożnik całej odległości skoku.
+- Końcowy zakres perka kompaktowa/rozległa wynosi obecnie maksymalnie ±31,2% względem odpowiedniej odchyłki od K. To nie mnożnik całej odległości skoku.
 
 ## 3. Silnik skoków, lądowanie i noty
 
