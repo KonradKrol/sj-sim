@@ -35,6 +35,7 @@ SeasonCalendarPreset::SeasonCalendarPreset(SeasonCalendar *seasonCalendar)
     {
         SeasonCalendar * presetCalendar = &this->calendar;
         presetCalendar->defaultRules=seasonCalendar->defaultRules;
+        QHash<QString,QString> sortIds;
         QHash<CompetitionInfo *, CompetitionInfo *> competitions; //1. Konkurs z kalendarza, 2. Konkurs z presetu
         for(auto & comp : seasonCalendar->getCompetitionsReference())
         {
@@ -48,6 +49,7 @@ SeasonCalendarPreset::SeasonCalendarPreset(SeasonCalendar *seasonCalendar)
             presetCompetition->getTeamsReference().clear();presetCompetition->getRoundsKOGroupsReference().clear();presetCompetition->getStartListReference().clear();
             presetCalendar->getCompetitionsReference().push_back(presetCompetition);
             competitions.insert(comp, presetCompetition);
+            sortIds.insert(comp->getIDStr(),presetCompetition->getIDStr());
         }
         for(auto & presetCompetition : presetCalendar->getCompetitionsReference())
         {
@@ -74,6 +76,7 @@ SeasonCalendarPreset::SeasonCalendarPreset(SeasonCalendar *seasonCalendar)
             presetClassification->setResults({});
             presetCalendar->getClassificationsReference().push_back(presetClassification);
             classifications.insert(cls, presetClassification);
+            sortIds.insert(cls->getIDStr(),presetClassification->getIDStr());
         }
         for(auto & presetCompetition : presetCalendar->getCompetitionsReference())
         {
@@ -89,6 +92,10 @@ SeasonCalendarPreset::SeasonCalendarPreset(SeasonCalendar *seasonCalendar)
                     }
                 }
             }
+        }
+        for(auto *event:presetCalendar->getCompetitionsReference()){
+            event->startListSortCompetitionId=sortIds.value(event->startListSortCompetitionId,event->startListSortCompetitionId);
+            event->startListSortClassificationId=sortIds.value(event->startListSortClassificationId,event->startListSortClassificationId);
         }
         presetCalendar->updateCompetitionsQualifyingCompetitions();
     }

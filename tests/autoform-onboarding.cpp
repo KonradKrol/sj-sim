@@ -41,6 +41,10 @@ int main(int argc,char **argv){
     check(setup.catalogReady(),"season catalog ready");auto save=setup.createExampleSave();check(bool(save),"example created");
     check(save->formEngine().enabled && save->getAutosaveEnabled() && save->getActualSeason()->getDatesEnabled(),"example enables all three automations");
     check(save->getActualSeason()->getCalendarsReference().size()==2,"example has summer and winter");
+    auto *winter=save->getActualSeason()->getCalendarsReference().last();auto *final=winter->getCompetitionsReference().last();
+    auto *globe=static_cast<Classification *>(nullptr);for(auto *ranking:winter->getClassifications())if(ranking->getName()==QString::fromUtf8("Puchar Globu"))globe=ranking;
+    check(globe && final->startListSortMode==3 && final->startListSortClassificationId==globe->getIDStr(),"Planica finale keeps its Globe classification sorting reference after copying the preset");
+
     for(auto *calendar:save->getActualSeason()->getCalendarsReference())for(auto *event:calendar->getCompetitionsReference())check(event->getScheduledDate().isValid(),"preset dates retained");
     {
         SimulationSaveManagerWindow manager(save.get(),&main);
