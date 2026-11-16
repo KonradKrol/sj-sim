@@ -6,6 +6,13 @@ Control {
     id: screen
     objectName: "athleteConceptPatches"
     property var backend
+    readonly property bool automaticForm: !!screen.backend.profile.formLocked
+    property bool diagnosticsVisible: false
+    Shortcut {
+        sequence: "Ctrl+Alt+["
+        enabled: screen.visible && Object.keys(screen.backend.profile.formDiagnostic || {}).length>0
+        onActivated: screen.diagnosticsVisible=!screen.diagnosticsVisible
+    }
     AthleteDesign { id: conceptPalette; variant: 1 }
     padding: Theme.dp(10)
     ContentHeight { control: screen }
@@ -16,6 +23,13 @@ Control {
             Layout.fillWidth: true
             Label { text: qsTr("Zawodnik"); font.family: Theme.displayFamily; font.pointSize: Theme.title; font.weight: Font.Black; color: conceptPalette.ink }
             Rectangle { Layout.fillWidth: true; height: 1; color: conceptPalette.line }
+            SCheck {
+                id: showForm
+                objectName: "athleteShowForm"
+                visible: screen.automaticForm
+                text: qsTr("Pokaż formę")
+                checked: true
+            }
             Image { source: screen.backend.profile.flag || ""; Layout.preferredWidth: Theme.dp(35); Layout.preferredHeight: Theme.dp(22); sourceSize.width: 70; sourceSize.height: 44; fillMode: Image.PreserveAspectFit; Accessible.ignored: true }
         }
         AthleteIdentity { backend: screen.backend; design: conceptPalette; Layout.fillWidth: true }
@@ -26,7 +40,7 @@ Control {
                 GridLayout {
                     columns: 2; Layout.fillWidth: true; columnSpacing: Theme.dp(18)
                     AthleteRating { backend: screen.backend; design: conceptPalette; compact: true; Layout.fillWidth: true; Layout.preferredWidth: Theme.dp(170) }
-                    AthleteRating { backend: screen.backend; design: conceptPalette; form: true; compact: true; Layout.fillWidth: true; Layout.preferredWidth: Theme.dp(140); Layout.alignment: Qt.AlignBottom }
+                    AthleteRating { visible: !screen.automaticForm || showForm.checked; backend: screen.backend; design: conceptPalette; form: true; compact: true; Layout.fillWidth: true; Layout.preferredWidth: Theme.dp(140); Layout.alignment: Qt.AlignBottom }
                 }
                 Rectangle { Layout.fillWidth: true; height: 1; color: Theme.divider }
                 Image { visible: !!screen.backend.profile.photo; source: screen.backend.profile.photo || ""; sourceSize.width: 480; sourceSize.height: 500; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: 0; Layout.preferredHeight: Theme.dp(120); fillMode: Image.PreserveAspectFit; asynchronous: true; Accessible.name: qsTr("Zdjęcie skoczka") }
@@ -35,6 +49,6 @@ Control {
             }
             AthletePatchRack { backend: screen.backend; design: conceptPalette; Layout.fillWidth: true; Layout.preferredWidth: Theme.dp(680); Layout.minimumWidth: 0; Layout.alignment: Qt.AlignTop }
         }
-        FormDiagnostics { backend: screen.backend; Layout.fillWidth: true }
+        FormDiagnostics { visible: screen.diagnosticsVisible && Object.keys(screen.backend.profile.formDiagnostic || {}).length>0; expanded: true; backend: screen.backend; Layout.fillWidth: true }
     }
 }

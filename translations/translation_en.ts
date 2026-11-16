@@ -1017,6 +1017,10 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <source>Zdjęcie skoczka</source>
             <translation>Jumper photo</translation>
         </message>
+        <message>
+            <source>Pokaż formę</source>
+            <translation>Show form</translation>
+        </message>
     </context>
     <context>
         <name>AthletePerkCatalog</name>

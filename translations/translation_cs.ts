@@ -1017,6 +1017,10 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <source>Zdjęcie skoczka</source>
             <translation>Fotografie skokana</translation>
         </message>
+        <message>
+            <source>Pokaż formę</source>
+            <translation>Zobrazit formu</translation>
+        </message>
     </context>
     <context>
         <name>AthletePerkCatalog</name>

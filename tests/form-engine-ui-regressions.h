@@ -84,8 +84,23 @@ static void formEngineUiRegressions(MainWindow &main){
     auto *draft=window.findChild<SimulationProfileDraft *>("seasonAthleteDraft");const auto form=save.getJumpersReference()[0]->getSimulationProfile()->form;
     check(draft && draft->profile().value("formLocked").toBool() && draft->profile().value("formDiagnostic").toMap().contains("base"),"season editor has a locked form and diagnostic state");
     check(draft->profile().value("formDiagnostic").toMap().value("rows").toList().size()>=25,"season diagnostics expose detailed state, dynamics and transition probabilities");
-    QTest::qWait(60);auto *formInput=item(scene(&window)->rootObject(),"athleteForm");check(formInput && formInput->property("readOnly").toBool(),"automatic form is read-only in the visible editor");
-    clickControl(scene(&window),"formDiagnosticsToggle");scene(&window)->grabFramebuffer();presentation(&window)->grab().save(output+"/form-diagnostics.png");
+    // Exercise the current editor directly; the former Widgets double-click route no longer opens this scene.
+    auto *formView=scene(&window);
+    QQmlComponent editorComponent(formView->engine(),QUrl("qrc:/ui/AthletePatches.qml"));
+    std::unique_ptr<QObject> editorObject(editorComponent.beginCreate(formView->rootContext()));
+    check(bool(editorObject),"current athlete editor creates");
+    editorObject->setProperty("backend",QVariant::fromValue(draft));editorComponent.completeCreate();
+    auto *editorItem=qobject_cast<QQuickItem *>(editorObject.get());check(editorItem,"current editor is a Quick item");
+    editorItem->setParentItem(formView->rootObject());editorItem->setWidth(900);editorItem->setHeight(600);editorItem->setZ(100);QTest::qWait(60);
+    auto *formInput=item(editorItem,"athleteForm");check(formInput && formInput->property("readOnly").toBool(),"automatic form is read-only in the visible editor");
+    auto *showForm=item(editorItem,"athleteShowForm");auto *diagnostics=item(editorItem,"formDiagnosticsToggle");
+    check(showForm && showForm->isVisible() && diagnostics && !diagnostics->isVisible(),"automatic form has a visibility control and hidden diagnostics");
+    clickControl(formView,"athleteShowForm");check(!formInput->isVisible(),"hide automatic form without changing its value");
+    clickControl(formView,"athleteShowForm");check(formInput->isVisible(),"show automatic form again");
+    presentation(&window)->activateWindow();formView->setFocus();QTest::qWait(40);
+    QTest::keyClick(formView,Qt::Key_BracketLeft,Qt::ControlModifier|Qt::AltModifier);QTest::qWait(40);
+    check(diagnostics->isVisible(),"developer shortcut reveals form diagnostics");
+    formView->grabFramebuffer();presentation(&window)->grab().save(output+"/form-diagnostics.png");
     QQmlComponent statusComponent(scene(&window)->engine(),QUrl("qrc:/ui/FormStatus.qml"));std::unique_ptr<QObject> status(statusComponent.create(scene(&window)->rootContext()));check(bool(status),"form status component loads");
     const auto statusHeight=status->property("implicitHeight").toDouble();
     for(const auto &range:QVector<QPair<int,int>>{{1,0},{19,0},{20,1},{34,1},{35,2},{44,2},{45,3},{55,3},{56,4},{69,4},{70,5},{84,5},{85,6},{94,6},{95,7},{100,7}}){status->setProperty("value",range.first);check(qAbs(status->property("implicitHeight").toDouble()-statusHeight)<.01,"form status height remains constant");check(status->property("band").toInt()==range.second,"all form description boundaries match their specified intervals");}
