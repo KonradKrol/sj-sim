@@ -33,6 +33,8 @@ int main(int argc,char **argv){
     QSettings::setDefaultFormat(QSettings::IniFormat);QSettings::setPath(QSettings::IniFormat,QSettings::UserScope,temp.path()+"/settings");
     app.setProperty("sjSimDataRoot",temp.path()+"/library");app.setProperty("sjSimDefaultsRoot",QString(argv[1])+"/data/defaults");
     QString error;check(UserDataPaths::initialize(error),error);check(GlobalDatabase::get()->loadFromJson(),"library loaded");
+    QStringList presetNames;for(const auto &preset:GlobalDatabase::get()->getEditableGlobalCalendarPresets())presetNames.append(preset.getName());presetNames.sort();
+    check(presetNames==QStringList({"Lato2023","Lato2024","Lato2026","Zima-2023-24","Zima-2024-25","Zima-2026-27"}),"all six default calendar names use the public naming scheme");
     MainWindow main;new QuickUi(&main);
     QTimer modalGuard;QObject::connect(&modalGuard,&QTimer::timeout,[]{for(auto *w:QApplication::allWidgets())if(auto *m=qobject_cast<QMessageBox*>(w);m && (m->isVisible()||m->property("sjQuickPage").toBool())){qCritical()<<"Unexpected test dialog:"<<m->text();std::exit(1);}});modalGuard.start(50);
     NewSimulationSaveConfigurationWindow setup({},&main);for(int i=0;i<200&&!setup.catalogReady();++i)tick(20);

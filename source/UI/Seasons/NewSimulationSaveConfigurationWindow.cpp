@@ -197,8 +197,8 @@ std::unique_ptr<SimulationSave> NewSimulationSaveConfigurationWindow::createExam
     SeasonCalendarPreset *summer=nullptr,*winter=nullptr;
     for(auto &preset:presets) {
         const auto name=preset.getName();
-        if(name=="LGP26" || name=="LGP2026" || name=="Official-LGP" || name==QString::fromUtf8("Oficjalne LGP"))summer=&preset;
-        if(name=="WC26-27" || name=="Official-WC" || name=="World_Cup_2026_2027")winter=&preset;
+        if(name=="Lato2026" || name=="LGP26" || name=="LGP2026" || name=="Official-LGP" || name==QString::fromUtf8("Oficjalne LGP"))summer=&preset;
+        if(name=="Zima-2026-27" || name=="WC26-27" || name=="Official-WC" || name=="World_Cup_2026_2027")winter=&preset;
     }
     if(!summer || !winter)return {};
     const QString base=tr("Przykładowa symulacja");QString name=base;for(int n=2;otherNames.contains(name,Qt::CaseInsensitive);++n)name=base+" "+QString::number(n);

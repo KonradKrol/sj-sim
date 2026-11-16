@@ -248,6 +248,7 @@ Sj.Sim otrzymał nowy interfejs Qt Quick: menu, przygotowanie zawodów, ekran ko
 - Mapowanie poziomów perków nie oznacza zachowania wszystkich dawnych parametrów lub wyników.
 - Nowe zasoby najlepiej udostępniać przez `.sjsim-pack`. Surowy JSON starej wersji może wymagać przekształcenia; nie obiecywać bezwarunkowej zgodności każdej paczki i presetu.
 - Aktualizacja nie zastępuje istniejącej biblioteki danymi startowymi. Sprawdzając czystą instalację, trzeba użyć odrębnego pustego folderu danych.
+- Ujednolicone nazwy presetów kalendarza: `Lato2026`, `Zima-2026-27` i analogicznie dla wcześniejszych lat.
 - Ukryty, niedokończony edytor rozdzielania zawodników pomiędzy listy nie jest funkcją przeznaczoną do ogłoszenia na premierę.
 - Opady oraz wybór alternatywnych metod pomiaru wiatru nie są obecnie udostępnione w normalnym UI.
 
