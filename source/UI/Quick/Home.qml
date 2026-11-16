@@ -43,10 +43,17 @@ Rectangle {
                     HomeTools { Layout.fillWidth: true; compact: home.width < 700 }
                     RowLayout {
                         Layout.fillWidth: true
-                        SButton { objectName: "homeDiscord"; text: qsTr("Dołącz do Discorda"); onClicked: Qt.openUrlExternally("https://discord.gg/NrusAMJgSw") }
                         Item { Layout.fillWidth: true }
                         SButton { objectName: "openAuthor"; text: qsTr("O autorze"); quiet: true; onClicked: ui.launch("author") }
                         SButton { text: qsTr("Zgłoś problem"); quiet: true; onClicked: ui.launch("issue") }
+                        SToolButton {
+                            id: discordButton
+                            objectName: "homeDiscord"
+                            text: "Discord"; iconSource: "icons/discord.svg"
+                            hint: qsTr("Dołącz do serwera Sj.Sima"); Accessible.name: hint
+                            onClicked: Qt.openUrlExternally("https://discord.gg/NrusAMJgSw")
+                            background: Rectangle { radius: Theme.controlRadius; color: discordButton.hovered || discordButton.down ? Theme.selection : "transparent"; border.width: discordButton.visualFocus ? Theme.focusBorder : 0; border.color: Theme.accent }
+                        }
                     }
                 }
             }

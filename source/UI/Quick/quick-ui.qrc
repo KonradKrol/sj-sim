@@ -151,6 +151,7 @@
 <file>AuthorPage.qml</file>
 <file>AuthorProject.qml</file>
 <file>AuthorSocial.qml</file>
+<file>icons/discord.svg</file>
 <file>icons/github-light.svg</file>
 <file>icons/github-dark.svg</file>
 <file>icons/linkedin-light.svg</file>
