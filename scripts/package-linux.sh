@@ -46,6 +46,13 @@ if [[ "$($QMAKE -query QT_VERSION)" == 5.* && ! -d "$($QMAKE -query QT_INSTALL_Q
     export QMAKE="${repo_root}/packaging/linux/qmake-runtime-wrapper.py"
     export LD_LIBRARY_PATH="${repo_root}/build-qml-preview/qt-runtime/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 fi
+# A partial system SDK can have all runtime modules but no import scanner.
+if [[ "$($QMAKE -query QT_VERSION)" == 5.* && ! -x "$($QMAKE -query QT_HOST_BINS)/qmlimportscanner" && -x "${repo_root}/build-qml-preview/qt-dev/root/usr/lib/qt5/bin/qmlimportscanner" ]]; then
+    export SJ_REAL_QMAKE="${QMAKE}"
+    export SJ_QT_QML_ROOT="$($QMAKE -query QT_INSTALL_QML)"
+    export SJ_QT_BIN_ROOT="${repo_root}/build-qml-preview/qt-dev/root/usr/lib/qt5/bin"
+    export QMAKE="${repo_root}/packaging/linux/qmake-runtime-wrapper.py"
+fi
 export QML_SOURCES_PATHS="${repo_root}/source/UI/Quick"
 export EXTRA_QT_MODULES="svg${EXTRA_QT_MODULES:+;${EXTRA_QT_MODULES}}"
 export EXTRA_PLATFORM_PLUGINS="libqoffscreen.so${EXTRA_PLATFORM_PLUGINS:+;${EXTRA_PLATFORM_PLUGINS}}"
