@@ -8,6 +8,7 @@ Pane {
     property var tables: []
     property int selectedIndex: -1
     property string selectedKey: ""
+    readonly property string pickerLabels: JSON.stringify(tables.map(function(table){return table.label}))
     property int hoverIndex: -1
     readonly property var active: tables.length ? tables[Math.max(0,Math.min(tables.length-1,selectedIndex))] : null
     readonly property var hoveredCompetition: active && hoverIndex>=0 && hoverIndex<active.competitions.length ? active.competitions[hoverIndex] : null
@@ -45,8 +46,8 @@ Pane {
         if(!tables.length) {selectedIndex=-1;hoverIndex=-1;selectedKey="";return}
         var index=0
         for(var i=0;i<tables.length;++i) if(tables[i].key===selectedKey) {index=i;break}
-        selectedIndex=index
         selectedKey=tables[index].key
+        selectedIndex=index
         if(picker) picker.currentIndex=index
     }
     onSelectedIndexChanged: {
@@ -69,16 +70,18 @@ Pane {
             }
             SChoice {
                 id: picker
+                objectName: "athleteStatisticsSeason"
                 visible: root.tables.length>1
                 Layout.preferredWidth: Theme.dp(250)
                 Layout.maximumWidth: root.width*0.62
                 Layout.minimumWidth: 0
-                model: root.tables.map(function(table){return table.label})
+                model: JSON.parse(root.pickerLabels)
                 currentIndex: root.selectedIndex
                 Accessible.name: qsTr("Kalendarz")
-                onActivated: {
+                onActivated: function(index) {
+                    if(index<0 || index>=root.tables.length)return
+                    root.selectedKey=root.tables[index].key
                     root.selectedIndex=index
-                    root.selectedKey=root.tables[index] ? root.tables[index].key : ""
                 }
             }
         }
