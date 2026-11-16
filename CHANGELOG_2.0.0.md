@@ -73,6 +73,7 @@ Sj.Sim otrzymał nowy interfejs Qt Quick: menu, przygotowanie zawodów, ekran ko
 - Powiązania kwalifikacji nie giną po zmianie kolejności. Nieprawidłowe zależności blokują rozegranie do czasu ich poprawienia.
 - Wybór źródła sortowania listy startowej: dopasowana klasyfikacja, źródło kwalifikacji, wskazany konkurs lub klasyfikacja.
 - Serie próbne mogą dziedziczyć kolejność konkursu głównego, również z układu KO.
+- Odwołane lub puste źródło kolejności startowej zastępuje domyślna pasująca klasyfikacja. Gdy również ona nie ma wyników, lista jest losowana bez blokowania startu.
 - Jawne odwołanie konkursu jest oddzielone od zwykłego wyjścia. Odwołanie kwalifikacji nie eliminuje ich uczestników z konkursu głównego.
 - Przebudowana edycja klasyfikacji, różne sposoby punktowania, czytelniejsze filtry oraz podgląd wkładu zawodników w wynik kraju.
 - Statystyki zawodnika z wykresem miejsc, filtrami rodzaju wydarzeń i szczegółami pod kursorem.
@@ -175,6 +176,7 @@ Sj.Sim otrzymał nowy interfejs Qt Quick: menu, przygotowanie zawodów, ekran ko
 - Daty obejmują kalendarze całego sezonu, a nie tylko aktualny widok. Aktualna data przesuwa się do kolejnego wydarzenia.
 - Planowanie pojedynczych odstępów i weekendów piątek–sobota–niedziela, wariantów kwalifikacji, treningów oraz próbnych; podgląd aktualizowany bez osobnego kroku.
 - Po zmianie typu wydarzenia na kwalifikacje, trening lub próbną wybierane są odpowiednie domyślne zasady.
+- Osobny wybór rodzaju konkursu w kalendarzu jest wyszarzony; rodzaj zmienia się wyłącznie przez zasady.
 - Klasyfikacje: klasyczne punkty za miejsca lub nota z konkursu, różne sposoby, punktacja między typami zawodów, mnożnik i filtry zaawansowane.
 - Istniejące sposoby punktacji można podglądać po rozegraniu zawodów, mimo blokady edycji chroniącej wyniki.
 - Wiek do filtra punktowania bazuje na roku początku sezonu. Filtr nie blokuje startu w samych zawodach.
@@ -212,7 +214,7 @@ Sj.Sim otrzymał nowy interfejs Qt Quick: menu, przygotowanie zawodów, ekran ko
 - Zdjęcia należą do paczki i są przenoszone razem z nią; nie wymagają ścieżek do prywatnego katalogu autora.
 - Eksport kalendarza i jego zależności różni się od zapisu rozegranego sezonu; do udostępniania należy używać eksportu biblioteki, zamiast wysyłać przypadkowe pliki robocze.
 - Poprawiono usuwanie otwartych zasobów, cofanie niezapisanych zmian w DB, zachowanie innych paczek i zapobieganie przywracaniu usuniętych zasobów przez stary stan edytora.
-- Aktualnie dostarczane Defaults: jedna paczka 83 skoczków ze zmienionymi nazwiskami, 128 skoczni, paczka zasad i punktacje; sześć kalendarzy: LGP 2023/2024/2026 oraz PŚ 2023/24, 2024/25, 2026/27.
+- Aktualnie dostarczane Defaults: jedna paczka 83 skoczków ze zmienionymi nazwiskami, 128 skoczni, paczka zasad i punktacje; dwa kalendarze: Lato2026 i Zima-2026-27.
 - Prywatna biblioteka autora może mieć inne nazwiska i liczebność. Dzisiejsze dopisanie 20 skoczków do lokalnej paczki 83→103 nie zmienia automatycznie zasobów startowych w repozytorium ani już zbudowanego instalatora.
 
 ## 10. Stabilność i wydajność
@@ -248,14 +250,14 @@ Sj.Sim otrzymał nowy interfejs Qt Quick: menu, przygotowanie zawodów, ekran ko
 - Mapowanie poziomów perków nie oznacza zachowania wszystkich dawnych parametrów lub wyników.
 - Nowe zasoby najlepiej udostępniać przez `.sjsim-pack`. Surowy JSON starej wersji może wymagać przekształcenia; nie obiecywać bezwarunkowej zgodności każdej paczki i presetu.
 - Aktualizacja nie zastępuje istniejącej biblioteki danymi startowymi. Sprawdzając czystą instalację, trzeba użyć odrębnego pustego folderu danych.
-- Ujednolicone nazwy presetów kalendarza: `Lato2026`, `Zima-2026-27` i analogicznie dla wcześniejszych lat.
+- Ujednolicone nazwy presetów kalendarza: `Lato2026`, `Zima-2026-27`.
 - Ukryty, niedokończony edytor rozdzielania zawodników pomiędzy listy nie jest funkcją przeznaczoną do ogłoszenia na premierę.
 - Opady oraz wybór alternatywnych metod pomiaru wiatru nie są obecnie udostępnione w normalnym UI.
 
 ## Pakiet wydania
 
 1. Zbudować świeży Release ze wskazanego commitu. Sama zmiana źródeł lub push nie aktualizuje starego lokalnego executable.
-2. Sprawdzić zawartość `data/defaults`: zasoby startowe, nazwy i zdjęcia, zasady, punktacje i sześć kalendarzy. Nie dodawać prywatnych zapisów, CSV z mapowaniem nazwisk ani kopii bezpieczeństwa.
+2. Sprawdzić zawartość `data/defaults`: zasoby startowe, nazwy i zdjęcia, zasady, punktacje i dwa kalendarze. Nie dodawać prywatnych zapisów, CSV z mapowaniem nazwisk ani kopii bezpieczeństwa.
 3. Uruchomić test wdrożenia oraz krótką ręczną kontrolę: powitanie → przykładowy sezon → kwalifikacje → konkurs → archiwum → zapis → ponowne wczytanie.
 4. Sprawdzić osobno KO, drużynówkę, import/eksport paczki ze zdjęciem i działanie pustej biblioteki.
 5. Udostępnić Windows `Setup.exe` i Linux `AppImage` oraz sumy SHA-256. Instrukcja: [DISTRIBUTION.md](docs/DISTRIBUTION.md).

@@ -58,7 +58,7 @@ Sj.Sim 2.0.0 to przebudowany interfejs, nowy silnik skoków i znacznie więcej m
 - Przebudowany wybór uczestników, listy zawodników i widoki krajów.
 - Narzędzia kopiowania list i sortowania według wyników zawodów, klasyfikacji, OVR, aktualnego potencjału, alfabetu i krajów, a także losowania i odwracania kolejności.
 - Wygodniejszy wybór źródłowego konkursu lub klasyfikacji, również z wcześniejszych sezonów.
-- Losowanie kolejności w obrębie remisów i zawodników bez przypisanego wyniku źródłowego.
+- Losowanie kolejności w obrębie remisów i zawodników bez przypisanego wyniku źródłowego. Odwołane lub puste źródło zastępuje domyślna klasyfikacja, a przy braku jej wyników — losowanie całej listy.
 - W drużynówkach wybór zawodników dostępnych do startu, respektowany przez ręczny i automatyczny dobór składów.
 - Ukrywanie krajów, z których nie można skompletować drużyny, i zamiana miejsc zawodników przez przeciąganie.
 - Edytor grup KO z wyszukiwaniem, przeciąganiem i możliwością ręcznego doboru także między seriami.
@@ -75,6 +75,7 @@ Sj.Sim 2.0.0 to przebudowany interfejs, nowy silnik skoków i znacznie więcej m
 - Trwałe powiązania kwalifikacji po przesuwaniu konkursów i wyraźne blokowanie niedozwolonych działań.
 - Wybór źródła sortowania listy startowej w kalendarzu. Serie próbne mogą dziedziczyć kolejność konkursu głównego, także KO.
 - Automatyczny wybór domyślnych zasad po zmianie rodzaju wydarzenia na kwalifikacje, trening lub próbną.
+- Rodzaj konkursu w kalendarzu wynika z zasad. Oddzielny wybór indywidualny/drużynowy jest tylko do odczytu.
 - Odwołane kwalifikacje nie eliminują uczestników z konkursu głównego.
 - Przebudowany edytor klasyfikacji: punkty za miejsca lub sumowanie not z zawodów, różne sposoby naliczania i filtry zaawansowane.
 - Podgląd sposobów punktacji także po rozegraniu konkursów, z ochroną przed zmianą zasad już naliczonych wyników.
@@ -98,7 +99,7 @@ Sj.Sim 2.0.0 to przebudowany interfejs, nowy silnik skoków i znacznie więcej m
 - Import i eksport paczek `.sjsim-pack`, również zawierających wiele zasobów i zdjęcia zawodników.
 - Zdjęcia należą do paczki i nie wymagają dostępu do prywatnych folderów jej autora.
 - Usuwanie zasobów z biblioteki z potwierdzeniem i możliwością odzyskania przez kosz systemowy, gdy jest dostępny.
-- Zasoby startowe na nowej instalacji oraz gotowe kalendarze LGP 2023, 2024 i 2026 oraz PŚ 2023/24, 2024/25 i 2026/27.
+- Zasoby startowe na nowej instalacji oraz gotowe kalendarze Lato2026 i Zima-2026-27.
 - Aktualizacja programu zachowuje istniejącą bibliotekę i zapisy użytkownika.
 
 ### Narzędzia, stabilność i instalacja
@@ -116,7 +117,7 @@ Sj.Sim 2.0.0 to przebudowany interfejs, nowy silnik skoków i znacznie więcej m
 - **Nowy silnik wymaga nowych sezonów. Zapisy z 1.3.0-beta2 nie są w pełni kompatybilne z 2.0.0. Zachowaj kopię poprzedniej biblioteki.**
 - Starsze paczki mogą wymagać migracji. Przybliżone przeliczenie profilu nie zachowuje dokładnie zachowania starego silnika; do udostępniania nowych zasobów używaj eksportu `.sjsim-pack`.
 - Nowe zasoby startowe nie nadpisują paczek w już istniejącej bibliotece.
-- Ujednolicone nazwy presetów kalendarza: `Lato2026`, `Zima-2026-27` i analogicznie dla wcześniejszych lat.
+- Ujednolicone nazwy presetów kalendarza: `Lato2026`, `Zima-2026-27`.
 - Opady są tymczasowo wyłączone. Nie ma obecnie wyboru metody pomiaru wiatru — gra korzysta z jednego wariantu, pomijającego czujniki za miejscem lądowania.
 - Laboratoria są narzędziami eksperymentalnymi. Tłumaczenia mogą jeszcze zawierać braki.
 - Windows może ostrzec o nieznanym wydawcy, ponieważ aplikacja nie ma skonfigurowanego podpisu certyfikatem.

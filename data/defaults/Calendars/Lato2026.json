@@ -5,8 +5,8 @@
         {
           "alt-points-for-places": [],
           "classification-type": 0,
-          "id": "4a772bf1-1e15-4353-b9c6-0f3672ff2090",
-          "name": "Letnie Grand Prix",
+          "id": "a69c74d6-d34f-4b00-9f5e-6de8797d9b5f",
+          "name": "Letni Puchar",
           "points-for-places": [
             100,
             80,
@@ -88,8 +88,8 @@
             1
           ],
           "classification-type": 1,
-          "id": "5d1027c7-b244-4a96-86a3-a2aecbe52b6b",
-          "name": "Puchar Narodów LGP",
+          "id": "dd7a89a5-3000-40d4-babf-caf0bb96c199",
+          "name": "Letni Puchar Krajów",
           "points-for-places": [
             400,
             350,
@@ -122,11 +122,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "f6fbf032-c8c5-432c-86fc-dbae7f761606",
+          "id": "9500affd-dce4-4d36-9c49-0e93733342f9",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "d8e0467f-592b-4239-9caa-450e462ff468",
+            "id": "fef4c369-4a64-4505-941e-2a7e5c19f1e1",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -156,7 +156,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-08-01",
           "serie-type": 3,
@@ -173,11 +173,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "ce8e764e-edba-4ea9-847f-61d3b89d678f",
+          "id": "c4145202-6d16-4b75-8256-f5bdc75509fa",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "de9b91ba-9031-4b42-921a-c5291e2c3452",
+            "id": "cae9f919-ae0c-41d8-8076-044a8e949e42",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -207,7 +207,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-08-01",
           "serie-type": 3,
@@ -223,15 +223,15 @@
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "4a772bf1-1e15-4353-b9c6-0f3672ff2090",
-            "5d1027c7-b244-4a96-86a3-a2aecbe52b6b"
+            "a69c74d6-d34f-4b00-9f5e-6de8797d9b5f",
+            "dd7a89a5-3000-40d4-babf-caf0bb96c199"
           ],
           "exceptional-rounds-count": 0,
-          "id": "d5f92297-6d51-49d2-aaeb-850ef42ee4e1",
+          "id": "0f9a4c32-44a9-4931-a292-7fc924ce17fc",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "609c2b0e-2862-4202-a8e5-1c73afb22470",
+            "id": "c504a5bb-76b3-47c2-963c-c9bb728ae65c",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -272,7 +272,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-08-01",
           "serie-type": 0,
@@ -283,8 +283,8 @@
           "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "f6fbf032-c8c5-432c-86fc-dbae7f761606",
-            "ce8e764e-edba-4ea9-847f-61d3b89d678f"
+            "9500affd-dce4-4d36-9c49-0e93733342f9",
+            "c4145202-6d16-4b75-8256-f5bdc75509fa"
           ]
         },
         {
@@ -292,11 +292,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "747ec3e8-f2a9-4177-8335-8d1ad6c7427d",
+          "id": "4372599e-e6d7-49c3-a412-ddb84220b191",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "a004795f-1ecf-412c-b80e-eb4cf88c0499",
+            "id": "719a0956-5934-4168-8584-22ee4c90e5ec",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -326,7 +326,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-08-02",
           "serie-type": 1,
@@ -339,19 +339,19 @@
           "training-ids": []
         },
         {
-          "advancement-competition-id": "747ec3e8-f2a9-4177-8335-8d1ad6c7427d",
+          "advancement-competition-id": "4372599e-e6d7-49c3-a412-ddb84220b191",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "4a772bf1-1e15-4353-b9c6-0f3672ff2090",
-            "5d1027c7-b244-4a96-86a3-a2aecbe52b6b"
+            "a69c74d6-d34f-4b00-9f5e-6de8797d9b5f",
+            "dd7a89a5-3000-40d4-babf-caf0bb96c199"
           ],
           "exceptional-rounds-count": 0,
-          "id": "9368adfb-f44e-4002-9794-a53ea8e8c39e",
+          "id": "41655be8-7d97-452d-b85d-eb8dbee285c3",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "8da7f09d-a173-447e-9245-705e104dc677",
+            "id": "92e2a9ab-6b34-4ae7-80f0-fd0256e18cf1",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -392,7 +392,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-08-02",
           "serie-type": 0,
@@ -400,7 +400,7 @@
           "start-list": [],
           "start-list-sort-classification": "",
           "start-list-sort-competition": "",
-          "start-list-sort-mode": 0,
+          "start-list-sort-mode": 1,
           "teams": [],
           "training-ids": []
         },
@@ -409,11 +409,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "47ab5cf6-2e0f-4586-9aaa-a11af6f91c76",
+          "id": "cb0c3459-b4ef-4f57-b5c5-07fe5f0827fc",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "4822bbb0-ea5e-4033-96a5-80f35c24818e",
+            "id": "f6aa7b33-bbec-4636-8aef-021a67754a28",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -443,7 +443,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-08-08",
           "serie-type": 3,
@@ -460,11 +460,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "3df251c6-c406-4651-a4a9-a6e3e849a3ad",
+          "id": "200f120f-86d1-4abd-a932-8328d22b2c2c",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "3fbadb48-afdf-456b-8913-06097d185c13",
+            "id": "220fbb0e-5f2b-42b7-8bb5-e493305b1249",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -494,7 +494,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-08-08",
           "serie-type": 3,
@@ -510,15 +510,15 @@
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "4a772bf1-1e15-4353-b9c6-0f3672ff2090",
-            "5d1027c7-b244-4a96-86a3-a2aecbe52b6b"
+            "a69c74d6-d34f-4b00-9f5e-6de8797d9b5f",
+            "dd7a89a5-3000-40d4-babf-caf0bb96c199"
           ],
           "exceptional-rounds-count": 0,
-          "id": "3994d430-6672-45d6-ac0f-715606834b14",
+          "id": "a6741866-a521-466f-8de8-031ecd4aab61",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "e1d86d8c-c3b0-4a50-95fe-fb440effeb36",
+            "id": "ad57c6bb-d633-4121-bc89-4b274a51625f",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -559,7 +559,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-08-08",
           "serie-type": 0,
@@ -570,8 +570,8 @@
           "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "47ab5cf6-2e0f-4586-9aaa-a11af6f91c76",
-            "3df251c6-c406-4651-a4a9-a6e3e849a3ad"
+            "cb0c3459-b4ef-4f57-b5c5-07fe5f0827fc",
+            "200f120f-86d1-4abd-a932-8328d22b2c2c"
           ]
         },
         {
@@ -579,11 +579,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "2f5409ba-6cd1-457a-8b0f-8644b99e0ca6",
+          "id": "edb40ba0-d737-44d3-8473-b5cf0b463135",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "8a1f5b11-8870-410d-8bfa-0817af0ef65d",
+            "id": "3ebe66a5-c6b0-4080-b62c-4c52b51a1e0b",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -613,7 +613,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-08-09",
           "serie-type": 1,
@@ -626,19 +626,19 @@
           "training-ids": []
         },
         {
-          "advancement-competition-id": "2f5409ba-6cd1-457a-8b0f-8644b99e0ca6",
+          "advancement-competition-id": "edb40ba0-d737-44d3-8473-b5cf0b463135",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "4a772bf1-1e15-4353-b9c6-0f3672ff2090",
-            "5d1027c7-b244-4a96-86a3-a2aecbe52b6b"
+            "a69c74d6-d34f-4b00-9f5e-6de8797d9b5f",
+            "dd7a89a5-3000-40d4-babf-caf0bb96c199"
           ],
           "exceptional-rounds-count": 0,
-          "id": "37015011-4993-4614-ad71-db0f3e161393",
+          "id": "6aa178de-b5f1-432c-9d4c-7e739da1b821",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "c5e6684f-55dc-40e5-acbb-9f003e1ffacf",
+            "id": "b1ad4eb5-e1f1-48b5-8bfe-61991c004152",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -679,7 +679,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-08-09",
           "serie-type": 0,
@@ -687,7 +687,7 @@
           "start-list": [],
           "start-list-sort-classification": "",
           "start-list-sort-competition": "",
-          "start-list-sort-mode": 0,
+          "start-list-sort-mode": 1,
           "teams": [],
           "training-ids": []
         },
@@ -696,11 +696,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "a9b0d1bd-4d62-47f2-85b8-6d3560fcc4dc",
+          "id": "6d403955-2ed2-4435-8a70-69bdd4f76037",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "f725923f-6e4e-477d-8cdb-ba55def1509a",
+            "id": "4bf533cf-fc11-4196-8dad-b087d1c1ef43",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -730,7 +730,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-09-19",
           "serie-type": 3,
@@ -747,11 +747,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "90e9b96f-0ef2-4d40-9194-dc1607472793",
+          "id": "96c6990d-f435-45b9-9909-597246e9e184",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "f99d1244-91e2-4260-bead-20eb79be2989",
+            "id": "8ea6338e-1db2-4e9d-a636-6d94634c6e63",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -781,7 +781,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-09-19",
           "serie-type": 3,
@@ -797,15 +797,15 @@
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "4a772bf1-1e15-4353-b9c6-0f3672ff2090",
-            "5d1027c7-b244-4a96-86a3-a2aecbe52b6b"
+            "a69c74d6-d34f-4b00-9f5e-6de8797d9b5f",
+            "dd7a89a5-3000-40d4-babf-caf0bb96c199"
           ],
           "exceptional-rounds-count": 0,
-          "id": "4028aa0f-ade7-4a6f-a062-21c0d94dc7e6",
+          "id": "482ef3b8-7656-4958-a0e0-19e0f45fa77d",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "8fd0d91c-6d3d-402c-97a1-8b371a42d870",
+            "id": "4fa693cd-7653-48b7-a2a9-33c724c514ab",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -846,7 +846,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-09-19",
           "serie-type": 0,
@@ -857,8 +857,8 @@
           "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "a9b0d1bd-4d62-47f2-85b8-6d3560fcc4dc",
-            "90e9b96f-0ef2-4d40-9194-dc1607472793"
+            "6d403955-2ed2-4435-8a70-69bdd4f76037",
+            "96c6990d-f435-45b9-9909-597246e9e184"
           ]
         },
         {
@@ -866,11 +866,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "662774a3-2e1f-4f24-b9b5-76216a6d20a6",
+          "id": "4ca894c1-247e-4755-9269-536f396098ca",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "ddd927af-a47c-4b6f-b2c8-7fea6ac09ee0",
+            "id": "356fbfc6-788b-492e-941f-a361ee8e98d1",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -900,7 +900,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-09-20",
           "serie-type": 2,
@@ -916,15 +916,15 @@
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "4a772bf1-1e15-4353-b9c6-0f3672ff2090",
-            "5d1027c7-b244-4a96-86a3-a2aecbe52b6b"
+            "a69c74d6-d34f-4b00-9f5e-6de8797d9b5f",
+            "dd7a89a5-3000-40d4-babf-caf0bb96c199"
           ],
           "exceptional-rounds-count": 0,
-          "id": "c68118ca-e6d5-4bc7-b67a-046ba4c5d8e7",
+          "id": "5fa06b68-239d-4f33-97da-f7218e712db0",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "cb567319-13df-4f23-9279-8494552147f2",
+            "id": "6639910e-af31-4fc1-99ef-beee0abb1038",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -965,7 +965,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-09-20",
           "serie-type": 0,
@@ -976,18 +976,18 @@
           "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [],
-          "trial-round-id": "662774a3-2e1f-4f24-b9b5-76216a6d20a6"
+          "trial-round-id": "4ca894c1-247e-4755-9269-536f396098ca"
         },
         {
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "e2875c75-1e50-4c45-acaf-1a80ada2ace3",
+          "id": "fe231c28-bba0-4821-8f2f-42a96239a546",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "ceb42998-962f-49fa-a6e7-3a53bc88ed18",
+            "id": "b56ec9d1-e5e4-416e-861c-6080f7ff0da5",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1017,7 +1017,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-10-23",
           "serie-type": 3,
@@ -1034,11 +1034,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "66415dc9-5323-4229-b99e-06bdc03bb517",
+          "id": "a19c4a9f-e4ca-488d-8212-0fabaaec2e25",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "bae12903-674c-424e-91fb-3328fd5dddb9",
+            "id": "9e2c84e6-7b5e-4c50-8c04-5163c999770b",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1068,7 +1068,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-10-23",
           "serie-type": 3,
@@ -1085,11 +1085,11 @@
           "classification-scoring": {},
           "classifications-ids": [],
           "exceptional-rounds-count": 0,
-          "id": "ed1948b9-f99a-4495-9057-4cd161550f21",
+          "id": "c4182d2f-a3f2-4003-b1a6-b3d077e9196c",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "460c3b54-c77d-46a0-b1c3-5fbac436854e",
+            "id": "338b5dbe-fb86-4257-9000-929428ea8af0",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1119,7 +1119,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-10-23",
           "serie-type": 1,
@@ -1130,24 +1130,24 @@
           "start-list-sort-mode": 0,
           "teams": [],
           "training-ids": [
-            "e2875c75-1e50-4c45-acaf-1a80ada2ace3",
-            "66415dc9-5323-4229-b99e-06bdc03bb517"
+            "fe231c28-bba0-4821-8f2f-42a96239a546",
+            "a19c4a9f-e4ca-488d-8212-0fabaaec2e25"
           ]
         },
         {
-          "advancement-competition-id": "ed1948b9-f99a-4495-9057-4cd161550f21",
+          "advancement-competition-id": "c4182d2f-a3f2-4003-b1a6-b3d077e9196c",
           "cancelled": false,
           "classification-scoring": {},
           "classifications-ids": [
-            "4a772bf1-1e15-4353-b9c6-0f3672ff2090",
-            "5d1027c7-b244-4a96-86a3-a2aecbe52b6b"
+            "a69c74d6-d34f-4b00-9f5e-6de8797d9b5f",
+            "dd7a89a5-3000-40d4-babf-caf0bb96c199"
           ],
           "exceptional-rounds-count": 0,
-          "id": "313841f3-4ae3-4b8c-8d2f-c088f24dfa3d",
+          "id": "36a4e1dd-3e75-45c2-8067-8f32a0dd397f",
           "jumps-importance": 5,
           "played": false,
           "results": {
-            "id": "6ef83df6-c776-4852-addf-3961c7bda8b3",
+            "id": "c791447c-ad92-40f9-bf03-f4c8617aedab",
             "results": []
           },
           "rounds-ko-groups": [],
@@ -1188,7 +1188,7 @@
             "wind-average-calculating-type": 2,
             "wind-compensation-distance-effect": 1,
             "wind-compensations": true,
-            "wind-measurement-type": 3
+            "wind-measurement-type": 4
           },
           "scheduled-date": "2026-10-24",
           "serie-type": 0,
@@ -1209,7 +1209,7 @@
         "training": null,
         "trial": null
       },
-      "id": "4b863729-1ccd-4232-83ce-9912c8e705f9",
+      "id": "709743ac-cb83-4541-8186-55f187ffb13e",
       "name": ""
     },
     "hills": [

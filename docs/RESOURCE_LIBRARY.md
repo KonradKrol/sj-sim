@@ -47,7 +47,7 @@ Przy pierwszym uruchomieniu kopiowane są do biblioteki:
 - jedna paczka Hills 26/27 — 128 skoczni;
 - jedna aktualna paczka zasad;
 - pięć aktualnych presetów punktacji;
-- sześć presetów kalendarza: Lato2023, Lato2024, Lato2026, Zima-2023-24, Zima-2024-25, Zima-2026-27;
+- dwa presety kalendarza: Lato2026 i Zima-2026-27;
 - kraje i narzędziowe presety formy/ważności.
 
 Kolejne uruchomienia nie nadpisują edycji ani nie przywracają usuniętych zasobów.
