@@ -35,6 +35,7 @@ public:
     static CompetitionResults getFromJson(QJsonObject obj, IdentifiableObjectsStorage *storage);
     static QJsonObject getJsonObject(CompetitionResults & results);
 
+    int individualPosition(const Jumper *jumper) const;
     QVector<int> getJumpersPositions(const QVector<Jumper *> *jumpers) const;
     QHash<Jumper *, int> getHashWithJumpersPositions(const QVector<Jumper *> *jumpers, int round = -1) const;
     void sortJumpersByResults(QVector<Jumper *> & jumpers);

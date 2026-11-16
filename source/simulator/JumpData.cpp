@@ -150,25 +150,7 @@ int JumpData::getPositionInRoundForTeamCompetition()
 
 int JumpData::getPositionInCompetitionForTeamCompetition()
 {
-    if(!competition || !jumper)return 0;
-    QHash<Jumper *, double> hash;
-    for(auto & teamResult : competition->getResultsReference().getResultsReference())
-    {
-        for(auto & jumperResult : teamResult.getTeamJumpersResultsReference())
-        {
-               if(hash.contains(jumperResult.getJumper()))
-                    hash[jumperResult.getJumper()] += jumperResult.getPointsSum();
-               else
-                    hash[jumperResult.getJumper()] = jumperResult.getPointsSum();
-        }
-    }
-    int pos = 1;
-    for(auto & key : hash.keys())
-    {
-        if(hash.value(jumper) < hash.value(key))
-           pos++;
-    }
-    return pos;
+    return competition?competition->getResultsReference().individualPosition(jumper):0;
 }
 
 bool JumpData::getInSingleJumps() const

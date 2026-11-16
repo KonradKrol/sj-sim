@@ -86,6 +86,25 @@ QJsonObject CompetitionResults::getJsonObject(CompetitionResults &results)
     return object;
 }
 
+int CompetitionResults::individualPosition(const Jumper *jumper) const
+{
+    QHash<const Jumper *,qint64> totals;
+    const auto add=[&](const CompetitionSingleResult &result){
+        for(const auto &jump:result.getJumps()) {
+            const auto *athlete=jump.getJumper()?jump.getJumper():result.getJumper();
+            if(athlete)totals[athlete]+=qRound64(jump.getPoints()*10.);
+        }
+    };
+    for(const auto &result:results) {
+        if(result.getType()==CompetitionSingleResult::TeamResult && result.getJumps().isEmpty())
+            for(const auto &child:result.getTeamJumpersResults())add(child);
+        else add(result);
+    }
+    if(!jumper || !totals.contains(jumper))return 0;
+    int position=1;for(auto points:totals)if(points>totals.value(jumper))++position;
+    return position;
+}
+
 QVector<int> CompetitionResults::getJumpersPositions(const QVector<Jumper *> *jumpers) const
 {
     QVector<int> positions;

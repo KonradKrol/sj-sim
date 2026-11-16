@@ -718,7 +718,9 @@ void QuickBridge::refresh() {
                 if(history && history->active()){
                     int position=result->getPosition();
                     if(!history->individualRanking() && result->getType()==CompetitionSingleResult::IndividualResult && result->getCompetition()->getRules().getCompetitionType()==CompetitionRules::Team){for(auto &team:history->snapshot.getResultsReference())if(team.getTeamJumperResult(result->getJumper())){position=team.getPosition();break;}}
-                    summary["position"]=QString::number(position);summary["positionNumber"]=position;summary["competitionPosition"]=QString::number(position);
+                    summary["position"]=QString::number(position);summary["positionNumber"]=position;
+                    const bool teamCompetition=result->getCompetition()->getRules().getCompetitionType()==CompetitionRules::Team;
+                    summary["competitionPosition"]=QString::number(teamCompetition?history->snapshot.individualPosition(result->getJumper()):position);
                     if(history->individualRanking()){double sum=0;for(int i=0;i<round && i<result->getJumpsReference().size();++i)sum+=result->getJumpsReference()[i].getPoints();summary["totalPoints"]=QString::number(sum,'f',1)+tr(" pkt");summary["weighted"]=false;summary["resetPoints"]=false;}
                 }
             }
