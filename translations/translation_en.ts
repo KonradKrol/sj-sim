@@ -2432,7 +2432,11 @@ li.checked::marker { content: "\2612"; }
     <message><source>Wybierz wspólne zasady dla treningów przed tym wydarzeniem lub ustaw własne.</source><translation>Choose shared rules for training before this event or set your own.</translation></message>
 
     <message><source>Seria próbna poprzedza zawody. Jej wyniki nie są wynikiem konkursu.</source><translation>The trial round precedes the event. Its results are separate from the competition.</translation></message>
-</context>
+    <message>
+            <source>Rodzaj konkursu zmienisz w zasadach.</source>
+            <translation>Change the competition type in its rules.</translation>
+        </message>
+    </context>
     <context>
         <name>CalendarInspector</name>
         <message>

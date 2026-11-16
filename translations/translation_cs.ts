@@ -2432,7 +2432,11 @@ li.checked::marker { content: "\2612"; }
     <message><source>Wybierz wspólne zasady dla treningów przed tym wydarzeniem lub ustaw własne.</source><translation>Vyberte společná pravidla tréninků před tímto závodem nebo nastavte vlastní.</translation></message>
 
     <message><source>Seria próbna poprzedza zawody. Jej wyniki nie są wynikiem konkursu.</source><translation>Zkušební kolo předchází závodu. Jeho výsledky nejsou výsledkem závodu.</translation></message>
-</context>
+    <message>
+            <source>Rodzaj konkursu zmienisz w zasadach.</source>
+            <translation>Typ závodu změníš v jeho pravidlech.</translation>
+        </message>
+    </context>
     <context>
         <name>CalendarInspector</name>
         <message>

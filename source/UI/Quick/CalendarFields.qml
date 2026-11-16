@@ -19,7 +19,7 @@ ColumnLayout {
         model: [
             {key:"hill",label:qsTr("Skocznia"),help:qsTr("Ta skocznia obowiązuje także w treningach i serii próbnej przed zawodami.")},
             {key:"type",label:qsTr("Wydarzenie"),help:qsTr("Kwalifikacje mogą wyłonić uczestników późniejszego konkursu. Powiąż je w zakładce Powiązania.")},
-            {key:"kind",label:qsTr("Rodzaj konkursu"),help:qsTr("W konkursie indywidualnym startują skoczkowie, a w drużynowym — zespoły.")},
+            {key:"kind",label:qsTr("Rodzaj konkursu"),help:qsTr("Rodzaj konkursu zmienisz w zasadach.")},
             {key:"rules",label:qsTr("Zasady konkursu"),help:qsTr("Zasady określają m.in. liczbę serii, awans i punktację. Możesz wybrać gotowe lub edytować je dla tych zawodów.")}
         ]
         ColumnLayout {
@@ -28,6 +28,8 @@ ColumnLayout {
             RowLayout { Layout.fillWidth: true; Label { text: field.label; color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true } HelpDot { explanation: field.help } }
             SChoice {
                 objectName: "calendar-field-" + parent.field.key
+                enabled: parent.field.key !== "kind"
+                opacity: enabled ? 1 : 0.5
                 Layout.fillWidth: true
                 searchable: parent.field.key === "hill"
                 model: parent.field.key === "hill" ? editorFields.backend.hills : parent.field.key === "rules" ? editorFields.backend.rules : parent.field.key === "type" ? [qsTr("Konkurs"),qsTr("Kwalifikacje")] : [qsTr("Indywidualny"),qsTr("Drużynowy")]
