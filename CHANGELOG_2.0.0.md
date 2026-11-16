@@ -7,8 +7,8 @@ Dokument do redakcji release notes: osobny opis dla graczy, szczegółowy wykaz 
 - Porównanie: **1.3.0-beta2 z main → 2.0.0**, branch `feature/simulation-v2`.
 - Data opracowania: **16 listopada 2026**.
 - Baza: `05f2e48d8e92c7b9b180f18abe250b3c7e61d24c`.
-- Koniec przeglądu kodu: `28ff00c6083d61ae0dc868a89c21f314ef943245`.
-- Liczba commitów: **694**. Manifest obejmuje całą różnicę, również wcześniejsze implementacje później zastąpione lub ukryte.
+- Koniec przeglądu kodu: `643d8b5af0680e8d5191d0cd22ea902ef3e1e493`.
+- Liczba commitów: **698**. Manifest obejmuje całą różnicę, również wcześniejsze implementacje później zastąpione lub ukryte.
 - Dokument opisuje stan końcowy. Historia w załączniku zachowuje także cofnięte pomysły i kolejne kalibracje; nie są one osobnymi aktywnymi funkcjami.
 - Starszy [wykaz z 26 października](docs/RELEASE_NOTES_VS_MAIN.md) pozostaje materiałem historycznym. W razie rozbieżności obowiązuje obecny kod, następnie ten dokument.
 
@@ -82,7 +82,7 @@ Sj.Sim otrzymał nowy interfejs Qt Quick: menu, przygotowanie zawodów, ekran ko
 - Siedem stanów formy, przejścia między nimi oraz niezależne wahania zawodników.
 - Perki regularności formy zmieniają wahania, czas trwania i prawdopodobieństwa stanów.
 - Czytelne opisy od „Głębokiego kryzysu” do „Absolutnego szczytu”.
-- Przy aktywnym systemie ręczna zmiana formy jest zablokowana, a edytor udostępnia diagnostykę.
+- Przy aktywnym systemie ręczna zmiana formy jest zablokowana. Przełącznik „Pokaż formę” pozwala ukryć jej wartość; bez autoformy jest zawsze widoczna. Diagnostyka jest domyślnie ukryta i dostępna przez Ctrl+Alt+[.
 - Forma dnia może dodatkowo zmienić dyspozycję w danym dniu; w szybkim konkursie można ją wyłączyć.
 
 ## Listy startowe i drużyny
@@ -112,7 +112,7 @@ Sj.Sim otrzymał nowy interfejs Qt Quick: menu, przygotowanie zawodów, ekran ko
 - Qt Quick jest domyślnym interfejsem. Kod Qt Widgets nie został w całości usunięty; część nadal pełni funkcje zaplecza lub alternatywnego interfejsu.
 - Wspólne komponenty motywów, typografii, przycisków, pól liczbowych, tabel, pomocy i dialogów zastępują doraźne układy poszczególnych ekranów.
 - Naprawiono m.in. zapętlone przeliczanie układów, ograniczanie wysokości paneli, obcinanie przycisków dialogów, niewidoczne elementy list rozwijanych i rozsynchronizowanie wyboru w edytorach.
-- Poprawiono zachowanie układu po zmianie skali interfejsu, przy pierwszym wejściu, przełączaniu zakładek i zmianie rozmiaru okna.
+- Poprawiono zachowanie układu po zmianie skali interfejsu, przy pierwszym wejściu, przełączaniu zakładek i zmianie rozmiaru okna. Usunięto także pętlę wyliczania wysokości panelu ustawień symulacji.
 - Wprowadzono animacje nawigacji i stanów, z obsługą ograniczonego ruchu; nie należy utożsamiać liczby historycznych próśb o animacje z liczbą niezależnych efektów w kodzie.
 - Ujednolicono format dat `DD.MM.YYYY`, pokazywanie odległości z jednym miejscem po przecinku i formatowanie strat. Klasyfikacje z wyłącznie całkowitymi punktami nie muszą wyświetlać końcówki „,0”.
 - Usunięto z widocznego UI integracje webhooków i zbędne ustawienia. Nie oznacza to usunięcia każdego historycznego pliku lub zewnętrznej zależności z repozytorium.
@@ -967,10 +967,14 @@ Chronologicznie od main do commitu kończącego przegląd. Wpisy pozostawiono w 
 - 2026-11-16 [`f9c8795`](https://github.com/KonradKrol/sj-sim/commit/f9c87950e9241a4411cf2d4b281999a159ceec4e) — Use the matching fallback import scanner when the system Qt SDK lacks tools
 - 2026-11-16 [`39526d2`](https://github.com/KonradKrol/sj-sim/commit/39526d2c930ed2bd4bff11ee975211d5166ef62b) — Normalize the Discord SVG path for Qt 5 and check all shipped vector assets
 - 2026-11-16 [`28ff00c`](https://github.com/KonradKrol/sj-sim/commit/28ff00c6083d61ae0dc868a89c21f314ef943245) — Supply only the matching missing Shapes module and validate complete deployed UI before publishing
+- 2026-11-16 [`d33c895`](https://github.com/KonradKrol/sj-sim/commit/d33c895f645cd5c300d4b0b8df4605c1ceb913c8) — Document complete 2.0.0 player changes, release notes and full branch history
+- 2026-11-16 [`6d3552b`](https://github.com/KonradKrol/sj-sim/commit/6d3552b809df29cea51f6ed5742569a0df6ec8fe) — Update community Discord invite in the menu and localized welcome
+- 2026-11-16 [`a90e306`](https://github.com/KonradKrol/sj-sim/commit/a90e3063b9d1cc99aaa0dff734a4ac90bb2d1fd0) — Allow hiding automatic form and reveal diagnostics only with a developer shortcut
+- 2026-11-16 [`643d8b5`](https://github.com/KonradKrol/sj-sim/commit/643d8b5af0680e8d5191d0cd22ea902ef3e1e493) — Defer simulation preference height updates to avoid recursive layout
 
 # V. Pełny manifest zmienionych plików
 
-Różnica `main → 28ff00c`, z wykrywaniem przeniesień przez Git. `A` — dodany, `M` — zmieniony, `D` — usunięty, `R` — przeniesiony. Manifest nie obejmuje niezacommitowanych lokalnych plików użytkownika.
+Różnica `main → 643d8b5`, z wykrywaniem przeniesień przez Git. `A` — dodany, `M` — zmieniony, `D` — usunięty, `R` — przeniesiony. Manifest nie obejmuje niezacommitowanych lokalnych plików użytkownika.
 
 ```text
 A	.agents/skills/qt-canvas2d/LICENSE.txt
@@ -1146,6 +1150,7 @@ M	.gitignore
 A	30-10-work.md
 A	31-10-start.md
 A	AGENTS.md
+A	CHANGELOG_2.0.0.md
 A	CODEX_work_31_10.md
 A	HANDOFF-31-10-LISTY.md
 A	Od-Nov-5.md
@@ -2095,4 +2100,4 @@ A	userData/GlobalDatabase/calendarPresets/Official-LGP.json
 A	userData/GlobalDatabase/calendarPresets/Official-WC.json
 ```
 
-Statystyka Git: `1120 files changed, 200250 insertions(+), 11707 deletions(-)`.
+Statystyka Git: `1121 files changed, 202388 insertions(+), 11707 deletions(-)`.
