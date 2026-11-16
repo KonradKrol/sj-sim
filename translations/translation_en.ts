@@ -15534,7 +15534,31 @@ Check that you selected the correct file.</translation>
         <source>Wzmacnia różnice OVR względem 70, bez zwiększania losowości. 1 zachowuje zwykły wpływ; 1,5 zwiększa różnice o połowę.</source>
         <translation>Scales OVR differences relative to 70 without increasing randomness. 1 keeps the usual effect; 1.5 increases differences by half.</translation>
     </message>
-</context>
+    <message>
+            <source>Nie można utworzyć kolejnego numeru sezonu.</source>
+            <translation>Cannot create another season number.</translation>
+        </message>
+        <message>
+            <source>Najpierw rozegraj lub odwołaj pozostałe wydarzenia sezonu.</source>
+            <translation>Complete or cancel the remaining events first.</translation>
+        </message>
+        <message>
+            <source>To samo wydarzenie jest przypisane do kilku kalendarzy. Popraw kalendarze przed ich powtórzeniem.</source>
+            <translation>An event belongs to multiple calendars. Fix the calendars before reusing them.</translation>
+        </message>
+        <message>
+            <source>Ta sama klasyfikacja jest przypisana do kilku kalendarzy. Popraw kalendarze przed ich powtórzeniem.</source>
+            <translation>A classification belongs to multiple calendars. Fix the calendars before reusing them.</translation>
+        </message>
+        <message>
+            <source>Nie można przesunąć dat konkursów o rok.</source>
+            <translation>Cannot move competition dates forward by one year.</translation>
+        </message>
+        <message>
+            <source>Nie można powtórzyć kalendarza „%1”: %2</source>
+            <translation>Cannot reuse calendar “%1”: %2</translation>
+        </message>
+    </context>
     <context>
         <name>QuickBridge</name>
         <message><source>Paczki danych</source><translation>Data packs</translation></message>
@@ -19141,7 +19165,43 @@ li.checked::marker { content: "\2612"; }
         <source>Wróć</source>
         <translation>Back</translation>
     </message>
-</context>
+    <message>
+            <source>Nowy sezon</source>
+            <translation>New season</translation>
+        </message>
+        <message>
+            <source>Nowy sezon %1</source>
+            <translation>New season %1</translation>
+        </message>
+        <message>
+            <source>Najpierw rozegraj lub odwołaj pozostałe wydarzenia sezonu.</source>
+            <translation>Complete or cancel the remaining events first.</translation>
+        </message>
+        <message>
+            <source>Skoczkowie, ich forma, skocznie, zasady i listy pozostają. Wyniki poprzedniego sezonu znajdziesz w archiwum.</source>
+            <translation>Athletes, their form, hills, rules and lists are retained. Previous season results remain in the archive.</translation>
+        </message>
+        <message>
+            <source>Powtórz kalendarze</source>
+            <translation>Reuse calendars</translation>
+        </message>
+        <message>
+            <source>Konkursy i klasyfikacje bez wyników. Daty przesuniemy o rok.</source>
+            <translation>Competitions and standings start without results. Dates move forward by one year.</translation>
+        </message>
+        <message>
+            <source>Rozpoczniesz z pustym kalendarzem. Potem możesz wczytać preset lub dodać konkursy.</source>
+            <translation>Start without scheduled events. You can then load a preset or add competitions.</translation>
+        </message>
+        <message>
+            <source>Rozpocznij sezon %1</source>
+            <translation>Start season %1</translation>
+        </message>
+        <message>
+            <source>Nie można rozpocząć sezonu</source>
+            <translation>Cannot start season</translation>
+        </message>
+    </context>
     <context>
         <name>SimulationSavesWindow</name>
         <message>

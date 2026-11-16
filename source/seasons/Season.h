@@ -16,6 +16,8 @@ public:
     Season();
     ~Season();
 
+    // Builds an independent, unplayed season without modifying the source.
+    bool prepareNext(bool repeatCalendars, Season &output, QString &error) const;
     static QJsonObject getJsonObject(const Season &season);
     static Season getFromJson(QJsonObject obj, IdentifiableObjectsStorage *storage);
     bool containsCalendarByName(QString n);

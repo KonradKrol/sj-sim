@@ -68,6 +68,7 @@ Sj.Sim 2.0.0 to przebudowany interfejs, nowy silnik skoków i znacznie więcej m
 
 - Przebudowany przegląd sezonu: najbliższe zawody, powiązane treningi i próbne, postęp rozgrywek oraz podium poprzedniego konkursu ze zdjęciami, jeśli są dostępne.
 - Oddzielenie kalendarza edytowanego od aktywnego, prostsze dodawanie kalendarzy i lepsze puste stany.
+- Proste przejście do następnego sezonu: powtórzenie kalendarzy bez wyników, z datami przesuniętymi o rok, albo start bez zaplanowanych zawodów. Skoczkowie, ich forma i zasoby pozostają, a poprzednie wyniki trafiają do archiwum.
 - Przeciąganie konkursów i całych bloków, operacje na wielu wydarzeniach oraz Cofnij/Ponów.
 - Planowanie terminów i całych weekendów piątek–sobota–niedziela z wariantami kwalifikacji, treningów i serii próbnych.
 - Kontrola chronologii również pomiędzy kalendarzami przy aktywnych datach. Wydarzenia z tego samego dnia można rozgrywać w wybranej kolejności.

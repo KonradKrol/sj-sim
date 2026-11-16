@@ -15535,7 +15535,31 @@ Ověřte, že jste vybrali správný soubor.</translation>
         <source>Wzmacnia różnice OVR względem 70, bez zwiększania losowości. 1 zachowuje zwykły wpływ; 1,5 zwiększa różnice o połowę.</source>
         <translation>Zesiluje rozdíly OVR oproti 70 bez zvýšení náhodnosti. 1 zachová běžný vliv; 1,5 zvýší rozdíly o polovinu.</translation>
     </message>
-</context>
+    <message>
+            <source>Nie można utworzyć kolejnego numeru sezonu.</source>
+            <translation>Nelze vytvořit další číslo sezóny.</translation>
+        </message>
+        <message>
+            <source>Najpierw rozegraj lub odwołaj pozostałe wydarzenia sezonu.</source>
+            <translation>Nejprve odehraj nebo zruš zbývající události sezóny.</translation>
+        </message>
+        <message>
+            <source>To samo wydarzenie jest przypisane do kilku kalendarzy. Popraw kalendarze przed ich powtórzeniem.</source>
+            <translation>Stejná událost je přiřazena více kalendářům. Před jejich převzetím kalendáře oprav.</translation>
+        </message>
+        <message>
+            <source>Ta sama klasyfikacja jest przypisana do kilku kalendarzy. Popraw kalendarze przed ich powtórzeniem.</source>
+            <translation>Stejné hodnocení je přiřazeno více kalendářům. Před jejich převzetím kalendáře oprav.</translation>
+        </message>
+        <message>
+            <source>Nie można przesunąć dat konkursów o rok.</source>
+            <translation>Termíny závodů nelze posunout o rok.</translation>
+        </message>
+        <message>
+            <source>Nie można powtórzyć kalendarza „%1”: %2</source>
+            <translation>Kalendář „%1“ nelze převzít: %2</translation>
+        </message>
+    </context>
     <context>
         <name>QuickBridge</name>
         <message><source>Paczki danych</source><translation>Datové balíčky</translation></message>
@@ -19142,7 +19166,43 @@ li.checked::marker { content: "\2612"; }
         <source>Wróć</source>
         <translation>Zpět</translation>
     </message>
-</context>
+    <message>
+            <source>Nowy sezon</source>
+            <translation>Nová sezóna</translation>
+        </message>
+        <message>
+            <source>Nowy sezon %1</source>
+            <translation>Nová sezóna %1</translation>
+        </message>
+        <message>
+            <source>Najpierw rozegraj lub odwołaj pozostałe wydarzenia sezonu.</source>
+            <translation>Nejprve odehraj nebo zruš zbývající události sezóny.</translation>
+        </message>
+        <message>
+            <source>Skoczkowie, ich forma, skocznie, zasady i listy pozostają. Wyniki poprzedniego sezonu znajdziesz w archiwum.</source>
+            <translation>Skokani, jejich forma, můstky, pravidla a seznamy zůstanou zachovány. Výsledky předchozí sezóny najdeš v archivu.</translation>
+        </message>
+        <message>
+            <source>Powtórz kalendarze</source>
+            <translation>Převzít kalendáře</translation>
+        </message>
+        <message>
+            <source>Konkursy i klasyfikacje bez wyników. Daty przesuniemy o rok.</source>
+            <translation>Závody a hodnocení budou bez výsledků. Termíny se posunou o rok.</translation>
+        </message>
+        <message>
+            <source>Rozpoczniesz z pustym kalendarzem. Potem możesz wczytać preset lub dodać konkursy.</source>
+            <translation>Začneš bez naplánovaných závodů. Poté můžeš načíst předvolbu nebo přidat závody.</translation>
+        </message>
+        <message>
+            <source>Rozpocznij sezon %1</source>
+            <translation>Zahájit sezónu %1</translation>
+        </message>
+        <message>
+            <source>Nie można rozpocząć sezonu</source>
+            <translation>Sezónu nelze zahájit</translation>
+        </message>
+    </context>
     <context>
         <name>SimulationSavesWindow</name>
         <message>

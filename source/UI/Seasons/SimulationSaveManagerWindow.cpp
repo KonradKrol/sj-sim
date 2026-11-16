@@ -37,6 +37,7 @@
 #include "../EditorWidgets/SimulationProfileEditor.h"
 #include "../../simulation-v2/ProfileDraft.h"
 #include <QMessageBox>
+#include <QCheckBox>
 #include <memory>
 #include <QTimer>
 #include <QProgressDialog>
@@ -1095,124 +1096,58 @@ void SimulationSaveManagerWindow::updateCompetitionConfigButton()
 
 void SimulationSaveManagerWindow::configNextSeason()
 {
-    auto newSeasonConfig = std::make_unique<NewSeasonConfiguratorWindow>(true, this);
-    newSeasonConfig->setProperty("simulationV2",simulationSave->getEngineVersion()==2);
-    QHash<Jumper *, Jumper *> originalJumpers;
-    QHash<Hill *, Hill *> originalHills;
-    QVector<Jumper *> draftJumpers;
-    QVector<Hill *> draftHills;
-    for(auto *jumper : simulationSave->getJumpersReference()) {
-        auto *draft = new Jumper(*jumper);
-        draftJumpers.append(draft);
-        originalJumpers.insert(draft, jumper);
+    if(nextSeasonTransitionRunning || !simulationSave || !simulationSave->getActualSeason())return;
+    QScopedValueRollback<bool> transition(nextSeasonTransitionRunning,true);
+    if(!checkSeasonEnd()) {
+        QMessageBox::information(this,tr("Nowy sezon"),tr("Najpierw rozegraj lub odwołaj pozostałe wydarzenia sezonu."));return;
     }
-    for(auto *hill : simulationSave->getHillsReference()) {
-        auto *draft = new Hill(*hill);
-        draftHills.append(draft);
-        originalHills.insert(draft, hill);
+    const auto *previous=simulationSave->getActualSeason();
+    const auto number=qint64(previous->getSeasonNumber())+1;
+    QMessageBox dialog(QMessageBox::NoIcon,tr("Nowy sezon %1").arg(number),
+        tr("Skoczkowie, ich forma, skocznie, zasady i listy pozostają. Wyniki poprzedniego sezonu znajdziesz w archiwum."),QMessageBox::NoButton,this);
+    dialog.setObjectName("nextSeasonTransition");
+    auto *repeat=new QCheckBox(tr("Powtórz kalendarze"),&dialog);repeat->setObjectName("nextSeasonRepeatCalendars");
+    repeat->setChecked(!previous->getCalendars().isEmpty());repeat->setEnabled(!previous->getCalendars().isEmpty());dialog.setCheckBox(repeat);
+    const auto updateSummary=[&] {
+        dialog.setInformativeText(repeat->isChecked()
+            ? tr("Konkursy i klasyfikacje bez wyników. Daty przesuniemy o rok.")
+            : tr("Rozpoczniesz z pustym kalendarzem. Potem możesz wczytać preset lub dodać konkursy."));
+    };
+    connect(repeat,&QCheckBox::toggled,&dialog,updateSummary);updateSummary();
+    auto *start=dialog.addButton(tr("Rozpocznij sezon %1").arg(number),QMessageBox::AcceptRole);start->setObjectName("nextSeasonStart");
+    dialog.addButton(QMessageBox::Cancel);dialog.setDefaultButton(start);dialog.exec();
+    if(dialog.clickedButton()!=start)return;
+    Season season;QString error;
+    try {
+        if(!previous->prepareNext(repeat->isChecked(),season,error)) {
+            QMessageBox::warning(this,tr("Nie można rozpocząć sezonu"),error);return;
+        }
+    } catch(const std::exception &failure) {
+        QMessageBox::warning(this,tr("Nie można rozpocząć sezonu"),QString::fromUtf8(failure.what()));return;
     }
-    newSeasonConfig->setJumpers(draftJumpers);
-    newSeasonConfig->setHills(draftHills);
-    newSeasonConfig->setCompetitionsRules(simulationSave->getCompetitionRulesReference());
-    if(newSeasonConfig->exec() == QDialog::Accepted)
+    // Leave the old editor before QVector growth can move the season value.
+    setEditingCalendar(nullptr);
+    QVector<SeasonCalendar *> detachedCalendars;
+    calendarsListView->setCalendars(&detachedCalendars);calendarsListView->setupListModel();
+    simulationSave->getSeasonsReference().append(season);
+    simulationSave->setActualSeason(&simulationSave->getSeasonsReference().last());
+    simulationSave->updateNextCompetitionIndex();
+    calendarsListView->setCalendars(&simulationSave->getActualSeason()->getCalendarsReference());
+    calendarsListView->setupListModel();
+    setEditingCalendar(simulationSave->getActualSeason()->getActualCalendar());
     {
-        QVector<Jumper *> acceptedJumpers;
-        QVector<Hill *> acceptedHills;
-        for(auto *draft : newSeasonConfig->getJumpersReference()) {
-            auto *target = originalJumpers.value(draft);
-            if(target) {
-                const auto id = target->getID();
-                *target = *draft;
-                target->setID(id);
-            } else target = new Jumper(*draft);
-            acceptedJumpers.append(target);
-        }
-        for(auto *draft : newSeasonConfig->getHillsReference()) {
-            auto *target = originalHills.value(draft);
-            if(target) {
-                const auto id = target->getID();
-                *target = *draft;
-                target->setID(id);
-            } else target = new Hill(*draft);
-            acceptedHills.append(target);
-        }
-        simulationSave->setJumpers(acceptedJumpers);
-        simulationSave->setHills(acceptedHills);
-        rulesEditor->setCompetitionRules(nullptr);
-        rulesEditor->hide();
-        simulationSave->setCompetitionRules(newSeasonConfig->getCompetitionsRulesReference());
-        simulationSave->fixJumpersFormInstabilities();
-        Season season;
-        season.setSeasonNumber(simulationSave->getSeasonsReference().last().getSeasonNumber() + 1);
-        season.setDatesEnabled(simulationSave->getActualSeason()->getDatesEnabled());
-
-        simulationSave->getSeasonsReference().push_back(season);
-        simulationSave->setActualSeason(&simulationSave->getSeasonsReference().last());
-        simulationSave->getActualSeason()->setActualCalendar(nullptr);
-        simulationSave->updateNextCompetitionIndex();
-        if(simulationSave->getAutosaveEnabled()){markSeasonChanged();saveSeasonChanges();}
-
-        updateCompetitionConfigButton();
-        ui->label_seasonNumber->setText(QString::number(simulationSave->getActualSeason()->getSeasonNumber()));
-
-        delete calendarTableModel;
-        calendarTableModel = new CalendarEditorTableModel(simulationSave->getActualSeason()->getActualCalendar(), &simulationSave->getHillsReference(), &simulationSave->getCompetitionRulesReference(), simulationSave->getNextCompetitionIndex(), this);
-
-        SeasonCalendar *actualCalendar = simulationSave->getActualSeason()->getActualCalendar();
-        QVector<Classification *> *activeClassifications = actualCalendar != nullptr
-            ? &actualCalendar->getClassificationsReference()
-            : &emptyClassifications;
-
-        delete calendarEditor;
-        calendarEditor = new CalendarEditorWidget(calendarTableModel, activeClassifications, this);
-        calendarEditor->setSave(simulationSave);
-        calendarEditor->setEnabled(actualCalendar != nullptr);
-        ui->verticalLayout_calendar->addWidget(calendarEditor);
-        connectCalendarEditorSignals();
-        calendarEmptyStateLabel->setVisible(actualCalendar == nullptr);
-
-        classificationsListView->setClassifications(activeClassifications);
-        classificationsListView->setupListModel();
-        classificationsListView->setEnabled(actualCalendar != nullptr);
-
-        calendarsListView->setCalendars(&simulationSave->getActualSeason()->getCalendarsReference());
-        calendarsListView->setupListModel();
-
-        classificationResultsTableView->setClassification(nullptr);
-        classificationResultsTableView->fillTable();
-
-        ui->lineEdit_calendarName->setEnabled(actualCalendar != nullptr);
-        ui->label_calendarName->setText(actualCalendar != nullptr
-            ? actualCalendar->getName()
-            : tr("BRAK"));
-
-        jumpersListView->getListView()->reset();
-        hillsListView->getListView()->reset();
-        rulesListView->getListView()->reset();
-
-        fillNextCompetitionInformations();
-
-        competitionsArchiveModel->setSeasonCompetitions(actualCalendar != nullptr
-            ? &actualCalendar->getCompetitionsReference()
-            : &emptyArchiveCompetitions);
-        classificationsArchiveModel->setSeasonClassifications(actualCalendar != nullptr
-            ? &actualCalendar->getClassificationsReference()
-            : &emptyArchiveClassifications);
+        const QSignalBlocker blocker(ui->comboBox_archiveSeason);
         ui->comboBox_archiveSeason->clear();
-        for(auto & season : simulationSave->getSeasonsReference())
-        {
-            ui->comboBox_archiveSeason->insertItem(0, QString::number(season.getSeasonNumber()));
-        }
+        for(const auto &entry:simulationSave->getSeasonsReference())ui->comboBox_archiveSeason->insertItem(0,QString::number(entry.getSeasonNumber()));
         ui->comboBox_archiveSeason->setCurrentIndex(0);
-
-        ui->listView_competitionsArchive->setModel(competitionsArchiveModel);
-        ui->listView_classificationsArchive->setModel(classificationsArchiveModel);
-
-        setupClassificationsComboBox();
-        ui->comboBox_archiveSeason->setCurrentIndex(0);
-        if(ui->comboBox_classifications->count() > 0)
-            emit ui->comboBox_classifications->currentIndexChanged(0);
     }
+    ui->label_seasonNumber->setText(QString::number(number));
+    classificationResultsTableView->setClassification(nullptr);classificationResultsTableView->fillTable();
+    setupClassificationsComboBox();syncArchiveCalendars();
+    fillNextCompetitionInformations();refreshProfileDrafts();
+    emit actualCalendarChanged();emit editingCalendarChanged();
+    markSeasonChanged();
+    if(simulationSave->getAutosaveEnabled())saveSeasonChanges();
 }
 
 bool SimulationSaveManagerWindow::checkSeasonEnd()

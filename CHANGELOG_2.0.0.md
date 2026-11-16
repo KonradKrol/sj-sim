@@ -66,6 +66,7 @@ Sj.Sim otrzymał nowy interfejs Qt Quick: menu, przygotowanie zawodów, ekran ko
 
 - Nowy przegląd sezonu z najbliższymi wydarzeniami, zgrupowanymi treningami i seriami próbnymi oraz podium ostatniego konkursu.
 - Edycja kalendarza jest oddzielona od wyboru kalendarza aktywnego.
+- Przejście do następnego sezonu sprowadza się do jednego potwierdzenia: domyślnie powtarza kalendarze i klasyfikacje bez wyników, przesuwa daty o rok i zachowuje zawodników z formą oraz zasoby. Można zamiast tego rozpocząć bez kalendarza. Archiwum poprzedniego sezonu pozostaje nienaruszone.
 - Wielokrotne Cofnij/Ponów, przeciąganie konkursów i bloków wydarzeń, operacje na wielu zaznaczonych pozycjach.
 - Szybkie planowanie dat i całych weekendów z kwalifikacjami, treningami i seriami próbnymi.
 - Kontrola chronologii także pomiędzy kalendarzami przy włączonych datach. Wydarzenia tego samego dnia można rozgrywać w wybranej kolejności.

@@ -121,6 +121,7 @@ signals:
     void rosterBoardOpenChanged();
 
 private:
+    bool nextSeasonTransitionRunning=false;
     bool quickSimulation=false;
     bool boardIsOpen=false;
     QVariantMap boardDraft, boardBaseline;

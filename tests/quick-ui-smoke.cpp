@@ -1177,39 +1177,32 @@ static void seasonToolRegressions(SimulationSaveManagerWindow &manager) {
     qInfo()<<"PASS: all season tools open through pointer-driven menus";
 }
 static void nextSeasonTransactionRegression(MainWindow &main) {
-    SimulationSave save;save.setName("Next season transaction");
+    SimulationSave save;save.setName("Next season transaction");save.setAutosaveEnabled(false);
     auto *jumper=new Jumper("Original","Athlete","POL");auto *hill=new Hill(GlobalDatabase::get()->getEditableGlobalHills().first());hill->setName("Original hill");save.setJumpers({jumper});save.setHills({hill});
     CompetitionRules rule;rule.setName("Original rules");save.setCompetitionRules({rule});
     auto *calendar=new SeasonCalendar("Completed calendar");Season season;season.setSeasonNumber(2026);season.setCalendars({calendar});season.setActualCalendar(calendar);save.setSeasons({season});save.setActualSeason(&save.getSeasonsReference().first());save.fixJumpersFormInstabilities();save.updateNextCompetitionIndex();
     SimulationSaveManagerWindow manager(&save,&main);manager.show();QTest::qWait(80);
     const auto jumperId=jumper->getID(),hillId=hill->getID(),ruleId=rule.getID();
-    for(bool accepted:{false,true}) {
-        bool opened=false;QTimer watcher;
+    const auto original=Season::getJsonObject(save.getSeasonsReference().first());
+    for(int mode=0;mode<3;++mode) {
+        bool opened=false;QTimer watcher;int attempts=0;
         QObject::connect(&watcher,&QTimer::timeout,[&] {
-            for(auto *widget:QApplication::allWidgets())if(auto *draft=qobject_cast<NewSeasonConfiguratorWindow *>(widget);draft && draft->isVisible() && draft->getNextSeason()) {
-                watcher.stop();opened=true;
-                draft->getJumpersReference().first()->setName("Edited athlete");draft->getHillsReference().first()->setName("Edited hill");draft->getCompetitionsRulesReference().first().setName("Edited rules");
-                if(accepted) {
-                    auto *jumperEditor=draft->findChild<JumperEditorWidget *>();auto *hillEditor=draft->findChild<HillEditorWidget *>();auto *rulesEditor=draft->findChild<CompetitionRulesEditorWidget *>();
-                    check(jumperEditor->getJumper()==draft->getJumpersReference().first() && hillEditor->getHill()==draft->getHillsReference().first() && rulesEditor->getCompetitionRules()==&draft->getCompetitionsRulesReference().first(),"next-season editors bind to the save draft rather than global defaults");
-                    jumperEditor->findChild<QLineEdit *>("lineEdit_name")->setText("Accepted athlete");QMetaObject::invokeMethod(jumperEditor,"submitted");
-                    hillEditor->findChild<QLineEdit *>("lineEdit_name")->setText("Accepted hill");QMetaObject::invokeMethod(hillEditor,"submitted");
-                    rulesEditor->findChild<QLineEdit *>("lineEdit_name")->setText("Accepted rules");QMetaObject::invokeMethod(rulesEditor,"submitted");
-                    draft->getJumpersReference().append(new Jumper("Added","Athlete","NOR"));
-                    auto hills=draft->getHillsReference();auto *addedHill=new Hill(*hill);addedHill->reassign();hills.append(addedHill);draft->setHills(hills);
-                    auto additionalRule=rule;additionalRule.reassign();additionalRule.setName("Added rules");draft->getCompetitionsRulesReference().append(additionalRule);
-                    draft->accept();
-                } else draft->reject();
+            check(++attempts<200,"next season confirmation cannot hang");
+            for(auto *widget:QApplication::allWidgets())if(auto *dialog=qobject_cast<QMessageBox *>(widget);dialog && dialog->objectName()=="nextSeasonTransition" && dialog->isVisible()) {
+                watcher.stop();opened=true;check(dialog->checkBox() && dialog->checkBox()->isChecked(),"repeat calendars is the default");
+                if(mode==0)dialog->reject();
+                else {if(mode==2)dialog->checkBox()->setChecked(false);dialog->findChild<QPushButton *>("nextSeasonStart")->click();}
                 break;
             }
-        });watcher.start(20);manager.configNextSeason();watcher.stop();check(opened,"next-season configuration opens");
-        if(!accepted)check(jumper->getName()=="Original" && hill->getName()=="Original hill" && save.getCompetitionRulesReference().first().getName()=="Original rules" && save.getSeasonsReference().size()==1,"cancelling next season discards all draft edits without changing the live save");
+        });watcher.start(20);manager.configNextSeason();watcher.stop();check(opened,"compact next season confirmation opens");
+        if(mode==0)check(save.getSeasonsReference().size()==1 && Season::getJsonObject(save.getSeasonsReference().first())==original,"cancelling preserves the entire season");
+        if(mode==1)check(save.getActualSeason()->getSeasonNumber()==2027 && save.getActualSeason()->getActualCalendar() && save.getActualSeason()->getActualCalendar()->getName()=="Completed calendar","confirmation creates the next season with its calendar");
+        if(mode==2)check(save.getActualSeason()->getSeasonNumber()==2028 && save.getActualSeason()->getCalendars().isEmpty(),"empty season choice opens without stale calendar references");
     }
-    check(save.getJumpersReference().first()==jumper && save.getHillsReference().first()==hill && jumper->getID()==jumperId && hill->getID()==hillId,"accepting a new season retains existing object identities and historical references");
-    check(jumper->getName()=="Accepted athlete" && hill->getName()=="Accepted hill" && save.getCompetitionRulesReference().first().getName()=="Accepted rules" && save.getCompetitionRulesReference().first().getID()==ruleId,"accepted next-season edits include jumpers, hills and rules");
-    check(save.getJumpersReference().size()==2 && save.getHillsReference().size()==2 && save.getCompetitionRulesReference().size()==2 && save.getSeasonsReference().size()==2 && save.getActualSeason()->getSeasonNumber()==2027,"accepting new season keeps additions and advances the season once");
-    check(save.getJumperFormInstability(save.getJumpersReference().last()),"added athletes have form instability settings");
-    manager.reject();qInfo()<<"PASS: next-season drafts cancel cleanly and accept edits, additions and existing identities";
+    check(save.getJumpersReference().first()==jumper && save.getHillsReference().first()==hill && jumper->getID()==jumperId && hill->getID()==hillId,"next season preserves athlete and hill identities");
+    check(jumper->getName()=="Original" && hill->getName()=="Original hill" && save.getCompetitionRulesReference().first().getID()==ruleId,"transition does not edit athletes, hills or rules");
+    check(Season::getJsonObject(save.getSeasonsReference().first())==original && manager.hasUnsavedSeasonChanges(),"history survives both transitions and manual saves remain dirty");
+    manager.reject();qInfo()<<"PASS: compact next season cancellation, copied calendars, empty season, unchanged resources, history and dirty state";
 }
 
 static void hillSearchRegression(QQuickWidget *view,const QString &name,const QStringList &labels) {
@@ -1242,7 +1235,7 @@ static void seasonWorkflowRegressions(MainWindow &main) {
     QTimer unexpectedDialogs;
     QObject::connect(&unexpectedDialogs,&QTimer::timeout,[]{
         for(auto *widget:QApplication::allWidgets())
-            if(auto *message=qobject_cast<QMessageBox *>(widget);message && (message->isVisible() || message->property("sjQuickPage").toBool()))
+            if(auto *message=qobject_cast<QMessageBox *>(widget);message && message->objectName()!="nextSeasonTransition" && (message->isVisible() || message->property("sjQuickPage").toBool()))
                 check(false,QString("unexpected season workflow dialog: %1: %2").arg(message->windowTitle(),message->text()));
     });
     unexpectedDialogs.start(50);
@@ -2658,6 +2651,7 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--playground-core-only")){playgroundRandomRegressions();playgroundBackendRegressions();return 0;}
     if(app.arguments().contains("--save-storage-only")){saveStorageRegressions();return 0;}
     if(app.arguments().contains("--engine-audit-only")){int selected=0;for(const auto &argument:app.arguments())if(argument.startsWith("--engine-case="))selected=argument.mid(14).toInt();engineAuditRegressions(selected);return 0;}
+    if(app.arguments().contains("--next-season-only")){nextSeasonTransactionRegression(main);return 0;}
     engineAuditRegressions();
     rosterTranslationRegression();
     if(app.arguments().contains("--engine-async-benchmark-only")){engineAsyncRegression();return 0;}
