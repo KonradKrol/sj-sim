@@ -21,7 +21,7 @@ Item {
             visible: true
             Layout.fillWidth: true
             Label { text: qsTr("Listy zawodników"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.heading; font.bold: true; Layout.fillWidth: true; Layout.minimumWidth: 0; elide: Text.ElideRight }
-            SButton { text: qsTr("Rozdziel zawodników"); primary: true; enabled: workspace.backend.rosterEntries.length>0; onClicked: workspace.backend.setRosterBoardOpen(true) }
+            SButton { visible: false; text: qsTr("Rozdziel zawodników"); primary: true; enabled: workspace.backend.rosterEntries.length>0; onClicked: workspace.backend.setRosterBoardOpen(true) }
             SButton { visible: workspace.backend.canRestoreRoster; text: qsTr("Cofnij usunięcie"); quiet: true; onClicked: workspace.backend.restoreRoster() }
             SButton { objectName: workspace.narrow ? "" : "rosterCreate"; text: qsTr("Nowa lista"); primary: !workspace.hasSelection; onClicked: {workspace.forceActiveFocus();workspace.backend.createRoster()} }
         }

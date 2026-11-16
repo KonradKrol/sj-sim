@@ -249,8 +249,6 @@ Item {
                     title: qsTr("Wybierz konkurs")
                     description: qsTr("Zaznacz konkurs na liście, aby zmienić jego ustawienia.")
                     actionText: calendar.backend.calendarIndex>=0 ? qsTr("Szybkie planowanie") : ""
-                    secondaryActionText: calendar.backend.events.length===0 ? qsTr("Wczytaj preset") : ""
-                    onSecondaryTriggered: calendar.loadPreset()
                     actionObjectName: "calendarEmptyPlanning"
                     onTriggered: calendar.openPlanning()
                 }
