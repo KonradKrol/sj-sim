@@ -1,4 +1,6 @@
 #include "../../simulation-v2/JumperPotential.h"
+#include "../../competitions/StartListOrderSource.h"
+#include <algorithm>
 #include <QSettings>
 #include <QRandomGenerator>
 #include "../../balance/BalanceRuntime.h"
@@ -259,30 +261,10 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         }
         if(seasonCompetition->getRules().getCompetitionType()==CompetitionRules::Individual) {
 
-        if(comp->startListSortMode==0) {
-            const auto classes=Classification::getSpecificTypeClassifications(simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference(),CompetitionRules::Individual);
-            if(!classes.isEmpty())IndividualCompetitionManager::setStartListOrderByClassification(seasonCompetitionJumpers,classes.first());
-        }
-        if(comp->startListSortMode != 0) {
-            CompetitionInfo *sortCompetition=nullptr;
-            Classification *sortClass=nullptr;
-            const auto kind=seasonCompetition->getRules().getCompetitionType();
-            if(comp->startListSortMode==1) {
-                sortCompetition=comp->getAdvancementCompetition();
-                if(sortCompetition && sortCompetition->getCancelled())sortCompetition=nullptr;
-                if(!sortCompetition)sortClass=comp->getAdvancementClassification();
-            } else if(comp->startListSortMode==2) {
-                for(auto *event:simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference()) {
-                    if(event==comp)break;
-                    if((comp->startListSortCompetitionId.isEmpty() || event->getIDStr()==comp->startListSortCompetitionId) && event->getRules().getCompetitionType()==kind)sortCompetition=event;
-                }
-            } else if(comp->startListSortMode==3) {
-                for(auto *classification:simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference())
-                    if(classification->getIDStr()==comp->startListSortClassificationId && classification->getClassificationType()==kind)sortClass=classification;
-            }
-            if(sortCompetition)IndividualCompetitionManager::setStartListOrderByCompetitionResults(seasonCompetitionJumpers,sortCompetition);
-            else if(sortClass)IndividualCompetitionManager::setStartListOrderByClassification(seasonCompetitionJumpers,sortClass);
-        }
+        const auto source=StartListOrder::resolve(simulationSave->getActualSeason()->getActualCalendar(),comp,CompetitionRules::Individual);
+        if(source.competition)IndividualCompetitionManager::setStartListOrderByCompetitionResults(seasonCompetitionJumpers,source.competition);
+        else if(source.classification && !source.classification->getRankedResults().isEmpty())IndividualCompetitionManager::setStartListOrderByClassification(seasonCompetitionJumpers,source.classification);
+        else std::shuffle(seasonCompetitionJumpers.begin(),seasonCompetitionJumpers.end(),*QRandomGenerator::global());
         }
         if(comp!=seasonCompetition && !comp->getRulesPointer()->getRoundsReference().isEmpty()) {
             auto &round=comp->getRulesPointer()->getRoundsReference().first();
@@ -356,26 +338,10 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
                     competitionTeams = TeamCompetitionManager::getFilteredTeamsByClassification(seasonCompetition, seasonCompetition->getAdvancementClassification(), competitionTeams);
             }
 
-        if(comp->startListSortMode != 0) {
-            CompetitionInfo *sortCompetition=nullptr;
-            Classification *sortClass=nullptr;
-            const auto kind=seasonCompetition->getRules().getCompetitionType();
-            if(comp->startListSortMode==1) {
-                sortCompetition=comp->getAdvancementCompetition();
-                if(sortCompetition && sortCompetition->getCancelled())sortCompetition=nullptr;
-                if(!sortCompetition)sortClass=comp->getAdvancementClassification();
-            } else if(comp->startListSortMode==2) {
-                for(auto *event:simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference()) {
-                    if(event==comp)break;
-                    if((comp->startListSortCompetitionId.isEmpty() || event->getIDStr()==comp->startListSortCompetitionId) && event->getRules().getCompetitionType()==kind)sortCompetition=event;
-                }
-            } else if(comp->startListSortMode==3) {
-                for(auto *classification:simulationSave->getActualSeason()->getActualCalendar()->getClassificationsReference())
-                    if(classification->getIDStr()==comp->startListSortClassificationId && classification->getClassificationType()==kind)sortClass=classification;
-            }
-            if(sortCompetition)TeamCompetitionManager::setStartListOrderByCompetitionResults(competitionTeams,sortCompetition);
-            else if(sortClass)TeamCompetitionManager::setStartListOrderByClassification(competitionTeams,sortClass);
-        }
+        const auto source=StartListOrder::resolve(simulationSave->getActualSeason()->getActualCalendar(),comp,CompetitionRules::Team);
+        if(source.competition)TeamCompetitionManager::setStartListOrderByCompetitionResults(competitionTeams,source.competition);
+        else if(source.classification && !source.classification->getRankedResults().isEmpty())TeamCompetitionManager::setStartListOrderByClassification(competitionTeams,source.classification);
+        else std::shuffle(competitionTeams.begin(),competitionTeams.end(),*QRandomGenerator::global());
             teamsSquadsModel->setupTreeItems();
             teamsTreeView->setModel(teamsSquadsModel);
             //teamsTreeView->getTreeView()->expandToDepth(0);

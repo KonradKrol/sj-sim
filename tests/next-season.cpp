@@ -4,6 +4,7 @@
 #include "../source/athletes/AthleteProfile.h"
 #include "../source/hills/HillProfile.h"
 #include "../source/global/JsonGraphValidation.h"
+#include "../source/competitions/StartListOrderSource.h"
 #include <cstdlib>
 #include <memory>
 
@@ -52,5 +53,15 @@ int main(int argc,char **argv){
     competition->setPlayed(false);Season untouched;untouched.setSeasonNumber(42);
     check(!source.prepareNext(true,untouched,error) && untouched.getSeasonNumber()==42,"unfinished season rejected without changing output");competition->setPlayed(true);
     competition->setScheduledDate(QDate(2026,5,1));check(!source.prepareNext(true,untouched,error) && untouched.getSeasonNumber()==42,"invalid copied chronology rejected transactionally");
+    competition->startListSortMode=2;competition->startListSortCompetitionId=qualifications->getIDStr();
+    qualifications->getResultsReference().getResultsReference().append(result);
+    check(StartListOrder::resolve(summer,competition,0).competition==qualifications,"valid event remains the sorting source");
+    qualifications->setCancelled(true);check(StartListOrder::resolve(summer,competition,0).classification==ranking,"cancelled source falls back to matching ranking");
+    qualifications->setCancelled(false);qualifications->getResultsReference().getResultsReference().clear();
+    check(StartListOrder::resolve(summer,competition,0).classification==ranking,"empty event results fall back safely");
+    competition->startListSortMode=1;qualifications->setCancelled(true);
+    check(StartListOrder::resolve(summer,competition,0).classification==ranking,"cancelled qualification falls back to default ranking");
+    check(!StartListOrder::resolve(summer,competition,1).classification && !StartListOrder::resolve(summer,competition,1).competition,"incompatible classification does not become a team source");
+    summer->setClassifications({});check(!StartListOrder::resolve(summer,competition,0).classification,"no classification leaves random ordering available");summer->setClassifications({ranking});
     qInfo()<<"PASS: next season cloning, dates, history, qualification, scoring, roster, identity, empty mode and failure rollback";
 }
