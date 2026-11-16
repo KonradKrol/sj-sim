@@ -8,6 +8,7 @@
 #ifdef SJ_QUICK_UI
 #include "UI/Quick/QuickUi.h"
 #include <QQuickWidget>
+#include <QQmlComponent>
 #endif
 
 #include <QApplication>
@@ -101,6 +102,10 @@ int main(int argc, char *argv[])
             const auto views=w.findChildren<QQuickWidget *>();
             bool ready=!views.isEmpty();
             for(auto *view:views)ready=ready && view->status()==QQuickWidget::Ready && view->rootObject();
+            if(!views.isEmpty())for(const auto *page:{"Workspace.qml","RaceScreen.qml","AthleteStatistics.qml","AnalysisPlot.qml","BalanceLabPlot.qml"}){
+                QQmlComponent component(views.first()->engine(),QUrl(QStringLiteral("qrc:/ui/")+QLatin1String(page)));
+                if(component.isError()){qWarning().noquote()<<"Deployment component:"<<page<<component.errorString();ready=false;}
+            }
             qInfo()<<"Deployment UI check:"<<(ready?"PASS":"FAIL");
             deploymentTrace(ready?"PASS: Quick UI ready":"FAIL: Quick UI unavailable");
             a.exit(ready?0:2);

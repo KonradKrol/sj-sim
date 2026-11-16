@@ -53,6 +53,16 @@ if [[ "$($QMAKE -query QT_VERSION)" == 5.* && ! -x "$($QMAKE -query QT_HOST_BINS
     export SJ_QT_BIN_ROOT="${repo_root}/build-qml-preview/qt-dev/root/usr/lib/qt5/bin"
     export QMAKE="${repo_root}/packaging/linux/qmake-runtime-wrapper.py"
 fi
+# Check the complete UI before deployment and prepare any matching local supplement.
+QT_QPA_PLATFORM=offscreen QT_QUICK_BACKEND=software "${repo_root}/scripts/with-qt-runtime.sh" "${executable}" --deployment-smoke
+extra_libraries=()
+supplement="${repo_root}/build-qt-supplement"
+if [[ -f "$supplement/qt-version" && "$(cat "$supplement/qt-version")" == "$($QMAKE -query QT_VERSION)" && ! -f "$($QMAKE -query QT_INSTALL_QML)/QtQuick/Shapes/qmldir" ]]; then
+    mkdir -p "${appdir}/usr/qml/QtQuick/Shapes"
+    cp -a "$supplement/qml/QtQuick/Shapes/." "${appdir}/usr/qml/QtQuick/Shapes/"
+    extra_libraries+=(--library "$supplement/lib/libQt5QuickShapes.so.5" --deploy-deps-only "${appdir}/usr/qml/QtQuick/Shapes/libqmlshapesplugin.so")
+    export LD_LIBRARY_PATH="$supplement/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+fi
 export QML_SOURCES_PATHS="${repo_root}/source/UI/Quick"
 export EXTRA_QT_MODULES="svg${EXTRA_QT_MODULES:+;${EXTRA_QT_MODULES}}"
 export EXTRA_PLATFORM_PLUGINS="libqoffscreen.so${EXTRA_PLATFORM_PLUGINS:+;${EXTRA_PLATFORM_PLUGINS}}"
@@ -64,12 +74,14 @@ chmod -R a+rX "${appdir}"
 python3 "${repo_root}/scripts/extract-app-icon.py" "${repo_root}/sj-sim.ico" "${workspace}/sj-sim.png"
 "${tool_dir}/linuxdeploy-x86_64.AppImage" --appdir "${appdir}" \
     --executable "${appdir}/usr/bin/sj-sim" --desktop-file "${repo_root}/packaging/linux/sj-sim.desktop" \
-    --icon-file "${workspace}/sj-sim.png" --plugin qt
+    --icon-file "${workspace}/sj-sim.png" "${extra_libraries[@]}" --plugin qt
 # Deployment tools can preserve restrictive permissions from their own runtime.
 chmod -R a+rX "${appdir}"
 "${tool_dir}/linuxdeploy-x86_64.AppImage" --appdir "${appdir}" --output appimage
 [[ -s "${LDAI_OUTPUT}" ]] || { echo "AppImage was not produced." >&2; exit 1; }
 chmod +x "${LDAI_OUTPUT}"
+env -u LD_LIBRARY_PATH -u QML2_IMPORT_PATH -u QML_IMPORT_PATH -u QT_PLUGIN_PATH -u QT_QPA_PLATFORM_PLUGIN_PATH \
+    APPIMAGE_EXTRACT_AND_RUN=1 QT_QPA_PLATFORM=offscreen QT_QUICK_BACKEND=software "${LDAI_OUTPUT}" --deployment-smoke
 artifact="${output_path}/$(basename "${LDAI_OUTPUT}")"
 mv -f -- "${LDAI_OUTPUT}" "${artifact}"
 (cd "${output_path}" && sha256sum "$(basename "${artifact}")" > "$(basename "${artifact}").sha256")

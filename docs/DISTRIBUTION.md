@@ -91,6 +91,12 @@ ImageMagick — ikona PNG jest wyodrębniana bez przeskalowania z istniejącego 
 Skrypt korzysta z pełnego systemowego Qt. Wyłącznie przy naszym niepełnym
 linuksowym SDK Qt 5 wykorzystuje pasujący runtime i qmlimportscanner z
 `build-qml-preview`; instalacje Qt 6 i CI nie wymagają tego obejścia.
+W Qt 5 wykresy wymagają `QtQuick.Shapes` (na Ubuntu/Debian:
+`qml-module-qtquick-shapes`). Jeśli lokalnie brakuje tylko tego modułu,
+launcher uzupełnia go zgodną wersją bez podmieniania systemowych Controls.
+Test wydania sprawdza również Workspace, konkurs, statystyki i wykresy.
+Gotowy AppImage przechodzi tę kontrolę bez ścieżek Qt komputera dewelopera,
+zanim zastąpi poprzednią paczkę.
 
 Budowanie odbywa się w tymczasowym katalogu. Dopiero udane pakowanie zastępuje
 poprzedni plik wynikowy. Pliki robocze i układ AppDir nie są częścią pobieranej

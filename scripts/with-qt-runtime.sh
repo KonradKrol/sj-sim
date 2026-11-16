@@ -14,11 +14,11 @@ for variable in LD_LIBRARY_PATH QML2_IMPORT_PATH QML_IMPORT_PATH; do
     done
     if [[ -n "$filtered" ]]; then export "${variable}=${filtered}"; else unset "$variable"; fi
 done
-qt_major=""; core_dir=""
+qt_major=""; core_dir=""; core_path=""
 while read -r library arrow location remainder; do
     if [[ "$library" == libQt5Core.so.5 || "$library" == libQt6Core.so.6 ]]; then
         qt_major="${library:5:1}"
-        if [[ "$arrow" == '=>' && -f "$location" ]]; then core_dir="$(dirname "$(readlink -f -- "$location")")"; fi
+        if [[ "$arrow" == '=>' && -f "$location" ]]; then core_path="$(readlink -f -- "$location")"; core_dir="$(dirname "$core_path")"; fi
         break
     fi
 done < <(ldd "$executable" 2>/dev/null || true)
@@ -43,6 +43,17 @@ fi
 if [[ -z "$qml_root" && "$qt_major" == 5 ]] && complete_qml "$legacy/qml" 5; then
     qml_root="$legacy/qml"
     export LD_LIBRARY_PATH="$legacy/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+fi
+# Supply only the missing Shapes module, never another copy of Controls or Quick.
+core_version="${core_path##*.so.}"
+if [[ "$qt_major" == 5 && "$core_version" == 5.*.* && -n "$qml_root" && ! -f "$qml_root/QtQuick/Shapes/qmldir" && -f "$legacy/qml/QtQuick/Shapes/qmldir" && -f "$legacy/lib/libQt5QuickShapes.so.$core_version" ]]; then
+    supplement="$repo_root/build-qt-supplement"
+    mkdir -p "$supplement/qml/QtQuick/Shapes" "$supplement/lib"
+    cp -au "$legacy/qml/QtQuick/Shapes/." "$supplement/qml/QtQuick/Shapes/"
+    cp -au "$legacy/lib/"libQt5QuickShapes.so* "$supplement/lib/"
+    printf '%s\n' "$core_version" > "$supplement/qt-version"
+    qml_root="$supplement/qml:$qml_root"
+    export LD_LIBRARY_PATH="$supplement/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 fi
 if [[ -n "$qml_root" ]]; then
     export QML2_IMPORT_PATH="$qml_root"
