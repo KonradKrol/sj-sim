@@ -1,3 +1,5 @@
+> **Dokument historyczny (26.10.2026).** Aktualny changelog, ograniczenia i notatki wydania: [CHANGELOG_2.0.0.md](../CHANGELOG_2.0.0.md). Nie wszystkie opisane tutaj wcześniejsze warianty są nadal dostępne.
+
 # Sj.Sim — pełny wykaz zmian względem main
 
 Dokument źródłowy do przygotowania release notes dla 2.0.0 albo innego numeru wydania. Opisuje końcowy stan gałęzi, a nie tylko ostatnie poprawki. Obejmuje również zmiany techniczne i narzędziowe, które nie muszą trafić do publicznej zapowiedzi.
