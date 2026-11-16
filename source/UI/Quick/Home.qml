@@ -51,7 +51,7 @@ Rectangle {
                             objectName: "homeDiscord"
                             text: "Discord"; iconSource: "icons/discord.svg"
                             hint: qsTr("Dołącz do serwera Sj.Sima"); Accessible.name: hint
-                            onClicked: Qt.openUrlExternally("https://discord.gg/NrusAMJgSw")
+                            onClicked: Qt.openUrlExternally("https://discord.gg/PsumKAqDBt")
                             background: Rectangle { radius: Theme.controlRadius; color: discordButton.hovered || discordButton.down ? Theme.selection : "transparent"; border.width: discordButton.visualFocus ? Theme.focusBorder : 0; border.color: Theme.accent }
                         }
                     }
