@@ -22,7 +22,7 @@ Sj.Sim otrzymał nowy interfejs Qt Quick: menu, przygotowanie zawodów, ekran ko
 - Regulowana wielkość interfejsu i tekstu, bardziej kompaktowe tabele i panele, ograniczanie animacji.
 - Przebudowana nawigacja, mniej wielopoziomowych dialogów, bardziej czytelne komunikaty i stany pustych ekranów.
 - Nowe logo, sekcja „O autorze”, odnośniki do społeczności i czteroczęściowe powitanie ze zdjęciami.
-- Przykładowy sezon uruchamiany bez ręcznego kompletowania zasobów: lato i zima, gotowe kalendarze, daty, automatyczna forma i automatyczny zapis.
+- Przykładowy sezon uruchamiany bez ręcznego kompletowania zasobów: zima, gotowy kalendarz, daty, automatyczna forma i automatyczny zapis.
 - Nazwa „Pojedynczy konkurs” została zastąpiona przez „Szybki konkurs”.
 
 ## Nowi skoczkowie, skocznie i silnik

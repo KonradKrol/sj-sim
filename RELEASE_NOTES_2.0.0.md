@@ -11,7 +11,7 @@ Sj.Sim 2.0.0 to przebudowany interfejs, nowy silnik skoków i znacznie więcej m
 - Jasny i ciemny wygląd oraz trzy motywy: standardowy, różowy i prosty. Regulowana wielkość interfejsu i tekstu oraz ograniczanie animacji.
 - Przebudowane dialogi, nawigacja i komunikaty; więcej pomocy przy mniej oczywistych opcjach.
 - Nowe logo, sekcja „O autorze” i dostęp do społeczności Discord bezpośrednio z gry.
-- Czteroczęściowe powitanie oraz możliwość rozpoczęcia gotowej przykładowej symulacji z letnim i zimowym kalendarzem, datami, autoformą i autozapisem.
+- Czteroczęściowe powitanie oraz możliwość rozpoczęcia gotowej przykładowej symulacji z zimowym kalendarzem, datami, autoformą i autozapisem.
 - „Pojedynczy konkurs” nazywa się teraz „Szybki konkurs”.
 
 ### Skoczkowie, skocznie i nowy silnik

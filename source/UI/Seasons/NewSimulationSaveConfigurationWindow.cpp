@@ -194,19 +194,18 @@ std::unique_ptr<SimulationSave> NewSimulationSaveConfigurationWindow::createExam
         packChoices[kind]->setCurrentIndex(active>=0?active:preferred>=0?preferred:fallback);
     }
     auto &presets=GlobalDatabase::get()->getEditableGlobalCalendarPresets();
-    SeasonCalendarPreset *summer=nullptr,*winter=nullptr;
+    SeasonCalendarPreset *winter=nullptr;
     for(auto &preset:presets) {
         const auto name=preset.getName();
-        if(name=="Lato2026" || name=="LGP26" || name=="LGP2026" || name=="Official-LGP" || name==QString::fromUtf8("Oficjalne LGP"))summer=&preset;
         if(name=="Zima-2026-27" || name=="WC26-27" || name=="Official-WC" || name=="World_Cup_2026_2027")winter=&preset;
     }
-    if(!summer || !winter)return {};
+    if(!winter)return {};
     const QString base=tr("Przykładowa symulacja");QString name=base;for(int n=2;otherNames.contains(name,Qt::CaseInsensitive);++n)name=base+" "+QString::number(n);
     ui->lineEdit_name->setText(name);findChild<QCheckBox *>("newSeasonDates")->setChecked(true);
     auto save=createSave();if(!save)return {};
-    for(auto *selected:{summer,winter}) {
+    for(auto *selected:{winter}) {
         SeasonCalendarPreset copy(&selected->getCalendarReference());
-        auto calendar=std::make_unique<SeasonCalendar>(copy.getCalendarReference());calendar->setName(selected==summer?tr("Lato"):tr("Zima"));
+        auto calendar=std::make_unique<SeasonCalendar>(copy.getCalendarReference());calendar->setName(tr("Zima"));
         const auto &venues=selected->getHillsReference();auto &events=calendar->getCompetitionsReference();
         for(int i=0;i<events.size();++i) {
             auto *best=save->getHillsReference().first();double score=std::numeric_limits<double>::max();
@@ -217,7 +216,7 @@ std::unique_ptr<SimulationSave> NewSimulationSaveConfigurationWindow::createExam
             events[i]->setHill(best);
         }
         calendar->normalizeCompetitionEvents();save->getActualSeason()->getCalendarsReference().append(calendar.get());
-        if(selected==summer)save->getActualSeason()->setActualCalendar(calendar.get());
+        save->getActualSeason()->setActualCalendar(calendar.get());
         calendar.release();
     }
     save->updateNextCompetitionIndex();save->repairDatabase();return save;
