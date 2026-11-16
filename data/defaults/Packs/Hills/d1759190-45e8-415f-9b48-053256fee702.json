@@ -14,6 +14,7 @@
             "perkLevels": 4,
             "perks": [
                 -2,
+                1,
                 0,
                 0,
                 0
@@ -330,7 +331,8 @@
             "perks": [
                 0,
                 -1,
-                -3,
+                -2,
+                0,
                 0
             ],
             "pointsAtK": 60,
@@ -372,8 +374,9 @@
             "perks": [
                 0,
                 0,
+                1,
                 0,
-                0
+                1
             ],
             "pointsAtK": 60,
             "pointsPerMetre": 1.8,
@@ -414,6 +417,7 @@
             "perks": [
                 0,
                 -1,
+                0,
                 0,
                 0
             ],
@@ -605,7 +609,8 @@
                 1,
                 2,
                 3,
-                0
+                0,
+                -1
             ],
             "pointsAtK": 60,
             "pointsPerMetre": 1.8,
@@ -731,6 +736,7 @@
                 -1,
                 -1,
                 -1,
+                -1,
                 0
             ],
             "pointsAtK": 60,
@@ -749,8 +755,9 @@
             "name": "Kulm",
             "perkLevels": 4,
             "perks": [
-                -1,
                 0,
+                0,
+                2,
                 0,
                 0
             ],
@@ -898,7 +905,8 @@
             "perks": [
                 0,
                 0,
-                2,
+                3,
+                0,
                 0
             ],
             "pointsAtK": 60,
@@ -955,7 +963,7 @@
             "headwindPoints": 10.8,
             "hs": 138,
             "id": "6f35fcf0-dbbc-4675-a821-aab5776809db",
-            "k": 123,
+            "k": 124,
             "name": "Trondheim",
             "perkLevels": 4,
             "perks": [
@@ -1001,10 +1009,11 @@
             "name": "Vikersund",
             "perkLevels": 4,
             "perks": [
-                -3,
+                -2,
                 -1,
+                1,
                 0,
-                0
+                2
             ],
             "pointsAtK": 120,
             "pointsPerMetre": 1.2,
@@ -1024,8 +1033,9 @@
             "perks": [
                 -4,
                 3,
+                1,
                 0,
-                0
+                3
             ],
             "pointsAtK": 120,
             "pointsPerMetre": 1.2,
@@ -1193,6 +1203,7 @@
                 1,
                 0,
                 0,
+                0,
                 0
             ],
             "pointsAtK": 120,
@@ -1277,6 +1288,7 @@
                 0,
                 0,
                 0,
+                0,
                 0
             ],
             "pointsAtK": 60,
@@ -1340,7 +1352,8 @@
                 1,
                 1,
                 0,
-                -2
+                -2,
+                -1
             ],
             "pointsAtK": 60,
             "pointsPerMetre": 1.8,
@@ -1361,6 +1374,7 @@
                 -3,
                 0,
                 3,
+                1,
                 1
             ],
             "pointsAtK": 60,
@@ -1741,7 +1755,8 @@
                 0,
                 0,
                 3,
-                2
+                2,
+                0
             ],
             "pointsAtK": 60,
             "pointsPerMetre": 1.8,
@@ -2155,12 +2170,13 @@
             "hs": 210,
             "id": "7cdd2c10-afd6-47ce-9fa6-472526aeb83d",
             "k": 185,
-            "name": "Harrachov",
+            "name": "Harrachov (OLD)",
             "perkLevels": 4,
             "perks": [
                 0,
+                -1,
                 0,
-                0,
+                -1,
                 0
             ],
             "pointsAtK": 120,
@@ -2176,12 +2192,13 @@
             "hs": 142,
             "id": "a548e3ca-20b2-4708-9e24-cc5ea0a4ca6a",
             "k": 125,
-            "name": "Harrachov",
+            "name": "Harrachov (OLD)",
             "perkLevels": 4,
             "perks": [
+                2,
+                -1,
                 0,
-                0,
-                0,
+                -1,
                 0
             ],
             "pointsAtK": 60,
@@ -2266,6 +2283,7 @@
                 0,
                 1,
                 0,
+                -1,
                 0
             ],
             "pointsAtK": 60,
@@ -2305,10 +2323,11 @@
             "name": "Sapporo",
             "perkLevels": 4,
             "perks": [
-                -1,
+                -2,
                 0,
                 1,
-                0
+                0,
+                2
             ],
             "pointsAtK": 60,
             "pointsPerMetre": 1.8,
@@ -2348,6 +2367,7 @@
             "perkLevels": 4,
             "perks": [
                 0,
+                -1,
                 0,
                 0,
                 0
@@ -2644,6 +2664,7 @@
                 0,
                 0,
                 0,
+                0,
                 0
             ],
             "pointsAtK": 60,
@@ -2679,13 +2700,14 @@
             "headwindPoints": 20,
             "hs": 300,
             "id": "f5052c64-ea68-4149-ae9e-d6fdb0a5119a",
-            "k": 120,
+            "k": 253.5,
             "name": "Akureyri",
             "perkLevels": 4,
             "perks": [
                 0,
-                -2,
-                0,
+                -3,
+                2,
+                2,
                 0
             ],
             "pointsAtK": 60,

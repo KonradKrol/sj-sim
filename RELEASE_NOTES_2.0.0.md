@@ -99,7 +99,7 @@ Sj.Sim 2.0.0 to przebudowany interfejs, nowy silnik skoków i znacznie więcej m
 - Import i eksport paczek `.sjsim-pack`, również zawierających wiele zasobów i zdjęcia zawodników.
 - Zdjęcia należą do paczki i nie wymagają dostępu do prywatnych folderów jej autora.
 - Usuwanie zasobów z biblioteki z potwierdzeniem i możliwością odzyskania przez kosz systemowy, gdy jest dostępny.
-- Zasoby startowe na nowej instalacji oraz gotowe kalendarze Lato2026 i Zima-2026-27.
+- Zasoby startowe na nowej instalacji: 103 skoczków z fikcyjnymi nazwiskami, 128 skoczni, zasady, punktacje oraz kalendarze Lato2026 i Zima-2026-27.
 - Aktualizacja programu zachowuje istniejącą bibliotekę i zapisy użytkownika.
 
 ### Narzędzia, stabilność i instalacja

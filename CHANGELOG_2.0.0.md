@@ -61,6 +61,7 @@ Sj.Sim otrzymał nowy interfejs Qt Quick: menu, przygotowanie zawodów, ekran ko
 - Wyniki drużynowe mają zapamiętywane tryby rozwinięcia i dodatkową klasyfikację indywidualną.
 - Podgląd wyników po wskazanej serii, także w archiwum. Podgląd wstrzymuje rozgrywanie i pozwala wrócić do aktualnego konkursu.
 - W wynikach i klasyfikacjach dostępne są subtelne, wyrównane kolumny strat punktowych.
+- Pole „Konkurs” w karcie skoku drużynowego pokazuje indywidualne miejsce zawodnika, także w archiwum i podglądzie po serii.
 
 ## Sezony i kalendarze
 
@@ -214,8 +215,8 @@ Sj.Sim otrzymał nowy interfejs Qt Quick: menu, przygotowanie zawodów, ekran ko
 - Zdjęcia należą do paczki i są przenoszone razem z nią; nie wymagają ścieżek do prywatnego katalogu autora.
 - Eksport kalendarza i jego zależności różni się od zapisu rozegranego sezonu; do udostępniania należy używać eksportu biblioteki, zamiast wysyłać przypadkowe pliki robocze.
 - Poprawiono usuwanie otwartych zasobów, cofanie niezapisanych zmian w DB, zachowanie innych paczek i zapobieganie przywracaniu usuniętych zasobów przez stary stan edytora.
-- Aktualnie dostarczane Defaults: jedna paczka 83 skoczków ze zmienionymi nazwiskami, 128 skoczni, paczka zasad i punktacje; dwa kalendarze: Lato2026 i Zima-2026-27.
-- Prywatna biblioteka autora może mieć inne nazwiska i liczebność. Dzisiejsze dopisanie 20 skoczków do lokalnej paczki 83→103 nie zmienia automatycznie zasobów startowych w repozytorium ani już zbudowanego instalatora.
+- Aktualnie dostarczane Defaults: jedna paczka 103 skoczków ze zmienionymi nazwiskami, 128 skoczni, paczka zasad i punktacje; dwa kalendarze: Lato2026 i Zima-2026-27.
+- Prywatna biblioteka autora może mieć inne nazwiska i liczebność. Aktualna paczka 103 zawodników została skopiowana do zasobów startowych ze zmianą dwóch liter w nazwiskach; prywatny oryginał pozostał nietknięty.
 
 ## 10. Stabilność i wydajność
 

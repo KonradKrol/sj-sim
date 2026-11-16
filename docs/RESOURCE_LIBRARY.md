@@ -43,7 +43,7 @@ nie jest drugim plikiem bazy danych ani autorytatywnym magazynem paczek.
 Build i oba skrypty pakujące umieszczają je w `Defaults` obok executable.
 Przy pierwszym uruchomieniu kopiowane są do biblioteki:
 
-- jedna domyślna paczka 83 skoczków, razem ze zdjęciami;
+- jedna domyślna paczka 103 skoczków, razem ze zdjęciami;
 - jedna paczka Hills 26/27 — 128 skoczni;
 - jedna aktualna paczka zasad;
 - pięć aktualnych presetów punktacji;

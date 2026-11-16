@@ -30,7 +30,7 @@ składnikiem potrzebnym do uruchomienia.
 
 Na obu platformach biblioteka jest w **Dokumenty/SjSimData** lub w folderze
 wybranym w ustawieniach → Biblioteka. Pierwszy start przygotowuje aktualne
-zasoby z `data/defaults`: 83 skoczków, 128 skoczni, zasady, punktacje i kalendarze.
+zasoby z `data/defaults`: 103 skoczków, 128 skoczni, zasady, punktacje i kalendarze.
 
 Aktualizacja programu nie nadpisuje istniejącej biblioteki. Instalator i jego
 uninstaller nie usuwają folderu Dokumenty/SjSimData ani folderu wybranego przez

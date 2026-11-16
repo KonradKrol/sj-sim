@@ -39,6 +39,7 @@ int main(int argc,char **argv){
     QTimer modalGuard;QObject::connect(&modalGuard,&QTimer::timeout,[]{for(auto *w:QApplication::allWidgets())if(auto *m=qobject_cast<QMessageBox*>(w);m && (m->isVisible()||m->property("sjQuickPage").toBool())){qCritical()<<"Unexpected test dialog:"<<m->text();std::exit(1);}});modalGuard.start(50);
     NewSimulationSaveConfigurationWindow setup({},&main);for(int i=0;i<200&&!setup.catalogReady();++i)tick(20);
     check(setup.catalogReady(),"season catalog ready");auto save=setup.createExampleSave();check(bool(save),"example created");
+    check(save->getJumpersReference().size()==103 && save->getHillsReference().size()==128,"example starts with the current release athlete and hill packs");
     check(save->formEngine().enabled && save->getAutosaveEnabled() && save->getActualSeason()->getDatesEnabled(),"example enables all three automations");
     check(save->getActualSeason()->getCalendarsReference().size()==2,"example has summer and winter");
     auto *winter=save->getActualSeason()->getCalendarsReference().last();auto *final=winter->getCompetitionsReference().last();
