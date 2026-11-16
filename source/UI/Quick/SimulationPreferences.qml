@@ -19,10 +19,11 @@ Column {
         }
     }
     Pane {
+        id: preferencesPanel
         width: parent.width
         height: implicitHeight
         padding: Theme.dp(12)
-        implicitHeight: rows.implicitHeight+topPadding+bottomPadding
+        Binding { target: preferencesPanel; property: "implicitHeight"; value: rows.implicitHeight+preferencesPanel.topPadding+preferencesPanel.bottomPadding; delayed: true }
         background: Rectangle { color: Theme.surface; radius: Theme.radius; border.color: Theme.outline }
         contentItem: ColumnLayout {
             id: rows
