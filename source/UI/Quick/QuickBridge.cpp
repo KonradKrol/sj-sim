@@ -1283,9 +1283,12 @@ void QuickBridge::compose(QuickNode *base) {
                     std::stable_sort(podium.begin(),podium.end(),[](const QVariant &a,const QVariant &b){return a.toMap().value("position").toInt()<b.toMap().value("position").toInt();});
                     latest={{"hill",hill?hill->getName():QString()},{"hs",hill?QString::number(hill->getHSPoint(),'f',0):QString()},{"type",lastPlayed->getLongSerieTypeText()},{"cancelled",lastPlayed->getCancelled()},{"date",datesEnabled && lastPlayed->getScheduledDate().isValid()?lastPlayed->getScheduledDate().toString("dd.MM.yyyy"):QString()},{"results",podium}};
                 }
-                if(!upcoming.isEmpty() || !latest.isEmpty() || m_window->property("chronology").toMap().value("blocked").toBool()) {
+                bool seasonEnded=true,hasEvents=false;
+                for(auto *calendar:season->getSimulationSave()->getActualSeason()->getCalendars())for(auto *event:calendar->getCompetitions())if(event){hasEvents=true;if(!event->getPlayed() && !event->getCancelled())seasonEnded=false;}
+                seasonEnded=seasonEnded && hasEvents;
+                if(seasonEnded || !upcoming.isEmpty() || !latest.isEmpty() || m_window->property("chronology").toMap().value("blocked").toBool()) {
                     auto *preview=m_groups.value("quickSeasonOverview");if(!preview){preview=new QuickNode(this);m_groups.insert("quickSeasonOverview",preview);}
-                    preview->update({{"kind","seasonOverview"},{"chronologyBackend",QVariant::fromValue<QObject *>(m_window)},{"events",upcoming},{"latest",latest},{"total",total},{"played",played},{"remainingCompetitions",remainingCompetitions},
+                    preview->update({{"kind","seasonOverview"},{"seasonEnded",seasonEnded},{"chronologyBackend",QVariant::fromValue<QObject *>(m_window)},{"events",upcoming},{"latest",latest},{"total",total},{"played",played},{"remainingCompetitions",remainingCompetitions},
                         {"quickAction",QVariant::fromValue(node(m_window->findChild<QPushButton *>("quickSimulateNextCompetition"),true))},{"cancelAction",QVariant::fromValue(node(m_window->findChild<QPushButton *>("pushButton_cancelNextCompetition"),true))},{"nextEvent",nextEvent?nextEvent->getLongSerieTypeText():QString()},{"action",QVariant::fromValue(node(m_content->findChild<QPushButton *>("pushButton_competitionConfig")))}});
                     overview={QVariant::fromValue(preview)};
                 }

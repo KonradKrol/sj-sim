@@ -24145,7 +24145,9 @@ Technical key: %4</translation>
         <source>Konkursy do rozegrania: %1 (bez kwalifikacji)</source>
         <translation>Competitions remaining: %1 (excluding qualifications)</translation>
     </message>
-</context>
+    <message><source>Sezon zakończony</source><translation>Season complete</translation></message>
+        <message><source>Następny sezon</source><translation>Next season</translation></message>
+    </context>
     <context>
         <name>StudioPackBar</name>
         <message>

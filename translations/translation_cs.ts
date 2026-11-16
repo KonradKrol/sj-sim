@@ -24146,7 +24146,9 @@ Technický klíč: %4</translation>
         <source>Konkursy do rozegrania: %1 (bez kwalifikacji)</source>
         <translation>Zbývající závody: %1 (bez kvalifikací)</translation>
     </message>
-</context>
+    <message><source>Sezon zakończony</source><translation>Sezóna dokončena</translation></message>
+        <message><source>Następny sezon</source><translation>Další sezóna</translation></message>
+    </context>
     <context>
         <name>StudioPackBar</name>
         <message>

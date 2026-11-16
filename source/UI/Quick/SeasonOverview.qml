@@ -11,6 +11,13 @@ Column {
     readonly property var chronologyBackend: fields.chronologyBackend || null
     readonly property var chronology: chronologyBackend ? chronologyBackend.chronology : ({blocked:false})
     spacing: Theme.dp(8)
+    RowLayout {
+        width: parent.width
+        visible: overview.fields.seasonEnded===true
+        spacing: Theme.dp(16)
+        Label { text: qsTr("Sezon zakończony"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; font.bold: true; Layout.fillWidth: true }
+        SButton { objectName: "startNextSeason"; text: qsTr("Następny sezon"); primary: true; onClicked: if(overview.fields.action)ui.activate(overview.fields.action.values.id) }
+    }
     Pane {
         objectName: "autoFormNotice"
         width: parent.width
