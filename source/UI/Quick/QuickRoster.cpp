@@ -75,6 +75,8 @@ void QuickRosterCountryRows::sync(const QVariantList &rows) {
 QString QuickRoster::key(Jumper *jumper) { return QString::number(reinterpret_cast<quintptr>(jumper),16); }
 QuickRoster::QuickRoster(QWidget *source,QObject *parent):QObject(parent),m_source(source),m_library(new QuickRosterRows(this)),m_ordered(new QuickRosterRows(this)),m_groupedRows(new QuickRosterRows(this)),m_groupedLibrary(new QuickRosterRows(this)),m_limitRows(new QuickRosterCountryRows(this)){
     m_grouped=savedList();sync();
+    if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source);config && config->checkBox_singleCompetitionQualifications)
+        connect(config->checkBox_singleCompetitionQualifications,&QCheckBox::toggled,this,[this]{refresh();});
     if(auto *config=qobject_cast<CompetitionConfigWindow *>(m_source);config && config->simulationSave && !teams()) {
         if(const auto *list=config->simulationSave->activeJumpersList();list && !list->getJumpers().isEmpty()) {
             QVector<Jumper *> selected;for(auto *jumper:m_current)if(list->getJumpers().contains(jumper))selected.append(jumper);
@@ -259,6 +261,7 @@ bool QuickRoster::teams() const {
 }
 bool QuickRoster::knockout() const {
     auto *c=qobject_cast<CompetitionConfigWindow *>(m_source);if(!c||teams())return false;
+    if(!c->seasonCompetition && c->checkBox_singleCompetitionQualifications && c->checkBox_singleCompetitionQualifications->isChecked())return false;
     const auto rules=c->seasonCompetition?c->seasonCompetition->getRules():c->competitionRulesEditor->getCompetitionRulesFromWidgetInputs();
     return !rules.getRounds().isEmpty() && rules.getRounds().first().getKO();
 }
