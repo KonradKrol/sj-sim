@@ -6,7 +6,9 @@ W edytorze bazy danych utwórz lub zmodyfikuj paczkę skoczków, skoczni, zasad 
 
 **Kalendarz:** przygotuj konkursy i klasyfikacje w sezonie, a następnie zapisz kalendarz jako preset. Do udostępnienia samego terminarza nie wysyłaj zapisu całej symulacji.
 
-**Zdjęcia:** umieść je w folderze paczki skoczków. W edytorze wpisz względną ścieżkę, np. `photos/POL_JanKowalski.png`. Podczas eksportu istniejące pliki zdjęć zostaną dołączone do archiwum; sama wpisana ścieżka nie wystarczy.
+**Gdzie jest folder paczki?** W **Ustawienia → Biblioteka zawartości** kliknij **Otwórz folder**, następnie wejdź do `Packs/Athletes`. Każdy podfolder o długiej nazwie jest jedną paczką. W jego pliku `pack.json` pole `name` podaje nazwę paczki. Domyślna lokalizacja to `Dokumenty/SjSimData/Packs/Athletes/<identyfikator-paczki>/` na Windowsie i Linuxie.
+
+**Zdjęcia:** umieść je w tym samym folderze co `pack.json` lub utwórz w nim podfolder `photos`. W edytorze wpisz względną ścieżkę, np. `photos/POL_JanKowalski.png`. Podczas eksportu istniejące pliki zdjęć zostaną dołączone do archiwum; sama wpisana ścieżka nie wystarczy.
 
 ## 2. Wyeksportuj paczkę
 
