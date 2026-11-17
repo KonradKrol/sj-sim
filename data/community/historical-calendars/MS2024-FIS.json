@@ -1,0 +1,62 @@
+[
+  {
+    "place": "Kulm Bad Mitterndorf/Tauplitz (AUT)",
+    "url": "https://www.fis-ski.com/DB/general/event-details.html?sectorcode=JP&eventid=53761&seasoncode=2024",
+    "races": [
+      {
+        "date": "2024-01-25",
+        "gender": "M",
+        "description": "Individual Flying Hill Qualification",
+        "codex": "3192",
+        "time": "2024-01-25T14:00:00+01:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=6938",
+        "cancelled": true,
+        "qualificationResults": false,
+        "officialResults": false,
+        "trainingResults": false,
+        "trialResults": false
+      },
+      {
+        "date": "2024-01-27",
+        "gender": "M",
+        "description": "Individual Flying Hill",
+        "codex": "3193",
+        "time": "",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=6939",
+        "cancelled": false,
+        "qualificationResults": false,
+        "officialResults": true,
+        "trainingResults": true,
+        "trialResults": false,
+        "training": {
+          "date": "2024-01-26",
+          "rounds": 2,
+          "url": "https://www.fis-ski.com/DB/v2/download/competition-attachment/c2ffe754-64da-11f1-b635-1866da7ef77e.pdf"
+        },
+        "actualRounds": 3
+      },
+      {
+        "date": "2024-01-28",
+        "gender": "M",
+        "description": "Team Flying Hill",
+        "codex": "3194",
+        "time": "2024-01-28T14:00:00+01:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=6940",
+        "cancelled": false,
+        "qualificationResults": false,
+        "officialResults": true,
+        "trainingResults": false,
+        "trialResults": true,
+        "trial": {
+          "date": "2024-01-28",
+          "rounds": 1,
+          "url": "https://www.fis-ski.com/DB/v2/download/competition-attachment/c30101c5-64da-11f1-b635-1866da7ef77e.pdf"
+        },
+        "actualRounds": 2
+      }
+    ],
+    "programs": [
+      "https://www.fis-ski.com/DB/v2/download/competition-attachment/c2f0d1c7-64da-11f1-b635-1866da7ef77e.pdf"
+    ]
+  }
+]

@@ -1,0 +1,102 @@
+[
+  {
+    "place": "Trondheim (NOR)",
+    "url": "https://www.fis-ski.com/DB/general/event-details.html?sectorcode=JP&eventid=55938&seasoncode=2025",
+    "races": [
+      {
+        "date": "2025-03-01",
+        "gender": "M",
+        "description": "Individual Normal Hill Qualification",
+        "codex": "3217",
+        "time": "2025-03-01T20:30:00+01:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7298",
+        "cancelled": false,
+        "qualificationResults": true,
+        "officialResults": false,
+        "trainingResults": true,
+        "trialResults": true,
+        "trial": {
+          "date": "2025-03-01",
+          "rounds": 1,
+          "url": "https://www.fis-ski.com/DB/v2/download/competition-attachment/c33941c4-64da-11f1-b635-1866da7ef77e.pdf"
+        },
+        "training": {
+          "date": "2025-02-28",
+          "rounds": 3,
+          "url": "https://www.fis-ski.com/DB/v2/download/competition-attachment/c338ea5f-64da-11f1-b635-1866da7ef77e.pdf"
+        }
+      },
+      {
+        "date": "2025-03-02",
+        "gender": "M",
+        "description": "Individual Normal Hill",
+        "codex": "3218",
+        "time": "2025-03-02T17:00:00+01:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7299",
+        "cancelled": false,
+        "qualificationResults": false,
+        "officialResults": true,
+        "trainingResults": false,
+        "trialResults": true,
+        "trial": {
+          "date": "2025-03-02",
+          "rounds": 1,
+          "url": "https://www.fis-ski.com/DB/v2/download/competition-attachment/c339aafb-64da-11f1-b635-1866da7ef77e.pdf"
+        },
+        "actualRounds": 2
+      },
+      {
+        "date": "2025-03-06",
+        "gender": "M",
+        "description": "Team Large Hill",
+        "codex": "3220",
+        "time": "2025-03-06T17:05:00+01:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7301",
+        "cancelled": false,
+        "qualificationResults": false,
+        "officialResults": true,
+        "trainingResults": false,
+        "trialResults": true,
+        "trial": {
+          "date": "2025-03-06",
+          "rounds": 1,
+          "url": "https://www.fis-ski.com/DB/v2/download/competition-attachment/c33a7d1a-64da-11f1-b635-1866da7ef77e.pdf"
+        },
+        "actualRounds": 2
+      },
+      {
+        "date": "2025-03-08",
+        "gender": "M",
+        "description": "Individual Large Hill Qualification",
+        "codex": "3222",
+        "time": "2025-03-08T14:15:00+01:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7303",
+        "cancelled": false,
+        "qualificationResults": true,
+        "officialResults": false,
+        "trainingResults": true,
+        "trialResults": false,
+        "training": {
+          "date": "2025-03-04",
+          "rounds": 3,
+          "url": "https://www.fis-ski.com/DB/v2/download/competition-attachment/c33a23ba-64da-11f1-b635-1866da7ef77e.pdf"
+        }
+      },
+      {
+        "date": "2025-03-08",
+        "gender": "M",
+        "description": "Individual Large Hill",
+        "codex": "3224",
+        "time": "2025-03-08T15:45:00+01:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7305",
+        "cancelled": false,
+        "qualificationResults": false,
+        "officialResults": true,
+        "trainingResults": false,
+        "trialResults": false,
+        "actualRounds": 2
+      }
+    ],
+    "programs": []
+  }
+]

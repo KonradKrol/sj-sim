@@ -1,0 +1,340 @@
+[
+  {
+    "place": "Courchevel (FRA)",
+    "url": "https://www.fis-ski.com/DB/general/event-details.html?sectorcode=JP&eventid=55771&seasoncode=2025",
+    "races": [
+      {
+        "date": "2024-08-13",
+        "gender": "M",
+        "description": "Individual Large Hill Qualification",
+        "codex": "3004",
+        "time": "2024-08-13T11:30:00+02:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7081",
+        "cancelled": false,
+        "qualificationResults": true,
+        "officialResults": false,
+        "trainingResults": true,
+        "trialResults": false,
+        "training": {
+          "date": "2024-08-13",
+          "rounds": 1,
+          "url": "https://www.fis-ski.com/DB/v2/download/competition-attachment/c3186d64-64da-11f1-b635-1866da7ef77e.pdf"
+        }
+      },
+      {
+        "date": "2024-08-13",
+        "gender": "M",
+        "description": "Individual Large Hill",
+        "codex": "3002",
+        "time": "2024-08-13T18:40:00+02:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7079",
+        "cancelled": false,
+        "qualificationResults": false,
+        "officialResults": true,
+        "trainingResults": false,
+        "trialResults": false,
+        "actualRounds": 2
+      },
+      {
+        "date": "2024-08-14",
+        "gender": "M",
+        "description": "Individual Large Hill Qualification",
+        "codex": "3007",
+        "time": "2024-08-14T10:00:00+02:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7084",
+        "cancelled": false,
+        "qualificationResults": true,
+        "officialResults": false,
+        "trainingResults": false,
+        "trialResults": false
+      },
+      {
+        "date": "2024-08-14",
+        "gender": "M",
+        "description": "Individual Large Hill",
+        "codex": "3008",
+        "time": "2024-08-14T18:15:00+02:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7085",
+        "cancelled": false,
+        "qualificationResults": false,
+        "officialResults": true,
+        "trainingResults": false,
+        "trialResults": false,
+        "actualRounds": 1
+      }
+    ],
+    "programs": [
+      "https://www.fis-ski.com/DB/v2/download/competition-attachment/c317fb5d-64da-11f1-b635-1866da7ef77e.pdf"
+    ]
+  },
+  {
+    "place": "Wisla (POL)",
+    "url": "https://www.fis-ski.com/DB/general/event-details.html?sectorcode=JP&eventid=55772&seasoncode=2025",
+    "races": [
+      {
+        "date": "2024-09-13",
+        "gender": "M",
+        "description": "Individual Large Hill Qualification",
+        "codex": "3010",
+        "time": "2024-09-13T18:00:00+02:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7087",
+        "cancelled": false,
+        "qualificationResults": true,
+        "officialResults": false,
+        "trainingResults": true,
+        "trialResults": false,
+        "training": {
+          "date": "2024-09-13",
+          "rounds": 2,
+          "url": "https://www.fis-ski.com/DB/v2/download/competition-attachment/c31b0866-64da-11f1-b635-1866da7ef77e.pdf"
+        }
+      },
+      {
+        "date": "2024-09-14",
+        "gender": "M",
+        "description": "Individual Large Hill",
+        "codex": "3012",
+        "time": "2024-09-14T15:00:00+02:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7089",
+        "cancelled": false,
+        "qualificationResults": false,
+        "officialResults": true,
+        "trainingResults": false,
+        "trialResults": true,
+        "trial": {
+          "date": "2024-09-14",
+          "rounds": 1,
+          "url": "https://www.fis-ski.com/DB/v2/download/competition-attachment/c31b2ac7-64da-11f1-b635-1866da7ef77e.pdf"
+        },
+        "actualRounds": 2
+      },
+      {
+        "date": "2024-09-15",
+        "gender": "M",
+        "description": "Individual Large Hill Qualification",
+        "codex": "3014",
+        "time": "2024-09-15T13:30:00+02:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7091",
+        "cancelled": false,
+        "qualificationResults": true,
+        "officialResults": false,
+        "trainingResults": false,
+        "trialResults": false
+      },
+      {
+        "date": "2024-09-15",
+        "gender": "M",
+        "description": "Individual Large Hill",
+        "codex": "3016",
+        "time": "2024-09-15T15:00:00+02:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7093",
+        "cancelled": false,
+        "qualificationResults": false,
+        "officialResults": true,
+        "trainingResults": false,
+        "trialResults": false,
+        "actualRounds": 1
+      }
+    ],
+    "programs": [
+      "https://www.fis-ski.com/DB/v2/download/competition-attachment/c317a0bc-64da-11f1-b635-1866da7ef77e.pdf"
+    ]
+  },
+  {
+    "place": "Rasnov (ROU)",
+    "url": "https://www.fis-ski.com/DB/general/event-details.html?sectorcode=JP&eventid=55773&seasoncode=2025",
+    "races": [
+      {
+        "date": "2024-09-21",
+        "gender": "M",
+        "description": "Individual Normal Hill",
+        "codex": "3020",
+        "time": "2024-09-21T16:00:00+03:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7097",
+        "cancelled": false,
+        "qualificationResults": false,
+        "officialResults": true,
+        "trainingResults": false,
+        "trialResults": true,
+        "trial": {
+          "date": "2024-09-21",
+          "rounds": 1,
+          "url": "https://www.fis-ski.com/DB/v2/download/competition-attachment/c31bd52e-64da-11f1-b635-1866da7ef77e.pdf"
+        },
+        "actualRounds": 2
+      },
+      {
+        "date": "2024-09-21",
+        "gender": "M",
+        "description": "Individual Normal Hill Qualification",
+        "codex": "3018",
+        "time": "2024-09-21T16:30:00+03:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7095",
+        "cancelled": false,
+        "qualificationResults": true,
+        "officialResults": false,
+        "trainingResults": true,
+        "trialResults": false,
+        "training": {
+          "date": "2024-09-20",
+          "rounds": 2,
+          "url": "https://www.fis-ski.com/DB/v2/download/competition-attachment/c31bba6c-64da-11f1-b635-1866da7ef77e.pdf"
+        }
+      },
+      {
+        "date": "2024-09-22",
+        "gender": "M",
+        "description": "Individual Normal Hill Qualification",
+        "codex": "3022",
+        "time": "2024-09-22T15:00:00+03:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7099",
+        "cancelled": false,
+        "qualificationResults": false,
+        "officialResults": false,
+        "trainingResults": false,
+        "trialResults": false
+      },
+      {
+        "date": "2024-09-22",
+        "gender": "M",
+        "description": "Individual Normal Hill",
+        "codex": "3024",
+        "time": "2024-09-22T16:00:00+03:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7101",
+        "cancelled": false,
+        "qualificationResults": false,
+        "officialResults": true,
+        "trainingResults": false,
+        "trialResults": true,
+        "trial": {
+          "date": "2024-09-22",
+          "rounds": 1,
+          "url": "https://www.fis-ski.com/DB/v2/download/competition-attachment/c31bf714-64da-11f1-b635-1866da7ef77e.pdf"
+        },
+        "actualRounds": 1
+      }
+    ],
+    "programs": [
+      "https://www.fis-ski.com/DB/v2/download/competition-attachment/c317be68-64da-11f1-b635-1866da7ef77e.pdf"
+    ]
+  },
+  {
+    "place": "Hinzenbach (AUT)",
+    "url": "https://www.fis-ski.com/DB/general/event-details.html?sectorcode=JP&eventid=55774&seasoncode=2025",
+    "races": [
+      {
+        "date": "2024-09-28",
+        "gender": "M",
+        "description": "Individual Normal Hill Qualification",
+        "codex": "3025",
+        "time": "2024-09-28T13:45:00+02:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7102",
+        "cancelled": false,
+        "qualificationResults": true,
+        "officialResults": false,
+        "trainingResults": true,
+        "trialResults": false,
+        "training": {
+          "date": "2024-09-28",
+          "rounds": 1,
+          "url": "https://www.fis-ski.com/DB/v2/download/competition-attachment/c31c79c5-64da-11f1-b635-1866da7ef77e.pdf"
+        }
+      },
+      {
+        "date": "2024-09-28",
+        "gender": "M",
+        "description": "Individual Normal Hill",
+        "codex": "3026",
+        "time": "2024-09-28T15:00:00+02:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7103",
+        "cancelled": false,
+        "qualificationResults": false,
+        "officialResults": true,
+        "trainingResults": false,
+        "trialResults": false,
+        "actualRounds": 2
+      },
+      {
+        "date": "2024-09-29",
+        "gender": "M",
+        "description": "Individual Normal Hill Qualification",
+        "codex": "3027",
+        "time": "2024-09-29T12:45:00+02:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7104",
+        "cancelled": false,
+        "qualificationResults": false,
+        "officialResults": false,
+        "trainingResults": false,
+        "trialResults": false
+      },
+      {
+        "date": "2024-09-29",
+        "gender": "M",
+        "description": "Individual Normal Hill",
+        "codex": "3028",
+        "time": "2024-09-29T14:00:00+02:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7105",
+        "cancelled": false,
+        "qualificationResults": false,
+        "officialResults": true,
+        "trainingResults": false,
+        "trialResults": true,
+        "trial": {
+          "date": "2024-09-29",
+          "rounds": 1,
+          "url": "https://www.fis-ski.com/DB/v2/download/competition-attachment/c31cc69c-64da-11f1-b635-1866da7ef77e.pdf"
+        },
+        "actualRounds": 2
+      }
+    ],
+    "programs": [
+      "https://www.fis-ski.com/DB/v2/download/competition-attachment/c317bc4f-64da-11f1-b635-1866da7ef77e.pdf"
+    ]
+  },
+  {
+    "place": "Klingenthal (GER)",
+    "url": "https://www.fis-ski.com/DB/general/event-details.html?sectorcode=JP&eventid=55775&seasoncode=2025",
+    "races": [
+      {
+        "date": "2024-10-05",
+        "gender": "M",
+        "description": "Individual Large Hill",
+        "codex": "3032",
+        "time": "2024-10-05T15:55:00+02:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7109",
+        "cancelled": false,
+        "qualificationResults": false,
+        "officialResults": true,
+        "trainingResults": false,
+        "trialResults": true,
+        "trial": {
+          "date": "2024-10-05",
+          "rounds": 1,
+          "url": "https://www.fis-ski.com/DB/v2/download/competition-attachment/c31d8693-64da-11f1-b635-1866da7ef77e.pdf"
+        },
+        "actualRounds": 2
+      },
+      {
+        "date": "2024-10-05",
+        "gender": "M",
+        "description": "Individual Large Hill Qualification",
+        "codex": "3030",
+        "time": "2024-10-05T19:00:00+02:00",
+        "results": "https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=7107",
+        "cancelled": false,
+        "qualificationResults": true,
+        "officialResults": false,
+        "trainingResults": true,
+        "trialResults": false,
+        "training": {
+          "date": "2024-10-04",
+          "rounds": 1,
+          "url": "https://www.fis-ski.com/DB/v2/download/competition-attachment/c31d6b7b-64da-11f1-b635-1866da7ef77e.pdf"
+        }
+      }
+    ],
+    "programs": [
+      "https://www.fis-ski.com/DB/v2/download/competition-attachment/c3166230-64da-11f1-b635-1866da7ef77e.pdf"
+    ]
+  }
+]
