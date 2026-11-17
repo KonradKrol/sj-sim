@@ -45,6 +45,11 @@ int main(int argc,char **argv){
     auto *winter=save->getActualSeason()->getCalendarsReference().last();auto *final=winter->getCompetitionsReference().last();
     auto *globe=static_cast<Classification *>(nullptr);for(auto *ranking:winter->getClassifications())if(ranking->getName()==QString::fromUtf8("Puchar Globu"))globe=ranking;
     check(globe && final->startListSortMode==3 && final->startListSortClassificationId==globe->getIDStr(),"Planica finale keeps its Globe classification sorting reference after copying the preset");
+    int planicaMembers=0;for(auto *event:winter->getCompetitions())for(auto *ranking:event->getClassifications())if(ranking->getName()==QString::fromUtf8("Siódemka Planicy")){
+        check(event->getHill() && event->getHill()->getName()=="Planica","Planica standings exclude every other venue");++planicaMembers;
+    }
+    check(planicaMembers>0,"Planica standings retain their Planica events");
+
 
     for(auto *calendar:save->getActualSeason()->getCalendarsReference())for(auto *event:calendar->getCompetitionsReference())check(event->getScheduledDate().isValid(),"preset dates retained");
     {
