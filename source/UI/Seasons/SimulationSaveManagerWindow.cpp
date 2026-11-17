@@ -66,6 +66,35 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     quickSimulate->setObjectName("quickSimulateNextCompetition");quickSimulate->hide();
     connect(quickSimulate,&QPushButton::clicked,this,[this]{if(quickSimulation)return;QScopedValueRollback<bool> quick(quickSimulation,true);on_pushButton_competitionConfig_clicked();});
 
+    auto *batch=new QPushButton(tr("Przesymuluj N konkursów"),this);
+    batch->setObjectName("developerSimulateContests");batch->hide();
+    connect(batch,&QPushButton::clicked,this,[this]{
+        if(quickSimulation)return;
+        auto *season=simulationSave->getActualSeason();int remaining=0;
+        for(auto *calendar:season->getCalendars())for(auto *event:calendar->getCompetitions())
+            if(SeasonChronology::pending(event) && event->getSerieType()==CompetitionInfo::Competition)++remaining;
+        if(!remaining)return;
+        bool accepted=false;const int requested=QInputDialog::getInt(this,tr("Szybka symulacja"),tr("Liczba konkursów:"),1,1,2147483647,1,&accepted);
+        if(!accepted)return;
+        const int count=std::min(requested,remaining);QScopedValueRollback<bool> quick(quickSimulation,true);
+        QProgressDialog progress(tr("Symulowanie konkursów…"),tr("Przerwij"),0,count,this);
+        progress.setWindowModality(Qt::WindowModal);progress.setMinimumDuration(0);progress.setValue(0);progress.show();
+        int done=0;
+        while(done<count && !progress.wasCanceled()) {
+            CompetitionInfo *next=nullptr;SeasonCalendar *owner=nullptr;
+            for(auto *calendar:season->getCalendars())for(auto *event:calendar->getCompetitions())if(SeasonChronology::pending(event)) {
+                if(!next || (season->getDatesEnabled() && event->getScheduledDate()<next->getScheduledDate())){next=event;owner=calendar;}break;
+            }
+            if(!next)break;
+            season->setActualCalendar(owner);simulationSave->updateNextCompetitionIndex();emit actualCalendarChanged();
+            QApplication::processEvents();if(progress.wasCanceled())break;
+            on_pushButton_competitionConfig_clicked();
+            if(!next->getPlayed() && !next->getCancelled())break;
+            if(next->getSerieType()==CompetitionInfo::Competition)progress.setValue(++done);
+        }
+        progress.close();fillNextCompetitionInformations();
+    });
+
     auto *cancelNext=new QPushButton(tr("Odwołaj najbliższe wydarzenie"),this);
     cancelNext->setObjectName("pushButton_cancelNextCompetition");cancelNext->hide();
     connect(cancelNext,&QPushButton::clicked,this,&SimulationSaveManagerWindow::cancelNextEvent);
