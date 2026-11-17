@@ -26,7 +26,7 @@ check(c.validate(error),"defaults validate");check(AutoForm::Config::fromJson(c.
     QFile calibrationFile(QFileInfo(QString::fromUtf8(__FILE__)).absolutePath()+"/../docs/calibration/form-defaults-2026-11-10.json");
     check(calibrationFile.open(QIODevice::ReadOnly),"recorded local form calibration exists");
     check(AutoForm::Config::fromJson(QJsonDocument::fromJson(calibrationFile.readAll()).object(),copy,error) && copy.centers.front()==20 && copy.centers[3]==50 && copy.centers.back()==89 && copy.meanDays[3]==104,"legacy calibration migrates to seven regimes and shorter periods");
-    QFile currentCalibration(QFileInfo(QString::fromUtf8(__FILE__)).absolutePath()+"/../docs/calibration/form-defaults-2026-11-11-seven-regimes-perks.json");
+    QFile currentCalibration(QFileInfo(QString::fromUtf8(__FILE__)).absolutePath()+"/../docs/calibration/form-defaults-2026-11-17.json");
     check(currentCalibration.open(QIODevice::ReadOnly) && QJsonDocument::fromJson(currentCalibration.readAll()).object()==c.toJson(),"hardcoded defaults exactly match current owner calibration");
     const std::array<double,7> expectedShares{{.02,.10,.23,.30,.23,.10,.02}};
     for(int perk=-4;perk<=4;++perk) {

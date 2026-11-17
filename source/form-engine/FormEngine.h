@@ -14,7 +14,7 @@ struct Config {
     std::array<double,regimeCount> meanDays{{104,104,104,104,104,104,104}};
     std::array<double,regimeCount> entryDeviation{{4,4,4.3333333333,5,5,4.666666666699999,4}};
     std::array<std::array<double,regimeCount>,regimeCount> weights{{{{0,1,0.25,0.0625,0.015625,0.00390625,0.000146484375}},{{0.15,0,1,0.25,0.0625,0.015625,0.0005859375}},{{0.0375,1,0,1,0.25,0.0625,0.00234375}},{{0.009375,0.25,1,0,1,0.25,0.009375}},{{0.00234375,0.0625,0.25,1,0,1,0.0375}},{{0.0005859375,0.015625,0.0625,0.25,1,0,0.15}},{{0.000146484375,0.00390625,0.015625,0.0625,0.25,1,0}}}};
-    double formHalfLife=13,formDeviation=13,baseHalfLife=180,baseDeviation=25,entryInertia=0.12;
+    double formHalfLife=13,formDeviation=8,baseHalfLife=180,baseDeviation=15,entryInertia=0.12;
     double initialDeviation=5,initialOutlierChance=0.05,initialOutlierDeviation=15;
     std::array<double,9> noise{{.45,.60,.75,.90,1,1.10,1.25,1.40,1.55}};
     std::array<double,regimeCount> shares{{.02,.10,.23,.30,.23,.10,.02}};
