@@ -103,6 +103,7 @@ jobs:
     needs: [windows, linux]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6
       - uses: actions/download-artifact@v6
         with:
           path: release-assets
@@ -113,8 +114,8 @@ jobs:
           tag_name: ${{ github.ref_name }}
           target_commitish: ${{ github.sha }}
           name: Sj.Sim ${{ github.ref_name }}
-          body: Windows — pobierz Setup.exe i zainstaluj. Linux — pobierz AppImage i nadaj prawo uruchamiania. Paczki i zapisy pozostają w Dokumenty/SjSimData.
+          body_path: docs/releases/2.0.0.md
           prerelease: ${{ contains(github.ref_name, '-') }}
-          make_latest: false
+          make_latest: ${{ !contains(github.ref_name, '-') }}
           files: release-assets/*
           fail_on_unmatched_files: true
