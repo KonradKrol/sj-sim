@@ -73,7 +73,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         auto *season=simulationSave->getActualSeason();int remaining=0;
         for(auto *calendar:season->getCalendars())for(auto *event:calendar->getCompetitions())
             if(SeasonChronology::pending(event) && event->getSerieType()==CompetitionInfo::Competition)++remaining;
-        if(!remaining)return;
+        if(!remaining){QMessageBox::information(this,tr("Szybka symulacja"),tr("Nie ma już konkursów do rozegrania w tym sezonie."));return;}
         bool accepted=false;const int requested=QInputDialog::getInt(this,tr("Szybka symulacja"),tr("Liczba konkursów:"),1,1,2147483647,1,&accepted);
         if(!accepted)return;
         const int count=std::min(requested,remaining);QScopedValueRollback<bool> quick(quickSimulation,true);

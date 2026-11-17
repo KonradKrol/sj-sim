@@ -1182,9 +1182,18 @@ static void nextSeasonTransactionRegression(MainWindow &main) {
     CompetitionRules rule;rule.setName("Original rules");save.setCompetitionRules({rule});
     auto *calendar=new SeasonCalendar("Completed calendar");Season season;season.setSeasonNumber(2026);season.setCalendars({calendar});season.setActualCalendar(calendar);save.setSeasons({season});save.setActualSeason(&save.getSeasonsReference().first());save.fixJumpersFormInstabilities();save.updateNextCompetitionIndex();
     SimulationSaveManagerWindow manager(&save,&main);manager.show();QTest::qWait(80);
+    auto *pending=new CompetitionInfo(hill);pending->setRules(rule);calendar->setCompetitions({pending});save.updateNextCompetitionIndex();manager.fillNextCompetitionInformations();
+    auto *bridge=manager.findChild<QuickBridge *>();check(bridge && bridge->find("developerSimulateContests"),"batch command is exposed outside the legacy content tree");
+    bool promptOpened=false;QTimer dismissBatch;
+    QObject::connect(&dismissBatch,&QTimer::timeout,[&]{for(auto *widget:QApplication::allWidgets())if(auto *input=qobject_cast<QInputDialog *>(widget);input && input->isVisible()){promptOpened=true;input->reject();}});
+    dismissBatch.start(10);presentation(&manager)->activateWindow();scene(&manager)->setFocus();QTest::qWait(50);
+    QTest::keyClick(scene(&manager),Qt::Key_N,Qt::ControlModifier|Qt::ShiftModifier);QTest::qWait(150);dismissBatch.stop();
+    check(promptOpened && !pending->getPlayed(),"Ctrl Shift N opens the count dialog and cancelling preserves the event");
+    pending->setPlayed(true);save.updateNextCompetitionIndex();manager.fillNextCompetitionInformations();
     const auto jumperId=jumper->getID(),hillId=hill->getID(),ruleId=rule.getID();
     const auto original=Season::getJsonObject(save.getSeasonsReference().first());
     for(int mode=0;mode<3;++mode) {
+        if(mode==2)for(auto *cal:save.getActualSeason()->getCalendars())for(auto *event:cal->getCompetitions())event->setPlayed(true);
         bool opened=false;QTimer watcher;int attempts=0;
         QObject::connect(&watcher,&QTimer::timeout,[&] {
             check(++attempts<200,"next season confirmation cannot hang");
