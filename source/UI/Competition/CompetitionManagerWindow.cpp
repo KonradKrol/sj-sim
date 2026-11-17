@@ -1125,8 +1125,6 @@ void CompetitionManagerWindow::autoSimulateCompetition()
             ok = true;
         }
         StartListCompetitorStatus::getStatusOfJumper(manager->getActualJumper(), manager->getStartListStatusesReference())->setQualifiedBy95HSRule(ok);
-        manager->updateLastQualifiedResult();
-        manager->updateLeaderResult();
         manager->updateLast10Judges();
 
         if(KOManager != nullptr)
@@ -1135,7 +1133,9 @@ void CompetitionManagerWindow::autoSimulateCompetition()
             KOManager->updateJumpersSortedByResults();
             KOManager->updateStatuses();
         }
-        manager->updateCompetitorsAdvanceStatuses();
+        // Advancement colours are not displayed during bulk playback.
+        // Round setup consumes these statuses, so calculate them at its boundary.
+        if(manager->checkRoundEnd())manager->updateCompetitorsAdvanceStatuses();
 
         refreshWindSnapshot();
         updateActualInrunSnow();
@@ -1195,6 +1195,9 @@ void CompetitionManagerWindow::autoSimulateCompetition()
 
     startListModel->refresh();
     bulkSimulationInProgress = false;
+    manager->updateLeaderResult();
+    manager->updateLastQualifiedResult();
+    refreshWindSnapshot();
     emit manager->actualJumperChanged();
     if(getType() == CompetitionRules::Individual){
         ui->tableView_results->setModel(nullptr);
@@ -1899,6 +1902,8 @@ void CompetitionManagerWindow::refreshWindSnapshot(bool includeManipulation)
     const auto field=includeManipulation && currentInputJumpManipulator.getExactSimulationWind()?currentInputJumpManipulator.getExactSimulationWind():simulationWeather;
     if(field)setActualWinds(SimulationV2::fieldWindSnapshot(*field,manager->getCompetitionInfo()->getHill()->getKPoint(),simulationSeconds));
     else setActualWinds(windsGenerator.generateWinds());
+    // Keep simulation inputs current without constructing an invisible UI forecast.
+    if(bulkSimulationInProgress)return;
     QVariantList preview;
     if(field) {
         const double width=manager->getCompetitionInfo()->getHill()->getKPoint()*1.2/6;
