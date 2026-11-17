@@ -11,7 +11,7 @@ ColumnLayout {
     }
 
     Shortcut {
-        sequence: "Ctrl+Alt+Shift+N"
+        sequence: "Ctrl+Shift+N"
         enabled: workspace.visible && ui.profile==="SimulationSaveManagerWindow"
         onActivated: {var action=ui.find("developerSimulateContests");if(action)ui.activate(action.values.id)}
     }

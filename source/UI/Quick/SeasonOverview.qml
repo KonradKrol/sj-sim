@@ -51,7 +51,7 @@ Column {
         width: parent.width; height: implicitHeight
         Label { text: qsTr("Rozegrano %1 / %2").arg(overview.fields.played || 0).arg(overview.fields.total || 0); color: Theme.muted; font.pointSize: Theme.caption; Layout.fillWidth: true }
         Label { text: qsTr("Konkursy do rozegrania: %1 (bez kwalifikacji)").arg(overview.fields.remainingCompetitions || 0); color: Theme.ink; font.pointSize: Theme.caption; Layout.fillWidth: true; Layout.minimumWidth: 0; horizontalAlignment: Text.AlignRight; wrapMode: Text.WordWrap }
-        SToolButton { text: "» N"; hint: qsTr("Przesymuluj N konkursów")+" · Ctrl+Alt+Shift+N"; visible: (overview.fields.remainingCompetitions || 0)>0; onClicked: {var action=ui.find("developerSimulateContests");if(action)ui.activate(action.values.id)} }
+        SToolButton { text: "» N"; hint: qsTr("Przesymuluj N konkursów")+" · Ctrl+Shift+N"; visible: (overview.fields.remainingCompetitions || 0)>0; onClicked: {var action=ui.find("developerSimulateContests");if(action)ui.activate(action.values.id)} }
     }
     ProgressBar {
         id: seasonProgress
