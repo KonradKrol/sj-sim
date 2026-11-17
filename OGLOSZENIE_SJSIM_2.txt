@@ -1,0 +1,43 @@
+@everyone
+
+# Sj.Sim 2
+
+### Co nowego?
+- **Zupełna zmiana wyglądu** — ładny, nowoczesny interfejs działa na prawie każdym ekranie; do wyboru są trzy motywy kolorystyczne oraz **tryb ciemny**
+- **Usunięto większość irytujących błędów ze starego Sj.Sima** — aplikacja nie jest jeszcze w pełni stabilna, ale możesz już spokojnie rozgrywać sezony, nie martwiąc się tak o losowe crashe :upside_down:
+- Realistyczniejsza symulacja: rozkład wyników, losowość, różnice między zawodnikami i noty za styl
+- Nowy model skoczka: OVR (1–100), forma (1–100), klasa lądowania (1–5) i perki — regularność, specjalizacja, podejście do treningów i równość formy
+- Nowy model skoczni z perkami: lotność, trudność lądowania na punkcie HS, dominujący kierunek i loteryjność wiatru oraz kompaktowość
+- **Opcjonalne daty konkursów** umożliwiają dynamiczną formę, która bardzo uprzyjemnia symulację :smiley_cat:
+- **Opcjonalna dynamiczna forma skoczków** — zaawansowany mechanizm tworzy ciekawe „historie”: nagłe spadki i wzrosty, powolną odbudowę albo stabilny poziom przez dłuższy czas, jak w prawdziwych skokach. Nie jest tak sztywny i liniowy jak w starym Sj.Simie. Formę można też ustalać samemu.
+- Mechanizm **formy dnia** — zwykle niewielka zmiana dyspozycji na dany dzień, która czasem robi sporą różnicę
+- Bardziej zaawansowany, realistyczniej zmieniający się wiatr, ładny podgląd na zeskoku i intuicyjne opcje jego ustalania
+- Funkcja **automatycznej belki startowej** oraz możliwość **odczekania czasu przed skokiem**, co zmienia warunki na zeskoku
+- **Nowy edytor kalendarzy** — przejrzystszy, mniej podatny na awarie i bardziej pomocny. Ułatwia planowanie całego weekendu jednym kliknięciem, ustalanie dat według wzorca i przypisywanie wielu powiązań kwalifikacji naraz
+- Możliwość rozegrania gotowego **przykładowego sezonu** z kalendarzem 2026/27 oraz prostsze przejście do następnego sezonu, z możliwością zachowania kalendarza
+- Nowe opcje konkursów: reset punktów między seriami, ważone przenoszenie punktów na następną serię i domyślne sortowanie listy startowej według wskazanego źródła
+- Nowe opcje klasyfikacji: filtr wieku, mnożnik punktów i wliczanie N najlepszych/najgorszych skoczków z kraju do klasyfikacji drużynowej. Można stworzyć klasyfikację młodych skoczków, Puchar Narodów z duetami albo TajnAir
+- **Ulepszone listy startowe** — łatwiejsza ręczna zmiana kolejności i sortowanie m.in. według aktualnego potencjału, OVR, wyników innych konkursów czy klasyfikacji z wcześniejszego sezonu
+- **Uprzystępnione listy zawodników** — można przypisać je do kalendarza, np. osobną listę na Fis Cup, i automatycznie jej używać
+- **Automatyczny wybór skoczków do drużynówki** — można wykluczyć wybranych zawodników i automatycznie ułożyć tzw. „drugi garnitur”
+- 3 nowe opcje doboru grup KO: format „węża” z High Five, koszyki z wykluczeniem rodaków i automatyczny wyrównany podział
+- Przebudowany ekran konkursu z czytelniejszym layoutem i możliwością dania zawodnikowi **DNS**
+- Podgląd wyników z wcześniejszych serii w bieżącym konkursie oraz informacja o największym awansie w serii
+- **Klasyfikacja indywidualna w drużynówkach** i trzy widoki wyników drużynowych: tylko suma drużyny, tylko aktualna drużyna albo pełne wyniki
+- Prostszy i ulepszony tryb **relacji konkursu** oraz **automatycznych skoków** co określoną liczbę sekund — przypomina relację FIS z zawodów
+- Automatyczna symulacja konkursu lub N konkursów w sezonie
+- Nowe opcje archiwum: stan klasyfikacji po danym konkursie i wyniki po wcześniejszej serii
+- Tabelka wyników zawodnika w konkursach **taka sama jak na Wikipedii**, z identycznymi kolorkami — prezent dla pasjonatów statystyk skokowych :wink:
+- Dużo łatwiejsze **tworzenie i udostępnianie zawartości** w archiwach `<nazwa_pliku>.sjsim-pack`. Zapraszam do wrzucania na #📦pobierz-paczki!
+- Widok **biblioteki zawartości** — można usuwać i eksportować wgrane zasoby, także wiele paczek w jednym archiwum, tworząc „pakiety” np. na dany sezon
+- Paczka 103 skoczków na sezon 2026/2027 oraz zaktualizowana paczka skoczni, w tym Akureyri :flag_is:
+- Bardziej intuicyjna obsługa i kilkadziesiąt „helperów” — przycisków wyjaśniających daną akcję. Prosta instalacja przez instalator
+- Tłumaczenie angielskie :england: i czeskie :flag_cz: oraz kody krajów FIS zamiast ISO
+
+### Uwagi
+- Nowa wersja symulatora jest w większości niekompatybilna z poprzednimi; zobacz #"Poradnik — jak tworzyć i publikować paczki", by dowiedzieć się więcej o kompatybilności Twoich paczek.
+- Będę wdzięczny za feedback i zgłoszenia błędów na #pomoc-pomysły-błędy. Pozwoli mi to stworzyć wersję poprawkową, orientacyjnie w grudniu.
+
+Dużo miłości :trzymajsie:
+
+https://github.com/KonradKrol/sj-sim/releases/tag/v2.0.0
