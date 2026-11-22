@@ -17317,6 +17317,14 @@ It is also on the clipboard, so you can paste it right away, for example on Disc
         <source>Relacja skoku i automatyczne skoki</source>
         <translation>Jump presentation and autoplay</translation>
     </message>
+        <message>
+            <source>Zapisz wyniki jako obraz…</source>
+            <translation>Save results as image…</translation>
+        </message>
+        <message>
+            <source>Zapisuje końcowe wyniki jako PNG i kopiuje je do schowka.</source>
+            <translation>Saves the final results as a PNG and copies them to the clipboard.</translation>
+        </message>
 </context>
     <context>
         <name>RaceLastJump</name>

@@ -33,6 +33,15 @@ Flow {
             onClicked: liveSettings.open()
         }
         SToolButton { objectName: "editNextKoGroups"; visible: !!ui.context.nextKoEditable; text: qsTr("Grupy KO…"); onClicked: ui.editNextKoGroups() }
+        // Final results: offered next to "finish" so they can be saved before the window closes.
+        SToolButton {
+            objectName: "raceSaveFinalResults"
+            readonly property var exportControl: ui.find("pushButton_exportResultsImage")
+            visible: !!ui.context.complete && !!exportControl
+            text: qsTr("Zapisz wyniki jako obraz…")
+            hint: qsTr("Zapisuje końcowe wyniki jako PNG i kopiuje je do schowka.")
+            onClicked: if(exportControl)ui.activate(exportControl.values.id,-1)
+        }
     }
     RaceToolGroup {
         width: implicitWidth

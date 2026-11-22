@@ -17318,6 +17318,14 @@ Je také ve schránce, takže ho můžete hned vložit, například na Discord.<
         <source>Relacja skoku i automatyczne skoki</source>
         <translation>Průběh skoku a automatické skákání</translation>
     </message>
+        <message>
+            <source>Zapisz wyniki jako obraz…</source>
+            <translation>Uložit výsledky jako obrázek…</translation>
+        </message>
+        <message>
+            <source>Zapisuje końcowe wyniki jako PNG i kopiuje je do schowka.</source>
+            <translation>Uloží konečné výsledky jako PNG a zkopíruje je do schránky.</translation>
+        </message>
 </context>
     <context>
         <name>RaceLastJump</name>
