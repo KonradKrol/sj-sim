@@ -36,6 +36,7 @@ private:
     Classification *historyClassification=nullptr;
     QComboBox *historyChoice;
     class QPushButton *exportImage=nullptr;
+    class QPushButton *publishDiscord=nullptr;
     QStandardItemModel *historyModel;
     QVector<CompetitionInfo *> historyEvents;
     void showHistory();
@@ -50,7 +51,6 @@ public:
     void setSave(SimulationSave *newSave);
 
 private slots:
-    void on_pushButton_webhook_clicked();
 };
 
 #endif // CLASSIFICATIONRESULTSTABLEVIEW_H

@@ -56,14 +56,6 @@ private slots:
 
     void on_pushButton_countriesEditor_clicked();
 
-    void on_lineEdit_jumpInfoWh_editingFinished();
-
-    void on_lineEdit_singleResultWh_editingFinished();
-
-    void on_lineEdit_compResultsWh_editingFinished();
-
-    void on_lineEdit_clsResultsWh_editingFinished();
-
     void on_doubleSpinBox_liveCompSpeed_editingFinished();
 
     void on_checkBox_liveCompetition_stateChanged(int arg1);

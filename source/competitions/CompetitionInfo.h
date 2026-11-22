@@ -49,9 +49,6 @@ public:
     QString getShortSerieTypeText();
     QString getLongSerieTypeText();
 
-    QString getSingleResultsTextForWebhook(AbstractCompetitionManager *manager);
-    dpp::message getResultsWebhookMessage(AbstractCompetitionManager *manager);
-    void sendResultsWebhook(AbstractCompetitionManager *manager);
 
 private:
     QHash<QString, ClassificationCompetitionSettings> classificationScoring;

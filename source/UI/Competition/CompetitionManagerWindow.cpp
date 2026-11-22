@@ -52,6 +52,7 @@
 #include "ui_JumpDataDetailedInfoWindow.h"
 #include "../ResultsShowing/JumpDataDetailedInfoWindow.h"
 #include "../ResultsImage/ResultsImage.h"
+#include "../../global/DiscordWebhook.h"
 
 extern const QString appVersion;
 
@@ -114,6 +115,11 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     auto *exportImage=new QPushButton(tr("Zapisz wyniki jako obraz…"),ui->pushButton_sendResultsWebhook->parentWidget());
     exportImage->setObjectName("pushButton_exportResultsImage");exportImage->hide();
     connect(exportImage,&QPushButton::clicked,this,[this]{if(this->manager)ResultsImage::exportCompetition(this,this->manager->getCompetitionInfo());});
+    auto *publish=new QPushButton(tr("Opublikuj wyniki na Discordzie…"),ui->pushButton_sendResultsWebhook->parentWidget());
+    publish->setObjectName("pushButton_publishResultsDiscord");publish->hide();
+    // Offered only when a Discord webhook is set in the settings.
+    publish->setEnabled(DiscordWebhook::isValidUrl(GlobalAppSettings::get()->getDiscordWebhookUrl()));
+    connect(publish,&QPushButton::clicked,this,[this]{if(this->manager)ResultsImage::publishCompetition(this,this->manager->getCompetitionInfo());});
 
     auto *automaticGate=new QCheckBox(tr("Auto-belka"),this);
     automaticGate->setObjectName("checkBox_automaticRaceGate");automaticGate->hide();
@@ -2383,11 +2389,6 @@ void CompetitionManagerWindow::on_comboBox_virtualClassification_currentIndexCha
     }
 }
 
-
-void CompetitionManagerWindow::on_pushButton_sendResultsWebhook_clicked()
-{
-    manager->getCompetitionInfo()->sendResultsWebhook(manager);
-}
 
 void CompetitionManagerWindow::on_checkBox_liveCompetition_stateChanged(int arg1)
 {

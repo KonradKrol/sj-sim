@@ -21,10 +21,8 @@ private:
     bool showSeasonJumpersAndHillsHelp = true;
     JumpDataInfoChoice jumpDataInfoChoice;
 
-    QString jumpInfoWebhook;
-    QString competitionSingleResultWebhook;
-    QString competitionResultsWebhook;
-    QString classificationResultsWebhook;
+    // One Discord webhook address used to publish results images (see DiscordWebhook).
+    QString discordWebhookUrl;
 
     bool liveCompetition = true;
     double liveCompetitionSpeedMulti = 1;
@@ -48,14 +46,8 @@ public:
     JumpDataInfoChoice getJumpDataInfoChoice() const;
     JumpDataInfoChoice & getJumpDataInfoChoiceReference();
     void setJumpDataInfoChoice(const JumpDataInfoChoice &newJumpDataInfoChoice);
-    QString getJumpInfoWebhook() const;
-    void setJumpInfoWebhook(const QString &newJumpInfoWebhook);
-    QString getCompetitionSingleResultWebhook() const;
-    void setCompetitionSingleResultWebhook(const QString &newCompetitionSingleResultWebhook);
-    QString getCompetitionResultsWebhook() const;
-    void setCompetitionResultsWebhook(const QString &newCompetitionResultsWebhook);
-    QString getClassificationResultsWebhook() const;
-    void setClassificationResultsWebhook(const QString &newClassificationResultsWebhook);
+    QString getDiscordWebhookUrl() const;
+    void setDiscordWebhookUrl(const QString &url);
     bool getLiveCompetition() const;
     void setLiveCompetition(bool newLiveCompetition);
     double getLiveCompetitionSpeedMulti() const;

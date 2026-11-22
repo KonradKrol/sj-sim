@@ -45,44 +45,14 @@ void GlobalAppSettings::setLiveCompetition(bool newLiveCompetition)
     liveCompetition = newLiveCompetition;
 }
 
-QString GlobalAppSettings::getClassificationResultsWebhook() const
+QString GlobalAppSettings::getDiscordWebhookUrl() const
 {
-    return classificationResultsWebhook;
+    return discordWebhookUrl;
 }
 
-void GlobalAppSettings::setClassificationResultsWebhook(const QString &newClassificationResultsWebhook)
+void GlobalAppSettings::setDiscordWebhookUrl(const QString &url)
 {
-    classificationResultsWebhook = newClassificationResultsWebhook;
-}
-
-QString GlobalAppSettings::getJumpInfoWebhook() const
-{
-    return jumpInfoWebhook;
-}
-
-void GlobalAppSettings::setJumpInfoWebhook(const QString &newJumpInfoWebhook)
-{
-    jumpInfoWebhook = newJumpInfoWebhook;
-}
-
-QString GlobalAppSettings::getCompetitionSingleResultWebhook() const
-{
-    return competitionSingleResultWebhook;
-}
-
-void GlobalAppSettings::setCompetitionSingleResultWebhook(const QString &newCompetitionSingleResultWebhook)
-{
-    competitionSingleResultWebhook = newCompetitionSingleResultWebhook;
-}
-
-QString GlobalAppSettings::getCompetitionResultsWebhook() const
-{
-    return competitionResultsWebhook;
-}
-
-void GlobalAppSettings::setCompetitionResultsWebhook(const QString &newCompetitionResultsWebhook)
-{
-    competitionResultsWebhook = newCompetitionResultsWebhook;
+    discordWebhookUrl = url.trimmed();
 }
 
 JumpDataInfoChoice GlobalAppSettings::getJumpDataInfoChoice() const
@@ -164,10 +134,12 @@ bool GlobalAppSettings::loadFromJson()
     setShowCalendarEditorHelp(value.toObject().value("show-calendar-editor-help").toBool(true));
     setShowSeasonJumpersAndHillsHelp(value.toObject().value("show-season-jumpers-and-hills-help").toBool(true));
     setJumpDataInfoChoice(JumpDataInfoChoice::getFromJson(value.toObject().value("jump-data-info-choice").toObject()));
-    setJumpInfoWebhook(value.toObject().value("jump-info-webhook").toString());
-    setCompetitionSingleResultWebhook(value.toObject().value("competition-single-result-webhook").toString());
-    setCompetitionResultsWebhook(value.toObject().value("competition-results-webhook").toString());
-    setClassificationResultsWebhook(value.toObject().value("classification-results-webhook").toString());
+    // Earlier versions kept four separate webhook addresses; the first one found is kept.
+    QString discord = value.toObject().value("discord-webhook-url").toString().trimmed();
+    for(const char *legacy : {"competition-results-webhook", "classification-results-webhook", "competition-single-result-webhook", "jump-info-webhook"})
+        if(discord.isEmpty())
+            discord = value.toObject().value(legacy).toString().trimmed();
+    setDiscordWebhookUrl(discord);
     setLiveCompetition(value.toObject().value("live-competition").toBool(true));
     setLiveCompetitionSpeedMulti(value.toObject().value("live-competition-speed").toDouble(1));
 
@@ -183,10 +155,7 @@ bool GlobalAppSettings::writeToJson()
     settingsObject.insert("show-calendar-editor-help", getShowCalendarEditorHelp());
     settingsObject.insert("show-season-jumpers-and-hills-help", getShowSeasonJumpersAndHillsHelp());
     settingsObject.insert("jump-data-info-choice", JumpDataInfoChoice::getJsonObject(jumpDataInfoChoice));
-    settingsObject.insert("jump-info-webhook", getJumpInfoWebhook());
-    settingsObject.insert("competition-single-result-webhook", getCompetitionSingleResultWebhook());
-    settingsObject.insert("competition-results-webhook", getCompetitionResultsWebhook());
-    settingsObject.insert("classification-results-webhook", getClassificationResultsWebhook());
+    settingsObject.insert("discord-webhook-url", getDiscordWebhookUrl());
     settingsObject.insert("live-competition", getLiveCompetition());
     settingsObject.insert("live-competition-speed", getLiveCompetitionSpeedMulti());
 

@@ -1,6 +1,12 @@
 #include "../Library/ResourceLibraryWindow.h"
 #include "AppSettingsWindow.h"
 #include "ui_AppSettingsWindow.h"
+#include "../../global/DiscordWebhook.h"
+#include <QGroupBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPointer>
+#include <QVBoxLayout>
 #include "../../playground/PlaygroundController.h"
 #include "../../balance/BalanceLabController.h"
 #include "../../form-engine/FormLab.h"
@@ -65,6 +71,43 @@ AppSettingsWindow::AppSettingsWindow(QWidget *parent) :
     add("perks",tr("Siła perków zawodników"),tr("Jak mocno działają specjalizacje, regularność i podejście do treningów."),{tr("Subtelna"),tr("Niewielka"),tr("Standardowa"),tr("Duża"),tr("Bardzo duża")});
     add("differences",tr("Różnice między zawodnikami"),tr("Jak duże różnice wyników tworzy różnica OVR. Nie zwiększa losowości skoków."),{tr("Bardzo małe"),tr("Małe"),tr("Standardowe"),tr("Duże"),tr("Bardzo duże")});
     ui->verticalLayout_6->insertWidget(0,simulation);
+
+    // One Discord channel for publishing results images. The address stays on this computer.
+    auto *discord=new QGroupBox(tr("Discord"),this);discord->setObjectName("discordSettings");
+    auto *discordLayout=new QVBoxLayout(discord);
+    auto *discordHelp=new QLabel(tr("Wklej adres webhooka kanału, aby publikować obrazy wyników przyciskiem „Opublikuj na Discordzie” w konkursie i w klasyfikacji. "
+        "Adres utworzysz w Discordzie: Edytuj kanał → Integracje → Webhooki → Nowy webhook → Kopiuj adres URL webhooka. "
+        "Każdy, kto zna ten adres, może pisać na kanale, więc nie udostępniaj go."),discord);
+    discordHelp->setWordWrap(true);discordHelp->setObjectName("discordPublishHelp");
+    auto *discordUrl=new QLineEdit(discord);discordUrl->setObjectName("discordPublishAddress");
+    discordUrl->setAccessibleName(tr("Adres webhooka Discord"));discordUrl->setPlaceholderText(QStringLiteral("https://discord.com/api/webhooks/…"));
+    discordUrl->setClearButtonEnabled(true);discordUrl->setText(GlobalAppSettings::get()->getDiscordWebhookUrl());
+    auto *discordStatus=new QLabel(discord);discordStatus->setObjectName("discordPublishStatus");discordStatus->setWordWrap(true);
+    auto *discordTest=new QPushButton(tr("Wyślij wiadomość testową"),discord);discordTest->setObjectName("discordPublishTest");
+    discordLayout->addWidget(discordHelp);discordLayout->addWidget(discordUrl);discordLayout->addWidget(discordStatus);discordLayout->addWidget(discordTest,0,Qt::AlignLeft);
+    const auto showDiscordState=[discordUrl,discordStatus,discordTest]{
+        QString problem;const QString url=discordUrl->text().trimmed();
+        const bool valid=DiscordWebhook::isValidUrl(url,&problem);
+        discordStatus->setText(url.isEmpty()?tr("Publikowanie wyłączone: nie wklejono adresu.")
+            :valid?tr("Adres poprawny: %1").arg(DiscordWebhook::maskedUrl(url)):problem);
+        discordTest->setEnabled(valid);
+    };
+    showDiscordState();
+    connect(discordUrl,&QLineEdit::textChanged,this,showDiscordState);
+    connect(discordUrl,&QLineEdit::editingFinished,this,[discordUrl]{
+        GlobalAppSettings::get()->setDiscordWebhookUrl(discordUrl->text());GlobalAppSettings::get()->writeToJson();
+    });
+    connect(discordTest,&QPushButton::clicked,this,[this,discordUrl,discordTest,discordStatus]{
+        GlobalAppSettings::get()->setDiscordWebhookUrl(discordUrl->text());GlobalAppSettings::get()->writeToJson();
+        discordTest->setEnabled(false);discordStatus->setText(tr("Wysyłanie wiadomości testowej…"));
+        const QPointer<QPushButton> button(discordTest);const QPointer<QLabel> status(discordStatus);
+        DiscordWebhook::get()->send(discordUrl->text(),tr("Sj.Sim połączył się z tym kanałem. Tutaj pojawią się opublikowane wyniki."),{},
+            [button,status](bool ok,const QString &message){
+                if(status)status->setText(ok?tr("Działa: wiadomość testowa dotarła na kanał."):message);
+                if(button)button->setEnabled(true);
+            });
+    });
+    ui->verticalLayout_6->insertWidget(1,discord);
     auto *lab=new QPushButton(tr("Laboratorium balansu"),this);lab->setObjectName("openBalanceLab");ui->verticalLayout_6->insertWidget(0,lab);
     auto *formLab=new QPushButton(tr("Laboratorium formy"),this);formLab->setObjectName("openFormEngineLab");ui->verticalLayout_6->insertWidget(0,formLab);
     connect(formLab,&QPushButton::clicked,this,[this]{auto *window=new FormLabWindow(this);window->setAttribute(Qt::WA_DeleteOnClose);window->show();});
@@ -81,10 +124,6 @@ AppSettingsWindow::AppSettingsWindow(QWidget *parent) :
     ui->checkBox_autoAdjustHillEffects->setChecked(GlobalSimulationSettings::get()->getAutoAdjustHillEffects());
     ui->doubleSpinBox->setValue(GlobalSimulationSettings::get()->getHillsEffectsMultiplier());
     ui->checkBox_globalDatabaseRecords->setChecked(GlobalSimulationSettings::get()->getUpdateGlobalDatabaseRecords());
-    ui->lineEdit_jumpInfoWh->setText(GlobalAppSettings::get()->getJumpInfoWebhook());
-    ui->lineEdit_singleResultWh->setText(GlobalAppSettings::get()->getCompetitionSingleResultWebhook());
-    ui->lineEdit_compResultsWh->setText(GlobalAppSettings::get()->getCompetitionResultsWebhook());
-    ui->lineEdit_clsResultsWh->setText(GlobalAppSettings::get()->getClassificationResultsWebhook());
     ui->checkBox_liveCompetition->setChecked(GlobalAppSettings::get()->getLiveCompetition());
     ui->doubleSpinBox_liveCompSpeed->setValue(GlobalAppSettings::get()->getLiveCompetitionSpeedMulti());
     ui->doubleSpinBox_takeoffFormEffect->setValue(GlobalSimulationSettings::get()->getTakeoffFormEffect());
@@ -297,26 +336,6 @@ void AppSettingsWindow::on_pushButton_countriesEditor_clicked()
     }
 }
 
-
-void AppSettingsWindow::on_lineEdit_jumpInfoWh_editingFinished()
-{
-    GlobalAppSettings::get()->setJumpInfoWebhook(ui->lineEdit_jumpInfoWh->text());
-}
-
-void AppSettingsWindow::on_lineEdit_singleResultWh_editingFinished()
-{
-    GlobalAppSettings::get()->setCompetitionSingleResultWebhook(ui->lineEdit_singleResultWh->text());
-}
-
-void AppSettingsWindow::on_lineEdit_compResultsWh_editingFinished()
-{
-    GlobalAppSettings::get()->setCompetitionResultsWebhook(ui->lineEdit_compResultsWh->text());
-}
-
-void AppSettingsWindow::on_lineEdit_clsResultsWh_editingFinished()
-{
-    GlobalAppSettings::get()->setClassificationResultsWebhook(ui->lineEdit_clsResultsWh->text());
-}
 
 void AppSettingsWindow::on_doubleSpinBox_liveCompSpeed_editingFinished()
 {

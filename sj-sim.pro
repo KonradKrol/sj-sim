@@ -484,11 +484,6 @@ RESOURCES += \
     source/UI/Quick/QuickCalendarDates.cpp \
 assets.qrc
 
-# DPP previously depended on a Windows-only binary bundle. Use the small
-# compatibility implementation on every platform so the application builds
-# reproducibly; webhook calls are no-ops in this configuration.
-INCLUDEPATH += $$PWD/source/3rdparty/linux-dpp-stub
-
 # Qt 5 defined QT_CHARTS_USE_NAMESPACE and friends in qchartglobal.h; Qt 6 removed them.
 greaterThan(QT_MAJOR_VERSION, 5): DEFINES += QT_CHARTS_BEGIN_NAMESPACE= QT_CHARTS_END_NAMESPACE= QT_CHARTS_USE_NAMESPACE=
 
@@ -548,3 +543,8 @@ HEADERS += source/UI/Library/ResourceLibraryWindow.h
 
 SOURCES += source/UI/ResultsImage/ResultsImage.cpp
 HEADERS += source/UI/ResultsImage/ResultsImage.h
+
+# Discord publishing uses Qt Network only (no bundled Discord library).
+QT += network
+SOURCES += source/global/DiscordWebhook.cpp
+HEADERS += source/global/DiscordWebhook.h

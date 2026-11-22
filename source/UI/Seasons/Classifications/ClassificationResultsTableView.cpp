@@ -15,6 +15,8 @@
 #include <QLocale>
 #include <QPushButton>
 #include "../../ResultsImage/ResultsImage.h"
+#include "../../../global/DiscordWebhook.h"
+#include "../../../global/GlobalAppSettings.h"
 
 ClassificationResultsTableView::ClassificationResultsTableView(bool allowShowDetails, Classification * classification, QWidget *parent) :
     QWidget(parent),
@@ -30,6 +32,11 @@ ClassificationResultsTableView::ClassificationResultsTableView(bool allowShowDet
     exportImage->setToolTip(tr("Zapisuje aktualny stan klasyfikacji jako plik PNG i kopiuje go do schowka."));
     ui->verticalLayout->addWidget(exportImage);
     connect(exportImage,&QPushButton::clicked,this,[this]{ResultsImage::exportClassification(this,this->classification);});
+    publishDiscord=new QPushButton(tr("Opublikuj klasyfikację na Discordzie…"),this);publishDiscord->setObjectName("pushButton_publishClassificationDiscord");
+    publishDiscord->setToolTip(tr("Wysyła obraz z aktualnym stanem klasyfikacji na kanał Discord ustawiony w ustawieniach."));
+    ui->verticalLayout->addWidget(publishDiscord);
+    connect(publishDiscord,&QPushButton::clicked,this,[this]{ResultsImage::publishClassification(this,this->classification);});
+    publishDiscord->setVisible(DiscordWebhook::isValidUrl(GlobalAppSettings::get()->getDiscordWebhookUrl()));
 
     tableModel = new ClassificationResultsTableModel(nullptr, this);
 
@@ -95,18 +102,15 @@ void ClassificationResultsTableView::setClassification(Classification *newClassi
     classification = newClassification;
 }
 
-void ClassificationResultsTableView::on_pushButton_webhook_clicked()
-{
-    classification->sendResultsWebhook(save);
-}
-
 
 void ClassificationResultsTableView::setHistoryCalendar(SeasonCalendar *calendar){historyCalendar=calendar;if(!calendar)historyChoice->hide();}
 bool ClassificationResultsTableView::historical() const {return historyCalendar && historyChoice->currentIndex()>0;}
 void ClassificationResultsTableView::showHistory(){
-    ui->pushButton_webhook->setEnabled(classification && !historical());
     // The image shows the current standings, not an archived state after an earlier event.
     exportImage->setEnabled(classification && !historical());
+    // Shown only when a Discord webhook is set in the settings.
+    publishDiscord->setVisible(DiscordWebhook::isValidUrl(GlobalAppSettings::get()->getDiscordWebhookUrl()));
+    publishDiscord->setEnabled(classification && !historical());
     if(!historical() || !classification){ui->tableView->setModel(tableModel);return;}
     struct Row {Jumper *jumper=nullptr;QString country;double points=0;};QHash<QString,Row> totals;
     for(int i=0;i<qMin(historyChoice->currentIndex(),int(historyEvents.size()));++i)for(const auto &c:classification->contributions(historyEvents[i])){

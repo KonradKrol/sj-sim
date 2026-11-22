@@ -8,7 +8,6 @@
 #include "../utilities/Identifiable.h"
 #include "ClassificationSingleResult.h"
 #include "../seasons/SeasonCalendar.h"
-#include <dpp/dpp.h>
 #include <memory>
 #include <vector>
 
@@ -54,9 +53,6 @@ public:
     QHash<Jumper *, QHash<CompetitionInfo *, int> > constructJumpersArchiveResults(Season * season, SeasonCalendar *calendar);
     QHash<QString, QHash<CompetitionInfo *, int> > constructTeamsArchiveResults(Season * season, SeasonCalendar *calendar);
 
-    QString getSingleResultsTextForWebhook();
-    dpp::message getMessageForResultsWebhook(SimulationSave *save);
-    void sendResultsWebhook(SimulationSave *save);
 
 private:
     ClassificationOptions options;

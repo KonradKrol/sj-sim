@@ -53,8 +53,6 @@
 #include <QDesktopServices>
 #include <random>
 
-#include <dpp/dpp.h>
-
 extern Uuid globalIDGenerator;
 const QString appVersion = "2.0.0";
 
@@ -62,14 +60,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-
-    dpp::cluster bot(""); // normally, you put your bot token in here. But to just run a webhook its not required
-
-    //dpp::webhook wh("https://discord.com/api/webhooks/1164965874017509406/X4HjOnhaRY3uE7il7wdeH3ubgDAbcTOGoS380Lge0q-bzZk2lOwcpeGxRx0EIf7Of91q");
-
-    //bot.execute_webhook(wh, dpp::message("Wiadomość wysyłana z poziomu Sj.Sim-a :smile:"));
-
-
     ui->setupUi(this);
     auto *author = new QPushButton(tr("O autorze"),this);
     author->setObjectName("pushButton_author");

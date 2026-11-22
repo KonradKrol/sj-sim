@@ -11,9 +11,15 @@
 #include "../../global/CountryCodes.h"
 #include "../../global/GlobalDatabase.h"
 #include "../../global/UserDataPaths.h"
+#include "../../global/DiscordWebhook.h"
+#include "../../global/GlobalAppSettings.h"
 #include "../mainwindow.h"
 
+#include <QBuffer>
 #include <QClipboard>
+#include <QDateTime>
+#include <QPointer>
+#include <QSaveFile>
 #include <QDir>
 #include <QFileDialog>
 #include <QFileInfo>
@@ -29,6 +35,9 @@
 #include <QRegularExpression>
 #include <QtMath>
 #include <algorithm>
+#include <array>
+#include <functional>
+#include <memory>
 
 namespace {
 // Alpine palette shared with the light "Alpejski" theme of the interface.
@@ -103,35 +112,166 @@ QString safeFileName(QString text)
     return text.simplified();
 }
 
-int askLimit(QWidget *parent,int available,bool *accepted)
+constexpr int maxSeparateImages=3;
+
+struct Choice
 {
-    QStringList options;QVector<int> limits;
-    for(int limit:{10,30})if(available>limit){options<<QObject::tr("%1 pierwszych miejsc").arg(limit);limits<<limit;}
-    options<<QObject::tr("Wszystkie miejsca (%1)").arg(available);limits<<0;
-    const int preferred=limits.contains(30)?limits.indexOf(30):options.size()-1;
-    const QString choice=QInputDialog::getItem(parent,QObject::tr("Obraz wyników"),
-        QObject::tr("Ile miejsc pokazać na obrazie? Krótsza lista jest czytelniejsza w czacie."),options,preferred,false,accepted);
-    if(!*accepted)return 0;
-    return limits.value(options.indexOf(choice),0);
+    int limit=0;          // places shown, 0 = all
+    int perImage=30;      // places on one image
+    bool accepted=false;
+};
+
+// Asks how many places to show and, for all places, how many fit on one image: 30 reads well
+// in a chat window, 50 gives fewer files.
+Choice askChoice(QWidget *parent,int available)
+{
+    QStringList options;QVector<Choice> choices;
+    for(int limit:{10,30})if(available>limit){options<<QObject::tr("%1 pierwszych miejsc · jeden obraz").arg(limit);choices.append({limit,limit,true});}
+    if(available<=30){options<<QObject::tr("Wszystkie miejsca (%1) · jeden obraz").arg(available);choices.append({0,30,true});}
+    else for(int perImage:{30,50}){
+        const int images=(available+perImage-1)/perImage;
+        options<<(images>1?QObject::tr("Wszystkie miejsca (%1) · po %2 na obrazie, obrazów: %3").arg(available).arg(perImage).arg(images)
+                          :QObject::tr("Wszystkie miejsca (%1) · jeden obraz").arg(available));
+        choices.append({0,perImage,true});
+    }
+    int preferred=options.size()-1;
+    for(int i=0;i<choices.size();++i)if(choices[i].limit==30)preferred=i;
+    bool accepted=false;
+    const QString selected=QInputDialog::getItem(parent,QObject::tr("Obraz wyników"),
+        QObject::tr("Ile miejsc pokazać? Krótsza lista jest czytelniejsza w czacie. Pełne wyniki można podzielić na kilka obrazów; więcej niż trzy zapiszą się jako archiwum ZIP."),
+        options,preferred,false,&accepted);
+    if(!accepted)return {};
+    return choices.value(options.indexOf(selected));
 }
 
-bool saveAndCopy(QWidget *parent,const ResultsCard &card,const QString &suggestedName)
+// Minimal ZIP writer with stored entries (PNG is already compressed). It needs no extra
+// library, so it works the same on every platform.
+quint32 crc32(const QByteArray &data)
+{
+    static const auto table=[]{std::array<quint32,256> t{};for(quint32 i=0;i<256;++i){quint32 c=i;for(int k=0;k<8;++k)c=(c&1)?0xEDB88320u^(c>>1):c>>1;t[i]=c;}return t;}();
+    quint32 crc=0xFFFFFFFFu;
+    for(const char byte:data)crc=table[(crc^quint8(byte))&0xFF]^(crc>>8);
+    return crc^0xFFFFFFFFu;
+}
+
+QByteArray zipArchive(const QVector<QPair<QString,QByteArray>> &files)
+{
+    QByteArray archive,directory;
+    const QDateTime now=QDateTime::currentDateTime();
+    const quint16 dosTime=quint16((now.time().hour()<<11)|(now.time().minute()<<5)|(now.time().second()/2));
+    const quint16 dosDate=quint16(((qMax(1980,now.date().year())-1980)<<9)|(now.date().month()<<5)|now.date().day());
+    const auto put16=[](QByteArray &out,quint16 v){out.append(char(v&0xFF));out.append(char(v>>8));};
+    const auto put32=[&](QByteArray &out,quint32 v){put16(out,quint16(v&0xFFFF));put16(out,quint16(v>>16));};
+    for(const auto &file:files){
+        const QByteArray name=file.first.toUtf8();const quint32 crc=crc32(file.second);const quint32 size=quint32(file.second.size());
+        const quint32 offset=quint32(archive.size());
+        // Local header. Flag 0x0800: file names are UTF-8.
+        put32(archive,0x04034b50);put16(archive,20);put16(archive,0x0800);put16(archive,0);put16(archive,dosTime);put16(archive,dosDate);
+        put32(archive,crc);put32(archive,size);put32(archive,size);put16(archive,quint16(name.size()));put16(archive,0);
+        archive.append(name);archive.append(file.second);
+        // Central directory entry.
+        put32(directory,0x02014b50);put16(directory,20);put16(directory,20);put16(directory,0x0800);put16(directory,0);put16(directory,dosTime);put16(directory,dosDate);
+        put32(directory,crc);put32(directory,size);put32(directory,size);put16(directory,quint16(name.size()));put16(directory,0);put16(directory,0);
+        put16(directory,0);put16(directory,0);put32(directory,0);put32(directory,offset);directory.append(name);
+    }
+    const quint32 directoryOffset=quint32(archive.size());
+    archive.append(directory);
+    put32(archive,0x06054b50);put16(archive,0);put16(archive,0);put16(archive,quint16(files.size()));put16(archive,quint16(files.size()));
+    put32(archive,quint32(directory.size()));put32(archive,directoryOffset);put16(archive,0);
+    return archive;
+}
+
+QByteArray pngBytes(const QImage &image)
+{
+    QByteArray bytes;QBuffer buffer(&bytes);buffer.open(QIODevice::WriteOnly);image.save(&buffer,"PNG");return bytes;
+}
+
+QString numbered(const QString &base,int index,int count)
+{
+    return count==1?base:QObject::tr("%1 (%2 z %3)").arg(base).arg(index+1).arg(count);
+}
+
+bool saveImages(QWidget *parent,const QVector<QImage> &images,const QString &suggestedName)
 {
     const QString folder=UserDataPaths::path(QStringLiteral("Exports"));
     QDir().mkpath(folder);
-    QString path=QFileDialog::getSaveFileName(parent,QObject::tr("Zapisz obraz wyników"),
-        QDir(folder).filePath(safeFileName(suggestedName)+QStringLiteral(".png")),QObject::tr("Obraz PNG (*.png)"));
+    const QString base=safeFileName(suggestedName);
+    const bool archive=images.size()>maxSeparateImages;
+    const QString extension=archive?QStringLiteral("zip"):QStringLiteral("png");
+    QString path=QFileDialog::getSaveFileName(parent,archive?QObject::tr("Zapisz obrazy wyników jako archiwum ZIP"):QObject::tr("Zapisz obraz wyników"),
+        QDir(folder).filePath(base+"."+extension),archive?QObject::tr("Archiwum ZIP (*.zip)"):QObject::tr("Obraz PNG (*.png)"));
     if(path.isEmpty())return false;
-    if(QFileInfo(path).suffix().compare(QStringLiteral("png"),Qt::CaseInsensitive)!=0)path+=QStringLiteral(".png");
-    const QImage image=ResultsImage::render(card);
-    if(image.isNull() || !image.save(path,"PNG")){
-        QMessageBox::warning(parent,QObject::tr("Nie zapisano obrazu"),QObject::tr("Nie udało się zapisać pliku %1. Wybierz inny folder.").arg(QDir::toNativeSeparators(path)));
+    if(QFileInfo(path).suffix().compare(extension,Qt::CaseInsensitive)!=0)path+="."+extension;
+    const QFileInfo target(path);
+    const QString chosenBase=target.completeBaseName();
+    QString failed;
+    if(archive){
+        QVector<QPair<QString,QByteArray>> files;
+        for(int i=0;i<images.size();++i)files.append({numbered(chosenBase,i,images.size())+QStringLiteral(".png"),pngBytes(images[i])});
+        QSaveFile file(path);
+        if(!file.open(QIODevice::WriteOnly) || file.write(zipArchive(files))<0 || !file.commit())failed=path;
+    } else {
+        for(int i=0;i<images.size() && failed.isEmpty();++i){
+            const QString name=images.size()==1?path:target.dir().filePath(numbered(chosenBase,i,images.size())+QStringLiteral(".png"));
+            if(images[i].isNull() || !images[i].save(name,"PNG"))failed=name;
+        }
+    }
+    if(!failed.isEmpty()){
+        QMessageBox::warning(parent,QObject::tr("Nie zapisano obrazu"),QObject::tr("Nie udało się zapisać pliku %1. Wybierz inny folder.").arg(QDir::toNativeSeparators(failed)));
         return false;
     }
-    if(auto *clipboard=QGuiApplication::clipboard())clipboard->setImage(image);
-    QMessageBox::information(parent,QObject::tr("Zapisano obraz wyników"),
-        QObject::tr("Obraz zapisano w pliku:\n%1\n\nJest też w schowku, więc możesz go od razu wkleić, na przykład na Discordzie.").arg(QDir::toNativeSeparators(path)));
+    if(images.size()==1){
+        if(auto *clipboard=QGuiApplication::clipboard())clipboard->setImage(images.first());
+        QMessageBox::information(parent,QObject::tr("Zapisano obraz wyników"),
+            QObject::tr("Obraz zapisano w pliku:\n%1\n\nJest też w schowku, więc możesz go od razu wkleić, na przykład na Discordzie.").arg(QDir::toNativeSeparators(path)));
+    } else if(archive) {
+        QMessageBox::information(parent,QObject::tr("Zapisano obrazy wyników"),
+            QObject::tr("Liczba obrazów w archiwum: %1.\n%2").arg(images.size()).arg(QDir::toNativeSeparators(path)));
+    } else {
+        QMessageBox::information(parent,QObject::tr("Zapisano obrazy wyników"),
+            QObject::tr("Liczba zapisanych obrazów: %1, w folderze:\n%2").arg(images.size()).arg(QDir::toNativeSeparators(target.absolutePath())));
+    }
     return true;
+}
+
+QString caption(const ResultsCard &card)
+{
+    QStringList parts{QStringLiteral("**%1**").arg(card.title),card.eyebrow};
+    if(!card.subtitle.isEmpty())parts<<card.subtitle;
+    return parts.join(QStringLiteral(" · "));
+}
+
+void publishImages(QWidget *parent,const QVector<QImage> &images,const ResultsCard &card,const QString &baseName)
+{
+    // Discord accepts up to 10 files in one message; larger sets go as several messages.
+    struct Batch{QString text;QVector<QPair<QString,QByteArray>> files;};
+    QVector<Batch> batches;
+    for(int i=0;i<images.size();++i){
+        if(i%10==0)batches.append({batches.isEmpty()?caption(card):QString(),{}});
+        batches.last().files.append({safeFileName(numbered(baseName,i,images.size()))+QStringLiteral(".png"),pngBytes(images[i])});
+    }
+    const QPointer<QWidget> owner(parent);
+    const QString url=GlobalAppSettings::get()->getDiscordWebhookUrl();
+    auto sendNext=std::make_shared<std::function<void(int)>>();
+    *sendNext=[owner,batches,url,sendNext](int index){
+        DiscordWebhook::get()->send(url,batches[index].text,batches[index].files,
+            [owner,batches,sendNext,index](bool ok,const QString &message){
+                if(ok && index+1<batches.size()){(*sendNext)(index+1);return;}
+                if(ok)QMessageBox::information(owner.data(),QObject::tr("Discord"),message);
+                else QMessageBox::warning(owner.data(),QObject::tr("Nie wysłano na Discorda"),message);
+                *sendNext=nullptr;
+            });
+    };
+    (*sendNext)(0);
+}
+
+bool discordReady(QWidget *parent)
+{
+    QString problem;
+    if(DiscordWebhook::isValidUrl(GlobalAppSettings::get()->getDiscordWebhookUrl(),&problem))return true;
+    QMessageBox::information(parent,QObject::tr("Discord nie jest ustawiony"),
+        QObject::tr("Aby publikować wyniki, wklej adres webhooka kanału w Ustawieniach, w sekcji „Discord”.\n\n%1").arg(problem));
+    return false;
 }
 }
 
@@ -233,7 +373,7 @@ QImage render(const ResultsCard &card,qreal ratio)
     painter.drawText(QRectF(textLeft,56,width-textLeft-margin,60),Qt::AlignLeft|Qt::AlignVCenter,titleMetrics.elidedText(card.title,Qt::ElideRight,width*.62-textLeft));
     if(!card.subtitle.isEmpty()){
         painter.setPen(headerMutedColor);painter.setFont(font(QStringLiteral("Barlow"),19,QFont::Medium));
-        painter.drawText(QRectF(margin,120,width-2*margin,30),Qt::AlignLeft|Qt::AlignVCenter,card.subtitle);
+        painter.drawText(QRectF(margin,120,width-2*margin,30),Qt::AlignLeft|Qt::AlignVCenter,card.pageNote.isEmpty()?card.subtitle:card.subtitle+QStringLiteral(" · ")+card.pageNote);
     }
 
     // Results table.
@@ -304,24 +444,83 @@ QImage render(const ResultsCard &card,qreal ratio)
     return image;
 }
 
-bool exportCompetition(QWidget *parent,CompetitionInfo *competition)
+QVector<ResultsCard> pages(const ResultsCard &card,int rowsPerPage)
 {
-    if(!competition)return false;
-    const int available=competition->getResultsReference().getResultsReference().size();
-    if(available==0){QMessageBox::information(parent,QObject::tr("Obraz wyników"),QObject::tr("Ten konkurs nie ma jeszcze wyników."));return false;}
-    bool accepted=false;const int limit=askLimit(parent,available,&accepted);if(!accepted)return false;
-    const ResultsCard card=fromCompetition(competition,limit);
+    if(card.rows.size()<=rowsPerPage)return {card};
+    QVector<ResultsCard> result;
+    const int count=(card.rows.size()+rowsPerPage-1)/rowsPerPage;
+    for(int page=0;page<count;++page){
+        ResultsCard part=card;
+        part.rows=card.rows.mid(page*rowsPerPage,rowsPerPage);
+        part.hiddenRows=page==count-1?card.hiddenRows:0;
+        part.pageNote=QObject::tr("Miejsca %1–%2 · obraz %3 z %4").arg(part.rows.first().position).arg(part.rows.last().position).arg(page+1).arg(count);
+        result.append(part);
+    }
+    return result;
+}
+}
+
+namespace {
+QVector<QImage> renderAll(const ResultsCard &card,int perImage)
+{
+    QVector<QImage> images;
+    for(const auto &page:ResultsImage::pages(card,perImage))images.append(ResultsImage::render(page));
+    return images;
+}
+
+QString competitionFileName(CompetitionInfo *competition,const ResultsCard &card)
+{
     QString name=card.title+QStringLiteral(" ")+competition->getLongSerieTypeText();
     if(competition->getScheduledDate().isValid())name+=QStringLiteral(" ")+competition->getScheduledDate().toString(Qt::ISODate);
-    return saveAndCopy(parent,card,name);
+    return name;
+}
+
+bool hasCompetitionResults(QWidget *parent,CompetitionInfo *competition)
+{
+    if(competition && !competition->getResultsReference().getResultsReference().isEmpty())return true;
+    QMessageBox::information(parent,QObject::tr("Obraz wyników"),QObject::tr("Ten konkurs nie ma jeszcze wyników."));
+    return false;
+}
+
+bool hasClassificationResults(QWidget *parent,Classification *classification)
+{
+    if(classification && !classification->getResultsReference().isEmpty())return true;
+    QMessageBox::information(parent,QObject::tr("Obraz wyników"),QObject::tr("Ta klasyfikacja nie ma jeszcze wyników."));
+    return false;
+}
+}
+
+namespace ResultsImage {
+bool exportCompetition(QWidget *parent,CompetitionInfo *competition)
+{
+    if(!hasCompetitionResults(parent,competition))return false;
+    const Choice choice=askChoice(parent,competition->getResultsReference().getResultsReference().size());if(!choice.accepted)return false;
+    const ResultsCard card=fromCompetition(competition,choice.limit);
+    return saveImages(parent,renderAll(card,choice.perImage),competitionFileName(competition,card));
 }
 
 bool exportClassification(QWidget *parent,Classification *classification)
 {
-    if(!classification)return false;
-    const int available=classification->getResultsReference().size();
-    if(available==0){QMessageBox::information(parent,QObject::tr("Obraz wyników"),QObject::tr("Ta klasyfikacja nie ma jeszcze wyników."));return false;}
-    bool accepted=false;const int limit=askLimit(parent,available,&accepted);if(!accepted)return false;
-    return saveAndCopy(parent,fromClassification(classification,limit),classification->getName());
+    if(!hasClassificationResults(parent,classification))return false;
+    const Choice choice=askChoice(parent,classification->getResultsReference().size());if(!choice.accepted)return false;
+    return saveImages(parent,renderAll(fromClassification(classification,choice.limit),choice.perImage),classification->getName());
+}
+
+bool publishCompetition(QWidget *parent,CompetitionInfo *competition)
+{
+    if(!discordReady(parent) || !hasCompetitionResults(parent,competition))return false;
+    const Choice choice=askChoice(parent,competition->getResultsReference().getResultsReference().size());if(!choice.accepted)return false;
+    const ResultsCard card=fromCompetition(competition,choice.limit);
+    publishImages(parent,renderAll(card,choice.perImage),card,competitionFileName(competition,card));
+    return true;
+}
+
+bool publishClassification(QWidget *parent,Classification *classification)
+{
+    if(!discordReady(parent) || !hasClassificationResults(parent,classification))return false;
+    const Choice choice=askChoice(parent,classification->getResultsReference().size());if(!choice.accepted)return false;
+    const ResultsCard card=fromClassification(classification,choice.limit);
+    publishImages(parent,renderAll(card,choice.perImage),card,classification->getName());
+    return true;
 }
 }

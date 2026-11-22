@@ -31,16 +31,25 @@ struct ResultsCard
     QString totalColumn;
     QVector<Row> rows;
     int hiddenRows=0;
+    QString pageNote;  // "Miejsca 31–60 · obraz 2 z 4" when the results span several images
 };
 
 namespace ResultsImage {
 ResultsCard fromCompetition(CompetitionInfo *competition, int limit=0);
 ResultsCard fromClassification(Classification *classification, int limit=0);
 QImage render(const ResultsCard &card, qreal pixelRatio=2.0);
+// Splits long results into several cards with the same header.
+QVector<ResultsCard> pages(const ResultsCard &card, int rowsPerPage);
 
-// Asks how many places to include, then where to save the PNG. The saved image is also
-// copied to the clipboard so it can be pasted straight into a chat. Returns false when
-// cancelled or when saving failed (the player is told why).
+// Asks how many places to include (10, 30 or all), then where to save. All places are split
+// into images of 30 or 50 places (the player chooses); up to three are saved as separate PNG files, more as one ZIP archive.
+// A single image is also copied to the clipboard. Returns false when cancelled or failed
+// (the player is told why).
 bool exportCompetition(QWidget *parent, CompetitionInfo *competition);
 bool exportClassification(QWidget *parent, Classification *classification);
+
+// The same images sent to the Discord webhook set in the settings. Sending is asynchronous and
+// the player is told the result. When no webhook is set, explains where to set it.
+bool publishCompetition(QWidget *parent, CompetitionInfo *competition);
+bool publishClassification(QWidget *parent, Classification *classification);
 }

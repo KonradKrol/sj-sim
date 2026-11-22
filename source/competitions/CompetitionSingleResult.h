@@ -10,7 +10,6 @@
 #include <QJsonValue>
 #include <QJsonArray>
 #include <QSet>
-#include <dpp/dpp.h>
 
 class CompetitionInfo;
 class Classification;
@@ -44,8 +43,6 @@ public:
     QString getIndividualJumpsSummaryText();
     QString getTeamJumpsSummaryText();
 
-    dpp::embed getEmbedForIndividualSingleCompResult();
-    dpp::embed getEmbedForTeamSingleCompResult();
 
 protected:
     CompetitionInfo * competition;

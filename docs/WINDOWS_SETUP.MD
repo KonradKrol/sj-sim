@@ -31,7 +31,7 @@ Instrukcja dla osoby pobierającej projekt oraz dla Codexa przygotowującego śr
 | Python 3.12 + `aqtinstall` — opcjonalnie | Pobranie Qt z terminala oraz skrypty dokumentacji. Python nie jest zależnością uruchomieniową gry; przy użyciu innej obsługiwanej wersji dostosuj `py -3.12` w poleceniach. |
 | Qt Creator — opcjonalnie | IDE i debugger; terminalowy build go nie wymaga. |
 
-Nie trzeba instalować DPP, Boost, Node.js, npm, Reacta, Electrona, baz danych ani osobnego serwera. Projekt dołącza `source/3rdparty/linux-dpp-stub` **także na Windowsie**. Nazwa katalogu jest historyczna; w tej konfiguracji dostarczanie webhooków Discord jest wyłączone. Nie przywracaj starych zewnętrznych bibliotek DPP, żeby uzyskać zwykły build.
+Nie trzeba instalować DPP, Boost, Node.js, npm, Reacta, Electrona, baz danych ani osobnego serwera. Publikowanie wyników na Discordzie korzysta wyłącznie z modułu Qt Network (`source/global/DiscordWebhook.cpp`); projekt nie dołącza już żadnej biblioteki Discord.
 
 ## 3. Instalacja i pobranie projektu
 

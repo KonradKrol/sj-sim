@@ -14,7 +14,6 @@
 #include "../../simulator/JumpManipulator.h"
 #include "../../simulator/InrunSnowGenerator.h"
 #include "../Seasons/Classifications/ClassificationResultsTableView.h"
-#include <dpp/dpp.h>
 #include "../../simulation-v2/Weather.h"
 #include "../../simulation-v2/Scoring.h"
 #include <memory>
@@ -87,8 +86,6 @@ public:
     QHash<Hill *,double> originalHillRecords;
     void checkRecordsByResults(CompetitionResults * results);
 
-    dpp::embed getEmbedForResults();
-    dpp::message getMessageForResults();
     QString getTextForFullResultsEmbed();
 
     void executeLiveCompetitionEffects();
@@ -207,7 +204,6 @@ private slots:
     void on_pushButton_coachGate_clicked();
     void on_pushButton_inrunSnowGeneratorSettings_clicked();
     void on_comboBox_virtualClassification_currentIndexChanged(int index);
-    void on_pushButton_sendResultsWebhook_clicked();
     void on_checkBox_liveCompetition_stateChanged(int arg1);
 protected:
     void closeEvent(QCloseEvent * event);

@@ -4,7 +4,6 @@
 #include <QWidget>
 #include "../../simulator/JumpData.h"
 #include "JumpWindInfoWidget.h"
-#include <dpp/dpp.h>
 
 namespace Ui {
 class JumpDataDetailedInfoWindow;
@@ -25,7 +24,6 @@ public:
     void removeSimulationInformationsLayouts();
     void removeWindsInfoLayout();
 
-    dpp::embed getEmbedForJumpInfo();
 
 private:
     Ui::JumpDataDetailedInfoWindow *ui;
@@ -40,7 +38,6 @@ public:
     JumpWindInfoWidget *getWindInfoWidget() const;
 
 private slots:
-    void on_pushButton_clicked();
 };
 
 #endif // JUMPDATADETAILEDINFOWINDOW_H

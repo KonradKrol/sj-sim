@@ -222,49 +222,6 @@ QString CompetitionSingleResult::getTeamJumpsSummaryText()
     return s;
 }
 
-dpp::embed CompetitionSingleResult::getEmbedForIndividualSingleCompResult()
-{
-    dpp::embed embed;
-    embed.set_color(dpp::colors::coffee);
-    QString title = QString("**%1 %2**").arg(jumper->getNameAndSurname()).arg(QString(":flag_%1:").arg(GlobalDatabase::get()->getCountryByAlpha3(jumper->getCountryCode())->getAlpha2().toLower()));
-    embed.set_title(title.toStdString());
-    QString description = competition->getHill()->getHillTextForDiscord() + QString(" (%1)").arg(competition->getLongSerieTypeText()) + " (indywidualny)";
-    embed.set_description(description.toStdString());
-
-    embed.add_field(QObject::tr("Pozycja").toStdString(), QString::number(position).toStdString(), true);
-    embed.add_field(QObject::tr("Nota łączna").toStdString(), QString::number(pointsSum, 'f', 1).toStdString(), true);
-    embed.add_field(QObject::tr("Skoki").toStdString(), getIndividualJumpsSummaryText().toStdString(), false);
-
-    embed.set_footer(
-        dpp::embed_footer()
-            .set_text(QObject::tr("Wiadomość wysłana z poziomu Sj.Sim ").toStdString() + appVersion.toStdString() + "\n" + "https://github.com/SiekamCebule/sj-sim")
-        );
-
-    return embed;
-}
-
-dpp::embed CompetitionSingleResult::getEmbedForTeamSingleCompResult()
-{
-    Country * country = GlobalDatabase::get()->getCountryByAlpha3(team->getCountryCode());
-    dpp::embed embed;
-    embed.set_color(dpp::colors::coffee);
-    QString title = QString("**%1 %2**").arg(country->getName()).arg(QString(":flag_%1:").arg(country->getAlpha2().toLower()));
-    embed.set_title(title.toStdString());
-    QString description = competition->getHill()->getHillTextForDiscord() + QString(" (%1)").arg(competition->getLongSerieTypeText()) + QObject::tr(" (drużynowy)");
-    embed.set_description(description.toStdString());
-
-    embed.add_field(QObject::tr("Pozycja").toStdString(), QString::number(position).toStdString(), true);
-    embed.add_field(QObject::tr("Nota łączna").toStdString(), QString::number(pointsSum, 'f', 1).toStdString(), true);
-    embed.add_field(QObject::tr("Skoki").toStdString(), getTeamJumpsSummaryText().toStdString(), false);
-
-    embed.set_footer(
-        dpp::embed_footer()
-            .set_text(QObject::tr("Wiadomość wysłana z poziomu Sj.Sim ").toStdString() + appVersion.toStdString() + "\n" + "https://github.com/SiekamCebule/sj-sim")
-        );
-
-    return embed;
-}
-
 CompetitionInfo *CompetitionSingleResult::getCompetition() const
 {
     return competition;
