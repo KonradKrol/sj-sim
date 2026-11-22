@@ -7,6 +7,7 @@
 
 class CompetitionInfo;
 class Classification;
+class JumpData;
 class QWidget;
 
 // Shareable results card (PNG). The card is built from a plain data snapshot and drawn with
@@ -52,4 +53,7 @@ bool exportClassification(QWidget *parent, Classification *classification);
 // the player is told the result. When no webhook is set, explains where to set it.
 bool publishCompetition(QWidget *parent, CompetitionInfo *competition);
 bool publishClassification(QWidget *parent, Classification *classification);
+// Posts one jump as a short text message: athlete, distance, score, place, judges' marks,
+// gate and wind. Explains where to set Discord up when no webhook is set.
+bool publishJump(QWidget *parent, JumpData *jump);
 }

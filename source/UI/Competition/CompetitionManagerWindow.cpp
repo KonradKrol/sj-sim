@@ -120,6 +120,21 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
     // Offered only when a Discord webhook is set in the settings.
     publish->setEnabled(DiscordWebhook::isValidUrl(GlobalAppSettings::get()->getDiscordWebhookUrl()));
     connect(publish,&QPushButton::clicked,this,[this]{if(this->manager)ResultsImage::publishCompetition(this,this->manager->getCompetitionInfo());});
+    auto *publishJump=new QPushButton(tr("Opublikuj ostatni skok na Discordzie…"),ui->pushButton_sendResultsWebhook->parentWidget());
+    publishJump->setObjectName("pushButton_publishJumpDiscord");publishJump->hide();
+    publishJump->setEnabled(DiscordWebhook::isValidUrl(GlobalAppSettings::get()->getDiscordWebhookUrl()));
+    connect(publishJump,&QPushButton::clicked,this,[this]{
+        // The latest jump is the one with the latest simulated start time; it is read from the
+        // current results so no pointer kept from an earlier preview can be stale.
+        JumpData *latest=nullptr;double latestTime=-1;
+        const auto visit=[&](CompetitionSingleResult &result){
+            for(auto &jump:result.getJumpsReference()){const double time=jump.getSimulationV2Data().value("startSeconds").toDouble(-1);if(time>latestTime){latestTime=time;latest=&jump;}}
+        };
+        if(this->manager && this->manager->getResults())for(auto &result:this->manager->getResults()->getResultsReference()){
+            visit(result);for(auto &member:result.getTeamJumpersResultsReference())visit(member);
+        }
+        ResultsImage::publishJump(this,latest);
+    });
 
     auto *automaticGate=new QCheckBox(tr("Auto-belka"),this);
     automaticGate->setObjectName("checkBox_automaticRaceGate");automaticGate->hide();

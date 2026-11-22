@@ -945,7 +945,7 @@ void QuickBridge::close() { QTimer::singleShot(0,this,[this] { if(m_window) m_wi
 QObject *QuickBridge::find(const QString &name) {
     if(m_groups.contains(name))return m_groups.value(name);
     QWidget *widget=nullptr;
-    if((name=="automaticFormEnabled" || name=="checkBox_automaticRaceGate" || name=="developerAdvanceForm" || name=="developerSimulateContests" || name=="pushButton_exportResultsImage" || name=="pushButton_publishResultsDiscord") && m_window)widget=m_window->findChild<QWidget *>(name);
+    if((name=="automaticFormEnabled" || name=="checkBox_automaticRaceGate" || name=="developerAdvanceForm" || name=="developerSimulateContests" || name=="pushButton_exportResultsImage" || name=="pushButton_publishResultsDiscord" || name=="pushButton_publishJumpDiscord") && m_window)widget=m_window->findChild<QWidget *>(name);
     if(name=="quickSelectedName" && m_content) {
         for(auto *child:m_content->findChildren<QWidget *>())if(child->inherits("JumperCompetitionResultsWidget")) {
             widget=child->findChild<QWidget *>("label_nameAndSurname");break;

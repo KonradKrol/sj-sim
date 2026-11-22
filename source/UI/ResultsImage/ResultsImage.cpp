@@ -8,6 +8,7 @@
 #include "../../simulator/Hill.h"
 #include "../../simulator/Jumper.h"
 #include "../../simulator/Team.h"
+#include "../../simulator/JumpData.h"
 #include "../../global/CountryCodes.h"
 #include "../../global/GlobalDatabase.h"
 #include "../../global/UserDataPaths.h"
@@ -521,6 +522,40 @@ bool publishClassification(QWidget *parent,Classification *classification)
     const Choice choice=askChoice(parent,classification->getResultsReference().size());if(!choice.accepted)return false;
     const ResultsCard card=fromClassification(classification,choice.limit);
     publishImages(parent,renderAll(card,choice.perImage),card,classification->getName());
+    return true;
+}
+
+bool publishJump(QWidget *parent,JumpData *jump)
+{
+    if(!jump || !jump->getJumper()){QMessageBox::information(parent,QObject::tr("Discord"),QObject::tr("Nie ma jeszcze skoku do opublikowania."));return false;}
+    if(!discordReady(parent))return false;
+    const auto format=[](double value,int decimals){return QLocale().toString(value,'f',decimals);};
+    QStringList lines;
+    QString header=QStringLiteral("**%1** (%2)").arg(jump->getJumper()->getNameAndSurname(),jump->getJumper()->getCountryCode());
+    QStringList where;
+    if(auto *hill=jump->getHill())where<<QObject::tr("%1 HS%2").arg(hill->getName()).arg(hill->getHSPoint());
+    if(auto *competition=jump->getCompetition())where<<competition->getLongSerieTypeText();
+    if(auto *result=jump->getSingleResult()){
+        for(int i=0;i<result->getJumpsReference().size();++i)if(&result->getJumpsReference()[i]==jump){where<<QObject::tr("%1. seria").arg(i+1);break;}
+    }
+    if(!where.isEmpty())header+=QStringLiteral(" · ")+where.join(QStringLiteral(" · "));
+    lines<<header;
+    if(jump->getDNS() || jump->getDSQ()){
+        lines<<QStringLiteral("**%1**").arg(jump->getDNS()?QObject::tr("DNS – nie wystartował"):QObject::tr("DSQ – dyskwalifikacja"));
+    } else {
+        QString result=QStringLiteral("**%1 m** · %2").arg(format(jump->getDistance(),1),QObject::tr("%1 pkt").arg(format(jump->getPoints(),1)));
+        if(auto *single=jump->getSingleResult();single && single->getPosition()>0)result+=QStringLiteral(" · ")+QObject::tr("%1. miejsce").arg(single->getPosition());
+        lines<<result;
+        QStringList marks;for(double mark:jump->getJudges())marks<<format(mark,1);
+        if(!marks.isEmpty())lines<<QObject::tr("Noty: %1 (%2 pkt)").arg(marks.join(QStringLiteral(" · ")),format(jump->getJudgesPoints(),1));
+        lines<<QObject::tr("Belka %1 · wiatr %2 m/s · rekompensata %3 pkt").arg(jump->getGate()).arg(format(jump->getAveragedWind(),2),format(jump->getTotalCompensation(),1));
+        lines<<QObject::tr("Lądowanie: %1").arg(jump->getLanding().getTextLandingType());
+    }
+    const QPointer<QWidget> owner(parent);
+    DiscordWebhook::get()->send(GlobalAppSettings::get()->getDiscordWebhookUrl(),lines.join(QLatin1Char('\n')),{},[owner](bool ok,const QString &message){
+        if(ok)QMessageBox::information(owner.data(),QObject::tr("Discord"),message);
+        else QMessageBox::warning(owner.data(),QObject::tr("Nie wysłano na Discorda"),message);
+    });
     return true;
 }
 }

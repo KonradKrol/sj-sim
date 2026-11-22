@@ -5175,6 +5175,10 @@ For additional compensation, the jumper must reach 95% of HS (%1 m).</translatio
             <source>Opublikuj wyniki na Discordzie…</source>
             <translation>Publish results on Discord…</translation>
         </message>
+        <message>
+            <source>Opublikuj ostatni skok na Discordzie…</source>
+            <translation>Publish the latest jump on Discord…</translation>
+        </message>
 </context>
     <context>
         <name>CompetitionQuickBridge</name>
@@ -15852,6 +15856,38 @@ It is also on the clipboard, so you can paste it right away, for example on Disc
             <source>Wysłano na Discorda.</source>
             <translation>Sent to Discord.</translation>
         </message>
+        <message>
+            <source>Nie ma jeszcze skoku do opublikowania.</source>
+            <translation>There is no jump to publish yet.</translation>
+        </message>
+        <message>
+            <source>DNS – nie wystartował</source>
+            <translation>DNS – did not start</translation>
+        </message>
+        <message>
+            <source>DSQ – dyskwalifikacja</source>
+            <translation>DSQ – disqualified</translation>
+        </message>
+        <message>
+            <source>%1 pkt</source>
+            <translation>%1 pts</translation>
+        </message>
+        <message>
+            <source>%1. miejsce</source>
+            <translation>Place %1</translation>
+        </message>
+        <message>
+            <source>Noty: %1 (%2 pkt)</source>
+            <translation>Style marks: %1 (%2 pts)</translation>
+        </message>
+        <message>
+            <source>Belka %1 · wiatr %2 m/s · rekompensata %3 pkt</source>
+            <translation>Gate %1 · wind %2 m/s · compensation %3 pts</translation>
+        </message>
+        <message>
+            <source>Lądowanie: %1</source>
+            <translation>Landing: %1</translation>
+        </message>
     </context>
     <context>
         <name>QuickBridge</name>
@@ -25008,6 +25044,10 @@ Close the previous Sj.Sim window and try again.</translation></message></context
         <message>
             <source>Opublikuj wyniki na Discordzie…</source>
             <translation>Publish results on Discord…</translation>
+        </message>
+        <message>
+            <source>Opublikuj ostatni skok na Discordzie…</source>
+            <translation>Publish the latest jump on Discord…</translation>
         </message>
 </context>
 <context>

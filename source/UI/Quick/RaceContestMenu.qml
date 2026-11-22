@@ -10,6 +10,7 @@ SButton {
     readonly property var simulationActions: simulation ? simulation.values.actions || [] : []
     readonly property var exportImage: ui.find("pushButton_exportResultsImage")
     readonly property var publishDiscord: ui.find("pushButton_publishResultsDiscord")
+    readonly property var publishJump: ui.find("pushButton_publishJumpDiscord")
     function entry(text,source,index,danger) {
         var actions=source ? source.values.actions || [] : []
         return {text:text,sourceId:source ? source.values.id : -1,actionIndex:index,danger:!!danger,enabled:!!source && source.values.enabled!==false && !!actions[index] && actions[index].enabled!==false}
@@ -25,6 +26,7 @@ SButton {
             if(button.exportImage)rows.push({text:qsTr("Zapisz wyniki jako obraz…"),sourceId:button.exportImage.values.id,actionIndex:-1,danger:false,enabled:button.exportImage.values.enabled!==false})
             // Shown only when a Discord webhook is set in the settings.
             if(button.publishDiscord && button.publishDiscord.values.enabled!==false)rows.push({text:qsTr("Opublikuj wyniki na Discordzie…"),sourceId:button.publishDiscord.values.id,actionIndex:-1,danger:false,enabled:true})
+            if(button.publishJump && button.publishJump.values.enabled!==false)rows.push({text:qsTr("Opublikuj ostatni skok na Discordzie…"),sourceId:button.publishJump.values.id,actionIndex:-1,danger:false,enabled:true})
             rows.push(button.entry(qsTr("Odwołaj rundę"),button.cancellation,1,true))
             rows.push(button.entry(qsTr("Odwołaj konkurs"),button.cancellation,0,true))
             return rows

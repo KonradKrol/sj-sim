@@ -5176,6 +5176,10 @@ Pro dodatečnou kompenzaci musí skokan dosáhnout 95 % bodu HS (%1 m).</transla
             <source>Opublikuj wyniki na Discordzie…</source>
             <translation>Zveřejnit výsledky na Discordu…</translation>
         </message>
+        <message>
+            <source>Opublikuj ostatni skok na Discordzie…</source>
+            <translation>Zveřejnit poslední skok na Discordu…</translation>
+        </message>
 </context>
     <context>
         <name>CompetitionQuickBridge</name>
@@ -15853,6 +15857,38 @@ Je také ve schránce, takže ho můžete hned vložit, například na Discord.<
             <source>Wysłano na Discorda.</source>
             <translation>Odesláno na Discord.</translation>
         </message>
+        <message>
+            <source>Nie ma jeszcze skoku do opublikowania.</source>
+            <translation>Zatím není žádný skok ke zveřejnění.</translation>
+        </message>
+        <message>
+            <source>DNS – nie wystartował</source>
+            <translation>DNS – nestartoval</translation>
+        </message>
+        <message>
+            <source>DSQ – dyskwalifikacja</source>
+            <translation>DSQ – diskvalifikace</translation>
+        </message>
+        <message>
+            <source>%1 pkt</source>
+            <translation>%1 b.</translation>
+        </message>
+        <message>
+            <source>%1. miejsce</source>
+            <translation>%1. místo</translation>
+        </message>
+        <message>
+            <source>Noty: %1 (%2 pkt)</source>
+            <translation>Známky: %1 (%2 b.)</translation>
+        </message>
+        <message>
+            <source>Belka %1 · wiatr %2 m/s · rekompensata %3 pkt</source>
+            <translation>Rampa %1 · vítr %2 m/s · kompenzace %3 b.</translation>
+        </message>
+        <message>
+            <source>Lądowanie: %1</source>
+            <translation>Dopad: %1</translation>
+        </message>
     </context>
     <context>
         <name>QuickBridge</name>
@@ -25009,6 +25045,10 @@ Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></con
         <message>
             <source>Opublikuj wyniki na Discordzie…</source>
             <translation>Zveřejnit výsledky na Discordu…</translation>
+        </message>
+        <message>
+            <source>Opublikuj ostatni skok na Discordzie…</source>
+            <translation>Zveřejnit poslední skok na Discordu…</translation>
         </message>
 </context>
 <context>
