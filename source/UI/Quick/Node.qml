@@ -132,7 +132,15 @@ FocusScope {
             readonly property bool dsq: control.fields.name === "spinBox_dsqProbability"
             readonly property var levels: [0,400,190,130,60]
             readonly property var names: [qsTr("Wyłączone"),qsTr("Bardzo rzadkie"),qsTr("Rzadkie"),qsTr("Częste"),qsTr("Bardzo częste")]
-            readonly property int current: Number(control.fields.value) <= 0 ? 0 : levels.indexOf(Number(control.fields.value))
+            // Stored values that are not one of the presets are shown as the nearest preset.
+            readonly property int current: {
+                var value = Number(control.fields.value)
+                if (value <= 0) return 0
+                var best = 1
+                for (var i = 2; i < levels.length; ++i)
+                    if (Math.abs(levels[i]-value) < Math.abs(levels[best]-value)) best = i
+                return best
+            }
             NumberField { visible: !parent.dsq; width: parent.width; fields: control.fields }
             SChoice {
                 id: dsqChoice
@@ -140,8 +148,8 @@ FocusScope {
                 visible: dsqControl.dsq; width: parent.width
                 implicitHeight: Math.max(Theme.dp(50),Theme.bodyMetrics.height+Theme.dp(18))
                 leftPadding: Theme.dp(8); rightPadding: Theme.dp(32)
-                model: dsqControl.current<0 ? dsqControl.names.concat([qsTr("Własna częstość")]) : dsqControl.names
-                currentIndex: dsqControl.current<0 ? 5 : dsqControl.current
+                model: dsqControl.names
+                currentIndex: dsqControl.current
                 Accessible.name: qsTr("Częstość dyskwalifikacji")
                 onActivated: function(index) { if(index<dsqControl.levels.length)ui.edit(control.fields.id,dsqControl.levels[index]) }
                 contentItem: RowLayout {
