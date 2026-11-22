@@ -462,6 +462,9 @@ macx {
     QMAKE_APPLE_DEVICE_ARCHS = x86_64 arm64
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 12.0
     QMAKE_TARGET_BUNDLE_PREFIX = io.github.konradkrol
+    # Qt 6.8.3 qyieldcpu.h calls __yield without a declaration; recent Apple clang makes
+    # that an error. Keep it a warning until the Qt version is raised.
+    QMAKE_CXXFLAGS += -Wno-error=implicit-function-declaration
 }
 
 # Default rules for deployment.

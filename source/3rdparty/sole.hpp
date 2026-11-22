@@ -665,8 +665,10 @@ namespace sole {
     // UUID implementations
 
     inline uuid uuid4() {
-        static $msvc(__declspec(thread)) $melse(__thread) std::random_device rd;
-        static $msvc(__declspec(thread)) $melse(__thread) std::uniform_int_distribution<uint64_t> dist(0, (uint64_t)(~0));
+        // Sj.Sim: standard thread_local instead of GNU __thread, which clang rejects for
+        // types with constructors and destructors (macOS build).
+        static $msvc(__declspec(thread)) $melse(thread_local) std::random_device rd;
+        static $msvc(__declspec(thread)) $melse(thread_local) std::uniform_int_distribution<uint64_t> dist(0, (uint64_t)(~0));
 
         uuid my;
 
