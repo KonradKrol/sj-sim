@@ -1,5 +1,6 @@
 #include "IndividualCompetitionManager.h"
 #include "../CompetitionAdvancement.h"
+#include "../AdvancementTieBreak.h"
 #include "../../utilities/functions.h"
 #include <QVector>
 #include <random>
@@ -28,15 +29,19 @@ void IndividualCompetitionManager::updateCompetitorsAdvanceStatuses()
     const bool knockOut=isKORound && KOManager && KOManager->getRoundNumber()==actualRound;
     if(knockOut)KOManager->updateStatuses();
     QVector<CompetitionAdvancement::Entry> entries;
+    QVector<Jumper *> field;
+    for(const auto &status:startListStatuses)field.append(status.getJumper());
+    // Ties are cut deterministically when the next round needs an exact number of jumpers.
+    const auto tieBreak=AdvancementTieBreak::ranks(competitionInfo,field);
     for(const auto &status:startListStatuses) {
         CompetitionAdvancement::Entry entry;
         entry.competitor=status.getJumper();entry.round=entry.maximumRound=actualRound;
+        entry.order=tieBreak.value(status.getJumper(),0);
         entry.pending=status.getJumpStatus()==StartListCompetitorStatus::Unfinished;
         entry.excluded=status.getJumpStatus()==StartListCompetitorStatus::Dns || status.getJumpStatus()==StartListCompetitorStatus::Dsq;
         entry.protectedByDistance=status.getQualifiedBy95HSRule();
         if(auto *result=results->getResultOfIndividualJumper(status.getJumper())) {
             entry.points=result->getRankingPoints();
-            entry.order=results->getIndexOfJumperResult(status.getJumper());
         }
         entries.append(entry);
     }
@@ -122,6 +127,17 @@ QVector<Jumper *> IndividualCompetitionManager::getFilteredJumpersAfterQualifica
     auto &eligibleResults=standings.getResultsReference();
     for(int i=eligibleResults.size()-1;i>=0;--i)if(!eligible(eligibleResults[i]))eligibleResults.removeAt(i);
     standings.sortInDescendingOrder();
+    if(firstRound.getKO()) {
+        // A KO round needs exactly `limit` jumpers: equal points at the cut-off are
+        // resolved by the first matching classification, then by jumper ID.
+        QVector<Jumper *> tied;
+        for(const auto &result:qAsConst(standings.getResultsReference()))if(result.getJumper())tied.append(result.getJumper());
+        const auto tieBreak=AdvancementTieBreak::ranks(competition,tied);
+        std::stable_sort(eligibleResults.begin(),eligibleResults.end(),[&tieBreak](const CompetitionSingleResult &left,const CompetitionSingleResult &right){
+            if(left.hasSameRankAs(right))return tieBreak.value(left.getJumper(),0)<tieBreak.value(right.getJumper(),0);
+            return left>right;
+        });
+    }
     QHash<QString,Jumper *> poolById;
     for(auto *jumper:qAsConst(jumpers))if(jumper && !poolById.contains(jumper->getIDStr()))poolById.insert(jumper->getIDStr(),jumper);
     QHash<QString,CompetitionSingleResult *> resultsById;

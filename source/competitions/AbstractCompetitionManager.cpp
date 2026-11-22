@@ -1,5 +1,6 @@
 #include "AbstractCompetitionManager.h"
 #include "CompetitionAdvancement.h"
+#include "AdvancementTieBreak.h"
 #include "CompetitionManagers/TeamCompetitionManager.h"
 #include "CompetitionManagers/IndividualCompetitionManager.h"
 #include "../utilities/functions.h"
@@ -127,13 +128,19 @@ void AbstractCompetitionManager::updateQualificationStatuses()
             append(jumper,team,entries.size());
         }
     }
-    for(auto &entry:entries) {
-        int order=0;
-        for(const auto &result:results->getResultsReference()) {
-            if((individual && entry.competitor==result.getJumper()) || (teamManager && entry.competitor==result.getTeam())){entry.order=order;break;}
-            ++order;
-        }
+    // Equal points are separated deterministically (classification position, then ID),
+    // so cutting a tie at an exact limit never depends on the stored order of results.
+    QHash<const void *,int> tieBreak;
+    if(individual) {
+        QVector<Jumper *> field;
+        for(const auto &entry:entries)field.append(static_cast<Jumper *>(const_cast<void *>(entry.competitor)));
+        tieBreak=AdvancementTieBreak::ranks(competitionInfo,field);
+    } else if(teamManager) {
+        QVector<Team *> field;
+        for(const auto &entry:entries)field.append(static_cast<Team *>(const_cast<void *>(entry.competitor)));
+        tieBreak=AdvancementTieBreak::ranks(competitionInfo,field);
     }
+    for(auto &entry:entries)entry.order=tieBreak.value(entry.competitor,0);
     for(const auto &entry:entries) {
         const int state=CompetitionAdvancement::status(entry,entries,limit,qualificationIncludesTies());
         if(individual)qualificationJumpers.insert(static_cast<Jumper *>(const_cast<void *>(entry.competitor)),state);
