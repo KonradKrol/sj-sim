@@ -16642,6 +16642,18 @@ It is also on the clipboard, so you can paste it right away, for example on Disc
         <source>Deszcz</source>
         <translation>Rain</translation>
     </message>
+        <message>
+            <source>Publikowanie na Discordzie</source>
+            <translation>Publishing on Discord</translation>
+        </message>
+        <message>
+            <source>Adres webhooka</source>
+            <translation>Webhook address</translation>
+        </message>
+        <message>
+            <source>Discord</source>
+            <translation>Discord</translation>
+        </message>
 </context>
     <context>
         <name>QuickCalendar</name>

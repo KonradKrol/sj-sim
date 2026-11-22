@@ -16643,6 +16643,18 @@ Je také ve schránce, takže ho můžete hned vložit, například na Discord.<
         <source>Deszcz</source>
         <translation>Déšť</translation>
     </message>
+        <message>
+            <source>Publikowanie na Discordzie</source>
+            <translation>Zveřejňování na Discordu</translation>
+        </message>
+        <message>
+            <source>Adres webhooka</source>
+            <translation>Adresa webhooku</translation>
+        </message>
+        <message>
+            <source>Discord</source>
+            <translation>Discord</translation>
+        </message>
 </context>
     <context>
         <name>QuickCalendar</name>

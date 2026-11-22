@@ -1213,7 +1213,9 @@ void QuickBridge::compose(QuickNode *base) {
         sections.append(group("tools",tr("Baza danych i narzędzia"),{group("database-settings-fields",QString(),fields({
             {"openResourceLibrary",""},{"showWelcomeAgain",""},{"pushButton_countriesEditor",""},
             {"pushButton_defaultSettings",""}}),"form")}));
-        auto *tabs=sectionTabs("settings-pages",{tr("Symulacja"),tr("Baza danych i narzędzia")},sections);
+        sections.append(group("discord",tr("Publikowanie na Discordzie"),{group("discord-settings-fields",QString(),fields({
+            {"discordPublishHelp",""},{"discordPublishAddress",tr("Adres webhooka")},{"discordPublishStatus",""},{"discordPublishTest",""}}),"form")}));
+        auto *tabs=sectionTabs("settings-pages",{tr("Symulacja"),tr("Baza danych i narzędzia"),tr("Discord")},sections);
         m_root->update(tabs->values(),tabs->children());return;
     }
     if(profile()=="SimulationSaveManagerWindow") {
