@@ -112,6 +112,11 @@ jobs:
           arch: clang_64
           modules: qtcharts
           cache: true
+      - name: Remove the AGL framework from the Qt build settings
+        # Qt 6.8.3 refers to AGL, which recent macOS SDKs no longer ship.
+        run: |
+          files=$(grep -rlE -- "-framework,?AGL|-framework AGL" "$QT_ROOT_DIR/mkspecs" "$QT_ROOT_DIR/lib" --include="*.conf" --include="*.prl" --include="*.pri" || true)
+          for file in $files; do sed -i '' -e 's/-framework AGL//g' -e 's/-framework,AGL//g' "$file"; echo "patched $file"; done
       - name: Build universal app
         run: |
           mkdir -p build/macos

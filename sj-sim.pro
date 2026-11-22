@@ -465,6 +465,8 @@ macx {
     # Qt 6.8.3 qyieldcpu.h calls __yield without a declaration; recent Apple clang makes
     # that an error. Keep it a warning until the Qt version is raised.
     QMAKE_CXXFLAGS += -Wno-error=implicit-function-declaration
+    # Qt 6.8.3 still links the AGL framework, which recent macOS SDKs no longer contain.
+    QMAKE_LIBS_OPENGL = -framework OpenGL
 }
 
 # Default rules for deployment.
