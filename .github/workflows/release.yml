@@ -117,7 +117,15 @@ jobs:
           mkdir -p build/macos
           cd build/macos
           qmake ../../sj-sim.pro CONFIG+=release
-          make -j"$(sysctl -n hw.ncpu)"
+          # Compiler errors are repeated as annotations so they are readable without the raw log.
+          set +e
+          make -j"$(sysctl -n hw.ncpu)" -k 2>&1 | tee build.log
+          status=${PIPESTATUS[0]}
+          set -e
+          if [ "$status" -ne 0 ]; then
+            grep -E "error:|Error [0-9]|ld: " build.log | sort -u | head -40 | while IFS= read -r line; do echo "::error::${line//%/%25}"; done
+            exit "$status"
+          fi
       - name: Create signed disk image
         run: bash scripts/package-macos.sh build/macos
       - name: Check both architectures and the checksum
