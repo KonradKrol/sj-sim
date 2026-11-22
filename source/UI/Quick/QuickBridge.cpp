@@ -840,7 +840,7 @@ void QuickBridge::refresh() {
                     summary["precipitation"]=(metadata.value("precipitationKind").toInt()==1?tr("Deszcz"):tr("Śnieg"))+" "+QLocale().toString(metadata.value("precipitation").toDouble(),'f',1)+" / 10";
             }
             for(const auto *key:{"takeoff","flight","random","snow"})summary.remove(key);
-            if(rules && !rules->getHas95HSRule())summary.remove("hs95");
+            if((rules && !rules->getHas95HSRule()) || !(stage==0 || stage>=2))summary.remove("hs95");
         }
         if(summary!=m_jumpSummary) { m_jumpSummary=summary;emit changed(); }
     }
