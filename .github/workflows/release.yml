@@ -151,13 +151,19 @@ jobs:
         with:
           path: release-assets
           merge-multiple: true
+      - name: Find release notes for the tag
+        id: notes
+        run: |
+          notes="docs/releases/${GITHUB_REF_NAME#v}.md"
+          test -f "$notes" || { echo "Missing $notes" >&2; exit 1; }
+          echo "path=$notes" >> "$GITHUB_OUTPUT"
       - name: Publish tagged release
         uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ github.ref_name }}
           target_commitish: ${{ github.sha }}
           name: Sj.Sim ${{ github.ref_name }}
-          body_path: docs/releases/2.0.0.md
+          body_path: ${{ steps.notes.outputs.path }}
           prerelease: ${{ contains(github.ref_name, '-') }}
           make_latest: ${{ !contains(github.ref_name, '-') }}
           files: release-assets/*
