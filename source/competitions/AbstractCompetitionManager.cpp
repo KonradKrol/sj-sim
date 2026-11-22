@@ -200,6 +200,26 @@ void AbstractCompetitionManager::updateToBeatLineDistance()
     toBeatLineDistance=-1;
     if(!lineContextValid(this))return;
     updateLeaderResult();
+    // In a KO round the target is the leader of the current group. Until someone
+    // from that group has jumped, it is the leader of the whole competition.
+    if(auto *individual=dynamic_cast<IndividualCompetitionManager *>(this);individual && actualJumper) {
+        auto *ko=individual->getKOManager();
+        const bool koRound=ko && ko->getRoundNumber()==actualRound && ko->getGroups()
+            && actualRound<=competitionRules->getRoundsReference().size() && competitionRules->getRoundsReference()[actualRound-1].getKO();
+        if(koRound) {
+            for(const auto &group:*ko->getGroups()) {
+                if(!group.getJumpers().contains(actualJumper))continue;
+                CompetitionSingleResult *groupLeader=nullptr;
+                for(auto *member:group.getJumpers()) {
+                    auto *result=member?results->getResultOfIndividualJumper(member):nullptr;
+                    if(!result || result->getJumpsReference().size()<actualRound || result->isTeamDisqualified())continue;
+                    if(!groupLeader || result->getPointsSum()>groupLeader->getPointsSum())groupLeader=result;
+                }
+                if(groupLeader){toBeatLineDistance=distanceForPoints(this,groupLeader->getPointsSum(),true);return;}
+                break;
+            }
+        }
+    }
     if(!leaderResult || leaderResult->getJumpsReference().isEmpty())return;
     toBeatLineDistance=distanceForPoints(this,leaderResult->getPointsSum(),true);
 }
