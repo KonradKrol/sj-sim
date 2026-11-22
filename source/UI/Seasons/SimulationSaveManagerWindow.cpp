@@ -42,6 +42,7 @@
 #include <QTimer>
 #include <QProgressDialog>
 #include <QElapsedTimer>
+#include <limits>
 #include <QRandomGenerator>
 #include <QPushButton>
 #include <QSignalBlocker>
@@ -75,8 +76,8 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         if(!remaining){QMessageBox::information(this,tr("Szybka symulacja"),tr("Nie ma już wydarzeń do rozegrania w tym sezonie."));return;}
         bool accepted=false;
         const int requested=QInputDialog::getInt(this,tr("Szybka symulacja"),
-            tr("Ile wydarzeń przesymulować? Liczy się każde wydarzenie: trening, seria próbna, kwalifikacje i konkurs.\nPozostało w sezonie: %1.").arg(remaining),
-            std::min(10,remaining),1,remaining,1,&accepted);
+            tr("Ile wydarzeń przesymulować? Liczy się każde wydarzenie: trening, seria próbna, kwalifikacje i konkurs.\nPozostało w sezonie: %1. Większa liczba rozegra sezon do końca.").arg(remaining),
+            std::min(10,remaining),1,std::numeric_limits<int>::max(),1,&accepted);
         if(!accepted)return;
         const int count=std::min(requested,remaining);
         QProgressDialog progress(tr("Symulowanie wydarzeń…"),tr("Przerwij"),0,count,this);
