@@ -8,6 +8,7 @@ SButton {
     readonly property var simulation: ui.find("toolButton_autoSimulationActions")
     readonly property var cancellation: ui.find("toolButton_cancelActions")
     readonly property var simulationActions: simulation ? simulation.values.actions || [] : []
+    readonly property var exportImage: ui.find("pushButton_exportResultsImage")
     function entry(text,source,index,danger) {
         var actions=source ? source.values.actions || [] : []
         return {text:text,sourceId:source ? source.values.id : -1,actionIndex:index,danger:!!danger,enabled:!!source && source.values.enabled!==false && !!actions[index] && actions[index].enabled!==false}
@@ -20,6 +21,7 @@ SButton {
             if(button.simulationActions.length===4)rows.push(button.entry(qsTr("Symuluj grupę"),button.simulation,1))
             if(Number(ui.context.roundCount)>1)rows.push(button.entry(qsTr("Symuluj serię"),button.simulation,button.simulationActions.length-2))
             rows.push(button.entry(qsTr("Symuluj N skoków"),button.simulation,button.simulationActions.length-1))
+            if(button.exportImage)rows.push({text:qsTr("Zapisz wyniki jako obraz…"),sourceId:button.exportImage.values.id,actionIndex:-1,danger:false,enabled:button.exportImage.values.enabled!==false})
             rows.push(button.entry(qsTr("Odwołaj rundę"),button.cancellation,1,true))
             rows.push(button.entry(qsTr("Odwołaj konkurs"),button.cancellation,0,true))
             return rows

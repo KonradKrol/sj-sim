@@ -35,6 +35,7 @@ private:
     SeasonCalendar *historyCalendar=nullptr;
     Classification *historyClassification=nullptr;
     QComboBox *historyChoice;
+    class QPushButton *exportImage=nullptr;
     QStandardItemModel *historyModel;
     QVector<CompetitionInfo *> historyEvents;
     void showHistory();

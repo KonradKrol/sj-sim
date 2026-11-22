@@ -538,10 +538,13 @@ contains(CONFIG, quick_ui_smoke) {
 }
 
 SOURCES += source/global/UserDataPaths.cpp
-HEADERS += source/global/UserDataPaths.h
+HEADERS += source/global/UserDataPaths.h source/global/AppPaths.h
 
 SOURCES += source/global/ResourceBundle.cpp
 HEADERS += source/global/ResourceBundle.h
 
 SOURCES += source/UI/Library/ResourceLibraryWindow.cpp
 HEADERS += source/UI/Library/ResourceLibraryWindow.h
+
+SOURCES += source/UI/ResultsImage/ResultsImage.cpp
+HEADERS += source/UI/ResultsImage/ResultsImage.h

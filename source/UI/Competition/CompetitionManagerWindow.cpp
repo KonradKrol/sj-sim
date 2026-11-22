@@ -51,6 +51,7 @@
 #include "ui_JumperCompetitionResultsWidget.h"
 #include "ui_JumpDataDetailedInfoWindow.h"
 #include "../ResultsShowing/JumpDataDetailedInfoWindow.h"
+#include "../ResultsImage/ResultsImage.h"
 
 extern const QString appVersion;
 
@@ -108,6 +109,11 @@ CompetitionManagerWindow::CompetitionManagerWindow(AbstractCompetitionManager *m
         if(save && save->getActualSeason()->getDatesEnabled() && date.isValid())
             setProperty("dayFormSeed",QVariant::fromValue<qulonglong>(SimulationV2::deriveSeed(save->formEngine().seed,quint64(date.toJulianDay()))));
     }else if(parent && parent->property("dayFormSeed").isValid())setProperty("dayFormSeed",parent->property("dayFormSeed"));
+
+    // Reached from the "Opcje konkursu" menu of the Quick race screen.
+    auto *exportImage=new QPushButton(tr("Zapisz wyniki jako obraz…"),ui->pushButton_sendResultsWebhook->parentWidget());
+    exportImage->setObjectName("pushButton_exportResultsImage");exportImage->hide();
+    connect(exportImage,&QPushButton::clicked,this,[this]{if(this->manager)ResultsImage::exportCompetition(this,this->manager->getCompetitionInfo());});
 
     auto *automaticGate=new QCheckBox(tr("Auto-belka"),this);
     automaticGate->setObjectName("checkBox_automaticRaceGate");automaticGate->hide();

@@ -13,6 +13,8 @@
 #include <QLabel>
 #include <QSet>
 #include <QLocale>
+#include <QPushButton>
+#include "../../ResultsImage/ResultsImage.h"
 
 ClassificationResultsTableView::ClassificationResultsTableView(bool allowShowDetails, Classification * classification, QWidget *parent) :
     QWidget(parent),
@@ -24,6 +26,10 @@ ClassificationResultsTableView::ClassificationResultsTableView(bool allowShowDet
     ui->tableView->setSelectionMode(QAbstractItemView::NoSelection);ui->tableView->setProperty("quickClassificationRanking",true);ui->tableView->setProperty("quickScoreColumn",2);ui->tableView->setProperty("quickGapColumn",2);
     save=nullptr;historyChoice=new QComboBox(this);historyChoice->setObjectName("comboBox_classificationHistory");historyChoice->setAccessibleName(tr("Stan klasyfikacji po konkursie"));historyChoice->hide();ui->verticalLayout->insertWidget(0,historyChoice);
     historyModel=new QStandardItemModel(this);connect(historyChoice,qOverload<int>(&QComboBox::currentIndexChanged),this,[this]{showHistory();});
+    exportImage=new QPushButton(tr("Zapisz klasyfikację jako obraz…"),this);exportImage->setObjectName("pushButton_exportClassificationImage");
+    exportImage->setToolTip(tr("Zapisuje aktualny stan klasyfikacji jako plik PNG i kopiuje go do schowka."));
+    ui->verticalLayout->addWidget(exportImage);
+    connect(exportImage,&QPushButton::clicked,this,[this]{ResultsImage::exportClassification(this,this->classification);});
 
     tableModel = new ClassificationResultsTableModel(nullptr, this);
 
@@ -99,6 +105,8 @@ void ClassificationResultsTableView::setHistoryCalendar(SeasonCalendar *calendar
 bool ClassificationResultsTableView::historical() const {return historyCalendar && historyChoice->currentIndex()>0;}
 void ClassificationResultsTableView::showHistory(){
     ui->pushButton_webhook->setEnabled(classification && !historical());
+    // The image shows the current standings, not an archived state after an earlier event.
+    exportImage->setEnabled(classification && !historical());
     if(!historical() || !classification){ui->tableView->setModel(tableModel);return;}
     struct Row {Jumper *jumper=nullptr;QString country;double points=0;};QHash<QString,Row> totals;
     for(int i=0;i<qMin(historyChoice->currentIndex(),int(historyEvents.size()));++i)for(const auto &c:classification->contributions(historyEvents[i])){
