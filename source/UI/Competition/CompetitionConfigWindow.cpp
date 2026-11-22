@@ -360,6 +360,13 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         checkBox_singleCompetitionQualifications->setFont(QFont("Quicksand Medium", 12, 650));
         ui->verticalLayout_competitionOptions->insertWidget(0, checkBox_singleCompetitionQualifications);
 
+        checkBox_singleCompetitionSortByQualifications = new QCheckBox(tr("Ułóż 1. serię według wyników kwalifikacji"), this);
+        checkBox_singleCompetitionSortByQualifications->setObjectName("checkBox_sortByQualifications");
+        checkBox_singleCompetitionSortByQualifications->setToolTip(tr("Zawodnicy w pierwszej serii skaczą od najsłabszego do najlepszego wyniku kwalifikacji. Dotyczy konkursów indywidualnych bez grup KO."));
+        checkBox_singleCompetitionSortByQualifications->setEnabled(false);
+        ui->verticalLayout_competitionOptions->insertWidget(1, checkBox_singleCompetitionSortByQualifications);
+        connect(checkBox_singleCompetitionQualifications, &QCheckBox::toggled, checkBox_singleCompetitionSortByQualifications, &QWidget::setEnabled);
+
         setWindowTitle(QObject::tr("Konfiguracja szybkiego konkursu"));
     }
     connect(competitionRulesEditor, &CompetitionRulesEditorWidget::jumpersCountInTeamChanged, this, [this](){
@@ -1402,7 +1409,10 @@ void CompetitionConfigWindow::on_pushButton_submit_clicked()
                 }
                 else
                 {
-                    static_cast<IndividualCompetitionManager *>(competitionManager)->getRoundsJumpersReference().push_back(static_cast<IndividualCompetitionManager *>(qualificationsManager)->getFilteredJumpersForNextRound());
+                    auto firstRoundJumpers = static_cast<IndividualCompetitionManager *>(qualificationsManager)->getFilteredJumpersForNextRound();
+                    if(checkBox_singleCompetitionSortByQualifications && checkBox_singleCompetitionSortByQualifications->isChecked())
+                        IndividualCompetitionManager::setStartListOrderByCompetitionResults(firstRoundJumpers, &qualsInfo);
+                    static_cast<IndividualCompetitionManager *>(competitionManager)->getRoundsJumpersReference().push_back(firstRoundJumpers);
                     info.getRoundsKOGroupsReference().push_back(QVector<KOGroup>());
                     static_cast<IndividualCompetitionManager *>(competitionManager)->getRoundsKOGroupsReference().push_back(&info.getRoundsKOGroupsReference().last());
                 }

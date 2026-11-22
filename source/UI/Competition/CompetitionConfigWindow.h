@@ -105,6 +105,7 @@ private:
     KOGroupsListView * KOGroupsList;
 
     QCheckBox * checkBox_singleCompetitionQualifications = nullptr;
+    QCheckBox * checkBox_singleCompetitionSortByQualifications = nullptr;
 
     QVector<Team> competitionTeams;
     QVector<Jumper *> competitionJumpers;

@@ -99,7 +99,8 @@ void CompetitionQuickBridge::refresh()
     if (m_section == 0) {
         one(tr("Szybki wybór"), {field(c->ui->comboBox_existingHill, tr("Skocznia z bazy")),
                                  field(c->existingCompetitionRulesComboBox, tr("Zasady z bazy")),
-                                 field(c->checkBox_singleCompetitionQualifications, tr("Przeprowadź kwalifikacje"))});
+                                 field(c->checkBox_singleCompetitionQualifications, tr("Przeprowadź kwalifikacje")),
+                                 field(c->checkBox_singleCompetitionSortByQualifications, tr("Ułóż 1. serię według wyników kwalifikacji"))});
         card(tr("Parametry konkursu"), c, "options");
     } else if (m_section == 1) {
         one(tr("Baza skoczni"), {field(c->ui->comboBox_existingHill, tr("Skocznia"))});
