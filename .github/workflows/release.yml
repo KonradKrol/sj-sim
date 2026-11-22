@@ -98,8 +98,9 @@ jobs:
 
   macos:
     # Experimental: built and smoke-started in CI, not yet tested by players on real Macs.
-    runs-on: macos-14
-    timeout-minutes: 60
+    # The newest GitHub macOS image; older pinned images are retired over time.
+    runs-on: macos-latest
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v6
       - name: Install Qt
