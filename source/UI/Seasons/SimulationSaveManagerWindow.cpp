@@ -844,6 +844,9 @@ void SimulationSaveManagerWindow::resizeEvent(QResizeEvent *event)
 
 void SimulationSaveManagerWindow::showClassificationApperanceWindowAfterListClick(const QModelIndex &index, Classification * classification)
 {
+    // A team row already opens the contribution breakdown in ClassificationResultsTableView;
+    // opening this window as well showed a second dialog after the first one was closed.
+    if(!classification || classification->getClassificationType()==Classification::Team)return;
     if(index.column() == 1)
     {
          ApperanceInClassificationWindow * window = new ApperanceInClassificationWindow(this);
