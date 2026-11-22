@@ -27,6 +27,7 @@
 #include <QMessageBox>
 #include <QByteArray>
 #include <exception>
+#include "../global/AppPaths.h"
 extern IdentifiableObjectsStorage seasonObjectsManager;
 extern const QString appVersion;
 
@@ -93,7 +94,7 @@ bool CompetitionInfo::saveToJsonFile(QString dir, QString name)
 
 bool CompetitionInfo::saveToCsvFile(QString dir, QString name)
 {
-    QDir d(dir);
+    QDir d(AppPaths::output(dir));
     if(!d.exists())
         d.mkpath(".");
     const QFileInfo requested(d.filePath(name));

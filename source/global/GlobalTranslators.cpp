@@ -7,6 +7,7 @@
 #include <QWidget>
 #include <QDir>
 #include "GlobalAppSettings.h"
+#include "AppPaths.h"
 
 GlobalTranslators* GlobalTranslators::m_globalTranslators = nullptr;
 
@@ -38,7 +39,7 @@ bool GlobalTranslators::setLanguage(QApplication *application, int language)
 
     QTranslator *next = language == GlobalAppSettings::Polish ? nullptr : globalTranslations.at(language - 1);
     const QString code = language == GlobalAppSettings::English ? QStringLiteral("en") : QStringLiteral("cs");
-    const QString translationDirectory = QDir(application->applicationDirPath()).filePath(QStringLiteral("translations"));
+    const QString translationDirectory = QDir(AppPaths::resources()).filePath(QStringLiteral("translations"));
     if (next && next->isEmpty() && !next->load(QStringLiteral("translation_%1.qm").arg(code), translationDirectory))
         return false;
 

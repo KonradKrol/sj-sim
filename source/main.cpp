@@ -1,5 +1,6 @@
 #include "UI/Library/ResourceLibraryWindow.h"
 #include "global/UserDataPaths.h"
+#include "global/AppPaths.h"
 #include <QTemporaryDir>
 #include <memory>
 #include "UI/mainwindow.h"
@@ -61,7 +62,8 @@ int main(int argc, char *argv[])
     // resources live in the chosen library, independently of the working directory.
     QString packageToOpen;
     for(const auto &argument:a.arguments().mid(1))if(argument.endsWith(".sjsim-pack",Qt::CaseInsensitive)){packageToOpen=QFileInfo(argument).absoluteFilePath();break;}
-    QDir::setCurrent(QCoreApplication::applicationDirPath());
+    // Relative asset paths such as "flags/..." resolve against the shipped resources folder.
+    QDir::setCurrent(AppPaths::resources());
 
     std::unique_ptr<QTemporaryDir> smokeData;
     if(deploymentSmoke){smokeData=std::make_unique<QTemporaryDir>();a.setProperty("sjSimDataRoot",smokeData->path());}

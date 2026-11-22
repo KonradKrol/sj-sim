@@ -1,4 +1,5 @@
 #include "UserDataPaths.h"
+#include "AppPaths.h"
 #include <QFile>
 #include <QFileInfo>
 #include <QSaveFile>
@@ -24,7 +25,7 @@ bool UserDataPaths::initialize(QString &error) {
     for(const auto &folder:{"Packs/Athletes","Packs/Hills","Packs/Rules","Packs/Points","Calendars","Saves","Settings","Tools/FormPresets","Tools/ImportancePresets","Tools/BalanceLab","Tools/FormEngine"})
         if(!QDir().mkpath(path(folder))){error=QObject::tr("Nie można zapisać danych w %1.").arg(root());return false;}
     if(QFileInfo::exists(path("library.json")))return true;
-    QString defaults=QCoreApplication::applicationDirPath()+"/Defaults";
+    QString defaults=AppPaths::resources()+"/Defaults";
     if(auto *app=QCoreApplication::instance();app && !app->property("sjSimDefaultsRoot").toString().isEmpty())defaults=app->property("sjSimDefaultsRoot").toString();
     if(!QFileInfo::exists(defaults+"/Packs/catalog.json")){error=QObject::tr("Brakuje zasobów startowych w folderze Defaults aplikacji.");return false;}
     if(!seed(defaults,root(),error))return false;

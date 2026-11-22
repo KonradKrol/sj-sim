@@ -456,6 +456,14 @@ TRANSLATIONS += \
 
 win32:RC_ICONS = sj-sim.ico
 
+# macOS: one universal bundle for Apple Silicon and Intel. Qt 6.8 requires macOS 12.
+# scripts/package-macos.sh adds the icon, Resources and bundle metadata after the build.
+macx {
+    QMAKE_APPLE_DEVICE_ARCHS = x86_64 arm64
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 12.0
+    QMAKE_TARGET_BUNDLE_PREFIX = io.github.konradkrol
+}
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

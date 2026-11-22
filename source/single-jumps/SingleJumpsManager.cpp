@@ -30,6 +30,7 @@
 #include "../global/GlobalSimulationSettings.h"
 
 #include "../simulator/JumpManipulator.h"
+#include "../global/AppPaths.h"
 
 namespace {
 SimulationV2::Seed nextJumpIndex(const QVector<JumpData> &jumps) {
@@ -197,9 +198,9 @@ void SingleJumpsManager::simulate()
 
 void SingleJumpsManager::saveResultsCsv(QString fileName)
 {
-    QDir dir(QDir::currentPath());
-    dir.mkpath("results/single-jumps");
-    QFile file("results/single-jumps/" + fileName);
+    const QString folder=AppPaths::output(QStringLiteral("results/single-jumps"));
+    QDir().mkpath(folder);
+    QFile file(QDir(folder).filePath(fileName));
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     file.resize(0);
     QTextStream stream(&file);
