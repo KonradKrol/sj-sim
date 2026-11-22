@@ -132,6 +132,9 @@ private:
     bool manipulationPending;
     bool personalBestNotificationsSuppressed;
     bool bulkSimulationInProgress = false;
+    // Automatic gate: starting quality of each athlete during one bulk simulation. It does not
+    // depend on wind or time, and athletes cannot be edited while a bulk simulation runs.
+    QHash<Jumper *, double> gateQualityCache;
 
     JumpSimulator simulator;
     void setupSimulator();

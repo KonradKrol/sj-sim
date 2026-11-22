@@ -41,6 +41,7 @@
 #include <memory>
 #include <QTimer>
 #include <QProgressDialog>
+#include <QElapsedTimer>
 #include <QRandomGenerator>
 #include <QPushButton>
 #include <QSignalBlocker>
@@ -66,33 +67,22 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     quickSimulate->setObjectName("quickSimulateNextCompetition");quickSimulate->hide();
     connect(quickSimulate,&QPushButton::clicked,this,[this]{if(quickSimulation)return;QScopedValueRollback<bool> quick(quickSimulation,true);on_pushButton_competitionConfig_clicked();});
 
-    auto *batch=new QPushButton(tr("Przesymuluj N konkursów"),this);
+    auto *batch=new QPushButton(tr("Przesymuluj N wydarzeń"),this);
     batch->setObjectName("developerSimulateContests");batch->hide();
     connect(batch,&QPushButton::clicked,this,[this]{
         if(quickSimulation)return;
-        auto *season=simulationSave->getActualSeason();int remaining=0;
-        for(auto *calendar:season->getCalendars())for(auto *event:calendar->getCompetitions())
-            if(SeasonChronology::pending(event) && event->getSerieType()==CompetitionInfo::Competition)++remaining;
-        if(!remaining){QMessageBox::information(this,tr("Szybka symulacja"),tr("Nie ma już konkursów do rozegrania w tym sezonie."));return;}
-        bool accepted=false;const int requested=QInputDialog::getInt(this,tr("Szybka symulacja"),tr("Liczba konkursów:"),1,1,2147483647,1,&accepted);
+        const int remaining=pendingSeasonEventsCount();
+        if(!remaining){QMessageBox::information(this,tr("Szybka symulacja"),tr("Nie ma już wydarzeń do rozegrania w tym sezonie."));return;}
+        bool accepted=false;
+        const int requested=QInputDialog::getInt(this,tr("Szybka symulacja"),
+            tr("Ile wydarzeń przesymulować? Liczy się każde wydarzenie: trening, seria próbna, kwalifikacje i konkurs.\nPozostało w sezonie: %1.").arg(remaining),
+            std::min(10,remaining),1,remaining,1,&accepted);
         if(!accepted)return;
-        const int count=std::min(requested,remaining);QScopedValueRollback<bool> quick(quickSimulation,true);
-        QProgressDialog progress(tr("Symulowanie konkursów…"),tr("Przerwij"),0,count,this);
+        const int count=std::min(requested,remaining);
+        QProgressDialog progress(tr("Symulowanie wydarzeń…"),tr("Przerwij"),0,count,this);
         progress.setWindowModality(Qt::WindowModal);progress.setMinimumDuration(0);progress.setValue(0);progress.show();
-        int done=0;
-        while(done<count && !progress.wasCanceled()) {
-            CompetitionInfo *next=nullptr;SeasonCalendar *owner=nullptr;
-            for(auto *calendar:season->getCalendars())for(auto *event:calendar->getCompetitions())if(SeasonChronology::pending(event)) {
-                if(!next || (season->getDatesEnabled() && event->getScheduledDate()<next->getScheduledDate())){next=event;owner=calendar;}break;
-            }
-            if(!next)break;
-            season->setActualCalendar(owner);simulationSave->updateNextCompetitionIndex();emit actualCalendarChanged();
-            QApplication::processEvents();if(progress.wasCanceled())break;
-            on_pushButton_competitionConfig_clicked();
-            if(!next->getPlayed() && !next->getCancelled())break;
-            if(next->getSerieType()==CompetitionInfo::Competition)progress.setValue(++done);
-        }
-        progress.close();fillNextCompetitionInformations();
+        simulateSeasonEvents(count,&progress);
+        progress.close();
     });
 
     auto *cancelNext=new QPushButton(tr("Odwołaj najbliższe wydarzenie"),this);
@@ -1253,7 +1243,9 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
             QMessageBox::warning(this,tr("Sprawdź kwalifikacje"),tr("Kwalifikacje i konkurs główny muszą mieć ten sam rodzaj oraz zgodną liczbę zawodników w drużynie."));focusCalendarTab(false,true);return;
         }
         // Do not serialize a partially running competition from an idle timer.
-        if(autosaveTimer && hasUnsavedSeasonChanges() && simulationSave->getAutosaveEnabled()){
+        // A batch saves once after its last event instead of before and after every event.
+        if(autosaveTimer && batchSimulation)autosaveTimer->stop();
+        else if(autosaveTimer && hasUnsavedSeasonChanges() && simulationSave->getAutosaveEnabled()){
             autosaveTimer->stop();
             if(!saveSeasonChanges())return;
         }
@@ -1263,7 +1255,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
         if(!simulationSave->formEngine().update(next->getScheduledDate(),simulationSave->getJumpersReference(),simulationSave->getActualSeason()->getDatesEnabled(),formError)){
             QMessageBox::warning(this,tr("Automatyczna forma"),formError);return;
         }
-        refreshProfileDrafts();
+        if(!batchSimulation)refreshProfileDrafts();
         auto configWindow=std::make_unique<CompetitionConfigWindow>(CompetitionConfigWindow::SeasonCompetition,this,simulationSave);
         configWindow->setModal(true);
 
@@ -1347,7 +1339,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
                 markSeasonChanged();return;
             }
             simulationSave->getActualSeason()->markStarted();
-            formCheckpoint.commit();refreshProfileDrafts();
+            formCheckpoint.commit();if(!batchSimulation)refreshProfileDrafts();
             {
                 competition->setPlayed(true);
                 for(auto & classification : competition->getClassificationsReference())
@@ -1401,24 +1393,25 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
                     classification->updatePointsSums();
                     classification->sortInDescendingOrder();
                 }
-                if(ui->comboBox_classifications->count() > 0)
-                {
-                    emit ui->comboBox_classifications->currentIndexChanged(ui->comboBox_classifications->currentIndex());
-                }
-
-                for(auto & season : simulationSave->getSeasonsReference())
-                    for(auto *calendar:season.getCalendarsReference())if(calendar)
-                        for(auto *comp:calendar->getCompetitionsReference())if(comp)
-                            comp->getResultsReference().fixSingleResultsJumps();
-
-                simulationSave->updateNextCompetitionIndex();
-                refreshProfileDrafts();
-                fillNextCompetitionInformations();
-                updateArchive();
-                markSeasonChanged();
-                if(simulationSave->getAutosaveEnabled()){
+                if(batchSimulation){
+                    // Views, profile drafts and the save file are refreshed once by finishSeasonEventsBatch().
+                    competition->getResultsReference().fixSingleResultsJumps();
+                    simulationSave->updateNextCompetitionIndex();
+                    markSeasonChanged();
                     if(autosaveTimer)autosaveTimer->stop();
-                    saveSeasonChanges();
+                } else {
+                    if(ui->comboBox_classifications->count() > 0)
+                        emit ui->comboBox_classifications->currentIndexChanged(ui->comboBox_classifications->currentIndex());
+                    fixAllSingleResultsJumps();
+                    simulationSave->updateNextCompetitionIndex();
+                    refreshProfileDrafts();
+                    fillNextCompetitionInformations();
+                    updateArchive();
+                    markSeasonChanged();
+                    if(simulationSave->getAutosaveEnabled()){
+                        if(autosaveTimer)autosaveTimer->stop();
+                        saveSeasonChanges();
+                    }
                 }
 
                 competition->saveToCsvFile("results/season-competitions/csv/", simulationSave->getName() + QString(" (%1)" ).arg(simulationSave->getActualSeason()->getActualCalendar()->getName()) + QString::number(simulationSave->getActualSeason()->getSeasonNumber()) + "-" + QString::number(simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference().indexOf(competition)) + " " + competition->getHill()->getHillText() + " (" + competition->getShortSerieTypeText() + ")" + ".csv");
@@ -1551,6 +1544,68 @@ void SimulationSaveManagerWindow::on_comboBox_archiveSeason_currentIndexChanged(
 void SimulationSaveManagerWindow::on_comboBox_archiveCalendar_currentIndexChanged(int index)
 {
     updateArchive();
+}
+
+int SimulationSaveManagerWindow::pendingSeasonEventsCount() const
+{
+    auto *season=simulationSave->getActualSeason();if(!season)return 0;
+    int remaining=0;
+    for(auto *calendar:season->getCalendars())for(auto *event:calendar->getCompetitions())
+        if(SeasonChronology::pending(event))++remaining;
+    return remaining;
+}
+
+int SimulationSaveManagerWindow::simulateSeasonEvents(int count,QProgressDialog *progress)
+{
+    auto *season=simulationSave->getActualSeason();
+    if(quickSimulation || count<=0 || !season)return 0;
+    int done=0;
+    {
+        QScopedValueRollback<bool> quick(quickSimulation,true);
+        QScopedValueRollback<bool> batch(batchSimulation,true);
+        QElapsedTimer sinceRefresh;sinceRefresh.start();
+        while(done<count && !(progress && progress->wasCanceled())) {
+            CompetitionInfo *next=nullptr;SeasonCalendar *owner=nullptr;
+            for(auto *calendar:season->getCalendars())for(auto *event:calendar->getCompetitions())if(SeasonChronology::pending(event)) {
+                if(!next || (season->getDatesEnabled() && event->getScheduledDate()<next->getScheduledDate())){next=event;owner=calendar;}break;
+            }
+            if(!next)break;
+            if(season->getActualCalendar()!=owner)season->setActualCalendar(owner);
+            simulationSave->updateNextCompetitionIndex();
+            on_pushButton_competitionConfig_clicked();
+            if(!next->getPlayed() && !next->getCancelled())break;
+            ++done;
+            // Keep the progress dialog and its cancel button responsive without repainting
+            // the whole season view after every event.
+            if(progress && sinceRefresh.elapsed()>=100){progress->setValue(done);QApplication::processEvents();sinceRefresh.restart();}
+        }
+    }
+    finishSeasonEventsBatch();
+    if(progress)progress->setValue(done);
+    return done;
+}
+
+void SimulationSaveManagerWindow::fixAllSingleResultsJumps()
+{
+    for(auto &season:simulationSave->getSeasonsReference())
+        for(auto *calendar:season.getCalendarsReference())if(calendar)
+            for(auto *comp:calendar->getCompetitionsReference())if(comp)
+                comp->getResultsReference().fixSingleResultsJumps();
+}
+
+void SimulationSaveManagerWindow::finishSeasonEventsBatch()
+{
+    fixAllSingleResultsJumps();
+    if(ui->comboBox_classifications->count()>0)
+        emit ui->comboBox_classifications->currentIndexChanged(ui->comboBox_classifications->currentIndex());
+    refreshProfileDrafts();
+    fillNextCompetitionInformations();
+    updateArchive();
+    emit actualCalendarChanged();
+    if(simulationSave->getAutosaveEnabled() && hasUnsavedSeasonChanges()){
+        if(autosaveTimer)autosaveTimer->stop();
+        saveSeasonChanges();
+    }
 }
 
 void SimulationSaveManagerWindow::updateArchive()

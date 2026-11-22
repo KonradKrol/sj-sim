@@ -956,7 +956,7 @@ void CompetitionManagerWindow::autoSimulateRound()
         return;
 
     setAutomaticPlayback(false);
-    QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);
+    QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);gateQualityCache.clear();
     jumperResultsWidget->hide();
     Jumper *lastSimulatedJumper = nullptr;
     if(getType() == CompetitionRules::Individual)
@@ -1085,7 +1085,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
 
     setAutomaticPlayback(false);
     QScopedValueRollback<bool> quietRecords(personalBestNotificationsSuppressed,personalBestNotificationsSuppressed || property("quickSeasonSimulation").toBool());
-    QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);
+    QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);gateQualityCache.clear();
     jumperResultsWidget->hide();
     Jumper *lastSimulatedJumper = nullptr;
     if(getType() == CompetitionRules::Individual)
@@ -1197,12 +1197,19 @@ void CompetitionManagerWindow::autoSimulateCompetition()
     bulkSimulationInProgress = false;
     manager->updateLeaderResult();
     manager->updateLastQualifiedResult();
-    refreshWindSnapshot();
-    emit manager->actualJumperChanged();
+    // A quick season simulation never shows this window: it keeps the results state but
+    // skips rebuilding tables, labels and the virtual classification preview.
+    const bool headless=property("quickSeasonSimulation").toBool();
+    if(!headless){
+        refreshWindSnapshot();
+        emit manager->actualJumperChanged();
+    }
     if(getType() == CompetitionRules::Individual){
-        ui->tableView_results->setModel(nullptr);
-        ui->tableView_results->setModel(resultsTableModel);
-        ResponsiveWindowUtils::configureTableColumns(ui->tableView_results);
+        if(!headless){
+            ui->tableView_results->setModel(nullptr);
+            ui->tableView_results->setModel(resultsTableModel);
+            ResponsiveWindowUtils::configureTableColumns(ui->tableView_results);
+        }
         if(KOManager != nullptr)
         {
             KOManager->updateActualGroup(manager->getActualJumper());
@@ -1210,13 +1217,15 @@ void CompetitionManagerWindow::autoSimulateCompetition()
             KOManager->updateStatuses();
             KOGroupsResultsModel->setGroup(KOManager->getActualGroup());
             manager->updateLastQualifiedResult();
-            updateToAdvanceDistanceLabel();
-            ui->tableView_KOGroupResults->setModel(nullptr);
-            ui->tableView_KOGroupResults->setModel(KOGroupsResultsModel);
-            ResponsiveWindowUtils::configureTableColumns(ui->tableView_KOGroupResults);
+            if(!headless){
+                updateToAdvanceDistanceLabel();
+                ui->tableView_KOGroupResults->setModel(nullptr);
+                ui->tableView_KOGroupResults->setModel(KOGroupsResultsModel);
+                ResponsiveWindowUtils::configureTableColumns(ui->tableView_KOGroupResults);
+            }
         }
     }
-    else if(getType() == CompetitionRules::Team){
+    else if(getType() == CompetitionRules::Team && !headless){
         teamResultsTreeModel->setupTreeItems();
         teamResultsTreeView->setModel(nullptr);
         teamResultsTreeView->setModel(teamResultsTreeModel);
@@ -1225,12 +1234,14 @@ void CompetitionManagerWindow::autoSimulateCompetition()
     }//teams sie psuje kiedy jest ostatnia seria
 
     manager->updateLast10Judges();
-    updateToBeatDistanceLabel();
-    updateToAdvanceDistanceLabel();
-    updatePointsToTheLeaderLabel();
-    updateAvgWindLabel();
-    updateActualInrunSnowLevelLabel();
-    emit ui->comboBox_virtualClassification->currentIndexChanged(ui->comboBox_virtualClassification->currentIndex());
+    if(!headless){
+        updateToBeatDistanceLabel();
+        updateToAdvanceDistanceLabel();
+        updatePointsToTheLeaderLabel();
+        updateAvgWindLabel();
+        updateActualInrunSnowLevelLabel();
+        emit ui->comboBox_virtualClassification->currentIndexChanged(ui->comboBox_virtualClassification->currentIndex());
+    }
 
     manager->updateCompetitorsAdvanceStatuses();
     checkRecordsByResults(manager->getResults());
@@ -1239,7 +1250,7 @@ void CompetitionManagerWindow::autoSimulateCompetition()
         setupGoToNextButtonForCompetitionEnd();
         showMessageBoxForCompetitionEnd();
     }
-    refreshAutomaticJumpPreview(jumperResultsWidget,manager->getResults(),lastSimulatedJumper);
+    if(!headless)refreshAutomaticJumpPreview(jumperResultsWidget,manager->getResults(),lastSimulatedJumper);
 }
 
 void CompetitionManagerWindow::autoSimulateGroup()
@@ -1254,7 +1265,7 @@ void CompetitionManagerWindow::autoSimulateGroup()
         return;
 
     setAutomaticPlayback(false);
-    QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);
+    QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);gateQualityCache.clear();
     jumperResultsWidget->hide();
     Jumper *lastSimulatedJumper = nullptr;
     teamResultsTreeModel->setLastTeam(nullptr);
@@ -1347,7 +1358,7 @@ void CompetitionManagerWindow::autoSimulateJumps()
                                                 5, 1, 10000, 1, &ok);
     if(ok == true){
         setAutomaticPlayback(false);
-    QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);
+    QScopedValueRollback<bool> bulk(bulkSimulationInProgress, true);gateQualityCache.clear();
         jumperResultsWidget->hide();
         Jumper *lastSimulatedJumper = nullptr;
         for(int i = 0; i < jumpsCount; i++){
@@ -2470,7 +2481,12 @@ void CompetitionManagerWindow::suggestCurrentGate(bool undo)
         QMap<int,QPair<Jumper *,double>> strongest;
         for(auto *jumper:candidates) {
             if(!jumper || !jumper->getSimulationProfile())continue;
-            preview.setJumper(jumper);const double quality=preview.previewQuality();
+            double quality;
+            if(bulkSimulationInProgress && gateQualityCache.contains(jumper))quality=gateQualityCache.value(jumper);
+            else {
+                preview.setJumper(jumper);quality=preview.previewQuality();
+                if(bulkSimulationInProgress)gateQualityCache.insert(jumper,quality);
+            }
             const int specialist=jumper->getSimulationProfile()->perks[1];
             if(!strongest.contains(specialist) || quality>strongest[specialist].second)strongest[specialist]={jumper,quality};
         }
@@ -2483,7 +2499,12 @@ void CompetitionManagerWindow::suggestCurrentGate(bool undo)
         if(!best)return;
         preview.setJumper(best);
         int low=ui->spinBox_actualGate->minimum(),high=ui->spinBox_actualGate->maximum();
-        while(low<high){const int middle=(low+high+1)/2;preview.setGate(middle);if(preview.previewDistance()<=hill->getSimulationProfile()->realHs())low=middle;else high=middle-1;}
+        const double realHs=hill->getSimulationProfile()->realHs();
+        const auto safeAt=[&](int gate){preview.setGate(gate);return preview.previewDistance()<=realHs;};
+        // The automatic gate only moves by more than one step. Distance grows with the gate, so
+        // two previews decide whether the full search below could find such a move.
+        if(automatic && (previous-1<=low || safeAt(previous-1)) && (previous+2>high || !safeAt(previous+2)))return;
+        while(low<high){const int middle=(low+high+1)/2;if(safeAt(middle))low=middle;else high=middle-1;}
         target=low;
         if(automatic && std::abs(target-previous)<=1)return;
         setProperty("gatePreviousValue",previous);

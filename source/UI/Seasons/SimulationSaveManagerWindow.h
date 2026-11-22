@@ -17,6 +17,7 @@
 #include "../../seasons/SimulationSave.h"
 
 class QLabel;
+class QProgressDialog;
 class SimulationProfileDraft;
 class QTimer;
 class QuickRoster;
@@ -107,6 +108,15 @@ public:
     void updateArchive();
     void syncArchiveCalendars();
 
+    int pendingSeasonEventsCount() const;
+    // Plays up to count pending events of the current season (every training, trial round,
+    // qualification and main competition counts as one). Returns the number played or cancelled.
+    int simulateSeasonEvents(int count, QProgressDialog *progress=nullptr);
+private:
+    void finishSeasonEventsBatch();
+    void fixAllSingleResultsJumps();
+public:
+
 signals:
     void seasonProfileSelectionChanged();
     void chronologyChanged();
@@ -123,6 +133,9 @@ signals:
 private:
     bool nextSeasonTransitionRunning=false;
     bool quickSimulation=false;
+    // Set while several events are simulated in a row: per-event UI refreshes and saving are
+    // deferred to one pass after the batch.
+    bool batchSimulation=false;
     bool boardIsOpen=false;
     QVariantMap boardDraft, boardBaseline;
     QuickRoster *seasonRosterEditor=nullptr;

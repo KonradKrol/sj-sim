@@ -7,6 +7,7 @@
 #include <QIcon>
 #include <QDebug>
 #include <QSize>
+#include <QHash>
 
 CountryFlagsManager::CountryFlagsManager()
 {
@@ -15,7 +16,16 @@ CountryFlagsManager::CountryFlagsManager()
 
 QPixmap CountryFlagsManager::getFlagPixmap(const QString &twoLettersCountryCode)
 {
-    return QPixmap("flags/" + CountryCodes::toIso(twoLettersCountryCode) + ".svg");
+    // Rendering an SVG flag is costly and lists show the same few flags many times. The files
+    // ship with the game and do not change while it runs, so each flag is rendered once.
+    // Pixmaps are GUI objects: this is only used from the GUI thread.
+    static QHash<QString,QPixmap> cache;
+    const QString file="flags/" + CountryCodes::toIso(twoLettersCountryCode) + ".svg";
+    auto cached=cache.constFind(file);
+    if(cached!=cache.constEnd())return *cached;
+    const QPixmap pixmap(file);
+    cache.insert(file,pixmap);
+    return pixmap;
 }
 
 /*QString CountryFlagsManager::convertThreeLettersCountryCodeToTwoLetters(const QString &code)

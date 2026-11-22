@@ -88,6 +88,16 @@ double Engine::previewDistance(const JumpRequest &input,const WeatherField &weat
     const double reserve=flightModel.reserve(input.manipulation.quality.apply(quality.value()),input.hill,input.scoring.juryGate-input.scoring.coachReduction,
         precipitation(input,weather),weather.wind(0,input.startSeconds).head,weather.precipitationKind());
     auto preview=input;preview.captureExposure=false;bool limited=false;
+    if(!preview.manipulation.distance.active()) {
+        // Same natural flight and hill spread as manipulatedFlight(). A real jump then flies again
+        // (a 36-step search) to land exactly on the spread distance; a preview only needs that
+        // distance, so it skips the search on hills with a distance-spread perk.
+        const auto flight=flightModel.fly(reserve,preview.hill,weather,preview.startSeconds,false,{},preview.athlete.perks[1]);
+        const double spread=std::max(0.,1+preview.hill.distanceSpreadPerk*flightModel.parameters().hillSpreadPerLevel*3.9);
+        if(spread==1)return flight.distance;
+        const double natural=std::max(0.,preview.hill.k+(flight.distance-preview.hill.k)*spread);
+        return std::clamp(natural,0.0,flightModel.landingLimit(preview.hill));
+    }
     return manipulatedFlight(preview,flightModel,weather,reserve,limited).distance;
 }
 
