@@ -17,6 +17,24 @@ ColumnLayout {
         SField { objectName: "rosterSearch"; Layout.fillWidth: true; Layout.minimumWidth: 0; text: library.backend.query; placeholderText: qsTr("Szukaj nazwiska lub kraju"); Accessible.name: placeholderText; onTextEdited: library.backend.query=text }
         SChoice { objectName: "rosterCountry"; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: 150; model: library.backend.countries; currentIndex: library.backend.country; Accessible.name: qsTr("Kraj"); onActivated: library.backend.country=currentIndex }
     }
+    RowLayout {
+        visible: library.backend.membership && !library.backend.savedList && !library.backend.knockout
+        Layout.fillWidth: true; spacing: 8
+        SButton {
+            objectName: "rosterSelectAll"; Layout.fillWidth: true; Layout.minimumWidth: 0
+            implicitHeight: library.cramped ? Theme.dp(32) : Theme.controlHeight
+            text: qsTr("Zaznacz wszystkich"); quiet: true
+            hint: qsTr("Dodaje do listy startowej wszystkich zawodników pasujących do wyszukiwania i kraju.")
+            enabled: candidates.count>0; onClicked: library.backend.addVisible()
+        }
+        SButton {
+            objectName: "rosterDeselectAll"; Layout.fillWidth: true; Layout.minimumWidth: 0
+            implicitHeight: library.cramped ? Theme.dp(32) : Theme.controlHeight
+            text: qsTr("Odznacz wszystkich"); quiet: true
+            hint: qsTr("Usuwa z listy startowej wszystkich zawodników pasujących do wyszukiwania i kraju.")
+            enabled: candidates.count>0; onClicked: library.backend.removeVisible()
+        }
+    }
     ListView {
         id: candidates
         objectName: "rosterLibrary"
