@@ -456,6 +456,42 @@ But to keep you from getting too cheerful, your computer has been infected with 
         <source>Pokazuj skoki stopniowo</source>
         <translation>Reveal jumps gradually</translation>
     </message>
+        <message>
+            <source>Discord</source>
+            <translation>Discord</translation>
+        </message>
+        <message>
+            <source>Wklej adres webhooka kanału, aby publikować obrazy wyników przyciskiem „Opublikuj na Discordzie” w konkursie i w klasyfikacji. Adres utworzysz w Discordzie: Edytuj kanał → Integracje → Webhooki → Nowy webhook → Kopiuj adres URL webhooka. Każdy, kto zna ten adres, może pisać na kanale, więc nie udostępniaj go.</source>
+            <translation>Paste a channel webhook address to publish results images with the “Publish on Discord” button in competitions and classifications. Create it in Discord: Edit Channel → Integrations → Webhooks → New Webhook → Copy Webhook URL. Anyone who knows this address can post in the channel, so do not share it.</translation>
+        </message>
+        <message>
+            <source>Adres webhooka Discord</source>
+            <translation>Discord webhook address</translation>
+        </message>
+        <message>
+            <source>Wyślij wiadomość testową</source>
+            <translation>Send a test message</translation>
+        </message>
+        <message>
+            <source>Publikowanie wyłączone: nie wklejono adresu.</source>
+            <translation>Publishing is off: no address has been pasted.</translation>
+        </message>
+        <message>
+            <source>Adres poprawny: %1</source>
+            <translation>Valid address: %1</translation>
+        </message>
+        <message>
+            <source>Wysyłanie wiadomości testowej…</source>
+            <translation>Sending a test message…</translation>
+        </message>
+        <message>
+            <source>Sj.Sim połączył się z tym kanałem. Tutaj pojawią się opublikowane wyniki.</source>
+            <translation>Sj.Sim is connected to this channel. Published results will appear here.</translation>
+        </message>
+        <message>
+            <source>Działa: wiadomość testowa dotarła na kanał.</source>
+            <translation>Working: the test message reached the channel.</translation>
+        </message>
 </context>
     <context>
         <name>AppearanceMenu</name>
@@ -3667,6 +3703,22 @@ li.checked::marker { content: "\2612"; }
             <source>Brak wkładu punktowego w tym zakresie konkursów.</source>
             <translation>No points contributed in this competition range.</translation>
         </message>
+        <message>
+            <source>Zapisz klasyfikację jako obraz…</source>
+            <translation>Save classification as image…</translation>
+        </message>
+        <message>
+            <source>Zapisuje aktualny stan klasyfikacji jako plik PNG i kopiuje go do schowka.</source>
+            <translation>Saves the current classification standings as a PNG file and copies it to the clipboard.</translation>
+        </message>
+        <message>
+            <source>Opublikuj klasyfikację na Discordzie…</source>
+            <translation>Publish classification on Discord…</translation>
+        </message>
+        <message>
+            <source>Wysyła obraz z aktualnym stanem klasyfikacji na kanał Discord ustawiony w ustawieniach.</source>
+            <translation>Sends an image of the current classification standings to the Discord channel set in Settings.</translation>
+        </message>
     </context>
     <context>
         <name>ClassificationSources</name>
@@ -5115,6 +5167,14 @@ For additional compensation, the jumper must reach 95% of HS (%1 m).</translatio
         <source>Pokazuj skoki stopniowo</source>
         <translation>Reveal jumps gradually</translation>
     </message>
+        <message>
+            <source>Zapisz wyniki jako obraz…</source>
+            <translation>Save results as image…</translation>
+        </message>
+        <message>
+            <source>Opublikuj wyniki na Discordzie…</source>
+            <translation>Publish results on Discord…</translation>
+        </message>
 </context>
     <context>
         <name>CompetitionQuickBridge</name>
@@ -15562,6 +15622,236 @@ Check that you selected the correct file.</translation>
             <source>Nie można powtórzyć kalendarza „%1”: %2</source>
             <translation>Cannot reuse calendar “%1”: %2</translation>
         </message>
+        <message>
+            <source> · drużynowy</source>
+            <translation> · team</translation>
+        </message>
+        <message>
+            <source> · indywidualny</source>
+            <translation> · individual</translation>
+        </message>
+        <message>
+            <source>DSQ</source>
+            <translation>DSQ</translation>
+        </message>
+        <message>
+            <source>DNS</source>
+            <translation>DNS</translation>
+        </message>
+        <message>
+            <source>%1 m</source>
+            <translation>%1 m</translation>
+        </message>
+        <message>
+            <source>%1 pierwszych miejsc · jeden obraz</source>
+            <translation>Top %1 places · one image</translation>
+        </message>
+        <message>
+            <source>Wszystkie miejsca (%1) · jeden obraz</source>
+            <translation>All places (%1) · one image</translation>
+        </message>
+        <message>
+            <source>Wszystkie miejsca (%1) · po %2 na obrazie, obrazów: %3</source>
+            <translation>All places (%1) · %2 per image, images: %3</translation>
+        </message>
+        <message>
+            <source>Obraz wyników</source>
+            <translation>Results image</translation>
+        </message>
+        <message>
+            <source>Ile miejsc pokazać? Krótsza lista jest czytelniejsza w czacie. Pełne wyniki można podzielić na kilka obrazów; więcej niż trzy zapiszą się jako archiwum ZIP.</source>
+            <translation>How many places should be shown? A shorter list is easier to read in a chat. Full results can be split into several images; more than three are saved as a ZIP archive.</translation>
+        </message>
+        <message>
+            <source>%1 (%2 z %3)</source>
+            <translation>%1 (%2 of %3)</translation>
+        </message>
+        <message>
+            <source>Zapisz obrazy wyników jako archiwum ZIP</source>
+            <translation>Save results images as a ZIP archive</translation>
+        </message>
+        <message>
+            <source>Zapisz obraz wyników</source>
+            <translation>Save results image</translation>
+        </message>
+        <message>
+            <source>Archiwum ZIP (*.zip)</source>
+            <translation>ZIP archive (*.zip)</translation>
+        </message>
+        <message>
+            <source>Obraz PNG (*.png)</source>
+            <translation>PNG image (*.png)</translation>
+        </message>
+        <message>
+            <source>Nie zapisano obrazu</source>
+            <translation>Image not saved</translation>
+        </message>
+        <message>
+            <source>Nie udało się zapisać pliku %1. Wybierz inny folder.</source>
+            <translation>Could not save the file %1. Choose another folder.</translation>
+        </message>
+        <message>
+            <source>Zapisano obraz wyników</source>
+            <translation>Results image saved</translation>
+        </message>
+        <message>
+            <source>Obraz zapisano w pliku:
+%1
+
+Jest też w schowku, więc możesz go od razu wkleić, na przykład na Discordzie.</source>
+            <translation>The image was saved to:
+%1
+
+It is also on the clipboard, so you can paste it right away, for example on Discord.</translation>
+        </message>
+        <message>
+            <source>Zapisano obrazy wyników</source>
+            <translation>Results images saved</translation>
+        </message>
+        <message>
+            <source>Liczba obrazów w archiwum: %1.
+%2</source>
+            <translation>Images in the archive: %1.
+%2</translation>
+        </message>
+        <message>
+            <source>Liczba zapisanych obrazów: %1, w folderze:
+%2</source>
+            <translation>Images saved: %1, in the folder:
+%2</translation>
+        </message>
+        <message>
+            <source>Discord</source>
+            <translation>Discord</translation>
+        </message>
+        <message>
+            <source>Nie wysłano na Discorda</source>
+            <translation>Not sent to Discord</translation>
+        </message>
+        <message>
+            <source>Discord nie jest ustawiony</source>
+            <translation>Discord is not set up</translation>
+        </message>
+        <message>
+            <source>Aby publikować wyniki, wklej adres webhooka kanału w Ustawieniach, w sekcji „Discord”.
+
+%1</source>
+            <translation>To publish results, paste the channel webhook address in Settings, in the “Discord” section.
+
+%1</translation>
+        </message>
+        <message>
+            <source>%1 HS%2</source>
+            <translation>%1 HS%2</translation>
+        </message>
+        <message>
+            <source>Wyniki końcowe</source>
+            <translation>Final results</translation>
+        </message>
+        <message>
+            <source>Wyniki w trakcie konkursu</source>
+            <translation>Results during the competition</translation>
+        </message>
+        <message>
+            <source>Nota</source>
+            <translation>Score</translation>
+        </message>
+        <message>
+            <source>%1. seria</source>
+            <translation>Round %1</translation>
+        </message>
+        <message>
+            <source>Klasyfikacja drużynowa</source>
+            <translation>Team classification</translation>
+        </message>
+        <message>
+            <source>Klasyfikacja indywidualna</source>
+            <translation>Individual classification</translation>
+        </message>
+        <message>
+            <source>Aktualny stan</source>
+            <translation>Current standings</translation>
+        </message>
+        <message>
+            <source>Punkty</source>
+            <translation>Points</translation>
+        </message>
+        <message>
+            <source>Miejsce</source>
+            <translation>Place</translation>
+        </message>
+        <message>
+            <source>Brak wyników do pokazania.</source>
+            <translation>No results to show.</translation>
+        </message>
+        <message>
+            <source>Pozostałe miejsca: %1</source>
+            <translation>Remaining places: %1</translation>
+        </message>
+        <message>
+            <source>Sj.Sim %1 · symulacja skoków narciarskich</source>
+            <translation>Sj.Sim %1 · ski jumping simulation</translation>
+        </message>
+        <message>
+            <source>Miejsca %1–%2 · obraz %3 z %4</source>
+            <translation>Places %1–%2 · image %3 of %4</translation>
+        </message>
+        <message>
+            <source>Ten konkurs nie ma jeszcze wyników.</source>
+            <translation>This competition has no results yet.</translation>
+        </message>
+        <message>
+            <source>Ta klasyfikacja nie ma jeszcze wyników.</source>
+            <translation>This classification has no results yet.</translation>
+        </message>
+        <message>
+            <source>Discord nie zna tego webhooka. Mógł zostać usunięty. Utwórz nowy w ustawieniach kanału Discord i wklej jego adres w ustawieniach Sj.Sima.</source>
+            <translation>Discord does not recognise this webhook. It may have been deleted. Create a new one in the Discord channel settings and paste its address in the Sj.Sim settings.</translation>
+        </message>
+        <message>
+            <source>Discord chwilowo ogranicza liczbę wiadomości. Spróbuj ponownie za %1 s.</source>
+            <translation>Discord is temporarily limiting messages. Try again in %1 s.</translation>
+        </message>
+        <message>
+            <source>Discord chwilowo ogranicza liczbę wiadomości. Spróbuj ponownie za chwilę.</source>
+            <translation>Discord is temporarily limiting messages. Try again shortly.</translation>
+        </message>
+        <message>
+            <source>Obraz jest za duży dla Discorda. Wybierz mniej miejsc.</source>
+            <translation>The image is too large for Discord. Choose fewer places.</translation>
+        </message>
+        <message>
+            <source>Discord odrzucił wiadomość (kod %1).</source>
+            <translation>Discord rejected the message (code %1).</translation>
+        </message>
+        <message>
+            <source>Discord ma chwilowe problemy (kod %1). Spróbuj ponownie później.</source>
+            <translation>Discord is having temporary problems (code %1). Try again later.</translation>
+        </message>
+        <message>
+            <source>Discord nie odpowiedział w ciągu 20 sekund. Sprawdź połączenie z internetem.</source>
+            <translation>Discord did not respond within 20 seconds. Check your internet connection.</translation>
+        </message>
+        <message>
+            <source>Nie udało się połączyć z Discordem. Sprawdź połączenie z internetem.</source>
+            <translation>Could not connect to Discord. Check your internet connection.</translation>
+        </message>
+        <message>
+            <source>Wklej adres webhooka z Discorda.</source>
+            <translation>Paste the webhook address from Discord.</translation>
+        </message>
+        <message>
+            <source>Adres musi zaczynać się od https://discord.com/api/webhooks/.</source>
+            <translation>The address must start with https://discord.com/api/webhooks/.</translation>
+        </message>
+        <message>
+            <source>To nie jest adres webhooka Discorda. Skopiuj go w Discordzie: Edytuj kanał → Integracje → Webhooki → Kopiuj adres URL webhooka.</source>
+            <translation>This is not a Discord webhook address. Copy it in Discord: Edit Channel → Integrations → Webhooks → Copy Webhook URL.</translation>
+        </message>
+        <message>
+            <source>Wysłano na Discorda.</source>
+            <translation>Sent to Discord.</translation>
+        </message>
     </context>
     <context>
         <name>QuickBridge</name>
@@ -19204,6 +19494,32 @@ li.checked::marker { content: "\2612"; }
         <message>
             <source>Nie można rozpocząć sezonu</source>
             <translation>Cannot start season</translation>
+        </message>
+        <message>
+            <source>Przesymuluj N wydarzeń</source>
+            <translation>Simulate N events</translation>
+        </message>
+        <message>
+            <source>Szybka symulacja</source>
+            <translation>Quick simulation</translation>
+        </message>
+        <message>
+            <source>Nie ma już wydarzeń do rozegrania w tym sezonie.</source>
+            <translation>There are no events left to play this season.</translation>
+        </message>
+        <message>
+            <source>Ile wydarzeń przesymulować? Liczy się każde wydarzenie: trening, seria próbna, kwalifikacje i konkurs.
+Pozostało w sezonie: %1. Większa liczba rozegra sezon do końca.</source>
+            <translation>How many events should be simulated? Every event counts: training, trial round, qualification and competition.
+Remaining this season: %1. A larger number plays the season to the end.</translation>
+        </message>
+        <message>
+            <source>Symulowanie wydarzeń…</source>
+            <translation>Simulating events…</translation>
+        </message>
+        <message>
+            <source>Przerwij</source>
+            <translation>Stop</translation>
         </message>
     </context>
     <context>
@@ -24661,6 +24977,14 @@ Close the previous Sj.Sim window and try again.</translation></message></context
         <source>Odwołaj konkurs</source>
         <translation>Cancel competition</translation>
     </message>
+        <message>
+            <source>Zapisz wyniki jako obraz…</source>
+            <translation>Save results as image…</translation>
+        </message>
+        <message>
+            <source>Opublikuj wyniki na Discordzie…</source>
+            <translation>Publish results on Discord…</translation>
+        </message>
 </context>
 <context>
     <name>SimulationPreferences</name>

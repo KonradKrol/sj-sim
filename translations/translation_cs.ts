@@ -456,6 +456,42 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
         <source>Pokazuj skoki stopniowo</source>
         <translation>Odhaluj skoky postupně</translation>
     </message>
+        <message>
+            <source>Discord</source>
+            <translation>Discord</translation>
+        </message>
+        <message>
+            <source>Wklej adres webhooka kanału, aby publikować obrazy wyników przyciskiem „Opublikuj na Discordzie” w konkursie i w klasyfikacji. Adres utworzysz w Discordzie: Edytuj kanał → Integracje → Webhooki → Nowy webhook → Kopiuj adres URL webhooka. Każdy, kto zna ten adres, może pisać na kanale, więc nie udostępniaj go.</source>
+            <translation>Vložte adresu webhooku kanálu a obrázky výsledků zveřejníte tlačítkem „Zveřejnit na Discordu“ v závodě i v klasifikaci. Vytvoříte ji v Discordu: Upravit kanál → Integrace → Webhooky → Nový webhook → Kopírovat URL webhooku. Kdo adresu zná, může psát do kanálu, proto ji nesdílejte.</translation>
+        </message>
+        <message>
+            <source>Adres webhooka Discord</source>
+            <translation>Adresa webhooku Discordu</translation>
+        </message>
+        <message>
+            <source>Wyślij wiadomość testową</source>
+            <translation>Odeslat testovací zprávu</translation>
+        </message>
+        <message>
+            <source>Publikowanie wyłączone: nie wklejono adresu.</source>
+            <translation>Zveřejňování je vypnuté: adresa není vložena.</translation>
+        </message>
+        <message>
+            <source>Adres poprawny: %1</source>
+            <translation>Platná adresa: %1</translation>
+        </message>
+        <message>
+            <source>Wysyłanie wiadomości testowej…</source>
+            <translation>Odesílání testovací zprávy…</translation>
+        </message>
+        <message>
+            <source>Sj.Sim połączył się z tym kanałem. Tutaj pojawią się opublikowane wyniki.</source>
+            <translation>Sj.Sim je připojen k tomuto kanálu. Zde se objeví zveřejněné výsledky.</translation>
+        </message>
+        <message>
+            <source>Działa: wiadomość testowa dotarła na kanał.</source>
+            <translation>Funguje: testovací zpráva dorazila do kanálu.</translation>
+        </message>
 </context>
     <context>
         <name>AppearanceMenu</name>
@@ -3667,6 +3703,22 @@ li.checked::marker { content: "\2612"; }
             <source>Brak wkładu punktowego w tym zakresie konkursów.</source>
             <translation>V tomto rozsahu závodů nejsou žádné bodové příspěvky.</translation>
         </message>
+        <message>
+            <source>Zapisz klasyfikację jako obraz…</source>
+            <translation>Uložit klasifikaci jako obrázek…</translation>
+        </message>
+        <message>
+            <source>Zapisuje aktualny stan klasyfikacji jako plik PNG i kopiuje go do schowka.</source>
+            <translation>Uloží aktuální stav klasifikace jako soubor PNG a zkopíruje ho do schránky.</translation>
+        </message>
+        <message>
+            <source>Opublikuj klasyfikację na Discordzie…</source>
+            <translation>Zveřejnit klasifikaci na Discordu…</translation>
+        </message>
+        <message>
+            <source>Wysyła obraz z aktualnym stanem klasyfikacji na kanał Discord ustawiony w ustawieniach.</source>
+            <translation>Odešle obrázek s aktuálním stavem klasifikace do kanálu Discordu nastaveného v nastavení.</translation>
+        </message>
     </context>
     <context>
         <name>ClassificationSources</name>
@@ -5116,6 +5168,14 @@ Pro dodatečnou kompenzaci musí skokan dosáhnout 95 % bodu HS (%1 m).</transla
         <source>Pokazuj skoki stopniowo</source>
         <translation>Odhaluj skoky postupně</translation>
     </message>
+        <message>
+            <source>Zapisz wyniki jako obraz…</source>
+            <translation>Uložit výsledky jako obrázek…</translation>
+        </message>
+        <message>
+            <source>Opublikuj wyniki na Discordzie…</source>
+            <translation>Zveřejnit výsledky na Discordu…</translation>
+        </message>
 </context>
     <context>
         <name>CompetitionQuickBridge</name>
@@ -15563,6 +15623,236 @@ Ověřte, že jste vybrali správný soubor.</translation>
             <source>Nie można powtórzyć kalendarza „%1”: %2</source>
             <translation>Kalendář „%1“ nelze převzít: %2</translation>
         </message>
+        <message>
+            <source> · drużynowy</source>
+            <translation> · družstva</translation>
+        </message>
+        <message>
+            <source> · indywidualny</source>
+            <translation> · jednotlivci</translation>
+        </message>
+        <message>
+            <source>DSQ</source>
+            <translation>DSQ</translation>
+        </message>
+        <message>
+            <source>DNS</source>
+            <translation>DNS</translation>
+        </message>
+        <message>
+            <source>%1 m</source>
+            <translation>%1 m</translation>
+        </message>
+        <message>
+            <source>%1 pierwszych miejsc · jeden obraz</source>
+            <translation>Prvních %1 míst · jeden obrázek</translation>
+        </message>
+        <message>
+            <source>Wszystkie miejsca (%1) · jeden obraz</source>
+            <translation>Všechna místa (%1) · jeden obrázek</translation>
+        </message>
+        <message>
+            <source>Wszystkie miejsca (%1) · po %2 na obrazie, obrazów: %3</source>
+            <translation>Všechna místa (%1) · %2 na obrázek, obrázků: %3</translation>
+        </message>
+        <message>
+            <source>Obraz wyników</source>
+            <translation>Obrázek výsledků</translation>
+        </message>
+        <message>
+            <source>Ile miejsc pokazać? Krótsza lista jest czytelniejsza w czacie. Pełne wyniki można podzielić na kilka obrazów; więcej niż trzy zapiszą się jako archiwum ZIP.</source>
+            <translation>Kolik míst zobrazit? Kratší seznam se v chatu čte lépe. Úplné výsledky lze rozdělit do více obrázků; více než tři se uloží jako archiv ZIP.</translation>
+        </message>
+        <message>
+            <source>%1 (%2 z %3)</source>
+            <translation>%1 (%2 z %3)</translation>
+        </message>
+        <message>
+            <source>Zapisz obrazy wyników jako archiwum ZIP</source>
+            <translation>Uložit obrázky výsledků jako archiv ZIP</translation>
+        </message>
+        <message>
+            <source>Zapisz obraz wyników</source>
+            <translation>Uložit obrázek výsledků</translation>
+        </message>
+        <message>
+            <source>Archiwum ZIP (*.zip)</source>
+            <translation>Archiv ZIP (*.zip)</translation>
+        </message>
+        <message>
+            <source>Obraz PNG (*.png)</source>
+            <translation>Obrázek PNG (*.png)</translation>
+        </message>
+        <message>
+            <source>Nie zapisano obrazu</source>
+            <translation>Obrázek nebyl uložen</translation>
+        </message>
+        <message>
+            <source>Nie udało się zapisać pliku %1. Wybierz inny folder.</source>
+            <translation>Soubor %1 se nepodařilo uložit. Vyberte jinou složku.</translation>
+        </message>
+        <message>
+            <source>Zapisano obraz wyników</source>
+            <translation>Obrázek výsledků uložen</translation>
+        </message>
+        <message>
+            <source>Obraz zapisano w pliku:
+%1
+
+Jest też w schowku, więc możesz go od razu wkleić, na przykład na Discordzie.</source>
+            <translation>Obrázek byl uložen do souboru:
+%1
+
+Je také ve schránce, takže ho můžete hned vložit, například na Discord.</translation>
+        </message>
+        <message>
+            <source>Zapisano obrazy wyników</source>
+            <translation>Obrázky výsledků uloženy</translation>
+        </message>
+        <message>
+            <source>Liczba obrazów w archiwum: %1.
+%2</source>
+            <translation>Počet obrázků v archivu: %1.
+%2</translation>
+        </message>
+        <message>
+            <source>Liczba zapisanych obrazów: %1, w folderze:
+%2</source>
+            <translation>Počet uložených obrázků: %1, ve složce:
+%2</translation>
+        </message>
+        <message>
+            <source>Discord</source>
+            <translation>Discord</translation>
+        </message>
+        <message>
+            <source>Nie wysłano na Discorda</source>
+            <translation>Neodesláno na Discord</translation>
+        </message>
+        <message>
+            <source>Discord nie jest ustawiony</source>
+            <translation>Discord není nastaven</translation>
+        </message>
+        <message>
+            <source>Aby publikować wyniki, wklej adres webhooka kanału w Ustawieniach, w sekcji „Discord”.
+
+%1</source>
+            <translation>Chcete-li zveřejňovat výsledky, vložte adresu webhooku kanálu v Nastavení, v části „Discord“.
+
+%1</translation>
+        </message>
+        <message>
+            <source>%1 HS%2</source>
+            <translation>%1 HS%2</translation>
+        </message>
+        <message>
+            <source>Wyniki końcowe</source>
+            <translation>Konečné výsledky</translation>
+        </message>
+        <message>
+            <source>Wyniki w trakcie konkursu</source>
+            <translation>Průběžné výsledky</translation>
+        </message>
+        <message>
+            <source>Nota</source>
+            <translation>Body</translation>
+        </message>
+        <message>
+            <source>%1. seria</source>
+            <translation>%1. kolo</translation>
+        </message>
+        <message>
+            <source>Klasyfikacja drużynowa</source>
+            <translation>Klasifikace družstev</translation>
+        </message>
+        <message>
+            <source>Klasyfikacja indywidualna</source>
+            <translation>Klasifikace jednotlivců</translation>
+        </message>
+        <message>
+            <source>Aktualny stan</source>
+            <translation>Aktuální stav</translation>
+        </message>
+        <message>
+            <source>Punkty</source>
+            <translation>Body</translation>
+        </message>
+        <message>
+            <source>Miejsce</source>
+            <translation>Místo</translation>
+        </message>
+        <message>
+            <source>Brak wyników do pokazania.</source>
+            <translation>Žádné výsledky k zobrazení.</translation>
+        </message>
+        <message>
+            <source>Pozostałe miejsca: %1</source>
+            <translation>Zbývající místa: %1</translation>
+        </message>
+        <message>
+            <source>Sj.Sim %1 · symulacja skoków narciarskich</source>
+            <translation>Sj.Sim %1 · simulace skoků na lyžích</translation>
+        </message>
+        <message>
+            <source>Miejsca %1–%2 · obraz %3 z %4</source>
+            <translation>Místa %1–%2 · obrázek %3 z %4</translation>
+        </message>
+        <message>
+            <source>Ten konkurs nie ma jeszcze wyników.</source>
+            <translation>Tento závod zatím nemá výsledky.</translation>
+        </message>
+        <message>
+            <source>Ta klasyfikacja nie ma jeszcze wyników.</source>
+            <translation>Tato klasifikace zatím nemá výsledky.</translation>
+        </message>
+        <message>
+            <source>Discord nie zna tego webhooka. Mógł zostać usunięty. Utwórz nowy w ustawieniach kanału Discord i wklej jego adres w ustawieniach Sj.Sima.</source>
+            <translation>Discord tento webhook nezná. Mohl být smazán. Vytvořte nový v nastavení kanálu Discordu a vložte jeho adresu do nastavení Sj.Simu.</translation>
+        </message>
+        <message>
+            <source>Discord chwilowo ogranicza liczbę wiadomości. Spróbuj ponownie za %1 s.</source>
+            <translation>Discord dočasně omezuje počet zpráv. Zkuste to znovu za %1 s.</translation>
+        </message>
+        <message>
+            <source>Discord chwilowo ogranicza liczbę wiadomości. Spróbuj ponownie za chwilę.</source>
+            <translation>Discord dočasně omezuje počet zpráv. Zkuste to znovu za chvíli.</translation>
+        </message>
+        <message>
+            <source>Obraz jest za duży dla Discorda. Wybierz mniej miejsc.</source>
+            <translation>Obrázek je pro Discord příliš velký. Zvolte méně míst.</translation>
+        </message>
+        <message>
+            <source>Discord odrzucił wiadomość (kod %1).</source>
+            <translation>Discord zprávu odmítl (kód %1).</translation>
+        </message>
+        <message>
+            <source>Discord ma chwilowe problemy (kod %1). Spróbuj ponownie później.</source>
+            <translation>Discord má dočasné potíže (kód %1). Zkuste to později.</translation>
+        </message>
+        <message>
+            <source>Discord nie odpowiedział w ciągu 20 sekund. Sprawdź połączenie z internetem.</source>
+            <translation>Discord neodpověděl do 20 sekund. Zkontrolujte připojení k internetu.</translation>
+        </message>
+        <message>
+            <source>Nie udało się połączyć z Discordem. Sprawdź połączenie z internetem.</source>
+            <translation>Nepodařilo se připojit k Discordu. Zkontrolujte připojení k internetu.</translation>
+        </message>
+        <message>
+            <source>Wklej adres webhooka z Discorda.</source>
+            <translation>Vložte adresu webhooku z Discordu.</translation>
+        </message>
+        <message>
+            <source>Adres musi zaczynać się od https://discord.com/api/webhooks/.</source>
+            <translation>Adresa musí začínat https://discord.com/api/webhooks/.</translation>
+        </message>
+        <message>
+            <source>To nie jest adres webhooka Discorda. Skopiuj go w Discordzie: Edytuj kanał → Integracje → Webhooki → Kopiuj adres URL webhooka.</source>
+            <translation>Toto není adresa webhooku Discordu. Zkopírujte ji v Discordu: Upravit kanál → Integrace → Webhooky → Kopírovat URL webhooku.</translation>
+        </message>
+        <message>
+            <source>Wysłano na Discorda.</source>
+            <translation>Odesláno na Discord.</translation>
+        </message>
     </context>
     <context>
         <name>QuickBridge</name>
@@ -19205,6 +19495,32 @@ li.checked::marker { content: "\2612"; }
         <message>
             <source>Nie można rozpocząć sezonu</source>
             <translation>Sezónu nelze zahájit</translation>
+        </message>
+        <message>
+            <source>Przesymuluj N wydarzeń</source>
+            <translation>Simulovat N událostí</translation>
+        </message>
+        <message>
+            <source>Szybka symulacja</source>
+            <translation>Rychlá simulace</translation>
+        </message>
+        <message>
+            <source>Nie ma już wydarzeń do rozegrania w tym sezonie.</source>
+            <translation>V této sezóně už nezbývají žádné události.</translation>
+        </message>
+        <message>
+            <source>Ile wydarzeń przesymulować? Liczy się każde wydarzenie: trening, seria próbna, kwalifikacje i konkurs.
+Pozostało w sezonie: %1. Większa liczba rozegra sezon do końca.</source>
+            <translation>Kolik událostí simulovat? Počítá se každá událost: trénink, zkušební kolo, kvalifikace i závod.
+Zbývá v sezóně: %1. Větší číslo odehraje sezónu do konce.</translation>
+        </message>
+        <message>
+            <source>Symulowanie wydarzeń…</source>
+            <translation>Simulace událostí…</translation>
+        </message>
+        <message>
+            <source>Przerwij</source>
+            <translation>Přerušit</translation>
         </message>
     </context>
     <context>
@@ -24662,6 +24978,14 @@ Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></con
         <source>Odwołaj konkurs</source>
         <translation>Zrušit závod</translation>
     </message>
+        <message>
+            <source>Zapisz wyniki jako obraz…</source>
+            <translation>Uložit výsledky jako obrázek…</translation>
+        </message>
+        <message>
+            <source>Opublikuj wyniki na Discordzie…</source>
+            <translation>Zveřejnit výsledky na Discordu…</translation>
+        </message>
 </context>
 <context>
     <name>SimulationPreferences</name>
