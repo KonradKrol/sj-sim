@@ -42,6 +42,7 @@
 #include <QTimer>
 #include <QProgressDialog>
 #include <QElapsedTimer>
+#include "../ResultsImage/ResultsImage.h"
 #include <limits>
 #include <QRandomGenerator>
 #include <QPushButton>
@@ -1642,6 +1643,10 @@ void SimulationSaveManagerWindow::on_listView_competitionsArchive_doubleClicked(
     auto *competition=competitionsArchiveModel->competitionAt(index.row());if(!index.isValid() || !competition)return;
     auto *dialog=new QDialog(this);dialog->setAttribute(Qt::WA_DeleteOnClose);dialog->setObjectName("competitionResultsArchive");dialog->setWindowTitle(tr("Wyniki konkursu"));
     auto *layout=new QVBoxLayout(dialog);layout->addWidget(new ResultsHistoryWidget(competition,false,dialog));
+    // Shown next to the round choice of the Quick archive page.
+    auto *exportImage=new QPushButton(tr("Zapisz wyniki jako obraz…"),dialog);exportImage->setObjectName("archiveExportResultsImage");
+    connect(exportImage,&QPushButton::clicked,dialog,[dialog,competition]{ResultsImage::exportCompetition(dialog,competition);});
+    layout->addWidget(exportImage,0,Qt::AlignLeft);
     ResponsiveWindowUtils::fitToAvailableScreen(dialog,QSize(1200,720));dialog->show();
 }
 

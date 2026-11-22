@@ -19521,6 +19521,10 @@ Remaining this season: %1. A larger number plays the season to the end.</transla
             <source>Przerwij</source>
             <translation>Stop</translation>
         </message>
+        <message>
+            <source>Zapisz wyniki jako obraz…</source>
+            <translation>Save results as image…</translation>
+        </message>
     </context>
     <context>
         <name>SimulationSavesWindow</name>

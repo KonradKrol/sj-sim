@@ -19522,6 +19522,10 @@ Zbývá v sezóně: %1. Větší číslo odehraje sezónu do konce.</translation
             <source>Przerwij</source>
             <translation>Přerušit</translation>
         </message>
+        <message>
+            <source>Zapisz wyniki jako obraz…</source>
+            <translation>Uložit výsledky jako obrázek…</translation>
+        </message>
     </context>
     <context>
         <name>SimulationSavesWindow</name>

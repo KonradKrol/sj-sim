@@ -1094,7 +1094,9 @@ void QuickBridge::compose(QuickNode *base) {
     }
     if(auto *library=qobject_cast<ResourceLibraryWindow *>(m_window.data())){m_root->update({{"kind","resourceLibrary"},{"backend",QVariant::fromValue<QObject *>(library)}});return;}
     if(m_window->objectName()=="competitionResultsArchive")if(auto *history=m_content->findChild<ResultsHistoryWidget *>()) {
-        auto *entry=node(history,true);m_root->update(entry->values());return;
+        auto *entry=node(history,true);auto values=entry->values();
+        if(auto *exportImage=m_content->findChild<QPushButton *>("archiveExportResultsImage"))values["actionsField"]=QVariant::fromValue(node(exportImage,true));
+        m_root->update(values);return;
     }
     if(m_window->objectName()=="manualKoGroupsDialog") {
         if(auto *list=m_content->findChild<KOGroupsListView *>()) {
