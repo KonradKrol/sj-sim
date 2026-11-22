@@ -53,7 +53,10 @@ QJsonObject gameCapture(){
     const auto level=[&](const char *name){return std::clamp(settings.value(QString("simulation/simple/")+name,2).toInt(),0,4);};
     const double scales[]{.6,.8,1,1.25,1.55};
     const auto multiply=[&](const QString &key,double factor,double fallback=0){values[key]=std::clamp(values.value(key).toDouble(fallback)*factor,0.0,100.0);};
-    const double spread=scales[level("spread")];
+    // "Standardowa" losowość odpowiada dawnemu poziomowi "Duża" (x1.25 względem surowego profilu);
+    // pozostałe poziomy zachowują dotychczasowe proporcje względem standardu.
+    const double spreadScales[]{.75,1,1.25,1.5625,1.9375};
+    const double spread=spreadScales[level("spread")];
     for(int i=0;i<4;++i)multiply(QString("quality.eventDeviation.%1").arg(i),spread);
     const double distanceScales[]{.6,.8,1,1.2,1.4};
     multiply("flight.qualityMetresAtK120",distanceScales[level("distanceSpread")],.55594);
