@@ -3159,6 +3159,18 @@ li.checked::marker { content: "\2612"; }
             <source>W wybranym zakresie nie naliczono punktów dla tego kraju.</source>
             <translation>Ve vybraném rozsahu nebyly této zemi přiděleny žádné body.</translation>
         </message>
+        <message>
+            <source>Miejsce po kolejnych konkursach</source>
+            <translation>Pořadí po jednotlivých závodech</translation>
+        </message>
+        <message>
+            <source>Brak rozegranych konkursów</source>
+            <translation>Žádné odehrané závody</translation>
+        </message>
+        <message>
+            <source>Miejsce pojawi się po pierwszym konkursie tej klasyfikacji.</source>
+            <translation>Pořadí se zobrazí po prvním závodě této klasifikace.</translation>
+        </message>
     </context>
     <context>
         <name>ClassificationEditorWidget</name>
@@ -3718,6 +3730,26 @@ li.checked::marker { content: "\2612"; }
         <message>
             <source>Wysyła obraz z aktualnym stanem klasyfikacji na kanał Discord ustawiony w ustawieniach.</source>
             <translation>Odešle obrázek s aktuálním stavem klasifikace do kanálu Discordu nastaveného v nastavení.</translation>
+        </message>
+        <message>
+            <source>Konkurs</source>
+            <translation>Závod</translation>
+        </message>
+        <message>
+            <source>Miejsce</source>
+            <translation>Místo</translation>
+        </message>
+        <message>
+            <source>%1. %2</source>
+            <translation>%1. %2</translation>
+        </message>
+        <message>
+            <source>Miejsce po kolejnych konkursach</source>
+            <translation>Pořadí po jednotlivých závodech</translation>
+        </message>
+        <message>
+            <source>Wkład i historia miejsca · %1</source>
+            <translation>Příspěvek a vývoj pořadí · %1</translation>
         </message>
     </context>
     <context>
@@ -5530,6 +5562,18 @@ průměrného větru</translation>
             <source>Nazwa kraju</source>
             <translation>Název země</translation>
         </message>
+        <message>
+            <source>Kraj</source>
+            <translation>Země</translation>
+        </message>
+        <message>
+            <source>Kod</source>
+            <translation>Kód</translation>
+        </message>
+        <message>
+            <source>Kliknij dwukrotnie, aby zmienić nazwę.</source>
+            <translation>Dvojitým kliknutím změníte název.</translation>
+        </message>
     </context>
     <context>
         <name>CountriesEditorWindow</name>
@@ -5547,6 +5591,90 @@ průměrného větru</translation>
             <location filename="../source/UI/AppSettings/CountriesEditorWindow.ui" line="115" />
             <source>OK</source>
             <translation>OK</translation>
+        </message>
+        <message>
+            <source>Kraje</source>
+            <translation>Země</translation>
+        </message>
+        <message>
+            <source>Nazwę zmienisz, klikając ją dwukrotnie. Kod decyduje o fladze, dlatego po dodaniu kraju się nie zmienia.</source>
+            <translation>Název změníte dvojitým kliknutím. Kód určuje vlajku, proto se po přidání země nemění.</translation>
+        </message>
+        <message>
+            <source>Szukaj kraju lub kodu</source>
+            <translation>Hledat zemi nebo kód</translation>
+        </message>
+        <message>
+            <source>Szukaj kraju</source>
+            <translation>Hledat zemi</translation>
+        </message>
+        <message>
+            <source>Dodaj kraj…</source>
+            <translation>Přidat zemi…</translation>
+        </message>
+        <message>
+            <source>Usuń kraj</source>
+            <translation>Odebrat zemi</translation>
+        </message>
+        <message>
+            <source>Zapisz</source>
+            <translation>Uložit</translation>
+        </message>
+        <message>
+            <source>Anuluj</source>
+            <translation>Zrušit</translation>
+        </message>
+        <message>
+            <source>Dodaj kraj</source>
+            <translation>Přidat zemi</translation>
+        </message>
+        <message>
+            <source>Nazwa</source>
+            <translation>Název</translation>
+        </message>
+        <message>
+            <source>Kod (3 litery)</source>
+            <translation>Kód (3 písmena)</translation>
+        </message>
+        <message>
+            <source>Kod ISO (2 litery)</source>
+            <translation>Kód ISO (2 písmena)</translation>
+        </message>
+        <message>
+            <source>Kod z 3 liter pojawia się przy zawodnikach i wybiera flagę. Kod ISO służy do flag na Discordzie.</source>
+            <translation>Třípísmenný kód se zobrazuje u závodníků a určuje vlajku. Kód ISO slouží pro vlajky na Discordu.</translation>
+        </message>
+        <message>
+            <source>Dodaj</source>
+            <translation>Přidat</translation>
+        </message>
+        <message>
+            <source>Wpisz nazwę kraju.</source>
+            <translation>Zadejte název země.</translation>
+        </message>
+        <message>
+            <source>Kod musi mieć 3 litery, np. POL.</source>
+            <translation>Kód musí mít 3 písmena, např. POL.</translation>
+        </message>
+        <message>
+            <source>Kod ISO musi mieć 2 litery, np. PL.</source>
+            <translation>Kód ISO musí mít 2 písmena, např. PL.</translation>
+        </message>
+        <message>
+            <source>Kraj z kodem %1 już istnieje: %2.</source>
+            <translation>Země s kódem %1 už existuje: %2.</translation>
+        </message>
+        <message>
+            <source>Nie można usunąć kraju</source>
+            <translation>Zemi nelze odebrat</translation>
+        </message>
+        <message>
+            <source>Kraju %1 używają zawodnicy (%2) lub skocznie (%3). Zmień im kraj, zanim go usuniesz.</source>
+            <translation>Zemi %1 používají závodníci (%2) nebo můstky (%3). Před odebráním jim změňte zemi.</translation>
+        </message>
+        <message>
+            <source>Usunąć kraj %1 (%2)? Zmiana zapisze się po kliknięciu „Zapisz”.</source>
+            <translation>Odebrat zemi %1 (%2)? Změna se uloží po kliknutí na „Uložit“.</translation>
         </message>
     </context>
     <context>
@@ -15888,6 +16016,58 @@ Je také ve schránce, takže ho můžete hned vložit, například na Discord.<
         <message>
             <source>Lądowanie: %1</source>
             <translation>Dopad: %1</translation>
+        </message>
+        <message>
+            <source>drużynowy</source>
+            <translation>družstva</translation>
+        </message>
+        <message>
+            <source>indywidualny</source>
+            <translation>jednotlivci</translation>
+        </message>
+        <message>
+            <source> - Skok %1</source>
+            <translation> - Skok %1</translation>
+        </message>
+        <message>
+            <source> (tryb pojedynczych skoków)</source>
+            <translation> (režim jednotlivých skoků)</translation>
+        </message>
+        <message>
+            <source>Uśredniony wiatr</source>
+            <translation>Průměrný vítr</translation>
+        </message>
+        <message>
+            <source>Łączna rekompensata</source>
+            <translation>Celková kompenzace</translation>
+        </message>
+        <message>
+            <source>Noty sędziowskie</source>
+            <translation>Známky rozhodčích</translation>
+        </message>
+        <message>
+            <source>Punkty od sędziów</source>
+            <translation>Body od rozhodčích</translation>
+        </message>
+        <message>
+            <source>Rodzaj lądowania</source>
+            <translation>Typ dopadu</translation>
+        </message>
+        <message>
+            <source>Wiatr przy skoku</source>
+            <translation>Vítr při skoku</translation>
+        </message>
+        <message>
+            <source>Miejsce po skoku</source>
+            <translation>Pořadí po skoku</translation>
+        </message>
+        <message>
+            <source>Pozycja noty w serii</source>
+            <translation>Pořadí známky v kole</translation>
+        </message>
+        <message>
+            <source>Śnieg/deszcz przy skoku</source>
+            <translation>Sníh/déšť při skoku</translation>
         </message>
     </context>
     <context>

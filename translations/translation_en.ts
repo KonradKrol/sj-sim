@@ -3159,6 +3159,18 @@ li.checked::marker { content: "\2612"; }
             <source>W wybranym zakresie nie naliczono punktów dla tego kraju.</source>
             <translation>No points were awarded to this country in the selected range.</translation>
         </message>
+        <message>
+            <source>Miejsce po kolejnych konkursach</source>
+            <translation>Place after each competition</translation>
+        </message>
+        <message>
+            <source>Brak rozegranych konkursów</source>
+            <translation>No competitions played</translation>
+        </message>
+        <message>
+            <source>Miejsce pojawi się po pierwszym konkursie tej klasyfikacji.</source>
+            <translation>The place appears after the first competition of this classification.</translation>
+        </message>
     </context>
     <context>
         <name>ClassificationEditorWidget</name>
@@ -3718,6 +3730,26 @@ li.checked::marker { content: "\2612"; }
         <message>
             <source>Wysyła obraz z aktualnym stanem klasyfikacji na kanał Discord ustawiony w ustawieniach.</source>
             <translation>Sends an image of the current classification standings to the Discord channel set in Settings.</translation>
+        </message>
+        <message>
+            <source>Konkurs</source>
+            <translation>Competition</translation>
+        </message>
+        <message>
+            <source>Miejsce</source>
+            <translation>Place</translation>
+        </message>
+        <message>
+            <source>%1. %2</source>
+            <translation>%1. %2</translation>
+        </message>
+        <message>
+            <source>Miejsce po kolejnych konkursach</source>
+            <translation>Place after each competition</translation>
+        </message>
+        <message>
+            <source>Wkład i historia miejsca · %1</source>
+            <translation>Contribution and place history · %1</translation>
         </message>
     </context>
     <context>
@@ -5529,6 +5561,18 @@ calculation</translation>
             <source>Nazwa kraju</source>
             <translation>Country name</translation>
         </message>
+        <message>
+            <source>Kraj</source>
+            <translation>Country</translation>
+        </message>
+        <message>
+            <source>Kod</source>
+            <translation>Code</translation>
+        </message>
+        <message>
+            <source>Kliknij dwukrotnie, aby zmienić nazwę.</source>
+            <translation>Double-click to rename.</translation>
+        </message>
     </context>
     <context>
         <name>CountriesEditorWindow</name>
@@ -5546,6 +5590,90 @@ calculation</translation>
             <location filename="../source/UI/AppSettings/CountriesEditorWindow.ui" line="115" />
             <source>OK</source>
             <translation>OK</translation>
+        </message>
+        <message>
+            <source>Kraje</source>
+            <translation>Countries</translation>
+        </message>
+        <message>
+            <source>Nazwę zmienisz, klikając ją dwukrotnie. Kod decyduje o fladze, dlatego po dodaniu kraju się nie zmienia.</source>
+            <translation>Double-click a name to change it. The code decides the flag, so it does not change after a country is added.</translation>
+        </message>
+        <message>
+            <source>Szukaj kraju lub kodu</source>
+            <translation>Search for a country or code</translation>
+        </message>
+        <message>
+            <source>Szukaj kraju</source>
+            <translation>Search for a country</translation>
+        </message>
+        <message>
+            <source>Dodaj kraj…</source>
+            <translation>Add country…</translation>
+        </message>
+        <message>
+            <source>Usuń kraj</source>
+            <translation>Remove country</translation>
+        </message>
+        <message>
+            <source>Zapisz</source>
+            <translation>Save</translation>
+        </message>
+        <message>
+            <source>Anuluj</source>
+            <translation>Cancel</translation>
+        </message>
+        <message>
+            <source>Dodaj kraj</source>
+            <translation>Add country</translation>
+        </message>
+        <message>
+            <source>Nazwa</source>
+            <translation>Name</translation>
+        </message>
+        <message>
+            <source>Kod (3 litery)</source>
+            <translation>Code (3 letters)</translation>
+        </message>
+        <message>
+            <source>Kod ISO (2 litery)</source>
+            <translation>ISO code (2 letters)</translation>
+        </message>
+        <message>
+            <source>Kod z 3 liter pojawia się przy zawodnikach i wybiera flagę. Kod ISO służy do flag na Discordzie.</source>
+            <translation>The 3-letter code appears next to athletes and selects the flag. The ISO code is used for flags on Discord.</translation>
+        </message>
+        <message>
+            <source>Dodaj</source>
+            <translation>Add</translation>
+        </message>
+        <message>
+            <source>Wpisz nazwę kraju.</source>
+            <translation>Enter the country name.</translation>
+        </message>
+        <message>
+            <source>Kod musi mieć 3 litery, np. POL.</source>
+            <translation>The code must have 3 letters, e.g. POL.</translation>
+        </message>
+        <message>
+            <source>Kod ISO musi mieć 2 litery, np. PL.</source>
+            <translation>The ISO code must have 2 letters, e.g. PL.</translation>
+        </message>
+        <message>
+            <source>Kraj z kodem %1 już istnieje: %2.</source>
+            <translation>A country with code %1 already exists: %2.</translation>
+        </message>
+        <message>
+            <source>Nie można usunąć kraju</source>
+            <translation>Country cannot be removed</translation>
+        </message>
+        <message>
+            <source>Kraju %1 używają zawodnicy (%2) lub skocznie (%3). Zmień im kraj, zanim go usuniesz.</source>
+            <translation>%1 is used by athletes (%2) or hills (%3). Change their country before removing it.</translation>
+        </message>
+        <message>
+            <source>Usunąć kraj %1 (%2)? Zmiana zapisze się po kliknięciu „Zapisz”.</source>
+            <translation>Remove %1 (%2)? The change is stored after you click “Save”.</translation>
         </message>
     </context>
     <context>
@@ -15887,6 +16015,58 @@ It is also on the clipboard, so you can paste it right away, for example on Disc
         <message>
             <source>Lądowanie: %1</source>
             <translation>Landing: %1</translation>
+        </message>
+        <message>
+            <source>drużynowy</source>
+            <translation>team</translation>
+        </message>
+        <message>
+            <source>indywidualny</source>
+            <translation>individual</translation>
+        </message>
+        <message>
+            <source> - Skok %1</source>
+            <translation> - Jump %1</translation>
+        </message>
+        <message>
+            <source> (tryb pojedynczych skoków)</source>
+            <translation> (single jumps mode)</translation>
+        </message>
+        <message>
+            <source>Uśredniony wiatr</source>
+            <translation>Average wind</translation>
+        </message>
+        <message>
+            <source>Łączna rekompensata</source>
+            <translation>Total compensation</translation>
+        </message>
+        <message>
+            <source>Noty sędziowskie</source>
+            <translation>Judges' marks</translation>
+        </message>
+        <message>
+            <source>Punkty od sędziów</source>
+            <translation>Judges' points</translation>
+        </message>
+        <message>
+            <source>Rodzaj lądowania</source>
+            <translation>Landing type</translation>
+        </message>
+        <message>
+            <source>Wiatr przy skoku</source>
+            <translation>Wind during the jump</translation>
+        </message>
+        <message>
+            <source>Miejsce po skoku</source>
+            <translation>Place after the jump</translation>
+        </message>
+        <message>
+            <source>Pozycja noty w serii</source>
+            <translation>Score rank in the round</translation>
+        </message>
+        <message>
+            <source>Śnieg/deszcz przy skoku</source>
+            <translation>Snow/rain during the jump</translation>
         </message>
     </context>
     <context>
