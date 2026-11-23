@@ -77,8 +77,6 @@ Pane {
                 Layout.minimumWidth: 0
                 model: JSON.parse(root.pickerLabels)
                 currentIndex: root.selectedIndex
-                popup.height: picker.popup.desired
-                popup.y: picker.height+Theme.dp(4)
                 Accessible.name: qsTr("Kalendarz")
                 onActivated: function(index) {
                     if(index<0 || index>=root.tables.length)return

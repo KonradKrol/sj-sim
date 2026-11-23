@@ -583,14 +583,11 @@ void QuickBridge::refresh() {
         const QVariantMap context{{"exampleBusy",m_window->property("exampleSeasonPreparing").toBool()},{"showWelcome",!QSettings().value("onboarding/welcomeDismissed",false).toBool()}};
         if(context!=m_context){m_context=context;emit changed();}
     }
-    if(!m_home) {
+    if(auto *stats=qobject_cast<JumperStatsWindow *>(m_window.data())) {
+        m_root->update({{"kind","athleteStats"},{"backend",QVariant::fromValue<QObject *>(stats)}});
+    } else if(!m_home) {
         auto *root=qobject_cast<SimulationSaveManagerWindow *>(m_window.data())?nullptr:layoutNode(m_content->layout());
         compose(root);
-        if(auto *stats=qobject_cast<JumperStatsWindow *>(m_window.data())) {
-            for(auto *chart:m_content->findChildren<QChartView *>())chart->setProperty("quickMenuOnly",true);
-            m_root->update({{"kind","athleteStats"},{"backend",QVariant::fromValue<QObject *>(stats)}});
-        }
-
     }
     for(auto named=m_named.cbegin();named!=m_named.cend();++named) if(named.value()) node(named.value(),true);
     QVariantList actions;
