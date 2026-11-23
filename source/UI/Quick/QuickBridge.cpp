@@ -1090,7 +1090,8 @@ void QuickBridge::compose(QuickNode *base) {
     if(m_window->property("playgroundController").isValid()){m_root->update({{"kind","playground"},{"backend",m_window->property("playgroundController")}});return;}
     if(m_window->objectName()=="classificationContributionDetails"){
         auto *table=m_content->findChild<QTableView *>("classificationContributionTable");
-        m_root->update({{"kind","classificationContributions"},{"country",m_window->property("contributionCountry")},{"name",m_window->property("contributionName")},{"total",classificationPointsText(m_window->property("contributionTotal").toDouble())},{"flag",QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(m_window->property("contributionCountry").toString())+".svg")).toString()},{"tableField",QVariant::fromValue(node(table,true))}});return;
+        m_root->update({{"kind","classificationContributions"},{"country",m_window->property("contributionCountry")},{"name",m_window->property("contributionName")},{"total",classificationPointsText(m_window->property("contributionTotal").toDouble())},{"flag",QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(m_window->property("contributionCountry").toString())+".svg")).toString()},{"tableField",QVariant::fromValue(node(table,true))},
+            {"historyField",[&]{auto *history=m_content->findChild<QTableView *>("classificationPlaceHistoryTable");return history?QVariant::fromValue(node(history,true)):QVariant();}()}});return;
     }
     if(auto *library=qobject_cast<ResourceLibraryWindow *>(m_window.data())){m_root->update({{"kind","resourceLibrary"},{"backend",QVariant::fromValue<QObject *>(library)}});return;}
     if(m_window->objectName()=="competitionResultsArchive")if(auto *history=m_content->findChild<ResultsHistoryWidget *>()) {

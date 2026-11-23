@@ -17,6 +17,7 @@
 #include "../../ResultsImage/ResultsImage.h"
 #include "../../../global/DiscordWebhook.h"
 #include "../../../global/GlobalAppSettings.h"
+#include "../../../seasons/SimulationSave.h"
 
 ClassificationResultsTableView::ClassificationResultsTableView(bool allowShowDetails, Classification * classification, QWidget *parent) :
     QWidget(parent),
@@ -148,5 +149,32 @@ void ClassificationResultsTableView::showContributions(const QString &country) {
     for(const auto &row:rows)add(row.name,row.points);if(teamPoints!=0)add(tr("Konkursy drużynowe"),teamPoints);
     if(rows.isEmpty() && teamPoints==0){auto *empty=new QLabel(tr("Brak wkładu punktowego w tym zakresie konkursów."),&dialog);empty->setWordWrap(true);layout->addWidget(empty);}
     auto *table=new QTableView(&dialog);table->setObjectName("classificationContributionTable");table->setProperty("quickPlainTable",true);table->setProperty("quickScoreColumn",2);table->setSelectionMode(QAbstractItemView::NoSelection);table->setModel(model);table->setEditTriggers(QAbstractItemView::NoEditTriggers);layout->addWidget(table,1);table->resizeColumnsToContents();
+
+    // Place history in the same window: the team's points and place after every event of the
+    // classification, within the same range of events as the contribution breakdown.
+    SeasonCalendar *calendar=historyCalendar;
+    if(!calendar && save)for(auto &season:save->getSeasonsReference())for(auto *candidate:season.getCalendarsReference())
+        if(candidate && candidate->getClassificationsReference().contains(classification))calendar=candidate;
+    if(calendar){
+        const auto places=classification->constructTeamsArchiveResults(nullptr,calendar).value(country);
+        auto *history=new QStandardItemModel(&dialog);history->setHorizontalHeaderLabels({tr("Konkurs"),tr("Punkty"),tr("Miejsce")});
+        int number=0;
+        for(auto *event:calendar->getCompetitionsReference()){
+            if(!places.contains(event))continue;
+            ++number;
+            if(historical() && !historyEvents.mid(0,historyChoice->currentIndex()).contains(event))continue;
+            double points=0;for(const auto &contribution:classification->contributions(event))if(contribution.country==country)points+=contribution.points;
+            const QString name=tr("%1. %2").arg(number).arg(event->getHill()?event->getHill()->getName():event->getShortSerieTypeText());
+            QList<QStandardItem *> items{new QStandardItem(name),new QStandardItem(QLocale().toString(points,'g',12)),new QStandardItem(QString::number(places.value(event)))};
+            for(auto *item:items)item->setFlags(Qt::ItemIsEnabled|Qt::ItemIsSelectable);
+            items[1]->setData(points,Qt::UserRole);items[2]->setData(places.value(event),Qt::UserRole);
+            history->appendRow(items);
+        }
+        auto *historyHeading=new QLabel(tr("Miejsce po kolejnych konkursach"),&dialog);layout->addWidget(historyHeading);
+        auto *historyTable=new QTableView(&dialog);historyTable->setObjectName("classificationPlaceHistoryTable");historyTable->setProperty("quickPlainTable",true);
+        historyTable->setSelectionMode(QAbstractItemView::NoSelection);historyTable->setModel(history);historyTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        layout->addWidget(historyTable,1);historyTable->resizeColumnsToContents();
+        dialog.setWindowTitle(tr("Wkład i historia miejsca · %1").arg(country));
+    }
     auto *buttons=new QDialogButtonBox(QDialogButtonBox::Close,&dialog);connect(buttons,&QDialogButtonBox::rejected,&dialog,&QDialog::reject);layout->addWidget(buttons);dialog.exec();
 }

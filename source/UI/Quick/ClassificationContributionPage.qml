@@ -7,7 +7,9 @@ ColumnLayout {
     ViewArrival { target: page; expressive: true; emphasis: arrivalHeading }
     readonly property var fields: ui.root.values
     readonly property var entry: fields.tableField || null
+    readonly property var history: fields.historyField || null
     readonly property bool hasRows: !!entry && !!entry.values.table && entry.values.table.count>0
+    readonly property bool hasHistory: !!history && !!history.values.table && history.values.table.count>0
     spacing: 12
     Pane {
         Layout.fillWidth: true; padding: 16
@@ -27,14 +29,37 @@ ColumnLayout {
             }
         }
     }
-    Label { text: qsTr("Wkład zawodników i konkursów drużynowych"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; wrapMode: Text.WordWrap }
-    DataTable {
-        objectName: "classificationContributionResults"
-        visible: page.hasRows
+    // Contribution and place history side by side on wide windows, one under the other otherwise.
+    GridLayout {
+        columns: page.width>=900 && page.history ? 2 : 1
+        columnSpacing: 16; rowSpacing: 12
         Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0
-        table: page.entry ? page.entry.values.table : null
-        ownerId: page.entry ? page.entry.values.id : -1
-        plain: true; searchEnabled: false
+        ColumnLayout {
+            Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; Layout.minimumWidth: 0; spacing: 8
+            Label { text: qsTr("Wkład zawodników i konkursów drużynowych"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+            DataTable {
+                objectName: "classificationContributionResults"
+                visible: page.hasRows
+                Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 120
+                table: page.entry ? page.entry.values.table : null
+                ownerId: page.entry ? page.entry.values.id : -1
+                plain: true; searchEnabled: false
+            }
+            EmptyState { visible: !page.hasRows; Layout.fillWidth: true; Layout.fillHeight: true; title: qsTr("Brak wkładu punktowego"); description: qsTr("W wybranym zakresie nie naliczono punktów dla tego kraju.") }
+        }
+        ColumnLayout {
+            visible: !!page.history
+            Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 0; Layout.minimumWidth: 0; spacing: 8
+            Label { text: qsTr("Miejsce po kolejnych konkursach"); color: Theme.ink; font.family: Theme.displayFamily; font.pointSize: Theme.section; Layout.fillWidth: true; wrapMode: Text.WordWrap }
+            DataTable {
+                objectName: "classificationPlaceHistory"
+                visible: page.hasHistory
+                Layout.fillWidth: true; Layout.fillHeight: true; Layout.minimumHeight: 120
+                table: page.history ? page.history.values.table : null
+                ownerId: page.history ? page.history.values.id : -1
+                plain: true; searchEnabled: false
+            }
+            EmptyState { visible: !page.hasHistory; Layout.fillWidth: true; Layout.fillHeight: true; title: qsTr("Brak rozegranych konkursów"); description: qsTr("Miejsce pojawi się po pierwszym konkursie tej klasyfikacji.") }
+        }
     }
-    EmptyState { visible: !page.hasRows; Layout.fillWidth: true; Layout.fillHeight: true; title: qsTr("Brak wkładu punktowego"); description: qsTr("W wybranym zakresie nie naliczono punktów dla tego kraju.") }
 }
