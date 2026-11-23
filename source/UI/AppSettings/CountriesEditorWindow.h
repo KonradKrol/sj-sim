@@ -2,13 +2,19 @@
 #define COUNTRIESEDITORWINDOW_H
 
 #include <QDialog>
-#include <QAction>
+#include <QVector>
 #include "CountriesEditorTableModel.h"
+
+class QLineEdit;
+class QPushButton;
+class QSortFilterProxyModel;
 
 namespace Ui {
 class CountriesEditorWindow;
 }
 
+// Simple list of countries: search, rename by double-click, add a country with a short form
+// and remove one that no athlete or hill uses. Changes are kept in a draft until "Zapisz".
 class CountriesEditorWindow : public QDialog
 {
     Q_OBJECT
@@ -18,20 +24,22 @@ public:
     ~CountriesEditorWindow();
 
     void fill();
-    void sort();
+    CountriesEditorTableModel *getModel() const { return model; }
 
 private slots:
     void on_pushButton_submit_clicked();
 
 private:
-    Ui::CountriesEditorWindow *ui;
-    CountriesEditorTableModel * model;
+    void addCountry();
+    void removeSelectedCountry();
+    int selectedRow() const;
 
-    QAction * action_insert;
-    QAction * action_remove;
-public:
-    CountriesEditorTableModel *getModel() const;
-    void setModel(CountriesEditorTableModel *newModel);
+    Ui::CountriesEditorWindow *ui;
+    QVector<Country> draft;
+    CountriesEditorTableModel *model=nullptr;
+    QSortFilterProxyModel *proxy=nullptr;
+    QLineEdit *search=nullptr;
+    QPushButton *removeButton=nullptr;
 };
 
 #endif // COUNTRIESEDITORWINDOW_H

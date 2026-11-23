@@ -2,51 +2,31 @@
 #define COUNTRIESEDITORTABLEMODEL_H
 
 #include <QAbstractTableModel>
-#include <QPair>
 #include <QVector>
-#include <QString>
 #include "../../global/GlobalDatabase.h"
 
+// Countries in the editor: the name (editable, with its flag) and the code, which decides the
+// flag and is fixed once a country exists. Works on a draft list owned by the editor window.
 class CountriesEditorTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 
 public:
-    explicit CountriesEditorTableModel(QObject *parent = nullptr);
+    explicit CountriesEditorTableModel(QVector<Country> *countries, QObject *parent = nullptr);
 
-    // Header:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-
-    bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole) override;
-
-    // Basic functionality:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
-
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-    // Editable:
-    bool setData(const QModelIndex &index, const QVariant &value,
-                 int role = Qt::EditRole) override;
-
-    Qt::ItemFlags flags(const QModelIndex& index) const override;
-
-    // Add data:
-    bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
-    bool insertColumns(int column, int count, const QModelIndex &parent = QModelIndex()) override;
-
-    // Remove data:
-    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
-    bool removeColumns(int column, int count, const QModelIndex &parent = QModelIndex()) override;
-
-signals:
-    void edited();
+    void addCountry(const Country &country);
+    void removeCountry(int row);
+    QVector<Country> *getCountries() const { return countries; }
 
 private:
-    QVector<Country> * countries;
-public:
-    QVector<Country> *getCountries() const;
-    void setCountries(QVector<Country> *newCountries);
+    QVector<Country> *countries;
 };
 
 #endif // COUNTRIESEDITORTABLEMODEL_H
