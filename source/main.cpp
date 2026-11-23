@@ -1,6 +1,7 @@
 #include "UI/Library/ResourceLibraryWindow.h"
 #include "global/UserDataPaths.h"
 #include "global/AppPaths.h"
+#include "global/SettingsMigrations.h"
 #include <QTemporaryDir>
 #include <memory>
 #include "UI/mainwindow.h"
@@ -81,6 +82,7 @@ int main(int argc, char *argv[])
 
     if(!GlobalAppSettings::get()->loadFromJson())
         qWarning() << "Application settings could not be loaded; keeping safe defaults.";
+    QSettings settings;SettingsMigrations::apply210(settings);
     deploymentTrace("Settings loaded");
 
     if (!GlobalTranslators::get()->setLanguage(&a, GlobalAppSettings::get()->getLanguageID())) {
