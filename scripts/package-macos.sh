@@ -67,9 +67,18 @@ set_plist NSHumanReadableCopyright "GPL-3.0" string
 macdeployqt "${app}" -qmldir="${repo_root}/source/UI/Quick" -qmldir="${repo_root}/source/UI/Competition/Quick" -always-overwrite
 
 # Start the bundled program with an isolated library before signing; the smoke run must not
-# leave files inside the bundle.
-env -u QML2_IMPORT_PATH -u QML_IMPORT_PATH -u QT_PLUGIN_PATH -u DYLD_LIBRARY_PATH -u DYLD_FRAMEWORK_PATH \
-    QT_QPA_PLATFORM=offscreen QT_QUICK_BACKEND=software "${app}/Contents/MacOS/sj-sim" --deployment-smoke
+# leave files inside the bundle. macdeployqt ships only the Cocoa platform plugin, so the run
+# uses the normal macOS window session of the build machine.
+smoke_log="${workspace}/smoke.log"
+if ! env -u QML2_IMPORT_PATH -u QML_IMPORT_PATH -u QT_PLUGIN_PATH -u DYLD_LIBRARY_PATH -u DYLD_FRAMEWORK_PATH \
+    QT_QUICK_BACKEND=software "${app}/Contents/MacOS/sj-sim" --deployment-smoke >"${smoke_log}" 2>&1; then
+    # Repeated as CI annotations, which are readable without access to the raw log.
+    tail -n 40 "${smoke_log}" | while IFS= read -r line; do echo "::error::smoke: ${line//%/%25}"; done
+    if [[ -f "${app}/Contents/MacOS/deployment-smoke.log" ]]; then
+        while IFS= read -r line; do echo "::error::reached: ${line}"; done < "${app}/Contents/MacOS/deployment-smoke.log"
+    fi
+    exit 1
+fi
 rm -f "${app}/Contents/MacOS/deployment-smoke.log"
 
 codesign --force --deep --sign - "${app}"
