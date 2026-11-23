@@ -35,12 +35,41 @@ FlightResult manipulatedFlight(const JumpRequest &input,const FlightModel &model
     const double target=std::clamp(desired,0.0,limit);
     limited=target!=desired;
     if(std::abs(target-flight.distance)<1e-8)return flight;
-    double lo=0,hi=1000000;
-    for(int i=0;i<36;++i) {
-        const double mid=(lo+hi)/2;
-        if(model.fly(mid,input.hill,weather,input.startSeconds,false,response,input.athlete.perks[1]).distance<target)lo=mid;else hi=mid;
+    // Find the starting reserve that lands on the target. Distance grows continuously with the
+    // reserve, so a bracketed false position (Illinois variant) reaches the target in a few
+    // flights instead of a 36-step bisection over [0, 1000000], at least as accurately.
+    const auto distanceAt=[&](double value){return model.fly(value,input.hill,weather,input.startSeconds,false,response,input.athlete.perks[1]).distance;};
+    constexpr double maximumReserve=1000000,tolerance=1e-7;
+    double lo=0,dLo=0,hi=maximumReserve,dHi=0;bool haveHi=false;
+    if(flight.distance<target){lo=reserve;dLo=flight.distance;}else{hi=reserve;dHi=flight.distance;haveHi=true;}
+    // Start from the proportional guess and widen the bracket until it contains the target.
+    double guess=std::clamp(reserve*target/std::max(flight.distance,1.0),0.0,maximumReserve);
+    for(int i=0;i<60;++i){
+        const double distance=distanceAt(guess);
+        if(distance<target){if(guess>=lo){lo=guess;dLo=distance;}}
+        else if(!haveHi || guess<=hi){hi=guess;dHi=distance;haveHi=true;}
+        if(haveHi && lo<hi)break;
+        if(!haveHi){if(guess>=maximumReserve)break;guess=std::min(maximumReserve,std::max(guess*1.5,guess+10));}
+        else guess=std::max(0.0,guess*0.5);
     }
-    return model.fly((lo+hi)/2,input.hill,weather,input.startSeconds,input.captureExposure,response,input.athlete.perks[1]);
+    double best=haveHi?hi:lo;
+    if(haveHi){
+        if(std::abs(dHi-target)<=tolerance)best=hi;
+        else{
+            int retained=0;
+            for(int i=0;i<80 && hi-lo>1e-12;++i){
+                double next=dHi!=dLo?lo+(target-dLo)*(hi-lo)/(dHi-dLo):(lo+hi)/2;
+                if(!(next>lo && next<hi))next=(lo+hi)/2;
+                const double distance=distanceAt(next);
+                best=next;
+                if(std::abs(distance-target)<=tolerance)break;
+                if(distance<target){lo=next;dLo=distance;if(retained==-1)dHi=target+(dHi-target)/2;retained=-1;}
+                else{hi=next;dHi=distance;if(retained==1)dLo=target+(dLo-target)/2;retained=1;}
+                best=hi;
+            }
+        }
+    }
+    return model.fly(best,input.hill,weather,input.startSeconds,input.captureExposure,response,input.athlete.perks[1]);
 }
 }
 

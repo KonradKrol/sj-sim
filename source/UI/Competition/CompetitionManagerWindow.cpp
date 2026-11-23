@@ -52,6 +52,7 @@
 #include "ui_JumpDataDetailedInfoWindow.h"
 #include "../ResultsShowing/JumpDataDetailedInfoWindow.h"
 #include "../ResultsImage/ResultsImage.h"
+#include <QtConcurrent/QtConcurrentMap>
 #include "../../global/DiscordWebhook.h"
 
 extern const QString appVersion;
@@ -2514,18 +2515,23 @@ void CompetitionManagerWindow::suggestCurrentGate(bool undo)
         }
         // For the same specialization the flight is monotone in starting quality.
         // Only its strongest athlete can determine the safe gate.
-        for(const auto &candidate:strongest) {
-            preview.setJumper(candidate.first);const double distance=preview.previewDistance();
-            if(distance>longest){longest=distance;best=candidate.first;}
-        }
+        // The previews are independent pure calculations, so they run in parallel on separate
+        // copies of the simulator. The longest is chosen in the same order as before.
+        QVector<Jumper *> leaders;for(const auto &candidate:strongest)leaders.append(candidate.first);
+        const QVector<double> distances=QtConcurrent::blockingMapped<QVector<double>>(leaders,[&preview](Jumper *jumper){
+            JumpSimulator local(preview);local.setJumper(jumper);return local.previewDistance();
+        });
+        for(int i=0;i<leaders.size();++i)if(distances[i]>longest){longest=distances[i];best=leaders[i];}
         if(!best)return;
         preview.setJumper(best);
         int low=ui->spinBox_actualGate->minimum(),high=ui->spinBox_actualGate->maximum();
         const double realHs=hill->getSimulationProfile()->realHs();
         const auto safeAt=[&](int gate){preview.setGate(gate);return preview.previewDistance()<=realHs;};
         // The automatic gate only moves by more than one step. Distance grows with the gate, so
-        // two previews decide whether the full search below could find such a move.
-        if(automatic && (previous-1<=low || safeAt(previous-1)) && (previous+2>high || !safeAt(previous+2)))return;
+        // at most one more preview decides whether the full search below could find such a move:
+        // a safe current gate means a lower one is safe too, an unsafe one means a higher is unsafe.
+        const bool safeNow=longest<=realHs;
+        if(automatic && (previous-1<=low || safeNow || safeAt(previous-1)) && (previous+2>high || !safeNow || !safeAt(previous+2)))return;
         while(low<high){const int middle=(low+high+1)/2;if(safeAt(middle))low=middle;else high=middle-1;}
         target=low;
         if(automatic && std::abs(target-previous)<=1)return;

@@ -135,6 +135,8 @@ void WindsGeneratorSettingsEditorWidget::removeSubmitButton()
 QVector<WindGenerationSettings> WindsGeneratorSettingsEditorWidget::getWindsGenerationSettingsFromInputs()
 {
     QVector<WindGenerationSettings> vector;
+    // The inputs may not have been built when the editor is never shown.
+    if(ui->toolBox->count()<settingsCount && windGenerationSettings)return *windGenerationSettings;
 
     for(int i=0; i < settingsCount; i++){
         WindsGeneratorSettingsWidgetInputItem * item = dynamic_cast<WindsGeneratorSettingsWidgetInputItem *>(ui->toolBox->widget(i));

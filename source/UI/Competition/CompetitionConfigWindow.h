@@ -83,7 +83,7 @@ private:
     bool automaticGateEnabled() const { return !simulationSave || simulationSave->getAutoGateEnabled(); }
     Ui::SingleCompetitionConfigWindow *ui;
     int type;
-    HillEditorWidget * hillEditor;
+    HillEditorWidget * hillEditor=nullptr;
     WindsGeneratorSettingsEditorWidget * windsGeneratorSettingsEditor;
     InrunSnowGeneratorSettingsEditorWidget * inrunSnowGeneratorSettingsEditor;
 

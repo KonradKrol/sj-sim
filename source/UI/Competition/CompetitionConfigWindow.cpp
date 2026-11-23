@@ -314,7 +314,10 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         windsGeneratorSettingsEditor->setKPoint(seasonCompetition->getHill()->getKPoint());
         windsGeneratorSettingsEditor->setWindGenerationSettings(new QVector<WindGenerationSettings>());
         windsGeneratorSettingsEditor->fillWindGenerationSettingsByDefault();
-        windsGeneratorSettingsEditor->fillSettingsInputs();
+        // With a new-engine hill the weather setup replaces this legacy editor (see setupWeather),
+        // so its per-sector inputs are never shown; the settings are read directly instead.
+        const bool weatherReplacesWindEditor=simulationSave && simulationSave->getEngineVersion()==2 && seasonCompetition->getHill()->getSimulationProfile();
+        if(!weatherReplacesWindEditor)windsGeneratorSettingsEditor->fillSettingsInputs();
 
         if(seasonCompetition->getRulesPointer()->getCompetitionType() == CompetitionRules::Team)
         {
@@ -379,7 +382,7 @@ CompetitionConfigWindow::CompetitionConfigWindow(short type, QWidget *parent, Si
         //emit teamsSquadsModel->dataChanged(teamsSquadsModel->index(0, 0, QModelIndex()), teamsSquadsModel->createIndex());
     });
 
-    connect(hillEditor, &HillEditorWidget::KPointInputChanged, this, [this](){
+    if(hillEditor)connect(hillEditor, &HillEditorWidget::KPointInputChanged, this, [this](){
         windsGeneratorSettingsEditor->setKPoint(hillEditor->getKPointFromInput());
         windsGeneratorSettingsEditor->setWindGenerationSettings(new QVector<WindGenerationSettings>());
         windsGeneratorSettingsEditor->fillWindGenerationSettingsByDefault();
@@ -944,6 +947,9 @@ void CompetitionConfigWindow::setClassificationsComboBoxIndex(int index)
 void CompetitionConfigWindow::setupHillToolBoxItem()
 {
     ui->comboBox_existingHill->clear();
+    // A season event always uses its calendar hill and the hill page is removed below, so the
+    // list of all hills and the hill editor are not built for it.
+    if(type==SeasonCompetition)return;
     if(!usesCanonicalCatalog())for(const auto & hill : GlobalDatabase::get()->getEditableGlobalHills())
     {
         ui->comboBox_existingHill->addItem(QIcon(QPixmap(CountryFlagsManager::getFlagPixmap(hill.getCountryCode().toLower()))) ,hill.getName() + " HS" + QString::number(hill.getHSPoint()));
