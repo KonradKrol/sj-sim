@@ -14,6 +14,7 @@
 #include "../source/UI/SingleJumps/SingleJumpsResultsWindow.h"
 #include "../source/UI/AppSettings/AppSettingsWindow.h"
 #include "../source/UI/AppSettings/CountriesEditorWindow.h"
+#include "../source/UI/AppSettings/CountriesController.h"
 #include "../source/UI/AppSettings/JumpDataInfoChoiceDialog.h"
 #include "../source/UI/SingleJumps/SingleJumpsResultsTableSortDialog.h"
 #include "../source/UI/EditorWidgets/Dialogs/CharacteristicInputDialog.h"
@@ -2661,6 +2662,33 @@ int main(int argc,char **argv) {
     if(app.arguments().contains("--save-storage-only")){saveStorageRegressions();return 0;}
     if(app.arguments().contains("--engine-audit-only")){int selected=0;for(const auto &argument:app.arguments())if(argument.startsWith("--engine-case="))selected=argument.mid(14).toInt();engineAuditRegressions(selected);return 0;}
     if(app.arguments().contains("--next-season-only")){nextSeasonTransactionRegression(main);return 0;}
+    // Focused screen check; it needs no legacy fixture database.
+    if(app.arguments().contains("--countries-only")) {
+        // Renders the countries screen in its main states and keeps the images for review.
+        main.show();
+        CountriesEditorWindow dialog(&main);dialog.show();QTest::qWait(400);
+        auto *view=scene(&dialog);check(view && view->status()==QQuickWidget::Ready,"countries screen loads");
+        auto *screen=view?item(view->rootObject(),"countriesEditorScreen"):nullptr;check(screen!=nullptr,"dedicated countries screen is shown");
+        check(item(view->rootObject(),"countriesList")!=nullptr && item(view->rootObject(),"countriesSave")!=nullptr,"countries list and save bar exist");
+        auto *appearance=view->rootContext()->contextProperty("appearance").value<QuickAppearance *>();
+        const auto shot=[&](const QString &name,QSize size,bool dark){presentation(&dialog)->resize(size);appearance->setDark(dark);QTest::qWait(300);
+            presentation(&dialog)->grab().toImage().save(output+QStringLiteral("/countries-%1.png").arg(name));};
+        shot("details",{1280,800},false);
+        // A country without a shipped flag shows the flag help.
+        auto *controller=dialog.controller();
+        for(int i=0;i<controller->total();++i){controller->select(i);if(!controller->current().value("hasFlag").toBool())break;}
+        QTest::qWait(200);shot("no-flag",{1280,800},false);
+        screen->setProperty("adding",true);QTest::qWait(200);shot("add",{1280,800},false);
+        shot("add-narrow",{600,820},false);
+        screen->setProperty("adding",false);controller->rename(0,controller->current().value("name").toString()+" X");QTest::qWait(200);shot("dirty-dark",{1280,800},true);
+        appearance->setDark(false);dialog.reject();
+        {
+            AppSettingsWindow settings;settings.setMainWindowParent(&main);settings.show();QTest::qWait(400);
+            auto *bridge=settings.findChild<QuickBridge *>();check(bridge!=nullptr,"settings bridge");id(bridge,"checkBox_hideForm");
+            presentation(&settings)->resize({1280,900});QTest::qWait(300);presentation(&settings)->grab().toImage().save(output+"/settings-simulation.png");settings.hide();
+        }
+        return 0;
+    }
     engineAuditRegressions();
     rosterTranslationRegression();
     if(app.arguments().contains("--engine-async-benchmark-only")){engineAsyncRegression();return 0;}

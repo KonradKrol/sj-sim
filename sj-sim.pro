@@ -60,7 +60,7 @@ SOURCES += \
     source/global/DataPack.cpp \
     source/global/CountryCodes.cpp \
     source/UI/AuthorWindow.cpp \
-    source/UI/AppSettings/CountriesEditorTableModel.cpp \
+    source/UI/AppSettings/CountriesController.cpp \
     source/UI/AppSettings/CountriesEditorWindow.cpp \
     source/UI/AppSettings/JumpDataInfoChoiceDialog.cpp \
     source/UI/AppSettings/NewJumpsImportancePresetDialog.cpp \
@@ -246,7 +246,7 @@ HEADERS += \
     source/global/CountryCodes.h \
     source/UI/AuthorWindow.h \
     source/UI/ResponsiveWindowUtils.h \
-    source/UI/AppSettings/CountriesEditorTableModel.h \
+    source/UI/AppSettings/CountriesController.h \
     source/UI/AppSettings/CountriesEditorWindow.h \
     source/UI/AppSettings/JumpDataInfoChoiceDialog.h \
     source/UI/AppSettings/NewJumpsImportancePresetDialog.h \

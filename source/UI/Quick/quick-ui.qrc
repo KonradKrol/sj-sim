@@ -131,6 +131,7 @@
         <file>PointsPresetEditor.qml</file>
 <file>ClassificationSources.qml</file>
 <file>ClassificationContributionPage.qml</file>
+<file>CountriesEditor.qml</file>
 <file>ClassificationFilters.qml</file>
 <file>HelpDot.qml</file>
 <file>CheckHelp.qml</file>
