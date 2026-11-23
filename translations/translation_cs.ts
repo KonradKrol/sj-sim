@@ -492,6 +492,50 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <source>Działa: wiadomość testowa dotarła na kanał.</source>
             <translation>Funguje: testovací zpráva dorazila do kanálu.</translation>
         </message>
+        <message>
+            <source>Bardzo mała</source>
+            <translation>Velmi malá</translation>
+        </message>
+        <message>
+            <source>Biblioteka i folder danych</source>
+            <translation>Knihovna a složka dat</translation>
+        </message>
+        <message>
+            <source>Jak mocno różnice jakości skoków przekładają się na metry. Nie zmienia samej siły wiatru.</source>
+            <translation>Jak silně se rozdíly v kvalitě skoků promítají do metrů. Nemění samotnou sílu větru.</translation>
+        </message>
+        <message>
+            <source>Laboratorium formy</source>
+            <translation>Laboratoř formy</translation>
+        </message>
+        <message>
+            <source>Losowość skoków</source>
+            <translation>Náhodnost skoků</translation>
+        </message>
+        <message>
+            <source>Mała</source>
+            <translation>Malá</translation>
+        </message>
+        <message>
+            <source>Różnice w odległościach</source>
+            <translation>Rozdíly ve vzdálenostech</translation>
+        </message>
+        <message>
+            <source>W nowych sezonach: większa zmienność skraca okresy formy i zwiększa wahania. Wymaga automatycznej formy.</source>
+            <translation>V nových sezónách: větší proměnlivost zkracuje období formy a zvyšuje výkyvy. Vyžaduje automatickou formu.</translation>
+        </message>
+        <message>
+            <source>Zmienność formy w sezonach</source>
+            <translation>Proměnlivost formy v sezónách</translation>
+        </message>
+        <message>
+            <source>Ukryj formę zawodników</source>
+            <translation>Skrýt formu závodníků</translation>
+        </message>
+        <message>
+            <source>W sezonie karta zawodnika nie pokaże jego formy ani formy dnia przy skoku. Forma nadal działa w symulacji. Na karcie zawodnika możesz ją podejrzeć przełącznikiem „Pokaż formę”.</source>
+            <translation>V sezóně karta závodníka neukáže formu a u skoku se nezobrazí forma dne. Forma v simulaci dál funguje. Na kartě závodníka ji můžete zobrazit přepínačem „Zobrazit formu“.</translation>
+        </message>
 </context>
     <context>
         <name>AppearanceMenu</name>
@@ -963,6 +1007,14 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <source>Przeciągnij uchwyt na liście lub użyj Alt + ↑/↓, aby zmienić kolejność.</source>
             <translation>Pořadí změňte přetažením úchytu nebo klávesami Alt + ↑/↓.</translation>
         </message>
+        <message>
+            <source>Statystyki zawodnika</source>
+            <translation>Statistiky skokana</translation>
+        </message>
+        <message>
+            <source>▥ Statystyki</source>
+            <translation>▥ Statistiky</translation>
+        </message>
     </context>
     <context>
         <name>AthleteMedals</name>
@@ -1135,6 +1187,50 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
             <source>Więcej wahań. Częściej psuje, czasem zaskakuje dobrym skokiem.</source>
             <translation>Více výkyvů. Častěji kazí skoky, ale občas překvapí dobrým výkonem.</translation>
         </message>
+        <message>
+            <source>Chwiejna forma</source>
+            <translation>Kolísavá forma</translation>
+        </message>
+        <message>
+            <source>Częściej psuje skoki, czasem zaskakuje.</source>
+            <translation>Častěji pokazí skok, občas překvapí.</translation>
+        </message>
+        <message>
+            <source>Forma w sezonie</source>
+            <translation>Forma během sezóny</translation>
+        </message>
+        <message>
+            <source>Lepiej radzi sobie na dużych skoczniach.</source>
+            <translation>Lépe si vede na velkých můstcích.</translation>
+        </message>
+        <message>
+            <source>Lepiej radzi sobie na małych skoczniach.</source>
+            <translation>Lépe si vede na malých můstcích.</translation>
+        </message>
+        <message>
+            <source>Na treningach i w próbnych częściej odpuszcza.</source>
+            <translation>V trénincích a zkušebních kolech častěji polevuje.</translation>
+        </message>
+        <message>
+            <source>Pomaga na treningach i w seriach próbnych.</source>
+            <translation>Pomáhá v trénincích a zkušebních kolech.</translation>
+        </message>
+        <message>
+            <source>Równa forma</source>
+            <translation>Vyrovnaná forma</translation>
+        </message>
+        <message>
+            <source>Równiejsze skoki.</source>
+            <translation>Vyrovnanější skoky.</translation>
+        </message>
+        <message>
+            <source>Spokojniejsze okresy automatycznej formy w sezonie.</source>
+            <translation>Klidnější období automatické formy během sezóny.</translation>
+        </message>
+        <message>
+            <source>Większe wahania automatycznej formy w sezonie.</source>
+            <translation>Větší výkyvy automatické formy během sezóny.</translation>
+        </message>
     </context>
     <context>
         <name>AthleteRating</name>
@@ -1169,6 +1265,14 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
 <message><source>Pomoc: OVR</source><translation>Nápověda: OVR</translation></message>
 <message><source>Aktualna dyspozycja skoczka. Wpływa na jakość skoków i może zmieniać się w sezonie.</source><translation>Aktuální forma skokana. Ovlivňuje kvalitu skoků a během sezony se může měnit.</translation></message>
 <message><source>Ogólny poziom umiejętności skoczka. Wyższy OVR zwykle pomaga skakać dalej.</source><translation>Celková úroveň schopností skokana. Vyšší OVR obvykle pomáhá k delším skokům.</translation></message>
+        <message>
+            <source>Aktualna dyspozycja skoczka.</source>
+            <translation>Aktuální dispozice skokana.</translation>
+        </message>
+        <message>
+            <source>Ogólny poziom umiejętności skoczka.</source>
+            <translation>Celková úroveň dovedností skokana.</translation>
+        </message>
 </context>
     <context>
         <name>AthleteStudio</name>
@@ -1438,6 +1542,30 @@ Aby ses ale neradoval příliš, tvůj počítač byl infikován škodlivým sof
 Udostępnij cały folder. Aby wczytać paczkę, wybierz w nim plik pack.json.</source><translation>%1
 
 Sdílejte celou složku. K importu vyberte soubor pack.json.</translation></message>
+        <message>
+            <source>Nowa paczka</source>
+            <translation>Nový balíček</translation>
+        </message>
+        <message>
+            <source>Paczka Sj.Sim (*.sjsim-pack)</source>
+            <translation>Balíček Sj.Sim (*.sjsim-pack)</translation>
+        </message>
+        <message>
+            <source>Udostępnij paczkę</source>
+            <translation>Sdílet balíček</translation>
+        </message>
+        <message>
+            <source>Wczytaj paczkę</source>
+            <translation>Načíst balíček</translation>
+        </message>
+        <message>
+            <source>Wczytano paczkę.</source>
+            <translation>Balíček načten.</translation>
+        </message>
+        <message>
+            <source>Zapisano paczkę do udostępnienia.</source>
+            <translation>Balíček uložen ke sdílení.</translation>
+        </message>
 </context>
     <context>
         <name>AthleteTokens</name>
@@ -2288,6 +2416,10 @@ li.checked::marker { content: "\2612"; }
 <message><source>Wybierz skocznię…</source><translation>Vyberte můstek…</translation></message>
 <message><source>Nieznana skocznia</source><translation>Neznámý můstek</translation></message>
 <message><source>%1 · HS %2</source><translation>%1 · HS %2</translation></message>
+        <message>
+            <source>Popraw daty w kalendarzu</source>
+            <translation>Opravte data v kalendáři</translation>
+        </message>
 </context>
     <context>
         <name>CalendarEventRow</name>
@@ -2579,6 +2711,42 @@ li.checked::marker { content: "\2612"; }
         <source>Ustaw brak źródła kwalifikacji</source>
         <translation>Nastavit kvalifikaci bez zdroje</translation>
     </message>
+        <message>
+            <source>Wybierz klasyfikację</source>
+            <translation>Vybrat pořadí</translation>
+        </message>
+        <message>
+            <source>Domyślnie — pierwsza pasująca klasyfikacja</source>
+            <translation>Výchozí — první vyhovující klasifikace</translation>
+        </message>
+        <message>
+            <source>Konkretna klasyfikacja</source>
+            <translation>Konkrétní klasifikace</translation>
+        </message>
+        <message>
+            <source>Konkretny konkurs</source>
+            <translation>Konkrétní závod</translation>
+        </message>
+        <message>
+            <source>Od najsłabszego do najlepszego. Kolejność możesz zmienić przed startem.</source>
+            <translation>Od nejslabšího po nejlepšího. Pořadí můžete změnit před startem.</translation>
+        </message>
+        <message>
+            <source>Różne konkursy</source>
+            <translation>Různé závody</translation>
+        </message>
+        <message>
+            <source>Sortowanie listy startowej</source>
+            <translation>Řazení startovní listiny</translation>
+        </message>
+        <message>
+            <source>Ustawia początkową kolejność od najsłabszego do najlepszego. Domyślnie korzysta z pierwszej pasującej klasyfikacji. Przed startem możesz ręcznie zmienić kolejność.</source>
+            <translation>Nastaví počáteční pořadí od nejslabšího po nejlepšího. Ve výchozím stavu použije první vyhovující klasifikaci. Před startem můžete pořadí ručně změnit.</translation>
+        </message>
+        <message>
+            <source>Według wybranego źródła kwalifikacji</source>
+            <translation>Podle zvoleného zdroje kvalifikace</translation>
+        </message>
 </context>
     <context>
         <name>CalendarVenueButton</name>
@@ -3049,6 +3217,22 @@ li.checked::marker { content: "\2612"; }
         <source>Odwołaj konkursy</source>
         <translation>Zrušit závody</translation>
     </message>
+        <message>
+            <source>Zawodnicy</source>
+            <translation>Skokani</translation>
+        </message>
+        <message>
+            <source>Nie można wykonać tej czynności</source>
+            <translation>Tuto akci nelze provést</translation>
+        </message>
+        <message>
+            <source>Popraw daty w kalendarzu</source>
+            <translation>Opravte data v kalendáři</translation>
+        </message>
+        <message>
+            <source>ZABLOKOWANE — popraw błędy przed zatwierdzeniem lub rozpoczęciem konkursu.</source>
+            <translation>ZABLOKOVÁNO — před potvrzením nebo zahájením závodu opravte chyby.</translation>
+        </message>
 </context>
     <context>
         <name>CalendarsListModel</name>
@@ -4308,6 +4492,46 @@ Ověřte, že existuje a má odpovídající oprávnění.</translation>
         <source>Ta klasyfikacja nie ma wyników. Kolejność listy startowej nie została zmieniona.</source>
         <translation>Tato klasifikace nemá výsledky. Pořadí startovní listiny nebylo změněno.</translation>
     </message>
+        <message>
+            <source>Ręcznie</source>
+            <translation>Ručně</translation>
+        </message>
+        <message>
+            <source>Dobierz automatycznie</source>
+            <translation>Doplnit automaticky</translation>
+        </message>
+        <message>
+            <source>Jedna dyspozycja zawodnika na kwalifikacje i wszystkie serie konkursu.</source>
+            <translation>Jedna denní dispozice závodníka pro kvalifikaci i všechna kola závodu.</translation>
+        </message>
+        <message>
+            <source>Losowo koszykami bez rodaków</source>
+            <translation>Náhodně z košů bez krajanů</translation>
+        </message>
+        <message>
+            <source>Na zakładkę (1, 20, 21…)</source>
+            <translation>Na přeskáčku (1, 20, 21…)</translation>
+        </message>
+        <message>
+            <source>Równomiernie (1, 11, 21…)</source>
+            <translation>Rovnoměrně (1, 11, 21…)</translation>
+        </message>
+        <message>
+            <source>Ułóż 1. serię według wyników kwalifikacji</source>
+            <translation>Seřadit 1. kolo podle výsledků kvalifikace</translation>
+        </message>
+        <message>
+            <source>Wylosuj formę dnia</source>
+            <translation>Losovat denní formu</translation>
+        </message>
+        <message>
+            <source>Wyrównany potencjał grup</source>
+            <translation>Vyrovnaná síla skupin</translation>
+        </message>
+        <message>
+            <source>Zawodnicy w pierwszej serii skaczą od najsłabszego do najlepszego wyniku kwalifikacji. Dotyczy konkursów indywidualnych bez grup KO.</source>
+            <translation>V prvním kole skáčou závodníci od nejslabšího po nejlepší výsledek kvalifikace. Platí pro závody jednotlivců bez skupin KO.</translation>
+        </message>
 </context>
     <context>
         <name>CompetitionInfoEditorWidget</name>
@@ -5212,6 +5436,34 @@ Pro dodatečnou kompenzaci musí skokan dosáhnout 95 % bodu HS (%1 m).</transla
             <source>Opublikuj ostatni skok na Discordzie…</source>
             <translation>Zveřejnit poslední skok na Discordu…</translation>
         </message>
+        <message>
+            <source>Ręcznie</source>
+            <translation>Ručně</translation>
+        </message>
+        <message>
+            <source>Auto-belka</source>
+            <translation>Auto-rampa</translation>
+        </message>
+        <message>
+            <source>Losowo koszykami bez rodaków</source>
+            <translation>Náhodně z košů bez krajanů</translation>
+        </message>
+        <message>
+            <source>Na zakładkę (1, 20, 21…)</source>
+            <translation>Na přeskáčku (1, 20, 21…)</translation>
+        </message>
+        <message>
+            <source>Obniżyć belkę o 1 na życzenie trenera? Aby otrzymać dodatkową rekompensatę, trzeba skoczyć co najmniej 95% HS (%1 m).</source>
+            <translation>Snížit rampu o 1 na žádost trenéra? Pro dodatečnou kompenzaci je třeba skočit alespoň 95 % HS (%1 m).</translation>
+        </message>
+        <message>
+            <source>Równomiernie (1, 11, 21…)</source>
+            <translation>Rovnoměrně (1, 11, 21…)</translation>
+        </message>
+        <message>
+            <source>Wyrównany potencjał grup</source>
+            <translation>Vyrovnaná síla skupin</translation>
+        </message>
 </context>
     <context>
         <name>CompetitionQuickBridge</name>
@@ -5305,6 +5557,10 @@ Pro dodatečnou kompenzaci musí skokan dosáhnout 95 % bodu HS (%1 m).</transla
             <location filename="../source/UI/Competition/Quick/CompetitionQuickBridge.cpp" line="248" />
             <source>Składy drużyn</source>
             <translation>Sestavy družstev</translation>
+        </message>
+        <message>
+            <source>Ułóż 1. serię według wyników kwalifikacji</source>
+            <translation>Seřadit 1. kolo podle výsledků kvalifikace</translation>
         </message>
     </context>
     <context>
@@ -5501,6 +5757,10 @@ průměrného větru</translation>
             <source>Trening</source>
             <translation>Trénink</translation>
         </message>
+        <message>
+            <source>Brak skoczni</source>
+            <translation>Žádný můstek</translation>
+        </message>
     </context>
     <context>
         <name>CompetitionsRangeComboBoxesWidget</name>
@@ -5676,6 +5936,10 @@ průměrného větru</translation>
             <source>Usunąć kraj %1 (%2)? Zmiana zapisze się po kliknięciu „Zapisz”.</source>
             <translation>Odebrat zemi %1 (%2)? Změna se uloží po kliknutí na „Uložit“.</translation>
         </message>
+        <message>
+            <source>Zamknij</source>
+            <translation>Zavřít</translation>
+        </message>
     </context>
     <context>
         <name>DataPackBar</name>
@@ -5701,6 +5965,14 @@ průměrného větru</translation>
     <message><source>Domyślne zasady</source><translation>Výchozí pravidla</translation></message>
 <message><source>Importuj</source><translation>Importovat</translation></message>
 <message><source>Eksportuj</source><translation>Exportovat</translation></message>
+        <message>
+            <source>Biblioteka</source>
+            <translation>Knihovna</translation>
+        </message>
+        <message>
+            <source>Udostępnij plik .sjsim-pack. W Bibliotece możesz połączyć różne zasoby w jednym pliku.</source>
+            <translation>Sdílejte soubor .sjsim-pack. V Knihovně můžete spojit různé zdroje do jednoho souboru.</translation>
+        </message>
 </context>
     <context>
         <name>DataTable</name>
@@ -6004,6 +6276,22 @@ průměrného větru</translation>
 <message><source>Konkurs drużynowy</source><translation>Závod družstev</translation></message>
 <message><source>Próbna drużynowa</source><translation>Zkušební kolo družstev</translation></message>
 <message><source>Brak zasad tego typu</source><translation>Nejsou pravidla tohoto typu</translation></message>
+        <message>
+            <source>Paczka</source>
+            <translation>Balíček</translation>
+        </message>
+        <message>
+            <source>Paczka Sj.Sim (*.sjsim-pack)</source>
+            <translation>Balíček Sj.Sim (*.sjsim-pack)</translation>
+        </message>
+        <message>
+            <source>Udostępnij paczkę</source>
+            <translation>Sdílet balíček</translation>
+        </message>
+        <message>
+            <source>Wczytaj paczkę</source>
+            <translation>Načíst balíček</translation>
+        </message>
 </context>
     <context>
         <name>DatabaseItemsListView</name>
@@ -6929,6 +7217,26 @@ li.checked::marker { content: "\2612"; }
             <source>Przy losowaniu warunków częściej pojawia się wiatr w plecy. Ręcznie wybrany kierunek pozostaje bez zmian.</source>
             <translation>Při losování podmínek je pravděpodobnější zadní vítr. Ručně zvolený směr se nemění.</translation>
         </message>
+        <message>
+            <source>Kompaktowa skocznia</source>
+            <translation>Kompaktní můstek</translation>
+        </message>
+        <message>
+            <source>Nieco zmniejsza różnice odległości między zawodnikami.</source>
+            <translation>Mírně snižuje rozdíly ve vzdálenostech mezi závodníky.</translation>
+        </message>
+        <message>
+            <source>Nieco zwiększa różnice odległości między zawodnikami.</source>
+            <translation>Mírně zvyšuje rozdíly ve vzdálenostech mezi závodníky.</translation>
+        </message>
+        <message>
+            <source>Rozległa skocznia</source>
+            <translation>Rozlehlý můstek</translation>
+        </message>
+        <message>
+            <source>Różnice odległości</source>
+            <translation>Rozdíly ve vzdálenostech</translation>
+        </message>
     </context>
     <context>
         <name>HillStudio</name>
@@ -7133,6 +7441,30 @@ li.checked::marker { content: "\2612"; }
             <translation>Importovat balíček</translation>
         </message>
     <message><source>Wyeksportowano paczkę do %1.</source><translation>Balíček byl exportován do %1.</translation></message>
+        <message>
+            <source>Nowa paczka</source>
+            <translation>Nový balíček</translation>
+        </message>
+        <message>
+            <source>Paczka Sj.Sim (*.sjsim-pack)</source>
+            <translation>Balíček Sj.Sim (*.sjsim-pack)</translation>
+        </message>
+        <message>
+            <source>Udostępnij paczkę</source>
+            <translation>Sdílet balíček</translation>
+        </message>
+        <message>
+            <source>Wczytaj paczkę</source>
+            <translation>Načíst balíček</translation>
+        </message>
+        <message>
+            <source>Wczytano paczkę.</source>
+            <translation>Balíček načten.</translation>
+        </message>
+        <message>
+            <source>Zapisano paczkę do udostępnienia.</source>
+            <translation>Balíček uložen ke sdílení.</translation>
+        </message>
 </context>
     <context>
         <name>HillTypesCheckBoxesWidget</name>
@@ -7270,6 +7602,10 @@ li.checked::marker { content: "\2612"; }
         <message>
             <source>Przykładowy sezon</source>
             <translation>Ukázková sezóna</translation>
+        </message>
+        <message>
+            <source>Dołącz do serwera Sj.Sima</source>
+            <translation>Připojte se k serveru Sj.Sim</translation>
         </message>
     </context>
     <context>
@@ -7871,6 +8207,10 @@ li.checked::marker { content: "\2612"; }
         <source>Pokaż natężenie opadów</source>
         <translation>Zobraz intenzitu srážek</translation>
     </message>
+        <message>
+            <source>Forma dnia (+/−)</source>
+            <translation>Denní forma (+/−)</translation>
+        </message>
 </context>
     <context>
         <name>JumpManipulatorConfigWindow</name>
@@ -8539,6 +8879,94 @@ skryté grafy</translation>
             <location filename="../source/UI/Seasons/Stats/JumperStatsWindow.cpp" line="720" />
             <source>Podaj nazwę jaką ma mieć folder z zapisanymi statystykami skoczka</source>
             <translation>Zadejte název složky s uloženými statistikami skokana</translation>
+        </message>
+        <message>
+            <source>Forma</source>
+            <translation>Forma</translation>
+        </message>
+        <message>
+            <source>Jakość skoku</source>
+            <translation>Kvalita skoku</translation>
+        </message>
+        <message>
+            <source>Miejsce</source>
+            <translation>Místo</translation>
+        </message>
+        <message>
+            <source>Odległość</source>
+            <translation>Vzdálenost</translation>
+        </message>
+        <message>
+            <source>Sezon</source>
+            <translation>Sezóna</translation>
+        </message>
+        <message>
+            <source>Wartość</source>
+            <translation>Hodnota</translation>
+        </message>
+        <message>
+            <source>m</source>
+            <translation>m</translation>
+        </message>
+        <message>
+            <source>pkt</source>
+            <translation>b</translation>
+        </message>
+        <message>
+            <source>Dyskwalifikacja</source>
+            <translation>Diskvalifikace</translation>
+        </message>
+        <message>
+            <source>Dyskwalifikacja w kwalifikacjach</source>
+            <translation>Diskvalifikace v kvalifikaci</translation>
+        </message>
+        <message>
+            <source>Eksport statystyk</source>
+            <translation>Export statistik</translation>
+        </message>
+        <message>
+            <source>Eksport statystyk zawodnika</source>
+            <translation>Export statistik závodníka</translation>
+        </message>
+        <message>
+            <source>Miejsca</source>
+            <translation>Umístění</translation>
+        </message>
+        <message>
+            <source>Nie udało się zapisać pliku %1.</source>
+            <translation>Soubor %1 se nepodařilo uložit.</translation>
+        </message>
+        <message>
+            <source>Nie wystartował</source>
+            <translation>Nestartoval</translation>
+        </message>
+        <message>
+            <source>Nie zakwalifikował się</source>
+            <translation>Nekvalifikoval se</translation>
+        </message>
+        <message>
+            <source>Ocena</source>
+            <translation>Hodnocení</translation>
+        </message>
+        <message>
+            <source>Sezon %1</source>
+            <translation>Sezóna %1</translation>
+        </message>
+        <message>
+            <source>Sezon %1/%2</source>
+            <translation>Sezóna %1/%2</translation>
+        </message>
+        <message>
+            <source>Skok %1</source>
+            <translation>Skok %1</translation>
+        </message>
+        <message>
+            <source>Suma not sędziowskich</source>
+            <translation>Součet známek rozhodčích</translation>
+        </message>
+        <message>
+            <source>Zastąpić istniejące pliki statystyk w tym folderze?</source>
+            <translation>Nahradit existující soubory statistik v této složce?</translation>
         </message>
     </context>
     <context>
@@ -9630,6 +10058,10 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
         <message>
             <source>Puchar Świata</source>
             <translation>Světový pohár</translation>
+        </message>
+        <message>
+            <source>Daty umożliwiają automatyczną zmianę formy i formę dnia zawodników.</source>
+            <translation>Data umožňují automatickou změnu formy a denní formu závodníků.</translation>
         </message>
     </context>
     <context>
@@ -16069,6 +16501,444 @@ Je také ve schránce, takže ho můžete hned vložit, například na Discord.<
             <source>Śnieg/deszcz przy skoku</source>
             <translation>Sníh/déšť při skoku</translation>
         </message>
+        <message>
+            <source>Kalendarze</source>
+            <translation>Kalendáře</translation>
+        </message>
+        <message>
+            <source>Preset kalendarza</source>
+            <translation>Předvolba kalendáře</translation>
+        </message>
+        <message>
+            <source>Zasady</source>
+            <translation>Pravidla</translation>
+        </message>
+        <message>
+            <source> dni</source>
+            <translation> dní</translation>
+        </message>
+        <message>
+            <source>Automatyczna forma wymaga dat wydarzeń.</source>
+            <translation>Automatická forma vyžaduje data událostí.</translation>
+        </message>
+        <message>
+            <source>Automatyczna forma wymaga nowych profili zawodników.</source>
+            <translation>Automatická forma vyžaduje nové profily závodníků.</translation>
+        </message>
+        <message>
+            <source>Baza μ</source>
+            <translation>Základ μ</translation>
+        </message>
+        <message>
+            <source>Biblioteka</source>
+            <translation>Knihovna</translation>
+        </message>
+        <message>
+            <source>Brakuje zasobów startowych w folderze Defaults aplikacji.</source>
+            <translation>Ve složce Defaults aplikace chybí výchozí zdroje.</translation>
+        </message>
+        <message>
+            <source>Centrum okresu</source>
+            <translation>Střed období</translation>
+        </message>
+        <message>
+            <source>Chwiejna forma %1</source>
+            <translation>Kolísavá forma %1</translation>
+        </message>
+        <message>
+            <source>Do zmiany okresu</source>
+            <translation>Do změny období</translation>
+        </message>
+        <message>
+            <source>Dokładne F procesu</source>
+            <translation>Přesné F procesu</translation>
+        </message>
+        <message>
+            <source>Dynamika</source>
+            <translation>Dynamika</translation>
+        </message>
+        <message>
+            <source>Długość okresów</source>
+            <translation>Délka období</translation>
+        </message>
+        <message>
+            <source>F w profilu</source>
+            <translation>F v profilu</translation>
+        </message>
+        <message>
+            <source>F − μ</source>
+            <translation>F − μ</translation>
+        </message>
+        <message>
+            <source>Folder danych</source>
+            <translation>Složka dat</translation>
+        </message>
+        <message>
+            <source>Losowanie</source>
+            <translation>Losování</translation>
+        </message>
+        <message>
+            <source>Losowość F / dzień</source>
+            <translation>Náhodnost F / den</translation>
+        </message>
+        <message>
+            <source>Losowość μ / dzień</source>
+            <translation>Náhodnost μ / den</translation>
+        </message>
+        <message>
+            <source>Mnożnik wahań</source>
+            <translation>Násobitel výkyvů</translation>
+        </message>
+        <message>
+            <source>Mnożnik średniego czasu między zmianami okresu.</source>
+            <translation>Násobitel průměrné doby mezi změnami období.</translation>
+        </message>
+        <message>
+            <source>Następna zmiana okresu</source>
+            <translation>Další změna období</translation>
+        </message>
+        <message>
+            <source>Nie można odczytać %1.</source>
+            <translation>Nelze načíst %1.</translation>
+        </message>
+        <message>
+            <source>Nie można odczytać paczki.</source>
+            <translation>Balíček nelze načíst.</translation>
+        </message>
+        <message>
+            <source>Nie można odczytać zdjęcia: %1.</source>
+            <translation>Fotografii nelze načíst: %1.</translation>
+        </message>
+        <message>
+            <source>Nie można przygotować importu.</source>
+            <translation>Import nelze připravit.</translation>
+        </message>
+        <message>
+            <source>Nie można przygotować nowego folderu danych.</source>
+            <translation>Novou složku dat nelze připravit.</translation>
+        </message>
+        <message>
+            <source>Nie można skopiować zasobu startowego: %1</source>
+            <translation>Výchozí zdroj nelze zkopírovat: %1</translation>
+        </message>
+        <message>
+            <source>Nie można usunąć pliku spoza folderu biblioteki.</source>
+            <translation>Nelze smazat soubor mimo složku knihovny.</translation>
+        </message>
+        <message>
+            <source>Nie można utworzyć folderu danych: %1</source>
+            <translation>Složku dat nelze vytvořit: %1</translation>
+        </message>
+        <message>
+            <source>Nie można zakończyć przygotowania folderu danych.</source>
+            <translation>Přípravu složky dat nelze dokončit.</translation>
+        </message>
+        <message>
+            <source>Nie można zapisać danych w %1.</source>
+            <translation>Data nelze uložit do %1.</translation>
+        </message>
+        <message>
+            <source>Nie można zapisać importowanego zasobu.</source>
+            <translation>Importovaný zdroj nelze uložit.</translation>
+        </message>
+        <message>
+            <source>Nie można zapisać zdjęcia.</source>
+            <translation>Fotografii nelze uložit.</translation>
+        </message>
+        <message>
+            <source>Nie udało się otworzyć pliku ustawień aplikacji
+Upewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia</source>
+            <translation>Nepodařilo se otevřít soubor nastavení aplikace
+Ujistěte se, že soubor existuje a má správná oprávnění</translation>
+        </message>
+        <message>
+            <source>Nie udało się otworzyć pliku ustawień symulacji
+Upewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia</source>
+            <translation>Nepodařilo se otevřít soubor nastavení simulace
+Ujistěte se, že soubor existuje a má správná oprávnění</translation>
+        </message>
+        <message>
+            <source>Nie udało się otworzyć presetu generatora formy: </source>
+            <translation>Nepodařilo se otevřít předvolbu generátoru formy: </translation>
+        </message>
+        <message>
+            <source>Nie udało się przenieść kopii danych. Poprzedni folder pozostał bez zmian.</source>
+            <translation>Kopii dat se nepodařilo přesunout. Předchozí složka zůstala beze změny.</translation>
+        </message>
+        <message>
+            <source>Nie udało się przenieść zasobu do kosza. Usunięto: %1.</source>
+            <translation>Zdroj se nepodařilo přesunout do koše. Smazáno: %1.</translation>
+        </message>
+        <message>
+            <source>Nie udało się wczytać paczek z folderu danych.
+%1</source>
+            <translation>Balíčky ze složky dat se nepodařilo načíst.
+%1</translation>
+        </message>
+        <message>
+            <source>Nie udało się wczytać punktacji
+Treść błędu: </source>
+            <translation>Bodování se nepodařilo načíst
+Chyba: </translation>
+        </message>
+        <message>
+            <source>Nie udało się wczytać skoczni
+Treść błędu: </source>
+            <translation>Můstky se nepodařilo načíst
+Chyba: </translation>
+        </message>
+        <message>
+            <source>Nie udało się wczytać ustawień aplikacji z pliku ustawień aplikacji
+Treść błędu: </source>
+            <translation>Nastavení aplikace se ze souboru nepodařilo načíst
+Chyba: </translation>
+        </message>
+        <message>
+            <source>Nie udało się wczytać ustawień symulacji z pliku ustawień symulacji
+Treść błędu: </source>
+            <translation>Nastavení simulace se ze souboru nepodařilo načíst
+Chyba: </translation>
+        </message>
+        <message>
+            <source>Nie udało się wczytać zasad konkursu
+Treść błędu: </source>
+            <translation>Pravidla závodů se nepodařilo načíst
+Chyba: </translation>
+        </message>
+        <message>
+            <source>Nie udało się wczytać zawodników
+Treść błędu: </source>
+            <translation>Závodníky se nepodařilo načíst
+Chyba: </translation>
+        </message>
+        <message>
+            <source>Nie udało się zakończyć importu. Przywrócono poprzedni stan biblioteki.</source>
+            <translation>Import se nepodařilo dokončit. Obnoven předchozí stav knihovny.</translation>
+        </message>
+        <message>
+            <source>Nie udało się zapisać paczki.</source>
+            <translation>Balíček se nepodařilo uložit.</translation>
+        </message>
+        <message>
+            <source>Nieobsługiwany rodzaj zasobu.</source>
+            <translation>Nepodporovaný typ zdroje.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowa liczba punktów.</source>
+            <translation>Neplatný počet bodů.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowa nazwa zasobu.</source>
+            <translation>Neplatný název zdroje.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowa punktacja.</source>
+            <translation>Neplatné bodování.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowa ścieżka zasobu.</source>
+            <translation>Neplatná cesta ke zdroji.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowe dane automatycznej formy.</source>
+            <translation>Neplatná data automatické formy.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowe załączniki paczki.</source>
+            <translation>Neplatné přílohy balíčku.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowy format paczki Sj.Sim.</source>
+            <translation>Neplatný formát balíčku Sj.Sim.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowy plik JSON: %1.</source>
+            <translation>Neplatný soubor JSON: %1.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowy zapis symulacji.</source>
+            <translation>Neplatná uložená simulace.</translation>
+        </message>
+        <message>
+            <source>Nowy folder nie jest pusty. Dane pozostają w %1.</source>
+            <translation>Nová složka není prázdná. Data zůstávají v %1.</translation>
+        </message>
+        <message>
+            <source>Odchylenie losowego składnika zmiany formy w jednym dniu, przed ograniczeniem zakresu.</source>
+            <translation>Odchylka náhodné složky změny formy za jeden den, před omezením rozsahu.</translation>
+        </message>
+        <message>
+            <source>Odwiedzone okresy</source>
+            <translation>Navštívená období</translation>
+        </message>
+        <message>
+            <source>Okres dyspozycji</source>
+            <translation>Období dispozice</translation>
+        </message>
+        <message>
+            <source>Ostatni przeliczony stan. Po ręcznej zmianie przy wyłączonej autoformie może różnić się od profilu.</source>
+            <translation>Poslední přepočítaný stav. Po ruční změně při vypnuté automatické formě se může lišit od profilu.</translation>
+        </message>
+        <message>
+            <source>Ostatnie przeliczenie</source>
+            <translation>Poslední přepočet</translation>
+        </message>
+        <message>
+            <source>Paczka jest zbyt duża. Podziel ją na mniejsze paczki.</source>
+            <translation>Balíček je příliš velký. Rozdělte ho na menší balíčky.</translation>
+        </message>
+        <message>
+            <source>Paczka zawiera powtórzone zasoby.</source>
+            <translation>Balíček obsahuje opakované zdroje.</translation>
+        </message>
+        <message>
+            <source>Perk formy</source>
+            <translation>Perk formy</translation>
+        </message>
+        <message>
+            <source>Po tym czasie pozostaje połowa różnicy między F a stałą bazą, bez losowości.</source>
+            <translation>Po této době zůstane polovina rozdílu mezi F a stálým základem, bez náhodnosti.</translation>
+        </message>
+        <message>
+            <source>Powrót F / dzień</source>
+            <translation>Návrat F / den</translation>
+        </message>
+        <message>
+            <source>Powrót μ / dzień</source>
+            <translation>Návrat μ / den</translation>
+        </message>
+        <message>
+            <source>Pozostały wylosowany czas do następnej zmiany okresu. Sama forma nie przeskakuje wtedy do jego centrum.</source>
+            <translation>Zbývající vylosovaný čas do další změny období. Samotná forma pak neskočí do jeho středu.</translation>
+        </message>
+        <message>
+            <source>Połowiczny powrót F</source>
+            <translation>Poloviční návrat F</translation>
+        </message>
+        <message>
+            <source>Połowiczny powrót μ</source>
+            <translation>Poloviční návrat μ</translation>
+        </message>
+        <message>
+            <source>Przesunięcie ku skrajnościom</source>
+            <translation>Posun ke krajnostem</translation>
+        </message>
+        <message>
+            <source>Przewidywany składnik powrotu do bazy w jednym dniu, przy niezmienionej bazie i bez losowości.</source>
+            <translation>Očekávaná složka návratu k základu za jeden den, při nezměněném základu a bez náhodnosti.</translation>
+        </message>
+        <message>
+            <source>Punktacje</source>
+            <translation>Bodování</translation>
+        </message>
+        <message>
+            <source>Robocze odchylenie przy stałej bazie, przed ograniczeniem do 1–100.</source>
+            <translation>Pracovní odchylka při stálém základu, před omezením na 1–100.</translation>
+        </message>
+        <message>
+            <source>Rozrzut nowej bazy</source>
+            <translation>Rozptyl nového základu</translation>
+        </message>
+        <message>
+            <source>Równa forma %1</source>
+            <translation>Vyrovnaná forma %1</translation>
+        </message>
+        <message>
+            <source>Seed rozgrywki</source>
+            <translation>Seed hry</translation>
+        </message>
+        <message>
+            <source>Skala odchylenia F</source>
+            <translation>Měřítko odchylky F</translation>
+        </message>
+        <message>
+            <source>Stan</source>
+            <translation>Stav</translation>
+        </message>
+        <message>
+            <source>Stan RNG</source>
+            <translation>Stav RNG</translation>
+        </message>
+        <message>
+            <source>Symulacje</source>
+            <translation>Simulace</translation>
+        </message>
+        <message>
+            <source>Szansa przy najbliższej zmianie okresu, nie w każdym dniu.</source>
+            <translation>Šance při nejbližší změně období, ne každý den.</translation>
+        </message>
+        <message>
+            <source>Tempo powrotu bazy do centrum aktualnego okresu.</source>
+            <translation>Rychlost návratu základu ke středu aktuálního období.</translation>
+        </message>
+        <message>
+            <source>Ustaw datę wydarzenia przed przeliczeniem formy.</source>
+            <translation>Před přepočtem formy nastavte datum události.</translation>
+        </message>
+        <message>
+            <source>Uszkodzona lub nieobsługiwana paczka.</source>
+            <translation>Poškozený nebo nepodporovaný balíček.</translation>
+        </message>
+        <message>
+            <source>Uszkodzony załącznik lub niedozwolona ścieżka.</source>
+            <translation>Poškozená příloha nebo nepovolená cesta.</translation>
+        </message>
+        <message>
+            <source>Wartość ujemna skupia czas w środku, dodatnia zwiększa udział skrajności.</source>
+            <translation>Záporná hodnota soustředí čas doprostřed, kladná zvyšuje podíl krajností.</translation>
+        </message>
+        <message>
+            <source>Wybierz zasoby do eksportu.</source>
+            <translation>Vyberte zdroje k exportu.</translation>
+        </message>
+        <message>
+            <source>Zachowanie starej bazy</source>
+            <translation>Zachování starého základu</translation>
+        </message>
+        <message>
+            <source>Zasób nie istnieje już w bibliotece.</source>
+            <translation>Zdroj už v knihovně neexistuje.</translation>
+        </message>
+        <message>
+            <source>Zaznacz zasoby do usunięcia.</source>
+            <translation>Označte zdroje ke smazání.</translation>
+        </message>
+        <message>
+            <source>Zbyt wiele stanów automatycznej formy.</source>
+            <translation>Příliš mnoho stavů automatické formy.</translation>
+        </message>
+        <message>
+            <source>Zdjęcie musi należeć do folderu paczki.</source>
+            <translation>Fotografie musí být ve složce balíčku.</translation>
+        </message>
+        <message>
+            <source>Zmiany okresu</source>
+            <translation>Změny období</translation>
+        </message>
+        <message>
+            <source>Średni czas okresu</source>
+            <translation>Průměrná doba období</translation>
+        </message>
+        <message>
+            <source>Szybka zmiana formy wymaga nowego profilu zawodnika.</source>
+            <translation>Rychlá změna formy vyžaduje nový profil závodníka.</translation>
+        </message>
+        <message>
+            <source>Podaj formę od 1 do 100.</source>
+            <translation>Zadejte formu od 1 do 100.</translation>
+        </message>
+        <message>
+            <source>Nieznana zmiana formy.</source>
+            <translation>Neznámá změna formy.</translation>
+        </message>
+        <message>
+            <source>Okres formy można zmienić tylko przy włączonej automatycznej formie.</source>
+            <translation>Období formy lze změnit jen se zapnutou automatickou formou.</translation>
+        </message>
+        <message>
+            <source>Forma tego zawodnika zostanie wyliczona przy najbliższym wydarzeniu. Wtedy zmienisz jej okres.</source>
+            <translation>Forma tohoto závodníka se vypočítá při nejbližší události. Pak můžete změnit její období.</translation>
+        </message>
     </context>
     <context>
         <name>QuickBridge</name>
@@ -16871,6 +17741,26 @@ Je také ve schránce, takže ho můžete hned vložit, například na Discord.<
             <source>Discord</source>
             <translation>Discord</translation>
         </message>
+        <message>
+            <source>Losowość skoków</source>
+            <translation>Náhodnost skoků</translation>
+        </message>
+        <message>
+            <source>Różnice w odległościach</source>
+            <translation>Rozdíly ve vzdálenostech</translation>
+        </message>
+        <message>
+            <source>Składy</source>
+            <translation>Sestavy</translation>
+        </message>
+        <message>
+            <source>Zmienność formy w sezonach</source>
+            <translation>Proměnlivost formy v sezónách</translation>
+        </message>
+        <message>
+            <source>Widoczność formy</source>
+            <translation>Viditelnost formy</translation>
+        </message>
 </context>
     <context>
         <name>QuickCalendar</name>
@@ -17268,6 +18158,38 @@ Je také ve schránce, takže ho můžete hned vložit, například na Discord.<
         <source>Gotowy do startu</source>
         <translation>Připraveno ke startu</translation>
     </message>
+        <message>
+            <source>Próbna</source>
+            <translation>Zkušební</translation>
+        </message>
+        <message>
+            <source>Zaznacz konkursy bez kwalifikacji.</source>
+            <translation>Vyberte závody bez kvalifikace.</translation>
+        </message>
+        <message>
+            <source>Dat nie można zmieniać po rozpoczęciu sezonu.</source>
+            <translation>Data nelze měnit po zahájení sezóny.</translation>
+        </message>
+        <message>
+            <source>Przygotowania %1/%2</source>
+            <translation>Přípravy %1/%2</translation>
+        </message>
+        <message>
+            <source>Trening lub seria próbna konkursu %1 musi mieścić się między poprzednim konkursem a tym konkursem.</source>
+            <translation>Trénink nebo zkušební kolo závodu %1 musí být mezi předchozím závodem a tímto závodem.</translation>
+        </message>
+        <message>
+            <source>Wyłącz daty zawodów</source>
+            <translation>Vypnout data závodů</translation>
+        </message>
+        <message>
+            <source>Wyłączyć daty zawodów? Autoforma i forma dnia przestaną działać.</source>
+            <translation>Vypnout data závodů? Automatická forma a denní forma přestanou fungovat.</translation>
+        </message>
+        <message>
+            <source>oczekuje</source>
+            <translation>čeká</translation>
+        </message>
 </context>
     <context>
         <name>QuickPlot</name>
@@ -17288,6 +18210,58 @@ Je také ve schránce, takže ho můžete hned vložit, například na Discord.<
             <location filename="../source/UI/Quick/QuickRoster.cpp" line="76" />
             <source>Wszystkie kraje</source>
             <translation>Všechny země</translation>
+        </message>
+        <message>
+            <source>Brak skoczni</source>
+            <translation>Žádný můstek</translation>
+        </message>
+        <message>
+            <source>Wybierz klasyfikację</source>
+            <translation>Vybrat pořadí</translation>
+        </message>
+        <message>
+            <source>Wybierz konkurs</source>
+            <translation>Vybrat závod</translation>
+        </message>
+        <message>
+            <source>Brak rozegranych konkursów i klasyfikacji w tym trybie.</source>
+            <translation>V tomto režimu nejsou odehrané žádné závody ani klasifikace.</translation>
+        </message>
+        <message>
+            <source>Brak źródeł</source>
+            <translation>Žádné zdroje</translation>
+        </message>
+        <message>
+            <source>Kolejność krajów</source>
+            <translation>Pořadí zemí</translation>
+        </message>
+        <message>
+            <source>Nie można ustalić kolejności</source>
+            <translation>Pořadí nelze určit</translation>
+        </message>
+        <message>
+            <source>Przeciągnij kraje, aby ustalić kolejność.</source>
+            <translation>Přetáhněte země a určete pořadí.</translation>
+        </message>
+        <message>
+            <source>Sezon %1</source>
+            <translation>Sezóna %1</translation>
+        </message>
+        <message>
+            <source>Sprawdź skocznię i ustawienia konkursu.</source>
+            <translation>Zkontrolujte můstek a nastavení závodu.</translation>
+        </message>
+        <message>
+            <source>Wolne miejsce</source>
+            <translation>Volné místo</translation>
+        </message>
+        <message>
+            <source>Zastąp listę startową</source>
+            <translation>Nahradit startovní listinu</translation>
+        </message>
+        <message>
+            <source>Zastąpić uczestników i kolejność listy startowej?</source>
+            <translation>Nahradit účastníky a pořadí startovní listiny?</translation>
         </message>
     </context>
     <context>
@@ -17554,6 +18528,22 @@ Je také ve schránce, takže ho můžete hned vložit, například na Discord.<
             <source>Zapisuje końcowe wyniki jako PNG i kopiuje je do schowka.</source>
             <translation>Uloží konečné výsledky jako PNG a zkopíruje je do schránky.</translation>
         </message>
+        <message>
+            <source>Auto</source>
+            <translation>Auto</translation>
+        </message>
+        <message>
+            <source>Automatyczna belka</source>
+            <translation>Automatická rampa</translation>
+        </message>
+        <message>
+            <source>Automatycznie zmienia belkę.</source>
+            <translation>Automaticky mění rampu.</translation>
+        </message>
+        <message>
+            <source>Dobierz belkę do warunków.</source>
+            <translation>Přizpůsobit rampu podmínkám.</translation>
+        </message>
 </context>
     <context>
         <name>RaceLastJump</name>
@@ -17660,6 +18650,10 @@ Je také ve schránce, takže ho můžete hned vložit, například na Discord.<
         <source>Opady</source>
         <translation>Srážky</translation>
     </message>
+        <message>
+            <source>Forma dnia</source>
+            <translation>Denní forma</translation>
+        </message>
 </context>
     <context>
         <name>RaceOptions</name>
@@ -18053,6 +19047,22 @@ Je také ve schránce, takže ho můžete hned vložit, například na Discord.<
             <source>Usuń widocznych z listy</source>
             <translation>Odebrat viditelné ze seznamu</translation>
         </message>
+        <message>
+            <source>Dodaje do listy startowej wszystkich zawodników pasujących do wyszukiwania i kraju.</source>
+            <translation>Přidá na startovní listinu všechny závodníky odpovídající hledání a zemi.</translation>
+        </message>
+        <message>
+            <source>Odznacz wszystkich</source>
+            <translation>Odznačit všechny</translation>
+        </message>
+        <message>
+            <source>Usuwa z listy startowej wszystkich zawodników pasujących do wyszukiwania i kraju.</source>
+            <translation>Odebere ze startovní listiny všechny závodníky odpovídající hledání a zemi.</translation>
+        </message>
+        <message>
+            <source>Zaznacz wszystkich</source>
+            <translation>Označit všechny</translation>
+        </message>
     </context>
     <context>
         <name>RosterOrder</name>
@@ -18149,6 +19159,14 @@ Je také ve schránce, takže ho můžete hned vložit, například na Discord.<
             <source>Kolejność na liście</source>
             <translation>Pořadí v seznamu</translation>
         </message>
+        <message>
+            <source>Ok</source>
+            <translation>OK</translation>
+        </message>
+        <message>
+            <source>↥ Przenieś</source>
+            <translation>↥ Přesunout</translation>
+        </message>
     </context>
     <context>
         <name>RosterPresets</name>
@@ -18176,6 +19194,22 @@ Je také ve schránce, takže ho můžete hned vložit, například na Discord.<
             <location filename="../source/UI/Quick/RosterPresets.qml" line="23" />
             <source>Kolejność</source>
             <translation>Pořadí</translation>
+        </message>
+        <message>
+            <source>Lista zawodników</source>
+            <translation>Seznam závodníků</translation>
+        </message>
+        <message>
+            <source>Wszyscy zawodnicy</source>
+            <translation>Všichni závodníci</translation>
+        </message>
+        <message>
+            <source>Zawodnicy</source>
+            <translation>Skokani</translation>
+        </message>
+        <message>
+            <source>Własny wybór</source>
+            <translation>Vlastní výběr</translation>
         </message>
     </context>
     <context>
@@ -18344,6 +19378,14 @@ Je také ve schránce, takže ho můžete hned vložit, například na Discord.<
     <message><source>Ustaw kolejność</source><translation>Nastavit pořadí</translation></message>
 <message><source>OVR rosnąco</source><translation>OVR vzestupně</translation></message>
 <message><source>OVR malejąco</source><translation>OVR sestupně</translation></message>
+        <message>
+            <source>Wybierz uczestników</source>
+            <translation>Vyberte účastníky</translation>
+        </message>
+        <message>
+            <source>Wybrani · %1</source>
+            <translation>Vybraní · %1</translation>
+        </message>
 </context>
     <context>
         <name>RoundInfoEditorWidget</name>
@@ -18471,6 +19513,22 @@ startovní listiny</translation>
         <message>
             <source>Rozegraj serię KO</source>
             <translation>Použít KO kolo</translation>
+        </message>
+        <message>
+            <source>Losowo koszykami bez rodaków</source>
+            <translation>Náhodně z košů bez krajanů</translation>
+        </message>
+        <message>
+            <source>Na zakładkę (1, 20, 21…)</source>
+            <translation>Na přeskáčku (1, 20, 21…)</translation>
+        </message>
+        <message>
+            <source>Równomiernie (1, 11, 21…)</source>
+            <translation>Rovnoměrně (1, 11, 21…)</translation>
+        </message>
+        <message>
+            <source>Wyrównany potencjał grup</source>
+            <translation>Vyrovnaná síla skupin</translation>
         </message>
     </context>
     <context>
@@ -19762,6 +20820,82 @@ Zbývá v sezóně: %1. Větší číslo odehraje sezónu do konce.</translation
             <source>Zapisz wyniki jako obraz…</source>
             <translation>Uložit výsledky jako obrázek…</translation>
         </message>
+        <message>
+            <source>Automatyczna forma</source>
+            <translation>Automatická forma</translation>
+        </message>
+        <message>
+            <source>Automatyczna forma zawodników</source>
+            <translation>Automatická forma závodníků</translation>
+        </message>
+        <message>
+            <source>Forma zmienia się wraz z datami wydarzeń. Wymaga włączonych dat; przy aktywnej funkcji nie można zmieniać formy ręcznie.</source>
+            <translation>Forma se mění podle dat událostí. Vyžaduje zapnutá data; když je funkce aktivní, formu nelze měnit ručně.</translation>
+        </message>
+        <message>
+            <source>Liczba dni dla wszystkich skoczków (bez zmiany dat kalendarza):</source>
+            <translation>Počet dní pro všechny skokany (beze změny dat v kalendáři):</translation>
+        </message>
+        <message>
+            <source>Nie zmieniono formy</source>
+            <translation>Forma nebyla změněna</translation>
+        </message>
+        <message>
+            <source>Popraw błędy dat przed rozpoczęciem konkursu.</source>
+            <translation>Před zahájením závodu opravte chyby v datech.</translation>
+        </message>
+        <message>
+            <source>Popraw daty w kalendarzu</source>
+            <translation>Opravte data v kalendáři</translation>
+        </message>
+        <message>
+            <source>Popraw kalendarz</source>
+            <translation>Opravte kalendář</translation>
+        </message>
+        <message>
+            <source>Przejdź do wydarzenia</source>
+            <translation>Přejít na událost</translation>
+        </message>
+        <message>
+            <source>Przesymuluj formę</source>
+            <translation>Odsimulovat formu</translation>
+        </message>
+        <message>
+            <source>Szybko przesymuluj</source>
+            <translation>Rychle odsimulovat</translation>
+        </message>
+        <message>
+            <source>Wybierz zawodnika na liście.</source>
+            <translation>Vyberte závodníka v seznamu.</translation>
+        </message>
+        <message>
+            <source>Wyłącz autoformę</source>
+            <translation>Vypnout automatickou formu</translation>
+        </message>
+        <message>
+            <source>Wyłącz daty zawodów</source>
+            <translation>Vypnout data závodů</translation>
+        </message>
+        <message>
+            <source>Wyłączyć automatyczną zmianę formy zawodników?</source>
+            <translation>Vypnout automatickou změnu formy závodníků?</translation>
+        </message>
+        <message>
+            <source>Wyłączyć daty zawodów? Autoforma i forma dnia przestaną działać.</source>
+            <translation>Vypnout data závodů? Automatická forma a denní forma přestanou fungovat.</translation>
+        </message>
+        <message>
+            <source>Zablokowane — kolejność wydarzeń</source>
+            <translation>Zablokováno — pořadí událostí</translation>
+        </message>
+        <message>
+            <source>Zachowaj kolejność wydarzeń</source>
+            <translation>Zachovat pořadí událostí</translation>
+        </message>
+        <message>
+            <source>Zmiana formy</source>
+            <translation>Změna formy</translation>
+        </message>
     </context>
     <context>
         <name>SimulationSavesWindow</name>
@@ -20667,6 +21801,10 @@ podle aktuálně vybraných skokanů</translation>
             <source>Zawodnik</source>
             <translation>Skokan</translation>
         </message>
+        <message>
+            <source>Wolne miejsce</source>
+            <translation>Volné místo</translation>
+        </message>
     </context>
     <context>
         <name>TeamsSquadsTreeView</name>
@@ -21495,6 +22633,18 @@ li.checked::marker { content: "\2612"; }
 <message><source>Bardzo wysokie</source><translation>Velmi vysoké</translation></message>
 <message><source>Kierunek i siła</source><translation>Směr a síla</translation></message>
 <message><source>Zmienność wiatru</source><translation>Proměnlivost větru</translation></message>
+        <message>
+            <source>Dokładna wartość · 0–10</source>
+            <translation>Přesná hodnota · 0–10</translation>
+        </message>
+        <message>
+            <source>Wpisz dokładną wartość od 0 do 10. Pozostałe opcje losują wartość z wybranego przedziału.</source>
+            <translation>Zadejte přesnou hodnotu od 0 do 10. Ostatní možnosti losují hodnotu z vybraného rozsahu.</translation>
+        </message>
+        <message>
+            <source>Własna wartość…</source>
+            <translation>Vlastní hodnota…</translation>
+        </message>
 </context>
     <context>
         <name>WindStationEditor</name>
@@ -22169,6 +23319,10 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/simulation-v2/ProfileDraft.cpp" line="66" />
             <source>Obrazy (*.png *.jpg *.jpeg *.webp)</source>
             <translation>Obrázky (*.png *.jpg *.jpeg *.webp)</translation>
+        </message>
+        <message>
+            <source>Wyłącz automatyczną formę, aby zmienić ją ręcznie.</source>
+            <translation>Chcete-li formu změnit ručně, vypněte automatickou formu.</translation>
         </message>
     </context>
     <context>
@@ -24704,6 +25858,30 @@ Technický klíč: %4</translation>
     </message>
     <message><source>Sezon zakończony</source><translation>Sezóna dokončena</translation></message>
         <message><source>Następny sezon</source><translation>Další sezóna</translation></message>
+        <message>
+            <source>Autoforma jest włączona</source>
+            <translation>Automatická forma je zapnutá</translation>
+        </message>
+        <message>
+            <source>Forma zmienia się w sezonie, przynosząc zwroty akcji i realistyczne przetasowania. Możesz ją wyłączyć przełącznikiem Autoforma.</source>
+            <translation>Forma se během sezóny mění a přináší zvraty i realistické přesuny. Můžete ji vypnout přepínačem Automatická forma.</translation>
+        </message>
+        <message>
+            <source>Przejdź do wydarzenia</source>
+            <translation>Přejít na událost</translation>
+        </message>
+        <message>
+            <source>Wyłącz autoformę</source>
+            <translation>Vypnout automatickou formu</translation>
+        </message>
+        <message>
+            <source>Zablokowane — kolejność wydarzeń</source>
+            <translation>Zablokováno — pořadí událostí</translation>
+        </message>
+        <message>
+            <source>Zamknij informację</source>
+            <translation>Zavřít informaci</translation>
+        </message>
     </context>
     <context>
         <name>StudioPackBar</name>
@@ -24759,6 +25937,14 @@ Technický klíč: %4</translation>
 <message><source>Eksport tworzy jeden plik paczki skoczni. Aby go wczytać, wybierz ten plik przy imporcie.</source><translation>Export vytvoří jeden soubor můstků. Při importu vyberte tento soubor.</translation></message>
 <message><source>Importuj</source><translation>Importovat</translation></message>
 <message><source>Eksportuj</source><translation>Exportovat</translation></message>
+        <message>
+            <source>Biblioteka</source>
+            <translation>Knihovna</translation>
+        </message>
+        <message>
+            <source>Udostępnij plik .sjsim-pack. Zdjęcia są dołączane do paczki. W Bibliotece możesz połączyć różne zasoby w jednym pliku.</source>
+            <translation>Sdílejte soubor .sjsim-pack. Fotografie jsou součástí balíčku. V Knihovně můžete spojit různé zdroje do jednoho souboru.</translation>
+        </message>
 </context>
     <context>
         <name>SortCountryButton</name>
@@ -24808,6 +25994,50 @@ Technický klíč: %4</translation>
         <message>
             <source>Wyłączony</source>
             <translation>Vypnuto</translation>
+        </message>
+        <message>
+            <source>Autoforma</source>
+            <translation>Automatická forma</translation>
+        </message>
+        <message>
+            <source>Autozapis</source>
+            <translation>Automatické ukládání</translation>
+        </message>
+        <message>
+            <source>Daty zawodów</source>
+            <translation>Data závodů</translation>
+        </message>
+        <message>
+            <source>Dyspozycja zmienia się wraz z datami zawodów.</source>
+            <translation>Dispozice se mění spolu s daty závodů.</translation>
+        </message>
+        <message>
+            <source>Po konkursie od razu, inne zmiany po 15 s.</source>
+            <translation>Hned po závodě, ostatní změny po 15 s.</translation>
+        </message>
+        <message>
+            <source>Przełączenie zapisuje obecny stan sezonu.</source>
+            <translation>Přepnutí uloží aktuální stav sezóny.</translation>
+        </message>
+        <message>
+            <source>Umożliwiają formę dnia i autoformę.</source>
+            <translation>Umožňují denní formu a automatickou formu.</translation>
+        </message>
+        <message>
+            <source>Używaj dat wydarzeń w sezonie.</source>
+            <translation>Používat data událostí v sezóně.</translation>
+        </message>
+        <message>
+            <source>Wyłączenie zachowuje formę. Ponowne włączenie nie nadrabia przerwy.</source>
+            <translation>Vypnutí zachová formu. Opětovné zapnutí přestávku nedohání.</translation>
+        </message>
+        <message>
+            <source>Włącz daty wydarzeń.</source>
+            <translation>Zapněte data událostí.</translation>
+        </message>
+        <message>
+            <source>Zapisuj sezon ręcznie.</source>
+            <translation>Ukládat sezónu ručně.</translation>
         </message>
     </context>
     <context>
@@ -24900,6 +26130,10 @@ Technický klíč: %4</translation>
         <message>
             <source>Ułóż kalendarz, wymyśl klasyfikacje i ruszaj z pełnym sezonem! Możesz rozdzielić kalendarz letni i zimowy. Forma skoczków dynamicznie się zmienia, co gwarantuje spore emocje. Możesz skorzystać z przykładowej symulacji sezonu 2026/2027.</source>
             <translation>Sestav kalendář, vytvoř hodnocení a pusť se do celé sezóny! Letní a zimní kalendář můžeš oddělit. Forma skokanů se dynamicky mění, takže o napětí nebude nouze. Můžeš využít ukázkovou simulaci sezóny 2026/2027.</translation>
+        </message>
+        <message>
+            <source>Ok</source>
+            <translation>OK</translation>
         </message>
     </context>
 <context><name>SavedRosterList</name><message><source>Wybrani zawodnicy</source><translation>Vybraní závodníci</translation></message><message><source>Wszyscy zawodnicy</source><translation>Všichni závodníci</translation></message><message><source>Szukaj nazwiska lub kraju</source><translation>Hledat jméno nebo zemi</translation></message><message><source>Usuń %1 z listy</source><translation>Odstranit %1 ze seznamu</translation></message><message><source>Dodaj %1 do listy</source><translation>Přidat %1 do seznamu</translation></message><message><source>Lista jest pusta</source><translation>Seznam je prázdný</translation></message><message><source>Brak pasujących zawodników</source><translation>Žádní odpovídající závodníci</translation></message><message><source>Pusta lista oznacza wszystkich zawodników. Dodaj wybranych, aby ograniczyć skład.</source><translation>Prázdný seznam zahrnuje všechny závodníky. Přidáním závodníků omezíte sestavu.</translation></message><message><source>Zmień nazwisko lub kraj, aby zobaczyć innych zawodników.</source><translation>Změňte jméno nebo zemi pro zobrazení dalších závodníků.</translation></message><message><source>Usuń zaznaczonych (%1)</source><translation>Odstranit vybrané (%1)</translation></message><message><source>Dodaj zaznaczonych (%1)</source><translation>Přidat vybrané (%1)</translation></message><message><source>Dodaj widocznych</source><translation>Přidat zobrazené</translation></message></context>
@@ -25308,6 +26542,10 @@ Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></con
         <source>Odwołaj</source>
         <translation>Zrušit</translation>
     </message>
+        <message>
+            <source>Szybko przesymuluj</source>
+            <translation>Rychle odsimulovat</translation>
+        </message>
 </context>
 <context>
     <name>RaceLiveSettings</name>
@@ -25366,4 +26604,1018 @@ Zavřete předchozí okno Sj.Sim a zkuste to znovu.</translation></message></con
 </context>
 <context><name>HomeWelcome</name><message><source>Witaj w Sj.Simie!</source><translation>Vítej v Sj.Simu!</translation></message><message><source>Korzystasz właśnie z symulatora stworzonego dla pasjonatów skoków narciarskich. Pozwoli Ci on przeprowadzać własne symulacje światów na swoich warunkach. Zacznij od aktualnego sezonu, przypomnij sobie czasy Małyszomanii albo zaprojektuj fikcyjne uniwersum!</source><translation>Používáš simulátor vytvořený pro nadšence do skoků na lyžích. Vytvářej vlastní světy a simuluj je podle svých představ. Začni aktuální sezónou, vrať se do éry Adama Małysze nebo navrhni fiktivní svět!</translation></message><message><source>Twórz własny świat</source><translation>Vytvoř vlastní svět</translation></message><message><source>Możesz stworzyć własne zasoby lub skorzystać z istniejących. Na &lt;a href="https://discord.gg/PsumKAqDBt"&gt;serwerze Discord&lt;/a&gt; znajdują się paczki stworzone przez społeczność.</source><translation>Můžeš vytvářet vlastní obsah nebo využít již existující. Na &lt;a href="https://discord.gg/PsumKAqDBt"&gt;serveru Discord&lt;/a&gt; najdeš balíčky vytvořené komunitou.</translation></message><message><source>Śmiało eksperymentuj z atrybutami skoczków i skoczni. Niektórzy zawodnicy świetnie radzą sobie na treningach, ale „spalają się” w konkursie. Inni są urodzonymi specjalistami od skoczni mniejszych. Za to skocznie takie jak Willingen są dość „wietrzne” i zarazem sprzyjają lotnikom. Sj.Sim to wszystko wspiera!</source><translation>Experimentuj s vlastnostmi skokanů a můstků. Někteří závodníci vynikají v tréninku, ale v závodě se jim nedaří. Jiní jsou specialisté na malé můstky. Můstky jako Willingen bývají větrné a vyhovují letcům. Sj.Sim to vše podporuje!</translation></message><message><source>Kieruj konkursami</source><translation>Řiď závody</translation></message><message><source>Podczas zawodów masz wpływ niemal na wszystko, począwszy od zasad i kolejności startowej, a kończąc na warunkach wietrznych i belce. Jeśli chcesz, możesz z góry przesądzić o wyniku wybranych zawodników ;)</source><translation>Během závodu ovlivňuješ téměř vše: pravidla, startovní pořadí, vítr i nájezdové okno. Můžeš dokonce předem rozhodnout o výkonu vybraných skokanů ;)</translation></message><message><source>Dostępne są zarówno konkursy indywidualne, jak i drużynówki czy popularny format KO. Możesz tworzyć złożone kombinacje konkursów wieloseryjnych, z wyzerowaniem not punktowych czy podziałem na grupy według różnych kryteriów.</source><translation>K dispozici jsou závody jednotlivců, družstev i oblíbený formát KO. Vytvářej vícekolové závody s nulováním bodů a rozdělením do skupin podle různých kritérií.</translation></message><message><source>Rozgrywaj pełne sezony</source><translation>Odehraj celé sezóny</translation></message><message><source>Układaj kalendarze, ustalaj zasady kwalifikacji i prowadź własne klasyfikacje. Łącz letnie i zimowe zawody, planuj weekendy i wybieraj zawodników na kolejne konkursy.</source><translation>Sestavuj kalendáře, nastavuj kvalifikační pravidla a vytvářej vlastní hodnocení. Kombinuj letní a zimní závody, plánuj víkendy a vybírej účastníky dalších soutěží.</translation></message><message><source>Śledź wyniki w archiwum i obserwuj zmiany formy w sezonach z datami zawodów. Na początek przygotowaliśmy przykładową symulację z Letnim Grand Prix 2026 i Pucharem Świata 2026/2027.</source><translation>Prohlížej výsledky v archivu a sleduj změny formy v sezónách s daty závodů. Pro začátek je připravena ukázková simulace s Letní Grand Prix 2026 a Světovým pohárem 2026/2027.</translation></message><message><source>Wstecz</source><translation>Zpět</translation></message><message><source>Dalej</source><translation>Další</translation></message><message><source>O autorze</source><translation>O autorovi</translation></message></context><context><name>AppSettingsWindow</name><message><source>Pokaż powitanie</source><translation>Zobrazit uvítání</translation></message></context><context><name>NewSimulationSaveConfigurationWindow</name><message><source>Przykładowa symulacja</source><translation>Ukázková simulace</translation></message><message><source>Lato</source><translation>Léto</translation></message><message><source>Zima</source><translation>Zima</translation></message></context>
 <context><name>MainWindow</name><message><source>Nie udało się przygotować przykładu. Potrzebne są kompletne paczki skoczków, skoczni i zasad oraz letni i zimowy preset kalendarza.</source><translation>Ukázku nelze připravit. Jsou potřeba úplné balíčky skokanů, můstků a pravidel a předvolby letního i zimního kalendáře.</translation></message></context>
+    <context>
+        <name>CountriesController</name>
+        <message>
+            <source>%1 zaw. · %2 skoczni</source>
+            <translation>%1 záv. · %2 můstků</translation>
+        </message>
+        <message>
+            <source>%1 zaw.</source>
+            <translation>%1 záv.</translation>
+        </message>
+        <message>
+            <source>%1 skoczni</source>
+            <translation>%1 můstků</translation>
+        </message>
+        <message>
+            <source>nieużywany</source>
+            <translation>nepoužito</translation>
+        </message>
+        <message>
+            <source>Nazwa nie może być pusta.</source>
+            <translation>Název nesmí být prázdný.</translation>
+        </message>
+        <message>
+            <source>Wpisz nazwę, np. Polska.</source>
+            <translation>Zadejte název, např. Polsko.</translation>
+        </message>
+        <message>
+            <source>Wpisz 3 litery, np. POL.</source>
+            <translation>Zadejte 3 písmena, např. POL.</translation>
+        </message>
+        <message>
+            <source>Ten kod ma już kraj „%1”.</source>
+            <translation>Tento kód už má země „%1“.</translation>
+        </message>
+        <message>
+            <source>Wpisz 2 litery, np. PL.</source>
+            <translation>Zadejte 2 písmena, např. PL.</translation>
+        </message>
+    </context>
+    <context>
+        <name>CountriesEditor</name>
+        <message>
+            <source>Kraje</source>
+            <translation>Země</translation>
+        </message>
+        <message>
+            <source>Nazwa kraju pojawia się przy zawodnikach, skoczniach i w wynikach. Kod (np. POL) wybiera flagę i łączy kraj z zawodnikami.</source>
+            <translation>Název země se zobrazuje u závodníků, můstků a ve výsledcích. Kód (např. POL) určuje vlajku a spojuje zemi se závodníky.</translation>
+        </message>
+        <message>
+            <source>Dodaj kraj</source>
+            <translation>Přidat zemi</translation>
+        </message>
+        <message>
+            <source>Szukaj: nazwa lub kod, np. Norwegia albo NOR</source>
+            <translation>Hledat: název nebo kód, např. Norsko nebo NOR</translation>
+        </message>
+        <message>
+            <source>Szukaj kraju</source>
+            <translation>Hledat zemi</translation>
+        </message>
+        <message>
+            <source>Krajów: %1</source>
+            <translation>Zemí: %1</translation>
+        </message>
+        <message>
+            <source>Znaleziono %1 z %2</source>
+            <translation>Nalezeno %1 z %2</translation>
+        </message>
+        <message>
+            <source>Nie ma kraju pasującego do wyszukiwania. Możesz go dodać przyciskiem „Dodaj kraj”.</source>
+            <translation>Hledání neodpovídá žádná země. Můžete ji přidat tlačítkem „Přidat zemi“.</translation>
+        </message>
+        <message>
+            <source>Masz niezapisane zmiany. Trafią do gry po kliknięciu „Zapisz zmiany”.</source>
+            <translation>Máte neuložené změny. Projeví se po kliknutí na „Uložit změny“.</translation>
+        </message>
+        <message>
+            <source>Brak zmian do zapisania.</source>
+            <translation>Žádné změny k uložení.</translation>
+        </message>
+        <message>
+            <source>Odrzuć i zamknij</source>
+            <translation>Zahodit a zavřít</translation>
+        </message>
+        <message>
+            <source>Zamknij</source>
+            <translation>Zavřít</translation>
+        </message>
+        <message>
+            <source>Zapisz zmiany</source>
+            <translation>Uložit změny</translation>
+        </message>
+        <message>
+            <source>Wybierz kraj z listy.</source>
+            <translation>Vyberte zemi ze seznamu.</translation>
+        </message>
+        <message>
+            <source>Nazwa w grze</source>
+            <translation>Název ve hře</translation>
+        </message>
+        <message>
+            <source>Nazwa kraju</source>
+            <translation>Název země</translation>
+        </message>
+        <message>
+            <source>Zmiana nazwy nie zmienia flagi ani przypisania zawodników.</source>
+            <translation>Přejmenování nemění vlajku ani přiřazení závodníků.</translation>
+        </message>
+        <message>
+            <source>Kod kraju</source>
+            <translation>Kód země</translation>
+        </message>
+        <message>
+            <source>skrót przy zawodnikach; wybiera flagę. Stały, bo łączy kraj z zawodnikami.</source>
+            <translation>zkratka u závodníků; určuje vlajku. Je pevný, protože spojuje zemi se závodníky.</translation>
+        </message>
+        <message>
+            <source>Kod ISO</source>
+            <translation>Kód ISO</translation>
+        </message>
+        <message>
+            <source>dwuliterowy kod do flag na Discordzie.</source>
+            <translation>dvoupísmenný kód pro vlajky na Discordu.</translation>
+        </message>
+        <message>
+            <source>Używany przez</source>
+            <translation>Používá</translation>
+        </message>
+        <message>
+            <source>nikogo – żaden zawodnik ani skocznia z bazy nie ma tego kraju.</source>
+            <translation>nikdo – žádný závodník ani můstek v databázi tuto zemi nemá.</translation>
+        </message>
+        <message>
+            <source>zawodnicy: %1, skocznie: %2</source>
+            <translation>závodníci: %1, můstky: %2</translation>
+        </message>
+        <message>
+            <source>Flaga</source>
+            <translation>Vlajka</translation>
+        </message>
+        <message>
+            <source>Używana jest Twoja flaga z pliku %1.</source>
+            <translation>Používá se vaše vlajka ze souboru %1.</translation>
+        </message>
+        <message>
+            <source>Używana jest flaga wbudowana w grę (%1).</source>
+            <translation>Používá se vlajka dodaná se hrou (%1).</translation>
+        </message>
+        <message>
+            <source>Brak flagi. Gra szuka pliku %1.</source>
+            <translation>Chybí vlajka. Hra hledá soubor %1.</translation>
+        </message>
+        <message>
+            <source>Kraj nie jest używany, więc możesz go usunąć.</source>
+            <translation>Země se nepoužívá, takže ji můžete odebrat.</translation>
+        </message>
+        <message>
+            <source>Nie można usunąć tego kraju, bo mają go zawodnicy lub skocznie. Najpierw zmień im kraj w edytorze bazy.</source>
+            <translation>Tuto zemi nelze odebrat, protože ji mají závodníci nebo můstky. Nejprve jim změňte zemi v editoru databáze.</translation>
+        </message>
+        <message>
+            <source>Usuń kraj</source>
+            <translation>Odebrat zemi</translation>
+        </message>
+        <message>
+            <source>Usunąć „%1”?</source>
+            <translation>Odebrat „%1“?</translation>
+        </message>
+        <message>
+            <source>Tak, usuń</source>
+            <translation>Ano, odebrat</translation>
+        </message>
+        <message>
+            <source>Nie</source>
+            <translation>Ne</translation>
+        </message>
+        <message>
+            <source>Nowy kraj</source>
+            <translation>Nová země</translation>
+        </message>
+        <message>
+            <source>Uzupełnij trzy pola. Podgląd poniżej pokazuje, jak kraj będzie wyglądał w grze.</source>
+            <translation>Vyplňte tři pole. Náhled níže ukazuje, jak bude země vypadat ve hře.</translation>
+        </message>
+        <message>
+            <source>1. Nazwa</source>
+            <translation>1. Název</translation>
+        </message>
+        <message>
+            <source>np. Polska</source>
+            <translation>např. Polsko</translation>
+        </message>
+        <message>
+            <source>Tak kraj będzie nazywał się w listach i wynikach.</source>
+            <translation>Takto se bude země jmenovat v seznamech a výsledcích.</translation>
+        </message>
+        <message>
+            <source>2. Kod kraju (3 litery)</source>
+            <translation>2. Kód země (3 písmena)</translation>
+        </message>
+        <message>
+            <source>np. POL</source>
+            <translation>např. POL</translation>
+        </message>
+        <message>
+            <source>Skrót widoczny przy zawodnikach. Wybiera flagę i nie da się go później zmienić.</source>
+            <translation>Zkratka u závodníků. Určuje vlajku a později ji nelze změnit.</translation>
+        </message>
+        <message>
+            <source>3. Kod ISO (2 litery)</source>
+            <translation>3. Kód ISO (2 písmena)</translation>
+        </message>
+        <message>
+            <source>np. PL</source>
+            <translation>např. PL</translation>
+        </message>
+        <message>
+            <source>Potrzebny do flagi w wiadomościach na Discordzie.</source>
+            <translation>Potřebný pro vlajku ve zprávách na Discordu.</translation>
+        </message>
+        <message>
+            <source>Brak flagi dla tego kodu. Możesz dodać plik %1 do folderu flag (opis niżej).</source>
+            <translation>Pro tento kód chybí vlajka. Soubor %1 můžete přidat do složky vlajek (popis níže).</translation>
+        </message>
+        <message>
+            <source>Flaga znaleziona.</source>
+            <translation>Vlajka nalezena.</translation>
+        </message>
+        <message>
+            <source>Flaga pojawi się po wpisaniu kodu.</source>
+            <translation>Vlajka se zobrazí po zadání kódu.</translation>
+        </message>
+        <message>
+            <source>Dodaj do listy</source>
+            <translation>Přidat do seznamu</translation>
+        </message>
+        <message>
+            <source>Anuluj</source>
+            <translation>Zrušit</translation>
+        </message>
+        <message>
+            <source>Nowy kraj trafi do gry po kliknięciu „Zapisz zmiany” na dole.</source>
+            <translation>Nová země se projeví po kliknutí na „Uložit změny“ dole.</translation>
+        </message>
+        <message>
+            <source>Jak dodać lub podmienić flagę: zapisz obraz SVG albo PNG pod nazwą %1 w folderze własnych flag. Twoja flaga ma pierwszeństwo przed wbudowaną i działa we wszystkich miejscach gry, także w zapisach obrazów wyników.</source>
+            <translation>Jak přidat nebo nahradit vlajku: uložte obrázek SVG nebo PNG pod názvem %1 do složky vlastních vlajek. Vaše vlajka má přednost před dodanou a používá se všude ve hře, i v obrázcích výsledků.</translation>
+        </message>
+        <message>
+            <source>Folder własnych flag:</source>
+            <translation>Složka vlastních vlajek:</translation>
+        </message>
+        <message>
+            <source>Otwórz folder flag</source>
+            <translation>Otevřít složku vlajek</translation>
+        </message>
+        <message>
+            <source>Sprawdź ponownie</source>
+            <translation>Zkontrolovat znovu</translation>
+        </message>
+        <message>
+            <source>Użyj po skopiowaniu nowej flagi do folderu.</source>
+            <translation>Použijte po zkopírování nové vlajky do složky.</translation>
+        </message>
+        <message>
+            <source>W listach poza tym ekranem nowa flaga pojawi się po ponownym uruchomieniu gry.</source>
+            <translation>Jinde ve hře se nová vlajka zobrazí po restartu hry.</translation>
+        </message>
+    </context>
+<context>
+    <name>AthletePositionPlot</name>
+        <message>
+            <source>Brak wyników</source>
+            <translation>Žádné výsledky</translation>
+        </message>
+        <message>
+            <source>Miejsce</source>
+            <translation>Místo</translation>
+        </message>
+        <message>
+            <source>%1. miejsce · %2 pkt</source>
+            <translation>%1. místo · %2 b.</translation>
+        </message>
+        <message>
+            <source>Kolejne występy</source>
+            <translation>Další starty</translation>
+        </message>
+        <message>
+            <source>Liczba występów: %1</source>
+            <translation>Počet startů: %1</translation>
+        </message>
+        <message>
+            <source>Miejsca w kolejnych zawodach</source>
+            <translation>Umístění v dalších závodech</translation>
+        </message>
+        <message>
+            <source>Wybierz rodzaje wydarzeń lub rozegraj zawody.</source>
+            <translation>Vyberte typy událostí nebo odehrajte závody.</translation>
+        </message>
+</context>
+<context>
+    <name>AthleteResultsTable</name>
+        <message>
+            <source>%1 konkursów</source>
+            <translation>%1 závodů</translation>
+        </message>
+        <message>
+            <source>Kalendarz</source>
+            <translation>Kalendář</translation>
+        </message>
+        <message>
+            <source>%1. miejsce%2</source>
+            <translation>%1. místo%2</translation>
+        </message>
+        <message>
+            <source>Brak rozegranych konkursów.</source>
+            <translation>Žádné odehrané závody.</translation>
+        </message>
+        <message>
+            <source>Brak wyniku</source>
+            <translation>Bez výsledku</translation>
+        </message>
+        <message>
+            <source>Konkurs %1 z %2</source>
+            <translation>Závod %1 z %2</translation>
+        </message>
+        <message>
+            <source>Miejsca w konkursach</source>
+            <translation>Umístění v závodech</translation>
+        </message>
+        <message>
+            <source>Σ pkt</source>
+            <translation>Σ b.</translation>
+        </message>
+</context>
+<context>
+    <name>AthleteStatistics</name>
+        <message>
+            <source>Konkursy</source>
+            <translation>Závody</translation>
+        </message>
+        <message>
+            <source>Kwalifikacje</source>
+            <translation>Kvalifikace</translation>
+        </message>
+        <message>
+            <source>Treningi</source>
+            <translation>Tréninky</translation>
+        </message>
+        <message>
+            <source>Średnie miejsce</source>
+            <translation>Průměrné umístění</translation>
+        </message>
+        <message>
+            <source>Najgorsze miejsce</source>
+            <translation>Nejhorší umístění</translation>
+        </message>
+        <message>
+            <source>Najlepsze miejsce</source>
+            <translation>Nejlepší umístění</translation>
+        </message>
+        <message>
+            <source>Odchylenie</source>
+            <translation>Odchylka</translation>
+        </message>
+        <message>
+            <source>Próbne</source>
+            <translation>Zkušební</translation>
+        </message>
+</context>
+<context>
+    <name>AutoForm</name>
+        <message>
+            <source>Zmienność formy</source>
+            <translation>Kolísání formy</translation>
+        </message>
+        <message>
+            <source>0 zachowuje rozkład. Wartość ujemna skupia czas wokół środka, dodatnia zwiększa udział obu skrajności.</source>
+            <translation>0 zachová rozdělení. Záporná hodnota soustředí čas kolem středu, kladná zvyšuje podíl obou krajností.</translation>
+        </message>
+        <message>
+            <source>Baza powoli dąży do tej wartości w tym okresie. Nie ustawia bezpośrednio aktualnej formy.</source>
+            <translation>Základ se v tomto období pomalu blíží této hodnotě. Nenastavuje přímo aktuální formu.</translation>
+        </message>
+        <message>
+            <source>Bazowy czas: %1</source>
+            <translation>Základní čas: %1</translation>
+        </message>
+        <message>
+            <source>Centrum bazy: %1</source>
+            <translation>Střed základu: %1</translation>
+        </message>
+        <message>
+            <source>Chwiejna %1</source>
+            <translation>Kolísavá %1</translation>
+        </message>
+        <message>
+            <source>Czas okresów: %1</source>
+            <translation>Čas období: %1</translation>
+        </message>
+        <message>
+            <source>Docelowe odchylenie bazy przy niezmiennym okresie. Zero wyłącza losowy dryf, ale zachowuje powrót do centrum.</source>
+            <translation>Cílová odchylka základu při nezměněném období. Nula vypne náhodný posun, ale zachová návrat ke středu.</translation>
+        </message>
+        <message>
+            <source>Docelowe odchylenie przy nieruchomej bazie, bez ograniczeń 1–100. Np. 6 daje typowe różnice kilku punktów; rzadziej większe.</source>
+            <translation>Cílová odchylka při pevném základu, bez omezení 1–100. Např. 6 dává typické rozdíly několika bodů; větší vzácněji.</translation>
+        </message>
+        <message>
+            <source>Jak daleko ukryta baza może leżeć od wpisanej formy. Sama forma początkowa pozostaje bez zmian.</source>
+            <translation>Jak daleko může skrytý základ ležet od zadané formy. Samotná počáteční forma zůstává beze změny.</translation>
+        </message>
+        <message>
+            <source>Mnożnik losowych zmian aktualnej formy. 0,7 zmniejsza odchylenie o 30%; 1,5 zwiększa o 50%.</source>
+            <translation>Násobitel náhodných změn aktuální formy. 0,7 snižuje odchylku o 30 %; 1,5 ji zvyšuje o 50 %.</translation>
+        </message>
+        <message>
+            <source>Mnożnik średniej długości okresów. 0,6 oznacza okresy krótsze średnio o 40%.</source>
+            <translation>Násobitel průměrné délky období. 0,6 znamená období v průměru kratší o 40 %.</translation>
+        </message>
+        <message>
+            <source>Neutralny</source>
+            <translation>Neutrální</translation>
+        </message>
+        <message>
+            <source>Nie udało się odczytać domyślnej konfiguracji formy.</source>
+            <translation>Nepodařilo se načíst výchozí konfiguraci formy.</translation>
+        </message>
+        <message>
+            <source>Nie udało się zapisać konfiguracji formy.</source>
+            <translation>Nepodařilo se uložit konfiguraci formy.</translation>
+        </message>
+        <message>
+            <source>Np. 0,05 oznacza 5% inicjalizacji z większym rozrzutem bazy.</source>
+            <translation>Např. 0,05 znamená 5 % inicializací s větším rozptylem základu.</translation>
+        </message>
+        <message>
+            <source>Odchylenie bazy w rzadkim wariancie początkowym. Nie zmienia wpisanej formy zawodnika.</source>
+            <translation>Odchylka základu ve vzácné počáteční variantě. Nemění zadanou formu závodníka.</translation>
+        </message>
+        <message>
+            <source>Odchylenie przy wejściu w okres. Większa wartość zwiększa różnice baz między zawodnikami.</source>
+            <translation>Odchylka při vstupu do období. Vyšší hodnota zvětšuje rozdíly základů mezi závodníky.</translation>
+        </message>
+        <message>
+            <source>Okresy formy</source>
+            <translation>Období formy</translation>
+        </message>
+        <message>
+            <source>Perk formy</source>
+            <translation>Perk formy</translation>
+        </message>
+        <message>
+            <source>Po tylu dniach pozostaje połowa początkowej różnicy względem stałej bazy, pomijając losowość.</source>
+            <translation>Po tolika dnech zůstane polovina počátečního rozdílu oproti stálému základu, bez náhodnosti.</translation>
+        </message>
+        <message>
+            <source>Początek</source>
+            <translation>Začátek</translation>
+        </message>
+        <message>
+            <source>Początkowy rozrzut bazy</source>
+            <translation>Počáteční rozptyl základu</translation>
+        </message>
+        <message>
+            <source>Powolne wahania bazy</source>
+            <translation>Pomalé výkyvy základu</translation>
+        </message>
+        <message>
+            <source>Powrót bazy do centrum — dni</source>
+            <translation>Návrat základu ke středu — dny</translation>
+        </message>
+        <message>
+            <source>Powrót formy do bazy — dni</source>
+            <translation>Návrat formy k základu — dny</translation>
+        </message>
+        <message>
+            <source>Przejścia</source>
+            <translation>Přechody</translation>
+        </message>
+        <message>
+            <source>Przesunięcie ku skrajnościom: %1</source>
+            <translation>Posun ke krajnostem: %1</translation>
+        </message>
+        <message>
+            <source>Przy zmianie okresu: 0 wybiera okolice nowego centrum, 1 zachowuje poprzednią bazę przed dodaniem losowego odchylenia.</source>
+            <translation>Při změně období: 0 vybírá okolí nového středu, 1 zachová předchozí základ před přidáním náhodné odchylky.</translation>
+        </message>
+        <message>
+            <source>Rozrzut nowej bazy: %1</source>
+            <translation>Rozptyl nového základu: %1</translation>
+        </message>
+        <message>
+            <source>Rozrzut przy większej różnicy</source>
+            <translation>Rozptyl při větším rozdílu</translation>
+        </message>
+        <message>
+            <source>Równa %1</source>
+            <translation>Vyrovnaná %1</translation>
+        </message>
+        <message>
+            <source>Szansa większej różnicy początkowej</source>
+            <translation>Šance na větší počáteční rozdíl</translation>
+        </message>
+        <message>
+            <source>Tempo długoterminowego powrotu bazy do centrum okresu. Większa liczba oznacza wolniejsze zmiany.</source>
+            <translation>Rychlost dlouhodobého návratu základu ke středu období. Větší číslo znamená pomalejší změny.</translation>
+        </message>
+        <message>
+            <source>Udział czasu: %1</source>
+            <translation>Podíl času: %1</translation>
+        </message>
+        <message>
+            <source>Wahania: %1</source>
+            <translation>Výkyvy: %1</translation>
+        </message>
+        <message>
+            <source>Większa wartość ułatwia przejścia między tymi okresami. Docelowy udział czasu pozostaje zachowany. Uwzględniana jest również waga przejścia powrotnego.</source>
+            <translation>Vyšší hodnota usnadňuje přechody mezi těmito obdobími. Cílový podíl času zůstane zachován. Zohledňuje se i váha zpětného přechodu.</translation>
+        </message>
+        <message>
+            <source>Współtworzy średni czas między zmianami. Czas konkretnego okresu zależy też od jego docelowego udziału. Okres może trwać znacznie dłużej od średniej.</source>
+            <translation>Spoluurčuje průměrnou dobu mezi změnami. Doba konkrétního období závisí i na jeho cílovém podílu. Období může trvat mnohem déle než průměr.</translation>
+        </message>
+        <message>
+            <source>Względny udział czasu bez perka. Wartości są normalizowane; 0,30 oznacza 30%, jeśli suma wynosi 1.</source>
+            <translation>Relativní podíl času bez perku. Hodnoty se normalizují; 0,30 znamená 30 %, pokud je součet 1.</translation>
+        </message>
+        <message>
+            <source>Zachowanie poprzedniej bazy</source>
+            <translation>Zachování předchozího základu</translation>
+        </message>
+        <message>
+            <source>Zmiany formy</source>
+            <translation>Změny formy</translation>
+        </message>
+</context>
+<context>
+    <name>CountryOrderDialog</name>
+        <message>
+            <source>Anuluj</source>
+            <translation>Zrušit</translation>
+        </message>
+        <message>
+            <source>Kolejność krajów</source>
+            <translation>Pořadí zemí</translation>
+        </message>
+        <message>
+            <source>Ok</source>
+            <translation>OK</translation>
+        </message>
+        <message>
+            <source>Przeciągnij kraj na wybrane miejsce.</source>
+            <translation>Přetáhněte zemi na zvolené místo.</translation>
+        </message>
+</context>
+<context>
+    <name>ResourceLibrary</name>
+        <message>
+            <source>Kalendarze</source>
+            <translation>Kalendáře</translation>
+        </message>
+        <message>
+            <source>Otwórz folder</source>
+            <translation>Otevřít složku</translation>
+        </message>
+        <message>
+            <source>Skoczkowie</source>
+            <translation>Skokani</translation>
+        </message>
+        <message>
+            <source>Skocznie</source>
+            <translation>Můstky</translation>
+        </message>
+        <message>
+            <source>Usuń</source>
+            <translation>Odstranit</translation>
+        </message>
+        <message>
+            <source>Wyczyść wybór</source>
+            <translation>Zrušit výběr</translation>
+        </message>
+        <message>
+            <source>Zasady</source>
+            <translation>Pravidla</translation>
+        </message>
+        <message>
+            <source>Brak zasobów</source>
+            <translation>Žádné zdroje</translation>
+        </message>
+        <message>
+            <source>Eksportuj (%1)</source>
+            <translation>Exportovat (%1)</translation>
+        </message>
+        <message>
+            <source>Punktacje</source>
+            <translation>Bodování</translation>
+        </message>
+        <message>
+            <source>Symulacje</source>
+            <translation>Simulace</translation>
+        </message>
+        <message>
+            <source>Wczytaj paczkę</source>
+            <translation>Načíst balíček</translation>
+        </message>
+        <message>
+            <source>Wczytaj paczkę lub utwórz zasoby w edytorze.</source>
+            <translation>Načtěte balíček nebo vytvořte zdroje v editoru.</translation>
+        </message>
+        <message>
+            <source>Wszystko</source>
+            <translation>Vše</translation>
+        </message>
+        <message>
+            <source>Zaznacz zasoby do eksportu lub usunięcia. Eksport zawiera zdjęcia i zależności kalendarzy.</source>
+            <translation>Označte zdroje k exportu nebo smazání. Export obsahuje fotografie a závislosti kalendářů.</translation>
+        </message>
+        <message>
+            <source>Zmień folder</source>
+            <translation>Změnit složku</translation>
+        </message>
+</context>
+<context>
+    <name>ResourceLibraryWindow</name>
+        <message>
+            <source>Eksportuj</source>
+            <translation>Exportovat</translation>
+        </message>
+        <message>
+            <source>Otwórz folder</source>
+            <translation>Otevřít složku</translation>
+        </message>
+        <message>
+            <source>Usuń</source>
+            <translation>Odstranit</translation>
+        </message>
+        <message>
+            <source>Biblioteka</source>
+            <translation>Knihovna</translation>
+        </message>
+        <message>
+            <source>Działa tryb przenośny. Usuń portable.txt obok aplikacji, aby wybrać inny folder przy następnym uruchomieniu.</source>
+            <translation>Je zapnutý přenosný režim. Odstraňte portable.txt vedle aplikace, abyste při dalším spuštění mohli zvolit jinou složku.</translation>
+        </message>
+        <message>
+            <source>Folder zostanie zmieniony po zamknięciu aplikacji. Bieżące dane zostaną skopiowane, a oryginały zachowane.</source>
+            <translation>Složka se změní po zavření aplikace. Aktuální data se zkopírují a originály zůstanou zachovány.</translation>
+        </message>
+        <message>
+            <source>Najpierw popraw edytowane dane.</source>
+            <translation>Nejprve opravte upravovaná data.</translation>
+        </message>
+        <message>
+            <source>Paczka Sj.Sim (*.sjsim-pack)</source>
+            <translation>Balíček Sj.Sim (*.sjsim-pack)</translation>
+        </message>
+        <message>
+            <source>Popraw nieprawidłowe dane w edytorze przed usunięciem zasobów.</source>
+            <translation>Před smazáním zdrojů opravte neplatná data v editoru.</translation>
+        </message>
+        <message>
+            <source>Przeniesiono do kosza: %1.</source>
+            <translation>Přesunuto do koše: %1.</translation>
+        </message>
+        <message>
+            <source>Przenieść zaznaczone zasoby do kosza (%1)?</source>
+            <translation>Přesunout označené zdroje do koše (%1)?</translation>
+        </message>
+        <message>
+            <source>Udostępnij zasoby</source>
+            <translation>Sdílet zdroje</translation>
+        </message>
+        <message>
+            <source>Usuń z biblioteki</source>
+            <translation>Odebrat z knihovny</translation>
+        </message>
+        <message>
+            <source>Wczytaj paczkę</source>
+            <translation>Načíst balíček</translation>
+        </message>
+        <message>
+            <source>Wczytano zasoby: %1. Istniejące pliki pozostały bez zmian.</source>
+            <translation>Načtené zdroje: %1. Existující soubory zůstaly beze změny.</translation>
+        </message>
+        <message>
+            <source>Wybierz nowy folder danych</source>
+            <translation>Zvolte novou složku dat</translation>
+        </message>
+        <message>
+            <source>Wybierz pusty folder poza obecnym folderem danych.</source>
+            <translation>Zvolte prázdnou složku mimo aktuální složku dat.</translation>
+        </message>
+        <message>
+            <source>Zamknij otwartą symulację przed jej usunięciem.</source>
+            <translation>Před smazáním otevřenou simulaci zavřete.</translation>
+        </message>
+        <message>
+            <source>Zapisano paczkę ze zdjęciami i zależnościami kalendarzy.</source>
+            <translation>Balíček uložen s fotografiemi a závislostmi kalendářů.</translation>
+        </message>
+        <message>
+            <source>Zmień folder</source>
+            <translation>Změnit složku</translation>
+        </message>
+</context>
+<context>
+    <name>RosterSourceDialog</name>
+        <message>
+            <source>Anuluj</source>
+            <translation>Zrušit</translation>
+        </message>
+        <message>
+            <source>Klasyfikacja</source>
+            <translation>Pořadí</translation>
+        </message>
+        <message>
+            <source>Konkurs</source>
+            <translation>Závod</translation>
+        </message>
+        <message>
+            <source>Sezon</source>
+            <translation>Sezóna</translation>
+        </message>
+        <message>
+            <source>Zastosuj</source>
+            <translation>Použít</translation>
+        </message>
+        <message>
+            <source>Brak dostępnych źródeł w tym sezonie.</source>
+            <translation>V této sezóně nejsou dostupné žádné zdroje.</translation>
+        </message>
+        <message>
+            <source>Kolejność z konkursu</source>
+            <translation>Pořadí ze závodu</translation>
+        </message>
+        <message>
+            <source>Lista z konkursu</source>
+            <translation>Listina ze závodu</translation>
+        </message>
+        <message>
+            <source>Sortuj klasyfikacją</source>
+            <translation>Seřadit podle klasifikace</translation>
+        </message>
+        <message>
+            <source>Sortuj wynikami konkursu</source>
+            <translation>Seřadit podle výsledků závodu</translation>
+        </message>
+        <message>
+            <source>Zastąp listę</source>
+            <translation>Nahradit listinu</translation>
+        </message>
+        <message>
+            <source>Zastąpi uczestników i kolejność. Składy drużyn pozostaną.</source>
+            <translation>Nahradí účastníky a pořadí. Sestavy družstev zůstanou.</translation>
+        </message>
+</context>
+<context>
+    <name>RosterTools</name>
+        <message>
+            <source>Kraje alfabetycznie</source>
+            <translation>Země abecedně</translation>
+        </message>
+        <message>
+            <source>Losowa kolejność</source>
+            <translation>Náhodné pořadí</translation>
+        </message>
+        <message>
+            <source>Kolejność startowa z konkursu</source>
+            <translation>Startovní pořadí ze závodu</translation>
+        </message>
+        <message>
+            <source>Odwróć kolejność</source>
+            <translation>Obrátit pořadí</translation>
+        </message>
+        <message>
+            <source>Sortuj alfabetycznie</source>
+            <translation>Seřadit abecedně</translation>
+        </message>
+        <message>
+            <source>Sortuj klasyfikacją</source>
+            <translation>Seřadit podle klasifikace</translation>
+        </message>
+        <message>
+            <source>Sortuj według OVR</source>
+            <translation>Seřadit podle OVR</translation>
+        </message>
+        <message>
+            <source>Sortuj według aktualnego potencjału</source>
+            <translation>Seřadit podle aktuálního potenciálu</translation>
+        </message>
+        <message>
+            <source>Sortuj wynikami konkursu</source>
+            <translation>Seřadit podle výsledků závodu</translation>
+        </message>
+        <message>
+            <source>Ustal kolejność krajów</source>
+            <translation>Určit pořadí zemí</translation>
+        </message>
+        <message>
+            <source>Zastąp listę listą z konkursu</source>
+            <translation>Nahradit listinu listinou ze závodu</translation>
+        </message>
+</context>
+<context>
+    <name>TeamRosterWorkspace</name>
+        <message>
+            <source>Cofnij</source>
+            <translation>Zpět</translation>
+        </message>
+        <message>
+            <source>Dostępni: %1</source>
+            <translation>Dostupní: %1</translation>
+        </message>
+        <message>
+            <source>Mogą startować</source>
+            <translation>Mohou startovat</translation>
+        </message>
+        <message>
+            <source>Składy ustalono przed wcześniejszym wydarzeniem.</source>
+            <translation>Sestavy byly určeny před dřívější událostí.</translation>
+        </message>
+</context>
+<context>
+    <name>AutoForm::Config</name>
+        <message>
+            <source>Brak parametru: %1</source>
+            <translation>Chybí parametr: %1</translation>
+        </message>
+        <message>
+            <source>Centra kolejnych okresów muszą rosnąć.</source>
+            <translation>Středy po sobě jdoucích období musí růst.</translation>
+        </message>
+        <message>
+            <source>Neutralny perk musi mieć mnożniki równe 1.</source>
+            <translation>Neutrální perk musí mít násobitele rovné 1.</translation>
+        </message>
+        <message>
+            <source>Nieobsługiwana konfiguracja silnika formy.</source>
+            <translation>Nepodporovaná konfigurace enginu formy.</translation>
+        </message>
+        <message>
+            <source>Nieznane parametry silnika formy.</source>
+            <translation>Neznámé parametry enginu formy.</translation>
+        </message>
+        <message>
+            <source>Parametr poza zakresem: %1</source>
+            <translation>Parametr mimo rozsah: %1</translation>
+        </message>
+        <message>
+            <source>Waga pozostania w tym samym okresie musi wynosić zero.</source>
+            <translation>Váha setrvání ve stejném období musí být nulová.</translation>
+        </message>
+</context>
+<context>
+    <name>AutoForm::State</name>
+        <message>
+            <source>Nieprawidłowy stan automatycznej formy.</source>
+            <translation>Neplatný stav automatické formy.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowy stary stan formy.</source>
+            <translation>Neplatný starý stav formy.</translation>
+        </message>
+</context>
+<context>
+    <name>FormDiagnostics</name>
+        <message>
+            <source>Diagnostyka formy</source>
+            <translation>Diagnostika formy</translation>
+        </message>
+        <message>
+            <source>Dynamika</source>
+            <translation>Dynamika</translation>
+        </message>
+        <message>
+            <source>Losowanie</source>
+            <translation>Losování</translation>
+        </message>
+        <message>
+            <source>Następna zmiana okresu</source>
+            <translation>Další změna období</translation>
+        </message>
+        <message>
+            <source>Rozwiń diagnostykę formy</source>
+            <translation>Rozbalit diagnostiku formy</translation>
+        </message>
+        <message>
+            <source>Stan</source>
+            <translation>Stav</translation>
+        </message>
+        <message>
+            <source>Stan procesu nie został jeszcze zainicjalizowany.</source>
+            <translation>Stav procesu ještě nebyl inicializován.</translation>
+        </message>
+        <message>
+            <source>Zwiń diagnostykę formy</source>
+            <translation>Sbalit diagnostiku formy</translation>
+        </message>
+</context>
+<context>
+    <name>FormStatus</name>
+        <message>
+            <source>Absolutny szczyt</source>
+            <translation>Absolutní vrchol</translation>
+        </message>
+        <message>
+            <source>Forma życia</source>
+            <translation>Forma života</translation>
+        </message>
+        <message>
+            <source>Głęboki kryzys</source>
+            <translation>Hluboká krize</translation>
+        </message>
+        <message>
+            <source>Obniżona</source>
+            <translation>Snížená</translation>
+        </message>
+        <message>
+            <source>Podwyższona</source>
+            <translation>Zvýšená</translation>
+        </message>
+        <message>
+            <source>Słaba</source>
+            <translation>Slabá</translation>
+        </message>
+        <message>
+            <source>Typowa</source>
+            <translation>Běžná</translation>
+        </message>
+        <message>
+            <source>Wysoka</source>
+            <translation>Vysoká</translation>
+        </message>
+</context>
+<context>
+    <name>TeamJumpersListModel</name>
+        <message>
+            <source>Wolne miejsce</source>
+            <translation>Volné místo</translation>
+        </message>
+</context>
+<context>
+    <name>FormShortcuts</name>
+        <message>
+            <source>Zmień formę ▾</source>
+            <translation>Změnit formu ▾</translation>
+        </message>
+        <message>
+            <source>Zmień formę</source>
+            <translation>Změnit formu</translation>
+        </message>
+        <message>
+            <source>Zwiększ formę</source>
+            <translation>Zvýšit formu</translation>
+        </message>
+        <message>
+            <source>Zmniejsz formę</source>
+            <translation>Snížit formu</translation>
+        </message>
+        <message>
+            <source>Wprowadź w kryzys</source>
+            <translation>Uvést do krize</translation>
+        </message>
+        <message>
+            <source>Wprowadź w szczyt</source>
+            <translation>Přivést na vrchol</translation>
+        </message>
+        <message>
+            <source>Ustal precyzyjnie…</source>
+            <translation>Nastavit přesně…</translation>
+        </message>
+        <message>
+            <source>Forma 1–100</source>
+            <translation>Forma 1–100</translation>
+        </message>
+        <message>
+            <source>Dokładna forma</source>
+            <translation>Přesná forma</translation>
+        </message>
+        <message>
+            <source>Ustaw</source>
+            <translation>Nastavit</translation>
+        </message>
+        <message>
+            <source>Okres formy o poziom wyżej</source>
+            <translation>Období formy o úroveň výš</translation>
+        </message>
+        <message>
+            <source>Okres formy o poziom niżej</source>
+            <translation>Období formy o úroveň níž</translation>
+        </message>
+        <message>
+            <source>Okres kryzysu</source>
+            <translation>Období krize</translation>
+        </message>
+        <message>
+            <source>Okres szczytu formy</source>
+            <translation>Období vrcholné formy</translation>
+        </message>
+        <message>
+            <source>Dokładna wartość; okres przesunie się o krok w jej stronę</source>
+            <translation>Přesná hodnota; období se posune o krok k ní</translation>
+        </message>
+        <message>
+            <source>To tylko skróty. Pod spodem forma działa na okresach, od kryzysu do szczytu, które same trwają i się zmieniają. Skrót zmienia tylko okres. Forma dochodzi do niego stopniowo, we własnym rytmie, więc efekt widać w kolejnych dniach.</source>
+            <translation>Jsou to jen zkratky. Forma pod tím funguje v obdobích, od krize po vrchol, která sama trvají a mění se. Zkratka mění jen období. Forma se k němu blíží postupně, vlastním tempem, takže účinek je vidět v dalších dnech.</translation>
+        </message>
+        <message>
+            <source>Automatyczna forma jest wyłączona, więc nie ma okresów formy. Możesz tylko ustalić dokładną wartość.</source>
+            <translation>Automatická forma je vypnutá, takže období formy nejsou. Můžete jen nastavit přesnou hodnotu.</translation>
+        </message>
+</context>
 </TS>

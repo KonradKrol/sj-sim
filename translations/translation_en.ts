@@ -492,6 +492,50 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <source>Działa: wiadomość testowa dotarła na kanał.</source>
             <translation>Working: the test message reached the channel.</translation>
         </message>
+        <message>
+            <source>Bardzo mała</source>
+            <translation>Very low</translation>
+        </message>
+        <message>
+            <source>Biblioteka i folder danych</source>
+            <translation>Library and data folder</translation>
+        </message>
+        <message>
+            <source>Jak mocno różnice jakości skoków przekładają się na metry. Nie zmienia samej siły wiatru.</source>
+            <translation>How strongly differences in jump quality turn into metres. Does not change the wind strength itself.</translation>
+        </message>
+        <message>
+            <source>Laboratorium formy</source>
+            <translation>Form lab</translation>
+        </message>
+        <message>
+            <source>Losowość skoków</source>
+            <translation>Jump randomness</translation>
+        </message>
+        <message>
+            <source>Mała</source>
+            <translation>Low</translation>
+        </message>
+        <message>
+            <source>Różnice w odległościach</source>
+            <translation>Distance differences</translation>
+        </message>
+        <message>
+            <source>W nowych sezonach: większa zmienność skraca okresy formy i zwiększa wahania. Wymaga automatycznej formy.</source>
+            <translation>In new seasons: more variability shortens form periods and increases swings. Requires automatic form.</translation>
+        </message>
+        <message>
+            <source>Zmienność formy w sezonach</source>
+            <translation>Form variability across seasons</translation>
+        </message>
+        <message>
+            <source>Ukryj formę zawodników</source>
+            <translation>Hide athletes’ form</translation>
+        </message>
+        <message>
+            <source>W sezonie karta zawodnika nie pokaże jego formy ani formy dnia przy skoku. Forma nadal działa w symulacji. Na karcie zawodnika możesz ją podejrzeć przełącznikiem „Pokaż formę”.</source>
+            <translation>In a season the athlete card will not show the form, and jumps will not show the form of the day. Form still works in the simulation. You can peek at it on the athlete card with the “Show form” switch.</translation>
+        </message>
 </context>
     <context>
         <name>AppearanceMenu</name>
@@ -963,6 +1007,14 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <source>Przeciągnij uchwyt na liście lub użyj Alt + ↑/↓, aby zmienić kolejność.</source>
             <translation>Drag the handle or use Alt + ↑/↓ to change the order.</translation>
         </message>
+        <message>
+            <source>Statystyki zawodnika</source>
+            <translation>Jumper statistics</translation>
+        </message>
+        <message>
+            <source>▥ Statystyki</source>
+            <translation>▥ Statistics</translation>
+        </message>
     </context>
     <context>
         <name>AthleteMedals</name>
@@ -1135,6 +1187,50 @@ But to keep you from getting too cheerful, your computer has been infected with 
             <source>Więcej wahań. Częściej psuje, czasem zaskakuje dobrym skokiem.</source>
             <translation>More variation. Makes mistakes more often but sometimes surprises with a good jump.</translation>
         </message>
+        <message>
+            <source>Chwiejna forma</source>
+            <translation>Unstable form</translation>
+        </message>
+        <message>
+            <source>Częściej psuje skoki, czasem zaskakuje.</source>
+            <translation>Spoils jumps more often, sometimes surprises.</translation>
+        </message>
+        <message>
+            <source>Forma w sezonie</source>
+            <translation>Form during the season</translation>
+        </message>
+        <message>
+            <source>Lepiej radzi sobie na dużych skoczniach.</source>
+            <translation>Does better on large hills.</translation>
+        </message>
+        <message>
+            <source>Lepiej radzi sobie na małych skoczniach.</source>
+            <translation>Does better on small hills.</translation>
+        </message>
+        <message>
+            <source>Na treningach i w próbnych częściej odpuszcza.</source>
+            <translation>Takes it easier in training and trial rounds.</translation>
+        </message>
+        <message>
+            <source>Pomaga na treningach i w seriach próbnych.</source>
+            <translation>Helps in training and trial rounds.</translation>
+        </message>
+        <message>
+            <source>Równa forma</source>
+            <translation>Steady form</translation>
+        </message>
+        <message>
+            <source>Równiejsze skoki.</source>
+            <translation>More consistent jumps.</translation>
+        </message>
+        <message>
+            <source>Spokojniejsze okresy automatycznej formy w sezonie.</source>
+            <translation>Calmer automatic form periods during the season.</translation>
+        </message>
+        <message>
+            <source>Większe wahania automatycznej formy w sezonie.</source>
+            <translation>Larger automatic form swings during the season.</translation>
+        </message>
     </context>
     <context>
         <name>AthleteRating</name>
@@ -1169,6 +1265,14 @@ But to keep you from getting too cheerful, your computer has been infected with 
 <message><source>Pomoc: OVR</source><translation>Help: OVR</translation></message>
 <message><source>Aktualna dyspozycja skoczka. Wpływa na jakość skoków i może zmieniać się w sezonie.</source><translation>The jumper’s current form. It affects jump quality and can change during the season.</translation></message>
 <message><source>Ogólny poziom umiejętności skoczka. Wyższy OVR zwykle pomaga skakać dalej.</source><translation>The jumper’s overall skill level. A higher OVR generally helps them jump farther.</translation></message>
+        <message>
+            <source>Aktualna dyspozycja skoczka.</source>
+            <translation>The athlete's current shape.</translation>
+        </message>
+        <message>
+            <source>Ogólny poziom umiejętności skoczka.</source>
+            <translation>The athlete's overall skill level.</translation>
+        </message>
 </context>
     <context>
         <name>AthleteStudio</name>
@@ -1438,6 +1542,30 @@ But to keep you from getting too cheerful, your computer has been infected with 
 Udostępnij cały folder. Aby wczytać paczkę, wybierz w nim plik pack.json.</source><translation>%1
 
 Share the entire folder. To import the pack, select its pack.json file.</translation></message>
+        <message>
+            <source>Nowa paczka</source>
+            <translation>New pack</translation>
+        </message>
+        <message>
+            <source>Paczka Sj.Sim (*.sjsim-pack)</source>
+            <translation>Sj.Sim pack (*.sjsim-pack)</translation>
+        </message>
+        <message>
+            <source>Udostępnij paczkę</source>
+            <translation>Share pack</translation>
+        </message>
+        <message>
+            <source>Wczytaj paczkę</source>
+            <translation>Load pack</translation>
+        </message>
+        <message>
+            <source>Wczytano paczkę.</source>
+            <translation>Pack loaded.</translation>
+        </message>
+        <message>
+            <source>Zapisano paczkę do udostępnienia.</source>
+            <translation>Pack saved for sharing.</translation>
+        </message>
 </context>
     <context>
         <name>AthleteTokens</name>
@@ -2288,6 +2416,10 @@ li.checked::marker { content: "\2612"; }
 <message><source>Wybierz skocznię…</source><translation>Choose a hill…</translation></message>
 <message><source>Nieznana skocznia</source><translation>Unknown hill</translation></message>
 <message><source>%1 · HS %2</source><translation>%1 · HS %2</translation></message>
+        <message>
+            <source>Popraw daty w kalendarzu</source>
+            <translation>Fix the dates in the calendar</translation>
+        </message>
 </context>
     <context>
         <name>CalendarEventRow</name>
@@ -2579,6 +2711,42 @@ li.checked::marker { content: "\2612"; }
         <source>Ustaw brak źródła kwalifikacji</source>
         <translation>Set qualification source to none</translation>
     </message>
+        <message>
+            <source>Wybierz klasyfikację</source>
+            <translation>Select standings</translation>
+        </message>
+        <message>
+            <source>Domyślnie — pierwsza pasująca klasyfikacja</source>
+            <translation>Default — first matching classification</translation>
+        </message>
+        <message>
+            <source>Konkretna klasyfikacja</source>
+            <translation>Specific classification</translation>
+        </message>
+        <message>
+            <source>Konkretny konkurs</source>
+            <translation>Specific competition</translation>
+        </message>
+        <message>
+            <source>Od najsłabszego do najlepszego. Kolejność możesz zmienić przed startem.</source>
+            <translation>From weakest to best. You can change the order before the start.</translation>
+        </message>
+        <message>
+            <source>Różne konkursy</source>
+            <translation>Different competitions</translation>
+        </message>
+        <message>
+            <source>Sortowanie listy startowej</source>
+            <translation>Start list order</translation>
+        </message>
+        <message>
+            <source>Ustawia początkową kolejność od najsłabszego do najlepszego. Domyślnie korzysta z pierwszej pasującej klasyfikacji. Przed startem możesz ręcznie zmienić kolejność.</source>
+            <translation>Sets the starting order from weakest to best. By default it uses the first matching classification. You can change the order manually before the start.</translation>
+        </message>
+        <message>
+            <source>Według wybranego źródła kwalifikacji</source>
+            <translation>By the chosen qualification source</translation>
+        </message>
 </context>
     <context>
         <name>CalendarVenueButton</name>
@@ -3049,6 +3217,22 @@ li.checked::marker { content: "\2612"; }
         <source>Odwołaj konkursy</source>
         <translation>Cancel competitions</translation>
     </message>
+        <message>
+            <source>Zawodnicy</source>
+            <translation>Jumpers</translation>
+        </message>
+        <message>
+            <source>Nie można wykonać tej czynności</source>
+            <translation>This action cannot be performed</translation>
+        </message>
+        <message>
+            <source>Popraw daty w kalendarzu</source>
+            <translation>Fix the dates in the calendar</translation>
+        </message>
+        <message>
+            <source>ZABLOKOWANE — popraw błędy przed zatwierdzeniem lub rozpoczęciem konkursu.</source>
+            <translation>BLOCKED — fix the errors before confirming or starting the competition.</translation>
+        </message>
 </context>
     <context>
         <name>CalendarsListModel</name>
@@ -4308,6 +4492,46 @@ Check that it exists and has appropriate permissions.</translation>
         <source>Ta klasyfikacja nie ma wyników. Kolejność listy startowej nie została zmieniona.</source>
         <translation>This classification has no results. The start list order was not changed.</translation>
     </message>
+        <message>
+            <source>Ręcznie</source>
+            <translation>Manually</translation>
+        </message>
+        <message>
+            <source>Dobierz automatycznie</source>
+            <translation>Fill in automatically</translation>
+        </message>
+        <message>
+            <source>Jedna dyspozycja zawodnika na kwalifikacje i wszystkie serie konkursu.</source>
+            <translation>One daily form for each athlete in qualification and all rounds of the competition.</translation>
+        </message>
+        <message>
+            <source>Losowo koszykami bez rodaków</source>
+            <translation>Random pots without compatriots</translation>
+        </message>
+        <message>
+            <source>Na zakładkę (1, 20, 21…)</source>
+            <translation>Overlapping (1, 20, 21…)</translation>
+        </message>
+        <message>
+            <source>Równomiernie (1, 11, 21…)</source>
+            <translation>Evenly (1, 11, 21…)</translation>
+        </message>
+        <message>
+            <source>Ułóż 1. serię według wyników kwalifikacji</source>
+            <translation>Order the 1st round by qualification results</translation>
+        </message>
+        <message>
+            <source>Wylosuj formę dnia</source>
+            <translation>Draw the daily form</translation>
+        </message>
+        <message>
+            <source>Wyrównany potencjał grup</source>
+            <translation>Balanced group strength</translation>
+        </message>
+        <message>
+            <source>Zawodnicy w pierwszej serii skaczą od najsłabszego do najlepszego wyniku kwalifikacji. Dotyczy konkursów indywidualnych bez grup KO.</source>
+            <translation>In the first round athletes jump from the weakest to the best qualification result. Applies to individual competitions without KO groups.</translation>
+        </message>
 </context>
     <context>
         <name>CompetitionInfoEditorWidget</name>
@@ -5211,6 +5435,34 @@ For additional compensation, the jumper must reach 95% of HS (%1 m).</translatio
             <source>Opublikuj ostatni skok na Discordzie…</source>
             <translation>Publish the latest jump on Discord…</translation>
         </message>
+        <message>
+            <source>Ręcznie</source>
+            <translation>Manually</translation>
+        </message>
+        <message>
+            <source>Auto-belka</source>
+            <translation>Auto gate</translation>
+        </message>
+        <message>
+            <source>Losowo koszykami bez rodaków</source>
+            <translation>Random pots without compatriots</translation>
+        </message>
+        <message>
+            <source>Na zakładkę (1, 20, 21…)</source>
+            <translation>Overlapping (1, 20, 21…)</translation>
+        </message>
+        <message>
+            <source>Obniżyć belkę o 1 na życzenie trenera? Aby otrzymać dodatkową rekompensatę, trzeba skoczyć co najmniej 95% HS (%1 m).</source>
+            <translation>Lower the gate by 1 at the coach's request? To get the extra compensation the athlete must jump at least 95% of HS (%1 m).</translation>
+        </message>
+        <message>
+            <source>Równomiernie (1, 11, 21…)</source>
+            <translation>Evenly (1, 11, 21…)</translation>
+        </message>
+        <message>
+            <source>Wyrównany potencjał grup</source>
+            <translation>Balanced group strength</translation>
+        </message>
 </context>
     <context>
         <name>CompetitionQuickBridge</name>
@@ -5304,6 +5556,10 @@ For additional compensation, the jumper must reach 95% of HS (%1 m).</translatio
             <location filename="../source/UI/Competition/Quick/CompetitionQuickBridge.cpp" line="248" />
             <source>Składy drużyn</source>
             <translation>Team lineups</translation>
+        </message>
+        <message>
+            <source>Ułóż 1. serię według wyników kwalifikacji</source>
+            <translation>Order the 1st round by qualification results</translation>
         </message>
     </context>
     <context>
@@ -5500,6 +5756,10 @@ calculation</translation>
             <source>Trening</source>
             <translation>Training</translation>
         </message>
+        <message>
+            <source>Brak skoczni</source>
+            <translation>No hill</translation>
+        </message>
     </context>
     <context>
         <name>CompetitionsRangeComboBoxesWidget</name>
@@ -5675,6 +5935,10 @@ calculation</translation>
             <source>Usunąć kraj %1 (%2)? Zmiana zapisze się po kliknięciu „Zapisz”.</source>
             <translation>Remove %1 (%2)? The change is stored after you click “Save”.</translation>
         </message>
+        <message>
+            <source>Zamknij</source>
+            <translation>Close</translation>
+        </message>
     </context>
     <context>
         <name>DataPackBar</name>
@@ -5700,6 +5964,14 @@ calculation</translation>
     <message><source>Domyślne zasady</source><translation>Default rules</translation></message>
 <message><source>Importuj</source><translation>Import</translation></message>
 <message><source>Eksportuj</source><translation>Export</translation></message>
+        <message>
+            <source>Biblioteka</source>
+            <translation>Library</translation>
+        </message>
+        <message>
+            <source>Udostępnij plik .sjsim-pack. W Bibliotece możesz połączyć różne zasoby w jednym pliku.</source>
+            <translation>Share a .sjsim-pack file. In the Library you can combine different resources in one file.</translation>
+        </message>
 </context>
     <context>
         <name>DataTable</name>
@@ -6003,6 +6275,22 @@ calculation</translation>
 <message><source>Konkurs drużynowy</source><translation>Team competition</translation></message>
 <message><source>Próbna drużynowa</source><translation>Team trial round</translation></message>
 <message><source>Brak zasad tego typu</source><translation>No rules of this type</translation></message>
+        <message>
+            <source>Paczka</source>
+            <translation>Pack</translation>
+        </message>
+        <message>
+            <source>Paczka Sj.Sim (*.sjsim-pack)</source>
+            <translation>Sj.Sim pack (*.sjsim-pack)</translation>
+        </message>
+        <message>
+            <source>Udostępnij paczkę</source>
+            <translation>Share pack</translation>
+        </message>
+        <message>
+            <source>Wczytaj paczkę</source>
+            <translation>Load pack</translation>
+        </message>
 </context>
     <context>
         <name>DatabaseItemsListView</name>
@@ -6928,6 +7216,26 @@ li.checked::marker { content: "\2612"; }
             <source>Przy losowaniu warunków częściej pojawia się wiatr w plecy. Ręcznie wybrany kierunek pozostaje bez zmian.</source>
             <translation>Tailwind is more likely when conditions are generated. A manually selected direction stays unchanged.</translation>
         </message>
+        <message>
+            <source>Kompaktowa skocznia</source>
+            <translation>Compact hill</translation>
+        </message>
+        <message>
+            <source>Nieco zmniejsza różnice odległości między zawodnikami.</source>
+            <translation>Slightly reduces distance differences between athletes.</translation>
+        </message>
+        <message>
+            <source>Nieco zwiększa różnice odległości między zawodnikami.</source>
+            <translation>Slightly increases distance differences between athletes.</translation>
+        </message>
+        <message>
+            <source>Rozległa skocznia</source>
+            <translation>Spread-out hill</translation>
+        </message>
+        <message>
+            <source>Różnice odległości</source>
+            <translation>Distance differences</translation>
+        </message>
     </context>
     <context>
         <name>HillStudio</name>
@@ -7132,6 +7440,30 @@ li.checked::marker { content: "\2612"; }
             <translation>Import pack</translation>
         </message>
     <message><source>Wyeksportowano paczkę do %1.</source><translation>Exported pack to %1.</translation></message>
+        <message>
+            <source>Nowa paczka</source>
+            <translation>New pack</translation>
+        </message>
+        <message>
+            <source>Paczka Sj.Sim (*.sjsim-pack)</source>
+            <translation>Sj.Sim pack (*.sjsim-pack)</translation>
+        </message>
+        <message>
+            <source>Udostępnij paczkę</source>
+            <translation>Share pack</translation>
+        </message>
+        <message>
+            <source>Wczytaj paczkę</source>
+            <translation>Load pack</translation>
+        </message>
+        <message>
+            <source>Wczytano paczkę.</source>
+            <translation>Pack loaded.</translation>
+        </message>
+        <message>
+            <source>Zapisano paczkę do udostępnienia.</source>
+            <translation>Pack saved for sharing.</translation>
+        </message>
 </context>
     <context>
         <name>HillTypesCheckBoxesWidget</name>
@@ -7269,6 +7601,10 @@ li.checked::marker { content: "\2612"; }
         <message>
             <source>Przykładowy sezon</source>
             <translation>Example season</translation>
+        </message>
+        <message>
+            <source>Dołącz do serwera Sj.Sima</source>
+            <translation>Join the Sj.Sim server</translation>
         </message>
     </context>
     <context>
@@ -7870,6 +8206,10 @@ li.checked::marker { content: "\2612"; }
         <source>Pokaż natężenie opadów</source>
         <translation>Show precipitation intensity</translation>
     </message>
+        <message>
+            <source>Forma dnia (+/−)</source>
+            <translation>Daily form (+/−)</translation>
+        </message>
 </context>
     <context>
         <name>JumpManipulatorConfigWindow</name>
@@ -8538,6 +8878,94 @@ hidden charts</translation>
             <location filename="../source/UI/Seasons/Stats/JumperStatsWindow.cpp" line="720" />
             <source>Podaj nazwę jaką ma mieć folder z zapisanymi statystykami skoczka</source>
             <translation>Enter a name for the folder containing the jumper statistics</translation>
+        </message>
+        <message>
+            <source>Forma</source>
+            <translation>Form</translation>
+        </message>
+        <message>
+            <source>Jakość skoku</source>
+            <translation>Jump quality</translation>
+        </message>
+        <message>
+            <source>Miejsce</source>
+            <translation>Place</translation>
+        </message>
+        <message>
+            <source>Odległość</source>
+            <translation>Distance</translation>
+        </message>
+        <message>
+            <source>Sezon</source>
+            <translation>Season</translation>
+        </message>
+        <message>
+            <source>Wartość</source>
+            <translation>Value</translation>
+        </message>
+        <message>
+            <source>m</source>
+            <translation>m</translation>
+        </message>
+        <message>
+            <source>pkt</source>
+            <translation>pts</translation>
+        </message>
+        <message>
+            <source>Dyskwalifikacja</source>
+            <translation>Disqualification</translation>
+        </message>
+        <message>
+            <source>Dyskwalifikacja w kwalifikacjach</source>
+            <translation>Disqualification in qualification</translation>
+        </message>
+        <message>
+            <source>Eksport statystyk</source>
+            <translation>Export statistics</translation>
+        </message>
+        <message>
+            <source>Eksport statystyk zawodnika</source>
+            <translation>Export athlete statistics</translation>
+        </message>
+        <message>
+            <source>Miejsca</source>
+            <translation>Places</translation>
+        </message>
+        <message>
+            <source>Nie udało się zapisać pliku %1.</source>
+            <translation>Could not save the file %1.</translation>
+        </message>
+        <message>
+            <source>Nie wystartował</source>
+            <translation>Did not start</translation>
+        </message>
+        <message>
+            <source>Nie zakwalifikował się</source>
+            <translation>Did not qualify</translation>
+        </message>
+        <message>
+            <source>Ocena</source>
+            <translation>Rating</translation>
+        </message>
+        <message>
+            <source>Sezon %1</source>
+            <translation>Season %1</translation>
+        </message>
+        <message>
+            <source>Sezon %1/%2</source>
+            <translation>Season %1/%2</translation>
+        </message>
+        <message>
+            <source>Skok %1</source>
+            <translation>Jump %1</translation>
+        </message>
+        <message>
+            <source>Suma not sędziowskich</source>
+            <translation>Sum of judges' marks</translation>
+        </message>
+        <message>
+            <source>Zastąpić istniejące pliki statystyk w tym folderze?</source>
+            <translation>Replace the existing statistics files in this folder?</translation>
         </message>
     </context>
     <context>
@@ -9629,6 +10057,10 @@ Można edytować kilka konkursów na raz (Jedynym wyjątakiem jest kolumna "Awan
         <message>
             <source>Puchar Świata</source>
             <translation>World Cup</translation>
+        </message>
+        <message>
+            <source>Daty umożliwiają automatyczną zmianę formy i formę dnia zawodników.</source>
+            <translation>Dates allow automatic form changes and athletes' daily form.</translation>
         </message>
     </context>
     <context>
@@ -16068,6 +16500,444 @@ It is also on the clipboard, so you can paste it right away, for example on Disc
             <source>Śnieg/deszcz przy skoku</source>
             <translation>Snow/rain during the jump</translation>
         </message>
+        <message>
+            <source>Kalendarze</source>
+            <translation>Calendars</translation>
+        </message>
+        <message>
+            <source>Preset kalendarza</source>
+            <translation>Calendar preset</translation>
+        </message>
+        <message>
+            <source>Zasady</source>
+            <translation>Rules</translation>
+        </message>
+        <message>
+            <source> dni</source>
+            <translation> days</translation>
+        </message>
+        <message>
+            <source>Automatyczna forma wymaga dat wydarzeń.</source>
+            <translation>Automatic form requires event dates.</translation>
+        </message>
+        <message>
+            <source>Automatyczna forma wymaga nowych profili zawodników.</source>
+            <translation>Automatic form requires new athlete profiles.</translation>
+        </message>
+        <message>
+            <source>Baza μ</source>
+            <translation>Base μ</translation>
+        </message>
+        <message>
+            <source>Biblioteka</source>
+            <translation>Library</translation>
+        </message>
+        <message>
+            <source>Brakuje zasobów startowych w folderze Defaults aplikacji.</source>
+            <translation>The application's Defaults folder is missing the starting resources.</translation>
+        </message>
+        <message>
+            <source>Centrum okresu</source>
+            <translation>Period centre</translation>
+        </message>
+        <message>
+            <source>Chwiejna forma %1</source>
+            <translation>Unstable form %1</translation>
+        </message>
+        <message>
+            <source>Do zmiany okresu</source>
+            <translation>Until the period change</translation>
+        </message>
+        <message>
+            <source>Dokładne F procesu</source>
+            <translation>Exact process F</translation>
+        </message>
+        <message>
+            <source>Dynamika</source>
+            <translation>Dynamics</translation>
+        </message>
+        <message>
+            <source>Długość okresów</source>
+            <translation>Period length</translation>
+        </message>
+        <message>
+            <source>F w profilu</source>
+            <translation>F in profile</translation>
+        </message>
+        <message>
+            <source>F − μ</source>
+            <translation>F − μ</translation>
+        </message>
+        <message>
+            <source>Folder danych</source>
+            <translation>Data folder</translation>
+        </message>
+        <message>
+            <source>Losowanie</source>
+            <translation>Draw</translation>
+        </message>
+        <message>
+            <source>Losowość F / dzień</source>
+            <translation>F randomness / day</translation>
+        </message>
+        <message>
+            <source>Losowość μ / dzień</source>
+            <translation>μ randomness / day</translation>
+        </message>
+        <message>
+            <source>Mnożnik wahań</source>
+            <translation>Swing multiplier</translation>
+        </message>
+        <message>
+            <source>Mnożnik średniego czasu między zmianami okresu.</source>
+            <translation>Multiplier of the average time between period changes.</translation>
+        </message>
+        <message>
+            <source>Następna zmiana okresu</source>
+            <translation>Next period change</translation>
+        </message>
+        <message>
+            <source>Nie można odczytać %1.</source>
+            <translation>Cannot read %1.</translation>
+        </message>
+        <message>
+            <source>Nie można odczytać paczki.</source>
+            <translation>Cannot read the pack.</translation>
+        </message>
+        <message>
+            <source>Nie można odczytać zdjęcia: %1.</source>
+            <translation>Cannot read the photo: %1.</translation>
+        </message>
+        <message>
+            <source>Nie można przygotować importu.</source>
+            <translation>Cannot prepare the import.</translation>
+        </message>
+        <message>
+            <source>Nie można przygotować nowego folderu danych.</source>
+            <translation>Cannot prepare the new data folder.</translation>
+        </message>
+        <message>
+            <source>Nie można skopiować zasobu startowego: %1</source>
+            <translation>Cannot copy the starting resource: %1</translation>
+        </message>
+        <message>
+            <source>Nie można usunąć pliku spoza folderu biblioteki.</source>
+            <translation>Cannot delete a file outside the library folder.</translation>
+        </message>
+        <message>
+            <source>Nie można utworzyć folderu danych: %1</source>
+            <translation>Cannot create the data folder: %1</translation>
+        </message>
+        <message>
+            <source>Nie można zakończyć przygotowania folderu danych.</source>
+            <translation>Cannot finish preparing the data folder.</translation>
+        </message>
+        <message>
+            <source>Nie można zapisać danych w %1.</source>
+            <translation>Cannot save data in %1.</translation>
+        </message>
+        <message>
+            <source>Nie można zapisać importowanego zasobu.</source>
+            <translation>Cannot save the imported resource.</translation>
+        </message>
+        <message>
+            <source>Nie można zapisać zdjęcia.</source>
+            <translation>Cannot save the photo.</translation>
+        </message>
+        <message>
+            <source>Nie udało się otworzyć pliku ustawień aplikacji
+Upewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia</source>
+            <translation>Could not open the application settings file
+Make sure the file exists and has the right permissions</translation>
+        </message>
+        <message>
+            <source>Nie udało się otworzyć pliku ustawień symulacji
+Upewnij się, że istnieje tam taki plik lub ma on odpowiednie uprawnienia</source>
+            <translation>Could not open the simulation settings file
+Make sure the file exists and has the right permissions</translation>
+        </message>
+        <message>
+            <source>Nie udało się otworzyć presetu generatora formy: </source>
+            <translation>Could not open the form generator preset: </translation>
+        </message>
+        <message>
+            <source>Nie udało się przenieść kopii danych. Poprzedni folder pozostał bez zmian.</source>
+            <translation>Could not move the data copy. The previous folder is unchanged.</translation>
+        </message>
+        <message>
+            <source>Nie udało się przenieść zasobu do kosza. Usunięto: %1.</source>
+            <translation>Could not move the resource to the bin. Deleted: %1.</translation>
+        </message>
+        <message>
+            <source>Nie udało się wczytać paczek z folderu danych.
+%1</source>
+            <translation>Could not load the packs from the data folder.
+%1</translation>
+        </message>
+        <message>
+            <source>Nie udało się wczytać punktacji
+Treść błędu: </source>
+            <translation>Could not load the points tables
+Error: </translation>
+        </message>
+        <message>
+            <source>Nie udało się wczytać skoczni
+Treść błędu: </source>
+            <translation>Could not load the hills
+Error: </translation>
+        </message>
+        <message>
+            <source>Nie udało się wczytać ustawień aplikacji z pliku ustawień aplikacji
+Treść błędu: </source>
+            <translation>Could not load the application settings from the settings file
+Error: </translation>
+        </message>
+        <message>
+            <source>Nie udało się wczytać ustawień symulacji z pliku ustawień symulacji
+Treść błędu: </source>
+            <translation>Could not load the simulation settings from the settings file
+Error: </translation>
+        </message>
+        <message>
+            <source>Nie udało się wczytać zasad konkursu
+Treść błędu: </source>
+            <translation>Could not load the competition rules
+Error: </translation>
+        </message>
+        <message>
+            <source>Nie udało się wczytać zawodników
+Treść błędu: </source>
+            <translation>Could not load the athletes
+Error: </translation>
+        </message>
+        <message>
+            <source>Nie udało się zakończyć importu. Przywrócono poprzedni stan biblioteki.</source>
+            <translation>Could not finish the import. The previous library state was restored.</translation>
+        </message>
+        <message>
+            <source>Nie udało się zapisać paczki.</source>
+            <translation>Could not save the pack.</translation>
+        </message>
+        <message>
+            <source>Nieobsługiwany rodzaj zasobu.</source>
+            <translation>Unsupported resource type.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowa liczba punktów.</source>
+            <translation>Invalid number of points.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowa nazwa zasobu.</source>
+            <translation>Invalid resource name.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowa punktacja.</source>
+            <translation>Invalid points table.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowa ścieżka zasobu.</source>
+            <translation>Invalid resource path.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowe dane automatycznej formy.</source>
+            <translation>Invalid automatic form data.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowe załączniki paczki.</source>
+            <translation>Invalid pack attachments.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowy format paczki Sj.Sim.</source>
+            <translation>Invalid Sj.Sim pack format.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowy plik JSON: %1.</source>
+            <translation>Invalid JSON file: %1.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowy zapis symulacji.</source>
+            <translation>Invalid simulation save.</translation>
+        </message>
+        <message>
+            <source>Nowy folder nie jest pusty. Dane pozostają w %1.</source>
+            <translation>The new folder is not empty. The data stays in %1.</translation>
+        </message>
+        <message>
+            <source>Odchylenie losowego składnika zmiany formy w jednym dniu, przed ograniczeniem zakresu.</source>
+            <translation>Deviation of the random part of the form change in one day, before the range is limited.</translation>
+        </message>
+        <message>
+            <source>Odwiedzone okresy</source>
+            <translation>Visited periods</translation>
+        </message>
+        <message>
+            <source>Okres dyspozycji</source>
+            <translation>Form period</translation>
+        </message>
+        <message>
+            <source>Ostatni przeliczony stan. Po ręcznej zmianie przy wyłączonej autoformie może różnić się od profilu.</source>
+            <translation>Last calculated state. After a manual change with automatic form off it may differ from the profile.</translation>
+        </message>
+        <message>
+            <source>Ostatnie przeliczenie</source>
+            <translation>Last calculation</translation>
+        </message>
+        <message>
+            <source>Paczka jest zbyt duża. Podziel ją na mniejsze paczki.</source>
+            <translation>The pack is too large. Split it into smaller packs.</translation>
+        </message>
+        <message>
+            <source>Paczka zawiera powtórzone zasoby.</source>
+            <translation>The pack contains repeated resources.</translation>
+        </message>
+        <message>
+            <source>Perk formy</source>
+            <translation>Form perk</translation>
+        </message>
+        <message>
+            <source>Po tym czasie pozostaje połowa różnicy między F a stałą bazą, bez losowości.</source>
+            <translation>After this time half of the difference between F and a constant base remains, without randomness.</translation>
+        </message>
+        <message>
+            <source>Powrót F / dzień</source>
+            <translation>F return / day</translation>
+        </message>
+        <message>
+            <source>Powrót μ / dzień</source>
+            <translation>μ return / day</translation>
+        </message>
+        <message>
+            <source>Pozostały wylosowany czas do następnej zmiany okresu. Sama forma nie przeskakuje wtedy do jego centrum.</source>
+            <translation>Remaining drawn time until the next period change. The form itself does not jump to its centre then.</translation>
+        </message>
+        <message>
+            <source>Połowiczny powrót F</source>
+            <translation>F half-life return</translation>
+        </message>
+        <message>
+            <source>Połowiczny powrót μ</source>
+            <translation>μ half-life return</translation>
+        </message>
+        <message>
+            <source>Przesunięcie ku skrajnościom</source>
+            <translation>Shift towards extremes</translation>
+        </message>
+        <message>
+            <source>Przewidywany składnik powrotu do bazy w jednym dniu, przy niezmienionej bazie i bez losowości.</source>
+            <translation>Expected return-to-base part in one day, with an unchanged base and without randomness.</translation>
+        </message>
+        <message>
+            <source>Punktacje</source>
+            <translation>Points tables</translation>
+        </message>
+        <message>
+            <source>Robocze odchylenie przy stałej bazie, przed ograniczeniem do 1–100.</source>
+            <translation>Working deviation with a constant base, before limiting to 1–100.</translation>
+        </message>
+        <message>
+            <source>Rozrzut nowej bazy</source>
+            <translation>New base spread</translation>
+        </message>
+        <message>
+            <source>Równa forma %1</source>
+            <translation>Steady form %1</translation>
+        </message>
+        <message>
+            <source>Seed rozgrywki</source>
+            <translation>Game seed</translation>
+        </message>
+        <message>
+            <source>Skala odchylenia F</source>
+            <translation>F deviation scale</translation>
+        </message>
+        <message>
+            <source>Stan</source>
+            <translation>State</translation>
+        </message>
+        <message>
+            <source>Stan RNG</source>
+            <translation>RNG state</translation>
+        </message>
+        <message>
+            <source>Symulacje</source>
+            <translation>Simulations</translation>
+        </message>
+        <message>
+            <source>Szansa przy najbliższej zmianie okresu, nie w każdym dniu.</source>
+            <translation>Chance at the next period change, not on every day.</translation>
+        </message>
+        <message>
+            <source>Tempo powrotu bazy do centrum aktualnego okresu.</source>
+            <translation>Speed of the base return to the centre of the current period.</translation>
+        </message>
+        <message>
+            <source>Ustaw datę wydarzenia przed przeliczeniem formy.</source>
+            <translation>Set the event date before calculating the form.</translation>
+        </message>
+        <message>
+            <source>Uszkodzona lub nieobsługiwana paczka.</source>
+            <translation>Damaged or unsupported pack.</translation>
+        </message>
+        <message>
+            <source>Uszkodzony załącznik lub niedozwolona ścieżka.</source>
+            <translation>Damaged attachment or forbidden path.</translation>
+        </message>
+        <message>
+            <source>Wartość ujemna skupia czas w środku, dodatnia zwiększa udział skrajności.</source>
+            <translation>A negative value concentrates time in the middle, a positive one increases the share of extremes.</translation>
+        </message>
+        <message>
+            <source>Wybierz zasoby do eksportu.</source>
+            <translation>Choose resources to export.</translation>
+        </message>
+        <message>
+            <source>Zachowanie starej bazy</source>
+            <translation>Keeping the old base</translation>
+        </message>
+        <message>
+            <source>Zasób nie istnieje już w bibliotece.</source>
+            <translation>The resource no longer exists in the library.</translation>
+        </message>
+        <message>
+            <source>Zaznacz zasoby do usunięcia.</source>
+            <translation>Select resources to delete.</translation>
+        </message>
+        <message>
+            <source>Zbyt wiele stanów automatycznej formy.</source>
+            <translation>Too many automatic form states.</translation>
+        </message>
+        <message>
+            <source>Zdjęcie musi należeć do folderu paczki.</source>
+            <translation>The photo must be inside the pack folder.</translation>
+        </message>
+        <message>
+            <source>Zmiany okresu</source>
+            <translation>Period changes</translation>
+        </message>
+        <message>
+            <source>Średni czas okresu</source>
+            <translation>Average period time</translation>
+        </message>
+        <message>
+            <source>Szybka zmiana formy wymaga nowego profilu zawodnika.</source>
+            <translation>Quick form changes require a new athlete profile.</translation>
+        </message>
+        <message>
+            <source>Podaj formę od 1 do 100.</source>
+            <translation>Enter a form from 1 to 100.</translation>
+        </message>
+        <message>
+            <source>Nieznana zmiana formy.</source>
+            <translation>Unknown form change.</translation>
+        </message>
+        <message>
+            <source>Okres formy można zmienić tylko przy włączonej automatycznej formie.</source>
+            <translation>The form period can be changed only with automatic form on.</translation>
+        </message>
+        <message>
+            <source>Forma tego zawodnika zostanie wyliczona przy najbliższym wydarzeniu. Wtedy zmienisz jej okres.</source>
+            <translation>This athlete’s form will be calculated at the next event. You can change its period then.</translation>
+        </message>
     </context>
     <context>
         <name>QuickBridge</name>
@@ -16870,6 +17740,26 @@ It is also on the clipboard, so you can paste it right away, for example on Disc
             <source>Discord</source>
             <translation>Discord</translation>
         </message>
+        <message>
+            <source>Losowość skoków</source>
+            <translation>Jump randomness</translation>
+        </message>
+        <message>
+            <source>Różnice w odległościach</source>
+            <translation>Distance differences</translation>
+        </message>
+        <message>
+            <source>Składy</source>
+            <translation>Squads</translation>
+        </message>
+        <message>
+            <source>Zmienność formy w sezonach</source>
+            <translation>Form variability across seasons</translation>
+        </message>
+        <message>
+            <source>Widoczność formy</source>
+            <translation>Form visibility</translation>
+        </message>
 </context>
     <context>
         <name>QuickCalendar</name>
@@ -17267,6 +18157,38 @@ It is also on the clipboard, so you can paste it right away, for example on Disc
         <source>Gotowy do startu</source>
         <translation>Ready to start</translation>
     </message>
+        <message>
+            <source>Próbna</source>
+            <translation>Trial</translation>
+        </message>
+        <message>
+            <source>Zaznacz konkursy bez kwalifikacji.</source>
+            <translation>Select competitions without qualifications.</translation>
+        </message>
+        <message>
+            <source>Dat nie można zmieniać po rozpoczęciu sezonu.</source>
+            <translation>Dates cannot be changed after the season has started.</translation>
+        </message>
+        <message>
+            <source>Przygotowania %1/%2</source>
+            <translation>Preparations %1/%2</translation>
+        </message>
+        <message>
+            <source>Trening lub seria próbna konkursu %1 musi mieścić się między poprzednim konkursem a tym konkursem.</source>
+            <translation>A training or trial round of competition %1 must fall between the previous competition and this one.</translation>
+        </message>
+        <message>
+            <source>Wyłącz daty zawodów</source>
+            <translation>Turn off event dates</translation>
+        </message>
+        <message>
+            <source>Wyłączyć daty zawodów? Autoforma i forma dnia przestaną działać.</source>
+            <translation>Turn off event dates? Automatic form and daily form will stop working.</translation>
+        </message>
+        <message>
+            <source>oczekuje</source>
+            <translation>pending</translation>
+        </message>
 </context>
     <context>
         <name>QuickPlot</name>
@@ -17287,6 +18209,58 @@ It is also on the clipboard, so you can paste it right away, for example on Disc
             <location filename="../source/UI/Quick/QuickRoster.cpp" line="76" />
             <source>Wszystkie kraje</source>
             <translation>All countries</translation>
+        </message>
+        <message>
+            <source>Brak skoczni</source>
+            <translation>No hill</translation>
+        </message>
+        <message>
+            <source>Wybierz klasyfikację</source>
+            <translation>Select standings</translation>
+        </message>
+        <message>
+            <source>Wybierz konkurs</source>
+            <translation>Select competition</translation>
+        </message>
+        <message>
+            <source>Brak rozegranych konkursów i klasyfikacji w tym trybie.</source>
+            <translation>No competitions or classifications played in this mode.</translation>
+        </message>
+        <message>
+            <source>Brak źródeł</source>
+            <translation>No sources</translation>
+        </message>
+        <message>
+            <source>Kolejność krajów</source>
+            <translation>Country order</translation>
+        </message>
+        <message>
+            <source>Nie można ustalić kolejności</source>
+            <translation>The order cannot be set</translation>
+        </message>
+        <message>
+            <source>Przeciągnij kraje, aby ustalić kolejność.</source>
+            <translation>Drag countries to set the order.</translation>
+        </message>
+        <message>
+            <source>Sezon %1</source>
+            <translation>Season %1</translation>
+        </message>
+        <message>
+            <source>Sprawdź skocznię i ustawienia konkursu.</source>
+            <translation>Check the hill and the competition settings.</translation>
+        </message>
+        <message>
+            <source>Wolne miejsce</source>
+            <translation>Free place</translation>
+        </message>
+        <message>
+            <source>Zastąp listę startową</source>
+            <translation>Replace the start list</translation>
+        </message>
+        <message>
+            <source>Zastąpić uczestników i kolejność listy startowej?</source>
+            <translation>Replace the participants and the order of the start list?</translation>
         </message>
     </context>
     <context>
@@ -17553,6 +18527,22 @@ It is also on the clipboard, so you can paste it right away, for example on Disc
             <source>Zapisuje końcowe wyniki jako PNG i kopiuje je do schowka.</source>
             <translation>Saves the final results as a PNG and copies them to the clipboard.</translation>
         </message>
+        <message>
+            <source>Auto</source>
+            <translation>Auto</translation>
+        </message>
+        <message>
+            <source>Automatyczna belka</source>
+            <translation>Automatic gate</translation>
+        </message>
+        <message>
+            <source>Automatycznie zmienia belkę.</source>
+            <translation>Changes the gate automatically.</translation>
+        </message>
+        <message>
+            <source>Dobierz belkę do warunków.</source>
+            <translation>Match the gate to the conditions.</translation>
+        </message>
 </context>
     <context>
         <name>RaceLastJump</name>
@@ -17659,6 +18649,10 @@ It is also on the clipboard, so you can paste it right away, for example on Disc
         <source>Opady</source>
         <translation>Precipitation</translation>
     </message>
+        <message>
+            <source>Forma dnia</source>
+            <translation>Daily form</translation>
+        </message>
 </context>
     <context>
         <name>RaceOptions</name>
@@ -18052,6 +19046,22 @@ It is also on the clipboard, so you can paste it right away, for example on Disc
             <source>Wyczyść filtry</source>
             <translation>Clear filters</translation>
         </message>
+        <message>
+            <source>Dodaje do listy startowej wszystkich zawodników pasujących do wyszukiwania i kraju.</source>
+            <translation>Adds every athlete matching the search and country to the start list.</translation>
+        </message>
+        <message>
+            <source>Odznacz wszystkich</source>
+            <translation>Deselect all</translation>
+        </message>
+        <message>
+            <source>Usuwa z listy startowej wszystkich zawodników pasujących do wyszukiwania i kraju.</source>
+            <translation>Removes every athlete matching the search and country from the start list.</translation>
+        </message>
+        <message>
+            <source>Zaznacz wszystkich</source>
+            <translation>Select all</translation>
+        </message>
     </context>
     <context>
         <name>RosterOrder</name>
@@ -18148,6 +19158,14 @@ It is also on the clipboard, so you can paste it right away, for example on Disc
             <source>Kolejność na liście</source>
             <translation>List order</translation>
         </message>
+        <message>
+            <source>Ok</source>
+            <translation>OK</translation>
+        </message>
+        <message>
+            <source>↥ Przenieś</source>
+            <translation>↥ Move</translation>
+        </message>
     </context>
     <context>
         <name>RosterPresets</name>
@@ -18175,6 +19193,22 @@ It is also on the clipboard, so you can paste it right away, for example on Disc
             <location filename="../source/UI/Quick/RosterPresets.qml" line="23" />
             <source>Kolejność</source>
             <translation>Order</translation>
+        </message>
+        <message>
+            <source>Lista zawodników</source>
+            <translation>Athlete roster</translation>
+        </message>
+        <message>
+            <source>Wszyscy zawodnicy</source>
+            <translation>All athletes</translation>
+        </message>
+        <message>
+            <source>Zawodnicy</source>
+            <translation>Jumpers</translation>
+        </message>
+        <message>
+            <source>Własny wybór</source>
+            <translation>Own selection</translation>
         </message>
     </context>
     <context>
@@ -18343,6 +19377,14 @@ It is also on the clipboard, so you can paste it right away, for example on Disc
     <message><source>Ustaw kolejność</source><translation>Set order</translation></message>
 <message><source>OVR rosnąco</source><translation>OVR ascending</translation></message>
 <message><source>OVR malejąco</source><translation>OVR descending</translation></message>
+        <message>
+            <source>Wybierz uczestników</source>
+            <translation>Choose participants</translation>
+        </message>
+        <message>
+            <source>Wybrani · %1</source>
+            <translation>Selected · %1</translation>
+        </message>
 </context>
     <context>
         <name>RoundInfoEditorWidget</name>
@@ -18470,6 +19512,22 @@ sorting</translation>
         <message>
             <source>Rozegraj serię KO</source>
             <translation>Use a KO round</translation>
+        </message>
+        <message>
+            <source>Losowo koszykami bez rodaków</source>
+            <translation>Random pots without compatriots</translation>
+        </message>
+        <message>
+            <source>Na zakładkę (1, 20, 21…)</source>
+            <translation>Overlapping (1, 20, 21…)</translation>
+        </message>
+        <message>
+            <source>Równomiernie (1, 11, 21…)</source>
+            <translation>Evenly (1, 11, 21…)</translation>
+        </message>
+        <message>
+            <source>Wyrównany potencjał grup</source>
+            <translation>Balanced group strength</translation>
         </message>
     </context>
     <context>
@@ -19761,6 +20819,82 @@ Remaining this season: %1. A larger number plays the season to the end.</transla
             <source>Zapisz wyniki jako obraz…</source>
             <translation>Save results as image…</translation>
         </message>
+        <message>
+            <source>Automatyczna forma</source>
+            <translation>Automatic form</translation>
+        </message>
+        <message>
+            <source>Automatyczna forma zawodników</source>
+            <translation>Athletes' automatic form</translation>
+        </message>
+        <message>
+            <source>Forma zmienia się wraz z datami wydarzeń. Wymaga włączonych dat; przy aktywnej funkcji nie można zmieniać formy ręcznie.</source>
+            <translation>Form changes along with event dates. Requires dates to be on; while active, form cannot be changed manually.</translation>
+        </message>
+        <message>
+            <source>Liczba dni dla wszystkich skoczków (bez zmiany dat kalendarza):</source>
+            <translation>Number of days for all athletes (without changing calendar dates):</translation>
+        </message>
+        <message>
+            <source>Nie zmieniono formy</source>
+            <translation>Form not changed</translation>
+        </message>
+        <message>
+            <source>Popraw błędy dat przed rozpoczęciem konkursu.</source>
+            <translation>Fix the date errors before starting the competition.</translation>
+        </message>
+        <message>
+            <source>Popraw daty w kalendarzu</source>
+            <translation>Fix the dates in the calendar</translation>
+        </message>
+        <message>
+            <source>Popraw kalendarz</source>
+            <translation>Fix the calendar</translation>
+        </message>
+        <message>
+            <source>Przejdź do wydarzenia</source>
+            <translation>Go to event</translation>
+        </message>
+        <message>
+            <source>Przesymuluj formę</source>
+            <translation>Simulate form</translation>
+        </message>
+        <message>
+            <source>Szybko przesymuluj</source>
+            <translation>Quick simulate</translation>
+        </message>
+        <message>
+            <source>Wybierz zawodnika na liście.</source>
+            <translation>Choose an athlete in the list.</translation>
+        </message>
+        <message>
+            <source>Wyłącz autoformę</source>
+            <translation>Turn off automatic form</translation>
+        </message>
+        <message>
+            <source>Wyłącz daty zawodów</source>
+            <translation>Turn off event dates</translation>
+        </message>
+        <message>
+            <source>Wyłączyć automatyczną zmianę formy zawodników?</source>
+            <translation>Turn off the athletes' automatic form changes?</translation>
+        </message>
+        <message>
+            <source>Wyłączyć daty zawodów? Autoforma i forma dnia przestaną działać.</source>
+            <translation>Turn off event dates? Automatic form and daily form will stop working.</translation>
+        </message>
+        <message>
+            <source>Zablokowane — kolejność wydarzeń</source>
+            <translation>Blocked — order of events</translation>
+        </message>
+        <message>
+            <source>Zachowaj kolejność wydarzeń</source>
+            <translation>Keep the order of events</translation>
+        </message>
+        <message>
+            <source>Zmiana formy</source>
+            <translation>Form change</translation>
+        </message>
     </context>
     <context>
         <name>SimulationSavesWindow</name>
@@ -20666,6 +21800,10 @@ based on currently selected jumpers</translation>
             <source>Zawodnik</source>
             <translation>Jumper</translation>
         </message>
+        <message>
+            <source>Wolne miejsce</source>
+            <translation>Free place</translation>
+        </message>
     </context>
     <context>
         <name>TeamsSquadsTreeView</name>
@@ -21494,6 +22632,18 @@ li.checked::marker { content: "\2612"; }
 <message><source>Bardzo wysokie</source><translation>Very high</translation></message>
 <message><source>Kierunek i siła</source><translation>Direction and strength</translation></message>
 <message><source>Zmienność wiatru</source><translation>Wind variability</translation></message>
+        <message>
+            <source>Dokładna wartość · 0–10</source>
+            <translation>Exact value · 0–10</translation>
+        </message>
+        <message>
+            <source>Wpisz dokładną wartość od 0 do 10. Pozostałe opcje losują wartość z wybranego przedziału.</source>
+            <translation>Enter an exact value from 0 to 10. The other options draw a value from the chosen range.</translation>
+        </message>
+        <message>
+            <source>Własna wartość…</source>
+            <translation>Custom value…</translation>
+        </message>
 </context>
     <context>
         <name>WindStationEditor</name>
@@ -22168,6 +23318,10 @@ li.checked::marker { content: "\2612"; }
             <location filename="../source/simulation-v2/ProfileDraft.cpp" line="66" />
             <source>Obrazy (*.png *.jpg *.jpeg *.webp)</source>
             <translation>Images (*.png *.jpg *.jpeg *.webp)</translation>
+        </message>
+        <message>
+            <source>Wyłącz automatyczną formę, aby zmienić ją ręcznie.</source>
+            <translation>Turn off automatic form to change it manually.</translation>
         </message>
     </context>
     <context>
@@ -24703,6 +25857,30 @@ Technical key: %4</translation>
     </message>
     <message><source>Sezon zakończony</source><translation>Season complete</translation></message>
         <message><source>Następny sezon</source><translation>Next season</translation></message>
+        <message>
+            <source>Autoforma jest włączona</source>
+            <translation>Automatic form is on</translation>
+        </message>
+        <message>
+            <source>Forma zmienia się w sezonie, przynosząc zwroty akcji i realistyczne przetasowania. Możesz ją wyłączyć przełącznikiem Autoforma.</source>
+            <translation>Form changes during the season, bringing twists and realistic reshuffles. You can turn it off with the Automatic form switch.</translation>
+        </message>
+        <message>
+            <source>Przejdź do wydarzenia</source>
+            <translation>Go to event</translation>
+        </message>
+        <message>
+            <source>Wyłącz autoformę</source>
+            <translation>Turn off automatic form</translation>
+        </message>
+        <message>
+            <source>Zablokowane — kolejność wydarzeń</source>
+            <translation>Blocked — order of events</translation>
+        </message>
+        <message>
+            <source>Zamknij informację</source>
+            <translation>Close the note</translation>
+        </message>
     </context>
     <context>
         <name>StudioPackBar</name>
@@ -24758,6 +25936,14 @@ Technical key: %4</translation>
 <message><source>Eksport tworzy jeden plik paczki skoczni. Aby go wczytać, wybierz ten plik przy imporcie.</source><translation>Export creates one hill pack file. Select it when importing.</translation></message>
 <message><source>Importuj</source><translation>Import</translation></message>
 <message><source>Eksportuj</source><translation>Export</translation></message>
+        <message>
+            <source>Biblioteka</source>
+            <translation>Library</translation>
+        </message>
+        <message>
+            <source>Udostępnij plik .sjsim-pack. Zdjęcia są dołączane do paczki. W Bibliotece możesz połączyć różne zasoby w jednym pliku.</source>
+            <translation>Share a .sjsim-pack file. Photos are included in the pack. In the Library you can combine different resources in one file.</translation>
+        </message>
 </context>
     <context>
         <name>SortCountryButton</name>
@@ -24807,6 +25993,50 @@ Technical key: %4</translation>
         <message>
             <source>Wyłączony</source>
             <translation>Off</translation>
+        </message>
+        <message>
+            <source>Autoforma</source>
+            <translation>Automatic form</translation>
+        </message>
+        <message>
+            <source>Autozapis</source>
+            <translation>Autosave</translation>
+        </message>
+        <message>
+            <source>Daty zawodów</source>
+            <translation>Event dates</translation>
+        </message>
+        <message>
+            <source>Dyspozycja zmienia się wraz z datami zawodów.</source>
+            <translation>Form changes along with the event dates.</translation>
+        </message>
+        <message>
+            <source>Po konkursie od razu, inne zmiany po 15 s.</source>
+            <translation>Right after a competition, other changes after 15 s.</translation>
+        </message>
+        <message>
+            <source>Przełączenie zapisuje obecny stan sezonu.</source>
+            <translation>Switching saves the current season state.</translation>
+        </message>
+        <message>
+            <source>Umożliwiają formę dnia i autoformę.</source>
+            <translation>They enable daily form and automatic form.</translation>
+        </message>
+        <message>
+            <source>Używaj dat wydarzeń w sezonie.</source>
+            <translation>Use event dates in the season.</translation>
+        </message>
+        <message>
+            <source>Wyłączenie zachowuje formę. Ponowne włączenie nie nadrabia przerwy.</source>
+            <translation>Turning it off keeps the form. Turning it on again does not catch up on the break.</translation>
+        </message>
+        <message>
+            <source>Włącz daty wydarzeń.</source>
+            <translation>Turn on event dates.</translation>
+        </message>
+        <message>
+            <source>Zapisuj sezon ręcznie.</source>
+            <translation>Save the season manually.</translation>
         </message>
     </context>
     <context>
@@ -24899,6 +26129,10 @@ Technical key: %4</translation>
         <message>
             <source>Ułóż kalendarz, wymyśl klasyfikacje i ruszaj z pełnym sezonem! Możesz rozdzielić kalendarz letni i zimowy. Forma skoczków dynamicznie się zmienia, co gwarantuje spore emocje. Możesz skorzystać z przykładowej symulacji sezonu 2026/2027.</source>
             <translation>Create a calendar, set up standings and start a full season! You can use separate summer and winter calendars. Athletes’ form changes dynamically, keeping the season exciting. You can start with the example simulation of the 2026/2027 season.</translation>
+        </message>
+        <message>
+            <source>Ok</source>
+            <translation>OK</translation>
         </message>
     </context>
 <context><name>SavedRosterList</name><message><source>Wybrani zawodnicy</source><translation>Selected athletes</translation></message><message><source>Wszyscy zawodnicy</source><translation>All athletes</translation></message><message><source>Szukaj nazwiska lub kraju</source><translation>Search by name or country</translation></message><message><source>Usuń %1 z listy</source><translation>Remove %1 from the list</translation></message><message><source>Dodaj %1 do listy</source><translation>Add %1 to the list</translation></message><message><source>Lista jest pusta</source><translation>The list is empty</translation></message><message><source>Brak pasujących zawodników</source><translation>No matching athletes</translation></message><message><source>Pusta lista oznacza wszystkich zawodników. Dodaj wybranych, aby ograniczyć skład.</source><translation>An empty list includes all athletes. Add athletes to restrict the roster.</translation></message><message><source>Zmień nazwisko lub kraj, aby zobaczyć innych zawodników.</source><translation>Change the name or country to see other athletes.</translation></message><message><source>Usuń zaznaczonych (%1)</source><translation>Remove selected (%1)</translation></message><message><source>Dodaj zaznaczonych (%1)</source><translation>Add selected (%1)</translation></message><message><source>Dodaj widocznych</source><translation>Add visible</translation></message></context>
@@ -25307,6 +26541,10 @@ Close the previous Sj.Sim window and try again.</translation></message></context
         <source>Odwołaj</source>
         <translation>Cancel event</translation>
     </message>
+        <message>
+            <source>Szybko przesymuluj</source>
+            <translation>Quick simulate</translation>
+        </message>
 </context>
 <context>
     <name>RaceLiveSettings</name>
@@ -25365,4 +26603,1018 @@ Close the previous Sj.Sim window and try again.</translation></message></context
 </context>
 <context><name>HomeWelcome</name><message><source>Witaj w Sj.Simie!</source><translation>Welcome to Sj.Sim!</translation></message><message><source>Korzystasz właśnie z symulatora stworzonego dla pasjonatów skoków narciarskich. Pozwoli Ci on przeprowadzać własne symulacje światów na swoich warunkach. Zacznij od aktualnego sezonu, przypomnij sobie czasy Małyszomanii albo zaprojektuj fikcyjne uniwersum!</source><translation>You are using a simulator made for ski jumping enthusiasts. Create your own worlds and run them your way. Start with the current season, revisit the Małysz era or design a fictional universe!</translation></message><message><source>Twórz własny świat</source><translation>Create your own world</translation></message><message><source>Możesz stworzyć własne zasoby lub skorzystać z istniejących. Na &lt;a href="https://discord.gg/PsumKAqDBt"&gt;serwerze Discord&lt;/a&gt; znajdują się paczki stworzone przez społeczność.</source><translation>You can create your own resources or use existing ones. The &lt;a href="https://discord.gg/PsumKAqDBt"&gt;Discord server&lt;/a&gt; offers packs made by the community.</translation></message><message><source>Śmiało eksperymentuj z atrybutami skoczków i skoczni. Niektórzy zawodnicy świetnie radzą sobie na treningach, ale „spalają się” w konkursie. Inni są urodzonymi specjalistami od skoczni mniejszych. Za to skocznie takie jak Willingen są dość „wietrzne” i zarazem sprzyjają lotnikom. Sj.Sim to wszystko wspiera!</source><translation>Experiment with athlete and hill attributes. Some athletes excel in training but struggle in competition. Others are natural small-hill specialists. Hills such as Willingen tend to be windy and favour ski flyers. Sj.Sim supports all of this!</translation></message><message><source>Kieruj konkursami</source><translation>Manage competitions</translation></message><message><source>Podczas zawodów masz wpływ niemal na wszystko, począwszy od zasad i kolejności startowej, a kończąc na warunkach wietrznych i belce. Jeśli chcesz, możesz z góry przesądzić o wyniku wybranych zawodników ;)</source><translation>During a competition you control almost everything, from rules and starting order to wind conditions and the gate. You can even decide how selected athletes will perform ;)</translation></message><message><source>Dostępne są zarówno konkursy indywidualne, jak i drużynówki czy popularny format KO. Możesz tworzyć złożone kombinacje konkursów wieloseryjnych, z wyzerowaniem not punktowych czy podziałem na grupy według różnych kryteriów.</source><translation>Individual, team and popular KO formats are available. Create multi-round competitions with point resets and groups based on different criteria.</translation></message><message><source>Rozgrywaj pełne sezony</source><translation>Play full seasons</translation></message><message><source>Układaj kalendarze, ustalaj zasady kwalifikacji i prowadź własne klasyfikacje. Łącz letnie i zimowe zawody, planuj weekendy i wybieraj zawodników na kolejne konkursy.</source><translation>Build calendars, set qualification rules and create your own standings. Combine summer and winter events, plan weekends and choose athletes for upcoming competitions.</translation></message><message><source>Śledź wyniki w archiwum i obserwuj zmiany formy w sezonach z datami zawodów. Na początek przygotowaliśmy przykładową symulację z Letnim Grand Prix 2026 i Pucharem Świata 2026/2027.</source><translation>Review results in the archive and follow changes in form in seasons with scheduled dates. To get started, we have prepared an example simulation with the 2026 Summer Grand Prix and 2026/2027 World Cup.</translation></message><message><source>Wstecz</source><translation>Back</translation></message><message><source>Dalej</source><translation>Next</translation></message><message><source>O autorze</source><translation>About the author</translation></message></context><context><name>AppSettingsWindow</name><message><source>Pokaż powitanie</source><translation>Show welcome</translation></message></context><context><name>NewSimulationSaveConfigurationWindow</name><message><source>Przykładowa symulacja</source><translation>Example simulation</translation></message><message><source>Lato</source><translation>Summer</translation></message><message><source>Zima</source><translation>Winter</translation></message></context>
 <context><name>MainWindow</name><message><source>Nie udało się przygotować przykładu. Potrzebne są kompletne paczki skoczków, skoczni i zasad oraz letni i zimowy preset kalendarza.</source><translation>Could not prepare the example. Complete athlete, hill and rules packs and both summer and winter calendar presets are required.</translation></message></context>
+    <context>
+        <name>CountriesController</name>
+        <message>
+            <source>%1 zaw. · %2 skoczni</source>
+            <translation>%1 athl. · %2 hills</translation>
+        </message>
+        <message>
+            <source>%1 zaw.</source>
+            <translation>%1 athl.</translation>
+        </message>
+        <message>
+            <source>%1 skoczni</source>
+            <translation>%1 hills</translation>
+        </message>
+        <message>
+            <source>nieużywany</source>
+            <translation>not used</translation>
+        </message>
+        <message>
+            <source>Nazwa nie może być pusta.</source>
+            <translation>The name cannot be empty.</translation>
+        </message>
+        <message>
+            <source>Wpisz nazwę, np. Polska.</source>
+            <translation>Enter a name, e.g. Poland.</translation>
+        </message>
+        <message>
+            <source>Wpisz 3 litery, np. POL.</source>
+            <translation>Enter 3 letters, e.g. POL.</translation>
+        </message>
+        <message>
+            <source>Ten kod ma już kraj „%1”.</source>
+            <translation>This code already belongs to “%1”.</translation>
+        </message>
+        <message>
+            <source>Wpisz 2 litery, np. PL.</source>
+            <translation>Enter 2 letters, e.g. PL.</translation>
+        </message>
+    </context>
+    <context>
+        <name>CountriesEditor</name>
+        <message>
+            <source>Kraje</source>
+            <translation>Countries</translation>
+        </message>
+        <message>
+            <source>Nazwa kraju pojawia się przy zawodnikach, skoczniach i w wynikach. Kod (np. POL) wybiera flagę i łączy kraj z zawodnikami.</source>
+            <translation>The country name appears next to athletes, hills and in results. The code (e.g. POL) selects the flag and links the country to athletes.</translation>
+        </message>
+        <message>
+            <source>Dodaj kraj</source>
+            <translation>Add country</translation>
+        </message>
+        <message>
+            <source>Szukaj: nazwa lub kod, np. Norwegia albo NOR</source>
+            <translation>Search: name or code, e.g. Norway or NOR</translation>
+        </message>
+        <message>
+            <source>Szukaj kraju</source>
+            <translation>Search for a country</translation>
+        </message>
+        <message>
+            <source>Krajów: %1</source>
+            <translation>Countries: %1</translation>
+        </message>
+        <message>
+            <source>Znaleziono %1 z %2</source>
+            <translation>Found %1 of %2</translation>
+        </message>
+        <message>
+            <source>Nie ma kraju pasującego do wyszukiwania. Możesz go dodać przyciskiem „Dodaj kraj”.</source>
+            <translation>No country matches the search. You can add it with “Add country”.</translation>
+        </message>
+        <message>
+            <source>Masz niezapisane zmiany. Trafią do gry po kliknięciu „Zapisz zmiany”.</source>
+            <translation>You have unsaved changes. They take effect after you click “Save changes”.</translation>
+        </message>
+        <message>
+            <source>Brak zmian do zapisania.</source>
+            <translation>No changes to save.</translation>
+        </message>
+        <message>
+            <source>Odrzuć i zamknij</source>
+            <translation>Discard and close</translation>
+        </message>
+        <message>
+            <source>Zamknij</source>
+            <translation>Close</translation>
+        </message>
+        <message>
+            <source>Zapisz zmiany</source>
+            <translation>Save changes</translation>
+        </message>
+        <message>
+            <source>Wybierz kraj z listy.</source>
+            <translation>Choose a country from the list.</translation>
+        </message>
+        <message>
+            <source>Nazwa w grze</source>
+            <translation>Name in the game</translation>
+        </message>
+        <message>
+            <source>Nazwa kraju</source>
+            <translation>Country name</translation>
+        </message>
+        <message>
+            <source>Zmiana nazwy nie zmienia flagi ani przypisania zawodników.</source>
+            <translation>Renaming does not change the flag or which athletes belong to the country.</translation>
+        </message>
+        <message>
+            <source>Kod kraju</source>
+            <translation>Country code</translation>
+        </message>
+        <message>
+            <source>skrót przy zawodnikach; wybiera flagę. Stały, bo łączy kraj z zawodnikami.</source>
+            <translation>shown next to athletes; selects the flag. Fixed, because it links the country to athletes.</translation>
+        </message>
+        <message>
+            <source>Kod ISO</source>
+            <translation>ISO code</translation>
+        </message>
+        <message>
+            <source>dwuliterowy kod do flag na Discordzie.</source>
+            <translation>two-letter code for flags on Discord.</translation>
+        </message>
+        <message>
+            <source>Używany przez</source>
+            <translation>Used by</translation>
+        </message>
+        <message>
+            <source>nikogo – żaden zawodnik ani skocznia z bazy nie ma tego kraju.</source>
+            <translation>nobody – no athlete or hill in the database has this country.</translation>
+        </message>
+        <message>
+            <source>zawodnicy: %1, skocznie: %2</source>
+            <translation>athletes: %1, hills: %2</translation>
+        </message>
+        <message>
+            <source>Flaga</source>
+            <translation>Flag</translation>
+        </message>
+        <message>
+            <source>Używana jest Twoja flaga z pliku %1.</source>
+            <translation>Your own flag from %1 is used.</translation>
+        </message>
+        <message>
+            <source>Używana jest flaga wbudowana w grę (%1).</source>
+            <translation>The flag shipped with the game is used (%1).</translation>
+        </message>
+        <message>
+            <source>Brak flagi. Gra szuka pliku %1.</source>
+            <translation>No flag. The game looks for the file %1.</translation>
+        </message>
+        <message>
+            <source>Kraj nie jest używany, więc możesz go usunąć.</source>
+            <translation>The country is not used, so you can remove it.</translation>
+        </message>
+        <message>
+            <source>Nie można usunąć tego kraju, bo mają go zawodnicy lub skocznie. Najpierw zmień im kraj w edytorze bazy.</source>
+            <translation>This country cannot be removed because athletes or hills use it. Change their country in the database editor first.</translation>
+        </message>
+        <message>
+            <source>Usuń kraj</source>
+            <translation>Remove country</translation>
+        </message>
+        <message>
+            <source>Usunąć „%1”?</source>
+            <translation>Remove “%1”?</translation>
+        </message>
+        <message>
+            <source>Tak, usuń</source>
+            <translation>Yes, remove</translation>
+        </message>
+        <message>
+            <source>Nie</source>
+            <translation>No</translation>
+        </message>
+        <message>
+            <source>Nowy kraj</source>
+            <translation>New country</translation>
+        </message>
+        <message>
+            <source>Uzupełnij trzy pola. Podgląd poniżej pokazuje, jak kraj będzie wyglądał w grze.</source>
+            <translation>Fill in three fields. The preview below shows how the country will look in the game.</translation>
+        </message>
+        <message>
+            <source>1. Nazwa</source>
+            <translation>1. Name</translation>
+        </message>
+        <message>
+            <source>np. Polska</source>
+            <translation>e.g. Poland</translation>
+        </message>
+        <message>
+            <source>Tak kraj będzie nazywał się w listach i wynikach.</source>
+            <translation>This is how the country is named in lists and results.</translation>
+        </message>
+        <message>
+            <source>2. Kod kraju (3 litery)</source>
+            <translation>2. Country code (3 letters)</translation>
+        </message>
+        <message>
+            <source>np. POL</source>
+            <translation>e.g. POL</translation>
+        </message>
+        <message>
+            <source>Skrót widoczny przy zawodnikach. Wybiera flagę i nie da się go później zmienić.</source>
+            <translation>Shown next to athletes. It selects the flag and cannot be changed later.</translation>
+        </message>
+        <message>
+            <source>3. Kod ISO (2 litery)</source>
+            <translation>3. ISO code (2 letters)</translation>
+        </message>
+        <message>
+            <source>np. PL</source>
+            <translation>e.g. PL</translation>
+        </message>
+        <message>
+            <source>Potrzebny do flagi w wiadomościach na Discordzie.</source>
+            <translation>Needed for the flag in Discord messages.</translation>
+        </message>
+        <message>
+            <source>Brak flagi dla tego kodu. Możesz dodać plik %1 do folderu flag (opis niżej).</source>
+            <translation>No flag for this code. You can add the file %1 to the flags folder (see below).</translation>
+        </message>
+        <message>
+            <source>Flaga znaleziona.</source>
+            <translation>Flag found.</translation>
+        </message>
+        <message>
+            <source>Flaga pojawi się po wpisaniu kodu.</source>
+            <translation>The flag appears once you enter the code.</translation>
+        </message>
+        <message>
+            <source>Dodaj do listy</source>
+            <translation>Add to the list</translation>
+        </message>
+        <message>
+            <source>Anuluj</source>
+            <translation>Cancel</translation>
+        </message>
+        <message>
+            <source>Nowy kraj trafi do gry po kliknięciu „Zapisz zmiany” na dole.</source>
+            <translation>The new country takes effect after you click “Save changes” at the bottom.</translation>
+        </message>
+        <message>
+            <source>Jak dodać lub podmienić flagę: zapisz obraz SVG albo PNG pod nazwą %1 w folderze własnych flag. Twoja flaga ma pierwszeństwo przed wbudowaną i działa we wszystkich miejscach gry, także w zapisach obrazów wyników.</source>
+            <translation>To add or replace a flag, save an SVG or PNG image named %1 in your own flags folder. Your flag takes precedence over the shipped one and is used everywhere in the game, including saved results images.</translation>
+        </message>
+        <message>
+            <source>Folder własnych flag:</source>
+            <translation>Your flags folder:</translation>
+        </message>
+        <message>
+            <source>Otwórz folder flag</source>
+            <translation>Open flags folder</translation>
+        </message>
+        <message>
+            <source>Sprawdź ponownie</source>
+            <translation>Check again</translation>
+        </message>
+        <message>
+            <source>Użyj po skopiowaniu nowej flagi do folderu.</source>
+            <translation>Use after copying a new flag into the folder.</translation>
+        </message>
+        <message>
+            <source>W listach poza tym ekranem nowa flaga pojawi się po ponownym uruchomieniu gry.</source>
+            <translation>Elsewhere in the game the new flag appears after the game is restarted.</translation>
+        </message>
+    </context>
+<context>
+    <name>AthletePositionPlot</name>
+        <message>
+            <source>Brak wyników</source>
+            <translation>No results</translation>
+        </message>
+        <message>
+            <source>Miejsce</source>
+            <translation>Place</translation>
+        </message>
+        <message>
+            <source>%1. miejsce · %2 pkt</source>
+            <translation>Place %1 · %2 pts</translation>
+        </message>
+        <message>
+            <source>Kolejne występy</source>
+            <translation>Consecutive appearances</translation>
+        </message>
+        <message>
+            <source>Liczba występów: %1</source>
+            <translation>Appearances: %1</translation>
+        </message>
+        <message>
+            <source>Miejsca w kolejnych zawodach</source>
+            <translation>Places in consecutive events</translation>
+        </message>
+        <message>
+            <source>Wybierz rodzaje wydarzeń lub rozegraj zawody.</source>
+            <translation>Choose event types or play some events.</translation>
+        </message>
+</context>
+<context>
+    <name>AthleteResultsTable</name>
+        <message>
+            <source>%1 konkursów</source>
+            <translation>%1 competitions</translation>
+        </message>
+        <message>
+            <source>Kalendarz</source>
+            <translation>Calendar</translation>
+        </message>
+        <message>
+            <source>%1. miejsce%2</source>
+            <translation>Place %1%2</translation>
+        </message>
+        <message>
+            <source>Brak rozegranych konkursów.</source>
+            <translation>No competitions played.</translation>
+        </message>
+        <message>
+            <source>Brak wyniku</source>
+            <translation>No result</translation>
+        </message>
+        <message>
+            <source>Konkurs %1 z %2</source>
+            <translation>Competition %1 of %2</translation>
+        </message>
+        <message>
+            <source>Miejsca w konkursach</source>
+            <translation>Places in competitions</translation>
+        </message>
+        <message>
+            <source>Σ pkt</source>
+            <translation>Σ pts</translation>
+        </message>
+</context>
+<context>
+    <name>AthleteStatistics</name>
+        <message>
+            <source>Konkursy</source>
+            <translation>Competitions</translation>
+        </message>
+        <message>
+            <source>Kwalifikacje</source>
+            <translation>Qualification</translation>
+        </message>
+        <message>
+            <source>Treningi</source>
+            <translation>Training rounds</translation>
+        </message>
+        <message>
+            <source>Średnie miejsce</source>
+            <translation>Average position</translation>
+        </message>
+        <message>
+            <source>Najgorsze miejsce</source>
+            <translation>Worst place</translation>
+        </message>
+        <message>
+            <source>Najlepsze miejsce</source>
+            <translation>Best place</translation>
+        </message>
+        <message>
+            <source>Odchylenie</source>
+            <translation>Deviation</translation>
+        </message>
+        <message>
+            <source>Próbne</source>
+            <translation>Trial</translation>
+        </message>
+</context>
+<context>
+    <name>AutoForm</name>
+        <message>
+            <source>Zmienność formy</source>
+            <translation>Form variation</translation>
+        </message>
+        <message>
+            <source>0 zachowuje rozkład. Wartość ujemna skupia czas wokół środka, dodatnia zwiększa udział obu skrajności.</source>
+            <translation>0 keeps the distribution. A negative value concentrates time around the middle, a positive one increases the share of both extremes.</translation>
+        </message>
+        <message>
+            <source>Baza powoli dąży do tej wartości w tym okresie. Nie ustawia bezpośrednio aktualnej formy.</source>
+            <translation>The base slowly moves towards this value during this period. It does not set the current form directly.</translation>
+        </message>
+        <message>
+            <source>Bazowy czas: %1</source>
+            <translation>Base time: %1</translation>
+        </message>
+        <message>
+            <source>Centrum bazy: %1</source>
+            <translation>Base centre: %1</translation>
+        </message>
+        <message>
+            <source>Chwiejna %1</source>
+            <translation>Unstable %1</translation>
+        </message>
+        <message>
+            <source>Czas okresów: %1</source>
+            <translation>Period time: %1</translation>
+        </message>
+        <message>
+            <source>Docelowe odchylenie bazy przy niezmiennym okresie. Zero wyłącza losowy dryf, ale zachowuje powrót do centrum.</source>
+            <translation>Target base deviation with an unchanged period. Zero disables random drift but keeps the return to the centre.</translation>
+        </message>
+        <message>
+            <source>Docelowe odchylenie przy nieruchomej bazie, bez ograniczeń 1–100. Np. 6 daje typowe różnice kilku punktów; rzadziej większe.</source>
+            <translation>Target deviation with a fixed base, without the 1–100 limits. E.g. 6 gives typical differences of a few points; larger ones are rarer.</translation>
+        </message>
+        <message>
+            <source>Jak daleko ukryta baza może leżeć od wpisanej formy. Sama forma początkowa pozostaje bez zmian.</source>
+            <translation>How far the hidden base can lie from the entered form. The starting form itself stays unchanged.</translation>
+        </message>
+        <message>
+            <source>Mnożnik losowych zmian aktualnej formy. 0,7 zmniejsza odchylenie o 30%; 1,5 zwiększa o 50%.</source>
+            <translation>Multiplier of random changes of the current form. 0.7 reduces the deviation by 30%; 1.5 increases it by 50%.</translation>
+        </message>
+        <message>
+            <source>Mnożnik średniej długości okresów. 0,6 oznacza okresy krótsze średnio o 40%.</source>
+            <translation>Multiplier of the average period length. 0.6 means periods shorter by 40% on average.</translation>
+        </message>
+        <message>
+            <source>Neutralny</source>
+            <translation>Neutral</translation>
+        </message>
+        <message>
+            <source>Nie udało się odczytać domyślnej konfiguracji formy.</source>
+            <translation>Could not read the default form configuration.</translation>
+        </message>
+        <message>
+            <source>Nie udało się zapisać konfiguracji formy.</source>
+            <translation>Could not save the form configuration.</translation>
+        </message>
+        <message>
+            <source>Np. 0,05 oznacza 5% inicjalizacji z większym rozrzutem bazy.</source>
+            <translation>E.g. 0.05 means 5% of initialisations with a wider base spread.</translation>
+        </message>
+        <message>
+            <source>Odchylenie bazy w rzadkim wariancie początkowym. Nie zmienia wpisanej formy zawodnika.</source>
+            <translation>Base deviation in the rare starting variant. Does not change the athlete's entered form.</translation>
+        </message>
+        <message>
+            <source>Odchylenie przy wejściu w okres. Większa wartość zwiększa różnice baz między zawodnikami.</source>
+            <translation>Deviation when entering a period. A higher value increases base differences between athletes.</translation>
+        </message>
+        <message>
+            <source>Okresy formy</source>
+            <translation>Form periods</translation>
+        </message>
+        <message>
+            <source>Perk formy</source>
+            <translation>Form perk</translation>
+        </message>
+        <message>
+            <source>Po tylu dniach pozostaje połowa początkowej różnicy względem stałej bazy, pomijając losowość.</source>
+            <translation>After this many days half of the initial difference from a constant base remains, ignoring randomness.</translation>
+        </message>
+        <message>
+            <source>Początek</source>
+            <translation>Start</translation>
+        </message>
+        <message>
+            <source>Początkowy rozrzut bazy</source>
+            <translation>Initial base spread</translation>
+        </message>
+        <message>
+            <source>Powolne wahania bazy</source>
+            <translation>Slow base swings</translation>
+        </message>
+        <message>
+            <source>Powrót bazy do centrum — dni</source>
+            <translation>Base return to the centre — days</translation>
+        </message>
+        <message>
+            <source>Powrót formy do bazy — dni</source>
+            <translation>Form return to the base — days</translation>
+        </message>
+        <message>
+            <source>Przejścia</source>
+            <translation>Transitions</translation>
+        </message>
+        <message>
+            <source>Przesunięcie ku skrajnościom: %1</source>
+            <translation>Shift towards extremes: %1</translation>
+        </message>
+        <message>
+            <source>Przy zmianie okresu: 0 wybiera okolice nowego centrum, 1 zachowuje poprzednią bazę przed dodaniem losowego odchylenia.</source>
+            <translation>When the period changes: 0 picks values around the new centre, 1 keeps the previous base before adding the random deviation.</translation>
+        </message>
+        <message>
+            <source>Rozrzut nowej bazy: %1</source>
+            <translation>New base spread: %1</translation>
+        </message>
+        <message>
+            <source>Rozrzut przy większej różnicy</source>
+            <translation>Spread with a larger difference</translation>
+        </message>
+        <message>
+            <source>Równa %1</source>
+            <translation>Steady %1</translation>
+        </message>
+        <message>
+            <source>Szansa większej różnicy początkowej</source>
+            <translation>Chance of a larger initial difference</translation>
+        </message>
+        <message>
+            <source>Tempo długoterminowego powrotu bazy do centrum okresu. Większa liczba oznacza wolniejsze zmiany.</source>
+            <translation>Speed of the long-term return of the base to the period centre. A larger number means slower changes.</translation>
+        </message>
+        <message>
+            <source>Udział czasu: %1</source>
+            <translation>Share of time: %1</translation>
+        </message>
+        <message>
+            <source>Wahania: %1</source>
+            <translation>Swings: %1</translation>
+        </message>
+        <message>
+            <source>Większa wartość ułatwia przejścia między tymi okresami. Docelowy udział czasu pozostaje zachowany. Uwzględniana jest również waga przejścia powrotnego.</source>
+            <translation>A higher value makes transitions between these periods easier. The target share of time is kept. The weight of the return transition is also taken into account.</translation>
+        </message>
+        <message>
+            <source>Współtworzy średni czas między zmianami. Czas konkretnego okresu zależy też od jego docelowego udziału. Okres może trwać znacznie dłużej od średniej.</source>
+            <translation>Contributes to the average time between changes. The time of a particular period also depends on its target share. A period can last much longer than the average.</translation>
+        </message>
+        <message>
+            <source>Względny udział czasu bez perka. Wartości są normalizowane; 0,30 oznacza 30%, jeśli suma wynosi 1.</source>
+            <translation>Relative share of time without a perk. Values are normalised; 0.30 means 30% if the sum is 1.</translation>
+        </message>
+        <message>
+            <source>Zachowanie poprzedniej bazy</source>
+            <translation>Keeping the previous base</translation>
+        </message>
+        <message>
+            <source>Zmiany formy</source>
+            <translation>Form changes</translation>
+        </message>
+</context>
+<context>
+    <name>CountryOrderDialog</name>
+        <message>
+            <source>Anuluj</source>
+            <translation>Cancel</translation>
+        </message>
+        <message>
+            <source>Kolejność krajów</source>
+            <translation>Country order</translation>
+        </message>
+        <message>
+            <source>Ok</source>
+            <translation>OK</translation>
+        </message>
+        <message>
+            <source>Przeciągnij kraj na wybrane miejsce.</source>
+            <translation>Drag a country to the chosen place.</translation>
+        </message>
+</context>
+<context>
+    <name>ResourceLibrary</name>
+        <message>
+            <source>Kalendarze</source>
+            <translation>Calendars</translation>
+        </message>
+        <message>
+            <source>Otwórz folder</source>
+            <translation>Open folder</translation>
+        </message>
+        <message>
+            <source>Skoczkowie</source>
+            <translation>Jumpers</translation>
+        </message>
+        <message>
+            <source>Skocznie</source>
+            <translation>Hills</translation>
+        </message>
+        <message>
+            <source>Usuń</source>
+            <translation>Delete</translation>
+        </message>
+        <message>
+            <source>Wyczyść wybór</source>
+            <translation>Clear selection</translation>
+        </message>
+        <message>
+            <source>Zasady</source>
+            <translation>Rules</translation>
+        </message>
+        <message>
+            <source>Brak zasobów</source>
+            <translation>No resources</translation>
+        </message>
+        <message>
+            <source>Eksportuj (%1)</source>
+            <translation>Export (%1)</translation>
+        </message>
+        <message>
+            <source>Punktacje</source>
+            <translation>Points tables</translation>
+        </message>
+        <message>
+            <source>Symulacje</source>
+            <translation>Simulations</translation>
+        </message>
+        <message>
+            <source>Wczytaj paczkę</source>
+            <translation>Load pack</translation>
+        </message>
+        <message>
+            <source>Wczytaj paczkę lub utwórz zasoby w edytorze.</source>
+            <translation>Load a pack or create resources in the editor.</translation>
+        </message>
+        <message>
+            <source>Wszystko</source>
+            <translation>Everything</translation>
+        </message>
+        <message>
+            <source>Zaznacz zasoby do eksportu lub usunięcia. Eksport zawiera zdjęcia i zależności kalendarzy.</source>
+            <translation>Select resources to export or delete. The export includes photos and calendar dependencies.</translation>
+        </message>
+        <message>
+            <source>Zmień folder</source>
+            <translation>Change folder</translation>
+        </message>
+</context>
+<context>
+    <name>ResourceLibraryWindow</name>
+        <message>
+            <source>Eksportuj</source>
+            <translation>Export</translation>
+        </message>
+        <message>
+            <source>Otwórz folder</source>
+            <translation>Open folder</translation>
+        </message>
+        <message>
+            <source>Usuń</source>
+            <translation>Delete</translation>
+        </message>
+        <message>
+            <source>Biblioteka</source>
+            <translation>Library</translation>
+        </message>
+        <message>
+            <source>Działa tryb przenośny. Usuń portable.txt obok aplikacji, aby wybrać inny folder przy następnym uruchomieniu.</source>
+            <translation>Portable mode is on. Remove portable.txt next to the application to choose another folder at the next start.</translation>
+        </message>
+        <message>
+            <source>Folder zostanie zmieniony po zamknięciu aplikacji. Bieżące dane zostaną skopiowane, a oryginały zachowane.</source>
+            <translation>The folder will change after the application is closed. The current data will be copied and the originals kept.</translation>
+        </message>
+        <message>
+            <source>Najpierw popraw edytowane dane.</source>
+            <translation>Fix the edited data first.</translation>
+        </message>
+        <message>
+            <source>Paczka Sj.Sim (*.sjsim-pack)</source>
+            <translation>Sj.Sim pack (*.sjsim-pack)</translation>
+        </message>
+        <message>
+            <source>Popraw nieprawidłowe dane w edytorze przed usunięciem zasobów.</source>
+            <translation>Fix the invalid data in the editor before deleting resources.</translation>
+        </message>
+        <message>
+            <source>Przeniesiono do kosza: %1.</source>
+            <translation>Moved to the bin: %1.</translation>
+        </message>
+        <message>
+            <source>Przenieść zaznaczone zasoby do kosza (%1)?</source>
+            <translation>Move the selected resources to the bin (%1)?</translation>
+        </message>
+        <message>
+            <source>Udostępnij zasoby</source>
+            <translation>Share resources</translation>
+        </message>
+        <message>
+            <source>Usuń z biblioteki</source>
+            <translation>Remove from the library</translation>
+        </message>
+        <message>
+            <source>Wczytaj paczkę</source>
+            <translation>Load pack</translation>
+        </message>
+        <message>
+            <source>Wczytano zasoby: %1. Istniejące pliki pozostały bez zmian.</source>
+            <translation>Resources loaded: %1. Existing files were left unchanged.</translation>
+        </message>
+        <message>
+            <source>Wybierz nowy folder danych</source>
+            <translation>Choose a new data folder</translation>
+        </message>
+        <message>
+            <source>Wybierz pusty folder poza obecnym folderem danych.</source>
+            <translation>Choose an empty folder outside the current data folder.</translation>
+        </message>
+        <message>
+            <source>Zamknij otwartą symulację przed jej usunięciem.</source>
+            <translation>Close the open simulation before deleting it.</translation>
+        </message>
+        <message>
+            <source>Zapisano paczkę ze zdjęciami i zależnościami kalendarzy.</source>
+            <translation>Pack saved with photos and calendar dependencies.</translation>
+        </message>
+        <message>
+            <source>Zmień folder</source>
+            <translation>Change folder</translation>
+        </message>
+</context>
+<context>
+    <name>RosterSourceDialog</name>
+        <message>
+            <source>Anuluj</source>
+            <translation>Cancel</translation>
+        </message>
+        <message>
+            <source>Klasyfikacja</source>
+            <translation>Standings</translation>
+        </message>
+        <message>
+            <source>Konkurs</source>
+            <translation>Competition</translation>
+        </message>
+        <message>
+            <source>Sezon</source>
+            <translation>Season</translation>
+        </message>
+        <message>
+            <source>Zastosuj</source>
+            <translation>Apply</translation>
+        </message>
+        <message>
+            <source>Brak dostępnych źródeł w tym sezonie.</source>
+            <translation>No sources available in this season.</translation>
+        </message>
+        <message>
+            <source>Kolejność z konkursu</source>
+            <translation>Order from a competition</translation>
+        </message>
+        <message>
+            <source>Lista z konkursu</source>
+            <translation>List from a competition</translation>
+        </message>
+        <message>
+            <source>Sortuj klasyfikacją</source>
+            <translation>Sort by classification</translation>
+        </message>
+        <message>
+            <source>Sortuj wynikami konkursu</source>
+            <translation>Sort by competition results</translation>
+        </message>
+        <message>
+            <source>Zastąp listę</source>
+            <translation>Replace the list</translation>
+        </message>
+        <message>
+            <source>Zastąpi uczestników i kolejność. Składy drużyn pozostaną.</source>
+            <translation>Replaces the participants and the order. Team squads stay.</translation>
+        </message>
+</context>
+<context>
+    <name>RosterTools</name>
+        <message>
+            <source>Kraje alfabetycznie</source>
+            <translation>Countries alphabetically</translation>
+        </message>
+        <message>
+            <source>Losowa kolejność</source>
+            <translation>Random order</translation>
+        </message>
+        <message>
+            <source>Kolejność startowa z konkursu</source>
+            <translation>Start order from a competition</translation>
+        </message>
+        <message>
+            <source>Odwróć kolejność</source>
+            <translation>Reverse the order</translation>
+        </message>
+        <message>
+            <source>Sortuj alfabetycznie</source>
+            <translation>Sort alphabetically</translation>
+        </message>
+        <message>
+            <source>Sortuj klasyfikacją</source>
+            <translation>Sort by classification</translation>
+        </message>
+        <message>
+            <source>Sortuj według OVR</source>
+            <translation>Sort by OVR</translation>
+        </message>
+        <message>
+            <source>Sortuj według aktualnego potencjału</source>
+            <translation>Sort by current potential</translation>
+        </message>
+        <message>
+            <source>Sortuj wynikami konkursu</source>
+            <translation>Sort by competition results</translation>
+        </message>
+        <message>
+            <source>Ustal kolejność krajów</source>
+            <translation>Set the country order</translation>
+        </message>
+        <message>
+            <source>Zastąp listę listą z konkursu</source>
+            <translation>Replace the list with a competition list</translation>
+        </message>
+</context>
+<context>
+    <name>TeamRosterWorkspace</name>
+        <message>
+            <source>Cofnij</source>
+            <translation>Undo</translation>
+        </message>
+        <message>
+            <source>Dostępni: %1</source>
+            <translation>Available: %1</translation>
+        </message>
+        <message>
+            <source>Mogą startować</source>
+            <translation>Can start</translation>
+        </message>
+        <message>
+            <source>Składy ustalono przed wcześniejszym wydarzeniem.</source>
+            <translation>Squads were set before an earlier event.</translation>
+        </message>
+</context>
+<context>
+    <name>AutoForm::Config</name>
+        <message>
+            <source>Brak parametru: %1</source>
+            <translation>Missing parameter: %1</translation>
+        </message>
+        <message>
+            <source>Centra kolejnych okresów muszą rosnąć.</source>
+            <translation>The centres of consecutive periods must increase.</translation>
+        </message>
+        <message>
+            <source>Neutralny perk musi mieć mnożniki równe 1.</source>
+            <translation>The neutral perk must have multipliers equal to 1.</translation>
+        </message>
+        <message>
+            <source>Nieobsługiwana konfiguracja silnika formy.</source>
+            <translation>Unsupported form engine configuration.</translation>
+        </message>
+        <message>
+            <source>Nieznane parametry silnika formy.</source>
+            <translation>Unknown form engine parameters.</translation>
+        </message>
+        <message>
+            <source>Parametr poza zakresem: %1</source>
+            <translation>Parameter out of range: %1</translation>
+        </message>
+        <message>
+            <source>Waga pozostania w tym samym okresie musi wynosić zero.</source>
+            <translation>The weight of staying in the same period must be zero.</translation>
+        </message>
+</context>
+<context>
+    <name>AutoForm::State</name>
+        <message>
+            <source>Nieprawidłowy stan automatycznej formy.</source>
+            <translation>Invalid automatic form state.</translation>
+        </message>
+        <message>
+            <source>Nieprawidłowy stary stan formy.</source>
+            <translation>Invalid old form state.</translation>
+        </message>
+</context>
+<context>
+    <name>FormDiagnostics</name>
+        <message>
+            <source>Diagnostyka formy</source>
+            <translation>Form diagnostics</translation>
+        </message>
+        <message>
+            <source>Dynamika</source>
+            <translation>Dynamics</translation>
+        </message>
+        <message>
+            <source>Losowanie</source>
+            <translation>Draw</translation>
+        </message>
+        <message>
+            <source>Następna zmiana okresu</source>
+            <translation>Next period change</translation>
+        </message>
+        <message>
+            <source>Rozwiń diagnostykę formy</source>
+            <translation>Expand form diagnostics</translation>
+        </message>
+        <message>
+            <source>Stan</source>
+            <translation>State</translation>
+        </message>
+        <message>
+            <source>Stan procesu nie został jeszcze zainicjalizowany.</source>
+            <translation>The process state has not been initialised yet.</translation>
+        </message>
+        <message>
+            <source>Zwiń diagnostykę formy</source>
+            <translation>Collapse form diagnostics</translation>
+        </message>
+</context>
+<context>
+    <name>FormStatus</name>
+        <message>
+            <source>Absolutny szczyt</source>
+            <translation>Absolute peak</translation>
+        </message>
+        <message>
+            <source>Forma życia</source>
+            <translation>Form of a lifetime</translation>
+        </message>
+        <message>
+            <source>Głęboki kryzys</source>
+            <translation>Deep crisis</translation>
+        </message>
+        <message>
+            <source>Obniżona</source>
+            <translation>Lowered</translation>
+        </message>
+        <message>
+            <source>Podwyższona</source>
+            <translation>Raised</translation>
+        </message>
+        <message>
+            <source>Słaba</source>
+            <translation>Poor</translation>
+        </message>
+        <message>
+            <source>Typowa</source>
+            <translation>Typical</translation>
+        </message>
+        <message>
+            <source>Wysoka</source>
+            <translation>High</translation>
+        </message>
+</context>
+<context>
+    <name>TeamJumpersListModel</name>
+        <message>
+            <source>Wolne miejsce</source>
+            <translation>Free place</translation>
+        </message>
+</context>
+<context>
+    <name>FormShortcuts</name>
+        <message>
+            <source>Zmień formę ▾</source>
+            <translation>Change form ▾</translation>
+        </message>
+        <message>
+            <source>Zmień formę</source>
+            <translation>Change form</translation>
+        </message>
+        <message>
+            <source>Zwiększ formę</source>
+            <translation>Raise form</translation>
+        </message>
+        <message>
+            <source>Zmniejsz formę</source>
+            <translation>Lower form</translation>
+        </message>
+        <message>
+            <source>Wprowadź w kryzys</source>
+            <translation>Send into a crisis</translation>
+        </message>
+        <message>
+            <source>Wprowadź w szczyt</source>
+            <translation>Bring to peak form</translation>
+        </message>
+        <message>
+            <source>Ustal precyzyjnie…</source>
+            <translation>Set precisely…</translation>
+        </message>
+        <message>
+            <source>Forma 1–100</source>
+            <translation>Form 1–100</translation>
+        </message>
+        <message>
+            <source>Dokładna forma</source>
+            <translation>Exact form</translation>
+        </message>
+        <message>
+            <source>Ustaw</source>
+            <translation>Set</translation>
+        </message>
+        <message>
+            <source>Okres formy o poziom wyżej</source>
+            <translation>Form period one level up</translation>
+        </message>
+        <message>
+            <source>Okres formy o poziom niżej</source>
+            <translation>Form period one level down</translation>
+        </message>
+        <message>
+            <source>Okres kryzysu</source>
+            <translation>Crisis period</translation>
+        </message>
+        <message>
+            <source>Okres szczytu formy</source>
+            <translation>Peak form period</translation>
+        </message>
+        <message>
+            <source>Dokładna wartość; okres przesunie się o krok w jej stronę</source>
+            <translation>Exact value; the period moves one step towards it</translation>
+        </message>
+        <message>
+            <source>To tylko skróty. Pod spodem forma działa na okresach, od kryzysu do szczytu, które same trwają i się zmieniają. Skrót zmienia tylko okres. Forma dochodzi do niego stopniowo, we własnym rytmie, więc efekt widać w kolejnych dniach.</source>
+            <translation>These are just shortcuts. Underneath, form works in periods, from crisis to peak, that last and change on their own. A shortcut only changes the period. The form moves towards it gradually, at its own pace, so the effect shows over the following days.</translation>
+        </message>
+        <message>
+            <source>Automatyczna forma jest wyłączona, więc nie ma okresów formy. Możesz tylko ustalić dokładną wartość.</source>
+            <translation>Automatic form is off, so there are no form periods. You can only set an exact value.</translation>
+        </message>
+</context>
 </TS>
