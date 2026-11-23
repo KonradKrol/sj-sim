@@ -7,6 +7,8 @@ Control {
     objectName: "athleteConceptPatches"
     property var backend
     readonly property bool automaticForm: !!screen.backend.profile.formLocked
+    // Settings → Symulacja → "Ukryj formę zawodników" hides the form in the season until the player peeks.
+    readonly property bool formHidden: !!screen.backend.profile.formHidden
     property bool diagnosticsVisible: false
     Shortcut {
         sequence: "Ctrl+Alt+["
@@ -26,9 +28,9 @@ Control {
             SCheck {
                 id: showForm
                 objectName: "athleteShowForm"
-                visible: screen.automaticForm
+                visible: screen.automaticForm || screen.formHidden
                 text: qsTr("Pokaż formę")
-                checked: true
+                checked: !screen.formHidden
             }
             Image { source: screen.backend.profile.flag || ""; Layout.preferredWidth: Theme.dp(35); Layout.preferredHeight: Theme.dp(22); sourceSize.width: 70; sourceSize.height: 44; fillMode: Image.PreserveAspectFit; Accessible.ignored: true }
         }
@@ -40,7 +42,7 @@ Control {
                 GridLayout {
                     columns: 2; Layout.fillWidth: true; columnSpacing: Theme.dp(18)
                     AthleteRating { backend: screen.backend; design: conceptPalette; compact: true; Layout.fillWidth: true; Layout.preferredWidth: Theme.dp(170) }
-                    AthleteRating { visible: !screen.automaticForm || showForm.checked; backend: screen.backend; design: conceptPalette; form: true; compact: true; Layout.fillWidth: true; Layout.preferredWidth: Theme.dp(140); Layout.alignment: Qt.AlignBottom }
+                    AthleteRating { visible: (!screen.automaticForm && !screen.formHidden) || showForm.checked; backend: screen.backend; design: conceptPalette; form: true; compact: true; Layout.fillWidth: true; Layout.preferredWidth: Theme.dp(140); Layout.alignment: Qt.AlignBottom }
                 }
                 Rectangle { Layout.fillWidth: true; height: 1; color: Theme.divider }
                 Image { visible: !!screen.backend.profile.photo; source: screen.backend.profile.photo || ""; sourceSize.width: 480; sourceSize.height: 500; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: 0; Layout.preferredHeight: Theme.dp(120); fillMode: Image.PreserveAspectFit; asynchronous: true; Accessible.name: qsTr("Zdjęcie skoczka") }

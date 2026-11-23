@@ -70,6 +70,13 @@ AppSettingsWindow::AppSettingsWindow(QWidget *parent) :
     add("landing",tr("Trudność lądowania"),tr("Jak wcześnie dalekie skoki stają się trudne do ustania. Nie zmienia kar w notach."),{tr("Bardzo łagodna"),tr("Łagodna"),tr("Standardowa"),tr("Wymagająca"),tr("Bardzo wymagająca")});
     add("perks",tr("Siła perków zawodników"),tr("Jak mocno działają specjalizacje, regularność i podejście do treningów."),{tr("Subtelna"),tr("Niewielka"),tr("Standardowa"),tr("Duża"),tr("Bardzo duża")});
     add("differences",tr("Różnice między zawodnikami"),tr("Jak duże różnice wyników tworzy różnica OVR. Nie zwiększa losowości skoków."),{tr("Bardzo małe"),tr("Małe"),tr("Standardowe"),tr("Duże"),tr("Bardzo duże")});
+    auto *hideForm=new QCheckBox(tr("Ukryj formę zawodników"),simulation);hideForm->setObjectName("checkBox_hideForm");
+    hideForm->setChecked(QSettings().value("simulation/hideForm",false).toBool());
+    connect(hideForm,&QCheckBox::toggled,this,[](bool hidden){QSettings().setValue("simulation/hideForm",hidden);});
+    auto *hideFormHelp=new QLabel(tr("W sezonie karta zawodnika nie pokaże jego formy ani formy dnia przy skoku. Forma nadal działa w symulacji. "
+        "Na karcie zawodnika możesz ją podejrzeć przełącznikiem „Pokaż formę”."),simulation);
+    hideFormHelp->setObjectName("hideFormHelp");hideFormHelp->setWordWrap(true);
+    form->addRow(hideForm);form->addRow(hideFormHelp);
     ui->verticalLayout_6->insertWidget(0,simulation);
 
     // One Discord channel for publishing results images. The address stays on this computer.
@@ -153,6 +160,7 @@ void AppSettingsWindow::on_pushButton_defaultSettings_clicked()
     QSettings().setValue("quickUi/liveFlightSeconds",7);
     GlobalAppSettings::get()->setJumpDataInfoChoice(JumpDataInfoChoice());
     for(auto *choice:findChildren<QComboBox *>())if(choice->objectName().startsWith("simpleSimulation_"))choice->setCurrentIndex(2);
+    if(auto *hideForm=findChild<QCheckBox *>("checkBox_hideForm"))hideForm->setChecked(false);
     ui->comboBox_language->setCurrentIndex(0);
     ui->spinBox_dsqProbability->setValue(150);
     ui->spinBox_skillsRange->setValue(100);

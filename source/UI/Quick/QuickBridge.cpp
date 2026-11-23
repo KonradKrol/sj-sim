@@ -779,6 +779,7 @@ void QuickBridge::refresh() {
             for(const auto *key:{"totalPoints","leaderGap","weights","quality","precipitation","dailyFormBonus"})
                 visibility[key]=settings.value(QString("quickUi/jumpDetails/%1").arg(key),QString(key)!="quality" && QString(key)!="precipitation" && QString(key)!="dailyFormBonus").toBool();
             visibility["leaderGap"]=visibility.value("leaderGap").toBool() && choice.getPositionAfterJump();
+            if(settings.value("simulation/hideForm",false).toBool())visibility["dailyFormBonus"]=false;
             const auto format=[](double value,int decimals){return QLocale().toString(value,'f',decimals);};
             const bool final=stage==0 || stage>=5;
             if(stage==0 || stage>=2)summary["distance"]=displayedJump->getDNS()?QString("DNS"):displayedJump->getDSQ()?QString("DSQ"):format(displayedJump->getDistance(),1)+" m";
@@ -1207,6 +1208,8 @@ void QuickBridge::compose(QuickNode *base) {
         const auto preferences=group("simple-simulation",QString(),fields({{"simpleSimulation_spread",tr("Losowość skoków")},{"simpleSimulation_distanceSpread",tr("Różnice w odległościach")},{"simpleSimulation_form",tr("Znaczenie formy")},{"simpleSimulation_seasonFormVariability",tr("Zmienność formy w sezonach")},{"simpleSimulation_landing",tr("Trudność lądowania")},{"simpleSimulation_perks",tr("Siła perków zawodników")},{"simpleSimulation_differences",tr("Różnice między zawodnikami")}}),"simulationPreferences");
         sections.append(group("simulation-page",QString(),{
             preferences,
+            group("form-visibility",tr("Widoczność formy"),{group("form-visibility-fields",QString(),fields({
+                {"checkBox_hideForm",""},{"hideFormHelp",""}}),"column")}),
             group("simulation",tr("Silnik symulacji"),{group("simulation-settings-fields",QString(),fields({
                 {"pushButton_jumpInfoChoice",""},
                 {"openFormEngineLab",""},{"openBalanceLab",""},{"openSimulationPlayground",""},
