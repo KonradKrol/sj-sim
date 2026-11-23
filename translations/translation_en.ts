@@ -26038,6 +26038,22 @@ Technical key: %4</translation>
             <source>Zapisuj sezon ręcznie.</source>
             <translation>Save the season manually.</translation>
         </message>
+        <message>
+            <source>Ukryj formę</source>
+            <translation>Hide form</translation>
+        </message>
+        <message>
+            <source>Forma zawodników jest niewidoczna.</source>
+            <translation>Athletes’ form is hidden.</translation>
+        </message>
+        <message>
+            <source>Forma zawodników jest widoczna.</source>
+            <translation>Athletes’ form is visible.</translation>
+        </message>
+        <message>
+            <source>Ukrywa formę na karcie zawodnika i formę dnia przy skoku. Forma nadal działa w symulacji, a na karcie możesz ją podejrzeć przełącznikiem „Pokaż formę”.</source>
+            <translation>Hides the form on the athlete card and the form of the day next to jumps. Form still works in the simulation, and you can peek at it on the card with the “Show form” switch.</translation>
+        </message>
     </context>
     <context>
         <name>RosterLimits</name>

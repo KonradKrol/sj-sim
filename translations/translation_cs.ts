@@ -26039,6 +26039,22 @@ Technický klíč: %4</translation>
             <source>Zapisuj sezon ręcznie.</source>
             <translation>Ukládat sezónu ručně.</translation>
         </message>
+        <message>
+            <source>Ukryj formę</source>
+            <translation>Skrýt formu</translation>
+        </message>
+        <message>
+            <source>Forma zawodników jest niewidoczna.</source>
+            <translation>Forma závodníků je skrytá.</translation>
+        </message>
+        <message>
+            <source>Forma zawodników jest widoczna.</source>
+            <translation>Forma závodníků je viditelná.</translation>
+        </message>
+        <message>
+            <source>Ukrywa formę na karcie zawodnika i formę dnia przy skoku. Forma nadal działa w symulacji, a na karcie możesz ją podejrzeć przełącznikiem „Pokaż formę”.</source>
+            <translation>Skryje formu na kartě závodníka a formu dne u skoku. Forma v simulaci dál funguje a na kartě ji můžete zobrazit přepínačem „Zobrazit formu“.</translation>
+        </message>
     </context>
     <context>
         <name>RosterLimits</name>

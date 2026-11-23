@@ -8,7 +8,7 @@ GridLayout {
     readonly property var backend: node ? node.values.backend : null
     readonly property var formNode: ui.find("automaticFormEnabled")
     readonly property var datesNode: ui.find("checkBox_calendarDates")
-    columns: width>=Theme.dp(780) ? 3 : width>=Theme.dp(520) ? 2 : 1
+    columns: width>=Theme.dp(1040) ? 4 : width>=Theme.dp(520) ? 2 : 1
     columnSpacing: Theme.dp(8); rowSpacing: Theme.dp(8)
         SeasonAutomationToggle {
             objectName: "seasonDates"
@@ -38,5 +38,14 @@ GridLayout {
             detail: enabled ? qsTr("Dyspozycja zmienia się wraz z datami zawodów.") : qsTr("Włącz daty wydarzeń.")
             explanation: qsTr("Wyłączenie zachowuje formę. Ponowne włączenie nie nadrabia przerwy.")
             onClicked: if(autosave.formNode)ui.activate(autosave.formNode.values.id)
+        }
+        SeasonAutomationToggle {
+            objectName: "seasonHideForm"
+            Layout.fillWidth: true; Layout.minimumWidth: 0
+            text: qsTr("Ukryj formę")
+            checked: autosave.backend ? autosave.backend.formHidden : false
+            detail: checked ? qsTr("Forma zawodników jest niewidoczna.") : qsTr("Forma zawodników jest widoczna.")
+            explanation: qsTr("Ukrywa formę na karcie zawodnika i formę dnia przy skoku. Forma nadal działa w symulacji, a na karcie możesz ją podejrzeć przełącznikiem „Pokaż formę”.")
+            onClicked: if (autosave.backend) autosave.backend.setFormHidden(checked)
         }
 }

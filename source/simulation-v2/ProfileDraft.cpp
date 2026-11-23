@@ -7,7 +7,6 @@
 #include <QFileDialog>
 #include <QJsonArray>
 #include <QSet>
-#include <QSettings>
 #include <QUrl>
 #include <QTimer>
 
@@ -26,8 +25,8 @@ QVariantMap SimulationProfileDraft::profile() const {
     values["flag"]=flag(values["country"].toString());
     if(kind==DataPack::Jumpers) {
         values["formLocked"]=formDiagnostic.value("automatic",false);values["formDiagnostic"]=formDiagnostic;
-        // Only season athletes carry a form diagnostic; the database editor always shows the form.
-        values["formHidden"]=!formDiagnostic.isEmpty() && QSettings().value("simulation/hideForm",false).toBool();
+        // Set per save by the season window; the database editor never hides the form.
+        values["formHidden"]=formDiagnostic.value("hidden",false).toBool();
         const auto path=athlete.getImageFilePath();values["photo"]=path.isEmpty()?QString():QUrl::fromLocalFile(path).toString();values["photoAvailable"]=!path.isEmpty();
         if(values["photoPath"].toString().isEmpty())values["photoPath"]=values["portrait"];
     }

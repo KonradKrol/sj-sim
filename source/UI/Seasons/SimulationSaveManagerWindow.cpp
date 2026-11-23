@@ -57,6 +57,7 @@
 #include <QLabel>
 #include <QResizeEvent>
 #include <QSplitter>
+#include <QApplication>
 #include <QTabWidget>
 #include <memory>
 
@@ -66,6 +67,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
     simulationSave(save)
 {
     ui->setupUi(this);
+    qApp->setProperty("seasonFormHidden",!simulationSave->getShowForm());
     auto *quickSimulate=new QPushButton(tr("Szybko przesymuluj"),this);
     quickSimulate->setObjectName("quickSimulateNextCompetition");quickSimulate->hide();
     connect(quickSimulate,&QPushButton::clicked,this,[this]{if(quickSimulation)return;QScopedValueRollback<bool> quick(quickSimulation,true);on_pushButton_competitionConfig_clicked();});
@@ -229,7 +231,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
             auto profile=*configured.getSimulationProfile();profile.form=editedAthlete->getSimulationProfile()->form;QString error;if(!configured.setSimulationProfile(profile,error))return;
         }
         *editedAthlete=configured;
-        auto diagnostic=simulationSave->formEngine().diagnostic(*editedAthlete);diagnostic["automatic"]=simulationSave->formEngine().enabled && simulationSave->getActualSeason()->getDatesEnabled();athleteDraft->setFormDiagnostic(diagnostic);
+        auto diagnostic=simulationSave->formEngine().diagnostic(*editedAthlete);diagnostic["automatic"]=simulationSave->formEngine().enabled && simulationSave->getActualSeason()->getDatesEnabled();diagnostic["hidden"]=!simulationSave->getShowForm();athleteDraft->setFormDiagnostic(diagnostic);
         emit jumpersListView->getListModel()->dataChanged(jumpersListView->getListModel()->index(row),jumpersListView->getListModel()->index(row));
     });
     connect(athleteDraft,&SimulationProfileDraft::formSteerRequested,this,[this](int action,int value){
@@ -697,6 +699,17 @@ void SimulationSaveManagerWindow::dismissAutoFormNotice(bool disable)
 
 bool SimulationSaveManagerWindow::autosaveEnabled() const { return simulationSave->getAutosaveEnabled(); }
 
+// The save's long-standing "show-form" flag: hides the form on the season athlete card and the
+// form of the day next to jumps. The competition screen reads it from the application property.
+bool SimulationSaveManagerWindow::formHidden() const { return !simulationSave->getShowForm(); }
+
+void SimulationSaveManagerWindow::setFormHidden(bool hidden)
+{
+    if(hidden==formHidden())return;
+    simulationSave->setShowForm(!hidden);qApp->setProperty("seasonFormHidden",hidden);
+    saveSimulationSettings();refreshProfileDrafts();emit formHiddenChanged();
+}
+
 void SimulationSaveManagerWindow::setAutosaveEnabled(bool enabled)
 {
     if(enabled==simulationSave->getAutosaveEnabled())return;
@@ -920,6 +933,7 @@ void SimulationSaveManagerWindow::setCalendarsListView(DatabaseItemsListView *ne
 
 SimulationSaveManagerWindow::~SimulationSaveManagerWindow()
 {
+    qApp->setProperty("seasonFormHidden",false);
     if(autosaveTimer && hasUnsavedSeasonChanges() && simulationSave->getAutosaveEnabled()){
         autosaveTimer->stop();
         saveSeasonChanges();
@@ -1793,7 +1807,7 @@ void SimulationSaveManagerWindow::refreshProfileDrafts()
         athleteDraft->load(*editedAthlete,editedAthlete->getSimulationAssetDirectory());
         auto diagnostic=simulationSave->formEngine().diagnostic(*editedAthlete);
         diagnostic["automatic"]=simulationSave->formEngine().enabled && simulationSave->getActualSeason()->getDatesEnabled();
-        athleteDraft->setFormDiagnostic(diagnostic);
+        diagnostic["hidden"]=!simulationSave->getShowForm();athleteDraft->setFormDiagnostic(diagnostic);
     }
     if(simulationSave->getHillsReference().contains(editedHill) && editedHill->getSimulationProfile())
         hillDraft->load(*editedHill);

@@ -2682,11 +2682,6 @@ int main(int argc,char **argv) {
         shot("add-narrow",{600,820},false);
         screen->setProperty("adding",false);controller->rename(0,controller->current().value("name").toString()+" X");QTest::qWait(200);shot("dirty-dark",{1280,800},true);
         appearance->setDark(false);dialog.reject();
-        {
-            AppSettingsWindow settings;settings.setMainWindowParent(&main);settings.show();QTest::qWait(400);
-            auto *bridge=settings.findChild<QuickBridge *>();check(bridge!=nullptr,"settings bridge");id(bridge,"checkBox_hideForm");
-            presentation(&settings)->resize({1280,900});QTest::qWait(300);presentation(&settings)->grab().toImage().save(output+"/settings-simulation.png");settings.hide();
-        }
         return 0;
     }
     engineAuditRegressions();
