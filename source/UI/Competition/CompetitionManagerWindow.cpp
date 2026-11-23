@@ -1,3 +1,4 @@
+#include <functional>
 #include "../../simulation-v2/JumperPotential.h"
 #include "../../playground/PlaygroundModel.h"
 #include "../../balance/BalanceRuntime.h"
@@ -2518,9 +2519,10 @@ void CompetitionManagerWindow::suggestCurrentGate(bool undo)
         // The previews are independent pure calculations, so they run in parallel on separate
         // copies of the simulator. The longest is chosen in the same order as before.
         QVector<Jumper *> leaders;for(const auto &candidate:strongest)leaders.append(candidate.first);
-        const QVector<double> distances=QtConcurrent::blockingMapped<QVector<double>>(leaders,[&preview](Jumper *jumper){
+        const std::function<double(Jumper *)> previewLeader=[&preview](Jumper *jumper){
             JumpSimulator local(preview);local.setJumper(jumper);return local.previewDistance();
-        });
+        };
+        const QVector<double> distances=QtConcurrent::blockingMapped<QVector<double>>(leaders,previewLeader);
         for(int i=0;i<leaders.size();++i)if(distances[i]>longest){longest=distances[i];best=leaders[i];}
         if(!best)return;
         preview.setJumper(best);
