@@ -108,14 +108,15 @@ bool Session::steer(Jumper &athlete,int action,int value,QString &error){
             next.base=config.centers[next.regime];
         }else{
             SimulationV2::SeededRandom rng(next.randomState);
-            // 60% one level, 30% two and 10% three: mean magnitude = 1.5 levels.
+            // 60% one level, 30% two and 10% three.
             const double draw=rng.unit();const int steps=draw<.6?1:draw<.9?2:3;
             const int direction=action==5?1:-1;
             const int target=std::clamp(next.regime+direction*steps,0,regimeCount-1);
             const int neighbour=std::clamp(next.regime+direction,0,regimeCount-1);
             const double gap=neighbour!=next.regime?std::abs(config.centers[neighbour]-config.centers[next.regime])
                 :std::abs(config.centers[next.regime]-config.centers[std::clamp(next.regime-direction,0,regimeCount-1)]);
-            next.form=std::clamp(next.form+direction*steps*gap*rng.uniform(.85,1.15),1.,100.);
+            const double strength=direction>0 && steps==1 ? rng.uniform(1.30,1.55) : rng.uniform(.85,1.15);
+            next.form=std::clamp(next.form+direction*steps*gap*strength,1.,100.);
             next.regime=target;next.randomState=rng.snapshot();
             // Keep μ: an immediate surge can settle back towards the existing base.
         }

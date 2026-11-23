@@ -26,8 +26,8 @@ int main(int argc,char **argv){
  session.states[key]=initial;check(session.steer(athlete,4,73,error) && athlete.getSimulationProfile()->form==73,"exact value applied");const auto before=session.toJson();check(!session.steer(athlete,4,101,error) && before==session.toJson() && athlete.getSimulationProfile()->form==73,"invalid exact value is atomic");
  for(int action:{5,6}){
   double sum=0;bool one=false,two=false,three=false;
-  for(int i=0;i<3000;++i){session.states[key]=initial;session.states[key].randomState=i+1;check(session.steer(athlete,action,0,error),"sudden action succeeds");const auto s=session.states[key];const int steps=std::abs(s.regime-3);one|=steps==1;two|=steps==2;three|=steps==3;const double delta=s.form-50;check((action==5?delta>0:delta<0) && s.base==50,"immediate directional change preserves baseline");sum+=std::abs(delta);}
-  const double gap=std::abs(session.config.centers[action==5?4:2]-50);check(one&&two&&three && std::abs(sum/3000/gap-1.5)<.08,"sudden changes span 1-3 regimes at the calibrated strength");
+  for(int i=0;i<3000;++i){session.states[key]=initial;session.states[key].randomState=i+1;check(session.steer(athlete,action,0,error),"sudden action succeeds");const auto s=session.states[key];const int steps=std::abs(s.regime-3);one|=steps==1;two|=steps==2;three|=steps==3;const double delta=s.form-50;check((action==5?delta>0:delta<0) && s.base==50,"immediate directional change preserves baseline");if(action==5 && steps==1)check(delta>=1.30*(session.config.centers[4]-50),"weakest upward shock is stronger");sum+=std::abs(delta);}
+  const double gap=std::abs(session.config.centers[action==5?4:2]-50);check(one&&two&&three && std::abs(sum/3000/gap-(action==5?1.755:1.5))<.08,"sudden changes span 1-3 regimes at the calibrated strength");
  }
  session.states.clear();
  check(session.steer(athlete,4,60,error) && !session.steer(athlete,4,70,error),"precise edit locks before the first event");
@@ -36,5 +36,5 @@ int main(int argc,char **argv){
  check(pending.update(initial.date,{&athlete},true,error) && pending.states[key].steeringLocked,
        "first event carries the lock into the athlete state");
  session.enabled=false;check(session.steer(athlete,4,1,error) && athlete.getSimulationProfile()->form==1,"exact works without automatic form");check(!session.steer(athlete,5,0,error),"dynamic action requires automatic form");
- std::cout<<"PASS: all-action lock, persistence, natural unlock, exact bounds, shock distribution\n";
+ std::cout<<"PASS: all-action lock, persistence, natural unlock, exact bounds, stronger upward shock\n";
 }
