@@ -115,9 +115,12 @@ QVariantList Config::definitions(){
     Config c;QVariantList result;fields(c,[&](const QString &key,double &v,double lo,double hi,double step,const QString &group,const QString &label,const QString &help){result.append(QVariantMap{{"key",key},{"value",v},{"minimum",lo},{"maximum",hi},{"step",step},{"group",group},{"label",label},{"help",help},{"editable",key!="noise.4" && key!="concentration.4" && key!="duration.4"}});});return result;
 }
 int State::displayed() const{return int(std::round(bounded(form)));}
-QJsonObject State::toJson() const{return {{"regimeCount",regimeCount},{"form",form},{"base",base},{"regime",regime},{"remainingDays",remainingDays},{"visited",visited},{"transitions",transitions},{"random",QString::number(randomState)},{"date",date.toString(Qt::ISODate)}};}
+QJsonObject State::toJson() const{return {{"gradualSteeringLocked",gradualSteeringLocked},{"regimeCount",regimeCount},{"form",form},{"base",base},{"regime",regime},{"remainingDays",remainingDays},{"visited",visited},{"transitions",transitions},{"random",QString::number(randomState)},{"date",date.toString(Qt::ISODate)}};}
 bool State::fromJson(const QJsonObject &j,State &out,QString &error){
-    State s;bool randomOk=false;s.randomState=j["random"].toString().toULongLong(&randomOk);s.date=QDate::fromString(j["date"].toString(),Qt::ISODate);
+    State s;
+    if(j.contains("gradualSteeringLocked") && !j["gradualSteeringLocked"].isBool()){error=tr("Nieprawidłowa blokada zmiany formy.");return false;}
+    s.gradualSteeringLocked=j["gradualSteeringLocked"].toBool();
+    bool randomOk=false;s.randomState=j["random"].toString().toULongLong(&randomOk);s.date=QDate::fromString(j["date"].toString(),Qt::ISODate);
     const auto number=[&](const char *key,double lo,double hi,double &v){v=j[key].toDouble();return j[key].isDouble() && std::isfinite(v) && v>=lo && v<=hi;};
     double r=0,mask=0,transitions=0;
     if(!randomOk || !s.date.isValid() || !number("form",1,100,s.form) || !number("base",1,100,s.base) || !number("remainingDays",0,1e12,s.remainingDays) || s.remainingDays<=0 || !number("regime",0,regimeCount-1,r) || std::floor(r)!=r || !number("visited",1,(1<<regimeCount)-1,mask) || std::floor(mask)!=mask || !(int(mask)&(1<<int(r))) || !number("transitions",0,1e8,transitions) || std::floor(transitions)!=transitions){error=tr("Nieprawidłowy stan automatycznej formy.");return false;}
@@ -183,6 +186,7 @@ void advance(State &s,QDate target,int perk,const Config &c,const std::function<
             drift(s,s.remainingDays,rng,c);left-=s.remainingDays;
             const auto &probabilities=plan.probabilities[s.regime];s.regime=int(rng.weightedIndex(std::vector<double>(probabilities.begin(),probabilities.end())));
             s.base=bounded(c.entryInertia*s.base+(1-c.entryInertia)*c.centers[s.regime]+laplace(rng,c.entryDeviation[s.regime]));
+            s.gradualSteeringLocked=false;
             s.visited|=1<<s.regime;++s.transitions;s.remainingDays=waiting(plan.days[s.regime],rng);
         }
         drift(s,left,rng,c);s.remainingDays-=left;

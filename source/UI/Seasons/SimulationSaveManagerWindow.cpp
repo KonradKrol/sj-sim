@@ -239,6 +239,7 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         if(row<0)return;
         QString error;
         if(!simulationSave->formEngine().steer(*editedAthlete,action,value,error)){QMessageBox::warning(this,tr("Zmiana formy"),error);return;}
+        markSeasonChanged();
         refreshProfileDrafts();
         emit jumpersListView->getListModel()->dataChanged(jumpersListView->getListModel()->index(row),jumpersListView->getListModel()->index(row));
     });

@@ -1,92 +1,124 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import QtQuick.Window 2.15
 
-// Season-only shortcut menu: five simple ways to steer the automatic form engine.
-SButton {
-    id: trigger
-    objectName: "athleteFormShortcuts"
+RowLayout {
+    id: root
     property var backend
-    text: qsTr("Zmień formę ▾")
-    dense: true
-    Accessible.name: qsTr("Zmień formę")
-    onClicked: menu.opened ? menu.close() : menu.open()
-
+    readonly property var diagnostic: backend ? backend.profile.formDiagnostic || {} : {}
+    readonly property bool automatic: !!(backend && backend.profile.formLocked && !diagnostic.pending)
+    spacing: Theme.dp(6)
+    SButton {
+        id: trigger
+        objectName: "athleteFormShortcuts"
+        text: qsTr("Zmień formę") + " ▾"
+        dense: true
+        onClicked: menu.opened ? menu.close() : menu.open()
+    }
+    HelpDot {
+        explanation: qsTr("Stopniowa zmiana działa w kolejnych dniach. Gwałtowna działa od razu. Możesz też ustalić formę od 1 do 100.")
+    }
+    Item { Layout.fillWidth: true }
     Popup {
         id: menu
         objectName: "athleteFormShortcutsMenu"
+        parent: trigger
         y: trigger.height + Theme.dp(6)
-        width: Theme.dp(300)
-        padding: Theme.dp(10)
+        width: Math.min(Theme.dp(430), trigger.Window.window ? trigger.Window.window.width-Theme.dp(24) : Theme.dp(430))
+        padding: Theme.dp(12)
+        margins: Theme.dp(12)
         property bool exact: false
-        onClosed: exact = false
+        onOpened: exactValue.text=String(root.backend.profile.form)
+        onClosed: exact=false
         background: Rectangle { color: Theme.surface; radius: Theme.radius; border.color: Theme.outline }
-        enter: Transition {
-            NumberAnimation { property: "opacity"; from: 0; to: 1; duration: Theme.motion }
-            NumberAnimation { property: "scale"; from: .94; to: 1; duration: Theme.motion; easing.type: Easing.OutCubic }
-        }
-        exit: Transition { NumberAnimation { property: "opacity"; to: 0; duration: Theme.motion * .6 } }
-        transformOrigin: Popup.Top
+        enter: Transition { NumberAnimation { property: "opacity"; from: 0; to: 1; duration: Theme.motion } }
         contentItem: ColumnLayout {
-            spacing: Theme.dp(4)
-            Repeater {
-                model: [
-                    {label: qsTr("Zwiększ formę"), detail: qsTr("Okres formy o poziom wyżej"), action: 0},
-                    {label: qsTr("Zmniejsz formę"), detail: qsTr("Okres formy o poziom niżej"), action: 1},
-                    {label: qsTr("Wprowadź w kryzys"), detail: qsTr("Okres kryzysu"), action: 2},
-                    {label: qsTr("Wprowadź w szczyt"), detail: qsTr("Okres szczytu formy"), action: 3},
-                    {label: qsTr("Ustal precyzyjnie…"), detail: qsTr("Dokładna wartość; okres przesunie się o krok w jej stronę"), action: 4}
-                ]
-                ItemDelegate {
-                    id: option
-                    required property var modelData
-                    required property int index
-                    Layout.fillWidth: true
-                    padding: Theme.dp(8)
-                    enabled: modelData.action===4 || !!trigger.backend.profile.formLocked
-                    opacity: !menu.opened ? 0 : enabled ? 1 : .45
-                    Behavior on opacity { NumberAnimation { duration: Theme.motion; easing.type: Easing.OutCubic } }
-                    transform: Translate { y: menu.opened ? 0 : Theme.dp(6); Behavior on y { NumberAnimation { duration: Theme.motion + option.index * 30; easing.type: Easing.OutCubic } } }
-                    Accessible.name: modelData.label
-                    background: Rectangle { radius: Theme.dp(6); color: option.down ? Theme.selection : option.hovered ? Theme.raised : "transparent" }
-                    contentItem: ColumnLayout {
-                        spacing: Theme.dp(1)
-                        Label { text: option.modelData.label; color: Theme.ink; font.bold: true; font.pointSize: Theme.body }
-                        Label { text: option.modelData.detail; color: Theme.muted; font.pointSize: Theme.caption }
-                    }
-                    onClicked: {
-                        if(modelData.action===4){menu.exact=true;exactValue.forceActiveFocus();return}
-                        trigger.backend.steerForm(modelData.action,0);menu.close()
+            spacing: Theme.dp(10)
+            GridLayout {
+                visible: root.automatic
+                columns: 2
+                Layout.fillWidth: true
+                columnSpacing: Theme.dp(8)
+                rowSpacing: Theme.dp(8)
+                Repeater {
+                    model: [
+                        {label: qsTr("Stopniowa podwyżka"), symbol: "↗", action: 0, up: true},
+                        {label: qsTr("Stopniowy spadek"), symbol: "↘", action: 1, up: false},
+                        {label: qsTr("Gwałtowna zwyżka"), symbol: "↑", action: 5, up: true},
+                        {label: qsTr("Gwałtowne pogorszenie"), symbol: "↓", action: 6, up: false},
+                        {label: qsTr("Głęboki kryzys"), symbol: "−", action: 2, up: false},
+                        {label: qsTr("Wejście na szczyt"), symbol: "+", action: 3, up: true}
+                    ]
+                    Button {
+                        id: actionButton
+                        objectName: "athleteFormAction-" + modelData.action
+                        required property var modelData
+                        Layout.fillWidth: true
+                        Layout.preferredWidth: 1
+                        implicitHeight: Theme.dp(60)
+                        padding: Theme.dp(9)
+                        hoverEnabled: true
+                        readonly property bool gradual: modelData.action<2
+                        readonly property bool atLimit: modelData.action===0 ? root.diagnostic.regimeIndex===6 : modelData.action===1 && root.diagnostic.regimeIndex===0
+                        enabled: root.automatic && !atLimit && !(gradual && root.diagnostic.gradualSteeringLocked)
+                        opacity: enabled ? 1 : .4
+                        Accessible.name: modelData.label
+                        background: Rectangle {
+                            radius: Theme.dp(8)
+                            color: actionButton.down ? Theme.selection : actionButton.hovered ? Theme.raised : Theme.surface
+                            border.color: actionButton.activeFocus ? Theme.accent : Theme.outline
+                        }
+                        contentItem: RowLayout {
+                            spacing: Theme.dp(8)
+                            Text { text: actionButton.modelData.symbol; color: actionButton.modelData.up ? Theme.success : Theme.danger; font.pointSize: Theme.heading; font.bold: true; Layout.preferredWidth: Theme.dp(22); horizontalAlignment: Text.AlignHCenter }
+                            Text { text: actionButton.modelData.label; color: Theme.ink; font.family: Theme.bodyFamily; font.pointSize: Theme.body; font.weight: Font.DemiBold; wrapMode: Text.WordWrap; Layout.fillWidth: true }
+                        }
+                        ToolTip.visible: hovered && gradual && root.diagnostic.gradualSteeringLocked
+                        ToolTip.text: qsTr("Stopniowa zmiana już działa")
+                        onClicked: {root.backend.steerForm(modelData.action,0);menu.close()}
                     }
                 }
             }
-            RowLayout {
-                visible: menu.exact
-                Layout.fillWidth: true; spacing: Theme.dp(6)
-                SField {
-                    id: exactValue
-                    objectName: "athleteFormExactValue"
-                    Layout.fillWidth: true
-                    placeholderText: qsTr("Forma 1–100")
-                    Accessible.name: qsTr("Dokładna forma")
-                    validator: IntValidator { bottom: 1; top: 100 }
-                    text: String(trigger.backend.profile.form || "")
-                    onAccepted: apply.clicked()
-                }
-                SButton {
-                    id: apply
-                    text: qsTr("Ustaw"); primary: true; dense: true
-                    enabled: exactValue.acceptableInput
-                    onClicked: {trigger.backend.steerForm(4,Number(exactValue.text));menu.close()}
-                }
-            }
-            Rectangle { Layout.fillWidth: true; implicitHeight: 1; color: Theme.divider; Layout.topMargin: Theme.dp(4) }
             Label {
-                Layout.fillWidth: true; wrapMode: Text.WordWrap
-                color: Theme.muted; font.pointSize: Theme.caption
-                text: trigger.backend.profile.formLocked
-                      ? qsTr("To tylko skróty. Pod spodem forma działa na okresach, od kryzysu do szczytu, które same trwają i się zmieniają. Skrót zmienia tylko okres. Forma dochodzi do niego stopniowo, we własnym rytmie, więc efekt widać w kolejnych dniach.")
-                      : qsTr("Automatyczna forma jest wyłączona, więc nie ma okresów formy. Możesz tylko ustalić dokładną wartość.")
+                visible: root.automatic && root.diagnostic.gradualSteeringLocked===true
+                text: qsTr("Stopniowa zmiana jest już aktywna")
+                color: Theme.muted
+                font.pointSize: Theme.caption
+                Layout.fillWidth: true
+                wrapMode: Text.WordWrap
+            }
+            Rectangle { Layout.fillWidth: true; implicitHeight: 1; color: Theme.divider }
+            SButton {
+                visible: !menu.exact
+                Layout.fillWidth: true
+                text: qsTr("Ustal precyzyjnie") + "…"
+                dense: true
+                onClicked: {menu.exact=true;exactValue.forceActiveFocus();exactValue.selectAll()}
+            }
+            ColumnLayout {
+                visible: menu.exact
+                Layout.fillWidth: true
+                spacing: Theme.dp(5)
+                Label { text: qsTr("Forma · zakres 1–100"); color: Theme.muted; font.pointSize: Theme.caption }
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: Theme.dp(8)
+                    SField {
+                        id: exactValue
+                        objectName: "athleteFormExactValue"
+                        Layout.fillWidth: true
+                        Accessible.name: qsTr("Forma od 1 do 100")
+                        validator: IntValidator { bottom: 1; top: 100 }
+                        onAccepted: if(apply.enabled)apply.clicked()
+                    }
+                    SButton {
+                        id: apply
+                        text: qsTr("Ustaw"); primary: true; dense: true
+                        enabled: exactValue.acceptableInput
+                        onClicked: {root.backend.steerForm(4,Number(exactValue.text));menu.close()}
+                    }
+                }
             }
         }
     }

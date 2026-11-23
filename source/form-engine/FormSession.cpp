@@ -55,33 +55,58 @@ bool Session::update(QDate date,const QVector<Jumper *> &athletes,bool dates,QSt
     states=std::move(candidate);anchorPending=false;error.clear();return true;
 }
 bool Session::steer(Jumper &athlete,int action,int value,QString &error){
+    error.clear();
     if(!athlete.getSimulationProfile()){error=QObject::tr("Szybka zmiana formy wymaga nowego profilu zawodnika.");return false;}
+    if(action<0 || action>6){error=QObject::tr("Nieznana zmiana formy.");return false;}
     if(action==4 && (value<1 || value>100)){error=QObject::tr("Podaj formę od 1 do 100.");return false;}
-    if(action<0 || action>4){error=QObject::tr("Nieznana zmiana formy.");return false;}
     auto profile=*athlete.getSimulationProfile();
     const int perk=std::clamp(profile.perks[3],-4,4);
-    auto it=enabled?states.find(athlete.getIDStr()):states.end();
+    auto it=states.find(athlete.getIDStr());
+    if(action!=4 && !enabled){error=QObject::tr("Włącz automatyczną formę, aby użyć tej akcji.");return false;}
+    if(action!=4 && it==states.end()){error=QObject::tr("Forma tego zawodnika nie została jeszcze wyliczona.");return false;}
+    if((action==0 || action==1) && it->gradualSteeringLocked){error=QObject::tr("Stopniowa zmiana już działa. Kolejna będzie dostępna później.");return false;}
+    if((action==0 && it->regime==regimeCount-1) || (action==1 && it->regime==0)){error=QObject::tr("Ta zmiana nie jest teraz dostępna.");return false;}
+    State next=it==states.end()?State{}:it.value();
+    const bool active=enabled && it!=states.end();
     if(action==4){
-        // Exact value: the form is set as given and the period moves one step towards it.
         profile.form=value;
-        if(!athlete.setSimulationProfile(profile,error))return false;
-        if(it==states.end())return true;
-        it->form=value;
-        int nearest=0;for(int r=1;r<regimeCount;++r)if(std::abs(value-config.centers[r])<std::abs(value-config.centers[nearest]))nearest=r;
-        if(nearest==it->regime)return true;
-        action=nearest>it->regime?0:1;
+        if(active){
+            next.form=value;
+            int nearest=0;for(int r=1;r<regimeCount;++r)if(std::abs(value-config.centers[r])<std::abs(value-config.centers[nearest]))nearest=r;
+            if(nearest!=next.regime){
+                next.regime+=nearest>next.regime?1:-1;
+                next.base=config.entryInertia*next.base+(1-config.entryInertia)*config.centers[next.regime];
+                next.remainingDays=std::max(1.,meanRegimeDays(next.regime,perk,config));
+            }
+        }
+    }else{
+        if(action==0 || action==1){
+            next.regime+=action==0?1:-1;
+            next.base=config.entryInertia*next.base+(1-config.entryInertia)*config.centers[next.regime];
+            next.gradualSteeringLocked=true;
+        }else if(action==2 || action==3){
+            next.regime=action==2?0:regimeCount-1;
+            next.form=action==2?12:98;
+            next.base=config.centers[next.regime];
+        }else{
+            SimulationV2::SeededRandom rng(next.randomState);
+            // 60% one level, 30% two and 10% three: mean magnitude = 1.5 levels.
+            const double draw=rng.unit();const int steps=draw<.6?1:draw<.9?2:3;
+            const int direction=action==5?1:-1;
+            const int target=std::clamp(next.regime+direction*steps,0,regimeCount-1);
+            const int neighbour=std::clamp(next.regime+direction,0,regimeCount-1);
+            const double gap=neighbour!=next.regime?std::abs(config.centers[neighbour]-config.centers[next.regime])
+                :std::abs(config.centers[next.regime]-config.centers[std::clamp(next.regime-direction,0,regimeCount-1)]);
+            next.form=std::clamp(next.form+direction*steps*gap*rng.uniform(.85,1.15),1.,100.);
+            next.regime=target;next.randomState=rng.snapshot();
+            // Keep μ: an immediate surge can settle back towards the existing base.
+        }
+        next.remainingDays=std::max(1.,meanRegimeDays(next.regime,perk,config));
+        profile.form=next.displayed();
     }
-    if(!enabled){error=QObject::tr("Okres formy można zmienić tylko przy włączonej automatycznej formie.");return false;}
-    if(it==states.end()){error=QObject::tr("Forma tego zawodnika zostanie wyliczona przy najbliższym wydarzeniu. Wtedy zmienisz jej okres.");return false;}
-    int regime=it->regime;
-    if(action==0)regime=std::min(regime+1,regimeCount-1);
-    else if(action==1)regime=std::max(regime-1,0);
-    else if(action==2)regime=0;
-    else regime=regimeCount-1;
-    // Same as a natural period change, without the random part: the form itself is untouched
-    // and drifts towards the new period at its usual pace.
-    it->regime=regime;it->base=config.entryInertia*it->base+(1-config.entryInertia)*config.centers[regime];
-    it->visited|=1<<regime;it->remainingDays=std::max(1.,meanRegimeDays(regime,perk,config));
+    next.visited|=1<<next.regime;
+    if(!athlete.setSimulationProfile(profile,error))return false;
+    if(active)it.value()=next;
     return true;
 }
 QVariantMap Session::diagnostic(const Jumper &athlete) const {
@@ -123,7 +148,7 @@ QVariantMap Session::diagnostic(const Jumper &athlete) const {
     const auto probabilities=transitionProbabilities(state.regime,perk,config);
     for(int r=0;r<regimeCount;++r)if(r!=state.regime)add(QObject::tr("Następna zmiana okresu"),regimeName(r),number(probabilities[r]*100,2)+" %",QObject::tr("Szansa przy najbliższej zmianie okresu, nie w każdym dniu."));
     add(random,QObject::tr("Stan RNG"),QString::number(state.randomState));
-    return {{"automatic",enabled},{"pending",false},{"form",state.form},{"base",state.base},{"regime",regimeName(state.regime)},{"date",state.date.toString("dd.MM.yyyy")},{"transitions",state.transitions},{"rows",rows}};
+    return {{"automatic",enabled},{"pending",false},{"gradualSteeringLocked",state.gradualSteeringLocked},{"regimeIndex",state.regime},{"form",state.form},{"base",state.base},{"regime",regimeName(state.regime)},{"date",state.date.toString("dd.MM.yyyy")},{"transitions",state.transitions},{"rows",rows}};
 }
 Checkpoint::Checkpoint(Session &session,const QVector<Jumper *> &entries):live(session),before(session),athletes(entries){for(auto *athlete:athletes)if(athlete && athlete->getSimulationProfile())forms.insert(athlete->getIDStr(),athlete->getSimulationProfile()->form);}
 Checkpoint::~Checkpoint(){restore();}
