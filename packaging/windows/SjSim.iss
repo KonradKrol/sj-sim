@@ -2,7 +2,7 @@
   #error StageDir must point to the deployed Qt application.
 #endif
 #ifndef AppVersion
-  #define AppVersion "2.1.0"
+  #define AppVersion "2.1.1"
 #endif
 #ifndef NumericVersion
   #define NumericVersion AppVersion

@@ -54,7 +54,7 @@
 #include <random>
 
 extern Uuid globalIDGenerator;
-const QString appVersion = "2.1.0";
+const QString appVersion = "2.1.1";
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
