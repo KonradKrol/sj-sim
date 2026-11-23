@@ -115,11 +115,12 @@ QVariantList Config::definitions(){
     Config c;QVariantList result;fields(c,[&](const QString &key,double &v,double lo,double hi,double step,const QString &group,const QString &label,const QString &help){result.append(QVariantMap{{"key",key},{"value",v},{"minimum",lo},{"maximum",hi},{"step",step},{"group",group},{"label",label},{"help",help},{"editable",key!="noise.4" && key!="concentration.4" && key!="duration.4"}});});return result;
 }
 int State::displayed() const{return int(std::round(bounded(form)));}
-QJsonObject State::toJson() const{return {{"gradualSteeringLocked",gradualSteeringLocked},{"regimeCount",regimeCount},{"form",form},{"base",base},{"regime",regime},{"remainingDays",remainingDays},{"visited",visited},{"transitions",transitions},{"random",QString::number(randomState)},{"date",date.toString(Qt::ISODate)}};}
+// Keep the old key so a saved lock still applies after upgrading.
+QJsonObject State::toJson() const{return {{"gradualSteeringLocked",steeringLocked},{"regimeCount",regimeCount},{"form",form},{"base",base},{"regime",regime},{"remainingDays",remainingDays},{"visited",visited},{"transitions",transitions},{"random",QString::number(randomState)},{"date",date.toString(Qt::ISODate)}};}
 bool State::fromJson(const QJsonObject &j,State &out,QString &error){
     State s;
     if(j.contains("gradualSteeringLocked") && !j["gradualSteeringLocked"].isBool()){error=tr("Nieprawidłowa blokada zmiany formy.");return false;}
-    s.gradualSteeringLocked=j["gradualSteeringLocked"].toBool();
+    s.steeringLocked=j["gradualSteeringLocked"].toBool();
     bool randomOk=false;s.randomState=j["random"].toString().toULongLong(&randomOk);s.date=QDate::fromString(j["date"].toString(),Qt::ISODate);
     const auto number=[&](const char *key,double lo,double hi,double &v){v=j[key].toDouble();return j[key].isDouble() && std::isfinite(v) && v>=lo && v<=hi;};
     double r=0,mask=0,transitions=0;
@@ -186,7 +187,7 @@ void advance(State &s,QDate target,int perk,const Config &c,const std::function<
             drift(s,s.remainingDays,rng,c);left-=s.remainingDays;
             const auto &probabilities=plan.probabilities[s.regime];s.regime=int(rng.weightedIndex(std::vector<double>(probabilities.begin(),probabilities.end())));
             s.base=bounded(c.entryInertia*s.base+(1-c.entryInertia)*c.centers[s.regime]+laplace(rng,c.entryDeviation[s.regime]));
-            s.gradualSteeringLocked=false;
+            s.steeringLocked=false;
             s.visited|=1<<s.regime;++s.transitions;s.remainingDays=waiting(plan.days[s.regime],rng);
         }
         drift(s,left,rng,c);s.remainingDays-=left;

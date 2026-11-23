@@ -8,6 +8,7 @@ RowLayout {
     property var backend
     readonly property var diagnostic: backend ? backend.profile.formDiagnostic || {} : {}
     readonly property bool automatic: !!(backend && backend.profile.formLocked && !diagnostic.pending)
+    readonly property bool locked: !!(backend && backend.profile.formLocked && diagnostic.steeringLocked)
     spacing: Theme.dp(6)
     SButton {
         id: trigger
@@ -59,9 +60,8 @@ RowLayout {
                         implicitHeight: Theme.dp(60)
                         padding: Theme.dp(9)
                         hoverEnabled: true
-                        readonly property bool gradual: modelData.action<2
                         readonly property bool atLimit: modelData.action===0 ? root.diagnostic.regimeIndex===6 : modelData.action===1 && root.diagnostic.regimeIndex===0
-                        enabled: root.automatic && !atLimit && !(gradual && root.diagnostic.gradualSteeringLocked)
+                        enabled: root.automatic && !atLimit && !root.locked
                         opacity: enabled ? 1 : .4
                         Accessible.name: modelData.label
                         background: Rectangle {
@@ -74,15 +74,13 @@ RowLayout {
                             Text { text: actionButton.modelData.symbol; color: actionButton.modelData.up ? Theme.success : Theme.danger; font.pointSize: Theme.heading; font.bold: true; Layout.preferredWidth: Theme.dp(22); horizontalAlignment: Text.AlignHCenter }
                             Text { text: actionButton.modelData.label; color: Theme.ink; font.family: Theme.bodyFamily; font.pointSize: Theme.body; font.weight: Font.DemiBold; wrapMode: Text.WordWrap; Layout.fillWidth: true }
                         }
-                        ToolTip.visible: hovered && gradual && root.diagnostic.gradualSteeringLocked
-                        ToolTip.text: qsTr("Stopniowa zmiana już działa")
                         onClicked: {root.backend.steerForm(modelData.action,0);menu.close()}
                     }
                 }
             }
             Label {
-                visible: root.automatic && root.diagnostic.gradualSteeringLocked===true
-                text: qsTr("Stopniowa zmiana jest już aktywna")
+                visible: root.locked
+                text: qsTr("Poczekaj na automatyczną zmianę formy.")
                 color: Theme.muted
                 font.pointSize: Theme.caption
                 Layout.fillWidth: true
@@ -90,7 +88,9 @@ RowLayout {
             }
             Rectangle { Layout.fillWidth: true; implicitHeight: 1; color: Theme.divider }
             SButton {
+                objectName: "athleteFormAction-4"
                 visible: !menu.exact
+                enabled: !root.locked
                 Layout.fillWidth: true
                 text: qsTr("Ustal precyzyjnie") + "…"
                 dense: true
@@ -98,6 +98,7 @@ RowLayout {
             }
             ColumnLayout {
                 visible: menu.exact
+                enabled: !root.locked
                 Layout.fillWidth: true
                 spacing: Theme.dp(5)
                 Label { text: qsTr("Forma · zakres 1–100"); color: Theme.muted; font.pointSize: Theme.caption }
@@ -115,7 +116,7 @@ RowLayout {
                     SButton {
                         id: apply
                         text: qsTr("Ustaw"); primary: true; dense: true
-                        enabled: exactValue.acceptableInput
+                        enabled: !root.locked && exactValue.acceptableInput
                         onClicked: {root.backend.steerForm(4,Number(exactValue.text));menu.close()}
                     }
                 }

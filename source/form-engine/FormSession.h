@@ -1,6 +1,7 @@
 #pragma once
 #include "FormEngine.h"
 #include <QHash>
+#include <QSet>
 #include <QVector>
 class Jumper;
 
@@ -18,6 +19,9 @@ struct Session {
     QVariantMap diagnostic(const Jumper &) const;
     // 0/1 gradual rise/fall, 2/3 crisis/peak, 4 exact (1–100), 5/6 immediate rise/fall.
     bool steer(Jumper &,int action,int value,QString &error);
+private:
+    // Exact edits can precede the first dated event, when no State exists yet.
+    QSet<QString> pendingSteeringLocks;
 };
 class Checkpoint {
     Session &live;

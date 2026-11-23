@@ -29,7 +29,7 @@ struct Config {
 struct State {
     double form=50,base=50,remainingDays=1;
     int regime=3,visited=8,transitions=0;
-    bool gradualSteeringLocked=false;
+    bool steeringLocked=false;
     SimulationV2::Seed randomState=0;
     QDate date;
     int displayed() const;

@@ -15,7 +15,13 @@ namespace AutoForm {
 Session::Session():seed(QRandomGenerator::system()->generate64()),config(defaultConfig().withVariability(QSettings().value("simulation/simple/seasonFormVariability",2).toInt())){}
 QJsonObject Session::toJson() const {
     QJsonObject stored;for(auto it=states.cbegin();it!=states.cend();++it)stored[it.key()]=it.value().toJson();
-    return {{"version",version},{"enabled",enabled},{"anchorPending",anchorPending},{"seed",QString::number(seed)},{"config",config.toJson()},{"states",stored}};
+    QJsonObject json{{"version",version},{"enabled",enabled},{"anchorPending",anchorPending},{"seed",QString::number(seed)},{"config",config.toJson()},{"states",stored}};
+    if(!pendingSteeringLocks.isEmpty()) {
+        auto locked=QStringList(pendingSteeringLocks.values());
+        locked.sort();
+        json["pendingSteeringLocks"]=QJsonArray::fromStringList(locked);
+    }
+    return json;
 }
 bool Session::fromJson(const QJsonObject &json,Session &out,QString &error){
     if(json["version"].toDouble()!=version || !json["enabled"].isBool() || !json["anchorPending"].isBool() || !json["states"].isObject()){error=QObject::tr("Nieprawidłowe dane automatycznej formy.");return false;}
@@ -24,6 +30,14 @@ bool Session::fromJson(const QJsonObject &json,Session &out,QString &error){
     candidate.enabled=json["enabled"].toBool();candidate.anchorPending=json["anchorPending"].toBool();
     const auto states=json["states"].toObject();if(states.size()>10000){error=QObject::tr("Zbyt wiele stanów automatycznej formy.");return false;}
     for(auto it=states.begin();it!=states.end();++it){State state;if(it.key().isEmpty() || !it.value().isObject() || !State::fromJson(it.value().toObject(),state,error))return false;candidate.states.insert(it.key(),state);}
+    const auto pending=json.value("pendingSteeringLocks");
+    if(!pending.isUndefined()) {
+        if(!pending.isArray() || pending.toArray().size()>10000){error=QObject::tr("Nieprawidłowa blokada zmiany formy.");return false;}
+        for(const auto &id:pending.toArray()) {
+            if(!id.isString() || id.toString().isEmpty()){error=QObject::tr("Nieprawidłowa blokada zmiany formy.");return false;}
+            candidate.pendingSteeringLocks.insert(id.toString());
+        }
+    }
     out=candidate;error.clear();return true;
 }
 bool Session::setEnabled(bool value,bool dates,QString &error){
@@ -44,6 +58,7 @@ bool Session::update(QDate date,const QVector<Jumper *> &athletes,bool dates,QSt
                 candidate.insert(key,initialize(profile->form,date,SimulationV2::deriveSeed(seed,stream),config,profile->perks[3]));
             }
             auto &state=candidate[key];
+            if(pendingSteeringLocks.contains(key))state.steeringLocked=true;
             if(anchorPending){state.date=date;if(state.displayed()!=profile->form)state.form=profile->form;}
             // Switching calendars never rewinds an already processed form timeline.
             if(date>state.date)advance(state,date,profile->perks.size()>3?profile->perks[3]:0,config);
@@ -52,7 +67,7 @@ bool Session::update(QDate date,const QVector<Jumper *> &athletes,bool dates,QSt
     }catch(const std::exception &exception){error=QString::fromUtf8(exception.what());return false;}
     for(auto it=candidate.begin();it!=candidate.end();)if(!active.contains(it.key()))it=candidate.erase(it);else ++it;
     for(const auto &update:updates){auto profile=*update.first->getSimulationProfile();profile.form=update.second;if(!update.first->setSimulationProfile(profile,error))return false;}
-    states=std::move(candidate);anchorPending=false;error.clear();return true;
+    states=std::move(candidate);pendingSteeringLocks.clear();anchorPending=false;error.clear();return true;
 }
 bool Session::steer(Jumper &athlete,int action,int value,QString &error){
     error.clear();
@@ -61,13 +76,17 @@ bool Session::steer(Jumper &athlete,int action,int value,QString &error){
     if(action==4 && (value<1 || value>100)){error=QObject::tr("Podaj formę od 1 do 100.");return false;}
     auto profile=*athlete.getSimulationProfile();
     const int perk=std::clamp(profile.perks[3],-4,4);
-    auto it=states.find(athlete.getIDStr());
+    const auto key=athlete.getIDStr();
+    auto it=states.find(key);
+    const bool active=enabled && it!=states.end();
     if(action!=4 && !enabled){error=QObject::tr("Włącz automatyczną formę, aby użyć tej akcji.");return false;}
     if(action!=4 && it==states.end()){error=QObject::tr("Forma tego zawodnika nie została jeszcze wyliczona.");return false;}
-    if((action==0 || action==1) && it->gradualSteeringLocked){error=QObject::tr("Stopniowa zmiana już działa. Kolejna będzie dostępna później.");return false;}
+    if(enabled && ((active && it->steeringLocked) || pendingSteeringLocks.contains(key))) {
+        error=QObject::tr("Kolejna zmiana formy będzie dostępna później.");
+        return false;
+    }
     if((action==0 && it->regime==regimeCount-1) || (action==1 && it->regime==0)){error=QObject::tr("Ta zmiana nie jest teraz dostępna.");return false;}
     State next=it==states.end()?State{}:it.value();
-    const bool active=enabled && it!=states.end();
     if(action==4){
         profile.form=value;
         if(active){
@@ -83,7 +102,6 @@ bool Session::steer(Jumper &athlete,int action,int value,QString &error){
         if(action==0 || action==1){
             next.regime+=action==0?1:-1;
             next.base=config.entryInertia*next.base+(1-config.entryInertia)*config.centers[next.regime];
-            next.gradualSteeringLocked=true;
         }else if(action==2 || action==3){
             next.regime=action==2?0:regimeCount-1;
             next.form=action==2?12:98;
@@ -106,7 +124,8 @@ bool Session::steer(Jumper &athlete,int action,int value,QString &error){
     }
     next.visited|=1<<next.regime;
     if(!athlete.setSimulationProfile(profile,error))return false;
-    if(active)it.value()=next;
+    if(active){next.steeringLocked=true;it.value()=next;}
+    else if(enabled)pendingSteeringLocks.insert(key);
     return true;
 }
 QVariantMap Session::diagnostic(const Jumper &athlete) const {
@@ -129,7 +148,7 @@ QVariantMap Session::diagnostic(const Jumper &athlete) const {
     add(model,QObject::tr("Długość okresów"),number(config.duration[p])+"×",QObject::tr("Mnożnik średniego czasu między zmianami okresu."));
     add(model,QObject::tr("Zachowanie starej bazy"),number(config.entryInertia*100,1)+" %");
     add(random,QObject::tr("Seed rozgrywki"),QString::number(seed));
-    if(it==states.cend())return {{"automatic",enabled},{"pending",true},{"rows",rows}};
+    if(it==states.cend())return {{"automatic",enabled},{"pending",true},{"steeringLocked",pendingSteeringLocks.contains(athlete.getIDStr())},{"rows",rows}};
     const auto &state=it.value();
     add(status,QObject::tr("Dokładne F procesu"),number(state.form),QObject::tr("Ostatni przeliczony stan. Po ręcznej zmianie przy wyłączonej autoformie może różnić się od profilu."));
     add(status,QObject::tr("Baza μ"),number(state.base));
@@ -148,7 +167,7 @@ QVariantMap Session::diagnostic(const Jumper &athlete) const {
     const auto probabilities=transitionProbabilities(state.regime,perk,config);
     for(int r=0;r<regimeCount;++r)if(r!=state.regime)add(QObject::tr("Następna zmiana okresu"),regimeName(r),number(probabilities[r]*100,2)+" %",QObject::tr("Szansa przy najbliższej zmianie okresu, nie w każdym dniu."));
     add(random,QObject::tr("Stan RNG"),QString::number(state.randomState));
-    return {{"automatic",enabled},{"pending",false},{"gradualSteeringLocked",state.gradualSteeringLocked},{"regimeIndex",state.regime},{"form",state.form},{"base",state.base},{"regime",regimeName(state.regime)},{"date",state.date.toString("dd.MM.yyyy")},{"transitions",state.transitions},{"rows",rows}};
+    return {{"automatic",enabled},{"pending",false},{"steeringLocked",state.steeringLocked},{"regimeIndex",state.regime},{"form",state.form},{"base",state.base},{"regime",regimeName(state.regime)},{"date",state.date.toString("dd.MM.yyyy")},{"transitions",state.transitions},{"rows",rows}};
 }
 Checkpoint::Checkpoint(Session &session,const QVector<Jumper *> &entries):live(session),before(session),athletes(entries){for(auto *athlete:athletes)if(athlete && athlete->getSimulationProfile())forms.insert(athlete->getIDStr(),athlete->getSimulationProfile()->form);}
 Checkpoint::~Checkpoint(){restore();}
