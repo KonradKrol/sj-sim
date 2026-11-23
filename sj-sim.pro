@@ -548,6 +548,8 @@ HEADERS += source/UI/Library/ResourceLibraryWindow.h
 
 SOURCES += source/UI/ResultsImage/ResultsImage.cpp
 HEADERS += source/UI/ResultsImage/ResultsImage.h
+SOURCES += source/UI/Notice.cpp
+HEADERS += source/UI/Notice.h
 
 # Discord publishing uses Qt Network only (no bundled Discord library).
 QT += network

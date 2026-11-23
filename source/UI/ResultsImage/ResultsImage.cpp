@@ -14,6 +14,10 @@
 #include "../../global/UserDataPaths.h"
 #include "../../global/DiscordWebhook.h"
 #include "../../global/GlobalAppSettings.h"
+#include "../../global/JumpDataInfoChoice.h"
+#include "../Notice.h"
+#include <QJsonArray>
+#include <QJsonObject>
 #include "../mainwindow.h"
 
 #include <QBuffer>
@@ -235,20 +239,22 @@ bool saveImages(QWidget *parent,const QVector<QImage> &images,const QString &sug
     return true;
 }
 
-QString caption(const ResultsCard &card)
+QString caption(const ResultsCard &card,const QString &title=QString())
 {
-    QStringList parts{QStringLiteral("**%1**").arg(card.title),card.eyebrow};
+    QStringList parts{QStringLiteral("**%1**").arg(title.isEmpty()?card.title:title),card.eyebrow};
     if(!card.subtitle.isEmpty())parts<<card.subtitle;
     return parts.join(QStringLiteral(" · "));
 }
 
-void publishImages(QWidget *parent,const QVector<QImage> &images,const ResultsCard &card,const QString &baseName)
+void reportDiscordResult(const QPointer<QWidget> &owner,bool ok,const QString &message);
+
+void publishImages(QWidget *parent,const QVector<QImage> &images,const ResultsCard &card,const QString &baseName,const QString &title=QString())
 {
     // Discord accepts up to 10 files in one message; larger sets go as several messages.
     struct Batch{QString text;QVector<QPair<QString,QByteArray>> files;};
     QVector<Batch> batches;
     for(int i=0;i<images.size();++i){
-        if(i%10==0)batches.append({batches.isEmpty()?caption(card):QString(),{}});
+        if(i%10==0)batches.append({batches.isEmpty()?caption(card,title):QString(),{}});
         batches.last().files.append({safeFileName(numbered(baseName,i,images.size()))+QStringLiteral(".png"),pngBytes(images[i])});
     }
     const QPointer<QWidget> owner(parent);
@@ -258,12 +264,84 @@ void publishImages(QWidget *parent,const QVector<QImage> &images,const ResultsCa
         DiscordWebhook::get()->send(url,batches[index].text,batches[index].files,
             [owner,batches,sendNext,index](bool ok,const QString &message){
                 if(ok && index+1<batches.size()){(*sendNext)(index+1);return;}
-                if(ok)QMessageBox::information(owner.data(),QObject::tr("Discord"),message);
-                else QMessageBox::warning(owner.data(),QObject::tr("Nie wysłano na Discorda"),message);
+                reportDiscordResult(owner,ok,message);
                 *sendNext=nullptr;
             });
     };
     (*sendNext)(0);
+}
+
+// Discord flag emoji (":flag_no:") for a FIS or ISO country code, or nothing when unknown.
+QString discordFlag(const QString &code)
+{
+    Country *country=GlobalDatabase::get()->getCountryByAlpha3(code);
+    if(!country)country=GlobalDatabase::get()->getCountryByAlpha3(CountryCodes::toIso(code));
+    if(!country || country->getAlpha2().isEmpty())return {};
+    return QStringLiteral(":flag_%1:").arg(country->getAlpha2().toLower());
+}
+
+// Same layout as the jump message of earlier Sj.Sim versions: a coloured card with the athlete
+// and flag in the title, the hill and event in the description and one field per detail chosen
+// in "Informacje o skoku".
+QJsonObject jumpEmbed(JumpData *jump)
+{
+    const auto number=[](double value,int decimals){return QString::number(value,'f',decimals);};
+    QJsonArray fields;
+    const auto field=[&](const QString &name,const QString &value,bool inline_){fields.append(QJsonObject{{"name",name},{"value",value},{"inline",inline_}});};
+    Jumper *jumper=jump->getJumper();
+    CompetitionInfo *competition=jump->getCompetition();
+    const bool competitionJump=!jump->getInSingleJumps() && competition;
+    const bool team=competitionJump && competition->getRulesPointer()->getCompetitionType()==CompetitionRules::Team;
+    int round=0;
+    if(auto *result=jump->getSingleResult())
+        for(int i=0;i<result->getJumpsReference().size();++i)if(&result->getJumpsReference()[i]==jump){round=i+1;break;}
+    Hill *hill=competitionJump?competition->getHill():jump->getHill();
+    const QString hillText=hill?QStringLiteral("%1 %2 HS%3").arg(hill->getName(),discordFlag(hill->getCountryCode())).arg(hill->getHSPoint()):QString();
+    QString description;
+    if(competitionJump)
+        description=hillText+QStringLiteral(" (%1) ").arg(competition->getLongSerieTypeText())+(team?QObject::tr("drużynowy"):QObject::tr("indywidualny"))+QObject::tr(" - Skok %1").arg(round);
+    else description=hillText+QObject::tr(" (tryb pojedynczych skoków)");
+
+    const auto *rules=competition?competition->getRulesPointer():nullptr;
+    const bool gateComp=!rules || rules->getHasGateCompensations();
+    const bool windComp=!rules || rules->getHasWindCompensations();
+    const bool judges=!rules || rules->getHasJudgesPoints();
+    const JumpDataInfoChoice &c=GlobalAppSettings::get()->getJumpDataInfoChoiceReference();
+    if(jump->getDNS() || jump->getDSQ())field(QObject::tr("Odległość"),jump->getDNS()?QStringLiteral("DNS"):QStringLiteral("DSQ"),true);
+    else {
+        if(c.getDistance())field(QObject::tr("Odległość"),number(jump->getDistance(),1),true);
+        if(c.getPoints())field(QObject::tr("Punkty"),number(jump->getPoints(),1),true);
+        if(c.getGate())field(QObject::tr("Belka"),QString::number(jump->getGate()),true);
+        if(c.getAveragedWind())field(QObject::tr("Uśredniony wiatr"),number(jump->getAveragedWind(),1),true);
+        if(c.getGateCompensation() && gateComp)field(QObject::tr("Rekompensata za belkę"),number(jump->getGateCompensation(),1),false);
+        if(c.getWindCompensation() && windComp)field(QObject::tr("Rekompensata za wiatr"),number(jump->getWindCompensation(),1),true);
+        if(c.getTotalCompensation() && (gateComp || windComp))field(QObject::tr("Łączna rekompensata"),number(jump->getTotalCompensation(),1),true);
+        if(c.getJudges() && judges)field(QObject::tr("Noty sędziowskie"),jump->getJudgesText(),false);
+        if(c.getJudgesPoints() && judges)field(QObject::tr("Punkty od sędziów"),number(jump->getJudgesPoints(),1),true);
+        if(c.getLandingType())field(QObject::tr("Rodzaj lądowania"),jump->getLanding().getTextLandingType(),true);
+        if(c.getSpecificWind())field(QObject::tr("Wiatr przy skoku"),jump->getWindsText(),false);
+    }
+    if(c.getPositionAfterJump() && competitionJump){
+        CompetitionSingleResult *result=team?competition->getResultsReference().getResultOfTeam(Team::getTeamByCountryCode(&competition->getTeamsReference(),jumper->getCountryCode()))
+                                            :competition->getResultsReference().getResultOfIndividualJumper(jumper);
+        if(result)field(QObject::tr("Miejsce po skoku"),QString::number(result->getPosition()),true);
+    }
+    if(c.getJumpPositionInRound() && competitionJump && !team)field(QObject::tr("Pozycja noty w serii"),QString::number(jump->getPositionInRound()),true);
+    if(c.getInrunSnow())field(QObject::tr("Śnieg/deszcz przy skoku"),number(jump->getSimulationDataReference().getInrunSnow(),1),true);
+
+    return QJsonObject{
+        {"color",0x38B0DE},
+        {"title",QStringLiteral("**%1 %2**").arg(jumper->getNameAndSurname(),discordFlag(jumper->getCountryCode()))},
+        {"description",description},
+        {"fields",fields},
+        {"footer",QJsonObject{{"text",QObject::tr("Wiadomość wysłana z poziomu Sj.Sim ")+appVersion+QStringLiteral("\nhttps://github.com/KonradKrol/sj-sim")}}}
+    };
+}
+
+void reportDiscordResult(const QPointer<QWidget> &owner,bool ok,const QString &message)
+{
+    if(ok)Notice::show(message);
+    else QMessageBox::warning(owner.data(),QObject::tr("Nie wysłano na Discorda"),message);
 }
 
 bool discordReady(QWidget *parent)
@@ -512,7 +590,10 @@ bool publishCompetition(QWidget *parent,CompetitionInfo *competition)
     if(!discordReady(parent) || !hasCompetitionResults(parent,competition))return false;
     const Choice choice=askChoice(parent,competition->getResultsReference().getResultsReference().size());if(!choice.accepted)return false;
     const ResultsCard card=fromCompetition(competition,choice.limit);
-    publishImages(parent,renderAll(card,choice.perImage),card,competitionFileName(competition,card));
+    // The hill keeps its flag in the caption, as in the results message of earlier versions.
+    QString title=card.title;
+    if(auto *hill=competition->getHill())title=QStringLiteral("%1 %2 HS%3").arg(hill->getName(),discordFlag(hill->getCountryCode())).arg(hill->getHSPoint());
+    publishImages(parent,renderAll(card,choice.perImage),card,competitionFileName(competition,card),title);
     return true;
 }
 
@@ -529,33 +610,9 @@ bool publishJump(QWidget *parent,JumpData *jump)
 {
     if(!jump || !jump->getJumper()){QMessageBox::information(parent,QObject::tr("Discord"),QObject::tr("Nie ma jeszcze skoku do opublikowania."));return false;}
     if(!discordReady(parent))return false;
-    const auto format=[](double value,int decimals){return QLocale().toString(value,'f',decimals);};
-    QStringList lines;
-    QString header=QStringLiteral("**%1** (%2)").arg(jump->getJumper()->getNameAndSurname(),jump->getJumper()->getCountryCode());
-    QStringList where;
-    if(auto *hill=jump->getHill())where<<QObject::tr("%1 HS%2").arg(hill->getName()).arg(hill->getHSPoint());
-    if(auto *competition=jump->getCompetition())where<<competition->getLongSerieTypeText();
-    if(auto *result=jump->getSingleResult()){
-        for(int i=0;i<result->getJumpsReference().size();++i)if(&result->getJumpsReference()[i]==jump){where<<QObject::tr("%1. seria").arg(i+1);break;}
-    }
-    if(!where.isEmpty())header+=QStringLiteral(" · ")+where.join(QStringLiteral(" · "));
-    lines<<header;
-    if(jump->getDNS() || jump->getDSQ()){
-        lines<<QStringLiteral("**%1**").arg(jump->getDNS()?QObject::tr("DNS – nie wystartował"):QObject::tr("DSQ – dyskwalifikacja"));
-    } else {
-        QString result=QStringLiteral("**%1 m** · %2").arg(format(jump->getDistance(),1),QObject::tr("%1 pkt").arg(format(jump->getPoints(),1)));
-        if(auto *single=jump->getSingleResult();single && single->getPosition()>0)result+=QStringLiteral(" · ")+QObject::tr("%1. miejsce").arg(single->getPosition());
-        lines<<result;
-        QStringList marks;for(double mark:jump->getJudges())marks<<format(mark,1);
-        if(!marks.isEmpty())lines<<QObject::tr("Noty: %1 (%2 pkt)").arg(marks.join(QStringLiteral(" · ")),format(jump->getJudgesPoints(),1));
-        lines<<QObject::tr("Belka %1 · wiatr %2 m/s · rekompensata %3 pkt").arg(jump->getGate()).arg(format(jump->getAveragedWind(),2),format(jump->getTotalCompensation(),1));
-        lines<<QObject::tr("Lądowanie: %1").arg(jump->getLanding().getTextLandingType());
-    }
     const QPointer<QWidget> owner(parent);
-    DiscordWebhook::get()->send(GlobalAppSettings::get()->getDiscordWebhookUrl(),lines.join(QLatin1Char('\n')),{},[owner](bool ok,const QString &message){
-        if(ok)QMessageBox::information(owner.data(),QObject::tr("Discord"),message);
-        else QMessageBox::warning(owner.data(),QObject::tr("Nie wysłano na Discorda"),message);
-    });
+    DiscordWebhook::get()->send(GlobalAppSettings::get()->getDiscordWebhookUrl(),QString(),{},
+        [owner](bool ok,const QString &message){reportDiscordResult(owner,ok,message);},QJsonArray{jumpEmbed(jump)});
     return true;
 }
 }

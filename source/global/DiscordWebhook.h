@@ -5,6 +5,7 @@
 #include <QString>
 #include <QVector>
 #include <QPair>
+#include <QJsonArray>
 #include <functional>
 
 class QNetworkAccessManager;
@@ -27,8 +28,10 @@ public:
     // Address shortened for display, without the secret token.
     static QString maskedUrl(const QString &url);
 
-    // files: (file name, PNG bytes); Discord accepts at most 10 per message.
-    void send(const QString &url, const QString &text, const QVector<QPair<QString,QByteArray>> &files, Callback done);
+    // files: (file name, PNG bytes); Discord accepts at most 10 per message. embeds: optional
+    // Discord embed objects (coloured cards with fields), sent with the message.
+    void send(const QString &url, const QString &text, const QVector<QPair<QString,QByteArray>> &files, Callback done,
+              const QJsonArray &embeds = QJsonArray());
 
 private:
     explicit DiscordWebhook(QObject *parent=nullptr);

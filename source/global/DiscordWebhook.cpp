@@ -67,7 +67,7 @@ QString DiscordWebhook::maskedUrl(const QString &text)
     return QStringLiteral("%1/…/%2/••••").arg(url.host(),match.captured(2));
 }
 
-void DiscordWebhook::send(const QString &urlText,const QString &text,const QVector<QPair<QString,QByteArray>> &files,Callback done)
+void DiscordWebhook::send(const QString &urlText,const QString &text,const QVector<QPair<QString,QByteArray>> &files,Callback done,const QJsonArray &embeds)
 {
     QString problem;
     if(!isValidUrl(urlText,&problem)){done(false,problem);return;}
@@ -76,7 +76,8 @@ void DiscordWebhook::send(const QString &urlText,const QString &text,const QVect
     url.setQuery(QStringLiteral("wait=true"));
 
     // Mentions are disabled so that a name in the results can never ping anybody.
-    const QJsonObject payload{{"content",text.left(textLimit)},{"allowed_mentions",QJsonObject{{"parse",QJsonArray{}}}}};
+    QJsonObject payload{{"content",text.left(textLimit)},{"allowed_mentions",QJsonObject{{"parse",QJsonArray{}}}}};
+    if(!embeds.isEmpty())payload["embeds"]=embeds;
     auto *body=new QHttpMultiPart(QHttpMultiPart::FormDataType);
     QHttpPart json;
     json.setHeader(QNetworkRequest::ContentDispositionHeader,QStringLiteral("form-data; name=\"payload_json\""));
