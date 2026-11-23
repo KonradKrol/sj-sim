@@ -1442,7 +1442,6 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
                     }
                 }
 
-                competition->saveToCsvFile("results/season-competitions/csv/", simulationSave->getName() + QString(" (%1)" ).arg(simulationSave->getActualSeason()->getActualCalendar()->getName()) + QString::number(simulationSave->getActualSeason()->getSeasonNumber()) + "-" + QString::number(simulationSave->getActualSeason()->getActualCalendar()->getCompetitionsReference().indexOf(competition)) + " " + competition->getHill()->getHillText() + " (" + competition->getShortSerieTypeText() + ")" + ".csv");
 
                 if(checkSeasonEnd())
                 {
