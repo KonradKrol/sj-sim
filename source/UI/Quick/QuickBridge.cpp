@@ -1257,7 +1257,10 @@ void QuickBridge::compose(QuickNode *base) {
             else if(season->getSimulationSave()->getActualSeason()->getActualCalendar()->getCompetitionsReference().isEmpty())
                 overview={empty("season-empty-calendar",tr("Dodaj pierwszy konkurs"),tr("Kalendarz jest gotowy. Dodaj konkursy lub wczytaj preset, aby rozpocząć sezon."),m_content->findChild<QPushButton *>("pushButton_competitionConfig"))};
             auto *activeCalendar=season->getSimulationSave()->getActualSeason()->getActualCalendar();
-            if(standings.isEmpty() || !activeCalendar || activeCalendar->getClassificationsReference().isEmpty())standings={empty("season-no-standings",tr("Brak wyników klasyfikacji"),tr("Dodaj klasyfikację w kalendarzu i przypisz do niej konkursy. Wyniki pojawią się po ich rozegraniu."))};
+            auto *standingsCalendar=season->overviewStandingsCalendar();
+            if(standings.isEmpty() || !standingsCalendar || standingsCalendar->getClassificationsReference().isEmpty())standings={empty("season-no-standings",tr("Brak wyników klasyfikacji"),tr("Dodaj klasyfikację w kalendarzu i przypisz do niej konkursy. Wyniki pojawią się po ich rozegraniu."))};
+            const QString standingsTitle=standingsCalendar && standingsCalendar!=activeCalendar
+                ? tr("Klasyfikacja · %1").arg(standingsCalendar->getName()) : tr("Klasyfikacja");
             if(activeCalendar) {
                 QVariantList upcoming;int total=0,played=0,remainingCompetitions=0;CompetitionInfo *lastPlayed=nullptr;const bool datesEnabled=season->getSimulationSave()->getActualSeason()->getDatesEnabled();
                 for(auto *event:activeCalendar->getCompetitionsReference()) {
@@ -1310,7 +1313,7 @@ void QuickBridge::compose(QuickNode *base) {
             if(SimulationSave::activeRosterFeatureEnabled())overview.prepend(QVariant::fromValue(rosterChoice));
             overview.append(QVariant::fromValue(autosave));
             QVariantList pages{group("season-overview",QString(),{
-                group("season-next",QString(),overview),group("season-standings",tr("Klasyfikacja"),standings)},"sections")};
+                group("season-next",QString(),overview),group("season-standings",standingsTitle,standings)},"sections")};
             QStringList labels{tr("Przegląd")};
             QVariantList sourceIndexes{-1};
             for(int i=0;i<source->count();++i) {

@@ -1066,11 +1066,28 @@ void SimulationSaveManagerWindow::fillNextCompetitionInformations()
     }
 }
 
+SeasonCalendar *SimulationSaveManagerWindow::overviewStandingsCalendar() const
+{
+    const auto *season=simulationSave->getActualSeason();
+    if(!season)return nullptr;
+    auto *active=season->getActualCalendar();
+    if(active && !active->getClassificationsReference().isEmpty())return active;
+    if(simulationSave->getNextCompetition() || !checkSeasonEnd())return active;
+
+    for(auto *calendar:season->getCalendars()) {
+        if(!calendar)continue;
+        for(const auto *ranking:calendar->getClassificationsReference()) {
+            if(ranking && !ranking->getRankedResults().isEmpty())return calendar;
+        }
+    }
+    return active;
+}
+
 void SimulationSaveManagerWindow::setupClassificationsComboBox()
 {
     if(simulationSave && simulationSave->getActualSeason())simulationSave->getActualSeason()->synchronizeClassificationYears();
     auto *previous=classificationResultsTableView?classificationResultsTableView->getClassification():nullptr;
-    disconnectComboBox();ui->comboBox_classifications->clear();auto *active=simulationSave->getActualSeason()->getActualCalendar();
+    disconnectComboBox();ui->comboBox_classifications->clear();auto *active=overviewStandingsCalendar();
     if(active){for(auto *entry:active->getClassificationsReference())ui->comboBox_classifications->addItem(entry->getName());const int row=active->getClassificationsReference().indexOf(previous);ui->comboBox_classifications->setCurrentIndex(row>=0?row:ui->comboBox_classifications->count()>0?0:-1);}
     connectComboBox();if(classificationResultsTableView)whenClassificationsComboBoxIndexChanged(ui->comboBox_classifications->currentIndex());
 }
@@ -1198,27 +1215,19 @@ void SimulationSaveManagerWindow::configNextSeason()
     if(simulationSave->getAutosaveEnabled())saveSeasonChanges();
 }
 
-bool SimulationSaveManagerWindow::checkSeasonEnd()
+bool SimulationSaveManagerWindow::checkSeasonEnd() const
 {
-    SeasonCalendar * startCalendar = simulationSave->getActualSeason()->getActualCalendar();
-    for(auto & cal : simulationSave->getActualSeason()->getCalendarsReference())
-    {
-        simulationSave->getActualSeason()->setActualCalendar(cal);
-        simulationSave->updateNextCompetitionIndex();
-        if(simulationSave->getNextCompetition() != nullptr){
-            simulationSave->getActualSeason()->setActualCalendar(startCalendar);
-            simulationSave->updateNextCompetitionIndex();
-            return false;
-        }
+    for(const auto *calendar:simulationSave->getActualSeason()->getCalendars()) {
+        if(!calendar)continue;
+        for(const auto *event:calendar->getCompetitions())
+            if(SeasonChronology::pending(event))return false;
     }
-    simulationSave->getActualSeason()->setActualCalendar(startCalendar);
-    simulationSave->updateNextCompetitionIndex();
     return true;
 }
 
 void SimulationSaveManagerWindow::whenClassificationsComboBoxIndexChanged(int index)
 {
-    if(!classificationResultsTableView)return;auto *active=simulationSave->getActualSeason()->getActualCalendar();
+    if(!classificationResultsTableView)return;auto *active=overviewStandingsCalendar();
     Classification *entry=active && index>=0 && index<active->getClassificationsReference().size()?active->getClassificationsReference()[index]:nullptr;
     classificationResultsTableView->setClassification(entry);classificationResultsTableView->fillTable();
 }
@@ -1446,6 +1455,7 @@ void SimulationSaveManagerWindow::on_pushButton_competitionConfig_clicked()
 
                 if(checkSeasonEnd())
                 {
+                    if(!batchSimulation)setupClassificationsComboBox();
                     if(!quickSimulation)QMessageBox::information(this, tr("Koniec sezonu"), tr("Sezon dobiegł końca! Aby skonfigurować kolejny sezon, wciśnij odpowiedni przycisk w oknie."), QMessageBox::Ok);
                     setupNextSeasonConfigButton();
                 }
@@ -1624,8 +1634,6 @@ void SimulationSaveManagerWindow::fixAllSingleResultsJumps()
 void SimulationSaveManagerWindow::finishSeasonEventsBatch()
 {
     fixAllSingleResultsJumps();
-    if(ui->comboBox_classifications->count()>0)
-        emit ui->comboBox_classifications->currentIndexChanged(ui->comboBox_classifications->currentIndex());
     refreshProfileDrafts();
     fillNextCompetitionInformations();
     updateArchive();

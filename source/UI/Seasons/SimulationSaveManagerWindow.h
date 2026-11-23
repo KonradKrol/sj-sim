@@ -98,13 +98,14 @@ public:
     Q_INVOKABLE bool selectActiveRoster(const QString &id);
 
     void setupClassificationsComboBox();
+    SeasonCalendar *overviewStandingsCalendar() const;
     void connectComboBox();
     void disconnectComboBox();
 
     void setupNextSeasonConfigButton();
     void updateCompetitionConfigButton();
     void configNextSeason();
-    bool checkSeasonEnd();
+    bool checkSeasonEnd() const;
 
     void showClassificationApperanceWindowAfterListClick(const QModelIndex & index, Classification *classification);
 
