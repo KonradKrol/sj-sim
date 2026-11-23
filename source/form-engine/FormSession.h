@@ -16,6 +16,8 @@ struct Session {
     bool setEnabled(bool enabled,bool datesEnabled,QString &);
     bool update(QDate,const QVector<Jumper *> &,bool datesEnabled,QString &);
     QVariantMap diagnostic(const Jumper &) const;
+    // Quick shortcuts: 0 raise / 1 lower by one regime, 2 crisis, 3 peak, 4 exact value (1–100).
+    bool steer(Jumper &,int action,int value,QString &error);
 };
 class Checkpoint {
     Session &live;

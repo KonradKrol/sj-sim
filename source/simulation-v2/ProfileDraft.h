@@ -35,7 +35,10 @@ public:
     Q_INVOKABLE void choosePhoto();
     Q_INVOKABLE void clearPhoto();
     Q_INVOKABLE void openPackFolder();
+    // Season only: quick form shortcuts handled by the save owner (see AutoForm::Session::steer).
+    Q_INVOKABLE void steerForm(int action,int value=0){emit formSteerRequested(action,value);}
 signals:
+    void formSteerRequested(int action,int value);
     void changed();
     void uiChanged();
 private:

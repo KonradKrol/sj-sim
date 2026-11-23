@@ -44,6 +44,7 @@ Control {
                     AthleteRating { backend: screen.backend; design: conceptPalette; compact: true; Layout.fillWidth: true; Layout.preferredWidth: Theme.dp(170) }
                     AthleteRating { visible: (!screen.automaticForm && !screen.formHidden) || showForm.checked; backend: screen.backend; design: conceptPalette; form: true; compact: true; Layout.fillWidth: true; Layout.preferredWidth: Theme.dp(140); Layout.alignment: Qt.AlignBottom }
                 }
+                FormShortcuts { visible: Object.keys(screen.backend.profile.formDiagnostic || {}).length>0; backend: screen.backend }
                 Rectangle { Layout.fillWidth: true; height: 1; color: Theme.divider }
                 Image { visible: !!screen.backend.profile.photo; source: screen.backend.profile.photo || ""; sourceSize.width: 480; sourceSize.height: 500; Layout.fillWidth: true; Layout.minimumWidth: 0; Layout.preferredWidth: 0; Layout.preferredHeight: Theme.dp(120); fillMode: Image.PreserveAspectFit; asynchronous: true; Accessible.name: qsTr("Zdjęcie skoczka") }
                 AthleteLanding { backend: screen.backend; design: conceptPalette; Layout.fillWidth: true }

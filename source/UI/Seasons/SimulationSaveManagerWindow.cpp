@@ -232,6 +232,14 @@ SimulationSaveManagerWindow::SimulationSaveManagerWindow(SimulationSave *save, Q
         auto diagnostic=simulationSave->formEngine().diagnostic(*editedAthlete);diagnostic["automatic"]=simulationSave->formEngine().enabled && simulationSave->getActualSeason()->getDatesEnabled();athleteDraft->setFormDiagnostic(diagnostic);
         emit jumpersListView->getListModel()->dataChanged(jumpersListView->getListModel()->index(row),jumpersListView->getListModel()->index(row));
     });
+    connect(athleteDraft,&SimulationProfileDraft::formSteerRequested,this,[this](int action,int value){
+        const int row=simulationSave->getJumpersReference().indexOf(editedAthlete);
+        if(row<0)return;
+        QString error;
+        if(!simulationSave->formEngine().steer(*editedAthlete,action,value,error)){QMessageBox::warning(this,tr("Zmiana formy"),error);return;}
+        refreshProfileDrafts();
+        emit jumpersListView->getListModel()->dataChanged(jumpersListView->getListModel()->index(row),jumpersListView->getListModel()->index(row));
+    });
     connect(jumpersListView, &DatabaseItemsListView::listViewDoubleClicked, this, [this](const QModelIndex & index){
         if(index.row()<0 || index.row()>=simulationSave->getJumpersReference().size())return;
         editedAthlete=simulationSave->getJumpersReference()[index.row()];

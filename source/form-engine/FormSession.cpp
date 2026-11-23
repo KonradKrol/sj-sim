@@ -54,6 +54,36 @@ bool Session::update(QDate date,const QVector<Jumper *> &athletes,bool dates,QSt
     for(const auto &update:updates){auto profile=*update.first->getSimulationProfile();profile.form=update.second;if(!update.first->setSimulationProfile(profile,error))return false;}
     states=std::move(candidate);anchorPending=false;error.clear();return true;
 }
+bool Session::steer(Jumper &athlete,int action,int value,QString &error){
+    if(!athlete.getSimulationProfile()){error=QObject::tr("Szybka zmiana formy wymaga nowego profilu zawodnika.");return false;}
+    if(action==4 && (value<1 || value>100)){error=QObject::tr("Podaj formę od 1 do 100.");return false;}
+    if(action<0 || action>4){error=QObject::tr("Nieznana zmiana formy.");return false;}
+    auto profile=*athlete.getSimulationProfile();
+    const int perk=std::clamp(profile.perks[3],-4,4);
+    auto it=enabled?states.find(athlete.getIDStr()):states.end();
+    if(action==4){
+        // Exact value: the form is set as given and the period moves one step towards it.
+        profile.form=value;
+        if(!athlete.setSimulationProfile(profile,error))return false;
+        if(it==states.end())return true;
+        it->form=value;
+        int nearest=0;for(int r=1;r<regimeCount;++r)if(std::abs(value-config.centers[r])<std::abs(value-config.centers[nearest]))nearest=r;
+        if(nearest==it->regime)return true;
+        action=nearest>it->regime?0:1;
+    }
+    if(!enabled){error=QObject::tr("Okres formy można zmienić tylko przy włączonej automatycznej formie.");return false;}
+    if(it==states.end()){error=QObject::tr("Forma tego zawodnika zostanie wyliczona przy najbliższym wydarzeniu. Wtedy zmienisz jej okres.");return false;}
+    int regime=it->regime;
+    if(action==0)regime=std::min(regime+1,regimeCount-1);
+    else if(action==1)regime=std::max(regime-1,0);
+    else if(action==2)regime=0;
+    else regime=regimeCount-1;
+    // Same as a natural period change, without the random part: the form itself is untouched
+    // and drifts towards the new period at its usual pace.
+    it->regime=regime;it->base=config.entryInertia*it->base+(1-config.entryInertia)*config.centers[regime];
+    it->visited|=1<<regime;it->remainingDays=std::max(1.,meanRegimeDays(regime,perk,config));
+    return true;
+}
 QVariantMap Session::diagnostic(const Jumper &athlete) const {
     const auto it=states.constFind(athlete.getIDStr());
     const auto profile=athlete.getSimulationProfile();const int perk=profile?std::clamp(profile->perks[3],-4,4):0,p=perk+4;
