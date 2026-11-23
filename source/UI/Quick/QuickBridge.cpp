@@ -1,3 +1,4 @@
+#include "../../global/AppPaths.h"
 #include "../Library/ResourceLibraryWindow.h"
 #include "../Seasons/Stats/JumperStatsWindow.h"
 #include "../../balance/BalanceLabController.h"
@@ -95,7 +96,7 @@ bool webhookControl(const QObject *object) {
     return false;
 }
 QString flagSource(const QString &country) {
-    const auto path=QDir::current().absoluteFilePath("flags/"+CountryCodes::toIso(country)+".svg");
+    const auto path=AppPaths::flagFile(country);
     static QHash<QString,QString> cache;
     if(!cache.contains(path))cache.insert(path,QFile::exists(path)?QUrl::fromLocalFile(path).toString():QString());
     return cache.value(path);
@@ -1071,7 +1072,7 @@ void QuickBridge::compose(QuickNode *base) {
         QVariantList seasonProfiles;
         const bool seasonLibrary=season && (container->getType()==DatabaseItemsListView::SeasonJumpersItems || container->getType()==DatabaseItemsListView::SeasonHillsItems);
         if(seasonLibrary) {
-            auto flag=[](const QString &country){return QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(country)+".svg")).toString();};
+            auto flag=[](const QString &country){return AppPaths::flagUrl(country);};
             auto *save=season->getSimulationSave();
             if(container->getType()==DatabaseItemsListView::SeasonJumpersItems){int index=0;for(auto *actor:save->getJumpersReference()){
                 const auto profile=actor->getSimulationProfile();seasonProfiles.append(QVariantMap{{"id",actor->getIDStr()},{"index",index++},{"label",actor->getNameAndSurname()},{"country",actor->getCountryCode()},{"flag",flag(actor->getCountryCode())},{"overall",profile?profile->overall:0}});
@@ -1086,11 +1087,12 @@ void QuickBridge::compose(QuickNode *base) {
             {"submitId",idFor(m_content->findChild<QPushButton *>("pushButton_submit_2"))}});return;
     }
     if(m_window->property("formLabController").isValid()){m_root->update({{"kind","formLab"},{"backend",m_window->property("formLabController")}});return;}
+    if(m_window->property("countriesController").isValid()){m_root->update({{"kind","countriesEditor"},{"backend",m_window->property("countriesController")}});return;}
     if(m_window->property("balanceLabController").isValid()){m_root->update({{"kind","balanceLab"},{"backend",m_window->property("balanceLabController")}});return;}
     if(m_window->property("playgroundController").isValid()){m_root->update({{"kind","playground"},{"backend",m_window->property("playgroundController")}});return;}
     if(m_window->objectName()=="classificationContributionDetails"){
         auto *table=m_content->findChild<QTableView *>("classificationContributionTable");
-        m_root->update({{"kind","classificationContributions"},{"country",m_window->property("contributionCountry")},{"name",m_window->property("contributionName")},{"total",classificationPointsText(m_window->property("contributionTotal").toDouble())},{"flag",QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(m_window->property("contributionCountry").toString())+".svg")).toString()},{"tableField",QVariant::fromValue(node(table,true))},
+        m_root->update({{"kind","classificationContributions"},{"country",m_window->property("contributionCountry")},{"name",m_window->property("contributionName")},{"total",classificationPointsText(m_window->property("contributionTotal").toDouble())},{"flag",AppPaths::flagUrl(m_window->property("contributionCountry").toString())},{"tableField",QVariant::fromValue(node(table,true))},
             {"historyField",[&]{auto *history=m_content->findChild<QTableView *>("classificationPlaceHistoryTable");return history?QVariant::fromValue(node(history,true)):QVariant();}()}});return;
     }
     if(auto *library=qobject_cast<ResourceLibraryWindow *>(m_window.data())){m_root->update({{"kind","resourceLibrary"},{"backend",QVariant::fromValue<QObject *>(library)}});return;}
@@ -1270,7 +1272,7 @@ void QuickBridge::compose(QuickNode *base) {
                     for(auto *training:trainings)if(training){++trainingNumber;const auto when=training->getScheduledDate();preparations.append(QVariantMap{{"training",true},{"number",trainingNumber},{"total",trainings.size()},{"played",training->getPlayed()},{"cancelled",training->getCancelled()},{"current",training==nextEvent},{"date",datesEnabled && when.isValid()?when.toString("dd.MM.yyyy"):QString()}});}
                     if(trial){const auto when=trial->getScheduledDate();preparations.append(QVariantMap{{"training",false},{"played",trial->getPlayed()},{"cancelled",trial->getCancelled()},{"current",trial==nextEvent},{"date",datesEnabled && when.isValid()?when.toString("dd.MM.yyyy"):QString()}});}
                     upcoming.append(QVariantMap{{"hill",hill?hill->getName():tr("Wybierz skocznię")},{"hs",hill?QString::number(hill->getHSPoint(),'f',0):QString()},
-                        {"country",hill?hill->getCountryCode():QString()},{"flag",hill?QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(hill->getCountryCode())+".svg")).toString():QString()},
+                        {"country",hill?hill->getCountryCode():QString()},{"flag",hill?AppPaths::flagUrl(hill->getCountryCode()):QString()},
                         {"date",datesEnabled && date.isValid()?date.toString("dd.MM.yyyy"):QString()},
                         {"type",event->getRules().getCompetitionType()==CompetitionRules::Team?tr("Drużynowy"):tr("Indywidualny")},
                         {"qualification",event->getSerieType()==CompetitionInfo::Qualifications},{"trainingCount",trainings.size()},{"trainingPlayed",completedTrainings},
@@ -1285,7 +1287,7 @@ void QuickBridge::compose(QuickNode *base) {
                         const auto *jumper=result.getJumper();const auto *team=result.getTeam();if(!jumper && !team)continue;
                         const auto country=jumper?jumper->getCountryCode():team->getCountryCode();
                         const auto photo=jumper?jumper->getImageFilePath():QString();
-                        podium.append(QVariantMap{{"position",position},{"name",jumper?jumper->getNameAndSurname():country},{"country",country},{"flag",QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(country)+".svg")).toString()},{"photo",!photo.isEmpty() && QFileInfo::exists(photo)?QUrl::fromLocalFile(QFileInfo(photo).absoluteFilePath()).toString():QString()},{"points",QLocale().toString(result.getPointsSum(),'f',1)}});
+                        podium.append(QVariantMap{{"position",position},{"name",jumper?jumper->getNameAndSurname():country},{"country",country},{"flag",AppPaths::flagUrl(country)},{"photo",!photo.isEmpty() && QFileInfo::exists(photo)?QUrl::fromLocalFile(QFileInfo(photo).absoluteFilePath()).toString():QString()},{"points",QLocale().toString(result.getPointsSum(),'f',1)}});
                     }
                     std::stable_sort(podium.begin(),podium.end(),[](const QVariant &a,const QVariant &b){return a.toMap().value("position").toInt()<b.toMap().value("position").toInt();});
                     latest={{"hill",hill?hill->getName():QString()},{"hs",hill?QString::number(hill->getHSPoint(),'f',0):QString()},{"type",lastPlayed->getLongSerieTypeText()},{"cancelled",lastPlayed->getCancelled()},{"date",datesEnabled && lastPlayed->getScheduledDate().isValid()?lastPlayed->getScheduledDate().toString("dd.MM.yyyy"):QString()},{"results",podium}};

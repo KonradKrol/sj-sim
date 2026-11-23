@@ -1,3 +1,4 @@
+#include "../../global/AppPaths.h"
 #include "../../global/UserDataPaths.h"
 #include "../../seasons/SeasonChronology.h"
 #include <stdexcept>
@@ -1832,7 +1833,7 @@ QVariantMap SimulationSaveManagerWindow::rosterBoard() const
 {
     QVariantList athletes;
     for (auto *athlete : simulationSave->getJumpers()) if (athlete)
-        athletes.append(QVariantMap{{"athleteId", athlete->getIDStr()}, {"athleteName", athlete->getNameAndSurname()}, {"countryCode", athlete->getCountryCode()}, {"flagSource", QUrl::fromLocalFile(QDir::current().absoluteFilePath("flags/"+CountryCodes::toIso(athlete->getCountryCode())+".svg")).toString()}});
+        athletes.append(QVariantMap{{"athleteId", athlete->getIDStr()}, {"athleteName", athlete->getNameAndSurname()}, {"countryCode", athlete->getCountryCode()}, {"flagSource", AppPaths::flagUrl(athlete->getCountryCode())}});
     return {{"athletes", athletes}, {"members", boardDraft}};
 }
 

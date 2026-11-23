@@ -1,3 +1,4 @@
+#include "../global/AppPaths.h"
 #include "ProfileDraft.h"
 #include "../global/GlobalDatabase.h"
 #include "../global/CountryCodes.h"
@@ -6,11 +7,12 @@
 #include <QFileDialog>
 #include <QJsonArray>
 #include <QSet>
+#include <QSettings>
 #include <QUrl>
 #include <QTimer>
 
 namespace {
-QString flag(const QString &country) {return QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(country)+".svg")).toString();}
+QString flag(const QString &country) {return AppPaths::flagUrl(country);}
 }
 SimulationProfileDraft::SimulationProfileDraft(DataPack::Kind kind,QObject *parent):QObject(parent),kind(kind) {}
 void SimulationProfileDraft::load(const Jumper &value,const QString &root) {athlete=originalAthlete=value;directory=root;loaded=kind==DataPack::Jumpers && bool(value.getSimulationProfile());error.clear();notifyChanged();}

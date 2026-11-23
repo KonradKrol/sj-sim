@@ -1,3 +1,4 @@
+#include "../global/AppPaths.h"
 #include "FormLab.h"
 #include "../simulation-v2/SimulationCatalog.h"
 #include <QtConcurrent>
@@ -70,7 +71,7 @@ void FormLabController::rebuildAthletes(){
         item->setData(id,Id);item->setData(name,Name);item->setData(country,Country);item->setData(name+" "+country,Search);
         item->setData(draft.value("selected",true),Chosen);item->setData(draft.value("form",p["form"].toInt()),InitialForm);
         const auto perks=p["perks"].toArray();item->setData(draft.value("perk",perks.size()>3?perks[3].toInt():0),FormPerk);
-        item->setData(QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(country)+".svg")).toString(),Flag);
+        item->setData(AppPaths::flagUrl(country),Flag);
         m_selectedAthletes+=item->data(Chosen).toBool();m_athleteRows.insert(id,m_athletes->rowCount());m_athletes->appendRow(item);
     }
     m_filteredAthletes->setSourceModel(m_athletes);emit selectionChanged();

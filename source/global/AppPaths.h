@@ -3,6 +3,9 @@
 #include <QCoreApplication>
 #include <QDir>
 #include "UserDataPaths.h"
+#include "CountryCodes.h"
+#include <QFileInfo>
+#include <QUrl>
 
 namespace AppPaths {
 // Read-only files shipped with the game: flags, translations and the Defaults library.
@@ -15,6 +18,37 @@ inline QString resources()
 #else
     return QCoreApplication::applicationDirPath();
 #endif
+}
+
+// Player's own flags: <data library>/Flags/<ISO code>.svg or .png. They take precedence over
+// the flags shipped with the game, which may be read-only (AppImage, macOS bundle).
+inline QString userFlagsFolder()
+{
+    return QDir(UserDataPaths::root()).filePath(QStringLiteral("Flags"));
+}
+
+// File name expected for a country's flag, e.g. "POL.svg" (FIS codes are converted to ISO).
+inline QString flagFileName(const QString &countryCode)
+{
+    return CountryCodes::toIso(countryCode).toUpper()+QStringLiteral(".svg");
+}
+
+// Absolute path of a country's flag: the player's own flag when present, otherwise the
+// shipped one (which may not exist for unusual codes).
+inline QString flagFile(const QString &countryCode)
+{
+    const QString iso=CountryCodes::toIso(countryCode).toUpper();
+    const QDir own(userFlagsFolder());
+    for(const char *extension:{".svg",".png"}){
+        const QString candidate=own.filePath(iso+QLatin1String(extension));
+        if(QFileInfo::exists(candidate))return candidate;
+    }
+    return QDir(QDir(resources()).filePath(QStringLiteral("flags"))).filePath(CountryCodes::toIso(countryCode)+QStringLiteral(".svg"));
+}
+
+inline QString flagUrl(const QString &countryCode)
+{
+    return QUrl::fromLocalFile(flagFile(countryCode)).toString();
 }
 
 // Folder for automatically exported result files given by a relative path such as

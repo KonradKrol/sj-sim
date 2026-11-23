@@ -1,3 +1,4 @@
+#include "../../../global/AppPaths.h"
 #include <QBuffer>
 #include <QSaveFile>
 #include <QFileDialog>
@@ -780,7 +781,7 @@ QVariantMap JumperStatsWindow::report() const {
     if(jumper && save) {
         const auto flag=[](const QString &country) {
             if(country.isEmpty())return QString();
-            return QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(country)+".svg")).toString();
+            return AppPaths::flagUrl(country);
         };
         const auto numberText=[](double value) {
             return QLocale().toString(value,'f',value==qRound64(value) ? 0 : 1);

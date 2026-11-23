@@ -1,3 +1,4 @@
+#include "../global/AppPaths.h"
 #include "../balance/BalanceRuntime.h"
 #include "../balance/BalanceLabModel.h"
 #include "WeatherSetup.h"
@@ -95,7 +96,7 @@ QVariantMap SimulationWeatherSetup::values() const {
         {"precipitationLevel",precipitation.scenario==SimulationV2::PrecipitationScenario::None ? 0 : precipitation.intensity<=3 ? 1 : precipitation.intensity<=6.5 ? 2 : 3},
         {"precipitationPattern",precipitation.scenario==SimulationV2::PrecipitationScenario::Variable || precipitation.scenario==SimulationV2::PrecipitationScenario::Increasing ? 1 : 0},
         {"precipitationVariation",precipitation.variation},{"precipitationIncrease",precipitation.increasePerMinute},
-        {"hillName",hill.name},{"hs",hill.hs},{"flag",QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(hill.country)+".svg")).toString()},{"k",hill.k}};
+        {"hillName",hill.name},{"hs",hill.hs},{"flag",AppPaths::flagUrl(hill.country)},{"k",hill.k}};
     result["staticWind"]=wind.temporalAmplitude==0 && wind.spatialAmplitude==0 && (wind.gustAmplitude==0 || wind.gustProbability==0) && wind.trendAmplitude==0;
     result["temporalAmplitude"]=wind.temporalAmplitude;result["correlationSeconds"]=wind.correlationSeconds;
     result["spatialAmplitude"]=wind.spatialAmplitude;result["correlationMetres"]=wind.correlationMetres;

@@ -1,3 +1,4 @@
+#include "../../global/AppPaths.h"
 #include <QLabel>
 #include <QLocale>
 #include <QPushButton>
@@ -40,7 +41,7 @@ const QList<QByteArray> countryRoles{"country","flag","count","limit","over"};
 QVector<Jumper *> unique(const QVector<Jumper *> &input) { QVector<Jumper *> out;QSet<Jumper *> seen;for(auto *j:input)if(j&&!seen.contains(j)){seen.insert(j);out.append(j);}return out; }
 
 QString flagSource(const QString &country) {
-    const auto file=QDir::current().absoluteFilePath("flags/"+CountryCodes::toIso(country)+".svg");
+    const auto file=AppPaths::flagFile(country);
     static QHash<QString,QString> cache;
     if(!cache.contains(file))cache.insert(file,QFile::exists(file)?QUrl::fromLocalFile(file).toString():QString());
     return cache.value(file);

@@ -1,3 +1,4 @@
+#include "../../global/AppPaths.h"
 #include "QuickCalendar.h"
 #include "../Seasons/CalendarEditor/CalendarEditorWidget.h"
 #include "../Seasons/SimulationSaveManagerWindow.h"
@@ -108,7 +109,7 @@ bool QuickCalendar::referencedByHistory(CompetitionInfo *event) const {
 QAbstractItemModel *QuickCalendar::eventModel() const { return m_eventModel; }
 QString QuickCalendar::hillFlag(Hill *hill) const {
     if(!hill)return {};
-    const auto path=QDir("flags").absoluteFilePath(CountryCodes::toIso(hill->getCountryCode())+".svg");
+    const auto path=AppPaths::flagFile(hill->getCountryCode());
     return QFile::exists(path)?QUrl::fromLocalFile(path).toString():QString();
 }
 QStringList QuickCalendar::hillFlags() const {

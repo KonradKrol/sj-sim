@@ -1,3 +1,4 @@
+#include "AppPaths.h"
 #include "CountryFlagsManager.h"
 #include "CountryCodes.h"
 
@@ -20,7 +21,7 @@ QPixmap CountryFlagsManager::getFlagPixmap(const QString &twoLettersCountryCode)
     // ship with the game and do not change while it runs, so each flag is rendered once.
     // Pixmaps are GUI objects: this is only used from the GUI thread.
     static QHash<QString,QPixmap> cache;
-    const QString file="flags/" + CountryCodes::toIso(twoLettersCountryCode) + ".svg";
+    const QString file=AppPaths::flagFile(twoLettersCountryCode);
     auto cached=cache.constFind(file);
     if(cached!=cache.constEnd())return *cached;
     const QPixmap pixmap(file);

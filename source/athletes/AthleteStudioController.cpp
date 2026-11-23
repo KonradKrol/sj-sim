@@ -1,3 +1,4 @@
+#include "../global/AppPaths.h"
 #include "../global/ResourceBundle.h"
 #include "../UI/Library/ResourceLibraryWindow.h"
 #include "AthleteStudioController.h"
@@ -82,7 +83,7 @@ bool AthleteStudioController::persist(const QJsonObject &pack,QString &error)con
 }
 bool AthleteStudioController::commit(const QJsonObject &next,int selection,const QString &message,bool perksOnly){if(next==currentPack()){m_selected=selection;return true;}QString error;QSet<QString> ids;const auto profiles=next["profiles"].toArray();if(profiles.size()>10000){status(tr("Paczka może mieć najwyżej 10 000 profili."));return false;}if(!perksOnly)for(const auto &entry:profiles){AthleteProfile checked;if(!AthleteProfile::fromJson(entry.toObject(),checked,error)){status(error);return false;}if(ids.contains(checked.id)){status(tr("Powtórzony identyfikator skoczka."));return false;}ids.insert(checked.id);}if(!persist(next,error)){status(error);return false;}m_undo.append(QJsonObject{{"pack",currentPack()},{"selection",m_selected}});if(m_undo.size()>100)m_undo.removeFirst();m_redo.clear();m_packs[m_pack]=next;m_selected=selection;m_message=message.isEmpty()?tr("Zapisano"):message;if(perksOnly){emit perksChanged();emit historyChanged();emit statusChanged();}else notifyChanged();return true;}
 QVariantList AthleteStudioController::packs()const{QVariantList list;for(const auto &p:m_packs)list.append(QVariantMap{{"name",p["name"].toString()},{"count",p["profiles"].toArray().size()}});return list;}
-QVariantList AthleteStudioController::profiles()const{QVariantList rows;const auto source=currentPack()["profiles"].toArray();for(int i=0;i<source.size();++i){auto p=source[i].toObject().toVariantMap();p["label"]=title(source[i].toObject());p["index"]=i;p["flag"]=QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(p["country"].toString())+".svg")).toString();rows.append(p);}return rows;}
+QVariantList AthleteStudioController::profiles()const{QVariantList rows;const auto source=currentPack()["profiles"].toArray();for(int i=0;i<source.size();++i){auto p=source[i].toObject().toVariantMap();p["label"]=title(source[i].toObject());p["index"]=i;p["flag"]=AppPaths::flagUrl(p["country"].toString());rows.append(p);}return rows;}
 QString AthleteStudioController::resolvedPhotoPath() const {
     const auto entries=currentPack()["profiles"].toArray();if(m_selected<0 || m_selected>=entries.size())return {};
     const auto relative=photoReference(entries[m_selected].toObject());return relative.isEmpty()?QString():QDir(packDirectory()).absoluteFilePath(relative);
@@ -90,12 +91,12 @@ QString AthleteStudioController::resolvedPhotoPath() const {
 QVariantMap AthleteStudioController::profile()const {
     const auto entries=currentPack()["profiles"].toArray();if(m_selected<0 || m_selected>=entries.size())return {};
     const auto object=entries[m_selected].toObject();auto p=object.toVariantMap();p["label"]=title(object);
-    p["flag"]=QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(p["country"].toString())+".svg")).toString();
+    p["flag"]=AppPaths::flagUrl(p["country"].toString());
     const auto path=resolvedPhotoPath();const QFileInfo file(path);const bool available=!path.isEmpty() && file.isFile() && insidePack(path,packDirectory());
     if(p["photoPath"].toString().isEmpty() && !object["portrait"].toString().isEmpty())p["photoPath"]=object["portrait"].toString();
     p["photo"]=available?QUrl::fromLocalFile(path).toString():QString();p["photoAvailable"]=available;return p;
 }
-QVariantList AthleteStudioController::countries()const{if(!m_countryOptions.isEmpty())return m_countryOptions;QVariantList values;QSet<QString> codes;for(const auto &country:GlobalDatabase::get()->getCountries()){const auto code=CountryCodes::toFis(country.getAlpha3());if(code.size()!=3 || codes.contains(code))continue;codes.insert(code);values.append(QVariantMap{{"code",code},{"name",country.getName()+" · "+code},{"flag",QUrl::fromLocalFile(QDir("flags").absoluteFilePath(CountryCodes::toIso(code)+".svg")).toString()}});}m_countryOptions=values;return m_countryOptions;}
+QVariantList AthleteStudioController::countries()const{if(!m_countryOptions.isEmpty())return m_countryOptions;QVariantList values;QSet<QString> codes;for(const auto &country:GlobalDatabase::get()->getCountries()){const auto code=CountryCodes::toFis(country.getAlpha3());if(code.size()!=3 || codes.contains(code))continue;codes.insert(code);values.append(QVariantMap{{"code",code},{"name",country.getName()+" · "+code},{"flag",AppPaths::flagUrl(code)}});}m_countryOptions=values;return m_countryOptions;}
 QVariantList AthleteStudioController::legacyPacks()const{QVariantList values;for(const auto &p:GlobalDatabase::get()->getPacks())if(p.kind==DataPack::Jumpers)values.append(QVariantMap{{"name",p.name},{"id",p.id},{"count",p.jumpers.size()}});return values;}
 QVariantList AthleteStudioController::legacyAthletes(int pack)const{int index=0;for(const auto &p:GlobalDatabase::get()->getPacks())if(p.kind==DataPack::Jumpers){if(index++!=pack)continue;QVariantList values;for(int i=0;i<p.jumpers.size();++i)values.append(QVariantMap{{"name",p.jumpers[i].getNameAndSurname()},{"index",i}});return values;}return {};}
 void AthleteStudioController::selectPack(int index){if(index<0 || index>=m_packs.size() || index==m_pack)return;m_pack=index;m_selected=currentPack()["profiles"].toArray().isEmpty()?-1:0;m_undo.clear();m_redo.clear();m_message.clear();notifyChanged();}

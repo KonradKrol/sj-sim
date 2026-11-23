@@ -1,3 +1,4 @@
+#include "../../../global/AppPaths.h"
 #include "ClassificationResultsTableView.h"
 #include "ui_ClassificationResultsTableView.h"
 #include "../../../global/CountryFlagsManager.h"
@@ -123,7 +124,7 @@ void ClassificationResultsTableView::showHistory(){
     auto *previousModel=historyModel;auto *nextModel=new QStandardItemModel(this);nextModel->setHorizontalHeaderLabels({tr("Poz."),classification->getClassificationType()==Classification::Individual?tr("Zawodnik"):tr("Drużyna"),tr("Punkty")});
     int place=0;double previous=0;for(int i=0;i<rows.size();++i){const auto &row=rows[i];if(i==0 || qAbs(row.points-previous)>1e-9)place=i+1;previous=row.points;
         QList<QStandardItem *> items{new QStandardItem(QString::number(place)),new QStandardItem(classification->getClassificationType()==Classification::Individual && row.jumper?row.jumper->getNameAndSurname():row.country),new QStandardItem(QString::number(row.points,'g',12))};
-        for(auto *item:items)item->setFlags(Qt::ItemIsEnabled|Qt::ItemIsSelectable);items[1]->setData(row.country,Qt::UserRole);items[1]->setIcon(QIcon(QDir::current().absoluteFilePath("flags/"+CountryCodes::toIso(row.country)+".svg")));nextModel->appendRow(items);
+        for(auto *item:items)item->setFlags(Qt::ItemIsEnabled|Qt::ItemIsSelectable);items[1]->setData(row.country,Qt::UserRole);items[1]->setIcon(QIcon(AppPaths::flagFile(row.country)));nextModel->appendRow(items);
     }
     auto *previousSelection=ui->tableView->selectionModel();historyModel=nextModel;ui->tableView->setModel(historyModel);if(previousSelection && previousSelection!=ui->tableView->selectionModel())previousSelection->deleteLater();previousModel->deleteLater();
 }

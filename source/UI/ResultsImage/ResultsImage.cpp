@@ -1,3 +1,4 @@
+#include "../../global/AppPaths.h"
 #include "ResultsImage.h"
 
 #include "../../competitions/CompetitionInfo.h"
@@ -73,7 +74,7 @@ QString countryName(const QString &code)
 QImage flagImage(const QString &country,QSize size)
 {
     if(country.isEmpty())return {};
-    QImageReader reader(QStringLiteral("flags/%1.svg").arg(CountryCodes::toIso(country)));
+    QImageReader reader(AppPaths::flagFile(country));
     reader.setScaledSize(size);
     return reader.read();
 }
