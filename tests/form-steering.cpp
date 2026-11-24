@@ -42,9 +42,9 @@ int main(int argc,char **argv){
    const int expectedSteps=draw<.6?1:draw<.9?2:3;
    const double strength=direction>0 && expectedSteps==1 ? rng.uniform(1.30,1.55) : rng.uniform(.85,1.15);
    const double previousEffect=direction*expectedSteps*gap*strength;
-   const double expectedForm=std::clamp(50+(direction>0 ? previousEffect*1.5*.35 : previousEffect),1.,100.);
+   const double expectedForm=std::clamp(50+(direction>0 ? previousEffect*1.5*.42 : previousEffect),1.,100.);
    check(steps==expectedSteps && result.base==50 && std::abs(result.form-expectedForm)<1e-9,
-         "upward shock is reduced by 65 percent, with the form cap");
+         "upward shock is reduced by 58 percent, with the form cap");
   }
   check(seen[1]&&seen[2]&&seen[3],"shocks still draw one, two or three steps");
  }

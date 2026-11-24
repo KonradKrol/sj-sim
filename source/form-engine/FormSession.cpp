@@ -117,7 +117,7 @@ bool Session::steer(Jumper &athlete,int action,int value,QString &error){
                 :std::abs(config.centers[next.regime]-config.centers[std::clamp(next.regime-direction,0,regimeCount-1)]);
             const double strength=direction>0 && steps==1 ? rng.uniform(1.30,1.55) : rng.uniform(.85,1.15);
             const double effect=direction*steps*gap*strength;
-            next.form=std::clamp(next.form+(direction>0 ? effect*.525 : effect),1.,100.);
+            next.form=std::clamp(next.form+(direction>0 ? effect*.63 : effect),1.,100.);
             next.regime=target;next.randomState=rng.snapshot();
             // Keep μ: an immediate surge can settle back towards the existing base.
         }
