@@ -133,14 +133,15 @@ jobs:
           fi
       - name: Create signed disk image
         run: bash scripts/package-macos.sh build/macos
-      - name: Check both architectures and the checksum
+      - name: Check signature, both architectures and the checksum
         run: |
           artifact=$(find dist -maxdepth 1 -name 'SjSim-*-macos-universal.dmg' -print -quit)
           mount_point=$(mktemp -d)
           hdiutil attach -nobrowse -readonly -mountpoint "$mount_point" "$artifact"
+          trap 'hdiutil detach "$mount_point"' EXIT
+          codesign --verify --deep --strict "$mount_point/Sj.Sim.app"
           lipo -info "$mount_point/Sj.Sim.app/Contents/MacOS/sj-sim" | grep -q arm64
           lipo -info "$mount_point/Sj.Sim.app/Contents/MacOS/sj-sim" | grep -q x86_64
-          hdiutil detach "$mount_point"
           cd dist
           shasum -a 256 -c ./*.dmg.sha256
       - uses: actions/upload-artifact@v6

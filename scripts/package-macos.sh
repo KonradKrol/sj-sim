@@ -1,14 +1,21 @@
 #!/usr/bin/env bash
 # Packages an already built sj-sim.app into dist/SjSim-<version>-macos-universal.dmg.
 # Usage: scripts/package-macos.sh <build-dir> [output-dir]
-# The bundle is signed ad hoc (required to start on Apple Silicon) and is not notarized:
-# on first start macOS asks the player to confirm opening it (right click → Open).
+# For distribution, set SJSIM_MAC_SIGN_IDENTITY to a Developer ID Application
+# identity and SJSIM_MAC_NOTARY_PROFILE to a stored notarytool keychain profile.
+# Without both settings this produces an ad-hoc signed development build.
 set -euo pipefail
 umask 022
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 build_path="$(cd "${repo_root}" && cd "${1:-build/macos}" && pwd)"
 output_path="${repo_root}/${2:-dist}"
 [[ "$(uname -s)" == Darwin ]] || { echo "This packager runs on macOS." >&2; exit 1; }
+sign_identity="${SJSIM_MAC_SIGN_IDENTITY:-}"
+notary_profile="${SJSIM_MAC_NOTARY_PROFILE:-}"
+if [[ -n "${sign_identity}" && -z "${notary_profile}" || -z "${sign_identity}" && -n "${notary_profile}" ]]; then
+    echo "Set both SJSIM_MAC_SIGN_IDENTITY and SJSIM_MAC_NOTARY_PROFILE for distribution." >&2
+    exit 1
+fi
 for tool in python3 lrelease qmake macdeployqt codesign hdiutil sips iconutil /usr/libexec/PlistBuddy; do
     command -v "$tool" >/dev/null || { echo "Missing build tool: $tool" >&2; exit 1; }
 done
@@ -64,9 +71,13 @@ set_plist LSMinimumSystemVersion "12.0" string
 set_plist NSHumanReadableCopyright "GPL-3.0" string
 
 # Qt frameworks, plugins and the QML modules imported by the interface.
-macdeployqt "${app}" -qmldir="${repo_root}/source/UI/Quick" -qmldir="${repo_root}/source/UI/Competition/Quick" -always-overwrite
+signing_option="-codesign=-"
+if [[ -n "${sign_identity}" ]]; then
+    signing_option="-sign-for-notarization=${sign_identity}"
+fi
+macdeployqt "${app}" -qmldir="${repo_root}/source/UI/Quick" -qmldir="${repo_root}/source/UI/Competition/Quick" -always-overwrite "${signing_option}"
 
-# Start the bundled program with an isolated library before signing; the smoke run must not
+# Start the bundled program with an isolated library; the smoke run must not
 # leave files inside the bundle. macdeployqt ships only the Cocoa platform plugin, so the run
 # uses the normal macOS window session of the build machine.
 smoke_log="${workspace}/smoke.log"
@@ -81,7 +92,9 @@ if ! env -u QML2_IMPORT_PATH -u QML_IMPORT_PATH -u QT_PLUGIN_PATH -u DYLD_LIBRAR
 fi
 rm -f "${app}/Contents/MacOS/deployment-smoke.log"
 
-codesign --force --deep --sign - "${app}"
+if [[ -z "${sign_identity}" ]]; then
+    codesign --force --deep --sign - "${app}"
+fi
 codesign --verify --deep --strict "${app}"
 
 staging="${workspace}/dmg"
@@ -91,5 +104,11 @@ ln -s /Applications "${staging}/Applications"
 artifact="${output_path}/SjSim-${version}-macos-universal.dmg"
 rm -f "${artifact}"
 hdiutil create -volname "Sj.Sim ${version}" -srcfolder "${staging}" -ov -format UDZO "${artifact}" >/dev/null
+if [[ -n "${sign_identity}" ]]; then
+    codesign --force --timestamp --sign "${sign_identity}" "${artifact}"
+    xcrun notarytool submit "${artifact}" --keychain-profile "${notary_profile}" --wait
+    xcrun stapler staple "${artifact}"
+    xcrun stapler validate "${artifact}"
+fi
 (cd "${output_path}" && shasum -a 256 "$(basename "${artifact}")" > "$(basename "${artifact}").sha256")
 echo "Ready: ${artifact}"
