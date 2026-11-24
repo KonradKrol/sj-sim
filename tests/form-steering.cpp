@@ -42,9 +42,9 @@ int main(int argc,char **argv){
    const int expectedSteps=draw<.6?1:draw<.9?2:3;
    const double strength=direction>0 && expectedSteps==1 ? rng.uniform(1.30,1.55) : rng.uniform(.85,1.15);
    const double previousEffect=direction*expectedSteps*gap*strength;
-   const double expectedForm=std::clamp(50+(direction>0 ? previousEffect*1.5 : previousEffect),1.,100.);
+   const double expectedForm=std::clamp(50+(direction>0 ? previousEffect*1.5*.35 : previousEffect),1.,100.);
    check(steps==expectedSteps && result.base==50 && std::abs(result.form-expectedForm)<1e-9,
-         "upward shock is 150 percent of the previous effect, with the form cap");
+         "upward shock is reduced by 65 percent, with the form cap");
   }
   check(seen[1]&&seen[2]&&seen[3],"shocks still draw one, two or three steps");
  }
@@ -55,5 +55,5 @@ int main(int argc,char **argv){
  check(pending.update(initial.date,{&athlete},true,error) && pending.states[key].steeringLocked,
        "first event carries the lock into the athlete state");
  session.enabled=false;check(session.steer(athlete,4,1,error) && athlete.getSimulationProfile()->form==1,"exact works without automatic form");check(!session.steer(athlete,5,0,error),"dynamic action requires automatic form");
- std::cout<<"PASS: all-action lock, persistence, natural unlock, exact bounds, 150 percent upward shock\n";
+ std::cout<<"PASS: all-action lock, persistence, natural unlock, exact bounds, and reduced upward shock\n";
 }
