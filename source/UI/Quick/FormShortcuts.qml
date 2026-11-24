@@ -80,7 +80,7 @@ RowLayout {
             }
             Label {
                 visible: root.locked
-                text: qsTr("Poczekaj na automatyczną zmianę formy.")
+                text: qsTr("Dostępne po następnym dziennym przeliczeniu formy.")
                 color: Theme.muted
                 font.pointSize: Theme.caption
                 Layout.fillWidth: true

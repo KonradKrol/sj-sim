@@ -82,7 +82,7 @@ bool Session::steer(Jumper &athlete,int action,int value,QString &error){
     if(action!=4 && !enabled){error=QObject::tr("Włącz automatyczną formę, aby użyć tej akcji.");return false;}
     if(action!=4 && it==states.end()){error=QObject::tr("Forma tego zawodnika nie została jeszcze wyliczona.");return false;}
     if(enabled && ((active && it->steeringLocked) || pendingSteeringLocks.contains(key))) {
-        error=QObject::tr("Kolejna zmiana formy będzie dostępna później.");
+        error=QObject::tr("Kolejna zmiana będzie dostępna po dziennym przeliczeniu formy.");
         return false;
     }
     if((action==0 && it->regime==regimeCount-1) || (action==1 && it->regime==0)){error=QObject::tr("Ta zmiana nie jest teraz dostępna.");return false;}

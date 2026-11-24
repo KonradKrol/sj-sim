@@ -21,7 +21,10 @@ int main(int argc,char **argv){
          && athlete.getSimulationProfile()->form==form,"all actions are blocked without changes");
  }
  AutoForm::Session loaded;check(AutoForm::Session::fromJson(session.toJson(),loaded,error) && loaded.states[key].steeringLocked,"lock survives save/load");
- state.remainingDays=.1;AutoForm::advance(state,state.date.addDays(1),0,session.config);check(!state.steeringLocked,"natural regime transition unlocks all actions");
+ AutoForm::advance(state,state.date,0,session.config);check(state.steeringLocked,"same-day recalculation keeps the lock");
+ const auto previousTransitions=state.transitions;
+ AutoForm::advance(state,state.date.addDays(1),0,session.config);
+ check(!state.steeringLocked && state.transitions==previousTransitions,"first daily update unlocks all actions without a regime transition");
  session.states[key]=initial;check(session.steer(athlete,2,0,error),"crisis succeeds");check(session.states[key].regime==0 && athlete.getSimulationProfile()->form==12,"crisis is immediate");
  session.states[key]=initial;check(session.steer(athlete,3,0,error),"peak succeeds");check(session.states[key].regime==6 && athlete.getSimulationProfile()->form==98,"peak is immediate");
  session.states[key]=initial;check(session.steer(athlete,4,73,error) && athlete.getSimulationProfile()->form==73,"exact value applied");const auto before=session.toJson();check(!session.steer(athlete,4,101,error) && before==session.toJson() && athlete.getSimulationProfile()->form==73,"invalid exact value is atomic");
@@ -55,5 +58,5 @@ int main(int argc,char **argv){
  check(pending.update(initial.date,{&athlete},true,error) && pending.states[key].steeringLocked,
        "first event carries the lock into the athlete state");
  session.enabled=false;check(session.steer(athlete,4,1,error) && athlete.getSimulationProfile()->form==1,"exact works without automatic form");check(!session.steer(athlete,5,0,error),"dynamic action requires automatic form");
- std::cout<<"PASS: all-action lock, persistence, natural unlock, exact bounds, and reduced upward shock\n";
+ std::cout<<"PASS: all-action lock, persistence, daily unlock, exact bounds, and reduced upward shock\n";
 }

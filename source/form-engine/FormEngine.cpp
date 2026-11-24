@@ -187,11 +187,11 @@ void advance(State &s,QDate target,int perk,const Config &c,const std::function<
             drift(s,s.remainingDays,rng,c);left-=s.remainingDays;
             const auto &probabilities=plan.probabilities[s.regime];s.regime=int(rng.weightedIndex(std::vector<double>(probabilities.begin(),probabilities.end())));
             s.base=bounded(c.entryInertia*s.base+(1-c.entryInertia)*c.centers[s.regime]+laplace(rng,c.entryDeviation[s.regime]));
-            s.steeringLocked=false;
             s.visited|=1<<s.regime;++s.transitions;s.remainingDays=waiting(plan.days[s.regime],rng);
         }
         drift(s,left,rng,c);s.remainingDays-=left;
         s.form=bounded(s.base+a*(s.form-s.base)+laplace(rng,deviation));s.date=s.date.addDays(1);
+        s.steeringLocked=false;
         if(observer)observer(s);
     }
     s.randomState=rng.snapshot();
